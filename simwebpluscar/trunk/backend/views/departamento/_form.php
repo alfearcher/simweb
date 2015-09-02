@@ -1,0 +1,27 @@
+<?php
+
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+
+/* @var $this yii\web\View */
+/* @var $model backend\models\Departamento */
+/* @var $form yii\widgets\ActiveForm */
+?>
+
+<div class="departamento-form">
+
+    <?php $form = ActiveForm::begin(); ?>
+
+    <?= $form->field($model, 'id_departamento')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'descripion')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'inactivo')->textInput() ?>
+
+    <div class="form-group">
+        <?= Html::submitButton($model->isNewRecord ? Yii::t('backend', 'Create') : Yii::t('backend', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    </div>
+
+    <?php ActiveForm::end(); ?>
+
+</div>
