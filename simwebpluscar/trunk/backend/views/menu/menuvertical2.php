@@ -104,16 +104,25 @@
 		        		],
 
 		        		//	SOLICITUDES DE VEHICULOS
-		        		['label' => Icon::show('fa fa-car',['class' => $typeLong], $typeIcon) . '&nbsp; Vehiculos',
+		        		['label' => Icon::show('fa fa-car',['class' => $typeLong], $typeIcon) . '&nbsp; Vehiculos', 
 		        			'items' => [
-		        						['label' => 'Inscripción de Vehiculos', 'url' => ['vehiculos/create']],
-		        						['label' => 'Calcomania', 'url' => '#'],
+		        						['label' => 'Inscripci&oacute;n de Vehiculos', 'url' => ['vehiculo/vehiculos/create']],
+		        						['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . 'Calcomania', 
+					        				'items' => [
+			        							['label' => 'Administrar funcionarios responsables de entregar calcomania','url' => ['vehiculo/calcomania/funcionario-calcomania/busqueda-funcionario']],
+			        							['label' => 'Generar Lote de Calcomania','url' => ['vehiculo/calcomania/lote-calcomania/create']],
+			        							['label' => 'Administrar Lote de Calcomanias Generadas','url' => ['vehiculo/calcomania/lote-calcomania/busqueda-lote']],
+			        							['label' => 'Asignar Calcomanias a funcionario (Distribuir entre funcionario responsables)','url' => ['vehiculo/calcomania/funcionario-calcomania/distribuir-lote']],
+			        							['label' => 'Administrar Entrega de calcomania','url' => '#'],
+			        							['label' => 'Cierre de Lote','url' => '#'],
+					        				],
+					        			],
 		        						['label' => 'Solvencia', 'url' => '#'],
 		        						['label' => 'Cambio de Propietario', 'url' => '#'],
-		        						['label' => 'Cambio de Placa', 'url' => ['vehiculos/cambio-placa']],
-		        						['label' => 'Desincorporación de Vehiculo', 'url' => '#'],
-		        						['label' => 'Cambio de Otros Datos del Vehiculo', 'url' => ['vehiculos/busqueda']],
-		        			]
+		        						['label' => 'Cambio de Placa', 'url' => ['vehiculo/vehiculos/cambio-placa']],
+		        						['label' => 'Desincorporaci&oacute;n de Vehiculo', 'url' => '#'],
+		        						['label' => 'Cambio de Otros Datos del Vehiculo', 'url' => ['vehiculo/vehiculos/busqueda']],
+		        			],
 		        		],
 
 		        		//	PROPAGANDA COMERCIAL
