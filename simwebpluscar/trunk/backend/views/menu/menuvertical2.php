@@ -1,4 +1,4 @@
-<?php 
+<?php
 	use yii\helpers\Html;
 	use yii\widgets\Menu;
 	use kartik\nav\NavX;
@@ -6,7 +6,7 @@
   	use kartik\sidenav\SideNav;
   	use kartik\icons\Icon;
   	use yii\helpers\Url;
-  
+
   	$typeIcon = Icon::FA;
   	$typeLong = 'fa-2x';
 
@@ -32,14 +32,14 @@
 		        			['label' => 'Modificar Funcionario', 'url' => '#', 'options' => ['value' => '301', 'id' => '301']],
 		        			['label' => 'Desincorporar Funcionario', 'url' => '#', 'options' => ['value' => '302', 'id' => '302']],
 		        			['label' => 'Asignar a Grupo de Trabajo', 'url' => '#', 'options' => ['value' => '303', 'id' => '303']],
-		        			['label' => Icon::show('user',['class' => 'fa-2x'], $typeIcon) . 'Usuarios', 'url' => '#', 
+		        			['label' => Icon::show('user',['class' => 'fa-2x'], $typeIcon) . 'Usuarios', 'url' => '#',
 		        				'items' => [
 		        							['label' => 'Crear Cuenta','url' => '#'],
 		        							['label' => 'Desincorporar Cuenta','url' => '#'],
 		        				]
 		        			],
 
-		        			['label' => Icon::show('fa fa-users',['class' => 'fa-2x'], $typeIcon) . 'Grupos de Trabajo (Perfiles)', 'url' => '#', 
+		        			['label' => Icon::show('fa fa-users',['class' => 'fa-2x'], $typeIcon) . 'Grupos de Trabajo (Perfiles)', 'url' => '#',
 		        				'items' => [
 		        							['label' => 'Crear Grupo de Trabajo (Perfiles)','url' => '#'],
 		        							['label' => 'Modificar Grupo de Trabajo','url' => '#'],
@@ -52,8 +52,8 @@
 		    	// &nbsp; espacio en blanco html
 		        ['label' => Icon::show('fa fa-book',['class' => $typeLong], $typeIcon) . '&nbsp; Registros Maestros',
 		        	'items' => [
-		        			['label' => 'Registros Datos Básicos', 'url' => ['datosbasico/create'], 'options' => ['value' => '520', 'id' => '500']],
-		        			//Icon::show('fa fa-book',['class' => 'fa-2x'], $typeIcon) . '&nbsp; 
+		        			['label' => 'Registros Datos Básicos', 'url' => ['/registromaestro/datosbasico/create'], 'options' => ['value' => '520', 'id' => '500']],
+		        			//Icon::show('fa fa-book',['class' => 'fa-2x'], $typeIcon) . '&nbsp;
 		        	]
 		        ],
 
@@ -84,7 +84,7 @@
 		        		],
 
 		        		//	SOLICITUDES DE INMUEBLES URBANOS
-		        		['label' => Icon::show('fa fa-home',['class' => $typeLong], $typeIcon) . '&nbsp; Inmuebles Urbanos', 
+		        		['label' => Icon::show('fa fa-home',['class' => $typeLong], $typeIcon) . '&nbsp; Inmuebles Urbanos',
 		        			'items' => [
 		        						['label' => 'Inscripción de Inmuebles Urbanos', 'url' => ['inscripcion-inmuebles-urbanos/inscripcioninmueblesurbanos']],
 		        						['label' => 'Avaluo Catastral', 'url' => '#'],
@@ -104,7 +104,7 @@
 		        		],
 
 		        		//	SOLICITUDES DE VEHICULOS
-		        		['label' => Icon::show('fa fa-car',['class' => $typeLong], $typeIcon) . '&nbsp; Vehiculos', 
+		        		['label' => Icon::show('fa fa-car',['class' => $typeLong], $typeIcon) . '&nbsp; Vehiculos',
 		        			'items' => [
 		        						['label' => 'Inscripción de Vehiculos', 'url' => ['vehiculos/create']],
 		        						['label' => 'Calcomania', 'url' => '#'],
@@ -117,7 +117,7 @@
 		        		],
 
 		        		//	PROPAGANDA COMERCIAL
-		        		['label' => Icon::show('fa fa-file-powerpoint-o',['class' => $typeLong], $typeIcon) . '&nbsp; Propaganda Comercial', 
+		        		['label' => Icon::show('fa fa-file-powerpoint-o',['class' => $typeLong], $typeIcon) . '&nbsp; Propaganda Comercial',
 		        			'items' => [
 		        						['label' => 'Inscripción de Propagandas', 'url' => '#'],
 		        						['label' => 'Renovación de Propagandas', 'url' => '#'],
@@ -128,7 +128,7 @@
 		        		],
 
 		        		//	ESPECTACULO PUBLICO
-		        		['label' => Icon::show('fa fa-cubes',['class' => $typeLong], $typeIcon) . '&nbsp; Espectaculo Publico', 
+		        		['label' => Icon::show('fa fa-cubes',['class' => $typeLong], $typeIcon) . '&nbsp; Espectaculo Publico',
 		        			'items' => [
 		        						['label' => 'Inscripción de Espectaculo', 'url' => '#'],
 		        						['label' => 'Suspención de Espectaculo', 'url' => '#'],
@@ -138,7 +138,7 @@
 		        		],
 
 		        		//	APUESTAS LICITAS
-		        		['label' => Icon::show('fa fa-diamond',['class' => $typeLong], $typeIcon) . '&nbsp; Apuestas Licitas', 
+		        		['label' => Icon::show('fa fa-diamond',['class' => $typeLong], $typeIcon) . '&nbsp; Apuestas Licitas',
 		        			'items' => [
 		        						['label' => 'Inscripción de Apuestas', 'url' => '#'],
 		        						['label' => 'Cambio de Otros Datos de Apuestas Licitas', 'url' => '#'],
@@ -147,7 +147,7 @@
 		        		],
 
 		        		//	Otras
-		        		['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . '&nbsp; Otras', 
+		        		['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . '&nbsp; Otras',
 		        			'items' => [
 		        						['label' => 'Pago Parcial', 'url' => '#'],
 		        						['label' => 'Convenio de Pago', 'url' => '#'],
@@ -168,7 +168,7 @@
 
 
 		        //	PANEL MAESTRO
-        		['label' => Icon::show('fa fa-calculator',['class' => $typeLong], $typeIcon) . '&nbsp; Panel Maestro', 
+        		['label' => Icon::show('fa fa-calculator',['class' => $typeLong], $typeIcon) . '&nbsp; Panel Maestro',
         			'items' => [
         						['label' => 'Pagar Planilla con Planilla(s)', 'url' => '#'],
         						['label' => 'Eliminación de Planillas', 'url' => '#'],
@@ -181,7 +181,7 @@
 
 
         		//	AJUSTAR PAGOS
-        		['label' => Icon::show('fa fa-pencil-square-o',['class' => $typeLong], $typeIcon) . '&nbsp; Ajustar Pagos', 
+        		['label' => Icon::show('fa fa-pencil-square-o',['class' => $typeLong], $typeIcon) . '&nbsp; Ajustar Pagos',
         			'items' => [
         						['label' => 'Ajustar Formas de Pagos', 'url' => '#'],
         						['label' => 'Ajustar Pagos Inconsistentes', 'url' => '#'],
@@ -194,7 +194,7 @@
 
 
         		//	PAGOS
-        		['label' => Icon::show('fa fa-money',['class' => $typeLong], $typeIcon) . '&nbsp; Pagos', 
+        		['label' => Icon::show('fa fa-money',['class' => $typeLong], $typeIcon) . '&nbsp; Pagos',
         			'items' => [
         						['label' => 'Recibo', 'url' => '#'],
         						['label' => 'Caja', 'url' => '#'],
@@ -209,15 +209,15 @@
 
 
 		        //	CONFIGURACIONES
-        		['label' => Icon::show('fa fa-cog',['class' => $typeLong], $typeIcon) . '&nbsp; Configuraciones', 
+        		['label' => Icon::show('fa fa-cog',['class' => $typeLong], $typeIcon) . '&nbsp; Configuraciones',
         			'items' => [
         						['label' => 'Configurar Ordenanzas', 'url' => '#'],
         						['label' => 'Configurar Vencimiento de Documentos', 'url' => '#'],
         						['label' => 'Configurar Solicitudes', 'url' => '#'],
         						['label' => 'Configurar Convenios de Pagos', 'url' => '#'],
-        						['label' => 'Configurar Dirección de Tributos', 
-        						            'url' => ['/hola/saludo2'], 
-        						            'id' => 10, 
+        						['label' => 'Configurar Dirección de Tributos',
+        						            'url' => ['/hola/saludo2'],
+        						            'id' => 10,
         						            'click' => 'alert("Button 2 clicked");'],
         			]
         		],
@@ -246,7 +246,7 @@
 		        ['label' => 'Profile', 'icon' => 'user', 'url' => "#"],
 		        */
 		    ],
-		]);      
+		]);
 		?>
 	</div>
 </div>
