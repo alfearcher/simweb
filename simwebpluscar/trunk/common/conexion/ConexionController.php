@@ -5,46 +5,46 @@
  */
 
  /**
- * 
- *	> This library is free software; you can redistribute it and/or modify it under 
- *	> the terms of the GNU Lesser Gereral Public Licence as published by the Free 
- *	> Software Foundation; either version 2 of the Licence, or (at your opinion) 
+ *
+ *	> This library is free software; you can redistribute it and/or modify it under
+ *	> the terms of the GNU Lesser Gereral Public Licence as published by the Free
+ *	> Software Foundation; either version 2 of the Licence, or (at your opinion)
  *	> any later version.
- *  > 
- *	> This library is distributed in the hope that it will be usefull, 
- *	> but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability 
- *	> or fitness for a particular purpose. See the GNU Lesser General Public Licence 
+ *  >
+ *	> This library is distributed in the hope that it will be usefull,
+ *	> but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability
+ *	> or fitness for a particular purpose. See the GNU Lesser General Public Licence
  *	> for more details.
- *  > 
+ *  >
  *	> See [LICENSE.TXT](../../LICENSE.TXT) file for more information.
  *
  */
 
- /**	
+ /**
  *	@file ConexionController.php
- *	
+ *
  *	@author Jose Rafael Perez Teran
- * 
+ *
  *	@date 22-03-2015
- * 
+ *
  *  @class ConexionController
  *	@brief Clase que permite crear una instancia de conexion a la db.
- * 
+ *
  *	Esto es un detalle
- * 
- *  
- *  
+ *
+ *
+ *
  *	@property
  *
- *  
+ *
  *	@method
  * 	initConectar
  *  conectar
  *  determinarParametros
  *  getArrayParametros
- *  
+ *
  *	@inherits
- *	
+ *
  */
 
 
@@ -83,8 +83,8 @@
 
 				// Se selecciona el elemento del arreglo multidimensional que tiene los parametros de conexion
 				// Del arreglo se selecciona el elemento cuya indice es $dbConexion.
-				$conn = $conn['components'][$dbConexion];		
-				//Array ( [class] => yii\db\Connection [dsn] => mysql:host=localhost;dbname=sim_teq [username] => root [password] => [charset] => utf8 ) 
+				$conn = $conn['components'][$dbConexion];
+				//Array ( [class] => yii\db\Connection [dsn] => mysql:host=localhost;dbname=sim_teq [username] => root [password] => [charset] => utf8 )
 
 				$arregloParametros = self::determinarParametro($dbConexion, $conn);
 				//Array ( [dsn] => mysql:host=localhost;dbname=sim_teq [username] => root [password] => )
@@ -100,7 +100,7 @@
 
 
 		/**
-		*	@return Returna un array de parametros de conexion a base de datos. El mismo es una array multidimensional.	
+		*	@return Returna un array de parametros de conexion a base de datos. El mismo es una array multidimensional.
 		*/
 		private static function getArrayParametros()
 		{
@@ -112,7 +112,7 @@
 		/**
 		 *	@param $dbConexion Variable de tipo string indica a que entidad se necesita la conexion.
 		 *  @param $arregloDsn Variable de tipo array de datos con los valores de conexion a la db.
-		 *  @return Returna un array de parametros(dsn,username, password) de conexion a db, 
+		 *  @return Returna un array de parametros(dsn,username, password) de conexion a db,
 		 *	$arregloParametros.
 		 */
 		private static function determinarParametro($dbConexion, $arregloDsn)
@@ -136,7 +136,7 @@
 		 *  @return Returna una instancia de la conexion para realizar operaciones en db.
 		 */
 		private static function conectar($arregloParametros)
-		{	
+		{
 			return $cnn = new Connection($arregloParametros);
 		}
 
@@ -152,14 +152,14 @@
 		private static function existeUserValido()
 		{
 			try {
-				if ( !(Yii::$app->user->identity) ) 
+				if ( !(Yii::$app->user->identity) )
 				{
 	            	die(Yii::t('backend','Sorry...User no valid'));
 	            }
 	            else
 	            {
 	            	return true;
-	            }	
+	            }
 			} catch (PDOException $e) {
 					die(Yii::t('backend','Sorry...User no valid'));
 			}
@@ -174,7 +174,7 @@
 		* 	@param $tableName nombre de la tabla.
 		* 	@param $arrayDatos arreglo de datos que seran insertados, cuya estructura es campo => valor.
 		* 	@return boolean true si guardo false si no guardo.
-		* 
+		*
 		*/
 		public function guardarRegistro($conection, $tableName, $arrayDatos = [])
 		{
@@ -187,7 +187,9 @@
 				} catch (PDOException $e) {
 					return false;
 				}
-			}	
+			} else {
+				return false;
+			}
 		}
 
 
@@ -198,10 +200,10 @@
 		*	@param $conection instancia de tipo Connection a la base de datos
 		* 	@param $tableName nombre de la tabla.
 		* 	@param $arrayColumna arreglo de columna de la tabla donde vamos a insertar.
-		* 	@param $arrayValores arreglos de los valores a insertar, los mismo corresponde con las 
+		* 	@param $arrayValores arreglos de los valores a insertar, los mismo corresponde con las
 		* 	columnas, y el arreglo puede tener varias filas de valores.
 		* 	@return boolean true si guardo false si no guardo.
-		* 
+		*
 		*/
 		public function guardarLoteRegistros($conection, $tableName, $arrayColumna = [], $arrayValores = [])
 		{
@@ -214,6 +216,8 @@
 				} catch (PDOException $e) {
 					return false;
 				}
+			} else {
+				return false;
 			}
 		}
 
@@ -222,12 +226,12 @@
 
 
 
-		/** 
+		/**
 		*	@param $conection instancia de tipo Connection a la base de datos.
 		* 	@param $tableName nombre de la tabla.
 		* 	@param $arrayDatos arreglo de datos que seran actualizados, cuya estructura es campo => valor.
 		* 	@param $arrayCondition arreglo de datos que especifica la condicion de los registros a actualizar,
-		* 	where condition de la sentencia sql. 
+		* 	where condition de la sentencia sql.
 		* 	@return boolean true si actualizo false si no actualizo.
 		*/
 		public function modificarRegistro($conection, $tableName, $arrayDatos = [], $arrayCondition = [])
@@ -241,6 +245,8 @@
 				} catch (PDOExcepcion $e) {
 					return false;
 				}
+			} else {
+				return false;
 			}
 		}
 
@@ -248,11 +254,11 @@
 
 
 
-		/** 
+		/**
 		*	@param $conection instancia de tipo Connection a la base de datos.
 		* 	@param $tableName nombre de la tabla.
 		* 	@param $arrayCondition arreglo de datos que especifica la condicion de los registros a eliminar,
-		* 	where condition de la sentencia sql. 
+		* 	where condition de la sentencia sql.
 		* 	@return boolean true si elimina false si no elimina.
 		*/
 		public function eliminarRegistro($conection, $tableName, $arrayCondition = [])
@@ -266,6 +272,8 @@
 				} catch (PDOException $e) {
 					return false;
 				}
+			} else {
+				return false;
 			}
 		}
 
@@ -278,17 +286,19 @@
 		 *  @param $conection instancia de tipo Connection a la base de datos.
 		 * 	@return dataReader con las columnas consultadas.
 		 */
-		private static function buscarRegistro($conection, $sql)
+		public function buscarRegistro($conection, $sql)
 		{
 			// Se controla que existe un usuario activo valido.
 			if ( $this->existeUserValido() )
 			{
 				try {
 					$command = $conection->createCommand($sql);
-					return $dataReader = $command->queryAll();		
+					return $dataReader = $command->queryAll();
 				} catch (PDOException $e) {
 					return false;
 				}
+			} else {
+				return false;
 			}
 		}
 
