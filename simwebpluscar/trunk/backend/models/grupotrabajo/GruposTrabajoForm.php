@@ -81,10 +81,6 @@ class GruposTrabajoForm extends \yii\db\ActiveRecord
             [ [ 'id_departamento', 'inactivo', 'id_unidad' ], 'integer' ],
             [ ['descripcion' ], 'string', 'max' => 200 ],
              
-            
-            
-
-
         ];
     }
     
