@@ -74,14 +74,14 @@ function activar_campos( val ) {
     if ( val == '10') { tit8='block'; }
     if ( val == '11') { tit1='block'; }
     if ( val == '11') { tit8='block'; }
-	
+    
     document.getElementById( 'ms1' ).style.display = tit1;
-    document.getElementById( 'ms2' ).style.display = tit2;	
-    document.getElementById( 'ms3' ).style.display = tit3;	
-    document.getElementById( 'ms4' ).style.display = tit4;	
-    document.getElementById( 'ms5' ).style.display = tit5;	
-    document.getElementById( 'ms6' ).style.display = tit6;	
-    document.getElementById( 'ms7' ).style.display = tit7;	
+    document.getElementById( 'ms2' ).style.display = tit2;  
+    document.getElementById( 'ms3' ).style.display = tit3;  
+    document.getElementById( 'ms4' ).style.display = tit4;  
+    document.getElementById( 'ms5' ).style.display = tit5;  
+    document.getElementById( 'ms6' ).style.display = tit6;  
+    document.getElementById( 'ms7' ).style.display = tit7;  
     document.getElementById( 'ms8' ).style.display = tit8;
 }
     
@@ -287,7 +287,7 @@ function puntitos( donde, caracter, campo ) {
                                     <?= $form->field( $model, 'cantidad_tiempo' )->label( false )->textInput( [   'style' => 'width:100%;text-transform:uppercase;',
                                                                                                                   'inline' => true
                                                                                                               ] )
-                                    ?>	
+                                    ?>  
                                 </div>
                             </td>
                                                 
@@ -488,14 +488,14 @@ function puntitos( donde, caracter, campo ) {
                             <td width="73%">
                                 <div>
                                     <p><i><small><?= Yii::t( 'backend', 'State&nbsp;/&nbsp;Town&nbsp;/&nbsp;Parish&nbsp;/&nbsp;Population center:' )?></small></i></p>
-                                    <?= $form->field( $model, 'est_mun_parr_cp' )->label( false )->textInput( [ 'maxlength' => true, 'style' => 'width:100%;' ] )?> 
+                                    <?= $form->field( $model, 'est_mun_parr_cp' )->label( false )->textInput( [ 'maxlength' => true, 'style' => 'width:120%;' ] )?> 
                                 </div>
                             </td>
                                 
                             <td>
                                 <div class="col-md-5">
                                     <p><i><small><?= Yii::t( 'backend', 'Location:' ) ?></small></i></p>
-                                    <?= $form->field( $model, 'id_cp' )->label( false )->textInput( [ 'maxlength' => true,'style' => 'width:100%;' ] )?> 
+                                    <?= $form->field( $model, 'id_cp' )->label( false )->textInput( [ 'maxlength' => true,'style' => 'width:150%;' ] )?> 
                                 </div> 
                                     
                                 <div class="col-md-3"> 

@@ -41,9 +41,9 @@
 
 		        			['label' => Icon::show('fa fa-users',['class' => 'fa-2x'], $typeIcon) . 'Grupos de Trabajo (Perfiles)', 'url' => '#',
 		        				'items' => [
-		        							['label' => 'Crear Grupo de Trabajo (Perfiles)','url' => '#'],
-		        							['label' => 'Modificar Grupo de Trabajo','url' => '#'],
-		        							['label' => 'Desincorporar Grupo de Trabajo','url' => '#'],
+		        							['label' => 'Crear Grupo de Trabajo (Perfiles)','url' => ['grupotrabajo/grupos-trabajo/create']],
+		        							['label' => 'Modificar Grupo de Trabajo','url' => ['grupotrabajo/grupos-trabajo/index']],
+		        							['label' => 'Desincorporar Grupo de Trabajo','url' => ['grupotrabajo/grupos-trabajo/index1']],
 		        				]
 		        			],
 		        	]
@@ -128,11 +128,11 @@
 		        		//	PROPAGANDA COMERCIAL
 		        		['label' => Icon::show('fa fa-file-powerpoint-o',['class' => $typeLong], $typeIcon) . '&nbsp; Propaganda Comercial',
 		        			'items' => [
-		        						['label' => 'Inscripción de Propagandas', 'url' => '#'],
-		        						['label' => 'Renovación de Propagandas', 'url' => '#'],
-		        						['label' => 'Desincorporación de Propaganda', 'url' => '#'],
-		        						['label' => 'Cambio de Otros Datos de Propaganda', 'url' => '#'],
-		        						['label' => 'Solvencia', 'url' => '#'],
+		        						['label' => 'Inscripción de Propagandas', 'url' => ['propaganda/propaganda/create']],
+		        						//['label' => 'Renovación de Propagandas', 'url' => '#'],
+		        						['label' => 'Desincorporación de Propaganda', 'url' => ['propaganda/propaganda/index1']],
+		        						['label' => 'Cambio de Otros Datos de Propaganda', 'url' => ['propaganda/propaganda/index']],
+		        						//['label' => 'Solvencia', 'url' => '#'],
 		        			]
 		        		],
 

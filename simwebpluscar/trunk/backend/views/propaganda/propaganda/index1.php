@@ -9,38 +9,25 @@ $this->title =Yii::t( 'backend', 'Propagandas' );
 ?>
 <script type="text/javascript">
 
-    function recargar_pagina(){
+function seleccion() {
 
-    
-               btn.disabled = false;
-    
-}
-    function seleccion(){
-
-    if (document.getElementById('checkbox').checked == 1)
-    {     
-               btn.disabled = false;
+    if ( document.getElementById('checkbox').checked == 1 ) {     
+               
+                btn.disabled = false;
     } else { 
-               btn.disabled = true; 
+                btn.disabled = true; 
     }
 }
-/*function selec(){
 
-if (btn.disabled != !this.checked ){
-        btn.disabled = false;
-    }else{
-        btn.disabled = false;
-    }
-}*/
 </script>
 
-<body onload="recargar_pagina()"/>
+<body onload="seleccion()"/>
 <div class="propaganda-form-index">
     <h1><?= Html::encode($this->title) ?></h1>
     <p>
         <?= Html::beginForm( [ 'propaganda/propaganda/disable' ], 'post' );?>
         
-        <?= Html::submitButton( 'Inactive', [ 'class' => 'btn btn-info', 'name' => 'btn', 'id' => "btn", 'value' => 'inactive', 'disabled' => 'disabled' ] );?>
+        <?= Html::submitButton( 'Inactive', [ 'class' => 'btn btn-primary', 'name' => 'btn', 'id' => "btn", 'value' => 'inactive', 'disabled' => 'disabled' ] );?>
     </p>
 
     <?= GridView::widget([
