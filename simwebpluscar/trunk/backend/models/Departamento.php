@@ -4,6 +4,7 @@ namespace backend\models;
 
 use Yii;
 
+
 /**
  * This is the model class for table "departamentos".
  *
@@ -44,4 +45,6 @@ class Departamento extends \yii\db\ActiveRecord
             'inactivo' => Yii::t('backend', 'Inactivo'),
         ];
     }
-}
+
+    
+    }

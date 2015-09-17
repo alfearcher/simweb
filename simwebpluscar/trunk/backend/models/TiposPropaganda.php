@@ -5,21 +5,22 @@ namespace backend\models;
 use Yii;
 
 /**
- * This is the model class for table "unidades_departamentos".
+ * This is the model class for table "tipos_propagandas".
  *
- * @property string $id_unidad
- * @property string $id_departamento
+ * @property string $tipo_propaganda
  * @property string $descripcion
  * @property integer $inactivo
+ * @property string $base_calculo
  */
-class UnidadDepartamento extends \yii\db\ActiveRecord
+class TiposPropaganda extends \yii\db\ActiveRecord
 {
+    
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'unidades_departamentos';
+        return 'tipos_propagandas';
     }
 
     /**
@@ -28,9 +29,8 @@ class UnidadDepartamento extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_unidad'], 'required'],
-            [['id_unidad', 'id_departamento', 'inactivo'], 'integer'],
-            [['descripcion'], 'string', 'max' => 45]
+            [['inactivo', 'base_calculo'], 'integer'],
+            [['descripcion'], 'string', 'max' => 255]
         ];
     }
 
@@ -40,10 +40,10 @@ class UnidadDepartamento extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_unidad' => Yii::t('backend', 'Id Unidad'),
-            'id_departamento' => Yii::t('backend', 'Id Departamento'),
+            'tipo_propaganda' => Yii::t('backend', 'Tipo Propaganda'),
             'descripcion' => Yii::t('backend', 'Descripcion'),
             'inactivo' => Yii::t('backend', 'Inactivo'),
+            'base_calculo' => Yii::t('backend', 'Base Calculo'),
         ];
     }
 }
