@@ -54,7 +54,7 @@ class ActionColumn extends Column
      *
      * @see buttons
      */
-    public $template = '{view} {update} {delete} {placa-update} {view-final-vehiculo}';
+    public $template = '{view} {update} {delete} {disable} {placa-update} {view-final-vehiculo}';
     /**
      * @var array button rendering callbacks. The array keys are the button names (without curly brackets),
      * and the values are the corresponding button rendering callbacks. The callbacks should use the following
@@ -159,7 +159,36 @@ class ActionColumn extends Column
                     'data-pjax' => '0',
                 ], $this->buttonOptions);
                 return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, $options);
-                            };
+            };
+        }
+        if (!isset($this->buttons['disable'])) {
+            $this->buttons['disable'] = function ($url, $model, $key) {
+            
+                    if($model->inactivo=='ACTIVO'){
+                      
+                            $msg='Are you sure you want to inactivate this item?';
+                            $label='Inactivate';
+                            $model->inactivo='ACTIVO';
+                            $icon='<span class="glyphicon glyphicon-ok"></span>';
+                    }else{
+                            $msg='Are you sure you want to activate this item?';
+                            $label='Activate';
+                            $model->inactivo='INACTIVO';
+                            $icon='<span class="glyphicon glyphicon-ban-circle"></span>';
+                    };
+                
+                $options = array_merge([
+                    'title' => Yii::t('yii', $label),
+                    'aria-label' => Yii::t('yii', $label),
+                    'data-confirm' => Yii::t('yii', $msg),
+                    'data-method' => 'post',
+                    'data-pjax' => '0',
+                   
+                ], $this->buttonOptions);
+                //echo var_dump($options);exit();
+                return Html::a($icon, $url, $options);
+            
+            };
         }
     }
 

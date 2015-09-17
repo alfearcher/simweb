@@ -91,7 +91,7 @@ class CheckboxColumn extends Column
      */
     protected function renderHeaderCellContent()
     {
-        $name = rtrim($this->name, '[]') . '_all';
+        $name = rtrim($this->name, ['id']) . '_all';
         $id = $this->grid->options['id'];
         $options = json_encode([
             'name' => $this->name,
@@ -103,9 +103,9 @@ class CheckboxColumn extends Column
         if ($this->header !== null || !$this->multiple) {
             return parent::renderHeaderCellContent();
         } else {
-            return Html::checkBox($name, false, ['class' => 'select-on-check-all']);
-        }
-    }
+            return Html::checkBox($name, true, ['id' => 'checkbox','onclick' => 'seleccion()', 'select-on-check-all']);
+        }                                                           
+    }                              
 
     /**
      * @inheritdoc
@@ -113,14 +113,13 @@ class CheckboxColumn extends Column
     protected function renderDataCellContent($model, $key, $index)
     {
         if ($this->checkboxOptions instanceof Closure) {
-            $options = call_user_func($this->checkboxOptions, $model, $key, $index, $this);
+            $options = call_user_func($this->checkboxOptions, $model, $key, $index,$onclick, $this);
         } else {
             $options = $this->checkboxOptions;
             if (!isset($options['value'])) {
                 $options['value'] = is_array($key) ? json_encode($key, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : $key;
-            }
+             }
         }
-
-        return Html::checkbox($this->name, !empty($options['checked']), $options);
+           return Html::checkBox($this->name,  empty($options['checked']),  $options);
     }
 }
