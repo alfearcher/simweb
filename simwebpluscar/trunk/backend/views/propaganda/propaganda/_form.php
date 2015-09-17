@@ -183,6 +183,7 @@ function puntitos( donde, caracter, campo ) {
     <?= Html::activeHiddenInput( $model, 'planilla', [ 'value' => '0' ] )?>
     <?= Html::activeHiddenInput( $model, 'id_cp', [ 'value' => '0' ] ) ?>
     <?= Html::activeHiddenInput( $model, 'id_sim', [ 'value' => '0' ] ) ?>
+    <?= Html::activeHiddenInput( $model, 'inactivo', [ 'value' => '0' ] ) ?>
     
     <div class="col-sm-11">
         <div class="panel panel-primary">
@@ -411,8 +412,7 @@ function puntitos( donde, caracter, campo ) {
                                 <div>
                                     <p><i><small><?= Yii::t( 'backend', 'Id Sim.:' ) ?></small></i></p>
                                     <?= $form->field( $model, 'id_sim' )->label( false )->textInput( [ 'inline' => true, 'style' => 'width:100%;' ] )?>
-                                    <p><i><small><?= $form->field( $model, 'inactivo' )->checkBox( [ 'inline' => true ] )?></small></i></p>
-                               </div>
+                                </div>
                             </td> 
                         </tr>
                     </table>  
@@ -481,9 +481,11 @@ function puntitos( donde, caracter, campo ) {
                                     </div>
                                 </td>
                         </tr>
-                                           
+                    </table>     
+                    
+                    <table class="table table-striped">                
                         <tr>
-                            <td>
+                            <td width="73%">
                                 <div>
                                     <p><i><small><?= Yii::t( 'backend', 'State&nbsp;/&nbsp;Town&nbsp;/&nbsp;Parish&nbsp;/&nbsp;Population center:' )?></small></i></p>
                                     <?= $form->field( $model, 'est_mun_parr_cp' )->label( false )->textInput( [ 'maxlength' => true, 'style' => 'width:100%;' ] )?> 
@@ -491,7 +493,7 @@ function puntitos( donde, caracter, campo ) {
                             </td>
                                 
                             <td>
-                                <div class="col-md-3">
+                                <div class="col-md-5">
                                     <p><i><small><?= Yii::t( 'backend', 'Location:' ) ?></small></i></p>
                                     <?= $form->field( $model, 'id_cp' )->label( false )->textInput( [ 'maxlength' => true,'style' => 'width:100%;' ] )?> 
                                 </div> 
@@ -504,7 +506,7 @@ function puntitos( donde, caracter, campo ) {
                         </tr>
                               
                         <tr>
-                            <td>
+                            <td colspan="2">
                                 <?= Html::submitButton( $model->isNewRecord ? 'Create' : 'Update', [ 'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'name'=> 'btn', ' value'=> 'crud' ] ) ?>
                             </td>
                         </tr>
