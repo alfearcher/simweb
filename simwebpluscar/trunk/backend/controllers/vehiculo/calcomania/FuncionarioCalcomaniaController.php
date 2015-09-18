@@ -153,13 +153,121 @@ class FuncionarioCalcomaniaController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionAsignate()
+    public function actionAutomatic()
     {
+        // Yii::$app->request->post( 'selection' )
 
-        echo "<pre>"; die(var_dump(Yii::$app->request->post())); echo "</pre>";
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        if (Yii::$app->request->post( 'selection' ) != null) {
+            // $t = 'funcionarios';
+            // $t2 = 'funcionario_calcomania';
+
+            $conn = New ConexionController();
+                
+            $this->conexion = $conn->initConectar('db');     // instancia de la conexion (Connection)
+            $this->conexion->open();            
+            $transaccion = $this->conexion->beginTransaction();   
+
+            $sqlLote = "select lc.* from lote_calcomania lc where lc.ano_impositivo = '".date('Y')."' and lc.inactivo = 0";
+            $resultLote = $conn->buscarRegistro($this->conexion, $sqlLote);
+
+            if (count(Yii::$app->request->post( 'selection' )) > 1) {                
+                foreach (Yii::$app->request->post( 'selection' ) as $key => $value) {
+                    $sql = "select fc.id_funcionario_calcomania, fc.id_funcionario, fc.naturaleza, fc.ci,
+                        f.id_funcionario, f.nombres, f.apellidos,
+                        dc.id_distribucion_calcomania, dc.id_distribucion_calcomania,
+                        dc.id_lote_calcomania, dc.rango_final,
+                        dc.rango_inicial, dc.estatus, dc.observacion
+                        from funcionario_calcomania fc 
+                        inner join funcionarios f 
+                        on fc.id_funcionario = f.id_funcionario
+                        left join distribucion_calcomania dc
+                        on dc.id_distribucion_calcomania = fc.id_funcionario_calcomania
+                        where fc.id_funcionario_calcomania = '".$value."'";
+
+                    $result[] = $conn->buscarRegistro($this->conexion, $sql);
+                }
+
+                
+                // Dividimos
+                $rangoXPersona = 3;//$resultLote[0]['rango_final'] / count($result);
+                $divisor = $resultLote[0]['rango_final']  / $rangoXPersona;
+                if ($divisor%2 == 0) {
+                   $intervalo = $divisor;
+                }else{
+                    $intervalo = $divisor - 1;
+                }
+                $contador = 0;
+                $start = 0;
+                while ($contador < count($result)) {
+                    if ($contador == 0) {
+                        $loteArray[$start]['inicio'] = $start;
+                        $loteArray[$start]['fin'] = $intervalo;
+                    }
+                    if ($contador == 1) {
+                        $loteArray[$contador]['inicio'] = $loteArray[0]['fin'] + 1;
+                        $loteArray[$contador]['fin'] = $loteArray[0]['fin'] + $loteArray[$contador]['inicio'] - 1;
+                    }
+                    if ($contador > 1) {
+                        $conta = $contador - 1;
+                        $loteArray[$contador]['inicio'] = $loteArray[$conta]['fin'] + 1;
+                        $loteArray[$contador]['fin'] = $loteArray[$conta]['fin'] + $intervalo - 1;
+                    }
+                    if ($contador == count($result)) {
+                        $excento = $resultLote[0]['rango_final'] - $loteArray[count($result)]['fin'];
+                        $loteArray[count($result)]['fin'] = $loteArray[count($result)]['fin'] + $excento;
+                    }
+                    
+                    $contador ++;
+                }
+
+                // range($resultLote[0]['rango_inicial'],$resultLote[0]['rango_final']);
+
+                // echo "<pre>"; die(var_dump(range($resultLote[0]['rango_inicial'],$resultLote[0]['rango_final']))); echo "</pre>";
+                echo "<pre>"; die(var_dump($loteArray)); echo "</pre>";
+                return $this->render('automatic', [
+                    'model' => $result,
+                    'resultLote' => $resultLote,
+                ]);
+                // echo "<pre>"; die(var_dump($result)); echo "</pre>";
+            }else{
+                $sql = "select fc.id_funcionario_calcomania, fc.id_funcionario, fc.naturaleza, fc.ci,
+                        f.id_funcionario, f.nombres, f.apellidos,
+                        dc.id_distribucion_calcomania, dc.id_distribucion_calcomania,
+                        dc.id_lote_calcomania, dc.rango_final,
+                        dc.rango_inicial, dc.estatus, dc.observacion
+                        from funcionario_calcomania fc 
+                        inner join funcionarios f 
+                        on fc.id_funcionario = f.id_funcionario
+                        left join distribucion_calcomania dc
+                        on dc.id_distribucion_calcomania = fc.id_funcionario_calcomania
+                        where fc.id_funcionario_calcomania = '".Yii::$app->request->post( 'selection' )[0]."'";
+
+                $result = $conn->buscarRegistro($this->conexion, $sql);
+                // echo "<pre>"; die(var_dump($result)); echo "</pre>";
+
+            }
+            // echo "<pre>"; die(var_dump(Yii::$app->request->post( 'selection' ))); echo "</pre>";
+            // return $this->redirect(['view', 'id' => $model->id_funcionario_calcomania]);
+        } else {           
+            $msg = "<script>alert('Debes seleccionar al menos un registro')</script>";
+
+            $searchModel = new FuncionarioCalcomaniaSearch();
+            $dataProvider = $searchModel->searchFuncionarioCalcomaniaList(Yii::$app->request->queryParams);
+
+            return $this->render('funcionario-calcomania-list', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'msg' => $msg,
+            ]);
+            // return $this->render('busqueda-funcionario', [
+            //     'model' => $model,
+            //     'msg' => $msg,
+            // ]);
+        }
+        $this->conexion->close();
+        // return $this->render('view', [
+        //     'model' => $this->findModel($id),
+        // ]);
     }
 
     /**
@@ -207,9 +315,7 @@ class FuncionarioCalcomaniaController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id_funcionario_calcomania]);
         } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            return $this->actionDistribuirLote();
         }
     }
 
