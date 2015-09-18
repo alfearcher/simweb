@@ -15,8 +15,8 @@ class FuncionarioCalcomaniaSearch extends FuncionarioCalcomaniaForm
     public $funcionarioName;
     public $funcionarioApellido;
     public $funcionarioCargo;
-    public $rango_inicial;
-    public $loteCalcomaniaRangoInicial;
+    public $distribucionRangoInicial;
+    public $distribucionRangoFinal;
     /**
      * @inheritdoc
      */
@@ -133,11 +133,15 @@ class FuncionarioCalcomaniaSearch extends FuncionarioCalcomaniaForm
                  * to enable sorting by country on initial loading of the grid.
                  * Se especificas las tabla con las cuales se requieren hacer el joinWith
                  */ 
-                $query->joinWith(['funcionarios']);
+                $query->joinWith(['funcionarios']);        
+
+                $query->joinWith(['distribucion']);
+
                 $query->andWhere(['funcionario_calcomania.estatus' => 1]);
-                // $query->joinWith(['lote_calcomania']);
-                // $query->andWhere(['lote_calcomania.id_lote_calcomania' => 'funcionario_calcomania.id_lote_calcomania']);
+                // $query->andWhere(['distribucion_calcomania.id_funcionario_calcomania' => 'funcionario_calcomania.id_funcionario_calcomania']);
                // $query->andWhere(['lote_calcomania.ano_impositivo' => date('Y')]);
+
+                // echo "<pre>"; var_dump($query); echo "</pre>"; die();
                 return $dataProvider;
             }
 

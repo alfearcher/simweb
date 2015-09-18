@@ -73,20 +73,37 @@ class FuncionarioCalcomaniaForm extends \yii\db\ActiveRecord
     }
 
     /**
-    *   Contiene la relacion de 1 a M, de las tablas lote_calcomania y funcionarios, 
+    *   Contiene la relacion de 1 a M, de las tablas distribucion_calcomania y funcionarios, 
     *   las cuales se relacionan  por su id referencial
     */
-    public function getLoteCalcomania()
+    public function getDistribucion()
     {
-       return $this->hasOne(LoteCalcomaniaForm::className(), ['ano_impositivo' => date('Y')]);
+       return $this->hasOne(DistribucionCalcomaniaForm::className(), ['id_funcionario_calcomania' => 'id_funcionario_calcomania']);
     }
 
     /**
-    *   Almacena el campo rango_inicial de la tabla lote_calcomania, en una variable GET para retornarla
+    *   Almacena el campo rango_inicial de la tabla distribucion_calcomania, en una variable GET para retornarla
     *   a la vista
     */
-    public function getLoteCalcomaniaRangoInicial()
+    public function getDistribucionRangoInicial()
     {
-        return $this->lotecalcomania->rango_inicial;
+        if ($this->distribucion == null) {
+            return "No Set";
+        }else{
+            return $this->distribucion->rango_inicial;
+        }
+    }
+
+    /**
+    *   Almacena el campo rango_final de la tabla distribucion_calcomania, en una variable GET para retornarla
+    *   a la vista
+    */
+    public function getDistribucionRangoFinal()
+    {
+        if ($this->distribucion == null) {
+            return "No Set";
+        }else{
+            return $this->distribucion->rango_final;
+        }        
     }
 }
