@@ -61,6 +61,9 @@
 	class ConexionController
 	{
 
+		public $lastInsertID;
+
+
 		public function __construct()
 		{
 		}
@@ -183,6 +186,8 @@
 			{
 				try {
 					$conection->createCommand()->insert($tableName, $arrayDatos)->execute();
+					self::setUltimoIdCreado($conection->getLastInsertID());
+
 					return true;
 				} catch (PDOException $e) {
 					return false;
@@ -300,6 +305,31 @@
 			} else {
 				return false;
 			}
+		}
+
+
+
+
+		/**
+		*	Metodo que setea el ultimo ID de la tabla generado por insercion de la transaccion.
+		* 	@param $ultimoID, long que indica el autoincremental generado despues de la insercion.
+		*/
+		public function setUltimoIdCreado($ultimoID)
+		{
+			$this->lastInsertID = $ultimoID;
+		}
+
+
+
+
+		/**
+		*	Metodo que retorna e ultimo ID generado de la tabla, este valor es el autoincremental
+		* 	de la tabla.
+		* 	@return returna el ultimo autoincremental de la tabla insertado de la transaccion.
+		*/
+		public function getUltimoIdCreado()
+		{
+			return $this->lastInsertID;
 		}
 
 	}
