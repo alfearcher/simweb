@@ -1,5 +1,5 @@
 <?php
-    use backend\assets\AppAsset;
+    //use backend\assets\AppAsset;
     use yii\helpers\Html;
     use yii\widgets\Breadcrumbs;
     use yii\web\Controller;
@@ -18,9 +18,9 @@
     }
 
 // Encabezado
-require('layoutencabezado.php'); 
+require('layoutencabezado.php');
 
-AppAsset::register($this);
+//AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -31,19 +31,19 @@ AppAsset::register($this);
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
-    
+
 </head>
 <body>
     <?php $this->beginBody() ?>
-    
+
     <div class="wrap">
         <div class="container">
             <?= Breadcrumbs::widget([
                 'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
             ]) ?>
-                    
+
             <div class="principal">
-                <?= $content ?>    
+                <?= $content ?>
             </div>
         </div>
     </div>
