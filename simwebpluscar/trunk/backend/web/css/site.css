@@ -8,7 +8,7 @@ body {
     min-height: 100%;
     height: auto;
     margin: 0 auto -60px;
- 
+
     /* Agregado por Jose */
     padding-top: 120px;
     padding-bottom: 30px;
@@ -21,7 +21,7 @@ body {
 
 .wrap > .container {
     padding: 15px 15px 20px;
-   
+
 
     /* Agregado por Jose */
     /*padding-bottom: 60px;*/
@@ -150,68 +150,102 @@ a.desc:after {
     width: 100%;
     left: 0;
     top:0;
-    background-color: #3A7EB5;
+    z-index: 999999;
+}
+
+
+.search, .undo {
+    float: right;
+    padding-right: 30px;
+    /*color: #3A7EB5;*/
+    color: white;   /* coloca en blanco imagen y texto search */
+    font-size: 1.0em;
+    margin-top: 8px;
+}
+
+
+
+/* franja de color despues del menu de usuario */
+.barra-inferior {
+    position: fixed;
     z-index: 999;
+    width: 100%;
+    background-color: #3A7EB5;
+    /*background-color: white;*/
+    margin-top: 60px;
+    height: 50px;
+    padding-top: 0px;
+    top: 11px;
+    /*border: solid 1px yellow;*/
+}
+
+.fa-2x {
+    /*color: white;*/
+}
+
+
+.barra-inferior > ul > li > a {
+    padding: 0px;
 }
 
 .dropdown-menu {
     background-color: #1D9376;
-    color: white;   
+    color: white;
 }
 
 /* CSS del menu principal que se visualiza al iniciar session */
 #nav li a {
-    display: block; 
-    padding: 8px; 
-    border-left: 4px solid #444; 
-    text-decoration: none; 
-    box-shadow: 2px 2px 5px #ccc; 
-    color: #555; 
+    display: block;
+    padding: 8px;
+    border-left: 4px solid #444;
+    text-decoration: none;
+    box-shadow: 2px 2px 5px #ccc;
+    color: #555;
 }
 
 #nav1 li a {
-    display: block; 
-    padding: 8px; 
-    border-left: 4px solid #444; 
-    text-decoration: none; 
-    box-shadow: 2px 2px 5px #ccc; 
-    color: #222; 
-    background: #f8f8f8; 
+    display: block;
+    padding: 8px;
+    border-left: 4px solid #444;
+    text-decoration: none;
+    box-shadow: 2px 2px 5px #ccc;
+    color: #222;
+    background: #f8f8f8;
     width: auto;
 }
-#nav li a:hover { 
-    border-left: 4px solid #069; 
+#nav li a:hover {
+    border-left: 4px solid #069;
     width: auto;
-    
+
 }
 
-#nav li ul { 
+#nav li ul {
     display: none;
     width: auto;
 }
 
 #nav li:hover ul
- { 
-    display: block; 
-    width: auto; 
-    
+ {
+    display: block;
+    width: auto;
+
 }
 
-#nav li:hover ul li { 
-    background: #3A7EB5; 
-    
+#nav li:hover ul li {
+    background: #3A7EB5;
+
 }
-#nav li:hover ul li a { 
-    color: #555; 
+#nav li:hover ul li a {
+    color: #555;
 }
 
-#nav li:hover ul li a:hover { 
-     
+#nav li:hover ul li a:hover {
+
     border-left: 4px solid #069;
 }
 
 .nav-side-menu {
-  
+
     font-family: verdana;
     font-size: 12px;
     font-weight: 200;
@@ -230,7 +264,7 @@ a.desc:after {
     display: block;
     text-align: center;
     font-size: 14px;
-    border-left: 4px solid #444; 
+    border-left: 4px solid #444;
 }
 
 .nav-side-menu .toggle-btn {
@@ -245,7 +279,7 @@ a.desc:after {
     margin: 0px;
     line-height: 35px;
     cursor: pointer;
-   
+
 .collapsed{
 .arrow:before{
     font-family: FontAwesome;
@@ -271,7 +305,7 @@ a.desc:after {
     vertical-align: middle;
     float: right;
 }
- 
+
 .nav-side-menu li {
     padding-left: 0px;
     border-bottom: 1px solid #23282e;
@@ -298,7 +332,7 @@ a.desc:after {
     width: 40px;
     text-align: center;
 }
- 
+
 .brand {
     text-align: left !important;
     font-size: 22px;
@@ -314,8 +348,8 @@ a.desc:after {
 }
 }
 /*Fin CSS del menu principal*/
-            
-    
+
+
 
 
 
