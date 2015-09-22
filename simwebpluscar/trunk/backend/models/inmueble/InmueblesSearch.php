@@ -50,7 +50,7 @@
  *  
  */ 
 namespace backend\models\inmueble;
-
+session_start();
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
