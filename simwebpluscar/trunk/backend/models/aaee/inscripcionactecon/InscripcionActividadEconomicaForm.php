@@ -112,7 +112,7 @@
 	    public function attributeLabels()
 	    {
 	        return [
-	            'id_contribuyente' => Yii::t('backend', 'Id Taxpayer'),
+	            'id_contribuyente' => Yii::t('backend', 'Id. Taxpayer'),
 	            'nro_solicitud' => Yii::t('backend', 'Application Number'),
 	            'reg_mercantil' => Yii::t('backend', 'Commercial Register'),
 	            'num_reg' => Yii::t('backend', 'Registration Number'),
