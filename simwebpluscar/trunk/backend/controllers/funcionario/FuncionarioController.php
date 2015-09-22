@@ -31,7 +31,7 @@
 	use yii\web\Controller;
 	use yii\filters\VerbFilter;
 	use yii\widgets\ActiveForm;
-	use yii\web\response;
+	use yii\web\Response;
 	use yii\helpers\Url;
 	use backend\models\funcionario\FuncionarioForm;
 	use backend\models\funcionario\Funcionario;
