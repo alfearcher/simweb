@@ -46,7 +46,7 @@ use backend\assets\AppAsset;
 use backend\models\vehiculo\VehiculosForm;
 use backend\models\vehiculo\VehiculosCambioPlacaForm;
 use backend\models\vehiculo\VehiculosSearch;
-use yii\web\response;
+use yii\web\Response;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
