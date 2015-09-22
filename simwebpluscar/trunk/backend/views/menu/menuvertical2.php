@@ -86,17 +86,17 @@
 		        		//	SOLICITUDES DE INMUEBLES URBANOS
 		        		['label' => Icon::show('fa fa-home',['class' => $typeLong], $typeIcon) . '&nbsp; Inmuebles Urbanos',
 		        			'items' => [
-		        						['label' => 'Inscripción de Inmuebles Urbanos', 'url' => ['inscripcion-inmuebles-urbanos/inscripcioninmueblesurbanos']],
+		        						['label' => 'Inscripción de Inmuebles Urbanos', 'url' => ['/inmueble/inscripcion-inmuebles-urbanos/inscripcion-inmuebles-urbanos']],
 		        						['label' => 'Avaluo Catastral', 'url' => '#'],
 		        						['label' => 'Certificado Catastral', 'url' => '#'],
 		        						['label' => 'Renovación de Certificado Catastral', 'url' => '#'],
 		        						['label' => 'Solvencia', 'url' => '#'],
-		        						['label' => 'Cambio de Numero Catastral', 'url' => '#'],
+		        						['label' => 'Cambio de Numero Catastral', 'url' => ['/inmueble/inmuebles-urbanos/index']],
 		        						['label' => 'Cambio de Propietario', 'url' => '#'],
 		        						['label' => 'Integración de Parcela', 'url' => '#'],
 		        						['label' => 'Desintegración de Parcela', 'url' => '#'],
-		        						['label' => 'Cambio a Propiedad Horizontal', 'url' => '#'],
-		        						['label' => 'Cambio de Otros Datos del Inmueble', 'url' => ['cambios-inmuebles-urbanos/index']],
+		        						['label' => 'Cambio a Propiedad Horizontal', 'url' => ['/inmueble/inmuebles-urbanos/index']],
+		        						['label' => 'Cambio de Otros Datos del Inmueble', 'url' => ['/inmueble/inmuebles-urbanos/index']],
 		        						['label' => 'Modificar Avaluo', 'url' => '#'],
 		        						['label' => 'Desincorporación de Inmueble', 'url' => '#'],
 
@@ -104,10 +104,10 @@
 		        		],
 
 		        		//	SOLICITUDES DE VEHICULOS
-		        		['label' => Icon::show('fa fa-car',['class' => $typeLong], $typeIcon) . '&nbsp; Vehiculos', 
+		        		['label' => Icon::show('fa fa-car',['class' => $typeLong], $typeIcon) . '&nbsp; Vehiculos',
 		        			'items' => [
 		        						['label' => 'Inscripci&oacute;n de Vehiculos', 'url' => ['vehiculo/vehiculos/create']],
-		        						['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . 'Calcomania', 
+		        						['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . 'Calcomania',
 					        				'items' => [
 			        							['label' => 'Administrar funcionarios responsables de entregar calcomania','url' => ['vehiculo/calcomania/funcionario-calcomania/busqueda-funcionario']],
 			        							['label' => 'Generar Lote de Calcomania','url' => ['vehiculo/calcomania/lote-calcomania/create']],
