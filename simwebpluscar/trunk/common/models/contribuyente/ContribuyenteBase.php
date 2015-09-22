@@ -108,6 +108,8 @@
 		public $fe_inic_agente_retencion;
 		public $no_sujeto;
 		public $ruc;
+		public $naturaleza_rep;
+		public $cedula_rep;
 
 
 		public $conexion;
@@ -129,11 +131,11 @@
 
 
 		/**
-		*	Metodo que describe la condicion del registro.
-		* 	@param $inactivoLocal, integer que determina la condicion del registro.
-		* 	@return string indicando la condicion del resgitro, si returna false no
-		* 	indica que no se ha podido identificar condicion del registro.
-		*/
+		 *	Metodo que describe la condicion del registro.
+		 * 	@param $inactivoLocal, integer que determina la condicion del registro.
+		 * 	@return string indicando la condicion del resgitro, si returna false no
+		 * 	indica que no se ha podido identificar condicion del registro.
+		 */
 		public static function  getActivoInctivoDescripcion($inactivoLocal)
 		{
 			if ( $inactivoLocal == 0 ) {
@@ -148,13 +150,13 @@
 
 
 		/**
-		*	Metodo que describe a que tipo de naturaleza pertenece el contribuyente, segun el
-		* 	valor del campo tipo_naturaleza.
-		* 	@param $tipoNaturalezaLocal, integer que determina a que tipo de naturaleza pertenece un
-		* 	contribuyente.
-		* 	@return string indicando el tipo de naturaleza, si returna false es porque no se ha
-		* 	podido identificar el tipo de naturaleza.
-		*/
+		 *	Metodo que describe a que tipo de naturaleza pertenece el contribuyente, segun el
+		 * 	valor del campo tipo_naturaleza.
+		 * 	@param $tipoNaturalezaLocal, integer que determina a que tipo de naturaleza pertenece un
+		 * 	contribuyente.
+		 * 	@return string indicando el tipo de naturaleza, si returna false es porque no se ha
+		 * 	podido identificar el tipo de naturaleza.
+		 */
 		public static function getTipoNaturalezaDescripcion($tipoNaturalezaLocal)
 		{
 			if ( $tipoNaturalezaLocal == 0 ) {
@@ -170,18 +172,18 @@
 
 
 		/**
-		*	Metodo que me arma el numero de identificacion del documento primario del contribuyente,
-		* 	cedula (contribuyentes naturalez), rif (contribuyente juridico).
-		* 	@param $tipoNaturalezaLocal, integer que indica el tipo de naturaleza del contribuyente,
-		* 	natural o juridico.
-		* 	@param $naturalezaLocal, string que identifica el primer caracter del documento de identificacion
-		* 	primario del contribuyente.
-		* 	@param $cedulaLocal, long que forma parte del documento de identificacion del contribuyente.
-		* 	@param $tipoLocal, integer que identifica el ultimo digito del rif de los contribuyentes juridico.
-		* 	@return returna un string que representa el numero de identificacion del contribuyente.
-		* 	Para los contribuyentes naturaleza retorna el formato A-99999999 y para los juridicos el formato
-		* 	sera A-999999999-9. Si retorna false es porque no se determino el tipo de naturaleza del contribuyente.
-		*/
+		 *	Metodo que me arma el numero de identificacion del documento primario del contribuyente,
+		 * 	cedula (contribuyentes naturalez), rif (contribuyente juridico).
+		 * 	@param $tipoNaturalezaLocal, integer que indica el tipo de naturaleza del contribuyente,
+		 * 	natural o juridico.
+		 * 	@param $naturalezaLocal, string que identifica el primer caracter del documento de identificacion
+		 * 	primario del contribuyente.
+		 * 	@param $cedulaLocal, long que forma parte del documento de identificacion del contribuyente.
+		 * 	@param $tipoLocal, integer que identifica el ultimo digito del rif de los contribuyentes juridico.
+		 * 	@return returna un string que representa el numero de identificacion del contribuyente.
+		 * 	Para los contribuyentes naturaleza retorna el formato A-99999999 y para los juridicos el formato
+		 * 	sera A-999999999-9. Si retorna false es porque no se determino el tipo de naturaleza del contribuyente.
+		 */
 		public static function getCedulaRifDescripcion($tipoNaturalezaLocal, $naturalezaLocal = 0, $cedulaLocal = 0, $tipoLocal = 0)
 		{
 			if ( $tipoNaturalezaLocal == 0 ) {
@@ -198,19 +200,19 @@
 
 
 		/**
-		*	Metodo que retorna la descripcion del contribuyente, es decir, apellidos y nombres para los contribuyentes
-		* 	naturales y razon social para los contribuyente juridicos.
-		* 	Cuando el contribuyente es juridico no es necesario enviar los demás parametros.
-		* 	@param $tipoNaturalezaLocal, integer que indica el tipo de naturaleza del contribuyente,
-		* 	natural o juridico.
-		* 	@param $razonSocialLocal, string que contiene la descripcion de los contribuyentes de tipo juridicos.
-		* 	@param $apellidosLocal, string que indica el apellido del contribuyente de tipo natural.
-		* 	@param $nombresLocal, string que indica el nombre del contribuyente de tipo natural.
-		* 	@param $ordenApellidoNombre, integer que indica en que orden se va a concatenar los apellidos y nombres
-		* 	de los contribuyentes naturalez.
-		* 	@return descripcion del contribuyente, si retorna blanco es poque no se pudo identificar el tipo de
-		* 	naturaleza o porque los campos se mandaron en blanco
-		*/
+		 *	Metodo que retorna la descripcion del contribuyente, es decir, apellidos y nombres para los contribuyentes
+		 * 	naturales y razon social para los contribuyente juridicos.
+		 * 	Cuando el contribuyente es juridico no es necesario enviar los demás parametros.
+		 * 	@param $tipoNaturalezaLocal, integer que indica el tipo de naturaleza del contribuyente,
+		 * 	natural o juridico.
+		 * 	@param $razonSocialLocal, string que contiene la descripcion de los contribuyentes de tipo juridicos.
+		 * 	@param $apellidosLocal, string que indica el apellido del contribuyente de tipo natural.
+		 * 	@param $nombresLocal, string que indica el nombre del contribuyente de tipo natural.
+		 * 	@param $ordenApellidoNombre, integer que indica en que orden se va a concatenar los apellidos y nombres
+		 * 	de los contribuyentes naturalez.
+		 * 	@return descripcion del contribuyente, si retorna blanco es poque no se pudo identificar el tipo de
+		 * 	naturaleza o porque los campos se mandaron en blanco
+		 */
 		public static function getContribuyenteDescripcion($tipoNaturalezaLocal, $razonSocialLocal = '',  $apellidosLocal = '', $nombresLocal = '', $ordenApellidoNombre = 0 )
 		{
 			$contribuyente = '';
@@ -232,8 +234,8 @@
 
 
 		/**
-		*
-		*/
+		 *
+		 */
 		private static function datosContribuyenteSegunID($idContribuyente)
 		{
 			if ( $idContribuyente > 0 ) {
@@ -262,9 +264,9 @@
 
 
 		/**
-		*
-		* 	@return Descripcion del contribuyente
-		*/
+		 *
+		 * 	@return Descripcion del contribuyente
+		 */
 		public static function getContribuyenteDescripcionSegunID($idContribuyente)
 		{
 			$dataResult = self::datosContribuyenteSegunID($idContribuyente);
@@ -275,6 +277,61 @@
 				$razonSocialLocal = $dataResult[0]['razon_social'];
 
 				return self::getContribuyenteDescripcion($tipoNaturalezaLocal, $razonSocialLocal, $apellidosLocal, $nombresLocal);
+			} else {
+				return false;
+			}
+		}
+
+
+
+
+
+
+		/**
+		 *	Metodo que me permite obtener el numero de cedula, en caso de los caontribuyentes con tipo naturaleza = NATURALEZ
+		 * 	o en su defecto el rif para aquellos contribuyentes cuyo tipo naturaleza es JURIDICO. Esto a traves del ID del Contribuyente
+		 * 	como parametro de entrada.
+		 * 	@param $idContribuyente, long que identifica al contribuyente.
+		 * 	@return returna la cedula de identidad en formato A-99999999 o el rif en formato A-999999999-9.
+		 */
+		public static function getCedulaRifSegunID($idContribuyente)
+		{
+			if ( $idContribuyente > 0 ) {
+				$dataResult = self::datosContribuyenteSegunID($idContribuyente);
+				if ( $dataResult ) {
+					$tipoNaturalezaLocal = $dataResult[0]['tipo_naturaleza'];
+					$naturalezaLocal = $dataResult[0]['naturaleza'];
+					$cedulaLocal = $dataResult[0]['cedula'];
+					$tipoLocal = $dataResult[0]['tipo'];
+
+					return self::getCedulaRifDescripcion($tipoNaturalezaLocal, $naturalezaLocal, $cedulaLocal, $tipoLocal);
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		}
+
+
+
+
+
+
+		/**
+		 *
+		 */
+		public static function getTipoNaturalezaDescripcionSegunID($idContribuyente)
+		{
+			if ( $idContribuyente > 0 ) {
+				$dataResult = self::datosContribuyenteSegunID($idContribuyente);
+				if ( $dataResult ) {
+					$tipoNaturalezaLocal = $dataResult[0]['tipo_naturaleza'];
+
+					return self::getTipoNaturalezaDescripcion($tipoNaturalezaLocal);
+				} else {
+					return false;
+				}
 			} else {
 				return false;
 			}
