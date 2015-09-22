@@ -154,18 +154,17 @@ class InmueblesUrbanosForm extends \yii\db\ActiveRecord
             
             //validaciones cambio propietario del inmueble
             [['tipo_naturaleza1','tipo_naturaleza','operacion'],'integer','message' => Yii::t('backend', 'only integers')],
-            [['naturalezaBuscar1','tipo_naturaleza1'], 'string', 'max' => 1,'message' => Yii::t('backend', 'Only 1 character')],
-            [['naturalezaBuscar','tipo_naturaleza'], 'string', 'max' => 1,'message' => Yii::t('backend', 'Only 1 character')],
-            [['cedulaBuscar1','ano_traspaso1'], 'string', 'max' => 8,'message' => Yii::t('backend', 'Only 8 character')],
-            [['cedulaBuscar','ano_traspaso'], 'string', 'max' => 8,'message' => Yii::t('backend', 'Only 8 character')],
-            [['tipoBuscar1'], 'string', 'max' => 1,'message' => Yii::t('backend', 'Only 1 character')],
-            [['tipoBuscar'], 'string', 'max' => 1,'message' => Yii::t('backend', 'Only 1 character')],
             
-//'operacion'
-/*[['naturalezaBuscar1','cedulaBuscar1','tipoBuscar1'], 'required','when'=>function($model){if ($model->tipo_naturaleza == 0) {
-              return $model->tipo_naturaleza1==0;
-            } }],*/ 
-
+            [['naturalezaBuscar1','tipo_naturaleza1'], 'string','when'=>function($model){ return $model->operacion==1;}, 'max' => 1,'message' => Yii::t('backend', 'Only 1 character')],
+            [['naturalezaBuscar','tipo_naturaleza'], 'string','when'=>function($model){ return $model->operacion==2;}, 'max' => 1,'message' => Yii::t('backend', 'Only 1 character')],
+            
+            [['cedulaBuscar1','ano_traspaso1'], 'string', 'max' => 8,'when'=>function($model){ return $model->operacion==1;},'message' => Yii::t('backend', 'Only 8 character')],
+            [['cedulaBuscar','ano_traspaso'], 'string', 'max' => 8,'when'=>function($model){ return $model->operacion==2;},'message' => Yii::t('backend', 'Only 8 character')],
+            
+            [['tipoBuscar1'], 'string', 'max' => 1,'when'=>function($model){ return $model->operacion==1;},'message' => Yii::t('backend', 'Only 1 character')],
+            [['tipoBuscar'], 'string', 'max' => 1,'when'=>function($model){ return $model->operacion==2;},'message' => Yii::t('backend', 'Only 1 character')],
+            
+            //requeridos en cambio propietario del inmueble
             [['direccion'],'required','when'=>function($model){ return $model->operacion==1;},'message' => Yii::t('backend', 'Street Address cannot be blank')],
             [['ano_traspaso1'],'required','when'=>function($model){ return $model->operacion==1;},'message' => Yii::t('backend', 'Handover Year cannot be blank')],
             [['tipo_naturaleza1'],'required','when'=>function($model){ return $model->operacion==1;},'message' => Yii::t('backend', 'Type Nature cannot be blank')],

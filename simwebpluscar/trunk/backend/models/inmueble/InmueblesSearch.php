@@ -56,6 +56,8 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use backend\models\inmueble\InmueblesConsulta;
 use backend\models\inmueble\CambiosInmueblesUrbanosForm;
+use backend\models\buscargeneral\BuscarGeneralForm;
+use backend\models\buscargeneral\BuscarGeneral;
 
 /**
  * InmueblesSearch represents the model behind the search form about `backend\models\Inmuebles`.
@@ -91,9 +93,12 @@ class InmueblesSearch extends InmueblesUrbanosForm
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        $query = InmueblesUrbanosForm::find();
+    { 
 
+
+        $query = InmueblesUrbanosForm::find()->where(['id_contribuyente' => $_SESSION['idContribuyente']]);
+        //$query = InmueblesUrbanosForm::find();
+        
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
