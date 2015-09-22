@@ -365,7 +365,7 @@ function bloquea() {
                             </div>    
 
                             <div class="form-group"> 
-                            <?= Html::submitButton(Yii::t('backend', 'Incorporate'), ['class' => 'btn btn-success',
+                            <?= Html::submitButton(Yii::t('backend', 'Incorporate'), ['class' => 'btn btn-primary',
                                       'data' => [
                                                   'confirm' => Yii::t('app', 'Are you sure you want to Incorporate this item?'),
                                                   'method' => 'post',],]) ?>
