@@ -62,7 +62,7 @@
 		        		//	SOLICITUDES DE ACTIVIDADES ECONOMICAS
 		        		['label' => Icon::show('fa fa-briefcase',['class' => $typeLong], $typeIcon) . '&nbsp; Actividades Economicas',
 		        			'items' => [
-		        						['label' => 'Inscripción de Actividades Economicas','url' => '#'],
+		        						['label' => 'Inscripción de Actividades Economicas','url' => ['/aaee/inscripcionactecon/inscripcion-actividad-economica/index']],
 		        					   	['label' => 'Inscripción de Sucursales', 'url' => '#'],
 		        					   	['label' => 'Licencias', 'url' => '#'],
 		        					   	['label' => 'Renovación de Licencias', 'url' => '#'],
