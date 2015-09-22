@@ -54,7 +54,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 
 use yii\widgets\ActiveForm;
-use yii\web\response;
+use yii\web\Response;
 use common\models\Users;
 use common\models\User;
 use yii\web\Session;
