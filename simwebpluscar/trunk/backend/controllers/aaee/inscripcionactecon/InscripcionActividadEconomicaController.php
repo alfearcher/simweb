@@ -51,7 +51,7 @@
 	use yii\web\Controller;
 	use yii\filters\VerbFilter;
 	use yii\widgets\ActiveForm;
-	use yii\web\response;
+	use yii\web\Response;
 	use yii\helpers\Url;
 	use yii\web\NotFoundHttpException;
 	use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomica;
@@ -159,7 +159,7 @@
 							// Se continua con la actualizacion de los valores en la tabla contribuyente.
 							$model = $_SESSION['model'];
 
-							$_SESSION['model'] = null;
+							unset($_SESSION['model']);
 
 							// Se inicia la actualizacion a nivel de la entidad del contribuyente.
 							if ( self::actualizarContribuyente($conexion, $this->connLocal, $model) == true ) {
