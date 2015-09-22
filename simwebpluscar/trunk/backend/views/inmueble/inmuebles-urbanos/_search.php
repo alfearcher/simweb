@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -17,7 +17,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id_impuesto') ?>
 
-    <?= $form->field($model, 'id_contribuyente') ?>
+    <?= $form->field($model, 'id_contribuyente')->textInput(['value'=>$_SESSION['idContribuyente']]) ?>
 
     <? //= $form->field($model, 'ano_inicio') ?>
 

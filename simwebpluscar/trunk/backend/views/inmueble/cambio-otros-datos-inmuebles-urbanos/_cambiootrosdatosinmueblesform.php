@@ -83,7 +83,7 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
                             </div> 
 
                             <div class="col-lg-1">
-                            <?= $form->field($model, 'estado_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:100px;'])->label(false);?> 
+                            <?= $form->field($model, 'estado_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:80px;'])->label(false);?> 
                             </div>
 
                             <div class="col-lg-1"> 
@@ -91,7 +91,7 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
                             </div>  
 
                             <div class="col-lg-1">
-                            <?= $form->field($model, 'municipio_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:100px;'])->label(false); ?>
+                            <?= $form->field($model, 'municipio_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:80px;'])->label(false); ?>
                             </div>
 
                             <div class="col-lg-1"> 
@@ -99,7 +99,7 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
                             </div> 
 
                             <div class="col-lg-1">
-                            <?= $form->field($model, 'parroquia_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:100px;'])->label(false) ?>
+                            <?= $form->field($model, 'parroquia_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:80px;'])->label(false) ?>
                             </div> 
 
                             <div class="col-lg-1"> 
@@ -107,7 +107,7 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
                             </div> 
 
                             <div class="col-lg-1">
-                            <?= $form->field($model, 'ambito_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:100px;'])->label(false) ?>
+                            <?= $form->field($model, 'ambito_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:80px;'])->label(false) ?>
                             </div> 
 
                             <div class="col-lg-1"> 
@@ -115,7 +115,7 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
                             </div> 
 
                             <div class="col-lg-1">
-                            <?= $form->field($model, 'sector_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:100px;'])->label(false) ?>
+                            <?= $form->field($model, 'sector_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:80px;'])->label(false) ?>
                             </div> 
 
                             <div class="col-lg-1"> 
@@ -123,7 +123,7 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
                             </div> 
 
                             <div class="col-lg-1">
-                            <?= $form->field($model, 'manzana_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:100px;'])->label(false) ?>
+                            <?= $form->field($model, 'manzana_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:80px;'])->label(false) ?>
                             </div> 
 
 
@@ -140,7 +140,7 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
                             </div> 
 
                             <div class="col-lg-1">
-                            <?= $form->field($model, 'parcela_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:100px;'])->label(false) ?>
+                            <?= $form->field($model, 'parcela_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:80px;'])->label(false) ?>
                             </div>
 
                             <div class="col-lg-1"> 
@@ -148,7 +148,7 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
                             </div>  
                     
                             <div class="col-lg-1">
-                            <?= $form->field($model, 'subparcela_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:100px;' ])->label(false) ?>
+                            <?= $form->field($model, 'subparcela_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:80px;'])->label(false) ?>
                             </div> 
                            
                             <div class="col-lg-1">
@@ -158,7 +158,7 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
 
 
                             <div class="col-lg-1">
-                            <?= $form->field($model, 'nivel_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:100px;'])->label(false) ?>
+                            <?= $form->field($model, 'nivel_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:80px;'])->label(false) ?>
                             </div> 
                             
                            
@@ -167,7 +167,7 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
                             </div> 
 
                             <div class="col-lg-1">
-                            <?= $form->field($model, 'unidad_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:100px;'])->label(false) ?>
+                            <?= $form->field($model, 'unidad_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:80px;'])->label(false) ?>
                             </div>                                          
                         </td> 
                    </tr>

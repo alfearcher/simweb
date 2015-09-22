@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
@@ -74,7 +74,7 @@ function bloquea() {
                             </div> 
 
                             <div class="col-lg-2">
-                            <?= $form->field($model, 'id_contribuyente')->label(false) ?>
+                            <?= $form->field($model, 'id_contribuyente')->textInput(['readonly'=>'readonly','value'=>$_SESSION['idContribuyente']])->label(false) ?>
                             </div> 
 
                             <div class="col-lg-1"> 

@@ -15,9 +15,7 @@ $this->title = Yii::t('backend', 'Property Urban');
     <h2><?= Html::encode($this->title) ?></h2>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a(Yii::t('backend', 'Register Property Urban'), ['inmueble/inscripcion-inmuebles-urbanos/inscripcion-inmuebles-urbanos'], ['class' => 'btn btn-success']) ?>
-    </p>
+    
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -25,10 +23,10 @@ $this->title = Yii::t('backend', 'Property Urban');
         'columns' => [
             //['class' => 'yii\grid\SerialColumn'],
 
-            'id_impuesto',
+        'id_impuesto',
             'id_contribuyente',
             //'ano_inicio',
-            'direccion',
+        'direccion',
             //'liquidado',
             // 'manzana_limite',
             // 'lote_1',
@@ -39,13 +37,13 @@ $this->title = Yii::t('backend', 'Property Urban');
             // 'casa_edf_qta_dom',
             // 'piso_nivel_no_dom',
             // 'apto_dom',
-             'tlf_hab',
+          'tlf_hab',
             // 'medidor',
             // 'id_sim',
             // 'observacion:ntext',
             // 'inactivo',
             // 'catastro',
-             'id_habitante',
+          'id_habitante',
             // 'tipo_ejido',
             // 'propiedad_horizontal',
             // 'estado_catastro',
@@ -62,5 +60,9 @@ $this->title = Yii::t('backend', 'Property Urban');
             ['class' => 'yii\grid\ActionColumn', 'template' => '{view}'],
         ],
     ]); ?>
+
+    <p>
+        <?= Html::a(Yii::t('backend', 'Register Property Urban'), ['inmueble/inscripcion-inmuebles-urbanos/inscripcion-inmuebles-urbanos'], ['class' => 'btn btn-primary']) ?>
+    </p>
 
 </div>

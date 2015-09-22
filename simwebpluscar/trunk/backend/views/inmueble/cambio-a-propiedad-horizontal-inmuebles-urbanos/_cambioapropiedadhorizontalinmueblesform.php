@@ -135,7 +135,7 @@ function bloquea() {
                             </div> 
 
                             <div class="col-lg-1">
-                            <?= $form->field($model, 'estado_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:100px;'])->label(false);?> 
+                            <?= $form->field($model, 'estado_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:80px;'])->label(false);?> 
                             </div>
 
                             <div class="col-lg-1"> 
@@ -143,7 +143,7 @@ function bloquea() {
                             </div>  
 
                             <div class="col-lg-1">
-                            <?= $form->field($model, 'municipio_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:100px;'])->label(false); ?>
+                            <?= $form->field($model, 'municipio_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:80px;'])->label(false); ?>
                             </div>
 
                             <div class="col-lg-1"> 
@@ -151,7 +151,7 @@ function bloquea() {
                             </div> 
 
                             <div class="col-lg-1">
-                            <?= $form->field($model, 'parroquia_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:100px;'])->label(false) ?>
+                            <?= $form->field($model, 'parroquia_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:80px;'])->label(false) ?>
                             </div> 
 
                             <div class="col-lg-1"> 
@@ -159,7 +159,7 @@ function bloquea() {
                             </div> 
 
                             <div class="col-lg-1">
-                            <?= $form->field($model, 'ambito_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:100px;'])->label(false) ?>
+                            <?= $form->field($model, 'ambito_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:80px;'])->label(false) ?>
                             </div> 
 
                             <div class="col-lg-1"> 
@@ -167,7 +167,7 @@ function bloquea() {
                             </div> 
 
                             <div class="col-lg-1">
-                            <?= $form->field($model, 'sector_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:100px;'])->label(false) ?>
+                            <?= $form->field($model, 'sector_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:80px;'])->label(false) ?>
                             </div> 
 
                             <div class="col-lg-1"> 
@@ -175,7 +175,7 @@ function bloquea() {
                             </div> 
 
                             <div class="col-lg-1">
-                            <?= $form->field($model, 'manzana_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:100px;'])->label(false) ?>
+                            <?= $form->field($model, 'manzana_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:80px;'])->label(false) ?>
                             </div> 
 
 
@@ -192,7 +192,7 @@ function bloquea() {
                             </div> 
 
                             <div class="col-lg-1">
-                            <?= $form->field($model, 'parcela_catastro')->textInput(['style' => 'width:100px;'])->label(false) ?>
+                            <?= $form->field($model, 'parcela_catastro')->textInput(['style' => 'width:80px;'])->label(false) ?>
                             </div>
 
                             <div class="col-lg-1" id="subparcela" style="display:none"> 

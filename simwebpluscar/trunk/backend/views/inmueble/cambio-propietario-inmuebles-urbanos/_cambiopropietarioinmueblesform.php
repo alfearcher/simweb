@@ -330,8 +330,8 @@ $variablephp=$_COOKIE['variablephp'];
                                                         </div>
                                                         <div class="form-group"> 
 <?= Html::beginForm();?>
-<?= Html::submitButton(Yii::t('backend', 'Search'), ['class' => 'btn btn-success',  ]) ?>
-<?= Html::endForm();?>
+<?= Html::submitButton(Yii::t('backend', 'Accept'), ['class' => 'btn btn-success', 'name'=>'AcceptSeller', 'value'=>'AcceptSeller']) ?>
+<?= Html::endForm();?> 
 
 
                                                         </div>
@@ -438,9 +438,9 @@ $variablephp=$_COOKIE['variablephp'];
  
                                                         <div class="form-group">
                                                         <?php if(count($datosVInmueble) >0){
-                                                                    echo Html::submitButton(Yii::t('backend', 'Accept'), ['class' => 'btn btn-success', 'name'=>'Accept', 'value'=>'Accept']); 
+                                                                    echo Html::submitButton(Yii::t('backend', 'Accept'), ['class' => 'btn btn-success', 'name'=>'AcceptBuyer', 'value'=>'Accept']); 
                                                               } else {         
-                                                                    echo Html::submitButton(Yii::t('backend', 'Next'), ['class' => 'btn btn-success', 'name'=>'Next', 'value'=>'Next']);
+                                                                    echo Html::submitButton(Yii::t('backend', 'Next'), ['class' => 'btn btn-success', 'name'=>'NextBuyer', 'value'=>'Next']);
                                                                  }?>
                                                         </div>
 
