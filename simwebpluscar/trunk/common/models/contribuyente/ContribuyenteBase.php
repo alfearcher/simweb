@@ -339,5 +339,24 @@
 
 
 
+
+		/**
+		 *
+		 */
+		public function getTefefonosSegunID($idContribuyente)
+		{
+
+		}
+
+
+
+		/**
+		 *
+		 */
+		public function getTelefonos()
+		{
+
+		}
+
 	}
  ?>
