@@ -263,9 +263,13 @@
 		/**
 		*
 		*/
-		public function getTipoNaturaleza($tipoNaturaleza)
+		public function getTipoNaturaleza($tipoNaturaleza, $idContribuyente = 0)
 		{
-			return ContribuyenteBase::getTipoNaturalezaDescripcion($tipoNaturaleza);
+			if ( $idContribuyente > 0 ) {
+				return ContribuyenteBase::getTipoNaturalezaDescripcionSegunID($idContribuyente);
+			} else {
+				return ContribuyenteBase::getTipoNaturalezaDescripcion($tipoNaturaleza);
+			}
 		}
 
 
