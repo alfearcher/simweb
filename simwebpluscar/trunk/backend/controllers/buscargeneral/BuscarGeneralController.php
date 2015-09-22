@@ -52,7 +52,7 @@
 	use yii\web\Controller;
 	use yii\filters\VerbFilter;
 	use yii\widgets\ActiveForm;
-	use yii\web\response;
+	use yii\web\Response;
 	use yii\helpers\Url;
 	use yii\web\NotFoundHttpException;
 	use backend\models\buscargeneral\BuscarGeneralForm;
@@ -208,9 +208,9 @@
 
 
 	  	/**
-	  	 * [actionView description]
-	  	 * @param  [type] $idContribuyente [description]
-	  	 * @return [type]                  [description]
+	  	 * Metodo que muestra una vista de los datos mas representativos del contribuyente
+	  	 * @param $idContribuyente, long que identifica al contribuyente.
+	  	 * @return Vista con los datos mas representativos
 	  	 */
 	  	public function actionView($idContribuyente)
     	{
