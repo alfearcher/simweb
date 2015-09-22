@@ -57,8 +57,12 @@
 	use yii\web\NotFoundHttpException;
 	use backend\models\buscargeneral\BuscarGeneralForm;
 	use backend\models\buscargeneral\BuscarGeneral;
+	//use  yii\web\Session;
+
+	//$session = Yii::$app()->session;		// Iniciando session
 
 	session_start();
+
 	/**
 	 * 	Controlador principal del modulo de BuscarGeneral.
 	 */
@@ -117,7 +121,9 @@
 	      	 		// Creo mi proveedor de datos para realizar la busqueda y mostrar lo encontrado.
 	      	 		$dataProvider = $model->BuscarContribuyente($arrayParametros);
 
+	      	 		//$session['dataProvider'] = $dataProvider;
 	      	 		$_SESSION['dataProvider'] = $dataProvider;
+
 
 	      	 		// Se levanta una vista con el resultado de la consulta, la misma tiene formato de tabla.
 	      	 		return $this->render('/buscar-general/contribuyente-encontrado-form', ['searchModel' => $model,'dataProvider' => $dataProvider,]);
@@ -130,7 +136,9 @@
 
 	      		if ( isset($params['page']) ) {
 	      			$params = Yii::$app->request->queryParams;
+	      			//$dataProvider = $session['dataProvider'];
 	      			$dataProvider = $_SESSION['dataProvider'];
+
 	      			$model->load($params);
       				return $this->render('/buscar-general/contribuyente-encontrado-form', ['searchModel' => $model,'dataProvider' => $dataProvider,]);
 	  			}
@@ -151,8 +159,12 @@
 		public function actionOk($idContribuyente)
 		{
 			$contribuyente = BuscarGeneralForm::getDescripcionContribuyenteSegunID($idContribuyente);
+			$tipoNaturaleza = BuscarGeneralForm::getTipoNaturaleza(0, $idContribuyente);
+			//$session['idContribuyente'] = $idContribuyente;
+			//$session['contribuyente'] = $contribuyente;
 			$_SESSION['idContribuyente'] = $idContribuyente;
 			$_SESSION['contribuyente'] = $contribuyente;
+			$_SESSION['tipoNaturaleza'] = $tipoNaturaleza;
 
 			return $this->render('/buscar-general/view-ok',['mostrarMenuPrincipal' => 1]);
 		}
@@ -167,6 +179,7 @@
 		 */
 		public  function actionEliminarSession()
 		{
+			//unset(Yii::app()->session['var']);
 			session_unset();
 			return $this->render('/buscar-general/view-ok',['mostrarMenuPrincipal' => 0]);
 		}
