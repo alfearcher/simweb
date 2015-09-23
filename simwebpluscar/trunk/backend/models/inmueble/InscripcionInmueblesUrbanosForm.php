@@ -94,7 +94,7 @@ namespace backend\models\inmueble;
 
 use Yii;
 
-use yii\base\model;
+use yii\base\Model;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
