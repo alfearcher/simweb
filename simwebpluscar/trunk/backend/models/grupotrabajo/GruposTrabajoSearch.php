@@ -61,10 +61,10 @@ class GruposTrabajoSearch extends GruposTrabajoForm
     */
     public function rules()
     {
-        return [
-            [ [ 'id_grupo' ], 'integer' ],
-            [ [ 'descripcion', 'departamentoName', 'unidadName' ], 'safe' ]
-        ];
+        return  [
+                    [ [ 'id_grupo' ], 'integer' ],
+                    [ [ 'descripcion', 'departamentoName', 'unidadName' ], 'safe' ]
+                ];
     }
     
     /**

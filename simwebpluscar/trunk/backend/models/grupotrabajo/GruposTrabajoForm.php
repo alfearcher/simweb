@@ -76,12 +76,10 @@ class GruposTrabajoForm extends \yii\db\ActiveRecord
     {
        
         return [
-            
-            [ [ 'descripcion', 'id_departamento', 'id_unidad', 'fecha', 'inactivo' ], 'required' ],
-            [ [ 'id_departamento', 'inactivo', 'id_unidad' ], 'integer' ],
-            [ ['descripcion' ], 'string', 'max' => 200 ],
-             
-        ];
+                    [ [ 'descripcion', 'id_departamento', 'id_unidad', 'fecha', 'inactivo' ], 'required' ],
+                    [ [ 'id_departamento', 'inactivo', 'id_unidad' ], 'integer' ],
+                    [ ['descripcion' ], 'string', 'max' => 200 ],
+                ];
     }
     
     /**
