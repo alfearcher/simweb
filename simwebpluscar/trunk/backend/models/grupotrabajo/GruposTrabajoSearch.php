@@ -56,7 +56,7 @@ class GruposTrabajoSearch extends GruposTrabajoForm
     public $unidadName;
     public $inactivoName;
     
-     /**
+    /**
     *   Metodo rules(), retorna las reglas de validaciones a la vista index.
     */
     public function rules()
@@ -75,7 +75,7 @@ class GruposTrabajoSearch extends GruposTrabajoForm
         return Model::scenarios();
     }
    
-     /**
+    /**
     *   Metodo search(), la consulta principal de los grupo de trabajo al controllers.
     * 	@param $searchModel, array obtiene los valores filtrados por los campos de busqueda.
     * 	@param $dataProvider, array obtiene los valores de la consulta principal.

@@ -8,10 +8,7 @@ use kartik\form\ActiveForm;
 use backend\models\Departamento;
 use backend\models\UnidadDepartamento;
 
-$fecha=date("Y-m-d");
-$this->title = Yii::t( 'backend', 'Update Workgroups' );
-$this->params['breadcrumbs'][] = [ 'label' => Yii::t( 'backend','Work Groups' ), 'url' => [ 'index' ] ];
-$this->params['breadcrumbs'][] = $this->title;
+$fecha = date("Y-m-d");
 ?>
 
 <div class="grupotrabajo-create">
@@ -26,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="col-sm-10">
         <div style="margin-left:15%">
             <div class="panel panel-primary">
-                <div class="panel-heading"><?=  Yii::t( 'backend',$this->title )?></div>
+                <div class="panel-heading"><?=  Yii::t( 'backend', 'Update Workgroups' )?></div>
                     <div class="panel-body" >
                         <table class="table table-striped">
                                             
@@ -47,9 +44,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 $listaDepartamento = ArrayHelper::map( $modelDepartamento, 'id_departamento', 'descripcion' ); 
                                         ?>
                                         <?= $form->field( $model, 'id_departamento' )->label( false )->dropDownList($listaDepartamento, [   'id' => 'departamentos', 
-                                                                                                                                          'prompt' => Yii::t( 'backend', 'Select' ),
-                                                                                                                                          'style' => 'width:100%;',
-                                                                                                                                           'onchange' => '$.post( "' . Yii::$app->urlManager->createUrl( 'unidad-departamento/lists' ) . '&id=' . '" + $(this).val(), function( data ) {$( "select#unidades" ).html( data );});' 
+                                                                                                                                            'prompt' => Yii::t( 'backend', 'Select' ),
+                                                                                                                                            'style' => 'width:100%;',
+                                                                                                                                            'onchange' => '$.post( "' . Yii::$app->urlManager->createUrl( 'unidad-departamento/lists' ) . '&id=' . '" + $(this).val(), function( data ) {$( "select#unidades" ).html( data );});' 
                                                                                                                                        ] ); 
                                         ?>
                                     </div> 
@@ -76,7 +73,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <td>
                                     <div>
                                         <?= Html::submitButton( Yii::t( 'backend', 'Update' ), [ 'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'name' => 'btn' , 'value' => 'Update' ] )?>
-                                    <div>
+                                        <a href="index.php?r=grupotrabajo/grupos-trabajo/index"><?= Html::Button($model->isNewRecord ? Yii::t('backend', 'Quit') : Yii::t('backend', 'Return'), ['class' => $model->isNewRecord ? 'btn btn-danger' : 'btn btn-danger']) ?></a>
+                                    </div>
                                 </td>
                             </tr>
                         </table>

@@ -42,6 +42,7 @@
 
 
 namespace backend\controllers\grupotrabajo;
+error_reporting(0);
 
 use Yii;
 use yii\helpers\Html;
@@ -219,7 +220,7 @@ class GruposTrabajoController extends Controller
     */   
     public function actionDisable( $id )  
     {
-        $model = $this->findModel($id);
+        $model = $this->findModel( $id );
         $conexion = new ConexionController();
         $conn = $conexion->initConectar( 'db' );
         $conn->open();

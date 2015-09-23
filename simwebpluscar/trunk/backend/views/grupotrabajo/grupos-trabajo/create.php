@@ -10,9 +10,6 @@ use backend\models\UnidadDepartamento;
 
 $fecha = date('Y-m-d');
 $inactivo = 0;
-$this->title = Yii::t( 'backend', 'Create Workgroups' );
-$this->params['breadcrumbs'][] = [ 'label' => Yii::t( 'backend','Work Groups' ), 'url' => [ 'index' ] ];
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="grupotrabajo-create">
@@ -24,10 +21,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'showLabels' => true ]
                                     ] );
     ?>
+    
     <div class="col-sm-10">
         <div style="margin-left:15%">
             <div class="panel panel-primary">
-                <div class="panel-heading"><?=  Yii::t( 'backend',$this->title )?></div>
+                <div class="panel-heading"><?=  Yii::t( 'backend', 'Create Workgroups' )?></div>
                     <div class="panel-body" >
                         <table class="table table-striped">
                                             
@@ -79,6 +77,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <td>
                                     <div>
                                         <?= Html::submitButton( Yii::t( 'backend', 'Create' ), [' class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary' ] )?>
+                                        <a href="index.php?r=grupotrabajo/grupos-trabajo/index"><?= Html::Button($model->isNewRecord ? Yii::t('backend', 'Quit') : Yii::t('backend', 'Return'), ['class' => $model->isNewRecord ? 'btn btn-danger' : 'btn btn-danger']) ?></a>
                                     </div>
                                 </td>
                             </tr>

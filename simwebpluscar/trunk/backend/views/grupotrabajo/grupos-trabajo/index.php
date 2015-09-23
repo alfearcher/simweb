@@ -8,7 +8,7 @@ use yii\data\ActiveDataProvider;
 $this->title =Yii::t( 'backend', 'Work Groups' );
 ?>
 
-<div class="person-index">
+<div class="grupos-trabajo-form-index">
     <h1><?= Html::encode( $this->title )?></h1>
       
     <?= GridView::widget([
