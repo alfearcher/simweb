@@ -49,7 +49,7 @@
  *  @inherits
  *  
  */ 
-namespace backend\odels;
+namespace backend\models;
 use Yii;
 use yii\base\Model;
 use common\models\Users;
