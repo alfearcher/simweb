@@ -66,7 +66,7 @@ use yii\base\Object;
 use yii\helpers\Url;
 // active record consultas..
 use yii\db\ActiveRecord;
-use common\conexion\conexionController;
+use common\conexion\ConexionController;
 
 class PreguntaSeguridadController extends Controller
 {
