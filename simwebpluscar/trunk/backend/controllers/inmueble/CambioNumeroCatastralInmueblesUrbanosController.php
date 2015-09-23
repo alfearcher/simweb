@@ -50,6 +50,7 @@ namespace backend\controllers\inmueble;
 
 use Yii;
 use backend\models\inmueble\InmueblesUrbanosForm;
+use backend\models\inmueble\CambioNumeroCatastralInmueblesForm;
 use backend\models\inmueble\InmueblesConsulta;
 use backend\models\inmueble\InmueblesSearch;
 use yii\web\Controller;
@@ -101,16 +102,19 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
               if($model->validate()){ 
 
                  //condicionales     
-                  
-                if (!\Yii::$app->user->isGuest){   
-                     
+                   
+                if (!\Yii::$app->user->isGuest){  
+
+                     $id_impuesto = $model->id_impuesto; 
+                     $id_contribuyente = $model->id_contribuyente;
                      $estado_catastro = $model->estado_catastro; 
                      $municipio_catastro = $model->municipio_catastro; 
                      $parroquia_catastro = $model->parroquia_catastro; 
                      $ambito_catastro = $model->ambito_catastro; 
                      $sector_catastro = $model->sector_catastro; 
                      $manzana_catastro = $model->manzana_catastro; 
-                     
+                     $propiedad_horizontal = $model->propiedad_horizontal; 
+
                      $catastro1 = array(['estado' => $estado_catastro, 'municipio'=> $municipio_catastro, 'parroquia'=>$parroquia_catastro, 'ambito'=>$ambito_catastro, 'sector'=>$sector_catastro, 'manzana' =>$manzana_catastro]);
                      $catastro = "".$catastro1[0]['estado']."-".$catastro1[0]['municipio']."-".$catastro1[0]['parroquia']."-".$catastro1[0]['ambito']."-".$catastro1[0]['sector']."-".$catastro1[0]['manzana']."";
                      //cambios a propiedad horizontal
@@ -131,7 +135,7 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
                           $unidad_catastro = $model->unidad_catastro;                                              //Unidad catastro  
                      }    
                     
-    //echo'<pre>'; var_dump($model->validacion); echo '</pre>'; die();
+   
                         //--------------TRY---------------
                         $arrayDatos = [ 
                                        'estado_catastro' => $estado_catastro,
@@ -153,7 +157,7 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
                         $tableName = 'inmuebles';  
 
                         $arrayCondition = ['id_impuesto' => $id_impuesto,]; 
-
+//echo'<pre>'; var_dump($arrayCondition); echo '</pre>'; die();
 
                         $conn = New ConexionController(); 
 
@@ -210,7 +214,7 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = InmueblesUrbanosForm::findOne($id)) !== null) {
+        if (($model = CambioNumeroCatastralInmueblesForm::findOne($id)) !== null) {
             return $model; 
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

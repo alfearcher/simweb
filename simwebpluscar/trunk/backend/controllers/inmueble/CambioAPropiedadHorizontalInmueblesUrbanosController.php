@@ -50,6 +50,7 @@ namespace backend\controllers\inmueble;
 
 use Yii;
 use backend\models\inmueble\InmueblesUrbanosForm;
+use backend\models\inmueble\CambioAPropiedadHorizontalInmueblesForm;
 use backend\models\inmueble\InmueblesConsulta;
 use backend\models\inmueble\InmueblesSearch;
 use yii\web\Response;
@@ -104,46 +105,33 @@ class CambioAPropiedadHorizontalInmueblesUrbanosController extends Controller
                   
                 if (!\Yii::$app->user->isGuest){
 
-                     $id_impuesto = $model->id_impuesto;                   
-                     $id_contribuyente = $model->id_contribuyente;         
-                     $ano_inicio = $model->ano_inicio;                     
-                     $direccion = $model->direccion;                       
-                     $propiedad_horizontal = $model->propiedad_horizontal;
+                     $datosCambio = Yii::$app->request->post('CambioAPropiedadHorizontalInmueblesForm');
+
+
+                     $id_impuesto = $datosCambio["id_impuesto"];                   
+                     $id_contribuyente = $datosCambio["id_contribuyente"];        
+                     $propiedad_horizontal = $datosCambio["propiedad_horizontal"];
                      
-                     $medidor = $model->medidor;                          
-                     $id_sim = $model->id_sim;                             
-                     $observacion = $model->observacion;                   
-                     $inactivo = $model->inactivo;                         
-                     $catastro = $model->catastro;                         
-                     $id_habitante = $model->id_habitante;                 
-                     $tipo_ejido = $model->tipo_ejido;                     
-                     
-                     $estado_catastro = $model->estado_catastro;           
-                     $municipio_catastro = $model->municipio_catastro;     
-                     $parroquia_catastro = $model->parroquia_catastro;     
-                     $ambito_catastro = $model->ambito_catastro;           
-                     $sector_catastro = $model->sector_catastro;           
-                     $manzana_catastro = $model->manzana_catastro;         
-                     
+
                      //cambios a propiedad horizontal
                     if ($propiedad_horizontal == 0) {
 
-                          $parcela_catastro = $model->parcela_catastro;                                            //Parcela catastro
+                          $parcela_catastro = $datosCambio["parcela_catastro"];                                            //Parcela catastro
                           $subparcela_catastro = 0;                                                                //Sub parcela catastro
                           $nivel_catastro = 0;                                                                     //Nivel catastro
                           $unidad_catastro = 0;                                                                    //Unidad catastro     
                      }else{ 
 
-                          $parcela_catastro = $model->parcela_catastro;                                            //Parcela catastro
-                          $subparcela_catastro = $model->subparcela_catastro;                                      //Sub parcela catastro
-                          $nivel_c1 = $model->nivela;
-                          $nivel_c2 = $model->nivelb;
+                          $parcela_catastro = $datosCambio["parcela_catastro"];                                            //Parcela catastro
+                          $subparcela_catastro = $datosCambio["subparcela_catastro"];                                      //Sub parcela catastro
+                          $nivel_c1 = $datosCambio["nivela"];
+                          $nivel_c2 = $datosCambio["nivelb"];
                           $nivel_catastro1 = array(['nivela' =>$nivel_c1 , 'nivelb'=>$nivel_c2 ]);                 //Nivel catastro
                           $nivel_catastro = "".$nivel_catastro1[0]['nivela']."".$nivel_catastro1[0]['nivelb']."";
-                          $unidad_catastro = $model->unidad_catastro;                                              //Unidad catastro  
+                          $unidad_catastro = $datosCambio["unidad_catastro"];                                              //Unidad catastro  
                      }  
                     
-    //echo'<pre>'; var_dump($model->validacion); echo '</pre>'; die();
+
                         //--------------TRY---------------
                         $arrayDatos = [
                                         //datos a guardar de propiedad horizontal
@@ -214,7 +202,7 @@ class CambioAPropiedadHorizontalInmueblesUrbanosController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = InmueblesUrbanosForm::findOne($id)) !== null) {
+        if (($model = CambioAPropiedadHorizontalInmueblesForm::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

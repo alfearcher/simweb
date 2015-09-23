@@ -50,6 +50,7 @@ namespace backend\controllers\inmueble;
 
 use Yii;
 use backend\models\inmueble\InmueblesUrbanosForm;
+use backend\models\inmueble\CambioOtrosDatosInmueblesForm;
 use backend\models\inmueble\InmueblesConsulta;
 use backend\models\inmueble\InmueblesSearch;
 use yii\web\Controller;
@@ -98,45 +99,36 @@ class CambioOtrosDatosInmueblesUrbanosController extends Controller
 
               if($model->validate()){
 
-                 //condicionales     
+                
                   
                 if (!\Yii::$app->user->isGuest){
 
-                     $id_impuesto = $model->id_impuesto;                   //clave principal de la tabla no sale en el formulario identificador del inpuesto inmobiliario
-                     $id_contribuyente = $model->id_contribuyente;         //identidad del contribuyente
-                     $ano_inicio = $model->ano_inicio;                     //anio de inicio
-                     $direccion = $model->direccion;                       //direccion
-                     
-                     $av_calle_esq_dom = $model->av_calle_esq_dom;         //avenida. calle. esquina. domicilio
-                     $casa_edf_qta_dom = $model->casa_edf_qta_dom;         //casa. edificio. quinta. domicilio
-                     $piso_nivel_no_dom = $model->piso_nivel_no_dom;       //piso. nivel. numero. domicilio
-                     $apto_dom = $model->apto_dom;                         //apartamento. domicilio
+                     $datosCambio = Yii::$app->request->post('CambioOtrosDatosInmueblesForm');
 
-                     $tlf_hab = $model->tlf_hab;                           //telefono habitacion
-                     $medidor = $model->medidor;                           //medidor
-                     $id_sim = $model->id_sim;                             //id_sim
-                     $observacion = $model->observacion;                   //observaciones
-                     $inactivo = $model->inactivo;                         //inactivo
-                     $catastro = $model->catastro;                         //catastro generado por el formulario de catastro
-                     $id_habitante = $model->id_habitante;                 //identificacion del abitante
-                     $tipo_ejido = $model->tipo_ejido;                     //tipo ejido
-                     $propiedad_horizontal = $model->propiedad_horizontal; //propiedad horizontal
+                     $id_impuesto = $datosCambio["id_impuesto"];                   //clave principal de la tabla no sale en el formulario identificador del inpuesto inmobiliario
+                     $id_contribuyente = $datosCambio["id_contribuyente"];         //identidad del contribuyente
+                     $ano_inicio = $datosCambio["ano_inicio"];                     //anio de inicio
+                     $direccion = $datosCambio["direccion"];                       //direccion
                      
+                     $casa_edf_qta_dom = $datosCambio["casa_edf_qta_dom"];         //casa. edificio. quinta. domicilio
+                     $piso_nivel_no_dom = $datosCambio["piso_nivel_no_dom"];       //piso. nivel. numero. domicilio
+                     $apto_dom = $datosCambio["apto_dom"];                         //apartamento. domicilio
 
-                     $estado_catastro = $model->estado_catastro;           //Estado catastro
-                     $municipio_catastro = $model->municipio_catastro;     //Municipio catastro
-                     $parroquia_catastro = $model->parroquia_catastro;     //Parroquia catastro
-                     $ambito_catastro = $model->ambito_catastro;           //Ambito catastro
-                     $sector_catastro = $model->sector_catastro;           //Sector catastro
-                     $manzana_catastro = $model->manzana_catastro;         //Manzana catastro
+                     $tlf_hab = $datosCambio["tlf_hab"];                           //telefono habitacion
+                     $medidor = $datosCambio["medidor"];                           //medidor
+                     
+                     $observacion = $datosCambio["observacion"];                   //observaciones
+                     $inactivo = $datosCambio["inactivo"];                         //inactivo
+                    
+                     $tipo_ejido = $datosCambio["tipo_ejido"];                     //tipo ejido
+                     
 
                   
-                        //--------------TRY---------------
+                     //--------------TRY---------------
                         $arrayDatos = [
                                         //otros datos
                                        'ano_inicio' => $ano_inicio,
                                        'direccion' => $direccion,
-                                       'av_calle_esq_dom' => $av_calle_esq_dom,
                                        'casa_edf_qta_dom' => $casa_edf_qta_dom, 
                                        'piso_nivel_no_dom' => $piso_nivel_no_dom,
                                        'apto_dom' => $apto_dom, 
@@ -206,7 +198,7 @@ class CambioOtrosDatosInmueblesUrbanosController extends Controller
      **/
     protected function findModel($id)
     {
-        if (($model = InmueblesUrbanosForm::findOne($id)) !== null) {
+        if (($model = CambioOtrosDatosInmueblesForm::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

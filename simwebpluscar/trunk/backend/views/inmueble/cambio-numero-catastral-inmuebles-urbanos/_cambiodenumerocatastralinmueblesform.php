@@ -60,7 +60,7 @@ function bloquea() {
 } 
 
 </script> 
-
+<body onload = "bloquea()"/>
 <div class="inscripcionInmueblesUrbanos">
 
     <?php $form = ActiveForm::begin([
@@ -89,25 +89,10 @@ function bloquea() {
                             </div> 
 
                             <div class="col-lg-2">
-                            <?= $form->field($model, 'id_contribuyente')->textInput(['disabled'=>$disabled,'style' => 'width:80px;'])->label(false) ?>
+                            <?= $form->field($model, 'id_contribuyente')->textInput(['readOnly'=>true,'style' => 'width:80px;'])->label(false) ?>
                             </div> 
 
-                            <div class="col-lg-1"> 
-                            <?= Yii::t('backend', 'Cadastre') ?>
-                            </div> 
-
-                            <div class="col-lg-2"> 
-                            <?= $form->field($model, 'catastro')->textInput(['disabled'=>$disabled,'style' => 'width:80px;'])->label(false) ?>
-                            </div> 
-
-                            <div class="col-lg-1"> 
-                            <?= Yii::t('backend', 'Id Sim') ?>
-                            </div> 
-
-                            <div class="col-lg-1">
-                            <?= $form->field($model, 'id_sim')->textInput(['disabled'=>$disabled,'style' => 'width:80px;'])->label(false) ?>
-                            </div> 
-
+                            
                             <div class="col-lg-2">
                             <?= $form->field($model, 'inactivo')->checkbox(['disabled'=>$disabled,'style' => 'width:50px;'])?> 
                             </div> 
@@ -275,33 +260,7 @@ function bloquea() {
                         </td>
                    </tr> 
  <!-- Direccio del domicilio -->                   
-                   <tr>
-                        <td colspan="6">
-                            <div class="col-lg-2"> 
-                            <?= Yii::t('backend', 'Hse/Building/Ctryhse') ?>
-                            </div>  
-
-                            <div class="col-lg-2">
-                            <?= $form->field($model, 'casa_edf_qta_dom')->textInput(['disabled'=>$disabled,'style' => 'width:100px;'])->label(false) ?>
-                            </div> 
-
-                            <div class="col-lg-2"> 
-                            <?= Yii::t('backend', 'Floor/Level') ?>
-                            </div> 
-
-                            <div class="col-lg-2">
-                            <?= $form->field($model, 'piso_nivel_no_dom')->textInput(['disabled'=>$disabled,'style' => 'width:100px;'])->label(false) ?>
-                            </div> 
-
-                            <div class="col-lg-2"> 
-                            <?= Yii::t('backend', 'Apartment/Num') ?>
-                            </div> 
-
-                            <div class="col-lg-2">
-                            <?= $form->field($model, 'apto_dom')->textInput(['disabled'=>$disabled,'style' => 'width:100px;'])->label(false) ?>
-                            </div> 
-                        </td>
-                  
+                                   
                    <tr>
                         <td colspan="4">
 
@@ -319,7 +278,11 @@ function bloquea() {
 
                             <div class="col-lg-2">
                             <?= $form->field($model, 'medidor')->textInput(['disabled'=>$disabled,'style' => 'width:100px;'])->label(false) ?>
-                            </div>                                                         
+                            </div>    
+
+                            <div class="col-lg-2">
+                            <?= $form->field($model, 'id_impuesto')->hiddenInput(['style' => 'width:80px;'])->label(false) ?>
+                            </div>                                                      
                         </td>
                    </tr>
 
@@ -339,10 +302,9 @@ function bloquea() {
                             </div>    
 
                             <div class="form-group"> 
-                            <?= Html::submitButton(Yii::t('backend', 'Update'), ['class' => 'btn btn-success','data' => [
-                                                          'confirm' => Yii::t('app', 'Are you sure you want to Update this item?'),
-                                                          'method' => 'post',
-            ],]) ?>
+<?= Html::beginForm();?>
+<?= Html::submitButton(Yii::t('backend', 'Accept'), ['class' => 'btn btn-primary', 'name'=>'Accept', 'value'=>'Accept']) ?>
+<?= Html::endForm();?> 
                             </div>
                                                                        
                         </td>
@@ -362,9 +324,9 @@ function bloquea() {
 
 
 <?= $form->field($model, 'validacion')->hiddenInput(['value' => '3'])->label(false) ?> 
+<?= Html::endForm();?> 
 
-
-<?php ActiveForm::end(); ?> 
+<?php //ActiveForm::end(); ?> 
 
 
 

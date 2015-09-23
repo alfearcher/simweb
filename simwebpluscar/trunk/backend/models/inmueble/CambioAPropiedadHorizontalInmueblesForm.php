@@ -21,15 +21,15 @@
  */
 
  /**    
- *  @file InmueblesForm.php
+ *  @file CambioAPropiedadHorizontalInmueblesForm.php
  *  
  *  @author Alvaro Jose Fernandez Archer
  * 
  *  @date 27-07-2015
  * 
- *  @class InmueblesForm
- *  @brief Clase que permite validar cada uno de los datos del formulario de inscripcion de inmuebles 
- *  urbanos, se establecen las reglas para los datos a ingresar y se le asigna el nombre de las etiquetas 
+ *  @class CambioAPropiedadHorizontalInmueblesForm
+ *  @brief Clase que permite validar cada uno de los datos del formulario de cambio a propiedad horizontal
+ *  de inmuebles urbanos, se establecen las reglas para los datos a ingresar y se le asigna el nombre de las etiquetas 
  *  de los campos. 
  * 
  *  
@@ -55,7 +55,7 @@ namespace backend\models\inmueble;
 
 use Yii;
 use backend\models\inmueble\InmueblesConsulta;
-use common\conexion\ConexionController;
+use common\conexion\conexionController;
 
 /**
  * This is the model class for table "inmuebles".
@@ -94,7 +94,7 @@ use common\conexion\ConexionController;
  * @property string $nivel_catastro
  * @property string $unidad_catastro
  */
-class InmueblesUrbanosForm extends \yii\db\ActiveRecord
+class CambioAPropiedadHorizontalInmueblesForm extends \yii\db\ActiveRecord
 {
 
     public $conn;
@@ -109,21 +109,7 @@ class InmueblesUrbanosForm extends \yii\db\ActiveRecord
     public $naturaleza;
     public $cedula;
     public $tipo;
-    public $naturalezaBuscar;
-    public $cedulaBuscar;
-    public $tipoBuscar;
-    
-    public $ano_traspaso1;
-    public $tipo_naturaleza1;
-    public $naturalezaBuscar1;
-    public $cedulaBuscar1;
-    public $tipoBuscar1;
-
-    public $variablephp;
-    public $datosVendedor;
-    public $inmuebleVendedor;
-    public $datosVContribuyente;
-    public $datosVInmueble;
+     public $tipo_naturaleza2;
 
     public static function tableName()
     {
@@ -136,10 +122,9 @@ class InmueblesUrbanosForm extends \yii\db\ActiveRecord
     {
 
         return [ 
-
-            [['id_contribuyente','ano_inicio', 'liquidado', 'manzana_limite', 'lote_1', 'lote_2', 'lote_3', 'inactivo', 'id_habitante', 'tipo_ejido', 'propiedad_horizontal', 'estado_catastro', 'municipio_catastro', 'parroquia_catastro', 'sector_catastro', 'manzana_catastro', 'parcela_catastro', 'subparcela_catastro', 'unidad_catastro'], 'integer','message' => Yii::t('backend', 'only integers')],
+            [['id_contribuyente', 'ano_inicio', 'liquidado', 'manzana_limite', 'lote_1', 'lote_2', 'lote_3', 'inactivo', 'id_habitante', 'tipo_ejido', 'propiedad_horizontal', 'estado_catastro', 'municipio_catastro', 'parroquia_catastro', 'sector_catastro', 'manzana_catastro', 'parcela_catastro', 'subparcela_catastro', 'unidad_catastro'], 'integer','message' => Yii::t('backend', 'only integers')],
             [['parcela_catastro', 'subparcela_catastro', 'unidad_catastro','nivela','nivelb'],'required', 'when'=> function($model){ return $model->propiedad_horizontal == 1; }, 'message' => Yii::t('backend', 'Required field')],
-           // [['observacion','datosVendedor','inmuebleVendedor'], 'string'], 
+            [['observacion','tipo_naturaleza2','tipo_naturaleza'], 'string'], 
             [['direccion'], 'string', 'max' => 255,'message' => Yii::t('backend', 'Only 255 character')],
             [['nivel', 'ambito_catastro','validacion'], 'string', 'max' => 4,'message' => Yii::t('backend', 'Only 3 character')],
             [['av_calle_esq_dom', 'casa_edf_qta_dom'], 'string', 'max' => 50,'message' => Yii::t('backend', 'Only 50 character')],
@@ -150,34 +135,7 @@ class InmueblesUrbanosForm extends \yii\db\ActiveRecord
             //'liquidado', 'id_habitante'
             [['propiedad_horizontal'], 'catastro_registro','when'=>function($model){ return $model->validacion==1;}], 
             [['propiedad_horizontal'], 'catastro_registro2','when'=>function($model){ return $model->validacion==1;}],
-            [['propiedad_horizontal'], 'catastro_cambio','when'=>function($model){ return $model->validacion==3;}], 
-            [['propiedad_horizontal'], 'catastro_cambio2','when'=>function($model){ return $model->validacion==3;}],
             
-            //validaciones cambio propietario del inmueble
-            [['tipo_naturaleza1','tipo_naturaleza','operacion'],'integer','message' => Yii::t('backend', 'only integers')],
-            
-            [['naturalezaBuscar1','tipo_naturaleza1'], 'string','when'=>function($model){ return $model->operacion==1;}, 'max' => 1,'message' => Yii::t('backend', 'Only 1 character')],
-            [['naturalezaBuscar','tipo_naturaleza'], 'string','when'=>function($model){ return $model->operacion==2;}, 'max' => 1,'message' => Yii::t('backend', 'Only 1 character')],
-            
-            [['cedulaBuscar1','ano_traspaso1'], 'string', 'max' => 8,'when'=>function($model){ return $model->operacion==1;},'message' => Yii::t('backend', 'Only 8 character')],
-            [['cedulaBuscar','ano_traspaso'], 'string', 'max' => 8,'when'=>function($model){ return $model->operacion==2;},'message' => Yii::t('backend', 'Only 8 character')],
-            
-            [['tipoBuscar1'], 'string', 'max' => 1,'when'=>function($model){ return $model->operacion==1;},'message' => Yii::t('backend', 'Only 1 character')],
-            [['tipoBuscar'], 'string', 'max' => 1,'when'=>function($model){ return $model->operacion==2;},'message' => Yii::t('backend', 'Only 1 character')],
-            
-            //requeridos en cambio propietario del inmueble
-            [['direccion'],'required','when'=>function($model){ return $model->operacion==1;},'message' => Yii::t('backend', 'Street Address cannot be blank')],
-            [['ano_traspaso1'],'required','when'=>function($model){ return $model->operacion==1;},'message' => Yii::t('backend', 'Handover Year cannot be blank')],
-            [['tipo_naturaleza1'],'required','when'=>function($model){ return $model->operacion==1;},'message' => Yii::t('backend', 'Type Nature cannot be blank')],
-            [['naturalezaBuscar1','cedulaBuscar1','tipoBuscar1'], 'required','when'=>function($model){ return $model->tipo_naturaleza1==2;},'message' => Yii::t('backend', 'Cannot be blank')],
-            [['naturalezaBuscar1','cedulaBuscar1'], 'required','when'=>function($model){ return $model->tipo_naturaleza1==1;},'message' => Yii::t('backend', 'Cannot be blank')],
-
-            [['ano_traspaso'],'required','when'=>function($model){ return $model->operacion==2;},'message' => Yii::t('backend', 'Handover Year cannot be blank')],
-            [['tipo_naturaleza'],'required','when'=>function($model){ return $model->operacion==2;},'message' => Yii::t('backend', 'Type Nature cannot be blank')],
-            [['naturalezaBuscar','cedulaBuscar','tipoBuscar'], 'required','when'=>function($model){ return $model->tipo_naturaleza==2;},'message' => Yii::t('backend', 'Cannot be blank')],
-            [['naturalezaBuscar','cedulaBuscar'], 'required','when'=>function($model){ return $model->tipo_naturaleza==1;},'message' => Yii::t('backend', 'Cannot be blank')],
-            
-            //[['datosVendedor'],'datosVendedor'],
             
         ];
     }
@@ -222,18 +180,6 @@ class InmueblesUrbanosForm extends \yii\db\ActiveRecord
             'nivel_catastro' => Yii::t('backend', 'Level'),
             'unidad_catastro' => Yii::t('backend', 'Unit'),
             'validacion' => Yii::t('backend', 'v'),
-            
-            'ano_traspaso1'=> Yii::t('backend', 'Handover year'),
-            'tipo_naturaleza1'=> Yii::t('backend', 'Type nature'),
-            'naturalezaBuscar1'=> Yii::t('backend', 'Nature'),
-            'cedulaBuscar1'=> Yii::t('backend', 'Identification Card'),
-            'tipoBuscar1'=> Yii::t('backend', 'Type'),
-            
-            'ano_traspaso'=> Yii::t('backend', 'Handover year'), 
-            'tipo_naturaleza'=> Yii::t('backend', 'Type nature'),           
-            'naturalezaBuscar'=> Yii::t('backend', 'Nature'),
-            'cedulaBuscar'=> Yii::t('backend', 'Identification Card'),
-            'tipoBuscar'=> Yii::t('backend', 'Type'),
         ];  
     }
 
@@ -421,15 +367,6 @@ class InmueblesUrbanosForm extends \yii\db\ActiveRecord
 
                     $this->addError($attribute, Yii::t('backend', 'The taxpayer: '.$table[0]['id_contribuyente'].' has already assigned cadestre. Tax: '.$table[0]['id_impuesto']));//Impuesto: '.$table->id_impuesto; 
             } 
-     }
-     
-
-     public function datosVendedor(){
-
-          $datosVendedor = ContribuyentesForm::find()->where(['naturaleza'=>$this->naturalezaBuscar])
-                                             ->andWhere(['cedula'=>$this->cedulaBuscar])
-                                             ->andWhere(['tipo'=>$this->tipoBuscar])->asArray()->all();
-          return $datosVendedor;
      }
 
      public function getGenderOptions(){
