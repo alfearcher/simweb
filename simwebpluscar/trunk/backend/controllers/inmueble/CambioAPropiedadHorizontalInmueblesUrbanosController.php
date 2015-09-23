@@ -52,6 +52,7 @@ use Yii;
 use backend\models\inmueble\InmueblesUrbanosForm;
 use backend\models\inmueble\InmueblesConsulta;
 use backend\models\inmueble\InmueblesSearch;
+use yii\web\Response;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

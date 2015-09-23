@@ -101,7 +101,7 @@ use yii\helpers\ArrayHelper;
 use common\conexion\ConexionController;
 use backend\models\inmueble\InmueblesConsulta;
 use backend\models\inmueble\ParametrosNivelesCatastro;
-class InscripcionInmueblesUrbanosForm extends model{
+class InscripcionInmueblesUrbanosForm extends Model{
     
     public $conn;
     public $conexion;
