@@ -82,7 +82,7 @@ function bloquea() {
                             </div> 
 
                             <div class="col-lg-2">  
-                            <?= $form->field($model, 'catastro')->label(false) ?>
+                            <?= $form->field($model, 'catastro')->hiddenInput(['value'=>0])->label(false) ?>
                             </div> 
 
                             <div class="col-lg-1"> 
