@@ -51,7 +51,7 @@
  */
 namespace backend\Models;
 use Yii;
-use yii\base\model;
+use yii\base\Model;
 use backend\models\PreguntasUsuarios;
 use common\models\Users;
 
