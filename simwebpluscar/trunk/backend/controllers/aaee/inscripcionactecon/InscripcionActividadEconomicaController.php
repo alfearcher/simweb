@@ -57,7 +57,7 @@
 	use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomica;
 	use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomicaForm;
 	use common\conexion\ConexionController;
-	use  yii\web\Session;
+	use backend\controllers\MenuController;
 
 	//$session = Yii::$app()->session;
 	session_start();		// Iniciando session
@@ -166,6 +166,7 @@
 								$transaccion->commit();
 								$tipoError = 0;	// No error.
 								$msg = Yii::t('backend', 'SUCCESS!....WAIT.');
+								$_SESSION['idInscripcion'] = $idInscripcion;
 								$url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['/aaee/inscripcionactecon/inscripcion-actividad-economica/view','idInscripcion' => $idInscripcion])."'>";
 								return $this->render('/mensaje/mensaje',['msg' => $msg, 'url' => $url, 'tipoError' => $tipoError]);
 
@@ -205,10 +206,21 @@
 		*/
 		public function actionView($idInscripcion)
     	{
-        	return $this->render('/aaee/inscripcion-actividad-economica/pre-view',
-        		['model' => $this->findModel($idInscripcion), 'preView' => false,
+    		if ( isset($_SESSION['idInscripcion']) ) {
+    			if ( $_SESSION['idInscripcion'] == $idInscripcion ) {
+    				$model = $this->findModel($idInscripcion);
+    				if ( $_SESSION['idContribuyente'] == $model->id_contribuyente ) {
+			        	return $this->render('/aaee/inscripcion-actividad-economica/pre-view',
+			        			['model' => $model, 'preView' => false,
 
-        		]);
+			        			]);
+			        } else {
+			        	echo 'Numero de Inscripcion no valido.';
+			        }
+	        	} else {
+	        		echo 'Numero de Inscripción no valido.';
+	        	}
+        	}
     	}
 
 
@@ -226,6 +238,20 @@
             	throw new NotFoundHttpException('The requested page does not exist.');
         	}
     	}
+
+
+
+
+
+    	/**
+    	*
+    	*/
+    	public function actionQuit()
+    	{
+    		unset($_SESSION['idInscripcion']);
+    		return $this->render('/aaee/inscripcion-actividad-economica/quit');
+    	}
+
 
 
 
