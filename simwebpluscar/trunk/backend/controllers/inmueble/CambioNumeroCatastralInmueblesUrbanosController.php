@@ -194,7 +194,7 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
               } 
          }
 
-         return $this->render('Cambio-de-numero-catastral-inmuebles', [
+         return $this->render('cambio-de-numero-catastral-inmuebles', [
                 'model' => $model,
             ]); 
         

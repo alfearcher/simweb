@@ -198,7 +198,7 @@ class CambioAPropiedadHorizontalInmueblesUrbanosController extends Controller
               }
          }
 
-         return $this->render('Cambio-a-propiedad-horizontal-inmuebles', [
+         return $this->render('cambio-a-propiedad-horizontal-inmuebles', [
                 'model' => $model,
             ]); 
         

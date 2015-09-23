@@ -297,7 +297,7 @@ FIN BUYER
          }*/
         }
    
-         return $this->render('Cambio-propietario-inmuebles', [
+         return $this->render('cambio-propietario-inmuebles', [
                 'model' => $model, 'modelContribuyente' => $modelContribuyente, 'modelBuscar' =>$modelBuscar, 'datosVContribuyente'=>$datosVContribuyente,
                 'datosVInmueble'=>$datosVInmueble,
             ]); 
