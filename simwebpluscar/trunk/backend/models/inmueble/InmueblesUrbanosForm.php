@@ -136,7 +136,8 @@ class InmueblesUrbanosForm extends \yii\db\ActiveRecord
     {
 
         return [ 
-            [['id_contribuyente','ano_inicio', 'liquidado', 'manzana_limite', 'lote_1', 'lote_2', 'lote_3', 'inactivo', 'id_habitante', 'tipo_ejido', 'propiedad_horizontal', 'estado_catastro', 'municipio_catastro', 'parroquia_catastro', 'sector_catastro', 'manzana_catastro', 'parcela_catastro', 'subparcela_catastro', 'unidad_catastro'], 'integer','message' => Yii::t('backend', 'only integers')],
+        
+  /*          [['id_contribuyente','ano_inicio', 'liquidado', 'manzana_limite', 'lote_1', 'lote_2', 'lote_3', 'inactivo', 'id_habitante', 'tipo_ejido', 'propiedad_horizontal', 'estado_catastro', 'municipio_catastro', 'parroquia_catastro', 'sector_catastro', 'manzana_catastro', 'parcela_catastro', 'subparcela_catastro', 'unidad_catastro'], 'integer','message' => Yii::t('backend', 'only integers')],
             [['parcela_catastro', 'subparcela_catastro', 'unidad_catastro','nivela','nivelb'],'required', 'when'=> function($model){ return $model->propiedad_horizontal == 1; }, 'message' => Yii::t('backend', 'Required field')],
             [['observacion','datosVendedor','inmuebleVendedor'], 'string'], 
             [['direccion'], 'string', 'max' => 255,'message' => Yii::t('backend', 'Only 255 character')],
@@ -153,7 +154,7 @@ class InmueblesUrbanosForm extends \yii\db\ActiveRecord
             [['propiedad_horizontal'], 'catastro_cambio2','when'=>function($model){ return $model->validacion==3;}],
             
             //validaciones cambio propietario del inmueble
-            [['tipo_naturaleza1','tipo_naturaleza','operacion'],'integer','message' => Yii::t('backend', 'only integers')],
+            [['tipo_naturaleza1','tipo_naturaleza','operacion'],'integer','when'=>function($model){ return $model->operacion!=null;},'message' => Yii::t('backend', 'only integers')],
             
             [['naturalezaBuscar1','tipo_naturaleza1'], 'string','when'=>function($model){ return $model->operacion==1;}, 'max' => 1,'message' => Yii::t('backend', 'Only 1 character')],
             [['naturalezaBuscar','tipo_naturaleza'], 'string','when'=>function($model){ return $model->operacion==2;}, 'max' => 1,'message' => Yii::t('backend', 'Only 1 character')],
@@ -177,7 +178,7 @@ class InmueblesUrbanosForm extends \yii\db\ActiveRecord
             [['naturalezaBuscar','cedulaBuscar'], 'required','when'=>function($model){ return $model->tipo_naturaleza==1;},'message' => Yii::t('backend', 'Cannot be blank')],
             
             //[['datosVendedor'],'datosVendedor'],
-            
+            */
         ];
     }
 
