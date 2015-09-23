@@ -50,11 +50,11 @@
  */ 
 namespace backend\models;
 use Yii;
-use yii\base\model;
+use yii\base\Model;
 use backend\models\PreguntasUsuarios;
 use common\models\Users;
 
-class FormAsignarPreguntaSecreta extends model{
+class FormAsignarPreguntaSecreta extends Model{
   
     public $email;
     public $usuario;

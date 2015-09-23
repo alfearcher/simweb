@@ -50,10 +50,10 @@
  */ 
 namespace backend\models;
 use Yii;
-use yii\base\model;
+use yii\base\Model;
 use common\models\Users;
 
-class FormChangePassword extends model{
+class FormChangePassword extends Model{
   
     public $username;
 	public $password;

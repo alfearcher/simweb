@@ -49,14 +49,14 @@
  *  @inherits
  *  
  */
-namespace backend\models;
+namespace backend\Models;
 use Yii;
 use yii\base\model;
 use backend\models\PreguntasUsuarios;
 use common\models\Users;
 
 
-class FormIniciarRecuperacionPasswordFuncionario extends model{
+class FormIniciarRecuperacionPasswordFuncionario extends Model{
   
     public $username;
     

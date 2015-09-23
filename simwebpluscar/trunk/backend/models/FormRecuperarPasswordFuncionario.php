@@ -54,12 +54,12 @@
  */
 namespace backend\models;
 use Yii;
-use yii\base\model;
+use yii\base\Model;
 use backend\models\PreguntasUsuarios;
 use common\models\Users;
 
 
-class FormRecuperarPasswordFuncionario extends model{
+class FormRecuperarPasswordFuncionario extends Model{
   
     
     public $user;

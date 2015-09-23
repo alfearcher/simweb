@@ -51,11 +51,11 @@
  */ 
 namespace backend\models;
 use Yii;
-use yii\base\model;
+use yii\base\Model;
 use common\models\Users;
 
 
-class FormRegistrarFuncionarioUsuario extends model{
+class FormRegistrarFuncionarioUsuario extends Model{
   
     public $username;
     public $email;

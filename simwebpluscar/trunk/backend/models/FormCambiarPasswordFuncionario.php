@@ -49,12 +49,12 @@
  *  @inherits
  *  
  */ 
-namespace backend\models;
+namespace backend\odels;
 use Yii;
-use yii\base\model;
+use yii\base\Model;
 use common\models\Users;
 
-class FormCambiarPasswordFuncionario extends model{
+class FormCambiarPasswordFuncionario extends Model{
   
     public $email;
 	  public $password;
