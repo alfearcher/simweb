@@ -3,8 +3,6 @@
 use yii\helpers\Html;
 
 $this->title = Yii::t('backend', 'Create Propaganda');
-$this->params['breadcrumbs'][] = [ 'label' => Yii::t( 'backend','Propagandas' ), 'url' => [ 'index' ] ];
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="propaganda-form-create">

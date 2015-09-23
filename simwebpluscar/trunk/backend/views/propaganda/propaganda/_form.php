@@ -184,6 +184,9 @@ function puntitos( donde, caracter, campo ) {
     <?= Html::activeHiddenInput( $model, 'id_cp', [ 'value' => '0' ] ) ?>
     <?= Html::activeHiddenInput( $model, 'id_sim', [ 'value' => '0' ] ) ?>
     <?= Html::activeHiddenInput( $model, 'inactivo', [ 'value' => '0' ] ) ?>
+    <?= Html::activeHiddenInput( $model, 'id_contribuyente', [ 'value' => $_SESSION['idContribuyente'] ] ) ?>
+    
+
     
     <div class="col-sm-11">
         <div class="panel panel-primary">
@@ -195,7 +198,6 @@ function puntitos( donde, caracter, campo ) {
                             <td>
                                 <div>
                                     <p><i><small><?= Yii::t( 'backend', 'Tax Year:' )?></small></i></p>
-                                    <?= $form->field( $model, 'id_contribuyente' )->label( false )->textInput( [ 'inline' => true, 'style' => 'width:100%;' ] )?>
                                     <?= $form->field( $model, 'ano_impo' )->label( false )->textInput( [ 'value' => $ano, 'inline' => true, 'style' => 'width:100%;', 'readonly' => 'readonly' ] )?>
                                </div>    
                             </td>
@@ -427,11 +429,11 @@ function puntitos( donde, caracter, campo ) {
                                     ?>
                                     <?= $form->field( $model, 'tipo_propaganda' )->label( false )->dropDownList( $listaTiposPropaganda, [  'id' => 'tipo_propaganda',
                                                                                                                                            'prompt' => Yii::t('backend','Select'),
-                                                                                                                                           'style' => 'width:120%;',
+                                                                                                                                           'style' => 'width:110%;',
                                                                                                                                            'onchange' =>'mostrar_contenido()'
                                                                                                                                         ] );
                                     ?>
-                                    <?= $form->field( $model, 'id_tipo_propaganda' )->label( false )->textArea( [ 'style' => 'width:120%;', 'maxlength' => true,'id' => 'id_tipo_propaganda', 'readonly' => 'readonly' ] )?>
+                                    <?= $form->field( $model, 'id_tipo_propaganda' )->label( false )->textArea( [ 'style' => 'width:110%;', 'maxlength' => true,'id' => 'id_tipo_propaganda', 'readonly' => 'readonly' ] )?>
                                 </div>
                             </td>
                         </tr>
@@ -508,6 +510,7 @@ function puntitos( donde, caracter, campo ) {
                         <tr>
                             <td colspan="2">
                                 <?= Html::submitButton( $model->isNewRecord ? 'Create' : 'Update', [ 'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'name'=> 'btn', ' value'=> 'crud' ] ) ?>
+                                <a href="index.php?r=propaganda/propaganda/index"><?= Html::Button($model->isNewRecord ? Yii::t('backend', 'Quit') : Yii::t('backend', 'Return'), ['class' => $model->isNewRecord ? 'btn btn-danger' : 'btn btn-danger']) ?></a>
                             </td>
                         </tr>
                     </table>

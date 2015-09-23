@@ -41,9 +41,10 @@
  */
 
 namespace backend\models\grupotrabajo;
-error_reporting(0);
 
 use Yii;
+use backend\models\Departamento;
+use backend\models\UnidadDepartamento;
 
 /**
  * This is the model class for table "grupos_trabajo".
@@ -106,7 +107,7 @@ class GruposTrabajoForm extends \yii\db\ActiveRecord
     */
     public function getDepartamento()
     {
-        return $this->hasOne( \backend\models\Departamento::className(), [ 'id_departamento' => 'id_departamento' ] );
+        return $this->hasOne( Departamento::className(), [ 'id_departamento' => 'id_departamento' ] );
     }
  
     /**
@@ -122,7 +123,7 @@ class GruposTrabajoForm extends \yii\db\ActiveRecord
     */
     public function getUnidad()
     {
-        return $this->hasOne( \backend\models\UnidadDepartamento::className(), [ 'id_unidad' => 'id_unidad' ] );
+        return $this->hasOne( UnidadDepartamento::className(), [ 'id_unidad' => 'id_unidad' ] );
     }
     
     /**

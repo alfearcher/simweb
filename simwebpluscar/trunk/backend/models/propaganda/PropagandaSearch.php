@@ -41,7 +41,6 @@
  */
 
 namespace backend\models\propaganda;
-error_reporting(0);
 
 use Yii;
 use yii\base\Model;
@@ -147,6 +146,7 @@ class PropagandaSearch extends PropagandaForm
                 $query->joinWith( [ 'clase' ] );
                 $query->joinWith( [ 'contribuyente' ] );
                 $query->andWhere( [ 'propagandas.inactivo' => '0' ] );
+                $query->andWhere( [ 'propagandas.id_contribuyente' => $_SESSION['idContribuyente'] ] );
                 
                 return $dataProvider;
             }
@@ -163,6 +163,7 @@ class PropagandaSearch extends PropagandaForm
             $query->andWhere( 'propagandas.ano_impositivo LIKE "%' . $this->ano_impositivo . '%" ' );
             $query->andWhere( 'propagandas.inactivo LIKE "%' . $this->inactivoName . '%" ' );
             $query->andWhere( [ 'propagandas.inactivo' => '0' ] );
+            $query->andWhere( [ 'propagandas.id_contribuyente' => $_SESSION['idContribuyente'] ] );
             
             $query->joinWith( [ 'uso' => function ( $q ){
                     $q->where( 'usos_propagandas.descripcion LIKE "%' . $this->usoName . '%"' );

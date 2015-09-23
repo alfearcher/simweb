@@ -43,7 +43,7 @@
 		        				'items' => [
 		        							['label' => 'Crear Grupo de Trabajo (Perfiles)','url' => ['grupotrabajo/grupos-trabajo/create']],
 		        							['label' => 'Modificar Grupo de Trabajo','url' => ['grupotrabajo/grupos-trabajo/index']],
-		        							['label' => 'Desincorporar Grupo de Trabajo','url' => ['grupotrabajo/grupos-trabajo/index1']],
+		        							['label' => 'Desincorporar Grupo de Trabajo','url' => ['grupotrabajo/grupos-trabajo/desincorporacion']],
 		        				]
 		        			],
 		        	]
@@ -130,7 +130,7 @@
 		        			'items' => [
 		        						['label' => 'Inscripción de Propagandas', 'url' => ['propaganda/propaganda/create']],
 		        						//['label' => 'Renovación de Propagandas', 'url' => '#'],
-		        						['label' => 'Desincorporación de Propaganda', 'url' => ['propaganda/propaganda/index1']],
+		        						['label' => 'Desincorporación de Propaganda', 'url' => ['propaganda/propaganda/desincorporacion']],
 		        						['label' => 'Cambio de Otros Datos de Propaganda', 'url' => ['propaganda/propaganda/index']],
 		        						//['label' => 'Solvencia', 'url' => '#'],
 		        			]

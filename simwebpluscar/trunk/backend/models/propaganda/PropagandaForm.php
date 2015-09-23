@@ -41,9 +41,12 @@
  */
 
 namespace backend\models\propaganda;
-error_reporting(0);
 
 use Yii;
+use backend\models\Contribuyente;
+use backend\models\UsosPropaganda;
+use backend\models\ClasesPropaganda;
+
 
 /**
  * This is the model class for table "propagandas".
@@ -102,11 +105,11 @@ class PropagandaForm extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [ [ 'id_impuesto', 'id_contribuyente', 'ano_impositivo', 'id_cp', 'clase_propaganda', 'tipo_propaganda', 'uso_propaganda', 'medio_difusion', 'medio_transporte', 'id_tiempo', 'inactivo', 'id_sim', 'cigarros', 'bebidas_alcoholicas', 'cantidad_propagandas', 'planilla', 'idioma' ], 'integer' ],
-            [ [ 'clase_propaganda', 'id_contribuyente', 'clase_propaganda', 'tipo_propaganda', 'uso_propaganda', 'id_tiempo', 'cantidad_propagandas', 'fecha_desde', 'cantidad_tiempo', 'cantidad_base', 'base_calculo','ano_impo', 'medio_difusion', 'id_cp' ], 'required' ],
-            [ [ 'direccion', 'fecha_desde', 'fecha_fin', 'fecha_guardado', 'observacion', 'selection' ], 'safe' ],
-            [ [ 'cantidad_tiempo' ], 'number' ],
-        ];
+                    [ [ 'id_impuesto', 'id_contribuyente', 'ano_impositivo', 'id_cp', 'clase_propaganda', 'tipo_propaganda', 'uso_propaganda', 'medio_difusion', 'medio_transporte', 'id_tiempo', 'inactivo', 'id_sim', 'cigarros', 'bebidas_alcoholicas', 'cantidad_propagandas', 'planilla', 'idioma' ], 'integer' ],
+                    [ [ 'clase_propaganda', 'id_contribuyente', 'clase_propaganda', 'tipo_propaganda', 'uso_propaganda', 'id_tiempo', 'cantidad_propagandas', 'fecha_desde', 'cantidad_tiempo', 'cantidad_base', 'base_calculo','ano_impo', 'medio_difusion', 'id_cp' ], 'required' ],
+                    [ [ 'direccion', 'fecha_desde', 'fecha_fin', 'fecha_guardado', 'observacion', 'selection' ], 'safe' ],
+                    [ [ 'cantidad_tiempo' ], 'number' ],
+                ];
     }
 
     /**
@@ -114,43 +117,42 @@ class PropagandaForm extends \yii\db\ActiveRecord
     */
     public function attributeLabels()
     {
-        return [
-            'id_impuesto' => Yii::t( 'backend', 'Tax Id' ),
-            'id_contribuyente' => Yii::t( 'backend', 'Id Contribuyente' ),
-            'ano_impositivo' => Yii::t( 'backend', 'Tax Year' ),
-            'direccion' => Yii::t( 'backend', 'Address' ),
-            'id_cp' => Yii::t( 'backend', 'Location' ),
-            'clase_propaganda' => Yii::t( 'backend', 'Clase Propaganda' ),
-            'tipo_propaganda' => Yii::t( 'backend', 'Kind' ),
-            'uso_propaganda' => Yii::t( 'backend', 'Use' ),
-            'medio_difusion' => Yii::t( 'backend', 'Through Construction' ),
-            'medio_transporte' => Yii::t( 'backend', 'Transport Means' ),
-            'fecha_desde' => Yii::t( 'backend', 'Start Date' ),
-            'cantidad_tiempo' => Yii::t( 'backend', 'Quantity' ),
-            'id_tiempo' => Yii::t( 'backend', 'Lapse' ),
-            'inactivo' => Yii::t( 'backend', 'Status' ),
-            'id_sim' => Yii::t( 'backend', 'Id Sim'),
-            'cantidad_base' => Yii::t( 'backend', 'Number' ),
-            'base_calculo' => Yii::t( 'backend', 'Base'),
-            'cigarros' => Yii::t( 'backend', 'Cigarettes or Tobacco' ),
-            'bebidas_alcoholicas' => Yii::t( 'backend', 'Alcoholic Beverages' ),
-            'cantidad_propagandas' => Yii::t( 'backend', 'Units' ),
-            'planilla' => Yii::t( 'backend', 'Planilla' ),
-            'idioma' => Yii::t( 'backend', 'Foreign Language' ),
-            'observacion' => Yii::t( 'backend', 'Observation' ),
-            'ano_impo' => Yii::t( 'backend', 'Tax Year' ),
-            'fecha_fin' => Yii::t( 'backend', 'Date End' ),
-            'fecha_guardado' => Yii::t( 'backend', 'Date Creation' ),
-            'usoName' => Yii::t( 'backend', 'Use Advertisement' ),
-            'claseName' => Yii::t( 'backend', 'Kind of Propaganda' ),
-            'contribuyenteName' => Yii::t( 'backend', 'Business Name' ),
-            'inactivoName' => Yii::t( 'backend', 'Status Group' ),
-            'pagoName' => Yii::t( 'backend', 'Payment Status' ),
-            'referencia' => Yii::t( 'backend', 'Cause Desincorparacion' ),
-            'comentario' => Yii::t( 'backend', 'Observation' ),
-            'selection' => Yii::t( 'backend', 'Observation' ),
-            
-        ];
+        return  [
+                    'id_impuesto' => Yii::t( 'backend', 'Tax Id' ),
+                    'id_contribuyente' => Yii::t( 'backend', 'Id Contribuyente' ),
+                    'ano_impositivo' => Yii::t( 'backend', 'Tax Year' ),
+                    'direccion' => Yii::t( 'backend', 'Address' ),
+                    'id_cp' => Yii::t( 'backend', 'Location' ),
+                    'clase_propaganda' => Yii::t( 'backend', 'Clase Propaganda' ),
+                    'tipo_propaganda' => Yii::t( 'backend', 'Kind' ),
+                    'uso_propaganda' => Yii::t( 'backend', 'Use' ),
+                    'medio_difusion' => Yii::t( 'backend', 'Through Construction' ),
+                    'medio_transporte' => Yii::t( 'backend', 'Transport Means' ),
+                    'fecha_desde' => Yii::t( 'backend', 'Start Date' ),
+                    'cantidad_tiempo' => Yii::t( 'backend', 'Quantity' ),
+                    'id_tiempo' => Yii::t( 'backend', 'Lapse' ),
+                    'inactivo' => Yii::t( 'backend', 'Status' ),
+                    'id_sim' => Yii::t( 'backend', 'Id Sim'),
+                    'cantidad_base' => Yii::t( 'backend', 'Number' ),
+                    'base_calculo' => Yii::t( 'backend', 'Base'),
+                    'cigarros' => Yii::t( 'backend', 'Cigarettes or Tobacco' ),
+                    'bebidas_alcoholicas' => Yii::t( 'backend', 'Alcoholic Beverages' ),
+                    'cantidad_propagandas' => Yii::t( 'backend', 'Units' ),
+                    'planilla' => Yii::t( 'backend', 'Planilla' ),
+                    'idioma' => Yii::t( 'backend', 'Foreign Language' ),
+                    'observacion' => Yii::t( 'backend', 'Observation' ),
+                    'ano_impo' => Yii::t( 'backend', 'Tax Year' ),
+                    'fecha_fin' => Yii::t( 'backend', 'Date End' ),
+                    'fecha_guardado' => Yii::t( 'backend', 'Date Creation' ),
+                    'usoName' => Yii::t( 'backend', 'Use Advertisement' ),
+                    'claseName' => Yii::t( 'backend', 'Kind of Propaganda' ),
+                    'contribuyenteName' => Yii::t( 'backend', 'Business Name' ),
+                    'inactivoName' => Yii::t( 'backend', 'Status Group' ),
+                    'pagoName' => Yii::t( 'backend', 'Payment Status' ),
+                    'referencia' => Yii::t( 'backend', 'Cause Desincorparacion' ),
+                    'comentario' => Yii::t( 'backend', 'Observation' ),
+                    'selection' => Yii::t( 'backend', 'Observation' ),
+                ];
     }
     
     /**
@@ -158,7 +160,7 @@ class PropagandaForm extends \yii\db\ActiveRecord
     */
     public function getUso()
     {
-        return $this->hasOne( \backend\models\UsosPropaganda::className(), [ 'uso_propaganda' => 'uso_propaganda' ] );
+        return $this->hasOne( UsosPropaganda::className(), [ 'uso_propaganda' => 'uso_propaganda' ] );
     }
  
     /**
@@ -174,7 +176,7 @@ class PropagandaForm extends \yii\db\ActiveRecord
     */
     public function getClase()
     {
-        return $this->hasOne( \backend\models\ClasesPropaganda::className(), [ 'clase_propaganda' => 'clase_propaganda' ] );
+        return $this->hasOne( ClasesPropaganda::className(), [ 'clase_propaganda' => 'clase_propaganda' ] );
     }
     
     /**
@@ -190,7 +192,7 @@ class PropagandaForm extends \yii\db\ActiveRecord
     */
     public function getContribuyente()
     {
-        return $this->hasOne( \backend\models\Contribuyente::className(), [ 'id_contribuyente' => 'id_contribuyente' ] );
+        return $this->hasOne( Contribuyente::className(), [ 'id_contribuyente' => 'id_contribuyente' ] );
     }
     
     /**

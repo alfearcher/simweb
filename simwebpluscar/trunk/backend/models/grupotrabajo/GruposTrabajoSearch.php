@@ -41,7 +41,6 @@
  */
 
 namespace backend\models\grupotrabajo;
-error_reporting(0);
 
 use Yii;
 use yii\base\model;

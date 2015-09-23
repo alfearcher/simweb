@@ -83,11 +83,11 @@ class GruposTrabajoController extends Controller
     * 	@param $searchModel, array obtiene los valores filtrados por los campos de busqueda.
     * 	@param $dataProvider, array obtiene los valores de la consulta principal.
     */
-    public function actionIndex1()
+    public function actionDesincorporacion()
     {    
         $searchModel = new GruposTrabajoSearch();
         $dataProvider = $searchModel->search( Yii::$app->request->queryParams );
-        return $this->render( 'index1', [ 'searchModel' => $searchModel, 'dataProvider' => $dataProvider ] );
+        return $this->render( 'desincorporacion', [ 'searchModel' => $searchModel, 'dataProvider' => $dataProvider ] );
     }
   
     /** 
@@ -242,7 +242,7 @@ class GruposTrabajoController extends Controller
         if( $conexion->modificarRegistro( $conn, $tabla, $arrayDatos, $arrayCondition ) ) {
                         
             $transaccion->commit(); 
-            return $this->redirect(['index1']);
+            return $this->redirect(['desincorporacion']);
         }   
             $this->conexion->close();
     }
