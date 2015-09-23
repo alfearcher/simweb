@@ -58,7 +58,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\Url;
-use common\conexion\conexionController;
+use common\conexion\ConexionController;
 
 use backend\models\buscargeneral\BuscarGeneralForm;
 use backend\models\buscargeneral\BuscarGeneral;
@@ -108,7 +108,7 @@ class CambioPropietarioInmueblesUrbanosController extends Controller
          } 
          
 
-$btn = Yii::$app->request->post();
+         $btn = Yii::$app->request->post();
 
 
          if ($model->load(Yii::$app->request->post())){
@@ -149,7 +149,7 @@ CONTENIDO VENDEDOR (SELLER)
                         $ano_traspaso = $model->ano_traspaso;
 
                         $id_contribuyenteComprador = $modelParametros[0]['id_contribuyente'];
-                 echo'<pre>'; var_dump($btn); echo '</pre>'; die('hola'); 
+echo'<pre>'; var_dump($btn); echo '</pre>'; die('hola'); 
 
                         //--------------TRY---------------
                         $arrayDatos = [
@@ -226,7 +226,7 @@ CONTENIDO DEL COMPRADOR (BUYER)
                         $id_contribuyenteVendedor = $model->datosVendedor;
                         $id_impuestoVendedor = $model->inmuebleVendedor;
                         //$id_contribuyenteComprador = $modelParametros[0]['id_contribuyente'];  
-                echo'<pre>'; var_dump($btn); echo '</pre>'; die(); 
+echo'<pre>'; var_dump($btn); echo '</pre>'; die(); 
 
                         //--------------TRY---------------
                         $arrayDatos = [

@@ -56,7 +56,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\Url;
-use common\conexion\conexionController;
+use common\conexion\ConexionController;
 
 /***************************************************************************************************
  * CambioOtrosDatosInmueblesUrbanosController implements the actions for InmueblesUrbanosForm model.
