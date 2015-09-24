@@ -73,7 +73,8 @@ function bloquea() {
 
 
 
-<div class="col-sm-15 ">
+<div class="container" style="width:1280px">
+ <div class="col-sm-12" style="width:1230px">
         <div class="panel panel-primary ancho-alto ">
             <div class="panel-heading">
                 <?= $this->title ?>
@@ -81,23 +82,20 @@ function bloquea() {
             <div class="panel-body" >
                 <table class="table table-striped ">
                     <tr>
-                        <td colspan="5"> 
-
-                            <div class="col-lg-1"> 
-
+                        <td style="max-width: 85px" align="right"> 
+                            <div class="col-sm-1"> 
                             <?= Yii::t('backend', 'IdTaxpayer') ?>
-                            </div> 
+                            </div>
+                        </td>
 
-                            <div class="col-lg-2">
+                        <td colspan="2" style="max-width: 100px" align="letf">
+                            <div class="col-sm-2">
                             <?= $form->field($model, 'id_contribuyente')->textInput(['readOnly'=>true,'style' => 'width:80px;'])->label(false) ?>
-                            </div> 
-                            
+                            </div>
+                        </td>
 
-                            <div class="col-lg-2">
-                            <?= $form->field($model, 'inactivo')->checkbox(['disabled'=>$disabled,'style' => 'width:50px;'])?> 
-                            </div> 
-
-                            <div class="col-lg-3"> 
+                        <td colspan="9" style="max-width: 100px" align="letf">
+                            <div class="col-sm-5"> 
                             <?= $form->field($model, 'propiedad_horizontal')->checkbox(['id'=> 'propiedadhorizontal', 
                                                                                          'style' => 'width:50px;',
                                                                                          'onclick'=>'bloquea()',
@@ -107,96 +105,121 @@ function bloquea() {
 
                                                ?>
                             </div>
-
                         </td>
                     </tr>
                                                     
 <!-- Direccion de Catastro  -->         
                    <tr>
-                        <td  colspan="6">
-
-                            <div class="col-lg-1"> 
+                        <td style="max-width: 85px" align="right"> 
+                            <div class="col-sm-1"> 
                             <?= Yii::t('backend', 'Edo.') ?>
-                            </div> 
+                            </div>
+                        </td>
 
-                            <div class="col-lg-1">
+                        <td style="max-width: 100px">
+                            <div class="col-sm-1">
                             <?= $form->field($model, 'estado_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:80px;'])->label(false);?> 
                             </div>
+                        </td>
 
-                            <div class="col-lg-1"> 
+                        <td style="max-width: 85px">
+                            <div class="col-sm-1"> 
                             <?= Yii::t('backend', 'Mnp.') ?>
                             </div>  
+                        </td>
 
-                            <div class="col-lg-1">
+                        <td style="max-width: 100px">
+                            <div class="col-sm-1">
                             <?= $form->field($model, 'municipio_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:80px;'])->label(false); ?>
                             </div>
+                        </td>
 
-                            <div class="col-lg-1"> 
+                        <td style="max-width: 85px">
+                            <div class="col-sm-1"> 
                             <?= Yii::t('backend', 'Prq.') ?>
                             </div> 
+                        </td>
 
-                            <div class="col-lg-1">
+                        <td style="max-width: 100px">
+                            <div class="col-sm-1">
                             <?= $form->field($model, 'parroquia_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:80px;'])->label(false) ?>
                             </div> 
+                        </td>
 
-                            <div class="col-lg-1"> 
+                        <td style="max-width: 85px">
+                            <div class="col-sm-1"> 
                             <?= Yii::t('backend', 'Amb.') ?>
-                            </div> 
+                            </div>
+                        </td>
 
-                            <div class="col-lg-1">
+                        <td style="max-width: 100px">
+                            <div class="col-sm-1">
                             <?= $form->field($model, 'ambito_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:80px;'])->label(false) ?>
                             </div> 
+                        </td>
 
-                            <div class="col-lg-1"> 
+                        <td style="max-width: 85px">
+                            <div class="col-sm-1"> 
                             <?= Yii::t('backend', 'Sct.') ?>
                             </div> 
+                        </td>
 
-                            <div class="col-lg-1">
+                        <td style="max-width: 100px">
+                            <div class="col-sm-1">
                             <?= $form->field($model, 'sector_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:80px;'])->label(false) ?>
                             </div> 
+                        </td>
 
-                            <div class="col-lg-1"> 
+                        <td style="max-width: 85px">
+                            <div class="col-sm-1"> 
                             <?= Yii::t('backend', 'Mzn.') ?>
                             </div> 
+                        </td>
 
-                            <div class="col-lg-1">
+                        <td style="max-width: 100px">
+                            <div class="col-sm-1">
                             <?= $form->field($model, 'manzana_catastro')->textInput(['disabled'=>$disabled,'style' => 'width:80px;'])->label(false) ?>
                             </div> 
-
-
                         </td>
                    </tr>
-
+<!-- Tipo de Domicilios del catastro --> 
                    <tr>
-                        <td>
-                           
-     <!-- Tipo de Domicilios del catastro --> 
-
-                            <div class="col-sm-1"> 
+                        <td style="max-width: 85px" align="right">
+                            <div class="col-am-1"> 
                             <?= Yii::t('backend', 'Plot') ?>
                             </div> 
+                        </td>
 
-                            <div class="col-lg-1">
+                        <td style="max-width: 100px">
+                            <div class="col-sm-1">
                             <?= $form->field($model, 'parcela_catastro')->textInput(['style' => 'width:80px;'])->label(false) ?>
                             </div>
+                        </td>
 
-                            <div class="col-lg-1" id="subparcela" style="display:none"> 
+                        <td style="max-width: 100px">
+                            <div class="col-sm-1" id="subparcela" style="display:none"> 
                             <?= Yii::t('backend', 'Sub-plot') ?>
-                            </div>  
-                    
-                            <div class="col-lg-1" id="subparcelac" style="display:none">
-                            <?= $form->field($model, 'subparcela_catastro')->textInput(['style' => 'width:80px;'])->label(false) //<?= $form->field($model, 'capa_subparcela')->textInput(['style' => 'width:80px;display:block;', 'id' => 'ms2', 'disabled'=>'disabled' ])->label(false) , 'id' => 'ms1' display:none;?>
                             </div> 
-                           
-                           <div class="col-lg-1" id="level" style= 'display:none'>
+                        </td>
+
+                        <td style="max-width: 100px">                    
+                            <div class="col-sm-1" id="subparcelac" style="display:none">
+                            <?= $form->field($model, 'subparcela_catastro')->textInput(['style' => 'width:80px;'])->label(false) //<?= $form->field($model, 'capa_subparcela')->textInput(['style' => 'width:80px;display:block;', 'id' => 'ms2', 'disabled'=>'disabled' ])->label(false) , 'id' => 'ms1' display:none;?>
+                            </div>
+                        </td>
+
+                        <td style="max-width: 100px">                           
+                           <div class="col-sm-1" id="level" style= 'display:none'>
                             <?= Yii::t('backend', 'Level') ?> <!--</legend> -->
                             </div>
+                        </td>
 
-                            <div class="col-lg-1" id="levelc" style="display:none">
-                            
-            <?php               $modelParametros = ParametrosNivelesCatastro::find()->asArray()->all();                                         
-                                $listaParametros = ArrayHelper::map($modelParametros,'codigo','descripcion'); 
-                                //echo'<pre>'; var_dump($listaParametros); echo '</pre>'; die(); ?> 
+                        <td style="max-width: 100px">
+                            <div class="col-sm-2" id="levelc" style="display:none">
+                            <?php
+                             $modelParametros = ParametrosNivelesCatastro::find()->asArray()->all();                                         
+                             $listaParametros = ArrayHelper::map($modelParametros,'codigo','descripcion'); 
+                             //echo'<pre>'; var_dump($listaParametros); echo '</pre>'; die(); ?> 
                             <?= $form->field($model, 'nivela')->dropDownList($listaParametros, [ 
                                                                                                             'id'=> 'parametro', 
                                                                                                             'prompt' => Yii::t('backend', 'Select'),
@@ -208,9 +231,11 @@ function bloquea() {
                                                                                                                                                                                                             });' 
                                                                                                            */ ])->label(false);
                                                                                                           ?>
-                            </div> 
+                            </div>
+                        </td>
 
-                            <div class="col-lg-1" id="levelc2" style="display:none">
+                        <td style="max-width: 100px">
+                            <div class="col-sm-3" id="levelc2" style="display:none">
                             <?= $form->field($model, 'nivelb')->dropDownList(['prompt' => Yii::t('backend', 'Select'),
                                                                                         '00'=>'00','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09',
                                                                                         '10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19',
@@ -222,85 +247,110 @@ function bloquea() {
                                                                                         '70'=>'70','71'=>'71','72'=>'72','73'=>'73','74'=>'74','75'=>'75','76'=>'76','77'=>'77','78'=>'78','79'=>'79',
                                                                                         '80'=>'80','81'=>'81','82'=>'82','83'=>'83','84'=>'84','85'=>'85','86'=>'86','87'=>'87','88'=>'88','89'=>'89',
                                                                                         '90'=>'90','91'=>'91','92'=>'92','93'=>'93','94'=>'94','95'=>'95','96'=>'96','97'=>'97','98'=>'98','99'=>'99',
-                                                                                        ])->label(false) ?> 
+                                                                                        ],['style' => 'width:80px;'])->label(false) ?> 
 
                             </div>
+                        </td>
 
-
-
-                            <div class="col-lg-1" id="unidad1" style="display:none"> 
+                        <td style="max-width: 100px">
+                            <div class="col-sm-1" id="unidad1" style="display:none"> 
                             <?= Yii::t('backend', 'Unit') ?>
-                            </div> 
+                            </div>
+                        </td>
 
-                            <div class="col-lg-1" id="unidad1c" style="display:none">
+                        <td colspan="4" style="max-width: 100px">
+                            <div class="col-sm-1" id="unidad1c" style="display:none">
                             <?= $form->field($model, 'unidad_catastro')->textInput(['style' => 'width:80px;'])->label(false) ?>
                             </div>                                  
                         </td> 
                    </tr> 
 
-                                                                                    
+<!-- Direccio y anio -->                                                                            
                    <tr>
-                        <td colspan="4">
-
-                            <div class="col-lg-2"> 
+                        <td style="max-width: 85px" align="right"> 
+                            <div class="col-sm-2"> 
                             <?= Yii::t('backend', 'Street Addres') ?>
                             </div> 
+                        </td>
 
-                            <div class="col-lg-4"> 
+                        <td colspan="4" style="max-width: 100px">
+                            <div class="col-sm-4"> 
                             <?= $form->field($model, 'direccion')->textarea(['disabled'=>$disabled,'maxlength' => true,'style' => 'width:300px;'])->label(false) ?>
                             </div> 
+                        </td>
 
-                            <div class="col-lg-1"> 
+                        <td style="max-width: 100px">
+                            <div class="col-sm-1"> 
                             <?= Yii::t('backend', 'Year home') ?>
                             </div> 
+                        </td>
 
-                            <div class="col-lg-1"> 
+                        <td colspan="6" style="max-width: 100px">
+                            <div class="col-sm-1"> 
                             <?= $form->field($model, 'ano_inicio')->textInput(['disabled'=>$disabled,'style' => 'width:100px;'])->label(false) ?> 
-                            </div>                                                                          
+                            </div>                                                                         
                         </td>
                    </tr> 
- <!-- Direccio del domicilio -->                   
+<!-- Direccio del domicilio -->                   
 
                    <tr>
-                        <td colspan="4">
-
-                            <div class="col-lg-1"> 
+                        <td style="max-width: 85px" align="right">
+                            <div class="col-sm-1"> 
                             <?= Yii::t('backend', 'Phone') ?>
-                            </div> 
+                            </div>
+                        </td>
 
-                            <div class="col-lg-2"> 
+                        <td colspan="2" style="max-width: 100px">
+                            <div class="col-sm-2"> 
                             <?= $form->field($model, 'tlf_hab')->textInput(['disabled'=>$disabled,'style' => 'width:100px;'])->label(false) ?>
-                            </div> 
+                            </div>
+                        </td>
 
-                            <div class="col-lg-1"> 
+                        <td style="max-width: 100px">
+                            <div class="col-sm-1"> 
                             <?= Yii::t('backend', 'Meter') ?>
                             </div> 
+                        </td>
 
-                            <div class="col-lg-2">
+                        <td colspan="2" style="max-width: 100px">
+                            <div class="col-sm-2">
                             <?= $form->field($model, 'medidor')->textInput(['disabled'=>$disabled,'style' => 'width:100px;'])->label(false) ?>
-                            </div>   
+                            </div> 
+                        </td>
 
-                            <div class="col-lg-2">
+                        <td colspan="6" style="max-width: 100px">
+                            <div class="col-sm-2">
                             <?= $form->field($model, 'id_impuesto')->hiddenInput(['readOnly'=>true,'style' => 'width:80px;'])->label(false) ?>
                             </div>                                                       
                         </td>
                    </tr>
 
                    <tr>
-                        <td colspan="2" >
-
-                            <div class="col-lg-1"> 
+                        <td style="max-width: 85px" align="right">
+                            <div class="col-sm-1"> 
                             <?= Yii::t('backend', 'Observation') ?>
-                            </div> 
+                            </div>
+                        </td>
 
-                            <div class="col-lg-4">
+                        <td colspan="4" style="max-width: 100px">
+                            <div class="col-sm-4">
                             <?= $form->field($model, 'observacion')->textarea(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?>
-                            </div>                                                                         
-                        
-                            <div class="col-lg-2"> 
-                            <?= $form->field($model, 'tipo_ejido')->checkbox(['disabled'=>$disabled,'style' => 'width:50px;']) ?>
-                            </div>    
+                            </div> 
+                        </td>
 
+                        <td colspan="2"style="max-width: 100px">                                                               
+                            <div class="col-sm-2"> 
+                            <?= $form->field($model, 'tipo_ejido')->checkbox(['disabled'=>$disabled,'style' => 'width:50px;']) ?>
+                            </div>
+                        </td>
+
+                        <td colspan="2" style="max-width: 100px" align="right">                      
+                            <div class="col-sm-4">
+                            <?= $form->field($model, 'inactivo')->checkbox(['disabled'=>$disabled,'style' => 'width:50px;'])?> 
+                            </div>
+                        </td>
+
+                        <td colspan="3"style="max-width: 100px">
                             <div class="form-group"> 
 <?= Html::beginForm();?>
 <?= Html::submitButton(Yii::t('backend', 'Accept'), ['class' => 'btn btn-primary', 'name'=>'Accept', 'value'=>'Accept']) ?>
@@ -315,7 +365,7 @@ function bloquea() {
             </div>
         </div>
     </div>
-
+</div>
 <!-- Campos ocultos -->   
 <?= $form->field($model, 'manzana_limite')->hiddenInput(['value' => 130])->label(false) ?> 
 <?= $form->field($model, 'id_habitante')->hiddenInput(['value' => 123456])->label(false) ?>
