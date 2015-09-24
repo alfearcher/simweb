@@ -55,7 +55,7 @@ namespace backend\models\inmueble;
 
 use Yii;
 use backend\models\inmueble\InmueblesConsulta;
-use common\conexion\conexionController;
+use common\conexion\ConexionController;
 
 /**
  * This is the model class for table "inmuebles".
