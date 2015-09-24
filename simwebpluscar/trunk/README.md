@@ -53,4 +53,3 @@ tests                    contains various tests for the advanced application
 123
 456
 789
-0
