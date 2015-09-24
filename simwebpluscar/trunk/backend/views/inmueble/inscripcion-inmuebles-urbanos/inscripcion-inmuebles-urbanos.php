@@ -425,6 +425,7 @@ function bloquea() {
 <?= $form->field($model, 'id_habitante')->hiddenInput(['value' => 123456])->label(false) ?>
 <?= $form->field($model, 'liquidado')->hiddenInput(['value' => 0])->label(false) ?>
 <?= $form->field($model, 'nivel')->hiddenInput(['value' => 0])->label(false) ?>
+<?= $form->field($model, 'catastro')->hiddenInput(['value' => 0])->label(false) ?>
 
 
 <?php ActiveForm::end(); ?> 

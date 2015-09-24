@@ -231,7 +231,7 @@ class InscripcionInmueblesUrbanosController extends Controller
                             $transaccion->commit();  
                             $tipoError = 0; 
                             $msg = Yii::t('backend', 'SUCCESSFUL REGISTRATION OF THE URBAN PROPERTY!');//REGISTRO EXITOSO DE LAS PREGUNTAS DE SEGURIDAD
-                            $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("inmueble/cambios-inmuebles-urbanos/index")."'>";                     
+                            $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("inmueble/inmuebles-urbanos/index")."'>";                     
                             return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
             
                         }else{ 
@@ -239,7 +239,7 @@ class InscripcionInmueblesUrbanosController extends Controller
                             $transaccion->roolBack();
                             $tipoError = 0; 
                             $msg = Yii::t('backend', 'AN ERROR OCCURRED WHEN FILLING THE URBAN PROPERTY!');//HA OCURRIDO UN ERROR AL LLENAR LAS PREGUNTAS SECRETAS
-                            $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("inmueble/cambios-inmuebles-urbanos/index")."'>";                     
+                            $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("inmueble/inmuebles-urbanos/index")."'>";                     
                             return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
                         }   
 
