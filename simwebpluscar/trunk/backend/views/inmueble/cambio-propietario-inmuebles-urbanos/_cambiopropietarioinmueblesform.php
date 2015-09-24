@@ -325,12 +325,12 @@ $variablephp=$_COOKIE['variablephp'];
                                                         <div class="col-lg-2" align='left'> 
                                                         <?= $form->field($model, 'cedulaBuscar1')->textInput()->label(false) ?> 
                                                         </div>
-                                                        <div class="col-lg-1" align='left' id='tipo' style='display:none'> 
+                                                        <div class="col-lg-2" align='left' id='tipo' style='display:none'> 
                                                         <?= $form->field($model, 'tipoBuscar1')->textInput()->label(false) ?> 
-                                                        </div>
+                                                        </div> 
                                                         <div class="form-group"> 
 <?= Html::beginForm();?>
-<?= Html::submitButton(Yii::t('backend', 'Accept'), ['class' => 'btn btn-success', 'name'=>'AcceptSeller', 'value'=>'AcceptSeller']) ?>
+<?= Html::submitButton(Yii::t('backend', 'Accept'), ['class' => 'btn btn-primary', 'name'=>'AcceptSeller', 'value'=>'AcceptSeller']) ?>
 <?= Html::endForm();?> 
 
 
@@ -396,7 +396,7 @@ $variablephp=$_COOKIE['variablephp'];
                                                 <div class="col-lg-2" align='left'> 
                                                         <?= $form->field($model, 'cedulaBuscar')->textInput()->label(false) ?> 
                                                         </div>
-                                                        <div class="col-lg-1" align='left' id='tipo2' style='display:none'> 
+                                                        <div class="col-lg-2" align='left' id='tipo2' style='display:none'> 
                                                         <?= $form->field($model, 'tipoBuscar')->textInput()->label(false) ?> 
                                                         </div>
                                                     </td>
@@ -438,18 +438,17 @@ $variablephp=$_COOKIE['variablephp'];
  
                                                         <div class="form-group">
                                                         <?php if(count($datosVInmueble) >0){
-                                                                    echo Html::submitButton(Yii::t('backend', 'Accept'), ['class' => 'btn btn-success', 'name'=>'AcceptBuyer', 'value'=>'Accept']); 
+                                                                    echo Html::submitButton(Yii::t('backend', 'Accept'), ['class' => 'btn btn-primary', 'name'=>'AcceptBuyer', 'value'=>'Accept']); 
                                                               } else {         
-                                                                    echo Html::submitButton(Yii::t('backend', 'Next'), ['class' => 'btn btn-success', 'name'=>'NextBuyer', 'value'=>'Next']);
+                                                                    echo Html::submitButton(Yii::t('backend', 'Next'), ['class' => 'btn btn-primary', 'name'=>'NextBuyer', 'value'=>'Next']);
                                                                  }?>
                                                         </div>
-
+<!-- Campos ocultos -->  
 <?= $form->field($model, 'id_contribuyente')->hiddenInput(['value' => $modelContribuyente->id_contribuyente])->label(false) ?>
- 
-<?= $form->field($model, 'manzana_limite')->hiddenInput(['value' => 130])->label(false) ?> 
 <?= $form->field($model, 'id_impuesto')->hiddenInput(['value' => $model->id_impuesto])->label(false) ?>
-<?= $form->field($model, 'liquidado')->hiddenInput(['value' => 4])->label(false) ?>
-<?= $form->field($model, 'nivel')->hiddenInput(['value' => 0])->label(false) ?>
+
+<?= $form->field($model, 'validacion')->hiddenInput(['value' => 4])->label(false) ?>
+
 <?= Html::endForm();?> 
                                                     </td>
                                                 </tr>
@@ -464,20 +463,9 @@ $variablephp=$_COOKIE['variablephp'];
                 </table>
 
    
-<!-- Campos ocultos -->  
 
 
-
-
-<?php 
-//echo "hola".$_SESSION['variablephp']; exit();
-$validacion = 1; ?>
-
-
-
-
-
-        
+       
 
             </div>
         </div>
@@ -487,4 +475,6 @@ $validacion = 1; ?>
 
 <?php //$form->end(); ?>
  
-</div><!-- inscripcionInmueblesUrbanos -->                     
+</div><!-- inscripcionInmueblesUrbanos 
+['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9']
+-->                     

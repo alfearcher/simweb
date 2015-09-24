@@ -137,16 +137,11 @@ class InmueblesUrbanosForm extends \yii\db\ActiveRecord
 
         return [ 
 
-            [['id_contribuyente','ano_inicio', 'liquidado', 'manzana_limite', 'lote_1', 'lote_2', 'lote_3', 'inactivo', 'id_habitante', 'tipo_ejido', 'propiedad_horizontal', 'estado_catastro', 'municipio_catastro', 'parroquia_catastro', 'sector_catastro', 'manzana_catastro', 'parcela_catastro', 'subparcela_catastro', 'unidad_catastro'], 'integer','message' => Yii::t('backend', 'only integers')],
-            [['parcela_catastro', 'subparcela_catastro', 'unidad_catastro','nivela','nivelb'],'required', 'when'=> function($model){ return $model->propiedad_horizontal == 1; }, 'message' => Yii::t('backend', 'Required field')],
-           // [['observacion','datosVendedor','inmuebleVendedor'], 'string'], 
+            [['id_contribuyente','id_impuesto','ano_inicio', 'liquidado', 'manzana_limite', 'lote_1', 'lote_2', 'lote_3', 'inactivo', 'id_habitante', 'tipo_ejido', 'propiedad_horizontal', 'estado_catastro', 'municipio_catastro', 'parroquia_catastro', 'sector_catastro', 'manzana_catastro', 'parcela_catastro', 'subparcela_catastro', 'unidad_catastro'], 'integer','message' => Yii::t('backend', 'only integers')],
+            
+            [['observacion','datosVendedor','inmuebleVendedor'], 'string'], 
             [['direccion'], 'string', 'max' => 255,'message' => Yii::t('backend', 'Only 255 character')],
-            [['nivel', 'ambito_catastro','validacion'], 'string', 'max' => 4,'message' => Yii::t('backend', 'Only 3 character')],
-            [['av_calle_esq_dom', 'casa_edf_qta_dom'], 'string', 'max' => 50,'message' => Yii::t('backend', 'Only 50 character')],
-            [['piso_nivel_no_dom', 'apto_dom'], 'string', 'max' => 25,'message' => Yii::t('backend', 'Only 25 character')],
-            [['tlf_hab'], 'string', 'max' => 15,'message' => Yii::t('backend', 'Only 15 character')],
-            [['medidor', 'id_sim'], 'string', 'max' => 20,'message' => Yii::t('backend', 'Only 20 character')],
-            [['catastro'], 'string', 'max' => 60,'message' => Yii::t('backend', 'Only 60 character')],
+            
             //'liquidado', 'id_habitante'
             [['propiedad_horizontal'], 'catastro_registro','when'=>function($model){ return $model->validacion==1;}], 
             [['propiedad_horizontal'], 'catastro_registro2','when'=>function($model){ return $model->validacion==1;}],
@@ -154,7 +149,7 @@ class InmueblesUrbanosForm extends \yii\db\ActiveRecord
             [['propiedad_horizontal'], 'catastro_cambio2','when'=>function($model){ return $model->validacion==3;}],
             
             //validaciones cambio propietario del inmueble
-            [['tipo_naturaleza1','tipo_naturaleza','operacion'],'integer','message' => Yii::t('backend', 'only integers')],
+            [['tipo_naturaleza1','tipo_naturaleza','operacion','validacion'],'integer','message' => Yii::t('backend', 'only integers')],
             
             [['naturalezaBuscar1','tipo_naturaleza1'], 'string','when'=>function($model){ return $model->operacion==1;}, 'max' => 1,'message' => Yii::t('backend', 'Only 1 character')],
             [['naturalezaBuscar','tipo_naturaleza'], 'string','when'=>function($model){ return $model->operacion==2;}, 'max' => 1,'message' => Yii::t('backend', 'Only 1 character')],
@@ -436,15 +431,5 @@ class InmueblesUrbanosForm extends \yii\db\ActiveRecord
     return array('M' => 'Male', 'F' => 'Female');
 }
 
-   /*Esto es para informarle que usted ha ganado un premio en dinero de
-($ 750,000.00 USD) para esta promoción 2015 que organiza
-El Google Gmail recoge todas las direcciones de correo electrónico de las personas que
-están en línea activa, entre los millones que se ha suscrito a Yahoo y
-Hotmail, Gmail sólo seleccionar cinco personas cada mes como nuestro
-ganadores a través del sistema electrónico de votación sin el ganador
-aplicando, lo felicitamos por ser una de las personas seleccionadas.
-ENVIAR SU DETALLE A (gwm.nwx101@hotmail.com)
-1. Nombre completo: 2. Domicilio 3 Edad 4. Teléfono. Número: 5. Sexo 6:
-Ocupación 7. Estado: 8 País:
-Gracias y acepte mis sinceras felicitaciones una vez más!*/
+
 }
