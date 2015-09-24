@@ -51,6 +51,7 @@ error_reporting(0);
 session_start();
 use Yii;
 use backend\models\inmueble\InmueblesUrbanosForm;
+use backend\models\inmueble\CambioPropietarioInmueblesForm;
 use backend\models\ContribuyentesForm;
 use backend\models\inmueble\InmueblesConsulta;
 use backend\models\inmueble\InmueblesSearch;
@@ -133,7 +134,7 @@ CONTENIDO VENDEDOR (SELLER)
                                     
                     if ($model->tipo_naturaleza == 0) {
                         $tipo = $model->tipoBuscar1;
-                    } else {
+                    } else { 
                         $tipo = 0;
                     }
 
@@ -320,7 +321,7 @@ FIN BUYER
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         } 
-    }
+    } 
     
     /**
      * Finds the Contribuyentes model based on its primary key value.
