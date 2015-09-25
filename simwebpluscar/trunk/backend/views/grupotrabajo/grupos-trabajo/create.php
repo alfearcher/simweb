@@ -76,7 +76,7 @@ $inactivo = 0;
                                 <td>
                                     <div>
                                         <?= Html::submitButton( Yii::t( 'backend', 'Create' ), [' class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary' ] )?>
-                                        <?= Html::a(Yii::t('backend', 'Quit'), ['grupotrabajo/grupos-trabajo/index'], ['class' => 'btn btn-danger']) ?>
+                                        <?= Html::a(Yii::t('backend', 'Quit'), ['menu/vertical'], ['class' => 'btn btn-danger']) ?>
                                     </div>
                                 </td>
                             </tr>

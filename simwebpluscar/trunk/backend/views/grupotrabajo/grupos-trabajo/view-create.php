@@ -10,9 +10,9 @@ use yii\widgets\DetailView;
 
 <div class="col-sm-8" style="margin-left:20%">
     <div class="panel panel-primary">
-        <div class="panel-heading"><?=  Yii::t( 'backend', 'View Workgroups:&nbsp;'.$model[0]['id_grupo'])?></div>
+        <div class="panel-heading"><?=  Yii::t( 'backend', 'See Working Groups Created:&nbsp;'.$model[0]['id_grupo'])?></div>
             <div class="panel-body" >
-                 <table class="table table-striped">
+                <table class="table table-striped">
 
                     <tr align="center">
                         <td width="50%">
@@ -76,13 +76,12 @@ use yii\widgets\DetailView;
                     
                    <tr>
                         <td colspan="2">
-                            <?= Html::a(Yii::t('backend', 'Quit'), ['grupotrabajo/grupos-trabajo/index'], ['class' => 'btn btn-danger']) ?>
+                            <?= Html::a(Yii::t('backend', 'Quit'), ['grupotrabajo/grupos-trabajo/create'], ['class' => 'btn btn-danger']) ?>
                
                         </td>   
                     </tr>
-               
-                 </table>
+                </table>
             </div>
-        </div>        
-    </div>
+    </div>        
 </div>
+
