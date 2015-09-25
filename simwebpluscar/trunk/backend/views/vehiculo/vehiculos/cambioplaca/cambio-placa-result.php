@@ -68,13 +68,21 @@ $this->params['breadcrumbs'][] = $this->title;
                 'ano_vehiculo',
 
                 [
-                    'header'=>'Seleccionar',
+                    'header'=>'Update',
                     'class' => 'yii\grid\ActionColumn',
-                    'template' => '{update} {view}',
+                    'template' => '{update}',
                     'buttons' => [                        
                         'update' => function ($url, $model, $key) {
                             return Html::a('<span class="glyphicon glyphicon-pencil"></span>',['placa-update','idVehiculo' => $key]);
                         },
+                    ],
+                ],
+
+                [
+                    'header'=>'View',
+                    'class' => 'yii\grid\ActionColumn',
+                    'template' => '{view}',
+                    'buttons' => [
                         'view' => function ($url, $model, $key) {
                             return Html::a('<span class="glyphicon glyphicon-eye-open"></span>',['view-final-vehiculo','idVehiculo' => $key]);
                         },
