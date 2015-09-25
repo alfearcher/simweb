@@ -10,9 +10,6 @@ use backend\models\propaganda\PropagandaForm;
 $fecha=date("Y-m-d");
 $inactivo='0';
 $this->title = Yii::t( 'backend', 'Catalogs Propaganda' );
-$this->params['breadcrumbs'][] = [ 'label' => Yii::t( 'backend','Propagandas' ), 'url' => [ 'index' ] ];
-$this->params['breadcrumbs'][] = [ 'label' => Yii::t( 'backend','Search Catalogs Propaganda' ), 'url' => [ 'search' ] ];
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="grupotrabajo-create">
@@ -149,7 +146,16 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </td>
                             </tr>
                                             
-                         <?php endforeach; ?>   
+                            <?php endforeach; ?>   
+                        
+                            <tr>
+                                <td colspan="9">
+                                    <div>
+                                        <?= Html::a(Yii::t('backend', 'Quit'), ['propaganda/propaganda/index'], ['class' => 'btn btn-danger']) ?>
+                                    </div>  
+                                </td>
+                            </tr>
+                            
                         </table>
                     </div>
             </div>

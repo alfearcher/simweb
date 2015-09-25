@@ -10,8 +10,6 @@ use backend\models\propaganda\PropagandaForm;
 $fecha=date("Y-m-d");
 $inactivo='0';
 $this->title = Yii::t( 'backend', 'Search Catalogs Propaganda' );
-$this->params['breadcrumbs'][] = [ 'label' => Yii::t( 'backend','Propagandas' ), 'url' => [ 'index' ] ];
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="grupotrabajo-create">
@@ -54,6 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <td>
                                     <div>
                                         <?= Html::submitButton( Yii::t( 'backend', 'Search' ),[ 'class' => $model->isNewRecord ? 'btn btn-primary' : 'btn btn-primary', 'name' => 'btn', 'value' => 'search' ] )?>
+                                        <?= Html::a(Yii::t('backend', 'Quit'), ['propaganda/propaganda/index'], ['class' => 'btn btn-danger']) ?>
                                     </div>
                                 </td>
                             </tr>

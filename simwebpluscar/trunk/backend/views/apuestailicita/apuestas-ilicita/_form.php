@@ -215,14 +215,8 @@ function puntitos( donde, caracter, campo ) {
                                                          
                                 <tr>
                                     <td colspan="2">
-                                         
-                                         <div class="col-md-1">
-                                            <?= Html::submitButton($model->isNewRecord ? Yii::t('backend', 'Create') : Yii::t('backend', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-                                        </div>
-                                         <div class="col-md-3">
-                                            
-                                            <a href="index.php?r=apuestailicita/apuestas-ilicita/index"><?= Html::Button($model->isNewRecord ? Yii::t('backend', 'Quit') : Yii::t('backend', 'Quit'), ['class' => $model->isNewRecord ? 'btn btn-danger' : 'btn btn-danger']) ?></a>
-                                        </div>
+                                        <?= Html::submitButton($model->isNewRecord ? Yii::t('backend', 'Create') : Yii::t('backend', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+                                        <?= Html::a(Yii::t('backend', 'Quit'), ['apuestailicita/apuestas-ilicita/index'], ['class' => 'btn btn-danger']) ?>
                                     </td>
                                 </tr>
                             </table>
@@ -340,9 +334,10 @@ function puntitos( donde, caracter, campo ) {
                                             <p><i><small><?=Yii::t('backend', '&nbsp;') ?></small></i></p>
                                             <?= Html::submitButton($model->isNewRecord ? Yii::t('backend', 'Save') : Yii::t('backend', 'Save'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-success', 'name' => 'btn', 'value' => 'save']) ?>
                                         </div>
+                                        
                                         <div class="col-md-5">
                                             <p><i><small><?=Yii::t('backend', '&nbsp;') ?></small></i></p>
-                                            <a href="index.php?r=apuestailicita/apuestas-ilicita/index"><?= Html::Button($model->isNewRecord ? Yii::t('backend', 'Quit') : Yii::t('backend', 'Quit'), ['class' => $model->isNewRecord ? 'btn btn-danger' : 'btn btn-danger']) ?></a>
+                                             <?= Html::a(Yii::t('backend', 'Quit'), ['apuestailicita/apuestas-ilicita/index'], ['class' => 'btn btn-danger']) ?>
                                         </div>
                                      
                                     </td>

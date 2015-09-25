@@ -76,7 +76,7 @@ $inactivo = 0;
                                 <td>
                                     <div>
                                         <?= Html::submitButton( Yii::t( 'backend', 'Create' ), [' class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary' ] )?>
-                                        <a href="index.php?r=grupotrabajo/grupos-trabajo/index"><?= Html::Button($model->isNewRecord ? Yii::t('backend', 'Quit') : Yii::t('backend', 'Quit'), ['class' => $model->isNewRecord ? 'btn btn-danger' : 'btn btn-danger']) ?></a>
+                                        <?= Html::a(Yii::t('backend', 'Quit'), ['grupotrabajo/grupos-trabajo/index'], ['class' => 'btn btn-danger']) ?>
                                     </div>
                                 </td>
                             </tr>
