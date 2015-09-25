@@ -92,7 +92,13 @@ class ApuestasIlicitaController extends Controller
      */
     public function actionView( $id )
     {
-        return $this->render( 'view', [ 'model' => $this->findModel($id), ] );
+            $sql = " SELECT A.id_grupo, A.descripcion, A.fecha, A.inactivo, B.descripcion AS unidad, C.descripcion AS departamento";
+            $sql.= " FROM grupos_trabajo A, unidades_departamentos B, departamentos C ";
+            $sql.= " WHERE A.id_departamento = B.id_departamento AND A.id_unidad = C.id_unidad AND A.inactive = '0' AND A.id_grupo= {$id}";
+            
+            $model= $conn->createCommand( $sql )->queryAll();
+            echo var_dump($model);exit();
+        //return $this->render( 'view', [ 'model' => $model ] );
     }
     
     /** 

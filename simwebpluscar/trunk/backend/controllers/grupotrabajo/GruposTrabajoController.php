@@ -90,6 +90,25 @@ class GruposTrabajoController extends Controller
         return $this->render( 'desincorporacion', [ 'searchModel' => $searchModel, 'dataProvider' => $dataProvider ] );
     }
   
+    /**
+    * Displays a single VehiculosForm model.
+    * @param string $id
+    * @return mixed
+    */
+    public function actionView( $id )
+    {
+        $conexion = new ConexionController();
+        $conn = $conexion->initConectar( 'db' );
+        $conn->open();  
+            
+        $sql = " SELECT A.id_grupo, A.descripcion, A.fecha, A.inactivo, B.descripcion AS unidad, C.descripcion AS departamento";
+        $sql.= " FROM grupos_trabajo A, unidades_departamentos B, departamentos C ";
+        $sql.= " WHERE A.id_departamento = C.id_departamento AND A.id_unidad = B.id_unidad AND A.INACTIVO = '0' AND A.id_grupo= {$id}";
+        $model= $conn->createCommand( $sql )->queryAll();
+            
+        return $this->render( 'view', [ 'model' => $model ] );
+    }
+    
     /** 
     *   Metodo actionCreate(), permite realizar los registros de los grupos de trabajo.
     *   @param $conn, instancia de conexion a base de datos.
@@ -195,7 +214,7 @@ class GruposTrabajoController extends Controller
                         $transaccion->commit(); 
                         $tipoError = 0;
                         $msg = "SUCCESSFULLY MODIFIED! .... Wait";
-                        $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("grupotrabajo/grupos-trabajo/index")."'>";
+                        $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("grupotrabajo/grupos-trabajo/view")."&id=$id'>";
                         return $this->render( '/mensaje/mensaje', [ 'msg' => $msg, 'url' => $url, 'tipoError' => $tipoError ] );
             } else {
                         $transaccion->rollBack();
