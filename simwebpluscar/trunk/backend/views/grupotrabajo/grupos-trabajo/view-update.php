@@ -16,7 +16,9 @@ use yii\widgets\DetailView;
 
                     <tr align="center">
                         <td width="50%">
-                            <p><i><small><div><?=  Yii::t( 'backend', 'Id Workgroup:' )?></div></p></i></small>
+                            <div>
+                                <p><i><small><?=  Yii::t( 'backend', 'Id Workgroup:' )?></p></i></small>
+                            </div>
                         </td>
                             
                         <td width="50%">
@@ -26,7 +28,9 @@ use yii\widgets\DetailView;
                     
                     <tr align="center">
                         <td width="50%">
-                            <p><i><small><div><?=  Yii::t( 'backend', 'Group Description:' )?></div></p></i></small>
+                            <div>
+                                <p><i><small><?=  Yii::t( 'backend', 'Group Description:' )?></p></i></small>
+                            </div>
                         </td>
                             
                         <td width="50%">    
@@ -36,7 +40,9 @@ use yii\widgets\DetailView;
                     
                     <tr align="center">
                         <td width="50%">
-                            <p><i><small><div><?=  Yii::t( 'backend', 'Description Department:' )?></div></p></i></small>
+                            <div>
+                                <p><i><small><?=  Yii::t( 'backend', 'Description Department:' )?></p></i></small>
+                            </div>
                         </td>
                             
                         <td width="50%">    
@@ -46,7 +52,9 @@ use yii\widgets\DetailView;
                     
                     <tr align="center">
                         <td width="50%">
-                            <p><i><small><div><?=  Yii::t( 'backend', 'Description Unit:' )?></div></p></i></small>
+                            <div>
+                                <p><i><small><?=  Yii::t( 'backend', 'Description Unit:' )?></p></i></small>
+                            </div>
                         </td>
                             
                         <td width="50%">    
@@ -56,7 +64,9 @@ use yii\widgets\DetailView;
                     
                     <tr align="center">
                         <td width="50%">
-                            <p><i><small><div><?=  Yii::t( 'backend', 'Status Group:' )?></div></p></i></small>
+                            <div>
+                                <p><i><small><div><?=  Yii::t( 'backend', 'Status Group:' )?></div></p></i></small>
+                            </div>
                         </td>
                             
                         <td width="50%">    
@@ -66,7 +76,9 @@ use yii\widgets\DetailView;
                     
                     <tr align="center">
                         <td width="50%">
-                            <p><i><small><div><?=  Yii::t( 'backend', 'Date Creation:' )?></div></p></i></small>
+                            <div>
+                                <p><i><small><?=  Yii::t( 'backend', 'Date Creation:' )?></p></i></small>
+                            </div>
                         </td>
                             
                         <td width="50%">    
@@ -77,7 +89,6 @@ use yii\widgets\DetailView;
                    <tr>
                         <td colspan="2">
                             <?= Html::a(Yii::t('backend', 'Quit'), ['grupotrabajo/grupos-trabajo/index'], ['class' => 'btn btn-danger']) ?>
-               
                         </td>   
                     </tr>
                 </table>

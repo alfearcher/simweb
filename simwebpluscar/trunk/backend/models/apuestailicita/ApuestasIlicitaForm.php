@@ -79,7 +79,7 @@ class ApuestasIlicitaForm extends \yii\db\ActiveRecord
         return [
                     [ [ 'id_impuesto', 'id_contribuyente', 'id_cp', 'id_sim' ], 'integer' ],
                     [ [ 'id_contribuyente', 'descripcion', 'direccion', 'id_cp' ], 'required' ],
-                    [ [ 'status_apuesta', 'id_impuesto', 'fecha_creacion' ], 'safe' ]
+                    [ [ 'status_apuesta', 'id_impuesto', 'fecha_creacion', 'contribuyenteName' ], 'safe' ]
                 ];
     }
 
@@ -90,13 +90,15 @@ class ApuestasIlicitaForm extends \yii\db\ActiveRecord
     {
         return [
                     'id_impuesto' => Yii::t( 'backend', 'Id Tax' ),
-                    'id_contribuyente' => Yii::t( 'backend', 'Contributor' ),
+                    'id_contribuyente' => Yii::t( 'backend', 'id Taxpayer' ),
                     'descripcion' => Yii::t( 'backend', 'Description of Illicit Bets' ),
                     'direccion' => Yii::t( 'backend', 'Address' ),
                     'id_cp' => Yii::t( 'backend', 'Id Cp' ),
                     'id_sim' => Yii::t( 'backend', 'Id Sim' ),
                     'status_apuesta' => Yii::t( 'backend', 'Status Bet' ),
                     'fecha_creacion' => Yii::t( 'backend', 'Date Creation' ),
+                    'contribuyenteName' => Yii::t( 'backend', 'Taxpayer Name' ),
+                    'inactivoName' => Yii::t( 'backend', 'Status Bet' ),    
                 ];
     }
     

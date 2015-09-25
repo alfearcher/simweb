@@ -104,7 +104,7 @@ class GruposTrabajoController extends Controller
         $sql = " SELECT A.id_grupo, A.descripcion, A.fecha, A.inactivo, B.descripcion AS unidad, C.descripcion AS departamento";
         $sql.= " FROM grupos_trabajo A, unidades_departamentos B, departamentos C ";
         $sql.= " WHERE A.id_departamento = C.id_departamento AND A.id_unidad = B.id_unidad AND A.INACTIVO = '0' AND A.id_grupo= {$id}";
-        $model= $conn->createCommand( $sql )->queryAll();
+        $model = $conn->createCommand( $sql )->queryAll();
             
         return $this->render( 'view-update', [ 'model' => $model ] );
     }
@@ -121,12 +121,12 @@ class GruposTrabajoController extends Controller
         $conn->open();  
         
         $sql_max = " SELECT MAX(id_grupo) AS id_grupo FROM grupos_trabajo WHERE inactivo = 0";
-        $id= $conn->createCommand( $sql_max )->queryAll();
+        $id = $conn->createCommand( $sql_max )->queryAll();
        
         $sql = " SELECT A.id_grupo, A.descripcion, A.fecha, A.inactivo, B.descripcion AS unidad, C.descripcion AS departamento";
         $sql.= " FROM grupos_trabajo A, unidades_departamentos B, departamentos C ";
         $sql.= " WHERE A.id_departamento = C.id_departamento AND A.id_unidad = B.id_unidad AND A.INACTIVO = '0' AND A.id_grupo= {$id[0]["id_grupo"]}";
-        $model= $conn->createCommand( $sql )->queryAll();
+        $model = $conn->createCommand( $sql )->queryAll();
            
         return $this->render( 'view-create', [ 'model' => $model ] );
     }

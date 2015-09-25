@@ -86,19 +86,45 @@ class ApuestasIlicitaController extends Controller
     }
     
     /**
-     * Displays a single ApuestasIlicitaForm model.
-     * @param string $id
-     * @return mixed
-     */
-    public function actionView( $id )
+    * Displays a single GruposTrabajo model.
+    * @param string $id
+    * @return mixed
+    */
+    public function actionViewUpdate( $id )
     {
-            $sql = " SELECT A.id_grupo, A.descripcion, A.fecha, A.inactivo, B.descripcion AS unidad, C.descripcion AS departamento";
-            $sql.= " FROM grupos_trabajo A, unidades_departamentos B, departamentos C ";
-            $sql.= " WHERE A.id_departamento = B.id_departamento AND A.id_unidad = C.id_unidad AND A.inactive = '0' AND A.id_grupo= {$id}";
+        $conexion = new ConexionController();
+        $conn = $conexion->initConectar( 'db' );
+        $conn->open();  
             
-            $model= $conn->createCommand( $sql )->queryAll();
-            echo var_dump($model);exit();
-        //return $this->render( 'view', [ 'model' => $model ] );
+        $sql = " SELECT A.id_impuesto, A.descripcion, A.direccion, A.fecha_creacion, B.razon_social";
+        $sql.= " FROM apuestas A, contribuyentes B ";
+        $sql.= " WHERE A.id_contribuyente = B.id_contribuyente AND A.id_impuesto = {$id}";
+        $model = $conn->createCommand( $sql )->queryAll();
+            
+        return $this->render( 'view-update', [ 'model' => $model ] );
+    }
+    
+     /**
+    * Displays a single GruposTrabajo model.
+    * @param string $id
+    * @return mixed
+    * @return mixed
+    */
+    public function actionViewCreate()
+    {
+        $conexion = new ConexionController();
+        $conn = $conexion->initConectar( 'db' );
+        $conn->open();  
+        
+        $sql_max = " SELECT MAX(id_impuesto) AS id_impuesto FROM apuestas WHERE status_apuesta = 0";
+        $id = $conn->createCommand( $sql_max )->queryAll();
+       
+        $sql = " SELECT A.id_impuesto, A.descripcion, A.direccion, A.fecha_creacion, B.razon_social";
+        $sql.= " FROM apuestas A, contribuyentes B ";
+        $sql.= " WHERE A.id_contribuyente = B.id_contribuyente AND A.id_impuesto = {$id[0]["id_impuesto"]}";
+        $model = $conn->createCommand( $sql )->queryAll();
+           
+        return $this->render( 'view-create', [ 'model' => $model ] );
     }
     
     /** 
@@ -141,10 +167,11 @@ class ApuestasIlicitaController extends Controller
                         $id_cp = $model->id_cp;
                         $id_sim = $model->id_sim;
                         $status_apuesta = 0;
+                        $fecha_creacion = date('Y-m-d');
 
 
                         $tabla = 'apuestas';  
-                        $arrayDatos = [ 'id_contribuyente' => $id_contribuyente, 'descripcion' => strtoupper($descripcion), 'direccion'=> strtoupper($direccion), 'id_cp' => $id_cp, 'id_sim' => $id_sim, 'status_apuesta' => $status_apuesta ];
+                        $arrayDatos = [ 'id_contribuyente' => $id_contribuyente, 'descripcion' => strtoupper($descripcion), 'direccion'=> strtoupper($direccion), 'id_cp' => $id_cp, 'id_sim' => $id_sim, 'status_apuesta' => $status_apuesta, 'fecha_creacion' => $fecha_creacion];
                         $transaccion = $conn->beginTransaction();
 
                         if( $conexion->guardarRegistro( $conn, $tabla, $arrayDatos ) ) {
@@ -152,13 +179,13 @@ class ApuestasIlicitaController extends Controller
                                     $transaccion->commit();
                                     $tipoError = 0;
                                     $msg = "REGISTRATION SUCCESSFUL ! .... Wait";
-                                    $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("apuestailicita/apuestas-ilicita/index")."'>";
+                                    $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("apuestailicita/apuestas-ilicita/view-create")."'>";
                                     return $this->render( '/mensaje/mensaje', [ 'msg' => $msg, 'url' => $url, 'tipoError' => $tipoError ] );
                         } else {
                                     $transaccion->rollBack();
                                     $tipoError = 1;
                                     $msg = "ERROR OCCURRED !....Wait";
-                                    $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("apuestailicita/apuestas-ilicita/index")."'>";
+                                    $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("apuestailicita/apuestas-ilicita/create")."'>";
                                     return $this->render( '/mensaje/mensaje', [ 'msg' => $msg, 'url' => $url, 'tipoError' => $tipoError ] );
                         }
                                 $this->conexion->close();  
@@ -258,13 +285,13 @@ class ApuestasIlicitaController extends Controller
                             $transaccion->commit(); 
                             $tipoError = 0;
                             $msg = "SUCCESSFULLY MODIFIED! .... Wait";
-                            $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("apuestailicita/apuestas-ilicita/index")."'>";
+                            $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("apuestailicita/apuestas-ilicita/view-update")."&id=$id'>";
                             return $this->render( '/mensaje/mensaje', [ 'msg' => $msg, 'url' => $url, 'tipoError' => $tipoError ] );
                 } else {
                             $transaccion->rollBack();
                             $tipoError = 1;
                             $msg = "ERROR OCCURRED!....Wait";
-                            $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("apuestailicita/apuestas-ilicita/index")."'>";
+                            $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("apuestailicita/apuestas-ilicita/update")."&id=$id'>";
                             return $this->render( '/mensaje/mensaje', [ 'msg' => $msg, 'url' => $url, 'tipoError' => $tipoError ] );
                 }
                         $this->conexion->close();

@@ -216,7 +216,7 @@ function puntitos( donde, caracter, campo ) {
                                 <tr>
                                     <td colspan="2">
                                         <?= Html::submitButton($model->isNewRecord ? Yii::t('backend', 'Create') : Yii::t('backend', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-                                        <?= Html::a(Yii::t('backend', 'Quit'), ['apuestailicita/apuestas-ilicita/index'], ['class' => 'btn btn-danger']) ?>
+                                        <?= Html::a(Yii::t('backend', 'Quit'), ['menu/vertical'], ['class' => 'btn btn-danger']) ?>
                                     </td>
                                 </tr>
                             </table>

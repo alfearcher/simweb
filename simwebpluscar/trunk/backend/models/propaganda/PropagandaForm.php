@@ -151,7 +151,7 @@ class PropagandaForm extends \yii\db\ActiveRecord
                     'pagoName' => Yii::t( 'backend', 'Payment Status' ),
                     'referencia' => Yii::t( 'backend', 'Cause Desincorparacion' ),
                     'comentario' => Yii::t( 'backend', 'Observation' ),
-                    'selection' => Yii::t( 'backend', 'Observation' ),
+                    'selection' => Yii::t( 'backend', 'Selection' ),
                 ];
     }
     
