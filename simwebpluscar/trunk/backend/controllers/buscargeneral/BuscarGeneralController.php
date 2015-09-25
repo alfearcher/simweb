@@ -154,14 +154,21 @@
 
 
 		/**
+		*	Este idContribuyente viene desde la lista donde el usuario selecciono "Ok".
 		*
 		*/
 		public function actionOk($idContribuyente)
 		{
 			$contribuyente = BuscarGeneralForm::getDescripcionContribuyenteSegunID($idContribuyente);
 			$tipoNaturaleza = BuscarGeneralForm::getTipoNaturaleza(0, $idContribuyente);
-			//$session['idContribuyente'] = $idContribuyente;
-			//$session['contribuyente'] = $contribuyente;
+			if ( isset($_SESSiON['idContribuyente']) ) {
+    			if ( $_SESSION['idContribuyente'] == $idContribuyente ) {
+    				unset($_SESSION['idContribuyente']);
+    				unset($_SESSION['contribuyente']);
+    				unset($_SESSION['tipoNaturaleza']);
+    			}
+    		}
+
 			$_SESSION['idContribuyente'] = $idContribuyente;
 			$_SESSION['contribuyente'] = $contribuyente;
 			$_SESSION['tipoNaturaleza'] = $tipoNaturaleza;
@@ -212,11 +219,25 @@
 	  	 * @param $idContribuyente, long que identifica al contribuyente.
 	  	 * @return Vista con los datos mas representativos
 	  	 */
-	  	public function actionView($idContribuyente)
+	  	public function actionView($idContribuyente = null)
     	{
-        	return $this->render('/buscar-general/view', [
-            	'model' => $this->findModel($idContribuyente),
-        	]);
+ 			if ( isset($idContribuyente) ) {
+	    		if ( isset($_SESSION['idContribuyente']) ) {
+	    			if ( $_SESSION['idContribuyente'] == $idContribuyente ) {
+	    				return $this->render('/buscar-general/view', [
+			            	'model' => $this->findModel($idContribuyente),
+			        	]);
+	    			} else {
+	    				unset($_SESSION['idContribuyente']);
+	    			}
+	    		} else {
+	    			return $this->render('/buscar-general/view', [
+			            	'model' => $this->findModel($idContribuyente),
+			        	]);
+	    		}
+	    	} else {
+	    		echo 'Contribuyente no definido';
+	    	}
     	}
 
 
