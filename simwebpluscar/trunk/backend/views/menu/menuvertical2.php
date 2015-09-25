@@ -149,8 +149,8 @@
 		        		//	APUESTAS LICITAS
 		        		['label' => Icon::show('fa fa-diamond',['class' => $typeLong], $typeIcon) . '&nbsp; Apuestas Licitas',
 		        			'items' => [
-		        						['label' => 'Inscripción de Apuestas', 'url' => '#'],
-		        						['label' => 'Cambio de Otros Datos de Apuestas Licitas', 'url' => '#'],
+		        						['label' => 'Inscripción de Apuestas', 'url' => ['apuestailicita/apuestas-ilicita/create']],
+		        						['label' => 'Cambio de Otros Datos de Apuestas Licitas', 'url' => ['apuestailicita/apuestas-ilicita/index']],
 		        						['label' => 'Declaración de Apuestas Licitas', 'url' => '#'],
 		        			]
 		        		],

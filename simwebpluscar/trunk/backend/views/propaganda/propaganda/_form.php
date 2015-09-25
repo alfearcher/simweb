@@ -188,7 +188,7 @@ function puntitos( donde, caracter, campo ) {
     
 
     
-    <div class="col-sm-11">
+    <div class="col-sm-11" style="margin-left:5%;">
         <div class="panel panel-primary">
             <div class="panel-heading"><?=  Yii::t( 'backend', $this->title )?></div>
                 <div class="panel-body" >
@@ -510,7 +510,7 @@ function puntitos( donde, caracter, campo ) {
                         <tr>
                             <td colspan="2">
                                 <?= Html::submitButton( $model->isNewRecord ? 'Create' : 'Update', [ 'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'name'=> 'btn', ' value'=> 'crud' ] ) ?>
-                                <a href="index.php?r=propaganda/propaganda/index"><?= Html::Button($model->isNewRecord ? Yii::t('backend', 'Quit') : Yii::t('backend', 'Return'), ['class' => $model->isNewRecord ? 'btn btn-danger' : 'btn btn-danger']) ?></a>
+                                <a href="index.php?r=propaganda/propaganda/index"><?= Html::Button($model->isNewRecord ? Yii::t('backend', 'Quit') : Yii::t('backend', 'Quit'), ['class' => $model->isNewRecord ? 'btn btn-danger' : 'btn btn-danger']) ?></a>
                             </td>
                         </tr>
                     </table>

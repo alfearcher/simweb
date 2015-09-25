@@ -21,9 +21,8 @@ $inactivo = 0;
                                         'showLabels' => true ]
                                     ] );
     ?>
-    
-    <div class="col-sm-10">
-        <div style="margin-left:15%">
+    <div style="margin-left:20%">
+        <div class="col-sm-10">
             <div class="panel panel-primary">
                 <div class="panel-heading"><?=  Yii::t( 'backend', 'Create Workgroups' )?></div>
                     <div class="panel-body" >
@@ -77,7 +76,7 @@ $inactivo = 0;
                                 <td>
                                     <div>
                                         <?= Html::submitButton( Yii::t( 'backend', 'Create' ), [' class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary' ] )?>
-                                        <a href="index.php?r=grupotrabajo/grupos-trabajo/index"><?= Html::Button($model->isNewRecord ? Yii::t('backend', 'Quit') : Yii::t('backend', 'Return'), ['class' => $model->isNewRecord ? 'btn btn-danger' : 'btn btn-danger']) ?></a>
+                                        <a href="index.php?r=grupotrabajo/grupos-trabajo/index"><?= Html::Button($model->isNewRecord ? Yii::t('backend', 'Quit') : Yii::t('backend', 'Quit'), ['class' => $model->isNewRecord ? 'btn btn-danger' : 'btn btn-danger']) ?></a>
                                     </div>
                                 </td>
                             </tr>
