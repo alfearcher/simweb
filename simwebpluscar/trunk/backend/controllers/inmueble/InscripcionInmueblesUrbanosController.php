@@ -261,7 +261,7 @@ class InscripcionInmueblesUrbanosController extends Controller
               return $this->render('inscripcion-inmuebles-urbanos', ['model' => $model, ]);  
 
         }  else {
-                    echo "No hay Contribuyente!!!...";
+                    echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
         }    
  
      } // cierre del metodo inscripcion de inmuebles

@@ -104,7 +104,7 @@ class InmueblesUrbanosController extends Controller
             'dataProvider' => $dataProvider,
         ]); 
         }  else {
-                    echo "No hay Contribuyente!!!...";
+                    echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
         }
     } 
 
@@ -120,7 +120,7 @@ class InmueblesUrbanosController extends Controller
             'model' => $this->findModel($id),
         ]);
         }  else {
-                    echo "No hay Contribuyente!!!...";
+                    echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
         }
     }
 
