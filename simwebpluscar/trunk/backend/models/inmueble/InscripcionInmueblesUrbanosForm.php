@@ -99,7 +99,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 use common\conexion\ConexionController;
-use backend\models\inmueble\InmueblesConsulta;
+use backend\models\inmueble\InmueblesUrbanosForm;
 use backend\models\inmueble\ParametrosNivelesCatastro;
 class InscripcionInmueblesUrbanosForm extends Model{
     
@@ -251,7 +251,7 @@ class InscripcionInmueblesUrbanosForm extends Model{
   
           //Buscar el email en la tabla 
          
-            $table = InmueblesConsulta::find()
+            $table = InmueblesUrbanosForm::find()
                                     ->where("estado_catastro=:estado_catastro", [":estado_catastro" => $this->estado_catastro])
                                     ->andwhere("municipio_catastro=:municipio_catastro", [":municipio_catastro" => $this->municipio_catastro])
                                     ->andwhere("parroquia_catastro=:parroquia_catastro", [":parroquia_catastro" => $this->parroquia_catastro])
@@ -286,7 +286,7 @@ class InscripcionInmueblesUrbanosForm extends Model{
             $nivel_catastro = "".$nivel_catastro1[0]['nivela']."".$nivel_catastro1[0]['nivelb']."";
 
 
-            $table = InmueblesConsulta::find()->where("estado_catastro=:estado_catastro", [":estado_catastro" => $this->estado_catastro])
+            $table = InmueblesUrbanosForm::find()->where("estado_catastro=:estado_catastro", [":estado_catastro" => $this->estado_catastro])
                                     ->andwhere("municipio_catastro=:municipio_catastro", [":municipio_catastro" => $this->municipio_catastro])
                                     ->andwhere("parroquia_catastro=:parroquia_catastro", [":parroquia_catastro" => $this->parroquia_catastro])
                                     ->andwhere("ambito_catastro=:ambito_catastro", [":ambito_catastro" => $this->ambito_catastro])
