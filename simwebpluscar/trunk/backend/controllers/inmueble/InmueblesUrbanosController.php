@@ -57,11 +57,15 @@ use backend\models\inmueble\InmueblesUrbanosForm;
 use backend\models\inmueble\InmueblesConsulta;
 use backend\models\inmueble\InmueblesSearch;
 use yii\web\Controller;
+use yii\web\Response;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\Url;
 use common\conexion\ConexionController;
 
+use backend\models\buscargeneral\BuscarGeneralForm;
+use backend\models\buscargeneral\BuscarGeneral;
+session_start();
 /**
  * CambiosInmueblesUrbanosController implements the CRUD actions for Inmuebles model.
  */
@@ -91,6 +95,7 @@ class InmueblesUrbanosController extends Controller
      */
     public function actionIndex()
     {
+        if ( isset( $_SESSION['idContribuyente'] ) ) {
         $searchModel = new InmueblesSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -98,6 +103,9 @@ class InmueblesUrbanosController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]); 
+        }  else {
+                    echo "No hay Contribuyente!!!...";
+        }
     } 
 
     /**
@@ -107,9 +115,13 @@ class InmueblesUrbanosController extends Controller
      */
     public function actionView($id)
     {
+        if ( isset( $_SESSION['idContribuyente'] ) ) {
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
+        }  else {
+                    echo "No hay Contribuyente!!!...";
+        }
     }
 
     /**

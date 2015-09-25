@@ -84,7 +84,7 @@ class CambioPropietarioInmueblesUrbanosController extends Controller
      **/
     public function actionCambioPropietarioInmuebles($id_contribuyente)
     { 
-        
+        if ( isset( $_SESSION['idContribuyente'] ) ) {
         $modelContribuyente = $this->findModelContribuyente($id_contribuyente);
         
 
@@ -176,7 +176,7 @@ echo'<pre>'; var_dump($btn); echo '</pre>'; die('hola');
                             $msg = Yii::t('backend', 'SUCCESSFUL UPDATE DATA OF THE URBAN PROPERTY!');//REGISTRO EXITOSO DE LAS PREGUNTAS DE SEGURIDAD
                             $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['inmueble/inmuebles-urbanos/index', 'id' => $model->id_contribuyente])."'>";                     
                             return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
-                        }else{   
+                        }else{ 
 
                             $transaccion->roolBack();  
                             $tipoError = 0; 
@@ -230,7 +230,7 @@ CONTENIDO DEL COMPRADOR (BUYER)
 echo'<pre>'; var_dump($btn); echo '</pre>'; die(); 
 
                         //--------------TRY---------------
-                        $arrayDatos = [
+                        $arrayDatos = [ 
                                         'id_contribuyente' => $id_contribuyenteComprador,
                                       ]; 
 
@@ -267,7 +267,6 @@ echo'<pre>'; var_dump($btn); echo '</pre>'; die();
                         
                     } 
                 }
-
 /*
 FIN BUYER
 */
@@ -303,6 +302,9 @@ FIN BUYER
                 'datosVInmueble'=>$datosVInmueble,
             ]); 
         
+        }  else {
+                    echo "No hay Contribuyente!!!...";
+        }
     } 
     
 

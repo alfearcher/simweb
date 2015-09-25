@@ -58,13 +58,13 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\Url;
 use common\conexion\ConexionController;
-
+session_start();
 /***************************************************************************************************
  * CambioOtrosDatosInmueblesUrbanosController implements the actions for InmueblesUrbanosForm model.
  ***************************************************************************************************/
 class CambioOtrosDatosInmueblesUrbanosController extends Controller
 {   
-
+    
     public $conn;
     public $conexion;
     public $transaccion;
@@ -79,6 +79,7 @@ class CambioOtrosDatosInmueblesUrbanosController extends Controller
      **/ 
     public function actionCambioOtrosDatosInmuebles($id_impuesto)
     {
+        if ( isset( $_SESSION['idContribuyente'] ) ) {
         //$model2 = new CambiarOtrosDatosInmueblesForm();
         $model = $this->findModel($id_impuesto);
 
@@ -186,7 +187,10 @@ class CambioOtrosDatosInmueblesUrbanosController extends Controller
          return $this->render('cambio-otros-datos-inmuebles', [
                 'model' => $model,
             ]); 
-        
+       
+        }  else {
+                    echo "No hay Contribuyente!!!...";
+        }
     } 
 
     /**

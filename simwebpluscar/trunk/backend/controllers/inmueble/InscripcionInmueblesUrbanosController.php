@@ -59,6 +59,7 @@ use common\models\Users;
 use common\models\User;
 use yii\web\Session;
 use backend\models\inmueble\InscripcionInmueblesUrbanosForm;
+use backend\models\inmueble\InmueblesUrbanosForm;
 //use common\models\Users;
 
 // mandar url
@@ -69,7 +70,7 @@ use yii\helpers\Url;
 // active record consultas..
 use yii\db\ActiveRecord;
 use common\conexion\ConexionController;
-
+session_start();
 /*********************************************************************************************************
  * InscripcionInmueblesUrbanosController implements the actions for InscripcionInmueblesUrbanosForm model.
  *********************************************************************************************************/
@@ -89,7 +90,7 @@ class InscripcionInmueblesUrbanosController extends Controller
      public function actionInscripcionInmueblesUrbanos()
      {
 
-
+         if ( isset( $_SESSION['idContribuyente'] ) ) {
          //Creamos la instancia con el model de validación
          $model = new InscripcionInmueblesUrbanosForm();
     
@@ -174,8 +175,7 @@ class InscripcionInmueblesUrbanosController extends Controller
                           
                      } 
 
-                        
-                        //--------------TRY---------------
+                   //--------------TRY---------------
                         $arrayDatos = ['id_contribuyente' => $id_contribuyente,
                                        'ano_inicio' => $ano_inicio,
                                        'direccion' => $direccion,
@@ -249,7 +249,7 @@ class InscripcionInmueblesUrbanosController extends Controller
                    }else{  
 
                         $msg = Yii::t('backend', 'AN ERROR OCCURRED WHEN FILLING THE URBAN PROPERTY!');//HA OCURRIDO UN ERROR AL LLENAR LAS PREGUNTAS SECRETAS
-                        $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("inmueble/cambios-inmuebles-urbanos/index")."'>";                     
+                        $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("inmueble/inmuebles-urbanos/index")."'>";                     
                         return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
                    } 
 
@@ -258,9 +258,15 @@ class InscripcionInmueblesUrbanosController extends Controller
                    $model->getErrors(); 
               }
          }
-              return $this->render('inscripcion-inmuebles-urbanos', ['model' => $model, ]);      
+              return $this->render('inscripcion-inmuebles-urbanos', ['model' => $model, ]);  
+
+        }  else {
+                    echo "No hay Contribuyente!!!...";
+        }    
  
-     } // cierre del metodo registerfun
+     } // cierre del metodo inscripcion de inmuebles
+
+     
 
 
 }

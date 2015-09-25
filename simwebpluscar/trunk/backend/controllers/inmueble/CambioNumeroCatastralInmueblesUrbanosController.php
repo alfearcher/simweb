@@ -58,8 +58,8 @@ use yii\web\Response;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\Url;
-use common\conexion\ConexionController;
-
+use common\conexion\conexionController;
+session_start();
 /**
  * CambiosInmueblesUrbanosController implements the CRUD actions for Inmuebles model.
  */
@@ -81,7 +81,7 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
      **/
     public function actionCambioDeNumeroCatastralInmuebles($id_impuesto)
     {
-        
+        if ( isset( $_SESSION['idContribuyente'] ) ) {
         $model = $this->findModel($id_impuesto);
 
     
@@ -201,6 +201,10 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
          return $this->render('cambio-de-numero-catastral-inmuebles', [
                 'model' => $model,
             ]); 
+
+       }  else {
+                    echo "No hay Contribuyente!!!...";
+        }
         
     } 
     

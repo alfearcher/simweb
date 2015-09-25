@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
@@ -352,9 +352,23 @@ function bloquea() {
                             </div> 
                         </td>
 
-                        <td style="max-width: 100px" align="letf">
+                        <td colspan="6" style="max-width: 100px" align="letf">
                             <div class="col-lg-2">
                             <?= $form->field($model, 'apto_dom')->textInput(['style' => 'width:80px;'])->label(false) ?>
+                            </div> 
+                        </td>
+                    </tr>
+<!-- Telefono y Medidor de domicilio -->  
+                   <tr>
+                        <td style="max-width: 85px" align="right">
+                            <div class="col-lg-1"> 
+                            <?= Yii::t('backend', 'Phone') ?>
+                            </div> 
+                        </td>
+
+                        <td style="max-width: 100px" align="letf">
+                            <div class="col-lg-2"> 
+                            <?= $form->field($model, 'tlf_hab')->textInput(['style' => 'width:80px;'])->label(false) ?>
                             </div> 
                         </td>
 
@@ -364,13 +378,12 @@ function bloquea() {
                             </div> 
                         </td>
 
-                        <td colspan="4" style="max-width: 100px" align="letf">
+                        <td colspan="9" style="max-width: 100px" align="letf">
                             <div class="col-lg-2">
                             <?= $form->field($model, 'medidor')->textInput(['style' => 'width:80px;'])->label(false) ?>
                             </div>                                                                        
                         </td>
-                    </tr>
-
+                   </tr>
 <!-- Observacion y Tipo de ejido de domicilio --> 
                    <tr>
                         <td style="max-width: 85px" align="right">
@@ -413,7 +426,7 @@ function bloquea() {
 <?= $form->field($model, 'liquidado')->hiddenInput(['value' => 0])->label(false) ?>
 <?= $form->field($model, 'nivel')->hiddenInput(['value' => 0])->label(false) ?>
 <?= $form->field($model, 'catastro')->hiddenInput(['value' => 0])->label(false) ?>
-<?= $form->field($model, 'tlf_hab')->hiddenInput(['style' => 'width:80px;','value' => 0])->label(false) ?>
+
 
 <?php ActiveForm::end(); ?> 
 

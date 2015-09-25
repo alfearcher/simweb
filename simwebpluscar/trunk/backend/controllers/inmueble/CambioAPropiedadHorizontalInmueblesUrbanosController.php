@@ -58,8 +58,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\Url;
-use common\conexion\ConexionController;
-
+use common\conexion\conexionController;
+session_start();
 /**************************************************************************************************
  * CambioAPropiedadHorizontalInmueblesUrbanosController implements the actions for Inmuebles model.
  **************************************************************************************************/
@@ -81,7 +81,7 @@ class CambioAPropiedadHorizontalInmueblesUrbanosController extends Controller
      **/
     public function actionCambioAPropiedadHorizontalInmuebles($id_impuesto)
     {
-        
+        if ( isset( $_SESSION['idContribuyente'] ) ) {
         $model = $this->findModel($id_impuesto);
 
     
@@ -190,6 +190,9 @@ class CambioAPropiedadHorizontalInmueblesUrbanosController extends Controller
                 'model' => $model,
             ]); 
         
+        }  else {
+                    echo "No hay Contribuyente!!!...";
+        }
     } 
 
 
