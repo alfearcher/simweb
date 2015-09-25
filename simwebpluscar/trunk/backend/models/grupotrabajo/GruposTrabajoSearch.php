@@ -167,7 +167,7 @@ class GruposTrabajoSearch extends GruposTrabajoForm
         return $dataProvider;
     }   
     
-      protected function addCondition( $query, $attribute, $partialMatch = false )
+    protected function addCondition( $query, $attribute, $partialMatch = false )
     {
         if( ( $pos = strrpos($attribute, '.' ) ) !== false ) {
                     $modelAttribute = substr( $attribute, $pos + 1 );
@@ -184,7 +184,7 @@ class GruposTrabajoSearch extends GruposTrabajoForm
         * The following line is additionally added for right aliasing
         * of columns so filtering happen correctly in the self join
         */
-        $attribute = "grupos_trabajo.$attribute";
+        $attribute = "apuestas.$attribute";
 
             if ($partialMatch) {
                         $query->andWhere( [ 'like', $attribute, $value ] );
@@ -192,6 +192,8 @@ class GruposTrabajoSearch extends GruposTrabajoForm
                         $query->andWhere( [ $attribute => $value ] );
             }
     }
+    
+    
 }
 
     
