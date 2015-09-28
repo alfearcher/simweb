@@ -107,9 +107,8 @@ class CambioPropietarioInmueblesUrbanosController extends Controller
               Yii::$app->response->format = Response::FORMAT_JSON;
               return ActiveForm::validate($modelContribuyente); 
          } 
-         
 
-         $btn = Yii::$app->request->post();
+         $datosCambio = Yii::$app->request->post("InmueblesUrbanosForm");
 
 
          if ($model->load(Yii::$app->request->post())){
@@ -119,13 +118,12 @@ class CambioPropietarioInmueblesUrbanosController extends Controller
            
                 if($model->validate()){
 
-
-
                  //condicionales     
                   
                 if (!\Yii::$app->user->isGuest){   
                      
-                   
+     echo'<pre>'; var_dump($datosCambio); echo '</pre>'; die('aqui');
+              
 /*
 CONTENIDO VENDEDOR (SELLER)
 */
@@ -145,12 +143,14 @@ CONTENIDO VENDEDOR (SELLER)
 
                     if ($btn['AcceptSeller']!=null) {
 
-                        $id_contribuyenteVendedor = $mode->id_contribuyente;
+                        $id_contribuyenteVendedor = $model->id_contribuyente;
                         $id_impuestoVenta = $model->direccion;
+                        $id_impuestoVenta2 = $datosCambio["direccion"];
                         $ano_traspaso = $model->ano_traspaso;
 
                         $id_contribuyenteComprador = $modelParametros[0]['id_contribuyente'];
-echo'<pre>'; var_dump($btn); echo '</pre>'; die('hola'); 
+//echo'<pre>'; var_dump($model->operacion); echo '</pre>'; die('aqui seller 1');
+//echo'<pre>'; var_dump($btn); echo '</pre>'; die('hola'); 
 
                         //--------------TRY---------------
                         $arrayDatos = [
@@ -161,7 +161,7 @@ echo'<pre>'; var_dump($btn); echo '</pre>'; die('hola');
 
                         $arrayCondition = ['id_impuesto' => $id_impuestoVenta,]; 
 
-
+//echo'<pre>'; var_dump($btn); echo '</pre>'; die('hola seller 2'); 
                         $conn = New ConexionController(); 
 
                         $this->conexion = $conn->initConectar('dbsim');     // instancia de la conexion (Connection)
@@ -169,7 +169,7 @@ echo'<pre>'; var_dump($btn); echo '</pre>'; die('hola');
 
                         $transaccion = $this->conexion->beginTransaction(); 
 
-                        if ( $conn->modificarRegistro($this->conexion, $tableName, $arrayDatos, $arrayCondition) ){
+                      /*  if ( $conn->modificarRegistro($this->conexion, $tableName, $arrayDatos, $arrayCondition) ){
 
                             $transaccion->commit(); 
                             $tipoError = 0; 
@@ -183,12 +183,11 @@ echo'<pre>'; var_dump($btn); echo '</pre>'; die('hola');
                             $msg = Yii::t('backend', 'AN ERROR OCCURRED WHEN UPDATE THE URBAN PROPERTY!');//HA OCURRIDO UN ERROR AL LLENAR LAS PREGUNTAS SECRETAS
                             $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['inmueble/inmuebles-urbanos/index', 'id' => $model->id_contribuyente])."'>";                     
                             return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
-                        }   
+                        }   */
 
                         $this->conexion->close();
                     }
                 }
-
 /*
 FIN SELLER
 */
@@ -217,7 +216,7 @@ CONTENIDO DEL COMPRADOR (BUYER)
                             $contador = $contador+1;
                             $datosVInmueble = InmueblesUrbanosForm::find()->where(['id_contribuyente'=>$model->datosVendedor])->asArray()->all(); 
 
-                             
+                         
                         }
                     }
                     if ($btn['AcceptBuyer']!=null) {
@@ -227,7 +226,7 @@ CONTENIDO DEL COMPRADOR (BUYER)
                         $id_contribuyenteVendedor = $model->datosVendedor;
                         $id_impuestoVendedor = $model->inmuebleVendedor;
                         //$id_contribuyenteComprador = $modelParametros[0]['id_contribuyente'];  
-echo'<pre>'; var_dump($btn); echo '</pre>'; die(); 
+echo'<pre>'; var_dump($btn); echo '</pre>'; die('aqui buyer 1'); 
 
                         //--------------TRY---------------
                         $arrayDatos = [ 
@@ -238,7 +237,6 @@ echo'<pre>'; var_dump($btn); echo '</pre>'; die();
 
                         $arrayCondition = ['id_impuesto' => $id_impuestoVendedor,]; 
 
-
                         $conn = New ConexionController(); 
 
                         $this->conexion = $conn->initConectar('dbsim');     // instancia de la conexion (Connection)
@@ -246,7 +244,7 @@ echo'<pre>'; var_dump($btn); echo '</pre>'; die();
 
                         $transaccion = $this->conexion->beginTransaction(); 
 
-                        if ( $conn->modificarRegistro($this->conexion, $tableName, $arrayDatos, $arrayCondition) ){
+                       /* if ( $conn->modificarRegistro($this->conexion, $tableName, $arrayDatos, $arrayCondition) ){
 
                             $transaccion->commit(); 
                             $tipoError = 0; 
@@ -260,7 +258,7 @@ echo'<pre>'; var_dump($btn); echo '</pre>'; die();
                             $msg = Yii::t('backend', 'AN ERROR OCCURRED WHEN UPDATE THE URBAN PROPERTY!');//HA OCURRIDO UN ERROR AL LLENAR LAS PREGUNTAS SECRETAS
                             $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['inmueble/inmuebles-urbanos/index', 'id' => $model->id_contribuyente])."'>";                     
                             return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
-                        }   
+                        }   */
 
                         $this->conexion->close();                 
 
