@@ -59,7 +59,7 @@ use yii\web\Controller;
 use common\models\LoginForm;
 use yii\filters\VerbFilter;
 use yii\widgets\ActiveForm;
-use yii\web\response;
+use yii\web\Response;
 //use app\models\FormContribuyente;
 //use app\models\Contribuyente;
 //use app\models\FormRegister;
