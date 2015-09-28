@@ -127,6 +127,29 @@ class ApuestasIlicitaController extends Controller
         return $this->render( 'view-create', [ 'model' => $model ] );
     }
     
+    /**
+    * Displays a single GruposTrabajo model.
+    * @param string $id
+    * @return mixed
+    * @return mixed
+    */
+    public function actionViewHistorico( $id )
+    {
+        $conexion = new ConexionController();
+        $conn = $conexion->initConectar( 'db' );
+        $conn->open();  
+        
+        $sql_max = " SELECT MAX(id_historico_apuesta) AS id_historico_apuesta FROM historico_apuestas WHERE id_impuesto = {$id}";
+        $id = $conn->createCommand( $sql_max )->queryAll();
+       
+        $sql = " SELECT A.id_impuesto, A.fecha_desde, A.fecha_hasta, A.monto_apuesta, A.planilla, B.porcentaje, B.ano_impositivo, C.descripcion AS clase, D.descripcion AS tipo";
+        $sql.= " FROM historico_apuestas A, tarifas_apuestas B, clases_apuestas C, tipos_apuestas D ";
+        $sql.= " WHERE A.id_tarifa_apuesta = B.id_tarifa_apuesta AND B.clase_apuesta = C.clase_apuesta AND B.tipo_apuesta = D.tipo_apuesta AND A.id_historico_apuesta = {$id[0]["id_historico_apuesta"]}";
+        $model = $conn->createCommand( $sql )->queryAll();
+         //echo var_dump($model);exit();  
+        return $this->render( 'view-historico', [ 'model' => $model ] );
+    }
+    
     /** 
     *   Metodo actionCreate(), permite realizar los registros de las apuestas ilicitas.
     *   @param $conn, instancia de conexion a base de datos.
@@ -213,7 +236,7 @@ class ApuestasIlicitaController extends Controller
     *   @param $status_apuesta, integer. 
     */  
     public function actionUpdate( $id ) 
-    {
+    {echo "Hola";exit();
         if ( isset( $_SESSION['idContribuyente'] ) ) {
         
             $model = $this->findModel( $id );
@@ -257,18 +280,18 @@ class ApuestasIlicitaController extends Controller
 
                             $resultadoOperacion = $operacion->registrarHistorico( $conexion, $conn, $datos );
 
-                            if( $resultadoOperacion == true ) {
+                            if( !$resultadoOperacion == true ) {
 
                                         $transaccion->commit(); 
                                         $tipoError = 0;
                                         $msg = "REGISTRATION SUCCESSFUL ! .... Wait";
-                                        $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("apuestailicita/apuestas-ilicita/index")."'>";
+                                        $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("apuestailicita/apuestas-ilicita/view-historico")."&id=$id'>";
                                         return $this->render( '/mensaje/mensaje', [ 'msg' => $msg, 'url' => $url, 'tipoError' => $tipoError ] );
                             } else {
                                         $transaccion->rollBack();
                                         $tipoError = 1;
                                         $msg = "ERROR OCCURRED !....Wait";
-                                        $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("apuestailicita/apuestas-ilicita/index")."'>";
+                                        $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("apuestailicita/apuestas-ilicita/update")."&id=$id>";
                                         return $this->render( '/mensaje/mensaje', [ 'msg' => $msg, 'url' => $url, 'tipoError' => $tipoError ] );
                             }
                         } else { 
