@@ -122,13 +122,13 @@ class CambioPropietarioInmueblesUrbanosController extends Controller
                   
                 if (!\Yii::$app->user->isGuest){   
                      
-     echo'<pre>'; var_dump($datosCambio); echo '</pre>'; die('aqui datosCambio');
+     echo'<pre>'; var_dump($datosCambio["operacion"]); echo '</pre>'; die('aqui datosCambio');
               
 /*
 CONTENIDO VENDEDOR (SELLER)
 */
 
-                if ($model->operacion == 1) {
+                if ($datosCambio["operacion"] == 1) {
                                     
                     if ($model->tipo_naturaleza == 0) {
                         $tipo = $model->tipoBuscar1;
