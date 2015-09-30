@@ -295,7 +295,7 @@ class InmueblesUrbanosForm extends \yii\db\ActiveRecord
     public function inmuebleSolventeA($attribute, $params)
     {
   
-          //Buscar el email en la tabla 
+          //solvencias y pago_detalles
           
             $table = Solvencias::find()
                                     ->where("id_contribuyente=:id_contribuyente", [":id_contribuyente" => $this->id_contribuyente])
