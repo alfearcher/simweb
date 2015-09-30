@@ -221,7 +221,7 @@ CONTENIDO DEL COMPRADOR (BUYER)
                     if ($btn['AcceptBuyer']!=null) {
                         $id_contribuyenteComprador = $datosCambio["id_contribuyente"];
 
-                        $ano_traspaso = $datosCambio->["ano_traspaso"];
+                        $ano_traspaso = $datosCambio["ano_traspaso"];
                         $id_contribuyenteVendedor = $datosCambio["datosVendedor"];
                         $id_impuestoVendedor = $datosCambio["inmuebleVendedor"];
                         //$id_contribuyenteComprador = $modelParametros[0]['id_contribuyente'];  
