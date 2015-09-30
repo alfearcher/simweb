@@ -109,6 +109,7 @@ class CambioPropietarioInmueblesUrbanosController extends Controller
          } 
 
          $datosCambio = Yii::$app->request->post("InmueblesUrbanosForm");
+         $btn = Yii::$app->request->post();
 
 
          if ($model->load(Yii::$app->request->post())){
@@ -122,7 +123,7 @@ class CambioPropietarioInmueblesUrbanosController extends Controller
                   
                 if (!\Yii::$app->user->isGuest){   
                      
-     echo'<pre>'; var_dump($datosCambio["operacion"]); echo '</pre>'; die('aqui datosCambio');
+     
               
 /*
 CONTENIDO VENDEDOR (SELLER)
@@ -130,27 +131,25 @@ CONTENIDO VENDEDOR (SELLER)
 
                 if ($datosCambio["operacion"] == 1) {
                                     
-                    if ($model->tipo_naturaleza == 0) {
-                        $tipo = $model->tipoBuscar1;
+                    if ($datosCambio["tipo_naturaleza1"] == 0) {
+                        $tipo = $datosCambio["tipoBuscar1"];
                     } else { 
                         $tipo = 0;
                     }
 
-                    $modelParametros = ContribuyentesForm::find()->where(['naturaleza'=>$model->naturalezaBuscar1])
-                                                                 ->andWhere(['cedula'=>$model->cedulaBuscar1])
+                    $modelParametros = ContribuyentesForm::find()->where(['naturaleza'=>$datosCambio["naturalezaBuscar1"];])
+                                                                 ->andWhere(['cedula'=>$datosCambio["cedulaBuscar1"];])
                                                                  ->andWhere(['tipo'=>$tipo])->asArray()->all();                                         
 
 
                     if ($btn['AcceptSeller']!=null) {
 
-                        $id_contribuyenteVendedor = $model->id_contribuyente;
-                        $id_impuestoVenta = $model->direccion;
-                        $id_impuestoVenta2 = $datosCambio["direccion"];
-                        $ano_traspaso = $model->ano_traspaso;
+                        $id_contribuyenteVendedor = $datosCambio["id_contribuyente"];;
+                        $id_impuestoVenta = $datosCambio["direccion"];;
+                        $ano_traspaso = $datosCambio["ano_traspaso"];;
 
                         $id_contribuyenteComprador = $modelParametros[0]['id_contribuyente'];
-//echo'<pre>'; var_dump($model->operacion); echo '</pre>'; die('aqui seller 1');
-echo'<pre>'; var_dump($btn); echo '</pre>'; die('hola'); 
+
 
                         //--------------TRY---------------
                         $arrayDatos = [
@@ -161,7 +160,7 @@ echo'<pre>'; var_dump($btn); echo '</pre>'; die('hola');
 
                         $arrayCondition = ['id_impuesto' => $id_impuestoVenta,]; 
 
-//echo'<pre>'; var_dump($btn); echo '</pre>'; die('hola seller 2'); 
+echo'<pre>'; var_dump($datosCambio); echo '</pre>'; die('hola seller 2'); 
                         $conn = New ConexionController(); 
 
                         $this->conexion = $conn->initConectar('dbsim');     // instancia de la conexion (Connection)
@@ -169,7 +168,7 @@ echo'<pre>'; var_dump($btn); echo '</pre>'; die('hola');
 
                         $transaccion = $this->conexion->beginTransaction(); 
 
-                      /*  if ( $conn->modificarRegistro($this->conexion, $tableName, $arrayDatos, $arrayCondition) ){
+                        if ( $conn->modificarRegistro($this->conexion, $tableName, $arrayDatos, $arrayCondition) ){
 
                             $transaccion->commit(); 
                             $tipoError = 0; 
@@ -183,7 +182,7 @@ echo'<pre>'; var_dump($btn); echo '</pre>'; die('hola');
                             $msg = Yii::t('backend', 'AN ERROR OCCURRED WHEN UPDATE THE URBAN PROPERTY!');//HA OCURRIDO UN ERROR AL LLENAR LAS PREGUNTAS SECRETAS
                             $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['inmueble/inmuebles-urbanos/index', 'id' => $model->id_contribuyente])."'>";                     
                             return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
-                        }   */
+                        }   
 
                         $this->conexion->close();
                     }
@@ -197,36 +196,36 @@ FIN SELLER
 CONTENIDO DEL COMPRADOR (BUYER)
 */  
        
-                if ($model->operacion == 2) {
+                if ($datosCambio["operacion"] == 2) {
                     //echo'<pre>'; var_dump($btn['Next']); echo '</pre>'; die();
                     if ($btn['NextBuyer']!=null) {
                         $contador = 1;
 
-                        $datosVContribuyente = ContribuyentesForm::find()->where(['naturaleza'=>$model->naturalezaBuscar])
-                                                                     ->andWhere(['cedula'=>$model->cedulaBuscar])
-                                                                     ->andWhere(['tipo'=>$model->tipoBuscar])->asArray()->all();  
+                        $datosVContribuyente = ContribuyentesForm::find()->where(['naturaleza'=>$datosCambio["naturalezaBuscar"]])
+                                                                     ->andWhere(['cedula'=>$datosCambio["cedulaBuscar"]])
+                                                                     ->andWhere(['tipo'=>$datosCambio["tipoBuscar"]])->asArray()->all();  
 
    
                     }
                     if ($btn['NextBuyer']!=null) {
                         
-                        if ($model->datosVendedor!=null) {
+                        if ($datosCambio["datosVendedor"]!=null) {
                             
                      
                             $contador = $contador+1;
-                            $datosVInmueble = InmueblesUrbanosForm::find()->where(['id_contribuyente'=>$model->datosVendedor])->asArray()->all(); 
+                            $datosVInmueble = InmueblesUrbanosForm::find()->where(['id_contribuyente'=>$datosCambio["datosVendedor"]])->asArray()->all(); 
 
                          
                         }
                     }
                     if ($btn['AcceptBuyer']!=null) {
-                        $id_contribuyenteComprador = $model->id_contribuyente;
+                        $id_contribuyenteComprador = $datosCambio["id_contribuyente"];
 
-                        $ano_traspaso = $model->ano_traspaso;
-                        $id_contribuyenteVendedor = $model->datosVendedor;
-                        $id_impuestoVendedor = $model->inmuebleVendedor;
+                        $ano_traspaso = $datosCambio->["ano_traspaso"];
+                        $id_contribuyenteVendedor = $datosCambio["datosVendedor"];
+                        $id_impuestoVendedor = $datosCambio["inmuebleVendedor"];
                         //$id_contribuyenteComprador = $modelParametros[0]['id_contribuyente'];  
-echo'<pre>'; var_dump($btn); echo '</pre>'; die('aqui buyer 1'); 
+
 
                         //--------------TRY---------------
                         $arrayDatos = [ 
@@ -236,7 +235,7 @@ echo'<pre>'; var_dump($btn); echo '</pre>'; die('aqui buyer 1');
                         $tableName = 'inmuebles'; 
 
                         $arrayCondition = ['id_impuesto' => $id_impuestoVendedor,]; 
-
+echo'<pre>'; var_dump($datosCambio); echo '</pre>'; die('aqui buyer 1'); 
                         $conn = New ConexionController(); 
 
                         $this->conexion = $conn->initConectar('dbsim');     // instancia de la conexion (Connection)
