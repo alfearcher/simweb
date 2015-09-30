@@ -150,7 +150,7 @@ CONTENIDO VENDEDOR (SELLER)
 
                         $id_contribuyenteComprador = $modelParametros[0]['id_contribuyente'];
 //echo'<pre>'; var_dump($model->operacion); echo '</pre>'; die('aqui seller 1');
-//echo'<pre>'; var_dump($btn); echo '</pre>'; die('hola'); 
+echo'<pre>'; var_dump($btn); echo '</pre>'; die('hola'); 
 
                         //--------------TRY---------------
                         $arrayDatos = [
