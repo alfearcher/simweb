@@ -171,7 +171,11 @@ class InmueblesUrbanosForm extends \yii\db\ActiveRecord
             [['tipo_naturaleza'],'required','when'=>function($model){ return $model->operacion==2;},'message' => Yii::t('backend', 'Type Nature cannot be blank')],
             [['naturalezaBuscar','cedulaBuscar','tipoBuscar'], 'required','when'=>function($model){ return $model->tipo_naturaleza==2;},'message' => Yii::t('backend', 'Cannot be blank')],
             [['naturalezaBuscar','cedulaBuscar'], 'required','when'=>function($model){ return $model->tipo_naturaleza==1;},'message' => Yii::t('backend', 'Cannot be blank')],
-            
+            //solvencia del inmueble
+
+            [['ano_traspaso1'], 'inmuebleSolventeA','when'=>function($model){ return $model->operacion==1;}],
+
+            [['ano_traspaso'], 'inmuebleSolventeB','when'=>function($model){ return $model->operacion==2;}],
             //[['datosVendedor'],'datosVendedor'],
             
         ];
@@ -288,21 +292,16 @@ class InmueblesUrbanosForm extends \yii\db\ActiveRecord
    
     } 
 
-    public function catastro_registro($attribute, $params)
+    public function inmuebleSolventeA($attribute, $params)
     {
   
           //Buscar el email en la tabla 
           if($this->propiedad_horizontal==0){
-            $table = InmueblesConsulta::find()
-                                    ->where("estado_catastro=:estado_catastro", [":estado_catastro" => $this->estado_catastro])
-                                    ->andwhere("municipio_catastro=:municipio_catastro", [":municipio_catastro" => $this->municipio_catastro])
-                                    ->andwhere("parroquia_catastro=:parroquia_catastro", [":parroquia_catastro" => $this->parroquia_catastro])
-                                    ->andwhere("ambito_catastro=:ambito_catastro", [":ambito_catastro" => $this->ambito_catastro])
-                                    ->andwhere("sector_catastro=:sector_catastro", [":sector_catastro" => $this->sector_catastro])
-                                    ->andwhere("manzana_catastro=:manzana_catastro", [":manzana_catastro" => $this->manzana_catastro])
-                                    ->andwhere("parcela_catastro=:parcela_catastro", [":parcela_catastro" => $this->parcela_catastro])
-                                    ->andwhere("propiedad_horizontal=:propiedad_horizontal", [":propiedad_horizontal" => 0])
-                                    ->andWhere("manzana_limite=:manzana_limite", [":manzana_limite" => $this->manzana_limite])
+            $table = Solvencias::find()
+                                    ->where("id_contribuyente=:id_contribuyente", [":id_contribuyente" => $this->id_contribuyente])
+                                    ->andwhere("id_impuesto=:id_impuesto", [":id_impuesto" => $this->direccion])
+                                    ->andwhere("impuesto=:impuesto", [":impuesto" => 2])
+                                    ->andwhere("id_impuesto=:id_impuesto", [":id_impuesto" => $this->ano_traspaso1])
                                     ->andWhere("inactivo=:inactivo", [":inactivo" => 0])
                                     ->asArray()->all(); 
                                     
@@ -320,7 +319,7 @@ class InmueblesUrbanosForm extends \yii\db\ActiveRecord
      } 
     
 
-     public function catastro_registro2($attribute, $params)
+     public function inmuebleSolventeB($attribute, $params)
      {
   
           //Buscar el email en la tabla 
