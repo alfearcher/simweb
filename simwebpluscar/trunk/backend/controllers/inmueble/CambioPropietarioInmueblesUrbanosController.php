@@ -160,7 +160,7 @@ CONTENIDO VENDEDOR (SELLER)
 
                         $arrayCondition = ['id_impuesto' => $id_impuestoVenta,]; 
 
-echo'<pre>'; var_dump($datosCambio); echo '</pre>'; die('hola seller 2'); 
+//echo'<pre>'; var_dump($datosCambio); echo '</pre>'; die('hola seller 2'); 
                         $conn = New ConexionController(); 
 
                         $this->conexion = $conn->initConectar('dbsim');     // instancia de la conexion (Connection)
@@ -235,7 +235,7 @@ CONTENIDO DEL COMPRADOR (BUYER)
                         $tableName = 'inmuebles'; 
 
                         $arrayCondition = ['id_impuesto' => $id_impuestoVendedor,]; 
-echo'<pre>'; var_dump($datosCambio); echo '</pre>'; die('aqui buyer 1'); 
+//echo'<pre>'; var_dump($datosCambio); echo '</pre>'; die('aqui buyer 1'); 
                         $conn = New ConexionController(); 
 
                         $this->conexion = $conn->initConectar('dbsim');     // instancia de la conexion (Connection)
