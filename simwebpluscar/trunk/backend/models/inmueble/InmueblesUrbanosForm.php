@@ -56,7 +56,7 @@ namespace backend\models\inmueble;
 use Yii;
 use backend\models\inmueble\InmueblesConsulta;
 use common\conexion\ConexionController;
-
+use backend\models\inmueble\Solvencias;
 /**
  * This is the model class for table "inmuebles".
  *
@@ -142,12 +142,7 @@ class InmueblesUrbanosForm extends \yii\db\ActiveRecord
             [['observacion','datosVendedor','inmuebleVendedor'], 'string'], 
             [['direccion'], 'string', 'max' => 255,'message' => Yii::t('backend', 'Only 255 character')],
             
-            //'liquidado', 'id_habitante'
-            [['propiedad_horizontal'], 'catastro_registro','when'=>function($model){ return $model->validacion==1;}], 
-            [['propiedad_horizontal'], 'catastro_registro2','when'=>function($model){ return $model->validacion==1;}],
-            [['propiedad_horizontal'], 'catastro_cambio','when'=>function($model){ return $model->validacion==3;}], 
-            [['propiedad_horizontal'], 'catastro_cambio2','when'=>function($model){ return $model->validacion==3;}],
-            
+                       
             //validaciones cambio propietario del inmueble
             [['tipo_naturaleza1','tipo_naturaleza','operacion','validacion'],'integer','message' => Yii::t('backend', 'only integers')],
             
@@ -329,7 +324,7 @@ class InmueblesUrbanosForm extends \yii\db\ActiveRecord
             $nivel_catastro = "".$nivel_catastro1[0]['nivela']."".$nivel_catastro1[0]['nivelb'].""; 
 
             
-            $table = InmueblesConsulta::find()->where("estado_catastro=:estado_catastro", [":estado_catastro" => $this->estado_catastro])
+            $table = Solvencias::find()->where("estado_catastro=:estado_catastro", [":estado_catastro" => $this->estado_catastro])
                                     ->andwhere("municipio_catastro=:municipio_catastro", [":municipio_catastro" => $this->municipio_catastro])
                                     ->andwhere("parroquia_catastro=:parroquia_catastro", [":parroquia_catastro" => $this->parroquia_catastro])
                                     ->andwhere("ambito_catastro=:ambito_catastro", [":ambito_catastro" => $this->ambito_catastro])
