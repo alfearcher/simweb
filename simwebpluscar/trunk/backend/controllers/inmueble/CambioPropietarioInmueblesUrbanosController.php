@@ -243,7 +243,7 @@ echo'<pre>'; var_dump($datosCambio); echo '</pre>'; die('aqui buyer 1');
 
                         $transaccion = $this->conexion->beginTransaction(); 
 
-                       /* if ( $conn->modificarRegistro($this->conexion, $tableName, $arrayDatos, $arrayCondition) ){
+                        if ( $conn->modificarRegistro($this->conexion, $tableName, $arrayDatos, $arrayCondition) ){
 
                             $transaccion->commit(); 
                             $tipoError = 0; 
@@ -257,7 +257,7 @@ echo'<pre>'; var_dump($datosCambio); echo '</pre>'; die('aqui buyer 1');
                             $msg = Yii::t('backend', 'AN ERROR OCCURRED WHEN UPDATE THE URBAN PROPERTY!');//HA OCURRIDO UN ERROR AL LLENAR LAS PREGUNTAS SECRETAS
                             $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['inmueble/inmuebles-urbanos/index', 'id' => $model->id_contribuyente])."'>";                     
                             return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
-                        }   */
+                        }   
 
                         $this->conexion->close();                 
 
