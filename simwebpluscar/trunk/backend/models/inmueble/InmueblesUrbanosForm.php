@@ -296,13 +296,13 @@ class InmueblesUrbanosForm extends \yii\db\ActiveRecord
     {
   
           //Buscar el email en la tabla 
-          if($this->propiedad_horizontal==0){
+          
             $table = Solvencias::find()
                                     ->where("id_contribuyente=:id_contribuyente", [":id_contribuyente" => $this->id_contribuyente])
                                     ->andwhere("id_impuesto=:id_impuesto", [":id_impuesto" => $this->direccion])
                                     ->andwhere("impuesto=:impuesto", [":impuesto" => 2])
                                     ->andwhere("id_impuesto=:id_impuesto", [":id_impuesto" => $this->ano_traspaso1])
-                                    ->andWhere("inactivo=:inactivo", [":inactivo" => 0])
+                                    //->andWhere("inactivo=:inactivo", [":inactivo" => 0])
                                     ->asArray()->all(); 
                                     
             //$sql = 'SELECT id_impuesto, id_contribuyente FROM inmuebles WHERE manzana_limite=:manzana_limite and catastro=:catastro';
@@ -315,7 +315,7 @@ class InmueblesUrbanosForm extends \yii\db\ActiveRecord
                     $this->addError($attribute, Yii::t('backend', 'The taxpayer: '.$table[0]['id_contribuyente'].' has already assigned cadestre. Tax: '.$table[0]['id_impuesto']));//Impuesto: '.$table->id_impuesto; 
             }
                             
-          }
+          
      } 
     
 
