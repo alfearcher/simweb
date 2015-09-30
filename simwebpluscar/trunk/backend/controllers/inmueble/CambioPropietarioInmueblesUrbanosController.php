@@ -137,16 +137,16 @@ CONTENIDO VENDEDOR (SELLER)
                         $tipo = 0;
                     }
 
-                    $modelParametros = ContribuyentesForm::find()->where(['naturaleza'=>$datosCambio["naturalezaBuscar1"];])
-                                                                 ->andWhere(['cedula'=>$datosCambio["cedulaBuscar1"];])
+                    $modelParametros = ContribuyentesForm::find()->where(['naturaleza'=>$datosCambio["naturalezaBuscar1"]])
+                                                                 ->andWhere(['cedula'=>$datosCambio["cedulaBuscar1"]])
                                                                  ->andWhere(['tipo'=>$tipo])->asArray()->all();                                         
 
 
                     if ($btn['AcceptSeller']!=null) {
 
-                        $id_contribuyenteVendedor = $datosCambio["id_contribuyente"];;
-                        $id_impuestoVenta = $datosCambio["direccion"];;
-                        $ano_traspaso = $datosCambio["ano_traspaso"];;
+                        $id_contribuyenteVendedor = $datosCambio["id_contribuyente"];
+                        $id_impuestoVenta = $datosCambio["direccion"];
+                        $ano_traspaso = $datosCambio["ano_traspaso"];
 
                         $id_contribuyenteComprador = $modelParametros[0]['id_contribuyente'];
 
