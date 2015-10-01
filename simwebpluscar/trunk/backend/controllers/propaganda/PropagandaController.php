@@ -105,6 +105,37 @@ class PropagandaController extends Controller
         }
     }
   
+	/**
+    * Metodo actionView(), retorna una vista para visualizar los datos modificados o registrados de las propagandas
+    * @param string $id
+    * @return mixed
+    */
+    public function actionView( $id )
+    {	
+        $conexion = new ConexionController();
+        $conn = $conexion->initConectar( 'db' );
+        $conn->open();  
+	
+        if( $id == '' ) {
+			
+					$sql_max = " SELECT MAX(id_impuesto) AS id_impuesto FROM propagandas WHERE inactivo = 0 ";
+					$id = $conn->createCommand( $sql_max )->queryAll();
+					$id = $id[0]["id_impuesto"];
+		} else {
+					$id = $id;
+		}
+	
+        $sql = " SELECT A.id_impuesto, A.ano_impositivo, B.razon_social, C.descripcion AS clase, D.descripcion AS uso, A.cantidad_tiempo, A.fecha_desde, A.fecha_fin, E.descripcion AS tiempo, A.direccion, A.observacion, ";
+		$sql.= " A.cantidad_base, F.descripcion AS base, A.cantidad_propagandas, A.cigarros, A.bebidas_alcoholicas, A.idioma, A.id_sim, H.descripcion AS tipo, I.descripcion AS medio, J.descripcion AS transporte, A.id_cp ";
+        $sql.= " FROM propagandas A, contribuyentes B, clases_propagandas C, usos_propagandas D, tiempos E, bases_calculos F, tipos_propagandas H, medios_difusion I, medios_transportes J";
+        $sql.= " WHERE A.id_impuesto = {$id} AND A.id_contribuyente = B.id_contribuyente AND A.clase_propaganda = C.clase_propaganda AND A.uso_propaganda = D.uso_propaganda AND A.id_tiempo = E.id_tiempo ";
+		$sql.= " AND A.base_calculo = F.base_calculo AND A.tipo_propaganda = H.tipo_propaganda AND A.medio_difusion = I.medio_difusion AND A.medio_transporte = J.medio_transporte";
+        $model = $conn->createCommand( $sql )->queryAll();
+            
+        return $this->render( 'view', [ 'model' => $model ] );
+    }
+	
+  
     /** 
     *   Metodo actionSearch(), retorna los catalagos de las propagandas dependiendo del @param $ano_impositivo, a consultar.
     * 	@param $conn, instancia de conexion a base de datos.
@@ -250,7 +281,7 @@ class PropagandaController extends Controller
                                         $transaccion->commit();
                                         $tipoError = 0;
                                         $msg = "REGISTRATION SUCCESSFUL ! .... Wait";
-                                        $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("propaganda/propaganda/index")."'>";
+										$url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("propaganda/propaganda/view")."&id=$id'>";
                                         return $this->render( '/mensaje/mensaje', [ 'msg' => $msg, 'url' => $url, 'tipoError' => $tipoError ] );
                             } else {
                                         $transaccion->rollBack();
@@ -356,13 +387,13 @@ class PropagandaController extends Controller
                             $transaccion->commit(); 
                             $tipoError = 0;
                             $msg = "SUCCESSFULLY MODIFIED! .... Wait";
-                            $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("propaganda/propaganda/index")."'>";
+							$url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("propaganda/propaganda/view")."&id=$id'>";
                             return $this->render( '/mensaje/mensaje', [ 'msg' => $msg, 'url' => $url, 'tipoError' => $tipoError ] );
                 } else {
                             $transaccion->rollBack();
                             $tipoError = 1;
                             $msg = "ERROR OCCURRED!....Wait";
-                            $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("propaganda/propaganda/index")."'>";
+							$url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("propaganda/propaganda/update")."&id=$id'>";
                             return $this->render( '/mensaje/mensaje', [ 'msg' => $msg, 'url' => $url, 'tipoError' => $tipoError ] );
                 }   
                             $this->conexion->close();

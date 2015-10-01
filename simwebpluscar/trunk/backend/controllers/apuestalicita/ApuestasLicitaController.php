@@ -86,51 +86,37 @@ class ApuestasLicitaController extends Controller
     }
     
     /**
-    * Displays a single apuestas licitas model.
+    * Metodo actionView(), retorna una vista para visualizar los datos modificados o registrados de las apuestas licitas
     * @param string $id
     * @return mixed
     */
-    public function actionViewUpdate( $id )
-    {
-        $conexion = new ConexionController();
-        $conn = $conexion->initConectar( 'db' );
-        $conn->open();  
-            
-        $sql = " SELECT A.id_impuesto, A.descripcion, A.direccion, A.fecha_creacion, B.razon_social";
-        $sql.= " FROM apuestas A, contribuyentes B ";
-        $sql.= " WHERE A.id_contribuyente = B.id_contribuyente AND A.id_impuesto = {$id}";
-        $model = $conn->createCommand( $sql )->queryAll();
-            
-        return $this->render( 'view-update', [ 'model' => $model ] );
-    }
-    
-     /**
-    * Displays a single apuestas licitas model.
-    * @param string $id
-    * @return mixed
-    * @return mixed
-    */
-    public function actionViewCreate()
+    public function actionView( $id )
     {
         $conexion = new ConexionController();
         $conn = $conexion->initConectar( 'db' );
         $conn->open();  
         
-        $sql_max = " SELECT MAX(id_impuesto) AS id_impuesto FROM apuestas WHERE status_apuesta = 0";
-        $id = $conn->createCommand( $sql_max )->queryAll();
-       
+		if( $id == '' ) {
+		
+					$sql_max = " SELECT MAX(id_impuesto) AS id_impuesto FROM apuestas WHERE status_apuesta = 0";
+					$id = $conn->createCommand( $sql_max )->queryAll();
+					$id = $id[0]["id_impuesto"];
+        } else {
+	   				$id = $id;
+		}
+		
         $sql = " SELECT A.id_impuesto, A.descripcion, A.direccion, A.fecha_creacion, B.razon_social";
         $sql.= " FROM apuestas A, contribuyentes B ";
-        $sql.= " WHERE A.id_contribuyente = B.id_contribuyente AND A.id_impuesto = {$id[0]["id_impuesto"]}";
+        $sql.= " WHERE A.id_contribuyente = B.id_contribuyente AND A.id_impuesto = {$id}";
         $model = $conn->createCommand( $sql )->queryAll();
-           
-        return $this->render( 'view-create', [ 'model' => $model ] );
+		//ECHO $sql;exit();
+		
+		return $this->render( 'view', [ 'model' => $model ] );
     }
     
     /**
-    * Displays a single apuestas licitas model.
+    * Metodo actionView(), retorna una vista para visualizar los datos registrados de los historicos de la apuesta licita
     * @param string $id
-    * @return mixed
     * @return mixed
     */
     public function actionViewHistorico( $id )
@@ -202,7 +188,7 @@ class ApuestasLicitaController extends Controller
                                     $transaccion->commit();
                                     $tipoError = 0;
                                     $msg = "REGISTRATION SUCCESSFUL ! .... Wait";
-                                    $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("apuestalicita/apuestas-licita/view-create")."'>";
+                                    $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("apuestalicita/apuestas-licita/view")."&id=$id'>";
                                     return $this->render( '/mensaje/mensaje', [ 'msg' => $msg, 'url' => $url, 'tipoError' => $tipoError ] );
                         } else {
                                     $transaccion->rollBack();
@@ -308,7 +294,7 @@ class ApuestasLicitaController extends Controller
                             $transaccion->commit(); 
                             $tipoError = 0;
                             $msg = "SUCCESSFULLY MODIFIED! .... Wait";
-                            $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("apuestalicita/apuestas-licita/view-update")."&id=$id'>";
+                            $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("apuestalicita/apuestas-licita/view")."&id=$id'>";
                             return $this->render( '/mensaje/mensaje', [ 'msg' => $msg, 'url' => $url, 'tipoError' => $tipoError ] );
                 } else {
                             $transaccion->rollBack();
