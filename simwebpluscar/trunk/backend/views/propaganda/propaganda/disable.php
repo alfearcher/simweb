@@ -49,8 +49,6 @@ use backend\models\propaganda\PropagandaForm;
 use backend\models\PagosDetalle;
 
 $this->title = Yii::t('backend', 'Disable Propaganda');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('backend','Propagandas'), 'url' => ['index1']];
-$this->params['breadcrumbs'][] = $this->title;
 ?>
     
 <div class="propagandas-disable">

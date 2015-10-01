@@ -510,7 +510,13 @@ function puntitos( donde, caracter, campo ) {
                         <tr>
                             <td colspan="2">
                                 <?= Html::submitButton( $model->isNewRecord ? 'Create' : 'Update', [ 'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'name'=> 'btn', ' value'=> 'crud' ] ) ?>
-                                <?= Html::a(Yii::t('backend', 'Quit'), ['propaganda/propaganda/index'], ['class' => 'btn btn-danger']) ?>
+                                
+								<?php if( $_GET['r'] == 'propaganda/propaganda/update' ) { ?>
+								
+																								<?= Html::a(Yii::t('backend', 'Quit'), ['propaganda/propaganda/index'], ['class' => 'btn btn-danger']) ?>
+            					<?php } else { ?>
+																								<?= Html::a(Yii::t('backend', 'Quit'), ['menu/vertical'], ['class' => 'btn btn-danger']) ?>
+								<?php } ?>
                             </td>
                         </tr>
                     </table>

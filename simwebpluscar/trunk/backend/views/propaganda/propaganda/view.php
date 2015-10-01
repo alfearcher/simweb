@@ -276,8 +276,11 @@ use yii\widgets\DetailView;
 					
                    <tr>
                         <td colspan="2">
-                            <?= Html::a(Yii::t('backend', 'Quit'), ['propaganda/propaganda/index'], ['class' => 'btn btn-danger']) ?>
-               
+							<?php if( $create == 1 ) { ?>
+															<?= Html::a(Yii::t('backend', 'Quit'), ['propaganda/propaganda/create'], ['class' => 'btn btn-danger']) ?>
+							<?php } else { ?>
+															<?= Html::a(Yii::t('backend', 'Quit'), ['propaganda/propaganda/index'], ['class' => 'btn btn-danger']) ?>
+							<?php } ?>
                         </td>   
                     </tr>
                 </table>
