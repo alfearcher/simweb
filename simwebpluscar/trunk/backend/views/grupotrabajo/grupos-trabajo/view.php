@@ -2,10 +2,6 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-
-/* @var $this yii\web\View */
-/* @var $model backend\models\VehiculosForm */
-
 ?>
 
 <div class="col-sm-8" style="margin-left:20%">
@@ -88,7 +84,11 @@ use yii\widgets\DetailView;
                     
                    <tr>
                         <td colspan="2">
-                            <?= Html::a(Yii::t('backend', 'Quit'), ['grupotrabajo/grupos-trabajo/index'], ['class' => 'btn btn-danger']) ?>
+							<?php if( $create == 1 ) { ?>
+															<?= Html::a(Yii::t('backend', 'Quit'), ['grupotrabajo/grupos-trabajo/create'], ['class' => 'btn btn-danger']) ?>
+							<?php } else { ?>
+															<?= Html::a(Yii::t('backend', 'Quit'), ['grupotrabajo/grupos-trabajo/index'], ['class' => 'btn btn-danger']) ?>
+							<?php } ?>
                         </td>   
                     </tr>
                 </table>
