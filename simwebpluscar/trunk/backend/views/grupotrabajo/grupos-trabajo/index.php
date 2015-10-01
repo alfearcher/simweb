@@ -5,7 +5,7 @@ use yii\grid\GridView;
 use yii\db\DataReader;
 use yii\data\ActiveDataProvider;
 
-$this->title =Yii::t( 'backend', 'Work Groups' );
+$this->title =Yii::t( 'backend', 'List of Working Groups' );
 ?>
 
 <div class="grupos-trabajo-form-index">
