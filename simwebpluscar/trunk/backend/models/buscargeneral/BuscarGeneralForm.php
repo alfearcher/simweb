@@ -60,7 +60,7 @@
 		public $cedula;
 		public $tipo;						// Ultimo numero del rif del contribuyente juridico.
 		public $apellidos;
-		public $nombre;
+		public $nombres;
 		public $razon_social;
 		public $tipo_naturaleza;			// 0 => Natural  1 => Juridico
 		public $inactivo;					// Indicador de la condicion del registros, 0 => Activo 1 => Inactivo
