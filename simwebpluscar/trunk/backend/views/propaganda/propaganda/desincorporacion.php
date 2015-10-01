@@ -5,7 +5,7 @@ use yii\grid\GridView;
 use yii\db\DataReader;
 use yii\data\ActiveDataProvider;
 
-$this->title =Yii::t( 'backend', 'Propagandas' );
+$this->title =Yii::t( 'backend', 'List of Advertisements' );
 ?>
 
 <script type="text/javascript">
