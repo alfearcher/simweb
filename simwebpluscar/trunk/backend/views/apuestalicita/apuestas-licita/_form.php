@@ -212,11 +212,12 @@ function puntitos( donde, caracter, campo ) {
                                     <td colspan="2">
                                         <?= Html::submitButton($model->isNewRecord ? Yii::t('backend', 'Create') : Yii::t('backend', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
                                         
-										<?php if( $_GET['r'] == 'apuestalicita/apuestas-licita/create' ) { ?>
-															<?= Html::a( Yii::t( 'backend', 'Quit' ), [ 'menu/vertical' ], [ 'class' => 'btn btn-danger' ]) ?>
-										<?php }else{ ?>
-															<?= Html::a(Yii::t('backend', 'Quit'), ['apuestalicita/apuestas-licita/index'], ['class' => 'btn btn-danger']) ?>
-										<?php } ?>
+										<?php if( $_GET['r'] == 'apuestalicita/apuestas-licita/update' ) { ?>
+								
+																								<?= Html::a(Yii::t('backend', 'Quit'), ['apuestalicita/apuestas-licita/index'], ['class' => 'btn btn-danger']) ?>
+            					<?php } else { ?>
+																								<?= Html::a(Yii::t('backend', 'Quit'), ['menu/vertical'], ['class' => 'btn btn-danger']) ?>
+								<?php } ?>
                                     </td>
                                 </tr>
                             </table>
