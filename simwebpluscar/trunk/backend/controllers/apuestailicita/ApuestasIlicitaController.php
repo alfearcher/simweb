@@ -236,7 +236,7 @@ class ApuestasIlicitaController extends Controller
     *   @param $status_apuesta, integer. 
     */  
     public function actionUpdate( $id ) 
-    {echo "Hola";exit();
+    {	
         if ( isset( $_SESSION['idContribuyente'] ) ) {
         
             $model = $this->findModel( $id );
@@ -280,7 +280,7 @@ class ApuestasIlicitaController extends Controller
 
                             $resultadoOperacion = $operacion->registrarHistorico( $conexion, $conn, $datos );
 
-                            if( !$resultadoOperacion == true ) {
+                            if( $resultadoOperacion == true ) {
 
                                         $transaccion->commit(); 
                                         $tipoError = 0;
@@ -291,7 +291,7 @@ class ApuestasIlicitaController extends Controller
                                         $transaccion->rollBack();
                                         $tipoError = 1;
                                         $msg = "ERROR OCCURRED !....Wait";
-                                        $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("apuestailicita/apuestas-ilicita/update")."&id=$id>";
+                                        $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("apuestailicita/apuestas-ilicita/update")."&id=$id'>";
                                         return $this->render( '/mensaje/mensaje', [ 'msg' => $msg, 'url' => $url, 'tipoError' => $tipoError ] );
                             }
                         } else { 
