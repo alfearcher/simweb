@@ -2,71 +2,75 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+
+/* @var $this yii\web\View */
+/* @var $model backend\models\VehiculosForm */
+
 ?>
 
 <div class="col-sm-8" style="margin-left:20%">
     <div class="panel panel-primary">
-        <div class="panel-heading"><?=  Yii::t( 'backend', 'View Lawful Bets Modified:&nbsp;'.$model[0]['id_impuesto'])?></div>
+        <div class="panel-heading"><?=  Yii::t( 'backend', 'View Workgroups:&nbsp;'.$model[0]['id_grupo'])?></div>
             <div class="panel-body" >
                 <table class="table table-striped">
 
                     <tr align="center">
                         <td width="50%">
                             <div>
-                                <p><i><small><?=  Yii::t( 'backend', 'Id Tax:' )?></p></i></small>
+                                <p><i><small><?=  Yii::t( 'backend', 'Id Workgroup:' )?></p></i></small>
                             </div>
                         </td>
                             
                         <td width="50%">
-                            <div><?= $model[0]['id_impuesto'];?></div>
+                            <div><?= $model[0]['id_grupo'];?></div>
                         </td>   
                     </tr>
                     
                     <tr align="center">
                         <td width="50%">
                             <div>
-                                <p><i><small><?=  Yii::t( 'backend', 'Taxpayer Name:' )?></p></i></small>
-                            </div>
-                        </td>
-                            
-                        <td width="50%">
-                            <div><?= $model[0]['razon_social'];?></div>
-                        </td>   
-                    </tr>
-                    
-                    <tr align="center">
-                        <td width="50%">
-                            <div>
-                                <p><i><small><?=  Yii::t( 'backend', 'Description of Lawful Bets:' )?></p></i></small>
+                                <p><i><small><?=  Yii::t( 'backend', 'Group Description:' )?></p></i></small>
                             </div>
                         </td>
                             
                         <td width="50%">    
-                            <div><?= $model[0]['descripcion'];?></div>
+                            <div><?= $model[0]['descripcion']?></div>
                         </td>   
                     </tr>
                     
                     <tr align="center">
                         <td width="50%">
                             <div>
-                                <p><i><small><?=  Yii::t( 'backend', 'Address:' )?></p></i></small>
+                                <p><i><small><?=  Yii::t( 'backend', 'Description Department:' )?></p></i></small>
                             </div>
                         </td>
                             
                         <td width="50%">    
-                            <div><?= $model[0]['direccion'];?></div>
+                            <div><?= $model[0]['departamento']?></div>
                         </td>   
                     </tr>
                     
                     <tr align="center">
                         <td width="50%">
                             <div>
-                                <p><i><small><?=  Yii::t( 'backend', 'Status Bet:' )?></p></i></small>
+                                <p><i><small><?=  Yii::t( 'backend', 'Description Unit:' )?></p></i></small>
                             </div>
                         </td>
                             
                         <td width="50%">    
-                           <div><?php if($model[0]['status_apuesta'] == 0){ echo "ACTIVO";}else{ echo "INACTIVO";}?></div>
+                            <div><?= $model[0]['unidad']?></div>
+                        </td>   
+                    </tr>
+                    
+                    <tr align="center">
+                        <td width="50%">
+                            <div>
+                                <p><i><small><div><?=  Yii::t( 'backend', 'Status Group:' )?></div></p></i></small>
+                            </div>
+                        </td>
+                            
+                        <td width="50%">    
+                            <div><?php if($model[0]['inactivo'] == 0){ echo "ACTIVO";}else{ echo "INACTIVO";}?></div>
                         </td>   
                     </tr>
                     
@@ -78,14 +82,13 @@ use yii\widgets\DetailView;
                         </td>
                             
                         <td width="50%">    
-                            <div><?= $model[0]['fecha_creacion'];?></div>
+                            <div><?= $model[0]['fecha']?></div>
                         </td>   
                     </tr>
                     
                    <tr>
                         <td colspan="2">
-                            <?= Html::a(Yii::t('backend', 'Quit'), ['apuestalicita/apuestas-licita/index'], ['class' => 'btn btn-danger']) ?>
-               
+                            <?= Html::a(Yii::t('backend', 'Quit'), ['grupotrabajo/grupos-trabajo/index'], ['class' => 'btn btn-danger']) ?>
                         </td>   
                     </tr>
                 </table>

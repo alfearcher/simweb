@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 
 <div class="col-sm-8" style="margin-left:20%">
     <div class="panel panel-primary">
-        <div class="panel-heading"><?=  Yii::t( 'backend', 'View of Historical Recorded Lawful Bets:&nbsp;'.$model[0]['id_impuesto'])?></div>
+        <div class="panel-heading"><?=  Yii::t( 'backend', 'View History Log Bet:&nbsp;'.$model[0]['id_impuesto'])?></div>
             <div class="panel-body" >
                 <table class="table table-striped">
 
@@ -78,7 +78,7 @@ use yii\widgets\DetailView;
                         </td>
                             
                         <td width="50%">    
-                            <div><?= $model[0]['monto_apuesta'];?></div>
+                            <div><?= number_format($model[0]['monto_apuesta'],2,",",".");?></div>
                         </td>   
                     </tr>
                     

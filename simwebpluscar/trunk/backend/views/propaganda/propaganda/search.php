@@ -52,7 +52,7 @@ $this->title = Yii::t( 'backend', 'Search Catalogs Propaganda' );
                                 <td>
                                     <div>
                                         <?= Html::submitButton( Yii::t( 'backend', 'Search' ),[ 'class' => $model->isNewRecord ? 'btn btn-primary' : 'btn btn-primary', 'name' => 'btn', 'value' => 'search' ] )?>
-                                        <?= Html::a(Yii::t('backend', 'Quit'), ['propaganda/propaganda/index'], ['class' => 'btn btn-danger']) ?>
+                                        <?= Html::a(Yii::t('backend', 'Quit'), ['propaganda/propaganda/create'], ['class' => 'btn btn-danger']) ?>
                                     </div>
                                 </td>
                             </tr>

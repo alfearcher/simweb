@@ -15,8 +15,8 @@ use backend\models\MediosTransporte;
 
 $fecha_fin = '00/00/0000';
 
-if( $_GET['r'] == 'propaganda/update' ) {
-        
+if( $_GET['r'] == 'propaganda/propaganda/update' ) {
+       
             $verificar = 1;
             $ano = $model->ano_impositivo;
             $fecha_guardado = $model->fecha_guardado;
@@ -429,11 +429,11 @@ function puntitos( donde, caracter, campo ) {
                                     ?>
                                     <?= $form->field( $model, 'tipo_propaganda' )->label( false )->dropDownList( $listaTiposPropaganda, [  'id' => 'tipo_propaganda',
                                                                                                                                            'prompt' => Yii::t('backend','Select'),
-                                                                                                                                           'style' => 'width:110%;',
+                                                                                                                                           'style' => 'width:115%;',
                                                                                                                                            'onchange' =>'mostrar_contenido()'
                                                                                                                                         ] );
                                     ?>
-                                    <?= $form->field( $model, 'id_tipo_propaganda' )->label( false )->textArea( [ 'style' => 'width:110%;', 'maxlength' => true,'id' => 'id_tipo_propaganda', 'readonly' => 'readonly' ] )?>
+                                    <?= $form->field( $model, 'id_tipo_propaganda' )->label( false )->textArea( [ 'style' => 'width:115%;', 'maxlength' => true,'id' => 'id_tipo_propaganda', 'readonly' => 'readonly' ] )?>
                                 </div>
                             </td>
                         </tr>
@@ -447,7 +447,7 @@ function puntitos( donde, caracter, campo ) {
                                     ?>
                                     <?= $form->field( $model, 'medio_difusion' )->label( false )->dropDownList( $listaMediosDifusion, [   'id' => 'medio_difusion',
                                                                                                                                           'prompt' => Yii::t('backend','Select'),
-                                                                                                                                          'style' => 'width:100%;'
+                                                                                                                                          'style' => 'width:107%;'
                                                                                                                                       ] )
                                     ?> 
                                 </div>
@@ -461,7 +461,7 @@ function puntitos( donde, caracter, campo ) {
                                     ?>
                                     <?= $form->field( $model, 'medio_transporte' )->label( false )->dropDownList( $listaMediosTransporte, [  'id' => 'medio_trasnporte',
                                                                                                                                              'prompt' => Yii::t('backend','Select'),
-                                                                                                                                              'style' => 'width:100%;'
+                                                                                                                                              'style' => 'width:108%;'
                                                                                                                                           ] );
                                     ?> 
                                 </div>
@@ -472,14 +472,14 @@ function puntitos( donde, caracter, campo ) {
                             <td>
                                 <div>
                                     <p><i><small><?= Yii::t( 'backend', 'Address:' ) ?></small></i></p>
-                                    <?= $form->field( $model, 'direccion' )->label( false )->textArea( [ 'maxlength' => true, 'style' => 'width:100%;text-transform:uppercase;' ] )?> 
+                                    <?= $form->field( $model, 'direccion' )->label( false )->textArea( [ 'maxlength' => true, 'style' => 'width:107%;text-transform:uppercase;' ] )?> 
                                 </div>
                             </td>
                                
                                 <td>
                                     <div>
                                         <p><i><small><?= Yii::t( 'backend', 'Observation:' ) ?></small></i></p>
-                                        <?= $form->field( $model, 'observacion')->label( false )->textArea( [ 'maxlength' => true,'style' => 'width:100%;text-transform:uppercase;' ] )?> 
+                                        <?= $form->field( $model, 'observacion')->label( false )->textArea( [ 'maxlength' => true,'style' => 'width:108%;text-transform:uppercase;' ] )?> 
                                     </div>
                                 </td>
                         </tr>
@@ -487,7 +487,7 @@ function puntitos( donde, caracter, campo ) {
                     
                     <table class="table table-striped">                
                         <tr>
-                            <td width="73%">
+                            <td width="78%">
                                 <div>
                                     <p><i><small><?= Yii::t( 'backend', 'State&nbsp;/&nbsp;Town&nbsp;/&nbsp;Parish&nbsp;/&nbsp;Population center:' )?></small></i></p>
                                     <?= $form->field( $model, 'est_mun_parr_cp' )->label( false )->textInput( [ 'maxlength' => true, 'style' => 'width:120%;' ] )?> 
@@ -497,7 +497,7 @@ function puntitos( donde, caracter, campo ) {
                             <td>
                                 <div class="col-md-5">
                                     <p><i><small><?= Yii::t( 'backend', 'Location:' ) ?></small></i></p>
-                                    <?= $form->field( $model, 'id_cp' )->label( false )->textInput( [ 'maxlength' => true,'style' => 'width:135%;' ] )?> 
+                                    <?= $form->field( $model, 'id_cp' )->label( false )->textInput( [ 'maxlength' => true,'style' => 'width:150%;' ] )?> 
                                 </div> 
                                     
                                 <div class="col-md-3"> 

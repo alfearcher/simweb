@@ -27,7 +27,7 @@ $this->title = Yii::t( 'backend', 'Catalogs Propaganda' );
             <div class="panel panel-primary">
                 <div class="panel-heading"><?=  Yii::t( 'backend',$this->title."&nbsp;Year:&nbsp;".$model->ano_impo )?></div>
                     <div class="panel-body" >
-                        <table class="table table-striped" style="border:1px solid #ccc;">
+                        <table class="table table-striped">
                             
                             <tr align="center">
                                 <td>
@@ -151,7 +151,7 @@ $this->title = Yii::t( 'backend', 'Catalogs Propaganda' );
                             <tr>
                                 <td colspan="9">
                                     <div>
-                                        <?= Html::a(Yii::t('backend', 'Quit'), ['propaganda/propaganda/index'], ['class' => 'btn btn-danger']) ?>
+                                        <?= Html::a(Yii::t('backend', 'Quit'), ['propaganda/propaganda/create'], ['class' => 'btn btn-danger']) ?>
                                     </div>  
                                 </td>
                             </tr>
