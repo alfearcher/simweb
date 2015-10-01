@@ -121,6 +121,7 @@ class PropagandaController extends Controller
 					$sql_max = " SELECT MAX(id_impuesto) AS id_impuesto FROM propagandas WHERE inactivo = 0 ";
 					$id = $conn->createCommand( $sql_max )->queryAll();
 					$id = $id[0]["id_impuesto"];
+					$create = 1;
 		} else {
 					$id = $id;
 		}
@@ -132,7 +133,7 @@ class PropagandaController extends Controller
 		$sql.= " AND A.base_calculo = F.base_calculo AND A.tipo_propaganda = H.tipo_propaganda AND A.medio_difusion = I.medio_difusion AND A.medio_transporte = J.medio_transporte";
         $model = $conn->createCommand( $sql )->queryAll();
             
-        return $this->render( 'view', [ 'model' => $model ] );
+        return $this->render( 'view', [ 'model' => $model, 'create' => $create ] );
     }
 	
   

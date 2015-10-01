@@ -106,6 +106,7 @@ class GruposTrabajoController extends Controller
 					$sql_max = " SELECT MAX(id_grupo) AS id_grupo FROM grupos_trabajo WHERE inactivo = 0";
 					$id = $conn->createCommand( $sql_max )->queryAll();
 					$id = $id[0]["id_grupo"];
+					$create = 1;
 		} else {
 					$id = $id;
 		}
@@ -115,7 +116,7 @@ class GruposTrabajoController extends Controller
         $sql.= " WHERE A.id_departamento = C.id_departamento AND A.id_unidad = B.id_unidad AND A.INACTIVO = '0' AND A.id_grupo= {$id}";
         $model = $conn->createCommand( $sql )->queryAll();
            
-        return $this->render( 'view', [ 'model' => $model ] );
+        return $this->render( 'view', [ 'model' => $model, 'id' => $id, 'create' => $create ] );
     }
     
     /** 

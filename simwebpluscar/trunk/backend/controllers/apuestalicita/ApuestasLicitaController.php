@@ -101,6 +101,7 @@ class ApuestasLicitaController extends Controller
 					$sql_max = " SELECT MAX(id_impuesto) AS id_impuesto FROM apuestas WHERE status_apuesta = 0";
 					$id = $conn->createCommand( $sql_max )->queryAll();
 					$id = $id[0]["id_impuesto"];
+					$create = 1;
         } else {
 	   				$id = $id;
 		}
@@ -111,7 +112,7 @@ class ApuestasLicitaController extends Controller
         $model = $conn->createCommand( $sql )->queryAll();
 		//ECHO $sql;exit();
 		
-		return $this->render( 'view', [ 'model' => $model ] );
+		return $this->render( 'view', [ 'model' => $model, 'create' => $create ] );
     }
     
     /**
