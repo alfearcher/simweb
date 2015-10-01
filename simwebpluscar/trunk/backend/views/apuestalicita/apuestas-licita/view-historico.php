@@ -2,15 +2,11 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-
-/* @var $this yii\web\View */
-/* @var $model backend\models\VehiculosForm */
-
 ?>
 
 <div class="col-sm-8" style="margin-left:20%">
     <div class="panel panel-primary">
-        <div class="panel-heading"><?=  Yii::t( 'backend', 'View Unlawful bet Modified:&nbsp;'.$model[0]['id_impuesto'])?></div>
+        <div class="panel-heading"><?=  Yii::t( 'backend', 'View of Historical Recorded Lawful Bets:&nbsp;'.$model[0]['id_impuesto'])?></div>
             <div class="panel-body" >
                 <table class="table table-striped">
 
@@ -29,66 +25,78 @@ use yii\widgets\DetailView;
                     <tr align="center">
                         <td width="50%">
                             <div>
-                                <p><i><small><?=  Yii::t( 'backend', 'Taxpayer Name:' )?></p></i></small>
+                                <p><i><small><?=  Yii::t( 'backend', 'Class Bet:' )?></p></i></small>
                             </div>
                         </td>
                             
                         <td width="50%">
-                            <div><?= $model[0]['razon_social'];?></div>
+                            <div><?= $model[0]['clase'];?></div>
                         </td>   
                     </tr>
                     
                     <tr align="center">
                         <td width="50%">
                             <div>
-                                <p><i><small><?=  Yii::t( 'backend', 'Description of the Illicit Bets:' )?></p></i></small>
+                                <p><i><small><?=  Yii::t( 'backend', 'Type Bet:' )?></p></i></small>
                             </div>
                         </td>
                             
                         <td width="50%">    
-                            <div><?= $model[0]['descripcion'];?></div>
+                            <div><?= $model[0]['tipo'];?></div>
                         </td>   
                     </tr>
                     
                     <tr align="center">
                         <td width="50%">
                             <div>
-                                <p><i><small><?=  Yii::t( 'backend', 'Address:' )?></p></i></small>
+                                <p><i><small><?=  Yii::t( 'backend', 'Date From:' )?></p></i></small>
                             </div>
                         </td>
                             
                         <td width="50%">    
-                            <div><?= $model[0]['direccion'];?></div>
+                            <div><?= $model[0]['fecha_desde'];?></div>
                         </td>   
                     </tr>
                     
                     <tr align="center">
                         <td width="50%">
                             <div>
-                                <p><i><small><?=  Yii::t( 'backend', 'Status Bet:' )?></p></i></small>
+                                <p><i><small><?=  Yii::t( 'backend', 'To Date:' )?></p></i></small>
                             </div>
                         </td>
                             
                         <td width="50%">    
-                           <div><?php if($model[0]['status_apuesta'] == 0){ echo "ACTIVO";}else{ echo "INACTIVO";}?></div>
+                           <div><?= $model[0]['fecha_hasta'];?></div>
                         </td>   
                     </tr>
                     
                     <tr align="center">
                         <td width="50%">
                             <div>
-                                <p><i><small><?=  Yii::t( 'backend', 'Date Creation:' )?></p></i></small>
+                                <p><i><small><?=  Yii::t( 'backend', 'Amount Bet:' )?></p></i></small>
                             </div>
                         </td>
                             
                         <td width="50%">    
-                            <div><?= $model[0]['fecha_creacion'];?></div>
+                            <div><?= $model[0]['monto_apuesta'];?></div>
+                        </td>   
+                    </tr>
+                    
+                    <tr align="center">
+                        <td width="50%">
+                            <div>
+                                <p><i><small><?=  Yii::t( 'backend', '% Applied::' )?></p></i></small>
+                            </div>
+                        </td>
+                            
+                        <td width="50%">    
+                            <div><?= $model[0]['porcentaje'];?></div>
                         </td>   
                     </tr>
                     
                    <tr>
                         <td colspan="2">
-                            <?= Html::a(Yii::t('backend', 'Quit'), ['apuestailicita/apuestas-ilicita/index'], ['class' => 'btn btn-danger']) ?>
+                            <?= Html::a(Yii::t('backend', 'Quit'), ['apuestalicita/apuestas-licita/index'], ['class' => 'btn btn-danger']) ?>
                
                         </td>   
                     </tr>
@@ -96,4 +104,3 @@ use yii\widgets\DetailView;
             </div>
     </div>        
 </div>
-

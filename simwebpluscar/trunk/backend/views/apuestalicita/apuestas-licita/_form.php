@@ -12,31 +12,26 @@ use backend\models\TarifasApuesta;
 
 $ano = date('Y')+1;
 $fecha_comprobar = $ano.'-01-01';
-        
 ?>
+
 <script type = "text/javascript">
 
 function fecha_validacion0(val) {
-   
-var fecha = val;
-var array = fecha.split("-");
 
-var fecha_actual = new Date();
-var ano_actual = fecha_actual.getFullYear();
+	var fecha = val;
+	var array = fecha.split("-");
 
+	var fecha_actual = new Date();
+	var ano_actual = fecha_actual.getFullYear();
 
-if( array[0]  > ano_actual ){
+	if( array[0]  > ano_actual ) {
     
-    
-    document.getElementById("aimpositivo").value='';
-    
-}else{
-    document.getElementById("aimpositivo").value=array[0];
-   } }
+				document.getElementById("aimpositivo").value='';
+    } else {
+				document.getElementById("aimpositivo").value=array[0];
+   } 
+}
    
-   
-  
-
 function puntitos( donde, caracter, campo ) {
         
     var decimales = true
@@ -111,14 +106,14 @@ function puntitos( donde, caracter, campo ) {
 }
 </script>
 
-<div class="apuestas-ilicita-form">
-    <?php   $form = ActiveForm::begin( [  'id' => 'form-propaganda-inline',
-                                          'type' => ActiveForm::TYPE_HORIZONTAL,
-                                          'formConfig' => [ 'showErrors' => true, 
-                                          'deviceSize' => ActiveForm::SIZE_SMALL, 
-                                          'labelSpan' => 2,
-                                          'showLabels' => true ]
-                                    ] );
+<div class="apuestas-licita-form">
+    <?php   $form = ActiveForm::begin( [	'id' => 'form-apuestas-licita-form-inline',
+											'type' => ActiveForm::TYPE_HORIZONTAL,
+											'formConfig' => [ 'showErrors' => true, 
+											'deviceSize' => ActiveForm::SIZE_SMALL, 
+											'labelSpan' => 2,
+											'showLabels' => true ]
+										] );
     ?>
     
     <?= Html::activeHiddenInput( $operacion, 'fecha_comprobar', [ 'value' => $fecha_comprobar ] ) ?>
@@ -133,13 +128,13 @@ function puntitos( donde, caracter, campo ) {
                         <ul class="nav nav-tabs">
                             <li class="active"><a href="#Betting" data-toggle="tab"><p><i><small><?= Yii::t( 'backend', 'Betting' ) ?></small></i></p></a></li>
 
-                            <?php if( $_GET['r'] == 'apuestailicita/apuestas-ilicita/create' ) { ?>
+                            <?php if( $_GET['r'] == 'apuestalicita/apuestas-licita/create' ) { ?>
 
                                             <li class="disabled"><a href="#Historic" data-toggle="tab disabled"> <p><i><small><?= Yii::t( 'backend', 'Historics' ) ?></small></i></p></a></li>
 
                             <?php }else{ ?>
 
-                                            <li class=""><a href="#Historic" data-toggle="tab"> <p><i><small><?= Yii::t( 'backend', 'Historic' ) ?></small></i></p></a></li>
+                                            <li><a href="#Historic" data-toggle="tab"> <p><i><small><?= Yii::t( 'backend', 'Historic' ) ?></small></i></p></a></li>
 
                             <?php } ?>
                         </ul>
@@ -207,7 +202,7 @@ function puntitos( donde, caracter, campo ) {
                                         </div>
                                  
                                         <div class="col-md-3"> 
-                                            <p><i><small><?=Yii::t('backend', '&nbsp;') ?></small></i></p>
+                                            <p><i><small><?= Yii::t('backend', '&nbsp;') ?></small></i></p>
                                             <?= Html::Button( Yii::t( 'backend', 'UPJ' ), [ 'class' => $model->isNewRecord ? 'btn btn-primary' : 'btn btn-primary' ] )?>
                                         </div> 
                                     </td> 
@@ -216,13 +211,18 @@ function puntitos( donde, caracter, campo ) {
                                 <tr>
                                     <td colspan="2">
                                         <?= Html::submitButton($model->isNewRecord ? Yii::t('backend', 'Create') : Yii::t('backend', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-                                        <?= Html::a(Yii::t('backend', 'Quit'), ['menu/vertical'], ['class' => 'btn btn-danger']) ?>
+                                        
+										<?php if( $_GET['r'] == 'apuestalicita/apuestas-licita/create' ) { ?>
+															<?= Html::a( Yii::t( 'backend', 'Quit' ), [ 'menu/vertical' ], [ 'class' => 'btn btn-danger' ]) ?>
+										<?php }else{ ?>
+															<?= Html::a(Yii::t('backend', 'Quit'), ['apuestalicita/apuestas-licita/index'], ['class' => 'btn btn-danger']) ?>
+										<?php } ?>
                                     </td>
                                 </tr>
                             </table>
                         </div>
                                 
-                        <div class="tab-pane" id="Historic">
+						<div class="tab-pane" id="Historic">
                             <table class="table table-striped" border="0px">
                                     
                                 <tr>
@@ -260,7 +260,7 @@ function puntitos( donde, caracter, campo ) {
                                                                                                                                                     'prompt' => Yii::t( 'backend', 'Select' ),
                                                                                                                                                     'style' => 'width:120%;',
                                                                                                                                                     'onchange' => '$.post( "' . Yii::$app->urlManager->createUrl( 'tipos-apuesta/porcentaje' ) . '&id=' . '" + $(this).val(), function( data ) {$( "select#porcentaje" ).html( data );});' 
-                                                                                                                                            ] );
+																																				] );
                                             ?>
                                         </div> 
                                     </td>
@@ -278,7 +278,7 @@ function puntitos( donde, caracter, campo ) {
                                                                                                                                 'style' => 'width:100%;',
                                                                                                                                 //'onchange' => '$.post( "' . Yii::$app->urlManager->createUrl( 'apuestailicita/apuestas-ilicita/lists' ) . '&id=' . '" + $(this).val(), function( data ) {$( "select#fdesde" ).html( data );});' 
                                                                                                                                 'onchange' => 'fecha_validacion0(this.value)'
-                                                                                                                        ] )
+																															] )
                                             ?> 
                                         </div>
                                     </td>
@@ -289,8 +289,7 @@ function puntitos( donde, caracter, campo ) {
                                             <?= $form->field( $operacion, 'fecha_hasta' )->label( false )->input( 'date',  [    'id' => 'fhasta',
                                                                                                                                 'type' => 'date',
                                                                                                                                 'style' => 'width:100%;',
-                                                                                                                                
-                                                                                                                        ] )
+																															] )
                                             ?> 
                                         </div> 
                                     </td> 
@@ -319,10 +318,10 @@ function puntitos( donde, caracter, campo ) {
                                             ?>
 
                                             <?= $form->field( $operacion, 'tipo_apuesta' )->label( false )->dropDownList( $listaTarifa, [   'id' => 'porcentaje',
-                                                                                                                                               'prompt' => Yii::t( 'backend', '' ),
-                                                                                                                                                'style' => 'width:100%;',
-                                                                                                                                                'disabled' => 'disabled',
-                                                                                                                                                //'onchange' => '$.post( "' . Yii::$app->urlManager->createUrl( 'tipos-apuesta/porcentaje' ) . '&id=' . '" + $(this).val(), function( data ) {$( "select#tipoprocentaje" ).html( data );});' 
+                                                                                                                                            'prompt' => Yii::t( 'backend', '' ),
+                                                                                                                                            'style' => 'width:100%;',
+                                                                                                                                            'disabled' => 'disabled',
+                                                                                                                                            //'onchange' => '$.post( "' . Yii::$app->urlManager->createUrl( 'tipos-apuesta/porcentaje' ) . '&id=' . '" + $(this).val(), function( data ) {$( "select#tipoprocentaje" ).html( data );});' 
                                                                                                                                         ] );
                                             ?>
                                         </div> 
@@ -332,12 +331,12 @@ function puntitos( donde, caracter, campo ) {
                                         
                                         <div class="col-md-5">
                                             <p><i><small><?=Yii::t('backend', '&nbsp;') ?></small></i></p>
-                                            <?= Html::submitButton($model->isNewRecord ? Yii::t('backend', 'Save') : Yii::t('backend', 'Save'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-success', 'name' => 'btn', 'value' => 'save']) ?>
+                                            <?= Html::submitButton($model->isNewRecord ? Yii::t('backend', 'Save') : Yii::t('backend', 'Save'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-success', 'name' => 'btn', 'value' => 'save' ]) ?>
                                         </div>
                                         
                                         <div class="col-md-5">
                                             <p><i><small><?=Yii::t('backend', '&nbsp;') ?></small></i></p>
-                                             <?= Html::a(Yii::t('backend', 'Quit'), ['apuestailicita/apuestas-ilicita/index'], ['class' => 'btn btn-danger']) ?>
+                                             <?= Html::a(Yii::t('backend', 'Quit'), ['apuestalicita/apuestas-licita/index'], ['class' => 'btn btn-danger']) ?>
                                         </div>
                                      
                                     </td>

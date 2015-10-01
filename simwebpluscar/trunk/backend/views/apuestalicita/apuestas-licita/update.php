@@ -3,12 +3,12 @@
 use yii\helpers\Html;
 
 $this->title = Yii::t('backend', 'Update {modelClass}: ', [
-    'modelClass' => 'Apuestas Ilicita Form',
+    'modelClass' => 'Apuestas licita Form',
 ]) . ' ' . $model->id_impuesto;
 
-$this->title = Yii::t('backend', 'Update Illicit Bets');
+$this->title = Yii::t('backend', 'Update Lawful Bets');
 ?>
-<div class="apuestas-ilicita-form-update">
+<div class="apuestas-licita-form-update">
 
    <?= $this->render( '_form', [ 'model' => $model, 'operacion' => $operacion, 'consulta_historico' => $consulta_historico ] )?>
 

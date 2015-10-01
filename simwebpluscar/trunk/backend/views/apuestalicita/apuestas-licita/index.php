@@ -9,10 +9,10 @@ use yii\data\ActiveDataProvider;
 /* @var $searchModel backend\models\apuestailicita\ApuestasIlicitaSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('backend', 'Apuestas Ilicita Forms');
+$this->title = Yii::t('backend', 'List of Lawful Bets');
 ?>
 
-<div class="apuestas-ilicita-form-index">
+<div class="apuestas-licita-form-index">
     <h1><?= Html::encode( $this->title )?></h1>
    
 
