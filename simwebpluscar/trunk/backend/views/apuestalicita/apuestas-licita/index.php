@@ -5,10 +5,6 @@ use yii\grid\GridView;
 use yii\db\DataReader;
 use yii\data\ActiveDataProvider;
 
-/* @var $this yii\web\View */
-/* @var $searchModel backend\models\apuestailicita\ApuestasIlicitaSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
-
 $this->title = Yii::t('backend', 'List of Lawful Bets');
 ?>
 
