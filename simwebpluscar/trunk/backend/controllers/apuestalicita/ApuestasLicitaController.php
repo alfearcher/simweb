@@ -21,14 +21,14 @@
  */
 
  /**    
- *      @file ApuestasIlicitaController.php
+ *      @file ApuestasLicitaController.php
  *  
  *      @author Ronny Jose Simosa Montoya
  * 
  *      @date 17-09-2015
  * 
- *      @class ApuestasIlicitaController
- *      @brief Clase permite gestionar las apuestas ilicitas ( crear, modificar y inactivar ).
+ *      @class ApuestasLicitaController
+ *      @brief Clase permite gestionar las apuestas Licitas ( crear, modificar y inactivar ).
  * 
  *  
  *  
@@ -41,7 +41,7 @@
  */
 
 
-namespace backend\controllers\apuestailicita;
+namespace backend\controllers\apuestalicita;
 session_start();
 error_reporting(0);
 
@@ -52,11 +52,11 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use backend\models\TarifasApuesta;
 use common\conexion\ConexionController;
-use backend\models\apuestailicita\HistoricoForm;
-use backend\models\apuestailicita\ApuestasIlicitaForm;
-use backend\models\apuestailicita\ApuestasIlicitaSearch;
+use backend\models\apuestalicita\HistoricoForm;
+use backend\models\apuestalicita\ApuestasLicitaForm;
+use backend\models\apuestalicita\ApuestasLicitaSearch;
 
-class ApuestasIlicitaController extends Controller
+class ApuestasLicitaController extends Controller
 {
     public $layout = 'layout-main';	
     public $conexion;
@@ -69,7 +69,7 @@ class ApuestasIlicitaController extends Controller
     }
     
    /** 
-    *   Metodo actionIndex(), retorna el listado principal de los grupos de trabajo, a la vista index.
+    *   Metodo actionIndex(), retorna el listado principal de las apuestas licitas, a la vista index.
     * 	@param $searchModel, array obtiene los valores filtrados por los campos de busqueda.
     * 	@param $dataProvider, array obtiene los valores de la consulta principal.
     */
@@ -77,7 +77,7 @@ class ApuestasIlicitaController extends Controller
     {
         if ( isset( $_SESSION['idContribuyente'] ) ) {
             
-                    $searchModel = new ApuestasIlicitaSearch();
+                    $searchModel = new ApuestasLicitaSearch();
                     $dataProvider = $searchModel->search( Yii::$app->request->queryParams );
                     return $this->render( 'index', [ 'searchModel' => $searchModel, 'dataProvider' => $dataProvider ] );
         }  else {
@@ -86,7 +86,7 @@ class ApuestasIlicitaController extends Controller
     }
     
     /**
-    * Displays a single GruposTrabajo model.
+    * Displays a single apuestas licitas model.
     * @param string $id
     * @return mixed
     */
@@ -105,7 +105,7 @@ class ApuestasIlicitaController extends Controller
     }
     
      /**
-    * Displays a single GruposTrabajo model.
+    * Displays a single apuestas licitas model.
     * @param string $id
     * @return mixed
     * @return mixed
@@ -128,7 +128,7 @@ class ApuestasIlicitaController extends Controller
     }
     
     /**
-    * Displays a single GruposTrabajo model.
+    * Displays a single apuestas licitas model.
     * @param string $id
     * @return mixed
     * @return mixed
@@ -151,7 +151,7 @@ class ApuestasIlicitaController extends Controller
     }
     
     /** 
-    *   Metodo actionCreate(), permite realizar los registros de las apuestas ilicitas.
+    *   Metodo actionCreate(), permite realizar los registros de las apuestas licitas.
     *   @param $conn, instancia de conexion a base de datos.
     * 	@param $msg, obtiene el valor del mensaje se muestra al retornar a la vista indicada.
     * 	@param $id_contribuyente, interger.
@@ -166,7 +166,7 @@ class ApuestasIlicitaController extends Controller
         if ( isset( $_SESSION['idContribuyente'] ) ) {
             
             $msg = '';
-            $model = new ApuestasIlicitaForm();  
+            $model = new ApuestasLicitaForm();  
             $operacion = new HistoricoForm();  
 
             if( $model->load( Yii::$app->request->post() ) && Yii::$app->request->isAjax ) {
@@ -202,13 +202,13 @@ class ApuestasIlicitaController extends Controller
                                     $transaccion->commit();
                                     $tipoError = 0;
                                     $msg = "REGISTRATION SUCCESSFUL ! .... Wait";
-                                    $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("apuestailicita/apuestas-ilicita/view-create")."'>";
+                                    $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("apuestalicita/apuestas-licita/view-create")."'>";
                                     return $this->render( '/mensaje/mensaje', [ 'msg' => $msg, 'url' => $url, 'tipoError' => $tipoError ] );
                         } else {
                                     $transaccion->rollBack();
                                     $tipoError = 1;
                                     $msg = "ERROR OCCURRED !....Wait";
-                                    $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("apuestailicita/apuestas-ilicita/create")."'>";
+                                    $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("apuestalicita/apuestas-licita/create")."'>";
                                     return $this->render( '/mensaje/mensaje', [ 'msg' => $msg, 'url' => $url, 'tipoError' => $tipoError ] );
                         }
                                 $this->conexion->close();  
@@ -225,7 +225,7 @@ class ApuestasIlicitaController extends Controller
     }
 
     /** 
-    *   Metodo actionUpdate(), permite realizar las modificaciones de las apuestas ilicitas registrados.
+    *   Metodo actionUpdate(), permite realizar las modificaciones de las apuestas licitas registrados.
     *   @param $conn, instancia de conexion a base de datos.
     * 	@param $msg, obtiene el valor del mensaje se muestra al retornar a la vista indicada.
     * 	@param $id_contribuyente, interger.
@@ -285,13 +285,13 @@ class ApuestasIlicitaController extends Controller
                                         $transaccion->commit(); 
                                         $tipoError = 0;
                                         $msg = "REGISTRATION SUCCESSFUL ! .... Wait";
-                                        $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("apuestailicita/apuestas-ilicita/view-historico")."&id=$id'>";
+                                        $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("apuestalicita/apuestas-licita/view-historico")."&id=$id'>";
                                         return $this->render( '/mensaje/mensaje', [ 'msg' => $msg, 'url' => $url, 'tipoError' => $tipoError ] );
                             } else {
                                         $transaccion->rollBack();
                                         $tipoError = 1;
                                         $msg = "ERROR OCCURRED !....Wait";
-                                        $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("apuestailicita/apuestas-ilicita/update")."&id=$id'>";
+                                        $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("apuestalicita/apuestas-licita/update")."&id=$id'>";
                                         return $this->render( '/mensaje/mensaje', [ 'msg' => $msg, 'url' => $url, 'tipoError' => $tipoError ] );
                             }
                         } else { 
@@ -308,13 +308,13 @@ class ApuestasIlicitaController extends Controller
                             $transaccion->commit(); 
                             $tipoError = 0;
                             $msg = "SUCCESSFULLY MODIFIED! .... Wait";
-                            $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("apuestailicita/apuestas-ilicita/view-update")."&id=$id'>";
+                            $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("apuestalicita/apuestas-licita/view-update")."&id=$id'>";
                             return $this->render( '/mensaje/mensaje', [ 'msg' => $msg, 'url' => $url, 'tipoError' => $tipoError ] );
                 } else {
                             $transaccion->rollBack();
                             $tipoError = 1;
                             $msg = "ERROR OCCURRED!....Wait";
-                            $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("apuestailicita/apuestas-ilicita/update")."&id=$id'>";
+                            $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("apuestalicita/apuestas-licita/update")."&id=$id'>";
                             return $this->render( '/mensaje/mensaje', [ 'msg' => $msg, 'url' => $url, 'tipoError' => $tipoError ] );
                 }
                         $this->conexion->close();
@@ -328,7 +328,7 @@ class ApuestasIlicitaController extends Controller
 
     protected function findModel( $id )
     {
-        if( ( $model = ApuestasIlicitaForm::findOne( $id ) ) !== null ){
+        if( ( $model = ApuestasLicitaForm::findOne( $id ) ) !== null ){
                     
                     return $model;
         } else {
