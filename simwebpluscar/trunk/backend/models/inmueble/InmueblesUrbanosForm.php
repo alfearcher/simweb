@@ -319,24 +319,12 @@ class InmueblesUrbanosForm extends \yii\db\ActiveRecord
   
           //Buscar el email en la tabla 
 
-         if($this->propiedad_horizontal==1){
-            $nivel_catastro1 = array(['nivela' =>$this->nivela , 'nivelb'=>$this->nivelb ]);              
-            $nivel_catastro = "".$nivel_catastro1[0]['nivela']."".$nivel_catastro1[0]['nivelb'].""; 
-
-            
-            $table = Solvencias::find()->where("estado_catastro=:estado_catastro", [":estado_catastro" => $this->estado_catastro])
-                                    ->andwhere("municipio_catastro=:municipio_catastro", [":municipio_catastro" => $this->municipio_catastro])
-                                    ->andwhere("parroquia_catastro=:parroquia_catastro", [":parroquia_catastro" => $this->parroquia_catastro])
-                                    ->andwhere("ambito_catastro=:ambito_catastro", [":ambito_catastro" => $this->ambito_catastro])
-                                    ->andwhere("sector_catastro=:sector_catastro", [":sector_catastro" => $this->sector_catastro])
-                                    ->andwhere("manzana_catastro=:manzana_catastro", [":manzana_catastro" => $this->manzana_catastro])
-                                    ->andwhere("propiedad_horizontal=:propiedad_horizontal", [":propiedad_horizontal" => 1])
-                                    ->andwhere("parcela_catastro=:parcela_catastro", [":parcela_catastro" => $this->parcela_catastro])
-                                    ->andwhere("subparcela_catastro=:subparcela_catastro", [":subparcela_catastro" => $this->subparcela_catastro])
-                                    ->andwhere("nivel_catastro=:nivel_catastro", [":nivel_catastro" => $nivel_catastro])
-                                    ->andwhere("unidad_catastro=:unidad_catastro", [":unidad_catastro" => $this->unidad_catastro])
-                                    ->andWhere("manzana_limite=:manzana_limite", [":manzana_limite" => $this->manzana_limite])
-                                    ->andWhere("inactivo=:inactivo", [":inactivo" => 0])
+          $table = Solvencias::find()
+                                    ->where("id_contribuyente=:id_contribuyente", [":id_contribuyente" => $this->id_contribuyente])
+                                    ->andwhere("id_impuesto=:id_impuesto", [":id_impuesto" => $this->direccion])
+                                    ->andwhere("impuesto=:impuesto", [":impuesto" => 2])
+                                    ->andwhere("id_impuesto=:id_impuesto", [":id_impuesto" => $this->ano_traspaso])
+                                    //->andWhere("inactivo=:inactivo", [":inactivo" => 0])
                                     ->asArray()->all(); 
                                     
 
