@@ -7,6 +7,7 @@
     use yii\helpers\Url;
     use backend\models\buscargeneral\BuscarGeneralForm;
     use kartik\icons\Icon;
+    use yii\widgets\ActiveForm;
 
     $typeIcon = Icon::FA;
     $typeLong = 'fa-2x';
@@ -21,86 +22,100 @@
 $this->title = Yii::t('backend','Result of the Consult');
 
 ?>
-<div class="buscar-general-contribuyente">
+<div class="buscar-gerenarl-view-list">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <?php
+        $form = ActiveForm::begin([
+            'id' => 'buscar-general-form',
+            'method' => 'post',
+            /*'enableClientValidation' => true,
+            'enableAjaxValidation' => true,
+            'enableClientScript' => true,*/
+        ]);
+     ?>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        //'filterModel' => $searchModel,
-        //'layout'=>"n{pager}\n{items}",
+    <div class="buscar-general-contribuyente">
 
-        'headerRowOptions' => ['class' => 'success'],
-        'rowOptions' => function($data) {
-            if ( $data->inactivo == 1 ) {
-                return ['class' => 'danger'];
-            }
-        },
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+        <h1><?= Html::encode($this->title) ?></h1>
 
-            [
-                'label' => 'ID.',
-                'value' => 'id_contribuyente',
-            ],
-            [
-                'label' =>  Yii::t('backend','Cedula/Rif'),
-                'value' => function($data) {
-                        return BuscarGeneralForm::getCedulaRif($data->tipo_naturaleza, $data->naturaleza, $data->cedula, $data->tipo);
-                },
-            ],
+        <?= GridView::widget([
+            'dataProvider' => $dataProvider,
+            //'filterModel' => $searchModel,
+            //'layout'=>"n{pager}\n{items}",
 
-            [
-                'label' => Yii::t('backend','Taxpayer'),
-                'value' => function($data) {
-                        return BuscarGeneralForm::getDescripcionContribuyente($data->tipo_naturaleza, $data->razon_social, $data->apellidos, $data->nombres);
+            'headerRowOptions' => ['class' => 'success'],
+            'rowOptions' => function($data) {
+                if ( $data->inactivo == 1 ) {
+                    return ['class' => 'danger'];
                 }
-            ],
+            },
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
 
-            [
-                'label' => Yii::t('backend', 'Condition'),
-                'value'=> function($data) {
-                    return BuscarGeneralForm::getActivoInactivo($data->inactivo);
-                },
-            ],
-
-            [
-                'label' => Yii::t('backend','Type'),
-                'value' => function($data) {
-                    return BuscarGeneralForm::getTipoNaturaleza($data->tipo_naturaleza);
-                }
-            ],
-
-            [
-                'class' => 'yii\grid\ActionColumn',
-                'header'=> Yii::t('backend','View'),
-                'template' => '{view}',
-                'buttons' => [
-                    'view' => function ($url, $model, $key) {
-                        return Html::a('<center><span class="glyphicon glyphicon-user"></span></center>',['view','idContribuyente' => $key]);
-                    },
-                    /*'link' => function ($url, $model, $key) {
-                        return Html::a('Action', $url);
-                    },*/
+                [
+                    'label' => 'ID.',
+                    'value' => 'id_contribuyente',
                 ],
-            ],
-
-            [
-                'class' => 'yii\grid\ActionColumn',
-                'header'=>'OK',
-                'template' => '{ok}',
-                'buttons' => [
-                    'ok' => function ($url, $model, $key) {
-                        if ($model->inactivo == 0 ) {
-                            return Html::a('<center><span class= "fa fa-thumbs-up"></span></center>',['ok','idContribuyente' => $key]);
-                        } else {
-                            return '<span><center>---</span></center>';
-                        }
+                [
+                    'label' =>  Yii::t('backend','Cedula/Rif'),
+                    'value' => function($data) {
+                            return BuscarGeneralForm::getCedulaRif($data->tipo_naturaleza, $data->naturaleza, $data->cedula, $data->tipo);
                     },
                 ],
+
+                [
+                    'label' => Yii::t('backend','Taxpayer'),
+                    'value' => function($data) {
+                            return BuscarGeneralForm::getDescripcionContribuyente($data->tipo_naturaleza, $data->razon_social, $data->apellidos, $data->nombres);
+                    }
+                ],
+
+                [
+                    'label' => Yii::t('backend', 'Condition'),
+                    'value'=> function($data) {
+                        return BuscarGeneralForm::getActivoInactivo($data->inactivo);
+                    },
+                ],
+
+                [
+                    'label' => Yii::t('backend','Type'),
+                    'value' => function($data) {
+                        return BuscarGeneralForm::getTipoNaturaleza($data->tipo_naturaleza);
+                    }
+                ],
+
+                [
+                    'class' => 'yii\grid\ActionColumn',
+                    'header'=> Yii::t('backend','View'),
+                    'template' => '{view}',
+                    'buttons' => [
+                        'view' => function ($url, $model, $key) {
+                            return Html::a('<center><span class="glyphicon glyphicon-user"></span></center>',['view','idContribuyente' => $key]);
+                        },
+                        /*'link' => function ($url, $model, $key) {
+                            return Html::a('Action', $url);
+                        },*/
+                    ],
+                ],
+
+                [
+                    'class' => 'yii\grid\ActionColumn',
+                    'header'=>'OK',
+                    'template' => '{ok}',
+                    'buttons' => [
+                        'ok' => function ($url, $model, $key) {
+                            if ($model->inactivo == 0 ) {
+                                return Html::a('<center><span class= "fa fa-thumbs-up"></span></center>',['ok','idContribuyente' => $key]);
+                            } else {
+                                return '<span><center>---</span></center>';
+                            }
+                        },
+                    ],
+                ],
+
             ],
+        ]); ?>
 
-        ],
-    ]); ?>
-
+    </div>
+     <?php ActiveForm::end(); ?>
 </div>

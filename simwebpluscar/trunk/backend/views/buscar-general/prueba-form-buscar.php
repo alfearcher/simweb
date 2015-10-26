@@ -64,7 +64,7 @@
  		$disableJuridico = true;
  		$disableNatural = true;
  		$disableAll = true;
- 		if ( $tipoNat == 0 ) {				//	Natural	
+ 		if ( $tipoNat == 0 ) {				//	Natural
  			$disableNatural = false;
  			//$maxLength = 8;					// Maximos digitos que acepta la cedula
 
@@ -96,7 +96,7 @@
 
 								<div class="radio">
 									<?= $form->field($model, 'tipo_naturaleza')->label(false)->radioList([
-								 																		'1' => Yii::t('backend', 'Legal Taxpayer'), 
+								 																		'1' => Yii::t('backend', 'Legal Taxpayer'),
 								 																		'0' => Yii::t('backend', 'Natural Taxpayer')
 								 																	  ],
 								 																	  [
@@ -245,19 +245,28 @@
 <!-- FIN DE ID CONTRIBUYENTE -->
 
 <!-- BOTON SEARCH -->
-						<div class="col-sm-1"  >
+						<div class="col-sm-2"  >
 							<div class="form-group">
-								<?= Html::submitButton(Yii::t('backend', Yii::t('backend', 'Search')), 
+								<?= Html::submitButton(Yii::t('backend', Yii::t('backend', 'Search')),
 																									  [
 																										'id' => 'btn-search',
 																										'class' => 'btn btn-success',
 																										'name' => 'btn-search',
 																									  ])
 								?>
-							</div>	 
+							</div>
+						</div>
+<!-- FIN DE SEARCH -->
+
+<!-- BOTON QUIT -->
+						<div class="col-sm-2"  >
+							<div class="form-group">
+								 <?= Html::a(Yii::t('backend', 'Quit'), ['menu/vertical'], ['class' => 'btn btn-danger']) ?>
+							</div>
 						</div>
 					</div>
-<!-- FIN DE SEARCH -->
+<!-- FIN DE QUIT -->
+
 				</div> <!-- Fin de col-sm-12 -->
 			</div>
         </div>

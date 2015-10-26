@@ -78,9 +78,6 @@ $this->title = Yii::t('backend','Id. Taxpayer') . ': ' . $model->id_contribuyent
 
 
 
-
-
-
             </div>  <!-- Fin de panel panel-primary -->
         </div>  <!-- Fin de container-fluid -->
     </div>  <!-- Fi de container -->
