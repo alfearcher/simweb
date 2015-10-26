@@ -112,8 +112,8 @@
 		public $cedula_rep;
 
 
-		public $conexion;
-		public $conn;
+		// public $conexion;
+		// public $conn;
 
 
 
@@ -234,7 +234,9 @@
 
 
 		/**
-		 *
+		 * [datosContribuyenteSegunID description]
+		 * @param  [type] $idContribuyente [description]
+		 * @return [type]                  [description]
 		 */
 		private static function datosContribuyenteSegunID($idContribuyente)
 		{
@@ -319,7 +321,9 @@
 
 
 		/**
-		 *
+		 * [getTipoNaturalezaDescripcionSegunID description]
+		 * @param  [type] $idContribuyente [description]
+		 * @return [type]                  [description]
 		 */
 		public static function getTipoNaturalezaDescripcionSegunID($idContribuyente)
 		{
@@ -357,6 +361,203 @@
 		{
 
 		}
+
+
+
+		/**
+		 * [getDatosContribuyenteSegunID description]
+		 * @param  [type] $idContribuyente [description]
+		 * @return [type]                  [description]
+		 */
+		public static function getDatosContribuyenteSegunID($idContribuyente)
+		{
+			if ( $idContribuyente > 0 ) {
+				return self::datosContribuyenteSegunID($idContribuyente);
+			} else {
+				return false;
+			}
+		}
+
+
+
+
+		/**
+		 * Metodo que permite obtener el ultimo indicador de la sucursal. Cero (0) indica sede principal.
+		 * @param  $naturalezaLocal string que indica la primera letra del RIF del contribuyente.
+		 * @param  $cedulaLocal integer que indica los numeros en el centro del RIF.
+		 * @param  $tipoLocal integer que indica el ultimo digito del RIF del contribuyente juridico.
+		 * @return returna un integer que representa el indicador de sucursal (id_rif), este numero se incrementa
+		 * cada vez que se incluye una sucursal, el valor de este numero en la sede principal debe ser cero (0).
+		 */
+		private static function getIdRifUltimaSucursal($naturalezaLocal = '', $cedulaLocal = 0, $tipoLocal = 0)
+		{
+			if ( trim($naturalezaLocal) != '' && $cedulaLocal > 0 ) {
+				try {
+					$conexion = new ConexionController();
+					$conn = $conexion->InitConectar('db');
+					$conn->open();
+					$tabla = self::tableName();
+
+					$command = $conn->createCommand('SELECT id_rif FROM contribuyentes WHERE naturaleza=:naturaleza
+													AND cedula=:cedula AND tipo=:tipo AND tipo_naturaleza=:tipo_naturaleza
+													ORDER BY id_rif DESC LIMIT 1');
+					$command->bindValues([':naturaleza' => $naturalezaLocal,':cedula' => $cedulaLocal, ':tipo' => $tipoLocal, ':tipo_naturaleza' => 1]);
+					$post = $command->queryOne();
+					$conn->close();
+
+					return $post;
+
+				} catch (PDOException $e) {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		}
+
+
+
+
+
+
+		/**
+		 * Metodo que permite obtener el ultimo indicador de la sucursal. Cero (0) indica sede principal.
+		 * @param  $naturalezaLocal string que indica la primera letra del RIF del contribuyente.
+		 * @param  $cedulaLocal integer que indica los numeros en el centro del RIF.
+		 * @param  $tipoLocal integer que indica el ultimo digito del RIF del contribuyente juridico.
+		 * @return returna un integer que representa el indicador de sucursal (id_rif), este numero se incrementa
+		 * cada vez que se incluye una sucursal, el valor de este numero en la sede principal debe ser cero (0).
+		 */
+		public static function getUltimoIdRifSucursalSegunRIF($naturalezaLocal = '', $cedulaLocal = 0, $tipoLocal = 0)
+		{
+			if ( trim($naturalezaLocal) != '' && $cedulaLocal > 0 ) {
+				if ( strlen($naturalezaLocal) == 1 ) {
+					return self::getIdRifUltimaSucursal($naturalezaLocal, $cedulaLocal, $tipoLocal);
+				}
+			}
+			return false;
+		}
+
+
+
+
+
+		/**
+		 * Metodo para obtener la cantidad de contribuyentes asociados a un RIF.
+		 * @param  $naturalezaLocal string que indica la primera letra del RIF del contribuyente.
+		 * @param  $cedulaLocal integer que indica los numeros en el centro del RIF.
+		 * @param  $tipoLocal integer que indica el ultimo digito del RIF del contribuyente juridico.
+		 * @return retorna cantidad de contribuyentes asociados a un RIF o false sino consigue ninguno.
+		 */
+		public static function getCantidadSucursalesSegunRIF($naturalezaLocal = '', $cedulaLocal = 0, $tipoLocal = 0, $inactivoLocal = 0)
+		{
+			if ( trim($naturalezaLocal) != '' && $cedulaLocal > 0 ) {
+				if ( strlen($naturalezaLocal) == 1 ) {
+					return self::getCantidadSucursales($naturalezaLocal, $cedulaLocal, $tipoLocal, $inactivoLocal);
+				}
+			}
+			return false;
+		}
+
+
+
+
+
+		/**
+		 * Metodo que retorna la cantidad de sucursales que estan asociada aun RIF, se buscan los registros por defectos
+		 * activos ($inactivoLocal = 0), si se requiere los inactivos se debe enviar $inactivoLocal = 1.
+		 * @param  $naturalezaLocal string que indica la primera letra del RIF del contribuyente.
+		 * @param  $cedulaLocal integer que indica los numeros en el centro del RIF.
+		 * @param  $tipoLocal integer que indica el ultimo digito del RIF del contribuyente juridico.
+		 * @return retorna integer que indica la cantidad de contribuyentes asociados a un RIF. Si no consigue nada retorna false.
+		 */
+		private static function getCantidadSucursales($naturalezaLocal = '', $cedulaLocal = 0, $tipoLocal = 0, $inactivoLocal = 0)
+		{
+			if ( trim($naturalezaLocal) != '' && $cedulaLocal > 0 ) {
+				try {
+					$conexion = new ConexionController();
+					$conn = $conexion->InitConectar('db');
+					$conn->open();
+					$tabla = self::tableName();
+
+					$command = $conn->createCommand('SELECT COUNT(*) as r FROM contribuyentes WHERE naturaleza=:naturaleza
+													AND cedula=:cedula AND tipo=:tipo AND tipo_naturaleza=:tipo_naturaleza AND inactivo=:inactivo');
+					$command->bindValues([':naturaleza' => $naturalezaLocal,':cedula' => $cedulaLocal, ':tipo' => $tipoLocal, ':tipo_naturaleza' => 1, ':inactivo' => $inactivoLocal]);
+					$post = $command->queryOne();
+					$conn->close();
+
+					return $post;
+
+				} catch (PDOException $e) {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		}
+
+
+
+
+
+		/**
+		 * [getListaSucursalesSegunRIF description]
+		 * @param  string  $naturalezaLocal [description]
+		 * @param  integer $cedulaLocal     [description]
+		 * @param  integer $tipoLocal       [description]
+		 * @param  integer $inactivoLocal   [description]
+		 * @return [type]                   [description]
+		 */
+		public static function getListaSucursalesSegunRIF($naturalezaLocal = '', $cedulaLocal = 0, $tipoLocal = 0, $inactivoLocal = 0)
+		{
+			if ( trim($naturalezaLocal) != '' && $cedulaLocal > 0 ) {
+				if ( strlen($naturalezaLocal) == 1 ) {
+					return self::getListaSucursales($naturalezaLocal, $cedulaLocal, $tipoLocal, $inactivoLocal);
+				}
+			}
+			return false;
+		}
+
+
+
+
+
+
+
+		/**
+		 * [getListaSucursales description]
+		 * @param  string  $naturalezaLocal [description]
+		 * @param  integer $cedulaLocal     [description]
+		 * @param  integer $tipoLocal       [description]
+		 * @param  integer $inactivoLocal   [description]
+		 * @return [type]                   [description]
+		 */
+		private static function getListaSucursales($naturalezaLocal = '', $cedulaLocal = 0, $tipoLocal = 0, $inactivoLocal = 0)
+		{
+			if ( trim($naturalezaLocal) != '' && $cedulaLocal > 0 ) {
+				try {
+					$conexion = new ConexionController();
+					$conn = $conexion->InitConectar('db');
+					$conn->open();
+					$tabla = self::tableName();
+
+					$command = $conn->createCommand('SELECT * FROM contribuyentes WHERE naturaleza=:naturaleza
+													AND cedula=:cedula AND tipo=:tipo AND tipo_naturaleza=:tipo_naturaleza AND inactivo=:inactivo');
+					$command->bindValues([':naturaleza' => $naturalezaLocal,':cedula' => $cedulaLocal, ':tipo' => $tipoLocal, ':tipo_naturaleza' => 1, ':inactivo' => $inactivoLocal]);
+					$post = $command->queryAll();
+					$conn->close();
+
+					return $post;
+
+				} catch (PDOException $e) {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		}
+
+
 
 	}
  ?>
