@@ -63,23 +63,34 @@
 		        		['label' => Icon::show('fa fa-briefcase',['class' => $typeLong], $typeIcon) . '&nbsp; Actividades Economicas',
 		        			'items' => [
 		        						['label' => 'Inscripción de Actividades Economicas','url' => ['/aaee/inscripcionactecon/inscripcion-actividad-economica/index']],
-		        					   	['label' => 'Inscripción de Sucursales', 'url' => '#'],
-		        					   	['label' => 'Licencias', 'url' => '#'],
-		        					   	['label' => 'Renovación de Licencias', 'url' => '#'],
-		        					   	['label' => 'Copia de Licencias', 'url' => '#'],
-		        					   	['label' => 'Cesación de Actividades', 'url' => '#'],
-		        					   	['label' => 'Declaraciones', 'url' => '#'],
-		        					   	['label' => 'Axeno de Ramo', 'url' => '#'],
-		        					   	['label' => 'Desincorporación de Ramo', 'url' => '#'],
-		        					   	['label' => 'Cambio de Ramo', 'url' => '#'],
-		        					   	['label' => 'Cambio de Razón Social', 'url' => '#'],
-		        					   	['label' => 'Cambio de Domicilio Fiscal', 'url' => '#'],
-		        					   	['label' => 'Cambio de Representante Legal', 'url' => '#'],
-		        					   	['label' => 'Aumento de Capital', 'url' => '#'],
-		        					   	['label' => 'Cambio de Otros Datos', 'url' => '#'],
-		        					   	['label' => 'Declaración Sustitutiva', 'url' => '#'],
-		        					   	['label' => 'Cierre por Incumplimento', 'url' => '#'],
-
+		        					   	['label' => 'Inscripción de Sucursales', 'url' => ['/aaee/inscripcionsucursal/inscripcion-sucursal/index']],
+		        					   	['label' => 'Autorizar Ramos', 'url' => ['/aaee/autorizarramo/autorizar-ramo/index']],
+		        					   	['label' => 'Renovación de Licencias', 'url' => ['/utilidad/documento/documento-requisito/documento-requisito-segun-impuesto']],
+		        					   	['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Modificion de Datos',
+		        					   		'items' => [
+		        					   				['label' => 'Anexo de Ramo', 'url' => '#'],
+		        					   				['label' => 'Desincorporacion de Ramo', 'url' => '#'],
+		        					   				['label' => 'Corrección de RIF', 'url' => '#'],
+		        					   				['label' => 'Corrección de Razón Social', 'url' => '#'],
+		        					   				['label' => 'Cambio de Domicilio Fiscal', 'url' => '#'],
+		        					   				['label' => 'Cambio de Representante Legal', 'url' => '#'],
+		        					   				['label' => 'Aumento de Capital', 'url' => '#'],
+		        					   				['label' => 'Cambio de Otros Datos', 'url' => '#'],
+		        					   		]
+		        					   	],
+		        					   	['label' => Icon::show('fa fa-table',['class' => $typeLong], $typeIcon) . '&nbsp; Declaracion',
+		        					   		'items' => [
+		        					   				['label' => 'Estimada', 'url' => '#'],
+		        					   				['label' => 'Definitiva', 'url' => '#'],
+		        					   				['label' => 'Sustitutiva', 'url' => '#'],
+		        					   		]
+		        					   	],
+		        					   	['label' => Icon::show('fa fa-hand-paper-o',['class' => $typeLong], $typeIcon) . '&nbsp; Cesación de Actividades',
+		        					   		'items' => [
+		        					   				['label' => 'Temporal', 'url' => '#'],
+		        					   				['label' => 'Definitiva', 'url' => '#'],
+		        					   		]
+		        					   	],
 		        			]
 		        		],
 
