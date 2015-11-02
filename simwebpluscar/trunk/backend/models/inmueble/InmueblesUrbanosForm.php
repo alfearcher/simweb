@@ -325,12 +325,12 @@ class InmueblesUrbanosForm extends \yii\db\ActiveRecord
                                     ->andwhere("impuesto=:impuesto", [":impuesto" => 2])
                                     //->andwhere("id_impuesto=:id_impuesto", [":id_impuesto" => $this->ano_traspaso])
                                     //->andWhere("inactivo=:inactivo", [":inactivo" => 0])
-                                    ->asArray()->all()->one(); 
+                                    ->asArray()->all(); 
 
             $table = Pagos::find()
                                     ->where("id_contribuyente=:id_contribuyente", [":id_contribuyente" => $this->id_contribuyente])
                                     //->andWhere("inactivo=:inactivo", [":inactivo" => 0])
-                                    ->asArray()->all(); 
+                                    ->asArray()->all()->one(); 
 
             $table = PagosDetalle::find()
                                     ->where("id_pago=:id_pago", [":id_pago" => ])
