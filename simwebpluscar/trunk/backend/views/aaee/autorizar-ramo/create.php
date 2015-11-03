@@ -47,7 +47,7 @@
 	    <?= $this->render('autorizar-ramo-form', [
 	        'model' => $model,
 	        'anoCatalogo' => $anoCatalogo,
-	        'datos' => $datos,
+	        'datosContribuyente' => $datosContribuyente,
 	        'modelSearch' => $modelSearch,
 	    ]) ?>
 

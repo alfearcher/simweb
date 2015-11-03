@@ -109,7 +109,7 @@
 																									'id' => 'id-contribuyente',
 																									'name' => 'id-contribuyente',
 																									'style' => 'width:100%;',
-																									'value' => $datos[0]['id_contribuyente'],
+																									'value' => $datosContribuyente[0]['id_contribuyente'],
 																									'readonly' => true,
 																						 			])->label(false) ?>
 											</div>
@@ -128,7 +128,7 @@
 																									'id' => 'fecha-inicio',
 																									'name' => 'fecha-inicio',
 																									'style' => 'width:100%;',
-																									'value' => $datos[0]['fecha_inicio'],
+																									'value' => $datosContribuyente[0]['fecha_inicio'],
 																									'readonly' => true,
 																						 			])->label(false) ?>
 											</div>
@@ -154,7 +154,6 @@
 										</div>
 									</div>
 <!-- Fin de Año Catalogo de Rubro -->
-
 
 
 								</div> 		<!-- Fin de row -->
@@ -289,10 +288,27 @@
 					<div class="row">
 						<div class="col-sm-2">
 							<div class="form-group">
-<!--
-								<?//= Html::submitButton(Yii::t('backend', 'Authorize Categorys'),['id' => 'btn-create', 'class' => 'btn btn-success', 'name' => 'btn-create'])?>
+
+<!-- 								<?//= Html::button(Yii::t('backend', 'Authorize Categorys'), [
+								// 															'id' => 'btn-create',
+								// 															'class' => 'btn btn-success',
+								// 															'onClick' => 'create("' . Url::toRoute('create') . '")',
+								// ]) ?>
+
  -->
+
+<!--
+								<?//= Html::submitButton(Yii::t('backend', 'Authorize Categorys'),[
+								// 																	'id' => 'btn-create',
+								// 																	'class' => 'btn btn-success',
+								// 																	'name' => 'btn-create',
+								// 																	'value' => 'save-form',
+								// 																])?>
+
+ -->
+
  								<?= Html::a(Yii::t('backend', 'Authorize Categorys'), ['create', 'guardar' => true], ['class' => 'btn btn-success']) ?>
+
  							</div>
 						</div>
 						<div class="col-sm-2" style="margin-left: 150px;">
@@ -312,17 +328,29 @@
 </div>	 <!-- Fin de inscripcion-act-econ-form -->
 
 
+<!--
+<script type="text/javascript">
+	// function create(url) {
+	// 	$.ajax({
+	// 			type: "post",
+	// 			url: url + '&guardar=true',
+	// 			data: $(".autorizar-ramo-form").serialize(),
+	// 			success: function(data) {
+	// 						//$.pjax.reload({container:'#grid-list-rubro'});
+	// 						$("#lista-rubros-prueba").html("<p>" + data + "</p>");
 
+	// 					}
+	// 		});
+	// 		return false;
+	// }
+</script>
+ -->
 
 <script type="text/javascript">
 	function miListaRubro(url) {
 		var params1 = $("#campo-busqueda").val();
 		var params2 = $("#ano-catalogo").val();;
 		var url2 = url + '&anoImpositivo=' + params2.toString() + '&params=' + params1.toString();
-		//$("#listaRubro").text(url2);
-		// $("#listaRubro").load(url2, function() {
-
-		// });
 
 		$.ajax({
 				type: "get",
