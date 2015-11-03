@@ -70,7 +70,7 @@
 		        					   		'items' => [
 		        					   				['label' => 'Anexo de Ramo', 'url' => '#'],
 		        					   				['label' => 'Desincorporacion de Ramo', 'url' => '#'],
-		        					   				['label' => 'Corrección de RIF', 'url' => '#'],
+		        					   				['label' => 'Corrección de RIF', 'url' => ['/aaee/correccioncedularif/correccion-cedula-rif/index']],
 		        					   				['label' => 'Corrección de Razón Social', 'url' => '#'],
 		        					   				['label' => 'Cambio de Domicilio Fiscal', 'url' => '#'],
 		        					   				['label' => 'Cambio de Representante Legal', 'url' => '#'],
