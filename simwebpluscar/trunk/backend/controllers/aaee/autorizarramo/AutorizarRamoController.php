@@ -54,12 +54,14 @@
 	use yii\helpers\Url;
 	use yii\web\NotFoundHttpException;
 	use common\models\contribuyente\ContribuyenteBase;
+	use common\conexion\ConexionController;
 	use backend\models\aaee\autorizarramo\AutorizarRamo;
 	use backend\models\aaee\autorizarramo\AutorizarRamoForm;
 	use backend\models\aaee\autorizarramo\BusquedaRubroForm;
 	use backend\models\aaee\actecon\ActEconForm;
 	use backend\models\aaee\acteconingreso\ActEconIngresoForm;
 	use backend\controllers\mensaje\MensajeController;
+	use backend\models\documentoconsignado\DocumentoConsignadoForm;
 
 
 	session_start();		// Iniciando session
@@ -89,50 +91,57 @@
 				if ( isset($_SESSION['idContribuyente']) ) {
 					$model = New AutorizarRamoForm();
 					$modelSearch = New BusquedaRubroForm();
-					//$dataProvider = $model->getProviderRubro();
 
 					// Se controla que el contribuyente no tenga declaraciones cargadas.
 					if ( !AutorizarRamoForm::tieneRecordActEcon($_SESSION['idContribuyente']) ) {
 
 						$postData = Yii::$app->request->post();
 						$request = Yii::$app->request;
+						//die(var_dump($postData));
+				  	// 	if ( $model->load($postData)  && Yii::$app->request->isAjax ) {
+							// Yii::$app->response->format = Response::FORMAT_JSON;
+							// return ActiveForm::validate($model);
+				   //    	}
 
-				  		if ( $model->load($postData)  && Yii::$app->request->isAjax ) {
-							Yii::$app->response->format = Response::FORMAT_JSON;
-							return ActiveForm::validate($model);
-				      	}
+				      	if ( isset($postData['btn-create']) ) {
+				      		if ( $postData['btn-create'] == 'save-form' ) {
+						      	if ( isset($_SESSION['arrayIdRubros']) ) {
+						      		$arrayIdRubros = $_SESSION['arrayIdRubros'];
+						      		if ( count($arrayIdRubros) > 0 ) {
+						      			if ( self::actionCreate(true, $postData) == true ) {
+						      				//$tipoError = 0;	// No error.
+											//$msg = Yii::t('backend', 'SUCCESS!....WAIT.');
+											//$url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['/aaee/autorizarramo/autorizar-ramo/view','idImpuesto' => $_SESSION['idImpuesto']])."'>";
+											//return $this->render('/mensaje/mensaje',['msg' => $msg, 'url' => $url, 'tipoError' => $tipoError]);
+//return self::gestionarMensajesLocales('exito .');
+						      			} else {
+						      				$tipoError = 1; // Error.
+											$msg = "AH ERROR OCCURRED!....WAIT";
+											$url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("/aaee/autorizarramo/autorizar-ramo/view")."'>";
+											return $this->render('/mensaje/mensaje',['msg' => $msg, 'url' => $url, 'tipoError' => $tipoError]);
 
-				      	if ( $model->load($postData) ) {
-
-				      	 	if ( $model->validate() ) {
-
-				      	 		$_SESSION['model'] = $model;
-				      	 		$_SESSION['postData'] = $postData;
-
-				      	 		// Se redirecciona a una preview para confirmar la creacion del registro.
-
-				      	 		return $this->render('/aaee/autorizar-ramo/pre-view', [
-			      	 																	'model' => $datosContribuyente,
-											      	 									'preView' => true
-											      	 									]);
-				      	 	} else {
-				      	 		$model->getErrors();
-				      	 	}
-				  		}
+						      			}
+						      		}
+						      	} else{
+						      		Yii::$app->response->format = Response::FORMAT_JSON;
+									return ActiveForm::validate($model);
+						      	}
+						    }
+					    }
 
 
-				  		$datos = ContribuyenteBase::getDatosContribuyenteSegunID($_SESSION['idContribuyente']);
-				  		if ( $datos ) {
-				  			$_SESSION['datos'] = $datos;
-				  			if ( isset($datos[0]['fecha_inicio']) ) {
-				  				$anoInicio = date('Y', strtotime($datos[0]['fecha_inicio']));
+				  		$datosContribuyente = ContribuyenteBase::getDatosContribuyenteSegunID($_SESSION['idContribuyente']);
+				  		if ( $datosContribuyente ) {
+				  			$_SESSION['datosContribuyente'] = $datosContribuyente;
+				  			if ( isset($datosContribuyente[0]['fecha_inicio']) ) {
+				  				$anoInicio = date('Y', strtotime($datosContribuyente[0]['fecha_inicio']));
 				  				$anoCatalogo = $model->determinarAnoCatalogoSegunAnoInicio($anoInicio);
 
 								if ( isset($_SESSION['model']) ) { $model = $_SESSION['model']; }
 
 					  			return $this->render('/aaee/autorizar-ramo/create', ['model' => $model,
 					  																 'anoCatalogo' => $anoCatalogo,
-					  																 'datos' => $datos,
+					  																 'datosContribuyente' => $datosContribuyente,
 					  																 'modelSearch' => $modelSearch]);
 				  			} else {
 				  				return self::gestionarMensajesLocales('No posee la fecha de inicio de actividades.');
@@ -153,27 +162,11 @@
 
 
 
-
-
-		/**
-		 * [gestionarMensajesLocales description]
-		 * @param  [type] $mensajeLocal [description]
-		 * @return [type]               [description]
-		 */
-		public function gestionarMensajesLocales($mensajeLocal)
-		{
-			if ( trim($mensajeLocal) != '' ) {
-				return MensajeController::actionMensaje($mensajeLocal);
-			}
-		}
-
-
-
 		/**
 		 * 	Metodo que guarda el registro respectivo
 		 * 	@return renderiza una vista final de la informacion a guardar.
 		 */
-		public function actionCreate($guardar = false)
+		public function actionCreate($guardar = false, $postData)
 		{
 			if ( $_SESSION['idContribuyente'] ) {
 				if ( $guardar == true ) {
@@ -188,62 +181,44 @@
 		      			// Instancia de tipo transaccion para asegurar la integridad del resguardo de los datos.
 		      			// Inicio de la transaccion.
 						$transaccion = $this->connLocal->beginTransaction();
+						$procesoExitoso = false;
 
-						// El metodo debe retornar un id contribuyente.
-						$idContribuyenteGenerado = self::actionCreateContribuyente($conexion, $this->connLocal);
-						if ( $idContribuyenteGenerado > 0 ) {
-
-							if ( self::actionCreateActividadEconomica($conexion, $this->connLocal, $idContribuyenteGenerado) ) {
-
-								$idInscripcion = self::actionCreateSucursal($conexion, $this->connLocal, $idContribuyenteGenerado);
-								if ( $idInscripcion > 0 ) {
-									if ( self::actionCreateDocumentosConsignados($conexion, $this->connLocal, $idContribuyenteGenerado) ) {
+						if ( self::actionCreateRamosAutorizados($conexion, $this->connLocal, $postData) ) {
+							$idImpuesto = 0;
+							$idImpuesto = self::actionCreateActEcon($conexion, $this->connLocal, $postData);
+							if ( $idImpuesto > 0 ) {
+								if ( self::actionCreateActEconIngresos($conexion, $this->connLocal, $idImpuesto) ) {
+									if ( self::actionCreateDocumentosConsignados($conexion, $this->connLocal, $postData, $idImpuesto) ) {
+										$procesoExitoso = true;
+										$_SESSION['idImpuesto'] = $idImpuesto;
 										$transaccion->commit();
-										$tipoError = 0;	// No error.
-										$msg = Yii::t('backend', 'SUCCESS!....WAIT.');
-										$_SESSION['idInscripcion'] = $idInscripcion;
-										$url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['/aaee/inscripcionsucursal/inscripcion-sucursal/view','idInscripcion' => $idInscripcion])."'>";
-										return $this->render('/mensaje/mensaje',['msg' => $msg, 'url' => $url, 'tipoError' => $tipoError]);
-
-									} else {
-										$transaccion->rollBack();
-										$tipoError = 1; // Error.
-										$msg = "AH ERROR OCCURRED!....WAIT";
-										$url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("/aaee/inscripcionsucursal/view")."'>";
-										return $this->render('/mensaje/mensaje',['msg' => $msg, 'url' => $url, 'tipoError' => $tipoError]);
+										$this->connLocal->close();
+										return true;
+										//$tipoError = 0;	// No error.
+										//$msg = Yii::t('backend', 'SUCCESS!....WAIT.');
+										//$url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['/aaee/autorizarramo/autorizar-ramo/view','idImpuesto' => $idImpuesto])."'>";
+										//return $this->render('/mensaje/mensaje',['msg' => $msg, 'url' => $url, 'tipoError' => $tipoError]);
 									}
-								} else {
-									$transaccion->rollBack();
-									$tipoError = 1; // Error.
-									$msg = "AH ERROR OCCURRED!....WAIT";
-									$url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("/aaee/inscripcionsucursal/view")."'>";
-									return $this->render('/mensaje/mensaje',['msg' => $msg, 'url' => $url, 'tipoError' => $tipoError]);
-
 								}
-							} else {
-								$transaccion->rollBack();
-								$tipoError = 1; // Error.
-								$msg = "AH ERROR OCCURRED!....WAIT";
-								$url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("/aaee/inscripcionsucursal/view")."'>";
-								return $this->render('/mensaje/mensaje',['msg' => $msg, 'url' => $url, 'tipoError' => $tipoError]);
-
 							}
-
-						} else {
-							$transaccion->rollBack();
-							$tipoError = 1; // Error.
-							$msg = "AH ERROR OCCURRED!....WAIT";
-								$url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("/aaee/inscripcionsucursal/view")."'>";
-							return $this->render('/mensaje/mensaje',['msg' => $msg, 'url' => $url, 'tipoError' => $tipoError]);
 						}
-						$this->connLocal->close();
+
+						if ( $procesoExitoso == false ) {
+							$transaccion->rollBack();
+							$this->connLocal->close();
+							return false;
+							//$tipoError = 1; // Error.
+							//$msg = "AH ERROR OCCURRED!....WAIT";
+							//$url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("/aaee/autorizarramo/autorizar-ramo/view")."'>";
+							//return $this->render('/mensaje/mensaje',['msg' => $msg, 'url' => $url, 'tipoError' => $tipoError]);
+						}
+
 					} else {
-						// No esta definido el modelo.
-						die('No esta definido el modelo');
+						return self::gestionarMensajesLocales('No esta definido el modelo');
 					}
 				}
 			} else {
-				echo 'No esta definido el contribuyente';
+				return self::gestionarMensajesLocales('No esta definido el contribuyente');
 			}
 		}
 
@@ -254,14 +229,14 @@
 		/**
 		*	Metodo muestra la vista con la informacion que fue guardada.
 		*/
-		public function actionView($idInscripcion)
+		public function actionView($idImpuesto)
     	{
-    		if ( isset($_SESSION['idInscripcion']) ) {
-    			if ( $_SESSION['idInscripcion'] == $idInscripcion ) {
-    				$model = $this->findModel($idInscripcion);
-    				if ( $_SESSION['idInscripcion'] == $model->id_inscripcion_sucursal ) {
-			        	return $this->render('/aaee/inscripcion-sucursal/pre-view',
-			        			['model' => $model, 'preView' => false,
+    		if ( isset($_SESSION['idImpuesto']) ) {
+    			if ( $_SESSION['idImpuesto'] == $idImpuesto ) {
+    				$model = $this->findModel($idImpuesto);
+    				if ( $_SESSION['idImpuesto'] == $model->id_impuesto ) {
+			        	return $this->render('/aaee/autorizar-ramo/view',
+			        			['model' => $model,
 
 			        			]);
 			        } else {
@@ -280,9 +255,9 @@
 		*	Metodo que busca el ultimo registro creado.
 		* 	@param $idInscripcion, long que identifica el autonumerico generado al crear el registro.
 		*/
-		protected function findModel($idInscripcion)
+		protected function findModel($idImpuesto)
     	{
-        	if (($model = InscripcionSucursal::findOne($idInscripcion)) !== null) {
+        	if (($model = ActEconIngresoForm::findOne($idImpuesto)) !== null) {
             	return $model;
         	} else {
             	throw new NotFoundHttpException('The requested page does not exist.');
@@ -299,8 +274,11 @@
     	 */
     	public function actionQuit()
     	{
-    		unset($_SESSION['idInscripcion']);
-    		return $this->render('/aaee/inscripcion-sucursal/quit');
+    		unset($_SESSION['idImpuesto']);
+    		unset($_SESSION['idContribuyente']);
+    		unset($_SESSION['datosContribuyente']);
+    		unset($_SESSION['anoImpositivo']);
+    		return $this->render('/aaee/autorizar-ramo/quit');
     	}
 
 
@@ -323,9 +301,12 @@
     		$request = Yii::$app->request->queryParams;
     		$modelSearch = New BusquedaRubroForm();
     		$model = New AutorizarRamoForm();
-    		$dataProvider = $model->searchRubro($anoImpositivo, $params, $request);
+    		$dataProvider = $model->searchRubro($anoImpositivo, $params);
 
     		if ( Yii::$app->request->isGet ) {
+    			if ( isset($dataProvider) && !isset($_SESSION['anoImpositivo']) ) {
+    				$_SESSION['anoImpositivo'] = $anoImpositivo;
+    			}
     			if ( isset($request['page']) ) {
     				$model->load($request);
     				return $this->renderAjax('/aaee/autorizar-ramo/create-lista-rubro', [
@@ -355,28 +336,27 @@
     	 */
     	public function actionAddRubro($idRubro)
     	{
-    		if ( Yii::$app->request->isGet ) {
-	    		if ( $idRubro > 0 ) {
-		    		if ( !isset($_SESSION['arrayIdRubros']) ) {
-		    			$_SESSION['arrayIdRubros'][] = $idRubro;
-		    		} else {
-		    			$arrayIdRurbros = [];
-		    			$arrayIdRurbros = $_SESSION['arrayIdRubros'];
-		    			if ( !in_array($idRubro, $arrayIdRurbros) ) {
-		    				$_SESSION['arrayIdRubros'][] = $idRubro;
-		    			} else {
-		    				// ya existe'
-		    			}
-		    			$modelRamo = New AutorizarRamoForm();
-		    			$dataProvider = $modelRamo->getAddRubro($_SESSION['arrayIdRubros']);
-
-		    			return $this->renderAjax('/aaee/autorizar-ramo/create-add-rubro-lista', [
-		    																					'modelRamo' => $modelRamo,
-		    																					'dataProvider' => $dataProvider
-		    																					]);
-		    		}
-		    	}
-    		}
+    		if ( $idRubro > 0 ) {
+	    		if ( !isset($_SESSION['arrayIdRubros']) ) {
+	    			$_SESSION['arrayIdRubros'][] = $idRubro;
+	    		} else {
+	    			$arrayIdRurbros = [];
+	    			$arrayIdRurbros = $_SESSION['arrayIdRubros'];
+	    			if ( !in_array($idRubro, $arrayIdRurbros) ) {
+	    				$_SESSION['arrayIdRubros'][] = $idRubro;
+	    			} else {
+	    				// ya existe'
+	    			}
+	    		}
+	    		$modelRamo = New AutorizarRamoForm();
+	    		$dataProvider = $modelRamo->getAddRubro($_SESSION['arrayIdRubros']);
+	    		if ( Yii::$app->request->isGet ) {
+	    			return $this->renderAjax('/aaee/autorizar-ramo/create-add-rubro-lista', [
+	    																					'modelRamo' => $modelRamo,
+	    																					'dataProvider' => $dataProvider
+	    																					]);
+	    		}
+	    	}
     	}
 
 
@@ -442,32 +422,68 @@
 
 
     	/**
+    	 * [gestionarMensajesLocales description]
+    	 * @param  [type] $mensajeLocal [description]
+    	 * @return [type]               [description]
+    	 */
+    	public function gestionarMensajesLocales($mensajeLocal)
+    	{
+    		if ( trim($mensajeLocal) != '' ) {
+    			return MensajeController::actionMensaje($mensajeLocal);
+    		}
+    	}
+
+
+
+
+    	/**
     	 * Metodo que guarda en
     	 * @param  [type] $conexion  [description]
     	 * @param  [type] $connLocal [description]
     	 * @return [type]            [description]
     	 */
-    	private static function actionCreateRamosAutorizados($conexion, $connLocal)
+    	private static function actionCreateRamosAutorizados($conexion, $connLocal, $postData)
     	{
-    		if ( isset($_SESSION['datosRamos']) ) {
-    			$modelRamo = New AutorizarRamoForm();
+    		if ( isset($_SESSION['idContribuyente']) && isset($connLocal) ) {
+    			//$datosContribuyente = $_SESSION['datosContribuyente'];
+    			if ( $_SESSION['idContribuyente'] == $postData['id-contribuyente'] ) {
 
-    			$arrayDatos = $_SESSION['datosRamos'];
+	    			$modelAutorizarRamo = New AutorizarRamoForm();
 
-    			$arrayDatos['fecha_inclusion'] = date('Y-m-d');
+	    			$arrayDatos = $modelAutorizarRamo->attributes;
 
-				// Se ajusta el formato de fecha incio de dd-mm-aaaa a aaaa-mm-dd.
-				$arrayDatos['fecha_inicio'] = date('Y-m-d', strtotime($arrayDatos['fecha_inicio']));
+	    			$arrayDatos['nro_solicitud'] = 0;
+	    			$arrayDatos['id_contribuyente'] = $_SESSION['idContribuyente'];
+	    			$arrayDatos['fecha_inicio'] = date('Y-m-d', strtotime($postData['fecha-inicio']));
+	    			$arrayDatos['ano_impositivo'] = $postData['ano-catalogo'];
+	    			$arrayDatos['id_rubro'] = 0;
+	    			$arrayDatos['fecha_hora'] = date('Y-m-d H:i:s');
+	    			$arrayDatos['usuario'] = Yii::$app->user->identity->username;
+	    			$arrayDatos['estatus'] = 0;
+	    			$arrayDatos['origen'] = 'LAN';
 
-				// Se procede a guardar primero en la entidad donde se guardan los rubros autorizados.
-      			$tabla = '';
-      			$tabla = $modelRamo->tableName();
+					// Se procede a guardar primero en la entidad donde se guardan los rubros autorizados.
+	      			$tabla = '';
+	      			$tabla = $modelAutorizarRamo->tableName();
 
-				if ( $conexion->guardarRegistro($connLocal, $tabla, $arrayDatos) ) {
-					return true;
-				}
+	      			$todoBien = false;
+	      			// Se pasan los id de los rubros incluidos a un arreglo.
+	      			$arrayIdRubros = $_SESSION['arrayIdRubros'];
+	      			if ( count($arrayIdRubros) > 0 ) {
+
+		      			foreach ($arrayIdRubros as $key => $value) {
+		      				$arrayDatos['id_rubro'] = $value;
+		      				if ( !$conexion->guardarRegistro($connLocal, $tabla, $arrayDatos) ) {
+		      					$todoBien = false;
+		      					break;
+							} else {
+								$todoBien = true;
+							}
+		      			}
+		      		}
+	      		}
     		}
-    		return false;
+    		return $todoBien;
     	}
 
 
@@ -475,31 +491,38 @@
 
 
 
-
-    	private static function actionCreateActEcon($conexion, $connLocal)
+    	/**
+    	 * [actionCreateActEcon description]
+    	 * @param  [type] $conexion  [description]
+    	 * @param  [type] $connLocal [description]
+    	 * @return [type]            [description]
+    	 */
+    	private static function actionCreateActEcon($conexion, $connLocal, $postData)
     	{
-    		if ( isset($_SESSION['datosRamos']) ) {
+    		if ( isset($_SESSION['idContribuyente'])  && isset($connLocal)  ) {
+    			if ( $_SESSION['idContribuyente'] == $postData['id-contribuyente'] ) {
+    				//$datosContribuyente = $_SESSION['datosContribuyente'];
+	    			$modelActEcon = New ActEconForm();
 
-	    		$modelActEcon = New ActEconForm();
+	    			$arrayDatos = $modelActEcon->attributes;
+	    			foreach ($arrayDatos as $key => $value) {
+	    				$arrayDatos[$key] = 0;
+	    			}
+		    		$arrayDatos['ente'] = Yii::$app->ente->getEnte();
+		    		$arrayDatos['id_contribuyente'] = $postData['id-contribuyente'];
+		    		$arrayDatos['ano_impositivo'] = $postData['ano-catalogo'];
+		    		$arrayDatos['exigibilidad_declaracion'] = 1;
 
-	    		$arrayDatos = $modelActEcon->attribute;
-	    		foreach ($arrayDatos as $key => $value) {
-	    			$arrayDatos[$value] = 0;
-	    		}
-	    		$arrayDatos['ente'] = Yii::$app->ente->getEnte();
-	    		$arrayDatos['id_contribuyente'] = $datosRamos['ano_impositivo'];
-	    		$arrayDatos['ano_impositivo'] = $datosRamos['ano_impositivo'];
-	    		$arrayDatos['exigibilidad_declaracion'] = 0;
+		    		// Se procede a guardar en la entidad maestra de las declaraciones.
+	      			$tabla = '';
+	      			$tabla = $modelActEcon->tableName();
 
-	    		// Se procede a guardar en la entidad maestra de las declaraciones.
-      			$tabla = '';
-      			$tabla = $modelActEcon->tableName();
-
-				if ( $conexion->guardarRegistro($connLocal, $tabla, $arrayDatos) ) {
-					$idImpuesto = 0;
-					return $idImpuesto = $connLocal->getLastInsertID();
-				}
-	    	}
+					if ( $conexion->guardarRegistro($connLocal, $tabla, $arrayDatos) ) {
+						$idImpuesto = 0;
+						return $idImpuesto = $connLocal->getLastInsertID();
+					}
+		    	}
+		    }
 	    	return false;
 	    }
 
@@ -507,30 +530,110 @@
 
 
 
-
+	    /**
+	     * [actionCreateActEconIngresos description]
+	     * @param  [type] $conexion   [description]
+	     * @param  [type] $connLocal  [description]
+	     * @param  [type] $idImpuesto [description]
+	     * @return [type]             [description]
+	     */
 	    private static function actionCreateActEconIngresos($conexion, $connLocal, $idImpuesto)
 	    {
-	    	if ( isset($_SESSION['datosRamos']) ) {
-	    		$modelActEconIngreso = New ActEconIngresoForm();
+	    	if ( isset($_SESSION['idContribuyente']) && isset($connLocal) ) {
+	    		if ( $idImpuesto > 0 ) {
 
-	    		$arrayDatos = $modelActEconIngreso->attribute;
-	    		foreach ($arrayDatos as $key => $value) {
-	    			$arrayDatos[$value] = 0;
-	    		}
-	    		$arrayDatos['id_impuesto'] = $idImpuesto;
-	    		$arrayDatos['exigibilidad_periodo'] = 1;
-	    		$arrayDatos['periodo_fiscal_desde'] = null;
-	    		$arrayDatos['periodo_fiscal_hasta'] = null;
+		    		$arrayIdRubros = $_SESSION['arrayIdRubros'];
+		    		if ( count($arrayIdRubros) > 0 ) {
 
-	    		// Se procede a guardar en la entidad maestra de las declaraciones.
-      			$tabla = '';
-      			$tabla = $modelActEcon->tableName();
+			    		$modelActEconIngreso = New ActEconIngresoForm();
+			    		$arrayDatos = $modelActEconIngreso->attributes;
 
-				if ( $conexion->guardarRegistro($connLocal, $tabla, $arrayDatos) ) {
-					return true;
-				}
+			    		foreach ($arrayDatos as $key => $value) {
+			    			$arrayDatos[$key] = 0;
+			    		}
+			    		$arrayDatos['id_impuesto'] = $idImpuesto;
+			    		$arrayDatos['exigibilidad_periodo'] = 1;
+			    		$arrayDatos['periodo_fiscal_desde'] = null;
+			    		$arrayDatos['periodo_fiscal_hasta'] = null;
+
+			    		// Se procede a guardar en la entidad maestra de las declaraciones.
+		      			$tabla = '';
+		      			$tabla = $modelActEconIngreso->tableName();
+		      			$todoBien = false;
+
+		      			foreach ($arrayIdRubros as $key => $value) {
+		      				$arrayDatos['id_rubro'] = $arrayIdRubros[$key];
+		      				if ( !$conexion->guardarRegistro($connLocal, $tabla, $arrayDatos) ) {
+								$todoBien = false;
+								break;
+							} else {
+								$todoBien = true;
+							}
+		      			}
+		      		}
+	      		}
 	    	}
-	    	return false;
+	    	return $todoBien;
 	    }
+
+
+
+
+
+	    /**
+	     * [actionCreateDocumentosConsignados description]
+	     * @param  [type]  $conexion                [description]
+	     * @param  [type]  $connLocal               [description]
+	     * @param  integer $idContribuyenteGenerado [description]
+	     * @return [type]                           [description]
+	     */
+	    private static function actionCreateDocumentosConsignados($conexion, $connLocal, $postData, $idImpuesto)
+		{
+			if ( isset($_SESSION['idContribuyente']) && isset($connLocal) ) {
+				if ( $_SESSION['idContribuyente'] == $postData['id-contribuyente'] ) {
+					if ( isset($conexion) ) {
+						if ( isset($postData) ) {
+
+							$seleccion = [];
+							//$postData = $_SESSION['postData'];
+
+							if ( isset($postData['selection']) ) {
+								$modelDocumento = new DocumentoConsignadoForm();
+
+								$tabla = '';
+				      			$tabla = $modelDocumento->tableName();
+
+								$arregloDatos = $modelDocumento->attributes;
+
+								$arregloDatos['id_contribuyente'] = $postData['id-contribuyente'];
+								$arregloDatos['nro_solicitud'] = 0;
+								$arregloDatos['id_impuesto'] = $idImpuesto;
+								$arregloDatos['impuesto'] = 1;
+								$arregloDatos['codigo_proceso'] = 'AUTORIZAR-RAMO';
+								$arregloDatos['fecha_hora'] = date('Y-m-d H:i:s');
+								$arregloDatos['estatus'] = 0;
+								$arregloDatos['usuario'] = Yii::$app->user->identity->username;
+
+								if ( isset($postData['selection']) ) {
+					  				$seleccion = $postData['selection'];
+					  				//die(var_dump($seleccion));
+					  				foreach ( $seleccion as $key => $value ) {
+					  					$arregloDatos['id_documento'] = $seleccion[$key];
+
+					  					if ( !$conexion->guardarRegistro($connLocal, $tabla, $arregloDatos) ) {
+											return false;
+										}
+					  				}
+					  				return true;
+					  			}
+					  		} else {
+					  			return true;
+					  		}
+						}
+					}
+				}
+			}
+			return false;
+		}
 	}
 ?>
