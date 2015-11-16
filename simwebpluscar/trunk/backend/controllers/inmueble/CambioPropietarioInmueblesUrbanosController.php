@@ -155,7 +155,7 @@ CONTENIDO VENDEDOR (SELLER)
                         $arrayDatos = [
                                         'id_contribuyente' => $id_contribuyenteComprador,
                                       ]; 
-                        $arrayDb = ['id_impuesto'=>$id_impuesto,]
+                        
 
                         $tableName = 'inmuebles'; 
 
