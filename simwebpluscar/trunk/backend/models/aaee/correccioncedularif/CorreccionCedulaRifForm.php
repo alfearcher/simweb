@@ -46,7 +46,7 @@
 	use yii\base\Model;
 	use yii\data\ActiveDataProvider;
 	use backend\models\aaee\correccioncedularif\CorreccionCedulaRif;
-	use common\models\contribuyente\ContribuyenteBase;
+	use common\models\aaee\Sucursal;
 
 
 	/**
@@ -58,9 +58,9 @@
 		public $id_correccion;
 		public $nro_solicitud;
 		public $id_contribuyente;
-		public $naturaleza_v;			// Naturaleza vieja.
-		public $cedula_v;				// Cedula vieja.
-		public $tipo_v;					// Tipo vieja, solo para los contribuyente Juridicos.
+		public $naturaleza_v;				// Naturaleza vieja.
+		public $cedula_v;					// Cedula vieja.
+		public $tipo_v;						// Tipo vieja, solo para los contribuyente Juridicos.
 		public $tipo_naturaleza_v;
 		public $naturaleza_new;				// Naturaleza nueva.
 		public $cedula_new; 				// Cedula nnueva.
@@ -91,7 +91,7 @@
 	    {
 	        return [
 	        	[['naturaleza_new','cedula_new','tipo_new'],'required','when' => function($model) {
-	        																if ( $model->cedula_new != null || $model->tipo_new != null ) {
+	        																if ( $model->cedula_new != null || $model->tipo_new != null || $model->naturaleza_new != null ) {
 	        																	return $model->tipo_naturaleza_new == 1; }
 	        																}],
 	        	[['naturaleza_new','cedula_new'],'required','when' => function($model) {
@@ -101,7 +101,7 @@
 	        	['cedula_new', 'string', 'max' => 8, 'when' => function($model) { return $model->tipo_naturaleza_new == 0; }],
 	          	['cedula_new', 'string', 'max' => 9, 'when' => function($model) { return $model->tipo_naturaleza_new == 1; }],
 	          	[['cedula_new', 'tipo_new', 'tipo_naturaleza_new', 'id_contribuyente'], 'integer'],
-	          	[['naturaleza'], 'string'],
+	          	[['naturaleza_new', 'naturaleza_v'], 'string'],
 	        ];
 	    }
 
@@ -138,24 +138,7 @@
 	    {
 	    	if ( trim($naturalezaLocal) != '' && $cedulaLocal > 0 ) {
 	    		if ( strlen($naturalezaLocal) == 1 ) {
-	    			//die($naturalezaLocal . ' ' . $cedulaLocal);
-	    			// $query = ContribuyenteBase::find()->select(['id_contribuyente',
-		    		// 											'naturaleza',
-		    		// 											'cedula',
-		    		// 											'tipo',
-		    		// 											'tipo_naturaleza',
-		    		// 											'id_rif',
-		    		// 											'nombres',
-		    		// 											'apellidos',
-		    		// 											'razon_social'])
-		    		// 									->where('naturaleza =:naturaleza and cedula =:cedula and tipo =:tipo and tipo_naturaleza =:tipo_naturaleza and inactivo =:inactivo',[':naturaleza' => $naturalezaLocal,
-	    			// 												':cedula' => $cedulaLocal,
-	    			// 												':tipo' => $tipoLocal,
-	    			// 												':tipo_naturaleza' => $tipoNaturalezaLocal,
-	    			// 												':inactivo'=> 0])
-		    		// 									->all();
-
-	    			$query = ContribuyenteBase::find();
+	    			$query = Sucursal::find();
 	    			$dataProvider = new ActiveDataProvider([
 	            		'query' => $query,
 	        		]);
@@ -163,7 +146,8 @@
 	    															':cedula' => $cedulaLocal,
 	    															':tipo' => $tipoLocal,
 	    															':tipo_naturaleza' => $tipoNaturalezaLocal,
-	    															':inactivo'=> 0])->all();
+	    															':inactivo'=> '0'])->all();
+
 
 	    			return $dataProvider;
 	    		}
@@ -184,23 +168,11 @@
 	    {
 	    	if ( is_array($arrayIdContribuyente) ) {
 		    	if ( count($arrayIdContribuyente) > 0 ) {
-
-		    		$query = ContribuyenteBase::find()->select('id_contribuyente,
-		    													naturaleza,
-		    													cedula,
-		    													tipo,
-		    													tipo_naturaleza,
-		    													id_rif,
-		    													nombres,
-		    													apellidos,
-		    													razon_social')
-		    											->where(['in', 'id_contribuyente', $arrayIdContribuyente])
-		    											->all();
-
+		    		$query = Sucursal::find();
 		    		$dataProvider = new ActiveDataProvider([
 		            	'query' => $query,
 		        	]);
-		        	//$query->where(['in', 'id_contribuyente', $arrayIdContribuyente]);
+		        	$query->where(['in', 'id_contribuyente', $arrayIdContribuyente]);
 
 		        	return $dataProvider;
 		    	}
@@ -210,6 +182,36 @@
 
 
 
+
+	    public function validateForm($model, $requestPost)
+	    {
+	    	$result = false;
+	    	$tipoNaturalezaLocal = '';
+	    	$nombreForm = $model->formName();
+	    	//die(var_dump($requestPost));
+	    	if ( isset($requestPost) ) {
+	    		if ( isset($requestPost[$nombreForm]) ) {
+	    			$request = $requestPost[$nombreForm];
+	    			$tipoNaturalezaLocal = $request['tipo_naturaleza_new'];
+	    			if ( $tipoNaturalezaLocal == 0 ) {
+	    				// Contribuyente Natural
+	    				if ( strlen($request['naturaleza_new']) == 1  && is_numeric($request['cedula_new']) && !isset($request['tipo_new']) ) {
+	    					$result = true;
+	    				} else {
+	    					$model->addError('naturaleza_new', Yii::t('backend', 'DNI is not valid.'));
+	    				}
+	    			} elseif ( $tipoNaturalezaLocal == 1 ) {
+	    				// Contribuyente Juridico
+	    				if ( strlen($request['naturaleza_new']) == 1  && is_numeric($request['cedula_new']) && is_numeric($request['tipo_new']) ) {
+	    					$result = true;
+	    				} else {
+	    					$model->addError('naturaleza_new', Yii::t('backend', 'DNI is not valid.'));
+	    				}
+	    			}
+	    		}
+	    	}
+	    	return $result;
+	    }
 
 
 	}
