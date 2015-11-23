@@ -103,8 +103,8 @@
 
 
 		/**
-		*	@return Returna un array de parametros de conexion a base de datos. El mismo es una array multidimensional.
-		*/
+		 *	@return Returna un array de parametros de conexion a base de datos. El mismo es una array multidimensional.
+		 */
 		private static function getArrayParametros()
 		{
 			return $connLocal = require(dirname(__DIR__)) . '/config/main-local.php';
@@ -173,12 +173,12 @@
 
 
 		/**
-		*	@param $conection instancia de tipo Connection a la base de datos
-		* 	@param $tableName nombre de la tabla.
-		* 	@param $arrayDatos arreglo de datos que seran insertados, cuya estructura es campo => valor.
-		* 	@return boolean true si guardo false si no guardo.
-		*
-		*/
+		 *	@param $conection instancia de tipo Connection a la base de datos
+		 * 	@param $tableName nombre de la tabla.
+		 * 	@param $arrayDatos arreglo de datos que seran insertados, cuya estructura es campo => valor.
+		 * 	@return boolean true si guardo false si no guardo.
+		 *
+		 */
 		public function guardarRegistro($conection, $tableName, $arrayDatos = [])
 		{
 			// Se controla que existe un usuario activo valido.
@@ -201,14 +201,14 @@
 
 
 		/**
-		*	@param $conection instancia de tipo Connection a la base de datos
-		* 	@param $tableName nombre de la tabla.
-		* 	@param $arrayColumna arreglo de columna de la tabla donde vamos a insertar.
-		* 	@param $arrayValores arreglos de los valores a insertar, los mismo corresponde con las
-		* 	columnas, y el arreglo puede tener varias filas de valores.
-		* 	@return boolean true si guardo false si no guardo.
-		*
-		*/
+		 *	@param $conection instancia de tipo Connection a la base de datos
+		 * 	@param $tableName nombre de la tabla.
+		 * 	@param $arrayColumna arreglo de columna de la tabla donde vamos a insertar.
+		 * 	@param $arrayValores arreglos de los valores a insertar, los mismo corresponde con las
+		 * 	columnas, y el arreglo puede tener varias filas de valores.
+		 * 	@return boolean true si guardo false si no guardo.
+		 *
+		 */
 		public function guardarLoteRegistros($conection, $tableName, $arrayColumna = [], $arrayValores = [])
 		{
 			// Se controla que existe un usuario activo valido.
@@ -231,13 +231,13 @@
 
 
 		/**
-		*	@param $conection instancia de tipo Connection a la base de datos.
-		* 	@param $tableName nombre de la tabla.
-		* 	@param $arrayDatos arreglo de datos que seran actualizados, cuya estructura es campo => valor.
-		* 	@param $arrayCondition arreglo de datos que especifica la condicion de los registros a actualizar,
-		* 	where condition de la sentencia sql.
-		* 	@return boolean true si actualizo false si no actualizo.
-		*/
+		 *	@param $conection instancia de tipo Connection a la base de datos.
+		 * 	@param $tableName nombre de la tabla.
+		 * 	@param $arrayDatos arreglo de datos que seran actualizados, cuya estructura es campo => valor.
+	 	 * 	@param $arrayCondition arreglo de datos que especifica la condicion de los registros a actualizar,
+		 * 	where condition de la sentencia sql.
+		 * 	@return boolean true si actualizo false si no actualizo.
+		 */
 		public function modificarRegistro($conection, $tableName, $arrayDatos = [], $arrayCondition = [])
 		{
 			// Se controla que existe un usuario activo valido.
@@ -259,12 +259,12 @@
 
 
 		/**
-		*	@param $conection instancia de tipo Connection a la base de datos.
-		* 	@param $tableName nombre de la tabla.
-		* 	@param $arrayCondition arreglo de datos que especifica la condicion de los registros a eliminar,
-		* 	where condition de la sentencia sql.
-		* 	@return boolean true si elimina false si no elimina.
-		*/
+		 *	@param $conection instancia de tipo Connection a la base de datos.
+		 * 	@param $tableName nombre de la tabla.
+		 * 	@param $arrayCondition arreglo de datos que especifica la condicion de los registros a eliminar,
+		 * 	where condition de la sentencia sql.
+		 * 	@return boolean true si elimina false si no elimina.
+		 */
 		public function eliminarRegistro($conection, $tableName, $arrayCondition = [])
 		{
 			// Se controla que existe un usuario activo valido.
