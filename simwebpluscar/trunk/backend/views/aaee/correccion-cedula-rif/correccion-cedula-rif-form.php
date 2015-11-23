@@ -40,23 +40,23 @@
  *
  */
 
- 	//use yii\web\Response;
- 	use kartik\icons\Icon;
+ 	use yii\web\Response;
+ 	//use kartik\icons\Icon;
  	use yii\grid\GridView;
 	use yii\helpers\Html;
 	use yii\helpers\Url;
 	use yii\helpers\ArrayHelper;
 	use yii\widgets\ActiveForm;
 	use yii\web\View;
-	//use yii\widgets\Pjax;
+	use yii\widgets\Pjax;
 	//use backend\controllers\utilidad\documento\DocumentoRequisitoController;
 	use common\models\contribuyente\ContribuyenteBase;
 	use backend\models\registromaestro\TipoNaturaleza;
 
-	$typeIcon = Icon::FA;
-  	$typeLong = 'fa-2x';
+	// $typeIcon = Icon::FA;
+ //  	$typeLong = 'fa-2x';
 
-    Icon::map($this, $typeIcon);
+ //    Icon::map($this, $typeIcon);
 
  ?>
 
@@ -67,6 +67,7 @@
  		$form = ActiveForm::begin([
  			'id' => 'correccion-cedula-rif-form',
  			'method' => 'post',
+ 			//'action' => ['index'],
  			'enableClientValidation' => true,
  			'enableAjaxValidation' => true,
  			'enableClientScript' => true,
@@ -80,6 +81,7 @@
         </div>
 
         <?= $form->field($model, 'tipo_naturaleza_new')->hiddenInput(['value' => $datosContribuyente[0]['tipo_naturaleza']])->label(false); ?>
+        <?= $form->field($model, 'tipo_naturaleza_v')->hiddenInput(['value' => $datosContribuyente[0]['tipo_naturaleza']])->label(false); ?>
 
 <!-- Cuerpo del formulario -->
         <div class="panel-body" style="background-color: #F9F9F9;">
@@ -102,8 +104,8 @@
 										<div class="row">
 											<div class="id-contribuyente">
 												<?= $form->field($model, 'id_contribuyente')->textInput([
-																									'id' => 'id-contribuyente',
-																									'name' => 'id-contribuyente',
+																									'id' => 'id_contribuyente',
+																									//'name' => 'id-contribuyente',
 																									'style' => 'width:100%;',
 																									'value' => $datosContribuyente[0]['id_contribuyente'],
 																									'readonly' => true,
@@ -121,8 +123,8 @@
 										<div class="row">
 											<div class="naturaleza-v">
 												<?= $form->field($model, 'naturaleza_v')->textInput([
-																									'id' => 'naturaleza-v',
-																									'name' => 'naturaleza-v',
+																									'id' => 'naturaleza_v',
+																									//'name' => 'naturaleza-v',
 																									'style' => 'width:50%;',
 																									'value' => $datosContribuyente[0]['naturaleza'],
 																									'readonly' => true,
@@ -139,8 +141,8 @@
 										<div class="row">
 											<div class="cedula-v">
 												<?= $form->field($model, 'cedula_v')->textInput([
-																								'id' => 'cedula-v',
-																								'name' => 'cedula-v',
+																								'id' => 'cedula_v',
+																								//'name' => 'cedula-v',
 																								'style' => 'width:100%;',
 																								'value' => $datosContribuyente[0]['cedula'],
 																								'readonly' => true,
@@ -150,7 +152,11 @@
 									</div>
 
 
-<?php if ( $datosContribuyente[0]['tipo_naturaleza'] == 1) {?>
+<?php
+	$longitudMax = 8;
+	if ( $datosContribuyente[0]['tipo_naturaleza'] == 1) {
+		$longitudMax = 9;
+?>
 									<div class="col-sm-1" style="margin-left: 3px;margin-top: 20px">
 										<div class="row" style="width:100%;">
 											<p style="margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('backend', '') ?></i></p>
@@ -158,8 +164,8 @@
 										<div class="row">
 											<div class="tipo-v">
 												<?= $form->field($model, 'tipo_v')->textInput([
-																								'id' => 'tipo-v',
-																								'name' => 'tipo-v',
+																								'id' => 'tipo_v',
+																								//'name' => 'tipo-v',
 																								'style' => 'width:50%;',
 																								'value' => $datosContribuyente[0]['tipo'],
 																								'readonly' => true,
@@ -240,9 +246,10 @@
 	        						<div class="col-sm-3" style="width: 20%;">
 										<div class="naturaleza-new">
 					                		<?= $form->field($model, 'naturaleza_new')->dropDownList($listaNaturaleza,[
-	                																	 			'id' => 'naturaleza-new',
-	                																	 			'name' => 'naturaleza-new',
+	                																	 			'id' => 'naturaleza_new',
+	                																	 			//'name' => 'naturalezanew',
 	                                                                     				 			'prompt' => Yii::t('backend', 'Select'),
+	                                                                     				 			//'value' => $datosContribuyente[0]['naturaleza'],
 	                                                                    							])->label(false)
 					    					?>
 										</div>
@@ -253,9 +260,10 @@
 									<div class="col-sm-3" style="width: 15%; margin-left: -25px;">
 										<div class="cedula-new">
 											<?= $form->field($model, 'cedula_new')->textInput([
-																							//'id' => 'cedula-new',
+																							'id' => 'cedula_new',
 																							//'name' => 'cedula-new',
-																							//'maxlength' => $maxLength,
+																							//'value' => $model->cedula_v,
+																							'maxlength' => $longitudMax,
 																		  				  ])->label(false) ?>
 										</div>
 									</div>
@@ -266,8 +274,9 @@
 									<div class="col-sm-1" style="width: 7%; margin-left: -25px;">
 										<div class="tipo-new">
 											<?= $form->field($model, 'tipo_new')->textInput([
-																						'id' => 'tipo-new',
-																						'name' => 'tipo-new',
+																						'id' => 'tipo_new',
+																						//'name' => 'tipo-new',
+																						//'value' => $model->tipo_v,
 																						'maxlength' => 1,
 																			  			])->label(false) ?>
 										</div>
@@ -283,7 +292,7 @@
 																										'id' => 'btn-update',
 																										'class' => 'btn btn-success',
 																										'name' => 'btn-update',
-																										//'action' => ['index'],
+																										//'action' => ['/correccion-cedula-rif/index'],
 																									  ])
 											?>
 										</div>
