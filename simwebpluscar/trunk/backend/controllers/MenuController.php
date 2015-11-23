@@ -12,7 +12,7 @@
 
 		public $layout = 'layoutbase';
 
-		
+
 		public function actionVertical()
 		{
 			return $this->render('menuvertical2');
