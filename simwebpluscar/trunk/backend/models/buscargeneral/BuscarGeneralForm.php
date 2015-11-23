@@ -261,8 +261,11 @@
 
 
 		/**
-		*
-		*/
+		 * [getTipoNaturaleza description]
+		 * @param  [type]  $tipoNaturaleza  [description]
+		 * @param  integer $idContribuyente [description]
+		 * @return [type]                   [description]
+		 */
 		public function getTipoNaturaleza($tipoNaturaleza, $idContribuyente = 0)
 		{
 			if ( $idContribuyente > 0 ) {
@@ -275,8 +278,14 @@
 
 
 		/**
-		*
-		*/
+		 * [getDescripcionContribuyente description]
+		 * @param  [type]  $tipoNaturaleza      [description]
+		 * @param  string  $razonSocial         [description]
+		 * @param  string  $apellidos           [description]
+		 * @param  string  $nombres             [description]
+		 * @param  integer $ordenApellidoNombre [description]
+		 * @return [type]                       [description]
+		 */
 		public function getDescripcionContribuyente($tipoNaturaleza, $razonSocial = '', $apellidos = '', $nombres = '', $ordenApellidoNombre = 0)
 		{
 			return ContribuyenteBase::getContribuyenteDescripcion($tipoNaturaleza, $razonSocial, $apellidos, $nombres, $ordenApellidoNombre);
@@ -286,11 +295,16 @@
 
 
 		/**
-		*
-		*/
-		public function getDescripcionContribuyenteSegunID($idContribuyente)
+		 * [getDescripcionContribuyenteSegunID description]
+		 * @param  integer $idContribuyente [description]
+		 * @return [type]                   [description]
+		 */
+		public function getDescripcionContribuyenteSegunID($idContribuyente = 0)
 		{
-			return ContribuyenteBase::getContribuyenteDescripcionSegunID($idContribuyente);
+			if ( $idContribuyente > 0 ) {
+				return ContribuyenteBase::getContribuyenteDescripcionSegunID($idContribuyente);
+			}
+			return "";
 		}
 
 	}
