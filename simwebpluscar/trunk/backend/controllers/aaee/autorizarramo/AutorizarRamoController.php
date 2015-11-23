@@ -302,7 +302,7 @@
     		$modelSearch = New BusquedaRubroForm();
     		$model = New AutorizarRamoForm();
     		$dataProvider = $model->searchRubro($anoImpositivo, $params);
-
+//die(var_dump($dataProvider));
     		if ( Yii::$app->request->isGet ) {
     			if ( isset($dataProvider) && !isset($_SESSION['anoImpositivo']) ) {
     				$_SESSION['anoImpositivo'] = $anoImpositivo;
