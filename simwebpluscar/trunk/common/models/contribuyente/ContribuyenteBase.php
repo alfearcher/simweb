@@ -117,6 +117,17 @@
 
 
 
+		/**
+		 *	Metodo que retorna el nombre de la base de datos donde se tiene la conexion actual.
+		 * 	Utiliza las propiedades y metodos de Yii2 para traer dicha informacion.
+		 * 	@return Nombre de la base de datos
+		 */
+		public static function getDb()
+		{
+			return Yii::$app->db;
+		}
+
+
 
 
 		/**
@@ -357,7 +368,7 @@
 		/**
 		 *
 		 */
-		public function getTelefonos()
+		private static function getTelefonos()
 		{
 
 		}
