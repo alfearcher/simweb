@@ -53,7 +53,7 @@ use Yii;
 use backend\models\inmueble\InmueblesUrbanosForm;
 use backend\models\inmueble\ContribuyentesForm;
 use backend\models\inmueble\AvaluoCatastralForm;
-use backend\models\ContribuyentesForm;
+
 use backend\models\inmueble\InmueblesConsulta;
 use backend\models\inmueble\InmueblesSearch;
 use yii\web\Controller;
