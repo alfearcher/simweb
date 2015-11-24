@@ -126,7 +126,7 @@ class AvaluoCatastralInmueblesUrbanosController extends Controller
 
         $model = $this->findModel($id_contribuyente); 
 
-        //$modelavaluo = new AvaluoCatastralForm();
+         //$modelavaluo = new AvaluoCatastralForm();
          //Mostrará un mensaje en la vista cuando el usuario se haya registrado
          $msg = null; 
          $url = null; 
@@ -159,8 +159,7 @@ class AvaluoCatastralInmueblesUrbanosController extends Controller
                   
                 if (!\Yii::$app->user->isGuest){   
                      
-     
-              
+                   
 /*
 CONTENIDO DEL AVALUO CATASTRAL
 */  

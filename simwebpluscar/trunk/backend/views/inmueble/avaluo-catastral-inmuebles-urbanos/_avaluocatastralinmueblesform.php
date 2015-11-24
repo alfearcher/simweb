@@ -203,10 +203,10 @@ $variablephp=$_COOKIE['variablephp'];
                                                     
                                                     
                                                     
-                                               </tr>   
+                                                </tr>   
 
-                                               <tr>                     
-                            
+                                                <tr>                     
+                                
 
                                                     <td colspan="2" style="max-width: 100px" align="right">
                                                         <div class="col-sm-2"> 
@@ -219,15 +219,15 @@ $variablephp=$_COOKIE['variablephp'];
                                                         <?= $form->field($model, 'metros_terreno')->Input(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?> 
                                                         </div>
                                                     </td>         
-                                             </tr>
+                                                </tr>
 
-                                             <tr>
+                                                <tr>
                                                     <td colspan="5" style="max-width: 100px">
                                                         <?php 
                                                         echo Html::submitButton(Yii::t('backend', 'Accept'), ['class' => 'btn btn-primary', 'name'=>'AcceptBuyer', 'value'=>'Accept']); 
                                                         ?>
                                                     </td>
-                                            </tr> 
+                                                </tr> 
                                        
                                                    
                   </div>      
