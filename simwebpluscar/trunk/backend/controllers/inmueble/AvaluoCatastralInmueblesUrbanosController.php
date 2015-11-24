@@ -73,7 +73,24 @@ class AvaluoCatastralInmueblesUrbanosController extends Controller
     public $conexion;
     public $transaccion; 
 
+     /**
+     * Lists all Inmuebles models.
+     * @return mixed
+     */
+    public function actionIndex()
+    {
+        if ( isset( $_SESSION['idContribuyente'] ) ) {
+        $searchModel = new InmueblesSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]); 
+        }  else {
+                    echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
+        }
+    }
     /**
      *Metodo: CambioPropietarioInmuebles
      *Actualiza los datos del numero catastral del inmueble urbano.
