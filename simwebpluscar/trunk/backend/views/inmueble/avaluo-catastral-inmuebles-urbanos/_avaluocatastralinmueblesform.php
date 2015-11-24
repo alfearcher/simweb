@@ -172,14 +172,13 @@ $variablephp=$_COOKIE['variablephp'];
                         <td colspan="2"> 
 
                              <?= DetailView::widget([
-                                                        'model' => $modelContribuyente,
+                                                        'model' => $model,
                                                         'attributes' => [ 
                                                         'id_contribuyente',
-                                                        'cedula',
-                                                        'nombres',
-                                                        'apellidos',
-                                                        'domicilio_fiscal',
-                                                        'email',
+                                                        'id_impuesto',
+                                                        'catastro',
+                                                        'direccion',
+                                                        'tlf_hab',                                                        
                                                          ],
                                                          
                               ]) ?> 

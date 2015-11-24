@@ -121,7 +121,7 @@ class AvaluoCatastralInmueblesUrbanosController extends Controller
     public function actionAvaluoCatastralInmuebles()
     { 
         if ( isset( $_SESSION['idContribuyente'] ) ) {
-        $modelContribuyente = $this->findModelContribuyente($id_contribuyente);
+        //$modelContribuyente = $this->findModelContribuyente($id_contribuyente);
         
 
         $model = $this->findModel($id_contribuyente); 
@@ -138,11 +138,11 @@ class AvaluoCatastralInmueblesUrbanosController extends Controller
               Yii::$app->response->format = Response::FORMAT_JSON;
               return ActiveForm::validate($model); 
          } 
-         if ($modelContribuyente->load(Yii::$app->request->post()) && Yii::$app->request->isAjax){ 
+         /*if ($modelContribuyente->load(Yii::$app->request->post()) && Yii::$app->request->isAjax){ 
 
               Yii::$app->response->format = Response::FORMAT_JSON;
               return ActiveForm::validate($modelContribuyente); 
-         } 
+         } */
 
          $datosCambio = Yii::$app->request->post("InmueblesUrbanosForm");
          $btn = Yii::$app->request->post();
@@ -298,7 +298,7 @@ FIN BUYER
      * @return Contribuyente the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function findModelContribuyente($id)
+   /* public function findModelContribuyente($id)
     {//echo'<pre>'; var_dump($_SESSION['idContribuyente']); echo '</pre>'; die('hola');
         if (($modelContribuyente = ContribuyentesForm::findOne($id)) !== null) {
             
@@ -306,6 +306,6 @@ FIN BUYER
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
-    }
+    }*/
 }
 
