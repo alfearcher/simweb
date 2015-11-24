@@ -325,8 +325,7 @@ class AvaluoCatastralForm extends \yii\db\ActiveRecord
 
                     $this->addError($attribute, Yii::t('backend', 'The taxpayer: '.$table[0]['id_contribuyente'].' has already assigned cadestre. Tax: '.$table[0]['id_impuesto']));//Impuesto: '.$table->id_impuesto; 
             } 
-         
-          } 
+          
      }
 
      public function catastro_cambio($attribute, $params)
