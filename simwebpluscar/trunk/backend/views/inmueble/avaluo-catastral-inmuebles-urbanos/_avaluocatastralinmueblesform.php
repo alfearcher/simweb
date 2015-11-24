@@ -188,8 +188,7 @@ $variablephp=$_COOKIE['variablephp'];
                     </tr>
 
 
-                    <tr>
-                        <td> 
+                    
 
                                                <tr>
                                                     <td style="max-width: 100px" align="right">
@@ -233,8 +232,7 @@ $variablephp=$_COOKIE['variablephp'];
                                                     </td>
                                             </tr> 
                                        
-                        </td>
-                    </tr>                              
+                                                   
                   </div>      
               </div>
         </div>
