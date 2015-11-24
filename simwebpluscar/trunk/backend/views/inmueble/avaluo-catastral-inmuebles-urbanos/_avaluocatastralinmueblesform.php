@@ -168,27 +168,24 @@ $variablephp=$_COOKIE['variablephp'];
                 <table class="table table-striped ">
                     
 
-                    <tr>
-                        <td colspan="5"> 
+                                              <tr>
+                                                     <td colspan="5"> 
 
-                             <?= DetailView::widget([
-                                                        'model' => $model,
-                                                        'attributes' => [ 
-                                                        'id_contribuyente',
-                                                        'id_impuesto',
-                                                        'catastro',
-                                                        'direccion',
-                                                        'tlf_hab',                                                        
-                                                         ],
+                                                         <?= DetailView::widget([
+                                                                                    'model' => $model,
+                                                                                    'attributes' => [ 
+                                                                                    'id_contribuyente',
+                                                                                    'id_impuesto',
+                                                                                    'catastro',
+                                                                                    'direccion',
+                                                                                    'tlf_hab',                                                        
+                                                                                     ],
                                                          
-                              ]) ?> 
+                                                          ]) ?> 
 
-                        </td>
+                                                     </td>
                         
-                    </tr>
-
-
-                    
+                                               </tr>
 
                                                <tr>
                                                     <td style="max-width: 100px" align="right">
