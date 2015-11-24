@@ -19,7 +19,7 @@ $disabled = true;
 
     <?= $this->render('_avaluocatastralinmueblesform', [
         'disabled'=>$disabled,'modelContribuyente' => $modelContribuyente,
-        'model'=>$model, 'modelBuscar'=>$modelBuscar,'datosVContribuyente'=>$datosVContribuyente, 'datosVInmueble'=>$datosVInmueble, 'modelAvaluo' =>$modelAvaluo,
+        'model'=>$model, 'modelBuscar'=>$modelBuscar,'datosVContribuyente'=>$datosVContribuyente, 'datosVInmueble'=>$datosVInmueble, 'modelavaluo' =>$modelavaluo,
     ]) ?>
 
 </div>
