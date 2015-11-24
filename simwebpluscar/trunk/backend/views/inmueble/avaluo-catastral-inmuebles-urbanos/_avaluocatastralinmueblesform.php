@@ -234,11 +234,11 @@ $variablephp=$_COOKIE['variablephp'];
                                              
                                         </div>
                                     </div>
-                            </div>  
+                              
 
                         </td>
                     </tr>                              
-                        
+                  </div>      
 
                              
 
