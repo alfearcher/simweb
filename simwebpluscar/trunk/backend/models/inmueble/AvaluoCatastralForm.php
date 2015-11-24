@@ -100,30 +100,9 @@ class AvaluoCatastralForm extends \yii\db\ActiveRecord
     public $conn;
     public $conexion;
     public $transaccion;   
-    public $nivela;
-    public $nivelb;
-    public $validacion; 
-    public $operacion; 
-    public $ano_traspaso;
-    public $tipo_naturaleza;
-    public $naturaleza;
-    public $cedula;
-    public $tipo;
-    public $naturalezaBuscar;
-    public $cedulaBuscar;
-    public $tipoBuscar;
-    
-    public $ano_traspaso1;
-    public $tipo_naturaleza1;
-    public $naturalezaBuscar1;
-    public $cedulaBuscar1;
-    public $tipoBuscar1;
-
-    public $variablephp;
-    public $datosVendedor;
-    public $inmuebleVendedor;
-    public $datosVContribuyente;
-    public $datosVInmueble;
+    public $metros_construcion;
+    public $metros_terreno;
+   
 
     public static function tableName()
     {

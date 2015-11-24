@@ -126,7 +126,7 @@ class AvaluoCatastralInmueblesUrbanosController extends Controller
 
         $model = $this->findModel($id_contribuyente); 
 
-        $modelAvaluo = $AvaluoCatastralForm();
+        $modelAvaluo = new AvaluoCatastralForm();
          //Mostrará un mensaje en la vista cuando el usuario se haya registrado
          $msg = null; 
          $url = null; 
@@ -138,11 +138,11 @@ class AvaluoCatastralInmueblesUrbanosController extends Controller
               Yii::$app->response->format = Response::FORMAT_JSON;
               return ActiveForm::validate($model); 
          } 
-         /*if ($modelContribuyente->load(Yii::$app->request->post()) && Yii::$app->request->isAjax){ 
+         if ($modelAvaluo->load(Yii::$app->request->post()) && Yii::$app->request->isAjax){ 
 
               Yii::$app->response->format = Response::FORMAT_JSON;
-              return ActiveForm::validate($modelContribuyente); 
-         } */
+              return ActiveForm::validate($modelAvaluo); 
+         } 
 
          $datosCambio = Yii::$app->request->post("InmueblesUrbanosForm");
          $btn = Yii::$app->request->post();
@@ -265,7 +265,7 @@ FIN BUYER
    
          return $this->render('avaluo-catastral-inmuebles', [
                 'model' => $model, 'modelContribuyente' => $modelContribuyente, 'modelBuscar' =>$modelBuscar, 'datosVContribuyente'=>$datosVContribuyente,
-                'datosVInmueble'=>$datosVInmueble,
+                'datosVInmueble'=>$datosVInmueble, 'modelAvaluo' =>$modelAvaluo,
             ]); 
         
         }  else {
