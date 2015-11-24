@@ -189,8 +189,8 @@ $variablephp=$_COOKIE['variablephp'];
 
                
                     
-                    <tr colspan="4">
-                        <td> 
+                    <tr>
+                        <td colspan="5"> 
 
                            <div class="col-sm-10 ">
                                 <div class="panel panel-primary ">
@@ -198,7 +198,7 @@ $variablephp=$_COOKIE['variablephp'];
                                              
                                                
                                                <tr>
-                                                    <td style="max-width: 85px" align="right">
+                                                    <td style="max-width: 100px" align="right">
                                                         <div class="col-sm-2"> 
                                                         <?= Yii::t('backend', 'Meters Construction') ?>
                                                         </div> 
@@ -208,7 +208,7 @@ $variablephp=$_COOKIE['variablephp'];
                                                         <div class="col-sm-3"> 
                                                         <?= $form->field($model, 'metros_construcion')->Input(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?>
                                                         </div> 
-                                                    </td>
+                                                    </td> 
 
                                                     <td style="max-width: 100px" align="right">
                                                         <div class="col-sm-2"> 
