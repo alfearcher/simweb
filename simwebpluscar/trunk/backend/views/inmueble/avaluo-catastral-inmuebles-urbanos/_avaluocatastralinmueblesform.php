@@ -169,7 +169,7 @@ $variablephp=$_COOKIE['variablephp'];
                     
 
                     <tr>
-                        <td colspan="2"> 
+                        <td colspan="5"> 
 
                              <?= DetailView::widget([
                                                         'model' => $model,
