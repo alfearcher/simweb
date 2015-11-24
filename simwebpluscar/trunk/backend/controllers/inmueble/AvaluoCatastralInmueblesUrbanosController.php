@@ -27,7 +27,7 @@
  * 
  *  @date 17-08-2015
  * 
- *  @class CambioPropietarioInmueblesUrbanosController
+ *  @class AvaluoCatastralInmueblesUrbanosController
  *  @brief Clase que permite controlar el cambio de otros datos del inmueble urbano, 
  *  el cambio ha propiedad horizontal
  *
@@ -38,7 +38,7 @@
  *
  *  
  *  @method
- *  CambioNumeroCatastralInmuebles
+ *  AvaluoCatastralInmuebles
  *  findModel
  *  
  *   
@@ -51,7 +51,7 @@ error_reporting(0);
 session_start();
 use Yii;
 use backend\models\inmueble\InmueblesUrbanosForm;
-use backend\models\inmueble\CambioPropietarioInmueblesForm;
+use backend\models\inmueble\AvaluoCatastralForm;
 use backend\models\ContribuyentesForm;
 use backend\models\inmueble\InmueblesConsulta;
 use backend\models\inmueble\InmueblesSearch;
@@ -295,7 +295,7 @@ FIN BUYER
          }*/
         }
    
-         return $this->render('cambio-propietario-inmuebles', [
+         return $this->render('avaluo-catastral-inmuebles', [
                 'model' => $model, 'modelContribuyente' => $modelContribuyente, 'modelBuscar' =>$modelBuscar, 'datosVContribuyente'=>$datosVContribuyente,
                 'datosVInmueble'=>$datosVInmueble,
             ]); 
