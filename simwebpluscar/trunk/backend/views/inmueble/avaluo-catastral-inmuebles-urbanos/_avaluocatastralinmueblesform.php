@@ -222,7 +222,7 @@ $variablephp=$_COOKIE['variablephp'];
                                              </tr>
 
                                              <tr>
-                                                    <td colspan="2" style="max-width: 100px">
+                                                    <td colspan="5" style="max-width: 100px">
                                                         <?php 
                                                         echo Html::submitButton(Yii::t('backend', 'Accept'), ['class' => 'btn btn-primary', 'name'=>'AcceptBuyer', 'value'=>'Accept']); 
                                                         ?>
