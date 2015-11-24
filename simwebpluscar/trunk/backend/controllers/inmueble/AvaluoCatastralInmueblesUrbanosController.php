@@ -28,8 +28,8 @@
  *  @date 17-08-2015
  * 
  *  @class AvaluoCatastralInmueblesUrbanosController
- *  @brief Clase que permite controlar el cambio de otros datos del inmueble urbano, 
- *  el cambio ha propiedad horizontal
+ *  @brief Clase que permite controlar el avaluo catastral del inmueble urbano 
+ *  
  *
  * 
  *  
@@ -126,75 +126,7 @@ class AvaluoCatastralInmueblesUrbanosController extends Controller
      
               
 /*
-CONTENIDO VENDEDOR (SELLER)
-*/
-
-                if ($datosCambio["operacion"] == 1) {
-                                    
-                    if ($datosCambio["tipo_naturaleza1"] == 0) {
-                        $tipo = $datosCambio["tipoBuscar1"];
-                    } else { 
-                        $tipo = 0;
-                    }
-
-                    $modelParametros = ContribuyentesForm::find()->where(['naturaleza'=>$datosCambio["naturalezaBuscar1"]])
-                                                                 ->andWhere(['cedula'=>$datosCambio["cedulaBuscar1"]])
-                                                                 ->andWhere(['tipo'=>$tipo])->asArray()->all();                                         
-
-
-                    if ($btn['AcceptSeller']!=null) {
-
-                        $id_contribuyenteVendedor = $datosCambio["id_contribuyente"];
-                        $id_impuestoVenta = $datosCambio["direccion"];
-                        $ano_traspaso = $datosCambio["ano_traspaso"];
-
-                        $id_contribuyenteComprador = $modelParametros[0]['id_contribuyente'];
-
-
-                        //--------------TRY---------------
-                        $arrayDatos = [
-                                        'id_contribuyente' => $id_contribuyenteComprador,
-                                      ]; 
-                        
-
-                        $tableName = 'inmuebles'; 
-
-                        $arrayCondition = ['id_impuesto' => $id_impuestoVenta,]; 
-
-//echo'<pre>'; var_dump($datosCambio); echo '</pre>'; die('hola seller 2'); 
-                        $conn = New ConexionController(); 
-
-                        $this->conexion = $conn->initConectar('dbsim');     // instancia de la conexion (Connection)
-                        $this->conexion->open(); 
-
-                        $transaccion = $this->conexion->beginTransaction(); 
-
-                        if ( $conn->modificarRegistro($this->conexion, $tableName, $arrayDatos, $arrayCondition) ){
-
-                            $transaccion->commit(); 
-                            $tipoError = 0; 
-                            $msg = Yii::t('backend', 'SUCCESSFUL UPDATE DATA OF THE URBAN PROPERTY!');//REGISTRO EXITOSO DE LAS PREGUNTAS DE SEGURIDAD
-                            $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['inmueble/inmuebles-urbanos/index', 'id' => $model->id_contribuyente])."'>";                     
-                            return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
-                        }else{ 
-
-                            $transaccion->roolBack();  
-                            $tipoError = 0; 
-                            $msg = Yii::t('backend', 'AN ERROR OCCURRED WHEN UPDATE THE URBAN PROPERTY!');//HA OCURRIDO UN ERROR AL LLENAR LAS PREGUNTAS SECRETAS
-                            $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['inmueble/inmuebles-urbanos/index', 'id' => $model->id_contribuyente])."'>";                     
-                            return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
-                        }   
-
-                        $this->conexion->close();
-                    }
-                }
-/*
-FIN SELLER
-*/
-
-
-/*
-CONTENIDO DEL COMPRADOR (BUYER)
+CONTENIDO DEL AVALUO CATASTRAL
 */  
        
                 if ($datosCambio["operacion"] == 2) {
