@@ -298,7 +298,7 @@ FIN BUYER
      * @return Contribuyente the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function findModelContribuyente($id)
+    /*public function findModelContribuyente($id)
     {//echo'<pre>'; var_dump($_SESSION['idContribuyente']); echo '</pre>'; die('hola');
         if (($modelContribuyente = ContribuyentesForm::findOne($id)) !== null) {
             
@@ -306,6 +306,6 @@ FIN BUYER
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
-    }
+    }*/
 }
 
