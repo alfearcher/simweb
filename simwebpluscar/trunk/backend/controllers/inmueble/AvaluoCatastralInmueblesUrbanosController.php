@@ -51,6 +51,7 @@ error_reporting(0);
 session_start();
 use Yii;
 use backend\models\inmueble\InmueblesUrbanosForm;
+use backend\models\inmueble\ContribuyentesForm,
 use backend\models\inmueble\AvaluoCatastralForm;
 use backend\models\ContribuyentesForm;
 use backend\models\inmueble\InmueblesConsulta;
