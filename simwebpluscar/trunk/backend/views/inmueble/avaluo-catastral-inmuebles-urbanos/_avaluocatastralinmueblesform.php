@@ -187,16 +187,10 @@ $variablephp=$_COOKIE['variablephp'];
                         
                     </tr>
 
-               
-                    
+
                     <tr>
                         <td colspan="5"> 
 
-                           <div class="col-sm-10 ">
-                                <div class="panel panel-primary ">
-                                       
-                                             
-                                               
                                                <tr>
                                                     <td style="max-width: 100px" align="right">
                                                         <div class="col-sm-2"> 
@@ -232,13 +226,13 @@ $variablephp=$_COOKIE['variablephp'];
 
                                                        
                                              
-                                        </div>
-                                    </div>
-                              
-
+                                       
                         </td>
                     </tr>                              
                   </div>      
+              </div>
+        </div>
+                              
 
                              
 
