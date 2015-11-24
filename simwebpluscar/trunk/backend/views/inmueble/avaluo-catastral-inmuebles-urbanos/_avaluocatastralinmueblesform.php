@@ -188,7 +188,7 @@ $variablephp=$_COOKIE['variablephp'];
                                                </tr>
 
                                                <tr>
-                                                    <td style="max-width: 100px" align="right">
+                                                    <td colspan="2" style="max-width: 100px" align="right">
                                                         <div class="col-sm-2"> 
                                                         <?= Yii::t('backend', 'Meters Construction') ?>
                                                         </div> 
@@ -208,7 +208,7 @@ $variablephp=$_COOKIE['variablephp'];
                                                <tr>                     
                             
 
-                                                    <td style="max-width: 100px" align="right">
+                                                    <td colspan="2" style="max-width: 100px" align="right">
                                                         <div class="col-sm-2"> 
                                                         <?= Yii::t('backend', 'Meters of Land') ?>
                                                         </div> 
