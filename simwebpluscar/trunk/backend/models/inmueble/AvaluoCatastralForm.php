@@ -312,7 +312,7 @@ class AvaluoCatastralForm extends \yii\db\ActiveRecord
                                     ->asArray()->all(); 
 
             $table = PagosDetalle::find()
-                                    ->where("id_pago=:id_pago", [":id_pago" => ])
+                                    ->where("id_pago=:id_pago", [":id_pago" => 1])
                                     ->andwhere("id_impuesto=:id_impuesto", [":id_impuesto" => $this->direccion])
                                     ->andwhere("impuesto=:impuesto", [":impuesto" => 2])
                                     ->andwhere("ano_impositivo=:ano_impositivo", [":ano_impositivo" => $this->ano_traspaso])
