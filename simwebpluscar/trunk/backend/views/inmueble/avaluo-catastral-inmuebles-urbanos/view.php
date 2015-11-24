@@ -14,7 +14,7 @@ $this->title = Yii::t('backend', 'View Property Urban. Id Tax: '.$model->id_impu
     
 
     <p>
-        <?= Html::a(Yii::t('backend', 'Update other data of property'), ['inmueble/avaluo-catastral-inmuebles-urbanos/avaluo-catastral-inmuebles', 'id_impuesto' => $model->id_impuesto], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('backend', 'Property Valuation'), ['inmueble/avaluo-catastral-inmuebles-urbanos/avaluo-catastral-inmuebles', 'id_impuesto' => $model->id_impuesto], ['class' => 'btn btn-primary']) ?>
         
     </p> 
 
