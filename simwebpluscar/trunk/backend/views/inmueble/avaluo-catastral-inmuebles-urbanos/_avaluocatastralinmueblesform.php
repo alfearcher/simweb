@@ -189,7 +189,7 @@ $variablephp=$_COOKIE['variablephp'];
 
 
                     <tr>
-                        <td colspan="5"> 
+                        <td> 
 
                                                <tr>
                                                     <td style="max-width: 100px" align="right">
@@ -204,7 +204,15 @@ $variablephp=$_COOKIE['variablephp'];
                                                         </div> 
                                                     </td> 
 
-                                                    <td style="max-width: 100px" align="right">
+                                                    
+                                                    
+                                                    
+                                               </tr>   
+
+                                               <tr>                     
+                            
+
+                                              <td style="max-width: 100px" align="right">
                                                         <div class="col-sm-2"> 
                                                         <?= Yii::t('backend', 'Meters of Land') ?>
                                                         </div> 
@@ -214,18 +222,16 @@ $variablephp=$_COOKIE['variablephp'];
                                                         <div class="col-sm-2"> 
                                                         <?= $form->field($model, 'metros_terreno')->Input(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?> 
                                                         </div>
-                                                    </td>
-                                                    
-                                                    <td style="max-width: 100px">
+                                                    </td>         
+                                             </tr>
+
+                                             <tr>
+                                             <td style="max-width: 100px">
                                                         <?php 
                                                         echo Html::submitButton(Yii::t('backend', 'Accept'), ['class' => 'btn btn-primary', 'name'=>'AcceptBuyer', 'value'=>'Accept']); 
                                                         ?>
-                                                    </td> 
-                                               </tr>                              
-                            
-
-                                                       
-                                             
+                                                    </td>
+                                            </tr> 
                                        
                         </td>
                     </tr>                              
