@@ -189,8 +189,7 @@ $variablephp=$_COOKIE['variablephp'];
 
                
                     
-                    <tr colspan="4">
-                        <td> 
+                    
 
                            <div class="col-sm-10 ">
                                 <div class="panel panel-primary ancho-alto ">
