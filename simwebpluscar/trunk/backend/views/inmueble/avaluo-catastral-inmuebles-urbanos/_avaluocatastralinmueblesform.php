@@ -160,7 +160,7 @@ $variablephp=$_COOKIE['variablephp'];
 
 
 <div class="col-sm-15 ">
-        <div class="panel panel-primary ancho-alto ">
+        <div class="panel panel-primary ">
             <div class="panel-heading">
                 <?= $this->title ?>
             </div> 
@@ -193,7 +193,7 @@ $variablephp=$_COOKIE['variablephp'];
                         <td> 
 
                            <div class="col-sm-10 ">
-                                <div class="panel panel-primary ancho-alto ">
+                                <div class="panel panel-primary ">
                                        
                                              
                                                
