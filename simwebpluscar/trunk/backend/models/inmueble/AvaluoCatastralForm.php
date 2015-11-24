@@ -28,7 +28,7 @@
  *  @date 27-07-2015
  * 
  *  @class AvaluoCatastaralForm
- *  @brief Clase que permite validar cada uno de los datos del formulario de inscripcion de inmuebles 
+ *  @brief Clase que permite validar cada uno de los datos del formulario de avaluo catastral de inmuebles 
  *  urbanos, se establecen las reglas para los datos a ingresar y se le asigna el nombre de las etiquetas 
  *  de los campos. 
  * 
