@@ -195,7 +195,7 @@ $variablephp=$_COOKIE['variablephp'];
                            <div class="col-sm-10 ">
                                 <div class="panel panel-primary ancho-alto ">
                                        
-                                             <div class="panel-body" id="avaluo" style="display:">
+                                             
                                                
                                                <tr>
                                                     <td style="max-width: 85px" align="right">
@@ -231,7 +231,7 @@ $variablephp=$_COOKIE['variablephp'];
                             
 
                                                        
-                                             </div>
+                                             
                                         </div>
                                     </div>
                             </div>  
