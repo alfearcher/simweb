@@ -218,7 +218,7 @@ $variablephp=$_COOKIE['variablephp'];
 
                                                     <td colspan="2" style="max-width: 100px">
                                                         <div class="col-sm-2"> 
-                                                        <?= $form->field($model, 'metros_terreno')->Input(['style' => 'width:300px;'])->label(false) ?> 
+                                                        <?= $form->field($model, 'metros_terreno')->Input(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?> 
                                                         </div>
                                                     </td>
                                                     
