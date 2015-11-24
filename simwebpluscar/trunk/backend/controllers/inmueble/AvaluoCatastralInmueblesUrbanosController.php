@@ -108,7 +108,7 @@ class AvaluoCatastralInmueblesUrbanosController extends Controller
         }
     }
 
-    
+
     /**
      *Metodo: CambioPropietarioInmuebles
      *Actualiza los datos del numero catastral del inmueble urbano.
@@ -117,7 +117,7 @@ class AvaluoCatastralInmueblesUrbanosController extends Controller
      *para el cambio de otros datos inmuebles
      *@return model 
      **/
-    public function actionAvaluoCatastralInmuebles($id_contribuyente)
+    public function actionAvaluoCatastralInmuebles($id)
     { 
         if ( isset( $_SESSION['idContribuyente'] ) ) {
         $modelContribuyente = $this->findModelContribuyente($id_contribuyente);
