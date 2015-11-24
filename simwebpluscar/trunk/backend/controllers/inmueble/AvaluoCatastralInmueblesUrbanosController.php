@@ -138,10 +138,10 @@ class AvaluoCatastralInmueblesUrbanosController extends Controller
               Yii::$app->response->format = Response::FORMAT_JSON;
               return ActiveForm::validate($model); 
          } 
-         if ($modelAvaluo->load(Yii::$app->request->post()) && Yii::$app->request->isAjax){ 
+         if ($modelavaluo->load(Yii::$app->request->post()) && Yii::$app->request->isAjax){ 
 
               Yii::$app->response->format = Response::FORMAT_JSON;
-              return ActiveForm::validate($modelAvaluo); 
+              return ActiveForm::validate($modelavaluo); 
          } 
 
          $datosCambio = Yii::$app->request->post("InmueblesUrbanosForm");
