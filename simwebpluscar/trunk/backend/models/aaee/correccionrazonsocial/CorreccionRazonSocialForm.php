@@ -105,7 +105,8 @@
 	        	'id_correccion' => Yii::t('backend', 'Id. Record'),
 	            'id_contribuyente' => Yii::t('backend', 'Id. Taxpayer'),
 	            'nro_solicitud' => Yii::t('backend', 'Application Number'),
-
+	            'razon_social_v' => Yii::t('backend', 'Antique Busness Name'),
+	            'razon_social_new' => Yii::t('backend', 'Current Busness Name'),
 	        ];
 	    }
 
@@ -161,6 +162,32 @@
 		            	'query' => $query,
 		        	]);
 		        	$query->where(['in', 'id_contribuyente', $arrayIdContribuyente]);
+
+		        	return $dataProvider;
+		    	}
+		    }
+		    return false;
+	    }
+
+
+
+
+
+
+	    /**
+	     * Metodo que genera el dataprovider de las correcciones realizadas.
+	     * @param $arrayIdCorreccion, array de id correccion guardados en el proceso.
+	     * @return returna un dataProvider o false sino logra crear la instancia.
+	     */
+	    public function getDataProviderCorreccionesRazonSocial($arrayIdCorreccion = [])
+	    {
+	    	if ( is_array($arrayIdCorreccion) ) {
+		    	if ( count($arrayIdCorreccion) > 0 ) {
+		    		$query = CorreccionRazonSocial::find();
+		    		$dataProvider = new ActiveDataProvider([
+		            	'query' => $query,
+		        	]);
+		        	$query->where(['in', 'id_correccion', $arrayIdCorreccion]);
 
 		        	return $dataProvider;
 		    	}
