@@ -233,6 +233,7 @@
 								$dataProvider = $_SESSION['dataProvider'];
 
 								if ( $actualizarBarraMenu ) {
+									// Se debe actualizar la descripcion del contribuyente que aparece en la barra superior.
 									unset($_SESSION['contribuyente']);
 									$nuevoContribuyente = ContribuyenteBase::getContribuyenteDescripcionSegunID($_SESSION['idContribuyente']);
 									$_SESSION['contribuyente'] = $nuevoContribuyente;
