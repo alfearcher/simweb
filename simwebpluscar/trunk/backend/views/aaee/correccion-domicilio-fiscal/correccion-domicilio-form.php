@@ -78,7 +78,7 @@
 		        	<div class="row">
 						<div class="panel panel-success" style="width: 103%;margin-left: -15px;">
 							<div class="panel-heading">
-					        	<span><?= Html::encode(Yii::t('backend', 'Datos del Contribuyente Principal')) ?></span>
+					        	<span><?= Html::encode(Yii::t('backend', 'Information of Main Taxpayer')) ?></span>
 					        </div>
 					        <div class="panel-body">
 <!-- DATOS DEL CONTRIBUYENTE PRINCIPAL -->

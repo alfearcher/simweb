@@ -50,7 +50,6 @@
     } else {
         $this->title = Yii::t('backend', 'Update of Tax Address No. ' . $model->id_correccion);
     }
-    unset($_SESSION['id_correccion']);
 ?>
 
 
@@ -66,7 +65,7 @@
 					<li class="list-group-item .panel panel-primary">
 		            	<div class="row">
 		            		<div class="col-sm-4" style="margin-left: 20px;">
-		            			<p><i><h4><?= $model->getAttributeLabel('id_contribuyente') ?> </h4></i></p>
+		            			<p><i><h4><?= $model->getAttributeLabel('id_contribuyente') ?>:</h4></i></p>
 		            		</div>
 		    				<div class="col-sm-4">
 		    					<h4><?= $datosContribuyente[0]['id_contribuyente'] ?></h4>
@@ -77,7 +76,7 @@
 					<li class="list-group-item .panel panel-primary">
 						<div class="row">
 		            		<div class="col-sm-4" style="margin-left: 20px;">
-		            			<p><i><h4><?= Yii::t('backend', 'DNI:') ?></h4></i></p>
+		            			<p><i><h4><?= Yii::t('backend', 'DNI:') ?>:</h4></i></p>
 		            		</div>
 		    				<div class="col-sm-4">
 		    					<h4>
@@ -96,7 +95,7 @@
 					<li class="list-group-item .panel panel-primary">
 						<div class="row">
 		            		<div class="col-sm-4" style="margin-left: 20px;">
-		            			<p><i><h4><?= Yii::t('backend', 'Taxpayer:') ?></h4></i></p>
+		            			<p><i><h4><?= Yii::t('backend', 'Taxpayer:') ?>:</h4></i></p>
 		            		</div>
 		    				<div class="col-sm-7">
 		    					<h4>
@@ -115,7 +114,7 @@
 					<li class="list-group-item .panel panel-primary">
 						<div class="row">
 		            		<div class="col-sm-4" style="margin-left: 20px;">
-		            			<p><i><h4><?= Yii::t('backend', 'Current Tax Address:') ?></h4></i></p>
+		            			<p><i><h4><?= Yii::t('backend', 'Current Tax Address:') ?>:</h4></i></p>
 		            		</div>
 		    				<div class="col-sm-7">
 		    					<h4><?= $datosContribuyente[0]['domicilio_fiscal'] ?></h4>
@@ -126,7 +125,7 @@
 		            <li class="list-group-item .panel panel-primary">
 						<div class="row">
 		            		<div class="col-sm-4" style="margin-left: 20px;">
-		            			<p><i><h4><?= Yii::t('backend', 'New Tax Address:') ?></h4></i></p>
+		            			<p><i><h4><?= Yii::t('backend', 'New Tax Address:') ?>:</h4></i></p>
 		            		</div>
 		    				<div class="col-sm-7">
 		    					<h4><?= $model->domicilio_fiscal_new ?></h4>
@@ -143,7 +142,7 @@
 					<li class="list-group-item .panel panel-primary">
 		            	<div class="row">
 		            		<div class="col-sm-4" style="margin-left: 20px;">
-		            			<p><i><h4><?= $model->getAttributeLabel('id_correccion') ?> </h4></i></p>
+		            			<p><i><h4><?= $model->getAttributeLabel('id_correccion') ?>:</h4></i></p>
 		            		</div>
 		    				<div class="col-sm-4">
 		    					<h4><?= $model->id_correccion ?></h4>
@@ -154,7 +153,7 @@
 					<li class="list-group-item .panel panel-primary">
 						<div class="row">
 		            		<div class="col-sm-4" style="margin-left: 20px;">
-		            			<p><i><h4><?= $model->getAttributeLabel('id_contribuyente') ?> </h4></i></p>
+		            			<p><i><h4><?= $model->getAttributeLabel('id_contribuyente') ?>:</h4></i></p>
 		            		</div>
 		    				<div class="col-sm-4">
 		    					<h4><?= $model->id_contribuyente ?></h4>
@@ -166,7 +165,7 @@
 					<li class="list-group-item .panel panel-primary">
 						<div class="row">
 		            		<div class="col-sm-4" style="margin-left: 20px;">
-		            			<p><i><h4><?= Yii::t('backend', 'DNI') ?></h4></i></p>
+		            			<p><i><h4><?= Yii::t('backend', 'DNI') ?>:</h4></i></p>
 		            		</div>
 		    				<div class="col-sm-4">
 		    					<h4>
@@ -185,7 +184,7 @@
 					<li class="list-group-item .panel panel-primary">
 						<div class="row">
 		            		<div class="col-sm-4" style="margin-left: 20px;">
-		            			<p><i><h4><?= Yii::t('backend', 'Taxpayer') ?></h4></i></p>
+		            			<p><i><h4><?= Yii::t('backend', 'Taxpayer') ?>:</h4></i></p>
 		            		</div>
 		    				<div class="col-sm-7">
 		    					<h4>
@@ -204,7 +203,7 @@
 		            <li class="list-group-item .panel panel-primary">
 						<div class="row">
 		            		<div class="col-sm-4" style="margin-left: 20px;">
-		            			<p><i><h4><?= Yii::t('backend', 'Tax Address Updated: ') ?></h4></i></p>
+		            			<p><i><h4><?= Yii::t('backend', 'Tax Address Updated: ') ?>:</h4></i></p>
 		            		</div>
 		    				<div class="col-sm-7">
 		    					<h4><?= $model->domicilio_fiscal_new ?></h4>
@@ -215,7 +214,7 @@
             </table>
 <?php }?>
 			<div class="row">
-                <div class="col-sm-3" style="width:50%; top: 5px; margin-left: 480px;">
+                <div class="col-sm-3" style="width:100%; top: 5px; margin-left: 180px;">
                 	<?php if ( $preView == true ) { ?>
                         <div class="col-sm-3">
             	           <?= Html::a(Yii::t('backend', 'Confirm Update'), ['create', 'guardar' => true], ['class' => 'btn btn-primary']) ?>
@@ -225,7 +224,10 @@
                         </div>
 
                 	<?php } else { ?>
-                            <?php //unset($_SESSION['postData']); ?>
+                			<div class="col-sm-3" style="margin-left: 10px;">
+                        	   <?= Html::a(Yii::t('backend', 'Go to Form'), ['index'], ['class' => 'btn btn-default']) ?>
+                            </div>
+
                             <div class="col-sm-3">
                         	   <?= Html::a(Yii::t('backend', 'Quit'), ['quit'], ['class' => 'btn btn-danger']) ?>
                             </div>
