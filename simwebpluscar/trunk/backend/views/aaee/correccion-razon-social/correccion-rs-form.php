@@ -74,7 +74,7 @@
 		        	<div class="row">
 						<div class="panel panel-success" style="width: 103%;margin-left: -15px;">
 							<div class="panel-heading">
-					        	<span><?= Html::encode(Yii::t('backend', 'Datos del Contribuyente Principal')) ?></span>
+					        	<span><?= Html::encode(Yii::t('backend', 'Infomation of Main Tarpayer')) ?></span>
 					        </div>
 					        <div class="panel-body">
 <!-- DATOS DEL CONTRIBUYENTE PRINCIPAL -->
@@ -151,7 +151,7 @@
 <!-- Razon Social Vieja-->
 									<div class="col-sm-6" style="margin-left: -20px;margin-top: 0px">
 										<div class="row" style="width:100%;">
-											<p style="margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('backend', 'Razón Social') ?></i></p>
+											<p style="margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('backend', 'Company Name') ?></i></p>
 										</div>
 										<div class="row">
 											<div class="razon-social-v">
@@ -175,7 +175,7 @@
 					<div class="row">
 						<div class="panel panel-success" style="width: 103%;margin-left: -15px;">
 							<div class="panel-heading">
-					        	<span><?= Html::encode(Yii::t('backend', 'Contribuyente Asociados')) ?></span>
+					        	<span><?= Html::encode(Yii::t('backend', 'Related Taxpayers')) ?></span>
 					        </div>
 	        				<div class="panel-body">
 	        					<div class="row">
@@ -190,7 +190,7 @@
 	        										//['class' => 'yii\grid\SerialColumn'],
 
 									            	[
-									                    'label' => 'ID.',
+									                    'label' => Yii::t('backend', 'ID.'),
 									                    'value' => 'id_contribuyente',
 									                ],
 									                [
@@ -200,7 +200,7 @@
 	                    											},
 									                ],
 									                [
-									                    'label' => Yii::t('backend', 'Description'),
+									                    'label' => Yii::t('backend', Yii::t('backend', 'Company Name')),
 									                    'value' => function($data) {
 	                            										return ContribuyenteBase::getContribuyenteDescripcion($data->tipo_naturaleza, $data->razon_social, $data->apellidos, $data->nombres);
 	                    											},
@@ -230,7 +230,7 @@
 					<div class="row">
 						<div class="panel panel-success" style="width: 103%;margin-left: -15px;">
 							<div class="panel-heading">
-					        	<span><?= Html::encode(Yii::t('backend', 'Nueva Razon Social')) ?></span>
+					        	<span><?= Html::encode(Yii::t('backend', 'New Company Name')) ?></span>
 					        </div>
 	        				<div class="panel-body">
 	        					<div class="row">
@@ -252,7 +252,7 @@
 <!-- Boton para aplicar la actualizacion -->
 									<div class="col-sm-2">
 										<div class="form-group">
-											<?= Html::submitButton(Yii::t('backend', Yii::t('backend', 'Execute Update of DNI')),
+											<?= Html::submitButton(Yii::t('backend', Yii::t('backend', 'Execute Update of Company Name')),
 																									  [
 																										'id' => 'btn-update',
 																										'class' => 'btn btn-success',
@@ -264,7 +264,7 @@
 									</div>
 <!-- Fin de Boton para aplicar la actualizacion -->
 
-									<div class="col-sm-1"></div>
+									<div class="col-sm-1" style="width: 15%;"></div>
 
 <!-- Boton para salir de la actualizacion -->
 									<div class="col-sm-2">

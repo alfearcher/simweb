@@ -39,7 +39,7 @@
 	/**
 	*@var $this yii\web\View */
 
-	$this->title = Yii::t('backend', 'Correccion de Razón Social');
+	$this->title = Yii::t('backend', 'Update of Company Name');
 
 ?>
 <div class="correccion-rs-form-create">

@@ -52,9 +52,9 @@
 	}
 
     if ( $preView == true ) {
-        $this->title = Yii::t('backend', 'Pre-View Correccion de Razón Social');
+        $this->title = Yii::t('backend', 'Pre-View Update of Company Name');
     } else {
-        $this->title = Yii::t('backend', 'Correccion de Razón Social.');
+        $this->title = Yii::t('backend', 'Update of Company Name');
     }
 ?>
 
@@ -104,7 +104,7 @@
 		            <li class="list-group-item .panel panel-primary">
 						<div class="row">
 		            		<div class="col-sm-4" style="margin-left: 20px;">
-		            			<p><i><h4>Razón Social Modificada: </h4></i></p>
+		            			<p><i><h4><?= Yii::t('backend', 'Company Name Updated')  ?>: </h4></i></p>
 		            		</div>
 		    				<div class="col-sm-6">
 		    					<h4><?= $model->razon_social_new ?></h4>
@@ -117,7 +117,7 @@
 			<div class="row">
 				<div class="panel panel-success" style="width: 97%;margin-left: 15px;">
 					<div class="panel-heading">
-			        	<span><?= Html::encode(Yii::t('backend', 'Contribuyente(s) que seran afectados')) ?></span>
+			        	<span><?= Html::encode(Yii::t('backend', 'Taxpayers Afected')) ?></span>
 			        </div>
     				<div class="panel-body">
     					<div class="row">
@@ -129,7 +129,7 @@
     									'columns' => [
 
 							            	[
-							                    'label' => 'ID.',
+							                    'label' => Yii::t('backend', 'ID.'),
 							                    'value' => 'id_contribuyente',
 							                ],
 							                [
@@ -139,7 +139,7 @@
                 											},
 							                ],
 							                [
-							                    'label' => Yii::t('backend', 'Description'),
+							                    'label' => Yii::t('backend', 'Current Company Name'),
 							                    'value' => function($data) {
                         										return ContribuyenteBase::getContribuyenteDescripcion($data->tipo_naturaleza, $data->razon_social, $data->apellidos, $data->nombres);
                 											},
@@ -165,7 +165,7 @@
 			<div class="row">
 				<div class="panel panel-success" style="width: 97%;margin-left: 15px;">
 					<div class="panel-heading">
-			        	<span><?= Html::encode(Yii::t('backend', 'Contribuyente(s) afectados')) ?></span>
+			        	<span><?= Html::encode(Yii::t('backend', 'Taxpayers Afected')) ?></span>
 			        </div>
     				<div class="panel-body">
     					<div class="row">
