@@ -80,7 +80,7 @@
     $menuItems1[] = ['label' => '<div class="contribuyente" style="padding-right: 5px;">
                     <form>
                         <div class="form-group" >
-                            <input type="text" value="' . $contribuyente . '" class="form-control" id="contribuyente" readonly style="width: 500px;">
+                            <input type="text" value="' . $contribuyente . '" class="form-control" id="contribuyente" readonly style="width: 450px;">
                         </div>
                     </form>
                 </div>'];
@@ -97,6 +97,10 @@
                                     <i class="glyphicon glyphicon-user fa-2x"></i>
                                 </div>', 'url' => ['/buscargeneral/buscar-general/view','idContribuyente' => isset($idContribuyente) ? $idContribuyente : null]];
 
+    // $menuItems1[] = [
+    //         'label' => Icon::show('glyphicon glyphicon-user',['class' => 'fa-2x'], $typeIcon),
+    //                         'url' => '#',
+    // ];
 
     $menuItems1[] = ['label' => '<div class="multa" id="multa" >
                                     <i class="fa fa-file-text-o fa-2x"></i>Multa<span class="badge">4</span>
