@@ -383,7 +383,8 @@
     				if ( $_SESSION['idCorreccion'] == $model->id_correccion ) {
     					$postData = $_SESSION['postData'];
     					$datosContribuyente = $_SESSION['datosContribuyente'];
-    					unset($_SESSION['postData'], $_SESSION['datosContribuyente'], $_SESSION['model'] );
+    					$variable = ['idCorreccion', 'datosContribuyente', 'model', 'postData'];
+    					self::actionEliminarVariablesSession($variable);
 			        	return $this->render('/aaee/correccion-domicilio-fiscal/pre-view',[
 															        				'model' => $model,
 															        				'preView' => false,
@@ -427,11 +428,27 @@
     	 */
     	public function actionQuit()
     	{
-    		unset($_SESSION['idCorreccion']);
-    		unset($_SESSION['datosContribuyente']);
-    		unset($_SESSION['model']);
-    		unset($_SESSION['postData']);
+    		$variable = ['idCorreccion', 'datosContribuyente', 'model', 'postData'];
+    		self::actionEliminarVariablesSession($variable);
     		return $this->render('/aaee/correccion-domicilio-fiscal/quit');
+    	}
+
+
+
+
+
+    	/**
+    	 * [actionEliminarVariablesSession description]
+    	 * @param  array  $arrayVariables [description]
+    	 * @return [type]                 [description]
+    	 */
+    	public function actionEliminarVariablesSession($arrayVariables = [])
+    	{
+    		if ( count($arrayVariables) > 0 ) {
+    			foreach ( $arrayVariables as $variable ) {
+    				unset($_SESSION[$variable]);
+    			}
+    		}
     	}
 
 
