@@ -54,9 +54,8 @@
     if ( $preView == true ) {
         $this->title = Yii::t('backend', 'Pre-View Correccion de Razón Social');
     } else {
-        $this->title = Yii::t('backend', 'Correccion de Razón Social No. ' . $model->id_correccion);
+        $this->title = Yii::t('backend', 'Correccion de Razón Social.');
     }
-    unset($_SESSION['id_correccion']);
 ?>
 
 
@@ -69,13 +68,13 @@
 <?php if ($preView == true ) {?>
             <table class="table table-striped">
 				<ul class="list-group">
-					<li class="list-group-item .panel panel-primary">
+<!-- 					<li class="list-group-item .panel panel-primary">
 		            	<div class="row">
 		            		<div class="col-sm-4" style="margin-left: 20px;">
 		            			<p><i><h4>Id. Contribuyente: </h4></i></p>
 		            		</div>
 		    				<div class="col-sm-4">
-		    					<h4><?= $datosContribuyente[0]['id_contribuyente'] ?></h4>
+		    					<h4><?//= $datosContribuyente[0]['id_contribuyente'] ?></h4>
 		    				</div>
 		            	</div>
 					</li>
@@ -86,7 +85,7 @@
 		            			<p><i><h4>RIF: </h4></i></p>
 		            		</div>
 		    				<div class="col-sm-4">
-		    					<h4><?= $datosContribuyente[0]['naturaleza'] . "-" . $datosContribuyente[0]['cedula'] . "-" . $datosContribuyente[0]['tipo']?></h4>
+		    					<h4><?//= $datosContribuyente[0]['naturaleza'] . "-" . $datosContribuyente[0]['cedula'] . "-" . $datosContribuyente[0]['tipo']?></h4>
 		    				</div>
 		            	</div>
 					</li>
@@ -97,17 +96,17 @@
 		            			<p><i><h4>Razón Social Actual: </h4></i></p>
 		            		</div>
 		    				<div class="col-sm-4">
-		    					<h4><?= $datosContribuyente[0]['razon_social'] ?></h4>
+		    					<h4><?//= $datosContribuyente[0]['razon_social'] ?></h4>
 		    				</div>
 		            	</div>
 		            </li>
-
+ -->
 		            <li class="list-group-item .panel panel-primary">
 						<div class="row">
 		            		<div class="col-sm-4" style="margin-left: 20px;">
 		            			<p><i><h4>Razón Social Modificada: </h4></i></p>
 		            		</div>
-		    				<div class="col-sm-4">
+		    				<div class="col-sm-6">
 		    					<h4><?= $model->razon_social_new ?></h4>
 		    				</div>
 		            	</div>
@@ -162,56 +161,62 @@
 
 <?php } else {?>
 <!-- Si llego aqui es porque se guardo de forma satisfatoria -->
-			<table class="table table-striped">
-				<ul class="list-group">
-					<li class="list-group-item .panel panel-primary">
-		            	<div class="row">
-		            		<div class="col-sm-4" style="margin-left: 20px;">
-		            			<p><i><h4><?= $model->getAttributeLabel('id_correccion') ?> </h4></i></p>
-		            		</div>
-		    				<div class="col-sm-4">
-		    					<h4><?= $model->id_correccion ?></h4>
-		    				</div>
-		            	</div>
-					</li>
 
-					<li class="list-group-item .panel panel-primary">
-						<div class="row">
-		            		<div class="col-sm-4" style="margin-left: 20px;">
-		            			<p><i><h4><?= $model->getAttributeLabel('id_contribuyente') ?> </h4></i></p>
-		            		</div>
-		    				<div class="col-sm-4">
-		    					<h4><?= $model->id_contribuyente ?></h4>
-		    				</div>
-		            	</div>
-					</li>
+			<div class="row">
+				<div class="panel panel-success" style="width: 97%;margin-left: 15px;">
+					<div class="panel-heading">
+			        	<span><?= Html::encode(Yii::t('backend', 'Contribuyente(s) afectados')) ?></span>
+			        </div>
+    				<div class="panel-body">
+    					<div class="row">
+    						<div class="col-sm-12">
+        						<div class="contribuyente-asociado">
+									<?= GridView::widget([
+										'id' => 'grid-contribuyente-update',
+    									'dataProvider' => $dataProvider,
+    									'columns' => [
 
-					<li class="list-group-item .panel panel-primary">
-						<div class="row">
-		            		<div class="col-sm-4" style="margin-left: 20px;">
-		            			<p><i><h4><?= Yii::t('backend', 'Razón Social Anterior: ') ?></h4></i></p>
-		            		</div>
-		    				<div class="col-sm-4">
-		    					<h4><?= $model->razon_social_v ?></h4>
-		    				</div>
-		            	</div>
-		            </li>
-
-		            <li class="list-group-item .panel panel-primary">
-						<div class="row">
-		            		<div class="col-sm-4" style="margin-left: 20px;">
-		            			<p><i><h4><?= Yii::t('backend', 'Razón Social Modificada: ') ?></h4></i></p>
-		            		</div>
-		    				<div class="col-sm-4">
-		    					<h4><?= $model->razon_social_new ?></h4>
-		    				</div>
-		            	</div>
-		            </li>
-				</ul>
-            </table>
+    										[
+							                    'label' => Yii::t('backend', $model->getAttributeLabel('id_correccion')),
+							                    'value' => function($data) {
+                        										return $data->id_correccion;
+                											},
+							                ],
+							            	[
+							                    'label' => Yii::t('backend', $model->getAttributeLabel('id_contribuyente')),
+							                    'value' => function($data) {
+                        										return $data->id_contribuyente;
+                											},
+							                ],
+							                [
+							                    'label' => Yii::t('backend', $model->getAttributeLabel('razon_social_v')),
+							                    'value' => function($data) {
+                        										return $data->razon_social_v;
+                											},
+							                ],
+							                [
+							                    'label' => Yii::t('backend', $model->getAttributeLabel('razon_social_new')),
+							                    'value' => function($data) {
+                        										return $data->razon_social_new;
+                											},
+							                ],
+							                [
+							                    'label' => Yii::t('backend', 'License No.'),
+							                    'value' => function($data) {
+                        										return 0;
+                											},
+							                ],
+							        	]
+									]);?>
+								</div>
+        					</div>
+        				</div>
+    				</div>
+    			</div>
+			</div>	<!-- Fin de row del grid -->
 <?php }?>
 			<div class="row">
-                <div class="col-sm-3" style="width:50%; top: 5px; margin-left: 480px;">
+                <div class="col-sm-3" style="width:100%; top: 5px; margin-left: 80px;">
                 	<?php if ( $preView == true ) { ?>
                         <div class="col-sm-3">
             	           <?= Html::a(Yii::t('backend', 'Confirm Update'), ['create', 'guardar' => true], ['class' => 'btn btn-primary']) ?>
@@ -221,7 +226,9 @@
                         </div>
 
                 	<?php } else { ?>
-                            <?php unset($_SESSION['datosContribuyente'], $_SESSION['postData'], $_SESSION['dataProvider']); ?>
+                			<div class="col-sm-3" style="margin-left: 10px;">
+                        	   <?= Html::a(Yii::t('backend', 'Other Update'), ['index'], ['class' => 'btn btn-default']) ?>
+                            </div>
                             <div class="col-sm-3">
                         	   <?= Html::a(Yii::t('backend', 'Quit'), ['quit'], ['class' => 'btn btn-danger']) ?>
                             </div>
