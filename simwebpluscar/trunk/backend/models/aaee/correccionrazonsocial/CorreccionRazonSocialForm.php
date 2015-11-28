@@ -105,8 +105,8 @@
 	        	'id_correccion' => Yii::t('backend', 'Id. Record'),
 	            'id_contribuyente' => Yii::t('backend', 'Id. Taxpayer'),
 	            'nro_solicitud' => Yii::t('backend', 'Application Number'),
-	            'razon_social_v' => Yii::t('backend', 'Antique Busness Name'),
-	            'razon_social_new' => Yii::t('backend', 'Current Busness Name'),
+	            'razon_social_v' => Yii::t('backend', 'Antique Company Name'),
+	            'razon_social_new' => Yii::t('backend', 'Current Company Name'),
 	        ];
 	    }
 
