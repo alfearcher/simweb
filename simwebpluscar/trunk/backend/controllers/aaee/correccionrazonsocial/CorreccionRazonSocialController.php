@@ -96,10 +96,12 @@
 				      	if ( $model->load($postData) ) {
 
 				      		if ( $model->validate() ) {
-// die(var_dump($postData['selection']));
+
 				      			if ( isset($postData['selection']) ) {
 
 					      			if ($postData['btn-update'] == 1 ) {
+					      				// Lista de sucursales (de existir) para mostrar en el pre-view,
+					      				// solo se mostraran las sucursales tildadas en el formulario.
 					      				$dataProvider = $model->getDataProviderSucursalesSegunId($postData['selection']);
 					      				$postData['btn-update'] = 2;
 						      			$_SESSION['model'] = $model;
@@ -132,8 +134,10 @@
 				      		if ( isset($_SESSION['dataProvider']) ) {
 				      			$_SESSION['dataProvider'] = false;
 				      		}
+
+				      		// Se buscan a los contribuyentes que tengan el mismo rif.
 				      		$dataProvider = $model->getDataProviderSucursalesSegunRif($naturaleza, $cedula, $tipo, 1);
-							if ( !$dataProvider == false ) {
+							if ( $dataProvider ) {
 
 					      		return $this->render('/aaee/correccion-razon-social/create', [
 			      																	'model' => $model,
@@ -225,9 +229,9 @@
 
 
 							if ( $todoBien ) {
+								// dataProvider de lo seleccinado en el formulario.
+								$dataProvider = $_SESSION['dataProvider'];
 
-								unset($_SESSION['dataProvider']);
-								unset($_SESSION['datosContribuyente']);
 								if ( $actualizarBarraMenu ) {
 									unset($_SESSION['contribuyente']);
 									$nuevoContribuyente = ContribuyenteBase::getContribuyenteDescripcionSegunID($_SESSION['idContribuyente']);
@@ -236,9 +240,8 @@
 								$transaccion->commit();
 								$tipoError = 0;	// No error.
 								$msg = Yii::t('backend', 'SUCCESS!....WAIT.');
-								//$_SESSION['idCorreccion'] = $idCorreccion;
-								//$url = "<meta http-equiv='refresh' content='3; ".Url::toRoute(['/aaee/correccionrazonsocial/correccion-razon-social/view','idCorreccion' => $idCorreccion])."'>";
-								$url = "<meta http-equiv='refresh' content='3; ".Url::toRoute(['/aaee/correccionrazonsocial/correccion-razon-social/view-ok'])."'>";
+								$url = "<meta http-equiv='refresh' content='3; ".Url::toRoute(['/aaee/correccionrazonsocial/correccion-razon-social/view'])."'>";
+								//$url = "<meta http-equiv='refresh' content='3; ".Url::toRoute(['/aaee/correccionrazonsocial/correccion-razon-social/view-ok'])."'>";
 								return $this->render('/mensaje/mensaje',['msg' => $msg, 'url' => $url, 'tipoError' => $tipoError]);
 
 							} else {
@@ -249,6 +252,7 @@
 								$url = "<meta http-equiv='refresh' content='3; ".Url::toRoute("/aaee/correccionrazonsocial/correccion-razon-social/index")."'>";
 								return $this->render('/mensaje/mensaje',['msg' => $msg, 'url' => $url, 'tipoError' => $tipoError]);
 							}
+							$this->connLocal->close();
 
 						} else {
 							return self::gestionarMensajesLocales('El Contribuyente no esta definido.');
@@ -288,13 +292,18 @@
 						$arregloDatos = $model->attributes;
 						$request = $postData[$nombreForm];
 
+						$arrayIdCorreccion = isset($_SESSION['idCorreccion']) ? $_SESSION['idCorreccion'] : [];
+
+						// post enviado con los valores que seran guardados.
 						foreach ( $arregloDatos as $key => $value ) {
 							if ( isset($request[$key]) ) {
 								$arregloDatos[$key] = $request[$key];
 							}
 						}
 
+						// Arreglo de datos a guardar.
 						$arregloDatos['id_contribuyente'] = $idContribuyente;
+						$arregloDatos['razon_social_v'] = ContribuyenteBase::getContribuyenteDescripcionSegunID($idContribuyente);
 						$arregloDatos['razon_social_new'] = $model->razon_social_new;
 						$arregloDatos['nro_solicitud'] = 0;
 						$arregloDatos['fecha_hora'] = date('Y-m-d H:i:s');
@@ -306,6 +315,9 @@
 							$idCorreccion = $connLocal->getLastInsertID();
 							if ( $idCorreccion > 0 ) {
 								$result = true;
+								$arrayIdCorreccion[$idContribuyente] = $idCorreccion;
+								self::actionEliminarVariablesSession(['idCorreccion']);
+								$_SESSION['idCorreccion'] = $arrayIdCorreccion;
 							} else {
 								$result = false;
 							}
@@ -368,29 +380,35 @@
 		 * [actionView description]
 		 * @return [type] [description]
 		 */
-		public function actionView($idCorreccion)
+		public function actionView()
 		{
 			if ( isset($_SESSION['idCorreccion']) ) {
-    			if ( $_SESSION['idCorreccion'] == $idCorreccion ) {
-    				$model = $this->findModel($idCorreccion);
-    				if ( $_SESSION['idCorreccion'] == $model->id_correccion ) {
-    					$postData = $_SESSION['postData'];
-    					unset($_SESSION['postData']);
-			        	return $this->render('/aaee/correccion-razon-social/pre-view',
-			        			[
-			        				'model' => $model,
-			        				'preView' => false,
-			        				'postData' => $postData,
 
-			        			]);
-			        } else {
-			        	return self::gestionarMensajesLocales('Numero de Inscripcion no valido.');
-			        	//echo 'Numero de Inscripcion no valido.';
-			        }
-	        	} else {
-	        		return self::gestionarMensajesLocales('Numero de Inscription no valido.');
-	        		// echo 'Numero de Inscription no valido.';
-	        	}
+				// $_SESSION['idCorreccion'], es un array donde el indice del arreglo es id del contribuyente y
+				// el valor del arreglo es el id correccion del registro guardado en la tabla respectiva por
+				// contribuyentes.
+				$arrayIdCorreccion = $_SESSION['idCorreccion'];
+				$idCorreccion = array_values($arrayIdCorreccion);
+				$model = $_SESSION['model'];
+				if ( $model ) {
+					$dataProvider = $model->getDataProviderCorreccionesRazonSocial($idCorreccion);
+					$postData = $_SESSION['postData'];
+
+					$arrayVariables = ['postData', 'datosContribuyente', 'model', 'dataProvider', 'idCorreccion'];
+					self::actionEliminarVariablesSession($arrayVariables);
+		        	return $this->render('/aaee/correccion-razon-social/pre-view',
+														        			[
+														        				'model' => $model,
+														        				'preView' => false,
+														        				'dataProvider' => $dataProvider,
+														        				'postData' => $postData,
+
+														        			]);
+		        } else {
+		        	return self::gestionarMensajesLocales('No se encontrarón los registros guardados.');
+		        }
+        	} else {
+        		return self::gestionarMensajesLocales('No se encontrarón los registros corregidos.');
         	}
 		}
 
@@ -404,8 +422,10 @@
 		 */
 		public function actionViewOk()
 		{
-			unset($_SESSION['postData'], $_SESSION['datosContribuyente'], $_SESSION['model'], $_SESSION['dataProvider']);
-			return self::gestionarMensajesLocales(Yii::t('backend', 'PROCESS SUCCESS.'));
+			//unset($_SESSION['postData'], $_SESSION['datosContribuyente'], $_SESSION['model'], $_SESSION['dataProvider']);
+			// $arrayVariables = ['postData', 'datosContribuyente', 'model', 'dataProvider'];
+			// self::actionEliminarVariablesSession($arrayVariables);
+			// return self::gestionarMensajesLocales(Yii::t('backend', 'PROCESS SUCCESS.'));
 		}
 
 
@@ -414,9 +434,10 @@
 		*	Metodo que busca el ultimo registro creado.
 		* 	@param $idInscripcion, long que identifica el autonumerico generado al crear el registro.
 		*/
-		protected function findModel($idCorreccion)
+		protected function findModel($arrayIdCorreccion)
     	{
-        	if (($model = CorreccionRazonSocial::findOne($idCorreccion)) !== null) {
+    		//if ( ($model = CorreccionRazonSocial::findOne($arrayIdCorreccion)) !== null ) {
+        	if ( ($model = CorreccionRazonSocial::find()->where(['in', 'id_correccion', $arrayIdCorreccion])->all()) !== null ) {
             	return $model;
         	} else {
             	throw new NotFoundHttpException('The requested page does not exist.');
@@ -433,11 +454,24 @@
     	 */
     	public function actionQuit()
     	{
-    		unset($_SESSION['idCorreccion']);
-    		unset($_SESSION['datosContribuyente']);
-    		unset($_SESSION['model']);
-    		unset($_SESSION['dataProvider']);
+    		$arrayVariables = ['idCorreccion', 'datosContribuyente', 'model', 'dataProvider', 'postData'];
+    		self::actionEliminarVariablesSession($arrayVariables);
     		return $this->render('/aaee/correccion-razon-social/quit');
+    	}
+
+
+
+    	/**
+    	 * [actionEliminarVariablesSession description]
+    	 * @return [type] [description]
+    	 */
+    	public function actionEliminarVariablesSession($arrayVariables = [])
+    	{
+    		if ( count($arrayVariables) > 0 ) {
+    			foreach ( $arrayVariables as $variable ) {
+    				unset($_SESSION[$variable]);
+    			}
+    		}
     	}
 
 
