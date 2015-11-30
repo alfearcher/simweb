@@ -164,7 +164,7 @@ $variablephp=$_COOKIE['variablephp'];
             <div class="panel-heading">
                 <?= $this->title ?>
             </div> 
-            <div class="panel-body" >
+            <div class="panel-body" > 
                 <table class="table table-striped ">
                     
 
