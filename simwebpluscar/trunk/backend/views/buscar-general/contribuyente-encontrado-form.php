@@ -80,7 +80,11 @@ $this->title = Yii::t('backend','Result of the Consult');
                 [
                     'label' => Yii::t('backend','Type'),
                     'value' => function($data) {
-                        return BuscarGeneralForm::getTipoNaturaleza($data->tipo_naturaleza);
+                        if ($data->tipo_naturaleza == 1 and $data->id_rif == 0 ) {
+                            return BuscarGeneralForm::getTipoNaturaleza($data->tipo_naturaleza) . ' (SP)';
+                        } else {
+                            return BuscarGeneralForm::getTipoNaturaleza($data->tipo_naturaleza);
+                        }
                     }
                 ],
 
