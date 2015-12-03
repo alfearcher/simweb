@@ -74,7 +74,7 @@
 		        					   				['label' => 'Corrección de Razón Social', 'url' => ['/aaee/correccionrazonsocial/correccion-razon-social/index']],
 		        					   				['label' => 'Cambio de Domicilio Fiscal', 'url' => ['/aaee/correcciondomicilio/correccion-domicilio-fiscal/index']],
 		        					   				['label' => 'Cambio de Representante Legal', 'url' => '#'],
-		        					   				['label' => 'Aumento de Capital', 'url' => '#'],
+		        					   				['label' => 'Aumento de Capital', 'url' => ['/aaee/correccioncapital/correccion-capital/index']],
 		        					   				['label' => 'Cambio de Otros Datos', 'url' => '#'],
 		        					   		]
 		        					   	],
