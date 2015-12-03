@@ -5,13 +5,20 @@ return [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+        'formatter' => [
+            //'dateFormat' => 'dd.MM.yyyy',
+            // Configuración para el formato de montos.
+            'decimalSeparator' => ',',
+            'thousandSeparator' => '.',
+            'currencyCode' => 'EUR',
+       ],
         'i18n' => [
         	'translations' => [
         		'frontend*' => [
         			'class' => 'yii\i18n\PhpMessageSource',
         			'basePath' => '@common/messages'
         		],
-        		'backend*' => [
+        		'backend' => [
         			'class' => 'yii\i18n\PhpMessageSource',
         			'basePath' => '@common/messages'
         		],
