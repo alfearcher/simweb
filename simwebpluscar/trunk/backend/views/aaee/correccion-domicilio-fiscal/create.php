@@ -43,7 +43,7 @@
 
 ?>
 
-<div class="correccion-rs-form-create">
+<div class="correccion-domicilio-form-create">
 
     <?= $this->render('correccion-domicilio-form', [
         'model' => $model,
