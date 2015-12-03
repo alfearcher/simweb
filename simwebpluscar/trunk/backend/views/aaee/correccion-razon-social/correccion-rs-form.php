@@ -287,10 +287,4 @@
 		</div>
 	</div>
 </div>
-
-
-
-
-
-
  <?php ActiveForm::end(); ?>
