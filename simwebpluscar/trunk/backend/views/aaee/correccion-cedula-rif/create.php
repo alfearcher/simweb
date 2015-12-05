@@ -39,15 +39,16 @@
 	/**
 	*@var $this yii\web\View */
 
-	$this->title = Yii::t('backend', 'Correction of DNI');
+	$this->title = Yii::t('backend', 'Update of DNI');
 
-	?>
+?>
 	<div class="correccion-cedula-rif-form-create">
 
 	    <?= $this->render('correccion-cedula-rif-form', [
 	        'model' => $model,
 	        'datosContribuyente' => $datosContribuyente,
 	        'dataProvider' => $dataProvider,
+	        'msjErrorLista' => $msjErrorLista,
 	    ]) ?>
 
 	</div>

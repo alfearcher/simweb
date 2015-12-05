@@ -49,7 +49,7 @@
 	use yii\widgets\ActiveForm;
 	use yii\web\View;
 	use yii\widgets\Pjax;
-	//use backend\controllers\utilidad\documento\DocumentoRequisitoController;
+	use backend\controllers\utilidad\documento\DocumentoRequisitoController;
 	use common\models\contribuyente\ContribuyenteBase;
 	use backend\models\registromaestro\TipoNaturaleza;
 
@@ -91,7 +91,7 @@
 		        	<div class="row">
 						<div class="panel panel-success" style="width: 103%;margin-left: -15px;">
 							<div class="panel-heading">
-					        	<span><?= Html::encode(Yii::t('backend', 'Datos del Contribuyente Principal')) ?></span>
+					        	<span><?= Html::encode(Yii::t('backend', 'Information of Main Taxpayer')) ?></span>
 					        </div>
 					        <div class="panel-body">
 <!-- DATOS DEL CONTRIBUYENTE PRINCIPAL -->
@@ -105,7 +105,6 @@
 											<div class="id-contribuyente">
 												<?= $form->field($model, 'id_contribuyente')->textInput([
 																									'id' => 'id_contribuyente',
-																									//'name' => 'id-contribuyente',
 																									'style' => 'width:100%;',
 																									'value' => $datosContribuyente[0]['id_contribuyente'],
 																									'readonly' => true,
@@ -124,7 +123,6 @@
 											<div class="naturaleza-v">
 												<?= $form->field($model, 'naturaleza_v')->textInput([
 																									'id' => 'naturaleza_v',
-																									//'name' => 'naturaleza-v',
 																									'style' => 'width:50%;',
 																									'value' => $datosContribuyente[0]['naturaleza'],
 																									'readonly' => true,
@@ -142,7 +140,6 @@
 											<div class="cedula-v">
 												<?= $form->field($model, 'cedula_v')->textInput([
 																								'id' => 'cedula_v',
-																								//'name' => 'cedula-v',
 																								'style' => 'width:100%;',
 																								'value' => $datosContribuyente[0]['cedula'],
 																								'readonly' => true,
@@ -165,7 +162,6 @@
 											<div class="tipo-v">
 												<?= $form->field($model, 'tipo_v')->textInput([
 																								'id' => 'tipo_v',
-																								//'name' => 'tipo-v',
 																								'style' => 'width:50%;',
 																								'value' => $datosContribuyente[0]['tipo'],
 																								'readonly' => true,
@@ -174,9 +170,28 @@
 										</div>
 									</div>
 <?php } ?>
-								</div>
 <!-- Fin de Rif o Cedula del Contribuyente -->
 
+<!-- Razon Social -->
+									<div class="col-sm-6" style="margin-left: -20px;margin-top: 0px">
+										<div class="row" style="width:100%;">
+											<p style="margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('backend', 'Company Name') ?></i></p>
+										</div>
+										<div class="row">
+											<div class="razon-social-v">
+												<?= $form->field($model, 'razon_social_v')->textInput([
+																								'id' => 'razon-social-v',
+																								'style' => 'width:100%;',
+																								'value' => $datosContribuyente[0]['razon_social'],
+																								'readonly' => true,
+																						 	])->label(false) ?>
+											</div>
+										</div>
+									</div>
+<!-- Fin de Razon Social -->
+
+
+								</div>
 					        </div>
 					    </div>
 					</div>
@@ -185,7 +200,7 @@
 					<div class="row">
 						<div class="panel panel-success" style="width: 103%;margin-left: -15px;">
 							<div class="panel-heading">
-					        	<span><?= Html::encode(Yii::t('backend', 'Contribuyente Asociados')) ?></span>
+					        	<span><?= Html::encode(Yii::t('backend', 'Related Taxpayers')) ?></span>
 					        </div>
 	        				<div class="panel-body">
 	        					<div class="row">
@@ -200,8 +215,10 @@
 	        										//['class' => 'yii\grid\SerialColumn'],
 
 									            	[
-									                    'label' => 'ID.',
-									                    'value' => 'id_contribuyente',
+									                    'label' => Yii::t('backend', 'ID.'),
+									                    'value' => function($data) {
+	                            										return $data->id_contribuyente;
+	                    											},
 									                ],
 									                [
 									                    'label' => Yii::t('backend', 'DNI'),
@@ -210,15 +227,26 @@
 	                    											},
 									                ],
 									                [
-									                    'label' => Yii::t('backend', 'Description'),
+									                    'label' => Yii::t('backend', 'Taxpayer'),
 									                    'value' => function($data) {
 	                            										return ContribuyenteBase::getContribuyenteDescripcion($data->tipo_naturaleza, $data->razon_social, $data->apellidos, $data->nombres);
 	                    											},
 									                ],
+									                [
+									                    'label' => Yii::t('backend', 'License No.'),
+									                    'value' => function($data) {
+	                            										return $data->id_sim;
+	                    											},
+									                ],
+									                ['class' => 'yii\grid\CheckboxColumn'],
 									        	]
 											]);?>
 										</div>
 		        					</div>
+		        				</div>
+
+		        				<div class="row" style="color: red; margin-left: 15px;">
+		        					<p><?= Html::encode($msjErrorLista) ?></p>
 		        				</div>
 	        				</div>
 	        			</div>
@@ -247,9 +275,7 @@
 										<div class="naturaleza-new">
 					                		<?= $form->field($model, 'naturaleza_new')->dropDownList($listaNaturaleza,[
 	                																	 			'id' => 'naturaleza_new',
-	                																	 			//'name' => 'naturalezanew',
 	                                                                     				 			'prompt' => Yii::t('backend', 'Select'),
-	                                                                     				 			//'value' => $datosContribuyente[0]['naturaleza'],
 	                                                                    							])->label(false)
 					    					?>
 										</div>
@@ -261,8 +287,6 @@
 										<div class="cedula-new">
 											<?= $form->field($model, 'cedula_new')->textInput([
 																							'id' => 'cedula_new',
-																							//'name' => 'cedula-new',
-																							//'value' => $model->cedula_v,
 																							'maxlength' => $longitudMax,
 																		  				  ])->label(false) ?>
 										</div>
@@ -275,8 +299,6 @@
 										<div class="tipo-new">
 											<?= $form->field($model, 'tipo_new')->textInput([
 																						'id' => 'tipo_new',
-																						//'name' => 'tipo-new',
-																						//'value' => $model->tipo_v,
 																						'maxlength' => 1,
 																			  			])->label(false) ?>
 										</div>
@@ -284,38 +306,75 @@
 <!-- Fin de Tipo Nuevo -->
 <?php } ?>
 
-<!-- Boton para aplicar la actualizacion -->
-									<div class="col-sm-2">
-										<div class="form-group">
-											<?= Html::submitButton(Yii::t('backend', Yii::t('backend', 'Execute Update of DNI')),
-																									  [
-																										'id' => 'btn-update',
-																										'class' => 'btn btn-success',
-																										'name' => 'btn-update',
-																										//'action' => ['/correccion-cedula-rif/index'],
-																									  ])
-											?>
-										</div>
-									</div>
-<!-- Fin de Boton para aplicar la actualizacion -->
-
-									<div class="col-sm-1"></div>
-
-<!-- Boton para salir de la actualizacion -->
-									<div class="col-sm-2">
-										<div class="form-group">
-											<?= Html::a(Yii::t('backend', 'Quit'), ['menu/vertical'], ['class' => 'btn btn-danger']) ?>
-										</div>
-									</div>
-<!-- Fin de Boton para salir de la actualizacion -->
-
-
 	        					</div>
 	        				</div>
 	        			</div>
 					</div>
 <!-- FIN DE CEDULA O RIF NUEVO -->
+					<?php
+	if ( $datosContribuyente[0]['tipo_naturaleza'] == 1) {
+?>
 
+					<div class="row">
+<!-- LISTA DE DOCUMENTOS Y REQUISITOS -->
+						<div class="panel panel-success" style="width: 103%;margin-left: -15px;">
+					        <div class="panel-heading">
+					        	<span><?= Html::encode(Yii::t('backend', 'Documents and Requirements Consigned')) ?></span>
+					        </div>
+					        <div class="panel-body">
+					        	<div class="row">
+					        		<div class="col-sm-8">
+										<div class="documento-requisito-consignado">
+									        <?= GridView::widget([
+									        	'id' => 'grid-list',
+									        	//'name' => 'grid-list', da error
+									            'dataProvider' => DocumentoRequisitoController::actionGetDataProviderSegunImpuesto(1),
+									            'columns' => [
+									                	['class' => 'yii\grid\SerialColumn'],
+									                	[
+										                    'label' => 'ID.',
+										                    'value' => 'id_documento',
+										                ],
+										                [
+										                    'label' => 'Descripcion',
+										                    'value' => 'descripcion',
+										                ],
+										                ['class' => 'yii\grid\CheckboxColumn'],
+									            ]
+											]);?>
+										</div>
+									</div>
+								</div>
+							</div>   	<!-- Fin de panel-body documento -->
+						</div>  		<!-- Fin de panel panel-success documento -->
+<!-- FINAL DE DOCUMENTOS Y REQUISITOS -->
+					</div>
+<?php }?>
+
+<!-- Boton para aplicar la actualizacion -->
+					<div class="col-sm-2">
+						<div class="form-group">
+							<?= Html::submitButton(Yii::t('backend', Yii::t('backend', 'Execute Update of DNI')),
+																					  [
+																						'id' => 'btn-update',
+																						'class' => 'btn btn-success',
+																						'name' => 'btn-update',
+																						'value' => 1,
+																					  ])
+							?>
+						</div>
+					</div>
+<!-- Fin de Boton para aplicar la actualizacion -->
+
+					<div class="col-sm-1"></div>
+
+<!-- Boton para salir de la actualizacion -->
+					<div class="col-sm-2">
+						<div class="form-group">
+							<?= Html::a(Yii::t('backend', 'Quit'), ['quit'], ['class' => 'btn btn-danger']) ?>
+						</div>
+					</div>
+<!-- Fin de Boton para salir de la actualizacion -->
 
 				</div>
 			</div>
