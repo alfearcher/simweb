@@ -99,7 +99,7 @@
 				      		if ( $model->validate() ) {
 
 				      			if ( isset($postData['selection']) ) {
-die(var_dump($postData));
+//die(var_dump($postData));
 					      			if ($postData['btn-update'] == 1 ) {
 					      				// Lista de sucursales (de existir) para mostrar en el pre-view,
 					      				// solo se mostraran las sucursales tildadas en el formulario.
