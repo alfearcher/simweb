@@ -570,5 +570,81 @@
 
 
 
+
+		/**
+		 * [getCapitalSegunID description]
+		 * @param  [type] $idContribuyente [description]
+		 * @return [type]                  [description]
+		 */
+		public static function getCapitalSegunID($idContribuyente)
+		{
+			if ( $idContribuyente > 0 ) {
+				$dataResult = self::datosContribuyenteSegunID($idContribuyente);
+				if ( $dataResult ) {
+
+					return $dataResult[0]['capital'];
+
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		}
+
+
+
+
+
+		/**
+		 * [getCedulaRifTipoNaturalezaSegunID description]
+		 * @param  [type] $idContribuyente [description]
+		 * @return [type]                  [description]
+		 */
+		public static function getCedulaRifTipoNaturalezaSegunID($idContribuyente)
+		{
+			if ( $idContribuyente > 0 ) {
+				$dataResult = self::datosContribuyenteSegunID($idContribuyente);
+				if ( $dataResult ) {
+					$cedulaRif['tipo_naturaleza'] = $dataResult[0]['tipo_naturaleza'];
+					$cedulaRif['naturaleza'] = $dataResult[0]['naturaleza'];
+					$cedulaRif['cedula'] = $dataResult[0]['cedula'];
+					$cedulaRif['tipo'] = $dataResult[0]['tipo'];
+
+					return $cedulaRif;
+
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		}
+
+
+
+
+		/**
+		 * [getLicenciaSegunID description]
+		 * @param  [type] $idContribuyente [description]
+		 * @return [type]                  [description]
+		 */
+		public static function getLicenciaSegunID($idContribuyente)
+		{
+			if ( $idContribuyente > 0 ) {
+				$dataResult = self::datosContribuyenteSegunID($idContribuyente);
+				if ( $dataResult ) {
+					$cedulaRif['id_sim'] = $dataResult[0]['id_sim'];
+
+					return $cedulaRif;
+
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		}
+
 	}
  ?>
