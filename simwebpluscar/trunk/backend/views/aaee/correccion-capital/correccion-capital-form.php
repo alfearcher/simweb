@@ -241,10 +241,11 @@
 	                    											},
 									                ],
 									                ['class' => 'yii\grid\CheckboxColumn',
-														                 'options' => [
-														                 		'checked' => 'checked',
-														                 ],
-									                ],
+									                						//'multiple' => false,
+														              //    	'checkboxOptions' => function($model, $key, $index, $column) {
+     																							// 	return ['checked' => true, 'readonly' => true];
+     																							// },
+     												],
 									        	]
 											]);?>
 										</div>
@@ -329,6 +330,8 @@
 
  <?php $this->registerJs(
  	"$(function() {
+ 		//alert('hola ' + $('#selection_all').val());
+ 		$(':checked').attr('checked', true);
  		//$('#ca').mask('000.000.000.000.000,00', {reverse: true});
  		//$('.capital-new').mask('999.999.999.999,99');
  	});"
