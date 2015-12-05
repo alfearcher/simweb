@@ -288,7 +288,7 @@
 <!-- Boton para salir de la actualizacion -->
 						<div class="col-sm-2" style="margin-left: 50px;">
 							<div class="form-group">
-								<?= Html::a(Yii::t('backend', 'Quit'), ['menu/vertical'], ['class' => 'btn btn-danger']) ?>
+								<?= Html::a(Yii::t('backend', 'Quit'), ['quit'], ['class' => 'btn btn-danger']) ?>
 							</div>
 						</div>
 <!-- Fin de Boton para salir de la actualizacion -->
