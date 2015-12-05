@@ -25,10 +25,10 @@
  *
  *  @author Jose Rafael Perez Teran
  *
- *  @date 19-09-2015
+ *  @date 04-12-2015
  *
  *  @class CorreccionCedulaRif
- *  @brief Clase Modelo que maneja la politica
+ *  @brief Clase Modelo del formulario
  *
  *
  *  @property
@@ -40,15 +40,12 @@
  *
  */
 
-	namespace backend\models\aaee\correccioncedularif;
+ 	namespace backend\models\aaee\correccioncedularif;
 
  	use Yii;
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 
-	/**
-	* 	Clase
-	*/
 	class CorreccionCedulaRif extends ActiveRecord
 	{
 
@@ -74,5 +71,4 @@
 
 
 	}
-
 ?>
