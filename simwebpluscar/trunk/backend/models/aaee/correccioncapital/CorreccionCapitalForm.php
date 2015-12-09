@@ -87,8 +87,8 @@
     	public function rules()
     	{
     		return [
-    			[['capital_new', 'id_contribuyente'],'required','message' => Yii::t('backend', '{attribute} is required')],
-    			//[['capital_new'], 'double', 'min' => 'capital_v', 'message' => Yii::t('backend', '{attribute} must be no less that 100')],
+    			[['capital_new', 'id_contribuyente', 'capital_v'],'required','message' => Yii::t('backend', '{attribute} is required')],
+    			[['capital_new', 'capital_v'], 'double', 'message' => Yii::t('backend', '{attribute} must be decimal.')],
     			['capital_new', 'compare', 'compareAttribute' => 'capital_v', 'operator' => '>=', 'message' => Yii::t('backend', '{attribute} must be no less that ')],
     			//['capital_new', 'format', Yii::$app->formatted->asDecimal($model->)]
     		];
