@@ -238,7 +238,7 @@ class AvaluoCatastralForm extends \yii\db\ActiveRecord
               $sql .= 'and subparcela_catastro = "'.$this->subparcela_catastro.'"';
               $sql .= 'and nivel_catastro = "'.$nivel_catastro.'"';
               $sql .= 'and unidad_catastro = "'.$this->unidad_catastro.'"'; 
-          }else{ 
+          }else{ $asignado
               $subparcela_catastro = 0;
               $nivel_catastro = 0; 
               $unidad_catastro = 0;
