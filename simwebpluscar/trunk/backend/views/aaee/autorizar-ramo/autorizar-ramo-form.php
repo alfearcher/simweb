@@ -127,7 +127,7 @@
 												<?= $form->field($model, 'fecha_inicio')->textInput([
 																									'id' => 'fecha-inicio',
 																									'name' => 'fecha-inicio',
-																									'style' => 'width:100%;',
+																									'style' => 'width:70%;',
 																									'value' => $datosContribuyente[0]['fecha_inicio'],
 																									'readonly' => true,
 																						 			])->label(false) ?>
@@ -137,7 +137,7 @@
 <!-- Fin de Fecha de Inicio -->
 
 <!-- Año Catalogo de Rubro -->
-									<div class="col-sm-2" style="margin-left: 5px;">
+									<div class="col-sm-2" style="margin-left: -45px;">
 										<div class="row" style="width:100%;">
 											<p style="margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('backend', $model->getAttributeLabel('ano_catalogo')) ?></i></p>
 										</div>
@@ -146,7 +146,7 @@
 												<?= $form->field($model, 'ano_catalogo')->textInput([
 																									'id' => 'ano-catalogo',
 																									'name' => 'ano-catalogo',
-																									'style' => 'width:100%;',
+																									'style' => 'width:60%;',
 																									'value' => $anoCatalogo,
 																									'readonly' => true,
 																						 			])->label(false) ?>
@@ -155,9 +155,39 @@
 									</div>
 <!-- Fin de Año Catalogo de Rubro -->
 
+<!-- Año de Vencimiento de la Ordenanza, segun el Año Catalogo -->
+									<div class="col-sm-2" style="margin-left: 55px;">
+										<div class="row" style="width:100%;">
+											<p style="margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('backend', 'Ordinance Expired') ?></i></p>
+										</div>
+										<div class="row">
+											<div class="ano-vence-ordenanza">
+												<?= $form->field($model, 'ano_vence_ordenanza')->textInput([
+																									'id' => 'ano-vence-ordenanza',
+																									'name' => 'ano-vence-ordenanza',
+																									'style' => 'width:70%;',
+																									'value' => $anoVenceOrdenanza,
+																									'readonly' => true,
+																						 			])->label(false) ?>
+											</div>
+										</div>
+									</div>
+<!-- Fin de Año de Vencimiento de la Ordenanza, segun el Año Catalogo -->
+
 
 								</div> 		<!-- Fin de row -->
 
+
+								<div class="row">
+									<div class="col-sm-5" style="width:80%;">
+										<div class="list-group">
+  											<a href="#" class="list-group-item">
+    											<h4 class="list-group-item-heading">Observaciones</h4>
+    											<p class="list-group-item-text">La autorización de los ramos comprenderan el lapso de tiempo entre los años <?= Html::encode($anoCatalogo) ?> y <?= Html::encode($anoVenceOrdenanza) ?>. Ambos inclusibles</p>
+  											</a>
+										</div>
+									</div>
+								</div>
 
 
 								<div class="row">

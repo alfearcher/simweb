@@ -49,6 +49,7 @@
 	        'anoCatalogo' => $anoCatalogo,
 	        'datosContribuyente' => $datosContribuyente,
 	        'modelSearch' => $modelSearch,
+	        'anoVenceOrdenanza' => $anoVenceOrdenanza,
 	    ]) ?>
 
 	</div>
