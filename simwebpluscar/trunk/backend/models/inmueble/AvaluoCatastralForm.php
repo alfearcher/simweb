@@ -351,7 +351,7 @@ class AvaluoCatastralForm extends \yii\db\ActiveRecord
                  
 
           //Si la consulta no cuenta (0) mostrar el error
-            if ($table != null){
+            if ($table != null){ 
 
                     $this->addError($attribute, Yii::t('backend', 'The taxpayer: '.$table[0]['id_contribuyente'].' has already assigned cadestre. Tax: '.$table[0]['id_impuesto']));//Impuesto: '.$table->id_impuesto; 
             } 
