@@ -62,6 +62,7 @@
 	use backend\models\aaee\acteconingreso\ActEconIngresoForm;
 	use backend\controllers\mensaje\MensajeController;
 	use backend\models\documentoconsignado\DocumentoConsignadoForm;
+	use common\models\ordenanza\OrdenanzaBase;
 
 
 	session_start();		// Iniciando session
@@ -137,12 +138,17 @@
 				  				$anoInicio = date('Y', strtotime($datosContribuyente[0]['fecha_inicio']));
 				  				$anoCatalogo = $model->determinarAnoCatalogoSegunAnoInicio($anoInicio);
 
+				  				// Se determina el año de vencimiento de la ordenanza, segun el año del catalogo de rubros.
+				  				$anoVenceOrdenanza = 0;
+				  				$anoVenceOrdenanza = OrdenanzaBase::actionGetAnoVencimientoOrdenanzaSegunAnoImpositivo($anoCatalogo, 1);
 								if ( isset($_SESSION['model']) ) { $model = $_SESSION['model']; }
 
 					  			return $this->render('/aaee/autorizar-ramo/create', ['model' => $model,
 					  																 'anoCatalogo' => $anoCatalogo,
 					  																 'datosContribuyente' => $datosContribuyente,
-					  																 'modelSearch' => $modelSearch]);
+					  																 'modelSearch' => $modelSearch,
+					  																 'anoVenceOrdenanza' => $anoVenceOrdenanza,
+					  																 ]);
 				  			} else {
 				  				return self::gestionarMensajesLocales('No posee la fecha de inicio de actividades.');
 				  			}
