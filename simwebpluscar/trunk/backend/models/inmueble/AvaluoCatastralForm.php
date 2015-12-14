@@ -152,7 +152,7 @@ class AvaluoCatastralForm extends \yii\db\ActiveRecord
             [['ano_traspaso'], 'inmuebleSolventeB','when'=>function($model){ return $model->operacion==2;}],
             //[['datosVendedor'],'datosVendedor'],
             
-        ];
+        ]; 
     }
 
     
