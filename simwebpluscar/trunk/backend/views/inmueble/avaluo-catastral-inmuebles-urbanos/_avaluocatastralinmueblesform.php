@@ -201,8 +201,7 @@ $variablephp=$_COOKIE['variablephp'];
                                                     </td> 
 
                                                     
-                                                    
-                                                    
+                                                                                                        
                                                 </tr>   
 
                                                 <tr>                     
