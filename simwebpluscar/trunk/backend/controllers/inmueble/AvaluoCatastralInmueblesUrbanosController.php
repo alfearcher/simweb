@@ -204,7 +204,7 @@ CONTENIDO DEL AVALUO CATASTRAL
 
                         $arrayCondition = ['id_impuesto' => $id_impuestoVendedor,]; 
 //echo'<pre>'; var_dump($datosCambio); echo '</pre>'; die('aqui buyer 1'); 
-                        $conn = New ConexionController();  
+                        $conn = New ConexionController(); 
 
                         $this->conexion = $conn->initConectar('dbsim');     // instancia de la conexion (Connection)
                         $this->conexion->open(); 
