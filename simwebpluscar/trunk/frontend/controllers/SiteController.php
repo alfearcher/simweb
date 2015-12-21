@@ -19,7 +19,7 @@ use yii\filters\AccessControl;
 class SiteController extends Controller
 {
    
-public $layout = "layout-main";
+public $layout = "layout-login";
 
     /**
      * @inheritdoc
