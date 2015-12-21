@@ -46,7 +46,7 @@ $this->title = 'Iniciar Sesion';
 			<div class="row" style="margin-left: 10px;">
 					
                     <?= Html::submitButton('Iniciar Sesion', ['class' => 'btn btn-primary', 'name' => 'login-button']) // BOTON DE INICIAR SESION ?>
-					<?= Html::a('Crear Usuario',['crearusuario/opcion-crear-usuario/crear-usuario'], ['class' => 'btn btn-primary', 'name' => 'create-user']) // BOTON DE CREAR USUARIO ?>
+					<?= Html::a('Crear Usuario', ['opcion-crear-usuario/crear-usuario'], ['class' => 'btn btn-primary', 'name' => 'create-user']) // BOTON DE CREAR USUARIO ?>
 					<?= Html::a('Cambiar Password', ['opcion-funcionario/iniciarrecuperacionpasswordfuncionario'], ['class' => 'btn btn-primary']) //BOTON DE RECUPERAR CONTRASENA ?>
               </div>
 						
