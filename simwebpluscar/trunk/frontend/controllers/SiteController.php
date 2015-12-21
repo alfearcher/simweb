@@ -70,7 +70,7 @@ public $layout = "layout-main";
 
     public function actionIndex()
     {
-        return $this->render('\layouts\layout-login');
+        return $this->render('index');
     }
 
     public function actionLogin()
