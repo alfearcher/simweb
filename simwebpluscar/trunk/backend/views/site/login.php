@@ -47,8 +47,8 @@ $this->title = 'Iniciar Sesion';
 				   <tr>
 						<td><div class="col-lg-offset-0 col-lg-5">
                             <?= Html::submitButton('Iniciar Sesion', ['class' => 'btn btn-primary', 'name' => 'login-button']) // BOTON DE INICIAR SESION ?>
-							
-							<?= Html::a('Recuperar Password', ['opcion-funcionario/iniciarrecuperacionpasswordfuncionario'], ['class' => 'btn btn-primary']) //BOTON DE RECUPERAR CONTRASENA ?>
+							<?= Html::a('Crear Usuario', ['class' => 'btn btn-primary', 'name' => 'create-user'])?>
+							<?= Html::a('Cambiar Password', ['opcion-funcionario/iniciarrecuperacionpasswordfuncionario'], ['class' => 'btn btn-primary']) //BOTON DE RECUPERAR CONTRASENA ?>
                             </div>
 						</td>
 					</tr>

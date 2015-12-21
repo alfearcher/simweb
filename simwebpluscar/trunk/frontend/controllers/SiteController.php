@@ -89,6 +89,11 @@ public $layout = "layout-login";
         }
     }
 
+     public function actionCrearUsuario()
+    {
+        return $this->render('crear-usuario');
+    }
+
     public function actionLogout()
     {
         Yii::$app->user->logout();

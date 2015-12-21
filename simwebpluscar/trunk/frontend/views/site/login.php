@@ -30,31 +30,29 @@ $this->title = 'Iniciar Sesion';
 				<?= $this->title ?>
 			</div>
 			<div class="panel-body" >
-				<table class="table table-striped">
-					<tr>
-						<td>
-                            <?= $form->field($model, 'username') ?>
-							
-						 </td>
-				   </tr>
-				   <tr>
-						<td>
-                            <?= $form->field($model, 'password')->passwordInput() ?>
-							
-						 </td>
-				   </tr>
-				   
-				   <tr>
-						<td><div class="col-lg-offset-0 col-lg-5">
-                            <?= Html::submitButton('Iniciar Sesion', ['class' => 'btn btn-primary', 'name' => 'login-button']) // BOTON DE INICIAR SESION ?>
-							
-							<?= Html::a('Recuperar Password', ['opcion-funcionario/iniciarrecuperacionpasswordfuncionario'], ['class' => 'btn btn-primary']) //BOTON DE RECUPERAR CONTRASENA ?>
-                            </div>
-						</td>
-					</tr>
-				</table>
+				
+			<div class="row" style="margin-left: 10px;">
+				
+				 <?= $form->field($model, 'username') ?>
+
+		    </div>
+
+			<div class="row" style="margin-left: 10px;">
+				
+				<?= $form->field($model, 'password')->passwordInput() ?>
+
 			</div>
+			
+			<div class="row" style="margin-left: 10px;">
+					
+                    <?= Html::submitButton('Iniciar Sesion', ['class' => 'btn btn-primary', 'name' => 'login-button']) // BOTON DE INICIAR SESION ?>
+					<?= Html::a('Crear Usuario',['crearusuario/opcion-crear-usuario/crear-usuario'], ['class' => 'btn btn-primary', 'name' => 'create-user']) // BOTON DE CREAR USUARIO ?>
+					<?= Html::a('Cambiar Password', ['opcion-funcionario/iniciarrecuperacionpasswordfuncionario'], ['class' => 'btn btn-primary']) //BOTON DE RECUPERAR CONTRASENA ?>
+              </div>
+						
+			
 		</div>
+	</div>
   </div>	
 
 
