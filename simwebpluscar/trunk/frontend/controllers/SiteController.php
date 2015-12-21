@@ -18,6 +18,9 @@ use yii\filters\AccessControl;
  */
 class SiteController extends Controller
 {
+   
+public $layout = "layout-main";
+
     /**
      * @inheritdoc
      */
@@ -67,7 +70,7 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        return $this->render('index');
+        return $this->render('layout-login');
     }
 
     public function actionLogin()
