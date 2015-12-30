@@ -56,7 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     <tr>
                         <td> 
-                            <?= Html::submitButton("Registrar", ["class" => "btn btn-primary"]) ?>
+                            <?= Html::submitButton("Register", ["class" => "btn btn-primary"]) ?>
                         </td>
                     </tr>
                 </table>
