@@ -75,7 +75,7 @@ public $layout = "layout-login";
 
     public function actionLogin()
     {
-       /* if (!\Yii::$app->user->isGuest) {
+        if (!\Yii::$app->user->isGuest) {
             return $this->goHome();
         }
 
@@ -86,7 +86,7 @@ public $layout = "layout-login";
             return $this->render('login', [
                 'model' => $model,
             ]);
-        }*/
+        }
     }
 
      public function actionCrearUsuario()
