@@ -316,7 +316,7 @@ class AvaluoCatastralForm extends \yii\db\ActiveRecord
                                     ->andwhere("id_impuesto=:id_impuesto", [":id_impuesto" => $this->direccion])
                                     ->andwhere("impuesto=:impuesto", [":impuesto" => 2])
                                     ->andwhere("ano_impositivo=:ano_impositivo", [":ano_impositivo" => $this->ano_traspaso])
-                                    ->andWhere("inactivo=:inactivo", [":inactivo" => 0])
+                                    //->andWhere("inactivo=:inactivo", [":inactivo" => 0])
                                     //id_pago, id_impuesto, impuesto, ano_impositivo, trimestre
                                     ->asArray()->all(); 
 
