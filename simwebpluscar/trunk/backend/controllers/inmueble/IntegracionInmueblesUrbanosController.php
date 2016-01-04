@@ -159,7 +159,8 @@ CONTENIDO VENDEDOR (SELLER)
 
                         $tableName = 'inmuebles'; 
 
-                        $arrayCondition = ['id_impuesto' => $id_impuestoVenta,]; 
+                        $arrayCondition = ['id_impuesto' => $id_impuestoVenta,
+                                           'nombre' => $nombre]; 
 
 //echo'<pre>'; var_dump($datosCambio); echo '</pre>'; die('hola seller 2'); 
                         $conn = New ConexionController(); 
