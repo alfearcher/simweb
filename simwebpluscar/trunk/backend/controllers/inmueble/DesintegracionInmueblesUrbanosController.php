@@ -21,14 +21,14 @@
  */
 
  /**    
- *  @file CambioPropietarioInmueblesUrbanosController.php
+ *  @file DesintegracionInmueblesUrbanosController.php
  *  
  *  @author Alvaro Jose Fernandez Archer
  * 
  *  @date 17-08-2015
  * 
- *  @class CambioPropietarioInmueblesUrbanosController
- *  @brief Clase que permite controlar el cambio de otros datos del inmueble urbano, 
+ *  @class DesintegracionInmueblesUrbanosController
+ *  @brief Clase que permite controlar la desintegracion del inmueble urbano, 
  *  el cambio ha propiedad horizontal
  *
  * 
@@ -66,7 +66,7 @@ use backend\models\buscargeneral\BuscarGeneral;
 /**
  * CambiosInmueblesUrbanosController implements the CRUD actions for InmueblesUrbanosForm model.
  */
-class CambioPropietarioInmueblesUrbanosController extends Controller
+class DesintegracionInmueblesUrbanosController extends Controller
 {   
 
     public $conn;
@@ -82,7 +82,7 @@ class CambioPropietarioInmueblesUrbanosController extends Controller
      *para el cambio de otros datos inmuebles
      *@return model 
      **/
-    public function actionCambioPropietarioInmuebles($id_contribuyente)
+    public function actionDesintegracionInmuebles($id_contribuyente)
     { 
         if ( isset( $_SESSION['idContribuyente'] ) ) {
         $modelContribuyente = $this->findModelContribuyente($id_contribuyente);
@@ -295,7 +295,7 @@ FIN BUYER
          }*/
         }
    
-         return $this->render('cambio-propietario-inmuebles', [
+         return $this->render('desintegracion-inmuebles', [
                 'model' => $model, 'modelContribuyente' => $modelContribuyente, 'modelBuscar' =>$modelBuscar, 'datosVContribuyente'=>$datosVContribuyente,
                 'datosVInmueble'=>$datosVInmueble,
             ]); 

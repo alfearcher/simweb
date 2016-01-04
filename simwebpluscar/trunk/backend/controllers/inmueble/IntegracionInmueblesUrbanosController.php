@@ -21,14 +21,14 @@
  */
 
  /**    
- *  @file CambioPropietarioInmueblesUrbanosController.php
+ *  @file IntegracionInmueblesUrbanosController.php
  *  
  *  @author Alvaro Jose Fernandez Archer
  * 
  *  @date 17-08-2015
  * 
- *  @class CambioPropietarioInmueblesUrbanosController
- *  @brief Clase que permite controlar el cambio de otros datos del inmueble urbano, 
+ *  @class IntegracionInmueblesUrbanosController
+ *  @brief Clase que permite controlar la integracion del inmueble urbano, 
  *  el cambio ha propiedad horizontal
  *
  * 
@@ -66,7 +66,7 @@ use backend\models\buscargeneral\BuscarGeneral;
 /**
  * CambiosInmueblesUrbanosController implements the CRUD actions for InmueblesUrbanosForm model.
  */
-class CambioPropietarioInmueblesUrbanosController extends Controller
+class IntegracionInmueblesUrbanosController extends Controller
 {   
 
     public $conn;
@@ -82,7 +82,7 @@ class CambioPropietarioInmueblesUrbanosController extends Controller
      *para el cambio de otros datos inmuebles
      *@return model 
      **/
-    public function actionCambioPropietarioInmuebles($id_contribuyente)
+    public function actionIntegracionInmuebles($id_contribuyente)
     { 
         if ( isset( $_SESSION['idContribuyente'] ) ) {
         $modelContribuyente = $this->findModelContribuyente($id_contribuyente);
@@ -295,7 +295,7 @@ FIN BUYER
          }*/
         }
    
-         return $this->render('cambio-propietario-inmuebles', [
+         return $this->render('integracion-inmuebles', [
                 'model' => $model, 'modelContribuyente' => $modelContribuyente, 'modelBuscar' =>$modelBuscar, 'datosVContribuyente'=>$datosVContribuyente,
                 'datosVInmueble'=>$datosVInmueble,
             ]); 
