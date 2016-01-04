@@ -53,8 +53,16 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use backend\models\registromaestro\TipoNaturaleza;
+use yii\helpers\ArrayHelper;
 // 
 
+
+
+                              
+
+$modeloTipoNaturaleza = TipoNaturaleza::find()->where('id_tipo_naturaleza BETWEEN 1 and 4')->all();
+$listaNaturaleza = ArrayHelper::map($modeloTipoNaturaleza, 'siglas_tnaturaleza', 'nb_naturaleza');
+                                
 
 $this->title = 'Busqueda Persona Juridica';
 $this->params['breadcrumbs'][] = $this->title;
@@ -86,15 +94,15 @@ $lista = ['Extranjero' , 'Venezolano'];
 
                            
                             <div class="row" style="width:100%;">
-                                <p style="margin-left: 15px;margin-top: 0px;margin-bottom: 0px;"><i><small><?=Yii::t('backend', 'naturaleza') ?></small></i></p>
+                                <p style="margin-left: 15px;margin-top: 0px;margin-bottom: 0px;"><i><small><?=Yii::t('frontend', 'DNI') ?></small></i></p>
                             </div>
 <!-- COMBO NATURALEZA -->
-                             <div class="col-sm-6">
+                             <div class="col-sm-5">
                             <div class="row" style="width:100%; padding-left: 0px;padding-right: 0px;">
                                 <div class="container-fluid" style="margin-left: 0px;margin-right: 0px;padding-left: 0px;padding-right: 0px;">
                                     <div class="col-sm-5" style="padding-right: 12px;">
                                         <div class="naturaleza">
-                                            <?= $form->field($model, 'naturaleza')->dropDownList($lista,[
+                                            <?= $form->field($model, 'naturaleza')->dropDownList($listaNaturaleza,[
                                                                                                     'id' => 'naturaleza',
                                                                                                     'prompt' => Yii::t('backend', 'Select'),
                                                                                                     'style' => 'height:32px;width:150px;',
@@ -106,7 +114,7 @@ $lista = ['Extranjero' , 'Venezolano'];
 <!-- FIN DE COMBO NATURALEZA -->
 
 <!-- CEDULA -->
-                                    <div class="col-sm-4" style="padding-left: 25px;">
+                                    <div class="col-sm-4" style="padding-left: 27px;">
 
                                           
                                                <div class="cedula">
@@ -121,7 +129,7 @@ $lista = ['Extranjero' , 'Venezolano'];
 <!-- FIN DE CEDULA -->
 
 <!-- TIPO -->
-                                    <div class="col-sm-2" style="padding-right: 0px;padding-left: 35px;">
+                                    <div class="col-sm-2" style="padding-right: 0px;padding-left: 40px;">
                                      
                                             <div class="tipo">
                                                <?= $form->field($model, 'tipo')->textInput([
@@ -143,11 +151,11 @@ $lista = ['Extranjero' , 'Venezolano'];
  <!-- Boton para aplicar la actualizacion -->
                                     <div class="col-sm-2">
                                         <div class="form-group">
-                                            <?= Html::submitButton(Yii::t('backend', Yii::t('frontend', 'Search')),
+                                            <?= Html::submitButton(Yii::t('frontend' , 'Search'),
                                                                                                       [
-                                                                                                        'id' => 'btn-update',
+                                                                                                        'id' => 'btn-search',
                                                                                                         'class' => 'btn btn-success',
-                                                                                                        'name' => 'btn-update',
+                                                                                                        'name' => 'btn-search',
                                                                                                         'value' => 1,
                                                                                                       ])
                                             ?>
