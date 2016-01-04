@@ -134,7 +134,7 @@ CONTENIDO VENDEDOR (SELLER)
                     if ($datosCambio["tipo_naturaleza1"] == 0) {
                         $tipo = $datosCambio["tipoBuscar1"];
                     } else { 
-                        $tipo = 0;
+                        $tipo = 0; 
                     }
 
                     $modelParametros = ContribuyentesForm::find()->where(['naturaleza'=>$datosCambio["naturalezaBuscar1"]])
