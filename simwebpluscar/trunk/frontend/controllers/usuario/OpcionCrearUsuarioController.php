@@ -55,6 +55,7 @@ use Yii;
 use common\models\LoginForm;
 use frontend\models\usuario\CrearUsuarioNaturalForm;
 use frontend\models\usuario\CrearUsuarioJuridicoForm;
+use frontend\models\usuario\CrearUsuarioJuridico;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
@@ -105,28 +106,7 @@ public $layout = "layout-login";
   } 
 
 
-      public function actionCrearUsuarioJuridico()
-    {
-
-      //die('llegue');
-      $model = New CrearUsuarioJuridicoForm();
-
-            $postData = Yii::$app->request->post();
-
-              if ( $model->load($postData) && Yii::$app->request->isAjax ) {
-              Yii::$app->response->format = Response::FORMAT_JSON;
-              return ActiveForm::validate($model);
-                }
-
-//die('llegue2');
-                if ( $model->load($postData) ) {
-
-                 //die('llegue2');
-                        
-   }
-   return $this->render('/usuario/crear-usuario-juridico' , ['model' => $model]);
-
-  }
+     
  }
   
 
