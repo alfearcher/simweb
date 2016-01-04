@@ -53,10 +53,11 @@ namespace frontend\models\usuario;
 
 use Yii;
 use yii\base\Model;
-use common\models\Users;
+use frontend\models\usuario\CrearUsuarioJuridicoForm;
+use yii\data\ActiveDataProvider;
 
 
-class CrearUsuarioJuridicoForm extends Model{
+class CrearUsuarioJuridicoForm extends CrearUsuarioJuridico{
   
   public $naturaleza;
     public $cedula;
@@ -83,10 +84,7 @@ class CrearUsuarioJuridicoForm extends Model{
         
       }
 
-
-
-
-      /**
+/**
       * Lista de atributos con sus respectivas etiquetas (labels), las cuales son las que aparecen en las vistas
       * @return returna arreglo de datos con los atributoe como key y las etiquetas como valor del arreglo.
       */
@@ -103,8 +101,54 @@ class CrearUsuarioJuridicoForm extends Model{
       }
 
 	
-   
- 
+   public function findRif($naturaleza, $cedula, $tipo)
+   {
+
+      $model = CrearUsuarioJuridico::find()->where([
+                    'naturaleza' => $naturaleza,
+                    'cedula' => $cedula,
+                    'tipo' => $tipo,
+                    'tipo_naturaleza' => 1])->All();
+
+     //die(var_dump($model));
+      return isset($model) ? $model : false;
+  }
+
+public function findAfiliacion($idContribuyente)
+   {
+
+      $model = Afiliacion::findOne([
+                    
+                    'id_contribuyente' => $idContribuyente,
+                    
+                    ]);
+
+     //die(var_dump($model));
+      return isset($model) ? $model : false;
+  }
+
+
+    public function obtenerDataProviderRif($naturalezaLocal, $cedulaLocal, $tipoLocal)
+   {
+      if ( trim($naturalezaLocal) != '' && $cedulaLocal > 0 ) {
+          if ( strlen($naturalezaLocal) == 1 ) {
+            $query = CrearUsuarioJuridico::find();
+            $dataProvider = new ActiveDataProvider([
+                  'query' => $query,
+              ]);
+            $query->where('naturaleza =:naturaleza and cedula =:cedula and tipo =:tipo and tipo_naturaleza =:tipo_naturaleza',[':naturaleza' => $naturalezaLocal,
+                                    ':cedula' => $cedulaLocal,
+                                    ':tipo' => $tipoLocal,
+                                    ':tipo_naturaleza' => 1
+                                     ])->all();
+
+            return $dataProvider;
+          }
+        }
+        return false;
+      
+    
+  }
 }
 
  ?>
