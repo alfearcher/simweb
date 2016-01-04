@@ -84,7 +84,7 @@ $this->params['breadcrumbs'][] = $this->title;
                        </div>
                     <br>
                        <div class="row">
-                            <?= Html::a('<strong><center><span class="glyphicon glyphicon-user"> Persona Juridica</span></center></strong>', ['/usuario/opcion-crear-usuario/crear-usuario-juridico']); ?>
+                            <?= Html::a('<strong><center><span class="glyphicon glyphicon-user"> Persona Juridica</span></center></strong>', ['/usuario/crear-usuario-juridico/crear-usuario-juridico']); ?>
                        </div>
                 </table>
             </div>
