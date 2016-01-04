@@ -145,7 +145,7 @@ class AvaluoCatastralForm extends \yii\db\ActiveRecord
             [['tipo_naturaleza'],'required','when'=>function($model){ return $model->operacion==2;},'message' => Yii::t('backend', 'Type Nature cannot be blank')],
             [['naturalezaBuscar','cedulaBuscar','tipoBuscar'], 'required','when'=>function($model){ return $model->tipo_naturaleza==2;},'message' => Yii::t('backend', 'Cannot be blank')],
             [['naturalezaBuscar','cedulaBuscar'], 'required','when'=>function($model){ return $model->tipo_naturaleza==1;},'message' => Yii::t('backend', 'Cannot be blank')],
-            //solvencia del inmueble
+            //solvencia del inmueble 
 
             [['ano_traspaso1'], 'inmuebleSolventeA','when'=>function($model){ return $model->operacion==1;}],
 
