@@ -38,11 +38,7 @@
  *  @property
  *
  *  
- *  @method
- *  rules
- *  attributeLabels
- *  email_existe
- *  username_existe
+ * 
  *  
  *
  *  @inherits
@@ -80,11 +76,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 
                      <div class="row">
-                            <?= Html::a('<strong><center><span class="glyphicon glyphicon-user"> Persona Natural</span></center></strong>', ['/usuario/opcion-crear-usuario/crear-usuario-natural']); ?>
+                            <?= Html::a('<strong><center><span class="glyphicon glyphicon-user" style="font-size:20px"> Persona Natural</span></center></strong>', ['/usuario/opcion-crear-usuario/crear-usuario-natural']); ?>
                        </div>
                     <br>
                        <div class="row">
-                            <?= Html::a('<strong><center><span class="glyphicon glyphicon-user"> Persona Juridica</span></center></strong>', ['/usuario/crear-usuario-juridico/crear-usuario-juridico']); ?>
+                            <?= Html::a('<strong><center><span class="glyphicon glyphicon-home" style="font-size:20px"> Persona Juridica</span></center></strong>', ['/usuario/crear-usuario-juridico/crear-usuario-juridico']); ?>
                        </div>
                 </table>
             </div>

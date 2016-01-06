@@ -82,9 +82,9 @@ $lista = ['Extranjero' , 'Venezolano'];
                   
 
 
-                            <div class="col-sm-6">
+                            <div class="col-sm-5">
                             <div class="row" style="width:100%;">
-                                <p style="margin-left: 15px;margin-top: 0px;margin-bottom: 0px;"><i><small><?=Yii::t('frontend', 'Naturaleza') ?></small></i></p>
+                                <p style="margin-left: 15px;margin-top: 0px;margin-bottom: 0px;"><i><small><?=Yii::t('frontend', 'DNI') ?></small></i></p>
                         
 <!-- COMBO NATURALEZA -->
                                 <div class="container-fluid" style="margin-left: 0px;margin-right: 0px;padding-left: 0px;padding-right: 0px;">
@@ -102,7 +102,7 @@ $lista = ['Extranjero' , 'Venezolano'];
 <!-- FIN DE COMBO NATURALEZA -->
 
 <!-- CEDULA -->
-                                    <div class="col-sm-4" style="padding-left: 25px;">
+                                    <div class="col-sm-4" style="padding-left: 27px;">
 
                                           
                                                <div class="cedula">

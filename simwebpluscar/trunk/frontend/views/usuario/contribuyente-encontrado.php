@@ -19,7 +19,7 @@
 /* @var $searchModel app\models\BancoSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('backend','Result of the Consult');
+$this->title = Yii::t('backend','Result of the Consult '.BuscarGeneralForm::getCedulaRif(1, $naturaleza, $cedula, $tipo));
 
 ?>
 <div class="buscar-gerenarl-view-list">
@@ -36,7 +36,7 @@ $this->title = Yii::t('backend','Result of the Consult');
 
     <div class="contribuyente-encontrado">
 
-        <h1><?= Html::encode($this->title) ?></h1>
+        <h3><?= Html::encode($this->title) ?></h3>
 
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
@@ -56,12 +56,12 @@ $this->title = Yii::t('backend','Result of the Consult');
                     'label' => 'ID.',
                     'value' => 'id_contribuyente',
                 ],
-                [
-                    'label' =>  Yii::t('frontend','Cedula/Rif'),
-                    'value' => function($data) {
-                            return BuscarGeneralForm::getCedulaRif($data->tipo_naturaleza, $data->naturaleza, $data->cedula, $data->tipo);
-                    },
-                ],
+                // [
+                //     'label' =>  Yii::t('frontend','Cedula/Rif'),
+                //     'value' => function($data) {
+                //             return BuscarGeneralForm::getCedulaRif($data->tipo_naturaleza, $data->naturaleza, $data->cedula, $data->tipo);
+                //     },
+                // ],
 
                 [
                     'label' => Yii::t('frontend','Taxpayer'),
@@ -70,12 +70,20 @@ $this->title = Yii::t('backend','Result of the Consult');
                     }
                 ],
 
-                [
-                    'label' => Yii::t('frontend', 'Condition'),
-                    'value'=> function($data) {
-                        return BuscarGeneralForm::getActivoInactivo($data->inactivo);
-                    },
+
+                 [
+                    'label' => Yii::t('frontend','Address'),
+                    'value' => function($data) {
+                            return $data->domicilio_fiscal;
+                    }
                 ],
+
+                // [
+                //     'label' => Yii::t('frontend', 'Condition'),
+                //     'value'=> function($data) {
+                //         return BuscarGeneralForm::getActivoInactivo($data->inactivo);
+                //     },
+                // ],
 
                 [
                     'label' => Yii::t('frontend','Type'),
@@ -109,7 +117,7 @@ $this->title = Yii::t('backend','Result of the Consult');
                     'buttons' => [
                         'ok' => function ($url, $model, $key) {
                             if ($model->inactivo == 0 ) {
-                                return Html::a('<center><span class= "fa fa-thumbs-up"></span></center>',['ok','idContribuyente' => $key]);
+                                return Html::a('<center><span class= "fa fa-thumbs-up"></span></center>',['validar-juridico','id' => $key]);
                             } else {
                                 return '<span><center>---</span></center>';
                             }
