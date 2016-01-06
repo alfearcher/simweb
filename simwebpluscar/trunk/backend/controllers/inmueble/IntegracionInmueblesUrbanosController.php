@@ -38,7 +38,7 @@
  *
  *  
  *  @method
- *  CambioNumeroCatastralInmuebles
+ *  IntegracionInmuebles
  *  findModel
  *  
  *   
