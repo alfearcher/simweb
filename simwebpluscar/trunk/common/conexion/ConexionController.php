@@ -157,7 +157,7 @@
 			try {
 				if ( !(Yii::$app->user->identity) )
 				{
-	            	die(Yii::t('backend','Sorry...User no valid'));
+	            	die(Yii::t('backend','Sorry...User not valid'));
 	            }
 	            else
 	            {
@@ -168,6 +168,24 @@
 			}
 		}
 
+
+
+			public function guardarRegistroAfiliacion($conection, $tableName, $arrayDatos = [])
+		{
+			// Se controla que existe un usuario activo valido.
+			//if ( $this->existeUserValido() )
+			//{
+				try {
+					$conection->createCommand()->insert($tableName, $arrayDatos)->execute();
+
+					return true;
+				} catch (PDOException $e) {
+					return false;
+				}
+			//} else {
+			//	return false;
+			//}
+		}
 
 
 
