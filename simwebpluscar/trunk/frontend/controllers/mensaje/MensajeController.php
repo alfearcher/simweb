@@ -23,12 +23,12 @@
  /**
  *	@file MensajeController.php
  *
- *	@author Jose Rafael Perez Teran
+ *	@author Manuel Alejandro Zapata Canelon
  *
- *	@date 16-10-2015
+ *	@date 04/01/2016
  *
  *  @class MensajeController
- *	@brief Clase MensajeController, controller de mensale.
+ *	@brief Clase MensajeController, controller de mensaje.
  *
  *
  *	@property
