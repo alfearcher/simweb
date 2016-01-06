@@ -22,14 +22,14 @@
  */
 
  /**    
- *  @file CrearUsuarioNaturalForm.php
+ *  @file Afiliacion.php
  *  
  *  @author Manuel Alejandro Zapata Canelon
  * 
- *  @date 21/12/15
+ *  @date 04/01/2016
  * 
- *  @class RegistrarUsuario
- *  @brief Modelo para crear usuario Natural. 
+ *  @class Afiliacion
+ *  @brief Modelo que instancia la conexion a la base de datos para buscar datos de la tabla afiliaciones. 
  * 
  *  
  * 
@@ -39,10 +39,10 @@
  *
  *  
  *  @method
- *  rules
- *  attributeLabels
- *  email_existe
- *  username_existe
+ *  getDb
+ *  tableName
+ *  
+ * 
  *  
  *
  *  @inherits

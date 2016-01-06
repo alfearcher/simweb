@@ -28,8 +28,8 @@
  * 
  *  @date 21/12/15
  * 
- *  @class RegistrarUsuario
- *  @brief Modelo para crear usuario Natural. 
+ *  @class CrearUsuarioNaturalForm
+ *  @brief Modelo para controlar las rules del formulario de busqueda de persona Natural. 
  * 
  *  
  * 
@@ -39,10 +39,11 @@
  *
  *  
  *  @method
+ * 
+ *  scenarios
  *  rules
  *  attributeLabels
- *  email_existe
- *  username_existe
+ *  
  *  
  *
  *  @inherits

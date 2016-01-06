@@ -28,8 +28,8 @@
  * 
  *  @date 21/12/15
  * 
- *  @class RegistrarUsuario
- *  @brief Modelo para crear usuario Juridico. 
+ *  @class CrearUsuarioJuridicoForm
+ *  @brief Modelo para controlar las rules del formulario de busqueda de persona Juridica. 
  * 
  *  
  * 
@@ -41,9 +41,10 @@
  *  @method
  *  rules
  *  attributeLabels
- *  email_existe
- *  username_existe
- *  
+ *  scenarios
+ *  findRif
+ *  findAfiliacion
+ *  obtenerDataProviderRif
  *
  *  @inherits
  *  
@@ -60,8 +61,9 @@ use yii\data\ActiveDataProvider;
 class CrearUsuarioJuridicoForm extends CrearUsuarioJuridico{
   
   public $naturaleza;
-    public $cedula;
-     public $tipo;
+  public $cedula;
+  public $tipo;
+  public $email;
     
 
 
@@ -149,6 +151,37 @@ public function findAfiliacion($idContribuyente)
       
     
   }
+
+
+    public function findContribuyente($id)
+   {
+
+      $model = CrearUsuarioJuridico::find()->where([
+                    'id_contribuyente' => $id,
+                      ])->All();
+
+     //die(var_dump($model));
+      return isset($model) ? $model : false;
+  }
+
+  public function attributeAfiliacion()
+  {
+
+    return ['id_contribuyente',
+            'login',
+            'password',
+            'fecha_hora_afiliacion',
+            'via_sms',
+            'via_email',
+            'via_tlf_fijo',
+            'via_callcenter',
+            'estatus',
+            'nivel',
+            'confirmar_email',
+
+          ];
+  }
+
 }
 
  ?>
