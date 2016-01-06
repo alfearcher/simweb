@@ -22,7 +22,7 @@
  */
 
  /**    
- *  @file CrearUsuarioController.php
+ *  @file OpcionCrearUsuarioController.php
  *  
  *  @author Manuel Alejandro Zapata Canelon
  * 

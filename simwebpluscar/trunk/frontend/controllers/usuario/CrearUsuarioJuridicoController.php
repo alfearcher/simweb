@@ -22,14 +22,14 @@
  */
 
  /**    
- *  @file CrearUsuarioController.php
+ *  @file CrearUsuarioJuridicoController.php
  *  
  *  @author Manuel Alejandro Zapata Canelon
  * 
  *  @date 21/12/15
  * 
  *  @class CrearUsuarioController
- *  @brief Controlador para crear usuario
+ *  @brief Controlador para crear usuario Juridico
  * 
  *  
  * 
@@ -64,6 +64,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use frontend\controllers\mensaje\MensajeController;
+use common\conexion\ConexionController;
 
 
 /**
@@ -75,47 +76,146 @@ class CrearUsuarioJuridicoController extends Controller
       public $layout = "layout-login";
 
       public function actionCrearUsuarioJuridico()
-    {
+      {
 
       //die('llegue');
-      $model = New CrearUsuarioJuridicoForm();
+              $model = New CrearUsuarioJuridicoForm();
 
-            $postData = Yii::$app->request->post();
+              $postData = Yii::$app->request->post();
 
               if ( $model->load($postData) && Yii::$app->request->isAjax ) {
-              Yii::$app->response->format = Response::FORMAT_JSON;
-              return ActiveForm::validate($model);
-                }
+                  Yii::$app->response->format = Response::FORMAT_JSON;
+                  return ActiveForm::validate($model);
+              }
 
-//die('llegue2');
+                //die('llegue2');
+                
                 if ( $model->load($postData) ) {
 
-                 if ($model->validate()){
+                    if ($model->validate()){
 
-                  return self::actionBuscarRif($model->naturaleza, $model->cedula,$model->tipo );
-                  //return $this->redirect(['buscar-rif']);
-                 }
+                      return self::actionBuscarRif($model->naturaleza, $model->cedula,$model->tipo );
+                          //return $this->redirect(['buscar-rif']);
+                    }
                         
-   }
-   return $this->render('/usuario/crear-usuario-juridico' , ['model' => $model]);
+                }
+              return $this->render('/usuario/crear-usuario-juridico' , ['model' => $model]);
 
-  }
+      }
     
+      
       public function actionBuscarRif($naturaleza, $cedula, $tipo)
       {
       
 
-        $dataProvider = CrearUsuarioJuridicoForm::obtenerDataProviderRif($naturaleza, $cedula, $tipo);
+              $dataProvider = CrearUsuarioJuridicoForm::obtenerDataProviderRif($naturaleza, $cedula, $tipo);
 
-          if ($dataProvider == false ){
+              if ($dataProvider == false ){
 
-            die('no existe contribuyente');
+                  die('no existe contribuyente');
           
+              } else {
+
+                  return $this->render('/usuario/contribuyente-encontrado' , ['dataProvider' => $dataProvider, 'naturaleza'=>$naturaleza, 'cedula'=> $cedula,'tipo'=> $tipo ]);
+
+              }
+      }
+
+
+
+       /**
+  *
+  *el id se refiere al id contribuyente
+  *
+  */
+      public function actionValidarJuridico($id)
+      {
+                
+          $model = CrearUsuarioJuridicoForm::findContribuyente($id);
+
+          if($model == false){
+              
+              //se manda a formulario de carga de datos basicos
+
           } else {
 
-            return $this->render('/usuario/contribuyente-encontrado' , ['dataProvider' => $dataProvider]);
+            
 
+          if ($model[0]->email == null or trim($model[0]->email) == ""){
+
+                   
+              //die('probando');
+              return MensajeController::actionMensaje('Please, go to your city hall');
+              
+          } else {
+
+              $modelAfiliacion = CrearUsuarioJuridicoForm::findAfiliacion($model[0]->id_contribuyente);
+
+              if ($modelAfiliacion == false){
+
+                 self::salvarAfiliacion($model);
+                
+
+              }  
+           
+            }
+          
+        
+          }     
+        }
+
+      public function salvarAfiliacion($model)
+      {
+       
+        $tabla = 'afiliaciones';
+        $arregloDatos = [];
+        $arregloCampo = CrearUsuarioJuridicoForm::attributeAfiliacion();
+
+          // die(var_dump($arregloCampo));
+         
+           foreach ($arregloCampo as $key=>$value){
+
+            $arregloDatos[$value] =0;
           }
+
+         
+          $arregloDatos['id_contribuyente'] = $model[0]->id_contribuyente;
+
+          $arregloDatos['login'] = $model[0] ->email;
+
+          $arregloDatos['fecha_hora_afiliacion'] = date('Y-m-d h:m:i');
+
+          $conexion = new ConexionController();
+
+          $conn = $conexion->initConectar('db');
+         
+          $conn->open();
+
+          $transaccion = $conn->beginTransaction();
+
+            if ($conexion->guardarRegistroAfiliacion($conn, $tabla, $arregloDatos )){
+              $transaccion->commit();
+              die('exito');
+
+            } else { 
+
+              $transaccion->rollback();
+              die('no guardo');
+
+            }
+      }
+
+
+ 
+} 
+
+
+
+
+
+
+
+
 
       //     $model = CrearUsuarioJuridicoForm::findRif($naturaleza, $cedula, $tipo);
 
@@ -162,6 +262,8 @@ class CrearUsuarioJuridicoController extends Controller
             
 
       // } 
- }
-}
-?>
+
+
+?> 
+
+
