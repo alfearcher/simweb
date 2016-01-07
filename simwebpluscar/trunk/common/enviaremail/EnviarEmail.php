@@ -62,8 +62,8 @@ class EnviarEmail extends Model{
     {
 
         Yii::$app->mailer->compose()
-        ->setFrom('manuelz0510@gmail.com')
-        ->setTo('fernandezarcher@gmail.com')
+        ->setFrom('manuel1122@hotmail.com')
+        ->setTo('manuelz0510@hotmail.com')
         ->setSubject('sujeto')
         ->setTextBody('texto del cuerpo')
         ->setHtmlBody('cuerpo del html')

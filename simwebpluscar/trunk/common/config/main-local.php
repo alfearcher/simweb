@@ -50,8 +50,8 @@ return [
 			'transport' => [
 			   'class' => 'Swift_SmtpTransport',
 			   'host' => 'smtp.gmail.com',
-			   'username' => 'manuelz0510@gmail.com',
-			   'password' => 'Manuel051092',
+			   'username' => 'manuel1122@hotmail.com',
+			   'password' => 'manuza21',
 			   'port' => '587',
 			   'encryption' => 'tls',
 			   
