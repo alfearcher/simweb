@@ -198,8 +198,6 @@ class CrearUsuarioJuridicoController extends Controller
 
           $arregloDatos['fecha_hora_afiliacion'] = date('Y-m-d h:m:i');
 
-          $arregloDatos['email'] = "manuel1122@hotmail.com";
-
           $conexion = new ConexionController();
 
           $conn = $conexion->initConectar('db');
