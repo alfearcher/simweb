@@ -216,7 +216,7 @@ class CrearUsuarioJuridicoController extends Controller
 
               $enviarEmail = new EnviarEmail();
 
-               $enviarEmail->enviarEmail()
+               $enviarEmail->enviarEmail();
 
             } else { 
 
