@@ -66,6 +66,7 @@ use yii\filters\AccessControl;
 use frontend\controllers\mensaje\MensajeController;
 use common\conexion\ConexionController;
 use common\seguridad\Seguridad;
+use common\enviaremail\EnviarEmail;
 
 /**
  * Site controller
