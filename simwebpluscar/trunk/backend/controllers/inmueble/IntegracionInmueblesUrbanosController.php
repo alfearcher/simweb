@@ -235,7 +235,7 @@ CONTENIDO DEL COMPRADOR (BUYER)
 
                         $tableName = 'inmuebles'; 
 
-                        $arrayCondition = ['id_impuesto' => $id_impuestoVendedor,]; 
+                        $arrayCondition = ['id_impuesto' => $id_impuestoInmueble,]; 
 //echo'<pre>'; var_dump($datosCambio); echo '</pre>'; die('aqui buyer 1'); 
                         $conn = New ConexionController(); 
 
