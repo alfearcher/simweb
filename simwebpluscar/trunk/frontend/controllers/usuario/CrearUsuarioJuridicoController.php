@@ -187,8 +187,6 @@ class CrearUsuarioJuridicoController extends Controller
           $password = $nuevaClave.$salt;
 
           $password_hash = md5($password);
-
-          die($salt);
          
           $arregloDatos['id_contribuyente'] = $model[0]->id_contribuyente;
 
