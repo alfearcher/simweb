@@ -210,12 +210,12 @@ class CrearUsuarioJuridicoController extends Controller
 
             if ($conexion->guardarRegistroAfiliacion($conn, $tabla, $arregloDatos )){
               $transaccion->commit();
-              die('exito');
+              //die('exito');
 
               $enviarEmail = new EnviarEmail();
 
                $enviarEmail->enviarEmail();
-
+  die('exito');
             } else { 
 
               $transaccion->rollback();
