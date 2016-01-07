@@ -65,7 +65,7 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use frontend\controllers\mensaje\MensajeController;
 use common\conexion\ConexionController;
-
+use common\seguridad\Seguridad;
 
 /**
  * Site controller
@@ -136,32 +136,32 @@ class CrearUsuarioJuridicoController extends Controller
           if($model == false){
               
               //se manda a formulario de carga de datos basicos
-
+              die('validacion para formulariuo');
           } else {
 
             
 
-          if ($model[0]->email == null or trim($model[0]->email) == ""){
+             if ($model[0]->email == null or trim($model[0]->email) == ""){
 
                    
-              //die('probando');
-              return MensajeController::actionMensaje('Please, go to your city hall');
+                 die('probando validacion para correo');
+                 return MensajeController::actionMensaje('Please, go to your city hall');
               
-          } else {
+             } else {
 
-              $modelAfiliacion = CrearUsuarioJuridicoForm::findAfiliacion($model[0]->id_contribuyente);
+                 $modelAfiliacion = CrearUsuarioJuridicoForm::findAfiliacion($model[0]->id_contribuyente);
 
-              if ($modelAfiliacion == false){
+                 if ($modelAfiliacion == false){
 
-                 self::salvarAfiliacion($model);
+                    self::salvarAfiliacion($model);
                 
 
-              }  
+                 }  
            
-            }
+             }
           
         
-          }     
+           }     
         }
 
       public function salvarAfiliacion($model)
@@ -178,12 +178,29 @@ class CrearUsuarioJuridicoController extends Controller
             $arregloDatos[$value] =0;
           }
 
+          $seguridad = new Seguridad();
+
+          $nuevaClave = $seguridad->randKey(6);
+
+          $salt = $seguridad->randKey(6);
+
+          $password = $nuevaClave.$salt;
+
+          $password_hash = md5($password);
+
+          die($salt);
          
           $arregloDatos['id_contribuyente'] = $model[0]->id_contribuyente;
 
           $arregloDatos['login'] = $model[0] ->email;
 
+          $arregloDatos['salt'] = $salt;
+
+          $arregloDatos['password_hash'] = $password_hash;
+
           $arregloDatos['fecha_hora_afiliacion'] = date('Y-m-d h:m:i');
+
+          $arregloDatos['email'] = "manuel1122@hotmail.com";
 
           $conexion = new ConexionController();
 
@@ -197,6 +214,10 @@ class CrearUsuarioJuridicoController extends Controller
               $transaccion->commit();
               die('exito');
 
+              $enviarEmail = new EnviarEmail();
+
+               $enviarEmail->enviarEmail()
+
             } else { 
 
               $transaccion->rollback();
@@ -205,6 +226,7 @@ class CrearUsuarioJuridicoController extends Controller
             }
       }
 
+       
 
  
 } 
