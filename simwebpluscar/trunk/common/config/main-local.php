@@ -46,6 +46,17 @@ return [
 			// send all mails to a file by default. You have to set
 			// 'useFileTransport' to false and configure a transport
 			// for the mailer to send real emails.
+
+			'transport' => [
+			   'class' => 'Swift_SmtpTransport',
+			   'host' => 'smtp.gmail.com',
+			   'username' => 'manuel1122@hotmail.com',
+			   'password' => 'manuza21',
+			   'port' => '587',
+			   'encryption' => 'tls',
+			   
+			],
+
 			'useFileTransport' => true,
 		],
 		'ente'   => [
