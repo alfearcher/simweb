@@ -208,7 +208,7 @@ class CrearUsuarioJuridicoController extends Controller
           $transaccion = $conn->beginTransaction();
 
             if ($conexion->guardarRegistroAfiliacion($conn, $tabla, $arregloDatos )){
-              $transaccion->commit();
+             // $transaccion->commit();
               //die('exito');
 
               $enviarEmail = new EnviarEmail();
