@@ -56,7 +56,7 @@ use common\models\Users;
 use yii\db\ActiveRecord;
 
 
-class EnviarEmail extends Controller{
+class EnviarEmail extends Model{
   
     public function enviarEmail()
     {
