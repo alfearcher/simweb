@@ -213,13 +213,13 @@ class CrearUsuarioJuridicoController extends Controller
              // $transaccion->commit();
               //die('exito');
 
-              // $enviarEmail = new EnviarEmail();
+               $enviarEmail = new EnviarEmail();
  
-              //  $enviarEmail->enviarEmail();
+                $enviarEmail->enviarEmail();
 
               // die('envie correo');
            
-            return MensajeController::actionMensaje('city hall');
+            return MensajeController::actionMensaje('Please, go to your city hall');
             } else { 
 
               $transaccion->rollback();
