@@ -43,6 +43,8 @@ return [
 		'mailer'    => [
 			'class'    => 'yii\swiftmailer\Mailer',
 
+
+
 			'transport' => [
 			   'class' => 'Swift_SmtpTransport',
 			   'host' => 'smtp.gmail.com',
@@ -60,7 +62,7 @@ return [
 
 			
 
-			'useFileTransport' => true,
+			//'useFileTransport' => true,
 		],
 		'ente'   => [
 			'class' => 'common\classes\Ente'
