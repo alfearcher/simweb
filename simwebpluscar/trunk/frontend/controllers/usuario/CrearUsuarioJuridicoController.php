@@ -143,10 +143,6 @@ class CrearUsuarioJuridicoController extends Controller
             
 
              if ($model[0]->email == null or trim($model[0]->email) == ""){
-
-                      $enviarEmail = new EnviarEmail();
- 
-                $enviarEmail->enviarEmail(); 
                  
                  return MensajeController::actionMensaje('Please, go to your city hall');
               
@@ -218,8 +214,8 @@ class CrearUsuarioJuridicoController extends Controller
                 $enviarEmail->enviarEmail();
 
               // die('envie correo');
-           
-            return MensajeController::actionMensaje('Please, go to your city hall');
+              return MensajeController::actionMensaje('Please, go to your city hall');
+            
             } else { 
 
               $transaccion->rollback();
