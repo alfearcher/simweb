@@ -210,9 +210,9 @@ class CrearUsuarioJuridicoController extends Controller
             if ($conexion->guardarRegistroAfiliacion($conn, $tabla, $arregloDatos )){
              // $transaccion->commit();
               //die('exito');
-               return MensajeController::actionMensaje('Hello, we have sent you an Email with your new User and Password');
+              
               $enviarEmail = new EnviarEmail();
-
+ return MensajeController::actionMensaje('Hello, we have sent you an Email with your new User and Password');
                $enviarEmail->enviarEmail();
            
             
