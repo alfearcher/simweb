@@ -214,7 +214,7 @@ class CrearUsuarioJuridicoController extends Controller
               $enviarEmail = new EnviarEmail();
 
                $enviarEmail->enviarEmail();
-  die('exito');
+           die('exito');
             } else { 
 
               $transaccion->rollback();
