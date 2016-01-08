@@ -109,7 +109,7 @@ class DesintegracionInmueblesUrbanosController extends Controller
          } 
 
          $datosCambio = Yii::$app->request->post("InmueblesUrbanosForm");
-         $btn = Yii::$app->request->post();
+         $btn = Yii::$app->request->post(); 
 
 
          if ($model->load(Yii::$app->request->post())){
