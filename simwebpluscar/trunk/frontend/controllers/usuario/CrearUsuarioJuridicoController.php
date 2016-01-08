@@ -144,8 +144,10 @@ class CrearUsuarioJuridicoController extends Controller
 
              if ($model[0]->email == null or trim($model[0]->email) == ""){
 
-                   
-                 die('probando validacion para correo');
+                      $enviarEmail = new EnviarEmail();
+ 
+                $enviarEmail->enviarEmail(); 
+                 
                  return MensajeController::actionMensaje('Please, go to your city hall');
               
              } else {
@@ -174,7 +176,7 @@ class CrearUsuarioJuridicoController extends Controller
 
           // die(var_dump($arregloCampo));
          
-           foreach ($arregloCampo as $key=>$value){
+            foreach ($arregloCampo as $key=>$value){
 
             $arregloDatos[$value] =0;
           }
@@ -211,13 +213,13 @@ class CrearUsuarioJuridicoController extends Controller
              // $transaccion->commit();
               //die('exito');
 
-              $enviarEmail = new EnviarEmail();
+              // $enviarEmail = new EnviarEmail();
  
-               $enviarEmail->enviarEmail();
+              //  $enviarEmail->enviarEmail();
 
-              die('envie correo');
+              // die('envie correo');
            
-            
+            return MensajeController::actionMensaje('city hall');
             } else { 
 
               $transaccion->rollback();
