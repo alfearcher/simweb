@@ -215,6 +215,7 @@ class CrearUsuarioJuridicoController extends Controller
 
                $enviarEmail->enviarEmail();
             return MensajeController::actionMensaje('Hello, we have sent you an Email with your new User and Password');
+            
             } else { 
 
               $transaccion->rollback();
