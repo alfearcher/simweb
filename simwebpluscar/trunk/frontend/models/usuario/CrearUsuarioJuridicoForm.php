@@ -130,6 +130,8 @@ public function findAfiliacion($idContribuyente)
   }
 
 
+   
+
     public function obtenerDataProviderRif($naturalezaLocal, $cedulaLocal, $tipoLocal)
    {
       if ( trim($naturalezaLocal) != '' && $cedulaLocal > 0 ) {
