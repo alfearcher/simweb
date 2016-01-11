@@ -113,7 +113,9 @@ class CrearUsuarioJuridicoController extends Controller
 
               if (!isset($dataProvider)){
 
-                  die('no existe contribuyente');
+                die(var_dump($dataProvider));
+
+                  die('no existe contribuyente');s
           
               } else {
 
