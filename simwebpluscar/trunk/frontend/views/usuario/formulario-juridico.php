@@ -182,6 +182,7 @@ $(document).ready(function(){
 <?php $form = ActiveForm::begin([
             'id' => 'form-datosBasicoJuridico-inline',
             'method' => 'post',
+            'action' => ['/usuario/crear-usuario-juridico/juridico'],
             'enableClientValidation' => true,
             'enableAjaxValidation' => true,
             'enableClientScript' => true,
@@ -365,7 +366,7 @@ $(document).ready(function(){
 
                     <tr>
                         <td colspan="4">
-                            <?= Html::submitButton($model->isNewRecord ? Yii::t('frontend', 'Create') : Yii::t('frontend', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+                            <?= Html::submitButton(Yii::t('frontend', 'Create') , ['class' =>'btn btn-success']) ?>
                         </td>
                         <td width="250px"></td> 
                         <td width="250px"></td> 

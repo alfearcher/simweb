@@ -97,6 +97,9 @@ class CrearUsuarioJuridicoController extends Controller
                     if ($model->validate()){
 
                       return self::actionBuscarRif($model->naturaleza, $model->cedula,$model->tipo );
+
+                      //return $this->redirect(['juridico']);
+
                           //return $this->redirect(['buscar-rif']);
                     }
                         
@@ -106,6 +109,12 @@ class CrearUsuarioJuridicoController extends Controller
       }
     
       
+      public function actionJuridico(){
+
+        die('llegue');
+      }
+
+
       public function actionBuscarRif($naturaleza, $cedula, $tipo)
       {
       
@@ -122,11 +131,11 @@ class CrearUsuarioJuridicoController extends Controller
 
                 $model = new CargaDatosBasicosForm();
 
-                $postData = Yii::$app->request->post();
+                 $postData = Yii::$app->request->post();
 
-              if ( $model->load($postData) && Yii::$app->request->isAjax ) {
+               if ( $model->load($postData) && Yii::$app->request->isAjax ) {
                   Yii::$app->response->format = Response::FORMAT_JSON;
-                  return ActiveForm::validate($model);
+                   return ActiveForm::validate($model);
               }
 
                $model->naturaleza = $naturaleza;
