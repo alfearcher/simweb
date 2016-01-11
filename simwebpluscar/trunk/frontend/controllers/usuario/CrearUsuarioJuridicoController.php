@@ -117,7 +117,7 @@ class CrearUsuarioJuridicoController extends Controller
 
 
 
-                  die('no existe contribuyente');s
+                  die('no existe contribuyente');
           
               } else {
 
