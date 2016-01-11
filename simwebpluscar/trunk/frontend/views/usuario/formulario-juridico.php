@@ -199,7 +199,7 @@ $(document).ready(function(){
 <!-- RIF -->
                     <tr>
                         <td colspan="4">
-                            <?= Yii::t('backend', 'Rif') ?>                         
+                            <?= Yii::t('frontend', 'Rif') ?>                         
                         </td>
                         <td width="9px"></td>
                         <td width="150px"></td>
@@ -207,19 +207,20 @@ $(document).ready(function(){
                     </tr>
                     <tr>
                         <td width="90px">
-                            <?= $form->field($model, 'naturaleza')->dropDownList(
-                                                                    ArrayHelper::map(TipoNaturaleza::find()->all(), 'siglas_tnaturaleza', 'siglas_tnaturaleza'),
+                            <?= $form->field($model, 'naturaleza')->textInput(
+                                                                   // ArrayHelper::map(TipoNaturaleza::find()->all(), 'siglas_tnaturaleza', 'siglas_tnaturaleza'),
                                                                     [
                                                                     'id'=> 'naturaleza',
-                                                                    'value' => $naturaleza,
+                                                                    'value' => $model->naturaleza,
+                                                                     'readOnly' =>true,
                                                                     ])->label(false);
                         ?>
                         </td>
                         <td width="150px">
-                            <?= $form->field($model, 'cedula')->label(false)->textInput(['maxlength' => 8, 'value'=> $cedula]) ?>
+                            <?= $form->field($model, 'cedula')->label(false)->textInput(['maxlength' => 8, 'value'=> $cedula, 'readOnly' =>true]) ?>
                         </td>
                         <td width="60px">
-                            <?= $form->field($model, 'tipo')->label(false)->textInput(['maxlength' => 1, 'value'=> $tipo]) ?>
+                            <?= $form->field($model, 'tipo')->label(false)->textInput(['maxlength' => 1, 'value'=> $tipo, 'readOnly' =>true]) ?>
                         </td>
                         <td width="250px" colspan="2"></td>
                         <td width="150px"></td>
@@ -270,7 +271,7 @@ $(document).ready(function(){
                             <table>
                                 <tr>
                                     <td><?= $form->field($mt, 'codigo')->dropDownList($listaTelefonoCodigo, ['inline' => true,
-                                                                                             'prompt' => Yii::t('backend', 'Select'), 
+                                                                                             'prompt' => Yii::t('frontend', 'Select'), 
                                                                                              'style' => 'width:100px;',
                                                                                              'id' => 'codigo',
                                                                                              'onchange' => 
@@ -301,7 +302,7 @@ $(document).ready(function(){
                             <table>
                                 <tr>
                                     <td><?= $form->field($mt, 'codigo')->dropDownList($listaTelefonoCodigo, ['inline' => true,
-                                                                                             'prompt' => Yii::t('backend', 'Select'), 
+                                                                                             'prompt' => Yii::t('frontend', 'Select'), 
                                                                                              'style' => 'width:100px;',
                                                                                              'id' => 'codigo_otro',
                                                                                              'onchange' => 
@@ -335,7 +336,7 @@ $(document).ready(function(){
                             <table>
                                 <tr>
                                     <td><?= $form->field($mtCelu, 'codigo')->dropDownList($listaTelefonoCodigoCelu, ['inline' => true,
-                                                                                             'prompt' => Yii::t('backend', 'Select'), 
+                                                                                             'prompt' => Yii::t('frontend', 'Select'), 
                                                                                              'style' => 'width:100px;',
                                                                                              'id' => 'codigo_celu',
                                                                                              'onchange' => 
@@ -364,7 +365,7 @@ $(document).ready(function(){
 
                     <tr>
                         <td colspan="4">
-                            <?= Html::submitButton($model->isNewRecord ? Yii::t('backend', 'Create') : Yii::t('backend', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+                            <?= Html::submitButton($model->isNewRecord ? Yii::t('frontend', 'Create') : Yii::t('frontend', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
                         </td>
                         <td width="250px"></td> 
                         <td width="250px"></td> 

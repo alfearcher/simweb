@@ -122,10 +122,19 @@ class CrearUsuarioJuridicoController extends Controller
 
                 $model = new CargaDatosBasicosForm();
 
+                $postData = Yii::$app->request->post();
+
+              if ( $model->load($postData) && Yii::$app->request->isAjax ) {
+                  Yii::$app->response->format = Response::FORMAT_JSON;
+                  return ActiveForm::validate($model);
+              }
+
+               $model->naturaleza = $naturaleza;
+
                 return $this->render('/usuario/formulario-juridico', 
                 ['model' => $model,
                 //'msg' => $msg,
-                'naturaleza' => $naturaleza,
+                'naturaleza' =>$model->naturaleza,
                 'cedula' => $cedula,
                 'tipo' => $tipo
                 
