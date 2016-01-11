@@ -111,7 +111,7 @@ class CrearUsuarioJuridicoController extends Controller
 
               $dataProvider = CrearUsuarioJuridicoForm::obtenerDataProviderRif($naturaleza, $cedula, $tipo);
 
-              if ($dataProvider == false ){
+              if (!isset($dataProvider)){
 
                   die('no existe contribuyente');
           
