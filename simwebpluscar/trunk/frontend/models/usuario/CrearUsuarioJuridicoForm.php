@@ -81,12 +81,8 @@ class CrearUsuarioJuridicoForm extends CrearUsuarioJuridico{
       public function rules()
       {
         return [
-
-          //VALIDACION DE FORMULARIO DE BUSQUEDA USUARIO JURIDICO
           [['naturaleza','cedula', 'tipo'],'required','message' => Yii::t('frontend', '{attribute} is required')]];
           //['capital_new', 'format', Yii::$app->formatted->asDecimal($model->)]
-
-          //INICIO VALIDACION DE FORMULARIO DE CARGA DE DATOS BASICOS
         
       }
 
