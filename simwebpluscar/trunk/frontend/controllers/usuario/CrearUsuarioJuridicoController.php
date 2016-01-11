@@ -67,6 +67,7 @@ use frontend\controllers\mensaje\MensajeController;
 use common\conexion\ConexionController;
 use common\seguridad\Seguridad;
 use common\enviaremail\EnviarEmail;
+use frontend\models\usuario\CargaDatosBasicosForm;
 
 /**
  * Site controller
@@ -111,14 +112,25 @@ class CrearUsuarioJuridicoController extends Controller
 
               $dataProvider = CrearUsuarioJuridicoForm::obtenerDataProviderRif($naturaleza, $cedula, $tipo);
 
-              die($dataProvider->TotalCount());
+              $posts = $dataProvider->getModels();
 
-              if (!isset($dataProvider)){
+             // die($posts);
+              
 
+              
+              if (count($posts) == 0){
 
+                $model = new CargaDatosBasicosForm();
 
-                  die('no existe contribuyente');
-          
+                return $this->render('/usuario/formulario-juridico', 
+                ['model' => $model,
+                //'msg' => $msg,
+                'naturaleza' => $naturaleza,
+                'cedula' => $cedula,
+                'tipo' => $tipo
+                
+                ]);
+
               } else {
 
                   return $this->render('/usuario/contribuyente-encontrado' , ['dataProvider' => $dataProvider, 'naturaleza'=>$naturaleza, 'cedula'=> $cedula,'tipo'=> $tipo ]);
@@ -141,7 +153,7 @@ class CrearUsuarioJuridicoController extends Controller
           if($model == false){
               
               //se manda a formulario de carga de datos basicos
-              die('validacion para formulariuo');
+              die('validacion para formulario');
           } else {
 
             
@@ -229,7 +241,7 @@ class CrearUsuarioJuridicoController extends Controller
       }
 
        
-
+      
  
 } 
 
