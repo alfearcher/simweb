@@ -111,7 +111,7 @@ class CrearUsuarioJuridicoController extends Controller
 
               $dataProvider = CrearUsuarioJuridicoForm::obtenerDataProviderRif($naturaleza, $cedula, $tipo);
 
-              die(dataProvider::getTotalCount($dataProvider));
+              die($dataProvider->getTotalCount());
 
               if (!isset($dataProvider)){
 
