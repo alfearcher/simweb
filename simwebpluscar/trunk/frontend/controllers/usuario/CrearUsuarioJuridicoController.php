@@ -213,8 +213,8 @@ class CrearUsuarioJuridicoController extends Controller
  
                 $enviarEmail->enviarEmail();
 
-              die('envie correo');
-             // return MensajeController::actionMensaje('enviar correo');
+              //die('envie correo');
+             MensajeController::actionMensaje('enviar correo');
             
             } else { 
 
