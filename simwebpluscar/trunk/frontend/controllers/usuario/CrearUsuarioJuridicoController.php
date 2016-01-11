@@ -214,7 +214,7 @@ class CrearUsuarioJuridicoController extends Controller
                 $enviarEmail->enviarEmail();
 
               //die('envie correo');
-             echo MensajeController::actionMensaje('enviar correo');
+             echo MensajeController::actionMensaje(Yii::t('frontend', 'We have sent you an email with your new user and password'));
             
             } else { 
 
