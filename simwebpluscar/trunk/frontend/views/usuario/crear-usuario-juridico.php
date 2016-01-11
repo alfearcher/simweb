@@ -66,7 +66,7 @@ $listaNaturaleza = ArrayHelper::map($modeloTipoNaturaleza, 'siglas_tnaturaleza',
 
 $this->title = 'Busqueda Persona Juridica';
 $this->params['breadcrumbs'][] = $this->title;
-$lista = ['Extranjero' , 'Venezolano'];
+
 ?>
  
 
