@@ -152,7 +152,7 @@ CONTENIDO VENDEDOR (SELLER)
 
 
                         //--------------TRY---------------
-                        $arrayDatos = [
+                        $arrayDatos = [ 
                                         'id_contribuyente' => $id_contribuyenteComprador,
                                       ]; 
                         
