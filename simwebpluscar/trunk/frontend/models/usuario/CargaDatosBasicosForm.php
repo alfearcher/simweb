@@ -102,8 +102,67 @@ use Yii;
  * @property string $ruc
  */
 class CargaDatosBasicosForm extends \yii\db\ActiveRecord
-{
-    public $cedula;
+{   
+
+        public $id_contribuyente;
+        public $ente;
+        public $naturaleza;
+        public $cedula;
+        public $tipo;
+        public $tipo_naturaleza;            // 0 => NATURAL, 1 => JURIDICO.
+        public $id_rif;
+        public $id_cp;
+        public $apellidos;
+        public $nombres;
+        public $razon_social;
+        public $representante;
+        public $nit;
+        public $fecha_nac;
+        public $sexo;
+        public $casa_edf_qta_dom;
+        public $piso_nivel_no_dom;
+        public $apto_dom;
+        public $domicilio_fiscal;
+        public $catastro;
+        public $tlf_hab;
+        public $tlf_hab_otro;
+        public $tlf_ofic;
+        public $tlf_ofic_otro;
+        public $tlf_celular;
+        public $fax;
+        public $email;
+        public $inactivo;                   // 0 => ACTIVO, 1 => INACTIVO.
+        public $cuenta;
+        public $reg_mercantil;
+        public $num_reg;
+        public $tomo;
+        public $folio;
+        public $fecha;
+        public $capital;
+        public $horario;
+        public $extension_horario;
+        public $num_empleados;
+        public $tipo_contribuyente;
+        public $licencia;
+        public $agente_retencion;
+        public $id_sim;
+        public $manzana_limite;
+        public $lote_1;
+        public $lote_2;
+        public $nivel;
+        public $lote_3;
+        public $fecha_inclusion;
+        public $fecha_inicio;
+        public $foraneo;
+        public $no_declara;
+        public $econ_informal;
+        public $grupo_contribuyente;
+        public $fe_inic_agente_retencion;
+        public $no_sujeto;
+        public $ruc;
+        public $naturaleza_rep;
+        public $cedula_rep;
+
     /**
      * @inheritdoc
      */
@@ -123,15 +182,13 @@ class CargaDatosBasicosForm extends \yii\db\ActiveRecord
             [['fecha_nac', 'fecha', 'fecha_inclusion', 'fecha_inicio', 'fe_inic_agente_reten'], 'safe'],            
             [['capital'], 'number'],            
             [['naturaleza', 'sexo'], 'string', 'max' => 1],
-            [['nombres', 'apellidos', 'nit', 'casa_edf_qta_dom', 'reg_mercantil', 'tomo', 'folio', 'horario'], 'string', 'max' => 50],
+            [['nombres', 'apellidos', 'nit', 'casa_edf_qta_dom', 'reg_mercantil', 'tomo', 'folio', 'horario'],  'string', 'max' => 50],
             [['razon_social'], 'string', 'max' => 75],
             [['sexo'],'default', 'value' => ''],
-            [['razon_social', 'tlf_ofic'], 'required', 'when' => function($model) {
+            [['razon_social', 'tlf_ofic', 'tlf_celular'], 'required', 'when' => function($model) {
                                                         return $model->tipo_naturaleza == 1;
             }],
-            [['nombres', 'apellidos', 'tlf_celular'], 'required', 'when' => function($model) {
-                                                        return $model->tipo_naturaleza == 0;
-            }],
+           
             [['representante'], 'string', 'max' => 200],
             [['piso_nivel_no_dom', 'apto_dom'], 'string', 'max' => 25],
             [['domicilio_fiscal'], 'string', 'max' => 250],

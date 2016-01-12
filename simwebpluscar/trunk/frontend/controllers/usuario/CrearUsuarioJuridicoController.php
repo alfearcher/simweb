@@ -109,10 +109,47 @@ class CrearUsuarioJuridicoController extends Controller
       }
     
       
-      public function actionJuridico(){
+       public function actionJuridico($naturaleza,$cedula,$tipo)
+       {
 
-        die('llegue');
-      }
+         $model = new CargaDatosBasicosForm();
+
+          $model->naturaleza = $naturaleza;
+
+                 $postData = Yii::$app->request->post();
+
+               if ( $model->load($postData) && Yii::$app->request->isAjax ) {
+                  Yii::$app->response->format = Response::FORMAT_JSON;
+                   return ActiveForm::validate($model);
+              }
+
+              if ( $model->load($postData) ) {
+
+                    if ($model->validate()){
+
+                    //  return self::actionBuscarRif($model->naturaleza, $model->cedula,$model->tipo );
+                      //die(var_dump($model));
+                      self::beginSave("contribuyente", $model);
+
+
+                      
+                      die('paso por los dos procesos');
+
+                      //return $this->redirect(['juridico']);
+
+                          //return $this->redirect(['buscar-rif']);
+                    }
+                        
+                }
+                return $this->render('/usuario/formulario-juridico' , ['model' => $model,
+                                                                      'naturaleza' =>$model->naturaleza,
+                                                                      'cedula' => $cedula,
+                                                                      'tipo' => $tipo
+                                                                      ]);
+
+
+         
+     }
 
 
       public function actionBuscarRif($naturaleza, $cedula, $tipo)
@@ -131,17 +168,11 @@ class CrearUsuarioJuridicoController extends Controller
 
                 $model = new CargaDatosBasicosForm();
 
-                 $postData = Yii::$app->request->post();
+               
+                $model->naturaleza = $naturaleza;
 
-               if ( $model->load($postData) && Yii::$app->request->isAjax ) {
-                  Yii::$app->response->format = Response::FORMAT_JSON;
-                   return ActiveForm::validate($model);
-              }
-
-               $model->naturaleza = $naturaleza;
-
-                return $this->render('/usuario/formulario-juridico', 
-                ['model' => $model,
+                return $this->redirect(['juridico', 
+                'model' => $model,
                 //'msg' => $msg,
                 'naturaleza' =>$model->naturaleza,
                 'cedula' => $cedula,
@@ -186,8 +217,8 @@ class CrearUsuarioJuridicoController extends Controller
 
                  if ($modelAfiliacion == false){
 
-                    self::salvarAfiliacion($model);
-                
+                   // self::salvarAfiliacion($model);
+                      self::beginSave("afiliaciones");
 
                  }  
            
@@ -197,9 +228,11 @@ class CrearUsuarioJuridicoController extends Controller
            }     
         }
 
-      public function salvarAfiliacion($model)
+
+
+      public function salvarAfiliacion($model, $conn, $conexion)
       {
-       
+        $resultado = false;
         $tabla = 'afiliaciones';
         $arregloDatos = [];
         $arregloCampo = CrearUsuarioJuridicoForm::attributeAfiliacion();
@@ -221,9 +254,11 @@ class CrearUsuarioJuridicoController extends Controller
 
           $password_hash = md5($password);
          
-          $arregloDatos['id_contribuyente'] = $model[0]->id_contribuyente;
+          $arregloDatos['id_contribuyente'] = $model->id_contribuyente;
 
-          $arregloDatos['login'] = $model[0] ->email;
+         
+
+          $arregloDatos['login'] = $model->email;
 
           $arregloDatos['salt'] = $salt;
 
@@ -231,7 +266,83 @@ class CrearUsuarioJuridicoController extends Controller
 
           $arregloDatos['fecha_hora_afiliacion'] = date('Y-m-d h:m:i');
 
+            if ($conexion->guardarRegistroAfiliacion($conn, $tabla, $arregloDatos)){
+
+              $resultado = true;
+            }
+         
+              //die('exito');
+
+              // $enviarEmail = new EnviarEmail();
+ 
+                //$enviarEmail->enviarEmail();
+                return $resultado;
+              //die('envie correo');
+             //echo MensajeController::actionMensaje(Yii::t('frontend', 'We have sent you an email with your new user and password'));
+            
+            
+      }
+
+       
+      public function salvarContribuyenteJuridico($conn, $conexion, $model)
+      {
+       
+        $tabla = 'contribuyentes';
+
+        //die(var_dump($model));
+        $arregloDatos = [];
+        $arregloCampo = CrearUsuarioJuridicoForm::attributeContribuyentes();
+
+          // die(var_dump($arregloCampo));
+         
+            foreach ($arregloCampo as $key=>$value){
+
+            $arregloDatos[$value] =0;
+          }
+          
+          //$arregloDatos['id_contribuyente'] = $model->id_contribuyente;
+        
+          $arregloDatos['naturaleza'] = $model->naturaleza;
+
+          $arregloDatos['cedula'] = $model->cedula;
+
+          $arregloDatos['tipo'] = $model->tipo;
+
+          $arregloDatos['razon_social'] = $model->razon_social;
+
+          $arregloDatos['domicilio_fiscal'] = $model->domicilio_fiscal;
+
+          $arregloDatos['email'] = $model->email;
+
+          $arregloDatos['tlf_ofic'] = $model->tlf_ofic;
+
+          $arregloDatos['tlf_ofic_otro'] = $model->tlf_ofic_otro;
+
+          $arregloDatos['tlf_celular'] = $model->tlf_celular;
+
+         
+               $idContribuyente = 0;
+            
+            if ($conexion->guardarRegistroAfiliacion($conn, $tabla, $arregloDatos )){
+            
+              $idContribuyente = $conn->getLastInsertID();
+              //die('exito');
+
+               //die('guardo con exito');
+
+              //die('envie correo');
+           }
+            return $idContribuyente;
+      }
+      
+ 
+
+      public function beginSave($var, $model)
+      {
+
           $conexion = new ConexionController();
+
+          $idContribuyente = 0;
 
           $conn = $conexion->initConectar('db');
          
@@ -239,29 +350,59 @@ class CrearUsuarioJuridicoController extends Controller
 
           $transaccion = $conn->beginTransaction();
 
-            if ($conexion->guardarRegistroAfiliacion($conn, $tabla, $arregloDatos )){
-             // $transaccion->commit();
-              //die('exito');
-
-               $enviarEmail = new EnviarEmail();
- 
-                $enviarEmail->enviarEmail();
-
-              //die('envie correo');
-             echo MensajeController::actionMensaje(Yii::t('frontend', 'We have sent you an email with your new user and password'));
             
-            } else { 
+            if ($var == "afiliaciones"){
 
-              $transaccion->rollback();
-              die('no guardo');
+              $respuesta = self::salvarAfiliacion($conn, $conexion, $model);
 
-            }
+              if ($respuesta == true){
+                $transaccion->commit();
+
+              }else{
+                $transaccion->rollback();
+              }
+
+            }elseif ($var == "contribuyente") { 
+
+            //  die(var_dump($model));
+              
+              $idContribuyente = self::salvarContribuyenteJuridico($conn, $conexion, $model);
+
+           
+
+
+              if ($idContribuyente > 0){
+               // $modelFind = CrearUsuarioJuridicoForm::findContribuyente($idContribuyente);
+
+                //die(var_dump($modelFind));
+                //die(var_dump($model));
+                $model->id_contribuyente = $idContribuyente;
+                $respuesta = self::salvarAfiliacion($model, $conn, $conexion);
+
+                  if ($respuesta == true){
+                    
+                    $transaccion->commit();
+                    die('guardo todo');
+
+
+                  }else {
+                      $transaccion->rollback();
+                  }
+
+                
+
+                //return MensajeController::actionMensaje(Yii::t('frontend', 'Congratulations, you have created a new account'));
+                //die('llegamos');
+              
+
+            
+        }
       }
 
-       
-      
- 
-} 
+      }
+
+}
+
 
 
 
