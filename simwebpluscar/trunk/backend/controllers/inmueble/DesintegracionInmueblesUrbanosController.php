@@ -75,8 +75,8 @@ class DesintegracionInmueblesUrbanosController extends Controller
 
 
     /**
-     *Metodo: CambioPropietarioInmuebles
-     *Actualiza los datos del numero catastral del inmueble urbano.
+     *Metodo: DesintegracionInmuebles
+     *Realiza la desintegracion del inmueble urbano.
      *si el cambio es exitoso, se redireccionara a la  vista 'inmueble/inmuebles-urbanos/view' de la pagina.
      *@param $id_impuesto, tipo de dato entero y clave primaria de la tabla inmueble,  variable condicional 
      *para el cambio de otros datos inmuebles
@@ -126,7 +126,13 @@ class DesintegracionInmueblesUrbanosController extends Controller
      
               
 /*
-CONTENIDO VENDEDOR (SELLER)
+CONTENIDO DESINTEGRACION DEL INMUEBLE
+-dueños unicos en las parcelas
+-aledaños (parcelas vecinas)
+-exista en el SIM
+-solvencia hasta la fecha (trimestre, mes, año)
+-no aplica para propiedad horizontal
+-en el catastro solo se edita el numero de parcela
 */
 
                 if ($datosCambio["operacion"] == 1) {
