@@ -18,6 +18,7 @@ $this->title = Yii::t('backend', 'View Property Urban. Id Tax: '.$model->id_impu
         <?= Html::a(Yii::t('backend', 'Horizontal property change'), ['inmueble/cambio-a-propiedad-horizontal-inmuebles-urbanos/cambio-a-propiedad-horizontal-inmuebles', 'id_impuesto' => $model->id_impuesto], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('backend', 'Change of cadastral number'), ['inmueble/cambio-numero-catastral-inmuebles-urbanos/cambio-de-numero-catastral-inmuebles', 'id_impuesto' => $model->id_impuesto], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('backend', 'Property owner change'), ['inmueble/cambio-propietario-inmuebles-urbanos/cambio-propietario-inmuebles','id_contribuyente' =>$model->id_contribuyente  ], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('backend', 'urban decay properties'), ['inmueble/avaluo-catastral-inmuebles-urbanos/avaluo-catastral-inmuebles','id_contribuyente' =>$model->id_contribuyente  ], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('backend', 'Urban property integration'), ['inmueble/integracion-inmuebles-urbanos/integracion-inmuebles','id_contribuyente' =>$model->id_contribuyente  ], ['class' => 'btn btn-primary']) ?> 
         <?= Html::a(Yii::t('backend', 'urban decay properties'), ['inmueble/desintegracion-inmuebles-urbanos/desintegracion-inmuebles','id_contribuyente' =>$model->id_contribuyente  ], ['class' => 'btn btn-primary']) ?>      
     </p> 
