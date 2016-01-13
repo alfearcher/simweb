@@ -80,7 +80,7 @@ class DesintegracionInmueblesUrbanosController extends Controller
      *si el cambio es exitoso, se redireccionara a la  vista 'inmueble/inmuebles-urbanos/view' de la pagina.
      *@param $id_impuesto, tipo de dato entero y clave primaria de la tabla inmueble,  variable condicional 
      *para el cambio de otros datos inmuebles
-     *@return model 
+     *@return model trae los datos del formulario 
      **/
     public function actionDesintegracionInmuebles($id_contribuyente)
     { 
@@ -171,7 +171,7 @@ CONTENIDO DESINTEGRACION DEL INMUEBLE
                         $conn = New ConexionController(); 
 
                         $this->conexion = $conn->initConectar('dbsim');     // instancia de la conexion (Connection)
-                        $this->conexion->open(); 
+                        $this->conexion->open();
 
                         $transaccion = $this->conexion->beginTransaction(); 
 
@@ -335,13 +335,13 @@ FIN BUYER
      * @param integer $id
      * @return Contribuyente the loaded model
      * @throws NotFoundHttpException if the model cannot be found
-     */
+     */ 
     public function findModelContribuyente($id)
     {//echo'<pre>'; var_dump($_SESSION['idContribuyente']); echo '</pre>'; die('hola');
         if (($modelContribuyente = ContribuyentesForm::findOne($id)) !== null) {
             
             return $modelContribuyente; 
-        } else {
+        } else { 
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
