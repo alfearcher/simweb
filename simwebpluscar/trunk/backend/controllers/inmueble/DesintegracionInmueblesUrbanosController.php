@@ -257,7 +257,7 @@ CONTENIDO DEL COMPRADOR (BUYER)
                             $msg = Yii::t('backend', 'SUCCESSFUL UPDATE DATA OF THE URBAN PROPERTY!');//REGISTRO EXITOSO DE LAS PREGUNTAS DE SEGURIDAD
                             $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['inmueble/inmuebles-urbanos/index', 'id' => $model->id_contribuyente])."'>";                     
                             return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
-                        }else{   
+                        }else{ 
 
                             $transaccion->roolBack();  
                             $tipoError = 0; 
