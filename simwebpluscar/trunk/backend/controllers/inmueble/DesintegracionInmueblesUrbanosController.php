@@ -217,7 +217,7 @@ CONTENIDO DEL COMPRADOR (BUYER)
                     if ($btn['NextBuyer']!=null) {
                         
                         if ($datosCambio["datosVendedor"]!=null) {
-                            
+
                      
                             $contador = $contador+1;
                             $datosVInmueble = InmueblesUrbanosForm::find()->where(['id_contribuyente'=>$datosCambio["datosVendedor"]])->asArray()->all(); 
