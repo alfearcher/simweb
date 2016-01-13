@@ -26,9 +26,9 @@
  *  
  *  @author Manuel Alejandro Zapata Canelon
  * 
- *  @date 21/12/15
+ *  @date 13/01/2016
  * 
- *  @class CrearUsuarioController
+ *  @class CrearUsuarioJuridicoController
  *  @brief Controlador para crear usuario Juridico
  * 
  *  
@@ -38,11 +38,6 @@
  *  @property
  *
  *  
- *  @method
- *  rules
- *  attributeLabels
- *  email_existe
- *  username_existe
  *  
  *
  *  @inherits
@@ -69,14 +64,21 @@ use common\seguridad\Seguridad;
 use common\enviaremail\EnviarEmail;
 use frontend\models\usuario\CargaDatosBasicosForm;
 
-/**
- * Site controller
- */
+
+
 class CrearUsuarioJuridicoController extends Controller
 {
    
       public $layout = "layout-login";
 
+    //--INICIO ACTIONCREARUSUARIOJURIDICO-->
+
+      /**
+       * Este metodo se utiliza para levantar el formulario para la busqueda de la persona Juridica
+       *
+       * @return retorna el modelo que valida el formulario y renderiza la vista al mismo
+       * 
+       */
       public function actionCrearUsuarioJuridico()
       {
 
@@ -107,10 +109,25 @@ class CrearUsuarioJuridicoController extends Controller
               return $this->render('/usuario/crear-usuario-juridico' , ['model' => $model]);
 
       }
+
+       //--FIN ACTIONCREARUSUARIOJURIDICO-->
     
+
       
-       public function actionJuridico($naturaleza,$cedula,$tipo)
-       {
+      ///--INICIO ACTIONJURIDICO-->
+
+      /**
+       *
+       * Este metodo se utiliza para levantar el formulario de carga de datos basicos 
+       * de usuario juridico y a su vez llama al metodo que guarda su informacion en la BD
+       *
+       * @param  $naturaleza [string] trae la naturaleza del usuario como venezolano, juridico, gubernamental
+       * @param  $cedula [int] trae la cedula del usuario a registrar
+       * @param  $tipo [int] trae el numero de tipo que se coloca al final del rif
+       * @return retorna la vista al formulario de carga de datos basicos de la persona Juridica
+       */
+      public function actionJuridico($naturaleza,$cedula,$tipo)
+      {
 
          $model = new CargaDatosBasicosForm();
 
@@ -130,12 +147,8 @@ class CrearUsuarioJuridicoController extends Controller
                     //  return self::actionBuscarRif($model->naturaleza, $model->cedula,$model->tipo );
                       //die(var_dump($model));
                       self::beginSave("contribuyente", $model);
-
-
-                      
-                      die('paso por los dos procesos');
-
-                      //return $this->redirect(['juridico']);
+                          
+                          //return $this->redirect(['juridico']);
 
                           //return $this->redirect(['buscar-rif']);
                     }
@@ -147,11 +160,22 @@ class CrearUsuarioJuridicoController extends Controller
                                                                       'tipo' => $tipo
                                                                       ]);
 
+      }
 
-         
-     }
+       ///--FIN ACTIONJURIDICO-->
 
 
+      ///--INICIO ACTIONBUSCARRIF-->
+
+      /**
+       * Este metodo se utiliza para buscar el rif en la base de datos y en caso de existir, te lleva a la vistadonde se elecciona la empresa a registrar
+       *
+       * @param $naturaleza [string] trae la naturaleza del usuario como venezolano, juridico, gubernamental
+       * @param $cedula [int] trae la cedula del usuario a registrar
+       * @param $tipo [int] trae el numero de tipo que se coloca al final del rif
+       * @return retorna la vista contribuyente-encontrado
+       *
+       */
       public function actionBuscarRif($naturaleza, $cedula, $tipo)
       {
       
@@ -162,9 +186,7 @@ class CrearUsuarioJuridicoController extends Controller
 
              // die($posts);
               
-
-              
-              if (count($posts) == 0){
+                if (count($posts) == 0){
 
                 $model = new CargaDatosBasicosForm();
 
@@ -187,27 +209,24 @@ class CrearUsuarioJuridicoController extends Controller
               }
       }
 
+      ///--FIN ACTIONBUSCARRIF-->
 
-
-       /**
-  *
-  *el id se refiere al id contribuyente
-  *
-  */
+      ///--INICIO ACTIONVALIDARJURIDICO-->
+      /**
+       *
+       * Metodo que verifica si el usuario no tiene correo electronico para enviar un mensaje , pidiendole
+       * que se dirija a la alcaldia, de lo contrario , de no tener cuenta en "afiliacion", se le crea una automatica
+       * 
+       * @param  [int] Se refiere al id del contribuyente
+       * @return [string] Retorna un mensaje en pantalla para el usuario
+       */
       public function actionValidarJuridico($id)
       {
                 
           $model = CrearUsuarioJuridicoForm::findContribuyente($id);
 
-          if($model == false){
-              
-              //se manda a formulario de carga de datos basicos
-              die('validacion para formulario');
-          } else {
-
-            
-
-             if ($model[0]->email == null or trim($model[0]->email) == ""){
+          
+            if ($model[0]->email == null or trim($model[0]->email) == ""){
                  
                  return MensajeController::actionMensaje('Please, go to your city hall');
               
@@ -215,21 +234,29 @@ class CrearUsuarioJuridicoController extends Controller
 
                  $modelAfiliacion = CrearUsuarioJuridicoForm::findAfiliacion($model[0]->id_contribuyente);
 
-                 if ($modelAfiliacion == false){
+                  if ($modelAfiliacion == false){
 
                    // self::salvarAfiliacion($model);
                       self::beginSave("afiliaciones");
 
-                 }  
+                  }  
            
-             }
-          
+                    }
+      }     
         
-           }     
-        }
+      ///--FIN ACTIONVALIDARJURIDICO-->
 
+      ///--INICIO SALVARAFILIACION-->
 
-
+      /**
+       *
+       * Modelo para guardar los datos en la tabla afiliaciones y envia un email al usuario con su nuevo "usuario" y "contraseña"
+       * 
+       * @param $model instancia que trae el modelo con los datos del formulario
+       * @param $conn instancia de conexion
+       * @param $conexion instancia de conexion
+       * @return retorna el resultado de la insercion en la tabla afiliaciones
+       */
       public function salvarAfiliacion($model, $conn, $conexion)
       {
         $resultado = false;
@@ -256,8 +283,6 @@ class CrearUsuarioJuridicoController extends Controller
          
           $arregloDatos['id_contribuyente'] = $model->id_contribuyente;
 
-         
-
           $arregloDatos['login'] = $model->email;
 
           $arregloDatos['salt'] = $salt;
@@ -283,7 +308,20 @@ class CrearUsuarioJuridicoController extends Controller
             
       }
 
+      ///--FIN SALVARAFILIACION-->
+
+      ///--INICIO SALVARCONTRIBUYENTEJURIDICO-->
        
+      /**
+       *
+       * metodo que guarda la informacion en la tabla contribuyente 
+       * 
+       * @param $model instancia que trae el modelo con los datos del formulario
+       * @param $conn instancia de conexion
+       * @param $conexion instancia de conexion
+       * @return retorna el resultado de la insercion en la tabla afiliaciones
+       * 
+       */
       public function salvarContribuyenteJuridico($conn, $conexion, $model)
       {
        
@@ -301,6 +339,8 @@ class CrearUsuarioJuridicoController extends Controller
           }
           
           //$arregloDatos['id_contribuyente'] = $model->id_contribuyente;
+
+          $arregloDatos['tipo_naturaleza'] = 1;
         
           $arregloDatos['naturaleza'] = $model->naturaleza;
 
@@ -334,9 +374,20 @@ class CrearUsuarioJuridicoController extends Controller
            }
             return $idContribuyente;
       }
-      
- 
 
+      ///--FIN SALVARACONTRIBUYENTEJURIDICO-->
+
+      
+      ///--INICIO BEGINSAVE-->
+      /**
+       *
+       * Metodo que guarda la informacion de los formularios de carga de datos basicos, tanto en contribuyente, o en contribuyente y afiliaciones a la misma vez
+       * segun lo requiera el caso
+       * 
+       * @param $var [string] variable en donde se guardan los parametros "contribuyente" y "afiliaciones"
+       * @param $modelo instancia del modelo que trae la informacion del formulario
+       * @return retorna mensaje de felicitaciones por haber creado una nueva cuenta en el sistema
+       */
       public function beginSave($var, $model)
       {
 
@@ -368,10 +419,7 @@ class CrearUsuarioJuridicoController extends Controller
               
               $idContribuyente = self::salvarContribuyenteJuridico($conn, $conexion, $model);
 
-           
-
-
-              if ($idContribuyente > 0){
+                if ($idContribuyente > 0){
                // $modelFind = CrearUsuarioJuridicoForm::findContribuyente($idContribuyente);
 
                 //die(var_dump($modelFind));
@@ -389,75 +437,15 @@ class CrearUsuarioJuridicoController extends Controller
                       $transaccion->rollback();
                   }
 
-                
-
-                //return MensajeController::actionMensaje(Yii::t('frontend', 'Congratulations, you have created a new account'));
+                  return MensajeController::actionMensaje(Yii::t('frontend', 'Congratulations, you have created a new account'));
                 //die('llegamos');
-              
-
-            
-        }
+          }
       }
 
       }
+      ///--FIN BEGINSAVE-->
 
 }
-
-
-
-
-
-
-
-
-
-
-      //     $model = CrearUsuarioJuridicoForm::findRif($naturaleza, $cedula, $tipo);
-
-
-           
-      //      //die(var_dump($model));
-            
-      //       if ($model == false ){
-
-            
-            
-      //       } else {
-
-      //         if (count($model)>1){
-      //           die(var_dump($model));
-      //         }
-
-      //           if ($model->inactivo == 0) {
-
-                
-      //             if ($model->email == null or  trim($model->email) == ""){
-      //               //die('probando');
-      //               return MensajeController::actionMensaje('Please, go to ');
-      //             } else { 
-                    
-      //               $modelAfiliacion = CrearUsuarioJuridicoForm::findAfiliacion($model->id_contribuyente);
-
-      //                 if ($modelAfiliacion == false){
-
-      //                 die('no estas afiliado');  
-      //               } else {
-
-      //                  return MensajeController::actionMensaje('Usted se encuentra registrado');
-                      
-      //               }
-      //             }
-
-      //       } else {
-
-      //         die('el cliente se encuentra inactivo');
-      //       }
-
-            
-            
-
-      // } 
-
 
 ?> 
 

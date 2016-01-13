@@ -192,6 +192,8 @@ $(document).ready(function(){
 ?> 
 
 <?= $form->field($model, 'id_contribuyente')->hiddenInput(['id' => 'id_contribuyente'])->label(false); ?>
+<?= $form->field($model, 'naturaleza')->hiddenInput(['naturaleza' => 'naturaleza'])->label(false); ?>
+<?= $form->field($model, 'id_rif')->hiddenInput(['id_rif' => 'id_rif'])->label(false); ?>
     <div class="col-sm-10">
         <div class="panel panel-primary">
 <!-- CARGA DINAMICAMENTE LA CONDICION DE LA PERSONA JURICA -->

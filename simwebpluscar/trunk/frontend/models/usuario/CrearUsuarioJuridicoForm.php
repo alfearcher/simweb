@@ -81,9 +81,13 @@ class CrearUsuarioJuridicoForm extends CrearUsuarioJuridico{
       public function rules()
       {
         return [
-          [['naturaleza','cedula', 'tipo'],'required','message' => Yii::t('frontend', '{attribute} is required')]];
+          [['naturaleza','cedula', 'tipo'],'required','message' => Yii::t('frontend', '{attribute} is required')],
+          [['tipo_naturaleza'],'default', 'value' => 1],
+         
+           // [['naturaleza','cedula','tipo'x],'unique', 'message' => 'Datos repetidos en la base de datos'],
+        ];
           //['capital_new', 'format', Yii::$app->formatted->asDecimal($model->)]
-        
+      
       }
 
 /**
@@ -250,8 +254,26 @@ public function findAfiliacion($idContribuyente)
             ];
   }
 
-  
+  public function dameIdRif($model){
 
+    $modelFind = CrearUsuarioJuridico::find()
+                                      ->where([
+                                        'naturaleza' => $model->naturaleza, 
+                                        'cedula' => $model->cedula, 
+                                        'tipo_naturaleza' => 1])
+                                      ->orderBy(['id_rif' => SORT_DESC])->one();
+
+    if(count($modelFind)>0){
+
+     return $modelFind->id_rif +=1;  
+    } else {
+
+      return 0;
+    }                                 
+
+    
+  }
+  
 }
 
  ?>

@@ -21,18 +21,23 @@
  */
 
  /**    
- *  @file DatosBasicoForm.php
+ *  @file CargaDatosBasicosForm.php
  *  
- *  @author Hansel Jose Colmenarez Guevara
+ *  @author Manuel Alejandro Zapata Canelon
  * 
- *  @date 21/07/2015
+ *  @date 13/01/2016
  * 
- *  @class DatosBasicoForm
+ *  @class CargaDatosBasicosForm
  *  @brief Modelo del formulario de datos basicos, en el estan las validaciones y textos necesarios.
-*   @property
+ *   @property
  *
  *  
  *  @method
+ *
+ *  tableName
+ *  rules
+ *  attributeLabels
+ *  getGenderOptions
  *    
  *  @inherits
  *  
@@ -178,6 +183,7 @@ class CargaDatosBasicosForm extends \yii\db\ActiveRecord
     {
         return [            
             [['ente','naturaleza', 'cedula', 'tipo',  'tlf_hab', 'email'],'required'],
+
             [['ente','cedula', 'tipo', 'tipo_naturaleza', 'id_rif', 'id_cp', 'inactivo', 'cuenta', 'num_reg', 'extension_horario', 'num_empleados', 'tipo_contribuyente', 'licencia', 'agente_retencion', 'manzana_limite', 'lote_1', 'lote_2', 'lote_3', 'foraneo', 'no_declara', 'econ_informal', 'grupo_contribuyente', 'no_sujeto'], 'integer'],
             [['fecha_nac', 'fecha', 'fecha_inclusion', 'fecha_inicio', 'fe_inic_agente_reten'], 'safe'],            
             [['capital'], 'number'],            
@@ -200,7 +206,12 @@ class CargaDatosBasicosForm extends \yii\db\ActiveRecord
             ['email', 'email'],
             ['tlf_ofic_otro','string', 'max'=>12],
             ['ente', 'default', 'value' => Yii::$app->ente->getEnte()],
-            [['naturaleza', 'cedula', 'tipo', 'tipo_naturaleza', 'id_rif'], 'unique', 'targetAttribute' => ['naturaleza', 'cedula', 'tipo', 'tipo_naturaleza', 'id_rif'], 'message' => 'The combination of Naturaleza, Cedula, Tipo, Tipo Naturaleza and Id Rif has already been taken.']
+            [['naturaleza', 'cedula', 'tipo', 'tipo_naturaleza', 'id_rif'], 'unique', 'targetAttribute' => ['naturaleza', 'cedula', 'tipo', 'tipo_naturaleza', 'id_rif'], 'message' => 'This user has already been taken.'],
+            
+            [['id_rif'], 'default', 'value'=> function($model){
+                                                    return self::dameIdRif($model);
+
+          }]
         ];
     }
 
@@ -272,4 +283,24 @@ class CargaDatosBasicosForm extends \yii\db\ActiveRecord
     public function getGenderOptions(){
         return array('M' => 'Masculino', 'F' => 'Femenino');
     }
+
+    public function dameIdRif($model){
+
+    $modelFind = CrearUsuarioJuridico::find()
+                                      ->where([
+                                        'naturaleza' => $model->naturaleza, 
+                                        'cedula' => $model->cedula, 
+                                        'tipo_naturaleza' => 1])
+                                      ->orderBy(['id_rif' => SORT_DESC])->one();
+
+    if(count($modelFind)>0){
+
+     return $modelFind->id_rif +=1;  
+    } else {
+
+      return 0;
+    }                                 
+
+    
+  }
 }

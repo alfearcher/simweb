@@ -29,7 +29,7 @@
  *  @date 21/12/15
  * 
  *  @class CrearUsuarioController
- *  @brief Controlador para crear usuario
+ *  @brief Controlador para crear usuario tanto juridico como natural
  * 
  *  
  * 
@@ -37,12 +37,7 @@
  *  
  *  @property
  *
- *  
- *  @method
- *  rules
- *  attributeLabels
- *  email_existe
- *  username_existe
+ *
  *  
  *
  *  @inherits
@@ -71,18 +66,24 @@ use yii\filters\AccessControl;
 class OpcionCrearUsuarioController extends Controller
 {
    
-public $layout = "layout-login";
+    public $layout = "layout-login";
 
+    //-- INICIO ACTIONSELECCIONARTIPOUSUARIO -->
 
-     public function actionSeleccionarTipoUsuario()
+    /**
+     *
+     * metodo que levanta la vista para la seleccion del tipo de registro a realizarse
+     * 
+     * @return retorna la vista para seleccionar el tipo de registro que desee hacer
+     */
+    public function actionSeleccionarTipoUsuario()
     {
-        return $this->render('/usuario/seleccionar-tipo');
+      return $this->render('/usuario/seleccionar-tipo');
     }   
 
-      
+    //-- FIN ACTIONSELECCIONARTIPOUSUARIO -->
 
-
-      public function actionCrearUsuarioNatural()
+    public function actionCrearUsuarioNatural()
     {
 
       //die('llegue');
@@ -93,28 +94,18 @@ public $layout = "layout-login";
               if ( $model->load($postData) && Yii::$app->request->isAjax ) {
               Yii::$app->response->format = Response::FORMAT_JSON;
               return ActiveForm::validate($model);
-                }
+              }
 
-//die('llegue2');
-                if ( $model->load($postData) ) {
+                //die('llegue2');
+              if ( $model->load($postData) ) {
 
                  //die('llegue2');
                         
-   }
-   return $this->render('/usuario/crear-usuario-natural' , ['model' => $model]);
+              }
+                return $this->render('/usuario/crear-usuario-natural' , ['model' => $model]);
 
-  } 
+   } 
 
-
-     
- }
-  
-
- 
- 
-     
-
-
-
+}
 
 ?>

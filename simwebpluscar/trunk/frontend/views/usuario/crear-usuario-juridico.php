@@ -54,7 +54,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use backend\models\registromaestro\TipoNaturaleza;
 use yii\helpers\ArrayHelper;
-// 
+
 
 
 
@@ -87,7 +87,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= $this->title ?>
             </div>
             <div class="panel-body" >
-                <table class="table table-striped">
+               
                   
 
 
@@ -145,21 +145,26 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 
-                </table>
+            
 
  <!-- Boton para aplicar la actualizacion -->
-                                    <div class="col-sm-2">
-                                        <div class="form-group">
+                                    <div class="col-sm-3" >
+                                        
                                             <?= Html::submitButton(Yii::t('frontend' , 'Search'),
                                                                                                       [
                                                                                                         'id' => 'btn-search',
                                                                                                         'class' => 'btn btn-success',
                                                                                                         'name' => 'btn-search',
                                                                                                         'value' => 1,
+                                                                                                        
                                                                                                       ])
                                             ?>
+                                        
+                                    </div>
+                                    <div class="col-sm-3">
+                                        
                                              <?= Html::a(Yii::t('frontend', 'Quit'), ['quit'], ['class' => 'btn btn-danger']) ?>
-                                        </div>
+                                       
                                     </div>
 <!-- Fin de Boton para aplicar la actualizacion -->
 
@@ -167,10 +172,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 
-            </div>
-        </div>
+          </div>
+       </div>
     </div>
-    </div> 
+  </div> 
+</div> 
+    
+
      
 
 <?php $form->end() ?>
