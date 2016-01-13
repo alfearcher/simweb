@@ -254,25 +254,7 @@ public function findAfiliacion($idContribuyente)
             ];
   }
 
-  public function dameIdRif($model){
-
-    $modelFind = CrearUsuarioJuridico::find()
-                                      ->where([
-                                        'naturaleza' => $model->naturaleza, 
-                                        'cedula' => $model->cedula, 
-                                        'tipo_naturaleza' => 1])
-                                      ->orderBy(['id_rif' => SORT_DESC])->one();
-
-    if(count($modelFind)>0){
-
-     return $modelFind->id_rif +=1;  
-    } else {
-
-      return 0;
-    }                                 
-
-    
-  }
+  
   
 }
 
