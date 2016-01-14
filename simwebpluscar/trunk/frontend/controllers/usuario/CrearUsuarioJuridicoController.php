@@ -235,9 +235,10 @@ class CrearUsuarioJuridicoController extends Controller
                  $modelAfiliacion = CrearUsuarioJuridicoForm::findAfiliacion($model[0]->id_contribuyente);
 
                   if ($modelAfiliacion == false){
+               
 
                    // self::salvarAfiliacion($model);
-                      self::beginSave("afiliaciones");
+                      self::beginSave("afiliaciones", $model);
 
                   }  
            
@@ -369,8 +370,9 @@ class CrearUsuarioJuridicoController extends Controller
               //die('exito');
 
                //die('guardo con exito');
+               
 
-              
+              //die('envie correo');
            }
             return $idContribuyente;
       }
