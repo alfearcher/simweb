@@ -235,10 +235,19 @@ class CrearUsuarioJuridicoController extends Controller
                  $modelAfiliacion = CrearUsuarioJuridicoForm::findAfiliacion($model[0]->id_contribuyente);
 
                   if ($modelAfiliacion == false){
-               
 
+                     $modelx = new CargaDatosBasicosForm();
+               
+                    $modelx->id_contribuyente = $model[0]->id_contribuyente;
+
+                    //die($modelx->id_contribuyente);
+                    $modelx->email = $model[0]->email;
+
+
+                   
+                   
                    // self::salvarAfiliacion($model);
-                      self::beginSave("afiliaciones", $model);
+                      self::beginSave("afiliaciones", $modelx);
 
                   }  
            
@@ -258,7 +267,7 @@ class CrearUsuarioJuridicoController extends Controller
        * @param $conexion instancia de conexion
        * @return retorna el resultado de la insercion en la tabla afiliaciones
        */
-      public function salvarAfiliacion($model, $conn, $conexion)
+      public function salvarAfiliacion($conn, $conexion, $model)
       {
         $resultado = false;
         $tabla = 'afiliaciones';
