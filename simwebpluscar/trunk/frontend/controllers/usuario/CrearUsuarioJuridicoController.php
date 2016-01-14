@@ -312,7 +312,7 @@ class CrearUsuarioJuridicoController extends Controller
  
                 $enviarEmail->enviarEmail();
 
-                 echo MensajeController::actionMensaje(Yii::t('frontend', 'We have sent you an email with your new user and password'));
+                 
             
                 return $resultado;
               //die('envie correo');
@@ -421,7 +421,9 @@ class CrearUsuarioJuridicoController extends Controller
 
               if ($respuesta == true){
                 $transaccion->commit();
-                die('exito');
+
+                echo MensajeController::actionMensaje(Yii::t('frontend', 'We have sent you an email with your new user and password'));
+
               }else{
                 $transaccion->rollback();
               }
@@ -443,7 +445,7 @@ class CrearUsuarioJuridicoController extends Controller
                   if ($respuesta == true){
                     
                     $transaccion->commit();
-                    die('guardo todo');
+                    echo MensajeController::actionMensaje(Yii::t('frontend', 'We have sent you an email with your new user and password'));
 
 
                   }else {
