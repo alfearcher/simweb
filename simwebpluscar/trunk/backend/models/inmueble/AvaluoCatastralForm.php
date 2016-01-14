@@ -398,7 +398,7 @@ class AvaluoCatastralForm extends \yii\db\ActiveRecord
                                              ->andWhere(['cedula'=>$this->cedulaBuscar])
                                              ->andWhere(['tipo'=>$this->tipoBuscar])->asArray()->all();
           return $datosVendedor;
-     }
+     } 
 
      public function getGenderOptions(){
     return array('M' => 'Male', 'F' => 'Female');
