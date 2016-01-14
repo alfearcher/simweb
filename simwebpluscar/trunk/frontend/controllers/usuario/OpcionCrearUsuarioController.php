@@ -83,28 +83,7 @@ class OpcionCrearUsuarioController extends Controller
 
     //-- FIN ACTIONSELECCIONARTIPOUSUARIO -->
 
-    public function actionCrearUsuarioNatural()
-    {
-
-      //die('llegue');
-      $model = New CrearUsuarioNaturalForm();
-
-            $postData = Yii::$app->request->post();
-
-              if ( $model->load($postData) && Yii::$app->request->isAjax ) {
-              Yii::$app->response->format = Response::FORMAT_JSON;
-              return ActiveForm::validate($model);
-              }
-
-                //die('llegue2');
-              if ( $model->load($postData) ) {
-
-                 //die('llegue2');
-                        
-              }
-                return $this->render('/usuario/crear-usuario-natural' , ['model' => $model]);
-
-   } 
+    
 
 }
 

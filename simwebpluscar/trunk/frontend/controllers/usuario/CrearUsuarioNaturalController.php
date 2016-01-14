@@ -49,7 +49,7 @@ namespace frontend\controllers\usuario;
 use Yii;
 use common\models\LoginForm;
 use frontend\models\CrearUsuarioForm;
-use frontend\models\usuario\CrearUsuarioJuridicoForm;
+use frontend\models\usuario\CrearUsuarioNaturalForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
@@ -62,28 +62,30 @@ use frontend\controllers\mensaje\MensajeController;
 use common\conexion\ConexionController;
 use common\seguridad\Seguridad;
 use common\enviaremail\EnviarEmail;
-use frontend\models\usuario\CargaDatosBasicosForm;
+use frontend\models\usuario\CargaDatosBasicosNaturalForm;
 
 
 
-class CrearUsuarioJuridicoController extends Controller
+
+class CrearUsuarioNaturalController extends Controller
 {
    
       public $layout = "layout-login";
 
+
     //--INICIO ACTIONCREARUSUARIOJURIDICO-->
 
       /**
-       * Este metodo se utiliza para levantar el formulario para la busqueda de la persona Juridica
+       * Este metodo se utiliza para levantar el formulario para la busqueda de la persona Natural
        *
        * @return retorna el modelo que valida el formulario y renderiza la vista al mismo
        * 
        */
-      public function actionCrearUsuarioJuridico()
+      public function actionCrearUsuarioNatural()
       {
 
       //die('llegue');
-              $model = New CrearUsuarioJuridicoForm();
+              $model = New CrearUsuarioNaturalForm();
 
               $postData = Yii::$app->request->post();
 
@@ -98,7 +100,7 @@ class CrearUsuarioJuridicoController extends Controller
 
                     if ($model->validate()){
 
-                      return self::actionBuscarRif($model->naturaleza, $model->cedula,$model->tipo );
+                      return self::actionBuscarRif($model->naturaleza, $model->cedula , $model->tipo);
 
                       //return $this->redirect(['juridico']);
 
@@ -106,15 +108,15 @@ class CrearUsuarioJuridicoController extends Controller
                     }
                         
                 }
-              return $this->render('/usuario/crear-usuario-juridico' , ['model' => $model]);
+              return $this->render('/usuario/crear-usuario-natural' , ['model' => $model]);
 
       }
 
-       //--FIN ACTIONCREARUSUARIOJURIDICO-->
+       //--FIN ACTIONCREARUSUARIONATURAL-->
     
 
       
-      ///--INICIO ACTIONJURIDICO-->
+      ///--INICIO ACTIONNATURAL-->
 
       /**
        *
@@ -126,12 +128,18 @@ class CrearUsuarioJuridicoController extends Controller
        * @param  $tipo [int] trae el numero de tipo que se coloca al final del rif
        * @return retorna la vista al formulario de carga de datos basicos de la persona Juridica
        */
-      public function actionJuridico($naturaleza,$cedula,$tipo)
+      public function actionNatural($naturaleza, $cedula, $tipo)
       {
 
-         $model = new CargaDatosBasicosForm();
+         $model = new CargaDatosBasicosNaturalForm();
 
           $model->naturaleza = $naturaleza;
+
+         // die(var_dump($model));
+
+
+
+          //die($naturaleza);
 
                  $postData = Yii::$app->request->post();
 
@@ -144,7 +152,9 @@ class CrearUsuarioJuridicoController extends Controller
 
                     if ($model->validate()){
 
-                    //  return self::actionBuscarRif($model->naturaleza, $model->cedula,$model->tipo );
+
+
+                      //return self::actionBuscarRif($model->naturaleza, $model->cedula,$model->tipo );
                       //die(var_dump($model));
                       self::beginSave("contribuyente", $model);
                           
@@ -154,7 +164,7 @@ class CrearUsuarioJuridicoController extends Controller
                     }
                         
                 }
-                return $this->render('/usuario/formulario-juridico' , ['model' => $model,
+                return $this->render('/usuario/formulario-natural' , ['model' => $model,
                                                                       'naturaleza' =>$model->naturaleza,
                                                                       'cedula' => $cedula,
                                                                       'tipo' => $tipo
@@ -180,20 +190,24 @@ class CrearUsuarioJuridicoController extends Controller
       {
       
 
-              $dataProvider = CrearUsuarioJuridicoForm::obtenerDataProviderRif($naturaleza, $cedula, $tipo);
+              $dataProvider = CrearUsuarioNaturalForm::obtenerDataProviderRif($naturaleza, $cedula, $tipo);
+
+             // die(var_dump($dataProvider));
 
               $posts = $dataProvider->getModels();
+
+
 
              // die($posts);
               
                 if (count($posts) == 0){
 
-                $model = new CargaDatosBasicosForm();
+                $model = new CargaDatosBasicosNaturalForm();
 
                
                 $model->naturaleza = $naturaleza;
 
-                return $this->redirect(['juridico', 
+                return $this->redirect(['natural', 
                 'model' => $model,
                 //'msg' => $msg,
                 'naturaleza' =>$model->naturaleza,
@@ -211,7 +225,7 @@ class CrearUsuarioJuridicoController extends Controller
 
       ///--FIN ACTIONBUSCARRIF-->
 
-      ///--INICIO ACTIONVALIDARJURIDICO-->
+      ///--INICIO ACTIONVALIDARNATURAL-->
       /**
        *
        * Metodo que verifica si el usuario no tiene correo electronico para enviar un mensaje , pidiendole
@@ -220,10 +234,10 @@ class CrearUsuarioJuridicoController extends Controller
        * @param  [int] Se refiere al id del contribuyente
        * @return [string] Retorna un mensaje en pantalla para el usuario
        */
-      public function actionValidarJuridico($id)
+      public function actionValidarNatural($id)
       {
                 
-          $model = CrearUsuarioJuridicoForm::findContribuyente($id);
+          $model = CrearUsuarioNaturalForm::findContribuyente($id);
 
           
             if ($model[0]->email == null or trim($model[0]->email) == ""){
@@ -232,11 +246,11 @@ class CrearUsuarioJuridicoController extends Controller
               
              } else {
 
-                 $modelAfiliacion = CrearUsuarioJuridicoForm::findAfiliacion($model[0]->id_contribuyente);
+                 $modelAfiliacion = CrearUsuarioNaturalForm::findAfiliacion($model[0]->id_contribuyente);
 
                   if ($modelAfiliacion == false){
 
-                     $modelx = new CargaDatosBasicosForm();
+                     $modelx = new CargaDatosBasicosNaturalForm();
                
                     $modelx->id_contribuyente = $model[0]->id_contribuyente;
 
@@ -272,7 +286,7 @@ class CrearUsuarioJuridicoController extends Controller
         $resultado = false;
         $tabla = 'afiliaciones';
         $arregloDatos = [];
-        $arregloCampo = CrearUsuarioJuridicoForm::attributeAfiliacion();
+        $arregloCampo = CrearUsuarioNaturalForm::attributeAfiliacion();
 
           // die(var_dump($arregloCampo));
          
@@ -334,14 +348,14 @@ class CrearUsuarioJuridicoController extends Controller
        * @return retorna el resultado de la insercion en la tabla afiliaciones
        * 
        */
-      public function salvarContribuyenteJuridico($conn, $conexion, $model)
+      public function salvarContribuyenteNatural($conn, $conexion, $model)
       {
        
         $tabla = 'contribuyentes';
 
         //die(var_dump($model));
         $arregloDatos = [];
-        $arregloCampo = CrearUsuarioJuridicoForm::attributeContribuyentes();
+        $arregloCampo = CrearUsuarioNaturalForm::attributeContribuyentes();
 
           // die(var_dump($arregloCampo));
          
@@ -352,7 +366,7 @@ class CrearUsuarioJuridicoController extends Controller
           
           //$arregloDatos['id_contribuyente'] = $model->id_contribuyente;
 
-          $arregloDatos['tipo_naturaleza'] = 1;
+          $arregloDatos['tipo_naturaleza'] = 0;
         
           $arregloDatos['naturaleza'] = $model->naturaleza;
 
@@ -360,17 +374,21 @@ class CrearUsuarioJuridicoController extends Controller
 
           $arregloDatos['tipo'] = $model->tipo;
 
-          $arregloDatos['razon_social'] = $model->razon_social;
+          $arregloDatos['nombres'] = $model->nombres;
+
+          $arregloDatos['apellidos'] = $model->apellidos;
+
+          $arregloDatos['fecha_nac'] = $model->fecha_nac;
+
+          $arregloDatos['sexo'] = $model->sexo;
 
           $arregloDatos['domicilio_fiscal'] = $model->domicilio_fiscal;
 
           $arregloDatos['email'] = $model->email;
 
-          $arregloDatos['tlf_ofic'] = $model->tlf_ofic;
-
-          $arregloDatos['tlf_ofic_otro'] = $model->tlf_ofic_otro;
-
           $arregloDatos['tlf_celular'] = $model->tlf_celular;
+
+          
 
          
                $idContribuyente = 0;
@@ -432,7 +450,7 @@ class CrearUsuarioJuridicoController extends Controller
 
             //  die(var_dump($model));
               
-              $idContribuyente = self::salvarContribuyenteJuridico($conn, $conexion, $model);
+              $idContribuyente = self::salvarContribuyenteNatural($conn, $conexion, $model);
 
                 if ($idContribuyente > 0){
                // $modelFind = CrearUsuarioJuridicoForm::findContribuyente($idContribuyente);
@@ -440,7 +458,7 @@ class CrearUsuarioJuridicoController extends Controller
                 //die(var_dump($modelFind));
                 //die(var_dump($model));
                 $model->id_contribuyente = $idContribuyente;
-                $respuesta = self::salvarAfiliacion($conn, $conexion, $model );
+                $respuesta = self::salvarAfiliacion( $conn, $conexion, $model);
 
                   if ($respuesta == true){
                     
