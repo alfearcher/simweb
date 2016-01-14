@@ -106,7 +106,7 @@ use Yii;
  * @property integer $no_sujeto
  * @property string $ruc
  */
-class CargaDatosBasicosForm extends \yii\db\ActiveRecord
+class CargaDatosBasicosNaturalForm extends \yii\db\ActiveRecord
 {   
 
         public $id_contribuyente;
@@ -182,7 +182,7 @@ class CargaDatosBasicosForm extends \yii\db\ActiveRecord
     public function rules()
     {
         return [            
-            [['ente','naturaleza', 'cedula', 'tipo',  'tlf_hab', 'email'],'required'],
+            [['ente','naturaleza', 'cedula', 'tipo',  'tlf_hab', 'email', 'nombres', 'apellidos', 'fecha_nac', 'sexo'],'required'],
             
 
             [['ente','cedula', 'tipo', 'tipo_naturaleza', 'id_rif', 'id_cp', 'inactivo', 'cuenta', 'num_reg', 'extension_horario', 'num_empleados', 'tipo_contribuyente', 'licencia', 'agente_retencion', 'manzana_limite', 'lote_1', 'lote_2', 'lote_3', 'foraneo', 'no_declara', 'econ_informal', 'grupo_contribuyente', 'no_sujeto'], 'integer'],
@@ -288,11 +288,11 @@ class CargaDatosBasicosForm extends \yii\db\ActiveRecord
 
     public function dameIdRif($model){
 
-    $modelFind = CrearUsuarioJuridico::find()
+    $modelFind = CrearUsuarioNatural::find()
                                       ->where([
                                         'naturaleza' => $model->naturaleza, 
                                         'cedula' => $model->cedula, 
-                                        'tipo_naturaleza' => 1])
+                                        'tipo_naturaleza' => 0])
                                       ->orderBy(['id_rif' => SORT_DESC])->one();
 
     if(count($modelFind)>0){

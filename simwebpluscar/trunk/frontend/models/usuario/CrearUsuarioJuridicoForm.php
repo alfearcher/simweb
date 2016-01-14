@@ -83,6 +83,7 @@ class CrearUsuarioJuridicoForm extends CrearUsuarioJuridico{
         return [
           [['naturaleza','cedula', 'tipo'],'required','message' => Yii::t('frontend', '{attribute} is required')],
           [['tipo_naturaleza'],'default', 'value' => 1],
+          [['cedula', 'tipo'], 'integer']
          
            // [['naturaleza','cedula','tipo'x],'unique', 'message' => 'Datos repetidos en la base de datos'],
         ];
