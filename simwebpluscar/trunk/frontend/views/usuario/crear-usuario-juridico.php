@@ -81,7 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ]);
 ?>
 
-<div class="col-sm-10">
+<div class="col-sm-6">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <?= $this->title ?>
@@ -96,7 +96,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <p style="margin-left: 15px;margin-top: 0px;margin-bottom: 0px;"><i><small><?=Yii::t('frontend', 'DNI') ?></small></i></p>
                             </div>
 <!-- COMBO NATURALEZA -->
-                             <div class="col-sm-5">
+                             <div class="col-sm-9">
                             <div class="row" style="width:100%; padding-left: 0px;padding-right: 0px;">
                                 <div class="container-fluid" style="margin-left: 0px;margin-right: 0px;padding-left: 0px;padding-right: 0px;">
                                     <div class="col-sm-5" style="padding-right: 12px;">

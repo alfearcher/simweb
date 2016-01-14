@@ -191,7 +191,7 @@ class CargaDatosBasicosForm extends \yii\db\ActiveRecord
             [['nombres', 'apellidos', 'nit', 'casa_edf_qta_dom', 'reg_mercantil', 'tomo', 'folio', 'horario'],  'string', 'max' => 50],
             [['razon_social'], 'string', 'max' => 75],
             [['sexo'],'default', 'value' => ''],
-            [['razon_social', 'tlf_ofic', 'tlf_celular'], 'required', 'when' => function($model) {
+            [['razon_social', 'tlf_ofic', 'tlf_celular', 'domicilio_fiscal'], 'required', 'when' => function($model) {
                                                         return $model->tipo_naturaleza == 1;
             }],
            
@@ -221,6 +221,7 @@ class CargaDatosBasicosForm extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
+            
             'id_contribuyente' => Yii::t('frontend', 'Id Contribuyente'),
             'ente' => Yii::t('frontend', 'Ente'),
             'naturaleza' => Yii::t('frontend', 'Natural'),

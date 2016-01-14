@@ -23,12 +23,12 @@
  /**    
  *  @file datos-basicos.php
  *  
- *  @author Hansel Jose Colmenarez Guevara
+ *  @author Manuel Alejandro Zapata Canelon
  * 
- *  @date 07/07/2015
+ *  @date 14/01/2016
  * 
  *  @class datos-basicos
- *  @brief Vista de registro de datos basicos de un contribuyente
+ *  @brief Vista de registro de datos basicos de un Usuario Juridico
 *   @property
  *
  *  
@@ -160,26 +160,15 @@ $(document).ready(function(){
 
     <!-- FIN SELECTOR DE TIPO DE PERSONA -->
 
-    <!-- SUBMENU DE PERSONA JURIDICA -->
-    <div class="col-xs-2" id="subMenuTipoPersona" style="height:40px;display:none;">
-        <select class="form-control" name="tipoPersonaNat" onChange="tipoNaturalezaContribuyente(this)">
-            <option value="0"><?= Yii::t('backend', 'Seleccionar') ?></option>
-            <option value="1"><?= Yii::t('backend', 'Empresa') ?></option>
-            <option value="2"><?= Yii::t('backend', 'Sucesion') ?></option>
-        </select>       
-    </div>
-    <div class="col-xs-3 alert alert-info" id="tmensajeJuri" style="height:40px;display:none;" >
-        <?= Yii::t('backend', 'Condition of the legal person') ?> <span data-toggle="tooltip" data-placement="right" title="<?= Yii::t('backend', 'Condition of the legal person') ?>" class="glyphicon glyphicon-info-sign"></span>
-    </div>
-    <!-- FIN DEL SUBMENU DE PERSONA JURIDICA -->
+    
 </div>
 <div><br></div>
 
 
 
 <!-- FORMULARIO PERSONA JURIDICA -->
-<div id="tJuridico" class="datosbasico-form" style="display:<?//= $noneJ?>;">
-<?php $form = ActiveForm::begin([
+    <div id="tJuridico" class="datosbasico-form" style="display:<?//= $noneJ?>;">
+            <?php $form = ActiveForm::begin([
             'id' => 'form-datosBasicoJuridico-inline',
             'method' => 'post',
             'action' => ['/usuario/crear-usuario-juridico/juridico'],
@@ -194,26 +183,27 @@ $(document).ready(function(){
 <?= $form->field($model, 'id_contribuyente')->hiddenInput(['id' => 'id_contribuyente'])->label(false); ?>
 <?= $form->field($model, 'naturaleza')->hiddenInput(['naturaleza' => 'naturaleza'])->label(false); ?>
 <?= $form->field($model, 'id_rif')->hiddenInput(['id_rif' => 'id_rif'])->label(false); ?>
-    <div class="col-sm-10">
+    <div class="row">
+    <div class="col-sm-7">
         <div class="panel panel-primary">
 <!-- CARGA DINAMICAMENTE LA CONDICION DE LA PERSONA JURICA -->
             <div class="panel-heading">
-                <?= Yii::t('backend', 'Registration Basic Information') ?> | <?= Yii::t('backend', 'Legal') ?> | <span id="sucesionLabel" style="display:none;"><?= Yii::t('backend', 'Succession') ?></span> <span id="empresaLabel" style="display:none;"><?= Yii::t('backend', 'Company') ?></span>
+                <?= Yii::t('backend', 'Registration Basic Information') ?> | <?= Yii::t('frontend', 'Legal') ?> | <span id="sucesionLabel" style="display:none;"><?= Yii::t('backend', 'Succession') ?></span> <span id="empresaLabel" style="display:none;"><?= Yii::t('backend', 'Company') ?></span>
             </div>
 <!-- FIN DE LA CARGA DINAMICA DE LA CONDICION DE PERSONA JURIDICA -->
+<hr>
             <div class="panel-body" >
-                <table class="table table-striped">
+
+
+               
 <!-- RIF -->
-                    <tr>
-                        <td colspan="4">
+                    
+                        <div>
                             <?= Yii::t('frontend', 'Rif') ?>                         
-                        </td>
-                        <td width="9px"></td>
-                        <td width="150px"></td>
-                        <td width="250px"></td>
-                    </tr>
-                    <tr>
-                        <td width="90px">
+                        </div>
+                   
+                        <div class="row">
+                        <div class="col-sm-2">
                             <?= $form->field($model, 'naturaleza')->textInput(
                                                                    // ArrayHelper::map(TipoNaturaleza::find()->all(), 'siglas_tnaturaleza', 'siglas_tnaturaleza'),
                                                                     [
@@ -222,62 +212,73 @@ $(document).ready(function(){
                                                                      'readOnly' =>true,
                                                                     ])->label(false);
                         ?>
-                        </td>
-                        <td width="150px">
+                        </div>
+                       <div class="col-sm-3">
                             <?= $form->field($model, 'cedula')->label(false)->textInput(['maxlength' => 8, 'value'=> $cedula, 'readOnly' =>true]) ?>
-                        </td>
-                        <td width="60px">
+                        
+                        </div>
+
+                         <div class="col-sm-2">
                             <?= $form->field($model, 'tipo')->label(false)->textInput(['maxlength' => 1, 'value'=> $tipo, 'readOnly' =>true]) ?>
-                        </td>
-                        <td width="250px" colspan="2"></td>
-                        <td width="150px"></td>
-                        <td width="250px"></td>
-                    </tr>
+                          
+                       </div>
+                       </div>
+
+
+                   
 <!-- FIN DE RIF -->
 
+<hr>
+
 <!-- RAZON SOCIAL -->
-                    <tr>
-                        <td colspan="4">
+                    
+                       <div class="row">
+                       <div class="col-sm-6">
                             <?= $form->field($model, 'razon_social')->textInput(['maxlength' => true]) ?>
-                        </td>
-                        <td width="9px"></td>
-                        <td width="150px"></td>
-                        <td width="250px"></td>
-                    </tr>
+                       </div>
+                       </div>
+
+                   
 <!-- FIN RAZON SOCIAL -->
 
+<hr>
+    
 <!-- DOMICILIO FISCAL -->               
-                    <tr>
-                        <td colspan="4">
+                       <div class="row">
+                       <div class="col-sm-6">
                             <?= $form->field($model, 'domicilio_fiscal')->textArea(['maxlength' => true]) ?>
-                        </td>
-                        <td width="9px"></td>
-                        <td width="150px"></td>
-                        <td width="250px"></td>                 
-                    </tr>
+                       </div>
+                       </div>            
+                   
 <!-- FIN DEL DOMICILIO FISCAL -->
 
+<hr>
+
 <!-- EMAIL -->
-                    <tr>
-                        <td colspan="4">
+                            <div class="row">
+                       <div class="col-sm-6">
+                        
                             <?= $form->field($model, 'email')->input('email') ?>
-                        </td>
-                        <td width="9px"></td>
-                        <td width="150px"></td>
-                        <td width="250px"></td>                 
-                    </tr>
+
+                            </div>
+                      </div> 
+                        
 <!-- FIN EMAIL -->
 
+<hr>
+
 <!-- TELEFONO DE OFICINA Y CELULAR -->
-                    <tr>
-                        <td colspan="4">
+                            
                             <?php 
                                 $listaTelefonoCodigo = TelefonoCodigo::getListaTelefonoCodigo($is_celular=0);
                                 $mt = new TelefonoCodigo();
                             ?>
-                            <table>
-                                <tr>
-                                    <td><?= $form->field($mt, 'codigo')->dropDownList($listaTelefonoCodigo, ['inline' => true,
+
+
+                          
+                           <div class="row">
+                            <div class="col-sm-2">
+                                 <?= $form->field($mt, 'codigo')->dropDownList($listaTelefonoCodigo, ['inline' => true,
                                                                                              'prompt' => Yii::t('frontend', 'Select'), 
                                                                                              'style' => 'width:100px;',
                                                                                              'id' => 'codigo',
@@ -286,8 +287,9 @@ $(document).ready(function(){
                                                                                              ]
                                                                     ) 
                                         ?>
-                                    </td>
-                                    <td><?= $form->field($model, 'tlf_ofic')->textInput(['maxlength' => 12,
+                                       </div>
+                                   <div class="col-sm-4">
+                                    <?= $form->field($model, 'tlf_ofic')->textInput(['maxlength' => 12,
                                                                         'style' => 'width:150px;',
                                                                         'placeholder' => false,
                                                                         'id' => 'tlf_ofic',
@@ -295,20 +297,20 @@ $(document).ready(function(){
                                                                         ]
                                                                     ) 
                                         ?>
-                                    </td>
-                                </tr>
-                            </table>                 
-                        </td>   
-                        <td width="9px"></td>
-                        <td width="150px"></td>
-                        <td width="250px"></td>             
-                    </tr>
 
-                    <tr>
-                        <td colspan="4">
-                            <table>
-                                <tr>
-                                    <td><?= $form->field($mt, 'codigo')->dropDownList($listaTelefonoCodigo, ['inline' => true,
+                                     
+                                        </div>
+                                        </div>
+
+
+                                 
+                             
+                                   
+                  
+
+                            <div class="row">
+                          <div class="col-sm-2">
+                                    <?= $form->field($mt, 'codigo')->dropDownList($listaTelefonoCodigo, ['inline' => true,
                                                                                              'prompt' => Yii::t('frontend', 'Select'), 
                                                                                              'style' => 'width:100px;',
                                                                                              'id' => 'codigo_otro',
@@ -317,32 +319,32 @@ $(document).ready(function(){
                                                                                              ]
                                                                     ) 
                                         ?>
-                                    </td>
-                                    <td><?= $form->field($model, 'tlf_ofic_otro')->textInput(['maxlength' => 12,
+                                        </div>
+
+                                     <div class="col-sm-4"> 
+                                   <?= $form->field($model, 'tlf_ofic_otro')->textInput(['maxlength' => 12,
                                                                         'style' => 'width:150px;',
                                                                         'placeholder' => false,
                                                                         'id' => 'tlf_ofic_otro',                                                                       
                                                                         ]
                                                                     ) 
                                         ?>
-                                    </td>
-                                </tr>
-                            </table>                 
-                        </td>   
-                        <td width="9px"></td>
-                        <td width="150px"></td>
-                        <td width="250px"></td>         
-                    </tr>
+                                    
+                               
+                                </div>
+                                </div>
 
-                    <tr>
-                        <td colspan="4">
+
+
+                           
                             <?php 
                                 $listaTelefonoCodigoCelu = TelefonoCodigo::getListaTelefonoCodigo($is_celular=1);
                                 $mtCelu = new TelefonoCodigo();
                             ?>
-                            <table>
-                                <tr>
-                                    <td><?= $form->field($mtCelu, 'codigo')->dropDownList($listaTelefonoCodigoCelu, ['inline' => true,
+                            
+                                 <div class="row">
+                                    <div class="col-sm-2">
+                                    <?= $form->field($mtCelu, 'codigo')->dropDownList($listaTelefonoCodigoCelu, ['inline' => true,
                                                                                              'prompt' => Yii::t('frontend', 'Select'), 
                                                                                              'style' => 'width:100px;',
                                                                                              'id' => 'codigo_celu',
@@ -351,8 +353,10 @@ $(document).ready(function(){
                                                                                              ]
                                                                     ) 
                                         ?>
-                                    </td>
-                                    <td><?= $form->field($model, 'tlf_celular')->textInput(['maxlength' => 12,
+                                        </div>
+                                        <div class="col-sm-4">
+                                    
+                                    <?= $form->field($model, 'tlf_celular')->textInput(['maxlength' => 12,
                                                                         'style' => 'width:150px;',
                                                                         'placeholder' => false,
                                                                         'id' => 'tlf_celularContri',
@@ -360,28 +364,23 @@ $(document).ready(function(){
                                                                         ]
                                                                     ) 
                                         ?>
-                                    </td>
-                                </tr>
-                            </table>                 
-                        </td>   
-                        <td width="9px"></td>
-                        <td width="150px"></td>
-                        <td width="250px"></td>
-                    </tr>
+                                    
+                                </div>
+                                </div>
+                                             
+                        
 <!-- FIN TELEFONO OFICINA Y CELULAR -->
 
-                    <tr>
-                        <td colspan="4">
+                            <div class="row"></div>
+                            <div class="col-sm-4">
                             <?= Html::submitButton(Yii::t('frontend', 'Create') , ['class' =>'btn btn-success']) ?>
-                        </td>
-                        <td width="250px"></td> 
-                        <td width="250px"></td> 
-                        <td width="250px"></td>
-                    </tr>                   
-                </table>
+                            </div>
+                            </div>
             </div>
-        </div>
     </div>
+    </div>
+    </div>
+
     <?php 
     /*
     *****************************************************
@@ -407,48 +406,9 @@ $(document).ready(function(){
     *****************************************************
     */
     ?>
-</div>
+
 <?php 
-/*
-*****************************************************
-*   Segmento para setear variables predefinidas     *
-*               Fecha de Registro                   *
-*****************************************************
-*/
-$fecha = date('Y-m-d');
-?>
-<!-- WIDGET DE CALENDARIO (FECHA Y HORA) -->
-<div id="fechaRegistro" style="z-index:9999;float:right;width:170px;padding-right: -50px;margin-top:30px">      
-    <div class="alert panel panel-primary alert-dismissable">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>       
-        <table align="center" border='0' width="130px">
-            <thead>
-                <th colspan="6"><?= Yii::t('backend', 'Registration date') ?>:</th>
-            </thead>
-            <tbody>
-                <tr>
-                    <td colspan="6"><?= $fecha?></td>
-                </tr>
-                <tr>                    
-                    <td><div style="width:5px" id='hora'></div></td>
-                    <td><div style="width:2px">:</div></td>
-                    <td><div style="width:5px" id='minuto'></div></td>
-                    <td><div style="width:2px">:</div></td>
-                    <td><div style="width:5px" id='segundo'></div></td>
-                    <td><div style="width:15px"></div></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-<!-- FIN DEL WIDGET DE CALENDARIO (FECHA Y HORA) -->
-<?php          
-   echo Html::activeHiddenInput($model, 'fecha_inclusion', ['value' => $fecha]);
-/*
-*****************************************************
-*       Fin del Segmento -Fecha de Registro-        *
-*****************************************************
-*/
+
 ?>
 <!-- SCRIPT DEL WIDGET CALENDARIO -->       
 <script type="text/javascript">
