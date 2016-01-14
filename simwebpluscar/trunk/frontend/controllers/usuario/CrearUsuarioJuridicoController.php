@@ -311,9 +311,11 @@ class CrearUsuarioJuridicoController extends Controller
                $enviarEmail = new EnviarEmail();
  
                 $enviarEmail->enviarEmail();
+                
+                 echo MensajeController::actionMensaje(Yii::t('frontend', 'We have sent you an email with your new user and password'));
+            
                 return $resultado;
               //die('envie correo');
-             echo MensajeController::actionMensaje(Yii::t('frontend', 'We have sent you an email with your new user and password'));
             
             
       }
@@ -380,10 +382,10 @@ class CrearUsuarioJuridicoController extends Controller
 
                //die('guardo con exito');
                
-
               //die('envie correo');
            }
             return $idContribuyente;
+
       }
 
       ///--FIN SALVARACONTRIBUYENTEJURIDICO-->
