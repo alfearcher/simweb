@@ -311,7 +311,7 @@ class CrearUsuarioJuridicoController extends Controller
                $enviarEmail = new EnviarEmail();
  
                 $enviarEmail->enviarEmail();
-                
+
                  echo MensajeController::actionMensaje(Yii::t('frontend', 'We have sent you an email with your new user and password'));
             
                 return $resultado;
@@ -421,7 +421,7 @@ class CrearUsuarioJuridicoController extends Controller
 
               if ($respuesta == true){
                 $transaccion->commit();
-
+                die('exito');
               }else{
                 $transaccion->rollback();
               }
