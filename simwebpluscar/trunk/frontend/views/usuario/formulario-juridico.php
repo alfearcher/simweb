@@ -151,6 +151,7 @@ $(document).ready(function(){
 <?php $form = ActiveForm::begin([
             'id' => 'form-datosBasicoNatural-inline',
             'method' => 'post',
+            
             'enableClientValidation' => true,
             'enableAjaxValidation' => true,
             'enableClientScript' => true,

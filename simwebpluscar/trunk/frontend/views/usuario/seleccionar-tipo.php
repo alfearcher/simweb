@@ -76,7 +76,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 
                      <div class="row">
-                            <?= Html::a('<strong><center><span class="glyphicon glyphicon-user" style="font-size:20px"> Persona Natural</span></center></strong>', ['/usuario/opcion-crear-usuario/crear-usuario-natural']); ?>
+                            <?= Html::a('<strong><center><span class="glyphicon glyphicon-user" style="font-size:20px"> Persona Natural</span></center></strong>', ['/usuario/crear-usuario-natural/crear-usuario-natural']); ?>
                        </div>
                     <br>
                        <div class="row">

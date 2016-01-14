@@ -52,11 +52,17 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use backend\models\registromaestro\TipoNaturaleza;
+use yii\helpers\ArrayHelper;
 // 
+// 
+// 
+$modeloTipoNaturaleza = TipoNaturaleza::find()->where('id_tipo_naturaleza BETWEEN 2 and 3')->all();
+$listaNaturaleza = ArrayHelper::map($modeloTipoNaturaleza, 'siglas_tnaturaleza', 'nb_naturaleza');
+
 $this->title = 'Busqueda Persona Natural';
 
 $this->params['breadcrumbs'][] = $this->title;
-$lista = ['Extranjero' , 'Venezolano'];
+
 ?>
  
 
@@ -90,7 +96,7 @@ $lista = ['Extranjero' , 'Venezolano'];
                                 <div class="container-fluid" style="margin-left: 0px;margin-right: 0px;padding-left: 0px;padding-right: 0px;">
                                     <div class="col-sm-5" style="padding-right: 12px;">
                                         <div class="naturaleza">
-                                            <?= $form->field($model, 'naturaleza')->dropDownList($lista,[
+                                            <?= $form->field($model, 'naturaleza')->dropDownList($listaNaturaleza,[
                                                                                                     'id' => 'naturaleza',
                                                                                                     'prompt' => Yii::t('frontend', 'Select'),
                                                                                                     'style' => 'height:32px;width:150px;',
@@ -114,6 +120,25 @@ $lista = ['Extranjero' , 'Venezolano'];
                                                                                           ])->label(false) ?>
                                         </div>
                                     </div>
+
+
+<!-- FIN CEDULA -->
+
+<!-- TIPO -->
+                                    <div class="col-sm-2" style="padding-right: 0px;padding-left: 40px;">
+                                     
+                                            <div class="tipo">
+                                               <?= $form->field($model, 'tipo')->textInput([
+                                                                                            'id' => 'tipo',
+                                                                                            'style' => 'height:32px;width:38px;',
+                                                                                            'type' =>'hidden',
+                                                                                            'maxlength' => 1,
+                                                                                            'value' => 0,
+                                                                                         ])->label(false) ?>
+                                        </div>
+                                    </div>
+                                </div>
+<!-- FIN DE TIPO -->                                    
                     </div> <!-- Fin de row -->
 
                </table>
