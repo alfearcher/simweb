@@ -63,7 +63,7 @@ use common\conexion\ConexionController;
 use common\seguridad\Seguridad;
 use common\enviaremail\EnviarEmail;
 use frontend\models\usuario\CargaDatosBasicosNaturalForm;
-use common\utilidades\Utilidad;
+use common\models\utilidades\Utilidad;
 
 
 
