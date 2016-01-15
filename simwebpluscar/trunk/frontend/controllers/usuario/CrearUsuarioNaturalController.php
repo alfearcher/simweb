@@ -299,7 +299,7 @@ class CrearUsuarioNaturalController extends Controller
 
           $nuevaClave = $seguridad->randKey(6);
 
-          self::Utilidad($utilidad);
+          self:: new Utilidad->Utilidad($utilidad);
 
           $password = $nuevaClave.$utilidad;
 
