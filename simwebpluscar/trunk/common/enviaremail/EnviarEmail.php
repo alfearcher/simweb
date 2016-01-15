@@ -64,9 +64,9 @@ class EnviarEmail{
        return Yii::$app->mailer->compose()
         ->setFrom('manuelz0510@gmail.com')
         ->setTo($email)
-        ->setSubject('Usuario y contraseña')
-        ->setTextBody('Su nuevo usuario y contraseña son:'.$email.' '.$nuevaClave)
-        ->setHtmlBody('mensaje de prueba')
+        ->setSubject('-')
+        ->setTextBody('-')
+        ->setHtmlBody('-')
         ->send();
 
     }
