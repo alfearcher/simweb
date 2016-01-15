@@ -152,7 +152,7 @@ class Afiliaciones extends \yii\base\Object implements \yii\web\IdentityInterfac
     {
         $salt = Utilidad::getUtilidad();
 	    		
-	    $clave = $password + $this->salt;
+	    $clave = $password + $salt;
 		
         /* Valida el password */
         if (crypt($password_hash, $this->password_hash) == $this->password_hash)
