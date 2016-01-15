@@ -53,6 +53,8 @@
  *  
  */
 namespace frontend\models\usuario;
+
+use common\models\utilidades\Utilidad;
  
 class Afiliaciones extends \yii\base\Object implements \yii\web\IdentityInterface
 {
@@ -148,6 +150,7 @@ class Afiliaciones extends \yii\base\Object implements \yii\web\IdentityInterfac
      */
     public function validatePassword($password)
     {
+        $salt = Utilidad::getUtilidad();
 	    		
 	    $clave = $password + $this->salt;
 		
