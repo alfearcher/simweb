@@ -66,8 +66,8 @@ class EnviarEmail extends Model{
         ->setTo('manuel1122@hotmail.com')
         ->setSubject('Usuario y contraseña')
         ->setTextBody('Su nuevo usuario y contraseña son:')
-        ->setHtmlBody($this->email
-                    $this->nuevaClave)
+        ->setHtmlBody($model->email
+                        $model->nuevaClave)
         ->send();
 
     }
