@@ -33,7 +33,7 @@ $this->title = 'Iniciar Sesion';
 				
 			<div class="row" style="margin-left: 10px;">
 				
-				 <?= $form->field($model, 'username') ?>
+				 <?= $form->field($model, 'email') ?>
 
 		    </div>
 
