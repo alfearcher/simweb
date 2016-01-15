@@ -1,4 +1,3 @@
-
 <?php
 
 /**
@@ -67,7 +66,7 @@ class EnviarEmail extends Model{
         ->setTo('manuel1122@hotmail.com')
         ->setSubject('Usuario y contraseña')
         ->setTextBody('Con este usuario y contraseña podras ingresar al sistema')
-        ->setHtmlBody('Su nueva clave y contraseña son:'
+        ->setHtmlBody('Su Usuario y contraseña son:'
                         Usuario : $model->email 
                         Password: $model->nuevaClave)
         ->send();
