@@ -2,7 +2,7 @@
 namespace frontend\controllers;
 
 use Yii;
-use common\models\LoginForm;
+use frontend\models\usuario\LoginForm;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
@@ -73,26 +73,58 @@ public $layout = "layout-login";
         return $this->render('index');
     }
 
-    public function actionLogin()
-    {
-        if (!\Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
+      
+      public function actionLogin()
+     {
+         if (!\Yii::$app->user->isGuest) 
+         {
+               if (Afiliaciones::isUserAdmin(Yii::$app->afiliaciones->identity->id_afiliaciones))
+               {
+                   return $this->redirect(["site/index3"]);
+               }
+             if (Afiliaciones::isUserFuncionario(Yii::$app->user->identity->id_afiliaciones))
+               {
+                   return $this->redirect(["site/index"]);
+               }
+               else
+               {
+                   return $this->redirect(["site/index2"]);
+               }
+         }     
+       
+        
+          $model = new LoginForm();
+          if ($model->load(Yii::$app->request->post()) && $model->login()) 
+          {
+                if (Afiliaciones::isUserAdmin(Yii::$app->user->identity->id_funcionario))
+                {
+                    //return $this->redirect(["site/index3"]);
+                      //return $this->redirect(["@backend/views/menu/vertical"]);
+      
+                }
+                  if (Afiliaciones::isUserFuncionario(Yii::$app->user->identity->id_funcionario))
+                  {
+                    //return $this->redirect(["site/index"]);
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        } else {
-            return $this->render('login', [
-                'model' => $model,
-            ]);
-        }
-    }
+                  //MenuController::actionVertical();
 
-     public function actionCrearUsuario()
-    {
-        return $this->render('crear-usuario');
-    }
+                    return $this->redirect(["/menu/vertical"]);                  
+                    
+                  }
+                  else
+                  {
+                    return $this->redirect(["site/index2"]);
+                  }
+          } 
+              else 
+              {
+              return $this->render('login', [
+                                   'model' => $model,
+                                             ]);
+          }
+     }
+
+     
 
     public function actionLogout()
     {
