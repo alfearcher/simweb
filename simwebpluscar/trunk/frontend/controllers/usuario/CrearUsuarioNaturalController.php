@@ -326,7 +326,7 @@ class CrearUsuarioNaturalController extends Controller
 
                $enviarEmail = new EnviarEmail();
  
-                $enviarEmail->enviarEmail();
+                $enviarEmail->enviarEmail($model->email, $nuevaClave);
 
                  
             
