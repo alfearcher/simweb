@@ -58,16 +58,16 @@ use yii\db\ActiveRecord;
 
 class EnviarEmail extends Model{
   
-    public function enviarEmail()
+    public function enviarEmail($email,$nuevaClave)
     {
 
        return Yii::$app->mailer->compose()
         ->setFrom('manuelz0510@gmail.com')
-        ->setTo('manuel1122@hotmail.com')
+        ->setTo($email)
         ->setSubject('Usuario y contraseña')
         ->setTextBody('Su nuevo usuario y contraseña son:')
-        ->setHtmlBody($model->email
-                      $model->nuevaClave)
+        ->setHtmlBody($email
+                      $nuevaClave)
         ->send();
 
     }
