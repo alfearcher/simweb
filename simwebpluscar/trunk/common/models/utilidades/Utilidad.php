@@ -49,19 +49,20 @@
 	/**
 	* 	Clase
 	*/
-	class Utilidad extends Models
+	class Utilidad
 	{
 
+		const UTILIDAD = '14adf8';
 		/**
 		 *	Metodo que retorna el nombre de la base de datos donde se tiene la conexion actual.
 		 * 	Utiliza las propiedades y metodos de Yii2 para traer dicha informacion.
 		 * 	@return Nombre de la base de datos
 		 */
-		public function Utilidad()
+		public function getUtilidad()
 		{
 
-			const $utilidad = '14adf8';
-			return $utilidad;
+			
+			return self::UTILIDAD;
 		}
 
 
