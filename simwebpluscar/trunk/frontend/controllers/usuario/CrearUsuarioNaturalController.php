@@ -63,7 +63,7 @@ use common\conexion\ConexionController;
 use common\seguridad\Seguridad;
 use common\enviaremail\EnviarEmail;
 use frontend\models\usuario\CargaDatosBasicosNaturalForm;
-
+use common\utilidades\Utilidad;
 
 
 
@@ -299,17 +299,15 @@ class CrearUsuarioNaturalController extends Controller
 
           $nuevaClave = $seguridad->randKey(6);
 
-          $salt = $seguridad->randKey(6);
+          self::Utilidad($utilidad);
 
-          $password = $nuevaClave.$salt;
+          $password = $nuevaClave.$utilidad;
 
           $password_hash = md5($password);
          
           $arregloDatos['id_contribuyente'] = $model->id_contribuyente;
 
           $arregloDatos['login'] = $model->email;
-
-          $arregloDatos['salt'] = $salt;
 
           $arregloDatos['password_hash'] = $password_hash;
 
