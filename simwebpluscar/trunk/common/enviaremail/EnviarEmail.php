@@ -1,3 +1,4 @@
+
 <?php
 
 /**
@@ -64,9 +65,11 @@ class EnviarEmail extends Model{
        return Yii::$app->mailer->compose()
         ->setFrom('manuelz0510@gmail.com')
         ->setTo('manuel1122@hotmail.com')
-        ->setSubject('sujeto')
-        ->setTextBody('texto del cuerpo')
-        ->setHtmlBody('cuerpo del html')
+        ->setSubject('Usuario y contraseña')
+        ->setTextBody('Con este usuario y contraseña podras ingresar al sistema')
+        ->setHtmlBody('Su nueva clave y contraseña son:'
+                        Usuario : $model->email 
+                        Password: $model->nuevaClave)
         ->send();
 
     }
