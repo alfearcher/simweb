@@ -58,7 +58,7 @@ use yii\db\ActiveRecord;
 
 class EnviarEmail extends Model{
   
-    public function enviarEmail()
+    public function enviarEmail($model)
     {
 
        return Yii::$app->mailer->compose()
