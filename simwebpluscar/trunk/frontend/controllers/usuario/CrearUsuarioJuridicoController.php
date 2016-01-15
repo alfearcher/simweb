@@ -285,7 +285,7 @@ class CrearUsuarioJuridicoController extends Controller
 
           $nuevaClave = $seguridad->randKey(6);
 
-          $salt = $seguridad->randKey(6);
+          $salt = Utilidad::getUtilidad();
 
           $password = $nuevaClave.$salt;
 
@@ -294,8 +294,6 @@ class CrearUsuarioJuridicoController extends Controller
           $arregloDatos['id_contribuyente'] = $model->id_contribuyente;
 
           $arregloDatos['login'] = $model->email;
-
-          $arregloDatos['salt'] = $salt;
 
           $arregloDatos['password_hash'] = $password_hash;
 
@@ -310,7 +308,7 @@ class CrearUsuarioJuridicoController extends Controller
 
                $enviarEmail = new EnviarEmail();
  
-                $enviarEmail->enviarEmail();
+                $enviarEmail->enviarEmail($model->email, $nuevaClave);
 
                  
             
