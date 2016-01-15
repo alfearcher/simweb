@@ -29,7 +29,7 @@
  * 
  *  @class IntegracionInmueblesUrbanosController
  *  @brief Clase que permite controlar la integracion del inmueble urbano, 
- *  el cambio ha propiedad horizontal
+ *  
  *
  * 
  *  
@@ -109,7 +109,7 @@ class IntegracionInmueblesUrbanosController extends Controller
          } 
 
          $datosCambio = Yii::$app->request->post("InmueblesUrbanosForm");
-         $btn = Yii::$app->request->post();
+         $btn = Yii::$app->request->post(); 
 
 
          if ($model->load(Yii::$app->request->post())){
@@ -158,7 +158,7 @@ CONTENIDO DE LA INTEGRACION DEL INMUEBLE
 
 
                         //--------------TRY---------------
-                        $arrayDatos = [
+                        $arrayDatos = [ 
                                         'id_contribuyente' => $id_contribuyenteComprador,
                                       ]; 
                         

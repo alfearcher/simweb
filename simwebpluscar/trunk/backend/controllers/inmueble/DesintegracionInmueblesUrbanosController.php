@@ -29,7 +29,7 @@
  * 
  *  @class DesintegracionInmueblesUrbanosController
  *  @brief Clase que permite controlar la desintegracion del inmueble urbano, 
- *  el cambio ha propiedad horizontal
+ *  
  *
  * 
  *  
