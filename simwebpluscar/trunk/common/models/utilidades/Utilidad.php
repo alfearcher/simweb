@@ -40,7 +40,7 @@
  *
  */
 
-	namespace common\models\aaee;
+	namespace common\models\utilidades;
 
  	use Yii;
 	use yii\base\Model;
@@ -61,7 +61,7 @@
 		{
 
 			const $utilidad = '14adf8';
-			
+			return $utilidad;
 		}
 
 
