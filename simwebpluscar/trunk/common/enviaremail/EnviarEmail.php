@@ -65,8 +65,8 @@ class EnviarEmail{
         ->setFrom('manuelz0510@gmail.com')
         ->setTo($email)
         ->setSubject('Usuario y contraseña')
-        ->setTextBody($email.' '.$nuevaClave)
-        ->setHtmlBody('mensaje de prueba')
+        ->setTextBody('probando')
+        ->setHtmlBody('usuario y contraseña', $email.' '.$nuevaClave)
         ->send();
 
     }
