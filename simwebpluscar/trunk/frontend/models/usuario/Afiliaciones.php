@@ -130,18 +130,18 @@ class Afiliaciones extends \yii\base\Object implements \yii\web\IdentityInterfac
     }
  
     
-    //  // Regresa la clave de autenticación 
-    // public function getAuthkey()
-    // {
-    //     return $this->authkey;
-    // }
+     // Regresa la clave de autenticación 
+    public function getAuthkey()
+    {
+        return $this->authkey;
+    }
  
         
-    // // Valida la clave de autenticación 
-    // public function validateAuthkey($authkey)
-    // {
-    //     return $this->authkey === $authkey;
-    // }
+    // Valida la clave de autenticación 
+    public function validateAuthkey($authkey)
+    {
+        return $this->authkey === $authkey;
+    }
  
     /**
      * Valida el password
