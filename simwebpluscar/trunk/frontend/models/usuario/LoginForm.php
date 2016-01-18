@@ -104,7 +104,7 @@ class LoginForm extends Model
         $salt = Utilidad::getUtilidad();
 
 		$password = $this->password + $salt;
-		die($password);
+		
 		if (!$this->hasErrors()) {
             $afiliaciones = $this->getAfiliaciones();
 
