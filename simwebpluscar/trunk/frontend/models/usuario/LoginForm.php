@@ -106,7 +106,7 @@ class LoginForm extends Model
             $afiliaciones = $this->getAfiliaciones();
 
             if (!$afiliaciones || !$afiliaciones->validatePassword($this->password)) {
-                $this->addError($attribute, 'Usuario incorrecto.');
+                $this->addError($attribute, 'Usuario incorrto.');
             }
         } //  fin validate password */                          
     }

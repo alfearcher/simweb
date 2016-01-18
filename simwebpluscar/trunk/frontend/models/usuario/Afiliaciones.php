@@ -73,8 +73,7 @@ class Afiliaciones extends \yii\base\Object implements \yii\web\IdentityInterfac
 	public $confirmar_email;
 	public $salt;
     public $password_hash;
-    public $email;
-
+   
     
     /* busca la identidad del usuario a través de su $id */
      public static function findIdentity($id_afiliacion)
@@ -85,20 +84,20 @@ class Afiliaciones extends \yii\base\Object implements \yii\web\IdentityInterfac
                 ->andWhere("id_afiliacion=:id_afiliacion", [":id_afiliacion" => $id_afiliacion])
                 ->one();
          
-        return isset($afiliacion) ? new static($afiliacion) : null;
+        return isset($afiliaciones) ? new static($afiliaciones) : null;
     }
  
     /* Busca la identidad del usuario a través de su token de acceso */
     public static function findIdentityByAccessToken($token, $type = null)
     {
          
-        $afiliacion = Afiliacion::find()
+        $afiliaciones = Afiliacion::find()
                 ->where("activate=:activate", [":activate" => 1])
                 ->andWhere("accesstoken=:accesstoken", [":accesstoken" => $token])
                 ->all();
     
-        foreach ($afiliacion as $afiliacion) {
-            if ($afiliacion->email === $email) {
+        foreach ($afiliaciones as $afiliacion) {
+            if ($afiliacion->accesstoken === $token) {
                 return new static($afiliacion);
             }
         }
@@ -110,14 +109,14 @@ class Afiliaciones extends \yii\base\Object implements \yii\web\IdentityInterfac
     /* Busca la identidad del usuario a través del username */
     public static function findByUsername($email)
     {
-        $afiliacion = Afiliacion::find()
-                ->where("estatus=:estatus", ["estatus" => 0])
+        $afiliaciones = Afiliacion::find()
+                ->where("estatus=:estatus", ["estatus" => 1])
                 ->andWhere("login=:login", [":login" => $email])
                 ->all();
          
-        foreach ($afiliacion as $user) {
-            if (strcasecmp($user->login, $email) === 0) {
-                return new static($user);
+        foreach ($afiliaciones as $afiliacion) {
+            if (strcasecmp($afiliacion->login, $login) === 0) {
+                return new static($afiliacion);
             }
         }
  
@@ -148,19 +147,21 @@ class Afiliaciones extends \yii\base\Object implements \yii\web\IdentityInterfac
     /**
      * Valida el password
      */
-    public function validatePassword($password)
+    public function validatePassword($nuevaClave, $password_hash)
     {
         $salt = Utilidad::getUtilidad();
+
+        die($salt);
 	    		
-	    $clave = $password + $salt;
+	    $nuevaClave = $password + $salt;
 		
         /* Valida el password */
         if (crypt($password, $this->password) == $this->password)
         {
-        return $password === $password;
+        return $password === $password_hash;
         }
 				
-		return $this->password === md5($clave);
+		return $this->password === md5($password_hash);
 		
     }
 	
