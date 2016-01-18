@@ -71,7 +71,6 @@ class Afiliaciones extends \yii\base\Object implements \yii\web\IdentityInterfac
 	public $estatus;
 	public $nivel;
 	public $confirmar_email;
-	public $salt;
     public $password_hash;
    
     
@@ -131,40 +130,38 @@ class Afiliaciones extends \yii\base\Object implements \yii\web\IdentityInterfac
     }
  
     
-     // Regresa la clave de autenticación 
-    public function getAuthkey()
-    {
-        return $this->authkey;
-    }
+    //  // Regresa la clave de autenticación 
+    // public function getAuthkey()
+    // {
+    //     return $this->authkey;
+    // }
  
         
-    // Valida la clave de autenticación 
-    public function validateAuthkey($authkey)
-    {
-        return $this->authkey === $authkey;
-    }
+    // // Valida la clave de autenticación 
+    // public function validateAuthkey($authkey)
+    // {
+    //     return $this->authkey === $authkey;
+    // }
  
     /**
      * Valida el password
      */
-    public function validatePassword($nuevaClave, $password_hash)
+    public function validatePassword($password)
     {
-        $salt = Utilidad::getUtilidad();
 
-        die($salt);
-	    		
-	    $nuevaClave = $password + $salt;
-		
+         $salt = Utilidad::getUtilidad();
+                
+        $clave = $password + $this->salt;
+
         /* Valida el password */
         if (crypt($password, $this->password) == $this->password)
         {
-        return $password === $password_hash;
+        return $password === $password;
         }
-				
-		return $this->password === md5($password_hash);
-		
+                
+        return $this->password === md5($clave);
+        
     }
-	
 	//  //  -------CONTROL DE ACCESO------
 	//  // CONTROL DE ACCESO USERS, FUNCIONARIO, ADMIN
 	 
