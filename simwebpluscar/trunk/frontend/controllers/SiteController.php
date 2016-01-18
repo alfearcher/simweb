@@ -78,7 +78,7 @@ public $layout = "layout-login";
      {
          if (!\Yii::$app->user->isGuest) 
          {
-               if (Afiliaciones::isUserAdmin(Yii::$app->afiliaciones->identity->id_afiliaciones))
+               if (Afiliaciones::isUserAdmin(Yii::$app->user->identity->id_afiliaciones))
                {
                    return $this->redirect(["site/index3"]);
                }
