@@ -103,10 +103,14 @@ class LoginForm extends Model
 	    //-----salt-------
         $salt = Utilidad::getUtilidad();
 
-		$password = $this->password + $salt;
+        $password = $this->password.$salt;
+
+         //die($password);
 		
 		if (!$this->hasErrors()) {
             $afiliaciones = $this->getAfiliaciones();
+
+            //die('llegue a usuario');
 
             if (!$afiliaciones || !$afiliaciones->validatePassword($this->password)) {
                 $this->addError($attribute, 'Usuario incorrecto.');
@@ -119,6 +123,7 @@ class LoginForm extends Model
     {
         if ($this->validate()) {
             return Yii::$app->user->login($this->getAfiliaciones(), $this->rememberMe ? 3600*24*30 : 0);
+            
         } else {
             return false;
         }

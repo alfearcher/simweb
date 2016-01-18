@@ -127,7 +127,9 @@ class Afiliaciones extends \yii\base\Object implements \yii\web\IdentityInterfac
     public function getId()
     {
         return $this->id_afiliacion;
+
     }
+
  
     
      // Regresa la clave de autenticación 
@@ -146,17 +148,18 @@ class Afiliaciones extends \yii\base\Object implements \yii\web\IdentityInterfac
     /**
      * Valida el password
      */
-    public function validatePassword($password){ 
+    public function validatePassword($password){    
     
 
          $salt = Utilidad::getUtilidad();
                 
-        $clave = $password + $salt;
+        $clave = $password.$salt;
+        die($clave);
 
         /* Valida el password */
-        if (crypt($password, $this->password) == $this->password_hash)
+        if (crypt($clave, $this->password) == $this->password_hash)
         {
-        return $password === $password_hash;
+        return $clave === $password_hash;
         }
                 
         return $this->password === md5($clave);
