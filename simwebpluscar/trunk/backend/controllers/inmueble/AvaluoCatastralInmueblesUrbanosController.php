@@ -162,12 +162,13 @@ class AvaluoCatastralInmueblesUrbanosController extends Controller
                    
 /*
 CONTENIDO DEL AVALUO CATASTRAL
-*/  
+-tarifas avaluos tabla del monto de los metros de construccion y terreno
+*/
        
                 if ($datosCambio["operacion"] == 2) {
                     //echo'<pre>'; var_dump($btn['Next']); echo '</pre>'; die();
                     if ($btn['NextBuyer']!=null) {
-                        $contador = 1;
+                        $contador = 1; 
 
                         $datosVContribuyente = ContribuyentesForm::find()->where(['naturaleza'=>$datosCambio["naturalezaBuscar"]])
                                                                      ->andWhere(['cedula'=>$datosCambio["cedulaBuscar"]])
