@@ -51,6 +51,7 @@ namespace frontend\models\usuario;
 
 use Yii;
 use yii\base\Model;
+use common\models\utilidades\Utilidad;
 
 /**
  * LoginForm es el model del login de acceso.
@@ -98,9 +99,11 @@ class LoginForm extends Model
      */
     public function validatePassword($attribute, $params)
     {   
-	   
+	       
 	    //-----salt-------
-		$password = $this->password + $this->salt;
+        $salt = Utilidad::getUtilidad();
+
+		$password = $this->password + $salt;
 		
 		if (!$this->hasErrors()) {
             $afiliaciones = $this->getAfiliaciones();

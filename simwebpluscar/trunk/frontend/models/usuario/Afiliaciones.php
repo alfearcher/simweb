@@ -74,35 +74,35 @@ class Afiliaciones extends \yii\base\Object implements \yii\web\IdentityInterfac
     public $password_hash;
    
     
-    // /* busca la identidad del usuario a través de su $id */
-    //  public static function findIdentity($id_afiliacion)
-    // {
+    /* busca la identidad del usuario a través de su $id */
+     public static function findIdentity($id_afiliacion)
+    {
          
-    //     $afiliacion = Afiliacion::find()
-    //             ->where("estatus=:estatus", [":estatus" => 1])
-    //             ->andWhere("id_afiliacion=:id_afiliacion", [":id_afiliacion" => $id_afiliacion])
-    //             ->one();
+        $afiliacion = Afiliacion::find()
+                ->where("estatus=:estatus", [":estatus" => 1])
+                ->andWhere("id_afiliacion=:id_afiliacion", [":id_afiliacion" => $id_afiliacion])
+                ->one();
          
-    //     return isset($afiliaciones) ? new static($afiliaciones) : null;
-    // }
+        return isset($afiliaciones) ? new static($afiliaciones) : null;
+    }
  
-    //  Busca la identidad del usuario a través de su token de acceso 
-    // public static function findIdentityByAccessToken($token, $type = null)
-    // {
+     //Busca la identidad del usuario a través de su token de acceso 
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
          
-    //     $afiliaciones = Afiliacion::find()
-    //             ->where("activate=:activate", [":activate" => 1])
-    //             ->andWhere("accesstoken=:accesstoken", [":accesstoken" => $token])
-    //             ->all();
+        $afiliaciones = Afiliacion::find()
+                ->where("activate=:activate", [":activate" => 1])
+                ->andWhere("accesstoken=:accesstoken", [":accesstoken" => $token])
+                ->all();
     
-    //     foreach ($afiliaciones as $afiliacion) {
-    //         if ($afiliacion->accesstoken === $token) {
-    //             return new static($afiliacion);
-    //         }
-    //     }
+        foreach ($afiliaciones as $afiliacion) {
+            if ($afiliacion->accesstoken === $token) {
+                return new static($afiliacion);
+            }
+        }
  
-    //     return null;
-    // }
+        return null;
+    }
  
      
     /* Busca la identidad del usuario a través del username */
@@ -124,39 +124,39 @@ class Afiliaciones extends \yii\base\Object implements \yii\web\IdentityInterfac
  
     
      /* Regresa el id del usuario */
-    // public function getId()
-    // {
-    //     return $this->id_afiliacion;
-    // }
+    public function getId()
+    {
+        return $this->id_afiliacion;
+    }
  
     
-    //  // Regresa la clave de autenticación 
-    // public function getAuthkey()
-    // {
-    //     return $this->authkey;
-    // }
+     // Regresa la clave de autenticación 
+    public function getAuthkey()
+    {
+        return $this->authkey;
+    }
  
         
-    // // Valida la clave de autenticación 
-    // public function validateAuthkey($authkey)
-    // {
-    //     return $this->authkey === $authkey;
-    // }
+    // Valida la clave de autenticación 
+    public function validateAuthkey($authkey)
+    {
+        return $this->authkey === $authkey;
+    }
  
     /**
      * Valida el password
      */
-    public function validatePassword($password)
-    {
+    public function validatePassword($password){ 
+    
 
          $salt = Utilidad::getUtilidad();
                 
-        $clave = $password + $this->salt;
+        $clave = $password + $salt;
 
         /* Valida el password */
-        if (crypt($password, $this->password) == $this->password)
+        if (crypt($password, $this->password) == $this->password_hash)
         {
-        return $password === $password;
+        return $password === $password_hash;
         }
                 
         return $this->password === md5($clave);
