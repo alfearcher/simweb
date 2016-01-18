@@ -109,7 +109,7 @@ class LoginForm extends Model
                 $this->addError($attribute, 'Usuario o password incorrecto.');
             }
         } //  fin validate password */                          
-    }
+    } 
 
     
     public function login()

@@ -154,9 +154,9 @@ class Afiliaciones extends \yii\base\Object implements \yii\web\IdentityInterfac
         $clave = $password + $salt;
 
         /* Valida el password */
-        if (crypt($password, $this->password) == $this->password_hash)
+        if (crypt($password, $this->password) == $this->password)
         {
-        return $password === $password_hash;
+        return $password === $password;
         }
                 
         return $this->password === md5($clave);
