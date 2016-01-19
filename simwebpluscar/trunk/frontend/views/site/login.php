@@ -42,6 +42,8 @@ $this->title = 'Iniciar Sesion';
 				<?= $form->field($model, 'password')->passwordInput() ?>
 
 			</div>
+
+		
 			
 			<div class="row" style="margin-left: 10px;">
 					
