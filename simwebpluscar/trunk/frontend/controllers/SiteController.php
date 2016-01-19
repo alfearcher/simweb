@@ -12,6 +12,9 @@ use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use frontend\models\usuario\Afiliaciones;
+use frontend\models\usuario\CrearUsuarioJuridicoForm;
+use frontend\controllers\mensaje\MensajeController;
 
 /**
  * Site controller
@@ -76,52 +79,48 @@ public $layout = "layout-login";
       
       public function actionLogin()
      {
-         if (!\Yii::$app->user->isGuest) 
-         {
-               if (Afiliaciones::isUserAdmin(Yii::$app->user->identity->id_afiliaciones))
-               {
-                   return $this->redirect(["site/index3"]);
-               }
-             if (Afiliaciones::isUserFuncionario(Yii::$app->user->identity->id_afiliaciones))
-               {
-                   return $this->redirect(["site/index"]);
-               }
-               else
-               {
-                   return $this->redirect(["site/index2"]);
-               }
-         }     
-       
         
-          $model = new LoginForm();
-          if ($model->load(Yii::$app->request->post()) && $model->login()) 
-          {
-                if (Afiliaciones::isUserAdmin(Yii::$app->user->identity->id_funcionario))
-                {
-                    //return $this->redirect(["site/index3"]);
-                      //return $this->redirect(["@backend/views/menu/vertical"]);
-      
+            $mensajeError = '';
+            $model = New LoginForm();
+
+              $postData = Yii::$app->request->post();
+
+              if ( $model->load($postData) && Yii::$app->request->isAjax ) {
+                  Yii::$app->response->format = Response::FORMAT_JSON;
+                  return ActiveForm::validate($model);
+              }
+
+                if ( $model->load($postData) ) {
+
+                    if ($model->validate()){
+
+                      $validar = new Afiliaciones();
+
+                        $x = $validar->ValidarUsuario($model);
+
+                          if ($x){
+
+                          $y = $validar->ValidarUsuarioContribuyente($x);
+                        
+                          if ($y){
+                            return $this->render('site/index3');
+                          
+                          } else {
+
+                            return MensajeController::actionMensaje('Your are not signed yet, Please go back and sign ');
+                          }
+
+                          } else {
+                           
+                           $model->addError('email', 'Usuario Y/o Contraseña Incorrectas');
+                          
+                          }
+                     
+                    }
+                        
                 }
-                  if (Afiliaciones::isUserFuncionario(Yii::$app->user->identity->id_funcionario))
-                  {
-                    //return $this->redirect(["site/index"]);
+              return $this->render('login' , ['model' => $model]);
 
-                  //MenuController::actionVertical();
-
-                    return $this->redirect(["/menu/vertical"]);                  
-                    
-                  }
-                  else
-                  {
-                    return $this->redirect(["site/index2"]);
-                  }
-          } 
-              else 
-              {
-              return $this->render('login', [
-                                   'model' => $model,
-                                             ]);
-          }
      }
 
      
