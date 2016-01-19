@@ -103,7 +103,7 @@ public $layout = "layout-login";
                           $y = $validar->ValidarUsuarioContribuyente($x);
                         
                           if ($y){
-                            return $this->render('index');
+                            return $this->render('/menu/menuvertical2');
                           
                           } else {
 
