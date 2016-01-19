@@ -103,7 +103,7 @@ public $layout = "layout-login";
                           $y = $validar->ValidarUsuarioContribuyente($x);
                         
                           if ($y){
-                            return $this->render('site/index3');
+                            return $this->render('index');
                           
                           } else {
 
