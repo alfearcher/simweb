@@ -55,8 +55,11 @@
 namespace frontend\models\usuario;
 
 use common\models\utilidades\Utilidad;
+use frontend\models\usuario\loginForm;
+use frontend\models\usuario\Afiliaciones;
+use frontend\models\usuario\CrearUsuarioJuridicoForm;
  
-class Afiliaciones extends \yii\base\Object implements \yii\web\IdentityInterface
+class Afiliaciones extends Afiliacion 
 {
      
     public $id_afiliacion;
@@ -75,127 +78,57 @@ class Afiliaciones extends \yii\base\Object implements \yii\web\IdentityInterfac
    
     
     /* busca la identidad del usuario a través de su $id */
-     public static function findIdentity($id_afiliacion)
+    public function ValidarUsuario($model)
     {
-         
-        $afiliacion = Afiliacion::find()
-                ->where("estatus=:estatus", [":estatus" => 1])
-                ->andWhere("id_afiliacion=:id_afiliacion", [":id_afiliacion" => $id_afiliacion])
-                ->one();
-         
-        return isset($afiliaciones) ? new static($afiliaciones) : null;
-    }
- 
-     //Busca la identidad del usuario a través de su token de acceso 
-    public static function findIdentityByAccessToken($token, $type = null)
-    {
-         
-        $afiliaciones = Afiliacion::find()
-                ->where("activate=:activate", [":activate" => 1])
-                ->andWhere("accesstoken=:accesstoken", [":accesstoken" => $token])
-                ->all();
     
-        foreach ($afiliaciones as $afiliacion) {
-            if ($afiliacion->accesstoken === $token) {
-                return new static($afiliacion);
-            }
-        }
- 
-        return null;
-    }
- 
+    $salt = Utilidad::getUtilidad();
      
-    /* Busca la identidad del usuario a través del username */
-    public static function findByUsername($email)
-    {
-        $afiliaciones = Afiliacion::find()
-                ->where("estatus=:estatus", ["estatus" => 1])
-                ->andWhere("login=:login", [":login" => $email])
-                ->all();
-         
-        foreach ($afiliaciones as $afiliacion) {
-            if (strcasecmp($afiliacion->login, $login) === 0) {
-                return new static($afiliacion);
-            }
-        }
- 
-        return null;
-    }
- 
-    
-     /* Regresa el id del usuario */
-    public function getId()
-    {
-        return $this->id_afiliacion;
+    $password = $model->password.$salt;
 
-    }
+    $clave = md5($password);
 
- 
-    
-     // Regresa la clave de autenticación 
-    public function getAuthkey()
-    {
-        return $this->authkey;
-    }
- 
+    $ValidarUsuario = Afiliacion::find()
+                                ->where([
+                                'login' => $model->email,
+                                'password_hash' => $clave,
+                                ])
+                                ->one();
+
+        if($ValidarUsuario){
         
-    // Valida la clave de autenticación 
-    public function validateAuthkey($authkey)
-    {
-        return $this->authkey === $authkey;
-    }
- 
-    /**
-     * Valida el password
-     */
-    public function validatePassword($password){    
-    
-
-         $salt = Utilidad::getUtilidad();
-                
-        $clave = $password.$salt;
-        die($clave);
-
-        /* Valida el password */
-        if (crypt($clave, $this->password) == $this->password_hash)
-        {
-        return $clave === $password_hash;
-        }
-                
-        return $this->password === md5($clave);
+            return $ValidarUsuario;  
         
-    }
-	//  //  -------CONTROL DE ACCESO------
-	//  // CONTROL DE ACCESO USERS, FUNCIONARIO, ADMIN
-	 
-	// public static function isUserAdmin($id_funcionario)
- //    {
- //       if (Users::findOne(['id_funcionario' => $id_funcionario, 'activate' => '1', 'role' => 3])){
- //       return true;
- //       } else {
- 
- //       return false;
- //       }
- 
- //     }
- //    public static function isUserFuncionario($id_funcionario)
- //    {
- //       if (Users::findOne(['id_funcionario' => $id_funcionario, 'activate' => '1', 'role' => 2])){
- //       return true;
- //       } else {
- 
- //       return false;
- //       }
- 
- //     }
- //     public static function isUserSimple($id_funcionario)
- //     {
- //        if (Users::findOne(['id_funcionario' => $id_funcionario, 'activate' => '1', 'role' => 1])){
- //        return true;
- //        } else {
- 
- //        return false; 
- //        }
- //     }
+        } else {
 
-}
+        return false;
+        //die('no encontro ');
+
+        }             
+
+
+    }   
+
+    public function ValidarUsuarioContribuyente($x)
+    {
+        $validarC = CrearUsuarioJuridico::find()
+                                    ->where([
+                                    'id_contribuyente' => $x->id_contribuyente,
+                                    ])
+                                    ->one();
+
+    
+                if($validarC){
+                // die('encontro');
+
+                return $validarC;
+
+                } else {
+
+                    return false;
+                //die('no encontro ');
+
+                }             
+
+
+    }
+ }

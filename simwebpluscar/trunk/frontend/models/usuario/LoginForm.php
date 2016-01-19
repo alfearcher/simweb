@@ -52,6 +52,7 @@ namespace frontend\models\usuario;
 use Yii;
 use yii\base\Model;
 use common\models\utilidades\Utilidad;
+use frontend\models\usuario\Afiliaciones;
 
 /**
  * LoginForm es el model del login de acceso.
@@ -77,8 +78,9 @@ class LoginForm extends Model
             [['email', 'password'], 'required', 'message' => 'Campo requerido'],
             // rememberMe es un valor booleano
             ['rememberMe', 'boolean'],
+            
             // password es validado por validatePassword()
-            ['password', 'validatePassword'],
+           
         ];
     }
 	/*
@@ -93,49 +95,9 @@ class LoginForm extends Model
               ];
 }
 
-    /**
-     * Validates the password.
-     * Este metodo realiza la validation del password.
-     */
-    public function validatePassword($attribute, $params)
-    {   
-	       
-	    //-----salt-------
-        $salt = Utilidad::getUtilidad();
-
-        $password = $this->password.$salt;
-
-         //die($password);
-		
-		if (!$this->hasErrors()) {
-            $afiliaciones = $this->getAfiliaciones();
-
-            //die('llegue a usuario');
-
-            if (!$afiliaciones || !$afiliaciones->validatePassword($this->password)) {
-                $this->addError($attribute, 'Usuario incorrecto.');
-            }
-        } //  fin validate password */                          
-    }
+    
+	
 
     
-    public function login()
-    {
-        if ($this->validate()) {
-            return Yii::$app->user->login($this->getAfiliaciones(), $this->rememberMe ? 3600*24*30 : 0);
-            
-        } else {
-            return false;
-        }
-    }
-
-    
-    public function getAfiliaciones()
-    {
-        if ($this->_user === false) {
-            $this->_user = Afiliaciones::findByUsername($this->email);
-        }
-
-        return $this->_user;
-    }
+   
 }
