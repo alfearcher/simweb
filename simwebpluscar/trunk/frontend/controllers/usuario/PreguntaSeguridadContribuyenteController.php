@@ -152,7 +152,7 @@ class PreguntaSeguridadContribuyenteController extends Controller
 
           $transaccion = $conn->beginTransaction();
 
-           if ($conexion->guardarRegistroAfiliacion($conn, $tabla, $arregloDatos)){
+           if ($conexion->guardarLoteRegistro($conn, $tabla, $arregloDatos)){
 
               $resultado = true;
 
