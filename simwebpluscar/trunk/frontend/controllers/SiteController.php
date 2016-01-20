@@ -15,6 +15,9 @@ use yii\filters\AccessControl;
 use frontend\models\usuario\Afiliaciones;
 use frontend\models\usuario\CrearUsuarioJuridicoForm;
 use frontend\controllers\mensaje\MensajeController;
+use frontend\models\usuario\PreguntaSeguridadContribuyenteForm;
+use frontend\controller\usuario\PreguntaSeguridadContribuyenteController;
+
 
 /**
  * Site controller
@@ -103,8 +106,30 @@ public $layout = "layout-login";
                           $y = $validar->ValidarUsuarioContribuyente($x);
                         
                           if ($y){
-                            return $this->render('/menu/menuvertical2');
-                          
+
+                            $pregunta = new PreguntaSeguridadContribuyenteForm();
+
+                            $z = $pregunta->ValidarPreguntaSeguridad($model);
+
+
+                            
+                            if ($x and $y == true and $z == null){
+                                //die('llegue a validacion pregunta');
+                                return $this->redirect(['/usuario/pregunta-seguridad-contribuyente/crear-pregunta-seguridad-contribuyente', 
+                                                                                                                       
+                                                                                                                        'id_contribuyente' => $x->id_contribuyente,
+                                                                                                                        
+                                                                                                                        ]);
+
+
+                            }else{                                                                                      
+
+
+
+
+
+                            return $this->render('index');
+                           }
                           } else {
 
                             return MensajeController::actionMensaje('Your are not signed yet, Please go back and sign ');

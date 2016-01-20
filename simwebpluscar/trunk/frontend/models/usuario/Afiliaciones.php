@@ -131,4 +131,32 @@ class Afiliaciones extends Afiliacion
 
 
     }
+
+
+    public function buscarDatos($id_contribuyente)
+    {
+        $buscarDatos = Afiliacion::find()
+                                    ->where([
+                                    'id_contribuyente' => $id_contribuyente,
+                                    ])
+                                    ->one();
+
+                                   // die(var_dump($buscarDatos));
+
+    
+                if($buscarDatos){
+                // die('encontro');
+
+                return $buscarDatos;
+
+                } else {
+
+                    return false;
+                //die('no encontro ');
+
+                }             
+
+
+    }
  }
+ ?>
