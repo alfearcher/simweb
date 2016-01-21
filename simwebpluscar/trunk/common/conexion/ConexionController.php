@@ -243,6 +243,22 @@
 			}
 		}
 
+			public function guardarLoteRegistrosPreguntas($conection, $tableName, $arrayColumna = [], $arrayValores = [])
+		{
+			// Se controla que existe un usuario activo valido.
+			
+			
+				try {
+					$conection->createCommand()->batchInsert($tableName, $arrayColumna, $arrayValores)->execute();
+					return true;
+				} catch (PDOException $e) {
+					return false;
+				}
+			  
+				return false;
+			
+		  
+		}
 
 
 
