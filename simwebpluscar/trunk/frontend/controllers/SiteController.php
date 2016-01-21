@@ -109,7 +109,7 @@ public $layout = "layout-login";
 
                             $pregunta = new PreguntaSeguridadContribuyenteForm();
 
-                            $z = $pregunta->ValidarPreguntaSeguridad($model);
+                            $z = $pregunta->ValidarPreguntaSeguridad($model, $x->id_contribuyente);
 
 
                             

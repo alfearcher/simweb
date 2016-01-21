@@ -136,9 +136,9 @@ class PreguntaSeguridadContribuyenteController extends Controller
 
 
           $arrayValores = [ 
-                            [$model->pregunta1, $model->respuesta1, $datos->login, 0,  0],
-                            [$model->pregunta2, $model->respuesta2 , $datos->login, 0, 1],
-                            [$model->pregunta3, $model->respuesta3 , $datos->login, 0, 2],
+                            [$datos->login, $datos->id_contribuyente, $model->pregunta1, $model->respuesta1,  0,  0],
+                            [$datos->login, $datos->id_contribuyente,$model->pregunta2, $model->respuesta2  , 0, 1],
+                            [$datos->login, $datos->id_contribuyente,$model->pregunta3, $model->respuesta3 , 0, 2],
                           ];
                             //die(var_dump($arrayValores));
           
@@ -152,11 +152,11 @@ class PreguntaSeguridadContribuyenteController extends Controller
 
           $transaccion = $conn->beginTransaction();
 
-           if ($conexion->guardarLoteRegistro($conn, $tabla, $arregloDatos)){
+           if ($conexion->guardarLoteRegistrosPreguntas($conn, $tabla, $arrayColumna, $arrayValores)){
 
               $resultado = true;
 
-              $transaccion->commit();
+             $transaccion->commit();
               die('guardo');
             }else {
               $transaccion->rollback();
