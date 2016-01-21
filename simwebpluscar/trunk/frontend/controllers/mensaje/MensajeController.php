@@ -64,7 +64,7 @@
 
 
 
-    	public function actionMensaje($cuerpoMensaje = '', $tipoModal = true, $url)
+    	public function actionMensaje($cuerpoMensaje = '', $tipoModal = true)
     	{
     		return $this->render('/mensaje/mensaje-modal', ['cuerpoMensaje' => $cuerpoMensaje, 'tipoModal' => $tipoModal]);
     	}
