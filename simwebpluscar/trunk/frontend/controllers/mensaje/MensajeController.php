@@ -45,7 +45,7 @@
 
  namespace frontend\controllers\mensaje;
 
-
+sleep(5);
  	use Yii;
 	use yii\filters\AccessControl;
 	use yii\web\Controller;
@@ -62,7 +62,7 @@
 	{
 		public $layout = 'layout-main';				//	Layout principal del formulario
 
-		sleep(5);
+		
 
     	public function actionMensaje($cuerpoMensaje = '', $tipoModal = true)
     	{
