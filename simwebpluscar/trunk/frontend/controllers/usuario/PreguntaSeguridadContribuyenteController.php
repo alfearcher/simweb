@@ -61,6 +61,7 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use frontend\models\usuario\Afiliaciones;
 use common\conexion\ConexionController;
+use frontend\controllers\mensaje\MensajeController;
 
 /**
  * Site controller
@@ -157,7 +158,9 @@ class PreguntaSeguridadContribuyenteController extends Controller
               $resultado = true;
 
              $transaccion->commit();
-              die('guardo');
+              $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['index'] "'>";  
+               return MensajeController::actionMensaje('We have saved your security answers'.$url);
+             // die('guardo');
             }else {
               $transaccion->rollback();
              die('no guardo');
