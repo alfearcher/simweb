@@ -158,8 +158,8 @@ class PreguntaSeguridadContribuyenteController extends Controller
               $resultado = true;
 
             // $transaccion->commit();
-              $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['index']). "'>";  
-               return MensajeController::actionMensaje('We have saved your security answers'.$url);
+             // $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['index']). "'>";  
+               return MensajeController::actionMensaje('We have saved your security answers');
               // return $this->redirect(['/site/index']);
              // die('guardo');
             }else {
