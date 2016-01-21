@@ -105,15 +105,19 @@ class PreguntaSeguridadContribuyenteForm extends PreguntaSeguridadContribuyente
 	
 
     
-    public function ValidarPreguntaSeguridad($model){
+    public function ValidarPreguntaSeguridad($model, $id_contribuyente){
+
+       // die(var_dump($model));
 
         $validarPregunta = PreguntaSeguridadContribuyente::find()
                                 ->where([
                                 'usuario' => $model->email,
-                                'password' =>$model->password,
+                                'id_contribuyente' => $id_contribuyente,
+                              
                                 'inactivo' => 0,
                                 ])
                                 ->one();
+
 
 
         if($validarPregunta != null){
