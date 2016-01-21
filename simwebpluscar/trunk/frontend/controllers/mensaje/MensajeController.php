@@ -62,7 +62,7 @@
 	{
 		public $layout = 'layout-main';				//	Layout principal del formulario
 
-		sleep(10);
+		sleep(5);
 
     	public function actionMensaje($cuerpoMensaje = '', $tipoModal = true)
     	{
