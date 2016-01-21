@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *	@copyright © by ASIS CONSULTORES 2012 - 2016
  *  All rights reserved - SIMWebPLUS
@@ -44,8 +43,8 @@
  */
 
 
- 	namespace frontend\controllers\mensaje;
-sleep(10);
+ namespace frontend\controllers\mensaje;
+
 
  	use Yii;
 	use yii\filters\AccessControl;
@@ -63,7 +62,7 @@ sleep(10);
 	{
 		public $layout = 'layout-main';				//	Layout principal del formulario
 
-
+		sleep(10);
 
     	public function actionMensaje($cuerpoMensaje = '', $tipoModal = true)
     	{
