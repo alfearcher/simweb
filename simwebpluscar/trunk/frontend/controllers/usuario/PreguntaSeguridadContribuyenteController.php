@@ -158,7 +158,7 @@ class PreguntaSeguridadContribuyenteController extends Controller
               $resultado = true;
 
              $transaccion->commit();
-              $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['index'] "'>";  
+              $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['index']. "'>";  
                return MensajeController::actionMensaje('We have saved your security answers'.$url);
              // die('guardo');
             }else {
