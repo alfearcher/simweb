@@ -62,7 +62,7 @@ use yii\filters\AccessControl;
 use frontend\models\usuario\Afiliaciones;
 use common\conexion\ConexionController;
 use frontend\controllers\mensaje\MensajeController;
-use Yii\helpers\url;
+use Yii\helpers\Url;
 /**
  * Site controller
  */
