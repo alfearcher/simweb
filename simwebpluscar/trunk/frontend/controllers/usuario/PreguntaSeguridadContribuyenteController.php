@@ -96,9 +96,13 @@ class PreguntaSeguridadContribuyenteController extends Controller
 
                     if ($model->validate()){
                       //die('metodo guardar');
-                      self::guardarPreguntaSeguridad($id_contribuyente, $model);
-
-
+                      
+                      $resultado = self::guardarPreguntaSeguridad($id_contribuyente,$model);
+                      if ($resultado == true ){
+                      return MensajeController::actionMensaje('We have saved your security answers');
+                        }else{
+                          return MensajeController::actionMensaje('An error ocurred while we were trying to save this');
+                        }
                       
                     }
                         
@@ -158,15 +162,18 @@ class PreguntaSeguridadContribuyenteController extends Controller
               $resultado = true;
 
             // $transaccion->commit();
+            die('guardo');
             //  $conn->close();
+              return true;
              //die('guardo');
              // $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['index']). "'>";  
-               return MensajeController::actionMensaje('We have saved your security answers');
-              // return $this->redirect(['/site/index']);
+               
+               return $this->redirect(['/site/index']);
              // die('guardo');
             }else {
               $transaccion->rollback();
                $conn->close();
+               return false;
              die('no guardo');
             }
 
