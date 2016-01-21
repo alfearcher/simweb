@@ -1,6 +1,6 @@
 <?php
 
-sleep(10);
+
 /**
  *	@copyright © by ASIS CONSULTORES 2012 - 2016
  *  All rights reserved - SIMWebPLUS
@@ -45,7 +45,7 @@ sleep(10);
 
 
  	namespace frontend\controllers\mensaje;
-
+sleep(10);
 
  	use Yii;
 	use yii\filters\AccessControl;
