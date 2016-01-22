@@ -161,7 +161,7 @@ class PreguntaSeguridadContribuyenteController extends Controller
 
               $resultado = true;
 
-            // $transaccion->commit();
+             $transaccion->commit();
            // die('guardo');
             //  $conn->close();
               return true;
