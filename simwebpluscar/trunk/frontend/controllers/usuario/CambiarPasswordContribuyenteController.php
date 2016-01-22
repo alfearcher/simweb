@@ -61,7 +61,8 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use frontend\models\usuario\VerificarPreguntasContribuyenteNaturalForm;
 use frontend\models\usuario\VerificarPreguntasContribuyenteJuridicoForm;
-
+use frontend\controllers\mensaje\MensajeController;
+use frontend\models\usuario\ValidarCambiarPasswordNaturalForm;
 
 
 /**
@@ -101,27 +102,63 @@ class CambiarPasswordContribuyenteController extends Controller
                 
                 if ( $model->load($postData) ) {
 
+
                     if ($model->validate()){
 
                         $buscarId = new VerificarPreguntasContribuyenteNaturalForm();
 
-                     $p = $buscarId::buscarId($model);
-                     if ($p == true){
-                      $q =  $buscarId::buscarPreguntaSeguridad($p);
+                        $p = $buscarId::buscarIdContribuyente($model);
+                        if ($p == true){
 
-                      if ($q == true){ 
-                        return $this->redirect(['/site/index']);
+                            $r = $buscarId::buscarIdAfiliaciones($p->id_contribuyente);
+
+                            if ($r == true){
+                                //die($p->id_contribuyente);
+                          
+                                $q =  $buscarId::buscarPreguntaSeguridad($p->id_contribuyente);
+                             //die(var_dump($q));
+
+                                if ($q == true){
+
+                                    //die(var_dump($q));
+                                $pregunta1 = $q[0]->pregunta;
+                                $pregunta2 = $q[1]->pregunta;
+                                $pregunta3 = $q[2]->pregunta;
+                                    //die($q[2]->pregunta); 
+
+                                    return $this->redirect(['/usuario/cambiar-password-contribuyente/mostrar-pregunta-seguridad-natural',
+                                                                                                                        'pregunta1' => $pregunta1,
+                                                                                                                        'pregunta2' => $pregunta2,
+                                                                                                                        'pregunta3' => $pregunta3,
+                                                                                                                            ]);
+                                } else {
+
+                                   return MensajeController::actionMensaje(Yii::t('frontend','You have not asigned security answers yet, please go to the city hall')); 
+                                }
+                          }else {
+                            die('no estas en afiliacion');
+                         
+                       
+                      //die(var_dump($q));
+
+                     
+                    }
+
                     }else{
-                        die('dirigirse a la alcaldia');
-                     }
+                        return MensajeController::actionMensaje(Yii::t('frontend','Please Go to your city hall to reset the password'));
                     }
-
-                    }
-                        
                 }
-              return $this->render('/usuario/verificar-preguntas-seguridad-natural' , ['model' => $model]);
 
-      } 
+            }
+
+
+
+                        
+                
+              return $this->render('/usuario/verificar-preguntas-seguridad-natural' , ['model' => $model]);
+                    
+
+    } 
 
        public function actionCambiarPasswordJuridico()
     {
@@ -152,6 +189,49 @@ class CambiarPasswordContribuyenteController extends Controller
               return $this->render('/usuario/verificar-preguntas-seguridad-juridico' , ['model' => $model]);
 
       } 
+
+      public function actionMostrarPreguntaSeguridadNatural($pregunta1, $pregunta2, $pregunta3){
+
+        $model = New ValidarCambiarPasswordNaturalForm();
+
+              $postData = Yii::$app->request->post();
+
+              if ( $model->load($postData) && Yii::$app->request->isAjax ) {
+                  Yii::$app->response->format = Response::FORMAT_JSON;
+                  return ActiveForm::validate($model);
+              }
+
+                //die('llegue2');
+                
+                if ( $model->load($postData) ) {
+
+                    if ($model->validate()){
+
+                      //return self::actionBuscarRif($model->naturaleza, $model->cedula,$model->tipo );
+
+                      //return $this->redirect(['juridico']);
+
+                          //return $this->redirect(['buscar-rif']);
+                    }
+                        
+                }
+              
+
+
+        return $this->render('/usuario/mostrar-pregunta-seguridad-natural' , 
+                                                        [
+                                                        'model' => $model,
+                                                        'pregunta1' => $pregunta1,
+                                                        'pregunta2' => $pregunta2,
+                                                        'pregunta3' => $pregunta3,
+
+
+
+
+                                                        ]); 
+
+
+      }
 
    
       

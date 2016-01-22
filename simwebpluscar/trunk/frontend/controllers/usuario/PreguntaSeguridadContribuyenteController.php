@@ -99,9 +99,9 @@ class PreguntaSeguridadContribuyenteController extends Controller
                       
                       $resultado = self::guardarPreguntaSeguridad($id_contribuyente,$model);
                       if ($resultado == true ){
-                      return MensajeController::actionMensaje('We have saved your security answers');
+                      return MensajeController::actionMensaje(Yii::('frontend','We have saved your security answers');
                         }else{
-                          return MensajeController::actionMensaje('An error ocurred while we were trying to save this');
+                          return MensajeController::actionMensaje(Yii::('frontend','An error ocurred while we were trying to save this');
                         }
                       
                     }
