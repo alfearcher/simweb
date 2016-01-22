@@ -152,6 +152,8 @@ class CrearUsuarioJuridicoController extends Controller
                          
                          if ($resultado == true){
                              return MensajeController::actionMensaje(Yii::t('frontend', 'We have sent you an email with your new user and password'));
+                            
+
                          }else{
                              return MensajeController::actionMensaje(Yii::t('frontend', 'Sorry, there was a problem creating your account'));
                          }
@@ -444,18 +446,20 @@ class CrearUsuarioJuridicoController extends Controller
                 //die(var_dump($modelFind));
                 //die(var_dump($model));
                 $model->id_contribuyente = $idContribuyente;
-                $respuesta = self::salvarAfiliacion($conn, $conexion, $model );
+                $respuestaAfiliacion = self::salvarAfiliacion($conn, $conexion, $model );
 
-                  if ($respuesta == true){
+                  if ($respuestaAfiliacion == true){
                     
                     $transaccion->commit();
+                    $conn->close();
 
-                    return true;
+                    return $respuestaAfiliacion;
                    
 
 
                   }else {
                       $transaccion->rollback();
+                      $conn->close();
                       return false;
                   }
 
