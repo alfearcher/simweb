@@ -57,6 +57,7 @@ namespace frontend\models\usuario;
 use Yii;
 use yii\base\Model;
 use frontend\models\usuario\CrearUsuarioNatural;
+use frontend\models\usuario\PreguntaSeguridadContribuyente;
 
 class VerificarPreguntasContribuyenteNaturalForm extends CrearUsuarioNatural
 {
@@ -96,20 +97,21 @@ class VerificarPreguntasContribuyenteNaturalForm extends CrearUsuarioNatural
 	
 
     
-    public function BuscarIdContribuyenteNatural($model){
+    public function buscarId($model){
 
        // die(var_dump($model));
 
-        $validarPregunta = CrearUsuarioNatural::find()
+        $validarPregunta = CrearUsuarioNatural::find() 
                                 ->where([
                                 
-                                'id_contribuyente' => $model->id_contribuyente,
-                              
+                                'naturaleza' => $model->naturaleza,
+                                'cedula' => $model->cedula,
+                                
                               
                                 ])
                                 ->one();
-                                die($model->id_contribuyente);
-
+                               
+                            
 
         if($validarPregunta != null){
         
@@ -120,9 +122,37 @@ class VerificarPreguntasContribuyenteNaturalForm extends CrearUsuarioNatural
         return false;
         //die('no encontro ');
 
+        }
+         } 
+
+        public function buscarPreguntaSeguridad($p){
+
+            $validarPreguntaSeguridad = PreguntaSeguridadContribuyente::find() 
+                                ->where([
+                                
+                                'id_contribuyente' => $p->id_contribuyente,
+                                
+                              
+                                ])
+                                ->one();
+
+                                //die(var_dump($validarPreguntaSeguridad));
+                               
+                            
+
+        if($validarPreguntaSeguridad != null){
+        
+            return $validarPreguntaSeguridad;  
+        
+        } else {
+
+        return false;
+        //die('no encontro ');
+
         } 
+        }
    
-}
+
  }
 
      
