@@ -446,14 +446,14 @@ class CrearUsuarioJuridicoController extends Controller
                 //die(var_dump($modelFind));
                 //die(var_dump($model));
                 $model->id_contribuyente = $idContribuyente;
-                $respuestaAfiliacion = self::salvarAfiliacion($conn, $conexion, $model );
+                $respuesta = self::salvarAfiliacion($conn, $conexion, $model );
 
-                  if ($respuestaAfiliacion == true){
+                  if ($respuesta == true){
                     
                     $transaccion->commit();
                     $conn->close();
 
-                    return $respuestaAfiliacion;
+                    return $true;
                    
 
 
