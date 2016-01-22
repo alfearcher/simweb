@@ -147,11 +147,14 @@ class CrearUsuarioJuridicoController extends Controller
 
                     //  return self::actionBuscarRif($model->naturaleza, $model->cedula,$model->tipo );
                       //die(var_dump($model));
-                      self::beginSave("contribuyente", $model);
-                          
-                          //return $this->redirect(['juridico']);
-
-                          //return $this->redirect(['buscar-rif']);
+                      
+                          $resultado = self::beginSave("contribuyente", $model);
+                         
+                         if ($resultado == true){
+                             return MensajeController::actionMensaje(Yii::t('frontend', 'We have sent you an email with your new user and password'));
+                         }else{
+                             return MensajeController::actionMensaje(Yii::t('frontend', 'Sorry, there was a problem creating your account'));
+                         }
                     }
                         
                 }
@@ -248,15 +251,7 @@ class CrearUsuarioJuridicoController extends Controller
                    
                    
                    // self::salvarAfiliacion($model);
-                      
-
-                      $resultado = self::beginSave("afiliaciones", $modelx);
-
-                      if ($resultado == true){
-                         return MensajeController::actionMensaje(Yii::t('frontend', 'We have sent you an email with your new user and password'));
-                       }else{
-                           return MensajeController::actionMensaje(Yii::t('frontend', 'Sorry, there was a problem creating your account'));
-                       }
+                      self::beginSave("afiliaciones", $modelx);
 
                   }  
            
