@@ -248,7 +248,15 @@ class CrearUsuarioJuridicoController extends Controller
                    
                    
                    // self::salvarAfiliacion($model);
-                      self::beginSave("afiliaciones", $modelx);
+                      
+
+                      $resultado = self::beginSave("afiliaciones", $modelx);
+
+                      if ($resultado == true){
+                         return MensajeController::actionMensaje(Yii::t('frontend', 'We have sent you an email with your new user and password'));
+                       }else{
+                           return MensajeController::actionMensaje(Yii::t('frontend', 'Sorry, there was a problem creating your account'));
+                       }
 
                   }  
            
@@ -446,14 +454,17 @@ class CrearUsuarioJuridicoController extends Controller
                   if ($respuesta == true){
                     
                     $transaccion->commit();
-                    return MensajeController::actionMensaje(Yii::t('frontend', 'We have sent you an email with your new user and password'));
+
+                    return true;
+                   
 
 
                   }else {
                       $transaccion->rollback();
+                      return false;
                   }
 
-                  return MensajeController::actionMensaje(Yii::t('frontend', 'Sorry, there was a problem creating your account'));
+                 
                 //die('llegamos');
           }
       }
