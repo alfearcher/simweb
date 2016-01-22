@@ -156,11 +156,15 @@ class CrearUsuarioNaturalController extends Controller
 
                       //return self::actionBuscarRif($model->naturaleza, $model->cedula,$model->tipo );
                       //die(var_dump($model));
-                      self::beginSave("contribuyente", $model);
+                     
                           
-                          //return $this->redirect(['juridico']);
+                          $resultado = self::beginSave("contribuyente", $model);
 
-                          //return $this->redirect(['buscar-rif']);
+                          if ($resultado == true){
+                             return MensajeController::actionMensaje(Yii::t('frontend', 'We have sent you an email with your new user and password'));
+                          }else{
+                               return MensajeController::actionMensaje(Yii::t('frontend', 'Sorry, there was a problem creating your account'));
+                          }
                     }
                         
                 }
@@ -441,11 +445,12 @@ class CrearUsuarioNaturalController extends Controller
 
               if ($respuesta == true){
                 $transaccion->commit();
-
-                echo MensajeController::actionMensaje(Yii::t('frontend', 'We have sent you an email with your new user and password'));
-
+                $conn->close();
+                  return true;
               }else{
                 $transaccion->rollback();
+                $conn->close();
+                return false;
               }
 
             }elseif ($var == "contribuyente") { 
@@ -465,14 +470,18 @@ class CrearUsuarioNaturalController extends Controller
                   if ($respuesta == true){
                     
                     $transaccion->commit();
-                    echo MensajeController::actionMensaje(Yii::t('frontend', 'We have sent you an email with your new user and password'));
+                    $conn->close();
+                    return true;
+                   
 
 
                   }else {
                       $transaccion->rollback();
+                      $conn->close();
+                      return false;
                   }
 
-                  return MensajeController::actionMensaje(Yii::t('frontend', 'Congratulations, you have created a new account'));
+                 
                 //die('llegamos');
           }
       }
