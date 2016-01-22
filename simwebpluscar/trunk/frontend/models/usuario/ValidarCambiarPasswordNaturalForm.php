@@ -60,14 +60,17 @@ use frontend\models\usuario\CrearUsuarioNatural;
 use frontend\models\usuario\PreguntaSeguridadContribuyente;
 use frontend\models\usuario\Afiliacion;
 
-class VerificarPreguntasContribuyenteNaturalForm extends CrearUsuarioNatural
+class ValidarCambiarPasswordNaturalForm extends Model
 {
      
     public $id_contribuyente;
-	public $usuario;
     public $email;
-    public $naturaleza;
-    public $cedula;
+	public $pregunta1;
+    public $respuesta1;
+    public $pregunta2;
+    public $respuesta2;
+    public $pregunta3;
+    public $respuesta3;
     public $tipo;
     
 
@@ -75,7 +78,7 @@ class VerificarPreguntasContribuyenteNaturalForm extends CrearUsuarioNatural
       public function rules()
     {   //validaciones requeridas para el formulario de registro de usuarios     
         return [
-            [['naturaleza',  'cedula', 'email'], 'required' ],
+            [['pregunta1',  'respuesta1', 'pregunta2', 'respuesta2', 'pregunta3', 'respuesta3'], 'required' ],
            
                   
            
@@ -98,96 +101,96 @@ class VerificarPreguntasContribuyenteNaturalForm extends CrearUsuarioNatural
 	
 
     
-    public function buscarIdContribuyente($model){
+    // public function buscarIdContribuyente($model){
 
-       // die(var_dump($model));
+    //    // die(var_dump($model));
 
-        $validarPregunta = CrearUsuarioNatural::find() 
-                                ->where([
+    //     $validarPregunta = CrearUsuarioNatural::find() 
+    //                             ->where([
                                 
-                                'naturaleza' => $model->naturaleza,
-                                'cedula' => $model->cedula,
-                                'tipo' => 0,
-                                'tipo_naturaleza' =>0,
+    //                             'naturaleza' => $model->naturaleza,
+    //                             'cedula' => $model->cedula,
+    //                             'tipo' => 0,
+    //                             'tipo_naturaleza' =>0,
                               
-                                ])
-                                ->one();
+    //                             ])
+    //                             ->one();
                                
                             
 
-        if($validarPregunta != null){
+    //     if($validarPregunta != null){
         
-            return $validarPregunta;  
+    //         return $validarPregunta;  
         
-        } else {
+    //     } else {
 
-        return false;
-        //die('no encontro ');
+    //     return false;
+    //     //die('no encontro ');
 
-        }
-         } 
+    //     }
+    //      } 
 
 
-         public function buscarIdAfiliaciones($id_contribuyente){
+    //      public function buscarIdAfiliaciones($id_contribuyente){
 
-            $afiliacion = new Afiliacion();
+    //         $afiliacion = new Afiliacion();
 
-        $validarPregunta = Afiliacion::find() 
-                                ->where([
+    //     $validarPregunta = Afiliacion::find() 
+    //                             ->where([
                                 
                                 
-                                'id_contribuyente' => $id_contribuyente,
+    //                             'id_contribuyente' => $id_contribuyente,
 
                                 
                               
-                                ])
-                                ->one();
+    //                             ])
+    //                             ->one();
                                
                             
 
-        if($validarPregunta != null){
+    //     if($validarPregunta != null){
         
-            return $validarPregunta;  
+    //         return $validarPregunta;  
         
-        } else {
+    //     } else {
 
-        return false;
-        //die('no encontro ');
+    //     return false;
+    //     //die('no encontro ');
 
-        }
-         } 
+    //     }
+    //      } 
 
          
 
-        public function buscarPreguntaSeguridad($id_contribuyente){ 
-            //die($id_contribuyente);
+    //     public function buscarPreguntaSeguridad($id_contribuyente){ 
+    //         //die($id_contribuyente);
 
           
 
-            $validarPreguntaSeguridad = PreguntaSeguridadContribuyente::find() 
-                                ->where([
+    //         $validarPreguntaSeguridad = PreguntaSeguridadContribuyente::find() 
+    //                             ->where([
                                 
-                                'id_contribuyente' => $id_contribuyente,
+    //                             'id_contribuyente' => $id_contribuyente,
                                 
                               
-                                ])
-                                ->all();
+    //                             ])
+    //                             ->all();
 
-                                //die(var_dump($validarPreguntaSeguridad));
-                 // die(var_dump($validarPreguntaSeguridad));             
+    //                             //die(var_dump($validarPreguntaSeguridad));
+    //              // die(var_dump($validarPreguntaSeguridad));             
                              
 
-        if($validarPreguntaSeguridad != null){
+    //     if($validarPreguntaSeguridad != null){
         
-            return $validarPreguntaSeguridad;  
+    //         return $validarPreguntaSeguridad;  
         
-        } else {
+    //     } else {
 
-        return false;
-        //die('no encontro ');
+    //     return false;
+    //     //die('no encontro ');
 
-        } 
-        }
+    //     } 
+    //     }
    
 
  }
