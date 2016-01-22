@@ -453,7 +453,7 @@ class CrearUsuarioJuridicoController extends Controller
                     $transaccion->commit();
                     $conn->close();
 
-                    return $true;
+                    return true;
                    
 
 
