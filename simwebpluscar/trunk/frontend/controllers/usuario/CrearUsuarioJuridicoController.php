@@ -427,7 +427,7 @@ class CrearUsuarioJuridicoController extends Controller
                 $transaccion->commit();
                 $conn->close();
 
-                return MensajeController::actionMensaje(Yii::t('frontend', 'We have sent you an email with your new user and password'));
+                //return MensajeController::actionMensaje(Yii::t('frontend', 'We have sent you an email with your new user and password'));
 
               }else{
                 $transaccion->rollback();
