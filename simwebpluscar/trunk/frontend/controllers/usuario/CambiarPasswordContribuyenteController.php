@@ -61,7 +61,8 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use frontend\models\usuario\VerificarPreguntasContribuyenteNaturalForm;
 use frontend\models\usuario\VerificarPreguntasContribuyenteJuridicoForm;
-use frontend\models\usuario\CargaDatosBasicosForm;
+
+
 
 /**
  * Site controller
@@ -102,7 +103,19 @@ class CambiarPasswordContribuyenteController extends Controller
 
                     if ($model->validate()){
 
-                      self::BuscarIdContribuyenteNatural($model);
+                        $buscarId = new VerificarPreguntasContribuyenteNaturalForm();
+
+                     $p = $buscarId::buscarId($model);
+                     if ($p == true){
+                      $q =  $buscarId::buscarPreguntaSeguridad($p);
+
+                      if ($q == true){ 
+                        return $this->redirect(['/site/index']);
+                    }else{
+                        die('dirigirse a la alcaldia');
+                     }
+                    }
+
                     }
                         
                 }
@@ -140,7 +153,7 @@ class CambiarPasswordContribuyenteController extends Controller
 
       } 
 
-
+   
       
 
     //-- FIN ACTIONSELECCIONARTIPOUSUARIO -->
