@@ -246,7 +246,7 @@ CONTENIDO DEL COMPRADOR (BUYER)
                         $conn = New ConexionController(); 
 
                         $this->conexion = $conn->initConectar('dbsim');     // instancia de la conexion (Connection)
-                        $this->conexion->open(); 
+                        $this->conexion->open(); //open db
 
                         $transaccion = $this->conexion->beginTransaction(); 
 
