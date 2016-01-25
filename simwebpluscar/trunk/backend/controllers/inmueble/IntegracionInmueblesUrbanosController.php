@@ -152,7 +152,7 @@ CONTENIDO DE LA INTEGRACION DEL INMUEBLE
 
                         $id_contribuyenteVendedor = $datosCambio["id_contribuyente"];
                         $id_impuestoVenta = $datosCambio["direccion"];
-                        $ano_traspaso = $datosCambio["ano_traspaso"];
+                        $ano_traspaso = $datosCambio["ano_traspaso"]; 
 
                         $id_contribuyenteComprador = $modelParametros[0]['id_contribuyente'];
 
