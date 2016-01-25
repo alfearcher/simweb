@@ -94,7 +94,7 @@ class IntegracionInmueblesUrbanosController extends Controller
          //Mostrará un mensaje en la vista cuando el usuario se haya registrado
          $msg = null; 
          $url = null; 
-         $tipoError = null;
+         $tipoError = null; 
     
          //Validación mediante ajax
          if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax){ 
