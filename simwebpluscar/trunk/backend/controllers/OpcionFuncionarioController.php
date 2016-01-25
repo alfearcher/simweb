@@ -82,7 +82,7 @@ use common\conexion\ConexionController;
 
 class OpcionFuncionarioController extends Controller
 {
-
+    public $layout = "layout-login";
     public $conn;
     public $conexion;
     public $transaccion;
@@ -322,7 +322,7 @@ class OpcionFuncionarioController extends Controller
 * del funcionario
 *******************************************************************************************************/
     public function actionIniciarrecuperacionpasswordfuncionario()
-    {
+    {    
          //Creamos la instancia con el model de validación
          $model = new FormIniciarRecuperacionPasswordFuncionario;
     
