@@ -288,6 +288,20 @@
 			}
 		}
 
+				public function modificarRegistroNatural($conection, $tableName, $arregloDatos = [], $arregloCondition = [])
+		{
+			// Se controla que existe un usuario activo valido.
+			
+			
+				try {
+					$conection->createCommand()->update($tableName, $arregloDatos, $arregloCondition)->execute();
+					return true;
+				} catch (PDOExcepcion $e) {
+					return false;
+				}
+			
+		}
+
 
 
 
