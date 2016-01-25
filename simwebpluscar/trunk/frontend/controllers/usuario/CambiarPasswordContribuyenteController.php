@@ -335,7 +335,7 @@ class CambiarPasswordContribuyenteController extends Controller
 
             if ($conexion->modificarRegistroNatural($conn, $tableName, $arregloDatos, $arregloCondition)){
 
-             // $transaccion->commit();
+              $transaccion->commit();
                 $conn->close();
                 return true;
               
