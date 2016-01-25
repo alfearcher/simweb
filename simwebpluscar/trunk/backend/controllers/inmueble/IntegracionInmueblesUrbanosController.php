@@ -109,7 +109,7 @@ class IntegracionInmueblesUrbanosController extends Controller
          } 
 
          $datosCambio = Yii::$app->request->post("InmueblesUrbanosForm");
-         $btn = Yii::$app->request->post();
+         $btn = Yii::$app->request->post(); 
 
 
          if ($model->load(Yii::$app->request->post())){
@@ -117,7 +117,7 @@ class IntegracionInmueblesUrbanosController extends Controller
 
               //if($modelContribuyente->validate()){ 
            
-                if($model->validate()){
+                if($model->validate()){ 
 
                  //condicionales     
                   

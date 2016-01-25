@@ -228,7 +228,7 @@ class InmueblesUrbanosForm extends \yii\db\ActiveRecord
             'naturalezaBuscar'=> Yii::t('backend', 'Nature'),
             'cedulaBuscar'=> Yii::t('backend', 'Identification Card'),
             'tipoBuscar'=> Yii::t('backend', 'Type'),
-        ];  
+        ]; 
     }
 
     public function catastro_existe($attribute, $params)
