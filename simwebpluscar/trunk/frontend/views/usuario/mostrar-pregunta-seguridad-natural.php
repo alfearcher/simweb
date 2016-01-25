@@ -96,8 +96,11 @@ $this->title = 'Preguntas de Seguridad';
                             <?= $form->field($model, "respuesta3")->input("text") ?>   
                             </div>
 						</td>
-					</tr>		
+					</tr>	
 
+					 
+                            <?= $form->field($model, 'id_contribuyente')->hiddenInput(['value' => $id_contribuyente])->label(false) ?>    
+                           
 					<tr>
 						<td>  
                             <?= Html::submitButton("Registrar", ["class" => "btn btn-primary"]) ?>
