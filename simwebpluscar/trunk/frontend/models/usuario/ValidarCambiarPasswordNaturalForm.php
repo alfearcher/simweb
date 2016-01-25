@@ -78,7 +78,10 @@ class ValidarCambiarPasswordNaturalForm extends Model
       public function rules()
     {   //validaciones requeridas para el formulario de registro de usuarios     
         return [
-            [['pregunta1',  'respuesta1', 'pregunta2', 'respuesta2', 'pregunta3', 'respuesta3'], 'required' ],
+            [['pregunta1',  'respuesta1', 'pregunta2', 'respuesta2', 'pregunta3', 'respuesta3', 'id_contribuyente'], 'required' ],
+            ['respuesta1' , 'buscarPreguntasNatural1'],
+            ['respuesta2' , 'buscarPreguntasNatural2'],
+            ['respuesta3' , 'buscarPreguntasNatural3'],
            
                   
            
@@ -99,101 +102,90 @@ class ValidarCambiarPasswordNaturalForm extends Model
         ];
     }
 	
+    public function buscarPreguntasNatural1($attribute, $params){
 
+
+        $buscarNatural = PreguntaSeguridadContribuyente::find()
+                                               
+                                               ->where([
+                                               'id_contribuyente' => $this->id_contribuyente,
+                                               'respuesta' => $this->respuesta1,
+                                               'tipo_pregunta' => 0,
+                                               'inactivo' => 0,
+                                               
+
+                                                ]);
+                                               // ->one();
+                                                //die(var_dump($buscarNatural));
+
+
+
+        if($buscarNatural->count()== 0){
+        
+         $this->addError($attribute, Yii::t('frontend', 'The answer does not match'));
+
+        } 
+
+    }
+
+       public function buscarPreguntasNatural2($attribute, $params){
+
+
+        $buscarNatural = PreguntaSeguridadContribuyente::find()
+                                               
+                                               ->where([
+                                               'id_contribuyente' => $this->id_contribuyente,
+                                               'respuesta' => $this->respuesta2,
+                                               'tipo_pregunta' => 1,
+                                               'inactivo' => 0,
+                                               
+
+                                                ]);
+                                               // ->one();
+
+
+
+
+
+        if($buscarNatural->count()== 0){
+        
+            $this->addError($attribute, Yii::t('frontend', 'The answer does not match'));
+        
+         }
+     }
+
+       public function buscarPreguntasNatural3($attribute, $params){
+
+
+        $buscarNatural = PreguntaSeguridadContribuyente::find()
+                                               
+                                               ->where([
+                                               'id_contribuyente' => $this->id_contribuyente,
+                                               'respuesta' => $this->respuesta3,
+                                               'tipo_pregunta' => 2,
+                                               'inactivo' => 0,
+                                               
+
+                                                ]);
+                                                //->all();
+                                                
+                                              //  die(var_dump($buscarNatural));
+
+
+
+        if($buscarNatural->count()== 0){
+        
+           $this->addError($attribute, Yii::t('frontend', 'The answer does not match')); 
+        
+        } 
+
+    }
     
-    // public function buscarIdContribuyente($model){
-
-    //    // die(var_dump($model));
-
-    //     $validarPregunta = CrearUsuarioNatural::find() 
-    //                             ->where([
-                                
-    //                             'naturaleza' => $model->naturaleza,
-    //                             'cedula' => $model->cedula,
-    //                             'tipo' => 0,
-    //                             'tipo_naturaleza' =>0,
-                              
-    //                             ])
-    //                             ->one();
-                               
-                            
-
-    //     if($validarPregunta != null){
-        
-    //         return $validarPregunta;  
-        
-    //     } else {
-
-    //     return false;
-    //     //die('no encontro ');
-
-    //     }
-    //      } 
-
-
-    //      public function buscarIdAfiliaciones($id_contribuyente){
-
-    //         $afiliacion = new Afiliacion();
-
-    //     $validarPregunta = Afiliacion::find() 
-    //                             ->where([
-                                
-                                
-    //                             'id_contribuyente' => $id_contribuyente,
-
-                                
-                              
-    //                             ])
-    //                             ->one();
-                               
-                            
-
-    //     if($validarPregunta != null){
-        
-    //         return $validarPregunta;  
-        
-    //     } else {
-
-    //     return false;
-    //     //die('no encontro ');
-
-    //     }
-    //      } 
-
-         
-
-    //     public function buscarPreguntaSeguridad($id_contribuyente){ 
-    //         //die($id_contribuyente);
-
-          
-
-    //         $validarPreguntaSeguridad = PreguntaSeguridadContribuyente::find() 
-    //                             ->where([
-                                
-    //                             'id_contribuyente' => $id_contribuyente,
-                                
-                              
-    //                             ])
-    //                             ->all();
-
-    //                             //die(var_dump($validarPreguntaSeguridad));
-    //              // die(var_dump($validarPreguntaSeguridad));             
-                             
-
-    //     if($validarPreguntaSeguridad != null){
-        
-    //         return $validarPreguntaSeguridad;  
-        
-    //     } else {
-
-    //     return false;
-    //     //die('no encontro ');
-
-    //     } 
-    //     }
+    
    
 
  }
+ ?>
 
      
  

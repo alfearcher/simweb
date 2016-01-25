@@ -82,7 +82,7 @@ class PreguntaSeguridadContribuyenteForm extends PreguntaSeguridadContribuyente
             [['pregunta1', 'pregunta2', 'respuesta1', 'respuesta2'], 'match', 'pattern' => "/^.{3,50}$/", 'message' => Yii::t('frontend', 'Minimum 3 and maximum 50 characters')],//minimo 3 y maximo 50 caracteres
             [['pregunta1', 'pregunta2', 'respuesta1', 'respuesta2'], 'match', 'pattern' => "/^[0-9 a-z]+$/i", 'message' => Yii::t('frontend', 'Accepted only letters, numbers and spaces')],//Sólo se aceptan letras, números y espacios en blanco
             ['usuario', 'match', 'pattern' => "/^.{5,80}$/", 'message' => Yii::t('frontend', 'Minimum 5 and maximum 80 characters')],//minimo 5 y maximo 80 caracteres
-           
+            [['pregunta1' , 'pregunta2','pregunta3'], 'compararPreguntas'],
                   
            
            
@@ -153,6 +153,27 @@ class PreguntaSeguridadContribuyenteForm extends PreguntaSeguridadContribuyente
 
             ];
   }
+
+  public function compararPreguntas($attribute, $params){ 
+
+    if ($this->pregunta1 ==  $this->pregunta2){
+
+        $this->addError($attribute, Yii::t('frontend', 'Answers can not be equals'));
+    }
+
+    if ($this->pregunta2 == $this->pregunta3){
+
+        $this->addError($attribute, Yii::t('frontend', 'Answers can not be equals'));
+
+    }
+
+    if ($this->pregunta1 == $this->pregunta3){ 
+
+        $this->addError($attribute, Yii::t('frontend', 'Answers can not be equals'));
+    
+    }
+   }
+
  }
 
  
