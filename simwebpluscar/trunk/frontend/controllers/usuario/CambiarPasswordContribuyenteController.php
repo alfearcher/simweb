@@ -185,6 +185,8 @@ class CambiarPasswordContribuyenteController extends Controller
 
                     if ($model->validate()){
 
+                      die('llegue a juridico');
+
                       //return self::actionBuscarRif($model->naturaleza, $model->cedula,$model->tipo );
 
                       //return $this->redirect(['juridico']);
