@@ -21,13 +21,13 @@
  */
 
  /**    
- *  @file IntegracionInmueblesUrbanosForm.php
+ *  @file IntegracionInmueblesForm.php
  *  
  *  @author Alvaro Jose Fernandez Archer
  * 
  *  @date 27-07-2015
  * 
- *  @class IntegracionInmueblesUrbanosForm
+ *  @class IntegracionInmueblesForm
  *  @brief Clase que permite validar cada uno de los datos del formulario de inscripcion de inmuebles 
  *  urbanos, se establecen las reglas para los datos a ingresar y se le asigna el nombre de las etiquetas 
  *  de los campos. 

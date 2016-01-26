@@ -168,27 +168,7 @@ $variablephp=$_COOKIE['variablephp'];
                 <table class="table table-striped ">
                     
 
-                    <tr>
-                        <td colspan="2"> 
-
-                             <?= DetailView::widget([
-                                                        'model' => $modelContribuyente,
-                                                        'attributes' => [ 
-                                                        'id_contribuyente',
-                                                        'cedula',
-                                                        'nombres',
-                                                        'apellidos',
-                                                        'domicilio_fiscal',
-                                                        'email',
-                                                         ],
-                                                         
-                              ]) ?> 
-
-                        </td>
-                        
-                    </tr>
-
-               
+                            
                     
                     <tr colspan="2">
                         <td> 
@@ -218,34 +198,7 @@ $variablephp=$_COOKIE['variablephp'];
                                                         </div> 
 
                                                    
-                                                        <div class="col-lg-50" id="mostrarinmueble" style="display:">
-                                                        <?php 
-
-                                                             
-
-                                                             if(count($listaParametros) > 0){
-                                                                 $listaOperaciones = array('1'=>Yii::t('backend', 'Change of Owner (Seller)'),
-                                                                                           '2' => Yii::t('backend', 'Change of Owner (Buyer)'),);
-
-                                                                echo $form->field($model, 'operacion')->dropDownList($listaOperaciones, [
-                                                                                                                    'prompt' => Yii::t('backend', 'Select'),
-                                                                                                                    'style' => 'width:100px;',
-                                                                                                                    'onchange' => 'bloquea()'
-                                                                                                                    ])->label(false);
-                                                                                                  
-
-                                                             } else { 
-                                                                $listaOperaciones = array('1'=>Yii::t('backend', 'Change of Owner (Seller)'),);
-
-                                                                echo $form->field($model, 'operacion')->dropDownList($listaOperaciones, [ 
-                                                                                                                    'prompt' => Yii::t('backend', 'Select'),
-                                                                                                                    'style' => 'width:100px;',
-                                                                                                                    'onchange' => 'bloquea()'
-                                                                                                                    ])->label(false);
-                                                                
-                                                             }
-                                                        ?>
-                                                        </div>
+                                                        
                                         </div>
                                     </div>
                             </div>  
@@ -258,7 +211,7 @@ $variablephp=$_COOKIE['variablephp'];
                                         <div class="panel-heading">
                                             <?= Yii::t('backend', 'Change of Owner (Seller)') ?>
                                         </div> 
-                                        <div class="panel-body" id="panelvendedor" style="display:">
+                                        <div class="panel-body" id="panelvendedor" >
                                              
                                            <table class="table table-striped ">
                                                 
