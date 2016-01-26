@@ -169,14 +169,23 @@ $variablephp=$_COOKIE['variablephp'];
                     
 
                             
-                    
-                    <tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="col-lg-50">
+                                                            <?= Yii::t('backend', 'Select Urban Property') ?>
+                                                         </div> 
+
+                                                    </td>
+
+                                                </tr>
+                                                
+                                                <tr>
                         
                         
                                                     <td colspan="2"> 
 
                                                         <div class="col-lg-4">
-                                                            <?= Yii::t('backend', 'Select Urban Property') ?>
+                                                            <?= Yii::t('backend', 'Select the First Urban Property') ?>
                                                         </div>
                                                         <div class="col-lg-5" align='left'> 
                                                             
@@ -201,7 +210,7 @@ $variablephp=$_COOKIE['variablephp'];
                                                     <td colspan="2"> 
 
                                                         <div class="col-lg-4">
-                                                            <?= Yii::t('backend', 'Select Urban Property') ?>
+                                                            <?= Yii::t('backend', 'Select the Second Urban Property') ?>
                                                         </div>
                                                         <div class="col-lg-5" align='left'> 
                                                             
@@ -219,7 +228,7 @@ $variablephp=$_COOKIE['variablephp'];
                                                     
                                                     </td>
                                                 </tr>
-                                                
+
                                                 <tr>
                                                     <td>
                                                         <div class="col-lg-50">
