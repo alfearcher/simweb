@@ -64,6 +64,7 @@ use frontend\models\usuario\VerificarPreguntasContribuyenteNaturalForm;
 use frontend\models\usuario\VerificarPreguntasContribuyenteJuridicoForm;
 use frontend\controllers\mensaje\MensajeController;
 use frontend\models\usuario\ValidarCambiarPasswordNaturalForm;
+use frontend\models\usuario\ValidarCambiarPasswordJuridicoForm;
 use frontend\models\usuario\ReseteoPasswordNaturalForm;
 use common\seguridad\Seguridad;
 use common\models\utilidades\Utilidad;
@@ -187,14 +188,37 @@ class CambiarPasswordContribuyenteController extends Controller
 
                         $buscarId = new VerificarPreguntasContribuyenteJuridicoForm();
 
-                            $buscarAfiliacionesJuridico = $buscarId::buscarIdAfiliaciones($model);
+                            $naturaleza = $model->naturaleza;
+                            $cedula = $model->cedula;
+                            $tipo = $model->tipo;
 
-                            if ($buscarAfiliacionesJuridico == true){
-                          
-                        //  $buscarAfiliaciones = $buscarId::buscarIdAfiliaciones($buscarContribuyente->id_contribuyente);
-                                die('valido');
-                            
+                            $buscarAfiliacionesJuridico = $buscarId::buscarIdAfiliaciones($model);
+                            //die(var_dump($buscarAfiliacionesJuridico));
+                            //
+                            $idsContribuyente = [];
+
+                            foreach ($buscarAfiliacionesJuridico as $key => $value){
+                              
+                              $idsContribuyente[] = $buscarAfiliacionesJuridico[$key]['id_contribuyente'];
+                              
                             }
+                              
+                             if ($buscarAfiliacionesJuridico == true){
+                                   $dataProvider = $buscarId::buscarIdContribuyente($idsContribuyente);
+
+                                   if ($dataProvider == true){
+                                   // die(var_dump($dataProvider));
+                                    return $this->render('/usuario/lista-contribuyente-juridico' , [
+                                                                                                  'dataProvider' => $dataProvider,
+                                                                                                  'naturaleza' => $naturaleza,
+                                                                                                  'cedula' => $cedula,
+                                                                                                  'tipo' => $tipo,
+                                                                                                  ]);
+
+                                   }
+                                }
+                            
+                            
 
                             
                       //return self::actionBuscarRif($model->naturaleza, $model->cedula,$model->tipo );
@@ -205,6 +229,8 @@ class CambiarPasswordContribuyenteController extends Controller
                     }
                         
                 }
+
+
                 return $this->render('/usuario/verificar-preguntas-seguridad-juridico' , ['model' => $model]);
 
     } 
@@ -251,6 +277,53 @@ class CambiarPasswordContribuyenteController extends Controller
 
 
       }
+
+
+      public function actionMostrarPreguntaSeguridadJuridico($id){
+
+        $model = New ValidarCambiarPasswordJuridicoForm();
+       // die($id);
+
+              $postData = Yii::$app->request->post();
+
+              if ( $model->load($postData) && Yii::$app->request->isAjax ) {
+                  Yii::$app->response->format = Response::FORMAT_JSON;
+                  return ActiveForm::validate($model);
+              }
+
+                //die('llegue2');
+                
+                if ( $model->load($postData) ) {
+
+                    if ($model->validate()){
+                     // die('llegue a juridico');
+
+                     return $this->redirect (['/usuario/cambiar-password-contribuyente/reseteo-password-juridico',
+                                                                                                          'id_contribuyente' => $id_contribuyente,
+
+                                                                                                          ]);
+                    }
+                        
+                }
+              
+
+
+        return $this->render('/usuario/mostrar-pregunta-seguridad-juridico' , 
+                                                        [
+                                                        'model' => $model,
+                                                        'id_contribuyente' => $id,
+                                                        
+                                                        
+
+
+
+
+                                                        ]); 
+                      //  die($id);
+
+
+      }
+
 
       public function actionReseteoPasswordNatural($id_contribuyente){
 
