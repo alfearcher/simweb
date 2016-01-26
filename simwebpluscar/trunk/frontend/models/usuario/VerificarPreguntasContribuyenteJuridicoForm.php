@@ -104,11 +104,9 @@ class VerificarPreguntasContribuyenteJuridicoForm extends CrearUsuarioNatural
                                  ->where([
                                 
                                 'login' => $model->email,
-                                'tipo_naturaleza' =>1,
-                                'inactivo' => 0,
-                              
+                                
                                 ])
-                                ->one();
+                                ->all();
                                
                             
 
