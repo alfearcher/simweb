@@ -206,7 +206,7 @@ $variablephp=$_COOKIE['variablephp'];
                         </td>
                         <td>
 
-                            <div class="col-sm-10 " id="seller" style="display:none">
+                            <div class="col-sm-10 " id="seller" style="display:">
                                     <div class="panel panel-primary ancho-alto ">
                                         <div class="panel-heading">
                                             <?= Yii::t('backend', 'Change of Owner (Seller)') ?>
