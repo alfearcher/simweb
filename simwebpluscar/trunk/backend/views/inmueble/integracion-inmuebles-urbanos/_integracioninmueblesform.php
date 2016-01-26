@@ -211,7 +211,7 @@ $variablephp=$_COOKIE['variablephp'];
                                         <div class="panel-heading">
                                             <?= Yii::t('backend', 'Change of Owner (Seller)') ?>
                                         </div> 
-                                        <div class="panel-body" id="panelvendedor" >
+                                        <div class="panel-body" id="panel" >
                                              
                                            <table class="table table-striped ">
                                                 
@@ -301,7 +301,7 @@ $variablephp=$_COOKIE['variablephp'];
                                         <div class="panel-heading">
                                             <?= Yii::t('backend', 'Change of Owner (Buyer)') ?>
                                         </div> 
-                                        <div class="panel-body" id="panelcomprador">
+                                        <div class="panel-body" id="panel2">
                                              
                                            <table class="table table-striped ">
                                                 <tr>
