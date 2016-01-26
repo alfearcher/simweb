@@ -59,6 +59,7 @@ use yii\base\Model;
 use frontend\models\usuario\Afiliacion;
 use frontend\models\usuario\CrearUsuarioNatural;
 use frontend\models\usuario\PreguntaSeguridadContribuyente;
+use yii\data\ActiveDataProvider;
 
 class VerificarPreguntasContribuyenteJuridicoForm extends CrearUsuarioNatural
 {
@@ -107,6 +108,9 @@ class VerificarPreguntasContribuyenteJuridicoForm extends CrearUsuarioNatural
                                 
                                 ])
                                 ->all();
+                                
+
+                               // die(var_dump($validarPregunta));
                                
                             
 
@@ -122,6 +126,31 @@ class VerificarPreguntasContribuyenteJuridicoForm extends CrearUsuarioNatural
         }
          } 
     
+
+         public function buscarIdContribuyente($idsContribuyente){
+
+
+          //  die(var_dump($idsContribuyente));
+           // die(var_dump($buscarAfiliacionesJuridico));
+            //
+        $query = CrearUsuarioNatural::find();
+           
+        $dataProvider = new ActiveDataProvider([
+
+                                                'query' => $query
+
+                                               ]);
+          
+
+            
+
+        $query->andFilterWhere(['in', 'id_contribuyente', $idsContribuyente]);
+
+
+                    return $dataProvider; 
+                               
+                            
+         } 
     
    
 }
