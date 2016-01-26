@@ -103,7 +103,7 @@ class VerificarPreguntasContribuyenteJuridicoForm extends CrearUsuarioNatural
         $validarPregunta = Afiliacion::find() 
                                  ->where([
                                 
-                                'email' => $model->email,
+                                'login' => $model->email,
                                 'tipo_naturaleza' =>1,
                                 'inactivo' => 0,
                               
