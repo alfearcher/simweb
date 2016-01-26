@@ -185,7 +185,22 @@ class CambiarPasswordContribuyenteController extends Controller
 
                     if ($model->validate()){
 
-                      die('llegue a juridico');
+                      $buscarId = new VerificarPreguntasContribuyenteJuridicoForm();
+
+                      $buscarContribuyenteJuridico = $buscarId::buscarIdContribuyente($model);
+
+                        if ($buscarContribuyente == true){
+                          
+                          $buscarAfiliaciones = $buscarId::buscarIdAfiliaciones($buscarContribuyente->id_contribuyente);
+
+                          if(){
+
+                            $
+                          }
+
+                        }else{
+                          die('no valido');
+                        } 
 
                       //return self::actionBuscarRif($model->naturaleza, $model->cedula,$model->tipo );
 
