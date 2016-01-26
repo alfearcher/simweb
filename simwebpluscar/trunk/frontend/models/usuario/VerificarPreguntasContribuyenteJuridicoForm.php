@@ -57,8 +57,10 @@ namespace frontend\models\usuario;
 use Yii;
 use yii\base\Model;
 use frontend\models\usuario\Afiliacion;
+use frontend\models\usuario\CrearUsuarioNatural;
+use frontend\models\usuario\PreguntaSeguridadContribuyente;
 
-class VerificarPreguntasContribuyenteJuridicoForm extends Afiliacion 
+class VerificarPreguntasContribuyenteJuridicoForm extends CrearUsuarioNatural
 {
      
     public $id_contribuyente;
@@ -94,33 +96,36 @@ class VerificarPreguntasContribuyenteJuridicoForm extends Afiliacion
         ];
     }
 	
+     public function buscarIdContribuyente($model){
 
-    
-    // public function ValidarPreguntaSeguridad($model, $id_contribuyente){
+       // die(var_dump($model));
 
-    //    // die(var_dump($model));
-
-    //     $validarPregunta = PreguntaSeguridadContribuyente::find()
-    //                             ->where([
-    //                             'usuario' => $model->email,
-    //                             'id_contribuyente' => $id_contribuyente,
+        $validarPregunta = CrearUsuarioNatural::find() 
+                                ->where([
+                                
+                                'naturaleza' => $model->naturaleza,
+                                'cedula' => $model->cedula,
+                                'tipo' => 1,
+                                'tipo_naturaleza' =>1,
                               
-    //                             'inactivo' => 0,
-    //                             ])
-    //                             ->one();
+                                ])
+                                ->one();
+                               
+                            
 
-
-
-    //     if($validarPregunta != null){
+        if($validarPregunta != null){
         
-    //         return $validarPregunta;  
+            return $validarPregunta;  
         
-    //     } else {
+        } else {
 
-    //     return false;
-    //     //die('no encontro ');
+        return false;
+        //die('no encontro ');
 
-    //     } 
+        }
+         } 
+    
+    
    
 }
 
