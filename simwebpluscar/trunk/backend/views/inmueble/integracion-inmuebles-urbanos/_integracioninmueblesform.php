@@ -24,7 +24,7 @@ use backend\models\ContribuyentesForm;
 /* @var $this yii\web\View */
 /* @var $model backend\models\InscripcionInmueblesUrbanosForm */
 /* @var $form ActiveForm */
-$this->title = Yii::t('backend', 'Change of Ownership of Property Urban'). '<p>Id Taxpayer: ' . $modelContribuyente->id_contribuyente.'</p>';
+$this->title = Yii::t('backend', 'Integration of Property Urban'). '<p>Id Taxpayer: ' . $modelContribuyente->id_contribuyente.'</p>';
  
 
  ?>
@@ -170,46 +170,14 @@ $variablephp=$_COOKIE['variablephp'];
 
                             
                     
-                    <tr colspan="2">
-                        <td> 
-
-                           <div class="col-sm-10 ">
-                                <div class="panel panel-primary ancho-alto ">
-                                       <div class="panel-heading">
-                                       <?= Yii::t('backend', 'Request Tax') ?>
-                                       </div> 
-                                             <div class="panel-body" id="panelvendedor" style="display:">
-                                                                             
-                            
-
-                                                       <?php $modelParametros = InmueblesUrbanosForm::find()->where(['id_contribuyente'=>$modelContribuyente->id_contribuyente])->asArray()->all();                                         
-                                                             $listaParametros = ArrayHelper::map($modelParametros,'id_impuesto','direccion'); 
-                                                             //echo'<pre>'; var_dump($modelParametros); echo '</pre>'; die(); 
-                                                          
-                                                       ?> 
-                                                
-                              
-                                                        <div class="col-lg-50" id="mostrarinmueble" style="display:none">
-                                                            <?= Yii::t('backend', 'Select Urban Property') ?>
-                                                            <?= $form->field($model, 'id_impuesto')->dropDownList($listaParametros, [ 'id'=> 'id_impuesto', 
-                                                                                                                                        'prompt' => Yii::t('backend', 'Select'),
-                                                                                                                                        'style' => 'width:280px;',                                                                                                            
-                                                                                                                                        ])->label(false); ?>
-                                                        </div> 
-
-                                                   
-                                                        
-                                        </div>
-                                    </div>
-                            </div>  
-
-                        </td>
+                    <tr>
+                        
                         <td>
 
                             <div class="col-sm-10 " id="seller" style="display:">
                                     <div class="panel panel-primary ancho-alto ">
                                         <div class="panel-heading">
-                                            <?= Yii::t('backend', 'Change of Owner (Seller)') ?>
+                                            <?= Yii::t('backend', 'Change of Integration') ?>
                                         </div> 
                                         <div class="panel-body" id="panel" >
                                              
