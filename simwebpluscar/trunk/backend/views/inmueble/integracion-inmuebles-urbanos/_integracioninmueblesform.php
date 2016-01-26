@@ -172,18 +172,7 @@ $variablephp=$_COOKIE['variablephp'];
                     
                     <tr>
                         
-                        <td>
-
-                            <div class="col-sm-10 " id="seller" style="display:">
-                                    <div class="panel panel-primary ancho-alto ">
-                                        <div class="panel-heading">
-                                            <?= Yii::t('backend', 'Change of Integration') ?>
-                                        </div> 
-                                        <div class="panel-body" id="panel" >
-                                             
-                                           <table class="table table-striped ">
-                                                
-                                                <tr>
+                        
                                                     <td colspan="2"> 
 
                                                         <div class="col-lg-4">
@@ -260,9 +249,7 @@ $variablephp=$_COOKIE['variablephp'];
                                                 </tr>
 
                                             </table>
-                                        </div>
-                                    </div>
-                            </div> 
+                                        </div> 
 
                             <div class="col-sm-10 " id="buyer" style="display:none">
                                     <div class="panel panel-primary ancho-alto ">
