@@ -96,17 +96,16 @@ class VerificarPreguntasContribuyenteJuridicoForm extends CrearUsuarioNatural
         ];
     }
 	
-     public function buscarIdContribuyente($model){
+     public function buscarIdAfiliaciones($model){
 
        // die(var_dump($model));
 
-        $validarPregunta = CrearUsuarioNatural::find() 
-                                ->where([
+        $validarPregunta = Afiliacion::find() 
+                                 ->where([
                                 
-                                'naturaleza' => $model->naturaleza,
-                                'cedula' => $model->cedula,
-                                'tipo' => 1,
+                                'email' => $model->email,
                                 'tipo_naturaleza' =>1,
+                                'inactivo' => 0,
                               
                                 ])
                                 ->one();

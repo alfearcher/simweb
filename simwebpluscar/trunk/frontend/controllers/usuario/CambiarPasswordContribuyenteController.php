@@ -185,23 +185,18 @@ class CambiarPasswordContribuyenteController extends Controller
 
                     if ($model->validate()){
 
-                      $buscarId = new VerificarPreguntasContribuyenteJuridicoForm();
+                        $buscarId = new VerificarPreguntasContribuyenteJuridicoForm();
 
-                      $buscarContribuyenteJuridico = $buscarId::buscarIdContribuyente($model);
+                            $buscarAfiliacionesJuridico = $buscarId::buscarIdAfiliaciones($model);
 
-                        if ($buscarContribuyente == true){
+                            if ($buscarAfiliacionesJuridico == true){
                           
-                          $buscarAfiliaciones = $buscarId::buscarIdAfiliaciones($buscarContribuyente->id_contribuyente);
+                        //  $buscarAfiliaciones = $buscarId::buscarIdAfiliaciones($buscarContribuyente->id_contribuyente);
+                                die('valido');
+                            
+                            }
 
-                          if(){
-
-                            $
-                          }
-
-                        }else{
-                          die('no valido');
-                        } 
-
+                            
                       //return self::actionBuscarRif($model->naturaleza, $model->cedula,$model->tipo );
 
                       //return $this->redirect(['juridico']);
@@ -210,9 +205,9 @@ class CambiarPasswordContribuyenteController extends Controller
                     }
                         
                 }
-              return $this->render('/usuario/verificar-preguntas-seguridad-juridico' , ['model' => $model]);
+                return $this->render('/usuario/verificar-preguntas-seguridad-juridico' , ['model' => $model]);
 
-      } 
+    } 
 
       public function actionMostrarPreguntaSeguridadNatural($pregunta1, $pregunta2, $pregunta3, $id_contribuyente){
 
