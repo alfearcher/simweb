@@ -219,7 +219,7 @@ $variablephp=$_COOKIE['variablephp'];
                                                             $listaParametros = ArrayHelper::map($modelParametros,'id_impuesto','direccion');  
                                                             ?>
 
-                                                            <?= $form->field($model, 'direccion')->dropDownList($listaParametros, [ 
+                                                            <?= $form->field($model, 'direccion2')->dropDownList($listaParametros, [ 
                                                                                                                     'prompt' => Yii::t('backend', 'Select'),
                                                                                                                     'style' => 'width:100px;',
                                                                                                                     'onchange' => 'bloquea()'
