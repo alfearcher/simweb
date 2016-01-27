@@ -21,11 +21,11 @@
  */
 
  /**    
- *  @file User.php
+ *  @file Afiliaciones.php
  *  
- *  @author Alvaro Jose Fernandez Archer
+ *  @author Manuel Alejandro Zapata Canelon
  * 
- *  @date 19-05-2015
+ *  @date 04-01-2016
  * 
  *  @class User
  *  @brief Clase que permite loguear al usuario comparando sus datos de acceso al sistema.
