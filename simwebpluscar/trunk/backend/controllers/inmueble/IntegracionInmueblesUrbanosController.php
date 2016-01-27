@@ -158,9 +158,9 @@ CONTENIDO DE LA INTEGRACION DEL INMUEBLE
 
 
                         //--------------TRY---------------
-                        $arrayDatos = [ 
+                        $arrayDatos = [
                                         'id_contribuyente' => $id_contribuyenteComprador,
-                                      ];
+                                      ]; 
                         
 
                         $tableName = 'inmuebles'; 
