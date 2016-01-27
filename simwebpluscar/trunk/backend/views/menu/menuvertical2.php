@@ -104,7 +104,7 @@
 		        						['label' => 'Solvencia', 'url' => '#'],
 		        						['label' => 'Cambio de Numero Catastral', 'url' => ['/inmueble/inmuebles-urbanos/index']],
 		        						['label' => 'Cambio de Propietario', 'url' => '#'],
-		        						['label' => 'Integración de Parcela', 'url' => '#'],
+		        						['label' => 'Integración de Parcela', 'url' => ['/inmueble/integracion-inmuebles-urbanos/integracion-inmuebles']],
 		        						['label' => 'Desintegración de Parcela', 'url' => '#'],
 		        						['label' => 'Cambio a Propiedad Horizontal', 'url' => ['/inmueble/inmuebles-urbanos/index']],
 		        						['label' => 'Cambio de Otros Datos del Inmueble', 'url' => ['/inmueble/inmuebles-urbanos/index']],
