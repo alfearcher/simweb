@@ -168,7 +168,7 @@ class VerificarPreguntasContribuyenteNaturalForm extends CrearUsuarioNatural
                                 ->where([
                                 
                                 'id_contribuyente' => $id_contribuyente,
-                                
+                                'inactivo' => 0,
                               
                                 ])
                                 ->all();

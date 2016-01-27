@@ -150,7 +150,40 @@ class VerificarPreguntasContribuyenteJuridicoForm extends CrearUsuarioNatural
                     return $dataProvider; 
                                
                             
-         } 
+         }
+
+
+              public function buscarPreguntaSeguridadJuridico($id){
+
+               
+            //die($id_contribuyente);
+
+          
+
+            $validarPreguntaSeguridad = PreguntaSeguridadContribuyente::find() 
+                                ->where([
+                                
+                                'id_contribuyente' => $id,
+                                'inactivo' => 0,
+                              
+                                ])
+                                ->all();
+
+                                //die(var_dump($validarPreguntaSeguridad));
+                 // die(var_dump($validarPreguntaSeguridad));             
+                             
+
+        if($validarPreguntaSeguridad != null){
+        
+            return $validarPreguntaSeguridad;  
+        
+        } else {
+
+        return false;
+        //die('no encontro ');
+
+        } 
+        } 
     
    
 }
