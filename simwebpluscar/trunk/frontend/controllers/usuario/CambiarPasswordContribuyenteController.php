@@ -254,7 +254,7 @@ class CambiarPasswordContribuyenteController extends Controller
 
                     if ($model->validate()){
 
-                     return $this->redirect(['/usuario/cambiar-password-contribuyente/reseteo-password-natural',
+                     return $this->redirect (['/usuario/cambiar-password-contribuyente/reseteo-password-natural',
                                                                                                           'id_contribuyente' => $id_contribuyente,
                                                                                                           ]);
                    }
@@ -363,11 +363,11 @@ class CambiarPasswordContribuyenteController extends Controller
         if ( $model->load($postData) && Yii::$app->request->isAjax ){
                 Yii::$app->response->format = Response::FORMAT_JSON;
                 return ActiveForm::validate($model);
-          
+                }
                 if ( $model->load($postData) ) {
 
                     if ($model->validate()){
-                     
+                 
                         $actualizarNatural =  self::actualizarPasswordNatural($id_contribuyente, $model->password1);
 
                         if ($actualizarNatural == true){
@@ -391,16 +391,16 @@ class CambiarPasswordContribuyenteController extends Controller
                     
                     }
                         
-                }
+                
               
-            
 
-        return $this->render('/usuario/reseteo-password-natural' , ['model' => $model,
+        }
+        return $this->render('/usuario/reseteo-password-natural'   , ['model' => $model,
                                                                     'id_contribuyente' => $id_contribuyente,
                                                                     ]); 
 
 
-       }
+       
   }
   /**
   * [actionReseteoPasswordNatural description] metodo que renderiza la vista para poder ingresar el nuevo password

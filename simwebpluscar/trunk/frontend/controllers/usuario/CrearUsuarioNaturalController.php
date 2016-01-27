@@ -94,6 +94,8 @@ class CrearUsuarioNaturalController extends Controller
 
                 if ($model->validate()){
 
+                    
+
                 return self::actionBuscarRif($model->naturaleza, $model->cedula , $model->tipo);
 
                       
