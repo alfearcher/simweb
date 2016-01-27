@@ -146,7 +146,7 @@ $this->params['breadcrumbs'][] = $this->title;
                <!-- Boton para aplicar la actualizacion -->
                                     <div class="col-sm-2">
                                         <div class="form-group">
-                                            <?= Html::submitButton(Yii::t('backend', Yii::t('frontend', 'Search')),
+                                            <?= Html::submitButton(Yii::t('frontend', Yii::t('frontend', 'Search')),
                                                                                                       [
                                                                                                         'id' => 'btn-update',
                                                                                                         'class' => 'btn btn-success',
