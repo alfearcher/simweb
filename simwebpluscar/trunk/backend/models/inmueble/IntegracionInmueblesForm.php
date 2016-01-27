@@ -209,6 +209,7 @@ class IntegracionInmueblesUrbanosForm extends \yii\db\ActiveRecord
             'tipoBuscar'=> Yii::t('backend', 'Type'),
         ]; 
     }
+    
     public function cercanos($attribute, $params)
     {
   
@@ -257,7 +258,7 @@ class IntegracionInmueblesUrbanosForm extends \yii\db\ActiveRecord
                             $this->addError($attribute, Yii::t('backend', 'The Contributor '.$buscar1[0]['id_contribuyente'].'  has already allocated about this property Cadastre. ')); 
 
 
-                         }
+                         } 
 
                       }
                    }
