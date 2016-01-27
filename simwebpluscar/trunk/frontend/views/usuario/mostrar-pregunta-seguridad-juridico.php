@@ -5,7 +5,7 @@ use yii\helpers\ArrayHelper;
 
 
 use frontend\models\usuario\ListaPreguntasContribuyente;
-use frontend\models\usuario\PreguntaSeguridadContribuyente;
+ 
  
 $this->title = 'Preguntas de Seguridad';
 
@@ -38,14 +38,14 @@ $this->title = 'Preguntas de Seguridad';
 
 
 						    
-							<?php       $modelpreguntas = PreguntaSeguridadContribuyente::find()->where(['inactivo' => 0, 'id_contribuyente' => $id_contribuyente])->asArray()->all();                                         
+							<?php       $modelpreguntas = ListaPreguntasContribuyente::find()->where(['estatus' => 0])->asArray()->all();                                         
                                         $listapreguntas = ArrayHelper::map($modelpreguntas,'pregunta','pregunta'); 
                                        // die(var_dump($listapreguntas));             ?>
 
-                            <?= $form->field($model, 'pregunta1')->textInput($listapreguntas ,               [ 'id'=> 'preguntas', 
+                            <?= $form->field($model, 'pregunta1')->textInput(                              [ 'id'=> 'preguntas', 
                                                                                                            
                                                                                                             'style' => 'width:280px;',
-                                                                                                            
+                                                                                                            'value' => $pregunta1  ,
                                                                                                             'readOnly' =>true,                                                                                                          
                                                                                                             ]); ?>
 
@@ -60,11 +60,11 @@ $this->title = 'Preguntas de Seguridad';
 				   </tr>
 				   <tr>
 						<td><div class="col-lg-4">
-                            <?php       $modelpreguntas = PreguntaSeguridadContribuyente::find()->where(['inactivo' => 0, 'id_contribuyente' => $id_contribuyente])->asArray()->all();                                         
+                            <?php       $modelpreguntas = ListaPreguntasContribuyente::find()->where(['estatus' => 0])->asArray()->all();                                         
                                         $listapreguntas = ArrayHelper::map($modelpreguntas,'pregunta','pregunta'); // primero el valor que guarda y segundo el valor que veras en el formulario ?>
 
-                            <?= $form->field($model, 'pregunta2')->textInput($listapreguntas,                [ 'id'=> 'preguntas', 
-                                                                                                            
+                            <?= $form->field($model, 'pregunta2')->textInput(  [ 'id'=> 'preguntas', 
+                                                                                                            'value' => $pregunta2  ,
                                                                                                             'readOnly' =>true,  
                                                                                                             'style' => 'width:280px;',
                                                                                                            ]);    ?>
@@ -80,11 +80,11 @@ $this->title = 'Preguntas de Seguridad';
 
 					<tr>
 						<td><div class="col-lg-4">
-                            <?php       $modelpreguntas = PreguntaSeguridadContribuyente::find()->where(['inactivo' => 0, 'id_contribuyente' => $id_contribuyente])->asArray()->all();                                         
+                            <?php       $modelpreguntas = ListaPreguntasContribuyente::find()->where(['estatus' => 0])->asArray()->all();                                         
                                         $listapreguntas = ArrayHelper::map($modelpreguntas,'pregunta','pregunta'); // primero el valor que guarda y segundo el valor que veras en el formulario ?>
 
-                            <?= $form->field($model, 'pregunta3')->textInput( $listapreguntas  ,            [ 'id'=> 'preguntas', 
-                                                                                                           
+                            <?= $form->field($model, 'pregunta3')->textInput( [ 'id'=> 'preguntas', 
+                                                                                                            'value' => $pregunta3  ,
                                                                                                             'readOnly' =>true,  
                                                                                                             'style' => 'width:280px;',
                                                                                                            ]);    ?>
