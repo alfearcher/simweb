@@ -339,7 +339,7 @@ class IntegracionInmueblesUrbanosForm extends \yii\db\ActiveRecord
                                     ->andwhere("ano_impositivo=:ano_impositivo", [":ano_impositivo" => $this->ano_traspaso])
                                     //->andWhere("inactivo=:inactivo", [":inactivo" => 0])
                                     //id_pago, id_impuesto, impuesto, ano_impositivo, trimestre
-                                    ->asArray()->all();                               
+                                    ->asArray()->all();                              
 
             //Si la consulta no cuenta (0) mostrar el error
             if ($table != null){
