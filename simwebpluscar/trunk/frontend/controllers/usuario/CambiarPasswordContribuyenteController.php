@@ -66,6 +66,7 @@ use frontend\controllers\mensaje\MensajeController;
 use frontend\models\usuario\ValidarCambiarPasswordNaturalForm;
 use frontend\models\usuario\ValidarCambiarPasswordJuridicoForm;
 use frontend\models\usuario\ReseteoPasswordNaturalForm;
+use frontend\models\usuario\ReseteoPasswordJuridicoForm;
 use common\seguridad\Seguridad;
 use common\models\utilidades\Utilidad;
 use common\conexion\ConexionController;
@@ -278,8 +279,38 @@ class CambiarPasswordContribuyenteController extends Controller
 
       }
 
+      public function actionBuscarPreguntaSeguridadJuridico($id){
+        
+        $buscarPreguntas = new VerificarPreguntasContribuyenteJuridicoForm();
 
-      public function actionMostrarPreguntaSeguridadJuridico($id){
+          $buscarPreguntaSeguridad = $buscarPreguntas::BuscarPreguntaSeguridadJuridico($id);
+
+            if ($buscarPreguntaSeguridad == true){
+
+              $pregunta1 = $buscarPreguntaSeguridad[0]->pregunta;
+              $pregunta2 = $buscarPreguntaSeguridad[1]->pregunta;
+              $pregunta3 = $buscarPreguntaSeguridad[2]->pregunta;
+              $idContribuyente = $buscarPreguntaSeguridad[0]->id_contribuyente;
+
+             // die($idContribuyente);
+
+              return $this->redirect(['mostrar-pregunta-seguridad-juridico',
+                                                                'id_contribuyente' => $idContribuyente,
+                                                                //die($idContribuyente),
+                                                                'pregunta1' => $pregunta1,
+                                                                'pregunta2' => $pregunta2,
+                                                                'pregunta3' => $pregunta3,
+
+                      ]);
+            }
+
+
+
+      }
+
+
+      public function actionMostrarPreguntaSeguridadJuridico($pregunta1, $pregunta2, $pregunta3, $id_contribuyente){
+       // die($id_contribuyente);
 
         $model = New ValidarCambiarPasswordJuridicoForm();
        // die($id);
@@ -311,7 +342,11 @@ class CambiarPasswordContribuyenteController extends Controller
         return $this->render('/usuario/mostrar-pregunta-seguridad-juridico' , 
                                                         [
                                                         'model' => $model,
-                                                        'id_contribuyente' => $id,
+                                                        'pregunta1' =>$pregunta1,
+                                                        'pregunta2' => $pregunta2,
+                                                        'pregunta3' => $pregunta3,
+                                                        'id_contribuyente' => $id_contribuyente,
+                                                        
                                                         
                                                         
 
@@ -385,6 +420,69 @@ class CambiarPasswordContribuyenteController extends Controller
 
       }
 
+      public function actionReseteoPasswordJuridico($id_contribuyente){
+
+
+
+
+        $model = New ReseteoPasswordJuridicoForm();
+
+              $postData = Yii::$app->request->post();
+
+              if ( $model->load($postData) && Yii::$app->request->isAjax ) {
+                  Yii::$app->response->format = Response::FORMAT_JSON;
+                  return ActiveForm::validate($model);
+              }
+
+                //die('llegue2');
+                
+                if ( $model->load($postData) ) {
+
+                    if ($model->validate()){
+                     // die($model->password1);
+
+                    $actualizarJuridico =  self::actualizarPasswordJuridico($id_contribuyente, $model->password1);
+
+                    if ($actualizarJuridico == true){
+
+                      
+                      
+
+                      $consultaContribuyente = new CrearusuarioNatural();
+
+                      $consultaContribuyente = CrearUsuarioNatural::find()
+                                                                   ->where([
+                                'id_contribuyente' => $id_contribuyente,
+                                'tipo_naturaleza' => 1,
+                                'inactivo' => 0,
+                                ])
+                                ->one();
+
+
+
+                               // die($consultaContribuyente->email);
+
+                      $enviarEmail = new EnviarEmailCambioClave();
+                      $enviarEmail->EnviarEmailCambioClave($consultaContribuyente->email, $model->password1);
+                      
+                      return MensajeController::actionMensaje(Yii::t('frontend', 'We have sent you an email with your new password'));
+
+                    }
+                    
+                    }
+                        
+                }
+              
+
+
+        return $this->render('/usuario/reseteo-password-juridico' , ['model' => $model,
+                                                                    'id_contribuyente' => $id_contribuyente,
+                                                                    ]); 
+
+
+      }
+
+
       public function actualizarPasswordNatural($id_contribuyente, $password1){
 
        // die(var_dump($model));
@@ -432,6 +530,56 @@ class CambiarPasswordContribuyenteController extends Controller
             }
 
             }
+
+         public function actualizarPasswordJuridico($id_contribuyente, $password1){
+
+       // die(var_dump($model));
+
+         
+        $tableName = 'afiliaciones';
+        $arregloCondition = ['id_contribuyente' => $id_contribuyente]; 
+
+        //die($password1);
+          // die(var_dump($arregloCampo));
+         
+            
+
+          $seguridad = new Seguridad();
+
+          $nuevaClave = $seguridad->randKey(6);
+
+          $salt = Utilidad::getUtilidad();
+
+          $password = $password1.$salt;
+
+          $password_hash = md5($password);
+         
+          $arregloDatos = ['password_hash' => $password_hash];
+
+          $conexion = new ConexionController();
+
+          $conn = $conexion->initConectar('db');
+         
+          $conn->open();
+
+          $transaccion = $conn->beginTransaction();
+
+            if ($conexion->modificarRegistroNatural($conn, $tableName, $arregloDatos, $arregloCondition)){
+
+              $transaccion->commit();
+                $conn->close();
+                return true;
+              
+            }else{ 
+         
+            $transaccion->rollback();
+                 $conn->close();
+                 return false;
+            }
+
+            }
+
+
 
       
       
