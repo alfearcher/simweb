@@ -82,6 +82,7 @@ class CrearUsuarioNaturalForm extends CrearUsuarioNatural{
       {
         return [
           [['naturaleza','cedula'],'required','message' => Yii::t('frontend', '{attribute} is required')],
+          ['cedula', 'existe'],
           [['tipo_naturaleza', 'tipo'],'default', 'value' => 0],
           [['cedula'], 'integer']
          
@@ -188,6 +189,42 @@ public function findAfiliacion($idContribuyente)
 
           ];
   }
+
+   public function existe($attribute, $params){
+
+    $buscar = CrearUsuarioNatural::find()
+                                   ->where([
+
+                                    'naturaleza' => $this->naturaleza,
+                                    'cedula' => $this->cedula,
+                                    'tipo_naturaleza' => 0,
+                                    'inactivo' => 0,
+                                    ])->one();
+
+     
+
+                                   
+  //die($hola);
+
+      if ($buscar  != null){ 
+                             
+      $buscar2 = Afiliacion::find()
+                                    ->where([
+
+                                   
+                                     'id_contribuyente' => $buscar->id_contribuyente,
+                                  
+                                     'estatus' => 0,
+                                    ])->one();
+                                //die(var_dump($buscar2));
+
+    if ($buscar2  != null){
+      $this->addError($attribute, Yii::t('frontend', 'This user already exists '));
+    }
+
+    
+    }
+ }
 
    public function attributeContribuyentes()
   {
