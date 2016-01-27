@@ -22,14 +22,14 @@
  */
 
  /**    
- *  @file OpcionCrearUsuarioController.php
+ *  @file CambiarPasswordContribuyenteController.php
  *  
  *  @author Manuel Alejandro Zapata Canelon
  * 
- *  @date 21/12/15
+ *  @date 27/01/2016
  * 
- *  @class CrearUsuarioController
- *  @brief Controlador para crear usuario tanto juridico como natural
+ *  @class CambiarPasswordContribuyenteController
+ *  @brief Controlador para cambiar el password de los contribuyentes, tanto natural como juridico
  * 
  *  
  * 
@@ -84,17 +84,24 @@ class CambiarPasswordContribuyenteController extends Controller
 
     /**
      *
-     * metodo que levanta la vista para la seleccion del tipo de registro a realizarse
+     * metodo que renderiza la vista para la seleccion del tipo de registro a realizarse
      * 
-     * @return retorna la vista para seleccionar el tipo de registro que desee hacer
+     * @return retorna la vista para seleccionar el tipo de cambio de password que desee realizar
      */
    public function actionSeleccionarTipoContribuyente(){
 
     return $this->render('/usuario/seleccionar-tipo-recuperar-password');
    }
 
-    public function actionCambiarPasswordNatural()
-    {
+    
+    /**
+     * [actionCambiarPasswordNatural] metodo que busca los id del usuario natural en la tabla contribuyente, afiliacion y 
+     * luego busca las preguntas de seguridad en la tabla para cambiarlas
+     * @return [type] [description] vista que te pide ingresar tu cedula y tu email para buscar las preguntas de seguridad
+     * @return [description] render de la vista que te muestra las preguntas de seguridad seteadas 
+     * para autenticar el usuario ($pregunta1, $pregunta2,$pregunta3)
+     */
+    public function actionCambiarPasswordNatural(){
 
             $model = New VerificarPreguntasContribuyenteNaturalForm();
 
@@ -114,74 +121,69 @@ class CambiarPasswordContribuyenteController extends Controller
 
                         $buscarId = new VerificarPreguntasContribuyenteNaturalForm();
 
-                        $p = $buscarId::buscarIdContribuyente($model);
-                        if ($p == true){
+                        $buscarContribuyente = $buscarId::buscarIdContribuyente($model);
+                        if ($buscarContribuyente == true){
 
-                            $r = $buscarId::buscarIdAfiliaciones($p->id_contribuyente);
+                            $buscarAfiliaciones = $buscarId::buscarIdAfiliaciones($buscarContribuyente->id_contribuyente);
 
-                            if ($r == true){
-                                //die($p->id_contribuyente);
-                          
-                                $q =  $buscarId::buscarPreguntaSeguridad($p->id_contribuyente);
-                             //die(var_dump($q));
+                            if ($buscarAfiliaciones == true){
+                                
+                                $buscarPreguntaSeguridadJuridico =  $buscarId::buscarPreguntaSeguridad($buscarAfiliaciones->id_contribuyente);
+                             
 
-                                if ($q == true){
-                                  //die(var_dump($q));
-
-
-                                    //die(var_dump($q));
-                                $pregunta1 = $q[0]->pregunta;
-                                $pregunta2 = $q[1]->pregunta;
-                                $pregunta3 = $q[2]->pregunta;
-                                $id_contribuyente = $q[0]->id_contribuyente;
-                                  //die($q[0]->id_contribuyente);
-
-                                    //die($q[2]->pregunta); 
-
+                                    if ($buscarPreguntaSeguridadJuridico == true){
+                                  
+                                    $pregunta1 = $buscarPreguntaSeguridadJuridico[0]->pregunta;
+                                    $pregunta2 = $buscarPreguntaSeguridadJuridico[1]->pregunta;
+                                    $pregunta3 = $buscarPreguntaSeguridadJuridico[2]->pregunta;
+                                    $idContribuyente = $buscarPreguntaSeguridadJuridico[0]->id_contribuyente;
+                                  
                                     return $this->redirect(['/usuario/cambiar-password-contribuyente/mostrar-pregunta-seguridad-natural',
                                                                                                                         'pregunta1' => $pregunta1,
                                                                                                                         'pregunta2' => $pregunta2,
                                                                                                                         'pregunta3' => $pregunta3,
-                                                                                                                        'id_contribuyente' => $id_contribuyente,
+                                                                                                                        'id_contribuyente' => $idContribuyente,
                                                                                                                          ]);
                                                                                                                           
-                                   } else {
+                                    } else {
 
-                                   return MensajeController::actionMensaje(Yii::t('frontend','You have not asigned security answers yet, please go to the city hall')); 
+                                    return MensajeController::actionMensaje(Yii::t('frontend','You have not asigned security answers yet, please go to the city hall')); 
+                                
                                 }
-                          }else {
+                          
+                            }else {
                                    return MensajeController::actionMensaje(Yii::t('frontend','You have not signed in afiliations, please go to create user')); 
-                          }
+                            }
 
-                    }else{
-                        return MensajeController::actionMensaje(Yii::t('frontend','Please Go to your city hall to reset the password'));
+                        }else{
+                            return MensajeController::actionMensaje(Yii::t('frontend','Please Go to your city hall to reset the password'));
+                        }
+                    
                     }
+
                 }
 
-            }
-
-
-
-                        
-                
-              return $this->render('/usuario/verificar-preguntas-seguridad-natural' , ['model' => $model]);
+                    return $this->render('/usuario/verificar-preguntas-seguridad-natural' , ['model' => $model]);
                     
 
     } 
 
-       public function actionCambiarPasswordJuridico()
-    {
+    /**
+     * [actionCambiarPasswordJuridico description] metodo que busca los id del usuario juridico en la tabla contribuyente, afiliacion y 
+     * luego busca las preguntas de seguridad en la tabla para cambiarlas
+     * @return [type] [description] vista que te pide ingresar tu rif y tu email para buscar las preguntas de seguridad
+     * @return [description]render de la vista que te pide seleccionar la empresa asociada al rif enviado ($naturaleza, $cedula, $tipo, $email)
+     */
+    public function actionCambiarPasswordJuridico(){
 
-            $model = New VerificarPreguntasContribuyenteJuridicoForm();
+        $model = New VerificarPreguntasContribuyenteJuridicoForm();
 
-              $postData = Yii::$app->request->post();
+            $postData = Yii::$app->request->post();
 
-              if ( $model->load($postData) && Yii::$app->request->isAjax ) {
-                  Yii::$app->response->format = Response::FORMAT_JSON;
-                  return ActiveForm::validate($model);
-              }
-
-                //die('llegue2');
+                if ( $model->load($postData) && Yii::$app->request->isAjax ) {
+                    Yii::$app->response->format = Response::FORMAT_JSON;
+                    return ActiveForm::validate($model);
+                }
                 
                 if ( $model->load($postData) ) {
 
@@ -194,21 +196,21 @@ class CambiarPasswordContribuyenteController extends Controller
                             $tipo = $model->tipo;
 
                             $buscarAfiliacionesJuridico = $buscarId::buscarIdAfiliaciones($model);
-                            //die(var_dump($buscarAfiliacionesJuridico));
-                            //
+                            
                             $idsContribuyente = [];
 
                             foreach ($buscarAfiliacionesJuridico as $key => $value){
                               
-                              $idsContribuyente[] = $buscarAfiliacionesJuridico[$key]['id_contribuyente'];
+                                $idsContribuyente[] = $buscarAfiliacionesJuridico[$key]['id_contribuyente'];
                               
                             }
                               
-                             if ($buscarAfiliacionesJuridico == true){
-                                   $dataProvider = $buscarId::buscarIdContribuyente($idsContribuyente);
+                            if ($buscarAfiliacionesJuridico == true){
+                                   
+                                $dataProvider = $buscarId::buscarIdContribuyente($idsContribuyente);
 
-                                   if ($dataProvider == true){
-                                   // die(var_dump($dataProvider));
+                                if ($dataProvider == true){
+                                   
                                     return $this->render('/usuario/lista-contribuyente-juridico' , [
                                                                                                   'dataProvider' => $dataProvider,
                                                                                                   'naturaleza' => $naturaleza,
@@ -216,130 +218,126 @@ class CambiarPasswordContribuyenteController extends Controller
                                                                                                   'tipo' => $tipo,
                                                                                                   ]);
 
-                                   }
                                 }
+                            }
                             
-                            
-
-                            
-                      //return self::actionBuscarRif($model->naturaleza, $model->cedula,$model->tipo );
-
-                      //return $this->redirect(['juridico']);
-
-                          //return $this->redirect(['buscar-rif']);
                     }
                         
                 }
 
-
-                return $this->render('/usuario/verificar-preguntas-seguridad-juridico' , ['model' => $model]);
+                    return $this->render('/usuario/verificar-preguntas-seguridad-juridico' , ['model' => $model]);
 
     } 
 
-      public function actionMostrarPreguntaSeguridadNatural($pregunta1, $pregunta2, $pregunta3, $id_contribuyente){
+    /**
+     * [actionMostrarPreguntaSeguridadNatural description] metodo que hace que se muestren las preguntas de seguridad seteadas para autenticar el usuario
+     * @param  [type] $pregunta1        [description] primera pregunta guardada en la tabla preg_seg_contribuyentes
+     * @param  [type] $pregunta2        [description] segunda pregunta guardada en la tabla preg_seg_contribuyentes
+     * @param  [type] $pregunta3        [description] tercera pregunta guardada en la tabla preg_seg_contribuyentes
+     * @param  [type] $id_contribuyente [description] id del contribuyente natural que desea buscar sus preguntas de seguridad
+     * @return [type]                   [description] render de la vista que muestra las preguntas de seguridad seteadas
+     * para autenticar el usuario
+     * @return [description] redireccionamiento al metodo que hace que puedas cambiar el password
+     */
+    public function actionMostrarPreguntaSeguridadNatural($pregunta1, $pregunta2, $pregunta3, $id_contribuyente){
 
         $model = New ValidarCambiarPasswordNaturalForm();
 
-              $postData = Yii::$app->request->post();
+            $postData = Yii::$app->request->post();
 
-              if ( $model->load($postData) && Yii::$app->request->isAjax ) {
+            if ( $model->load($postData) && Yii::$app->request->isAjax ){
                   Yii::$app->response->format = Response::FORMAT_JSON;
                   return ActiveForm::validate($model);
-              }
+            }
 
-                //die('llegue2');
-                
-                if ( $model->load($postData) ) {
+            if ( $model->load($postData) ) {
 
                     if ($model->validate()){
 
-                     return $this->redirect (['/usuario/cambiar-password-contribuyente/reseteo-password-natural',
+                     return $this->redirect(['/usuario/cambiar-password-contribuyente/reseteo-password-natural',
                                                                                                           'id_contribuyente' => $id_contribuyente,
-
                                                                                                           ]);
-                    }
+                   }
                         
-                }
+            }
               
+                     return $this->render('/usuario/mostrar-pregunta-seguridad-natural' , [
+                                                                          'model' => $model,
+                                                                          'pregunta1' => $pregunta1,
+                                                                          'pregunta2' => $pregunta2,
+                                                                          'pregunta3' => $pregunta3,
+                                                                          'id_contribuyente' => $id_contribuyente,
+
+                                                                           ]); 
 
 
-        return $this->render('/usuario/mostrar-pregunta-seguridad-natural' , 
-                                                        [
-                                                        'model' => $model,
-                                                        'pregunta1' => $pregunta1,
-                                                        'pregunta2' => $pregunta2,
-                                                        'pregunta3' => $pregunta3,
-                                                        'id_contribuyente' => $id_contribuyente,
+    }
 
-
-
-
-                                                        ]); 
-
-
-      }
-
-      public function actionBuscarPreguntaSeguridadJuridico($id){
+    /**
+     * [actionBuscarPreguntaSeguridadJuridico description] metodo que busca las preguntas de seguridad del usuario juridico en la tabla
+     * preg_seg_contribuyente enviando como parametro el id.
+     * @param  [INT] $id [description] parametro enviado para realizar la busqueda en la tabla
+     * @return [description] redireccionamiento al metodo que renderiza la vista con las preguntas del usuario juridico
+     * seteadas para autenticarlo.
+     */
+    public function actionBuscarPreguntaSeguridadJuridico($id){
         
         $buscarPreguntas = new VerificarPreguntasContribuyenteJuridicoForm();
 
-          $buscarPreguntaSeguridad = $buscarPreguntas::BuscarPreguntaSeguridadJuridico($id);
+        $buscarPreguntaSeguridad = $buscarPreguntas::BuscarPreguntaSeguridadJuridico($id);
 
             if ($buscarPreguntaSeguridad == true){
 
-              $pregunta1 = $buscarPreguntaSeguridad[0]->pregunta;
-              $pregunta2 = $buscarPreguntaSeguridad[1]->pregunta;
-              $pregunta3 = $buscarPreguntaSeguridad[2]->pregunta;
-              $idContribuyente = $buscarPreguntaSeguridad[0]->id_contribuyente;
+                $pregunta1 = $buscarPreguntaSeguridad[0]->pregunta;
+                $pregunta2 = $buscarPreguntaSeguridad[1]->pregunta;
+                $pregunta3 = $buscarPreguntaSeguridad[2]->pregunta;
+                $idContribuyente = $buscarPreguntaSeguridad[0]->id_contribuyente;
 
-             // die($idContribuyente);
+                    return $this->redirect(['mostrar-pregunta-seguridad-juridico',
+                                            'id_contribuyente' => $idContribuyente,
+                                            'pregunta1' => $pregunta1,
+                                            'pregunta2' => $pregunta2,
+                                            'pregunta3' => $pregunta3,
 
-              return $this->redirect(['mostrar-pregunta-seguridad-juridico',
-                                                                'id_contribuyente' => $idContribuyente,
-                                                                //die($idContribuyente),
-                                                                'pregunta1' => $pregunta1,
-                                                                'pregunta2' => $pregunta2,
-                                                                'pregunta3' => $pregunta3,
+                                             ]);
+            }else{
 
-                      ]);
+                return MensajeController::actionMensaje(Yii::t('frontend', 'You have not created your security answers yet, please go to your city hall'));
             }
+    }
 
-
-
-      }
-
-
-      public function actionMostrarPreguntaSeguridadJuridico($pregunta1, $pregunta2, $pregunta3, $id_contribuyente){
-       // die($id_contribuyente);
-
+    /**
+     * [actionMostrarPreguntaSeguridadJuridico description] metodo que renderiza la vista con las preguntas del usuario juridico seteadas
+     * @param  [type] $pregunta1        [description] primera pregunta guardada en la tabla preg_seg_contribuyentes
+     * @param  [type] $pregunta2        [description] segunda pregunta guardada en la tabla preg_seg_contribuyentes
+     * @param  [type] $pregunta3        [description] tercera pregunta guardada en la tabla preg_seg_contribuyentes
+     * @param  [type] $id_contribuyente [description] id del contribuyente juridico que desea buscar sus preguntas de seguridad
+     * @return [type]                   [description] metodo que renderiza la vista con las preguntas de seguridad del usuario ya seteadas
+     * @return [description] redireccionamiento al metodo que hace que puedas cambiar el password
+     */
+    public function actionMostrarPreguntaSeguridadJuridico($pregunta1, $pregunta2, $pregunta3, $id_contribuyente){
+        
         $model = New ValidarCambiarPasswordJuridicoForm();
-       // die($id);
+       
+            $postData = Yii::$app->request->post();
 
-              $postData = Yii::$app->request->post();
-
-              if ( $model->load($postData) && Yii::$app->request->isAjax ) {
+            if ( $model->load($postData) && Yii::$app->request->isAjax ) {
                   Yii::$app->response->format = Response::FORMAT_JSON;
                   return ActiveForm::validate($model);
-              }
+            }
 
-                //die('llegue2');
-                
-                if ( $model->load($postData) ) {
+            if ( $model->load($postData) ) {
 
-                    if ($model->validate()){
-                     // die('llegue a juridico');
-
-                     return $this->redirect (['/usuario/cambiar-password-contribuyente/reseteo-password-juridico',
-                                                                                                          'id_contribuyente' => $id_contribuyente,
+                if ($model->validate()){
+                     
+                    return $this->redirect (['/usuario/cambiar-password-contribuyente/reseteo-password-juridico',
+                                                                          'id_contribuyente' => $id_contribuyente,
 
                                                                                                           ]);
-                    }
-                        
                 }
+            }
               
-
-
-        return $this->render('/usuario/mostrar-pregunta-seguridad-juridico' , 
+                return $this->render('/usuario/mostrar-pregunta-seguridad-juridico' , 
                                                         [
                                                         'model' => $model,
                                                         'pregunta1' =>$pregunta1,
@@ -347,247 +345,212 @@ class CambiarPasswordContribuyenteController extends Controller
                                                         'pregunta3' => $pregunta3,
                                                         'id_contribuyente' => $id_contribuyente,
                                                         
-                                                        
-                                                        
-
-
-
-
                                                         ]); 
-                      //  die($id);
+    }
 
-
-      }
-
-
-      public function actionReseteoPasswordNatural($id_contribuyente){
-
-
-
+    /**
+     * [actionReseteoPasswordNatural description] metodo que renderiza la vista para poder ingresar el nuevo password
+     * del usuario natural y que luego, al cambiarlo, le envia un correo al usuario con su "usuario" y "contraseña".
+     * @param  [type] $id_contribuyente [description] id del contribuyente al cual se le realizara el cambio de password
+     * @return [type]                   [description] render de la vista para ingresar el nuevo password del usuario natural
+     */
+    public function actionReseteoPasswordNatural($id_contribuyente){
 
         $model = New ReseteoPasswordNaturalForm();
 
-              $postData = Yii::$app->request->post();
+        $postData = Yii::$app->request->post();
 
-              if ( $model->load($postData) && Yii::$app->request->isAjax ) {
-                  Yii::$app->response->format = Response::FORMAT_JSON;
-                  return ActiveForm::validate($model);
-              }
-
-                //die('llegue2');
-                
+        if ( $model->load($postData) && Yii::$app->request->isAjax ){
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($model);
+          
                 if ( $model->load($postData) ) {
 
                     if ($model->validate()){
-                     // die($model->password1);
+                     
+                        $actualizarNatural =  self::actualizarPasswordNatural($id_contribuyente, $model->password1);
 
-                    $actualizarNatural =  self::actualizarPasswordNatural($id_contribuyente, $model->password1);
+                        if ($actualizarNatural == true){
 
-                    if ($actualizarNatural == true){
+                            $consultaContribuyente = new CrearusuarioNatural();
 
+                            $consultaContribuyente = CrearUsuarioNatural::find()
+                                                                          ->where([
+                                                                         'id_contribuyente' => $id_contribuyente,
+                                                                         'tipo_naturaleza' => 0,
+                                                                         'inactivo' => 0,
+                                                                          ])
+                                                                         ->one();
+
+                            $enviarEmail = new EnviarEmailCambioClave();
+                            $enviarEmail->EnviarEmailCambioClave($consultaContribuyente->email, $model->password1);
                       
-                      
+                            return MensajeController::actionMensaje(Yii::t('frontend', 'We have sent you an email with your new password'));
 
-                      $consultaContribuyente = new CrearusuarioNatural();
-
-                      $consultaContribuyente = CrearUsuarioNatural::find()
-                                                                   ->where([
-                                'id_contribuyente' => $id_contribuyente,
-                                'tipo_naturaleza' => 0,
-                                'inactivo' => 0,
-                                ])
-                                ->one();
-
-                                //die($consultaContribuyente->email);
-
-                      $enviarEmail = new EnviarEmailCambioClave();
-                      $enviarEmail->EnviarEmailCambioClave($consultaContribuyente->email, $model->password1);
-                      
-                      return MensajeController::actionMensaje(Yii::t('frontend', 'We have sent you an email with your new password'));
-
-                    }
+                        }
                     
                     }
                         
                 }
               
-
+            
 
         return $this->render('/usuario/reseteo-password-natural' , ['model' => $model,
                                                                     'id_contribuyente' => $id_contribuyente,
                                                                     ]); 
 
 
+       }
+  }
+  /**
+  * [actionReseteoPasswordNatural description] metodo que renderiza la vista para poder ingresar el nuevo password
+  * del usuario juridico y que luego, al cambiarlo, le envia un correo al usuario con su "usuario" y "contraseña".
+  * @param  [type] $id_contribuyente [description] id del contribuyente al cual se le realizara el cambio de password
+  * @return [type]                   [description] render de la vista para ingresar el nuevo password del usuario juridico
+  */
+  public function actionReseteoPasswordJuridico($id_contribuyente){
+
+      $model = New ReseteoPasswordJuridicoForm();
+
+      $postData = Yii::$app->request->post();
+
+      if ( $model->load($postData) && Yii::$app->request->isAjax ) {
+          Yii::$app->response->format = Response::FORMAT_JSON;
+          return ActiveForm::validate($model);
       }
 
-      public function actionReseteoPasswordJuridico($id_contribuyente){
+      if ( $model->load($postData) ) {
 
-
-
-
-        $model = New ReseteoPasswordJuridicoForm();
-
-              $postData = Yii::$app->request->post();
-
-              if ( $model->load($postData) && Yii::$app->request->isAjax ) {
-                  Yii::$app->response->format = Response::FORMAT_JSON;
-                  return ActiveForm::validate($model);
-              }
-
-                //die('llegue2');
-                
-                if ( $model->load($postData) ) {
-
-                    if ($model->validate()){
-                     // die($model->password1);
-
-                    $actualizarJuridico =  self::actualizarPasswordJuridico($id_contribuyente, $model->password1);
-
-                    if ($actualizarJuridico == true){
-
-                      
-                      
-
-                      $consultaContribuyente = new CrearusuarioNatural();
-
-                      $consultaContribuyente = CrearUsuarioNatural::find()
-                                                                   ->where([
-                                'id_contribuyente' => $id_contribuyente,
-                                'tipo_naturaleza' => 1,
-                                'inactivo' => 0,
-                                ])
-                                ->one();
-
-
-
-                               // die($consultaContribuyente->email);
-
-                      $enviarEmail = new EnviarEmailCambioClave();
-                      $enviarEmail->EnviarEmailCambioClave($consultaContribuyente->email, $model->password1);
-                      
-                      return MensajeController::actionMensaje(Yii::t('frontend', 'We have sent you an email with your new password'));
-
-                    }
+          if ($model->validate()){
                     
-                    }
+              $actualizarJuridico =  self::actualizarPasswordJuridico($id_contribuyente, $model->password1);
+
+              if ($actualizarJuridico == true){
+
+                  $consultaContribuyente = new CrearusuarioNatural();
+
+                  $consultaContribuyente = CrearUsuarioNatural::find()
+                                                                ->where([
+                                                               'id_contribuyente' => $id_contribuyente,
+                                                               'tipo_naturaleza' => 1,
+                                                               'inactivo' => 0,
+                                                                ])
+                                                                ->one();
+
+                  $enviarEmail = new EnviarEmailCambioClave();
+                  $enviarEmail->EnviarEmailCambioClave($consultaContribuyente->email, $model->password1);
+                      
+                  return MensajeController::actionMensaje(Yii::t('frontend', 'We have sent you an email with your new password'));
+
+              }
+                    
+          }
                         
-                }
+      }
               
 
 
-        return $this->render('/usuario/reseteo-password-juridico' , ['model' => $model,
+      return $this->render('/usuario/reseteo-password-juridico' , ['model' => $model,
                                                                     'id_contribuyente' => $id_contribuyente,
                                                                     ]); 
 
+  }
 
-      }
+  /**
+   * [actualizarPasswordNatural description] metodo que actualiza el password del usuario natural en la base de datos
+   * @param  [type] $id_contribuyente [description] id del contribuyente a quien se le realizara la actualizacion de password
+   * @param  [type] $password1        [description] password nuevo, el cual suplantara al password olvidado
+   * @return [type]                   [description] si la transaccion se realiza efectivamente, se retorna una respuesta positiva 
+   * y se manda al metodo que envia el correo con el nuevo password
+   * @return [description] si la transaccion no se realiza efectivamente, se retorna una respuesta negativa y retorna un mensaje de error 
+   */
+  public function actualizarPasswordNatural($id_contribuyente, $password1){
 
+      $tableName = 'afiliaciones';
+      $arregloCondition = ['id_contribuyente' => $id_contribuyente]; 
 
-      public function actualizarPasswordNatural($id_contribuyente, $password1){
+      $seguridad = new Seguridad();
 
-       // die(var_dump($model));
+      $nuevaClave = $seguridad->randKey(6);
 
+      $salt = Utilidad::getUtilidad();
+
+      $password = $password1.$salt;
+
+      $password_hash = md5($password);
          
-        $tableName = 'afiliaciones';
-        $arregloCondition = ['id_contribuyente' => $id_contribuyente]; 
+      $arregloDatos = ['password_hash' => $password_hash];
 
-        //die($password1);
-          // die(var_dump($arregloCampo));
+      $conexion = new ConexionController();
+
+      $conn = $conexion->initConectar('db');
          
-            
+      $conn->open();
 
-          $seguridad = new Seguridad();
+      $transaccion = $conn->beginTransaction();
 
-          $nuevaClave = $seguridad->randKey(6);
-
-          $salt = Utilidad::getUtilidad();
-
-          $password = $password1.$salt;
-
-          $password_hash = md5($password);
-         
-          $arregloDatos = ['password_hash' => $password_hash];
-
-          $conexion = new ConexionController();
-
-          $conn = $conexion->initConectar('db');
-         
-          $conn->open();
-
-          $transaccion = $conn->beginTransaction();
-
-            if ($conexion->modificarRegistroNatural($conn, $tableName, $arregloDatos, $arregloCondition)){
+          if ($conexion->modificarRegistroNatural($conn, $tableName, $arregloDatos, $arregloCondition)){
 
               $transaccion->commit();
-                $conn->close();
-                return true;
+              $conn->close();
+              return true;
               
-            }else{ 
+          }else{ 
          
-            $transaccion->rollback();
-                 $conn->close();
-                 return false;
-            }
+              $transaccion->rollback();
+              $conn->close();
+              return false;
+          }
 
-            }
+  }
 
-         public function actualizarPasswordJuridico($id_contribuyente, $password1){
+  /**
+  * [actualizarPasswordNatural description] metodo que actualiza el password del usuario juridico en la base de datos
+  * @param  [type] $id_contribuyente [description] id del contribuyente a quien se le realizara la actualizacion de password
+  * @param  [type] $password1        [description] password nuevo, el cual suplantara al password olvidado
+  * @return [type]                   [description] si la transaccion se realiza efectivamente, se retorna una respuesta positiva 
+  * y se manda al metodo que envia el correo con el nuevo password
+  * @return [description] si la transaccion no se realiza efectivamente, se retorna una respuesta negativa y retorna un mensaje de error 
+  */
+  public function actualizarPasswordJuridico($id_contribuyente, $password1){
 
-       // die(var_dump($model));
+      $tableName = 'afiliaciones';
+      $arregloCondition = ['id_contribuyente' => $id_contribuyente]; 
 
+      $seguridad = new Seguridad();
+
+      $nuevaClave = $seguridad->randKey(6);
+
+      $salt = Utilidad::getUtilidad();
+
+      $password = $password1.$salt;
+
+      $password_hash = md5($password);
          
-        $tableName = 'afiliaciones';
-        $arregloCondition = ['id_contribuyente' => $id_contribuyente]; 
+      $arregloDatos = ['password_hash' => $password_hash];
 
-        //die($password1);
-          // die(var_dump($arregloCampo));
+      $conexion = new ConexionController();
+
+      $conn = $conexion->initConectar('db');
          
-            
+      $conn->open();
 
-          $seguridad = new Seguridad();
+      $transaccion = $conn->beginTransaction();
 
-          $nuevaClave = $seguridad->randKey(6);
-
-          $salt = Utilidad::getUtilidad();
-
-          $password = $password1.$salt;
-
-          $password_hash = md5($password);
-         
-          $arregloDatos = ['password_hash' => $password_hash];
-
-          $conexion = new ConexionController();
-
-          $conn = $conexion->initConectar('db');
-         
-          $conn->open();
-
-          $transaccion = $conn->beginTransaction();
-
-            if ($conexion->modificarRegistroNatural($conn, $tableName, $arregloDatos, $arregloCondition)){
+          if ($conexion->modificarRegistroNatural($conn, $tableName, $arregloDatos, $arregloCondition)){
 
               $transaccion->commit();
-                $conn->close();
-                return true;
+              $conn->close();
+              return true;
               
-            }else{ 
+          }else{ 
          
-            $transaccion->rollback();
-                 $conn->close();
-                 return false;
-            }
+              $transaccion->rollback();
+              $conn->close();
+              return false;
+          }
 
-            }
-
-
-
-      
-      
-
-   
-      
-
-    //-- FIN ACTIONSELECCIONARTIPOUSUARIO -->
+  }
 
     
 

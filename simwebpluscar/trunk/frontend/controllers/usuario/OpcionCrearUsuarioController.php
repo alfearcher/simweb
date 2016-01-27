@@ -28,8 +28,8 @@
  * 
  *  @date 21/12/15
  * 
- *  @class CrearUsuarioController
- *  @brief Controlador para crear usuario tanto juridico como natural
+ *  @class OpcionCrearUsuarioController
+ *  @brief Controlador que renderiza vista para la seleccion del tipo de usuario que se desea crear, ya sea natural o juridico.
  * 
  *  
  * 
@@ -68,20 +68,20 @@ class OpcionCrearUsuarioController extends Controller
    
     public $layout = "layout-login";
 
-    //-- INICIO ACTIONSELECCIONARTIPOUSUARIO -->
+   
 
     /**
      *
-     * metodo que levanta la vista para la seleccion del tipo de registro a realizarse
+     * metodo que renderiza la vista para la seleccion del tipo de registro a realizarse
      * 
      * @return retorna la vista para seleccionar el tipo de registro que desee hacer
      */
     public function actionSeleccionarTipoUsuario()
     {
-      return $this->render('/usuario/seleccionar-tipo');
+        return $this->render('/usuario/seleccionar-tipo');
     }   
 
-    //-- FIN ACTIONSELECCIONARTIPOUSUARIO -->
+    
 
     
 

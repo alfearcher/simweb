@@ -22,14 +22,14 @@
  */
 
  /**    
- *  @file OpcionCrearUsuarioController.php
+ *  @file PreguntaSeguridadContribuyenteController.php
  *  
  *  @author Manuel Alejandro Zapata Canelon
  * 
  *  @date 21/12/15
  * 
- *  @class CrearUsuarioController
- *  @brief Controlador para crear usuario tanto juridico como natural
+ *  @class PreguntaSeguridadContribuyenteController
+ *  @brief Controlador crear las preguntas de seguridad de los usuarios tanto naturales como juridicos.
  * 
  *  
  * 
@@ -68,116 +68,108 @@ use yii\helpers\Url;
  */
 class PreguntaSeguridadContribuyenteController extends Controller
 {
-   
+
     public $layout = "layout-login";
 
-    //-- INICIO ACTIONSELECCIONARTIPOUSUARIO -->
-
     /**
-     *
-     * metodo que levanta la vista para la seleccion del tipo de registro a realizarse
-     * 
-     * @return retorna la vista para seleccionar el tipo de registro que desee hacer
-     */
+    *
+    * metodo que levanta la vista para la seleccion del tipo de registro a realizarse
+    * 
+    * @return retorna la vista para seleccionar el tipo de registro que desee hacer
+    */
     public function actionCrearPreguntaSeguridadContribuyente($id_contribuyente)
     {
-      //die($id_contribuyente);
-         $model = New PreguntaSeguridadContribuyenteForm();
+      
+        $model = New PreguntaSeguridadContribuyenteForm();
          
-         
-              $postData = Yii::$app->request->post();
+        $postData = Yii::$app->request->post();
 
-              if ( $model->load($postData) && Yii::$app->request->isAjax ) {
-                  Yii::$app->response->format = Response::FORMAT_JSON;
-                  return ActiveForm::validate($model);
-              }
+            if ( $model->load($postData) && Yii::$app->request->isAjax ){
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($model);
+            }
 
-                if ( $model->load($postData) ) {
+            if ( $model->load($postData) ) {
 
-                    if ($model->validate()){
-                      //die('metodo guardar');
+                if ($model->validate()){
                       
-                      $resultado = self::guardarPreguntaSeguridad($id_contribuyente,$model);
-                      if ($resultado == true ){
-                      return MensajeController::actionMensaje(Yii::t('frontend','We have saved your security answers'));
-                        }else{
+                $resultado = self::guardarPreguntaSeguridad($id_contribuyente,$model);
+                      
+                if ($resultado == true ){
+                      
+                return MensajeController::actionMensaje(Yii::t('frontend','We have saved your security answers'));
+                
+                }else{
                           return MensajeController::actionMensaje(Yii::t('frontend','An error ocurred while we were trying to save this'));
-                        }
-                      
-                    }
-                        
                 }
-              return $this->render('/usuario/pregunta-seguridad-contribuyente' , ['model' => $model]);
+                      
+                }
+                        
+            }
+            return $this->render('/usuario/pregunta-seguridad-contribuyente' , ['model' => $model]);
 
     }
 
-       
-      public function guardarPreguntaSeguridad($id_contribuyente, $model){
+    /**
+     * [guardarPreguntaSeguridad description] Metodo que guarda las preguntas y las respuestas de seguridad de cada contribuyente en la
+     * tabla preg_seg_contribuyentes
+     * @param  [type] $id_contribuyente [description] id del contribuyente que desea guardar sus preguntas de seguridad
+     * @param  [type] $model            [description] modelo que contiene las preguntas de seguridad
+     * @return [type]                   [description] redireccionamiento a la cuenta del usuario luego de haber guardado las preguntas de seguridad
+     */
+    public function guardarPreguntaSeguridad($id_contribuyente, $model){
 
         $buscar = new Afiliaciones();
 
         $datos = $buscar->buscarDatos($id_contribuyente);
-      // die(var_dump($datos));
+        
+        $tabla = 'preg_seg_contribuyentes';
 
-         $tabla = 'preg_seg_contribuyentes';
-
-        //die(var_dump($model));
         $arregloDatos = [];
+        
         $arregloCampo = PreguntaSeguridadContribuyenteForm::attributeContribuyentes();
 
-          foreach ($arregloCampo as $key=>$value){
+            foreach ($arregloCampo as $key=>$value){
 
-            $arregloDatos[$value] = 0;
-          }
+                $arregloDatos[$value] = 0;
+            }
           
-          //die($);
-         
-          $arrayColumna = [
-                          'usuario' , 'id_contribuyente' , 'pregunta', 'respuesta', 'inactivo', 'tipo_pregunta',
-                         
-                          
+            $arrayColumna = [
+                            'usuario' , 'id_contribuyente' , 'pregunta', 'respuesta', 'inactivo', 'tipo_pregunta',
                             ];
-                           // die(var_dump($arrayColumna));
-
-
-          $arrayValores = [ 
+                           
+            $arrayValores = [ 
                             [$datos->login, $datos->id_contribuyente, $model->pregunta1, $model->respuesta1,  0,  0],
                             [$datos->login, $datos->id_contribuyente,$model->pregunta2, $model->respuesta2  , 0, 1],
                             [$datos->login, $datos->id_contribuyente,$model->pregunta3, $model->respuesta3 , 0, 2],
-                          ];
-                            //die(var_dump($arrayValores));
-          
-          
+                            ];
+                           
+            $conexion = new ConexionController();
 
-          $conexion = new ConexionController();
-
-          $conn = $conexion->initConectar('db');
+            $conn = $conexion->initConectar('db');
          
-          $conn->open();
+            $conn->open();
 
-          $transaccion = $conn->beginTransaction();
+            $transaccion = $conn->beginTransaction();
 
-           if ($conexion->guardarLoteRegistrosPreguntas($conn, $tabla, $arrayColumna, $arrayValores)){
+                if ($conexion->guardarLoteRegistrosPreguntas($conn, $tabla, $arrayColumna, $arrayValores)){
 
-              $resultado = true;
+                    $resultado = true;
 
-             $transaccion->commit();
-           // die('guardo');
-            //  $conn->close();
-              return true;
-             //die('guardo');
-             // $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['index']). "'>";  
-               
-               return $this->redirect(['/site/index']);
-             // die('guardo');
-            }else {
-              $transaccion->rollback();
-               $conn->close();
-               return false;
-             die('no guardo');
-            }
+                    $transaccion->commit();
+                    $conn->close();
+                    return true;
+             
+                        return $this->redirect(['/site/index']);
+            
+                }else {
+                   
+                    $transaccion->rollback();
+                    $conn->close();
+                    return false;
+                }
 
-      }
+   }
 
     
 
