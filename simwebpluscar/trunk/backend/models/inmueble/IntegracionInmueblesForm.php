@@ -141,7 +141,7 @@ class IntegracionInmueblesUrbanosForm extends \yii\db\ActiveRecord
 
             [['id_contribuyente','id_impuesto','ano_inicio', 'liquidado', 'manzana_limite', 'lote_1', 'lote_2', 'lote_3', 'inactivo', 'id_habitante', 'tipo_ejido', 'propiedad_horizontal', 'estado_catastro', 'municipio_catastro', 'parroquia_catastro', 'sector_catastro', 'manzana_catastro', 'parcela_catastro', 'subparcela_catastro', 'unidad_catastro'], 'integer','message' => Yii::t('backend', 'only integers')],
             
-            [['observacion','datosVendedor'], 'string'], 
+            //[['observacion','datosVendedor'], 'string'], 
             [['direccion', 'direccion2'], 'string', 'max' => 255,'message' => Yii::t('backend', 'Only 255 character')],
                              
             //solvencia del inmueble
@@ -153,7 +153,7 @@ class IntegracionInmueblesUrbanosForm extends \yii\db\ActiveRecord
             //Validacion
             [['direccion', 'direccion2'], 'cercanos'],
         ];
-    }
+    } 
 
     
     public function attributeLabels()
@@ -227,16 +227,16 @@ class IntegracionInmueblesUrbanosForm extends \yii\db\ActiveRecord
               $unidad_catastro = 0;
               $sql1 = 'SELECT id_impuesto, id_contribuyente, estado_catastro,municipio_catastro, parroquia_catastro, ambito_catastro, sector_catastro, manzana_catastro, parcela_catastro FROM inmuebles WHERE ';
               $sql1 .= 'and id_contribuyente = "'.$this->id_contribuyente.'"';
-              $sql1 .= 'and id_impuesto = "'.$this->id_impuesto.'"';
+              $sql1 .= 'and id_impuesto = "'.$this->direccion.'"';
 
 
               $sql2 = 'SELECT id_impuesto, id_contribuyente, estado_catastro,municipio_catastro, parroquia_catastro, ambito_catastro, sector_catastro, manzana_catastro, parcela_catastro FROM inmuebles WHERE ';
               $sql2 .= 'and id_contribuyente = "'.$this->id_contribuyente.'"';
-              $sql2 .= 'and id_impuesto = "'.$this->id_impuesto.'"';
+              $sql2 .= 'and id_impuesto = "'.$this->direccion2.'"'
           
           
           $buscar1 = $conn->buscarRegistro($this->conexion, $sql1);
-          $buscar2 = $conn->buscarRegistro($this->conexion, $sql2);
+          $buscar2 = $conn->buscarRegistro($this->conexion, $sql2); 
           
           if($buscar1->estado_catastro != $buscar2->estado_catastro ) {
 
@@ -278,7 +278,7 @@ class IntegracionInmueblesUrbanosForm extends \yii\db\ActiveRecord
           $this->conexion->close(); 
    
     } 
-
+    }
     public function catastro_existe($attribute, $params)
     {
   

@@ -229,50 +229,7 @@ $variablephp=$_COOKIE['variablephp'];
                                                     </td>
                                                 </tr>
 
-                                                <tr>
-                                                    <td>
-                                                        <div class="col-lg-50">
-                                                            <?= Yii::t('backend', 'Search Details Buyer') ?>
-                                                         </div> 
-
-                                                    </td>
-
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="4"> 
-
-                                                        <div class="col-lg-2">
-                                                        <?= Yii::t('backend', 'Year over:') ?>
-                                                        </div> 
-
-
-                                                        <div class="col-lg-2" align='left'> 
-                                                        <?= $form->field($model, 'ano_traspaso1')->textInput()->label(false) ?> 
-                                                        </div> 
-
-                                                        <div class="col-lg-2">
-                                                        <?= Yii::t('backend', 'type nature:') ?>
-                                                        </div> 
-                                                    
-                                                        <div class="col-lg-4" align='left'> 
-                                                        <?= $form->field($model, 'tipo_naturaleza1')->radioList([2 => Yii::t('backend', 'Legal'), 1 => Yii::t('backend', 'Persons')], ['itemOptions' => ['class' =>'radio-inline','id'=>'tipo_naturaleza1', 'onclick'=>'bloquea()' ]] )->label(false) ?>
-                                                        </div> 
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="2"> 
-                                                        <div class="col-lg-2">
-                                                        <?= Yii::t('backend', 'Cedula/Rif') ?>
-                                                        </div> 
-                                                        <div class="col-lg-2" align='left'> 
-                                                        <?= $form->field($model, 'naturalezaBuscar1')->dropDownList(['V'=>'V','E'=>'E','P'=>'P','J'=>'J'])->label(false) ?> 
-                                                        </div>
-                                                        <div class="col-lg-2" align='left'> 
-                                                        <?= $form->field($model, 'cedulaBuscar1')->textInput()->label(false) ?> 
-                                                        </div>
-                                                        <div class="col-lg-2" align='left' id='tipo' style='display:none'> 
-                                                        <?= $form->field($model, 'tipoBuscar1')->textInput()->label(false) ?> 
-                                                        </div> 
+                                                
                                                         <div class="form-group"> 
 <?= Html::beginForm();?>
 <?= Html::submitButton(Yii::t('backend', 'Accept'), ['class' => 'btn btn-primary', 'name'=>'AcceptSeller', 'value'=>'AcceptSeller']) ?>
