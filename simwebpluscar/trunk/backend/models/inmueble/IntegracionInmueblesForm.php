@@ -143,10 +143,8 @@ class IntegracionInmueblesForm extends \yii\db\ActiveRecord
             
             //[['observacion','datosVendedor'], 'string'], 
             [['direccion', 'direccion2'], 'string', 'max' => 255,'message' => Yii::t('backend', 'Only 255 character')],
-                             
-            //solvencia del inmueble
-            [['ano_traspaso1'], 'inmuebleSolventeA','when'=>function($model){ return $model->operacion==1;}],
-            [['ano_traspaso'], 'inmuebleSolventeB','when'=>function($model){ return $model->operacion==2;}],
+             [['direccion', 'direccion2'], 'require', 'message' => Yii::t('backend', 'Cannot be blank')],                
+            
             
             //[['datosVendedor'],'datosVendedor'],
 
