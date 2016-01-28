@@ -144,7 +144,7 @@ class IntegracionInmueblesForm extends \yii\db\ActiveRecord
             
             [['direccion', 'direccion2'], 'string', 'max' => 255,'message' => Yii::t('backend', 'Only 255 character')],
             [['direccion', 'direccion2'], 'required', 'message' => Yii::t('backend', 'Cannot be blank')],                
-            //Validacion
+            //Validacion 
             [['direccion', 'direccion2'], 'cercanos'],
         ];
     } 
@@ -203,7 +203,11 @@ class IntegracionInmueblesForm extends \yii\db\ActiveRecord
             'tipoBuscar'=> Yii::t('backend', 'Type'),
         ]; 
     }
-    
+    /**
+     * @param  [type]
+     * @param  [type]
+     * @return [type]
+     */ 
     public function cercanos($attribute, $params)
     {
   
@@ -271,6 +275,11 @@ class IntegracionInmueblesForm extends \yii\db\ActiveRecord
  
     }
 
+    /**
+     * @param  [type]
+     * @param  [type]
+     * @return [type]
+     */
     public function catastro_existe($attribute, $params)
     {
   
@@ -327,6 +336,11 @@ class IntegracionInmueblesForm extends \yii\db\ActiveRecord
    
     } 
 
+    /**
+     * @param  [type]
+     * @param  [type]
+     * @return [type]
+     */
     public function inmuebleSolventeA($attribute, $params)
     {
   
@@ -353,7 +367,11 @@ class IntegracionInmueblesForm extends \yii\db\ActiveRecord
           
      } 
     
-
+     /**
+      * @param  [type]
+      * @param  [type]
+      * @return [type]
+      */
      public function inmuebleSolventeB($attribute, $params)
      {
   
@@ -390,8 +408,13 @@ class IntegracionInmueblesForm extends \yii\db\ActiveRecord
            
      }
 
+     /**
+      * @param  [type]
+      * @param  [type]
+      * @return [type]
+      */
      public function catastro_cambio($attribute, $params)
-    {
+     {
   
           //Buscar el email en la tabla 
          
@@ -419,7 +442,11 @@ class IntegracionInmueblesForm extends \yii\db\ActiveRecord
             } 
      }
     
-
+    /**
+     * @param  [type]
+     * @param  [type]
+     * @return [type]
+     */
      public function catastro_cambio2($attribute, $params)
      {
   
@@ -453,7 +480,9 @@ class IntegracionInmueblesForm extends \yii\db\ActiveRecord
             } 
      }
      
-
+     /**
+      * @return [type]
+      */
      public function datosVendedor(){
 
           $datosVendedor = ContribuyentesForm::find()->where(['naturaleza'=>$this->naturalezaBuscar])
@@ -462,9 +491,12 @@ class IntegracionInmueblesForm extends \yii\db\ActiveRecord
           return $datosVendedor;
      }
 
+     /**
+      * @return [type]
+      */
      public function getGenderOptions(){
-    return array('M' => 'Male', 'F' => 'Female');
-}
+        return array('M' => 'Male', 'F' => 'Female');
+    }
 
 
 }
