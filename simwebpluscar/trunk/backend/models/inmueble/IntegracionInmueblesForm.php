@@ -235,11 +235,11 @@ class IntegracionInmueblesForm extends \yii\db\ActiveRecord
           
           $buscar1 = $conn->buscarRegistro($this->conexion, $sql1);
           $buscar2 = $conn->buscarRegistro($this->conexion, $sql2); 
-          die(var_dump($buscar1, $buscar2));
+          die(var_dump($buscar1->municipio_catastro, $buscar1->municipio_catastro));
           if($buscar1->estado_catastro != $buscar2->estado_catastro ) {
 
              $this->addError($attribute, Yii::t('backend', 'The Contributor '.$buscar1[0]['id_contribuyente'].'  has already allocated about this property Cadastre. ')); 
-             if($buscar1->municipio_catastro != $buscar2->municipio_catastro ) {
+             if($buscar1->municipio_catastro != $buscar1->municipio_catastro ) {
 
                 $this->addError($attribute, Yii::t('backend', 'The Contributor '.$buscar1[0]['id_contribuyente'].'  has already allocated about this property Cadastre. ')); 
                 if($buscar1->parroquia_catastro != $buscar2->parroquia_catastro ) {
