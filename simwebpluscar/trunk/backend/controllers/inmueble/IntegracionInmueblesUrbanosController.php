@@ -121,7 +121,7 @@ class IntegracionInmueblesUrbanosController extends Controller
                 if($model->validate()){ 
 
                  //condicionales   
-                  
+                  die('llegue');
                 if (!\Yii::$app->user->isGuest){   
                      
      
