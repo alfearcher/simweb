@@ -210,7 +210,10 @@ class CrearUsuarioNaturalController extends Controller
 
                 $modelAfiliacion = CrearUsuarioNaturalForm::findAfiliacion($model[0]->id_contribuyente);
 
-                    if ($modelAfiliacion == false){
+                    if ($modelAfiliacion == true){
+
+                        return MensajeController::actionMensaje('this user already exists');
+                        }else{ 
 
                         $modelx = new CargaDatosBasicosNaturalForm();
                

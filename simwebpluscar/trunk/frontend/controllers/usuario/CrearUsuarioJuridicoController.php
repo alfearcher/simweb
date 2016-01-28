@@ -211,7 +211,10 @@ class CrearUsuarioJuridicoController extends Controller
 
                 $modelAfiliacion = CrearUsuarioJuridicoForm::findAfiliacion($model[0]->id_contribuyente);
 
-                if ($modelAfiliacion == false){
+                if ($modelAfiliacion == true){
+
+                  return MensajeController::actionMensaje('this user already exists');
+                   }else{ 
 
                     $modelx = new CargaDatosBasicosForm();
                

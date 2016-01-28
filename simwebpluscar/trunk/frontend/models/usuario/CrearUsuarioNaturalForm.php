@@ -82,7 +82,7 @@ class CrearUsuarioNaturalForm extends CrearUsuarioNatural{
       {
         return [
           [['naturaleza','cedula'],'required','message' => Yii::t('frontend', '{attribute} is required')],
-          ['cedula', 'existe'],
+         // ['cedula', 'existe'],
           [['tipo_naturaleza', 'tipo'],'default', 'value' => 0],
           [['cedula'], 'integer']
          

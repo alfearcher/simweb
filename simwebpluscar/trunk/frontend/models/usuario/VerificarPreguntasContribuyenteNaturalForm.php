@@ -76,7 +76,8 @@ class VerificarPreguntasContribuyenteNaturalForm extends CrearUsuarioNatural
     {   //validaciones requeridas para el formulario de registro de usuarios     
         return [
             [['naturaleza',  'cedula', 'email'], 'required' ],
-           
+             [['naturaleza', 'cedula'], 'validar'],
+             ['email' , 'validarEmail'],
                   
            
            
@@ -95,6 +96,73 @@ class VerificarPreguntasContribuyenteNaturalForm extends CrearUsuarioNatural
                 
         ];
     }
+
+
+    public function validarEmail($attribute, $params){ 
+        // die($this->tipo);
+
+            $validar = CrearUsuarioNatural::find() 
+                                ->where([
+                                
+                                'email' => $this->email,
+                                'tipo_naturaleza' => 1,
+                                'inactivo' => 0,
+                              
+                                ])
+                                ->all();
+
+                                //die(var_dump($validar));
+                 // die(var_dump($validarPreguntaSeguridad));             
+                             
+
+        if($validar == null){
+          //die('valido bien');
+          
+            $this->addError($attribute, Yii::t('frontend', 'This email does not exists' ));
+        
+        } else {
+
+        return false;
+        //die('no encontro ');
+
+        } 
+        
+
+         }
+
+         public function validar($attribute, $params){ 
+        // die($this->cedula);
+
+            $validar = CrearUsuarioNatural::find() 
+                                ->where([
+                                
+                                'naturaleza' => $this->naturaleza,
+                                'cedula' => $this->cedula,
+                    
+                                'tipo_naturaleza' => 0,
+                                'inactivo' => 0,
+                              
+                                ])
+                                ->all();
+
+                                //die(var_dump($validar));
+                 // die(var_dump($validarPreguntaSeguridad));             
+                             
+
+        if($validar == null){
+          //die('valido bien');
+          
+            $this->addError($attribute, Yii::t('frontend', 'This rif does not exists' ));
+        
+        } else {
+
+        return false;
+        //die('no encontro ');
+
+        } 
+        
+
+         }
 	
 
     
