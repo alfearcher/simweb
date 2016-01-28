@@ -270,7 +270,7 @@ class IntegracionInmueblesForm extends \yii\db\ActiveRecord
              }
 
           }
-die('salto el condicional de catastro');
+
 
  
     }
