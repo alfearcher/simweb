@@ -239,7 +239,7 @@ class IntegracionInmueblesForm extends \yii\db\ActiveRecord
           $buscar1 = InmueblesConsulta::find()->where(['id_contribuyente'=>$this->id_contribuyente, 'id_impuesto' => $this->direccion ])->asArray()->one();
           $buscar2 = InmueblesConsulta::find()->where(['id_contribuyente'=>$this->id_contribuyente, 'id_impuesto' => $this->direccion2 ])->asArray()->one();
 
-          //die(var_dump($buscar1["estado_catastro"]));
+          die(var_dump($buscar1, $buscar2));
 
 
           if($buscar1["estado_catastro"] != $buscar2["estado_catastro"] ) {
