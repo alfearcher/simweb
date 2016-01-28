@@ -244,22 +244,22 @@ class IntegracionInmueblesForm extends \yii\db\ActiveRecord
 
           if($buscar1["estado_catastro"] != $buscar2["estado_catastro"] ) {
  
-             $this->addError($attribute, Yii::t('backend', 'The Contributor '.$buscar1[0]['id_contribuyente'].'  has already allocated about this property Cadastre. ')); 
+             $this->addError($attribute, Yii::t('backend', 'The Contributor '.$buscar1['id_contribuyente'].'  has already allocated about this property Cadastre. ')); 
              if($buscar1["municipio_catastro"] != $buscar2["municipio_catastro"] ) {
 
-                $this->addError($attribute, Yii::t('backend', 'The Contributor '.$buscar1[0]['id_contribuyente'].'  has already allocated about this property Cadastre. ')); 
+                $this->addError($attribute, Yii::t('backend', 'The Contributor '.$buscar1['id_contribuyente'].'  has already allocated about this property Cadastre. ')); 
                 if($buscar1["parroquia_catastro"] != $buscar2["parroquia_catastro"] ) {
 
-                   $this->addError($attribute, Yii::t('backend', 'The Contributor '.$buscar1[0]['id_contribuyente'].'  has already allocated about this property Cadastre. ')); 
+                   $this->addError($attribute, Yii::t('backend', 'The Contributor '.$buscar1['id_contribuyente'].'  has already allocated about this property Cadastre. ')); 
                    if($buscar1["ambito_catastro"] != $buscar2["ambito_catastro"] ) {
                       
-                      $this->addError($attribute, Yii::t('backend', 'The Contributor '.$buscar1[0]['id_contribuyente'].'  has already allocated about this property Cadastre. ')); 
+                      $this->addError($attribute, Yii::t('backend', 'The Contributor '.$buscar1['id_contribuyente'].'  has already allocated about this property Cadastre. ')); 
                       if($buscar1["sector_catastro"] != $buscar2["sector_catastro"] ) {
                         
-                         $this->addError($attribute, Yii::t('backend', 'The Contributor '.$buscar1[0]['id_contribuyente'].'  has already allocated about this property Cadastre. ')); 
+                         $this->addError($attribute, Yii::t('backend', 'The Contributor '.$buscar1['id_contribuyente'].'  has already allocated about this property Cadastre. ')); 
                          if($buscar1["manzana_catastro"] != $buscar2["manzana_catastro"] ) {
                             
-                            $this->addError($attribute, Yii::t('backend', 'The Contributor '.$buscar1[0]['id_contribuyente'].'  has already allocated about this property Cadastre. ')); 
+                            $this->addError($attribute, Yii::t('backend', 'The Contributor '.$buscar1['id_contribuyente'].'  has already allocated about this property Cadastre. ')); 
 
 
                          } 
