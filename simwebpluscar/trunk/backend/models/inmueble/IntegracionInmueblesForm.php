@@ -140,7 +140,7 @@ class IntegracionInmueblesForm extends \yii\db\ActiveRecord
         return [ 
 
             [['id_contribuyente','id_impuesto','ano_inicio', 'liquidado', 'manzana_limite', 'lote_1', 'lote_2', 'lote_3', 'inactivo', 'id_habitante', 'tipo_ejido', 'propiedad_horizontal'], 'integer','message' => Yii::t('backend', 'only integers')],
-            [[ 'estado_catastro', 'municipio_catastro', 'parroquia_catastro', 'sector_catastro', 'manzana_catastro', 'parcela_catastro', 'subparcela_catastro', 'unidad_catastro'], 'string'] 
+            [[ 'estado_catastro', 'municipio_catastro', 'parroquia_catastro', 'sector_catastro', 'manzana_catastro', 'parcela_catastro', 'subparcela_catastro', 'unidad_catastro'], 'string'],
             
             [['direccion', 'direccion2'], 'string', 'max' => 255,'message' => Yii::t('backend', 'Only 255 character')],
              [['direccion', 'direccion2'], 'required', 'message' => Yii::t('backend', 'Cannot be blank')],                
