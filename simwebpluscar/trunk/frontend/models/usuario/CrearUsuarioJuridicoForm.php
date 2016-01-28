@@ -94,7 +94,7 @@ class CrearUsuarioJuridicoForm extends CrearUsuarioJuridico{
       
       }
 
-/**
+    /**
       * Lista de atributos con sus respectivas etiquetas (labels), las cuales son las que aparecen en las vistas
       * @return returna arreglo de datos con los atributoe como key y las etiquetas como valor del arreglo.
       */
@@ -102,11 +102,8 @@ class CrearUsuarioJuridicoForm extends CrearUsuarioJuridico{
       {
           return [
             'natuleza' => Yii::t('frontend', 'Nature'),
-              'cedula' => Yii::t('frontend', 'ID.'),
-               'tipo' => Yii::t('frontend', 'Kind of Taxpayer'),
-              
-              
-
+            'cedula' => Yii::t('frontend', 'ID.'),
+            'tipo' => Yii::t('frontend', 'Kind of Taxpayer'),
           ];
       }
 
