@@ -270,19 +270,11 @@ class IntegracionInmueblesForm extends \yii\db\ActiveRecord
              }
 
           }
+die('salto el condicional de catastro')
 
-
-//echo'<pre>'; var_dump($buscar); echo '</pre>'; die();
-          if ($buscar1 == null){ 
-             if ($buscar2 == null){
-
-                  $this->addError($attribute, Yii::t('backend', 'The Contributor '.$buscar[0]['id_contribuyente'].'  has already allocated about this property Cadastre. Tax: '.$buscar[0]['id_impuesto'])); //el contribuidor (id) ya ha asignado catastro sobre este inmueble
-          } 
-                             
-          $this->conexion->close(); 
-   
-    } 
+ 
     }
+    
     public function catastro_existe($attribute, $params)
     {
   
