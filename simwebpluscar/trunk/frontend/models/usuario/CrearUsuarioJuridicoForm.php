@@ -45,6 +45,9 @@
  *  findRif
  *  findAfiliacion
  *  obtenerDataProviderRif
+ *  findContribuyente
+ *  attributeAfiliacion
+ *  attributeContribuyentes
  *
  *  @inherits
  *  
@@ -67,7 +70,7 @@ class CrearUsuarioJuridicoForm extends CrearUsuarioJuridico{
     
 
 
-          public function scenarios()
+      public function scenarios()
       {
           // bypass scenarios() implementation in the parent class
           return Model::scenarios();

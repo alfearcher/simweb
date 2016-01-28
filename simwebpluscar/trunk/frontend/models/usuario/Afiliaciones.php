@@ -27,7 +27,7 @@
  * 
  *  @date 04-01-2016
  * 
- *  @class User
+ *  @class Afiliaciones
  *  @brief Clase que permite loguear al usuario comparando sus datos de acceso al sistema.
  * 
  *  
@@ -38,16 +38,12 @@
  *
  *  
  *  @method
- *  findIdentity
- *  findIdentityByAccesToken
- *  findByUsername
- *  getId
- *  getAuthkey
- *  validateAuthkey
- *  validatePassword
- *  isUserAdmin
- *  isUserFuncionario
- *  isUserSimple
+ *  
+ *  ValidarUsuario
+ *  ValidarUsuarioContribuyente
+ *  buscarDatos
+ *  
+ *  
  *  
  *  @inherits
  *  
@@ -77,86 +73,89 @@ class Afiliaciones extends Afiliacion
     public $password_hash;
    
     
-    /* busca la identidad del usuario a través de su $id */
+    /**
+     * [ValidarUsuario description] Metodo que valida el password ingresado por el usuario
+     * con el password almacenado en la base de datos para poder iniciar sesion
+     * @param  $model [description] modelo que viene cargado con los datos que envia el usuario al introducirlos
+     * en el login y enviarlos 
+     * @return [description] retorna los datos encontrados al controlador para realizar otras busquedas
+     */
     public function ValidarUsuario($model)
     {
     
-    $salt = Utilidad::getUtilidad();
+        $salt = Utilidad::getUtilidad();
      
-    $password = $model->password.$salt;
+        $password = $model->password.$salt;
 
-    $clave = md5($password);
+        $clave = md5($password);
 
-    $ValidarUsuario = Afiliacion::find()
-                                ->where([
-                                'login' => $model->email,
-                                'password_hash' => $clave,
-                                ])
-                                ->one();
+        $ValidarUsuario = Afiliacion::find()
+                                    ->where([
+                                    'login' => $model->email,
+                                    'password_hash' => $clave,
+                                    ])
+                                    ->one();
 
-        if($ValidarUsuario){
+            if($ValidarUsuario){
         
-            return $ValidarUsuario;  
+                return $ValidarUsuario;  
         
-        } else {
+            } else {
 
-        return false;
-        //die('no encontro ');
-
-        }             
+                return false;
+            }             
 
 
     }   
-
-    public function ValidarUsuarioContribuyente($x)
+    /**
+     * [ValidarUsuarioContribuyente description] metodo que busca en la tabla contribuyente para verificar si el usuario existe
+     * @param  $validarPassword [description] envia el modelo para buscar el id del contribuyente en la tabla contribuyente
+     */
+    public function ValidarUsuarioContribuyente($validarPassword)
     {
-        $validarC = CrearUsuarioJuridico::find()
-                                    ->where([
-                                    'id_contribuyente' => $x->id_contribuyente,
-                                    ])
-                                    ->one();
-
     
-                if($validarC){
-                // die('encontro');
+        $validar = CrearUsuarioJuridico::find()
+                                         ->where([
+                                        'id_contribuyente' => $validarPassword->id_contribuyente,
+                                         ])
+                                        ->one();
 
-                return $validarC;
+            if($validar){
+                
+                return $validar;
 
-                } else {
+            } else {
 
-                    return false;
-                //die('no encontro ');
-
-                }             
+                return false;
+            }             
 
 
     }
 
-
+    /**
+     * [buscarDatos description] metodo que busca si el id del contribuyente existe en la tabla afiliaciones
+     * @param   $id_contribuyente [description] id contribuyente que llega de la tabla contribuyente para buscarlo en afiliaciones
+     * @return [type] [description] retorna el modelo con los datos encontrados
+     */
     public function buscarDatos($id_contribuyente)
     {
+    
         $buscarDatos = Afiliacion::find()
-                                    ->where([
-                                    'id_contribuyente' => $id_contribuyente,
+                                   ->where([
+                                   'id_contribuyente' => $id_contribuyente,
                                     ])
                                     ->one();
 
-                                   // die(var_dump($buscarDatos));
-
-    
-                if($buscarDatos){
-                // die('encontro');
-
+            if($buscarDatos){
+                
                 return $buscarDatos;
 
-                } else {
+            } else {
 
-                    return false;
-                //die('no encontro ');
-
-                }             
+                return false;
+            }             
 
 
     }
- }
- ?>
+}
+?>

@@ -21,13 +21,13 @@
  */
 
  /**    
- *  @file CargaDatosBasicosForm.php
+ *  @file CargaDatosBasicosNaturalForm.php
  *  
  *  @author Manuel Alejandro Zapata Canelon
  * 
  *  @date 13/01/2016
  * 
- *  @class CargaDatosBasicosForm
+ *  @class CargaDatosBasicosNaturalForm
  *  @brief Modelo del formulario de datos basicos, en el estan las validaciones y textos necesarios.
  *   @property
  *
@@ -38,6 +38,7 @@
  *  rules
  *  attributeLabels
  *  getGenderOptions
+ *  dameIdRif
  *    
  *  @inherits
  *  
@@ -285,24 +286,28 @@ class CargaDatosBasicosNaturalForm extends \yii\db\ActiveRecord
     public function getGenderOptions(){
         return array('M' => 'Masculino', 'F' => 'Femenino');
     }
-
+    /**
+     * [dameIdRif description] metodo que busca el rif ingresado por el usuario en la tabla contribuyentes
+     * @param  [type] $model [description] modelo donde viene el rif enviado por el usuario
+     * @return [type]        [description] retorna el id_rif encontrado y le suma uno automaticamente
+     */
     public function dameIdRif($model){
 
-    $modelFind = CrearUsuarioNatural::find()
-                                      ->where([
+        $modelFind = CrearUsuarioNatural::find()
+                                         ->where([
                                         'naturaleza' => $model->naturaleza, 
                                         'cedula' => $model->cedula, 
                                         'tipo_naturaleza' => 0])
-                                      ->orderBy(['id_rif' => SORT_DESC])->one();
+                                        ->orderBy(['id_rif' => SORT_DESC])->one();
 
-    if(count($modelFind)>0){
+        if(count($modelFind)>0){
 
-     return $modelFind->id_rif +=1;  
-    } else {
+            return $modelFind->id_rif +=1;  
+        } else {
 
-      return 0;
-    }                                 
+            return 0;
+        }                                    
 
     
-  }
+    }
 }
