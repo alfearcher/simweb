@@ -196,8 +196,7 @@ class CambiarPasswordContribuyenteController extends Controller
                             $tipo = $model->tipo;
 
                             $buscarAfiliacionesJuridico = $buscarId::buscarIdAfiliaciones($model);
-                            //die(var_dump($model));
-                            
+                           
                             $idsContribuyente = [];
 
                             foreach($buscarAfiliacionesJuridico as $key => $value){

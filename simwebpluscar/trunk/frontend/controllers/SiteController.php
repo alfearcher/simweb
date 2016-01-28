@@ -80,73 +80,68 @@ public $layout = "layout-login";
     }
 
       
-      public function actionLogin()
-     {
+    public function actionLogin()
+    {
         
-            $mensajeError = '';
-            $model = New LoginForm();
+        $mensajeError = '';
+        $model = New LoginForm();
 
-              $postData = Yii::$app->request->post();
+        $postData = Yii::$app->request->post();
 
-              if ( $model->load($postData) && Yii::$app->request->isAjax ) {
-                  Yii::$app->response->format = Response::FORMAT_JSON;
-                  return ActiveForm::validate($model);
-              }
+        if ( $model->load($postData) && Yii::$app->request->isAjax ) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
 
-                if ( $model->load($postData) ) {
+            if ( $model->load($postData) ) {
 
-                    if ($model->validate()){
+            if ($model->validate()){
 
-                      $validar = new Afiliaciones();
+                $validar = new Afiliaciones();
 
-                        $x = $validar->ValidarUsuario($model);
+                $validarPassword = $validar->ValidarUsuario($model);
 
-                          if ($x){
+                if ($validarPassword){
 
-                          $y = $validar->ValidarUsuarioContribuyente($x);
+                    $validarContribuyente = $validar->ValidarUsuarioContribuyente($validarPassword);
                         
-                          if ($y){
+                if ($validarContribuyente){
 
-                            $pregunta = new PreguntaSeguridadContribuyenteForm();
+                    $pregunta = new PreguntaSeguridadContribuyenteForm();
 
-                            $z = $pregunta->ValidarPreguntaSeguridad($model, $x->id_contribuyente);
+                    $preguntaSeguridad = $pregunta->ValidarPreguntaSeguridad($model, $validarPassword->id_contribuyente);
 
 
                             
-                            if ($x and $y == true and $z == null){
-                                //die('llegue a validacion pregunta');
-                                return $this->redirect(['/usuario/pregunta-seguridad-contribuyente/crear-pregunta-seguridad-contribuyente', 
+                    if ($validarPassword and $validarContribuyente == true and $preguntaSeguridad == null){
+                                
+                        return $this->redirect(['/usuario/pregunta-seguridad-contribuyente/crear-pregunta-seguridad-contribuyente', 
                                                                                                                        
-                                                                                                                        'id_contribuyente' => $x->id_contribuyente,
+                                                                                        'id_contribuyente' => $validarPassword->id_contribuyente,
                                                                                                                         
                                                                                                                         ]);
+                    }else{                                                                                      
 
-
-                            }else{                                                                                      
-
-
-
-
-
-                            return $this->render('/usuario/llegue');
-                           }
-                          } else {
-
-                            return MensajeController::actionMensaje('Your are not signed yet, Please go back and sign ');
-                          }
-
-                          } else {
-                           
-                           $model->addError('email', 'Usuario Y/o Contraseña Incorrectas');
-                          
-                          }
-                     
+                        return $this->render('/usuario/llegue');
                     }
-                        
-                }
-              return $this->render('login' , ['model' => $model]);
+                    
+                    } else {
 
-     }
+                        return MensajeController::actionMensaje('Your are not signed yet, Please go back and sign ');
+                    }
+
+                    } else {
+                           
+                        $model->addError('email', 'Usuario Y/o Contraseña Incorrectas');
+                          
+                    }
+                     
+            }
+                        
+            }
+            return $this->render('login' , ['model' => $model]);
+
+    }
 
      
 
