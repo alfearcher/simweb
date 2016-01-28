@@ -140,7 +140,7 @@ class IntegracionInmueblesForm extends \yii\db\ActiveRecord
         return [ 
 
             [['id_contribuyente','id_impuesto','ano_inicio', 'liquidado', 'manzana_limite', 'lote_1', 'lote_2', 'lote_3', 'inactivo', 'id_habitante', 'tipo_ejido', 'propiedad_horizontal'], 'integer','message' => Yii::t('backend', 'only integers')],
-            [[ 'estado_catastro', 'municipio_catastro', 'parroquia_catastro', 'sector_catastro', 'manzana_catastro', 'parcela_catastro', 'subparcela_catastro', 'unidad_catastro'], 'string'],
+            [['estado_catastro', 'municipio_catastro', 'parroquia_catastro', 'sector_catastro', 'manzana_catastro', 'parcela_catastro', 'subparcela_catastro', 'unidad_catastro'], 'string'],
             
             [['direccion', 'direccion2'], 'string', 'max' => 255,'message' => Yii::t('backend', 'Only 255 character')],
              [['direccion', 'direccion2'], 'required', 'message' => Yii::t('backend', 'Cannot be blank')],                
@@ -235,7 +235,7 @@ class IntegracionInmueblesForm extends \yii\db\ActiveRecord
           
           $buscar1 = $conn->buscarRegistro($this->conexion, $sql1);
           $buscar2 = $conn->buscarRegistro($this->conexion, $sql2); 
-          die(var_dump($buscar1->municipio_catastro, $buscar1->municipio_catastro));
+          die(var_dump($buscar1->municipio_catastro, $buscar2->municipio_catastro));
           if($buscar1->estado_catastro != $buscar2->estado_catastro ) {
 
              $this->addError($attribute, Yii::t('backend', 'The Contributor '.$buscar1[0]['id_contribuyente'].'  has already allocated about this property Cadastre. ')); 
