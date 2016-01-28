@@ -213,11 +213,11 @@ class VerificarPreguntasContribuyenteJuridicoForm extends CrearUsuarioNatural
             
 
         $query->andFilterWhere(['in', 'id_contribuyente', $idsContribuyente]);
-
+            die(var_dump($dataProvider));
 
                     return $dataProvider; 
                                
-                            
+                     
          }
 
 
