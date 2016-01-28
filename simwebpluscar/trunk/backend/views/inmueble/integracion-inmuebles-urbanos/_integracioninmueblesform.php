@@ -249,13 +249,7 @@ $variablephp=$_COOKIE['variablephp'];
                             
                                                       
  
-                                                        <div class="form-group">
-                                                        <?php if(count($datosVInmueble) >0){
-                                                                    echo Html::submitButton(Yii::t('backend', 'Accept'), ['class' => 'btn btn-primary', 'name'=>'AcceptBuyer', 'value'=>'Accept']); 
-                                                              } else {         
-                                                                    echo Html::submitButton(Yii::t('backend', 'Next'), ['class' => 'btn btn-primary', 'name'=>'NextBuyer', 'value'=>'Next']);
-                                                                 }?>
-                                                        </div>
+
 <!-- Campos ocultos -->  
 <?= $form->field($model, 'id_contribuyente')->hiddenInput(['value' => $modelContribuyente->id_contribuyente])->label(false) ?>
 <?= $form->field($model, 'id_impuesto')->hiddenInput(['value' => $model->id_impuesto])->label(false) ?>
