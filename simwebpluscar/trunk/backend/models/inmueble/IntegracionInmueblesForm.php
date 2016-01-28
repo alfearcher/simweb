@@ -226,12 +226,12 @@ class IntegracionInmueblesForm extends \yii\db\ActiveRecord
               $nivel_catastro = 0; 
               $unidad_catastro = 0;
               $sql1 = 'SELECT id_impuesto, id_contribuyente, estado_catastro,municipio_catastro, parroquia_catastro, ambito_catastro, sector_catastro, manzana_catastro, parcela_catastro FROM inmuebles WHERE ';
-              $sql1 .= 'and id_contribuyente = "'.$this->id_contribuyente.'"';
+              $sql1 .= 'id_contribuyente = "'.$this->id_contribuyente.'"';
               $sql1 .= 'and id_impuesto = "'.$this->direccion.'"';
 
 
               $sql2 = 'SELECT id_impuesto, id_contribuyente, estado_catastro,municipio_catastro, parroquia_catastro, ambito_catastro, sector_catastro, manzana_catastro, parcela_catastro FROM inmuebles WHERE ';
-              $sql2 .= 'and id_contribuyente = "'.$this->id_contribuyente.'"';
+              $sql2 .= 'id_contribuyente = "'.$this->id_contribuyente.'"';
               $sql2 .= 'and id_impuesto = "'.$this->direccion2.'"';
           
           
