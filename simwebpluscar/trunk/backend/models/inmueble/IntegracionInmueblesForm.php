@@ -233,8 +233,12 @@ class IntegracionInmueblesForm extends \yii\db\ActiveRecord
               $sql2 .= 'and id_impuesto = "'.$this->direccion2.'"';
           
           
-          $buscar1 = $conn->buscarRegistro($this->conexion, $sql1);
-          $buscar2 = $conn->buscarRegistro($this->conexion, $sql2); 
+          //$buscar1 = $conn->buscarRegistro($this->conexion, $sql1);
+          //$buscar2 = $conn->buscarRegistro($this->conexion, $sql2); 
+
+          $buscar1 = InmueblesConsulta::find()->where(['id_contribuyente'=>$this->id_contribuyente, 'id_impuesto' = $this->direccion ])->asArray()->all();
+          $buscar2 = InmueblesConsulta::find()->where(['id_contribuyente'=>$this->id_contribuyente, 'id_impuesto' = $this->direccion2 ])->asArray()->all();
+
           die(var_dump($buscar1->municipio_catastro, $buscar2->municipio_catastro));
           if($buscar1->estado_catastro != $buscar2->estado_catastro ) {
 
