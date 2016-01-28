@@ -232,7 +232,7 @@ class IntegracionInmueblesUrbanosForm extends \yii\db\ActiveRecord
 
               $sql2 = 'SELECT id_impuesto, id_contribuyente, estado_catastro,municipio_catastro, parroquia_catastro, ambito_catastro, sector_catastro, manzana_catastro, parcela_catastro FROM inmuebles WHERE ';
               $sql2 .= 'and id_contribuyente = "'.$this->id_contribuyente.'"';
-              $sql2 .= 'and id_impuesto = "'.$this->direccion2.'"'
+              $sql2 .= 'and id_impuesto = "'.$this->direccion2.'"';
           
           
           $buscar1 = $conn->buscarRegistro($this->conexion, $sql1);
