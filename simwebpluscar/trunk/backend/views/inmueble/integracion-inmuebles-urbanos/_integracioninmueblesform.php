@@ -228,7 +228,10 @@ $variablephp=$_COOKIE['variablephp'];
                                                     
                                                     </td>
                                                 </tr>
-
+                                                
+                                                <tr>
+                                                
+                                                    <td colspan="2">
                                                 
                                                         <div class="form-group"> 
 <?= Html::beginForm();?>
@@ -243,98 +246,8 @@ $variablephp=$_COOKIE['variablephp'];
                                             </table>
                                         </div> 
 
-                            <div class="col-sm-10 " id="buyer" style="display:none">
-                                    <div class="panel panel-primary ancho-alto ">
-                                        <div class="panel-heading">
-                                            <?= Yii::t('backend', 'Change of Owner (Buyer)') ?>
-                                        </div> 
-                                        <div class="panel-body" id="panel2">
-                                             
-                                           <table class="table table-striped ">
-                                                <tr>
-                                                    <td>
-                                                        <div class="col-lg-50">
-                                                            <?= Yii::t('backend', 'Search Details Seller') ?>
-                                                         </div> 
-
-                                                    </td>
-
-                                                </tr> 
-
-                                                <tr>
-                                                    <td colspan="4"> 
-
-
-                                                        <div class="col-lg-2">
-                                                        <?= Yii::t('backend', 'Year over:') ?>
-                                                        </div> 
-
-
-                                                        <div class="col-lg-2" align='left'> 
-                                                        <?= $form->field($model, 'ano_traspaso')->textInput()->label(false) ?> 
-                                                        </div> 
-
-                                                        <div class="col-lg-2">
-                                                        <?= Yii::t('backend', 'type nature:') ?>
-                                                        </div> 
-                                                    
-                                                        <div class="col-lg-4" align='left'> 
-                                                        <?= $form->field($model, 'tipo_naturaleza')->radioList([2 => Yii::t('backend', 'Legal'), 1 => Yii::t('backend', 'Persons')], ['itemOptions' => ['class' =>'radio-inline','id'=>'tipo_naturaleza', 'onclick'=>'bloquea()' ]] )->label(false) ?>
-                                                        </div> 
-                                                    </td>
-                                                </tr> 
-
-                                                <tr> 
-                                                    <td colspan="5">
-
-                                                        <div class="col-lg-2">
-                                                        <?= Yii::t('backend', 'Cedula/Rif') ?>
-                                                        </div> 
-                                                        <div class="col-lg-2" align='left'> 
-                                                        <?= $form->field($model, 'naturalezaBuscar')->dropDownList(['prompt' => Yii::t('backend', 'Select'),'V'=>'V','E'=>'E','P'=>'P','J'=>'J'],['onchange'=>'naturaleza(this.value)'])->label(false) ?> 
-                                                        </div>
-                                                <div class="col-lg-2" align='left'> 
-                                                        <?= $form->field($model, 'cedulaBuscar')->textInput()->label(false) ?> 
-                                                        </div>
-                                                        <div class="col-lg-2" align='left' id='tipo2' style='display:none'> 
-                                                        <?= $form->field($model, 'tipoBuscar')->textInput()->label(false) ?> 
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="5">
-                                                        <div class="col-lg-2" align='left'> 
-
-                                                         <?php   if(count($datosVContribuyente) >0){
-                                                                      $listaParametros = ArrayHelper::map($datosVContribuyente,'id_contribuyente','nombres');
-                                                                      echo   $form->field($model, 'datosVendedor')->dropDownList($listaParametros,['prompt' => Yii::t('backend', 'Select'),
-                                                                                                                                                   'id'=>'datosVendedor',
-                                                                                                                                                   //'onchange' => '$.post( "' . Yii::$app->urlManager->createUrl( 'inmuebles-urbanos-form/lists' ) . '&id=' . '" + $(this).val(), function( data ) {$( "select#inmuebleVendedor" ).html( data );});' 
-                                                                                                                                                   ])->label(false);
-                                  
-                                                                 } else {         
-                                                                      echo   $form->field($model, 'datosVendedor')->hiddenInput(['value'=>$datosVContribuyente])->label(false); 
-                                                                 }
-
-                                 
-                                                         ?>  
-
-                                                       </div> 
-                                                       <div class="col-lg-2" align='left'> 
-
-                                                         <?php   if(count($datosVInmueble) >0){
-                                                                      $listaParametrosi = ArrayHelper::map($datosVInmueble,'id_impuesto','direccion');
-                                                                      echo   $form->field($model, 'inmuebleVendedor')->dropDownList($listaParametrosi,['prompt' => Yii::t('backend', 'Select'),
-                                                                                                                                                       'id'=>'inmuebleVendedor'])->label(false);
-                                  
-                                                                 } else {         
-                                                                      echo   $form->field($model, 'inmuebleVendedor')->hiddenInput(['value'=>$datosVContribuyente])->label(false); 
-                                                                 }
-
-                                 
-                                                         ?>  
-
-                                                       </div> 
+                            
+                                                      
  
                                                         <div class="form-group">
                                                         <?php if(count($datosVInmueble) >0){
@@ -350,27 +263,13 @@ $variablephp=$_COOKIE['variablephp'];
 <?= $form->field($model, 'validacion')->hiddenInput(['value' => 4])->label(false) ?>
 
 <?= Html::endForm();?> 
-                                                    </td>
-                                                </tr>
-
-                                            </table>
-                                        </div>
-                                    </div>
-                            </div> 
-                        </td>
-                    </tr>
-
-                </table>
-
-   
-
-
-       
-
+                                                  
+                    </div>
             </div>
-        </div>
-    </div>
+     </div> 
+                       
 
+            
 
 
 <?php //$form->end(); ?>
