@@ -117,7 +117,7 @@ $this->title = Yii::t('frontend','Result of the Consult '.BuscarGeneralForm::get
                     'buttons' => [
                         'ok' => function ($url, $model, $key) {
                             if ($model->inactivo == 0 ) {
-                                return Html::a('<center><span class= "fa fa-thumbs-up"></span></center>',['buscar-pregunta-seguridad-juridico','id' => $key]);
+                                return Html::a('<center><span class= "fa fa-thumbs-up"></span></center>',['ocultar-variable','id' => $key]);
                             } else {
                                 return '<span><center>---</span></center>';
                             }

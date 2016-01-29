@@ -76,8 +76,8 @@ class VerificarPreguntasContribuyenteNaturalForm extends CrearUsuarioNatural
     {   //validaciones requeridas para el formulario de registro de usuarios     
         return [
             [['naturaleza',  'cedula', 'email'], 'required' ],
-             [['naturaleza', 'cedula'], 'validar'],
-             ['email' , 'validarEmail'],
+             ['cedula' , 'validarEmailRif'],
+            // ['email' , 'validarEmail'],
                   
            
            
@@ -98,47 +98,14 @@ class VerificarPreguntasContribuyenteNaturalForm extends CrearUsuarioNatural
     }
 
 
-    public function validarEmail($attribute, $params){ 
+    public function validarEmailRif($attribute, $params){ 
         // die($this->tipo);
 
             $validar = CrearUsuarioNatural::find() 
                                 ->where([
-                                
-                                'email' => $this->email,
-                                'tipo_naturaleza' => 1,
-                                'inactivo' => 0,
-                              
-                                ])
-                                ->all();
-
-                                //die(var_dump($validar));
-                 // die(var_dump($validarPreguntaSeguridad));             
-                             
-
-        if($validar == null){
-          //die('valido bien');
-          
-            $this->addError($attribute, Yii::t('frontend', 'This email does not exists' ));
-        
-        } else {
-
-        return false;
-        //die('no encontro ');
-
-        } 
-        
-
-         }
-
-         public function validar($attribute, $params){ 
-        // die($this->cedula);
-
-            $validar = CrearUsuarioNatural::find() 
-                                ->where([
-                                
                                 'naturaleza' => $this->naturaleza,
                                 'cedula' => $this->cedula,
-                    
+                                'email' => $this->email,
                                 'tipo_naturaleza' => 0,
                                 'inactivo' => 0,
                               
@@ -152,17 +119,16 @@ class VerificarPreguntasContribuyenteNaturalForm extends CrearUsuarioNatural
         if($validar == null){
           //die('valido bien');
           
-            $this->addError($attribute, Yii::t('frontend', 'This rif does not exists' ));
+            $this->addError($attribute, Yii::t('frontend', 'This user does not exists' ));
         
-        } else {
-
-        return false;
-        //die('no encontro ');
-
-        } 
-        
+         }else{
+            return false;
+         }
 
          }
+
+        
+       
 	
 
     

@@ -98,8 +98,9 @@ $this->title = 'Preguntas de Seguridad';
 						</td>
 					</tr>	
 
-					 
-                            <?= $form->field($model, 'id_contribuyente')->hiddenInput(['value' => $id_contribuyente])->label(false) ?>    
+					 		
+                            <?= $form->field($model, 'id_contribuyente')->textInput(['value' => $id_contribuyente])->label(false) ?> 
+                          
                            
 					<tr>
 						<td>  

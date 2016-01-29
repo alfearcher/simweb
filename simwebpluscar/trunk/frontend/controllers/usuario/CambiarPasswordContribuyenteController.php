@@ -71,7 +71,9 @@ use common\seguridad\Seguridad;
 use common\models\utilidades\Utilidad;
 use common\conexion\ConexionController;
 use common\enviaremail\EnviarEmailCambioClave;
+use common\models\session\Session;
 
+session_start();
 /**
  * Site controller
  */
@@ -274,6 +276,21 @@ class CambiarPasswordContribuyenteController extends Controller
 
     }
 
+
+    public function actionOcultarVariable($id)
+    {
+        //die('llego a ocultar variable'.$id);
+        Session::actionDeleteSession(['idContribuyente']);
+
+        $_SESSION['idContribuyente'] = $id;
+
+            return $this->redirect(['buscar-pregunta-seguridad-juridico'
+                                                                
+                                                                ]);
+    
+
+    }
+
     /**
      * [actionBuscarPreguntaSeguridadJuridico description] metodo que busca las preguntas de seguridad del usuario juridico en la tabla
      * preg_seg_contribuyente enviando como parametro el id.
@@ -281,30 +298,45 @@ class CambiarPasswordContribuyenteController extends Controller
      * @return [description] redireccionamiento al metodo que renderiza la vista con las preguntas del usuario juridico
      * seteadas para autenticarlo.
      */
-    public function actionBuscarPreguntaSeguridadJuridico($id){
+    public function actionBuscarPreguntaSeguridadJuridico()
+    {   
+        //die($_SESSION['idContribuyente']);
+
+        if (isset($_SESSION['idContribuyente'])){
+            die($_SESSION['idContribuyente']);
+
+        $id = $_SESSION['idContribuyente'];  
         
-        $buscarPreguntas = new VerificarPreguntasContribuyenteJuridicoForm();
+                $buscarPreguntas = new VerificarPreguntasContribuyenteJuridicoForm();
 
-        $buscarPreguntaSeguridad = $buscarPreguntas::BuscarPreguntaSeguridadJuridico($id);
+                $buscarPreguntaSeguridad = $buscarPreguntas::BuscarPreguntaSeguridadJuridico($id);
 
-            if ($buscarPreguntaSeguridad == true){
+                if ($buscarPreguntaSeguridad == true){
 
-                $pregunta1 = $buscarPreguntaSeguridad[0]->pregunta;
-                $pregunta2 = $buscarPreguntaSeguridad[1]->pregunta;
-                $pregunta3 = $buscarPreguntaSeguridad[2]->pregunta;
-                $idContribuyente = $buscarPreguntaSeguridad[0]->id_contribuyente;
+                    $pregunta1 = $buscarPreguntaSeguridad[0]->pregunta;
+                    $pregunta2 = $buscarPreguntaSeguridad[1]->pregunta;
+                    $pregunta3 = $buscarPreguntaSeguridad[2]->pregunta;
+                    $idContribuyente = $buscarPreguntaSeguridad[0]->id_contribuyente;
 
-                    return $this->redirect(['mostrar-pregunta-seguridad-juridico',
-                                            'id_contribuyente' => $idContribuyente,
-                                            'pregunta1' => $pregunta1,
-                                            'pregunta2' => $pregunta2,
-                                            'pregunta3' => $pregunta3,
+                        return $this->redirect(['mostrar-pregunta-seguridad-juridico',
+                                                'id_contribuyente' => $idContribuyente,
+                                                'pregunta1' => $pregunta1,
+                                                'pregunta2' => $pregunta2,
+                                                'pregunta3' => $pregunta3,
 
-                                             ]);
-            }else{
+                                                 ]);
+                
+                }else{
 
-                return MensajeController::actionMensaje(Yii::t('frontend', 'You have not created your security answers yet, please go to your city hall'));
-            }
+                    return MensajeController::actionMensaje(Yii::t('frontend', 'You have not created your security answers yet, please go to your city hall'));
+                }
+            
+            
+        
+        } else{
+
+           return MensajeController::actionMensaje(Yii::t('frontend', 'Sorry, not possible')); 
+        }
     }
 
     /**
