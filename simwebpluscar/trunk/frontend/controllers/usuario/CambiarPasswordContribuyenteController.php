@@ -130,22 +130,19 @@ class CambiarPasswordContribuyenteController extends Controller
 
                             if ($buscarAfiliaciones == true){
                                 
-                                $buscarPreguntaSeguridadJuridico =  $buscarId::buscarPreguntaSeguridad($buscarAfiliaciones->id_contribuyente);
+                                $buscarPreguntaSeguridadNatural =  $buscarId::buscarPreguntaSeguridad($buscarAfiliaciones->id_contribuyente);
                              
 
-                                    if ($buscarPreguntaSeguridadJuridico == true){
+                                    if ($buscarPreguntaSeguridadNatural == true){
                                   
-                                    $pregunta1 = $buscarPreguntaSeguridadJuridico[0]->pregunta;
-                                    $pregunta2 = $buscarPreguntaSeguridadJuridico[1]->pregunta;
-                                    $pregunta3 = $buscarPreguntaSeguridadJuridico[2]->pregunta;
-                                    $idContribuyente = $buscarPreguntaSeguridadJuridico[0]->id_contribuyente;
+                                    // $pregunta1 = $buscarPreguntaSeguridadJuridico[0]->pregunta;
+                                    // $pregunta2 = $buscarPreguntaSeguridadJuridico[1]->pregunta;
+                                    // $pregunta3 = $buscarPreguntaSeguridadJuridico[2]->pregunta;
+                                    // $idContribuyente = $buscarPreguntaSeguridadJuridico[0]->id_contribuyente;
+
+                                        $_SESSION['preguntaSeguridad'] = $buscarPreguntaSeguridadNatural;
                                   
-                                    return $this->redirect(['/usuario/cambiar-password-contribuyente/mostrar-pregunta-seguridad-natural',
-                                                                                                                        'pregunta1' => $pregunta1,
-                                                                                                                        'pregunta2' => $pregunta2,
-                                                                                                                        'pregunta3' => $pregunta3,
-                                                                                                                        'id_contribuyente' => $idContribuyente,
-                                                                                                                         ]);
+                                    return $this->redirect(['/usuario/cambiar-password-contribuyente/mostrar-pregunta-seguridad-natural']);
                                                                                                                           
                                     } else {
 
@@ -197,7 +194,11 @@ class CambiarPasswordContribuyenteController extends Controller
                             $cedula = $model->cedula;
                             $tipo = $model->tipo;
 
-                            $buscarAfiliacionesJuridico = $buscarId::buscarIdAfiliaciones($model);
+                            $buscarAfiliacionesJuridico = $buscarId->buscarIdAfiliaciones($model);
+
+                            if ($buscarAfiliacionesJuridico == false){
+                                return MensajeController::actionMensaje(Yii::t('frontend', 'Sorry, you are not afiliated, go to create user')); 
+                            }else{ 
                            
                             $idsContribuyente = [];
 
@@ -206,9 +207,9 @@ class CambiarPasswordContribuyenteController extends Controller
                                 $idsContribuyente[] = $buscarAfiliacionesJuridico[$key]['id_contribuyente'];
                               
                             }
+
                               
-                            if ($buscarAfiliacionesJuridico == true){
-                                //die('valido');
+                           
                                    
                                 $dataProvider = $buscarId::buscarIdContribuyente($idsContribuyente);
 
@@ -222,6 +223,8 @@ class CambiarPasswordContribuyenteController extends Controller
                                                                                                   ]);
 
                                 }
+                            
+                                //die('no esta en afiliaciones');
                             }
                             
                     }
@@ -242,7 +245,14 @@ class CambiarPasswordContribuyenteController extends Controller
      * para autenticar el usuario
      * @return [description] redireccionamiento al metodo que hace que puedas cambiar el password
      */
-    public function actionMostrarPreguntaSeguridadNatural($pregunta1, $pregunta2, $pregunta3, $id_contribuyente){
+    public function actionMostrarPreguntaSeguridadNatural(){
+
+        $preguntaSeguridad = isset($_SESSION['preguntaSeguridad']) ? $_SESSION['preguntaSeguridad'] : null;
+
+        if ($preguntaSeguridad != null){
+
+
+        
 
         $model = New ValidarCambiarPasswordNaturalForm();
 
@@ -258,7 +268,7 @@ class CambiarPasswordContribuyenteController extends Controller
                     if ($model->validate()){
 
                      return $this->redirect (['/usuario/cambiar-password-contribuyente/reseteo-password-natural',
-                                                                                                          'id_contribuyente' => $id_contribuyente,
+                                                                                                          'id_contribuyente' => $preguntaSeguridad[0]['id_contribuyente'],
                                                                                                           ]);
                    }
                         
@@ -266,14 +276,12 @@ class CambiarPasswordContribuyenteController extends Controller
               
                      return $this->render('/usuario/mostrar-pregunta-seguridad-natural' , [
                                                                           'model' => $model,
-                                                                          'pregunta1' => $pregunta1,
-                                                                          'pregunta2' => $pregunta2,
-                                                                          'pregunta3' => $pregunta3,
-                                                                          'id_contribuyente' => $id_contribuyente,
-
+                                                                            'preguntaSeguridad' => $preguntaSeguridad,
                                                                            ]); 
 
-
+      }else {
+        die('preg no definidas');
+      }
     }
 
 
