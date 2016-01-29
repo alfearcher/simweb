@@ -44,6 +44,8 @@
     use backend\models\registromaestro\TipoNaturaleza;
     use backend\models\TelefonoCodigo;
     use yii\helpers\Url;
+    use yii\jui\DatePicker;
+
 /* @var $this yii\web\View */
 /* @var $model backend\models\DatosBasicoForm */
 /* @var $form yii\widgets\ActiveForm */
@@ -249,13 +251,22 @@ $(document).ready(function(){
 <!-- FECHA DE NACIMIENTO -->
                     <tr>
                         <td colspan="4">
-                            <?= $form->field($model, 'fecha_nac')->input('date', 
-                                                                          [
-                                                                            'id' => 'fecha-nac',
-                                                                            'type' => 'date',
-                                                                            'style' => 'width:160px;height:32px;'
-                                                                          ]); 
-                            ?>
+                           <div class="fecha-nac">
+                          <?= $form->field($model, 'fecha_nac')->widget(\yii\jui\DatePicker::classname(),['id' => 'fecha_nac',
+                                                                                    'clientOptions' => [
+                                                                                    'maxDate' => '+0d', // Bloquear los dias en el calendario a partir del dia siguiente al actual.
+                                                                                     ],
+                                                                                    'language' => 'es-ES',
+                                                                                    'dateFormat' => 'dd-MM-yyyy',
+                                                                                    'options' => [
+                                                                                        'class' => 'form-control',
+                                                                                        //'readonly' => true,
+                                                                                        'style' => 'background-color: white;',
+
+                                                                                ]
+                                                                                ]); ?>
+                                                    </div>
+
                         </td>
                         <td width="150px"></td>
                         <td width="250px" colspan="1"></td>
