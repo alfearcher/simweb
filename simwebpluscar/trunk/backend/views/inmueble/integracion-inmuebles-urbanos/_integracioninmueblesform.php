@@ -21,6 +21,7 @@ use backend\models\inmueble\CambioPropietarioInmueblesForm;
 use backend\models\inmueble\Estados;
 use backend\models\inmueble\Municipios;
 use backend\models\ContribuyentesForm;
+use yii\jui\DatePicker;
 /* @var $this yii\web\View */
 /* @var $model backend\models\InscripcionInmueblesUrbanosForm */
 /* @var $form ActiveForm */
@@ -244,7 +245,7 @@ $variablephp=$_COOKIE['variablephp'];
                                                                                                                                                     'readonly' => true,
                                                                                                                                                     'style' => 'background-color: white;',
 
-                                                                                                                                            ]
+                                                                                                                                            ],
                                                                                                                                             ])->label(false) ?>
                                                     </div>
                                                         <div class="form-group"> 
