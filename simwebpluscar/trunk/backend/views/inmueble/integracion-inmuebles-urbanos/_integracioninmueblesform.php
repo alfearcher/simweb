@@ -21,7 +21,6 @@ use backend\models\inmueble\CambioPropietarioInmueblesForm;
 use backend\models\inmueble\Estados;
 use backend\models\inmueble\Municipios;
 use backend\models\ContribuyentesForm;
-use yii\jui\DatePicker;
 /* @var $this yii\web\View */
 /* @var $model backend\models\InscripcionInmueblesUrbanosForm */
 /* @var $form ActiveForm */
@@ -233,21 +232,7 @@ $variablephp=$_COOKIE['variablephp'];
                                                 <tr>
                                                 
                                                     <td colspan="2">
-                                                <div class="fecha-inicio">
-                                                        <?= $form->field($model, 'fecha_inicio')->widget(\yii\jui\DatePicker::classname(),['id' => 'fecha-inicio',
-                                                                                                                                            'clientOptions' => [
-                                                                                                                                                'maxDate' => '+0d', // Bloquear los dias en el calendario a partir del dia siguiente al actual.
-                                                                                                                                            ],
-                                                                                                                                            'language' => 'es-ES',
-                                                                                                                                            'dateFormat' => 'dd-MM-yyyy',
-                                                                                                                                            'options' => [
-                                                                                                                                                    'class' => 'form-control',
-                                                                                                                                                    'readonly' => true,
-                                                                                                                                                    'style' => 'background-color: white;',
-
-                                                                                                                                            ],
-                                                                                                                                            ])->label(false) ?>
-                                                    </div>
+                                                
                                                         <div class="form-group"> 
 <?= Html::beginForm();?>
 <?= Html::submitButton(Yii::t('backend', 'Accept'), ['class' => 'btn btn-primary', 'name'=>'AcceptSeller', 'value'=>'AcceptSeller']) ?>
