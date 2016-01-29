@@ -126,6 +126,7 @@ class IntegracionInmueblesForm extends \yii\db\ActiveRecord
     public $datosVInmueble;
     public $direccion;
     public $direccion2;
+    public $fecha_inicio;
 
     public static function tableName()
     {
