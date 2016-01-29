@@ -221,7 +221,15 @@ class CrearUsuarioNaturalController extends Controller
 
                         $modelx->email = $model[0]->email;
 
-                        self::beginSave("afiliaciones", $modelx);
+                        $guardarAfiliacion = self::beginSave("afiliaciones", $modelx);
+
+                            if ($guardarAfiliacion == true){
+                                return MensajeController::actionMensaje('You have been afiliated, please check your email');
+                            } else{
+                                return MensajeController::actionMensaje('An error ocurred while we were trying to proced');
+                            }
+
+
 
                    }  
            

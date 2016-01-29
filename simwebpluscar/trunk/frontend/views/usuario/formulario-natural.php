@@ -414,10 +414,7 @@ $(document).ready(function(){
     <?= Html::activeHiddenInput($model, 'fe_inic_agente_reten', ['value' => '00-00-0000']) ?>
     <?= Html::activeHiddenInput($model, 'ruc', ['value' => '0']) ?>
 
-    <?php 
-        $fecha = date('Y-m-d'); 
-        echo Html::activeHiddenInput($model, 'fecha_inclusion', ['value' => $fecha]);
-    ?>
+    
     <input type="hidden" name="visible" value="natural">
     <?php 
     /*
