@@ -135,12 +135,7 @@ class CambiarPasswordContribuyenteController extends Controller
 
                                     if ($buscarPreguntaSeguridadNatural == true){
                                   
-                                    // $pregunta1 = $buscarPreguntaSeguridadJuridico[0]->pregunta;
-                                    // $pregunta2 = $buscarPreguntaSeguridadJuridico[1]->pregunta;
-                                    // $pregunta3 = $buscarPreguntaSeguridadJuridico[2]->pregunta;
-                                    // $idContribuyente = $buscarPreguntaSeguridadJuridico[0]->id_contribuyente;
-
-                                        $_SESSION['preguntaSeguridad'] = $buscarPreguntaSeguridadNatural;
+                                    $_SESSION['preguntaSeguridad'] = $buscarPreguntaSeguridadNatural;
                                   
                                     return $this->redirect(['/usuario/cambiar-password-contribuyente/mostrar-pregunta-seguridad-natural']);
                                                                                                                           
@@ -280,7 +275,7 @@ class CambiarPasswordContribuyenteController extends Controller
                                                                            ]); 
 
       }else {
-        die('preg no definidas');
+         return MensajeController::actionMensaje(Yii::t('frontend', 'You have not created your security answers yet'));
       }
     }
 
@@ -311,7 +306,7 @@ class CambiarPasswordContribuyenteController extends Controller
         //die($_SESSION['idContribuyente']);
 
         if (isset($_SESSION['idContribuyente'])){
-            die($_SESSION['idContribuyente']);
+           
 
         $id = $_SESSION['idContribuyente'];  
         
@@ -321,16 +316,10 @@ class CambiarPasswordContribuyenteController extends Controller
 
                 if ($buscarPreguntaSeguridad == true){
 
-                    $pregunta1 = $buscarPreguntaSeguridad[0]->pregunta;
-                    $pregunta2 = $buscarPreguntaSeguridad[1]->pregunta;
-                    $pregunta3 = $buscarPreguntaSeguridad[2]->pregunta;
-                    $idContribuyente = $buscarPreguntaSeguridad[0]->id_contribuyente;
+                    
 
                         return $this->redirect(['mostrar-pregunta-seguridad-juridico',
-                                                'id_contribuyente' => $idContribuyente,
-                                                'pregunta1' => $pregunta1,
-                                                'pregunta2' => $pregunta2,
-                                                'pregunta3' => $pregunta3,
+                                               
 
                                                  ]);
                 
@@ -356,7 +345,12 @@ class CambiarPasswordContribuyenteController extends Controller
      * @return [type]                   [description] metodo que renderiza la vista con las preguntas de seguridad del usuario ya seteadas
      * @return [description] redireccionamiento al metodo que hace que puedas cambiar el password
      */
-    public function actionMostrarPreguntaSeguridadJuridico($pregunta1, $pregunta2, $pregunta3, $id_contribuyente){
+    public function actionMostrarPreguntaSeguridadJuridico(){
+
+        $preguntaSeguridad = isset($_SESSION['preguntaSeguridad']) ? $_SESSION['preguntaSeguridad'] : null;
+
+        if ($preguntaSeguridad != null){
+
         
         $model = New ValidarCambiarPasswordJuridicoForm();
        
@@ -372,7 +366,7 @@ class CambiarPasswordContribuyenteController extends Controller
                 if ($model->validate()){
                      
                     return $this->redirect (['/usuario/cambiar-password-contribuyente/reseteo-password-juridico',
-                                                                          'id_contribuyente' => $id_contribuyente,
+                                                                          'id_contribuyente' => $$preguntaSeguridad[0]['id_contribuyente'],
 
                                                                                                           ]);
                 }
@@ -381,12 +375,13 @@ class CambiarPasswordContribuyenteController extends Controller
                 return $this->render('/usuario/mostrar-pregunta-seguridad-juridico' , 
                                                         [
                                                         'model' => $model,
-                                                        'pregunta1' =>$pregunta1,
-                                                        'pregunta2' => $pregunta2,
-                                                        'pregunta3' => $pregunta3,
-                                                        'id_contribuyente' => $id_contribuyente,
+                                                        'preguntaSeguridad' => $preguntaSeguridad,
+                                                        
                                                         
                                                         ]); 
+     }else{
+         return MensajeController::actionMensaje(Yii::t('frontend', 'You have not created your security answers yet'));
+     }
     }
 
     /**
