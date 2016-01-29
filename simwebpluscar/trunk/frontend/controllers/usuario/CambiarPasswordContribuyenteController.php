@@ -141,7 +141,7 @@ class CambiarPasswordContribuyenteController extends Controller
                                                                                                                           
                                     } else {
 
-                                    return MensajeController::actionMensaje(Yii::t('frontend','You have not asigned security answers yet, please go to the city hall')); 
+                                    return MensajeController::actionMensaje(Yii::t('frontend', 'You have not created your security answers yet, in case you forgot your password, please go to your city hall'));
                                 
                                 }
                           
@@ -325,7 +325,7 @@ class CambiarPasswordContribuyenteController extends Controller
                 
                 }else{
 
-                    return MensajeController::actionMensaje(Yii::t('frontend', 'You have not created your security answers yet, please go to your city hall'));
+                    return MensajeController::actionMensaje(Yii::t('frontend', 'You have not created your security answers yet, in case you forgot your password, please go to your city hall'));
                 }
             
             
