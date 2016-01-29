@@ -44,7 +44,6 @@
     use backend\models\registromaestro\TipoNaturaleza;
     use backend\models\TelefonoCodigo;
     use yii\helpers\Url;
-    use yii\jui\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\DatosBasicoForm */
@@ -60,64 +59,9 @@
 */
 
 ?>
-<!-- SCRIPT DE OCULTAR CAPAS -->
-<!-- JQuery que permite ocultar o mostrar las capas segun el selector -->
-<script type="text/javascript">
-    function tipoContribuyenteOnChange(sel) {
-        if (sel.value=="mensaje"){      
-            $("#tmensaje").hide();
-            $("#tJuridico").hide();
-            $("#subMenuTipoPersona").hide();
-            $("#tNatural").hide();
-            $("#tmensajeJuri").hide();
-            $("#paneldataBasicRegister").show();
-            location.reload(true);
-        }   
-        if (sel.value=="juridico"){         
-            $("#subMenuTipoPersona").show();
-            $("#tmensajeJuri").show();
-            $("#tmensaje").show();
-            $("#tNatural").hide();
-            $("#paneldataBasicRegister").show();
-        }else{
-            $("#tJuridico").hide();
-            $("#tmensajeJuri").hide();
-            $("#subMenuTipoPersona").hide();
-            $("#tmensaje").hide();
-            $("#paneldataBasicRegister").hide();
-            $("#tNatural").show();
-        }           
-    }
-    function tipoNaturalezaContribuyente(tipoContri){
-        if (tipoContri.value==1){
-            $("#menuTipoPersona").show();
-            $("#tJuridico").show();
-            $("#subMenuTipoPersona").show();            
-            $("#Empresa").show();
-            $("#Sucesion").hide();
-            $("#tmensajeJuri").show();          
-            $("#tmensaje").show();
-            $("#tNatural").hide();
-            $("#paneldataBasicRegister").hide();
-            $("#sucesionLabel").hide();
-            $("#empresaLabel").show();
-        }if (tipoContri.value == 2) {
-            $("#menuTipoPersona").show();
-            $("#tJuridico").show();
-            $("#subMenuTipoPersona").show();
-            $("#Sucesion").show();
-            $("#Empresa").hide();
-            $("#tmensajeJuri").show();          
-            $("#tmensaje").show();
-            $("#tNatural").hide();
-            $("#paneldataBasicRegister").hide();
-            $("#empresaLabel").hide();
-            $("#sucesionLabel").show();
-        }if (tipoContri.value == 0) {
-            location.reload(true);
-        }
-    }
-</script>
+
+
+
 <!-- FIN DEL SCRIPT DE OCULTAR CAPAS -->
 
 <!-- SCRIPT DE MOSTRAR PREFIJO TELEFONO -->
@@ -165,7 +109,6 @@ $(document).ready(function(){
  </div>
     <!-- FIN SELECTOR DE TIPO DE PERSONA -->
 
-    
 
 <div><br></div>
 
@@ -219,10 +162,7 @@ $(document).ready(function(){
                         
                         </div>
 
-                         <div class="col-sm-2">
-                            <?= $form->field($model, 'tipo')->label(false)->textInput(['maxlength' => 1, 'value'=> $tipo, 'readOnly' =>true]) ?>
-                          
-                       </div>
+                        
                        </div>
 
 
@@ -263,7 +203,7 @@ $(document).ready(function(){
                                                                                         //'readonly' => true,
                                                                                         'style' => 'background-color: white;',
 
-                                                                                ]
+                                                                                ],
                                                                                 ]); ?>
                                                     </div>
 
@@ -425,4 +365,3 @@ $(document).ready(function(){
     ?>
 </div>
 <!-- FIN DEL FORMULARIO PERSONA NATURAL -->
-<?php ActiveForm::end(); ?>

@@ -45,7 +45,7 @@ $this->title = 'Preguntas de Seguridad';
                             <?= $form->field($model, 'pregunta1')->textInput(                              [ 'id'=> 'preguntas', 
                                                                                                            
                                                                                                             'style' => 'width:280px;',
-                                                                                                            'value' => $pregunta1  ,
+                                                                                                            'value' => $preguntaSeguridad[0]['pregunta']  ,
                                                                                                             'readOnly' =>true,                                                                                                          
                                                                                                             ]); ?>
 
@@ -64,7 +64,7 @@ $this->title = 'Preguntas de Seguridad';
                                         $listapreguntas = ArrayHelper::map($modelpreguntas,'pregunta','pregunta'); // primero el valor que guarda y segundo el valor que veras en el formulario ?>
 
                             <?= $form->field($model, 'pregunta2')->textInput(  [ 'id'=> 'preguntas', 
-                                                                                                            'value' => $pregunta2  ,
+                                                                                                            'value' => $preguntaSeguridad[1]['pregunta']  ,
                                                                                                             'readOnly' =>true,  
                                                                                                             'style' => 'width:280px;',
                                                                                                            ]);    ?>
@@ -84,7 +84,7 @@ $this->title = 'Preguntas de Seguridad';
                                         $listapreguntas = ArrayHelper::map($modelpreguntas,'pregunta','pregunta'); // primero el valor que guarda y segundo el valor que veras en el formulario ?>
 
                             <?= $form->field($model, 'pregunta3')->textInput( [ 'id'=> 'preguntas', 
-                                                                                                            'value' => $pregunta3  ,
+                                                                                                            'value' => $preguntaSeguridad[2]['pregunta']  ,
                                                                                                             'readOnly' =>true,  
                                                                                                             'style' => 'width:280px;',
                                                                                                            ]);    ?>
@@ -99,7 +99,7 @@ $this->title = 'Preguntas de Seguridad';
 					</tr>	
 
 					 		
-                            <?= $form->field($model, 'id_contribuyente')->textInput(['value' => $id_contribuyente])->label(false) ?> 
+                            <?= $form->field($model, 'id_contribuyente')->hiddenInput(['value' => $preguntaSeguridad[0]['id_contribuyente']])->label(false) ?> 
                           
                            
 					<tr>

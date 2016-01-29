@@ -154,7 +154,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                                                         'value' => 1,
                                                                                                       ])
                                             ?>
-                                             <?= Html::a(Yii::t('frontend', 'Quit'), ['quit'], ['class' => 'btn btn-danger']) ?>
+                                             
                                         </div>
                                     </div>
 <!-- Fin de Boton para aplicar la actualizacion -->
@@ -174,5 +174,5 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
         
 
-<?php $form->end() ?>
+<?php ActiveForm::end(); ?>
 
