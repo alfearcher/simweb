@@ -63,6 +63,7 @@ use common\conexion\ConexionController;
 
 use backend\models\buscargeneral\BuscarGeneralForm;
 use backend\models\buscargeneral\BuscarGeneral;
+use backend\models\inmueble\DesintegracionInmueblesForm;
 /**
  * CambiosInmueblesUrbanosController implements the CRUD actions for InmueblesUrbanosForm model.
  */
