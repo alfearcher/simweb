@@ -103,7 +103,7 @@ session_start();
 		        						['label' => 'Renovación de Certificado Catastral', 'url' => '#'],
 		        						['label' => 'Solvencia', 'url' => '#'],
 		        						['label' => 'Cambio de Numero Catastral', 'url' => ['/inmueble/inmuebles-urbanos/index']],
-		        						['label' => 'Cambio de Propietario', 'url' => ['/inmueble/desintegracion-inmuebles-urbanos/desintegracion-inmuebles','id_contribuyente' =>$_SESSION['idContribuyente']]],
+		        						['label' => 'Cambio de Propietario', 'url' => ['inmueble/desintegracion-inmuebles-urbanos/desintegracion-inmuebles','id_contribuyente' =>$_SESSION['idContribuyente']]],
 		        						['label' => 'Integración de Parcela', 'url' => ['/inmueble/integracion-inmuebles-urbanos/integracion-inmuebles','id_contribuyente' =>$_SESSION['idContribuyente']]],
 		        						['label' => 'Desintegración de Parcela', 'url' => '#'],
 		        						['label' => 'Cambio a Propiedad Horizontal', 'url' => ['/inmueble/inmuebles-urbanos/index']],
