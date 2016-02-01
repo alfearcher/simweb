@@ -146,7 +146,7 @@ class IntegracionInmueblesForm extends \yii\db\ActiveRecord
             [['direccion', 'direccion2'], 'string', 'max' => 255,'message' => Yii::t('backend', 'Only 255 character')],
             [['direccion', 'direccion2'], 'required', 'message' => Yii::t('backend', 'Cannot be blank')],                
             //Validacion 
-            [['direccion', 'direccion2'], 'cercanos'],
+            //[['direccion', 'direccion2'], 'cercanos'],
         ];
     } 
 
