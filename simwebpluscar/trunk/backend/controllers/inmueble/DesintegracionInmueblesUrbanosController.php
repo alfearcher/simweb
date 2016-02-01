@@ -121,7 +121,7 @@ class DesintegracionInmueblesUrbanosController extends Controller
                 if($model->validate()){
 
                  //condicionales     
-                
+                die('llegue al proceso desintegracion');
                 if (!\Yii::$app->user->isGuest){   
                      
      
