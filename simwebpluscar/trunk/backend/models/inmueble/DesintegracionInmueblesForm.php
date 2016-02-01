@@ -94,7 +94,7 @@ use backend\models\inmueble\Solvencias;
  * @property string $nivel_catastro
  * @property string $unidad_catastro
  */
-class IntegracionInmueblesForm extends \yii\db\ActiveRecord
+class DesintegracionInmueblesForm extends \yii\db\ActiveRecord
 {
 
     public $conn;
