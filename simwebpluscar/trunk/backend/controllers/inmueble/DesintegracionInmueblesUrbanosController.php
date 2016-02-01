@@ -321,7 +321,7 @@ FIN BUYER
      */
     protected function findModel($id)
     { 
-        if (($model = InmueblesUrbanosForm::find()->where(['id_contribuyente'=>$_SESSION['idContribuyente']])->one()) !== null) {
+        if (($model = DesintegracionInmueblesForm::find()->where(['id_contribuyente'=>$_SESSION['idContribuyente']])->one()) !== null) {
 
             return $model; 
         } else {

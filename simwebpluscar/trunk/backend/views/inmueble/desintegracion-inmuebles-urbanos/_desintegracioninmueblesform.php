@@ -204,31 +204,7 @@ $variablephp=$_COOKIE['variablephp'];
                                                     </td>
                                                 </tr>
 
-                                                <tr>
-                        
-                        
-                                                    <td colspan="2"> 
-
-                                                        <div class="col-lg-4">
-                                                            <?= Yii::t('backend', 'Select the Second Urban Property') ?>
-                                                        </div>
-                                                        <div class="col-lg-5" align='left'> 
-                                                            
-                                                            <?php 
-                                                            $modelParametros = InmueblesUrbanosForm::find()->where(['id_contribuyente'=>$modelContribuyente->id_contribuyente])->asArray()->all();                                         
-                                                            $listaParametros = ArrayHelper::map($modelParametros,'id_impuesto','direccion');  
-                                                            ?>
-
-                                                            <?= $form->field($model, 'direccion2')->dropDownList($listaParametros, [ 
-                                                                                                                    'prompt' => Yii::t('backend', 'Select'),
-                                                                                                                    'style' => 'width:100px;',
-                                                                                                                    'onchange' => 'bloquea()'
-                                                                                                                    ])->label(false) ?> 
-                                                        </div>
-                                                    
-                                                    </td>
-                                                </tr>
-                                                
+                                                                                                
                                                 <tr>
                                                 
                                                     <td colspan="2">
