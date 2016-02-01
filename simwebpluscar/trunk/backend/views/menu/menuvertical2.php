@@ -6,7 +6,7 @@
   	use kartik\sidenav\SideNav;
   	use kartik\icons\Icon;
   	use yii\helpers\Url;
-
+session_start();
   	$typeIcon = Icon::FA;
   	$typeLong = 'fa-2x';
 
@@ -104,7 +104,7 @@
 		        						['label' => 'Solvencia', 'url' => '#'],
 		        						['label' => 'Cambio de Numero Catastral', 'url' => ['/inmueble/inmuebles-urbanos/index']],
 		        						['label' => 'Cambio de Propietario', 'url' => '#'],
-		        						['label' => 'Integración de Parcela', 'url' => ['/inmueble/integracion-inmuebles-urbanos/integracion-inmuebles','id_contribuyente' =>$_SESSION['id_contribuyente']]],
+		        						['label' => 'Integración de Parcela', 'url' => ['/inmueble/integracion-inmuebles-urbanos/integracion-inmuebles','id_contribuyente' =>$_SESSION['idContribuyente']]],
 		        						['label' => 'Desintegración de Parcela', 'url' => '#'],
 		        						['label' => 'Cambio a Propiedad Horizontal', 'url' => ['/inmueble/inmuebles-urbanos/index']],
 		        						['label' => 'Cambio de Otros Datos del Inmueble', 'url' => ['/inmueble/inmuebles-urbanos/index']],
