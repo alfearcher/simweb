@@ -28,7 +28,7 @@
  *  @date 13/01/2016
  * 
  *  @class CargaDatosBasicosNaturalForm
- *  @brief Modelo del formulario de datos basicos, en el estan las validaciones y textos necesarios.
+ *  @brief Modelo del formulario de datos basicos de persona natural, en el estan las validaciones y textos necesarios.
  *   @property
  *
  *  

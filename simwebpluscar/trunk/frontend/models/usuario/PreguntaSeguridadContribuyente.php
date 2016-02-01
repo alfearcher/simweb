@@ -22,13 +22,13 @@
  */
 
  /**    
- *  @file Afiliacion.php
+ *  @file PreguntaSeguridadContribuyente.php
  *  
  *  @author Manuel Alejandro Zapata Canelon
  * 
  *  @date 20/01/2016
  * 
- *  @class Afiliacion
+ *  @class PreguntaSeguridadContribuyente
  *  @brief Modelo que instancia la conexion a la base de datos para buscar datos de la tabla preg_seg_contribuyentes. 
  * 
  *  

@@ -281,11 +281,18 @@ class CargaDatosBasicosForm extends \yii\db\ActiveRecord
             'ruc' => Yii::t('frontend', 'Ruc'),
         ];
     }
-
+    /**
+    * @inheritdoc
+    */
     public function getGenderOptions(){
         return array('M' => 'Masculino', 'F' => 'Femenino');
     }
-
+    /**
+     * [dameIdRif description] metodo que busca en la tabla contribuyentes para conseguir el rif ingresado por el usuario para
+     * su busqueda
+     * @param  [type] $model [description] modelo que contiene el rif enviado por el usuario (naturaleza, cedula y tipo (solo si es usuario juridico))
+     * @return [type]        [description] retorna el id_rif encontrado y lo ordena de forma descendente y luego le suma uno.
+     */
     public function dameIdRif($model){
 
     $modelFind = CrearUsuarioJuridico::find()

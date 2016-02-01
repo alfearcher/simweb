@@ -22,13 +22,13 @@
  */
 
  /**    
- *  @file CrearUsuarioJuridico.php
+ *  @file CrearUsuarioNatural.php
  *  
  *  @author Manuel Alejandro Zapata Canelon
  * 
  *  @date 04/01/2016
  * 
- *  @class CrearUsuarioJuridico
+ *  @class CrearUsuarioNatural
  *  @brief Modelo que instancia la conexion a base de datos para buscar datos en contribuyentes. 
  * 
  *  

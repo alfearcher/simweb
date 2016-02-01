@@ -31,27 +31,26 @@ $this->title = 'Preguntas de Seguridad';
 				<?= $this->title ?>
 			</div>
 			<div class="panel-body" >
-				<table class="table table-striped">
 				
-				   <tr>
-						<td><div class="col-lg-4">
+				
+				   
+						
 
 
 						    
 							<?php       $modelpreguntas = ListaPreguntasContribuyente::find()->where(['estatus' => 0])->asArray()->all();                                         
                                         $listapreguntas = ArrayHelper::map($modelpreguntas,'pregunta','pregunta'); 
-                                       // die(var_dump($listapreguntas));             ?>
-
+                                                    ?>
+							<div class="row">
+							<div class="col-sm-6">
                             <?= $form->field($model, 'pregunta1')->textInput(                              [ 'id'=> 'preguntas', 
                                                                                                            
                                                                                                             'style' => 'width:280px;',
                                                                                                             'value' => $preguntaSeguridad[0]['pregunta']  ,
                                                                                                             'readOnly' =>true,                                                                                                          
                                                                                                             ]); ?>
-
-							  </div>
-						 </td>
-				   </tr>
+							</div>
+							</div>
 				   <tr>
 						<td><div class="col-lg-4">
                             <?= $form->field($model, "respuesta1")->input("text") ?>   

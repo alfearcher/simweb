@@ -21,15 +21,15 @@
  */
 
  /**    
- *  @file User.php
+ *  @file ReseteoPasswordJuridicoForm.php
  *  
- *  @author Alvaro Jose Fernandez Archer
+ *  @author Manuel Aljenadro Zapata Canelon
  * 
- *  @date 19-05-2015
+ *  @date 15-01-2016
  * 
- *  @class User
- *  @brief Clase que permite loguear al usuario comparando sus datos de acceso al sistema.
- * 
+ *  @class ReseteoPasswordJuridicoForm.php
+ *  @brief Clase contiene las rules y las validaciones para el formulario de reseteo de password juridico.
+ *  
  *  
  * 
  *  
@@ -38,16 +38,8 @@
  *
  *  
  *  @method
- *  findIdentity
- *  findIdentityByAccesToken
- *  findByUsername
- *  getId
- *  getAuthkey
- *  validateAuthkey
- *  validatePassword
- *  isUserAdmin
- *  isUserFuncionario
- *  isUserSimple
+ *  rules
+ *  attributeLabels
  *  
  *  @inherits
  *  

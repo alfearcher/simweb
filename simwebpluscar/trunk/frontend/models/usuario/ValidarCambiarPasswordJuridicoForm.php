@@ -21,14 +21,14 @@
  */
 
  /**    
- *  @file User.php
+ *  @file ValidarCambiarPasswordJuridicoForm.php
  *  
- *  @author Alvaro Jose Fernandez Archer
+ *  @author Manuel Alejandro Zapata Canelon
  * 
- *  @date 19-05-2015
+ *  @date 25-01-2016
  * 
- *  @class User
- *  @brief Clase que permite loguear al usuario comparando sus datos de acceso al sistema.
+ *  @class ValidarCambiarPasswordJuridicoForm
+ *  @brief Clase contiene las rules y metodos para las preguntas de seguridad del usuario
  * 
  *  
  * 
@@ -38,16 +38,11 @@
  *
  *  
  *  @method
- *  findIdentity
- *  findIdentityByAccesToken
- *  findByUsername
- *  getId
- *  getAuthkey
- *  validateAuthkey
- *  validatePassword
- *  isUserAdmin
- *  isUserFuncionario
- *  isUserSimple
+ * rules
+ * attributeLabels
+ * buscarPreguntasJuridico1
+ * buscarPreguntasJuridico2
+ * buscarPreguntasJuridico3
  *  
  *  @inherits
  *  
@@ -75,7 +70,7 @@ class ValidarCambiarPasswordJuridicoForm extends Model
     
 
 
-      public function rules()
+    public function rules()
     {   //validaciones requeridas para el formulario de registro de usuarios     
         return [
             [['pregunta1',  'respuesta1', 'pregunta2', 'respuesta2', 'pregunta3', 'respuesta3', 'id_contribuyente'], 'required' ],
@@ -90,7 +85,7 @@ class ValidarCambiarPasswordJuridicoForm extends Model
     } 
     
     // nombre de etiquetas
-     public function attributeLabels()
+    public function attributeLabels()
     {
         return [
                 //'usuario' => Yii::t('frontend', 'Your Username'), // para multiples idiomas
@@ -101,9 +96,16 @@ class ValidarCambiarPasswordJuridicoForm extends Model
                 
         ];
     }
-	
-    public function buscarPreguntasJuridico1($attribute, $params){
-
+	  /**
+     * [buscarPreguntasJuridico1 description] metodo para buscar la pregunta 1 y respuesta de esa pregunta en la tabla 
+     * preg_seg_contribuyentes junto con el id del usuario.
+     * @param  [type] $attribute [description] atributos necesarios para enviar mensaje de error
+     * @param  [type] $params    [description] parametros necesarios para enviar mensaje de error
+     * @return [type]            [description] si encontro pregunta, salta al otro metodo de validacion, de los contrario envia
+     * mensaje de error
+     */
+    public function buscarPreguntasJuridico1($attribute, $params)
+    {
 
         $buscarNatural = PreguntaSeguridadContribuyente::find()
                                                
@@ -115,21 +117,26 @@ class ValidarCambiarPasswordJuridicoForm extends Model
                                                
 
                                                 ]);
-                                               // ->one();
-                                                //die(var_dump($buscarNatural));
+                                               
 
-
-
-        if($buscarNatural->count()== 0){
+            if($buscarNatural->count()== 0){
         
-         $this->addError($attribute, Yii::t('frontend', 'The answer does not match'));
+                $this->addError($attribute, Yii::t('frontend', 'The answer does not match'));
 
-        } 
+            } 
 
     }
 
-       public function buscarPreguntasJuridico2($attribute, $params){
-
+    /**
+     * [buscarPreguntasJuridico1 description] metodo para buscar la pregunta 2 y respuesta de esa pregunta en la tabla 
+     * preg_seg_contribuyentes junto con el id del usuario.
+     * @param  [type] $attribute [description] atributos necesarios para enviar mensaje de error
+     * @param  [type] $params    [description] parametros necesarios para enviar mensaje de error
+     * @return [type]            [description] si encontro pregunta, salta al otro metodo de validacion, de los contrario envia
+     * mensaje de error
+     */
+    public function buscarPreguntasJuridico2($attribute, $params)
+    {
 
         $buscarNatural = PreguntaSeguridadContribuyente::find()
                                                
@@ -141,21 +148,25 @@ class ValidarCambiarPasswordJuridicoForm extends Model
                                                
 
                                                 ]);
-                                               // ->one();
+                                               
 
-
-
-
-
-        if($buscarNatural->count()== 0){
+            if($buscarNatural->count()== 0){
         
-            $this->addError($attribute, Yii::t('frontend', 'The answer does not match'));
+                $this->addError($attribute, Yii::t('frontend', 'The answer does not match'));
         
-         }
-     }
+            }
+    }
 
-       public function buscarPreguntasJuridico3($attribute, $params){
-
+    /**
+     * [buscarPreguntasJuridico1 description] metodo para buscar la pregunta 3 y respuesta de esa pregunta en la tabla 
+     * preg_seg_contribuyentes junto con el id del usuario.
+     * @param  [type] $attribute [description] atributos necesarios para enviar mensaje de error
+     * @param  [type] $params    [description] parametros necesarios para enviar mensaje de error
+     * @return [type]            [description] si encontro pregunta, salta al otro metodo de validacion, de los contrario envia
+     * mensaje de error
+     */
+    public function buscarPreguntasJuridico3($attribute, $params)
+    {
 
         $buscarNatural = PreguntaSeguridadContribuyente::find()
                                                
@@ -167,17 +178,12 @@ class ValidarCambiarPasswordJuridicoForm extends Model
                                                
 
                                                 ]);
-                                                //->all();
                                                 
-                                              //  die(var_dump($buscarNatural));
-
-
-
-        if($buscarNatural->count()== 0){
+            if($buscarNatural->count()== 0){
         
-           $this->addError($attribute, Yii::t('frontend', 'The answer does not match')); 
+                $this->addError($attribute, Yii::t('frontend', 'The answer does not match')); 
         
-        } 
+            } 
 
     }
     

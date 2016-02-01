@@ -21,33 +21,26 @@
  */
 
  /**    
- *  @file User.php
+ * @file VerificarPreguntasContribuyenteNaturalForm.php
  *  
- *  @author Alvaro Jose Fernandez Archer
+ *  @author Manuel Alejandro Zapata Canelon
  * 
- *  @date 19-05-2015
+ *  @date 28-01-2016
  * 
- *  @class User
- *  @brief Clase que permite loguear al usuario comparando sus datos de acceso al sistema.
+ *  @class VerificarPreguntasContribuyenteNaturalForm
+ *  @brief Clase que contiene las rules y los metodos para la validacion de las preguntas de seguridad del usuario natural
  * 
  *  
  * 
  *  
  *  
  *  @property
- *
- *  
- *  @method
- *  findIdentity
- *  findIdentityByAccesToken
- *  findByUsername
- *  getId
- *  getAuthkey
- *  validateAuthkey
- *  validatePassword
- *  isUserAdmin
- *  isUserFuncionario
- *  isUserSimple
+ *  rules
+ *  attributeLabels
+ *  buscarIdAfiliaciones
+ *  validarEmailRif
+ *  buscarIdContribuyente
+ *  buscarPreguntaSeguridadNatural
  *  
  *  @inherits
  *  
@@ -85,7 +78,7 @@ class VerificarPreguntasContribuyenteNaturalForm extends CrearUsuarioNatural
     } 
     
     // nombre de etiquetas
-     public function attributeLabels()
+    public function attributeLabels()
     {
         return [
                 //'usuario' => Yii::t('frontend', 'Your Username'), // para multiples idiomas
@@ -97,11 +90,16 @@ class VerificarPreguntasContribuyenteNaturalForm extends CrearUsuarioNatural
         ];
     }
 
-
-    public function validarEmailRif($attribute, $params){ 
-        // die($this->tipo);
-
-            $validar = CrearUsuarioNatural::find() 
+    /**
+     * [validarEmailRif description] metodo que busca el email y el rif en la tabla contribuyentes para verificar si posee preguntas de seguridad
+     * @param  [type] $attribute [description] atributos necesarios para enviar mensaje de error
+     * @param  [type] $params    [description] parametros necesarios para enviar mensaje de error
+     * @return [type]            [description] retorna un mensaje de error en caso de no encontrar al usuario en la tabla
+     */
+    public function validarEmailRif($attribute, $params)
+    { 
+        
+        $validar = CrearUsuarioNatural::find() 
                                 ->where([
                                 'naturaleza' => $this->naturaleza,
                                 'cedula' => $this->cedula,
@@ -112,29 +110,24 @@ class VerificarPreguntasContribuyenteNaturalForm extends CrearUsuarioNatural
                                 ])
                                 ->all();
 
-                                //die(var_dump($validar));
-                 // die(var_dump($validarPreguntaSeguridad));             
-                             
-
-        if($validar == null){
-          //die('valido bien');
+            if($validar == null){
+        
           
-            $this->addError($attribute, Yii::t('frontend', 'This user does not exists' ));
+                $this->addError($attribute, Yii::t('frontend', 'This user does not exists' ));
         
-         }else{
-            return false;
-         }
+            }else{
+                
+                return false;
+            }
 
-         }
-
-        
-       
-	
-
-    
-    public function buscarIdContribuyente($model){
-
-       // die(var_dump($model));
+    }
+      /**
+     * [buscarIdContribuyente description] Metodo que busca el id del contribuyente en la tabla contribuyentes
+     * @param  [type] $model [description] modelo que trae la informacion del contribuyente desde la tabla contribuyentes
+     * @return [type]        [description] retorna una respuesta con la informacion buscada en caso de encontrarla, sino retorna false.
+     */
+    public function buscarIdContribuyente($model)
+    {
 
         $validarPregunta = CrearUsuarioNatural::find() 
                                 ->where([
@@ -147,24 +140,27 @@ class VerificarPreguntasContribuyenteNaturalForm extends CrearUsuarioNatural
                                 ])
                                 ->one();
                                
-                            
-
-        if($validarPregunta != null){
+            if($validarPregunta != null){
         
-            return $validarPregunta;  
+                return $validarPregunta;  
         
-        } else {
+            } else {
 
-        return false;
-        //die('no encontro ');
+                return false;
 
-        }
-         } 
+            }
+    } 
 
+    /**
+     * [buscarIdAfiliaciones description] Metodo que busca el id del contribuyente en la tabla afiliaciones
+     * @param  [type] $model [description] modelo que trae la informacion del contribuyente desde la tabla contribuyentes
+     * y se utiliza el email para buscar en la tabla afiliaciones
+     * @return [type]        [description] retorna una respuesta con la informacion buscada en caso de encontrarla, sino retorna false.
+     */
+    public function buscarIdAfiliaciones($id_contribuyente)
+    {
 
-         public function buscarIdAfiliaciones($id_contribuyente){
-
-            $afiliacion = new Afiliacion();
+        $afiliacion = new Afiliacion();
 
         $validarPregunta = Afiliacion::find() 
                                 ->where([
@@ -177,28 +173,24 @@ class VerificarPreguntasContribuyenteNaturalForm extends CrearUsuarioNatural
                                 ])
                                 ->one();
                                
-                            
-
-        if($validarPregunta != null){
+            if($validarPregunta != null){
         
-            return $validarPregunta;  
+                return $validarPregunta;  
         
-        } else {
+            } else {
 
-        return false;
-        //die('no encontro ');
+                return false;
+            }
+    } 
 
-        }
-         } 
-
-         
-
-        public function buscarPreguntaSeguridad($id_contribuyente){ 
-            //die($id_contribuyente);
-
-          
-
-            $validarPreguntaSeguridad = PreguntaSeguridadContribuyente::find() 
+      /**
+     * [buscarPreguntaSeguridadNatural description] metodo que busca las preguntas de seguridad asociadas al id del contribuyente enviado
+     * @param  [type] $id [description] id del contribuyente para buscar preguntas de seguridad asociadas a ese usuario.
+     * @return [type]     [description] retorna las preguntas de seguridad encontradas en caso de que asi sea.
+     */    
+    public function buscarPreguntaSeguridad($id_contribuyente){ 
+        
+        $validarPreguntaSeguridad = PreguntaSeguridadContribuyente::find() 
                                 ->where([
                                 
                                 'id_contribuyente' => $id_contribuyente,
@@ -207,21 +199,16 @@ class VerificarPreguntasContribuyenteNaturalForm extends CrearUsuarioNatural
                                 ])
                                 ->all();
 
-                                //die(var_dump($validarPreguntaSeguridad));
-                 // die(var_dump($validarPreguntaSeguridad));             
-                             
-
-        if($validarPreguntaSeguridad != null){
+            if($validarPreguntaSeguridad != null){
         
-            return $validarPreguntaSeguridad;  
+                return $validarPreguntaSeguridad;  
         
-        } else {
+            } else {
 
-        return false;
-        //die('no encontro ');
-
-        } 
-        }
+                return false;
+        
+            } 
+    }
    
 
  }

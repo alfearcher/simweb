@@ -24,9 +24,9 @@
  /**    
  *  @file LoginForm.php
  *  
- *  @author Alvaro Jose Fernandez Archer
+ *  @author Manuel Alejandro Zapata Canelon
  * 
- *  @date 19-05-2015
+ *  @date 11-01-2016
  * 
  *  @class LoginForm
  *  @brief Clase que permite validar cada uno de los datos del formulario login.
@@ -86,14 +86,14 @@ class LoginForm extends Model
 	/*
 	 *  Metodo que retorna los nombres de los atributos
 	 */
-	public function attributeLabels()
-{ 
-    return [
-      'email' => Yii::t('frontend', 'Email'),
-      'password' => Yii::t('frontend', 'Password'),
-	  'rememberMe' => Yii::t('frontend', 'RememberMe'),
+	  public function attributeLabels()
+    { 
+        return [
+        'email' => Yii::t('frontend', 'Email'),
+        'password' => Yii::t('frontend', 'Password'),
+	      'rememberMe' => Yii::t('frontend', 'RememberMe'),
               ];
-}
+    }
 
     
 	

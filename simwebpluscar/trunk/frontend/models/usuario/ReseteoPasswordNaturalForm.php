@@ -21,14 +21,14 @@
  */
 
  /**    
- *  @file User.php
+ *  @file ReseteoPasswordNatural.php
  *  
- *  @author Alvaro Jose Fernandez Archer
+ *  @author Manuel Aljenadro Zapata Canelon
  * 
- *  @date 19-05-2015
+ *  @date 15-01-2016
  * 
- *  @class User
- *  @brief Clase que permite loguear al usuario comparando sus datos de acceso al sistema.
+ *  @class ReseteoPasswordNaturalForm.php
+ *  @brief Clase contiene las rules y las validaciones para el formulario de reseteo de password Natural.
  * 
  *  
  * 
@@ -36,18 +36,11 @@
  *  
  *  @property
  *
+ *
  *  
  *  @method
- *  findIdentity
- *  findIdentityByAccesToken
- *  findByUsername
- *  getId
- *  getAuthkey
- *  validateAuthkey
- *  validatePassword
- *  isUserAdmin
- *  isUserFuncionario
- *  isUserSimple
+ *  rules
+ *  attributeLabels
  *  
  *  @inherits
  *  
@@ -69,7 +62,7 @@ class ReseteoPasswordNaturalForm extends Model
     
 
 
-      public function rules()
+    public function rules()
     {   //validaciones requeridas para el formulario de registro de usuarios     
         return [
             [['password1',  'password2'], 'required' ],
@@ -83,7 +76,7 @@ class ReseteoPasswordNaturalForm extends Model
     } 
     
     // nombre de etiquetas
-     public function attributeLabels()
+    public function attributeLabels()
     {
         return [
                 //'usuario' => Yii::t('frontend', 'Your Username'), // para multiples idiomas

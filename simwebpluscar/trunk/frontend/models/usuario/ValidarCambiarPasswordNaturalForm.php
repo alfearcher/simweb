@@ -21,33 +21,28 @@
  */
 
  /**    
- *  @file User.php
+ *  @file ValidarCambiarPasswordNaturalForm.php
  *  
- *  @author Alvaro Jose Fernandez Archer
+ *  @author Manuel Alejandro Zapata Canelon
  * 
- *  @date 19-05-2015
+ *  @date 25-01-2016
  * 
- *  @class User
- *  @brief Clase que permite loguear al usuario comparando sus datos de acceso al sistema.
- * 
- *  
+ *  @class ValidarCambiarPasswordNaturalForm
+ *  @brief Clase contiene las rules y metodos para las preguntas de seguridad del usuario
  * 
  *  
+ * 
  *  
- *  @property
+ *  
+ * @property
  *
  *  
  *  @method
- *  findIdentity
- *  findIdentityByAccesToken
- *  findByUsername
- *  getId
- *  getAuthkey
- *  validateAuthkey
- *  validatePassword
- *  isUserAdmin
- *  isUserFuncionario
- *  isUserSimple
+ * rules
+ * attributeLabels
+ * buscarPreguntasJuridico1
+ * buscarPreguntasJuridico2
+ * buscarPreguntasJuridico3
  *  
  *  @inherits
  *  
@@ -65,7 +60,7 @@ class ValidarCambiarPasswordNaturalForm extends Model
      
     public $id_contribuyente;
     public $email;
-	public $pregunta1;
+	  public $pregunta1;
     public $respuesta1;
     public $pregunta2;
     public $respuesta2;
@@ -90,7 +85,7 @@ class ValidarCambiarPasswordNaturalForm extends Model
     } 
     
     // nombre de etiquetas
-     public function attributeLabels()
+    public function attributeLabels()
     {
         return [
                 //'usuario' => Yii::t('frontend', 'Your Username'), // para multiples idiomas
@@ -101,9 +96,17 @@ class ValidarCambiarPasswordNaturalForm extends Model
                 
         ];
     }
-	
-    public function buscarPreguntasNatural1($attribute, $params){
-
+	  
+    /**
+     * [buscarPreguntasNatural1 description] metodo para buscar la pregunta 1 y respuesta de esa pregunta en la tabla 
+     * preg_seg_contribuyentes junto con el id del usuario.
+     * @param  [type] $attribute [description] atributos necesarios para enviar mensaje de error
+     * @param  [type] $params    [description] parametros necesarios para enviar mensaje de error
+     * @return [type]            [description] si encontro pregunta, salta al otro metodo de validacion, de los contrario envia
+     * mensaje de error
+     */
+    public function buscarPreguntasNatural1($attribute, $params)
+    {
 
         $buscarNatural = PreguntaSeguridadContribuyente::find()
                                                
@@ -115,21 +118,25 @@ class ValidarCambiarPasswordNaturalForm extends Model
                                                
 
                                                 ]);
-                                               // ->one();
-                                                //die(var_dump($buscarNatural));
-
-
-
-        if($buscarNatural->count()== 0){
+                                               
+            if($buscarNatural->count()== 0){
         
-         $this->addError($attribute, Yii::t('frontend', 'The answer does not match'));
+                $this->addError($attribute, Yii::t('frontend', 'The answer does not match'));
 
-        } 
+            } 
 
     }
 
-       public function buscarPreguntasNatural2($attribute, $params){
-
+    /**
+     * [buscarPreguntasNatural2 description] metodo para buscar la pregunta 2 y respuesta de esa pregunta en la tabla 
+     * preg_seg_contribuyentes junto con el id del usuario.
+     * @param  [type] $attribute [description] atributos necesarios para enviar mensaje de error
+     * @param  [type] $params    [description] parametros necesarios para enviar mensaje de error
+     * @return [type]            [description] si encontro pregunta, salta al otro metodo de validacion, de los contrario envia
+     * mensaje de error
+     */
+    public function buscarPreguntasNatural2($attribute, $params)
+    {
 
         $buscarNatural = PreguntaSeguridadContribuyente::find()
                                                
@@ -141,20 +148,25 @@ class ValidarCambiarPasswordNaturalForm extends Model
                                                
 
                                                 ]);
-                                               // ->one();
+                                               
 
-
-
-
-
-        if($buscarNatural->count()== 0){
+            if($buscarNatural->count()== 0){
         
-            $this->addError($attribute, Yii::t('frontend', 'The answer does not match'));
+                $this->addError($attribute, Yii::t('frontend', 'The answer does not match'));
         
-         }
-     }
+            }
+    }
 
-       public function buscarPreguntasNatural3($attribute, $params){
+    /**
+     * [buscarPreguntasNatural3 description] metodo para buscar la pregunta 3 y respuesta de esa pregunta en la tabla 
+     * preg_seg_contribuyentes junto con el id del usuario.
+     * @param  [type] $attribute [description] atributos necesarios para enviar mensaje de error
+     * @param  [type] $params    [description] parametros necesarios para enviar mensaje de error
+     * @return [type]            [description] si encontro pregunta, salta al otro metodo de validacion, de los contrario envia
+     * mensaje de error
+     */
+    public function buscarPreguntasNatural3($attribute, $params)
+    {
 
 
         $buscarNatural = PreguntaSeguridadContribuyente::find()
@@ -167,17 +179,13 @@ class ValidarCambiarPasswordNaturalForm extends Model
                                                
 
                                                 ]);
-                                                //->all();
-                                                
-                                              //  die(var_dump($buscarNatural));
+                                        
 
-
-
-        if($buscarNatural->count()== 0){
+              if($buscarNatural->count()== 0){
         
-           $this->addError($attribute, Yii::t('frontend', 'The answer does not match')); 
+                  $this->addError($attribute, Yii::t('frontend', 'The answer does not match')); 
         
-        } 
+              } 
 
     }
     

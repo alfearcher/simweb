@@ -213,17 +213,17 @@ $(document).ready(function(){
                                                                      'readOnly' =>true,
                                                                     ])->label(false);
                         ?>
-                        </div>
+                       </div>
                        <div class="col-sm-3">
                             <?= $form->field($model, 'cedula')->label(false)->textInput(['maxlength' => 8, 'value'=> $cedula, 'readOnly' =>true]) ?>
                         
-                        </div>
+                       </div>
 
                          <div class="col-sm-2">
                             <?= $form->field($model, 'tipo')->label(false)->textInput(['maxlength' => 1, 'value'=> $tipo, 'readOnly' =>true]) ?>
                           
-                       </div>
-                       </div>
+                        </div>
+                        </div>
 
 
                    
@@ -256,8 +256,8 @@ $(document).ready(function(){
 <hr>
 
 <!-- EMAIL -->
-                            <div class="row">
-                       <div class="col-sm-6">
+                        <div class="row">
+                        <div class="col-sm-6">
                         
                             <?= $form->field($model, 'email')->input('email') ?>
 
@@ -287,21 +287,21 @@ $(document).ready(function(){
                                                                                                 'cambio()'
                                                                                              ]
                                                                     ) 
-                                        ?>
-                                       </div>
-                                   <div class="col-sm-4">
-                                    <?= $form->field($model, 'tlf_ofic')->textInput(['maxlength' => 12,
+                            ?>
+                            </div>
+                            <div class="col-sm-4">
+                            <?= $form->field($model, 'tlf_ofic')->textInput(['maxlength' => 12,
                                                                         'style' => 'width:150px;',
                                                                         'placeholder' => false,
                                                                         'id' => 'tlf_ofic',
                                                                        
                                                                         ]
                                                                     ) 
-                                        ?>
+                            ?>
 
                                      
-                                        </div>
-                                        </div>
+                            </div>
+                            </div>
 
 
                                  
@@ -310,7 +310,7 @@ $(document).ready(function(){
                   
 
                             <div class="row">
-                          <div class="col-sm-2">
+                            <div class="col-sm-2">
                                     <?= $form->field($mt, 'codigo')->dropDownList($listaTelefonoCodigo, ['inline' => true,
                                                                                              'prompt' => Yii::t('frontend', 'Select'), 
                                                                                              'style' => 'width:100px;',
@@ -319,11 +319,11 @@ $(document).ready(function(){
                                                                                                 'cambio1()'
                                                                                              ]
                                                                     ) 
-                                        ?>
-                                        </div>
+                            ?>
+                            </div>
 
-                                     <div class="col-sm-4"> 
-                                   <?= $form->field($model, 'tlf_ofic_otro')->textInput(['maxlength' => 12,
+                            <div class="col-sm-4"> 
+                            <?= $form->field($model, 'tlf_ofic_otro')->textInput(['maxlength' => 12,
                                                                         'style' => 'width:150px;',
                                                                         'placeholder' => false,
                                                                         'id' => 'tlf_ofic_otro',                                                                       
@@ -332,8 +332,8 @@ $(document).ready(function(){
                                         ?>
                                     
                                
-                                </div>
-                                </div>
+                            </div>
+                            </div>
 
 
 
@@ -377,10 +377,10 @@ $(document).ready(function(){
                             <?= Html::submitButton(Yii::t('frontend', 'Create') , ['class' =>'btn btn-success']) ?>
                             </div>
                             </div>
-            </div>
+        </div>
+      </div>
     </div>
-    </div>
-    </div>
+  </div>
 
     <?php 
     /*

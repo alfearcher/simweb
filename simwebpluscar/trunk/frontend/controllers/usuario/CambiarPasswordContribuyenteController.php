@@ -219,7 +219,7 @@ class CambiarPasswordContribuyenteController extends Controller
 
                                 }
                             
-                                //die('no esta en afiliaciones');
+                                
                             }
                             
                     }
@@ -282,7 +282,7 @@ class CambiarPasswordContribuyenteController extends Controller
 
     public function actionOcultarVariable($id)
     {
-        //die('llego a ocultar variable'.$id);
+     
         Session::actionDeleteSession(['idContribuyente']);
 
         $_SESSION['idContribuyente'] = $id;
@@ -303,7 +303,7 @@ class CambiarPasswordContribuyenteController extends Controller
      */
     public function actionBuscarPreguntaSeguridadJuridico()
     {   
-        //die($_SESSION['idContribuyente']);
+       
 
         if (isset($_SESSION['idContribuyente'])){
            

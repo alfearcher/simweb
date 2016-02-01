@@ -22,13 +22,13 @@
  */
 
  /**    
- *  @file CrearUsuarioJuridicoForm.php
+ *  @file CrearUsuarioNaturalForm.php
  *  
  *  @author Manuel Alejandro Zapata Canelon
  * 
  *  @date 21/12/15
  * 
- *  @class CrearUsuarioJuridicoForm
+ *  @class CrearUsuarioNaturalForm
  *  @brief Modelo para controlar las rules del formulario de busqueda de persona Juridica. 
  * 
  *  
@@ -75,7 +75,7 @@ class CrearUsuarioNaturalForm extends CrearUsuarioNatural{
    
      
     /**
-       * [rules description]
+       * [rules description] reglas de validacion del formulario para crear usuario natural
        * @return [type] [description]
        */
       public function rules()
@@ -108,91 +108,117 @@ class CrearUsuarioNaturalForm extends CrearUsuarioNatural{
           ];
       }
 
-  
-   public function findRif($naturaleza, $cedula, $tipo)
-   {
+      /**
+       * [findRif description] metodo para buscar el rif del usuario natural en la tabla contribuyentes
+       * @param  [type] $naturaleza [description] naturaleza del usuario
+       * @param  [type] $cedula     [description] cedula del usuario
+       * @param  [type] $tipo       [description] tipo del usuario
+       * @return [type]             [description] retorna una respuesta con el rif del usuario en caso de encontrarlo
+       */
+      public function findRif($naturaleza, $cedula, $tipo)
+      {
 
-      $model = CrearUsuarioNatural::find()->where([
+          $model = CrearUsuarioNatural::find()->where([
                     'naturaleza' => $naturaleza,
                     'cedula' => $cedula,
                     'tipo' => $tipo,
                     'tipo_naturaleza' => 0])->All();
 
-     //die(var_dump($model));
-      return isset($model) ? $model : false;
-  }
+          return isset($model) ? $model : false;
+      }
+      /**
+       * [findAfiliacion description] metodo que realiza la busqueda del usuario en la tabla afiliacion enviando el id de este.
+       * @param  [type] $idContribuyente [description] id del contribuyente natural encontrado en la tabla contribuyentes
+       * @return [type]                  [description] devuelve una respuesta con la informacion en caso de haberla encontrado
+       */
+      public function findAfiliacion($idContribuyente)
+      {
 
-public function findAfiliacion($idContribuyente)
-   {
-
-      $model = Afiliacion::findOne([
+          $model = Afiliacion::findOne([
                     
                     'id_contribuyente' => $idContribuyente,
                     
                     ]);
 
-     //die(var_dump($model));
       return isset($model) ? $model : false;
-  }
-
-
-   
-
-    public function obtenerDataProviderRif($naturalezaLocal, $cedulaLocal, $tipoLocal)
-   {
-      if ( trim($naturalezaLocal) != '' && $cedulaLocal > 0 ) {
-          if ( strlen($naturalezaLocal) == 1 ) {
-            $query = CrearUsuarioNatural::find();
-            $dataProvider = new ActiveDataProvider([
+      }
+      /**
+       * [obtenerDataProviderRif description] metodo que obtiene el data provider del rif del usuario natural para poder mostrar la tabla
+       * de contribuyente encontrado
+       * @param  [type] $naturalezaLocal [description] naturaleza del usuario
+       * @param  [type] $cedulaLocal     [description] cedula del usuario
+       * @param  [type] $tipoLocal       [description] tipo del usuario
+       * @return [type]                  [description] devuelve una respuesta con los datos en caso de haberlos encontrado
+       */
+      public function obtenerDataProviderRif($naturalezaLocal, $cedulaLocal, $tipoLocal)
+      {
+          if ( trim($naturalezaLocal) != '' && $cedulaLocal > 0 ) {
+              if ( strlen($naturalezaLocal) == 1 ) {
+                  $query = CrearUsuarioNatural::find();
+                  $dataProvider = new ActiveDataProvider([
                   'query' => $query,
               ]);
-            $query->where('naturaleza =:naturaleza and cedula =:cedula and tipo =:tipo and tipo_naturaleza =:tipo_naturaleza',[':naturaleza' => $naturalezaLocal,
+               $query->where('naturaleza =:naturaleza and cedula =:cedula and tipo =:tipo and tipo_naturaleza =:tipo_naturaleza',[':naturaleza' => $naturalezaLocal,
                                     ':cedula' => $cedulaLocal,
                                     ':tipo' => $tipoLocal,
                                     ':tipo_naturaleza' => 0
                                      ])->all();
 
-            return $dataProvider;
+              return $dataProvider;
+              }
           }
-        }
         return false;
       
     
-  }
+      }
 
+      /**
+       * [findContribuyente description] metodo que busca al usuario natural en la tabla contribuytente
+       * @param  [type] $id [description] id del contribuyente
+       * @return [type]     [description] retorna el id del contribuyente en caso de ser encontrado
+       */
+      public function findContribuyente($id)
+      {
 
-    public function findContribuyente($id)
-   {
-
-      $model = CrearUsuarioJuridico::find()->where([
+          $model = CrearUsuarioJuridico::find()->where([
                     'id_contribuyente' => $id,
                       ])->All();
 
-     //die(var_dump($model));
-      return isset($model) ? $model : false;
-  }
+  
+          return isset($model) ? $model : false;
+      }
+      /**
+       * [attributeAfiliacion description] metodo que contiene los nombres de los campos de la tabla afiliacion
+       * @return [type] [description]
+       */
+      public function attributeAfiliacion()
+      {
 
-  public function attributeAfiliacion()
-  {
-
-    return ['id_contribuyente',
-            'login',
-            'password',
-            'fecha_hora_afiliacion',
-            'via_sms',
-            'via_email',
-            'via_tlf_fijo',
-            'via_callcenter',
-            'estatus',
-            'nivel',
-            'confirmar_email',
+          return ['id_contribuyente',
+              'login',
+              'password',
+              'fecha_hora_afiliacion',
+              'via_sms',
+              'via_email',
+              'via_tlf_fijo',
+              'via_callcenter',
+              'estatus',
+              'nivel',
+              'confirmar_email',
 
           ];
-  }
+      }
+      /**
+       * [existe description] metodo que busca tanto en la tabla contribuyente como en la tabla contribuyentes
+       * para verificar si el usuario ingresado existe
+       * @param  [type] $attribute [description] atributos necesarios para enviar mensaje de error
+       * @param  [type] $params    [description] parametros necesarios para enviar mensaje de error
+       * @return [type]            [description] en caso de no conseguir al usuario en ninguna de las tablas, genera un mensaje de error
+       */
+      public function existe($attribute, $params)
+      {
 
-   public function existe($attribute, $params){
-
-    $buscar = CrearUsuarioNatural::find()
+          $buscar = CrearUsuarioNatural::find()
                                    ->where([
 
                                     'naturaleza' => $this->naturaleza,
@@ -201,35 +227,31 @@ public function findAfiliacion($idContribuyente)
                                     'inactivo' => 0,
                                     ])->one();
 
-     
-
-                                   
-  //die($hola);
-
-      if ($buscar  != null){ 
+          if ($buscar  != null){ 
                              
-      $buscar2 = Afiliacion::find()
+              $buscar2 = Afiliacion::find()
                                     ->where([
 
                                    
                                      'id_contribuyente' => $buscar->id_contribuyente,
-                                  
                                      'estatus' => 0,
-                                    ])->one();
-                                //die(var_dump($buscar2));
-
-    if ($buscar2  != null){
-      $this->addError($attribute, Yii::t('frontend', 'This user already exists '));
-    }
+                                     ])->one();
+                                
+              if ($buscar2  != null){
+                  $this->addError($attribute, Yii::t('frontend', 'This user already exists '));
+              }
 
     
-    }
- }
+          }
+      }
+      /**
+       * [attributeContribuyentes description] metodo que contiene los nombres de los campos de la tabla contribuyentes
+       * @return [type] [description]
+       */
+      public function attributeContribuyentes()
+      {
 
-   public function attributeContribuyentes()
-  {
-
-    return ['id_contribuyente',
+            return ['id_contribuyente',
             'ente',
             'naturaleza',
             'cedula',
@@ -290,7 +312,7 @@ public function findAfiliacion($idContribuyente)
             
 
             ];
-  }
+      }
 
   
   

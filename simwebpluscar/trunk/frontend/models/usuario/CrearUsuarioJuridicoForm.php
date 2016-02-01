@@ -78,7 +78,7 @@ class CrearUsuarioJuridicoForm extends CrearUsuarioJuridico{
    
      
     /**
-       * [rules description]
+       * [rules description] reglas de validacion del formulario para crear usuario juridico
        * @return [type] [description]
        */
       public function rules()
@@ -107,156 +107,178 @@ class CrearUsuarioJuridicoForm extends CrearUsuarioJuridico{
           ];
       }
 
-	
-   public function findRif($naturaleza, $cedula, $tipo)
-   {
+	    /**
+       * [findRif description] metodo que busca en la tabla contribuyente el rif ingresado por el usuario
+       * @param  [type] $naturaleza [description] naturaleza del rif
+       * @param  [type] $cedula     [description] cedula
+       * @param  [type] $tipo       [description] tipo 
+       * @return [type]             [description] retorna una respuesta con los datos solicitados
+       */
+      public function findRif($naturaleza, $cedula, $tipo)
+      {
 
-      $model = CrearUsuarioJuridico::find()->where([
+          $model = CrearUsuarioJuridico::find()->where([
                     'naturaleza' => $naturaleza,
                     'cedula' => $cedula,
                     'tipo' => $tipo,
                     'tipo_naturaleza' => 1])->All();
 
-     //die(var_dump($model));
+     
       return isset($model) ? $model : false;
-  }
+      }
+      /**
+       * [findAfiliacion description] metodo que busca registros en la tabla afiliacion
+       * @param  [type] $idContribuyente [description] parametro para realizar la busqueda en la tabla
+       * @return [type]                  [description] retorna una respuesta con los datos solicitados
+       */
+      public function findAfiliacion($idContribuyente)
+      {
 
-public function findAfiliacion($idContribuyente)
-   {
-
-      $model = Afiliacion::findOne([
+          $model = Afiliacion::findOne([
                     
                     'id_contribuyente' => $idContribuyente,
                     
                     ]);
 
-     //die(var_dump($model));
-      return isset($model) ? $model : false;
-  }
+    
+          return isset($model) ? $model : false;
+      }
 
-
-   
-
-    public function obtenerDataProviderRif($naturalezaLocal, $cedulaLocal, $tipoLocal)
-   {
-      if ( trim($naturalezaLocal) != '' && $cedulaLocal > 0 ) {
-          if ( strlen($naturalezaLocal) == 1 ) {
-            $query = CrearUsuarioJuridico::find();
-            $dataProvider = new ActiveDataProvider([
-                  'query' => $query,
-              ]);
-            $query->where('naturaleza =:naturaleza and cedula =:cedula and tipo =:tipo and tipo_naturaleza =:tipo_naturaleza',[':naturaleza' => $naturalezaLocal,
+      /**
+       * [obtenerDataProviderRif description] metodo que obtiene datos de la tabla attributeContribuyentes
+       * @param  [type] $naturalezaLocal [description] naturaleza del ususario
+       * @param  [type] $cedulaLocal     [description] cedula del usuario
+       * @param  [type] $tipoLocal       [description] tipo de la cedula del usuario
+       * @return [type]                  [description] retorna una respuesta con los datos solicitados
+       */
+      public function obtenerDataProviderRif($naturalezaLocal, $cedulaLocal, $tipoLocal)
+      {
+      
+          if ( trim($naturalezaLocal) != '' && $cedulaLocal > 0 ) {
+              if ( strlen($naturalezaLocal) == 1 ) {
+                  $query = CrearUsuarioJuridico::find();
+                  $dataProvider = new ActiveDataProvider([
+                      'query' => $query,
+                      ]);
+                  $query->where('naturaleza =:naturaleza and cedula =:cedula and tipo =:tipo and tipo_naturaleza =:tipo_naturaleza',[':naturaleza' => $naturalezaLocal,
                                     ':cedula' => $cedulaLocal,
                                     ':tipo' => $tipoLocal,
                                     ':tipo_naturaleza' => 1
                                      ])->all();
 
-            return $dataProvider;
+                  return $dataProvider;
+              }
           }
-        }
-        return false;
+          return false;
       
     
-  }
+      }
 
+      /**
+       * [findContribuyente description] metodo que busca el id del contribuyente en la tabla contribuyentes
+       * @param  [type] $id [description] id del contribuyente para realizar la busqueda en la tabla
+       * @return [type]     [description] retorna una respuesta con el id del contribuyente en caso de encontrarlo
+       */
+      public function findContribuyente($id)
+      {
 
-    public function findContribuyente($id)
-   {
-
-      $model = CrearUsuarioJuridico::find()->where([
+          $model = CrearUsuarioJuridico::find()->where([
                     'id_contribuyente' => $id,
                       ])->All();
 
-     //die(var_dump($model));
+     
       return isset($model) ? $model : false;
-  }
+      }
+      /**
+       * [attributeAfiliacion description] metodo que contiene los nombres de los campos de la tabla afiliacion
+       * 
+       */
+      public function attributeAfiliacion()
+      {
 
-  public function attributeAfiliacion()
-  {
+          return ['id_contribuyente',
+              'login',
+              'password',
+              'fecha_hora_afiliacion',
+              'via_sms',
+              'via_email',
+              'via_tlf_fijo',
+              'via_callcenter',
+              'estatus',
+              'nivel',
+              'confirmar_email',
 
-    return ['id_contribuyente',
-            'login',
-            'password',
-            'fecha_hora_afiliacion',
-            'via_sms',
-            'via_email',
-            'via_tlf_fijo',
-            'via_callcenter',
-            'estatus',
-            'nivel',
-            'confirmar_email',
+              ];
+      }
 
-          ];
-  }
+      public function attributeContribuyentes()
+      {
 
-   public function attributeContribuyentes()
-  {
-
-    return ['id_contribuyente',
-            'ente',
-            'naturaleza',
-            'cedula',
-            'tipo',
-            'tipo_naturaleza',
-            'id_rif',
-            'id_cp',
-            'nombres',
-            'apellidos',
-            'razon_social',
-            'representante',
-            'nit',
-            'fecha_nac',
-            'sexo',
-            'casa_edf_qta_dom',
-            'piso_nivel_no_dom',
-            'apto_dom',
-            'domicilio_fiscal',
-            'catastro',
-            'tlf_hab',
-            'tlf_hab_otro',
-            'tlf_ofic',
-            'tlf_ofic_otro',
-            'tlf_celular',
-            'fax',
-            'email',
-            'inactivo',
-            'cuenta',
-            'reg_mercantil',
-            'num_reg',
-            'tomo',
-            'folio',
-            'fecha',
-            'capital',
-            'horario',
-            'extension_horario',
-            'num_empleados',
-            'tipo_contribuyente',
-            'licencia',
-            'agente_retencion',
-            'id_sim',
-            'manzana_limite',
-            'lote_1',
-            'lote_2',
-            'nivel',
-            'lote_3',
-            'fecha_inclusion',
-            'fecha_inicio',
-            'foraneo',
-            'no_declara',
-            'econ_informal',
-            'grupo_contribuyente',
-            'fe_inic_agente_reten',
-            'no_sujeto',
-            'ruc',
-            'naturaleza_rep',
-            'cedula_rep',
+          return ['id_contribuyente',
+              'ente',
+              'naturaleza',
+              'cedula',
+              'tipo',
+              'tipo_naturaleza',
+              'id_rif',
+              'id_cp',
+              'nombres',
+              'apellidos',
+              'razon_social',
+              'representante',
+              'nit',
+              'fecha_nac',
+              'sexo',
+              'casa_edf_qta_dom',
+              'piso_nivel_no_dom',
+              'apto_dom',
+              'domicilio_fiscal',
+              'catastro',
+              'tlf_hab',
+              'tlf_hab_otro',
+              'tlf_ofic',
+              'tlf_ofic_otro',
+              'tlf_celular',
+              'fax',
+              'email',
+              'inactivo',
+              'cuenta',
+              'reg_mercantil',
+              'num_reg',
+              'tomo',
+              'folio',
+              'fecha',
+              'capital',
+              'horario',
+              'extension_horario',
+              'num_empleados',
+              'tipo_contribuyente',
+              'licencia',
+              'agente_retencion',
+              'id_sim',
+              'manzana_limite',
+              'lote_1',
+              'lote_2',
+              'nivel',
+              'lote_3',
+              'fecha_inclusion',
+              'fecha_inicio',
+              'foraneo',
+              'no_declara',
+              'econ_informal',
+              'grupo_contribuyente',
+              'fe_inic_agente_reten',
+              'no_sujeto',
+              'ruc',
+              'naturaleza_rep',
+              'cedula_rep',
             
 
             ];
-  }
+      }
 
   
   
 }
 
- ?>
+?>

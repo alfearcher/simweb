@@ -21,33 +21,29 @@
  */
 
  /**    
- *  @file User.php
+ *  @file VerificarPreguntasContribuyenteJuridicoForm.php
  *  
- *  @author Alvaro Jose Fernandez Archer
+ *  @author Manuel Alejandro Zapata Canelon
  * 
- *  @date 19-05-2015
+ *  @date 28-01-2016
  * 
- *  @class User
- *  @brief Clase que permite loguear al usuario comparando sus datos de acceso al sistema.
+ *  @class VerificarPreguntasContribuyenteJuridicoForm
+ *  @brief Clase que contiene las rules y los metodos para la validacion de las preguntas de seguridad del usuario juridico
  * 
  *  
  * 
  *  
  *  
  *  @property
- *
+ *  rules
+ *  attributeLabels
+ *  buscarIdAfiliaciones
+ *  validarEmailRif
+ *  buscarIdContribuyente
+ *  buscarPreguntaSeguridadJuridico
  *  
  *  @method
- *  findIdentity
- *  findIdentityByAccesToken
- *  findByUsername
- *  getId
- *  getAuthkey
- *  validateAuthkey
- *  validatePassword
- *  isUserAdmin
- *  isUserFuncionario
- *  isUserSimple
+ *  
  *  
  *  @inherits
  *  
@@ -65,7 +61,7 @@ class VerificarPreguntasContribuyenteJuridicoForm extends CrearUsuarioNatural
 {
      
     public $id_contribuyente;
-	public $usuario;
+	  public $usuario;
     public $email;
     public $naturaleza;
     public $cedula;
@@ -73,7 +69,7 @@ class VerificarPreguntasContribuyenteJuridicoForm extends CrearUsuarioNatural
     
 
 
-      public function rules()
+    public function rules()
     {   //validaciones requeridas para el formulario de registro de usuarios     
         return [
             [['naturaleza',  'cedula', 'tipo', 'email'], 'required' ],
@@ -87,7 +83,7 @@ class VerificarPreguntasContribuyenteJuridicoForm extends CrearUsuarioNatural
     } 
     
     // nombre de etiquetas
-     public function attributeLabels()
+    public function attributeLabels()
     {
         return [
                 //'usuario' => Yii::t('frontend', 'Your Username'), // para multiples idiomas
@@ -98,12 +94,16 @@ class VerificarPreguntasContribuyenteJuridicoForm extends CrearUsuarioNatural
                 
         ];
     }
-	
-     public function buscarIdAfiliaciones($model){
+	  /**
+     * [buscarIdAfiliaciones description] Metodo que busca el id del contribuyente en la tabla afiliaciones
+     * @param  [type] $model [description] modelo que trae la informacion del contribuyente desde la tabla contribuyentes
+     * y se utiliza el email para buscar en la tabla afiliaciones
+     * @return [type]        [description] retorna una respuesta con la informacion buscada en caso de encontrarla, sino retorna false.
+     */
+    public function buscarIdAfiliaciones($model)
+    {
 
-       // die(var_dump($model));
-
-        $validarPregunta = Afiliacion::find() 
+        $validar = Afiliacion::find() 
                                  ->where([
                                 
                                 'login' => $model->email,
@@ -111,27 +111,25 @@ class VerificarPreguntasContribuyenteJuridicoForm extends CrearUsuarioNatural
                                 ])
                                 ->all();
                                 
-
-                               // die(var_dump($validarPregunta));
-                               
-                            
-
-        if($validarPregunta != null){
+            if($validar != null){
         
-            return $validarPregunta;  
+                return $validar;  
         
-        } else {
+            }else{
 
-        return false;
-        //die('no encontro ');
-
-        }
-         } 
-
-         public function validarEmailRif($attribute, $params){ 
-        // die($this->tipo);
-
-            $validar = CrearUsuarioNatural::find() 
+                return false;
+            }
+    } 
+    /**
+     * [validarEmailRif description] metodo que busca el email y el rif en la tabla contribuyentes para verificar si posee preguntas de seguridad
+     * @param  [type] $attribute [description] atributos necesarios para enviar mensaje de error
+     * @param  [type] $params    [description] parametros necesarios para enviar mensaje de error
+     * @return [type]            [description] retorna un mensaje de error en caso de no encontrar al usuario en la tabla
+     */
+    public function validarEmailRif($attribute, $params)
+    { 
+        
+        $validar = CrearUsuarioNatural::find() 
                                 ->where([
                                 'naturaleza' => $this->naturaleza,
                                 'cedula' => $this->cedula,
@@ -143,55 +141,49 @@ class VerificarPreguntasContribuyenteJuridicoForm extends CrearUsuarioNatural
                                 ])
                                 ->all();
 
-                                //die(var_dump($validar));
-                 // die(var_dump($validarPreguntaSeguridad));             
-                             
-
-        if($validar == null){
-          //die('valido bien');
-          
-            $this->addError($attribute, Yii::t('frontend', 'This user does not exists' ));
+            if($validar == null){
         
-         }else{
-            return false;
-         }
+                $this->addError($attribute, Yii::t('frontend', 'This user does not exists' ));
+        
+            }else{
+                return false;
+            }
 
-         }
+    }
+    /**
+     * 
+     * [buscarIdContribuyente description] metodo que busca al usuario juridico en la tabla contribuyentes de manera masiva
+     * llevando a comparacion todos los id contribuyentes previamente buscados en afiliacion
+     * @param  [type] $idsContribuyente [description] ids de los contribuyentes encontrados y enviados para buscar en la tabla contribuyentes
+     * @return [type]                   [description] retorna un data provider con las empresas asociadas a esos id que se buscaron previamente
+     */
+    public function buscarIdContribuyente($idsContribuyente)
+    {
 
-         public function buscarIdContribuyente($idsContribuyente){
-
-
-          //  die(var_dump($idsContribuyente));
-           // die(var_dump($buscarAfiliacionesJuridico));
-            //
         $query = CrearUsuarioNatural::find();
            
         $dataProvider = new ActiveDataProvider([
 
-                                                'query' => $query
+                               'query' => $query
 
                                                ]);
           
 
-            
-
         $query->andFilterWhere(['in', 'id_contribuyente', $idsContribuyente]);
-            //die(var_dump($dataProvider));
-
-                    return $dataProvider; 
+            
+            return $dataProvider; 
                                
                      
-         }
+    }
+    /**
+     * [buscarPreguntaSeguridadJuridico description] metodo que busca las preguntas de seguridad asociadas al id del contribuyente enviado
+     * @param  [type] $id [description] id del contribuyente para buscar preguntas de seguridad asociadas a ese usuario.
+     * @return [type]     [description] retorna las preguntas de seguridad encontradas en caso de que asi sea.
+     */
+    public function buscarPreguntaSeguridadJuridico($id)
+    {
 
-
-              public function buscarPreguntaSeguridadJuridico($id){
-
-               
-            //die($id_contribuyente);
-
-          
-
-            $validarPreguntaSeguridad = PreguntaSeguridadContribuyente::find() 
+        $validarPreguntaSeguridad = PreguntaSeguridadContribuyente::find() 
                                 ->where([
                                 
                                 'id_contribuyente' => $id,
@@ -200,21 +192,15 @@ class VerificarPreguntasContribuyenteJuridicoForm extends CrearUsuarioNatural
                                 ])
                                 ->all();
 
-                                //die(var_dump($validarPreguntaSeguridad));
-                 // die(var_dump($validarPreguntaSeguridad));             
-                             
-
-        if($validarPreguntaSeguridad != null){
+            if($validarPreguntaSeguridad != null){
         
-            return $validarPreguntaSeguridad;  
+                return $validarPreguntaSeguridad;  
         
-        } else {
+            } else {
 
-        return false;
-        //die('no encontro ');
-
-        } 
-        } 
+                return false;
+            } 
+    } 
     
    
 }

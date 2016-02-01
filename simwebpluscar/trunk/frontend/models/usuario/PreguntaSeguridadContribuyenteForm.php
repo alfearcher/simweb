@@ -21,15 +21,14 @@
  */
 
  /**    
- *  @file User.php
+ *  @file PreguntaSeguridadContribuyenteForm.php
  *  
- *  @author Alvaro Jose Fernandez Archer
+ *  @author Manuel Alejandro Zapata Canelon
  * 
- *  @date 19-05-2015
+ *  @date 11-01-2016
  * 
- *  @class User
- *  @brief Clase que permite loguear al usuario comparando sus datos de acceso al sistema.
- * 
+ *  @class PreguntaSeguridadContribuyenteForm
+ *  @brief clase que contiene los metodos rules y validaciones para las preguntas de seguridad
  *  
  * 
  *  
@@ -75,7 +74,7 @@ class PreguntaSeguridadContribuyenteForm extends PreguntaSeguridadContribuyente
 	public $inactivo;
 
 
-      public function rules()
+    public function rules()
     {   //validaciones requeridas para el formulario de registro de usuarios     
         return [
             [['pregunta1', 'pregunta2' , 'pregunta3' , 'respuesta1', 'respuesta2', 'respuesta3'], 'required' ],  
@@ -90,7 +89,7 @@ class PreguntaSeguridadContribuyenteForm extends PreguntaSeguridadContribuyente
     } 
     
     // nombre de etiquetas
-     public function attributeLabels()
+    public function attributeLabels()
     {
         return [
                 //'usuario' => Yii::t('frontend', 'Your Username'), // para multiples idiomas
@@ -104,10 +103,14 @@ class PreguntaSeguridadContribuyenteForm extends PreguntaSeguridadContribuyente
     }
 	
 
-    
+    /**
+     * [ValidarPreguntaSeguridad description] metodo que busca las preguntas de seguridad del usuario en la tabla preg_seg_contribuyentes
+     * @param [type] $model            [description] modelo enviado por el usuario con la informacion de las preguntas
+     * @param [type] $id_contribuyente [description] id del contribuyente para buscar en la tabla
+     */
     public function ValidarPreguntaSeguridad($model, $id_contribuyente){
 
-       // die(var_dump($model));
+       
 
         $validarPregunta = PreguntaSeguridadContribuyente::find()
                                 ->where([
@@ -120,23 +123,23 @@ class PreguntaSeguridadContribuyenteForm extends PreguntaSeguridadContribuyente
 
 
 
-        if($validarPregunta != null){
+            if($validarPregunta != null){
         
-            return $validarPregunta;  
+                return $validarPregunta;  
         
-        } else {
+            } else {
 
-        return false;
-        //die('no encontro ');
+                return false;
+    
 
-        } 
+            } 
    
-}
+    }
+     // Contiene los nombres de los campos de la tabla contribuyentes
+    public function attributeContribuyentes()
+    {
 
-     public function attributeContribuyentes()
-  {
-
-    return [
+        return [
             
             'id_pregunta',
             'usuario',
@@ -152,27 +155,32 @@ class PreguntaSeguridadContribuyenteForm extends PreguntaSeguridadContribuyente
             
 
             ];
-  }
-
-  public function compararPreguntas($attribute, $params){ 
-
-    if ($this->pregunta1 ==  $this->pregunta2){
-
-        $this->addError($attribute, Yii::t('frontend', 'Answers can not be equals'));
     }
+    /**
+     * [compararPreguntas description] metodo que valida las preguntas de seguridad para que no se envien dos o todas las preguntas iguales
+     * @param  [type] $attribute [description] atributos necesarios para enviar mensaje de error
+     * @param  [type] $params    [description] parametros necesarios para enviar mensaje de error
+     * @return [type]            [description] retorna mensajes de error indicando que alguna pregunta esta repetida
+     */
+    public function compararPreguntas($attribute, $params){ 
 
-    if ($this->pregunta2 == $this->pregunta3){
+        if ($this->pregunta1 ==  $this->pregunta2){
 
-        $this->addError($attribute, Yii::t('frontend', 'Answers can not be equals'));
+            $this->addError($attribute, Yii::t('frontend', 'Answers can not be equals'));
+        }
 
-    }
+        if ($this->pregunta2 == $this->pregunta3){
 
-    if ($this->pregunta1 == $this->pregunta3){ 
+            $this->addError($attribute, Yii::t('frontend', 'Answers can not be equals'));
 
-        $this->addError($attribute, Yii::t('frontend', 'Answers can not be equals'));
+        }
+
+        if ($this->pregunta1 == $this->pregunta3){ 
+
+            $this->addError($attribute, Yii::t('frontend', 'Answers can not be equals'));
     
+        }
     }
-   }
 
  }
 

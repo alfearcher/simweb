@@ -133,13 +133,13 @@ $(document).ready(function(){
         
 ?> 
 
-    <div class="col-sm-10">
+    <div class="col-sm-7">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <?= Yii::t('backend', 'Registration Basic Information') ?> | <?= Yii::t('backend', 'Natural') ?>
             </div>
             <div class="panel-body" >
-                <table class="table table-striped">
+               
 <!-- RIF -->
                     
                         <div>
@@ -156,7 +156,7 @@ $(document).ready(function(){
                                                                      'readOnly' =>true,
                                                                     ])->label(false);
                         ?>
-                        </div>
+                       </div>
                        <div class="col-sm-3">
                             <?= $form->field($model, 'cedula')->label(false)->textInput(['maxlength' => 8, 'value'=> $cedula, 'readOnly' =>true]) ?>
                         
@@ -170,27 +170,22 @@ $(document).ready(function(){
 <!-- FIN DE RIF <--></-->
 
 <!-- APELLIDOS Y NOMBRES-->
-                    <tr>
-                        <td colspan="4">
+                            <div class="row">
+                            <div class="col-sm-6">
                             <?= $form->field($model, 'nombres')->textInput(['maxlength' => true]) ?>
-                        </td>
-                        <td width="9px"></td>
-                        <td width="150px"></td>
-                        <td width="250px"></td>
-                    </tr>                   
-                    <tr>
-                        <td colspan="4">
+                            </div>
+                            </div>
+                            
+                            <div class="row">
+                            <div class="col-sm-6">
                             <?= $form->field($model, 'apellidos')->textInput(['maxlength' => true]) ?>
-                        </td>   
-                        <td width="9px"></td>
-                        <td width="150px"></td>
-                        <td width="250px"></td>             
-                    </tr>
+                            </div>
+                            </div>
 <!-- FIN DE APELLIDOS Y NOMBRES -->
 
 <!-- FECHA DE NACIMIENTO -->
-                    <tr>
-                        <td colspan="4">
+                            <div class="row">
+                            <div class="col-sm-3">
                            <div class="fecha-nac">
                           <?= $form->field($model, 'fecha_nac')->widget(\yii\jui\DatePicker::classname(),['id' => 'fecha_nac',
                                                                                     'clientOptions' => [
@@ -206,59 +201,46 @@ $(document).ready(function(){
                                                                                 ],
                                                                                 ]); ?>
                                                     </div>
-
-                        </td>
-                        <td width="150px"></td>
-                        <td width="250px" colspan="1"></td>
-                        <td width="250px"></td>             
-                    </tr>
+                        </div>
+                        </div>
 <!-- FIN DE FECHA DE NACIMIENTO -->
 
 <!-- SEXO -->
-                    <tr>
-                        <td width="170px">
+                        <div class="row">
+                        <div class="col-sm-3">
                         <?= $form->field($model, 'sexo')->dropDownList($model->getGenderOptions(), ['prompt' => 'Select']) ?> 
-                        </td>   
-                        <td width="9px"></td>
-                        <td width="100px"></td>
-                        <td width="250px" colspan="2"></td>
-                        <td width="250px"></td> 
-                        <td width="250px"></td>         
-                    </tr>
+                        </div>
+                        </div>
+                        
 <!-- FIN DE SEXO -->
 
 <!-- DOMICILIO FISCAL -->
-                    <tr>
-                        <td colspan="4">
+                            <div class="row">
+                            <div class="col-sm-6">
                             <?= $form->field($model, 'domicilio_fiscal')->textArea(['maxlength' => true]) ?>
-                        </td>   
-                        <td width="9px"></td>
-                        <td width="150px"></td>
-                        <td width="250px"></td>                 
-                    </tr>
+                            </div>
+                            </div>
+                        
 <!-- FIN DE DOMICILIO FISCAL -->
 
 <!-- EMAIL -->
-                    <tr>
-                        <td colspan="4">
+                            <div class="row">
+                            <div class="col-sm-6">
                             <?= $form->field($model, 'email')->input('email') ?>
-                        </td>
-                        <td width="9px"></td>
-                        <td width="150px"></td>
-                        <td width="250px"></td> 
-                    </tr>
+                            </div>
+                            </div>
 <!-- FIN DE EMAIL -->
 
 <!-- TELEFONO CELULAR -->
-                    <tr>
-                        <td colspan="4">
+                       
                         <?php 
                                 $listaCelularCodigo = TelefonoCodigo::getListaTelefonoCodigo($is_celular=1);
                                 $mtCelular = new TelefonoCodigo();
                             ?>
-                            <table>
-                                <tr>
-                                    <td><?= $form->field($mtCelular, 'codigo')->dropDownList($listaCelularCodigo, ['inline' => true,
+
+                                 <div class="row">
+                        <div class="col-sm-2">
+                                    <?= $form->field($mtCelular, 'codigo')->dropDownList($listaCelularCodigo, ['inline' => true,
                                                                                              'prompt' => Yii::t('backend', 'Select'), 
                                                                                              'style' => 'width:100px;',
                                                                                              'id' => 'codigo_celuNat',
@@ -267,8 +249,11 @@ $(document).ready(function(){
                                                                                              ]
                                                                     ) 
                                         ?>
-                                    </td>
-                                    <td><?= $form->field($model, 'tlf_celular')->textInput(['maxlength' => 12,
+                            
+                             </div>
+                             <did class="col-sm-3" >
+                                  
+                                    <?= $form->field($model, 'tlf_celular')->textInput(['maxlength' => 12,
                                                                         'style' => 'width:150px;',
                                                                         'placeholder' => false,
                                                                         'id' => 'tlf_celular',
@@ -276,24 +261,17 @@ $(document).ready(function(){
                                                                         ]
                                                                     ) 
                                         ?>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                        <td width="9px"></td>
-                        <td width="150px"></td>
-                        <td width="250px"></td> 
-                    </tr>
+                                  
+                                    </did>
+                            </div>
+
 <!-- FIN DE TELEFONO CELULAR -->
 
-                    <tr>
-                        <td colspan="4">
+                            <div class="row"></div>
+                            <div class="col-sm-4">
                             <?= Html::submitButton(Yii::t('frontend', 'Create') , ['class' =>'btn btn-success']) ?>
-                        <td width="250px"></td> 
-                        <td width="250px"></td> 
-                        <td width="250px"></td> 
-                    </tr>                   
-                </table>
+                            </div>
+                            </div>
             </div>
         </div>
     </div>
