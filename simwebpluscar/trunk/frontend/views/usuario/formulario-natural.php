@@ -171,21 +171,22 @@ $(document).ready(function(){
 
 <!-- APELLIDOS Y NOMBRES-->
                             <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-5">
                             <?= $form->field($model, 'nombres')->textInput(['maxlength' => true]) ?>
                             </div>
-                            </div>
+                         
                             
-                            <div class="row">
-                            <div class="col-sm-6">
+                            
+                            <div class="col-sm-5">
                             <?= $form->field($model, 'apellidos')->textInput(['maxlength' => true]) ?>
                             </div>
-                            </div>
+                         
+                               </div>
 <!-- FIN DE APELLIDOS Y NOMBRES -->
 
 <!-- FECHA DE NACIMIENTO -->
                             <div class="row">
-                            <div class="col-sm-3">
+                            <div class="col-sm-4">
                            <div class="fecha-nac">
                           <?= $form->field($model, 'fecha_nac')->widget(\yii\jui\DatePicker::classname(),['id' => 'fecha_nac',
                                                                                     'clientOptions' => [
@@ -202,21 +203,21 @@ $(document).ready(function(){
                                                                                 ]); ?>
                                                     </div>
                         </div>
-                        </div>
+                        
 <!-- FIN DE FECHA DE NACIMIENTO -->
 
 <!-- SEXO -->
-                        <div class="row">
-                        <div class="col-sm-3">
+                       
+                        <div class="col-sm-4">
                         <?= $form->field($model, 'sexo')->dropDownList($model->getGenderOptions(), ['prompt' => 'Select']) ?> 
                         </div>
+                      
                         </div>
-                        
 <!-- FIN DE SEXO -->
 
 <!-- DOMICILIO FISCAL -->
                             <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-10">
                             <?= $form->field($model, 'domicilio_fiscal')->textArea(['maxlength' => true]) ?>
                             </div>
                             </div>
