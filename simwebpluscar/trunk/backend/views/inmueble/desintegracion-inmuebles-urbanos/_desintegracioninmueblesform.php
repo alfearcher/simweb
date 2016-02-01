@@ -24,7 +24,7 @@ use backend\models\ContribuyentesForm;
 /* @var $this yii\web\View */
 /* @var $model backend\models\InscripcionInmueblesUrbanosForm */
 /* @var $form ActiveForm */
-$this->title = Yii::t('backend', 'Integration of Property Urban'). '<p>Id Taxpayer: ' . $modelContribuyente->id_contribuyente.'</p>';
+$this->title = Yii::t('backend', 'Desintegration of Property Urban'). '<p>Id Taxpayer: ' . $modelContribuyente->id_contribuyente.'</p>';
  
 
  ?>
@@ -185,7 +185,7 @@ $variablephp=$_COOKIE['variablephp'];
                                                     <td colspan="2"> 
 
                                                         <div class="col-lg-4">
-                                                            <?= Yii::t('backend', 'Select the First Urban Property') ?>
+                                                            <?= Yii::t('backend', 'Select the Urban Property') ?>
                                                         </div>
                                                         <div class="col-lg-5" align='left'> 
                                                             
