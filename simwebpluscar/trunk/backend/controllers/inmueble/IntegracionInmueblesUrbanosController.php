@@ -224,7 +224,7 @@ CONTENIDO DEL COMPRADOR (BUYER)
                             $datosVInmueble = InmueblesUrbanosForm::find()->where(['id_contribuyente'=>$datosCambio["datosVendedor"]])->asArray()->all(); 
 
                          
-                        }
+                        } 
                     }
                     if ($btn['AcceptBuyer']!=null) {
                         $id_contribuyenteComprador = $datosCambio["id_contribuyente"];

@@ -126,7 +126,7 @@ class IntegracionInmueblesForm extends \yii\db\ActiveRecord
     public $datosVInmueble;
     public $direccion;
     public $direccion2;
-    
+
 
     public static function tableName()
     {
@@ -263,7 +263,7 @@ class IntegracionInmueblesForm extends \yii\db\ActiveRecord
                             $this->addError($attribute, Yii::t('backend', 'The Contributor '.$buscar1['id_contribuyente'].'  has already allocated about this property Cadastre. ')); 
 
 
-                         } 
+                         }
 
                       }
                    }
