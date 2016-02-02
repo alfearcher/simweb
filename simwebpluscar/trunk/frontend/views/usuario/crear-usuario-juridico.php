@@ -107,11 +107,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                             ?>
                                         
                                     </div>
-                                    <div class="col-sm-3">
-                                        
-                                            
-                                       
-                                    </div>
+                                   
 <!-- Fin de Boton para aplicar la actualizacion -->
 
                                 

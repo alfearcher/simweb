@@ -42,7 +42,7 @@
     use yii\widgets\ActiveForm;
     use yii\helpers\ArrayHelper;
     use backend\models\registromaestro\TipoNaturaleza;
-    use backend\models\TelefonoCodigo;
+    use frontend\models\usuario\TelefonoCodigo;
     use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $model backend\models\DatosBasicoForm */
@@ -121,17 +121,17 @@
 <!-- SCRIPT DE MOSTRAR PREFIJO TELEFONO -->
 <script>
     function cambio() {
-        $("#tlf_ofic").val($("#codigo").val() + "-");
+        $("#tlf_ofic").val($("#codigo").val() + "");
     }
     function cambio1() {
-        $("#tlf_ofic_otro").val($("#codigo_otro").val() + "-");
+        $("#tlf_ofic_otro").val($("#codigo_otro").val() + "");
     }
 
     function cambioCelu1() {
-        $("#tlf_celular").val($("#codigo_celuNat").val() + "-");
+        $("#tlf_celular").val($("#codigo_celuNat").val() + "");
     }
     function cambioCelu() {
-        $("#tlf_celularContri").val($("#codigo_celu").val() + "-");
+        $("#tlf_celularContri").val($("#codigo_celu").val() + "");
     }
 </script>
 <script>
@@ -272,14 +272,14 @@ $(document).ready(function(){
                             
                             <?php 
                                 $listaTelefonoCodigo = TelefonoCodigo::getListaTelefonoCodigo($is_celular=0);
-                                $mt = new TelefonoCodigo();
+                                
                             ?>
 
 
                           
                            <div class="row">
                             <div class="col-sm-2">
-                                 <?= $form->field($mt, 'codigo')->dropDownList($listaTelefonoCodigo, ['inline' => true,
+                                 <?= $form->field($model, 'codigo')->dropDownList($listaTelefonoCodigo, ['inline' => true,
                                                                                              'prompt' => Yii::t('frontend', 'Select'), 
                                                                                              'style' => 'width:100px;',
                                                                                              'id' => 'codigo',
@@ -311,7 +311,7 @@ $(document).ready(function(){
 
                             <div class="row">
                             <div class="col-sm-2">
-                                    <?= $form->field($mt, 'codigo')->dropDownList($listaTelefonoCodigo, ['inline' => true,
+                                    <?= $form->field($model, 'codigo2')->dropDownList($listaTelefonoCodigo, ['inline' => true,
                                                                                              'prompt' => Yii::t('frontend', 'Select'), 
                                                                                              'style' => 'width:100px;',
                                                                                              'id' => 'codigo_otro',
@@ -340,12 +340,12 @@ $(document).ready(function(){
                            
                             <?php 
                                 $listaTelefonoCodigoCelu = TelefonoCodigo::getListaTelefonoCodigo($is_celular=1);
-                                $mtCelu = new TelefonoCodigo();
+                               
                             ?>
                             
                                  <div class="row">
                                     <div class="col-sm-2">
-                                    <?= $form->field($mtCelu, 'codigo')->dropDownList($listaTelefonoCodigoCelu, ['inline' => true,
+                                    <?= $form->field($model, 'codigo')->dropDownList($listaTelefonoCodigoCelu, ['inline' => true,
                                                                                              'prompt' => Yii::t('frontend', 'Select'), 
                                                                                              'style' => 'width:100px;',
                                                                                              'id' => 'codigo_celu',

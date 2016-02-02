@@ -42,7 +42,7 @@
     use yii\widgets\ActiveForm;
     use yii\helpers\ArrayHelper;
     use backend\models\registromaestro\TipoNaturaleza;
-    use backend\models\TelefonoCodigo;
+    use frontend\models\usuario\TelefonoCodigo;
     use yii\helpers\Url;
 
 /* @var $this yii\web\View */
@@ -67,17 +67,17 @@
 <!-- SCRIPT DE MOSTRAR PREFIJO TELEFONO -->
 <script>
     function cambio() {
-        $("#tlf_ofic").val($("#codigo").val() + "-");
+        $("#tlf_ofic").val($("#codigo").val() + "");
     }
     function cambio1() {
-        $("#tlf_ofic_otro").val($("#codigo_otro").val() + "-");
+        $("#tlf_ofic_otro").val($("#codigo_otro").val() + "");
     }
 
     function cambioCelu1() {
-        $("#tlf_celular").val($("#codigo_celuNat").val() + "-");
+        $("#tlf_celular").val($("#codigo_celuNat").val() + "");
     }
     function cambioCelu() {
-        $("#tlf_celularContri").val($("#codigo_celu").val() + "-");
+        $("#tlf_celularContri").val($("#codigo_celu").val() + "");
     }
 </script>
 <script>
@@ -236,12 +236,12 @@ $(document).ready(function(){
                        
                         <?php 
                                 $listaCelularCodigo = TelefonoCodigo::getListaTelefonoCodigo($is_celular=1);
-                                $mtCelular = new TelefonoCodigo();
+                               
                             ?>
 
                                  <div class="row">
                         <div class="col-sm-2">
-                                    <?= $form->field($mtCelular, 'codigo')->dropDownList($listaCelularCodigo, ['inline' => true,
+                                    <?= $form->field($model, 'codigo')->dropDownList($listaCelularCodigo, ['inline' => true,
                                                                                              'prompt' => Yii::t('backend', 'Select'), 
                                                                                              'style' => 'width:100px;',
                                                                                              'id' => 'codigo_celuNat',
