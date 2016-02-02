@@ -185,11 +185,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                             ?>
                                         
                                     </div>
-                                    <div class="col-sm-3">
-                                        
-                                             <?= Html::a(Yii::t('frontend', 'Quit'), ['quit'], ['class' => 'btn btn-danger']) ?>
-                                       
-                                    </div>
+                                    
 <!-- Fin de Boton para aplicar la actualizacion -->
 
                                 
