@@ -21,13 +21,13 @@
  */
 
  /**    
- *  @file IntegracionInmueblesForm.php
+ *  @file DesintegracionInmueblesForm.php
  *  
  *  @author Alvaro Jose Fernandez Archer
  * 
  *  @date 27-07-2015
  * 
- *  @class IntegracionInmueblesForm
+ *  @class DesintegracionInmueblesForm
  *  @brief Clase que permite validar cada uno de los datos del formulario de inscripcion de inmuebles 
  *  urbanos, se establecen las reglas para los datos a ingresar y se le asigna el nombre de las etiquetas 
  *  de los campos. 
@@ -143,8 +143,8 @@ class DesintegracionInmueblesForm extends \yii\db\ActiveRecord
             [['id_contribuyente','id_impuesto', 'validacion'], 'integer','message' => Yii::t('backend', 'only integers')],
             //[['estado_catastro', 'municipio_catastro', 'parroquia_catastro', 'sector_catastro', 'manzana_catastro', 'parcela_catastro', 'subparcela_catastro', 'unidad_catastro'], 'string'],
             
-            [['direccion', 'direccion2'], 'string', 'max' => 255,'message' => Yii::t('backend', 'Only 255 character')],
-            [['direccion', 'direccion2'], 'required', 'message' => Yii::t('backend', 'Cannot be blank')],                
+            [['direccion'], 'string', 'max' => 255,'message' => Yii::t('backend', 'Only 255 character')],
+            [['direccion'], 'required', 'message' => Yii::t('backend', 'Cannot be blank')],                
             //Validacion 
             //[['direccion', 'direccion2'], 'cercanos'],
         ];
