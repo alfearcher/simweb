@@ -114,7 +114,7 @@ class CambiarPasswordContribuyenteController extends Controller
                   return ActiveForm::validate($model);
               }
 
-                //die('llegue2');
+               
                 
                 if ( $model->load($postData) ) {
 
@@ -143,7 +143,7 @@ class CambiarPasswordContribuyenteController extends Controller
 
                                     return MensajeController::actionMensaje(Yii::t('frontend', 'You have not created your security answers yet, in case you forgot your password, please go to your city hall'));
                                 
-                                }
+                                    }
                           
                             }else {
                                    return MensajeController::actionMensaje(Yii::t('frontend','You have not signed in afiliations, please go to create user')); 
