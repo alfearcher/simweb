@@ -109,7 +109,7 @@ class IntegracionInmueblesUrbanosController extends Controller
               return ActiveForm::validate($modelContribuyente); 
          } 
 
-         $datosCambio = Yii::$app->request->post("InmueblesUrbanosForm");
+         $datosCambio = Yii::$app->request->post("IntegracionInmueblesForm");
          $btn = Yii::$app->request->post();
 
 

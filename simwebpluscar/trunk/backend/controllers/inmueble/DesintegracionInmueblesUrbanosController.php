@@ -109,7 +109,7 @@ class DesintegracionInmueblesUrbanosController extends Controller
               return ActiveForm::validate($modelContribuyente); 
          } 
 
-         $datosCambio = Yii::$app->request->post("InmueblesUrbanosForm");
+         $datosCambio = Yii::$app->request->post("DesintegracionInmueblesForm");
          $btn = Yii::$app->request->post();
 
 
