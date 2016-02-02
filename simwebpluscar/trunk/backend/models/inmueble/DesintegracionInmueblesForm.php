@@ -147,7 +147,7 @@ class DesintegracionInmueblesForm extends \yii\db\ActiveRecord
             [['direccion'], 'required', 'message' => Yii::t('backend', 'Cannot be blank')],                
             //Validacion 
             //[['direccion', 'direccion2'], 'cercanos'],
-        ];
+        ]; 
     } 
 
     
