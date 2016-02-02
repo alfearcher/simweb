@@ -168,6 +168,7 @@ class CargaDatosBasicosNaturalForm extends \yii\db\ActiveRecord
         public $ruc;
         public $naturaleza_rep;
         public $cedula_rep;
+        public $codigo;     
 
     /**
      * @inheritdoc
@@ -183,8 +184,11 @@ class CargaDatosBasicosNaturalForm extends \yii\db\ActiveRecord
     public function rules()
     {
         return [            
-            [['ente','naturaleza', 'cedula', 'tipo',  'tlf_hab', 'email', 'nombres', 'apellidos', 'fecha_nac', 'sexo'],'required'],
-            
+            [['ente','naturaleza', 'cedula', 'tipo', 'email', 'nombres', 'apellidos', 'fecha_nac', 'sexo', 'codigo', 'domicilio_fiscal', 'tlf_celular'],'required'],
+              [['tlf_celular'], 'match' , 'pattern' => "/^.{11,12}$/", 'message' => Yii::t('frontend', 'Minimum 11 numbers')],
+              ['tlf_celular', 'integer', 'message' => Yii::t('frontend', 'Mobile phone must be an integer')],
+
+           
 
             [['ente','cedula', 'tipo', 'tipo_naturaleza', 'id_rif', 'id_cp', 'inactivo', 'cuenta', 'num_reg', 'extension_horario', 'num_empleados', 'tipo_contribuyente', 'licencia', 'agente_retencion', 'manzana_limite', 'lote_1', 'lote_2', 'lote_3', 'foraneo', 'no_declara', 'econ_informal', 'grupo_contribuyente', 'no_sujeto'], 'integer'],
             [['fecha_nac', 'fecha', 'fecha_inclusion', 'fecha_inicio', 'fe_inic_agente_reten'], 'safe'],            
@@ -201,12 +205,12 @@ class CargaDatosBasicosNaturalForm extends \yii\db\ActiveRecord
             [['piso_nivel_no_dom', 'apto_dom'], 'string', 'max' => 25],
             [['domicilio_fiscal'], 'string', 'max' => 250],
             [['catastro', 'email'], 'string', 'max' => 60],
-            [['tlf_hab', 'tlf_hab_otro', 'tlf_ofic', 'tlf_ofic_otro', 'tlf_celular', 'fax', 'id_sim'], 'string', 'max' => 15],
+            [['tlf_hab', 'tlf_hab_otro', 'tlf_ofic', 'tlf_ofic_otro', 'tlf_celular', 'fax', 'id_sim'], 'string', 'max' => 11],
             [['nivel'], 'string', 'max' => 3],
             [['ruc'], 'string', 'max' => 20],
             ['email', 'filter','filter'=>'strtolower'],
             ['email', 'email'],
-            ['tlf_ofic_otro','string', 'max'=>12],
+            ['tlf_celular','string', 'max'=>12],
             ['ente', 'default', 'value' => Yii::$app->ente->getEnte()],
             [['naturaleza', 'cedula', 'tipo', 'tipo_naturaleza', 'id_rif'], 'unique', 'targetAttribute' => ['naturaleza', 'cedula', 'tipo', 'tipo_naturaleza', 'id_rif'], 'message' => 'This user has already been taken.'],
             
@@ -223,6 +227,8 @@ class CargaDatosBasicosNaturalForm extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
+            'codigo' => Yii::t('frontend', 'Code'),
+            'codigo2' => Yii::t('frontend', 'Code'),
 
             'id_contribuyente' => Yii::t('frontend', 'Id Contribuyente'),
             'ente' => Yii::t('frontend', 'Ente'),
