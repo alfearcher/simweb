@@ -168,6 +168,7 @@ $(document).ready(function(){
 
                    
 <!-- FIN DE RIF <--></-->
+<hr>
 
 <!-- APELLIDOS Y NOMBRES-->
                             <div class="row">
@@ -183,6 +184,7 @@ $(document).ready(function(){
                          
                                </div>
 <!-- FIN DE APELLIDOS Y NOMBRES -->
+<hr>
 
 <!-- FECHA DE NACIMIENTO -->
                             <div class="row">
@@ -205,7 +207,7 @@ $(document).ready(function(){
                         </div>
                         
 <!-- FIN DE FECHA DE NACIMIENTO -->
-
+<hr>
 <!-- SEXO -->
                        
                         <div class="col-sm-4">
@@ -214,7 +216,7 @@ $(document).ready(function(){
                       
                         </div>
 <!-- FIN DE SEXO -->
-
+<hr>
 <!-- DOMICILIO FISCAL -->
                             <div class="row">
                             <div class="col-sm-10">
@@ -223,7 +225,7 @@ $(document).ready(function(){
                             </div>
                         
 <!-- FIN DE DOMICILIO FISCAL -->
-
+<hr>
 <!-- EMAIL -->
                             <div class="row">
                             <div class="col-sm-6">
@@ -231,7 +233,7 @@ $(document).ready(function(){
                             </div>
                             </div>
 <!-- FIN DE EMAIL -->
-
+<hr>
 <!-- TELEFONO CELULAR -->
                        
                         <?php 
