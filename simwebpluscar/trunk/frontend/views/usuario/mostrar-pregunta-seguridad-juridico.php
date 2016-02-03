@@ -15,11 +15,7 @@ $this->title = 'Preguntas de Seguridad';
 
 
 <?php $form = ActiveForm::begin([
-    'method' => 'post',
-	'id' => 'formulario',
-    'enableClientValidation' => false,
-    'enableAjaxValidation' => true,
-	'options' => ['class' => 'form-horizontal'],
+    
         
 ]);
 

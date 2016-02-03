@@ -15,17 +15,13 @@ $this->title = 'Preguntas de Seguridad';
 
 
 <?php $form = ActiveForm::begin([
-    'method' => 'post',
-	'id' => 'formulario',
-    'enableClientValidation' => false,
-    'enableAjaxValidation' => true,
-	'options' => ['class' => 'form-horizontal'],
+   
         
 ]);
 
 ?>
 
-<div class="col-sm-10">
+<div class="col-sm-7">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
 				<?= $this->title ?>
