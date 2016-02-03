@@ -159,17 +159,22 @@ class VerificarPreguntasContribuyenteJuridicoForm extends CrearUsuarioNatural
      */
     public function buscarIdContribuyente($idsContribuyente)
     {
+        //die(var_dump($idsContribuyente));
 
         $query = CrearUsuarioNatural::find();
+                                       
+
+                                      // die(var_dump($query));
            
         $dataProvider = new ActiveDataProvider([
 
                                'query' => $query
 
                                                ]);
-          
+          //  die(var_dump($dataProvider));
+         $query->where(['tipo_naturaleza' => 1 , 'inactivo' => 0]);
+        $query->andFilterWhere(['in', 'id_contribuyente' , $idsContribuyente]);
 
-        $query->andFilterWhere(['in', 'id_contribuyente', $idsContribuyente]);
             
             return $dataProvider; 
                                
@@ -182,18 +187,19 @@ class VerificarPreguntasContribuyenteJuridicoForm extends CrearUsuarioNatural
      */
     public function buscarPreguntaSeguridadJuridico($id)
     {
-
+       
         $validarPreguntaSeguridad = PreguntaSeguridadContribuyente::find() 
                                 ->where([
                                 
                                 'id_contribuyente' => $id,
+                               // die($id),
                                 'inactivo' => 0,
                               
                                 ])
                                 ->all();
 
             if($validarPreguntaSeguridad != null){
-        
+                
                 return $validarPreguntaSeguridad;  
         
             } else {

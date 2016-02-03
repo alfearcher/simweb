@@ -190,6 +190,7 @@ class CambiarPasswordContribuyenteController extends Controller
                             $tipo = $model->tipo;
 
                             $buscarAfiliacionesJuridico = $buscarId->buscarIdAfiliaciones($model);
+                            //die(var_dump($buscarAfiliacionesJuridico));
 
                             if ($buscarAfiliacionesJuridico == false){
                                 return MensajeController::actionMensaje(Yii::t('frontend', 'Sorry, you are not afiliated, go to create user')); 
@@ -209,6 +210,7 @@ class CambiarPasswordContribuyenteController extends Controller
                                 $dataProvider = $buscarId::buscarIdContribuyente($idsContribuyente);
 
                                 if ($dataProvider == true){
+                                    
                                    
                                     return $this->render('/usuario/lista-contribuyente-juridico' , [
                                                                                                   'dataProvider' => $dataProvider,
@@ -245,7 +247,7 @@ class CambiarPasswordContribuyenteController extends Controller
         $preguntaSeguridad = isset($_SESSION['preguntaSeguridad']) ? $_SESSION['preguntaSeguridad'] : null;
 
         if ($preguntaSeguridad != null){
-
+      
 
         
 
@@ -282,10 +284,12 @@ class CambiarPasswordContribuyenteController extends Controller
 
     public function actionOcultarVariable($id)
     {
+      //  die($id);
      
         Session::actionDeleteSession(['idContribuyente']);
 
         $_SESSION['idContribuyente'] = $id;
+      
 
             return $this->redirect(['buscar-pregunta-seguridad-juridico'
                                                                 
@@ -306,9 +310,11 @@ class CambiarPasswordContribuyenteController extends Controller
        
 
         if (isset($_SESSION['idContribuyente'])){
+          
            
 
         $id = $_SESSION['idContribuyente'];  
+       
         
                 $buscarPreguntas = new VerificarPreguntasContribuyenteJuridicoForm();
 
@@ -316,6 +322,7 @@ class CambiarPasswordContribuyenteController extends Controller
 
                 if ($buscarPreguntaSeguridad == true){
 
+                   $_SESSION['preguntaSeguridadJuridico'] = $buscarPreguntaSeguridad;
                     
 
                         return $this->redirect(['mostrar-pregunta-seguridad-juridico',
@@ -347,10 +354,10 @@ class CambiarPasswordContribuyenteController extends Controller
      */
     public function actionMostrarPreguntaSeguridadJuridico(){
 
-        $preguntaSeguridad = isset($_SESSION['preguntaSeguridad']) ? $_SESSION['preguntaSeguridad'] : null;
-
+        $preguntaSeguridad = isset($_SESSION['preguntaSeguridadJuridico']) ? $_SESSION['preguntaSeguridadJuridico'] : null;
+       
         if ($preguntaSeguridad != null){
-
+           
         
         $model = New ValidarCambiarPasswordJuridicoForm();
        
@@ -368,7 +375,9 @@ class CambiarPasswordContribuyenteController extends Controller
                     return $this->redirect (['/usuario/cambiar-password-contribuyente/reseteo-password-juridico',
                                                                           'id_contribuyente' => $preguntaSeguridad[0]['id_contribuyente'],
 
+
                                                                                                           ]);
+                    
                 }
             }
               
@@ -376,6 +385,7 @@ class CambiarPasswordContribuyenteController extends Controller
                                                         [
                                                         'model' => $model,
                                                         'preguntaSeguridad' => $preguntaSeguridad,
+                                                        //die(var_dump($preguntaSeguridad)),
                                                         
                                                         
                                                         ]); 

@@ -187,10 +187,10 @@ $(document).ready(function(){
 <hr>
 
 <!-- FECHA DE NACIMIENTO -->
-                            <div class="row">
-                            <div class="col-sm-4">
-                           <div class="fecha-nac">
-                          <?= $form->field($model, 'fecha_nac')->widget(\yii\jui\DatePicker::classname(),['id' => 'fecha_nac',
+                        <div class="row">
+                        <div class="col-sm-4">
+                        <div class="fecha-nac">
+                        <?= $form->field($model, 'fecha_nac')->widget(\yii\jui\DatePicker::classname(),['id' => 'fecha_nac',
                                                                                     'clientOptions' => [
                                                                                     'maxDate' => '+0d', // Bloquear los dias en el calendario a partir del dia siguiente al actual.
                                                                                      ],
@@ -203,11 +203,11 @@ $(document).ready(function(){
 
                                                                                 ],
                                                                                 ]); ?>
-                                                    </div>
+                        </div>
                         </div>
                         
 <!-- FIN DE FECHA DE NACIMIENTO -->
-<hr>
+
 <!-- SEXO -->
                        
                         <div class="col-sm-4">
