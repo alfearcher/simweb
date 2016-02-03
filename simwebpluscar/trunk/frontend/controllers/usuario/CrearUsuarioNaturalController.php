@@ -65,7 +65,7 @@ use common\enviaremail\EnviarEmail;
 use frontend\models\usuario\CargaDatosBasicosNaturalForm;
 use common\models\utilidades\Utilidad;
 
-
+session_start();
 
 class CrearUsuarioNaturalController extends Controller
 {
@@ -106,6 +106,47 @@ class CrearUsuarioNaturalController extends Controller
 
    }
 
+    /**
+    * Este metodo se utiliza para buscar el rif en la base de datos y en caso de existir, te lleva a la vistadonde se elecciona la empresa a registrar
+    *
+    * @param $naturaleza [string] trae la naturaleza del usuario como venezolano, juridico, gubernamental
+    * @param $cedula [int] trae la cedula del usuario a registrar
+    * @param $tipo [int] trae el numero de tipo que se coloca al final del rif
+    * @return retorna la vista contribuyente-encontrado
+    *
+    */
+    public function actionBuscarRif($naturaleza, $cedula, $tipo)
+    {
+        $_SESSION['rifNatural'] = ['naturaleza' => $naturaleza,
+                                   'cedula' => $cedula,
+                                   'tipo' => $tipo,
+                                ];
+         
+
+        
+        $dataProvider = CrearUsuarioNaturalForm::obtenerDataProviderRif($naturaleza, $cedula, $tipo);
+
+        $posts = $dataProvider->getModels();
+
+            if (count($posts) == 0){
+
+                $model = new CargaDatosBasicosNaturalForm();
+
+                $model->naturaleza = $naturaleza;
+
+                return $this->redirect(['natural', 
+                                     
+                                        
+                
+                                        ]);
+
+            }else{
+
+            return $this->render('/usuario/contribuyente-natural-encontrado' , ['dataProvider' => $dataProvider, 'naturaleza'=>$naturaleza, 'cedula'=> $cedula,'tipo'=> $tipo ]);
+
+            }
+    }
+
    /**
    *
    * Este metodo se utiliza para levantar el formulario de carga de datos basicos 
@@ -116,12 +157,15 @@ class CrearUsuarioNaturalController extends Controller
    * @param  $tipo [int] trae el numero de tipo que se coloca al final del rif
    * @return retorna la vista al formulario de carga de datos basicos de la persona Juridica
    */
-   public function actionNatural($naturaleza, $cedula, $tipo)
+   public function actionNatural()
    {
+         $rifNatural = isset($_SESSION['rifNatural']) ? $_SESSION['rifNatural'] : null;
 
+         if ($rifNatural != null){ 
+       
        $model = new CargaDatosBasicosNaturalForm();
 
-       $model->naturaleza = $naturaleza;
+      // $model->naturaleza = $naturaleza;
 
        $postData = Yii::$app->request->post();
 
@@ -146,48 +190,14 @@ class CrearUsuarioNaturalController extends Controller
                         
                }
                return $this->render('/usuario/formulario-natural' , ['model' => $model,
-                                                                    'naturaleza' =>$model->naturaleza,
-                                                                    'cedula' => $cedula,
-                                                                    'tipo' => $tipo
+                                                                    'rifNatural' => $rifNatural,
                                                                     ]);
+             }else{
+                return MensajeController::actionMensaje(Yii::t('frontend', 'There is no rif associated'));
+             }
     }
 
-    /**
-    * Este metodo se utiliza para buscar el rif en la base de datos y en caso de existir, te lleva a la vistadonde se elecciona la empresa a registrar
-    *
-    * @param $naturaleza [string] trae la naturaleza del usuario como venezolano, juridico, gubernamental
-    * @param $cedula [int] trae la cedula del usuario a registrar
-    * @param $tipo [int] trae el numero de tipo que se coloca al final del rif
-    * @return retorna la vista contribuyente-encontrado
-    *
-    */
-    public function actionBuscarRif($naturaleza, $cedula, $tipo)
-    {
-    
-        $dataProvider = CrearUsuarioNaturalForm::obtenerDataProviderRif($naturaleza, $cedula, $tipo);
 
-        $posts = $dataProvider->getModels();
-
-            if (count($posts) == 0){
-
-                $model = new CargaDatosBasicosNaturalForm();
-
-                $model->naturaleza = $naturaleza;
-
-                return $this->redirect(['natural', 
-                                        'model' => $model,
-                                        'naturaleza' =>$model->naturaleza,
-                                        'cedula' => $cedula,
-                                        'tipo' => $tipo
-                
-                                        ]);
-
-            }else{
-
-            return $this->render('/usuario/contribuyente-natural-encontrado' , ['dataProvider' => $dataProvider, 'naturaleza'=>$naturaleza, 'cedula'=> $cedula,'tipo'=> $tipo ]);
-
-            }
-    }
 
     /**
     *

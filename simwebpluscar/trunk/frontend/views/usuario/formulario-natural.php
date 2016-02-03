@@ -136,7 +136,7 @@ $(document).ready(function(){
     <div class="col-sm-7">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <?= Yii::t('backend', 'Registration Basic Information') ?> | <?= Yii::t('backend', 'Natural') ?>
+                <?= Yii::t('frontend', 'Registration Basic Information') ?> | <?= Yii::t('frontend', 'Natural') ?>
             </div>
             <div class="panel-body" >
                
@@ -152,13 +152,14 @@ $(document).ready(function(){
                                                                    // ArrayHelper::map(TipoNaturaleza::find()->all(), 'siglas_tnaturaleza', 'siglas_tnaturaleza'),
                                                                     [
                                                                     'id'=> 'naturaleza',
-                                                                    'value' => $model->naturaleza,
+                                                                    'value' => $rifNatural['naturaleza'],
+                                                                    
                                                                      'readOnly' =>true,
                                                                     ])->label(false);
                         ?>
                        </div>
                        <div class="col-sm-3">
-                            <?= $form->field($model, 'cedula')->label(false)->textInput(['maxlength' => 8, 'value'=> $cedula, 'readOnly' =>true]) ?>
+                            <?= $form->field($model, 'cedula')->label(false)->textInput(['maxlength' => 8, 'value'=> $rifNatural['cedula'], 'readOnly' =>true]) ?>
                         
                         </div>
 

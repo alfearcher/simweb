@@ -82,14 +82,26 @@ class CrearUsuarioNaturalForm extends CrearUsuarioNatural{
       {
         return [
           [['naturaleza','cedula'],'required','message' => Yii::t('frontend', '{attribute} is required')],
+          ['cedula','integer'],
+         
          // ['cedula', 'existe'],
           [['tipo_naturaleza', 'tipo'],'default', 'value' => 0],
-          [['cedula'], 'integer']
+          [['cedula'], 'integer'],
+          [['cedula'], 'validarLongitud'],
          
            // [['naturaleza','cedula','tipo'x],'unique', 'message' => 'Datos repetidos en la base de datos'],
         ];
           //['capital_new', 'format', Yii::$app->formatted->asDecimal($model->)]
       
+      }
+
+      public function validarLongitud($attribute, $params){
+
+        $longitud = strlen($this->naturaleza.$this->cedula);
+
+          if ($longitud >9){
+            $this->addError($attribute, Yii::t('frontend', 'The rif must not have more than 9 characters'));
+          }
       }
 
 /**

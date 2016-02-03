@@ -209,18 +209,18 @@ $(document).ready(function(){
                                                                    // ArrayHelper::map(TipoNaturaleza::find()->all(), 'siglas_tnaturaleza', 'siglas_tnaturaleza'),
                                                                     [
                                                                     'id'=> 'naturaleza',
-                                                                    'value' => $model->naturaleza,
+                                                                    'value' => $rifJuridico['naturaleza'],
                                                                      'readOnly' =>true,
                                                                     ])->label(false);
                         ?>
                        </div>
                        <div class="col-sm-3">
-                            <?= $form->field($model, 'cedula')->label(false)->textInput(['maxlength' => 8, 'value'=> $cedula, 'readOnly' =>true]) ?>
+                            <?= $form->field($model, 'cedula')->label(false)->textInput(['maxlength' => 8, 'value'=> $rifJuridico['cedula'], 'readOnly' =>true]) ?>
                         
                        </div>
 
                          <div class="col-sm-2">
-                            <?= $form->field($model, 'tipo')->label(false)->textInput(['maxlength' => 1, 'value'=> $tipo, 'readOnly' =>true]) ?>
+                            <?= $form->field($model, 'tipo')->label(false)->textInput(['maxlength' => 1, 'value'=> $rifJuridico['tipo'], 'readOnly' =>true]) ?>
                           
                         </div>
                         </div>

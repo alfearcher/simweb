@@ -86,13 +86,31 @@ class CrearUsuarioJuridicoForm extends CrearUsuarioJuridico{
         return [
           [['naturaleza','cedula', 'tipo'],'required','message' => Yii::t('frontend', '{attribute} is required')],
           [['tipo_naturaleza'],'default', 'value' => 1],
-          [['cedula', 'tipo'], 'integer']
+          [['cedula', 'tipo'], 'integer'],
+          ['cedula', 'integer'],
+          [['cedula'], 'validarLongitud'],
+
          
            // [['naturaleza','cedula','tipo'x],'unique', 'message' => 'Datos repetidos en la base de datos'],
         ];
           //['capital_new', 'format', Yii::$app->formatted->asDecimal($model->)]
       
       }
+
+      public function validarLongitud($attribute, $params)
+      {
+
+       $longitud = strlen($this->naturaleza.$this->cedula.$this->tipo);
+
+
+      // die($longitud));
+
+        if ($longitud > 10){
+          $this->addError($attribute, Yii::t('frontend', 'The rif must not have more than 10 characters'));
+       
+        }
+      }
+
 
     /**
       * Lista de atributos con sus respectivas etiquetas (labels), las cuales son las que aparecen en las vistas

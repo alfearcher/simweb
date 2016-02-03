@@ -65,7 +65,7 @@ use common\enviaremail\EnviarEmail;
 use frontend\models\usuario\CargaDatosBasicosForm;
 use common\models\utilidades\Utilidad;
 
-
+session_start();
 
 class CrearUsuarioJuridicoController extends Controller
 {
@@ -105,6 +105,47 @@ class CrearUsuarioJuridicoController extends Controller
 
     }
 
+     /**
+    * Este metodo se utiliza para buscar el rif en la base de datos y en caso de existir, te lleva a la vistadonde se elecciona la empresa a registrar
+    *
+    * @param $naturaleza [string] trae la naturaleza del usuario como venezolano, juridico, gubernamental
+    * @param $cedula [int] trae la cedula del usuario a registrar
+    * @param $tipo [int] trae el numero de tipo que se coloca al final del rif
+    * @return retorna la vista contribuyente-encontrado
+    *
+    */
+    public function actionBuscarRif($naturaleza, $cedula, $tipo)
+    {
+
+        $_SESSION['rifJuridico'] = [
+                                  'naturaleza' => $naturaleza,
+                                  'cedula' => $cedula,
+                                  'tipo' => $tipo,
+
+                                    ];
+      
+        $dataProvider = CrearUsuarioJuridicoForm::obtenerDataProviderRif($naturaleza, $cedula, $tipo);
+
+        $posts = $dataProvider->getModels();
+
+            if (count($posts) == 0){
+
+                $model = new CargaDatosBasicosForm();
+
+                $model->naturaleza = $naturaleza;
+
+                return $this->redirect(['juridico', 
+                                        
+                
+                                        ]);
+
+            }else{
+
+            return $this->render('/usuario/contribuyente-encontrado' , ['dataProvider' => $dataProvider, 'naturaleza'=>$naturaleza, 'cedula'=> $cedula,'tipo'=> $tipo ]);
+
+            }
+    }
+
     /**
     *
     * Este metodo se utiliza para levantar el formulario de carga de datos basicos 
@@ -115,12 +156,16 @@ class CrearUsuarioJuridicoController extends Controller
     * @param  $tipo [int] trae el numero de tipo que se coloca al final del rif
     * @return retorna la vista al formulario de carga de datos basicos de la persona Juridica
     */
-    public function actionJuridico($naturaleza,$cedula,$tipo)
+    public function actionJuridico()
     {
+
+        $rifJuridico = isset($_SESSION['rifJuridico']) ? $_SESSION['rifJuridico'] : null;
+        //die(var_dump($rifJuridico));
+         if ($rifJuridico != null){ 
 
         $model = new CargaDatosBasicosForm();
 
-        $model->naturaleza = $naturaleza;
+        
 
         $postData = Yii::$app->request->post();
 
@@ -147,48 +192,14 @@ class CrearUsuarioJuridicoController extends Controller
                         
             }
             return $this->render('/usuario/formulario-juridico' , ['model' => $model,
-                                                                      'naturaleza' =>$model->naturaleza,
-                                                                      'cedula' => $cedula,
-                                                                      'tipo' => $tipo
+                                                                      'rifJuridico' => $rifJuridico,
                                                                       ]);
+           }else{
+              return MensajeController::actionMensaje(Yii::t('frontend', 'There is no rif associated'));
+           }
     }
 
-    /**
-    * Este metodo se utiliza para buscar el rif en la base de datos y en caso de existir, te lleva a la vistadonde se elecciona la empresa a registrar
-    *
-    * @param $naturaleza [string] trae la naturaleza del usuario como venezolano, juridico, gubernamental
-    * @param $cedula [int] trae la cedula del usuario a registrar
-    * @param $tipo [int] trae el numero de tipo que se coloca al final del rif
-    * @return retorna la vista contribuyente-encontrado
-    *
-    */
-    public function actionBuscarRif($naturaleza, $cedula, $tipo)
-    {
-      
-        $dataProvider = CrearUsuarioJuridicoForm::obtenerDataProviderRif($naturaleza, $cedula, $tipo);
-
-        $posts = $dataProvider->getModels();
-
-            if (count($posts) == 0){
-
-                $model = new CargaDatosBasicosForm();
-
-                $model->naturaleza = $naturaleza;
-
-                return $this->redirect(['juridico', 
-                                        'model' => $model,
-                                        'naturaleza' =>$model->naturaleza,
-                                        'cedula' => $cedula,
-                                        'tipo' => $tipo
-                
-                                        ]);
-
-            }else{
-
-            return $this->render('/usuario/contribuyente-encontrado' , ['dataProvider' => $dataProvider, 'naturaleza'=>$naturaleza, 'cedula'=> $cedula,'tipo'=> $tipo ]);
-
-            }
-    }
+   
 
     /**
     *
