@@ -1,49 +1,6 @@
 <?php
 
-/**
- *  @copyright © by ASIS CONSULTORES 2012 - 2016
- *  All rights reserved - SIMWebPLUS
- */
 
- /**
- * 
- *  > This library is free software; you can redistribute it and/or modify it under 
- *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free 
- *  > Software Foundation; either version 2 of the Licence, or (at your opinion) 
- *  > any later version.
- *  > 
- *  > This library is distributed in the hope that it will be usefull, 
- *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability 
- *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence 
- *  > for more details.
- *  > 
- *  > See [LICENSE.TXT](../../LICENSE.TXT) file for more information.
- *
- */
-
- /**    
- *  @file seleccionar-tipo.php
- *  
- *  @author Manuel Alejandro Zapata Canelon
- * 
- *  @date 21/12/15
- * 
- *  @class CrearUsuario
- *  @brief .Vista para la seleccion del tipo de usuario que desea registrar.
- * 
- *  
- * 
- *  
- *  
- *  @property
- *
- *  
- * 
- *  
- *
- *  @inherits
- *  
- */ 
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -71,18 +28,22 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= $this->title ?>
             </div>
             <div class="panel-body" >
-                <table class="table table-striped">
+               
                     
 
                 
                      <div class="row">
+                     <div class="col-sm-6"; style="margin-left:100px; ">
                             <?= Html::a('<strong><center><span class="glyphicon glyphicon-user" style="font-size:20px"> Persona Natural</span></center></strong>', ['/usuario/cambiar-password-contribuyente/cambiar-password-natural']); ?>
+                       </div>
                        </div>
                     <br>
                        <div class="row">
+                        <div class="col-sm-6" style="margin-left:100px;">
                             <?= Html::a('<strong><center><span class="glyphicon glyphicon-home" style="font-size:20px"> Persona Juridica</span></center></strong>', ['/usuario/cambiar-password-contribuyente/cambiar-password-juridico']); ?>
                        </div>
-                </table>
+                        </div>
+               
             </div>
         </div>
     </div>
