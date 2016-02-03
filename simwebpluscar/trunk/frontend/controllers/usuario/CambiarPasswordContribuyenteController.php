@@ -366,7 +366,7 @@ class CambiarPasswordContribuyenteController extends Controller
                 if ($model->validate()){
                      
                     return $this->redirect (['/usuario/cambiar-password-contribuyente/reseteo-password-juridico',
-                                                                          'id_contribuyente' => $$preguntaSeguridad[0]['id_contribuyente'],
+                                                                          'id_contribuyente' => $preguntaSeguridad[0]['id_contribuyente'],
 
                                                                                                           ]);
                 }
