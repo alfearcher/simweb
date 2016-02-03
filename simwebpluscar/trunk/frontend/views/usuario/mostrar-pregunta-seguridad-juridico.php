@@ -21,7 +21,7 @@ $this->title = 'Preguntas de Seguridad';
 
 ?>
 
-<div class="col-sm-10">
+<div class="col-sm-7">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
 				<?= $this->title ?>
