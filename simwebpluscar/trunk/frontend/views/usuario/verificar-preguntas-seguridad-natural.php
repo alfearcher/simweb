@@ -165,7 +165,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                                                         'class' => 'btn btn-success',
                                                                                                         'name' => 'btn-search',
                                                                                                         'value' => 1,
-                                                                                                        
+                                                                                                        'style' => 'height:30px;width:200px;margin-left:20px;',
                                                                                                       ])
                                             ?>
                                         

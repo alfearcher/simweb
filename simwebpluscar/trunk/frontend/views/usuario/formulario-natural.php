@@ -268,7 +268,7 @@ $(document).ready(function(){
 
 <!-- FIN DE TELEFONO CELULAR -->
 
-                            <div class="row"></div>
+                            <div class="row">
                             <div class="col-sm-4">
                             <?= Html::submitButton(Yii::t('frontend', 'Create') , ['class' =>'btn btn-success']) ?>
                             </div>

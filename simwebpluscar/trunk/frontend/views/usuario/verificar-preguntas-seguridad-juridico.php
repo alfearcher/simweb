@@ -60,7 +60,7 @@ use yii\helpers\ArrayHelper;
 
                               
 
-$modeloTipoNaturaleza = TipoNaturaleza::find()->where('id_tipo_naturaleza BETWEEN 1 and 4')->all();
+$modeloTipoNaturaleza = TipoNaturaleza::find()->where('id_tipo_naturaleza BETWEEN 2 and 3')->all();
 $listaNaturaleza = ArrayHelper::map($modeloTipoNaturaleza, 'siglas_tnaturaleza', 'nb_naturaleza');
                                 
 
@@ -149,7 +149,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </div>
 <!-- EMAIL -->
                                   
-                                    <div class="col-sm-4" style="padding-left: 15px;">
+                                    <div class="col-sm-4" style="padding-left: 27px;">
 
                                           
                                                <div class="cedula">
@@ -180,12 +180,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                                                         'class' => 'btn btn-success',
                                                                                                         'name' => 'btn-search',
                                                                                                         'value' => 1,
+                                                                                                         'style' => 'height:30px;width:200px;margin-right:400px;',
                                                                                                         
                                                                                                       ])
                                             ?>
                                         
                                     </div>
-                                    
+                                   
 <!-- Fin de Boton para aplicar la actualizacion -->
 
                                 
