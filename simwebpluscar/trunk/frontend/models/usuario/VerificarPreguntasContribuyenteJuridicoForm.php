@@ -72,15 +72,15 @@ class VerificarPreguntasContribuyenteJuridicoForm extends CrearUsuarioNatural
     public function rules()
     {   //validaciones requeridas para el formulario de registro de usuarios     
         return [
+            [['cedula','tipo'],'integer'],
             [['naturaleza',  'cedula', 'tipo', 'email'], 'required' ],
+            [['cedula'], 'validarLongitud'],
             ['cedula' ,'validarEmailRif'],
-           // ['email' , 'validarEmail'],
-           
-                  
-           
-           
         ];
     } 
+
+     
+
     
     // nombre de etiquetas
     public function attributeLabels()
@@ -94,6 +94,22 @@ class VerificarPreguntasContribuyenteJuridicoForm extends CrearUsuarioNatural
                 
         ];
     }
+
+    public function validarLongitud($attribute, $params)
+      {
+        //die('llegue');
+
+       $longitud = strlen($this->naturaleza.$this->cedula.$this->tipo);
+
+
+      // die($longitud));
+
+        if ($longitud > 10){
+          $this->addError($attribute, Yii::t('frontend', 'The rif must not have more than 10 characters'));
+       
+        }
+      }
+
 	  /**
      * [buscarIdAfiliaciones description] Metodo que busca el id del contribuyente en la tabla afiliaciones
      * @param  [type] $model [description] modelo que trae la informacion del contribuyente desde la tabla contribuyentes

@@ -44,7 +44,6 @@
     use backend\models\registromaestro\TipoNaturaleza;
     use frontend\models\usuario\TelefonoCodigo;
     use yii\helpers\Url;
-    use yii\jui\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\DatosBasicoForm */
@@ -160,7 +159,7 @@ $(document).ready(function(){
                         ?>
                        </div>
                        <div class="col-sm-3">
-                            <?= $form->field($model, 'cedula')->label(false)->textInput(['maxlength' => 8, 'value'=> $rifNatural['cedula'], 'readOnly' =>true]) ?>
+                            <?= $form->field($model, 'cedula')->label(false)->textInput(['maxlength' => 8, 'value'=> $rifNatural['cedula'], 'readOnly' =>true,'style' => 'margin-left:-25px;']) ?>
                         
                         </div>
 
@@ -170,7 +169,7 @@ $(document).ready(function(){
 
                    
 <!-- FIN DE RIF <--></-->
-<hr>
+
 
 <!-- APELLIDOS Y NOMBRES-->
                             <div class="row">
@@ -181,12 +180,12 @@ $(document).ready(function(){
                             
                             
                             <div class="col-sm-5">
-                            <?= $form->field($model, 'apellidos')->textInput(['maxlength' => true]) ?>
+                            <?= $form->field($model, 'apellidos')->textInput(['maxlength' => true,'style' => 'margin-left:-15px;']) ?>
                             </div>
                          
                                </div>
 <!-- FIN DE APELLIDOS Y NOMBRES -->
-<hr>
+
 
 <!-- FECHA DE NACIMIENTO -->
                         <div class="row">
@@ -194,17 +193,17 @@ $(document).ready(function(){
                         <div class="fecha-nac">
                         <?= $form->field($model, 'fecha_nac')->widget(\yii\jui\DatePicker::classname(),['id' => 'fecha_nac',
                                                                                     'clientOptions' => [
-                                                                                            'maxDate' => '+0d', // Bloquear los dias en el calendario a partir del dia siguiente al actual.
+                                                                                    'maxDate' => '+0d', // Bloquear los dias en el calendario a partir del dia siguiente al actual.
                                                                                      ],
                                                                                     'language' => 'es-ES',
                                                                                     'dateFormat' => 'dd-MM-yyyy',
                                                                                     'options' => [
-                                                                                            'class' => 'form-control',
-                                                                                            //'readonly' => true,
-                                                                                            'style' => 'background-color: white;',
+                                                                                        'class' => 'form-control',
+                                                                                        //'readonly' => true,
+                                                                                        'style' => 'background-color: white;',
 
-                                                                                    ],
-                                                                                ]) ?>
+                                                                                ],
+                                                                                ]); ?>
                         </div>
                         </div>
                         
@@ -213,12 +212,12 @@ $(document).ready(function(){
 <!-- SEXO -->
                        
                         <div class="col-sm-4">
-                        <?= $form->field($model, 'sexo')->dropDownList($model->getGenderOptions(), ['prompt' => 'Select']) ?> 
+                        <?= $form->field($model, 'sexo')->dropDownList($model->getGenderOptions(), ['prompt' => 'Select','style' => 'margin-left:-15px;']) ?> 
                         </div>
                       
                         </div>
 <!-- FIN DE SEXO -->
-<hr>
+
 <!-- DOMICILIO FISCAL -->
                             <div class="row">
                             <div class="col-sm-10">
@@ -227,7 +226,7 @@ $(document).ready(function(){
                             </div>
                         
 <!-- FIN DE DOMICILIO FISCAL -->
-<hr>
+
 <!-- EMAIL -->
                             <div class="row">
                             <div class="col-sm-6">
@@ -235,7 +234,7 @@ $(document).ready(function(){
                             </div>
                             </div>
 <!-- FIN DE EMAIL -->
-<hr>
+
 <!-- TELEFONO CELULAR -->
                        
                         <?php 

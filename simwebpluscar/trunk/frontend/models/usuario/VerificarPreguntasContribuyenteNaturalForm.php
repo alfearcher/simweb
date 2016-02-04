@@ -68,8 +68,12 @@ class VerificarPreguntasContribuyenteNaturalForm extends CrearUsuarioNatural
       public function rules()
     {   //validaciones requeridas para el formulario de registro de usuarios     
         return [
+             ['cedula', 'integer'],
             [['naturaleza',  'cedula', 'email'], 'required' ],
-             ['cedula' , 'validarEmailRif'],
+            [['cedula'], 'validarLongitud'],
+            ['cedula' , 'validarEmailRif'],
+           
+             
             // ['email' , 'validarEmail'],
                   
            
@@ -89,6 +93,23 @@ class VerificarPreguntasContribuyenteNaturalForm extends CrearUsuarioNatural
                 
         ];
     }
+
+
+    public function validarLongitud($attribute, $params)
+      {
+       // die('llegue');
+
+       $longitud = strlen($this->naturaleza.$this->cedula.$this->tipo);
+
+
+      // die($longitud));
+
+        if ($longitud > 9){
+          $this->addError($attribute, Yii::t('frontend', 'The rif must not have more than 10 characters'));
+       
+        }
+      }
+
 
     /**
      * [validarEmailRif description] metodo que busca el email y el rif en la tabla contribuyentes para verificar si posee preguntas de seguridad

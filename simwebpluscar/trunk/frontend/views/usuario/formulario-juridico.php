@@ -192,7 +192,7 @@ $(document).ready(function(){
                 <?= Yii::t('backend', 'Registration Basic Information') ?> | <?= Yii::t('frontend', 'Legal') ?> | <span id="sucesionLabel" style="display:none;"><?= Yii::t('backend', 'Succession') ?></span> <span id="empresaLabel" style="display:none;"><?= Yii::t('backend', 'Company') ?></span>
             </div>
 <!-- FIN DE LA CARGA DINAMICA DE LA CONDICION DE PERSONA JURIDICA -->
-<hr>
+
             <div class="panel-body" >
 
 
@@ -215,12 +215,12 @@ $(document).ready(function(){
                         ?>
                        </div>
                        <div class="col-sm-3">
-                            <?= $form->field($model, 'cedula')->label(false)->textInput(['maxlength' => 8, 'value'=> $rifJuridico['cedula'], 'readOnly' =>true]) ?>
+                            <?= $form->field($model, 'cedula')->label(false)->textInput(['maxlength' => 8, 'value'=> $rifJuridico['cedula'], 'readOnly' =>true,'style' => 'margin-left:-25px;']) ?>
                         
                        </div>
 
                          <div class="col-sm-2">
-                            <?= $form->field($model, 'tipo')->label(false)->textInput(['maxlength' => 1, 'value'=> $rifJuridico['tipo'], 'readOnly' =>true]) ?>
+                            <?= $form->field($model, 'tipo')->label(false)->textInput(['maxlength' => 1, 'value'=> $rifJuridico['tipo'], 'readOnly' =>true,'style' => 'margin-left:-50px;']) ?>
                           
                         </div>
                         </div>
@@ -229,7 +229,7 @@ $(document).ready(function(){
                    
 <!-- FIN DE RIF -->
 
-<hr>
+
 
 <!-- RAZON SOCIAL -->
                     
@@ -242,7 +242,7 @@ $(document).ready(function(){
                    
 <!-- FIN RAZON SOCIAL -->
 
-<hr>
+
     
 <!-- DOMICILIO FISCAL -->               
                        <div class="row">
@@ -253,7 +253,7 @@ $(document).ready(function(){
                    
 <!-- FIN DEL DOMICILIO FISCAL -->
 
-<hr>
+
 
 <!-- EMAIL -->
                         <div class="row">
@@ -266,7 +266,7 @@ $(document).ready(function(){
                         
 <!-- FIN EMAIL -->
 
-<hr>
+
 
 <!-- TELEFONO DE OFICINA Y CELULAR -->
                             
@@ -293,6 +293,7 @@ $(document).ready(function(){
                             <?= $form->field($model, 'tlf_ofic')->textInput(['maxlength' => 12,
                                                                         'style' => 'width:150px;',
                                                                         'placeholder' => false,
+                                                                        'style' => 'margin-left:-5px;',
                                                                         'id' => 'tlf_ofic',
                                                                        
                                                                         ]
@@ -326,6 +327,7 @@ $(document).ready(function(){
                             <?= $form->field($model, 'tlf_ofic_otro')->textInput(['maxlength' => 12,
                                                                         'style' => 'width:150px;',
                                                                         'placeholder' => false,
+                                                                        'style' => 'margin-left:-5px;',
                                                                         'id' => 'tlf_ofic_otro',                                                                       
                                                                         ]
                                                                     ) 
@@ -359,6 +361,7 @@ $(document).ready(function(){
                                     
                                     <?= $form->field($model, 'tlf_celular')->textInput(['maxlength' => 12,
                                                                         'style' => 'width:150px;',
+                                                                        'style' => 'margin-left:-5px;',
                                                                         'placeholder' => false,
                                                                         'id' => 'tlf_celularContri',
                                                                        
