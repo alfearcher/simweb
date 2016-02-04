@@ -203,7 +203,7 @@ $(document).ready(function(){
                                                                                                                                                     'style' => 'background-color: white;',
 
                                                                                                                                             ],
-                                                                                                                                            ])->label(false) ?>?>
+                                                                                                                                            ])->label(false) ?>
                         </div>
                         </div>
                         
