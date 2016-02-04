@@ -81,7 +81,8 @@ class PreguntaSeguridadContribuyenteForm extends PreguntaSeguridadContribuyente
             [['pregunta1', 'pregunta2', 'respuesta1', 'respuesta2'], 'match', 'pattern' => "/^.{3,50}$/", 'message' => Yii::t('frontend', 'Minimum 3 and maximum 50 characters')],//minimo 3 y maximo 50 caracteres
             [['pregunta1', 'pregunta2', 'respuesta1', 'respuesta2'], 'match', 'pattern' => "/^[0-9 a-z]+$/i", 'message' => Yii::t('frontend', 'Accepted only letters, numbers and spaces')],//Sólo se aceptan letras, números y espacios en blanco
             ['usuario', 'match', 'pattern' => "/^.{5,80}$/", 'message' => Yii::t('frontend', 'Minimum 5 and maximum 80 characters')],//minimo 5 y maximo 80 caracteres
-            [['pregunta1' , 'pregunta2','pregunta3'], 'compararPreguntas'],
+            ['pregunta1' ,'compararPreguntas1'],
+            ['pregunta2' ,'compararPreguntas2'],
                   
            
            
@@ -162,25 +163,71 @@ class PreguntaSeguridadContribuyenteForm extends PreguntaSeguridadContribuyente
      * @param  [type] $params    [description] parametros necesarios para enviar mensaje de error
      * @return [type]            [description] retorna mensajes de error indicando que alguna pregunta esta repetida
      */
-    public function compararPreguntas($attribute, $params){ 
+    public function compararPreguntas1($attribute, $params){ 
+
+        if ($this->pregunta1 == $this->pregunta2 and $this->pregunta1 == $this->pregunta3){
+
+            $this->addError($attribute, Yii::t('frontend', 'All questions are repeated'));
+        }
 
         if ($this->pregunta1 ==  $this->pregunta2){
 
-            $this->addError($attribute, Yii::t('frontend', 'Answers can not be equals'));
+            $this->addError($attribute, Yii::t('frontend', 'first and second questios are repeated'));
         }
 
-        if ($this->pregunta2 == $this->pregunta3){
+        if ($this->pregunta1 == $this->pregunta3){
 
-            $this->addError($attribute, Yii::t('frontend', 'Answers can not be equals'));
+            $this->addError($attribute, Yii::t('frontend', 'first and third questions are repeated'));
 
         }
 
-        if ($this->pregunta1 == $this->pregunta3){ 
 
-            $this->addError($attribute, Yii::t('frontend', 'Answers can not be equals'));
-    
+        
+     }
+
+     public function compararPreguntas2($attribute, $params){ 
+
+        if ($this->pregunta2 == $this->pregunta1 and $this->pregunta2 == $this->pregunta3){
+
+            $this->addError($attribute, Yii::t('frontend', 'All questions are repeated'));
         }
-    }
+
+        if ($this->pregunta2 ==  $this->pregunta3){
+
+            $this->addError($attribute, Yii::t('frontend', 'Second and third questios are repeated'));
+        }
+
+        if ($this->pregunta2 == $this->pregunta1){
+
+            $this->addError($attribute, Yii::t('frontend', 'first and Second questions are repeated'));
+
+        }
+
+
+        
+     }
+
+     public function compararPreguntas3($attribute, $params){ 
+
+        if ($this->pregunta3 == $this->pregunta2 and $this->pregunta3 == $this->pregunta1){
+
+            $this->addError($attribute, Yii::t('frontend', 'All questions are repeated'));
+        }
+
+        if ($this->pregunta3 ==  $this->pregunta2){
+
+            $this->addError($attribute, Yii::t('frontend', 'Second and third questios are repeated'));
+        }
+
+        if ($this->pregunta3 == $this->pregunta1){
+
+            $this->addError($attribute, Yii::t('frontend', 'first and third questions are repeated'));
+
+        }
+
+
+        
+     }
 
  }
 

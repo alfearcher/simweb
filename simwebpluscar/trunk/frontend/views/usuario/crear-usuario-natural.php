@@ -11,7 +11,7 @@ $listaNaturaleza = ArrayHelper::map($modeloTipoNaturaleza, 'siglas_tnaturaleza',
                                 
 
 $this->title = 'Busqueda Persona Juridica';
-$this->params['breadcrumbs'][] = $this->title;
+
 ?>
  
 
@@ -91,9 +91,15 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                                                         'class' => 'btn btn-success',
                                                                                                         'name' => 'btn-search',
                                                                                                         'value' => 1,
-                                                                                                        
+                                                                                                        'style' => 'height:30px;width:200px;margin-left:20px;',
                                                                                                       ])
                                             ?>
+                                        
+                                    </div>
+
+                                    <div class="col-sm-3" >
+                                        
+                                            <?= Html::a('Volver',['/usuario/cambiar-password-contribuyente/seleccionar-tipo'], ['class' => 'btn btn-primary','style' => 'height:30px;width:200px;margin-left:140px;' ]) //BOTON DE RECUPERAR CONTRASENA ?>
                                         
                                     </div>
                                    

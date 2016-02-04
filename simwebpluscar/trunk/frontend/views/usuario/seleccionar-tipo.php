@@ -6,7 +6,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 // 
 $this->title = 'Seleccione su tipo de registro';
-$this->params['breadcrumbs'][] = $this->title;
+
 ?>
  
 

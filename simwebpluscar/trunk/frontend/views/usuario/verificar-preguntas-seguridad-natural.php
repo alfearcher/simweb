@@ -17,7 +17,7 @@ $listaNaturaleza = ArrayHelper::map($modeloTipoNaturaleza, 'siglas_tnaturaleza',
                                 
 
 $this->title = 'Busqueda';
-$this->params['breadcrumbs'][] = $this->title;
+
 ?>
  
 
@@ -120,6 +120,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                                                         'style' => 'height:30px;width:200px;margin-left:20px;',
                                                                                                       ])
                                             ?>
+                                        
+                                    </div>
+
+                                    <div class="col-sm-3" >
+                                        
+                                            <?= Html::a('Volver',['/usuario/cambiar-password-contribuyente/seleccionar-tipo-contribuyente'], ['class' => 'btn btn-primary','style' => 'height:30px;width:200px;margin-left:150px;' ]) //BOTON DE RECUPERAR CONTRASENA ?>
                                         
                                     </div>
                                    

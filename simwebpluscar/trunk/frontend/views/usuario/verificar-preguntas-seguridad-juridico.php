@@ -13,12 +13,11 @@ use yii\helpers\ArrayHelper;
 
                               
 
-$modeloTipoNaturaleza = TipoNaturaleza::find()->where('id_tipo_naturaleza BETWEEN 2 and 3')->all();
+$modeloTipoNaturaleza = TipoNaturaleza::find()->where('id_tipo_naturaleza BETWEEN 1 and 4')->all();
 $listaNaturaleza = ArrayHelper::map($modeloTipoNaturaleza, 'siglas_tnaturaleza', 'nb_naturaleza');
                                 
 
 $this->title = 'Busqueda';
-$this->params['breadcrumbs'][] = $this->title;
 ?>
  
 
@@ -105,7 +104,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <div class="col-sm-4" style="padding-left: 27px;">
 
                                           
-                                               <div class="cedula">
+                                               <div class="email">
                                                  <?= $form->field($model, 'email')->textInput([
                                                                                             'id' => 'cedula',
                                                                                             'style' => 'height:32px;width:200px;margin-right:120px;',
@@ -137,6 +136,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                                                         
                                                                                                       ])
                                             ?>
+                                        
+                                    </div>
+
+                                    <div class="col-sm-3" >
+                                        
+                                            <?= Html::a('Volver',['/usuario/cambiar-password-contribuyente/seleccionar-tipo-contribuyente'], ['class' => 'btn btn-primary','style' => 'height:30px;width:200px;margin-left:120px;' ]) //BOTON DE RECUPERAR CONTRASENA ?>
                                         
                                     </div>
                                    
