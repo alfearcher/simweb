@@ -44,6 +44,7 @@
     use backend\models\registromaestro\TipoNaturaleza;
     use frontend\models\usuario\TelefonoCodigo;
     use yii\helpers\Url;
+    use yii\jui\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\DatosBasicoForm */
