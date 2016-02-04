@@ -323,7 +323,7 @@ class CrearUsuarioJuridicoController extends Controller
           
       $arregloDatos['tipo_naturaleza'] = 1;
 
-      $arregloDatos['ente'] = 13,
+      $arregloDatos['ente'] = 13;
         
       $arregloDatos['naturaleza'] = $model->naturaleza;
 

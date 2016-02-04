@@ -330,7 +330,7 @@ class CrearUsuarioNaturalController extends Controller
 
             $arregloDatos['cedula'] = $model->cedula;
 
-            $arregloDatos['ente'] = 13,
+            $arregloDatos['ente'] = 13;
 
             $arregloDatos['tipo'] = $model->tipo;
 
