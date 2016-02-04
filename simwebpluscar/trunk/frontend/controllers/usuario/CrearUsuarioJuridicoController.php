@@ -322,6 +322,8 @@ class CrearUsuarioJuridicoController extends Controller
       }
           
       $arregloDatos['tipo_naturaleza'] = 1;
+
+      $arregloDatos['ente'] => 13,
         
       $arregloDatos['naturaleza'] = $model->naturaleza;
 
@@ -334,6 +336,8 @@ class CrearUsuarioJuridicoController extends Controller
       $arregloDatos['domicilio_fiscal'] = $model->domicilio_fiscal;
 
       $arregloDatos['email'] = $model->email;
+
+      $arregloDatos['fecha_inclusion'] = date('Y-m-d');
 
       $arregloDatos['tlf_ofic'] = $model->tlf_ofic;
 
