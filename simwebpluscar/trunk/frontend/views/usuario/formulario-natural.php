@@ -193,17 +193,17 @@ $(document).ready(function(){
                         <div class="fecha-nac">
                         <?= $form->field($model, 'fecha_nac')->widget(\yii\jui\DatePicker::classname(),['id' => 'fecha_nac',
                                                                                     'clientOptions' => [
-                                                                                    'maxDate' => '+0d', // Bloquear los dias en el calendario a partir del dia siguiente al actual.
+                                                                                            'maxDate' => '+0d', // Bloquear los dias en el calendario a partir del dia siguiente al actual.
                                                                                      ],
                                                                                     'language' => 'es-ES',
                                                                                     'dateFormat' => 'dd-MM-yyyy',
                                                                                     'options' => [
-                                                                                        'class' => 'form-control',
-                                                                                        //'readonly' => true,
-                                                                                        'style' => 'background-color: white;',
+                                                                                            'class' => 'form-control',
+                                                                                            //'readonly' => true,
+                                                                                            'style' => 'background-color: white;',
 
-                                                                                ],
-                                                                                ]); ?>
+                                                                                    ],
+                                                                                ]) ?>
                         </div>
                         </div>
                         
