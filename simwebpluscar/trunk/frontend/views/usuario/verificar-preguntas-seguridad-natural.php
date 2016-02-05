@@ -16,7 +16,7 @@ $modeloTipoNaturaleza = TipoNaturaleza::find()->where('id_tipo_naturaleza BETWEE
 $listaNaturaleza = ArrayHelper::map($modeloTipoNaturaleza, 'siglas_tnaturaleza', 'nb_naturaleza');
                                 
 
-$this->title = 'Busqueda';
+$this->title = 'Busqueda persona Natural';
 
 ?>
  
@@ -109,6 +109,7 @@ $this->title = 'Busqueda';
             
 
  <!-- Boton para aplicar la actualizacion -->
+                                    <div class="row">
                                     <div class="col-sm-3" >
                                         
                                             <?= Html::submitButton(Yii::t('frontend' , 'Search'),
@@ -117,18 +118,21 @@ $this->title = 'Busqueda';
                                                                                                         'class' => 'btn btn-success',
                                                                                                         'name' => 'btn-search',
                                                                                                         'value' => 1,
-                                                                                                        'style' => 'height:30px;width:200px;margin-left:20px;',
+                                                                                                        'style' => 'height:30px;width:140px;margin-left:0px;',
                                                                                                       ])
                                             ?>
                                         
                                     </div>
 
+                                    <div class="col-sm-1">
+                                    </div>
+
                                     <div class="col-sm-3" >
                                         
-                                            <?= Html::a('Volver',['/usuario/cambiar-password-contribuyente/seleccionar-tipo-contribuyente'], ['class' => 'btn btn-primary','style' => 'height:30px;width:200px;margin-left:150px;' ]) //BOTON DE RECUPERAR CONTRASENA ?>
+                                            <?= Html::a('Return',['/usuario/cambiar-password-contribuyente/seleccionar-tipo-contribuyente'], ['class' => 'btn btn-primary','style' => 'height:30px;width:140px;margin-left:80px;' ]) //BOTON DE RECUPERAR CONTRASENA ?>
                                         
                                     </div>
-                                   
+                                   </div>
 <!-- Fin de Boton para aplicar la actualizacion -->
 
                                 

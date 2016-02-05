@@ -273,9 +273,15 @@ $(document).ready(function(){
 
                             <div class="row">
                             <div class="col-sm-4">
-                            <?= Html::submitButton(Yii::t('frontend', 'Create') , ['class' =>'btn btn-success']) ?>
+                            <?= Html::submitButton(Yii::t('frontend', 'Create') , ['class' =>'btn btn-success', 'style' => 'height:30px;width:100px;margin-left:0px;']) ?>
                             </div>
+                            
+                            <div class="col-sm-4">
+                             <?= Html::a('Return',['/usuario/opcion-crear-usuario/seleccionar-tipo-usuario'], ['class' => 'btn btn-primary','style' => 'height:30px;width:100px;margin-left:-55px;' ]) //boton para volver al menu de seleccion tipo usuario ?>
                             </div>
+                           </div>
+
+
             </div>
         </div>
     </div>

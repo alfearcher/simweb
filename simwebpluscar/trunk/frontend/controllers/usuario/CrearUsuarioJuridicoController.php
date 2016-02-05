@@ -339,6 +339,8 @@ class CrearUsuarioJuridicoController extends Controller
 
       $arregloDatos['fecha_inclusion'] = date('Y-m-d');
 
+      $arregloDatos['fecha_nac'] = $model->fecha_nac;
+
       $arregloDatos['tlf_ofic'] = $model->tlf_ofic;
 
       $arregloDatos['tlf_ofic_otro'] = $model->tlf_ofic_otro;

@@ -93,7 +93,7 @@ $this->title = 'Busqueda Persona Juridica';
             
 
  <!-- Boton para aplicar la actualizacion -->
-                                    <div class="col-sm-3" >
+                                    <div class="col-sm-4" >
                                         
                                             <?= Html::submitButton(Yii::t('frontend' , 'Search'),
                                                                                                       [
@@ -101,15 +101,15 @@ $this->title = 'Busqueda Persona Juridica';
                                                                                                         'class' => 'btn btn-success',
                                                                                                         'name' => 'btn-search',
                                                                                                         'value' => 1,
-                                                                                                        'style' => 'height:30px;width:200px;margin-right:400px;',
+                                                                                                        'style' => 'height:30px;width:100px;margin-right:0px;',
                                                                                                       ])
                                             ?>
                                         
                                     </div>
 
-                                       <div class="col-sm-3" >
+                                       <div class="col-sm-2" >
                                         
-                                            <?= Html::a('Volver',['/usuario/cambiar-password-contribuyente/seleccionar-tipo-contribuyente'], ['class' => 'btn btn-primary','style' => 'height:30px;width:200px;margin-left:120px;' ]) //BOTON DE RECUPERAR CONTRASENA ?>
+                                            <?= Html::a('Return',['/usuario/opcion-crear-usuario/seleccionar-tipo-usuario'], ['class' => 'btn btn-primary','style' => 'height:30px;width:100px;margin-left:50px;' ]) //boton para volver al menu de seleccion tipo usuario ?>
                                         
                                     </div>
                                    

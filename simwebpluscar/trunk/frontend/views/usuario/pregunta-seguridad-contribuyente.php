@@ -90,9 +90,17 @@ $this->title = 'Preguntas de Seguridad';
 						 	
 						 	 <div class="row">
 							<div class="col-sm-6">
-                            <?= Html::submitButton("Registrar", ["class" => "btn btn-primary"]) ?>
+                            <?= Html::submitButton("Registrar", ["class" => "btn btn-success", 'style' => 'height:30px;width:140px;margin-left:0px;']) ?>
 							 </div>
-                             </div>
+                             
+                             <div class="col-sm-3" >
+                                        
+                            <?= Html::a('Return',['/site/login'], ['class' => 'btn btn-primary','style' => 'height:30px;width:140px;margin-left:-120px;' ]) //Retornar al login ?>
+                                        
+                            </div>
+                            </div>
+
+                            </div>
 			</div>
 		</div>
 	</div>

@@ -44,9 +44,13 @@ $this->title = 'Resetear Password';
                            
 							<div class="row">
 							<div class="col-sm-5">
-                            <?= Html::submitButton("Registrar", ["class" => "btn btn-primary"]) ?>
+                            <?= Html::submitButton("Registrar", ["class" => "btn btn-success"]) ?>
 							</div>
-							</div>
+							
+							<div class="col-sm-3" >
+                            <?= Html::a('Return',['/usuario/cambiar-password-contribuyente/seleccionar-tipo-contribuyente'], ['class' => 'btn btn-primary','style' => 'height:30px;width:140px;margin-left:80px;' ]) //boton para volver a la busqueda de pregunta de seguridad ?>
+                            </div>
+                            </div>
 			</div>
 		</div>
 	</div>
