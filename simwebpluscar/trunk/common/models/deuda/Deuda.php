@@ -263,7 +263,6 @@
 						    AND D.impuesto =:impuesto AND P.id_contribuyente =:id_contribuyente
 						    GROUP BY V.id_vehiculo
 						    UNION
-						    UNION
 						    (SELECT X.id_impuesto,
 						    	   X.descripcion,
 						    	   (sum(D.monto+D.recargo+D.interes)-sum(D.descuento+D.monto_reconocimiento)) as deuda,
