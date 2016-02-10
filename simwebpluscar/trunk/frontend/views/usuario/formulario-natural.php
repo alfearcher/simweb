@@ -40,6 +40,7 @@
 
     use yii\helpers\Html;
     use yii\widgets\ActiveForm;
+    use yii\web\View;
     use yii\helpers\ArrayHelper;
     use backend\models\registromaestro\TipoNaturaleza;
     use frontend\models\usuario\TelefonoCodigo;
