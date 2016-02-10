@@ -141,25 +141,51 @@
 		{
 			$result = null;
 			try {
-				$sql = "SELECT P.planilla,
-							   D.ano_impositivo,
-							   D.trimestre,
-							   E.unidad,
-							   (sum(D.monto+D.recargo+D.interes)-sum(D.descuento+D.monto_reconocimiento)) as deuda,
-							   P.id_contribuyente,
-							   D.impuesto
-					    FROM pagos as P
-					    INNER JOIN pagos_detalle as D on P.id_pago=D.id_pago
-					    INNER JOIN exigibilidades as E on D.exigibilidad_pago=E.exigibilidad
-					    WHERE D.pago = 0 AND D.trimestre >= 0 AND D.impuesto =:impuesto
-					    AND D.id_impuesto =:id_impuesto AND P.id_contribuyente =:id_contribuyente";
+				if ( $this->_impuesto == 1 ) {
+					$sql = "SELECT P.planilla,
+								   D.ano_impositivo,
+								   D.trimestre,
+								   E.unidad,
+								   (sum(D.monto+D.recargo+D.interes)-sum(D.descuento+D.monto_reconocimiento)) as deuda,
+								   P.id_contribuyente,
+								   D.impuesto,
+								   D.referencia
+						    FROM pagos as P
+						    INNER JOIN pagos_detalle as D on P.id_pago=D.id_pago
+						    INNER JOIN exigibilidades as E on D.exigibilidad_pago=E.exigibilidad
+						    WHERE D.pago = 0 AND D.trimestre >= 0 AND D.impuesto =:impuesto
+						    AND P.id_contribuyente =:id_contribuyente
+						    ORDER BY D.referencia, D.ano_impositivo, D.trimestre";
 
-				$command = $this->connLocal->createCommand($sql);
-				$command->bindValues([
-										':impuesto', $this->_impuesto,
-										':id_impuesto', $this->_idImpuesto,
-										':id_contribuyente', $this->_idContribuyente
-									]);
+					$command = $this->connLocal->createCommand($sql);
+					$command->bindValues([
+											':impuesto' => $this->_impuesto,
+											':id_impuesto' => $this->_idImpuesto,
+											':id_contribuyente' => $this->_idContribuyente
+										]);
+				} else {
+					$sql = "SELECT P.planilla,
+								   D.ano_impositivo,
+								   D.trimestre,
+								   E.unidad,
+								   (sum(D.monto+D.recargo+D.interes)-sum(D.descuento+D.monto_reconocimiento)) as deuda,
+								   P.id_contribuyente,
+								   D.impuesto,
+								   D.referencia
+						    FROM pagos as P
+						    INNER JOIN pagos_detalle as D on P.id_pago=D.id_pago
+						    INNER JOIN exigibilidades as E on D.exigibilidad_pago=E.exigibilidad
+						    WHERE D.pago = 0 AND D.trimestre >= 0 AND D.impuesto =:impuesto
+						    AND D.id_impuesto =:id_impuesto AND P.id_contribuyente =:id_contribuyente
+						    ORDER BY D.referencia, D.ano_impositivo, D.trimestre";
+
+					$command = $this->connLocal->createCommand($sql);
+					$command->bindValues([
+											':impuesto' => $this->_impuesto,
+											':id_impuesto' => $this->_idImpuesto,
+											':id_contribuyente' => $this->_idContribuyente
+										]);
+				}
 
 				$result = $command->queryAll();
 
@@ -414,7 +440,7 @@
 			} catch (Exception $e) {
 				//$e->errorInfo, muestra un array indicando el error ocurrido
 				//$e->errorInfo[2] muestra la descripcion del mensaje
-				echo var_dump($e->errorInfo[2]);
+				echo var_dump($e->errorInfo);
 			}
 			return $result;
 		}
@@ -450,7 +476,7 @@
 			} catch (Exception $e) {
 				//$e->errorInfo, muestra un array indicando el error ocurrido
 				//$e->errorInfo[2] muestra la descripcion del mensaje
-				echo var_dump($e->errorInfo[2]);
+				echo var_dump($e->errorInfo);
 			}
 			return $result;
 		}
