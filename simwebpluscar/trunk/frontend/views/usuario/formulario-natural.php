@@ -182,7 +182,6 @@ $(document).ready(function(){
                                                                                                 'clientOptions' => [
                                                                                                     'maxDate' => '+0d', // Bloquear los dias en el calendario a partir del dia siguiente al actual.
                                                                                                  ],
-
                                                                                                 'language' => 'es-ES',
                                                                                                 'dateFormat' => 'dd-MM-yyyy',
                                                                                                 'options' => [
