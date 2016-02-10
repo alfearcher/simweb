@@ -189,7 +189,7 @@ $(document).ready(function(){
                                                                                                     'readonly' => true,
                                                                                                     'style' => 'background-color: white;',
                                                                                                 ],
-                                                                                            ])->label(false)
+                                                                                            ])
                                     ?>
                                 </div>
                             </div>
