@@ -97,8 +97,7 @@ $(document).ready(function(){
 </div>
 
     <div id="tJuridico" class="datosbasico-form" style="display:<?//= $noneJ?>;">
-
- </div>
+    </div>
     <!-- FIN SELECTOR DE TIPO DE PERSONA -->
 
 
@@ -139,24 +138,20 @@ $(document).ready(function(){
                         </div>
 
                         <div class="row">
-                        <div class="col-sm-2">
-                            <?= $form->field($model, 'naturaleza')->textInput(
-                                                                   // ArrayHelper::map(TipoNaturaleza::find()->all(), 'siglas_tnaturaleza', 'siglas_tnaturaleza'),
-                                                                    [
-                                                                    'id'=> 'naturaleza',
-                                                                    'value' => $rifNatural['naturaleza'],
-
-                                                                     'readOnly' =>true,
-                                                                    ])->label(false);
-                        ?>
-                       </div>
-                       <div class="col-sm-3">
-                            <?= $form->field($model, 'cedula')->label(false)->textInput(['maxlength' => 8, 'value'=> $rifNatural['cedula'], 'readOnly' =>true,'style' => 'margin-left:-25px;']) ?>
-
+                            <div class="col-sm-2">
+                                <?= $form->field($model, 'naturaleza')->textInput(
+                                                                       // ArrayHelper::map(TipoNaturaleza::find()->all(), 'siglas_tnaturaleza', 'siglas_tnaturaleza'),
+                                                                        [
+                                                                        'id'=> 'naturaleza',
+                                                                        'value' => $rifNatural['naturaleza'],
+                                                                         'readOnly' =>true,
+                                                                        ])->label(false);
+                            ?>
+                            </div>
+                            <div class="col-sm-3">
+                                <?= $form->field($model, 'cedula')->label(false)->textInput(['maxlength' => 8, 'value'=> $rifNatural['cedula'], 'readOnly' =>true,'style' => 'margin-left:-25px;']) ?>
+                            </div>
                         </div>
-
-
-                       </div>
 
 
 
@@ -193,7 +188,7 @@ $(document).ready(function(){
                                                                                                 'options' => [
                                                                                                     'class' => 'form-control',
                                                                                                     'readonly' => true,
-                                                                                                    'style' => 'background-color: white;',
+                                                                                                    'style' => 'background-color: red;',
                                                                                                 ],
                                                                                             ]);
                                     ?>
