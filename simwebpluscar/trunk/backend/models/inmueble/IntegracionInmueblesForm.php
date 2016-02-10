@@ -311,7 +311,7 @@ class IntegracionInmueblesForm extends \yii\db\ActiveRecord
               $sql .= 'and unidad_catastro = "'.$this->unidad_catastro.'"'; 
           }else{ 
               $subparcela_catastro = 0;
-              $nivel_catastro = 0; 
+              $nivel_catastro = 0;
               $unidad_catastro = 0;
               $sql = 'SELECT id_impuesto, id_contribuyente FROM inmuebles WHERE estado_catastro = '.$this->estado_catastro.' ';
               $sql .= 'and municipio_catastro = "'.$this->municipio_catastro.'"';

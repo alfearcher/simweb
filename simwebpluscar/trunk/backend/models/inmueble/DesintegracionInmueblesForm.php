@@ -222,7 +222,7 @@ class DesintegracionInmueblesForm extends \yii\db\ActiveRecord
           
           
               $subparcela_catastro = 0;
-              $nivel_catastro = 0; 
+              $nivel_catastro = 0;
               $unidad_catastro = 0;
               $sql1 = 'SELECT id_impuesto, id_contribuyente, estado_catastro,municipio_catastro, parroquia_catastro, ambito_catastro, sector_catastro, manzana_catastro, parcela_catastro FROM inmuebles WHERE ';
               $sql1 .= 'id_contribuyente = "'.$this->id_contribuyente.'"';
