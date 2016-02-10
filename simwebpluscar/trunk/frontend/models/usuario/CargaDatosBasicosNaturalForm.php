@@ -187,9 +187,6 @@ class CargaDatosBasicosNaturalForm extends \yii\db\ActiveRecord
             [['ente','naturaleza', 'cedula', 'tipo', 'email', 'nombres', 'apellidos', 'fecha_nac', 'sexo', 'codigo', 'domicilio_fiscal', 'tlf_celular'],'required'],
               [['tlf_celular'], 'match' , 'pattern' => "/^.{11,12}$/", 'message' => Yii::t('frontend', 'Minimum 11 numbers')],
               ['tlf_celular', 'integer', 'message' => Yii::t('frontend', 'Mobile phone must be an integer')],
-
-
-
             [['ente','cedula', 'tipo', 'tipo_naturaleza', 'id_rif', 'id_cp', 'inactivo', 'cuenta', 'num_reg', 'extension_horario', 'num_empleados', 'tipo_contribuyente', 'licencia', 'agente_retencion', 'manzana_limite', 'lote_1', 'lote_2', 'lote_3', 'foraneo', 'no_declara', 'econ_informal', 'grupo_contribuyente', 'no_sujeto'], 'integer'],
             [['fecha_nac', 'fecha', 'fecha_inclusion', 'fecha_inicio', 'fe_inic_agente_reten'], 'safe'],
             [['fecha_nac'], 'date', 'format' => 'dd-MM-yyyy','message' => Yii::t('backend','formatted date no valid.')],
@@ -201,7 +198,6 @@ class CargaDatosBasicosNaturalForm extends \yii\db\ActiveRecord
             [['razon_social', 'tlf_ofic', 'tlf_celular', 'domicilio_fiscal'], 'required', 'when' => function($model) {
                                                         return $model->tipo_naturaleza == 1;
             }],
-
             [['representante'], 'string', 'max' => 200],
             [['piso_nivel_no_dom', 'apto_dom'], 'string', 'max' => 25],
             [['domicilio_fiscal'], 'string', 'max' => 250],
