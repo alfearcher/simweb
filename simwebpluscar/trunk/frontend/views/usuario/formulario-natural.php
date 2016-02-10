@@ -188,7 +188,7 @@ $(document).ready(function(){
                                                                                                 'options' => [
                                                                                                     'class' => 'form-control',
                                                                                                     'readonly' => true,
-                                                                                                    'style' => 'background-color: red;',
+                                                                                                    'style' => 'background-color: white;',
                                                                                                 ],
                                                                                             ]);
                                     ?>
