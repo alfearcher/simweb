@@ -97,17 +97,7 @@ $(document).ready(function(){
 </div>
 
     <div id="tJuridico" class="datosbasico-form" style="display:<?//= $noneJ?>;">
-            <?php $form = ActiveForm::begin([
-            'id' => 'form-datosBasicoJuridico-inline',
-            'method' => 'post',
 
-            'enableClientValidation' => true,
-            'enableAjaxValidation' => true,
-            'enableClientScript' => true,
-
-        ]);
-
-?>
  </div>
     <!-- FIN SELECTOR DE TIPO DE PERSONA -->
 
@@ -170,7 +160,7 @@ $(document).ready(function(){
 
 
 
-<!-- FIN DE RIF <--></-->
+<!-- FIN DE RIF <-->
 
 
 <!-- APELLIDOS Y NOMBRES-->
@@ -357,4 +347,5 @@ $(document).ready(function(){
     */
     ?>
 </div>
+<?php ActiveForm::end() ?>
 <!-- FIN DEL FORMULARIO PERSONA NATURAL -->
