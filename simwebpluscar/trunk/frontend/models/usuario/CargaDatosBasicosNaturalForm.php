@@ -5,33 +5,33 @@
  */
 
  /**
- * 
- *  > This library is free software; you can redistribute it and/or modify it under 
- *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free 
- *  > Software Foundation; either version 2 of the Licence, or (at your opinion) 
+ *
+ *  > This library is free software; you can redistribute it and/or modify it under
+ *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free
+ *  > Software Foundation; either version 2 of the Licence, or (at your opinion)
  *  > any later version.
- *  > 
- *  > This library is distributed in the hope that it will be usefull, 
- *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability 
- *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence 
+ *  >
+ *  > This library is distributed in the hope that it will be usefull,
+ *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability
+ *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence
  *  > for more details.
- *  > 
+ *  >
  *  > See [LICENSE.TXT](../../LICENSE.TXT) file for more information.
  *
  */
 
- /**    
+ /**
  *  @file CargaDatosBasicosNaturalForm.php
- *  
+ *
  *  @author Manuel Alejandro Zapata Canelon
- * 
+ *
  *  @date 13/01/2016
- * 
+ *
  *  @class CargaDatosBasicosNaturalForm
  *  @brief Modelo del formulario de datos basicos de persona natural, en el estan las validaciones y textos necesarios.
  *   @property
  *
- *  
+ *
  *  @method
  *
  *  tableName
@@ -39,9 +39,9 @@
  *  attributeLabels
  *  getGenderOptions
  *  dameIdRif
- *    
+ *
  *  @inherits
- *  
+ *
  */
 namespace frontend\models\usuario;
 
@@ -108,7 +108,7 @@ use Yii;
  * @property string $ruc
  */
 class CargaDatosBasicosNaturalForm extends \yii\db\ActiveRecord
-{   
+{
 
         public $id_contribuyente;
         public $ente;
@@ -168,7 +168,7 @@ class CargaDatosBasicosNaturalForm extends \yii\db\ActiveRecord
         public $ruc;
         public $naturaleza_rep;
         public $cedula_rep;
-        public $codigo;     
+        public $codigo;
 
     /**
      * @inheritdoc
@@ -183,16 +183,17 @@ class CargaDatosBasicosNaturalForm extends \yii\db\ActiveRecord
      */
     public function rules()
     {
-        return [            
+        return [
             [['ente','naturaleza', 'cedula', 'tipo', 'email', 'nombres', 'apellidos', 'fecha_nac', 'sexo', 'codigo', 'domicilio_fiscal', 'tlf_celular'],'required'],
               [['tlf_celular'], 'match' , 'pattern' => "/^.{11,12}$/", 'message' => Yii::t('frontend', 'Minimum 11 numbers')],
               ['tlf_celular', 'integer', 'message' => Yii::t('frontend', 'Mobile phone must be an integer')],
 
-           
+
 
             [['ente','cedula', 'tipo', 'tipo_naturaleza', 'id_rif', 'id_cp', 'inactivo', 'cuenta', 'num_reg', 'extension_horario', 'num_empleados', 'tipo_contribuyente', 'licencia', 'agente_retencion', 'manzana_limite', 'lote_1', 'lote_2', 'lote_3', 'foraneo', 'no_declara', 'econ_informal', 'grupo_contribuyente', 'no_sujeto'], 'integer'],
-            [['fecha_nac', 'fecha', 'fecha_inclusion', 'fecha_inicio', 'fe_inic_agente_reten'], 'safe'],            
-            [['capital'], 'number'],            
+            [['fecha_nac', 'fecha', 'fecha_inclusion', 'fecha_inicio', 'fe_inic_agente_reten'], 'safe'],
+            [['fecha_nac'], 'date', 'format' => 'dd-MM-yyyy','message' => Yii::t('backend','formatted date no valid.')],
+            [['capital'], 'number'],
             [['naturaleza', 'sexo'], 'string', 'max' => 1],
             [['nombres', 'apellidos', 'nit', 'casa_edf_qta_dom', 'reg_mercantil', 'tomo', 'folio', 'horario'],  'string', 'max' => 50],
             [['razon_social'], 'string', 'max' => 75],
@@ -200,7 +201,7 @@ class CargaDatosBasicosNaturalForm extends \yii\db\ActiveRecord
             [['razon_social', 'tlf_ofic', 'tlf_celular', 'domicilio_fiscal'], 'required', 'when' => function($model) {
                                                         return $model->tipo_naturaleza == 1;
             }],
-           
+
             [['representante'], 'string', 'max' => 200],
             [['piso_nivel_no_dom', 'apto_dom'], 'string', 'max' => 25],
             [['domicilio_fiscal'], 'string', 'max' => 250],
@@ -213,7 +214,7 @@ class CargaDatosBasicosNaturalForm extends \yii\db\ActiveRecord
             ['tlf_celular','string', 'max'=>12],
             ['ente', 'default', 'value' => Yii::$app->ente->getEnte()],
             [['naturaleza', 'cedula', 'tipo', 'tipo_naturaleza', 'id_rif'], 'unique', 'targetAttribute' => ['naturaleza', 'cedula', 'tipo', 'tipo_naturaleza', 'id_rif'], 'message' => 'This user has already been taken.'],
-            
+
             [['id_rif'], 'default', 'value'=> function($model){
                                                     return self::dameIdRif($model);
 
@@ -301,19 +302,19 @@ class CargaDatosBasicosNaturalForm extends \yii\db\ActiveRecord
 
         $modelFind = CrearUsuarioNatural::find()
                                          ->where([
-                                        'naturaleza' => $model->naturaleza, 
-                                        'cedula' => $model->cedula, 
+                                        'naturaleza' => $model->naturaleza,
+                                        'cedula' => $model->cedula,
                                         'tipo_naturaleza' => 0])
                                         ->orderBy(['id_rif' => SORT_DESC])->one();
 
         if(count($modelFind)>0){
 
-            return $modelFind->id_rif +=1;  
+            return $modelFind->id_rif +=1;
         } else {
 
             return 0;
-        }                                    
+        }
 
-    
+
     }
 }
