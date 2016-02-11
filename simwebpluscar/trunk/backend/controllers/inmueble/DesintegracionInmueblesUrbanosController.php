@@ -86,8 +86,6 @@ class DesintegracionInmueblesUrbanosController extends Controller
             }
              
 
-
-
         return $this->render('desintegracion', [
                // 'model' => $model,
             ]); 
@@ -138,7 +136,7 @@ class DesintegracionInmueblesUrbanosController extends Controller
      *para el cambio de otros datos inmuebles
      *@return model trae los datos del formulario 
      **/
-    public function actionDesintegracionInmuebles($idmodel)
+    public function actionDesintegracionInmuebles()
     { 
         if ( isset( $_SESSION['idContribuyente'] ) ) {
         $modelContribuyente = $this->findModelContribuyente($id_contribuyente);
