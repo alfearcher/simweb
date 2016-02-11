@@ -130,7 +130,7 @@ class DesintegracionInmueblesUrbanosController extends Controller
             return $modelContribuyente; 
         } else { 
             throw new NotFoundHttpException('The requested page does not exist.');
-        }
+        } 
     }
     /**
      *Metodo: DesintegracionInmuebles
@@ -140,7 +140,7 @@ class DesintegracionInmueblesUrbanosController extends Controller
      *para el cambio de otros datos inmuebles
      *@return model trae los datos del formulario 
      **/
-    public function actionDesintegracionInmuebles($idmodel)
+    public function actionDesintegracionInmuebles()
     { 
         if ( isset( $_SESSION['idContribuyente'] ) ) {
         $modelContribuyente = $this->findModelContribuyente($id_contribuyente);
