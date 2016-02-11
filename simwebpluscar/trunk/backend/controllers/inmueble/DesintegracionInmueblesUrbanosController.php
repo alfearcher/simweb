@@ -90,8 +90,7 @@ class DesintegracionInmueblesUrbanosController extends Controller
 die('llegue antes del redirect');
 
         return $this->render('desintegracion', [
-                'model' => $model, 'modelContribuyente' => $modelContribuyente, 'modelBuscar' =>$modelBuscar, 'datosVContribuyente'=>$datosVContribuyente,
-                'datosVInmueble'=>$datosVInmueble,
+               // 'model' => $model,
             ]); 
 
         }  else {
