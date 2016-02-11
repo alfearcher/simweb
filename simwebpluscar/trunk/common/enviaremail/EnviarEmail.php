@@ -22,14 +22,14 @@
  */
 
  /**    
- *  @file CrearUsuarioJuridico.php
+ *  @file EnviarEmail.php
  *  
  *  @author Manuel Alejandro Zapata Canelon
  * 
  *  @date 04/01/2016
  * 
- *  @class CrearUsuarioJuridico
- *  @brief Modelo que instancia la conexion a base de datos para buscar datos en contribuyentes. 
+ *  @class EnviarEmail
+ *  @brief Modelo que contiene el metodo que se encarga de enviar el email al usuario automaticamente con su usuario y contraseña. 
  * 
  *  
  * 
@@ -40,8 +40,7 @@
  *  
  *  @method
  * 
- *  getDb
- *  tableName
+ *  enviarEmail
  *  
  *
  *  @inherits
@@ -64,9 +63,15 @@ class EnviarEmail{
        return Yii::$app->mailer->compose()
         ->setFrom('manuelz0510@gmail.com')
         ->setTo($email)
-        ->setSubject('Usuario y contraseña')
-        ->setTextBody('probando')
-        ->setHtmlBody('Usuario: ' .$email.'<br>'.'Contraseña: '.$nuevaClave)
+        ->setSubject('Bienvenido al Servicio Online')
+        ->setTextBody('Tu usuario y contraseña')
+        ->setHtmlBody('Estimado Contribuyente: <br><br>
+                       Usted ha realizado con exito su registro<br><br>
+                       Usuario: ' .$email.'<br>'.'Contraseña: '.$nuevaClave'<br>
+                       A partir de este momento puede disfrutar de nuestro servicio "on-line".<br>
+                       Recuerde, esta informacion es personal y de su exclusiva responsabilidad y se agradece no divulgar ni transferir
+                       a terceros estos datos<br><br>
+                       Esta es una cuenta no monitoreada, por favor no responder este correo. ')
         ->send();
 
     }
