@@ -84,7 +84,7 @@ class DesintegracionInmueblesUrbanosController extends Controller
             $id_contribuyente = $_SESSION['idContribuyente'];
 
             return $this->rendirect('desintegracion-inmuebles', [
-                'id' => $id_contribuyente,
+                'idmodel' => $id_contribuyente,
             ]); 
 
 
@@ -137,7 +137,7 @@ class DesintegracionInmueblesUrbanosController extends Controller
      *para el cambio de otros datos inmuebles
      *@return model trae los datos del formulario 
      **/
-    public function actionDesintegracionInmuebles($id)
+    public function actionDesintegracionInmuebles($idmodel)
     { 
         if ( isset( $_SESSION['idContribuyente'] ) ) {
         $modelContribuyente = $this->findModelContribuyente($id_contribuyente);
