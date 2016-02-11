@@ -89,7 +89,10 @@ class DesintegracionInmueblesUrbanosController extends Controller
 
 
 
-
+        return $this->render('desintegracion', [
+                'model' => $model, 'modelContribuyente' => $modelContribuyente, 'modelBuscar' =>$modelBuscar, 'datosVContribuyente'=>$datosVContribuyente,
+                'datosVInmueble'=>$datosVInmueble,
+            ]); 
 
         }  else {
                     echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
@@ -103,7 +106,7 @@ class DesintegracionInmueblesUrbanosController extends Controller
      * @return Inmuebles the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel()
     { 
         if (($model = DesintegracionInmueblesForm::find()->where(['id_contribuyente'=>$_SESSION['idContribuyente']])->one()) !== null) {
 
@@ -120,7 +123,7 @@ class DesintegracionInmueblesUrbanosController extends Controller
      * @return Contribuyente the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */ 
-    public function findModelContribuyente($id)
+    public function findModelContribuyente()
     {//echo'<pre>'; var_dump($_SESSION['idContribuyente']); echo '</pre>'; die('hola');
         if (($modelContribuyente = ContribuyentesForm::findOne($id)) !== null) {
             
