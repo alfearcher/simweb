@@ -83,7 +83,7 @@ class DesintegracionInmueblesUrbanosController extends Controller
             
             $id_contribuyente = $_SESSION['idContribuyente'];
 
-            return $this->rendirect('desintegracion-inmuebles', [
+            return $this->redirect('desintegracion-inmuebles', [
                 'idmodel' => $id_contribuyente,
             ]); 
 
