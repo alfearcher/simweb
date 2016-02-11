@@ -56,7 +56,13 @@ use yii\db\ActiveRecord;
 
 
 class enviarEmailCambioCLave{
-  
+    
+    /**
+     * [enviarEmailCambioCLave description] metodo que envia email al usuario con la informacion que reciba como parametros
+     * @param  [type] $email     [description] parametro recibido que contiene el email, que es el login del usuario
+     * @param  [type] $Password1 [description] parametro recibido que contiene la nueva contraseña del usuario
+     * @return [type]            [description] retorna la funcion que hace que envie el correo
+    */
     public function enviarEmailCambioCLave($email, $Password1)
     {
 

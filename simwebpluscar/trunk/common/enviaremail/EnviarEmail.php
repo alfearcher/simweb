@@ -56,7 +56,13 @@ use yii\db\ActiveRecord;
 
 
 class EnviarEmail{
-  
+
+    /**
+     * [enviarEmail description] metodo que envia email al usuario con la informacion que reciba como parametros
+     * @param  [type] $email     [description] parametro recibido que contiene el email, que es el login del usuario
+     * @param  [type] $nuevaClave [description] parametro recibido que contiene la contraseña del usuario
+     * @return [type]            [description] retorna la funcion que hace que envie el correo
+     */
     public function enviarEmail($email,$nuevaClave)
     {
 
