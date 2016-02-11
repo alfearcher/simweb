@@ -90,7 +90,7 @@ AppAsset::register($this);
         <div class="barra-inferior">
             <?php
                 if (!Yii::$app->user->isGuest) {
-                    require('boton-search.php');
+                    //require('boton-search.php');
                     //require('barra-inferior.php');
                     //require('boton-undo.php');
                     //require('opciones-nav.php');
