@@ -81,11 +81,8 @@ class DesintegracionInmueblesUrbanosController extends Controller
     {    
         if ( isset( $_SESSION['idContribuyente'] ) ) {
             
-            $id_contribuyente = $_SESSION['idContribuyente'];
-
-
-
-            return $this->redirect('inmueble/desintegracion-inmuebles-urbanos/desintegracion-inmuebles'); 
+            
+             return $this->redirect('inmueble/desintegracion-inmuebles-urbanos/desintegracion-inmuebles'); 
 
 
 
