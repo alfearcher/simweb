@@ -64,14 +64,10 @@ class EnviarEmail{
         ->setFrom('manuelz0510@gmail.com')
         ->setTo($email)
         ->setSubject('Bienvenido al Servicio Online')
-        ->setTextBody('Tu usuario y contraseña')
+        ->setTextBody('Bienvenido al Servicio Online')
         ->setHtmlBody('Estimado Contribuyente: <br><br>
                        Usted ha realizado con exito su registro<br><br>
-                       Usuario: ' .$email.'<br>'.'Contraseña: '.$nuevaClave'<br>
-                       A partir de este momento puede disfrutar de nuestro servicio "on-line".<br>
-                       Recuerde, esta informacion es personal y de su exclusiva responsabilidad y se agradece no divulgar ni transferir
-                       a terceros estos datos<br><br>
-                       Esta es una cuenta no monitoreada, por favor no responder este correo. ')
+                       Usuario: ' .$email.'<br>'.'Contraseña: '.$nuevaClave)
         ->send();
 
     }
