@@ -77,7 +77,7 @@ class DesintegracionInmueblesUrbanosController extends Controller
     public $transaccion; 
     
 
-    protected function actionDesintegracion()
+   public function actionDesintegracion()
     {    
         if ( isset( $_SESSION['idContribuyente'] ) ) {
             
