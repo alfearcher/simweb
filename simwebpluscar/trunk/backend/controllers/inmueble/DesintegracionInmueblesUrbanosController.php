@@ -95,39 +95,7 @@ class DesintegracionInmueblesUrbanosController extends Controller
         }
 
     } 
-     /**
-     * Finds the Inmuebles model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Inmuebles the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel()
-    { 
-        if (($model = DesintegracionInmueblesForm::find()->where(['id_contribuyente'=>$_SESSION['idContribuyente']])->one()) !== null) {
-
-            return $model; 
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
-        } 
-    } 
-    
-    /**
-     * Finds the Contribuyentes model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Contribuyente the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */ 
-    public function findModelContribuyente()
-    {//echo'<pre>'; var_dump($_SESSION['idContribuyente']); echo '</pre>'; die('hola');
-        if (($modelContribuyente = ContribuyentesForm::findOne($id)) !== null) {
-            
-            return $modelContribuyente; 
-        } else { 
-            throw new NotFoundHttpException('The requested page does not exist.');
-        } 
-    }
+     
     /**
      *Metodo: DesintegracionInmuebles
      *Realiza la desintegracion del inmueble urbano.
@@ -365,7 +333,39 @@ FIN BUYER
         }
     } 
     
+     /**
+     * Finds the Inmuebles model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return Inmuebles the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel()
+    { 
+        if (($model = DesintegracionInmueblesForm::find()->where(['id_contribuyente'=>$_SESSION['idContribuyente']])->one()) !== null) {
 
+            return $model; 
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        } 
+    } 
+    
+    /**
+     * Finds the Contribuyentes model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return Contribuyente the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */ 
+    public function findModelContribuyente()
+    {//echo'<pre>'; var_dump($_SESSION['idContribuyente']); echo '</pre>'; die('hola');
+        if (($modelContribuyente = ContribuyentesForm::findOne($id)) !== null) {
+            
+            return $modelContribuyente; 
+        } else { 
+            throw new NotFoundHttpException('The requested page does not exist.');
+        } 
+    }
     
 }
 
