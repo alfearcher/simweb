@@ -87,7 +87,7 @@ class DesintegracionInmueblesUrbanosController extends Controller
                 'idmodel' => $id_contribuyente,
             ]); 
 
-
+die('llegue antes del redirect');
 
         return $this->render('desintegracion', [
                 'model' => $model, 'modelContribuyente' => $modelContribuyente, 'modelBuscar' =>$modelBuscar, 'datosVContribuyente'=>$datosVContribuyente,
