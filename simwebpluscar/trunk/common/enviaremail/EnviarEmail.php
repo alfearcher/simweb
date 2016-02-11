@@ -67,7 +67,11 @@ class EnviarEmail{
         ->setTextBody('Bienvenido al Servicio Online')
         ->setHtmlBody('Estimado Contribuyente: <br><br>
                        Usted ha realizado con exito su registro<br><br>
-                       Usuario: ' .$email.'<br>'.'Contraseña: '.$nuevaClave)
+                       Usuario: ' .$email.'<br>'.'Contraseña: '.$nuevaClave
+                       'A partir de este momento puede disfrutar de nuestro servicio "on-line".<br>
+                       Recuerde, esta informacion es personal y de su exclusiva responsabilidad y se agradece no divulgar ni transferir
+                       a terceros estos datos<br><br>
+                       Esta es una cuenta no monitoreada, por favor no responder este correo.')
         ->send();
 
     }
