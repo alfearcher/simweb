@@ -83,7 +83,7 @@ class IntegracionInmueblesUrbanosController extends Controller
      *para el cambio de otros datos inmuebles
      *@return model 
      **/
-    public function actionIntegracionInmuebles($id_contribuyente)
+    public function actionIntegracionInmuebles()
     { 
         if ( isset( $_SESSION['idContribuyente'] ) ) {
         $modelContribuyente = $this->findModelContribuyente($id_contribuyente);
