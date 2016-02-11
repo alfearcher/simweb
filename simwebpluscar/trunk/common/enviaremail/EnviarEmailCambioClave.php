@@ -22,14 +22,14 @@
  */
 
  /**    
- *  @file CrearUsuarioJuridico.php
+ *  @file EnviarEmailCambioClave.php
  *  
  *  @author Manuel Alejandro Zapata Canelon
  * 
- *  @date 04/01/2016
+ *  @date 20/01/2016
  * 
- *  @class CrearUsuarioJuridico
- *  @brief Modelo que instancia la conexion a base de datos para buscar datos en contribuyentes. 
+ *  @class enviarEmailCambioCLave
+ *  @brief Modelo que envia el correo electronico al usuario con su nueva clave luego de haberla cambiado. 
  * 
  *  
  * 
@@ -40,8 +40,7 @@
  *  
  *  @method
  * 
- *  getDb
- *  tableName
+ *  enviarEmailCambioClave
  *  
  *
  *  @inherits
@@ -66,9 +65,12 @@ class enviarEmailCambioCLave{
        return Yii::$app->mailer->compose()
         ->setFrom('manuelz0510@gmail.com')
         ->setTo($email)
-        ->setSubject('Usuario y contraseña')
-        ->setTextBody('probando')
-        ->setHtmlBody('Usuario: ' .$email.'<br>'.'Contraseña: '.$Password1.'<br>Si desconoce Esta Operacion, dirijase a la alcaldia')
+        ->setSubject('Cambio de Contraseña')
+        ->setTextBody('Cambio de Contraseña')
+        ->setHtmlBody('Estimado Contribuyente: <br><br>
+                       Usted ha realizado con exito su cambio de datos de acceso<br><br>
+                       Usuario: ' .$email.'<br>'.'Contraseña: '.$password1.'<br><br>'.
+                       'Recuerde, esta informacion es personal y de exclusiva responsabilidad. No divulgar ni trasnferir a terceros estos datos')
         ->send();
 
     }
