@@ -75,7 +75,27 @@ class DesintegracionInmueblesUrbanosController extends Controller
     public $conn;
     public $conexion;
     public $transaccion; 
+    
 
+    protected function actionDesintegracion()
+    {    
+        if ( isset( $_SESSION['idContribuyente'] ) ) {
+            
+            $id_contribuyente = $_SESSION['idContribuyente'];
+
+            return $this->rendirect('desintegracion-inmuebles', [
+                'id' => $id_contribuyente,
+            ]); 
+
+
+
+
+
+        }  else {
+                    echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
+        }
+
+    } 
      /**
      * Finds the Inmuebles model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -117,7 +137,7 @@ class DesintegracionInmueblesUrbanosController extends Controller
      *para el cambio de otros datos inmuebles
      *@return model trae los datos del formulario 
      **/
-    public function actionDesintegracionInmuebles($_SESSION['idContribuyente'])
+    public function actionDesintegracionInmuebles($id)
     { 
         if ( isset( $_SESSION['idContribuyente'] ) ) {
         $modelContribuyente = $this->findModelContribuyente($id_contribuyente);
