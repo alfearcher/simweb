@@ -105,7 +105,7 @@ session_start();
 		        						['label' => 'Cambio de Numero Catastral', 'url' => ['/inmueble/inmuebles-urbanos/index']],
 		        						['label' => 'Cambio de Propietario', 'url' => ['inmueble/cambio-propietario-inmuebles-urbanos/cambio-propietario-inmuebles']],
 		        						['label' => 'Integración de Parcela', 'url' => ['/inmueble/integracion-inmuebles-urbanos/integracion-inmuebles']],
-		        						['label' => 'Desintegración de Parcela', 'url' => ['inmueble/desintegracion-inmuebles-urbanos/desintegracion-inmuebles']],
+		        						['label' => 'Desintegración de Parcela', 'url' => ['inmueble/desintegracion-inmuebles-urbanos/desintegracion']],
 		        						['label' => 'Cambio a Propiedad Horizontal', 'url' => ['/inmueble/inmuebles-urbanos/index']],
 		        						['label' => 'Cambio de Otros Datos del Inmueble', 'url' => ['/inmueble/inmuebles-urbanos/index']],
 		        						['label' => 'Modificar Avaluo', 'url' => '#'],
