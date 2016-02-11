@@ -70,7 +70,8 @@ class enviarEmailCambioCLave{
         ->setHtmlBody('Estimado Contribuyente: <br><br>
                        Usted ha realizado con exito su cambio de datos de acceso<br><br>
                        Usuario: ' .$email.'<br>'.'Contraseña: '.$Password1.'<br><br>'.
-                       'Recuerde, esta informacion es personal y de exclusiva responsabilidad. No divulgar ni trasnferir a terceros estos datos')
+                       'Recuerde, esta informacion es personal y de su exclusiva responsabilidad. No divulgar ni trasnferir a terceros estos datos.<br><br>
+                       Esta es una cuenta no monitoreada, por favor no responder este correo.')
         ->send();
 
     }
