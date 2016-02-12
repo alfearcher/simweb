@@ -9,9 +9,12 @@
     use kartik\icons\Icon;
     //use yii\widgets\Pjax;
     //use yii\bootstrap\Modal;
+    //
+    //session_start();
 
     $typeIcon = Icon::FA;
     $typeLong = 'fa-2x';
+
 
     Icon::map($this, $typeIcon);
 
@@ -88,12 +91,16 @@ AppAsset::register($this);
 
         </div>
         <div class="barra-inferior">
+
             <?php
-                if (!Yii::$app->user->isGuest) {
-                    //require('boton-search.php');
+            //die($_SESSION['idContribuyente']);
+                if (isset($_SESSION['idContribuyente'])) {
+
+                   // require('boton-search-contribuyente.php');
                     //require('barra-inferior.php');
                     //require('boton-undo.php');
                     //require('opciones-nav.php');
+                
                 }
             ?>
         </div>
