@@ -84,14 +84,14 @@ class DesintegracionInmueblesUrbanosController extends Controller
             if ($_SESSION['idContribuyente'] != null) {
                 
                 return $this->redirect('desintegracion-inmuebles'); 
-            }
+            } 
              
 
         
 
         }  else {
                     echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
-        }
+        } 
 
 
 
