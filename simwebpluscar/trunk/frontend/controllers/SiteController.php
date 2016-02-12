@@ -17,6 +17,9 @@ use frontend\models\usuario\CrearUsuarioJuridicoForm;
 use frontend\controllers\mensaje\MensajeController;
 use frontend\models\usuario\PreguntaSeguridadContribuyenteForm;
 use frontend\controller\usuario\PreguntaSeguridadContribuyenteController;
+use common\models\contribuyente\ContribuyenteBase;
+
+session_start();
 
 
 /**
@@ -104,9 +107,21 @@ public $layout = "layout-login";
                 if ($validarPassword){
 
                     $validarContribuyente = $validar->ValidarUsuarioContribuyente($validarPassword);
+
+                            
+                        
+
                         
                 if ($validarContribuyente){
 
+                    $_SESSION['idContribuyente'] = $validarContribuyente->id_contribuyente;
+
+                   // $contribuyente = ContribuyenteBase::getContribuyenteDescripcionSegunID($validarContribuyente->id_contribuyente);
+
+                        
+                            
+                        
+                    
                     $pregunta = new PreguntaSeguridadContribuyenteForm();
 
                     $preguntaSeguridad = $pregunta->ValidarPreguntaSeguridad($model, $validarPassword->id_contribuyente);
@@ -122,7 +137,7 @@ public $layout = "layout-login";
                                                                                                                         ]);
                     }else{                                                                                      
 
-                        return $this->render('/usuario/llegue');
+                        return $this->render('/usuario/menu-vertical');
                     }
                     
                     } else {
