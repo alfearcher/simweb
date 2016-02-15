@@ -96,7 +96,7 @@ AppAsset::register($this);
             //die($_SESSION['idContribuyente']);
                 if (isset($_SESSION['idContribuyente'])) {
 
-                   // require('boton-search-contribuyente.php');
+                    require('boton-search-contribuyente.php');
                     //require('barra-inferior.php');
                     //require('boton-undo.php');
                     //require('opciones-nav.php');
