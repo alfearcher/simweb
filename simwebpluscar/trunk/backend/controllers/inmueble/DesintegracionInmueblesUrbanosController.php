@@ -83,7 +83,7 @@ class DesintegracionInmueblesUrbanosController extends Controller
             
             if ($_SESSION['idContribuyente'] != null) {
                 
-                return $this->redirect('inmueble/desintegracion-inmuebles-urbanos/desintegracion-inmuebles'); 
+                return $this->redirect('/inmueble/desintegracion-inmuebles-urbanos/desintegracion-inmuebles'); 
             } 
              
 
