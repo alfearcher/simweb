@@ -83,7 +83,7 @@ class DesintegracionInmueblesUrbanosController extends Controller
             
             if ($_SESSION['idContribuyente'] != null) {
                 
-                return $this->redirect('/inmueble/desintegracion-inmuebles-urbanos/desintegracion-inmuebles'); 
+                return $this->redirect('/inmueble/desintegracion-inmuebles-urbanos/desintegracion-inmuebles', ['id_contribuyente' =>$_SESSION['idContribuyente'] ]); 
             } 
              
 
@@ -108,13 +108,13 @@ class DesintegracionInmueblesUrbanosController extends Controller
      *para el cambio de otros datos inmuebles
      *@return model trae los datos del formulario 
      **/
-    public function actionDesintegracionInmuebles()
+    public function actionDesintegracionInmuebles(id_contribuyente)
     { 
         if ( isset( $_SESSION['idContribuyente'] ) ) {
-        $modelContribuyente = $this->findModelContribuyente($_SESSION['idContribuyente']);
+        $modelContribuyente = $this->findModelContribuyente($id_contribuyente);
         
 
-        $model = $this->findModel($_SESSION['idContribuyente']); 
+        $model = $this->findModel($id_contribuyente); 
 
 
          //Mostrará un mensaje en la vista cuando el usuario se haya registrado

@@ -234,7 +234,7 @@ $variablephp=$_COOKIE['variablephp'];
                                                     <td colspan="2">
                                                 
                                                         <div class="form-group"> 
-<?= Html::beginForm();?>
+<?= Html::beginForm();?> 
 <?= Html::submitButton(Yii::t('backend', 'Accept'), ['class' => 'btn btn-primary', 'name'=>'AcceptSeller', 'value'=>'AcceptSeller']) ?>
 <?= Html::endForm();?> 
 
