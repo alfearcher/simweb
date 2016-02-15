@@ -157,5 +157,30 @@ class Afiliaciones extends Afiliacion
 
 
     }
+
+    public function validarUsuarioActivo($validarContribuyente){
+        
+        $buscarDatos = Afiliacion::find()
+                                   ->where([
+                                   'id_contribuyente' => $validarContribuyente->id_contribuyente,
+                                  // die($validarContribuyente->id_contribuyente),
+                                   'estatus' => 1,
+                                    ])
+                                    ->all();
+
+                                    //die(var_dump($buscarDatos));
+
+                                    
+
+            if($buscarDatos == true){
+                   // die('encontro estatus');
+                
+                return $buscarDatos;
+
+            } else {
+
+                return false;
+            }             
+    }
 }
 ?>

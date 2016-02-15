@@ -107,7 +107,7 @@ use Yii;
  * @property integer $no_sujeto
  * @property string $ruc
  */
-class CargaDatosBasicosNaturalForm extends \yii\db\ActiveRecord
+class CargaDatosBasicosNaturalForm extends CrearUsuarioNatural
 {
 
         public $id_contribuyente;
