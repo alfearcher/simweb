@@ -415,9 +415,9 @@ function bloquea() {
 <?= $form->field($model, 'catastro')->hiddenInput(['value' => 0])->label(false) ?>
 <?= $form->field($model, 'tlf_hab')->hiddenInput(['style' => 'width:80px;','value' =>0])->label(false) ?>
 
-<?php ActiveForm::end(); ?> 
+<?php //ActiveForm::end(); ?> 
 
-
+<?= Html::endForm();?>
 
 </div><!-- inscripcionInmueblesUrbanos -->
 
