@@ -3,6 +3,7 @@
   	use yii\helpers\Url;
     use yii\helpers\Html;
     use yii\bootstrap\Nav;
+    use yii\kartik\DetailView;
 
   	$typeIcon = Icon::FA;
   	$typeLong = 'fa-2x';
@@ -14,27 +15,25 @@
 
  ?>
 
-        <div class="row" style="margin-left: 170px;">
-        <div class="col-sm-7">
-        <div class="panel panel-primary">
-        <div class="panel-body" >
-        </div>
-               
-                <div class="row">
-                <div class="col-sm-5">
-               
-                        <div class="form-group" >
-                            <input type="text" class="form-control" id="contribuyente" value="<?php echo $idContribuyente ?>" readonly style="width: 100px; margin-left: 240px;" >
-                        </div>
-                </div>
+       <?= DetailView::widget([
+                                                       'model' => $modelContribuyente,
+                                                       'attributes' => [ 
+                                                       'id_contribuyente',
+                                                       'cedula',
+                                                       'nombres',
+                                                       'apellidos',
+                                                       'domicilio_fiscal',
+                                                       'email',
+                                                        ],
+                                                        
+                             ]) ?> 
+Alvaro Jose • 10:37
+Alvaro Jose Fernandez Archer
 
-                        <div class="col-sm-4">
-                            <div class="form-group" >
-                            <input type="text" class="form-control" id="contribuyente" value="manuel zapata" readonly style="width: 200px; margin-left: -310px;">
-                        </div>
-                        </div>
-                </div>
-               
+
+Envía un mensaje
+
+
 
         </div>
         </div>
