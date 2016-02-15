@@ -419,46 +419,5 @@ function bloquea() {
 
 
 
-<!-- inscripcionInmueblesUrbanos -->
+</div><!-- inscripcionInmueblesUrbanos -->
 
-<!-- 
-<tr>
-                        <td><div class="col-lg-5">
-                            
-                            </div>                                                                          
-                        </td>
-                   </tr>
-                   <tr>
-                        <td><div class="col-lg-5">
-                            <? // = $form->field($model, 'lote_1') ?>
-                            </div>                                                                          
-                        </td>
-                   </tr>
-                   <tr>
-                        <td><div class="col-lg-5">
-                            <? // = $form->field($model, 'lote_2') ?>
-                            </div>                                                                          
-                        </td>
-                   </tr>
-                   <tr>
-                        <td><div class="col-lg-5">
-                        <? // = $form->field($model, 'lote_3') ?>
-                        </div>                                                                          
-                        </td>
-                   </tr>  <? // = $form->field($model, 'estado_catastro')->label(false) ?>
-                   <? // = $form->field($model, 'municipio_catastro')->label(false) ?>
-
-
-select E.estado,M.municipio,P.parroquia,A.ambito,S.codigo_ambito,A.descripcion,S.sector,MZ.manzana from estados As E " & _
-             "inner join municipios as M on E.estado=M.estado " & _
-             "inner join parroquias as P on M.estado=P.estado and M.municipio=P.municipio " & _
-             "inner join sectores as S on P.estado=S.estado and P.municipio=S.municipio and P.parroquia=S.parroquia " & _
-             "inner join ambitos as A on S.ambito=A.ambito " & _
-             "inner join urbanizaciones as U on S.id_cp=U.id_cp " & _
-             "inner join manzanas as MZ on U.id_cp=MZ.id_cp and U.urbanizacion=MZ.urbanizacion " & _
-             "inner join manzana_limites as ML on MZ.id_manzana=ML.id_manzana " & _
-             "where ML.manzana_limite=" & Str(nIdManzanaLimite) 
-
-<div class="form-group">
-        <? //= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>
