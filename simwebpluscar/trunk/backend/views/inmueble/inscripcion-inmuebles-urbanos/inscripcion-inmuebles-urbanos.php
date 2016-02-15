@@ -419,7 +419,7 @@ function bloquea() {
 
 
 
-</div><!-- inscripcionInmueblesUrbanos -->
+<!-- inscripcionInmueblesUrbanos -->
 
 <!-- 
 <tr>
