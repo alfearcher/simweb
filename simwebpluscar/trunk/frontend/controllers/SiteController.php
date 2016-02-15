@@ -116,17 +116,19 @@ public $layout = "layout-login";
 
                     $_SESSION['idContribuyente'] = $validarContribuyente->id_contribuyente;
 
-                   // $contribuyente = ContribuyenteBase::getContribuyenteDescripcionSegunID($validarContribuyente->id_contribuyente);
+                    $validarActivo = $validar->validarUsuarioActivo($validarContribuyente);
 
-                        
-                            
-                        
-                    
+                        if ($validarActivo == true){
+                            return MensajeController::actionMensaje('Your status is inactive, please go to your city hall ');
+                         
+                        }else{
+                     
+
                     $pregunta = new PreguntaSeguridadContribuyenteForm();
 
                     $preguntaSeguridad = $pregunta->ValidarPreguntaSeguridad($model, $validarPassword->id_contribuyente);
 
-
+                       
                             
                     if ($validarPassword and $validarContribuyente == true and $preguntaSeguridad == null){
                                 
@@ -139,7 +141,7 @@ public $layout = "layout-login";
 
                         return $this->render('/usuario/menu-vertical');
                     }
-                    
+                    }
                     } else {
 
                         return MensajeController::actionMensaje('Your are not signed yet, Please go back and sign ');
