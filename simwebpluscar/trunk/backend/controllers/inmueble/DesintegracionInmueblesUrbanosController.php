@@ -189,7 +189,7 @@ CONTENIDO DESINTEGRACION DEL INMUEBLE
                                       ]; 
                         
 
-                        $tableName = 'inmuebles'; 
+                        $tableName = 'inmuebles';  
 
                         $arrayCondition = ['id_impuesto' => $id_impuestoVenta,]; 
 
