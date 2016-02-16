@@ -8,12 +8,12 @@ use yii\helpers\ArrayHelper;
 
 $modeloTipoNaturaleza = TipoNaturaleza::find()->where('id_tipo_naturaleza BETWEEN 2 and 3')->all();
 $listaNaturaleza = ArrayHelper::map($modeloTipoNaturaleza, 'siglas_tnaturaleza', 'nb_naturaleza');
-                                
+
 
 $this->title = 'Busqueda Persona Natural';
 
 ?>
- 
+
 
 
 
@@ -22,8 +22,9 @@ $this->title = 'Busqueda Persona Natural';
     'id' => 'formulario',
     'enableClientValidation' => false,
     'enableAjaxValidation' => true,
+    'enableClientScript' => true,
     'options' => ['class' => 'form-horizontal'],
-        
+
 ]);
 ?>
 
@@ -33,11 +34,11 @@ $this->title = 'Busqueda Persona Natural';
             <?= $this->title ?>
                 </div>
                     <div class="panel-body" >
-               
-                  
 
 
-                           
+
+
+
                             <div class="row" style="width:100%;">
                                 <p style="margin-left: 15px;margin-top: 0px;margin-bottom: 0px;"><i><small><?=Yii::t('frontend', 'DNI') ?></small></i></p>
                             </div>
@@ -51,7 +52,7 @@ $this->title = 'Busqueda Persona Natural';
                                                                                                     'id' => 'naturaleza',
                                                                                                     'prompt' => Yii::t('backend', 'Select'),
                                                                                                     'style' => 'height:32px;width:150px;',
-                                                                                                    
+
                                                                                                     ])->label(false)
                                             ?>
                                         </div>
@@ -61,12 +62,12 @@ $this->title = 'Busqueda Persona Natural';
 <!-- CEDULA -->
                                     <div class="col-sm-4" style="padding-left: 27px;">
 
-                                          
+
                                                <div class="cedula">
                                                  <?= $form->field($model, 'cedula')->textInput([
                                                                                             'id' => 'cedula',
                                                                                             'style' => 'height:32px;width:122px;',
-                                                                                           
+
                                                                                             //'maxlength' => $maxLength,
                                                                                           ])->label(false) ?>
                                                 </div>
@@ -76,15 +77,15 @@ $this->title = 'Busqueda Persona Natural';
 
                                 </div>
 <!-- FIN DE TIPO -->
-                           
 
 
 
-            
+
+
 
  <!-- Boton para aplicar la actualizacion -->
                                     <div class="col-sm-4" >
-                                        
+
                                             <?= Html::submitButton(Yii::t('frontend' , 'Search'),
                                                                                                       [
                                                                                                         'id' => 'btn-search',
@@ -94,29 +95,29 @@ $this->title = 'Busqueda Persona Natural';
                                                                                                         'style' => 'height:30px;width:100px;margin-left:-15px;',
                                                                                                       ])
                                             ?>
-                                        
+
                                     </div>
 
                                     <div class="col-sm-3" >
-                                        
+
                                             <?= Html::a('Return',['/usuario/opcion-crear-usuario/seleccionar-tipo-usuario'], ['class' => 'btn btn-primary','style' => 'height:30px;width:100px;margin-left:30px;' ]) //boton para volver al menu de seleccion tipo usuario ?>
-                                        
+
                                     </div>
-                                   
+
 <!-- Fin de Boton para aplicar la actualizacion -->
 
-                                
+
 
 
 
           </div>
        </div>
     </div>
-  </div> 
-</div> 
-    
+  </div>
+</div>
 
-     
+
+
 
 <?php $form->end() ?>
 
