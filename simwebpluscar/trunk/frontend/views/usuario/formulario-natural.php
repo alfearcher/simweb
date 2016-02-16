@@ -46,9 +46,9 @@
     }
 </script>
 <script>
-$(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();
-});
+// $(document).ready(function(){
+//     $('[data-toggle="tooltip"]').tooltip();
+// });
 </script>
 <!-- FIN DEL SCRIPT DE MOSTRAR PREFIJO TELEFONO -->
 
@@ -58,11 +58,6 @@ $(document).ready(function(){
 <div class="dataBasicRegister" id="paneldataBasicRegister" style="display:;">
     <h3><?= Yii::t('backend', 'Registration Basic Information') ?> </h3>
 </div>
-
-    <div id="tJuridico" class="datosbasico-form" style="display:<?//= $noneJ?>;">
-    </div>
-    <!-- FIN SELECTOR DE TIPO DE PERSONA -->
-
 
 <div><br></div>
 
