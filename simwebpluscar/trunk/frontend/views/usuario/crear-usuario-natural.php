@@ -18,7 +18,7 @@ $this->title = 'Busqueda Persona Natural';
 
 
 <?php $form = ActiveForm::begin([
-   // 'method' => 'post',
+   'method' => 'post',
     'id' => 'formulario',
     'enableClientValidation' => false,
     'enableAjaxValidation' => true,
