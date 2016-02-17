@@ -3,41 +3,57 @@
   	use yii\helpers\Url;
     use yii\helpers\Html;
     use yii\bootstrap\Nav;
-    use yii\kartik\DetailView;
-
+   use yii\widgets\DetailView;
+   use frontend\models\usuario\Afiliacion;
+   use frontend\models\usuario\CrearUsuarioNatural;
   	$typeIcon = Icon::FA;
   	$typeLong = 'fa-2x';
 
     Icon::map($this, $typeIcon);
 
-   $idContribuyente = $_SESSION['idContribuyente'];
+    $this->title = 'Informacion del Contribuyente';
+
+    $id = $_SESSION['idContribuyente'];
+    $nombre = $_SESSION['nombre'];
+    $apellido = $_SESSION['apellido'];
+
+    
+   $modelContribuyente = ['id_contribuyente' => $id, 'nombre' => $nombre.' '.$apellido];
+    
+   
 
 
- ?>
-
+ ?>   <div class="row">
+      <div class="col-sm-5" style="margin-left:200px; width: 660px; height: 120px;">
+      <div class="panel panel-primary">
+       <div class="panel-heading">
+       <?= $this->title ?>
+       </div>
+      <div class="panel-body">
+     
        <?= DetailView::widget([
                                                        'model' => $modelContribuyente,
+                                                       
                                                        'attributes' => [ 
                                                        'id_contribuyente',
-                                                       'cedula',
-                                                       'nombres',
-                                                       'apellidos',
-                                                       'domicilio_fiscal',
-                                                       'email',
+                                                        'nombre' ,
+                                                        ],
+                                                        'options' =>[ 
+                                                        'style' => 'width:600px; margin-left:0px;',
+                                                        'class' =>'table table-hover table-bordered',
+                                                          
+       
                                                         ],
                                                         
                              ]) ?> 
-Alvaro Jose • 10:37
-Alvaro Jose Fernandez Archer
 
 
-Envía un mensaje
-
-
-
+      </div>
+      </div>
         </div>
         </div>
-        </div>
+      
+    
 <!--  </div>
 
 
