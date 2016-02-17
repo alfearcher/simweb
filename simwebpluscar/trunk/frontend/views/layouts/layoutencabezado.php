@@ -93,9 +93,9 @@ AppAsset::register($this);
         <div class="barra-inferior">
 
             <?php
-            //die($_SESSION['idContribuyente']);
+          
                 if (isset($_SESSION['idContribuyente'])) {
-
+                    
                     require('boton-search-contribuyente.php');
                     //require('barra-inferior.php');
                     //require('boton-undo.php');
