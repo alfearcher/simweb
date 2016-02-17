@@ -251,7 +251,7 @@ CONTENIDO DEL COMPRADOR (BUYER)
                          
                         }
                     }
-                    if ($btn['AcceptBuyer']!=null) {
+                    if ($btn['AcceptBuyer']!=null) { 
                         $id_contribuyenteComprador = $datosCambio["id_contribuyente"];
 
                         $ano_traspaso = $datosCambio["ano_traspaso"];
