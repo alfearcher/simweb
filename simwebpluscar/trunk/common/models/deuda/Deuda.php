@@ -59,6 +59,7 @@
 		private $_impuesto;
 		private $_idContribuyente;
 		private $_idImpuesto;
+		private $_concepto = -1;
 		public $connLocal;			// Instancia de conexion.
 		public $conexion;
 
@@ -135,6 +136,17 @@
 		}
 
 
+		public function setConcepto($concepto)
+		{
+			$this->_concepto = $concepto;
+		}
+
+
+		public function getConcepto()
+		{
+			return $this->_concepto;
+		}
+
 
 		/***/
 		private function getPlanillaDelObjetoImponible()
@@ -208,7 +220,7 @@
 		 * los objetos con sus respetivos totales de deudas.
 		 * @return [type] [description]
 		 */
-		private function getDeudaPorImpuestoEspecifico()
+		private function getDeudaPorImpuestoEspecifico2()
 		{
 			$result = null;
 			try {
@@ -421,7 +433,7 @@
 		 * Metodo que retorna la deuda total de un contribuyente. Aqui se contabilizan todos los registros
 		 * @return retorna un monto total de la deuda del contribuyente
 		 */
-		private function getDeudaGeneralContribuyente()
+		private function getDeudaGeneralContribuyente2()
 		{
 			$result = null;
 			try {
@@ -454,7 +466,7 @@
 		 * @return retorna un array con la estructrura:
 		 * descripcion del impuesto => total de la deuda por el impuesto especifico.
 		 */
-		private function getDeudaGeneralPorImpuesto()
+		private function getDeudaGeneralPorImpuesto2()
 		{
 			$result = null;
 			try {
@@ -482,6 +494,331 @@
 
 
 
+///////////////////////////////////////////////////////
+
+		/**funciona*/
+		private function getDeudaGeneralPorImpuesto()
+		{
+			$result = null;
+			try {
+				$query = New Query();
+
+				$query->select('I.descripcion,P.id_contribuyente,SUM(D.monto) as tmonto,
+					           SUM(D.recargo) as trecargo,SUM(D.interes) as tinteres,
+					           SUM(D.descuento) as tdescuento,SUM(D.monto_reconocimiento) as tmonto_reconocimiento')
+					  ->from('pagos as P')
+					  ->join('INNER JOIN', 'pagos_detalle as D', 'P.id_pago=D.id_pago')
+					  ->join('INNER JOIN', 'impuestos as I', 'D.impuesto=I.impuesto')
+					  ->where('P.id_contribuyente =:id_contribuyente', [':id_contribuyente' => $this->_idContribuyente])
+					  ->andWhere('D.pago =:pago',[':pago' => 0])
+					  ->groupBy('D.impuesto')
+					  ->orderBy([
+					  		'D.impuesto' => SORT_ASC,
+					  	]);
+
+				$result = $query->all();
+
+			} catch (Exception $e) {
+				//$e->errorInfo, muestra un array indicando el error ocurrido
+				//$e->errorInfo[2] muestra la descripcion del mensaje
+				echo var_dump($e->errorInfo);
+
+			}
+
+			return $result;
+		}
+
+
+		/**funciona*/
+		private function getDeudaPorImpuestoEspecifico()
+		{
+			$result = null;
+			try {
+				$query1 = New Query();
+
+				$query1->select('CONCAT("Objetos Imponibles") as concepto,' . 'D.impuesto,
+						   	    P.id_contribuyente,
+							    SUM(D.monto) as tmonto,
+					            SUM(D.recargo) as trecargo,
+					            SUM(D.interes) as tinteres,
+					            SUM(D.descuento) as tdescuento,
+					            SUM(D.monto_reconocimiento) as tmonto_reconocimiento')
+					   ->from('pagos as P')
+					   ->join('INNER JOIN', 'pagos_detalle as D', 'P.id_pago=D.id_pago')
+					   ->join('INNER JOIN', 'impuestos as I', 'D.impuesto=I.impuesto')
+					   ->where('P.id_contribuyente =:id_contribuyente',[':id_contribuyente' => $this->_idContribuyente])
+					   ->andWhere('D.pago =:pago',[':pago' => 0])
+					   ->andWhere('D.trimestre >:trimestre',[':trimestre' => 0])
+					   ->andWhere('D.impuesto =:impuesto',[':impuesto' => $this->_impuesto]);
+
+				$query2 = New Query();
+
+				$query2->select('CONCAT("Otros Conceptos") as concepto,' . 'D.impuesto,
+						  	    P.id_contribuyente,
+							    SUM(D.monto) as tmonto,
+					            SUM(D.recargo) as trecargo,
+					            SUM(D.interes) as tinteres,
+					            SUM(D.descuento) as tdescuento,
+					            SUM(D.monto_reconocimiento) as tmonto_reconocimiento')
+					   ->from('pagos as P')
+					   ->join('INNER JOIN', 'pagos_detalle as D', 'P.id_pago=D.id_pago')
+					   ->join('INNER JOIN', 'impuestos as I', 'D.impuesto=I.impuesto')
+					   ->where('P.id_contribuyente =:id_contribuyente',[':id_contribuyente' => $this->_idContribuyente])
+					   ->andWhere('D.pago =:pago',[':pago' => 0])
+					   ->andWhere('D.trimestre =:trimestre',[':trimestre' => 0])
+					   ->andWhere('D.impuesto =:impuesto',[':impuesto' => $this->_impuesto]);
+
+				$result = $query1->union($query2)
+								 ->groupBy('P.id_contribuyente')
+								 ->orderBy([
+					  		 			'P.id_contribuyente' => SORT_ASC,
+					  				])
+								 ->all();
+
+			} catch (Exception $e) {
+				//$e->errorInfo, muestra un array indicando el error ocurrido
+				//$e->errorInfo[2] muestra la descripcion del mensaje
+				echo var_dump(var_dump($e->errorInfo));
+
+			}
+
+			return $result;
+		}
+
+
+
+		/***/
+		private function getDeudaDetallePorImpuestoEspecifico()
+		{
+			$result = null;
+			try {
+
+				if ( $this->_concepto == 1 ) {
+					if ( $this->_impuesto == 1 ) {
+						$result = $this->getDeudaDetallePorActividadEconomica();
+					} elseif ( $this->_impuesto == 2 ) {
+						$result = $this->getDeudaDetallePorInmueblesUrbanos();
+					} elseif ( $this->_impuesto == 3 ) {
+
+					} elseif ( $this->_impuesto == 4 ) {
+
+					} elseif ( $this->_impuesto == 5 ) {
+
+					} elseif ( $this->_impuesto == 6 ) {
+
+					} elseif ( $this->_impuesto == 7 ) {
+
+					} elseif ( $this->_impuesto == 12 ) {
+						$result = $this->getDeudaDetallePorAseoUrbano();
+					} else {
+
+					}
+				} elseif ( $this->_concepto == 0 ) {
+					if ( $this->_impuesto == 1 ) {
+
+					} elseif ( $this->_impuesto == 2 ) {
+
+					} elseif ( $this->_impuesto == 3 ) {
+
+					} elseif ( $this->_impuesto == 4 ) {
+
+					} elseif ( $this->_impuesto == 5 ) {
+
+					} elseif ( $this->_impuesto == 6 ) {
+
+					} elseif ( $this->_impuesto == 7 ) {
+
+					} elseif ( $this->_impuesto == 12 ) {
+
+					} else {
+
+					}
+				}
+
+			} catch ( Exception $e ) {
+				//$e->errorInfo, muestra un array indicando el error ocurrido
+				//$e->errorInfo[2] muestra la descripcion del mensaje
+				echo var_dump(var_dump($e->errorInfo));
+
+			}
+
+			return $result;
+		}
+
+
+
+
+		/***/
+		private function getDeudaDetallePorActividadEconomica()
+		{
+			$result = null;
+			try {
+				$query = new Query();
+				if ( $this->_concepto == 1 ) {
+					$query->select('P.planilla,
+						            D.ano_impositivo,
+								    D.trimestre,
+								    E.unidad,
+								    if(D.referencia=1,CONCAT("DEFINITIVA"),CONCAT("ESTIMADA")) as tipo,
+								    SUM(D.monto) as tmonto,
+							        SUM(D.recargo) as trecargo,
+							        SUM(D.interes) as tinteres,
+							        SUM(D.descuento) as tdescuento,
+							        SUM(D.monto_reconocimiento) as tmonto_reconocimiento,
+							        D.impuesto,
+							        I.descripcion,
+						            P.id_contribuyente')
+						  ->from('pagos as P')
+					      ->join('INNER JOIN', 'pagos_detalle as D', 'P.id_pago=D.id_pago')
+						  ->join('INNER JOIN', 'impuestos as I', 'D.impuesto=I.impuesto')
+						  ->join('INNER JOIN', 'exigibilidades as E', 'D.exigibilidad_pago=E.exigibilidad')
+						  ->where('P.id_contribuyente =:id_contribuyente',[':id_contribuyente' => $this->_idContribuyente])
+						  ->andWhere('D.pago =:pago',[':pago' => 0])
+					      ->andWhere('D.trimestre >:trimestre',[':trimestre' => 0])
+					      ->andWhere('D.impuesto =:impuesto',[':impuesto' => $this->_impuesto]);
+
+				} elseif ( $this->_concepto == 0 ) {
+					$query->select('P.planilla,
+						            D.ano_impositivo,
+								    D.trimestre,
+								    E.unidad,
+								    if(D.referencia=1,CONCAT("DEFINITIVA"),CONCAT("ESTIMADA")) as tipo,
+								    SUM(D.monto) as tmonto,
+							        SUM(D.recargo) as trecargo,
+							        SUM(D.interes) as tinteres,
+							        SUM(D.descuento) as tdescuento,
+							        SUM(D.monto_reconocimiento) as tmonto_reconocimiento,
+							        D.impuesto,
+							        I.descripcion,
+						            P.id_contribuyente')
+						  ->from('pagos as P')
+					      ->join('INNER JOIN', 'pagos_detalle as D', 'P.id_pago=D.id_pago')
+						  ->join('INNER JOIN', 'impuestos as I', 'D.impuesto=I.impuesto')
+						  ->join('INNER JOIN', 'exigibilidades as E', 'D.exigibilidad_pago=E.exigibilidad')
+						  ->where('P.id_contribuyente =:id_contribuyente',[':id_contribuyente' => $this->_idContribuyente])
+						  ->andWhere('D.pago =:pago',[':pago' => 0])
+					      ->andWhere('D.trimestre =:trimestre',[':trimestre' => 0])
+					      ->andWhere('D.impuesto =:impuesto',[':impuesto' => $this->_impuesto]);
+
+				}
+			} catch ( Exception $e ) {
+				//$e->errorInfo, muestra un array indicando el error ocurrido
+				//$e->errorInfo[2] muestra la descripcion del mensaje
+				echo var_dump(var_dump($e->errorInfo));
+			}
+
+			$result = $query->groupBy('P.planilla')
+							->orderBy([
+				  		 			'P.planilla' => SORT_ASC,
+				  		 			'D.referencia' => SORT_ASC,
+				  		 			'D.ano_impositivo' => SORT_ASC,
+				  		 			'D.trimestre' => SORT_ASC
+				  				])
+							->all();
+
+			return $result;
+		}
+
+
+
+
+		/**funciona*/
+		private function getDeudaDetallePorInmueblesUrbanos()
+		{
+			$resul = null;
+			try {
+				$query = new Query();
+				if ( $this->_concepto == 1 ) {
+					$query->select('U.id_impuesto,
+									U.direccion,
+									(SUM(D.monto+D.recargo+D.interes)-SUM(D.descuento+D.monto_reconocimiento)) as total,
+									P.id_contribuyente,D.impuesto')
+						  ->from('pagos as P')
+						  ->join('INNER JOIN', 'pagos_detalle as D', 'P.id_pago=D.id_pago')
+						  ->join('INNER JOIN', 'inmuebles as U', 'D.id_impuesto=U.id_impuesto')
+						  ->where('P.id_contribuyente =:id_contribuyente',[':id_contribuyente' => $this->_idContribuyente])
+						  ->andWhere('D.pago =:pago',[':pago' => 0])
+						  ->andWhere('D.trimestre >:trimestre',[':trimestre' => 0])
+						  ->andWhere('D.impuesto =:impuesto',[':impuesto' => $this->_impuesto]);
+
+				} elseif ( $this->_concepto == 0 ) {
+					$query->select('U.id_impuesto,
+									U.direccion,
+									(SUM(D.monto+D.recargo+D.interes)-SUM(D.descuento+D.monto_reconocimiento)) as total,
+									P.id_contribuyente,D.impuesto')
+						  ->from('pagos as P')
+						  ->join('INNER JOIN', 'pagos_detalle as D', 'P.id_pago=D.id_pago')
+						  ->join('INNER JOIN', 'inmuebles as U', 'D.id_impuesto=U.id_impuesto')
+						  ->where('P.id_contribuyente =:id_contribuyente',[':id_contribuyente' => $this->_idContribuyente])
+						  ->andWhere('D.pago =:pago',[':pago' => 0])
+						  ->andWhere('D.trimestre =:trimestre',[':trimestre' => 0])
+						  ->andWhere('D.impuesto =:impuesto',[':impuesto' => $this->_impuesto]);
+				}
+			} catch ( Exception $e ) {
+				//$e->errorInfo, muestra un array indicando el error ocurrido
+				//$e->errorInfo[2] muestra la descripcion del mensaje
+				echo var_dump(var_dump($e->errorInfo));
+			}
+
+			$result = $query->groupBy('D.id_impuesto')
+							->orderBy([
+				  		 			'D.id_impuesto' => SORT_ASC
+				  				])
+							->all();
+
+			return $result;
+		}
+
+
+
+		/***/
+		private function getDeudaDetallePorAseoUrbano()
+		{
+			$resul = null;
+			try {
+				$query = new Query();
+				if ( $this->_concepto == 1 ) {
+					$query->select('U.id_impuesto,
+									U.direccion,
+									(SUM(D.monto+D.recargo+D.interes)-SUM(D.descuento+D.monto_reconocimiento)) as total,
+									P.id_contribuyente,D.impuesto')
+						  ->from('pagos as P')
+						  ->join('INNER JOIN', 'pagos_detalle as D', 'P.id_pago=D.id_pago')
+						  ->join('INNER JOIN', 'inmuebles as U', 'D.id_impuesto=U.id_impuesto')
+						  ->where('P.id_contribuyente =:id_contribuyente',[':id_contribuyente' => $this->_idContribuyente])
+						  ->andWhere('D.pago =:pago',[':pago' => 0])
+						  ->andWhere('D.trimestre >:trimestre',[':trimestre' => 0])
+						  ->andWhere('D.impuesto =:impuesto',[':impuesto' => $this->_impuesto]);
+
+				} elseif ( $this->_concepto == 0 ) {
+					$query->select('U.id_impuesto,
+									U.direccion,
+									(SUM(D.monto+D.recargo+D.interes)-SUM(D.descuento+D.monto_reconocimiento)) as total,
+									P.id_contribuyente,D.impuesto')
+						  ->from('pagos as P')
+						  ->join('INNER JOIN', 'pagos_detalle as D', 'P.id_pago=D.id_pago')
+						  ->join('INNER JOIN', 'inmuebles as U', 'D.id_impuesto=U.id_impuesto')
+						  ->where('P.id_contribuyente =:id_contribuyente',[':id_contribuyente' => $this->_idContribuyente])
+						  ->andWhere('D.pago =:pago',[':pago' => 0])
+						  ->andWhere('D.trimestre =:trimestre',[':trimestre' => 0])
+						  ->andWhere('D.impuesto =:impuesto',[':impuesto' => $this->_impuesto]);
+				}
+			} catch ( Exception $e ) {
+				//$e->errorInfo, muestra un array indicando el error ocurrido
+				//$e->errorInfo[2] muestra la descripcion del mensaje
+				echo var_dump(var_dump($e->errorInfo));
+			}
+
+			$result = $query->groupBy('D.id_impuesto')
+							->orderBy([
+				  		 			'D.id_impuesto' => SORT_ASC
+				  				])
+							->all();
+
+			return $result;
+		}
+
+
 
 		public function getPlanillaSegunObjeto($id, $impuesto, $idImpuesto)
 		{
@@ -497,6 +834,14 @@
 			$this->setIdContribuyente($id);
 			$this->setImpuesto($impuesto);
 			return $this->getDeudaPorImpuestoEspecifico();
+		}
+
+		public function getDeudaDetalleSegunImpuesto($id, $impuesto, $concepto)
+		{
+			$this->setIdContribuyente($id);
+			$this->setImpuesto($impuesto);
+			$this->setConcepto($concepto);
+			return $this->getDeudaDetallePorImpuestoEspecifico();
 		}
 
 
@@ -521,24 +866,24 @@
 		/***/
 		public function getDeudaGeneral2()
 		{
-			// $query = New Query();
+			$query = New Query();
 
-			// $query->select('P.planilla,
-			//     		    P.id_contribuyente,
-			// 			    D.*')
-			// 	  ->from('pagos as P')
-			// 	  ->join('INNER JOIN', 'pagos_detalle as D', 'P.id_pago = D.id_pago')
-			// 	  ->where('P.id_contribuyente =:id_contribuyente', [':id_contribuyente' => $this->idContribuyente])
-			// 	  ->andWhere('D.pago =:pago', [':pago' => 0])
-			// 	  ->orderBy([
-			// 				'D.impuesto' => SORT_ASC,
-			// 				'P.planilla' => SORT_ASC,
-			// 				'D.ano_impositivo' => SORT_ASC,
-			// 				'D.trimestre' => SORT_ASC
-			// 			  ])
-			// 	  ->all();
+			$query->select('P.planilla,
+			    		    P.id_contribuyente,
+						    (sum(D.monto+D.recargo)-sum(D.descuento+D.monto_reconocimiento)) as t')
+				  ->from('pagos as P')
+				  ->join('INNER JOIN', 'pagos_detalle as D', 'P.id_pago = D.id_pago')
+				  ->where('P.id_contribuyente =:id_contribuyente', [':id_contribuyente' => $this->_idContribuyente])
+				  ->andWhere('D.pago =:pago', [':pago' => 0])
+				  ->groupBy('P.planilla')
+				  ->orderBy([
+							'D.impuesto' => SORT_ASC,
+							'P.planilla' => SORT_ASC,
+							'D.ano_impositivo' => SORT_ASC,
+							'D.trimestre' => SORT_ASC
+						  ]);
 
-			// return $query;
+			return $query->all();
 		}
 
 
