@@ -91,12 +91,12 @@ public $layout = "layout-login";
 
         $postData = Yii::$app->request->post();
 
-        if ( $model->load($postData) && Yii::$app->request->isAjax ) {
+        if ( $model->load($postData) &&  Yii::$app->request->isAjax ) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ActiveForm::validate($model);
         }
 
-            if ( $model->load($postData) ) {
+            if ( $model->load($postData)   ) {
 
             if ($model->validate()){
 
@@ -104,9 +104,12 @@ public $layout = "layout-login";
 
                 $validarPassword = $validar->ValidarUsuario($model);
 
+               // die(var_dump($model));
+
                 if ($validarPassword){
 
                     $validarContribuyente = $validar->ValidarUsuarioContribuyente($validarPassword);
+
 
                             
                         
@@ -115,7 +118,10 @@ public $layout = "layout-login";
                 if ($validarContribuyente){
 
                     $_SESSION['idContribuyente'] = $validarContribuyente->id_contribuyente;
-
+                    $_SESSION['nombre'] = $validarContribuyente->nombres;
+                    $_SESSION['apellido'] = $validarContribuyente->apellidos;
+                    
+                
                     $validarActivo = $validar->validarUsuarioActivo($validarContribuyente);
 
                         if ($validarActivo == true){
@@ -137,9 +143,14 @@ public $layout = "layout-login";
                                                                                         'id_contribuyente' => $validarPassword->id_contribuyente,
                                                                                                                         
                                                                                                                         ]);
-                    }else{                                                                                      
+                    }else{ 
+
+                                                                                                        
 
                         return $this->render('/usuario/menu-vertical');
+                    
+                    
+                    
                     }
                     }
                     } else {
