@@ -95,9 +95,27 @@ class LoginForm extends Model
               ];
     }
 
-    
+     public function login()
+    {
+      //  die('llegue a loginform');
+        if ($this->validate()) {
+           // die(var_dump(Yii::$app->user->identity));
+            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
+        } else {
+            return false;
+        }
+    }
 	
+    public function getUser()
+    {
+        
+       // die($this->login);
+        if ($this->_user === false) {
+            $this->_user = Afiliaciones::findByUsername($this->email);
+        }
 
+        return $this->_user;
+    }
     
    
 }
