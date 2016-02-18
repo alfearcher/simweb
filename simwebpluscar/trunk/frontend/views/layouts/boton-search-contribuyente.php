@@ -11,6 +11,9 @@
 
     Icon::map($this, $typeIcon);
 
+
+  // die(var_dump(Yii::$app->user->getId;
+
     $this->title = 'Informacion del Contribuyente';
 
     $id = $_SESSION['idContribuyente'];

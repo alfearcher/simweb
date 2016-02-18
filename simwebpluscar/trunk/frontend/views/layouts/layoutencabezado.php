@@ -94,9 +94,9 @@ AppAsset::register($this);
 
             <?php
           
-                if (isset($_SESSION['idContribuyente'])) {
+                if (Yii::$app->user->isGuest) {
                     
-                    require('boton-search-contribuyente.php');
+                    //require('boton-search-contribuyente.php');
                     //require('barra-inferior.php');
                     //require('boton-undo.php');
                     //require('opciones-nav.php');
