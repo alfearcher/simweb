@@ -147,7 +147,7 @@ class DesintegracionInmueblesUrbanosController extends Controller
 
                  //condicionales     
                 die('llegue al proceso desintegracion');
-                if (!\Yii::$app->user->isGuest){   
+                if (!\Yii::$app->user->isGuest){ 
                      
      
               
@@ -249,7 +249,7 @@ CONTENIDO DEL COMPRADOR (BUYER)
                             $datosVInmueble = InmueblesUrbanosForm::find()->where(['id_contribuyente'=>$datosCambio["datosVendedor"]])->asArray()->all(); 
 
                          
-                        }
+                        } 
                     }
                     if ($btn['AcceptBuyer']!=null) { 
                         $id_contribuyenteComprador = $datosCambio["id_contribuyente"];
