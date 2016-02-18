@@ -52,12 +52,11 @@ namespace frontend\models\usuario;
 
 use common\models\utilidades\Utilidad;
 use frontend\models\usuario\loginForm;
-use frontend\models\usuario\Afiliaciones;
+use frontend\models\usuario\Afiliacion;
 use frontend\models\usuario\CrearUsuarioJuridicoForm;
  
-class Afiliaciones extends Afiliacion 
-{
-     
+class Afiliaciones extends Afiliacion
+{      
     public $id_afiliacion;
 	public $id_contribuyente;
     public $login;
@@ -117,6 +116,7 @@ class Afiliaciones extends Afiliacion
         $validar = CrearUsuarioJuridico::find()
                                          ->where([
                                         'id_contribuyente' => $validarPassword->id_contribuyente,
+                                        
                                          ])
                                         ->one();
 
@@ -158,6 +158,8 @@ class Afiliaciones extends Afiliacion
 
     }
 
+    
+
     public function validarUsuarioActivo($validarContribuyente){
         
         $buscarDatos = Afiliacion::find()
@@ -182,5 +184,85 @@ class Afiliaciones extends Afiliacion
                 return false;
             }             
     }
+
+
+
+
+    // PRUEBA DE AQUI PARA ABAJO
+
+
+     public static function findIdentity($id_contribuyente)
+    {
+         
+        $user = Afiliacion::find()
+                ->where("estatus=:estatus", [":estatus" => 1])
+                ->andWhere("id_contribuyente=:id_contribuyente", ["id_contribuyente" => $id_contribuyente])
+                ->one();
+
+                die(var_dump($user));
+         
+        return isset($user) ? new static($user) : null;
+    }
+ 
+    /* Busca la identidad del usuario a través de su token de acceso */
+    
+     
+    /* Busca la identidad del usuario a través del username */
+    public static function findByUsername($email)
+    {
+        $users = Afiliacion::find()
+                ->where("estatus=:estatus", ["estatus" => 1])
+                ->andWhere("login=:login", [":login" => $email])
+                ->all();
+         
+        foreach ($users as $user) {
+            if (strcasecmp($user->login, $email) === 0) {
+                return new static($user);
+            }
+        }
+ 
+        return null;
+    }
+ 
+    
+     /* Regresa el id del usuario */
+    public function getId()
+    {
+        return $this->id_contribuyente;
+    }
+ 
+    
+     // Regresa la clave de autenticación 
+    
+   public function getAuthkey()
+    {
+        return $this->authkey;
+    }
+ 
+        
+    // Valida la clave de autenticación 
+    public function validateAuthkey($authkey)
+    {
+        return $this->authkey === $authkey;
+    }
+
+
+     public static function findIdentityByAccessToken($token, $type = null)
+    {
+         
+        $users = Users::find()
+                ->where("activate=:activate", [":activate" => 1])
+                ->andWhere("accesstoken=:accesstoken", [":accesstoken" => $token])
+                ->all();
+    
+        foreach ($users as $user) {
+            if ($user->accesstoken === $token) {
+                return new static($user);
+            }
+        }
+ 
+        return null;
+    }
+  
 }
 ?>
