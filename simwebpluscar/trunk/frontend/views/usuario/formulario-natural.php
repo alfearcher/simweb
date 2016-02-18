@@ -31,19 +31,19 @@
 
 <!-- SCRIPT DE MOSTRAR PREFIJO TELEFONO -->
 <script>
-    function cambio() {
-        $("#tlf_ofic").val($("#codigo").val() + "");
-    }
-    function cambio1() {
-        $("#tlf_ofic_otro").val($("#codigo_otro").val() + "");
-    }
+    // function cambio() {
+    //     $("#tlf_ofic").val($("#codigo").val() + "");
+    // }
+    // function cambio1() {
+    //     $("#tlf_ofic_otro").val($("#codigo_otro").val() + "");
+    // }
 
-    function cambioCelu1() {
-        $("#tlf_celular").val($("#codigo_celuNat").val() + "");
-    }
-    function cambioCelu() {
-        $("#tlf_celularContri").val($("#codigo_celu").val() + "");
-    }
+    // function cambioCelu1() {
+    //     $("#tlf_celular").val($("#codigo_celuNat").val() + "");
+    // }
+    // function cambioCelu() {
+    //     $("#tlf_celularContri").val($("#codigo_celu").val() + "");
+    // }
 </script>
 <script>
 // $(document).ready(function(){
