@@ -90,147 +90,128 @@
                 <?= Yii::t('frontend', 'Registration Basic Information') ?> | <?= Yii::t('frontend', 'Natural') ?>
             </div>
             <div class="panel-body" >
-
 <!-- RIF -->
+                <div>
+                    <?= Yii::t('frontend', 'Rif') ?>
+                </div>
 
-                        <div>
-                            <?= Yii::t('frontend', 'Rif') ?>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-2">
-                                <?= $form->field($model, 'naturaleza')->textInput(
-                                                                       // ArrayHelper::map(TipoNaturaleza::find()->all(), 'siglas_tnaturaleza', 'siglas_tnaturaleza'),
-                                                                        [
-                                                                        'id'=> 'naturaleza',
-                                                                        'value' => $rifNatural['naturaleza'],
-                                                                         'readOnly' =>true,
-                                                                        ])->label(false);
-                            ?>
-                            </div>
-                            <div class="col-sm-3">
-                                <?= $form->field($model, 'cedula')->label(false)->textInput(['maxlength' => 8, 'value'=> $rifNatural['cedula'], 'readOnly' =>true,'style' => 'margin-left:-25px;']) ?>
-                            </div>
-                        </div>
-
-
-
+                <div class="row">
+                    <div class="col-sm-2">
+                        <?= $form->field($model, 'naturaleza')->textInput(
+                                                               // ArrayHelper::map(TipoNaturaleza::find()->all(), 'siglas_tnaturaleza', 'siglas_tnaturaleza'),
+                                                                [
+                                                                'id'=> 'naturaleza',
+                                                                'value' => $rifNatural['naturaleza'],
+                                                                 'readOnly' =>true,
+                                                                ])->label(false);
+                    ?>
+                    </div>
+                    <div class="col-sm-3">
+                        <?= $form->field($model, 'cedula')->label(false)->textInput(['maxlength' => 8, 'value'=> $rifNatural['cedula'], 'readOnly' =>true,'style' => 'margin-left:-25px;']) ?>
+                    </div>
+                </div>
 <!-- FIN DE RIF <-->
 
 
 <!-- APELLIDOS Y NOMBRES-->
-                            <div class="row">
-                            <div class="col-sm-5">
-                            <?= $form->field($model, 'nombres')->textInput(['maxlength' => true]) ?>
-                            </div>
+                <div class="row">
+                    <div class="col-sm-5">
+                        <?= $form->field($model, 'nombres')->textInput(['maxlength' => true]) ?>
+                    </div>
 
-
-
-                            <div class="col-sm-5">
-                            <?= $form->field($model, 'apellidos')->textInput(['maxlength' => true,'style' => 'margin-left:-15px;']) ?>
-                            </div>
-
-                               </div>
+                    <div class="col-sm-5">
+                        <?= $form->field($model, 'apellidos')->textInput(['maxlength' => true,'style' => 'margin-left:-15px;']) ?>
+                    </div>
+                </div>
 <!-- FIN DE APELLIDOS Y NOMBRES -->
 
 
 <!-- FECHA DE NACIMIENTO -->
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="fecha-nac">
-                                    <?= $form->field($model, 'fecha_nac')->widget(\yii\jui\DatePicker::classname(),['id' => 'fecha-nac',
-                                                                                                'clientOptions' => [
-                                                                                                    'maxDate' => '+0d', // Bloquear los dias en el calendario a partir del dia siguiente al actual.
-                                                                                                 ],
-                                                                                                'language' => 'es-ES',
-                                                                                                'dateFormat' => 'dd-MM-yyyy',
-                                                                                                'options' => [
-                                                                                                    'class' => 'form-control',
-                                                                                                    'readonly' => false,
-                                                                                                    'style' => 'background-color: white;',
-                                                                                                ],
-                                                                                            ])
-                                    ?>
-                                </div>
-                            </div>
-
-
-
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="fecha-nac">
+                            <?= $form->field($model, 'fecha_nac')->widget(\yii\jui\DatePicker::classname(),['id' => 'fecha-nac',
+                                                                                        'clientOptions' => [
+                                                                                            'maxDate' => '+0d', // Bloquear los dias en el calendario a partir del dia siguiente al actual.
+                                                                                         ],
+                                                                                        'language' => 'es-ES',
+                                                                                        'dateFormat' => 'dd-MM-yyyy',
+                                                                                        'options' => [
+                                                                                            'class' => 'form-control',
+                                                                                            'readonly' => false,
+                                                                                            'style' => 'background-color: white;',
+                                                                                        ],
+                                                                                    ])
+                            ?>
+                        </div>
+                    </div>
 <!-- FIN DE FECHA DE NACIMIENTO -->
 
 <!-- SEXO -->
-
-                        <div class="col-sm-4">
+                    <div class="col-sm-4">
                         <?= $form->field($model, 'sexo')->dropDownList($model->getGenderOptions(), ['prompt' => 'Select','style' => 'margin-left:-15px;']) ?>
-                        </div>
-
-                        </div>
+                    </div>
+                </div>
 <!-- FIN DE SEXO -->
 
 <!-- DOMICILIO FISCAL -->
-                            <div class="row">
-                            <div class="col-sm-10">
-                            <?= $form->field($model, 'domicilio_fiscal')->textArea(['maxlength' => true]) ?>
-                            </div>
-                            </div>
+                <div class="row">
+                    <div class="col-sm-10">
+                        <?= $form->field($model, 'domicilio_fiscal')->textArea(['maxlength' => true]) ?>
+                    </div>
+                </div>
 
 <!-- FIN DE DOMICILIO FISCAL -->
 
 <!-- EMAIL -->
-                            <div class="row">
-                            <div class="col-sm-6">
-                            <?= $form->field($model, 'email')->input('email') ?>
-                            </div>
-                            </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <?= $form->field($model, 'email')->input('email') ?>
+                    </div>
+                </div>
 <!-- FIN DE EMAIL -->
 
 <!-- TELEFONO CELULAR -->
 
-                        <?php
-                                $listaCelularCodigo = TelefonoCodigo::getListaTelefonoCodigo($is_celular=1);
+                <?php
+                    $listaCelularCodigo = TelefonoCodigo::getListaTelefonoCodigo($is_celular=1);
+                ?>
 
+                <div class="row">
+                    <div class="col-sm-2">
+                                <?= $form->field($model, 'codigo')->dropDownList($listaCelularCodigo, ['inline' => true,
+                                                                                         'prompt' => Yii::t('backend', 'Select'),
+                                                                                         'style' => 'width:100px;',
+                                                                                         'id' => 'codigo_celuNat',
+                                                                                         'onchange' =>
+                                                                                            'cambioCelu1()'
+                                                                                         ]
+                                                                )
+                                    ?>
+
+                    </div>
+                    <did class="col-sm-3" >
+                        <?= $form->field($model, 'tlf_celular')->textInput(['maxlength' => 12,
+                                                            'style' => 'width:150px;',
+                                                            'placeholder' => false,
+                                                            'id' => 'tlf_celular',
+
+                                                            ]);
                             ?>
-
-                                 <div class="row">
-                        <div class="col-sm-2">
-                                    <?= $form->field($model, 'codigo')->dropDownList($listaCelularCodigo, ['inline' => true,
-                                                                                             'prompt' => Yii::t('backend', 'Select'),
-                                                                                             'style' => 'width:100px;',
-                                                                                             'id' => 'codigo_celuNat',
-                                                                                             'onchange' =>
-                                                                                                'cambioCelu1()'
-                                                                                             ]
-                                                                    )
-                                        ?>
-
-                             </div>
-                             <did class="col-sm-3" >
-
-                                    <?= $form->field($model, 'tlf_celular')->textInput(['maxlength' => 12,
-                                                                        'style' => 'width:150px;',
-                                                                        'placeholder' => false,
-                                                                        'id' => 'tlf_celular',
-
-                                                                        ]
-                                                                    )
-                                        ?>
-
-                                    </did>
-                            </div>
+                    </did>
+                </div>
 
 <!-- FIN DE TELEFONO CELULAR -->
 
-                            <div class="row">
-                            <div class="col-sm-4">
-                            <?= Html::submitButton(Yii::t('frontend', 'Create') , ['class' =>'btn btn-success', 'style' => 'height:30px;width:100px;margin-left:0px;']) ?>
-                            </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <?= Html::submitButton(Yii::t('frontend', 'Create') , ['class' =>'btn btn-success', 'style' => 'height:30px;width:100px;margin-left:0px;']) ?>
+                    </div>
 
-                            <div class="col-sm-4">
-                             <?= Html::a('Return',['/usuario/opcion-crear-usuario/seleccionar-tipo-usuario'], ['class' => 'btn btn-primary','style' => 'height:30px;width:100px;margin-left:-55px;' ]) //boton para volver al menu de seleccion tipo usuario ?>
-                            </div>
-                           </div>
-
-
+                    <div class="col-sm-4">
+                        <?= Html::a('Return',['/usuario/opcion-crear-usuario/seleccionar-tipo-usuario'], ['class' => 'btn btn-primary','style' => 'height:30px;width:100px;margin-left:-55px;' ]) //boton para volver al menu de seleccion tipo usuario ?>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -276,7 +257,7 @@
     <?= Html::activeHiddenInput($model, 'tlf_hab_otro', ['value' => '000000']) ?>
     <?= Html::activeHiddenInput($model, 'inactivo', ['value' => '0']) ?>
     <?= Html::activeHiddenInput($model, 'folio', ['value' => '0']) ?>
-    <?= Html::activeHiddenInput($model, 'fecha', ['value' => '00-00-0000']) ?>
+    <?//= Html::activeHiddenInput($model, 'fecha', ['value' => '00-00-0000']) ?>
     <?= Html::activeHiddenInput($model, 'capital', ['value' => '0']) ?>
     <?= Html::activeHiddenInput($model, 'num_empleados', ['value' => '0']) ?>
     <?= Html::activeHiddenInput($model, 'licencia', ['value' => '0']) ?>
@@ -300,6 +281,5 @@
     *****************************************************
     */
     ?>
-</div>
 <?php ActiveForm::end() ?>
 <!-- FIN DEL FORMULARIO PERSONA NATURAL -->
