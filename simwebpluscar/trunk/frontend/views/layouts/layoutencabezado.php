@@ -96,7 +96,7 @@ AppAsset::register($this);
           
                 if (Yii::$app->user->isGuest) {
                     
-                    //require('boton-search-contribuyente.php');
+                  //  require('boton-search-contribuyente.php');
                     //require('barra-inferior.php');
                     //require('boton-undo.php');
                     //require('opciones-nav.php');

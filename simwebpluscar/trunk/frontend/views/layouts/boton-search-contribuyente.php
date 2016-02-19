@@ -1,8 +1,8 @@
 <?php
-	use kartik\icons\Icon;
-  	use yii\helpers\Url;
-    use yii\helpers\Html;
-    use yii\bootstrap\Nav;
+	 use kartik\icons\Icon;
+   use yii\helpers\Url;
+   use yii\helpers\Html;
+   use yii\bootstrap\Nav;
    use yii\widgets\DetailView;
    use frontend\models\usuario\Afiliacion;
    use frontend\models\usuario\CrearUsuarioNatural;
@@ -16,17 +16,17 @@
 
     $this->title = 'Informacion del Contribuyente';
 
-    $id = $_SESSION['idContribuyente'];
-    $nombre = $_SESSION['nombre'];
-    $apellido = $_SESSION['apellido'];
+   //   $id = $_SESSION['idContribuyente'];
+   //   $nombre = $_SESSION['nombre'];
+   //   $apellido = $_SESSION['apellido'];
 
     
-   $modelContribuyente = ['id_contribuyente' => $id, 'nombre' => $nombre.' '.$apellido];
+   // $modelContribuyente = ['id_contribuyente' => $id, 'nombre' => $nombre.' '.$apellido];
     
-   
+    ?>
 
 
- ?>   <div class="row">
+   <div class="row">
       <div class="col-sm-5" style="margin-left:200px; width: 660px; height: 120px;">
       <div class="panel panel-primary">
        <div class="panel-heading">
@@ -35,7 +35,7 @@
       <div class="panel-body">
      
        <?= DetailView::widget([
-                                                       'model' => $modelContribuyente,
+                                                      // 'model' => $modelContribuyente,
                                                        
                                                        'attributes' => [ 
                                                        'id_contribuyente',
