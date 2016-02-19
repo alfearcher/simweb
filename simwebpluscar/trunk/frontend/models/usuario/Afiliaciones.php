@@ -55,7 +55,7 @@ use frontend\models\usuario\loginForm;
 use frontend\models\usuario\Afiliacion;
 use frontend\models\usuario\CrearUsuarioJuridicoForm;
  
-class Afiliaciones extends Afiliacion
+class Afiliaciones extends Afiliacion implements \yii\web\IdentityInterface
 {      
     public $id_afiliacion;
 	public $id_contribuyente;
@@ -70,6 +70,34 @@ class Afiliaciones extends Afiliacion
 	public $nivel;
 	public $confirmar_email;
     public $password_hash;
+
+    public static function findIdentityByAccessToken($token, $type = null){
+        return null;
+    }
+
+     public function getId()
+    {
+        return null;
+    }
+
+      public function getAuthkey()
+    {
+        return null;
+    }
+ 
+        
+    // Valida la clave de autenticación 
+    public function validateAuthkey($authkey)
+    {
+        return null;
+    }
+ 
+     public static function findIdentity($id)
+    {
+        return null;
+    }
+
+
    
     
     /**
@@ -185,84 +213,44 @@ class Afiliaciones extends Afiliacion
             }             
     }
 
+    public function findUserPass($userName, $password_hash)
+    {
+       // die('llegue a find');
+
+        $buscar = Afiliacion::find()
+                            ->where([
+
+                                'login' => $userName,
+                                'password_hash' => $password_hash,
+                                'estatus' => 0,
+                                ])
+                                ->one(); 
+
+        // $arrayLimpio = ['id_afiliacion' => $buscar[0]->id_afiliacion, 'id_contribuyente' => $buscar[0]->id_contribuyente, 
+        //                 'login' => $buscar[0]->login, 'password' => $buscar[0]->password, 'fecha_hora_afiliacion' => $buscar[0]->fecha_hora_afiliacion, 'via_sms' => $buscar[0]->via_sms, 'via_email' => $buscar[0]->via_email,
+        //                     'via_tlf_fijo' => $buscar[0]->via_tlf_fijo, 'via_callcenter' => $buscar[0]->via_callcenter,
+        //                     'estatus' => $buscar[0]->estatus, 'nivel' => $buscar[0]->nivel, 'confirmar_email' => $buscar[0]->confirmar_email, 'salt' => $buscar[0]->salt, 'password_hash' => $buscar[0]->password_hash  ];
+       // die(var_dump($arrayLimpio));                      
+
+                            //die(var_dump($buscar));
+
+        
+                
+                return new static($buscar);
+
+            
+        
+                      
+    }
+
 
 
 
     // PRUEBA DE AQUI PARA ABAJO
 
 
-     public static function findIdentity($id_contribuyente)
-    {
-         
-        $user = Afiliacion::find()
-                ->where("estatus=:estatus", [":estatus" => 1])
-                ->andWhere("id_contribuyente=:id_contribuyente", ["id_contribuyente" => $id_contribuyente])
-                ->one();
-
-                die(var_dump($user));
-         
-        return isset($user) ? new static($user) : null;
-    }
- 
-    /* Busca la identidad del usuario a través de su token de acceso */
     
-     
-    /* Busca la identidad del usuario a través del username */
-    public static function findByUsername($email)
-    {
-        $users = Afiliacion::find()
-                ->where("estatus=:estatus", ["estatus" => 1])
-                ->andWhere("login=:login", [":login" => $email])
-                ->all();
-         
-        foreach ($users as $user) {
-            if (strcasecmp($user->login, $email) === 0) {
-                return new static($user);
-            }
-        }
  
-        return null;
-    }
- 
-    
-     /* Regresa el id del usuario */
-    public function getId()
-    {
-        return $this->id_contribuyente;
-    }
- 
-    
-     // Regresa la clave de autenticación 
-    
-   public function getAuthkey()
-    {
-        return $this->authkey;
-    }
- 
-        
-    // Valida la clave de autenticación 
-    public function validateAuthkey($authkey)
-    {
-        return $this->authkey === $authkey;
-    }
-
-
-     public static function findIdentityByAccessToken($token, $type = null)
-    {
-         
-        $users = Users::find()
-                ->where("activate=:activate", [":activate" => 1])
-                ->andWhere("accesstoken=:accesstoken", [":accesstoken" => $token])
-                ->all();
-    
-        foreach ($users as $user) {
-            if ($user->accesstoken === $token) {
-                return new static($user);
-            }
-        }
- 
-        return null;
-    }
-  
+   
 }
 ?>

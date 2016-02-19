@@ -59,6 +59,19 @@ use frontend\models\usuario\Afiliaciones;
  */
 class LoginForm extends Model
 {
+    public $id_afiliacion;
+    public $id_contribuyente;
+    public $login;
+    //public $password;
+    public $fecha_hora_afiliacion;
+    public $via_sms;
+    public $via_email;
+    public $via_tlf_fijo;
+    public $via_callcenter;
+    public $estatus;
+    public $nivel;
+    public $confirmar_email;
+    public $password_hash;
     public $email;
     public $password;
     public $rememberMe = true;
@@ -97,10 +110,12 @@ class LoginForm extends Model
 
      public function login()
     {
-      //  die('llegue a loginform');
+     
         if ($this->validate()) {
-           // die(var_dump(Yii::$app->user->identity));
+           
+            //die(var_dump($this->getUser()));
             return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
+
         } else {
             return false;
         }
@@ -108,14 +123,42 @@ class LoginForm extends Model
 	
     public function getUser()
     {
-        
-       // die($this->login);
-        if ($this->_user === false) {
-            $this->_user = Afiliaciones::findByUsername($this->email);
+
+         $pass = $this->password;
+         $utilidad = Utilidad::getUtilidad();
+         $password = $pass.$utilidad;
+
+          $password_hash = md5($password);
+
+         if ($this->_user === false) {
+
+            $this->_user = Afiliaciones::findUserPass($this->email, $password_hash);
+
         }
 
         return $this->_user;
     }
     
+       // die('llego a getuser');
+        // $pass = $this->password;
+        // $utilidad = Utilidad::getUtilidad();
+        // $password = $pass.$utilidad;
+
+        //  $password_hash = md5($password);
+
+        // $buscar = Afiliacion::find()
+        //                     ->where([
+        //                         'login' => $this->email,
+        //                         'password_hash' => $password_hash,
+
+        //                         ])
+        //                     ->all();
+
+                            //die($buscar[0]['id_contribuyente']);
+
+                       
+        
+       // die($this->login);
+       
    
 }
