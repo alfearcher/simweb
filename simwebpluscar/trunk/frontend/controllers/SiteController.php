@@ -96,7 +96,7 @@ public $layout = "layout-login";
             return ActiveForm::validate($model);
         }
 
-            if ( $model->load($postData)   ) {
+             if ($model->load(Yii::$app->request->post()) && $model->login())  {
 
             if ($model->validate()){
 
