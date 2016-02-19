@@ -13,8 +13,12 @@ return [
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'frontend\models\usuario\Afiliaciones',
             'enableAutoLogin' => true,
+            'identityCookie' =>[ 
+            'name' => '_frontendUser',
+
+            ]
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
