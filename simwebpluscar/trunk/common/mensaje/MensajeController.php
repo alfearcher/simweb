@@ -1,7 +1,7 @@
 <?php
 /**
- *	@copyright © by XXXXXX 2012 - 2016
- *  All rights reserved - SIGECON
+ *  @copyright © by ASIS CONSULTORES 2012 - 2016
+ *  All rights reserved - SIMWebPLUS
  */
 
  /**
