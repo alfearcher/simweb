@@ -12,8 +12,9 @@
     Icon::map($this, $typeIcon);
 
 
-  // die(var_dump(Yii::$app->user->getId;
+   $modelContribuyente = Yii::$app->user->identity;
 
+   //die(var_dump($modelContribuyente));
     $this->title = 'Informacion del Contribuyente';
 
    //   $id = $_SESSION['idContribuyente'];
@@ -35,11 +36,11 @@
       <div class="panel-body">
      
        <?= DetailView::widget([
-                                                      // 'model' => $modelContribuyente,
+                                                       'model' => $modelContribuyente,
                                                        
                                                        'attributes' => [ 
                                                        'id_contribuyente',
-                                                        'nombre' ,
+                                                       // 'nombres' ,
                                                         ],
                                                         'options' =>[ 
                                                         'style' => 'width:600px; margin-left:0px;',
