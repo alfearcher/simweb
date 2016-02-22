@@ -14,7 +14,7 @@ return [
     'components' => [
         'user' => [
             'identityClass' => 'frontend\models\usuario\Afiliaciones',
-            'enableAutoLogin' => true,
+            'enableAutoLogin' => false,
             'identityCookie' =>[ 
             'name' => '_frontendUser',
 
