@@ -49,7 +49,9 @@
  *  
  */
 namespace frontend\models\usuario;
-
+use yii\base\NotSupportedException;
+use yii\web;
+use Yii\base\Modes;
 use common\models\utilidades\Utilidad;
 use frontend\models\usuario\loginForm;
 use frontend\models\usuario\Afiliacion;
@@ -71,31 +73,7 @@ class Afiliaciones extends Afiliacion implements \yii\web\IdentityInterface
 	public $confirmar_email;
     public $password_hash;
 
-    public static function findIdentityByAccessToken($token, $type = null){
-        return null;
-    }
 
-     public function getId()
-    {
-        return null;
-    }
-
-      public function getAuthkey()
-    {
-        return null;
-    }
- 
-        
-    // Valida la clave de autenticación 
-    public function validateAuthkey($authkey)
-    {
-        return null;
-    }
- 
-     public static function findIdentity($id)
-    {
-        return null;
-    }
 
 
    
@@ -215,7 +193,7 @@ class Afiliaciones extends Afiliacion implements \yii\web\IdentityInterface
 
     public function findUserPass($userName, $password_hash)
     {
-       // die('llegue a find');
+//die('llegue a find');
 
         $buscar = Afiliacion::find()
                             ->where([
@@ -233,7 +211,7 @@ class Afiliaciones extends Afiliacion implements \yii\web\IdentityInterface
        // die(var_dump($arrayLimpio));                      
 
                             //die(var_dump($buscar));
-
+                               // die(var_dump($buscar));
         
                 
                 return new static($buscar);
@@ -248,9 +226,54 @@ class Afiliaciones extends Afiliacion implements \yii\web\IdentityInterface
 
     // PRUEBA DE AQUI PARA ABAJO
 
+    public static function findIdentityByAccessToken($token, $type = null){
+       // ('llegue aqui');
+        throw new NotSupportedException();
+    }
 
-    
+     public function getId()
+    {
+       return null; 
+       //throw new NotSupportedException(;
+    }
+
+      public function getAuthkey()
+    {
+         throw new NotSupportedException();
+    }
  
+        
+    // Valida la clave de autenticación 
+    public function validateAuthkey($authkey)
+    {
+         throw new NotSupportedException();
+    }
+ 
+     public static function findIdentity($id)
+    {
+     throw new NotSupportedException();
+    }
+
+
+    public static function findByUsername($email)
+    {
+
+        $users = Afiliacion::find()
+                ->where("estatus=:estatus", [":estatus" => 0])
+                ->andWhere("login=:username", [":username" => $email])
+                ->all();
+
+               // die(var_dump($users));
+         
+        foreach ($users as $user) {
+            if (strcasecmp($user->login, $email) === 0) {
+                //die(var_dump($user));
+                return new static($user);
+
+            }
+        }
+    
+  }
    
 }
 ?>

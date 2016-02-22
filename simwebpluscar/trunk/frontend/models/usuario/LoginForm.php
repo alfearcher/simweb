@@ -90,12 +90,16 @@ class LoginForm extends Model
             // username y password son requeridos
             [['email', 'password'], 'required', 'message' => 'Campo requerido'],
             // rememberMe es un valor booleano
-            ['rememberMe', 'boolean'],
+            ['password' , 'validatePassword'],
+          //  ['rememberMe', 'boolean'],
             
             // password es validado por validatePassword()
            
         ];
     }
+
+
+
 	/*
 	 *  Metodo que retorna los nombres de los atributos
 	 */
@@ -107,6 +111,30 @@ class LoginForm extends Model
 	      'rememberMe' => Yii::t('frontend', 'RememberMe'),
               ];
     }
+
+    public function validatePassword($attribute, $params)
+    {
+        $pass = $this->password;
+
+        $utilidad = Utilidad::getUtilidad();
+        $password = $pass.$utilidad;
+
+        $password_hash = md5($password);
+        
+            $buscar = Afiliacion::find()
+                                ->where([
+                                    'login' => $this->email,
+                                    'password_hash' => $password_hash, 
+                                    'estatus' => 0,
+                                    ])
+                                ->one();
+
+          //  die(var_dump($buscar));
+                 if  ($buscar == false){ 
+                $this->addError($attribute, 'Usuario o password incorrecto.');
+            }
+        } 
+    
 
      public function login()
     {
@@ -124,17 +152,19 @@ class LoginForm extends Model
     public function getUser()
     {
 
-         $pass = $this->password;
-         $utilidad = Utilidad::getUtilidad();
-         $password = $pass.$utilidad;
+         // $pass = $this->password;
+         // $utilidad = Utilidad::getUtilidad();
+         // $password = $pass.$utilidad;
 
-          $password_hash = md5($password);
+         //  $password_hash = md5($password);
 
          if ($this->_user === false) {
+            
+            $this->_user = Afiliaciones::findByUsername($this->email);
 
-            $this->_user = Afiliaciones::findUserPass($this->email, $password_hash);
 
         }
+       //die(var_dump($this->_user));
 
         return $this->_user;
     }
