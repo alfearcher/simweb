@@ -68,7 +68,7 @@ AppAsset::register($this);
                         ];
                     } else {
                         $menuItems[] = [
-                            'label' => Icon::show('user',['class' => 'fa-2x'], $typeIcon) . ' ' . Yii::t('backend', 'user') . ' (' . Yii::$app->user->identity->username . ')',
+                            'label' => Icon::show('user',['class' => 'fa-2x'], $typeIcon) . ' ' . Yii::t('backend', 'user') . ' (' . Yii::$app->user->identity->login . ')',
                             'url' => '#',
                             //'linkOptions' => ['data-method' => 'post'],
                                 'items' => [['label' => Yii::t('backend', 'Create Security Questions'), 'url' =>  ['pregunta-seguridad/asignarpreguntasecreta']],
