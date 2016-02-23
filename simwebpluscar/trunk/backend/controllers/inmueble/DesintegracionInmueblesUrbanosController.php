@@ -124,10 +124,10 @@ class DesintegracionInmueblesUrbanosController extends Controller
     public function actionDesintegracionInmuebles()
     { 
         if ( isset( $_SESSION['idContribuyente'] ) ) {
-        $modelContribuyente = $this->findModelContribuyente($id_contribuyente);
+        $modelContribuyente = $this->findModelContribuyente($_SESSION['idContribuyente']);
         
 
-        $model = $this->findModel($id_contribuyente); 
+        $model = $this->findModel($_SESSION['idContribuyente']); 
 
 
          //Mostrará un mensaje en la vista cuando el usuario se haya registrado
