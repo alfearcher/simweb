@@ -118,7 +118,10 @@
 	    													])
 	    										  ->all();
 	    	} else {
-	    		$findModel = TipoSolicitud::find()->where(['impuesto' => $impuesto])
+	    		$findModel = TipoSolicitud::find()->where([
+	    													'impuesto' => $impuesto,
+	    													'inactivo' => 0,
+	    												  ])
 	    										  ->orderBy([
 	    													'impuesto' => SORT_ASC,
 	    													'descripcion' => SORT_ASC,
@@ -128,5 +131,25 @@
 
 	    	return $findModel;
 	    }
+
+
+
+	    /***/
+	    public function totalTipoSolicitud($impuesto = 0)
+	    {
+	    	if ( $impuesto == 0 ) {
+	    		$findModel = TipoSolicitud::find()->count();
+	    	} else {
+	    		$findModel = TipoSolicitud::find()->where([
+	    													'impuesto' => $impuesto,
+	    													'inactivo' => 0,
+	    												  ])
+	    										  ->count();
+	    	}
+
+	    	return $findModel;
+	    }
+
+
 	}
 ?>
