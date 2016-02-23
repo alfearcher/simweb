@@ -121,10 +121,10 @@ class DesintegracionInmueblesUrbanosController extends Controller
      *para el cambio de otros datos inmuebles
      *@return model trae los datos del formulario 
      **/
-    public function actionDesintegracionInmuebles()
+    public function actionDesintegracionInmuebles($id_impuesto)
     { 
         if ( isset( $_SESSION['idContribuyente'] ) ) {
-        //$modelContribuyente = $this->findModelContribuyente($_SESSION['idContribuyente']);
+        $modelContribuyente = $this->findModelContribuyente($_SESSION['idContribuyente']);
         
 
         $model = $this->findModel($id_impuesto); 
@@ -141,11 +141,11 @@ class DesintegracionInmueblesUrbanosController extends Controller
               Yii::$app->response->format = Response::FORMAT_JSON;
               return ActiveForm::validate($model); 
          } 
-         // if ($modelContribuyente->load(Yii::$app->request->post()) && Yii::$app->request->isAjax){ 
+         if ($modelContribuyente->load(Yii::$app->request->post()) && Yii::$app->request->isAjax){ 
 
-         //      Yii::$app->response->format = Response::FORMAT_JSON;
-         //      return ActiveForm::validate($modelContribuyente); 
-         // } 
+              Yii::$app->response->format = Response::FORMAT_JSON;
+              return ActiveForm::validate($modelContribuyente); 
+         } 
 
          $datosCambio = Yii::$app->request->post("DesintegracionInmueblesForm");
          $btn = Yii::$app->request->post(); 
