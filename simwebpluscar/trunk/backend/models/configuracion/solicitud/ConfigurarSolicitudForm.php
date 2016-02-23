@@ -90,8 +90,8 @@
 	        	  'tipo_solicitud', 'inactivo',
 	        	  'solo_funcionario', 'nivel_aprobacion'], 'integer', 'message' => Yii::t('backend','{attribute} must be a number')],
 	        	[['observacion'], 'string', 'message' => Yii::t('backend','{attribute} must be a string')],
-	          	[['fecha_hora', 'fecha_desde'], 'default', 'value' => date('Y-m-d H:i:s')],
-	          	['fecha_hasta', 'default', 'value' => '0000-00-00'],
+	          	[['fecha_hora'], 'default', 'value' => date('Y-m-d H:i:s')],
+	          	[['fecha_desde', 'fecha_hasta'], 'default', 'value' => '0000-00-00'],
 	     		[['inactivo', 'solo_funcionario'], 'default', 'value' => 0],
 	     		['usuario', 'default', 'value' => Yii::$app->user->identity->username],
 	        ];
@@ -117,9 +117,9 @@
 	            'usuario' => Yii::t('backend', 'User'),
 	            'fecha_hora' => Yii::t('backend', 'Date/Hour'),
 	            'observacion' => Yii::t('backend', 'Observation'),
-	            'fecha_desde' => Yii::t('backend', 'Begin Date'),
-	            'fecha_hasta' => Yii::t('backend', 'End Date'),
-	            'solo_funcionario' => Yii::t('backend', 'solo fun'),
+	            'fecha_desde' => Yii::t('backend', 'Starting Date'),
+	            'fecha_hasta' => Yii::t('backend', 'Expiration Date'),
+	            'solo_funcionario' => Yii::t('backend', 'Like Public Officer'),
 
 	        ];
 	    }
