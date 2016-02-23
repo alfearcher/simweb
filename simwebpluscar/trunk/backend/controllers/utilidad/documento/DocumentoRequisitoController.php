@@ -92,5 +92,16 @@
 			return DocumentoRequisitoForm::getDataProviderDocumentosRequisitosSegunImpuesto($impuesto);
 		}
 
+
+
+		/***/
+		public function actionRenderizarGridViewDocumentoRequisito($impuesto = 0)
+		{
+			$dataProvider = $this->actionGetDataProviderSegunImpuesto($impuesto);
+			return $this->render('/utilidad/documento-requisito/documento-requisito-gridview', [
+																			'dataProvider' => $dataProvider
+																]);
+		}
+
 	}
 ?>
