@@ -102,12 +102,21 @@
 
 	    /**
 	     * Metodo que retorna un dataProvider
-	     * @param  array  $arrayImpuesto si 
+	     * @param  array  $arrayImpuesto si el array esta vacio se aume que debe regeresar todos.
 	     * @return [type]              [description]
 	     */
 	    public function getDataProvider($arrayImpuesto = [])
 	    {
+	    	$dataProvider = null;
 
+	    	$query = Impuesto::find();
+	    	$dataProvider = New ActiveDataProvider([
+            	'query' => $query,
+        	]);
+        	if ( is_array($arrayImpuesto) ) {
+        		$query->where(['in', 'impuesto', $arrayImpuesto]);
+        	}
+		    return $dataProvider;
 	    }
 	}
 ?>
