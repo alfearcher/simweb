@@ -152,15 +152,15 @@ class LoginForm extends Model
     public function getUser()
     {
 
-         // $pass = $this->password;
-         // $utilidad = Utilidad::getUtilidad();
-         // $password = $pass.$utilidad;
+          $pass = $this->password;
+          $utilidad = Utilidad::getUtilidad();
+          $password = $pass.$utilidad;
 
-         //  $password_hash = md5($password);
+           $password_hash = md5($password);
 
          if ($this->_user === false) {
             
-            $this->_user = Afiliaciones::findByUsername($this->email);
+            $this->_user = Afiliaciones::findByUsername($this->email, $password_hash);
 
 
         }

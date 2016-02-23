@@ -255,15 +255,16 @@ class Afiliaciones extends Afiliacion implements \yii\web\IdentityInterface
     }
 
 
-    public static function findByUsername($email)
+    public static function findByUsername($email,$password_hash)
     {
 
         $users = Afiliacion::find()
                 ->where("estatus=:estatus", [":estatus" => 0])
+                ->andWhere("password_hash=:password_hash", [":password_hash" => $password_hash])
                 ->andWhere("login=:username", [":username" => $email])
                 ->all();
 
-               // die(var_dump($users));
+              //  die(var_dump($users));
          
         foreach ($users as $user) {
             if (strcasecmp($user->login, $email) === 0) {
