@@ -105,11 +105,12 @@
 	     * @param  array  $arrayImpuesto si el array esta vacio se aume que debe regeresar todos.
 	     * @return [type]              [description]
 	     */
-	    public function getDataProvider($arrayImpuesto = [])
+	    public function getDataProvider($arrayImpuesto)
 	    {
 	    	$dataProvider = null;
 
 	    	$query = Impuesto::find();
+
 	    	$dataProvider = New ActiveDataProvider([
             	'query' => $query,
         	]);
@@ -118,5 +119,20 @@
         	}
 		    return $dataProvider;
 	    }
+
+
+
+	    /***/
+	    public function findImpuesto($arrayImpuesto = [])
+	    {
+	    	if ( is_array($arrayImpuesto) ) {
+	    		$findModel = Impuesto::findAll($arrayImpuesto);
+	    	} else {
+	    		$findModel = Impuesto::findAll();
+	    	}
+
+	    	return $findModel;
+	    }
+
 	}
 ?>
