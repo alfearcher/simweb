@@ -359,7 +359,7 @@ FIN BUYER
      */
     protected function findModel($id)
     { 
-        if (($model = DesintegracionInmueblesForm::find()->where(['id_impusto'=>$id)->one()) !== null) {
+        if (($model = DesintegracionInmueblesForm::find()->where(['id_impusto'=>$id])->one()) !== null) {
 
             return $model; 
         } else {
