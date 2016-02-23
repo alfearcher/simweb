@@ -76,6 +76,8 @@
 							<div class="row" style="width:100%;">
 								<p style="margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('backend', $model->getAttributeLabel('impuesto')) ?></i></p>
 							</div>
+						</div>
+						<div class="col-sm-4">
 							<div class="row">
 								<div class="impuesto">
 									<?= $form->field($model, 'impuesto')->dropDownList($listaImpuesto,[
@@ -87,8 +89,9 @@
 								</div>
 							</div>
 						</div>
-
 					</div>	<!-- Fin de row -->
+
+
 				</div>		<!-- Fin de col-sm-12 -->
 
 				<div class="row" style="margin-top: 15px;">
