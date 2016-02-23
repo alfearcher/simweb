@@ -257,7 +257,7 @@
     <?= Html::activeHiddenInput($model, 'tlf_hab_otro', ['value' => '000000']) ?>
     <?= Html::activeHiddenInput($model, 'inactivo', ['value' => '0']) ?>
     <?= Html::activeHiddenInput($model, 'folio', ['value' => '0']) ?>
-    <?//= Html::activeHiddenInput($model, 'fecha', ['value' => '00-00-0000']) ?>
+    
     <?= Html::activeHiddenInput($model, 'capital', ['value' => '0']) ?>
     <?= Html::activeHiddenInput($model, 'num_empleados', ['value' => '0']) ?>
     <?= Html::activeHiddenInput($model, 'licencia', ['value' => '0']) ?>
