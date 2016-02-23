@@ -33,14 +33,24 @@
 
  	use yii\web\Response;
  	//use kartik\icons\Icon;
- 	//use yii\grid\GridView;
+ 	use yii\grid\GridView;
 	use yii\helpers\Html;
 	use yii\helpers\Url;
 	use yii\helpers\ArrayHelper;
 	use yii\widgets\ActiveForm;
 	use yii\web\View;
-	//use yii\widgets\Pjax;
+	use yii\jui\DatePicker;
+	use yii\widgets\Pjax;
+
 ?>
+
+<?php
+	// $this->registerJs(
+	// 	'if ($("#impuesto").val() <> 0 )'
+	// );
+?>
+
+
 
 <div class="create-config-solicitud-form" style="margin-top: 0px;">
  	<?php
@@ -57,11 +67,12 @@
  		// Lista de los impuesto
  		$listaImpuesto = ArrayHelper::map($modelImpuesto, 'impuesto', 'descripcion');
 
- 		// Lista de los codigos de area de telefonos nacionales.
- 		//$listaCodigoNacionales = ArrayHelper::map($modelCodigo, 'codigo', 'codigo');
+ 		// Lista de los tipos de solicitud.
+ 		//$listaTipoSolicitud = ArrayHelper::map($modelTipoSolicitud, 'id_tipo_solicitud', 'descripcion');
 
- 		// Lista de los codigos de telefonos movil (celular).
- 		//$listaCodigoCelular = ArrayHelper::map($modelCodigoCelular, 'codigo', 'codigo');
+ 		// Lista de los niveles de aprobacion.
+ 		$listaNivelesAprobacion = ['1' => 'AUTOMATICO', '2' => 'SELECCION DE OPCIONES', '3' => 'ACTIVACION DE FORMULARIO'];
+ 		//$listaNivelesAprobacion = ArrayHelper::map($modelCodigoCelular, 'codigo', 'codigo');
  	?>
 
 	<meta http-equiv="refresh">
@@ -71,8 +82,8 @@
 			<div class="container-fluid">
 				<div class="col-sm-12">
 <!-- Inicio Impuesto -->
-			        <div class="row" style=" margin-top: 0px;">
-			        	<div class="col-sm-2" style="margin-left: -15px;">
+			        <div class="row" style=" margin-top: 0px;margin-left:10px;">
+			        	<div class="col-sm-2">
 							<div class="row" style="width:100%;">
 								<p style="margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('backend', $model->getAttributeLabel('impuesto')) ?></i></p>
 							</div>
@@ -82,15 +93,194 @@
 								<div class="impuesto">
 									<?= $form->field($model, 'impuesto')->dropDownList($listaImpuesto,[
 				                																		'id' => 'impuesto',
-				                																		'style' => 'width:110%;',
+				                																		'style' => 'width:100%;',
 				                                                                     				 	'prompt' => Yii::t('backend', 'Select'),
+				                                                                     				 	'onchange' => '$.post( "' . Yii::$app->urlManager
+                                                                                                                                             ->createUrl('/configuracion/solicitud/configurar-solicitud/lista-tipo-solicitud') . '&id=' . '" + $(this).val(), function( data ) {
+                                                                                                                                                                                                            $( "select#tipo-solicitud" ).html( data );
+                                                                                                                                                                                                        });'
 				                                                                						 ])->label(false)
 								   ?>
 								</div>
 							</div>
 						</div>
 					</div>	<!-- Fin de row -->
+<!-- Fin de Impuesto -->
 
+
+<!-- Inicio Tipo Solicitud -->
+			        <div class="row" style=" margin-top: 0px;margin-left:10px;">
+			        	<div class="col-sm-2">
+							<div class="row" style="width:100%;">
+								<p style="margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('backend', $model->getAttributeLabel('tipo_solicitud')) ?></i></p>
+							</div>
+						</div>
+						<div class="col-sm-5">
+							<div class="row">
+								<div class="tipo-solicitud">
+									<?= $form->field($model, 'tipo_solicitud')->dropDownList([],[
+				                																	'id' => 'tipo-solicitud',
+				                																	'style' => 'width:160%;',
+				                                                                     				'prompt' => Yii::t('backend', 'Select'),
+				                                                                				])->label(false)
+								   ?>
+								</div>
+							</div>
+						</div>
+					</div>	<!-- Fin de row -->
+<!-- Fin de Tipo Solicitud -->
+
+<!-- Inicio Nivel de Aprobacion -->
+			        <div class="row" style=" margin-top: 0px;margin-left:10px;">
+			        	<div class="col-sm-2">
+							<div class="row" style="width:100%;">
+								<p style="margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('backend', $model->getAttributeLabel('nivel_aprobacion')) ?></i></p>
+							</div>
+						</div>
+						<div class="col-sm-3">
+							<div class="row">
+								<div class="nivel-aprobacion">
+									<?= $form->field($model, 'nivel_aprobacion')->dropDownList($listaNivelesAprobacion,[
+				                																				'id' => 'nivel-aprobacion',
+				                																				'style' => 'width:120%;',
+				                                                                     							'prompt' => Yii::t('backend', 'Select'),
+				                                                                							])->label(false)
+								   ?>
+								</div>
+							</div>
+						</div>
+					</div>	<!-- Fin de row -->
+<!-- Fin de Nivel de Aprobacion -->
+
+<!-- Fecha de Inicio de Fecha Desde -->
+					<div class="row" style=" margin-top: 0px;margin-left:10px;">
+						<div class="col-sm-2">
+							<div class="row" style="width:100%;">
+								<p style="margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('backend', $model->getAttributeLabel('fecha_desde')) ?></i></p>
+							</div>
+						</div>
+						<div class="col-sm-2">
+							<div class="row" >
+								<div class="fecha-desde">
+									<?= $form->field($model, 'fecha_desde')->widget(\yii\jui\DatePicker::classname(),['id' => 'fecha-desde',
+																														'clientOptions' => [
+																															'maxDate' => '+0d',	// Bloquear los dias en el calendario a partir del dia siguiente al actual.
+																															//'changeYear' => true,
+																														],
+																														'language' => 'es-ES',
+																														'dateFormat' => 'dd-MM-yyyy',
+																														'options' => [
+																																'class' => 'form-control',
+																																'readonly' => true,
+																																'style' => 'background-color: white;width:75%;',
+
+																														]
+																														])->label(false) ?>
+								</div>
+							</div>
+						</div>
+					</div>
+<!-- Fin de Inicio de Fecha Desde -->
+
+
+<!-- Fecha de Inicio de Fecha Hasta -->
+					<div class="row" style=" margin-top: 0px;margin-left:10px;">
+						<div class="col-sm-2">
+							<div class="row" style="width:100%;">
+								<p style="margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('backend', $model->getAttributeLabel('fecha_hasta')) ?></i></p>
+							</div>
+						</div>
+						<div class="col-sm-2">
+							<div class="row" >
+								<div class="fecha-hasta">
+									<?= $form->field($model, 'fecha_hasta')->widget(\yii\jui\DatePicker::classname(),['id' => 'fecha-hasta',
+																														'clientOptions' => [
+																															'maxDate' => '+0d',	// Bloquear los dias en el calendario a partir del dia siguiente al actual.
+																															//'changeYear' => true,
+																														],
+																														'language' => 'es-ES',
+																														'dateFormat' => 'dd-MM-yyyy',
+																														'options' => [
+																																'class' => 'form-control',
+																																'readonly' => true,
+																																'style' => 'background-color: white;width:75%;',
+
+																														]
+																														])->label(false) ?>
+								</div>
+							</div>
+						</div>
+					</div>
+<!-- Fin de Inicio de Fecha Hasta -->
+
+<!-- Inicio Mostrar solo a funcionario -->
+			        <div class="row" style=" margin-top: 0px;margin-left:10px;">
+			        	<div class="col-sm-2" >
+							<div class="row" style="width:120%;">
+								<p style="margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('backend', $model->getAttributeLabel('solo_funcionario')) ?></i></p>
+							</div>
+						</div>
+						<div class="col-sm-1">
+							<div class="row">
+								<div class="solo-funcionario">
+									<?= $form->field($model, 'solo_funcionario')->checkBox([
+				                															'id' => 'solo-funcionario',
+				                															'label' => '',
+				                															'style' => 'width:20%;',
+				                                                                		])
+								   ?>
+								</div>
+							</div>
+						</div>
+					</div>
+<!-- Fin de Mostrar solo a funcionario -->
+
+<!-- Inicio de Procesos que genera la solicitud -->
+					<div class="row" style="border-bottom: solid 1px #ccc;color: blue;">
+						<h4><?= Yii::t('backend', 'Procesos que genera la Solicitud.') ?></h4>
+					</div>
+					<div class="row">
+		        		<div class="col-sm-8">
+							<div class="proceso-generado">
+								<?= GridView::widget([
+			        						'id' => 'grid-lista-proceso',
+									        'dataProvider' => $dataProvider,
+									        'columns' => [
+									                ['class' => 'yii\grid\SerialColumn'],
+									                [
+									                    'label' => 'ID.',
+									                    'value' => 'id_documento',
+									                ],
+									                [
+									                    'label' => 'Descripcion',
+									                    'value' => 'descripcion',
+									                ],
+									                ['class' => 'yii\grid\CheckboxColumn'],
+									        ]
+									    ]);
+								?>
+							</div>
+						</div>
+					</div>
+<!-- Fin de Procesos que genera la solicitud -->
+
+<!-- Inicio de Documentos y/o Requisitos de la solicitud -->
+					<div class="row" style="border-bottom: solid 1px #ccc;color: blue;">
+						<h4><?= Yii::t('backend', 'Documentos y/o Requisitos.') ?></h4>
+					</div>
+
+					<div class="row">
+		        		<div class="col-sm-8">
+							<div class="documento-requisito-consignado">
+								<?php Pjax::begin(); ?>
+									<div id="lista-documento-requisito" class="lista-documento-requisito">
+
+									</div>
+								<?php Pjax::end(); ?>
+							</div>
+						</div>
+					</div>
+<!-- Fin de Documentos y/o Requisitos de la solicitud -->
 
 				</div>		<!-- Fin de col-sm-12 -->
 
@@ -131,3 +321,20 @@
     </div>		<!-- Fin de Panel Panel-Default -->
     <?php ActiveForm::end() ?>
 </div>
+
+<?php
+	$this->registerJs(
+		'$("#impuesto").on("change", function() {
+			var url = "' . Yii::$app->urlManager->createUrl('/configuracion/solicitud/configurar-solicitud/lista-documento-requisito') . '&id=' . '" + $(this).val()
+			$.ajax({
+				type: "POST",
+				url: url,
+				data: $("#config-solicitud-form").serialize(),
+				success: function(data) {
+					$("#lista-documento-requisito").html(data);
+				}
+			});
+			return false;
+		});'
+	)
+?>
