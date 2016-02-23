@@ -77,28 +77,41 @@ class DesintegracionInmueblesUrbanosController extends Controller
     public $transaccion; 
     
 
-   public function actionDesintegracion()
-    {    
+     /**
+     * Lists all Inmuebles models.
+     * @return mixed
+     */
+    public function actionIndex()
+    {
         if ( isset( $_SESSION['idContribuyente'] ) ) {
-            
-            if ($_SESSION['idContribuyente'] != null) {
-                
-                return $this->redirect('/inmueble/desintegracion-inmuebles-urbanos/desintegracion-inmuebles', ['id_contribuyente' =>$_SESSION['idContribuyente'] ]); 
-            } 
-             
+        $searchModel = new InmueblesSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        
-
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]); 
         }  else {
                     echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
-        } 
+        }
+    }
 
+    /**
+     * Displays a single Inmuebles model.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionView($id)
+    {
+        if ( isset( $_SESSION['idContribuyente'] ) ) {
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
+        }  else {
+                    echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
+        }
+    }
 
-
-    return $this->render('desintegracion', [
-               // 'model' => $model,
-            ]); 
-    } 
      
     /**
      *Metodo: DesintegracionInmuebles
@@ -108,7 +121,7 @@ class DesintegracionInmueblesUrbanosController extends Controller
      *para el cambio de otros datos inmuebles
      *@return model trae los datos del formulario 
      **/
-    public function actionDesintegracionInmuebles($id_contribuyente)
+    public function actionDesintegracionInmuebles()
     { 
         if ( isset( $_SESSION['idContribuyente'] ) ) {
         $modelContribuyente = $this->findModelContribuyente($id_contribuyente);

@@ -70,7 +70,41 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
     public $conexion;
     public $transaccion;
 
+    /**
+     * Lists all Inmuebles models.
+     * @return mixed
+     */
+    public function actionIndex()
+    {
+        if ( isset( $_SESSION['idContribuyente'] ) ) {
+        $searchModel = new InmueblesSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]); 
+        }  else {
+                    echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
+        }
+    }
+
+    /**
+     * Displays a single Inmuebles model.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionView($id)
+    {
+        if ( isset( $_SESSION['idContribuyente'] ) ) {
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
+        }  else {
+                    echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
+        }
+    }
+    
     /**
      *Metodo: CambioDeNumeroCatastralInmuebles
      *Actualiza los datos del numero catastral del inmueble urbano.
