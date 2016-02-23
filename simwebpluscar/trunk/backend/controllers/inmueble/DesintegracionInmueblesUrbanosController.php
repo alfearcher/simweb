@@ -124,7 +124,7 @@ class DesintegracionInmueblesUrbanosController extends Controller
     public function actionDesintegracionInmuebles()
     { 
         if ( isset( $_SESSION['idContribuyente'] ) ) {
-        $modelContribuyente = $this->findModelContribuyente($_SESSION['idContribuyente']);
+        //$modelContribuyente = $this->findModelContribuyente($_SESSION['idContribuyente']);
         
 
         $model = $this->findModel($id_impuesto); 
@@ -141,11 +141,11 @@ class DesintegracionInmueblesUrbanosController extends Controller
               Yii::$app->response->format = Response::FORMAT_JSON;
               return ActiveForm::validate($model); 
          } 
-         if ($modelContribuyente->load(Yii::$app->request->post()) && Yii::$app->request->isAjax){ 
+         // if ($modelContribuyente->load(Yii::$app->request->post()) && Yii::$app->request->isAjax){ 
 
-              Yii::$app->response->format = Response::FORMAT_JSON;
-              return ActiveForm::validate($modelContribuyente); 
-         } 
+         //      Yii::$app->response->format = Response::FORMAT_JSON;
+         //      return ActiveForm::validate($modelContribuyente); 
+         // } 
 
          $datosCambio = Yii::$app->request->post("DesintegracionInmueblesForm");
          $btn = Yii::$app->request->post(); 
