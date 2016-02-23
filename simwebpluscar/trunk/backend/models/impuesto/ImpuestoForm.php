@@ -126,9 +126,13 @@
 	    public function findImpuesto($arrayImpuesto = [])
 	    {
 	    	if ( is_array($arrayImpuesto) ) {
-	    		$findModel = Impuesto::findAll($arrayImpuesto);
+	    		if ( count($arrayImpuesto) > 0 ) {
+	    			$findModel = Impuesto::findAll($arrayImpuesto);
+	    		} else {
+	    			$findModel = Impuesto::find()->all();
+	    		}
 	    	} else {
-	    		$findModel = Impuesto::findAll();
+	    		$findModel = Impuesto::find()->all();
 	    	}
 
 	    	return $findModel;
