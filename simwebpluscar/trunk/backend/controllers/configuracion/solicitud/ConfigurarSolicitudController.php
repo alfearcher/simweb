@@ -59,6 +59,9 @@
 	use backend\models\documentoconsignado\DocumentoConsignadoForm;
 	use backend\models\configuracion\solicitud\ConfigurarSolicitudForm;
 	use backend\models\impuesto\ImpuestoForm;
+	use backend\models\configuracion\tiposolicitud\TipoSolicitudForm;
+	use backend\controllers\utilidad\documento\DocumentoRequisitoController;
+	use backend\models\configuracion\procesosolicitud\SolicitudProcesoForm;
 
 	session_start();		// Iniciando session
 
@@ -92,6 +95,45 @@
 									'caption' => Yii::t('backend', 'SETUP REQUEST.'),
 				]);
 		}
+
+
+
+
+		/***/
+		public function actionListaTipoSolicitud()
+		{
+			$countTipoSolicitud = 0;
+			$request = Yii::$app->request;
+			if ( Yii::$app->request->isPost ) {
+				// Se toma el impuesto enviado.
+				$impuesto = $request->get('id');
+				$countTipoSolicitud = TipoSolicitudForm::totalTipoSolicitud($impuesto);
+				if ( $countTipoSolicitud > 0 ) {
+					$modelTipoSolicitud = TipoSolicitudForm::findTipoSolicitud($impuesto);
+
+					foreach ($modelTipoSolicitud as $tipo) {
+						 echo "<option value='" . $tipo->id_tipo_solicitud . "'>" . $tipo->descripcion . "</option>";
+					}
+				} else {
+            		echo "<option> - </option>";
+				}
+			}
+		}
+
+
+		/***/
+		public function actionListaDocumentoRequisito()
+		{
+			$impuesto = 0;
+			$request = Yii::$app->request;
+			$impuesto = $request->get('id');
+			$dataProvider = DocumentoRequisitoController::actionGetDataProviderSegunImpuesto($impuesto);
+
+			return $this->renderAjax('/utilidad/documento-requisito/documento-requisito-gridview', [
+																'dataProvider' => $dataProvider,
+				]);
+		}
+
 
 
 
@@ -132,11 +174,19 @@
 					}
 				}
 
+				// Modelo para cargar el combo con la lista de los impuestos.
 				$modelImpuesto = ImpuestoForm::findImpuesto();
-// die(var_dump($modelImpuesto));
+
+				// Data provider de los proceos que genera la solicitudes.
+				$dataProvider = SolicitudProcesoForm::getDataProvider();
+
+				// Modelo para cargar el combo con la lista de los tipos de solicitudes
+				//$modelTipoSolicitud = TipoSolicitudForm::findTipoSolicitud(2);
+
 				return $this->render('/configuracion/solicitud/create-config-solicitud-form', [
 																		'model' => $model,
 																		'modelImpuesto' => $modelImpuesto,
+																		'dataProvider' => $dataProvider,
 					]);
 			} else {
 				MensajeController::actionMensaje(999, false);
