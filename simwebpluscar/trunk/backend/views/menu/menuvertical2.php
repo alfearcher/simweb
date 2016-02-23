@@ -98,7 +98,7 @@ session_start();
 		        		['label' => Icon::show('fa fa-home',['class' => $typeLong], $typeIcon) . '&nbsp; Inmuebles Urbanos',
 		        			'items' => [
 		        						['label' => 'Inscripción de Inmuebles Urbanos', 'url' => ['/inmueble/inscripcion-inmuebles-urbanos/inscripcion-inmuebles-urbanos']],
-		        						['label' => 'Avaluo Catastral', 'url' => '#'],
+		        						['label' => 'Avaluo Catastral', 'url' => ['/inmueble/avaluo-catastral-inmuebles-urbanos/index']],
 		        						['label' => 'Certificado Catastral', 'url' => '#'],
 		        						['label' => 'Renovación de Certificado Catastral', 'url' => '#'],
 		        						['label' => 'Solvencia', 'url' => '#'],
