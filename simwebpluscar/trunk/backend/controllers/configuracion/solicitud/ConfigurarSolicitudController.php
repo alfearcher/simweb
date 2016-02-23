@@ -55,9 +55,10 @@
 	use yii\web\NotFoundHttpException;
 	use common\conexion\ConexionController;
 	use common\mensaje\MensajeController;
-	use common○\models\session\Session;
+	use common\models\session\Session;
 	use backend\models\documentoconsignado\DocumentoConsignadoForm;
 	use backend\models\configuracion\solicitud\ConfigurarSolicitudForm;
+	use backend\models\impuesto\ImpuestoForm;
 
 	session_start();		// Iniciando session
 
@@ -97,7 +98,7 @@
 		/***/
 		public function actionCreate()
 		{
-			if ( Session::existeUser() ) {
+			if ( Session::actionExisteUser() ) {
 
 				$model = New ConfigurarSolicitudForm();
 				$request = Yii::$app->request;
@@ -131,8 +132,11 @@
 					}
 				}
 
+				$modelImpuesto = ImpuestoForm::getDataProvider();
+// die(var_dump($modelImpuesto));
 				return $this->render('/configuracion/solicitud/create-config-solicitud-form', [
 																		'model' => $model,
+																		'modelImpuesto' => $modelImpuesto,
 					]);
 			} else {
 				MensajeController::actionMensaje(999, false);
