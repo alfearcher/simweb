@@ -225,6 +225,7 @@ $variablephp=$_COOKIE['variablephp'];
                                                         <?php 
                                                         echo Html::submitButton(Yii::t('backend', 'Accept'), ['class' => 'btn btn-primary', 'name'=>'AcceptBuyer', 'value'=>'Accept']); 
                                                         ?> 
+                                                        <?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) ?>
                                                     </td>
                                                 </tr> 
                                        

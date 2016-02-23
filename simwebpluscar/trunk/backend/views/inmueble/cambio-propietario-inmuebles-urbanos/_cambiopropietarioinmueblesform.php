@@ -331,6 +331,7 @@ $variablephp=$_COOKIE['variablephp'];
                                                         <div class="form-group"> 
 <?= Html::beginForm();?>
 <?= Html::submitButton(Yii::t('backend', 'Accept'), ['class' => 'btn btn-primary', 'name'=>'AcceptSeller', 'value'=>'AcceptSeller']) ?>
+<?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) ?>
 <?= Html::endForm();?> 
 
 
@@ -439,8 +440,10 @@ $variablephp=$_COOKIE['variablephp'];
                                                         <div class="form-group">
                                                         <?php if(count($datosVInmueble) >0){
                                                                     echo Html::submitButton(Yii::t('backend', 'Accept'), ['class' => 'btn btn-primary', 'name'=>'AcceptBuyer', 'value'=>'Accept']); 
+                                                                    echo Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) 
                                                               } else {         
                                                                     echo Html::submitButton(Yii::t('backend', 'Next'), ['class' => 'btn btn-primary', 'name'=>'NextBuyer', 'value'=>'Next']);
+                                                                    echo Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) 
                                                                  }?>
                                                         </div>
 <!-- Campos ocultos -->  

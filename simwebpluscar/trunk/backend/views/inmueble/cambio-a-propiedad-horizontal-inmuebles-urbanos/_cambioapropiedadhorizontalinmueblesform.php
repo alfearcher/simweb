@@ -354,6 +354,7 @@ function bloquea() {
                             <div class="form-group"> 
 <?= Html::beginForm();?>
 <?= Html::submitButton(Yii::t('backend', 'Accept'), ['class' => 'btn btn-primary', 'name'=>'Accept', 'value'=>'Accept']) ?>
+<?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) ?>
 <?= Html::endForm();?> 
                             </div>
                                                                        
