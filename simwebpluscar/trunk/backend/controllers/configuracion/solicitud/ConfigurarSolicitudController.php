@@ -132,7 +132,7 @@
 					}
 				}
 
-				$modelImpuesto = ImpuestoForm::getDataProvider();
+				$modelImpuesto = ImpuestoForm::findImpuesto(['1', '2']);
 // die(var_dump($modelImpuesto));
 				return $this->render('/configuracion/solicitud/create-config-solicitud-form', [
 																		'model' => $model,
