@@ -233,7 +233,7 @@ session_start();
         			'items' => [
         						['label' => 'Configurar Ordenanzas', 'url' => '#'],
         						['label' => 'Configurar Vencimiento de Documentos', 'url' => '#'],
-        						['label' => 'Configurar Solicitudes', 'url' => '#'],
+        						['label' => 'Configurar Solicitudes', 'url' => ['/configuracion/solicitud/configurar-solicitud/index']],
         						['label' => 'Configurar Convenios de Pagos', 'url' => '#'],
         						['label' => 'Configurar Dirección de Tributos',
         						            'url' => ['/hola/saludo2'],
