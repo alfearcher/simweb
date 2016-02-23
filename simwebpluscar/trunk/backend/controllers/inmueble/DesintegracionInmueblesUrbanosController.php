@@ -127,7 +127,7 @@ class DesintegracionInmueblesUrbanosController extends Controller
         $modelContribuyente = $this->findModelContribuyente($_SESSION['idContribuyente']);
         
 
-        $model = $this->findModel($_SESSION['idContribuyente']); 
+        $model = $this->findModel($id_impuesto); 
 
 
          //Mostrará un mensaje en la vista cuando el usuario se haya registrado
