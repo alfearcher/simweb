@@ -121,7 +121,7 @@ class DesintegracionInmueblesUrbanosController extends Controller
      *para el cambio de otros datos inmuebles
      *@return model trae los datos del formulario 
      **/
-    public function actionDesintegracionInmuebles($id_contribuyente)
+    public function actionDesintegracionInmuebles()
     { 
         if ( isset( $_SESSION['idContribuyente'] ) ) {
         $modelContribuyente = $this->findModelContribuyente($_SESSION['idContribuyente']);
@@ -357,7 +357,7 @@ FIN BUYER
      * @return Inmuebles the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel()
+    protected function findModel($id)
     { 
         if (($model = DesintegracionInmueblesForm::find()->where(['id_contribuyente'=>$_SESSION['idContribuyente']])->one()) !== null) {
 
@@ -374,7 +374,7 @@ FIN BUYER
      * @return Contribuyente the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */ 
-    public function findModelContribuyente()
+    public function findModelContribuyente($id)
     {//echo'<pre>'; var_dump($_SESSION['idContribuyente']); echo '</pre>'; die('hola');
         if (($modelContribuyente = ContribuyentesForm::findOne($id)) !== null) {
             
