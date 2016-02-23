@@ -121,7 +121,7 @@ class DesintegracionInmueblesUrbanosController extends Controller
      *para el cambio de otros datos inmuebles
      *@return model trae los datos del formulario 
      **/
-    public function actionDesintegracionInmuebles()
+    public function actionDesintegracionInmuebles($id_contribuyente)
     { 
         if ( isset( $_SESSION['idContribuyente'] ) ) {
         $modelContribuyente = $this->findModelContribuyente($_SESSION['idContribuyente']);
