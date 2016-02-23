@@ -15,7 +15,7 @@ $this->title = Yii::t('backend', 'View Property Urban. Id Tax: '.$model->id_impu
 
     <p>
         <?= Html::a(Yii::t('backend', 'Urban decay properties'), ['inmueble/desintegracion-inmuebles-urbanos/desintegracion-inmuebles','id_contribuyente' =>$model->id_contribuyente  ], ['class' => 'btn btn-primary']) ?>  
-        
+        <?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) ?>
     </p> 
 
     <?= DetailView::widget([

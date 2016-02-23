@@ -15,7 +15,7 @@ $this->title = Yii::t('backend', 'View Property Urban. Id Tax: '.$model->id_impu
 
     <p>
         <?= Html::a(Yii::t('backend', 'Change of cadastral number'), ['inmueble/cambio-numero-catastral-inmuebles-urbanos/cambio-de-numero-catastral-inmuebles', 'id_impuesto' => $model->id_impuesto], ['class' => 'btn btn-primary']) ?>
-        
+        <?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) ?>
     </p> 
 
     <?= DetailView::widget([

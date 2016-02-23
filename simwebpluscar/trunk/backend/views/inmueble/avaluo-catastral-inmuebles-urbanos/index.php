@@ -63,6 +63,7 @@ $this->title = Yii::t('backend', 'Property Urban');
 
     <p>
         <?= Html::a(Yii::t('backend', 'Register Property Urban'), ['inmueble/inscripcion-inmuebles-urbanos/inscripcion-inmuebles-urbanos'], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) ?>
     </p>
 
 </div>
