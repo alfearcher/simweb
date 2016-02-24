@@ -117,13 +117,13 @@ class IntegracionInmueblesUrbanosController extends Controller
      *para el cambio de otros datos inmuebles
      *@return model 
      **/
-    public function actionIntegracionInmuebles()
+    public function actionIntegracionInmuebles($id_impuesto)
     { 
         if ( isset( $_SESSION['idContribuyente'] ) ) {
         $modelContribuyente = $this->findModelContribuyente($_SESSION['idContribuyente']);
         
 
-        $model = $this->findModel($_SESSION['idContribuyente']); 
+        $model = $this->findModel($id_impuesto); 
 
 
          //Mostrará un mensaje en la vista cuando el usuario se haya registrado
@@ -356,7 +356,7 @@ FIN BUYER
      */
     protected function findModel($id)
     { 
-        if (($model = IntegracionInmueblesForm::find()->where(['id_contribuyente'=>$_SESSION['idContribuyente']])->one()) !== null) {
+        if (($model = IntegracionInmueblesForm::findOne($id)) !== null) {
 
             return $model; 
         } else {
