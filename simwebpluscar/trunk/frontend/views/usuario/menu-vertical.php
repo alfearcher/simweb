@@ -7,18 +7,18 @@
   	use kartik\icons\Icon;
   	use yii\helpers\Url;
     
-
+  	//session_start();
 
   	$typeIcon = Icon::FA;
   	$typeLong = 'fa-2x';
 
     Icon::map($this, $typeIcon);
 
-    
+ 
 ?>
 
 <div class="col-xs-3">
-	<div class="menu-funcionario" >
+	<div class="menu-funcionario" style="margin-left:-180px;">
 		<?=
 		  SideNav::widget([
 		    'type' => SideNav::TYPE_DEFAULT,
@@ -30,9 +30,9 @@
 		        // Important: you need to specify url as 'controller/action',
 		        // not just as 'controller' even if default action is used.
 
-		    	['label' => Icon::show('fa fa-street-view',['class' => $typeLong], $typeIcon) . '&nbsp; Opcion1',
+		    	['label' => Icon::show('fa fa-street-view',['class' => $typeLong], $typeIcon) . '&nbsp; Solicitudes',
 		        	'items' => [
-		        			['label' => 'Crear Funcionario', 'url' => ['funcionario/create'], 'options' => ['value' => '300', 'id' => '300']],
+		        			['label' => 'Crear Funcionario', 'url' => ['/contribuyente/crear/crear'], 'options' => ['value' => '300', 'id' => '300']],
 		        			['label' => 'Modificar Funcionario', 'url' => '#', 'options' => ['value' => '301', 'id' => '301']],
 		        			['label' => 'Desincorporar Funcionario', 'url' => '#', 'options' => ['value' => '302', 'id' => '302']],
 		        			['label' => 'Asignar a Grupo de Trabajo', 'url' => '#', 'options' => ['value' => '303', 'id' => '303']],

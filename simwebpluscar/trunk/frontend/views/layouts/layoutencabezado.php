@@ -11,7 +11,13 @@
     //use yii\bootstrap\Modal;
     //
     //session_start();
+    //
+     $sesion = yii::$app->user->identity;
 
+    $_SESSION['sesion'] = $sesion;
+
+    //die(var_dump($sesion));
+    
     $typeIcon = Icon::FA;
     $typeLong = 'fa-2x';
 
@@ -56,7 +62,7 @@ AppAsset::register($this);
 
                     if (!Yii::$app->user->isGuest) {
                         $menuItems = [
-                            ['label' =>  '<p>' . Icon::show('fa fa-list-alt',['class' => 'fa-2x'], $typeIcon) . Yii::t('backend', 'Main Menu') . '</p>', 'url' => ['/menu/vertical']],
+                            ['label' =>  '<p>' . Icon::show('fa fa-list-alt',['class' => 'fa-2x'], $typeIcon) . Yii::t('frontend', 'Main Menu') . '</p>', 'url' => ['/usuario/menu-vertical']],
 
                         ];
                     }
@@ -67,13 +73,14 @@ AppAsset::register($this);
                             //'items' => []
                         ];
                     } else {
-                        $menuItems[] = [
-                            'label' => Icon::show('user',['class' => 'fa-2x'], $typeIcon) . ' ' . Yii::t('backend', 'user') . ' (' . Yii::$app->user->identity->login . ')',
+                       $menuItems[] = [
+                            'label' => Icon::show('user',['class' => 'fa-2x'], $typeIcon) . ' ' . Yii::t('frontend', 'user') . ' (' . Yii::$app->user->identity->login . ')',
+
+                                //die(var_dump(Yii::$app->user)),
                             'url' => '#',
                             //'linkOptions' => ['data-method' => 'post'],
-                                'items' => [['label' => Yii::t('backend', 'Create Security Questions'), 'url' =>  ['pregunta-seguridad/asignarpreguntasecreta']],
-                                            ['label' => Yii::t('backend', 'Change Password'), 'url' =>  ['opcion-funcionario/cambiarpasswordfuncionario']],
-                                            ['label' => 'Logout', 'url' => ['site/logout'],'linkOptions' => ['data-method' => 'post'], ],
+                                   'items' => [['label' => Yii::t('frontend', 'Change Password'), 'url' =>  ['usuario/mostrar-pregunta-seguridad/buscar-mostrar-pregunta-seguridad']],
+                                            ['label' => 'Logout', 'url' => ['site/logout2'],'linkOptions' => ['data-method' => 'POST'], ],
                                     ]
 
                         ];
@@ -111,12 +118,3 @@ AppAsset::register($this);
 <?php $this->endPage() ?>
 
 
-<script>
-    $("#lupa").click(function(event) {
-        //alert('lupa');
-        //$("#modal").modal("show")
-        //    .find("#modalForm")
-        //    .load($(this).attr("url"));
-    });
-
-</script>

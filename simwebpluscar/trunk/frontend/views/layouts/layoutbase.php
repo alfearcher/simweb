@@ -9,7 +9,7 @@
 /* @var $content string */
     
     try {
-        if (!(Yii::$app->user->identity)) {
+        if (!isset($_SESSION['sesion'])) {
             // No existe usuario definido
             //Controller::redirect(['/site/login']);
             die('No existe user');

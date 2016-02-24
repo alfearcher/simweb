@@ -19,7 +19,7 @@ use frontend\models\usuario\PreguntaSeguridadContribuyenteForm;
 use frontend\controller\usuario\PreguntaSeguridadContribuyenteController;
 use common\models\contribuyente\ContribuyenteBase;
 
-session_start();
+//session_start();
 
 
 /**
@@ -85,6 +85,7 @@ public $layout = "layout-login";
      
     public function actionLogin()
     {
+       // die('ee');
         
         $mensajeError = '';
         $model = New LoginForm();
@@ -171,15 +172,25 @@ public $layout = "layout-login";
 
     }
 
-     
 
     public function actionLogout()
     {
+        //die('llegue a logout');
         Yii::$app->user->logout();
-
-        return $this->goHome();
+        
+        return $this->redirect(['/contribuyente/crear/crear']);
     }
 
+    public function actionLogout2()
+    {
+        //die('llegue a logout');
+        Yii::$app->user->logout();
+        
+        return $this->redirect(['site/login']);
+    }
+
+
+   
     public function actionContact()
     {
         $model = new ContactForm();
@@ -255,4 +266,7 @@ public $layout = "layout-login";
             'model' => $model,
         ]);
     }
+
+
+    
 }

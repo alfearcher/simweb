@@ -239,6 +239,7 @@ class Afiliaciones extends Afiliacion implements \yii\web\IdentityInterface
 
       public function getAuthkey()
     {
+       // return null;
          throw new NotSupportedException();
     }
  
@@ -251,12 +252,14 @@ class Afiliaciones extends Afiliacion implements \yii\web\IdentityInterface
  
      public static function findIdentity($id)
     {
-     throw new NotSupportedException();
+       die('llegue a findbyidentity');
+     return self::findOne(array('id_contribuyente'=>$id));
     }
 
 
     public static function findByUsername($email,$password_hash)
     {
+      //  die('llegue a findby');
 
         $users = Afiliacion::find()
                 ->where("estatus=:estatus", [":estatus" => 0])

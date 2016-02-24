@@ -8,6 +8,8 @@ use yii\bootstrap\ActiveForm;
 
 $this->title = 'Iniciar Sesion';
 //$this->params['breadcrumbs'][] = $this->title; // guia de la direccion de la pagina ejemplo: /home/registrar
+//
+//die(var_dump(yii::$app->user->identity));
 ?>
 
     

@@ -62,7 +62,7 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use frontend\models\usuario\VerificarPreguntasContribuyenteNaturalForm;
 use frontend\models\usuario\VerificarPreguntasContribuyenteJuridicoForm;
-use frontend\controllers\mensaje\MensajeController;
+
 use frontend\models\usuario\ValidarCambiarPasswordNaturalForm;
 use frontend\models\usuario\ValidarCambiarPasswordJuridicoForm;
 use frontend\models\usuario\ReseteoPasswordNaturalForm;
@@ -72,7 +72,9 @@ use common\models\utilidades\Utilidad;
 use common\conexion\ConexionController;
 use common\enviaremail\EnviarEmailCambioClave;
 use common\models\session\Session;
-
+use common\mensaje\MensajeController;
+use frontend\models\usuario\PreguntaSeguridadContribuyente;
+use frontend\models\usuario\MostrarPreguntaSeguridadForm;
 session_start();
 /**
  * Site controller
@@ -141,7 +143,7 @@ class CambiarPasswordContribuyenteController extends Controller
                                                                                                                           
                                     } else {
 
-                                    return MensajeController::actionMensaje(Yii::t('frontend', 'You have not created your security answers yet, in case you forgot your password, please go to your city hall'));
+                                    return MensajeController::actionMensaje(401);
                                 
                                     }
                           
@@ -598,8 +600,6 @@ class CambiarPasswordContribuyenteController extends Controller
 
   }
 
-    
-
+  
 }
-
 ?>

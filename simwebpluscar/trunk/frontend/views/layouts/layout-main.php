@@ -7,9 +7,9 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-
+   //die('llegue a layout main');
     try {
-        if (!(Yii::$app->user->identity)) {
+        if ((Yii::$app->user->identity)) {
            //Controller::redirect(['/site/login']);
             die('No existe user');
         }
