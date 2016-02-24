@@ -115,13 +115,13 @@ class CambioPropietarioInmueblesUrbanosController extends Controller
      *para el cambio de otros datos inmuebles
      *@return model 
      **/
-    public function actionCambioPropietarioInmuebles($id_contribuyente)
+    public function actionCambioPropietarioInmuebles($id_impuesto)
     { 
         if ( isset( $_SESSION['idContribuyente'] ) ) {
         $modelContribuyente = $this->findModelContribuyente($id_contribuyente);
         
 
-        $model = $this->findModel($id_contribuyente); 
+        $model = $this->findModel($id_impuesto); 
 
 
          //Mostrará un mensaje en la vista cuando el usuario se haya registrado
@@ -348,7 +348,7 @@ FIN BUYER
      */
     protected function findModel($id)
     { 
-        if (($model = InmueblesUrbanosForm::find()->where(['id_contribuyente'=>$_SESSION['idContribuyente']])->one()) !== null) {
+        if (($model = InmueblesUrbanosForm::findOne($id)) !== null) {
 
             return $model; 
         } else {
