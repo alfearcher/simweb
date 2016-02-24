@@ -118,13 +118,13 @@ class AvaluoCatastralInmueblesUrbanosController extends Controller
      *para el cambio de otros datos inmuebles
      *@return model 
      **/
-    public function actionAvaluoCatastralInmuebles()
+    public function actionAvaluoCatastralInmuebles($id_impuesto)
     { 
         if ( isset( $_SESSION['idContribuyente'] ) ) {
         //$modelContribuyente = $this->findModelContribuyente($id_contribuyente);
         
 
-        $model = $this->findModel($id_contribuyente); 
+        $model = $this->findModel($id_impuesto); 
 
          //$modelavaluo = new AvaluoCatastralForm();
          //Mostrará un mensaje en la vista cuando el usuario se haya registrado
