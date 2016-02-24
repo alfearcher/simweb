@@ -14,7 +14,7 @@ $this->title = Yii::t('backend', 'View Property Urban. Id Tax: '.$model->id_impu
     
 
     <p>
-        <?= Html::a(Yii::t('backend', 'Property owner change'), ['inmueble/cambio-propietario-inmuebles-urbanos/cambio-propietario-inmuebles','id_impuesto' =>$model->id_impuesto  ], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('backend', 'Property owner change'), ['inmueble/cambio-propietario-inmuebles-urbanos/cambio-propietario-inmuebles','id_impuesto' =>$model->id_impuesto, 'id_contribuyente'=>$model->id_contribuyente  ], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) ?>
     </p> 
 

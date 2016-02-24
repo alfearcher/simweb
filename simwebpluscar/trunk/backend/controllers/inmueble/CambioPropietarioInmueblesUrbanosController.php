@@ -115,7 +115,7 @@ class CambioPropietarioInmueblesUrbanosController extends Controller
      *para el cambio de otros datos inmuebles
      *@return model 
      **/
-    public function actionCambioPropietarioInmuebles($id_impuesto)
+    public function actionCambioPropietarioInmuebles($id_impuesto, $id_contribuyente)
     { 
         if ( isset( $_SESSION['idContribuyente'] ) ) {
         $modelContribuyente = $this->findModelContribuyente($id_contribuyente);
