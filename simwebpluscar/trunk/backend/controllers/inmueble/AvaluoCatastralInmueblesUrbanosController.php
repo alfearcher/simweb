@@ -283,7 +283,7 @@ FIN AVALUO CATASTRAL DEL INMUEBLE
      */
     protected function findModel($id)
     { 
-        if (($model = AvaluoCatastralForm::find()->where(['id_contribuyente'=>$_SESSION['idContribuyente']])->one()) !== null) {
+        if (($model = AvaluoCatastralForm::findOne($id)) !== null) {
 
             return $model; 
         } else {
