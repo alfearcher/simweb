@@ -62,7 +62,7 @@ AppAsset::register($this);
 
                     if (!Yii::$app->user->isGuest) {
                         $menuItems = [
-                            ['label' =>  '<p>' . Icon::show('fa fa-list-alt',['class' => 'fa-2x'], $typeIcon) . Yii::t('frontend', 'Main Menu') . '</p>', 'url' => ['/usuario/menu-vertical']],
+                            ['label' =>  '<p>' . Icon::show('fa fa-list-alt',['class' => 'fa-2x'], $typeIcon) . Yii::t('frontend', 'Main Menu') . '</p>', 'url' => ['site/menu-vertical']],
 
                         ];
                     }
