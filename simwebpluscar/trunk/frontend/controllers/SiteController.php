@@ -148,7 +148,7 @@ public $layout = "layout-login";
 
                                                                                                         
 
-                        return $this->render('/usuario/menu-vertical');
+                        return $this->redirect(['menu-vertical']);
                     
                     
                     
@@ -265,6 +265,11 @@ public $layout = "layout-login";
         return $this->render('resetPassword', [
             'model' => $model,
         ]);
+    }
+
+    public function actionMenuVertical()
+    {
+        return $this->render('/usuario/menu-vertical');
     }
 
 
