@@ -40,17 +40,19 @@
 //fa fa-question-circle, interrogacion
 
 return [
-	'999' => [Yii::t('backend', 'User no valid'), 'danger', 'fa fa-times'],
-	'900' => [Yii::t('backend', 'Register no valid'), 'danger', 'fa fa-times'],
-	'910' => [Yii::t('backend', 'Data for save no detect'), 'danger', 'fa fa-times'],
-	'920' => [Yii::t('backend', 'Error. The operation not was executed'), 'danger', 'fa fa-times'],
-	'930' => [Yii::t('backend', 'Don`t was defined to onwer type'), 'danger', 'fa fa-times'],
-	'990' => [Yii::t('backend', 'Register found not'), 'danger', 'fa fa-times'],
+	'999' => [Yii::t('backend', 'User not valid'), 'danger', 'fa fa-times'],
+	'900' => [Yii::t('backend', 'Register not valid'), 'danger', 'fa fa-times'],
+	'910' => [Yii::t('backend', 'Saving data not detected'), 'danger', 'fa fa-times'],
+	'920' => [Yii::t('backend', 'Error. The operation was not executed'), 'danger', 'fa fa-times'],
+	'930' => [Yii::t('backend', 'Taxpayer type  was not defined'), 'danger', 'fa fa-times'],
+	'990' => [Yii::t('backend', 'Register not found'), 'danger', 'fa fa-times'],
 	'404' => [Yii::t('backend', 'The requested page does not exist.'), 'danger', 'fa fa-times'],
 	'100' => [Yii::t('backend', 'Register saved'), 'success', 'fa fa-check-circle-o'],
 	'200' => [Yii::t('backend', 'Register updated'), 'success', 'fa fa-check-circle-o'],
-	'300' => [Yii::t('backend', 'Operation execute'), 'success', 'fa fa-check-circle-o'],
+	'300' => [Yii::t('backend', 'Operation executed'), 'success', 'fa fa-check-circle-o'],
 	'400' => [Yii::t('backend', 'Register was inactivated'), 'success', 'fa fa-check-circle-o'],
+	'401' => [Yii::t('backend', 'Security Answers not Created'), 'warning', 'fa fa-exclamation-triangle'],
+	'402' => [Yii::t('backend', 'We have sent you an email with your user and Password'), 'success', 'fa fa-exclamation-triangle'],
 ]
 
 
