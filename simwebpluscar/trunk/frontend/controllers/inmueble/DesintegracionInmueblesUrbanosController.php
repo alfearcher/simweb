@@ -63,7 +63,7 @@ use common\conexion\ConexionController;
 
 use backend\models\buscargeneral\BuscarGeneralForm;
 use backend\models\buscargeneral\BuscarGeneral;
-use backend\models\inmueble\DesintegracionInmueblesForm;
+use frontend\models\inmueble\DesintegracionInmueblesForm;
 
 
 /**
