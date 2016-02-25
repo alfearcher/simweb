@@ -164,7 +164,7 @@ class LoginForm extends Model
 
 
         }
-       //die(var_dump($this->_user));
+      // die(var_dump($this->_user));
 
         return $this->_user;
     }

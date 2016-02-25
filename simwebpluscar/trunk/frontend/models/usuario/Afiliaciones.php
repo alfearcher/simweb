@@ -56,8 +56,9 @@ use common\models\utilidades\Utilidad;
 use frontend\models\usuario\loginForm;
 use frontend\models\usuario\Afiliacion;
 use frontend\models\usuario\CrearUsuarioJuridicoForm;
+use yii\db\ActiveRecord;
  
-class Afiliaciones extends Afiliacion implements \yii\web\IdentityInterface
+class Afiliaciones extends \yii\base\Object implements \yii\web\IdentityInterface
 {      
     public $id_afiliacion;
 	public $id_contribuyente;
@@ -72,6 +73,7 @@ class Afiliaciones extends Afiliacion implements \yii\web\IdentityInterface
 	public $nivel;
 	public $confirmar_email;
     public $password_hash;
+    public $salt;
 
 
 
@@ -191,35 +193,7 @@ class Afiliaciones extends Afiliacion implements \yii\web\IdentityInterface
             }             
     }
 
-    public function findUserPass($userName, $password_hash)
-    {
-//die('llegue a find');
-
-        $buscar = Afiliacion::find()
-                            ->where([
-
-                                'login' => $userName,
-                                'password_hash' => $password_hash,
-                                'estatus' => 0,
-                                ])
-                                ->one(); 
-
-        // $arrayLimpio = ['id_afiliacion' => $buscar[0]->id_afiliacion, 'id_contribuyente' => $buscar[0]->id_contribuyente, 
-        //                 'login' => $buscar[0]->login, 'password' => $buscar[0]->password, 'fecha_hora_afiliacion' => $buscar[0]->fecha_hora_afiliacion, 'via_sms' => $buscar[0]->via_sms, 'via_email' => $buscar[0]->via_email,
-        //                     'via_tlf_fijo' => $buscar[0]->via_tlf_fijo, 'via_callcenter' => $buscar[0]->via_callcenter,
-        //                     'estatus' => $buscar[0]->estatus, 'nivel' => $buscar[0]->nivel, 'confirmar_email' => $buscar[0]->confirmar_email, 'salt' => $buscar[0]->salt, 'password_hash' => $buscar[0]->password_hash  ];
-       // die(var_dump($arrayLimpio));                      
-
-                            //die(var_dump($buscar));
-                               // die(var_dump($buscar));
-        
-                
-                return new static($buscar);
-
-            
-        
-                      
-    }
+    
 
 
 
@@ -233,8 +207,10 @@ class Afiliaciones extends Afiliacion implements \yii\web\IdentityInterface
 
      public function getId()
     {
-       return null; 
-       //throw new NotSupportedException(;
+       return $this->id_afiliacion; 
+
+      // die($this->id_contribuyente);
+       //throw new NotSupportedException();
     }
 
       public function getAuthkey()
@@ -250,16 +226,21 @@ class Afiliaciones extends Afiliacion implements \yii\web\IdentityInterface
          throw new NotSupportedException();
     }
  
-     public static function findIdentity($id)
+     public static function findIdentity($id_afiliacion)
     {
-       die('llegue a findbyidentity');
-     return self::findOne(array('id_contribuyente'=>$id));
+       //die('llegue a findidentity front');
+      $user = Afiliacion::find()
+                ->where("estatus=:activate", [":activate" => 0])
+                ->andWhere("id_afiliacion=:id_funcionario", ["id_funcionario" => $id_afiliacion])
+                ->one();
+         
+        return isset($user) ? new static($user) : null;
     }
 
 
     public static function findByUsername($email,$password_hash)
     {
-      //  die('llegue a findby');
+      // die('llegue a findby');
 
         $users = Afiliacion::find()
                 ->where("estatus=:estatus", [":estatus" => 0])
