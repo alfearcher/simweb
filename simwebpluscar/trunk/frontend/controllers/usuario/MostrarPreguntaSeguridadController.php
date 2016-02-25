@@ -68,6 +68,7 @@ use common\seguridad\Seguridad;
 use common\conexion\ConexionController;
 use frontend\models\usuario\CrearUsuarioNatural;
 use common\enviaremail\EnviarEmailCambioClave;
+use common\mensaje\MensajeController;
 
 /**
  * Site controller
@@ -174,7 +175,7 @@ class MostrarPreguntaSeguridadController extends Controller
                             $enviarEmail = new EnviarEmailCambioClave();
                             $enviarEmail->EnviarEmailCambioClave($consultaContribuyente->email, $model->password1);
                       
-                            return MensajeController::actionMensaje(Yii::t('frontend', 'We have sent you an email with your new password'));
+                            return MensajeController::actionMensaje(402);
 
                         }
                     
