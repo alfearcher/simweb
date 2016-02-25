@@ -104,11 +104,11 @@ $this->title = 'Preguntas de Seguridad';
                            
 								<div class="row">
 							<div class="col-sm-6">
-                            <?= Html::submitButton("Actualizar", ["class" => "btn btn-success", 'style' => 'height:30px;width:140px;margin-rigth:200px;']) ?>
+                            <?= Html::submitButton("Submit", ["class" => "btn btn-success", 'style' => 'height:30px;width:140px;margin-rigth:200px;']) ?>
 							</div>
                            	
                            	<div class="col-sm-3" >
-                            <?= Html::a('Return',['/usuario/cambiar-password-contribuyente/cambiar-password-natural'], ['class' => 'btn btn-primary','style' => 'height:30px;width:140px;margin-left:-40px;' ]) //boton para volver a la busqueda de pregunta de seguridad ?>
+                            <?= Html::a('Return',['site/menu-vertical'], ['class' => 'btn btn-primary','style' => 'height:30px;width:140px;margin-left:-40px;' ]) //boton para volver a la busqueda de pregunta de seguridad ?>
                             </div>
 
                            
