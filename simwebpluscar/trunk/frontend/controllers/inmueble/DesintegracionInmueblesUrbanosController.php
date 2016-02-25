@@ -46,7 +46,7 @@
  *  @inherits
  *  
  */
-namespace frontend\controllers;
+namespace frontend\controllers\inmueble;
 error_reporting(0);
 session_start();
 use Yii;
