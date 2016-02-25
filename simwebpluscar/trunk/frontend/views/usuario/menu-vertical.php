@@ -18,7 +18,7 @@
 ?>
 
 <div class="col-xs-3">
-	<div class="menu-funcionario" style="margin-left:-180px;">
+	<div class="menu-funcionario" style="margin-left:-110px;">
 		<?=
 		  SideNav::widget([
 		    'type' => SideNav::TYPE_DEFAULT,

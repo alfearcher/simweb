@@ -22,7 +22,7 @@ $this->title = 'Preguntas de Seguridad';
 ?>
 
 <div class="col-sm-7">
-		<div class="panel panel-primary">
+		<div class="panel panel-primary" style="margin-left: 0px; margin-top: 15px;">
 			<div class="panel-heading">
 				<?= $this->title ?>
 			</div>
@@ -104,15 +104,14 @@ $this->title = 'Preguntas de Seguridad';
                            
 								<div class="row">
 							<div class="col-sm-6">
-                            <?= Html::submitButton("Registrar", ["class" => "btn btn-success", 'style' => 'height:30px;width:140px;margin-rigth:200px;']) ?>
+                            <?= Html::submitButton("Actualizar", ["class" => "btn btn-success", 'style' => 'height:30px;width:140px;margin-rigth:200px;']) ?>
 							</div>
-                           
-
-                            <div class="col-sm-3" >
-                                        
-                                            <?= Html::a('Return',['/usuario/cambiar-password-contribuyente/seleccionar-tipo-contribuyente'], ['class' => 'btn btn-primary','style' => 'height:30px;width:140px;margin-left:-100px;' ]) //Retornar a seleccionar tipo usuario ?>
-                                        
+                           	
+                           	<div class="col-sm-3" >
+                            <?= Html::a('Return',['/usuario/cambiar-password-contribuyente/cambiar-password-natural'], ['class' => 'btn btn-primary','style' => 'height:30px;width:140px;margin-left:-40px;' ]) //boton para volver a la busqueda de pregunta de seguridad ?>
                             </div>
+
+                           
                              </div>
 						
 			</div>
