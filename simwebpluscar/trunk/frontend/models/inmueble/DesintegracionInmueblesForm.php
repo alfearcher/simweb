@@ -51,7 +51,7 @@
  *  
  */ 
 
-namespace frontend\models;
+namespace frontend\models\inmueble;
 
 use Yii;
 use backend\models\inmueble\InmueblesConsulta;
