@@ -200,23 +200,7 @@
                             ?>
                     </did>
                 </div>
-                <div class="row">
-                    <did class="col-sm-3" >
-                        <?= $form->field($model, 'fecha_inicio')->widget(\yii\jui\DatePicker::classname(),['id' => 'fecha-inicio',
-                                                                                                                                            'clientOptions' => [
-                                                                                                                                                'maxDate' => '+0d', // Bloquear los dias en el calendario a partir del dia siguiente al actual.
-                                                                                                                                            ],
-                                                                                                                                            'language' => 'es-ES',
-                                                                                                                                            'dateFormat' => 'dd-MM-yyyy',
-                                                                                                                                            'options' => [
-                                                                                                                                                    'class' => 'form-control',
-                                                                                                                                                    'readonly' => true,
-                                                                                                                                                    'style' => 'background-color: white;',
-
-                                                                                                                                            ]
-                                                                                                                                            ])->label(false) ?>
-                    </did>
-                </div>
+                
 
 <!-- FIN DE TELEFONO CELULAR -->
 
