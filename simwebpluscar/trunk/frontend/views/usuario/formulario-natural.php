@@ -200,7 +200,7 @@
                             ?>
                     </did>
                 </div>
-                </div>
+                <div class="row">
                     <did class="col-sm-3" >
                         <?= $form->field($model, 'fecha_inicio')->widget(\yii\jui\DatePicker::classname(),['id' => 'fecha-inicio',
                                                                                                                                             'clientOptions' => [
