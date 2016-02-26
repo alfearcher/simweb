@@ -101,7 +101,7 @@
 	    /***/
 	    public function findSolicitudProceso()
 	    {
-	    	$findModel = SolicitudProceso::find()->orderBy(['descripcion' => SORT_ASC])->all();
+	    	$findModel = SolicitudProceso::find()->where(['inactivo' => 0 ])->orderBy(['descripcion' => SORT_ASC])->all();
 	    	return $findModel;
 	    }
 
@@ -110,7 +110,7 @@
 	    /***/
 	    public function totalSolicitudProceso()
 	    {
-	    	$findModel = SolicitudProceso::find()->count();
+	    	$findModel = SolicitudProceso::find()->where(['inactivo' => 0 ])->count();
 
 	    	return $findModel;
 	    }
@@ -119,7 +119,7 @@
 
 	    public function getDataProvider()
 	    {
-	    	$query = self::findSolicitudProceso();
+	    	$query = SolicitudProceso::find();
 
 	    	$dataProvider = New ActiveDataProvider([
 	    		'query' => $query,
