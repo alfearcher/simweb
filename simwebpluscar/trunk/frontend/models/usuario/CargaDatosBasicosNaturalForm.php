@@ -169,7 +169,7 @@ class CargaDatosBasicosNaturalForm extends CrearUsuarioNatural
         public $naturaleza_rep;
         public $cedula_rep;
         public $codigo;
-        public $fecha_inicio;
+        
 
     /**
      * @inheritdoc
