@@ -173,7 +173,7 @@ $variablephp=$_COOKIE['variablephp'];
                                                     <td>
                                                         <div class="col-lg-50">
                                                             <?= Yii::t('backend', 'Choose to Integrate Urban Property') ?>
-                                                         </div> 
+                                                        </div> 
 
                                                     </td>
 
