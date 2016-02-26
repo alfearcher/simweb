@@ -53,6 +53,7 @@
 	use yii\web\Response;
 	use yii\helpers\Url;
 	use yii\web\NotFoundHttpException;
+	use yii\db\Exception;
 	use common\conexion\ConexionController;
 	use common\mensaje\MensajeController;
 	use common\models\session\Session;
@@ -61,7 +62,7 @@
 	use backend\models\impuesto\ImpuestoForm;
 	use backend\models\configuracion\tiposolicitud\TipoSolicitudForm;
 	use backend\controllers\utilidad\documento\DocumentoRequisitoController;
-	use backend\models\configuracion\procesosolicitud\SolicitudProcesoForm;
+	use backend\models\utilidad\documento\DocumentoRequisitoForm;
 
 	session_start();		// Iniciando session
 
@@ -127,14 +128,15 @@
 			$impuesto = 0;
 			$request = Yii::$app->request;
 			$impuesto = $request->get('id');
-			$dataProvider = DocumentoRequisitoController::actionGetDataProviderSegunImpuesto($impuesto);
+			if ( $impuesto > 0 ) {
+				$dataProvider = DocumentoRequisitoController::actionGetDataProviderSegunImpuesto($impuesto);
 
-			return $this->renderAjax('/utilidad/documento-requisito/documento-requisito-gridview', [
+				return $this->renderAjax('/utilidad/documento-requisito/documento-requisito-gridview', [
 																'dataProvider' => $dataProvider,
-				]);
+						]);
+			}
+			return false;
 		}
-
-
 
 
 		/***/
@@ -151,23 +153,12 @@
 					return ActiveForm::validate($model);
 				}
 
+//die(var_dump($postData));
 				if ( $model->load($postData) ) {
 					if ( $model->validate() ) {
-
-						if ( $postData['btn-create'] == 1 ) {
+//die(var_dump($postData));
+						if ( $postData['btn-create'] == 1 && isset($postData) ) {
 							$postData['btn-create'] = 2;
-
-							$_SESSION['postData'] = $postData;
-							//$urlPost = '/condominio/condominio/create';
-
-							return $this->render('/condominio/_pre-view',[
-																	'postData' => $postData,
-																	'model' => $model,
-																	'estoyCreate' => true,
-																	'estoyUpdate' => false,
-																	'urlPost' => $urlPost,
-										]);
-						} elseif ( $puedoCreate && isset($postData) ) {
 							// Se guardan los datos
 							self::actionBeginSave($postData, $model, 'create');
 						}
@@ -177,16 +168,9 @@
 				// Modelo para cargar el combo con la lista de los impuestos.
 				$modelImpuesto = ImpuestoForm::findImpuesto();
 
-				// Data provider de los proceos que genera la solicitudes.
-				$dataProvider = SolicitudProcesoForm::getDataProvider();
-
-				// Modelo para cargar el combo con la lista de los tipos de solicitudes
-				//$modelTipoSolicitud = TipoSolicitudForm::findTipoSolicitud(2);
-
 				return $this->render('/configuracion/solicitud/create-config-solicitud-form', [
 																		'model' => $model,
 																		'modelImpuesto' => $modelImpuesto,
-																		'dataProvider' => $dataProvider,
 					]);
 			} else {
 				MensajeController::actionMensaje(999, false);
@@ -195,47 +179,135 @@
 
 
 
+		/***/
+		protected function actionBeginSave($postData, $model, $operacion)
+		{
+			$result = false;
+			if ( isset($postData) && isset($model) ) {
+
+				$conexion = New ConexionController();
+
+				// Instancia de conexion hacia la base de datos.
+				$conn = $conexion->initConectar('db');
+				$conn->open();
+
+				// Instancia de transaccion. Esto permite realizar el commit o rollBack de la operacion.
+				$transaccion = $conn->beginTransaction();
+
+				if ( strtolower(trim($operacion)) == 'create' ) {
+					if ( self::actionCreateConfigurarSolicitud($postData, $model, $conn, $conexion) ) {
+
+						// Guardar los procesos que generara la solicitud, de haberlos.
+						if ( self::actionCreateProcesoGenerado($postData, $model, $conn, $conexion) ) {
+							$result = true;
+							//$transaccion->commit();
+							//return self::gestionarMensajesLocales(100);
+							//self::actionProcesoExitoso();
+							//Session::actionDeleteSession(['postData', 'idCondominio']);
+							//return $this->redirect(['proceso-exitoso']);
+						}
+					}
+
+					if ( $result == true ) {
+						$transaccion->commit();
+						return $this->redirect(['proceso-exitoso']);
+					} else {
+						$transaccion->rollBack();
+						return $this->redirect(['error-operacion']);
+					}
 
 
-		/**
-		*	Metodo muestra la vista con la informacion que fue guardada.
-		*/
-		public function actionView($idImpuesto)
-    	{
-    		if ( isset($_SESSION['idImpuesto']) ) {
-    			if ( $_SESSION['idImpuesto'] == $idImpuesto ) {
-    				$model = $this->findModel($idImpuesto);
-    				if ( $_SESSION['idImpuesto'] == $model->id_impuesto ) {
-			        	return $this->render('/aaee/autorizar-ramo/view',
-			        			['model' => $model,
+				} elseif ( strtolower(trim($operacion)) == 'update' ) {
 
-			        			]);
-			        } else {
-			        	echo 'Numero de Inscripcion no valido.';
-			        }
-	        	} else {
-	        		echo 'Numero de Inscription no valido.';
-	        	}
-        	}
-    	}
+					/*if ( self::actionUpdateCondominio($postData, $model, $conn, $conexion)) {
+						$transaccion->commit();
+						Session::actionDeleteSession(['postData', 'idCondominio']);
+						return $this->redirect(['registro-creado', 'codigoMensaje' => 200]);
+
+					} else {
+						$transaccion->rollBack();
+						return $this->redirect(['error-operacion']);
+					}*/
+
+				}
+				$conn->close();
+			} else {
+				//return self::gestionarMensajesLocales(Yii::t('backend', 'Data for save no detect'));
+				MensajeController::actionMensaje(910);
+			}
+		}
 
 
 
 
-		/**
-		*	Metodo que busca el ultimo registro creado.
-		* 	@param $idInscripcion, long que identifica el autonumerico generado al crear el registro.
-		*/
-		protected function findModel($idImpuesto)
-    	{
-        	if (($model = ActEconIngresoForm::findOne($idImpuesto)) !== null) {
-            	return $model;
-        	} else {
-            	throw new NotFoundHttpException('The requested page does not exist.');
-        	}
-    	}
+		/***/
+		protected function actionCreateConfigurarSolicitud($postData, $model, $connLocal, $conexionLocal)
+		{
+			$result = false;
+			$tabla = $model->tableName();
+			$nombreForm = $model->formName();
+
+			// Lo siguiente obtiene un array de datos que seran tomados para guardarlos del modelo de dato.
+			$arregloDatos = $model->attributes;
+
+			// Se filtran los campos y valores que seran guardados en db.
+			$request = $postData[$nombreForm];
+
+			// Se pasan los valores enviados desde el form al model para que sean guardados.
+			// Se crea un ciclo con los campos del model y si estan en el arregloDatos (post)
+			// entonces se pasan al model, aquellos que no aparezacan se les asignara los valores
+			// que tengan por defectos o de forma manual.
+			foreach ( $arregloDatos as $key => $value ) {
+				if ( isset($request[$key]) ) {
+					$arregloDatos[$key] = $request[$key];
+				}
+			}
+
+			if ( date($arregloDatos['fecha_desde']) ) {
+				// Se ajusta el formato de fecha incio de dd-mm-aaaa a aaaa-mm-dd.
+				$arregloDatos['fecha_desde'] = date('Y-m-d', strtotime($arregloDatos['fecha_desde']));
+			} else {
+				$arregloDatos['fecha_desde'] = '0000-00-00';
+			}
+			if ( date($arregloDatos['fecha_hasta']) ) {
+				// Se ajusta el formato de fecha incio de dd-mm-aaaa a aaaa-mm-dd.
+				$arregloDatos['fecha_hasta'] = date('Y-m-d', strtotime($arregloDatos['fecha_hasta']));
+			} else {
+				$arregloDatos['fecha_hasta'] = '0000-00-00';
+			}
+
+			$arregloDatos['fecha_hora'] = date('Y-m-d H:i:s');
+
+			try {
+				if ( $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos ) ) {
+					$result = true;
+				}
+			} catch ( Exception $e ) {
+				 //echo $e->errorInfo[2];
+			}
+
+			return $result;
+		}
 
 
+
+
+		/***/
+		protected function actionCreateProcesoGenerado($postData, $model, $connLocal, $conexionLocal)
+		{
+			$result = false;
+			$tabla = 'config_solic_detalles';
+			$arregloDatos['id_config_solicitud'] = $model->id_config_solicitud;
+			$arregloDatos['id_proceso'] = 0;
+			$arregloDatos['inactivo'] = 0;
+
+			$arregloProceso = $postData['chk-proceso-generado'];
+
+//die(var_dump($model));
+die(var_dump($arregloProceso));
+
+			return $result;
+		}
 
 
 
@@ -255,139 +327,18 @@
 
 
 
-
-    	/**
-    	 * Metodo que permite renderizar una vista con el catalogo de rubros que el usuario consulte.
-    	 * @param  $anoImpositivo, integer año del catalogo de rubros, este es determinado por el año de inicio
-    	 * y los años iniciales y finales del catalogo de rubros.
-    	 * @param string que permite realizar busquedas personalizadas en el catalogo de rubros, permite localizar
-    	 * rubros por descripcion especificas o por el codigo del o los rubros. Para realizar busquedas por varios
-    	 * codigos de rubros a la vez, se tienen que separar cada codigo con una coma (,), ejemplo: 201, 302, 5044.
-    	 * @return reurna una vista con los rubros localizados y un boton para adicionarlos a una lista de rubros
-    	 * seleccionados.
-    	 */
-    	public function actionListaRubros($anoImpositivo, $params = '')
+    	/***/
+    	public function actionProcesoExitoso()
     	{
-    		// Se busca primero el dataProvider.
-    		$request = Yii::$app->request->queryParams;
-    		$modelSearch = New BusquedaRubroForm();
-    		$model = New AutorizarRamoForm();
-    		$dataProvider = $model->searchRubro($anoImpositivo, $params);
-//die(var_dump($dataProvider));
-    		if ( Yii::$app->request->isGet ) {
-    			if ( isset($dataProvider) && !isset($_SESSION['anoImpositivo']) ) {
-    				$_SESSION['anoImpositivo'] = $anoImpositivo;
-    			}
-    			if ( isset($request['page']) ) {
-    				$model->load($request);
-    				return $this->renderAjax('/aaee/autorizar-ramo/create-lista-rubro', [
-    			 																	'model' => $model,
-    			 																	'dataProvider' => $dataProvider,
-    			 																	]);
-    			} else {
-    				return $this->renderAjax('/aaee/autorizar-ramo/create-lista-rubro', [
-    																				'model' => $model,
-    																				'dataProvider' => $dataProvider
-    																				]);
-    			}
-    		}
+    		return MensajeController::actionMensaje(100);
     	}
 
 
-
-
-
-
-    	/**
-    	 * Metodo que permite adicional un rubro en una lista de rubros para autorizar
-    	 * y renderiza la vista.
-    	 * @param $idRubro, long que identifica al rubro seleccionado, es una autonumerico
-    	 * de una tabla.
-    	 * @return retona una vista con el rubro agregado en un gridview.
-    	 */
-    	public function actionAddRubro($idRubro)
+    	/***/
+    	public function actionErrorOperacion()
     	{
-    		if ( $idRubro > 0 ) {
-	    		if ( !isset($_SESSION['arrayIdRubros']) ) {
-	    			$_SESSION['arrayIdRubros'][] = $idRubro;
-	    		} else {
-	    			$arrayIdRurbros = [];
-	    			$arrayIdRurbros = $_SESSION['arrayIdRubros'];
-	    			if ( !in_array($idRubro, $arrayIdRurbros) ) {
-	    				$_SESSION['arrayIdRubros'][] = $idRubro;
-	    			} else {
-	    				// ya existe'
-	    			}
-	    		}
-	    		$modelRamo = New AutorizarRamoForm();
-	    		$dataProvider = $modelRamo->getAddRubro($_SESSION['arrayIdRubros']);
-	    		if ( Yii::$app->request->isGet ) {
-	    			return $this->renderAjax('/aaee/autorizar-ramo/create-add-rubro-lista', [
-	    																					'modelRamo' => $modelRamo,
-	    																					'dataProvider' => $dataProvider
-	    																					]);
-	    		}
-	    	}
+    		return MensajeController::actionMensaje(920);
     	}
-
-
-
-
-
-
-    	/**
-    	 * [actionRemoveRubro description]
-    	 * @param  [type] $idRubro [description]
-    	 * @return [type]          [description]
-    	 */
-    	public function actionRemoveRubro($idRubro)
-    	{
-    		if ( Yii::$app->request->isGet ) {
-	    		if ( $idRubro > 0 ) {
-		    		if ( !isset($_SESSION['arrayIdRubros']) ) {
-		    			// NO esta definido los rubros en la lista.
-		    			// Abortar remocion.
-		    		} else {
-
-		    			// Lista de id-rubro despues de suprimir el $idRubro indicado.
-		    			$arrayIdRubrosActualizado = [];
-
-		    			$arrayIdRubros = [];
-		    			$arrayIdRubros = $_SESSION['arrayIdRubros'];
-		    			foreach ( $arrayIdRubros as $key => $value ) {
-		    				if ( $arrayIdRubros[$key] != $idRubro ) {
-		    					$arrayIdRubrosActualizado[$key] = $value;
-		    				}
-		    			}
-
-		    			$modelRamo = New AutorizarRamoForm();
-		    			if ( count($arrayIdRubrosActualizado) > 0 ) {
-		    				unset($_SESSION['arrayIdRubros']);
-		    				//session_destroy($_SESSION['arrayIdRubros']);
-
-		    				foreach ($arrayIdRubrosActualizado as $key => $value) {
-		    					$_SESSION['arrayIdRubros'][] = $arrayIdRubrosActualizado[$key];
-		    				}
-
-			    			$dataProvider = $modelRamo->getAddRubro($_SESSION['arrayIdRubros']);
-
-		    			} elseif ( count($arrayIdRubrosActualizado) == 0 ) {
-		    				unset($_SESSION['arrayIdRubros']);
-		    				$dataProvider = $modelRamo->getAddRubro(['-1']);
-
-		    			}
-
-			    			return $this->renderAjax('/aaee/autorizar-ramo/create-add-rubro-lista', [
-			    																				'modelRamo' => $modelRamo,
-			    																				'dataProvider' => $dataProvider
-			    																				]);
-		    		}
-		    	} else {
-		    		// Rubro no definido
-		    	}
-		    }
-    	}
-
 
 
 
@@ -397,155 +348,10 @@
     	 * @param  [type] $mensajeLocal [description]
     	 * @return [type]               [description]
     	 */
-    	public function gestionarMensajesLocales($mensajeLocal)
+    	public function actionGestionarMensajesLocales($codigo, $render = true)
     	{
-    		if ( trim($mensajeLocal) != '' ) {
-    			return MensajeController::actionMensaje($mensajeLocal);
-    		}
+    		return MensajeController::actionMensaje($codigo, $render);
     	}
-
-
-
-
-    	/**
-    	 * Metodo que guarda en
-    	 * @param  [type] $conexion  [description]
-    	 * @param  [type] $connLocal [description]
-    	 * @return [type]            [description]
-    	 */
-    	private static function actionCreateRamosAutorizados($conexion, $connLocal, $postData)
-    	{
-    		if ( isset($_SESSION['idContribuyente']) && isset($connLocal) ) {
-    			//$datosContribuyente = $_SESSION['datosContribuyente'];
-    			if ( $_SESSION['idContribuyente'] == $postData['id-contribuyente'] ) {
-
-	    			$modelAutorizarRamo = New AutorizarRamoForm();
-
-	    			$arrayDatos = $modelAutorizarRamo->attributes;
-
-	    			$arrayDatos['nro_solicitud'] = 0;
-	    			$arrayDatos['id_contribuyente'] = $_SESSION['idContribuyente'];
-	    			$arrayDatos['fecha_inicio'] = date('Y-m-d', strtotime($postData['fecha-inicio']));
-	    			$arrayDatos['ano_impositivo'] = $postData['ano-catalogo'];
-	    			$arrayDatos['id_rubro'] = 0;
-	    			$arrayDatos['fecha_hora'] = date('Y-m-d H:i:s');
-	    			$arrayDatos['usuario'] = Yii::$app->user->identity->username;
-	    			$arrayDatos['estatus'] = 0;
-	    			$arrayDatos['origen'] = 'LAN';
-
-					// Se procede a guardar primero en la entidad donde se guardan los rubros autorizados.
-	      			$tabla = '';
-	      			$tabla = $modelAutorizarRamo->tableName();
-
-	      			$todoBien = false;
-	      			// Se pasan los id de los rubros incluidos a un arreglo.
-	      			$arrayIdRubros = $_SESSION['arrayIdRubros'];
-	      			if ( count($arrayIdRubros) > 0 ) {
-
-		      			foreach ($arrayIdRubros as $key => $value) {
-		      				$arrayDatos['id_rubro'] = $value;
-		      				if ( !$conexion->guardarRegistro($connLocal, $tabla, $arrayDatos) ) {
-		      					$todoBien = false;
-		      					break;
-							} else {
-								$todoBien = true;
-							}
-		      			}
-		      		}
-	      		}
-    		}
-    		return $todoBien;
-    	}
-
-
-
-
-
-
-    	/**
-    	 * [actionCreateActEcon description]
-    	 * @param  [type] $conexion  [description]
-    	 * @param  [type] $connLocal [description]
-    	 * @return [type]            [description]
-    	 */
-    	private static function actionCreateActEcon($conexion, $connLocal, $postData)
-    	{
-    		if ( isset($_SESSION['idContribuyente'])  && isset($connLocal)  ) {
-    			if ( $_SESSION['idContribuyente'] == $postData['id-contribuyente'] ) {
-    				//$datosContribuyente = $_SESSION['datosContribuyente'];
-	    			$modelActEcon = New ActEconForm();
-
-	    			$arrayDatos = $modelActEcon->attributes;
-	    			foreach ($arrayDatos as $key => $value) {
-	    				$arrayDatos[$key] = 0;
-	    			}
-		    		$arrayDatos['ente'] = Yii::$app->ente->getEnte();
-		    		$arrayDatos['id_contribuyente'] = $postData['id-contribuyente'];
-		    		$arrayDatos['ano_impositivo'] = $postData['ano-catalogo'];
-		    		$arrayDatos['exigibilidad_declaracion'] = 1;
-
-		    		// Se procede a guardar en la entidad maestra de las declaraciones.
-	      			$tabla = '';
-	      			$tabla = $modelActEcon->tableName();
-
-					if ( $conexion->guardarRegistro($connLocal, $tabla, $arrayDatos) ) {
-						$idImpuesto = 0;
-						return $idImpuesto = $connLocal->getLastInsertID();
-					}
-		    	}
-		    }
-	    	return false;
-	    }
-
-
-
-
-
-	    /**
-	     * [actionCreateActEconIngresos description]
-	     * @param  [type] $conexion   [description]
-	     * @param  [type] $connLocal  [description]
-	     * @param  [type] $idImpuesto [description]
-	     * @return [type]             [description]
-	     */
-	    private static function actionCreateActEconIngresos($conexion, $connLocal, $idImpuesto)
-	    {
-	    	if ( isset($_SESSION['idContribuyente']) && isset($connLocal) ) {
-	    		if ( $idImpuesto > 0 ) {
-
-		    		$arrayIdRubros = $_SESSION['arrayIdRubros'];
-		    		if ( count($arrayIdRubros) > 0 ) {
-
-			    		$modelActEconIngreso = New ActEconIngresoForm();
-			    		$arrayDatos = $modelActEconIngreso->attributes;
-
-			    		foreach ($arrayDatos as $key => $value) {
-			    			$arrayDatos[$key] = 0;
-			    		}
-			    		$arrayDatos['id_impuesto'] = $idImpuesto;
-			    		$arrayDatos['exigibilidad_periodo'] = 1;
-			    		$arrayDatos['periodo_fiscal_desde'] = null;
-			    		$arrayDatos['periodo_fiscal_hasta'] = null;
-
-			    		// Se procede a guardar en la entidad maestra de las declaraciones.
-		      			$tabla = '';
-		      			$tabla = $modelActEconIngreso->tableName();
-		      			$todoBien = false;
-
-		      			foreach ($arrayIdRubros as $key => $value) {
-		      				$arrayDatos['id_rubro'] = $arrayIdRubros[$key];
-		      				if ( !$conexion->guardarRegistro($connLocal, $tabla, $arrayDatos) ) {
-								$todoBien = false;
-								break;
-							} else {
-								$todoBien = true;
-							}
-		      			}
-		      		}
-	      		}
-	    	}
-	    	return $todoBien;
-	    }
 
 
 
