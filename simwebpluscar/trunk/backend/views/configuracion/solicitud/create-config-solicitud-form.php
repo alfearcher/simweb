@@ -41,13 +41,12 @@
 	use yii\web\View;
 	use yii\jui\DatePicker;
 	use yii\widgets\Pjax;
+	use backend\controllers\configuracion\procesosolicitud\SolicitudProcesoController;
 
 ?>
 
 <?php
-	// $this->registerJs(
-	// 	'if ($("#impuesto").val() <> 0 )'
-	// );
+	$this->title = Yii::t('backend', 'Create Setup Request.');
 ?>
 
 
@@ -58,17 +57,14 @@
  		$form = ActiveForm::begin([
  			'id' => 'config-solicitud-form',
  			'method' => 'post',
- 			'action' => ['/configuracion-solicitud/create'],
+ 			'action' => ['/configuracion/solicitud/configurar-solicitud/create'],
  			'enableClientValidation' => true,
- 			//'enableAjaxValidation' => true,
+ 			'enableAjaxValidation' => true,
  			'enableClientScript' => true,
  		]);
 
  		// Lista de los impuesto
  		$listaImpuesto = ArrayHelper::map($modelImpuesto, 'impuesto', 'descripcion');
-
- 		// Lista de los tipos de solicitud.
- 		//$listaTipoSolicitud = ArrayHelper::map($modelTipoSolicitud, 'id_tipo_solicitud', 'descripcion');
 
  		// Lista de los niveles de aprobacion.
  		$listaNivelesAprobacion = ['1' => 'AUTOMATICO', '2' => 'SELECCION DE OPCIONES', '3' => 'ACTIVACION DE FORMULARIO'];
@@ -165,7 +161,7 @@
 									<?= $form->field($model, 'fecha_desde')->widget(\yii\jui\DatePicker::classname(),['id' => 'fecha-desde',
 																														'clientOptions' => [
 																															'maxDate' => '+0d',	// Bloquear los dias en el calendario a partir del dia siguiente al actual.
-																															//'changeYear' => true,
+																															'changeYear' => true,
 																														],
 																														'language' => 'es-ES',
 																														'dateFormat' => 'dd-MM-yyyy',
@@ -196,7 +192,7 @@
 									<?= $form->field($model, 'fecha_hasta')->widget(\yii\jui\DatePicker::classname(),['id' => 'fecha-hasta',
 																														'clientOptions' => [
 																															'maxDate' => '+0d',	// Bloquear los dias en el calendario a partir del dia siguiente al actual.
-																															//'changeYear' => true,
+																															'changeYear' => true,
 																														],
 																														'language' => 'es-ES',
 																														'dateFormat' => 'dd-MM-yyyy',
@@ -215,18 +211,21 @@
 
 <!-- Inicio Mostrar solo a funcionario -->
 			        <div class="row" style=" margin-top: 0px;margin-left:10px;">
-			        	<div class="col-sm-2" >
-							<div class="row" style="width:120%;">
+			        	<div class="col-sm-2">
+							<div class="row" style="width:100%;">
 								<p style="margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('backend', $model->getAttributeLabel('solo_funcionario')) ?></i></p>
 							</div>
 						</div>
-						<div class="col-sm-1">
+						<div class="col-sm-5">
 							<div class="row">
-								<div class="solo-funcionario">
+								<div class="solo-funcionario" style=" margin: 0 0 0 0;">
 									<?= $form->field($model, 'solo_funcionario')->checkBox([
 				                															'id' => 'solo-funcionario',
 				                															'label' => '',
-				                															'style' => 'width:20%;',
+				                															'labelOptions' => [
+				                																'style' => 'width: 35%;margin-left:0px;',
+				                															],
+				                															'style' => 'width:50%;margin-left:-24px;',
 				                                                                		])
 								   ?>
 								</div>
@@ -235,30 +234,36 @@
 					</div>
 <!-- Fin de Mostrar solo a funcionario -->
 
+<!-- Inicio Observacion -->
+			        <div class="row" style=" margin-top: 0px;margin-left:10px;">
+			        	<div class="col-sm-2">
+							<div class="row" style="width:100%;">
+								<p style="margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('backend', $model->getAttributeLabel('observacion')) ?></i></p>
+							</div>
+						</div>
+						<div class="col-sm-5">
+							<div class="row">
+								<div class="observacion">
+									<?= $form->field($model, 'observacion')->textArea([
+	                																	'id' => 'observacion',
+	                																	'style' => 'width:160%;',
+	                                                                				])->label(false)
+								   ?>
+								</div>
+							</div>
+						</div>
+					</div>	<!-- Fin de row -->
+<!-- Fin de Tipo Solicitud -->
+
+
 <!-- Inicio de Procesos que genera la solicitud -->
 					<div class="row" style="border-bottom: solid 1px #ccc;color: blue;">
 						<h4><?= Yii::t('backend', 'Procesos que genera la Solicitud.') ?></h4>
 					</div>
 					<div class="row">
 		        		<div class="col-sm-8">
-							<div class="proceso-generado">
-								<?= GridView::widget([
-			        						'id' => 'grid-lista-proceso',
-									        'dataProvider' => $dataProvider,
-									        'columns' => [
-									                ['class' => 'yii\grid\SerialColumn'],
-									                [
-									                    'label' => 'ID.',
-									                    'value' => 'id_documento',
-									                ],
-									                [
-									                    'label' => 'Descripcion',
-									                    'value' => 'descripcion',
-									                ],
-									                ['class' => 'yii\grid\CheckboxColumn'],
-									        ]
-									    ]);
-								?>
+							<div class="lista-proceso-generado">
+								<?= SolicitudProcesoController::actionListarProcesoSolicitud(); ?>
 							</div>
 						</div>
 					</div>
@@ -272,11 +277,10 @@
 					<div class="row">
 		        		<div class="col-sm-8">
 							<div class="documento-requisito-consignado">
-								<?php Pjax::begin(); ?>
-									<div id="lista-documento-requisito" class="lista-documento-requisito">
-
+									<? Pjax::begin(); ?>
+									<div id="lista-documento-requisito">
 									</div>
-								<?php Pjax::end(); ?>
+									<? Pjax::end(); ?>
 							</div>
 						</div>
 					</div>
@@ -284,7 +288,8 @@
 
 				</div>		<!-- Fin de col-sm-12 -->
 
-				<div class="row" style="margin-top: 15px;">
+
+				<div class="row" style="margin-left:50px; margin-top: 85px;">
 <!-- Boton para aplicar la actualizacion -->
 					<div class="col-sm-3">
 						<div class="form-group">
@@ -293,9 +298,9 @@
 																						'id' => 'btn-create',
 																						'class' => 'btn btn-success',
 																						'value' => 1,
-																						//'action' => ['/administradora/create'],
 																						'name' => 'btn-create',
 																						'style' => 'width: 100%;',
+																						'data-confirm' => Yii::t('backend', 'Confirm Save?.'),
 																					  ])
 							?>
 						</div>
@@ -308,14 +313,17 @@
 					<div class="col-sm-2" style="margin-left: 50px;">
 						<div class="form-group">
 							<?= Html::a(Yii::t('backend', 'Quit'), ['quit'], [
+																				'id' => 'btn-quit',
 																				'class' => 'btn btn-danger',
 																				'style' => 'width: 100%;',
-																				])
+																			])
 							?>
 						</div>
 					</div>
 <!-- Fin de Boton para salir de la actualizacion -->
 				</div>		<!-- Fin de row botones -->
+
+
 			</div> <!-- Fin de container-fluid -->
 		</div>	<!-- Fin de Panel body -->
     </div>		<!-- Fin de Panel Panel-Default -->
