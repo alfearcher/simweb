@@ -81,17 +81,16 @@
 	    public function rules()
 	    {
 	        return [
-	        	[['id_config_solicitud', 'impuesto',
+	        	[['impuesto',
 	        	  'tipo_solicitud', 'nivel_aprobacion',
-	        	  'inactivo','fecha_desde', 'solo_funcionario',
-	        	  'usuario'],
+	        	  'fecha_desde', 'solo_funcionario'],
 	        	  'required','message' => Yii::t('backend','{attribute} is required')],
 	        	[['id_config_solicitud', 'impuesto',
 	        	  'tipo_solicitud', 'inactivo',
 	        	  'solo_funcionario', 'nivel_aprobacion'], 'integer', 'message' => Yii::t('backend','{attribute} must be a number')],
 	        	[['observacion'], 'string', 'message' => Yii::t('backend','{attribute} must be a string')],
 	          	[['fecha_hora'], 'default', 'value' => date('Y-m-d H:i:s')],
-	          	[['fecha_desde', 'fecha_hasta'], 'default', 'value' => '0000-00-00'],
+	          	[['fecha_desde', 'fecha_hasta'], 'default', 'value' => null],
 	     		[['inactivo', 'solo_funcionario'], 'default', 'value' => 0],
 	     		['usuario', 'default', 'value' => Yii::$app->user->identity->username],
 	        ];
