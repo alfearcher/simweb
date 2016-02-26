@@ -79,11 +79,17 @@ AppAsset::register($this);
                                 //die(var_dump(Yii::$app->user)),
                             'url' => '#',
                             //'linkOptions' => ['data-method' => 'post'],
-                                   'items' => [['label' => Yii::t('frontend', 'Change Password'), 'url' =>  ['usuario/mostrar-pregunta-seguridad/buscar-mostrar-pregunta-seguridad']],
-                                            ['label' => 'Logout', 'url' => ['site/logout2'],'linkOptions' => ['data-method' => 'POST'], ],
+                                    'items' => [['label' => Yii::t('backend', 'Change Security Questions'), 'url' =>  ['usuario/cambiar-pregunta-seguridad/buscar-cambiar-pregunta-seguridad']],
+                                            ['label' => Yii::t('backend', 'Change Password'), 'url' =>  ['usuario/mostrar-pregunta-seguridad/buscar-mostrar-pregunta-seguridad']],
+                                            ['label' => 'Logout', 'url' => ['site/logout2'],'linkOptions' => ['data-method' => 'post'], 
+                                            ],
                                     ]
 
                         ];
+
+
+
+                                   
                     }
 
                     echo Nav::widget([

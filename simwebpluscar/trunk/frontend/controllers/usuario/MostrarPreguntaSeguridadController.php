@@ -120,6 +120,8 @@ class MostrarPreguntaSeguridadController extends Controller
 
                 if ($model->validate()){
 
+                  die('llegue a mostrar');
+
                    return $this->redirect (['/usuario/mostrar-pregunta-seguridad/reseteo-password',
                                                                           'id_contribuyente' => $datosContribuyente->id_contribuyente,
 

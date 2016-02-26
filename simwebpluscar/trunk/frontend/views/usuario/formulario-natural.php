@@ -97,7 +97,7 @@
 
                 <div class="row">
                     <div class="col-sm-2">
-                        <?= $form->field($model, 'naturaleza')->textInput(
+                        <?= $form->field($model, 'natureza')->textInput(
                                                                // ArrayHelper::map(TipoNaturaleza::find()->all(), 'siglas_tnaturaleza', 'siglas_tnaturaleza'),
                                                                 [
                                                                 'id'=> 'naturaleza',
