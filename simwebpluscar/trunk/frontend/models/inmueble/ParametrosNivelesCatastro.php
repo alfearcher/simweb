@@ -28,7 +28,7 @@
  *  @date 29-02-2016
  * 
  *  @class ParametrosNivelesCatastro
- *  @brief Clase que permite acceder a los datos de la tabla municipios. 
+ *  @brief Clase que permite acceder a los datos de la tabla nivel de catastro. 
  * 
  *  
  * 
