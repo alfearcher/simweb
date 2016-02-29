@@ -90,7 +90,7 @@ class InscripcionInmueblesUrbanosController extends Controller
      *@return model 
      **/
      public function actionInscripcionInmueblesUrbanos()
-     {
+     { 
 
          if ( isset(Yii::$app->user->identity->id_contribuyente) ) {
          //Creamos la instancia con el model de validación
