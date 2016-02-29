@@ -10,7 +10,7 @@
     //use yii\widgets\Pjax;
     //use yii\bootstrap\Modal;
     //
-    //session_start();
+    session_start();
     //
      $sesion = yii::$app->user->identity;
 
