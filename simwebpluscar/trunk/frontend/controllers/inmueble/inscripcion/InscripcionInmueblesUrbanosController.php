@@ -91,7 +91,7 @@ class InscripcionInmueblesUrbanosController extends Controller
      **/
      public function actionInscripcionInmueblesUrbanos()
      { 
-die(Yii::$app->user->identity->id_contribuyente);
+
 //         if ( isset(Yii::$app->user->identity->id_contribuyente) ) {
          //Creamos la instancia con el model de validación
          $model = new InscripcionInmueblesUrbanosForm();
