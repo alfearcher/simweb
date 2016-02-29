@@ -30,36 +30,36 @@
 		        // Important: you need to specify url as 'controller/action',
 		        // not just as 'controller' even if default action is used.
 
-		    	['label' => Icon::show('fa fa-street-view',['class' => $typeLong], $typeIcon) . '&nbsp; Solicitudes',
-		        	'items' => [
-		        			['label' => 'Crear Funcionario', 'url' => ['/contribuyente/crear/crear'], 'options' => ['value' => '300', 'id' => '300']],
-		        			['label' => 'Modificar Funcionario', 'url' => '#', 'options' => ['value' => '301', 'id' => '301']],
-		        			['label' => 'Desincorporar Funcionario', 'url' => '#', 'options' => ['value' => '302', 'id' => '302']],
-		        			['label' => 'Asignar a Grupo de Trabajo', 'url' => '#', 'options' => ['value' => '303', 'id' => '303']],
-		        			['label' => Icon::show('user',['class' => 'fa-2x'], $typeIcon) . 'Usuarios', 'url' => '#',
-		        				'items' => [
-		        							['label' => 'Crear Cuenta','url' => '#'],
-		        							['label' => 'Desincorporar Cuenta','url' => '#'],
-		        				]
-		        			],
+		    	// ['label' => Icon::show('fa fa-street-view',['class' => $typeLong], $typeIcon) . '&nbsp; Solicitudes',
+		     //    	'items' => [
+		     //    			['label' => 'Crear Funcionario', 'url' => ['/contribuyente/crear/crear'], 'options' => ['value' => '300', 'id' => '300']],
+		     //    			['label' => 'Modificar Funcionario', 'url' => '#', 'options' => ['value' => '301', 'id' => '301']],
+		     //    			['label' => 'Desincorporar Funcionario', 'url' => '#', 'options' => ['value' => '302', 'id' => '302']],
+		     //    			['label' => 'Asignar a Grupo de Trabajo', 'url' => '#', 'options' => ['value' => '303', 'id' => '303']],
+		     //    			['label' => Icon::show('user',['class' => 'fa-2x'], $typeIcon) . 'Usuarios', 'url' => '#',
+		     //    				'items' => [
+		     //    							['label' => 'Crear Cuenta','url' => '#'],
+		     //    							['label' => 'Desincorporar Cuenta','url' => '#'],
+		     //    				]
+		     //    			],
 
-		        			['label' => Icon::show('fa fa-users',['class' => 'fa-2x'], $typeIcon) . 'Grupos de Trabajo (Perfiles)', 'url' => '#',
-		        				'items' => [
-		        							['label' => 'Crear Grupo de Trabajo (Perfiles)','url' => ['grupotrabajo/grupos-trabajo/create']],
-		        							['label' => 'Modificar Grupo de Trabajo','url' => ['grupotrabajo/grupos-trabajo/index']],
-		        							['label' => 'Desincorporar Grupo de Trabajo','url' => ['grupotrabajo/grupos-trabajo/desincorporacion']],
-		        				]
-		        			],
-		        	]
-		        ],
+		     //    			['label' => Icon::show('fa fa-users',['class' => 'fa-2x'], $typeIcon) . 'Grupos de Trabajo (Perfiles)', 'url' => '#',
+		     //    				'items' => [
+		     //    							['label' => 'Crear Grupo de Trabajo (Perfiles)','url' => ['grupotrabajo/grupos-trabajo/create']],
+		     //    							['label' => 'Modificar Grupo de Trabajo','url' => ['grupotrabajo/grupos-trabajo/index']],
+		     //    							['label' => 'Desincorporar Grupo de Trabajo','url' => ['grupotrabajo/grupos-trabajo/desincorporacion']],
+		     //    				]
+		     //    			],
+		     //    	]
+		     //    ],
 
-		    	// &nbsp; espacio en blanco html
-		        ['label' => Icon::show('fa fa-book',['class' => $typeLong], $typeIcon) . '&nbsp; Registros Maestros',
-		        	'items' => [
-		        			['label' => 'Registros Datos Básicos', 'url' => ['/registromaestro/datosbasico/create'], 'options' => ['value' => '520', 'id' => '500']],
-		        			//Icon::show('fa fa-book',['class' => 'fa-2x'], $typeIcon) . '&nbsp;
-		        	]
-		        ],
+		    	// // &nbsp; espacio en blanco html
+		     //    ['label' => Icon::show('fa fa-book',['class' => $typeLong], $typeIcon) . '&nbsp; Registros Maestros',
+		     //    	'items' => [
+		     //    			['label' => 'Registros Datos Básicos', 'url' => ['/registromaestro/datosbasico/create'], 'options' => ['value' => '520', 'id' => '500']],
+		     //    			//Icon::show('fa fa-book',['class' => 'fa-2x'], $typeIcon) . '&nbsp;
+		     //    	]
+		     //    ],
 
 		        ['label' => Icon::show('fa fa-laptop',['class' => $typeLong], $typeIcon) . '&nbsp; Solicitudes',
 		        	'items' => [
@@ -121,7 +121,7 @@
 		        		//	SOLICITUDES DE VEHICULOS
 		        		['label' => Icon::show('fa fa-car',['class' => $typeLong], $typeIcon) . '&nbsp; Vehiculos',
 		        			'items' => [
-		        						['label' => 'Inscripci&oacute;n de Vehiculos', 'url' => ['vehiculo/vehiculos/create']],
+		        						['label' => 'Inscripci&oacute;n de Vehiculos', 'url' => ['/vehiculo/registrar/registrar-vehiculo/registrar-vehiculo']],
 		        						['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . 'Calcomania',
 					        				'items' => [
 			        							['label' => 'Administrar funcionarios responsables de entregar calcomania','url' => ['vehiculo/calcomania/funcionario-calcomania/busqueda-funcionario']],
@@ -191,60 +191,60 @@
 		        ],
 
 
-		        //	PANEL MAESTRO
-        		['label' => Icon::show('fa fa-calculator',['class' => $typeLong], $typeIcon) . '&nbsp; Panel Maestro',
-        			'items' => [
-        						['label' => 'Pagar Planilla con Planilla(s)', 'url' => '#'],
-        						['label' => 'Eliminación de Planillas', 'url' => '#'],
-        						['label' => 'Listado de Solicitudes de Anulación de Planillas', 'url' => '#'],
-        						['label' => 'Aprobación de Solicitudes de Anulación de Planillas', 'url' => '#'],
-        						['label' => 'Solicitud para Anular Planillas', 'url' => '#'],
-        						['label' => 'Supervisores autorizados', 'url' => '#'],
-        			]
-        		],
+		        // //	PANEL MAESTRO
+        		// ['label' => Icon::show('fa fa-calculator',['class' => $typeLong], $typeIcon) . '&nbsp; Panel Maestro',
+        		// 	'items' => [
+        		// 				['label' => 'Pagar Planilla con Planilla(s)', 'url' => '#'],
+        		// 				['label' => 'Eliminación de Planillas', 'url' => '#'],
+        		// 				['label' => 'Listado de Solicitudes de Anulación de Planillas', 'url' => '#'],
+        		// 				['label' => 'Aprobación de Solicitudes de Anulación de Planillas', 'url' => '#'],
+        		// 				['label' => 'Solicitud para Anular Planillas', 'url' => '#'],
+        		// 				['label' => 'Supervisores autorizados', 'url' => '#'],
+        		// 	]
+        		// ],
 
 
-        		//	AJUSTAR PAGOS
-        		['label' => Icon::show('fa fa-pencil-square-o',['class' => $typeLong], $typeIcon) . '&nbsp; Ajustar Pagos',
-        			'items' => [
-        						['label' => 'Ajustar Formas de Pagos', 'url' => '#'],
-        						['label' => 'Ajustar Pagos Inconsistentes', 'url' => '#'],
-        						['label' => 'Listado Planillas-Bancos vs Planillas-Pagadas', 'url' => '#'],
-        						['label' => 'Ajustar Cuentas Bancarias Sobre Pagos', 'url' => '#'],
-        						['label' => 'Ajustar Planillas por Ingresos', 'url' => '#'],
-        						['label' => 'Ajustar Pagos Por Fecha', 'url' => '#'],
-        			]
-        		],
+        		// //	AJUSTAR PAGOS
+        		// ['label' => Icon::show('fa fa-pencil-square-o',['class' => $typeLong], $typeIcon) . '&nbsp; Ajustar Pagos',
+        		// 	'items' => [
+        		// 				['label' => 'Ajustar Formas de Pagos', 'url' => '#'],
+        		// 				['label' => 'Ajustar Pagos Inconsistentes', 'url' => '#'],
+        		// 				['label' => 'Listado Planillas-Bancos vs Planillas-Pagadas', 'url' => '#'],
+        		// 				['label' => 'Ajustar Cuentas Bancarias Sobre Pagos', 'url' => '#'],
+        		// 				['label' => 'Ajustar Planillas por Ingresos', 'url' => '#'],
+        		// 				['label' => 'Ajustar Pagos Por Fecha', 'url' => '#'],
+        		// 	]
+        		// ],
 
 
-        		//	PAGOS
-        		['label' => Icon::show('fa fa-money',['class' => $typeLong], $typeIcon) . '&nbsp; Pagos',
-        			'items' => [
-        						['label' => 'Recibo', 'url' => '#'],
-        						['label' => 'Caja', 'url' => '#'],
-        						['label' => 'Elaborar Deposito', 'url' => '#'],
-        						['label' => 'Pagos Anteriores', 'url' => '#'],
-        						['label' => 'Exoneraciones y Exenciones', 'url' => '#'],
-        						['label' => 'Cuentas Por Cobrar', 'url' => '#'],
-        						['label' => 'Procesar Pagos en Lote', 'url' => '#'],
-        						['label' => 'Registros TXT', 'url' => '#'],
-        			]
-        		],
+        		// //	PAGOS
+        		// ['label' => Icon::show('fa fa-money',['class' => $typeLong], $typeIcon) . '&nbsp; Pagos',
+        		// 	'items' => [
+        		// 				['label' => 'Recibo', 'url' => '#'],
+        		// 				['label' => 'Caja', 'url' => '#'],
+        		// 				['label' => 'Elaborar Deposito', 'url' => '#'],
+        		// 				['label' => 'Pagos Anteriores', 'url' => '#'],
+        		// 				['label' => 'Exoneraciones y Exenciones', 'url' => '#'],
+        		// 				['label' => 'Cuentas Por Cobrar', 'url' => '#'],
+        		// 				['label' => 'Procesar Pagos en Lote', 'url' => '#'],
+        		// 				['label' => 'Registros TXT', 'url' => '#'],
+        		// 	]
+        		// ],
 
 
-		        //	CONFIGURACIONES
-        		['label' => Icon::show('fa fa-cog',['class' => $typeLong], $typeIcon) . '&nbsp; Configuraciones',
-        			'items' => [
-        						['label' => 'Configurar Ordenanzas', 'url' => '#'],
-        						['label' => 'Configurar Vencimiento de Documentos', 'url' => '#'],
-        						['label' => 'Configurar Solicitudes', 'url' => '#'],
-        						['label' => 'Configurar Convenios de Pagos', 'url' => '#'],
-        						['label' => 'Configurar Dirección de Tributos',
-        						            'url' => ['/hola/saludo2'],
-        						            'id' => 10,
-        						            'click' => 'alert("Button 2 clicked");'],
-        			]
-        		],
+		        // //	CONFIGURACIONES
+        		// ['label' => Icon::show('fa fa-cog',['class' => $typeLong], $typeIcon) . '&nbsp; Configuraciones',
+        		// 	'items' => [
+        		// 				['label' => 'Configurar Ordenanzas', 'url' => '#'],
+        		// 				['label' => 'Configurar Vencimiento de Documentos', 'url' => '#'],
+        		// 				['label' => 'Configurar Solicitudes', 'url' => '#'],
+        		// 				['label' => 'Configurar Convenios de Pagos', 'url' => '#'],
+        		// 				['label' => 'Configurar Dirección de Tributos',
+        		// 				            'url' => ['/hola/saludo2'],
+        		// 				            'id' => 10,
+        		// 				            'click' => 'alert("Button 2 clicked");'],
+        		// 	]
+        		// ],
 
 
 
