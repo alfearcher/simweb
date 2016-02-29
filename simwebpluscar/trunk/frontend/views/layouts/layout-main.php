@@ -9,7 +9,7 @@
 
    //die('llegue a layout main');
     try {
-        if ((Yii::$app->user->identity)) {
+        if (!isset($_SESSION['sesion'])) {
            //Controller::redirect(['/site/login']);
             die('No existe user main');
         }
