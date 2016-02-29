@@ -40,9 +40,9 @@
  *  @method
  * rules
  * attributeLabels
- * buscarPreguntasJuridico1
- * buscarPreguntasJuridico2
- * buscarPreguntasJuridico3
+ * compararPreguntas1
+ * compararPreguntas2
+ * compararPreguntas3
  *  
  *  @inherits
  *  
@@ -107,7 +107,7 @@ class CambiarPreguntaSeguridadForm extends Model
       
    
       /**
-     * [compararPreguntas description] metodo que valida las preguntas de seguridad para que no se envien dos o todas las preguntas iguales
+     * [compararPreguntas1 description] metodo que valida las preguntas de seguridad para que no se envien dos o todas las preguntas iguales
      * @param  [type] $attribute [description] atributos necesarios para enviar mensaje de error
      * @param  [type] $params    [description] parametros necesarios para enviar mensaje de error
      * @return [type]            [description] retorna mensajes de error indicando que alguna pregunta esta repetida
@@ -134,6 +134,12 @@ class CambiarPreguntaSeguridadForm extends Model
         
      }
 
+      /**
+     * [compararPreguntas2 description] metodo que valida las preguntas de seguridad para que no se envien dos o todas las preguntas iguales
+     * @param  [type] $attribute [description] atributos necesarios para enviar mensaje de error
+     * @param  [type] $params    [description] parametros necesarios para enviar mensaje de error
+     * @return [type]            [description] retorna mensajes de error indicando que alguna pregunta esta repetida
+     */
      public function compararPreguntas2($attribute, $params){ 
 
         if ($this->pregunta2 == $this->pregunta1 and $this->pregunta2 == $this->pregunta3){
@@ -156,6 +162,12 @@ class CambiarPreguntaSeguridadForm extends Model
         
      }
 
+      /**
+     * [compararPreguntas3 description] metodo que valida las preguntas de seguridad para que no se envien dos o todas las preguntas iguales
+     * @param  [type] $attribute [description] atributos necesarios para enviar mensaje de error
+     * @param  [type] $params    [description] parametros necesarios para enviar mensaje de error
+     * @return [type]            [description] retorna mensajes de error indicando que alguna pregunta esta repetida
+     */
      public function compararPreguntas3($attribute, $params){ 
 
         if ($this->pregunta3 == $this->pregunta2 and $this->pregunta3 == $this->pregunta1){

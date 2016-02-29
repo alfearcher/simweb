@@ -167,7 +167,11 @@ class Afiliaciones extends \yii\base\Object implements \yii\web\IdentityInterfac
     }
 
     
-
+    /**
+     * [validarUsuarioActivo description] metodo que valida si el usuario que desea ingresar al sistema se encuentra en estatus activo
+     * @param  [type] $validarContribuyente [description] modelo que contiene el id del contribuyente para verificar al usuario en la bd
+     * @return [type]                       [description] retorna la respuesta , true si el usuario esta activo y false si esta inactivo
+     */
     public function validarUsuarioActivo($validarContribuyente){
         
         $buscarDatos = Afiliacion::find()
@@ -192,43 +196,35 @@ class Afiliaciones extends \yii\base\Object implements \yii\web\IdentityInterfac
                 return false;
             }             
     }
-
-    
-
-
-
-
-    // PRUEBA DE AQUI PARA ABAJO
-
+    // busca al usuario por accesstoken (no se utiliza en el frontend por no tener el campo accesstoken)
     public static function findIdentityByAccessToken($token, $type = null){
-       // ('llegue aqui');
+       
         throw new NotSupportedException();
     }
-
+    //retorna el id afiliacion que es el principal de la tabla
      public function getId()
     {
        return $this->id_afiliacion; 
 
-      // die($this->id_contribuyente);
-       //throw new NotSupportedException();
+      
     }
-
-      public function getAuthkey()
+    //obtiene el authkey de la tabla (no se utiliza en el frontend por no tener el campo authkey)
+    public function getAuthkey()
     {
-       // return null;
+       
          throw new NotSupportedException();
     }
  
         
-    // Valida la clave de autenticación 
+    // Valida la clave de autenticación en caso de utilizarla
     public function validateAuthkey($authkey)
     {
          throw new NotSupportedException();
     }
- 
-     public static function findIdentity($id_afiliacion)
+    //busca al contribuyente por su id afiliacion, este metodo es el que mantiene la sesion activa.
+    public static function findIdentity($id_afiliacion)
     {
-       //die('llegue a findidentity front');
+      
       $user = Afiliacion::find()
                 ->where("estatus=:activate", [":activate" => 0])
                 ->andWhere("id_afiliacion=:id_funcionario", ["id_funcionario" => $id_afiliacion])
@@ -237,10 +233,10 @@ class Afiliaciones extends \yii\base\Object implements \yii\web\IdentityInterfac
         return isset($user) ? new static($user) : null;
     }
 
-
+    //busca al usuario en base a su email y password, para poderlo diferenciar de los otros.
     public static function findByUsername($email,$password_hash)
     {
-      // die('llegue a findby');
+     
 
         $users = Afiliacion::find()
                 ->where("estatus=:estatus", [":estatus" => 0])
@@ -248,11 +244,11 @@ class Afiliaciones extends \yii\base\Object implements \yii\web\IdentityInterfac
                 ->andWhere("login=:username", [":username" => $email])
                 ->all();
 
-              //  die(var_dump($users));
+              
          
         foreach ($users as $user) {
             if (strcasecmp($user->login, $email) === 0) {
-                //die(var_dump($user));
+             
                 return new static($user);
 
             }

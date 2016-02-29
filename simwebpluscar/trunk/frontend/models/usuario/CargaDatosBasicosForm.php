@@ -186,7 +186,7 @@ class CargaDatosBasicosForm extends CrearUsuarioJuridico
     {
         return [            
             [['ente','naturaleza', 'cedula', 'tipo',  'tlf_ofic', 'email', 'codigo'],'required'],
-            [['tlf_celular', 'tlf_ofic'], 'match', 'pattern' => "/^.{11,11}$/", 'message' => Yii::t('frontend', 'Minimum 11 and maximum 11 characters')],
+            [['tlf_celular', 'tlf_ofic'], 'match', 'pattern' => "/^.{7,7}$/", 'message' => Yii::t('frontend', 'Phone number must have 7 digits')],
             ['tlf_celular', 'integer', 'message' => Yii::t('frontend', 'Mobile phone must be an integer')],
             ['tlf_ofic', 'integer', 'message' => Yii::t('frontend', 'Mobile phone must be an integer')],
             
