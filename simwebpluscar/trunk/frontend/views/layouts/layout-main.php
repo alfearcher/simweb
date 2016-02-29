@@ -11,7 +11,7 @@
     try {
         if (!isset($_SESSION['sesion'])) {
            //Controller::redirect(['/site/login']);
-            die('No existe user main');
+            die('No existe user');
         }
     } catch (Exception $e) {
         die('Error ' . $e->getName());
