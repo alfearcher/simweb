@@ -83,6 +83,7 @@ class InscripcionInmueblesUrbanosController extends Controller
     public $transaccion;
 
 
+
      /**
      *REGISTRO (inscripcion) INMUEBLES URBANOS
      *Metodo para crear las cuentas de usuarios de los funcionarios
@@ -91,7 +92,7 @@ class InscripcionInmueblesUrbanosController extends Controller
      public function actionInscripcionInmueblesUrbanos()
      {
 
-        // if ( isset(Yii::$app->user->isGuest) ) {
+         if ( isset(Yii::$app->user->identity->id_contribuyente) ) {
          //Creamos la instancia con el model de validación
          $model = new InscripcionInmueblesUrbanosForm();
     
@@ -261,9 +262,9 @@ class InscripcionInmueblesUrbanosController extends Controller
          }
               return $this->render('inscripcion-inmuebles-urbanos', ['model' => $model, ]);  
 
-        // }  else {
-        //             echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
-        // }    
+        }  else {
+                    echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
+        }    
  
      } // cierre del metodo inscripcion de inmuebles
 
