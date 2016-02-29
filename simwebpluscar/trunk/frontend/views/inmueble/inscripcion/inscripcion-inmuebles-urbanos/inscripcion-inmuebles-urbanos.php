@@ -76,27 +76,11 @@ function bloquea() {
 
                         <td style="max-width: 100px" align="letf">
                             <div class="col-sm-4">
-                            <?= $form->field($model, 'id_contribuyente')->textInput(['readonly'=>'readonly','value'=>$_SESSION['idContribuyente'],'style' => 'width:80px;'])->label(false) ?>
+                            <?= $form->field($model, 'id_contribuyente')->textInput(['readonly'=>'readonly','value'=>Yii::$app->user->identity->id_contribuyente,'style' => 'width:80px;'])->label(false) ?>
                             </div> 
                         </td>
 
-                        <td style="max-width: 100px" align="letf">
-                            <div class="col-sm-1"> 
-                            <?= Yii::t('backend', 'Id Sim') ?>
-                            </div> 
-                        </td>
-
-                        <td style="max-width: 100px">
-                            <div class="col-sm-4">
-                            <?= $form->field($model, 'id_sim')->textInput(['style' => 'width:80px;'])->label(false) ?>
-                            </div> 
-                        </td>
-
-                        <td style="max-width: 100px" align="letf">
-                            <div class="col-sm-2">
-                            <?= $form->field($model, 'inactivo')->checkbox(array(['style' => 'width:80px;']))?> 
-                            </div> 
-                        </td>
+                        
 
                         <td colspan="7" style="max-width: 100px" align="letf">
                             <div class="col-sm-6"> 
