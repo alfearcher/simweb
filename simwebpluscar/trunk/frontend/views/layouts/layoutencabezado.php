@@ -12,7 +12,7 @@
     //
     session_start();
     //
-     $sesion = yii::$app->user->identity->id_contribuyente;
+     $sesion = yii::$app->user->identity->login;
 die($sesion);
     $_SESSION['sesion'] = $sesion;
 

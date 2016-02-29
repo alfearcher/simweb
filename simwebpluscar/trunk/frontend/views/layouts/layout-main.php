@@ -11,7 +11,7 @@
     try {
         if ((Yii::$app->user->identity)) {
            //Controller::redirect(['/site/login']);
-            die('No existe user');
+            die('No existe user main');
         }
     } catch (Exception $e) {
         die('Error ' . $e->getName());

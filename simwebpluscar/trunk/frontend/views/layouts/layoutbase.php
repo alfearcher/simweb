@@ -12,7 +12,7 @@
         if (!isset($_SESSION['sesion'])) {
             // No existe usuario definido
             //Controller::redirect(['/site/login']);
-            die('No existe user');
+            die('No existe user base');
         }
     } catch (Exception $e) {
         die('Error ' . $e->getName());
