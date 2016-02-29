@@ -13,7 +13,7 @@
     session_start();
     //
      $sesion = yii::$app->user->identity;
-die(var_dump($sesion));
+
     $_SESSION['sesion'] = $sesion;
 
     //die(var_dump($sesion));
