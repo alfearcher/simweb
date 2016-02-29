@@ -8,15 +8,15 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
     
-    try {
-        if (!isset($_SESSION['sesion'])) {
-            // No existe usuario definido
-            //Controller::redirect(['/site/login']);
-            die('No existe user');
-        }
-    } catch (Exception $e) {
-        die('Error ' . $e->getName());
-    }
+    // try {
+    //     if (!isset($_SESSION['sesion'])) {
+    //         // No existe usuario definido
+    //         //Controller::redirect(['/site/login']);
+    //         die('No existe user');
+    //     }
+    // } catch (Exception $e) {
+    //     die('Error ' . $e->getName());
+    // }
 
 // Encabezado
 require('layoutencabezado.php');
