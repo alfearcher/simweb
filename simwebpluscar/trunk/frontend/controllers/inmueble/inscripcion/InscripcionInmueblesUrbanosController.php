@@ -82,7 +82,7 @@ class InscripcionInmueblesUrbanosController extends Controller
     public $conexion;
     public $transaccion;
 
-
+die(Yii::$app->user->identity->id_contribuyente);
 
      /**
      *REGISTRO (inscripcion) INMUEBLES URBANOS
