@@ -126,7 +126,13 @@ class CambiarPreguntaSeguridadController extends Controller
                 if ($model->validate()){
 
 
-                 self::cambiarEstatusPreguntas($model);
+                $cambiarEstatus = self::cambiarEstatusPreguntas($model);
+
+                  if($cambiarEstatus == true){
+                   return MensajeController::actionMensaje(400);
+                  }else{
+                   return MensajeController::actionMensaje(400);
+                  }
 
                 }
                 
@@ -142,8 +148,8 @@ class CambiarPreguntaSeguridadController extends Controller
     public function cambiarEstatusPreguntas($model)
     {
 
-     // die('volvi a llegar');
-      //die(var_dump($model));
+   // die('volvi a llegar al principio');
+    
       $datosContribuyente = yii::$app->user->identity;
 
       $buscarPreguntas = PreguntaSeguridadContribuyente::find()
@@ -197,31 +203,34 @@ class CambiarPreguntaSeguridadController extends Controller
                             ];
 
                 if ($conexion->guardarLoteRegistros($conn, $tabla, $arrayColumna, $arrayValores)){
-                  //die('actualizo y guardo');
+                 // die('actualizo y guardo');
                    // $transaccion->commit();
                     $conn->close();
 
-                    self::enviarMensaje();
-                    //die('actualizo y guardo');
+                    
+                    return true;
+
+
+
+                   
                 }else{
 
                     $transaccion->rollback();
                     $conn->close();
+                    return false;
                 }
 
       }
          
   }
 
-
   public function enviarMensaje()
   {
-
-
-    }
-  
-   
+    return MensajeController::actionMensaje(400); 
   }
+
+
+  
                     
                     
     

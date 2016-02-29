@@ -22,14 +22,14 @@
  */
 
  /**    
- *  @file OpcionCrearUsuarioController.php
+ *  @file MostrarPreguntaSeguridadController.php
  *  
  *  @author Manuel Alejandro Zapata Canelon
  * 
- *  @date 21/12/15
+ *  @date 26/02/16
  * 
- *  @class OpcionCrearUsuarioController
- *  @brief Controlador que renderiza vista para la seleccion del tipo de usuario que se desea crear, ya sea natural o juridico.
+ *  @class MostrarPreguntaSeguridad
+ *  @brief Controlador que renderiza vista con las preguntas de seguridad al usuario desde adentro de su cuenta para poder cambiar el password
  * 
  *  
  * 
@@ -120,7 +120,7 @@ class MostrarPreguntaSeguridadController extends Controller
 
                 if ($model->validate()){
 
-                  die('llegue a mostrar');
+                //  die('llegue a mostrar');
 
                    return $this->redirect (['/usuario/mostrar-pregunta-seguridad/reseteo-password',
                                                                           'id_contribuyente' => $datosContribuyente->id_contribuyente,
@@ -142,7 +142,10 @@ class MostrarPreguntaSeguridadController extends Controller
 
     
 
-
+    /**
+     * [actionReseteoPassword description] metodo que resetea el password del contribuyente , cuando este lo cambia desde adentro de su cuenta
+     * @return [type] [description] retorna un mensaje indicando que el usuario y la contraseña fueron enviados por correo
+     */
     public function actionReseteoPassword()
     {
 
@@ -192,6 +195,12 @@ class MostrarPreguntaSeguridadController extends Controller
                                                                     ]);  die('llegue a reseteo password');
     }
 
+    /**
+     * [actualizarPasswordNatural description] metodo que actualiza el password del contribuyente en la base de datos
+     * @param  [type] $idContribuyente [description] id del contribuyente 
+     * @param  [type] $password1       [description] password del contribuyente a cambiar
+     * 
+     */
     public function actualizarPasswordNatural($idContribuyente, $password1){
 
       $tableName = 'afiliaciones';
