@@ -76,7 +76,7 @@ function bloquea() {
 
                         <td style="max-width: 100px" align="letf">
                             <div class="col-sm-4">
-                            <?= $form->field($model, 'id_contribuyente')->textInput(['readonly'=>'readonly','value'=>Yii::$app->user->identity->id_contribuyente,'style' => 'width:80px;'])->label(false) ?>
+                            <?= $form->field($model, 'id_contribuyente')->textInput(['readonly'=>'readonly','value'=>178131,'style' => 'width:80px;'])->label(false) //Yii::$app->user->identity->id_contribuyente?>
                             </div> 
                         </td>
 
