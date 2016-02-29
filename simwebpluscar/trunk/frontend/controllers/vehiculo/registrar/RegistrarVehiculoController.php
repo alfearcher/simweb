@@ -48,27 +48,14 @@ namespace frontend\controllers\vehiculo\registrar;
 
 use Yii;
 
-use common\models\LoginForm;
-use frontend\models\usuario\CrearUsuarioNaturalForm;
-use frontend\models\usuario\CrearUsuarioJuridicoForm;
-use frontend\models\usuario\CrearUsuarioJuridico;
-use frontend\models\ResetPasswordForm;
-use frontend\models\SignupForm;
-use frontend\models\ContactForm;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use frontend\models\usuario\PreguntaSeguridadContribuyente;
-use frontend\models\usuario\MostrarPreguntaSeguridadForm;
-use frontend\models\usuario\ReseteoPasswordForm;
-use common\models\utilidades\Utilidad;
-use common\seguridad\Seguridad;
 use common\conexion\ConexionController;
-use frontend\models\usuario\CrearUsuarioNatural;
-use common\enviaremail\EnviarEmailCambioClave;
 use common\mensaje\MensajeController;
+use frontend\models\vehiculo\registrar\RegistrarVehiculoForm;
 
 /**
  * Site controller
@@ -100,24 +87,10 @@ class RegistrarVehiculoController extends Controller
     public function actionRegistrarVehiculo()
     {
 
-        //die($idContribuyente);
+        
         if(isset(yii::$app->user->identity->id_contribuyente)){
 
-
-
-          die('usuario existe');
-        $datosContribuyente = yii::$app->user->identity;
-
-        $buscarPreguntas = PreguntaSeguridadContribuyente::find()
-                                                    ->where([
-                                                    'id_contribuyente' => $datosContribuyente->id_contribuyente,
-                                                    'inactivo' => 0,
-
-                                                        ])
-                                                    ->all();
-        
-
-        $model = new MostrarPreguntaSeguridadForm();
+            $model = new RegistrarVehiculoForm();
 
             $postData = Yii::$app->request->post();
 
@@ -130,29 +103,22 @@ class RegistrarVehiculoController extends Controller
 
                 if ($model->validate()){
 
-                //  die('llegue a mostrar');
-
-                   return $this->redirect (['/usuario/mostrar-pregunta-seguridad/reseteo-password',
-                                                                          'id_contribuyente' => $datosContribuyente->id_contribuyente,
-
-
-
-                                                                                                          ]);
-
-                }
                 
 
-              
+                }
+            
             }
-            return $this->render('/usuario/mostrar-pregunta-seguridad', [
-                                                        'model' => $model,
-                                                        'preguntaSeguridad' => $buscarPreguntas,
-            ]);  
+            
+            return $this->render('/vehiculo/registrar/registrar-vehiculo', [
+                                                           'model' => $model,
+            ]);
+            
 
-          }else{
+        }else{
 
-            die('no existe user alvaro');
-          }
+            die('no existe user');
+
+        }
     }
 
     
