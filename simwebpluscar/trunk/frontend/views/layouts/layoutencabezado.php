@@ -12,7 +12,7 @@
     //
     session_start();
     //
-     $sesion = yii::$app->user->identity->login;
+     $sesion = yii::$app->user->identity;
 die($sesion);
     $_SESSION['sesion'] = $sesion;
 
