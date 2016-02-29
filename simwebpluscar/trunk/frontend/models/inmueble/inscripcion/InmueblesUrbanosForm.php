@@ -21,13 +21,13 @@
  */
 
  /**    
- *  @file DesintegracionInmueblesForm.php
+ *  @file InmueblesForm.php
  *  
  *  @author Alvaro Jose Fernandez Archer
  * 
  *  @date 27-07-2015
  * 
- *  @class DesintegracionInmueblesForm
+ *  @class InmueblesForm
  *  @brief Clase que permite validar cada uno de los datos del formulario de inscripcion de inmuebles 
  *  urbanos, se establecen las reglas para los datos a ingresar y se le asigna el nombre de las etiquetas 
  *  de los campos. 
@@ -51,7 +51,7 @@
  *  
  */ 
 
-namespace frontend\models\inmueble;
+namespace frontend\models\inmueble\inscripcion;
 
 use Yii;
 use backend\models\inmueble\InmueblesConsulta;
@@ -94,7 +94,7 @@ use backend\models\inmueble\Solvencias;
  * @property string $nivel_catastro
  * @property string $unidad_catastro
  */
-class DesintegracionInmueblesForm extends \yii\db\ActiveRecord
+class InmueblesUrbanosForm extends \yii\db\ActiveRecord
 {
 
     public $conn;
@@ -124,10 +124,6 @@ class DesintegracionInmueblesForm extends \yii\db\ActiveRecord
     public $inmuebleVendedor;
     public $datosVContribuyente;
     public $datosVInmueble;
-    public $direccion;
-    public $direccion2;
-    public $fecha_inicio;
-
 
     public static function tableName()
     {
@@ -141,15 +137,44 @@ class DesintegracionInmueblesForm extends \yii\db\ActiveRecord
 
         return [ 
 
-            [['id_contribuyente','id_impuesto', 'validacion'], 'integer','message' => Yii::t('backend', 'only integers')],
-            //[['estado_catastro', 'municipio_catastro', 'parroquia_catastro', 'sector_catastro', 'manzana_catastro', 'parcela_catastro', 'subparcela_catastro', 'unidad_catastro'], 'string'],
+            [['id_contribuyente','id_impuesto','ano_inicio', 'liquidado', 'manzana_limite', 'lote_1', 'lote_2', 'lote_3', 'inactivo', 'id_habitante', 'tipo_ejido', 'propiedad_horizontal', 'estado_catastro', 'municipio_catastro', 'parroquia_catastro', 'sector_catastro', 'manzana_catastro', 'parcela_catastro', 'subparcela_catastro', 'unidad_catastro'], 'integer','message' => Yii::t('backend', 'only integers')],
             
+            [['observacion','datosVendedor','inmuebleVendedor'], 'string'], 
             [['direccion'], 'string', 'max' => 255,'message' => Yii::t('backend', 'Only 255 character')],
-            [['direccion'], 'required', 'message' => Yii::t('backend', 'Cannot be blank')],                
-            //Validacion 
-            //[['direccion', 'direccion2'], 'cercanos'],
-        ]; 
-    } 
+            
+                       
+            //validaciones cambio propietario del inmueble
+            [['tipo_naturaleza1','tipo_naturaleza','operacion','validacion'],'integer','message' => Yii::t('backend', 'only integers')],
+            
+            [['naturalezaBuscar1','tipo_naturaleza1'], 'string','when'=>function($model){ return $model->operacion==1;}, 'max' => 1,'message' => Yii::t('backend', 'Only 1 character')],
+            [['naturalezaBuscar','tipo_naturaleza'], 'string','when'=>function($model){ return $model->operacion==2;}, 'max' => 1,'message' => Yii::t('backend', 'Only 1 character')],
+            
+            [['cedulaBuscar1','ano_traspaso1'], 'string', 'max' => 8,'when'=>function($model){ return $model->operacion==1;},'message' => Yii::t('backend', 'Only 8 character')],
+            [['cedulaBuscar','ano_traspaso'], 'string', 'max' => 8,'when'=>function($model){ return $model->operacion==2;},'message' => Yii::t('backend', 'Only 8 character')],
+            
+            [['tipoBuscar1'], 'string', 'max' => 1,'when'=>function($model){ return $model->operacion==1;},'message' => Yii::t('backend', 'Only 1 character')],
+            [['tipoBuscar'], 'string', 'max' => 1,'when'=>function($model){ return $model->operacion==2;},'message' => Yii::t('backend', 'Only 1 character')],
+            
+            //requeridos en cambio propietario del inmueble
+            [['direccion'],'required','when'=>function($model){ return $model->operacion==1;},'message' => Yii::t('backend', 'Street Address cannot be blank')],
+            [['ano_traspaso1'],'required','when'=>function($model){ return $model->operacion==1;},'message' => Yii::t('backend', 'Handover Year cannot be blank')],
+            [['tipo_naturaleza1'],'required','when'=>function($model){ return $model->operacion==1;},'message' => Yii::t('backend', 'Type Nature cannot be blank')],
+            [['naturalezaBuscar1','cedulaBuscar1','tipoBuscar1'], 'required','when'=>function($model){ return $model->tipo_naturaleza1==2;},'message' => Yii::t('backend', 'Cannot be blank')],
+            [['naturalezaBuscar1','cedulaBuscar1'], 'required','when'=>function($model){ return $model->tipo_naturaleza1==1;},'message' => Yii::t('backend', 'Cannot be blank')],
+
+            [['ano_traspaso'],'required','when'=>function($model){ return $model->operacion==2;},'message' => Yii::t('backend', 'Handover Year cannot be blank')],
+            [['tipo_naturaleza'],'required','when'=>function($model){ return $model->operacion==2;},'message' => Yii::t('backend', 'Type Nature cannot be blank')],
+            [['naturalezaBuscar','cedulaBuscar','tipoBuscar'], 'required','when'=>function($model){ return $model->tipo_naturaleza==2;},'message' => Yii::t('backend', 'Cannot be blank')],
+            [['naturalezaBuscar','cedulaBuscar'], 'required','when'=>function($model){ return $model->tipo_naturaleza==1;},'message' => Yii::t('backend', 'Cannot be blank')],
+            //solvencia del inmueble
+
+            [['ano_traspaso1'], 'inmuebleSolventeA','when'=>function($model){ return $model->operacion==1;}],
+
+            [['ano_traspaso'], 'inmuebleSolventeB','when'=>function($model){ return $model->operacion==2;}],
+            //[['datosVendedor'],'datosVendedor'],
+            
+        ];
+    }
 
     
     public function attributeLabels()
@@ -205,83 +230,7 @@ class DesintegracionInmueblesForm extends \yii\db\ActiveRecord
             'tipoBuscar'=> Yii::t('backend', 'Type'),
         ]; 
     }
-    /**
-     * @param  [type]
-     * @param  [type]
-     * @return [type]
-     */ 
-    public function cercanos($attribute, $params)
-    {
-  
-          //Buscar  id contribuyente, id impuesto y nombre o razón social que se repite. en el numero de catastro
-          $conn = New ConexionController(); // instancia de la conexion (Connection)
-          
 
-          $this->conexion = $conn->initConectar('dbsim');     
-          $this->conexion->open(); 
-          $transaccion = $this->conexion->beginTransaction();
-          
-          
-              $subparcela_catastro = 0;
-              $nivel_catastro = 0;
-              $unidad_catastro = 0;
-              $sql1 = 'SELECT id_impuesto, id_contribuyente, estado_catastro,municipio_catastro, parroquia_catastro, ambito_catastro, sector_catastro, manzana_catastro, parcela_catastro FROM inmuebles WHERE ';
-              $sql1 .= 'id_contribuyente = "'.$this->id_contribuyente.'"';
-              $sql1 .= 'and id_impuesto = "'.$this->direccion.'"';
-
-
-              $sql2 = 'SELECT id_impuesto, id_contribuyente, estado_catastro,municipio_catastro, parroquia_catastro, ambito_catastro, sector_catastro, manzana_catastro, parcela_catastro FROM inmuebles WHERE ';
-              $sql2 .= 'id_contribuyente = "'.$this->id_contribuyente.'"';
-              $sql2 .= 'and id_impuesto = "'.$this->direccion2.'"';
-          
-          
-          //$buscar1 = $conn->buscarRegistro($this->conexion, $sql1);
-          //$buscar2 = $conn->buscarRegistro($this->conexion, $sql2); 
-
-          $buscar1 = InmueblesConsulta::find()->where(['id_contribuyente'=>$this->id_contribuyente, 'id_impuesto' => $this->direccion ])->asArray()->one();
-          $buscar2 = InmueblesConsulta::find()->where(['id_contribuyente'=>$this->id_contribuyente, 'id_impuesto' => $this->direccion2 ])->asArray()->one();
-
-         // echo'<pre>'; var_dump($buscar1, $buscar2); echo '</pre>'; die();
-
-
-          if($buscar1["estado_catastro"] != $buscar2["estado_catastro"] ) {
- 
-             $this->addError($attribute, Yii::t('backend', 'The Contributor '.$buscar1['id_contribuyente'].'  has already allocated about this property Cadastre. ')); 
-             if($buscar1["municipio_catastro"] != $buscar2["municipio_catastro"] ) {
-
-                $this->addError($attribute, Yii::t('backend', 'The Contributor '.$buscar1['id_contribuyente'].'  has already allocated about this property Cadastre. ')); 
-                if($buscar1["parroquia_catastro"] != $buscar2["parroquia_catastro"] ) {
-
-                   $this->addError($attribute, Yii::t('backend', 'The Contributor '.$buscar1['id_contribuyente'].'  has already allocated about this property Cadastre. ')); 
-                   if($buscar1["ambito_catastro"] != $buscar2["ambito_catastro"] ) {
-                      
-                      $this->addError($attribute, Yii::t('backend', 'The Contributor '.$buscar1['id_contribuyente'].'  has already allocated about this property Cadastre. ')); 
-                      if($buscar1["sector_catastro"] != $buscar2["sector_catastro"] ) {
-                        
-                         $this->addError($attribute, Yii::t('backend', 'The Contributor '.$buscar1['id_contribuyente'].'  has already allocated about this property Cadastre. ')); 
-                         if($buscar1["manzana_catastro"] != $buscar2["manzana_catastro"] ) {
-                            
-                            $this->addError($attribute, Yii::t('backend', 'The Contributor '.$buscar1['id_contribuyente'].'  has already allocated about this property Cadastre. ')); 
-
-
-                         }
-
-                      }
-                   }
-                }
-             }
-
-          }
-
-
- 
-    }
-
-    /**
-     * @param  [type]
-     * @param  [type]
-     * @return [type]
-     */
     public function catastro_existe($attribute, $params)
     {
   
@@ -338,11 +287,6 @@ class DesintegracionInmueblesForm extends \yii\db\ActiveRecord
    
     } 
 
-    /**
-     * @param  [type]
-     * @param  [type]
-     * @return [type]
-     */
     public function inmuebleSolventeA($attribute, $params)
     {
   
@@ -369,11 +313,7 @@ class DesintegracionInmueblesForm extends \yii\db\ActiveRecord
           
      } 
     
-     /**
-      * @param  [type]
-      * @param  [type]
-      * @return [type]
-      */
+
      public function inmuebleSolventeB($attribute, $params)
      {
   
@@ -399,7 +339,7 @@ class DesintegracionInmueblesForm extends \yii\db\ActiveRecord
                                     ->andwhere("ano_impositivo=:ano_impositivo", [":ano_impositivo" => $this->ano_traspaso])
                                     //->andWhere("inactivo=:inactivo", [":inactivo" => 0])
                                     //id_pago, id_impuesto, impuesto, ano_impositivo, trimestre
-                                    ->asArray()->all(); 
+                                    ->asArray()->all();                               
 
             //Si la consulta no cuenta (0) mostrar el error
             if ($table != null){
@@ -410,13 +350,8 @@ class DesintegracionInmueblesForm extends \yii\db\ActiveRecord
            
      }
 
-     /**
-      * @param  [type]
-      * @param  [type]
-      * @return [type]
-      */
      public function catastro_cambio($attribute, $params)
-     {
+    {
   
           //Buscar el email en la tabla 
          
@@ -432,23 +367,19 @@ class DesintegracionInmueblesForm extends \yii\db\ActiveRecord
                                     ->andWhere("manzana_limite=:manzana_limite", [":manzana_limite" => $this->manzana_limite])
                                     ->andWhere("inactivo=:inactivo", [":inactivo" => 0])
                                     ->asArray()->all(); 
-                                  
+                                   
           //$sql = 'SELECT id_impuesto, id_contribuyente FROM inmuebles WHERE manzana_limite=:manzana_limite and catastro=:catastro';
           //$inmuebles = Inmuebles::findBySql($sql, [':manzana_limite' => $this->manzana_limite, 'catastro'=> $this->catastro])->all();
                  
 
           //Si la consulta no cuenta (0) mostrar el error
-            if ($table != null){ 
+            if ($table != null){
 
                     $this->addError($attribute, Yii::t('backend', 'The taxpayer: '.$table[0]['id_contribuyente'].' has already assigned cadestre. Tax: '.$table[0]['id_impuesto']));//Impuesto: '.$table->id_impuesto; 
             } 
      }
-  
-    /**
-     * @param  [type]
-     * @param  [type]
-     * @return [type]
-     */
+    
+
      public function catastro_cambio2($attribute, $params)
      {
   
@@ -482,9 +413,7 @@ class DesintegracionInmueblesForm extends \yii\db\ActiveRecord
             } 
      }
      
-     /**
-      * @return [type]
-      */
+
      public function datosVendedor(){
 
           $datosVendedor = ContribuyentesForm::find()->where(['naturaleza'=>$this->naturalezaBuscar])
@@ -493,12 +422,9 @@ class DesintegracionInmueblesForm extends \yii\db\ActiveRecord
           return $datosVendedor;
      }
 
-     /**
-      * @return [type]
-      */
      public function getGenderOptions(){
-        return array('M' => 'Male', 'F' => 'Female');
-    }
+    return array('M' => 'Male', 'F' => 'Female');
+}
 
 
 }
