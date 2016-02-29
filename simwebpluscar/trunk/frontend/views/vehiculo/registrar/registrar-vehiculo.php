@@ -150,6 +150,7 @@ $listaUsoVehiculo = ArrayHelper::map($usoVehiculo, 'uso_vehiculo' , 'descripcion
                         <?= $form->field($model, 'clase_vehiculo')->dropDownList($listaClaseVehiculo,
                                                                 [
                                                                 'id'=> 'clase_vehiculo',
+                                                                'prompt' => yii::t('frontend', 'Select'),
                                                                 ]);
                     ?>
                 
@@ -166,6 +167,7 @@ $listaUsoVehiculo = ArrayHelper::map($usoVehiculo, 'uso_vehiculo' , 'descripcion
                         <?= $form->field($model, 'tipo_vehiculo')->dropDownList($listaTipoVehiculo,
                                                                 [
                                                                 'id'=> 'tipo_vehiculo',
+                                                                'prompt' => yii::t('frontend', 'Select'),
                                                                 ]);
                     ?>
                 
@@ -181,6 +183,7 @@ $listaUsoVehiculo = ArrayHelper::map($usoVehiculo, 'uso_vehiculo' , 'descripcion
                         <?= $form->field($model, 'uso_vehiculo')->dropDownList($listaUsoVehiculo,
                                                                 [
                                                                 'id'=> 'uso_vehiculo',
+                                                                'prompt' => yii::t('frontend', 'Select'),
                                                                 ]);
                     ?>
                 
