@@ -381,7 +381,7 @@ function bloquea() {
                                       'data' => [
                                                   'confirm' => Yii::t('app', 'Are you sure you want to Incorporate this item?'),
                                                   'method' => 'post',],]) ?>
-                            <?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) ?>
+                            <?= Html::a(Yii::t('backend', 'Back'), ['/site/menu-vertical'], ['class' => 'btn btn-danger']) ?>
                             </div>                                                                        
                         </td>
                    </tr>
