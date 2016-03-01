@@ -162,7 +162,7 @@ class InscripcionInmueblesUrbanosForm extends Model{
             [['medidor'], 'string', 'max' => 20,'message' => Yii::t('frontend', 'Only 20 character')],
             
            
-        ]; 
+        ];
     }
 
     

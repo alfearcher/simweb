@@ -143,7 +143,7 @@ class InscripcionInmueblesUrbanosController extends Controller
                      }
 
 
-                   }else{  
+                   }else{ 
 
                         $msg = Yii::t('backend', 'AN ERROR OCCURRED WHEN FILLING THE URBAN PROPERTY!');//HA OCURRIDO UN ERROR AL LLENAR LAS PREGUNTAS SECRETAS
                         $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("inmueble/inmuebles-urbanos/index")."'>";                     

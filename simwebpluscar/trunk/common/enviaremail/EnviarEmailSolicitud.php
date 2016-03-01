@@ -60,8 +60,9 @@ class EnviarEmailSolicitud{
 
     /**
      * [enviarEmail description] metodo que envia email al usuario con la informacion que reciba como parametros
-     * @param  [type] $ [description] 
-     * @param  [type] $ [description] 
+     * @param  [type] $email string [description] variable que recibe el email del contribuyente al que se le enviara el correo 
+     * con la informacion de la solicitud
+     * @param  [type] $solicitud string [description] variable que recibe el tipo de solicitud que realiza el contribuyente
      * @return [type]            [description] retorna la funcion que hace que envie el correo
      */
     public function enviarEmail($email, $solicitud)
