@@ -70,7 +70,8 @@
 		 */
 		public static function tableName()
 		{
-			return 'documentos_requisitos';
+			//return 'documentos_requisitos';
+			return 'config_documentos_requisitos';
 		}
 
 
