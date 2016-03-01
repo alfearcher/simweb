@@ -131,22 +131,16 @@ class InscripcionInmueblesUrbanosController extends Controller
                             return MensajeController::actionMensaje(100);
 
 
-
                           } else {
                             
                             return MensajeController::actionMensaje(920);
 
                           }
 
-                          
-
                      } else {
 
                           return MensajeController::actionMensaje(920);
                      }
-
-                     
-                      
 
 
                    }else{  
@@ -164,7 +158,7 @@ class InscripcionInmueblesUrbanosController extends Controller
               return $this->render('inscripcion-inmuebles-urbanos', ['model' => $model, ]);  
 
         }  else {
-                    echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['site/login'])."'>";
+                    echo "No hay Contribuyente Registrado!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['site/login'])."'>";
         }    
  
      } // cierre del metodo inscripcion de inmuebles
@@ -172,85 +166,85 @@ class InscripcionInmueblesUrbanosController extends Controller
     
 
      /**
-      * [GuardarInscripcion description]
-      * @param [type] $model [description]
+      * [GuardarInscripcion description] Metodo que se encarga de guardar los datos de la solicitud 
+      * de inscripcion del inmueble del contribuyente
+      * @param [type] $model [description] arreglo de datos del formulario de inscripcion del
+      * inmueble
       */
      public function GuardarInscripcion($model)
      {
         
         
-       
-                     //$id_impuesto = $model->id_impuesto;                   //clave principal de la tabla no sale en el formulario identificador del inpuesto inmobiliario
-                     $id_contribuyente = $model->id_contribuyente;         //identidad del contribuyente
-                     $ano_inicio = $model->ano_inicio;                     //anio de inicio
-                     $direccion = $model->direccion;                       //direccion
-                     //$av_calle_esq_dom = $model->av_calle_esq_dom;         //avenida. calle. esquina. domicilio
-                     $casa_edf_qta_dom = $model->casa_edf_qta_dom;         //casa. edificio. quinta. domicilio
-                     $piso_nivel_no_dom = $model->piso_nivel_no_dom;       //piso. nivel. numero. domicilio
-                     $apto_dom = $model->apto_dom;                         //apartamento. domicilio
-                     $medidor = $model->medidor;                           //medidor
-                     $observacion = $model->observacion;                   //observaciones
-                     $tipo_ejido = $model->tipo_ejido;                     //tipo ejido
+            //$id_impuesto = $model->id_impuesto;                   //clave principal de la tabla no sale en el formulario identificador del inpuesto inmobiliario
+            $id_contribuyente = $model->id_contribuyente;         //identidad del contribuyente
+            $ano_inicio = $model->ano_inicio;                     //anio de inicio
+            $direccion = $model->direccion;                       //direccion
+            //$av_calle_esq_dom = $model->av_calle_esq_dom;         //avenida. calle. esquina. domicilio
+            $casa_edf_qta_dom = $model->casa_edf_qta_dom;         //casa. edificio. quinta. domicilio
+            $piso_nivel_no_dom = $model->piso_nivel_no_dom;       //piso. nivel. numero. domicilio
+            $apto_dom = $model->apto_dom;                         //apartamento. domicilio
+            $medidor = $model->medidor;                           //medidor
+            $observacion = $model->observacion;                   //observaciones
+            $tipo_ejido = $model->tipo_ejido;                     //tipo ejido
 
+            //--------------TRY---------------
+            $arrayDatos = [   'id_contribuyente' => $id_contribuyente,
+                              'ano_inicio' => $ano_inicio,
+                              'direccion' => $direccion,
+                              'medidor' => $medidor,
+                              'observacion' => $observacion,
+                              'tipo_ejido' => $tipo_ejido,
+                            //'av_calle_esq_dom' => $av_calle_esq_dom,
+                              'casa_edf_qta_dom' => $casa_edf_qta_dom,
+                              'piso_nivel_no_dom' => $piso_nivel_no_dom,
+                              'apto_dom' => $apto_dom,
+                          ]; 
 
-                   //--------------TRY---------------
-                        $arrayDatos = ['id_contribuyente' => $id_contribuyente,
-                                       'ano_inicio' => $ano_inicio,
-                                       'direccion' => $direccion,
-                                       'medidor' => $medidor,
-                                       'observacion' => $observacion,
-                                       'tipo_ejido' => $tipo_ejido,
-                                       //direcciones
-                                       //'av_calle_esq_dom' => $av_calle_esq_dom,
-                                       'casa_edf_qta_dom' => $casa_edf_qta_dom,
-                                       'piso_nivel_no_dom' => $piso_nivel_no_dom,
-                                       'apto_dom' => $apto_dom,
+            $tableName = 'sl_inmuebles'; 
 
-                                       ]; 
+            $conn = New ConexionController();
+            $this->conexion = $conn->initConectar('dbsim');     // instancia de la conexion (Connection)
+            $this->conexion->open();  
+            $transaccion = $this->conexion->beginTransaction();
 
-                        $tableName = 'sl_inmuebles'; 
-
-
-                        $conn = New ConexionController();
-
-                        $this->conexion = $conn->initConectar('dbsim');     // instancia de la conexion (Connection)
-                        $this->conexion->open();  
-
-                        $transaccion = $this->conexion->beginTransaction();
-
-                        if ( $conn->guardarRegistro($this->conexion, $tableName,  $arrayDatos) ){  
-
-                            //$transaccion->commit(); 
-                            $this->conexion->close(); 
-                            $tipoError = 0; 
-                                          
-                            return true; 
-            
-                        }else{ 
-
-                            //$transaccion->roolBack();
-                            $this->conexion->close();
-                            $tipoError = 0; 
-                                             
-                            return false;
-                        }   
+            if ( $conn->guardarRegistro($this->conexion, $tableName,  $arrayDatos) ){  
+                //$transaccion->commit(); 
+                $this->conexion->close(); 
+                $tipoError = 0; 
+                                 
+                return true; 
+   
+            }else{ 
+                //$transaccion->roolBack();
+                $this->conexion->close();
+                $tipoError = 0; 
+                                    
+                return false;
+            }   
 
                        
      }
 
+
+/**
+ * [EnviarCorreo description] Metodo que se encarga de enviar un email al contribuyente 
+ * con el estatus del proceso
+ */
      public function EnviarCorreo()
      {
-        $email = yii::$app->user->identity->login;
+         $email = yii::$app->user->identity->login;
 
-        $enviarEmail = new EnviarEmailSolicitud();
+         $solicitud = 'Inscripcion de Inmueble';
+
+         $enviarEmail = new EnviarEmailSolicitud();
         
-        if ($enviarEmail->enviarEmail($email)){
+         if ($enviarEmail->enviarEmail($email, $solicitud)){
 
-            return true;
-        } else {
+             return true;
+         } else {
 
-            return false;
-        }
+             return false;
+         }
 
 
      }

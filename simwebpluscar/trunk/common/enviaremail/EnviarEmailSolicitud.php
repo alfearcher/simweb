@@ -64,7 +64,7 @@ class EnviarEmailSolicitud{
      * @param  [type] $ [description] 
      * @return [type]            [description] retorna la funcion que hace que envie el correo
      */
-    public function enviarEmail($email)
+    public function enviarEmail($email, $solicitud)
     {
 
        return Yii::$app->mailer->compose()
@@ -73,8 +73,8 @@ class EnviarEmailSolicitud{
         ->setSubject('Bienvenido al Servicio Online')
         ->setTextBody('Bienvenido al Servicio Online')
         ->setHtmlBody('Estimado Contribuyente: <br><br>
-                       Usted ha realizado con exito su Solicitud<br><br>
-                       Por favor dirijase a la alcaldia para completar la solicitud competente '.
+                       Usted ha realizado con exito su Solicitud '.$solicitud.'<br><br>'
+                       'Por favor dirijase a la alcaldia para completar la solicitud competente '.
                        'Recuerde, esta informacion es personal y de su exclusiva responsabilidad y se agradece no divulgar ni transferir
                        a terceros estos datos<br><br>
                        Esta es una cuenta no monitoreada, por favor no responder este correo.')
