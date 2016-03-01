@@ -74,9 +74,9 @@ class EnviarEmailSolicitud{
         ->setTextBody('Bienvenido al Servicio Online')
         ->setHtmlBody('Estimado Contribuyente: <br><br>
                        Usted ha realizado con exito su Solicitud '.$solicitud.'<br><br>'.
-                       'Por favor dirijase a la alcaldia para completar la solicitud competente '.
+                       'Por favor dirijase a la alcaldia para completar la solicitud competente. '.
                        'Recuerde, esta informacion es personal y de su exclusiva responsabilidad y se agradece no divulgar ni transferir
-                       a terceros estos datos<br><br>
+                       a terceros estos datos.<br><br>
                        Esta es una cuenta no monitoreada, por favor no responder este correo.')
         ->send();
 
