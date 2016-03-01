@@ -100,6 +100,10 @@
 
 
 
+
+
+
+
 		/***/
 		public function actionListaTipoSolicitud()
 		{
@@ -370,11 +374,8 @@
     	 */
     	public function actionQuit()
     	{
-    		unset($_SESSION['idImpuesto']);
-    		unset($_SESSION['idContribuyente']);
-    		unset($_SESSION['datosContribuyente']);
-    		unset($_SESSION['anoImpositivo']);
-    		return $this->render('/aaee/autorizar-ramo/quit');
+    		Session::actionDeleteSession(['postData', 'model']);
+    		return $this->render('/configuracion/solicitud/quit');
     	}
 
 
