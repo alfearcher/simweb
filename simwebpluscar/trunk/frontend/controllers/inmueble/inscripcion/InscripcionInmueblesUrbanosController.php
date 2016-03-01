@@ -119,7 +119,16 @@ class InscripcionInmueblesUrbanosController extends Controller
 
                      $guardo = self::GuardarInscripcion($model);
 
+                     if($guardo == true){
 
+                          die('guardo');
+
+                     } else {
+
+                          die('no guardo');
+                     }
+
+                     
                       
 
 
@@ -240,7 +249,7 @@ class InscripcionInmueblesUrbanosController extends Controller
                                        // 'lote_3' => $lote_3, 
                                        // 'nivel' => $nivel,
                                        ]; 
-die(var_dump($arrayDatos));
+
                         $tableName = 'sl_inmuebles'; 
 
 
@@ -253,7 +262,7 @@ die(var_dump($arrayDatos));
 
                         if ( $conn->guardarRegistro($this->conexion, $tableName,  $arrayDatos) ){  
 
-                            $transaccion->commit(); 
+                            //$transaccion->commit(); 
                             $this->conexion->close(); 
                             $tipoError = 0; 
                             // $msg = Yii::t('backend', 'SUCCESSFUL REGISTRATION OF THE URBAN PROPERTY!');//REGISTRO EXITOSO DE LAS PREGUNTAS DE SEGURIDAD
@@ -262,7 +271,7 @@ die(var_dump($arrayDatos));
             
                         }else{ 
 
-                            $transaccion->roolBack();
+                            //$transaccion->roolBack();
                             $this->conexion->close();
                             $tipoError = 0; 
                             // $msg = Yii::t('backend', 'AN ERROR OCCURRED WHEN FILLING THE URBAN PROPERTY!');//HA OCURRIDO UN ERROR AL LLENAR LAS PREGUNTAS SECRETAS
