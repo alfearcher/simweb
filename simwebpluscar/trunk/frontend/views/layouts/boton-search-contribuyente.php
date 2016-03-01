@@ -107,7 +107,7 @@
     $menuItems1[] = ['label' => '<div class="id-cont" style="padding-right: 5px;">
                     <form>
                         <div class="form-group" >
-                            <input type="text" value="' . $id_contribuyente . '" class="form-control" id="id-contribuyente" readonly style="width: 150px;">
+                            <input type="text" value="' .'ID:'.' '. $id_contribuyente . '" class="form-control" id="id-contribuyente" readonly style="width: 150px;">
                         </div>
                     </form>
                 </div>'];
