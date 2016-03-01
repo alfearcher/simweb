@@ -72,6 +72,7 @@ use yii\helpers\Url;
 use yii\db\ActiveRecord;
 use common\conexion\ConexionController;
 use common\enviaremail\EnviarEmailSolicitud;
+use common\mensaje\MensajeController;
 session_start();
 /*********************************************************************************************************
  * InscripcionInmueblesUrbanosController implements the actions for InscripcionInmueblesUrbanosForm model.
@@ -127,11 +128,13 @@ class InscripcionInmueblesUrbanosController extends Controller
 
                           if($envio == true){
 
-                            die('envio correo');
+                            return MensajeController::actionMensaje(100);
+
 
 
                           } else {
-                            die('no envio correo');
+                            
+                            return MensajeController::actionMensaje(920);
 
                           }
 
@@ -139,7 +142,7 @@ class InscripcionInmueblesUrbanosController extends Controller
 
                      } else {
 
-                          die('no guardo');
+                          return MensajeController::actionMensaje(920);
                      }
 
                      
