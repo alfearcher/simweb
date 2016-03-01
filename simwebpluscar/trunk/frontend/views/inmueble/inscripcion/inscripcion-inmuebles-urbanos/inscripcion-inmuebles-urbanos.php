@@ -80,17 +80,6 @@ function bloquea() {
                             </div> 
                         </td>
 
-                        
-
-                        <td colspan="10" style="max-width: 100px" align="letf">
-                            <div class="col-sm-6"> 
-                            <?= $form->field($model, 'propiedad_horizontal')->checkbox(['id'=> 'propiedadhorizontal',
-                                                                                         'style' => 'width:50px;', 
-                                                                                         'onclick'=>'bloquea()',
-                                                                                         
-                                                                                          ]); ?> 
-                            </div> 
-                        </td>
                     </tr>
                                                     
 
