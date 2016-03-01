@@ -183,6 +183,7 @@
 		protected function actionBeginSave($postData, $model, $operacion)
 		{
 			$result = false;
+			$idConfigSolicitud = 0;
 			if ( isset($postData) && isset($model) ) {
 
 				$conexion = New ConexionController();
@@ -195,16 +196,15 @@
 				$transaccion = $conn->beginTransaction();
 
 				if ( strtolower(trim($operacion)) == 'create' ) {
-					if ( self::actionCreateConfigurarSolicitud($postData, $model, $conn, $conexion) ) {
-
+					$idConfigSolicitud = self::actionCreateConfigurarSolicitud($postData, $model, $conn, $conexion);
+					if ( $idConfigSolicitud > 0 ) {
 						// Guardar los procesos que generara la solicitud, de haberlos.
-						if ( self::actionCreateProcesoGenerado($postData, $model, $conn, $conexion) ) {
-							$result = true;
-							//$transaccion->commit();
-							//return self::gestionarMensajesLocales(100);
-							//self::actionProcesoExitoso();
-							//Session::actionDeleteSession(['postData', 'idCondominio']);
-							//return $this->redirect(['proceso-exitoso']);
+						if ( self::actionCreateProcesoGenerado($postData, $model, $conn, $conexion, $idConfigSolicitud) ) {
+							// Guardar los documentos a consignar, de haberlos.
+							if ( self::actionCreateDocumento($postData, $model, $conn, $conexion, $idConfigSolicitud) ) {
+
+								$result = true;
+							}
 						}
 					}
 
@@ -243,7 +243,7 @@
 		/***/
 		protected function actionCreateConfigurarSolicitud($postData, $model, $connLocal, $conexionLocal)
 		{
-			$result = false;
+			$result = 0;
 			$tabla = $model->tableName();
 			$nombreForm = $model->formName();
 
@@ -279,8 +279,8 @@
 			$arregloDatos['fecha_hora'] = date('Y-m-d H:i:s');
 
 			try {
-				if ( $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos ) ) {
-					$result = true;
+				if ( $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos) ) {
+					$result = $connLocal->getLastInsertID();
 				}
 			} catch ( Exception $e ) {
 				 //echo $e->errorInfo[2];
@@ -293,21 +293,74 @@
 
 
 		/***/
-		protected function actionCreateProcesoGenerado($postData, $model, $connLocal, $conexionLocal)
+		protected function actionCreateProcesoGenerado($postData, $model, $connLocal, $conexionLocal, $idConfigSolicitud = 0)
 		{
 			$result = false;
 			$tabla = 'config_solic_detalles';
-			$arregloDatos['id_config_solicitud'] = $model->id_config_solicitud;
-			$arregloDatos['id_proceso'] = 0;
-			$arregloDatos['inactivo'] = 0;
+			$arregloCampo = ['id_config_solicitud', 'id_proceso', 'inactivo'];
 
-			$arregloProceso = $postData['chk-proceso-generado'];
+			// Se obtienen los valores seleccionados en el grid de los procesos a generar
+			$arregloProceso = isset($postData['chk-proceso-generado']) ? $postData['chk-proceso-generado'] : null;
 
-//die(var_dump($model));
-die(var_dump($arregloProceso));
+			if ( count($arregloProceso) == 0 ) {
+				return true;
+			}
+
+			foreach ( $arregloProceso as $key => $value ) {
+				$arregloDatos[] = [$idConfigSolicitud, $value, 0];
+			}
+
+			try {
+					if ( $conexionLocal->guardarLoteRegistros($connLocal, $tabla, $arregloCampo, $arregloDatos) ) {
+						$result = true;
+					}
+				} catch ( Exception $e ) {
+				 //echo $e->errorInfo[2];
+			}
 
 			return $result;
 		}
+
+
+
+		/***/
+		protected function actionCreateDocumento($postData, $model, $connLocal, $conexionLocal, $idConfigSolicitud = 0)
+		{
+			$result = false;
+			$tabla = 'config_solic_documentos';
+			$arregloCampo = ['id_config_solicitud',
+			                 'id_documento',
+			                 'adjuntar_electronico',
+			                 'original',
+			                 'copia',
+			                 'nro_copias',
+			                 'inactivo'];
+
+			// Se obtienen los valores seleccionados en el grid de los documentos a consignar.
+			$arregloDocumento = isset($postData['chk-documento-requisito']) ? $postData['chk-documento-requisito'] : null ;
+
+			if ( count($arregloDocumento) == 0 ) {
+				return true;
+			}
+
+			foreach ( $arregloDocumento as $key => $value ) {
+				$arregloDatos[] = [$idConfigSolicitud, $value, 0, 0, 0, 0, 0];
+			}
+
+			try {
+					if ( $conexionLocal->guardarLoteRegistros($connLocal, $tabla, $arregloCampo, $arregloDatos) ) {
+						$result = true;
+					}
+				} catch ( Exception $e ) {
+				 //echo $e->errorInfo[2];
+			}
+
+			return $result;
+		}
+
+
+
+
 
 
 
