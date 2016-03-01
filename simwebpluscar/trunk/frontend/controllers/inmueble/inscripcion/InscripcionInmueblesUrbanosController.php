@@ -59,8 +59,8 @@ use yii\web\Response;
 use common\models\Users;
 use common\models\User;
 use yii\web\Session;
-use backend\models\inmueble\InscripcionInmueblesUrbanosForm;
-use backend\models\inmueble\InmueblesUrbanosForm;
+use frontend\models\inmueble\inscripcion\InscripcionInmueblesUrbanosForm;
+
 //use common\models\Users;
 
 // mandar url
@@ -115,8 +115,43 @@ class InscripcionInmueblesUrbanosController extends Controller
                  //condicionales     
                   
                 if (!\Yii::$app->user->isGuest){                                      
-            
+                      
 
+                     $guardo = self:GuardarInscripcion($model);
+
+
+                      
+
+
+                   }else{  
+
+                        $msg = Yii::t('backend', 'AN ERROR OCCURRED WHEN FILLING THE URBAN PROPERTY!');//HA OCURRIDO UN ERROR AL LLENAR LAS PREGUNTAS SECRETAS
+                        $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("inmueble/inmuebles-urbanos/index")."'>";                     
+                        return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
+                   } 
+
+              }else{
+                
+                   $model->getErrors(); 
+              }
+         }
+              return $this->render('inscripcion-inmuebles-urbanos', ['model' => $model, ]);  
+
+        }  else {
+                    echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['site/login'])."'>";
+        }    
+ 
+     } // cierre del metodo inscripcion de inmuebles
+
+    
+
+     /**
+      * [GuardarInscripcion description]
+      * @param [type] $model [description]
+      */
+     public function GuardarInscripcion($model)
+     {
+        die(var_dump($model));
                      $id_impuesto = $model->id_impuesto;                   //clave principal de la tabla no sale en el formulario identificador del inpuesto inmobiliario
                      $id_contribuyente = $model->id_contribuyente;         //identidad del contribuyente
                      $ano_inicio = $model->ano_inicio;                     //anio de inicio
@@ -245,30 +280,8 @@ class InscripcionInmueblesUrbanosController extends Controller
                             return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
                         }   
 
-                        $this->conexion->close(); 
-
-
-                   }else{  
-
-                        $msg = Yii::t('backend', 'AN ERROR OCCURRED WHEN FILLING THE URBAN PROPERTY!');//HA OCURRIDO UN ERROR AL LLENAR LAS PREGUNTAS SECRETAS
-                        $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("inmueble/inmuebles-urbanos/index")."'>";                     
-                        return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
-                   } 
-
-              }else{
-                
-                   $model->getErrors(); 
-              }
-         }
-              return $this->render('inscripcion-inmuebles-urbanos', ['model' => $model, ]);  
-
-        }  else {
-                    echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['site/login'])."'>";
-        }    
- 
-     } // cierre del metodo inscripcion de inmuebles
-
-     
+                        $this->conexion->close();
+     }
 
 
 }

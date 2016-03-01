@@ -150,21 +150,18 @@ class InscripcionInmueblesUrbanosForm extends Model{
     {
 
         return [
-            [['id_contribuyente', 'ano_inicio', 'liquidado', 'manzana_limite', 'lote_1', 'lote_2', 'lote_3', 'inactivo', 'id_habitante', 'tipo_ejido', 'propiedad_horizontal', 'estado_catastro', 'municipio_catastro', 'parroquia_catastro', 'sector_catastro', 'manzana_catastro', 'parcela_catastro', 'subparcela_catastro', 'unidad_catastro'], 'integer','message' => Yii::t('backend', 'only integers')],
-            [['id_contribuyente','id_sim','parcela_catastro','casa_edf_qta_dom','piso_nivel_no_dom','apto_dom','tlf_hab', 'ano_inicio', 'manzana_limite', 'inactivo', 'tipo_ejido', 'propiedad_horizontal', 'estado_catastro', 'municipio_catastro', 'parroquia_catastro','ambito_catastro', 'sector_catastro', 'manzana_catastro', 'direccion'], 'required','message' => Yii::t('backend', 'Required field')],
-            [['parcela_catastro', 'subparcela_catastro', 'unidad_catastro','nivela','nivelb'],'required', 'when'=> function($model){ return $model->propiedad_horizontal == 1; }, 'message' => Yii::t('backend', 'Required field')],
+            [['id_contribuyente', 'ano_inicio', 'tipo_ejido', ], 'integer','message' => Yii::t('frontend', 'only integers')],
+            [['id_contribuyente','casa_edf_qta_dom','piso_nivel_no_dom','apto_dom', 'ano_inicio', 'tipo_ejido', 'direccion'], 'required','message' => Yii::t('frontend', 'Required field')],
+            
             [['observacion'], 'string'],
-            [['direccion'], 'string', 'max' => 255,'message' => Yii::t('backend', 'Only 255 character')],
-            [['nivel', 'ambito_catastro'], 'string', 'max' => 4,'message' => Yii::t('backend', 'Only 3 character')],
-            [['av_calle_esq_dom', 'casa_edf_qta_dom'], 'string', 'max' => 50,'message' => Yii::t('backend', 'Only 50 character')],
-            [['piso_nivel_no_dom', 'apto_dom'], 'string', 'max' => 25,'message' => Yii::t('backend', 'Only 25 character')],
-            [['tlf_hab'], 'string', 'max' => 15,'message' => Yii::t('backend', 'Only 15 character')],
-            [['medidor', 'id_sim'], 'string', 'max' => 20,'message' => Yii::t('backend', 'Only 20 character')],
-            [['catastro'], 'string', 'max' => 60,'message' => Yii::t('backend', 'Only 60 character')],
-            //'liquidado', 'id_habitante'
-            //[['catastro'], 'catastro_existe'],
-            [['propiedad_horizontal'], 'catastro_registro','when'=> function($model){ return $model->propiedad_horizontal == 0; }],
-            [['propiedad_horizontal'], 'catastro_registro2','when'=> function($model){ return $model->propiedad_horizontal == 1; }],
+            [['direccion'], 'string', 'max' => 255,'message' => Yii::t('frontend', 'Only 255 character')],
+            
+            [['av_calle_esq_dom', 'casa_edf_qta_dom'], 'string', 'max' => 50,'message' => Yii::t('frontend', 'Only 50 character')],
+            [['piso_nivel_no_dom', 'apto_dom'], 'string', 'max' => 25,'message' => Yii::t('frontend', 'Only 25 character')],
+            
+            [['medidor'], 'string', 'max' => 20,'message' => Yii::t('frontend', 'Only 20 character')],
+            
+           
         ]; 
     }
 
