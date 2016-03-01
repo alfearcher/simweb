@@ -180,13 +180,16 @@ function bloquea() {
                             </div>    
                         </td>
 
-                        <td colspan="2" style="max-width: 100px" align="letf">                                                                    
+                        <td colspan="7" style="max-width: 100px" align="letf">                                                                    
                             <div class="col-lg-2">
                             <?= $form->field($model, 'tipo_ejido')->checkbox(['style' => 'width:50px;']) ?>
                             </div> 
                         </td>
 
-                        <td colspan="5" style="max-width: 100px" align="letf">
+                        
+                   </tr>
+                   <tr>
+                        <td colspan="10" style="max-width: 100px" align="letf">
                             <div class="form-group"> 
                             <?= Html::submitButton(Yii::t('backend', 'Incorporate'), ['class' => 'btn btn-primary',
                                       'data' => [
@@ -195,7 +198,8 @@ function bloquea() {
                             <?= Html::a(Yii::t('backend', 'Back'), ['/site/menu-vertical'], ['class' => 'btn btn-danger']) ?>
                             </div>                                                                        
                         </td>
-                   </tr>
+
+                   </tr>    
 
                     
                 </table>
