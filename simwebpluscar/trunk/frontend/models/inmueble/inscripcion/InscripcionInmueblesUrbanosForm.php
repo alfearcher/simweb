@@ -100,7 +100,7 @@ use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 use common\conexion\ConexionController;
 use frontend\models\inmueble\inscripcion\InmueblesUrbanosForm;
-usfrontendend\models\inmueble\ParametrosNivelesCatastro;
+
 class InscripcionInmueblesUrbanosForm extends Model{
     
     public $conn;
