@@ -158,7 +158,7 @@ class InscripcionInmueblesUrbanosController extends Controller
                      $id_contribuyente = $model->id_contribuyente;         //identidad del contribuyente
                      $ano_inicio = $model->ano_inicio;                     //anio de inicio
                      $direccion = $model->direccion;                       //direccion
-                     $av_calle_esq_dom = $model->av_calle_esq_dom;         //avenida. calle. esquina. domicilio
+                     //$av_calle_esq_dom = $model->av_calle_esq_dom;         //avenida. calle. esquina. domicilio
                      $casa_edf_qta_dom = $model->casa_edf_qta_dom;         //casa. edificio. quinta. domicilio
                      $piso_nivel_no_dom = $model->piso_nivel_no_dom;       //piso. nivel. numero. domicilio
                      $apto_dom = $model->apto_dom;                         //apartamento. domicilio
@@ -205,7 +205,7 @@ class InscripcionInmueblesUrbanosController extends Controller
                                        'observacion' => $observacion,
                                        'tipo_ejido' => $tipo_ejido,
                                        //direcciones
-                                       'av_calle_esq_dom' => $av_calle_esq_dom,
+                                       //'av_calle_esq_dom' => $av_calle_esq_dom,
                                        'casa_edf_qta_dom' => $casa_edf_qta_dom,
                                        'piso_nivel_no_dom' => $piso_nivel_no_dom,
                                        'apto_dom' => $apto_dom,
