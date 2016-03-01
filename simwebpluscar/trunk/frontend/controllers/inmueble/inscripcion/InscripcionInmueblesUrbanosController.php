@@ -151,9 +151,9 @@ class InscripcionInmueblesUrbanosController extends Controller
       */
      public function GuardarInscripcion($model)
      {
-        //die(var_dump($model['id_contribuyente']));
+        
         $id_contribuyente= $model->id_contribuyente;
-        die('llegue'.$id_contribuyente);
+        die('llegue: '.$id_contribuyente);
                      $id_impuesto = $model->id_impuesto;                   //clave principal de la tabla no sale en el formulario identificador del inpuesto inmobiliario
                      $id_contribuyente = $model->id_contribuyente;         //identidad del contribuyente
                      $ano_inicio = $model->ano_inicio;                     //anio de inicio
