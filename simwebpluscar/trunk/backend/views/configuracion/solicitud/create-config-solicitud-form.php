@@ -160,7 +160,7 @@
 								<div class="fecha-desde">
 									<?= $form->field($model, 'fecha_desde')->widget(\yii\jui\DatePicker::classname(),['id' => 'fecha-desde',
 																														'clientOptions' => [
-																															'maxDate' => '+0d',	// Bloquear los dias en el calendario a partir del dia siguiente al actual.
+																															//'maxDate' => '+0d',	// Bloquear los dias en el calendario a partir del dia siguiente al actual.
 																															'changeYear' => true,
 																														],
 																														'language' => 'es-ES',
@@ -191,7 +191,7 @@
 								<div class="fecha-hasta">
 									<?= $form->field($model, 'fecha_hasta')->widget(\yii\jui\DatePicker::classname(),['id' => 'fecha-hasta',
 																														'clientOptions' => [
-																															'maxDate' => '+0d',	// Bloquear los dias en el calendario a partir del dia siguiente al actual.
+																															//'maxDate' => '+0d',	// Bloquear los dias en el calendario a partir del dia siguiente al actual.
 																															'changeYear' => true,
 																														],
 																														'language' => 'es-ES',
