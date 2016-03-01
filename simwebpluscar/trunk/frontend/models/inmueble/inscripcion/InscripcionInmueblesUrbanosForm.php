@@ -100,7 +100,7 @@ use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 use common\conexion\ConexionController;
 use frontend\models\inmueble\inscripcion\InmueblesUrbanosForm;
-use frontend\models\inmueble\ParametrosNivelesCatastro;
+usfrontendend\models\inmueble\ParametrosNivelesCatastro;
 class InscripcionInmueblesUrbanosForm extends Model{
     
     public $conn;
@@ -172,41 +172,41 @@ class InscripcionInmueblesUrbanosForm extends Model{
     public function attributeLabels()
     {
         return [
-            'id_impuesto' => Yii::t('backend', 'Id Tax'), 
-            'id_contribuyente' => Yii::t('backend', 'Id taxpayer'),
-            'ano_inicio' => Yii::t('backend', 'Year home'),
-            'direccion' => Yii::t('backend', 'Street Address'),
-            'liquidado' => Yii::t('backend', 'liquidated'),
-            'manzana_limite' => Yii::t('backend', 'Quadrant Limit'),
-            'lote_1' => Yii::t('backend', 'Lote 1'),
-            'lote_2' => Yii::t('backend', 'Lote 2'),
-            'nivel' => Yii::t('backend', 'Level'),
-            'lote_3' => Yii::t('backend', 'Lote 3'),
-            'av_calle_esq_dom' => Yii::t('backend', 'Avenue Street Corner Home'),
-            'casa_edf_qta_dom' => Yii::t('backend', 'House Building Quint Home'),
-            'piso_nivel_no_dom' => Yii::t('backend', 'Flat Level Number Home'),
-            'apto_dom' => Yii::t('backend', 'Apartment Home'),
-            'tlf_hab' => Yii::t('backend', 'Phone Room'),
-            'medidor' => Yii::t('backend', 'Meter'),
-            'id_sim' => Yii::t('backend', 'Id Sim'),
-            'observacion' => Yii::t('backend', 'Observation'),
-            'inactivo' => Yii::t('backend', 'Inactive'),
-            'catastro' => Yii::t('backend', 'Cadastre'),
-            'id_habitante' => Yii::t('backend', 'Id Habitante'),
-            'tipo_ejido' => Yii::t('backend', 'Type Ejido'),
-            'propiedad_horizontal' => Yii::t('backend', 'Horizontal Property'),
+            'id_impuesto' => Yii::t('frontend', 'Id Tax'), 
+            'id_contribuyente' => Yii::t('frontend', 'Id taxpayer'),
+            'ano_inicio' => Yii::t('frontend', 'Year home'),
+            'direccion' => Yii::t('frontend', 'Street Address'),
+            'liquidado' => Yii::t('frontend', 'liquidated'),
+            'manzana_limite' => Yii::t('frontend', 'Quadrant Limit'),
+            'lote_1' => Yii::t('frontend', 'Lote 1'),
+            'lote_2' => Yii::t('frontend', 'Lote 2'),
+            'nivel' => Yii::t('frontend', 'Level'),
+            'lote_3' => Yii::t('frontend', 'Lote 3'),
+            'av_calle_esq_dom' => Yii::t('frontend', 'Avenue Street Corner Home'),
+            'casa_edf_qta_dom' => Yii::t('frontend', 'House Building Quint Home'),
+            'piso_nivel_no_dom' => Yii::t('frontend', 'Flat Level Number Home'),
+            'apto_dom' => Yii::t('frontend', 'Apartment Home'),
+            'tlf_hab' => Yii::t('frontend', 'Phone Room'),
+            'medidor' => Yii::t('frontend', 'Meter'),
+            'id_sim' => Yii::t('frontend', 'Id Sim'),
+            'observacion' => Yii::t('frontend', 'Observation'),
+            'inactivo' => Yii::t('frontend', 'Inactive'),
+            'catastro' => Yii::t('frontend', 'Cadastre'),
+            'id_habitante' => Yii::t('frontend', 'Id Habitante'),
+            'tipo_ejido' => Yii::t('frontend', 'Type Ejido'),
+            'propiedad_horizontal' => Yii::t('frontend', 'Horizontal Property'),
             
-            'estado_catastro' => Yii::t('backend', 'Edo.'),
-            'municipio_catastro' => Yii::t('backend', 'Mnp.'),
-            'parroquia_catastro' => Yii::t('backend', 'Prq.'),
-            'ambito_catastro' => Yii::t('backend', 'Amb.'),
-            'sector_catastro' => Yii::t('backend', 'Sct.'),
-            'manzana_catastro' => Yii::t('backend', 'Mzn.'),
+            'estado_catastro' => Yii::t('frontend', 'Edo.'),
+            'municipio_catastro' => Yii::t('frontend', 'Mnp.'),
+            'parroquia_catastro' => Yii::t('frontend', 'Prq.'),
+            'ambito_catastro' => Yii::t('frontend', 'Amb.'),
+            'sector_catastro' => Yii::t('frontend', 'Sct.'),
+            'manzana_catastro' => Yii::t('frontend', 'Mzn.'),
             
-            'parcela_catastro' => Yii::t('backend', 'Plot'),
-            'subparcela_catastro' => Yii::t('backend', 'Subplot'),
-            'nivel_catastro' => Yii::t('backend', 'Level'),
-            'unidad_catastro' => Yii::t('backend', 'Unit'),
+            'parcela_catastro' => Yii::t('frontend', 'Plot'),
+            'subparcela_catastro' => Yii::t('frontend', 'Subplot'),
+            'nivel_catastro' => Yii::t('frontend', 'Level'),
+            'unidad_catastro' => Yii::t('frontend', 'Unit'),
         ];
     }
 
