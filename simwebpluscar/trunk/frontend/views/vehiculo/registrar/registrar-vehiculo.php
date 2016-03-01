@@ -82,7 +82,7 @@ $listaUsoVehiculo = ArrayHelper::map($usoVehiculo, 'uso_vehiculo' , 'descripcion
 <!-- MARCA -->
 
                 
-                    <div class="col-sm-2">
+                    <div class="col-sm-3" style="margin-left: -20px;">
                         <?= $form->field($model, 'marca')->textInput(
                                                                 [
                                                                 'id'=> 'marca',
@@ -97,7 +97,7 @@ $listaUsoVehiculo = ArrayHelper::map($usoVehiculo, 'uso_vehiculo' , 'descripcion
 <!-- MODELO -->
 
                
-                    <div class="col-sm-2">
+                    <div class="col-sm-3" style="margin-left: -20px;">
                         <?= $form->field($model, 'modelo')->textInput(
                                                                 [
                                                                 'id'=> 'modelo',
@@ -112,11 +112,12 @@ $listaUsoVehiculo = ArrayHelper::map($usoVehiculo, 'uso_vehiculo' , 'descripcion
 <!-- AÑO COMPRA -->
 
                
-                    <div class="col-sm-2">
-                        <?= $form->field($model, 'ano_compra')->input('date',
+                    <div class="col-sm-2" style="margin-left: -20px;">
+                        <?= $form->field($model, 'ano_compra')->dropDownList(
                                                                 [
-                                                                'type' => 'date',
-                                                                'id'=> 'ano_compra',
+                                                                'promt' => yii::t('frontend', 'Select'),
+                                                                'value' => 10,15,  
+                                                                
                                                                 ]);
                     ?>
                 
@@ -128,7 +129,7 @@ $listaUsoVehiculo = ArrayHelper::map($usoVehiculo, 'uso_vehiculo' , 'descripcion
 <!-- AÑO VEHICULO -->
 
                
-                    <div class="col-sm-2">
+                    <div class="col-sm-2" style="margin-left: -20px;">
                         <?= $form->field($model, 'ano_vehiculo')->textInput(
                                                                 [
                                                                 'type' => 'date',
@@ -192,19 +193,250 @@ $listaUsoVehiculo = ArrayHelper::map($usoVehiculo, 'uso_vehiculo' , 'descripcion
 
 <!-- FIN DE TIPOS <-->
 
+<!-- COLOR -->
+
+                    <div class="row">
+                    <div class="col-sm-2">
+                        <?= $form->field($model, 'color')->input(
+                                                                [
+                                                                
+                                                                'id'=> 'color',
+                                                                ]);
+                    ?>
+                
+                    </div>
+
+                    
+
+<!-- COLOR <-->
+
+<!-- NRO. EJES -->
+
+                   
+                    <div class="col-sm-1" style="margin-left: -20px;">
+                        <?= $form->field($model, 'no_ejes')->input(
+                                                                [
+                                                                
+                                                                'id'=> 'no_ejes',
+                                                                ]);
+                    ?>
+                
+                    </div>
+
+                    
+
+<!-- FIN NRO. EJES <-->
+
+<!-- NRO. PUESTO -->
+
+                   
+                    <div class="col-sm-2" style="margin-left: -20px;">
+                        <?= $form->field($model, 'nro_puestos')->input(
+                                                                [
+                                                                
+                                                                'id'=> 'nro_puestos',
+                                                                ]);
+                    ?>
+                
+                    </div>
+
+                    
+
+<!-- FIN NRO. PUESTO <-->
+
+<!-- FECHA INICIO -->
+
+               
+                    <div class="col-sm-2" style="margin-left: -20px;">
+                        <?= $form->field($model, 'fecha_inicio')->input('date',
+                                                                [
+                                                                'type' => 'date',
+                                                                'id'=> 'fecha_inicio',
+                                                                ]);
+                    ?>
+                
+                    </div>
+                    
+
+<!-- FIN DE FECHA INICIO <-->
+
+<!-- NRO. PUESTO -->
+
+                   
+                    <div class="col-sm-2" style="margin-left: -20px;">
+                        <?= $form->field($model, 'nro_calcomania')->input(
+                                                                [
+                                                                
+                                                                'id'=> 'nro_calcomania',
+                                                                ]);
+                    ?>
+                
+                    </div>
+                    </div>
+                    
+
+<!-- FIN NRO. PUESTO <-->
+
+<!-- PESO -->
+
+                    <div class="row"> 
+                    <div class="col-sm-2">
+                        <?= $form->field($model, 'peso')->input(
+                                                                [
+                                                                
+                                                                'id'=> 'peso',
+                                                                ]);
+                    ?>
+                
+                    </div>
+                   
+                    
+
+<!-- FIN PESO <-->
+
+<!-- CILINDRADA -->
+
+                   
+                    <div class="col-sm-2" style="margin-left: -20px;">
+                        <?= $form->field($model, 'nro_cilindros')->input(
+                                                                [
+                                                                
+                                                                'id'=> 'cilindrada',
+                                                                ]);
+                    ?>
+                
+                    </div>
+                    
+                    
+
+<!-- FIN DE CILINDRADA <-->
+
+<!-- PRECIO -->
+
+                   
+                    <div class="col-sm-2" style="margin-left: -20px;">
+                        <?= $form->field($model, 'precio_inicial')->input(
+                                                                [
+                                                                
+                                                                'id'=> 'precio_inicial',
+                                                                ]);
+                    ?>
+                
+                    </div>
+                    </div>
+
+<!-- FIN PRECIO <-->
+
+
+<!-- CAPACIDAD DE CARGA -->
+
+                    <div class="row">                    
+                    <div class="col-sm-2">
+                        <?= $form->field($model, 'capacidad')->input(
+                                                                [
+                                                                
+                                                                'id'=> 'capacidad',
+                                                                ]);
+                    ?>
+                
+                    </div>
+                    </div>
+                 
+
+<!-- FIN CAPACIDAD DE CARGA <-->
+
+<!-- EXCESO CAPACIDAD DE CARGA <-->
+
+
+                    <div class="row">
+                    <div class="col-sm-2">
+                        <?= $form->field($model, 'exceso_cap')->input(
+                                                                [
+                                                                
+                                                                'id'=> 'exceso_cap',
+                                                                ]);
+                    ?>
+                
+                    </div>
+                    
+
+<!-- FIN EXCESO CAPACIDAD DE CARGA <-->
+
+<!-- MEDIDA DE CAPACIDAD -->
+
+                         
+                    <div class="col-sm-2" style="margin-bottom:43px;">
+                       
+                    <?= $form->field($model, 'medida_cap')->label(false)->radioList([
+                                                                                                        '1' => Yii::t('frontend', 'Kgs.'),
+
+                                                                                                        '0' => Yii::t('frontend', 'Tns.'),
+                                                                                                      ],
+                                                                                                      [
+                                                                                                        
+                                                                                                      ]
+                                                                                                      ) ?>
+                               
+                
+                    </div>
+                    </div>
+                    
 
 
 
+<!-- FIN MEDIDA DE CAPACIDAD -->
 
+
+<!-- SERIAL DE CARROCERIA <-->
+
+
+                    <div class="row">
+                    <div class="col-sm-5">
+                        <?= $form->field($model, 'serial_carroceria')->input(
+                                                                [
+                                                                
+                                                                'id'=> 'serial_carroceria',
+                                                                ]);
+                    ?>
+                
+                    </div>
+                    
+
+<!-- FIN SERIAL DE CARROCERIA <-->
+
+
+
+<!-- SERIAL DE MOTOR <-->
+
+
+                    
+                    <div class="col-sm-5" style="margin-left: -20px;">
+                        <?= $form->field($model, 'serial_motor')->input(
+                                                                [
+                                                                
+                                                                'id'=> 'serial_motor',
+                                                                ]);
+                    ?>
+                
+                    </div>
+                    </div>
+
+                    
+
+<!-- FIN SERIAL DE MOTOR <-->
+
+                
+
+
+                 
 
 
               
 
 
+                
 
-
-               
-
+             
 
                
                <div class="row">
