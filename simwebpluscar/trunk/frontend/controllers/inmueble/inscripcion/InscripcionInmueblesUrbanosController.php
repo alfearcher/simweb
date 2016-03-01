@@ -125,6 +125,16 @@ class InscripcionInmueblesUrbanosController extends Controller
                           
                           $envio = self::EnviarCorreo();
 
+                          if($envio == true){
+
+                            die('envio correo');
+
+
+                          } else {
+                            die('no envio correo');
+
+                          }
+
                           
 
                      } else {
@@ -228,9 +238,18 @@ class InscripcionInmueblesUrbanosController extends Controller
      public function EnviarCorreo()
      {
         $email = yii::$app->user->identity->login;
-        die($email);
+
         $enviarEmail = new EnviarEmailSolicitud();
-        $enviarEmail->enviarEmail($email);
+        
+        if ($enviarEmail->enviarEmail($email)){
+
+            return true;
+        } else {
+
+            return false;
+        }
+
+
      }
 
 
