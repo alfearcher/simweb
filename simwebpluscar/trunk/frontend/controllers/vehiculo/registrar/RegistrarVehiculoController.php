@@ -103,7 +103,7 @@ class RegistrarVehiculoController extends Controller
 
                 if ($model->validate()){
 
-                
+                die('valido bien');
 
                 }
             
