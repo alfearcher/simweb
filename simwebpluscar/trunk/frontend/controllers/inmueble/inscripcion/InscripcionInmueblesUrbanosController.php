@@ -117,7 +117,7 @@ class InscripcionInmueblesUrbanosController extends Controller
                 if (!\Yii::$app->user->isGuest){                                      
                       
 
-                     $guardo = self:GuardarInscripcion($model);
+                     $guardo = self::GuardarInscripcion($model);
 
 
                       
