@@ -143,9 +143,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                       } else {
 
                             return MensajeController::actionMensaje(920);
-                         
-
-                     } 
+                      } 
 
 
                    }else{ 
@@ -259,11 +257,14 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
             
           } catch ( Exception $e ) {
               //echo $e->errorInfo[2];
-          }
+          } 
                        
      }
 
-
+    /**
+     * [DatosConfiguracionTiposSolicitudes description] metodo que busca el tipo de solicitud en 
+     * la tabla config_tipos_solicitudes
+     */
      public function DatosConfiguracionTiposSolicitudes()
      {
 
@@ -276,15 +277,11 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
      }
 
-     public function BeginSave()
-     {    
-          
-     }
 
-/**
- * [EnviarCorreo description] Metodo que se encarga de enviar un email al contribuyente 
- * con el estatus del proceso
- */
+    /**
+     * [EnviarCorreo description] Metodo que se encarga de enviar un email al contribuyente 
+     * con el estatus del proceso
+     */
      public function EnviarCorreo()
      {
          $email = yii::$app->user->identity->login;
