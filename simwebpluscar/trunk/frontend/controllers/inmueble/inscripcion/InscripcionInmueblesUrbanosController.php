@@ -206,7 +206,7 @@ class InscripcionInmueblesUrbanosController extends Controller
             $conn = New ConexionController();
             $conexion = $conn->initConectar('dbsim');     // instancia de la conexion (Connection)
             $conexion->open();  
-            $transaccion = $this->conexion->beginTransaction();
+            $transaccion = $conexion->beginTransaction();
 
             if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){  
                 //$result = $connLocal->getLastInsertID();
