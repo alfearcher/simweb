@@ -40,7 +40,7 @@
  *  @method
  * rules
  * attributeLabels
-
+ *
  *  
  *  @inherits
  *  
@@ -67,10 +67,10 @@ class RegistrarVehiculoForm extends RegistrarVehiculo
 
 
         return [
-            [['placa', 'marca', 'modelo', 'ano_compra' ,'ano_vehiculo', 'clase_vehiculo', 'tipo_vehiculo',
-             'uso_vehiculo', 'color', 'no_ejes', 'nro_puestos', 'fecha_inicio', 'nro_calcomania', 
-             'peso', 'nro_cilindros', 'precio_inicial', 'capacidad', 'exceso_cap', 'medida_cap',
-              'serial_carroceria', 'serial_motor'], 'required' ],
+              [['placa', 'marca', 'modelo', 'ano_compra' ,'ano_vehiculo', 'clase_vehiculo', 'tipo_vehiculo',
+               'uso_vehiculo', 'color', 'no_ejes', 'nro_puestos', 'fecha_inicio', 'nro_calcomania', 
+               'peso', 'nro_cilindros', 'precio_inicial', 'capacidad', 'exceso_cap', 'medida_cap',
+                'serial_carroceria', 'serial_motor'], 'required' ],
 
             [['color'], 'match' , 'pattern' => "/[a-zA-Z]+/", 'message' => Yii::t('frontend', 'Color must have only letters')],
             
@@ -126,8 +126,70 @@ class RegistrarVehiculoForm extends RegistrarVehiculo
                 
         ];
     }
+
+    public function attributeSolicitudContribuyente()
+    {
+        return [
+               
+               'nro_solicitud',
+               'id_config_solicitud',
+               'impuesto',
+               'id_impuesto',
+               'tipo_solicitud',
+               'usuario',
+               'id_contribuyente',
+               'fecha_hora_creacion',
+               'nivel_aprobacion',
+               'nivel_aprobacion',
+               'nro_control',
+               'firma_digital',
+               'estatus',
+               'inactivo',
+                
+                
+        ];
+    }
+
+    public function attributeVehiculo()
+    {
+        return [
+               
+              'id_vehiculo',
+              'nro_solicitud',
+              'id_contribuyente',
+              'placa',
+              'marca',
+              'modelo',
+              'color',
+              'uso_vehiculo',
+              'precio_inicial',
+              'fecha_inicio',
+              'ano_compra',
+              'ano_vehiculo',
+              'no_ejes',
+              'liquidado',
+              'status_vehiculo',
+              'exceso_cap',
+              'medida_cap',
+              'capacidad',
+              'nro_puestos',
+              'peso',
+              'clase_vehiculo',
+              'tipo_vehiculo',
+              'serial_motor',
+              'serial_carroceria',
+              'nro_calcomania',
+              'estatus_funcionario',
+              'user_funcionario',
+              'fecha_funcionario',
+              'fecha_hora',
+              'nro_cilindros',
+                
+                
+        ];
+    }
       
-   
+    
     
     
    
