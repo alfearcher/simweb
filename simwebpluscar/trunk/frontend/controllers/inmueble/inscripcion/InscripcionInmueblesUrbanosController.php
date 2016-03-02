@@ -204,15 +204,16 @@ class InscripcionInmueblesUrbanosController extends Controller
             $tableName2 = 'sl_inmuebles'; 
 
             $conn = New ConexionController();
-            $this->conexion = $conn->initConectar('dbsim');     // instancia de la conexion (Connection)
-            $this->conexion->open();  
+            $conexion = $conn->initConectar('dbsim');     // instancia de la conexion (Connection)
+            $conexion->open();  
             $transaccion = $this->conexion->beginTransaction();
 
-            if ( $conn->guardarRegistro($this->conexion, $tableName2,  $arrayDatos2) ){  
+            if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){  
+                //$result = $connLocal->getLastInsertID();
                 //$transaccion->commit(); 
                 $this->conexion->close(); 
                 $tipoError = 0; 
-                                 
+                              die('guardo en sl_inmuebles');   
                 return true;
    
             }else{ 
