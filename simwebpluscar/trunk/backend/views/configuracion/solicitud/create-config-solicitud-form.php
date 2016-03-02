@@ -32,7 +32,7 @@
  */
 
  	use yii\web\Response;
- 	//use kartik\icons\Icon;
+ 	use kartik\icons\Icon;
  	use yii\grid\GridView;
 	use yii\helpers\Html;
 	use yii\helpers\Url;
@@ -47,6 +47,8 @@
 
 <?php
 	$this->title = Yii::t('backend', 'Create Setup Request.');
+
+	Icon::map($this, Icon::FA);
 ?>
 
 
@@ -158,28 +160,29 @@
 						<div class="col-sm-2">
 							<div class="row" >
 								<div class="fecha-desde">
-									<?= $form->field($model, 'fecha_desde')->widget(\yii\jui\DatePicker::classname(),['id' => 'fecha-desde',
-																														'clientOptions' => [
+									<?= $form->field($model, 'fecha_desde')->widget(\yii\jui\DatePicker::classname(),[
+																													  'clientOptions' => [
 																															//'maxDate' => '+0d',	// Bloquear los dias en el calendario a partir del dia siguiente al actual.
 																															'changeYear' => true,
-																														],
-																														'language' => 'es-ES',
-																														'dateFormat' => 'dd-MM-yyyy',
-																														'options' => [
-																																'class' => 'form-control',
-																																'readonly' => true,
-																																'style' => 'background-color: white;width:75%;',
+																													   ],
+																													   'language' => 'es-ES',
+																													   'dateFormat' => 'dd-MM-yyyy',
+																													   'options' => [
+																															'id' => 'fecha-desde',
+																															'class' => 'form-control',
+																															'readonly' => true,
+																															'style' => 'background-color: white;width:75%;',
 
-																														]
+																													    ]
 																														])->label(false) ?>
 								</div>
 							</div>
 						</div>
 					</div>
-<!-- Fin de Inicio de Fecha Desde -->
+<!-- Fin de Fecha Desde -->
 
 
-<!-- Fecha de Inicio de Fecha Hasta -->
+<!-- Inicio Fecha Hasta -->
 					<div class="row" style=" margin-top: 0px;margin-left:10px;">
 						<div class="col-sm-2">
 							<div class="row" style="width:100%;">
@@ -189,25 +192,37 @@
 						<div class="col-sm-2">
 							<div class="row" >
 								<div class="fecha-hasta">
-									<?= $form->field($model, 'fecha_hasta')->widget(\yii\jui\DatePicker::classname(),['id' => 'fecha-hasta',
-																														'clientOptions' => [
+									<?= $form->field($model, 'fecha_hasta')->widget(\yii\jui\DatePicker::classname(),[
+																													  'clientOptions' => [
 																															//'maxDate' => '+0d',	// Bloquear los dias en el calendario a partir del dia siguiente al actual.
 																															'changeYear' => true,
 																														],
-																														'language' => 'es-ES',
-																														'dateFormat' => 'dd-MM-yyyy',
-																														'options' => [
-																																'class' => 'form-control',
-																																'readonly' => true,
-																																'style' => 'background-color: white;width:75%;',
+																													  'language' => 'es-ES',
+																													  'dateFormat' => 'dd-MM-yyyy',
+																													  'options' => [
+																													  		'id' => 'fecha-hasta',
+																															'class' => 'form-control',
+																															'readonly' => true,
+																															'style' => 'background-color: white;width:75%;',
 
 																														]
 																														])->label(false) ?>
 								</div>
 							</div>
 						</div>
+						<div class="col-sm-1" style="margin-left: -35px;margin-top: 4px;">
+							<div class="row">
+								<?= Html::button('<center><span class= "fa fa-undo"></span></center>',
+																						[
+																							'id' => 'id-btn-resetear',
+																							'style' => 'color:blue;',
+																							//'onclick' => 'resetearFecha($this)'
+																						])
+								?>
+							</div>
+						</div>
 					</div>
-<!-- Fin de Inicio de Fecha Hasta -->
+<!-- Fin de Fecha Hasta -->
 
 <!-- Inicio Mostrar solo a funcionario -->
 			        <div class="row" style=" margin-top: 0px;margin-left:10px;">
@@ -343,6 +358,15 @@
 				}
 			});
 			return false;
-		});'
+		});
+
+		$("#id-btn-resetear").on("click", function() {
+			$("#fecha-hasta").val("");
+		});
+
+		//function resetearFecha($this) {
+			//$this.text = "";
+		//	alert("hola");
+		//}'
 	)
 ?>
