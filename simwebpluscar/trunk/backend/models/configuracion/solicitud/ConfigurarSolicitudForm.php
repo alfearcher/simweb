@@ -93,10 +93,26 @@
 	          	[['fecha_desde', 'fecha_hasta'], 'default', 'value' => null],
 	     		[['inactivo', 'solo_funcionario'], 'default', 'value' => 0],
 	     		['usuario', 'default', 'value' => Yii::$app->user->identity->username],
+	     		['fecha_desde', 'compararFecha'],
+	     		// ['fecha_desde',
+	     		//  'compare',
+	     		//  'compareAttribute' => 'fecha_hasta',
+	     		//  'operator' => '<=',
+	     		//  'message' => Yii::t('backend', '{attribute} must be no less that ')],
 	        ];
 	    }
 
 
+
+	    /***/
+	    public function compararFecha($attribute, $params)
+	    {
+	    	if ( date($this->attribute) && !date($model->fecha_hasta) ) {
+	    		return true;
+	    	}
+	    	$this->addError($attribute,'mamamamm');
+	    	return false;
+	    }
 
 
 
