@@ -191,7 +191,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                               'estatus' => null,
                               'inactivo' => 0,
                           ]; 
-            die(var_dump($arrayDatos1));
+            
         
             //$id_impuesto = $model->id_impuesto;                   //clave principal de la tabla no sale en el formulario identificador del inpuesto inmobiliario
             $id_contribuyente = $model->id_contribuyente;         //identidad del contribuyente
@@ -231,7 +231,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                 //$transaccion->commit(); 
                 $conexion->close(); 
                 $tipoError = 0; 
-                              die('guardo en sl_inmuebles '.$result);   
+                              die('guardo en solicitudes_contribuyentes '.$result);   
                 return true;
    
             }else{ 
