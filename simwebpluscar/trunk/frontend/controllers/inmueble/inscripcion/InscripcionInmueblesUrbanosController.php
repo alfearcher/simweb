@@ -127,18 +127,26 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                      if($guardo == true){
 
-                          
-                          $envio = self::EnviarCorreo();
+                          $salvo = self::BeginSave($guardo = true);
 
-                          if($envio == true){
+                          if($salvo == true){
 
-                            return MensajeController::actionMensaje(100);
+                              $envio = self::EnviarCorreo();
 
+                              if($envio == true){
+
+                                  return MensajeController::actionMensaje(100);
+
+
+                               } else {
+                            
+                                  return MensajeController::actionMensaje(920);
+
+                               }
 
                           } else {
-                            
-                            return MensajeController::actionMensaje(920);
 
+                                return MensajeController::actionMensaje(920);
                           }
 
                      } else {
@@ -177,6 +185,8 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
       */
      public function GuardarInscripcion($model)
      {
+           
+
             $tableName1 = 'solicitudes_contribuyente'; 
 
             $tipoSolicitud = self::DatosConfiguracionTiposSolicitudes();
@@ -238,18 +248,17 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
             
                  $tableName2 = 'sl_inmuebles'; 
 
+                if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){
 
-                //$transaccion->commit(); 
-                $conexion->close(); 
-                $tipoError = 0; 
-                              die('guardo en solicitudes_contribuyentes '.$result);   
-                return true;
-   
+                      return true;
+
+                } else {
+                      
+                      return false;
+                }
+
             }else{ 
-                //$transaccion->roolBack();
-                $conexion->close();
-                $tipoError = 0; 
-                                    
+                
                 return false;
             }   
 
@@ -269,9 +278,19 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
      }
 
-     public function DatosSlInmuebles()
-     {
-        
+     public function BeginSave($guardo)
+     {    die('llego a guardar beginsave '.$guardo)
+          if($guardo==true) {
+              $transaccion->commit(); 
+              $conexion->close(); 
+              $tipoError = 0; 
+
+          } else {
+              $transaccion->roolBack();
+              $conexion->close();
+              $tipoError = 0; 
+
+          }
      }
 
 /**
