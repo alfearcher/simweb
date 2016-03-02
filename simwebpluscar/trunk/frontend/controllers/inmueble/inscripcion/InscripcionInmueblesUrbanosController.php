@@ -180,7 +180,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
             $tableName1 = 'solicitudes_contribuyente'; 
 
             $tipoSolicitud = self::DatosConfiguracionTiposSolicitudes();
-
+die('llego con el tipo solicitud: '.$tipoSolicitud);
             $arrayDatos1 = [  'id_contribuyente' => $model->id_contribuyente,
                               'id_config_solicitud' => null,
                               'impuesto' => 2,
@@ -265,8 +265,8 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                                                         ->asArray()->all();
 
 
-//die(var_dump($buscar));
-die($buscar[0]["id_tipo_solicitud"]);
+         return $buscar[0]["id_tipo_solicitud"];                                                 
+
      }
 
      public function DatosSlInmuebles()
