@@ -188,7 +188,7 @@ class InscripcionInmueblesUrbanosController extends Controller
             $tipo_ejido = $model->tipo_ejido;                     //tipo ejido
 
             //--------------TRY---------------
-            $arrayDatos = [   'id_contribuyente' => $id_contribuyente,
+            $arrayDatos2 = [   'id_contribuyente' => $id_contribuyente,
                               'ano_inicio' => $ano_inicio,
                               'direccion' => $direccion,
                               'medidor' => $medidor,
@@ -200,19 +200,20 @@ class InscripcionInmueblesUrbanosController extends Controller
                               'apto_dom' => $apto_dom,
                           ]; 
 
-            $tableName = 'sl_inmuebles'; 
+            $tableName1 = 'solicitudes_contribuyentes'; 
+            $tableName2 = 'sl_inmuebles'; 
 
             $conn = New ConexionController();
             $this->conexion = $conn->initConectar('dbsim');     // instancia de la conexion (Connection)
             $this->conexion->open();  
             $transaccion = $this->conexion->beginTransaction();
 
-            if ( $conn->guardarRegistro($this->conexion, $tableName,  $arrayDatos) ){  
+            if ( $conn->guardarRegistro($this->conexion, $tableName2,  $arrayDatos2) ){  
                 //$transaccion->commit(); 
                 $this->conexion->close(); 
                 $tipoError = 0; 
                                  
-                return true; 
+                return true;
    
             }else{ 
                 //$transaccion->roolBack();
