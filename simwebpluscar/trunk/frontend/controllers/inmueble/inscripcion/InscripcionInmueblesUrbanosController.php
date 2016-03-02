@@ -84,7 +84,10 @@ class InscripcionInmueblesUrbanosController extends Controller
     public $conexion;
     public $transaccion;
 
+/* 
+tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
+*/
 
      /**
      *REGISTRO (inscripcion) INMUEBLES URBANOS
@@ -173,7 +176,22 @@ class InscripcionInmueblesUrbanosController extends Controller
       */
      public function GuardarInscripcion($model)
      {
-        
+            $tableName1 = 'solicitudes_contribuyentes'; 
+
+            $arrayDatos1 = [  'id_contribuyente' => $model->id_contribuyente,
+                              'id_config_solicitud' => null,
+                              'impuesto' => 2,
+                              'id_impuesto' => null,
+                              'tipo_solicitud' => null,
+                              'usuario' => yii::$app->user->identity->login,
+                              'fecha_hora_creacion' => date('Y-m-d h:i:s'),
+                              'nivel_aprobacion' => 0,
+                              'nro_control' => 0,
+                              'firma_digital' => null,
+                              'estatus' => ,
+                              'inactivo' => 0,
+                          ]; 
+            die(var_dump($arrayDatos1));
         
             //$id_impuesto = $model->id_impuesto;                   //clave principal de la tabla no sale en el formulario identificador del inpuesto inmobiliario
             $id_contribuyente = $model->id_contribuyente;         //identidad del contribuyente
@@ -200,7 +218,7 @@ class InscripcionInmueblesUrbanosController extends Controller
                               'apto_dom' => $apto_dom,
                           ]; 
 
-            $tableName1 = 'solicitudes_contribuyentes'; 
+            
             $tableName2 = 'sl_inmuebles'; 
 
             $conn = New ConexionController();
@@ -208,7 +226,7 @@ class InscripcionInmueblesUrbanosController extends Controller
             $conexion->open();  
             $transaccion = $conexion->beginTransaction();
 
-            if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){  
+            if ( $conn->guardarRegistro($conexion, $tableName1,  $arrayDatos1) ){  
                 $result = $conexion->getLastInsertID();
                 //$transaccion->commit(); 
                 $conexion->close(); 
@@ -227,6 +245,16 @@ class InscripcionInmueblesUrbanosController extends Controller
                        
      }
 
+
+     public function DatosSolicitudesContribuyente()
+     {
+
+     }
+
+     public function DatosSlInmuebles()
+     {
+        
+     }
 
 /**
  * [EnviarCorreo description] Metodo que se encarga de enviar un email al contribuyente 
