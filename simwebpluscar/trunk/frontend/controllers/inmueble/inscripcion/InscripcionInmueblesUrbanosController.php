@@ -279,7 +279,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      }
 
      public function BeginSave($guardo)
-     {    die('llego a guardar beginsave '.$guardo)
+     {    die('llego a guardar beginsave '.$guardo);
           if($guardo==true) {
               $transaccion->commit(); 
               $conexion->close(); 
