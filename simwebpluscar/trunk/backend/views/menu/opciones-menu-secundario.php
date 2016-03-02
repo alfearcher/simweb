@@ -63,15 +63,6 @@
             'title' => Yii::t('backend', 'Search'),
             'url' => '#',
         ],
-    	'select-owner' => [
-    		'icon' => 'el-universal-access',
-    		'class' => 'el-2x',
-    		'color' => $color,
-    		'tipoIcon' => $tipoIcon[1],
-    		'caption' => Yii::t('backend', 'Select Owner'),
-    		'title' => Yii::t('backend', 'Select Owner'),
-    		'url' => '#',
-    	],
     ];
 
 ?>
