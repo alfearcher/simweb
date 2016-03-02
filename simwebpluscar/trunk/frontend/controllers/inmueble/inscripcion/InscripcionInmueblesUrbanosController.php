@@ -209,11 +209,11 @@ class InscripcionInmueblesUrbanosController extends Controller
             $transaccion = $conexion->beginTransaction();
 
             if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){  
-                //$result = $connLocal->getLastInsertID();
+                $result = $conexion->getLastInsertID();
                 //$transaccion->commit(); 
                 $conexion->close(); 
                 $tipoError = 0; 
-                              die('guardo en sl_inmuebles');   
+                              die('guardo en sl_inmuebles '.$result);   
                 return true;
    
             }else{ 
