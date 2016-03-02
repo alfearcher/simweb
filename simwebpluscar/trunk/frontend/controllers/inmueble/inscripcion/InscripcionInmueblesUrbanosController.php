@@ -274,13 +274,15 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      }
 
      public function BeginSave($guardo)
-     {    die('llego a guardar beginsave '.$guardo);
+     {    //die('llego a guardar beginsave '.$guardo);
           if($guardo==true) {
+            die ('guardo commit');
               $transaccion->commit(); 
               $conexion->close(); 
               $tipoError = 0; 
 
           } else {
+            die ('no guardo commit');
               $transaccion->roolBack();
               $conexion->close();
               $tipoError = 0; 
