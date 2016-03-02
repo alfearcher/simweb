@@ -409,61 +409,12 @@
 
 
 
+    	public static function actionViewListadoSolicitudGeneral()
+    	{
 
-	    /**
-	     * [actionCreateDocumentosConsignados description]
-	     * @param  [type]  $conexion                [description]
-	     * @param  [type]  $connLocal               [description]
-	     * @param  integer $idContribuyenteGenerado [description]
-	     * @return [type]                           [description]
-	     */
-	    private static function actionCreateDocumentosConsignados($conexion, $connLocal, $postData, $idImpuesto)
-		{
-			if ( isset($_SESSION['idContribuyente']) && isset($connLocal) ) {
-				if ( $_SESSION['idContribuyente'] == $postData['id-contribuyente'] ) {
-					if ( isset($conexion) ) {
-						if ( isset($postData) ) {
+    	}
 
-							$seleccion = [];
-							//$postData = $_SESSION['postData'];
 
-							if ( isset($postData['selection']) ) {
-								$modelDocumento = new DocumentoConsignadoForm();
 
-								$tabla = '';
-				      			$tabla = $modelDocumento->tableName();
-
-								$arregloDatos = $modelDocumento->attributes;
-
-								$arregloDatos['id_contribuyente'] = $postData['id-contribuyente'];
-								$arregloDatos['nro_solicitud'] = 0;
-								$arregloDatos['id_impuesto'] = $idImpuesto;
-								$arregloDatos['impuesto'] = 1;
-								$arregloDatos['codigo_proceso'] = 'AUTORIZAR-RAMO';
-								$arregloDatos['fecha_hora'] = date('Y-m-d H:i:s');
-								$arregloDatos['estatus'] = 0;
-								$arregloDatos['usuario'] = Yii::$app->user->identity->username;
-
-								if ( isset($postData['selection']) ) {
-					  				$seleccion = $postData['selection'];
-					  				//die(var_dump($seleccion));
-					  				foreach ( $seleccion as $key => $value ) {
-					  					$arregloDatos['id_documento'] = $seleccion[$key];
-
-					  					if ( !$conexion->guardarRegistro($connLocal, $tabla, $arregloDatos) ) {
-											return false;
-										}
-					  				}
-					  				return true;
-					  			}
-					  		} else {
-					  			return true;
-					  		}
-						}
-					}
-				}
-			}
-			return false;
-		}
 	}
 ?>
