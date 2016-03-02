@@ -180,9 +180,9 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
             $tableName1 = 'solicitudes_contribuyente'; 
 
             $tipoSolicitud = self::DatosConfiguracionTiposSolicitudes();
-die('llego con el tipo solicitud: '.$tipoSolicitud);
+
             $arrayDatos1 = [  'id_contribuyente' => $model->id_contribuyente,
-                              'id_config_solicitud' => null,
+                              'id_config_solicitud' => 68,
                               'impuesto' => 2,
                               'id_impuesto' => null,
                               'tipo_solicitud' => $tipoSolicitud,
@@ -191,12 +191,12 @@ die('llego con el tipo solicitud: '.$tipoSolicitud);
                               'nivel_aprobacion' => 0,
                               'nro_control' => 0,
                               'firma_digital' => null,
-                              'estatus' => null,
+                              'estatus' => 0,
                               'inactivo' => 0,
                           ]; 
             
         
-            
+            die(var_dump($arrayDatos1));
 
             //--------------TRY---------------
             
