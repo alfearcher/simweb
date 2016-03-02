@@ -74,7 +74,7 @@ class ConfiguracionTiposSolicitudes extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['inactivo', 'impuesto', 'cont_mostrar', 'general'], 'integer'],
+            [['inactivo', 'impuesto', 'cont_mostrar', 'general', 'id_tipo_solicitud'], 'integer'],
             [['descripcion', 'controlador'], 'string', 'max' => 45]
         ];
     }

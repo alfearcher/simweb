@@ -264,7 +264,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                                                         ->andwhere("descripcion=:descripcion", [":descripcion" => 'REGISTRO NUEVO'])
                                                         ->asArray()->all();
 
-die($buscar['id_tipo_solicitud']);
+die($buscar["id_tipo_solicitud"]);
 
      }
 
