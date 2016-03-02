@@ -133,7 +133,6 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                               return MensajeController::actionMensaje(100);
 
-
                           } else {
                             
                               return MensajeController::actionMensaje(920);
@@ -144,7 +143,6 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                             return MensajeController::actionMensaje(920);
                       } 
-
 
                    }else{ 
 
@@ -300,6 +298,5 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
 
      }
-
 
 }
