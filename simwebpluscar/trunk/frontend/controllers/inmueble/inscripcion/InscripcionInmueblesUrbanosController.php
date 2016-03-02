@@ -73,6 +73,7 @@ use yii\db\ActiveRecord;
 use common\conexion\ConexionController;
 use common\enviaremail\EnviarEmailSolicitud;
 use common\mensaje\MensajeController;
+use frontend\models\inmueble\ConfiguracionTiposSolicitudes;
 session_start();
 /*********************************************************************************************************
  * InscripcionInmueblesUrbanosController implements the actions for InscripcionInmueblesUrbanosForm model.
@@ -178,11 +179,13 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      {
             $tableName1 = 'solicitudes_contribuyente'; 
 
+            $tipoSolicitud = self::DatosConfiguracionTiposSolicitudes();
+
             $arrayDatos1 = [  'id_contribuyente' => $model->id_contribuyente,
                               'id_config_solicitud' => null,
                               'impuesto' => 2,
                               'id_impuesto' => null,
-                              'tipo_solicitud' => null,
+                              'tipo_solicitud' => $tipoSolicitud,
                               'usuario' => yii::$app->user->identity->login,
                               'fecha_hora_creacion' => date('Y-m-d h:i:s'),
                               'nivel_aprobacion' => 0,
@@ -193,33 +196,10 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                           ]; 
             
         
-            //$id_impuesto = $model->id_impuesto;                   //clave principal de la tabla no sale en el formulario identificador del inpuesto inmobiliario
-            $id_contribuyente = $model->id_contribuyente;         //identidad del contribuyente
-            $ano_inicio = $model->ano_inicio;                     //anio de inicio
-            $direccion = $model->direccion;                       //direccion
-            //$av_calle_esq_dom = $model->av_calle_esq_dom;         //avenida. calle. esquina. domicilio
-            $casa_edf_qta_dom = $model->casa_edf_qta_dom;         //casa. edificio. quinta. domicilio
-            $piso_nivel_no_dom = $model->piso_nivel_no_dom;       //piso. nivel. numero. domicilio
-            $apto_dom = $model->apto_dom;                         //apartamento. domicilio
-            $medidor = $model->medidor;                           //medidor
-            $observacion = $model->observacion;                   //observaciones
-            $tipo_ejido = $model->tipo_ejido;                     //tipo ejido
+            
 
             //--------------TRY---------------
-            $arrayDatos2 = [   'id_contribuyente' => $id_contribuyente,
-                              'ano_inicio' => $ano_inicio,
-                              'direccion' => $direccion,
-                              'medidor' => $medidor,
-                              'observacion' => $observacion,
-                              'tipo_ejido' => $tipo_ejido,
-                            //'av_calle_esq_dom' => $av_calle_esq_dom,
-                              'casa_edf_qta_dom' => $casa_edf_qta_dom,
-                              'piso_nivel_no_dom' => $piso_nivel_no_dom,
-                              'apto_dom' => $apto_dom,
-                          ]; 
-
             
-            $tableName2 = 'sl_inmuebles'; 
 
             $conn = New ConexionController();
             $conexion = $conn->initConectar('dbsim');     // instancia de la conexion (Connection)
@@ -228,6 +208,37 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
             if ( $conn->guardarRegistro($conexion, $tableName1,  $arrayDatos1) ){  
                 $result = $conexion->getLastInsertID();
+
+
+                    //$id_impuesto = $model->id_impuesto;                   //clave principal de la tabla no sale en el formulario identificador del inpuesto inmobiliario
+                $id_contribuyente = $model->id_contribuyente;         //identidad del contribuyente
+                $ano_inicio = $model->ano_inicio;                     //anio de inicio
+                $direccion = $model->direccion;                       //direccion
+                //$av_calle_esq_dom = $model->av_calle_esq_dom;         //avenida. calle. esquina. domicilio
+                $casa_edf_qta_dom = $model->casa_edf_qta_dom;         //casa. edificio. quinta. domicilio
+                $piso_nivel_no_dom = $model->piso_nivel_no_dom;       //piso. nivel. numero. domicilio
+                $apto_dom = $model->apto_dom;                         //apartamento. domicilio
+                $medidor = $model->medidor;                           //medidor
+                $observacion = $model->observacion;                   //observaciones
+                $tipo_ejido = $model->tipo_ejido;                     //tipo ejido
+
+                $arrayDatos2 = [    'id_contribuyente' => $id_contribuyente,
+                                    'nro_solicitud' => $result,
+                                    'ano_inicio' => $ano_inicio,
+                                    'direccion' => $direccion,
+                                    'medidor' => $medidor,
+                                    'observacion' => $observacion,
+                                    'tipo_ejido' => $tipo_ejido,
+                                  //'av_calle_esq_dom' => $av_calle_esq_dom,
+                                    'casa_edf_qta_dom' => $casa_edf_qta_dom,
+                                    'piso_nivel_no_dom' => $piso_nivel_no_dom,
+                                    'apto_dom' => $apto_dom,
+                                ]; 
+
+            
+                 $tableName2 = 'sl_inmuebles'; 
+
+
                 //$transaccion->commit(); 
                 $conexion->close(); 
                 $tipoError = 0; 
@@ -246,8 +257,14 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      }
 
 
-     public function DatosSolicitudesContribuyente()
+     public function DatosConfiguracionTiposSolicitudes()
      {
+
+         $buscar = ConfiguracionTiposSolicitudes::find()->where("impuesto=:impuesto", [":impuesto" => 2])
+                                                        ->andwhere("descripcion=:descripcion", [":descripcion" => 'REGISTRO NUEVO'])
+                                                        ->asArray()->all();
+
+die(var_dump($buscar));
 
      }
 
