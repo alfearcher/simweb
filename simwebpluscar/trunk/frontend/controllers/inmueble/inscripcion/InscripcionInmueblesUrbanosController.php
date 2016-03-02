@@ -188,7 +188,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                               'nivel_aprobacion' => 0,
                               'nro_control' => 0,
                               'firma_digital' => null,
-                              'estatus' => ,
+                              'estatus' => null,
                               'inactivo' => 0,
                           ]; 
             die(var_dump($arrayDatos1));
