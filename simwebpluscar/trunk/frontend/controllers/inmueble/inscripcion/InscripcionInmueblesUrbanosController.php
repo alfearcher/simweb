@@ -176,7 +176,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
       */
      public function GuardarInscripcion($model)
      {
-            $tableName1 = 'solicitudes_contribuyentes'; 
+            $tableName1 = 'solicitudes_contribuyente'; 
 
             $arrayDatos1 = [  'id_contribuyente' => $model->id_contribuyente,
                               'id_config_solicitud' => null,
