@@ -10,50 +10,13 @@
     use yii\helpers\Url;
     use yii\jui\DatePicker;
 
-/* @var $this yii\web\View */
-/* @var $model backend\models\DatosBasicoForm */
-/* @var $form yii\widgets\ActiveForm */
 
 
-/*
-*****************************************************
-*   Condicionales que permite mostrar un formulario *
-*                   en especifico                   *
-*   Las variables vienen cargadas del controlador   *
-*****************************************************
-*/
 
 ?>
 
 
 
-<!-- FIN DEL SCRIPT DE OCULTAR CAPAS -->
-
-<!-- SCRIPT DE MOSTRAR PREFIJO TELEFONO -->
-<script>
-    // function cambio() {
-    //     $("#tlf_ofic").val($("#codigo").val() + "");
-    // }
-    // function cambio1() {
-    //     $("#tlf_ofic_otro").val($("#codigo_otro").val() + "");
-    // }
-
-    // function cambioCelu1() {
-    //     $("#tlf_celular").val($("#codigo_celuNat").val() + "");
-    // }
-    // function cambioCelu() {
-    //     $("#tlf_celularContri").val($("#codigo_celu").val() + "");
-    // }
-</script>
-<script>
-// $(document).ready(function(){
-//     $('[data-toggle="tooltip"]').tooltip();
-// });
-</script>
-<!-- FIN DEL SCRIPT DE MOSTRAR PREFIJO TELEFONO -->
-
-<!-- VARIABLE QUE MANEJA EL MENSAJE DE ERROR -->
- <?//= $msg ?>
 
 <div class="dataBasicRegister" id="paneldataBasicRegister" style="display:;">
     <h3><?= Yii::t('backend', 'Registration Basic Information') ?> </h3>
@@ -97,11 +60,12 @@
 
                 <div class="row">
                     <div class="col-sm-2">
-                        <?= $form->field($model, 'natureza')->textInput(
+                        <?= $form->field($model, 'naturaleza')->textInput(
                                                                // ArrayHelper::map(TipoNaturaleza::find()->all(), 'siglas_tnaturaleza', 'siglas_tnaturaleza'),
                                                                 [
                                                                 'id'=> 'naturaleza',
                                                                 'value' => $rifNatural['naturaleza'],
+                                                                //die($rifNatural['naturaleza']),
                                                                  'readOnly' =>true,
                                                                 ])->label(false);
                     ?>
