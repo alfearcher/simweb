@@ -45,6 +45,7 @@
  	use Yii;
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
+	use backend\models\configuracion\tiposolicitud\TipoSolicitud;
 
 	/**
 	* 	Clase
@@ -70,6 +71,15 @@
 		public static function tableName()
 		{
 			return 'config_solicitudes';
+		}
+
+
+		/***/
+		public function getTipoSolicitud()
+		{
+			return [
+				$this->hasMany(TipoSolicitud::className(), ['id_tipo_solicitud' => 'tipo_solicitud'])
+			];
 		}
 
 
