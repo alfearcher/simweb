@@ -78,7 +78,7 @@
 		public function getTipoSolicitud()
 		{
 			return [
-				$this->hasMany(TipoSolicitud::className(), ['id_tipo_solicitud' => 'tipo_solicitud'])
+				$this->hasOne(TipoSolicitud::className(), ['id_tipo_solicitud' => 'tipo_solicitud'])
 			];
 		}
 
