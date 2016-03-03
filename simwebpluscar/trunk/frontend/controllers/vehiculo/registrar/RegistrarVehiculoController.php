@@ -319,7 +319,7 @@ class RegistrarVehiculoController extends Controller
           
                   if ($buscar and $guardar == true ){ 
 
-                   // $transaccion->commit();
+                    $transaccion->commit();
                     $conn->close();
 
                       $enviarNumeroSolicitud = new EnviarEmailSolicitud;
