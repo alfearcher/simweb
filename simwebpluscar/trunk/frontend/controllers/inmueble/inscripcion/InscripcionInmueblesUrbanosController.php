@@ -286,7 +286,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
          $solicitud = 'Inscripcion de Inmueble';
 
-         $nro_solicitud = $guardo
+         $nro_solicitud = $guardo;
 
          $enviarEmail = new EnviarEmailSolicitud();
         
