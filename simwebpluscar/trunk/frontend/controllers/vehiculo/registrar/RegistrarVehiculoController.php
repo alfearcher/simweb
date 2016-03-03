@@ -56,6 +56,7 @@ use yii\filters\AccessControl;
 use common\conexion\ConexionController;
 use common\mensaje\MensajeController;
 use frontend\models\vehiculo\registrar\RegistrarVehiculoForm;
+use common\enviaremail\EnviarEmailSolicitud;
 
 /**
  * Site controller
@@ -103,6 +104,7 @@ class RegistrarVehiculoController extends Controller
                     $buscarGuardarVehiculo = self::beginSave("buscarGuardar" , $model);
 
                 if($buscarGuardarVehiculo == true){
+
 
                     return MensajeController::actionMensaje(100);
 
@@ -317,9 +319,24 @@ class RegistrarVehiculoController extends Controller
           
                   if ($buscar and $guardar == true ){ 
 
-                      $transaccion->commit();
-                      $conn->close();
-                      return true;
+                   // $transaccion->commit();
+                    $conn->close();
+
+                      $enviarNumeroSolicitud = new EnviarEmailSolicitud;
+
+                      $login = yii::$app->user->identity->login;
+
+                      $solicitud = 'Registro de Vehiculo';
+
+                      $enviarNumeroSolicitud->enviarEmail($login,$solicitud, $idSolicitud);
+
+
+                        if($enviarNumeroSolicitud == true){
+
+                          die('guardo y envio correo');
+                        }
+
+                       return true;
 
                   }else{
                 
