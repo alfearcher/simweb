@@ -151,7 +151,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                         return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
                    } 
 
-              }else{
+              }else{ 
                 
                    $model->getErrors(); 
               }
@@ -271,7 +271,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                                                         ->asArray()->all();
 
 
-         return $buscar[0]["id_tipo_solicitud"];                                                 
+         return $buscar[0]["id_tipo_solicitud"];                                              
 
      }
 
