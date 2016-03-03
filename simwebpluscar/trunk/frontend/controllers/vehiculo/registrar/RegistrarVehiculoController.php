@@ -333,10 +333,10 @@ class RegistrarVehiculoController extends Controller
 
                         if($enviarNumeroSolicitud == true){
 
-                          return true;
+                            return true;
                         
 
-                       }
+                        }
                   }else{
                 
                       $transaccion->rollback();
