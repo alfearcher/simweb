@@ -333,7 +333,7 @@ class RegistrarVehiculoController extends Controller
 
                         if($enviarNumeroSolicitud == true){
 
-                          die('guardo y envio correo');
+                          return true;
                         }
 
                        return true;
