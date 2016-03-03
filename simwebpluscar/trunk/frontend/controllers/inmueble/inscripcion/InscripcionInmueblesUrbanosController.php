@@ -127,7 +127,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                      if($guardo == true){
 
-                          $envio = self::EnviarCorreo();
+                          $envio = self::EnviarCorreo($guardo);
 
                           if($envio == true){
 
@@ -237,7 +237,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                     $transaccion->commit(); 
                     $conexion->close(); 
                     $tipoError = 0; 
-                    return true;
+                    return $result;
 
                 } else {
             
@@ -280,15 +280,17 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      * [EnviarCorreo description] Metodo que se encarga de enviar un email al contribuyente 
      * con el estatus del proceso
      */
-     public function EnviarCorreo()
+     public function EnviarCorreo($guardo)
      {
          $email = yii::$app->user->identity->login;
 
          $solicitud = 'Inscripcion de Inmueble';
 
+         $nro_solicitud = 
+
          $enviarEmail = new EnviarEmailSolicitud();
         
-         if ($enviarEmail->enviarEmail($email, $solicitud)){
+         if ($enviarEmail->enviarEmail($email, $solicitud, $guardo)){
 
              return true;
          } else {
