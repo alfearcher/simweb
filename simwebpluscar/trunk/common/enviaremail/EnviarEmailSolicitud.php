@@ -65,8 +65,14 @@ class EnviarEmailSolicitud{
      * @param  [type] $solicitud string [description] variable que recibe el tipo de solicitud que realiza el contribuyente
      * @return [type]            [description] retorna la funcion que hace que envie el correo
      */
+<<<<<<< .mine
+    public function enviarEmail($email, $solicitud, $idSolicitud)
+=======
     public function enviarEmail($email, $solicitud, $nro_solicitud)
+>>>>>>> .r1048
     {
+      
+
 
        return Yii::$app->mailer->compose()
         ->setFrom('manuelz0510@gmail.com')
