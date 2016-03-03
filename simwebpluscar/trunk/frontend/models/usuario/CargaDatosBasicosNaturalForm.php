@@ -185,6 +185,8 @@ class CargaDatosBasicosNaturalForm extends CrearUsuarioNatural
     public function rules()
     {
         return [
+
+        
             [['ente','naturaleza', 'cedula', 'tipo', 'email', 'nombres', 'apellidos', 'fecha_nac', 'sexo', 'codigo', 'domicilio_fiscal', 'tlf_celular'],'required'],
               [['tlf_celular'], 'match' , 'pattern' => "/^.{7,7}$/", 'message' => Yii::t('frontend', 'Phone number must have 7 digits')],
               ['tlf_celular', 'integer', 'message' => Yii::t('frontend', 'Mobile phone must be an integer')],
