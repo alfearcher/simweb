@@ -335,7 +335,7 @@ class RegistrarVehiculoController extends Controller
 
                           return true;
                         }
-
+                        die('falta un true');
                        return true;
 
                   }else{
