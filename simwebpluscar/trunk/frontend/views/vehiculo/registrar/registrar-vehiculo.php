@@ -25,6 +25,19 @@ $listaTipoVehiculo = ArrayHelper::map($tipoVehiculo, 'tipo_vehiculo' , 'descripc
 $usoVehiculo = UsoVehiculo::find()->all();
 $listaUsoVehiculo = ArrayHelper::map($usoVehiculo, 'uso_vehiculo' , 'descripcion' );
 ////////////////////////////////////////////
+///
+
+ foreach (range(1960, 2016) as $numero){
+    $listaFecha = $numero;
+ }
+
+
+
+    
+
+
+
+
 ?>
 
 
@@ -116,7 +129,7 @@ $listaUsoVehiculo = ArrayHelper::map($usoVehiculo, 'uso_vehiculo' , 'descripcion
                         <?= $form->field($model, 'ano_compra')->dropDownList(
                                                                 [
                                                                 'promt' => yii::t('frontend', 'Select'),
-                                                                'value' => 10,15,  
+                                                                'value' => $listaFecha,  
                                                                 
                                                                 ]);
                     ?>
