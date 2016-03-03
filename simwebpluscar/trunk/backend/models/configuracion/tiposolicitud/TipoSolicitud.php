@@ -45,6 +45,7 @@
  	use Yii;
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
+	use backend\models\configuracion\solicitud\ConfigurarSolicitud;
 
 	/**
 	* 	Clase
@@ -72,6 +73,13 @@
 			return 'config_tipos_solicitudes';
 		}
 
+
+		public function getConfigurarSolicitud()
+		{
+			return [
+				$this->hasOne(ConfigurarSolicitud::className(), ['tipo_solicitud' => 'id_tipo_solicitud'])
+			];
+		}
 
 	}
 
