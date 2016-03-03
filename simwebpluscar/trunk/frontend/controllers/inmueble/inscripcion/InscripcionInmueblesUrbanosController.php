@@ -286,11 +286,11 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
          $solicitud = 'Inscripcion de Inmueble';
 
-         $nro_solicitud = 
+         $nro_solicitud = $guardo
 
          $enviarEmail = new EnviarEmailSolicitud();
         
-         if ($enviarEmail->enviarEmail($email, $solicitud, $guardo)){
+         if ($enviarEmail->enviarEmail($email, $solicitud, $nro_solicitud)){
 
              return true;
          } else {
