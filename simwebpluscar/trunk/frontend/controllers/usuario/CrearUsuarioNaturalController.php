@@ -178,6 +178,8 @@ class CrearUsuarioNaturalController extends Controller
 
                if ($model->validate()){
 
+               
+
                    $resultado = self::beginSave("contribuyente", $model);
 
                    if ($resultado == true){

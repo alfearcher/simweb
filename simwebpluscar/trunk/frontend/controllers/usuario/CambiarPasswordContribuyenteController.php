@@ -143,14 +143,8 @@ class CambiarPasswordContribuyenteController extends Controller
                                                                                                                           
                                     } else {
 
-<<<<<<< .mine
-
-                                    return MensajeController::actionMensaje(Yii::t('frontend', 'You have not created your security answers yet, in case you forgot your password, please go to your city hall'));
-||||||| .r791
-                                    return MensajeController::actionMensaje(Yii::t('frontend', 'You have not created your security answers yet, in case you forgot your password, please go to your city hall'));
-=======
                                     return MensajeController::actionMensaje(401);
->>>>>>> .r897
+
                                 
                                     }
                           
