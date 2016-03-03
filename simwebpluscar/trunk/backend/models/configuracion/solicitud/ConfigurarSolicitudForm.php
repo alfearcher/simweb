@@ -138,5 +138,18 @@
 
 	        ];
 	    }
+
+
+
+	    /***/
+	    public function findConfigurarSolicitud($idConfigSolicitud)
+	    {
+	    	if ( $idConfigSolicitud == 0 ) {
+	    		$findModel = ConfigurarSolicitud::find();
+	    	} else {
+	    		$findModel = ConfigurarSolicitud::find()->where(['id_config_solicitud' => $idConfigSolicitud]);
+	    	}
+	    	return $findModel;
+	    }
 	}
 ?>
