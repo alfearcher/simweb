@@ -286,7 +286,7 @@
 					$result = $connLocal->getLastInsertID();
 				}
 			} catch ( Exception $e ) {
-				 //echo $e->errorInfo[2];
+				 echo $e->errorInfo[2];
 			}
 
 			return $result;
@@ -405,7 +405,6 @@
     	{
     		return MensajeController::actionMensaje($codigo, $render);
     	}
-
 
 
 
