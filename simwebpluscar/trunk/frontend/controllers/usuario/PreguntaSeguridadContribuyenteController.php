@@ -69,7 +69,7 @@ use yii\helpers\Url;
 class PreguntaSeguridadContribuyenteController extends Controller
 {
 
-    public $layout = "layout-main";
+    public $layout = "layout-login";
 
     /**
     *
