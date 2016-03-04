@@ -76,7 +76,7 @@ class RegistrarVehiculoController extends Controller
 
 
     
-   public $layout = 'layoutbase';
+   public $layout = 'layout-main';
    
     /**
      * [actionRegistrarVehiculo description] metodo que renderiza y valida el formulario de registro de vehiculo

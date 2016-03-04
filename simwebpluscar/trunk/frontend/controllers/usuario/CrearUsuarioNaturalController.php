@@ -46,24 +46,31 @@
 
 namespace frontend\controllers\usuario;
 
-use Yii;
-use common\models\LoginForm;
-use frontend\models\CrearUsuarioForm;
-use frontend\models\usuario\CrearUsuarioNaturalForm;
-use frontend\models\ResetPasswordForm;
-use frontend\models\SignupForm;
-use frontend\models\ContactForm;
-use yii\base\InvalidParamException;
-use yii\web\BadRequestHttpException;
+ use Yii;
+// use common\models\LoginForm;
+// use frontend\models\CrearUsuarioForm;
+// use frontend\models\usuario\CrearUsuarioNaturalForm;
+// use frontend\models\ResetPasswordForm;
+// use frontend\models\SignupForm;
+// use frontend\models\ContactForm;
+// use yii\base\InvalidParamException;
+// use yii\web\BadRequestHttpException;
+// use yii\web\Controller;
+// use yii\filters\VerbFilter;
+// use yii\filters\AccessControl;
+// use frontend\controllers\mensaje\MensajeController;
+// use common\conexion\ConexionController;
+// use common\seguridad\Seguridad;
+// use common\enviaremail\EnviarEmail;
+// use frontend\models\usuario\CargaDatosBasicosNaturalForm;
+// use common\models\utilidades\Utilidad;
+// 
+// use Yii;
+ use frontend\models\usuario\CargaDatosBasicosNaturalForm;
 use yii\web\Controller;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-use frontend\controllers\mensaje\MensajeController;
-use common\conexion\ConexionController;
-use common\seguridad\Seguridad;
-use common\enviaremail\EnviarEmail;
-use frontend\models\usuario\CargaDatosBasicosNaturalForm;
-use common\models\utilidades\Utilidad;
+use frontend\models\prueba\PruebaCalendarioForm;
+use frontend\models\usuario\CrearUsuarioNaturalForm;
+
 
 session_start();
 
@@ -191,6 +198,7 @@ class CrearUsuarioNaturalController extends Controller
                }
                         
                }
+               $layout = 'layout-main';
                return $this->render('/usuario/formulario-natural' , ['model' => $model,
                                                                     'rifNatural' => $rifNatural,
                                                                     ]);
@@ -425,9 +433,10 @@ class CrearUsuarioNaturalController extends Controller
             }
 
     }
-      
 
-}
+
+
+ }
 
 ?> 
 
