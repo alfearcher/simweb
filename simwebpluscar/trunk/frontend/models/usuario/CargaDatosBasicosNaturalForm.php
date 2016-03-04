@@ -169,6 +169,7 @@ class CargaDatosBasicosNaturalForm extends CrearUsuarioNatural
         public $naturaleza_rep;
         public $cedula_rep;
         public $codigo;
+        
 
 
     /**
@@ -187,13 +188,13 @@ class CargaDatosBasicosNaturalForm extends CrearUsuarioNatural
         return [
 
         
-            [['ente','naturaleza', 'cedula', 'tipo', 'email', 'nombres', 'apellidos', 'fecha_nac', 'sexo', 'codigo', 'domicilio_fiscal', 'tlf_celular'],'required'],
+            [['ente','naturaleza', 'cedula', 'tipo', 'email', 'nombres', 'apellidos',  'sexo', 'codigo', 'domicilio_fiscal', 'tlf_celular'],'required'],
               [['tlf_celular'], 'match' , 'pattern' => "/^.{7,7}$/", 'message' => Yii::t('frontend', 'Phone number must have 7 digits')],
               ['tlf_celular', 'integer', 'message' => Yii::t('frontend', 'Mobile phone must be an integer')],
             [['ente','cedula', 'tipo', 'tipo_naturaleza', 'id_rif', 'id_cp', 'inactivo', 'cuenta', 'num_reg', 'extension_horario', 'num_empleados', 'tipo_contribuyente', 'licencia', 'agente_retencion', 'manzana_limite', 'lote_1', 'lote_2', 'lote_3', 'foraneo', 'no_declara', 'econ_informal', 'grupo_contribuyente', 'no_sujeto'], 'integer'],
             [['fecha', 'fecha_inclusion', 'fecha_inicio', 'fe_inic_agente_reten'], 'safe'],
            //['fecha_nac','date'], 
-           [['fecha_nac'], 'default', 'value' => null],
+           //[['fecha_nac'], 'default', 'value' => null],
             [['capital'], 'number'],
             [['naturaleza', 'sexo'], 'string', 'max' => 1],
             [['nombres', 'apellidos', 'nit', 'casa_edf_qta_dom', 'reg_mercantil', 'tomo', 'folio', 'horario'],  'string', 'max' => 50],
