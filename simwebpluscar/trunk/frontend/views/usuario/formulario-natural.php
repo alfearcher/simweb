@@ -106,7 +106,7 @@
                                                                                             //'onClick' => 'alert("calendario")',
                                                                                             'class' => 'form-control',
                                                                                            'readonly' => false,
-                                                                                            'type' => 'date',
+                                                                                            //'type' => 'date',
                                                                                             'style' => 'background-color: white;',
                                                                                         ],
 
