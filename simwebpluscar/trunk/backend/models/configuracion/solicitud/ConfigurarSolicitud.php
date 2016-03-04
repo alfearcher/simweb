@@ -77,9 +77,14 @@
 		/***/
 		public function getTipoSolicitud()
 		{
-			return [
-				$this->hasOne(TipoSolicitud::className(), ['id_tipo_solicitud' => 'tipo_solicitud'])
-			];
+			return $this->hasOne(TipoSolicitud::className(), ['id_tipo_solicitud' => 'tipo_solicitud']);
+		}
+
+
+
+		public function getDescripcionTipoSolicitud()
+		{
+			return $this->tiposolicitud->descripcion;
 		}
 
 

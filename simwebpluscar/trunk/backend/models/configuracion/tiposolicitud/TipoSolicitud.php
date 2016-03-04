@@ -76,9 +76,7 @@
 
 		public function getConfigurarSolicitud()
 		{
-			return [
-				$this->hasOne(ConfigurarSolicitud::className(), ['tipo_solicitud' => 'id_tipo_solicitud'])
-			];
+			return $this->hasMany(ConfigurarSolicitud::className(), ['tipo_solicitud' => 'id_tipo_solicitud']);
 		}
 
 	}
