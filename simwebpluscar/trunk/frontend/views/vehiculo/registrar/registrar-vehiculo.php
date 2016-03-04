@@ -149,16 +149,29 @@ foreach  (range(1960, $fecha_actual) as $fecha[]) {
 <!-- AÑO VEHICULO -->
 
                
-                    <div class="col-sm-2" style="margin-left: -20px;">
-                        <?= $form->field($model, 'ano_vehiculo')->textInput(
-                                                                [
-                                                                'type' => 'date',
-                                                                'id'=> 'ano_vehiculo',
-                                                                ]);
-                    ?>
-                
+                       <div class="col-sm-4">
+                        <div class="fecha-nac">
+                            <?= $form->field($model, 'ano_vehiculo')->widget(\yii\jui\DatePicker::classname(),[
+                                                                                        //'type' => 'date',
+                                                                                        'clientOptions' => [
+                                                                                            'maxDate' => '+0d', // Bloquear los dias en el calendario a partir del dia siguiente al actual.
+                                                                                         ],
+                                                                                       'language' => 'es-ES',
+                                                                                       'dateFormat' => 'dd-MM-yyyy',
+                                                                                        'options' => [
+                                                                                            //'onClick' => 'alert("calendario")',
+                                                                                            'id' => 'fecha-nac',
+                                                                                            'class' => 'form-control',
+                                                                                           'readonly' => true,
+                                                                                            //'type' => 'date',
+                                                                                            'style' => 'background-color: white;',
+                                                                                        ],
+
+                                                                                      
+                                                                                    ])
+                            ?>
+                        </div>
                     </div>
-                     </div>
 
 <!-- FIN DE AÑO VEHICULO <-->
 

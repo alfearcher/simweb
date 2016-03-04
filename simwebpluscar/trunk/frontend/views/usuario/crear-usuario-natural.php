@@ -20,6 +20,7 @@ $this->title = 'Busqueda Persona Natural';
 <?php $form = ActiveForm::begin([
    'method' => 'post',
     'id' => 'formulario',
+    'action' => ['/usuario/crear-usuario-natural/natural'],
     'enableClientValidation' => false,
     'enableAjaxValidation' => true,
     'enableClientScript' => true,

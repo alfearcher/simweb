@@ -9,7 +9,7 @@
     use frontend\models\usuario\TelefonoCodigo;
     use yii\helpers\Url;
     use yii\jui\DatePicker;
-
+use yii\web\AssetBundle;
 
 
 
@@ -53,28 +53,7 @@
                 <?= Yii::t('frontend', 'Registration Basic Information') ?> | <?= Yii::t('frontend', 'Natural') ?>
             </div>
             <div class="panel-body" >
-<!-- RIF -->
-                <div>
-                    <?= Yii::t('frontend', 'Rif') ?>
-                </div>
 
-                <div class="row">
-                    <div class="col-sm-2">
-                        <?= $form->field($model, 'naturaleza')->textInput(
-                                                               // ArrayHelper::map(TipoNaturaleza::find()->all(), 'siglas_tnaturaleza', 'siglas_tnaturaleza'),
-                                                                [
-                                                                'id'=> 'naturaleza',
-                                                                'value' => $rifNatural['naturaleza'],
-                                                                //die($rifNatural['naturaleza']),
-                                                                 'readOnly' =>true,
-                                                                ])->label(false);
-                    ?>
-                    </div>
-                    <div class="col-sm-3">
-                        <?= $form->field($model, 'cedula')->label(false)->textInput(['maxlength' => 8, 'value'=> $rifNatural['cedula'], 'readOnly' =>true,'style' => 'margin-left:-25px;']) ?>
-                    </div>
-                </div>
-<!-- FIN DE RIF <-->
 
 
 <!-- APELLIDOS Y NOMBRES-->
@@ -255,4 +234,3 @@
     ?>
 <?php ActiveForm::end() ?>
 <!-- FIN DEL FORMULARIO PERSONA NATURAL -->
-

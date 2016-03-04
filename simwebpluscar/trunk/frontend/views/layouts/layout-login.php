@@ -1,5 +1,5 @@
 <?php
-    use backend\assets\AppAsset;
+   // use frontend\assets\AppAsset;
     use yii\helpers\Html;
     use yii\widgets\Breadcrumbs;
     use yii\web\Controller;
@@ -10,7 +10,7 @@
 // Encabezado
 require('layoutencabezado.php'); 
 
-AppAsset::register($this);
+//AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
