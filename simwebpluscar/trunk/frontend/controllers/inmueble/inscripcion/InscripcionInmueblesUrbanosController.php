@@ -133,7 +133,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                               return MensajeController::actionMensaje(100);
 
-                          } else {
+                          } else { 
                             
                               return MensajeController::actionMensaje(920);
 
