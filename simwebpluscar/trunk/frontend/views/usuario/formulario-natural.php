@@ -94,21 +94,20 @@
                 <div class="row">
                     <div class="col-sm-4">
                         <div class="fecha-nac">
-                            <?=  $form->field($model, 'fecha_nac')-> widget(DatePicker::classname(),[
-
-                                                                                       // 'id' => 'fecha-nac',
-                                                                                        //'type' => 'date',
+                            <?=  $form->field($model, 'fecha_nac')->widget(DatePicker::classname(),[
+                                                                                       'id' => 'fecha-nac',
+                                                                                        'type' => 'date',
                                                                                         'clientOptions' => [
-                                                                                            //'maxDate' => '+0d', // Bloquear los dias en el calendario a partir del dia siguiente al actual.
+                                                                                            'maxDate' => '+0d', // Bloquear los dias en el calendario a partir del dia siguiente al actual.
                                                                                          ],
-                                                                                       // 'language' => 'es-ES',
-                                                                                    //    'dateFormat' => 'dd-MM-yyyy',
+                                                                                       'language' => 'es-ES',
+                                                                                       'dateFormat' => 'dd-MM-yyyy',
                                                                                         'options' => [
-                                                                                            'onClick' => 'alert("calendario")',
-                                                                                           // 'class' => 'form-control',
-                                                                                          //  'readonly' => false,
-                                                                                           // 'type' => 'date',
-                                                                                           // 'style' => 'background-color: white;',
+                                                                                            //'onClick' => 'alert("calendario")',
+                                                                                            'class' => 'form-control',
+                                                                                           'readonly' => false,
+                                                                                            'type' => 'date',
+                                                                                            'style' => 'background-color: white;',
                                                                                         ],
 
                                                                                       
