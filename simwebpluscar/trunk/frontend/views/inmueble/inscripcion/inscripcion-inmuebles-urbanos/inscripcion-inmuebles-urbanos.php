@@ -200,7 +200,7 @@ function bloquea() {
                                                                                                                                             ]
                                                                                                                                             ])->label(false) ?>
                                                     </div>
-                        </td>
+                        </td> 
 
                         
                    </tr>
