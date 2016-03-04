@@ -37,7 +37,7 @@
 	use backend\models\funcionario\Funcionario;
 	use common\conexion\ConexionController;
 	use common\classes\ValueDefault;	// Modulo por desarrollar, buscar los valores por defectos de los campos en las rules del modelo.
-
+	use commmon\models\configuracion\solicitud\ParametroSolicitud;
 
 
  /**
@@ -82,6 +82,7 @@
 		 */
 		public function actionCreate()
 	  	{
+
 	  		$msg='';
 	      	$model = new FuncionarioForm();
 
@@ -140,6 +141,15 @@
 
       		// Create es una vista que redirecciona a el formulario principal de carga.
       		return $this->render('/funcionario/create', ['model' => $model, 'msg' => $msg]);
+	  	}
+
+
+
+	  	public function actionPrueba()
+	  	{
+	  		$parametro = New ParametroSolicitud();
+	  		$parametro->configurar(55);
+die(var_dump($parametro->getConfigSolicitud()));
 	  	}
 	}
 
