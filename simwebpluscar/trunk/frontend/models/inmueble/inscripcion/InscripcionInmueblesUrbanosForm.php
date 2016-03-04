@@ -228,7 +228,7 @@ class InscripcionInmueblesUrbanosForm extends Model{
              "inner join urbanizaciones as U on S.id_cp=U.id_cp " & _
              "inner join manzanas as MZ on U.id_cp=MZ.id_cp and U.urbanizacion=MZ.urbanizacion " & _
              "inner join manzana_limites as ML on MZ.id_manzana=ML.id_manzana " & _
-             "where ML.manzana_limite=" & Str(nIdManzanaLimite); ';*/
+             "where ML.manzana_limite=" & Str(nIdManzanaLimite); ';*/ 
           
  
           $buscar = $conn->buscarRegistro($this->conexion, $sql);
