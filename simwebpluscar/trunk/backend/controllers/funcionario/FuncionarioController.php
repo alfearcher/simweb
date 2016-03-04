@@ -37,7 +37,7 @@
 	use backend\models\funcionario\Funcionario;
 	use common\conexion\ConexionController;
 	use common\classes\ValueDefault;	// Modulo por desarrollar, buscar los valores por defectos de los campos en las rules del modelo.
-	use commmon\models\configuracion\solicitud\ParametroSolicitud;
+	use common\models\configuracion\solicitud\ParametroSolicitud;
 
 
  /**
@@ -148,8 +148,8 @@
 	  	public function actionPrueba()
 	  	{
 	  		$parametro = New ParametroSolicitud();
-	  		$parametro->configurar(55);
-die(var_dump($parametro->getConfigSolicitud()));
+	  		$parametro->configurar(75);
+die(var_dump($parametro->findConfigurarSolicitud()));
 	  	}
 	}
 
