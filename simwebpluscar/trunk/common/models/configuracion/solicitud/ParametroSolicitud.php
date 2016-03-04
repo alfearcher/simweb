@@ -83,7 +83,17 @@
 
 		public function getTipoSolicitud()
 		{
-			return $this->getConfiSolicitud();
+			$config = New ConfigurarSolicitud();
+			return $config->getDescripcionTipoSolicitud();
+		}
+
+
+
+		public function findConfigurarSolicitud()
+		{
+			$config = ConfigurarSolicitud::find()->where(['id_config_solicitud' => 55])
+			                                     ->with('tipoSolicitud')->one();
+			return $config;
 		}
 	}
 
