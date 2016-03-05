@@ -147,9 +147,12 @@
 
 	  	public function actionPrueba()
 	  	{
-	  		$parametro = New ParametroSolicitud();
-	  		$parametro->configurar(75);
-die(var_dump($parametro->findConfigurarSolicitud()));
+	  		//$parametro = New ParametroSolicitud();
+	  		//$parametro->configurar(75);
+//die(var_dump($parametro->findConfigurarSolicitud()));
+
+
+	  		die(Yii::$app->solicitud->crear());
 	  	}
 	}
 
