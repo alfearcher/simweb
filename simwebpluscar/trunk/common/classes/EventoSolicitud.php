@@ -68,7 +68,7 @@
 
 
 	 	/***/
-	 	public function aprobar();
+	 	public function aprobar()
 	 	{
 	 		return self::APROBAR_SOLICITUD;
 	 	}
