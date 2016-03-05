@@ -91,7 +91,7 @@
 
 		public function findConfigurarSolicitud()
 		{
-			$config = ConfigurarSolicitud::find()->where(['id_config_solicitud' => 55])
+			$config = ConfigurarSolicitud::find()->where(['id_config_solicitud' => $this->getIdConfig()])
 			                                     ->with('tipoSolicitud')->one();
 			return $config;
 		}
