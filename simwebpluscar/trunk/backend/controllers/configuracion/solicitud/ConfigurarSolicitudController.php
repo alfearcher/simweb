@@ -63,6 +63,8 @@
 	use backend\models\configuracion\tiposolicitud\TipoSolicitudForm;
 	use backend\controllers\utilidad\documento\DocumentoRequisitoController;
 	use backend\models\utilidad\documento\DocumentoRequisitoForm;
+	use backend\models\configuracion\detallesolicitud\SolicitudDetalleForm;
+	use backend\models\configuracion\documentosolicitud\SolicitudDocumentoForm;
 
 	session_start();		// Iniciando session
 
@@ -157,9 +159,9 @@
 					return ActiveForm::validate($model);
 				}
 
+//die(var_dump($postData));
 				if ( $model->load($postData) ) {
 					if ( $model->validate() ) {
-//die(var_dump($postData));
 						if ( $postData['btn-create'] == 1 && isset($postData) ) {
 							$postData['btn-create'] = 2;
 							// Se guardan los datos
@@ -250,7 +252,7 @@
 			$tabla = $model->tableName();
 			$nombreForm = $model->formName();
 
-			// Lo siguiente obtiene un array de datos que seran tomados para guardarlos del modelo de dato.
+			// Lo siguiente obtiene un array de campos que seran tomados para guardarlos del modelo de dato.
 			$arregloDatos = $model->attributes;
 
 			// Se filtran los campos y valores que seran guardados en db.
@@ -299,9 +301,12 @@
 		protected function actionCreateProcesoGenerado($postData, $model, $connLocal, $conexionLocal, $idConfigSolicitud = 0)
 		{
 			$result = false;
-			$tabla = 'config_solic_detalles';
-			$arregloCampo = ['id_config_solicitud', 'id_proceso', 'inactivo'];
+			$modelSolicitudDetalle = New SolicitudDetalleForm();
+			$tabla = $modelSolicitudDetalle->tableName();
+			$arregloCampo = $modelSolicitudDetalle->attributes;
+			$arregloCampo = array_keys($arregloCampo);
 
+//die(var_dump($arregloCampo));
 			// Se obtienen los valores seleccionados en el grid de los procesos a generar
 			$arregloProceso = isset($postData['chk-proceso-generado']) ? $postData['chk-proceso-generado'] : null;
 
@@ -310,15 +315,17 @@
 			}
 
 			foreach ( $arregloProceso as $key => $value ) {
-				$arregloDatos[] = [$idConfigSolicitud, $value, 0];
+				$arregloDatos[] = [null, $idConfigSolicitud, $value, Yii::$app->solicitud->crear(), 0];
 			}
 
+//die(var_dump($arregloDatos));
 			try {
 					if ( $conexionLocal->guardarLoteRegistros($connLocal, $tabla, $arregloCampo, $arregloDatos) ) {
 						$result = true;
 					}
 				} catch ( Exception $e ) {
 				 //echo $e->errorInfo[2];
+				 die(var_dump($e->errorInfo));
 			}
 
 			return $result;
@@ -330,14 +337,10 @@
 		protected function actionCreateDocumento($postData, $model, $connLocal, $conexionLocal, $idConfigSolicitud = 0)
 		{
 			$result = false;
-			$tabla = 'config_solic_documentos';
-			$arregloCampo = ['id_config_solicitud',
-			                 'id_documento',
-			                 'adjuntar_electronico',
-			                 'original',
-			                 'copia',
-			                 'nro_copias',
-			                 'inactivo'];
+			$modelSolicitudDocumento = New SolicitudDocumentoForm();
+			$tabla = $modelSolicitudDocumento->tableName();
+			$arregloCampo = $modelSolicitudDocumento->attributes;
+			$arregloCampo = array_keys($arregloCampo);
 
 			// Se obtienen los valores seleccionados en el grid de los documentos a consignar.
 			$arregloDocumento = isset($postData['chk-documento-requisito']) ? $postData['chk-documento-requisito'] : null ;
@@ -347,7 +350,7 @@
 			}
 
 			foreach ( $arregloDocumento as $key => $value ) {
-				$arregloDatos[] = [$idConfigSolicitud, $value, 0, 0, 0, 0, 0];
+				$arregloDatos[] = [null, $idConfigSolicitud, $value, 0, 0, 0, 0, 0];
 			}
 
 			try {
