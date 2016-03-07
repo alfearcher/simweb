@@ -46,12 +46,14 @@
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 	use backend\models\configuracion\tiposolicitud\TipoSolicitud;
+	use backend\models\impuesto\Impuesto;
 
 	/**
 	* 	Clase
 	*/
 	class ConfigurarSolicitud extends ActiveRecord
 	{
+		public $tipoSolicitud;
 
 		/**
 		 *	Metodo que retorna el nombre de la base de datos donde se tiene la conexion actual.
@@ -74,7 +76,9 @@
 		}
 
 
-		/***/
+		/**
+		* Relacion de las entidades "config-solicitudes" y "config-tipos-solicitudes".
+		*/
 		public function getTipoSolicitud()
 		{
 			return $this->hasOne(TipoSolicitud::className(), ['id_tipo_solicitud' => 'tipo_solicitud']);
@@ -82,9 +86,21 @@
 
 
 
+		/**
+		* Relacion entre las entidades "config-solicitudes" e "impuesto".
+		* El primer "impuesto se refiere a la entidad impuestos".
+		*/
+		public function getImpuestoSolicitud()
+		{
+			return $this->hasOne(Impuesto::className(), ['impuesto' => 'impuesto']);
+		}
+
+
+
+
 		public function getDescripcionTipoSolicitud()
 		{
-			return $this->tiposolicitud->descripcion;
+			return $this->getTipoSolicitud();
 		}
 
 
