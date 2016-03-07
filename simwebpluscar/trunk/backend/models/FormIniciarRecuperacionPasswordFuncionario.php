@@ -59,7 +59,6 @@ use common\models\Users;
 class FormIniciarRecuperacionPasswordFuncionario extends Model{
   
     public $username;
-    public $fecha_inicio;
     
      
     public function rules()
