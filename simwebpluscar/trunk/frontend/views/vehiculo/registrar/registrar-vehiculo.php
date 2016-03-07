@@ -10,6 +10,7 @@
     use common\models\vehiculo\clasevehiculo\ClaseVehiculo;
     use common\models\vehiculo\tipovehiculo\TipoVehiculo;
     use common\models\vehiculo\usovehiculo\UsoVehiculo;
+    use common\fecha\RangoFecha;
 
 //arrayhelper que carga el combo clase vehiculo
 $claseVehiculo = ClaseVehiculo::find()->all();
@@ -27,16 +28,18 @@ $listaUsoVehiculo = ArrayHelper::map($usoVehiculo, 'uso_vehiculo' , 'descripcion
 ////////////////////////////////////////////
 ///
 
-$fecha_actual = date('Y');
+// $fecha_actual = date('Y');
 
  
-foreach  (range(1960, $fecha_actual) as $fecha[]) { 
+// foreach  (range(1960, $fecha_actual) as $fecha[]) { 
 
-  }
-//die(var_dump($fecha));
+//   }
+// //die(var_dump($fecha));
 
 
+ $fecha = new RangoFecha(); // instancia de la clase que contiene el metodo para crear combos de rango de fecha dinamicos.
  
+
 
 
 
@@ -133,7 +136,7 @@ foreach  (range(1960, $fecha_actual) as $fecha[]) {
 
                
                     <div class="col-sm-2" style="margin-left: -20px;">
-                        <?= $form->field($model, 'ano_compra')->dropDownList($fecha,
+                        <?= $form->field($model, 'ano_compra')->dropDownList($listaFecha = $fecha->RangoFecha(1960),
                                                                 [
                                                                 'prompt' => yii::t('frontend', 'Select'),
                                                                
@@ -149,30 +152,17 @@ foreach  (range(1960, $fecha_actual) as $fecha[]) {
 <!-- AÑO VEHICULO -->
 
                
-                       <div class="col-sm-4">
-                        <div class="fecha-nac">
-                            <?= $form->field($model, 'ano_vehiculo')->widget(\yii\jui\DatePicker::classname(),[
-                                                                                        //'type' => 'date',
-                                                                                        'clientOptions' => [
-                                                                                            'maxDate' => '+0d', // Bloquear los dias en el calendario a partir del dia siguiente al actual.
-                                                                                         ],
-                                                                                       'language' => 'es-ES',
-                                                                                       'dateFormat' => 'dd-MM-yyyy',
-                                                                                        'options' => [
-                                                                                            //'onClick' => 'alert("calendario")',
-                                                                                            'id' => 'fecha-nac',
-                                                                                            'class' => 'form-control',
-                                                                                           'readonly' => true,
-                                                                                            //'type' => 'date',
-                                                                                            'style' => 'background-color: white;',
-                                                                                        ],
-
-                                                                                      
-                                                                                    ])
-                            ?>
-                        </div>
+                     <div class="col-sm-2" style="margin-left: -20px;">
+                        <?= $form->field($model, 'ano_vehiculo')->dropDownList($listaFecha = $fecha->RangoFecha(1920),
+                                                                [
+                                                                'prompt' => yii::t('frontend', 'Select'),
+                                                               
+                                                                
+                                                                ]);
+                    ?>
+                
                     </div>
-
+                       </div>
 <!-- FIN DE AÑO VEHICULO <-->
 
 
@@ -246,7 +236,7 @@ foreach  (range(1960, $fecha_actual) as $fecha[]) {
 <!-- NRO. EJES -->
 
                    
-                    <div class="col-sm-1" style="margin-left: -20px;">
+                    <div class="col-sm-2" style="margin-left: -20px;">
                         <?= $form->field($model, 'no_ejes')->input(
                                                                 [
                                                                 
@@ -280,14 +270,28 @@ foreach  (range(1960, $fecha_actual) as $fecha[]) {
 <!-- FECHA INICIO -->
 
                
-                    <div class="col-sm-2" style="margin-left: -20px;">
-                        <?= $form->field($model, 'fecha_inicio')->input('date',
-                                                                [
-                                                                'type' => 'date',
-                                                                'id'=> 'fecha_inicio',
-                                                                ]);
-                    ?>
-                
+                          <div class="col-sm-2">
+                        <div class="fecha-nac">
+                            <?= $form->field($model, 'fecha_inicio')->widget(\yii\jui\DatePicker::classname(),[
+                                                                                        //'type' => 'date',
+                                                                                        'clientOptions' => [
+                                                                                            'maxDate' => '+0d', // Bloquear los dias en el calendario a partir del dia siguiente al actual.
+                                                                                         ],
+                                                                                       'language' => 'es-ES',
+                                                                                       'dateFormat' => 'dd-MM-yyyy',
+                                                                                        'options' => [
+                                                                                            //'onClick' => 'alert("calendario")',
+                                                                                            'id' => 'fecha-nac',
+                                                                                            'class' => 'form-control',
+                                                                                           'readonly' => true,
+                                                                                            //'type' => 'date',
+                                                                                            'style' => 'background-color: white;',
+                                                                                        ],
+
+                                                                                      
+                                                                                    ])
+                            ?>
+                        </div>
                     </div>
                     
 
