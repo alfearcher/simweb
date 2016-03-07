@@ -227,6 +227,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                                     'casa_edf_qta_dom' => $casa_edf_qta_dom,
                                     'piso_nivel_no_dom' => $piso_nivel_no_dom,
                                     'apto_dom' => $apto_dom,
+                                    'fecha_creacion' => date('Y-m-d h:i:s'),
                                 ]; 
 
             
@@ -293,7 +294,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
          if ($enviarEmail->enviarEmail($email, $solicitud, $nro_solicitud)){
 
              return true;
-         } else {
+         } else { 
 
              return false;
          }
