@@ -73,25 +73,18 @@ use yii\web\AssetBundle;
                 <div class="row">
                     <div class="col-sm-4">
                         <div class="fecha-nac">
-                            <?= $form->field($model, 'fecha_nac')->widget(\yii\jui\DatePicker::classname(),[
-                                                                                        //'type' => 'date',
-                                                                                        'clientOptions' => [
-                                                                                            'maxDate' => '+0d', // Bloquear los dias en el calendario a partir del dia siguiente al actual.
-                                                                                         ],
-                                                                                       'language' => 'es-ES',
-                                                                                       'dateFormat' => 'dd-MM-yyyy',
-                                                                                        'options' => [
-                                                                                            //'onClick' => 'alert("calendario")',
-                                                                                            'id' => 'fecha-nac',
-                                                                                            'class' => 'form-control',
-                                                                                           'readonly' => true,
-                                                                                            //'type' => 'date',
-                                                                                            'style' => 'background-color: white;',
-                                                                                        ],
-
-                                                                                      
-                                                                                    ])
-                            ?>
+<?php       
+echo '<label>Check Issue Date</label>';
+echo DatePicker::widget([
+'name' => 'check_issue_date', 
+'value' => date('d-M-Y', strtotime('+2 days')),
+'options' => ['placeholder' => 'Select issue date ...'],
+'pluginOptions' => [
+'format' => 'dd-M-yyyy',
+'todayHighlight' => true
+]
+]);
+?>
                         </div>
                     </div>
 
