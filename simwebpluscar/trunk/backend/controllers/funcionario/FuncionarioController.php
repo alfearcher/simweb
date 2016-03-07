@@ -149,10 +149,11 @@
 	  	{
 	  		$parametro = New ParametroSolicitud();
 	  		$parametro->configurar(75);
-die(var_dump($parametro->findConfigurarSolicitud()));
+//die(var_dump($parametro->findConfigurarSolicitud()));
+	  		//$arrayP = $parametro->findConfigurarSolicitud();
+	  		//die(var_dump($arrayP[0]['tipoSolicitud']['descripcion']));
 
-
-	  		die(Yii::$app->solicitud->crear());
+	  		die(var_dump($parametro->getDescripcionImpuestoSolciitud()));
 	  	}
 	}
 
