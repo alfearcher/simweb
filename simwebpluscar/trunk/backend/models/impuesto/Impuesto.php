@@ -45,6 +45,7 @@
  	use Yii;
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
+	use backend\models\configuracion\solicitud\ConfigurarSolicitud;
 
 	/**
 	* 	Clase
@@ -72,6 +73,12 @@
 			return 'impuestos';
 		}
 
+
+		/***/
+		public function getConfigurarSolicitud()
+		{
+			return $this->hasMany(ConfigurarSolicitud::className(), ['impuesto' => 'impuesto']);
+		}
 
 	}
 
