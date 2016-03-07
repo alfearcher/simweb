@@ -80,6 +80,8 @@ class CrearUsuarioNaturalForm extends CrearUsuarioNatural{
        */
       public function rules()
       {
+
+       // die('llegue a las rules');
         return [
           [['naturaleza','cedula'],'required','message' => Yii::t('frontend', '{attribute} is required')],
           ['cedula','integer'],
