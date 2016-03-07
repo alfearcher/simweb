@@ -47,29 +47,26 @@
 namespace frontend\controllers\usuario;
 
  use Yii;
-// use common\models\LoginForm;
-// use frontend\models\CrearUsuarioForm;
-// use frontend\models\usuario\CrearUsuarioNaturalForm;
-// use frontend\models\ResetPasswordForm;
-// use frontend\models\SignupForm;
-// use frontend\models\ContactForm;
-// use yii\base\InvalidParamException;
-// use yii\web\BadRequestHttpException;
-// use yii\web\Controller;
-// use yii\filters\VerbFilter;
-// use yii\filters\AccessControl;
-// use frontend\controllers\mensaje\MensajeController;
-// use common\conexion\ConexionController;
-// use common\seguridad\Seguridad;
-// use common\enviaremail\EnviarEmail;
-// use frontend\models\usuario\CargaDatosBasicosNaturalForm;
-// use common\models\utilidades\Utilidad;
-// 
-// use Yii;
- use frontend\models\usuario\CargaDatosBasicosNaturalForm;
-use yii\web\Controller;
-use frontend\models\prueba\PruebaCalendarioForm;
+use common\models\LoginForm;
+use frontend\models\CrearUsuarioForm;
 use frontend\models\usuario\CrearUsuarioNaturalForm;
+use frontend\models\ResetPasswordForm;
+use frontend\models\SignupForm;
+use frontend\models\ContactForm;
+use yii\base\InvalidParamException;
+use yii\web\BadRequestHttpException;
+use yii\web\Controller;
+use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+use frontend\controllers\mensaje\MensajeController;
+use common\conexion\ConexionController;
+use common\seguridad\Seguridad;
+use common\enviaremail\EnviarEmail;
+use frontend\models\usuario\CargaDatosBasicosNaturalForm;
+use common\models\utilidades\Utilidad;
+
+
+
 
 
 session_start();
@@ -101,6 +98,7 @@ class CrearUsuarioNaturalController extends Controller
 
                 if ($model->validate()){
 
+
                     
 
                 return self::actionBuscarRif($model->naturaleza, $model->cedula , $model->tipo);
@@ -124,6 +122,8 @@ class CrearUsuarioNaturalController extends Controller
     */
     public function actionBuscarRif($naturaleza, $cedula, $tipo)
     {
+
+      //  die('llegue a action buscar rif');
         $_SESSION['rifNatural'] = ['naturaleza' => $naturaleza,
                                    'cedula' => $cedula,
                                    'tipo' => $tipo,
