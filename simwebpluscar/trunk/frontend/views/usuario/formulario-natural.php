@@ -9,7 +9,7 @@
     use frontend\models\usuario\TelefonoCodigo;
     use yii\helpers\Url;
     use yii\jui\DatePicker;
-use yii\web\AssetBundle;
+
 
 
 
@@ -53,7 +53,28 @@ use yii\web\AssetBundle;
                 <?= Yii::t('frontend', 'Registration Basic Information') ?> | <?= Yii::t('frontend', 'Natural') ?>
             </div>
             <div class="panel-body" >
+<!-- RIF -->
+                <div>
+                    <?= Yii::t('frontend', 'Rif') ?>
+                </div>
 
+                <div class="row">
+                    <div class="col-sm-2">
+                        <?= $form->field($model, 'naturaleza')->textInput(
+                                                               // ArrayHelper::map(TipoNaturaleza::find()->all(), 'siglas_tnaturaleza', 'siglas_tnaturaleza'),
+                                                                [
+                                                                'id'=> 'naturaleza',
+                                                                'value' => $rifNatural['naturaleza'],
+                                                                //die($rifNatural['naturaleza']),
+                                                                 'readOnly' =>true,
+                                                                ])->label(false);
+                    ?>
+                    </div>
+                    <div class="col-sm-3">
+                        <?= $form->field($model, 'cedula')->label(false)->textInput(['maxlength' => 8, 'value'=> $rifNatural['cedula'], 'readOnly' =>true,'style' => 'margin-left:-25px;']) ?>
+                    </div>
+                </div>
+<!-- FIN DE RIF <-->
 
 
 <!-- APELLIDOS Y NOMBRES-->
@@ -73,18 +94,25 @@ use yii\web\AssetBundle;
                 <div class="row">
                     <div class="col-sm-4">
                         <div class="fecha-nac">
-<?php       
-echo '<label>Check Issue Date</label>';
-echo DatePicker::widget([
-'name' => 'check_issue_date', 
-'value' => date('d-M-Y', strtotime('+2 days')),
-'options' => ['placeholder' => 'Select issue date ...'],
-'pluginOptions' => [
-'format' => 'dd-M-yyyy',
-'todayHighlight' => true
-]
-]);
-?>
+                            <?= $form->field($model, 'fecha_nac')->widget(\yii\jui\DatePicker::classname(),[
+                                                                                        //'type' => 'date',
+                                                                                        'clientOptions' => [
+                                                                                            'maxDate' => '+0d', // Bloquear los dias en el calendario a partir del dia siguiente al actual.
+                                                                                         ],
+                                                                                       'language' => 'es-ES',
+                                                                                       'dateFormat' => 'dd-MM-yyyy',
+                                                                                        'options' => [
+                                                                                            //'onClick' => 'alert("calendario")',
+                                                                                            'id' => 'fecha-nac',
+                                                                                            'class' => 'form-control',
+                                                                                           'readonly' => true,
+                                                                                            //'type' => 'date',
+                                                                                            'style' => 'background-color: white;',
+                                                                                        ],
+
+                                                                                      
+                                                                                    ])
+                            ?>
                         </div>
                     </div>
 
