@@ -1,5 +1,5 @@
 <?php
-die('llegue al view');
+
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 

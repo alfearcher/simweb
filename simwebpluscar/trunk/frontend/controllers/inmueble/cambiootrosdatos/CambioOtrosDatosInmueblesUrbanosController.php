@@ -119,10 +119,10 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
     {
         if ( isset( $_SESSION['idContribuyente'] ) ) {
 
-          
+
           $idInmueble = yii::$app->request->post('id');
            
-die($idInmueble);
+
 
         return $this->render('view', [
             'model' => $this->findModel($id),
