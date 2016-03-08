@@ -118,7 +118,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
     {
         if ( isset( $_SESSION['idContribuyente'] ) ) {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+           // 'model' => $this->findModel($id),
         ]);
         }  else {
                     echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
@@ -131,12 +131,12 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      *Metodo para crear las cuentas de usuarios de los funcionarios
      *@return model 
      **/
-     public function actionInscripcionInmueblesUrbanos()
+     public function actionCambioOtrosDatosInmueblesUrbanos()
      { 
 
          if ( isset(Yii::$app->user->identity->id_contribuyente) ) {
          //Creamos la instancia con el model de validación
-         $model = new InscripcionInmueblesUrbanosForm();
+         $model = new CambioOtrosDatosInmueblesUrbanosForm();
     
          //Mostrará un mensaje en la vista cuando el usuario se haya registrado
          $msg = null;
@@ -159,7 +159,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                 if (!\Yii::$app->user->isGuest){                                      
                       
 
-                     $guardo = self::GuardarInscripcion($model);
+                     $guardo = self::GuardarCambios($model);
 
                      if($guardo == true){
 
@@ -208,7 +208,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
       * @param [type] $model [description] arreglo de datos del formulario de inscripcion del
       * inmueble
       */
-     public function GuardarInscripcion($model)
+     public function GuardarCambios($model)
      {
            
             try {
