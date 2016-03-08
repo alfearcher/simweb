@@ -122,10 +122,12 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
           $idInmueble = yii::$app->request->post('id');
            
-
-
+          $datos = InmueblesConsulta::find()->where("id_impuesto=:impuesto", [":impuesto" => $idInmueble])
+                                            ->andwhere("inactivo=:inactivo", [":inactivo" => 0])
+                                            ->one();
+die(var_dump($datos));
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            //'model' => $this->findModel($idInmueble),
         ]);
         }  else {
                     echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
