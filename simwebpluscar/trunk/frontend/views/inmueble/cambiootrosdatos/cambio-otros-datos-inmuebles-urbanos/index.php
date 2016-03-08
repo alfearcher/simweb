@@ -2,6 +2,9 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
+use yii\widgets\ActiveField;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\InmueblesSearch */
