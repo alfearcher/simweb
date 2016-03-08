@@ -127,7 +127,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                                             ->one();
 
         return $this->render('view', [
-            'model' => $this->findModel($datos),
+            'model' => $datos,
         ]);
         }  else {
                     echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
