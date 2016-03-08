@@ -114,7 +114,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionView()
     {
         if ( isset( $_SESSION['idContribuyente'] ) ) {
         return $this->render('view', [
