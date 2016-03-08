@@ -21,6 +21,7 @@ $this->title = Yii::t('backend', 'Property Urban');
  <?php $form = ActiveForm::begin([
     'method' => 'post',
     'id' => 'formulario',
+    'action'=> '/inmueble/cambiootrosdatos/cambio-otros-datos-inmuebles-urbanos/view',
     'enableClientValidation' => false,
     'enableAjaxValidation' => true,
     'options' => ['class' => 'form-vertical'],]); ?>
@@ -74,7 +75,7 @@ $this->title = Yii::t('backend', 'Property Urban');
                                                                             'name' => 'id',
                                                                             'title' => Yii::t('frontend', 'View'),
                                                                             'style' => 'margin: 0 auto; display: block;',
-                                                                            'action'=> ['/inmueble/cambiootrosdatos/cambio-otros-datos-inmuebles-urbanos/view'],
+
                                                                         ]
                                                                     );
                                         },
