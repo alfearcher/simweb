@@ -136,7 +136,7 @@
 		        						['label' => 'Cambio de Propietario', 'url' => '#'],
 		        						['label' => 'Cambio de Placa', 'url' => ['vehiculo/vehiculos/cambio-placa']],
 		        						['label' => 'Desincorporaci&oacute;n de Vehiculo', 'url' => '#'],
-		        						['label' => 'Cambio de Otros Datos del Vehiculo', 'url' => ['vehiculo/vehiculos/busqueda']],
+		        						['label' => 'Cambio de Otros Datos del Vehiculo', 'url' => ['/vehiculo/cambiodatos/cambio-datos-vehiculo/vista-seleccion']],
 		        			],
 		        		],
 
