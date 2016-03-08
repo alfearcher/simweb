@@ -61,6 +61,7 @@ use common\models\User;
 use yii\web\Session;
 use frontend\models\inmueble\cambiootrosdatos\CambioOtrosDatosInmueblesUrbanosForm;
 use frontend\models\inmueble\InmueblesSearch;
+use frontend\models\inmueble\InmueblesConsulta;
 
 //use common\models\Users;
 
@@ -117,8 +118,12 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
     public function actionView()
     {
         if ( isset( $_SESSION['idContribuyente'] ) ) {
+          $idInmueble = yii::$app->request->post('id');
+           
+die($idInmueble);
+
         return $this->render('view', [
-           // 'model' => $this->findModel($id),
+            'model' => $this->findModel($id),
         ]);
         }  else {
                     echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
