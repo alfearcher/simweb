@@ -118,6 +118,8 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
     public function actionView()
     {
         if ( isset( $_SESSION['idContribuyente'] ) ) {
+
+          
           $idInmueble = yii::$app->request->post('id');
            
 die($idInmueble);
