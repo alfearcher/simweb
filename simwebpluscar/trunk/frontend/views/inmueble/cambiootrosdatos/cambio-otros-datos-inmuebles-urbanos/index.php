@@ -76,7 +76,7 @@ $this->title = Yii::t('backend', 'Property Urban');
                                                                             'title' => Yii::t('frontend', 'View'),
                                                                             'style' => 'margin: 0 auto; display: block;',
 
-                                                                        ], ['/inmueble/cambiootrosdatos/cambio-otros-datos-inmuebles-urbanos/view'],
+                                                                        ], ['/inmueble/cambiootrosdatos/cambio-otros-datos-inmuebles-urbanos/view']
                                                                     );
                                         },
                                     ],
