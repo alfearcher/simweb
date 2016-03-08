@@ -25,7 +25,7 @@
  *  
  *  @author Alvaro Jose Fernandez Archer
  * 
- *  @date 27-07-2015
+ *  @date 08-03-2016
  * 
  *  @class InmueblesSearch
  *  @brief Clase que permite validar cada uno de los datos del formulario de inscripcion de inmuebles 
@@ -49,20 +49,18 @@
  *  @inherits
  *  
  */ 
-namespace backend\models\inmueble;
+namespace frontend\models\inmueble;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\inmueble\InmueblesConsulta;
-use backend\models\inmueble\CambiosInmueblesUrbanosForm;
-use backend\models\buscargeneral\BuscarGeneralForm;
-use backend\models\buscargeneral\BuscarGeneral;
+use frontend\models\inmueble\InmueblesConsulta;
+
 
 /**
  * InmueblesSearch represents the model behind the search form about `backend\models\Inmuebles`.
  */
-class InmueblesSearch extends InmueblesUrbanosForm
+class InmueblesSearch extends InmueblesConsulta
 {
    
     /**
@@ -96,7 +94,7 @@ class InmueblesSearch extends InmueblesUrbanosForm
     { 
 
 
-        $query = InmueblesUrbanosForm::find()->where(['id_contribuyente' => $_SESSION['idContribuyente']]);
+        $query = InmueblesConsulta::find()->where(['id_contribuyente' => $_SESSION['idContribuyente']]);
         //$query = InmueblesUrbanosForm::find();
         
         $dataProvider = new ActiveDataProvider([

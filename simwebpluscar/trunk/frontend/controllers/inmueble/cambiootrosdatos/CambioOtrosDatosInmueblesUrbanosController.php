@@ -25,9 +25,9 @@
  *  
  *  @author Alvaro Jose Fernandez Archer
  * 
- *  @date 29-02-2016
+ *  @date 08-03-2016
  * 
- *  @class InmueblesUrbanosController
+ *  @class CambioOtrosDatosInmueblesUrbanosController
  *  @brief Clase que permite controlar la solicitud del registro o inscripcion de inmuebles urbanos
  *  en el lado del contribuyente,
  *
@@ -47,7 +47,7 @@
  *  @inherits
  *  
  */
-namespace frontend\controllers\inmueble\inscripcion;
+namespace frontend\controllers\inmueble\cambiootrosdatos;
 
 use Yii;
 use yii\filters\AccessControl;
@@ -59,7 +59,8 @@ use yii\web\Response;
 use common\models\Users;
 use common\models\User;
 use yii\web\Session;
-use frontend\models\inmueble\inscripcion\InscripcionInmueblesUrbanosForm;
+use frontend\models\inmueble\cambiootrosdatos\CambioOtrosDatosInmueblesUrbanosForm;
+use frontend\models\inmueble\InmueblesSearch;
 
 //use common\models\Users;
 
@@ -78,7 +79,7 @@ session_start();
 /*********************************************************************************************************
  * InscripcionInmueblesUrbanosController implements the actions for InscripcionInmueblesUrbanosForm model.
  *********************************************************************************************************/
-class InscripcionInmueblesUrbanosController extends Controller
+class CambioOtrosDatosInmueblesUrbanosController extends Controller
 {
 
     public $conn;
