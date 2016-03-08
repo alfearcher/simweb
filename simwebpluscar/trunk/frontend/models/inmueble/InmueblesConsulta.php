@@ -79,7 +79,7 @@
  * @property string $nivel_catastro
  * @property string $unidad_catastro
  */
-namespace backend\models\inmueble;
+namespace frontend\models\inmueble;
 
 use Yii;
 
