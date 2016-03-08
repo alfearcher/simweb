@@ -69,7 +69,7 @@ $this->title = Yii::t('backend', 'Property Urban');
 
             ['class' => 'yii\grid\ActionColumn', 'template' => '{view}', 'buttons' => [
                                         'view' => function ($url, $model, $key) {
-                                            return Html::submitButton('<div class="item-list" style="color: #337AB7;"><center>'. Icon::show('fa fa-thumbs-up',['class' => 'fa-1x'], Icon::FA) .'</center></div>',
+                                            return Html::a('<div class="item-list" style="color: #337AB7;"><center>'. Icon::show('fa fa-thumbs-up',['class' => 'fa-1x'], Icon::FA) .'</center></div>',
                                                                         [
                                                                             'value' => $key,
                                                                             'name' => 'id',
