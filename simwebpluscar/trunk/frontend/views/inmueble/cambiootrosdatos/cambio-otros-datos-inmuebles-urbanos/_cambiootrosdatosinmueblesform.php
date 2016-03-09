@@ -36,7 +36,8 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
                         <div class="col-sm-2">
                            <?= $form->field($datos, 'id_impuesto')->textInput(
                                                                    [
-                                                                   'id'=> 'placa',
+                                                                   'readOnly'=>true,
+                                                                   'id'=> 'id_impuesto',
                                                                    ]);
                             ?>
                     
@@ -45,7 +46,8 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
                         <div class="col-sm-2">
                             <?= $form->field($datos, 'direccion')->textInput(
                                                                     [
-                                                                    'id'=> 'placa',
+                                                                    'readOnly'=>true,
+                                                                    'id'=> 'direccion',
                                                                     ]);
                             ?>
                     
