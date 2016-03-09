@@ -82,7 +82,7 @@ session_start();
  *********************************************************************************************************/
 class CambioOtrosDatosInmueblesUrbanosController extends Controller
 {
-
+    public $layout = 'loyout-login';
     public $conn;
     public $conexion;
     public $transaccion;
