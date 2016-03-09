@@ -173,7 +173,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                      $guardo = self::GuardarCambios($model, $datos);
 
-                     if($guardo == true){
+                     if($guardo == true){ 
 
                           $envio = self::EnviarCorreo($guardo);
 
@@ -333,7 +333,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      {
          $email = yii::$app->user->identity->login;
 
-         $solicitud = 'Inscripcion de Inmueble';
+         $solicitud = 'Actualizacion de Datos del Inmueble';
 
          $nro_solicitud = $guardo;
 
@@ -341,7 +341,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
         
          if ($enviarEmail->enviarEmail($email, $solicitud, $nro_solicitud)){
 
-             return true;
+             return true; 
          } else { 
 
              return false; 
