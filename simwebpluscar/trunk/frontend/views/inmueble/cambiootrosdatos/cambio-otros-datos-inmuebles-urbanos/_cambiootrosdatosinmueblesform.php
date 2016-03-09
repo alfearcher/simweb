@@ -115,7 +115,8 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
                         
                             <div class="col-sm-2">
                             <?= $form->field($model, 'apto_dom')->textInput(['style' => 'width:100px;'])->label(false) ?>
-                            </div> 
+                            </div>
+                    </div> 
                         
                   
                    <div class="row">
@@ -197,7 +198,7 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
                     </div>
                                                                        
                         
-                   </div>
+                   
 
                     
                 </table>
