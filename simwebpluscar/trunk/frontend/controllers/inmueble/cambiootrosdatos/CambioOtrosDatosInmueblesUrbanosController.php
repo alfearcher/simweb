@@ -264,7 +264,7 @@ $id_impuesto=$datos->id_impuesto;
                 $medidor = $model->medidor;                           //medidor
                 $observacion = $model->observacion;                   //observaciones
                 $tipo_ejido = $model->tipo_ejido;                     //tipo ejido
-die($model->observacion);
+die(var_dump($model->observacion));
                 $arrayDatos2 = [    'id_contribuyente' => $id_contribuyente,
                                     'nro_solicitud' => $result,
                                     'ano_inicio' => $ano_inicio,
