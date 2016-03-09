@@ -60,7 +60,15 @@ use frontend\models\usuario\Afiliacion;
 class CambioDatosVehiculoForm extends Model
 {
 
-  public $seleccion;
+  public $placavieja;
+  public $placa;
+  public $marcavieja;
+  public $marca;
+  public $modeloviejo;
+  public $modelo;
+
+
+
      
   
 
@@ -70,7 +78,7 @@ class CambioDatosVehiculoForm extends Model
      
 
         return [
-              ['seleccion', 'required'],
+              [['placa','placavieja', 'marcavieja', 'marca','modeloviejo', 'modelo'],'required'],
              
             
 
@@ -87,7 +95,10 @@ class CambioDatosVehiculoForm extends Model
     {
         return [
                
-                'seleccion' => Yii::t('frontend', 'Seleccione su Vehiculo'), 
+                'placa' => Yii::t('frontend', 'Placa'),
+                'marca' => Yii::t('frontend', 'Marca'), 
+                'modelo' => Yii::t('frontend', 'Modelo'),  
+
               
                 
         ];
