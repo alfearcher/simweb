@@ -170,7 +170,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                   
                 if (!\Yii::$app->user->isGuest){                                      
                       
-die($datos->id_impuesto);
+die(var_dump($datos->id_impuesto));
                      $guardo = self::GuardarCambios($model, $datos);
 
                      if($guardo == true){
