@@ -263,7 +263,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                 $medidor = $model->medidor;                           //medidor
                 $observacion = $model->observacion;                   //observaciones
                 $tipo_ejido = $model->tipo_ejido;                     //tipo ejido
-die(var_dump($model));
+die(var_dump($model->observacion));
                 $arrayDatos2 = [    'id_contribuyente' => $id_contribuyente,
                                     'nro_solicitud' => $result,
                                     'ano_inicio' => $ano_inicio,
