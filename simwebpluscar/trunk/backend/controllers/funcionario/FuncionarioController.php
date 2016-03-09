@@ -147,13 +147,13 @@
 
 	  	public function actionPrueba()
 	  	{
-	  		$parametro = New ParametroSolicitud();
-	  		$parametro->configurar(75);
+	  		$parametro = New ParametroSolicitud(54);
+	  		//$parametro->configurar(54);
 //die(var_dump($parametro->findConfigurarSolicitud()));
 	  		//$arrayP = $parametro->findConfigurarSolicitud();
 	  		//die(var_dump($arrayP[0]['tipoSolicitud']['descripcion']));
 
-	  		die(var_dump($parametro->getDescripcionImpuestoSolciitud()));
+	  		die(var_dump($parametro->findConfiguracionSolicitudDetalle()));
 	  	}
 	}
 
