@@ -22,15 +22,14 @@
  */
 
  /**    
- *  @file MostrarPreguntaSeguridadController.php
+ *  @file CambioDatosVehiculoController.php
  *  
  *  @author Manuel Alejandro Zapata Canelon
  * 
- *  @date 29/02/16
+ *  @date 09/03/16
  * 
- *  @class RegistrarVehiculoController
- *  @brief Controlador que renderiza vista con el formulario para el registro de vehiculo
- * 
+ *  @class CambioDatosVehiculoController
+ *  @brief Controlador que renderiza la vista con el formulario de cambio de datos de vehiculo
  *  
  * 
  *  
@@ -77,41 +76,38 @@ class CambioDatosVehiculoController extends Controller
 
 
     
-   public $layout = 'layout-main';
+  public $layout = 'layout-main';
    
    
 
 
 
 
-   public function actionVistaSeleccion()
-   {
+  public function actionVistaSeleccion()
+  {
 
 
-         if(isset(yii::$app->user->identity->id_contribuyente)){
+      if(isset(yii::$app->user->identity->id_contribuyente)){
 
-        $searchModel = new VehiculoSearch();
+          $searchModel = new VehiculoSearch();
 
-        $dataProvider = $searchModel->search();
-       // die($dataProvider);
+          $dataProvider = $searchModel->search();
+       
 
-        return $this->render('/vehiculo/cambiodatos/seleccionar-vehiculo', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+          return $this->render('/vehiculo/cambiodatos/seleccionar-vehiculo', [
+                                                'searchModel' => $searchModel,
+                                                'dataProvider' => $dataProvider,
             
-
-        ]); 
-        }  else {
-            echo "No existe User";
-        }
+                                                ]); 
+      }else{
+          echo "No existe User";
+      }
     
 
-   }
+  }
 
-   public function actionBuscarVehiculo()
-   {
-
-
+  public function actionBuscarVehiculo()
+  {
 
       $idContribuyente = yii::$app->user->identity->id_contribuyente;
       $idVehiculo = yii::$app->request->post('id');
@@ -119,21 +115,17 @@ class CambioDatosVehiculoController extends Controller
       $modelsearch = new VehiculoSearch();
       $busqueda = $modelsearch->busquedaVehiculo($idVehiculo, $idContribuyente);
 
-        if ($busqueda == true){ 
+          if ($busqueda == true){ 
         
-        $_SESSION['datosVehiculo'] = $busqueda;
-        //die(var_dump($_SESSION['datosVehiculo']));
-        return $this->redirect(['cambio-datos-vehiculo']);
+              $_SESSION['datosVehiculo'] = $busqueda;
         
-        }else{
+          return $this->redirect(['cambio-datos-vehiculo']);
+        
+          }else{
 
-          die('no existe vehiculo asociado a ese ID');
-         }
-   
-
-
-    
-   }
+              die('no existe vehiculo asociado a ese ID');
+          }
+  }
 
 
     /**
@@ -143,7 +135,7 @@ class CambioDatosVehiculoController extends Controller
     public function actionCambioDatosVehiculo()
     {
       
-        
+        $datosVehiculo = $_SESSION['datosVehiculo']; 
         if(isset(yii::$app->user->identity->id_contribuyente)){
 
           if (isset($_SESSION['datosVehiculo'])){ 
@@ -169,7 +161,9 @@ class CambioDatosVehiculoController extends Controller
             }
             
             return $this->render('/vehiculo/cambiodatos/seleccionar-vehiculo-cambio-datos', [
-                                                           'model' => $_SESSION['datosVehiculo'],
+                                                              'model' => $model,
+                                                              'datos' => $datosVehiculo,
+
                                                            
             ]);
             
@@ -184,12 +178,7 @@ class CambioDatosVehiculoController extends Controller
         }
     }
 
-    public function buscarVehiculos()
-    {
-
-
-      die('llegue a buscar vehiculos');
-    }
+    
 
  
               
