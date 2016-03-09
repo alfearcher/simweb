@@ -290,7 +290,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                 } else {
             
-                    $transaccion->roolBack();
+                    $transaccion->rollBack();
                     $conexion->close();
                     $tipoError = 0; 
                     return false;

@@ -52,7 +52,7 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
                             <?= Yii::t('backend', 'Street Addres') ?>
                         </div> 
 
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <?= $form->field($datos, 'direccion')->textInput(
                                                                     [
                                                                     'readOnly'=>true,

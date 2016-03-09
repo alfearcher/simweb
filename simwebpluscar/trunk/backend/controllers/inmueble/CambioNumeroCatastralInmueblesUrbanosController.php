@@ -209,7 +209,7 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
                             return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
                         }else{ 
 
-                            $transaccion->roolBack(); 
+                            $transaccion->rollBack(); 
                             $tipoError = 0; 
                             $msg = Yii::t('backend', 'AN ERROR OCCURRED WHEN UPDATE THE URBAN PROPERTY!');//HA OCURRIDO UN ERROR AL LLENAR LAS PREGUNTAS SECRETAS
                             $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['inmueble/inmuebles-urbanos/view', 'id' => $model->id_impuesto])."'>";                     
