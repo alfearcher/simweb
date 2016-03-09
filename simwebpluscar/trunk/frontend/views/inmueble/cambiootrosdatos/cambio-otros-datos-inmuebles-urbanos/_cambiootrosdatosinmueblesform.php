@@ -33,22 +33,31 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
                                              
 <!-- Direccion de Catastro  -->      
                     <div class="row">
+
+                        <div class="col-sm-2"> 
+                            <?= Yii::t('backend', 'Id Tax') ?>
+                        </div> 
+
                         <div class="col-sm-2">
                            <?= $form->field($datos, 'id_impuesto')->textInput(
                                                                    [
                                                                    'readOnly'=>true,
                                                                    'id'=> 'id_impuesto',
-                                                                   ]);
+                                                                   ])->label(false);
                             ?>
                     
                         </div>
+
+                        <div class="col-sm-2"> 
+                            <?= Yii::t('backend', 'Street Addres') ?>
+                        </div> 
 
                         <div class="col-sm-2">
                             <?= $form->field($datos, 'direccion')->textInput(
                                                                     [
                                                                     'readOnly'=>true,
                                                                     'id'=> 'direccion',
-                                                                    ]);
+                                                                    ])->label(false);
                             ?>
                     
                         </div>   
