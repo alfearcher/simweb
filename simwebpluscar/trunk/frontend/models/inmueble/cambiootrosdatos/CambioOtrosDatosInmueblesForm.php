@@ -89,7 +89,7 @@
  * @property string $unidad_catastro
  */
 
-namespace frontend\models\inmueble;
+namespace frontend\models\inmueble\cambiootrosdatos;
 
 use Yii;
 use backend\models\inmueble\InmueblesConsulta;
