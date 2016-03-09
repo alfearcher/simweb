@@ -170,8 +170,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                   
                 if (!\Yii::$app->user->isGuest){                                      
                       
-$id_impuesto=$datos->id_impuesto;
-//die('imprimio impuesto id> '.$id_impuesto);
+die(var_dump($model));
                      $guardo = self::GuardarCambios($model, $datos);
 
                      if($guardo == true){
@@ -264,7 +263,7 @@ $id_impuesto=$datos->id_impuesto;
                 $medidor = $model->medidor;                           //medidor
                 $observacion = $model->observacion;                   //observaciones
                 $tipo_ejido = $model->tipo_ejido;                     //tipo ejido
-die(var_dump($model->observacion));
+die(var_dump($model));
                 $arrayDatos2 = [    'id_contribuyente' => $id_contribuyente,
                                     'nro_solicitud' => $result,
                                     'ano_inicio' => $ano_inicio,
