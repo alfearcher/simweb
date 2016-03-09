@@ -31,8 +31,28 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
             <div class="panel-body" >
                 <table class="table table-striped "cellpadding="1px" cellspacing="1px">
                                              
-<!-- Direccion de Catastro  -->         
-                                                                                                       
+<!-- Direccion de Catastro  -->      
+                    <div class="row">
+                        <div class="col-sm-2">
+                           <?= $form->field($datos, 'id_impuesto')->textInput(
+                                                                   [
+                                                                   'id'=> 'placa',
+                                                                   ]);
+                            ?>
+                    
+                        </div>
+
+                        <div class="col-sm-2">
+                            <?= $form->field($datos, 'direccion')->textInput(
+                                                                    [
+                                                                    'id'=> 'placa',
+                                                                    ]);
+                            ?>
+                    
+                        </div>   
+                    </div>  
+
+
                    <tr>
                         <td style="max-width: 85px" align="right">
                             <div class="col-sm-2"> 
