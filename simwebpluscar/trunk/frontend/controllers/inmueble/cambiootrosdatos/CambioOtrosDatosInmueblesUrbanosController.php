@@ -242,7 +242,7 @@ $id_impuesto=$datos->id_impuesto;
                               'estatus' => 0,
                               'inactivo' => 0,
                           ]; 
-            
+            die(var_dump($arrayDatos1));
 
             $conn = New ConexionController();
             $conexion = $conn->initConectar('dbsim');     // instancia de la conexion (Connection)
@@ -317,7 +317,7 @@ $id_impuesto=$datos->id_impuesto;
      {
 
          $buscar = ConfiguracionTiposSolicitudes::find()->where("impuesto=:impuesto", [":impuesto" => 2])
-                                                        ->andwhere("descripcion=:descripcion", [":descripcion" => 'REGISTRO NUEVO'])
+                                                        ->andwhere("descripcion=:descripcion", [":descripcion" => 'ACTUALIZACION DE DATOS'])
                                                         ->asArray()->all();
 
 
