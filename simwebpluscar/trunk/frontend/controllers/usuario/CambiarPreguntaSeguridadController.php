@@ -87,7 +87,7 @@ class CambiarPreguntaSeguridadController extends Controller
 
 
     
-   public $layout = 'layoutbase';
+   public $layout = 'layout-main';
    
     /**
      *
