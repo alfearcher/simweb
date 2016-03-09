@@ -193,7 +193,7 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
                                 <?= Html::submitButton(Yii::t('backend', 'Accept'), ['class' => 'btn btn-success', 'name'=>'Accept', 'value'=>'Accept']) ?>
                                 </div>
                                 <div class="col-sm-1">
-                                <?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) ?>
+                                <?= Html::a(Yii::t('backend', 'Back'), ['/site/menu-vertical'], ['class' => 'btn btn-danger']) ?>
                                 </div>
                                 <?= Html::endForm();?> 
                                 
