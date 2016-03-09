@@ -100,7 +100,7 @@ class CambioOtrosDatosInmueblesForm extends \yii\db\ActiveRecord
 {
     
     public $validacion;
-    public $fecha_inicio;
+    
     
     public static function tableName()
     {
