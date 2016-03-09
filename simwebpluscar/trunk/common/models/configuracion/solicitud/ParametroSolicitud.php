@@ -6,6 +6,7 @@
 	use backend\models\configuracion\tiposolicitud\TipoSolicitud;
 	use backend\models\impuesto\Impuesto;
 	use backend\models\configuracion\documentosolicitud\SolicitudDocumento;
+	use backend\models\configuracion\detallesolicitud\SolicitudDetalle;
 
 	/**
 	*
@@ -20,13 +21,22 @@
 		public $configSolicitud;
 
 
+
+
+
+		public function __construct($idConfig = 0)
+		{
+			$this->configurar($idConfig);
+		}
+
+
 		/**
 		* Busca y configura la variable $config, con los datos de la entidad
 		* "config-solicitudes", creando un modelo de dicha entidad.
 		* @param $idConfig, long que identifica al registro de la entidad
 		* "config-solicitudes".
 		*/
-		public  function configurar($idConfig = 0)
+		private function configurar($idConfig = 0)
 		{
 			$this->setIdConfig($idConfig);
 			$config = ConfigurarSolicitud::findOne($this->getIdConfig());
@@ -115,7 +125,9 @@
 		*/
 		public function findConfiguracionSolicitudTipo()
 		{
-			$config = ConfigurarSolicitud::find()->where(['id_config_solicitud' => $this->getIdConfig()])
+			$config = ConfigurarSolicitud::find()->where(['id_config_solicitud' => $this->getIdConfig(),
+														  'inactivo' => 0
+														 ])
 			                                     ->with('tipoSolicitud')->asArray()->all();
 			return $config;
 		}
@@ -139,16 +151,45 @@
 		*/
 		public function findConfiguracionSolicitudImpuesto()
 		{
-			$configImpuesto = ConfigurarSolicitud::find()->where(['id_config_solicitud' => $this->getIdConfig()])
+			$configImpuesto = ConfigurarSolicitud::find()->where(['id_config_solicitud' => $this->getIdConfig(),
+																  'inactivo' => 0
+																 ])
 			                        				     ->with('impuestoSolicitud')->asArray()->all();
 			return $configImpuesto;
 		}
 
 
+
+		/**
+		* Descripcion del impuesto de la configuracion de la socilictud.
+		*/
 		public function getDescripcionImpuestoSolcitud()
 		{
 			$configImpuesto = $this->findConfiguracionSolicitudImpuesto();
 			return $configImpuesto[0]['impuestoSolicitud']['descripcion'];
+		}
+
+
+
+
+		/***/
+		public function findConfiguracionSolicitudDetalle()
+		{
+			$configDetalle = ConfigurarSolicitud::find()->where(['id_config_solicitud' => $this->getIdConfig(),
+																  'inactivo' => 0
+																 ])
+			                        				     ->with('detalleSolicitud')->asArray()->all();
+			return $configDetalle;
+		}
+
+
+
+
+		/***/
+		public function findConfiguracionDetalleProceso()
+		{
+			$config = SolicitudDetalle::find()->where([])
+			return $config;
 		}
 
 
