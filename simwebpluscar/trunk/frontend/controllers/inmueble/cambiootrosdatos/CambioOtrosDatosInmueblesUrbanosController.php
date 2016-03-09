@@ -282,7 +282,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                  $tableName2 = 'sl_inmuebles'; 
 
                 if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){
-die('guardo datos commit');
+
                     $transaccion->commit(); 
                     $conexion->close(); 
                     $tipoError = 0; 
