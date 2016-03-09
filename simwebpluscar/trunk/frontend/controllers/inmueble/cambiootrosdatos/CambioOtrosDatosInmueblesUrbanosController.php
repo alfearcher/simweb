@@ -279,11 +279,11 @@ $id_impuesto=$datos->id_impuesto;
                                     'fecha_creacion' => date('Y-m-d h:i:s'),
                                 ]; 
 
-            die(var_dump($arrayDatos2));
+            
                  $tableName2 = 'sl_inmuebles'; 
 
                 if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){
-
+die('guardo datos commit');
                     $transaccion->commit(); 
                     $conexion->close(); 
                     $tipoError = 0; 
