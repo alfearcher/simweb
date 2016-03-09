@@ -83,7 +83,7 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
  <!-- Direccio del domicilio -->                   
                    <div class="row">
                         
-                            <div class="col-sm-2"> 
+                            <div class="col-sm-2" > 
                             <?= Yii::t('backend', 'Hse/Building/Ctryhse') ?>
                             </div>
                         
@@ -120,7 +120,7 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
                   
                    <div class="row">
                         
-                            <div class="col-sm-1"> 
+                            <div class="col-sm-2"> 
                             <?= Yii::t('backend', 'Phone') ?>
                             </div> 
                         
@@ -132,7 +132,7 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
                         
 
                         
-                            <div class="col-sm-1"> 
+                            <div class="col-sm-2"> 
                             <?= Yii::t('backend', 'Meter') ?>
                             </div>
                         
@@ -158,7 +158,7 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
 
                    <div class="row">
                         
-                            <div class="col-sm-1"> 
+                            <div class="col-sm-2"> 
                             <?= Yii::t('backend', 'Observation') ?>
                             </div>
                         
@@ -185,8 +185,12 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
 
                             <div class="form-group"> 
 <?= Html::beginForm();?>
+<div class="col-sm-2">
 <?= Html::submitButton(Yii::t('backend', 'Accept'), ['class' => 'btn btn-primary', 'name'=>'Accept', 'value'=>'Accept']) ?>
+</div>
+<div class="col-sm-2">
 <?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) ?>
+</div>
 <?= Html::endForm();?> 
                             </div>
                                                                        
