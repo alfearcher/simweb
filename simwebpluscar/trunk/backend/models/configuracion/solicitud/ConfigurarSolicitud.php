@@ -47,6 +47,8 @@
 	use yii\db\ActiveRecord;
 	use backend\models\configuracion\tiposolicitud\TipoSolicitud;
 	use backend\models\impuesto\Impuesto;
+	use backend\models\configuracion\detallesolicitud\SolicitudDetalle;
+	use backend\models\configuracion\procesosolicitud\SolicitudProceso;
 
 	/**
 	* 	Clase
@@ -96,12 +98,23 @@
 		}
 
 
-
-
-		public function getDescripcionTipoSolicitud()
+		/**
+		* Relacion entre las entidades "config-solicitudes" e "config-solic-detalles".
+		* * El primer "id_config_solicitud se refiere a la entidad config-solic-detalles".
+		*/
+		public function getDetalleSolicitud()
 		{
-			return $this->getTipoSolicitud();
+			return $this->hasMany(SolicitudDetalle::className(), ['id_config_solicitud' => 'id_config_solicitud']);
 		}
+
+
+
+
+		public function getDetalleProcesoSolicitud()
+		{
+			return $this->hasMany(SolicitudDetalle::className(),['id_proceso' => 'id_proceso']);
+		}
+
 
 
 	}

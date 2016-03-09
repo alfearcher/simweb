@@ -45,6 +45,8 @@
  	use Yii;
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
+	use backend\models\configuracion\solicitud\ConfigurarSolicitud;
+	use backend\models\configuracion\procesosolicitud\SolicitudProceso;
 
 	/**
 	* 	Clase
@@ -71,6 +73,25 @@
 		{
 			return 'config_solic_detalles';
 		}
+
+
+
+		/***/
+		public function getConfigurarSolicitud()
+		{
+			return $this->hasOne(ConfigurarSolicitud::className(), ['id_config_solicitud' => 'id_config_solicitud']);
+		}
+
+
+
+		/**
+		* Relacion entre la entidades "config-solic-detalle" y "config-solicitud-proceso"
+		*/
+		public function getProcesoSolicitud()
+		{
+			return $this->hasMany(SolicitudProceso::className(), ['id_proceso' => 'id_proceso']);
+		}
+
 
 	}
 

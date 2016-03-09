@@ -45,6 +45,7 @@
  	use Yii;
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
+	use backend\models\configuracion\detallesolicitud\SolicitudDetalle;
 
 	/**
 	* 	Clase
@@ -70,6 +71,13 @@
 		public static function tableName()
 		{
 			return 'config_solicitud_procesos';
+		}
+
+
+
+		public function getSolicitudDetalle()
+		{
+			return $this->hasOne(SolicitudDetalle::className(), ['id_proceso' => 'id_proceso']);
 		}
 
 
