@@ -125,6 +125,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
           $datos = InmueblesConsulta::find()->where("id_impuesto=:impuesto", [":impuesto" => $idInmueble])
                                             ->andwhere("inactivo=:inactivo", [":inactivo" => 0])
                                             ->one();
+          $_SESSION['datos'] = $datos;
 
         return $this->render('view', [
             'model' => $datos,
@@ -132,7 +133,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
         }  else {
                     echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
         }
-    }
+    } 
 
     
      /**
@@ -146,7 +147,9 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
          if ( isset(Yii::$app->user->identity->id_contribuyente) ) {
          //Creamos la instancia con el model de validación
          $model = new CambioOtrosDatosInmueblesUrbanosForm();
-    
+
+         $datos = $_SESSION['datos'];
+    die(var_dump($datos));
          //Mostrará un mensaje en la vista cuando el usuario se haya registrado
          $msg = null;
          $url = null; 
@@ -161,7 +164,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
    
          if ($model->load(Yii::$app->request->post())){
 
-              if($model->validate()){
+              if($model->validate()){ 
 
                  //condicionales     
                   
@@ -201,7 +204,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                    $model->getErrors(); 
               }
          }
-              return $this->render('inscripcion-inmuebles-urbanos', ['model' => $model, ]);  
+              return $this->render('cambio-otros-datos-inmuebles-urbanos', ['model' => $model, ]);  
 
         }  else {
                     echo "No hay Contribuyente Registrado!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['site/login'])."'>";
@@ -217,7 +220,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
       * @param [type] $model [description] arreglo de datos del formulario de inscripcion del
       * inmueble
       */
-     public function GuardarCambios($model)
+     public function GuardarCambios($model, $datos)
      {
            
             try {
@@ -228,7 +231,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
             $arrayDatos1 = [  'id_contribuyente' => $model->id_contribuyente,
                               'id_config_solicitud' => 68,
                               'impuesto' => 2,
-                              'id_impuesto' => null,
+                              'id_impuesto' => $datos->id_impuesto,
                               'tipo_solicitud' => $tipoSolicitud,
                               'usuario' => yii::$app->user->identity->login,
                               'fecha_hora_creacion' => date('Y-m-d h:i:s'),
