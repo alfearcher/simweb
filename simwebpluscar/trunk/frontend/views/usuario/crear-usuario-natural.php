@@ -21,9 +21,9 @@ $this->title = 'Busqueda Persona Natural';
    'method' => 'post',
     'id' => 'formulario',
     //'action' => ['/usuario/crear-usuario-natural/natural'],
-    'enableClientValidation' => false,
-    'enableAjaxValidation' => true,
-    'enableClientScript' => true,
+    'enableClientValidation' => true,
+      'enableAjaxValidation' => false,
+     'enableClientScript' => true,
     'options' => ['class' => 'form-horizontal'],
 
 ]);

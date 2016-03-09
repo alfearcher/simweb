@@ -10,7 +10,7 @@
 // Encabezado
 require('layoutencabezado.php'); 
 
-AppAsset::register($this);
+//AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>

@@ -39,9 +39,9 @@
             'id' => 'form-datosBasicoJuridico-inline',
             'method' => 'post',
             'action' => ['/usuario/crear-usuario-natural/natural'],
-            'enableClientValidation' => true,
-            'enableAjaxValidation' => true,
-            'enableClientScript' => true,
+             'enableClientValidation' => true,
+             'enableAjaxValidation' => false,
+             'enableClientScript' => true,
 
         ]);
 

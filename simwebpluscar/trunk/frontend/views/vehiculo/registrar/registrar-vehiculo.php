@@ -2,7 +2,7 @@
 
 
     use yii\helpers\Html;
-    use yii\widgets\ActiveForm;
+    //use yii\widgets\ActiveForm;
     use yii\web\View;
     use yii\helpers\ArrayHelper;
     use yii\helpers\Url;
@@ -11,6 +11,7 @@
     use common\models\vehiculo\tipovehiculo\TipoVehiculo;
     use common\models\vehiculo\usovehiculo\UsoVehiculo;
     use common\fecha\RangoFecha;
+    use kartik\form\ActiveForm;
 
 //arrayhelper que carga el combo clase vehiculo
 $claseVehiculo = ClaseVehiculo::find()->all();
@@ -72,9 +73,9 @@ $listaUsoVehiculo = ArrayHelper::map($usoVehiculo, 'uso_vehiculo' , 'descripcion
             'id' => 'form-vehiculo-inline',
             'method' => 'post',
             //'action' => ['/usuario/crear-usuario-natural/natural'],
-            'enableClientValidation' => true,
-            'enableAjaxValidation' => true,
-            'enableClientScript' => true,
+             'enableClientValidation' => true,
+             'enableAjaxValidation' => false,
+             'enableClientScript' => true,
 
         ]);
 
@@ -275,7 +276,8 @@ $listaUsoVehiculo = ArrayHelper::map($usoVehiculo, 'uso_vehiculo' , 'descripcion
                             <?= $form->field($model, 'fecha_inicio')->widget(\yii\jui\DatePicker::classname(),[
                                                                                         //'type' => 'date',
                                                                                         'clientOptions' => [
-                                                                                            'maxDate' => '+0d', // Bloquear los dias en el calendario a partir del dia siguiente al actual.
+                                                                                            'maxDate' => '+0d',// Bloquear los dias en el calendario a partir del dia siguiente al actual.
+                                                                                             //'changeYear' => 'true', 
                                                                                          ],
                                                                                        'language' => 'es-ES',
                                                                                        'dateFormat' => 'dd-MM-yyyy',
@@ -284,6 +286,7 @@ $listaUsoVehiculo = ArrayHelper::map($usoVehiculo, 'uso_vehiculo' , 'descripcion
                                                                                             'id' => 'fecha-nac',
                                                                                             'class' => 'form-control',
                                                                                            'readonly' => true,
+
                                                                                             //'type' => 'date',
                                                                                             'style' => 'background-color: white;',
                                                                                         ],
