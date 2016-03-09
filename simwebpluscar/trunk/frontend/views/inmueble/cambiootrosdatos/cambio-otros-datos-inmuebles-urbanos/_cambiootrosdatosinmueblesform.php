@@ -120,7 +120,7 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
                   
                    <div class="row">
                         
-                            <div class="col-sm-2" style="margin-left: -20px;"> 
+                            <div class="col-sm-2" style="margin-left: 20px;"> 
                             <?= Yii::t('backend', 'Phone') ?>
                             </div> 
                         
@@ -158,7 +158,7 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
 
                    <div class="row">
                         
-                            <div class="col-sm-2" style="margin-left: -20px;"> 
+                            <div class="col-sm-2" style="margin-left: 20px;"> 
                             <?= Yii::t('backend', 'Observation') ?>
                             </div>
                         
@@ -182,16 +182,18 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
                         
 
                               
+                    <div class="row">
 
                             <div class="form-group"> 
-<?= Html::beginForm();?>
-<div class="col-sm-2">
-<?= Html::submitButton(Yii::t('backend', 'Accept'), ['class' => 'btn btn-primary', 'name'=>'Accept', 'value'=>'Accept']) ?>
-</div>
-<div class="col-sm-2">
-<?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) ?>
-</div>
-<?= Html::endForm();?> 
+                                <?= Html::beginForm();?>
+                                <div class="col-sm-2">
+                                <?= Html::submitButton(Yii::t('backend', 'Accept'), ['class' => 'btn btn-primary', 'name'=>'Accept', 'value'=>'Accept']) ?>
+                                </div>
+                                <div class="col-sm-2">
+                                <?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) ?>
+                                </div>
+                                <?= Html::endForm();?> 
+                                </div>
                             </div>
                                                                        
                         
