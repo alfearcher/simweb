@@ -67,7 +67,8 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
                             <?= $form->field($model, 'direccion')->textarea(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?>
                             </div> 
                         
-
+                            <div class="col-sm-1">
+                            </div>
                         
                             <div class="col-sm-2"> 
                             <?= Yii::t('backend', 'Year home') ?>
@@ -168,9 +169,10 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
                             <div class="col-sm-3">
                             <?= $form->field($model, 'observacion')->textarea(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?>
                             </div> 
-                        
 
-                                                                          
+                            <div class="col-sm-1">
+                            </div> 
+                        
                             <div class="col-sm-2"> 
                             <?= $form->field($model, 'tipo_ejido')->textInput(['style' => 'width:100px;'])->checkbox() ?>
                             </div> 
