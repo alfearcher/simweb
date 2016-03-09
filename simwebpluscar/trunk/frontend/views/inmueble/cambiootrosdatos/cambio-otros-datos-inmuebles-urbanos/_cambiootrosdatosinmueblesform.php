@@ -55,133 +55,133 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
                     </div>  
 
 
-                   <tr>
-                        <td style="max-width: 85px" align="right">
+                   <div class="row">
+                        
                             <div class="col-sm-2"> 
                             <?= Yii::t('backend', 'Street Addres') ?>
                             </div> 
-                        </td>
+                        
 
-                        <td colspan="2" style="max-width: 100px">
+                        
                             <div class="col-sm-3"> 
                             <?= $form->field($model, 'direccion')->textarea(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?>
                             </div> 
-                        </td>
+                        
 
-                        <td style="max-width: 100px" align="right">
+                        
                             <div class="col-sm-2"> 
                             <?= Yii::t('backend', 'Year home') ?>
                             </div> 
-                        </td>
+                        
 
-                        <td colspan="2" style="max-width: 100px">
+                        
                             <div class="col-sm-2"> 
                             <?= $form->field($model, 'ano_inicio')->textInput(['style' => 'width:100px;'])->label(false) ?> 
                             </div>
-                        </td>
-                   </tr>
+                        
+                   </div>
  <!-- Direccio del domicilio -->                   
-                   <tr>
-                        <td style="max-width: 85px" align="right">
+                   <div class="row">
+                        
                             <div class="col-sm-2"> 
                             <?= Yii::t('backend', 'Hse/Building/Ctryhse') ?>
                             </div>
-                        </td>
+                        
 
-                        <td  style="max-width: 100px" align="right">  
+                          
                             <div class="col-sm-2">
                             <?= $form->field($model, 'casa_edf_qta_dom')->textInput(['style' => 'width:100px;'])->label(false) ?>
                             </div> 
-                        </td>
+                        
 
-                        <td style="max-width: 50px" align="right"> 
+                         
                             <div class="col-sm-2"> 
                             <?= Yii::t('backend', 'Floor/Level') ?>
                             </div> 
-                        </td>
+                        
 
-                        <td style="max-width: 50px" align="right">
+                        
                             <div class="col-sm-2">
                             <?= $form->field($model, 'piso_nivel_no_dom')->textInput(['style' => 'width:100px;'])->label(false) ?>
                             </div>
-                        </td>
+                        
 
-                        <td style="max-width: 50px" align="right">
+                        
                             <div class="col-sm-2"> 
                             <?= Yii::t('backend', 'Apartment/Num') ?>
                             </div>
-                        </td>
+                        
 
-                        <td style="max-width: 50px" align="right">
+                        
                             <div class="col-sm-2">
                             <?= $form->field($model, 'apto_dom')->textInput(['style' => 'width:100px;'])->label(false) ?>
                             </div> 
-                        </td>
+                        
                   
-                   <tr>
-                        <td style="max-width: 85px" align="right">
+                   <div class="row">
+                        
                             <div class="col-sm-1"> 
                             <?= Yii::t('backend', 'Phone') ?>
                             </div> 
-                        </td>
+                        
 
-                        <td style="max-width: 200px" align="right">
+                        
                             <div class="col-sm-2"> 
                             <?= $form->field($model, 'tlf_hab')->textInput(['style' => 'width:100px;'])->label(false) ?>
                             </div>
-                        </td>
+                        
 
-                        <td style="max-width: 200px" align="right">
+                        
                             <div class="col-sm-1"> 
                             <?= Yii::t('backend', 'Meter') ?>
                             </div>
-                        </td>
+                        
 
-                        <td style="max-width: 200px">
+                        
                             <div class="col-sm-2">
                             <?= $form->field($model, 'medidor')->textInput(['style' => 'width:100px;'])->label(false) ?>
                             </div>
-                        </td>
+                        
 
-                        <td style="max-width: 200px">
+                        
                             <div class="col-sm-2">
                             <?= $form->field($model, 'id_contribuyente')->hiddenInput(['style' => 'width:80px;'])->label(false) ?>
                             </div>
-                        </td>
+                        
 
-                        <td style="max-width: 200px"> 
+                         
                             <div class="col-sm-2">
                             <?= $form->field($model, 'id_impuesto')->hiddenInput(['style' => 'width:80px;'])->label(false) ?>
                             </div>                                                      
-                        </td>
-                   </tr>
+                        
+                   </div>
 
-                   <tr>
-                        <td style="max-width: 85px" align="right">
+                   <div class="row">
+                        
                             <div class="col-sm-1"> 
                             <?= Yii::t('backend', 'Observation') ?>
                             </div>
-                        </td>
+                        
 
-                        <td colspan="2"style="max-width: 200px">
+                        
                             <div class="col-sm-3">
                             <?= $form->field($model, 'observacion')->textarea(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?>
                             </div> 
-                        </td>
+                        
 
-                        <td style="max-width: 100px">                                                   
+                                                                          
                             <div class="col-sm-2"> 
                             <?= $form->field($model, 'tipo_ejido')->textInput(['style' => 'width:100px;'])->checkbox() ?>
                             </div> 
-                        </td>
+                        
 
-                        <td style="max-width: 100px">
+                        
                             <div class="col-sm-2">
                             <?= $form->field($model, 'inactivo')->checkbox()?> 
                             </div>
-                        </td>
+                        
 
-                        <td style="max-width: 100px">      
+                              
 
                             <div class="form-group"> 
 <?= Html::beginForm();?>
@@ -190,8 +190,8 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
 <?= Html::endForm();?> 
                             </div>
                                                                        
-                        </td>
-                   </tr>
+                        
+                   </div>
 
                     
                 </table>
