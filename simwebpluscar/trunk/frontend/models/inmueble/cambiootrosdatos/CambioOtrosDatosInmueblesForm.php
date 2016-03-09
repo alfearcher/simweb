@@ -114,15 +114,15 @@ class CambioOtrosDatosInmueblesForm extends \yii\db\ActiveRecord
     {
         return [
             
-            [['id_contribuyente','ano_inicio', 'liquidado', 'manzana_limite', 'lote_1', 'lote_2', 'lote_3', 'inactivo', 'id_habitante', 'tipo_ejido'], 'integer','message' => Yii::t('backend', 'only integers')],
+            [['ano_inicio', 'manzana_limite',  'inactivo', 'id_habitante', 'tipo_ejido'], 'integer','message' => Yii::t('backend', 'only integers')],
             // [['observacion','datosVendedor','inmuebleVendedor'], 'string'], 
-            [['direccion'], 'string', 'max' => 255,'message' => Yii::t('backend', 'Only 255 character')],
-            [['nivel', 'ambito_catastro','validacion'], 'string', 'max' => 4,'message' => Yii::t('backend', 'Only 3 character')],
+            [['direccion', 'observacion'], 'string', 'max' => 255,'message' => Yii::t('backend', 'Only 255 character')],
+            [['validacion'], 'string', 'max' => 4,'message' => Yii::t('backend', 'Only 3 character')],
             [['av_calle_esq_dom', 'casa_edf_qta_dom'], 'string', 'max' => 50,'message' => Yii::t('backend', 'Only 50 character')],
             [['piso_nivel_no_dom', 'apto_dom'], 'string', 'max' => 25,'message' => Yii::t('backend', 'Only 25 character')],
             [['tlf_hab'], 'string', 'max' => 15,'message' => Yii::t('backend', 'Only 15 character')],
-            [['medidor', 'id_sim'], 'string', 'max' => 20,'message' => Yii::t('backend', 'Only 20 character')],
-            [['medidor'], 'string', 'max' => 20],
+            [['medidor'], 'string', 'max' => 20,'message' => Yii::t('backend', 'Only 20 character')],
+            
             
         ]; 
     }
