@@ -121,7 +121,7 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
                   
                    <div class="row">
                         
-                            <div class="col-sm-2" style="margin-left: 15px;"> 
+                            <div class="col-sm-2"> 
                             <?= Yii::t('backend', 'Phone') ?>
                             </div> 
                         
@@ -159,7 +159,7 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
 
                    <div class="row">
                         
-                            <div class="col-sm-2" style="margin-left: 15px;"> 
+                            <div class="col-sm-2"> 
                             <?= Yii::t('backend', 'Observation') ?>
                             </div>
                         
