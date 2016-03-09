@@ -141,7 +141,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      *Metodo para crear las cuentas de usuarios de los funcionarios
      *@return model 
      **/
-     public function actionCambioOtrosDatosInmueblesUrbanos()
+     public function actionCambioOtrosDatosInmuebles()
      { 
 
          if ( isset(Yii::$app->user->identity->id_contribuyente) ) {
@@ -204,7 +204,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                    $model->getErrors(); 
               }
          }
-              return $this->render('cambio-otros-datos-inmuebles-urbanos', ['model' => $model, ]);  
+              return $this->render('cambio-otros-datos-inmuebles', ['model' => $model, ]);  
 
         }  else {
                     echo "No hay Contribuyente Registrado!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['site/login'])."'>";
