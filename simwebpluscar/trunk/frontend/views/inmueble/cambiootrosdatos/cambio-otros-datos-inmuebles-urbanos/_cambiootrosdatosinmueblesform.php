@@ -11,7 +11,7 @@ use backend\models\inmueble\Municipios;
 /* @var $this yii\web\View */
 /* @var $model backend\models\InscripcionInmueblesUrbanosForm */
 /* @var $form ActiveForm */
-$this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_impuesto;
+$this->title = Yii::t('frontend', 'Property Update');
 ?>
 <div class="inscripcionInmueblesUrbanos">
 

@@ -229,7 +229,7 @@ $id_impuesto=$datos->id_impuesto;
 
             $tipoSolicitud = self::DatosConfiguracionTiposSolicitudes();
 
-            $arrayDatos1 = [  'id_contribuyente' => $model->id_contribuyente,
+            $arrayDatos1 = [  'id_contribuyente' => $datos->id_contribuyente,
                               'id_config_solicitud' => 68,
                               'impuesto' => 2,
                               'id_impuesto' => $datos->id_impuesto,
@@ -254,7 +254,7 @@ die(var_dump($arrayDatos1));
 
 
                     //$id_impuesto = $model->id_impuesto;                   //clave principal de la tabla no sale en el formulario identificador del inpuesto inmobiliario
-                $id_contribuyente = $model->id_contribuyente;         //identidad del contribuyente
+                $id_contribuyente = $datos->id_contribuyente;         //identidad del contribuyente
                 $ano_inicio = $model->ano_inicio;                     //anio de inicio
                 $direccion = $model->direccion;                       //direccion
                 //$av_calle_esq_dom = $model->av_calle_esq_dom;         //avenida. calle. esquina. domicilio
