@@ -59,7 +59,7 @@ use yii\web\Response;
 use common\models\Users;
 use common\models\User;
 use yii\web\Session;
-use frontend\models\inmueble\cambiootrosdatos\CambioOtrosDatosInmueblesUrbanosForm;
+use frontend\models\inmueble\cambiootrosdatos\CambioOtrosDatosInmueblesForm;
 use frontend\models\inmueble\InmueblesSearch;
 use frontend\models\inmueble\InmueblesConsulta;
 
@@ -146,7 +146,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
          if ( isset(Yii::$app->user->identity->id_contribuyente) ) {
          //Creamos la instancia con el model de validación
-         $model = new CambioOtrosDatosInmueblesUrbanosForm();
+         $model = new CambioOtrosDatosInmueblesForm();
 
          $datos = $_SESSION['datos'];
     die(var_dump($datos));
