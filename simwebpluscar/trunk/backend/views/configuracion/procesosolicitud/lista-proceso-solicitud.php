@@ -48,7 +48,6 @@
         <?= GridView::widget([
                 'id' => 'grid-lista-proceso',
                 'dataProvider' => $dataProvider,
-                'filterModel' => true,
                 'summary' => '',
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
@@ -63,7 +62,11 @@
                     [
                         'class' => 'yii\grid\DataColumn',
                         'attribute' => 'ejecutar_en',
-                        'filter' => [1 => "1" , 2 => "2"],
+                        'filterInputOptions' => [
+                                'class' => 'form-control',
+                                'id' => 'ejecutar',
+                                'filter' => ["1" => "uno", "2" => "dos"],
+                        ],
                     ],
                     [
                         'class' => 'yii\grid\CheckboxColumn',
