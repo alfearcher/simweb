@@ -67,43 +67,44 @@ function bloquea() {
             </div> 
             <div class="panel-body" >
                 <table class="table table-striped ">
-                    <tr>
-                        <td style="max-width: 85px" align="right"> 
+                    
+                    <div class="row">
+                        
                             <div class="col-sm-1"> 
                             <?= Yii::t('backend', 'IdTaxpayer') ?>
                             </div> 
-                        </td>
+                        
 
-                        <td colspan = "10" style="max-width: 100px" align="letf">
+                        
                             <div class="col-sm-4">
                             <?= $form->field($model, 'id_contribuyente')->textInput(['readonly'=>'readonly','value'=>Yii::$app->user->identity->id_contribuyente,'style' => 'width:80px;'])->label(false) //Yii::$app->user->identity->id_contribuyente?>
                             </div> 
-                        </td>
+                        
 
-                    </tr>
+                    </div>
                                                     
 
 <!-- Direccion y anio de domicilio --> 
-                   <tr>
-                        <td style="max-width: 85px" align="right">
+                   <div class="row">
+                        
                             <div class="col-lg-2"> 
                             <?= Yii::t('backend', 'Street Addres') ?> 
                             </div> 
-                        </td>
+                        
 
-                        <td colspan="4" style="max-width: 100px" align="letf">
+                        
                             <div class="col-lg-4"> 
                             <?= $form->field($model, 'direccion')->textarea(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?>
                             </div> 
-                        </td>
+                        
 
-                        <td style="max-width: 100px" align="letf">
+                       
                             <div class="col-lg-1"> 
                             <?= Yii::t('backend', 'Year home') ?>
                             </div> 
-                        </td>
+                        
 
-                        <td colspan="7" style="max-width: 100px" align="letf">
+                        
                             <div class="col-lg-1"> 
                             <?= $form->field($model, 'ano_inicio')->textInput(['style' => 'width:80px;'])->label(false)/*->input('date', 
                                                                            [
@@ -113,74 +114,74 @@ function bloquea() {
                                                                               //'format' => 'yyyy-mm-dd',
                                                                            ])*/  ?>  
                             </div>                                                                          
-                        </td>
-                   </tr>
+                        
+                   </div>
  <!-- Direccion del domicilio -->                   
-                   <tr> 
-                        <td colspan="2" style="max-width: 85px" align="right">
+                   <div class="row"> 
+                        
                             <div class="col-lg-2"> 
                             <?= Yii::t('backend', 'Hse/Building/Ctryhse') ?>
                             </div>  
-                        </td>
+                        
 
-                        <td style="max-width: 100px" align="letf">
+                        
                             <div class="col-lg-2">
                             <?= $form->field($model, 'casa_edf_qta_dom')->textInput(['style' => 'width:80px;'])->label(false) ?>
                             </div> 
-                        </td>
+                        
 
-                        <td style="max-width: 100px" align="letf">
+                        
                             <div class="col-lg-2"> 
                             <?= Yii::t('backend', 'Floor/Level') ?>
                             </div> 
-                        </td>
+                        
 
-                        <td style="max-width: 100px" align="letf">
+                        
                             <div class="col-lg-2">
                             <?= $form->field($model, 'piso_nivel_no_dom')->textInput(['style' => 'width:80px;'])->label(false) ?>
                             </div> 
-                        </td>
+                        
 
-                        <td style="max-width: 100px" align="letf">
+                        
                             <div class="col-lg-2"> 
                             <?= Yii::t('backend', 'Apartment/Num') ?>
                             </div> 
-                        </td>
+                        
 
-                        <td  style="max-width: 100px" align="letf">
+                        
                             <div class="col-lg-2">
                             <?= $form->field($model, 'apto_dom')->textInput(['style' => 'width:80px;'])->label(false) ?>
                             </div> 
-                        </td>
+                        
 
-                        <td style="max-width: 100px" align="letf">
+                        
                             <div class="col-lg-1"> 
                             <?= Yii::t('backend', 'Meter') ?>
                             </div> 
-                        </td>
+                        
 
-                        <td colspan="4" style="max-width: 100px" align="letf">
+                        
                             <div class="col-lg-2">
                             <?= $form->field($model, 'medidor')->textInput(['style' => 'width:80px;'])->label(false) ?>
                             </div>                                                                        
-                        </td>
-                    </tr>
+                        
+                    </div>
 
 <!-- Observacion y Tipo de ejido de domicilio --> 
-                   <tr>
-                        <td style="max-width: 85px" align="right">
+                   <div class="row">
+                        
                             <div class="col-lg-1"> 
                             <?= Yii::t('backend', 'Observation') ?> 
                             </div> 
-                        </td>
+                        
 
-                        <td colspan="4" style="max-width: 100px" align="letf">
+                        
                             <div class="col-lg-4">
                             <?= $form->field($model, 'observacion')->textarea(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?>
                             </div>    
-                        </td>
+                        
 
-                        <td colspan="7" style="max-width: 100px" align="letf">                                                                    
+                                                                                           
                             <div class="col-lg-2">
                             <?= $form->field($model, 'tipo_ejido')->checkbox(['style' => 'width:50px;']) ?>
                             </div> 
@@ -199,13 +200,13 @@ function bloquea() {
 
                                                                                                                                             ]
                                                                                                                                             ])->label(false) ?>
-                                                    </div>
-                        </td> 
+                            </div>
+                        
 
                         
-                   </tr>
-                   <tr>
-                        <td colspan="10" style="max-width: 100px" align="letf">
+                   </div>
+                   <div class="row">
+                        
                             <div class="form-group"> 
                             <?= Html::submitButton(Yii::t('backend', 'Incorporate'), ['class' => 'btn btn-success',
                                       'data' => [
@@ -213,9 +214,9 @@ function bloquea() {
                                                   'method' => 'post',],]) ?>
                             <?= Html::a(Yii::t('backend', 'Back'), ['/site/menu-vertical'], ['class' => 'btn btn-danger']) ?>
                             </div>                                                                        
-                        </td>
+                        
 
-                   </tr>    
+                   </div>    
 
                     
                 </table>
