@@ -61,7 +61,7 @@ use yii\filters\AccessControl;
 use frontend\controllers\mensaje\MensajeController;
 use common\conexion\ConexionController;
 use common\seguridad\Seguridad;
-use common\enviaremail\EnviarEmail;
+use common\enviaremail\EnviarEmailJuridico;
 use frontend\models\usuario\CargaDatosBasicosForm;
 use common\models\utilidades\Utilidad;
 
@@ -291,9 +291,9 @@ class CrearUsuarioJuridicoController extends Controller
               $resultado = true;
           }
          
-          $enviarEmail = new EnviarEmail();
+          $enviarEmail = new EnviarEmailJuridico();
  
-          $enviarEmail->enviarEmail($model->email, $nuevaClave);
+          $enviarEmail->enviarEmail($model->email, $nuevaClave, $model->razon_social);
 
           return $resultado;
               

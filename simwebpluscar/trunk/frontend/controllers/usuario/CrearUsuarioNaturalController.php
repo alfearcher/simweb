@@ -61,7 +61,7 @@ use yii\filters\AccessControl;
 use frontend\controllers\mensaje\MensajeController;
 use common\conexion\ConexionController;
 use common\seguridad\Seguridad;
-use common\enviaremail\EnviarEmail;
+use common\enviaremail\EnviarEmailNatural;
 use frontend\models\usuario\CargaDatosBasicosNaturalForm;
 use common\models\utilidades\Utilidad;
 
@@ -301,9 +301,9 @@ class CrearUsuarioNaturalController extends Controller
                     $resultado = true;
                 }
          
-                $enviarEmail = new EnviarEmail();
+                $enviarEmail = new EnviarEmailNatural();
  
-                $enviarEmail->enviarEmail($model->email, $nuevaClave);
+                $enviarEmail->enviarEmail($model->email, $nuevaClave, $model->nombre, $model->apellido);
 
                 return $resultado;
               

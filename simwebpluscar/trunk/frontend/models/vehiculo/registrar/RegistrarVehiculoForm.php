@@ -52,6 +52,7 @@ use yii\base\Model;
 use frontend\models\usuario\CrearUsuarioNatural;
 use frontend\models\usuario\PreguntaSeguridadContribuyente;
 use frontend\models\usuario\Afiliacion;
+use frontend\models\vehiculo\cambiodatos\busquedaVehiculos;
 
 
 
@@ -69,8 +70,10 @@ class RegistrarVehiculoForm extends RegistrarVehiculo
         return [
               [['placa', 'marca', 'modelo', 'ano_compra' ,'ano_vehiculo', 'clase_vehiculo', 'tipo_vehiculo',
                'uso_vehiculo', 'color', 'no_ejes', 'nro_puestos', 'fecha_inicio', 'nro_calcomania', 
-               'peso', 'nro_cilindros', 'precio_inicial', 'capacidad', 'exceso_cap', 'medida_cap',
+               'peso', 'nro_cilindros', 'precio_inicial', 'capacidad',  'medida_cap',
                 'serial_carroceria', 'serial_motor'], 'required' ],
+
+                ['placa', 'buscarPlaca'],
 
             [['color'], 'match' , 'pattern' => "/[a-zA-Z]+/", 'message' => Yii::t('frontend', 'Color must have only letters')],
             
@@ -188,10 +191,33 @@ class RegistrarVehiculoForm extends RegistrarVehiculo
                 
         ];
     }
+    /**
+     * [buscarPlaca description] Metodo que realiza la busqueda de la placa en la tabla vehiculos para verificar si esta ya existe
+     * @return [type] [description]
+     */
+    public function buscarPlaca($attribute, $params)
+    {
+      $busquedaPlaca = busquedaVehiculos::find()
+                                        ->where([
+
+                                      'placa' => $this->placa,
+                                      'status_vehiculo' => 0,
+
+                                          ])
+                                        ->all();
+
+              if ($busquedaPlaca != null){
+
+                $this->addError($attribute, Yii::t('frontend', 'This car plate is already in Use' ));
+              }else{
+                return false;
+              }
+    }
       
     
     
     
    
 
-    }
+    }    
+      
