@@ -149,7 +149,7 @@ function bloquea() {
                         
 
                         
-                            <div class="col-lg-2">
+                            <div class="col-lg-1">
                             <?= $form->field($model, 'apto_dom')->textInput(['style' => 'width:80px;'])->label(false) ?>
                             </div> 
                         
