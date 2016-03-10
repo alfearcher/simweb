@@ -63,14 +63,17 @@
                         'class' => 'yii\grid\DataColumn',
                         'attribute' => 'ejecutar_en',
                         'filter' => true,
-                        'value' => function() {
-                                    $lista = [
-                                            ["id" => "uno", "campo" => "uno"],
-                                            ["id" => "dos", "campo" => "dos"],
-                                    ];
-                                    $result = ArrayHelper::map($lista,'id', "campo");
-                                    echo Html::dropDownList('ejecutar', null, $result);
-                        }
+                        'filterInputOptions' => [
+                                'selected' => ["1" => "uno", "2" => "dos"],
+                        ],
+                        // 'value' => function() {
+                        //             $lista = [
+                        //                     ["id" => "uno", "campo" => "uno"],
+                        //                     ["id" => "dos", "campo" => "dos"],
+                        //             ];
+                        //             $result = ArrayHelper::map($lista,'id', "campo");
+                        //             return Html::dropDownList('ejecutar', null, $result);
+                        // }
                     ],
                     // [
                     //     'class' => 'yii\grid\DataColumn',
