@@ -358,7 +358,12 @@ class CrearUsuarioNaturalController extends Controller
 
             $arregloDatos['email'] = $model->email;
 
-            $arregloDatos['tlf_celular'] = $model->tlf_celular;
+            $codigo = $model->codigo;
+            
+
+            $arregloDatos['tlf_celular'] = $codigo.$model->tlf_celular;
+
+            
 
             $idContribuyente = 0;
             
