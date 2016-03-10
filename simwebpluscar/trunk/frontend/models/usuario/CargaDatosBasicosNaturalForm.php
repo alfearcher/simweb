@@ -195,6 +195,7 @@ class CargaDatosBasicosNaturalForm extends CrearUsuarioNatural
             [['fecha', 'fecha_inclusion', 'fecha_inicio', 'fe_inic_agente_reten'], 'safe'],
             //['fecha_nac','date'], 
            //[['fecha_nac'], 'default', 'value' => null],
+            [['domicilio_fiscal'], 'match' , 'pattern' => "/[a-zA-Z0-9*#°]+/", 'message' => Yii::t('frontend', '{attribute} is sensitive to lower and upper case and some symbols(#*°)')],
             [['capital'], 'number'],
             [['naturaleza', 'sexo'], 'string', 'max' => 1],
             [['nombres', 'apellidos', 'nit', 'casa_edf_qta_dom', 'reg_mercantil', 'tomo', 'folio', 'horario'],  'string', 'max' => 50],
@@ -206,6 +207,7 @@ class CargaDatosBasicosNaturalForm extends CrearUsuarioNatural
             [['representante'], 'string', 'max' => 200],
             [['piso_nivel_no_dom', 'apto_dom'], 'string', 'max' => 25],
             [['domicilio_fiscal'], 'string', 'max' => 250],
+
             [['catastro', 'email'], 'string', 'max' => 60],
             [['tlf_hab', 'tlf_hab_otro', 'tlf_ofic', 'tlf_ofic_otro', 'tlf_celular', 'fax', 'id_sim'], 'string', 'max' => 11],
             [['nivel'], 'string', 'max' => 3],
