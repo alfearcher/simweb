@@ -60,6 +60,7 @@
                         'value' => 'descripcion',
                     ],
                     [
+                        'class' => 'yii\grid\DataColumn',
                         'attribute' => 'ejecutar_en',
                         'value' => function() {
                                     $lista = ["1" => "uno", "2" => "dos"];
