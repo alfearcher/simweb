@@ -70,13 +70,13 @@ function bloquea() {
                     
                     <div class="row">
                         
-                            <div class="col-sm-1"> 
+                            <div class="col-lg-2"> 
                             <?= Yii::t('backend', 'IdTaxpayer') ?>
                             </div> 
                         
 
                         
-                            <div class="col-sm-4">
+                            <div class="col-lg-4">
                             <?= $form->field($model, 'id_contribuyente')->textInput(['readonly'=>'readonly','value'=>Yii::$app->user->identity->id_contribuyente,'style' => 'width:80px;'])->label(false) //Yii::$app->user->identity->id_contribuyente?>
                             </div> 
                         
@@ -99,13 +99,13 @@ function bloquea() {
                         
 
                        
-                            <div class="col-lg-1"> 
+                            <div class="col-lg-2"> 
                             <?= Yii::t('backend', 'Year home') ?>
                             </div> 
                         
 
                         
-                            <div class="col-lg-1"> 
+                            <div class="col-lg-2"> 
                             <?= $form->field($model, 'ano_inicio')->textInput(['style' => 'width:80px;'])->label(false)/*->input('date', 
                                                                            [
                                                                               //'value' => date('d-m-Y'),
@@ -170,7 +170,7 @@ function bloquea() {
 <!-- Observacion y Tipo de ejido de domicilio --> 
                    <div class="row">
                         
-                            <div class="col-lg-1"> 
+                            <div class="col-lg-2"> 
                             <?= Yii::t('backend', 'Observation') ?> 
                             </div> 
                         
@@ -191,13 +191,13 @@ function bloquea() {
                    </div>
                    <div class="row">
                         
-                            <div class="col-lg-2">
+                            <div class="col-lg-1">
                             <?= Html::submitButton(Yii::t('backend', 'Incorporate'), ['class' => 'btn btn-success',
                                       'data' => [
                                                   'confirm' => Yii::t('app', 'Are you sure you want to Incorporate this item?'),
                                                   'method' => 'post',],]) ?>
                             </div>
-                            <div class="col-lg-2">
+                            <div class="col-lg-1">
                             <?= Html::a(Yii::t('backend', 'Back'), ['/site/menu-vertical'], ['class' => 'btn btn-danger']) ?>
                             </div>                                                                        
                         
