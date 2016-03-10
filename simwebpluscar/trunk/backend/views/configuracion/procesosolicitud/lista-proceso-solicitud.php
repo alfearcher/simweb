@@ -62,6 +62,7 @@
                     [
                         'class' => 'yii\grid\DataColumn',
                         'attribute' => 'ejecutar_en',
+                        'filter' => true,
                         'value' => function() {
                                     $lista = [
                                             ["id" => "1", "campo" => "uno"],
