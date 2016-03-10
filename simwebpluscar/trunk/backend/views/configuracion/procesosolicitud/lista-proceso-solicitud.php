@@ -68,8 +68,8 @@
                                             ["id" => "uno", "campo" => "uno"],
                                             ["id" => "dos", "campo" => "dos"],
                                     ];
-                                    $resul = ArrayHelper::map($lista,'id', "campo");
-                                    return Html::dropDownList('ejecutar', null, $resul);
+                                    $result = ArrayHelper::map($lista,'id', "campo");
+                                    echo Html::dropDownList('ejecutar', null, $result);
                         }
                     ],
                     // [
