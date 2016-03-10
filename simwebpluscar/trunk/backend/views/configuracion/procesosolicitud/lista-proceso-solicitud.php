@@ -65,8 +65,8 @@
                         'filter' => true,
                         'value' => function() {
                                     $lista = [
-                                            ["id" => "1", "campo" => "uno"],
-                                            ["id" => "2", "campo" => "dos"],
+                                            ["id" => "uno", "campo" => "uno"],
+                                            ["id" => "dos", "campo" => "dos"],
                                     ];
                                     $resul = ArrayHelper::map($lista,'id', "campo");
                                     return Html::dropDownList('ejecutar', null, $resul);
