@@ -61,10 +61,12 @@
                     ],
                     [
                         'attribute' => 'ejecutar_en',
-                        'filter' => [
+                        'value' => function() {
+                            return [
                                         "1" => "CREAR",
                                         "2" => "APROBAR",
-                                    ]
+                                   ];
+                        }
                     ],
                     [
                         'class' => 'yii\grid\CheckboxColumn',
