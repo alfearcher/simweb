@@ -60,11 +60,9 @@
                         'value' => 'descripcion',
                     ],
                     [
+                        'class' => 'yii\data\DataColumn',
                         'attribute' => 'ejecutar_en',
-                        'value' => function() {
-                            $lista = 2;
-                            return $lista;
-                        }
+                        'filter' => [1 => "1" , 2 => "2"],
                     ],
                     [
                         'class' => 'yii\grid\CheckboxColumn',
