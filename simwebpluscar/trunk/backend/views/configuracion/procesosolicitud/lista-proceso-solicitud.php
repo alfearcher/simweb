@@ -48,6 +48,7 @@
         <?= GridView::widget([
                 'id' => 'grid-lista-proceso',
                 'dataProvider' => $dataProvider,
+                'filterModel' => true,
                 'summary' => '',
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
