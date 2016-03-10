@@ -60,7 +60,7 @@
                         'value' => 'descripcion',
                     ],
                     [
-                        'class' => 'yii\data\DataColumn',
+                        'class' => 'yii\grid\DataColumn',
                         'attribute' => 'ejecutar_en',
                         'filter' => [1 => "1" , 2 => "2"],
                     ],
