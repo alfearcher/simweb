@@ -63,7 +63,7 @@
                         'attribute' => 'ejecutar_en',
                         'value' => function() {
                                     $lista = ["1" => "uno", "2" => "dos"];
-                                    return Html::dropDownList($lista);
+                                    return Html::dropDownList('ejecutar', null, $lista);
                         }
                     ],
                     // [
