@@ -97,10 +97,10 @@
                             <?= $form->field($model, 'fecha_nac')->widget(\yii\jui\DatePicker::classname(),[
                                                                                         //'type' => 'date',
                                                                                         'clientOptions' => [
-                                                                                            'maxDate' => '+0d', // Bloquear los dias en el calendario a partir del dia siguiente al actual.
+                                                                                           // 'maxDate' => '+0d', // Bloquear los dias en el calendario a partir del dia siguiente al actual.
                                                                                          ],
                                                                                        'language' => 'es-ES',
-                                                                                       'dateFormat' => 'dd-MM-yyyy',
+                                                                                       'dateFormat' => 'yyyy-MM-dd',
                                                                                         'options' => [
                                                                                             //'onClick' => 'alert("calendario")',
                                                                                             'id' => 'fecha-nac',
