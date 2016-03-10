@@ -65,7 +65,7 @@ class EnviarEmailJuridico{
      */
     public function enviarEmail($email,$nuevaClave, $razonSocial)
     {
-      die($razonSocial);
+     // die($razonSocial);
        return Yii::$app->mailer->compose()
         ->setFrom('manuelz0510@gmail.com')
         ->setTo($email)
