@@ -79,6 +79,23 @@ function bloquea() {
                             <div class="col-lg-4">
                             <?= $form->field($model, 'id_contribuyente')->textInput(['readonly'=>'readonly','value'=>Yii::$app->user->identity->id_contribuyente,'style' => 'width:80px;'])->label(false) //Yii::$app->user->identity->id_contribuyente?>
                             </div> 
+
+
+                            <div class="col-lg-2"> 
+                            <?= Yii::t('backend', 'Year home') ?>
+                            </div> 
+                        
+
+                        
+                            <div class="col-lg-2"> 
+                            <?= $form->field($model, 'ano_inicio')->textInput(['style' => 'width:80px;'])->label(false)/*->input('date', 
+                                                                           [
+                                                                              //'value' => date('d-m-Y'),
+                                                                              'type' => 'date',
+                                                                              'style' => 'width:160px;'
+                                                                              //'format' => 'yyyy-mm-dd',
+                                                                           ])*/  ?>  
+                            </div>
                         
 
                     </div>
@@ -99,21 +116,7 @@ function bloquea() {
                         
 
                        
-                            <div class="col-lg-2"> 
-                            <?= Yii::t('backend', 'Year home') ?>
-                            </div> 
-                        
-
-                        
-                            <div class="col-lg-2"> 
-                            <?= $form->field($model, 'ano_inicio')->textInput(['style' => 'width:80px;'])->label(false)/*->input('date', 
-                                                                           [
-                                                                              //'value' => date('d-m-Y'),
-                                                                              'type' => 'date',
-                                                                              'style' => 'width:160px;'
-                                                                              //'format' => 'yyyy-mm-dd',
-                                                                           ])*/  ?>  
-                            </div>                                                                          
+                                                                                                      
                         
                    </div>
  <!-- Direccion del domicilio -->                   
