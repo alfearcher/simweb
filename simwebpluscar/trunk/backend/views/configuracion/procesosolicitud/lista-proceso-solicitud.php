@@ -60,7 +60,7 @@
                         'value' => 'descripcion',
                     ],
                     [
-                        'label' => 'Ejecutar en',
+                        'attribute' => 'ejecutar_en',
                         'filter' => [
                                         "1" => "CREAR",
                                         "2" => "APROBAR",
