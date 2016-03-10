@@ -62,7 +62,7 @@
                     [
                         'class' => 'yii\grid\DataColumn',
                         'attribute' => 'ejecutar_en',
-                        'value' => function() {
+                        'filter' => function() {
                                     $lista = ["1" => "uno", "2" => "dos"];
                                     return Html::dropDownList('ejecutar', null, $lista);
                         }
