@@ -93,7 +93,7 @@ function bloquea() {
                         
 
                         
-                            <div class="col-lg-4"> 
+                            <div class="col-lg-3"> 
                             <?= $form->field($model, 'direccion')->textarea(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?>
                             </div> 
                         
@@ -125,7 +125,7 @@ function bloquea() {
                         
 
                         
-                            <div class="col-lg-2">
+                            <div class="col-lg-1">
                             <?= $form->field($model, 'casa_edf_qta_dom')->textInput(['style' => 'width:80px;'])->label(false) ?>
                             </div> 
                         
@@ -137,7 +137,7 @@ function bloquea() {
                         
 
                         
-                            <div class="col-lg-2">
+                            <div class="col-lg-1">
                             <?= $form->field($model, 'piso_nivel_no_dom')->textInput(['style' => 'width:80px;'])->label(false) ?>
                             </div> 
                         
@@ -161,7 +161,7 @@ function bloquea() {
                         
 
                         
-                            <div class="col-lg-2">
+                            <div class="col-lg-1">
                             <?= $form->field($model, 'medidor')->textInput(['style' => 'width:80px;'])->label(false) ?>
                             </div>                                                                        
                         
@@ -176,7 +176,7 @@ function bloquea() {
                         
 
                         
-                            <div class="col-lg-4">
+                            <div class="col-lg-3">
                             <?= $form->field($model, 'observacion')->textarea(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?>
                             </div>    
                         
