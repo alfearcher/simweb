@@ -252,29 +252,18 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                 $result = $conexion->getLastInsertID();
 
 
-                    //$id_impuesto = $model->id_impuesto;                   //clave principal de la tabla no sale en el formulario identificador del inpuesto inmobiliario
-                $id_contribuyente = $datos->id_contribuyente;         //identidad del contribuyente
-                $ano_inicio = $model->ano_inicio;                     //anio de inicio
-                $direccion = $model->direccion;                       //direccion
-                //$av_calle_esq_dom = $model->av_calle_esq_dom;         //avenida. calle. esquina. domicilio
-                $casa_edf_qta_dom = $model->casa_edf_qta_dom;         //casa. edificio. quinta. domicilio
-                $piso_nivel_no_dom = $model->piso_nivel_no_dom;       //piso. nivel. numero. domicilio
-                $apto_dom = $model->apto_dom;                         //apartamento. domicilio
-                $medidor = $model->medidor;                           //medidor
-                $observacion = $model->observacion;                   //observaciones
-                $tipo_ejido = $model->tipo_ejido;                     //tipo ejido
-
-                $arrayDatos2 = [    'id_contribuyente' => $id_contribuyente,
+                $arrayDatos2 = [    'id_contribuyente' => $datos->id_contribuyente,
+                                    'id_impuesto' => $datos->id_impuesto,
                                     'nro_solicitud' => $result,
-                                    'ano_inicio' => $ano_inicio,
-                                    'direccion' => $direccion,
-                                    'medidor' => $medidor,
-                                    'observacion' => $observacion,
+                                    'ano_inicio' => $model->ano_inicio,
+                                    'direccion' => $model->direccion,
+                                    'medidor' => $model->medidor,
+                                    'observacion' => $model->observacion,
                                     'tipo_ejido' => $tipo_ejido,
                                   //'av_calle_esq_dom' => $av_calle_esq_dom,
-                                    'casa_edf_qta_dom' => $casa_edf_qta_dom,
-                                    'piso_nivel_no_dom' => $piso_nivel_no_dom,
-                                    'apto_dom' => $apto_dom,
+                                    'casa_edf_qta_dom' => $model->casa_edf_qta_dom,
+                                    'piso_nivel_no_dom' => $model->piso_nivel_no_dom,
+                                    'apto_dom' => $model->apto_dom,
                                     'fecha_creacion' => date('Y-m-d h:i:s'),
                                 ]; 
 
