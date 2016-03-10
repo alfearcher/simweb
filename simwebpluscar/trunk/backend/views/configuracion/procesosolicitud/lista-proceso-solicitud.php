@@ -60,14 +60,21 @@
                         'value' => 'descripcion',
                     ],
                     [
-                        'class' => 'yii\grid\DataColumn',
                         'attribute' => 'ejecutar_en',
-                        'filterInputOptions' => [
-                                'class' => 'form-control',
-                                'id' => 'ejecutar',
-                        ],
-                        'filter' => ["1" => "uno", "2" => "dos"],
+                        'value' => function() {
+                                    $lista = ["1" => "uno", "2" => "dos"];
+                                    return Html::dropDownList($lista);
+                        }
                     ],
+                    // [
+                    //     'class' => 'yii\grid\DataColumn',
+                    //     'attribute' => 'ejecutar_en',
+                    //     'filterInputOptions' => [
+                    //             'class' => 'form-control',
+                    //             'id' => 'ejecutar',
+                    //     ],
+                    //     'filter' => ["1" => "uno", "2" => "dos"],
+                    // ],
                     [
                         'class' => 'yii\grid\CheckboxColumn',
                         'name' => 'chk-proceso-generado',
