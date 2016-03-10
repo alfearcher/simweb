@@ -65,8 +65,8 @@
                         'filterInputOptions' => [
                                 'class' => 'form-control',
                                 'id' => 'ejecutar',
-                                'filter' => ["1" => "uno", "2" => "dos"],
                         ],
+                        'filter' => ["1" => "uno", "2" => "dos"],
                     ],
                     [
                         'class' => 'yii\grid\CheckboxColumn',
