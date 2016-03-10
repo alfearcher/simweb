@@ -62,8 +62,8 @@
                     [
                         'label' => 'Ejecutar en',
                         'filter' => [
-                                        Yii::$app->solicitud->crear(),
-                                        Yii::$app->solicitud->aprobar(),
+                                        "1" => Yii::$app->solicitud->crear(),
+                                        "2" => Yii::$app->solicitud->aprobar(),
                                     ]
                     ],
                     [
