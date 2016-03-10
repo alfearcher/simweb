@@ -71,7 +71,7 @@ class EnviarEmailJuridico{
         ->setTo($email)
         ->setSubject('Bienvenido al Servicio Online')
         ->setTextBody('Bienvenido al Servicio Online')
-        ->setHtmlBody('Estimado Contribuyente:'.$razonSocial.'<br><br>
+        ->setHtmlBody('Estimado Contribuyente:'.' '.$razonSocial.'<br><br>
                        Usted ha realizado con exito su registro<br><br>
                        Usuario: ' .$email.'<br>'.'Contraseña: '.$nuevaClave.'<br><br>'.
                        'A partir de este momento puede disfrutar de nuestro servicio "on-line".<br>
