@@ -120,7 +120,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                  //condicionales     
                   
-                if (!\Yii::$app->user->isGuest){                                      
+                if (!\Yii::$app->user->isGuest){                                    
                       
 
                      $guardo = self::GuardarInscripcion($model);
