@@ -60,6 +60,13 @@
                         'value' => 'descripcion',
                     ],
                     [
+                        'label' => 'Ejecutar en',
+                        'filter' => [
+                                        Yii::$app->solicitud->crear,
+                                        Yii::$app->solicitud->aprobar,
+                                    ]
+                    ],
+                    [
                         'class' => 'yii\grid\CheckboxColumn',
                         'name' => 'chk-proceso-generado',
                     ],
