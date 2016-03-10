@@ -189,13 +189,15 @@ class CargaDatosBasicosNaturalForm extends CrearUsuarioNatural
 
         
             [['ente','naturaleza', 'fecha_nac','cedula', 'tipo', 'email', 'nombres', 'apellidos',  'sexo', 'codigo', 'domicilio_fiscal', 'tlf_celular'],'required'],
-              [['tlf_celular'], 'match' , 'pattern' => "/^.{7,7}$/", 'message' => Yii::t('frontend', 'Phone number must have 7 digits')],
-              ['tlf_celular', 'integer', 'message' => Yii::t('frontend', 'Mobile phone must be an integer')],
+               [['tlf_celular'], 'match' , 'pattern' => "/^.{7,7}$/", 'message' => Yii::t('frontend', 'Phone number must have 7 digits')],
+               [['tlf_celular'], 'match' , 'pattern' => "/[0-9]+/", 'message' => Yii::t('frontend', '{attribute} must be an integer')],
+              // ['tlf_celular', 'string', 'length' => [4,7]], 
+
             [['ente','cedula', 'tipo', 'tipo_naturaleza', 'id_rif', 'id_cp', 'inactivo', 'cuenta', 'num_reg', 'extension_horario', 'num_empleados', 'tipo_contribuyente', 'licencia', 'agente_retencion', 'manzana_limite', 'lote_1', 'lote_2', 'lote_3', 'foraneo', 'no_declara', 'econ_informal', 'grupo_contribuyente', 'no_sujeto'], 'integer'],
             [['fecha', 'fecha_inclusion', 'fecha_inicio', 'fe_inic_agente_reten'], 'safe'],
             //['fecha_nac','date'], 
            //[['fecha_nac'], 'default', 'value' => null],
-            [['domicilio_fiscal'], 'match' , 'pattern' => "/[a-zA-Z0-9*#°]+/", 'message' => Yii::t('frontend', '{attribute} is sensitive to lower and upper case and some symbols(#*°)')],
+            [['domicilio_fiscal'], 'match' , 'pattern' => "/[a-zA-Z0-9*#°.,-_]+/", 'message' => Yii::t('frontend', '{attribute} is sensitive to lower and upper case and some symbols(#*°.,-_)')],
             [['capital'], 'number'],
             [['naturaleza', 'sexo'], 'string', 'max' => 1],
             [['nombres', 'apellidos', 'nit', 'casa_edf_qta_dom', 'reg_mercantil', 'tomo', 'folio', 'horario'],  'string', 'max' => 50],
@@ -209,7 +211,7 @@ class CargaDatosBasicosNaturalForm extends CrearUsuarioNatural
             [['domicilio_fiscal'], 'string', 'max' => 250],
 
             [['catastro', 'email'], 'string', 'max' => 60],
-            [['tlf_hab', 'tlf_hab_otro', 'tlf_ofic', 'tlf_ofic_otro', 'tlf_celular', 'fax', 'id_sim'], 'string', 'max' => 11],
+            [['tlf_hab', 'tlf_hab_otro', 'tlf_ofic', 'tlf_ofic_otro',  'fax', 'id_sim'], 'string', 'max' => 11],
             [['nivel'], 'string', 'max' => 3],
             [['ruc'], 'string', 'max' => 20],
             ['email', 'filter','filter'=>'strtolower'],

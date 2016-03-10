@@ -169,6 +169,7 @@ class CargaDatosBasicosForm extends CrearUsuarioJuridico
         public $cedula_rep;
         public $codigo;
         public $codigo2;
+        public $codigo3;
 
 
     /**
@@ -185,11 +186,11 @@ class CargaDatosBasicosForm extends CrearUsuarioJuridico
     public function rules()
     {
         return [            
-            [['ente','naturaleza', 'cedula', 'tipo',  'tlf_ofic', 'email', 'codigo'],'required'],
+            [['ente', 'cedula', 'tipo',  'tlf_ofic', 'email', 'codigo', 'codigo3'],'required'],
             [['tlf_celular', 'tlf_ofic'], 'match', 'pattern' => "/^.{7,7}$/", 'message' => Yii::t('frontend', 'Phone number must have 7 digits')],
             ['tlf_celular', 'integer', 'message' => Yii::t('frontend', 'Mobile phone must be an integer')],
             ['tlf_ofic', 'integer', 'message' => Yii::t('frontend', 'Mobile phone must be an integer')],
-            
+            [['domicilio_fiscal'], 'match' , 'pattern' => "/[a-zA-Z0-9*#°.,-_]+/", 'message' => Yii::t('frontend', '{attribute} is sensitive to lower and upper case and some symbols(#*°.,-_)')],
 
             [['ente','cedula', 'tipo', 'tipo_naturaleza', 'id_rif', 'id_cp', 'inactivo', 'cuenta', 'num_reg', 'extension_horario', 'num_empleados', 'tipo_contribuyente', 'licencia', 'agente_retencion', 'manzana_limite', 'lote_1', 'lote_2', 'lote_3', 'foraneo', 'no_declara', 'econ_informal', 'grupo_contribuyente', 'no_sujeto'], 'integer'],
             [['fecha_nac', 'fecha', 'fecha_inclusion', 'fecha_inicio', 'fe_inic_agente_reten'], 'safe'],            
@@ -230,7 +231,8 @@ class CargaDatosBasicosForm extends CrearUsuarioJuridico
     {
         return [
           'codigo' => Yii::t('frontend', 'Code'),
-            'codigo2' => Yii::t('frontend', 'Code'),
+          'codigo2' => Yii::t('frontend', 'Code'),
+          'codigo3' => Yii::t('frontend', 'Code'),
 
 
             'id_contribuyente' => Yii::t('frontend', 'Id Contribuyente'),

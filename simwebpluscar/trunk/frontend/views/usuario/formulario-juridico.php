@@ -29,7 +29,7 @@
             $("#tmensaje").hide();
             $("#tJuridico").hide();
             $("#subMenuTipoPersona").hide();
-            $("#tNatural").hide();
+           // $("#tNatural").hide();
             $("#tmensajeJuri").hide();
             $("#paneldataBasicRegister").show();
             location.reload(true);
@@ -38,7 +38,7 @@
             $("#subMenuTipoPersona").show();
             $("#tmensajeJuri").show();
             $("#tmensaje").show();
-            $("#tNatural").hide();
+           // $("#tNatural").hide();
             $("#paneldataBasicRegister").show();
         }else{
             $("#tJuridico").hide();
@@ -46,7 +46,7 @@
             $("#subMenuTipoPersona").hide();
             $("#tmensaje").hide();
             $("#paneldataBasicRegister").hide();
-            $("#tNatural").show();
+            //$("#tNatural").show();
         }           
     }
     function tipoNaturalezaContribuyente(tipoContri){
@@ -93,15 +93,7 @@
     <h3><?= Yii::t('backend', 'Registration Basic Information') ?> </h3>
 </div>
 <div class="datosbasico-form" >
-<?php $form = ActiveForm::begin([
-            'id' => 'form-datosBasicoNatural-inline',
-            'method' => 'post',
-            
-            'enableClientValidation' => true,
-            'enableAjaxValidation' => true,
-            'enableClientScript' => true,
-        ]);    
-?>      
+
 </div>
 
     <!-- FIN SELECTOR DE TIPO DE PERSONA -->
@@ -119,7 +111,7 @@
             'method' => 'post',
             'action' => ['/usuario/crear-usuario-juridico/juridico'],
             'enableClientValidation' => true,
-            'enableAjaxValidation' => true,
+            'enableAjaxValidation' => false,
             'enableClientScript' => true,
 
         ]);    
@@ -292,7 +284,7 @@
                             
                                  <div class="row">
                                     <div class="col-sm-2">
-                                    <?= $form->field($model, 'codigo')->dropDownList($listaTelefonoCodigoCelu, ['inline' => true,
+                                    <?= $form->field($model, 'codigo3')->dropDownList($listaTelefonoCodigoCelu, ['inline' => true,
                                                                                              'prompt' => Yii::t('frontend', 'Select'), 
                                                                                              'style' => 'width:100px;',
                                                                                              'id' => 'codigo_celu',
@@ -352,44 +344,7 @@
         <?= Html::activeHiddenInput($model, 'no_sujeto', ['value' => '1']) ?>
     </div>
 
-    <?php 
-    /*
-    *****************************************************
-    *       Fin del Segmento -Persona Juridica-         *
-    *****************************************************
-    */
-    ?>
-
-<?php 
-
-?>
-<!-- SCRIPT DEL WIDGET CALENDARIO -->       
-<script type="text/javascript">
-    Reloj(); // PERMITE LA RECARGAR LOS MINUTOS Y SEGUNDOS AUTOMATICAMENTE
-    function Reloj() {
-        var tiempo = new Date(); // SE CREA LA INSTANCIA DE LA CLASE PROPIA DE JQUERY DATE
-        var hora = tiempo.getHours(); // METODO PROPIO DE JQ PARA OBTENER LA HORA
-        var minuto = tiempo.getMinutes(); // METODO PROPIO DE JQ PARA OBTENER EL MINUTO
-        var segundo = tiempo.getSeconds(); // METODO PROPIO DE JQ PARA OBTENER LOS SEGUNDOS
-        document.getElementById('hora').innerHTML = hora;
-        document.getElementById('minuto').innerHTML = minuto;
-        document.getElementById('segundo').innerHTML = segundo;
-        setTimeout('Reloj()', 1000);
-        str_hora = new String(hora);
-        if (str_hora.length == 1) {
-            document.getElementById('hora').innerHTML = '0' + hora;
-        }
-        str_minuto = new String(minuto);
-        if (str_minuto.length == 1) {
-            document.getElementById('minuto').innerHTML = '0' + minuto;
-        }
-        str_segundo = new String(segundo);
-        if (str_segundo.length == 1) {
-            document.getElementById('segundo').innerHTML = '0' + segundo;
-        }
-    }
-</script>
-<!-- FIN DEL SCRIPT DEL WIDGET CALENDARIO -->
+    
 <?php 
 /*
 *****************************************************

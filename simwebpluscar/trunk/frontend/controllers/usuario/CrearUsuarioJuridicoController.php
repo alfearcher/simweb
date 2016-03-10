@@ -341,11 +341,16 @@ class CrearUsuarioJuridicoController extends Controller
 
       $arregloDatos['fecha_nac'] = $model->fecha_nac;
 
-      $arregloDatos['tlf_ofic'] = $model->tlf_ofic;
+      $codigo = $model->codigo;
+      
+      $arregloDatos['tlf_ofic'] = $codigo.$model->tlf_ofic;
+
 
       $arregloDatos['tlf_ofic_otro'] = $model->tlf_ofic_otro;
 
-      $arregloDatos['tlf_celular'] = $model->tlf_celular;
+      $codigoCelular = $model->codigo3;
+
+      $arregloDatos['tlf_celular'] = $codigoCelular.$model->tlf_celular;
 
       $idContribuyente = 0;
             
