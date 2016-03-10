@@ -62,10 +62,11 @@
                     [
                         'attribute' => 'ejecutar_en',
                         'value' => function() {
-                            return [
+                            $lista = [
                                         "1" => "CREAR",
                                         "2" => "APROBAR",
                                    ];
+                            return $lista;
                         }
                     ],
                     [
