@@ -81,7 +81,7 @@ session_start();
 /*********************************************************************************************************
  * InscripcionInmueblesUrbanosController implements the actions for InscripcionInmueblesUrbanosForm model.
  *********************************************************************************************************/
-class CambioOtrosDatosInmueblesUrbanosController extends Controller
+class DesincorporacionInmueblesUrbanosController extends Controller
 {
    
     public $conn;
