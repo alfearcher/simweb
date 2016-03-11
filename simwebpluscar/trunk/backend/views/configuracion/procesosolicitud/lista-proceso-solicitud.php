@@ -100,7 +100,7 @@
     //         alert("hola");
     //     });
     // });
-    'function habilitarDeshabilitar() {
+    '$function habilitarDeshabilitar() {
         alert("kakaak");
     }'
     );
