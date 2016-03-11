@@ -23,7 +23,7 @@ function bloquea() {
 }*/
  //alert('estoy'+document.getElementById("propiedadhorizontal").checked);
 
-       
+      
     
     if (document.getElementById("propiedadhorizontal").checked==1) { 
         document.getElementById("subparcela").style.display=''; 

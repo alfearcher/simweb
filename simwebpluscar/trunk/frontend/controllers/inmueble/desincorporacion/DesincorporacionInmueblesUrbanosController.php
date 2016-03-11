@@ -21,14 +21,14 @@
  */
 
  /**    
- *  @file CambioOtrosDatosInmueblesUrbanosController.php
+ *  @file DesincorporacionInmueblesUrbanosController.php
  *  
  *  @author Alvaro Jose Fernandez Archer
  * 
  *  @date 08-03-2016
  * 
- *  @class CambioOtrosDatosInmueblesUrbanosController
- *  @brief Clase que permite controlar la solicitud del registro o inscripcion de inmuebles urbanos
+ *  @class DesincorporacionInmueblesUrbanosController
+ *  @brief Clase que permite controlar la solicitud de desincorporacion de inmuebles urbanos
  *  en el lado del contribuyente,
  *
  * 
@@ -38,8 +38,9 @@
  *
  *  
  *  @method
- *  randKey
- *  InscripcionInmueblesUrbanos
+ *  View
+ *  Index
+ *  DesincorporacionInmuebles
  *
  *  
  *   
@@ -141,7 +142,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      *Metodo para crear las cuentas de usuarios de los funcionarios
      *@return model 
      **/
-     public function actionCambioOtrosDatosInmuebles()
+     public function actionDesincorporacionInmuebles()
      { 
 
          if ( isset(Yii::$app->user->identity->id_contribuyente) ) {
@@ -204,7 +205,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                    $model->getErrors(); 
               }
          }
-              return $this->render('cambio-otros-datos-inmuebles', ['model' => $model, 'datos'=>$datos]);  
+              return $this->render('desincorporacion-inmuebles', ['model' => $model, 'datos'=>$datos]);  
 
         }  else {
                     echo "No hay Contribuyente Registrado!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['site/login'])."'>";
