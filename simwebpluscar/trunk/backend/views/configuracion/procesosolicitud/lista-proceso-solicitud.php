@@ -82,7 +82,7 @@
                         'name' => 'chk-proceso-generado',
                         'checkboxOptions' => [
                                 'id' => 'chk-proceso-generado',
-                                'onClick' => 'habilitarDeshabilitar()',
+                                //'onClick' => 'habilitarDeshabilitar()',
                                 //'onClick' => 'alert("hola " + $(this).val());'
                                 //$(this).is(":checked"), permite determinar si un checkbox esta tildado.
                         ],
@@ -95,13 +95,25 @@
 </div>
 
 <?php $this->registerJs(
-    // '$(function() {
-    //     $("#chk-proceso-generado").on("click", function() {
-    //         alert("hola");
-    //     });
-    // });
-    '$function habilitarDeshabilitar() {
-        alert("kakaak");
-    }'
+    '$(function() {
+        $("#chk-proceso-generado").on("click", function() {
+            alert("hola");
+        });
+        //$("input[name="chk-proceso-generado"]:checked").each(function() {
+        //    alert($(this).val()); //es el valor del checkbox correspondiente
+            //checkboxValues.push($(this).val());
+        //});
+         //$("#chk-proceso-generado").on("click", function() {
+            // alert("hola");
+            // if $(this).is(":checked") {
+            //     alert("tildado");
+            // } else {
+            //     alert("no tildado");
+            // }
+        //});
+    });'
+   // 'function habilitarDeshabilitar() {
+   //     alert("kakaak");
+   // }'
     );
 ?>
