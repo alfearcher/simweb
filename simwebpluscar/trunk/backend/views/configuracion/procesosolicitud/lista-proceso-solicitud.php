@@ -72,24 +72,36 @@
                                     return Html::dropDownList('ejecutar[]', null, $result,[
                                                                                         'prompt' => Yii::t('backend', 'Select...'),
                                                                                         'class' => 'form-control',
-                                                                                        //'value' => '',
-                                                                                        'options' => [
-                                                                                            'disabled' => 'disabled',
-                                                                                        ],
+                                                                                        'id' => 'ejecutar',
+                                                                                        'disabled' => 'disabled',
                                                                                     ]);
                         }
                     ],
                     [
                         'class' => 'yii\grid\CheckboxColumn',
                         'name' => 'chk-proceso-generado',
-                        'multiple' => false,
-                        'options' => [
+                        'checkboxOptions' => [
                                 'id' => 'chk-proceso-generado',
-                                'onClick' => 'alert("hola " + $this.val());'
+                                'onClick' => 'habilitarDeshabilitar();'
+                                //'onClick' => 'alert("hola " + $(this).val());'
+                                //$(this).is(":checked"), permite determinar si un checkbox esta tildado.
                         ],
+                        'multiple' => false,
                     ],
                 ]
             ]);
         ?>
     </div>
 </div>
+
+<?php $this->registerJs(
+    '$(function() {
+        $("#chk-proceso-generado").on("click", function() {
+            alert("hola");
+        });
+    });
+    function habilitarDeshabilitar() {
+        alert("kakaak");
+    }'
+    );
+?>
