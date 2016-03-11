@@ -48,7 +48,7 @@
  *  @inherits
  *  
  */
-namespace frontend\controllers\inmueble\cambiootrosdatos;
+namespace frontend\controllers\inmueble\desincorporacion;
 
 use Yii;
 use yii\filters\AccessControl;
@@ -60,7 +60,7 @@ use yii\web\Response;
 use common\models\Users;
 use common\models\User;
 use yii\web\Session;
-use frontend\models\inmueble\cambiootrosdatos\CambioOtrosDatosInmueblesForm;
+use frontend\models\inmueble\desincorporacion\DesincorporacionInmueblesForm;
 use frontend\models\inmueble\InmueblesSearch;
 use frontend\models\inmueble\InmueblesConsulta;
 

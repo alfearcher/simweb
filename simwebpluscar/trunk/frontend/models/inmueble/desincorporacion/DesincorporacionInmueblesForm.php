@@ -87,14 +87,14 @@
  * @property string $unidad_catastro
  */
 
-namespace frontend\models\inmueble\cambiootrosdatos;
+namespace frontend\models\inmueble\desincorporacion;
 
 use Yii;
 use backend\models\inmueble\InmueblesConsulta;
 use common\conexion\ConexionController;
 
 
-class CambioOtrosDatosInmueblesForm extends \yii\db\ActiveRecord
+class DesincorporacionInmueblesForm extends \yii\db\ActiveRecord
 {
     
     public $validacion;
@@ -119,7 +119,7 @@ class CambioOtrosDatosInmueblesForm extends \yii\db\ActiveRecord
             [['av_calle_esq_dom', 'casa_edf_qta_dom'], 'string', 'max' => 50,'message' => Yii::t('backend', 'Only 50 character')],
             [['piso_nivel_no_dom', 'apto_dom'], 'string', 'max' => 25,'message' => Yii::t('backend', 'Only 25 character')],
             [['tlf_hab'], 'string', 'max' => 15,'message' => Yii::t('backend', 'Only 15 character')],
-            [['medidor'], 'string', 'max' => 20,'message' => Yii::t('backend', 'Only 20 character')],
+            [['medidor'], 'string', 'max' => 20,'message' => Yii::t('backend', 'Only 20 character')], 
             
             
         ]; 
