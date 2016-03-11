@@ -98,6 +98,8 @@
                                                                                         //'type' => 'date',
                                                                                         'clientOptions' => [
                                                                                            // 'maxDate' => '+0d', // Bloquear los dias en el calendario a partir del dia siguiente al actual.
+                                                                                        'changeYear' => 'true', 
+                                                                                         
                                                                                          ],
                                                                                        'language' => 'es-ES',
                                                                                        'dateFormat' => 'yyyy-MM-dd',
