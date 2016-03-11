@@ -62,31 +62,31 @@
                     [
                         'class' => 'yii\grid\DataColumn',
                         'attribute' => 'ejecutar_en',
-                        'filter' => true,
-                        'filterInputOptions' => [
-                                'selected' => ["1" => "uno", "2" => "dos"],
-                        ],
-                        // 'value' => function() {
-                        //             $lista = [
-                        //                     ["id" => "uno", "campo" => "uno"],
-                        //                     ["id" => "dos", "campo" => "dos"],
-                        //             ];
-                        //             $result = ArrayHelper::map($lista,'id', "campo");
-                        //             return Html::dropDownList('ejecutar', null, $result);
-                        // }
+                        'format' => 'raw',
+                        'value' => function() {
+                                    $lista = [
+                                            [ "id" => Yii::$app->solicitud->crear(),"valor" => Yii::$app->solicitud->crear()],
+                                            [ "id" => Yii::$app->solicitud->aprobar(),"valor" => Yii::$app->solicitud->aprobar()],
+                                    ];
+                                    $result = ArrayHelper::map($lista,'id', "valor");
+                                    return Html::dropDownList('ejecutar[]', null, $result,[
+                                                                                        'prompt' => Yii::t('backend', 'Select...'),
+                                                                                        'class' => 'form-control',
+                                                                                        //'value' => '',
+                                                                                        'options' => [
+                                                                                            'disabled' => 'disabled',
+                                                                                        ],
+                                                                                    ]);
+                        }
                     ],
-                    // [
-                    //     'class' => 'yii\grid\DataColumn',
-                    //     'attribute' => 'ejecutar_en',
-                    //     'filterInputOptions' => [
-                    //             'class' => 'form-control',
-                    //             'id' => 'ejecutar',
-                    //     ],
-                    //     'filter' => ["1" => "uno", "2" => "dos"],
-                    // ],
                     [
                         'class' => 'yii\grid\CheckboxColumn',
                         'name' => 'chk-proceso-generado',
+                        'multiple' => false,
+                        'options' => [
+                                'id' => 'chk-proceso-generado',
+                                'onClick' => 'alert("hola " + $this.val());'
+                        ],
                     ],
                 ]
             ]);
