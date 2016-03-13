@@ -6,6 +6,7 @@ use backend\models\registromaestro\TipoNaturaleza;
 use yii\helpers\ArrayHelper;
 
 
+
 $modeloTipoNaturaleza = TipoNaturaleza::find()->where('id_tipo_naturaleza BETWEEN 2 and 3')->all();
 $listaNaturaleza = ArrayHelper::map($modeloTipoNaturaleza, 'siglas_tnaturaleza', 'nb_naturaleza');
 
@@ -20,10 +21,12 @@ $this->title = 'Busqueda Persona Natural';
 <?php $form = ActiveForm::begin([
    'method' => 'post',
     'id' => 'formulario',
-    //'action' => ['/usuario/crear-usuario-natural/natural'],
+
+    
     'enableClientValidation' => true,
-      'enableAjaxValidation' => false,
-     'enableClientScript' => true,
+    'enableAjaxValidation' => false,
+    'enableClientScript' => true,
+
     'options' => ['class' => 'form-horizontal'],
 
 ]);
