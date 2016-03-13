@@ -26,8 +26,8 @@ $this->title = 'Busqueda persona Natural';
 <?php $form = ActiveForm::begin([
     'method' => 'post',
     'id' => 'formulario',
-    'enableClientValidation' => false,
-    'enableAjaxValidation' => true,
+    'enableClientValidation' => true,
+    'enableAjaxValidation' => false,
     'options' => ['class' => 'form-horizontal'],
         
 ]);
