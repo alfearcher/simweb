@@ -109,13 +109,22 @@
 
 
 
-
+		/**
+		 * Relacion entre las entidades "config-solic-detalles" y "config-solicitud-procesos"
+		 * @return [type] [description]
+		 */
 		public function getDetalleProcesoSolicitud()
 		{
-			return $this->hasMany(SolicitudDetalle::className(),['id_proceso' => 'id_proceso']);
+			$config = SolicitudDetalle::find()->where(['id_config_solicitud' => $this->getIdConfigSolicitud()])
+											  ->with('procesoSolicitud');
+			return $config;
 		}
 
 
+		public function getDetalleProceso()
+		{
+			return SolicitudDetalle::getProcesoSolicitud();
+		}
 
 	}
 
