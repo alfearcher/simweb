@@ -128,7 +128,9 @@
 			$config = ConfigurarSolicitud::find()->where(['id_config_solicitud' => $this->getIdConfig(),
 														  'inactivo' => 0
 														 ])
-			                                     ->with('tipoSolicitud')->asArray()->all();
+			                                     ->with('tipoSolicitud')
+			                                     ->asArray()
+			                                     ->all();
 			return $config;
 		}
 
@@ -154,7 +156,9 @@
 			$configImpuesto = ConfigurarSolicitud::find()->where(['id_config_solicitud' => $this->getIdConfig(),
 																  'inactivo' => 0
 																 ])
-			                        				     ->with('impuestoSolicitud')->asArray()->all();
+			                        				     ->with('impuestoSolicitud')
+			                        				     ->asArray()
+			                        				     ->all();
 			return $configImpuesto;
 		}
 
@@ -172,13 +176,19 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que busca los registros relacionados entre las entidades "config-solicitudes"
+		 * y "config-solic-detalles". la relacion realiza un LEFT JOIN entre las entidades y retorna
+		 * un array con todos los campos de ambas tablas.
+		 * @return array de campos con todas los campos de ambas entidades.
+		 */
 		public function findConfiguracionSolicitudDetalle()
 		{
 			$configDetalle = ConfigurarSolicitud::find()->where(['id_config_solicitud' => $this->getIdConfig(),
-																  'inactivo' => 0
-																 ])
-			                        				     ->with('detalleSolicitud')->asArray()->all();
+																 'config_solic_detalles.inactivo' => 0])
+			                        				    ->with('detalleSolicitud')
+			                        				    ->asArray()
+			                        				    ->all();
 			return $configDetalle;
 		}
 
@@ -186,10 +196,51 @@
 
 
 		/***/
+		public function findConfiguracionDetalleProceso1()
+		{
+			//$config = New ConfigurarSolicitud();
+			// $c = $config->find()->where(['id_config_solicitud' => $this->getIdConfig(),
+			// 													 'inactivo' => 0])
+			//                         				    ->with('detalleSolicitud');
+			// $config->setIdConfigSolicitud($this->getIdConfig());
+			// $c = $config->find()->where(['id_config_solicitud' => $this->getIdConfig(),
+			//  													 'inactivo' => 0])
+			//                          				    ->with('detalleSolicitud');
+			//ConfigurarSolicitud::setIdConfigSolicitud($this->getIdConfig());
+			// $config = ConfigurarSolicitud::find()->where(['id_config_solicitud' => $this->getIdConfig(),
+			// 													 'inactivo' => 0])
+			//                         			 ->with('detalleSolicitud')
+			//                         			->joinWith('detalleProceso')->all();
+			//$config->joinWith('detalleProcesoSolicitud')->all();
+
+
+
+			// $config = ConfigurarSolicitud::find()->joinWith('detalleSolicitud')
+			// 									 ->joinWith('detalleProceso')
+			// 									 ->where(['config_solicitudes.id_config_solicitud' => $this->getIdConfig(),
+			// 											  'config_solicitudes.inactivo' => 0])
+			// 									 ->all();
+
+			return $config;
+		}
+
+
+
+		/**
+		 * Metodo que busca los registros relacionados entre las entidades "config-solic-detalles"
+		 * y "config-solicitud-procesos". La relacion realiza un LEFT JOIN entre ambas entidades,
+		 * y los registros resulatante llegan como un arreglo de datos.
+		 * @return array de datos con todas las columnas de ambas entidades.
+		 */
 		public function findConfiguracionDetalleProceso()
 		{
-			$config = SolicitudDetalle::find()->where([])
-			return $config;
+			$configDetalleProceso = SolicitudDetalle::find()->where(['id_config_solicitud' => $this->getIdConfig(),
+																     'config_solic_detalles.inactivo' => 0])
+															->joinWith('procesoSolicitud')
+															->asArray()
+															->all();
+
+			return $configDetalleProceso;
 		}
 
 
