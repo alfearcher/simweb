@@ -76,7 +76,10 @@
 
 
 
-		/***/
+		/**
+		 * Relacion entre las entidades "config-solicitudes" y "config-solic-detalles"
+		 * @return [type] [description]
+		 */
 		public function getConfigurarSolicitud()
 		{
 			return $this->hasOne(ConfigurarSolicitud::className(), ['id_config_solicitud' => 'id_config_solicitud']);
@@ -89,7 +92,7 @@
 		*/
 		public function getProcesoSolicitud()
 		{
-			return $this->hasMany(SolicitudProceso::className(), ['id_proceso' => 'id_proceso']);
+			return $this->hasOne(SolicitudProceso::className(), ['id_proceso' => 'id_proceso']);
 		}
 
 
