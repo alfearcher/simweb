@@ -78,11 +78,25 @@
 
 
 
+		/**
+		 * Relacion entre las entidades "config-solic-detalles" y "config-solicitud-procesos"
+		 * @return [type] [description]
+		 */
 		public function getSolicitudDetalle()
 		{
 			return $this->hasOne(SolicitudDetalle::className(), ['id_proceso' => 'id_proceso']);
 		}
 
+
+
+		/**
+		 * Relacion entre las entidades "config-solic-detalles" y "config-solicitud-procesos"
+		 * @return [type] [description]
+		 */
+		public function getProcesoSolicitud()
+		{
+			return $this->hasMany(SolicitudDetalle::className(), ['id_proceso' => 'id_proceso']);
+		}
 
 	}
 
