@@ -6,8 +6,9 @@
   	use kartik\sidenav\SideNav;
   	use kartik\icons\Icon;
   	use yii\helpers\Url;
+
     
-  	//session_start();
+  	session_start();
 
   	$typeIcon = Icon::FA;
   	$typeLong = 'fa-2x';
@@ -121,7 +122,10 @@
 		        		//	SOLICITUDES DE VEHICULOS
 		        		['label' => Icon::show('fa fa-car',['class' => $typeLong], $typeIcon) . '&nbsp; Vehiculos',
 		        			'items' => [
-		        						['label' => 'Inscripci&oacute;n de Vehiculos', 'url' => ['/vehiculo/registrar/registrar-vehiculo/registrar-vehiculo'] , 'options' => ['onClick' => yii::$app->solicitud->setId(60)]],
+		        						['label' => 'Inscripci&oacute;n de Vehiculos', 'url' => ['/vehiculo/registrar/registrar-vehiculo/registrar-vehiculo'] , 'options' =>
+		        													      ['onclick' => Yii::$app->solicitud->setId(40),
+
+		        													      ]],
 		        						['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . 'Calcomania',
 					        				'items' => [
 			        							['label' => 'Administrar funcionarios responsables de entregar calcomania','url' => ['vehiculo/calcomania/funcionario-calcomania/busqueda-funcionario']],
@@ -134,7 +138,7 @@
 					        			],
 		        						['label' => 'Solvencia', 'url' => '#'],
 		        						['label' => 'Cambio de Propietario', 'url' => '#'],
-		        						['label' => 'Cambio de Placa', 'url' => ['/vehiculo/cambioplaca/cambio-placa-vehiculo/cambio-placa-vehiculo'], 'options' => ['onClick' => 'yii:$app->solicitud->setId()']],
+		        						['label' => 'Cambio de Placa', 'url' => ['/vehiculo/cambioplaca/cambio-placa-vehiculo/cambio-placa-vehiculo'], 'options' => []],
 		        						['label' => 'Desincorporaci&oacute;n de Vehiculo', 'url' => '#'],
 		        						['label' => 'Cambio de Otros Datos del Vehiculo', 'url' => ['/vehiculo/cambiodatos/cambio-datos-vehiculo/vista-seleccion']],
 		        			],
