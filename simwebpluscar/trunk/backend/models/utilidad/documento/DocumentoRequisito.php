@@ -47,6 +47,7 @@
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 	use common\conexion\ConexionController;
+	use backend\models\configuracion\solicitud\documentosolicitud\SolicitudDocumento;
 	/**
 	* 	Clase
 	*/
@@ -104,6 +105,14 @@
 			} else {
 				return false;
 			}
+		}
+
+
+
+		/***/
+		public function getSolicitudDocumento()
+		{
+			return $this->hasMany(SolicitudDocumento::className(), ['id_documento' => 'id_documento']);
 		}
 
 	}
