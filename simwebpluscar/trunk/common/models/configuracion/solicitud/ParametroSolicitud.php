@@ -141,7 +141,7 @@
 		*/
 		public function getDescripcionTipoSolicitud()
 		{
-			$config = $this->findConfigurarSolicitud();
+			$config = $this->findConfiguracionSolicitudTipo();
 			return $config[0]['tipoSolicitud']['descripcion'];
 		}
 
