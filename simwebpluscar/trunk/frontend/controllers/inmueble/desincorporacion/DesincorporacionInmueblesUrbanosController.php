@@ -29,7 +29,7 @@
  * 
  *  @class DesincorporacionInmueblesUrbanosController
  *  @brief Clase que permite controlar la solicitud de desincorporacion de inmuebles urbanos
- *  en el lado del contribuyente,
+ *  en el lado del contribuyente.
  *
  * 
  *  
