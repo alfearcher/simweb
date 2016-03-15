@@ -50,6 +50,9 @@
 
  	namespace common\classes;
 
+ 	use Yii;
+ 	use common\models\session\Session;
+
  	/**
  	 *
  	 */
@@ -58,6 +61,25 @@
 	 	const CREAR_SOLICITUD = 'CREAR';
 	 	const APROBAR_SOLICITUD = 'APROBAR';
 	 	const NEGAR_SOLICITUD = 'NEGAR';
+
+	 	public $_id;
+
+
+	 	public function setId($id)
+	 	{
+	 		if ( isset($_SESSION['_id']) ) {
+	 			Session::actionDeleteSession(['_id']);
+	 			$_SESSION['_id'] = $id;
+	 		} else {
+	 			 $_SESSION['_id'] = $id;
+	 		}
+	 	}
+
+
+	 	public function getId()
+	 	{
+	 		return $_SESSION['_id'];
+	 	}
 
 
 	 	/***/
