@@ -45,6 +45,8 @@
  	use Yii;
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
+	use backend\models\configuracion\solicitud\ConfigurarSolicitud;
+	use backend\models\utilidad\documento\DocumentoRequisito;
 
 	/**
 	* 	Clase
@@ -70,6 +72,24 @@
 		public static function tableName()
 		{
 			return 'config_solic_documentos';
+		}
+
+
+		/**
+		 * Relacion entre las entidades "config-solicitudes" y "config-solic-documentos"
+		 * @return [type] [description]
+		 */
+		public function getConfigurarSolicitud()
+		{
+			return $this->hasOne(ConfigurarSolicitud::className(), ['id_config_solicitud' => 'id_config_solicitud']);
+		}
+
+
+
+		/***/
+		public function getDocumentoRequisito()
+		{
+			return $this->hasOne(DocumentoRequisito::className(), ['id_documento' => 'id_documento']);
 		}
 
 	}
