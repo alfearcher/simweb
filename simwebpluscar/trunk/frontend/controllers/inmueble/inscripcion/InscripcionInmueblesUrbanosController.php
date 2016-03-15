@@ -179,7 +179,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
             $tableName1 = 'solicitudes_contribuyente'; 
 
             $tipoSolicitud = self::DatosConfiguracionTiposSolicitudes();
-$idConfig = yii::$app->configuracion->getId();
+$idConfig = yii::$app->solicitud->getId();
 die('este es el id config '.$idConfig);
             $arrayDatos1 = [  'id_contribuyente' => $model->id_contribuyente,
                               'id_config_solicitud' => 68, //$idConfig
