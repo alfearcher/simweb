@@ -14,7 +14,7 @@ $this->title = Yii::t('backend', 'View Property Urban. Id Tax: '.$model->id_impu
     
 
     <p>
-        <?= Html::a(Yii::t('frontend', 'Divesting Urban Property'), ['/inmueble/cambiootrosdatos/cambio-otros-datos-inmuebles-urbanos/cambio-otros-datos-inmuebles'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('frontend', 'Divesting Urban Property'), ['/inmueble/desincorporacion/desincorporacion-inmuebles-urbanos/desincorporacion-inmuebles'], ['class' => 'btn btn-success']) ?>
         <?= Html::a(Yii::t('frontend', 'Back'), ['/site/menu-vertical'], ['class' => 'btn btn-danger']) ?>
     </p> 
 
