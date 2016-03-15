@@ -97,7 +97,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      **/
      public function actionInscripcionInmueblesUrbanos()
      { 
-yii::$app->solicitud->setId(68)
+yii::$app->solicitud->setId(68);
       die(var_dump(yii::$app->solicitud->getId()));
 
          if ( isset(Yii::$app->user->identity->id_contribuyente) ) {
