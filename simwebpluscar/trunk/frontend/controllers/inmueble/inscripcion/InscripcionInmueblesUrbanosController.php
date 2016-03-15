@@ -97,7 +97,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      **/
      public function actionInscripcionInmueblesUrbanos()
      { 
-         $id = yii::$app->solicitud->setId(30);
+       
       
 
          if ( isset(Yii::$app->user->identity->id_contribuyente) ) {
@@ -181,7 +181,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
             $tableName1 = 'solicitudes_contribuyente'; 
 
             $tipoSolicitud = self::DatosConfiguracionTiposSolicitudes();
-//probando.......... idconfig      
+     
             $idConfig = yii::$app->solicitud->getId();
             die('este es el id config '.$idConfig);
 
