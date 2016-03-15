@@ -61,7 +61,7 @@ use yii\filters\AccessControl;
 use frontend\controllers\mensaje\MensajeController;
 use common\conexion\ConexionController;
 use common\seguridad\Seguridad;
-use common\enviaremail\EnviarEmail;
+use common\enviaremail\EnviarEmailNatural;
 use frontend\models\usuario\CargaDatosBasicosNaturalForm;
 use common\models\utilidades\Utilidad;
 
