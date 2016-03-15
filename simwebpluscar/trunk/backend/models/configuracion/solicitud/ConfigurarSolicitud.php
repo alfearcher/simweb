@@ -49,6 +49,7 @@
 	use backend\models\impuesto\Impuesto;
 	use backend\models\configuracion\detallesolicitud\SolicitudDetalle;
 	use backend\models\configuracion\procesosolicitud\SolicitudProceso;
+	use backend\models\configuracion\nivelaprobacion\NivelAprobacion;
 
 	/**
 	* 	Clase
@@ -121,9 +122,21 @@
 		}
 
 
+		/***/
 		public function getDetalleProceso()
 		{
 			return SolicitudDetalle::getProcesoSolicitud();
+		}
+
+
+
+		/**
+		 * Relacion entre las entidades "config-solicitudes" y "niveles_aprobacion"
+		 * @return [type] [description]
+		 */
+		public function getNivelAprobacion()
+		{
+			return $this->hasOne(NivelAprobacion::className(), ['nivel_aprobacion' => 'nivel_aprobacion']);
 		}
 
 	}
