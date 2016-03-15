@@ -80,5 +80,18 @@
 	 		return self::NEGAR_SOLICITUD;
 	 	}
 
+
+	 	/***/
+	 	public function eventos()
+	 	{
+	 		$crear = $this->crear();
+	 		$aprobar = $this->aprobar();
+	 		$negar = $this->negar();
+
+	 		$eventos = [$crear, $aprobar, $negar];
+
+	 		return $eventos;
+	 	}
+
 	 }
 ?>
