@@ -364,9 +364,8 @@
 			$("#fecha-hasta").val("");
 		});
 
-		//function resetearFecha($this) {
-			//$this.text = "";
-		//	alert("hola");
-		//}'
+		function hola() {
+			alert("hola");
+		}'
 	)
 ?>
