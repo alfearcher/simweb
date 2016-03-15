@@ -121,7 +121,7 @@
 		        		//	SOLICITUDES DE VEHICULOS
 		        		['label' => Icon::show('fa fa-car',['class' => $typeLong], $typeIcon) . '&nbsp; Vehiculos',
 		        			'items' => [
-		        						['label' => 'Inscripci&oacute;n de Vehiculos', 'url' => ['/vehiculo/registrar/registrar-vehiculo/registrar-vehiculo']],
+		        						['label' => 'Inscripci&oacute;n de Vehiculos', 'url' => ['/vehiculo/registrar/registrar-vehiculo/registrar-vehiculo'] , 'options' => ['onClick' => yii::$app->solicitud->setId(60)]],
 		        						['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . 'Calcomania',
 					        				'items' => [
 			        							['label' => 'Administrar funcionarios responsables de entregar calcomania','url' => ['vehiculo/calcomania/funcionario-calcomania/busqueda-funcionario']],
@@ -134,7 +134,7 @@
 					        			],
 		        						['label' => 'Solvencia', 'url' => '#'],
 		        						['label' => 'Cambio de Propietario', 'url' => '#'],
-		        						['label' => 'Cambio de Placa', 'url' => ['/vehiculo/cambioplaca/cambio-placa-vehiculo/cambio-placa-vehiculo']],
+		        						['label' => 'Cambio de Placa', 'url' => ['/vehiculo/cambioplaca/cambio-placa-vehiculo/cambio-placa-vehiculo'], 'options' => ['onClick' => 'yii:$app->solicitud->setId()']],
 		        						['label' => 'Desincorporaci&oacute;n de Vehiculo', 'url' => '#'],
 		        						['label' => 'Cambio de Otros Datos del Vehiculo', 'url' => ['/vehiculo/cambiodatos/cambio-datos-vehiculo/vista-seleccion']],
 		        			],
@@ -272,5 +272,29 @@
 		    ],
 		]);
 		?>
+
+
 	</div>
 </div>
+
+<script type="text/javascript">
+
+function hola(url,id_config){
+
+	
+
+	$.ajax({
+
+
+		url:url,
+		data:'id : {200}',
+		type: 'POST',
+
+
+	});
+	return false;
+
+}
+	
+
+</script>
