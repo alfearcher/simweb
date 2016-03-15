@@ -244,6 +244,106 @@
 		}
 
 
+
+		/**
+		 * Metodo que obtiene una lista de los procesos que genera la solicitud.
+		 * @return Array de datos con los campos de la entidad "config-solicitud-procesos".
+		 */
+		public function getProcesoQueGeneraSolicitud()
+		{
+			// Array de los procesos que genera la solicitud.
+			$configProcesos = $this->findConfiguracionDetalleProceso();
+
+			foreach ( $configProcesos as $procesos ) {
+				$proceso[] = $procesos['procesoSolicitud'];
+			}
+
+			return $proceso;
+		}
+
+
+
+
+		/**
+		 * Metodo que genera un array con los proceso que genera por eventos.
+		 * Al momento de configurar la solicitud, se define que evento se va a
+		 * relacionar a cada proceso, un evento puede tener asociado varios procesos.
+		 * @param  string $evento los eventos que puede afectar a una solicitud:
+		 * - CREAR
+		 * - APROBAR
+		 * - NEGAR
+		 * @return Array donde el indice del arreglo es un evento y los elementos
+		 * del arreglo son los procesos asociados al evento.
+		 */
+		public function getProcesoSegunEvento($evento = '')
+		{
+			// Array de los procesos que genera la solicitud.
+			$configProcesos = $this->findConfiguracionDetalleProceso();
+
+			// Los diferentes eventos que puede suceder en una solicitud.
+			$eventos = Yii::$app->solicitud->eventos();
+
+			if ( trim($evento) == '' ) {
+				foreach ( $eventos as $key => $value ) {
+					foreach ( $configProcesos as $procesos ) {
+						if ( $procesos['ejecutar_en'] == $value ) {
+							$listaProcesos[$procesos['id_proceso']] = $procesos['procesoSolicitud']['descripcion'];
+						}
+					}
+					$lista[$value] = isset($listaProcesos) ? $listaProcesos : null;
+					$listaProcesos = null;
+				}
+			} else {
+				foreach ( $configProcesos as $procesos ) {
+					if ( $procesos['ejecutar_en'] == $evento ) {
+						$listaProcesos[$procesos['id_proceso']] = $procesos['procesoSolicitud']['descripcion'];
+					}
+				}
+				$lista[$evento] = isset($listaProcesos) ? $listaProcesos : null;
+				$listaProcesos = null;
+			}
+
+			return $lista;
+		}
+
+
+
+		/**
+		 * Metodo que busca los registros relacionados a las entidades "config-solic-documentos"
+		 * y "config-documentos-requisitos".
+		 * @return array retorna una arreglo de todos los campos de ambas entidades. Segun
+		 * el valor del id-config-solicitud.
+		 */
+		public function findConfiguracionSolicitudDocumento()
+		{
+			$configSolicitudDoc = SolicitudDocumento::find()->where(['id_config_solicitud' => $this->getIdConfig(),
+																     'config_solic_documentos.inactivo' => 0])
+															->joinWith('documentoRequisito')
+															->asArray()
+															->all();
+
+			return $configSolicitudDoc;
+		}
+
+
+
+
+		/**
+		 * Metodo que genera un arreglo con los documentos y/o requisitos que son propios
+		 * de la solicitud.
+		 * @return Array Lista con todos los campos de la entidad "config-documentos-requisitos".
+		 */
+		public function getDocumentoRequisitoSolciitud()
+		{
+			$configDocumento = $this->findConfiguracionSolicitudDocumento();
+
+			foreach ( $configDocumento as $documentos ) {
+				$documento[] = $documentos['documentoRequisito'];
+			}
+
+			return $documento;
+		}
+
 	}
 
 
