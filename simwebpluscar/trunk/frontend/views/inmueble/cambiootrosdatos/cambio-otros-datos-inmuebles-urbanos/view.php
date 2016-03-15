@@ -14,8 +14,8 @@ $this->title = Yii::t('backend', 'View Property Urban. Id Tax: '.$model->id_impu
     
 
     <p>
-        <?= Html::a(Yii::t('forntend', 'Update other data of property'), ['/inmueble/cambiootrosdatos/cambio-otros-datos-inmuebles-urbanos/cambio-otros-datos-inmuebles'], ['class' => 'btn btn-success']) ?>
-        <?= Html::a(Yii::t('forntend', 'Back'), ['/site/menu-vertical'], ['class' => 'btn btn-danger']) ?>
+        <?= Html::a(Yii::t('frontend', 'Update other data of property'), ['/inmueble/cambiootrosdatos/cambio-otros-datos-inmuebles-urbanos/cambio-otros-datos-inmuebles'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('frontend', 'Back'), ['/site/menu-vertical'], ['class' => 'btn btn-danger']) ?>
     </p> 
 
     <?= DetailView::widget([
