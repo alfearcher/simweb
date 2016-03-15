@@ -98,7 +98,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      public function actionInscripcionInmueblesUrbanos()
      { 
        
-      
+        die(var_dump(yii::$app->solicitud->getId()));
 
          if ( isset(Yii::$app->user->identity->id_contribuyente) ) {
          //Creamos la instancia con el model de validación
