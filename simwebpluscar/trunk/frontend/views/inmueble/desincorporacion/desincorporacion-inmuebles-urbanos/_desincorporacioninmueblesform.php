@@ -200,10 +200,10 @@ $this->title = Yii::t('frontend', 'Property Update');
                              
                                 <?= Html::beginForm();?>
                                 <div class="col-sm-1">
-                                <?= Html::submitButton(Yii::t('backend', 'Accept'), ['class' => 'btn btn-success', 'name'=>'Accept', 'value'=>'Accept']) ?>
+                                <?= Html::submitButton(Yii::t('frontend', 'Accept'), ['class' => 'btn btn-success', 'name'=>'Accept', 'value'=>'Accept']) ?>
                                 </div>
                                 <div class="col-sm-1">
-                                <?= Html::a(Yii::t('backend', 'Back'), ['/site/menu-vertical'], ['class' => 'btn btn-danger']) ?>
+                                <?= Html::a(Yii::t('frontend', 'Back'), ['/site/menu-vertical'], ['class' => 'btn btn-danger']) ?>
                                 </div>
                                 <?= Html::endForm();?> 
                                 

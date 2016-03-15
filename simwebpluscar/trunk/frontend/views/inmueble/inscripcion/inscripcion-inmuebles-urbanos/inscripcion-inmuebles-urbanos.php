@@ -195,13 +195,13 @@ function bloquea() {
                    <div class="row">
                         
                             <div class="col-lg-1">
-                            <?= Html::submitButton(Yii::t('backend', 'Incorporate'), ['class' => 'btn btn-success',
+                            <?= Html::submitButton(Yii::t('frontend', 'Incorporate'), ['class' => 'btn btn-success',
                                       'data' => [
                                                   'confirm' => Yii::t('app', 'Are you sure you want to Incorporate this item?'),
                                                   'method' => 'post',],]) ?>
                             </div>
                             <div class="col-lg-1">
-                            <?= Html::a(Yii::t('backend', 'Back'), ['/site/menu-vertical'], ['class' => 'btn btn-danger']) ?>
+                            <?= Html::a(Yii::t('frontend', 'Back'), ['/site/menu-vertical'], ['class' => 'btn btn-danger']) ?>
                             </div>                                                                        
                         
 
