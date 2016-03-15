@@ -97,8 +97,8 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      **/
      public function actionInscripcionInmueblesUrbanos()
      { 
-$id = yii::$app->solicitud->setId(68);
-      die($id);
+         $id = yii::$app->solicitud->setId(68);
+      
 
          if ( isset(Yii::$app->user->identity->id_contribuyente) ) {
          //Creamos la instancia con el model de validación
@@ -125,7 +125,7 @@ $id = yii::$app->solicitud->setId(68);
                 if (!\Yii::$app->user->isGuest){                                    
                       
 
-                     $guardo = self::GuardarInscripcion($model);
+                     $guardo = self::GuardarInscripcion($model,$id);
 
                      if($guardo == true){
 
@@ -174,7 +174,7 @@ $id = yii::$app->solicitud->setId(68);
       * @param [type] $model [description] arreglo de datos del formulario de inscripcion del
       * inmueble
       */
-     public function GuardarInscripcion($model)
+     public function GuardarInscripcion($model, $id)
      {
            
             try {
