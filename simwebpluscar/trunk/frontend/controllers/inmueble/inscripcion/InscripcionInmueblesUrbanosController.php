@@ -125,7 +125,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                 if (!\Yii::$app->user->isGuest){                                    
                       
 
-                     $guardo = self::GuardarInscripcion($model,$id);
+                     $guardo = self::GuardarInscripcion($model);
 
                      if($guardo == true){
 
@@ -174,7 +174,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
       * @param [type] $model [description] arreglo de datos del formulario de inscripcion del
       * inmueble
       */
-     public function GuardarInscripcion($model, $id)
+     public function GuardarInscripcion($model)
      {
            
             try {
