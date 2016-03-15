@@ -69,10 +69,10 @@
                                             [ "id" => Yii::$app->solicitud->aprobar(),"valor" => Yii::$app->solicitud->aprobar()],
                                     ];
                                     $result = ArrayHelper::map($lista,'id', "valor");
-                                    return Html::dropDownList('ejecutar[]', null, $result,[
+                                    return Html::dropDownList('ejecutar', null, $result,[
                                                                                         'prompt' => Yii::t('backend', 'Select...'),
                                                                                         'class' => 'form-control',
-                                                                                        'id' => 'ejecutar',
+                                                                                        'id' => 'e',
                                                                                         'disabled' => 'disabled',
                                                                                     ]);
                         }
@@ -82,7 +82,11 @@
                         'name' => 'chk-proceso-generado',
                         'checkboxOptions' => [
                                 'id' => 'chk-proceso-generado',
-                                //'onClick' => 'habilitarDeshabilitar()',
+                                'onClick' => 'if ( $(this).is(":checked") ) {
+                                                alert("TILDE");
+                                              } else {
+                                                alert("NO TILDE");
+                                              }',
                                 //'onClick' => 'alert("hola " + $(this).val());'
                                 //$(this).is(":checked"), permite determinar si un checkbox esta tildado.
                         ],
@@ -96,9 +100,13 @@
 
 <?php $this->registerJs(
     '$(function() {
-        $("#chk-proceso-generado").on("click", function() {
-            alert("hola");
-        });
+        if ( document.getElementById("e") ) {
+
+        }
+        //var keys = $("#grid").yiiGridView("getSelectedRows");
+        //$("#chk-proceso-generado").on("click", function() {
+          //  alert("hola");
+        //});
         //$("input[name="chk-proceso-generado"]:checked").each(function() {
         //    alert($(this).val()); //es el valor del checkbox correspondiente
             //checkboxValues.push($(this).val());
