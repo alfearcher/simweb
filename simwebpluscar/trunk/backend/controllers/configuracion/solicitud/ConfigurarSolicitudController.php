@@ -411,12 +411,5 @@
 
 
 
-    	public static function actionViewListadoSolicitudGeneral()
-    	{
-
-    	}
-
-
-
 	}
 ?>
