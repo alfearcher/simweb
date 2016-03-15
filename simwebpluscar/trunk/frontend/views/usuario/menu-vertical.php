@@ -102,7 +102,7 @@
 		        		//	SOLICITUDES DE INMUEBLES URBANOS
 		        		['label' => Icon::show('fa fa-home',['class' => $typeLong], $typeIcon) . '&nbsp; Inmuebles Urbanos',
 		        			'items' => [
-		        						['label' => 'Inscripción de Inmuebles Urbanos', 'url' => ['inmueble/inscripcion/inscripcion-inmuebles-urbanos/inscripcion-inmuebles-urbanos'], 'options' => ['id'=> 'inscripcion', 'onClick' => yii::$app->solicitud->setId(68)]],
+		        						['label' => 'Inscripción de Inmuebles Urbanos', 'url' => ['inmueble/inscripcion/inscripcion-inmuebles-urbanos/inscripcion-inmuebles-urbanos'], 'options' => ['onClick' => yii::$app->solicitud->setId(68)]],
 		        						['label' => 'Avaluo Catastral', 'url' => '#'],
 		        						['label' => 'Certificado Catastral', 'url' => '#'],
 		        						['label' => 'Renovación de Certificado Catastral', 'url' => '#'],
@@ -123,7 +123,7 @@
 		        		['label' => Icon::show('fa fa-car',['class' => $typeLong], $typeIcon) . '&nbsp; Vehiculos',
 		        			'items' => [
 		        						['label' => 'Inscripci&oacute;n de Vehiculos', 'url' => ['/vehiculo/registrar/registrar-vehiculo/registrar-vehiculo'] , 'options' =>
-		        													      ['onclick' => Yii::$app->solicitud->setId(40),
+		        													      ['onclick' => Yii::$app->solicitud->setId(2),
 
 		        													      ]],
 		        						['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . 'Calcomania',
