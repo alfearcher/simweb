@@ -266,9 +266,10 @@
 
 
 		/**
-		 * Metodo que genera un array con los proceso que genera por eventos.
-		 * Al momento de configurar la solicitud, se define que evento se va a
-		 * relacionar a cada proceso, un evento puede tener asociado varios procesos.
+		 * Metodo que genera un array con los proceso que genera la solicitud
+		 * por eventos. Al momento de configurar la solicitud, se define que
+		 * evento se va a relacionar a cada proceso, un evento puede tener
+		 * asociado varios procesos.
 		 * @param  string $evento los eventos que puede afectar a una solicitud:
 		 * - CREAR
 		 * - APROBAR
