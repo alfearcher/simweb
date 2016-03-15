@@ -8,6 +8,7 @@
 	use backend\models\configuracion\documentosolicitud\SolicitudDocumento;
 	use backend\models\configuracion\detallesolicitud\SolicitudDetalle;
 
+
 	/**
 	*
 	*/
@@ -342,6 +343,39 @@
 			}
 
 			return $documento;
+		}
+
+
+
+
+		/**
+		 * Metodo que busca los registros relacionados entre las entidades "config-solicitudes"
+		 * y "niveles-aprobacion". La relacion realiza un LEFT JOIN entre ambas entidades,
+		 * y los registros resulatante llegan como un arreglo de datos.
+		 * @return array de datos con todas las columnas de ambas entidades.
+		 */
+		public function findConfiguracionNivelAprobacion()
+		{
+			$configAprobacion = ConfigurarSolicitud::find()->where(['id_config_solicitud' => $this->getIdConfig(),
+																  'inactivo' => 0
+																 ])
+			                        				       ->with('nivelAprobacion')
+			                        				       ->asArray()
+			                        				       ->all();
+			return $configAprobacion;
+		}
+
+
+
+
+		/**
+		 * Metodo que permite obtener la descripcion del nivel de aprobacion.
+		 * @return String Descripcion del nivel de aprobacion.
+		 */
+		public function getNivelAprobacionSegunSolicitud()
+		{
+			$nivel = $this->findConfiguracionNivelAprobacion();
+			return $nivel[0]['nivelAprobacion']['descripcion'];
 		}
 
 	}
