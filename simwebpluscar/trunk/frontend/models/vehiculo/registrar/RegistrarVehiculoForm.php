@@ -52,7 +52,7 @@ use yii\base\Model;
 use frontend\models\usuario\CrearUsuarioNatural;
 use frontend\models\usuario\PreguntaSeguridadContribuyente;
 use frontend\models\usuario\Afiliacion;
-use frontend\models\vehiculo\cambiodatos\busquedaVehiculos;
+use frontend\models\vehiculo\cambiodatos\BusquedaVehiculos;
 
 
 
