@@ -57,7 +57,7 @@ use common\conexion\ConexionController;
 use common\mensaje\MensajeController;
 use frontend\models\vehiculo\registrar\RegistrarVehiculoForm;
 use common\enviaremail\EnviarEmailSolicitud;
-
+use common\models\configuracion\solicitud\ParametroSolicitud;
 /**
  * Site controller
  */
@@ -86,11 +86,12 @@ class RegistrarVehiculoController extends Controller
     {
 
 
-        die('llegue a controlador'.yii::$app->solicitud->getId());
-        //die(var_dump($id));
+        $idConfig = yii::$app->request->get('id');
+
+        $_SESSION['id'] = $idConfig;
+
 
         
-     
 
         if(isset(yii::$app->user->identity->id_contribuyente)){
 
@@ -147,6 +148,11 @@ class RegistrarVehiculoController extends Controller
     public function buscarNumeroSolicitud($conn, $conexion, $model)
     {
 
+    	$buscar = new ParametroSolicitud($_SESSION['id']);
+
+        $buscar->getParametroSolicitud(["tipo_solicitud", "impuesto", "nivel_aprobacion"]);
+
+
       $datos = yii::$app->user->identity;
       $tabla = 'solicitudes_contribuyente';
       $arregloDatos = [];
@@ -154,12 +160,12 @@ class RegistrarVehiculoController extends Controller
 
       foreach ($arregloCampo as $key=>$value){
 
-          $arregloDatos[$value] =0;
+          $arregloDatos[$value] = 0;
       }
 
-      $arregloDatos['impuesto'] = 3;
+      $arregloDatos['impuesto'] = $buscar['impuesto'];
 
-      $arregloDatos['tipo_solicitud'] = 55;
+      $arregloDatos['tipo_solicitud'] = $buscar['tipo_solicitud'];
 
       $arregloDatos['usuario'] = $datos->login;
 
@@ -167,11 +173,18 @@ class RegistrarVehiculoController extends Controller
 
       $arregloDatos['fecha_hora_creacion'] = date('Y-m-d h:m:i');
 
-      $arregloDatos['nivel_aprobacion'] = 0;
+      $arregloDatos['nivel_aprobacion'] = $buscar['nivel_aprobacion'];
 
       $arregloDatos['nro_control'] = 0;
 
+      if ($buscar['nivel_aprobacion'] == 1){
+
       $arregloDatos['estatus'] = 1;
+
+      }else{
+
+      $arregloDatos['estatus'] = 0;
+      }
 
       $arregloDatos['inactivo'] = 0;
 
@@ -202,7 +215,7 @@ class RegistrarVehiculoController extends Controller
       $datos = yii::$app->user->identity;
       $tabla = 'sl_vehiculos';
       $arregloDatos = [];
-      $arregloCampo = RegistrarVehiculoForm::attributeVehiculo();
+      $arregloCampo = RegistrarVehiculoForm::attributeSlVehiculo();
 
       foreach ($arregloCampo as $key=>$value){
 
@@ -269,11 +282,90 @@ class RegistrarVehiculoController extends Controller
       $arregloDatos['nro_cilindros'] = $model->nro_cilindros;
 
 
+		if ($conexion->guardarRegistro($conn, $tabla, $arregloDatos )){
 
 
 
+             $resultado = true;
 
-          if ($conexion->guardarRegistro($conn, $tabla, $arregloDatos )){
+
+              return $resultado;
+
+
+          }
+
+    }
+
+    public function guardarVehiculoMaestro($conn, $conexion, $model)
+    {
+     
+     
+      $resultado = false;
+      $datos = yii::$app->user->identity;
+      $tabla = 'vehiculos';
+      $arregloDatos = [];
+      $arregloCampo = RegistrarVehiculoForm::attributeVehiculo();
+
+      foreach ($arregloCampo as $key=>$value){
+
+          $arregloDatos[$value] =0;
+      }
+
+     
+
+     //die($arregloDatos['nro_solicitud']);
+      $arregloDatos['id_contribuyente'] = $datos->id_contribuyente;
+
+      $arregloDatos['placa'] = $model->placa;
+
+      $arregloDatos['marca'] = $model->marca;
+
+      $arregloDatos['modelo'] = $model->modelo;
+
+      $arregloDatos['color'] = $model->color;
+
+      $arregloDatos['uso_vehiculo'] = $model->uso_vehiculo;
+
+      $arregloDatos['precio_inicial'] = $model->precio_inicial;
+
+      $arregloDatos['fecha_inicio'] = $model->fecha_inicio;
+
+      $arregloDatos['ano_compra'] = $model->ano_compra;
+
+      $arregloDatos['ano_vehiculo'] = $model->ano_vehiculo;
+
+      $arregloDatos['no_ejes'] = $model->no_ejes;
+
+      $arregloDatos['liquidado'] = 0;
+
+      $arregloDatos['status_vehiculo'] = 0;
+
+      $arregloDatos['exceso_cap'] = $model->exceso_cap;
+
+      $arregloDatos['medida_cap'] = $model->medida_cap;
+
+      $arregloDatos['capacidad'] = $model->capacidad;
+
+      $arregloDatos['nro_puestos'] = $model->nro_puestos;
+
+      $arregloDatos['peso'] = $model->peso;
+
+      $arregloDatos['clase_vehiculo'] = $model->clase_vehiculo;
+
+      $arregloDatos['tipo_vehiculo'] = $model->tipo_vehiculo;
+
+      $arregloDatos['serial_motor'] = $model->serial_motor;
+
+      $arregloDatos['serial_carroceria'] = $model->serial_carroceria;
+
+      $arregloDatos['nro_calcomania'] = $model->nro_calcomania;
+
+  	  $arregloDatos['fecha_hora'] = 0;
+
+      $arregloDatos['nro_cilindros'] = $model->nro_cilindros;
+
+
+		if ($conexion->guardarRegistro($conn, $tabla, $arregloDatos )){
 
 
 
@@ -296,7 +388,9 @@ class RegistrarVehiculoController extends Controller
      */
     public function beginSave($var, $model)
     {
-      //die(var_dump(yii::$app->solicitud->getId()));
+      	$nivelAprobacion = new ParametroSolicitud($_SESSION['id']);
+
+        $nivelAprobacion->getParametroSolicitud(["nivel_aprobacion"]);
 
         $conexion = new ConexionController();
 
@@ -322,6 +416,8 @@ class RegistrarVehiculoController extends Controller
               if ($buscar == true){
 
                   $guardar = self::guardarRegistroVehiculo($conn,$conexion, $model, $idSolicitud);
+
+                  if ($nivelAprobacion['nivel_aprobacion'] != 1){ 
 
                   if ($buscar and $guardar == true ){
 
@@ -349,6 +445,39 @@ class RegistrarVehiculoController extends Controller
                       $conn->close();
                       return false;
                   }
+              	  
+              	  }else{
+
+              	      $guardarVehiculo = self::guardarVehiculoMaestro($conn,$conexion, $model);
+
+              	  	      if ($buscar and $guardar and $guardarVehiculo == true ){
+
+			                    $transaccion->commit();
+			                    $conn->close();
+
+                      		$enviarNumeroSolicitud = new EnviarEmailSolicitud;
+
+                         $login = yii::$app->user->identity->login;
+
+                         $solicitud = 'Registro de Vehiculo';
+
+                         $enviarNumeroSolicitud->enviarEmail($login,$solicitud, $idSolicitud);
+
+
+                             if($enviarNumeroSolicitud == true){
+
+                                 return true;
+
+
+                             }
+                             }else{
+
+		                      $transaccion->rollback();
+		                      $conn->close();
+		                      return false;
+
+              	             }
+
 
 
                   }
