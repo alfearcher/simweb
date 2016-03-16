@@ -105,6 +105,7 @@ function tipo2() {
         $("#tipo").show();
         //document.getElementById("tipo").style.display='';
         //document.getElementById("contribuyentesform-cedulabuscar").style.display='';
+        //
                
     } 
 } 

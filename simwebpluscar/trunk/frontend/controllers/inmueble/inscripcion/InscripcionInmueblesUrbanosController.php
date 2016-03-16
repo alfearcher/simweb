@@ -127,7 +127,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                      $guardo = self::GuardarInscripcion($model);
 
-                     if($guardo == true){
+                     if($guardo == true){ 
 
                           $envio = self::EnviarCorreo($guardo);
 
@@ -198,7 +198,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                               'firma_digital' => null,
                               'estatus' => 0,
                               'inactivo' => 0,
-                          ]; 
+                          ];  
             
 
             $conn = New ConexionController();

@@ -121,7 +121,7 @@ class DesincorporacionInmueblesForm extends \yii\db\ActiveRecord
             [['medidor'], 'string', 'max' => 20,'message' => Yii::t('backend', 'Only 20 character')], 
             
             
-        ]; 
+        ];  
     }
 
     /**
