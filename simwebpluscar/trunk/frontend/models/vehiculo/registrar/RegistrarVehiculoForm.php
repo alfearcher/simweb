@@ -233,6 +233,8 @@ class RegistrarVehiculoForm extends RegistrarVehiculo
      */
     public function buscarPlaca($attribute, $params)
     {
+
+     // die('llegue a bnuscar placa');
       $busquedaPlaca = busquedaVehiculos::find()
                                         ->where([
 
