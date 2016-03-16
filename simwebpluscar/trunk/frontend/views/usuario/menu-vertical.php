@@ -114,7 +114,7 @@
 		        						['label' => 'Cambio a Propiedad Horizontal', 'url' => ['/inmueble/inmuebles-urbanos/index']],
 		        						['label' => 'Cambio de Otros Datos del Inmueble', 'url' => ['/inmueble/cambiootrosdatos/cambio-otros-datos-inmuebles-urbanos/index']],
 		        						['label' => 'Modificar Avaluo', 'url' => '#'],
-		        						['label' => 'Desincorporación de Inmueble', 'url' => ['inmueble/desincorporacion/desincorporacion-inmuebles-urbanos/index']],
+		        						['label' => 'Desincorporación de Inmueble', 'url' => ['inmueble/desincorporacion/desincorporacion-inmuebles-urbanos/index'], 'options' => ['onclick' => "setId(50)"]],
 
 		        			]
 		        		],
@@ -122,10 +122,7 @@
 		        		//	SOLICITUDES DE VEHICULOS
 		        		['label' => Icon::show('fa fa-car',['class' => $typeLong], $typeIcon) . '&nbsp; Vehiculos',
 		        			'items' => [
-		        						['label' => 'Inscripci&oacute;n de Vehiculos', 'url' => ['/vehiculo/registrar/registrar-vehiculo/registrar-vehiculo'] , 'options' =>
-		        													      ['onclick' => Yii::$app->solicitud->setId(2),
-
-		        													      ]],
+		        						['label' => 'Inscripci&oacute;n de Vehiculos' , 'url' =>['/vehiculo/registrar/registrar-vehiculo/registrar-vehiculo', 'id' =>60]],
 		        						['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . 'Calcomania',
 					        				'items' => [
 			        							['label' => 'Administrar funcionarios responsables de entregar calcomania','url' => ['vehiculo/calcomania/funcionario-calcomania/busqueda-funcionario']],
@@ -281,24 +278,13 @@
 	</div>
 </div>
 
-<script type="text/javascript">
 
-function hola(url,id_config){
+
+
+
 
 	
 
-	$.ajax({
 
-
-		url:url,
-		data:'id : {200}',
-		type: 'POST',
-
-
-	});
-	return false;
-
-}
 	
 
-</script>
