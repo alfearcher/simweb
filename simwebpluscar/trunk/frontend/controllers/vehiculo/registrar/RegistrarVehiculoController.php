@@ -85,7 +85,13 @@ class RegistrarVehiculoController extends Controller
     public function actionRegistrarVehiculo()
     {
 
-        die(var_dump(Yii::$app->solicitud->getId()));
+
+        die('llegue a controlador'.yii::$app->solicitud->getId());
+        //die(var_dump($id));
+
+        
+     
+
         if(isset(yii::$app->user->identity->id_contribuyente)){
 
             $model = new RegistrarVehiculoForm();
@@ -290,7 +296,7 @@ class RegistrarVehiculoController extends Controller
      */
     public function beginSave($var, $model)
     {
-
+      //die(var_dump(yii::$app->solicitud->getId()));
 
         $conexion = new ConexionController();
 
