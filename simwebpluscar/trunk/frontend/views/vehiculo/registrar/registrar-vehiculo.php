@@ -408,9 +408,9 @@ $listaUsoVehiculo = ArrayHelper::map($usoVehiculo, 'uso_vehiculo' , 'descripcion
                     <div class="col-sm-2" style="margin-bottom:43px;">
                        
                     <?= $form->field($model, 'medida_cap')->label(false)->radioList([
-                                                                                                        '1' => Yii::t('frontend', 'Kgs.'),
+                                                                                                        'Kgs' => Yii::t('frontend', 'Kgs.'),
 
-                                                                                                        '0' => Yii::t('frontend', 'Tns.'),
+                                                                                                        'Ton' => Yii::t('frontend', 'Tns.'),
                                                                                                       ],
                                                                                                       [
                                                                                                         
