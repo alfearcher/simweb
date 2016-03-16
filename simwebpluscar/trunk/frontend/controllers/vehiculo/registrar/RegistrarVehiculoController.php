@@ -150,7 +150,11 @@ class RegistrarVehiculoController extends Controller
 
     	$buscar = new ParametroSolicitud($_SESSION['id']);
 
+    	
+
         $buscar->getParametroSolicitud(["tipo_solicitud", "impuesto", "nivel_aprobacion"]);
+
+        $resultado = $buscar->getParametroSolicitud(["tipo_solicitud", "impuesto", "nivel_aprobacion"]);
 
 
       $datos = yii::$app->user->identity;
@@ -163,9 +167,11 @@ class RegistrarVehiculoController extends Controller
           $arregloDatos[$value] = 0;
       }
 
-      $arregloDatos['impuesto'] = $buscar['impuesto'];
+      $arregloDatos['impuesto'] = $resultado['impuesto'];
+     
+      $arregloDatos['id_config_solicitud'] = $_SESSION['id'];
 
-      $arregloDatos['tipo_solicitud'] = $buscar['tipo_solicitud'];
+      $arregloDatos['tipo_solicitud'] = $resultado['tipo_solicitud'];
 
       $arregloDatos['usuario'] = $datos->login;
 
@@ -173,11 +179,11 @@ class RegistrarVehiculoController extends Controller
 
       $arregloDatos['fecha_hora_creacion'] = date('Y-m-d h:m:i');
 
-      $arregloDatos['nivel_aprobacion'] = $buscar['nivel_aprobacion'];
+      $arregloDatos['nivel_aprobacion'] = $resultado['nivel_aprobacion'];
 
       $arregloDatos['nro_control'] = 0;
 
-      if ($buscar['nivel_aprobacion'] == 1){
+      if ($resultado['nivel_aprobacion'] == 1){
 
       $arregloDatos['estatus'] = 1;
 
@@ -304,7 +310,7 @@ class RegistrarVehiculoController extends Controller
       $datos = yii::$app->user->identity;
       $tabla = 'vehiculos';
       $arregloDatos = [];
-      $arregloCampo = RegistrarVehiculoForm::attributeVehiculo();
+      $arregloCampo = RegistrarVehiculoForm::attributeVehiculos();
 
       foreach ($arregloCampo as $key=>$value){
 
@@ -360,7 +366,7 @@ class RegistrarVehiculoController extends Controller
 
       $arregloDatos['nro_calcomania'] = $model->nro_calcomania;
 
-  	  $arregloDatos['fecha_hora'] = 0;
+  	 
 
       $arregloDatos['nro_cilindros'] = $model->nro_cilindros;
 
@@ -388,9 +394,11 @@ class RegistrarVehiculoController extends Controller
      */
     public function beginSave($var, $model)
     {
-      	$nivelAprobacion = new ParametroSolicitud($_SESSION['id']);
+      	$buscar = new ParametroSolicitud($_SESSION['id']);
 
-        $nivelAprobacion->getParametroSolicitud(["nivel_aprobacion"]);
+        $buscar->getParametroSolicitud(["nivel_aprobacion"]);
+
+        $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
 
         $conexion = new ConexionController();
 
@@ -418,6 +426,8 @@ class RegistrarVehiculoController extends Controller
                   $guardar = self::guardarRegistroVehiculo($conn,$conexion, $model, $idSolicitud);
 
                   if ($nivelAprobacion['nivel_aprobacion'] != 1){ 
+
+                  	//die('no es de aprobacion directa');
 
                   if ($buscar and $guardar == true ){
 
@@ -447,6 +457,7 @@ class RegistrarVehiculoController extends Controller
                   }
               	  
               	  }else{
+              	  	//die('es de aprobacion directa');
 
               	      $guardarVehiculo = self::guardarVehiculoMaestro($conn,$conexion, $model);
 
