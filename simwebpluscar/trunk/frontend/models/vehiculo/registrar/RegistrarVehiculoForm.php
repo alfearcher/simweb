@@ -153,7 +153,7 @@ class RegistrarVehiculoForm extends RegistrarVehiculo
         ];
     }
 
-    public function attributeVehiculo()
+    public function attributeSlVehiculo()
     {
         return [
                
@@ -191,6 +191,42 @@ class RegistrarVehiculoForm extends RegistrarVehiculo
                 
         ];
     }
+
+       public function attributeVehiculos()
+    {
+        return [
+               
+              'id_vehiculo',
+              'id_contribuyente',
+              'placa',
+              'marca',
+              'modelo',
+              'color',
+              'uso_vehiculo',
+              'precio_inicial',
+              'fecha_inicio',
+              'ano_compra',
+              'ano_vehiculo',
+              'no_ejes',
+              'liquidado',
+              'status_vehiculo',
+              'exceso_cap',
+              'medida_cap',
+              'capacidad',
+              'nro_puestos',
+              'peso',
+              'clase_vehiculo',
+              'tipo_vehiculo',
+              'serial_motor',
+              'serial_carroceria',
+              'nro_calcomania',
+              'nro_cilindros',
+                
+                
+        ];
+    }
+
+
     /**
      * [buscarPlaca description] Metodo que realiza la busqueda de la placa en la tabla vehiculos para verificar si esta ya existe
      * @return [type] [description]

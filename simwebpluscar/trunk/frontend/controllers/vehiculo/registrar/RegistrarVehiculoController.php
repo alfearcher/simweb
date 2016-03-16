@@ -495,7 +495,7 @@ class RegistrarVehiculoController extends Controller
 
 
 
-
+ }
 
 
 

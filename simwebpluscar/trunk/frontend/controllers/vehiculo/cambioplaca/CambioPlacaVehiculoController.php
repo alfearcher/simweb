@@ -85,7 +85,7 @@ class CambioPlacaVehiculoController extends Controller
     public function actionCambioPlacaVehiculo()
     {
       
-       die('llegue a cambio de placa vehiculo');
+       die(var_dump(yii::$app->request->post('value')));
         if(isset(yii::$app->user->identity->id_contribuyente)){
 
          
