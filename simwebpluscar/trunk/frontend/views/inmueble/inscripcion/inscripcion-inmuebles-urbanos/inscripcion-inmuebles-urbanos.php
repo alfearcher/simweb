@@ -213,6 +213,7 @@ function bloquea() {
         </div>
     </div>
 </div>
+
 <!-- Campos ocultos -->   
 <?= $form->field($model, 'manzana_limite')->hiddenInput(['value' => 130])->label(false) ?> 
 <?= $form->field($model, 'id_habitante')->hiddenInput(['value' => 123456])->label(false) ?>
@@ -221,9 +222,9 @@ function bloquea() {
 <?= $form->field($model, 'catastro')->hiddenInput(['value' => 0])->label(false) ?>
 <?= $form->field($model, 'tlf_hab')->hiddenInput(['style' => 'width:80px;','value' =>0])->label(false) ?>
 
-
+</div><!-- inscripcionInmueblesUrbanos -->
 
 <?= Html::endForm();?>
 
-</div><!-- inscripcionInmueblesUrbanos -->
+
 
