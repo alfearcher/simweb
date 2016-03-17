@@ -102,7 +102,7 @@
 		        		//	SOLICITUDES DE INMUEBLES URBANOS
 		        		['label' => Icon::show('fa fa-home',['class' => $typeLong], $typeIcon) . '&nbsp; Inmuebles Urbanos',
 		        			'items' => [
-		        						['label' => 'Inscripción de Inmuebles Urbanos', 'url' => ['inmueble/inscripcion/inscripcion-inmuebles-urbanos/inscripcion-inmuebles-urbanos'], 'options' => ['onClick' => yii::$app->solicitud->setId(68)]],
+		        						['label' => 'Inscripción de Inmuebles Urbanos', 'url' => ['inmueble/inscripcion/inscripcion-inmuebles-urbanos/inscripcion-inmuebles-urbanos','id' =>60]],
 		        						['label' => 'Avaluo Catastral', 'url' => '#'],
 		        						['label' => 'Certificado Catastral', 'url' => '#'],
 		        						['label' => 'Renovación de Certificado Catastral', 'url' => '#'],
