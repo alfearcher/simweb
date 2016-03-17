@@ -290,7 +290,6 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                     } else {
 
                         $arrayDatos3 = [    'id_contribuyente' => $datos->id_contribuyente,
-                                            'id_impuesto' => $datos->id_impuesto,
                                             'ano_inicio' => $model->ano_inicio,
                                             'direccion' => $model->direccion,
                                             'medidor' => $model->medidor,
@@ -305,8 +304,9 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
             
                         $tableName3 = 'inmuebles';
+                        $arrayCondition = ['id_impuesto'=>$datos->id_impuesto];
 
-                        if ( $conn->guardarRegistro($conexion, $tableName3,  $arrayDatos3) ){
+                        if ( $conn->modificarRegistro($conexion, $tableName3,  $arrayDatos3, $arrayCondition) ){
 
                               $transaccion->commit(); 
                               $conexion->close(); 
