@@ -71,10 +71,17 @@
 			foreach (range($fecha_desde , $fecha_hasta) as $fecha[]){
 
 
+				
+
 
 			}
-			//die(var_dump($fecha));
-			return $fecha;
+			
+			foreach ($fecha as $f){
+
+				$array[] = ['id' => $f, 'campo' => $f];
+			}
+
+			return $array;
 
 		}
 
