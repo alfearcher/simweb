@@ -190,7 +190,7 @@ $this->title = Yii::t('frontend', 'Property Update');
                         
                             <div class="col-sm-2">
                             <?= $form->field($model, 'inactivo')->checkbox()?> 
-                            </div> $inactivo
+                            </div> 
 
                                                  
 
