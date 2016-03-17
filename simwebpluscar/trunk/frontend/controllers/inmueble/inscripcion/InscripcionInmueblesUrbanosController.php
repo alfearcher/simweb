@@ -247,7 +247,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                     if ($nivelAprobacion['nivel_aprobacion'] != 1){
 
-die('llegue a aprobacion diferente de 1 '.$nivelAprobacion['nivel_aprobacion']);
+
 
                         $transaccion->commit(); 
                         $conexion->close(); 
@@ -271,7 +271,7 @@ die('llegue a aprobacion diferente de 1 '.$nivelAprobacion['nivel_aprobacion']);
                         $tableName3 = 'inmuebles';
 
                         if ( $conn->guardarRegistro($conexion, $tableName3,  $arrayDatos3) ){
-die('llegue a aprobacion nivel 1 '.$nivelAprobacion['nivel_aprobacion']);
+
                               $transaccion->commit(); 
                               $conexion->close(); 
                               $tipoError = 0; 
