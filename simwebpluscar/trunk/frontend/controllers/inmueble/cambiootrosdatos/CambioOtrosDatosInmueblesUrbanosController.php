@@ -237,7 +237,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
             $tipoSolicitud = self::DatosConfiguracionTiposSolicitudes();
 
             $arrayDatos1 = [  'id_contribuyente' => $datos->id_contribuyente,
-                              'id_config_solicitud' => $buscar->getParametroSolicitud(["id_config_solicitud"]);,
+                              'id_config_solicitud' => $buscar->getParametroSolicitud(["id_config_solicitud"]),
                               'impuesto' => 2,
                               'id_impuesto' => $datos->id_impuesto,
                               'tipo_solicitud' => $tipoSolicitud,
