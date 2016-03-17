@@ -154,7 +154,7 @@ class CambioDatosVehiculoController extends Controller
 
                 if ($model->validate()){
 
-                 $buscarVehiculos = self::buscarVehiculos();
+                die('llegue de nuevo  a controlador'.var_dump($model));
 
                 }
             

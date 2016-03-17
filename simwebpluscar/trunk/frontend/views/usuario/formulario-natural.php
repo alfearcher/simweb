@@ -102,7 +102,7 @@
                                                                                          
                                                                                          ],
                                                                                        'language' => 'es-ES',
-                                                                                       'dateFormat' => 'yyyy-MM-dd',
+                                                                                       'dateFormat' => 'dd-MM-yyyy',
                                                                                         'options' => [
                                                                                             //'onClick' => 'alert("calendario")',
                                                                                             'id' => 'fecha-nac',

@@ -334,7 +334,10 @@ class RegistrarVehiculoController extends Controller
 
       $arregloDatos['precio_inicial'] = $model->precio_inicial;
 
-      $arregloDatos['fecha_inicio'] = $model->fecha_inicio;
+      $arregloDatos['fecha_inicio'] =  date('Y-m-d', strtotime($model->fecha_inicio));
+
+     // die( $arregloDatos['fecha_inicio']);
+
 
       $arregloDatos['ano_compra'] = $model->ano_compra;
 
@@ -366,7 +369,7 @@ class RegistrarVehiculoController extends Controller
 
       $arregloDatos['nro_calcomania'] = $model->nro_calcomania;
 
-  	 
+  	 // $arregloDatos['fecha_hora'] = date('Y-m-d h:m:i');
 
       $arregloDatos['nro_cilindros'] = $model->nro_cilindros;
 

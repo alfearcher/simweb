@@ -66,6 +66,23 @@ class CambioDatosVehiculoForm extends Model
   public $marca;
   public $modeloviejo;
   public $modelo;
+  public $colorviejo;
+  public $color;
+  public $no_ejes_viejo;
+  public $no_ejes;
+  public $nro_puestos_viejo;
+  public $nro_puestos;
+  public $pesoviejo;
+  public $peso;
+  public $nro_cilindros_viejo;
+  public $nro_cilindros;
+  public $precio_inicial_viejo;
+  public $precio_inicial;
+  public $capacidadvieja;
+  public $capacidad;
+  public $medida_cap_vieja;
+  public $medida_cap;
+
 
 
 
@@ -78,7 +95,9 @@ class CambioDatosVehiculoForm extends Model
      
 
         return [
-              [['placa','placavieja', 'marcavieja', 'marca','modeloviejo', 'modelo'],'required'],
+              [['marcavieja', 'marca','modeloviejo', 'modelo', 'colorviejo','color','no_ejes_viejo','no_ejes',
+              'nro_puestos_viejo','nro_puestos','pesoviejo','peso','nro_cilindros_viejo','nro_cilindros','precio_inicial_viejo','precio_inicial',
+              'capacidadvieja','capacidad','medida_cap_vieja','medida_cap'],'required'],
              
             
 
@@ -94,10 +113,28 @@ class CambioDatosVehiculoForm extends Model
     public function attributeLabels()
     {
         return [
-               
-                'placa' => Yii::t('frontend', 'Placa'),
+                'marcavieja' => Yii::t('frontend', 'Marca Antigua'), 
                 'marca' => Yii::t('frontend', 'Marca'), 
-                'modelo' => Yii::t('frontend', 'Modelo'),  
+                'modeloviejo' => Yii::t('frontend', 'Modelo Antiguo'),
+                'modelo' => Yii::t('frontend', 'Modelo'),
+                'colorviejo' => yii::t('frontend', 'Color Antiguo'),
+                'color' => yii::t('frontend', 'Color'),
+                'no_ejes_viejo' => yii::t('frontend', 'Nro. ejes Antiguo') ,
+                'no_ejes' => yii::t('frontend', 'Nro. ejes'),
+                'nro_puestos_viejo' => yii::t('frontend', 'Nro. puesto Antiguo') ,
+                'nro_puestos' => yii::t('frontend', 'Nro. puesto') ,
+                'pesoviejo' => yii::t('frontend', 'Peso Antiguo') ,
+                'peso' => yii::t('frontend', 'Peso') ,
+                'nro_cilindros_viejo' => yii::t('frontend', 'Nro. Cilindros Antiuguo') ,
+                'nro_cilndros' => yii::t('frontend', 'Nro. Cilindros') ,
+                'precio_inicial_viejo' => yii::t('frontend', 'Precio Inicial Antiguo') ,
+                'precio_inicial' => yii::t('frontend', 'Precio Inicial') ,
+                'capacidadvieja' => yii::t('frontend', 'Capacidad Antigua') ,
+                'capacidad' => yii::t('frontend', 'Capacidad') ,
+                'mediad_cap_vieja' => yii::t('frontend', 'Medida de capacidad Antigua') ,
+                'medida_cap' => yii::t('frontend', 'Medidad de capacidad') ,
+
+
 
               
                 

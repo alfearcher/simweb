@@ -39,8 +39,17 @@ $listaUsoVehiculo = ArrayHelper::map($usoVehiculo, 'uso_vehiculo' , 'descripcion
 
 
  $fecha = new RangoFecha(); // instancia de la clase que contiene el metodo para crear combos de rango de fecha dinamicos.
- 
 
+ $listaFecha = $fecha->RangoFecha(1960);
+
+ //die(var_dump($listaFecha));
+ 
+$listaAño = ArrayHelper::map($listaFecha, 'id' , 'campo');
+
+
+$listaFecha2 = $fecha->RangoFecha(1920);
+
+$listaAño2  = ArrayHelper::map($listaFecha2, 'id' , 'campo');
 
 
 
@@ -137,7 +146,7 @@ $listaUsoVehiculo = ArrayHelper::map($usoVehiculo, 'uso_vehiculo' , 'descripcion
 
                
                     <div class="col-sm-2" style="margin-left: -20px;">
-                        <?= $form->field($model, 'ano_compra')->dropDownList($listaFecha = $fecha->RangoFecha(1960),
+                        <?= $form->field($model, 'ano_compra')->dropDownList($listaAño,
                                                                 [
                                                                 'prompt' => yii::t('frontend', 'Select'),
                                                                
@@ -154,7 +163,7 @@ $listaUsoVehiculo = ArrayHelper::map($usoVehiculo, 'uso_vehiculo' , 'descripcion
 
                
                      <div class="col-sm-2" style="margin-left: -20px;">
-                        <?= $form->field($model, 'ano_vehiculo')->dropDownList($listaFecha = $fecha->RangoFecha(1920),
+                        <?= $form->field($model, 'ano_vehiculo')->dropDownList($listaAño2,
                                                                 [
                                                                 'prompt' => yii::t('frontend', 'Select'),
                                                                

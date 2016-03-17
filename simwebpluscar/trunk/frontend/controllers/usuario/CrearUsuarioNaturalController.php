@@ -346,7 +346,9 @@ class CrearUsuarioNaturalController extends Controller
             //die($arregloDatos['nombres']);
             $arregloDatos['apellidos'] = $model->apellidos;
 
-            $arregloDatos['fecha_nac'] = $model->fecha_nac;
+            $arregloDatos['fecha_nac'] = date('Y-m-d', strtotime($model->fecha_nac));
+
+                die($arregloDatos['fecha_nac']);
 
             $arregloDatos['sexo'] = $model->sexo;
 
