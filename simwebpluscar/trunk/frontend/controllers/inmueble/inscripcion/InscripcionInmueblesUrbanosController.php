@@ -74,6 +74,7 @@ use common\conexion\ConexionController;
 use common\enviaremail\EnviarEmailSolicitud;
 use common\mensaje\MensajeController;
 use frontend\models\inmueble\ConfiguracionTiposSolicitudes;
+use common\models\configuracion\solicitud\ParametroSolicitud;
 session_start();
 /*********************************************************************************************************
  * InscripcionInmueblesUrbanosController implements the actions for InscripcionInmueblesUrbanosForm model.
@@ -176,16 +177,16 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
       */
      public function GuardarInscripcion($model)
      {
-           
+            $buscar = new ParametroSolicitud($_SESSION['id']);
+
+            $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
+
             try {
             $tableName1 = 'solicitudes_contribuyente'; 
 
             $tipoSolicitud = self::DatosConfiguracionTiposSolicitudes();
      
-            $idConfig = yii::$app->solicitud->getId();
-            die('este es el id config '.$idConfig);
-
-
+            
             $arrayDatos1 = [  'id_contribuyente' => $model->id_contribuyente,
                               'id_config_solicitud' => 68, //$idConfig
                               'impuesto' => 2,
@@ -195,9 +196,9 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                               'fecha_hora_creacion' => date('Y-m-d h:i:s'),
                               'nivel_aprobacion' => 0,
                               'nro_control' => 0,
-                              'firma_digital' => null,
+                              'firma_digital' => null, 
                               'estatus' => 0,
-                              'inactivo' => 0,
+                              'inactivo' => 0, 
                           ];  
             
 
@@ -232,7 +233,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                                   //'av_calle_esq_dom' => $av_calle_esq_dom,
                                     'casa_edf_qta_dom' => $casa_edf_qta_dom,
                                     'piso_nivel_no_dom' => $piso_nivel_no_dom,
-                                    'apto_dom' => $apto_dom,
+                                    'apto_dom' => $apto_dom, 
                                     'fecha_creacion' => date('Y-m-d h:i:s'),
                                 ]; 
 
@@ -241,10 +242,47 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                 if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){
 
-                    $transaccion->commit(); 
-                    $conexion->close(); 
-                    $tipoError = 0; 
-                    return $result;
+                    if ($nivelAprobacion['nivel_aprobacion'] != 1){
+
+                        $transaccion->commit(); 
+                        $conexion->close(); 
+                        $tipoError = 0; 
+                        return $result;
+
+                    } else {
+
+                        $arrayDatos3 = [    'id_contribuyente' => $id_contribuyente,
+                                            'ano_inicio' => $ano_inicio,
+                                            'direccion' => $direccion,
+                                            'medidor' => $medidor,
+                                            'observacion' => $observacion,
+                                            'tipo_ejido' => $tipo_ejido,
+                                          //'av_calle_esq_dom' => $av_calle_esq_dom,
+                                            'casa_edf_qta_dom' => $casa_edf_qta_dom,
+                                            'piso_nivel_no_dom' => $piso_nivel_no_dom,
+                                            'apto_dom' => $apto_dom, 
+                                       ]; 
+
+                        $tableName3 = 'inmuebles';
+
+                        if ( $conn->guardarRegistro($conexion, $tableName3,  $arrayDatos3) ){
+
+                              $transaccion->commit(); 
+                              $conexion->close(); 
+                              $tipoError = 0; 
+                              return $result;
+
+                        } else {
+            
+                              $transaccion->rollBack();
+                              $conexion->close();
+                              $tipoError = 0; 
+                              return false;
+
+                        }
+
+
+                    }
 
                 } else {
             
@@ -255,7 +293,9 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                 }
 
-            }else{ 
+
+
+            } else { 
                 
                 return false;
             }   
