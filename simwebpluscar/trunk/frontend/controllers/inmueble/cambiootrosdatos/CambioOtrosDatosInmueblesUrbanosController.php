@@ -97,6 +97,10 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      */
     public function actionIndex()
     {
+        $idConfig = yii::$app->request->get('id');
+
+         $_SESSION['id'] = $idConfig;
+
         if ( isset( $_SESSION['idContribuyente'] ) ) {
         $searchModel = new InmueblesSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -143,7 +147,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      **/
      public function actionCambioOtrosDatosInmuebles()
      { 
-
+         
          if ( isset(Yii::$app->user->identity->id_contribuyente) ) {
          //Creamos la instancia con el model de validación
          $model = new CambioOtrosDatosInmueblesForm();
@@ -222,7 +226,10 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
       */
      public function GuardarCambios($model, $datos)
      {
-           
+            $buscar = new ParametroSolicitud($_SESSION['id']);
+
+            $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
+
             try {
             $tableName1 = 'solicitudes_contribuyente'; 
 
@@ -272,10 +279,48 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                 if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){
 
-                    $transaccion->commit(); 
-                    $conexion->close(); 
-                    $tipoError = 0; 
-                    return $result;
+                    if ($nivelAprobacion['nivel_aprobacion'] != 1){
+die('llegue a nivel aprobacion por partes '.$nivelAprobacion['nivel_aprobacion']);
+                        $transaccion->commit(); 
+                        $conexion->close(); 
+                        $tipoError = 0; 
+                        return $result;
+
+                    } else {
+die('llegue a nivel aprobacion directa '.$nivelAprobacion['nivel_aprobacion']);
+                        $arrayDatos3 = [    'id_contribuyente' => $datos->id_contribuyente,
+                                            'id_impuesto' => $datos->id_impuesto,
+                                            'ano_inicio' => $model->ano_inicio,
+                                            'direccion' => $model->direccion,
+                                            'medidor' => $model->medidor,
+                                            'observacion' => $model->observacion,
+                                            'tipo_ejido' => $tipo_ejido,
+                                          //'av_calle_esq_dom' => $av_calle_esq_dom,
+                                            'casa_edf_qta_dom' => $model->casa_edf_qta_dom,
+                                            'piso_nivel_no_dom' => $model->piso_nivel_no_dom,
+                                            'apto_dom' => $model->apto_dom,
+                                    
+                                        ]; 
+
+            
+                        $tableName3 = 'inmuebles';
+
+                        if ( $conn->guardarRegistro($conexion, $tableName3,  $arrayDatos3) ){
+
+                              $transaccion->commit(); 
+                              $conexion->close(); 
+                              $tipoError = 0; 
+                              return $result;
+
+                        } else {
+            
+                              $transaccion->rollBack();
+                              $conexion->close();
+                              $tipoError = 0; 
+                              return false;
+
+                        }
+
 
                 } else {
             
