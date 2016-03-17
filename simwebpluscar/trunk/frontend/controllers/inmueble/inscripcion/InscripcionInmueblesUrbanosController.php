@@ -99,7 +99,9 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      public function actionInscripcionInmueblesUrbanos()
      { 
        
-     
+         $idConfig = yii::$app->request->get('id');
+
+         $_SESSION['id'] = $idConfig;
 
          if ( isset(Yii::$app->user->identity->id_contribuyente) ) {
          //Creamos la instancia con el model de validación
@@ -208,6 +210,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
             $transaccion = $conexion->beginTransaction();
 
             if ( $conn->guardarRegistro($conexion, $tableName1,  $arrayDatos1) ){  
+                
                 $result = $conexion->getLastInsertID();
 
 
@@ -297,8 +300,8 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
             } else { 
                 
-                return false;
-            }   
+                 return false;
+             }   
             
           } catch ( Exception $e ) {
               //echo $e->errorInfo[2];
