@@ -88,13 +88,13 @@ function bloquea() {
 
                         
                             <div class="col-sm-2"> 
-                            <?= $form->field($model, 'ano_inicio')->textInput(['style' => 'width:80px;'])//->label(false)/*->input('date', 
+                            <?= $form->field($model, 'ano_inicio')->textInput(['style' => 'width:80px;'])/*->input('date', 
                                                                            [
                                                                               //'value' => date('d-m-Y'),
                                                                               'type' => 'date',
                                                                               'style' => 'width:160px;'
                                                                               //'format' => 'yyyy-mm-dd',
-                                                                           ])*/  ?>  
+                                                                           ])*/ //->label(false) ?>  
                             </div>
                         
 
