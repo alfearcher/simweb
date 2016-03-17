@@ -280,7 +280,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                 if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){
 
-                    if ($nivelAprobacion['nivel_aprobacion'] != 1){
+                    if ($nivelAprobacion['nivel_aprobacion'] != 0){
 die('llegue a nivel aprobacion por partes '.$nivelAprobacion['nivel_aprobacion']);
                         $transaccion->commit(); 
                         $conexion->close(); 
