@@ -301,7 +301,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                                             'apto_dom' => $model->apto_dom,
                                     
                                         ]; 
-
+die(var_dump($arrayDatos1));
             
                         $tableName3 = 'inmuebles';
                         $arrayCondition = ['id_impuesto'=>$datos->id_impuesto];
