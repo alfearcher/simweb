@@ -237,7 +237,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
             $tipoSolicitud = self::DatosConfiguracionTiposSolicitudes();
 
             $arrayDatos1 = [  'id_contribuyente' => $datos->id_contribuyente,
-                              'id_config_solicitud' => 3,
+                              'id_config_solicitud' => $buscar->getParametroSolicitud(["id_config_solicitud"]);,
                               'impuesto' => 2,
                               'id_impuesto' => $datos->id_impuesto,
                               'tipo_solicitud' => $tipoSolicitud,
@@ -249,7 +249,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                               'estatus' => 0,
                               'inactivo' => 0,
                           ];  
-            
+            die(var_dump($arrayDatos1));
 
             $conn = New ConexionController();
             $conexion = $conn->initConectar('dbsim');     // instancia de la conexion (Connection)
@@ -280,15 +280,15 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                 if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){
 
-                    if ($nivelAprobacion['nivel_aprobacion'] != 0){
-die('llegue a nivel aprobacion por partes '.$nivelAprobacion['nivel_aprobacion']);
+                    if ($nivelAprobacion['nivel_aprobacion'] != 1){
+
                         $transaccion->commit(); 
                         $conexion->close(); 
                         $tipoError = 0; 
                         return $result;
 
                     } else {
-die('llegue a nivel aprobacion directa '.$nivelAprobacion['nivel_aprobacion']);
+
                         $arrayDatos3 = [    'id_contribuyente' => $datos->id_contribuyente,
                                             'id_impuesto' => $datos->id_impuesto,
                                             'ano_inicio' => $model->ano_inicio,
