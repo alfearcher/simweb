@@ -182,6 +182,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
             $buscar = new ParametroSolicitud($_SESSION['id']);
 
             $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
+            $idConf = $buscar->getParametroSolicitud(["id_config_solicitud"]);
 
             try {
             $tableName1 = 'solicitudes_contribuyente'; 
@@ -190,7 +191,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      
             
             $arrayDatos1 = [  'id_contribuyente' => $model->id_contribuyente,
-                              'id_config_solicitud' => 68, //$idConfig
+                              'id_config_solicitud' => 68, //$idConf
                               'impuesto' => 2,
                               'id_impuesto' => null,
                               'tipo_solicitud' => $tipoSolicitud,
