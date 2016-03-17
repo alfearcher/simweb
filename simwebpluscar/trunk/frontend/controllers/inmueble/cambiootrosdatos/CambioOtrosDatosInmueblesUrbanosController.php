@@ -249,7 +249,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                               'estatus' => 0,
                               'inactivo' => 0,
                           ];  
-            die(var_dump($arrayDatos1));
+            
 
             $conn = New ConexionController();
             $conexion = $conn->initConectar('dbsim');     // instancia de la conexion (Connection)
