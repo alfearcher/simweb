@@ -112,7 +112,7 @@
 		        						['label' => 'Integración de Parcela', 'url' => ['/inmueble/integracion-inmuebles-urbanos/integracion-inmuebles']],
 		        						['label' => 'Desintegración de Parcela', 'url' => ['inmueble/desintegracion-inmuebles-urbanos/desintegracion']],
 		        						['label' => 'Cambio a Propiedad Horizontal', 'url' => ['/inmueble/inmuebles-urbanos/index']],
-		        						['label' => 'Cambio de Otros Datos del Inmueble', 'url' => ['/inmueble/cambiootrosdatos/cambio-otros-datos-inmuebles-urbanos/index']],
+		        						['label' => 'Cambio de Otros Datos del Inmueble', 'url' => ['/inmueble/cambiootrosdatos/cambio-otros-datos-inmuebles-urbanos/index','id' =>3]],
 		        						['label' => 'Modificar Avaluo', 'url' => '#'],
 		        						['label' => 'Desincorporación de Inmueble', 'url' => ['inmueble/desincorporacion/desincorporacion-inmuebles-urbanos/index'], 'options' => ['onclick' => "setId(50)"]],
 
