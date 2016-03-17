@@ -77,7 +77,7 @@ function bloquea() {
 
                         
                             <div class="col-sm-2">
-                            <?= $form->field($model, 'id_contribuyente')->textInput(['readonly'=>'readonly','value'=>Yii::$app->user->identity->id_contribuyente,'style' => 'width:80px;'])//->label(false) //Yii::$app->user->identity->id_contribuyente?>
+                            <?= $form->field($model, 'id_contribuyente')->textInput(['readonly'=>'readonly','value'=>Yii::$app->user->identity->id_contribuyente,'style' => 'width:80px;'])->label(false) //Yii::$app->user->identity->id_contribuyente?>
                             </div> 
 
 
@@ -88,13 +88,13 @@ function bloquea() {
 
                         
                             <div class="col-sm-2"> 
-                            <?= $form->field($model, 'ano_inicio')->textInput(['style' => 'width:80px;'])/*->input('date', 
+                            <?= $form->field($model, 'ano_inicio')->textInput(['style' => 'width:80px;'])->label(false)/*->input('date', 
                                                                            [
                                                                               //'value' => date('d-m-Y'),
                                                                               'type' => 'date',
                                                                               'style' => 'width:160px;'
                                                                               //'format' => 'yyyy-mm-dd',
-                                                                           ])*/ //->label(false) ?>  
+                                                                           ])*/  ?>  
                             </div>
                         
 
@@ -111,7 +111,7 @@ function bloquea() {
 
                         
                             <div class="col-sm-3"> 
-                            <?= $form->field($model, 'direccion')->textarea(['maxlength' => true,'style' => 'width:300px;'])//->label(false) ?>
+                            <?= $form->field($model, 'direccion')->textarea(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?>
                             </div> 
                         
 
@@ -129,7 +129,7 @@ function bloquea() {
 
                         
                             <div class="col-sm-1">
-                            <?= $form->field($model, 'casa_edf_qta_dom')->textInput(['style' => 'width:80px;'])//->label(false) ?>
+                            <?= $form->field($model, 'casa_edf_qta_dom')->textInput(['style' => 'width:80px;'])->label(false) ?>
                             </div> 
                         
 
@@ -141,7 +141,7 @@ function bloquea() {
 
                         
                             <div class="col-sm-1">
-                            <?= $form->field($model, 'piso_nivel_no_dom')->textInput(['style' => 'width:80px;'])//->label(false) ?>
+                            <?= $form->field($model, 'piso_nivel_no_dom')->textInput(['style' => 'width:80px;'])->label(false) ?>
                             </div> 
                         
 
@@ -153,7 +153,7 @@ function bloquea() {
 
                         
                             <div class="col-sm-1">
-                            <?= $form->field($model, 'apto_dom')->textInput(['style' => 'width:80px;'])//->label(false) ?>
+                            <?= $form->field($model, 'apto_dom')->textInput(['style' => 'width:80px;'])->label(false) ?>
                             </div> 
                         
 
@@ -165,7 +165,7 @@ function bloquea() {
 
                         
                             <div class="col-sm-1">
-                            <?= $form->field($model, 'medidor')->textInput(['style' => 'width:80px;'])//->label(false) ?>
+                            <?= $form->field($model, 'medidor')->textInput(['style' => 'width:80px;'])->label(false) ?>
                             </div>                                                                        
                         
                     </div>
@@ -180,7 +180,7 @@ function bloquea() {
 
                         
                             <div class="col-sm-3">
-                            <?= $form->field($model, 'observacion')->textarea(['maxlength' => true,'style' => 'width:300px;'])//->label(false) ?>
+                            <?= $form->field($model, 'observacion')->textarea(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?>
                             </div>    
                         
 
@@ -213,7 +213,6 @@ function bloquea() {
         </div>
     </div>
 </div>
-
 <!-- Campos ocultos -->   
 <?= $form->field($model, 'manzana_limite')->hiddenInput(['value' => 130])->label(false) ?> 
 <?= $form->field($model, 'id_habitante')->hiddenInput(['value' => 123456])->label(false) ?>
@@ -222,9 +221,9 @@ function bloquea() {
 <?= $form->field($model, 'catastro')->hiddenInput(['value' => 0])->label(false) ?>
 <?= $form->field($model, 'tlf_hab')->hiddenInput(['style' => 'width:80px;','value' =>0])->label(false) ?>
 
-</div><!-- inscripcionInmueblesUrbanos -->
+
 
 <?= Html::endForm();?>
 
-
+</div><!-- inscripcionInmueblesUrbanos -->
 
