@@ -64,6 +64,8 @@
 		public $fecha_hasta;
 		public $solo_funcionario;
 
+		public $combo = [];
+
 		/**
      	* @inheritdoc
      	*/
@@ -150,6 +152,51 @@
 	    		$findModel = ConfigurarSolicitud::find()->where(['id_config_solicitud' => $idConfigSolicitud]);
 	    	}
 	    	return $findModel;
+	    }
+
+
+
+	    /**
+	     * [validarRangoFecha description]
+	     * @param  [type] $model [description]
+	     * @return [type]        [description]
+	     */
+	    public function validarRangoFecha($model)
+	    {
+	    	if ( isset($this->fecha_desde) ) {
+	    		if ( isset($this->fecha_hasta) ) {
+	    			if ( $this->fecha_hasta < $this->fecha_desde ) {
+	    				$model->addError('fecha_hasta', Yii::t('backend', $model->getAttributeLabel('fecha_hasta') . ' no debe ser anterior a la ' . $model->getAttributeLabel('fecha_desde')));
+	    				return false;
+	    			}
+	    		}
+	    	}
+	    	return true;
+	    }
+
+
+
+
+	    /**
+	     * Metedo que valida si al seleccionar un proceso en la configuracion
+	     * de la solicitud se determina cuando se va a ejecutar dicho proceso,
+	     * si en la creacion, aprobacion o negacion de la solicitud. Esto se
+	     * detremina si se ha seleccionado una opcion del combo
+	     * @param  array  $items Las opciones selccionadas,determinada por enteros.
+	     * @param  $model Modelo del formulario.
+	     * @return boolean Retorna true o false.
+	     */
+	    public function validarProcesoSeleccion($items = [], $model)
+	    {
+	    	if ( count($items) > 0 ) {
+	    		foreach ($ite as $key => $value) {
+	    			if ( $value == '' || $value == null ) {
+	    				$model->addError('combo', Yii::t('backend', 'No ha indicado el proceso a ejecutar.'));
+	    				return false;
+	    			}
+	    		}
+	    	}
+	    	return true;
 	    }
 	}
 ?>
