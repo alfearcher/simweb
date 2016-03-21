@@ -46,6 +46,8 @@
 	use yii\base\Model;
 	use yii\data\ActiveDataProvider;
 	use backend\models\configuracion\nivelaprobacion\NivelAprobacion;
+	use yii\helpers\ArrayHelper;
+
 
 	/**
 	* 	Clase
@@ -116,6 +118,19 @@
 	    	]);
 
 	    	return $dataProvider;
+	    }
+
+
+	    /***/
+	    public function getListaNivelAprobacion()
+	    {
+	    	$model = $this->findNivelAprobacion();
+	    	if ( isset($model) ) {
+	    		$lista = ArrayHelper::map($model, 'nivel_aprobacion', 'descripcion');
+	    	} else {
+	    		$lista = null;
+	    	}
+	    	return $lista;
 	    }
 
 
