@@ -65,6 +65,7 @@
 	use backend\models\utilidad\documento\DocumentoRequisitoForm;
 	use backend\models\configuracion\detallesolicitud\SolicitudDetalleForm;
 	use backend\models\configuracion\documentosolicitud\SolicitudDocumentoForm;
+	use backend\models\configuracion\nivelaprobacion\NivelAprobacionForm;
 
 	session_start();		// Iniciando session
 
@@ -153,29 +154,37 @@
 				$model = New ConfigurarSolicitudForm();
 				$request = Yii::$app->request;
 				$postData = $request->post();
+				$itemsEjecutar = isset($postData['ejecutar']) ? $postData['ejecutar'] : null;
 
 				if ( $model->load($postData) && Yii::$app->request->isAjax ) {
 					Yii::$app->response->format = Response::FORMAT_JSON;
 					return ActiveForm::validate($model);
 				}
 
-// die(var_dump($postData));
+//die(var_dump($itemsEjecutar));
 				if ( $model->load($postData) ) {
 					if ( $model->validate() ) {
-						if ( $postData['btn-create'] == 1 && isset($postData) ) {
-							$postData['btn-create'] = 2;
-							// Se guardan los datos
-							self::actionBeginSave($postData, $model, 'create');
+						if ( $model->validarRangoFecha($model) ) {
+							if ( $model->validarProcesoSeleccion($itemsEjecutar, $model) ) {
+								if ( $postData['btn-create'] == 1 && isset($postData) ) {
+									$postData['btn-create'] = 2;
+									// Se guardan los datos
+									self::actionBeginSave($postData, $model, 'create');
+								}
+							}
 						}
 					}
 				}
 
 				// Modelo para cargar el combo con la lista de los impuestos.
 				$modelImpuesto = ImpuestoForm::findImpuesto();
+				$modelNivelAprobacion = New NivelAprobacionForm();
+				$listaNivelAprobacion = $modelNivelAprobacion->getListaNivelAprobacion();
 
 				return $this->render('/configuracion/solicitud/create-config-solicitud-form', [
 																		'model' => $model,
 																		'modelImpuesto' => $modelImpuesto,
+																		'listaNivelAprobacion' => $listaNivelAprobacion,
 					]);
 			} else {
 				MensajeController::actionMensaje(999, false);
