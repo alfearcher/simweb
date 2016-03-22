@@ -95,9 +95,9 @@ class CambioDatosVehiculoForm extends Model
      
 
         return [
-              [['marcavieja', 'marca','modeloviejo', 'modelo', 'colorviejo','color','no_ejes_viejo','no_ejes',
-              'nro_puestos_viejo','nro_puestos','pesoviejo','peso','nro_cilindros_viejo','nro_cilindros','precio_inicial_viejo','precio_inicial',
-              'capacidadvieja','capacidad','medida_cap_vieja','medida_cap'],'required'],
+              [['marca', 'modelo','color','no_ejes',
+              'nro_puestos','peso','nro_cilindros','precio_inicial',
+              'capacidad','medida_cap'],'required'],
              
             
 
