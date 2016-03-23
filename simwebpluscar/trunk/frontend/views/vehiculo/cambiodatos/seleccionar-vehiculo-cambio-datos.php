@@ -33,7 +33,22 @@ $this->title = 'Vehicle Specifications change';
 
 
 						    
-							
+							<div class="row">
+                           
+                             
+                        
+                            
+                            
+                            <div class="col-sm-4">
+                            <?= $form->field($model, 'placa')->textInput(                              [ 'id'=> 'preguntas', 
+                                                                                                           
+                                                                                                            'style' => 'width:280px;',
+                                                                                                            'value' => $datos[0]['placa']  ,
+                                                                                                           // die(var_dump($preguntaSeguridad[0]['pregunta'])),
+                                                                                                            'readOnly' =>true,                                                                                                          
+                                                                                                            ]); ?>
+                              </div>
+                            </div>
 							
 								
 							<div class="row">

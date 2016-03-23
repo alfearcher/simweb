@@ -116,6 +116,8 @@ class CambioDatosVehiculoController extends Controller
 
       $idContribuyente = yii::$app->user->identity->id_contribuyente;
       $idVehiculo = yii::$app->request->post('id');
+      $_SESSION['idVehiculo'] = $idVehiculo;
+  
 
       $modelsearch = new VehiculoSearch();
       $busqueda = $modelsearch->busquedaVehiculo($idVehiculo, $idContribuyente);
@@ -139,6 +141,8 @@ class CambioDatosVehiculoController extends Controller
      */
     public function actionCambioDatosVehiculo()
     {
+   
+     //die($_SESSION['idVehiculo']);
       
         
          if(isset(yii::$app->user->identity->id_contribuyente)){
@@ -165,6 +169,14 @@ class CambioDatosVehiculoController extends Controller
                if ($model->validate()){
 
                    $buscarActualizar = self::beginSave("buscarActualizar", $model);
+
+                   if($buscarActualizar == true){
+                     return MensajeController::actionMensaje(100);
+
+                   }else{
+
+                    return MensajeController::actionMensaje(420);
+                   }
                  }
                 
             
@@ -347,16 +359,19 @@ class CambioDatosVehiculoController extends Controller
      public function actualizarVehiculoMaestro($conn, $conexion, $model)
     {
      
-     die(var_dump($model));
+    //die(var_dump($model));
      
 
-      $tableName = 'afiliaciones';
-      $arregloCondition = ['id_vehiculo' => $idVehiculo]; 
-      $resultado = false;
+      $tableName = 'vehiculos';
+      $arregloCondition = ['id_vehiculo' => $_SESSION['idVehiculo']];
+      //die(var_dump($arregloCondition));
+     
 
-       $arregloDatos['id_contribuyente'] = $datos->id_contribuyente;
+      // $arregloDatos['id_contribuyente'] = $datos->id_contribuyente;
 
       $arregloDatos['placa'] = $model->placa;
+
+      //die($arregloDatos['placa']);
 
       $arregloDatos['marca'] = $model->marca;
 
@@ -364,18 +379,18 @@ class CambioDatosVehiculoController extends Controller
 
       $arregloDatos['color'] = $model->color;
 
-      $arregloDatos['uso_vehiculo'] = $model->uso_vehiculo;
+     // $arregloDatos['uso_vehiculo'] = $model->uso_vehiculo;
 
       $arregloDatos['precio_inicial'] = $model->precio_inicial;
 
-      $arregloDatos['fecha_inicio'] =  date('Y-m-d', strtotime($model->fecha_inicio));
+     // $arregloDatos['fecha_inicio'] =  date('Y-m-d', strtotime($model->fecha_inicio));
 
      // die( $arregloDatos['fecha_inicio']);
 
 
-      $arregloDatos['ano_compra'] = $model->ano_compra;
+      //$arregloDatos['ano_compra'] = $model->ano_compra;
 
-      $arregloDatos['ano_vehiculo'] = $model->ano_vehiculo;
+     // $arregloDatos['ano_vehiculo'] = $model->ano_vehiculo;
 
       $arregloDatos['no_ejes'] = $model->no_ejes;
 
@@ -383,7 +398,7 @@ class CambioDatosVehiculoController extends Controller
 
       $arregloDatos['status_vehiculo'] = 0;
 
-      $arregloDatos['exceso_cap'] = $model->exceso_cap;
+     // $arregloDatos['exceso_cap'] = $model->exceso_cap;
 
       $arregloDatos['medida_cap'] = $model->medida_cap;
 
@@ -393,15 +408,15 @@ class CambioDatosVehiculoController extends Controller
 
       $arregloDatos['peso'] = $model->peso;
 
-      $arregloDatos['clase_vehiculo'] = $model->clase_vehiculo;
+    //  $arregloDatos['clase_vehiculo'] = $model->clase_vehiculo;
 
-      $arregloDatos['tipo_vehiculo'] = $model->tipo_vehiculo;
+      //$arregloDatos['tipo_vehiculo'] = $model->tipo_vehiculo;
 
-      $arregloDatos['serial_motor'] = $model->serial_motor;
+     // $arregloDatos['serial_motor'] = $model->serial_motor;
 
-      $arregloDatos['serial_carroceria'] = $model->serial_carroceria;
+     // $arregloDatos['serial_carroceria'] = $model->serial_carroceria;
 
-      $arregloDatos['nro_calcomania'] = $model->nro_calcomania;
+     // $arregloDatos['nro_calcomania'] = $model->nro_calcomania;
 
      // $arregloDatos['fecha_hora'] = date('Y-m-d h:m:i');
 
@@ -413,13 +428,13 @@ class CambioDatosVehiculoController extends Controller
          
       $conn->open();
 
-      $transaccion = $conn->beginTransaction();
+      //$transaccion = $conn->beginTransaction();
 
           if ($conexion->modificarRegistro($conn, $tableName, $arregloDatos, $arregloCondition)){
 
-              $resultado = true;
+             // die('modifico');
 
-              return $resultado;
+              return true;
               
           }
          
@@ -437,7 +452,7 @@ class CambioDatosVehiculoController extends Controller
 
     public function beginSave($var, $model)
     {
-
+     // die($_SESSION['idVehiculo']);
       
 
       $buscar = new ParametroSolicitud($_SESSION['id']);
@@ -513,6 +528,7 @@ class CambioDatosVehiculoController extends Controller
                       $actualizarVehiculo = self::actualizarVehiculoMaestro($conn,$conexion, $model);
 
                           if ($buscar and $guardar and $actualizarVehiculo == true ){
+                            //die('los tres son verdad');
 
                           $transaccion->commit();
                           $conn->close();

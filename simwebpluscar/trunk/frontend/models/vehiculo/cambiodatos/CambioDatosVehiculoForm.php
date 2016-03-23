@@ -60,7 +60,7 @@ use frontend\models\usuario\Afiliacion;
 class CambioDatosVehiculoForm extends Model
 {
 
-  public $placavieja;
+
   public $placa;
   public $marcavieja;
   public $marca;
@@ -95,7 +95,7 @@ class CambioDatosVehiculoForm extends Model
      
 
         return [
-              [['marca', 'modelo','color','no_ejes',
+              [['placa','marca', 'modelo','color','no_ejes',
               'nro_puestos','peso','nro_cilindros','precio_inicial',
               'capacidad','medida_cap'],'required'],
              
