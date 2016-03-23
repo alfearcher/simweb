@@ -63,16 +63,17 @@
                         'class' => 'yii\grid\DataColumn',
                         'attribute' => 'ejecutar_en',
                         'format' => 'raw',
-                        'value' => function() {
+                        'value' => function($data) {
                                     $lista = [
                                             [ "id" => Yii::$app->solicitud->crear(),"valor" => Yii::$app->solicitud->crear()],
                                             [ "id" => Yii::$app->solicitud->aprobar(),"valor" => Yii::$app->solicitud->aprobar()],
+                                            [ "id" => Yii::$app->solicitud->negar(),"valor" => Yii::$app->solicitud->negar()],
                                     ];
                                     $result = ArrayHelper::map($lista,'id', "valor");
-                                    return Html::dropDownList('ejecutar', null, $result,[
+                                    return Html::dropDownList('combo[' . $data->id_proceso . ']', null, $result,[
                                                                                         'prompt' => Yii::t('backend', 'Select...'),
                                                                                         'class' => 'form-control',
-                                                                                        'id' => 'e',
+                                                                                        'id' => 'combo'. $data->id_proceso,
                                                                                         'disabled' => 'disabled',
                                                                                     ]);
                         }
@@ -83,9 +84,11 @@
                         'checkboxOptions' => [
                                 'id' => 'chk-proceso-generado',
                                 'onClick' => 'if ( $(this).is(":checked") ) {
-                                                alert("TILDE");
+                                                var combo = "#combo" + $(this).val();
+                                                $(combo).removeAttr("disabled");
                                               } else {
-                                                alert("NO TILDE");
+                                                var combo = "#combo" + $(this).val();
+                                                $(combo).attr("disabled", true);
                                               }',
                                 //'onClick' => 'alert("hola " + $(this).val());'
                                 //$(this).is(":checked"), permite determinar si un checkbox esta tildado.
@@ -97,31 +100,3 @@
         ?>
     </div>
 </div>
-
-<?php $this->registerJs(
-    '$(function() {
-        if ( document.getElementById("e") ) {
-
-        }
-        //var keys = $("#grid").yiiGridView("getSelectedRows");
-        //$("#chk-proceso-generado").on("click", function() {
-          //  alert("hola");
-        //});
-        //$("input[name="chk-proceso-generado"]:checked").each(function() {
-        //    alert($(this).val()); //es el valor del checkbox correspondiente
-            //checkboxValues.push($(this).val());
-        //});
-         //$("#chk-proceso-generado").on("click", function() {
-            // alert("hola");
-            // if $(this).is(":checked") {
-            //     alert("tildado");
-            // } else {
-            //     alert("no tildado");
-            // }
-        //});
-    });'
-   // 'function habilitarDeshabilitar() {
-   //     alert("kakaak");
-   // }'
-    );
-?>
