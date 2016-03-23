@@ -68,8 +68,10 @@
  		// Lista de los impuesto
  		$listaImpuesto = ArrayHelper::map($modelImpuesto, 'impuesto', 'descripcion');
 
+ 		//Campo oculto
+ 		$form->field($model, 'ejecutar_en')->hiddenInput()->label(false);
  		// Lista de los niveles de aprobacion.
- 		$listaNivelesAprobacion = ['1' => 'AUTOMATICO', '2' => 'SELECCION DE OPCIONES', '3' => 'ACTIVACION DE FORMULARIO'];
+ 		//$listaNivelesAprobacion = ['1' => 'AUTOMATICO', '2' => 'SELECCION DE OPCIONES', '3' => 'ACTIVACION DE FORMULARIO'];
  		//$listaNivelesAprobacion = ArrayHelper::map($modelCodigoCelular, 'codigo', 'codigo');
  	?>
 
@@ -120,6 +122,7 @@
 				                																	'id' => 'tipo-solicitud',
 				                																	'style' => 'width:160%;',
 				                                                                     				'prompt' => Yii::t('backend', 'Select'),
+				                                                                     				'value' => Yii::$app->request->post('tipo_solicitud'),
 				                                                                				])->label(false)
 								   ?>
 								</div>
@@ -138,7 +141,7 @@
 						<div class="col-sm-3">
 							<div class="row">
 								<div class="nivel-aprobacion">
-									<?= $form->field($model, 'nivel_aprobacion')->dropDownList($listaNivelesAprobacion,[
+									<?= $form->field($model, 'nivel_aprobacion')->dropDownList($listaNivelAprobacion,[
 				                																				'id' => 'nivel-aprobacion',
 				                																				'style' => 'width:120%;',
 				                                                                     							'prompt' => Yii::t('backend', 'Select'),
@@ -276,7 +279,10 @@
 						<h4><?= Yii::t('backend', 'Procesos que genera la Solicitud.') ?></h4>
 					</div>
 					<div class="row">
-		        		<div class="col-sm-8">
+						<div class="well" style="color: red;"><?= Html::encode($errorEjecutarEn); ?></div>
+					</div>
+					<div class="row">
+		        		<div class="col-sm-8" style="width: 90%;">
 							<div class="lista-proceso-generado">
 								<?= SolicitudProcesoController::actionListarProcesoSolicitud(); ?>
 							</div>
@@ -288,7 +294,6 @@
 					<div class="row" style="border-bottom: solid 1px #ccc;color: blue;">
 						<h4><?= Yii::t('backend', 'Documentos y/o Requisitos.') ?></h4>
 					</div>
-
 					<div class="row">
 		        		<div class="col-sm-8">
 							<div class="documento-requisito-consignado">
@@ -348,7 +353,10 @@
 <?php
 	$this->registerJs(
 		'$("#impuesto").on("change", function() {
-			var url = "' . Yii::$app->urlManager->createUrl('/configuracion/solicitud/configurar-solicitud/lista-documento-requisito') . '&id=' . '" + $(this).val()
+			var url = "' . Yii::$app->urlManager
+			                        ->createUrl('/configuracion/solicitud/configurar-solicitud/lista-documento-requisito') . '&id=' . '" + $(this).val()
+			$.blockUI({ message: "Espere un momento por favor..." });
+
 			$.ajax({
 				type: "POST",
 				url: url,
@@ -357,6 +365,7 @@
 					$("#lista-documento-requisito").html(data);
 				}
 			});
+			$.unblockUI();
 			return false;
 		});
 
@@ -364,8 +373,5 @@
 			$("#fecha-hasta").val("");
 		});
 
-		function hola() {
-			alert("hola");
-		}'
 	)
 ?>
