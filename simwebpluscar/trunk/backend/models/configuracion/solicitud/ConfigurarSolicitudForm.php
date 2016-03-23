@@ -64,7 +64,8 @@
 		public $fecha_hasta;
 		public $solo_funcionario;
 
-		public $combo = [];
+		public $ejecutar_en;
+		public $combo;
 
 		/**
      	* @inheritdoc
@@ -189,9 +190,9 @@
 	    public function validarProcesoSeleccion($items = [], $model)
 	    {
 	    	if ( count($items) > 0 ) {
-	    		foreach ($ite as $key => $value) {
+	    		foreach ($items as $key => $value) {
 	    			if ( $value == '' || $value == null ) {
-	    				$model->addError('combo', Yii::t('backend', 'No ha indicado el proceso a ejecutar.'));
+	    				$model->addError('ejecutar_en', Yii::t('backend', 'No ha indicado el proceso a ejecutar.'));
 	    				return false;
 	    			}
 	    		}
