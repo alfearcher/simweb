@@ -151,17 +151,18 @@
 		{
 			if ( Session::actionExisteUser() ) {
 
+				$errorEjecutarEn = '';
 				$model = New ConfigurarSolicitudForm();
 				$request = Yii::$app->request;
 				$postData = $request->post();
-				$itemsEjecutar = isset($postData['ejecutar']) ? $postData['ejecutar'] : null;
+				$itemsEjecutar = isset($postData['combo']) ? $postData['combo'] : null;
 
 				if ( $model->load($postData) && Yii::$app->request->isAjax ) {
 					Yii::$app->response->format = Response::FORMAT_JSON;
 					return ActiveForm::validate($model);
 				}
 
-//die(var_dump($itemsEjecutar));
+// die(var_dump($postData));
 				if ( $model->load($postData) ) {
 					if ( $model->validate() ) {
 						if ( $model->validarRangoFecha($model) ) {
@@ -171,6 +172,8 @@
 									// Se guardan los datos
 									self::actionBeginSave($postData, $model, 'create');
 								}
+							} else {
+								$errorEjecutarEn = $model->getFirstErrors('ejecutar_en')['ejecutar_en'];
 							}
 						}
 					}
@@ -185,6 +188,8 @@
 																		'model' => $model,
 																		'modelImpuesto' => $modelImpuesto,
 																		'listaNivelAprobacion' => $listaNivelAprobacion,
+																		'postData' => $postData,
+																		'errorEjecutarEn' => $errorEjecutarEn,
 					]);
 			} else {
 				MensajeController::actionMensaje(999, false);
@@ -317,14 +322,15 @@
 
 //die(var_dump($arregloCampo));
 			// Se obtienen los valores seleccionados en el grid de los procesos a generar
-			$arregloProceso = isset($postData['chk-proceso-generado']) ? $postData['chk-proceso-generado'] : null;
+			//$arregloProceso = isset($postData['chk-proceso-generado']) ? $postData['chk-proceso-generado'] : null;
+			$arregloProceso = isset($postData['combo']) ? $postData['combo'] : null;
 
 			if ( count($arregloProceso) == 0 ) {
 				return true;
 			}
 
 			foreach ( $arregloProceso as $key => $value ) {
-				$arregloDatos[] = [null, $idConfigSolicitud, $value, Yii::$app->solicitud->crear(), 0];
+				$arregloDatos[] = [null, $idConfigSolicitud, $key, $value, 0];
 			}
 
 //die(var_dump($arregloDatos));
