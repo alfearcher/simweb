@@ -354,7 +354,8 @@
 	$this->registerJs(
 		'$("#impuesto").on("change", function() {
 			var url = "' . Yii::$app->urlManager
-			                        ->createUrl('/configuracion/solicitud/configurar-solicitud/lista-documento-requisito') . '&id=' . '" + $(this).val()
+			                        ->createUrl("/configuracion/solicitud/configurar-solicitud/lista-documento-requisito") . "&id=" . '" + $(this).val();
+
 			$.blockUI({ message: "Espere un momento por favor..." });
 
 			$.ajax({
@@ -373,5 +374,5 @@
 			$("#fecha-hasta").val("");
 		});
 
-	)
+	)'
 ?>
