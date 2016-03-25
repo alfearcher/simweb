@@ -68,6 +68,7 @@
 		public $monto_aseo;
 		public $tipo_monto;
 		public $calculo_por_unidades;
+		public $id_metodo;
 
 		/**
      	* @inheritdoc
@@ -114,6 +115,7 @@
 	            'monto_aseo' => Yii::t('backend', 'Monto Aseo'),
 	            'tipo_monto' => Yii::t('backend', 'Tipo de Monto'),
 	            'calculo_por_unidades' => Yii::t('backend', 'Calculo Por Unidades'),
+	            'id_metodo' => Yii::t('backend', 'Metodo de determinacion del impuesto'),
 
 	        ];
 	    }
