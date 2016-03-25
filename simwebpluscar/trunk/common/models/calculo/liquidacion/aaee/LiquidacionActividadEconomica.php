@@ -56,11 +56,22 @@
 	class LiquidacionActividadEconomica extends OrdenanzaBase
 	{
 
-		public $_calculoAnual;
+		private $_calculoAnual;
 		public $_idContribuyente;
 		private $_anoImpositivo;
 		private $_declaracion;
+		private $_tipoDeclaracion;
 		private $_periodo;
+		private $_exigDeclaracion;
+		// Se crea un detalle de la liquidacion donde se muestra lo siguiente:
+		// año.
+		// rubro (codigo del rubro, no el identificador).
+		// descripcion.
+		// monto declarado.
+		// alicuota.
+		// minimo.
+		// impuesto.
+		private $_calculoDetallado = [];
 
 
 
@@ -75,10 +86,15 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que permite obtener la declaracion de un lapso especifico
+		 * @return Array, el arreglo retornado contiene los datos de la entidad
+		 * "act-econ" y "act-econ-ingresos". Los campos pertenecientes a la entidad
+		 * "act-econ-ingresos" estan contenido un un arreglo con el indice "actividadDetalle".
+		 */
 		protected function getDeclaracionContribuyente()
 		{
-			if ( $this->_anoImpositivo > 0 ) {
+			if ( $this->_anoImpositivo > 0 && $this->_periodo > 0 ) {
 				$modelfind = ActEcon::find()->where([
 												'id_contribuyente' => $this->_idContribuyente,
 												'ano_impositivo' => $this->_anoImpositivo,
@@ -102,14 +118,13 @@
 
 
 		/***/
-		public function iniciarCalcularLiquidacion($ano, $periodo)
+		public function iniciarCalcularLiquidacion($ano, $periodo, $tipoDeclaracion)
 		{
 			$this->_anoImpositivo = $ano;
 			$this->_periodo = $periodo;
+			$this->_tipoDeclaracion = $tipoDeclaracion;
 			$this->_declaracion = $this->getDeclaracionContribuyente();
-			//$this->_calculoAnual = $this->getCalcularLiquidacion();
-			//return $this->getCalculoAnual();
-			return $this->getRubroDeclarado();
+			$this->calculoRubroDeclarado();
 		}
 
 
@@ -122,66 +137,30 @@
 
 
 
-
-		/***/
-		public function getCalcularLiquidacion()
-		{
-			if ( isset($this->_declaracion) ) {
-
-			} else {
-				return $this->_declaracion;
-			}
-		}
-
-
-
 		/**
 		 * Metodo que toma la declaracion y obtiene de ella solo los rubros
 		 * que tiene autorizado la misma. Con la intencion de realizar un
 		 * ciclo de calculo por cada rubro.
 		 * @return [type] [description]
 		 */
-		public function getRubroDeclarado()
+		private function calculoRubroDeclarado()
 		{
 			if ( isset($this->_declaracion) ) {
 				// Se obtienen los rubros que posee la declaracion.
 				$rubros = $this->_declaracion[0]['actividadDetalle'];
-				die(print_r($this->_declaracion));
-				foreach ( $this->_declaracion as $key => $value ) {
-					if ( is_array($value) ) {
-						print_r($value);
-					}
+
+				// Se comienza un ciclo donde se calcularan los impuestos por rubro declarado.
+				foreach ( $rubros as $rubro ) {
+					$calculoRubro = New CalculoRubro($rubro);
+					$montoCalculadoRubro = $calculoRubro->getCalcularPorTipoDeclaracion($this->_tipoDeclaracion);
+					$this->_calculoAnual = $this->getCalculoAnual() + $montoCalculadoRubro;
 				}
-				die();
-			} else {
-				return $this->_declaracion;
 			}
 		}
 
 
 
-		/**
-		 * Metodo que define la metodologia de calculo que se debe aplicar para
-		 * la determinacion del impuesto por el rubro. Primero se obtiene los datos
-		 * del rubro.
-		 * @return Returna monto calculado por el rubro.
-		 */
-		public function getCalcular()
-		{
-			$this->_calculo = 0;
-			// Se obtiene los datos del rubro.
-			$this->_rubro = $this->getInfoRubro();
-			if ( isset($this->_rubro) ) {
-				if ( $this->_rubro->id_metodo == 1 ) {				// Calculo por declaracion de ingresos brutos.
 
-				} elseif ( $this->_rubro->id_metodo == 2 ) {		// Calculo por unidades.
-
-				} else {
-					return null;
-				}
-			}
-			return $this->_calculo;
-		}
 
 	}
 

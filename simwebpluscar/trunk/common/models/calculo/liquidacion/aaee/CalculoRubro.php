@@ -45,8 +45,7 @@
  	use Yii;
 	use yii\db\ActiveRecord;
 	use backend\models\aaee\rubro\Rubro;
-	use backend\models\utilidad\ut\UnidadTributariaForm;
-
+	use backend\models\aaee\rubro\RubroForm;
 
 
 	/**
@@ -56,46 +55,58 @@
 	*/
 	class CalculoRubro extends Rubro
 	{
-		public $idRubro;
+		private $_idRubro;
 		private $_rubro;
 		private $_calculo;
 		private $_anoImpositivo;
 		private $_ut;
+		private $_rubroDeclarado;
+		private $_MinimoTributable;
 
 
 
-		/**
-		 * [__construct description]
-		 * @param Long $id, identificador del rubro, id_rubro.
-		 */
-		public function __construct($id)
+		/***/
+		public function __construct($datosDeclaracion)
 		{
 			$this->_calculo = 0;
 			$this->_rubro = null;
-			$this->idRubro = $id;
+
+			// Datos de la declaracion, que incluyen el identificador del rubro entre otros.
+			$this->_rubroDeclarado = is_array($datosDeclaracion) ? $datosDeclaracion : null;
 		}
+
+
 
 
 		/**
 		 * Metodo que define la metodologia de calculo que se debe aplicar para
 		 * la determinacion del impuesto por el rubro. Primero se obtiene los datos
 		 * del rubro.
-		 * @return Returna monto calculado por el rubro.
+		 * @param  String $tipoDeclaracion, Nombre del campo que contiene la declaracion.
+		 * puede ser estimado, reales, rectificatoria, auditoria, etc.
+		 * @return Double, Monto calculado del impuesto segun la declaracion.
 		 */
-		public function getCalcular()
+		private function getCalcular($tipoDeclaracion)
 		{
 			$this->_calculo = 0;
 			// Se obtiene los datos del rubro.
 			$this->_rubro = $this->getInfoRubro();
 			if ( isset($this->_rubro) ) {
 				if ( $this->_rubro->id_metodo == 1 ) {				// Calculo por declaracion de ingresos brutos.
+					$this->getCalculoPorDeclaracion($tipoDeclaracion);
 
 				} elseif ( $this->_rubro->id_metodo == 2 ) {		// Calculo por unidades.
-
-				} else {
-					return null;
+					$this->getCalculoPorUnidad();
 				}
 			}
+			return $this->getCalculo();
+		}
+
+
+
+		/***/
+		public function getCalculo()
+		{
 			return $this->_calculo;
 		}
 
@@ -107,48 +118,80 @@
 		 */
 		private function getInfoRubro()
 		{
-			$model = Rubro::find()->where(['id_rubro' => $this->idRubro])->one();
-			if ( isset($model) ) {
-				return $model;
-			} else {
-				return null;
+			if ( count($this->_rubroDeclarado) > 0 ) {
+				$model = Rubro::find()->where(['id_rubro' => $this->_rubroDeclarado['id_rubro']])->one();
+				if ( isset($model) ) {
+					return $model;
+				}
 			}
+			return null;
+		}
+
+
+
+
+		/**
+		 * Metodo que realiza el calculo del impuesto. El calculo se realiza
+		 * por tipo de declaracion ($descripcionDeclaracion)
+		 * @param  String $descripcionDeclaracion, Nombre del campo que se va
+		 * a utilizar en el calculo del impuesto. Campo que determina el monto
+		 * declaradoo tipo de declaracion, estimado, reales, sustitutiva, etc.
+		 * @return [type]                         [description]
+		 */
+		private function getCalculoPorDeclaracion($descripcionDeclaracion)
+		{
+			// Minimo Tributable que debe tener el rubro, esto se refiere al minimo
+			// que debe calcularse por el rubro. Si el calculo del impuesto por el rubro
+			// no supera este minimo se debe tomar como monto del impuesto el minimo
+			// tributable.
+			$minimoTributable = $this->getMinimoTributableRubro();
+
+			// Monto que esta declarado segun el tipo de declaracion.
+			$montoDeclaracion = $this->_rubroDeclarado[$descripcionDeclaracion];
+
+			// Se determina la alicuota a utilizar.
+			if ( $this->_rubro['divisor_alicuota'] > 0 ) {
+				$alicuota = $this->_rubro['alicuota']/$this->_rubro['divisor_alicuota'];
+			} else {
+			 	$alicuota = $this->_rubro['alicuota'];
+			}
+
+			// Calculo del impuesto, monto declarado por la alicuota respectiva.
+			$calculoDeclarado = $montoDeclaracion * $alicuota;
+
+			if ( $calculoDeclarado >= $minimoTributable ) {
+				$this->_calculo = $calculoDeclarado;
+			} else {
+				$this->_calculo = $minimoTributable;
+			}
+		}
+
+
+
+		/***/
+		private function getCalculoPorUnidad()
+		{
+
 		}
 
 
 
 		/**
-		 * Metodo que permite obtener el monto de la unidad tributaria, este metodo
-		 * recibe una variable $param, que puede ser una fecha o un año.
-		 * @param  Variable que puede ser una fecha o un año.
-		 * @return Retorna un monto de la unidad tributaria.
+		 * Metodo que permite obtener el minimo tributable en bolivares
+		 * que se debe declarar por elrubro.
+		 * @return Double, monto.
 		 */
-		public function getUnidadTributaria($param)
+		public function getMinimoTributableRubro()
 		{
-			$this->_ut = 0;
-			if ( is_integer($param) ) {
-				$this->_ut = UnidadTributariaForm::getUnidadTributariaPorAnoImpositivo($param);
-			} elseif ( date($param) ) {
-				$this->_ut = 0;
-			}
-			return $this->_ut;
-		}
-
-
-
-
-		/***/
-		public function getCalculoPorDeclaracion()
-		{
-
+			return RubroForm::getMinimoTributableRubro($this->_rubroDeclarado['id_rubro']);
 		}
 
 
 
 		/***/
-		public function getCalculoPorUnidad()
+		public function getCalcularPorTipoDeclaracion($tipoDeclaracion)
 		{
-
+			return $this->getCalcular($tipoDeclaracion);
 		}
 
 	}
