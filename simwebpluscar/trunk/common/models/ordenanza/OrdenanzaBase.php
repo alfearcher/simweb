@@ -57,7 +57,7 @@
 		 * @param  [type] $impuesto     [description]
 		 * @return [type]               [description]
 		 */
-		private static function actionGetIdentificadorOrdenanza($anoOrdenanza, $impuesto)
+		private static function getIdentificadorOrdenanza($anoOrdenanza, $impuesto)
 		{
 
 			$query = New Query();
@@ -89,10 +89,10 @@
 		 * @return retorna un array de datos, el array de datos contiene el id_ordenanza,
 		 * impuesto y ano_impositivo.
 		 */
-		public static function actionGetIdOrdenanza($anoOrdenanza, $impuesto)
+		public static function getetIdOrdenanza($anoOrdenanza, $impuesto)
 		{
 			if ( $anoOrdenanza > 0 && $impuesto > 0 ) {
-				return $row = self::actionGetIdentificadorOrdenanza($anoOrdenanza, $impuesto);
+				return $row = self::getIdentificadorOrdenanza($anoOrdenanza, $impuesto);
 			} else {
 				return false;
 			}
@@ -109,7 +109,7 @@
 		 * @return retorna un integer de cuatro digito si encuantra la ordenanza, es su defecto
 		 * retornara cero (0). Este corresponde al año de creacion de la ordenanza.
 		 */
-		public static function actionGetAnoOrdenanzaSegunAnoImpositivoImpuesto($anoImpositivo, $impuesto)
+		public static function getAnoOrdenanzaSegunAnoImpositivoImpuesto($anoImpositivo, $impuesto)
 		{
 			$result = [];
 			$anoOrdenanza = 0;
@@ -118,7 +118,7 @@
 				// al año impositivo $anoImpositivo y correspondan al impuesto $impuesto.
 				// Este año ( $anoImpositivo ), corresponde a cualquier periodo.
 
-				$result = self::actionBuscarAnoOrdenanza($anoImpositivo, $impuesto);
+				$result = self::buscarAnoOrdenanza($anoImpositivo, $impuesto);
 				if ( $result != false ) {
 					$anoOrdenanza = $result['ano_impositivo'];
 				} else {
@@ -127,7 +127,7 @@
 					// tomar al año ordenanza superior más próximo al año impositivo del periodo
 					// a considerara.
 
-					$result = self::actionBuscarAnoOrdenanzaMayoresAnoImpositivo($anoImpositivo, $impuesto);
+					$result = self::buscarAnoOrdenanzaMayoresAnoImpositivo($anoImpositivo, $impuesto);
 					if ( $result != false ) {
 						$anoOrdenanza = $result['ano_impositivo'];
 					}
@@ -149,7 +149,7 @@
 		 * @param  [type] $impuesto      [description]
 		 * @return [type]                [description]
 		 */
-		private static function actionBuscarAnoOrdenanza($anoImpositivo, $impuesto)
+		private static function buscarAnoOrdenanza($anoImpositivo, $impuesto)
 		{
 			$query = New Query();
 
@@ -171,7 +171,7 @@
 
 
 		/***/
-		private static function actionBuscarAnoOrdenanzaMayoresAnoImpositivo($anoImpositivo, $impuesto)
+		private static function buscarAnoOrdenanzaMayoresAnoImpositivo($anoImpositivo, $impuesto)
 		{
 			$query = New Query();
 
@@ -204,16 +204,16 @@
 		 * @return retorna integer, año de vencimiento de la ordenanza de cuatro digito si encuentra el año,
 		 * sino solo retornara cero (0).
 		 */
-		public static function actionGetAnoVencimientoOrdenanzaSegunAnoImpositivo($anoImpositivo, $impuesto)
+		public static function getAnoVencimientoOrdenanzaSegunAnoImpositivo($anoImpositivo, $impuesto)
 		{
 			$anoVenceOrdenanza = 0;
 			if ( $anoImpositivo > 0 && $impuesto > 0 ) {
 
 				$anoOrdenanza = 0;
 
-				$anoOrdenanza = self::actionGetAnoOrdenanzaSegunAnoImpositivoImpuesto($anoImpositivo, $impuesto);
+				$anoOrdenanza = self::getAnoOrdenanzaSegunAnoImpositivoImpuesto($anoImpositivo, $impuesto);
 				if ( $anoOrdenanza > 0 ) {
-					$anoVenceOrdenanza = self::actionAnoVencimientoOrdenanza($anoOrdenanza, $impuesto);
+					$anoVenceOrdenanza = self::anoVencimientoOrdenanza($anoOrdenanza, $impuesto);
 				}
 			}
 			return $anoVenceOrdenanza;
@@ -232,14 +232,14 @@
 		 * @return return integer, el integer debe ser de cuatro digitos, 9999. Si no consigue
 		 * nada se asume que la ordenanza todavia esta vigente y en su defecto retornara el año actaul.
 		 */
-		public static function actionAnoVencimientoOrdenanza($anoOrdenanza, $impuesto)
+		public static function anoVencimientoOrdenanza($anoOrdenanza, $impuesto)
 		{
 			$anoVencimiento = 0;
 			$ordenanza = 0;
 			if ( $anoOrdenanza > 0 && $impuesto > 0 ) {
 
 				// Se debe verificar primero que la ordenanza existe.
-				$ordenanza = self::actionGetAnoOrdenanzaSegunAnoImpositivoImpuesto($anoOrdenanza, $impuesto);
+				$ordenanza = self::getAnoOrdenanzaSegunAnoImpositivoImpuesto($anoOrdenanza, $impuesto);
 				if ( $ordenanza == $anoOrdenanza ) {
 
 					$query = New Query();
@@ -271,20 +271,20 @@
 
 
 		/***/
-		public static function actionGetIdOrdenanzaSegunAnoImpositivo($anoImpositivo, $impuesto)
+		public static function getIdOrdenanzaSegunAnoImpositivo($anoImpositivo, $impuesto)
 		{
 			$ordenanza = false;
 			if ( $anoImpositivo > 0 && $impuesto > 0 ) {
 
 				$anoOrdenanza = 0;
 				// Se determina primero el año de la ordenanza.
-				$anoOrdenanza = self::actionGetAnoOrdenanzaSegunAnoImpositivoImpuesto($anoImpositivo, $impuesto);
+				$anoOrdenanza = self::getAnoOrdenanzaSegunAnoImpositivoImpuesto($anoImpositivo, $impuesto);
 				if ( $anoOrdenanza > 0 ) {
 
 					// Teniendo el año de creacion de la ordenanza ahora se identifica el id de la misma.
 					// Aqui se obtiene un array con los valores del id ordenanza, ano_impositivo de creacion
 					// e impuesto.
-					$ordenanza = self::actionGetIdOrdenanza($anoOrdenanza, $impuesto);
+					$ordenanza = self::getIdOrdenanza($anoOrdenanza, $impuesto);
 				}
 			}
 			return $ordenanza;
@@ -295,13 +295,13 @@
 
 
 		/***/
-		public static function actionGetExigibilidadLiquidacion($anoImpositivo, $impuesto)
+		public static function getExigibilidadLiquidacion($anoImpositivo, $impuesto)
 		{
 			$exigibilidadLiquidacion = false;		// retornara un array del tipo, ej: [campo, valor]
 			if ( $anoImpositivo > 0 && $impuesto > 0 ) {
 
 				// Aqui reciben datos de la ordenanza, id, año de creacione impuesto.
-				$ordenanza = self::actionGetIdOrdenanzaSegunAnoImpositivo($anoImpositivo, $impuesto);
+				$ordenanza = self::getIdOrdenanzaSegunAnoImpositivo($anoImpositivo, $impuesto);
 				if ( $ordenanza != false ) {
 
 					$idOrdenanza = $ordenanza[0]['id_ordenanza'];
@@ -331,13 +331,13 @@
 
 
 		/***/
-		public static function actionGetExigibilidadDeclaracion($anoImpositivo, $impuesto)
+		public static function getExigibilidadDeclaracion($anoImpositivo, $impuesto)
 		{
 			$exigibilidadDeclaracion = false;		// retornara un array del tipo, ej: [campo, valor]
 			if ( $anoImpositivo > 0 && $impuesto > 0 ) {
 
 				// Aqui reciben datos de la ordenanza, id, año de creacione impuesto.
-				$ordenanza = self::actionGetIdOrdenanzaSegunAnoImpositivo($anoImpositivo, $impuesto);
+				$ordenanza = self::getIdOrdenanzaSegunAnoImpositivo($anoImpositivo, $impuesto);
 				if ( $ordenanza != false ) {
 
 					$idOrdenanza = $ordenanza[0]['id_ordenanza'];
