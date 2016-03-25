@@ -50,7 +50,7 @@
 	* 	Clase
 	*
 	*/
-	class UnidadTributaria extends UnidadTributaria
+	class UnidadTributariaForm extends UnidadTributaria
 	{
 
 		public $id_ut;
@@ -104,6 +104,24 @@
 	            'ultimo' => Yii::t('backend', 'Last'),
 
 	        ];
+	    }
+
+
+
+	    /***/
+	    public function getUnidadTributariaPorAnoImpositivo($anoImpositivo = 0)
+	    {
+	    	if ( $anoImpositivo > 0 ) {
+	    		$model = UnidadTributaria::find()->where(['Year(fecha_inicio)' => $anoImpositivo])->one();
+	    	} else {
+	    		//$model = Rubro::find()->where($fecha . ' between fecha_inicio and fecha_fin')->one();
+	    		//$anoImpositivo = isset($fecha) ? date('Y', strtotime($fecha)) : 0;
+	    	}
+	    	if ( isset($model) ) {
+	    		return $model->monto_ut;
+	    	} else {
+	    		return null;
+	    	}
 	    }
 
 
