@@ -89,7 +89,7 @@
 		 * @return retorna un array de datos, el array de datos contiene el id_ordenanza,
 		 * impuesto y ano_impositivo.
 		 */
-		public static function getetIdOrdenanza($anoOrdenanza, $impuesto)
+		public static function getIdOrdenanza($anoOrdenanza, $impuesto)
 		{
 			if ( $anoOrdenanza > 0 && $impuesto > 0 ) {
 				return $row = self::getIdentificadorOrdenanza($anoOrdenanza, $impuesto);
