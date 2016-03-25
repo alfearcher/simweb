@@ -45,6 +45,8 @@
  	use Yii;
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
+	use backend\models\aaee\acteconingreso\ActEconIngreso;
+
 
 	/**
 	* 	Clase
@@ -70,6 +72,17 @@
 		public static function tableName()
 		{
 			return 'act_econ';
+		}
+
+
+
+		/**
+		 * Relacion con la entidad "act-econ-ingresos".
+		 * @return [type] [description]
+		 */
+		public function getActividadDetalle()
+		{
+			return $this->hasMany(ActEconIngreso::className(), ['id_impuesto' => 'id_impuesto']);
 		}
 
 
