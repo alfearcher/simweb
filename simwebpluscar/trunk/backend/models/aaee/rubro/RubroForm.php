@@ -46,6 +46,7 @@
 	use yii\base\Model;
 	use yii\data\ActiveDataProvider;
 	use backend\models\aaee\rubro\Rubro;
+	use backend\models\utilidad\ut\UnidadTributariaForm;
 
 
 
@@ -201,7 +202,7 @@
 
 
 
-
+	    /***/
 	    public function getAddDataProviderRubro($arrayRubros)
 	    {
 	    	// Se crea una instancia del tipo yii\db\ActiveQueryInterface
@@ -215,6 +216,41 @@
 	    	$query->where(['in', 'id_rubro', $arrayRubros]);
 
 	        return $dataProvider;
+	    }
+
+
+
+
+	    /***/
+	    public function getMinimoTributableRubro($idRurbo)
+	    {
+	    	$minimoTributable = 0;
+	    	$rubro = Rubro::find()->where(['id_rubro' => $idRurbo])
+	    						  ->one();
+	    	if ( count($rubro) > 0 ) {
+	    		if ( $rubro->minimo > 0 ) {				// El minimo a considerar esta en bolivares.
+	    			$minimoTributable = $rubro->minimo;
+
+	    		} elseif ( $rubro->minimo_ut > 0 ) {	// El minimo s considerar esta en Unidad Tributaria.
+	    			$unidadTributaria = self::getUnidadTributariaPorAnoImpositivo($rubro->ano_impositivo);
+	    			$minimoTributable = $unidadTributaria * $rubro->minimo_ut;
+	    		}
+	    	}
+	    	return $minimoTributable;
+	    }
+
+
+
+
+	    /***/
+	    public function getUnidadTributariaPorAnoImpositivo($anoImpositivo)
+	    {
+	    	$ut = New UnidadTributariaForm();
+	    	$montoUT = $ut->getUnidadTributaria($anoImpositivo);
+	    	if ( isset($montoUT) ) {
+	    		return $montoUT;
+	    	}
+	    	return 0;
 	    }
 
 	}
