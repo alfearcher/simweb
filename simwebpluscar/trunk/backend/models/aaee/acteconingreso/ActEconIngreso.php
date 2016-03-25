@@ -45,6 +45,7 @@
  	use Yii;
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
+	use backend\models\aaee\actecon\ActEcon;
 
 	/**
 	* 	Clase
@@ -72,6 +73,12 @@
 			return 'act_econ_ingresos';
 		}
 
+
+
+		public function getActividadEconomica()
+		{
+			return $this->hasOne(ActEcon::className(), ['id_impuesto' => 'id_impuesto']);
+		}
 
 	}
 
