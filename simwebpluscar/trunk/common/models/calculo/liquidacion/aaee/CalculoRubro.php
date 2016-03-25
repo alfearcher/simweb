@@ -45,6 +45,9 @@
  	use Yii;
 	use yii\db\ActiveRecord;
 	use backend\models\aaee\rubro\Rubro;
+	use backend\models\utilidad\ut\UnidadTributariaForm;
+
+
 
 	/**
 	* 	Clase que gestiona el calculo segun el rubro. Calculo el impuesto
@@ -53,38 +56,55 @@
 	*/
 	class CalculoRubro extends Rubro
 	{
-
-
 		public $idRubro;
-		public $rubro;
-		public $calculo;
+		private $_rubro;
+		private $_calculo;
+		private $_anoImpositivo;
+		private $_ut;
 
 
+
+		/**
+		 * [__construct description]
+		 * @param Long $id, identificador del rubro, id_rubro.
+		 */
 		public function __construct($id)
 		{
-			$this->calculo = 0;
-			$this->rubro = null;
+			$this->_calculo = 0;
+			$this->_rubro = null;
 			$this->idRubro = $id;
 		}
 
 
+		/**
+		 * Metodo que define la metodologia de calculo que se debe aplicar para
+		 * la determinacion del impuesto por el rubro. Primero se obtiene los datos
+		 * del rubro.
+		 * @return Returna monto calculado por el rubro.
+		 */
 		public function getCalcular()
 		{
-			$this->rubro = $this->getInfoRubro();
-			if ( isset($this->rubro) ) {
-				if ( $rubro->id_metodo == 1 ) {		// Calculo por declaracion de ingresos brutos.
+			$this->_calculo = 0;
+			// Se obtiene los datos del rubro.
+			$this->_rubro = $this->getInfoRubro();
+			if ( isset($this->_rubro) ) {
+				if ( $this->_rubro->id_metodo == 1 ) {				// Calculo por declaracion de ingresos brutos.
 
-				} elseif ( $rubro->id_metodo == 2 ) {		// Calculo por unidades.
+				} elseif ( $this->_rubro->id_metodo == 2 ) {		// Calculo por unidades.
 
 				} else {
 					return null;
 				}
 			}
+			return $this->_calculo;
 		}
 
 
 
-		/***/
+		/**
+		 * Metodo para obtener los datos de la entidad rubros.
+		 * @return Returna un ActiveRecord del la entidad rubros.
+		 */
 		private function getInfoRubro()
 		{
 			$model = Rubro::find()->where(['id_rubro' => $this->idRubro])->one();
@@ -94,6 +114,26 @@
 				return null;
 			}
 		}
+
+
+
+		/**
+		 * Metodo que permite obtener el monto de la unidad tributaria, este metodo
+		 * recibe una variable $param, que puede ser una fecha o un año.
+		 * @param  Variable que puede ser una fecha o un año.
+		 * @return Retorna un monto de la unidad tributaria.
+		 */
+		public function getUnidadTributaria($param)
+		{
+			$this->_ut = 0;
+			if ( is_integer($param) ) {
+				$this->_ut = UnidadTributariaForm::getUnidadTributariaPorAnoImpositivo($param);
+			} elseif ( date($param) ) {
+				$this->_ut = 0;
+			}
+			return $this->_ut;
+		}
+
 
 
 
