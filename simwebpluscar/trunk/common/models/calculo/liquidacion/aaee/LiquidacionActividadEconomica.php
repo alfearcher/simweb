@@ -44,7 +44,8 @@
 
  	use Yii;
 	use yii\db\ActiveRecord;
-	use backend\models\aaee\actecon\ActEcon;
+	//use backend\models\aaee\actecon\ActEcon;
+	use backend\models\aaee\declaracion\Declaracion;
 	use yii\db\Exception;
 	use common\models\calculo\liquidacion\aaee\CalculoRubro;
 	use common\models\ordenanza\OrdenanzaBase;
@@ -58,7 +59,7 @@
 
 		private $_calculoAnual;
 		public $_idContribuyente;
-		private $_anoImpositivo;
+		private $_añoImpositivo;
 		private $_declaracion;
 		private $_tipoDeclaracion;
 		private $_periodo;
@@ -86,41 +87,21 @@
 
 
 
-		/**
-		 * Metodo que permite obtener la declaracion de un lapso especifico
-		 * @return Array, el arreglo retornado contiene los datos de la entidad
-		 * "act-econ" y "act-econ-ingresos". Los campos pertenecientes a la entidad
-		 * "act-econ-ingresos" estan contenido un un arreglo con el indice "actividadDetalle".
-		 */
+		/***/
 		protected function getDeclaracionContribuyente()
 		{
-			if ( $this->_anoImpositivo > 0 && $this->_periodo > 0 ) {
-				$modelfind = ActEcon::find()->where([
-												'id_contribuyente' => $this->_idContribuyente,
-												'ano_impositivo' => $this->_anoImpositivo,
-												'exigibilidad_periodo' => $this->_periodo,
-													])
-				                            ->joinWith('actividadDetalle')
-				                            ->orderBy([
-				                            	'ano_impositivo' => SORT_ASC,
-				                            	'exigibilidad_periodo' => SORT_ASC,
-				                            	     ])
-				                            ->asArray()
-				                            ->all();
-				if ( count($modelfind) > 0 ) {
-					return $modelfind;
-				}
-			}
-			return null;
+			$declaracion = New Declaracion($this->_idContribuyente);
+			$declaracion->setLapsoPeriodo($this->_añoImpositivo, $this->_periodo);
+			return $declaracion->getDeclaracionContribuyente();
 		}
 
 
 
 
 		/***/
-		public function iniciarCalcularLiquidacion($ano, $periodo, $tipoDeclaracion)
+		public function iniciarCalcularLiquidacion($año, $periodo, $tipoDeclaracion)
 		{
-			$this->_anoImpositivo = $ano;
+			$this->_añoImpositivo = $año;
 			$this->_periodo = $periodo;
 			$this->_tipoDeclaracion = $tipoDeclaracion;
 			$this->_declaracion = $this->getDeclaracionContribuyente();
@@ -153,6 +134,9 @@
 				foreach ( $rubros as $rubro ) {
 					$calculoRubro = New CalculoRubro($rubro);
 					$montoCalculadoRubro = $calculoRubro->getCalcularPorTipoDeclaracion($this->_tipoDeclaracion);
+					//$this->_calculoDetallado[] = [];
+
+					// Se va acumulando lo calculado por rubro.
 					$this->_calculoAnual = $this->getCalculoAnual() + $montoCalculadoRubro;
 				}
 			}
