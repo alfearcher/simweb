@@ -71,6 +71,16 @@
 		{
 			return 'rubros';
 		}
+
+
+		/**
+		 * Relacion con la entidad "act-econ-ingresos"
+		 * @return [type] [description]
+		 */
+		public function getActividadIngreso()
+		{
+			return $this->hasMany(ActEconIngreso::className(), ['id_rubro' => 'id_rubro']);
+		}
 	}
 
 
