@@ -135,7 +135,7 @@
 		 * por tipo de declaracion ($descripcionDeclaracion)
 		 * @param  String $descripcionDeclaracion, Nombre del campo que se va
 		 * a utilizar en el calculo del impuesto. Campo que determina el monto
-		 * declaradoo tipo de declaracion, estimado, reales, sustitutiva, etc.
+		 * declaradoo poe el tipo de declaracion, estimado, reales, sustitutiva, etc.
 		 * @return [type]                         [description]
 		 */
 		private function getCalculoPorDeclaracion($descripcionDeclaracion)
