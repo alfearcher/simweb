@@ -54,7 +54,7 @@
 	* 	Clase que gestiona el calculo anual del impuesto por actividad economica,
 	*
 	*/
-	class LiquidacionActividadEconomica extends OrdenanzaBase
+	class LiquidacionActividadEconomica extends Declaracion
 	{
 
 		private $_calculoAnual;
@@ -82,17 +82,17 @@
 		 */
 		public function __construct($id)
 		{
+			parent::__construct($id);
 			$this->_idContribuyente = $id;
 		}
 
 
 
 		/***/
-		protected function getDeclaracionContribuyente()
+		public function getDeclaracionContribuyente()
 		{
-			$declaracion = New Declaracion($this->_idContribuyente);
-			$declaracion->setLapsoPeriodo($this->_añoImpositivo, $this->_periodo);
-			return $declaracion->getDeclaracionContribuyente();
+			$declaracion = Declaracion::setLapsoPeriodo($this->_añoImpositivo, $this->_periodo);
+			return Declaracion::getDeclaracionContribuyente();
 		}
 
 
