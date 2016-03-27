@@ -46,6 +46,7 @@
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 	use backend\models\aaee\actecon\ActEcon;
+	use backend\models\aaee\rubro\Rubro;
 
 	/**
 	* 	Clase
@@ -75,9 +76,24 @@
 
 
 
+		/**
+		 * Relacion con la entidad "act-econ"
+		 * @return [type] [description]
+		 */
 		public function getActividadEconomica()
 		{
 			return $this->hasOne(ActEcon::className(), ['id_impuesto' => 'id_impuesto']);
+		}
+
+
+
+		/**
+		 * Relacion con la entidad "rubros"
+		 * @return [type] [description]
+		 */
+		public function getRubroDetalle()
+		{
+			return $this->hasOne(Rubro::className(), ['id_rubro' => 'id_rubro']);
 		}
 
 	}
