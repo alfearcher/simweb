@@ -85,7 +85,6 @@
 			return $this->hasMany(ActEconIngreso::className(), ['id_impuesto' => 'id_impuesto']);
 		}
 
-
 	}
 
 ?>
