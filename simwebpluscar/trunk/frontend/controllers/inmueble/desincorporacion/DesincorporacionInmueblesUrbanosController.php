@@ -116,7 +116,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      * @param integer $id
      * @return mixed
      */
-    public function actionView() 
+    public function actionView()                                                    
     {
         if ( isset( $_SESSION['idContribuyente'] ) ) {
 
@@ -180,7 +180,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                           if($envio == true){ 
 
-                              return MensajeController::actionMensaje(100);
+                              return MensajeController::actionMensaje(100); 
 
                           } else { 
                             
