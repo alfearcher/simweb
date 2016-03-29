@@ -168,7 +168,7 @@
 		public function iniciarCicloLiquidacion()
 		{
 			if ( $this->validarRangoLiquidacion() ) {
-
+				
 			}
 		}
 
