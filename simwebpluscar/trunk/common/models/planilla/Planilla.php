@@ -168,8 +168,13 @@
 		public function iniciarCicloLiquidacion()
 		{
 			if ( $this->validarRangoLiquidacion() ) {
+				$ultima = isset($this->getUltimaLiquidacionExistente()) ? $this->getUltimaLiquidacionExistente() : null;
+				$detalle = isset($ultima['pagoDetalle']) ? $ultima['pagoDetalle'] : null;
+				if ( $detalle != null ) {
 
+				}
 			}
+			return false;
 		}
 
 
