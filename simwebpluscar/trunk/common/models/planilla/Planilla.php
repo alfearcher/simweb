@@ -48,6 +48,8 @@
  	use common\models\calculo\liquidacion\LiquidacionActividadEconomica;
  	use common\models\planilla\Pago;
  	use common\models\planilla\PagoDetalle;
+ 	use commmon\models\contribuyente\ContribuyenteBase;
+
 
 	/**
 	* 	Clase
@@ -61,6 +63,7 @@
 		private $_idImpuesto;
 		private $_impuesto;
 		private $_ultimaLiquidacion;
+		private $_fechaInicio;
 		public $añoDesde;
 		public $añoHasta;
 		public $periodoDesde;
@@ -96,6 +99,7 @@
 				$this->esUnaDefinitiva = false;
 			}
 			$this->esUnaPlanillaVarios = $esTasa;
+			$this->_fechaInicio = ContribuyenteBase::getFechaInicio($idContribuyente);
 		}
 
 
@@ -170,7 +174,10 @@
 			if ( $this->validarRangoLiquidacion() ) {
 				$ultima = isset($this->getUltimaLiquidacionExistente()) ? $this->getUltimaLiquidacionExistente() : null;
 				$detalle = isset($ultima['pagoDetalle']) ? $ultima['pagoDetalle'] : null;
-				if ( $detalle != null ) {
+				if ( $detalle == null ) {
+					// Es indicativo que no tiene registros liquidados, lo que implica que esta sera
+					// la primera liquidacion del contribuyente u objeto.
+
 
 				}
 			}
@@ -192,6 +199,8 @@
 			}
 			return true;
 		}
+
+
 
 
 		/***/
