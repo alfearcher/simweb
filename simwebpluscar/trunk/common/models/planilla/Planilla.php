@@ -205,7 +205,7 @@
 					// definido por la fecha inicio ($this->_fechaInicio). Lo que se debe determinar
 					// es la exigibilidad de liquidacion para el impuesto y año impositivo.
 					$exigibilidadLiq = OrdenanzaBase::getExigibilidadLiquidacion($this->añoDesde, $this->_impuesto);
-					$this->periodoDesde = OrdenanzaBase::getPeriodoSegunFecha($exigibilidadLiq['exigibilidad_liquidacion'], date('Y-m-d')) ;
+					$this->periodoDesde = OrdenanzaBase::getPeriodoSegunFecha($exigibilidadLiq['exigibilidad_liquidacion'], $this->_fechaInicio);
 
 					if ( $this->periodoDesde == false ) { return null;}
 
@@ -223,6 +223,7 @@
 				// No es la primera liquidacion, se debe determinar cual es el utlimo año-periodo
 				// liquidado para continuar a partir de este.
 				$exigibilidadLiq = OrdenanzaBase::getExigibilidadLiquidacion($this->añoDesde, $this->_impuesto);
+				$añoActual = date('Y');
 				if ( $ultimo['trimestre'] == $exigibilidadLiq['exigibilidad_liquidacion'] ) {
 					// Es indicativo que el ultimo periodo liquidado corresponde al ultimo periodo
 					// del año.
@@ -231,7 +232,7 @@
 					$this->periodoDesde = 1;
 					$this->periodoHasta = $this->periodoDesde;
 
-				} elseif ( $ultimo['']) {
+				} elseif ( $ultimo['ano_impositivo'] < $añoActual ) {
 
 				}
 
