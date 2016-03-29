@@ -168,7 +168,7 @@
 		public function iniciarCicloLiquidacion()
 		{
 			if ( $this->validarRangoLiquidacion() ) {
-				
+
 			}
 		}
 
@@ -263,7 +263,7 @@
 		{
 			$detalle = null;
 			if ( count($this->_ultimaLiquidacion) > 0 ) {
-				$detalle = $this->_ultimaLiquidacion['pagoDetalle'][0];
+				$detalle = isset($this->_ultimaLiquidacion['pagoDetalle'][0]) ? $this->_ultimaLiquidacion['pagoDetalle'][0] : null;
 			}
 			return $detalle;
 		}
