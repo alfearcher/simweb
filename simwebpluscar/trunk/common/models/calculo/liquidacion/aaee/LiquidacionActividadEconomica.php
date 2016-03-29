@@ -127,7 +127,7 @@
 		private function calculoRubroDeclarado()
 		{
 			if ( isset($this->_declaracion) ) {
-				// Se obtienen los rubros que posee la declaracion.
+				// Se obtienen los rubros, montos y tipo de declaracion que posee la declaracion.
 				$rubros = $this->_declaracion[0]['actividadDetalle'];
 
 				// Se comienza un ciclo donde se calcularan los impuestos por rubro declarado.
