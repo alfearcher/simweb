@@ -375,6 +375,19 @@
 
 
 
+		/***/
+		public static function getFechaInicio($idContribuyente)
+		{
+			$datos = self::getDatosContribuyenteSegunID($idContribuyente);
+			if ( $datos != false ) {
+				return isset($datos['fecha_inicio']) ? $datos['fecha_inicio'] : null;
+			}
+			return null;
+		}
+
+
+
+
 		/**
 		 * [getDatosContribuyenteSegunID description]
 		 * @param  [type] $idContribuyente [description]
