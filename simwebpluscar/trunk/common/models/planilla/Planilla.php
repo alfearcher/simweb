@@ -48,7 +48,8 @@
  	use common\models\calculo\liquidacion\LiquidacionActividadEconomica;
  	use common\models\planilla\Pago;
  	use common\models\planilla\PagoDetalle;
- 	use commmon\models\contribuyente\ContribuyenteBase;
+ 	use common\models\contribuyente\ContribuyenteBase;
+ 	use common\models\ordenanza\OrdenanzaBase;
 
 
 	/**
@@ -188,6 +189,59 @@
 
 
 		/***/
+		private function configurarLapsoLiquidacionActividadEconomica()
+		{
+			$ultimo = $this->getUltimaLiquidacion();
+			if ( $ultimo == null ) {
+				// Se determinara la primera liquidacion del contribuyente. Se requiere la fecha
+				// de inicio de sus actividades.
+				$this->_fechaInicio = ContribuyenteBase::getFechaInicio($this->_idContribuyente);
+
+				if ( date($this->_fechaInicio) ) {
+					$this->añoDesde = date('Y', $this->_fechaInicio);
+
+					// El periodo dependera de la configuracion de la ordenanza segun el impuesto
+					// y el año. Para este caso el impuesto es Actividad Economica y el año estara
+					// definido por la fecha inicio ($this->_fechaInicio). Lo que se debe determinar
+					// es la exigibilidad de liquidacion para el impuesto y año impositivo.
+					$exigibilidadLiq = OrdenanzaBase::getExigibilidadLiquidacion($this->añoDesde, $this->_impuesto);
+					$this->periodoDesde = OrdenanzaBase::getPeriodoSegunFecha($exigibilidadLiq['exigibilidad_liquidacion'], date('Y-m-d')) ;
+
+					if ( $this->periodoDesde == false ) { return null;}
+
+					// Solo se permitira la liquidacion de un periodo. Condicion que puede cambiar
+					// para futuros proyectos, es aqui donde se debe realizar el ajuste del año-periodo
+					// final.
+					$this->añoHasta = $this->añoDesde;
+					$this->periodoHasta = $this->periodoDesde;
+
+				} else {
+					// No esta definida la fecha inicio del contribuyente. Aqui termina el proceso.
+					return null;
+				}
+			} else {
+				// No es la primera liquidacion, se debe determinar cual es el utlimo año-periodo
+				// liquidado para continuar a partir de este.
+				$exigibilidadLiq = OrdenanzaBase::getExigibilidadLiquidacion($this->añoDesde, $this->_impuesto);
+				if ( $ultimo['trimestre'] == $exigibilidadLiq['exigibilidad_liquidacion'] ) {
+					// Es indicativo que el ultimo periodo liquidado corresponde al ultimo periodo
+					// del año.
+					$this->añoDesde = $ultimo['ano_impositivo'] + 1;
+					$this->añoHasta = $this->añoDesde;
+					$this->periodoDesde = 1;
+					$this->periodoHasta = $this->periodoDesde;
+
+				} elseif ( $ultimo['']) {
+
+				}
+
+
+			}
+		}
+
+
+
+		/***/
 		private function validarRangoLiquidacion()
 		{
 			if ( $this->añoDesde > $this->añoHasta ) {
@@ -235,6 +289,7 @@
 		private function getUltimoLapsoActividadEconomica()
 		{
 			if ( $this->_idContribuyente > 0 ) {
+				$this->setImpuesto(1);
 				$this->_ultimaLiquidacion = Pago::find()->where('id_contribuyente =:id_contribuyente',[':id_contribuyente' => $this->_idContribuyente])
 														->andWhere('impuesto =:impuesto', [':impuesto' => 1])
 														->andWhere('trimestre >:trimestre', [':trimestre' => 0])
