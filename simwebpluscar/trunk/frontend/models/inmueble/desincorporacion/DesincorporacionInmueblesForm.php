@@ -109,7 +109,7 @@ class DesincorporacionInmueblesForm extends \yii\db\ActiveRecord
      */
     public function rules()
     {
-        return [
+        return [ 
             
             [['ano_inicio', 'manzana_limite',  'inactivo', 'id_habitante', 'tipo_ejido'], 'integer','message' => Yii::t('backend', 'only integers')],
             // [['observacion','datosVendedor','inmuebleVendedor'], 'string'], 
