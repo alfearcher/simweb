@@ -152,7 +152,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
          $datos = $_SESSION['datos'];
     
          //Mostrará un mensaje en la vista cuando el usuario se haya registrado
-         $msg = null;
+         $msg = null; 
          $url = null; 
          $tipoError = null; 
     
