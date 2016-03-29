@@ -364,5 +364,150 @@
 
 
 
+	   /**
+		* Metodo que permite obtener el periodo segun la exigibilidad de la ordenanza y la fecha
+		* especifica
+		* @param Integer $exigibilidad, Exigibilidad de Liquidacion o declaracion.
+		* @param date $fecha, Fecha a consultar.
+		* @return Integer, Retorna entero indicando el periodo para la fecha y exigibilidad.
+		*/
+		public static function getPeriodoSegunFecha($exigibilidad, $fecha)
+		{
+			$periodo = 0;
+			if ( $exigibilidad > 0 && date($fecha) ) {
+				$mes = date('n', strtotime($fecha));
+				if ( $exigibilidad == 1 ) {
+					$periodo = 1;
+				} elseif ( $exigibilidad == 2 ) {
+					switch ( $mes ) {
+						case 1:
+						case 2:
+						case 3:
+						case 4:
+						case 5:
+						case 6:
+							$periodo = 1;
+							break;
+
+						case 7:
+						case 8:
+						case 9:
+						case 10:
+						case 11:
+						case 12:
+							$periodo = 2;
+							break;
+
+						default:
+							$periodo = 0;
+							break;
+					}
+				} elseif ( $exigibilidad == 3 ) {
+					switch ( $mes ) {
+						case 1:
+						case 2:
+						case 3:
+						case 4:
+							$periodo = 1;
+							break;
+
+						case 5:
+						case 6:
+						case 7:
+						case 8:
+							$periodo = 2;
+							break;
+
+						case 9:
+						case 10:
+						case 11:
+						case 12:
+							$periodo = 3;
+							break;
+
+						default:
+							$periodo = 0;
+							break;
+					}
+
+				} elseif ( $exigibilidad == 4 ) {
+					switch ( $mes ) {
+						case 1:
+						case 2:
+						case 3:
+							$periodo = 1;
+							break;
+
+						case 4:
+						case 5:
+						case 6:
+							$periodo = 2;
+							break;
+
+						case 7:
+						case 8:
+						case 9:
+							$periodo = 3;
+							break;
+
+						case 10:
+						case 11:
+						case 12:
+							$periodo = 4;
+							break;
+
+						default:
+							$periodo = 0;
+							break;
+					}
+
+				} elseif ( $exigibilidad == 6 ) {
+					switch ( $mes ) {
+						case 1:
+						case 2:
+							$periodo = 1;
+							break;
+
+						case 3:
+						case 4:
+							$periodo = 2;
+							break;
+
+						case 5:
+						case 6:
+							$periodo = 3;
+							break;
+
+						case 7:
+						case 8:
+							$periodo = 4;
+							break;
+
+						case 9:
+						case 10:
+							$periodo = 5;
+							break;
+
+						case 11:
+						case 12:
+							$periodo = 6;
+							break;
+
+						default:
+							$periodo = 0;
+							break;
+					}
+
+				} elseif ( $exigibilidad == 12 ) {
+					$periodo = $mes;
+				}
+			}
+			return $periodo;
+		}
+
+
+
+
+
 	}
  ?>
