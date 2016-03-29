@@ -90,7 +90,7 @@ $this->title = Yii::t('frontend', 'Property Update');
                             </div>
                         
                    </div>
- <!-- Direccio del domicilio -->                   
+ <!-- Direccio del domicilio -->                    
                    <div class="row">
                         
                             <div class="col-sm-2" > 
