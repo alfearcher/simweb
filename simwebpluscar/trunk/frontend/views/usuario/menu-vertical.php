@@ -135,7 +135,7 @@
 					        			],
 		        						['label' => 'Solvencia', 'url' => '#'],
 		        						['label' => 'Cambio de Propietario', 'url' => '#'],
-		        						['label' => 'Cambio de Placa', 'url' => ['/vehiculo/cambioplaca/cambio-placa-vehiculo/cambio-placa-vehiculo'], 'options' => []],
+		        						['label' => 'Cambio de Placa', 'url' => ['/vehiculo/cambioplaca/cambio-placa-vehiculo/vista-seleccion', 'id' => 74], 'options' => []],
 		        						['label' => 'Desincorporaci&oacute;n de Vehiculo', 'url' => '#'],
 		        						['label' => 'Cambio de Otros Datos del Vehiculo', 'url' => ['/vehiculo/cambiodatos/cambio-datos-vehiculo/vista-seleccion', 'id' => 5]],
 		        			],

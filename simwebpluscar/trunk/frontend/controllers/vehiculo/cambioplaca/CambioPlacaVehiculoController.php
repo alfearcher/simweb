@@ -56,7 +56,9 @@ use common\conexion\ConexionController;
 use common\mensaje\MensajeController;
 use frontend\models\vehiculo\cambioplaca\CambioPlacaVehiculoForm;
 use common\enviaremail\EnviarEmailSolicitud;
-use frontend\models\vehiculo\cambiodatos\VehiculoSearch;
+use frontend\models\vehiculo\cambioplaca\PlacaSearch;
+use common\models\configuracion\solicitud\ParametroSolicitud;
+use frontend\models\vehiculo\registrar\RegistrarVehiculoForm;
 
 /**
  * Site controller
@@ -78,6 +80,68 @@ class CambioPlacaVehiculoController extends Controller
     
   public $layout = 'layout-main';
    
+
+
+
+    public function actionVistaSeleccion()
+  {
+
+
+
+      //die($_SESSION['id']);
+      if(isset(yii::$app->user->identity->id_contribuyente)){
+
+
+        $idConfig = yii::$app->request->get('id');
+        
+        $_SESSION['id'] = $idConfig;
+
+       // die($idConfig);
+
+          $searchModel = new PlacaSearch();
+
+          $dataProvider = $searchModel->search();
+       
+
+          return $this->render('/vehiculo/cambioplaca/seleccionar-vehiculo-cambio-placa', [
+                                                'searchModel' => $searchModel,
+                                                'dataProvider' => $dataProvider,
+            
+                                                ]); 
+      }else{
+          echo "No existe User";
+      }
+    
+
+  }
+
+
+  public function actionBuscarPlaca()
+  {
+     // die('llegue a buscar placa');
+      $idContribuyente = yii::$app->user->identity->id_contribuyente;
+      $idVehiculo = yii::$app->request->post('id');
+
+      //die($idVehiculo);
+      $_SESSION['idVehiculo'] = $idVehiculo;
+  
+
+      $modelsearch = new PlacaSearch();
+      $busqueda = $modelsearch->busquedaPlaca($idVehiculo, $idContribuyente);
+
+          if ($busqueda == true){ 
+            //die('consiguio placa');
+        
+              $_SESSION['datosVehiculo'] = $busqueda;
+        
+          return $this->redirect(['cambio-placa-vehiculo']);
+        
+          }else{
+
+              die('no existe vehiculo asociado a ese ID');
+          }
+  }
+
     /**
      * [actionRegistrarVehiculo description] metodo que renderiza y valida el formulario de cambio de datos del vehiculo
      * @return [type] [description] render del formulario de cambio de datos de vehiculo
@@ -85,10 +149,14 @@ class CambioPlacaVehiculoController extends Controller
     public function actionCambioPlacaVehiculo()
     {
       
-       die(var_dump(yii::$app->request->post('value')));
+      
         if(isset(yii::$app->user->identity->id_contribuyente)){
 
-         
+        
+
+          $datosVehiculo = $_SESSION['datosVehiculo']; 
+
+           if (isset($_SESSION['datosVehiculo'])){ 
 
 
             $model = new CambioPlacaVehiculoForm();
@@ -100,34 +168,299 @@ class CambioPlacaVehiculoController extends Controller
                   return ActiveForm::validate($model);
             }
 
-                if ( $model->load($postData) ) {
+            if ( $model->load($postData) ) {
+             // die('valido el postdata');
 
-                    if ($model->validate()){
+               if ($model->validate()){
 
-                 
+               // die('valido');
 
-                    }
+                   $buscarActualizar = self::beginSave("buscarActualizar", $model);
+
+                   if($buscarActualizar == true){
+                     return MensajeController::actionMensaje(100);
+
+                   }else{
+
+                    return MensajeController::actionMensaje(420);
+                   }
+                 }
+                
             
-                }
+            }
             
-                return $this->render('/vehiculo/cambioplaca/cambio-placa-vehiculo', [
+            return $this->render('/vehiculo/cambioplaca/cambio-placa-vehiculo', [
                                                               'model' => $model,
-                                                            
+                                                              'datos' => $datosVehiculo,
 
                                                            
-                ]);
+            ]);
             
-          
+             }else{
+               die('no hay datos de vehiculo');
+             } 
 
-        }else{
+         }else{
 
-            die('no existe user');
+             die('no existe user');
 
-        }
+       }
     }
 
-    
+    public function buscarNumeroSolicitud($conn, $conexion, $model)
+    {
 
+      $buscar = new ParametroSolicitud($_SESSION['id']);
+
+      
+
+        $buscar->getParametroSolicitud(["tipo_solicitud", "impuesto", "nivel_aprobacion"]);
+
+        $resultado = $buscar->getParametroSolicitud(["tipo_solicitud", "impuesto", "nivel_aprobacion"]);
+
+
+      $datos = yii::$app->user->identity;
+      $tabla = 'solicitudes_contribuyente';
+      $arregloDatos = [];
+      $arregloCampo = RegistrarVehiculoForm::attributeSolicitudContribuyente();
+
+      foreach ($arregloCampo as $key=>$value){
+
+          $arregloDatos[$value] = 0;
+      }
+
+      $arregloDatos['impuesto'] = $resultado['impuesto'];
+     
+      $arregloDatos['id_config_solicitud'] = $_SESSION['id'];
+
+      $arregloDatos['tipo_solicitud'] = $resultado['tipo_solicitud'];
+
+      $arregloDatos['usuario'] = $datos->login;
+
+      $arregloDatos['id_contribuyente'] = $datos->id_contribuyente;
+
+      $arregloDatos['fecha_hora_creacion'] = date('Y-m-d h:m:i');
+
+      $arregloDatos['nivel_aprobacion'] = $resultado['nivel_aprobacion'];
+
+      $arregloDatos['nro_control'] = 0;
+
+      if ($resultado['nivel_aprobacion'] == 1){
+
+      $arregloDatos['estatus'] = 1;
+
+      }else{
+
+      $arregloDatos['estatus'] = 0;
+      }
+
+      $arregloDatos['inactivo'] = 0;
+
+      if ($conexion->guardarRegistro($conn, $tabla, $arregloDatos )){
+
+              $idSolicitud = $conn->getLastInsertID();
+
+          }
+         
+
+          return $idSolicitud;
+
+    }
+
+    public function guardarRegistroCambioPlaca($conn, $conexion, $model , $idSolicitud)
+    {
+      //die($idSolicitud);
+
+      $numeroSolicitud = $idSolicitud;
+      $resultado = false;
+      $datos = yii::$app->user->identity;
+      $tabla = 'sl_vehiculos';
+      $arregloDatos = [];
+      $arregloCampo = RegistrarVehiculoForm::attributeSlVehiculo();
+
+      foreach ($arregloCampo as $key=>$value){
+
+          $arregloDatos[$value] =0;
+      }
+
+      $arregloDatos['nro_solicitud'] = $numeroSolicitud;
+
+    
+      $arregloDatos['id_contribuyente'] = $datos->id_contribuyente;
+
+      $arregloDatos['placa'] = $model->placa;
+
+     // die($arregloDatos['placa']);
+
+
+    if ($conexion->guardarRegistro($conn, $tabla, $arregloDatos )){
+
+
+
+             $resultado = true;
+
+
+              return $resultado;
+
+
+          }
+
+    }
+
+
+    public function actualizarPlaca($conn, $conexion, $model)
+    {
+     
+    //die(var_dump($model));
+     
+
+      $tableName = 'vehiculos';
+      $arregloCondition = ['id_vehiculo' => $_SESSION['idVehiculo']];
+      //die(var_dump($arregloCondition));
+     
+
+      
+
+      $arregloDatos['placa'] = $model->placa;
+
+      $conexion = new ConexionController();
+
+      $conn = $conexion->initConectar('db');
+         
+      $conn->open();
+
+      //$transaccion = $conn->beginTransaction();
+
+          if ($conexion->modificarRegistro($conn, $tableName, $arregloDatos, $arregloCondition)){
+
+             // die('modifico');
+
+              return true;
+              
+          }
+         
+
+  }
+
+
+    
+     public function beginSave($var, $model)
+    {
+     // die($_SESSION['idVehiculo']);
+      
+
+      $buscar = new ParametroSolicitud($_SESSION['id']);
+
+        $buscar->getParametroSolicitud(["nivel_aprobacion"]);
+
+        //die(var_dump($buscar->getParametroSolicitud(["nivel_aprobacion"])));
+
+        $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
+
+       // die(var_dump($nivelAprobacion));
+
+        $conexion = new ConexionController();
+
+      $idSolicitud = 0;
+
+      $conn = $conexion->initConectar('db');
+
+      $conn->open();
+
+      $transaccion = $conn->beginTransaction();
+
+          if ($var == "buscarActualizar"){
+
+              $buscar = self::buscarNumeroSolicitud($conn, $conexion, $model);
+
+              if ($buscar > 0){
+
+               // die('consiguio  id');
+
+                  $idSolicitud = $buscar;
+
+
+              }
+
+              if ($buscar == true){
+
+                  $guardar = self::guardarRegistroCambioPlaca($conn,$conexion, $model, $idSolicitud);
+
+                  if ($nivelAprobacion['nivel_aprobacion'] != 1){ 
+
+                    //die('no es de aprobacion directa');
+
+                  if ($buscar and $guardar == true ){
+                    //die('actualizo y guardo');
+
+                    $transaccion->commit();
+                    $conn->close();
+
+                      $enviarNumeroSolicitud = new EnviarEmailSolicitud;
+
+                      $login = yii::$app->user->identity->login;
+
+                      $solicitud = 'Cambio de placa';
+
+                      $enviarNumeroSolicitud->enviarEmail($login,$solicitud, $idSolicitud);
+
+
+                        if($enviarNumeroSolicitud == true){
+
+                            return true;
+
+
+                        }
+                  }else{
+
+                      $transaccion->rollback();
+                      $conn->close();
+                      return false;
+                  }
+                  
+                  }else{
+                    //die('es de aprobacion directa');
+
+                      $actualizarPlaca = self::actualizarPlaca($conn,$conexion, $model);
+
+                          if ($buscar and $guardar and $actualizarPlaca == true ){
+                           // die('los tres son verdad');
+
+                          $transaccion->commit();
+                          $conn->close();
+
+                          $enviarNumeroSolicitud = new EnviarEmailSolicitud;
+
+                         $login = yii::$app->user->identity->login;
+
+                         $solicitud = 'Cambio de Placa';
+
+                         $enviarNumeroSolicitud->enviarEmail($login,$solicitud, $idSolicitud);
+
+
+                             if($enviarNumeroSolicitud == true){
+
+                                 return true;
+
+
+                             }
+                             }else{
+
+                          $transaccion->rollback();
+                          $conn->close();
+                          return false;
+
+                             }
+
+
+
+                  }
+
+          }
+
+    }
+    }
+    
  
               
             
