@@ -288,7 +288,7 @@ class CambioPlacaVehiculoController extends Controller
     
       $arregloDatos['id_contribuyente'] = $datos->id_contribuyente;
 
-      $arregloDatos['placa'] = $model->placa;
+      $arregloDatos['placa'] = strtoupper($model->placa);
 
      // die($arregloDatos['placa']);
 
@@ -321,7 +321,7 @@ class CambioPlacaVehiculoController extends Controller
 
       
 
-      $arregloDatos['placa'] = $model->placa;
+      $arregloDatos['placa'] = strtoupper($model->placa);
 
       $conexion = new ConexionController();
 

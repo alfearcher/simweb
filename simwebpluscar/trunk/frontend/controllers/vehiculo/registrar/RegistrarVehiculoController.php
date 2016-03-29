@@ -233,7 +233,7 @@ class RegistrarVehiculoController extends Controller
      //die($arregloDatos['nro_solicitud']);
       $arregloDatos['id_contribuyente'] = $datos->id_contribuyente;
 
-      $arregloDatos['placa'] = $model->placa;
+      $arregloDatos['placa'] = strtoupper($model->placa);
 
       $arregloDatos['marca'] = $model->marca;
 
