@@ -308,7 +308,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                         if ( $conn->modificarRegistro($conexion, $tableName3,  $arrayDatos3, $arrayCondition) ){
 
-                              $transaccion->commit(); 
+                              $transaccion->commit();  
                               $conexion->close(); 
                               $tipoError = 0; 
                               return $result; 

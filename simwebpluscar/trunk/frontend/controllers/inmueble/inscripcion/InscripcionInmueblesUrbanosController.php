@@ -253,7 +253,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                         $transaccion->commit(); 
                         $conexion->close(); 
                         $tipoError = 0; 
-                        return $result;
+                        return $result; 
 
                     } else {
 
@@ -276,14 +276,14 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                               $transaccion->commit(); 
                               $conexion->close(); 
                               $tipoError = 0; 
-                              return $result;
+                              return $result; 
 
                         } else {
             
-                              $transaccion->rollBack();
-                              $conexion->close();
+                              $transaccion->rollBack(); 
+                              $conexion->close(); 
                               $tipoError = 0; 
-                              return false;
+                              return false; 
 
                         }
 
