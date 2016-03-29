@@ -284,7 +284,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                         $transaccion->commit(); 
                         $conexion->close(); 
-                        $tipoError = 0; 
+                        $tipoError = 0;  
                         return $result; 
 
                     } else {
