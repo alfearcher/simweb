@@ -82,7 +82,7 @@ $this->title = Yii::t('frontend', 'Property Update');
                             <?= $form->field($model, 'causa')->dropDownList($listaParametros, [ 
                                                                                                             'id'=> 'parametro', 
                                                                                                             'prompt' => Yii::t('backend', 'Select'),
-                                                                                                            'style' => 'width:100px;',
+                                                                                                            'style' => 'width:300px;',
                                                                                                            /*'onchange' =>
                                                                                                                 '$.post( "' . Yii::$app->urlManager
                                                                                                                                        ->createUrl('parroquias/lists') . '&municipio=' . '" + $(this).val(), function( data ) {
