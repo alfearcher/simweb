@@ -343,10 +343,10 @@ class DesincorporacionVehiculoController extends Controller
       //die($idSolicitud);
 
       $numeroSolicitud = $idSolicitud;
-      
+
       $resultado = false;
       $datos = yii::$app->user->identity;
-      $tabla = 'sl_desincorporacion';
+      $tabla = 'sl_desincorporaciones';
       $arregloDatos = [];
       $arregloCampo = DesincorporacionVehiculoForm::attributeSldesincorporaciones();
 
