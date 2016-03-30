@@ -77,6 +77,7 @@ use common\conexion\ConexionController;
 use common\enviaremail\EnviarEmailSolicitud;
 use common\mensaje\MensajeController;
 use frontend\models\inmueble\ConfiguracionTiposSolicitudes;
+use frontend\models\inmueble\desincorporacion\DesincorporacionInmueblesForm;
 session_start();
 /*********************************************************************************************************
  * InscripcionInmueblesUrbanosController implements the actions for InscripcionInmueblesUrbanosForm model.
