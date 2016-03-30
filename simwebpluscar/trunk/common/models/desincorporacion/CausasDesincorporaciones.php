@@ -46,7 +46,7 @@
  *  
  */ 
 
-namespace frontend\models\inmueble;
+namespace common\models\desincorporacion;
 
 use Yii;
 
