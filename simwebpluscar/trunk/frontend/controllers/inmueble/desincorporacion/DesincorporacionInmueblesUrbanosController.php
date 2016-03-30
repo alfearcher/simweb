@@ -87,7 +87,7 @@ class DesincorporacionInmueblesUrbanosController extends Controller
    
     public $conn;
     public $conexion;
-    public $transaccion;
+    public $transaccion; 
 
 /* 
 tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes

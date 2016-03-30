@@ -67,13 +67,13 @@ $this->title = Yii::t('frontend', 'Property Update');
                    <div class="row">
                         
                             <div class="col-sm-2"> 
-                            <?= Yii::t('backend', 'Street Addres') ?>
+                            <?= Yii::t('backend', 'Divestiture Causes') ?>
                             </div> 
                         
 
                         
                             <div class="col-sm-3"> 
-                            <?= $form->field($model, 'direccion')->textarea(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?>
+                            <?= $form->field($model, 'causa')->textarea(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?>
                             </div> 
                         
                             <div class="col-sm-1">
@@ -90,82 +90,7 @@ $this->title = Yii::t('frontend', 'Property Update');
                             </div>
                         
                    </div>
- <!-- Direccio del domicilio -->                   
-                   <div class="row">
-                        
-                            <div class="col-sm-2" > 
-                            <?= Yii::t('backend', 'Hse/Building/Ctryhse') ?>
-                            </div>
-                        
 
-                          
-                            <div class="col-sm-2">
-                            <?= $form->field($model, 'casa_edf_qta_dom')->textInput(['style' => 'width:100px;'])->label(false) ?>
-                            </div> 
-                        
-
-                         
-                            <div class="col-sm-2"> 
-                            <?= Yii::t('backend', 'Floor/Level') ?>
-                            </div> 
-                        
-
-                        
-                            <div class="col-sm-2">
-                            <?= $form->field($model, 'piso_nivel_no_dom')->textInput(['style' => 'width:100px;'])->label(false) ?>
-                            </div>
-                        
-
-                        
-                            <div class="col-sm-2"> 
-                            <?= Yii::t('backend', 'Apartment/Num') ?>
-                            </div>
-                        
-
-                        
-                            <div class="col-sm-2">
-                            <?= $form->field($model, 'apto_dom')->textInput(['style' => 'width:100px;'])->label(false) ?>
-                            </div>
-                    </div> 
-                        
-                  
-                   <div class="row">
-                        
-                            <div class="col-sm-2"> 
-                            <?= Yii::t('backend', 'Phone') ?>
-                            </div> 
-                        
-
-                        
-                            <div class="col-sm-2"> 
-                            <?= $form->field($model, 'tlf_hab')->textInput(['style' => 'width:100px;'])->label(false) ?>
-                            </div>
-                        
-
-                        
-                            <div class="col-sm-2"> 
-                            <?= Yii::t('backend', 'Meter') ?>
-                            </div>
-                        
-
-                        
-                            <div class="col-sm-2">
-                            <?= $form->field($model, 'medidor')->textInput(['style' => 'width:100px;'])->label(false) ?>
-                            </div>
-                        
-
-                        
-                            <div class="col-sm-2">
-                            <?= $form->field($model, 'id_contribuyente')->hiddenInput(['style' => 'width:80px;'])->label(false) ?>
-                            </div>
-                        
-
-                         
-                            <div class="col-sm-2">
-                            <?= $form->field($model, 'id_impuesto')->hiddenInput(['style' => 'width:80px;'])->label(false) ?>
-                            </div>                                                      
-                        
-                   </div>
 
                    <div class="row">
                         
@@ -179,20 +104,7 @@ $this->title = Yii::t('frontend', 'Property Update');
                             <?= $form->field($model, 'observacion')->textarea(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?>
                             </div> 
 
-                            <div class="col-sm-1">
-                            </div> 
-                        
-                            <div class="col-sm-2"> 
-                            <?= $form->field($model, 'tipo_ejido')->textInput(['style' => 'width:100px;'])->checkbox() ?>
-                            </div> 
-                        
-
-                        
-                            <div class="col-sm-2">
-                            <?= $form->field($model, 'inactivo')->checkbox()?> 
-                            </div> $inactivo
-
-                                                 
+                   
 
                     </div>     
                     <div class="row">
