@@ -74,7 +74,7 @@ $this->title = Yii::t('frontend', 'Property Update');
                         
 
                         
-                            <div class="col-sm-5"> 
+                            <div class="col-sm-6"> 
                             <?php
                                 $modelParametros = CausasDesincorporaciones::find()->asArray()->all();                                         
                                 $listaParametros = ArrayHelper::map($modelParametros,'causa_desincorporacion','descripcion'); 
