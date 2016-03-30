@@ -59,7 +59,7 @@ use common\enviaremail\EnviarEmailSolicitud;
 use frontend\models\vehiculo\cambiodatos\VehiculoSearch;
 use common\models\configuracion\solicitud\ParametroSolicitud;
 use frontend\models\vehiculo\desincorporacion\DesincorporacionVehiculoForm;
-
+use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 /**
  * Site controller
  */
@@ -83,7 +83,7 @@ class DesincorporacionVehiculoController extends Controller
 
 
 
-    public function actionVistaSeleccion()
+    public function actionVistaSeleccion($errorCheck = "")
   {
 
     //die('llegue a action vista');
@@ -106,7 +106,7 @@ class DesincorporacionVehiculoController extends Controller
           return $this->render('/vehiculo/desincorporacion/seleccionar-vehiculo-desincorporacion', [
                                                 'searchModel' => $searchModel,
                                                 'dataProvider' => $dataProvider,
-            
+                                                'errorCheck' => $errorCheck,
                                                 ]); 
       }else{
           echo "No existe User";
@@ -118,14 +118,16 @@ class DesincorporacionVehiculoController extends Controller
 
   public function actionMotivosDesincorporacion()
   {
-     
+      $errorCheck = ""; 
       $idContribuyente = yii::$app->user->identity->id_contribuyente;
       $idVehiculo = yii::$app->request->post('chk-desincorporar-vehiculo');
       //die(var_dump($idVehiculo));
       $_SESSION['idVehiculo'] = $idVehiculo;
   
+      $validacion = new DesincorporacionVehiculoForm();
 
-      $modelsearch = new VehiculoSearch();
+       if ($validacion->validarCheck(yii::$app->request->post('chk-desincorporar-vehiculo')) == true){
+           $modelsearch = new VehiculoSearch();
       $busqueda = $modelsearch->busquedaVehiculo($idVehiculo, $idContribuyente);
 
           if ($busqueda == true){ 
@@ -139,6 +141,13 @@ class DesincorporacionVehiculoController extends Controller
 
               die('no existe vehiculo asociado a ese ID');
           }
+       }else{
+          $errorCheck = "Please select a car";
+          return $this->redirect(['vista-seleccion' , 'errorCheck' => $errorCheck]); 
+
+                                                                                             
+       }
+     
   }
 
     /**
@@ -154,7 +163,7 @@ class DesincorporacionVehiculoController extends Controller
         
 
           $datosVehiculo = $_SESSION['datosVehiculo']; 
-
+         // die(var_dump($datosVehiculo));
            if (isset($_SESSION['datosVehiculo'])){ 
 
 
@@ -172,8 +181,17 @@ class DesincorporacionVehiculoController extends Controller
 
                if ($model->validate()){
 
-               // die('valido');
+                  $verificarSolicitud = self::verificarSolicitud($datosVehiculo[0]->id_vehiculo , $_SESSION['id']);
 
+                    if($verificarSolicitud == true){
+                      return MensajeController::actionMensaje(403);
+                    }else{
+
+
+
+
+
+                    }
                   
                  }
                 
@@ -197,6 +215,32 @@ class DesincorporacionVehiculoController extends Controller
 
        }
     }
+
+    public function verificarSolicitud($idVehiculo,$idConfig)
+    {
+      $buscar = SolicitudesContribuyente::find()
+                                        ->where([ 
+                                          'id_impuesto' => $idVehiculo,
+                                          'id_config_solicitud' => $idConfig,
+                                          'inactivo' => 0,
+                                        ])
+                                      ->all();
+
+            if($buscar == true){
+             return true;
+            }else{
+             return false;
+            }
+    }
+
+    
+
+
+
+
+
+
+
 
     public function buscarNumeroSolicitud($conn, $conexion, $model)
     {

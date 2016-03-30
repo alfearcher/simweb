@@ -78,7 +78,7 @@ class DesincorporacionVehiculoForm extends Model
 
         return [
               [['motivos', 'otrosMotivos'],'required'],
-             
+              
             
 
 
@@ -104,7 +104,15 @@ class DesincorporacionVehiculoForm extends Model
         ];
     }
 
+    public function validarCheck($postCheck)
+    {
+        if (count($postCheck) > 0){
 
+            return true;
+        }else{
+            return false;
+        }
+    }
 
     
       

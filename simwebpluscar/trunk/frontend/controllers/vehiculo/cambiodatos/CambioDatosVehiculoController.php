@@ -59,6 +59,7 @@ use common\enviaremail\EnviarEmailSolicitud;
 use frontend\models\vehiculo\cambiodatos\VehiculoSearch;
 use common\models\configuracion\solicitud\ParametroSolicitud;
 use frontend\models\vehiculo\registrar\RegistrarVehiculoForm;
+use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 /**
  * Site controller
  */
@@ -168,6 +169,13 @@ class CambioDatosVehiculoController extends Controller
 
                if ($model->validate()){
 
+                  $verificarSolicitud = self::verificarSolicitud($datosVehiculo[0]->id_vehiculo , $_SESSION['id']);
+
+                  if($verificarSolicitud == true){
+
+                    return MensajeController::actionMensaje(403);
+                  }else{ 
+
                    $buscarActualizar = self::beginSave("buscarActualizar", $model);
 
                    if($buscarActualizar == true){
@@ -179,7 +187,7 @@ class CambioDatosVehiculoController extends Controller
                    }
                  }
                 
-            
+              }
             }
             
             return $this->render('/vehiculo/cambiodatos/seleccionar-vehiculo-cambio-datos', [
@@ -200,10 +208,27 @@ class CambioDatosVehiculoController extends Controller
        }
     }
 
+       public function verificarSolicitud($idVehiculo,$idConfig)
+    {
+      $buscar = SolicitudesContribuyente::find()
+                                        ->where([ 
+                                          'id_impuesto' => $idVehiculo,
+                                          'id_config_solicitud' => $idConfig,
+                                          'inactivo' => 0,
+                                        ])
+                                      ->all();
+
+            if($buscar == true){
+             return true;
+            }else{
+             return false;
+            }
+    }
+
 
     public function buscarNumeroSolicitud($conn, $conexion, $model)
     {
-
+      //die('hola');  
       $buscar = new ParametroSolicitud($_SESSION['id']);
 
       
@@ -211,6 +236,9 @@ class CambioDatosVehiculoController extends Controller
         $buscar->getParametroSolicitud(["tipo_solicitud", "impuesto", "nivel_aprobacion"]);
 
         $resultado = $buscar->getParametroSolicitud(["tipo_solicitud", "impuesto", "nivel_aprobacion"]);
+
+     
+     $datosVehiculo = $_SESSION['datosVehiculo'];
 
 
       $datos = yii::$app->user->identity;
@@ -226,6 +254,10 @@ class CambioDatosVehiculoController extends Controller
       $arregloDatos['impuesto'] = $resultado['impuesto'];
      
       $arregloDatos['id_config_solicitud'] = $_SESSION['id'];
+
+      $arregloDatos['id_impuesto'] = $datosVehiculo[0]->id_vehiculo;
+
+      //die($arregloDatos['id_impuesto']);
 
       $arregloDatos['tipo_solicitud'] = $resultado['tipo_solicitud'];
 

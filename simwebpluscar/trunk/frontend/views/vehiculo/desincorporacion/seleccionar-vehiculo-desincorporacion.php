@@ -94,14 +94,21 @@ $this->title = Yii::t('frontend', 'Select your Vehicles');
     <div class="col-sm-4">
     <p>
        
-        <?= Html::a(Yii::t('backend', 'Back'), ['/site/menu-vertical'], ['class' => 'btn btn-danger']) ?>
+        <?= Html::a(Yii::t('backend', 'Back'), ['/site/menu-vertical'], ['class' => 'btn btn-danger', 'style' => 'height:30px;width:140px;']) ?>
     </p>
     </div>
 
-    <div class="col-sm-5">
+    <div class="col-sm-5" style="margin-left: -200px;">
     
-     <?= Html::submitButton("Submit", ["class" => "btn btn-success", 'style' => 'height:30px;width:140px;margin-rigth:200px;']) ?>
+     <?= Html::submitButton("Submit", ["class" => "btn btn-success", 'style' => 'height:30px;width:140px;']) ?>
 
+    </div>
+  
+    <div class="col-sm-2" style="float:right; color:red; font: comic sans ms">
+   
+    <p><?php echo $errorCheck ?></p>
+
+   
     </div>
     </div>
 
