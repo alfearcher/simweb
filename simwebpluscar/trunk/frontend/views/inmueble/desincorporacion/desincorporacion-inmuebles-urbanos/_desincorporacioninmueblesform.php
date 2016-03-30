@@ -5,7 +5,7 @@ use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveField;
 
-use common\models\desincorporacion\CausasDesincorporacion;
+use common\models\desincorporacion\CausasDesincorporaciones;
 use backend\models\inmueble\ParametrosNivelesCatastro;
 use backend\models\inmueble\Estados;
 use backend\models\inmueble\Municipios;

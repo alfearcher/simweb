@@ -54,13 +54,10 @@ use Yii;
  * This is the model class for table "parametros_niveles_catastro".
  *
  * @property string $id_parametro
- * @property string $codigo
  * @property string $descripcion
- * @property string $desde
- * @property string $hasta
  * @property integer $inactivo
  */
-class ParametrosNivelesCatastro extends \yii\db\ActiveRecord
+class CausasDesincorporaciones extends \yii\db\ActiveRecord
 {
     
     public static function tableName()
@@ -72,9 +69,8 @@ class ParametrosNivelesCatastro extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['codigo', 'descripcion', 'desde', 'hasta'], 'required'],
+            [['descripcion'], 'required'],
             [['inactivo'], 'integer'],
-            [['codigo', 'desde', 'hasta'], 'string', 'max' => 2],
             [['descripcion'], 'string', 'max' => 45]
         ];
     }
@@ -83,11 +79,8 @@ class ParametrosNivelesCatastro extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_parametro' => 'Id Parametro',
-            'codigo' => 'Codigo',
+            'causas_desincorporaciones' => 'Id Parametro',
             'descripcion' => 'Descripcion',
-            'desde' => 'Desde',
-            'hasta' => 'Hasta',
             'inactivo' => 'Inactivo',
         ];
     }
