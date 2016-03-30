@@ -116,7 +116,25 @@ class DesincorporacionVehiculoForm extends Model
 
     
       
-    
+    public function attributeSldesincorporaciones()
+    {
+
+
+    return [  'nro_solicitud',
+              'id_contribuyente',
+              'id_impuesto',
+              'impuesto',
+              'causa_desincorporacion',
+              'observacion',
+              'usuario',
+              'fecha_hora',
+              'inactivo',
+              
+              
+
+              ];
+      
+    }
     
     
    

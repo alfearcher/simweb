@@ -60,6 +60,7 @@ use frontend\models\vehiculo\cambiodatos\VehiculoSearch;
 use common\models\configuracion\solicitud\ParametroSolicitud;
 use frontend\models\vehiculo\desincorporacion\DesincorporacionVehiculoForm;
 use common\models\solicitudescontribuyente\SolicitudesContribuyente;
+use frontend\models\vehiculo\registrar\RegistrarVehiculoForm;
 /**
  * Site controller
  */
@@ -129,7 +130,7 @@ class DesincorporacionVehiculoController extends Controller
        if ($validacion->validarCheck(yii::$app->request->post('chk-desincorporar-vehiculo')) == true){
            $modelsearch = new VehiculoSearch();
       $busqueda = $modelsearch->busquedaVehiculo($idVehiculo, $idContribuyente);
-
+      //die(var_dump($busqueda));
           if ($busqueda == true){ 
            
         
@@ -156,7 +157,7 @@ class DesincorporacionVehiculoController extends Controller
      */
     public function actionDesincorporarVehiculo()
     {
-      
+        $todoBien = true;
       
         if(isset(yii::$app->user->identity->id_contribuyente)){
 
@@ -181,17 +182,48 @@ class DesincorporacionVehiculoController extends Controller
 
                if ($model->validate()){
 
-                  $verificarSolicitud = self::verificarSolicitud($datosVehiculo[0]->id_vehiculo , $_SESSION['id']);
+                  //die($datosVehiculo[0]->id_vehiculo);
+                  //
+                  foreach($datosVehiculo as $key => $value) {
+                     
+                     $value['id_vehiculo'];
 
-                    if($verificarSolicitud == true){
-                      return MensajeController::actionMensaje(403);
+                     $verificarSolicitud = self::verificarSolicitud($value['id_vehiculo'] , $_SESSION['id']);
+                      if($verificarSolicitud == true){
+                        $todoBien = false;
+                      
+                       }
+                  }
+
+
+                    if($todoBien){
+                        $buscarActualizar = self::beginSave("buscarActualizar", $model, $datosVehiculo);
+
+                    if($buscarActualizar == true){
+                     
+                        return MensajeController::actionMensaje(100);
+
                     }else{
 
-
-
-
+                        return MensajeController::actionMensaje(420);
+                    
+                    }
+                    
+                    }else{
+                       return MensajeController::actionMensaje(403);
 
                     }
+
+
+                   
+
+                 
+
+                        
+
+
+
+                  
                   
                  }
                 
@@ -253,7 +285,7 @@ class DesincorporacionVehiculoController extends Controller
 
         $resultado = $buscar->getParametroSolicitud(["tipo_solicitud", "impuesto", "nivel_aprobacion"]);
 
-
+      $datosVehiculo = $_SESSION['datosVehiculo'];
       $datos = yii::$app->user->identity;
       $tabla = 'solicitudes_contribuyente';
       $arregloDatos = [];
@@ -268,6 +300,10 @@ class DesincorporacionVehiculoController extends Controller
      
       $arregloDatos['id_config_solicitud'] = $_SESSION['id'];
 
+      $arregloDatos['id_impuesto'] = $datosVehiculo[0]->id_vehiculo;
+
+     // die( $arregloDatos['id_impuesto']);
+
       $arregloDatos['tipo_solicitud'] = $resultado['tipo_solicitud'];
 
       $arregloDatos['usuario'] = $datos->login;
@@ -277,7 +313,7 @@ class DesincorporacionVehiculoController extends Controller
       $arregloDatos['fecha_hora_creacion'] = date('Y-m-d h:m:i');
 
       $arregloDatos['nivel_aprobacion'] = $resultado['nivel_aprobacion'];
-
+ 
       $arregloDatos['nro_control'] = 0;
 
       if ($resultado['nivel_aprobacion'] == 1){
@@ -302,16 +338,17 @@ class DesincorporacionVehiculoController extends Controller
 
     }
 
-    public function guardarRegistroCambioPlaca($conn, $conexion, $model , $idSolicitud)
+    public function guardarRegistroDesincorporacion($conn, $conexion, $model , $idSolicitud)
     {
       //die($idSolicitud);
 
       $numeroSolicitud = $idSolicitud;
+      
       $resultado = false;
       $datos = yii::$app->user->identity;
-      $tabla = 'sl_vehiculos';
+      $tabla = 'sl_desincorporacion';
       $arregloDatos = [];
-      $arregloCampo = RegistrarVehiculoForm::attributeSlVehiculo();
+      $arregloCampo = DesincorporacionVehiculoForm::attributeSldesincorporaciones();
 
       foreach ($arregloCampo as $key=>$value){
 
@@ -321,11 +358,7 @@ class DesincorporacionVehiculoController extends Controller
       $arregloDatos['nro_solicitud'] = $numeroSolicitud;
 
     
-      $arregloDatos['id_contribuyente'] = $datos->id_contribuyente;
-
-      $arregloDatos['placa'] = strtoupper($model->placa);
-
-     // die($arregloDatos['placa']);
+      
 
 
     if ($conexion->guardarRegistro($conn, $tabla, $arregloDatos )){
@@ -343,7 +376,7 @@ class DesincorporacionVehiculoController extends Controller
     }
 
 
-    public function actualizarPlaca($conn, $conexion, $model)
+    public function actualizarDesincorporacion($conn, $conexion, $model)
     {
      
     //die(var_dump($model));
@@ -379,10 +412,10 @@ class DesincorporacionVehiculoController extends Controller
 
 
     
-     public function beginSave($var, $model)
+     public function beginSave($var, $model, $datosVehiculo)
     {
-     // die($_SESSION['idVehiculo']);
       
+      $todoBien = true;
 
       $buscar = new ParametroSolicitud($_SESSION['id']);
 
@@ -396,46 +429,63 @@ class DesincorporacionVehiculoController extends Controller
 
         $conexion = new ConexionController();
 
-      $idSolicitud = 0;
+        $idSolicitud = 0;
 
-      $conn = $conexion->initConectar('db');
+        $conn = $conexion->initConectar('db');
 
-      $conn->open();
+        $conn->open();
 
-      $transaccion = $conn->beginTransaction();
+        $transaccion = $conn->beginTransaction();
 
           if ($var == "buscarActualizar"){
 
-              $buscar = self::buscarNumeroSolicitud($conn, $conexion, $model);
+              foreach($datosVehiculo as $key => $value){
 
-              if ($buscar > 0){
-
-               // die('consiguio  id');
-
-                  $idSolicitud = $buscar;
+                $idSolicitud = 0;
+                $idSolicitud = self::buscarNumeroSolicitud($conn, $conexion, $model);
 
 
+                 if ($idSolicitud > 0){
+
+                    $guardar = self::guardarRegistroDesincorporacion($conn,$conexion, $model, $idSolicitud);
+
+                      if ($nivelAprobacion['nivel_aprobacion'] != 1){ 
+
+                          if ($idSolicitud and $guardar == true ){
+                            return $todoBien;
+                          }
+                        
+                      
+                      }else{
+
+
+                            $actualizarDesincorporacion = self::actualizarPlaca($conn,$conexion, $model);
+
+                            if ($idSolicitud and $guardar and $actualizarDesincorporacion == true ){
+                            return $todoBien;
+
+                            }
+                        }
+
+              }else{
+                $todoBien = false;
+                break;
               }
 
-              if ($buscar == true){
+             }
+              
 
-                  $guardar = self::guardarRegistroCambioPlaca($conn,$conexion, $model, $idSolicitud);
-
-                  if ($nivelAprobacion['nivel_aprobacion'] != 1){ 
-
-                    //die('no es de aprobacion directa');
-
-                  if ($buscar and $guardar == true ){
-                    //die('actualizo y guardo');
+             
+                    if ($todoBien == true){
 
                     $transaccion->commit();
                     $conn->close();
-
+                    
                       $enviarNumeroSolicitud = new EnviarEmailSolicitud;
 
                       $login = yii::$app->user->identity->login;
 
-                      $solicitud = 'Cambio de placa';
+                      $solicitud = 'Desincorporacion de Vehiculo';
 
                       $enviarNumeroSolicitud->enviarEmail($login,$solicitud, $idSolicitud);
 
@@ -445,62 +495,36 @@ class DesincorporacionVehiculoController extends Controller
                             return true;
 
 
+                        }else{
+                          return false;
                         }
-                  }else{
 
-                      $transaccion->rollback();
+                    }else{
+
+                       $transaccion->rollback();
                       $conn->close();
                       return false;
-                  }
-                  
-                  }else{
-                    //die('es de aprobacion directa');
+                    }
+                    
 
-                      $actualizarPlaca = self::actualizarPlaca($conn,$conexion, $model);
+                   
 
-                          if ($buscar and $guardar and $actualizarPlaca == true ){
-                           // die('los tres son verdad');
+                      
+                 
 
-                          $transaccion->commit();
-                          $conn->close();
+                      
 
-                          $enviarNumeroSolicitud = new EnviarEmailSolicitud;
+                          
+                         
+          
 
-                         $login = yii::$app->user->identity->login;
-
-                         $solicitud = 'Cambio de Placa';
-
-                         $enviarNumeroSolicitud->enviarEmail($login,$solicitud, $idSolicitud);
-
-
-                             if($enviarNumeroSolicitud == true){
-
-                                 return true;
-
-
-                             }
-                             }else{
-
-                          $transaccion->rollback();
-                          $conn->close();
-                          return false;
-
-                             }
-
-
-
-                  }
-
-          }
-
-    }
-    }
-    
+        }
  
               
             
-}
-    
+    }
+
+}  
 
 
 

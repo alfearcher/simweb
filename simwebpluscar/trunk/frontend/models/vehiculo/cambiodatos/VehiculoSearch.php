@@ -129,6 +129,7 @@ class VehiculoSearch extends BusquedaVehiculos
                                             ->all();
 
                 if ($buscarVehiculo == true){
+                    
                     return $buscarVehiculo;
                 }
     }
