@@ -53,6 +53,7 @@ return [
 	'400' => [Yii::t('backend', 'Register was inactivated'), 'success', 'fa fa-check-circle-o'],
 	'401' => [Yii::t('backend', 'Security Answers not Created'), 'warning', 'fa fa-exclamation-triangle'],
 	'402' => [Yii::t('backend', 'We have sent you an email with your user and Password'), 'success', 'fa fa-exclamation-triangle'],
+	'403' => [Yii::t('backend', 'You already have an open request for this '), 'success', 'fa fa-exclamation-triangle'],
 ]
 
 
