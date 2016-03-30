@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveField;
 
+use commom\models\desincorporacion\CausasDesincorporacion;
 use backend\models\inmueble\ParametrosNivelesCatastro;
 use backend\models\inmueble\Estados;
 use backend\models\inmueble\Municipios;
@@ -54,12 +55,21 @@ $this->title = Yii::t('frontend', 'Property Update');
                         </div> 
 
                         <div class="col-sm-4">
-                            <?= $form->field($datos, 'direccion')->textInput(
-                                                                    [
-                                                                    'readOnly'=>true,
-                                                                    'id'=> 'direccion',
-                                                                    ])->label(false);
-                            ?>
+                            <?php
+                                $modelParametros = CausasDesincorporacion::find()->asArray()->all();                                         
+                                $listaParametros = ArrayHelper::map($modelParametros,'causa_desincorporacion','descripcion'); 
+                                //echo'<pre>'; var_dump($listaParametros); echo '</pre>'; die(); ?> 
+                            <?= $form->field($model, 'nivela')->dropDownList($listaParametros, [ 
+                                                                                                            'id'=> 'parametro', 
+                                                                                                            'prompt' => Yii::t('backend', 'Select'),
+                                                                                                            'style' => 'width:80px;',
+                                                                                                           /*'onchange' =>
+                                                                                                                '$.post( "' . Yii::$app->urlManager
+                                                                                                                                       ->createUrl('parroquias/lists') . '&municipio=' . '" + $(this).val(), function( data ) {
+                                                                                                                                                                                                            $( "select#parroquias" ).html( data );
+                                                                                                                                                                                                            });' 
+                                                                                                           */ ],['style' => 'width:80px;'])->label(false);
+                                                                                                          ?>
                     
                         </div>   
                     </div>  
