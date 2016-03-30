@@ -59,7 +59,7 @@ $this->title = Yii::t('frontend', 'Property Update');
                                 $modelParametros = CausasDesincorporacion::find()->asArray()->all();                                         
                                 $listaParametros = ArrayHelper::map($modelParametros,'causa_desincorporacion','descripcion'); 
                                 //echo'<pre>'; var_dump($listaParametros); echo '</pre>'; die(); ?> 
-                            <?= $form->field($model, 'nivela')->dropDownList($listaParametros, [ 
+                            <?= $form->field($model, 'causa')->dropDownList($listaParametros, [ 
                                                                                                             'id'=> 'parametro', 
                                                                                                             'prompt' => Yii::t('backend', 'Select'),
                                                                                                             'style' => 'width:80px;',
