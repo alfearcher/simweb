@@ -74,7 +74,7 @@ $this->title = Yii::t('frontend', 'Property Update');
                         
 
                         
-                            <div class="col-sm-3"> 
+                            <div class="col-sm-5"> 
                             <?php
                                 $modelParametros = CausasDesincorporaciones::find()->asArray()->all();                                         
                                 $listaParametros = ArrayHelper::map($modelParametros,'causa_desincorporacion','descripcion'); 
@@ -82,7 +82,7 @@ $this->title = Yii::t('frontend', 'Property Update');
                             <?= $form->field($model, 'causa')->dropDownList($listaParametros, [ 
                                                                                                             'id'=> 'parametro', 
                                                                                                             'prompt' => Yii::t('backend', 'Select'),
-                                                                                                            'style' => 'width:80px;',
+                                                                                                            'style' => 'width:100px;',
                                                                                                            /*'onchange' =>
                                                                                                                 '$.post( "' . Yii::$app->urlManager
                                                                                                                                        ->createUrl('parroquias/lists') . '&municipio=' . '" + $(this).val(), function( data ) {
