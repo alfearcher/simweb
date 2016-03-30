@@ -55,6 +55,26 @@ $this->title = Yii::t('frontend', 'Property Update');
                         </div> 
 
                         <div class="col-sm-4">
+                            <?= $form->field($datos, 'direccion')->textInput(
+                                                                    [
+                                                                    'readOnly'=>true,
+                                                                    'id'=> 'direccion',
+                                                                    ])->label(false);
+                            ?>
+                    
+                        </div>   
+                    </div>  
+
+
+                   <div class="row">
+                        
+                            <div class="col-sm-2"> 
+                            <?= Yii::t('backend', 'Divestiture Causes') ?>
+                            </div> 
+                        
+
+                        
+                            <div class="col-sm-3"> 
                             <?php
                                 $modelParametros = CausasDesincorporaciones::find()->asArray()->all();                                         
                                 $listaParametros = ArrayHelper::map($modelParametros,'causa_desincorporacion','descripcion'); 
@@ -70,23 +90,9 @@ $this->title = Yii::t('frontend', 'Property Update');
                                                                                                                                                                                                             });' 
                                                                                                            */ ],['style' => 'width:80px;'])->label(false);
                                                                                                           ?>
-                    
-                        </div>   
-                    </div>  
-
-
-                   <div class="row">
-                        
-                            <div class="col-sm-2"> 
-                            <?= Yii::t('backend', 'Divestiture Causes') ?>
                             </div> 
                         
-
-                        
-                            <div class="col-sm-3"> 
-                            <?= $form->field($model, 'causa')->textarea(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?>
-                            </div> 
-                        
+                                                  
                    </div>
 
 
