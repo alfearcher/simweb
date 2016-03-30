@@ -82,7 +82,7 @@ $this->title = Yii::t('frontend', 'Property Update');
                             <?= $form->field($model, 'causa')->dropDownList($listaParametros, [ 
                                                                                                             'id'=> 'parametro', 
                                                                                                             'prompt' => Yii::t('backend', 'Select'),
-                                                                                                            'style' => 'width:300px;',
+                                                                                                            'style' => 'width:400px;',
                                                                                                            /*'onchange' =>
                                                                                                                 '$.post( "' . Yii::$app->urlManager
                                                                                                                                        ->createUrl('parroquias/lists') . '&municipio=' . '" + $(this).val(), function( data ) {
@@ -105,7 +105,7 @@ $this->title = Yii::t('frontend', 'Property Update');
 
                         
                             <div class="col-sm-3">
-                            <?= $form->field($model, 'observacion')->textarea(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?>
+                            <?= $form->field($model, 'observacion')->textarea(['maxlength' => true,'style' => 'width:400px;'])->label(false) ?>
                             </div> 
 
                    

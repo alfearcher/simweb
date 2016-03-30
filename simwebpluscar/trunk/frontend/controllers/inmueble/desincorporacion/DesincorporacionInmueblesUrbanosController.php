@@ -110,7 +110,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
         }  else {
                     echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
         }
-    }
+    } 
 
     /**
      * Displays a single Inmuebles model.
@@ -150,7 +150,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
          //Creamos la instancia con el model de validación
          $model = new DesincorporacionInmueblesForm();
 
-         $datos = $_SESSION['datos'];
+         $datos = $_SESSION['datos']; 
     
          //Mostrará un mensaje en la vista cuando el usuario se haya registrado
          $msg = null; 
