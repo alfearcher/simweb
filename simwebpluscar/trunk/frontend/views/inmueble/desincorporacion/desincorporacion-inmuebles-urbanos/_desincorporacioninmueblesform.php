@@ -88,7 +88,7 @@ $this->title = Yii::t('frontend', 'Property Update');
                                                                                                                                        ->createUrl('parroquias/lists') . '&municipio=' . '" + $(this).val(), function( data ) {
                                                                                                                                                                                                             $( "select#parroquias" ).html( data );
                                                                                                                                                                                                             });' 
-                                                                                                           */ ],['style' => 'width:80px;'])->label(false);
+                                                                                                           */ ])->label(false);
                                                                                                           ?>
                             </div> 
                         
