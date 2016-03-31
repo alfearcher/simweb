@@ -272,7 +272,7 @@ class DesincorporacionVehiculoController extends Controller
       
 
       $buscar = new ParametroSolicitud($_SESSION['id']);
-
+      //die(var_dump($buscar));
       
 
         $buscar->getParametroSolicitud(["tipo_solicitud", "impuesto", "nivel_aprobacion"]);
@@ -293,6 +293,8 @@ class DesincorporacionVehiculoController extends Controller
 
 
       $arregloDatos['impuesto'] = $resultado['impuesto'];
+
+      //die($arregloDatos['impuesto']);
      
       $arregloDatos['id_config_solicitud'] = $_SESSION['id'];
 
@@ -338,9 +340,15 @@ class DesincorporacionVehiculoController extends Controller
     {
         $buscar = new ParametroSolicitud($_SESSION['id']);
 
+
+
         $buscar->getParametroSolicitud(["impuesto"]);
 
         $resultado = $buscar->getParametroSolicitud(["impuesto"]);
+
+        $impuesto = $resultado['impuesto']; 
+
+        //die($impuesto);
 
       
 
@@ -363,7 +371,9 @@ class DesincorporacionVehiculoController extends Controller
 
       $arregloDatos['id_impuesto'] = $idVehiculo;
 
-      $arregloDatos['impuesto'] = $resultado['impuesto'];
+      $arregloDatos['impuesto'] = $impuesto;
+
+      //die($arregloDatos['impuesto']);
 
       $arregloDatos['causa_desincorporacion'] = $model->motivos;
 
