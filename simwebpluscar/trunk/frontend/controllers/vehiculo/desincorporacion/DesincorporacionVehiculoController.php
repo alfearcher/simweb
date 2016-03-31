@@ -124,6 +124,7 @@ class DesincorporacionVehiculoController extends Controller
       $idVehiculo = yii::$app->request->post('chk-desincorporar-vehiculo');
       //die(var_dump($idVehiculo));
       $_SESSION['idVehiculo'] = $idVehiculo;
+//die(var_dump($_SESSION['idVehiculo']));
   
       $validacion = new DesincorporacionVehiculoForm();
 
@@ -157,6 +158,8 @@ class DesincorporacionVehiculoController extends Controller
      */
     public function actionDesincorporarVehiculo()
     {
+
+
         $todoBien = true;
       
         if(isset(yii::$app->user->identity->id_contribuyente)){
@@ -182,14 +185,15 @@ class DesincorporacionVehiculoController extends Controller
 
                if ($model->validate()){
 
-                  //die($datosVehiculo[0]->id_vehiculo);
-                  //
+                  //die(var_dump($datosVehiculo));
+                  
                   foreach($datosVehiculo as $key => $value) {
                      
                      $value['id_vehiculo'];
-
+                     //die($value['id_vehiculo']);
                      $verificarSolicitud = self::verificarSolicitud($value['id_vehiculo'] , $_SESSION['id']);
                       if($verificarSolicitud == true){
+                        //die(var_dump($value['id_vehiculo']));
                         $todoBien = false;
                       
                        }
@@ -197,7 +201,8 @@ class DesincorporacionVehiculoController extends Controller
 
 
                     if($todoBien){
-                        $buscarActualizar = self::beginSave("buscarActualizar", $model, $datosVehiculo);
+
+                      $buscarActualizar = self::beginSave("buscarActualizar", $model, $datosVehiculo);
 
                     if($buscarActualizar == true){
                      
@@ -213,19 +218,7 @@ class DesincorporacionVehiculoController extends Controller
                        return MensajeController::actionMensaje(403);
 
                     }
-
-
-                   
-
-                 
-
-                        
-
-
-
-                  
-                  
-                 }
+                }
                 
             
             }
@@ -274,8 +267,9 @@ class DesincorporacionVehiculoController extends Controller
 
 
 
-    public function buscarNumeroSolicitud($conn, $conexion, $model)
+    public function buscarNumeroSolicitud($conn, $conexion, $model, $idVehiculo)
     {
+      
 
       $buscar = new ParametroSolicitud($_SESSION['id']);
 
@@ -285,7 +279,7 @@ class DesincorporacionVehiculoController extends Controller
 
         $resultado = $buscar->getParametroSolicitud(["tipo_solicitud", "impuesto", "nivel_aprobacion"]);
 
-      $datosVehiculo = $_SESSION['datosVehiculo'];
+      
       $datos = yii::$app->user->identity;
       $tabla = 'solicitudes_contribuyente';
       $arregloDatos = [];
@@ -296,13 +290,15 @@ class DesincorporacionVehiculoController extends Controller
           $arregloDatos[$value] = 0;
       }
 
+
+
       $arregloDatos['impuesto'] = $resultado['impuesto'];
      
       $arregloDatos['id_config_solicitud'] = $_SESSION['id'];
 
-      $arregloDatos['id_impuesto'] = $datosVehiculo[0]->id_vehiculo;
+      $arregloDatos['id_impuesto'] = $idVehiculo;
 
-     // die( $arregloDatos['id_impuesto']);
+      
 
       $arregloDatos['tipo_solicitud'] = $resultado['tipo_solicitud'];
 
@@ -338,12 +334,18 @@ class DesincorporacionVehiculoController extends Controller
 
     }
 
-    public function guardarRegistroDesincorporacion($conn, $conexion, $model , $idSolicitud)
+    public function guardarRegistroDesincorporacion($conn, $conexion, $model , $idSolicitud, $idVehiculo)
     {
-      //die($idSolicitud);
+        $buscar = new ParametroSolicitud($_SESSION['id']);
+
+        $buscar->getParametroSolicitud(["impuesto"]);
+
+        $resultado = $buscar->getParametroSolicitud(["impuesto"]);
+
+      
 
       $numeroSolicitud = $idSolicitud;
-
+      $idContribuyente = yii::$app->user->identity->id_contribuyente;
       $resultado = false;
       $datos = yii::$app->user->identity;
       $tabla = 'sl_desincorporaciones';
@@ -357,11 +359,22 @@ class DesincorporacionVehiculoController extends Controller
 
       $arregloDatos['nro_solicitud'] = $numeroSolicitud;
 
-    
-      
+      $arregloDatos['id_contribuyente'] = $idContribuyente;
+
+      $arregloDatos['id_impuesto'] = $idVehiculo;
+
+      $arregloDatos['impuesto'] = $resultado['impuesto'];
+
+      $arregloDatos['causa_desincorporacion'] = $model->motivos;
+
+      $arregloDatos['observacion'] = $model->otrosMotivos;
+
+      $arregloDatos['fecha_hora'] = date('Y-m-d h:m:i');
+
+      $arregloDatos['inactivo'] = 0;
 
 
-    if ($conexion->guardarRegistro($conn, $tabla, $arregloDatos )){
+          if ($conexion->guardarRegistro($conn, $tabla, $arregloDatos )){
 
 
 
@@ -389,7 +402,7 @@ class DesincorporacionVehiculoController extends Controller
 
       
 
-      $arregloDatos['placa'] = strtoupper($model->placa);
+      $arregloDatos['status_vehiculo'] = 1;
 
       $conexion = new ConexionController();
 
@@ -442,33 +455,35 @@ class DesincorporacionVehiculoController extends Controller
               foreach($datosVehiculo as $key => $value){
 
                 $idSolicitud = 0;
-                $idSolicitud = self::buscarNumeroSolicitud($conn, $conexion, $model);
+                $idSolicitud = self::buscarNumeroSolicitud($conn, $conexion, $model, $value['id_vehiculo']);
 
 
                  if ($idSolicitud > 0){
+                 // die($idSolicitud);
 
-                    $guardar = self::guardarRegistroDesincorporacion($conn,$conexion, $model, $idSolicitud);
+                    $guardar = self::guardarRegistroDesincorporacion($conn,$conexion, $model, $idSolicitud , $value['id_vehiculo']);
 
                       if ($nivelAprobacion['nivel_aprobacion'] != 1){ 
 
                           if ($idSolicitud and $guardar == true ){
-                            return $todoBien;
+                            //die('guardo en los dos');
+                            $todoBien == true;
                           }
                         
                       
                       }else{
 
 
-                            $actualizarDesincorporacion = self::actualizarPlaca($conn,$conexion, $model);
+                            $actualizarDesincorporacion = self::actualizarDesincorporacion($conn,$conexion, $model);
 
                             if ($idSolicitud and $guardar and $actualizarDesincorporacion == true ){
-                            return $todoBien;
+                              $todoBien == true;
 
                             }
                         }
 
               }else{
-                $todoBien = false;
+                $todoBien == false;
                 break;
               }
 
