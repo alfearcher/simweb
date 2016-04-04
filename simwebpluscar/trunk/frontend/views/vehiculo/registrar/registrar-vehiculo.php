@@ -305,26 +305,18 @@ $listaAño2  = ArrayHelper::map($listaFecha2, 'id' , 'campo');
                             ?>
                         </div>
                     </div>
-                    
+                     </div>
 
 <!-- FIN DE FECHA INICIO <-->
 
-<!-- NRO. PUESTO -->
+
 
                    
-                    <div class="col-sm-2" style="margin-left: -20px;">
-                        <?= $form->field($model, 'nro_calcomania')->input(
-                                                                [
-                                                                
-                                                                'id'=> 'nro_calcomania',
-                                                                ]);
-                    ?>
-                
-                    </div>
-                    </div>
+                 
+                   
                     
 
-<!-- FIN NRO. PUESTO <-->
+
 
 <!-- PESO -->
 

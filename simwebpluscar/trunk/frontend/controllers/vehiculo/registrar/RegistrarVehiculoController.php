@@ -275,7 +275,7 @@ class RegistrarVehiculoController extends Controller
 
       $arregloDatos['serial_carroceria'] = $model->serial_carroceria;
 
-      $arregloDatos['nro_calcomania'] = $model->nro_calcomania;
+     
 
       $arregloDatos['estatus_funcionario'] = 0;
 
@@ -367,7 +367,7 @@ class RegistrarVehiculoController extends Controller
 
       $arregloDatos['serial_carroceria'] = $model->serial_carroceria;
 
-      $arregloDatos['nro_calcomania'] = $model->nro_calcomania;
+     
 
   	 // $arregloDatos['fecha_hora'] = date('Y-m-d h:m:i');
 

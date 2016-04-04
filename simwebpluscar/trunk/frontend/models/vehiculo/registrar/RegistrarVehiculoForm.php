@@ -62,6 +62,25 @@ class RegistrarVehiculoForm extends RegistrarVehiculo
 {
      
   
+public $placa;
+public $marca;
+public $modelo;
+public $ano_compra;
+public $ano_vehiculo;
+public $clase_vehiculo;
+public $tipo_vehiculo;
+public $uso_vehiculo;
+public $color;
+public $no_ejes;
+public $nro_puestos;
+public $fecha_inicio;
+public $peso;
+public $nro_cilindros;
+public $precio_inicial;
+public $capacidad;
+public $medida_cap;
+public $serial_carroceria;
+public $serial_motor;
 
     public function rules()
     {   //validaciones requeridas para el formulario de registro de usuarios  
@@ -69,18 +88,22 @@ class RegistrarVehiculoForm extends RegistrarVehiculo
 
         return [
               [['placa', 'marca', 'modelo', 'ano_compra' ,'ano_vehiculo', 'clase_vehiculo', 'tipo_vehiculo',
-               'uso_vehiculo', 'color', 'no_ejes', 'nro_puestos', 'fecha_inicio', 'nro_calcomania', 
+               'uso_vehiculo', 'color', 'no_ejes', 'nro_puestos', 'fecha_inicio', 
                'peso', 'nro_cilindros', 'precio_inicial', 'capacidad',  'medida_cap',
-                'serial_carroceria', 'serial_motor'], 'required' ],
-
-                ['placa', 'buscarPlaca'],
-
+              'serial_carroceria', 'serial_motor'],'required'],
+             
+            ['placa', 'buscarPlaca'],
+            [['placa'], 'match' , 'pattern' => "/^[a-zA-Z0-9]+$/", 'message' => Yii::t('frontend', '{attribute} must be an alphanumeric')],
+            [['serial_carroceria'], 'match' , 'pattern' => "/^[a-zA-Z0-9]+$/", 'message' => Yii::t('frontend', '{attribute} must be an alphanumeric')],
+            [['serial_motor'], 'match' , 'pattern' => "/^[a-zA-Z0-9]+$/", 'message' => Yii::t('frontend', '{attribute} must be an alphanumeric')],
             [['color'], 'match' , 'pattern' => "/[a-zA-Z]+/", 'message' => Yii::t('frontend', 'Color must have only letters')],
             
-            [['no_ejes', 'nro_puestos', 'nro_calcomania' ,'peso','nro_cilindros', 'capacidad', 'exceso_cap' ,
+            [['no_ejes', 'nro_puestos' ,'peso','nro_cilindros', 'capacidad', 'exceso_cap' ,
             ],'integer','message' => yii::t('frontend', '{attribute} must be an integer') ] ,    
 
-            ['placa' , 'string' , 'max' => 12 ],
+            ['placa', 'string' , 'min' => 7, 'max' => 7],
+            ['serial_motor', 'string' , 'min' => 17, 'max' => 17],
+            ['serial_carroceria', 'string' , 'min' => 17, 'max' => 17],
             ['marca' , 'string' , 'max' => 25 ],
             ['modelo' , 'string' , 'max' => 25 ],
             ['color' , 'string' , 'max' => 25 ],
@@ -117,7 +140,7 @@ class RegistrarVehiculoForm extends RegistrarVehiculo
                 'no_ejes' => Yii::t('frontend', 'Nro. Ejes'),   
                 'nro_puestos' => Yii::t('frontend', 'Nro. Puesto'), 
                 'fecha_inicio' => Yii::t('frontend', 'Fecha Inicio'), 
-                'nro_calcomania' => Yii::t('frontend', 'Nro. Calcomania'), 
+               
                 'peso' => Yii::t('frontend', 'Peso (kg)'), 
                 'nro_cilindros' => Yii::t('frontend', 'Nro. Cilindros'), 
                 'precio_inicial' => Yii::t('frontend', 'Precio Inicial'), 
