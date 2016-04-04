@@ -75,7 +75,8 @@ class CambioPlacaVehiculoForm extends Model
         return [
               [['placa', 'placavieja'],'required'],
              ['placa', 'buscarPlaca'],
-            
+             [['placa'], 'match' , 'pattern' => "/^[a-zA-Z0-9]+$/", 'message' => Yii::t('frontend', '{attribute} must be an alphanumeric')],
+              ['placa', 'string' , 'min' => 7, 'max' => 7],
 
 
 
