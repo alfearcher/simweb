@@ -91,14 +91,20 @@
 		/***/
 		public function getDeclaracionContribuyente()
 		{
-			$declaracion = Declaracion::setLapsoPeriodo($this->_añoImpositivo, $this->_periodo);
+			Declaracion::setLapsoPeriodo($this->_añoImpositivo, $this->_periodo);
 			return Declaracion::getDeclaracionContribuyente();
 		}
 
 
 
 
-		/***/
+		/**
+		 * Metodo donde comienza el proceso.
+		 * @param  [type] $año             [description]
+		 * @param  [type] $periodo         [description]
+		 * @param  [type] $tipoDeclaracion [description]
+		 * @return [type]                  [description]
+		 */
 		public function iniciarCalcularLiquidacion($año, $periodo, $tipoDeclaracion)
 		{
 			$this->_añoImpositivo = $año;

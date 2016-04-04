@@ -168,11 +168,21 @@
 
 
 
-		/***/
-		private function getCalculoPorUnidad()
-		{
 
+		/***/
+		private function getCalculoPorUnidad($descripcionDeclaracion)
+		{
+			// Monto que esta declarado segun el tipo de declaracion.
+			$montoDeclaracion = $this->_rubroDeclarado[$descripcionDeclaracion];
+
+			$alicuota = $this->_rubro['alicuota'];
+
+			// Calculo del impuesto, monto declarado por la alicuota respectiva.
+			$calculoDeclarado = $montoDeclaracion * $alicuota;
+
+			$this->_calculo = $calculoDeclarado;
 		}
+
 
 
 
