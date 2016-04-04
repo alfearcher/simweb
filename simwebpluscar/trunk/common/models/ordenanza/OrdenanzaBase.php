@@ -127,9 +127,14 @@
 					// tomar al año ordenanza superior más próximo al año impositivo del periodo
 					// a considerara.
 
-					$result = self::buscarAnoOrdenanzaMayoresAnoImpositivo($anoImpositivo, $impuesto);
+					$result = self::buscarAnoOrdenanzaMenoresAnoImpositivo($anoImpositivo, $impuesto);
 					if ( $result != false ) {
 						$anoOrdenanza = $result['ano_impositivo'];
+					} else {
+						$result = self::buscarAnoOrdenanzaMayoresAnoImpositivo($anoImpositivo, $impuesto);
+						if ( $result != false ) {
+							$anoOrdenanza = $result['ano_impositivo'];
+						}
 					}
 				}
 			}
@@ -171,6 +176,28 @@
 
 
 		/***/
+		private static function buscarAnoOrdenanzaMenoresAnoImpositivo($anoImpositivo, $impuesto)
+		{
+			$query = New Query();
+
+			// return del tipo row['parametro']
+			$row = $query->select('ordenanzas.id_ordenanza, ordenanzas.ano_impositivo, ordenanzas_detalles.impuesto')
+						 ->from('ordenanzas')
+					     ->join('INNER JOIN', 'ordenanzas_detalles', 'ordenanzas.id_ordenanza = ordenanzas_detalles.id_ordenanza')
+					     ->where('ordenanzas.ano_impositivo < :ano_impositivo', [':ano_impositivo' => $anoImpositivo])
+					     ->andWhere('ordenanzas_detalles.impuesto = :impuesto', [':impuesto' => $impuesto])
+					     ->andWhere('ordenanzas.status_ordenanza = :status_ordenanza', [':status_ordenanza' => 0])
+					     ->andWhere('ordenanzas_detalles.status_detalle=:status_detalle', [':status_detalle' => 0])
+					     ->orderBy('ano_impositivo DESC')
+					     ->one();
+
+			return $row;
+		}
+
+
+
+
+		/***/
 		private static function buscarAnoOrdenanzaMayoresAnoImpositivo($anoImpositivo, $impuesto)
 		{
 			$query = New Query();
@@ -188,6 +215,7 @@
 
 			return $row;
 		}
+
 
 
 
@@ -279,7 +307,7 @@
 				$anoOrdenanza = 0;
 				// Se determina primero el año de la ordenanza.
 				$anoOrdenanza = self::getAnoOrdenanzaSegunAnoImpositivoImpuesto($anoImpositivo, $impuesto);
-				if ( $anoOrdenanza > 0 ) {
+				if ( count($anoOrdenanza) > 0 ) {
 
 					// Teniendo el año de creacion de la ordenanza ahora se identifica el id de la misma.
 					// Aqui se obtiene un array con los valores del id ordenanza, ano_impositivo de creacion
@@ -287,6 +315,21 @@
 					$ordenanza = self::getIdOrdenanza($anoOrdenanza, $impuesto);
 				}
 			}
+			// Returna una arreglo multidimimensional.
+			// Ejemplo:
+			/**
+			 	array(1) {
+				  [0]=>
+				  array(3) {
+				    ["id_ordenanza"]=>
+				    string(1) "2"
+				    ["ano_impositivo"]=>
+				    string(4) "2006"
+				    ["impuesto"]=>
+				    string(1) "1"
+				  }
+				}
+			 */
 			return $ordenanza;
 		}
 
@@ -302,7 +345,7 @@
 
 				// Aqui reciben datos de la ordenanza, id, año de creacione impuesto.
 				$ordenanza = self::getIdOrdenanzaSegunAnoImpositivo($anoImpositivo, $impuesto);
-				if ( $ordenanza != false ) {
+				if ( count($ordenanza) > 0 ) {
 
 					$idOrdenanza = $ordenanza[0]['id_ordenanza'];
 
@@ -323,6 +366,19 @@
 				}
 			}
 
+			/**
+			 * Returna un arreglo. Ejemplo:
+				array(4) {
+	  				["exigibilidad"]=>
+					string(2) "12"
+					["lapso_declaracion"]=>
+					string(9) "Mensuales"
+					["unidad"]=>
+					string(3) "Mes"
+					["observaciones"]=>
+					string(18) "Doce pagos al año"
+				}
+			 */
 			return $exigibilidadLiquidacion;
 		}
 
@@ -503,6 +559,44 @@
 				}
 			}
 			return $periodo;
+		}
+
+
+
+
+
+		/**
+		 * Metodo que permite determinar el valor del paramatero añoDesde
+		 * (año desde que se iniciara el calculo de la liquidacion). Utiliza
+		 * la configuracion de la ordenanza del impuesto.
+		 * @param $añoImpositivo, Variable que representa un año especifico.
+		 * @param $impuesto, Identificador dle impuesto.
+		 * @return Integer, Retorna un año de cuatro digito, sino encuentra
+		 * el año retorna cero (0).
+		 */
+		public function determinarAnoDesde($añoImpositivo, $impuesto)
+		{
+			$añoDesde = 0;
+			$añoInicio = 0;
+			$añoActual = date('Y');
+			$a = $añoActual - 7;		// el 7 debe ser un valor parametrizable.
+			if ( is_integer($añoImpositivo) ) {
+				$añoInicio = $añoImpositivo;
+				if ( $añoInicio > 0 ) {
+					$añoOrdenanza = self::getAnoOrdenanzaSegunAnoImpositivoImpuesto($añoInicio, $impuesto);
+					if ( $añoOrdenanza > 0 ) {
+						if ( $añoInicio >= $añoOrdenanza ) {
+							$añoDesde = $añoInicio;
+						} elseif ( $añoInicio < $añoOrdenanza ) {
+							$añoDesde = $añoOrdenanza;
+						}
+						if ( $añoDesde <= $a ) {
+							$añoDesde = $a;
+						}
+					}
+				}
+			}
+			return $añoDesde;
 		}
 
 
