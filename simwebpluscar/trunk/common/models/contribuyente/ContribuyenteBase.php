@@ -380,7 +380,7 @@
 		{
 			$datos = self::getDatosContribuyenteSegunID($idContribuyente);
 			if ( $datos != false ) {
-				return isset($datos['fecha_inicio']) ? $datos['fecha_inicio'] : null;
+				return isset($datos[0]['fecha_inicio']) ? $datos[0]['fecha_inicio'] : null;
 			}
 			return null;
 		}
