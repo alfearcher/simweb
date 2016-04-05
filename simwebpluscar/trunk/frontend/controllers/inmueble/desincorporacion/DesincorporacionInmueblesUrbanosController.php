@@ -129,7 +129,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
           $_SESSION['idInmueble'] = $idInmueble;
 
           //$idInmueble = yii::$app->request->post('id');
-          $validacion = new DesincorporacionInmuebleForm();
+          $validacion = new DesincorporacionInmueblesForm();
 
           if ($validacion->validarCheck(yii::$app->request->post('chk-desincorporar-inmueble')) == true){
 
