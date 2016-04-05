@@ -71,7 +71,7 @@ $this->title = Yii::t('frontend', 'Property Update');
                         
                             <div class="col-sm-2"> 
                             <?= Yii::t('backend', 'Divestiture Causes') ?>
-                            </div> 
+                            </div>  
                         
 
                         
