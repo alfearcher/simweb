@@ -204,7 +204,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                  //condicionales     
                   
                 if (!\Yii::$app->user->isGuest){                                      
-die('llegue al proceso que controla la desincorporacion')
+die('llegue al proceso que controla la desincorporacion');
 
                      $guardo = self::GuardarCambios($model, $datos);
 
