@@ -100,14 +100,19 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
     public function actionIndex($errorCheck = "")
     {
         if ( isset( $_SESSION['idContribuyente'] ) ) {
-        $searchModel = new InmueblesSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'errorCheck' => $errorCheck,
-        ]); 
+            $idConfig = yii::$app->request->get('id');
+        
+            $_SESSION['id'] = $idConfig;
+
+            $searchModel = new InmueblesSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'errorCheck' => $errorCheck,
+            ]); 
         }  else {
                     echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
         }
@@ -190,6 +195,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
          $msg = null; 
          $url = null; 
          $tipoError = null; 
+         $todoBien = true;
     
          //Validación mediante ajax
          if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax){ 
@@ -211,33 +217,40 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                      
                           $value['id_impuesto'];
                           //die($value['id_vehiculo']);
-                          $verificarSolicitud = self::verificarSolicitud($value['id_vehiculo'] , $_SESSION['id']);
+                          $verificarSolicitud = self::verificarSolicitud($value['id_impuesto'] , $_SESSION['id']);
                           if($verificarSolicitud == true){
                               //die(var_dump($value['id_vehiculo']));
                               $todoBien = false;
                           
                            }
-                  }
+                     }
                      $guardo = self::GuardarCambios($model, $datos);
 
-                     if($guardo == true){ 
+                     if($todoBien){
 
-                          $envio = self::EnviarCorreo($guardo);
+                             if($guardo == true){ 
 
-                          if($envio == true){ 
+                                  $envio = self::EnviarCorreo($guardo);
 
-                              return MensajeController::actionMensaje(100); 
+                                  if($envio == true){ 
 
-                          } else { 
-                            
-                              return MensajeController::actionMensaje(920);
+                                      return MensajeController::actionMensaje(100); 
 
-                          } 
+                                  } else { 
+                                    
+                                      return MensajeController::actionMensaje(920);
 
-                      } else {
+                                  } 
+
+                              } else {
+
+                                    return MensajeController::actionMensaje(920);
+                              } 
+
+                     } else {
 
                             return MensajeController::actionMensaje(920);
-                      } 
+                     } 
 
                    }else{ 
 
@@ -343,6 +356,23 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
           } 
                        
      }
+
+     public function verificarSolicitud($idInmueble,$idConfig)
+    {
+      $buscar = SolicitudesContribuyente::find()
+                                        ->where([ 
+                                          'id_impuesto' => $idInmueble,
+                                          'id_config_solicitud' => $idConfig,
+                                          'inactivo' => 0,
+                                        ])
+                                      ->all();
+
+            if($buscar == true){
+             return true;
+            }else{
+             return false;
+            }
+    }
 
     /**
      * [DatosConfiguracionTiposSolicitudes description] metodo que busca el tipo de solicitud en 
