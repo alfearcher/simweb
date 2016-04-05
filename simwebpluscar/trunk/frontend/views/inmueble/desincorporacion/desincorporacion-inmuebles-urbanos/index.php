@@ -83,7 +83,7 @@ $this->title = Yii::t('backend', 'Property Urban');
     ]); ?>
 
     <p>
-        <?= Html::summit(Yii::t('frontend', 'Divesting Urban Property'),  ['class' => 'btn btn-success']) ?> 
+        <?= Html::submit(Yii::t('frontend', 'Divesting Urban Property'),  ['class' => 'btn btn-success']) ?> 
         <?= Html::a(Yii::t('frontend', 'Back'), ['/site/menu-vertical'], ['class' => 'btn btn-danger']) ?>
 
 
