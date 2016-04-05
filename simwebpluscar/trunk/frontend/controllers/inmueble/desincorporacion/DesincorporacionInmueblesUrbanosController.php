@@ -206,7 +206,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                   
                 if (!\Yii::$app->user->isGuest){                                      
 
-
+die('llegue al proceso que controla la desincorporacion');  
                      $guardo = self::GuardarCambios($model, $datos);
 
                      if($guardo == true){ 
