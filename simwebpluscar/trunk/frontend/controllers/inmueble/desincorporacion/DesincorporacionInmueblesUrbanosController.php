@@ -133,7 +133,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
           if ($validacion->validarCheck(yii::$app->request->post('chk-desincorporar-inmueble')) == true){
 
-          $modelsearch = new InmuebleSearch();
+          $modelsearch = new InmueblesSearch();
           $datos = $modelsearch->busquedaInmueble($idInmueble, $idContribuyente);
 die(var_dump($datos));
           // $datos = InmueblesConsulta::find()->where("id_impuesto=:impuesto", [":impuesto" => $idInmueble])
