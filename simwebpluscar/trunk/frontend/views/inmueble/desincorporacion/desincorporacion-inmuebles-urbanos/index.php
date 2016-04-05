@@ -67,20 +67,18 @@ $this->title = Yii::t('backend', 'Property Urban');
             // 'nivel_catastro',
             // 'unidad_catastro',
 
-            ['class' => 'yii\grid\ActionColumn', 'template' => '{view}', 'buttons' => [
-                                        'view' => function ($url, $model, $key) {
-                                            return Html::submitButton('<div class="item-list" style="color: #337AB7;"><center>'. Icon::show('fa fa-thumbs-up',['class' => 'fa-1x'], Icon::FA) .'</center></div>',
-                                                                        [
-                                                                            'value' => $key,
-                                                                            'name' => 'id',
-                                                                            'title' => Yii::t('frontend', 'View'),
-                                                                            'style' => 'margin: 0 auto; display: block;',
-
-                                                                        ]
-                                                                    );
-                                        },
-                                    ],
-            ],
+                    [
+                        'class' => 'yii\grid\CheckboxColumn',
+                        'name' => 'chk-desincorporar-vehiculo',
+                        'checkboxOptions' => [
+                                'id' => 'id-chk-desincorporar-vehiculo',
+                               
+                                //'onClick' => 'alert("hola " + $(this).val());'
+                                //$(this).is(":checked"), permite determinar si un checkbox esta tildado.
+                        ],
+                        'multiple' => true,
+                    ],
+            
         ],
     ]); ?>
 
@@ -91,3 +89,21 @@ $this->title = Yii::t('backend', 'Property Urban');
 
 </div>
 <?= Html::endForm();?>
+
+
+<?php 
+// ['class' => 'yii\grid\ActionColumn', 'template' => '{view}', 'buttons' => [
+//                                         'view' => function ($url, $model, $key) {
+//                                             return Html::submitButton('<div class="item-list" style="color: #337AB7;"><center>'. Icon::show('fa fa-thumbs-up',['class' => 'fa-1x'], Icon::FA) .'</center></div>',
+//                                                                         [
+//                                                                             'value' => $key,
+//                                                                             'name' => 'id',
+//                                                                             'title' => Yii::t('frontend', 'View'),
+//                                                                             'style' => 'margin: 0 auto; display: block;',
+//
+//                                                                         ]
+//                                                                     );
+//                                         },
+//                                     ],
+//             ],
+?>
