@@ -64,6 +64,7 @@
 		private $_fechaInicio;
 		private $_montoCalculado;
 		private $_montoTotal;
+		private $_periodosLiquidados = [];
 
 
 
@@ -71,6 +72,7 @@
 		public function __construct($id)
 		{
 			$this->_idContribuyente = $id;
+			$this->_periodosLiquidados = null;
 		}
 
 
@@ -81,8 +83,6 @@
 			$this->setTipoDeclaracion("ESTIMADA");
 			$this->configurarLapsoLiquidacionActividadEconomica();
 			$this->configurarCicloLiquidacion();
-			//die(var_dump($r));
-
 		}
 
 
@@ -247,7 +247,7 @@
 				$añoActual = date('Y');
 				if ( $ultimo['ano_impositivo'] < $añoActual ) {
 
-					$exigibilidadLiq = self::getExigibilidadLiquidacion($ultimo['ano_impositivo'])['exigibilidad'];
+					$exigibilidadLiq = self::getExigibilidadLiquidacion($ultimo['ano_impositivo']);
 					if ( $ultimo['trimestre'] == $exigibilidadLiq['exigibilidad'] ) {
 						// Es indicativo que el ultimo periodo liquidado corresponde al ultimo periodo
 						// del año.
@@ -269,7 +269,7 @@
 				} elseif ( $ultimo['ano_impositivo'] == $añoActual ) {
 
 					$año = $ultimo['ano_impositivo'] + 1;
-					$exigibilidadLiq = self::getExigibilidadLiquidacion($año)['exigibilidad'];
+					$exigibilidadLiq = self::getExigibilidadLiquidacion($año);
 
 					if ( $ultimo['trimestre'] == $exigibilidadLiq['exigibilidad'] ) {
 						// No existen periodos por liquidar. Aqui debe finalizar el proceso.
@@ -442,7 +442,7 @@
 					self::liquidarDeclaracion($i, $periodos);
 				}
 			}
-			//return $ciclo;
+			return $ciclo;
 		}
 
 
@@ -454,29 +454,75 @@
 		{
 			$monto = 0;
 			$exigibilidadDeclaracion = self::getExigibilidadDeclaracion($año);
+			$exigibilidadLiq = self::getExigibilidadLiquidacion($año);
 
 			if ( $exigibilidadDeclaracion['exigibilidad'] == 1 ) {
 				$liquidacion = New LiquidacionActividadEconomica($this->_idContribuyente);
 				$liquidacion->iniciarCalcularLiquidacion($año, 1, $this->_tipoDeclaracion);
 				$monto = $liquidacion->getCalculoAnual();
-				die($monto);
-				if ( $monto == 0 ) {
-					// Se debe abortar el proceso por declaracion faltante o parametros en los calculos incompletos
-				} else {
-					$l = $this->getPrimerPeriodoLiquidadoActividadEconomica($this->_idContribuyente);
-					die(var_dump($l));
-					if ( count($detalle) > 0 ) {
+				$monto = number_format($monto, 2);
 
-					} else {
-						// Se debe abortar el proceso por declaracion faltante o parametros en los calculos incompletos
-					}
-				}
+				$this->generarPeriodosLiquidados($monto, $año, $periodos, $exigibilidadLiq, $exigibilidadDeclaracion);
 
 			} elseif ( $exigibilidadDeclaracion['exigibilidad'] > 1 ) {
+
 
 			}
 			return $monto;
 		}
+
+
+
+
+		/***/
+		private function generarPeriodosLiquidados($montoLiquidado, $año, $periodos, $exigibilidadLiq, $exigibilidadDeclaracion)
+		{
+			if ( $montoLiquidado == 0 || $montoLiquidado < 0 ) {
+					// Se debe abortar el proceso por declaracion faltante o parametros en los calculos incompletos.
+					// Renderizar a un vista.
+
+			} elseif ( $montoLiquidado > 0 ) {
+				$divisor = 0;
+				// Lo siguiente retorna un arreglo con los datos de la planilla y el detalle de la misma
+				// del primer periodo liquidado para el año ($año).
+				$primerPeriodo = $this->getPrimerPeriodoLiquidadoActividadEconomica($this->_idContribuyente, $año);
+				if ( count($primerPeriodo) > 0 ) {
+					// Si el primer periodo encontrado es igual a 1 (trimestre = 1), el monto calculado
+					// se divide entre la exigibilidad del año ($exigibilidadLiq['exigibilidad']), si el
+					// primer periodo liquidado es mayor a uno se debe realizar un ajuste en la division
+					// del monto liquidado del año. El ajuste sera la exigibilidad del año menos el primer
+					// periodo encontrado más uno.
+					$p = $primerPeriodo['trimestre'];
+					if ( $p == 1 ) {
+						$divisor = (int) $exigibilidadLiq['exigibilidad'];
+
+					} elseif ( $p > 1 ) {
+						$divisor = ($exigibilidadLiq['exigibilidad'] - $p) + 1;
+					}
+
+				} else {
+					// No posee periodos liquidados para el Año ($año) en consideracion. Es decir que sera la primera
+					// liquidacion del año ($año).
+					$divisor = (int) $exigibilidadLiq['exigibilidad'];
+				}
+
+				if ( $divisor > 0 ) {
+					$montoPeriodo = number_format($montoLiquidado/$divisor, 2);
+					$fechaActual = date('Y-m-d');
+					foreach ( $periodos as $key => $value ) {
+						$this->_periodosLiquidados[] = [$año, $value, $montoPeriodo, $fechaActual];
+					}
+
+				} else {
+					// Ha ocurrido un error al intentar obtener la exigibilidad de la liquidacion.
+					// Renderizar a un vista.
+
+				}
+			}
+		}
+
+
+
 
 
 

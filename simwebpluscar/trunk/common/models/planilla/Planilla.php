@@ -123,7 +123,7 @@
 		 * @return Array, Retorna un array con los datos principales de la entidad "pagos" y la entidad
 		 * "pagos-detalle".
 		 */
-		private function getUltimoLapsoActividadEconomica($idContribuyente, $año = 0)
+		public function getUltimoLapsoActividadEconomica($idContribuyente, $año = 0)
 		{
 			if ( $idContribuyente > 0 && $año == 0 ) {
 				$model = PagoDetalle::find()->where('id_contribuyente =:id_contribuyente',[':id_contribuyente' => $idContribuyente])
@@ -197,7 +197,26 @@
 
 
 
+		/***/
+		public function crearNumeroPlanilla()
+		{
+			$numeroNuevaPlanilla = 0;
+			$ultimaPlanilla = $this->getUltimoNumeroPlanilla();	// Retorna es una array
+			if ( count($ultimaPlanilla) > 0 ) {
+				$numeroNuevaPlanilla = $ultimaPlanilla['numero'] + 1;
+			}
+			return $numeroNuevaPlanilla;
+		}
 
+
+
+
+		/***/
+		public function getUltimoNumeroPlanilla()
+		{
+			$model = Pago::find()->select('MAX(planilla) as numero')->asArray()->one();
+			return isset($model) ? $model : null;
+		}
 
 
 
