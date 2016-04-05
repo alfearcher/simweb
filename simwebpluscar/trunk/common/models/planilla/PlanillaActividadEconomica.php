@@ -442,7 +442,7 @@
 					self::liquidarDeclaracion($i, $periodos);
 				}
 			}
-			return $ciclo;
+			//return $ciclo;
 		}
 
 
@@ -450,22 +450,29 @@
 
 
 		/***/
-		private function LiquidarDeclaracion($año, $periodos = [])
+		private function LiquidarDeclaracion($año, $periodos)
 		{
 			$monto = 0;
 			$exigibilidadDeclaracion = self::getExigibilidadDeclaracion($año);
 			$exigibilidadLiq = self::getExigibilidadLiquidacion($año);
 
+			$liquidacion = New LiquidacionActividadEconomica($this->_idContribuyente);
 			if ( $exigibilidadDeclaracion['exigibilidad'] == 1 ) {
-				$liquidacion = New LiquidacionActividadEconomica($this->_idContribuyente);
 				$liquidacion->iniciarCalcularLiquidacion($año, 1, $this->_tipoDeclaracion);
 				$monto = $liquidacion->getCalculoAnual();
-				$monto = number_format($monto, 2);
+				$monto = number_format($monto, 2, '.', '');
 
 				$this->generarPeriodosLiquidados($monto, $año, $periodos, $exigibilidadLiq, $exigibilidadDeclaracion);
 
 			} elseif ( $exigibilidadDeclaracion['exigibilidad'] > 1 ) {
+				foreach ($periodos as $key => $value) {
+					$monto = 0;
+					$liquidacion->iniciarCalcularLiquidacion($año, $value, $this->_tipoDeclaracion);
+					$monto = $liquidacion->getCalculoAnual();
+					$monto = number_format($monto, 2, ",", ".");
 
+					$this->generarPeriodosLiquidados($monto, $año, $periodos, $exigibilidadLiq, $exigibilidadDeclaracion);
+				}
 
 			}
 			return $monto;
@@ -497,20 +504,26 @@
 						$divisor = (int) $exigibilidadLiq['exigibilidad'];
 
 					} elseif ( $p > 1 ) {
-						$divisor = ($exigibilidadLiq['exigibilidad'] - $p) + 1;
+						$divisor = (int) ($exigibilidadLiq['exigibilidad'] - $p) + 1;
 					}
 
 				} else {
 					// No posee periodos liquidados para el Año ($año) en consideracion. Es decir que sera la primera
 					// liquidacion del año ($año).
 					$divisor = (int) $exigibilidadLiq['exigibilidad'];
+
 				}
 
 				if ( $divisor > 0 ) {
-					$montoPeriodo = number_format($montoLiquidado/$divisor, 2);
+					$montoPeriodo = number_format(($montoLiquidado/$divisor), 2, '.', '');
+
 					$fechaActual = date('Y-m-d');
-					foreach ( $periodos as $key => $value ) {
-						$this->_periodosLiquidados[] = [$año, $value, $montoPeriodo, $fechaActual];
+					if ( is_array($periodos) ) {
+						foreach ( $periodos as $key => $value ) {
+							$this->_periodosLiquidados[] = [$año, $value, $montoPeriodo, $fechaActual];
+						}
+					} elseif ( is_integer($periodos) )  {
+						$this->_periodosLiquidados[] = [$año, $periodos, $montoPeriodo, $fechaActual];
 					}
 
 				} else {
