@@ -179,7 +179,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
          if ( isset(Yii::$app->user->identity->id_contribuyente) ) {
 
-         die('llegue al proceso que controla la desincorporacion');       
+              
 
          //Creamos la instancia con el model de validación
          $model = new DesincorporacionInmueblesForm();
