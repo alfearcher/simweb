@@ -202,7 +202,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
               if($model->validate()){ 
 
-                 //condicionales     
+                 //condicionales    
                   
                 if (!\Yii::$app->user->isGuest){                                      
 
