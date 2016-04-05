@@ -90,6 +90,7 @@
 							 					'ano_impositivo' => SORT_ASC,
 							 					'trimestre' => SORT_ASC,
 							 			])
+									 ->asArray()
 									 ->one();
 
 			} elseif ( $idContribuyente > 0 && $año > 0 ) {
@@ -104,10 +105,31 @@
 							 					'ano_impositivo' => SORT_ASC,
 							 					'trimestre' => SORT_ASC,
 							 			])
+									 ->asArray()
 									 ->one();
 			}
-			if ( isset($model) ) {
+			if ( count($model) > 0 ) {
 				return $model;
+			}
+			return null;
+		}
+
+
+
+
+		/***/
+		public function getUltimoLapsoActividadEconomica($idContribuyente, $año = 0)
+		{
+			$model = $this->getUltimaPlanillaActividadEconomica($idContribuyente, $año);
+			die(var_dump($model));
+			if ( $model != null ) {
+				$detalle = isset($model['pagoDetalle']) ? $model['pagoDetalle'] : null;
+				if ( $detalle == null ) {
+					return null;
+				} else {
+					$i = count($detalle) - 1;	//Total de registro
+					return $model['pagoDetalle'][$i];
+				}
 			}
 			return null;
 		}
@@ -120,7 +142,7 @@
 		 * @return Array, Retorna un array con los datos principales de la entidad "pagos" y la entidad
 		 * "pagos-detalle".
 		 */
-		public function getUltimoLapsoActividadEconomica($idContribuyente, $año = 0)
+		private function getUltimaPlanillaActividadEconomica($idContribuyente, $año = 0)
 		{
 			if ( $idContribuyente > 0 && $año == 0 ) {
 				$model = Pago::find()->where('id_contribuyente =:id_contribuyente',[':id_contribuyente' => $idContribuyente])
@@ -133,6 +155,7 @@
 					 					'ano_impositivo' => SORT_DESC,
 					 					'trimestre' => SORT_DESC,
 					 				 ])
+					 				 ->asArray()
 									 ->one();
 
 			} elseif ( $idContribuyente > 0 && $año > 0 ) {
@@ -147,15 +170,14 @@
 					 					'ano_impositivo' => SORT_DESC,
 					 					'trimestre' => SORT_DESC,
 					 				 ])
+					 				 ->asArray()
 									 ->one();
 			}
-			if ( isset($model) ) {
+			if ( count($model) > 0 ) {
 				return $model;
 			}
 			return null;
 		}
-
-
 
 
 
@@ -183,9 +205,10 @@
 							 					'ano_impositivo' => SORT_ASC,
 							 					'trimestre' => SORT_ASC,
 							 			])
+									  ->asArray()
 									 ->one();
 			}
-			if ( isset($model) ) {
+			if ( count($model) > 0 ) {
 				return $model;
 			}
 			return null;

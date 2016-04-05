@@ -80,8 +80,8 @@
 		{
 			$this->setTipoDeclaracion("ESTIMADA");
 			$this->configurarLapsoLiquidacionActividadEconomica();
-			$r = $this->configurarCicloLiquidacion();
-			die(var_dump($r));
+			$this->configurarCicloLiquidacion();
+			//die(var_dump($r));
 
 		}
 
@@ -243,7 +243,7 @@
 			} else {
 				// No es la primera liquidacion, se debe determinar cual es el utlimo año-periodo
 				// liquidado para continuar a partir desde el siguiente a este.
-
+				die('kakaka');
 				$añoActual = date('Y');
 				if ( $ultimo['ano_impositivo'] < $añoActual ) {
 
@@ -350,35 +350,15 @@
 		 */
 		public function getUltimoLapsoActEcon()
 		{
+			$this->_ultimaLiquidacion = null;
 			if ( $this->_idContribuyente > 0 ) {
 				$model = $this->getUltimoLapsoActividadEconomica($this->_idContribuyente);
-				die(var_dump($model));
-				//die(var_dump($model->asArray()));
-			// 	$this->_ultimaLiquidacion = Pago::find()->where('id_contribuyente =:id_contribuyente',[':id_contribuyente' => $this->_idContribuyente])
-			// 											->andWhere('impuesto =:impuesto', [':impuesto' => 1])
-			// 											->andWhere('trimestre >:trimestre', [':trimestre' => 0])
-			// 											->andWhere('pago !=:pago', [':pago' => 9])
-			// 											->andWhere('referencia =:referencia',[':referencia' => 0])
-			// 											->joinWith('pagoDetalle')
-			// 											->orderBy([
-			// 							 					'ano_impositivo' => SORT_DESC,
-			// 							 					'trimestre' => SORT_DESC,
-			// 							 				])
-			// 							 				->asArray()
-			// 							 				->one();
-			}
-			if ( isset($model) ) {
-				return $this->_ultimaLiquidacion = $model->pagoDetalle;
+				// die(var_dump($model));
+				if ( $model != null ) {
+					return $this->_ultimaLiquidacion = isset($model) ? $model : null;
+				}
 			}
 			return null;
-		}
-
-
-
-		/***/
-		public function getUltimaLiquidacionExistente()
-		{
-			return $this->_ultimaLiquidacion;
 		}
 
 
@@ -459,24 +439,12 @@
 					}
 
 					// Se manda el año con sus correspondientes periodos.
-					//self::liquidarDeclaracion($i, $periodos);
+					self::liquidarDeclaracion($i, $periodos);
 				}
 			}
-			return $ciclo;
+			//return $ciclo;
 		}
 
-
-
-
-		/***/
-		// private function liquidarDeclaracion($año, $periodo)
-		// {
-		// 	$monto = 0;
-		// 	if ( trim($this->_tipoDeclaracion) != '' ) {
-		// 		$monto = self::LiquidarDeclarcionEstimada($año, $periodo);
-		// 	}
-		// 	return $monto;
-		// }
 
 
 
@@ -496,6 +464,7 @@
 					// Se debe abortar el proceso por declaracion faltante o parametros en los calculos incompletos
 				} else {
 					$l = $this->getPrimerPeriodoLiquidadoActividadEconomica($this->_idContribuyente);
+					die(var_dump($l));
 					if ( count($detalle) > 0 ) {
 
 					} else {
