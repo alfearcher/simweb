@@ -166,4 +166,14 @@ class DesincorporacionInmueblesForm extends \yii\db\ActiveRecord
             'unidad_catastro' => Yii::t('app', 'Unidad Catastro'),
         ];
     }
+
+    public function validarCheck($postCheck)
+    {
+        if (count($postCheck) > 0){
+
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
