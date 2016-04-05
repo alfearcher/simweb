@@ -143,13 +143,13 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
            
         
                  $_SESSION['datosInmueble'] = $datos;
-die('llegue antes del redirect para desincorporar este es el view');
+
               return $this->redirect(['desincorporacion-inmuebles']);
         
               }else{
 
                  echo "No hay Inmueble asociado al Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
-              }
+              } 
           }else{
               $errorCheck = "Please select a Property";
               return $this->redirect(['index' , 'errorCheck' => $errorCheck]); 
