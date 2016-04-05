@@ -71,7 +71,7 @@ $this->title = Yii::t('backend', 'Property Urban');
                         'class' => 'yii\grid\CheckboxColumn',
                         'name' => 'chk-desincorporar-inmueble',
                         'checkboxOptions' => [
-                                'id' => 'id-chk-desincorporar-vehiculo',
+                                'id' => 'id-chk-desincorporar-inmueble',
                                
                                 //'onClick' => 'alert("hola " + $(this).val());'
                                 //$(this).is(":checked"), permite determinar si un checkbox esta tildado.

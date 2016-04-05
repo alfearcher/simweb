@@ -125,7 +125,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
           $errorCheck = ""; 
           $idContribuyente = yii::$app->user->identity->id_contribuyente;
           $idInmueble = yii::$app->request->post('chk-desincorporar-inmueble');
-          //die(var_dump($idinmueble));
+die(var_dump($idinmueble));
           $_SESSION['idInmueble'] = $idInmueble;
 
           //$idInmueble = yii::$app->request->post('id');
@@ -143,7 +143,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
            
         
                  $_SESSION['datosInmueble'] = $datos;
-        die('llegue antes del redirect para desincorporar este es el view');
+die('llegue antes del redirect para desincorporar este es el view');
               return $this->redirect(['desincorporacion-inmuebles']);
         
               }else{
