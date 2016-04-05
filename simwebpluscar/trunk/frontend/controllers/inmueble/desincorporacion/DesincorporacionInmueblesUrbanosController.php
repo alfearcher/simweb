@@ -180,7 +180,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
          if ( isset(Yii::$app->user->identity->id_contribuyente) ) {
 
               
-         $datos = $_SESSION['datos'];
+         $datos = $_SESSION['datosInmueble'];
          //Creamos la instancia con el model de validación
          $model = new DesincorporacionInmueblesForm();
 
@@ -206,7 +206,18 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                   
                 if (!\Yii::$app->user->isGuest){                                      
 
-die('llegue al proceso que controla la desincorporacion');  
+
+                     foreach($datos as $key => $value) {
+                     
+                          $value['id_impuesto'];
+                          //die($value['id_vehiculo']);
+                          $verificarSolicitud = self::verificarSolicitud($value['id_vehiculo'] , $_SESSION['id']);
+                          if($verificarSolicitud == true){
+                              //die(var_dump($value['id_vehiculo']));
+                              $todoBien = false;
+                          
+                           }
+                  }
                      $guardo = self::GuardarCambios($model, $datos);
 
                      if($guardo == true){ 
