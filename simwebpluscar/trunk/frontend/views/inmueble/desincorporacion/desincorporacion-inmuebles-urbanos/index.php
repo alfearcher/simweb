@@ -69,7 +69,7 @@ $this->title = Yii::t('backend', 'Property Urban');
 
                     [
                         'class' => 'yii\grid\CheckboxColumn',
-                        'name' => 'chk-desincorporar-vehiculo',
+                        'name' => 'chk-desincorporar-inmueble',
                         'checkboxOptions' => [
                                 'id' => 'id-chk-desincorporar-vehiculo',
                                
@@ -83,10 +83,12 @@ $this->title = Yii::t('backend', 'Property Urban');
     ]); ?>
 
     <p>
-        <?= Html::a(Yii::t('frontend', 'Divesting Urban Property'), ['/inmueble/desincorporacion/desincorporacion-inmuebles-urbanos/desincorporacion-inmuebles'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('frontend', 'Divesting Urban Property'), ['/inmueble/desincorporacion/desincorporacion-inmuebles-urbanos/view'], ['class' => 'btn btn-success']) ?>
         <?= Html::a(Yii::t('frontend', 'Back'), ['/site/menu-vertical'], ['class' => 'btn btn-danger']) ?>
-    </p>
 
+
+    </p>
+<p><?php echo $errorCheck ?></p>
 </div>
 <?= Html::endForm();?>
 

@@ -97,7 +97,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      * Lists all Inmuebles models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($errorCheck = "")
     {
         if ( isset( $_SESSION['idContribuyente'] ) ) {
         $searchModel = new InmueblesSearch();
@@ -106,6 +106,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'errorCheck' => $errorCheck,
         ]); 
         }  else {
                     echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
@@ -121,17 +122,46 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
     {
         if ( isset( $_SESSION['idContribuyente'] ) ) {
 
+          $errorCheck = ""; 
+          $idContribuyente = yii::$app->user->identity->id_contribuyente;
+          $idInmueble = yii::$app->request->post('chk-desincorporar-inmueble');
+          //die(var_dump($idinmueble));
+          $_SESSION['idInmueble'] = $idInmueble;
 
-          $idInmueble = yii::$app->request->post('id');
+          //$idInmueble = yii::$app->request->post('id');
+          $validacion = new DesincorporacionInmuebleForm();
+
+          if ($validacion->validarCheck(yii::$app->request->post('chk-desincorporar-inmueble')) == true){
+
+          $modelsearch = new InmuebleSearch();
+          $datos = $modelsearch->busquedaVehiculo($idVehiculo, $idContribuyente);
            
-          $datos = InmueblesConsulta::find()->where("id_impuesto=:impuesto", [":impuesto" => $idInmueble])
-                                            ->andwhere("inactivo=:inactivo", [":inactivo" => 0])
-                                            ->one();
-          $_SESSION['datos'] = $datos;
+          // $datos = InmueblesConsulta::find()->where("id_impuesto=:impuesto", [":impuesto" => $idInmueble])
+          //                                   ->andwhere("inactivo=:inactivo", [":inactivo" => 0])
+          //                                   ->one();
+              if ($datos == true){ 
+           
+        
+                 $_SESSION['datosInmueble'] = $datos;
+        
+              return $this->redirect(['desincorporacion-inmuebles']);
+        
+              }else{
 
-        return $this->render('view', [
-            'model' => $datos,
-        ]);
+                 echo "No hay Inmueble asociado al Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
+              }
+          }else{
+              $errorCheck = "Please select a Property";
+              return $this->redirect(['index' , 'errorCheck' => $errorCheck]); 
+
+                                                                                             
+          }
+
+
+
+        // return $this->render('view', [
+        //     'model' => $datos,
+        // ]);
         }  else {
                     echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
         }
@@ -148,13 +178,8 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
          if ( isset(Yii::$app->user->identity->id_contribuyente) ) {
 
-          $idInmueble = yii::$app->request->post('id');
-           
-          $datos = InmueblesConsulta::find()->where("id_impuesto=:impuesto", [":impuesto" => $idInmueble])
-                                            ->andwhere("inactivo=:inactivo", [":inactivo" => 0])
-                                            ->one();
-          $_SESSION['datos'] = $datos;
-          
+                
+
          //Creamos la instancia con el model de validación
          $model = new DesincorporacionInmueblesForm();
 
@@ -179,7 +204,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                  //condicionales     
                   
                 if (!\Yii::$app->user->isGuest){                                      
-                      
+die('llegue al proceso que controla la desincorporacion')
 
                      $guardo = self::GuardarCambios($model, $datos);
 
