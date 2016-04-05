@@ -91,6 +91,8 @@ public $serial_motor;
                'uso_vehiculo', 'color', 'no_ejes', 'nro_puestos', 'fecha_inicio', 
                'peso', 'nro_cilindros', 'precio_inicial', 'capacidad',  'medida_cap',
               'serial_carroceria', 'serial_motor'],'required'],
+
+              ['ano_vehiculo', 'validarAño'],
              
             ['placa', 'buscarPlaca'],
             [['placa'], 'match' , 'pattern' => "/^[a-zA-Z0-9]+$/", 'message' => Yii::t('frontend', '{attribute} must be an alphanumeric')],
@@ -274,11 +276,29 @@ public $serial_motor;
                 return false;
               }
     }
-      
-    
-    
-    
-   
 
+    /**
+     * [validarAño description] Metodo que valida que el año de compra no sea menor al año del vehiculo por mas de un año
+     * @param  [type] $attribute [description] atributos para enviar mensaje de error
+     * @param  [type] $params    [description] parametros para enviar mensaje de error
+     * @return [type]            [description] si retorna true, entonces deja enviar el formulario pero si retorna false, envia un mensaje 
+     * de error.
+     */
+    public function validarAño($attribute, $params)
+    {
+      if ($this->ano_compra > $this->ano_vehiculo){
+        return true;
+      }
+    
+          if ($this->ano_vehiculo - $this->ano_compra == 1){
+
+              return true;
+
+          }else{
+            
+              $this->addError($attribute, Yii::t('frontend', 'Año de Vehiculo is bigger than Año de Compra' )); 
+          }
     }    
+    
+  }
       
