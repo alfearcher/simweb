@@ -134,7 +134,7 @@ die(var_dump($idInmueble));
           if ($validacion->validarCheck(yii::$app->request->post('chk-desincorporar-inmueble')) == true){
 
           $modelsearch = new InmuebleSearch();
-          $datos = $modelsearch->busquedaVehiculo($idVehiculo, $idContribuyente);
+          $datos = $modelsearch->busquedaVehiculo($idInmueble, $idContribuyente);
            
           // $datos = InmueblesConsulta::find()->where("id_impuesto=:impuesto", [":impuesto" => $idInmueble])
           //                                   ->andwhere("inactivo=:inactivo", [":inactivo" => 0])
