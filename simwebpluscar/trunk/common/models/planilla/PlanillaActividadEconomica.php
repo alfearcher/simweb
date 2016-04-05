@@ -243,7 +243,7 @@
 			} else {
 				// No es la primera liquidacion, se debe determinar cual es el utlimo año-periodo
 				// liquidado para continuar a partir desde el siguiente a este.
-				die('kakaka');
+
 				$añoActual = date('Y');
 				if ( $ultimo['ano_impositivo'] < $añoActual ) {
 
@@ -377,7 +377,7 @@
 			$this->getUltimoLapsoActEcon();
 			$detalle = null;
 			if ( count($this->_ultimaLiquidacion) > 0 ) {
-				$detalle = isset($this->_ultimaLiquidacion['pagoDetalle'][0]) ? $this->_ultimaLiquidacion['pagoDetalle'][0] : null;
+				$detalle = isset($this->_ultimaLiquidacion) ? $this->_ultimaLiquidacion : null;
 			}
 			return $detalle;
 		}

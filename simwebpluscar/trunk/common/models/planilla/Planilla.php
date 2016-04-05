@@ -80,33 +80,33 @@
 		public function getPrimerPeriodoLiquidadoActividadEconomica($idContribuyente, $año = 0)
 		{
 			if ( $idContribuyente > 0 && $año == 0 ) {
-				$model = Pago::find()->where('id_contribuyente =:id_contribuyente',[':id_contribuyente' => $idContribuyente])
-									 ->andWhere('impuesto =:impuesto', [':impuesto' => 1])
-									 ->andWhere('trimestre >:trimestre', [':trimestre' => 0])
-									 ->andWhere('pago !=:pago', [':pago' => 9])
-									 ->andWhere('referencia =:referencia',[':referencia' => 0])
-									 ->joinWith('pagoDetalle')
-									 ->orderBy([
+				$model = PagoDetalle::find()->where('id_contribuyente =:id_contribuyente',[':id_contribuyente' => $idContribuyente])
+									 	    ->andWhere('impuesto =:impuesto', [':impuesto' => 1])
+									        ->andWhere('trimestre >:trimestre', [':trimestre' => 0])
+									        ->andWhere('pago !=:pago', [':pago' => 9])
+									        ->andWhere('referencia =:referencia',[':referencia' => 0])
+									        ->joinWith('pagos')
+									 		->orderBy([
 							 					'ano_impositivo' => SORT_ASC,
 							 					'trimestre' => SORT_ASC,
-							 			])
-									 ->asArray()
-									 ->one();
+							 				])
+									 		->asArray()
+									 		->one();
 
 			} elseif ( $idContribuyente > 0 && $año > 0 ) {
-				$model = Pago::find()->where('id_contribuyente =:id_contribuyente',[':id_contribuyente' => $idContribuyente])
-									 ->andWhere('impuesto =:impuesto', [':impuesto' => 1])
-									 ->andWhere('ano_impositivo =:ano_impositivo', [':ano_impositivo' => $año])
-									 ->andWhere('trimestre >:trimestre', [':trimestre' => 0])
-									 ->andWhere('pago !=:pago', [':pago' => 9])
-									 ->andWhere('referencia =:referencia',[':referencia' => 0])
-									 ->joinWith('pagoDetalle')
-									 ->orderBy([
+				$model = PagoDetalle::find()->where('id_contribuyente =:id_contribuyente',[':id_contribuyente' => $idContribuyente])
+									 	    ->andWhere('impuesto =:impuesto', [':impuesto' => 1])
+									        ->andWhere('ano_impositivo =:ano_impositivo', [':ano_impositivo' => $año])
+									        ->andWhere('trimestre >:trimestre', [':trimestre' => 0])
+									        ->andWhere('pago !=:pago', [':pago' => 9])
+									        ->andWhere('referencia =:referencia',[':referencia' => 0])
+									        ->joinWith('pagos')
+									        ->orderBy([
 							 					'ano_impositivo' => SORT_ASC,
 							 					'trimestre' => SORT_ASC,
-							 			])
-									 ->asArray()
-									 ->one();
+							 				])
+									 	    ->asArray()
+									 		->one();
 			}
 			if ( count($model) > 0 ) {
 				return $model;
@@ -117,75 +117,42 @@
 
 
 
-		/***/
-		public function getUltimoLapsoActividadEconomica($idContribuyente, $año = 0)
-		{
-			$model = $this->getUltimaPlanillaActividadEconomica($idContribuyente, $año);
-			die(var_dump($model));
-			if ( $model != null ) {
-				$detalle = isset($model['pagoDetalle']) ? $model['pagoDetalle'] : null;
-				if ( $detalle == null ) {
-					return null;
-				} else {
-					$i = count($detalle) - 1;	//Total de registro
-					return $model['pagoDetalle'][$i];
-				}
-			}
-			return null;
-		}
-
-
-
 		/**
 		 * Metodo que permite obtener el registro de la ultima liquidacion que presenta (de haberla)
 		 * el contribuyente, se obtiene entre otros datos la planilla y los detalles de la misma.
 		 * @return Array, Retorna un array con los datos principales de la entidad "pagos" y la entidad
 		 * "pagos-detalle".
 		 */
-		private function getUltimaPlanillaActividadEconomica($idContribuyente, $año = 0)
+		private function getUltimoLapsoActividadEconomica($idContribuyente, $año = 0)
 		{
 			if ( $idContribuyente > 0 && $año == 0 ) {
-				// $model = Pago::find()->where('id_contribuyente =:id_contribuyente',[':id_contribuyente' => $idContribuyente])
-				// 					 ->andWhere('impuesto =:impuesto', [':impuesto' => 1])
-				// 					 ->andWhere('trimestre >:trimestre', [':trimestre' => 0])
-				// 					 ->andWhere('pago !=:pago', [':pago' => 9])
-				// 					 ->andWhere('referencia =:referencia',[':referencia' => 0])
-				// 					 ->joinWith('pagoDetalle')
-				// 					 ->orderBy([
-				// 	 					'ano_impositivo' => SORT_DESC,
-				// 	 					'trimestre' => SORT_DESC,
-				// 	 				 ])
-				// 	 				 ->asArray()
-				// 					 ->one();
-
-
-				$model = Pago::find()->select('pagos_detalle.*')->innerJoin('pagos_detalle','pagos.id_pago=pagos_detalle.id_pago')
-									 ->where('pagos.id_contribuyente =:id_contribuyente', [':id_contribuyente' =>$idContribuyente])
-									 ->andWhere('pagos_detalle.impuesto =:impuesto', [':impuesto'=> 1])
-									 ->andWhere('pagos_detalle.trimestre >:trimestre', [':trimestre' => 0])
-									 ->andWhere('pagos_detalle.referencia =:referencia', [':referencia' => 0])
-									 ->andWhere('pagos_detalle.pago !=:pago', [':pago' => 9])
-									 ->orderBy([
-									 		'ano_impositivo' => SORT_DESC,
-									 		'trimestre' => SORT_DESC,
-
-									 	])
-									 ->one();
+				$model = PagoDetalle::find()->where('id_contribuyente =:id_contribuyente',[':id_contribuyente' => $idContribuyente])
+									        ->andWhere('impuesto =:impuesto', [':impuesto' => 1])
+									        ->andWhere('trimestre >:trimestre', [':trimestre' => 0])
+									        ->andWhere('pago !=:pago', [':pago' => 9])
+									        ->andWhere('referencia =:referencia',[':referencia' => 0])
+									        ->joinWith('pagos')
+									        ->orderBy([
+					 							'ano_impositivo' => SORT_DESC,
+					 							'trimestre' => SORT_DESC,
+					 				 		])
+					 				 		->asArray()
+									 		->one();
 
 			} elseif ( $idContribuyente > 0 && $año > 0 ) {
-				$model = Pago::find()->where('id_contribuyente =:id_contribuyente',[':id_contribuyente' => $idContribuyente])
-									 ->andWhere('impuesto =:impuesto', [':impuesto' => 1])
-									 ->andWhere('ano_impositivo =:ano_impositivo', [':ano_impositivo' => $año])
-									 ->andWhere('trimestre >:trimestre', [':trimestre' => 0])
-									 ->andWhere('pago !=:pago', [':pago' => 9])
-									 ->andWhere('referencia =:referencia',[':referencia' => 0])
-									 ->joinWith('pagoDetalle')
-									 ->orderBy([
-					 					'ano_impositivo' => SORT_DESC,
-					 					'trimestre' => SORT_DESC,
-					 				 ])
-					 				 ->asArray()
-									 ->one();
+				$model = PagoDetalle::find()->where('id_contribuyente =:id_contribuyente',[':id_contribuyente' => $idContribuyente])
+									 	    ->andWhere('impuesto =:impuesto', [':impuesto' => 1])
+									        ->andWhere('ano_impositivo =:ano_impositivo', [':ano_impositivo' => $año])
+									        ->andWhere('trimestre >:trimestre', [':trimestre' => 0])
+									        ->andWhere('pago !=:pago', [':pago' => 9])
+									        ->andWhere('referencia =:referencia',[':referencia' => 0])
+									        ->joinWith('pagos')
+									        ->orderBy([
+					 							'ano_impositivo' => SORT_DESC,
+					 							'trimestre' => SORT_DESC,
+					 				 		])
+					 				 		->asArray()
+									 		->one();
 			}
 			if ( count($model) > 0 ) {
 				return $model;
@@ -209,18 +176,18 @@
 		public function getPrimerPeriodoLiquidadoObjeto($año, $idImpuesto, $impuesto)
 		{
 			if ( $idImpuesto > 0 and $impuesto > 0 ) {
-				$model = Pago::find()->where('id_impuesto =:id_impuesto',[':id_impuesto' => $idImpuesto])
-									 ->andWhere('impuesto =:impuesto', [':impuesto' => 1])
-									 ->andWhere('trimestre >:trimestre', [':trimestre' => 0])
-									 ->andWhere('pago !=:pago', [':pago' => 9])
-									 ->andWhere('referencia =:referencia',[':referencia' => 0])
-									 ->joinWith('pagoDetalle')
-									 ->orderBy([
+				$model = PagoDetalle::find()->where('id_impuesto =:id_impuesto',[':id_impuesto' => $idImpuesto])
+									 		->andWhere('impuesto =:impuesto', [':impuesto' => 1])
+									 		->andWhere('trimestre >:trimestre', [':trimestre' => 0])
+									 		->andWhere('pago !=:pago', [':pago' => 9])
+									 		->andWhere('referencia =:referencia',[':referencia' => 0])
+									 		->joinWith('pagoDetalle')
+									 		->orderBy([
 							 					'ano_impositivo' => SORT_ASC,
 							 					'trimestre' => SORT_ASC,
-							 			])
-									  ->asArray()
-									 ->one();
+							 				])
+									  		->asArray()
+									 		->one();
 			}
 			if ( count($model) > 0 ) {
 				return $model;

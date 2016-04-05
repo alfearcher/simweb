@@ -101,7 +101,7 @@
 		 * Relacion con la entidad "pagos".
 		 * @return [type] [description]
 		 */
-		public function getPago()
+		public function getPagos()
 		{
 			return $this->hasOne(Pago::className(), ['id_pago' => 'id_pago']);
 		}
