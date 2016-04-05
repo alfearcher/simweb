@@ -124,7 +124,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
           $errorCheck = ""; 
           $idContribuyente = yii::$app->user->identity->id_contribuyente;
-          $idInmueble = yii::$app->request->post('chk-desincorporar-inmueble');
+          $idInmueble = yii::$app->request->post();
 die(var_dump($idInmueble));
           $_SESSION['idInmueble'] = $idInmueble;
 
