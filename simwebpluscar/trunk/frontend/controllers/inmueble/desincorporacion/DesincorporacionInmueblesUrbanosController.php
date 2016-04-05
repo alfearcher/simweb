@@ -182,7 +182,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
               
          $datos = $_SESSION['datos'];
           $model = new DesincorporacionInmueblesForm();
-              return $this->render('desincorporacion-inmuebles', ['model' => $model, 'datos'=>$datos]);  
+              return $this->render('desincorporacion-inmuebles');   //['model' => $model, 'datos'=>$datos]
 
         }  else {
                     echo "No hay Contribuyente Registrado!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['site/login'])."'>";
