@@ -148,4 +148,22 @@ class InmueblesSearch extends InmueblesConsulta
 
         return $dataProvider;
     }
+
+    public function BusquedaInmueble($idInmueble, $idContribuyente)
+    {
+
+        $buscarVehiculo = InmueblesConsulta::find()
+                                            ->where([
+                                            'id_impuesto' => $idInmueble,
+                                            'id_contribuyente' => $idContribuyente,
+                                            'inactivo' => 0,
+
+                                                ])
+                                            ->all();
+
+                if ($buscarVehiculo == true){
+                    
+                    return $buscarVehiculo;
+                }
+    }
 }
