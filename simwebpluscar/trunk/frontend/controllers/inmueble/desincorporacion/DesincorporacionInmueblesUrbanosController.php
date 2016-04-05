@@ -143,7 +143,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
            
         
                  $_SESSION['datosInmueble'] = $datos;
-        
+        die('llegue antes del redirect para desincorporar este es el view');
               return $this->redirect(['desincorporacion-inmuebles']);
         
               }else{
