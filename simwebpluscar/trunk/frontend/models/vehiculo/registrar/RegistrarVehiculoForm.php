@@ -92,7 +92,7 @@ public $serial_motor;
                'peso', 'nro_cilindros', 'precio_inicial', 'capacidad',  'medida_cap',
               'serial_carroceria', 'serial_motor'],'required'],
 
-              ['ano_vehiculo', 'validarAño'],
+              ['ano_vehiculo', 'validarAno'],
              
             ['placa', 'buscarPlaca'],
             [['placa'], 'match' , 'pattern' => "/^[a-zA-Z0-9]+$/", 'message' => Yii::t('frontend', '{attribute} must be an alphanumeric')],
@@ -103,7 +103,7 @@ public $serial_motor;
             [['no_ejes', 'nro_puestos' ,'peso','nro_cilindros', 'capacidad', 'exceso_cap' ,
             ],'integer','message' => yii::t('frontend', '{attribute} must be an integer') ] ,    
 
-            ['placa', 'string' , 'min' => 7, 'max' => 7],
+            ['placa', 'string' , 'min' => 6, 'max' => 7],
             ['serial_motor', 'string' , 'min' => 17, 'max' => 17],
             ['serial_carroceria', 'string' , 'min' => 17, 'max' => 17],
             ['marca' , 'string' , 'max' => 25 ],
@@ -284,21 +284,34 @@ public $serial_motor;
      * @return [type]            [description] si retorna true, entonces deja enviar el formulario pero si retorna false, envia un mensaje 
      * de error.
      */
-    public function validarAño($attribute, $params)
+    public function validarAno($attribute, $params)
     {
       if ($this->ano_compra > $this->ano_vehiculo){
+        //die('es mayor año compra');
         return true;
       }
     
-          if ($this->ano_vehiculo - $this->ano_compra == 1){
+          if($this->ano_compra < $this->ano_vehiculo){
+            //die('valido');
+             $dif =  $this->ano_vehiculo - $this->ano_compra;
+             //die(var_dump($dif));
+              if($dif == 1){
+                  return true;  
+              }else{
+                $this->addError($attribute, Yii::t('frontend', 'Año de Vehiculo is bigger than Año de Compra' )); 
+                return false;
+              }
+              
+
+          }elseif($this->ano_compra == $this->ano_vehiculo){
 
               return true;
 
           }else{
-            
+
               $this->addError($attribute, Yii::t('frontend', 'Año de Vehiculo is bigger than Año de Compra' )); 
           }
-    }    
+  }    
     
   }
       
