@@ -83,7 +83,7 @@ $this->title = Yii::t('backend', 'Property Urban');
     ]); ?>
 
     <p>
-        <?= Html::a(Yii::t('frontend', 'Register Property Urban'), ['inmueble/inscripcion/inscripcion-inmuebles-urbanos/inscripcion-inmuebles-urbanos'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('frontend', 'Divesting Urban Property'), ['/inmueble/desincorporacion/desincorporacion-inmuebles-urbanos/desincorporacion-inmuebles'], ['class' => 'btn btn-success']) ?>
         <?= Html::a(Yii::t('frontend', 'Back'), ['/site/menu-vertical'], ['class' => 'btn btn-danger']) ?>
     </p>
 
