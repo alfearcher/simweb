@@ -147,6 +147,14 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      { 
 
          if ( isset(Yii::$app->user->identity->id_contribuyente) ) {
+
+          $idInmueble = yii::$app->request->post('id');
+           
+          $datos = InmueblesConsulta::find()->where("id_impuesto=:impuesto", [":impuesto" => $idInmueble])
+                                            ->andwhere("inactivo=:inactivo", [":inactivo" => 0])
+                                            ->one();
+          $_SESSION['datos'] = $datos;
+          
          //Creamos la instancia con el model de validación
          $model = new DesincorporacionInmueblesForm();
 
