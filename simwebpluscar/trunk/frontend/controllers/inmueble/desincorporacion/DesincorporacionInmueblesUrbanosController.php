@@ -180,7 +180,8 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
          if ( isset(Yii::$app->user->identity->id_contribuyente) ) {
 
               
-         
+         $datos = $_SESSION['datos'];
+          $model = new DesincorporacionInmueblesForm();
               return $this->render('desincorporacion-inmuebles', ['model' => $model, 'datos'=>$datos]);  
 
         }  else {
@@ -317,3 +318,65 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      }
 
 }
+
+
+// $datos = $_SESSION['datos'];
+//          //Creamos la instancia con el model de validación
+//          $model = new DesincorporacionInmueblesForm();
+
+          
+    
+//          //Mostrará un mensaje en la vista cuando el usuario se haya registrado
+//          $msg = null; 
+//          $url = null; 
+//          $tipoError = null; 
+    
+//          //Validación mediante ajax
+//          if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax){ 
+
+//               Yii::$app->response->format = Response::FORMAT_JSON;
+//               return ActiveForm::validate($model); 
+//          } 
+   
+//          if ($model->load(Yii::$app->request->post())){
+
+//               if($model->validate()){ 
+
+//                  //condicionales     
+                  
+//                 if (!\Yii::$app->user->isGuest){                                      
+
+// die('llegue al proceso que controla la desincorporacion');  
+//                      $guardo = self::GuardarCambios($model, $datos);
+
+//                      if($guardo == true){ 
+
+//                           $envio = self::EnviarCorreo($guardo);
+
+//                           if($envio == true){ 
+
+//                               return MensajeController::actionMensaje(100); 
+
+//                           } else { 
+                            
+//                               return MensajeController::actionMensaje(920);
+
+//                           } 
+
+//                       } else {
+
+//                             return MensajeController::actionMensaje(920);
+//                       } 
+
+//                    }else{ 
+
+//                         $msg = Yii::t('backend', 'AN ERROR OCCURRED WHEN FILLING THE URBAN PROPERTY!');//HA OCURRIDO UN ERROR AL LLENAR LAS PREGUNTAS SECRETAS
+//                         $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("site/login")."'>";                     
+//                         return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
+//                    } 
+
+//               }else{ 
+                
+//                    $model->getErrors(); 
+//               }
+//          }
