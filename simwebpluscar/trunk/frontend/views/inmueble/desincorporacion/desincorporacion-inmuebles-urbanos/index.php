@@ -83,7 +83,7 @@ $this->title = Yii::t('backend', 'Property Urban');
     ]); ?>
 
     <p>
-        <?= Html::a(Yii::t('frontend', 'Divesting Urban Property'), ['/inmueble/desincorporacion/desincorporacion-inmuebles-urbanos/view'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('frontend', 'Divesting Urban Property'),  ['class' => 'btn btn-success']) ?> 
         <?= Html::a(Yii::t('frontend', 'Back'), ['/site/menu-vertical'], ['class' => 'btn btn-danger']) ?>
 
 
@@ -107,5 +107,5 @@ $this->title = Yii::t('backend', 'Property Urban');
 //                                                                     );
 //                                         },
 //                                     ],
-//             ],
+//             ],  ['/inmueble/desincorporacion/desincorporacion-inmuebles-urbanos/view'],
 ?>
