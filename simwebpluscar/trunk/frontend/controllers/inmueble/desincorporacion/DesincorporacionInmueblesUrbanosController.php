@@ -189,7 +189,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
          //Creamos la instancia con el model de validación
          $model = new DesincorporacionInmueblesForm();
 
-          
+         $postData = Yii::$app->request->post();
     
          //Mostrará un mensaje en la vista cuando el usuario se haya registrado
          $msg = null; 
@@ -198,13 +198,13 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
          $todoBien = true;
     
          //Validación mediante ajax
-         if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax){ 
+         if ($model->load($postData) && Yii::$app->request->isAjax){ 
 
               Yii::$app->response->format = Response::FORMAT_JSON;
               return ActiveForm::validate($model); 
          } 
    
-         if ($model->load(Yii::$app->request->post())){
+         if ($model->load($postData)){
 
               if($model->validate()){ 
 
