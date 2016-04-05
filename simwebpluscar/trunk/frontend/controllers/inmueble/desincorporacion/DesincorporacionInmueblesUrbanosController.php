@@ -135,7 +135,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
           $modelsearch = new InmueblesSearch();
           $datos = $modelsearch->busquedaInmueble($idInmueble, $idContribuyente);
-die(var_dump($datos));
+
           // $datos = InmueblesConsulta::find()->where("id_impuesto=:impuesto", [":impuesto" => $idInmueble])
           //                                   ->andwhere("inactivo=:inactivo", [":inactivo" => 0])
           //                                   ->one();
