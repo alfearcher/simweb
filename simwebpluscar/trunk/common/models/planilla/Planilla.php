@@ -145,17 +145,31 @@
 		private function getUltimaPlanillaActividadEconomica($idContribuyente, $año = 0)
 		{
 			if ( $idContribuyente > 0 && $año == 0 ) {
-				$model = Pago::find()->where('id_contribuyente =:id_contribuyente',[':id_contribuyente' => $idContribuyente])
-									 ->andWhere('impuesto =:impuesto', [':impuesto' => 1])
-									 ->andWhere('trimestre >:trimestre', [':trimestre' => 0])
-									 ->andWhere('pago !=:pago', [':pago' => 9])
-									 ->andWhere('referencia =:referencia',[':referencia' => 0])
-									 ->joinWith('pagoDetalle')
+				// $model = Pago::find()->where('id_contribuyente =:id_contribuyente',[':id_contribuyente' => $idContribuyente])
+				// 					 ->andWhere('impuesto =:impuesto', [':impuesto' => 1])
+				// 					 ->andWhere('trimestre >:trimestre', [':trimestre' => 0])
+				// 					 ->andWhere('pago !=:pago', [':pago' => 9])
+				// 					 ->andWhere('referencia =:referencia',[':referencia' => 0])
+				// 					 ->joinWith('pagoDetalle')
+				// 					 ->orderBy([
+				// 	 					'ano_impositivo' => SORT_DESC,
+				// 	 					'trimestre' => SORT_DESC,
+				// 	 				 ])
+				// 	 				 ->asArray()
+				// 					 ->one();
+
+
+				$model = Pago::find()->select('pagos_detalle.*')->innerJoin('pagos_detalle','pagos.id_pago=pagos_detalle.id_pago')
+									 ->where('pagos.id_contribuyente =:id_contribuyente', [':id_contribuyente' =>$idContribuyente])
+									 ->andWhere('pagos_detalle.impuesto =:impuesto', [':impuesto'=> 1])
+									 ->andWhere('pagos_detalle.trimestre >:trimestre', [':trimestre' => 0])
+									 ->andWhere('pagos_detalle.referencia =:referencia', [':referencia' => 0])
+									 ->andWhere('pagos_detalle.pago !=:pago', [':pago' => 9])
 									 ->orderBy([
-					 					'ano_impositivo' => SORT_DESC,
-					 					'trimestre' => SORT_DESC,
-					 				 ])
-					 				 ->asArray()
+									 		'ano_impositivo' => SORT_DESC,
+									 		'trimestre' => SORT_DESC,
+
+									 	])
 									 ->one();
 
 			} elseif ( $idContribuyente > 0 && $año > 0 ) {
