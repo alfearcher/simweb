@@ -155,7 +155,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
               return $this->redirect(['index' , 'errorCheck' => $errorCheck]); 
 
                                                                                              
-          }
+          } 
 
 
 
@@ -180,11 +180,11 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
          if ( isset(Yii::$app->user->identity->id_contribuyente) ) {
 
               
-
+         $datos = $_SESSION['datos'];
          //Creamos la instancia con el model de validación
          $model = new DesincorporacionInmueblesForm();
 
-         $datos = $_SESSION['datos']; 
+          
     
          //Mostrará un mensaje en la vista cuando el usuario se haya registrado
          $msg = null; 
