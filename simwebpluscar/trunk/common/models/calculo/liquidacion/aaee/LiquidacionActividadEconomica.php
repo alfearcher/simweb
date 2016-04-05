@@ -44,7 +44,6 @@
 
  	use Yii;
 	use yii\db\ActiveRecord;
-	//use backend\models\aaee\actecon\ActEcon;
 	use backend\models\aaee\declaracion\Declaracion;
 	use yii\db\Exception;
 	use common\models\calculo\liquidacion\aaee\CalculoRubro;
