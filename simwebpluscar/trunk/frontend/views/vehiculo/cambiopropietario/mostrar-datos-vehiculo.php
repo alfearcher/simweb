@@ -67,7 +67,7 @@ $listaAño2  = ArrayHelper::map($listaFecha2, 'id' , 'campo');
 
 
 <div class="dataBasicRegister" id="paneldataBasicRegister" style="display:;">
-    <h3><?= Yii::t('frontend', 'Vehicle Registration') ?> </h3>
+    <h3><?= Yii::t('frontend', 'Vehicle Specifications') ?> </h3>
 </div>
 
 <div><br></div>
@@ -93,7 +93,7 @@ $listaAño2  = ArrayHelper::map($listaFecha2, 'id' , 'campo');
     <div class="col-sm-10">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <?= Yii::t('frontend', 'Vehicle Registration') ?> 
+                <?= Yii::t('frontend', 'Vehicle Specifications') ?> 
             </div>
             <div class="panel-body" >
 
@@ -103,6 +103,8 @@ $listaAño2  = ArrayHelper::map($listaFecha2, 'id' , 'campo');
                     <div class="col-sm-2">
                         <?= $form->field($model, 'placa')->textInput(
                                                                 [
+                                                                'value' => $datosVehiculo[0]['placa'],
+                                                                'readonly' => true,
                                                                 'id'=> 'placa',
                                                                 ]);
                     ?>
@@ -118,6 +120,8 @@ $listaAño2  = ArrayHelper::map($listaFecha2, 'id' , 'campo');
                     <div class="col-sm-3" style="margin-left: -20px;">
                         <?= $form->field($model, 'marca')->textInput(
                                                                 [
+                                                                 'value' => $datosVehiculo[0]['marca'],
+                                                                'readonly' => true,
                                                                 'id'=> 'marca',
                                                                 ]);
                     ?>
@@ -133,6 +137,8 @@ $listaAño2  = ArrayHelper::map($listaFecha2, 'id' , 'campo');
                     <div class="col-sm-3" style="margin-left: -20px;">
                         <?= $form->field($model, 'modelo')->textInput(
                                                                 [
+                                                                 'value' => $datosVehiculo[0]['modelo'],
+                                                                'readonly' => true,
                                                                 'id'=> 'modelo',
                                                                 ]);
                     ?>
@@ -146,8 +152,10 @@ $listaAño2  = ArrayHelper::map($listaFecha2, 'id' , 'campo');
 
                
                     <div class="col-sm-2" style="margin-left: -20px;">
-                        <?= $form->field($model, 'ano_compra')->dropDownList($listaAño,
+                        <?= $form->field($model, 'ano_compra')->textInput(
                                                                 [
+                                                                 'value' => $datosVehiculo[0]['ano_compra'],
+                                                                'readonly' => true,
                                                                 'prompt' => yii::t('frontend', 'Select'),
                                                                
                                                                 
@@ -163,8 +171,10 @@ $listaAño2  = ArrayHelper::map($listaFecha2, 'id' , 'campo');
 
                
                      <div class="col-sm-2" style="margin-left: -20px;">
-                        <?= $form->field($model, 'ano_vehiculo')->dropDownList($listaAño2,
+                        <?= $form->field($model, 'ano_vehiculo')->textInput(
                                                                 [
+                                                                 'value' => $datosVehiculo[0]['ano_vehiculo'],
+                                                                'readonly' => true,
                                                                 'prompt' => yii::t('frontend', 'Select'),
                                                                
                                                                 
@@ -181,8 +191,10 @@ $listaAño2  = ArrayHelper::map($listaFecha2, 'id' , 'campo');
 
                     <div class="row">
                     <div class="col-sm-6">
-                        <?= $form->field($model, 'clase_vehiculo')->dropDownList($listaClaseVehiculo,
+                        <?= $form->field($model, 'clase_vehiculo')->textInput( 
                                                                 [
+                                                                 'value' => $datosVehiculo[0]['clase_vehiculo'],
+                                                                'readonly' => true,
                                                                 'id'=> 'clase_vehiculo',
                                                                 'prompt' => yii::t('frontend', 'Select'),
                                                                 ]);
@@ -198,8 +210,10 @@ $listaAño2  = ArrayHelper::map($listaFecha2, 'id' , 'campo');
 
                     <div class="row">
                     <div class="col-sm-6">
-                        <?= $form->field($model, 'tipo_vehiculo')->dropDownList($listaTipoVehiculo,
+                        <?= $form->field($model, 'tipo_vehiculo')->textInput( 
                                                                 [
+                                                                 'value' => $datosVehiculo[0]['tipo_vehiculo'],
+                                                                'readonly' => true,
                                                                 'id'=> 'tipo_vehiculo',
                                                                 'prompt' => yii::t('frontend', 'Select'),
                                                                 ]);
@@ -214,8 +228,10 @@ $listaAño2  = ArrayHelper::map($listaFecha2, 'id' , 'campo');
 
                     <div class="row">
                     <div class="col-sm-6">
-                        <?= $form->field($model, 'uso_vehiculo')->dropDownList($listaUsoVehiculo,
+                        <?= $form->field($model, 'uso_vehiculo')->textInput( 
                                                                 [
+                                                                 'value' => $datosVehiculo[0]['uso_vehiculo'],
+                                                                'readonly' => true,
                                                                 'id'=> 'uso_vehiculo',
                                                                 'prompt' => yii::t('frontend', 'Select'),
                                                                 ]);
@@ -230,9 +246,10 @@ $listaAño2  = ArrayHelper::map($listaFecha2, 'id' , 'campo');
 
                     <div class="row">
                     <div class="col-sm-2">
-                        <?= $form->field($model, 'color')->input(
+                        <?= $form->field($model, 'color')->textInput(
                                                                 [
-                                                                
+                                                                 'value' => $datosVehiculo[0]['color'],
+                                                                'readonly' => true,
                                                                 'id'=> 'color',
                                                                 ]);
                     ?>
@@ -247,9 +264,10 @@ $listaAño2  = ArrayHelper::map($listaFecha2, 'id' , 'campo');
 
                    
                     <div class="col-sm-2" style="margin-left: -20px;">
-                        <?= $form->field($model, 'no_ejes')->input(
+                        <?= $form->field($model, 'no_ejes')->textInput(
                                                                 [
-                                                                
+                                                                 'value' => $datosVehiculo[0]['no_ejes'],
+                                                                'readonly' => true,
                                                                 'id'=> 'no_ejes',
                                                                 ]);
                     ?>
@@ -264,9 +282,10 @@ $listaAño2  = ArrayHelper::map($listaFecha2, 'id' , 'campo');
 
                    
                     <div class="col-sm-2" style="margin-left: -20px;">
-                        <?= $form->field($model, 'nro_puestos')->input(
+                        <?= $form->field($model, 'nro_puestos')->textInput(
                                                                 [
-                                                                
+                                                                 'value' => $datosVehiculo[0]['nro_puestos'],
+                                                                'readonly' => true,
                                                                 'id'=> 'nro_puestos',
                                                                 ]);
                     ?>
@@ -280,29 +299,15 @@ $listaAño2  = ArrayHelper::map($listaFecha2, 'id' , 'campo');
 <!-- FECHA INICIO -->
 
                
-                          <div class="col-sm-2">
-                        <div class="fecha-nac">
-                            <?= $form->field($model, 'fecha_inicio')->widget(\yii\jui\DatePicker::classname(),[
-                                                                                        //'type' => 'date',
-                                                                                        'clientOptions' => [
-                                                                                            'maxDate' => '+0d',// Bloquear los dias en el calendario a partir del dia siguiente al actual.
-                                                                                            'changeYear' => 'true', 
-                                                                                         ],
-                                                                                       'language' => 'es-ES',
-                                                                                       'dateFormat' => 'dd-MM-yyyy',
-                                                                                        'options' => [
-                                                                                            //'onClick' => 'alert("calendario")',
-                                                                                            'id' => 'fecha-nac',
-                                                                                            'class' => 'form-control',
-                                                                                           'readonly' => true,
-
-                                                                                            //'type' => 'date',
-                                                                                            'style' => 'background-color: white;',
-                                                                                        ],
-
-                                                                                      
-                                                                                    ])
-                            ?>
+                          <div class="col-sm-2" style="margin-left: -20px;">
+                        <div class="fecha-inicio">
+                             <?= $form->field($model, 'fecha_inicio')->textInput(
+                                                                [
+                                                                 'value' => $datosVehiculo[0]['fecha_inicio'],
+                                                                'readonly' => true,
+                                                                'id'=> 'nro_puestos',
+                                                                ]);
+                    ?>
                         </div>
                     </div>
                      </div>
@@ -322,9 +327,10 @@ $listaAño2  = ArrayHelper::map($listaFecha2, 'id' , 'campo');
 
                     <div class="row"> 
                     <div class="col-sm-2">
-                        <?= $form->field($model, 'peso')->input(
+                        <?= $form->field($model, 'peso')->textInput(
                                                                 [
-                                                                
+                                                                'value' => $datosVehiculo[0]['peso'],
+                                                                'readonly' => true,
                                                                 'id'=> 'peso',
                                                                 ]);
                     ?>
@@ -339,9 +345,10 @@ $listaAño2  = ArrayHelper::map($listaFecha2, 'id' , 'campo');
 
                    
                     <div class="col-sm-2" style="margin-left: -20px;">
-                        <?= $form->field($model, 'nro_cilindros')->input(
+                        <?= $form->field($model, 'nro_cilindros')->textInput(
                                                                 [
-                                                                
+                                                                'value' => $datosVehiculo[0]['nro_cilindros'],
+                                                                'readonly' => true,
                                                                 'id'=> 'cilindrada',
                                                                 ]);
                     ?>
@@ -356,26 +363,45 @@ $listaAño2  = ArrayHelper::map($listaFecha2, 'id' , 'campo');
 
                    
                     <div class="col-sm-2" style="margin-left: -20px;">
-                        <?= $form->field($model, 'precio_inicial')->input(
+                        <?= $form->field($model, 'precio_inicial')->textInput(
                                                                 [
-                                                                
+                                                                'value' => $datosVehiculo[0]['precio_inicial'],
+                                                                'readonly' => true,
                                                                 'id'=> 'precio_inicial',
                                                                 ]);
                     ?>
                 
                     </div>
-                    </div>
+                   
 
 <!-- FIN PRECIO <-->
+
+<!-- CALCOMANIA -->
+
+                   
+                    <div class="col-sm-2" style="margin-left: -20px;">
+                        <?= $form->field($model, 'nro_calcomania')->textInput(
+                                                                [
+                                                                'value' => $datosVehiculo[0]['nro_calcomania'],
+                                                                'readonly' => true,
+                                                                'id'=> 'precio_inicial',
+                                                                ]);
+                    ?>
+                
+                    </div>
+                   </div>
+
+<!-- FIN DE CALCOMANIA <-->
 
 
 <!-- CAPACIDAD DE CARGA -->
 
                     <div class="row">                    
                     <div class="col-sm-2">
-                        <?= $form->field($model, 'capacidad')->input(
+                        <?= $form->field($model, 'capacidad')->textInput(
                                                                 [
-                                                                
+                                                                'value' => $datosVehiculo[0]['capacidad'],
+                                                                'readonly' => true,
                                                                 'id'=> 'capacidad',
                                                                 ]);
                     ?>
@@ -391,9 +417,10 @@ $listaAño2  = ArrayHelper::map($listaFecha2, 'id' , 'campo');
 
                     <div class="row">
                     <div class="col-sm-2">
-                        <?= $form->field($model, 'exceso_cap')->input(
+                        <?= $form->field($model, 'exceso_cap')->textInput(
                                                                 [
-                                                                
+                                                                'value' => $datosVehiculo[0]['exceso_cap'],
+                                                                'readonly' => true,
                                                                 'id'=> 'exceso_cap',
                                                                 ]);
                     ?>
@@ -408,15 +435,13 @@ $listaAño2  = ArrayHelper::map($listaFecha2, 'id' , 'campo');
                          
                     <div class="col-sm-2" style="margin-bottom:43px;">
                        
-                    <?= $form->field($model, 'medida_cap')->label(false)->radioList([
-                                                                                                        'Kgs' => Yii::t('frontend', 'Kgs.'),
-
-                                                                                                        'Ton' => Yii::t('frontend', 'Tns.'),
-                                                                                                      ],
-                                                                                                      [
-                                                                                                        
-                                                                                                      ]
-                                                                                                      ) ?>
+                     <?= $form->field($model, 'medida_cap')->textInput(
+                                                                [
+                                                                'value' => $datosVehiculo[0]['medida_cap'],
+                                                                'readonly' => true,
+                                                                'id'=> 'exceso_cap',
+                                                                ]);
+                    ?>
                                
                 
                     </div>
@@ -433,9 +458,10 @@ $listaAño2  = ArrayHelper::map($listaFecha2, 'id' , 'campo');
 
                     <div class="row">
                     <div class="col-sm-5">
-                        <?= $form->field($model, 'serial_carroceria')->input(
+                        <?= $form->field($model, 'serial_carroceria')->textInput(
                                                                 [
-                                                                
+                                                                'value' => $datosVehiculo[0]['serial_carroceria'],
+                                                                'readonly' => true,
                                                                 'id'=> 'serial_carroceria',
                                                                 ]);
                     ?>
@@ -452,9 +478,10 @@ $listaAño2  = ArrayHelper::map($listaFecha2, 'id' , 'campo');
 
                     
                     <div class="col-sm-5" style="margin-left: -20px;">
-                        <?= $form->field($model, 'serial_motor')->input(
+                        <?= $form->field($model, 'serial_motor')->textInput(
                                                                 [
-                                                                
+                                                                'value' => $datosVehiculo[0]['serial_motor'],
+                                                                'readonly' => true,
                                                                 'id'=> 'serial_motor',
                                                                 ]);
                     ?>

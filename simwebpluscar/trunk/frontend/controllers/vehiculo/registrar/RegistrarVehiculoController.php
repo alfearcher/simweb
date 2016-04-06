@@ -452,6 +452,7 @@ class RegistrarVehiculoController extends Controller
 
 
                         }
+                  
                   }else{
 
                       $transaccion->rollback();
@@ -483,14 +484,17 @@ class RegistrarVehiculoController extends Controller
                                  return true;
 
 
-                             }
-                             }else{
+                          }
+                          
+                          }else{
 
 		                      $transaccion->rollback();
 		                      $conn->close();
 		                      return false;
 
-              	             }
+              	         }
+
+
 
 
 

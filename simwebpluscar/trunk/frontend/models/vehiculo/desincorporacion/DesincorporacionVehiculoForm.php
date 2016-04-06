@@ -94,7 +94,7 @@ class DesincorporacionVehiculoForm extends Model
     {
         return [
                 'motivos' => Yii::t('frontend', 'Motivo Principal'), 
-                'otrosMotivos' => Yii::t('frontend', 'Especificacion'), 
+                'otrosMotivos' => Yii::t('frontend', 'Especifique el motivo de la desincorporacion'), 
                 
 
 

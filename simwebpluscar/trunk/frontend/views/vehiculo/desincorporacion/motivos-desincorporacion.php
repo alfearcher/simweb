@@ -7,7 +7,7 @@ use yii\helpers\ArrayHelper;
 use common\models\desincorporacion\CausasDesincorporaciones;
  
  
-$this->title = 'Motivos de Desincorporacion';
+$this->title = 'Cause of Desincorporation';
 
 //die($pregunta1);
 ?>

@@ -210,7 +210,7 @@ class DesincorporacionVehiculoController extends Controller
 
                     }else{
 
-                        return MensajeController::actionMensaje(420);
+                        return MensajeController::actionMensaje(920);
                     
                     }
                     

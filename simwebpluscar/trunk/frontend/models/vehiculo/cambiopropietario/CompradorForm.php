@@ -117,9 +117,9 @@ class CompradorForm extends Model
 
                                             //die(var_dump($buscarVehiculo[0]->id_vehiculo));
 
-                if ($buscarVehiculo == true and $this->ano_traspaso > $buscarVehiculo[0]->ano_vehiculo ){
+                if ($buscarVehiculo == true and $this->ano_traspaso < $buscarVehiculo[0]->ano_vehiculo ){
 
-                      $this->addError($attribute, Yii::t('frontend', 'Año de traspaso must not be bigger than año de Vehiculo' ));
+                      $this->addError($attribute, Yii::t('frontend', 'Año de traspaso must not be lower than año de Vehiculo' ));
                    
                 }else{
                 

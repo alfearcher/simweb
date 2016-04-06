@@ -95,13 +95,13 @@ class CambioDatosVehiculoForm extends Model
      
 
         return [
-              [['placa','marca', 'modelo','color','no_ejes',
+            [['placa','marca', 'modelo','color','no_ejes',
               'nro_puestos','peso','nro_cilindros','precio_inicial',
               'capacidad','medida_cap'],'required'],
              
-             [['color'], 'match' , 'pattern' => "/[a-zA-Z]+/", 'message' => Yii::t('frontend', 'Color must have only letters')],
+            [['color'], 'match' , 'pattern' => "/[a-zA-Z]+/", 'message' => Yii::t('frontend', 'Color must have only letters')],
             
-              [['no_ejes', 'nro_puestos' ,'peso','nro_cilindros', 'capacidad',
+            [['no_ejes', 'nro_puestos' ,'peso','nro_cilindros', 'capacidad',
             ],'integer','message' => yii::t('frontend', '{attribute} must be an integer') ] ,  
 
               ['marca' , 'string' , 'max' => 25 ],

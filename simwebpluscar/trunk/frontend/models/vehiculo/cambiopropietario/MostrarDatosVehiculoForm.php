@@ -61,7 +61,7 @@ use frontend\models\vehiculo\cambiodatos\BusquedaVehiculos;
 class MostrarDatosVehiculoForm extends Model
 {
      
-  
+public $exceso_cap;  
 public $placa;
 public $marca;
 public $modelo;
@@ -77,6 +77,7 @@ public $fecha_inicio;
 public $peso;
 public $nro_cilindros;
 public $precio_inicial;
+public $nro_calcomania;
 public $capacidad;
 public $medida_cap;
 public $serial_carroceria;
@@ -87,10 +88,7 @@ public $serial_motor;
 
 
         return [
-              [['placa', 'marca', 'modelo', 'ano_compra' ,'ano_vehiculo', 'clase_vehiculo', 'tipo_vehiculo',
-               'uso_vehiculo', 'color', 'no_ejes', 'nro_puestos', 'fecha_inicio', 
-               'peso', 'nro_cilindros', 'precio_inicial', 'capacidad',  'medida_cap',
-              'serial_carroceria', 'serial_motor'],'required'],
+              ['placa' , 'required'],
 
              
              
@@ -127,6 +125,7 @@ public $serial_motor;
                 'peso' => Yii::t('frontend', 'Peso (kg)'), 
                 'nro_cilindros' => Yii::t('frontend', 'Nro. Cilindros'), 
                 'precio_inicial' => Yii::t('frontend', 'Precio Inicial'), 
+                'nro_calcomania' => Yii::t('frontend', 'Nro. Calcomania'), 
                 'capacidad' => Yii::t('frontend', 'Capacidad'),
                 'exceso_cap' => Yii::t('frontend', 'Exceso de Capacidad'),
                 'medida_cap' => Yii::t('frontend', 'Medida de Capacidad'),   

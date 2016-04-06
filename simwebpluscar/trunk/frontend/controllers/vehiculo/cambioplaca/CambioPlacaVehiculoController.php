@@ -187,7 +187,7 @@ class CambioPlacaVehiculoController extends Controller
 
                    }else{
 
-                    return MensajeController::actionMensaje(420);
+                    return MensajeController::actionMensaje(920);
                    }
                  }
                } 
@@ -213,7 +213,7 @@ class CambioPlacaVehiculoController extends Controller
     }
 
 
-        public function verificarSolicitud($idVehiculo,$idConfig)
+    public function verificarSolicitud($idVehiculo,$idConfig)
     {
       $buscar = SolicitudesContribuyente::find()
                                         ->where([ 
