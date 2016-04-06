@@ -265,7 +265,7 @@ class CambioPropietarioController extends Controller
 
   public function verificarSolicitud($idVehiculo,$idConfig)
   {
-      
+     
       $buscar = SolicitudesContribuyente::find()
                                         ->where([ 
                                           'id_impuesto' => $idVehiculo,
@@ -518,7 +518,7 @@ class CambioPropietarioController extends Controller
 
                   if ($buscar and $guardar == true ){
 
-                    die('los dos primeros son true');
+                   // die('los dos primeros son true');
 
                     $transaccion->commit();
                     $conn->close();
