@@ -375,7 +375,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                 $todoBien == false;
                 break;
               }
-            }
+            } /// fin del foreach
 
             if ($todoBien == true){
                 
