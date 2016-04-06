@@ -183,8 +183,8 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
 
          if ( isset(Yii::$app->user->identity->id_contribuyente) ) {
-
-              
+$datos = $_SESSION['datosInmueble'];
+$model = new DesincorporacionInmueblesForm();              
          
               return $this->render('desincorporacion-inmuebles', ['model' => $model, 'datos'=>$datos]);  
 
@@ -339,3 +339,83 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      }
 
 }
+
+// $datos = $_SESSION['datosInmueble'];
+//          //Creamos la instancia con el model de validación
+//          $model = new DesincorporacionInmueblesForm();
+
+//          $postData = Yii::$app->request->post();
+    
+//          //Mostrará un mensaje en la vista cuando el usuario se haya registrado
+//          $msg = null; 
+//          $url = null; 
+//          $tipoError = null; 
+//          $todoBien = true;
+    
+//          //Validación mediante ajax
+//          if ($model->load($postData) && Yii::$app->request->isAjax){ 
+
+//               Yii::$app->response->format = Response::FORMAT_JSON;
+//               return ActiveForm::validate($model); 
+//          } 
+   
+//          if ($model->load($postData)){
+
+//               if($model->validate()){ 
+
+//                  //condicionales    
+                  
+//                 if (!\Yii::$app->user->isGuest){                                      
+
+
+//                      foreach($datos as $key => $value) {
+                     
+//                           $value['id_impuesto'];
+//                           //die($value['id_vehiculo']);
+//                           $verificarSolicitud = self::verificarSolicitud($value['id_impuesto'] , $_SESSION['id']);
+//                           if($verificarSolicitud == true){
+//                               //die(var_dump($value['id_vehiculo']));
+//                               $todoBien = false;
+                          
+//                            }
+//                      }
+//                      $guardo = self::GuardarCambios($model, $datos);
+
+//                      if($todoBien){
+
+//                              if($guardo == true){ 
+
+//                                   $envio = self::EnviarCorreo($guardo);
+
+//                                   if($envio == true){ 
+
+//                                       return MensajeController::actionMensaje(100); 
+
+//                                   } else { 
+                                    
+//                                       return MensajeController::actionMensaje(920);
+
+//                                   } 
+
+//                               } else {
+
+//                                     return MensajeController::actionMensaje(920);
+//                               } 
+
+//                      } else {
+
+//                             return MensajeController::actionMensaje(920);
+//                      } 
+
+//                    }else{ 
+
+//                         $msg = Yii::t('backend', 'AN ERROR OCCURRED WHEN FILLING THE URBAN PROPERTY!');//HA OCURRIDO UN ERROR AL LLENAR LAS PREGUNTAS SECRETAS
+//                         $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("site/login")."'>";                     
+//                         return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
+//                    } 
+
+//               }else{ 
+                
+//                    $model->getErrors(); 
+//               }
+//          }
