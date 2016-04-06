@@ -185,7 +185,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
          if ( isset(Yii::$app->user->identity->id_contribuyente) ) {
 
               
-         die('llegue a comprobar ');
+         
               return $this->render('desincorporacion-inmuebles', ['model' => $model, 'datos'=>$datos]);  
 
         }  else {
