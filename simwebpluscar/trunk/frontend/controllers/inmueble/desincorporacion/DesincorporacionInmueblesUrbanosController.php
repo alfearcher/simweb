@@ -134,9 +134,9 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
           $_SESSION['idInmueble'] = $idInmueble;
 
           //$idInmueble = yii::$app->request->post('id');
-          $validacion = new DesincorporacionInmueblesForm();
+          $model = new DesincorporacionInmueblesForm();
 
-          if ($validacion->validarCheck(yii::$app->request->post('chk-desincorporar-inmueble')) == true){
+          if ($model->validarCheck(yii::$app->request->post('chk-desincorporar-inmueble')) == true){
 
           $modelsearch = new InmueblesSearch();
           $datos = $modelsearch->busquedaInmueble($idInmueble, $idContribuyente);
