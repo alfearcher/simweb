@@ -289,30 +289,37 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      public function GuardarCambios($model, $datos)
      {
             die(var_dump($datos));
-            try {
-            $tableName1 = 'solicitudes_contribuyente'; 
+            $buscar = new ParametroSolicitud($_SESSION['id']);
 
+            $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
+            $conn = New ConexionController();
+            $conexion = $conn->initConectar('dbsim');     // instancia de la conexion (Connection)
+            $conexion->open();  
+            $transaccion = $conexion->beginTransaction();
+            
+
+            try {
+
+            foreach($datosVehiculo as $key => $value){
+            
             $tipoSolicitud = self::DatosConfiguracionTiposSolicitudes();
 
+            $tableName1 = 'solicitudes_contribuyente'; 
+
             $arrayDatos1 = [  'id_contribuyente' => $datos->id_contribuyente,
-                              'id_config_solicitud' => 3,
+                              'id_config_solicitud' => $_SESSION['id'],
                               'impuesto' => 2,
                               'id_impuesto' => $datos->id_impuesto,
                               'tipo_solicitud' => $tipoSolicitud,
                               'usuario' => yii::$app->user->identity->login,
                               'fecha_hora_creacion' => date('Y-m-d h:i:s'),
-                              'nivel_aprobacion' => 0,
+                              'nivel_aprobacion' => $nivelAprobacion,
                               'nro_control' => 0,
                               'firma_digital' => null,
                               'estatus' => 0,
                               'inactivo' => 0,
                           ];  
             
-
-            $conn = New ConexionController();
-            $conexion = $conn->initConectar('dbsim');     // instancia de la conexion (Connection)
-            $conexion->open();  
-            $transaccion = $conexion->beginTransaction();
 
             if ( $conn->guardarRegistro($conexion, $tableName1,  $arrayDatos1) ){  
                 $result = $conexion->getLastInsertID();
@@ -321,15 +328,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                 $arrayDatos2 = [    'id_contribuyente' => $datos->id_contribuyente,
                                     'id_impuesto' => $datos->id_impuesto,
                                     'nro_solicitud' => $result,
-                                    'ano_inicio' => $model->ano_inicio,
-                                    'direccion' => $model->direccion,
-                                    'medidor' => $model->medidor,
-                                    'observacion' => $model->observacion,
-                                    'tipo_ejido' => $tipo_ejido,
-                                  //'av_calle_esq_dom' => $av_calle_esq_dom,
-                                    'casa_edf_qta_dom' => $model->casa_edf_qta_dom,
-                                    'piso_nivel_no_dom' => $model->piso_nivel_no_dom,
-                                    'apto_dom' => $model->apto_dom,
+                                    'inactivo' => 1,
                                     'fecha_creacion' => date('Y-m-d h:i:s'),
                                 ]; 
 
@@ -338,25 +337,64 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                 if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){
 
-                    $transaccion->commit(); 
-                    $conexion->close(); 
-                    $tipoError = 0; 
-                    return $result;
+                    if ($nivelAprobacion['nivel_aprobacion'] != 1){
 
-                } else {
+                        $todoBien == true;
+                         
+
+                    } else {
+
+                        $arrayDatos3 = [    'id_contribuyente' => $datos->id_contribuyente,
+                                            'ano_inicio' => $model->ano_inicio,
+                                            'direccion' => $model->direccion,
+                                            'medidor' => $model->medidor,
+                                            'observacion' => $model->observacion,
+                                            'tipo_ejido' => $model->tipo_ejido,
+                                            'casa_edf_qta_dom' => $model->casa_edf_qta_dom,
+                                            'piso_nivel_no_dom' => $model->piso_nivel_no_dom,
+                                            'apto_dom' => $model->apto_dom,
+                                    
+                                        ]; 
+
             
-                    $transaccion->rollBack();
-                    $conexion->close();
-                    $tipoError = 0; 
-                    return false;
+                        $tableName3 = 'inmuebles';
+                        $arrayCondition = ['id_impuesto'=>$datos->id_impuesto];
 
+                        if ( $conn->modificarRegistro($conexion, $tableName3,  $arrayDatos3, $arrayCondition) ){
+
+                              $todoBien == true; 
+
+                        } else {
+            
+                              $todoBien = false; 
+
+                        }
+                  }
                 }
+              }else{ 
+                $todoBien == false;
+                break;
+              }
+            }
 
-            }else{ 
+            if ($todoBien == true){
                 
-                return false;
-            }   
+                $transaccion->commit();  
+                $conexion->close(); 
+                $tipoError = 0; 
+                return $result;
+
+            } else {
             
+                $transaccion->rollBack(); 
+                $conexion->close(); 
+                $tipoError = 0; 
+                return false; 
+
+            }
+              
+               
+          
           } catch ( Exception $e ) {
               //echo $e->errorInfo[2];
           } 
