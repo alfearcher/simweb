@@ -41,7 +41,10 @@
  *  View
  *  Index
  *  DesincorporacionInmuebles
- *
+ *  GuardarCambios
+ *  verificarSolicitud
+ *  DatosConfiguracionTiposSolicitudes
+ *  EnviarCorreo
  *  
  *   
  *  
@@ -63,6 +66,7 @@ use yii\web\Session;
 use frontend\models\inmueble\desincorporacion\DesincorporacionInmueblesForm;
 use frontend\models\inmueble\InmueblesSearch;
 use frontend\models\inmueble\InmueblesConsulta;
+use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 
 //use common\models\Users;
 
@@ -78,7 +82,7 @@ use common\enviaremail\EnviarEmailSolicitud;
 use common\mensaje\MensajeController;
 use frontend\models\inmueble\ConfiguracionTiposSolicitudes;
 
-session_start();
+session_start(); 
 /*********************************************************************************************************
  * InscripcionInmueblesUrbanosController implements the actions for InscripcionInmueblesUrbanosForm model.
  *********************************************************************************************************/
@@ -164,9 +168,9 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
 
 
-        // return $this->render('view', [
-        //     'model' => $datos,
-        // ]);
+         return $this->render('view', [
+             'model' => $datos,
+         ]);
         }  else {
                     echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
         }
@@ -174,17 +178,96 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
     
      /**
-     *REGISTRO (inscripcion) INMUEBLES URBANOS
-     *Metodo para crear las cuentas de usuarios de los funcionarios
-     *@return model 
+     *REGISTRO (desincorporacion) INMUEBLES URBANOS
+     *Metodo para generar las solicitudes de desincorporacion
+     *@return model, datos
      **/
      public function actionDesincorporacionInmuebles()
      { 
 
 
          if ( isset(Yii::$app->user->identity->id_contribuyente) ) {
-$datos = $_SESSION['datosInmueble'];
-$model = new DesincorporacionInmueblesForm();              
+
+         $datos = $_SESSION['datosInmueble'];
+         //Creamos la instancia con el model de validación
+         $model = new DesincorporacionInmueblesForm();
+
+         $postData = Yii::$app->request->post();
+    
+         //Mostrará un mensaje en la vista cuando el usuario se haya registrado
+         $msg = null; 
+         $url = null; 
+         $tipoError = null; 
+         $todoBien = true;
+    
+         //Validación mediante ajax
+         if ($model->load($postData) && Yii::$app->request->isAjax){ 
+
+              Yii::$app->response->format = Response::FORMAT_JSON;
+              return ActiveForm::validate($model); 
+         } 
+   
+         if ($model->load($postData)){
+
+              if($model->validate()){ 
+
+                 //condicionales    
+                  
+                if (!\Yii::$app->user->isGuest){                                      
+
+
+                     foreach($datos as $key => $value) {
+                     
+                          $value['id_impuesto'];
+                          //die($value['id_vehiculo']);
+                          $verificarSolicitud = self::verificarSolicitud($value['id_impuesto'] , $_SESSION['id']);
+                          if($verificarSolicitud == true){
+                              //die(var_dump($value['id_vehiculo']));
+                              $todoBien = false;
+                          
+                           }
+                     }
+                    
+                     $guardo = self::GuardarCambios($model, $datos);
+
+                     if($todoBien){
+
+                             if($guardo == true){ 
+
+                                  $envio = self::EnviarCorreo($guardo);
+
+                                  if($envio == true){ 
+
+                                      return MensajeController::actionMensaje(100); 
+
+                                  } else { 
+                                    
+                                      return MensajeController::actionMensaje(920);
+
+                                  } 
+
+                              } else {
+
+                                    return MensajeController::actionMensaje(920);
+                              } 
+
+                     } else {
+
+                            return MensajeController::actionMensaje(920);
+                     } 
+
+                   }else{ 
+
+                        $msg = Yii::t('backend', 'AN ERROR OCCURRED WHEN FILLING THE URBAN PROPERTY!');//HA OCURRIDO UN ERROR AL LLENAR LAS PREGUNTAS SECRETAS
+                        $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("site/login")."'>";                     
+                        return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
+                   } 
+
+              }else{ 
+                
+                   $model->getErrors(); 
+              }
+         }              
          
               return $this->render('desincorporacion-inmuebles', ['model' => $model, 'datos'=>$datos]);  
 
@@ -197,14 +280,15 @@ $model = new DesincorporacionInmueblesForm();
     
 
      /**
-      * [GuardarInscripcion description] Metodo que se encarga de guardar los datos de la solicitud 
-      * de inscripcion del inmueble del contribuyente
-      * @param [type] $model [description] arreglo de datos del formulario de inscripcion del
+      * [GuardarCambios description] Metodo que se encarga de guardar los datos de la solicitud 
+      * de desincorporacion del inmueble del contribuyente
+      * @param [type] $model [description] arreglo de datos del formulario de desincorporacion del
       * inmueble
+      * @param [type] $datos [description] arreglo de datos del contribuyente 
       */
      public function GuardarCambios($model, $datos)
      {
-           
+            die(var_dump($datos));
             try {
             $tableName1 = 'solicitudes_contribuyente'; 
 
@@ -278,7 +362,12 @@ $model = new DesincorporacionInmueblesForm();
           } 
                        
      }
-
+/**
+ * [verificarSolicitud description]
+ * @param  [type] $idInmueble [description] datos del inmueble 
+ * @param  [type] $idConfig   [description] id configuracion de la solicuitud de desincorporacion del inmueble
+ * @return [type]             [description]
+ */
      public function verificarSolicitud($idInmueble,$idConfig)
     {
       $buscar = SolicitudesContribuyente::find()
@@ -340,82 +429,8 @@ $model = new DesincorporacionInmueblesForm();
 
 }
 
-// $datos = $_SESSION['datosInmueble'];
-//          //Creamos la instancia con el model de validación
-//          $model = new DesincorporacionInmueblesForm();
-
-//          $postData = Yii::$app->request->post();
-    
-//          //Mostrará un mensaje en la vista cuando el usuario se haya registrado
-//          $msg = null; 
-//          $url = null; 
-//          $tipoError = null; 
-//          $todoBien = true;
-    
-//          //Validación mediante ajax
-//          if ($model->load($postData) && Yii::$app->request->isAjax){ 
-
-//               Yii::$app->response->format = Response::FORMAT_JSON;
-//               return ActiveForm::validate($model); 
-//          } 
-   
-//          if ($model->load($postData)){
-
-//               if($model->validate()){ 
-
-//                  //condicionales    
-                  
-//                 if (!\Yii::$app->user->isGuest){                                      
 
 
-//                      foreach($datos as $key => $value) {
-                     
-//                           $value['id_impuesto'];
-//                           //die($value['id_vehiculo']);
-//                           $verificarSolicitud = self::verificarSolicitud($value['id_impuesto'] , $_SESSION['id']);
-//                           if($verificarSolicitud == true){
-//                               //die(var_dump($value['id_vehiculo']));
-//                               $todoBien = false;
-                          
-//                            }
-//                      }
-//                      $guardo = self::GuardarCambios($model, $datos);
 
-//                      if($todoBien){
 
-//                              if($guardo == true){ 
 
-//                                   $envio = self::EnviarCorreo($guardo);
-
-//                                   if($envio == true){ 
-
-//                                       return MensajeController::actionMensaje(100); 
-
-//                                   } else { 
-                                    
-//                                       return MensajeController::actionMensaje(920);
-
-//                                   } 
-
-//                               } else {
-
-//                                     return MensajeController::actionMensaje(920);
-//                               } 
-
-//                      } else {
-
-//                             return MensajeController::actionMensaje(920);
-//                      } 
-
-//                    }else{ 
-
-//                         $msg = Yii::t('backend', 'AN ERROR OCCURRED WHEN FILLING THE URBAN PROPERTY!');//HA OCURRIDO UN ERROR AL LLENAR LAS PREGUNTAS SECRETAS
-//                         $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("site/login")."'>";                     
-//                         return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
-//                    } 
-
-//               }else{ 
-                
-//                    $model->getErrors(); 
-//               }
-//          }

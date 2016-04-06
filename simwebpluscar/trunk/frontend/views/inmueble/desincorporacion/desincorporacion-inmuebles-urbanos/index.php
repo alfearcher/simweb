@@ -21,7 +21,7 @@ $this->title = Yii::t('backend', 'Property Urban');
  <?php $form = ActiveForm::begin([
     'method' => 'post',
     'id' => 'formulario',
-    'action'=> '/simwebpluscar/frontend/web/index.php?r=/inmueble/desincorporacion/desincorporacion-inmuebles-urbanos/view',
+    'action'=> ['/inmueble/desincorporacion/desincorporacion-inmuebles-urbanos/view'],
     'enableClientValidation' => false,
     'enableAjaxValidation' => true,
     'options' => ['class' => 'form-vertical'],]); ?>

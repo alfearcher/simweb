@@ -11,14 +11,14 @@ use yii\helpers\Html;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Inmuebles'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id_impuesto, 'url' => ['view', 'id' => $model->id_impuesto]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');*/
-$disabled = true;
+
 ?>
 <div class="inmuebles-update">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_desincorporacioninmueblesform', [
-        'model' => $model, 'datos'=>$datos, 'disabled'=>$disabled,
+        'model' => $model, 'datos'=>$datos, 
     ]) ?>
 
 </div>

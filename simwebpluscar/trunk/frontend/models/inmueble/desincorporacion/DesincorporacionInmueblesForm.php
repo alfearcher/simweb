@@ -98,6 +98,7 @@ class DesincorporacionInmueblesForm extends \yii\db\ActiveRecord
     
     public $validacion;
     public $causa;
+    public $observacion;
     
     
     public static function tableName()
@@ -112,7 +113,7 @@ class DesincorporacionInmueblesForm extends \yii\db\ActiveRecord
     {
         return [  
             
-            [['ano_inicio', 'manzana_limite',  'inactivo', 'id_habitante', 'tipo_ejido'], 'integer','message' => Yii::t('backend', 'only integers')],
+            [['ano_inicio', 'manzana_limite',  'inactivo', 'id_habitante', 'tipo_ejido', 'causa'], 'integer','message' => Yii::t('backend', 'only integers')],
             // [['observacion','datosVendedor','inmuebleVendedor'], 'string'], 
             [['direccion', 'observacion'], 'string', 'max' => 255,'message' => Yii::t('backend', 'Only 255 character')],
             [['validacion'], 'string', 'max' => 4,'message' => Yii::t('backend', 'Only 3 character')],
@@ -131,39 +132,40 @@ class DesincorporacionInmueblesForm extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_impuesto' => Yii::t('app', 'Id Impuesto'),
+            //'causa' => Yii::t('frontend', 'Cause'),
+            'id_impuesto' => Yii::t('frontend', 'Id Impuesto'),
             'id_contribuyente' => Yii::t('app', 'Id Contribuyente'),
-            'ano_inicio' => Yii::t('app', 'Ano Inicio'),
-            'direccion' => Yii::t('app', 'Direccion'),
-            'liquidado' => Yii::t('app', 'Liquidado'),
-            'manzana_limite' => Yii::t('app', 'Manzana Limite'),
-            'lote_1' => Yii::t('app', 'Lote 1'),
-            'lote_2' => Yii::t('app', 'Lote 2'),
-            'nivel' => Yii::t('app', 'Nivel'),
-            'lote_3' => Yii::t('app', 'Lote 3'),
-            'av_calle_esq_dom' => Yii::t('app', 'Av Calle Esq Dom'),
-            'casa_edf_qta_dom' => Yii::t('app', 'Casa Edf Qta Dom'),
-            'piso_nivel_no_dom' => Yii::t('app', 'Piso Nivel No Dom'),
-            'apto_dom' => Yii::t('app', 'Apto Dom'),
-            'tlf_hab' => Yii::t('app', 'Tlf Hab'),
-            'medidor' => Yii::t('app', 'Medidor'),
-            'id_sim' => Yii::t('app', 'Id Sim'),
-            'observacion' => Yii::t('app', 'Observacion'),
-            'inactivo' => Yii::t('app', 'Inactivo'),
-            'catastro' => Yii::t('app', 'Catastro'),
-            'id_habitante' => Yii::t('app', 'Id Habitante'),
-            'tipo_ejido' => Yii::t('app', 'Tipo Ejido'),
-            'propiedad_horizontal' => Yii::t('app', 'Propiedad Horizontal'),
-            'estado_catastro' => Yii::t('app', 'Estado Catastro'),
-            'municipio_catastro' => Yii::t('app', 'Municipio Catastro'),
-            'parroquia_catastro' => Yii::t('app', 'Parroquia Catastro'),
-            'ambito_catastro' => Yii::t('app', 'Ambito Catastro'),
-            'sector_catastro' => Yii::t('app', 'Sector Catastro'),
-            'manzana_catastro' => Yii::t('app', 'Manzana Catastro'),
-            'parcela_catastro' => Yii::t('app', 'Parcela Catastro'),
-            'subparcela_catastro' => Yii::t('app', 'Subparcela Catastro'),
-            'nivel_catastro' => Yii::t('app', 'Nivel Catastro'),
-            'unidad_catastro' => Yii::t('app', 'Unidad Catastro'),
+            'ano_inicio' => Yii::t('frontend', 'Ano Inicio'),
+            'direccion' => Yii::t('frontend', 'Direccion'),
+            'liquidado' => Yii::t('frontend', 'Liquidado'),
+            'manzana_limite' => Yii::t('frontend', 'Manzana Limite'),
+            'lote_1' => Yii::t('frontend', 'Lote 1'),
+            'lote_2' => Yii::t('frontend', 'Lote 2'),
+            'nivel' => Yii::t('frontend', 'Nivel'),
+            'lote_3' => Yii::t('frontend', 'Lote 3'),
+            'av_calle_esq_dom' => Yii::t('frontend', 'Av Calle Esq Dom'),
+            'casa_edf_qta_dom' => Yii::t('frontend', 'Casa Edf Qta Dom'),
+            'piso_nivel_no_dom' => Yii::t('frontend', 'Piso Nivel No Dom'),
+            'apto_dom' => Yii::t('frontend', 'Apto Dom'),
+            'tlf_hab' => Yii::t('frontend', 'Tlf Hab'),
+            'medidor' => Yii::t('frontend', 'Medidor'),
+            'id_sim' => Yii::t('frontend', 'Id Sim'),
+            'observacion' => Yii::t('frontend', 'Observacion'),
+            'inactivo' => Yii::t('frontend', 'Inactivo'),
+            'catastro' => Yii::t('frontend', 'Catastro'),
+            'id_habitante' => Yii::t('frontend', 'Id Habitante'),
+            'tipo_ejido' => Yii::t('frontend', 'Tipo Ejido'),
+            'propiedad_horizontal' => Yii::t('frontend', 'Propiedad Horizontal'),
+            'estado_catastro' => Yii::t('frontend', 'Estado Catastro'),
+            'municipio_catastro' => Yii::t('frontend', 'Municipio Catastro'),
+            'parroquia_catastro' => Yii::t('frontend', 'Parroquia Catastro'),
+            'ambito_catastro' => Yii::t('frontend', 'Ambito Catastro'),
+            'sector_catastro' => Yii::t('frontend', 'Sector Catastro'),
+            'manzana_catastro' => Yii::t('frontend', 'Manzana Catastro'),
+            'parcela_catastro' => Yii::t('frontend', 'Parcela Catastro'),
+            'subparcela_catastro' => Yii::t('frontend', 'Subparcela Catastro'),
+            'nivel_catastro' => Yii::t('frontend', 'Nivel Catastro'),
+            'unidad_catastro' => Yii::t('frontend', 'Unidad Catastro'),
         ];
     }
 

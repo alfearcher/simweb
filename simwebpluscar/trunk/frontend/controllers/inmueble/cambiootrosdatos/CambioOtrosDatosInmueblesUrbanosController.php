@@ -38,11 +38,12 @@
  *
  *  
  *  @method
- *  randKey
- *  InscripcionInmueblesUrbanos
- *
- *  
- *   
+ *  View
+ *  Index
+ *  CambiosOtrosDatosInmueblesUrbanos
+ *  GuardarCambios
+ *  DatosConfiguracionTiposSolicitudes
+ *  EnviarCorreo
  *  
  *  @inherits
  *  

@@ -1,5 +1,5 @@
 <?php
-
+//die('llegue a la vista desincorporacion');
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
@@ -33,38 +33,7 @@ $this->title = Yii::t('frontend', 'Property Update');
                 <table class="table table-striped "cellpadding="1px" cellspacing="1px">
                                              
 <!-- Direccion de Catastro  -->      
-                    <div class="row">
-
-                        <div class="col-sm-2"> 
-                            <?= Yii::t('backend', 'Id Tax') ?>
-                        </div> 
-
-                        <div class="col-sm-2">
-                           <?= $form->field($datos, 'id_impuesto')->textInput(
-                                                                   [
-                                                                   'readOnly'=>true,
-                                                                   'id'=> 'id_impuesto',
-                                                                   ])->label(false);
-                            ?>
-                    
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-2"> 
-                            <?= Yii::t('backend', 'Street Addres') ?>
-                        </div> 
-
-                        <div class="col-sm-4">
-                            <?= $form->field($datos, 'direccion')->textInput(
-                                                                    [
-                                                                    'readOnly'=>true,
-                                                                    'id'=> 'direccion',
-                                                                    'style' => 'width:300px;',
-                                                                    ])->label(false);
-                            ?>
-                    
-                        </div>   
-                    </div>  
+                     
 
 
                    <div class="row">
@@ -149,5 +118,8 @@ $this->title = Yii::t('frontend', 'Property Update');
 
 
 
-</div><!-- inscripcionInmueblesUrbanos -->
+</div><!-- inscripcionInmueblesUrbanos 
+
+
+-->
 
