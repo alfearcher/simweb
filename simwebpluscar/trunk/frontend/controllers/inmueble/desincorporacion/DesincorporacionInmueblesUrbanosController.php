@@ -81,6 +81,7 @@ use common\conexion\ConexionController;
 use common\enviaremail\EnviarEmailSolicitud;
 use common\mensaje\MensajeController;
 use frontend\models\inmueble\ConfiguracionTiposSolicitudes;
+use common\models\configuracion\solicitud\ParametroSolicitud;
 
 session_start(); 
 /*********************************************************************************************************
@@ -286,9 +287,9 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
       * inmueble
       * @param [type] $datos [description] arreglo de datos del contribuyente 
       */
-     public function GuardarCambios($model, $datos)
+     public function GuardarCambios($model, $datosInmueble)
      {
-            die(var_dump($datos));
+            //die(var_dump($datos));
             $buscar = new ParametroSolicitud($_SESSION['id']);
 
             $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
@@ -300,13 +301,13 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
             try {
 
-            foreach($datosVehiculo as $key => $value){
+            foreach($datosInmueble as $key => $value){
             
             $tipoSolicitud = self::DatosConfiguracionTiposSolicitudes();
 
             $tableName1 = 'solicitudes_contribuyente'; 
 
-            $arrayDatos1 = [  'id_contribuyente' => $datos->id_contribuyente,
+            $arrayDatos1 = [  'id_contribuyente' => $datosInmueble[]->id_contribuyente,
                               'id_config_solicitud' => $_SESSION['id'],
                               'impuesto' => 2,
                               'id_impuesto' => $datos->id_impuesto,
@@ -373,9 +374,9 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                 }
               }else{ 
                 $todoBien == false;
-                break;
+                break; 
               }
-            } /// fin del foreach
+            } /// fin del foreach 
 
             if ($todoBien == true){
                 
