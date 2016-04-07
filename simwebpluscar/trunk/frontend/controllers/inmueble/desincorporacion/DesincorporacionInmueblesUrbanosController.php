@@ -290,10 +290,13 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      public function GuardarCambios($model, $datosInmueble)
      {
             //die(var_dump($datos));
-            $todoBien= true;
+            $todoBien = true;
+            
             $buscar = new ParametroSolicitud($_SESSION['id']);
 
             $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
+            $tipoSolicitud = self::DatosConfiguracionTiposSolicitudes();
+
             $conn = New ConexionController();
             $conexion = $conn->initConectar('dbsim');     // instancia de la conexion (Connection)
             $conexion->open();  
@@ -304,7 +307,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
             foreach($datosInmueble as $key => $value){
             
-            $tipoSolicitud = self::DatosConfiguracionTiposSolicitudes();
+            
 
             $tableName1 = 'solicitudes_contribuyente'; 
 
@@ -346,21 +349,14 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                     } else {
 
-                        $arrayDatos3 = [    'id_contribuyente' => $datos->id_contribuyente,
-                                            'ano_inicio' => $model->ano_inicio,
-                                            'direccion' => $model->direccion,
-                                            'medidor' => $model->medidor,
-                                            'observacion' => $model->observacion,
-                                            'tipo_ejido' => $model->tipo_ejido,
-                                            'casa_edf_qta_dom' => $model->casa_edf_qta_dom,
-                                            'piso_nivel_no_dom' => $model->piso_nivel_no_dom,
-                                            'apto_dom' => $model->apto_dom,
+                        $arrayDatos3 = [    
+                                            'inactivo' => 1,
                                     
                                         ]; 
 
             
                         $tableName3 = 'inmuebles';
-                        $arrayCondition = ['id_impuesto'=>$datos->id_impuesto];
+                        $arrayCondition = ['id_impuesto'=>$value['id_impuesto']];
 
                         if ( $conn->modificarRegistro($conexion, $tableName3,  $arrayDatos3, $arrayCondition) ){
 
