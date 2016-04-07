@@ -82,8 +82,59 @@
 		{
 			$this->setTipoDeclaracion("ESTIMADA");
 			$this->configurarLapsoLiquidacionActividadEconomica();
-			$this->configurarCicloLiquidacion();
+			$result = $this->configurarCicloLiquidacion();
+			$this->iniciarCicloLiquidacion($result);
+//die(var_dump($result));
 		}
+
+
+
+		/***/
+		private function iniciarCicloLiquidacion($cicloLiquidacion)
+		{
+			$montoCalculo = 0;
+			if ( count($cicloLiquidacion) > 0 ) {
+				foreach ( $cicloLiquidacion as $key => $value ) {
+					$montoCalculado = 0;
+					if ( strlen($key) == 4 && is_integer($key) ) {
+						if ( is_array($value) ) {
+							$año = $key;
+							$periodos = $cicloLiquidacion[$año];
+
+							$exigibilidadDeclaracion = self::getExigibilidadDeclaracion($año);
+							$exigibilidadLiq = self::getExigibilidadLiquidacion($año);
+
+							if ( $exigibilidadDeclaracion['exigibilidad'] == 1 ) {
+								$montoCalculado = $this->liquidarDeclaracion($año, 1);
+								if ( $montoCalculado > 0 ) {
+									$this->generarPeriodosLiquidados($montoCalculado, $año, $periodos, $exigibilidadLiq, $exigibilidadDeclaracion);
+die(var_dump($this->_periodosLiquidados));
+
+								} else {
+									// Abortar el proceso. Por no determinar monto. Renderizar vista
+								}
+
+							} elseif ( $exigibilidadDeclaracion['exigibilidad'] > 1 ) {
+								foreach ( $periodos as $key => $value ) {
+									$montoCalculado = $this->liquidarDeclaracion($año, $value);
+									if ( $montoCalculado > 0 ) {
+										$this->generarPeriodosLiquidados($montoCalculado, $año, $value, $exigibilidadLiq, $exigibilidadDeclaracion);
+
+									} else {
+										// Abortar el proceso. Por no determinar monto. Renderizar vista
+									}
+								}
+							}
+						} else {
+							// Abortar la operacion. Renderizar a una vista.
+						}
+					} else {
+						// Abortar la operacion. Renderizar a una vista.
+					}
+				}
+			}
+		}
+
 
 
 
@@ -430,19 +481,21 @@
 						$periodoFinal = $this->_periodoHasta;
 
 					}
+					$ciclo[$i] = null;
+					$periodos = null;
 					for ( $j = $periodoInicial; $j <= $periodoFinal; $j++ ) {
 						// Con lo siguiente se forma el rango de liquidacion
 						//echo $i . ' - ' . $j;
 						//echo '<br>';
-						$ciclo[] = [$i, $j];
 						$periodos[] = $j;
 					}
+					$ciclo[$i] = $periodos;
 
 					// Se manda el año con sus correspondientes periodos.
-					self::liquidarDeclaracion($i, $periodos);
+					//self::liquidarDeclaracion($i, $periodos);
 				}
 			}
-			//return $ciclo;
+			return $ciclo;
 		}
 
 
@@ -450,31 +503,15 @@
 
 
 		/***/
-		private function LiquidarDeclaracion($año, $periodos)
+		public function LiquidarDeclaracion($año, $periodo)
 		{
-			$monto = 0;
-			$exigibilidadDeclaracion = self::getExigibilidadDeclaracion($año);
-			$exigibilidadLiq = self::getExigibilidadLiquidacion($año);
+			$monto = 0;		// Calculo anual de la liquidacion.
 
 			$liquidacion = New LiquidacionActividadEconomica($this->_idContribuyente);
-			if ( $exigibilidadDeclaracion['exigibilidad'] == 1 ) {
-				$liquidacion->iniciarCalcularLiquidacion($año, 1, $this->_tipoDeclaracion);
-				$monto = $liquidacion->getCalculoAnual();
-				$monto = number_format($monto, 2, '.', '');
+			$liquidacion->iniciarCalcularLiquidacion($año, $periodo, $this->_tipoDeclaracion);
+			$monto = $liquidacion->getCalculoAnual();
+			$monto = number_format($monto, 2, '.', '');
 
-				$this->generarPeriodosLiquidados($monto, $año, $periodos, $exigibilidadLiq, $exigibilidadDeclaracion);
-
-			} elseif ( $exigibilidadDeclaracion['exigibilidad'] > 1 ) {
-				foreach ($periodos as $key => $value) {
-					$monto = 0;
-					$liquidacion->iniciarCalcularLiquidacion($año, $value, $this->_tipoDeclaracion);
-					$monto = $liquidacion->getCalculoAnual();
-					$monto = number_format($monto, 2, ",", ".");
-
-					$this->generarPeriodosLiquidados($monto, $año, $periodos, $exigibilidadLiq, $exigibilidadDeclaracion);
-				}
-
-			}
 			return $monto;
 		}
 
