@@ -114,7 +114,9 @@
 	    {
 	    	if ( is_integer($param) ) {
 	    		$model = UnidadTributaria::find()->where(['Year(fecha_inicio)' => $param])->one();
+
 	    	} elseif ( date($param) ) {
+
 	    		//$model = Rubro::find()->where($fecha . ' between fecha_inicio and fecha_fin')->one();
 	    		//$anoImpositivo = isset($fecha) ? date('Y', strtotime($fecha)) : 0;
 	    	}
