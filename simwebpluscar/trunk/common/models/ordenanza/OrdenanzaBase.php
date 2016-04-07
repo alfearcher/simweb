@@ -318,17 +318,17 @@
 			// Returna una arreglo multidimimensional.
 			// Ejemplo:
 			/**
-			 	array(1) {
-				  [0]=>
-				  array(3) {
-				    ["id_ordenanza"]=>
-				    string(1) "2"
-				    ["ano_impositivo"]=>
-				    string(4) "2006"
-				    ["impuesto"]=>
-				    string(1) "1"
-				  }
-				}
+			 * 	array(1) {
+			 *	  [0]=>
+			 *	  array(3) {
+			 *	    ["id_ordenanza"]=>
+			 *	    string(1) "2"
+			 *	    ["ano_impositivo"]=>
+			 *	    string(4) "2006"
+			 *	    ["impuesto"]=>
+			 *	    string(1) "1"
+			 *	  }
+			 *	}
 			 */
 			return $ordenanza;
 		}
@@ -368,16 +368,16 @@
 
 			/**
 			 * Returna un arreglo. Ejemplo:
-				array(4) {
-	  				["exigibilidad"]=>
-					string(2) "12"
-					["lapso_declaracion"]=>
-					string(9) "Mensuales"
-					["unidad"]=>
-					string(3) "Mes"
-					["observaciones"]=>
-					string(18) "Doce pagos al año"
-				}
+			 *	array(4) {
+	  		 *		["exigibilidad"]=>
+			 *		string(2) "12"
+			 *		["lapso_declaracion"]=>
+			 *		string(9) "Mensuales"
+			 *		["unidad"]=>
+			 *		string(3) "Mes"
+			 *		["observaciones"]=>
+		 	 *		string(18) "Doce pagos al año"
+			 *	}
 			 */
 			return $exigibilidadLiquidacion;
 		}
