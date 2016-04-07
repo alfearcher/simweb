@@ -88,6 +88,32 @@
 
 
 
+
+		/**
+    	 *	Metodo que permite fijar la reglas de validacion del formulario inscripcion-accionista-form.
+    	 */
+	    public function rules()
+	    {
+	        return [
+	        	[['ente', 'id_contribuyente',
+	        	  'planilla', 'status_pago',
+	        	  'notificado', 'ult_act',
+	        	  'id_moneda', 'exigibilidad_deuda'],
+	        	  'required', 'message' => Yii::t('backend','{attribute} is required')],
+	        	['recibo', 'status_pago', 'id_moneda', 'default', 'value' => 0],
+	        	['ente', 'default', 'value' => Yii::$app->ente->noente()],
+	        	[['id_contribuyente', 'planilla',
+	        	  'recibo', 'status_pago',
+	        	  'notificado', 'ente'],
+	        	  'integer', 'message' => Yii::t('backend','{attribute}')],
+	        	['planilla', 'unique', 'message' => Yii::t('backend','{attribute} debe ser unica')],
+
+	        ];
+	    }
+
+
+
+
 		/**
 		 * Relacion con la entidad "pagos-detalle".
 		 * @return [type] [description]

@@ -46,8 +46,10 @@
  	use common\models\calculo\liquidacion\aaee\LiquidacionActividadEconomica;
 	use common\models\contribuyente\ContribuyenteBase;
  	use common\models\ordenanza\OrdenanzaBase;
- 	//use common\models\planilla\Pago;
  	use common\models\planilla\Planilla;
+ 	use backend\models\aaee\declaracion\Declaracion;
+
+
 
 	/**
 	* 	Clase
@@ -73,6 +75,7 @@
 		{
 			$this->_idContribuyente = $id;
 			$this->_periodosLiquidados = null;
+			$_SESSION['idContribuyente'] = $this->_idContribuyente;
 		}
 
 
@@ -82,9 +85,12 @@
 		{
 			$this->setTipoDeclaracion("ESTIMADA");
 			$this->configurarLapsoLiquidacionActividadEconomica();
-			$result = $this->configurarCicloLiquidacion();
-			$this->iniciarCicloLiquidacion($result);
-//die(var_dump($result));
+			$ciclo = $this->configurarCicloLiquidacion();
+			$this->iniciarCicloLiquidacion($ciclo);
+
+			$model = New Pago();
+			$result = $this->guardarPlanilla($model);
+
 		}
 
 
@@ -106,10 +112,10 @@
 
 							if ( $exigibilidadDeclaracion['exigibilidad'] == 1 ) {
 								$montoCalculado = $this->liquidarDeclaracion($año, 1);
+
 								if ( $montoCalculado > 0 ) {
 									$this->generarPeriodosLiquidados($montoCalculado, $año, $periodos, $exigibilidadLiq, $exigibilidadDeclaracion);
 die(var_dump($this->_periodosLiquidados));
-
 								} else {
 									// Abortar el proceso. Por no determinar monto. Renderizar vista
 								}
@@ -526,6 +532,23 @@ die(var_dump($this->_periodosLiquidados));
 					// Renderizar a un vista.
 
 			} elseif ( $montoLiquidado > 0 ) {
+				$fechaActual = date('Y-m-d');
+				$modelDetalle = New PagoDetalle();
+				$arregloDetalle = array_values($modelDetalle->attributes());
+				$arregloDatos = $this->inicializarDatos($arregloDetalle);
+				$idImpuesto = self::getIdImpuestoSegunAnoImpositivo($año);
+
+				$modelDetalle->id_impuesto = $idImpuesto;
+				$modelDetalle->impuesto = 1;
+				$modelDetalle->ano_impositivo = $año;
+				$modelDetalle->fecha_emision = $fechaActual;
+				$modelDetalle->fecha_pago = null;
+				$modelDetalle->fecha_vcto = null;
+				$modelDetalle->fecha_desde = null;
+				$modelDetalle->fecha_hasta = null;
+
+
+
 				$divisor = 0;
 				// Lo siguiente retorna un arreglo con los datos de la planilla y el detalle de la misma
 				// del primer periodo liquidado para el año ($año).
@@ -554,10 +577,12 @@ die(var_dump($this->_periodosLiquidados));
 				if ( $divisor > 0 ) {
 					$montoPeriodo = number_format(($montoLiquidado/$divisor), 2, '.', '');
 
-					$fechaActual = date('Y-m-d');
 					if ( is_array($periodos) ) {
 						foreach ( $periodos as $key => $value ) {
-							$this->_periodosLiquidados[] = [$año, $value, $montoPeriodo, $fechaActual];
+							$modelDetalle->trimestre = $value;
+							$modelDetalle->monto = $montoPeriodo;
+
+							$this->_periodosLiquidados[] = $modelDetalle->toArray();
 						}
 					} elseif ( is_integer($periodos) )  {
 						$this->_periodosLiquidados[] = [$año, $periodos, $montoPeriodo, $fechaActual];
@@ -572,6 +597,31 @@ die(var_dump($this->_periodosLiquidados));
 		}
 
 
+
+
+		/***/
+		private function inicializarDatos($arregloDatos)
+		{
+			$arreglo = null;
+			foreach ( $arregloDatos as $key => $value ) {
+				$arreglo[$value] = 0;
+			}
+			return $arreglo;
+		}
+
+
+
+
+		/***/
+		private function getIdImpuestoSegunAnoImpositivo($añoImpositivo)
+		{
+			$idImpuesto = 0;
+			if ( $añoImpositivo > 0 ) {
+				$declaracion = New Declaracion($this->_idContribuyente);
+				$idImpuesto = $declaracion->getIdImpuestoSegunAnoImpositivo($añoImpositivo);
+			}
+			return $idImpuesto['id_impuesto'];
+		}
 
 
 

@@ -181,7 +181,7 @@
 									 		->andWhere('trimestre >:trimestre', [':trimestre' => 0])
 									 		->andWhere('pago !=:pago', [':pago' => 9])
 									 		->andWhere('referencia =:referencia',[':referencia' => 0])
-									 		->joinWith('pagoDetalle')
+									 		->joinWith('pagos')
 									 		->orderBy([
 							 					'ano_impositivo' => SORT_ASC,
 							 					'trimestre' => SORT_ASC,
@@ -212,10 +212,25 @@
 
 
 		/***/
-		public function getUltimoNumeroPlanilla()
+		private function getUltimoNumeroPlanilla()
 		{
 			$model = Pago::find()->select('MAX(planilla) as numero')->asArray()->one();
 			return isset($model) ? $model : null;
+		}
+
+
+
+
+		/***/
+		public function guardarPlanilla($model)
+		{
+			if ( isset($model) ) {
+				return true;
+			} else {
+				return false;
+			}
+
+
 		}
 
 

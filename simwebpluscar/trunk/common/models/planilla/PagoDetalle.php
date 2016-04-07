@@ -72,6 +72,8 @@
 		public $descripcion;
 		public $monto_reconocimiento;
 		public $exigibilidad_pago;
+		public $fecha_desde;
+		public $fecha_hasta;
 
 
 
