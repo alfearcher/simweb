@@ -290,6 +290,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      public function GuardarCambios($model, $datosInmueble)
      {
             //die(var_dump($datos));
+            $todoBien= true;
             $buscar = new ParametroSolicitud($_SESSION['id']);
 
             $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
@@ -307,10 +308,10 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
             $tableName1 = 'solicitudes_contribuyente'; 
 
-            $arrayDatos1 = [  'id_contribuyente' => $datosInmueble[]->id_contribuyente,
+            $arrayDatos1 = [  'id_contribuyente' => $_SESSION['idContribuyente'],
                               'id_config_solicitud' => $_SESSION['id'],
                               'impuesto' => 2,
-                              'id_impuesto' => $datos->id_impuesto,
+                              'id_impuesto' => $value['id_impuesto'],
                               'tipo_solicitud' => $tipoSolicitud,
                               'usuario' => yii::$app->user->identity->login,
                               'fecha_hora_creacion' => date('Y-m-d h:i:s'),
@@ -326,8 +327,8 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                 $result = $conexion->getLastInsertID();
 
 
-                $arrayDatos2 = [    'id_contribuyente' => $datos->id_contribuyente,
-                                    'id_impuesto' => $datos->id_impuesto,
+                $arrayDatos2 = [    'id_contribuyente' => $_SESSION['idContribuyente'],
+                                    'id_impuesto' => $value['id_impuesto'],
                                     'nro_solicitud' => $result,
                                     'inactivo' => 1,
                                     'fecha_creacion' => date('Y-m-d h:i:s'),
