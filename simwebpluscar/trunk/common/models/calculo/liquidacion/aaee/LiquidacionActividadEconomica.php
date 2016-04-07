@@ -142,7 +142,7 @@
 					//$this->_calculoDetallado[] = [];
 
 					// Se va acumulando lo calculado por rubro.
-					$this->_calculoAnual = $this->getCalculoAnual() + $montoCalculadoRubro;
+					$this->_calculoAnual = $this->_calculoAnual + $montoCalculadoRubro;
 				}
 			}
 		}
