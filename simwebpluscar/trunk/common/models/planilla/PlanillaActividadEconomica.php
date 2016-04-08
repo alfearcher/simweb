@@ -115,6 +115,7 @@
 
 								if ( $montoCalculado > 0 ) {
 									$this->generarPeriodosLiquidados($montoCalculado, $año, $periodos, $exigibilidadLiq, $exigibilidadDeclaracion);
+// die($montoCalculado);
 die(var_dump($this->_periodosLiquidados));
 								} else {
 									// Abortar el proceso. Por no determinar monto. Renderizar vista
@@ -261,6 +262,7 @@ die(var_dump($this->_periodosLiquidados));
 		private function configurarLapsoLiquidacionActividadEconomica()
 		{
 			$ultimo = $this->getUltimaLiquidacion();
+			$añoActual = date('Y');
 			if ( $ultimo == null ) {
 				// Se determinara la primera liquidacion del contribuyente. Se requiere la fecha
 				// de inicio de sus actividades.
@@ -283,11 +285,18 @@ die(var_dump($this->_periodosLiquidados));
 							$this->anulacionRangoLiquidacion();
 
 						} else {
-							// Solo se permitira la liquidacion de un periodo. Condicion que puede cambiar
-							// para futuros proyectos, es aqui donde se debe realizar el ajuste del año-periodo
-							// final.
-							$this->_añoHasta = $this->_añoDesde;
-							$this->_periodoHasta = $this->_periodoDesde;
+							// Se define el rango final de la liquidacion del contribuyente.
+							if ( $this->_añoDesde == $añoActual ) {
+								$this->_añoHasta = $añoActual;
+								$this->_periodoHasta = $exigibilidadLiq;
+
+							} elseif ( $this->_añoDesde < $añoActual ) {
+								$this->_añoHasta = $añoActual;
+								$this->_periodoHasta = $exigibilidadLiq;
+
+							} else {
+								$this->anulacionRangoLiquidacion();
+							}
 						}
 					} else {
 						$this->anulacionRangoLiquidacion();
@@ -301,7 +310,6 @@ die(var_dump($this->_periodosLiquidados));
 				// No es la primera liquidacion, se debe determinar cual es el utlimo año-periodo
 				// liquidado para continuar a partir desde el siguiente a este.
 
-				$añoActual = date('Y');
 				if ( $ultimo['ano_impositivo'] < $añoActual ) {
 
 					$exigibilidadLiq = self::getExigibilidadLiquidacion($ultimo['ano_impositivo']);
@@ -309,15 +317,15 @@ die(var_dump($this->_periodosLiquidados));
 						// Es indicativo que el ultimo periodo liquidado corresponde al ultimo periodo
 						// del año.
 						$this->_añoDesde = $ultimo['ano_impositivo'] + 1;
-						$this->_añoHasta = $this->_añoDesde;
+						$this->_añoHasta = $añoActual;
 						$this->_periodoDesde = 1;
-						$this->_periodoHasta = $this->_periodoDesde;
+						$this->_periodoHasta = $exigibilidadLiq['exigibilidad'];
 
 					} elseif ( $ultimo['trimestre'] < $exigibilidadLiq['exigibilidad'] ) {
 						$this->_añoDesde = $ultimo['ano_impositivo'];
-						$this->_añoHasta = $this->_añoDesde;
+						$this->_añoHasta = $añoActual;
 						$this->_periodoDesde = $ultimo['trimestre'] + 1;
-						$this->_periodoHasta = $this->_periodoDesde;
+						$this->_periodoHasta = $exigibilidadLiq['exigibilidad'];
 
 					} else {
 						$this->anulacionRangoLiquidacion();
@@ -325,8 +333,8 @@ die(var_dump($this->_periodosLiquidados));
 
 				} elseif ( $ultimo['ano_impositivo'] == $añoActual ) {
 
-					$año = $ultimo['ano_impositivo'] + 1;
-					$exigibilidadLiq = self::getExigibilidadLiquidacion($año);
+					//$año = $ultimo['ano_impositivo'] + 1;
+					$exigibilidadLiq = self::getExigibilidadLiquidacion($añoActual);
 
 					if ( $ultimo['trimestre'] == $exigibilidadLiq['exigibilidad'] ) {
 						// No existen periodos por liquidar. Aqui debe finalizar el proceso.
@@ -334,9 +342,9 @@ die(var_dump($this->_periodosLiquidados));
 
 					} elseif ( $ultimo['trimestre'] < $exigibilidadLiq['exigibilidad'] ) {
 						$this->_añoDesde = $ultimo['ano_impositivo'];
-						$this->_añoHasta = $this->_añoDesde;
+						$this->_añoHasta = $añoActual;
 						$this->_periodoDesde = $ultimo['trimestre'] + 1;
-						$this->_periodoHasta = $this->_periodoDesde;
+						$this->_periodoHasta = $exigibilidadLiq['exigibilidad'];
 
 					} else {
 						$this->anulacionRangoLiquidacion();
@@ -546,8 +554,6 @@ die(var_dump($this->_periodosLiquidados));
 				$modelDetalle->fecha_vcto = null;
 				$modelDetalle->fecha_desde = null;
 				$modelDetalle->fecha_hasta = null;
-
-
 
 				$divisor = 0;
 				// Lo siguiente retorna un arreglo con los datos de la planilla y el detalle de la misma
