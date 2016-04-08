@@ -41,7 +41,7 @@ $this->title = 'Seleccione el tipo de Usuario que realizara la compra';
                     <br>
                        <div class="row">
                         <div class="col-sm-6"; style="margin-left:100px; ">
-                            <?= Html::a('<strong><center><span class="glyphicon glyphicon-home" style="font-size:20px"> Persona Juridica</span></center></strong>', ['/usuario/crear-usuario-juridico/crear-usuario-juridico']); ?>
+                            <?= Html::a('<strong><center><span class="glyphicon glyphicon-home" style="font-size:20px"> Persona Juridica</span></center></strong>', ['/vehiculo/cambiopropietario/comprador-juridico/busqueda-juridico']); ?>
                        </div>
                        </div>
                

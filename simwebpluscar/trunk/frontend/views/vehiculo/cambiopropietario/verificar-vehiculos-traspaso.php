@@ -19,7 +19,7 @@ $listaAño = ArrayHelper::map($listaFecha, 'id' , 'campo');
 $id_contribuyente = yii::$app->user->identity->id_contribuyente;
 
        $buscarVehiculos = BusquedaVehiculos::find()->where(['id_contribuyente' => $id_contribuyente])->asArray()->all();                                         
-      $listaVehiculo = ArrayHelper::map($buscarVehiculos, 'placa', function($buscarVehiculos){return $buscarVehiculos['placa'].'-'.$buscarVehiculos['marca'].' '.$buscarVehiculos['modelo'];}); 
+      $listaVehiculo = ArrayHelper::map($buscarVehiculos, 'placa', function($buscarVehiculos){return '"'.$buscarVehiculos['placa'].'" -'.$buscarVehiculos['marca'].''.$buscarVehiculos['modelo'];}); 
                                                   
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -12,6 +12,7 @@
     use common\models\vehiculo\usovehiculo\UsoVehiculo;
     use common\fecha\RangoFecha;
     use kartik\form\ActiveForm;
+    use frontend\models\usuario\CrearUsuarioNatural;
 
 //arrayhelper que carga el combo clase vehiculo
 $claseVehiculo = ClaseVehiculo::find()->all();
@@ -53,7 +54,16 @@ $listaAño2  = ArrayHelper::map($listaFecha2, 'id' , 'campo');
 
 
 
-    
+$busqueda = CrearUsuarioNatural::find()
+                                ->where([
+                                    'id_contribuyente' => $_SESSION['idComprador'],
+                                    //die($_SESSION['idComprador']),
+                                    'inactivo' => 0,
+                                    ])
+
+                            ->all();
+
+
 
 
 
@@ -90,13 +100,77 @@ $listaAño2  = ArrayHelper::map($listaFecha2, 'id' , 'campo');
 
 ?>
 
+
+
     <div class="col-sm-10">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <?= Yii::t('frontend', 'Vehicle Specifications') ?> 
+                <?= Yii::t('frontend', 'Buyer Information') ?> 
             </div>
             <div class="panel-body" >
 
+  
+
+<!-- NOMBRE -->
+
+                <div class="row">
+                    <div class="col-sm-2">
+                        <?= $form->field($model, 'nombre')->textInput(
+                                                                [
+                                                                'value' => $busqueda[0]->nombres ,
+                                                                'readonly' => true,
+                                                                'id'=> 'placa',
+                                                                ]);
+                    ?>
+                
+                    </div>
+                
+
+<!-- FIN DE NOMBRE <-->
+
+<!-- APELLIDO -->
+
+                
+                    <div class="col-sm-2">
+                        <?= $form->field($model, 'apellido')->textInput(
+                                                                [
+                                                                'value' => $busqueda[0]->apellidos ,
+                                                                'readonly' => true,
+                                                                'id'=> 'placa',
+                                                                ]);
+                    ?>
+                
+                    </div>
+
+                
+                
+
+<!-- FIN DE APELLIDO <-->
+
+
+
+<!-- ID  -->
+
+               
+                    <div class="col-sm-2">
+                        <?= $form->field($model, 'id_contribuyente')->textInput(
+                                                                [
+                                                                'value' => $_SESSION['idComprador'],
+                                                                'readonly' => true,
+                                                                'id'=> 'placa',
+                                                                ]);
+                    ?>
+                
+                    </div>
+                     </div>
+
+<!-- FIN DE ID <-->
+ <div class="panel panel-primary">
+<div class="panel-heading">
+                <?= Yii::t('frontend', 'Vehicle Specifications') ?> 
+</div>
+                
+</div>
 <!-- PLACA -->
 
                 <div class="row">
