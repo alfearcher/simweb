@@ -14,7 +14,13 @@
 // Encabezado
 require('layoutencabezado.php'); 
 
+
 //AppAsset::register($this);
+//die(AppAsset::register($this));
+
+//AppAsset::register($this);
+
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -27,6 +33,7 @@ require('layoutencabezado.php');
     <?php $this->head() ?>
     
 </head>
+
 <body>
     <?php $this->beginBody() ?>
     
@@ -37,6 +44,7 @@ require('layoutencabezado.php');
             ]) ?>
                     
             <div class="principal">
+                
                 <?= $content ?>    
             </div>
         </div>

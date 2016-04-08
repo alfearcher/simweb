@@ -7,7 +7,7 @@
     use yii\widgets\Breadcrumbs;
    // use kartik\nav\NavX;
     use kartik\icons\Icon;
-   // use yii\web\AssetBundle;
+    use yii\web\AssetBundle;
     //use yii\widgets\Pjax;
     //use yii\bootstrap\Modal;
     //
@@ -101,6 +101,7 @@ AppAsset::register($this);
 
                     NavBar::end();
                 ?>
+                
 
 
         </div>
