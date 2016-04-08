@@ -243,10 +243,11 @@
 
 
 	    /***/
-	    public function getUnidadTributariaPorAnoImpositivo($anoImpositivo)
+	    public function getUnidadTributariaPorAnoImpositivo($añoImpositivo)
 	    {
+	    	settype($añoImpositivo, 'integer');
 	    	$ut = New UnidadTributariaForm();
-	    	$montoUT = $ut->getUnidadTributaria($anoImpositivo);
+	    	$montoUT = $ut->getUnidadTributaria($añoImpositivo);
 	    	if ( isset($montoUT) ) {
 	    		return $montoUT;
 	    	}
