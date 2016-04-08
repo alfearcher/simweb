@@ -184,6 +184,8 @@ class CambioPropietarioVendedorController extends Controller
 
                 if ($model->validate()){
 
+                 // die('llego de nuevo aqui');
+
                   $verificarSolicitud = self::verificarSolicitud($datosVehiculo[0]->id_vehiculo , $_SESSION['id']);
 
                   if($verificarSolicitud == true){
@@ -219,6 +221,7 @@ class CambioPropietarioVendedorController extends Controller
 
   public function verificarSolicitud($idVehiculo,$idConfig)
   {
+    //die($_SESSION['idConfig']);
      
       $buscar = SolicitudesContribuyente::find()
                                         ->where([ 
@@ -399,7 +402,7 @@ class CambioPropietarioVendedorController extends Controller
     public function guardarCambioPropietarioMaestro($conn, $conexion, $model)
     {
      
-    $idContribuyente = yii::$app->user->identity->id_contribuyente;
+    $idComprador = $_SESSION['idComprador'];
      
     //die($idContribuyente);
       $tableName = 'vehiculos';
@@ -409,7 +412,7 @@ class CambioPropietarioVendedorController extends Controller
 
       
 
-      $arregloDatos['id_contribuyente'] = $idContribuyente;
+      $arregloDatos['id_contribuyente'] = $idComprador;
 
       $conexion = new ConexionController();
 

@@ -22,14 +22,14 @@
  */
 
  /**    
- *  @file CompradorNaturalController.php
+ *  @file CompradorJuridicoController.php
  *  
  *  @author Manuel Alejandro Zapata Canelon
  * 
- *  @date 07/04/16
+ *  @date 08/04/16
  * 
  *  @class CompradorNaturalController
- *  @brief Controlador que renderiza la vista para realizar la busqueda del comprador natural
+ *  @brief Controlador que renderiza la vista para realizar la busqueda del comprador juridico
  *  
  * 
  *  
@@ -72,7 +72,7 @@ session_start();
 
 
 
-class CompradorNaturalController extends Controller
+class CompradorJuridicoController extends Controller
 {
 
 
@@ -84,9 +84,9 @@ class CompradorNaturalController extends Controller
      * [actionRegistrarVehiculo description] metodo que renderiza y valida el formulario de cambio de datos del vehiculo
      * @return [type] [description] render del formulario de cambio de datos de vehiculo
      */
-    public function actionBusquedaNatural()
+    public function actionBusquedaJuridico()
     {
-      //die('volvi a llegar a natural');
+      die('llegue a juridico');
       //die(var_dump($_SESSION['datosVehiculo']));
       //die('llegue a busqueda natural'.$_SESSION['id']); 
       
