@@ -67,14 +67,19 @@
 		private $_montoCalculado;
 		private $_montoTotal;
 		private $_periodosLiquidados = [];
+		public $conexion;			// Instancia de tipo ConexionController,
+		 							// permite ejecutar los metodo para guardar.
+		public $conn;				// Instancia de conexion de la db.
 
 
 
 		/***/
-		public function __construct($id)
+		public function __construct($id, $conexionLocal, $connLocal)
 		{
 			$this->_idContribuyente = $id;
 			$this->_periodosLiquidados = null;
+			$this->conexion = $conexionLocal;
+			$this->conn = $connLocal;
 			$_SESSION['idContribuyente'] = $this->_idContribuyente;
 		}
 
@@ -83,14 +88,17 @@
 		/***/
 		public function liquidarEstimada()
 		{
-			$this->setTipoDeclaracion("ESTIMADA");
-			$this->configurarLapsoLiquidacionActividadEconomica();
-			$ciclo = $this->configurarCicloLiquidacion();
-			$this->iniciarCicloLiquidacion($ciclo);
-
-			$model = New Pago();
-			$result = $this->guardarPlanilla($model);
-
+			if ( isset($this->conexion) && isset($this->conn) ) {
+				$this->setTipoDeclaracion("ESTIMADA");
+				$this->configurarLapsoLiquidacionActividadEconomica();
+				$ciclo = self::configurarCicloLiquidacion();
+				if ( $ciclo != null ) {
+					$result = self::iniciarCicloLiquidacion($ciclo);
+					if ( $result != null ) {
+						$this->iniciarGuadrarPlanilla($result);
+					}
+				}
+			}
 		}
 
 
@@ -98,7 +106,13 @@
 		/***/
 		private function iniciarCicloLiquidacion($cicloLiquidacion)
 		{
+			// Array de periodos liquidados, donde el indice del array es el año impositivo
+			// y los elemento del array corresponde al modelo de la entidad "pagos-detalle".
+			$periodosLiq;
+
+			// Monto anual de la liquidacion.
 			$montoCalculo = 0;
+
 			if ( count($cicloLiquidacion) > 0 ) {
 				foreach ( $cicloLiquidacion as $key => $value ) {
 					$montoCalculado = 0;
@@ -114,32 +128,43 @@
 								$montoCalculado = $this->liquidarDeclaracion($año, 1);
 
 								if ( $montoCalculado > 0 ) {
-									$this->generarPeriodosLiquidados($montoCalculado, $año, $periodos, $exigibilidadLiq, $exigibilidadDeclaracion);
+									$periodosLiq[$año] = self::generarPeriodosLiquidados($montoCalculado, $año, $periodos, $exigibilidadLiq, $exigibilidadDeclaracion);
+									if ( isset($periodosLiq[$año]) ) {
+										return null;
+									}
 // die($montoCalculado);
-die(var_dump($this->_periodosLiquidados));
 								} else {
 									// Abortar el proceso. Por no determinar monto. Renderizar vista
+									return null;
 								}
 
 							} elseif ( $exigibilidadDeclaracion['exigibilidad'] > 1 ) {
 								foreach ( $periodos as $key => $value ) {
 									$montoCalculado = $this->liquidarDeclaracion($año, $value);
 									if ( $montoCalculado > 0 ) {
-										$this->generarPeriodosLiquidados($montoCalculado, $año, $value, $exigibilidadLiq, $exigibilidadDeclaracion);
+										$periodosLiq[$año] = self::generarPeriodosLiquidados($montoCalculado, $año, $value, $exigibilidadLiq, $exigibilidadDeclaracion);
+										if ( isset($periodosLiq[$año]) ) {
+											return null;
+										}
 
 									} else {
 										// Abortar el proceso. Por no determinar monto. Renderizar vista
+die('monto no detectado ' . $año);
+										return null;
 									}
 								}
 							}
 						} else {
-							// Abortar la operacion. Renderizar a una vista.
+							// Abortar la operacion. No se pudo determinar los periodos. Renderizar a una vista.
+							return null;
 						}
 					} else {
-						// Abortar la operacion. Renderizar a una vista.
+						// Abortar la operacion. No se pudo determinar el año. Renderizar a una vista.
+						return null;
 					}
 				}
 			}
+			return $periodosLiq;
 		}
 
 
@@ -288,11 +313,11 @@ die(var_dump($this->_periodosLiquidados));
 							// Se define el rango final de la liquidacion del contribuyente.
 							if ( $this->_añoDesde == $añoActual ) {
 								$this->_añoHasta = $añoActual;
-								$this->_periodoHasta = $exigibilidadLiq;
+								$this->_periodoHasta = $exigibilidadLiq['exigibilidad'];
 
 							} elseif ( $this->_añoDesde < $añoActual ) {
 								$this->_añoHasta = $añoActual;
-								$this->_periodoHasta = $exigibilidadLiq;
+								$this->_periodoHasta = $exigibilidadLiq['exigibilidad'];
 
 							} else {
 								$this->anulacionRangoLiquidacion();
@@ -542,18 +567,10 @@ die(var_dump($this->_periodosLiquidados));
 			} elseif ( $montoLiquidado > 0 ) {
 				$fechaActual = date('Y-m-d');
 				$modelDetalle = New PagoDetalle();
-				$arregloDetalle = array_values($modelDetalle->attributes());
-				$arregloDatos = $this->inicializarDatos($arregloDetalle);
-				$idImpuesto = self::getIdImpuestoSegunAnoImpositivo($año);
 
-				$modelDetalle->id_impuesto = $idImpuesto;
-				$modelDetalle->impuesto = 1;
-				$modelDetalle->ano_impositivo = $año;
-				$modelDetalle->fecha_emision = $fechaActual;
-				$modelDetalle->fecha_pago = null;
-				$modelDetalle->fecha_vcto = null;
-				$modelDetalle->fecha_desde = null;
-				$modelDetalle->fecha_hasta = null;
+				$arregloDetalle = array_values($modelDetalle->attributes());
+
+				$idImpuesto = self::getIdImpuestoSegunAnoImpositivo($año);
 
 				$divisor = 0;
 				// Lo siguiente retorna un arreglo con los datos de la planilla y el detalle de la misma
@@ -584,14 +601,37 @@ die(var_dump($this->_periodosLiquidados));
 					$montoPeriodo = number_format(($montoLiquidado/$divisor), 2, '.', '');
 
 					if ( is_array($periodos) ) {
+						// Aqui $value es el periodo (trimstre).
 						foreach ( $periodos as $key => $value ) {
-							$modelDetalle->trimestre = $value;
-							$modelDetalle->monto = $montoPeriodo;
+							$arregloDatos[] = $this->inicializarDatos($arregloDetalle);
 
-							$this->_periodosLiquidados[] = $modelDetalle->toArray();
+							$arregloDatos[$key]['trimestre'] = $value;
+							$arregloDatos[$key]['monto'] = $montoPeriodo;
+							$arregloDatos[$key]['id_impuesto'] = $idImpuesto;
+							$arregloDatos[$key]['impuesto'] = 1;
+							$arregloDatos[$key]['ano_impositivo'] = $año;
+							$arregloDatos[$key]['fecha_emision'] = $fechaActual;
+							$arregloDatos[$key]['fecha_pago'] = null;
+							$arregloDatos[$key]['fecha_vcto'] = null;
+							$arregloDatos[$key]['fecha_desde'] = null;
+							$arregloDatos[$key]['fecha_hasta'] = null;
+							$arregloDatos[$key]['exigibilidad_pago'] = $exigibilidadLiq['exigibilidad'];
 						}
 					} elseif ( is_integer($periodos) )  {
-						$this->_periodosLiquidados[] = [$año, $periodos, $montoPeriodo, $fechaActual];
+							$arregloDatos[] = $this->inicializarDatos($arregloDetalle);
+
+							$arregloDatos[$periodos]['trimestre'] = $value;
+							$arregloDatos[$periodos]['monto'] = $montoPeriodo;
+							$arregloDatos[$periodos]['id_impuesto'] = $idImpuesto;
+							$arregloDatos[$periodos]['impuesto'] = 1;
+							$arregloDatos[$periodos]['ano_impositivo'] = $año;
+							$arregloDatos[$periodos]['fecha_emision'] = $fechaActual;
+							$arregloDatos[$periodos]['fecha_pago'] = null;
+							$arregloDatos[$periodos]['fecha_vcto'] = null;
+							$arregloDatos[$periodos]['fecha_desde'] = null;
+							$arregloDatos[$periodos]['fecha_hasta'] = null;
+							$arregloDatos[$key]['exigibilidad_pago'] = $exigibilidadLiq['exigibilidad'];
+
 					}
 
 				} else {
@@ -599,7 +639,9 @@ die(var_dump($this->_periodosLiquidados));
 					// Renderizar a un vista.
 
 				}
+				return $arregloDatos;
 			}
+			return null;
 		}
 
 
