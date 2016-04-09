@@ -198,10 +198,10 @@
 
 
 		/***/
-		public function crearNumeroPlanilla()
+		protected function crearNumeroPlanilla()
 		{
 			$numeroNuevaPlanilla = 0;
-			$ultimaPlanilla = $this->getUltimoNumeroPlanilla();	// Retorna es una array
+			$ultimaPlanilla = $this->getUltimoNumeroPlanilla();	// Retorna un array
 			if ( count($ultimaPlanilla) > 0 ) {
 				$numeroNuevaPlanilla = $ultimaPlanilla['numero'] + 1;
 			}
@@ -212,7 +212,7 @@
 
 
 		/***/
-		private function getUltimoNumeroPlanilla()
+		protected function getUltimoNumeroPlanilla()
 		{
 			$model = Pago::find()->select('MAX(planilla) as numero')->asArray()->one();
 			return isset($model) ? $model : null;
@@ -221,18 +221,93 @@
 
 
 
-		/***/
-		public function guardarPlanilla($model)
+		/**
+		 * [iniciarGuadrarPlanilla description]
+		 * @param  [type] $conexion     [description]
+		 * @param  [type] $conn         [description]
+		 * @param  [type] $idContribuyente [description]
+		 * @param  Array $arrayDetalle, arreglo de datos donde el indice del array es el año
+		 * impositvo y el elemento del array es otro array que contiene los campos de la entidad
+		 * "pagos=detalle"
+		 * @return [type]               [description]
+		 */
+		protected function iniciarGuadrarPlanilla($conexion, $conn, $idContribuyente, $arrayDetalle)
 		{
-			if ( isset($model) ) {
-				return true;
-			} else {
-				return false;
-			}
-
 
 		}
 
+
+
+		/***/
+		private function iniciarCicloDetalle($conexion, $conn, $idContribuyente, $arrayDetalle)
+		{
+			// Se inicia guardano los datos maestro de la planilla.
+			// $key es el año impositivo.
+			// $value es un arreglo que representa cada registro del detalle que sera
+			// guardado. Ejemplo:
+			// [0] => [
+			// 		['campo01'] => valor01,
+			// 		['campo02'] => valor02,
+			// ]
+			// [1] => [
+			// 		['campo11'] => valor11,
+			// 		['campo12'] => valor12,
+			// ]
+
+			foreach ( $arrayDetalle as $key => $value ) {
+
+			}
+		}
+
+
+
+
+		protected function guardarPlanilla($conexion, $conn, $idContribuyente)
+		{
+			$model = New Pago();
+
+			$tableName = $model->tableName();
+			$arregloDato = $model->attributes;
+			$idPago = 0;
+
+			// Iniicando los valores del arreglo.
+			foreach ( $arregloDato as $key => $value ) {
+				$arregloDato[$key] = 0;
+			}
+
+			$numeroPlanilla = self::crearNumeroPlanilla();
+			if ( $numeroPlanilla > 0 ) {
+				$arregloDato['ente'] = Yii::$app->ente->noente();
+				$arregloDato['id_contribuyente'] = $idContribuyente;
+				$arregloDato['planilla'] = $numeroPlanilla;
+				$arregloDato['ult_act'] = date('Y-m-d');
+				$arregloDato['id_moneda'] = 1;
+			}
+
+			if ( $conexion->guardarRegistro($conn, $tableName, $arregloDato) ) {
+				$idPago = $conn->getLastInsertID();
+			}
+			return $idPago;
+
+		}
+
+
+
+
+		protected function guardarDetallePlanilla($conexion, $conn, $arregloDetalle)
+		{
+			$model = New PagoDetalle();
+			$tableName = $model->tableName();
+
+			$arregloDato = $model->attributes;
+
+			// Iniicando los valores del arreglo.
+			foreach ( $arregloDato as $key => $value ) {
+				$arregloDato[$key] = 0;
+			}
+
+			
+		}
 
 
 	}
