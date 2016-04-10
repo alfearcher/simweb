@@ -295,7 +295,7 @@
 		protected function guardarPlanilla($conexion, $conn, $idContribuyente)
 		{
 			// Se fija los intentos para guardar el maestro de la planilla.
-			$initentos = 5;
+			$intentos = 5;
 
 			$model = New Pago();
 
