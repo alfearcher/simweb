@@ -101,7 +101,7 @@
 	        	  'id_moneda', 'exigibilidad_deuda'],
 	        	  'required', 'message' => Yii::t('backend','{attribute} is required')],
 	        	['recibo', 'status_pago', 'id_moneda', 'default', 'value' => 0],
-	        	['ente', 'default', 'value' => Yii::$app->ente->noente()],
+	        	['ente', 'default', 'value' => Yii::$app->ente->getEnte()],
 	        	[['id_contribuyente', 'planilla',
 	        	  'recibo', 'status_pago',
 	        	  'notificado', 'ente'],

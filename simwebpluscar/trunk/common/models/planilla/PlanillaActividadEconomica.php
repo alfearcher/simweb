@@ -93,11 +93,22 @@
 				$this->configurarLapsoLiquidacionActividadEconomica();
 				$ciclo = self::configurarCicloLiquidacion();
 				if ( $ciclo != null ) {
+					// Lo siguente retorna un array multi-dimensional, donde el indice de este array, son los años
+					// impositivo que tienen periodos por liquidar. Los elementos del array corresponde
+					// a otro array, donde los indices son enteros empezando por el cero (0) y los elementos
+					// del mismo son los campos (modelo de la clase PagoDetalle) de la entidad que tiene los
+					// detalleas de la planilla.
 					$result = self::iniciarCicloLiquidacion($ciclo);
 					if ( $result != null ) {
-						$this->iniciarGuadrarPlanilla($result);
+						return $this->iniciarGuadrarPlanilla($this->conexion, $this->conn, $this->_idContribuyente, $result);
+					} else {
+						return false;
 					}
+				} else {
+					return false;
 				}
+			} else {
+				return false;
 			}
 		}
 
@@ -128,8 +139,10 @@
 								$montoCalculado = $this->liquidarDeclaracion($año, 1);
 
 								if ( $montoCalculado > 0 ) {
-									$periodosLiq[$año] = self::generarPeriodosLiquidados($montoCalculado, $año, $periodos, $exigibilidadLiq, $exigibilidadDeclaracion);
-									if ( isset($periodosLiq[$año]) ) {
+									$periodosLiq[$año] = self::generarPeriodosLiquidados($montoCalculado, $año,
+									                                                     $periodos, $exigibilidadLiq,
+									                                                     $exigibilidadDeclaracion);
+									if ( !isset($periodosLiq[$año]) ) {
 										return null;
 									}
 // die($montoCalculado);
@@ -143,7 +156,7 @@
 									$montoCalculado = $this->liquidarDeclaracion($año, $value);
 									if ( $montoCalculado > 0 ) {
 										$periodosLiq[$año] = self::generarPeriodosLiquidados($montoCalculado, $año, $value, $exigibilidadLiq, $exigibilidadDeclaracion);
-										if ( isset($periodosLiq[$año]) ) {
+										if ( !isset($periodosLiq[$año]) ) {
 											return null;
 										}
 

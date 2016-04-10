@@ -233,7 +233,7 @@
 		 */
 		protected function iniciarGuadrarPlanilla($conexion, $conn, $idContribuyente, $arrayDetalle)
 		{
-
+			self::iniciarCicloDetalle($conexion, $conn, $idContribuyente, $arrayDetalle);
 		}
 
 
@@ -253,39 +253,53 @@
 			// 		['campo11'] => valor11,
 			// 		['campo12'] => valor12,
 			// ]
-
-			foreach ( $arrayDetalle as $key => $value ) {
-
+			$result = false;
+			$idPago = 0;
+			foreach ( $arrayDetalle as $key => $valueDetalle ) {
+				$detalle = $valueDetalle;
+				foreach ( $detalle as $key => $value ) {
+					$idPago = self::guardarPlanilla($conexion, $conn, $idContribuyente);
+					if ( $idPago > 0 ) {
+						$value['id_pago'] = $idPago;
+						$result = self::guardarDetallePlanilla($conexion, $conn, $value);
+					} else {
+						$result = false;
+					}
+					if ( !$result ) { break; }
+				}
+				if ( !$result ) { break; }
 			}
+			return $result;
 		}
 
 
 
 
+		/***/
 		protected function guardarPlanilla($conexion, $conn, $idContribuyente)
 		{
 			$model = New Pago();
 
 			$tableName = $model->tableName();
-			$arregloDato = $model->attributes;
+			$arregloDatos = $model->attributes;
 			$idPago = 0;
 
-			// Iniicando los valores del arreglo.
-			foreach ( $arregloDato as $key => $value ) {
-				$arregloDato[$key] = 0;
+			// Iniciando los valores del arreglo.
+			foreach ( $arregloDatos as $key => $value ) {
+				$arregloDatos[$key] = 0;
 			}
 
 			$numeroPlanilla = self::crearNumeroPlanilla();
 			if ( $numeroPlanilla > 0 ) {
-				$arregloDato['ente'] = Yii::$app->ente->noente();
-				$arregloDato['id_contribuyente'] = $idContribuyente;
-				$arregloDato['planilla'] = $numeroPlanilla;
-				$arregloDato['ult_act'] = date('Y-m-d');
-				$arregloDato['id_moneda'] = 1;
-			}
+				$arregloDatos['ente'] = Yii::$app->ente->getEnte();
+				$arregloDatos['id_contribuyente'] = $idContribuyente;
+				$arregloDatos['planilla'] = $numeroPlanilla;
+				$arregloDatos['ult_act'] = date('Y-m-d');
+				$arregloDatos['id_moneda'] = 1;
 
-			if ( $conexion->guardarRegistro($conn, $tableName, $arregloDato) ) {
-				$idPago = $conn->getLastInsertID();
+				if ( $conexion->guardarRegistro($conn, $tableName, $arregloDatos) ) {
+					$idPago = $conn->getLastInsertID();
+				}
 			}
 			return $idPago;
 
@@ -294,19 +308,29 @@
 
 
 
+		/***/
 		protected function guardarDetallePlanilla($conexion, $conn, $arregloDetalle)
 		{
+			$result = false;
 			$model = New PagoDetalle();
 			$tableName = $model->tableName();
 
-			$arregloDato = $model->attributes;
+			$arregloDatos = $model->attributes;
 
 			// Iniicando los valores del arreglo.
-			foreach ( $arregloDato as $key => $value ) {
-				$arregloDato[$key] = 0;
+			foreach ( $arregloDatos as $key => $value ) {
+				if ( isset($arregloDetalle[$key]) ) {
+					$arregloDatos[$key] = $arregloDetalle[$key];
+				}
 			}
 
-			
+// die(var_dump($arregloDatos));
+
+			if ( $conexion->guardarRegistro($conn, $tableName, $arregloDatos) ) {
+				$result = true;
+			}
+
+			return $result;
 		}
 
 
