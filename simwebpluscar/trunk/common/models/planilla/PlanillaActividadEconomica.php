@@ -85,7 +85,11 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que inicia el proceso de la liquidacion estimada.
+		 * @return Array Retorna un arreglo multi-dimensional de los periodos liquidados.
+		 * De lo contrario retorna false.
+		 */
 		public function liquidarEstimada()
 		{
 			if ( isset($this->conexion) && isset($this->conn) ) {
@@ -114,7 +118,11 @@
 
 
 
-		/***/
+		/**
+		 * [iniciarCicloLiquidacion description]
+		 * @param  [type] $cicloLiquidacion [description]
+		 * @return [type]                   [description]
+		 */
 		private function iniciarCicloLiquidacion($cicloLiquidacion)
 		{
 			// Array de periodos liquidados, donde el indice del array es el año impositivo
@@ -145,7 +153,7 @@
 									if ( !isset($periodosLiq[$año]) ) {
 										return null;
 									}
-// die($montoCalculado);
+
 								} else {
 									// Abortar el proceso. Por no determinar monto. Renderizar vista
 									return null;
@@ -162,7 +170,6 @@
 
 									} else {
 										// Abortar el proceso. Por no determinar monto. Renderizar vista
-die('monto no detectado ' . $año);
 										return null;
 									}
 								}
@@ -395,7 +402,13 @@ die('monto no detectado ' . $año);
 
 
 
-		/***/
+		/**
+		 * Metodo que permite buscar o determinar el año de inicio de la liquidacion estimada
+		 * segun la configuracion de la ordenanza, tomando como parametro el año impositivo
+		 * especifico.
+		 * @param  Integer $añoImpositivo, expresion de 4 digitos.
+		 * @return Integer Retorna año de 4 digitos.
+		 */
 		private function getAnoDesde($añoImpositivo)
 		{
 			return OrdenanzaBase::determinarAnoDesde($añoImpositivo, 1);
@@ -417,7 +430,6 @@ die('monto no detectado ' . $año);
 			$this->_periodoDesde = null;
 			$this->_periodoHasta = $this->_periodoDesde;
 		}
-
 
 
 
@@ -542,9 +554,6 @@ die('monto no detectado ' . $año);
 						$periodos[] = $j;
 					}
 					$ciclo[$i] = $periodos;
-
-					// Se manda el año con sus correspondientes periodos.
-					//self::liquidarDeclaracion($i, $periodos);
 				}
 			}
 			return $ciclo;
@@ -554,7 +563,18 @@ die('monto no detectado ' . $año);
 
 
 
-		/***/
+		/**
+		 * Metodo que instancia la clase que permite realizar los calculos para liquidar
+		 * la declaracion segun el año y el periodo. Para complementar los parametros
+		 * se envia el tipo de declaracion a la cual se le realizara la liquidacion.
+		 * El monto ($monto), represntara lo liquidado para un año especifico si la
+		 * exigibilidad de la declaracion es uno (1), si la exigibilidad de la declaracion
+		 * es mayor a uno, el monto calculado representara a la declaracion de dicho periodo
+		 * exclusivamente. Ejemplo 2010-1 o 2010-2...
+		 * @param Integer $año, expresion de 4 digitos, que representa el año impositivo.
+		 * @param Integer $periodo, expresion de minimo un digito y maximo 2 digitos.
+		 * @return Double $monto, Retorna el monto liquidado de la declaracion.
+		 */
 		public function LiquidarDeclaracion($año, $periodo)
 		{
 			$monto = 0;		// Calculo anual de la liquidacion.
@@ -570,7 +590,19 @@ die('monto no detectado ' . $año);
 
 
 
-		/***/
+		/**
+		 * Metodo que distribuye el monto calculado de la liquidacion entre los periodos
+		 * respectivo del año. Si el primer periodo de la liquidacion es mayor a cero
+		 * se debe realizar un ajuste en la distribucion del monto entre los periodos.
+		 * @param  Double $montoLiquidado, Calculo de la liquidacion.
+		 * @param  Integer $año, expresion de 4 digitos que representa el año impositivo.
+		 * @param  Array|Interger $periodos, periodos o periodo de la liquidacion.
+		 * @param  Array $exigibilidadLiq, determina la cantidad de periodos que deben
+		 * ser liquidados en un año. Es un arreglo de la entidad "exigibilidades".
+		 * @param  Array $exigibilidadDeclaracion, determina la cantidad de declaraciones
+		 * que se deben realizar en un año. Es un arreglo de la entidad "exigibilidades"
+		 * @return Array Retorna un arreglo de la entidad "pagos-detalle".
+		 */
 		private function generarPeriodosLiquidados($montoLiquidado, $año, $periodos, $exigibilidadLiq, $exigibilidadDeclaracion)
 		{
 			if ( $montoLiquidado == 0 || $montoLiquidado < 0 ) {
@@ -673,7 +705,12 @@ die('monto no detectado ' . $año);
 
 
 
-		/***/
+		/**
+		 * Metodo que instancia otra clase para determinar el identificador de la
+		 * declaracion del contribuyente, segun el año impositivo especifico.
+		 * @param  Integer $añoImpositivo, expresion de 4 digitos.
+		 * @return Long Retorna un identificador de la declaracion.
+		 */
 		private function getIdImpuestoSegunAnoImpositivo($añoImpositivo)
 		{
 			$idImpuesto = 0;

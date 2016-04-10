@@ -197,7 +197,15 @@
 
 
 
-		/***/
+
+		/**
+		 * Metodo que instancia la clase que se encargara de generar y retornar un
+		 * numero de la planilla.
+		 * @param  [type] $conexion, Instancia del tipo ControllerConexion().
+		 * @param  [type] $conn, Instancia de conexion a la db.
+		 * @return Long Retornara un numero de planilla, sino logra generar dicho numero
+		 * retornara cero (0).
+		 */
 		public function crearNumeroPlanilla($conexion, $conn)
 		{
 			$planilla = New NumeroPlanillaSearch($conexion, $conn);
@@ -209,15 +217,16 @@
 
 
 
+
 		/**
-		 * [iniciarGuadrarPlanilla description]
-		 * @param  [type] $conexion     [description]
-		 * @param  [type] $conn         [description]
-		 * @param  [type] $idContribuyente [description]
+		 * Metodo que inicia el proceso para guadar la planilla.
+		 * @param  [type] $conexion, Instancia del tipo ControllerConexion().
+		 * @param  [type] $conn, Instancia de conexion a la db.
+		 * @param  Long $idContribuyente,identificador del contribuyente.
 		 * @param  Array $arrayDetalle, arreglo de datos donde el indice del array es el año
 		 * impositvo y el elemento del array es otro array que contiene los campos de la entidad
-		 * "pagos=detalle"
-		 * @return [type]               [description]
+		 * "pagos=detalle".
+		 * @return Boolean Retorna true si genero y guardo la planilla, false en caso contrario.
 		 */
 		protected function iniciarGuadrarPlanilla($conexion, $conn, $idContribuyente, $arrayDetalle)
 		{
@@ -226,7 +235,18 @@
 
 
 
-		/***/
+
+
+		/**
+		 * [iniciarCicloDetalle description]
+		 * @param  [type] $conexion, Instancia del tipo ControllerConexion().
+		 * @param  [type] $conn, Instancia de conexion a la db.
+		 * @param  [type] $idContribuyente,identificador del contribuyente.
+		 * @param  [type] $arrayDetalle, arreglo de datos donde el indice del array es el año
+		 * impositvo y el elemento del array es otro array que contiene los campos de la entidad
+		 * "pagos=detalle".
+		 * @return Boolean Retorna true si genero y guardo la planilla, false en caso contrario.
+		 */
 		private function iniciarCicloDetalle($conexion, $conn, $idContribuyente, $arrayDetalle)
 		{
 			// Se inicia guardano los datos maestro de la planilla.
@@ -263,9 +283,20 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que guarda el la entidad maestro de la planilla. Se genera el numero
+		 * de la planilla que le correspondera a la planilla.
+		 * @param  [type] $conexion, Instancia del tipo ControllerConexion().
+		 * @param  [type] $conn, Instancia de conexion a la db.
+		 * @param  Long $idContribuyente, identificador del contribuyente.
+		 * @return Long Retorna el identificador del registro de la entidad maestro de la planilla.
+		 * si no logra inserta el registro retornara cero (0).
+		 */
 		protected function guardarPlanilla($conexion, $conn, $idContribuyente)
 		{
+			// Se fija los intentos para guardar el maestro de la planilla.
+			$initentos = 5;
+
 			$model = New Pago();
 
 			$tableName = $model->tableName();
@@ -277,17 +308,21 @@
 				$arregloDatos[$key] = 0;
 			}
 
-			$numeroPlanilla = self::crearNumeroPlanilla($conexion, $conn);
-			if ( $numeroPlanilla > 0 ) {
-				$arregloDatos['id_pago'] = null;
-				$arregloDatos['ente'] = Yii::$app->ente->getEnte();
-				$arregloDatos['id_contribuyente'] = $idContribuyente;
-				$arregloDatos['planilla'] = $numeroPlanilla;
-				$arregloDatos['ult_act'] = date('Y-m-d');
-				$arregloDatos['id_moneda'] = 1;
+			while ( $intentos >= 1 ) {
+				$i--;
+				$numeroPlanilla = self::crearNumeroPlanilla($conexion, $conn);
+				if ( $numeroPlanilla > 0 ) {
+					$intentos = 0;
+					$arregloDatos['id_pago'] = null;
+					$arregloDatos['ente'] = Yii::$app->ente->getEnte();
+					$arregloDatos['id_contribuyente'] = $idContribuyente;
+					$arregloDatos['planilla'] = $numeroPlanilla;
+					$arregloDatos['ult_act'] = date('Y-m-d');
+					$arregloDatos['id_moneda'] = 1;
 
-				if ( $conexion->guardarRegistro($conn, $tableName, $arregloDatos) ) {
-					$idPago = $conn->getLastInsertID();
+					if ( $conexion->guardarRegistro($conn, $tableName, $arregloDatos) ) {
+						$idPago = $conn->getLastInsertID();
+					}
 				}
 			}
 			return $idPago;
@@ -297,7 +332,14 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que guardara los detalles de la planilla. Aqui se guardan los periodos liquidados.
+		 * @param  [type] $conexion, Instancia del tipo ControllerConexion().
+		 * @param  [type] $conn, Instancia de conexion a la db.
+		 * @param  Array $arregloDetalle arreglo de datos de la entidad detalle de la planilla. Este
+		 * arreglo contiene todos los campos de dicha entidad.
+		 * @return Boolean Retornara true si guarda el periodo, en caso contrario retornara false.
+		 */
 		protected function guardarDetallePlanilla($conexion, $conn, $arregloDetalle)
 		{
 			$result = false;
@@ -313,7 +355,6 @@
 				}
 			}
 			$arregloDatos['id_detalle'] = null;
-// die(var_dump($arregloDatos));
 
 			if ( $conexion->guardarRegistro($conn, $tableName, $arregloDatos) ) {
 				$result = true;

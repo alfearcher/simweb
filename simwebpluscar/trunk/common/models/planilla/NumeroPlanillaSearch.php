@@ -132,8 +132,6 @@
 				$arregloDatos = $model->attributes;
 				$arregloDatos = $model->toArray();
 
-// die(var_dump($arregloDatos));
-
 				if ( $this->conexion->guardarRegistro($this->conn, $tableName, $arregloDatos) ) {
 					$this->planilla = $this->conn->getLastInsertID();
 				}
