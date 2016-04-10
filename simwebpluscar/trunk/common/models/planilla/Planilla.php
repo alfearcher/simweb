@@ -309,7 +309,7 @@
 			}
 
 			while ( $intentos >= 1 ) {
-				$i--;
+				$intentos--;
 				$numeroPlanilla = self::crearNumeroPlanilla($conexion, $conn);
 				if ( $numeroPlanilla > 0 ) {
 					$intentos = 0;
