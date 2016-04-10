@@ -49,7 +49,7 @@
  	use common\models\planilla\PagoDetalle;
  	use common\models\contribuyente\ContribuyenteBase;
  	use common\models\ordenanza\OrdenanzaBase;
-
+ 	use common\models\planilla\NumeroPlanillaSearch;
 
 	/**
 	* 	Clase
@@ -198,24 +198,12 @@
 
 
 		/***/
-		protected function crearNumeroPlanilla()
+		public function crearNumeroPlanilla($conexion, $conn)
 		{
-			$numeroNuevaPlanilla = 0;
-			$ultimaPlanilla = $this->getUltimoNumeroPlanilla();	// Retorna un array
-			if ( count($ultimaPlanilla) > 0 ) {
-				$numeroNuevaPlanilla = $ultimaPlanilla['numero'] + 1;
-			}
-			return $numeroNuevaPlanilla;
-		}
+			$planilla = New NumeroPlanillaSearch($conexion, $conn);
+			$ultimaPlanilla = $planilla->getGenerarNumeroPlanilla();
 
-
-
-
-		/***/
-		protected function getUltimoNumeroPlanilla()
-		{
-			$model = Pago::find()->select('MAX(planilla) as numero')->asArray()->one();
-			return isset($model) ? $model : null;
+			return $ultimaPlanilla;
 		}
 
 
@@ -233,7 +221,7 @@
 		 */
 		protected function iniciarGuadrarPlanilla($conexion, $conn, $idContribuyente, $arrayDetalle)
 		{
-			self::iniciarCicloDetalle($conexion, $conn, $idContribuyente, $arrayDetalle);
+			return self::iniciarCicloDetalle($conexion, $conn, $idContribuyente, $arrayDetalle);
 		}
 
 
@@ -289,8 +277,9 @@
 				$arregloDatos[$key] = 0;
 			}
 
-			$numeroPlanilla = self::crearNumeroPlanilla();
+			$numeroPlanilla = self::crearNumeroPlanilla($conexion, $conn);
 			if ( $numeroPlanilla > 0 ) {
+				$arregloDatos['id_pago'] = null;
 				$arregloDatos['ente'] = Yii::$app->ente->getEnte();
 				$arregloDatos['id_contribuyente'] = $idContribuyente;
 				$arregloDatos['planilla'] = $numeroPlanilla;
@@ -323,7 +312,7 @@
 					$arregloDatos[$key] = $arregloDetalle[$key];
 				}
 			}
-
+			$arregloDatos['id_detalle'] = null;
 // die(var_dump($arregloDatos));
 
 			if ( $conexion->guardarRegistro($conn, $tableName, $arregloDatos) ) {
