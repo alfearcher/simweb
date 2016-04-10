@@ -80,7 +80,6 @@
 			$this->_periodosLiquidados = null;
 			$this->conexion = $conexionLocal;
 			$this->conn = $connLocal;
-			$_SESSION['idContribuyente'] = $this->_idContribuyente;
 		}
 
 
@@ -104,7 +103,7 @@
 					// detalleas de la planilla.
 					$result = self::iniciarCicloLiquidacion($ciclo);
 					if ( $result != null ) {
-						return $this->iniciarGuadrarPlanilla($this->conexion, $this->conn, $this->_idContribuyente, $result);
+						return $this->iniciarGuadarPlanilla($this->conexion, $this->conn, $this->_idContribuyente, $result);
 					} else {
 						return false;
 					}
@@ -378,7 +377,6 @@
 
 				} elseif ( $ultimo['ano_impositivo'] == $añoActual ) {
 
-					//$año = $ultimo['ano_impositivo'] + 1;
 					$exigibilidadLiq = self::getExigibilidadLiquidacion($añoActual);
 
 					if ( $ultimo['trimestre'] == $exigibilidadLiq['exigibilidad'] ) {
@@ -467,6 +465,7 @@
 		{
 			$this->_ultimaLiquidacion = null;
 			if ( $this->_idContribuyente > 0 ) {
+				// Metodo de la clase Planilla().
 				$model = $this->getUltimoLapsoActividadEconomica($this->_idContribuyente);
 				// die(var_dump($model));
 				if ( $model != null ) {
@@ -531,7 +530,8 @@
 					if ( $i == $this->_añoDesde ) {
 						$periodoInicial = $this->_periodoDesde;
 						if ( $this->_añoDesde == $this->_añoHasta ) {
-							$periodoFinal = $periodoInicial;
+							//$periodoFinal = $periodoInicial;
+							$periodoFinal = self::getExigibilidadLiquidacion($i)['exigibilidad'];
 						} else {
 							$periodoFinal = self::getExigibilidadLiquidacion($i)['exigibilidad'];
 						}
@@ -542,7 +542,8 @@
 
 					} elseif ( ( $i > $this->_añoDesde ) && ( $i == $this->_añoHasta ) ) {
 						$periodoInicial = 1;
-						$periodoFinal = $this->_periodoHasta;
+						//$periodoFinal = $this->_periodoHasta;
+						$periodoFinal = self::getExigibilidadLiquidacion($i)['exigibilidad'];
 
 					}
 					$ciclo[$i] = null;
@@ -611,6 +612,8 @@
 
 			} elseif ( $montoLiquidado > 0 ) {
 				$fechaActual = date('Y-m-d');
+				$fechaVcto = $this->getUltimoDiaMes($fechaActual);
+
 				$modelDetalle = New PagoDetalle();
 
 				$arregloDetalle = array_values($modelDetalle->attributes());
@@ -657,7 +660,7 @@
 							$arregloDatos[$key]['ano_impositivo'] = $año;
 							$arregloDatos[$key]['fecha_emision'] = $fechaActual;
 							$arregloDatos[$key]['fecha_pago'] = null;
-							$arregloDatos[$key]['fecha_vcto'] = null;
+							$arregloDatos[$key]['fecha_vcto'] = $fechaVcto;
 							$arregloDatos[$key]['fecha_desde'] = null;
 							$arregloDatos[$key]['fecha_hasta'] = null;
 							$arregloDatos[$key]['exigibilidad_pago'] = $exigibilidadLiq['exigibilidad'];
@@ -672,7 +675,7 @@
 							$arregloDatos[$periodos]['ano_impositivo'] = $año;
 							$arregloDatos[$periodos]['fecha_emision'] = $fechaActual;
 							$arregloDatos[$periodos]['fecha_pago'] = null;
-							$arregloDatos[$periodos]['fecha_vcto'] = null;
+							$arregloDatos[$periodos]['fecha_vcto'] = $fechaVcto;
 							$arregloDatos[$periodos]['fecha_desde'] = null;
 							$arregloDatos[$periodos]['fecha_hasta'] = null;
 							$arregloDatos[$key]['exigibilidad_pago'] = $exigibilidadLiq['exigibilidad'];

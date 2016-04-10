@@ -228,7 +228,7 @@
 		 * "pagos=detalle".
 		 * @return Boolean Retorna true si genero y guardo la planilla, false en caso contrario.
 		 */
-		protected function iniciarGuadrarPlanilla($conexion, $conn, $idContribuyente, $arrayDetalle)
+		protected function iniciarGuadarPlanilla($conexion, $conn, $idContribuyente, $arrayDetalle)
 		{
 			return self::iniciarCicloDetalle($conexion, $conn, $idContribuyente, $arrayDetalle);
 		}
@@ -361,6 +361,24 @@
 			}
 
 			return $result;
+		}
+
+
+
+
+		/**
+		 * Metodo que determina la fecha de vencimiento de un mes segun una fecha determinada.
+		 * @param  Date|String $fecha, fecha a la cual se le determinara la fecha de vencimiento.
+		 * @return Date|String, Retornara una fecha.
+		 */
+		protected function getUltimoDiaMes($fecha)
+		{
+			$año = date('Y', strtotime($fecha));
+			$mes = date('m', strtotime($fecha));
+
+  			$dia = date('d', (mktime(0, 0, 0, $mes + 1, 1, $año) - 1));
+
+  			return $año . '-' . $mes . '-' . $dia;
 		}
 
 
