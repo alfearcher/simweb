@@ -46,7 +46,7 @@
  *  
  *  @inherits
  *  
- */
+ */ 
 namespace frontend\controllers\inmueble\inscripcion;
 
 use Yii;
