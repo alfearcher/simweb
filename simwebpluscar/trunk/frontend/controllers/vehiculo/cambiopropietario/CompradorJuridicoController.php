@@ -178,6 +178,7 @@ class CompradorJuridicoController extends Controller
 
 
                   if ($buscar == true){
+                    die(var_dump($buscar));
                     return $buscar;
                   }else{
                     return false;
