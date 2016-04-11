@@ -138,14 +138,14 @@
 								'descripcion' => $tasa['descripcion'],
 								'monto' => 0,
 					];
-					$this->_descripcion = $tasa['descripcion'];
+
 					if ( $tasa['tipo_rango'] == 0 ) {			// Moneda Nacional.
 						$montoCalculado = $tasa['monto'];
 
 					} elseif ( $tasa['tipo_rango'] == 1 ) {		// Unidad tributaria.
 						// Se obtiene la unidad tributaria del año.
-						$año = settype($tasa['ano_impositivo'], 'integer');
-						$unidadTributariaDelAño = UnidadTributariaForm::getUnidadTributaria($año);
+						settype($tasa['ano_impositivo'], 'integer');
+						$unidadTributariaDelAño = UnidadTributariaForm::getUnidadTributaria($tasa['ano_impositivo']);
 						if ( isset($unidadTributariaDelAño) ) {
 							$montoCalculado = $unidadTributariaDelAño * $tasa['monto'];
 
