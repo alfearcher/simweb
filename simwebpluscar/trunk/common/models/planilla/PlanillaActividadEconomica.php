@@ -438,13 +438,13 @@
 		 */
 		private function validarRangoLiquidacion()
 		{
-			if ( $this->_añoDesde == null || $this->_añoHasta == null || $this->_periodoDesde == null || $this->_añoDesde == null ) {
+			if ( $this->_añoDesde == null || $this->_añoHasta == null || $this->_periodoDesde == null || $this->_añoHasta == null ) {
 				return false;
 			} else {
 				if ( $this->_añoDesde > $this->_añoHasta ) {
 					return false;
 				} elseif ( $this->_añoDesde == $this->_añoHasta ) {
-					if ( $this->_periodoDesde > $this->_periodoDesde ) {
+					if ( $this->_periodoDesde > $this->_periodoHasta ) {
 						return false;
 					}
 				}
@@ -678,7 +678,7 @@
 							$arregloDatos[$periodos]['fecha_vcto'] = $fechaVcto;
 							$arregloDatos[$periodos]['fecha_desde'] = null;
 							$arregloDatos[$periodos]['fecha_hasta'] = null;
-							$arregloDatos[$key]['exigibilidad_pago'] = $exigibilidadLiq['exigibilidad'];
+							$arregloDatos[$periodos]['exigibilidad_pago'] = $exigibilidadLiq['exigibilidad'];
 
 					}
 
