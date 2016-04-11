@@ -47,7 +47,7 @@
  *  @inherits
  *  
  */ 
-
+ 
 /**
  * This is the model class for table "inmuebles".
  *

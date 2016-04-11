@@ -98,7 +98,7 @@ use common\conexion\ConexionController;
 
 class CambioOtrosDatosInmueblesForm extends \yii\db\ActiveRecord
 {
-    
+     
     public $validacion;
     
     

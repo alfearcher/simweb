@@ -52,7 +52,7 @@
  */ 
 
 namespace frontend\models\inmueble\inscripcion;
-
+ 
 use Yii;
 use backend\models\inmueble\InmueblesConsulta;
 use common\conexion\ConexionController;
