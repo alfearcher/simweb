@@ -187,7 +187,7 @@ class CompradorJuridicoController extends Controller
   public function buscarContribuyenteJuridico($model)
   {
 
-    die('llegue a buscar contribuyente');
+    //die('llegue a buscar contribuyente');
 
     $buscar = CrearUsuarioNatural::find()
                                   ->where([
