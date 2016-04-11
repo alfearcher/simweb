@@ -56,7 +56,8 @@ use common\conexion\ConexionController;
 use common\mensaje\MensajeController;
 use common\enviaremail\EnviarEmailSolicitud;
 use frontend\models\vehiculo\cambiopropietario\FormularioNaturalForm;
-use frontend\models\vehiculo\cambiopropietario\CrearContribuyenteNaturalForm;
+use frontend\models\vehiculo\cambiopropietario\FormularioJuridicoForm;
+use frontend\models\vehiculo\cambiopropietario\CrearContribuyenteJuridicoForm;
 use frontend\models\usuario\CrearUsuarioNaturalForm;
 use frontend\models\usuario\CrearUsuarioNatural;
 
@@ -86,7 +87,7 @@ class CompradorJuridicoController extends Controller
      */
     public function actionBusquedaJuridico()
     {
-      die('llegue a juridico');
+     // die('llegue a juridico');
       //die(var_dump($_SESSION['datosVehiculo']));
       //die('llegue a busqueda natural'.$_SESSION['id']); 
       
@@ -94,7 +95,7 @@ class CompradorJuridicoController extends Controller
         if(isset(yii::$app->user->identity->id_contribuyente)){
 
 
-            $model = new FormularioNaturalForm();
+            $model = new FormularioJuridicoForm();
 
             $postData = Yii::$app->request->post();
 
@@ -108,6 +109,8 @@ class CompradorJuridicoController extends Controller
 
                if ($model->validate()){
 
+                //die('valido');
+
                 $buscarContribuytente = self::buscarContribuyente($model);
 
                     if ($buscarContribuytente){
@@ -117,20 +120,20 @@ class CompradorJuridicoController extends Controller
                       
                     }else{
 
-                      $buscarContribuyenteNatural = self::buscarContribuyenteNatural($model);
+                      $buscarContribuyenteJuridico = self::buscarContribuyenteJuridico($model);
 
-                        if ($buscarContribuyenteNatural){
+                        if ($buscarContribuyenteJuridico){
                             
-                            $_SESSION['datosNatural'] = $buscarContribuyenteNatural;
+                            $_SESSION['datosJuridico'] = $buscarContribuyenteJuridico;
 
-                            return $this->redirect(['/vehiculo/cambiopropietario/cambio-propietario-vendedor/mostrar-datos']);
+                            return $this->redirect(['/vehiculo/cambiopropietario/cambio-propietario-vendedor/mostrar-datos-juridico']);
                         
                         }else{
 
                          
                          // die(var_dump($_SESSION['datosNuevos']));
 
-                          return $this->redirect(['crear-contribuyente-natural']);
+                          return $this->redirect(['crear-contribuyente-juridico']);
                         }
 
                       
@@ -140,7 +143,7 @@ class CompradorJuridicoController extends Controller
             
             }
             
-            return $this->render('/vehiculo/cambiopropietario/busqueda-natural', [
+            return $this->render('/vehiculo/cambiopropietario/busqueda-juridico', [
                                                               'model' => $model,
                                                               
 
@@ -166,7 +169,7 @@ class CompradorJuridicoController extends Controller
                                   //die($model->naturaleza),
                                   'cedula' => $model->cedula,
                                   'tipo' => $model->tipo,
-                                  'tipo_naturaleza' => 0,
+                                  'tipo_naturaleza' => 1,
                                   'id_rif' => 0,
                                  'id_contribuyente' => $idContribuyente,
                                     ])
@@ -181,7 +184,7 @@ class CompradorJuridicoController extends Controller
                   }
   }
 
-  public function buscarContribuyenteNatural($model)
+  public function buscarContribuyenteJuridico($model)
   {
 
     //die($idContribuyente);
@@ -208,11 +211,11 @@ class CompradorJuridicoController extends Controller
                   }
   }
 
-  public function actionCrearContribuyenteNatural()
+  public function actionCrearContribuyenteJuridico()
   {
         //die($_SESSION['datosNuevos']);
    
-      $model = new CrearContribuyenteNaturalForm();
+      $model = new CrearContribuyenteJuridicoForm();
 
             $postData = Yii::$app->request->post();
 
@@ -229,18 +232,18 @@ class CompradorJuridicoController extends Controller
                   
 
                
-                   $guardarContribuyente = self::beginSave("natural", $model);
+                   $guardarContribuyente = self::beginSave("juridico", $model);
 
 
                        if ($guardarContribuyente == true){
 
-                        return $this->redirect(['/vehiculo/cambiopropietario/cambio-propietario-vendedor/mostrar-datos']);
+                        return $this->redirect(['/vehiculo/cambiopropietario/cambio-propietario-vendedor/mostrar-datos-juridico']);
                        }
                 
                } 
             
             }
-            return $this->render('/vehiculo/cambiopropietario/crear-usuario-natural', [
+            return $this->render('/vehiculo/cambiopropietario/crear-usuario-juridico', [
                                                               'model' => $model,
                                                               
 
@@ -276,10 +279,10 @@ class CompradorJuridicoController extends Controller
 
             $arregloDatos['ente'] = 13;
 
-            $arregloDatos['nombres'] = $model->nombre;
+            $arregloDatos['razon_social'] = $model->razon_social;
 
             //die($arregloDatos['nombres']);
-            $arregloDatos['apellidos'] = $model->apellido;
+           
 
             
             $arregloDatos['fecha_inclusion'] = date('Y-m-d');
@@ -305,7 +308,7 @@ class CompradorJuridicoController extends Controller
 
         $transaccion = $conn->beginTransaction();
 
-            if ($var == "natural"){
+            if ($var == "juridico"){
 
                 $respuesta = self::salvarContribuyenteNatural($conn, $conexion, $model);
 

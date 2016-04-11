@@ -218,6 +218,63 @@ class CambioPropietarioVendedorController extends Controller
             ]);   
   }
 
+  public function actionMostrarDatosJuridico()
+  {
+
+    //die(var_dump($_SESSION['datosNatural']).'hola');
+
+   
+  $datosVehiculo = $_SESSION['datosVehiculo'];
+  //die(var_dump($datosVehiculo));
+  // die(var_dump($datosVehiculo));
+    $model = new MostrarDatosVehiculoForm();
+
+            $postData = Yii::$app->request->post();
+
+            if ( $model->load($postData) && Yii::$app->request->isAjax ){
+                  Yii::$app->response->format = Response::FORMAT_JSON;
+                  return ActiveForm::validate($model);
+            }
+
+            if ( $model->load($postData) ) {
+
+                if ($model->validate()){
+
+
+                 // die('llego de nuevo aqui');
+
+                  $verificarSolicitud = self::verificarSolicitud($datosVehiculo[0]->id_vehiculo , $_SESSION['id']);
+
+                  if($verificarSolicitud == true){
+
+                    return MensajeController::actionMensaje(403);
+                  }else{ 
+                 
+                        $buscarGuardar = self::beginsave("buscarGuardar" , $datosVehiculo);
+
+                          if($buscarGuardar == true){
+                            return MensajeController::actionMensaje(100);
+                          }else{
+                            return MensajeController::actionMensaje(920);
+                          }
+
+                   }
+                        
+                }
+            }
+                
+                
+
+             
+            
+            return $this->render('/vehiculo/cambiopropietario/mostrar-datos-vehiculo-vendedor-juridico', [
+                                                        'model' => $model,
+                                                        'datosVehiculo' => $datosVehiculo,
+
+                                                       
+            ]);   
+  }
+
 
   public function verificarSolicitud($idVehiculo,$idConfig)
   {

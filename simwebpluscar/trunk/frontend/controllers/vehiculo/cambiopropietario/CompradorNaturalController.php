@@ -184,7 +184,7 @@ class CompradorNaturalController extends Controller
   public function buscarContribuyenteNatural($model)
   {
 
-    //die($idContribuyente);
+    //die(var_dump($model));
 
     $buscar = CrearUsuarioNatural::find()
                                   ->where([
@@ -210,7 +210,7 @@ class CompradorNaturalController extends Controller
 
   public function actionCrearContribuyenteNatural()
   {
-        //die($_SESSION['datosNuevos']);
+        //die(var_dump($_SESSION['datosNuevos']));
    
       $model = new CrearContribuyenteNaturalForm();
 
