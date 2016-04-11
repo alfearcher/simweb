@@ -145,7 +145,7 @@
 					} elseif ( $tasa['tipo_rango'] == 1 ) {		// Unidad tributaria.
 						// Se obtiene la unidad tributaria del año.
 						$año = settype($tasa['ano_impositivo'], 'integer');
-						$unidadTributariaDelAño = UnidadTributariaForm::getUnidadTributaria($años);
+						$unidadTributariaDelAño = UnidadTributariaForm::getUnidadTributaria($año);
 						if ( isset($unidadTributariaDelAño) ) {
 							$montoCalculado = $unidadTributariaDelAño * $tasa['monto'];
 
