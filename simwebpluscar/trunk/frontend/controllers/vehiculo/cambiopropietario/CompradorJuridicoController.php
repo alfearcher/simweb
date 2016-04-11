@@ -195,7 +195,7 @@ class CompradorJuridicoController extends Controller
                                   //die($model->naturaleza),
                                   'cedula' => $model->cedula,
                                   'tipo' => $model->tipo,
-                                  'tipo_naturaleza' => 0,
+                                  'tipo_naturaleza' => 1,
                                   'id_rif' => 0,
                                 
                                     ])
