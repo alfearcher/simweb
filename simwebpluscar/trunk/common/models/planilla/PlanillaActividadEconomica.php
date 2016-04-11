@@ -661,6 +661,7 @@
 							$arregloDatos[$key]['fecha_emision'] = $fechaActual;
 							$arregloDatos[$key]['fecha_pago'] = null;
 							$arregloDatos[$key]['fecha_vcto'] = $fechaVcto;
+							$arregloDatos[$key]['descripcion'] = 'LIQUIDACION';
 							$arregloDatos[$key]['fecha_desde'] = null;
 							$arregloDatos[$key]['fecha_hasta'] = null;
 							$arregloDatos[$key]['exigibilidad_pago'] = $exigibilidadLiq['exigibilidad'];
@@ -676,6 +677,7 @@
 							$arregloDatos[$periodos]['fecha_emision'] = $fechaActual;
 							$arregloDatos[$periodos]['fecha_pago'] = null;
 							$arregloDatos[$periodos]['fecha_vcto'] = $fechaVcto;
+							$arregloDatos[$periodos]['descripcion'] = 'LIQUIDACION';
 							$arregloDatos[$periodos]['fecha_desde'] = null;
 							$arregloDatos[$periodos]['fecha_hasta'] = null;
 							$arregloDatos[$periodos]['exigibilidad_pago'] = $exigibilidadLiq['exigibilidad'];
