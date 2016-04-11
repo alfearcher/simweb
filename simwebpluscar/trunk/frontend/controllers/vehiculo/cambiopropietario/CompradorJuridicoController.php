@@ -124,8 +124,7 @@ class CompradorJuridicoController extends Controller
 
                         if ($buscarContribuyenteJuridico){
                             
-                            $_SESSION['datosJuridico'] = $buscarContribuyenteJuridico;
-
+                            
                             return $this->redirect(['/vehiculo/cambiopropietario/cambio-propietario-vendedor/mostrar-datos-juridico']);
                         
                         }else{
