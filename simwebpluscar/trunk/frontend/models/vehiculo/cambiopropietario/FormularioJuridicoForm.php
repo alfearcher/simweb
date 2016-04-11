@@ -84,7 +84,6 @@ class FormularioJuridicoForm extends CrearUsuarioNatural{
           [['naturaleza','cedula', 'tipo'],'required','message' => Yii::t('frontend', '{attribute} is required')],
           [['cedula','tipo'],'integer'],
          
-        
           [['tipo_naturaleza', 'tipo'],'default', 'value' => 1],
           [['cedula','tipo'], 'integer'],
           [['cedula'], 'validarLongitud'],
@@ -103,6 +102,9 @@ class FormularioJuridicoForm extends CrearUsuarioNatural{
             $this->addError($attribute, Yii::t('frontend', 'The rif must not have more than 9 characters'));
           }
       }
+
+
+     
 
 /**
       * Lista de atributos con sus respectivas etiquetas (labels), las cuales son las que aparecen en las vistas
