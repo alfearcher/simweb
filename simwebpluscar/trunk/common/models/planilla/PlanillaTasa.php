@@ -81,16 +81,23 @@
 
 
 		/**
-		 * Metodo que inicia el proceso de la liquidacion estimada.
-		 * @return Array Retorna un arreglo multi-dimensional de los periodos liquidados.
-		 * De lo contrario retorna false.
+		 * Metodo que inicia la liquiadacion de la tasa
+		 * @param  Integer $factorMultiplicador, entero que indica por cuanto se debe multiplicar
+		 * el resultado de la liquidacion, si este valor es cero (0), no se tomara encuenta.
+		 * @param  String  $observacion, Nota que sera agregada en las observaciones de la planilla.
+		 * @return Bollean Retornara true si guardo la planilla de forma exitosa, retornara false si no
+		 * logra guardar la planilla.
 		 */
-		public function liquidarTasa($factorMultiplicador = 0)
+		public function liquidarTasa($factorMultiplicador = 0, $observacion = '')
 		{
 			if ( isset($this->conexion) && isset($this->conn) ) {
 				$parametros = self::iniciarLiquidarTasa($factorMultiplicador);
 				if ( count($parametros) > 0 ) {
 					if ( $parametros['monto'] > 0 ) {
+						$this->setMontoCalculado($parametros['monto']);
+						if ( trim($observacion) != '' ) {
+							$parametros['descripcion'] = strtoupper($observacion) . ' / '. $parametros['descripcion'];
+						}
 						$result[$parametros['ano_impositivo']] = self::generarPeriodoLiquidado($parametros);
 						if ( $result != null && isset($this->_idContribuyente) ) {
 							// Metodo de la clase Planilla().
@@ -101,34 +108,6 @@
 			}
 			return false;
 		}
-
-
-
-
-		/***/
-		public function setAnoImpositivoDesde($año)
-		{
-			$this->_añoDesde = $año;
-		}
-
-
-
-		/***/
-		public function setPeriodoDesde($periodo)
-		{
-			$this->_periodoDesde = $periodo;
-		}
-
-
-
-		/***/
-		public function setLapsoPeriodo($añoDesde, $periodoDesde)
-		{
-			$this->setAnoImpositivoDesde($añoDesde);
-			$this->setPeriodoDesde($periodoDesde);
-		}
-
-
 
 
 		/***/
@@ -231,9 +210,7 @@
 					$modelDetalle->fecha_vcto = $fechaVcto;
 					$modelDetalle->exigibilidad_pago = 99;
 
-					$arregloDetalle = $modelDetalle->attributes;
-
-					$arregloDatos[] = $arregloDetalle;
+					$arregloDatos[] = $modelDetalle->attributes;
 
 					return $arregloDatos;
 				}
