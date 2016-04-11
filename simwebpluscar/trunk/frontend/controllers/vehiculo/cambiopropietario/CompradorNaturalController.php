@@ -121,7 +121,7 @@ class CompradorNaturalController extends Controller
 
                         if ($buscarContribuyenteNatural){
                             
-                            $_SESSION['datosNatural'] = $buscarContribuyenteNatural;
+                            
 
                             return $this->redirect(['/vehiculo/cambiopropietario/cambio-propietario-vendedor/mostrar-datos']);
                         
