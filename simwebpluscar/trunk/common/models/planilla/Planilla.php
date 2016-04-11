@@ -249,9 +249,9 @@
 		 */
 		private function iniciarCicloDetalle($conexion, $conn, $idContribuyente, $arrayDetalle)
 		{
-			// Se inicia guardano los datos maestro de la planilla.
+			// Se inicia guardando los datos maestro de la planilla.
 			// $key es el año impositivo.
-			// $value es un arreglo que representa cada registro del detalle que sera
+			// $valueDetalle es un arreglo que representa cada registro del detalle que sera
 			// guardado. Ejemplo:
 			// [0] => [
 			// 		['campo01'] => valor01,

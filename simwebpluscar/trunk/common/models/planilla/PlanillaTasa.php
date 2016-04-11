@@ -43,10 +43,10 @@
 	namespace common\models\planilla;
 
  	use Yii;
- 	//use common\models\calculo\liquidacion\aaee\LiquidacionActividadEconomica;
 	use common\models\contribuyente\ContribuyenteBase;
  	use common\models\ordenanza\OrdenanzaBase;
  	use common\models\planilla\Planilla;
+ 	use common\models\calculo\liquidacion\tasa\LiquidacionTasa;
 
 
 
@@ -88,96 +88,16 @@
 		public function liquidarTasa()
 		{
 			if ( isset($this->conexion) && isset($this->conn) ) {
-				$ciclo = self::configurarCicloLiquidacion();
-				if ( $ciclo != null ) {
-					// Lo siguente retorna un array multi-dimensional, donde el indice de este array, son los años
-					// impositivo que tienen periodos por liquidar. Los elementos del array corresponde
-					// a otro array, donde los indices son enteros empezando por el cero (0) y los elementos
-					// del mismo son los campos (modelo de la clase PagoDetalle) de la entidad que tiene los
-					// detalleas de la planilla.
-					$result = self::iniciarCicloLiquidacion($ciclo);
-					if ( $result != null ) {
+				$parametros = self::iniciarLiquidarTasa();
+				if ( count($parametros) > 0 ) {
+					$result[$parametros['ano_impositivo']] = self::generarPeriodoLiquidado($parametros);
+					if ( $result != null && isset($this->_idContribuyente) ) {
+						// Metodo de la clase Planilla().
 						return $this->iniciarGuadarPlanilla($this->conexion, $this->conn, $this->_idContribuyente, $result);
-					} else {
-						return false;
-					}
-				} else {
-					return false;
-				}
-			} else {
-				return false;
-			}
-		}
-
-
-
-		/**
-		 * [iniciarCicloLiquidacion description]
-		 * @param  [type] $cicloLiquidacion [description]
-		 * @return [type]                   [description]
-		 */
-		private function iniciarCicloLiquidacion($cicloLiquidacion)
-		{
-			// Array de periodos liquidados, donde el indice del array es el año impositivo
-			// y los elemento del array corresponde al modelo de la entidad "pagos-detalle".
-			$periodosLiq;
-
-			// Monto anual de la liquidacion.
-			$montoCalculo = 0;
-
-			if ( count($cicloLiquidacion) > 0 ) {
-				foreach ( $cicloLiquidacion as $key => $value ) {
-					$montoCalculado = 0;
-					if ( strlen($key) == 4 && is_integer($key) ) {
-						if ( is_array($value) ) {
-							$año = $key;
-							$periodos = $cicloLiquidacion[$año];
-
-							$exigibilidadDeclaracion = self::getExigibilidadDeclaracion($año);
-							$exigibilidadLiq = self::getExigibilidadLiquidacion($año);
-
-							if ( $exigibilidadDeclaracion['exigibilidad'] == 1 ) {
-								$montoCalculado = $this->liquidarDeclaracion($año, 1);
-
-								if ( $montoCalculado > 0 ) {
-									$periodosLiq[$año] = self::generarPeriodosLiquidados($montoCalculado, $año,
-									                                                     $periodos, $exigibilidadLiq,
-									                                                     $exigibilidadDeclaracion);
-									if ( !isset($periodosLiq[$año]) ) {
-										return null;
-									}
-
-								} else {
-									// Abortar el proceso. Por no determinar monto. Renderizar vista
-									return null;
-								}
-
-							} elseif ( $exigibilidadDeclaracion['exigibilidad'] > 1 ) {
-								foreach ( $periodos as $key => $value ) {
-									$montoCalculado = $this->liquidarDeclaracion($año, $value);
-									if ( $montoCalculado > 0 ) {
-										$periodosLiq[$año] = self::generarPeriodosLiquidados($montoCalculado, $año, $value, $exigibilidadLiq, $exigibilidadDeclaracion);
-										if ( !isset($periodosLiq[$año]) ) {
-											return null;
-										}
-
-									} else {
-										// Abortar el proceso. Por no determinar monto. Renderizar vista
-										return null;
-									}
-								}
-							}
-						} else {
-							// Abortar la operacion. No se pudo determinar los periodos. Renderizar a una vista.
-							return null;
-						}
-					} else {
-						// Abortar la operacion. No se pudo determinar el año. Renderizar a una vista.
-						return null;
 					}
 				}
 			}
-			return $periodosLiq;
+			return false;
 		}
 
 
@@ -270,33 +190,12 @@
 
 
 
-
-		/**
-		 * Metodo que determina el ultimo registro liquidado, de haberlo.
-		 * Si el metodo retorna null quiere decir que no existe periodos liquidados
-		 * lo que indica que la liquidacion actual sera la primera.
-		 * @return Array, Retorna un arreglo con los campos de la entidad "pagos-detalle"
-		 * este registro es el ultimo encontrado, o sea el ultimo registro existente
-		 * en la entidad segun los parametros de consulta.
-		 */
-		public function getUltimaLiquidacion()
-		{
-			$this->getUltimoLapsoActEcon();
-			$detalle = null;
-			if ( count($this->_ultimaLiquidacion) > 0 ) {
-				$detalle = isset($this->_ultimaLiquidacion) ? $this->_ultimaLiquidacion : null;
-			}
-			return $detalle;
-		}
-
-
-
 		/***/
-		public function LiquidarTasa()
+		public function iniciarLiquidarTasa()
 		{
 			$result = null;		// Array con los parametros principales y el calculo de la tasa anual.
 
-			$liquidacion = New LiquidacionTasa($this->_Impuesto);
+			$liquidacion = New LiquidacionTasa($this->_idImpuesto);
 			$result = $liquidacion->iniciarCalcularLiquidacionTasa();
 			return $result;
 		}
@@ -304,19 +203,7 @@
 
 
 
-		/**
-		 * Metodo que distribuye el monto calculado de la liquidacion entre los periodos
-		 * respectivo del año. Si el primer periodo de la liquidacion es mayor a cero
-		 * se debe realizar un ajuste en la distribucion del monto entre los periodos.
-		 * @param  Double $montoLiquidado, Calculo de la liquidacion.
-		 * @param  Integer $año, expresion de 4 digitos que representa el año impositivo.
-		 * @param  Array|Interger $periodos, periodos o periodo de la liquidacion.
-		 * @param  Array $exigibilidadLiq, determina la cantidad de periodos que deben
-		 * ser liquidados en un año. Es un arreglo de la entidad "exigibilidades".
-		 * @param  Array $exigibilidadDeclaracion, determina la cantidad de declaraciones
-		 * que se deben realizar en un año. Es un arreglo de la entidad "exigibilidades"
-		 * @return Array Retorna un arreglo de la entidad "pagos-detalle".
-		 */
+		/***/
 		private function generarPeriodoLiquidado($arregloParametro)
 		{
 			if ( count($arregloParametro) > 0 ) {
@@ -326,104 +213,30 @@
 
 					$modelDetalle = New PagoDetalle();
 
-					$arregloDetalle = array_values($modelDetalle->attributes());
+					$modelDetalle->id_impuesto = $arregloParametro['id_impuesto'];
+					$modelDetalle->impuesto = $arregloParametro['impuesto'];
+					$modelDetalle->ano_impositivo = $arregloParametro['ano_impositivo'];
+					$modelDetalle->trimestre = 0;
+					$modelDetalle->monto = $arregloParametro['monto'];
+					$modelDetalle->recargo = 0;
+					$modelDetalle->interes = 0;
+					$modelDetalle->descuento = 0;
+					$modelDetalle->pago = 0;
+					$modelDetalle->referencia = 0;
+					$modelDetalle->descripcion = $arregloParametro['descripcion'];
+					$modelDetalle->monto_reconocimiento = 0;
+					$modelDetalle->fecha_emision = $fechaActual;
+					$modelDetalle->fecha_vcto = $fechaVcto;
+					$modelDetalle->exigibilidad_pago = 99;
+
+					$arregloDetalle = $modelDetalle->attributes;
+
+					$arregloDatos[] = $arregloDetalle;
+
+					return $arregloDatos;
 				}
 			}
 			return null;
-			if ( $montoLiquidado == 0 || $montoLiquidado < 0 ) {
-					// Se debe abortar el proceso por declaracion faltante o parametros en los calculos incompletos.
-					// Renderizar a un vista.
-
-			} elseif ( $montoLiquidado > 0 ) {
-				$fechaActual = date('Y-m-d');
-				$fechaVcto = $this->getUltimoDiaMes($fechaActual);
-
-				$modelDetalle = New PagoDetalle();
-
-				$arregloDetalle = array_values($modelDetalle->attributes());
-
-				if ( is_array($periodos) ) {
-					// Aqui $value es el periodo (trimstre).
-					foreach ( $periodos as $key => $value ) {
-						$arregloDatos[] = $this->inicializarDatos($arregloDetalle);
-
-						$arregloDatos[$key]['trimestre'] = $value;
-						$arregloDatos[$key]['monto'] = $montoPeriodo;
-						$arregloDatos[$key]['id_impuesto'] = $idImpuesto;
-						$arregloDatos[$key]['impuesto'] = 1;
-						$arregloDatos[$key]['ano_impositivo'] = $año;
-						$arregloDatos[$key]['fecha_emision'] = $fechaActual;
-						$arregloDatos[$key]['fecha_pago'] = null;
-						$arregloDatos[$key]['fecha_vcto'] = $fechaVcto;
-						$arregloDatos[$key]['fecha_desde'] = null;
-						$arregloDatos[$key]['fecha_hasta'] = null;
-						$arregloDatos[$key]['exigibilidad_pago'] = $exigibilidadLiq['exigibilidad'];
-					}
-				} elseif ( is_integer($periodos) )  {
-						$arregloDatos[] = $this->inicializarDatos($arregloDetalle);
-
-						$arregloDatos[$periodos]['trimestre'] = $value;
-						$arregloDatos[$periodos]['monto'] = $montoPeriodo;
-						$arregloDatos[$periodos]['id_impuesto'] = $idImpuesto;
-						$arregloDatos[$periodos]['impuesto'] = 1;
-						$arregloDatos[$periodos]['ano_impositivo'] = $año;
-						$arregloDatos[$periodos]['fecha_emision'] = $fechaActual;
-						$arregloDatos[$periodos]['fecha_pago'] = null;
-						$arregloDatos[$periodos]['fecha_vcto'] = $fechaVcto;
-						$arregloDatos[$periodos]['fecha_desde'] = null;
-						$arregloDatos[$periodos]['fecha_hasta'] = null;
-						$arregloDatos[$periodos]['exigibilidad_pago'] = $exigibilidadLiq['exigibilidad'];
-
-				}
-
-				return $arregloDatos;
-			}
-			return null;
-		}
-
-
-
-
-		/***/
-		private function inicializarDatos($arregloDatos)
-		{
-			$arreglo = null;
-			foreach ( $arregloDatos as $key => $value ) {
-				$arreglo[$value] = 0;
-			}
-			return $arreglo;
-		}
-
-
-
-
-
-
-
-		/**
-		 * Metodo que obtiene un array con la informacion de la entidad "exigibilidades".
-		 * Para acceder a la informacion de las exigibilidad, segun la liquidacion o
-		 * declaracion.
-		 * @param  Integer $año, Año impositivo de 4 digito.
-		 * @return Array, retorna un array de los campos con la entidad "exigibilidades".
-		 */
-		private function getExigibilidadDeclaracion($año)
-		{
-			return OrdenanzaBase::getExigibilidadDeclaracion($año, 1);
-		}
-
-
-
-		/**
-		 * Metodo que obtiene un array con la informacion de la entidad "exigibilidades".
-		 * Para acceder a la informacion de las exigibilidad, segun la liquidacion o
-		 * declaracion.
-		 * @param  Integer $año, Año impositivo de 4 digito.
-		 * @return Array, retorna un array de los campos con la entidad "exigibilidades".
-		 */
-		private function getExigibilidadLiquidacion($año)
-		{
-			return OrdenanzaBase::getExigibilidadLiquidacion($año, 1);
 		}
 
 
