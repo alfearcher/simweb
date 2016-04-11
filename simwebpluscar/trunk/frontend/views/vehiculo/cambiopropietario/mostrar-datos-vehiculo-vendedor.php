@@ -56,12 +56,21 @@ $listaAño2  = ArrayHelper::map($listaFecha2, 'id' , 'campo');
 
 $busqueda = CrearUsuarioNatural::find()
                                 ->where([
-                                    'id_contribuyente' => $_SESSION['idComprador'],
-                                    //die($_SESSION['idComprador']),
+                                    'naturaleza' => $_SESSION['datosNuevos']->naturaleza,
+                                    'cedula' => $_SESSION['datosNuevos']->cedula,
+                                    //die($_SESSION['datosNuevos']->cedula),
+                                    'tipo' => $_SESSION['datosNuevos']->tipo,
+                                    'tipo_naturaleza' => 0,
                                     'inactivo' => 0,
                                     ])
 
                             ->all();
+
+
+
+
+
+
 
 
 
@@ -155,7 +164,7 @@ $busqueda = CrearUsuarioNatural::find()
                     <div class="col-sm-2">
                         <?= $form->field($model, 'id_contribuyente')->textInput(
                                                                 [
-                                                                'value' => $_SESSION['idComprador'],
+                                                                'value' => $busqueda[0]->id_contribuyente,
                                                                 'readonly' => true,
                                                                 'id'=> 'placa',
                                                                 ]);

@@ -56,8 +56,11 @@ $listaAño2  = ArrayHelper::map($listaFecha2, 'id' , 'campo');
 
 $busqueda = CrearUsuarioNatural::find()
                                 ->where([
-                                    'id_contribuyente' => $_SESSION['idComprador'],
-                                    //die($_SESSION['idComprador']),
+                                    'naturaleza' => $_SESSION['datosNuevos']->naturaleza,
+                                    'cedula' => $_SESSION['datosNuevos']->cedula,
+                                    //die($_SESSION['datosNuevos']->cedula),
+                                    'tipo' => $_SESSION['datosNuevos']->tipo,
+                                    'tipo_naturaleza' => 1,
                                     'inactivo' => 0,
                                     ])
 
@@ -66,7 +69,7 @@ $busqueda = CrearUsuarioNatural::find()
 
 
 
-
+//die(var_dump());
 
 ?>
 
@@ -117,7 +120,7 @@ $busqueda = CrearUsuarioNatural::find()
                     <div class="col-sm-3">
                         <?= $form->field($model, 'razon_social')->textInput(
                                                                 [
-                                                                'value' => $busqueda[0]->razon_social ,
+                                                                'value' => $busqueda[0]->razon_social,
                                                                 'readonly' => true,
                                                                 'id'=> 'razon_social',
                                                                 ]);
@@ -138,7 +141,7 @@ $busqueda = CrearUsuarioNatural::find()
                     <div class="col-sm-2">
                         <?= $form->field($model, 'id_contribuyente')->textInput(
                                                                 [
-                                                                'value' => $_SESSION['idComprador'],
+                                                                'value' => $busqueda[0]->id_contribuyente,
                                                                 'readonly' => true,
                                                                 'id'=> 'ID',
                                                                 ]);
