@@ -78,9 +78,6 @@
 
 		/**
 		 * Metodo donde comienza el proceso.
-		 * @param  [type] $año             [description]
-		 * @param  [type] $periodo         [description]
-		 * @param  [type] $tipoDeclaracion [description]
 		 * @return Array retorna un arreglo con los siguientes valores:
 		 * id-impuesto, impuesto, año impositivo, descripcion y monto calculado.
 		 */
