@@ -85,15 +85,17 @@
 		 * @return Array Retorna un arreglo multi-dimensional de los periodos liquidados.
 		 * De lo contrario retorna false.
 		 */
-		public function liquidarTasa()
+		public function liquidarTasa($factorMultiplicador = 0)
 		{
 			if ( isset($this->conexion) && isset($this->conn) ) {
-				$parametros = self::iniciarLiquidarTasa();
+				$parametros = self::iniciarLiquidarTasa($factorMultiplicador);
 				if ( count($parametros) > 0 ) {
-					$result[$parametros['ano_impositivo']] = self::generarPeriodoLiquidado($parametros);
-					if ( $result != null && isset($this->_idContribuyente) ) {
-						// Metodo de la clase Planilla().
-						return $this->iniciarGuadarPlanilla($this->conexion, $this->conn, $this->_idContribuyente, $result);
+					if ( $parametros['monto'] > 0 ) {
+						$result[$parametros['ano_impositivo']] = self::generarPeriodoLiquidado($parametros);
+						if ( $result != null && isset($this->_idContribuyente) ) {
+							// Metodo de la clase Planilla().
+							return $this->iniciarGuadarPlanilla($this->conexion, $this->conn, $this->_idContribuyente, $result);
+						}
 					}
 				}
 			}
@@ -191,11 +193,11 @@
 
 
 		/***/
-		public function iniciarLiquidarTasa()
+		public function iniciarLiquidarTasa($factorMultiplicador = 0)
 		{
 			$result = null;		// Array con los parametros principales y el calculo de la tasa anual.
 
-			$liquidacion = New LiquidacionTasa($this->_idImpuesto);
+			$liquidacion = New LiquidacionTasa($this->_idImpuesto, $factorMultiplicador);
 			$result = $liquidacion->iniciarCalcularLiquidacionTasa();
 			return $result;
 		}
