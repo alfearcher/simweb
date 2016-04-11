@@ -178,7 +178,7 @@ class CompradorJuridicoController extends Controller
 
 
                   if ($buscar == true){
-                    die(var_dump($buscar));
+                   // die(var_dump($buscar));
                     return $buscar;
                   }else{
                     return false;
@@ -193,19 +193,24 @@ class CompradorJuridicoController extends Controller
     $buscar = CrearUsuarioNatural::find()
                                   ->where([
                                   'naturaleza' => $model->naturaleza,
-                                  //die($model->naturaleza),
+                                  
                                   'cedula' => $model->cedula,
+
                                   'tipo' => $model->tipo,
+                                    //die($model->tipo),
                                   'tipo_naturaleza' => 1,
                                   'id_rif' => 0,
-                                
+                                  
                                     ])
                                   ->all();
 
 
 
                   if ($buscar == true){
+                 // die('encontro'); 
+                    $_SESSION['datosNuevos'] = $model;
                     return $buscar;
+
                   }else{
                     $_SESSION['datosNuevos'] = $model;
                     return false;
@@ -257,7 +262,7 @@ class CompradorJuridicoController extends Controller
 
   }
 
-  public function salvarContribuyenteNatural($conn, $conexion, $model)
+  public function salvarContribuyenteJuridico($conn, $conexion, $model)
     {
 
         $datos = $_SESSION['datosNuevos'];
@@ -272,11 +277,13 @@ class CompradorJuridicoController extends Controller
                 $arregloDatos[$value] =0;
             }
           
-            $arregloDatos['tipo_naturaleza'] = 0;
+            $arregloDatos['tipo_naturaleza'] = 1;
         
             $arregloDatos['naturaleza'] = $datos->naturaleza;
 
             $arregloDatos['cedula'] = $datos->cedula;
+
+            $arregloDatos['tipo'] = $datos->tipo;
 
             $arregloDatos['ente'] = 13;
 
@@ -311,7 +318,7 @@ class CompradorJuridicoController extends Controller
 
             if ($var == "juridico"){
 
-                $respuesta = self::salvarContribuyenteNatural($conn, $conexion, $model);
+                $respuesta = self::salvarContribuyenteJuridico($conn, $conexion, $model);
 
                     if ($respuesta == true){
                       
