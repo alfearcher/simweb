@@ -201,6 +201,7 @@ class CompradorNaturalController extends Controller
 
 
                   if ($buscar == true){
+                    $_SESSION['datosNuevos'] = $model;
                     return $buscar;
                   }else{
                     $_SESSION['datosNuevos'] = $model;
