@@ -90,6 +90,7 @@
 
 		/**
 		 * Relacion con la entidad "clases-vehiculos".
+		 * @return [type] [description]
 		 */
 		public function getClaseVehiculo()
 		{
