@@ -305,124 +305,124 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
             try {
 
-            foreach($datosInmueble as $key => $value){
-            
-            
+                foreach($datosInmueble as $key => $value){
+                
+                
 
-            $tableName1 = 'solicitudes_contribuyente'; 
+                $tableName1 = 'solicitudes_contribuyente'; 
 
-            $arrayDatos1 = [  'id_contribuyente' => $_SESSION['idContribuyente'],
-                              'id_config_solicitud' => $_SESSION['id'],
-                              'impuesto' => 2,
-                              'id_impuesto' => $value['id_impuesto'],
-                              'tipo_solicitud' => $tipoSolicitud,
-                              'usuario' => yii::$app->user->identity->login,
-                              'fecha_hora_creacion' => date('Y-m-d h:i:s'),
-                              'nivel_aprobacion' => $nivelAprobacion,
-                              'nro_control' => 0,
-                              'firma_digital' => null,
-                              'estatus' => 0,
-                              'inactivo' => 0,
-                          ];  
-            
+                $arrayDatos1 = [  'id_contribuyente' => $_SESSION['idContribuyente'],
+                                  'id_config_solicitud' => $_SESSION['id'],
+                                  'impuesto' => 2,
+                                  'id_impuesto' => $value['id_impuesto'],
+                                  'tipo_solicitud' => $tipoSolicitud,
+                                  'usuario' => yii::$app->user->identity->login,
+                                  'fecha_hora_creacion' => date('Y-m-d h:i:s'),
+                                  'nivel_aprobacion' => $nivelAprobacion,
+                                  'nro_control' => 0,
+                                  'firma_digital' => null,
+                                  'estatus' => 0,
+                                  'inactivo' => 0,
+                              ];  
+                
 
-            if ( $conn->guardarRegistro($conexion, $tableName1,  $arrayDatos1) ){  
-                $result = $conexion->getLastInsertID();
-
-
-                $arrayDatos2 = [    'id_contribuyente' => $_SESSION['idContribuyente'],
-                                    'id_impuesto' => $value['id_impuesto'],
-                                    'nro_solicitud' => $result,
-                                    'inactivo' => 1,
-                                    'fecha_creacion' => date('Y-m-d h:i:s'),
-                                ]; 
-
-            
-                 $tableName2 = 'sl_inmuebles'; 
-
-                if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ) {
-
-                    $tableName4 = 'sl_desincorporaciones';
-                    $arrayDatos4 = [
-                                    'nro_solicitud'=>$result,
-                                    'id_contribuyente'=>$_SESSION['idContribuyente'],
-                                    'id_impuesto'=>$value['id_impuesto'],
-                                    'impuesto'=>2,
-                                    'causa_desincorporacion'=>$model->causa,
-                                    'observacion'=>$model->observacion,
-                                    'fecha_hora'=> date('Y-m-d h:m:i'),
-                                    'inactivo'=> 0,
-              
-                    ];
-      
-
-                  if($conn->guardarRegistro($conexion, $tableName4,  $arrayDatos4)){
+                if ( $conn->guardarRegistro($conexion, $tableName1,  $arrayDatos1) ){  
+                    $result = $conexion->getLastInsertID();
 
 
+                    $arrayDatos2 = [    'id_contribuyente' => $_SESSION['idContribuyente'],
+                                        'id_impuesto' => $value['id_impuesto'],
+                                        'nro_solicitud' => $result,
+                                        'inactivo' => 1,
+                                        'fecha_creacion' => date('Y-m-d h:i:s'),
+                                    ]; 
 
-                    if ($nivelAprobacion['nivel_aprobacion'] != 1){
+                
+                     $tableName2 = 'sl_inmuebles'; 
 
-                        $todoBien == true;
-                         
+                    if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ) {
+
+                          $tableName4 = 'sl_desincorporaciones';
+                          $arrayDatos4 = [
+                                          'nro_solicitud'=>$result,
+                                          'id_contribuyente'=>$_SESSION['idContribuyente'],
+                                          'id_impuesto'=>$value['id_impuesto'],
+                                          'impuesto'=>2,
+                                          'causa_desincorporacion'=>$model->causa,
+                                          'observacion'=>$model->observacion,
+                                          'fecha_hora'=> date('Y-m-d h:m:i'),
+                                          'inactivo'=> 0,
+                    
+                          ];
+          
+
+                          if($conn->guardarRegistro($conexion, $tableName4,  $arrayDatos4)){
+
+
+
+                            if ($nivelAprobacion['nivel_aprobacion'] != 1){
+
+                                $todoBien == true;
+                                 
+
+                            } else {
+
+                                $arrayDatos3 = [    
+                                                    'inactivo' => 1,
+                                            
+                                                ]; 
+
+                    
+                                $tableName3 = 'inmuebles';
+                                $arrayCondition = ['id_impuesto'=>$value['id_impuesto']];
+
+                                if ( $conn->modificarRegistro($conexion, $tableName3,  $arrayDatos3, $arrayCondition) ){
+
+                                      $todoBien == true; 
+
+                                } else {
+                    
+                                      $todoBien = false; 
+                                      break;
+
+                                }
+                            }
+                          
+                        } else {
+
+                          $todoBien = false; 
+                          break;
+                        }
 
                     } else {
 
-                        $arrayDatos3 = [    
-                                            'inactivo' => 1,
-                                    
-                                        ]; 
+                      $todoBien = false; 
+                      break;
 
-            
-                        $tableName3 = 'inmuebles';
-                        $arrayCondition = ['id_impuesto'=>$value['id_impuesto']];
-
-                        if ( $conn->modificarRegistro($conexion, $tableName3,  $arrayDatos3, $arrayCondition) ){
-
-                              $todoBien == true; 
-
-                        } else {
-            
-                              $todoBien = false; 
-                              break;
-
-                        }
-                      }
+                    }
                   
+                  }else{ 
+                    $todoBien == false;
+                    break; 
+                  }
+                } /// fin del foreach 
+
+                if ($todoBien == true){
+                    
+                    $transaccion->commit();  
+                    $conexion->close(); 
+                    $tipoError = 0; 
+                    return $result;
+
                 } else {
-
-                  $todoBien = false; 
-                  break;
-                }
-
-                } else {
-
-                  $todoBien = false; 
-                  break;
-
-                }
-              
-              }else{ 
-                $todoBien == false;
-                break; 
-              }
-            } /// fin del foreach 
-
-            if ($todoBien == true){
                 
-                $transaccion->commit();  
-                $conexion->close(); 
-                $tipoError = 0; 
-                return $result;
+                    $transaccion->rollBack(); 
+                    $conexion->close(); 
+                    $tipoError = 0; 
+                    return false; 
 
-            } else {
-            
-                $transaccion->rollBack(); 
-                $conexion->close(); 
-                $tipoError = 0; 
-                return false; 
-
-            }
-              
+                }
+                  
                
           
           } catch ( Exception $e ) {
