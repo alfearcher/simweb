@@ -13,6 +13,7 @@
     use common\fecha\RangoFecha;
     use kartik\form\ActiveForm;
     use frontend\models\usuario\CrearUsuarioNatural;
+  
 
 //arrayhelper que carga el combo clase vehiculo
 $claseVehiculo = ClaseVehiculo::find()->all();
@@ -69,9 +70,35 @@ $busqueda = CrearUsuarioNatural::find()
 
 
 
-//die(var_dump());
+$claseVehiculo = ClaseVehiculo::find()
+                            ->where([
+                            'clase_vehiculo' => $datosVehiculo[0]->clase_vehiculo,
+                           // die($datosVehiculo[0]->clase_vehiculo),
+
+                                ])
+                            ->all();
+
+$usoVehiculo = UsoVehiculo::find()
+                            ->where([
+                            'uso_vehiculo' => $datosVehiculo[0]->uso_vehiculo,
+                           // die($datosVehiculo[0]->clase_vehiculo),
+
+                                ])
+                            ->all();
+
+$tipoVehiculo = TipoVehiculo::find()
+                            ->where([
+                            'tipo_vehiculo' => $datosVehiculo[0]->tipo_vehiculo,
+                           // die($datosVehiculo[0]->clase_vehiculo),
+
+                                ])
+                            ->all();
+               
 
 ?>
+               
+
+
 
 
 
@@ -253,7 +280,9 @@ $busqueda = CrearUsuarioNatural::find()
                     <div class="col-sm-6">
                         <?= $form->field($model, 'clase_vehiculo')->textInput( 
                                                                 [
-                                                                 'value' => $datosVehiculo[0]['clase_vehiculo'],
+
+                                                                 'value' => isset($claseVehiculo[0]->descripcion) ? $claseVehiculo[0]->descripcion: null , 
+                                                                 //die($datosVehiculo[0]->clase_vehiculo),
                                                                 'readonly' => true,
                                                                 'id'=> 'clase_vehiculo',
                                                                 'prompt' => yii::t('frontend', 'Select'),
@@ -270,9 +299,14 @@ $busqueda = CrearUsuarioNatural::find()
 
                     <div class="row">
                     <div class="col-sm-6">
-                        <?= $form->field($model, 'tipo_vehiculo')->textInput( 
+                        <?= $form->field($model, 'tipo_vehiculo')->textInput(
                                                                 [
-                                                                 'value' => $datosVehiculo[0]['tipo_vehiculo'],
+
+                                                              
+                                                               
+                                                               
+                                                                'value' => isset($tipoVehiculo[0]->descripcion) ? $tipoVehiculo[0]->descripcion: null , 
+                                                                
                                                                 'readonly' => true,
                                                                 'id'=> 'tipo_vehiculo',
                                                                 'prompt' => yii::t('frontend', 'Select'),
@@ -284,13 +318,13 @@ $busqueda = CrearUsuarioNatural::find()
 
 <!-- FIN DE TIPOS <-->
 
-<!-- TIPOS -->
+<!-- USOS -->
 
                     <div class="row">
                     <div class="col-sm-6">
                         <?= $form->field($model, 'uso_vehiculo')->textInput( 
                                                                 [
-                                                                 'value' => $datosVehiculo[0]['uso_vehiculo'],
+                                                                 'value' => isset($usoVehiculo[0]->descripcion) ? $usoVehiculo[0]->descripcion: null , 
                                                                 'readonly' => true,
                                                                 'id'=> 'uso_vehiculo',
                                                                 'prompt' => yii::t('frontend', 'Select'),
@@ -300,7 +334,7 @@ $busqueda = CrearUsuarioNatural::find()
                     </div>
                     </div>
 
-<!-- FIN DE TIPOS <-->
+<!-- FIN DE USOS <-->
 
 <!-- COLOR -->
 
