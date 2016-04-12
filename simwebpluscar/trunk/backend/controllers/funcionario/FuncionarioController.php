@@ -38,6 +38,10 @@
 	use common\conexion\ConexionController;
 	use common\classes\ValueDefault;	// Modulo por desarrollar, buscar los valores por defectos de los campos en las rules del modelo.
 	use common\models\configuracion\solicitud\ParametroSolicitud;
+	use common\models\planilla\Planilla;
+	use common\models\ordenanza\OrdenanzaBase;
+	use common\models\planilla\PlanillaActividadEconomica;
+	use common\models\planilla\PlanillaTasa;
 
 
  /**
@@ -147,13 +151,28 @@
 
 	  	public function actionPrueba()
 	  	{
-	  		$parametro = New ParametroSolicitud(54);
-	  		//$parametro->configurar(54);
-//die(var_dump($parametro->findConfigurarSolicitud()));
-	  		//$arrayP = $parametro->findConfigurarSolicitud();
-	  		//die(var_dump($arrayP[0]['tipoSolicitud']['descripcion']));
+	  		$conexion = New ConexionController();
 
-	  		die(var_dump($parametro->findConfiguracionSolicitudDetalle()));
+			// Instancia de conexion hacia la base de datos.
+			$this->connLocal = $conexion->initConectar('db');
+			$this->connLocal->open();
+
+			// Instancia de tipo transaccion para asegurar la integridad del resguardo de los datos.
+			// Inicio de la transaccion.
+			$transaccion = $this->connLocal->beginTransaction();
+
+			// Parametros IdContribuyente, idImpuesto
+			$planilla = New PlanillaTasa(458, 1339, $conexion, $this->connLocal);
+
+			$result = $planilla->liquidarTasa();
+			if ( $result ) {
+				$transaccion->commit();
+				die('guardo');
+			} else {
+				$transaccion->rollBack();
+				die('NO guardo');
+			}
+
 	  	}
 	}
 
