@@ -98,8 +98,8 @@
 			$model = New NumeroPlanilla();
 
 			$model->ente = Yii::$app->ente->getEnte();
-			// $model->usuario = Yii::$app->user->username;
-			$model->usuario = 'PRUEBA';
+			$model->usuario = Yii::$app->user->identity->email;
+			//$model->usuario = 'PRUEBA';
 			$model->fecha_hora = date('Y-m-d H:i:s');
 
 			$this->guardarNumeroPlanilla($model);
@@ -112,7 +112,7 @@
 		 * Metodo para obtener el numero de planilla generado en la insercion.
 		 * @return Long Retorna numero de la entidad.
 		 */
-		protected function getPlanilla()
+		public function getPlanilla()
 		{
 			return $this->planilla;
 		}
