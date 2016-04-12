@@ -47,30 +47,30 @@
 	use yii\db\Exception;
 	use common\models\ordenanza\OrdenanzaBase;
 	use backend\models\utilidad\ut\UnidadTributariaForm;
+	use frontend\models\vehiculo\cambiodatos\BusquedaVehiculos;
 
 	/**
 	* 	Clase que gestiona el calculo anual del impuesto por actividad economica,
 	*
 	*/
-	class LiquidacionTasa
+	class LiquidacionVehiculo
 	{
 
 		private $_calculoAnual;
-		private $_idImpuesto;
-		private $_parametro;
-		private $_multiplicador;
+		private $_idImpuesto;		// Identificador del Vehiculo.
+		private $_parametro;		// Array que retornara el id-impuesto, impuesto,
+									// año impositivo, placa y monto calculado.
 
 
 		/**
 		 * Metodo constructor
-		 * @param Long $id identificador del Contribuyente (IdContribuyente).
+		 * @param Long $idImpuesto identificador del vehiculo.
 		 */
-		public function __construct($idImpuesto, $factorMultiplicador = 0)
+		public function __construct($idImpuesto)
 		{
 			$this->_calculoAnual = 0;
 			$this->_parametro = null;
 			$this->_idImpuesto = $idImpuesto;
-			$this->_multiplicador = $factorMultiplicador;
 		}
 
 
@@ -78,15 +78,15 @@
 		/**
 		 * Metodo donde comienza el proceso.
 		 * @return Array retorna un arreglo con los siguientes valores:
-		 * id-impuesto, impuesto, año impositivo, descripcion y monto calculado.
+		 * id-impuesto, impuesto, año impositivo, placa y monto calculado.
 		 */
-		public function iniciarCalcularLiquidacionTasa()
+		public function iniciarCalcularLiquidacionVehiculo()
 		{
 			$this->_calculoAnual = 0;
 			$this->_parametro = null;
 			if ( isset($this->_idImpuesto) ) {
 				$this->calculoTasa();
-				$monto = $this->_multiplicador > 0 ? $this->getCalculoAnual() * $this->_multiplicador : $this->getCalculoAnual();
+				$monto = getCalculoAnual();
 				$this->_parametro['monto'] = $monto;
 			}
 			return $this->_parametro;
@@ -115,41 +115,36 @@
 
 
 
-
 		/**
-		 * Metodo que determina que tipo de operacion se debe realizar para calcular el monto
-		 * de la tasa. Aqui se maneja dos tipos de operacion, por bolivares o unidades tributarias.
-		 * @return Double Retornara monto calculado, el monto esta representado en Bolivares.
+		 * Metodo que retorna un modelo que instancia una clase tipo ActiveRecord con los datos
+		 * del vehiculo, utilizando como parametro de busqueda el identificador del vehiculo.
 		 */
-		private function calculoTasa()
+		private function getDatosVehiculo()
 		{
-			$montoCalculado = 0;
-			if ( isset($this->_idImpuesto) ) {
-				$tasa = $this->getParametrosTasa();
-				if ( isset($tasa) ) {
-					$this->_parametro = [
-								'id_impuesto' => $tasa['id_impuesto'],
-								'impuesto' => $tasa['impuesto'],
-								'ano_impositivo' => $tasa['ano_impositivo'],
-								'descripcion' => $tasa['descripcion'],
-								'monto' => 0,
-					];
+			return isset($this_idImpuesto) ? BusquedaVehiculos::findOne($this->_idImpuesto) : null;
+		}
 
-					if ( $tasa['tipo_rango'] == 0 ) {			// Moneda Nacional.
-						$montoCalculado = $tasa['monto'];
 
-					} elseif ( $tasa['tipo_rango'] == 1 ) {		// Unidad tributaria.
-						// Se obtiene la unidad tributaria del año.
-						settype($tasa['ano_impositivo'], 'integer');
-						$unidadTributariaDelAño = UnidadTributariaForm::getUnidadTributaria($tasa['ano_impositivo']);
-						if ( isset($unidadTributariaDelAño) ) {
-							$montoCalculado = $unidadTributariaDelAño * $tasa['monto'];
 
-						}
-					}
-				}
+
+		/***/
+		private function calculoImpuestoVehiculo()
+		{
+			$model = $this->getDatosVehiculo();
+			if ( isset($model) ) {
+
+			} else {
+
 			}
-			$this->_calculoAnual = $montoCalculado;
+		}
+
+
+
+
+		/***/
+		private function getCalculoPorClaseVehiculo()
+		{
+
 		}
 
 
