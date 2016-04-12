@@ -290,7 +290,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      public function GuardarCambios($model, $datosInmueble)
      {
             //die(var_dump($datos));
-            $todoBien = true;
+            $todoBien = true; 
             
             $buscar = new ParametroSolicitud($_SESSION['id']);
 
@@ -340,7 +340,25 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
             
                  $tableName2 = 'sl_inmuebles'; 
 
-                if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){
+                if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ) {
+
+                    $tableName4 = 'sl_desincorporaciones';
+                    $arrayDatos4 = [
+                                    'nro_solicitud'=>$result,
+                                    'id_contribuyente'=>$_SESSION['idContribuyente'],
+                                    'id_impuesto'=>$value['id_impuesto'],
+                                    'impuesto'=>$impuesto,
+                                    'causa_desincorporacion'=>$model->causa,
+                                    'observacion'=>$model->observacion,
+                                    'fecha_hora'=> date('Y-m-d h:m:i'),
+                                    'inactivo'=> 0,
+              
+                    ];
+      
+
+                  if($conn->guardarRegistro($conexion, $tableName4,  $arrayDatos4)){
+
+
 
                     if ($nivelAprobacion['nivel_aprobacion'] != 1){
 
@@ -365,9 +383,21 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                         } else {
             
                               $todoBien = false; 
+                              break;
 
                         }
                   }
+                } else {
+
+                  $todoBien = false; 
+                  break;
+
+                } else {
+
+                  $todoBien = false; 
+                  break;
+
+                }
                 }
               }else{ 
                 $todoBien == false;
