@@ -289,7 +289,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
       */
      public function GuardarCambios($model, $datosInmueble)
      {
-            //die(var_dump($datos));
+            
             $todoBien = true; 
             
             $buscar = new ParametroSolicitud($_SESSION['id']);
@@ -347,7 +347,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                                     'nro_solicitud'=>$result,
                                     'id_contribuyente'=>$_SESSION['idContribuyente'],
                                     'id_impuesto'=>$value['id_impuesto'],
-                                    'impuesto'=>$impuesto,
+                                    'impuesto'=>2,
                                     'causa_desincorporacion'=>$model->causa,
                                     'observacion'=>$model->observacion,
                                     'fecha_hora'=> date('Y-m-d h:m:i'),
@@ -386,11 +386,13 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                               break;
 
                         }
-                  }
+                      }
+                  
                 } else {
 
                   $todoBien = false; 
                   break;
+                }
 
                 } else {
 
@@ -398,7 +400,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                   break;
 
                 }
-                }
+              
               }else{ 
                 $todoBien == false;
                 break; 
