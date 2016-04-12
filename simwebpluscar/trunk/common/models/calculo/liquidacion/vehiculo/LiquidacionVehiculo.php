@@ -48,6 +48,8 @@
 	use common\models\ordenanza\OrdenanzaBase;
 	use backend\models\utilidad\ut\UnidadTributariaForm;
 	use frontend\models\vehiculo\cambiodatos\BusquedaVehiculos;
+	use backend\models\utilidad\tarifa\vehiculo\TarifaVehiculo;
+	use backend\models\utilidad\tarifa\vehiculo\TarifaVehiculoDetalle;
 
 	/**
 	* 	Clase que gestiona el calculo anual del impuesto por actividad economica,
