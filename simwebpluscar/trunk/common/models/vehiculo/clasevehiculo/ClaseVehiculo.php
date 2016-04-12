@@ -81,7 +81,7 @@ class ClaseVehiculo extends \yii\db\ActiveRecord
 
 
     /**
-     * Relacion con la entidada "Tarifas-Vahiculos"
+     * Relacion con la entidada "Tarifas-Vehiculos"
      */
     public function getTarifaVehiculo()
     {
