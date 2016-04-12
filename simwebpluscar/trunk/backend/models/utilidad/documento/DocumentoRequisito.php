@@ -109,7 +109,9 @@
 
 
 
-		/***/
+		/**
+		 * Relacion entre las entidades "config-documentos-requisitos" y "config-solic-documentos"
+		 */
 		public function getSolicitudDocumento()
 		{
 			return $this->hasMany(SolicitudDocumento::className(), ['id_documento' => 'id_documento']);
