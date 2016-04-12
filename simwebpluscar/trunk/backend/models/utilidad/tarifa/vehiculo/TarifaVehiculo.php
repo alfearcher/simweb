@@ -46,6 +46,7 @@
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 	use backend\models\utilidad\tarifa\vehiculo\TarifaVehiculoDetalle;
+	use common\models\vehiculo\clasevehiculo\ClaseVehiculo;
 
 
 	/**
@@ -83,6 +84,16 @@
 		public function getTarifaDetalle()
 		{
 			return $this->hasMany(TarifaVehiculoDetalle::className(), ['id_tarifa_vehiculo' => 'id_tarifa_vehiculo']);
+		}
+
+
+
+		/**
+		 * Relacion con la entidad "clases-vehiculos".
+		 */
+		public function getClaseVehiculo()
+		{
+			return $this->hasMany(ClaseVehiculo::className(), ['clase_vehiculo' => 'clase_vehiculo']);
 		}
 
 	}
