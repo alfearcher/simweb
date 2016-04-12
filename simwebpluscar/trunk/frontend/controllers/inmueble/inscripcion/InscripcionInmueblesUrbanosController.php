@@ -75,6 +75,7 @@ use common\enviaremail\EnviarEmailSolicitud;
 use common\mensaje\MensajeController;
 use frontend\models\inmueble\ConfiguracionTiposSolicitudes;
 use common\models\configuracion\solicitud\ParametroSolicitud;
+use common\models\configuracion\solicitud\DocumentoSolicitud;
 session_start();
 /*********************************************************************************************************
  * InscripcionInmueblesUrbanosController implements the actions for InscripcionInmueblesUrbanosForm model.
@@ -124,13 +125,25 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
               if($model->validate()){
 
                  //condicionales     
-                  
+                   $documento = new DocumentoSolicitud();
+
+                   $requisitos = $documento->documentos();
+
+                   foreach ($requisitos as $key => $value) {
+                     
+                     $a[] = $value['documentoRequisito']['descripcion'];
+
+                   } 
+
+                   die(var_dump($a)); 
+                 
                 if (!\Yii::$app->user->isGuest){                                    
                       
 
                      $guardo = self::GuardarInscripcion($model);
 
                      if($guardo == true){ 
+
 
                           $envio = self::EnviarCorreo($guardo);
 
