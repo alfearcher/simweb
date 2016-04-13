@@ -48,8 +48,9 @@
 	use common\models\ordenanza\OrdenanzaBase;
 	use backend\models\utilidad\ut\UnidadTributariaForm;
 	use frontend\models\vehiculo\cambiodatos\BusquedaVehiculos;
-	use backend\models\utilidad\tarifa\vehiculo\TarifaVehiculo;
-	use backend\models\utilidad\tarifa\vehiculo\TarifaVehiculoDetalle;
+	//use backend\models\utilidad\tarifa\vehiculo\TarifaVehiculo;
+	//use backend\models\utilidad\tarifa\vehiculo\TarifaVehiculoDetalle;
+	use backend\models\utilidad\tarifa\vehiculo\TarifaParametroVehiculo;
 
 	/**
 	* 	Clase que gestiona el calculo anual del impuesto de vehiculo,
@@ -59,10 +60,11 @@
 	{
 
 		private $_calculoAnual;
+		private $_datosVehiculo;
 		private $_añoImpositivo;
 		private $_idImpuesto;		// Identificador del Vehiculo.
-		private $_parametro;		// Array que retornara el id-impuesto, impuesto,
-									// año impositivo, placa y monto calculado.
+		private $_parametro;
+
 
 
 		/**
@@ -72,6 +74,7 @@
 		public function __construct($idImpuesto)
 		{
 			$this->_calculoAnual = 0;
+			$this->_añoImpositivo = 0;
 			$this->_parametro = null;
 			$this->_idImpuesto = $idImpuesto;
 		}
@@ -96,7 +99,7 @@
 
 
 		/**
-		 * Metodo donde comienza el proceso.
+		 * Metodo donde comienza el proceso.s
 		 * @return Array retorna un arreglo con los siguientes valores:
 		 * id-impuesto, impuesto, año impositivo, placa y monto calculado.
 		 */
@@ -104,34 +107,22 @@
 		{
 			$this->_calculoAnual = 0;
 			$this->_parametro = null;
-			if ( isset($this->_idImpuesto) ) {
-				$this->calculoTasa();
-				$monto = getCalculoAnual();
-				$this->_parametro['monto'] = $monto;
+
+			$model = self::getDatosVehiculo();
+			if ( $model != null ) {
+				$this->_datosVehiculo = $model->toArray();
+				if ( count($this->_datosVehiculo) > 0 ) {
+					// Se buscan los parametros de las tarifas segun clase y ordennaza
+					$this->_parametro = self::getTarifaPorOrdenanzaClaseVehiculo($this->_datosVehiculo['clase_vehiculo']);
+die(var_dump($this->_parametro));
+				}
+			} else {
+				return false;
 			}
-			return $this->_parametro;
 		}
 
 
 
-		/***/
-		public function getCalculoAnual()
-		{
-			return $this->_calculoAnual;
-		}
-
-
-
-
-		/**
-		 * Metodo que obtiene los parametros (campos del registro) de la entidad.
-		 * @return Array Retorna un arreglo con los campos de la entidad segun el identificador.
-		 */
-		private function getParametrosTasa()
-		{
-			$tasa = TasaForm::getValoresTasa($this->_idImpuesto);
-			return $tasa;
-		}
 
 
 
@@ -141,7 +132,10 @@
 		 */
 		private function getDatosVehiculo()
 		{
-			return isset($this_idImpuesto) ? BusquedaVehiculos::findOne($this->_idImpuesto) : null;
+			if ( $this->_idImpuesto > 0 ) {
+				return BusquedaVehiculos::findOne($this->_idImpuesto);
+			}
+			return null;
 		}
 
 
@@ -162,9 +156,16 @@
 
 
 		/***/
-		private function getTarifaPorOrdenanzaClaseVehiculo($idOrdenanza, $claseVehiculo)
+		private function getTarifaPorOrdenanzaClaseVehiculo($claseVehiculo)
 		{
+			$modelTarifa = null;
+			$idOrdenanza = null;
+			$idOrdenanza = self::getIdOrdenanza();
 
+			if ( $idOrdenanza != null && $claseVehiculo > 0 ) {
+				$modelTarifa = TarifaParametroVehiculo::getTarifasVehiculoSegunClase($idOrdenanza[0]['id_ordenanza'], $claseVehiculo);
+			}
+			return $modelTarifa;
 		}
 
 
@@ -190,20 +191,20 @@
 		/**
 		 * Metodo que determina el identificador de la ordenanza, segun los parametros
 		 * año e impuesto (en este caso 3).
-		 * @return Integer, retorna un entero de encontrar el identificador de la ordenanza
-		 * este sera mayor a cero (0), sino devolvera cero(0).
+		 * @return Array, Retorna un arreglo donde contiene el identificador de la ordenanza,
+		 * año de creacion de la misma y el impuesto respectivo. Sino consigue nada retorna null.
 		 */
 		private function getIdOrdenanza()
 		{
-			$idOrdenanza = 0;
+			$idOrdenanza = null;
 			$año = self::getAnoOrdenanza();
 			if ( $año > 0 ) {
 				$idOrdenanza = OrdenanzaBase::getIdOrdenanza($año, 3);
 				if ( !isset($idOrdenanza) || $idOrdenanza == false ) {
-					$idOrdenanza = 0;
+					$idOrdenanza = null;
 				}
 			}
-			return $idOrdenanza
+			return $idOrdenanza;
 		}
 
 
