@@ -69,12 +69,12 @@ class EnviarEmailSolicitud{
     { 
    $docu = '';
     foreach ($documento as $doc){
-
+      $d = $doc;
       if ($docu == ''){
 
-       $docu = print_r($doc).'<br>'; 
+       $docu = $d.'<br>'; 
       }else{
-        $docu = $docu .print_r($doc).'<br>';
+        $docu = $docu .$d.'<br>';
       }
 
       
@@ -92,7 +92,7 @@ class EnviarEmailSolicitud{
         ->setHtmlBody('Estimado Contribuyente: <br><br>
                        Usted ha realizado con exito su Solicitud '.$solicitud.' de numero: '.$nro_solicitud.'<br><br>'.
                        'Por favor dirijase a la alcaldia para completar la solicitud competente. '.
-                       'Los documentos a consignar son los siguientes: '.$docu.'<br>'.
+                       'Los documentos a consignar son los siguientes: <br>'.$docu.'<br>'.
                        'Recuerde, esta informacion es personal y de su exclusiva responsabilidad y se agradece no divulgar ni transferir
                        a terceros estos datos.<br><br>
                        Esta es una cuenta no monitoreada, por favor no responder este correo.')
