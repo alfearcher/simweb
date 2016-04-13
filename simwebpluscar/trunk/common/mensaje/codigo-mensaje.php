@@ -48,6 +48,8 @@ return [
 	'990' => [Yii::t('backend', 'Register not found'), 'danger', 'fa fa-times'],
 	'991' => [Yii::t('backend', 'You can aquire a property you already own '), 'danger', 'fa fa-exclamation-triangle'],
 	'992' => [Yii::t('backend', 'This car plate doesnt exists, please go to your city hall  '), 'danger', 'fa fa-exclamation-triangle'],
+	'993' => [Yii::t('backend', 'The buyer doesnt exists, please go to your city hall  '), 'danger', 'fa fa-exclamation-triangle'],
+
 	'404' => [Yii::t('backend', 'The requested page does not exist.'), 'danger', 'fa fa-times'],
 	'100' => [Yii::t('backend', 'Register saved'), 'success', 'fa fa-check-circle-o'],
 	'200' => [Yii::t('backend', 'Register updated'), 'success', 'fa fa-check-circle-o'],
