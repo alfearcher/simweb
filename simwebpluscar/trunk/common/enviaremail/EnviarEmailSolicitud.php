@@ -68,8 +68,8 @@ class EnviarEmailSolicitud{
     public function enviarEmail($email, $solicitud, $nro_solicitud, $documento)
     { 
    $docu = '';
-    foreach ($documento as $doc){
-      $d = (string) $doc;
+    foreach ($documento as $key => $doc){
+      $d = $doc;
       //settype($d, 'string');
       if ($docu == ''){
 
