@@ -148,11 +148,18 @@ class RegistrarVehiculoController extends Controller
     public function buscarNumeroSolicitud($conn, $conexion, $model)
     {
 
-    	$buscar = new ParametroSolicitud($_SESSION['id']);
+    	$buscar = new ParametroSolicitud(8);
 
-    	
+    
 
         $buscar->getParametroSolicitud(["tipo_solicitud", "impuesto", "nivel_aprobacion"]);
+
+        $buscar->getDocumentoRequisitoSolciitud();
+
+        $resultadoDocumento = $buscar->getDocumentoRequisitoSolciitud();
+      
+
+        die(var_dump($resultadoDocumento));
 
         $resultado = $buscar->getParametroSolicitud(["tipo_solicitud", "impuesto", "nivel_aprobacion"]);
 

@@ -132,7 +132,7 @@ class CompradorJuridicoController extends Controller
                          
                          // die(var_dump($_SESSION['datosNuevos']));
 
-                          return $this->redirect(['crear-contribuyente-juridico']);
+                          return MensajeController::actionMensaje(993);
                         }
 
                       
@@ -216,126 +216,9 @@ class CompradorJuridicoController extends Controller
                   }
   }
 
-  public function actionCrearContribuyenteJuridico()
-  {
-        //die($_SESSION['datosNuevos']);
-   
-      $model = new CrearContribuyenteJuridicoForm();
+  
 
-            $postData = Yii::$app->request->post();
-
-            if ( $model->load($postData) && Yii::$app->request->isAjax ){
-                  Yii::$app->response->format = Response::FORMAT_JSON;
-                  return ActiveForm::validate($model);
-            }
-
-            if ( $model->load($postData) ) {
-             // die('valido el postdata');
-
-               if ($model->validate()){
-
-                  
-
-               
-                   $guardarContribuyente = self::beginSave("juridico", $model);
-
-
-                       if ($guardarContribuyente == true){
-
-                        return $this->redirect(['/vehiculo/cambiopropietario/cambio-propietario-vendedor/mostrar-datos-juridico']);
-                       }
-                
-               } 
-            
-            }
-            return $this->render('/vehiculo/cambiopropietario/crear-usuario-juridico', [
-                                                              'model' => $model,
-                                                              
-
-                                                           
-            ]);
-
-
-            
-        
-
-  }
-
-  public function salvarContribuyenteJuridico($conn, $conexion, $model)
-    {
-
-        $datos = $_SESSION['datosNuevos'];
-       
-        $tabla = 'contribuyentes';
-
-        $arregloDatos = [];
-        $arregloCampo = CrearUsuarioNaturalForm::attributeContribuyentes();
-
-            foreach ($arregloCampo as $key=>$value){
-
-                $arregloDatos[$value] =0;
-            }
-          
-            $arregloDatos['tipo_naturaleza'] = 1;
-        
-            $arregloDatos['naturaleza'] = $datos->naturaleza;
-
-            $arregloDatos['cedula'] = $datos->cedula;
-
-            $arregloDatos['tipo'] = $datos->tipo;
-
-            $arregloDatos['ente'] = 13;
-
-            $arregloDatos['razon_social'] = $model->razon_social;
-
-            //die($arregloDatos['nombres']);
-           
-
-            
-            $arregloDatos['fecha_inclusion'] = date('Y-m-d');
-
-            if ($conexion->guardarRegistro($conn, $tabla, $arregloDatos )){
-            
-                  $idContribuyente = $conn->getLastInsertID();
-              
-                }
-                  return $idContribuyente;
-                
-                
-
-    }
-
-  public function beginSave($var,$model)
-  {
-    $conexion = new ConexionController();
-
-        $conn = $conexion->initConectar('db');
-         
-        $conn->open();
-
-        $transaccion = $conn->beginTransaction();
-
-            if ($var == "juridico"){
-
-                $respuesta = self::salvarContribuyenteJuridico($conn, $conexion, $model);
-
-                    if ($respuesta == true){
-                      
-                    $_SESSION['idComprador'] = $respuesta;
-
-                    $transaccion->commit();
-                    $conn->close();
-                     return true;
-              
-            }else{
-                $transaccion->rollback();
-                $conn->close();
-                return false;
-              }
-  }
-
- }
-
+  
 
    
     
