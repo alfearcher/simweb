@@ -68,25 +68,9 @@ class EnviarEmailSolicitud{
     public function enviarEmail($email, $solicitud, $nro_solicitud, $documento)
     { 
 
-    //die(var_dump($documento).'documentos');
-   $docu = '';
+  $docu = '';
    $docu = implode("<br>", $documento);
    
-   //die($docu);
-    // foreach ($documento as $key => $doc){
-    //   $d = $documento[$key];
-    //   //die($d);
-    //   settype($d, 'string');
-    //   if ($docu == ''){
-
-    //    $docu = $d.'<br>'; 
-    //   }else{
-    //     $docu = $docu .$d.'<br>';
-    //   }
-    // }    
-      
-        
-        
         return Yii::$app->mailer->compose()
         ->setFrom('manuelz0510@gmail.com')
         ->setTo($email)
@@ -95,7 +79,7 @@ class EnviarEmailSolicitud{
         ->setHtmlBody('Estimado Contribuyente: <br><br>
                        Usted ha realizado con exito su Solicitud '.$solicitud.' de numero: '.$nro_solicitud.'<br><br>'.
                        'Por favor dirijase a la alcaldia para completar la solicitud competente. '.
-                       'Los documentos a consignar son los siguientes: <br>'.$docu.'<br>'.
+                       'Los documentos a consignar son los siguientes: <br><br>*'.$docu.'<br>'.
                        'Recuerde, esta informacion es personal y de su exclusiva responsabilidad y se agradece no divulgar ni transferir
                        a terceros estos datos.<br><br>
                        Esta es una cuenta no monitoreada, por favor no responder este correo.')
