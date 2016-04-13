@@ -69,7 +69,7 @@ class EnviarEmailSolicitud{
     { 
    $docu = '';
     foreach ($documento as $key => $doc){
-      $d = $document[$key];
+      $d = $documento[$key];
       //settype($d, 'string');
       if ($docu == ''){
 
