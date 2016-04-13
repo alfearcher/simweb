@@ -69,6 +69,7 @@ class EnviarEmailSolicitud{
     { 
    $docu = '';
    $docu = implode("'<br>'", $documento);
+   die($docu);
    //die($docu);
     // foreach ($documento as $key => $doc){
     //   $d = $documento[$key];
