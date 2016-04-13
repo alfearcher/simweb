@@ -101,6 +101,27 @@ class CompradorForm extends Model
         ];
     }
 
+    public function attributeSlCambioPropietario()
+    {
+        return [
+                'id_impuesto',
+                'impuesto',
+                'id_impuesto',
+                'id_propietario',
+                'id_comprador',
+                'usuario',
+                'fecha_hora',
+                'estatus',
+
+                
+
+
+
+              
+                
+        ];
+    }
+
     public function validarTraspaso($attribute, $params)
     {
 
