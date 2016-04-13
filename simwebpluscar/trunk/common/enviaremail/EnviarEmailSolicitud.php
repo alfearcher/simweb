@@ -72,9 +72,9 @@ class EnviarEmailSolicitud{
 
       if ($docu == ''){
 
-       $docu = $doc.'<br>'; 
+       $docu = print_r($doc).'<br>'; 
       }else{
-        $docu = $docu .$doc.'<br>';
+        $docu = $docu .print_r($doc).'<br>';
       }
 
       
