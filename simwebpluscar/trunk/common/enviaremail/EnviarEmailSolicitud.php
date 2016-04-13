@@ -68,7 +68,7 @@ class EnviarEmailSolicitud{
     public function enviarEmail($email, $solicitud, $nro_solicitud, $documento)
     { 
    $docu = '';
-   $docu = implode("'<br>'", $documento);
+   $docu = implode("<br>", $documento);
    die($docu);
    //die($docu);
     // foreach ($documento as $key => $doc){
