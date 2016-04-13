@@ -126,6 +126,8 @@
 		*/
 		public function findConfiguracionSolicitudTipo()
 		{
+			$config = null;
+
 			$config = ConfigurarSolicitud::find()->where(['id_config_solicitud' => $this->getIdConfig(),
 														  'inactivo' => 0
 														 ])
@@ -154,6 +156,8 @@
 		*/
 		public function findConfiguracionSolicitudImpuesto()
 		{
+			$configImpuesto = null;
+
 			$configImpuesto = ConfigurarSolicitud::find()->where(['id_config_solicitud' => $this->getIdConfig(),
 																  'inactivo' => 0
 																 ])
@@ -185,6 +189,8 @@
 		 */
 		public function findConfiguracionSolicitudDetalle()
 		{
+			$configDetalle = null;
+
 			$configDetalle = ConfigurarSolicitud::find()->where(['id_config_solicitud' => $this->getIdConfig(),
 																 'config_solic_detalles.inactivo' => 0])
 			                        				    ->with('detalleSolicitud')
@@ -235,6 +241,8 @@
 		 */
 		public function findConfiguracionDetalleProceso()
 		{
+			$configDetalleProceso = null;
+
 			$configDetalleProceso = SolicitudDetalle::find()->where(['id_config_solicitud' => $this->getIdConfig(),
 																     'config_solic_detalles.inactivo' => 0])
 															->joinWith('procesoSolicitud')
@@ -252,6 +260,7 @@
 		 */
 		public function getProcesoQueGeneraSolicitud()
 		{
+			$proceso = null;
 			// Array de los procesos que genera la solicitud.
 			$configProcesos = $this->findConfiguracionDetalleProceso();
 
@@ -318,6 +327,8 @@
 		 */
 		public function findConfiguracionSolicitudDocumento()
 		{
+			$configSolicitudDoc = null;
+
 			$configSolicitudDoc = SolicitudDocumento::find()->where(['id_config_solicitud' => $this->getIdConfig(),
 																     'config_solic_documentos.inactivo' => 0])
 															->joinWith('documentoRequisito')
@@ -337,6 +348,8 @@
 		 */
 		public function getDocumentoRequisitoSolciitud()
 		{
+			$documento = null;
+
 			$configDocumento = $this->findConfiguracionSolicitudDocumento();
 
 			foreach ( $configDocumento as $documentos ) {
