@@ -586,7 +586,13 @@ class CambioPropietarioVendedorController extends Controller
 
                          $documentos = $DocumentosRequisito->Documentos();
 
-                         $enviarNumeroSolicitud->enviarEmail($login,$solicitud, $idSolicitud, $documentos);
+                         foreach ($requisitos as $key => $value) {
+                   
+                        $a[] = $value['documentoRequisito']['descripcion'];
+
+                        } 
+
+                         $enviarNumeroSolicitud->enviarEmail($login,$solicitud, $idSolicitud, $a);
 
 
                              if($enviarNumeroSolicitud == true){
