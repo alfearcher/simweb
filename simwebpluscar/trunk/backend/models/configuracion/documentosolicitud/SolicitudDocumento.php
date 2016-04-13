@@ -86,7 +86,9 @@
 
 
 
-		/***/
+		/**
+		 * Relacion entre las entidades "config-solic-documentos" y "config-documentos-requisitos"
+		 */
 		public function getDocumentoRequisito()
 		{
 			return $this->hasOne(DocumentoRequisito::className(), ['id_documento' => 'id_documento']);
