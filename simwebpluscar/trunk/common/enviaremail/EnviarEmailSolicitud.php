@@ -68,20 +68,18 @@ class EnviarEmailSolicitud{
     public function enviarEmail($email, $solicitud, $nro_solicitud, $documento)
     { 
    $docu = '';
-    foreach ($documento as $key => $doc){
-      $d = $documento[$key];
-      settype($d, 'string');
-      if ($docu == ''){
+   $docu = implode("'<br>'", $documento);
+    // foreach ($documento as $key => $doc){
+    //   $d = $documento[$key];
+    //   //die($d);
+    //   settype($d, 'string');
+    //   if ($docu == ''){
 
-       $docu = $d.'<br>'; 
-      }else{
-        $docu = $docu .$d.'<br>';
-      }
-
-      
-                       
-
-                       }    
+    //    $docu = $d.'<br>'; 
+    //   }else{
+    //     $docu = $docu .$d.'<br>';
+    //   }
+    // }    
       
         
         
