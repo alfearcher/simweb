@@ -68,7 +68,7 @@ class DocumentoSolicitud{
     public function Documentos()
     {
 
-       $documentos = SolicitudDocumento::find()->Where(['id_config_solicitud'=>$_SESSION['id']]) //$_SESSION['id'] 8
+       $documentos = SolicitudDocumento::find()->Where(['id_config_solicitud'=>$_SESSION['id']]) 
                                                ->joinWith('documentoRequisito')
                                                ->asArray()
                                                ->all();
