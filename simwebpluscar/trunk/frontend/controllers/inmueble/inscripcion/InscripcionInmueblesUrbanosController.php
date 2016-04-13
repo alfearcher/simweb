@@ -135,8 +135,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                    } 
 
-
-                   //die(var_dump($a)); 
+                  //    die(var_dump('probando con el for <br>')); 
                  
                 if (!\Yii::$app->user->isGuest){                                    
                       
