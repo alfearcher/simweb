@@ -146,7 +146,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                      if($guardo == true){ 
 
 
-                          $envio = self::EnviarCorreo($guardo);
+                          $envio = self::EnviarCorreo($guardo, $a);
 
                           if($envio == true){
 
@@ -196,7 +196,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
             $buscar = new ParametroSolicitud($_SESSION['id']);
 
             $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
-            
+             
 
             try {
             $tableName1 = 'solicitudes_contribuyente'; 
@@ -347,7 +347,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      * [EnviarCorreo description] Metodo que se encarga de enviar un email al contribuyente 
      * con el estatus del proceso
      */
-     public function EnviarCorreo($guardo)
+     public function EnviarCorreo($guardo, $documento)
      {
          $email = yii::$app->user->identity->login;
 
@@ -357,7 +357,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
          $enviarEmail = new EnviarEmailSolicitud();
         
-         if ($enviarEmail->enviarEmail($email, $solicitud, $nro_solicitud)){
+         if ($enviarEmail->enviarEmail($email, $solicitud, $nro_solicitud, $documento)){
 
              return true;
          } else { 
