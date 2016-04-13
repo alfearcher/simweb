@@ -353,7 +353,7 @@
 			$configDocumento = $this->findConfiguracionSolicitudDocumento();
 
 			foreach ( $configDocumento as $documentos ) {
-				$documento[] = $documentos['documentoRequisito'];
+				$documento[] = $documentos['documentoRequisito']['descripcion'];
 			}
 
 			return $documento;
