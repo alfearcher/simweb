@@ -67,6 +67,7 @@ class EnviarEmailSolicitud{
      */
     public function enviarEmail($email, $solicitud, $nro_solicitud, $documento)
     { 
+      die(var_dump($documento));
   //  die('llegue a enviarCorreo'.$email.$solicitud.$nro_solicitud);
         //die(var_dump($documento[0]));
         foreach ($documento as $key => $value) {
