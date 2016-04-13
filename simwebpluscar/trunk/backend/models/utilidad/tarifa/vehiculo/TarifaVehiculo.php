@@ -47,6 +47,7 @@
 	use yii\db\ActiveRecord;
 	use backend\models\utilidad\tarifa\vehiculo\TarifaVehiculoDetalle;
 	use common\models\vehiculo\clasevehiculo\ClaseVehiculo;
+	use backend\models\utilidad\tiporango\TipoRango;
 
 
 	/**
@@ -95,6 +96,19 @@
 		public function getClaseVehiculo()
 		{
 			return $this->hasMany(ClaseVehiculo::className(), ['clase_vehiculo' => 'clase_vehiculo']);
+		}
+
+
+
+
+		/**
+		 * Relacion con la entidad "tipos-rangos". El segundo tipo, corresponde a la entidad
+		 * "tarifas-vehiculos" (tipo_monto).
+		 * @return [type] [description]
+		 */
+		public function getTipoRango()
+		{
+			return $this->hasOne(TipoRango::className(), ['tipo_rango' => 'tipo_monto']);
 		}
 
 	}

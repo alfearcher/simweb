@@ -45,7 +45,9 @@
  	use Yii;
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
+	use backend\models\utilidad\tarifa\vehiculo\TarifaVehiculo;
 	use backend\models\utilidad\tarifa\vehiculo\TarifaVehiculoDetalle;
+
 
 
 	/**
@@ -84,6 +86,17 @@
 		{
 			return $this->hasMany(TarifaVehiculoDetalle::className(), ['tipo_rango' => 'tipo_rango']);
 		}
+
+
+		/**
+		 * Relacion con la entidad "tarifas-vehiculos".
+		 * @return [type] [description]
+		 */
+		public function getTarifaVehiculo()
+		{
+			return $this->hasMany(TarifaVehiculo::className(), ['tipo_monto' => 'tipo_rango']);
+		}
+
 
 	}
 
