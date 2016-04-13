@@ -545,9 +545,19 @@ class CambioPropietarioVendedorController extends Controller
 
                       $DocumentosRequisito = new DocumentoSolicitud();
 
+
                       $documentos = $DocumentosRequisito->Documentos();
 
-                      $enviarNumeroSolicitud->enviarEmail($login,$solicitud, $idSolicitud, $documentos);
+                      foreach ($documentos as $key => $value) {
+                   
+                        $a[] = $value['documentoRequisito']['descripcion'];
+
+                        } 
+                        die(var_dump($a).'hola'); 
+
+
+                      $enviarNumeroSolicitud->enviarEmail($login,$solicitud, $idSolicitud, $a);
+
 
 
                         if($enviarNumeroSolicitud == true){
@@ -586,11 +596,12 @@ class CambioPropietarioVendedorController extends Controller
 
                          $documentos = $DocumentosRequisito->Documentos();
 
-                         foreach ($requisitos as $key => $value) {
+                         foreach ($documentos as $key => $value) {
                    
                         $a[] = $value['documentoRequisito']['descripcion'];
 
                         } 
+                       // die(var_dump($a).'hola');
 
                          $enviarNumeroSolicitud->enviarEmail($login,$solicitud, $idSolicitud, $a);
 
