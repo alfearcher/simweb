@@ -582,7 +582,11 @@ class CambioPropietarioVendedorController extends Controller
 
                          $solicitud = 'Cambio de Propietario';
 
-                         $enviarNumeroSolicitud->enviarEmail($login,$solicitud, $idSolicitud);
+                         $DocumentosRequisito = new DocumentoSolicitud();
+
+                         $documentos = $DocumentosRequisito->Documentos();
+
+                         $enviarNumeroSolicitud->enviarEmail($login,$solicitud, $idSolicitud, $documentos);
 
 
                              if($enviarNumeroSolicitud == true){
