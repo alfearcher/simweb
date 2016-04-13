@@ -553,7 +553,7 @@ class CambioPropietarioVendedorController extends Controller
                         $a[] = $value['documentoRequisito']['descripcion'];
 
                         } 
-                        die(var_dump($a).'hola'); 
+                       // die(var_dump($a).'hola'); 
 
 
                       $enviarNumeroSolicitud->enviarEmail($login,$solicitud, $idSolicitud, $a);
