@@ -52,13 +52,14 @@
 	use backend\models\utilidad\tarifa\vehiculo\TarifaVehiculoDetalle;
 
 	/**
-	* 	Clase que gestiona el calculo anual del impuesto por actividad economica,
+	* 	Clase que gestiona el calculo anual del impuesto de vehiculo,
 	*
 	*/
 	class LiquidacionVehiculo
 	{
 
 		private $_calculoAnual;
+		private $_añoImpositivo;
 		private $_idImpuesto;		// Identificador del Vehiculo.
 		private $_parametro;		// Array que retornara el id-impuesto, impuesto,
 									// año impositivo, placa y monto calculado.
@@ -74,6 +75,23 @@
 			$this->_parametro = null;
 			$this->_idImpuesto = $idImpuesto;
 		}
+
+
+
+		/***/
+		public function setAnoImpositivo($año)
+		{
+			$this->_añoImpositivo = $año;
+		}
+
+
+
+		/***/
+		public function getAnoImpositivo()
+		{
+			return $this->_añoImpositivo;
+		}
+
 
 
 
@@ -144,7 +162,7 @@
 
 
 		/***/
-		private function getCalculoPorClaseVehiculo()
+		private function getTarifaPorOrdenanzaClaseVehiculo($idOrdenanza, $claseVehiculo)
 		{
 
 		}
@@ -152,7 +170,41 @@
 
 
 
+		/**
+		 * Metodo que permite obtener el Año de creacion de la ordenanza.
+		 * @return Integer, Retorna un entero de 4 digitos si encuentra el año,
+		 * en caso contrario retornara 0.
+		 */
+		public function getAnoOrdenanza()
+		{
+			$año = 0;
+			if ( $this->_añoImpositivo > 0 ) {
+				$año = OrdenanzaBase::getAnoOrdenanzaSegunAnoImpositivoImpuesto($this->_añoImpositivo, 3);
+			}
+			return $año;
+		}
 
+
+
+
+		/**
+		 * Metodo que determina el identificador de la ordenanza, segun los parametros
+		 * año e impuesto (en este caso 3).
+		 * @return Integer, retorna un entero de encontrar el identificador de la ordenanza
+		 * este sera mayor a cero (0), sino devolvera cero(0).
+		 */
+		private function getIdOrdenanza()
+		{
+			$idOrdenanza = 0;
+			$año = self::getAnoOrdenanza();
+			if ( $año > 0 ) {
+				$idOrdenanza = OrdenanzaBase::getIdOrdenanza($año, 3);
+				if ( !isset($idOrdenanza) || $idOrdenanza == false ) {
+					$idOrdenanza = 0;
+				}
+			}
+			return $idOrdenanza
+		}
 
 
 
