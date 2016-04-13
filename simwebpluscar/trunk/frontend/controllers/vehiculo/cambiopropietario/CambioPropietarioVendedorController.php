@@ -534,7 +534,7 @@ class CambioPropietarioVendedorController extends Controller
 
                    // die('los dos primeros son true');
 
-                    $transaccion->commit();
+                   // $transaccion->commit();
                     $conn->close();
 
                       $enviarNumeroSolicitud = new EnviarEmailSolicitud;
@@ -594,7 +594,7 @@ class CambioPropietarioVendedorController extends Controller
                           
                           }else{
 
-                          $transaccion->rollback();
+                         // $transaccion->rollback();
                           $conn->close();
                           return false;
 
