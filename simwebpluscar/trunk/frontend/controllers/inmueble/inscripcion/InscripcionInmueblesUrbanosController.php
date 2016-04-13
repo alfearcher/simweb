@@ -136,7 +136,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                    } 
 
 
-                   die(var_dump($a)); 
+                   //die(var_dump($a)); 
                  
                 if (!\Yii::$app->user->isGuest){                                    
                       
@@ -350,7 +350,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      public function EnviarCorreo($guardo, $documento)
      {
          $email = yii::$app->user->identity->login;
-
+//die(var_dump($documento));
          $solicitud = 'Inscripcion de Inmueble';
 
          $nro_solicitud = $guardo;
