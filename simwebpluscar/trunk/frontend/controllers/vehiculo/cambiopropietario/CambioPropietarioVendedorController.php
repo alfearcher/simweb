@@ -61,7 +61,7 @@ use frontend\models\vehiculo\cambioplaca\BusquedaVehiculos;
 use frontend\models\vehiculo\cambiopropietario\MostrarDatosVehiculoForm;
 use frontend\models\vehiculo\registrar\RegistrarVehiculoForm;
 use common\models\solicitudescontribuyente\SolicitudesContribuyente;
-
+use common\models\configuracion\solicitud\DocumentoSolicitud;
 
 session_start();
 
@@ -543,7 +543,11 @@ class CambioPropietarioVendedorController extends Controller
 
                       $solicitud = 'Cambio de Propietario';
 
-                      $enviarNumeroSolicitud->enviarEmail($login,$solicitud, $idSolicitud);
+                      $DocumentosRequisito = new DocumentoSolicitud();
+
+                      $documentos = $DocumentosRequisito->Documentos();
+
+                      $enviarNumeroSolicitud->enviarEmail($login,$solicitud, $idSolicitud, $documentos);
 
 
                         if($enviarNumeroSolicitud == true){
