@@ -78,10 +78,11 @@ use yii\helpers\Url;
 // active record consultas..
 use yii\db\ActiveRecord;
 use common\conexion\ConexionController;
-use common\enviaremail\EnviarEmailSolicitud;
+use common\enviaremail\PlantillaEmail;
 use common\mensaje\MensajeController;
 use frontend\models\inmueble\ConfiguracionTiposSolicitudes;
 use common\models\configuracion\solicitud\ParametroSolicitud;
+use common\models\configuracion\solicitud\DocumentoSolicitud;
 
 session_start(); 
 /*********************************************************************************************************
@@ -213,7 +214,10 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
               if($model->validate()){ 
 
                  //condicionales    
-                  
+                  $documento = new DocumentoSolicitud();
+
+                   $requisitos = $documento->documentos();
+
                 if (!\Yii::$app->user->isGuest){                                      
 
 
@@ -235,7 +239,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                              if($guardo == true){ 
 
-                                  $envio = self::EnviarCorreo($guardo);
+                                  $envio = self::EnviarCorreo($guardo, $requisitos);
 
                                   if($envio == true){ 
 
@@ -474,7 +478,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      * [EnviarCorreo description] Metodo que se encarga de enviar un email al contribuyente 
      * con el estatus del proceso
      */
-     public function EnviarCorreo($guardo)
+     public function EnviarCorreo($guardo, $documento)
      {
          $email = yii::$app->user->identity->login;
 
@@ -482,9 +486,9 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
          $nro_solicitud = $guardo; 
 
-         $enviarEmail = new EnviarEmailSolicitud();
+         $enviarEmail = new PlantillaEmail();
         
-         if ($enviarEmail->enviarEmail($email, $solicitud, $nro_solicitud)){
+         if ($enviarEmail->plantillaEmailSolicitud($email, $solicitud, $nro_solicitud, $documento)){
 
              return true; 
          } else { 
