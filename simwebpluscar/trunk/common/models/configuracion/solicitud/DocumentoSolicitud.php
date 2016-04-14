@@ -68,17 +68,24 @@ class DocumentoSolicitud{
     public function Documentos()
     {
 
+
        $documentos = SolicitudDocumento::find()->Where(['id_config_solicitud'=>$_SESSION['id']]) 
                                                ->joinWith('documentoRequisito')
                                                ->asArray()
                                                ->all();
        if($documentos == true) {
 
-        return $documentos;
+         foreach ($documentos as $key => $value) {
+                   
+          $a[] = $value['documentoRequisito']['descripcion'];
+
+          }
+
+        return $a;
         
        } else {
 
-        return false;
+        return $a =['a' => 'NO REQUIERE DOCUMENTOS'];
        }
        
     }
