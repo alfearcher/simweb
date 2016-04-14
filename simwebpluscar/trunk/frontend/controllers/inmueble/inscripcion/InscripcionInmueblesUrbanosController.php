@@ -138,7 +138,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                    } else {
 
                     $a = ['descripcion'=>'No requiere de documentos la solicitud'];
-                   }
+                   } 
                    
 
                   //    die(var_dump('probando con el for <br>')); 
