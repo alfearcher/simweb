@@ -469,13 +469,9 @@ class CambioPropietarioCompradorController extends Controller
 
                       $documentos = $DocumentosRequisito->Documentos();
 
-                         foreach ($documentos as $key => $value) {
-                   
-                        $a[] = $value['documentoRequisito']['descripcion'];
 
-                        } 
 
-                      $enviarNumeroSolicitud->plantillaEmailSolicitud($login,$solicitud, $idSolicitud, $a);
+                      $enviarNumeroSolicitud->plantillaEmailSolicitud($login,$solicitud, $idSolicitud, $documentos);
 
 
                         if($enviarNumeroSolicitud == true){
