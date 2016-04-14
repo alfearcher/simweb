@@ -129,10 +129,6 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                    $requisitos = $documento->documentos();
 
-                   
-                   
-
-                  //    die(var_dump('probando con el for <br>')); 
                  
                 if (!\Yii::$app->user->isGuest){                                    
                       
