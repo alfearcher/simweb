@@ -129,16 +129,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                    $requisitos = $documento->documentos();
 
-                   if($requisitos == true){
-                      foreach ($requisitos as $key => $value) {
-                     
-                          $a[] = $value['documentoRequisito']['descripcion'];
-
-                      } 
-                   } else {
-
-                    $a = ['descripcion'=>'No requiere de documentos la solicitud'];
-                   } 
+                   
                    
 
                   //    die(var_dump('probando con el for <br>')); 
@@ -151,7 +142,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                      if($guardo == true){ 
 
 
-                          $envio = self::EnviarCorreo($guardo, $a);
+                          $envio = self::EnviarCorreo($guardo, $requisitos);
 
                           if($envio == true){
 
