@@ -129,11 +129,17 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                    $requisitos = $documento->documentos();
 
-                   foreach ($requisitos as $key => $value) {
+                   if($requisitos == true){
+                      foreach ($requisitos as $key => $value) {
                      
-                     $a[] = $value['documentoRequisito']['descripcion'];
+                          $a[] = $value['documentoRequisito']['descripcion'];
 
-                   } 
+                      } 
+                   } else {
+
+                    $a = ['descripcion'=>'No requiere de documentos la solicitud'];
+                   }
+                   
 
                   //    die(var_dump('probando con el for <br>')); 
                  
