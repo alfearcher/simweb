@@ -62,6 +62,7 @@ use frontend\models\vehiculo\cambiopropietario\MostrarDatosVehiculoForm;
 use frontend\models\vehiculo\registrar\RegistrarVehiculoForm;
 use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 use common\models\configuracion\solicitud\DocumentoSolicitud;
+use frontend\models\vehiculo\cambiopropietario\CompradorForm;
 
 session_start();
 
@@ -184,7 +185,7 @@ class CambioPropietarioVendedorController extends Controller
 
                 if ($model->validate()){
 
-                 // die('llego de nuevo aqui');
+                 
 
                   $verificarSolicitud = self::verificarSolicitud($datosVehiculo[0]->id_vehiculo , $_SESSION['id']);
 
@@ -192,6 +193,8 @@ class CambioPropietarioVendedorController extends Controller
 
                     return MensajeController::actionMensaje(403);
                   }else{ 
+
+
                  
                         $buscarGuardar = self::beginsave("buscarGuardar" , $datosVehiculo);
 
@@ -365,101 +368,56 @@ class CambioPropietarioVendedorController extends Controller
 
     public function guardarCambioPropietario($conn, $conexion, $model , $idSolicitud)
     {
-      //die(var_dump($model));
+     // die($_SESSION['id']);
 
+      $buscar = new ParametroSolicitud($_SESSION['id']);
+
+      $resultado = $buscar->getParametroSolicitud(["impuesto"]);
+
+      $idImpuesto = $model[0]->id_vehiculo;
       $numeroSolicitud = $idSolicitud;
       $resultado = false;
       $datos = yii::$app->user->identity;
-      $tabla = 'sl_vehiculos';
+      $tabla = 'sl_cambios_propietarios';
       $arregloDatos = [];
-      $arregloCampo = RegistrarVehiculoForm::attributeSlVehiculo();
+      $arregloCampo = CompradorForm::attributeSlCambioPropietario();
 
       foreach ($arregloCampo as $key=>$value){
 
           $arregloDatos[$value] =0;
       }
 
-      $arregloDatos['nro_solicitud'] = $numeroSolicitud;
+      $arregloDatos['id_impuesto'] = $idImpuesto;
 
-    // die($arregloDatos['nro_solicitud']);
-      $arregloDatos['id_contribuyente'] = $datos->id_contribuyente;
+      $arregloDatos['id_impuesto'] = $idImpuesto;
 
-      $arregloDatos['placa'] = strtoupper($model[0]->placa);
+      $arregloDatos['impuesto'] = $resultado;
 
-      $arregloDatos['marca'] = $model[0]->marca;
+      $arregloDatos['id_propietario'] = $datos->id_contribuyente;
 
-     // die($arregloDatos['marca']);
+      $arregloDatos['id_comprador'] = $_SESSION['idComprador'];
 
-      $arregloDatos['modelo'] = $model[0]->modelo;
+      $arregloDatos['usuario'] = $datos->login;
 
-      $arregloDatos['color'] = $model[0]->color;
+      $arregloDatos['fecha_hora'] = date('Y-m-d h:m:i');
 
-      $arregloDatos['uso_vehiculo'] = $model[0]->uso_vehiculo;
+      $arregloDatos['estatus'] = 0;
 
-      $arregloDatos['precio_inicial'] = $model[0]->precio_inicial;
+          if ($conexion->guardarRegistro($conn, $tabla, $arregloDatos )){
 
-      $arregloDatos['fecha_inicio'] = $model[0]->fecha_inicio;
-
-      $arregloDatos['ano_compra'] = $model[0]->ano_compra;
-
-      $arregloDatos['ano_vehiculo'] = $model[0]->ano_vehiculo;
-
-      $arregloDatos['no_ejes'] = $model[0]->no_ejes;
-
-      $arregloDatos['liquidado'] = 0;
-
-      $arregloDatos['status_vehiculo'] = 0;
-
-      $arregloDatos['exceso_cap'] = $model[0]->exceso_cap;
-
-      $arregloDatos['medida_cap'] = $model[0]->medida_cap;
-
-      $arregloDatos['capacidad'] = $model[0]->capacidad;
-
-      $arregloDatos['nro_puestos'] = $model[0]->nro_puestos;
-
-      $arregloDatos['peso'] = $model[0]->peso;
-
-      $arregloDatos['clase_vehiculo'] = $model[0]->clase_vehiculo;
-
-      $arregloDatos['tipo_vehiculo'] = $model[0]->tipo_vehiculo;
-
-      $arregloDatos['serial_motor'] = $model[0]->serial_motor;
-
-      $arregloDatos['serial_carroceria'] = $model[0]->serial_carroceria;
-
-     
-
-      $arregloDatos['estatus_funcionario'] = 0;
-
-      $arregloDatos['user_funcionario'] = 0;
-
-      $arregloDatos['fecha_funcionario'] = 0;
-
-      $arregloDatos['fecha_hora'] = 0;
-
-      $arregloDatos['nro_cilindros'] = $model[0]->nro_cilindros;
-
-
-    if ($conexion->guardarRegistro($conn, $tabla, $arregloDatos )){
-
-
-
-             $resultado = true;
-
+              $resultado = true;
 
               return $resultado;
-
-
-          }
+        }
 
     }
+
 
 
     public function guardarCambioPropietarioMaestro($conn, $conexion, $model)
     {
      
-    $idComprador = $_SESSION['idComprador'];
+    
      
     //die($idContribuyente);
       $tableName = 'vehiculos';
@@ -534,7 +492,7 @@ class CambioPropietarioVendedorController extends Controller
 
                    // die('los dos primeros son true');
 
-                   // $transaccion->commit();
+                    $transaccion->commit();
                     $conn->close();
 
                       $enviarNumeroSolicitud = new EnviarEmailSolicitud;

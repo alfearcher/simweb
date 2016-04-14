@@ -67,6 +67,8 @@ $busqueda = CrearUsuarioNatural::find()
 
                             ->all();
 
+$_SESSION['idComprador'] = $busqueda[0]->id_contribuyente;
+
 
 
 
@@ -281,7 +283,7 @@ $tipoVehiculo = TipoVehiculo::find()
                         <?= $form->field($model, 'clase_vehiculo')->textInput( 
                                                                 [
 
-                                                                 'value' => isset($claseVehiculo[0]->descripcion) ? $claseVehiculo[0]->descripcion: null , 
+                                                                 'value' => $claseVehiculo[0]->descripcion, 
                                                                  //die($datosVehiculo[0]->clase_vehiculo),
                                                                 'readonly' => true,
                                                                 'id'=> 'clase_vehiculo',
@@ -305,7 +307,7 @@ $tipoVehiculo = TipoVehiculo::find()
                                                               
                                                                
                                                                
-                                                                'value' => isset($tipoVehiculo[0]->descripcion) ? $tipoVehiculo[0]->descripcion: null , 
+                                                                'value' => $tipoVehiculo[0]->descripcion, 
                                                                 
                                                                 'readonly' => true,
                                                                 'id'=> 'tipo_vehiculo',
@@ -324,7 +326,7 @@ $tipoVehiculo = TipoVehiculo::find()
                     <div class="col-sm-6">
                         <?= $form->field($model, 'uso_vehiculo')->textInput( 
                                                                 [
-                                                                 'value' => isset($usoVehiculo[0]->descripcion) ? $usoVehiculo[0]->descripcion: null , 
+                                                                 'value' => $usoVehiculo[0]->descripcion, 
                                                                 'readonly' => true,
                                                                 'id'=> 'uso_vehiculo',
                                                                 'prompt' => yii::t('frontend', 'Select'),

@@ -61,8 +61,8 @@ use frontend\models\vehiculo\cambioplaca\BusquedaVehiculos;
 use frontend\models\vehiculo\cambiopropietario\MostrarDatosVehiculoForm;
 use frontend\models\vehiculo\registrar\RegistrarVehiculoForm;
 use common\models\solicitudescontribuyente\SolicitudesContribuyente;
-
-
+use common\models\configuracion\solicitud\DocumentoSolicitud;
+use common\enviaremail\PlantillaEmail;
 session_start();
 
 
@@ -331,12 +331,14 @@ class CambioPropietarioCompradorController extends Controller
 
     public function guardarCambioPropietario($conn, $conexion, $model , $idSolicitud)
     {
+      //die($_SESSION['id']);
 
       $buscar = new ParametroSolicitud($_SESSION['id']);
 
       $resultado = $buscar->getParametroSolicitud(["impuesto"]);
-     
+        //die(var_dump($resultado));
       $idImpuesto = $model[0]->id_vehiculo;
+
       $numeroSolicitud = $idSolicitud;
       $resultado = false;
       $datos = yii::$app->user->identity;
@@ -351,34 +353,26 @@ class CambioPropietarioCompradorController extends Controller
 
       $arregloDatos['id_impuesto'] = $idImpuesto;
 
-      $arregloDatos['impuesto'] = $idImpuesto;
+      $arregloDatos['id_impuesto'] = $idImpuesto;
 
-      $arregloDatos['impuesto'] = $resultado['impuesto'];
+      $arregloDatos['impuesto'] = $resultado;
 
-       $arregloDatos['id_propietario'] = $model[0]->id_contribuyente;
+      $arregloDatos['id_propietario'] = $model[0]->id_contribuyente;
 
-       die($arregloDatos['id_propietario']);
+      $arregloDatos['id_comprador'] = $datos->id_contribuyente;
 
-
+      $arregloDatos['usuario'] = $datos->login;
 
       $arregloDatos['fecha_hora'] = date('Y-m-d h:m:i');
 
       $arregloDatos['estatus'] = 0;
 
-      
+          if ($conexion->guardarRegistro($conn, $tabla, $arregloDatos )){
 
-
-    if ($conexion->guardarRegistro($conn, $tabla, $arregloDatos )){
-
-
-
-             $resultado = true;
-
+              $resultado = true;
 
               return $resultado;
-
-
-          }
+        }
 
     }
 
@@ -462,16 +456,26 @@ class CambioPropietarioCompradorController extends Controller
 
                    // die('los dos primeros son true');
 
-                    $transaccion->commit();
+                   // $transaccion->commit();
                     $conn->close();
 
-                      $enviarNumeroSolicitud = new EnviarEmailSolicitud;
+                      $enviarNumeroSolicitud = new PlantillaEmail();
 
                       $login = yii::$app->user->identity->login;
 
                       $solicitud = 'Cambio de Propietario';
 
-                      $enviarNumeroSolicitud->enviarEmail($login,$solicitud, $idSolicitud);
+                      $DocumentosRequisito = new DocumentoSolicitud();
+
+                      $documentos = $DocumentosRequisito->Documentos();
+
+                         foreach ($documentos as $key => $value) {
+                   
+                        $a[] = $value['documentoRequisito']['descripcion'];
+
+                        } 
+
+                      $enviarNumeroSolicitud->plantillaEmailSolicitud($login,$solicitud, $idSolicitud, $a);
 
 
                         if($enviarNumeroSolicitud == true){
@@ -497,7 +501,7 @@ class CambioPropietarioCompradorController extends Controller
 
                             //die('las tres son true');
 
-                          $transaccion->commit();
+                          //$transaccion->commit();
                           $conn->close();
 
                           $enviarNumeroSolicitud = new EnviarEmailSolicitud;
@@ -506,7 +510,7 @@ class CambioPropietarioCompradorController extends Controller
 
                          $solicitud = 'Cambio de Propietario';
 
-                         $enviarNumeroSolicitud->enviarEmail($login,$solicitud, $idSolicitud);
+                         $enviarNumeroSolicitud->enviarEmail($login,$solicitud, $idSolicitud, $a);
 
 
                              if($enviarNumeroSolicitud == true){
