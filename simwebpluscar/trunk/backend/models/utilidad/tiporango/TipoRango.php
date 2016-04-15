@@ -84,7 +84,7 @@
 		 */
 		public function getTarifaDetalle()
 		{
-			return $this->hasMany(TarifaVehiculoDetalle::className(), ['tipo_rango' => 'tipo_rango']);
+			return $this->hasMany(TarifaVehiculoDetalle::className(), ['tipo_monto' => 'tipo_rango']);
 		}
 
 

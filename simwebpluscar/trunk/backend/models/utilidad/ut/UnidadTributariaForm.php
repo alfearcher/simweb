@@ -128,6 +128,57 @@
 	    }
 
 
+
+	    /**
+	     * Metodo que determina el monto a aplicar dependiento del tipo de monto,
+	     * lo retornado estara expresado en moneda nacional ( Bolivares ). Si el
+	     * tipo de monto es diferente a cero (0) se debe determinar el equivalente
+	     * en bolivares o moneda nacional.
+	     * @param  Array $parametros, variable que debe estar estructurada de la siguiente
+	     * manera:
+	     * Array {
+	     * 			$parametros['tipo_rango'] o $parametros['tipo_monto']
+	     *   		$parametros['monto']
+	     *   	 	$parametros['ano_impositivo']
+	     *   	 	.....
+	     *   	 	.....
+	     *   	 	otros parametros
+	     *   	}
+	     * @return Double Retorna un monto expresado en moneda, sino se determina
+	     * el monto retornara cero (0).
+	     */
+	    public function getMontoAplicar($parametros)
+	    {
+	    	$monto = 0;
+	    	$tipo = 0;
+	    	$continuo = false;
+	    	if ( count($parametros) > 0 ) {
+	    		if ( isset($parametros['tipo_monto']) ) {
+	    			$tipo = $parametros['tipo_monto'];
+	    			$continuo = true;
+
+	    		} elseif ( isset($parametros['tipo_monto']) ) {
+	    			$tipo = $parametros['tipo_monto'];
+	    			$continuo = true;
+
+	    		}
+	    		if ( $continuo ) {
+			    	if ( $tipo == 0 ) {					// Bolivares
+			    		$monto = $parametros['monto'];
+
+			    	} elseif ( $tipo == 1 ) {			// Unidad Tributaria
+			    		$año = isset($parametros['ano_impositivo']) ? $parametros['ano_impositivo'] : null;
+			    		settype($año, 'integer');
+			    		$unidadTributaria = self::getUnidadTributaria($año);
+			    		$monto = $parametros['monto'] * $unidadTributaria;
+			    	}
+			    }
+
+		    }
+		    return $monto;
+	    }
+
+
 	}
 
 ?>

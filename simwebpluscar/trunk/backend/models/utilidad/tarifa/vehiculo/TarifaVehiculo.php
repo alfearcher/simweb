@@ -95,7 +95,7 @@
 		 */
 		public function getClaseVehiculo()
 		{
-			return $this->hasMany(ClaseVehiculo::className(), ['clase_vehiculo' => 'clase_vehiculo']);
+			return $this->hasOne(ClaseVehiculo::className(), ['clase_vehiculo' => 'clase_vehiculo']);
 		}
 
 
