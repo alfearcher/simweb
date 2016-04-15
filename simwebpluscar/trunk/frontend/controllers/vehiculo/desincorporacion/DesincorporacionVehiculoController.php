@@ -61,6 +61,8 @@ use common\models\configuracion\solicitud\ParametroSolicitud;
 use frontend\models\vehiculo\desincorporacion\DesincorporacionVehiculoForm;
 use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 use frontend\models\vehiculo\registrar\RegistrarVehiculoForm;
+use common\models\configuracion\solicitud\DocumentoSolicitud;
+use common\enviaremail\PlantillaEmail;
 /**
  * Site controller
  */
@@ -339,7 +341,7 @@ class DesincorporacionVehiculoController extends Controller
     public function guardarRegistroDesincorporacion($conn, $conexion, $model , $idSolicitud, $idVehiculo)
     {
         $buscar = new ParametroSolicitud($_SESSION['id']);
-
+        //die(var_dump($buscar));
 
 
         $buscar->getParametroSolicitud(["impuesto"]);
@@ -348,7 +350,7 @@ class DesincorporacionVehiculoController extends Controller
 
         $impuesto = $resultado['impuesto']; 
 
-        //die($impuesto);
+        ///die($impuesto);
 
       
 
@@ -373,7 +375,7 @@ class DesincorporacionVehiculoController extends Controller
 
       $arregloDatos['impuesto'] = $impuesto;
 
-      //die($arregloDatos['impuesto']);
+      $arregloDatos['usuario'] = $datos->login;
 
       $arregloDatos['causa_desincorporacion'] = $model->motivos;
 
@@ -506,13 +508,16 @@ class DesincorporacionVehiculoController extends Controller
                     $transaccion->commit();
                     $conn->close();
                     
-                      $enviarNumeroSolicitud = new EnviarEmailSolicitud;
+                      $enviarNumeroSolicitud = new PlantillaEmail();
 
                       $login = yii::$app->user->identity->login;
 
                       $solicitud = 'Desincorporacion de Vehiculo';
 
-                      $enviarNumeroSolicitud->enviarEmail($login,$solicitud, $idSolicitud);
+                      $DocumentosRequisito = new DocumentoSolicitud();
+
+                      $documentos = $DocumentosRequisito->Documentos();
+                        $enviarNumeroSolicitud->plantillaEmailSolicitud($login,$solicitud, $idSolicitud, $documentos);
 
 
                         if($enviarNumeroSolicitud == true){

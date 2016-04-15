@@ -60,6 +60,8 @@ use frontend\models\vehiculo\cambioplaca\PlacaSearch;
 use common\models\configuracion\solicitud\ParametroSolicitud;
 use frontend\models\vehiculo\registrar\RegistrarVehiculoForm;
 use common\models\solicitudescontribuyente\SolicitudesContribuyente;
+use common\models\configuracion\solicitud\DocumentoSolicitud;
+use common\enviaremail\PlantillaEmail;
 /**
  * Site controller
  */
@@ -300,8 +302,8 @@ class CambioPlacaVehiculoController extends Controller
 
     public function guardarRegistroCambioPlaca($conn, $conexion, $model , $idSolicitud)
     {
-      //die($idSolicitud);
-
+      
+       $datosVehiculo = $_SESSION['idVehiculo'];
       $numeroSolicitud = $idSolicitud;
       $resultado = false;
       $datos = yii::$app->user->identity;
@@ -315,6 +317,8 @@ class CambioPlacaVehiculoController extends Controller
       }
 
       $arregloDatos['nro_solicitud'] = $numeroSolicitud;
+
+      $arregloDatos['id_vehiculo'] = $datosVehiculo;
 
     
       $arregloDatos['id_contribuyente'] = $datos->id_contribuyente;
@@ -427,13 +431,16 @@ class CambioPlacaVehiculoController extends Controller
                     $transaccion->commit();
                     $conn->close();
 
-                      $enviarNumeroSolicitud = new EnviarEmailSolicitud;
+                      $enviarNumeroSolicitud = new PlantillaEmail();
 
                       $login = yii::$app->user->identity->login;
 
-                      $solicitud = 'Cambio de placa';
+                      $solicitud = 'Cambio de Placa';
 
-                      $enviarNumeroSolicitud->enviarEmail($login,$solicitud, $idSolicitud);
+                      $DocumentosRequisito = new DocumentoSolicitud();
+
+                      $documentos = $DocumentosRequisito->Documentos();
+                        $enviarNumeroSolicitud->plantillaEmailSolicitud($login,$solicitud, $idSolicitud, $documentos);
 
 
                         if($enviarNumeroSolicitud == true){
@@ -460,13 +467,17 @@ class CambioPlacaVehiculoController extends Controller
                           $transaccion->commit();
                           $conn->close();
 
-                          $enviarNumeroSolicitud = new EnviarEmailSolicitud;
+                          $enviarNumeroSolicitud = new PlantillaEmail();
 
-                         $login = yii::$app->user->identity->login;
+                      $login = yii::$app->user->identity->login;
 
-                         $solicitud = 'Cambio de Placa';
+                      $solicitud = 'Cambio de Placa';
 
-                         $enviarNumeroSolicitud->enviarEmail($login,$solicitud, $idSolicitud);
+                      $DocumentosRequisito = new DocumentoSolicitud();
+
+                      $documentos = $DocumentosRequisito->Documentos();
+                        $enviarNumeroSolicitud->plantillaEmailSolicitud($login,$solicitud, $idSolicitud, $documentos);
+
 
 
                              if($enviarNumeroSolicitud == true){

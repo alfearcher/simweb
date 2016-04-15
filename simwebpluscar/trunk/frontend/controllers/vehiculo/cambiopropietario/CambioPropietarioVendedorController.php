@@ -64,6 +64,7 @@ use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 use common\models\configuracion\solicitud\DocumentoSolicitud;
 use frontend\models\vehiculo\cambiopropietario\CompradorForm;
 
+use common\enviaremail\PlantillaEmail;
 session_start();
 
 
@@ -100,7 +101,7 @@ class CambioPropietarioVendedorController extends Controller
 
                 if ($model->validate()){
 
-                 // die(var_dump($model['vehiculo']));
+                 //die('valido');
                  
                     $buscarPlacaContribuyente = self::buscarPlacaContribuyente($model['vehiculo']);
 
@@ -108,11 +109,13 @@ class CambioPropietarioVendedorController extends Controller
 
                      $_SESSION['datosVehiculo'] = $buscarPlacaContribuyente;
 
-                    // die(var_dump($_SESSION['datosVehiculo']));
+                   
 
                      return $this->redirect(['mostrar-tipo-contribuyente']);
                     
                    
+                  }else{
+                    return MensajeController::actionMensaje(900);
                   }
             }
 
@@ -132,6 +135,7 @@ class CambioPropietarioVendedorController extends Controller
   public function buscarPlacaContribuyente($model)
   {
 
+
     $idContribuyente = yii::$app->user->identity->id_contribuyente;
     
           $buscarPlacaContribuyente = BusquedaVehiculos::find()
@@ -148,10 +152,11 @@ class CambioPropietarioVendedorController extends Controller
 
                 if ($buscarPlacaContribuyente == true){
 
-                    
+                    //die('placa');
                   
                     return $buscarPlacaContribuyente;
                 }else{
+                  //die('no encontro');
                    
                     return false;
 
@@ -495,7 +500,7 @@ class CambioPropietarioVendedorController extends Controller
                     $transaccion->commit();
                     $conn->close();
 
-                      $enviarNumeroSolicitud = new EnviarEmailSolicitud;
+                      $enviarNumeroSolicitud = new PlantillaEmail();
 
                       $login = yii::$app->user->identity->login;
 
@@ -503,18 +508,8 @@ class CambioPropietarioVendedorController extends Controller
 
                       $DocumentosRequisito = new DocumentoSolicitud();
 
-
                       $documentos = $DocumentosRequisito->Documentos();
-
-                      foreach ($documentos as $key => $value) {
-                   
-                        $a[] = $value['documentoRequisito']['descripcion'];
-
-                        } 
-                       // die(var_dump($a).'hola'); 
-
-
-                      $enviarNumeroSolicitud->enviarEmail($login,$solicitud, $idSolicitud, $a);
+                        $enviarNumeroSolicitud->plantillaEmailSolicitud($login,$solicitud, $idSolicitud, $documentos);
 
 
 
@@ -544,24 +539,16 @@ class CambioPropietarioVendedorController extends Controller
                           $transaccion->commit();
                           $conn->close();
 
-                          $enviarNumeroSolicitud = new EnviarEmailSolicitud;
+                          $enviarNumeroSolicitud = new PlantillaEmail();
 
-                         $login = yii::$app->user->identity->login;
+                      $login = yii::$app->user->identity->login;
 
-                         $solicitud = 'Cambio de Propietario';
+                      $solicitud = 'Cambio de Propietario';
 
-                         $DocumentosRequisito = new DocumentoSolicitud();
+                      $DocumentosRequisito = new DocumentoSolicitud();
 
-                         $documentos = $DocumentosRequisito->Documentos();
-
-                         foreach ($documentos as $key => $value) {
-                   
-                        $a[] = $value['documentoRequisito']['descripcion'];
-
-                        } 
-                       // die(var_dump($a).'hola');
-
-                         $enviarNumeroSolicitud->enviarEmail($login,$solicitud, $idSolicitud, $a);
+                      $documentos = $DocumentosRequisito->Documentos();
+                        $enviarNumeroSolicitud->plantillaEmailSolicitud($login,$solicitud, $idSolicitud, $documentos);
 
 
                              if($enviarNumeroSolicitud == true){

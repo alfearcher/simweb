@@ -60,6 +60,8 @@ use frontend\models\vehiculo\cambiodatos\VehiculoSearch;
 use common\models\configuracion\solicitud\ParametroSolicitud;
 use frontend\models\vehiculo\registrar\RegistrarVehiculoForm;
 use common\models\solicitudescontribuyente\SolicitudesContribuyente;
+use common\models\configuracion\solicitud\DocumentoSolicitud;
+use common\enviaremail\PlantillaEmail;
 /**
  * Site controller
  */
@@ -296,7 +298,7 @@ class CambioDatosVehiculoController extends Controller
 
     public function guardarRegistroVehiculo($conn, $conexion, $model , $idSolicitud)
     {
-      //die($idSolicitud);
+     $datosVehiculo = $_SESSION['datosVehiculo'];
 
       $numeroSolicitud = $idSolicitud;
       $resultado = false;
@@ -309,13 +311,11 @@ class CambioDatosVehiculoController extends Controller
 
           $arregloDatos[$value] =0;
       }
+      $arregloDatos['id_vehiculo'] = $datosVehiculo[0]->id_vehiculo;;
 
       $arregloDatos['nro_solicitud'] = $numeroSolicitud;
 
-     //die($arregloDatos['nro_solicitud']);
       $arregloDatos['id_contribuyente'] = $datos->id_contribuyente;
-
-     // $arregloDatos['placa'] = $model->placa;
 
       $arregloDatos['marca'] = $model->marca;
 
@@ -323,26 +323,13 @@ class CambioDatosVehiculoController extends Controller
 
       $arregloDatos['color'] = $model->color;
 
-     // $arregloDatos['uso_vehiculo'] = $model->uso_vehiculo
-
-
-      ;
-
       $arregloDatos['precio_inicial'] = $model->precio_inicial;
-
-      //$arregloDatos['fecha_inicio'] = $model->fecha_inicio;
-
-     // $arregloDatos['ano_compra'] = $model->ano_compra;
-
-      //$arregloDatos['ano_vehiculo'] = $model->ano_vehiculo;
 
       $arregloDatos['no_ejes'] = $model->no_ejes;
 
       $arregloDatos['liquidado'] = 0;
 
       $arregloDatos['status_vehiculo'] = 0;
-
-   //   $arregloDatos['exceso_cap'] = $model->exceso_cap;
 
       $arregloDatos['medida_cap'] = $model->medida_cap;
 
@@ -351,16 +338,6 @@ class CambioDatosVehiculoController extends Controller
       $arregloDatos['nro_puestos'] = $model->nro_puestos;
 
       $arregloDatos['peso'] = $model->peso;
-
-     // $arregloDatos['clase_vehiculo'] = $model->clase_vehiculo;
-
-      //$arregloDatos['tipo_vehiculo'] = $model->tipo_vehiculo;
-
-     // $arregloDatos['serial_motor'] = $model->serial_motor;
-
-      //$arregloDatos['serial_carroceria'] = $model->serial_carroceria;
-
-      //$arregloDatos['nro_calcomania'] = $model->nro_calcomania;
 
       $arregloDatos['estatus_funcionario'] = 0;
 
@@ -391,19 +368,16 @@ class CambioDatosVehiculoController extends Controller
      public function actualizarVehiculoMaestro($conn, $conexion, $model)
     {
      
-    //die(var_dump($model));
+   
      
 
       $tableName = 'vehiculos';
       $arregloCondition = ['id_vehiculo' => $_SESSION['idVehiculo']];
-      //die(var_dump($arregloCondition));
      
-
-      // $arregloDatos['id_contribuyente'] = $datos->id_contribuyente;
 
       $arregloDatos['placa'] = strtoupper($model->placa);
 
-      //die($arregloDatos['placa']);
+  
 
       $arregloDatos['marca'] = $model->marca;
 
@@ -411,26 +385,13 @@ class CambioDatosVehiculoController extends Controller
 
       $arregloDatos['color'] = $model->color;
 
-     // $arregloDatos['uso_vehiculo'] = $model->uso_vehiculo;
-
       $arregloDatos['precio_inicial'] = $model->precio_inicial;
-
-     // $arregloDatos['fecha_inicio'] =  date('Y-m-d', strtotime($model->fecha_inicio));
-
-     // die( $arregloDatos['fecha_inicio']);
-
-
-      //$arregloDatos['ano_compra'] = $model->ano_compra;
-
-     // $arregloDatos['ano_vehiculo'] = $model->ano_vehiculo;
 
       $arregloDatos['no_ejes'] = $model->no_ejes;
 
       $arregloDatos['liquidado'] = 0;
 
       $arregloDatos['status_vehiculo'] = 0;
-
-     // $arregloDatos['exceso_cap'] = $model->exceso_cap;
 
       $arregloDatos['medida_cap'] = $model->medida_cap;
 
@@ -440,27 +401,14 @@ class CambioDatosVehiculoController extends Controller
 
       $arregloDatos['peso'] = $model->peso;
 
-    //  $arregloDatos['clase_vehiculo'] = $model->clase_vehiculo;
-
-      //$arregloDatos['tipo_vehiculo'] = $model->tipo_vehiculo;
-
-     // $arregloDatos['serial_motor'] = $model->serial_motor;
-
-     // $arregloDatos['serial_carroceria'] = $model->serial_carroceria;
-
-     // $arregloDatos['nro_calcomania'] = $model->nro_calcomania;
-
-     // $arregloDatos['fecha_hora'] = date('Y-m-d h:m:i');
-
       $arregloDatos['nro_cilindros'] = $model->nro_cilindros;
 
+      
       $conexion = new ConexionController();
 
       $conn = $conexion->initConectar('db');
          
       $conn->open();
-
-      //$transaccion = $conn->beginTransaction();
 
           if ($conexion->modificarRegistro($conn, $tableName, $arregloDatos, $arregloCondition)){
 
@@ -475,7 +423,7 @@ class CambioDatosVehiculoController extends Controller
 
      
 
-     //die($arregloDatos['nro_solicitud']);
+   
      
 
 
@@ -484,7 +432,7 @@ class CambioDatosVehiculoController extends Controller
 
     public function beginSave($var, $model)
     {
-     // die($_SESSION['idVehiculo']);
+    
       
 
       $buscar = new ParametroSolicitud($_SESSION['id']);
@@ -532,13 +480,16 @@ class CambioDatosVehiculoController extends Controller
                     $transaccion->commit();
                     $conn->close();
 
-                      $enviarNumeroSolicitud = new EnviarEmailSolicitud;
+                      $enviarNumeroSolicitud = new PlantillaEmail();
 
                       $login = yii::$app->user->identity->login;
 
-                      $solicitud = 'Registro de Vehiculo';
+                      $solicitud = 'Cambio de datos del Vehiculo';
 
-                      $enviarNumeroSolicitud->enviarEmail($login,$solicitud, $idSolicitud);
+                      $DocumentosRequisito = new DocumentoSolicitud();
+
+                      $documentos = $DocumentosRequisito->Documentos();
+                        $enviarNumeroSolicitud->plantillaEmailSolicitud($login,$solicitud, $idSolicitud, $documentos);
 
 
                         if($enviarNumeroSolicitud == true){
@@ -565,13 +516,16 @@ class CambioDatosVehiculoController extends Controller
                           $transaccion->commit();
                           $conn->close();
 
-                          $enviarNumeroSolicitud = new EnviarEmailSolicitud;
+                         $enviarNumeroSolicitud = new PlantillaEmail();
 
-                         $login = yii::$app->user->identity->login;
+                      $login = yii::$app->user->identity->login;
 
-                         $solicitud = 'Actualizacion de datos de Vehiculo';
+                      $solicitud = 'Cambio de datos del Vehiculo';
 
-                         $enviarNumeroSolicitud->enviarEmail($login,$solicitud, $idSolicitud);
+                      $DocumentosRequisito = new DocumentoSolicitud();
+
+                      $documentos = $DocumentosRequisito->Documentos();
+                        $enviarNumeroSolicitud->plantillaEmailSolicitud($login,$solicitud, $idSolicitud, $documentos);
 
 
                              if($enviarNumeroSolicitud == true){

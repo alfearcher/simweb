@@ -60,6 +60,8 @@ use common\enviaremail\EnviarEmailSolicitud;
 use common\models\configuracion\solicitud\ParametroSolicitud;
 use common\models\configuracion\solicitud\DocumentoSolicitud;
 use common\enviaremail\PlantillaEmail;
+use common\models\configuracion\solicitud\DocumentoSolicitud;
+use common\enviaremail\PlantillaEmail;
 /**
  * Site controller
  */
@@ -237,10 +239,11 @@ class RegistrarVehiculoController extends Controller
 
           $arregloDatos[$value] =0;
       }
-
+      
+      
       $arregloDatos['nro_solicitud'] = $numeroSolicitud;
 
-     //die($arregloDatos['nro_solicitud']);
+
       $arregloDatos['id_contribuyente'] = $datos->id_contribuyente;
 
       $arregloDatos['placa'] = strtoupper($model->placa);

@@ -351,7 +351,7 @@ class CambioPropietarioCompradorController extends Controller
           $arregloDatos[$value] =0;
       }
 
-      $arregloDatos['id_impuesto'] = $idImpuesto;
+     
 
       $arregloDatos['id_impuesto'] = $idImpuesto;
 
