@@ -96,6 +96,12 @@
 		}
 
 
+		/***/
+		public function getCalculoAnual()
+		{
+			return $this->_calculoAnual;
+		}
+
 
 
 		/**
@@ -112,10 +118,48 @@
 			if ( $model != null ) {
 				$this->_datosVehiculo = $model->toArray();
 				if ( count($this->_datosVehiculo) > 0 ) {
-					// Se buscan los montos a aplicar de las tarifas segun clase y ordennaza
+					// Se buscan las tarifas que coincidan con la clase del vehiculo y la oredenanza respectiva.
+					// Aqui se recibe un arreglo de las tarifas ligadas a la clase de vehiculo. Luego se enviada el
+					// conjunto de tarifas que coinciden con el criterio de busqueda para que se determinen los detalles
+					// de cada tarifa. $tarifasParametros, arreglo multi-dimensional que contiene los campos de la
+					// entidades "tarifas-vehiculos", "clases-vehiculos" y "tipos-rangos".
 					$tarifasParametros = self::getTarifaPorOrdenanzaClaseVehiculo($this->_datosVehiculo['clase_vehiculo']);
+
 					if ( count($tarifasParametros) > 0 ) {
+
+						// Se envialas las tarifas que coincidan con la clase del vehiculo para crear un ciclo
+						// que vaya realizando la consulta de los detalles de las mismas por identificador
+						// de tarifa.
 						$monto = self::iniciarCicloTarifa($tarifasParametros);
+					}
+				}
+			}
+			$this->_calculoAnual = $monto;
+			return $this->getCalculoAnual();
+		}
+
+
+
+
+		/**
+		 * Metodo que recibe un arreglo de tarifas que coincidan con la clase del vehiculo y la
+		 * ordenanza respetiva. Se obtiene los campos de la entidad "tarifas-vehiculos" ($tarifa)
+		 * para ir evaluando cada tarifa ($tarifa), se envia el identificador de la tarifa para
+		 * obtener sus detalles.
+		 * @param  Array $tarifasParametros, arreglo que contiene los campos de la entidades
+		 * "tarifas-vehiculos", "clases-vehiculos" y "tipos-rangos"
+		 * @return Double Retorna monto ($monto).
+		 */
+		private function iniciarCicloTarifa($tarifasParametros)
+		{
+			$monto = 0;
+			$result = false;
+			if ( count($tarifasParametros) > 0 ) {
+				foreach ( $tarifasParametros as $key => $tarifa ) {
+					$result = self::iniciarCicloTarifaDetalle($tarifa['id_tarifa_vehiculo']);
+					if ( $result ) {
+						$monto = self::getMontoAplicar($tarifa);
+						break;
 					}
 				}
 			}
@@ -124,37 +168,13 @@
 
 
 
-		/***/
-		private function getUnidadTributaria($año)
-		{
-			settype($año, 'integer');
-			if ( $año > 0 ) {
-				return UnidadTributariaForm::getUnidadTributaria($año);
-			}
-			return null;
-		}
 
-
-
-
-		/***/
-		private function iniciarCicloTarifa($tarifasParametros)
-		{
-			$monto = 0;
-			$result = false;
-			if ( count($tarifasParametros) > 0 ) {
-				foreach ( $tarifasParametros as $key => $tarifa ) {
-					$result = self::iniciarCicloTarifaDetalle($tarifa['id_tarifa_vehiculo']);
-					if ( !$result ) { break; }
-				}
-			}
-			return $monto;
-		}
-
-
-
-
-		/***/
+		/**
+		 * Metodo que busca los detalles de la tarifa por identificador, cada ciclo debe
+		 * buscar los detalles de cada identificador.
+		 * @param  Long $idTarifaVehiculo, identificador de la entidad "tarifas-vehiculos".
+		 * @return [type]                   [description]
+		 */
 		private function iniciarCicloTarifaDetalle($idTarifaVehiculo)
 		{
 			$tarifaDetalle = null;
@@ -170,13 +190,17 @@
 				// Por ejemplo:
 				// la caracteristica puede ser "numero de ejes", y su rango de valores estara entre 1 y 3, estos
 				// valores se comparan contra la caracteristica del vehiculo "numero de eje" para determinar si
-				// se encuentra entre este rango.
+				// se encuentra entre dicho rango.
 				$tarifaDetalles = self::getDetallePorTarifa($idTarifaVehiculo);
 				if ( count($tarifaDetalles) > 0 ) {
+
 					foreach ( $tarifaDetalles as $key => $detalle ) {
+						// Si el $rsult es true, significa que el vehiculo satisface la caracteristica. False
+						// caso contrario.
 						$result = self::satisfaceCaracteristica($detalle);
 						if ( !$result ) { break; }
 					}
+
 				}
 			}
 			return $result;
@@ -226,11 +250,11 @@
 				case 5:					//	ANTIGUEDAD(EN AÑOS)
 					$añoVehiculo = strlen($this->_datosVehiculo['ano_vehiculo']) == 4 ? $this->_datosVehiculo['ano_vehiculo'] : 0;
 					if ( $añoVehiculo > 0 ) {
-						$parametro = date('Y') - $añoVehiculo;
+						if ( (int) date('Y') >= (int) $añoVehiculo ) { $parametro = date('Y') - $añoVehiculo; }
 					}
 					break;
 				case 6:					//	NRO. PUESTOS
-					$parametro = $this->_datosVehiculo['nro_puesto'];
+					$parametro = $this->_datosVehiculo['nro_puestos'];
 					break;
 				case 7:					//	NRO. PUERTAS
 					# code...
@@ -255,7 +279,10 @@
 					break;
 			}
 
-			if ( $rangoDesde > 0 && $rangoHasta > 0 ) {
+			settype($rangoDesde, 'float');
+			settype($rangoHasta, 'float');
+
+			if ( $rangoDesde >= 0 && $rangoHasta > 0 ) {
 				if ( $rangoDesde <= $parametro && $rangoHasta >= $parametro ) {
 					$result = true;
 				}
@@ -287,7 +314,7 @@
 			if ( count($tarifa) > 0 ) {
 				$parametros['tipo_monto'] = $tarifa['tipo_monto'];
 				$parametros['monto'] = $tarifa['monto_aplicar'];
-				$parametros['ano_impositivo'] = $tarifa['ano_impositivo'];
+				$parametros['ano_impositivo'] = $this->getAnoImpositivo();
 
 				$montoAplicar = UnidadTributariaForm::getMontoAplicar($parametros);
 			}
@@ -326,19 +353,6 @@
 			return null;
 		}
 
-
-
-
-		/***/
-		private function calculoImpuestoVehiculo()
-		{
-			$model = $this->getDatosVehiculo();
-			if ( isset($model) ) {
-
-			} else {
-
-			}
-		}
 
 
 
