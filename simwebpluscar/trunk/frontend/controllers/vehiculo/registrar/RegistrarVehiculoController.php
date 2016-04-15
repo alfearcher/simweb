@@ -58,6 +58,8 @@ use common\mensaje\MensajeController;
 use frontend\models\vehiculo\registrar\RegistrarVehiculoForm;
 use common\enviaremail\EnviarEmailSolicitud;
 use common\models\configuracion\solicitud\ParametroSolicitud;
+use common\models\configuracion\solicitud\DocumentoSolicitud;
+use common\enviaremail\PlantillaEmail;
 /**
  * Site controller
  */
@@ -445,13 +447,18 @@ class RegistrarVehiculoController extends Controller
                     $transaccion->commit();
                     $conn->close();
 
-                      $enviarNumeroSolicitud = new EnviarEmailSolicitud;
+                      $enviarNumeroSolicitud = new PlantillaEmail();
 
                       $login = yii::$app->user->identity->login;
 
                       $solicitud = 'Registro de Vehiculo';
 
-                      $enviarNumeroSolicitud->enviarEmail($login,$solicitud, $idSolicitud);
+                      $DocumentosRequisito = new DocumentoSolicitud();
+
+                      $documentos = $DocumentosRequisito->Documentos();
+
+                     $enviarNumeroSolicitud->plantillaEmailSolicitud($login,$solicitud, $idSolicitud, $documentos);
+
 
 
                         if($enviarNumeroSolicitud == true){
@@ -478,13 +485,17 @@ class RegistrarVehiculoController extends Controller
 			                    $transaccion->commit();
 			                    $conn->close();
 
-                      		$enviarNumeroSolicitud = new EnviarEmailSolicitud;
+                      		$enviarNumeroSolicitud = new PlantillaEmail();
 
-                         $login = yii::$app->user->identity->login;
+                      $login = yii::$app->user->identity->login;
 
-                         $solicitud = 'Registro de Vehiculo';
+                      $solicitud = 'Registro de Vehiculo';
 
-                         $enviarNumeroSolicitud->enviarEmail($login,$solicitud, $idSolicitud);
+                      $DocumentosRequisito = new DocumentoSolicitud();
+
+                      $documentos = $DocumentosRequisito->Documentos();
+                        $enviarNumeroSolicitud->plantillaEmailSolicitud($login,$solicitud, $idSolicitud, $documentos);
+
 
 
                              if($enviarNumeroSolicitud == true){

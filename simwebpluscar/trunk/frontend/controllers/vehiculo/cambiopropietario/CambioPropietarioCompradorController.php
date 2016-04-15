@@ -500,13 +500,17 @@ class CambioPropietarioCompradorController extends Controller
                           //$transaccion->commit();
                           $conn->close();
 
-                          $enviarNumeroSolicitud = new EnviarEmailSolicitud;
+                          $enviarNumeroSolicitud = new PlantillaEmail();
 
-                         $login = yii::$app->user->identity->login;
+                      $login = yii::$app->user->identity->login;
 
-                         $solicitud = 'Cambio de Propietario';
+                      $solicitud = 'Cambio de Propietario';
 
-                         $enviarNumeroSolicitud->enviarEmail($login,$solicitud, $idSolicitud, $a);
+                      $DocumentosRequisito = new DocumentoSolicitud();
+
+                      $documentos = $DocumentosRequisito->Documentos();
+                        $enviarNumeroSolicitud->plantillaEmailSolicitud($login,$solicitud, $idSolicitud, $documentos);
+
 
 
                              if($enviarNumeroSolicitud == true){
