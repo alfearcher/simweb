@@ -207,7 +207,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                               'nro_control' => 0,
                               'firma_digital' => null, 
                               'estatus' => 0,
-                              'inactivo' => 0, 
+                              'inactivo' => 0,
                           ];  
             
 
