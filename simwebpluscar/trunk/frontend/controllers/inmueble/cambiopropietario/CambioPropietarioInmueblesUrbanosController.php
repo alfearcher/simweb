@@ -72,7 +72,7 @@ class CambioPropietarioInmueblesUrbanosController extends Controller
     public $conn;
     public $conexion;
     public $transaccion; 
-
+ 
      /**
      * Lists all Inmuebles models.
      * @return mixed

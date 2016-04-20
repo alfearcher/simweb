@@ -90,7 +90,7 @@ session_start();
  *********************************************************************************************************/
 class DesincorporacionInmueblesUrbanosController extends Controller
 {
-   
+    
     public $conn;
     public $conexion;
     public $transaccion; 
