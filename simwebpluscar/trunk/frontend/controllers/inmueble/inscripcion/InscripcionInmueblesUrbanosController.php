@@ -205,7 +205,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                               'fecha_hora_creacion' => date('Y-m-d h:i:s'),
                               'nivel_aprobacion' => 0,
                               'nro_control' => 0,
-                              'firma_digital' => null, 
+                              'firma_digital' => null,
                               'estatus' => 0,
                               'inactivo' => 0,
                           ];  
