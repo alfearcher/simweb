@@ -204,36 +204,6 @@
 
 
 
-		/***/
-		public function findConfiguracionDetalleProceso1()
-		{
-			//$config = New ConfigurarSolicitud();
-			// $c = $config->find()->where(['id_config_solicitud' => $this->getIdConfig(),
-			// 													 'inactivo' => 0])
-			//                         				    ->with('detalleSolicitud');
-			// $config->setIdConfigSolicitud($this->getIdConfig());
-			// $c = $config->find()->where(['id_config_solicitud' => $this->getIdConfig(),
-			//  													 'inactivo' => 0])
-			//                          				    ->with('detalleSolicitud');
-			//ConfigurarSolicitud::setIdConfigSolicitud($this->getIdConfig());
-			// $config = ConfigurarSolicitud::find()->where(['id_config_solicitud' => $this->getIdConfig(),
-			// 													 'inactivo' => 0])
-			//                         			 ->with('detalleSolicitud')
-			//                         			->joinWith('detalleProceso')->all();
-			//$config->joinWith('detalleProcesoSolicitud')->all();
-
-
-
-			// $config = ConfigurarSolicitud::find()->joinWith('detalleSolicitud')
-			// 									 ->joinWith('detalleProceso')
-			// 									 ->where(['config_solicitudes.id_config_solicitud' => $this->getIdConfig(),
-			// 											  'config_solicitudes.inactivo' => 0])
-			// 									 ->all();
-
-			return $config;
-		}
-
-
 
 		/**
 		 * Metodo que busca los registros relacionados entre las entidades "config-solic-detalles"
