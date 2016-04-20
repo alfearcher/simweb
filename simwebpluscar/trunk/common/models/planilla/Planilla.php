@@ -173,12 +173,27 @@
 		 * @param  Long $impuesto, identificador del impuesto.
 		 * @return Retorna un model con el primer registro liquidado. Null si no encuentra nada.
 		 */
-		public function getPrimerPeriodoLiquidadoObjeto($año, $idImpuesto, $impuesto)
+		public function getPrimerPeriodoLiquidadoObjeto($idImpuesto, $impuesto, $año = 0)
 		{
-			if ( $idImpuesto > 0 and $impuesto > 0 ) {
+			if ( $idImpuesto > 0 and $impuesto > 0 && $año == 0 ) {
 				$model = PagoDetalle::find()->where('id_impuesto =:id_impuesto',[':id_impuesto' => $idImpuesto])
-									 		->andWhere('impuesto =:impuesto', [':impuesto' => 1])
+									 		->andWhere('impuesto =:impuesto', [':impuesto' => $impuesto])
 									 		->andWhere('trimestre >:trimestre', [':trimestre' => 0])
+									 		->andWhere('pago !=:pago', [':pago' => 9])
+									 		->andWhere('referencia =:referencia',[':referencia' => 0])
+									 		->joinWith('pagos')
+									 		->orderBy([
+							 					'ano_impositivo' => SORT_ASC,
+							 					'trimestre' => SORT_ASC,
+							 				])
+									  		->asArray()
+									 		->one();
+
+			} elseif ( $idImpuesto > 0 and $impuesto > 0 && $año > 0 ) {
+				$model = PagoDetalle::find()->where('id_impuesto =:id_impuesto',[':id_impuesto' => $idImpuesto])
+									 		->andWhere('impuesto =:impuesto', [':impuesto' => $impuesto])
+									 		->andWhere('trimestre >:trimestre', [':trimestre' => 0])
+									 		->andWhere('ano_impositivo >:ano_impositivo', [':ano_impositivo' => $año])
 									 		->andWhere('pago !=:pago', [':pago' => 9])
 									 		->andWhere('referencia =:referencia',[':referencia' => 0])
 									 		->joinWith('pagos')
@@ -194,6 +209,57 @@
 			}
 			return null;
 		}
+
+
+
+
+		/**
+		 * Metodo que permite obtener el primer periodo liquidado de un objeto imponible,
+		 * para un año especifico.
+		 * @param  Integer $año, entero de 4 digitos que representa el año impositivo.
+		 * @param  Long $idImpuesto, identificador del objeto.
+		 * @param  Long $impuesto, identificador del impuesto.
+		 * @return Retorna un model con el primer registro liquidado. Null si no encuentra nada.
+		 */
+		public function getUltimoPeriodoLiquidadoObjeto($idImpuesto, $impuesto, $año = 0)
+		{
+			$model = null;
+			if ( $idImpuesto > 0 and $impuesto > 0 && $año == 0 ) {
+				$model = PagoDetalle::find()->where('id_impuesto =:id_impuesto',[':id_impuesto' => $idImpuesto])
+									 		->andWhere('impuesto =:impuesto', [':impuesto' => $impuesto])
+									 		->andWhere('trimestre >:trimestre', [':trimestre' => 0])
+									 		->andWhere('pago !=:pago', [':pago' => 9])
+									 		->andWhere('referencia =:referencia',[':referencia' => 0])
+									 		->joinWith('pagos')
+									 		->orderBy([
+							 					'ano_impositivo' => SORT_DESC,
+							 					'trimestre' => SORT_DESC,
+							 				])
+									  		->asArray()
+									 		->one();
+
+			} elseif ( $idImpuesto > 0 and $impuesto > 0 && $año > 0 ) {
+				$model = PagoDetalle::find()->where('id_impuesto =:id_impuesto',[':id_impuesto' => $idImpuesto])
+									 		->andWhere('impuesto =:impuesto', [':impuesto' => $impuesto])
+									 		->andWhere('trimestre >:trimestre', [':trimestre' => 0])
+									 		->andWhere('ano_impositivo >:ano_impositivo', [':ano_impositivo' => $año])
+									 		->andWhere('pago !=:pago', [':pago' => 9])
+									 		->andWhere('referencia =:referencia',[':referencia' => 0])
+									 		->joinWith('pagos')
+									 		->orderBy([
+							 					'ano_impositivo' => SORT_DESC,
+							 					'trimestre' => SORT_DESC,
+							 				])
+									  		->asArray()
+									 		->one();
+			}
+			if ( count($model) > 0 ) {
+				return $model;
+			}
+			return null;
+		}
+
+
 
 
 
