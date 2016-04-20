@@ -65,6 +65,8 @@
 		private $_idImpuesto;		// Identificador del Vehiculo.
 		private $_parametro;
 
+		const IMPUESTO = 3;			// Impuesto asociado a vehiculo.
+
 
 
 		/**
@@ -403,7 +405,7 @@
 			$año = self::getAnoOrdenanza();
 
 			if ( $año > 0 ) {
-				$idOrdenanza = OrdenanzaBase::getIdOrdenanza($año, 3);
+				$idOrdenanza = OrdenanzaBase::getIdOrdenanza($año, self::IMPUESTO);
 				if ( !isset($idOrdenanza) || $idOrdenanza == false ) {
 					$idOrdenanza = null;
 				}
