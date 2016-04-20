@@ -385,7 +385,7 @@
 		{
 			$año = 0;
 			if ( $this->_añoImpositivo > 0 ) {
-				$año = OrdenanzaBase::getAnoOrdenanzaSegunAnoImpositivoImpuesto($this->_añoImpositivo, 3);
+				$año = OrdenanzaBase::getAnoOrdenanzaSegunAnoImpositivoImpuesto($this->_añoImpositivo, self::IMPUESTO);
 			}
 			return $año;
 		}
