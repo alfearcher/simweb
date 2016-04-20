@@ -129,14 +129,17 @@
 		{
 			$monto = 0;
 			$montoAvaluo = 0;
+			$tarifa = null;
 			// Se obtienen los parametros o tarifas que se aplicaran en los calculo
 			// conjuntamente con los valores del avaluo.
 			$tarifa = self::getParametroTarifa();
-die(var_dump($tarifa));
+
 			if ( count($tarifa) > 0 ) {
 				$tasaLocal = $tarifa['tasa_construccion'] + $tarifa['tasa_terreno'];
+
 				$minimo = $tarifa['minimo'];
-				$montoAvaluo = self::getAvaluo($avaluo);
+				$montoAvaluo = self::getAvaluo($avaluo, $tarifa);
+
 				if ( $tarifa['tasa_construccion'] > 0 ) {
 					$monto = $montoAvaluo * $tarifa['tasa_construccion'];
 					if ( $monto < $minimo ) {
@@ -166,19 +169,22 @@ die(var_dump($tarifa));
 		/**
 		 * Metodo que determina el monto del avaluo general, entre el avaluo de terreno
 		 * y el avaluo de construccion.
-		 * @param  Array $avaluo arreglo multi-dimensional con los campo de la entidad
+		 * @param  Array $avaluo arreglo que contiene campo de la entidad
 		 * "historico-avaluos".
+		 * @param  Array $tarifa arreglo que contiene los campos de la entidad "tarifas-avaluos".
 		 * @return Double Retorna un monto de la suma de los avaluo.
 		 */
-		private function getAvaluo($avaluo)
+		private function getAvaluo($avaluo, $tarifa)
 		{
 			$montoAvaluo = 0;
 			if ( count($avaluo) > 0 ) {
 				// Avaluo de la construccion.
-				$montoAvaluoConstruccion = $avaluo['mts'] * $avaluo['valor_por_mts2'];
+				//$montoAvaluoConstruccion = $avaluo['mts'] * $avaluo['valor_por_mts2'];
+				$montoAvaluoConstruccion = $avaluo['mts'] * $tarifa['valor_construccion'];
 
 				// Avaluo del terreno.
-				$montoAvaluoTerreno = $avaluo['mts2_terreno'] * $avaluo['valor_por_mts2_terreno'];
+				//$montoAvaluoTerreno = $avaluo['mts2_terreno'] * $avaluo['valor_por_mts2_terreno'];
+				$montoAvaluoTerreno = $avaluo['mts2_terreno'] * $tarifa['valor_terreno'];
 
 				$montoAvaluo = $montoAvaluoTerreno + $montoAvaluoConstruccion;
 			}
