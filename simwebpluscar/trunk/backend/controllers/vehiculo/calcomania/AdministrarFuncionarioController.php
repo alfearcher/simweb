@@ -86,7 +86,7 @@ class AdministrarFuncionarioController extends Controller
    */
     public function actionBusquedaFuncionario()
     {
-   
+    //die('llegue a funcionario');
             $model = new BusquedaFuncionarioForm();
 
             $postData = Yii::$app->request->post();
@@ -102,6 +102,12 @@ class AdministrarFuncionarioController extends Controller
                if ($model->validate()){
 
                    $busquedaFuncionario = self::busquedaFuncionario($model);
+
+                      if($busquedaFuncionario == true){
+                        return $this->redirect(['datos-funcionario']);
+                      }else{
+                        return MensajeController::actionMensaje(990);
+                      }
                 
               }
             }
@@ -122,10 +128,24 @@ class AdministrarFuncionarioController extends Controller
     public function busquedaFuncionario($model)
     {
       
-      $busquedaFuncionario = 
+      $busquedaFuncionario = Funcionario::find()
+                                        ->where([
+                                        'ci' => $model->cedula,
+                                        'status_funcionario' => 0,
+                                        ])
+                                        ->all();
+
+      if ($busquedaFuncionario == true){
+        return true;
+      }else{
+        return false;
+      }
     }
 
-      
+    public function actionDatosFuncionario()
+    {
+      die('llegue a datos funcionario');
+    }
 
     
 
