@@ -318,7 +318,7 @@
 		 * las variables son 4 y permiten determiinar el "desde" y el"hasta" donde de debe liquidar.
 		 * @return [type] [description]
 		 */
-		private function configurarLapsoLiquidacionVehiculo()
+		private function configurarLapsoLiquidacionInmueble()
 		{
 			$ultimo = $this->getUltimaLiquidacion();
 			$añoActual = date('Y');
