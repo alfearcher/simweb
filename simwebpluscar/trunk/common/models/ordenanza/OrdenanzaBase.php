@@ -81,6 +81,26 @@
 
 
 
+		/***/
+		public static function getDetalleOrdenanza($idOrdenanza, $impuesto)
+		{
+			$query = New Query();
+			$row = null;
+
+			$row = $query->select('ordenanzas_detalles.*')
+						 ->from('ordenanzas')
+					     ->join('INNER JOIN', 'ordenanzas_detalles', 'ordenanzas.id_ordenanza = ordenanzas_detalles.id_ordenanza')
+					     ->where('ordenanzas.id_ordenanza = :id_ordenanza', [':id_ordenanza' => $idOrdenanza])
+					     ->andWhere('ordenanzas_detalles.impuesto = :impuesto', [':impuesto' => $impuesto])
+					     ->andWhere('ordenanzas.status_ordenanza = :status_ordenanza', [':status_ordenanza' => 0])
+					     ->andWhere('ordenanzas_detalles.status_detalle = :status_detalle', [':status_detalle' => 0])
+					     ->one();
+
+			return $row;
+		}
+
+
+
 
 		/**
 		 * Metodo para determinar el identificador ( id ) de la ordenanza.
