@@ -132,12 +132,13 @@
 			// Se obtienen los parametros o tarifas que se aplicaran en los calculo
 			// conjuntamente con los valores del avaluo.
 			$tarifa = self::getParametroTarifa();
+die(var_dump($tarifa));
 			if ( count($tarifa) > 0 ) {
-				$tasaLocal = $tarifa[0]['tasa_construccion'] + $tarifa[0]['tasa_terreno'];
-				$minimo = $tarifa[0]['minimo'];
+				$tasaLocal = $tarifa['tasa_construccion'] + $tarifa['tasa_terreno'];
+				$minimo = $tarifa['minimo'];
 				$montoAvaluo = self::getAvaluo($avaluo);
-				if ( $tarifa[0]['tasa_construccion'] > 0 ) {
-					$monto = $montoAvaluo * $tarifa[0]['tasa_construccion'];
+				if ( $tarifa['tasa_construccion'] > 0 ) {
+					$monto = $montoAvaluo * $tarifa['tasa_construccion'];
 					if ( $monto < $minimo ) {
 						$monto = $minimo;
 					}
@@ -174,10 +175,10 @@
 			$montoAvaluo = 0;
 			if ( count($avaluo) > 0 ) {
 				// Avaluo de la construccion.
-				$montoAvaluoConstruccion = $avaluo[0]['mts'] * $avaluo[0]['valor_por_mts2'];
+				$montoAvaluoConstruccion = $avaluo['mts'] * $avaluo['valor_por_mts2'];
 
 				// Avaluo del terreno.
-				$montoAvaluoTerreno = $avaluo[0]['mts2_terreno'] * $avaluo[0]['valor_por_mts2_terreno'];
+				$montoAvaluoTerreno = $avaluo['mts2_terreno'] * $avaluo['valor_por_mts2_terreno'];
 
 				$montoAvaluo = $montoAvaluoTerreno + $montoAvaluoConstruccion;
 			}
