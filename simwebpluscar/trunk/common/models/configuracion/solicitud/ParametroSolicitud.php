@@ -25,7 +25,7 @@
 
 
 
-		public function __construct($idConfig = 0)
+		public function __construct($idConfig)
 		{
 			$this->configurar($idConfig);
 		}
@@ -37,11 +37,13 @@
 		* @param $idConfig, long que identifica al registro de la entidad
 		* "config-solicitudes".
 		*/
-		private function configurar($idConfig = 0)
+		private function configurar($idConfig)
 		{
-			$this->setIdConfig($idConfig);
-			$config = ConfigurarSolicitud::findOne($this->getIdConfig());
-			$this->setConfigSolicitud($config);
+			if ( $idConfig > 0 ) {
+				$this->setIdConfig($idConfig);
+				$config = ConfigurarSolicitud::findOne($this->getIdConfig());
+				$this->setConfigSolicitud($config);
+			}
 		}
 
 
