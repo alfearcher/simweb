@@ -43,7 +43,7 @@
 	namespace common\models\planilla;
 
  	use Yii;
- 	use common\models\calculo\liquidacion\vehiculo\LiquidacionInmueble;
+ 	use common\models\calculo\liquidacion\inmueble\LiquidacionInmueble;
 	use common\models\contribuyente\ContribuyenteBase;
  	use common\models\ordenanza\OrdenanzaBase;
  	use common\models\planilla\Planilla;
