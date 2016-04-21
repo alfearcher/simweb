@@ -43,6 +43,7 @@ $this->title = Yii::t('frontend', 'Select your Vehicles');
         'columns' => [
             //['class' => 'yii\grid\SerialColumn'],
             //
+            'funcionario.id_funcionario',
            'funcionario.nombres',
            'funcionario.apellidos',
            'funcionario.ci',
