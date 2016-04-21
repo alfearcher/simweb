@@ -42,6 +42,9 @@
 	use common\models\ordenanza\OrdenanzaBase;
 	use common\models\planilla\PlanillaActividadEconomica;
 	use common\models\planilla\PlanillaTasa;
+	//use common\models\calculo\liquidacion\vehiculo\LiquidacionVehiculo;
+	use common\models\planilla\PlanillaVehiculo;
+	use common\models\planilla\PlanillaInmueble;
 
 
  /**
@@ -151,7 +154,12 @@
 
 	  	public function actionPrueba()
 	  	{
-	  		$conexion = New ConexionController();
+
+	  		//$l = New LiquidacionVehiculo(6);
+	  		//$l->setAnoImpositivo(2012);
+	  		//$r = $l->iniciarCalcularLiquidacionVehiculo();
+
+	  			$conexion = New ConexionController();
 
 			// Instancia de conexion hacia la base de datos.
 			$this->connLocal = $conexion->initConectar('db');
@@ -162,9 +170,9 @@
 			$transaccion = $this->connLocal->beginTransaction();
 
 			// Parametros IdContribuyente, idImpuesto
-			$planilla = New PlanillaTasa(458, 1339, $conexion, $this->connLocal);
+			$planilla = New PlanillaInmueble(2317, $conexion, $this->connLocal);
 
-			$result = $planilla->liquidarTasa();
+			$result = $planilla->liquidarEstimadaInmueble();
 			if ( $result ) {
 				$transaccion->commit();
 				die('guardo');
