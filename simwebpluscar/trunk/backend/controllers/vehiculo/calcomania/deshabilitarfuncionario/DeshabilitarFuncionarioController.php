@@ -103,7 +103,7 @@ class DeshabilitarFuncionarioController extends Controller
 
   public function actionDeshabilitarFuncionario()
   {
-    die('deshabilitar');
+   // die('deshabilitar');
     $errorCheck = ""; 
      
       $idFuncionario = yii::$app->request->post('chk-deshabilitar-funcionario');
