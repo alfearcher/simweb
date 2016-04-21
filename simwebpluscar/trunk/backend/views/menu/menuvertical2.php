@@ -120,8 +120,10 @@ session_start();
 		        						['label' => 'Inscripci&oacute;n de Vehiculos', 'url' => ['vehiculo/vehiculos/create']],
 		        						['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . 'Calcomania',
 					        				'items' => [
-			        							['label' => 'Administrar funcionarios responsables de entregar calcomania','url' => ['/vehiculo/calcomania/administrar-funcionario/busqueda-funcionario']],
-			        							['label' => 'Generar Lote de Calcomania','url' => ['vehiculo/calcomania/lote-calcomania/create']],
+			        							['label' => 'Administrar funcionarios responsables de entregar calcomania','url' => ['/vehiculo/calcomania/administrarfuncionario/administrar-funcionario/busqueda-funcionario']],
+			        							['label' => 'Deshabilitar Funcionarios para la gestion de Calcomanias','url' => ['/vehiculo/calcomania/deshabilitarfuncionario/deshabilitar-funcionario/busqueda-funcionario']],
+
+			        							['label' => 'Generar Lote de Calcomania','url' => ['vehiculo/calcomania/administrarfuncionario/lote-calcomania/create']],
 			        							['label' => 'Administrar Lote de Calcomanias Generadas','url' => ['vehiculo/calcomania/lote-calcomania/busqueda-lote']],
 			        							['label' => 'Asignar Calcomanias a funcionario (Distribuir entre funcionario responsables)','url' => ['vehiculo/calcomania/funcionario-calcomania/distribuir-lote']],
 			        							['label' => 'Administrar Entrega de calcomania','url' => '#'],
