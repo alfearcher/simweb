@@ -61,7 +61,7 @@ use common\enviaremail\PlantillaEmail;
 use backend\models\vehiculo\calcomania\administrarfuncionario\BusquedaFuncionarioForm;
 use backend\models\vehiculo\calcomania\administrarfuncionario\MostrarDatosFuncionarioForm;
 use backend\models\funcionario\Funcionario;
-use backend\models\funcionario\FuncionarioCalcomania;
+use backend\models\funcionario\calcomania\FuncionarioCalcomania;
 /**
  * Site controller
  */
