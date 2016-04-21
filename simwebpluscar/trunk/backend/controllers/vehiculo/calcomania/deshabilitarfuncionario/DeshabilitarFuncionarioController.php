@@ -103,12 +103,13 @@ class DeshabilitarFuncionarioController extends Controller
 
   public function actionDeshabilitarFuncionario()
   {
+    die('deshabilitar');
     $errorCheck = ""; 
-      $idContribuyente = yii::$app->user->identity->id_contribuyente;
+     
       $idFuncionario = yii::$app->request->post('chk-deshabilitar-funcionario');
       die(var_dump($idFuncionario));
-      $_SESSION['idVehiculo'] = $idVehiculo;
-//die(var_dump($_SESSION['idVehiculo']));
+      $_SESSION['idFuncionario'] = $idFuncionario;
+
   
       $validacion = new DesincorporacionVehiculoForm();
 
