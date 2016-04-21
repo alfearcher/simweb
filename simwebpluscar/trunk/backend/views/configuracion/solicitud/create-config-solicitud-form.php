@@ -356,7 +356,7 @@
 			var url = "' . Yii::$app->urlManager
 			                        ->createUrl("/configuracion/solicitud/configurar-solicitud/lista-documento-requisito") . "&id=" . '" + $(this).val();
 
-			$.blockUI({ message: "Espere un momento por favor..." });
+			//$.blockUI({ message: "Espere un momento por favor..." });
 
 			$.ajax({
 				type: "POST",
@@ -366,13 +366,12 @@
 					$("#lista-documento-requisito").html(data);
 				}
 			});
-			$.unblockUI();
+			//$.unblockUI();
 			return false;
 		});
 
 		$("#id-btn-resetear").on("click", function() {
 			$("#fecha-hasta").val("");
 		});
-
-	)'
+	')
 ?>
