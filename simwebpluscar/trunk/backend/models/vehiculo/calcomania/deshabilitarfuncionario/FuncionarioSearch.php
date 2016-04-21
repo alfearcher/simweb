@@ -54,7 +54,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
-use backend\models\funcionario\FuncionarioCalcomania;
+use backend\models\funcionario\calcomania\FuncionarioCalcomania;
 
 
 /**
