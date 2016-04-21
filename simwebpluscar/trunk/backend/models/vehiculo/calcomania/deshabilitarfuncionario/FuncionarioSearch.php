@@ -55,6 +55,7 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
 use backend\models\funcionario\calcomania\FuncionarioCalcomania;
+use backend\models\funcionario\Funcionario;
 
 
 /**
@@ -95,7 +96,7 @@ class FuncionarioSearch extends Model
     { 
   
 
-        $idFuncionario = yii::$app->user->identity->id_user;
+    
 
 
         $query = FuncionarioCalcomania::find();
@@ -104,12 +105,16 @@ class FuncionarioSearch extends Model
                              
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-           // die(var_dump($dataProvider)),
+           
         ]);
         $query->where([
           
             'estatus' => 0,
-            ]);
+            ])
+        ->joinWith('funcionario')
+        ->all();
+       // die(var_dump($query));
+
         
         return $dataProvider;
 
