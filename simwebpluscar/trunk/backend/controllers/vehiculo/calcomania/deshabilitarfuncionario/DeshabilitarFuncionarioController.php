@@ -57,7 +57,7 @@ use common\conexion\ConexionController;
 use common\mensaje\MensajeController;
 use backend\models\funcionario\Funcionario;
 use backend\models\vehiculo\calcomania\deshabilitarfuncionario\FuncionarioSearch;
-use backend\models\funcionario\FuncionarioCalcomania;
+use backend\models\funcionario\calcomania\FuncionarioCalcomania;
 
 /**
  * Site controller
