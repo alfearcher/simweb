@@ -42,7 +42,7 @@
  *  
  */
 
-	namespace backend\models\funcionario;
+	namespace backend\models\funcionario\calcomania;
 
  	use Yii;
 	use yii\base\Model;
