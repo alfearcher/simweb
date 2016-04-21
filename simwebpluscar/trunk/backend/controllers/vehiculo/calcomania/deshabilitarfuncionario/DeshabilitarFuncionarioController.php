@@ -89,7 +89,7 @@ class DeshabilitarFuncionarioController extends Controller
           $searchModel = new FuncionarioSearch();
 
           $dataProvider = $searchModel->search();
-       
+          //die(var_dump($dataProvider));
 
           return $this->render('/vehiculo/calcomania/deshabilitarfuncionario/vista-seleccion', [
                                                 'searchModel' => $searchModel,
@@ -103,7 +103,36 @@ class DeshabilitarFuncionarioController extends Controller
 
   public function actionDeshabilitarFuncionario()
   {
-    die('llegue a deshabilitar');
+    $errorCheck = ""; 
+      $idContribuyente = yii::$app->user->identity->id_contribuyente;
+      $idFuncionario = yii::$app->request->post('chk-deshabilitar-funcionario');
+      die(var_dump($idFuncionario));
+      $_SESSION['idVehiculo'] = $idVehiculo;
+//die(var_dump($_SESSION['idVehiculo']));
+  
+      $validacion = new DesincorporacionVehiculoForm();
+
+       if ($validacion->validarCheck(yii::$app->request->post('chk-desincorporar-vehiculo')) == true){
+           $modelsearch = new VehiculoSearch();
+           $busqueda = $modelsearch->busquedaVehiculo($idVehiculo, $idContribuyente);
+      //die(var_dump($busqueda));
+          if ($busqueda == true){ 
+           
+        
+              $_SESSION['datosVehiculo'] = $busqueda;
+        
+          return $this->redirect(['desincorporar-vehiculo']);
+        
+          }else{
+
+              die('no existe vehiculo asociado a ese ID');
+          }
+       }else{
+          $errorCheck = "Please select a car";
+          return $this->redirect(['vista-seleccion' , 'errorCheck' => $errorCheck]); 
+
+                                                                                             
+       }
   }
             
         
