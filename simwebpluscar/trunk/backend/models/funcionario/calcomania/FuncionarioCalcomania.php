@@ -82,7 +82,7 @@
 		 * Relacion con la entidad "funcionarios"
 		 * @return ActiveRecord.
 		 */
-		public static function getFuncionario()
+		public function getFuncionario()
 		{
 			return $this->hasOne(Funcionario::className(), ['id_funcionario' => 'id_funcionario']);
 		}

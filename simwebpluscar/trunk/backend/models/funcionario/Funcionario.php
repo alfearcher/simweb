@@ -82,7 +82,7 @@
 		 * Relacion con la entidad "funcionario-calcomania".
 		 * @return ActiveRecord.
 		 */
-		public static function getCalcomania()
+		public function getCalcomania()
 		{
 			return $this->hasMany(FuncionarioCalcomania::className(),['id_funcionario' => 'id_funcionario']);
 		}
