@@ -38,14 +38,19 @@ $this->title = Yii::t('frontend', 'Select your Vehicles');
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+       // die(var_dump($dataProvider)),
        // 'filterModel' => $searchModel,
         'columns' => [
             //['class' => 'yii\grid\SerialColumn'],
+            //
+           'funcionario.nombres',
+           'funcionario.apellidos',
+           'funcionario.ci',
 
-        'id_funcionario',
-           // 'id_contribuyente',
-            //'ano_inicio',
-        //'placa',
+        // 'id_funcionario',
+        //    // 'id_contribuyente',
+        //     //'ano_inicio',
+        // 'nombres',
             //'liquidado',
             // 'manzana_limite',
             // 'lote_1',
@@ -78,9 +83,9 @@ $this->title = Yii::t('frontend', 'Select your Vehicles');
 
               [
                         'class' => 'yii\grid\CheckboxColumn',
-                        'name' => 'chk-desincorporar-vehiculo',
+                        'name' => 'chk-deshabilitar-funcionario',
                         'checkboxOptions' => [
-                                'id' => 'id-chk-desincorporar-vehiculo',
+                                'id' => 'id-chk-deshabilitar-funcionario',
                                
                                 //'onClick' => 'alert("hola " + $(this).val());'
                                 //$(this).is(":checked"), permite determinar si un checkbox esta tildado.
