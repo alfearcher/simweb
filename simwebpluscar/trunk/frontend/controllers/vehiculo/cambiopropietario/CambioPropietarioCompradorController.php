@@ -456,7 +456,7 @@ class CambioPropietarioCompradorController extends Controller
 
                    // die('los dos primeros son true');
 
-                   // $transaccion->commit();
+                    $transaccion->commit();
                     $conn->close();
 
                       $enviarNumeroSolicitud = new PlantillaEmail();
@@ -497,7 +497,7 @@ class CambioPropietarioCompradorController extends Controller
 
                             //die('las tres son true');
 
-                          //$transaccion->commit();
+                          $transaccion->commit();
                           $conn->close();
 
                           $enviarNumeroSolicitud = new PlantillaEmail();
