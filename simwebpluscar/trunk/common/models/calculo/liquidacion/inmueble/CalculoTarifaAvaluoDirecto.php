@@ -129,19 +129,15 @@
 		{
 			$monto = 0;
 			$montoAvaluo = 0;
-			$tarifa = null;
 			// Se obtienen los parametros o tarifas que se aplicaran en los calculo
 			// conjuntamente con los valores del avaluo.
 			$tarifa = self::getParametroTarifa();
-
 			if ( count($tarifa) > 0 ) {
-				$tasaLocal = $tarifa['tasa_construccion'] + $tarifa['tasa_terreno'];
-
-				$minimo = $tarifa['minimo'];
-				$montoAvaluo = self::getAvaluo($avaluo, $tarifa);
-
-				if ( $tarifa['tasa_construccion'] > 0 ) {
-					$monto = $montoAvaluo * $tarifa['tasa_construccion'];
+				$tasaLocal = $tarifa[0]['tasa_construccion'] + $tarifa[0]['tasa_terreno'];
+				$minimo = $tarifa[0]['minimo'];
+				$montoAvaluo = self::getAvaluo($avaluo);
+				if ( $tarifa[0]['tasa_construccion'] > 0 ) {
+					$monto = $montoAvaluo * $tarifa[0]['tasa_construccion'];
 					if ( $monto < $minimo ) {
 						$monto = $minimo;
 					}
@@ -169,22 +165,19 @@
 		/**
 		 * Metodo que determina el monto del avaluo general, entre el avaluo de terreno
 		 * y el avaluo de construccion.
-		 * @param  Array $avaluo arreglo que contiene campo de la entidad
+		 * @param  Array $avaluo arreglo multi-dimensional con los campo de la entidad
 		 * "historico-avaluos".
-		 * @param  Array $tarifa arreglo que contiene los campos de la entidad "tarifas-avaluos".
 		 * @return Double Retorna un monto de la suma de los avaluo.
 		 */
-		private function getAvaluo($avaluo, $tarifa)
+		private function getAvaluo($avaluo)
 		{
 			$montoAvaluo = 0;
 			if ( count($avaluo) > 0 ) {
 				// Avaluo de la construccion.
-				//$montoAvaluoConstruccion = $avaluo['mts'] * $avaluo['valor_por_mts2'];
-				$montoAvaluoConstruccion = $avaluo['mts'] * $tarifa['valor_construccion'];
+				$montoAvaluoConstruccion = $avaluo[0]['mts'] * $avaluo[0]['valor_por_mts2'];
 
 				// Avaluo del terreno.
-				//$montoAvaluoTerreno = $avaluo['mts2_terreno'] * $avaluo['valor_por_mts2_terreno'];
-				$montoAvaluoTerreno = $avaluo['mts2_terreno'] * $tarifa['valor_terreno'];
+				$montoAvaluoTerreno = $avaluo[0]['mts2_terreno'] * $avaluo[0]['valor_por_mts2_terreno'];
 
 				$montoAvaluo = $montoAvaluoTerreno + $montoAvaluoConstruccion;
 			}
