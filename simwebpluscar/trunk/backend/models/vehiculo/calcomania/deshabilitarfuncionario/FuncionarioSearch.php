@@ -99,7 +99,7 @@ class FuncionarioSearch extends Model
     
 
 
-        $query = FuncionarioCalcomania::find();
+        $query = Funcionario::find();
 
                                 
                              
@@ -111,7 +111,7 @@ class FuncionarioSearch extends Model
           
             'estatus' => 0,
             ])
-        ->joinWith('funcionario')
+        ->joinWith('funcionarioCalcomania')
         ->all();
        // die(var_dump($query));
 
@@ -119,6 +119,18 @@ class FuncionarioSearch extends Model
         return $dataProvider;
 
        
+    }
+
+    public function validarCheck($postCheck)
+    {
+        //die($postCheck);
+        
+        if (count($postCheck) > 0){
+            //die('lo selecciono');
+            return true;
+        }else{
+            return false;
+        }
     }
 
    
