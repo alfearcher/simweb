@@ -115,7 +115,7 @@ class AdministrarFuncionarioController extends Controller
               }
             }
             
-            return $this->render('/vehiculo/calcomania/busqueda-funcionario', [
+            return $this->render('/vehiculo/calcomania/administrarfuncionario/busqueda-funcionario', [
                                                               'model' => $model,
                                                              
                                                            
@@ -187,7 +187,7 @@ class AdministrarFuncionarioController extends Controller
                 }
             }
                 
-            return $this->render('/vehiculo/calcomania/mostrar-datos-funcionario', [
+            return $this->render('/vehiculo/calcomania/administrarfuncionario/mostrar-datos-funcionario', [
                                                         'model' => $model,
                                                         'datosFuncionario' => $datosFuncionario,
 

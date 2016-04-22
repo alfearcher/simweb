@@ -58,6 +58,7 @@ use common\mensaje\MensajeController;
 use backend\models\funcionario\Funcionario;
 use backend\models\vehiculo\calcomania\deshabilitarfuncionario\FuncionarioSearch;
 use backend\models\funcionario\calcomania\FuncionarioCalcomania;
+use backend\models\vehiculo\calcomania\deshabilitarfuncionario\DeshabilitarForm;
 
 /**
  * Site controller
@@ -107,33 +108,141 @@ class DeshabilitarFuncionarioController extends Controller
     $errorCheck = ""; 
      
       $idFuncionario = yii::$app->request->post('chk-deshabilitar-funcionario');
-      die(var_dump($idFuncionario));
+      //die(var_dump($idFuncionario));
       $_SESSION['idFuncionario'] = $idFuncionario;
 
   
-      $validacion = new DesincorporacionVehiculoForm();
+      $validacion = new FuncionarioSearch();
 
-       if ($validacion->validarCheck(yii::$app->request->post('chk-desincorporar-vehiculo')) == true){
-           $modelsearch = new VehiculoSearch();
-           $busqueda = $modelsearch->busquedaVehiculo($idVehiculo, $idContribuyente);
-      //die(var_dump($busqueda));
-          if ($busqueda == true){ 
+       if ($validacion->validarCheck(yii::$app->request->post('chk-deshabilitar-funcionario')) == true){
+        
+        return $this->redirect(['aceptar-desincorporacion']);
            
         
-              $_SESSION['datosVehiculo'] = $busqueda;
-        
-          return $this->redirect(['desincorporar-vehiculo']);
-        
-          }else{
-
-              die('no existe vehiculo asociado a ese ID');
-          }
+          
        }else{
-          $errorCheck = "Please select a car";
-          return $this->redirect(['vista-seleccion' , 'errorCheck' => $errorCheck]); 
+          $errorCheck = "Please select an Oficcer";
+          return $this->redirect(['busqueda-funcionario' , 'errorCheck' => $errorCheck]); 
 
                                                                                              
        }
+  }
+
+  /**
+   * [AceptarDesincorporacion description] metodo que verifica si desea deshabilitar los funcionarios seleccionados
+   */
+  public function actionAceptarDesincorporacion()
+  {
+  
+      
+        
+
+        $model = new DeshabilitarForm();
+
+            $postData = Yii::$app->request->post();
+
+            if ( $model->load($postData) && Yii::$app->request->isAjax ){
+                  Yii::$app->response->format = Response::FORMAT_JSON;
+                  return ActiveForm::validate($model);
+            }
+
+            
+
+                  
+                      $actualizarEstatus = self::beginSave();
+                      
+                      if($actualizarEstatus == true){
+                        die('hizo todo');
+                      }
+                    
+                  
+                
+            return $this->render('/vehiculo/calcomania/deshabilitarfuncionario/aceptar-desincorporacion', [
+                                                              'model' => $model,
+                                                              
+            ]);
+            
+  }
+  /**
+   * [actualizarDesincorporacion description] metodo que realiza la actualizacion del estatus del funcionario 
+   * @param  [type] $conn     [description] instancia a la conexion
+   * @param  [type] $conexion [description] instancia a la conexion
+   * @return [type]           [description] retorna true si todo el proceso se cumple
+   */
+  public function deshabilitarFuncionario($conn, $conexion)
+  {
+     
+      $tableName = 'funcionario_calcomania';
+      $arregloCondition = ['id_funcionario' => $_SESSION['idFuncionario']]; //id del funcionario
+      
+     
+      $arregloDatos['estatus'] = 1;
+
+      $conexion = new ConexionController();
+
+      $conn = $conexion->initConectar('db');
+         
+      $conn->open();
+
+            if ($conexion->modificarRegistro($conn, $tableName, $arregloDatos, $arregloCondition)){
+
+            return true;
+              
+          }
+         
+
+  }
+  
+
+
+  /**
+   * [actionBeginSave description] metodo que realiza los procesos del conexion controller y actualiza el estatus del funcionario
+   * @return [type] [description] si retorna true, actualiza el estatus del funcionario pero si retorna false envia un mensaje de error
+   * 
+   */
+  public function beginSave()
+  {
+  die('llegue a begin save');
+  $idFuncionario = $_SESSION['idFuncionario'];
+     $todoBien = true;
+
+      $conexion = new ConexionController();
+
+        $idSolicitud = 0;
+
+        $conn = $conexion->initConectar('db');
+
+        $conn->open();
+
+        $transaccion = $conn->beginTransaction();
+
+          foreach($idFuncionario as $key => $value){
+
+                
+                $deshabilitarFuncionario = self::deshabilitarFuncionario($conn, $conexion);
+
+
+                    if ($deshabilitarFuncionario == true ){
+                            
+                            $todoBien == true;
+                            break;
+                    }
+                        
+                      
+                    if($todoBien == true){
+                       
+                        $transaccion->commit();
+                        $conn->close();
+                        
+                        return true;
+                    }else{
+
+                        $transaccion->rollback();
+                        $conn->close();
+                        return false;
+                    }
+
+             }
   }
             
         
