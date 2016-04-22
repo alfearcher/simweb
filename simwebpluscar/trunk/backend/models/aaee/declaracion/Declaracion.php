@@ -153,6 +153,7 @@
 												'id_contribuyente' => $this->_idContribuyente,
 												'ano_impositivo' => $this->_añoImpositivo,
 												'exigibilidad_periodo' => $this->_periodo,
+												'inactivo' => 0,
 													])
 				                            ->joinWith('actividadDetalle')
 				                            ->orderBy([
@@ -179,6 +180,7 @@
 														'id_impuesto' => $this->_idImpuesto,
 														'ano_impositivo' => $this->_añoImpositivo,
 														'exigibilidad_periodo' => $this->_periodo,
+														'inactivo' => 0,
 													])
 				                            		->joinWith('rubroDetalle')
 				                            		->orderBy([
@@ -199,7 +201,7 @@
 
 
 		/***/
-		public function getIdImpuestoSegunAnoImpositivo($añoImpositivo = 0)
+		public function getIdImpuestoSegunAnoImpositivo($añoImpositivo)
 		{
 			if ( $añoImpositivo > 0 ) {
 				$this->setAnoImpositivo($añoImpositivo);
@@ -207,7 +209,7 @@
 			$modelFind = ActEcon::find()->select('id_impuesto')
 										->where([
 											'id_contribuyente' => $this->_idContribuyente,
-											'ano_impositivo' => $this->_añoImpositivo,
+											'ano_impositivo' => $añoImpositivo,
 										])
 										->one();
 			if ( isset($modelFind) ) {
