@@ -71,9 +71,14 @@
         		<div class="col-sm-4">
         			<h4><?= Html::encode($caption) ?></h4>
         		</div>
-        		<div class="col-sm-3" style="width: 30%; float:right; margin-top: -48px;">
+        		<div class="col-sm-3" style="width: 30%; float:right; padding-right: 50px;">
+        			<style type="text/css">
+					.col-sm-3 > ul > li > a:hover {
+						background-color: #F5F5F5;
+					}
+    			</style>
 	        		<?= MenuController::actionMenuSecundario([
-	        						'home' => '/propietario/propietario/index-update',
+	        						'quit' => '/funcionario/solicitud/funcionario-solicitud/quit',
 	        			])
 	        		?>
 	        	</div>
