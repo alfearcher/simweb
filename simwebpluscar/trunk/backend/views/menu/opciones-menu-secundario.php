@@ -63,6 +63,15 @@
             'title' => Yii::t('backend', 'Search'),
             'url' => '#',
         ],
+        'quit' => [
+            'icon' => 'fa fa-home',
+            'class' => 'fa-2x',
+            'color' => $color,
+            'tipoIcon' => $tipoIcon[0],
+            'caption' => Yii::t('backend', 'Quit'),
+            'title' => Yii::t('backend', 'Quit'),
+            'url' => '#',
+        ],
     ];
 
 ?>
