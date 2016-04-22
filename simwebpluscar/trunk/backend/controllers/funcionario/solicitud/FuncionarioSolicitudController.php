@@ -40,6 +40,7 @@
 	use common\models\session\Session;
 	use backend\models\utilidad\departamento\DepartamentoForm;
 	use backend\models\utilidad\unidaddepartamento\UnidadDepartamentoForm;
+	use backend\controllers\MenuController;
 
  /**
   *	@file FuncionarioSolicitudController.php
@@ -166,9 +167,9 @@
 		/***/
 		public function actionQuit()
 		{
-			//$varSession = ['idAdministradora', 'postData'];
+			$varSession = [];
 			self::actionAnularSession($varSession);
-			return $this->render('/menu/create-menu-principal');
+			return $this->render('/funcionario/quit');
 		}
 
 
