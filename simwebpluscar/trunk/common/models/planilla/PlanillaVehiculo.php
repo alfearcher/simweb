@@ -669,7 +669,7 @@
 							$arregloDatos[$key]['impuesto'] = self::IMPUESTO;
 							$arregloDatos[$key]['ano_impositivo'] = $año;
 							$arregloDatos[$key]['fecha_emision'] = $fechaActual;
-							$arregloDatos[$key]['fecha_pago'] = '0000-00-00';
+							$arregloDatos[$key]['fecha_pago'] = null;
 							$arregloDatos[$key]['fecha_vcto'] = $fechaVcto;
 							$arregloDatos[$key]['descripcion'] = 'LIQUIDACION';
 							$arregloDatos[$key]['fecha_desde'] = null;
@@ -685,7 +685,7 @@
 							$arregloDatos[$periodos]['impuesto'] = self::IMPUESTO;
 							$arregloDatos[$periodos]['ano_impositivo'] = $año;
 							$arregloDatos[$periodos]['fecha_emision'] = $fechaActual;
-							$arregloDatos[$periodos]['fecha_pago'] = '0000-00-00';
+							$arregloDatos[$periodos]['fecha_pago'] = null;
 							$arregloDatos[$periodos]['fecha_vcto'] = $fechaVcto;
 							$arregloDatos[$periodos]['descripcion'] = 'LIQUIDACION';
 							$arregloDatos[$periodos]['fecha_desde'] = null;
