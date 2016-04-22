@@ -51,7 +51,7 @@
     $tamano = 'fa-2x';
     $tipoIcon = [Icon::FA, 'elusive'];
 
-    $menuOpciones = require(dirname(__DIR__)) . '/menu/opciones-menu-secundario.php';;
+    $menuOpciones = require(dirname(__DIR__)) . '/menu/opciones-menu-secundario.php';
 
     $item = '';
     $iconOpcion = '';
