@@ -62,7 +62,7 @@
 
 	use Yii;
 	/**
-	* 
+	*
 	*/
 	class Ente
 	{
@@ -86,7 +86,7 @@
 		protected $municipio = 'Caroni';
 
 		// identificador dentro del sistema, generado por el mismo.
-		protected $id = 0;			
+		protected $id = 0;
 
 
 
