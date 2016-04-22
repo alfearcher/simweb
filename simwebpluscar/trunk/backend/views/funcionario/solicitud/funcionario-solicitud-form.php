@@ -49,6 +49,7 @@
 	use backend\models\UnidadDepartamento;
 	use kartik\icons\Icon;
 	use yii\web\View;
+	use backend\controllers\menu;
 
 ?>
 <div class="funcionario-solicitud-form">
@@ -70,11 +71,15 @@
 			<div class="container-fluid">
 				<div class="col-sm-12">
 
+					<div class="row" style="border-bottom: 0.5px solid #ccc;">
+						<h4><strong><?= Yii::t('backend', 'Search Official')?></strong></h4>
+					</div>
+
 <!-- Inicio Departamento -->
-					<div class="row">
+					<div class="row" style="padding-top: 15px;">
 						<div class="col-sm-2">
 							<div class="row">
-								<p><?= $model->getAttributeLabel(Yii::t('backend', 'Departamento')) ?></p>
+								<p><strong><?= $model->getAttributeLabel(Yii::t('backend', 'Departamento')) ?></strong></p>
 							</div>
 						</div>
 						<div class="col-sm-5">
@@ -86,7 +91,7 @@
                                                                             'style' => 'width:280px;',
                                                                             'onchange' =>
                                                                               '$.post( "' . Yii::$app->urlManager
-                                                                                                       ->createUrl('utilidad/unidaddepartamento/unidad-departamento/lists') . '&id=' . '" + $(this).val(), function( data ) {
+                                                                                                     ->createUrl('utilidad/unidaddepartamento/unidad-departamento/lists') . '&id=' . '" + $(this).val(), function( data ) {
                                                                                                                                                                                 $( "select#unidad" ).html( data );
                                                                                                                                                                             });'
                                                                             ])->label(false);
@@ -100,7 +105,7 @@
 					<div class="row">
 						<div class="col-sm-2">
 							<div class="row">
-								<p><?= $model->getAttributeLabel(Yii::t('backend', 'Unidad')) ?></p>
+								<p><strong><?= $model->getAttributeLabel(Yii::t('backend', 'Unidad')) ?></strong></p>
 							</div>
 						</div>
 						<div class="col-sm-5">
