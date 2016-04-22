@@ -10,14 +10,14 @@ use kartik\icons\Icon;
 
 
 
-$this->title = Yii::t('frontend', 'Select your Vehicles');
+$this->title = Yii::t('frontend', 'Select the officer');
 
 ?>
 
 
 
  <?php $form = ActiveForm::begin([
-            'id' => 'form-datosBasicoJuridico-inline',
+            'id' => 'id-chk-deshabilitar-funcionario',
             'method' => 'post',
             'action' => ['/vehiculo/calcomania/deshabilitarfuncionario/deshabilitar-funcionario/deshabilitar-funcionario'],
             'enableClientValidation' => true,
@@ -41,13 +41,13 @@ $this->title = Yii::t('frontend', 'Select your Vehicles');
        // die(var_dump($dataProvider)),
        // 'filterModel' => $searchModel,
         'columns' => [
-            //['class' => 'yii\grid\SerialColumn'],
-            //
-            'funcionario.id_funcionario',
-           'funcionario.nombres',
-           'funcionario.apellidos',
-           'funcionario.ci',
-
+           
+           'id_funcionario',
+           'nombres',
+           'apellidos',
+           'ci',
+            
+          
         // 'id_funcionario',
         //    // 'id_contribuyente',
         //     //'ano_inicio',
@@ -100,7 +100,7 @@ $this->title = Yii::t('frontend', 'Select your Vehicles');
     <div class="col-sm-4">
     <p>
        
-        <?= Html::a(Yii::t('backend', 'Back'), ['/site/menu-vertical'], ['class' => 'btn btn-danger', 'style' => 'height:30px;width:140px;']) ?>
+        <?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger', 'style' => 'height:30px;width:140px;']) ?>
     </p>
     </div>
 
@@ -110,7 +110,12 @@ $this->title = Yii::t('frontend', 'Select your Vehicles');
 
     </div>
   
+     <div class="col-sm-2" style="float:right; color:red; font: comic sans ms">
    
+    <p><?php echo $errorCheck ?></p>
+
+   
+    </div>
     </div>
 
 </div>
