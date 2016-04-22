@@ -49,6 +49,7 @@
 	use yii\db\ActiveRecord;
 	use backend\models\funcionario\Funcionario;
 
+
 	/**
 	* 	Clase base del modulo de funcioario.
 	*/
@@ -82,15 +83,7 @@
 
 
 
-		/**
-		 * Relacion con la entidad "funcionarios"
-		 * @return ActiveRecord.
-		 */
-		public function getFuncionario()
-		{
-			return $this->hasOne(Funcionario::className(), ['id_funcionario' => 'id_funcionario']);
-		}
-
+	
 
 	}
 

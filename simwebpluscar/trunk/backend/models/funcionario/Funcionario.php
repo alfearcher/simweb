@@ -54,6 +54,7 @@
 	*/
 	class Funcionario extends ActiveRecord
 	{
+	
 
 		/**
 		 *	Metodo que retorna el nombre de la base de datos donde se tiene la conexion actual.
@@ -85,6 +86,11 @@
 		public function getCalcomania()
 		{
 			return $this->hasMany(FuncionarioCalcomania::className(),['id_funcionario' => 'id_funcionario']);
+		}
+
+		public function getFuncionarioCalcomania()
+		{
+			return $this->hasOne(FuncionarioCalcomania::className(),['id_funcionario' => 'id_funcionario']);
 		}
 
 	}
