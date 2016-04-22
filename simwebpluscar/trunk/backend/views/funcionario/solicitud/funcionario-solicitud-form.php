@@ -49,7 +49,7 @@
 	use backend\models\UnidadDepartamento;
 	use kartik\icons\Icon;
 	use yii\web\View;
-	use backend\controllers\menu;
+	use backend\controllers\menu\MenuController;
 
 ?>
 <div class="funcionario-solicitud-form">
@@ -66,7 +66,19 @@
 
 	<meta http-equiv="refresh">
     <div class="panel panel-default"  style="width: 85%;">
-        <div class="panel-heading"><h4><?= Html::encode($caption) ?></h4></div>
+        <div class="panel-heading">
+        	<div class="row">
+        		<div class="col-sm-4">
+        			<h4><?= Html::encode($caption) ?></h4>
+        		</div>
+        		<div class="col-sm-3" style="width: 30%; float:right; margin-top: -48px;">
+	        		<?= MenuController::actionMenuSecundario([
+	        						'home' => '/propietario/propietario/index-update',
+	        			])
+	        		?>
+	        	</div>
+        	</div>
+        </div>
 		<div class="panel-body">
 			<div class="container-fluid">
 				<div class="col-sm-12">
