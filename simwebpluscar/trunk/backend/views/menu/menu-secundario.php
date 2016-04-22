@@ -38,13 +38,13 @@
 	use kartik\icons\Icon;
 	use yii\bootstrap\Nav;
 
-    Icon::addFramework('elusive', [
-    	'class' => '\common\icons\ElusiveIconAsset',
-    	'prefix' => 'el ',
-	]);
+ //    Icon::addFramework('elusive', [
+ //    	'class' => '\common\icons\ElusiveIconAsset',
+ //    	'prefix' => 'el ',
+	// ]);
 
 	// map to view file
-	Icon::map($this, 'elusive');
+	//Icon::map($this, 'elusive');
 	Icon::map($this, Icon::FA);
 
     $color = 'color: #337AB7;';
