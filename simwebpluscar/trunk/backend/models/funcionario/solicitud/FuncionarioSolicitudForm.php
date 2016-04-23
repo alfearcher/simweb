@@ -55,7 +55,7 @@
 	/**
 	 *	Clase principal del formulario.
 	 */
-	class FuncionarioForm extends Funcionario
+	class FuncionarioSolicitudForm extends FuncionarioSolicitud
 	{
 
 	    public $id_funcionario_solic;			// Autonumeric
