@@ -49,6 +49,7 @@
 	use backend\models\UnidadDepartamento;
 	use kartik\icons\Icon;
 	use yii\web\View;
+	use yii\widgets\Pjax;
 	use backend\controllers\menu\MenuController;
 
 ?>
@@ -56,7 +57,7 @@
 	<?php
 		$form = ActiveForm::begin([
 			'id' => 'funcionario-solicitud-form-create',
-			'method' => 'post',
+		    'method' => 'post',
 			'enableClientValidation' => true,
 			'enableAjaxValidation' => true,
 			'enableClientScript' => true,
@@ -139,13 +140,14 @@
 						<div class="col-sm-3">
 							<div class="form-group">
 								<?= Html::submitButton(Yii::t('backend', 'Search'),
-																				  [
-																					'id' => 'btn-search',
-																					'class' => 'btn btn-success',
-																					'value' => 1,
-																					'name' => 'btn-search',
-																					'style' => 'width: 100%;',
-																				  ])
+													  [
+														'id' => 'btn-search',
+														'class' => 'btn btn-success',
+														'value' => 1,
+														'name' => 'btn-search',
+														'style' => 'width: 100%;',
+														'onClick' => 'buscarFuncionario("' . Url::toRoute('buscar-funcionario') . '")',
+													  ])
 								?>
 							</div>
 						</div>
@@ -177,5 +179,60 @@
 		</div>		<!-- Fin de panel-body -->
 	</div>			<!-- Fin de panel panel-default -->
 
+	<?php Pjax::begin(); ?>
+	<div class="prueba">eeee</div>
+	<?php Pjax::end(); ?>
+
 	<?php ActiveForm::end(); ?>
 </div>
+
+
+<script type="text/javascript">
+	function buscarFuncionario(url) {
+		var idD = $("select[id=departamentos]").val();
+		var idU = $("select[id=unidad]").val();
+
+		$.ajax({
+			url: url,
+			type: "POST",
+			dataType: "JSON",
+			data: { idDepartamento: idD, idUnidad: idU },
+
+			success: function(data) {
+						$("#prueba").html("<p>" + data + "</p>");
+			}
+		});
+		return false;
+	}
+</script>
+
+
+
+
+
+<?php //$this->registerJs(
+	// '$("#btn-search").on("click", function() {
+	// 	var idD = $("select[id=departamentos]").val();
+	// 	var idU = $("select[id=unidad]").val();
+
+	// 	var url = "' .Yii::$app->urlManager
+ //                               ->createUrl("funcionario/solicitud/funcionario-solicitud/buscar-funcionario") . '";
+	// 	//alert(url);
+
+	// 	$.ajax({
+ //  			url: url,
+ //  			type: "POST",
+ //  			dataType: "json",
+ // 			//data: $.("funcionario-solicitud-form-create").serialize(),
+ // 			data: { idDepartamento: idD, idUnidad: idU },
+
+ // 			success: function(data) {
+	// 					$("#prueba").html("<p>" + data + "</p>");
+ // 						//alert(data);
+ // 					}
+
+	// 	});
+	// 	return false;
+	// })'
+
+//);?>
