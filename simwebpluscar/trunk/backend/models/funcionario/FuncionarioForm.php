@@ -146,7 +146,7 @@ use common\conexion\ConexionController;
 
 	    /**
 	    *	Valida que el valor del campo fecha_inicio no sea mayor a la fecha actaul.
-	    * 	
+	    *
 	    * 	@return boolean, true o false
 	    */
 	    public static function fechaInicioValida($attribute, $params)
@@ -191,6 +191,23 @@ use common\conexion\ConexionController;
 	            'celular' => Yii::t('backend', 'Mobile Phone'),
 	            'naturaleza' => Yii::t('backend', 'Nature'), 
 	        ];
+	    }
+
+
+
+
+	    /***/
+	    public function findFuncionarioPorDepartamentoUnidad($idDepartamento, $idUnidad)
+	    {
+	    	$modelFind = Funcionario::find()->where('id_departamento =:id_departamento', [':id_departamento' => $idDepartamento])
+	    	     							->andWhere('id_unidad =:id_unidad', [':id_unidad' => $idUnidad])
+	    	     							->andWhere('vigencia >:vigencia', [':vigencia' => date('Y-m-d')])
+	    	     							->orderBy([
+	    	     									'apellidos' => SORT_ASC,
+	    	     									'nombres' => SORT_ASC,
+	    	     								])
+	    	     							->all();
+	    	return isset($modelFind) ? $modelFind : null;
 	    }
 	}
 ?>
