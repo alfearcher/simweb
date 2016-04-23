@@ -35,6 +35,7 @@
 	use yii\helpers\Url;
 	use backend\models\funcionario\solicitud\FuncionarioSolicitud;
 	use backend\models\funcionario\solicitud\FuncionarioSolicitudForm;
+	use backend\models\funcionario\FuncionarioForm;
 	use common\conexion\ConexionController;
 	use common\mensaje\MensajeController;
 	use common\models\session\Session;
@@ -92,7 +93,7 @@
 		{
 			if ( isset(Yii::$app->user->identity->username) ) {
 				$puedoCreate = false;
-				$model = New FuncionarioSolicitud();
+				$model = New FuncionarioSolicitudForm();
 
 				$request = Yii::$app->request;
 				$postData = $request->post();
@@ -156,10 +157,17 @@
 
 
 
+		public function actionBuscarFuncionario()
+		{
+			$request = Yii::$app->request->post();
+die(var_dump($request));
 
-
-
-
+			if ( $idDepartamento > 0 && $idUnidad > 0 ) {
+				$model = New FuncionarioForm();
+				$d = $model->findFuncionarioPorDepartamentoUnidad($idDepartamento, $idUnidad);
+die(var_dump($d));
+			}
+		}
 
 
 
