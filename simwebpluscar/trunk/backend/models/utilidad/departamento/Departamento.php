@@ -48,6 +48,7 @@
     use Yii;
     use yii\db\ActiveRecord;
     use backend\models\utilidad\unidaddepartamento\UnidadDepartamento;
+    use backend\models\funcionario\Funcionario;
 
 /**
  *
@@ -84,6 +85,18 @@
                 'descripion' => Yii::t('backend', 'Descripion'),
                 'inactivo' => Yii::t('backend', 'Inactivo'),
             ];
+        }
+
+
+
+
+        /**
+         * Relacion con la entidad "funcionarios"
+         * @return [type] [description]
+         */
+        public function getFuncionario()
+        {
+            return $this->hasMany(Funcionario::className(), ['id_departamento' => 'id_departamento']);
         }
 
 
