@@ -52,6 +52,7 @@ use yii\base\Model;
 //use yii\db\ActiveRecord;
 use backend\models\funcionario\Funcionario;
 use common\conexion\ConexionController;
+use yii\data\ActiveDataProvider;
 
 /**
  * This is the model class for table "funcionarios".
@@ -189,7 +190,7 @@ use common\conexion\ConexionController;
 	            'id_unidad' => Yii::t('backend', 'Work Unit'),
 	            'email' => Yii::t('backend', 'Email'),
 	            'celular' => Yii::t('backend', 'Mobile Phone'),
-	            'naturaleza' => Yii::t('backend', 'Nature'), 
+	            'naturaleza' => Yii::t('backend', 'Nature'),
 	        ];
 	    }
 
@@ -205,9 +206,53 @@ use common\conexion\ConexionController;
 	    	     							->orderBy([
 	    	     									'apellidos' => SORT_ASC,
 	    	     									'nombres' => SORT_ASC,
-	    	     								])
-	    	     							->all();
+	    	     								]);
 	    	return isset($modelFind) ? $modelFind : null;
+	    }
+
+
+
+
+	    /***/
+	    public function findFuncionarioVigente()
+	    {
+	    	$modelFind = Funcionario::find()->where('vigencia >:vigencia', [':vigencia' => date('Y-m-d')])
+	    	     							->orderBy([
+	    	     									'apellidos' => SORT_ASC,
+	    	     									'nombres' => SORT_ASC,
+	    	     								]);
+	    	return isset($modelFind) ? $modelFind : null;
+	    }
+
+
+
+
+
+	    /***/
+	    public function getDataProviverFuncionarioPorDepartamento($idDepartamento, $idUnidad)
+	    {
+	    	$query = $this->findFuncionarioPorDepartamentoUnidad($idDepartamento, $idUnidad);
+
+	    	$dataProvider = New ActiveDataProvider([
+	    						'query' => $query,
+	    	]);
+
+	    	return $dataProvider;
+	    }
+
+
+
+
+	    /***/
+	    public function getDataProviderFuncionarioVigente()
+	    {
+	    	$query = $this->findFuncionarioVigente();
+
+	    	$dataProvider = New ActiveDataProvider([
+	    						'query' => $query,
+	    	]);
+
+	    	return $dataProvider;
 	    }
 	}
 ?>
