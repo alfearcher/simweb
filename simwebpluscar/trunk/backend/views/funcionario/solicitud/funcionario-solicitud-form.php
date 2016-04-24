@@ -102,7 +102,7 @@
 						</div>
 						<div class="col-sm-5">
 							<div class="row">
-								 <?= $form->field($modelDepartamento, 'id_departamento')
+								 <?= $form->field($model, 'id_departamento')
 								          ->dropDownList($listaDepartamento, [
                                                                             'id'=> 'departamentos',
                                                                             'prompt' => Yii::t('backend', 'Select'),
@@ -128,7 +128,7 @@
 						</div>
 						<div class="col-sm-5">
 							<div class="row" class="unidad">
-								 <?= $form->field($modelUnidad, 'id_unidad')
+								 <?= $form->field($model, 'id_unidad')
 								          ->dropDownList([], [
                                                             	'id'=> 'unidad',
                                                             	'prompt' => Yii::t('backend', 'Select'),
@@ -146,7 +146,7 @@
 														'value' => 1,
 														'name' => 'btn-search',
 														'style' => 'width: 100%;',
-														'onClick' => 'buscarFuncionario("' . Url::toRoute('buscar-funcionario') . '")',
+														// 'onClick' => 'buscarFuncionario("' . Url::toRoute('buscar-funcionario') . '")',
 													  ])
 								?>
 							</div>
@@ -158,7 +158,7 @@
 																				  [
 																					'id' => 'btn-search-all',
 																					'class' => 'btn btn-primary',
-																					'value' => 1,
+																					'value' => 2,
 																					'name' => 'btn-search-all',
 																					'style' => 'width: 100%;',
 																				  ])
@@ -179,60 +179,9 @@
 		</div>		<!-- Fin de panel-body -->
 	</div>			<!-- Fin de panel panel-default -->
 
-	<?php Pjax::begin(); ?>
-	<div class="prueba">eeee</div>
-	<?php Pjax::end(); ?>
+	<div id="prueba">eeee</div>
 
 	<?php ActiveForm::end(); ?>
 </div>
 
 
-<script type="text/javascript">
-	function buscarFuncionario(url) {
-		var idD = $("select[id=departamentos]").val();
-		var idU = $("select[id=unidad]").val();
-
-		$.ajax({
-			url: url,
-			type: "POST",
-			dataType: "JSON",
-			data: { idDepartamento: idD, idUnidad: idU },
-
-			success: function(data) {
-						$("#prueba").html("<p>" + data + "</p>");
-			}
-		});
-		return false;
-	}
-</script>
-
-
-
-
-
-<?php //$this->registerJs(
-	// '$("#btn-search").on("click", function() {
-	// 	var idD = $("select[id=departamentos]").val();
-	// 	var idU = $("select[id=unidad]").val();
-
-	// 	var url = "' .Yii::$app->urlManager
- //                               ->createUrl("funcionario/solicitud/funcionario-solicitud/buscar-funcionario") . '";
-	// 	//alert(url);
-
-	// 	$.ajax({
- //  			url: url,
- //  			type: "POST",
- //  			dataType: "json",
- // 			//data: $.("funcionario-solicitud-form-create").serialize(),
- // 			data: { idDepartamento: idD, idUnidad: idU },
-
- // 			success: function(data) {
-	// 					$("#prueba").html("<p>" + data + "</p>");
- // 						//alert(data);
- // 					}
-
-	// 	});
-	// 	return false;
-	// })'
-
-//);?>
