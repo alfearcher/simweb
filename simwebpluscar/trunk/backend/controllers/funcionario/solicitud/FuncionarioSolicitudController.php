@@ -36,6 +36,7 @@
 	use backend\models\funcionario\solicitud\FuncionarioSolicitud;
 	use backend\models\funcionario\solicitud\FuncionarioSolicitudForm;
 	use backend\models\funcionario\FuncionarioForm;
+	use backend\models\funcionario\solicitud\FuncionarioSearch;
 	use common\conexion\ConexionController;
 	use common\mensaje\MensajeController;
 	use common\models\session\Session;
@@ -88,12 +89,74 @@
 
 
 
+		public function actionIndex()
+		{
+			if ( isset(Yii::$app->user->identity->username) ) {
+				$puedoCreate = false;
+				$model = New FuncionarioSearch();
+
+				$request = Yii::$app->request;
+				$postData = $request->post();
+
+
+				if ( $model->load($postData) && Yii::$app->request->isAjax ) {
+					Yii::$app->response->format = Response::FORMAT_JSON;
+					return ActiveForm::validate($model);
+				}
+
+
+				if ( $model->load($postData) ) {
+
+					if ( isset($postData['btn-search']) ) {
+						if ( $model->validate() ) {
+
+							$formName = $model->formName();
+							$idDepartamento = $postData[$formName]['id_departamento'];
+							$idUnidad = $postData[$formName]['id_unidad'];
+							self::actionBuscarPorDepartamentoUnidad($idDepartamento, $idUnidad);
+						}
+					} elseif ( isset($postData['btn-search-all']) ) {
+						// Search-All de los funcionarios con cuentas vigentes.
+						//return self::actionBuscarFuncionarioVigente();
+						return $this->redirect(['buscar-funcionario-vigente']);
+					}
+				}
+
+				// Modelo adicionales para la busqueda de los funcionarios.
+				$modelDepartamento = New DepartamentoForm();
+				$modelUnidad = New UnidadDepartamentoForm();
+
+				// Se define la lista de item para el combo de departamentos.
+				$listaDepartamento = $modelDepartamento->getListaDepartamento();
+
+				return $this->render('/funcionario/solicitud/funcionario-solicitud-form', [
+																				'model' => $model,
+																				'modelDepartamento' => $modelDepartamento,
+																				'modelUnidad' => $modelUnidad,
+																				'caption' => 'Assign Request to Official',
+																				'listaDepartamento' => $listaDepartamento,
+
+					]);
+
+
+
+
+			} else {
+				// No esta definido el usuario. Eliminar todas las variables de session y salir.
+				return MensajeController::actionMensaje(999);
+			}
+		}
+
+
+
+
+
 		/***/
 		public function actionCreate()
 		{
 			if ( isset(Yii::$app->user->identity->username) ) {
 				$puedoCreate = false;
-				$model = New FuncionarioSolicitudForm();
+				$model = New FuncionarioSearch();
 
 				$request = Yii::$app->request;
 				$postData = $request->post();
@@ -157,16 +220,53 @@
 
 
 
-		public function actionBuscarFuncionario()
-		{
-			$request = Yii::$app->request->post();
-die(var_dump($request));
 
-			if ( $idDepartamento > 0 && $idUnidad > 0 ) {
-				$model = New FuncionarioForm();
-				$d = $model->findFuncionarioPorDepartamentoUnidad($idDepartamento, $idUnidad);
-die(var_dump($d));
-			}
+		public function actionPrueba()
+		{
+			return "molalal";
+		}
+
+
+
+
+		/***/
+		public function actionBuscarPorDepartamentoUnidad($idDepartamento, $idUnidad)
+		{
+
+			$model = New FuncionarioForm();
+
+			// Se genera un dataprovider con los parametros enviados.
+			$dataProvider = $model->getDataProviverFuncionarioPorDepartamento($idDepartamento, $idUnidad);
+
+die(var_dump($dataProvider));
+		}
+
+
+
+
+
+		/**
+		 * Metodo Search-All
+		 * @return [type] [description]
+		 */
+		public function actionBuscarFuncionarioVigente()
+		{
+
+// die(var_dump(Yii::$app->request->queryParams));
+			$model = New FuncionarioForm();
+			// puedo obtener el all() de todos los registros de un modelo de la siguinete manera
+			/**
+			 *  $m = $model->findFuncionarioVigente();
+			 *  $m->all();
+			 */
+			// Se genera un dataprovider de todos los funcionarios con cuentas vigentes.
+			$dataProvider = $model->getDataProviderFuncionarioVigente();
+
+			return $this->render('/funcionario/solicitud/lista-funcionario-vigente', [
+																'model' => $model,
+																'dataProvider' => $dataProvider,
+																'caption' => Yii::t('backend', 'Lists of Official'),
+				]);
 		}
 
 
