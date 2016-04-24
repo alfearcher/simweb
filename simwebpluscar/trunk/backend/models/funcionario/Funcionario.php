@@ -48,13 +48,14 @@
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 	use backend\models\funcionario\calcomania\FuncionarioCalcomania;
+	use backend\models\utilidad\departamento\Departamento;
+	use backend\models\utilidad\unidaddepartamento\UnidadDepartamento;
 
 	/**
 	* 	Clase base del modulo de funcioario.
 	*/
 	class Funcionario extends ActiveRecord
 	{
-	
 
 		/**
 		 *	Metodo que retorna el nombre de la base de datos donde se tiene la conexion actual.
@@ -87,6 +88,29 @@
 		{
 			return $this->hasMany(FuncionarioCalcomania::className(),['id_funcionario' => 'id_funcionario']);
 		}
+
+
+		/**
+		 * Relacion con la entidad "departamentos"
+		 * @return [type] [description]
+		 */
+		public function getDepartamento()
+		{
+			return $this->hasOne(Departamento::className(), ['id_departamento' => 'id_departamento']);
+		}
+
+
+
+		/**
+		 * Relacion con la entidad "unidades-departamentos".
+		 * @return [type] [description]
+		 */
+		public function getUnidad()
+		{
+			return $this->hasOne(UnidadDepartamento::className(), ['id_unidad' => 'id_unidad']);
+		}
+
+
 
 		public function getFuncionarioCalcomania()
 		{
