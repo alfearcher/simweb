@@ -84,6 +84,10 @@
 		public $conexion;
 		public $transaccion;
 
+		const SCENARIO_SEARCH_DEPARTAMENTO_UNIDAD = 'search_departamento';
+		const SCENARIO_SEARCH_GLOBAL = 'search_global';
+		const SCENARIO_DEFAULT = 'default';
+
 
 
 
@@ -98,6 +102,11 @@
 				$request = Yii::$app->request;
 				$postData = $request->post();
 
+				if ( isset($postData['btn-search']) ) {
+					$model->scenario = self::SCENARIO_SEARCH_DEPARTAMENTO_UNIDAD;
+				} elseif ( isset($postData['btn-search-all']) ) {
+					$model->scenario = ''; //self::SCENARIO_DEFAULT'';
+				}
 
 				if ( $model->load($postData) && Yii::$app->request->isAjax ) {
 					Yii::$app->response->format = Response::FORMAT_JSON;
@@ -113,7 +122,8 @@
 							$formName = $model->formName();
 							$idDepartamento = $postData[$formName]['id_departamento'];
 							$idUnidad = $postData[$formName]['id_unidad'];
-							self::actionBuscarPorDepartamentoUnidad($idDepartamento, $idUnidad);
+							return $this->redirect(['buscar-por-departamento-unidad', 'idD' => $idDepartamento, 'idU' => $idUnidad]);
+							// self::actionBuscarPorDepartamentoUnidad($idDepartamento, $idUnidad);
 						}
 					} elseif ( isset($postData['btn-search-all']) ) {
 						// Search-All de los funcionarios con cuentas vigentes.
@@ -230,15 +240,36 @@
 
 
 		/***/
-		public function actionBuscarPorDepartamentoUnidad($idDepartamento, $idUnidad)
+		public function actionBuscarPorDepartamentoUnidad($idD, $idU)
 		{
+			$request = Yii::$app->request;
+			$postData = $request->post();
 
-			$model = New FuncionarioForm();
+			$model = New FuncionarioSearch();
+			$model->scenario = self::SCENARIO_SEARCH_GLOBAL;
+
+			if ( $model->load($postData) && Yii::$app->request->isAjax ) {
+				Yii::$app->response->format = Response::FORMAT_JSON;
+				return ActiveForm::validate($model);
+			}
+
+			if ( $model->load($postData) ) {
+				if ( isset($postData['btn-search-global']) ) {
+					if ( $model->validate() ) {
+// die('kakakak');
+					}
+				}
+			}
 
 			// Se genera un dataprovider con los parametros enviados.
-			$dataProvider = $model->getDataProviverFuncionarioPorDepartamento($idDepartamento, $idUnidad);
+			$dataProvider = $model->getDataProviderFuncionarioPorDepartamento($idD, $idU);
 
-die(var_dump($dataProvider));
+			return $this->render('/funcionario/solicitud/lista-funcionario-vigente', [
+																'model' => $model,
+																'dataProvider' => $dataProvider,
+																'caption' => Yii::t('backend', 'Lists of Official'),
+				]);
+
 		}
 
 
@@ -252,13 +283,30 @@ die(var_dump($dataProvider));
 		public function actionBuscarFuncionarioVigente()
 		{
 
-// die(var_dump(Yii::$app->request->queryParams));
-			$model = New FuncionarioForm();
+			$request = Yii::$app->request;
+			$postData = $request->post();
+
+			$model = New FuncionarioSearch();
+			$model->scenario = self::SCENARIO_SEARCH_GLOBAL;
 			// puedo obtener el all() de todos los registros de un modelo de la siguinete manera
 			/**
 			 *  $m = $model->findFuncionarioVigente();
 			 *  $m->all();
 			 */
+
+			if ( $model->load($postData) && Yii::$app->request->isAjax ) {
+				Yii::$app->response->format = Response::FORMAT_JSON;
+				return ActiveForm::validate($model);
+			}
+
+			if ( $model->load($postData) ) {
+				if ( isset($postData['btn-search-global']) ) {
+					if ( $model->validate() ) {
+// die('kakakak');
+					}
+				}
+			}
+
 			// Se genera un dataprovider de todos los funcionarios con cuentas vigentes.
 			$dataProvider = $model->getDataProviderFuncionarioVigente();
 
