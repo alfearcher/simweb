@@ -72,6 +72,15 @@
             'title' => Yii::t('backend', 'Quit'),
             'url' => '#',
         ],
+        'back' => [
+            'icon' => 'fa fa-arrow-left',
+            'class' => 'fa-2x',
+            'color' => $color,
+            'tipoIcon' => $tipoIcon[0],
+            'caption' => Yii::t('backend', 'Back'),
+            'title' => Yii::t('backend', 'Back'),
+            'url' => '#',
+        ],
     ];
 
 ?>
