@@ -69,7 +69,7 @@
     <div class="panel panel-default"  style="width: 85%;">
         <div class="panel-heading">
         	<div class="row">
-        		<div class="col-sm-4">
+        		<div class="col-sm-4" style="padding-top: 10px;">
         			<h4><?= Html::encode($caption) ?></h4>
         		</div>
         		<div class="col-sm-3" style="width: 30%; float:right; padding-right: 50px;">
@@ -178,8 +178,6 @@
 			</div>	<!-- Fin de container-fluid -->
 		</div>		<!-- Fin de panel-body -->
 	</div>			<!-- Fin de panel panel-default -->
-
-	<div id="prueba">eeee</div>
 
 	<?php ActiveForm::end(); ?>
 </div>

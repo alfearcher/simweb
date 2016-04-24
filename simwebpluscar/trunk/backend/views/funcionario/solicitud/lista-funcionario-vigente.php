@@ -68,7 +68,7 @@
     <div class="panel panel-default"  style="width: 85%;">
         <div class="panel-heading">
         	<div class="row">
-        		<div class="col-sm-4">
+        		<div class="col-sm-4" style="padding-top: 10px;">
         			<h4><?= Html::encode($caption) ?></h4>
         		</div>
         		<div class="col-sm-3" style="width: 30%; float:right; padding-right: 50px;">
@@ -93,12 +93,37 @@
 						<h4><strong><?= Yii::t('backend', 'Search Official')?></strong></h4>
 					</div>
 
+					<div class="row" style="padding-top: 15px;">
+						<div class="col-sm-6">
+							<div class="search-global">
+								<?= $form->field($model, 'searchGlobal')->textInput([
+																					'id' => 'searchGlobal',
+																					'style' => 'width: 100%;',
+																	  			  ])->label(false) ?>
+							</div>
+						</div>
+						<div class="col-sm-3">
+							<div class="form-group">
+								<?= Html::submitButton(Yii::t('backend', 'Search'),
+													  [
+														'id' => 'btn-search-global',
+														'class' => 'btn btn-success',
+														'value' => 1,
+														'name' => 'btn-search-global',
+														'style' => 'width: 100%;',
+													  ])
+								?>
+							</div>
+						</div>
+					</div>
+
+
 					<div class="row">
 						<div class="lista-funcionario">
 							<?= GridView::widget([
 										'id' => 'id-lista-funcionario-vigente',
 										'dataProvider' => $dataProvider,
-										'filterModel' => $model,
+										//'filterModel' => $model,
 										'headerRowOptions' => ['class' => 'success'],
 										'summary' => '',
 										'columns' => [
@@ -107,10 +132,24 @@
                         						'name' => 'chk-proceso-generado',
                         						'multiple' => true,
                         					],
-											 //['class' => 'yii\grid\SerialColumn'],
-											'ci',
-											'apellidos',
-											'nombres'
+                        					[
+                        						'label' => Yii::t('backend', 'DNI'),
+                        						'value' => function($model) {
+                        							return $model->ci;
+                        						}
+                        					],
+											[
+                        						'label' => Yii::t('backend', 'Last Name'),
+                        						'value' => function($model) {
+                        							return $model->apellidos;
+                        						}
+                        					],
+                        					[
+                        						'label' => Yii::t('backend', 'First Name'),
+                        						'value' => function($model) {
+                        							return $model->nombres;
+                        						}
+                        					],
 										]
 								])
 							?>
