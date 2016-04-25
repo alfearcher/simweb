@@ -193,6 +193,10 @@
 			$model = New FuncionarioSearch();
 			$model->scenario = self::SCENARIO_SEARCH_GLOBAL;
 
+			$modelImpuesto = new ImpuestoForm();
+			// Lista para el combo impuestos.
+			$listaImpuesto = $modelImpuesto->getListaImpuesto();
+
 			if ( $model->load($postData) && Yii::$app->request->isAjax ) {
 				Yii::$app->response->format = Response::FORMAT_JSON;
 				return ActiveForm::validate($model);
@@ -214,6 +218,8 @@
 														'dataProvider' => $dataProvider,
 														'caption' => Yii::t('backend', 'Lists of Official'),
 														'subCaption' => $subCaption,
+														'modelImpuesto' => $modelImpuesto,
+														'listaImpuesto' => $listaImpuesto,
 				]);
 
 		}
@@ -270,6 +276,27 @@
 														'modelImpuesto' => $modelImpuesto,
 														'listaImpuesto' => $listaImpuesto,
 				]);
+		}
+
+
+
+
+		/***/
+		public function actionListaImpuestoSolicitud()
+		{
+			$caption = Yii::t('backend', 'List of Request');
+			$request = Yii::$app->request;
+			$postData = $request->get();
+			$impuesto = $postData['id'];		// Indice del combo impuesto.
+			$modelSolicitud = New TipoSolicitudSearch();
+			$dataProvider = $modelSolicitud->getDataProviderSolicitudImpuesto($impuesto);
+
+			return $this->renderAjax('/funcionario/solicitud/lista-impuesto-solicitud', [
+														'model' => $modelSolicitud,
+														'dataProvider' => $dataProvider,
+														'caption' => $caption,
+				]);
+
 		}
 
 
