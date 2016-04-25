@@ -204,7 +204,7 @@ class AdministrarFuncionarioController extends Controller
       $busquedaFuncionario = FuncionarioCalcomania::find()
                                         ->where([
                                         'id_funcionario' => $idFuncionario[0]->id_funcionario,
-                                        
+                                        'estatus' => 0,
                                         ])
                                         ->all();
 
