@@ -150,6 +150,18 @@
                         							return $model->nombres;
                         						}
                         					],
+                        					[
+                        						'label' => Yii::t('backend', 'Departamento'),
+                        						'value' => function($model) {
+                        							return $model->departamento->descripcion;
+                        						}
+                        					],
+                        					[
+                        						'label' => Yii::t('backend', 'Unidad'),
+                        						'value' => function($model) {
+                        							return $model->unidad->descripcion;
+                        						}
+                        					],
 										]
 								])
 							?>
