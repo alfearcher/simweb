@@ -91,7 +91,7 @@
 		 * Relacion con la entidad "impuestos".
 		 * @return Active Record
 		 */
-		public function getImpuesto()
+		public function getImpuestos()
 		{
 			return $this->hasOne(Impuesto::className(), ['impuesto' => 'impuesto']);
 		}

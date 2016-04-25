@@ -69,10 +69,10 @@
 				                              	]);
 			} else {
 				$modelFind = Impuesto::find()->joinWith('impuesto')
-			                             ->orderBy([
-			                             	'impuesto' => SORT_ASC,
-			                              	'tipo_solicitud' => SORT_ASC
-			                             ]);
+			                                 ->orderBy([
+			                             		'impuesto' => SORT_ASC,
+			                              		'tipo_solicitud' => SORT_ASC
+			                             		]);
 			}
 			return isset($modelFind) ? $modelFind :  null;
 		}
@@ -85,17 +85,17 @@
 			$modelFind = null;
 			if ( $impuesto > 0 ) {
 				$modelFind = TipoSolicitud::find()->where(TipoSolicitud::tableName().'.impuesto =:impuesto', [':impuesto' => $impuesto])
-				                              ->joinWith('impuesto')
-				                              ->orderBy([
-				                              		'impuesto' => SORT_ASC,
-				                              		'descripcion' => SORT_ASC
-				                              	]);
+				                                  ->joinWith('impuestos')
+				                                  ->orderBy([
+				                              			'impuesto' => SORT_ASC,
+				                              			'descripcion' => SORT_ASC
+				                              		]);
 			} else {
-				$modelFind = TipoSolicitud::find()->joinWith('impuesto')
-				                              ->orderBy([
-				                              		'impuesto' => SORT_ASC,
-				                              		'descripcion' => SORT_ASC
-				                              	]);
+				$modelFind = TipoSolicitud::find()->joinWith('impuestos')
+				                                  ->orderBy([
+				                              			'impuesto' => SORT_ASC,
+				                              			'descripcion' => SORT_ASC
+				                              		]);
 			}
 
 			return isset($modelFind) ? $modelFind :  null;
@@ -106,11 +106,16 @@
 		/***/
 		public function getDataProviderSolicitudImpuesto($impuesto = 0)
 		{
+
 			$query = $this->findTipoSolicitudImpuesto($impuesto);
 
 			$dataProvider = New ActiveDataProvider([
 	    						'query' => $query,
 	    	]);
+
+			if ( $impuesto == 0 ) {
+				$query->where('0=1');
+			}
 
 	    	return $dataProvider;
 		}
