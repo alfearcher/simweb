@@ -52,80 +52,51 @@
 	use backend\controllers\menu\MenuController;
 
 ?>
-<div class="lista-impuesto-solicitud-general">
-	<?php
-		$form = ActiveForm::begin([
-			'id' => 'lista-impuesto-solicitud-form',
-		    'method' => 'post',
-			'enableClientValidation' => true,
-			'enableAjaxValidation' => true,
-			'enableClientScript' => true,
+
+<div class="lista-funcionario">
+	<?= GridView::widget([
+			'id' => 'id-lista-impuesto-solicitud',
+			'dataProvider' => $dataProvider,
+			//'filterModel' => $model,
+			'headerRowOptions' => ['class' => 'success'],
+			'rowOptions' => function($data) {
+								if ( $data->inactivo == 1 ) {
+										return ['class' => 'danger'];
+								}
+							},
+			'summary' => '',
+			'columns' => [
+				[
+					'class' => 'yii\grid\CheckboxColumn',
+					'name' => 'chk-solicitud',
+					'multiple' => true,
+					'checkboxOptions' => function($modelSolicitud, $key, $index, $column) {
+											if ( $modelSolicitud->inactivo == 1 ) {
+													return ['enabled' => false, 'readonly' => true];
+												}
+											},
+				],
+				[
+					'label' => Yii::t('backend', 'Request'),
+					'value' => function($modelSolicitud) {
+						return $modelSolicitud->id_tipo_solicitud;
+					}
+				],
+				[
+					'label' => Yii::t('backend', 'Description'),
+					'value' => function($modelSolicitud) {
+						return $modelSolicitud->descripcion;
+					}
+				],
+				[
+					'label' => Yii::t('backend', 'Tax'),
+					'value' => function($modelSolicitud) {
+						return $modelSolicitud->impuestos['descripcion'];
+					}
+				],
+			]
 		]);
 	?>
 
-
-	<meta http-equiv="refresh">
-    <div class="panel panel-default"  style="width: 85%;">
-        <div class="panel-heading">
-        	<div class="row">
-        		<div class="col-sm-4" style="padding-top: 10px;">
-        			<h4><?= Html::encode($caption) ?></h4>
-        		</div>
-        	</div>
-        </div>
-		<div class="panel-body">
-			<div class="container-fluid">
-				<div class="col-sm-12">
-
-					<div class="row" style="border-bottom: 0.5px solid #ccc;">
-					</div>
-
-					<div class="row">
-						<div class="lista-funcionario">
-							<?= GridView::widget([
-									'id' => 'id-lista-impuesto-solicitud',
-									'dataProvider' => $dataProvider,
-									//'filterModel' => $model,
-									'headerRowOptions' => ['class' => 'success'],
-									'summary' => '',
-									'columns' => [
-										[
-                    						'class' => 'yii\grid\CheckboxColumn',
-                    						'name' => 'chk-proceso-generado',
-                    						'multiple' => true,
-                    					],
-                    					[
-                    						'label' => Yii::t('backend', 'Request'),
-                    						'value' => function($modelSolicitud) {
-                    							return $modelSolicitud->id_tipo_solicitud;
-                    						}
-                    					],
-                    					[
-                    						'label' => Yii::t('backend', 'Description'),
-                    						'value' => function($modelSolicitud) {
-                    							return $modelSolicitud->descripcion;
-                    						}
-                    					],
-                    					[
-                    						'label' => Yii::t('backend', 'Tax'),
-                    						'value' => function($modelSolicitud) {
-                    							return $modelSolicitud->impuestos['descripcion'];
-                    						}
-                    					],
-									]
-								])
-							?>
-
-						</div>
-					</div>
-
-				</div>
-			</div>	<!-- Fin de container-fluid -->
-		</div>		<!-- Fin de panel-body -->
-	</div>			<!-- Fin de panel panel-default -->
-
-
-	<?php ActiveForm::end(); ?>
 </div>
-
 

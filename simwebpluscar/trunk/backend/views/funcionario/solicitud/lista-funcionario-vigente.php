@@ -129,7 +129,7 @@
 										'columns' => [
 											[
                         						'class' => 'yii\grid\CheckboxColumn',
-                        						'name' => 'chk-proceso-generado',
+                        						'name' => 'chk-funcionario',
                         						'multiple' => true,
                         					],
                         					[

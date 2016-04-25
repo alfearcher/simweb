@@ -49,9 +49,9 @@
 	<?php $form = ActiveForm::begin([
 		'id' => 'lista-impuesto-form',
 	    'method' => 'post',
-		'enableClientValidation' => true,
-		'enableAjaxValidation' => true,
-		'enableClientScript' => true,
+		//'enableClientValidation' => true,
+		//'enableAjaxValidation' => true,
+		//'enableClientScript' => true,
 	]);?>
 
 	<meta http-equiv="refresh">
@@ -59,14 +59,14 @@
         <div class="panel-heading">
         	<div class="row">
         		<div class="col-sm-4" style="padding-top: 10px;">
-        			<h4><?= Html::encode( $modelImpuesto->getAttributeLabel(Yii::t('backend', 'impuesto'))) ?></h4>
+        			<h4><?= Html::encode(Yii::t('backend', 'List of Request')) ?></h4>
         		</div>
         	</div>
         </div>
 		<div class="panel-body">
 			<div class="container-fluid">
 				<div class="col-sm-12">
-					<!-- Inicio Impuesto -->
+<!-- Inicio Impuesto -->
 					<div class="row" style="padding-top: 15px;">
 						<div class="col-sm-2">
 							<div class="row">
@@ -91,7 +91,13 @@
 							</div>
 						</div>
 					</div>
-				<!-- Fin de Impuesto -->
+<!-- Fin de Impuesto -->
+
+					<div class="row" style="border-bottom: 0.5px solid #ccc;">
+						<div class="lista-impuesto-solicitud" id="lista-impuesto-solicitud">
+						</div>
+					</div>
+
 
 				</div>
 			</div>	<!-- Fin de container-fluid -->

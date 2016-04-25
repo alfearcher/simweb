@@ -42,7 +42,19 @@
  */
 
 	use yii\helpers\Html;
+	use yii\helpers\Url;
+	use yii\widgets\ActiveForm;
 ?>
+
+<?php $form = ActiveForm::begin([
+		'id' => 'asignar-solicitud',
+	    'method' => 'post',
+	    //'action' => Yii::$app->urlManager
+         //                    ->createUrl('funcionario/solicitud/funcionario-solicitud/prueba'),
+		//'enableClientValidation' => true,
+		//'enableAjaxValidation' => true,
+		//'enableClientScript' => true,
+	]);?>
 <div class="lista-funcionario">
 	<?=	$this->render('/funcionario/solicitud/lista-funcionario-vigente', [
 																'model' => $model,
@@ -59,8 +71,26 @@
 		]);
 	?>
 </div>
-<div class="lista-impuesto-solicitud" id="lista-impuesto-solicitud">
 
+<div class="boton-enviar" style="padding-top: 25px;">
+	<div class="col-sm-3">
+		<div class="form-group">
+			<?= Html::submitButton(Yii::t('backend', 'Send Request'),
+								  [
+									'id' => 'btn-send-request',
+									'class' => 'btn btn-success',
+									'value' => 1,
+									'name' => 'btn-send-request',
+									'style' => 'width: 100%;',
+									'onClick' => '$.post( "' . Yii::$app->urlManager
+                     ->createUrl('funcionario/solicitud/funcionario-solicitud/prueba') . '&id=1",
+                     function( data ) {
+                           $( "#lista-impuesto-solicitud" ).html( data );
+		             });'
+								  ])
+			?>
+		</div>
+	</div>
 </div>
 
-
+<?php ActiveForm::end(); ?>
