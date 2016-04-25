@@ -135,5 +135,26 @@
 
 
 
+	    /***/
+	    private function getDepartamento($idDepartamento)
+	    {
+	    	$model = Departamento::findOne($idDepartamento);
+	    	return isset($model) ? $model : null;
+	    }
+
+
+
+
+	    /***/
+	    public function getDescripcionDepartamento($idDepartamento)
+	    {
+	    	$model = self::getDepartamento($idDepartamento);
+	    	if ( isset($model) ) {
+	    		$modelDepartamento = $model;
+	    		return isset($modelDepartamento) ? $modelDepartamento->descripcion : null;
+	    	}
+	    	return null;
+	    }
+
 	}
 ?>
