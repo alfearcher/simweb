@@ -46,6 +46,7 @@
 	use yii\base\Model;
 	use yii\data\ActiveDataProvider;
 	use backend\models\impuesto\Impuesto;
+	use yii\helpers\ArrayHelper;
 
 	/**
 	* 	Clase
@@ -136,6 +137,25 @@
 	    	}
 
 	    	return $findModel;
+	    }
+
+
+
+	    /**
+	     * Metodo que permite obtener una lista de la entidad "impuestos",
+	     * para luego utilizarlo en lista de combo.
+	     */
+	    public function getListaImpuesto($inactivo = 0)
+	    {
+	    	$listaImpuesto = null;
+	    	$model = $this->findImpuesto();
+	    	if ( isset($model) ) {
+	    		// Se convierte el modelo encontrado en un arreglo de datos para facilitar pasarlo a una lista.
+	    		if ( count($model) > 0 ) {
+	    			$listaImpuesto = ArrayHelper::map($model, 'impuesto', 'descripcion');
+	    		}
+	    	}
+	    	return $listaImpuesto;
 	    }
 
 	}
