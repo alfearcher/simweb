@@ -43,7 +43,7 @@
 
 	use yii\helpers\Html;
 ?>
-<div class="row">
+<div class="lista-funcionario">
 	<?=	$this->render('/funcionario/solicitud/lista-funcionario-vigente', [
 																'model' => $model,
 																'dataProvider' => $dataProvider,
@@ -52,8 +52,15 @@
 				]);
 	?>
 </div>
-<div class="row">
-	
+<div class="lista-impuesto">
+	<?= $this->render('/funcionario/solicitud/combo-impuesto', [
+													'modelImpuesto' => $modelImpuesto,
+													'listaImpuesto' => $listaImpuesto,
+		]);
+	?>
+</div>
+<div class="lista-impuesto-solicitud" id="lista-impuesto-solicitud">
+
 </div>
 
 

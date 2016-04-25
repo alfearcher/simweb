@@ -168,12 +168,6 @@
 					</div>
 <!-- Fin de Unidad -->
 
-
-
-
-
-
-
 				</div>
 			</div>	<!-- Fin de container-fluid -->
 		</div>		<!-- Fin de panel-body -->

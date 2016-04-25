@@ -21,13 +21,13 @@
  */
 
  /**
- *  @file funcionario-solicitud-form.php
+ *  @file lista-funcionario-vigente.php
  *
  *  @author Jose Rafael Perez Teran
  *
  *  @date 21-04-2016
  *
- *  @view funcionario-solicitud-form.php
+ *  @view lista-funcionario-vigente.php
  *  @brief vista del formualario que se utilizara para capturar los datos a guardar.
  *
  *
