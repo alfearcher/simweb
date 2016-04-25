@@ -96,14 +96,20 @@
                     					],
                     					[
                     						'label' => Yii::t('backend', 'Request'),
-                    						'value' => function($model) {
-                    							return $model->id_tipo_solicitud;
+                    						'value' => function($modelSolicitud) {
+                    							return $modelSolicitud->id_tipo_solicitud;
                     						}
                     					],
                     					[
                     						'label' => Yii::t('backend', 'Description'),
-                    						'value' => function($model) {
-                    							return $model->descripcion;
+                    						'value' => function($modelSolicitud) {
+                    							return $modelSolicitud->descripcion;
+                    						}
+                    					],
+                    					[
+                    						'label' => Yii::t('backend', 'Tax'),
+                    						'value' => function($modelSolicitud) {
+                    							return $modelSolicitud->impuestos['descripcion'];
                     						}
                     					],
 									]
