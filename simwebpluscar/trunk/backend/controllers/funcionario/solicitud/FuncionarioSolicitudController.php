@@ -33,9 +33,9 @@
 	use yii\widgets\ActiveForm;
 	use yii\web\Response;
 	use yii\helpers\Url;
-	use backend\models\funcionario\solicitud\FuncionarioSolicitud;
+	//use backend\models\funcionario\solicitud\FuncionarioSolicitud;
 	use backend\models\funcionario\solicitud\FuncionarioSolicitudForm;
-	use backend\models\funcionario\FuncionarioForm;
+	//use backend\models\funcionario\FuncionarioForm;
 	use backend\models\funcionario\solicitud\FuncionarioSearch;
 	use common\conexion\ConexionController;
 	use common\mensaje\MensajeController;
@@ -43,6 +43,8 @@
 	use backend\models\utilidad\departamento\DepartamentoForm;
 	use backend\models\utilidad\unidaddepartamento\UnidadDepartamentoForm;
 	use backend\controllers\MenuController;
+	use backend\models\configuracion\tiposolicitud\TipoSolicitudSearch;
+	use backend\models\impuesto\ImpuestoForm;
 
  /**
   *	@file FuncionarioSolicitudController.php
@@ -164,66 +166,6 @@
 		/***/
 		public function actionCreate()
 		{
-			if ( isset(Yii::$app->user->identity->username) ) {
-				$puedoCreate = false;
-				$model = New FuncionarioSearch();
-
-				$request = Yii::$app->request;
-				$postData = $request->post();
-
-				if ( $model->load($postData) && Yii::$app->request->isAjax ) {
-					Yii::$app->response->format = Response::FORMAT_JSON;
-					return ActiveForm::validate($model);
-				}
-
-
-				if ( $model->load($postData) ) {
-
-					if ( $model->validate() ) {
-
-						if ( $postData['btn-create'] == 1 ) {
-							$postData['btn-create'] = 2;
-
-							//$_SESSION['postData'] = $postData;
-							//$urlPost = '/administradora/administradora/create';
-
-							// return $this->render('/administradora/_pre-view',[
-							// 											'postData' => $postData,
-							// 											'model' => $model,
-							// 											'estoyCreate' => true,
-							// 											'estoyUpdate' => false,
-							// 											'urlPost' => $urlPost,
-							//				]);
-						} elseif ( $puedoCreate && isset($postData) ) {
-							// Se guardan los datos
-							//self::actionBeginSave($postData, $model, 'create');
-						}
-					}
-				}
-
-				// Modelo adicionales para la busqueda de los funcionarios.
-				$modelDepartamento = New DepartamentoForm();
-				$modelUnidad = New UnidadDepartamentoForm();
-
-				// Se define la lista de item para el combo de departamentos.
-				$listaDepartamento = $modelDepartamento->getListaDepartamento();
-
-				return $this->render('/funcionario/solicitud/funcionario-solicitud-form', [
-																				'model' => $model,
-																				'modelDepartamento' => $modelDepartamento,
-																				'modelUnidad' => $modelUnidad,
-																				'caption' => 'Assign Request to Official',
-																				'listaDepartamento' => $listaDepartamento,
-
-					]);
-
-
-
-
-			} else {
-				// No esta definido el usuario. Eliminar todas las variables de session y salir.
-				return MensajeController::actionMensaje(999);
-			}
 
 		}
 
@@ -293,6 +235,10 @@
 			$model = New FuncionarioSearch();
 			$model->scenario = self::SCENARIO_SEARCH_GLOBAL;
 
+			$modelImpuesto = new ImpuestoForm();
+			// Lista para el combo impuestos.
+			$listaImpuesto = $modelImpuesto->getListaImpuesto();
+
 			$subCaption = 'All';
 			// puedo obtener el all() de todos los registros de un modelo de la siguinete manera
 			/**
@@ -321,6 +267,8 @@
 														'dataProvider' => $dataProvider,
 														'caption' => Yii::t('backend', 'Lists of Official'),
 														'subCaption' => $subCaption,
+														'modelImpuesto' => $modelImpuesto,
+														'listaImpuesto' => $listaImpuesto,
 				]);
 		}
 
