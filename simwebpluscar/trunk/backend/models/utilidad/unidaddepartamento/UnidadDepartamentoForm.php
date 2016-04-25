@@ -99,5 +99,32 @@
             	'inactivo' => Yii::t('backend', 'Inactivo'),
         	];
 	    }
+
+
+	    /***/
+	    private function getUnidadDepartamento($idUnidad)
+	    {
+	    	$model = UnidadDepartamento::findOne($idUnidad);
+	    	return isset($model) ? $model : null;
+	    }
+
+
+
+
+	    /***/
+	    public function getDescripcionUnidadDepartamento($idUnidad)
+	    {
+	    	$model = self::getUnidadDepartamento($idUnidad);
+	    	if ( isset($model) ) {
+	    		$modelUnidad = $model;
+	    		return isset($modelUnidad) ? $modelUnidad->descripcion : null;
+	    	}
+	    	return null;
+	    }
+
+
+	    /***/
+	    public function findUnidadDepartamentoSegunDepartamento()
+	    {}
 	}
 ?>
