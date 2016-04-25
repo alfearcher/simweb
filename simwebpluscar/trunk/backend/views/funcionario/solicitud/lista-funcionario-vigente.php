@@ -90,7 +90,7 @@
 				<div class="col-sm-12">
 
 					<div class="row" style="border-bottom: 0.5px solid #ccc;">
-						<h4><strong><?= Yii::t('backend', 'Search Official')?></strong></h4>
+						<h4><strong><?= Yii::t('backend', 'Search Official: ') . $subCaption; ?></strong></h4>
 					</div>
 
 					<div class="row" style="padding-top: 15px;">
