@@ -59,21 +59,22 @@
 		/***/
 		public function findImpuestoTipoSolicitud($impuesto = 0)
 		{
+			$modelFind = null;
 			if ( $impuesto > 0 ) {
-				$model = Impuesto::find()->where(Impuesto::tableName().'.impuesto =:impuesto', [':impuesto' => $impuesto])
+				$modelFind = Impuesto::find()->where(Impuesto::tableName().'.impuesto =:impuesto', [':impuesto' => $impuesto])
 				                              ->joinWith('tipoSolicitud')
 				                              ->orderBy([
 				                              		'impuesto' => SORT_ASC,
 				                              		'tipo_solicitud' => SORT_ASC
 				                              	]);
 			} else {
-				$model = Impuesto::find()->joinWith('impuesto')
+				$modelFind = Impuesto::find()->joinWith('impuesto')
 			                             ->orderBy([
 			                             	'impuesto' => SORT_ASC,
 			                              	'tipo_solicitud' => SORT_ASC
 			                             ]);
 			}
-			return isset($model) ? $model :  null;
+			return isset($modelFind) ? $modelFind :  null;
 		}
 
 
@@ -81,29 +82,31 @@
 		/***/
 		public function findTipoSolicitudImpuesto($impuesto = 0)
 		{
+			$modelFind = null;
 			if ( $impuesto > 0 ) {
-				$model = TipoSolicitud::find()->where(TipoSolicitud::tableName().'.impuesto =:impuesto', [':impuesto' => $impuesto])
+				$modelFind = TipoSolicitud::find()->where(TipoSolicitud::tableName().'.impuesto =:impuesto', [':impuesto' => $impuesto])
 				                              ->joinWith('impuesto')
 				                              ->orderBy([
 				                              		'impuesto' => SORT_ASC,
-				                              		'tipo_solicitud' => SORT_ASC
+				                              		'descripcion' => SORT_ASC
 				                              	]);
 			} else {
-				$model = TipoSolicitud::find()->joinWith('impuesto')
+				$modelFind = TipoSolicitud::find()->joinWith('impuesto')
 				                              ->orderBy([
 				                              		'impuesto' => SORT_ASC,
-				                              		'tipo_solicitud' => SORT_ASC
+				                              		'descripcion' => SORT_ASC
 				                              	]);
 			}
-			return isset($model) ? $model :  null;
+
+			return isset($modelFind) ? $modelFind :  null;
 		}
 
 
 
 		/***/
-		public function getDataProviderImpuestoSolicitud($impuesto = 0)
+		public function getDataProviderSolicitudImpuesto($impuesto = 0)
 		{
-			$model = $this->findImpuestoTipoSolicitud($impuesto);
+			$query = $this->findTipoSolicitudImpuesto($impuesto);
 
 			$dataProvider = New ActiveDataProvider([
 	    						'query' => $query,
