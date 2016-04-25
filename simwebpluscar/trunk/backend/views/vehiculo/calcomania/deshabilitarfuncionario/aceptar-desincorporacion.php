@@ -34,11 +34,12 @@ $this->title = 'Verificacion de Deshabilitacion';
                   
 
 
-                        <p>¿ESTA SEGURO QUE DESEA DESHABILITAR ESTOS FUNCIONARIOS?</p>    
+                        <p>¿ESTA SEGURO QUE DESEA COMPLETAR ESTA ACCION?</p>    
         
                         
                             
 
+                        <?= $form->field($model, 'id_funcionario')->hiddenInput(['id' => 'id_funcionario'])->label(false); ?>
 
             
 
