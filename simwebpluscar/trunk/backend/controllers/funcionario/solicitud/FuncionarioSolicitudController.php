@@ -175,7 +175,10 @@
 
 		public function actionPrueba()
 		{
-			return "molalal";
+			$request = Yii::$app->request;
+			$postData = $request->get();
+
+die(var_dump($postData));
 		}
 
 
