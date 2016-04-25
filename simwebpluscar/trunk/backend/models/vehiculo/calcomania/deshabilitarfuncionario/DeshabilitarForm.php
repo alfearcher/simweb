@@ -61,7 +61,7 @@ use backend\models\funcionario\Funcionario;
  */
 class DeshabilitarForm extends Model
 {
-    public $cedula;
+    public $id_funcionario;
     
    
     /**
@@ -70,7 +70,7 @@ class DeshabilitarForm extends Model
     public function rules()
     {
         return [
-                ['cedula' , 'required'],
+                
         ]; 
     } 
 
