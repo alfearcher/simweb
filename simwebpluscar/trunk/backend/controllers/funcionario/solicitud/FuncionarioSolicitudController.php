@@ -244,6 +244,9 @@
 		{
 			$request = Yii::$app->request;
 			$postData = $request->post();
+			$captionDepartamento = 'Departamento: ' . DepartamentoForm::getDescripcionDepartamento($idD);
+			$captionUnidad = 'Unidad: ' . UnidadDepartamentoForm::getDescripcionUnidadDepartamento($idU);
+			$subCaption = $captionDepartamento . ' / ' . $captionUnidad;
 
 			$model = New FuncionarioSearch();
 			$model->scenario = self::SCENARIO_SEARCH_GLOBAL;
@@ -268,6 +271,7 @@
 																'model' => $model,
 																'dataProvider' => $dataProvider,
 																'caption' => Yii::t('backend', 'Lists of Official'),
+																'subCaption' => $subCaption,
 				]);
 
 		}
@@ -288,6 +292,8 @@
 
 			$model = New FuncionarioSearch();
 			$model->scenario = self::SCENARIO_SEARCH_GLOBAL;
+
+			$subCaption = 'All';
 			// puedo obtener el all() de todos los registros de un modelo de la siguinete manera
 			/**
 			 *  $m = $model->findFuncionarioVigente();
@@ -314,6 +320,7 @@
 																'model' => $model,
 																'dataProvider' => $dataProvider,
 																'caption' => Yii::t('backend', 'Lists of Official'),
+																'subCaption' => $subCaption,
 				]);
 		}
 
