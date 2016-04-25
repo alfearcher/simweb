@@ -292,7 +292,7 @@
 			$dataProvider = $modelSolicitud->getDataProviderSolicitudImpuesto($impuesto);
 
 			return $this->renderAjax('/funcionario/solicitud/lista-impuesto-solicitud', [
-														'model' => $modelSolicitud,
+														'modelSolicitud' => $modelSolicitud,
 														'dataProvider' => $dataProvider,
 														'caption' => $caption,
 				]);
