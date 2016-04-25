@@ -267,11 +267,11 @@
 			// Se genera un dataprovider con los parametros enviados.
 			$dataProvider = $model->getDataProviderFuncionarioPorDepartamento($idD, $idU);
 
-			return $this->render('/funcionario/solicitud/lista-funcionario-vigente', [
-																'model' => $model,
-																'dataProvider' => $dataProvider,
-																'caption' => Yii::t('backend', 'Lists of Official'),
-																'subCaption' => $subCaption,
+			return $this->render('/funcionario/solicitud/_list', [
+														'model' => $model,
+														'dataProvider' => $dataProvider,
+														'caption' => Yii::t('backend', 'Lists of Official'),
+														'subCaption' => $subCaption,
 				]);
 
 		}
@@ -316,11 +316,11 @@
 			// Se genera un dataprovider de todos los funcionarios con cuentas vigentes.
 			$dataProvider = $model->getDataProviderFuncionarioVigente();
 
-			return $this->render('/funcionario/solicitud/lista-funcionario-vigente', [
-																'model' => $model,
-																'dataProvider' => $dataProvider,
-																'caption' => Yii::t('backend', 'Lists of Official'),
-																'subCaption' => $subCaption,
+			return $this->render('/funcionario/solicitud/_list', [
+														'model' => $model,
+														'dataProvider' => $dataProvider,
+														'caption' => Yii::t('backend', 'Lists of Official'),
+														'subCaption' => $subCaption,
 				]);
 		}
 
