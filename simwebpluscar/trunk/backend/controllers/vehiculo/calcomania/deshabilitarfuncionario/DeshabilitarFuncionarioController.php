@@ -134,31 +134,36 @@ class DeshabilitarFuncionarioController extends Controller
   public function actionAceptarDesincorporacion()
   {
   
-      
-        
+      $model = new DeshabilitarForm();
 
-        $model = new DeshabilitarForm();
-
-            $postData = Yii::$app->request->post();
+             $postData = Yii::$app->request->post();
 
             if ( $model->load($postData) && Yii::$app->request->isAjax ){
                   Yii::$app->response->format = Response::FORMAT_JSON;
                   return ActiveForm::validate($model);
             }
 
-            
+            if ( $model->load($postData) ) {
+             
 
+               if ($model->validate()){
+
+                 $deshabilitarFuncionario = self::beginSave();
+
+                    if ($deshabilitarFuncionario == true){
+                        return MensajeController::actionMensaje(200); 
+                    }else{
+                        return MensajeController::actionMensaje(920);
+                    }
                   
-                      $actualizarEstatus = self::beginSave();
-                      
-                      if($actualizarEstatus == true){
-                        die('hizo todo');
-                      }
+              }
+            }
                     
                   
                 
             return $this->render('/vehiculo/calcomania/deshabilitarfuncionario/aceptar-desincorporacion', [
                                                               'model' => $model,
+
                                                               
             ]);
             
@@ -171,7 +176,7 @@ class DeshabilitarFuncionarioController extends Controller
    */
   public function deshabilitarFuncionario($conn, $conexion)
   {
-     
+    // die('llego a deshabilitar');
       $tableName = 'funcionario_calcomania';
       $arregloCondition = ['id_funcionario' => $_SESSION['idFuncionario']]; //id del funcionario
       
@@ -202,13 +207,13 @@ class DeshabilitarFuncionarioController extends Controller
    */
   public function beginSave()
   {
-  die('llegue a begin save');
+   // die('llego a begin');
   $idFuncionario = $_SESSION['idFuncionario'];
      $todoBien = true;
 
       $conexion = new ConexionController();
 
-        $idSolicitud = 0;
+      
 
         $conn = $conexion->initConectar('db');
 
@@ -223,20 +228,21 @@ class DeshabilitarFuncionarioController extends Controller
 
 
                     if ($deshabilitarFuncionario == true ){
-                            
+                           // die('deshabilito');
                             $todoBien == true;
-                            break;
+                            
                     }
                         
                       
                     if($todoBien == true){
+                      //die('esta todo bien');
                        
                         $transaccion->commit();
                         $conn->close();
                         
                         return true;
                     }else{
-
+                    
                         $transaccion->rollback();
                         $conn->close();
                         return false;
