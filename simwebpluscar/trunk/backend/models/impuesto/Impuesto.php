@@ -46,6 +46,7 @@
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 	use backend\models\configuracion\solicitud\ConfigurarSolicitud;
+	use backend\models\configuracion\tiposolicitud\TipoSolicitud;
 
 	/**
 	* 	Clase
@@ -78,6 +79,16 @@
 		public function getConfigurarSolicitud()
 		{
 			return $this->hasMany(ConfigurarSolicitud::className(), ['impuesto' => 'impuesto']);
+		}
+
+
+		/**
+		 * Relacion con la entidad "config-tipos-solicitudes".
+		 * @return ActiveRecord
+		 */
+		public function getTipoSolicitud()
+		{
+			return $this->hasMany(TipoSolicitud::className(), ['impuesto' => 'impuesto']);
 		}
 
 	}
