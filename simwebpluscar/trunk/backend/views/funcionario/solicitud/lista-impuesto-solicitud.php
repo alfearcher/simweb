@@ -53,7 +53,7 @@
 
 ?>
 
-<div class="lista-funcionario">
+<div class="lista-solicitudes">
 	<?= GridView::widget([
 			'id' => 'id-lista-impuesto-solicitud',
 			'dataProvider' => $dataProvider,
