@@ -56,7 +56,8 @@
 	<?php
 		$form = ActiveForm::begin([
 			'id' => 'lista-funcionario-vigente-form',
-		    //'method' => 'post',
+		    'method' => 'post',
+		    'action' => Url::toRoute(['funcionario/solicitud/funcionario-solicitud/prueba']),
 			'enableClientValidation' => true,
 			'enableAjaxValidation' => true,
 			'enableClientScript' => true,
@@ -117,7 +118,7 @@
 						</div>
 					</div>
 
-
+<!-- Inicio lista de funcionarios -->
 					<div class="row">
 						<div class="lista-funcionario">
 							<?= GridView::widget([
@@ -165,9 +166,72 @@
 										]
 								])
 							?>
-
 						</div>
 					</div>
+<!-- Fin de lista de funcionario -->
+
+
+
+
+<!-- Inicio Impuesto -->
+					<div class="row" style="border-top: 0.5px solid #ccc; border-bottom: 0.5px solid #ccc; padding-top: 15px;">
+						<div class="col-sm-2">
+							<div class="row">
+								<p><strong><?= $modelImpuesto->getAttributeLabel(Yii::t('backend', 'impuesto')) ?></strong></p>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="row">
+								 <?= $form->field($modelImpuesto, 'impuesto')
+								          ->dropDownList($listaImpuesto, [
+				                                                            'id'=> 'impuesto',
+				                                                            'prompt' => Yii::t('backend', 'Select'),
+				                                                            'style' => 'width:280px;',
+				                                                            'onchange' =>
+				                                                              '$.post( "' . Yii::$app->urlManager
+                     ->createUrl('funcionario/solicitud/funcionario-solicitud/lista-impuesto-solicitud') . '&id=' . '" + $(this).val(),
+                     function( data ) {
+                           $( "#lista-impuesto-solicitud" ).html( data );
+		             });'
+				                                                            ])->label(false);
+				                ?>
+							</div>
+						</div>
+					</div>
+<!-- Fin de Impuesto -->
+
+<!-- Lista de Solicitudes -->
+					<div class="row" style="border-bottom: 0.5px solid #ccc; padding-top: 15px;">
+						<div class="lista-impuesto-solicitud" id="lista-impuesto-solicitud">
+						</div>
+					</div>
+<!-- Fin de lista de Solicitudes -->
+
+
+<!-- Inicio Boton Enviar -->
+					<div class="row">
+						<div class="boton-enviar" style="padding-top: 25px;">
+							<div class="col-sm-4">
+								<div class="form-group">
+									<?= Html::submitButton(Yii::t('backend', 'Send Request'),
+														  [
+															'id' => 'btn-send-request',
+															'class' => 'btn btn-success',
+															'value' => 1,
+															'name' => 'btn-send-request',
+															'style' => 'width: 100%;',
+															// 'onClick' => '$.post( "' . Yii::$app->urlManager
+						         //             ->createUrl('funcionario/solicitud/funcionario-solicitud/prueba') . '&id=1",
+						         //             function( data ) {
+						         //                   $( "#lista-impuesto-solicitud" ).html( data );
+								       //       });'
+														  ])
+									?>
+								</div>
+							</div>
+						</div>
+					</div>
+<!-- Fin de Boton Enviar -->
 
 				</div>
 			</div>	<!-- Fin de container-fluid -->
