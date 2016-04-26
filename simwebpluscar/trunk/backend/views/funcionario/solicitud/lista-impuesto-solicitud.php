@@ -58,7 +58,8 @@
 			'id' => 'id-lista-impuesto-solicitud',
 			'dataProvider' => $dataProvider,
 			//'filterModel' => $model,
-			'headerRowOptions' => ['class' => 'success'],
+			'caption' => Yii::t('backend', 'List of Request'),
+			'headerRowOptions' => ['class' => 'info'],
 			'rowOptions' => function($data) {
 								if ( $data->inactivo == 1 ) {
 										return ['class' => 'danger'];

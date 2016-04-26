@@ -202,8 +202,10 @@
 
 <!-- Lista de Solicitudes -->
 					<div class="row" style="border-bottom: 0.5px solid #ccc; padding-top: 15px;">
+						<?php Pjax::begin(); ?>
 						<div class="lista-impuesto-solicitud" id="lista-impuesto-solicitud">
 						</div>
+						<?php Pjax::end(); ?>
 					</div>
 <!-- Fin de lista de Solicitudes -->
 
@@ -220,11 +222,7 @@
 															'value' => 1,
 															'name' => 'btn-send-request',
 															'style' => 'width: 100%;',
-															// 'onClick' => '$.post( "' . Yii::$app->urlManager
-						         //             ->createUrl('funcionario/solicitud/funcionario-solicitud/prueba') . '&id=1",
-						         //             function( data ) {
-						         //                   $( "#lista-impuesto-solicitud" ).html( data );
-								       //       });'
+
 														  ])
 									?>
 								</div>
