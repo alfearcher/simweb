@@ -97,7 +97,7 @@ class CambioPropietarioInmueblesUrbanosController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionView($id) 
     {
         if ( isset( $_SESSION['idContribuyente'] ) ) {
         return $this->render('view', [
@@ -150,7 +150,7 @@ class CambioPropietarioInmueblesUrbanosController extends Controller
 
               //if($modelContribuyente->validate()){ 
            
-                if($model->validate()){
+                if($model->validate()){ 
 
                  //condicionales     
                  
@@ -284,7 +284,7 @@ CONTENIDO DEL COMPRADOR (BUYER)
                             $msg = Yii::t('backend', 'SUCCESSFUL UPDATE DATA OF THE URBAN PROPERTY!');//REGISTRO EXITOSO DE LAS PREGUNTAS DE SEGURIDAD
                             $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['inmueble/inmuebles-urbanos/index', 'id' => $model->id_contribuyente])."'>";                     
                             return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
-                        }else{   
+                        }else{  
 
                             $transaccion->rollBack();  
                             $tipoError = 0; 
