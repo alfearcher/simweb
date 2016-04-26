@@ -98,6 +98,8 @@
 		public function actionIndex()
 		{
 			if ( isset(Yii::$app->user->identity->username) ) {
+				$_SESSION['errListaFuncionario'] = '';
+				$_SESSION['errListaSolicitud'] = '';
 				$puedoCreate = false;
 				$model = New FuncionarioSearch();
 
@@ -182,6 +184,8 @@
 		/***/
 		public function actionVerificarEnvio()
 		{
+			$_SESSION['errListaFuncionario'] = '';
+			$_SESSION['errListaSolicitud'] = '';
 			$request = Yii::$app->request;
 			$postData = $request->post();
 
@@ -201,6 +205,12 @@
 					if ( count($chkFuncionario) > 0 && count($chkSolicitud) > 0 ) {
 
 					} else {
+						if ( count($chkFuncionario) == 0 ) {
+							$_SESSION['errListaFuncionario'] = 'Debe seleccionar al menos uno';
+						}
+						if ( count($chkSolicitud) == 0 ) {
+							$_SESSION['errListaSolicitud'] = 'Debe seleccionar al menos una solicitud';
+						}
 						if ( $listado == 1 ) {				// Viene de la consulta por Departamento y Unidades
 							return $this->redirect(['buscar-por-departamento-unidad',
 												    'idD' => $_SESSION['idD'],
