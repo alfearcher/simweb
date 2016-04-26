@@ -41,6 +41,8 @@
  *
  */
 
+ 	//session_start();		// Iniciando session
+
 	use yii\helpers\Html;
 	use yii\helpers\Url;
 	use yii\grid\GridView;
@@ -126,6 +128,13 @@
 
 <!-- Inicio lista de funcionarios -->
 					<div class="row">
+						<? if ( $_SESSION['errListaFuncionario'] != '' { ?>
+							<div class="well">
+								<?= $_SESSION['errListaFuncionario']; ?>
+							</div>
+						<?}?>
+					</div>
+					<div class="row">
 						<div class="lista-funcionario">
 							<?= GridView::widget([
 										'id' => 'id-lista-funcionario-vigente',
@@ -207,6 +216,13 @@
 <!-- Fin de Impuesto -->
 
 <!-- Lista de Solicitudes -->
+					<div class="row">
+						<? if ( $_SESSION['errListaSolicitud'] != '' { ?>
+							<div class="well">
+								<?= $_SESSION['errListaSolicitud']; ?>
+							</div>
+						<?}?>
+					</div>
 					<div class="row" style="border-bottom: 0.5px solid #ccc; padding-top: 15px;">
 						<?php Pjax::begin(); ?>
 						<div class="lista-impuesto-solicitud" id="lista-impuesto-solicitud">
