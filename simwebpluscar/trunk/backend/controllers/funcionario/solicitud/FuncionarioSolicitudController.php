@@ -25,7 +25,7 @@
 
  	namespace backend\controllers\funcionario\solicitud;
 
-
+ 	session_start();		// Iniciando session
  	use Yii;
 	use yii\filters\AccessControl;
 	use yii\web\Controller;
@@ -170,15 +170,54 @@
 		}
 
 
-
-
-
 		public function actionPrueba()
+		{
+			var_dump(Yii::$app->request->post());
+			die();
+		}
+
+
+
+
+		/***/
+		public function actionVerificarEnvio()
 		{
 			$request = Yii::$app->request;
 			$postData = $request->post();
 
-die(var_dump($postData));
+			$model = New FuncionarioSearch();
+			$formName = $model->formName();
+			$varPost = $postData[$formName];
+			$listado = $varPost['listado'];
+
+			if ( isset($postData['btn-send-request']) ) {
+				if ( $postData['btn-send-request'] == 1 ) {
+
+					// El envio se realizo de forma correcta a traves del boton respectivo.
+					// Se verifica que haya seleccionado algun funcionario y solicitud de las listas.
+					$chkFuncionario = isset($postData['chk-funcionario']) ? $postData['chk-funcionario'] : null;
+					$chkSolicitud = isset($postData['chk-solicitud']) ? $postData['chk-solicitud'] : null;
+
+					if ( count($chkFuncionario) > 0 && count($chkSolicitud) > 0 ) {
+
+					} else {
+						if ( $listado == 1 ) {				// Viene de la consulta por Departamento y Unidades
+							return $this->redirect(['buscar-por-departamento-unidad',
+												    'idD' => $_SESSION['idD'],
+												    'idU' => $_SESSION['idU']]);
+
+						} elseif ( $listado == 2 ) {		// Viene de la consulta general (all).
+							return $this->redirect(['buscar-funcionario-vigente']);
+						}
+					}
+				} else {
+					// El envio no se realizo al presionar el boton.
+					return MensajeController::actionMensaje(404);
+				}
+			} else {
+				return MensajeController::actionMensaje(404);
+			}
+
 		}
 
 
@@ -187,6 +226,9 @@ die(var_dump($postData));
 		/***/
 		public function actionBuscarPorDepartamentoUnidad($idD, $idU)
 		{
+			$listado = 1;
+			$_SESSION['idD'] = $idD;
+			$_SESSION['idU'] = $idU;
 			$request = Yii::$app->request;
 			$postData = $request->post();
 			$captionDepartamento = 'Departamento: ' . DepartamentoForm::getDescripcionDepartamento($idD);
@@ -208,7 +250,7 @@ die(var_dump($postData));
 			if ( $model->load($postData) ) {
 				if ( isset($postData['btn-search-global']) ) {
 					if ( $model->validate() ) {
-// die('kakakak');
+
 					}
 				}
 			}
@@ -223,6 +265,7 @@ die(var_dump($postData));
 														'subCaption' => $subCaption,
 														'modelImpuesto' => $modelImpuesto,
 														'listaImpuesto' => $listaImpuesto,
+														'listado' => $listado,
 				]);
 
 		}
@@ -237,7 +280,7 @@ die(var_dump($postData));
 		 */
 		public function actionBuscarFuncionarioVigente()
 		{
-
+			$listado = 2;
 			$request = Yii::$app->request;
 			$postData = $request->post();
 
@@ -263,7 +306,7 @@ die(var_dump($postData));
 			if ( $model->load($postData) ) {
 				if ( isset($postData['btn-search-global']) ) {
 					if ( $model->validate() ) {
-// die('kakakak');
+
 					}
 				}
 			}
@@ -278,6 +321,7 @@ die(var_dump($postData));
 														'subCaption' => $subCaption,
 														'modelImpuesto' => $modelImpuesto,
 														'listaImpuesto' => $listaImpuesto,
+														'listado' => $listado,
 				]);
 		}
 
@@ -289,8 +333,8 @@ die(var_dump($postData));
 		{
 			$caption = Yii::t('backend', 'List of Request');
 			$request = Yii::$app->request;
-			$postData = $request->get();
-			$impuesto = $postData['id'];		// Indice del combo impuesto.
+			$getData = $request->get();
+			$impuesto = $getData['id'];		// Indice del combo impuesto.
 			$modelSolicitud = New TipoSolicitudSearch();
 			$dataProvider = $modelSolicitud->getDataProviderSolicitudImpuesto($impuesto);
 
