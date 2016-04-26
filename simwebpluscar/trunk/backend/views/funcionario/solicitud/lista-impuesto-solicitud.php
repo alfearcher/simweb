@@ -58,7 +58,7 @@
 			'id' => 'id-lista-impuesto-solicitud',
 			'dataProvider' => $dataProvider,
 			//'filterModel' => $model,
-			'caption' => Yii::t('backend', 'List of Request'),
+			'caption' => $caption,  //Yii::t('backend', 'List of Request'),
 			'headerRowOptions' => ['class' => 'info'],
 			'rowOptions' => function($data) {
 								if ( $data->inactivo == 1 ) {
@@ -71,11 +71,11 @@
 					'class' => 'yii\grid\CheckboxColumn',
 					'name' => 'chk-solicitud',
 					'multiple' => true,
-					'checkboxOptions' => function($modelSolicitud, $key, $index, $column) {
-											if ( $modelSolicitud->inactivo == 1 ) {
-													return ['enabled' => false, 'readonly' => true];
-												}
-											},
+					// 'checkboxOptions' => function($modelSolicitud, $key, $index, $column) {
+					// 						if ( $modelSolicitud->inactivo == 1 ) {
+					// 								return ['enabled' => false, 'readonly' => true];
+					// 							}
+					// 						},
 				],
 				[
 					'label' => Yii::t('backend', 'Request'),

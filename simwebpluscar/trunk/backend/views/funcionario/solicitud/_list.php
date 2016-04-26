@@ -54,6 +54,7 @@
 																'subCaption' => $subCaption,
 																'modelImpuesto' => $modelImpuesto,
 																'listaImpuesto' => $listaImpuesto,
+																'listado' => $listado,
 				]);
 	?>
 </div>

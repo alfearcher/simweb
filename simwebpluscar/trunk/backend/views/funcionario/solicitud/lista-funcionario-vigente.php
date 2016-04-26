@@ -57,13 +57,19 @@
 		$form = ActiveForm::begin([
 			'id' => 'lista-funcionario-vigente-form',
 		    'method' => 'post',
-		    'action' => Url::toRoute(['funcionario/solicitud/funcionario-solicitud/prueba']),
+		    'action' => Url::toRoute(['funcionario/solicitud/funcionario-solicitud/verificar-envio']),
 			'enableClientValidation' => true,
 			'enableAjaxValidation' => true,
 			'enableClientScript' => true,
 		]);
 	?>
 
+	<?=
+		// Variable que me indica el tipo de listado generado
+		// 1 => listado por departamento y unidades
+		// 2 => listado de todos (all).
+		$form->field($model, 'listado')->hiddenInput(['value' => $listado])->label(false);
+	?>
 
 	<meta http-equiv="refresh">
     <div class="panel panel-default"  style="width: 85%;">
