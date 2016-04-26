@@ -176,7 +176,7 @@
 		public function actionPrueba()
 		{
 			$request = Yii::$app->request;
-			$postData = $request->get();
+			$postData = $request->post();
 
 die(var_dump($postData));
 		}
