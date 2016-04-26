@@ -63,6 +63,9 @@
 	    public $id_departamento;
 	    public $id_unidad;
 	    public $searchGlobal;
+	    public $listado;
+	    public $errListaFuncionario;
+	    public $errListaSolicitud;
 
 	    const SCENARIO_SEARCH_DEPARTAMENTO_UNIDAD = 'search_departamento';
 		const SCENARIO_SEARCH_GLOBAL = 'search_global';
@@ -102,8 +105,10 @@
 	              'required', 'on' => 'search_departamento', 'message' => Yii::t('backend', '{attribute} is require')],
 	            [['searchGlobal'],
 	              'required', 'on' => 'search_global', 'message' => Yii::t('backend', '{attribute} is require')],
+	            ['listado', 'safe'],
 	            [['id_departamento', 'id_unidad'],
 	              'integer'],
+	            [['errListaFuncionario', 'errListaSolicitud'], 'string'],
 	        ];
 	    }
 
