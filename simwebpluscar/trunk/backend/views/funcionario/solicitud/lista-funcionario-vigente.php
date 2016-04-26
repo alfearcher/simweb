@@ -56,7 +56,7 @@
 	<?php
 		$form = ActiveForm::begin([
 			'id' => 'lista-funcionario-vigente-form',
-		    'method' => 'post',
+		    //'method' => 'post',
 			'enableClientValidation' => true,
 			'enableAjaxValidation' => true,
 			'enableClientScript' => true,
