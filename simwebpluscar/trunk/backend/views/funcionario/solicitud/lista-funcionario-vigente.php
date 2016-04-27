@@ -235,9 +235,9 @@
 <!-- Inicio Boton Enviar -->
 					<div class="row">
 						<div class="boton-enviar" style="padding-top: 25px;">
-							<div class="col-sm-4">
+							<div class="col-sm-3">
 								<div class="form-group">
-									<?= Html::submitButton(Yii::t('backend', 'Send Request'),
+									<?= Html::submitButton(Yii::t('backend', 'Save'),
 														  [
 															'id' => 'btn-send-request',
 															'class' => 'btn btn-success',
