@@ -244,6 +244,7 @@
 															'value' => 1,
 															'name' => 'btn-send-request',
 															'style' => 'width: 100%;',
+															'data-confirm' => Yii::t('backend', 'Confirm Save?.'),
 
 														  ])
 									?>
