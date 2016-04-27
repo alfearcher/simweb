@@ -129,7 +129,7 @@
 <!-- Inicio lista de funcionarios -->
 					<div class="row">
 						<? if ( $_SESSION['errListaFuncionario'] != '' { ?>
-							<div class="well">
+							<div class="well well-sm">
 								<?= $_SESSION['errListaFuncionario']; ?>
 							</div>
 						<?}?>
@@ -218,7 +218,7 @@
 <!-- Lista de Solicitudes -->
 					<div class="row">
 						<? if ( $_SESSION['errListaSolicitud'] != '' { ?>
-							<div class="well">
+							<div class="well well-sm">
 								<?= $_SESSION['errListaSolicitud']; ?>
 							</div>
 						<?}?>
