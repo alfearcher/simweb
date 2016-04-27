@@ -168,7 +168,7 @@
 		private function actionBeginSave($postData, $action)
 		{
 			$result = false;
-			if ( strtolower($action) == 'save' ) {
+			if ( strtolower($action) == 'create' ) {
 				if ( count($postData) > 0 ) {
 					$conexion = New ConexionController();
 
@@ -260,7 +260,7 @@
 
 					if ( count($chkFuncionario) > 0 && count($chkSolicitud) > 0 ) {
 						// Todo bien. Se puede guardar.
-						$result = self::actionBeginSave($postData, "save");
+						$result = self::actionBeginSave($postData, "create");
 						if ( $result ) {
 							$this->redirect(['proceso-exitoso']);
 						} else {
@@ -443,6 +443,8 @@
 		/***/
 		private function actionProcesoExitoso()
 		{
+			$varSession = ['errListaFuncionario', 'errListaSolicitud', 'idD', 'idU'];
+			self::actionAnularSession($varSession);
 			return MensajeController::actionMensaje(100);
 		}
 
@@ -451,6 +453,8 @@
 		/***/
 		private function actionErrorOperacion($codigo)
 		{
+			$varSession = ['errListaFuncionario', 'errListaSolicitud', 'idD', 'idU'];
+			self::actionAnularSession($varSession);
 			return MensajeController::actionMensaje($codigo);
 		}
 
