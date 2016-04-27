@@ -182,8 +182,10 @@
 	  				$result = self::actionCreate($postData, $conexion, $this->conn);
 	  				if ( $result ) {
 	  					$transaccion->commit();
+	  					//return $this->redirect(['proceso-exitoso']);
 	  				} else {
 	  					$transaccion->rollBack();
+	  					//return $this->redirect(['error-operacion', 'cod' => 920]);
 	  				}
 
 	  				$this->conn->close();
@@ -433,7 +435,7 @@
 
 
 		/***/
-		private function actionAnularSession($varSessions)
+		public function actionAnularSession($varSessions)
 		{
 			Session::actionDeleteSession($varSessions);
 		}
@@ -441,9 +443,9 @@
 
 
 		/***/
-		private function actionProcesoExitoso()
+		public function actionProcesoExitoso()
 		{
-			$varSession = ['errListaFuncionario', 'errListaSolicitud', 'idD', 'idU'];
+			$varSession = self::actionGetListaSessions();
 			self::actionAnularSession($varSession);
 			return MensajeController::actionMensaje(100);
 		}
@@ -451,11 +453,24 @@
 
 
 		/***/
-		private function actionErrorOperacion($codigo)
+		public function actionErrorOperacion($codigo)
 		{
-			$varSession = ['errListaFuncionario', 'errListaSolicitud', 'idD', 'idU'];
+			$varSession = self::actionGetListaSessions();
 			self::actionAnularSession($varSession);
 			return MensajeController::actionMensaje($codigo);
+		}
+
+
+
+		/***/
+		public function actionGetListaSessions()
+		{
+			return $varSession = [
+							'errListaFuncionario',
+							'errListaSolicitud',
+							'idD',
+							'idU'
+					];
 		}
 
 
