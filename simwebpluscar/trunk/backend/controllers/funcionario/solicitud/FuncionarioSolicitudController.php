@@ -206,7 +206,7 @@
 
 					} else {
 						if ( count($chkFuncionario) == 0 ) {
-							$_SESSION['errListaFuncionario'] = 'Debe seleccionar al menos uno';
+							$_SESSION['errListaFuncionario'] = 'Debe seleccionar al menos un funcionario';
 						}
 						if ( count($chkSolicitud) == 0 ) {
 							$_SESSION['errListaSolicitud'] = 'Debe seleccionar al menos una solicitud';
