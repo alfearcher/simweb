@@ -126,7 +126,6 @@
 							$idDepartamento = $postData[$formName]['id_departamento'];
 							$idUnidad = $postData[$formName]['id_unidad'];
 							return $this->redirect(['buscar-por-departamento-unidad', 'idD' => $idDepartamento, 'idU' => $idUnidad]);
-							// self::actionBuscarPorDepartamentoUnidad($idDepartamento, $idUnidad);
 						}
 					} elseif ( isset($postData['btn-search-all']) ) {
 						// Search-All de los funcionarios con cuentas vigentes.
@@ -225,7 +224,13 @@
 				foreach ( $chkSolicitud as $solicitud ) {
 					$arregloDatos['tipo_solicitud'] = $solicitud;
 					$result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
-					if ( !$result ) { break; }
+					if ( !$result ) {
+						break;
+					} else {
+						$result = self::actionInactivarFuncionarioSolicitud($funcionario, $solicitud, $tabla, $conexionLocal, $connLocal);
+						if ( !$result ) { break; }
+					}
+
 				}
 				if ( !$result ) { break; }
 			}
@@ -287,6 +292,19 @@
 					}
 				} else {
 					// El envio no se realizo al presionar el boton.
+					return MensajeController::actionMensaje(404);
+				}
+			} elseif ( isset($postData['btn-search-global']) ) {
+				if ( $postData['btn-search-global'] == 1 ) {
+					if ( $listado == 1 ) {				// Viene de la consulta por Departamento y Unidades
+						return $this->redirect(['buscar-por-departamento-unidad',
+											    'idD' => $_SESSION['idD'],
+											    'idU' => $_SESSION['idU']]);
+
+					} elseif ( $listado == 2 ) {		// Viene de la consulta general (all).
+						return $this->redirect(['buscar-funcionario-vigente']);
+					}
+				} else {
 					return MensajeController::actionMensaje(404);
 				}
 			} else {
@@ -359,6 +377,8 @@
 			$request = Yii::$app->request;
 			$postData = $request->post();
 
+
+die(var_dump($postData));
 			$model = New FuncionarioSearch();
 			$model->scenario = self::SCENARIO_SEARCH_GLOBAL;
 
@@ -473,6 +493,21 @@
 					];
 		}
 
+
+
+		/***/
+		public function actionInactivarFuncionarioSolicitud($idFuncionario, $tipoSolicitud, $tabla, $conexionLocal, $connLocal)
+		{
+			$result = false;
+			$arregloCondicion = [
+									'id_funcionario' => $idFuncionario,
+									'tipo_solicitud' => $tipoSolicitud
+								];
+			$arregloDatos = ['inactivo' => 1];
+			$result = $conexionLocal->modificarRegistro($connLocal, $tabla, $arregloDatos, $arregloCondicion);
+
+			return $result;
+		}
 
 
 	}
