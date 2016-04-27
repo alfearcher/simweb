@@ -62,8 +62,9 @@
 			$modelFind = null;
 			if ( $impuesto > 0 ) {
 				$modelFind = Impuesto::find()->where(Impuesto::tableName().'.impuesto =:impuesto', [':impuesto' => $impuesto])
-				                              ->joinWith('tipoSolicitud')
-				                              ->orderBy([
+											 ->andWhere('inactivo =:inactivo', [':inactivo' => 0])
+				                             ->joinWith('tipoSolicitud')
+				                             ->orderBy([
 				                              		'impuesto' => SORT_ASC,
 				                              		'tipo_solicitud' => SORT_ASC
 				                              	]);
@@ -86,6 +87,7 @@
 			$modelFind = null;
 			if ( $impuesto > 0 ) {
 				$modelFind = TipoSolicitud::find()->where(TipoSolicitud::tableName().'.impuesto =:impuesto', [':impuesto' => $impuesto])
+												  ->andWhere('inactivo =:inactivo', [':inactivo' => 0])
 				                                  ->joinWith('impuestos')
 				                                  ->orderBy([
 				                              			'impuesto' => SORT_ASC,
