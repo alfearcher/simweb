@@ -68,7 +68,8 @@
 				                              		'tipo_solicitud' => SORT_ASC
 				                              	]);
 			} else {
-				$modelFind = Impuesto::find()->joinWith('impuesto')
+				$modelFind = Impuesto::find()->where('inactivo =:inactivo', [':inactivo' => 0])
+				                             ->joinWith('impuesto')
 			                                 ->orderBy([
 			                             		'impuesto' => SORT_ASC,
 			                              		'tipo_solicitud' => SORT_ASC
@@ -91,7 +92,8 @@
 				                              			'descripcion' => SORT_ASC
 				                              		]);
 			} else {
-				$modelFind = TipoSolicitud::find()->joinWith('impuestos')
+				$modelFind = TipoSolicitud::find()->where('inactivo =:inactivo', [':inactivo' => 0])
+					                              ->joinWith('impuestos')
 				                                  ->orderBy([
 				                              			'impuesto' => SORT_ASC,
 				                              			'descripcion' => SORT_ASC
