@@ -33,9 +33,8 @@
 	use yii\widgets\ActiveForm;
 	use yii\web\Response;
 	use yii\helpers\Url;
-	//use backend\models\funcionario\solicitud\FuncionarioSolicitud;
+	use backend\models\funcionario\solicitud\FuncionarioSolicitud;
 	use backend\models\funcionario\solicitud\FuncionarioSolicitudForm;
-	//use backend\models\funcionario\FuncionarioForm;
 	use backend\models\funcionario\solicitud\FuncionarioSearch;
 	use common\conexion\ConexionController;
 	use common\mensaje\MensajeController;
@@ -82,7 +81,7 @@
 
 		public $layout = 'layout-main';				//	Layout principal del formulario.
 
-		public $connLocal;
+		public $conn;
 		public $conexion;
 		public $transaccion;
 
@@ -166,17 +165,55 @@
 
 
 		/***/
-		public function actionCreate()
+		private function actionBeginSave($postData)
 		{
+			$result = false;
+			if ( count($postData) > 0 ) {
+				$conexion = New ConexionController();
 
+  				// Instancia de conexion hacia la base de datos.
+  				$this->conn = $conexion->initConectar('db');
+  				$this->conn->open();
+
+  				// Instancia de transaccion.
+  				$transaccion = $this->conn->beginTransaction();
+
+  				$result = self::actionCreate($postData, $conexion, $this->conn);
+
+  				$this->conn->close();
+
+			}
 		}
 
 
-		public function actionPrueba()
+
+
+		/***/
+		private function actionCreate($postData, $conexionLocal, $connLocal)
 		{
-			var_dump(Yii::$app->request->post());
-			die();
+			$result = false;
+			// Se buscan los identificadores de los funcionarios. Lo siguiente es un array de identificadores.
+			$chkFuncionario = $postData['chk-funcionario'];
+
+			// Se buscan los identificadores de las solicitudes. Lo siguiente es un array de identificadores.
+			$chkSolicitud = $postData['chk-solicitud'];
+
+			// Modelo de la entidad principal a guardar.
+			$model = New FuncionarioSolicitud();
+			$tabla = $model->tableName();
+
+			$arregloDatos = $model->attributes;
+
+			$arregloDatos['usuario'] = Yii::$app->user->identity->username;
+			$arregloDatos['fecha_hora'] = date('Y-m-d H:i:s');
+			$arregloDatos['inactivo'] = 0;
+
+			foreach ( $chkFuncionario as $funcionario ) {
+				$arregloDatos['id_funcionario'] = $funcionario;
+			}
+
 		}
+
 
 
 
@@ -203,6 +240,8 @@
 					$chkSolicitud = isset($postData['chk-solicitud']) ? $postData['chk-solicitud'] : null;
 
 					if ( count($chkFuncionario) > 0 && count($chkSolicitud) > 0 ) {
+						// Todo bien. Se puede guardar.
+						$result = self::actionBeginSave($postData);
 
 					} else {
 						if ( count($chkFuncionario) == 0 ) {
