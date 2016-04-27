@@ -165,24 +165,32 @@
 
 
 		/***/
-		private function actionBeginSave($postData)
+		private function actionBeginSave($postData, $action)
 		{
 			$result = false;
-			if ( count($postData) > 0 ) {
-				$conexion = New ConexionController();
+			if ( strtolower($action) == 'save' ) {
+				if ( count($postData) > 0 ) {
+					$conexion = New ConexionController();
 
-  				// Instancia de conexion hacia la base de datos.
-  				$this->conn = $conexion->initConectar('db');
-  				$this->conn->open();
+	  				// Instancia de conexion hacia la base de datos.
+	  				$this->conn = $conexion->initConectar('db');
+	  				$this->conn->open();
 
-  				// Instancia de transaccion.
-  				$transaccion = $this->conn->beginTransaction();
+	  				// Instancia de transaccion.
+	  				$transaccion = $this->conn->beginTransaction();
 
-  				$result = self::actionCreate($postData, $conexion, $this->conn);
+	  				$result = self::actionCreate($postData, $conexion, $this->conn);
+	  				if ( $result ) {
+	  					$transaccion->commit();
+	  				} else {
+	  					$transaccion->rollBack();
+	  				}
 
-  				$this->conn->close();
-
+	  				$this->conn->close();
+				}
 			}
+
+			return $result;
 		}
 
 
@@ -202,15 +210,25 @@
 			$model = New FuncionarioSolicitud();
 			$tabla = $model->tableName();
 
+			// Se crea un arreglo de datos con los atributos de la clase.
 			$arregloDatos = $model->attributes;
 
+			$arregloDatos['id_funcionario_solic'] = null;
 			$arregloDatos['usuario'] = Yii::$app->user->identity->username;
 			$arregloDatos['fecha_hora'] = date('Y-m-d H:i:s');
 			$arregloDatos['inactivo'] = 0;
 
 			foreach ( $chkFuncionario as $funcionario ) {
 				$arregloDatos['id_funcionario'] = $funcionario;
+				foreach ( $chkSolicitud as $solicitud ) {
+					$arregloDatos['tipo_solicitud'] = $solicitud;
+					$result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
+					if ( !$result ) { break; }
+				}
+				if ( !$result ) { break; }
 			}
+
+			return $result;
 
 		}
 
@@ -221,6 +239,7 @@
 		/***/
 		public function actionVerificarEnvio()
 		{
+			$result = false;
 			$_SESSION['errListaFuncionario'] = '';
 			$_SESSION['errListaSolicitud'] = '';
 			$request = Yii::$app->request;
@@ -241,7 +260,12 @@
 
 					if ( count($chkFuncionario) > 0 && count($chkSolicitud) > 0 ) {
 						// Todo bien. Se puede guardar.
-						$result = self::actionBeginSave($postData);
+						$result = self::actionBeginSave($postData, "save");
+						if ( $result ) {
+							$this->redirect(['proceso-exitoso']);
+						} else {
+							$this->redirect(['error-operacion', 'cod' => 920]);
+						}
 
 					} else {
 						if ( count($chkFuncionario) == 0 ) {
@@ -401,7 +425,7 @@
 		/***/
 		public function actionQuit()
 		{
-			$varSession = [];
+			$varSession = ['errListaFuncionario', 'errListaSolicitud', 'idD', 'idU'];
 			self::actionAnularSession($varSession);
 			return $this->render('/funcionario/quit');
 		}
@@ -414,6 +438,21 @@
 			Session::actionDeleteSession($varSessions);
 		}
 
+
+
+		/***/
+		private function actionProcesoExitoso()
+		{
+			return MensajeController::actionMensaje(100);
+		}
+
+
+
+		/***/
+		private function actionErrorOperacion($codigo)
+		{
+			return MensajeController::actionMensaje($codigo);
+		}
 
 
 
