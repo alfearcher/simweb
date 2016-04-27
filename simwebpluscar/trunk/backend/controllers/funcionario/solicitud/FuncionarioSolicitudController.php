@@ -377,8 +377,6 @@
 			$request = Yii::$app->request;
 			$postData = $request->post();
 
-
-die(var_dump($postData));
 			$model = New FuncionarioSearch();
 			$model->scenario = self::SCENARIO_SEARCH_GLOBAL;
 
