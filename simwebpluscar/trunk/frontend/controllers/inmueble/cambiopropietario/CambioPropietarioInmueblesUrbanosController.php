@@ -168,7 +168,7 @@ CONTENIDO VENDEDOR (SELLER)
                         $tipo = $datosCambio["tipoBuscar1"];
                     } else { 
                         $tipo = 0;
-                    }
+                    } 
 
                     $modelParametros = ContribuyentesForm::find()->where(['naturaleza'=>$datosCambio["naturalezaBuscar1"]])
                                                                  ->andWhere(['cedula'=>$datosCambio["cedulaBuscar1"]])
@@ -266,7 +266,7 @@ CONTENIDO DEL COMPRADOR (BUYER)
                                         'id_contribuyente' => $id_contribuyenteComprador,
                                       ]; 
 
-                        $tableName = 'inmuebles'; 
+                        $tableName = 'inmuebles';
 
                         $arrayCondition = ['id_impuesto' => $id_impuestoVendedor,]; 
 //echo'<pre>'; var_dump($datosCambio); echo '</pre>'; die('aqui buyer 1'); 
