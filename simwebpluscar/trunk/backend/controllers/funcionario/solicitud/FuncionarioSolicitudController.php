@@ -92,8 +92,17 @@
 
 
 
+		public function actionPrueba()
+		{
+			$request = Yii::$app->request;
+			$postData = $request->post();
+die(var_dump($postData));
+		}
 
 
+
+
+		/***/
 		public function actionIndex()
 		{
 			if ( isset(Yii::$app->user->identity->username) ) {
@@ -108,7 +117,7 @@
 				if ( isset($postData['btn-search']) ) {
 					$model->scenario = self::SCENARIO_SEARCH_DEPARTAMENTO_UNIDAD;
 				} elseif ( isset($postData['btn-search-all']) ) {
-					$model->scenario = ''; //self::SCENARIO_DEFAULT'';
+					$model->scenario = self::SCENARIO_SEARCH_DEPARTAMENTO_UNIDAD; //self::SCENARIO_DEFAULT;
 				}
 
 				if ( $model->load($postData) && Yii::$app->request->isAjax ) {
@@ -129,7 +138,6 @@
 						}
 					} elseif ( isset($postData['btn-search-all']) ) {
 						// Search-All de los funcionarios con cuentas vigentes.
-						//return self::actionBuscarFuncionarioVigente();
 						return $this->redirect(['buscar-funcionario-vigente']);
 					}
 				}
