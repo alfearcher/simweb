@@ -116,8 +116,10 @@ die(var_dump($postData));
 
 				if ( isset($postData['btn-search']) ) {
 					$model->scenario = self::SCENARIO_SEARCH_DEPARTAMENTO_UNIDAD;
-				} elseif ( isset($postData['btn-search-all']) ) {
-					$model->scenario = self::SCENARIO_SEARCH_DEPARTAMENTO_UNIDAD; //self::SCENARIO_DEFAULT;
+				} elseif ( isset($postData['btn-search-parameters']) ) {
+					$model->scenario = self::SCENARIO_SEARCH_GLOBAL;
+				} else {
+					$model->scenario = self::SCENARIO_SEARCH_GLOBAL;
 				}
 
 				if ( $model->load($postData) && Yii::$app->request->isAjax ) {
@@ -125,20 +127,24 @@ die(var_dump($postData));
 					return ActiveForm::validate($model);
 				}
 
-
 				if ( $model->load($postData) ) {
-
+die(var_dump($model));
 					if ( isset($postData['btn-search']) ) {
+						// Busqueda de funcionarios por departamento y unidad.
 						if ( $model->validate() ) {
-
 							$formName = $model->formName();
 							$idDepartamento = $postData[$formName]['id_departamento'];
 							$idUnidad = $postData[$formName]['id_unidad'];
 							return $this->redirect(['buscar-por-departamento-unidad', 'idD' => $idDepartamento, 'idU' => $idUnidad]);
 						}
+
+					} elseif ( isset($postData['btn-search-parameters']) ) {
+						// Busqueda de los funcionarios por parametro, DNI, apellidos o nombres.
+						if ( $model->validate() ) {
+							return $this->redirect(['buscar-funcionario-vigente']);
+						}
 					} elseif ( isset($postData['btn-search-all']) ) {
-						// Search-All de los funcionarios con cuentas vigentes.
-						return $this->redirect(['buscar-funcionario-vigente']);
+						// Busqueda de todos los funcionarios con cuentas vigentes.
 					}
 				}
 
@@ -165,6 +171,19 @@ die(var_dump($postData));
 				// No esta definido el usuario. Eliminar todas las variables de session y salir.
 				return MensajeController::actionMensaje(999);
 			}
+		}
+
+
+
+
+		/***/
+		public function actionBuscarFuncionario($postData)
+		{
+			$model = New FuncionarioSearch();
+
+			$request = Yii::$app->request;
+			$postData = $request->post();
+
 		}
 
 
