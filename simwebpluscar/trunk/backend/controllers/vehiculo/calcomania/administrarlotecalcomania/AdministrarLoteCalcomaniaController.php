@@ -43,7 +43,7 @@
  *  
  */ 
 
-namespace backend\controllers\vehiculo\calcomania\administrarlote;
+namespace backend\controllers\vehiculo\calcomania\administrarlotecalcomania;
 
 use Yii;
 
@@ -79,10 +79,10 @@ class AdministrarLoteCalcomaniaController extends Controller
     
   public $layout = 'layout-main';
    
-  /**
-   * [actionBusquedaFuncionario description] Metodo que renderiza el formulario para realizar la busqueda de funcionarios activos
-   * @return [type] [description] Retorna el modelo de la cedula para buscar en la tabla funcionarios.
-   */
+    /**
+     * [actionBusquedaLote description]
+     * @return [type] [description]
+     */
     public function actionBusquedaLote()
     {
     die('llegue a busqueda lote');
