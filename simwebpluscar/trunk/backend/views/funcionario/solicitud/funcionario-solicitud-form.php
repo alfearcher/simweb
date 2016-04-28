@@ -90,14 +90,14 @@
 				<div class="col-sm-12">
 
 					<div class="row" style="border-bottom: 0.5px solid #ccc;">
-						<h4><strong><?= Yii::t('backend', 'Search Official')?></strong></h4>
+						<h4><strong><?= Yii::t('backend', 'Search for Departament')?></strong></h4>
 					</div>
 
 <!-- Inicio Departamento -->
 					<div class="row" style="padding-top: 15px;">
 						<div class="col-sm-2">
 							<div class="row">
-								<p><strong><?= $model->getAttributeLabel(Yii::t('backend', 'Departamento')) ?></strong></p>
+								<p><strong><?= $model->getAttributeLabel(Yii::t('backend', 'Departament')) ?></strong></p>
 							</div>
 						</div>
 						<div class="col-sm-5">
@@ -123,7 +123,7 @@
 					<div class="row">
 						<div class="col-sm-2">
 							<div class="row">
-								<p><strong><?= $model->getAttributeLabel(Yii::t('backend', 'Unidad')) ?></strong></p>
+								<p><strong><?= $model->getAttributeLabel(Yii::t('backend', 'Section')) ?></strong></p>
 							</div>
 						</div>
 						<div class="col-sm-5">
@@ -151,22 +151,65 @@
 								?>
 							</div>
 						</div>
-						<div class="col-sm-2"></div>
+					</div>
+<!-- Fin de Unidad -->
+
+<!-- Inicio busqueda por parametros -->
+					<div class="row" style="border-bottom: 0.5px solid #ccc;">
+						<h4><strong><?= Yii::t('backend', 'Search for DNI, Last Name or Name')?></strong></h4>
+					</div>
+
+					<div class="row" style="padding-top: 15px;">
 						<div class="col-sm-2">
+							<div class="row">
+								<p><strong><?= $model->getAttributeLabel(Yii::t('backend', 'Input')) ?></strong></p>
+							</div>
+						</div>
+						<div class="col-sm-5">
+							<div class="row" class="search-global">
+								<?= $form->field($model, 'searchGlobal')->textInput([
+																					'id' => 'searchGlobal',
+																					'style' => 'width: 75%;',
+																	  			  ])->label(false) ?>
+							</div>
+						</div>
+						<div class="col-sm-3">
 							<div class="form-group">
-								<?= Html::submitButton(Yii::t('backend', 'Search All'),
-																				  [
-																					'id' => 'btn-search-all',
-																					'class' => 'btn btn-primary',
-																					'value' => 2,
-																					'name' => 'btn-search-all',
-																					'style' => 'width: 100%;',
-																				  ])
+								<?= Html::submitButton(Yii::t('backend', 'Search'),
+																		  [
+																			'id' => 'btn-search-parameters',
+																			'class' => 'btn btn-primary',
+																			'value' => 2,
+																			'name' => 'btn-search-parameters',
+																			'style' => 'width: 100%;',
+																		  ])
 								?>
 							</div>
 						</div>
 					</div>
-<!-- Fin de Unidad -->
+<!-- Fin de busqueda por parametro -->
+
+<!-- Inicia de busqueda de todos los funcionarios -->
+					<div class="row" style="border-bottom: 0.5px solid #ccc;">
+						<h4><strong><?= Yii::t('backend', 'Search All')?></strong></h4>
+					</div>
+					<div class="row" style="padding-top: 15px;">
+						<div class="col-sm-3">
+							<div class="form-group">
+								<?= Html::submitButton(Yii::t('backend', 'Search All'),
+																		  [
+																			'id' => 'btn-search-all',
+																			'class' => 'btn btn-default',
+																			'value' => 3,
+																			'name' => 'btn-search-all',
+																			'style' => 'width: 100%;',
+																		  ])
+								?>
+							</div>
+						</div>
+					</div>
+
+<!-- Fin de busqueda de todos los funcionarios -->
 
 				</div>
 			</div>	<!-- Fin de container-fluid -->
