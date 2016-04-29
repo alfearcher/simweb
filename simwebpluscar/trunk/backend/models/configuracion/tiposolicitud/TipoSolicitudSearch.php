@@ -107,6 +107,60 @@
 
 
 
+
+		/**
+		 * Metodo que busca el impuesto relacionado a una solicitud.
+		 * @param  Integer $tipoSolicitud identificador de la solicitud
+		 * @return Array, Retorna un arreglo de la consulta.
+		 */
+		private function findImpuestoSegunSolicitud($tipoSolicitud)
+		{
+			$modelFind = null;
+			if ( $tipoSolicitud > 0 ) {
+				$modelFind = TipoSolicitud::find()->where('id_tipo_solicitud =:id_tipo_solicitud', [':id_tipo_solicitud' => $tipoSolicitud])
+												  ->andWhere('inactivo =:inactivo', [':inactivo' => 0])
+				                                  ->joinWith('impuestos')
+				                                  ->asArray()
+				                                  ->one();
+			}
+
+			return isset($modelFind) ? $modelFind :  null;
+		}
+
+
+
+		/**
+		 * Metodo que realiza la busqueda del impuesto segun la solicitud
+		 * y luego define con el arreglo recibido los deatos a retornar.
+		 * Este metodo recibe un arreglo donde un indice del arreglo se denomina
+		 * "impuestos", este indice contiene la informacion del impuesto en un arreglo.
+		 * [impuestos] => [
+		 * 		impuesto => valor,
+		 *   	descripcin => valor,
+		 *    	.
+		 *     	.
+		 *      etc...
+		 * ]
+		 * @param  Integer $tipoSolicitud identificador de la solicitud.
+		 * @return Array, Retorna un arreglo con los datos del impuesto.
+		 * Un arreglo con los datos de la entidad "impuestos". Si
+		 * el model esta vacio retornara null.
+		 */
+		public function getInfoImpuestoSegunSolicitud($tipoSolicitud)
+		{
+			$infoImpuesto = null;
+			$model = $this->findImpuestoSegunSolicitud($tipoSolicitud);
+			if ( count($model) > 0 ) {
+				$infoImpuesto = $model->impuestos;
+			}
+			return $infoImpuesto;
+		}
+
+
+
+
+
+
 		/***/
 		public function getDataProviderSolicitudImpuesto($impuesto = 0)
 		{
