@@ -110,6 +110,7 @@
 	            'inactivo' => Yii::t('backend', 'Condition'),
 	            'usuario' => Yii::t('backend', 'User'),
 	            'fecha_hora' => Yii::t('backend', 'Time/Hour'),
+	            'observacion' => Yii::t('backend', 'Note'),
 	        ];
 	    }
 	}
