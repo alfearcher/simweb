@@ -57,7 +57,7 @@
 	/**
 	 *	Clase principal del formulario.
 	 */
-	class FuncionarioSearch extends FuncionarioForm
+	class FuncionarioSearch extends Model
 	{
 
 	    public $id_departamento;
