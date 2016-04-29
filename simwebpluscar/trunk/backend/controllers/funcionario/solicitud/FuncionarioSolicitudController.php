@@ -88,6 +88,7 @@
 		const SCENARIO_SEARCH_DEPARTAMENTO_UNIDAD = 'search_departamento';
 		const SCENARIO_SEARCH_GLOBAL = 'search_global';
 		const SCENARIO_DEFAULT = 'default';
+		const SCENARIO_SEARCH_IMPUESTO_SOLICITUD = 'search_imuesto_solicitud';
 
 
 
@@ -238,7 +239,7 @@
 				$arregloDatos['id_funcionario'] = $funcionario;
 				foreach ( $chkSolicitud as $solicitud ) {
 					$arregloDatos['tipo_solicitud'] = $solicitud;
-
+					// Se inactiva cualquier solicitud que tenga el funcionario y que coincida con la que se guardara.
 					$result = self::actionInactivarFuncionarioSolicitud($funcionario, $solicitud, $tabla, $conexionLocal, $connLocal);
 					if ( $result ) {
 						$result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
