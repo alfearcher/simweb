@@ -129,7 +129,9 @@
 					} elseif ( isset($postData['btn-search-impuesto']) ) {
 						// Busqueda de los funcionarios por impuesto y tipo de solicitud
 						if ( $model->validate() ) {
-							
+							$tipoSolicitud = $postData[$formName]['tipo_solicitud'];
+							$impuesto = $postData[$formName]['impuesto'];
+							return self::actionBuscarFuncionarioPorSolicitud($tipoSolicitud, $impuesto);
 						}
 					}
 				}	
@@ -157,8 +159,6 @@
 
 
 
-
-
 		/**
 		 * Metodo que permite renderizar un combo de tipos de solicitudes
 		 * segun el parametro impuestos.
@@ -181,6 +181,37 @@
 	            echo "<option> - </option>";
 	        }
 	    }
+
+
+
+	    /***/
+	    public function actionBuscarFuncionarioPorSolicitud($tipoSolicitud, $impuesto)
+		{
+			$listado = 1;
+
+			$model = New FuncionarioSearch();
+			$model->scenario = self::SCENARIO_SEARCH_IMPUESTO_SOLICITUD;
+
+			// Arreglo multi-dimensional que contiene el su primer elemento los datos del impuesto
+			// y en su segundo elemento los datos del tipo de solicitud.
+			$infoSolicitud = $model->getInfoSolicitudImpuesto($tipoSolicitud);
+
+			$captionImpuesto = 'Impuesto: ' . $infoSolicitud['impuesto'][$impuesto];
+			$captionSolicitud = 'Solicitud: ' . $infoSolicitud['solicitud'][$tipoSolicitud];
+			$subCaption = $captionImpuesto . ' / ' . $captionSolicitud;
+
+			// Se genera un dataprovider de funcionarios, busqueda realizada por el tipo de solicitud.
+			$dataProvider = $model->getDataProviderSolicitudFuncionario($tipoSolicitud);
+
+			return $this->render('/funcionario/solicitud/lista-funcionario-por-solicitud', [
+																	'model' => $model,
+																	'dataProvider' => $dataProvider,
+																	'caption' => Yii::t('backend', 'Desincorporacion de Funcionario'),
+																	'subCaption' => $subCaption,
+																	'listado' => $listado,
+				]);
+
+		}
 
 
 
