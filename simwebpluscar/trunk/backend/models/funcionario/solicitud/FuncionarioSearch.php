@@ -67,11 +67,13 @@
 	    public $listado;
 	    public $errListaFuncionario;
 	    public $errListaSolicitud;
+	    public $impuesto;
+	    public $tipo_solicitud;
 
 	    const SCENARIO_SEARCH_DEPARTAMENTO_UNIDAD = 'search_departamento';
 		const SCENARIO_SEARCH_GLOBAL = 'search_global';
 		const SCENARIO_DEFAULT = 'default';
-
+		const SCENARIO_SEARCH_IMPUESTO_SOLICITUD = 'search_impuesto_solicitud';
 
     	/**
      	* @inheritdoc
@@ -82,14 +84,18 @@
         	//return Model::scenarios();
         	return [
         		self::SCENARIO_SEARCH_DEPARTAMENTO_UNIDAD => [
-        														'id_departamento',
-        														'id_unidad'
+								'id_departamento',
+								'id_unidad'
         		],
         		self::SCENARIO_SEARCH_GLOBAL => [
-        											'searchGlobal',
+        						'searchGlobal',
+        		],
+        		self::SCENARIO_SEARCH_IMPUESTO_SOLICITUD => [
+        						'impuesto',
+        						'tipo_solicitud'
         		],
         		self::SCENARIO_DEFAULT => [
-        					'',
+        						'',
         		],
         	];
     	}
@@ -107,9 +113,11 @@
 	            [['searchGlobal'],
 	              'required', 'on' => 'search_global', 'message' => Yii::t('backend', '{attribute} is require')],
 	            ['listado', 'safe'],
-	            [['id_departamento', 'id_unidad'],
+	            [['id_departamento', 'id_unidad', 'impuesto', 'tipo_solicitud'],
 	              'integer'],
 	            [['errListaFuncionario', 'errListaSolicitud'], 'string'],
+	            [['impuesto', 'tipo_solicitud'],
+	              'required', 'on' => 'search_impuesto_solicitud', 'message' => Yii::t('backend', '{attribute} is require')],
 	        ];
 	    }
 
