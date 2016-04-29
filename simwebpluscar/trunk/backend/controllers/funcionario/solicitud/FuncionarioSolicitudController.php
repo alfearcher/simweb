@@ -552,9 +552,9 @@
 		{
 			$result = false;
 			$arregloCondicion = [
-									'id_funcionario' => $idFuncionario,
-									'tipo_solicitud' => $tipoSolicitud
-								];
+					'id_funcionario' => $idFuncionario,
+					'tipo_solicitud' => $tipoSolicitud
+			];
 			$arregloDatos = ['inactivo' => 1];
 			$result = $conexionLocal->modificarRegistro($connLocal, $tabla, $arregloDatos, $arregloCondicion);
 
