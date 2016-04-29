@@ -313,7 +313,7 @@
 							return self::actionBuscarFuncionarioPorParametros($postIndex[$formName]['searchGlobal'],
 							 												  $model);
 
-						} elseif ( $listado == 3 ) {		// Viene de la consulta por parametros.
+						} elseif ( $listado == 3 ) {		// Viene de la consulta de todos los funcionarios.
 							$model->scenario = self::SCENARIO_SEARCH_GLOBAL;
 							$model->load($postIndex);
 							return self::actionBuscarFuncionarioAll($model);
