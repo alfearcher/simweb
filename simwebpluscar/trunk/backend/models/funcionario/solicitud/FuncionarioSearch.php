@@ -49,6 +49,7 @@
 
 	use Yii;
 	use yii\base\Model;
+	use yii\db\ActiveRecord;
 	use backend\models\funcionario\FuncionarioForm;
 	use backend\models\funcionario\Funcionario;
 	use yii\data\ActiveDataProvider;
