@@ -47,6 +47,7 @@
 	use yii\db\ActiveRecord;
 	use backend\models\configuracion\solicitud\ConfigurarSolicitud;
 	use backend\models\impuesto\Impuesto;
+	use backend\models\funcionario\solicitud\FuncionarioSolicitud;
 
 	/**
 	* 	Clase
@@ -94,6 +95,17 @@
 		public function getImpuestos()
 		{
 			return $this->hasOne(Impuesto::className(), ['impuesto' => 'impuesto']);
+		}
+
+
+
+		/**
+		 * Relacion con la entidad "funcionarios-solicitudes".
+		 * @return Active Record.
+		 */
+		public function getFuncionarioSolicitud()
+		{
+			return $this->hasMany(FuncionarioSolicitud::className(), ['tipo_solicitud' => 'id_tipo_solicitud']);
 		}
 
 	}
