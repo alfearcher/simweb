@@ -113,14 +113,13 @@
 		 * @param  Integer $tipoSolicitud identificador de la solicitud
 		 * @return Array, Retorna un arreglo de la consulta.
 		 */
-		private function findImpuestoSegunSolicitud($tipoSolicitud)
+		public function findImpuestoSegunSolicitud($tipoSolicitud)
 		{
 			$modelFind = null;
 			if ( $tipoSolicitud > 0 ) {
 				$modelFind = TipoSolicitud::find()->where('id_tipo_solicitud =:id_tipo_solicitud', [':id_tipo_solicitud' => $tipoSolicitud])
 												  ->andWhere('inactivo =:inactivo', [':inactivo' => 0])
 				                                  ->joinWith('impuestos')
-				                                  ->asArray()
 				                                  ->one();
 			}
 
@@ -149,9 +148,10 @@
 		public function getInfoImpuestoSegunSolicitud($tipoSolicitud)
 		{
 			$infoImpuesto = null;
-			$model = $this->findImpuestoSegunSolicitud($tipoSolicitud);
+			$model = self::findImpuestoSegunSolicitud($tipoSolicitud);
 			if ( count($model) > 0 ) {
-				$infoImpuesto = $model->impuestos;
+				$infoImpuesto['impuesto'] = [$model->impuestos->impuesto => $model->impuestos->descripcion]; 
+				$infoImpuesto['solicitud'] = [$model->id_tipo_solicitud => $model->descripcion];
 			}
 			return $infoImpuesto;
 		}
