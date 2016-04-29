@@ -64,6 +64,7 @@
 	    public $usuario;
 	    public $fecha_hora;
 	    public $inactivo;
+	    public $observacion;
 
 
     	/**

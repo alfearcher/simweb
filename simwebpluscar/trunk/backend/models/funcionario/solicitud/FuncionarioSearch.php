@@ -58,7 +58,7 @@
 	/**
 	 *	Clase principal del formulario.
 	 */
-	class FuncionarioSearch extends ActiveRecord
+	class FuncionarioSearch extends Model
 	{
 
 	    public $id_departamento;
