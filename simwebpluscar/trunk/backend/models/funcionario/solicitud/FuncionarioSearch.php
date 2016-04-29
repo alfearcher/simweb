@@ -52,6 +52,7 @@
 	use yii\db\ActiveRecord;
 	use backend\models\funcionario\FuncionarioForm;
 	use backend\models\funcionario\Funcionario;
+	use backend\models\funcionario\solicitud\FuncionarioSolicitud;
 	use yii\data\ActiveDataProvider;
 
 
@@ -222,5 +223,62 @@
 
 	    	return $dataProvider;
 	    }
+
+
+
+
+	    /**
+	     * Metodo que realiza una busqueda de los funcionarios relacionados a una
+	     * solicitud a traves de la entidad "funcionarios-solicitudes". Utiliza como
+	     * parametro de busqueda el tipo de solicitud.
+	     * @param  Integer $tipoSolicitud identificador de la solicitud
+	     * @return Active Record, Retorna un modelo con la informacion de la entidad "funcionarios-solicitudes"
+	     * y la informacion del funcionarios estara un un array con el indice denominado "funcionario".
+	     */
+	    public function findSolicitudFuncionarios($tipoSolicitud)
+	    {
+	    	$modelFind = null;
+	    	$modelFind = FuncionarioSolicitud::find()->where('tipo_solicitud =:tipo_solicitud', [':tipo_solicitud' => $tipoSolicitud])
+	    											 ->andWhere(Funcionario::tableName().'.inactivo =:inactivo', [':inactivo' => 0])
+	    											 ->joinWith('funcionario')
+	    											 ->orderBy([
+	    											 		'apellidos' => SORT_ASC,
+	    											 		'nombres' => SORT_ASC,
+	    											 	]);
+	    	return isset($modelFind) ? $modelFind : null;
+	    }
+
+
+
+
+
+	    /**
+	     * Metod que permite generar un dataprovider para la renderizacion de los resultados
+	     * a traves de un gridview. El dataprovider contendra los datos de las entidades
+	     * "funcionarios-solicitudes" y "funcionarios".
+	     * @param  Integer $tipoSolicitud identificador del tipo de solicitud.
+	     * @return ActiveDataProvider.
+	     */
+	    public function getDataProviderSolicitudFuncionario($tipoSolicitud)
+	    {
+	    	$query = $this->findSolicitudFuncionarios($tipoSolicitud);
+
+	    	$dataProvider = New ActiveDataProvider([
+	    						'query' => $query,
+	    	]);
+
+	    	if ( $this->searchGlobal != '' ) {
+	    		$query->andFilterWhere([
+	    						'or',
+	    						['like', 'ci', $this->searchGlobal],
+	    						['like', 'apellidos', $this->searchGlobal],
+	    						['like', 'nombres', $this->searchGlobal],
+
+	    			]);
+	    	}
+
+	    	return $dataProvider;	
+	    }
+
 	}
 ?>
