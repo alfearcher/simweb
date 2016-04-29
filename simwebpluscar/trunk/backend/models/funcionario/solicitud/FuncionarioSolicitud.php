@@ -47,6 +47,8 @@
  	use Yii;
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
+	use backend\models\funcionario\Funcionario;
+	use backend\models\configuracion\tiposolicitud\TipoSolicitud;
 	//use backend\FuncionarioForm;
 
 	/**
@@ -73,6 +75,29 @@
 		public static function tableName()
 		{
 			return 'funcionarios_solicitudes';
+		}
+
+
+
+
+		/**
+		 * Relacion con la entidad "funcionarios"
+		 * @return Active Record
+		 */
+		public function getFuncionario()
+		{
+			return $this->hasOne(Funcionario::className(), ['id_funcionario' => 'id_funcionario']);
+		}
+
+
+
+		/**
+		 * Relacion con la entidad "config-tipos-solicitudes"
+		 * @return Active Record
+		 */
+		public function getTipoSolicitud()
+		{
+			return $this->hasOne(TipoSolicitud::className(), ['id_tipo_soliicitud' => 'tipo_solicitud']);
 		}
 
 	}
