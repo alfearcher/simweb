@@ -108,11 +108,13 @@ die(var_dump($postData));
 			if ( isset(Yii::$app->user->identity->username) ) {
 				$_SESSION['errListaFuncionario'] = '';
 				$_SESSION['errListaSolicitud'] = '';
-				$puedoCreate = false;
-				$model = New FuncionarioSearch();
 
+				$model = New FuncionarioSearch();
+				$formName = $model->formName();
 				$request = Yii::$app->request;
 				$postData = $request->post();
+
+//die(var_dump(Yii::$app->controller->defaultAction));
 
 				if ( isset($postData['btn-search']) ) {
 					$model->scenario = self::SCENARIO_SEARCH_DEPARTAMENTO_UNIDAD;
@@ -128,23 +130,29 @@ die(var_dump($postData));
 				}
 
 				if ( $model->load($postData) ) {
-die(var_dump($model));
 					if ( isset($postData['btn-search']) ) {
 						// Busqueda de funcionarios por departamento y unidad.
 						if ( $model->validate() ) {
-							$formName = $model->formName();
 							$idDepartamento = $postData[$formName]['id_departamento'];
 							$idUnidad = $postData[$formName]['id_unidad'];
-							return $this->redirect(['buscar-por-departamento-unidad', 'idD' => $idDepartamento, 'idU' => $idUnidad]);
+							// return $this->redirect([
+							// 			'buscar-por-departamento-unidad',
+							// 			'idD' => $idDepartamento,
+							// 			'idU' => $idUnidad,
+							// 			'model' => $model]);
+							return self::actionBuscarPorDepartamentoUnidad($idDepartamento, $idUnidad, $model);
 						}
 
 					} elseif ( isset($postData['btn-search-parameters']) ) {
 						// Busqueda de los funcionarios por parametro, DNI, apellidos o nombres.
 						if ( $model->validate() ) {
-							return $this->redirect(['buscar-funcionario-vigente']);
+							//return $this->redirect(['buscar-funcionario-vigente']);
+							$params = $postData[$formName]['searchGlobal'];
+							return self::actionBuscarFuncionarioPorParametros($params, $model);
 						}
 					} elseif ( isset($postData['btn-search-all']) ) {
 						// Busqueda de todos los funcionarios con cuentas vigentes.
+						return self::actionBuscarFuncionarioAll($model);
 					}
 				}
 
@@ -172,21 +180,6 @@ die(var_dump($model));
 				return MensajeController::actionMensaje(999);
 			}
 		}
-
-
-
-
-		/***/
-		public function actionBuscarFuncionario($postData)
-		{
-			$model = New FuncionarioSearch();
-
-			$request = Yii::$app->request;
-			$postData = $request->post();
-
-		}
-
-
 
 
 
@@ -308,32 +301,32 @@ die(var_dump($model));
 						if ( count($chkSolicitud) == 0 ) {
 							$_SESSION['errListaSolicitud'] = 'Debe seleccionar al menos una solicitud';
 						}
-						if ( $listado == 1 ) {				// Viene de la consulta por Departamento y Unidades
-							return $this->redirect(['buscar-por-departamento-unidad',
-												    'idD' => $_SESSION['idD'],
-												    'idU' => $_SESSION['idU']]);
+						// if ( $listado == 1 ) {				// Viene de la consulta por Departamento y Unidades
+						// 	return $this->redirect(['buscar-por-departamento-unidad',
+						// 						    'idD' => $_SESSION['idD'],
+						// 						    'idU' => $_SESSION['idU']]);
 
-						} elseif ( $listado == 2 ) {		// Viene de la consulta general (all).
-							return $this->redirect(['buscar-funcionario-vigente']);
-						}
+						// } elseif ( $listado == 2 ) {		// Viene de la consulta general (all).
+						// 	return $this->redirect(['buscar-funcionario-vigente']);
+						// }
 					}
 				} else {
 					// El envio no se realizo al presionar el boton.
 					return MensajeController::actionMensaje(404);
 				}
-			} elseif ( isset($postData['btn-search-global']) ) {
-				if ( $postData['btn-search-global'] == 1 ) {
-					if ( $listado == 1 ) {				// Viene de la consulta por Departamento y Unidades
-						return $this->redirect(['buscar-por-departamento-unidad',
-											    'idD' => $_SESSION['idD'],
-											    'idU' => $_SESSION['idU']]);
+			// } elseif ( isset($postData['btn-search-global']) ) {
+			// 	if ( $postData['btn-search-global'] == 1 ) {
+			// 		if ( $listado == 1 ) {				// Viene de la consulta por Departamento y Unidades
+			// 			return $this->redirect(['buscar-por-departamento-unidad',
+			// 								    'idD' => $_SESSION['idD'],
+			// 								    'idU' => $_SESSION['idU']]);
 
-					} elseif ( $listado == 2 ) {		// Viene de la consulta general (all).
-						return $this->redirect(['buscar-funcionario-vigente']);
-					}
-				} else {
-					return MensajeController::actionMensaje(404);
-				}
+			// 		} elseif ( $listado == 2 ) {		// Viene de la consulta general (all).
+			// 			return $this->redirect(['buscar-funcionario-vigente']);
+			// 		}
+			// 	} else {
+			// 		return MensajeController::actionMensaje(404);
+			// 	}
 			} else {
 				return MensajeController::actionMensaje(404);
 			}
@@ -343,37 +336,45 @@ die(var_dump($model));
 
 
 
-		/***/
-		public function actionBuscarPorDepartamentoUnidad($idD, $idU)
+		/**
+		 * [actionBuscarPorDepartamentoUnidad description]
+		 * @param  [type] $idD   [description]
+		 * @param  [type] $idU   [description]
+		 * @param  [type] $model [description]
+		 * @return [type]        [description]
+		 */
+		public function actionBuscarPorDepartamentoUnidad($idD, $idU, $model)
 		{
 			$listado = 1;
-			$_SESSION['idD'] = $idD;
-			$_SESSION['idU'] = $idU;
+			// $_SESSION['idD'] = $idD;
+			// $_SESSION['idU'] = $idU;
 			$request = Yii::$app->request;
 			$postData = $request->post();
+//die(var_dump($postData));
+			//Yii::$app->controller->defaultAction = 'buscar-por-departamento-unidad';
 			$captionDepartamento = 'Departamento: ' . DepartamentoForm::getDescripcionDepartamento($idD);
 			$captionUnidad = 'Unidad: ' . UnidadDepartamentoForm::getDescripcionUnidadDepartamento($idU);
 			$subCaption = $captionDepartamento . ' / ' . $captionUnidad;
 
-			$model = New FuncionarioSearch();
-			$model->scenario = self::SCENARIO_SEARCH_GLOBAL;
+			//$model = New FuncionarioSearch();
+			// $model->scenario = self::SCENARIO_SEARCH_GLOBAL;
 
 			$modelImpuesto = new ImpuestoForm();
 			// Lista para el combo impuestos.
 			$listaImpuesto = $modelImpuesto->getListaImpuesto();
 
-			if ( $model->load($postData) && Yii::$app->request->isAjax ) {
-				Yii::$app->response->format = Response::FORMAT_JSON;
-				return ActiveForm::validate($model);
-			}
+			// if ( $model->load($postData) && Yii::$app->request->isAjax ) {
+			// 	Yii::$app->response->format = Response::FORMAT_JSON;
+			// 	return ActiveForm::validate($model);
+			// }
 
-			if ( $model->load($postData) ) {
-				if ( isset($postData['btn-search-global']) ) {
-					if ( $model->validate() ) {
+			// if ( $model->load($postData) ) {
+			// 	if ( isset($postData['btn-search-global']) ) {
+			// 		if ( $model->validate() ) {
 
-					}
-				}
-			}
+			// 		}
+			// 	}
+			// }
 
 			// Se genera un dataprovider con los parametros enviados.
 			$dataProvider = $model->getDataProviderFuncionarioPorDepartamento($idD, $idU);
@@ -395,41 +396,43 @@ die(var_dump($model));
 
 
 		/**
-		 * Metodo Search-All
-		 * @return [type] [description]
+		 * [actionBuscarFuncionarioPorParametros description]
+		 * @param  [type] $params [description]
+		 * @param  [type] $model  [description]
+		 * @return [type]         [description]
 		 */
-		public function actionBuscarFuncionarioVigente()
+		public function actionBuscarFuncionarioPorParametros($params, $model)
 		{
 			$listado = 2;
-			$request = Yii::$app->request;
-			$postData = $request->post();
+			// $request = Yii::$app->request;
+			// $postData = $request->post();
 
-			$model = New FuncionarioSearch();
-			$model->scenario = self::SCENARIO_SEARCH_GLOBAL;
+			// $model = New FuncionarioSearch();
+			// $model->scenario = self::SCENARIO_SEARCH_GLOBAL;
 
 			$modelImpuesto = new ImpuestoForm();
 			// Lista para el combo impuestos.
 			$listaImpuesto = $modelImpuesto->getListaImpuesto();
 
-			$subCaption = 'All';
+			$subCaption = $params;
 			// puedo obtener el all() de todos los registros de un modelo de la siguinete manera
 			/**
 			 *  $m = $model->findFuncionarioVigente();
 			 *  $m->all();
 			 */
 
-			if ( $model->load($postData) && Yii::$app->request->isAjax ) {
-				Yii::$app->response->format = Response::FORMAT_JSON;
-				return ActiveForm::validate($model);
-			}
+			// if ( $model->load($postData) && Yii::$app->request->isAjax ) {
+			// 	Yii::$app->response->format = Response::FORMAT_JSON;
+			// 	return ActiveForm::validate($model);
+			// }
 
-			if ( $model->load($postData) ) {
-				if ( isset($postData['btn-search-global']) ) {
-					if ( $model->validate() ) {
+			// if ( $model->load($postData) ) {
+			// 	if ( isset($postData['btn-search-global']) ) {
+			// 		if ( $model->validate() ) {
 
-					}
-				}
-			}
+			// 		}
+			// 	}
+			// }
 
 			// Se genera un dataprovider de todos los funcionarios con cuentas vigentes.
 			$dataProvider = $model->getDataProviderFuncionarioVigente();
@@ -444,6 +447,68 @@ die(var_dump($model));
 														'listado' => $listado,
 				]);
 		}
+
+
+
+
+
+		/**
+		 * [actionBuscarFuncionarioAll description]
+		 * @param  [type] $model [description]
+		 * @return [type]        [description]
+		 */
+		public function actionBuscarFuncionarioAll($model)
+		{
+			$listado = 3;
+			// $request = Yii::$app->request;
+			// $postData = $request->post();
+
+			// $model = New FuncionarioSearch();
+			// $model->scenario = self::SCENARIO_SEARCH_GLOBAL;
+
+			$modelImpuesto = new ImpuestoForm();
+			// Lista para el combo impuestos.
+			$listaImpuesto = $modelImpuesto->getListaImpuesto();
+
+			$subCaption = 'All';
+			// puedo obtener el all() de todos los registros de un modelo de la siguinete manera
+			/**
+			 *  $m = $model->findFuncionarioVigente();
+			 *  $m->all();
+			 */
+
+			// if ( $model->load($postData) && Yii::$app->request->isAjax ) {
+			// 	Yii::$app->response->format = Response::FORMAT_JSON;
+			// 	return ActiveForm::validate($model);
+			// }
+
+			// if ( $model->load($postData) ) {
+			// 	if ( isset($postData['btn-search-global']) ) {
+			// 		if ( $model->validate() ) {
+
+			// 		}
+			// 	}
+			// }
+
+			// Se genera un dataprovider de todos los funcionarios con cuentas vigentes.
+			$dataProvider = $model->getDataProviderFuncionarioVigente();
+
+			return $this->render('/funcionario/solicitud/_list', [
+														'model' => $model,
+														'dataProvider' => $dataProvider,
+														'caption' => Yii::t('backend', 'Lists of Official'),
+														'subCaption' => $subCaption,
+														'modelImpuesto' => $modelImpuesto,
+														'listaImpuesto' => $listaImpuesto,
+														'listado' => $listado,
+				]);
+
+		}
+
+
+
+
+
 
 
 
