@@ -50,6 +50,7 @@
 	use backend\models\funcionario\calcomania\FuncionarioCalcomania;
 	use backend\models\utilidad\departamento\Departamento;
 	use backend\models\utilidad\unidaddepartamento\UnidadDepartamento;
+	use backend\models\funcionario\solicitud\FuncionarioSolicitud;
 
 	/**
 	* 	Clase base del modulo de funcioario.
@@ -111,10 +112,24 @@
 		}
 
 
-
+		/**
+		 * Relacion con la entidad "funcionario-calcomania"
+		 * @return [type] [description]
+		 */
 		public function getFuncionarioCalcomania()
 		{
 			return $this->hasOne(FuncionarioCalcomania::className(),['id_funcionario' => 'id_funcionario']);
+		}
+
+
+
+		/**
+		 * Relacion con la entidad "funcionarios-solicitudes"
+		 * @return Active Record
+		 */
+		public function getFuncionarioSolicitud()
+		{
+			return $this->hasMany(FuncionarioSolicitud::className(), ['id_funcionario' => 'id_funcionario']);
 		}
 
 	}
