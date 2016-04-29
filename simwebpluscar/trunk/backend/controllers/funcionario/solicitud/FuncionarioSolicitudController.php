@@ -91,30 +91,18 @@
 
 
 
-
-		public function actionPrueba()
-		{
-			$request = Yii::$app->request;
-			$postData = $request->post();
-die(var_dump($postData));
-		}
-
-
-
-
 		/***/
 		public function actionIndex()
 		{
 			if ( isset(Yii::$app->user->identity->username) ) {
 				$_SESSION['errListaFuncionario'] = '';
 				$_SESSION['errListaSolicitud'] = '';
+				$_SESSION['postIndex'] = null;
 
 				$model = New FuncionarioSearch();
 				$formName = $model->formName();
 				$request = Yii::$app->request;
 				$postData = $request->post();
-
-//die(var_dump(Yii::$app->controller->defaultAction));
 
 				if ( isset($postData['btn-search']) ) {
 					$model->scenario = self::SCENARIO_SEARCH_DEPARTAMENTO_UNIDAD;
@@ -129,6 +117,7 @@ die(var_dump($postData));
 					return ActiveForm::validate($model);
 				}
 
+				$_SESSION['postIndex'] = $postData;
 				if ( $model->load($postData) ) {
 					if ( isset($postData['btn-search']) ) {
 						// Busqueda de funcionarios por departamento y unidad.
@@ -243,14 +232,14 @@ die(var_dump($postData));
 				$arregloDatos['id_funcionario'] = $funcionario;
 				foreach ( $chkSolicitud as $solicitud ) {
 					$arregloDatos['tipo_solicitud'] = $solicitud;
-					$result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
-					if ( !$result ) {
-						break;
-					} else {
-						$result = self::actionInactivarFuncionarioSolicitud($funcionario, $solicitud, $tabla, $conexionLocal, $connLocal);
-						if ( !$result ) { break; }
-					}
 
+					$result = self::actionInactivarFuncionarioSolicitud($funcionario, $solicitud, $tabla, $conexionLocal, $connLocal);
+					if ( $result ) {
+						$result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
+						if ( !$result ) { break; }
+					} else {
+						break;
+					}
 				}
 				if ( !$result ) { break; }
 			}
@@ -272,8 +261,11 @@ die(var_dump($postData));
 			$request = Yii::$app->request;
 			$postData = $request->post();
 
+			$postIndex = $_SESSION['postIndex'];
 			$model = New FuncionarioSearch();
+// die(var_dump('llegue4'));
 			$formName = $model->formName();
+
 			$varPost = $postData[$formName];
 			$listado = $varPost['listado'];
 
@@ -301,32 +293,36 @@ die(var_dump($postData));
 						if ( count($chkSolicitud) == 0 ) {
 							$_SESSION['errListaSolicitud'] = 'Debe seleccionar al menos una solicitud';
 						}
-						// if ( $listado == 1 ) {				// Viene de la consulta por Departamento y Unidades
-						// 	return $this->redirect(['buscar-por-departamento-unidad',
-						// 						    'idD' => $_SESSION['idD'],
-						// 						    'idU' => $_SESSION['idU']]);
+						if ( $listado == 1 ) {				// Viene de la consulta por Departamento y Unidades
+							$model->scenario = self::SCENARIO_SEARCH_DEPARTAMENTO_UNIDAD;
+							$model->load($postIndex);
+							// $model->id_departamento = $_SESSION['idD'];
+							// $model->id_unidad = $_SESSION['idU'];
 
-						// } elseif ( $listado == 2 ) {		// Viene de la consulta general (all).
-						// 	return $this->redirect(['buscar-funcionario-vigente']);
-						// }
+							return self::actionBuscarPorDepartamentoUnidad($postIndex[$formName]['id_departamento'],
+							 											   $postIndex[$formName]['id_unidad'],
+							 											   $model);
+							// return $this->redirect(['buscar-por-departamento-unidad',
+							// 					    'idD' => $_SESSION['idD'],
+							// 					    'idU' => $_SESSION['idU']]);
+
+						} elseif ( $listado == 2 ) {		// Viene de la consulta por parametros.
+							$model->scenario = self::SCENARIO_SEARCH_GLOBAL;
+							$model->load($postIndex);
+							return self::actionBuscarFuncionarioPorParametros($postIndex[$formName]['searchGlobal'],
+							 												  $model);
+							//return $this->redirect(['buscar-funcionario-vigente']);
+
+						} elseif ( $listado == 3 ) {		// Viene de la consulta por parametros.
+							$model->scenario = self::SCENARIO_SEARCH_GLOBAL;
+							$model->load($postIndex);
+							return self::actionBuscarFuncionarioAll($model);
+						}
 					}
 				} else {
 					// El envio no se realizo al presionar el boton.
 					return MensajeController::actionMensaje(404);
 				}
-			// } elseif ( isset($postData['btn-search-global']) ) {
-			// 	if ( $postData['btn-search-global'] == 1 ) {
-			// 		if ( $listado == 1 ) {				// Viene de la consulta por Departamento y Unidades
-			// 			return $this->redirect(['buscar-por-departamento-unidad',
-			// 								    'idD' => $_SESSION['idD'],
-			// 								    'idU' => $_SESSION['idU']]);
-
-			// 		} elseif ( $listado == 2 ) {		// Viene de la consulta general (all).
-			// 			return $this->redirect(['buscar-funcionario-vigente']);
-			// 		}
-			// 	} else {
-			// 		return MensajeController::actionMensaje(404);
-			// 	}
 			} else {
 				return MensajeController::actionMensaje(404);
 			}
@@ -346,35 +342,14 @@ die(var_dump($postData));
 		public function actionBuscarPorDepartamentoUnidad($idD, $idU, $model)
 		{
 			$listado = 1;
-			// $_SESSION['idD'] = $idD;
-			// $_SESSION['idU'] = $idU;
-			$request = Yii::$app->request;
-			$postData = $request->post();
-//die(var_dump($postData));
-			//Yii::$app->controller->defaultAction = 'buscar-por-departamento-unidad';
+
 			$captionDepartamento = 'Departamento: ' . DepartamentoForm::getDescripcionDepartamento($idD);
 			$captionUnidad = 'Unidad: ' . UnidadDepartamentoForm::getDescripcionUnidadDepartamento($idU);
 			$subCaption = $captionDepartamento . ' / ' . $captionUnidad;
 
-			//$model = New FuncionarioSearch();
-			// $model->scenario = self::SCENARIO_SEARCH_GLOBAL;
-
 			$modelImpuesto = new ImpuestoForm();
 			// Lista para el combo impuestos.
 			$listaImpuesto = $modelImpuesto->getListaImpuesto();
-
-			// if ( $model->load($postData) && Yii::$app->request->isAjax ) {
-			// 	Yii::$app->response->format = Response::FORMAT_JSON;
-			// 	return ActiveForm::validate($model);
-			// }
-
-			// if ( $model->load($postData) ) {
-			// 	if ( isset($postData['btn-search-global']) ) {
-			// 		if ( $model->validate() ) {
-
-			// 		}
-			// 	}
-			// }
 
 			// Se genera un dataprovider con los parametros enviados.
 			$dataProvider = $model->getDataProviderFuncionarioPorDepartamento($idD, $idU);
@@ -404,11 +379,6 @@ die(var_dump($postData));
 		public function actionBuscarFuncionarioPorParametros($params, $model)
 		{
 			$listado = 2;
-			// $request = Yii::$app->request;
-			// $postData = $request->post();
-
-			// $model = New FuncionarioSearch();
-			// $model->scenario = self::SCENARIO_SEARCH_GLOBAL;
 
 			$modelImpuesto = new ImpuestoForm();
 			// Lista para el combo impuestos.
@@ -420,19 +390,6 @@ die(var_dump($postData));
 			 *  $m = $model->findFuncionarioVigente();
 			 *  $m->all();
 			 */
-
-			// if ( $model->load($postData) && Yii::$app->request->isAjax ) {
-			// 	Yii::$app->response->format = Response::FORMAT_JSON;
-			// 	return ActiveForm::validate($model);
-			// }
-
-			// if ( $model->load($postData) ) {
-			// 	if ( isset($postData['btn-search-global']) ) {
-			// 		if ( $model->validate() ) {
-
-			// 		}
-			// 	}
-			// }
 
 			// Se genera un dataprovider de todos los funcionarios con cuentas vigentes.
 			$dataProvider = $model->getDataProviderFuncionarioVigente();
@@ -460,11 +417,6 @@ die(var_dump($postData));
 		public function actionBuscarFuncionarioAll($model)
 		{
 			$listado = 3;
-			// $request = Yii::$app->request;
-			// $postData = $request->post();
-
-			// $model = New FuncionarioSearch();
-			// $model->scenario = self::SCENARIO_SEARCH_GLOBAL;
 
 			$modelImpuesto = new ImpuestoForm();
 			// Lista para el combo impuestos.
@@ -476,19 +428,6 @@ die(var_dump($postData));
 			 *  $m = $model->findFuncionarioVigente();
 			 *  $m->all();
 			 */
-
-			// if ( $model->load($postData) && Yii::$app->request->isAjax ) {
-			// 	Yii::$app->response->format = Response::FORMAT_JSON;
-			// 	return ActiveForm::validate($model);
-			// }
-
-			// if ( $model->load($postData) ) {
-			// 	if ( isset($postData['btn-search-global']) ) {
-			// 		if ( $model->validate() ) {
-
-			// 		}
-			// 	}
-			// }
 
 			// Se genera un dataprovider de todos los funcionarios con cuentas vigentes.
 			$dataProvider = $model->getDataProviderFuncionarioVigente();
@@ -504,10 +443,6 @@ die(var_dump($postData));
 				]);
 
 		}
-
-
-
-
 
 
 
