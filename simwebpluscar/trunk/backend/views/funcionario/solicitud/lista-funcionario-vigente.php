@@ -117,6 +117,7 @@
 										'dataProvider' => $dataProvider,
 										//'filterModel' => $model,
 										'headerRowOptions' => ['class' => 'success'],
+										'caption' => Yii::t('backend', 'List of Official Public'),
 										'summary' => '',
 										'columns' => [
 											[
@@ -165,7 +166,7 @@
 
 
 <!-- Inicio Impuesto -->
-					<div class="row" style="border-top: 0.5px solid #ccc; border-bottom: 0.5px solid #ccc; padding-top: 15px;">
+					<div class="row" style="border-top: 0.5px solid #ccc; border-bottom: 0.5px solid #ccc; padding-top: 45px;">
 						<div class="col-sm-2">
 							<div class="row">
 								<p><strong><?= $modelImpuesto->getAttributeLabel(Yii::t('backend', 'impuesto')) ?></strong></p>
@@ -199,11 +200,9 @@
 							</div>
 						<?}?>
 					</div>
-					<div class="row" style="border-bottom: 0.5px solid #ccc; padding-top: 15px;">
-
+					<div class="row" style="border-bottom: 0.5px solid #ccc;">
 						<div class="lista-impuesto-solicitud" id="lista-impuesto-solicitud">
 						</div>
-
 					</div>
 <!-- Fin de lista de Solicitudes -->
 
