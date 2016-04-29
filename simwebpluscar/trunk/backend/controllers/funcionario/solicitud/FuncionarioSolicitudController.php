@@ -43,6 +43,7 @@
 	use backend\models\utilidad\unidaddepartamento\UnidadDepartamentoForm;
 	use backend\controllers\MenuController;
 	use backend\models\configuracion\tiposolicitud\TipoSolicitudSearch;
+	use backend\models\configuracion\tiposolicitud\TipoSolicitud;
 	use backend\models\impuesto\ImpuestoForm;
 
  /**
@@ -88,7 +89,8 @@
 		const SCENARIO_SEARCH_DEPARTAMENTO_UNIDAD = 'search_departamento';
 		const SCENARIO_SEARCH_GLOBAL = 'search_global';
 		const SCENARIO_DEFAULT = 'default';
-		const SCENARIO_SEARCH_IMPUESTO_SOLICITUD = 'search_imuesto_solicitud';
+		const SCENARIO_SEARCH_IMPUESTO_SOLICITUD = 'search_impuesto_solicitud';
+
 
 
 
@@ -101,6 +103,50 @@
 		public function actionIndexDelete()
 		{
 			if ( isset(Yii::$app->user->identity->username) ) {
+				$model = New FuncionarioSearch();
+				$formName = $model->formName();
+				$request = Yii::$app->request;
+				$postData = $request->post();
+
+				if ( isset($postData['btn-search-parameters']) ) {
+					$model->scenario = self::SCENARIO_SEARCH_GLOBAL;
+				} elseif ( isset($postData['btn-search-impuesto']) ) {
+					$model->scenario = self::SCENARIO_SEARCH_IMPUESTO_SOLICITUD;
+				}
+
+				if ( $model->load($postData) && Yii::$app->request->isAjax ) {
+					Yii::$app->response->format = Response::FORMAT_JSON;
+					return ActiveForm::validate($model);
+				}
+
+				if ( $model->load($postData) ) {
+					if ( isset($postData['btn-search-parameters']) ) {
+						// Busqueda de funcionarios por parametros
+						if ( $model->validate() ) {
+							
+						}
+
+					} elseif ( isset($postData['btn-search-impuesto']) ) {
+						// Busqueda de los funcionarios por impuesto y tipo de solicitud
+						if ( $model->validate() ) {
+							
+						}
+					}
+				}	
+
+				// Modelo adicionales para la busqueda de los funcionarios.
+				$modelImpuesto = New ImpuestoForm();
+
+				// Se define la lista de item para el combo de impuestos.
+				$listaImpuesto = $modelImpuesto->getListaImpuesto();
+
+				return $this->render('/funcionario/solicitud/funcionario-desincorporar-solicitud-form', [
+																				'model' => $model,
+																				'modelImpuesto' => $modelImpuesto,
+																				'caption' => 'Desincorporacion de Request',
+																				'listaImpuesto' => $listaImpuesto,
+
+					]);
 
 			} else {
 				// No esta definido el usuario. Eliminar todas las variables de session y salir.
@@ -111,6 +157,30 @@
 
 
 
+
+
+		/**
+		 * Metodo que permite renderizar un combo de tipos de solicitudes
+		 * segun el parametro impuestos.
+		 * @param  Integer $i identificador del impuesto.
+		 * @return Renderiza una vista con un combo de impuesto.
+		 */
+		public function actionListSolicitud($i)
+	    {
+	       // die('hola, entro a list');
+	        $countSolicitud = TipoSolicitud::find()->where(['impuesto' => $i, 'inactivo' => 0])->count();
+
+	        $solicitudes = TipoSolicitud::find()->where(['impuesto' => $i, 'inactivo' => 0])->all();
+
+	        if ( $countSolicitud > 0 ) {
+	        	echo "<option value='0'>" . "Select..." . "</option>";
+	            foreach ( $solicitudes as $solicitud ) {
+	                echo "<option value='" . $solicitud->id_tipo_solicitud . "'>" . $solicitud->descripcion . "</option>";
+	            }
+	        } else {
+	            echo "<option> - </option>";
+	        }
+	    }
 
 
 
