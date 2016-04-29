@@ -91,7 +91,10 @@
 
 
 
-		/***/
+		/**
+		 * [actionIndex description]
+		 * @return [type] [description]
+		 */
 		public function actionIndex()
 		{
 			if ( isset(Yii::$app->user->identity->username) ) {
@@ -124,18 +127,12 @@
 						if ( $model->validate() ) {
 							$idDepartamento = $postData[$formName]['id_departamento'];
 							$idUnidad = $postData[$formName]['id_unidad'];
-							// return $this->redirect([
-							// 			'buscar-por-departamento-unidad',
-							// 			'idD' => $idDepartamento,
-							// 			'idU' => $idUnidad,
-							// 			'model' => $model]);
 							return self::actionBuscarPorDepartamentoUnidad($idDepartamento, $idUnidad, $model);
 						}
 
 					} elseif ( isset($postData['btn-search-parameters']) ) {
 						// Busqueda de los funcionarios por parametro, DNI, apellidos o nombres.
 						if ( $model->validate() ) {
-							//return $this->redirect(['buscar-funcionario-vigente']);
 							$params = $postData[$formName]['searchGlobal'];
 							return self::actionBuscarFuncionarioPorParametros($params, $model);
 						}
@@ -172,7 +169,12 @@
 
 
 
-		/***/
+		/**
+		 * [actionBeginSave description]
+		 * @param  [type] $postData [description]
+		 * @param  [type] $action   [description]
+		 * @return [type]           [description]
+		 */
 		private function actionBeginSave($postData, $action)
 		{
 			$result = false;
@@ -190,10 +192,8 @@
 	  				$result = self::actionCreate($postData, $conexion, $this->conn);
 	  				if ( $result ) {
 	  					$transaccion->commit();
-	  					//return $this->redirect(['proceso-exitoso']);
 	  				} else {
 	  					$transaccion->rollBack();
-	  					//return $this->redirect(['error-operacion', 'cod' => 920]);
 	  				}
 
 	  				$this->conn->close();
@@ -206,7 +206,13 @@
 
 
 
-		/***/
+		/**
+		 * [actionCreate description]
+		 * @param  [type] $postData      [description]
+		 * @param  [type] $conexionLocal [description]
+		 * @param  [type] $connLocal     [description]
+		 * @return [type]                [description]
+		 */
 		private function actionCreate($postData, $conexionLocal, $connLocal)
 		{
 			$result = false;
@@ -250,9 +256,10 @@
 
 
 
-
-
-		/***/
+		/**
+		 * [actionVerificarEnvio description]
+		 * @return [type] [description]
+		 */
 		public function actionVerificarEnvio()
 		{
 			$result = false;
@@ -263,7 +270,6 @@
 
 			$postIndex = $_SESSION['postIndex'];
 			$model = New FuncionarioSearch();
-// die(var_dump('llegue4'));
 			$formName = $model->formName();
 
 			$varPost = $postData[$formName];
@@ -296,22 +302,16 @@
 						if ( $listado == 1 ) {				// Viene de la consulta por Departamento y Unidades
 							$model->scenario = self::SCENARIO_SEARCH_DEPARTAMENTO_UNIDAD;
 							$model->load($postIndex);
-							// $model->id_departamento = $_SESSION['idD'];
-							// $model->id_unidad = $_SESSION['idU'];
 
 							return self::actionBuscarPorDepartamentoUnidad($postIndex[$formName]['id_departamento'],
 							 											   $postIndex[$formName]['id_unidad'],
 							 											   $model);
-							// return $this->redirect(['buscar-por-departamento-unidad',
-							// 					    'idD' => $_SESSION['idD'],
-							// 					    'idU' => $_SESSION['idU']]);
 
 						} elseif ( $listado == 2 ) {		// Viene de la consulta por parametros.
 							$model->scenario = self::SCENARIO_SEARCH_GLOBAL;
 							$model->load($postIndex);
 							return self::actionBuscarFuncionarioPorParametros($postIndex[$formName]['searchGlobal'],
 							 												  $model);
-							//return $this->redirect(['buscar-funcionario-vigente']);
 
 						} elseif ( $listado == 3 ) {		// Viene de la consulta por parametros.
 							$model->scenario = self::SCENARIO_SEARCH_GLOBAL;
@@ -357,7 +357,7 @@
 			return $this->render('/funcionario/solicitud/_list', [
 														'model' => $model,
 														'dataProvider' => $dataProvider,
-														'caption' => Yii::t('backend', 'Lists of Official'),
+														'caption' => Yii::t('backend', 'Assign Request to Official'),
 														'subCaption' => $subCaption,
 														'modelImpuesto' => $modelImpuesto,
 														'listaImpuesto' => $listaImpuesto,
@@ -397,7 +397,7 @@
 			return $this->render('/funcionario/solicitud/_list', [
 														'model' => $model,
 														'dataProvider' => $dataProvider,
-														'caption' => Yii::t('backend', 'Lists of Official'),
+														'caption' => Yii::t('backend', 'Assign Request to Official'),
 														'subCaption' => $subCaption,
 														'modelImpuesto' => $modelImpuesto,
 														'listaImpuesto' => $listaImpuesto,
@@ -435,7 +435,7 @@
 			return $this->render('/funcionario/solicitud/_list', [
 														'model' => $model,
 														'dataProvider' => $dataProvider,
-														'caption' => Yii::t('backend', 'Lists of Official'),
+														'caption' => Yii::t('backend', 'Assign Request to Official'),
 														'subCaption' => $subCaption,
 														'modelImpuesto' => $modelImpuesto,
 														'listaImpuesto' => $listaImpuesto,
@@ -446,9 +446,10 @@
 
 
 
-
-
-		/***/
+		/**
+		 * [actionListaImpuestoSolicitud description]
+		 * @return [type] [description]
+		 */
 		public function actionListaImpuestoSolicitud()
 		{
 			$caption = Yii::t('backend', 'List of Request');
@@ -469,17 +470,24 @@
 
 
 
-		/***/
+		/**
+		 * [actionQuit description]
+		 * @return [type] [description]
+		 */
 		public function actionQuit()
 		{
-			$varSession = ['errListaFuncionario', 'errListaSolicitud', 'idD', 'idU'];
+			$varSession = self::actionGetListaSessions();
 			self::actionAnularSession($varSession);
 			return $this->render('/funcionario/quit');
 		}
 
 
 
-		/***/
+		/**
+		 * [actionAnularSession description]
+		 * @param  [type] $varSessions [description]
+		 * @return [type]              [description]
+		 */
 		public function actionAnularSession($varSessions)
 		{
 			Session::actionDeleteSession($varSessions);
@@ -487,7 +495,10 @@
 
 
 
-		/***/
+		/**
+		 * [actionProcesoExitoso description]
+		 * @return [type] [description]
+		 */
 		public function actionProcesoExitoso()
 		{
 			$varSession = self::actionGetListaSessions();
@@ -497,7 +508,11 @@
 
 
 
-		/***/
+		/**
+		 * [actionErrorOperacion description]
+		 * @param  [type] $codigo [description]
+		 * @return [type]         [description]
+		 */
 		public function actionErrorOperacion($codigo)
 		{
 			$varSession = self::actionGetListaSessions();
@@ -507,20 +522,32 @@
 
 
 
-		/***/
+		/**
+		 * [actionGetListaSessions description]
+		 * @return [type] [description]
+		 */
 		public function actionGetListaSessions()
 		{
 			return $varSession = [
 							'errListaFuncionario',
 							'errListaSolicitud',
 							'idD',
-							'idU'
+							'idU',
+							'postIndex'
 					];
 		}
 
 
 
-		/***/
+		/**
+		 * [actionInactivarFuncionarioSolicitud description]
+		 * @param  [type] $idFuncionario [description]
+		 * @param  [type] $tipoSolicitud [description]
+		 * @param  [type] $tabla         [description]
+		 * @param  [type] $conexionLocal [description]
+		 * @param  [type] $connLocal     [description]
+		 * @return [type]                [description]
+		 */
 		public function actionInactivarFuncionarioSolicitud($idFuncionario, $tipoSolicitud, $tabla, $conexionLocal, $connLocal)
 		{
 			$result = false;
