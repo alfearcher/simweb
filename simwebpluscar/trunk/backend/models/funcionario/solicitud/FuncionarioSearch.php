@@ -88,7 +88,7 @@
         											'searchGlobal',
         		],
         		self::SCENARIO_DEFAULT => [
-        					Model::scenarios()
+        					'',
         		],
         	];
     	}
