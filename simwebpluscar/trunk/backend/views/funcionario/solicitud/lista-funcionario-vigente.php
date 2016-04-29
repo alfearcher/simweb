@@ -59,7 +59,7 @@
 		$form = ActiveForm::begin([
 			'id' => 'lista-funcionario-vigente-form',
 		    'method' => 'post',
-		    'action' => Url::toRoute(['funcionario/solicitud/funcionario-solicitud/verificar-envio']),
+		    //'action' => Url::toRoute(['funcionario/solicitud/funcionario-solicitud/verificar-envio']),
 			'enableClientValidation' => true,
 			'enableAjaxValidation' => true,
 			'enableClientScript' => true,
@@ -100,30 +100,6 @@
 
 					<div class="row" style="border-bottom: 0.5px solid #ccc;">
 						<h4><strong><?= Yii::t('backend', 'Search Official: ') . $subCaption; ?></strong></h4>
-					</div>
-
-					<div class="row" style="padding-top: 15px;">
-						<div class="col-sm-6">
-							<div class="search-global">
-								<?= $form->field($model, 'searchGlobal')->textInput([
-																					'id' => 'searchGlobal',
-																					'style' => 'width: 100%;',
-																	  			  ])->label(false) ?>
-							</div>
-						</div>
-						<div class="col-sm-3">
-							<div class="form-group">
-								<?= Html::submitButton(Yii::t('backend', 'Search'),
-													  [
-														'id' => 'btn-search-global',
-														'class' => 'btn btn-success',
-														'value' => 1,
-														'name' => 'btn-search-global',
-														'style' => 'width: 100%;',
-													  ])
-								?>
-							</div>
-						</div>
 					</div>
 
 <!-- Inicio lista de funcionarios -->
