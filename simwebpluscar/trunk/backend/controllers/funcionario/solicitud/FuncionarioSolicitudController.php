@@ -92,11 +92,34 @@
 
 
 
+
+		/**
+		 * Metodo que permite iniciar el proceso de desincorporacion de una solicitud
+		 * relacionada a una funcionario. Aqui delete no es borrado fisico sino logico.
+		 * @return [type] [description]
+		 */
+		public function actionIndexDelete()
+		{
+			if ( isset(Yii::$app->user->identity->username) ) {
+
+			} else {
+				// No esta definido el usuario. Eliminar todas las variables de session y salir.
+				return MensajeController::actionMensaje(999);
+			}
+
+		}
+
+
+
+
+
+
+
 		/**
 		 * [actionIndex description]
 		 * @return [type] [description]
 		 */
-		public function actionIndex()
+		public function actionIndexCreate()
 		{
 			if ( isset(Yii::$app->user->identity->username) ) {
 				$_SESSION['errListaFuncionario'] = '';
@@ -158,9 +181,6 @@
 																				'listaDepartamento' => $listaDepartamento,
 
 					]);
-
-
-
 
 			} else {
 				// No esta definido el usuario. Eliminar todas las variables de session y salir.
