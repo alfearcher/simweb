@@ -59,9 +59,9 @@
 		$form = ActiveForm::begin([
 			'id' => 'lista-funcionario-vigente-form',
 		    'method' => 'post',
-		    //'action' => Url::toRoute(['funcionario/solicitud/funcionario-solicitud/verificar-envio']),
+		    'action' => Url::toRoute(['funcionario/solicitud/funcionario-solicitud/verificar-envio']),
 			'enableClientValidation' => true,
-			'enableAjaxValidation' => true,
+			//'enableAjaxValidation' => true,
 			'enableClientScript' => true,
 		]);
 	?>
@@ -200,10 +200,10 @@
 						<?}?>
 					</div>
 					<div class="row" style="border-bottom: 0.5px solid #ccc; padding-top: 15px;">
-						<?php Pjax::begin(); ?>
+
 						<div class="lista-impuesto-solicitud" id="lista-impuesto-solicitud">
 						</div>
-						<?php Pjax::end(); ?>
+
 					</div>
 <!-- Fin de lista de Solicitudes -->
 
