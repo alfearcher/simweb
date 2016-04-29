@@ -53,6 +53,7 @@
 	use backend\models\funcionario\FuncionarioForm;
 	use backend\models\funcionario\Funcionario;
 	use backend\models\funcionario\solicitud\FuncionarioSolicitud;
+	use backend\models\configuracion\tiposolicitud\TipoSolicitudSearch;
 	use yii\data\ActiveDataProvider;
 
 
@@ -239,7 +240,7 @@
 	    {
 	    	$modelFind = null;
 	    	$modelFind = FuncionarioSolicitud::find()->where('tipo_solicitud =:tipo_solicitud', [':tipo_solicitud' => $tipoSolicitud])
-	    											 ->andWhere(Funcionario::tableName().'.inactivo =:inactivo', [':inactivo' => 0])
+	    											 ->andWhere('vigencia >:vigencia', [':vigencia' => date('Y-m-d')])
 	    											 ->joinWith('funcionario')
 	    											 ->orderBy([
 	    											 		'apellidos' => SORT_ASC,
@@ -278,6 +279,15 @@
 	    	}
 
 	    	return $dataProvider;	
+	    }
+
+
+
+
+	    /***/
+	    public function getInfoSolicitudImpuesto($tipoSolicitud)
+	    {
+	    	return TipoSolicitudSearch::getInfoImpuestoSegunSolicitud($tipoSolicitud);
 	    }
 
 	}
