@@ -123,7 +123,8 @@
 					if ( isset($postData['btn-search-parameters']) ) {
 						// Busqueda de funcionarios por parametros
 						if ( $model->validate() ) {
-							
+							$params = $postData[$formName]['searchGlobal'];
+							return self::actionBuscarFuncionarioParaDesincorporar(0, 0, $params);
 						}
 
 					} elseif ( isset($postData['btn-search-impuesto']) ) {
@@ -131,10 +132,10 @@
 						if ( $model->validate() ) {
 							$tipoSolicitud = $postData[$formName]['tipo_solicitud'];
 							$impuesto = $postData[$formName]['impuesto'];
-							return self::actionBuscarFuncionarioPorSolicitud($tipoSolicitud, $impuesto);
+							return self::actionBuscarFuncionarioParaDesincorporar($tipoSolicitud, $impuesto);
 						}
 					}
-				}	
+				}
 
 				// Modelo adicionales para la busqueda de los funcionarios.
 				$modelImpuesto = New ImpuestoForm();
@@ -184,32 +185,74 @@
 
 
 
+	    public function actionPrueba()
+	    {
+die('jsjsjsjsjs');
+	    }
+
+
+	    public function actionBuscarFuncionarioPorParametrosParaDesincorporar($params)
+	    {
+
+	    }
+
+
+
 	    /***/
-	    public function actionBuscarFuncionarioPorSolicitud($tipoSolicitud, $impuesto)
+	    public function actionBuscarFuncionarioParaDesincorporar($tipoSolicitud, $impuesto, $params = '')
 		{
-			$listado = 1;
+			if ( trim($params) != '' ) {
+				//	Lista de funcionarios, si saber que solicitudes tienen asociada.
+				$listado = 2;
+				//$url = Url::to(['prueba']);
+				$url = Url::to(['prueba']);
+				$model = New FuncionarioSearch();
+				$model->scenario = self::SCENARIO_SEARCH_GLOBAL;
+				$model->searchGlobal = $params;
 
-			$model = New FuncionarioSearch();
-			$model->scenario = self::SCENARIO_SEARCH_IMPUESTO_SOLICITUD;
+				$subCaption = $params;
 
-			// Arreglo multi-dimensional que contiene el su primer elemento los datos del impuesto
-			// y en su segundo elemento los datos del tipo de solicitud.
-			$infoSolicitud = $model->getInfoSolicitudImpuesto($tipoSolicitud);
+				// Se genera un dataprovider de funcionarios.
+				$dataProvider = $model->getDataProviderFuncionarioParaDesincorporar();
 
-			$captionImpuesto = 'Impuesto: ' . $infoSolicitud['impuesto'][$impuesto];
-			$captionSolicitud = 'Solicitud: ' . $infoSolicitud['solicitud'][$tipoSolicitud];
-			$subCaption = $captionImpuesto . ' / ' . $captionSolicitud;
+				return $this->render('/funcionario/solicitud/seleccionar-funcionario-desincorporar', [
+																		'model' => $model,
+																		'dataProvider' => $dataProvider,
+																		'caption' => Yii::t('backend', 'Desincorporacion de Funcionario'),
+																		'subCaption' => $subCaption,
+																		'listado' => $listado,
+																		'url' => $url,
+					]);
 
-			// Se genera un dataprovider de funcionarios, busqueda realizada por el tipo de solicitud.
-			$dataProvider = $model->getDataProviderSolicitudFuncionario($tipoSolicitud);
 
-			return $this->render('/funcionario/solicitud/lista-funcionario-por-solicitud', [
-																	'model' => $model,
-																	'dataProvider' => $dataProvider,
-																	'caption' => Yii::t('backend', 'Desincorporacion de Funcionario'),
-																	'subCaption' => $subCaption,
-																	'listado' => $listado,
-				]);
+			} elseif ( $tipoSolicitud > 0 && $impuesto > 0 ) {
+				// Lista de funcionario y se sabe a que solicitud estan relacionados. A la utilizada en la busqueda.
+				$listado = 1;
+				//$url = Url::to(['prueba']);
+				$url = Url::to(['prueba']);
+				$model = New FuncionarioSearch();
+				$model->scenario = self::SCENARIO_SEARCH_IMPUESTO_SOLICITUD;
+
+				// Arreglo multi-dimensional que contiene el su primer elemento los datos del impuesto
+				// y en su segundo elemento los datos del tipo de solicitud.
+				$infoSolicitud = $model->getInfoSolicitudImpuesto($tipoSolicitud);
+
+				$captionImpuesto = 'Impuesto: ' . $infoSolicitud['impuesto'][$impuesto];
+				$captionSolicitud = 'Solicitud: ' . $infoSolicitud['solicitud'][$tipoSolicitud];
+				$subCaption = $captionImpuesto . ' / ' . $captionSolicitud;
+
+				// Se genera un dataprovider de funcionarios, busqueda realizada por el tipo de solicitud.
+				$dataProvider = $model->getDataProviderFuncionarioParaDesincorporar($tipoSolicitud);
+
+				return $this->render('/funcionario/solicitud/lista-funcionario-por-solicitud', [
+																		'model' => $model,
+																		'dataProvider' => $dataProvider,
+																		'caption' => Yii::t('backend', 'Desincorporacion de Funcionario'),
+																		'subCaption' => $subCaption,
+																		'listado' => $listado,
+																		'url' => $url,
+					]);
+			}
 
 		}
 
