@@ -50,7 +50,6 @@
 	use yii\widgets\ActiveForm;
 	use kartik\icons\Icon;
 	use yii\web\View;
-	use yii\widgets\Pjax;
 	use backend\controllers\menu\MenuController;
 
     $typeIcon = Icon::FA;
@@ -65,6 +64,7 @@
 			'id' => 'lista-funcionario-por-solicitud-form',
 		    'method' => 'post',
 		    //'action' => Url::toRoute(['funcionario/solicitud/funcionario-solicitud/verificar-envio']),
+		    'action' => $url,
 			'enableClientValidation' => true,
 			//'enableAjaxValidation' => true,
 			'enableClientScript' => true,
@@ -136,26 +136,30 @@
                 							return $model->funcionario->nombres;
                 						}
                 					],
-
                 					[
-                                    	'class' => 'yii\grid\ActionColumn',
-                                    	'header'=> Yii::t('backend','View'),
-                                    	'template' => '{view}',
-                                    	'buttons' => [
-                                        	'view' => function ($url, $model, $key) {
-                                            	return Html::submitButton('<div class="item-list" style="color: #337AB7;"><center>'. Icon::show('fa fa-thumbs-						up',
-                                            							 ['class' => 'fa-2x'],
-                                            							 Icon::FA) .'</center></div>',
-                                                                        [
-                                                                            'value' => $key,
-                                                                            'name' => 'id',
-                                                                            'title' => Yii::t('backend', 'View'),
-                                                                            'style' => 'margin: 0 auto; display: block;',
-                                                                        ]);
-                                        			},
-                                    	],
-                                	],
-                        				
+										'class' => 'yii\grid\CheckboxColumn',
+										'name' => 'chk-solicitud',
+										'multiple' => true,
+									],
+
+                					// [
+                     //                	'class' => 'yii\grid\ActionColumn',
+                     //                	'header'=> Yii::t('backend','OK'),
+                     //                	'template' => '{ok}',
+                     //                	'buttons' => [
+                     //                    	'ok' => function ($url, $model, $key) {
+                     //                        	return Html::submitButton('<div class="item-list" style="color: #337AB7;"><center>'. Icon::show('fa fa-thumbs-						up',
+                     //                        							 ['class' => 'fa-2x'],
+                     //                        							 Icon::FA) .'</center></div>',
+                     //                                                    [
+                     //                                                        'value' => $key,
+                     //                                                        'name' => 'id',
+                     //                                                        'title' => Yii::t('backend', 'ok'),
+                     //                                                        'style' => 'margin: 0 auto; display: block;',
+                     //                                                    ]);
+                     //                    			},
+                     //                	],
+                     //            	],
 								],
 							]);
 						?>
