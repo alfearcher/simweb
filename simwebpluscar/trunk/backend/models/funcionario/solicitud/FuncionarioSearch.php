@@ -246,6 +246,24 @@
 	    											 		'apellidos' => SORT_ASC,
 	    											 		'nombres' => SORT_ASC,
 	    											 	]);
+
+	    	return isset($modelFind) ? $modelFind : null;
+	    }
+
+
+
+
+
+	    /***/
+	    public function findFuncionarioSolicitud()
+	    {
+	    	$modelFind = null;
+	    	$modelFind = Funcionario::find()->distinct('id_funcionario')->where('vigencia >:vigencia', [':vigencia' => date('Y-m-d')])
+	    									->joinWith('funcionarioSolicitud')
+	    									->orderBy([
+											 		'apellidos' => SORT_ASC,
+											 		'nombres' => SORT_ASC,
+											 	]);
 	    	return isset($modelFind) ? $modelFind : null;
 	    }
 
@@ -260,10 +278,13 @@
 	     * @param  Integer $tipoSolicitud identificador del tipo de solicitud.
 	     * @return ActiveDataProvider.
 	     */
-	    public function getDataProviderSolicitudFuncionario($tipoSolicitud)
+	    public function getDataProviderFuncionarioParaDesincorporar($tipoSolicitud = 0)
 	    {
-	    	$query = $this->findSolicitudFuncionarios($tipoSolicitud);
-
+	    	if ( $tipoSolicitud > 0 ) {
+	    		$query = $this->findSolicitudFuncionarios($tipoSolicitud);
+	    	} else {
+	    		$query = $this->findFuncionarioSolicitud();
+	    	}
 	    	$dataProvider = New ActiveDataProvider([
 	    						'query' => $query,
 	    	]);
@@ -278,7 +299,7 @@
 	    			]);
 	    	}
 
-	    	return $dataProvider;	
+	    	return $dataProvider;
 	    }
 
 
