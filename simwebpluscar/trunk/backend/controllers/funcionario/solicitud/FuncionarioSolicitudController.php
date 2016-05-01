@@ -197,7 +197,6 @@
 	    	$request = Yii::$app->request;
 	    	$postData = $request->post();
 
- die(var_dump($request->bodyParams));
 	    	$chkIdFuncionarioSolicitud = isset($postData['chk-id-funcionario-solicitud']) ? $postData['chk-id-funcionario-solicitud'] : null;
 
 	    	// Se verifica que el post enviado desde el formulario este correcto
