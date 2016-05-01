@@ -186,13 +186,6 @@
 
 
 
-	    public function actionPrueba()
-	    {
-die('jsjsjsjsjs');
-	    }
-
-
-
 	    /**
 	     * Metodo que permite inactivar una solicitud relacionada a un o varios funcionarios.
 	     * El listado inicial esta identificado el tipo de solicitud y le sigue un listado
@@ -230,7 +223,7 @@ die('jsjsjsjsjs');
 	     * se renderizara un mensaje de error.
 	     * @return [type] [description]
 	     */
-	    public function actionSolicitudesSegunFuncionario()
+	    public function actionTiposSolicitudesSegunFuncionario()
 	    {
 	    	$request = Yii::$app->request;
 	    	$postData = $request->post();
@@ -245,6 +238,7 @@ die('jsjsjsjsjs');
 	    		$model = New FuncionarioSearch();
 	    		$dataProvider = $model->getDataProviderTipoSolicitudSegunFuncionario($id);
 	    		$caption = Yii::t('backend', 'Remove Request');
+	    		$subCaption = Yii::t('backend', 'Select Request');
 	    		$listado = 3;
 	    		$url = Url::to(['inactivar-seleccion-solicitud']);
 	    		return $this->render('/funcionario/solicitud/seleccionar-solicitud-desincorporar', [
@@ -270,7 +264,7 @@ die('jsjsjsjsjs');
 				//	Lista de funcionarios, si saber que solicitudes tienen asociada.
 				$listado = 2;
 				//$url = Url::to(['prueba']);
-				$url = Url::to(['solicitudes-segun-funcionario']);
+				$url = Url::to(['tipos-solicitudes-segun-funcionario']);
 				$model = New FuncionarioSearch();
 				$model->scenario = self::SCENARIO_SEARCH_GLOBAL;
 				$model->searchGlobal = $params;
