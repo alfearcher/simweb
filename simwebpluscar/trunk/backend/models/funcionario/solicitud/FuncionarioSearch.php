@@ -240,6 +240,7 @@
 	    {
 	    	$modelFind = null;
 	    	$modelFind = FuncionarioSolicitud::find()->where('tipo_solicitud =:tipo_solicitud', [':tipo_solicitud' => $tipoSolicitud])
+	    											 ->andWhere('inactivo =:inactivo', [':inactivo' => 0])
 	    											 ->andWhere('vigencia >:vigencia', [':vigencia' => date('Y-m-d')])
 	    											 ->joinWith('funcionario')
 	    											 ->orderBy([
