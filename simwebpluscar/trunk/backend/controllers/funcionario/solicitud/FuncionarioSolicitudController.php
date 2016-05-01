@@ -223,13 +223,41 @@ die('jsjsjsjsjs');
 
 
 
-	    /***/
+	    /**
+	     * Metodo que permite renderizar una vista con las solicitudes relacionadas a un funcionario.
+	     * De este listado el usuario podra seleccionar las solicitudes que desee desincorporar.
+	     * Si el post enviado por el formulario donde se selecciona al funcionario no es valido
+	     * se renderizara un mensaje de error.
+	     * @return [type] [description]
+	     */
 	    public function actionSolicitudesSegunFuncionario()
 	    {
 	    	$request = Yii::$app->request;
 	    	$postData = $request->post();
 
-// die(var_dump($postData));
+	    	// Se obtiene el identificador del funcionario.
+	    	$id = isset($postData['id']) ? $postData['id'] : 0;
+	    	if ( $id > 0 ) {
+	    		// Se muestra un listado con los tipos de solicitudes relacionados
+	    		// a un funcionario. Este listado tendra la posibilidad de seleccion
+	    		// multiple para la desincorporacion de la(s) solicitud(es).
+
+	    		$model = New FuncionarioSearch();
+	    		$dataProvider = $model->getDataProviderTipoSolicitudSegunFuncionario($id);
+	    		$caption = Yii::t('backend', 'Remove Request');
+	    		$listado = 3;
+	    		$url = Url::to(['inactivar-seleccion-solicitud']);
+	    		return $this->render('/funcionario/solicitud/seleccionar-solicitud-desincorporar', [
+																		'model' => $model,
+																		'dataProvider' => $dataProvider,
+																		'caption' => $caption,
+																		'subCaption' => $subCaption,
+																		'listado' => $listado,
+																		'url' => $url,
+					]);
+	    	} else {
+	    		return MensajeController::actionMensaje(404);
+	    	}
 	    }
 
 
