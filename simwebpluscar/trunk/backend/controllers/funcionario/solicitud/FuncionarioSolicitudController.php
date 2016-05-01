@@ -197,6 +197,7 @@
 	    	$request = Yii::$app->request;
 	    	$postData = $request->post();
 
+// die(var_dump($postData));
 	    	$chkIdFuncionarioSolicitud = isset($postData['chk-id-funcionario-solicitud']) ? $postData['chk-id-funcionario-solicitud'] : null;
 
 	    	// Se verifica que el post enviado desde el formulario este correcto
@@ -237,7 +238,7 @@
 	    		$model = New FuncionarioSearch();
 	    		$model->scenario = self::SCENARIO_SEARCH_GLOBAL;
 	    		$dataProvider = $model->getDataProviderTipoSolicitudSegunFuncionario($id);
-// die(var_dump($dataProvider));
+
 	    		$caption = Yii::t('backend', 'Remove Request');
 	    		$funcionario = $model->getFuncionarioSegunId($id);
 	    		$subCaption = $funcionario['apellidos'] . ' ' . $funcionario['nombres'];
