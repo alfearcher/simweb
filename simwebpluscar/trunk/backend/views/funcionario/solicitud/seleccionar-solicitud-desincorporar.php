@@ -139,6 +139,22 @@
 					</div>
 <!-- Fin de lista de funcionario -->
 
+<!-- Inicio de boton -->
+					<div class="col-sm-3">
+						<div class="form-group">
+							<?= Html::submitButton(Yii::t('backend', 'Remove Request'),
+												  [
+													'id' => 'btn-remove-request',
+													'class' => 'btn btn-success',
+													'value' => 1,
+													'name' => 'btn-remove-request',
+													'style' => 'width: 100%;',
+												  ])
+							?>
+						</div>
+					</div>
+<!--  -->
+
 
 				</div>
 			</div>	<!-- Fin de container-fluid -->
