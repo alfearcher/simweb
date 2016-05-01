@@ -143,10 +143,11 @@
 				// Se define la lista de item para el combo de impuestos.
 				$listaImpuesto = $modelImpuesto->getListaImpuesto();
 
+				$caption = Yii::t('backend', 'Remove Request');
 				return $this->render('/funcionario/solicitud/funcionario-desincorporar-solicitud-form', [
 																				'model' => $model,
 																				'modelImpuesto' => $modelImpuesto,
-																				'caption' => 'Desincorporacion de Request',
+																				'caption' => $caption,
 																				'listaImpuesto' => $listaImpuesto,
 
 					]);
@@ -191,9 +192,44 @@ die('jsjsjsjsjs');
 	    }
 
 
-	    public function actionBuscarFuncionarioPorParametrosParaDesincorporar($params)
-	    {
 
+	    /**
+	     * Metodo que permite inactivar una solicitud relacionada a un o varios funcionarios.
+	     * El listado inicial esta identificado el tipo de solicitud y le sigue un listado
+	     * de funcionario.
+	     * @return [type] [description]
+	     */
+	    public function actionInactivarSeleccionSolicitud()
+	    {
+	    	$result = false;
+	    	$request = Yii::$app->request;
+	    	$postData = $request->post();
+
+	    	$chkIdFuncionarioSolicitud = isset($postData['chk-id-funcionario-solicitud']) ? $postData['chk-id-funcionario-solicitud'] : null;
+
+	    	// Se verifica que el post enviado desde el formulario este correcto
+	    	if ( isset($postData['btn-remove-request']) && count($chkIdFuncionarioSolicitud) > 0 ) {
+	    		$result = self::actionBeginSave($postData, 'delete');		// delete a nivel logico.
+	    		if ( $result ) {
+					$this->redirect(['proceso-exitoso']);
+				} else {
+					$this->redirect(['error-operacion', 'cod' => 920]);
+				}
+	    	} else {
+	    		return MensajeController::actionMensaje(404);
+	    	}
+	    }
+
+
+
+
+	    /***/
+	    public function actionSolicitudesSegunFuncionario()
+	    {
+	    	$request = Yii::$app->request;
+	    	$postData = $request->post();
+
+// die(var_dump($postData));
 	    }
 
 
@@ -201,11 +237,12 @@ die('jsjsjsjsjs');
 	    /***/
 	    public function actionBuscarFuncionarioParaDesincorporar($tipoSolicitud, $impuesto, $params = '')
 		{
+			$caption = Yii::t('backend', 'Remove Request');
 			if ( trim($params) != '' ) {
 				//	Lista de funcionarios, si saber que solicitudes tienen asociada.
 				$listado = 2;
 				//$url = Url::to(['prueba']);
-				$url = Url::to(['prueba']);
+				$url = Url::to(['solicitudes-segun-funcionario']);
 				$model = New FuncionarioSearch();
 				$model->scenario = self::SCENARIO_SEARCH_GLOBAL;
 				$model->searchGlobal = $params;
@@ -218,7 +255,7 @@ die('jsjsjsjsjs');
 				return $this->render('/funcionario/solicitud/seleccionar-funcionario-desincorporar', [
 																		'model' => $model,
 																		'dataProvider' => $dataProvider,
-																		'caption' => Yii::t('backend', 'Desincorporacion de Funcionario'),
+																		'caption' => $caption,
 																		'subCaption' => $subCaption,
 																		'listado' => $listado,
 																		'url' => $url,
@@ -226,10 +263,12 @@ die('jsjsjsjsjs');
 
 
 			} elseif ( $tipoSolicitud > 0 && $impuesto > 0 ) {
-				// Lista de funcionario y se sabe a que solicitud estan relacionados. A la utilizada en la busqueda.
+				// Lista de funcionario y se sabe a que solicitud estan relacionados. La utilizada en la busqueda.
+				// Aqui la desincorpracion es directa porque ya se conoce a los funcioanrios que estas relacionados
+				// a una solcitud.
 				$listado = 1;
 				//$url = Url::to(['prueba']);
-				$url = Url::to(['prueba']);
+				$url = Url::to(['inactivar-seleccion-solicitud']);
 				$model = New FuncionarioSearch();
 				$model->scenario = self::SCENARIO_SEARCH_IMPUESTO_SOLICITUD;
 
@@ -247,7 +286,7 @@ die('jsjsjsjsjs');
 				return $this->render('/funcionario/solicitud/lista-funcionario-por-solicitud', [
 																		'model' => $model,
 																		'dataProvider' => $dataProvider,
-																		'caption' => Yii::t('backend', 'Desincorporacion de Funcionario'),
+																		'caption' => $caption,
 																		'subCaption' => $subCaption,
 																		'listado' => $listado,
 																		'url' => $url,
@@ -363,10 +402,62 @@ die('jsjsjsjsjs');
 
 	  				$this->conn->close();
 				}
+			} if ( strtolower($action) == 'delete' ) {
+				if ( count($postData) > 0 ) {
+					$conexion = New ConexionController();
+
+	  				// Instancia de conexion hacia la base de datos.
+	  				$this->conn = $conexion->initConectar('db');
+	  				$this->conn->open();
+
+	  				// Instancia de transaccion.
+	  				$transaccion = $this->conn->beginTransaction();
+
+	  				$result = self::actionDelete($postData, $conexion, $this->conn);
+	  				if ( $result ) {
+	  					$transaccion->commit();
+	  				} else {
+	  					$transaccion->rollBack();
+	  				}
+
+	  				$this->conn->close();
+				}
 			}
 
 			return $result;
 		}
+
+
+
+		/***/
+		private function actionDelete($postData, $conexionLocal, $connLocal)
+		{
+			$result = false;
+			// Se buscan los identificadores del registro.
+			$chkIdFuncionarioSolicitud['id_funcionario_solic'] = $postData['chk-id-funcionario-solicitud'];
+
+// die(var_dump($chkIdFuncionarioSolicitud));
+			// Modelo de la entidad principal a guardar.
+			$model = New FuncionarioSolicitud();
+			$tabla = $model->tableName();
+
+			// Se crea un arreglo de datos con los atributos de la clase.
+			//$arregloDatos = $model->attributes;
+
+			$arregloDatos['observacion'] = 'DESINCORPORADO POR: ' . Yii::$app->user->identity->username . ' / ' . date('Y-m-d H:i:s');
+			$arregloDatos['inactivo'] = 1;
+
+			//foreach ( $chkIdFuncionarioSolicitud as $id ) {
+				//$arregloCondicion['id_funcionario_solic'] = $funcionario;
+				$result = $conexionLocal->modificarRegistro($connLocal, $tabla, $arregloDatos, $chkIdFuncionarioSolicitud);
+				//if ( !$result ) { break; }
+			//}
+
+			return $result;
+
+		}
+
+
 
 
 
