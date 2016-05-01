@@ -351,6 +351,7 @@
 	    	]);
 	    	$query->andFilterWhere([
 	    						FuncionarioSolicitud::tableName().'.inactivo' => 0,
+	    						TipoSolicitud::tableName().'.inactivo' => 0,
 	    						// ['like', 'apellidos', $this->searchGlobal],
 	    						// ['like', 'nombres', $this->searchGlobal],
 
