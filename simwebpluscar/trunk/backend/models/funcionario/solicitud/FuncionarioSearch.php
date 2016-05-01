@@ -55,6 +55,7 @@
 	use backend\models\funcionario\solicitud\FuncionarioSolicitud;
 	use backend\models\configuracion\tiposolicitud\TipoSolicitudSearch;
 	use backend\models\configuracion\tiposolicitud\TipoSolicitud;
+	use backend\models\impuesto\ImpuestoForm;
 	use yii\data\ActiveDataProvider;
 
 
@@ -328,7 +329,8 @@
 	    	$modelFind = FuncionarioSolicitud::find()->where('id_funcionario =:id_funcionario', [':id_funcionario' => $idFuncionario])
 	    	               							 ->joinWith('tipoSolicitud')
 	    	               							 ->orderBy([
-	    	               							 		'tipo_solicitud' => SORT_ASC,
+	    	               							 		'impuesto' => SORT_ASC,
+	    	               							 		'descripcion' => SORT_ASC,
 	    	               							 	]);
 	    	return isset($modelFind) ? $modelFind : null;
 	    }
@@ -361,12 +363,17 @@
 
 
 
-	    /***/
+	    /**
+	     * [getFuncionarioSegunId description]
+	     * @param  [type] $id [description]
+	     * @return [type]     [description]
+	     */
 	    public function getFuncionarioSegunId($id)
 	    {
 	    	$model = New FuncionarioForm();
 	    	return $model->getFuncionarioSegunId($id);
 	    }
+
 
 	}
 ?>
