@@ -359,5 +359,14 @@
 	    	return $dataProvider;
 	    }
 
+
+
+	    /***/
+	    public function getFuncionarioSegunId($id)
+	    {
+	    	$model = New FuncionarioForm();
+	    	return $model->getFuncionarioSegunId($id);
+	    }
+
 	}
 ?>
