@@ -34,7 +34,6 @@
 	use yii\web\Response;
 	use yii\helpers\Url;
 	use backend\models\funcionario\solicitud\FuncionarioSolicitud;
-	use backend\models\funcionario\solicitud\FuncionarioSolicitudForm;
 	use backend\models\funcionario\solicitud\FuncionarioSearch;
 	use common\conexion\ConexionController;
 	use common\mensaje\MensajeController;
@@ -236,9 +235,12 @@
 	    		// multiple para la desincorporacion de la(s) solicitud(es).
 
 	    		$model = New FuncionarioSearch();
+	    		$model->scenario = self::SCENARIO_SEARCH_GLOBAL;
 	    		$dataProvider = $model->getDataProviderTipoSolicitudSegunFuncionario($id);
+// die(var_dump($dataProvider));
 	    		$caption = Yii::t('backend', 'Remove Request');
-	    		$subCaption = Yii::t('backend', 'Select Request');
+	    		$funcionario = $model->getFuncionarioSegunId($id);
+	    		$subCaption = $funcionario['apellidos'] . ' ' . $funcionario['nombres'];
 	    		$listado = 3;
 	    		$url = Url::to(['inactivar-seleccion-solicitud']);
 	    		return $this->render('/funcionario/solicitud/seleccionar-solicitud-desincorporar', [
