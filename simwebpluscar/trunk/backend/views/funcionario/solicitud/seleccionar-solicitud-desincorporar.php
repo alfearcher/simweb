@@ -111,7 +111,7 @@
 								'dataProvider' => $dataProvider,
 								//'filterModel' => $model,
 								'headerRowOptions' => ['class' => 'success'],
-								'caption' => Yii::t('backend', 'List of Official Public'),
+								'caption' => Yii::t('backend', 'List of Request'),
 								'summary' => '',
 								'columns' => [
 									[
@@ -123,13 +123,13 @@
                 					[
 										'label' => Yii::t('backend', 'Request'),
 										'value' => function($model) {
-											return $model->id_tipo_solicitud;
+											return $model->tipoSolicitud['id_tipo_solicitud'];
 										}
 									],
 									[
 										'label' => Yii::t('backend', 'Description'),
 										'value' => function($model) {
-											return $model->tiposolicitud->descripcion;
+											return $model->tipoSolicitud['descripcion'];
 										}
 									],
 								],
