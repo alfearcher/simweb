@@ -51,6 +51,7 @@
 	use kartik\icons\Icon;
 	use yii\web\View;
 	use backend\controllers\menu\MenuController;
+	use backend\models\funcionario\solicitud\FuncionarioSearch;
 
     $typeIcon = Icon::FA;
     $typeLong = 'fa-2x';
@@ -114,16 +115,17 @@
 								'caption' => Yii::t('backend', 'List of Request'),
 								'summary' => '',
 								'columns' => [
-									[
-										'class' => 'yii\grid\CheckboxColumn',
-										'name' => 'chk-id-funcionario-solicitud',
-										'multiple' => true,
-									],
-
                 					[
 										'label' => Yii::t('backend', 'Request'),
 										'value' => function($model) {
 											return $model->tipoSolicitud['id_tipo_solicitud'];
+										}
+									],
+									[
+										'label' => Yii::t('backend', 'Tax'),
+										'value' => function($model) {
+											$datos = FuncionarioSearch::getInfoSolicitudImpuesto($model->tipoSolicitud['id_tipo_solicitud']);
+											return $datos['impuesto'][$model->tipoSolicitud['impuesto']];
 										}
 									],
 									[
@@ -132,6 +134,12 @@
 											return $model->tipoSolicitud['descripcion'];
 										}
 									],
+									[
+										'class' => 'yii\grid\CheckboxColumn',
+										'name' => 'chk-id-funcionario-solicitud',
+										'multiple' => true,
+									],
+
 								],
 							]);
 						?>

@@ -87,7 +87,7 @@
 					}
     			</style>
 	        		<?= MenuController::actionMenuSecundario([
-	        						'back' => '/funcionario/solicitud/funcionario-solicitud/index',
+	        						'back' => '/funcionario/solicitud/funcionario-solicitud/index-create',
 	        						'quit' => '/funcionario/solicitud/funcionario-solicitud/quit',
 	        			])
 	        		?>
