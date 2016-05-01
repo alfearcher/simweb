@@ -313,12 +313,44 @@
 
 
 
-	    /***/
+	    /**
+	     * Metodo que realiza la busqueda de los tipos de solicitudes relacionados
+	     * a un funcionario. La relacion entre las entidades para obtener los resultados
+	     * se realizan desde "funcionarios-solicitudes" hacia "config-tipos-solicitudes".
+	     * @param  Long $idFuncionario identificador del funcionario.
+	     * @return ActiveRecord.
+	     */
 	    public function findTipoSolicitudSegunFuncionario($idFuncionario)
 	    {
 	    	$modelFind = null;
 	    	$modelFind = FuncionarioSolicitud::find()->where('id_funcionario =:id_funcionario', [':id_funcionario' => $idFuncionario])
 	    	               							 ->andWhere('inactivo =:inactivo',[':inactivo'=> 0])
+	    	               							 ->joinWith('tipoSolicitud')
+	    	               							 ->orderBy([
+	    	               							 		'tipo_solicitud' => SORT_ASC,
+	    	               							 	]);
+	    	return isset($modelFind) ? $modelFind : null;
+	    }
+
+
+
+	    /**
+	     * Metodo que permite obtener un dataprovider que puede ser utilizado en un
+	     * gridview. Este gridview mostrara la lista de las solicitudes asociadas
+	     * a un funcionario, el key del gridview sera el indice de la entidad
+	     * "funcionarios-solicitudes".
+	     * @param  Long $idFuncionario identificador del funcionario.
+	     * @return ActiveDataProvider.
+	     */
+	    public function getDataProviderTipoSolicitudSegunFuncionario($idFuncionario)
+	    {
+	    	$query = $this->findTipoSolicitudSegunFuncionario($idFuncionario);
+
+	    	$dataProvider = New ActiveDataProvider([
+	    							'query' => $query,
+	    	]);
+
+	    	return $dataProvider;
 	    }
 
 	}
