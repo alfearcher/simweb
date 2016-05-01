@@ -89,6 +89,7 @@
 						$postData = Yii::$app->request->post();
 						$g=Yii::$app->request->getBodyParam('selection');
 
+//die(var_dump($postData));
 				  		if ( $model->load($postData) && Yii::$app->request->isAjax ) {
 							Yii::$app->response->format = Response::FORMAT_JSON;
 							return ActiveForm::validate($model);
