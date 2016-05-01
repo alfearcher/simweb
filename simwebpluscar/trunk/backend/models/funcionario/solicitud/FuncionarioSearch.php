@@ -311,5 +311,15 @@
 	    	return TipoSolicitudSearch::getInfoImpuestoSegunSolicitud($tipoSolicitud);
 	    }
 
+
+
+	    /***/
+	    public function findTipoSolicitudSegunFuncionario($idFuncionario)
+	    {
+	    	$modelFind = null;
+	    	$modelFind = FuncionarioSolicitud::find()->where('id_funcionario =:id_funcionario', [':id_funcionario' => $idFuncionario])
+	    	               							 ->andWhere('inactivo =:inactivo',[':inactivo'=> 0])
+	    }
+
 	}
 ?>
