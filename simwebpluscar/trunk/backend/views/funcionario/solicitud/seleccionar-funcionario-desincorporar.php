@@ -63,7 +63,6 @@
 		$form = ActiveForm::begin([
 			'id' => 'lista-funcionario-por-solicitud-form',
 		    'method' => 'post',
-		    //'action' => Url::toRoute(['funcionario/solicitud/funcionario-solicitud/verificar-envio']),
 		    'action' => $url,
 			'enableClientValidation' => true,
 			//'enableAjaxValidation' => true,
@@ -161,6 +160,7 @@
 						</div>
 					</div>
 <!-- Fin de lista de funcionario -->
+
 
 				</div>
 			</div>	<!-- Fin de container-fluid -->

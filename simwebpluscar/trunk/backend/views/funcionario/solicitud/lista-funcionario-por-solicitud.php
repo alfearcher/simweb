@@ -63,7 +63,6 @@
 		$form = ActiveForm::begin([
 			'id' => 'lista-funcionario-por-solicitud-form',
 		    'method' => 'post',
-		    //'action' => Url::toRoute(['funcionario/solicitud/funcionario-solicitud/verificar-envio']),
 		    'action' => $url,
 			'enableClientValidation' => true,
 			//'enableAjaxValidation' => true,
@@ -138,34 +137,36 @@
                 					],
                 					[
 										'class' => 'yii\grid\CheckboxColumn',
-										'name' => 'chk-solicitud',
+										'name' => 'chk-id-funcionario-solicitud',
 										'multiple' => true,
 									],
 
-                					// [
-                     //                	'class' => 'yii\grid\ActionColumn',
-                     //                	'header'=> Yii::t('backend','OK'),
-                     //                	'template' => '{ok}',
-                     //                	'buttons' => [
-                     //                    	'ok' => function ($url, $model, $key) {
-                     //                        	return Html::submitButton('<div class="item-list" style="color: #337AB7;"><center>'. Icon::show('fa fa-thumbs-						up',
-                     //                        							 ['class' => 'fa-2x'],
-                     //                        							 Icon::FA) .'</center></div>',
-                     //                                                    [
-                     //                                                        'value' => $key,
-                     //                                                        'name' => 'id',
-                     //                                                        'title' => Yii::t('backend', 'ok'),
-                     //                                                        'style' => 'margin: 0 auto; display: block;',
-                     //                                                    ]);
-                     //                    			},
-                     //                	],
-                     //            	],
 								],
 							]);
 						?>
 						</div>
 					</div>
 <!-- Fin de lista de funcionario -->
+
+
+					<!-- Inicio de boton -->
+					<div class="col-sm-3">
+						<div class="form-group">
+							<?= Html::submitButton(Yii::t('backend', 'Remove Request'),
+												  [
+													'id' => 'btn-remove-request',
+													'class' => 'btn btn-success',
+													'value' => 1,
+													'name' => 'btn-remove-request',
+													'style' => 'width: 100%;',
+												  ])
+							?>
+						</div>
+					</div>
+<!--  -->
+
+
+
 
 				</div>
 			</div>	<!-- Fin de container-fluid -->
