@@ -54,6 +54,7 @@
 	use backend\models\funcionario\Funcionario;
 	use backend\models\funcionario\solicitud\FuncionarioSolicitud;
 	use backend\models\configuracion\tiposolicitud\TipoSolicitudSearch;
+	use backend\models\configuracion\tiposolicitud\TipoSolicitud;
 	use yii\data\ActiveDataProvider;
 
 
@@ -325,7 +326,6 @@
 	    {
 	    	$modelFind = null;
 	    	$modelFind = FuncionarioSolicitud::find()->where('id_funcionario =:id_funcionario', [':id_funcionario' => $idFuncionario])
-	    	               							 ->andWhere('inactivo =:inactivo',[':inactivo'=> 0])
 	    	               							 ->joinWith('tipoSolicitud')
 	    	               							 ->orderBy([
 	    	               							 		'tipo_solicitud' => SORT_ASC,
@@ -346,11 +346,15 @@
 	    public function getDataProviderTipoSolicitudSegunFuncionario($idFuncionario)
 	    {
 	    	$query = $this->findTipoSolicitudSegunFuncionario($idFuncionario);
-
 	    	$dataProvider = New ActiveDataProvider([
 	    							'query' => $query,
 	    	]);
+	    	$query->andFilterWhere([
+	    						FuncionarioSolicitud::tableName().'.inactivo' => 0,
+	    						// ['like', 'apellidos', $this->searchGlobal],
+	    						// ['like', 'nombres', $this->searchGlobal],
 
+	    			]);
 	    	return $dataProvider;
 	    }
 
