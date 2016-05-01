@@ -194,5 +194,25 @@ use common\conexion\ConexionController;
 	    }
 
 
+	    /***/
+	    public function findFuncionario($id)
+	    {
+	    	$model = Funcionario::findOne($id);
+	    	return isset($model) ? $model : null;
+	    }
+
+
+
+	    /***/
+	    public function getFuncionarioSegunId($id)
+	    {
+	    	$funcionario = null;
+	    	$model = $this->findFuncionario($id);
+	    	if ( $model != null ) {
+	    		$funcionario['apellidos'] = $model->apellidos;
+	    		$funcionario['nombres'] = $model->nombres;
+	    	}
+	    	return $funcionario;
+	    }
 	}
 ?>
