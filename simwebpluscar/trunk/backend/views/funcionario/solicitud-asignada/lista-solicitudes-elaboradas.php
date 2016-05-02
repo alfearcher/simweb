@@ -142,10 +142,35 @@
                 						}
                 					],
                 					[
-										'class' => 'yii\grid\CheckboxColumn',
-										'name' => 'chk-id-funcionario-solicitud',
-										'multiple' => true,
-									],
+                						'label' => Yii::t('backend', 'User'),
+                						'value' => function($model) {
+                							return $model->usuario;
+                						}
+                					],
+                					[
+                						'label' => Yii::t('backend', 'Id. Taxpayer'),
+                						'value' => function($model) {
+                							return $model->id_contribuyente;
+                						}
+                					],
+                					[
+                                    	'class' => 'yii\grid\ActionColumn',
+                                    	'header'=> Yii::t('backend','OK'),
+                                    	'template' => '{ok}',
+                                    	'buttons' => [
+                                        	'ok' => function ($url, $model, $key) {
+                                            	return Html::submitButton('<div class="item-list" style="color: #337AB7;"><center>'. Icon::show('fa fa-thumbs-						up',
+                                            							 ['class' => 'fa-2x'],
+                                            							 Icon::FA) .'</center></div>',
+                                                                        [
+                                                                            'value' => $key,
+                                                                            'name' => 'id',
+                                                                            'title' => Yii::t('backend', 'ok'),
+                                                                            'style' => 'margin: 0 auto; display: block;',
+                                                                        ]);
+                                        			},
+                                    	],
+                                	],
 
 								],
 							]);
