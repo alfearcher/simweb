@@ -124,7 +124,7 @@
 
 
 	    /***/
-	    public function findImpuesto($arrayImpuesto)
+	    public function findImpuesto($arrayImpuesto = '')
 	    {
 	    	if ( is_array($arrayImpuesto) ) {
 	    		if ( count($arrayImpuesto) > 0 ) {
