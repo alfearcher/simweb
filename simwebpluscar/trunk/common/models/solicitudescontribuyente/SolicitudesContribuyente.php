@@ -6,48 +6,48 @@
  */
 
  /**
- * 
- *  > This library is free software; you can redistribute it and/or modify it under 
- *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free 
- *  > Software Foundation; either version 2 of the Licence, or (at your opinion) 
+ *
+ *  > This library is free software; you can redistribute it and/or modify it under
+ *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free
+ *  > Software Foundation; either version 2 of the Licence, or (at your opinion)
  *  > any later version.
- *  > 
- *  > This library is distributed in the hope that it will be usefull, 
- *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability 
- *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence 
+ *  >
+ *  > This library is distributed in the hope that it will be usefull,
+ *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability
+ *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence
  *  > for more details.
- *  > 
+ *  >
  *  > See [LICENSE.TXT](../../LICENSE.TXT) file for more information.
  *
  */
 
- /**    
+ /**
  *  @file SolicitudesContribuyenteForm.php
- *  
+ *
  *  @author Manuel Alejandro Zapata Canelon
- * 
+ *
  *  @date 30/03/2016
- * 
+ *
  *  @class SolicitudesContribuyenteForm
- *  @brief Modelo que instancia la conexion a la base de datos para buscar datos de la tabla solicitudes_contribuyente. 
- * 
- *  
- * 
- *  
- *  
+ *  @brief Modelo que instancia la conexion a la base de datos para buscar datos de la tabla solicitudes_contribuyente.
+ *
+ *
+ *
+ *
+ *
  *  @property
  *
- *  
+ *
  *  @method
  *  getDb
  *  tableName
- *  
- * 
- *  
+ *
+ *
+ *
  *
  *  @inherits
- *  
- */ 
+ *
+ */
 
 namespace common\models\solicitudescontribuyente;
 
@@ -55,10 +55,11 @@ use Yii;
 use yii\base\Model;
 use common\models\Users;
 use yii\db\ActiveRecord;
+use backend\models\configuracion\solicitud\tiposolicitud\TipoSolicitud;
 
 
 class SolicitudesContribuyente extends ActiveRecord{
-  
+
     public static function getDb()
     {
       return Yii::$app->db;
@@ -73,11 +74,18 @@ class SolicitudesContribuyente extends ActiveRecord{
     {
       return 'solicitudes_contribuyente';
     }
-    
 
-   
-     
-  
+
+
+    /**
+     * Relacion con la entidad "config-tipos-solicitudes".
+     * @return [type] [description]
+     */
+    public function getTipoSolicitud()
+    {
+        return $this->hasOne(TipoSolicitud::className(), ['id_tipo_solicitud' => 'tipo_solicitud']);
+    }
+
 }
 
  ?>
