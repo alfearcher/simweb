@@ -91,8 +91,8 @@
 					}
     			</style>
 	        		<?= MenuController::actionMenuSecundario([
-	        						'back' => '/funcionario/solicitud/funcionario-solicitud/index-delete',
-	        						'quit' => '/funcionario/solicitud/funcionario-solicitud/quit',
+	        						'back' => '/funcionario/solicitud/solicitud-asignada/index',
+	        						'quit' => '/funcionario/solicitud/solicitud-asignada/quit',
 	        			])
 	        		?>
 	        	</div>
@@ -110,29 +110,35 @@
 					<div class="row">
 						<div class="lista-funcionario">
 							<?= GridView::widget([
-								'id' => 'id-lista-funcionario-por-solicitud',
+								'id' => 'id-lista-solicitud-elaborada',
 								'dataProvider' => $dataProvider,
 								//'filterModel' => $model,
 								'headerRowOptions' => ['class' => 'success'],
-								'caption' => Yii::t('backend', 'List of Official Public'),
-								'summary' => '',
+								'caption' => Yii::t('backend', 'List of Request Taxpayer'),
+								'summary' => '{begin} - {end} {count} {totalCount} {page} {pageCount}',
 								'columns' => [
                 					[
-                						'label' => Yii::t('backend', 'DNI'),
+                						'label' => Yii::t('backend', 'Request No.'),
                 						'value' => function($model) {
-                							return $model->funcionario->ci;
+                							return $model->nro_solicitud;
                 						}
                 					],
 									[
-                						'label' => Yii::t('backend', 'Last Name'),
+                						'label' => Yii::t('backend', 'Date/Hour'),
                 						'value' => function($model) {
-                							return $model->funcionario->apellidos;
+                							return $model->fecha_hora_creacion;
                 						}
                 					],
                 					[
-                						'label' => Yii::t('backend', 'First Name'),
+                						'label' => Yii::t('backend', 'Request'),
                 						'value' => function($model) {
-                							return $model->funcionario->nombres;
+                							return $model->tipoSolicitud->descripcion;
+                						}
+                					],
+                					[
+                						'label' => Yii::t('backend', 'Tax'),
+                						'value' => function($model) {
+                							return $model->getImpuesto($model->tipoSolicitud->impuesto);
                 						}
                 					],
                 					[
@@ -150,19 +156,19 @@
 
 
 					<!-- Inicio de boton -->
-					<div class="col-sm-3">
+					<!-- <div class="col-sm-3">
 						<div class="form-group">
-							<?= Html::submitButton(Yii::t('backend', 'Remove Request'),
+							<?//= Html::submitButton(Yii::t('backend', 'Remove Request'),
 												  [
-													'id' => 'btn-remove-request',
-													'class' => 'btn btn-success',
-													'value' => 1,
-													'name' => 'btn-remove-request',
-													'style' => 'width: 100%;',
+													//'id' => 'btn-remove-request',
+													//'class' => 'btn btn-success',
+													//'value' => 1,
+													//'name' => 'btn-remove-request',
+												//	'style' => 'width: 100%;',
 												  ])
 							?>
 						</div>
-					</div>
+					</div> -->
 <!--  -->
 
 
