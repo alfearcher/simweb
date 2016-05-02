@@ -95,6 +95,7 @@
 
 
 
+
 		/***/
 		public function actionIndex()
 		{
@@ -111,9 +112,9 @@
 
 			if ( $model->load($postData) ) {
 				if ( $model->validate() ) {
-					// if ( $model->validarRangoFecha($model) ) {
-
-					// }
+					if ( isset($postData['btn-search-request']) ) {
+						return self::actionBuscarSolicitudesContribuyente($model);
+					}
 				}
 			}
 
@@ -137,6 +138,34 @@
 
 				]);
 		}
+
+
+
+		/***/
+		public function actionBuscarSolicitudesContribuyente($model)
+		{
+			$request = Yii::$app->request;
+			$postData = $request->post();
+
+			$modelSolicitud = New SolicitudAsignadaSearch();
+			$modelSolicitud->attributes = $model->attributes;
+// die(var_dump($modelSolicitud));
+			$lista = $modelSolicitud->getTipoSolicitudAsignada('jperez');
+
+			$caption = Yii::t('backend', 'Lists of Request');
+			$subCaption = Yii::t('backend', 'Lists of Request');
+			$dataProvider = $modelSolicitud->getDataProviderSolicitudContribuyente($lista);
+// die(var_dump($dataProvider));
+			return $this->render('/funcionario/solicitud-asignada/lista-solicitudes-elaboradas', [
+																'model' => $modelSolicitud,
+																'dataProvider' => $dataProvider,
+																'caption' => $caption,
+																'subCaption' => $subCaption,
+																'url' => 'sss',
+																'listado' => 10,
+				]);
+		}
+
 
 
 
