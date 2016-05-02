@@ -78,8 +78,10 @@
 		public function actionIndex()
 		{
 			$model = New SolicitudAsignadaSearch();
-			$lista['tipo_solicitud'] = $model->getTipoSolicitudAsignada('jperez');
-die(var_dump($lista));
+			$lista = $model->getTipoSolicitudAsignada('jperez');
+
+			$model->getDataProviderSolicitudContribuyente($lista);
+
 // 			$lista = $model->findIdTipoSolicitudSegunFuncionario('jperez');
 // 			$listaGeneral = $lista->asArray()->all();
 //  			$listaSolicitud = $listaGeneral[0]['funcionarioSolicitud'];
