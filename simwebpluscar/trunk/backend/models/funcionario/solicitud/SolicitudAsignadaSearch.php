@@ -149,10 +149,11 @@
 
 	    	]);
 
+	    	$query->andFilterWhere(['IN', 'tipo_solicitud', $tipoSolicitud]);
 	    	if ( $this->tipo_solicitud > 0 ) {
-		   		$query->andFilterWhere(['IN', $this->tipo_solicitud, $tipoSolicitud]);
+		   		$query->andFilterWhere(['=', 'tipo_solicitud', $this->tipo_solicitud]);
 		   	} else {
-		   		$query->andFilterWhere(['IN', 'tipo_solicitud', $tipoSolicitud]);
+		   		//$query->andFilterWhere(['IN', 'tipo_solicitud', $tipoSolicitud]);
 		   	}
 	    	if ( $this->fecha_desde != null && $this->fecha_hasta != null ) {
 		    	$query->andFilterWhere(['BETWEEN','fecha_hora_creacion',
