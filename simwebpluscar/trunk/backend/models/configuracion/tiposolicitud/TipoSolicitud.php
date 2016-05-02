@@ -48,6 +48,7 @@
 	use backend\models\configuracion\solicitud\ConfigurarSolicitud;
 	use backend\models\impuesto\Impuesto;
 	use backend\models\funcionario\solicitud\FuncionarioSolicitud;
+	use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 
 	/**
 	* 	Clase
@@ -106,6 +107,17 @@
 		public function getFuncionarioSolicitud()
 		{
 			return $this->hasMany(FuncionarioSolicitud::className(), ['tipo_solicitud' => 'id_tipo_solicitud']);
+		}
+
+
+
+		/**
+		 * Relacion con la entidad "solicitudes-contribuyente".
+		 * @return Active Record.
+		 */
+		public function getSolicitudContribuyente()
+		{
+			return $this->hasMany(SolicitudesContribuyente::className(), ['tipo_solicitud' => 'id_tipo_solicitud']);
 		}
 
 	}
