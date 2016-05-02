@@ -124,7 +124,7 @@
 
 
 	    /***/
-	    public function findImpuesto($arrayImpuesto = [])
+	    public function findImpuesto($arrayImpuesto)
 	    {
 	    	if ( is_array($arrayImpuesto) ) {
 	    		if ( count($arrayImpuesto) > 0 ) {
@@ -132,6 +132,8 @@
 	    		} else {
 	    			$findModel = Impuesto::find()->all();
 	    		}
+	    	} elseif ( is_int($arrayImpuesto) ) {
+	    		$findModel = Impuesto::findOne($arrayImpuesto);
 	    	} else {
 	    		$findModel = Impuesto::find()->all();
 	    	}
@@ -156,6 +158,16 @@
 	    		}
 	    	}
 	    	return $listaImpuesto;
+	    }
+
+
+
+	    /***/
+	    public function getDescripcionImpuesto($impuesto)
+	    {
+	    	settype($impuesto, 'integer');
+	    	$model = self::findImpuesto($impuesto);
+			return $model->descripcion;
 	    }
 
 	}
