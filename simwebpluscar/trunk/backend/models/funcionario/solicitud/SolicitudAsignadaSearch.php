@@ -95,7 +95,7 @@
 	     * de solicitudes que tiene asignado un funcionario.
 	     * @param  String $userLocal nombre del usuario del funcionario logueado.
 	     * @return Array Retorna un arreglo con los valores de los identificadores de las solicitudes
-	     * asignadas al funcionario
+	     * asignadas al funcionario existentes en la entidad "funcionarios-solicitudes".
 	     */
 	    public function getTipoSolicitudAsignada($userLocal)
 	    {
