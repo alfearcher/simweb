@@ -364,15 +364,48 @@
 
 
 	    /**
-	     * [getFuncionarioSegunId description]
-	     * @param  [type] $id [description]
-	     * @return [type]     [description]
+	     * Metodo que entrega el apellido y nombre de un funcionario, segun el
+	     * identificador del funcionario.
+	     * @param  Long $id identificador del funcionario.
+	     * @return Array Retorna un arreglo donde los indices (key) del arreglo
+	     * corresponde a "apellidos" y "nombres". El valor de los elementos
+	     * corresponde a los datos respectivos.
 	     */
 	    public function getFuncionarioSegunId($id)
 	    {
 	    	$model = New FuncionarioForm();
 	    	return $model->getFuncionarioSegunId($id);
 	    }
+
+
+
+
+	    /**
+	     * Metodo que permite obetene los identificadores de los tipos de solictudes
+	     * asignadas a un funcionario. El paramatro de busqueda utilizado es el login
+	     * (nombre de usuario) del funcionario.
+	     * @param  String $userLocal usuario del funcionoario, establecido en la entidad
+	     * principal "funcionarios".
+	     * @return Array Retorna un arreglo de identificadores del tipo de solicitud
+	     * asignada al funcionario. Esta relacion se determina en la entidad "funcionarios-solicitudes".
+	     */
+	    public function findIdTipoSolicitudSegunFuncionario($userLocal)
+	    {
+	    	$model = FuncionarioSolicitud::find()->select('tipo_solicitud')
+	    	                                     ->distinct('tipo_solicitud')
+	    	                                     ->where('inactivo =:inactivo', [':inactivo' => 0])
+	    	                                     ->andWhere('login =:login', [':login' => $userLocal])
+	    	                                     ->joinWith('funcionario')
+	    	                                     ->orderBy([
+	    	                                     		'tipo_solicitud' => SORT_ASC,
+	    	                                     	])
+	    	                                     ->asArray()
+	    	                                     ->all();
+
+	    	return count($model) > 0 ? $model : null;
+	    }
+
+
 
 
 	}
