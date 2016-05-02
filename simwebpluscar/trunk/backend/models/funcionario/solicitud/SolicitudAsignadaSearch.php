@@ -62,7 +62,7 @@
 	/**
 	 *	Clase principal del formulario.
 	 */
-	class SolicitudAsignadaSearch extends ActiveRecord
+	class SolicitudAsignadaSearch extends SolicitudAsignadaForm
 	{
 
 
@@ -78,9 +78,9 @@
 	    public function findTipoSolicitudAsignadaFuncionario($userLocal)
 	    {
 	    	$modelFind = FuncionarioSolicitud::find()->where('inactivo =:inactivo', [':inactivo' => 0])
-	                                             ->andWhere('login =:login', [':login' => $userLocal])
-	                                             ->joinWith('funcionario', false)
-			                                     ->orderBy([
+	                                                 ->andWhere('login =:login', [':login' => $userLocal])
+	                                                 ->joinWith('funcionario', false)
+			                                         ->orderBy([
 			                                     		'tipo_solicitud' => SORT_ASC,
 			                                    	]);
 
@@ -125,11 +125,12 @@
 	    	$modelFind = SolicitudesContribuyente::find()->where('estatus =:estatus', [':estatus' => 0])
 	    	                                             ->andWhere(SolicitudesContribuyente::tableName().'.inactivo =:inactivo', [':inactivo' => 0])
 	    	                                             ->andWhere(TipoSolicitud::tableName().'.inactivo =:inactivo', [':inactivo' => 0])
-	    	                                             ->andWhere(['tipo_solicitud' => $tipoSolicitud])
+	    	                                            // ->andWhere(['tipo_solicitud' => $tipoSolicitud])
 	    	                                             ->joinWith('tipoSolicitud')
 	    	                                             ->orderBy([
 	    	                                             		'nro_solicitud' => SORT_ASC,
 	    	                                             	]);
+	    	                                             //->limit(10);
 
 	    	return isset($modelFind) ? $modelFind : null;
 	    }
@@ -139,15 +140,28 @@
 	    /***/
 	    public function getDataProviderSolicitudContribuyente($tipoSolicitud)
 	    {
-// die(var_dump($tipoSolicitud));
+//die(var_dump($this->tipo_solicitud));
+// die(var_dump($this->fecha_desde));
 	    	$query = $this->findSolicitudContribuyenteEmitida($tipoSolicitud);
-die(var_dump($query->asArray()->all()));
+ // die(var_dump($query->asArray()->all()));
 	    	$dataProvider = New ActiveDataProvider([
-	    		$query = 'query',
+	    		'query' => $query,
 
-	    		]);
-	    	$query->andFilterWhere(['IN', 'tipo_solicitud', $tipoSolicitud]);
+	    	]);
 
+	    	if ( $this->tipo_solicitud > 0 ) {
+		   		$query->andFilterWhere(['IN', $this->tipo_solicitud, $tipoSolicitud]);
+		   	} else {
+		   		$query->andFilterWhere(['IN', 'tipo_solicitud', $tipoSolicitud]);
+		   	}
+	    	if ( $this->fecha_desde != null && $this->fecha_hasta != null ) {
+		    	$query->andFilterWhere(['BETWEEN','fecha_hora_creacion',
+		    	      					 date('Y-m-d',strtotime($this->fecha_desde)),
+		    	      					 date('Y-m-d',strtotime($this->fecha_hasta))]);
+		   	}
+		   	if ( $this->impuesto > 0 ) {
+		   		$query->andFilterWhere(['=', SolicitudesContribuyente::tableName().'.impuesto', $this->impuesto]);
+		   	}
 	    	return $dataProvider;
 	    }
 

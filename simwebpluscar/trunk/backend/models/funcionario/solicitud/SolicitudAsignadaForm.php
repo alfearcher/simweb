@@ -100,6 +100,13 @@
 	        	[['fecha_hasta'], 'compare',
 	        	  'compareAttribute' => 'fecha_desde', 'operator' => '>='],
 	        	[['fecha_desde', 'fecha_hasta'], 'default', 'value' => null],
+	        	[['impuesto'], 'required',
+	        	  'when' => function($model) {
+	        	  				if ( $model->tipo_solicitud != null ) {
+	        	  					return true;
+	        	  				}
+	        				}
+	        	, 'message' => Yii::t('backend', '{attribute} is required')],
 	        	[['impuesto', 'tipo_solicitud'], 'integer', 'message' => Yii::t('backend', 'Select {attribute}')],
 	        ];
 	    }
