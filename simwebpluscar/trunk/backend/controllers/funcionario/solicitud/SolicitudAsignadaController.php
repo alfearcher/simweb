@@ -56,9 +56,11 @@
 	use yii\web\Response;
 	use yii\helpers\Url;
 	use backend\models\funcionario\solicitud\SolicitudAsignadaSearch;
+	use backend\models\funcionario\solicitud\SolicitudAsignadaForm;
 	use common\conexion\ConexionController;
 	use common\mensaje\MensajeController;
 	use common\models\session\Session;
+	use backend\models\impuesto\ImpuestoForm;
 
 	/**
 	 *	Clase principal del formulario.
@@ -75,19 +77,130 @@
 
 
 		/***/
-		public function actionIndex()
+		public function actionIndex2()
 		{
 			$model = New SolicitudAsignadaSearch();
 			$lista = $model->getTipoSolicitudAsignada('jperez');
 
-			$model->getDataProviderSolicitudContribuyente($lista);
+			$caption = Yii::t('backend', 'Lists of Request');
+			$subCaption = Yii::t('backend', 'Lists of Request');
+			$dataProvider = $model->getDataProviderSolicitudContribuyente($lista);
+			return $this->render('/funcionario/solicitud-asignada/lista-solicitud-elaborada', [
+																'model' => $model,
+																'dataProvider' => $dataProvider,
+																'caption' => $caption,
+																'subCaption' => $subCaption,
+				]);
+		}
 
-// 			$lista = $model->findIdTipoSolicitudSegunFuncionario('jperez');
-// 			$listaGeneral = $lista->asArray()->all();
-//  			$listaSolicitud = $listaGeneral[0]['funcionarioSolicitud'];
-// die(var_dump($listaSolicitud));
-//  			$tipo = $listaSolicitud['tipo_solicitud'];
-// die(var_dump($tipo));
+
+
+		/***/
+		public function actionIndex()
+		{
+			$request = Yii::$app->request;
+			$postData = $request->post();
+
+			// Modelo del formulario de busqueda de las solicitudes.
+			$model = New SolicitudAsignadaForm();
+
+			if ( $model->load($postData) && Yii::$app->request->isAjax ) {
+				Yii::$app->response->format = Response::FORMAT_JSON;
+				return ActiveForm::validate($model);
+			}
+
+			if ( $model->load($postData) ) {
+				if ( $model->validate() ) {
+					// if ( $model->validarRangoFecha($model) ) {
+
+					// }
+				}
+			}
+
+// die(var_dump($postData));
+			//$result = $model->validarRangoFecha();
+//die(var_dump($result));
+
+
+			// Modelo adicionales para la busqueda de los funcionarios.
+			$modelImpuesto = New ImpuestoForm();
+
+			// Se define la lista de item para el combo de impuestos.
+			$listaImpuesto = $modelImpuesto->getListaImpuesto();
+
+			$caption = Yii::t('backend', 'Search Request');
+			return $this->render('/funcionario/solicitud-asignada/busqueda-solicitud-form', [
+																			'model' => $model,
+																			'modelImpuesto' => $modelImpuesto,
+																			'caption' => $caption,
+																			'listaImpuesto' => $listaImpuesto,
+
+				]);
+		}
+
+
+
+		/**
+		 * [actionQuit description]
+		 * @return [type] [description]
+		 */
+		public function actionQuit()
+		{
+			$varSession = self::actionGetListaSessions();
+			self::actionAnularSession($varSession);
+			return $this->render('/funcionario/quit');
+		}
+
+
+
+		/**
+		 * [actionAnularSession description]
+		 * @param  [type] $varSessions [description]
+		 * @return [type]              [description]
+		 */
+		public function actionAnularSession($varSessions)
+		{
+			Session::actionDeleteSession($varSessions);
+		}
+
+
+
+		/**
+		 * [actionProcesoExitoso description]
+		 * @return [type] [description]
+		 */
+		public function actionProcesoExitoso()
+		{
+			$varSession = self::actionGetListaSessions();
+			self::actionAnularSession($varSession);
+			return MensajeController::actionMensaje(100);
+		}
+
+
+
+		/**
+		 * [actionErrorOperacion description]
+		 * @param  [type] $codigo [description]
+		 * @return [type]         [description]
+		 */
+		public function actionErrorOperacion($codigo)
+		{
+			$varSession = self::actionGetListaSessions();
+			self::actionAnularSession($varSession);
+			return MensajeController::actionMensaje($codigo);
+		}
+
+
+
+		/**
+		 * [actionGetListaSessions description]
+		 * @return [type] [description]
+		 */
+		public function actionGetListaSessions()
+		{
+			return $varSession = [
+							''
+					];
 		}
 
 	}
