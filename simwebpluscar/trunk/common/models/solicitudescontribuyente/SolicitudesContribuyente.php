@@ -56,6 +56,7 @@ use yii\base\Model;
 use common\models\Users;
 use yii\db\ActiveRecord;
 use backend\models\configuracion\tiposolicitud\TipoSolicitud;
+use backend\models\impuesto\ImpuestoForm;
 
 
 class SolicitudesContribuyente extends ActiveRecord{
@@ -83,8 +84,19 @@ class SolicitudesContribuyente extends ActiveRecord{
      */
     public function getTipoSolicitud()
     {
-        return $this->hasOne(TipoSolicitud::className(), ['id_tipo_solicitud' => 'tipo_solicitud']);
+        return $this->hasOne(TipoSolicitud::className(), [
+                                                            'id_tipo_solicitud' => 'tipo_solicitud',
+                                                        ]);
     }
+
+
+    /***/
+    public function getImpuesto($impuesto)
+    {
+        $descripcion = ImpuestoForm::getDescripcionImpuesto($impuesto);
+        return $descripcion;
+    }
+
 
 }
 
