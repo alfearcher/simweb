@@ -183,20 +183,24 @@
 	     * en la entidad "funcionarios".
 	     * @return Active Record.
 	     */
-	    public function findImpuestoSegunFuncionario($idFuncionario)
+	    public function findImpuestoSegunFuncionario($tipoSolicitud)
 	    {
 	    	$modelFind = null;
-	    	$modelFind = SolicitudesContribuyente::find()->select(['impuesto', 'nro_solicitud'])
-	    												 ->distinct('impuesto')
-	    												 ->where('id_funcionario =:id_funcionario', [':id_funcionario' => $idFuncionario])
-	    												 ->andWhere(SolicitudesContribuyente::tableName().'.inactivo =:inactivo', [':inactivo' => 0])
-	    												 ->andWhere('estatus =:estatus', [':estatus' => 0])
-	    												 ->andWhere(FuncionarioSolicitud::tableName().'.inactivo =:inactivo', [':inactivo' => 0])
-	    												 ->joinWith('funcionarioSolicitud', false)
-	    												 ->orderBy([
-	    												 		'impuesto' => SORT_ASC,
-	    												 	]);
+	    	// $modelFind = SolicitudesContribuyente::find()
+	    	// 											 ->select('impuesto')
+	    	// 											 ->distinct()
+	    	// 											 ->where('id_funcionario =:id_funcionario', [':id_funcionario' => $idFuncionario])
+	    	// 											 ->andWhere(SolicitudesContribuyente::tableName().'.inactivo =:inactivo', [':inactivo' => 0])
+	    	// 											 ->andWhere('estatus =:estatus', [':estatus' => 0])
+	    	// 											 ->andWhere(FuncionarioSolicitud::tableName().'.inactivo =:inactivo', [':inactivo' => 0])
+	    	// 											 ->joinWith('funcionarioSolicitud')
+	    	// 											 ->orderBy([
+	    	// 											 		'impuesto' => SORT_ASC,
+	    	// 											 	]);
 
+	    	$modelFind = SolicitudesContribuyente::find()->select('impuesto')
+	    												 ->distinct()
+	    												 ->where(['IN','tipo_solicitud', $tipoSolicitud]);
 	    	return isset($modelFind) ? $modelFind : null;
 	    }
 
