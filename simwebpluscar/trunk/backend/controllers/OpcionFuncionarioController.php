@@ -153,7 +153,7 @@ class OpcionFuncionarioController extends Controller
     public function actionIndexFuncionario()
     {
         //if ( isset( $_SESSION['idContribuyente'] ) ) {
-        $searchModel = new FuncionarioForm();
+        $searchModel = new FuncionarioForm(); 
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index-funcionario', [
