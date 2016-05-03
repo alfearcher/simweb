@@ -125,28 +125,40 @@ class OpcionFuncionarioController extends Controller
 
          if ($model->load(Yii::$app->request->post())){
 
-              if($model->validate()){ 
+              if($model->validate()){
 
-                   die('valido busqueda de funcionario');
-                  
-                         
-                         
 
-                   }else{ 
+                     $usuario = $model->user;
+                     $msg = Yii::t('backend', 'Searching!');//VALIDANDO PREGUNTAS DE SEGURIDAD
+                     $url =  "<meta http-equiv='refresh' content='1; ".Url::toRoute(['opcion-funcionario/index-funcionario'])."'>";                    
+                     return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url,"usuario" => $usuario, "tipoError" => $tipoError]);  
+                     
+               }else{
 
-                         $msg = Yii::t('backend', 'AN ERROR OCCURRED WHILE CARRYING OUT THE REGISTRATION!');//HA OCURRIDO UN ERROR AL REALIZAR EL REGISTRO
-                         $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("opcion-funcionario/registrarfuncionariousuario")."'>";
-                         return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]); 
-                   }
-
-              }else{
-
-                   $model->getErrors(); 
-              }
+                     $model->getErrors(); 
+               }
+           }// cierre del  post para traer el model
          
               return $this->render("buscar-funcionario-usuario", ["model" => $model]);          
  
      } // cierre del metodo registerfun
+
+
+
+    public function actionIndexFuncionario()
+    {
+        if ( isset( $_SESSION['idContribuyente'] ) ) {
+        $searchModel = new InmueblesSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index-funcionario', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]); 
+        }  else {
+                    echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
+        }
+    } 
 /***************************** REGISTRAR FUNCIONARIOS ***********************************************
 * Metodo para crear las cuentas de usuarios de los funcionarios
 *****************************************************************************************************/

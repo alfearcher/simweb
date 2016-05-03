@@ -72,19 +72,28 @@ class BuscarFuncionarioUsuarioForm extends Model{
            
         ];
     }
-   
+   /**
+    * [cedulaExiste description: busqueda de la cedula del funcionario]
+    * @param  [type] $attribute [description] variable que contiene el mensaje de error
+    * @param  [type] $params    [description] parametro para controlar el error
+    * @return [type] $id        [description] id del funcionario
+    */
     public function cedulaExiste($attribute, $params)
     {
    
          //Buscar el email en la tabla PreguntasUsuarios
-         $table = Funcionario::find()->where("cedula=:cedula", [":cedula" => $this->cedula]);
+         $table = Funcionario::find()->where(['ci'=>$this->cedula])->asArray()->all();
+                                                
    
-         //Si el email existe mostrar el error
-         if ($table->count() == 0){
-die('no encontro funcionario');
+         //Si la cedula no existe mostrar el error
+         if ($table == false){
+
                  $this->addError($attribute, Yii::t('backend', 'The user does not exist'));
          }else{
-die('encontro funcionario');
+
+           $id = $table[0]['id_funcionario'];
+           $_SESSION['idFuncionario'] = $id;
+
          }
     }
 	
