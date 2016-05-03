@@ -146,7 +146,10 @@ class OpcionFuncionarioController extends Controller
      } // cierre del metodo registerfun
 
 
-
+/**
+ * [actionIndexFuncionario description] Pantalla que muestra los datos del funcionario al que se le creara la cuenta de usuario
+ * @return [type] [description] vista del index-funcionario
+ */
     public function actionIndexFuncionario()
     {
         //if ( isset( $_SESSION['idContribuyente'] ) ) {
@@ -208,6 +211,7 @@ class OpcionFuncionarioController extends Controller
 
 
                         $arrayDatos = ['salt' => $salt,
+                                       'id_funcionario'=>$_SESSION['idFuncionario'],
                                        'password' => $password,
                                        'username' => $username,
                                        'email' => $email,

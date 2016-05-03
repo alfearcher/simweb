@@ -2,19 +2,30 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use kartik\icons\Icon;
+use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
+use yii\widgets\ActiveField;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\InmueblesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('backend', 'Property Urban');
+$this->title = Yii::t('backend', 'Official User Register');
 
 ?>
 <div class="inmuebles-index">
 
     <h2><?= Html::encode($this->title) ?></h2>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
+ 
+    <?php $form = ActiveForm::begin([
+    'method' => 'post',
+    'id' => 'formulario',
+    'action'=> '/simwebpluscar/backend/web/index.php?r=opcion-funcionario%2Fregistrarfuncionariousuario',
+    'enableClientValidation' => false,
+    'enableAjaxValidation' => true,
+    'options' => ['class' => 'form-vertical'],]); ?>
     
 
     <?= GridView::widget([
@@ -47,8 +58,7 @@ $this->title = Yii::t('backend', 'Property Urban');
         ],
     ]); ?>
 
-    <p>
-        <?= Html::a(Yii::t('backend', 'Official User Register'), ['opcion-funcionario/registrarfuncionariousuario'], ['class' => 'btn btn-primary']) ?>
-    </p>
+    
 
 </div>
+<?= Html::endForm();?>
