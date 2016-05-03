@@ -32,6 +32,9 @@ session_start();
 		        			['label' => 'Modificar Funcionario', 'url' => '#', 'options' => ['value' => '301', 'id' => '301']],
 		        			['label' => 'Desincorporar Funcionario', 'url' => '#', 'options' => ['value' => '302', 'id' => '302']],
 		        			['label' => 'Asignar a Grupo de Trabajo', 'url' => '#', 'options' => ['value' => '303', 'id' => '303']],
+		        			['label' => 'Asignar Solicitud', 'url' => ['funcionario/solicitud/funcionario-solicitud/index-create'], 'options' => ['value' => '304', 'id' => '304']],
+		        			['label' => 'Desincorporar Solicitud', 'url' => ['funcionario/solicitud/funcionario-solicitud/index-delete'], 'options' => ['value' => '305', 'id' => '305']],
+		        			['label' => 'Listar Solicitud', 'url' => ['funcionario/solicitud/solicitud-asignada/index'], 'options' => ['value' => '306', 'id' => '306']],
 		        			['label' => Icon::show('user',['class' => 'fa-2x'], $typeIcon) . 'Usuarios', 'url' => '#',
 		        				'items' => [
 		        							['label' => 'Crear Cuenta','url' => '#'],
