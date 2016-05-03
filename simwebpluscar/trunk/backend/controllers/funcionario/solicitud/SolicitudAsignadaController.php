@@ -100,62 +100,74 @@
 		public function actionIndex()
 		{
 			$request = Yii::$app->request;
-			$postData = $request->post();
+			$page = isset($request->queryParams['page']) ? $request->queryParams['page'] : null;
 
 			// Modelo del formulario de busqueda de las solicitudes.
 			$model = New SolicitudAsignadaForm();
 
-			if ( $model->load($postData) && Yii::$app->request->isAjax ) {
-				Yii::$app->response->format = Response::FORMAT_JSON;
-				return ActiveForm::validate($model);
-			}
+			if ( $page == null ) {
 
-			if ( $model->load($postData) ) {
-				if ( $model->validate() ) {
-					if ( isset($postData['btn-search-request']) ) {
-						return self::actionBuscarSolicitudesContribuyente($model);
+				$postData = $request->post();
+
+				if ( $model->load($postData) && Yii::$app->request->isAjax ) {
+					Yii::$app->response->format = Response::FORMAT_JSON;
+					return ActiveForm::validate($model);
+				}
+
+				if ( $model->load($postData) ) {
+					if ( $model->validate() ) {
+						if ( isset($postData['btn-search-request']) ) {
+							return self::actionBuscarSolicitudesContribuyente($model);
+							// return $this->redirect(['buscar-solicitudes-contribuyente', 'postData' => 10]);
+							//$_SESSION['postData'] = $postData;
+						}
 					}
 				}
+
+				// Modelo adicionales para la busqueda de los funcionarios.
+				$modelImpuesto = New ImpuestoForm();
+
+				// Se define la lista de item para el combo de impuestos.
+				$listaImpuesto = $modelImpuesto->getListaImpuesto();
+
+				$caption = Yii::t('backend', 'Search Request');
+				return $this->render('/funcionario/solicitud-asignada/busqueda-solicitud-form', [
+																				'model' => $model,
+																				'modelImpuesto' => $modelImpuesto,
+																				'caption' => $caption,
+																				'listaImpuesto' => $listaImpuesto,
+
+					]);
+			} elseif ( $page > 0 && isset($request->queryParams['page']) ) {
+				$model->load($request->queryParams);
+				return self::actionBuscarSolicitudesContribuyente($model);
 			}
-
-// die(var_dump($postData));
-			//$result = $model->validarRangoFecha();
-//die(var_dump($result));
-
-
-			// Modelo adicionales para la busqueda de los funcionarios.
-			$modelImpuesto = New ImpuestoForm();
-
-			// Se define la lista de item para el combo de impuestos.
-			$listaImpuesto = $modelImpuesto->getListaImpuesto();
-
-			$caption = Yii::t('backend', 'Search Request');
-			return $this->render('/funcionario/solicitud-asignada/busqueda-solicitud-form', [
-																			'model' => $model,
-																			'modelImpuesto' => $modelImpuesto,
-																			'caption' => $caption,
-																			'listaImpuesto' => $listaImpuesto,
-
-				]);
 		}
 
 
 
-		/***/
+
+
+		/**
+		 * [actionBuscarSolicitudesContribuyente description]
+		 * @param  [type] $model [description]
+		 * @return [type]        [description]
+		 */
 		public function actionBuscarSolicitudesContribuyente($model)
 		{
 			$request = Yii::$app->request;
 			$postData = $request->post();
 
+			$url = Url::to(['verificar-envio']);
 			$modelSolicitud = New SolicitudAsignadaSearch();
 			$modelSolicitud->attributes = $model->attributes;
-// die(var_dump($modelSolicitud));
+
 			$lista = $modelSolicitud->getTipoSolicitudAsignada('jperez');
 
 			$caption = Yii::t('backend', 'Lists of Request');
 			$subCaption = Yii::t('backend', 'Lists of Request');
 			$dataProvider = $modelSolicitud->getDataProviderSolicitudContribuyente($lista);
-// die(var_dump($dataProvider));
+
 			return $this->render('/funcionario/solicitud-asignada/lista-solicitudes-elaboradas', [
 																'model' => $modelSolicitud,
 																'dataProvider' => $dataProvider,
