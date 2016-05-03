@@ -49,7 +49,7 @@
 	use yii\db\ActiveRecord;
 	use backend\models\funcionario\Funcionario;
 	use backend\models\configuracion\tiposolicitud\TipoSolicitud;
-	//use backend\FuncionarioForm;
+	use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 
 	/**
 	* 	Clase base del modulo de funcioario.
@@ -98,6 +98,17 @@
 		public function getTipoSolicitud()
 		{
 			return $this->hasOne(TipoSolicitud::className(), ['id_tipo_solicitud' => 'tipo_solicitud']);
+		}
+
+
+
+		/**
+		 * RElacion con la entidad "solicitudes-contribuyente".
+		 * @return Active Record.
+		 */
+		public function getSolicitudContribuyente()
+		{
+			return $this->hasMany(SolicitudesContribuyente::className(), ['tipo_solicitud' => 'tipo_solicitud']);
 		}
 
 	}

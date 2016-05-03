@@ -174,5 +174,33 @@
 	    	return $dataProvider;
 	    }
 
+
+
+	    /**
+	     * Metodo que realiza una busqueda de los impuestos asociados al funcionario
+	     * para el procesamiento de las solicitudes relacionadas al impuesto.
+	     * @param  Long $idFuncionario identificador del funcionario que se encuentra
+	     * en la entidad "funcionarios".
+	     * @return Active Record.
+	     */
+	    public function findImpuestoSegunFuncionario($idFuncionario)
+	    {
+	    	$modelFind = null;
+	    	$modelFind = SolicitudesContribuyente::find()->select(['impuesto', 'nro_solicitud'])
+	    												 ->distinct('impuesto')
+	    												 ->where('id_funcionario =:id_funcionario', [':id_funcionario' => $idFuncionario])
+	    												 ->andWhere(SolicitudesContribuyente::tableName().'.inactivo =:inactivo', [':inactivo' => 0])
+	    												 ->andWhere('estatus =:estatus', [':estatus' => 0])
+	    												 ->andWhere(FuncionarioSolicitud::tableName().'.inactivo =:inactivo', [':inactivo' => 0])
+	    												 ->joinWith('funcionarioSolicitud', false)
+	    												 ->orderBy([
+	    												 		'impuesto' => SORT_ASC,
+	    												 	]);
+
+	    	return isset($modelFind) ? $modelFind : null;
+	    }
+
+
+
 	}
 ?>
