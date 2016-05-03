@@ -37,7 +37,7 @@ session_start();
 		        			['label' => 'Listar Solicitud', 'url' => ['funcionario/solicitud/solicitud-asignada/index'], 'options' => ['value' => '306', 'id' => '306']],
 		        			['label' => Icon::show('user',['class' => 'fa-2x'], $typeIcon) . 'Usuarios', 'url' => '#',
 		        				'items' => [
-		        							['label' => 'Crear Cuenta','url' =>[' opcion-funcionario/registrarfuncionariousuario']],
+		        							['label' => 'Crear Cuenta','url' =>['opcion-funcionario/registrarfuncionariousuario']],
 		        							['label' => 'Desincorporar Cuenta','url' => '#'],
 		        				]
 		        			],
