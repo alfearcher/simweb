@@ -129,8 +129,11 @@
 				$listaImpuesto = $modelImpuesto->getListaImpuesto(0, [1,2]);
 
 				$m = New SolicitudAsignadaSearch();
-				$r1 = $m->findImpuestoSegunFuncionario(Yii::$app->user->identity->id_funcionario);
-//ie(var_dump($r1->asArray()->one()));
+
+				$userLocal = Yii::$app->user->identity->username;
+				$lista = $m->getTipoSolicitudAsignada($userLocal);
+				$r1 = $m->findImpuestoSegunFuncionario($lista);
+die(var_dump($r1->asArray()->all()));
 
 				$caption = Yii::t('backend', 'Search Request');
 				return $this->render('/funcionario/solicitud-asignada/busqueda-solicitud-form', [
