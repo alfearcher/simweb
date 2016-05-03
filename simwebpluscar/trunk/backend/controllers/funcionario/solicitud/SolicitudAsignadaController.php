@@ -174,19 +174,23 @@ die(var_dump($postData));
 			$modelSolicitud->attributes = $model->attributes;
 
 			$lista = $modelSolicitud->getTipoSolicitudAsignada('jperez');
-
+// die(var_dump($lista));
 			$caption = Yii::t('backend', 'Lists of Request');
 			$subCaption = Yii::t('backend', 'Lists of Request');
-			$dataProvider = $modelSolicitud->getDataProviderSolicitudContribuyente($lista);
+			// if ( count($lista) > 0 ) {
+				$dataProvider = $modelSolicitud->getDataProviderSolicitudContribuyente($lista);
 
-			return $this->render('/funcionario/solicitud-asignada/lista-solicitudes-elaboradas', [
-																'model' => $modelSolicitud,
-																'dataProvider' => $dataProvider,
-																'caption' => $caption,
-																'subCaption' => $subCaption,
-																'url' => $url,
-																'listado' => 10,
-				]);
+				return $this->render('/funcionario/solicitud-asignada/lista-solicitudes-elaboradas', [
+																	'model' => $modelSolicitud,
+																	'dataProvider' => $dataProvider,
+																	'caption' => $caption,
+																	'subCaption' => $subCaption,
+																	'url' => $url,
+																	'listado' => 10,
+					]);
+			// } else {
+			// 	return $this->redirect(['index']);
+			// }
 		}
 
 
