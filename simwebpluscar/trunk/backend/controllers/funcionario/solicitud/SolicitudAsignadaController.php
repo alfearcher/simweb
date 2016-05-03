@@ -130,7 +130,7 @@
 
 				$m = New SolicitudAsignadaSearch();
 				$r1 = $m->findImpuestoSegunFuncionario(Yii::$app->user->identity->id_funcionario);
-die(var_dump($r1->asArray()->one()));
+//ie(var_dump($r1->asArray()->one()));
 
 				$caption = Yii::t('backend', 'Search Request');
 				return $this->render('/funcionario/solicitud-asignada/busqueda-solicitud-form', [
