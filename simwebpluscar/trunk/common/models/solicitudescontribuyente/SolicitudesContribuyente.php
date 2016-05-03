@@ -49,55 +49,63 @@
  *
  */
 
-namespace common\models\solicitudescontribuyente;
+    namespace common\models\solicitudescontribuyente;
 
-use Yii;
-use yii\base\Model;
-use common\models\Users;
-use yii\db\ActiveRecord;
-use backend\models\configuracion\tiposolicitud\TipoSolicitud;
-use backend\models\impuesto\ImpuestoForm;
+    use Yii;
+    use yii\base\Model;
+    use common\models\Users;
+    use yii\db\ActiveRecord;
+    use backend\models\configuracion\tiposolicitud\TipoSolicitud;
+    use backend\models\impuesto\Impuesto;
+    use backend\models\funcionario\solicitud\FuncionarioSolicitud;
 
 
-class SolicitudesContribuyente extends ActiveRecord{
+    class SolicitudesContribuyente extends ActiveRecord{
 
-    public static function getDb()
-    {
-      return Yii::$app->db;
+        public static function getDb()
+        {
+          return Yii::$app->db;
+        }
+
+
+        /**
+         *  Metodo que retorna el nombre de la tabla que utiliza el modelo.
+         *  @return Nombre de la tabla del modelo.
+         */
+        public static function tableName()
+        {
+          return 'solicitudes_contribuyente';
+        }
+
+
+
+        /**
+         * Relacion con la entidad "config-tipos-solicitudes".
+         * @return [type] [description]
+         */
+        public function getTipoSolicitud()
+        {
+            return $this->hasOne(TipoSolicitud::className(), ['id_tipo_solicitud' => 'tipo_solicitud']);
+        }
+
+
+        /**
+         * Relacion con la entidad "impuestos"
+         * @return Active Record.
+         */
+        public function getImpuestos()
+        {
+            return $this->hasOne(Impuesto::className(), ['impuesto' => 'impuesto']);
+        }
+
+
+
+        /***/
+        public function getFuncionarioSolicitud()
+        {
+            return $this->hasMany(FuncionarioSolicitud::className(), ['tipo_solicitud' => 'tipo_solicitud']);
+        }
+
     }
-
-
-    /**
-     *  Metodo que retorna el nombre de la tabla que utiliza el modelo.
-     *  @return Nombre de la tabla del modelo.
-     */
-    public static function tableName()
-    {
-      return 'solicitudes_contribuyente';
-    }
-
-
-
-    /**
-     * Relacion con la entidad "config-tipos-solicitudes".
-     * @return [type] [description]
-     */
-    public function getTipoSolicitud()
-    {
-        return $this->hasOne(TipoSolicitud::className(), [
-                                                            'id_tipo_solicitud' => 'tipo_solicitud',
-                                                        ]);
-    }
-
-
-    /***/
-    public function getImpuesto($impuesto)
-    {
-        $descripcion = ImpuestoForm::getDescripcionImpuesto($impuesto);
-        return $descripcion;
-    }
-
-
-}
 
  ?>
