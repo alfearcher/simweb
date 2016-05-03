@@ -147,6 +147,17 @@
 
 
 
+		/***/
+		public function actionVerificarEnvio()
+		{
+			$request = Yii::$app->request;
+			$postData = $request->post();
+die(var_dump($postData));
+		}
+
+
+
+
 
 		/**
 		 * [actionBuscarSolicitudesContribuyente description]
@@ -173,7 +184,7 @@
 																'dataProvider' => $dataProvider,
 																'caption' => $caption,
 																'subCaption' => $subCaption,
-																'url' => 'sss',
+																'url' => $url,
 																'listado' => 10,
 				]);
 		}
