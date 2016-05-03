@@ -118,8 +118,6 @@
 					if ( $model->validate() ) {
 						if ( isset($postData['btn-search-request']) ) {
 							return self::actionBuscarSolicitudesContribuyente($model);
-							// return $this->redirect(['buscar-solicitudes-contribuyente', 'postData' => 10]);
-							//$_SESSION['postData'] = $postData;
 						}
 					}
 				}
@@ -128,7 +126,11 @@
 				$modelImpuesto = New ImpuestoForm();
 
 				// Se define la lista de item para el combo de impuestos.
-				$listaImpuesto = $modelImpuesto->getListaImpuesto();
+				$listaImpuesto = $modelImpuesto->getListaImpuesto(0, [1,2]);
+
+				$m = New SolicitudAsignadaSearch();
+				$r1 = $m->findImpuestoSegunFuncionario(Yii::$app->user->identity->id_funcionario);
+die(var_dump($r1->asArray()->one()));
 
 				$caption = Yii::t('backend', 'Search Request');
 				return $this->render('/funcionario/solicitud-asignada/busqueda-solicitud-form', [
@@ -173,24 +175,23 @@ die(var_dump($postData));
 			$modelSolicitud = New SolicitudAsignadaSearch();
 			$modelSolicitud->attributes = $model->attributes;
 
+			$userLocal = Yii::$app->user->identity->username;
 			$lista = $modelSolicitud->getTipoSolicitudAsignada('jperez');
-// die(var_dump($lista));
+
 			$caption = Yii::t('backend', 'Lists of Request');
 			$subCaption = Yii::t('backend', 'Lists of Request');
-			// if ( count($lista) > 0 ) {
-				$dataProvider = $modelSolicitud->getDataProviderSolicitudContribuyente($lista);
 
-				return $this->render('/funcionario/solicitud-asignada/lista-solicitudes-elaboradas', [
-																	'model' => $modelSolicitud,
-																	'dataProvider' => $dataProvider,
-																	'caption' => $caption,
-																	'subCaption' => $subCaption,
-																	'url' => $url,
-																	'listado' => 10,
-					]);
-			// } else {
-			// 	return $this->redirect(['index']);
-			// }
+			$dataProvider = $modelSolicitud->getDataProviderSolicitudContribuyente($lista);
+
+			return $this->render('/funcionario/solicitud-asignada/lista-solicitudes-elaboradas', [
+																'model' => $modelSolicitud,
+																'dataProvider' => $dataProvider,
+																'caption' => $caption,
+																'subCaption' => $subCaption,
+																'url' => $url,
+																'listado' => 10,
+				]);
+
 		}
 
 
