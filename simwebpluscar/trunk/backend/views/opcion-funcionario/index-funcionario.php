@@ -19,50 +19,36 @@ $this->title = Yii::t('backend', 'Property Urban');
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        //'filterModel' => $searchModel,
         'columns' => [
             //['class' => 'yii\grid\SerialColumn'],
 
-        'id_impuesto',
-            'id_contribuyente',
-            //'ano_inicio',
-        'direccion',
-            //'liquidado',
-            // 'manzana_limite',
-            // 'lote_1',
-            // 'lote_2',
-            // 'nivel',
-            // 'lote_3',
-            // 'av_calle_esq_dom',
-            // 'casa_edf_qta_dom',
-            // 'piso_nivel_no_dom',
-            // 'apto_dom',
-          'tlf_hab',
-            // 'medidor',
-            // 'id_sim',
-            // 'observacion:ntext',
-            // 'inactivo',
-            // 'catastro',
-          'id_habitante',
-            // 'tipo_ejido',
-            // 'propiedad_horizontal',
-            // 'estado_catastro',
-            // 'municipio_catastro',
-            // 'parroquia_catastro',
-            // 'ambito_catastro',
-            // 'sector_catastro',
-            // 'manzana_catastro',
-            // 'parcela_catastro',
-            // 'subparcela_catastro',
-            // 'nivel_catastro',
-            // 'unidad_catastro',
+            'id_funcionario',
+            'ci',
+            'apellidos',            
+            'nombres',
+            'status_funcionario',
+            
 
-            ['class' => 'yii\grid\ActionColumn', 'template' => '{view}'],
+            ['class' => 'yii\grid\ActionColumn', 'template' => '{view}', 'buttons' => [
+                                        'view' => function ($url, $model, $key) {
+                                            return Html::submitButton('<div class="item-list" style="color: #337AB7;"><center>'. Icon::show('fa fa-thumbs-up',['class' => 'fa-1x'], Icon::FA) .'</center></div>',
+                                                                        [
+                                                                            'value' => $key,
+                                                                            'name' => 'id',
+                                                                            'title' => Yii::t('backend', 'Register'),
+                                                                            'style' => 'margin: 0 auto; display: block;',
+
+                                                                        ]
+                                                                    );
+                                        },
+                                    ],
+            ],
         ],
     ]); ?>
 
     <p>
-        <?= Html::a(Yii::t('backend', 'Register Property Urban'), ['inmueble/inscripcion-inmuebles-urbanos/inscripcion-inmuebles-urbanos'], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('backend', 'Official User Register'), ['opcion-funcionario/registrarfuncionariousuario'], ['class' => 'btn btn-primary']) ?>
     </p>
 
 </div>

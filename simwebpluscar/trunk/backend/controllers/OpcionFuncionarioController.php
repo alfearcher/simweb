@@ -72,6 +72,8 @@ use backend\models\FormIniciarRecuperacionPasswordFuncionario;
 use backend\models\FormRecuperarPasswordFuncionario;
 use backend\models\FormChangePassword;
 use backend\models\BuscarFuncionarioUsuarioForm;
+use backend\models\funcionario\Funcionario;
+use backend\models\funcionario\FuncionarioForm;
 // mandar url
 use yii\web\UrlManager;
 use yii\base\Component;
@@ -80,7 +82,7 @@ use yii\helpers\Url;
 // active record consultas..
 use yii\db\ActiveRecord;
 use common\conexion\ConexionController;
-
+session_start();
 class OpcionFuncionarioController extends Controller
 {
     public $layout = "layout-login";
@@ -128,10 +130,10 @@ class OpcionFuncionarioController extends Controller
               if($model->validate()){
 
 
-                     $usuario = $model->user;
+                     
                      $msg = Yii::t('backend', 'Searching!');//VALIDANDO PREGUNTAS DE SEGURIDAD
                      $url =  "<meta http-equiv='refresh' content='1; ".Url::toRoute(['opcion-funcionario/index-funcionario'])."'>";                    
-                     return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url,"usuario" => $usuario, "tipoError" => $tipoError]);  
+                     return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);  
                      
                }else{
 
@@ -147,17 +149,17 @@ class OpcionFuncionarioController extends Controller
 
     public function actionIndexFuncionario()
     {
-        if ( isset( $_SESSION['idContribuyente'] ) ) {
-        $searchModel = new InmueblesSearch();
+        //if ( isset( $_SESSION['idContribuyente'] ) ) {
+        $searchModel = new FuncionarioForm();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index-funcionario', [
-            'searchModel' => $searchModel,
+            'searchModel' => $searchModel, 
             'dataProvider' => $dataProvider,
         ]); 
-        }  else {
-                    echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
-        }
+        // }  else {
+        //             echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
+        // }
     } 
 /***************************** REGISTRAR FUNCIONARIOS ***********************************************
 * Metodo para crear las cuentas de usuarios de los funcionarios
