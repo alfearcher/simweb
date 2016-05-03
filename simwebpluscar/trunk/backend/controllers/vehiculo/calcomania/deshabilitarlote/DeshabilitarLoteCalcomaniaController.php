@@ -74,10 +74,7 @@ class DeshabilitarLoteCalcomaniaController extends Controller
     
   public $layout = 'layout-main';
    
-  /**
-   * [actionBusquedaFuncionario description] metodo que realiza la busqueda del funcionario para deshabilitarlo
-   * @return [type] [description] retorna un dataprovider con todos los funcionarios activos
-   */
+
   public function actionBusquedaLoteCalcomania()
   {
    // die('llegue a lote calcomania');
