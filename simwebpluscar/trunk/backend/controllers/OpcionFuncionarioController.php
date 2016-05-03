@@ -71,6 +71,7 @@ use backend\models\PreguntasUsuarios;
 use backend\models\FormIniciarRecuperacionPasswordFuncionario;
 use backend\models\FormRecuperarPasswordFuncionario;
 use backend\models\FormChangePassword;
+use backend\models\BuscarFuncionarioUsuarioForm;
 // mandar url
 use yii\web\UrlManager;
 use yii\base\Component;
@@ -105,7 +106,47 @@ class OpcionFuncionarioController extends Controller
          return $key;
      }
 
+     public function actionBuscarFuncionarioUsuario()
+     {
+         //Creamos la instancia con el model de validación
+         $model = new BuscarFuncionarioUsuarioForm;
+    
+         //Mostrará un mensaje en la vista cuando el usuario se haya registrado
+         $msg = null;
+         $url = null;
+         $tipoError = null;
+    
+         //Validación mediante ajax
+         if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax){
 
+              Yii::$app->response->format = Response::FORMAT_JSON;
+              return ActiveForm::validate($model);
+         }
+
+         if ($model->load(Yii::$app->request->post())){
+
+              if($model->validate()){ 
+
+                   die('valido busqueda de funcionario');
+                  
+                         
+                         
+
+                   }else{ 
+
+                         $msg = Yii::t('backend', 'AN ERROR OCCURRED WHILE CARRYING OUT THE REGISTRATION!');//HA OCURRIDO UN ERROR AL REALIZAR EL REGISTRO
+                         $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("opcion-funcionario/registrarfuncionariousuario")."'>";
+                         return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]); 
+                   }
+
+              }else{
+
+                   $model->getErrors(); 
+              }
+         
+              return $this->render("buscar-funcionario-usuario", ["model" => $model]);          
+ 
+     } // cierre del metodo registerfun
 /***************************** REGISTRAR FUNCIONARIOS ***********************************************
 * Metodo para crear las cuentas de usuarios de los funcionarios
 *****************************************************************************************************/
