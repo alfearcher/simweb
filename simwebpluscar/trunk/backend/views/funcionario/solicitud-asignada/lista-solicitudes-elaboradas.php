@@ -145,7 +145,7 @@
                 					[
                 						'label' => Yii::t('backend', 'Tax'),
                 						'value' => function($model) {
-                							return $model->getImpuesto($model->tipoSolicitud->impuesto);
+                							return $model->impuestos->descripcion;
                 						}
                 					],
                 					[
