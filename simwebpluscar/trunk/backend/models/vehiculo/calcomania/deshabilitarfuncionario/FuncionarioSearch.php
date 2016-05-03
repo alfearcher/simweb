@@ -95,14 +95,8 @@ class FuncionarioSearch extends Model
     public function search()
     { 
   
-
-    
-
-
         $query = Funcionario::find();
 
-                                
-                             
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
            
