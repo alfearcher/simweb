@@ -77,6 +77,7 @@
 	     */
 	    public function findTipoSolicitudAsignadaFuncionario($userLocal)
 	    {
+	    	$modelFind = null;
 	    	$modelFind = FuncionarioSolicitud::find()->where('inactivo =:inactivo', [':inactivo' => 0])
 	                                                 ->andWhere('login =:login', [':login' => $userLocal])
 	                                                 ->joinWith('funcionario', false)
@@ -99,6 +100,7 @@
 	     */
 	    public function getTipoSolicitudAsignada($userLocal)
 	    {
+	    	$lista = null;
 	    	$model = $this->findTipoSolicitudAsignadaFuncionario($userLocal);
 	    	$listaSolicitudeAsignadas = $model->asArray()->all();
 	    	foreach ( $listaSolicitudeAsignadas as $solicitud ) {
@@ -126,7 +128,7 @@
 	    	                                             ->andWhere(SolicitudesContribuyente::tableName().'.inactivo =:inactivo', [':inactivo' => 0])
 	    	                                             ->andWhere(TipoSolicitud::tableName().'.inactivo =:inactivo', [':inactivo' => 0])
 	    	                                            // ->andWhere(['tipo_solicitud' => $tipoSolicitud])
-	    	                                             ->joinWith('tipoSolicitud')
+	    	                                             ->joinWith('tipoSolicitud', 'impuestos')
 	    	                                             ->orderBy([
 	    	                                             		'nro_solicitud' => SORT_ASC,
 	    	                                             	]);
@@ -137,18 +139,24 @@
 
 
 
-	    /***/
+	    /**
+	     * [getDataProviderSolicitudContribuyente description]
+	     * @param  Array $tipoSolicitud arreglo de identificadores del tipo de solicitud.
+	     * @return Data Provider.
+	     */
 	    public function getDataProviderSolicitudContribuyente($tipoSolicitud)
 	    {
-//die(var_dump($this->tipo_solicitud));
-// die(var_dump($this->fecha_desde));
 	    	$query = $this->findSolicitudContribuyenteEmitida($tipoSolicitud);
- // die(var_dump($query->asArray()->all()));
+
 	    	$dataProvider = New ActiveDataProvider([
 	    		'query' => $query,
 
 	    	]);
 
+	    	if ( count($tipoSolicitud) == 0 ) {
+	    		$query->where('0=1');
+	    		return $dataProvider;
+	    	}
 	    	$query->andFilterWhere(['IN', 'tipo_solicitud', $tipoSolicitud]);
 	    	if ( $this->tipo_solicitud > 0 ) {
 		   		$query->andFilterWhere(['=', 'tipo_solicitud', $this->tipo_solicitud]);

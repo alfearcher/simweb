@@ -47,6 +47,7 @@
 	use yii\db\ActiveRecord;
 	use backend\models\configuracion\solicitud\ConfigurarSolicitud;
 	use backend\models\configuracion\tiposolicitud\TipoSolicitud;
+	use common\mdoels\solicitudescontribuyente\SoliictudesContribuyente;
 
 	/**
 	* 	Clase
@@ -89,6 +90,16 @@
 		public function getTipoSolicitud()
 		{
 			return $this->hasMany(TipoSolicitud::className(), ['impuesto' => 'impuesto']);
+		}
+
+
+		/**
+		 * Relacion con la entidad "solicitudes-contribuyente".
+		 * @return Active Record.
+		 */
+		public function getSolicitudContribuyente()
+		{
+			return $this->hasMany(SolicitudesContribuyente::className(), ['impuesto' => 'impuesto']);
 		}
 
 	}

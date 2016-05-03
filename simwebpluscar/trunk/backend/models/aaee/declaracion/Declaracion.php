@@ -54,9 +54,6 @@
 	*/
 	class Declaracion extends ActEcon
 	{
-
-		public $act_econ;
-		public $act_econ_ingresos;
 		private $_añoImpositivo;
 		private $_periodo;
 		private $_idContribuyente;

@@ -69,8 +69,6 @@
 	    public $id_unidad;
 	    public $searchGlobal;
 	    public $listado;
-	    public $errListaFuncionario;
-	    public $errListaSolicitud;
 	    public $impuesto;
 	    public $tipo_solicitud;
 
@@ -119,7 +117,6 @@
 	            ['listado', 'safe'],
 	            [['id_departamento', 'id_unidad', 'impuesto', 'tipo_solicitud'],
 	              'integer'],
-	            [['errListaFuncionario', 'errListaSolicitud'], 'string'],
 	            [['impuesto', 'tipo_solicitud'],
 	              'required', 'on' => 'search_impuesto_solicitud', 'message' => Yii::t('backend', '{attribute} is require')],
 	        ];
