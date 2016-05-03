@@ -163,10 +163,10 @@
                 					[
                                     	'class' => 'yii\grid\ActionColumn',
                                     	'header'=> Yii::t('backend','OK'),
-                                    	'template' => '{ok}',
+                                    	'template' => '{view}',
                                     	'buttons' => [
-                                        	'ok' => function ($url, $model, $key) {
-                                            	return Html::submitButton('<div class="item-list" style="color: #337AB7;"><center>'. Icon::show('fa fa-thumbs-						up',
+                                        	'view' => function ($url, $model, $key) {
+                                            	return Html::submitButton('<div class="item-list" style="color: #337AB7;"><center>'. Icon::show('fa fa-thumbs-up',
                                             							 ['class' => 'fa-2x'],
                                             							 Icon::FA) .'</center></div>',
                                                                         [
