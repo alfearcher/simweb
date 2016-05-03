@@ -115,7 +115,8 @@
 								//'filterModel' => $model,
 								'headerRowOptions' => ['class' => 'success'],
 								'caption' => Yii::t('backend', 'List of Request Taxpayer'),
-								'summary' => '{begin} - {end} {count} {totalCount} {page} {pageCount}',
+								//'summary' => '{begin} - {end} {count} {totalCount} {page} {pageCount}',
+								'summary' => Yii::t('backend', 'Total Register') . ': ' . ' {totalCount}' . ' - ' . Yii::t('backend', 'page') . ': ' . '{page}' . ' ' . Yii::t('backend', 'of') . ' ' . '{pageCount}',
 								'columns' => [
                 					[
                 						'label' => Yii::t('backend', 'Request No.'),
@@ -123,6 +124,12 @@
                 							return $model->nro_solicitud;
                 						}
                 					],
+                					// [
+                					// 	'label' => Yii::t('backend', 'Request No.'),
+                					// 	'value' => function($model) {
+                					// 		return $model->tipo_solicitud;
+                					// 	}
+                					// ],
 									[
                 						'label' => Yii::t('backend', 'Date/Hour'),
                 						'value' => function($model) {
@@ -184,13 +191,13 @@
 					<!-- <div class="col-sm-3">
 						<div class="form-group">
 							<?//= Html::submitButton(Yii::t('backend', 'Remove Request'),
-												  [
+												  //[
 													//'id' => 'btn-remove-request',
 													//'class' => 'btn btn-success',
 													//'value' => 1,
 													//'name' => 'btn-remove-request',
 												//	'style' => 'width: 100%;',
-												  ])
+												  //])
 							?>
 						</div>
 					</div> -->
