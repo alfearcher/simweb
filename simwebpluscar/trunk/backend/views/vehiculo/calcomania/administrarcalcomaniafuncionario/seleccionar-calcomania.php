@@ -24,9 +24,9 @@ $this->title = Yii::t('frontend', 'Select the Stickers');
 
 
  <?php $form = ActiveForm::begin([
-            'id' => 'id-chk-deshabilitar-funcionario',
+            'id' => 'id-chk-seleccionar-calcomania',
             'method' => 'post',
-            'action' => ['/vehiculo/calcomania/administrarcalcomaniafuncionario/administrar-calcomania-funcionario/verificar-funcionario'],
+            'action' => ['/vehiculo/calcomania/administrarcalcomaniafuncionario/administrar-calcomania-funcionario/verificar-calcomania'],
             'enableClientValidation' => true,
             'enableAjaxValidation' => true,
             'enableClientScript' => true,
@@ -45,39 +45,37 @@ $this->title = Yii::t('frontend', 'Select the Stickers');
         'dataProvider' => $provider,
 
         'columns' => [
-            //['class' => 'yii\grid\SerialColumn'],
-            'id',
-           'name',
-           'email',
+           // ['class' => 'yii\grid\SerialColumn'],
+            
+           // 'id',
+           // 'Calcomania',
+                    [
+                    'label' => 'Calcomania',
+                    'value' => function($data){
+                        return $data['Calcomania'];
+                    },
+                    ],
+            
+                    [
+                        'class' => 'yii\grid\CheckboxColumn',
+                        'name' => 'chk-seleccionar-calcomania',
+                        'checkboxOptions' => [
+                        'id' => 'id-chk-seleccionar-calcomania',
+                               
+                                //'onClick' => 'alert("hola " + $(this).val());'
+                                //$(this).is(":checked"), permite determinar si un checkbox esta tildado.
+                        ],
+                        'multiple' => true,
+                    ],
 
-              [
-                                    'class' => 'yii\grid\ActionColumn',
-                                    'header'=> Yii::t('backend','View'),
-                                    'template' => '{view}',
-                                    'buttons' => [
-                                        'view' => function ($url, $model, $key) {
-                                            return Html::submitButton('<div class="item-list" style="color: #337AB7;"><center>'. Icon::show('fa fa-thumbs-up',['class' => 'fa-1x'], Icon::FA) .'</center></div>',
-                                                                        [
-                                                                            'value' => $key,
-                                                                            'name' => 'id',
-                                                                            'title' => Yii::t('backend', 'View'),
-                                                                            'style' => 'margin: 0 auto; display: block;',
-                                                                        ]
-                                                                    );
-                                        },
-                                    ],
-                                ],
-
-         
-
-    ]
+        ]
 ]);
 
  
     
     ?>
 
-    <div class="row">
+   <div class="row">
     <div class="col-sm-4">
     <p>
        
@@ -85,9 +83,18 @@ $this->title = Yii::t('frontend', 'Select the Stickers');
     </p>
     </div>
 
+    <div class="col-sm-5" style="margin-left: -200px;">
+    
+     <?= Html::submitButton("Submit", ["class" => "btn btn-success", 'style' => 'height:30px;width:140px;']) ?>
 
+    </div>
   
+     <div class="col-sm-2" style="margin-left:170px;color:red; font: comic sans ms">
    
+    <p><?php echo $errorCheck ?></p>
+
+   
+    </div>
     </div>
 
 </div>
