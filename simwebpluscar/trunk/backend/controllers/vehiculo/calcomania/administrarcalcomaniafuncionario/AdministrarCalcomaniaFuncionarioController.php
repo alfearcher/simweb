@@ -140,7 +140,7 @@ class AdministrarCalcomaniaFuncionarioController extends Controller
         return $this->redirect(['seleccionar-calcomania']);
     }
 
-    public function actionSeleccionarCalcomania()
+    public function actionSeleccionarCalcomania($errorCheck = "")
     {
 
           $idLote = $_SESSION['idLote'];
@@ -158,25 +158,60 @@ class AdministrarCalcomaniaFuncionarioController extends Controller
 
           foreach($rango as $key=>$value){
            
-              $hola[] = $value;
+             $prueba[$value] = ['id' => $value, 'Calcomania' => $value];
 
           }
-          //die(var_dump($hola));
+          //$p = array_values($prueba);
+         // die(var_dump($prueba));
+        
 
 
         $provider = new ArrayDataProvider([
-            'allModels' => $hola,
+            'allModels' => $prueba,
+            
             'sort' => [
-       
+                 
+            'attributes' => ['id', 'Calcomania'],
+            
             ],
+          
             'pagination' => [
-            'pageSize' => 10,
+            'pageSize' => 1000,
             ],
         ]);
 
               return $this->render('/vehiculo/calcomania/administrarcalcomaniafuncionario/seleccionar-calcomania', [
                                                                                             'provider' => $provider,
+                                                                                            'errorCheck' => $errorCheck,
                                                                                             ]);   
+    }
+
+    public function actionVerificarCalcomania()
+    {
+      $errorCheck = ""; 
+
+      $idCalcomanias = yii::$app->request->post('chk-seleccionar-calcomania');
+     // die(var_dump($idCalcomanias));
+      $_SESSION['idCalcomanias'] = $idCalcomanias;
+
+  
+      $validacion = new AdministrarCalcomaniaFuncionarioForm();
+
+       if ($validacion->validarCheck(yii::$app->request->post('chk-seleccionar-calcomania')) == true){
+        
+        return $this->redirect(['verificar-calcomania-asignada']);
+           
+        }else{
+          $errorCheck = "Please select a Sticker";
+          return $this->redirect(['seleccionar-calcomania' , 'errorCheck' => $errorCheck]); 
+
+                                                                                             
+       }
+    }
+
+    public function actionVerificarCalcomaniaAsignada()
+    {
+      
     }
     
 
