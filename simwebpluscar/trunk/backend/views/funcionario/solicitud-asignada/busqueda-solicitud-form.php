@@ -106,7 +106,7 @@
                                                                   'prompt' => Yii::t('backend', 'Select'),
                                                                   'style' => 'width:280px;',
                                                                   'onchange' => '$.post( "' . Yii::$app->urlManager
-                                                                                       		           ->createUrl('funcionario/solicitud/funcionario-solicitud/list-solicitud') . '&i=' . '" + $(this).val(), function( data ) {
+                                                                                       		           ->createUrl('funcionario/solicitud/solicitud-asignada/list-solicitud') . '&i=' . '" + $(this).val(), function( data ) {
                                                                                                                  $( "select#tipo-solicitud" ).html( data );
                                                                                                            });'
                                                                             ])->label(false);

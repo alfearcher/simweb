@@ -143,7 +143,7 @@
                                     	'buttons' => [
                                         	'ok' => function ($url, $model, $key) {
                                             	return Html::submitButton('<div class="item-list" style="color: #337AB7;"><center>'. Icon::show('fa fa-thumbs-up',
-                                            							 ['class' => 'fa-2x'],
+                                            							 ['class' => 'fa-1x'],
                                             							 Icon::FA) .'</center></div>',
                                                                         [
                                                                             'value' => $key,
