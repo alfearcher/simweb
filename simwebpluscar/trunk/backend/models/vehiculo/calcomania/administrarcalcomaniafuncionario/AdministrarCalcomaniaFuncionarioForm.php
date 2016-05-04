@@ -116,6 +116,18 @@ class AdministrarCalcomaniaFuncionarioForm extends Model
        
     }
 
+     public function validarCheck($postCheck)
+    {
+        //die($postCheck);
+        
+        if (count($postCheck) > 0){
+            //die('lo selecciono');
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     
 
     
