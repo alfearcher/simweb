@@ -61,6 +61,7 @@
 	use common\mensaje\MensajeController;
 	use common\models\session\Session;
 	use backend\models\impuesto\ImpuestoForm;
+	use backend\models\configuracion\tiposolicitud\TipoSolicitud;
 
 	/**
 	 *	Clase principal del formulario.
@@ -130,10 +131,17 @@
 
 				$m = New SolicitudAsignadaSearch();
 
-				$userLocal = Yii::$app->user->identity->username;
-				$lista = $m->getTipoSolicitudAsignada($userLocal);
-				$r1 = $m->findImpuestoSegunFuncionario($lista);
-die(var_dump($r1->asArray()->all()));
+				// $userLocal = Yii::$app->user->identity->username;
+				// $lista = $m->getTipoSolicitudAsignada($userLocal);
+				// $r1 = $m->findImpuestoSegunFuncionario($lista);
+				// $r2	= $r1->asArray()->all();
+				// foreach ($r2 as $key => $value) {
+				// 	foreach ($value as $key2 => $value2) {
+				// 		var_dump($value2);
+				// 	}
+				// }
+				// die();
+die(var_dump($m->getImpuestoSegunFuncionario()));
 
 				$caption = Yii::t('backend', 'Search Request');
 				return $this->render('/funcionario/solicitud-asignada/busqueda-solicitud-form', [
@@ -262,6 +270,31 @@ die(var_dump($postData));
 							''
 					];
 		}
+
+
+
+		/**
+		 * Metodo que permite renderizar un combo de tipos de solicitudes
+		 * segun el parametro impuestos.
+		 * @param  Integer $i identificador del impuesto.
+		 * @return Renderiza una vista con un combo de impuesto.
+		 */
+		public function actionListSolicitud($i)
+	    {
+	       // die('hola, entro a list');
+	        $countSolicitud = TipoSolicitud::find()->where(['impuesto' => $i, 'inactivo' => 0])->count();
+
+	        $solicitudes = TipoSolicitud::find()->where(['impuesto' => $i, 'inactivo' => 0])->all();
+
+	        if ( $countSolicitud > 0 ) {
+	        	echo "<option value='0'>" . "Select..." . "</option>";
+	            foreach ( $solicitudes as $solicitud ) {
+	                echo "<option value='" . $solicitud->id_tipo_solicitud . "'>" . $solicitud->descripcion . "</option>";
+	            }
+	        } else {
+	            echo "<option> - </option>";
+	        }
+	    }
 
 	}
 ?>
