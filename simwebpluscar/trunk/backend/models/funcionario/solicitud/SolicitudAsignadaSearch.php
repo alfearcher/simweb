@@ -127,7 +127,7 @@
 	    	$modelFind = SolicitudesContribuyente::find()->where('estatus =:estatus', [':estatus' => 0])
 	    	                                             ->andWhere(SolicitudesContribuyente::tableName().'.inactivo =:inactivo', [':inactivo' => 0])
 	    	                                             ->andWhere(TipoSolicitud::tableName().'.inactivo =:inactivo', [':inactivo' => 0])
-	    	                                            // ->andWhere(['tipo_solicitud' => $tipoSolicitud])
+	    	                                             //->andWhere(['tipo_solicitud' => $tipoSolicitud])
 	    	                                             ->joinWith('tipoSolicitud', 'impuestos')
 	    	                                             ->orderBy([
 	    	                                             		'nro_solicitud' => SORT_ASC,
@@ -157,11 +157,11 @@
 	    		$query->where('0=1');
 	    		return $dataProvider;
 	    	}
-	    	$query->andFilterWhere(['IN', 'tipo_solicitud', $tipoSolicitud]);
+
 	    	if ( $this->tipo_solicitud > 0 ) {
 		   		$query->andFilterWhere(['=', 'tipo_solicitud', $this->tipo_solicitud]);
 		   	} else {
-		   		//$query->andFilterWhere(['IN', 'tipo_solicitud', $tipoSolicitud]);
+		   		$query->andFilterWhere(['IN', 'tipo_solicitud', $tipoSolicitud]);
 		   	}
 	    	if ( $this->fecha_desde != null && $this->fecha_hasta != null ) {
 		    	$query->andFilterWhere(['BETWEEN','fecha_hora_creacion',
@@ -172,6 +172,7 @@
 		   		$query->andFilterWhere(['=', SolicitudesContribuyente::tableName().'.impuesto', $this->impuesto]);
 		   	}
 	    	return $dataProvider;
+	    	//$query->andFilterWhere(['IN', 'tipo_solicitud', $tipoSolicitud]);
 	    }
 
 
@@ -183,25 +184,81 @@
 	     * en la entidad "funcionarios".
 	     * @return Active Record.
 	     */
-	    public function findImpuestoSegunFuncionario($tipoSolicitud)
+	    public function findImpuestoSegunFuncionario($listaSolicitud)
 	    {
 	    	$modelFind = null;
-	    	// $modelFind = SolicitudesContribuyente::find()
-	    	// 											 ->select('impuesto')
-	    	// 											 ->distinct()
-	    	// 											 ->where('id_funcionario =:id_funcionario', [':id_funcionario' => $idFuncionario])
-	    	// 											 ->andWhere(SolicitudesContribuyente::tableName().'.inactivo =:inactivo', [':inactivo' => 0])
-	    	// 											 ->andWhere('estatus =:estatus', [':estatus' => 0])
-	    	// 											 ->andWhere(FuncionarioSolicitud::tableName().'.inactivo =:inactivo', [':inactivo' => 0])
-	    	// 											 ->joinWith('funcionarioSolicitud')
-	    	// 											 ->orderBy([
-	    	// 											 		'impuesto' => SORT_ASC,
-	    	// 											 	]);
-
-	    	$modelFind = SolicitudesContribuyente::find()->select('impuesto')
-	    												 ->distinct()
-	    												 ->where(['IN','tipo_solicitud', $tipoSolicitud]);
+	    	if ( is_array($listaSolicitud) ) {
+		    	$modelFind = SolicitudesContribuyente::find()->select('impuesto')
+		    												 ->distinct()
+		    												 ->where(['IN','tipo_solicitud', $listaSolicitud]);
+		    }
 	    	return isset($modelFind) ? $modelFind : null;
+	    }
+
+
+
+	    /***/
+	    public function getImpuestoSegunFuncionario()
+	    {
+	    	$lista = null;
+	    	$listaImpuesto = null;
+	    	$userLocal = Yii::$app->user->identity->username;
+	    	// Se obtiene la lista de solicitudes asignadas al funcionario.
+			$listaSolicitud = $this->getTipoSolicitudAsignada($userLocal);
+
+			if ( count($listaSolicitud) > 0 ) {
+				// Se busca un modelo que contenga los impuestos segun el listado
+				// de solicitudes enviadas.
+				$model = $this->findImpuestoSegunFuncionario($listaSolicitud);
+				if ( isset($model) ) {
+					// Genera un array multi-dimensional.
+					$listaImpuesto = $model->asArray()->all();
+					foreach ( $listaImpuesto as $key => $value ) {
+						$lista[$key] = $value['impuesto'];
+					}
+				}
+			}
+
+			return $lista;
+	    }
+
+
+
+	    /***/
+	    public function findSolicitudAsignadaSegunImpuesto($impuesto, $listaSolicitud = '')
+	    {
+	    	if ( count($listaSolicitud) > 0 ) {
+	    		$modelFind = SolicitudesContribuyente::find()->select('tipo_solicitud')
+	    													 ->distinct()
+	    													 ->where('impuesto =:impuesto', [':impuesto' => $impuesto])
+	    													 ->andWhere(['IN', 'tipo_solicitud', $listaSolicitud])
+	    													 ->orderBy([
+	    													 	'tipo_solicitud' => SORT_ASC,
+	    													 	]);
+	    	} else {
+	    		$modelFind = SolicitudesContribuyente::find()->select('tipo_solicitud')
+	    													 ->distinct()
+	    													 ->where('impuesto =:impuesto', [':impuesto' => $impuesto])
+	    													 ->orderBy([
+	    													 	'tipo_solicitud' => SORT_ASC,
+	    													 	]);
+	    	}
+	    	return isset($modelFind) ? $modelFind : null;
+	    }
+
+
+
+
+	    /***/
+	    public function getFiltrarSolicitudAsignadaSegunImpuesto($impuesto, $listaSolicitud = '')
+	    {
+	    	$lista = null;
+	    	$model = $this->findSolicitudAsignadaSegunImpuesto($impuesto, $listaSolicitud);
+	    	$listaSolicitudFiltrada = isset($model) ? $model->asArray()->all() : null;
+	    	foreach ( $listaSolicitudFiltrada as $key => $value ) {
+				$lista[$key] = $value['tipo_solicitud'];
+			}
+			return $lista;
 	    }
 
 
