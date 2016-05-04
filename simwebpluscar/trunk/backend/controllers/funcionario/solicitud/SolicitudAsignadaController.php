@@ -122,26 +122,18 @@
 						}
 					}
 				}
+				// Lo siguiente permite determinar que impuestos estan relacionados a las
+				// solicitudes permisadas para el funcionario.
+				$listaImpuesto = null;
+				$modelSolicitud = New SolicitudAsignadaSearch();
+				$listaImpuesto = $modelSolicitud->getImpuestoSegunFuncionario();
 
 				// Modelo adicionales para la busqueda de los funcionarios.
 				$modelImpuesto = New ImpuestoForm();
 
 				// Se define la lista de item para el combo de impuestos.
-				$listaImpuesto = $modelImpuesto->getListaImpuesto(0, [1,2]);
-
-				$m = New SolicitudAsignadaSearch();
-
-				// $userLocal = Yii::$app->user->identity->username;
-				// $lista = $m->getTipoSolicitudAsignada($userLocal);
-				// $r1 = $m->findImpuestoSegunFuncionario($lista);
-				// $r2	= $r1->asArray()->all();
-				// foreach ($r2 as $key => $value) {
-				// 	foreach ($value as $key2 => $value2) {
-				// 		var_dump($value2);
-				// 	}
-				// }
-				// die();
-die(var_dump($m->getImpuestoSegunFuncionario()));
+				// El primer parametro se refiere a la condicion del registro 0 => activo, 1 => inactivo.
+				$listaImpuesto = $modelImpuesto->getListaImpuesto(0, $listaImpuesto);
 
 				$caption = Yii::t('backend', 'Search Request');
 				return $this->render('/funcionario/solicitud-asignada/busqueda-solicitud-form', [
@@ -187,7 +179,7 @@ die(var_dump($postData));
 			$modelSolicitud->attributes = $model->attributes;
 
 			$userLocal = Yii::$app->user->identity->username;
-			$lista = $modelSolicitud->getTipoSolicitudAsignada('jperez');
+			$lista = $modelSolicitud->getTipoSolicitudAsignada($userLocal);
 
 			$caption = Yii::t('backend', 'Lists of Request');
 			$subCaption = Yii::t('backend', 'Lists of Request');
@@ -282,9 +274,27 @@ die(var_dump($postData));
 		public function actionListSolicitud($i)
 	    {
 	       // die('hola, entro a list');
-	        $countSolicitud = TipoSolicitud::find()->where(['impuesto' => $i, 'inactivo' => 0])->count();
+	       	$userLocal = Yii::$app->user->identity->username;
+	    	$model = New SolicitudAsignadaSearch();
 
-	        $solicitudes = TipoSolicitud::find()->where(['impuesto' => $i, 'inactivo' => 0])->all();
+	    	// Todas las solicitudes asignadas.
+	    	$listaSolicitud = $model->getTipoSolicitudAsignada($userLocal);
+
+	    	// Lista de solicitudes filtradas por el impuesto, es decir, las solicitudes
+	    	// relacionada al impuesto $i.
+	    	$lista = $model->getFiltrarSolicitudAsignadaSegunImpuesto($i, $listaSolicitud);
+
+	        $countSolicitud = TipoSolicitud::find()->where('impuesto =:impuesto', [':impuesto' => $i])
+	        									   ->andWhere(['IN', 'id_tipo_solicitud', $lista])
+	        									   ->andwhere('inactivo =:inactivo', [':inactivo' => 0])
+	        									   ->count();
+
+	        //$solicitudes = TipoSolicitud::find()->where(['impuesto' => $i, 'inactivo' => 0])->all();
+
+	        $solicitudes = TipoSolicitud::find()->where('impuesto =:impuesto', [':impuesto' => $i])
+	        									->andWhere(['IN', 'id_tipo_solicitud', $lista])
+	        									->andwhere('inactivo =:inactivo', [':inactivo' => 0])
+	        									->all();
 
 	        if ( $countSolicitud > 0 ) {
 	        	echo "<option value='0'>" . "Select..." . "</option>";
