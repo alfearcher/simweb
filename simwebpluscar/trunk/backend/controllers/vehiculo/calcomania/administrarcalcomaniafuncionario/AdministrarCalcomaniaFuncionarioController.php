@@ -60,6 +60,7 @@ use backend\models\vehiculo\calcomania\administrarcalcomaniafuncionario\Administ
 use backend\models\vehiculo\calcomania\deshabilitarfuncionario\FuncionarioSearch;
 use backend\models\vehiculo\calcomania\generarlote\LoteSearch;
 use yii\data\ArrayDataProvider;
+use common\models\calcomania\calcomaniamodelo\Calcomania;
 /**
  * Site controller
  */
@@ -102,6 +103,15 @@ class AdministrarCalcomaniaFuncionarioController extends Controller
   {
     $idFuncionario = yii::$app->request->post('id');
     $_SESSION['idFuncionario'] = $idFuncionario;
+
+        $buscarFuncionario = new AdministrarCalcomaniaFuncionarioForm();
+
+            $busqueda = $buscarFuncionario->buscarLogin($idFuncionario);
+
+                if($busqueda == true){
+                  $_SESSION['datosFuncionario'] = $busqueda[0]->login;
+                  //die($_SESSION['datosFuncionario']);
+                }
 
         return $this->redirect(['busqueda-lote']);
   }
@@ -212,32 +222,65 @@ class AdministrarCalcomaniaFuncionarioController extends Controller
     public function actionVerificarCalcomaniaAsignada()
     {
       
+        $idCalcomania = $_SESSION['idCalcomanias'];
+
+        $administrarCalcomania = new AdministrarCalcomaniaFuncionarioForm();
+
+        $buscar = $administrarCalcomania->buscarCalcomania($idCalcomania);
+
+            if($buscar == true){
+              return MensajeController::actionMensaje(994);
+            }else{
+              $guardar = self::beginSave("guardar", $idCalcomania);
+
+                if($guardar == true){
+                  return MensajeController::actionMensaje(100);
+                }else{
+                  return MensajeController::actionMensaje(920);
+                }
+            }
+
+
+
     }
     
 
-    public function guardarFuncionario($conn, $conexion)
+    public function guardarCalcomanias($conn, $conexion, $value)
     {
+      $funcionarioAsignado = $_SESSION['datosFuncionario'];
+      $Calcomania =$value;  
       $idUser = yii::$app->user->identity->id_user;
-      $datosFuncionario = $_SESSION['datosFuncionario'];
-      $resultado = false;
       $datos = yii::$app->user->identity;
-      $tabla = 'funcionario_calcomania';
+      $tabla = 'calcomanias';
       $arregloDatos = [];
-      $arregloCampo = BusquedaFuncionarioForm::attributeFuncionarioCalcomania();
+      $arregloCampo = AdministrarCalcomaniaFuncionarioForm::attributeCalcomania();
 
       foreach ($arregloCampo as $key=>$value){
 
           $arregloDatos[$value] =0;
       }
 
-      $arregloDatos['id_funcionario'] = $datosFuncionario[0]->id_funcionario;
-      //die($arregloDatos['id_funcionario']);
+      $arregloDatos['nro_calcomania'] = $Calcomania;
       
+      $arregloDatos['fecha_creacion'] = date('Y-m-d h:m:i');
+      
+      $arregloDatos['ano_impositivo'] = date('Y');
+
+      $arregloDatos['usuario_creacion'] = $funcionarioAsignado;
+
+      $arregloDatos['entregado'] = 0;
+
       $arregloDatos['estatus'] = 0;
+
+      $arregloDatos['usuario_creacion'] = $funcionarioAsignado;
+
+      $arregloDatos['usuario_creacion'] = $funcionarioAsignado;
+
+      $arregloDatos['login'] = $datos->username;
+
+
       
-      $arregloDatos['usuario'] = $idUser;
       
-      $arregloDatos['fecha_hora'] = date('Y-m-d h:m:i');
 
 
           if ($conexion->guardarRegistro($conn, $tabla, $arregloDatos )){
@@ -248,13 +291,14 @@ class AdministrarCalcomaniaFuncionarioController extends Controller
     }
 
     /**
-     * [beginSave description] metodo que realiza el guardado del funcionario en la tabla funcionario_calcomania
+     * [beginSave description] metodo que realiza el guardado de las calcomanias asignadas en la tabla calcomanias
      * @param  [type] $var [description] variable que recibe en forma de string para comenzar el guardado
      * @return [type]      [description] retorna true si el commit se realiza y false si hay un roll back
      */
-    public function beginSave($var)
+    public function beginSave($var, $idCalcomania)
     {
-      //die('llegue a beginsave');
+      $todoBien = true;
+
       $conexion = new ConexionController();
 
       $conn = $conexion->initConectar('db');
@@ -263,12 +307,16 @@ class AdministrarCalcomaniaFuncionarioController extends Controller
 
       $transaccion = $conn->beginTransaction();
 
-          if($var == "guardarFuncionario"){
-            //die('llegue a var');
+          if($var == "guardar"){
+           
+              foreach($idCalcomania as $key=>$value)
+              { 
+              $guardar = self::guardarCalcomanias($conn, $conexion, $value);
+              $todoBien == true;
 
-              $buscar = self::guardarFuncionario($conn, $conexion);
+              }
 
-                  if ($buscar == true){
+                  if ($todoBien == true){
 
                     $transaccion->commit();
                     $conn->close();
