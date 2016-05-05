@@ -86,7 +86,7 @@ $this->title = Yii::t('frontend', 'Property Update');
 
                         
                             <div class="col-sm-2"> 
-                            <?= $form->field($model, 'ano_inicio')->textInput(['style' => 'width:100px;'])->label(false) ?> 
+                            <?= $form->field($model, 'ano_inicio')->textInput(['style' => 'width:100px;', 'readOnly'=>true])->label(false) ?> 
                             </div>
                         
                    </div>
