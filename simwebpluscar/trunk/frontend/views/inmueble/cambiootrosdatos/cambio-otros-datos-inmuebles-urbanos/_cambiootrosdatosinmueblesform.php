@@ -79,15 +79,7 @@ $this->title = Yii::t('frontend', 'Property Update');
                             <div class="col-sm-1">
                             </div>
                         
-                            <div class="col-sm-2"> 
-                            <?= Yii::t('backend', 'Year home') ?>
-                            </div> 
-                        
-
-                        
-                            <div class="col-sm-2"> 
-                            <?= $form->field($model, 'ano_inicio')->textInput(['style' => 'width:100px;', 'readOnly'=>true])->label(false) ?> 
-                            </div>
+                            
                         
                    </div>
  <!-- Direccio del domicilio -->                    
