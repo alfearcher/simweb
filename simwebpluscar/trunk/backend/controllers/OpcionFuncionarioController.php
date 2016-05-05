@@ -223,7 +223,7 @@ class OpcionFuncionarioController extends Controller
 
                         $tableName = 'users';
 
-                        $conn = New ConexionController();
+                        $conn = New ConexionController(); 
 
                         $this->conexion = $conn->initConectar('dbsim');     // instancia de la conexion (Connection)
                         $this->conexion->open(); 
@@ -245,7 +245,7 @@ class OpcionFuncionarioController extends Controller
                             $msg = "AH OCURRIDO UN ERROR!....Espere";
                             $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("opcion-funcionario/registrarfuncionariousuario")."'>";
                             return $this->render('/mensaje/mensaje',['msg' => $msg, 'url' => $url, 'tipoError' => $tipoError]);
-                        } 
+                        }
                         $this->conexion->close();
                          //-------------FIN TRY CATCH---------------
 

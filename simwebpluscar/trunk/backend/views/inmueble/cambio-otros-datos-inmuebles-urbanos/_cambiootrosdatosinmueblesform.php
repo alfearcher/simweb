@@ -54,7 +54,7 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
 
                         <td colspan="2" style="max-width: 100px">
                             <div class="col-sm-2"> 
-                            <?= $form->field($model, 'ano_inicio')->textInput(['style' => 'width:100px;'])->label(false) ?> 
+                            <?= $form->field($model, 'ano_inicio')->textInput(['style' => 'width:100px;', 'readOnly'=>true])->label(false) ?> 
                             </div>
                         </td>
                    </tr>
