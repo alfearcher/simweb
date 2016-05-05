@@ -22,7 +22,7 @@ $this->title = Yii::t('backend', 'Official User Register');
     <?php $form = ActiveForm::begin([
     'method' => 'post',
     'id' => 'formulario',
-    'action'=> 'opcion-funcionario/registrarfuncionariousuario',
+    'action'=> '/simwebpluscar/backend/web/index.php?r=opcion-funcionario/registrarfuncionariousuario',
     'enableClientValidation' => false,
     'enableAjaxValidation' => true,
     'options' => ['class' => 'form-vertical'],]); ?>
