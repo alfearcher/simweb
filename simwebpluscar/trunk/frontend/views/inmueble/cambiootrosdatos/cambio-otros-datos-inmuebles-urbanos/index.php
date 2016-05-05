@@ -21,7 +21,7 @@ $this->title = Yii::t('backend', 'Property Urban');
  <?php $form = ActiveForm::begin([
     'method' => 'post',
     'id' => 'formulario',
-    'action'=> '/simwebpluscar/frontend/web/index.php?r=/inmueble/cambiootrosdatos/cambio-otros-datos-inmuebles-urbanos/view',
+    'action'=> ['/inmueble/cambiootrosdatos/cambio-otros-datos-inmuebles-urbanos/view'],
     'enableClientValidation' => false,
     'enableAjaxValidation' => true,
     'options' => ['class' => 'form-vertical'],]); ?>
