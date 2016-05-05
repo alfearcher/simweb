@@ -114,7 +114,7 @@ class CambioPropietarioInmueblesUrbanosController extends Controller
      *@param $id_impuesto, tipo de dato entero y clave primaria de la tabla inmueble,  variable condicional 
      *para el cambio de otros datos inmuebles
      *@return model 
-     **/
+     **/ 
     public function actionCambioPropietarioInmuebles($id_impuesto, $id_contribuyente)
     { 
         if ( isset( $_SESSION['idContribuyente'] ) ) {
