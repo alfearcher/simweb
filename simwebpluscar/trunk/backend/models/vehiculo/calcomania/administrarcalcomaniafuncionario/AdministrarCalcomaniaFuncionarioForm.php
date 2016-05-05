@@ -54,6 +54,7 @@ use yii\data\ActiveDataProvider;
 use backend\models\funcionario\calcomania\FuncionarioCalcomania;
 use backend\models\funcionario\Funcionario;
 use backend\models\vehiculo\calcomania\generarlote\LoteSearch;
+use common\models\calcomania\calcomaniamodelo\Calcomania;
 
 
 
@@ -127,6 +128,63 @@ class AdministrarCalcomaniaFuncionarioForm extends Model
             return false;
         }
     }
+
+    public function buscarCalcomania($calcomanias)
+    {
+        $buscar = Calcomania::find()
+                            ->where([
+                                'nro_calcomania' => $calcomanias,
+                                'ano_impositivo' => date('Y'),
+                                'estatus' => 0,
+
+
+                                ])
+                            ->all();
+            if($buscar == true){
+                return true;
+            }else{
+                return false;
+            }
+
+    }
+
+    public function attributeCalcomania()
+    {
+        return [
+              'nro_calcomania',
+              'fecha_creacion',
+              'ano_impositivo',
+              'usuario_creacion',
+              'usuario_propietario',
+              'entregado',
+              'estatus',
+              'punto',
+              'fecha_entrega',
+              'id_vehiculo',
+              'id_contribuyente',
+              'placa',
+              'planilla',
+        ];
+    }
+
+    public function buscarLogin($id)
+    {
+        $buscar = Funcionario::find()
+                            ->where([
+                                'id_funcionario' => $id,
+                                'status_funcionario' => 0,
+                                   ])
+                             ->all();
+
+            if($buscar == true){
+                return $buscar;
+            }else{
+                return false;
+            }
+
+    }
+
+
 
     
 
