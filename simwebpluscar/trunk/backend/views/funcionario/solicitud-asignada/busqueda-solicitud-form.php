@@ -201,19 +201,42 @@
 							</div>
 						</div>
 <!-- Fin de Fecha Hasta -->
-						<div class="row">
-							<div class="col-sm-3" style="float: right;">
-								<div class="form-group">
-									<?= Html::submitButton(Yii::t('backend', 'Search Request'),
-																			  [
-																				'id' => 'btn-search-request',
-																				'class' => 'btn btn-primary',
-																				'value' => 1,
-																				'name' => 'btn-search-request',
-																				'style' => 'width: 100%;',
-																			  ])
-									?>
-								</div>
+					</div>
+
+<!-- Inicio de Nro de Solicitud -->
+					<div class="row" style="border-bottom: 0.5px solid #ccc;">
+						<h4><strong><?= $model->getAttributeLabel('nro_solicitud') ?></strong></h4>
+					</div>
+
+					<div class="row" style="padding-top: 15px;">
+						<div class="col-sm-2">
+							<div class="row">
+								<p><strong><?= $model->getAttributeLabel('nro_solicitud') ?></strong></p>
+							</div>
+						</div>
+						<div class="col-sm-3">
+							<div class="row" class="nro-solicitud">
+								<?= $form->field($model, 'nro_solicitud')->textInput([
+																				'id' => 'nro-solicitud',
+																			])->label(false) ?>
+							</div>
+						</div>
+					</div>
+<!-- Fin de Nro de Solicitud -->
+
+
+					<div class="row">
+						<div class="col-sm-3" style="float: right;">
+							<div class="form-group">
+								<?= Html::submitButton(Yii::t('backend', 'Search Request'),
+																		  [
+																			'id' => 'btn-search-request',
+																			'class' => 'btn btn-primary',
+																			'value' => 1,
+																			'name' => 'btn-search-request',
+																			'style' => 'width: 100%;',
+																		  ])
+								?>
 							</div>
 						</div>
 					</div>
