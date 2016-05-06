@@ -183,7 +183,7 @@ die(var_dump($postData));
 		{
 			$varSession = self::actionGetListaSessions();
 			self::actionAnularSession($varSession);
-			return $this->render('/funcionario/quit');
+			return $this->render('/funcionario/solicitud-asignada/quit');
 		}
 
 
