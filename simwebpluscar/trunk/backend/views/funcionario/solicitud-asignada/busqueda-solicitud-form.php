@@ -77,7 +77,7 @@
 					}
     			</style>
 	        		<?= MenuController::actionMenuSecundario([
-	        						'quit' => '/funcionario/solicitud-asignada/quit',
+	        						'quit' => '/funcionario/solicitud/solicitud-asignada/quit',
 	        			])
 	        		?>
 	        	</div>
