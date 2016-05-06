@@ -156,8 +156,8 @@ die(var_dump($postData));
 			$userLocal = Yii::$app->user->identity->username;
 			$lista = $modelSolicitud->getTipoSolicitudAsignada($userLocal);
 
-			$caption = Yii::t('backend', 'Lists of Request');
-			$subCaption = Yii::t('backend', 'Lists of Request');
+			$caption = Yii::t('backend', 'Lists of Request Authorized');
+			$subCaption = Yii::t('backend', 'Lists of Request Authorized');
 
 			$dataProvider = $modelSolicitud->getDataProviderSolicitudContribuyente($lista);
 
