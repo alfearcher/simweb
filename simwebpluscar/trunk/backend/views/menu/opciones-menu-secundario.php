@@ -81,6 +81,15 @@
             'title' => Yii::t('backend', 'Back'),
             'url' => '#',
         ],
+        'undo' => [
+            'icon' => 'fa fa-undo',
+            'class' => 'fa-2x',
+            'color' => $color,
+            'tipoIcon' => $tipoIcon[0],
+            'caption' => Yii::t('backend', 'Undo'),
+            'title' => Yii::t('backend', 'Undo'),
+            'url' => '#',
+        ],
     ];
 
 ?>
