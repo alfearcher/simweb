@@ -236,6 +236,8 @@
 	    													 ->distinct()
 	    													 ->where('impuesto =:impuesto', [':impuesto' => $impuesto])
 	    													 ->andWhere(['IN', 'tipo_solicitud', $listaSolicitud])
+	    													 ->andWhere('inactivo =:inactivo', [':inactivo' => 0])
+	    													 ->andWhere('estatus =:estatus', [':estatus' => 0])
 	    													 ->orderBy([
 	    													 	'tipo_solicitud' => SORT_ASC,
 	    													 	]);
@@ -243,6 +245,8 @@
 	    		$modelFind = SolicitudesContribuyente::find()->select('tipo_solicitud')
 	    													 ->distinct()
 	    													 ->where('impuesto =:impuesto', [':impuesto' => $impuesto])
+	    													 ->andWhere('inactivo =:inactivo', [':inactivo' => 0])
+	    													 ->andWhere('estatus =:estatus', [':estatus' => 0])
 	    													 ->orderBy([
 	    													 	'tipo_solicitud' => SORT_ASC,
 	    													 	]);
