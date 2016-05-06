@@ -59,7 +59,7 @@
 	 */
 	class SolicitudAsignadaForm extends Model
 	{
-
+		public $nro_solicitud;
 	    public $impuesto;
 	    public $tipo_solicitud;
 	    public $fecha_desde;
@@ -108,6 +108,7 @@
 	        				}
 	        	, 'message' => Yii::t('backend', '{attribute} is required')],
 	        	[['impuesto', 'tipo_solicitud'], 'integer', 'message' => Yii::t('backend', 'Select {attribute}')],
+	        	[['nro_solicitud'], 'integer', 'message' => Yii::t('backend', '{attribute} not valid')],
 	        ];
 	    }
 
@@ -120,6 +121,7 @@
 	    public function attributeLabels()
 	    {
 	        return [
+	        	'nro_solicitud' => Yii::t('backend', 'Nro. Request'),
 	        	'impuesto' => Yii::t('backend', 'Tax'),
 	            'tipo_solicitud' => Yii::t('backend', 'Request'),
 	            'fecha_desde' => Yii::t('backend', 'Start date'),

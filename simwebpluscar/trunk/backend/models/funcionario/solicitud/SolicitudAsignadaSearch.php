@@ -171,6 +171,9 @@
 		   	if ( $this->impuesto > 0 ) {
 		   		$query->andFilterWhere(['=', SolicitudesContribuyente::tableName().'.impuesto', $this->impuesto]);
 		   	}
+		   	if ( $this->nro_solicitud > 0 ) {
+		   		$query->andFilterWhere(['=', 'nro_solicitud', $this->nro_solicitud]);
+		   	}
 	    	return $dataProvider;
 	    	//$query->andFilterWhere(['IN', 'tipo_solicitud', $tipoSolicitud]);
 	    }
