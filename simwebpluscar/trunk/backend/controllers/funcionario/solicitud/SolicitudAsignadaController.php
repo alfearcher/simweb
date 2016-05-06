@@ -78,27 +78,64 @@
 
 
 		/***/
-		public function actionIndex2()
+		public function actionIndex()
 		{
-			$model = New SolicitudAsignadaSearch();
-			$lista = $model->getTipoSolicitudAsignada('jperez');
+			$request = Yii::$app->request;
+			$page = isset($request->queryParams['page']) ? $request->queryParams['page'] : null;
 
-			$caption = Yii::t('backend', 'Lists of Request');
-			$subCaption = Yii::t('backend', 'Lists of Request');
-			$dataProvider = $model->getDataProviderSolicitudContribuyente($lista);
-			return $this->render('/funcionario/solicitud-asignada/lista-solicitud-elaborada', [
-																'model' => $model,
-																'dataProvider' => $dataProvider,
-																'caption' => $caption,
-																'subCaption' => $subCaption,
-				]);
+			// Modelo del formulario de busqueda de las solicitudes.
+			$model = New SolicitudAsignadaForm();
+
+			if ( $page == null ) {
+
+				$postData = $request->post();
+
+				if ( $model->load($postData) && Yii::$app->request->isAjax ) {
+					Yii::$app->response->format = Response::FORMAT_JSON;
+					return ActiveForm::validate($model);
+				}
+
+				if ( $model->load($postData) ) {
+					if ( $model->validate() ) {
+						if ( isset($postData['btn-search-request']) ) {
+							//return self::actionBuscarSolicitudesContribuyente($model);
+							$_SESSION['postData'] = $postData;
+							return $this->redirect(['buscar-solicitudes-contribuyente']);
+						}
+					}
+				}
+				// Lo siguiente permite determinar que impuestos estan relacionados a las
+				// solicitudes permisadas para el funcionario.
+				$listaImpuesto = null;
+				$modelSolicitud = New SolicitudAsignadaSearch();
+				$listaImpuesto = $modelSolicitud->getImpuestoSegunFuncionario();
+
+				// Modelo adicionales para la busqueda de los funcionarios.
+				$modelImpuesto = New ImpuestoForm();
+
+				// Se define la lista de item para el combo de impuestos.
+				// El primer parametro se refiere a la condicion del registro 0 => activo, 1 => inactivo.
+				$listaImpuesto = $modelImpuesto->getListaImpuesto(0, $listaImpuesto);
+
+				$caption = Yii::t('backend', 'Search Request');
+				return $this->render('/funcionario/solicitud-asignada/busqueda-solicitud-form', [
+																				'model' => $model,
+																				'modelImpuesto' => $modelImpuesto,
+																				'caption' => $caption,
+																				'listaImpuesto' => $listaImpuesto,
+
+					]);
+			} elseif ( $page > 0 && isset($request->queryParams['page']) ) {
+				$model->load($request->queryParams);
+				return self::actionBuscarSolicitudesContribuyente($model);
+			}
 		}
 
 
 
 
 		/***/
-		public function actionIndex()
+		public function actionIndex2()
 		{
 			$request = Yii::$app->request;
 			$page = isset($request->queryParams['page']) ? $request->queryParams['page'] : null;
@@ -163,13 +200,50 @@ die(var_dump($postData));
 
 
 
+		public function actionBuscarSolicitudesContribuyente()
+		{
+			$page = null;
+			$postInicial = isset($_SESSION['postData']) ? $_SESSION['postData'] : null;
+			$model = New SolicitudAsignadaForm();     // Modelo del formulario de busqueda.
+
+			$request = Yii::$app->request;
+			$postData = isset($request->queryParams['page']) ? $request->queryParams : $postInicial;
+
+			$model->load($postData);
+
+			$url = Url::to(['verificar-envio']);
+			$modelSolicitud = New SolicitudAsignadaSearch();
+			$modelSolicitud->attributes = $model->attributes;
+
+			$userLocal = Yii::$app->user->identity->username;
+			$lista = $modelSolicitud->getTipoSolicitudAsignada($userLocal);
+
+			$caption = Yii::t('backend', 'Lists of Request');
+			$subCaption = Yii::t('backend', 'Lists of Request');
+
+			$dataProvider = $modelSolicitud->getDataProviderSolicitudContribuyente($lista);
+
+			return $this->render('/funcionario/solicitud-asignada/lista-solicitudes-elaboradas', [
+																'model' => $modelSolicitud,
+																'dataProvider' => $dataProvider,
+																'caption' => $caption,
+																'subCaption' => $subCaption,
+																'url' => $url,
+																'listado' => 10,
+				]);
+
+		}
+
+
+
+
 
 		/**
 		 * [actionBuscarSolicitudesContribuyente description]
 		 * @param  [type] $model [description]
 		 * @return [type]        [description]
 		 */
-		public function actionBuscarSolicitudesContribuyente($model)
+		public function actionBuscarSolicitudesContribuyente2($model)
 		{
 			$request = Yii::$app->request;
 			$postData = $request->post();
