@@ -77,6 +77,7 @@
 					}
     			</style>
 	        		<?= MenuController::actionMenuSecundario([
+	        						'undo' => '/funcionario/solicitud/solicitud-asignada/index',
 	        						'quit' => '/funcionario/solicitud/solicitud-asignada/quit',
 	        			])
 	        		?>
