@@ -234,7 +234,7 @@ die(var_dump($postData));
 		public function actionGetListaSessions()
 		{
 			return $varSession = [
-							''
+							'postData'
 					];
 		}
 
