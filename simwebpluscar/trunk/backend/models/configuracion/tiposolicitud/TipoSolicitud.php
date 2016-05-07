@@ -117,9 +117,7 @@
 		 */
 		public function getSolicitudContribuyente()
 		{
-			return $this->hasMany(SolicitudesContribuyente::className(), [
-																			'tipo_solicitud' => 'id_tipo_solicitud',
-																		]);
+			return $this->hasMany(SolicitudesContribuyente::className(), ['tipo_solicitud' => 'id_tipo_solicitud']);
 		}
 
 	}
