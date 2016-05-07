@@ -355,23 +355,56 @@
 
 
 
-		/**
-		 *
-		 */
-		public function getTefefonosSegunID($idContribuyente)
+		/***/
+		public function getTelefonosSegunID($idContribuyente)
 		{
-
+			return self::getTelefonos($idContribuyente);
 		}
 
 
 
-		/**
-		 *
-		 */
-		private static function getTelefonos()
+		/***/
+		private static function getTelefonos($idContribuyente)
 		{
+			$telefono = null;
+			$dataResult = self::datosContribuyenteSegunID($idContribuyente);
+			if ( $dataResult ) {
+				if ( $dataResult[0]['tipo_naturaleza'] == 0 ) {
+					$telefono['tlf_hab'] = $dataResult[0]['tlf_hab'];
+					$telefono['tlf_hab_otro'] = $dataResult[0]['tlf_hab_otro'];
+					$telefono['tlf_celular'] = $dataResult[0]['tlf_celular'];
 
+				} elseif ( $dataResult[0]['tipo_naturaleza'] == 1 ) {
+					$telefono['tlf_ofic'] = $dataResult[0]['tlf_ofic'];
+					$telefono['tlf_ofic_otro'] = $dataResult[0]['tlf_ofic_otro'];
+					$telefono['tlf_celular'] = $dataResult[0]['tlf_celular'];
+				}
+			}
+			return $telefono;
 		}
+
+
+
+		/***/
+		public static function getDomicilioSegunID($idContribuyente)
+		{
+			return self::getDomicilio($idContribuyente);
+		}
+
+
+
+		/***/
+		private static function getDomicilio($idContribuyente)
+		{
+			$domicilio = null;
+			$dataResult = self::datosContribuyenteSegunID($idContribuyente);
+			if ( $dataResult ) {
+				$domicilio = $dataResult[0]['domicilio_fiscal'];
+			}
+			return $domicilio;
+		}
+
+
 
 
 
