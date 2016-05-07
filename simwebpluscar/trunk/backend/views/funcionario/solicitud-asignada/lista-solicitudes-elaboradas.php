@@ -120,16 +120,10 @@
 								'columns' => [
                 					[
                 						'label' => Yii::t('backend', 'Request No.'),
-                						'value' => function($model) {
+                						'value' => function($model, $key, $index, $colum) {
                 							return $model->nro_solicitud;
                 						}
                 					],
-                					// [
-                					// 	'label' => Yii::t('backend', 'Request No.'),
-                					// 	'value' => function($model) {
-                					// 		return $model->tipo_solicitud;
-                					// 	}
-                					// ],
 									[
                 						'label' => Yii::t('backend', 'Date/Hour'),
                 						'value' => function($model) {
@@ -148,12 +142,12 @@
                 							return $model->impuestos->descripcion;
                 						}
                 					],
-                					[
-                						'label' => Yii::t('backend', 'User'),
-                						'value' => function($model) {
-                							return $model->usuario;
-                						}
-                					],
+                					// [
+                					// 	'label' => Yii::t('backend', 'User'),
+                					// 	'value' => function($model) {
+                					// 		return $model->usuario;
+                					// 	}
+                					// ],
                 					[
                 						'label' => Yii::t('backend', 'Id. Taxpayer'),
                 						'value' => function($model) {
@@ -172,7 +166,7 @@
                                                                         [
                                                                             'value' => $key,
                                                                             'name' => 'id',
-                                                                            'title' => Yii::t('backend', 'ok'),
+                                                                            'title' => Yii::t('backend', $key),
                                                                             'style' => 'margin: 0 auto; display: block;',
                                                                         ]);
                                         			},
