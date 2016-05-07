@@ -154,7 +154,6 @@ die(var_dump($contribuyente));
 		/***/
 		public function actionBuscarSolicitudesContribuyente()
 		{
-			$page = null;
 			$postInicial = isset($_SESSION['postData']) ? $_SESSION['postData'] : null;
 			$model = New SolicitudAsignadaForm();     // Modelo del formulario de busqueda.
 			$model->load($postInicial);
@@ -163,25 +162,26 @@ die(var_dump($contribuyente));
 			$postData = isset($request->queryParams['page']) ? $request->queryParams : $postInicial;
 
 			$url = Url::to(['buscar-solicitud-seleccionada']);
-			$modelSolicitud = New SolicitudAsignadaSearch();
-			$modelSolicitud->attributes = $model->attributes;
-			$modelSolicitud->load($postData);
+			$modelSearch = New SolicitudAsignadaSearch();
+			$modelSearch->attributes = $model->attributes;
+
+			$modelSearch->load($postData);
 
 			$userLocal = Yii::$app->user->identity->username;
-			$lista = $modelSolicitud->getTipoSolicitudAsignada($userLocal);
+			$lista = $modelSearch->getTipoSolicitudAsignada($userLocal);
 
 			$caption = Yii::t('backend', 'Lists of Request Authorized');
 			$subCaption = Yii::t('backend', 'Lists of Request Authorized');
 
-			$dataProvider = $modelSolicitud->getDataProviderSolicitudContribuyente($lista);
+			$dataProvider = $modelSearch->getDataProviderSolicitudContribuyente($lista);
 
 			return $this->render('/funcionario/solicitud-asignada/lista-solicitudes-elaboradas', [
-																'model' => $modelSolicitud,
+																'model' => $modelSearch,
 																'dataProvider' => $dataProvider,
 																'caption' => $caption,
 																'subCaption' => $subCaption,
 																'url' => $url,
-																'listado' => 10,
+																'listado' => 5,
 				]);
 
 		}
