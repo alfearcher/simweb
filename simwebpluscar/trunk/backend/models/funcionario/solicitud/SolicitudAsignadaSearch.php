@@ -133,7 +133,6 @@
 	    	                                             ->orderBy([
 	    	                                             		'nro_solicitud' => SORT_ASC,
 	    	                                             	]);
-	    	                                             //->limit(10);
 
 	    	return isset($modelFind) ? $modelFind : null;
 	    }
