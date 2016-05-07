@@ -63,8 +63,6 @@
     class SolicitudesContribuyente extends ActiveRecord
     {
 
-        public $nro_solicitud;
-
         public static function getDb()
         {
           return Yii::$app->db;
