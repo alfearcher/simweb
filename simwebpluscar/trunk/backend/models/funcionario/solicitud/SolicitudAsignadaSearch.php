@@ -280,10 +280,11 @@
 	    public function findSolicitudSeleccionada($nroSolicitud)
 	    {
 	    	$modelFind = null;
-	    	return $modelFind = SolicitudesContribuyente::find($nroSolicitud)
-                                                ->with('tipoSolicitud', 'impuestos')
-                                                //->asArray()
+	    	return $modelFind = SolicitudesContribuyente::find()
+	    										->where(['nro_solicitud' => $nroSolicitud])
+                                                ->joinWith('tipoSolicitud', 'impuestos')
                                                 ->one();
+                                                //->asArray()
 	    }
 
 
