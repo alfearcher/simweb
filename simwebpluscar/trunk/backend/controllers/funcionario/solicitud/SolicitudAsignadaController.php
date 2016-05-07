@@ -105,8 +105,8 @@
 			// Lo siguiente permite determinar que impuestos estan relacionados a las
 			// solicitudes permisadas para el funcionario.
 			$listaImpuesto = null;
-			$modelSolicitud = New SolicitudAsignadaSearch();
-			$listaImpuesto = $modelSolicitud->getImpuestoSegunFuncionario();
+			$modelSearch = New SolicitudAsignadaSearch();
+			$listaImpuesto = $modelSearch->getImpuestoSegunFuncionario();
 
 			// Modelo adicionales para la busqueda de los funcionarios.
 			$modelImpuesto = New ImpuestoForm();
@@ -128,11 +128,25 @@
 
 
 		/***/
-		public function actionVerificarEnvio()
+		public function actionBuscarSolicitudSeleccionada()
 		{
 			$request = Yii::$app->request;
 			$postData = $request->post();
-die(var_dump($postData));
+
+			// Identificador de la solicitud seleccionada por el usuario.
+			$id = isset($postData['id']) ? $postData['id'] : null;
+
+			if ( $id != null ) {
+				$modelSearch = New SolicitudAsignadaSearch();
+				$infoSolicitud = $modelSearch->findSolicitudSeleccionada($id);
+
+				if ( isset($infoSolicitud->id_contribuyente) ) {
+					$contribuyente = $modelSearch->getDatosBasicoContribuyenteSegunId($infoSolicitud->id_contribuyente);
+die(var_dump($contribuyente));
+				}
+
+			}
+
 		}
 
 
@@ -148,7 +162,7 @@ die(var_dump($postData));
 			$request = Yii::$app->request;
 			$postData = isset($request->queryParams['page']) ? $request->queryParams : $postInicial;
 
-			$url = Url::to(['verificar-envio']);
+			$url = Url::to(['buscar-solicitud-seleccionada']);
 			$modelSolicitud = New SolicitudAsignadaSearch();
 			$modelSolicitud->attributes = $model->attributes;
 			$modelSolicitud->load($postData);
