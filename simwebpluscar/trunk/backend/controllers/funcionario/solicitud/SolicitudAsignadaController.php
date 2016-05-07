@@ -132,19 +132,44 @@
 		{
 			$request = Yii::$app->request;
 			$postData = $request->post();
+			$contribuyente =null;
+			$caption = Yii::t('backend', 'Infomation of the request');
+			$subCaption = Yii::t('backend', 'Request');
+			$url = null;
 
 			// Identificador de la solicitud seleccionada por el usuario.
 			$id = isset($postData['id']) ? $postData['id'] : null;
-
+//die(var_dump($postData));
 			if ( $id != null ) {
 				$modelSearch = New SolicitudAsignadaSearch();
 				$infoSolicitud = $modelSearch->findSolicitudSeleccionada($id);
 
+//die(var_dump($infoSolicitud));
+				// Se buscan los datos del contribuyente.
 				if ( isset($infoSolicitud->id_contribuyente) ) {
 					$contribuyente = $modelSearch->getDatosBasicoContribuyenteSegunId($infoSolicitud->id_contribuyente);
-die(var_dump($contribuyente));
+					if ( count($contribuyente) > 0 ) {
+						return $this->render('/funcionario/solicitud-asignada/view-solicitud-seleccionada', [
+																				'model' => $infoSolicitud,
+																				'caption' => $caption,
+																				'subCaption' => $subCaption,
+																				'listado' => 6,
+																				'url' => $url,
+																				'contribuyente' => $contribuyente,
+							]);
+					} else {
+						// Contribuyente no definido.
+						return MensajeController::actionMensaje(404);
+					}
+
+				} else {
+					// Contribuyente no definido.
+					return MensajeController::actionMensaje(404);
 				}
 
+			} else {
+				// Solicitud no definida.
+				return MensajeController::actionMensaje(404);
 			}
 
 		}
