@@ -57,6 +57,7 @@
 	use backend\models\impuesto\ImpuestoForm;
 	use yii\data\ActiveDataProvider;
 	use common\models\solicitudescontribuyente\SolicitudesContribuyente;
+	use common\models\contribuyente\ContribuyenteBase;
 
 
 	/**
@@ -257,7 +258,12 @@
 
 
 
-	    /***/
+	    /**
+	     * [getFiltrarSolicitudAsignadaSegunImpuesto description]
+	     * @param  [type] $impuesto       [description]
+	     * @param  string $listaSolicitud [description]
+	     * @return [type]                 [description]
+	     */
 	    public function getFiltrarSolicitudAsignadaSegunImpuesto($impuesto, $listaSolicitud = '')
 	    {
 	    	$lista = null;
@@ -269,6 +275,31 @@
 			return $lista;
 	    }
 
+
+
+	    /***/
+	    public function findSolicitudSeleccionada($nroSolicitud)
+	    {
+	    	$modelFind = null;
+	    	return $modelFind = SolicitudesContribuyente::find($nroSolicitud)
+                                                ->with('tipoSolicitud', 'impuestos')
+                                                //->asArray()
+                                                ->one();
+	    }
+
+
+
+	    /***/
+	    public function getDatosBasicoContribuyenteSegunId($id)
+	    {
+	    	$datos = null;
+	    	$model = New ContribuyenteBase();
+	    	$datos['dni'] = $model->getCedulaRifSegunID($id);
+	    	$datos['contribuyente'] = $model->getContribuyenteDescripcionSegunID($id);
+	    	$datos['domicilio'] = $model->getDomicilioSegunID($id);
+	    	$datos['telefono'] = $model->getTelefonosSegunId($id);
+	    	return $datos;
+	    }
 
 
 	}
