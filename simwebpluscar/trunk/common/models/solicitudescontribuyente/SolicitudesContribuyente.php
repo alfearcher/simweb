@@ -60,7 +60,10 @@
     use backend\models\funcionario\solicitud\FuncionarioSolicitud;
 
 
-    class SolicitudesContribuyente extends ActiveRecord{
+    class SolicitudesContribuyente extends ActiveRecord
+    {
+
+        public $nro_solicitud;
 
         public static function getDb()
         {
@@ -100,7 +103,10 @@
 
 
 
-        /***/
+        /**
+         * Relacion con la entidad "funcionarios-solicitudes"
+         * @return Active Record
+         */
         public function getFuncionarioSolicitud()
         {
             return $this->hasMany(FuncionarioSolicitud::className(), ['tipo_solicitud' => 'tipo_solicitud']);
