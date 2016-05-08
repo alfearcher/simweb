@@ -139,12 +139,11 @@
 
 			// Identificador de la solicitud seleccionada por el usuario.
 			$id = isset($postData['id']) ? $postData['id'] : null;
-//die(var_dump($postData));
+
 			if ( $id != null ) {
 				$modelSearch = New SolicitudAsignadaSearch();
 				$infoSolicitud = $modelSearch->findSolicitudSeleccionada($id);
 
-//die(var_dump($infoSolicitud));
 				// Se buscan los datos del contribuyente.
 				if ( isset($infoSolicitud->id_contribuyente) ) {
 					$contribuyente = $modelSearch->getDatosBasicoContribuyenteSegunId($infoSolicitud->id_contribuyente);
