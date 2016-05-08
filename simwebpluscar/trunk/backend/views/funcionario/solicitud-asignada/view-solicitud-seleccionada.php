@@ -112,12 +112,12 @@
 								<p><strong><?= Yii::t('backend', $model->getAttributeLabel('nro_solicitud')) ?></strong></p>
 							</div>
 						</div>
-						<div class="col-sm-4" style="padding-left: 75px;">
+						<div class="col-sm-3" style="padding-left: 75px;">
 							<div class="row" class="nro-solicitud">
 								<?= $form->field($model, 'nro_solicitud')->textInput([
 																					'id' => 'nro-solicitud',
 																					'readonly' => true,
-																					'style' => 'width: 100%; background-color: white;',
+																					'style' => 'width: 110%; background-color: white;',
 																					'value' => $model->nro_solicitud,
 																				])->label(false) ?>
 							</div>
@@ -197,7 +197,7 @@
 					<div class="row" style="padding-left: 15px; padding-top: 10px;">
 						<div class="col-sm-3">
 							<div class="row">
-								<p><strong><?= Yii::t('backend', $model->getAttributeLabel('id_contribuyente')) ?></strong></p>
+								<p><strong><?= Yii::t('backend', Yii::t('backend','ID')) ?></strong></p>
 							</div>
 						</div>
 						<div class="col-sm-2" style="padding-left: 0px;">
@@ -273,23 +273,57 @@
 
 <!-- Fin de Datos del CONTRIBUYENTE -->
 
-
-
-
-					<!-- Inicio de boton -->
-					<!-- <div class="col-sm-3">
-						<div class="form-group">
-							<?//= Html::submitButton(Yii::t('backend', 'Remove Request'),
-												  //[
-													//'id' => 'btn-remove-request',
-													//'class' => 'btn btn-success',
-													//'value' => 1,
-													//'name' => 'btn-remove-request',
-												//	'style' => 'width: 100%;',
-												  //])
-							?>
+<!-- Inicio de Detalle de la Solicitud -->
+					<div class="row" style="padding-top: 15px;">
+						<div class="detalle-solicitud">
+							<div class="row" style="border-bottom: 0.5px solid #ccc;">
+								<h4><strong><?= Yii::t('backend', 'Details of Request') ?></strong></h4>
+							</div>
 						</div>
-					</div> -->
+					</div>
+<!-- Fin de Detalle de la Solicitud -->
+
+					<div class="row" style="padding-top: 55px;">
+						<div class="separador">
+							<div class="row" style="border-bottom: 0.5px solid #ccc;">
+								
+							</div>
+						</div>
+					</div>
+
+<!-- Inicio de boton -->
+					<div class="row" style="padding-top: 55px;">
+						<div class="col-sm-3">
+							<div class="form-group">
+								<?= Html::submitButton(Yii::t('backend', 'Approve Request'),
+													  [
+														'id' => 'btn-approve-request',
+														'class' => 'btn btn-success',
+														'value' => 1,
+														'name' => 'btn-approve-request',
+														'style' => 'width: 100%;',
+													  ])
+								?>
+							</div>
+						</div>
+
+						<div class="col-sm-3"></div>
+
+						<div class="col-sm-3">
+							<div class="form-group">
+								<?= Html::submitButton(Yii::t('backend', 'Reject Request'),
+													  [
+														'id' => 'btn-reject-request',
+														'class' => 'btn btn-danger',
+														'value' => 1,
+														'name' => 'btn-reject-request',
+														'style' => 'width: 100%;',
+													  ])
+								?>
+							</div>
+						</div>
+
+					</div>
 <!--  -->
 
 
