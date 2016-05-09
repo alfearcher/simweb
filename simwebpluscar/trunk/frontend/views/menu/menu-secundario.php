@@ -47,7 +47,8 @@
 	//Icon::map($this, 'elusive');
 	Icon::map($this, Icon::FA);
 
-    $color = 'color: #337AB7;';
+    //$color = 'color: #337AB7;';
+    $color = 'color: #FFFFFF;';
     $tamano = 'fa-2x';
     $tipoIcon = [Icon::FA, 'elusive'];
 
