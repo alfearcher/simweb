@@ -72,6 +72,8 @@
 		public $conexion;
 		public $transaccion;
 
+		const SCENARIO_FRONTEND = 'frontend';
+		const SCENARIO_BACKEND = 'backend';
 
 
 
@@ -84,6 +86,7 @@
 			$id = isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : 0;
 			$model = New InscripcionActividadEconomicaForm();
 			$tipoNaturaleza = $model->getTipoNaturalezaDescripcionSegunID($id);
+			$model->scenario = self::SCENARIO_FRONTEND;
 
 			if ( $tipoNaturaleza == 'JURIDICO') {
 				if ( isset($_SESSION['idContribuyente']) ) {
@@ -107,7 +110,7 @@
 			      	} else {
 
 			  		}
-die(var_dump(Yii::$app->user->identity));
+die(var_dump(Yii::$app->user->identity->login));
 		  			return $this->render('/aaee/inscripcion-actividad-economica/_create', [
 		  																'model' => $model,
 		  				]);
