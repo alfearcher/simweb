@@ -318,7 +318,7 @@
 				                				<?= $form->field($model, 'cedula_rep')->textInput([
 				                														'id' => 'cedula-rep',
 				                														'maxlength' => 8,
-				                														'style' => 'width:75%;height:32px;',
+				                														'style' => 'width:75%;',
 				                														'readonly' => $bloquear,
 				                													])->label(false) ?>
 				                			</div>
@@ -337,7 +337,7 @@
 											<div class="representante" style="margin-left: 0px;">
 												<?= $form->field($model, 'representante')->textInput([
 																								'id' => 'representante',
-																								'style' => 'height:32px;width:100%;',
+																								'style' => 'width:100%;',
 																								'readonly' => $bloquear,
 																						 	])->label(false) ?>
 											</div>
@@ -358,10 +358,14 @@
 								<?= Html::submitButton(Yii::t('frontend', 'Create'),[
 																					'id' => 'btn-create',
 																					'class' => 'btn btn-success',
-																					'name' => 'btn-create'
+																					'name' => 'btn-create',
+																					'style' => 'width: 100%',
 																				])?>
 							</div>
 						</div>
+
+						<div class="col-sm-2" style="padding-left: 25px;"></div>
+
 						<div class="col-sm-3" style="margin-left: 150px;">
 							<div class="form-group">
 								 <?= Html::a(Yii::t('frontend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) ?>
