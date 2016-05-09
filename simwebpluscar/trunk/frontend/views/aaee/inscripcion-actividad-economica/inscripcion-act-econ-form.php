@@ -40,7 +40,7 @@
  *
  */
 
- 	//use yii\web\Response;
+ 	use yii\web\Response;
 	use yii\helpers\Html;
 	use yii\helpers\Url;
 	use yii\helpers\ArrayHelper;
@@ -50,7 +50,6 @@
 	use backend\models\registromaestro\TipoNaturaleza;
 	use backend\controllers\menu\MenuController;
 
-	//session_start();
  ?>
 
  <div class="inscripcion-act-econ-form">
@@ -373,7 +372,7 @@
 					<div class="row">
 						<div class="col-sm-3">
 							<div class="form-group">
-								<?= Html::submitButton(Yii::t('frontend', 'Create'),[
+								<?= Html::submitButton(Yii::t('frontend', 'Create Request'),[
 																					'id' => 'btn-create',
 																					'class' => 'btn btn-success',
 																					'name' => 'btn-create',
