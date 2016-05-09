@@ -81,14 +81,14 @@
 						<div class="col-sm-3">
 							<div class="row" style="width:100%;">
 								<p style="margin-left: 0px;margin-top: 0px;margin-bottom: 0px;">
-									<i><?=Yii::t('backend', $model->getAttributeLabel('id_contribuyente')) ?></i>
+									<strong><?=Yii::t('backend', $model->getAttributeLabel('id_contribuyente')) ?></strong>
 								</p>
 							</div>
 							<div class="row" >
 								<div class="id-contribuyente" style="margin-left: 0px;">
 									<?= $form->field($model, 'id_contribuyente')->textInput([
 																						'id' => 'id-contribuyente',
-																						'style' => 'height:32px;width:98%;',
+																						'style' => 'height:32px;width:98%;background-color: white;',
 																						'readonly' => true,
 																						'value' => $_SESSION['idContribuyente'],
 																			 			])->label(false) ?>
@@ -98,18 +98,18 @@
 <!-- nro solicitud -->
 						<div class="col-sm-3" style="padding-right: 15px;">
 							<div class="row" style="width:100%;">
-								<p style="margin-left: 0px;margin-top: 0px;margin-bottom: 0px;"><i>
-									<?=Yii::t('frontend', $model->getAttributeLabel('nro_solicitud')) ?></i>
+								<p style="margin-left: 0px;margin-top: 0px;margin-bottom: 0px;">
+									<strong><?=Yii::t('frontend', $model->getAttributeLabel('nro_solicitud')) ?></strong>
 								</p>
 							</div>
 							<div class="row">
 									<div class="nro-solicitud" style="margin-left: 0px;">
 										<?= $form->field($model, 'nro_solicitud')->textInput([
-																							'id' => 'nro-solicitud',
-																							'style' => 'height:32px;width:100%;',
-																							'disabled' => true,
-																							'value' => 0,
-																				 			])->label(false) ?>
+																						'id' => 'nro-solicitud',
+																						'style' => 'height:32px;width:100%;background-color: white;',
+																						'readonly' => true,
+																						'value' => 0,
+																				 	])->label(false) ?>
 									</div>
 							</div>
 						</div>
@@ -123,15 +123,16 @@
 						<div class="col-sm-3">
 							<div class="row" style="width:100%;">
 								<p style="margin-left: 0px;margin-top: 0px;margin-bottom: 0px;">
-									<i><?=Yii::t('frontend', $model->getAttributeLabel('num_reg')) ?></i>
+									<strong><?=Yii::t('frontend', $model->getAttributeLabel('num_reg')) ?></strong>
 								</p>
 							</div>
 							<div class="row" >
 								<div class="num-reg" style="margin-left: 0px;">
 									<?= $form->field($model, 'num_reg')->textInput([
-																						'id' => 'num-reg',
-																						'style' => 'height:32px;width:98%;',
-																			 			])->label(false) ?>
+																				'id' => 'num-reg',
+																				'style' => 'height:32px;width:98%;',
+																				'readonly' => $bloquear,
+																		])->label(false) ?>
 								</div>
 							</div>
 						</div>
@@ -140,16 +141,17 @@
 <!-- Registro Mercantil -->
 						<div class="col-sm-6">
 							<div class="row" style="width:100%;">
-								<p style="margin-left: 0px;margin-top: 0px;margin-bottom: 0px;"><i>
-									<?=Yii::t('frontend', $model->getAttributeLabel('reg_mercantil')) ?></i>
+								<p style="margin-left: 0px;margin-top: 0px;margin-bottom: 0px;">
+									<strong><?=Yii::t('frontend', $model->getAttributeLabel('reg_mercantil')) ?></strong>
 								</p>
 							</div>
 							<div class="row" >
 								<div class="reg-mercantil" style="margin-left: 0px;">
 									<?= $form->field($model, 'reg_mercantil')->textInput([
-																						'id' => 'reg-mercantil',
-																						'style' => 'height:32px;width:99%;',
-																			 			])->label(false) ?>
+																					'id' => 'reg-mercantil',
+																					'style' => 'height:32px;width:99%;',
+																					'readonly' => $bloquear,
+																			 	])->label(false) ?>
 								</div>
 							</div>
 						</div>
@@ -158,8 +160,9 @@
 <!-- Fecha de Registro Mercantil -->
 						<div class="col-sm-3">
 							<div class="row" style="width:100%;">
-								<p style="margin-left: 0px;margin-top: 0px;margin-bottom: 0px;"><i>
-								<?=Yii::t('frontend', $model->getAttributeLabel('fecha')) ?></i></p>
+								<p style="margin-left: 0px;margin-top: 0px;margin-bottom: 0px;">
+									<strong><?=Yii::t('frontend', $model->getAttributeLabel('fecha')) ?></strong>
+								</p>
 							</div>
 							<div class="row" >
 								<div class="fecha" style="margin-left: 0px;">
@@ -182,14 +185,17 @@
 <!-- Tomo -->
 						<div class="col-sm-3">
 							<div class="row" style="width:100%;">
-								<p style="margin-left: 0px;margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('frontend', $model->getAttributeLabel('tomo')) ?></i></p>
+								<p style="margin-left: 0px;margin-top: 0px;margin-bottom: 0px;">
+									<strong><?=Yii::t('frontend', $model->getAttributeLabel('tomo')) ?></strong>
+								</p>
 							</div>
 							<div class="row" >
 								<div class="tomo" style="margin-left: 0px;">
 									<?= $form->field($model, 'tomo')->textInput([
-																						'id' => 'tomo',
-																						'style' => 'height:32px;width:98%;',
-																			 			])->label(false) ?>
+																		'id' => 'tomo',
+																		'style' => 'height:32px;width:98%;',
+																		'readonly' => $bloquear,
+															 		])->label(false) ?>
 								</div>
 							</div>
 						</div>
@@ -198,14 +204,17 @@
 <!-- Folio -->
 						<div class="col-sm-3">
 							<div class="row" style="width:100%;">
-								<p style="margin-left: 0px;margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('frontend', $model->getAttributeLabel('folio')) ?></i></p>
+								<p style="margin-left: 0px;margin-top: 0px;margin-bottom: 0px;">
+									<strong><?=Yii::t('frontend', $model->getAttributeLabel('folio')) ?></strong>
+								</p>
 							</div>
 							<div class="row" >
 								<div class="folio" style="margin-left: 0px;">
 									<?= $form->field($model, 'folio')->textInput([
-																						'id' => 'folio',
-																						'style' => 'height:32px;width:98%;',
-																			 			])->label(false) ?>
+																			'id' => 'folio',
+																			'style' => 'height:32px;width:98%;',
+																			'readonly' => $bloquear,
+																 		])->label(false) ?>
 								</div>
 							</div>
 						</div>
@@ -214,14 +223,17 @@
 <!-- Capital -->
 						<div class="col-sm-3">
 							<div class="row" style="width:100%;">
-								<p style="margin-left: 0px;margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('frontend', $model->getAttributeLabel('capital')) ?></i></p>
+								<p style="margin-left: 0px;margin-top: 0px;margin-bottom: 0px;">
+									<strong><?=Yii::t('frontend', $model->getAttributeLabel('capital')) ?></strong>
+								</p>
 							</div>
 							<div class="row" >
 								<div class="capital" style="margin-left: 0px;">
 									<?= $form->field($model, 'capital')->textInput([
-																						'id' => 'capital',
-																						'style' => 'height:32px;width:98%;',
-																			 			])->label(false) ?>
+																			'id' => 'capital',
+																			'style' => 'height:32px;width:98%;',
+																			'readonly' => $bloquear,
+																		])->label(false) ?>
 								</div>
 							</div>
 						</div>
@@ -230,13 +242,16 @@
 <!-- Numero de Empleados -->
 						<div class="col-sm-3">
 							<div class="row" style="width:100%;">
-								<p style="margin-left: 0px;margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('frontend', $model->getAttributeLabel('num_empleados')) ?></i></p>
+								<p style="margin-left: 0px;margin-top: 0px;margin-bottom: 0px;">
+									<strong><?=Yii::t('frontend', $model->getAttributeLabel('num_empleados')) ?></strong>
+								</p>
 							</div>
 							<div class="row">
 								<div class="num-empleados" style="margin-left: 0px;">
 									<?= $form->field($model, 'num_empleados')->textInput([
 																						'id' => 'num-empleados',
 																						'style' => 'height:32px;width:50%;',
+																						'readonly' => $bloquear,
 																			 			])->label(false) ?>
 								</div>
 							</div>
@@ -263,17 +278,18 @@
 <!-- Naturaleza del Representante Legal -->
 									<div class="col-sm-3">
 										<div class="row" style="width:100%;">
-											<p style="margin-left: 15px;margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('frontend', $model->getAttributeLabel('naturaleza_rep')) ?></i></p>
+											<p style="margin-left: 15px;margin-top: 0px;margin-bottom: 0px;">
+												<strong><?=Yii::t('frontend', $model->getAttributeLabel('naturaleza_rep')) ?></strong>
+											</p>
 										</div>
 										<div class="row">
 											<div class="naturaleza-rep" style="margin-left: 15px;">
 						                        <?= $form->field($model, 'naturaleza_rep')->dropDownList($listaNaturaleza,[
 						                        																//'inline' => true,
-						                                                                                               	'prompt' => Yii::t('frontend', 'Select'),
-						                                                                                                'style' => 'height:32px;
-						                                                                                                			width:70%;
-						                                                                                                			'
-						                                                                                             ])->label(false)
+						                                                                                         'prompt' => Yii::t('frontend', 'Select'),
+						                                                                                         'style' => 'height:32px;width:70%;'
+						                                                                                         'readonly' => $bloquear,
+						                                                                                       ])->label(false)
 					                			?>
 				                			</div>
 										</div>
@@ -283,11 +299,18 @@
 <!-- Cedula del Representante Legal -->
 									<div class="col-sm-3" style="margin-left: -62px;">
 										<div class="row" style="width:100%;">
-											<p style="margin-left: 0px;margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('frontend', $model->getAttributeLabel('cedula_rep')) ?></i></p>
+											<p style="margin-left: 0px;margin-top: 0px;margin-bottom: 0px;">
+												<strong><?=Yii::t('frontend', $model->getAttributeLabel('cedula_rep')) ?></strong>
+											</p>
 										</div>
 										<div class="row">
 											<div class="cedula-rep">
-				                				<?= $form->field($model, 'cedula_rep')->textInput(['id' => 'cedula-rep', 'maxlength' => 8, 'style' => 'width:75%;height:32px;'])->label(false) ?>
+				                				<?= $form->field($model, 'cedula_rep')->textInput([
+				                														'id' => 'cedula-rep',
+				                														'maxlength' => 8,
+				                														'style' => 'width:75%;height:32px;'
+				                														'readonly' => $bloquear,
+				                													])->label(false) ?>
 				                			</div>
 				                		</div>
 									</div>
@@ -296,14 +319,17 @@
 <!-- Apellidos y Nombres de Representante Legal -->
 									<div class="col-sm-6" style="margin-left: -55px;">
 										<div class="row" style="width:100%;">
-											<p style="margin-left: 0px;margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('frontend', $model->getAttributeLabel('representante')) ?></i></p>
+											<p style="margin-left: 0px;margin-top: 0px;margin-bottom: 0px;">
+												<strong><?=Yii::t('frontend', $model->getAttributeLabel('representante')) ?></strong>
+											</p>
 										</div>
 										<div class="row">
 											<div class="representante" style="margin-left: 0px;">
 												<?= $form->field($model, 'representante')->textInput([
-																									'id' => 'representante',
-																									'style' => 'height:32px;width:100%;',
-																						 			])->label(false) ?>
+																								'id' => 'representante',
+																								'style' => 'height:32px;width:100%;',
+																								'readonly' => $bloquear,
+																						 	])->label(false) ?>
 											</div>
 										</div>
 									</div>
@@ -317,12 +343,16 @@
 <!-- FIN DE REPRESNTANTE LEGAL -->
 
 					<div class="row">
-						<div class="col-sm-2">
+						<div class="col-sm-3">
 							<div class="form-group">
-								<?= Html::submitButton(Yii::t('frontend', 'Create'),['id' => 'btn-create', 'class' => 'btn btn-success', 'name' => 'btn-create'])?>
+								<?= Html::submitButton(Yii::t('frontend', 'Create'),[
+																					'id' => 'btn-create',
+																					'class' => 'btn btn-success',
+																					'name' => 'btn-create'
+																				])?>
 							</div>
 						</div>
-						<div class="col-sm-2" style="margin-left: 150px;">
+						<div class="col-sm-3" style="margin-left: 150px;">
 							<div class="form-group">
 								 <?= Html::a(Yii::t('frontend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) ?>
 							</div>
