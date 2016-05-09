@@ -73,15 +73,16 @@
 	        		<h3><?= Html::encode($this->title) ?></h3>
 	        	</div>
 	        	<div class="col-sm-3" style="width: 30%; float:right; padding-right: 50px;">
-	    			<style type="text/css">
-						.col-sm-3 > ul > li > a:hover {
-							color: white;
-						}
-					</style>
+
 	        		<?= MenuController::actionMenuSecundario([
 	        						'quit' => '/aaee/inscripcionactecon/inscripcion-actividad-economica/quit',
 	        			])
 	        		?>
+	        		<style type="text/css">
+						.col-sm-3 > ul > li > a:hover {
+							color: white;
+						}
+					</style>
 	        	</div>
 	        </div>
 	    </div>
