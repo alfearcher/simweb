@@ -107,7 +107,7 @@
 			      	} else {
 
 			  		}
-die('llego');
+// die('llego');
 		  			return $this->render('/aaee/inscripcion-actividad-economica/_create', [
 		  																'model' => $model,
 		  				]);
