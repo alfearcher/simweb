@@ -55,7 +55,7 @@
  	<?php
 
  		$form = ActiveForm::begin([
- 			'id' => 'inscripcion-act-econ-form',
+ 			'id' => 'id-inscripcion-act-econ-form',
  			'method' => 'post',
  			'enableClientValidation' => true,
  			'enableAjaxValidation' => true,
