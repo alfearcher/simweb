@@ -48,6 +48,7 @@
 	use yii\web\View;
 	use yii\jui\DatePicker;
 	use backend\models\registromaestro\TipoNaturaleza;
+	use backend\controllers\menu\MenuController;
 
 	//session_start();
  ?>
@@ -67,8 +68,21 @@
 	<meta http-equiv="refresh">
     <div class="panel panel-primary"  style="width: 90%;">
         <div class="panel-heading">
-        	<h3><?= Html::encode($this->title) ?></h3>
-        </div>
+        	<div class="col-sm-3">
+        		<h3><?= Html::encode($this->title) ?></h3>
+        	</div>
+        	<div class="col-sm-3" style="width: 30%; float:right; padding-right: 50px;">
+    			<style type="text/css">
+				.col-sm-3 > ul > li > a:hover {
+					background-color: #F5F5F5;
+				}
+			</style>
+        		<?= MenuController::actionMenuSecundario([
+        						'quit' => '/aaee/inscripcionactecon/inscripcion-actividad-economica/quit',
+        			])
+        		?>
+        	</div>
+	    </div>
 
 	 <!-- <?//= Html::activeHiddenInput($model, 'id_contribuyente', ['id' => 'id-contribuyente', 'name' => 'id-contribuyente', 'value' => $_SESSION['idContribuyente']]) ?> -->
 
