@@ -58,6 +58,13 @@
 
  //    Icon::map($this, $typeIcon);
 
+
+	//$userProvider->pagination->pageParam = 'user-page';
+	//$userProvider->sort->sortParam = 'user-sort';
+
+	$dataProvider->pagination->pageParam = 'contribuyente-page';
+	$dataProvider->sort->sortParam = 'contribuyente-sort';
+
  ?>
 
 
@@ -238,7 +245,10 @@
 	                            										return $data->id_sim;
 	                    											},
 									                ],
-									                ['class' => 'yii\grid\CheckboxColumn'],
+									                [
+									                	'class' => 'yii\grid\CheckboxColumn',
+									                	'name' => 'myche',
+									                ],
 									        	]
 											]);?>
 										</div>
@@ -360,6 +370,7 @@
 																						'class' => 'btn btn-success',
 																						'name' => 'btn-update',
 																						'value' => 1,
+																						'data-confirm' => Yii::t('yii', 'Are you sure you want to change this password?')
 																					  ])
 							?>
 						</div>
@@ -383,3 +394,15 @@
 </div>
 
 <?php ActiveForm::end(); ?>
+
+
+<?php
+	$this->registerJs(
+		'$("#grid-contribuyente-asociado").on("click", function() {
+			var keys = $("#grid-contribuyente-asociado").yiiGridView("getSelectedRows");
+			alert(keys);
+		});
+		//var keys = $("#grid-contribuyente-asociado").yiiGridView("getSelectedRows");
+		//alert(keys);'
+		);
+?>
