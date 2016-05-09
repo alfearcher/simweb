@@ -48,7 +48,7 @@
 	use yii\web\View;
 	use yii\jui\DatePicker;
 	use backend\models\registromaestro\TipoNaturaleza;
-	use common\mensaje\MensajeController;
+	use backend\menu\MenuController;
 
 	//session_start();
  ?>
