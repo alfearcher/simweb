@@ -260,7 +260,7 @@
 								<div class="num-empleados" style="margin-left: 0px;">
 									<?= $form->field($model, 'num_empleados')->textInput([
 																						'id' => 'num-empleados',
-																						'style' => 'width:40%;',
+																						'style' => 'width:45%;',
 																						'readonly' => $bloquear,
 																			 			])->label(false) ?>
 								</div>
