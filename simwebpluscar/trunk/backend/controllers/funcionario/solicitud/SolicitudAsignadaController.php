@@ -127,6 +127,16 @@
 
 
 
+		public function actionProcesarSolicitud()
+		{
+			$request = Yii::$app->request;
+			$postData = $request->post();
+die(var_dump($postData));
+		}
+
+
+
+
 		/***/
 		public function actionBuscarSolicitudSeleccionada()
 		{
@@ -135,7 +145,7 @@
 			$contribuyente =null;
 			$caption = Yii::t('backend', 'Infomation of the request');
 			$subCaption = Yii::t('backend', 'Request');
-			$url = null;
+			$url = Url::to(['procesar-solicitud']);
 
 			// Identificador de la solicitud seleccionada por el usuario.
 			$id = isset($postData['id']) ? $postData['id'] : null;
@@ -144,7 +154,7 @@
 				$modelSearch = New SolicitudAsignadaSearch();
 				$infoSolicitud = $modelSearch->findSolicitudSeleccionada($id);
 
-				// Se buscan los datos del contribuyente.
+				// Se buscan los datos basicos del contribuyente.
 				if ( isset($infoSolicitud->id_contribuyente) ) {
 					$contribuyente = $modelSearch->getDatosBasicoContribuyenteSegunId($infoSolicitud->id_contribuyente);
 					if ( count($contribuyente) > 0 ) {
@@ -192,6 +202,8 @@
 			$modelSearch->load($postData);
 
 			$userLocal = Yii::$app->user->identity->username;
+
+			// Lista de los identificadores de los tipos de solicitud asociado al funcionario.
 			$lista = $modelSearch->getTipoSolicitudAsignada($userLocal);
 
 			$caption = Yii::t('backend', 'Lists of Request Authorized');
