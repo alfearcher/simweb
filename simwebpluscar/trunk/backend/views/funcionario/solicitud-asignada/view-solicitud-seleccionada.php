@@ -286,7 +286,7 @@
 					<div class="row" style="padding-top: 55px;">
 						<div class="separador">
 							<div class="row" style="border-bottom: 0.5px solid #ccc;">
-								
+
 							</div>
 						</div>
 					</div>
@@ -302,6 +302,7 @@
 														'value' => 1,
 														'name' => 'btn-approve-request',
 														'style' => 'width: 100%;',
+														'data-confirm' => Yii::t('backend', 'Confirm Approve?.'),
 													  ])
 								?>
 							</div>
@@ -318,6 +319,7 @@
 														'value' => 1,
 														'name' => 'btn-reject-request',
 														'style' => 'width: 100%;',
+														'data-confirm' => Yii::t('backend', 'Confirm Reject?.'),
 													  ])
 								?>
 							</div>
