@@ -178,7 +178,7 @@
 																						  		'id' => 'fecha',
 																								'class' => 'form-control',
 																								'readonly' => true,
-																								'style' => 'background-color: white;width:75%;',
+																								'style' => 'background-color: white;width:65%;',
 
 																							]
 																							])->label(false) ?>
