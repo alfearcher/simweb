@@ -110,9 +110,13 @@
 			      	} else {
 
 			  		}
-// die(var_dump(Yii::$app->user->identity->login));
+
+			  		$url = Url::to(['index']);
+			  		$bloquear = false;
 		  			return $this->render('/aaee/inscripcion-actividad-economica/_create', [
 		  																'model' => $model,
+		  																'bloquear' => $bloquear,
+		  																'url' => $url,
 		  				]);
 		  		} else {
 		  			// Contribuyente no definido.
