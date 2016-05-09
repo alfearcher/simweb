@@ -89,7 +89,7 @@
 				if ( isset($_SESSION['idContribuyente']) ) {
 
 			  		$request = Yii::$app->request;
-// die(var_dump($request));
+
 			  		if ( $model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax ) {
 						Yii::$app->response->format = Response::FORMAT_JSON;
 						return ActiveForm::validate($model);
@@ -107,8 +107,10 @@
 			      	} else {
 
 			  		}
-
-		  			return $this->render('/aaee/inscripcion-actividad-economica/_create', ['model' => $model]);
+die('llego');
+		  			return $this->render('/aaee/inscripcion-actividad-economica/_create', [
+		  																'model' => $model,
+		  				]);
 		  		} else {
 		  			// Contribuyente no definido.
 		  			return MensajeController::actionMensaje(400);
