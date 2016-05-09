@@ -72,7 +72,7 @@
 	 <!-- <?//= Html::activeHiddenInput($model, 'id_contribuyente', ['id' => 'id-contribuyente', 'name' => 'id-contribuyente', 'value' => $_SESSION['idContribuyente']]) ?> -->
 
 <!-- Cuerpo del formulario -->
-        <div class="panel-body" style="background-color: #F9F9F9;">
+        <div class="panel-body">
         	<div class="container-fluid">
         		<div class="col-sm-12">
 <!-- ID CONTRIBUYENTE Y NRO SOLICITUD -->
