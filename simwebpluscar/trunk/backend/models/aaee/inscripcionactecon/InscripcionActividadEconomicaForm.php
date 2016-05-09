@@ -84,8 +84,32 @@
         	// bypass scenarios() implementation in the parent class
         	//return Model::scenarios();
         	return [
-
-
+        		self::SCENARIO_FRONTEND => [
+        					'id_contribuyente',
+        					'reg_mercantil',
+        					'num_reg',
+        					'tomo',
+        					'folio',
+        					'fecha',
+        					'capital',
+        					'num_empleados',
+        					'naturaleza_rep',
+        					'cedula_rep',
+        					'representante',
+        		],
+        		self::SCENARIO_BACKEND => [
+        					'id_contribuyente',
+        					'reg_mercantil',
+        					'num_reg',
+        					'tomo',
+        					'folio',
+        					'fecha',
+        					'capital',
+        					'num_empleados',
+        					'naturaleza_rep',
+        					'cedula_rep',
+        					'representante',
+        		]
         	];
     	}
 
