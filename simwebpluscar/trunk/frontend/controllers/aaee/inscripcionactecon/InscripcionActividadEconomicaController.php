@@ -81,11 +81,11 @@
 		 */
 		public function actionIndex()
 		{
-die(var_dump($_SESSION['idContribuyente']));
-			// $model = New InscripcionActividadEconomicaForm();
-			// $tipoNaturaleza = $model->getTipoNaturalezaDescripcionSegunID();
+			$id = isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : 0;
+			$model = New InscripcionActividadEconomicaForm();
+			$tipoNaturaleza = $model->getTipoNaturalezaDescripcionSegunID($id);
 
-
+die(var_dump($tipoNaturaleza));
 
 			// $tipoNaturaleza = isset($_SESSION['tipoNaturaleza']) ? $_SESSION['tipoNaturaleza'] : null;
 			// if ( $tipoNaturaleza == 'JURIDICO') {
