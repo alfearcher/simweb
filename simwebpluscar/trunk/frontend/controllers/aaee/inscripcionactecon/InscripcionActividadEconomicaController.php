@@ -89,7 +89,7 @@
 				if ( isset($_SESSION['idContribuyente']) ) {
 
 			  		$request = Yii::$app->request;
-
+die(var_dump($request));
 			  		if ( $model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax ) {
 						Yii::$app->response->format = Response::FORMAT_JSON;
 						return ActiveForm::validate($model);
