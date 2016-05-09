@@ -115,7 +115,7 @@
 	     		['estatus', 'default', 'value' => 0],
 	     		['fecha_hora_proceso', 'default', 'value' => date('Y-m-d H:i:s', strtotime('0000-00-00 00:00:00'))],
 	     		['user_funcionario', 'default', 'value' => null],
-	     		['usuario', 'default', 'value' => Yii::$app->user->identity->username, 'on' => 'backend'],
+	     		['usuario', 'default', 'value' => isset(Yii::$app->user->identity->username) ? Yii::$app->user->identity->username : Yii::$app->user->identity->login, 'on' => 'backend'],
 	     		['usuario', 'default', 'value' => Yii::$app->user->identity->login, 'on' => 'frontend'],
 	     		['origen', 'default', 'value' => 'LAN'],
 	     		['nro_solicitud', 'default', 'value' => 0],
