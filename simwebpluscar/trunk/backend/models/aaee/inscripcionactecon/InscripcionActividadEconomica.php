@@ -70,7 +70,7 @@
 		 */
 		public static function tableName()
 		{
-			return 'inscripciones_act_econ';
+			return 'sl_inscripciones_act_econ';
 		}
 
 

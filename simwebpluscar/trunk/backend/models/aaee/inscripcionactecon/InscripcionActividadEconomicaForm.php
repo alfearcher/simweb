@@ -45,6 +45,8 @@
  	use Yii;
 	use yii\base\Model;
 	use yii\data\ActiveDataProvider;
+	use common\models\contribuyente\ContribuyenteBase;
+	use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomicaSearch;
 
 	/**
 	* 	Clase base del formulario inscripcion-act-econ-form.
@@ -67,6 +69,8 @@
 		public $estatus;
 		public $fecha_hora;
 		public $usuario;
+		public $user_funcionario;				// Funcionario que aprueba o rechaza la solicitud.
+		public $fecha_hora_proceso;				// Fecha y hora cuando de aprueba o rechaza la solcitud.
 
 		/**
      	* @inheritdoc
@@ -85,17 +89,28 @@
 	    public function rules()
 	    {
 	        return [
-	        	[['reg_mercantil', 'tomo', 'folio', 'fecha', 'num_reg', 'capital', 'num_empleados', 'naturaleza_rep', 'cedula_rep', 'representante'], 'required'],
-	        	[['id_contribuyente', 'num_reg', 'num_empleados', 'cedula_rep'], 'integer'],
+	        	[['reg_mercantil', 'tomo', 'folio', 'fecha',
+	        	  'num_reg', 'capital', 'num_empleados',
+	        	  'naturaleza_rep', 'cedula_rep', 'representante'],
+	        	  'required',
+	        	  'message' => Yii::t('backend', '{attribute} is required')],
+	        	[['id_contribuyente', 'num_reg',
+	        	  'num_empleados', 'cedula_rep'],
+	        	  'integer'],
 	        	[['capital'], 'double'],
-	        	[['reg_mercantil', 'tomo', 'folio', 'naturaleza_rep', 'representante'], 'string'],
+	        	[['reg_mercantil', 'tomo', 'folio', 'naturaleza_rep',
+	        	  'representante'],
+	        	  'string'],
 	          	['fecha_hora', 'default', 'value' => date('Y-m-d H:i:s')],
 	          	['num_reg', 'unique'],
+	          	['capital', 'default', 'value' => 0],
 	     		['estatus', 'default', 'value' => 0],
+	     		['fecha_hora_proceso', 'default', 'value' => date('Y-m-d H:i:s', strtotime('0000-00-00 00:00:00'))],
+	     		['user_funcionario', 'default', 'value' => null],
 	     		['usuario', 'default', 'value' => Yii::$app->user->identity->username],
-	     		['origen', 'default', 'value' => 'INTERNO'],
+	     		['origen', 'default', 'value' => 'LAN'],
 	     		['nro_solicitud', 'default', 'value' => 0],
-	     		['id_contribuyente', 'default', 'value' => $_SESSION['idContribuyente']],
+	     		['id_contribuyente', 'default', 'value' => isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : null],
 	     		['cedula_rep', 'string', 'max' => 8],
 	        ];
 	    }
@@ -113,9 +128,9 @@
 	    {
 	        return [
 	            'id_contribuyente' => Yii::t('backend', 'Id. Taxpayer'),
-	            'nro_solicitud' => Yii::t('backend', 'Application Number'),
+	            'nro_solicitud' => Yii::t('backend', 'Number Request'),
 	            'reg_mercantil' => Yii::t('backend', 'Commercial Register'),
-	            'num_reg' => Yii::t('backend', 'Registration Number'),
+	            'num_reg' => Yii::t('backend', 'Number Registration'),
 	            'fecha' => Yii::t('backend', 'Date'),
 	            'tomo' => Yii::t('backend', 'Volume Number'),
 	            'folio' => Yii::t('backend', 'Folio'),
@@ -132,7 +147,7 @@
 
 
 	    /**
-	    *	Metodo que retarna el arreglo de atributos que seran acrualizados.
+	    *	Metodo que retarna el arreglo de atributos que seran actualizados.
 	    */
 	    public function atributosUpDate()
 	    {
@@ -148,6 +163,22 @@
 	    		'cedula_rep',
 	    		'representante'
 	    	];
+	    }
+
+
+
+
+	    /**
+	     * Metodo que retorna la descripcion del tipo de contribuyente, segun el identificador del mismo.
+	     * "NATURAL".
+	     * "JURIDICO".
+	     * @param  Long $idContribuyente identificador dle contribuyente.
+	     * @return String Retorna la descripcion del tipo de contribuyente.
+	     */
+	    public function getTipoNaturalezaDescripcionSegunID($idContribuyente)
+	    {
+	    	$descripcion = null;
+	    	return $descripcion = ContribuyenteBase::getTipoNaturalezaDescripcionSegunID($idContribuyente);
 	    }
 
 
