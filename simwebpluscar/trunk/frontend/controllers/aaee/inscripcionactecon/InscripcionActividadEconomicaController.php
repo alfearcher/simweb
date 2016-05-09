@@ -57,7 +57,7 @@
 	use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomicaForm;
 	use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 	use common\conexion\ConexionController;
-	use backend\controllers\MenuController;
+	use common\mensaje\MensajeController;
 
 	session_start();		// Iniciando session
 
@@ -85,46 +85,38 @@
 			$model = New InscripcionActividadEconomicaForm();
 			$tipoNaturaleza = $model->getTipoNaturalezaDescripcionSegunID($id);
 
-die(var_dump($tipoNaturaleza));
+			if ( $tipoNaturaleza == 'JURIDICO') {
+				if ( isset($_SESSION['idContribuyente']) ) {
 
-			// $tipoNaturaleza = isset($_SESSION['tipoNaturaleza']) ? $_SESSION['tipoNaturaleza'] : null;
-			// if ( $tipoNaturaleza == 'JURIDICO') {
-			// 	if ( isset($_SESSION['idContribuyente']) ) {
-			// 		$model = New InscripcionActividadEconomicaForm();
+			  		$request = Yii::$app->request;
 
-			//   		$request = Yii::$app->request;
+			  		if ( $model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax ) {
+						Yii::$app->response->format = Response::FORMAT_JSON;
+						return ActiveForm::validate($model);
+			      	}
 
-			//   		if ( $model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax ) {
-			// 			Yii::$app->response->format = Response::FORMAT_JSON;
-			// 			return ActiveForm::validate($model);
-			//       	}
+			      	if ( $model->load(Yii::$app->request->post()) ) {
 
-			//       	if ( $model->load(Yii::$app->request->post()) ) {
+			      	 	if ( $model->validate() ) {
+			      	 		// Todo bien la validacion es correcta.
 
-			//       	 	if ( $model->validate() ) {
-			//       	 		// Todo bien la validacion es correcta.
-			//       	 		// Se redirecciona a una preview para confirmar la creacion del registro.
-			//       	 		$_SESSION['model'] = $model;
-			//       	 		return $this->render('/aaee/inscripcion-actividad-economica/pre-view', ['model' => $model, 'preView' => true]);
-			//       	 		//$arrayParametros = $request->bodyParams;
+			      	 	} else {
+			      	 		//die('validate no');
+			      	 		$model->getErrors();
+			      	 	}
+			      	} else {
 
-			//       	 	} else {
-			//       	 		//die('validate no');
-			//       	 		$model->getErrors();
-			//       	 	}
-			//       	} else {
+			  		}
 
-			//   		}
-			//   		if ( isset($_SESSION['model']) ) { $model = $_SESSION['model']; }
-
-		 //  			return $this->render('/aaee/inscripcion-actividad-economica/create', ['model' => $model]);
-		 //  		} else {
-		 //  			// No esta definido el contribuyente.
-		 //  			die('NO esta definido el contribuyente');
-		 //  		}
-	  // 		} else {
-	  // 			echo 'Contribuyente no aplica para esta opción.';
-	  // 		}
+		  			return $this->render('/aaee/inscripcion-actividad-economica/_create', ['model' => $model]);
+		  		} else {
+		  			// Contribuyente no definido.
+		  			return MensajeController::actionMensaje(400);
+		  		}
+	  		} else {
+	  			// Naturaleza del Contribuyente no definido.
+	  			return MensajeController::actionMensaje(400);
+	  		}
 		}
 
 
