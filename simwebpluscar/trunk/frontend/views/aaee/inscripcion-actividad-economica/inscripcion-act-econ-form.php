@@ -59,7 +59,7 @@
  			'id' => 'id-inscripcion-act-econ-form',
  			'method' => 'post',
  			'enableClientValidation' => true,
- 			'enableAjaxValidation' => true,
+ 			//'enableAjaxValidation' => true,
  			'enableClientScript' => true,
  		]);
  	?>
