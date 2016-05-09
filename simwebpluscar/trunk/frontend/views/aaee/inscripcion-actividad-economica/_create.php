@@ -47,7 +47,8 @@
 
 	    <?= $this->render('inscripcion-act-econ-form', [
 	        							'model' => $model,
-	        							'bloquear' => $bloquear
+	        							'bloquear' => $bloquear,
+	        							'url' => $url,
 	    ]) ?>
 
 	</div>
