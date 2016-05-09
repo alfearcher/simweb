@@ -80,7 +80,7 @@
 	        		?>
 	        		<style type="text/css">
 						.col-sm-3 > ul > li > a:hover {
-							color: #337AB7;
+							background-color: #337AB7;
 						}
 					</style>
 	        	</div>
