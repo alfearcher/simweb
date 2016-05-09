@@ -59,6 +59,7 @@
  		$form = ActiveForm::begin([
  			'id' => 'id-inscripcion-act-econ-form',
  			'method' => 'post',
+ 			'action' => $url,
  			'enableClientValidation' => true,
  			//'enableAjaxValidation' => true,
  			'enableClientScript' => true,
@@ -383,11 +384,6 @@
 
 						<div class="col-sm-2" style="padding-left: 25px;"></div>
 
-						<div class="col-sm-3" style="margin-left: 150px;">
-							<div class="form-group">
-								 <?= Html::a(Yii::t('frontend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) ?>
-							</div>
-						</div>
 					</div>
 
 				</div>	<!-- Fin de col-sm-12 -->
