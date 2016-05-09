@@ -72,13 +72,21 @@
 		public $user_funcionario;				// Funcionario que aprueba o rechaza la solicitud.
 		public $fecha_hora_proceso;				// Fecha y hora cuando de aprueba o rechaza la solcitud.
 
+
+		const SCENARIO_FRONTEND = 'frontend';
+		const SCENARIO_BACKEND = 'backend';
+
 		/**
      	* @inheritdoc
      	*/
     	public function scenarios()
     	{
         	// bypass scenarios() implementation in the parent class
-        	return Model::scenarios();
+        	//return Model::scenarios();
+        	return [
+
+
+        	];
     	}
 
 
@@ -107,7 +115,8 @@
 	     		['estatus', 'default', 'value' => 0],
 	     		['fecha_hora_proceso', 'default', 'value' => date('Y-m-d H:i:s', strtotime('0000-00-00 00:00:00'))],
 	     		['user_funcionario', 'default', 'value' => null],
-	     		['usuario', 'default', 'value' => Yii::$app->user->identity->username],
+	     		['usuario', 'default', 'value' => Yii::$app->user->identity->username, 'on' => 'backend'],
+	     		['usuario', 'default', 'value' => Yii::$app->user->identity->login, 'on' => 'frontend'],
 	     		['origen', 'default', 'value' => 'LAN'],
 	     		['nro_solicitud', 'default', 'value' => 0],
 	     		['id_contribuyente', 'default', 'value' => isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : null],
