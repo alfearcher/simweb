@@ -110,7 +110,7 @@
 			      	} else {
 
 			  		}
-die(var_dump(Yii::$app->user->identity->login));
+// die(var_dump(Yii::$app->user->identity->login));
 		  			return $this->render('/aaee/inscripcion-actividad-economica/_create', [
 		  																'model' => $model,
 		  				]);
