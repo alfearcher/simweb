@@ -48,7 +48,7 @@
 	use yii\web\View;
 	use yii\jui\DatePicker;
 	use backend\models\registromaestro\TipoNaturaleza;
-	use backend\controllers\menu\MenuController;
+	use common\mensaje\MenuController;
 
 	//session_start();
  ?>
@@ -73,10 +73,10 @@
         	</div>
         	<div class="col-sm-3" style="width: 30%; float:right; padding-right: 50px;">
     			<style type="text/css">
-				.col-sm-3 > ul > li > a:hover {
-					background-color: #F5F5F5;
-				}
-			</style>
+					.col-sm-3 > ul > li > a:hover {
+						background-color: #F5F5F5;
+					}
+				</style>
         		<?= MenuController::actionMenuSecundario([
         						'quit' => '/aaee/inscripcionactecon/inscripcion-actividad-economica/quit',
         			])
