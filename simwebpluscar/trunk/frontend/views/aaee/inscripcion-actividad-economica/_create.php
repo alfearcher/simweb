@@ -41,13 +41,12 @@
 	*@var $this yii\web\View */
 
 	$this->title = Yii::t('frontend', 'Register of Economic Activity');
-
+	$b = $bloquear;
 	?>
 	<div class="inscripcion-act-econ-form-create">
-
 	    <?= $this->render('inscripcion-act-econ-form', [
 	        							'model' => $model,
-	        							'bloquear' => $bloquear,
+	        							'bloquear' => $b,
 	        							'url' => $url,
 	    ]) ?>
 
