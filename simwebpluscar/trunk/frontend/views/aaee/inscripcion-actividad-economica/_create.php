@@ -40,7 +40,7 @@
 	/**
 	*@var $this yii\web\View */
 
-	$this->title = Yii::t('backend', 'Register of Economic Activity');
+	$this->title = Yii::t('frontend', 'Register of Economic Activity');
 
 	?>
 	<div class="inscripcion-act-econ-form-create">
