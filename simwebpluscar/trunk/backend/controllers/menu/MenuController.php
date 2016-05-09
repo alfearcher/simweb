@@ -74,7 +74,7 @@ class MenuController extends Controller
     */
     public function actionMenuSecundario($opciones = [] )
     {
-        return $this->render('/menu/create-menu-secundario', [
+        return $this->render('@menu/create-menu-secundario', [
                                                                 'opciones' => $opciones,
                                                                 //'iconOpciones' => $iconOpciones,
                                                             ]);
