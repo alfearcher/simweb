@@ -74,7 +74,7 @@
         	<div class="col-sm-3" style="width: 30%; float:right; padding-right: 50px;">
     			<style type="text/css">
 					.col-sm-3 > ul > li > a:hover {
-						background-color: #F5F5F5;
+						/*background-color: #F5F5F5;*/
 					}
 				</style>
         		<?= MenuController::actionMenuSecundario([
