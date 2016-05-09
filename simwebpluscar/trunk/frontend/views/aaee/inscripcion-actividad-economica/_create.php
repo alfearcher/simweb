@@ -46,7 +46,7 @@
 	<div class="inscripcion-act-econ-form-create">
 
 	    <?= $this->render('inscripcion-act-econ-form', [
-	        'model' => $model,
+	        							'model' => $model,
 	    ]) ?>
 
 	</div>
