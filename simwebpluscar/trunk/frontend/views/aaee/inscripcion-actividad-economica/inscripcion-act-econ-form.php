@@ -46,6 +46,7 @@
 	use yii\helpers\ArrayHelper;
 	use yii\widgets\ActiveForm;
 	use yii\web\View;
+	use yii\jui\DatePicker;
 	use backend\models\registromaestro\TipoNaturaleza;
 
 	//session_start();
@@ -166,12 +167,21 @@
 							</div>
 							<div class="row" >
 								<div class="fecha" style="margin-left: 0px;">
-									<?= $form->field($model, 'fecha')->input('date',
-																					[
-																						'id' => 'fecha',
-																						'type' => 'date',
-																						'style' => 'height:32px;width:70%;',
-																		 			])->label(false) ?>
+									<?= $form->field($model, 'fecha')->widget(\yii\jui\DatePicker::classname(),[
+																						  'clientOptions' => [
+																								'maxDate' => '+0d',	// Bloquear los dias en el calendario a partir del dia siguiente al actual.
+																								'changeYear' => true,
+																							],
+																						  'language' => 'es-ES',
+																						  'dateFormat' => 'dd-MM-yyyy',
+																						  'options' => [
+																						  		'id' => 'fecha',
+																								'class' => 'form-control',
+																								'readonly' => true,
+																								'style' => 'background-color: white;width:75%;',
+
+																							]
+																							])->label(false) ?>
 								</div>
 							</div>
 						</div>
