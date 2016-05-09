@@ -297,7 +297,7 @@
 						                        <?= $form->field($model, 'naturaleza_rep')->dropDownList($listaNaturaleza,[
 						                        																//'inline' => true,
 						                                                                                         'prompt' => Yii::t('frontend', 'Select'),
-						                                                                                         'style' => 'height:32px;width:70%;'
+						                                                                                         'style' => 'height:32px;width:70%;',
 						                                                                                         'readonly' => $bloquear,
 						                                                                                       ])->label(false)
 					                			?>
@@ -318,7 +318,7 @@
 				                				<?= $form->field($model, 'cedula_rep')->textInput([
 				                														'id' => 'cedula-rep',
 				                														'maxlength' => 8,
-				                														'style' => 'width:75%;height:32px;'
+				                														'style' => 'width:75%;height:32px;',
 				                														'readonly' => $bloquear,
 				                													])->label(false) ?>
 				                			</div>
