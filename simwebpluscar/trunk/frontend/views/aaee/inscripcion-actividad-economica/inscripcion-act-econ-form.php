@@ -89,7 +89,7 @@
 								<div class="id-contribuyente" style="margin-left: 0px;">
 									<?= $form->field($model, 'id_contribuyente')->textInput([
 																						'id' => 'id-contribuyente',
-																						'style' => 'height:32px;width:98%;background-color: white;',
+																						'style' => 'width:98%;background-color: white;',
 																						'readonly' => true,
 																						'value' => $_SESSION['idContribuyente'],
 																			 			])->label(false) ?>
@@ -107,7 +107,7 @@
 									<div class="nro-solicitud" style="margin-left: 0px;">
 										<?= $form->field($model, 'nro_solicitud')->textInput([
 																						'id' => 'nro-solicitud',
-																						'style' => 'height:32px;width:100%;background-color: white;',
+																						'style' => 'width:100%;background-color: white;',
 																						'readonly' => true,
 																						'value' => 0,
 																				 	])->label(false) ?>
@@ -131,7 +131,7 @@
 								<div class="num-reg" style="margin-left: 0px;">
 									<?= $form->field($model, 'num_reg')->textInput([
 																				'id' => 'num-reg',
-																				'style' => 'height:32px;width:98%;',
+																				'style' => 'width:98%;',
 																				'readonly' => $bloquear,
 																		])->label(false) ?>
 								</div>
@@ -150,7 +150,7 @@
 								<div class="reg-mercantil" style="margin-left: 0px;">
 									<?= $form->field($model, 'reg_mercantil')->textInput([
 																					'id' => 'reg-mercantil',
-																					'style' => 'height:32px;width:99%;',
+																					'style' => 'width:99%;',
 																					'readonly' => $bloquear,
 																			 	])->label(false) ?>
 								</div>
@@ -203,7 +203,7 @@
 								<div class="tomo" style="margin-left: 0px;">
 									<?= $form->field($model, 'tomo')->textInput([
 																		'id' => 'tomo',
-																		'style' => 'height:32px;width:98%;',
+																		'style' => 'width:98%;',
 																		'readonly' => $bloquear,
 															 		])->label(false) ?>
 								</div>
@@ -222,7 +222,7 @@
 								<div class="folio" style="margin-left: 0px;">
 									<?= $form->field($model, 'folio')->textInput([
 																			'id' => 'folio',
-																			'style' => 'height:32px;width:98%;',
+																			'style' => 'width:98%;',
 																			'readonly' => $bloquear,
 																 		])->label(false) ?>
 								</div>
@@ -241,7 +241,7 @@
 								<div class="capital" style="margin-left: 0px;">
 									<?= $form->field($model, 'capital')->textInput([
 																			'id' => 'capital',
-																			'style' => 'height:32px;width:98%;',
+																			'style' => 'width:98%;',
 																			'readonly' => $bloquear,
 																		])->label(false) ?>
 								</div>
@@ -260,7 +260,7 @@
 								<div class="num-empleados" style="margin-left: 0px;">
 									<?= $form->field($model, 'num_empleados')->textInput([
 																						'id' => 'num-empleados',
-																						'style' => 'height:32px;width:50%;',
+																						'style' => 'width:40%;',
 																						'readonly' => $bloquear,
 																			 			])->label(false) ?>
 								</div>
