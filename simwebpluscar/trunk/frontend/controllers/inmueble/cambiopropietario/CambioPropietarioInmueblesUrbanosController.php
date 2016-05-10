@@ -106,7 +106,7 @@ class CambioPropietarioInmueblesUrbanosController extends Controller
         }  else {
                     echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
         }
-    }
+    } 
     /**
      *Metodo: CambioPropietarioInmuebles
      *Actualiza los datos del numero catastral del inmueble urbano.
@@ -168,7 +168,7 @@ CONTENIDO VENDEDOR (SELLER)
                         $tipo = $datosCambio["tipoBuscar1"];
                     } else { 
                         $tipo = 0; 
-                    } 
+                    } $nombre
 
                     $modelParametros = ContribuyentesForm::find()->where(['naturaleza'=>$datosCambio["naturalezaBuscar1"]])
                                                                  ->andWhere(['cedula'=>$datosCambio["cedulaBuscar1"]])
