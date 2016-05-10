@@ -89,7 +89,7 @@
 			$request = Yii::$app->request;
 			$idContribuyente = isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : 0;
 
-			if ( isset($request->get('id')) ) {
+			if ( isset($request->get()['id']) ) {
 				// identificador de la configuracion de la solicitud.
 				$id = $request->get('id');
 				$tipoSolicitud = 0;
