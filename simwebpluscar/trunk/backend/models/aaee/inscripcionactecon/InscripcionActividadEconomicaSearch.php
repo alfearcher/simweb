@@ -80,7 +80,7 @@
 															  ->andWhere(['IN', 'estatus', [0,1]])
 															  ->asArray()
 															  ->limit(1);
-
+die(var_dump($modelFind));
 			return count($modelFind) > 0 ? true : false;
 		}
 
