@@ -53,7 +53,7 @@
 	class InscripcionActividadEconomicaSearch extends InscripcionActividadEconomica
 	{
 
-		private $id_contribuyente;
+		public $id_contribuyente;
 
 
 
