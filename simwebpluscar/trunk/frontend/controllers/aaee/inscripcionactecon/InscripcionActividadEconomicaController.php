@@ -86,7 +86,7 @@
 		{
 			$request = Yii::$app->request;
 			$idContribuyente = isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : 0;
-die(var_dump($request->post()));
+die(var_dump($request->get()));
 
 			$modelSearch = New InscripcionActividadEconomicaSearch($idContribuyente);
 
