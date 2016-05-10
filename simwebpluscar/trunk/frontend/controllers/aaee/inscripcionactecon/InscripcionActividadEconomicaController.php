@@ -98,13 +98,14 @@
 				$tipoSolicitud = 0;
 				$tipoNaturaleza = '';
 				$modelParametro = New ParametroSolicitud($id);
-				// Se obtiene el tipo de solicitud.
+				// Se obtiene el tipo de solicitud. Se retorna un array donde elkey es el nombre
+				// del parametro y elvalor del elemento es elcontenido del campos en base de datos.
 				$tipoSolicitud = $modelParametro->getParametroSolicitud(['tipo_solicitud']);
-die(var_dump($tipoSolicitud));
+
 				$modelSearch = New InscripcionActividadEconomicaSearch($idContribuyente);
 				// Se determina si el contribuyente ya posee una solicitud de este tipo, si es asi
 				// se aborta la operacion de solicitud.
-				$poseeSolicitud = $modelSearch->yaPoseeSolicitudSimiliar($tipoSolicitud);
+				$poseeSolicitud = $modelSearch->yaPoseeSolicitudSimiliar($tipoSolicitud['tipo_solicitud']);
 				if ( $poseeSolicitud ) {
 					// Ya posee una solicitud de este tipo y no puede continuar.
 					return MensajeController::actionMensaje(945);
