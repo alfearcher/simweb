@@ -68,7 +68,6 @@
 		 * Metodo que permite determinar si el contribuyente posee una solicitud pendiente (estatus = 0)
 		 * o aprobada (estatus = 1), del mismo tipo ($tipoSolicitud), por ser una solicitud de inscripcion
 		 * de actividad economica no deberia existir ninguna pendiente o aprobada.
-		 * @param Integer $tipoSolicitud, identificador del tipo de solicitud.
 		 * @return Boolean Retorna true si ya posee una solicitud con las caracteristicas descriptas, caso
 		 * contrario retornara false.
 		 */
@@ -76,7 +75,6 @@
 		{
 			$modelFind = null;
 			$modelFind = InscripcionActividadEconomica::find()->where('id_contribuyente =:id_contribuyente', [':id_contribuyente' => $this->id_contribuyente])
-															  ->andWhere('tipo_solicitud =:tipo_solicitud', [':tipo_solicitud' => $tipoSolicitud])
 															  ->andWhere(['IN', 'estatus', [0,1]])
 															  ->count();
 die(var_dump($modelFind));
