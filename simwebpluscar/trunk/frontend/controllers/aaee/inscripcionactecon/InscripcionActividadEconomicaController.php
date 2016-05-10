@@ -59,6 +59,7 @@
 	use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 	use common\conexion\ConexionController;
 	use common\mensaje\MensajeController;
+	use common\models\configuracion\solicitud\ParametroSolicitud;
 
 	session_start();		// Iniciando session
 
@@ -86,8 +87,12 @@
 		{
 			$request = Yii::$app->request;
 			$idContribuyente = isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : 0;
-die(var_dump($request->get()));
+// die(var_dump($request->get()));
 
+			// identificador de la configuracion de la solicitud.
+			$id = $request->get('id');
+			$modelParametro = ParametroSolicitud($id);
+die(var_dump($modelParametro->getParametroSolicitud('tipo_solicitud'));
 			$modelSearch = New InscripcionActividadEconomicaSearch($idContribuyente);
 
 			$tipoNaturaleza = $modelSearch->getTipoNaturalezaDescripcionSegunID(2);
