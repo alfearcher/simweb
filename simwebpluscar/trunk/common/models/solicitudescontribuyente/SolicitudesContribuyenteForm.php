@@ -55,11 +55,11 @@
     use Yii;
     use yii\base\Model;
     use yii\db\ActiveRecord;
-    use common\models\solicitudescontribuyente\SolicitudesContribuyente
+    use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 
 
     /***/
-    class SolicitudesContribuyente extends SolicitudesContribuyente
+    class SolicitudesContribuyenteForm extends SolicitudesContribuyente
     {
         public $nro_solicitud;
         public $id_config_solicitud;
@@ -77,7 +77,7 @@
         public $user_funcionario;
         public $fecha_hora_proceso;
         public $causa;                      // Causa de desincorporacion o inactivacion.
-        public $observacion                 // Observacion colocada por el funcionario para la desincorporacion o inactivacion.
+        public $observacion;                // Observacion colocada por el funcionario para la desincorporacion o inactivacion.
 
 
 
