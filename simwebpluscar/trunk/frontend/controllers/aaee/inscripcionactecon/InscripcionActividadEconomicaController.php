@@ -85,56 +85,81 @@
 		 */
 		public function actionIndex()
 		{
+			$poseeSolicitud = false;
 			$request = Yii::$app->request;
 			$idContribuyente = isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : 0;
-// die(var_dump($request->get()));
 
-			// identificador de la configuracion de la solicitud.
-			$id = $request->get('id');
-			$modelParametro = New ParametroSolicitud($id);
-die(var_dump($modelParametro->getParametroSolicitud(['tipo_solicitud'])));
-			$modelSearch = New InscripcionActividadEconomicaSearch($idContribuyente);
+			if ( isset($request->get('id')) ) {
+				// identificador de la configuracion de la solicitud.
+				$id = $request->get('id');
+				$tipoSolicitud = 0;
+				$tipoNaturaleza = '';
+				$modelParametro = New ParametroSolicitud($id);
+				// Se obtiene el tipo de solicitud.
+				$tipoSolicitud = $modelParametro->getParametroSolicitud(['tipo_solicitud']);
 
-			$tipoNaturaleza = $modelSearch->getTipoNaturalezaDescripcionSegunID(2);
-			$model->scenario = self::SCENARIO_FRONTEND;
+				$modelSearch = New InscripcionActividadEconomicaSearch($idContribuyente);
+				// Se determina si el contribuyente ya posee una solicitud de este tipo, si es asi
+				// se aborta la operacion de solicitud.
+				$poseeSolicitud = $modelSearch->yaPoseeSolicitudSimiliar($tipoSolicitud);
+				if ( $poseeSolicitud ) {
+					// Ya posee una solicitud de este tipo y no puede continuar.
+					return MensajeController::actionMensaje(400);
+				} else {
+					$tipoNaturaleza = $modelSearch->getTipoNaturalezaDescripcionSegunID($tipoSolicitud);
+					if ( $tipoNaturaleza == 'JURIDICO') {
+						return $this->redirec(['index-create']);
+					} else {
+						// Naturaleza del Contribuyente no definido o no corresponde con el tipo de solicitud.
+	  					return MensajeController::actionMensaje(400);
+					}
+				}
+			} else {
+				// No esta definido el identificador d ela configuracion de la solicitud.
+				return MensajeController::actionMensaje(400);
+			}
 
-			if ( $tipoNaturaleza == 'JURIDICO') {
-				if ( isset($_SESSION['idContribuyente']) ) {
-					$model = New InscripcionActividadEconomicaForm();
+		}
 
-			  		if ( $model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax ) {
-						Yii::$app->response->format = Response::FORMAT_JSON;
-						return ActiveForm::validate($model);
-			      	}
 
-			      	if ( $model->load(Yii::$app->request->post()) ) {
 
-			      	 	if ( $model->validate() ) {
-			      	 		// Todo bien la validacion es correcta.
+		/***/
+		public function actionIndexCreate()
+		{
+			if ( isset($_SESSION['idContribuyente']) ) {
+				$model = New InscripcionActividadEconomicaForm();
+				$model->scenario = self::SCENARIO_FRONTEND;
 
-			      	 	} else {
-			      	 		//die('validate no');
-			      	 		$model->getErrors();
-			      	 	}
-			      	} else {
+		  		if ( $model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax ) {
+					Yii::$app->response->format = Response::FORMAT_JSON;
+					return ActiveForm::validate($model);
+		      	}
 
-			  		}
+		      	if ( $model->load(Yii::$app->request->post()) ) {
 
-			  		$url = Url::to(['index']);
-			  		$bloquear = false;
-		  			return $this->render('/aaee/inscripcion-actividad-economica/_create', [
-		  																'model' => $model,
-		  																'bloquear' => $bloquear,
-		  																'url' => $url,
-		  				]);
-		  		} else {
-		  			// Contribuyente no definido.
-		  			return MensajeController::actionMensaje(400);
+		      	 	if ( $model->validate() ) {
+		      	 		// Todo bien la validacion es correcta.
+
+		      	 	} else {
+		      	 		//die('validate no');
+		      	 		$model->getErrors();
+		      	 	}
+		      	} else {
+
 		  		}
+
+		  		$url = Url::to(['index-create']);
+		  		$bloquear = false;
+	  			return $this->render('/aaee/inscripcion-actividad-economica/_create', [
+	  																'model' => $model,
+	  																'bloquear' => $bloquear,
+	  																'url' => $url,
+	  				]);
 	  		} else {
-	  			// Naturaleza del Contribuyente no definido.
+	  			// Contribuyente no definido.
 	  			return MensajeController::actionMensaje(400);
 	  		}
+
 		}
 
 
