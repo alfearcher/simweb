@@ -91,7 +91,7 @@
 
 			// identificador de la configuracion de la solicitud.
 			$id = $request->get('id');
-			$modelParametro = ParametroSolicitud($id);
+			$modelParametro = New ParametroSolicitud($id);
 die(var_dump($modelParametro->getParametroSolicitud('tipo_solicitud')));
 			$modelSearch = New InscripcionActividadEconomicaSearch($idContribuyente);
 
