@@ -56,7 +56,7 @@
 	use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomica;
 	use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomicaForm;
 	use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomicaSearch;
-	use common\models\solicitudescontribuyente\SolicitudesContribuyente;
+	use common\models\solicitudescontribuyente\SolicitudesContribuyenteForm;
 	use common\conexion\ConexionController;
 	use common\mensaje\MensajeController;
 	use common\models\configuracion\solicitud\ParametroSolicitud;
@@ -97,13 +97,20 @@
 				$id = $getData['id'];
 				$tipoSolicitud = 0;
 				$tipoNaturaleza = '';
-				// $modelParametro = New ParametroSolicitud($id);
+				$modelParametro = New ParametroSolicitud($id);
 				// // Se obtiene el tipo de solicitud. Se retorna un array donde el key es el nombre
 				// // del parametro y el valor del elemento es el contenido del campo en base de datos.
-				// $tipoSolicitud = $modelParametro->getParametroSolicitud(['tipo_solicitud']);
+				$config = $modelParametro->getParametroSolicitud([
+															'id_config_solicitud',
+															'tipo_solicitud',
+															'impuesto'
+															]);
+
+//die(var_dump($config));
+				$_SESSION['conf'] = $config;
 
 				$modelSearch = New InscripcionActividadEconomicaSearch($idContribuyente);
-				$tipoNaturaleza = $modelSearch->getTipoNaturalezaDescripcionSegunID($tipoSolicitud);
+				$tipoNaturaleza = $modelSearch->getTipoNaturalezaDescripcionSegunID();
 				if ( $tipoNaturaleza == 'JURIDICO') {
 					// Se determina si el contribuyente ya posee una solicitud de este tipo, si es asi
 					// se aborta la operacion de solicitud.
@@ -143,8 +150,8 @@
 
 		      	 	if ( $model->validate() ) {
 		      	 		// Todo bien la validacion es correcta.
-
-
+		      	 		$_SESSION['guardar'] = 1;
+		      	 		self::actionBeginSave($model);
 		      	 	}
 		  		}
 
@@ -164,8 +171,36 @@
 
 
 
+		/***/
+		public function actionBeginSave($model)
+		{
+			$result = false;
+			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['guardar'])  ) {
+				if ( $_SESSION['idContribuyente'] > 0 && $_SESSION['guardar'] == 1 ) {
+
+					$conexion = New ConexionController();
+
+					// Instancia de conexion hacia la base de datos.
+			      	$this->conn = $conexion->initConectar('db');
+			      	$this->conn->open();
+
+			      	// Instancia de tipo transaccion para asegurar la integridad del resguardo de los datos.
+			      	// Inicio de la transaccion.
+					$transaccion = $this->conn->beginTransaction();
+					$result = self::actionCreateSolicitud($conexion, $this->conn);
 
 
+					$this->conn->close();
+
+				} else {
+					// Operacion no ejecutada.
+					return MensajeController::actionMensaje(920);
+				}
+			} else {
+				return MensajeController::actionMensaje(920);
+			}
+			return $result;
+		}
 
 
 
@@ -174,72 +209,30 @@
 		 * 	Metodo que guarda el registro respectivo
 		 * 	@return renderiza una vista final de la informacion a guardar.
 		 */
-		public function actionCreate($guardar = false)
+		public function actionCreateSolicitud($conexionLocal, $connLocal)
 		{
-			if ( $_SESSION['idContribuyente'] ) {
-				if ( $guardar == true ) {
-					if ( isset($_SESSION['model']) ) {
-						$model = $_SESSION['model'];
-						$arrayDatos = $model->attributes;
+			$modelSolicitud = New SolicitudesContribuyenteForm();
+			$tablaName = $modelSolicitud->tableName();
 
-						// nombre de la tabla
-		      			$tabla = '';
-		      			$tabla = $model->tableName();
+			// Arreglo de datos del modelo para guardar los datos.
+			$arregloDatos = $modelSolicitud->attributes;
 
-		      			$conexion = New ConexionController();
+			$nroSolicitud = 0;
+			$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : null;
 
-		      			// Instancia de conexion hacia la base de datos.
-		      			$this->connLocal = $conexion->initConectar('db');
-		      			$this->connLocal->open();
+			$modelSolicitud->attributes = $conf;
 
-		      			// Instancia de tipo transaccion para asegurar la integridad del resguardo de los datos.
-		      			// Inicio de la transaccion.
-						$transaccion = $this->connLocal->beginTransaction();
-
-						if ( $conexion->guardarRegistro($this->connLocal, $tabla, $arrayDatos) ) {
-							//$idInscripcion = $conexion->getUltimoIdCreado();
-							$idInscripcion = $this->connLocal->getLastInsertID();
-
-							// Se continua con la actualizacion de los valores en la tabla contribuyente.
-							$model = $_SESSION['model'];
-
-							unset($_SESSION['model']);
-
-							// Se inicia la actualizacion a nivel de la entidad del contribuyente.
-							if ( self::actualizarContribuyente($conexion, $this->connLocal, $model) == true ) {
-								$transaccion->commit();
-								$tipoError = 0;	// No error.
-								$msg = Yii::t('backend', 'SUCCESS!....WAIT.');
-								$_SESSION['idInscripcion'] = $idInscripcion;
-								$url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['/aaee/inscripcionactecon/inscripcion-actividad-economica/view','idInscripcion' => $idInscripcion])."'>";
-								return $this->render('/mensaje/mensaje',['msg' => $msg, 'url' => $url, 'tipoError' => $tipoError]);
-
-							} else {
-								$transaccion->rollBack();
-								$tipoError = 1; // Error.
-								$msg = "AH ERROR OCCURRED!....WAIT";
-								$url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("/aaee/inscripcion-actividad-economica/view")."'>";
-								return $this->render('/mensaje/mensaje',['msg' => $msg, 'url' => $url, 'tipoError' => $tipoError]);
-
-							}
-
-						} else {
-							$transaccion->rollBack();
-							$tipoError = 1; // Error.
-							$msg = "AH ERROR OCCURRED!....WAIT";
-								$url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("/aaee/inscripcion-actividad-economica/view")."'>";
-							return $this->render('/mensaje/mensaje',['msg' => $msg, 'url' => $url, 'tipoError' => $tipoError]);
-						}
-						$this->connLocal->close();
-					} else {
-						// No esta definido el modelo.
-						die('No esta definido el modelo');
-					}
-				}
-			} else {
-				echo 'No esta definido el contribuyente';
-			}
+die(var_dump($modelSolicitud->attributes));
+			return $nroSolicitud;
 		}
+
+
+		/***/
+		private function actionCreateInscripcionActEcon($model, $conexionLocal, $connLocal)
+		{
+
+		}
+
 
 
 
