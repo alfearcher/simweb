@@ -233,10 +233,11 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                            }
                      }
                     
-                     $guardo = self::GuardarCambios($model, $datos);
+                     
 
-                     if($todoBien){
-
+                     if($todoBien == true){
+                             
+                             $guardo = self::GuardarCambios($model, $datos);
                              if($guardo == true){ 
 
                                   $envio = self::EnviarCorreo($guardo, $requisitos);
