@@ -152,10 +152,10 @@ class AdministrarCalcomaniaFuncionarioForm extends Model
     {
         return [
               'nro_calcomania',
-              'fecha_creacion',
+              'fecha_creacion_lote',
               'ano_impositivo',
-              'usuario_creacion',
-              'usuario_propietario',
+              'usuario_creacion_lote',
+              'usuario_funcionario',
               'entregado',
               'estatus',
               'punto',
