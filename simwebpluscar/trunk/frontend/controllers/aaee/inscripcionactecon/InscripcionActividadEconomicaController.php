@@ -55,6 +55,7 @@
 	use yii\web\NotFoundHttpException;
 	use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomica;
 	use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomicaForm;
+	use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomicaSearch;
 	use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 	use common\conexion\ConexionController;
 	use common\mensaje\MensajeController;
@@ -83,15 +84,18 @@
 		 */
 		public function actionIndex()
 		{
+			$request = Yii::$app->request;
 			$id = isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : 0;
-			$model = New InscripcionActividadEconomicaForm();
-			$tipoNaturaleza = $model->getTipoNaturalezaDescripcionSegunID($id);
+die(var_dump($request->get()));
+
+			$modelSearch = New InscripcionActividadEconomicaSearch($id);
+
+			$tipoNaturaleza = $modelSearch->getTipoNaturalezaDescripcionSegunID(2);
 			$model->scenario = self::SCENARIO_FRONTEND;
 
 			if ( $tipoNaturaleza == 'JURIDICO') {
 				if ( isset($_SESSION['idContribuyente']) ) {
-
-			  		$request = Yii::$app->request;
+					$model = New InscripcionActividadEconomicaForm();
 
 			  		if ( $model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax ) {
 						Yii::$app->response->format = Response::FORMAT_JSON;
