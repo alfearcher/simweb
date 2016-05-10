@@ -77,7 +77,7 @@
 			$modelFind = InscripcionActividadEconomica::find()->where('id_contribuyente =:id_contribuyente', [':id_contribuyente' => $this->id_contribuyente])
 															  ->andWhere(['IN', 'estatus', [0,1]])
 															  ->count();
-			return count($modelFind) > 0 ? true : false;
+			return ($modelFind > 0) ? true : false;
 		}
 
 
