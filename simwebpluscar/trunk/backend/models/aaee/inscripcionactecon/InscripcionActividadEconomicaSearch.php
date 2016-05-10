@@ -79,8 +79,8 @@
 															  ->andWhere('tipo_solicitud =:tipo_solicitud', [':tipo_solicitud' => $tipoSolicitud])
 															  ->andWhere(['IN', 'estatus', [0,1]])
 															  ->asArray()
-															  ->one();
-															  //->limit(1);
+															  ->all()
+															  ->limit(1);
 die(var_dump($modelFind));
 			return count($modelFind) > 0 ? true : false;
 		}
