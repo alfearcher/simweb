@@ -75,13 +75,10 @@
 		public function yaPoseeSolicitudSimiliar($tipoSolicitud)
 		{
 			$modelFind = null;
-			// $modelFind = InscripcionActividadEconomica::find()->where('id_contribuyente =:id_contribuyente', [':id_contribuyente' => $this->id_contribuyente])
-			// 												  ->andWhere('tipo_solicitud =:tipo_solicitud', [':tipo_solicitud' => $tipoSolicitud])
-			// 												  ->andWhere(['IN', 'estatus', [0,1]])
-			// 												  ->asArray()
-			// 												  //->limit(1)
-			// 												  ->all();
-			$modelFind = InscripcionActividadEconomica::find()->all();
+			$modelFind = InscripcionActividadEconomica::find()->where('id_contribuyente =:id_contribuyente', [':id_contribuyente' => $this->id_contribuyente])
+															  ->andWhere('tipo_solicitud =:tipo_solicitud', [':tipo_solicitud' => $tipoSolicitud])
+															  ->andWhere(['IN', 'estatus', [0,1]])
+															  ->all();
 die(var_dump($modelFind));
 			return count($modelFind) > 0 ? true : false;
 		}
