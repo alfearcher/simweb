@@ -75,7 +75,6 @@
 		public function yaPoseeSolicitudSimiliar($tipoSolicitud)
 		{
 			$modelFind = null;
-die('lalala');
 			$modelFind = InscripcionActividadEconomica::find()->where('id_contribuyente =:id_contribuyente', [':id_contribuyente' => $this->id_contribuyente])
 															  ->andWhere('tipo_solicitud =:tipo_solicitud', [':tipo_solicitud' => $tipoSolicitud])
 															  ->andWhere(['IN', 'estatus', [0,1]])
