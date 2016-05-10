@@ -370,7 +370,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                                 $todoBien == true;
                                  
 
-                            } else {
+                            } else { 
 
                                 $arrayDatos3 = [    
                                                     'inactivo' => 1,
