@@ -100,7 +100,7 @@
 				$modelParametro = New ParametroSolicitud($id);
 				// Se obtiene el tipo de solicitud.
 				$tipoSolicitud = $modelParametro->getParametroSolicitud(['tipo_solicitud']);
-
+die(var_dump($tipoSolicitud));
 				$modelSearch = New InscripcionActividadEconomicaSearch($idContribuyente);
 				// Se determina si el contribuyente ya posee una solicitud de este tipo, si es asi
 				// se aborta la operacion de solicitud.
