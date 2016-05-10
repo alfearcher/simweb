@@ -61,6 +61,8 @@ use backend\models\vehiculo\calcomania\administrarfuncionario\BusquedaFuncionari
 use backend\models\vehiculo\calcomania\administrarfuncionario\MostrarDatosFuncionarioForm;
 use backend\models\funcionario\Funcionario;
 use backend\models\funcionario\calcomania\FuncionarioCalcomania;
+use backend\models\vehiculo\calcomania\administrarlotecalcomania\BusquedaMultipleForm;
+
 /**
  * Site controller
  */
@@ -74,19 +76,31 @@ session_start();
 class AdministrarLoteCalcomaniaController extends Controller
 {
 
-
+        const SCENARIO_SEARCH_FUNCIONARIO = 'search_funcionario';
+        const SCENARIO_SEARCH_CALCOMANIA = 'search_calcomania';
+        const SCENARIO_SEARCH_RANGO = 'search_rango';
 
     
   public $layout = 'layout-main';
    
     /**
-     * [actionBusquedaLote description]
-     * @return [type] [description]
+     * [actionBusquedaMultiple description] metodo que renderiza la vista para realizar busquedas multiples para deshabilitar calcomanias
+     * 
      */
-    public function actionBusquedaLote()
+    public function actionBusquedaMultiple()
     {
-    die('llegue a busqueda lote');
-            $model = new BusquedaFuncionarioForm();
+    //die('llegue a busqueda multiple');
+          $post = yii::$app->request->post();
+         // die(var_dump($post));
+          $model = new BusquedaMultipleForm();
+          
+          if(isset($post['btn-funcionario-ano'])){ 
+              $model->scenario = self::SCENARIO_SEARCH_FUNCIONARIO;
+          }elseif(isset($post['btn-funcionario-calcomania'])){
+              $model->scenario = self::SCENARIO_SEARCH_CALCOMANIA;
+          }elseif(isset($post['btn-rango-calcomania'])){
+              $model->scenario = self::SCENARIO_SEARCH_RANGO;
+          } 
 
             $postData = Yii::$app->request->post();
 
@@ -96,25 +110,28 @@ class AdministrarLoteCalcomaniaController extends Controller
             }
 
             if ( $model->load($postData) ) {
-             
 
-               if ($model->validate()){
 
-                   $busquedaFuncionario = self::busquedaFuncionario($model);
+          if(isset($post['btn-funcionario-ano'])){ 
+              if ($model->validate()){
+                die('valido funcionario');
+              }
 
-                      if($busquedaFuncionario == true){
-
-                        $_SESSION['datosFuncionario'] = $busquedaFuncionario;
-
-                        return $this->redirect(['datos-funcionario']);
-                      }else{
-                        return MensajeController::actionMensaje(990);
-                      }
+          }elseif(isset($post['btn-funcionario-calcomania'])){
+             if ($model->validate()){
+                die('valido calcomania');
+              }
+          }elseif(isset($post['btn-rango-calcomania'])){
+             if ($model->validate()){
                 
               }
-            }
+          } 
+             
+
+               
+          }
             
-            return $this->render('/vehiculo/calcomania/administrarfuncionario/busqueda-funcionario', [
+            return $this->render('/vehiculo/calcomania/administrarlotecalcomania/busqueda-multiple', [
                                                               'model' => $model,
                                                              
                                                            
