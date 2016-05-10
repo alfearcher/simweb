@@ -88,8 +88,8 @@
 			$poseeSolicitud = false;
 			$request = Yii::$app->request;
 			$idContribuyente = isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : 0;
-die(var_dump($request->get()));
-			$id = 0;
+die(var_dump($request->get('id')));
+			$id = $request->get();
 			//$id = isset($request->get()) ? $request->get() : null;
 			if ( $id['id'] > 0 ) {
 
