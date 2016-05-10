@@ -89,7 +89,8 @@
 			$request = Yii::$app->request;
 			$idContribuyente = isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : 0;
 
-			if ( isset($request->get()['id']) ) {
+			if ( isset($request->get('id')) ) {
+
 				// identificador de la configuracion de la solicitud.
 				$id = $request->get('id');
 				$tipoSolicitud = 0;
@@ -104,19 +105,19 @@
 				$poseeSolicitud = $modelSearch->yaPoseeSolicitudSimiliar($tipoSolicitud);
 				if ( $poseeSolicitud ) {
 					// Ya posee una solicitud de este tipo y no puede continuar.
-					return MensajeController::actionMensaje(400);
+					return MensajeController::actionMensaje(945);
 				} else {
 					$tipoNaturaleza = $modelSearch->getTipoNaturalezaDescripcionSegunID($tipoSolicitud);
 					if ( $tipoNaturaleza == 'JURIDICO') {
 						return $this->redirec(['index-create']);
 					} else {
 						// Naturaleza del Contribuyente no definido o no corresponde con el tipo de solicitud.
-	  					return MensajeController::actionMensaje(400);
+	  					return MensajeController::actionMensaje(930);
 					}
 				}
 			} else {
-				// No esta definido el identificador d ela configuracion de la solicitud.
-				return MensajeController::actionMensaje(400);
+				// No esta definido el identificador de la configuracion de la solicitud.
+				return MensajeController::actionMensaje(940);
 			}
 
 		}
