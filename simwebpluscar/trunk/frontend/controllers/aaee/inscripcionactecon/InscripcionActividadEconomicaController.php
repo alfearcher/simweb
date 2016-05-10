@@ -85,10 +85,10 @@
 		public function actionIndex()
 		{
 			$request = Yii::$app->request;
-			$id = isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : 0;
-die(var_dump($request->get()));
+			$idContribuyente = isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : 0;
+die(var_dump($request->post()));
 
-			$modelSearch = New InscripcionActividadEconomicaSearch($id);
+			$modelSearch = New InscripcionActividadEconomicaSearch($idContribuyente);
 
 			$tipoNaturaleza = $modelSearch->getTipoNaturalezaDescripcionSegunID(2);
 			$model->scenario = self::SCENARIO_FRONTEND;
