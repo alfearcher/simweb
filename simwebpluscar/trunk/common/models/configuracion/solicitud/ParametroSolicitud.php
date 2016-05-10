@@ -318,7 +318,7 @@
 		 * de la solicitud.
 		 * @return Array Lista con todos los campos de la entidad "config-documentos-requisitos".
 		 */
-		public function getDocumentoRequisitoSolciitud()
+		public function getDocumentoRequisitoSolicitud()
 		{
 			$documento = null;
 
