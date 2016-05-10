@@ -109,7 +109,7 @@ class AdministrarCalcomaniaFuncionarioController extends Controller
             $busqueda = $buscarFuncionario->buscarLogin($idFuncionario);
 
                 if($busqueda == true){
-                  $_SESSION['datosFuncionario'] = $busqueda[0]->login;
+                  $_SESSION['datosFuncionario'] = $busqueda;
                   //die($_SESSION['datosFuncionario']);
                 }
 
@@ -229,7 +229,7 @@ class AdministrarCalcomaniaFuncionarioController extends Controller
         $buscar = $administrarCalcomania->buscarCalcomania($idCalcomania);
 
             if($buscar == true){
-              return MensajeController::actionMensaje(994);
+              return MensajeController::actionMensaje(995);
             }else{
               $guardar = self::beginSave("guardar", $idCalcomania);
 
@@ -247,7 +247,9 @@ class AdministrarCalcomaniaFuncionarioController extends Controller
 
     public function guardarCalcomanias($conn, $conexion, $value)
     {
-      $funcionarioAsignado = $_SESSION['datosFuncionario'];
+      $funcionarioAsignado = $_SESSION['datosFuncionario'][0]->login;
+      $idFuncionario = $_SESSION['datosFuncionario'][0]->id_funcionario;
+      //die($idFuncionario);
       $Calcomania =$value;  
       $idUser = yii::$app->user->identity->id_user;
       $datos = yii::$app->user->identity;
@@ -262,30 +264,23 @@ class AdministrarCalcomaniaFuncionarioController extends Controller
 
       $arregloDatos['nro_calcomania'] = $Calcomania;
       
-      $arregloDatos['fecha_creacion'] = date('Y-m-d h:m:i');
+      $arregloDatos['fecha_creacion_lote'] = date('Y-m-d h:m:i');
       
       $arregloDatos['ano_impositivo'] = date('Y');
 
-      $arregloDatos['usuario_creacion'] = $funcionarioAsignado;
+      $arregloDatos['usuario_creacion_lote'] = $datos->username;
 
       $arregloDatos['entregado'] = 0;
 
       $arregloDatos['estatus'] = 0;
 
-      $arregloDatos['usuario_creacion'] = $funcionarioAsignado;
+      $arregloDatos['usuario_funcionario'] = $funcionarioAsignado;
 
-      $arregloDatos['usuario_creacion'] = $funcionarioAsignado;
-
-      $arregloDatos['login'] = $datos->username;
-
-
-      
-      
-
+      $arregloDatos['id_funcionario'] = $idFuncionario;
 
           if ($conexion->guardarRegistro($conn, $tabla, $arregloDatos )){
 
-          return true;
+              return true;
           }
 
     }
