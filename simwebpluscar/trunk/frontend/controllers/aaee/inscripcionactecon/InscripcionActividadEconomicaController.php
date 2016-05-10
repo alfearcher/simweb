@@ -88,9 +88,9 @@
 			$poseeSolicitud = false;
 			$request = Yii::$app->request;
 			$idContribuyente = isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : 0;
-//die(var_dump($request->get('id')));
+
 			$getData = $request->get();
-			//$id = isset($request->get()) ? $request->get() : null;
+
 			if ( isset($getData['id']) ) {
 
 				// identificador de la configuracion de la solicitud.
@@ -98,14 +98,14 @@
 				$tipoSolicitud = 0;
 				$tipoNaturaleza = '';
 				$modelParametro = New ParametroSolicitud($id);
-				// Se obtiene el tipo de solicitud. Se retorna un array donde elkey es el nombre
-				// del parametro y elvalor del elemento es elcontenido del campos en base de datos.
+				// Se obtiene el tipo de solicitud. Se retorna un array donde el key es el nombre
+				// del parametro y el valor del elemento es el contenido del campo en base de datos.
 				$tipoSolicitud = $modelParametro->getParametroSolicitud(['tipo_solicitud']);
 
 				$modelSearch = New InscripcionActividadEconomicaSearch($idContribuyente);
 				// Se determina si el contribuyente ya posee una solicitud de este tipo, si es asi
 				// se aborta la operacion de solicitud.
-				$poseeSolicitud = $modelSearch->yaPoseeSolicitudSimiliar($tipoSolicitud['tipo_solicitud']);
+				$poseeSolicitud = $modelSearch->yaPoseeSolicitudSimiliar();
 				if ( $poseeSolicitud ) {
 					// Ya posee una solicitud de este tipo y no puede continuar.
 					return MensajeController::actionMensaje(945);
