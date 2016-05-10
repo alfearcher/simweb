@@ -332,7 +332,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                 
 
                 if ( $conn->guardarRegistro($conexion, $tableName1,  $arrayDatos1) ){  
-                    $result = $conexion->getLastInsertID();
+                    $result = $conexion->getLastInsertID(); 
 
 
                     $arrayDatos2 = [    'id_contribuyente' => $_SESSION['idContribuyente'],
@@ -358,7 +358,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                                           'fecha_hora'=> date('Y-m-d h:m:i'),
                                           'inactivo'=> 0,
                     
-                          ];
+                          ]; 
           
 
                           if($conn->guardarRegistro($conexion, $tableName4,  $arrayDatos4)){
