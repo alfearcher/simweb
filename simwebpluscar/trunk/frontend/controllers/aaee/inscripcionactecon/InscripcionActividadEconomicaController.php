@@ -91,32 +91,32 @@
 
 			$getData = $request->get();
 
-			if ( isset($getData['id']) ) {
+			if ( isset($getData['id']) && $idContribuyente > 0 ) {
 
 				// identificador de la configuracion de la solicitud.
 				$id = $getData['id'];
 				$tipoSolicitud = 0;
 				$tipoNaturaleza = '';
-				$modelParametro = New ParametroSolicitud($id);
-				// Se obtiene el tipo de solicitud. Se retorna un array donde el key es el nombre
-				// del parametro y el valor del elemento es el contenido del campo en base de datos.
-				$tipoSolicitud = $modelParametro->getParametroSolicitud(['tipo_solicitud']);
+				// $modelParametro = New ParametroSolicitud($id);
+				// // Se obtiene el tipo de solicitud. Se retorna un array donde el key es el nombre
+				// // del parametro y el valor del elemento es el contenido del campo en base de datos.
+				// $tipoSolicitud = $modelParametro->getParametroSolicitud(['tipo_solicitud']);
 
 				$modelSearch = New InscripcionActividadEconomicaSearch($idContribuyente);
-				// Se determina si el contribuyente ya posee una solicitud de este tipo, si es asi
-				// se aborta la operacion de solicitud.
-				$poseeSolicitud = $modelSearch->yaPoseeSolicitudSimiliar();
-				if ( $poseeSolicitud ) {
-					// Ya posee una solicitud de este tipo y no puede continuar.
-					return MensajeController::actionMensaje(945);
-				} else {
-					$tipoNaturaleza = $modelSearch->getTipoNaturalezaDescripcionSegunID($tipoSolicitud);
-					if ( $tipoNaturaleza == 'JURIDICO') {
-						return $this->redirect(['index-create']);
+				$tipoNaturaleza = $modelSearch->getTipoNaturalezaDescripcionSegunID($tipoSolicitud);
+				if ( $tipoNaturaleza == 'JURIDICO') {
+					// Se determina si el contribuyente ya posee una solicitud de este tipo, si es asi
+					// se aborta la operacion de solicitud.
+					$poseeSolicitud = $modelSearch->yaPoseeSolicitudSimiliar();
+					if ( $poseeSolicitud ) {
+						// Ya posee una solicitud de este tipo y no puede continuar.
+						return MensajeController::actionMensaje(945);
 					} else {
-						// Naturaleza del Contribuyente no definido o no corresponde con el tipo de solicitud.
-	  					return MensajeController::actionMensaje(930);
+						return $this->redirect(['index-create']);
 					}
+				} else {
+					// Naturaleza del Contribuyente no definido o no corresponde con el tipo de solicitud.
+  					return MensajeController::actionMensaje(930);
 				}
 			} else {
 				// No esta definido el identificador de la configuracion de la solicitud.
@@ -144,12 +144,8 @@
 		      	 	if ( $model->validate() ) {
 		      	 		// Todo bien la validacion es correcta.
 
-		      	 	} else {
-		      	 		//die('validate no');
-		      	 		$model->getErrors();
-		      	 	}
-		      	} else {
 
+		      	 	}
 		  		}
 
 		  		$url = Url::to(['index-create']);
@@ -161,7 +157,7 @@
 	  				]);
 	  		} else {
 	  			// Contribuyente no definido.
-	  			return MensajeController::actionMensaje(400);
+	  			return MensajeController::actionMensaje(930);
 	  		}
 
 		}
