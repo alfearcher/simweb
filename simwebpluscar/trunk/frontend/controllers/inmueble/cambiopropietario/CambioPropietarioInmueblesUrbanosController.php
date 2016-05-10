@@ -168,7 +168,7 @@ CONTENIDO VENDEDOR (SELLER)
                         $tipo = $datosCambio["tipoBuscar1"];
                     } else { 
                         $tipo = 0; 
-                    } $nombre
+                    } 
 
                     $modelParametros = ContribuyentesForm::find()->where(['naturaleza'=>$datosCambio["naturalezaBuscar1"]])
                                                                  ->andWhere(['cedula'=>$datosCambio["cedulaBuscar1"]])
