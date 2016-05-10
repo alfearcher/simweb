@@ -81,7 +81,7 @@
 			// 												  ->asArray()
 			// 												  //->limit(1)
 			// 												  ->all();
-			$modelFind = InscripcionActividadEconomica::find();
+			$modelFind = InscripcionActividadEconomica::find()->all();
 die(var_dump($modelFind));
 			return count($modelFind) > 0 ? true : false;
 		}
