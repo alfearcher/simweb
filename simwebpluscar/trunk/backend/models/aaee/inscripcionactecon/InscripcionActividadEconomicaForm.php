@@ -45,7 +45,6 @@
  	use Yii;
 	use yii\base\Model;
 	use yii\data\ActiveDataProvider;
-	use common\models\contribuyente\ContribuyenteBase;
 	use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomicaSearch;
 
 	/**
@@ -198,21 +197,6 @@
 	    	];
 	    }
 
-
-
-
-	    /**
-	     * Metodo que retorna la descripcion del tipo de contribuyente, segun el identificador del mismo.
-	     * "NATURAL".
-	     * "JURIDICO".
-	     * @param  Long $idContribuyente identificador dle contribuyente.
-	     * @return String Retorna la descripcion del tipo de contribuyente.
-	     */
-	    public function getTipoNaturalezaDescripcionSegunID($idContribuyente)
-	    {
-	    	$descripcion = null;
-	    	return $descripcion = ContribuyenteBase::getTipoNaturalezaDescripcionSegunID($idContribuyente);
-	    }
 
 
 	}
