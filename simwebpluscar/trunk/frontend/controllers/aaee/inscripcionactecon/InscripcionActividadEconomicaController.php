@@ -112,7 +112,7 @@
 				} else {
 					$tipoNaturaleza = $modelSearch->getTipoNaturalezaDescripcionSegunID($tipoSolicitud);
 					if ( $tipoNaturaleza == 'JURIDICO') {
-						return $this->redirec(['index-create']);
+						return $this->redirect(['index-create']);
 					} else {
 						// Naturaleza del Contribuyente no definido o no corresponde con el tipo de solicitud.
 	  					return MensajeController::actionMensaje(930);
