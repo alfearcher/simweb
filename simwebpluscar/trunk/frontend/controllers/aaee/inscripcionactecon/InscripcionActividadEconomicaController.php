@@ -92,7 +92,7 @@
 			// identificador de la configuracion de la solicitud.
 			$id = $request->get('id');
 			$modelParametro = ParametroSolicitud($id);
-die(var_dump($modelParametro->getParametroSolicitud('tipo_solicitud'));
+die(var_dump($modelParametro->getParametroSolicitud('tipo_solicitud')));
 			$modelSearch = New InscripcionActividadEconomicaSearch($idContribuyente);
 
 			$tipoNaturaleza = $modelSearch->getTipoNaturalezaDescripcionSegunID(2);
