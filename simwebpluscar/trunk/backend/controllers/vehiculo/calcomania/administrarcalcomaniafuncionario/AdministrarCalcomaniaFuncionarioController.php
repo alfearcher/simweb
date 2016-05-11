@@ -198,11 +198,11 @@ class AdministrarCalcomaniaFuncionarioController extends Controller
 
     public function actionVerificarCalcomania()
     {
-      $errorCheck = ""; 
+    $errorCheck = ""; 
 
-      $idCalcomanias = yii::$app->request->post('chk-seleccionar-calcomania');
-     // die(var_dump($idCalcomanias));
-      $_SESSION['idCalcomanias'] = $idCalcomanias;
+    $idCalcomanias = yii::$app->request->post('chk-seleccionar-calcomania');
+    // die(var_dump($idCalcomanias));
+    $_SESSION['idCalcomanias'] = $idCalcomanias;
 
   
       $validacion = new AdministrarCalcomaniaFuncionarioForm();
@@ -239,9 +239,6 @@ class AdministrarCalcomaniaFuncionarioController extends Controller
                   return MensajeController::actionMensaje(920);
                 }
             }
-
-
-
     }
     
 
