@@ -55,8 +55,6 @@ return [
 	'995' => [Yii::t('backend', 'This Stickers lot already exists'), 'danger', 'fa fa-exclamation-triangle'],
 	'996' => [Yii::t('backend', 'This Stickers lot has already been asigned'), 'danger', 'fa fa-exclamation-triangle'],
 
-
-
 	'404' => [Yii::t('backend', 'The requested page does not exist.'), 'danger', 'fa fa-times'],
 	'100' => [Yii::t('backend', 'Register saved'), 'success', 'fa fa-check-circle-o'],
 	'200' => [Yii::t('backend', 'Register updated'), 'success', 'fa fa-check-circle-o'],
