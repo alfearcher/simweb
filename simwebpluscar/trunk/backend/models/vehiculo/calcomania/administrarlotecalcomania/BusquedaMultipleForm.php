@@ -48,8 +48,8 @@ namespace backend\models\vehiculo\calcomania\administrarlotecalcomania;
 
 use Yii;
 use yii\base\Model;
-
-
+use common\models\calcomania\calcomaniamodelo\Calcomania;
+use yii\data\ActiveDataProvider;
 
 
 
@@ -61,9 +61,9 @@ class BusquedaMultipleForm extends Model
 
 
 
-
+ 
     public $ano_impositivo;
-    public $funcionario;
+    public $id_funcionario;
     public $ano_impositivo2;
     public $nro_calcomania;
 
@@ -80,7 +80,7 @@ class BusquedaMultipleForm extends Model
             return [
                 self::SCENARIO_SEARCH_FUNCIONARIO => [
                                 'ano_impositivo',
-                                'funcionario'
+                                'id_funcionario'
                 ],
                 self::SCENARIO_SEARCH_CALCOMANIA => [
                                 'ano_impositivo2',
@@ -101,12 +101,12 @@ class BusquedaMultipleForm extends Model
      
 
         return [
-            [['ano_impositivo', 'funcionario'],
-                  'required', 'on' => 'search_funcionario', 'message' => Yii::t('backend', '{attribute} is require')],
+            [['ano_impositivo', 'id_funcionario'],
+                  'required', 'on' => 'search_funcionario', 'message' => Yii::t('backend', '{attribute} is required')],
              
              [['ano_impositivo2', 'nro_calcomania'],
-                  'required', 'on' => 'search_calcomania', 'message' => Yii::t('backend', '{attribute} is require')],
-             
+                  'required', 'on' => 'search_calcomania', 'message' => Yii::t('backend', '{attribute} is required')],
+             ['nro_calcomania', 'integer'],
             
         ];
     } 
@@ -120,9 +120,9 @@ class BusquedaMultipleForm extends Model
     {
         return [
                 'ano_impositivo' => Yii::t('backend', 'Año Impositivo'),
-                'funcionario' => Yii::t('backend', 'Funcionario'), 
-
-                
+                'id_funcionario' => Yii::t('backend', 'Funcionario'), 
+                'ano_impositivo2' => yii::t('backend', 'Año Impositivo'),
+                'nro_calcomania' => yii::t('backend', 'Nro de Calcomania'),
         ];
     }
     
@@ -136,6 +136,45 @@ class BusquedaMultipleForm extends Model
                 'usuario',
                 'fecha_hora',
         ];
+    }
+
+    public function search($model)
+    { 
+    // die(var_dump($model));
+        $query = Calcomania::find();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+           
+        ]);
+        $query->filterWhere([
+            'id_funcionario' => $model->id_funcionario,
+            'ano_impositivo' => $model->ano_impositivo,
+            'entregado' => 0,
+            'estatus' => 0,
+            ]);
+  
+        
+       // die(var_dump($query));
+       
+    
+
+
+        return $dataProvider;
+
+       
+    }
+
+    public function validarCheck($postCheck)
+    {
+        //die($postCheck);
+        
+        if (count($postCheck) > 0){
+            //die('lo selecciono');
+            return true;
+        }else{
+            return false;
+        }
     }
 
 
