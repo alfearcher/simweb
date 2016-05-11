@@ -120,19 +120,19 @@
 					if ( $poseeSolicitud ) {
 						// Ya posee una solicitud de este tipo y no puede continuar.
 						//return MensajeController::actionMensaje(945);
-						$this->redirect(['error-operacion', 'cod' => 945]);
+						return $this->redirect(['error-operacion', 'cod' => 945]);
 					} else {
 						return $this->redirect(['index-create']);
 					}
 				} else {
 					// Naturaleza del Contribuyente no definido o no corresponde con el tipo de solicitud.
   					//return MensajeController::actionMensaje(930);
-  					$this->redirect(['error-operacion', 'cod' => 930]);
+  					return $this->redirect(['error-operacion', 'cod' => 930]);
 				}
 			} else {
 				// No esta definido el identificador de la configuracion de la solicitud.
 				//return MensajeController::actionMensaje(940);
-				$this->redirect(['error-operacion', 'cod' => 940]);
+				return $this->redirect(['error-operacion', 'cod' => 940]);
 			}
 
 		}
@@ -175,7 +175,7 @@
 	  				]);
 	  		} else {
 	  			// Contribuyente no definido.
-	  			$this->redirect(['error-operacion', 'cod' => 930]);
+	  			return $this->redirect(['error-operacion', 'cod' => 930]);
 	  			//return MensajeController::actionMensaje(930);
 	  		}
 
@@ -184,7 +184,7 @@
 
 
 		/***/
-		public function actionBeginSave($model)
+		private function actionBeginSave($model)
 		{
 			$result = false;
 			$nroSolicitud = 0;
@@ -216,12 +216,12 @@
 				} else {
 					// Operacion no ejecutada.
 					//return MensajeController::actionMensaje(920);
-					$this->redirect(['error-operacion', 'cod' => 920]);
+					return $this->redirect(['error-operacion', 'cod' => 920]);
 
 				}
 			} else {
 				//return MensajeController::actionMensaje(920);
-				$this->redirect(['error-operacion', 'cod' => 920]);
+				return $this->redirect(['error-operacion', 'cod' => 920]);
 			}
 			return $result;
 		}
@@ -234,7 +234,7 @@
 		 * @param  [type] $connLocal     [description]
 		 * @return Retorna un long, que es el numero de la solicitud generado.
 		 */
-		public function actionCreateSolicitud($conexionLocal, $connLocal)
+		private function actionCreateSolicitud($conexionLocal, $connLocal)
 		{
 			$nroSolicitud = 0;
 			$modelSolicitud = New SolicitudesContribuyenteForm();
@@ -282,7 +282,12 @@
 			$tabla = $model->tableName();
 			$idContribuyente = $_SESSION['idContribuyente'];
 
-//die(var_dump($model));
+			$model->origen = 'WEB';
+			$model->fecha = date('Y-m-d H:i:s');
+			$model->estatus = 0;
+			$model->fecha_hora = date('Y-m-d H:i:s');
+			$model->usuario = Yii::$app->user->identity->login;
+			$model->fecha_hora_proceso = '0000-00-00 00:00:00';
 
 			// Arreglo de datos para pasarle los datos del modelo.
 			$arregloDatos = $model->attributes;
@@ -290,7 +295,6 @@
 			$result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
 
 			return $result;
-
 		}
 
 
@@ -338,11 +342,11 @@
 		 * @param  [type] $codigo [description]
 		 * @return [type]         [description]
 		 */
-		public function actionErrorOperacion($codigo)
+		public function actionErrorOperacion($cod)
 		{
 			$varSession = self::actionGetListaSessions();
 			self::actionAnularSession($varSession);
-			return MensajeController::actionMensaje($codigo);
+			return MensajeController::actionMensaje($cod);
 		}
 
 
