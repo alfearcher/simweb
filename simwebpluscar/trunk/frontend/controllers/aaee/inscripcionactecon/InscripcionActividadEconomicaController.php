@@ -61,6 +61,7 @@
 	use common\mensaje\MensajeController;
 	use common\models\session\Session;
 	use common\models\configuracion\solicitud\ParametroSolicitud;
+	use common\models\contribuyente\ContribuyenteBase;
 
 	session_start();		// Iniciando session
 
@@ -188,6 +189,7 @@
 		{
 			$result = false;
 			$nroSolicitud = 0;
+			$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : null;
 			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['guardar'])  ) {
 				if ( $_SESSION['idContribuyente'] > 0 && $_SESSION['guardar'] == 1 ) {
 
@@ -204,6 +206,14 @@
 					if ( $nroSolicitud > 0 ) {
 						$model->nro_solicitud = $nroSolicitud;
 						$result = self::actionCreateInscripcionActEcon($model, $conexion, $this->conn);
+						if ( count($conf) > 0 ) {
+							if ( $conf['nivel_aprobacion'] == 1 ) {
+								// Solicitud de aprobacion directa. Se deben de pasar los datos
+								// a las tablas principales. En este caso se actualiza los datos
+								// del contribuyente con los datos anteriormente guardados.
+								$result = self::actionUpdateContribuyente($model, $conexion, $this->conn);
+							}
+						}
 						if ( $result ) {
 							$transaccion->commit();
 						} else {
@@ -283,7 +293,7 @@
 			$idContribuyente = $_SESSION['idContribuyente'];
 
 			$model->origen = 'WEB';
-			$model->fecha = date('Y-m-d H:i:s');
+			$model->fecha = date('Y-m-d', strtotime($model->fecha));
 			$model->estatus = 0;
 			$model->fecha_hora = date('Y-m-d H:i:s');
 			$model->usuario = Yii::$app->user->identity->login;
@@ -293,6 +303,38 @@
 			$arregloDatos = $model->attributes;
 
 			$result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
+
+			return $result;
+		}
+
+
+
+
+		/***/
+		private function actionUpdateContribuyente($model, $conexionLocal, $connLocal)
+		{
+			$result = false;
+			$modelContribuyente = New ContribuyenteBase();
+			$tabla = $modelContribuyente->tableName();
+
+			// Se obtiene el array de atributos que seran actualizados.
+			$atributos = $model->atributosUpDate();
+
+			// where condicion del update.
+			$arregloCondicion['id_contribuyente'] = $model->id_contribuyente;
+
+			// arreglo de datos que se actualizaran.
+			$arregloDatos = null;
+
+			foreach ( $atributos as $atributo ) {
+				if ( array_key_exists($atributo, $model->attributes) ) {
+					$arregloDatos[$atributo] = $model->$atributo;
+				}
+			}
+
+			if ( count($arregloDatos) > 0 ) {
+				$result = $conexionLocal->modificarRegistro($connLocal, $tabla, $arregloDatos, $arregloCondicion);
+			}
 
 			return $result;
 		}
