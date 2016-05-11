@@ -59,6 +59,7 @@
 	use common\models\solicitudescontribuyente\SolicitudesContribuyenteForm;
 	use common\conexion\ConexionController;
 	use common\mensaje\MensajeController;
+	use common\models\session\Session;
 	use common\models\configuracion\solicitud\ParametroSolicitud;
 
 	session_start();		// Iniciando session
@@ -103,10 +104,11 @@
 				$config = $modelParametro->getParametroSolicitud([
 															'id_config_solicitud',
 															'tipo_solicitud',
-															'impuesto'
+															'impuesto',
+															'nivel_aprobacion'
 															]);
 
-//die(var_dump($config));
+
 				$_SESSION['conf'] = $config;
 
 				$modelSearch = New InscripcionActividadEconomicaSearch($idContribuyente);
@@ -117,17 +119,20 @@
 					$poseeSolicitud = $modelSearch->yaPoseeSolicitudSimiliar();
 					if ( $poseeSolicitud ) {
 						// Ya posee una solicitud de este tipo y no puede continuar.
-						return MensajeController::actionMensaje(945);
+						//return MensajeController::actionMensaje(945);
+						$this->redirect(['error-operacion', 'cod' => 945]);
 					} else {
 						return $this->redirect(['index-create']);
 					}
 				} else {
 					// Naturaleza del Contribuyente no definido o no corresponde con el tipo de solicitud.
-  					return MensajeController::actionMensaje(930);
+  					//return MensajeController::actionMensaje(930);
+  					$this->redirect(['error-operacion', 'cod' => 930]);
 				}
 			} else {
 				// No esta definido el identificador de la configuracion de la solicitud.
-				return MensajeController::actionMensaje(940);
+				//return MensajeController::actionMensaje(940);
+				$this->redirect(['error-operacion', 'cod' => 940]);
 			}
 
 		}
@@ -137,6 +142,7 @@
 		/***/
 		public function actionIndexCreate()
 		{
+			$result = false;
 			if ( isset($_SESSION['idContribuyente']) ) {
 				$model = New InscripcionActividadEconomicaForm();
 				$model->scenario = self::SCENARIO_FRONTEND;
@@ -151,7 +157,12 @@
 		      	 	if ( $model->validate() ) {
 		      	 		// Todo bien la validacion es correcta.
 		      	 		$_SESSION['guardar'] = 1;
-		      	 		self::actionBeginSave($model);
+		      	 		$result = self::actionBeginSave($model);
+		      	 		if ( $result ) {
+		      	 			$this->redirect(['proceso-exitoso']);
+		      	 		} else {
+		      	 			$this->redirect(['error-operacion', 'cod' => 920]);
+		      	 		}
 		      	 	}
 		  		}
 
@@ -164,7 +175,8 @@
 	  				]);
 	  		} else {
 	  			// Contribuyente no definido.
-	  			return MensajeController::actionMensaje(930);
+	  			$this->redirect(['error-operacion', 'cod' => 930]);
+	  			//return MensajeController::actionMensaje(930);
 	  		}
 
 		}
@@ -175,6 +187,7 @@
 		public function actionBeginSave($model)
 		{
 			$result = false;
+			$nroSolicitud = 0;
 			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['guardar'])  ) {
 				if ( $_SESSION['idContribuyente'] > 0 && $_SESSION['guardar'] == 1 ) {
 
@@ -187,173 +200,168 @@
 			      	// Instancia de tipo transaccion para asegurar la integridad del resguardo de los datos.
 			      	// Inicio de la transaccion.
 					$transaccion = $this->conn->beginTransaction();
-					$result = self::actionCreateSolicitud($conexion, $this->conn);
-
+					$nroSolicitud = self::actionCreateSolicitud($conexion, $this->conn);
+					if ( $nroSolicitud > 0 ) {
+						$model->nro_solicitud = $nroSolicitud;
+						$result = self::actionCreateInscripcionActEcon($model, $conexion, $this->conn);
+						if ( $result ) {
+							$transaccion->commit();
+						} else {
+							$transaccion->rollBack();
+						}
+					}
 
 					$this->conn->close();
 
 				} else {
 					// Operacion no ejecutada.
-					return MensajeController::actionMensaje(920);
+					//return MensajeController::actionMensaje(920);
+					$this->redirect(['error-operacion', 'cod' => 920]);
+
 				}
 			} else {
-				return MensajeController::actionMensaje(920);
+				//return MensajeController::actionMensaje(920);
+				$this->redirect(['error-operacion', 'cod' => 920]);
 			}
 			return $result;
 		}
 
 
 
-
 		/**
-		 * 	Metodo que guarda el registro respectivo
-		 * 	@return renderiza una vista final de la informacion a guardar.
+		 * Metodo que guarda el registro respectivo en la entidad "solicitudes-contribuyente".
+		 * @param  Class $conexionLocal instancia de tipo ConexionController
+		 * @param  [type] $connLocal     [description]
+		 * @return Retorna un long, que es el numero de la solicitud generado.
 		 */
 		public function actionCreateSolicitud($conexionLocal, $connLocal)
 		{
+			$nroSolicitud = 0;
 			$modelSolicitud = New SolicitudesContribuyenteForm();
-			$tablaName = $modelSolicitud->tableName();
-
-			// Arreglo de datos del modelo para guardar los datos.
-			$arregloDatos = $modelSolicitud->attributes;
+			$tabla = $modelSolicitud->tableName();
+			$idContribuyente = $_SESSION['idContribuyente'];
 
 			$nroSolicitud = 0;
 			$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : null;
 
-			$modelSolicitud->attributes = $conf;
+			if ( count($conf) > 0 ) {
+				// Valores que se pasan al modelo:
+				// id-config-solicitud.
+				// impuesto.
+				// tipo-solicitud.
+				// nivel-aprobacion
+				$modelSolicitud->attributes = $conf;
 
-die(var_dump($modelSolicitud->attributes));
+				$modelSolicitud->id_contribuyente = $idContribuyente;
+				$modelSolicitud->id_impuesto = 0;
+				$modelSolicitud->usuario = Yii::$app->user->identity->login;
+				$modelSolicitud->fecha_hora_creacion = date('Y-m-d H:i:s');
+				$modelSolicitud->inactivo = 0;
+				$modelSolicitud->estatus = 0;
+				$modelSolicitud->nro_control = 0;
+				$modelSolicitud->fecha_hora_proceso = '0000-00-00 00:00:00';
+				$modelSolicitud->causa = 0;
+
+				// Arreglo de datos del modelo para guardar los datos.
+				$arregloDatos = $modelSolicitud->attributes;
+
+				if ( $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos) ) {
+					$nroSolicitud = $connLocal->getLastInsertID();
+				}
+			}
+
 			return $nroSolicitud;
 		}
+
 
 
 		/***/
 		private function actionCreateInscripcionActEcon($model, $conexionLocal, $connLocal)
 		{
+			$result = false;
+			$tabla = $model->tableName();
+			$idContribuyente = $_SESSION['idContribuyente'];
+
+//die(var_dump($model));
+
+			// Arreglo de datos para pasarle los datos del modelo.
+			$arregloDatos = $model->attributes;
+
+			$result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
+
+			return $result;
 
 		}
 
 
 
+    	/**
+		 * [actionQuit description]
+		 * @return [type] [description]
+		 */
+		public function actionQuit()
+		{
+			$varSession = self::actionGetListaSessions();
+			self::actionAnularSession($varSession);
+			return $this->render('/funcionario/solicitud-asignada/quit');
+		}
 
 
 
 		/**
-		*	Metodo muestra la vista con la informacion que fue guardada.
-		*/
-		public function actionView($idInscripcion)
-    	{
-    		if ( isset($_SESSION['idInscripcion']) ) {
-    			if ( $_SESSION['idInscripcion'] == $idInscripcion ) {
-    				$model = $this->findModel($idInscripcion);
-    				if ( $_SESSION['idContribuyente'] == $model->id_contribuyente ) {
-			        	return $this->render('/aaee/inscripcion-actividad-economica/pre-view',
-			        			['model' => $model, 'preView' => false,
-
-			        			]);
-			        } else {
-			        	echo 'Numero de Inscripcion no valido.';
-			        }
-	        	} else {
-	        		echo 'Numero de Inscripción no valido.';
-	        	}
-        	}
-    	}
-
+		 * [actionAnularSession description]
+		 * @param  [type] $varSessions [description]
+		 * @return [type]              [description]
+		 */
+		public function actionAnularSession($varSessions)
+		{
+			Session::actionDeleteSession($varSessions);
+		}
 
 
 
 		/**
-		*	Metodo que busca el ultimo registro creado.
-		* 	@param $idInscripcion, long que identifica el autonumerico generado al crear el registro.
-		*/
-		protected function findModel($idInscripcion)
-    	{
-        	if (($model = InscripcionActividadEconomica::findOne($idInscripcion)) !== null) {
-            	return $model;
-        	} else {
-            	throw new NotFoundHttpException('The requested page does not exist.');
-        	}
-    	}
+		 * [actionProcesoExitoso description]
+		 * @return [type] [description]
+		 */
+		public function actionProcesoExitoso()
+		{
+			$varSession = self::actionGetListaSessions();
+			self::actionAnularSession($varSession);
+			return MensajeController::actionMensaje(100);
+		}
 
 
 
-
-
-    	/**
-    	*
-    	*/
-    	public function actionQuit()
-    	{
-    		unset($_SESSION['idInscripcion']);
-    		return $this->render('/aaee/inscripcion-actividad-economica/quit');
-    	}
-
-
-
-
-
-    	/**
-    	*	Metodo que realiza la actualizacion de los campos segun los valores cargados
-    	* 	@param $conexion, instancia de tipo ConexionController.
-    	* 	@param $connLocal, instancia de tipo Connection.
-    	* 	@param $model, instancia de tipo InscripcionActividadEconomicaForm, que
-    	* 	posee todos los valores a guardar.
-    	*/
-    	protected function actualizarContribuyente($conexion, $connLocal, $model)
-    	{
-    		$arrayDatosValores = [];
-    		$tabla = 'contribuyentes';
-    		$arrayCondicion = [];
-    		$arrayCondicion['id_contribuyente'] = $model->id_contribuyente;
-
-    		$arrayDatosValores = self::armarArregloDatosInscripcion($model);
-    		if ( is_array($arrayDatosValores) ) {
-    			return $conexion->modificarRegistro($connLocal, $tabla, $arrayDatosValores, $arrayCondicion);
-    		} else {
-    			return false;
-    		}
-    	}
+		/**
+		 * [actionErrorOperacion description]
+		 * @param  [type] $codigo [description]
+		 * @return [type]         [description]
+		 */
+		public function actionErrorOperacion($codigo)
+		{
+			$varSession = self::actionGetListaSessions();
+			self::actionAnularSession($varSession);
+			return MensajeController::actionMensaje($codigo);
+		}
 
 
 
+		/**
+		 * [actionGetListaSessions description]
+		 * @return [type] [description]
+		 */
+		public function actionGetListaSessions()
+		{
+			return $varSession = [
+							'getData',
+							'postData',
+							'conf',
+							'guardar'
+					];
+		}
 
 
-    	/**
-    	*	Metodo que armar un array de estructura campo => valor, los mismos son
-    	* 	los campos que seran acrtualizados en la entidad contribuyentes.
-    	* 	@return arreglo de datos con la estructura campo => valor.
-    	*/
-    	protected function armarArregloDatosInscripcion($model)
-    	{
-    		$arrayCampos = [];
-    		$arrayCampos = $model->atributosUpDate();
-    		$arrayCamposValores = [];
-
-    		foreach ( $arrayCampos as $campo => $value ) {
-    			$arrayCamposValores[$value] = $model[$value];
-    		}
-
-    		return $arrayCamposValores;
-    	}
-
-
-
-
-
-    	/**
-    	 *	METODO PENDIENTE
-    	 *	Metodo que coloca los registros anteriores pendientes (estatus = 0) del contribuyente por
-    	 * 	Inscripcion de Actividad Economica, en una condicion de sustituidos (estatus = 3), lo que
-    	 * 	indica que el funcionario vovlio a cargar un registro por concepto de Inscrcipcion de Actividad
-    	 * 	Economica. Este proceso de cambio de estatus se realiza para determinar cual fue el ultimo
-    	 * 	@param $idContribuyente, long que identifica al contribuyente.
-    	 * 	@return bollean, retorna tru o false, si retorna true la actualizacion se realizo satisfactoriamente.
-    	 */
-    	protected function sustituirRecordInscripcion($idContribuyente)
-    	{
-
-    	}
 
 
 	}
