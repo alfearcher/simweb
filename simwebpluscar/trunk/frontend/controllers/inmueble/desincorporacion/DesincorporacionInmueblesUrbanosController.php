@@ -230,7 +230,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                               //die(var_dump($value['id_vehiculo']));
                               $todoBien = false;
                           
-                           }
+                           } 
                      }
                     
                      
