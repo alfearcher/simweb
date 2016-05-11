@@ -200,7 +200,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
          $msg = null; 
          $url = null; 
          $tipoError = null; 
-         $todoBien = true;
+         $todoBien = true; 
     
          //Validación mediante ajax
          if ($model->load($postData) && Yii::$app->request->isAjax){ 
