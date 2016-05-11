@@ -53,7 +53,7 @@ $listaFuncionarios = ArrayHelper::map($busquedaFuncionario, 'id_funcionario', fu
 
 
 <div class="dataBasicRegister" id="paneldataBasicRegister" style="display:;">
-    <h3><?= Yii::t('frontend', 'Vehicle Specifications') ?> </h3>
+    <h3><?= Yii::t('frontend', 'Multiple Search') ?> </h3>
 </div>
 
 <div><br></div>
@@ -65,7 +65,7 @@ $listaFuncionarios = ArrayHelper::map($busquedaFuncionario, 'id_funcionario', fu
 <!-- FORMULARIO PARA VEHICULO -->
 
 <?php $form = ActiveForm::begin([
-            'id' => 'form-vehiculo-inline',
+            'id' => 'form-busqueda-inline',
             'method' => 'post',
             //'action' => ['/usuario/crear-usuario-natural/natural'],
              'enableClientValidation' => true,
@@ -81,15 +81,16 @@ $listaFuncionarios = ArrayHelper::map($busquedaFuncionario, 'id_funcionario', fu
     <div class="col-sm-10">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <?= Yii::t('frontend', 'Buyer Information') ?> 
+                <?= Yii::t('frontend', 'Officer Search') ?> 
             </div>
             <div class="panel-body" >
 
   
 
+            <!--FORMULARIO PARA BUSQUEDA DE FUNCIONARIO Y AÑO IMPOSITIVO-->
 
             <div class="row">  
-             <div class="col-sm-5" style="padding-right: 12px;">
+                <div class="col-sm-5" style="padding-right: 12px;">
                                         <div class="naturaleza">
                                             <?= $form->field($model, 'ano_impositivo')->dropDownList($listaAnoImpositivo,[
                                                                                                     'id' => 'ano_impositivo',
@@ -99,15 +100,15 @@ $listaFuncionarios = ArrayHelper::map($busquedaFuncionario, 'id_funcionario', fu
                                                                                                     ])
                                             ?>
                                         </div>
-                                    </div>
+                </div>
 
-              </div>
+            </div>
 
-                     <div class="row">  
-             <div class="col-sm-5" style="padding-right: 12px;">
+            <div class="row">  
+            <div class="col-sm-5" style="padding-right: 12px;">
                                         <div class="naturaleza">
-                                            <?= $form->field($model, 'funcionario')->dropDownList($listaFuncionarios,[
-                                                                                                    'id' => 'funcionario',
+                                            <?= $form->field($model, 'id_funcionario')->dropDownList($listaFuncionarios,[
+                                                                                                    'id' => 'id_funcionario',
                                                                                                     'prompt' => Yii::t('backend', 'Select'),
                                                                                                     'style' => 'height:32px;width:150px;',
                                                                                                     
@@ -119,28 +120,29 @@ $listaFuncionarios = ArrayHelper::map($busquedaFuncionario, 'id_funcionario', fu
             
 
 
-                
-
-             
-
-               
-              
-                    <div class="col-sm-5">
+            <div class="col-sm-5" style="margin-left:-70px;">
                         <?= Html::submitButton(Yii::t('frontend', 'Search') , ['id' => 'btn-funcionario-ano', 'name' => 'btn-funcionario-ano','class' =>'btn btn-success', 'style' => 'height:30px;width:100px;margin-left:0px;']) ?>
                     </div>
 
                    
-                </div>
+            </div>
+
+            <!--FIN DE FORMULARIO PARA BUSQUEDA DE FUNCIONARIO Y AÑO IMPOSITIVO-->
+
+
+
+            <!--INICIO DE FORMULARIO PARA BUSQUEDA DE AÑO IMPOSITIVO Y CALCOMANIA ESPECIFICA-->
+
 
     <div class="panel panel-primary">
     <div class="panel-heading">
-                <?= Yii::t('frontend', 'Buyer Information') ?> 
+                <?= Yii::t('frontend', 'Sticker Search') ?> 
     </div>
     <div class="panel-body" >
 
             
             <div class="row">  
-             <div class="col-sm-5" style="padding-right: 12px;">
+            <div class="col-sm-5" style="padding-right: 12px;">
                                         <div class="naturaleza">
                                             <?= $form->field($model, 'ano_impositivo2')->dropDownList($listaAnoImpositivo,[
                                                                                                     'id' => 'ano_impositivo2',
@@ -151,14 +153,28 @@ $listaFuncionarios = ArrayHelper::map($busquedaFuncionario, 'id_funcionario', fu
                                             ?>
                                         </div>
                                     </div>
+                                    </div>
+
+            <div class="row">           
+            <div class="col-sm-2">
+                        <?= $form->field($model, 'nro_calcomania')->textInput(
+                                                                [
+                                                               
+                                                               
+                                                                'id'=> 'nro_calcomania',
+                                                                ]);
+                    ?>
+                
+            </div>
+         
 
             
-            <div class="col-sm-5">
+            <div class="col-sm-5" style="margin-left:150px;">
                         <?= Html::submitButton(Yii::t('frontend', 'Search') , ['id' => 'btn-funcionario-calcomania', 'name' => 'btn-funcionario-calcomania' ,'class' =>'btn btn-success', 'style' => 'height:30px;width:100px;margin-left:0px;']) ?>
             </div>
 
             </div>  
-
+            </div>
 
 
 
