@@ -7,7 +7,7 @@
   	use kartik\icons\Icon;
   	use yii\helpers\Url;
 
-    
+
   	session_start();
 
   	$typeIcon = Icon::FA;
@@ -15,7 +15,7 @@
 
     Icon::map($this, $typeIcon);
 
- 
+
 ?>
 
 <div class="col-xs-3">
@@ -67,7 +67,7 @@
 		        		//	SOLICITUDES DE ACTIVIDADES ECONOMICAS
 		        		['label' => Icon::show('fa fa-briefcase',['class' => $typeLong], $typeIcon) . '&nbsp; Actividades Economicas',
 		        			'items' => [
-		        						['label' => 'Inscripción de Actividades Economicas','url' => ['/aaee/inscripcionactecon/inscripcion-actividad-economica/index', 'id' => 1]],
+		        						['label' => 'Inscripción de Actividades Economicas','url' => ['/aaee/inscripcionactecon/inscripcion-actividad-economica/index', 'id' => 81]],
 		        					   	['label' => 'Inscripción de Sucursales', 'url' => ['/aaee/inscripcionsucursal/inscripcion-sucursal/index']],
 		        					   	['label' => 'Autorizar Ramos', 'url' => ['/aaee/autorizarramo/autorizar-ramo/index']],
 		        					   	['label' => 'Renovación de Licencias', 'url' => ['ordenanza/impuesto/ordenanza/index']],
@@ -283,8 +283,8 @@
 
 
 
-	
 
 
-	
+
+
 
