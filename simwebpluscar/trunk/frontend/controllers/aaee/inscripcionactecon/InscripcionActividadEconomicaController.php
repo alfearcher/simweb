@@ -207,7 +207,10 @@
 						$model->nro_solicitud = $nroSolicitud;
 						$result = self::actionCreateInscripcionActEcon($model, $conexion, $this->conn);
 						if ( count($conf) > 0 ) {
+
+							// Se define que tipo de aprobacion se debe aplicar en la solicitud.
 							if ( $conf['nivel_aprobacion'] == 1 ) {
+
 								// Solicitud de aprobacion directa. Se deben de pasar los datos
 								// a las tablas principales. En este caso se actualiza los datos
 								// del contribuyente con los datos anteriormente guardados.
