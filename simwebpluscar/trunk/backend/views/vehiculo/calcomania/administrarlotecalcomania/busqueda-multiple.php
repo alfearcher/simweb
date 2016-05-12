@@ -120,7 +120,7 @@ $listaFuncionarios = ArrayHelper::map($busquedaFuncionario, 'id_funcionario', fu
             
 
 
-            <div class="col-sm-5" style="margin-left:-70px;">
+            <div class="col-sm-5" style="margin-left:0px;">
                         <?= Html::submitButton(Yii::t('frontend', 'Search') , ['id' => 'btn-funcionario-ano', 'name' => 'btn-funcionario-ano','class' =>'btn btn-success', 'style' => 'height:30px;width:100px;margin-left:0px;']) ?>
                     </div>
 
@@ -129,16 +129,12 @@ $listaFuncionarios = ArrayHelper::map($busquedaFuncionario, 'id_funcionario', fu
 
             <!--FIN DE FORMULARIO PARA BUSQUEDA DE FUNCIONARIO Y AÑO IMPOSITIVO-->
 
-
+        <hr>
 
             <!--INICIO DE FORMULARIO PARA BUSQUEDA DE AÑO IMPOSITIVO Y CALCOMANIA ESPECIFICA-->
 
 
-    <div class="panel panel-primary">
-    <div class="panel-heading">
-                <?= Yii::t('frontend', 'Sticker Search') ?> 
-    </div>
-    <div class="panel-body" >
+        
 
             
             <div class="row">  
@@ -169,14 +165,77 @@ $listaFuncionarios = ArrayHelper::map($busquedaFuncionario, 'id_funcionario', fu
          
 
             
-            <div class="col-sm-5" style="margin-left:150px;">
+            <div class="col-sm-5" style="margin-left:230px;">
                         <?= Html::submitButton(Yii::t('frontend', 'Search') , ['id' => 'btn-funcionario-calcomania', 'name' => 'btn-funcionario-calcomania' ,'class' =>'btn btn-success', 'style' => 'height:30px;width:100px;margin-left:0px;']) ?>
             </div>
 
             </div>  
+
+             <!--FIN DE FORMULARIO PARA BUSQUEDA DE FUNCIONARIO Y AÑO IMPOSITIVO-->
+
+
+            <hr>
+
+           <!--INICIO DE FORMULARIO PARA BUSQUEDA DE RANGO DE CALCOMANIA Y AÑO IMPOSITIVO-->
+
+
+        
+
+            
+            <div class="row">  
+            <div class="col-sm-5" style="padding-right: 12px;">
+                                        <div class="naturaleza">
+                                            <?= $form->field($model, 'ano_impositivo3')->dropDownList($listaAnoImpositivo,[
+                                                                                                    'id' => 'ano_impositivo3',
+                                                                                                    'prompt' => Yii::t('backend', 'Select'),
+                                                                                                    'style' => 'height:32px;width:150px;',
+                                                                                                    
+                                                                                                    ])
+                                            ?>
+                                        </div>
+                                    </div>
+                                    </div>
+
+            <div class="row">           
+            <div class="col-sm-2">
+                        <?= $form->field($model, 'rango_inicial')->textInput(
+                                                                [
+                                                               
+                                                               
+                                                                'id'=> 'rango_inicial',
+                                                                ]);
+                    ?>
+                
             </div>
 
+             <div class="col-sm-2">
+                        <?= $form->field($model, 'rango_final')->textInput(
+                                                                [
+                                                               
+                                                               
+                                                                'id'=> 'rango_final',
+                                                                ]);
+                    ?>
+                
+            </div>
+         
 
+            
+            <div class="col-sm-5" style="margin-left:80px;">
+                        <?= Html::submitButton(Yii::t('frontend', 'Search') , ['id' => 'btn-rango-calcomania', 'name' => 'btn-rango-calcomania' ,'class' =>'btn btn-success', 'style' => 'height:30px;width:100px;margin-left:0px;']) ?>
+            </div>
+
+            </div>  
+
+             <!--FIN DE FORMULARIO PARA BUSQUEDA DE RANGO DE CALCOMANIA Y AÑO IMPOSITIVO-->
+
+
+            </div>
+
+             
+    
+
+    
 
 
 
