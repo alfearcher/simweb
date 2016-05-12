@@ -126,7 +126,8 @@ class AdministrarLoteCalcomaniaController extends Controller
               }
           }elseif(isset($post['btn-rango-calcomania'])){
              if ($model->validate()){
-                
+                $_SESSION['datos'] = $model;
+                 return self::actionBuscarRango();
               }
           } 
              
@@ -171,9 +172,38 @@ class AdministrarLoteCalcomaniaController extends Controller
 
     public function actionBuscarCalcomania($errorCheck = "")
     {
-      die('llegue a buscar calcomania');
-      $model = $_SESSION['datos'];
+        $model = $_SESSION['datos'];
+
+        $searchModel = new BusquedaMultipleForm();
+
+            $dataProvider = $searchModel->searchCalcomania($model);
+
+            return $this->render('/vehiculo/calcomania/administrarlotecalcomania/deshabilitar-calcomania-ano', [
+                                                                                  'searchModel' => $searchModel,
+                                                                                  'dataProvider' => $dataProvider,
+                                                                                  'errorCheck' => $errorCheck,
+
+                                                                                          ]);
     }
+
+
+    public function actionBuscarRango($errorCheck = "")
+    {
+        $model = $_SESSION['datos'];
+
+        $searchModel = new BusquedaMultipleForm();
+
+            $dataProvider = $searchModel->searchRango($model);
+
+            return $this->render('/vehiculo/calcomania/administrarlotecalcomania/deshabilitar-calcomania-ano', [
+                                                                                  'searchModel' => $searchModel,
+                                                                                  'dataProvider' => $dataProvider,
+                                                                                  'errorCheck' => $errorCheck,
+
+                                                                                          ]);
+    }
+
+
 
 
 
@@ -204,6 +234,36 @@ class AdministrarLoteCalcomaniaController extends Controller
                                                                                              
        }
     }
+    /**
+     * [actionVerificarCalcomaniasAno description] metodo que verifica si una calcomania esta seleccionada y redirecciona al guardado
+
+     */
+    public function actionVerificarCalcomaniasAno()
+    {
+
+    $errorCheck = ""; 
+
+    $idCalcomanias = yii::$app->request->post('chk-deshabilitar-calcomania');
+    // die(var_dump($idCalcomanias));
+    $_SESSION['idCalcomanias'] = $idCalcomanias;
+
+  
+      $validacion = new BusquedaMultipleForm();
+
+       if ($validacion->validarCheck(yii::$app->request->post('chk-deshabilitar-calcomania')) == true){
+        
+        return $this->redirect(['deshabilitar-calcomania']);
+           
+        }else{
+          $errorCheck = "Please select a Sticker";
+              return $this->redirect(['buscar-calcomania' , 'errorCheck' => $errorCheck]); 
+
+                                                                                             
+       }
+    }
+
+
+
     /**
      * [actionDeshabilitarCalcomania description] metodo que direcciona al begin save y espera respuestas para enviar mensaje de controlador
     
