@@ -221,7 +221,7 @@ class OpcionFuncionarioController extends Controller
                                        'role' => $role,
                                        'fecha_creacion' => $fecha_creacion,];
 
-                        $tableName = 'users'; 
+                        $tableName = 'users';  
 
                         $conn = New ConexionController(); 
 

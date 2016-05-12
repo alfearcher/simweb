@@ -218,12 +218,12 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                    $requisitos = $documento->documentos();
 
-                if (!\Yii::$app->user->isGuest){                                      
+                if (!\Yii::$app->user->isGuest){ 
 
 
                      foreach($datos as $key => $value) {
                      
-                          $value['id_impuesto'];
+                          $value['id_impuesto']; 
                           //die($value['id_vehiculo']);
                           $verificarSolicitud = self::verificarSolicitud($value['id_impuesto'] , $_SESSION['id']);
                           if($verificarSolicitud == true){
