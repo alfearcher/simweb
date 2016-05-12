@@ -195,7 +195,7 @@ class AdministrarLoteCalcomaniaController extends Controller
 
             $dataProvider = $searchModel->searchRango($model);
 
-            return $this->render('/vehiculo/calcomania/administrarlotecalcomania/deshabilitar-calcomania-ano', [
+            return $this->render('/vehiculo/calcomania/administrarlotecalcomania/deshabilitar-calcomania-rango', [
                                                                                   'searchModel' => $searchModel,
                                                                                   'dataProvider' => $dataProvider,
                                                                                   'errorCheck' => $errorCheck,
@@ -257,6 +257,30 @@ class AdministrarLoteCalcomaniaController extends Controller
         }else{
           $errorCheck = "Please select a Sticker";
               return $this->redirect(['buscar-calcomania' , 'errorCheck' => $errorCheck]); 
+
+                                                                                             
+       }
+    }
+
+    public function actionVerificarCalcomaniaRango()
+    {
+
+    $errorCheck = ""; 
+
+    $idCalcomanias = yii::$app->request->post('chk-deshabilitar-calcomania');
+    // die(var_dump($idCalcomanias));
+    $_SESSION['idCalcomanias'] = $idCalcomanias;
+
+  
+      $validacion = new BusquedaMultipleForm();
+
+       if ($validacion->validarCheck(yii::$app->request->post('chk-deshabilitar-calcomania')) == true){
+        
+        return $this->redirect(['deshabilitar-calcomania']);
+           
+        }else{
+          $errorCheck = "Please select a Sticker";
+              return $this->redirect(['buscar-rango' , 'errorCheck' => $errorCheck]); 
 
                                                                                              
        }
@@ -339,7 +363,7 @@ class AdministrarLoteCalcomaniaController extends Controller
 
                       if ($deshabilitarCalcomanias == true ){
                             //die('deshabilito');
-                            $todoBien == true;
+                            $todoBien == false;
                             
                       }
                         
