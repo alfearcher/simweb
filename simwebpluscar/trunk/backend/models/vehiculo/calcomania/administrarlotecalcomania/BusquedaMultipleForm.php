@@ -64,8 +64,13 @@ class BusquedaMultipleForm extends Model
  
     public $ano_impositivo;
     public $id_funcionario;
+    
     public $ano_impositivo2;
     public $nro_calcomania;
+
+    public $ano_impositivo3;
+    public $rango_inicial;
+    public $rango_final;
 
 
         const SCENARIO_SEARCH_FUNCIONARIO = 'search_funcionario';
@@ -87,8 +92,9 @@ class BusquedaMultipleForm extends Model
                                 'nro_calcomania',
                 ],
                 self::SCENARIO_SEARCH_RANGO => [
-                                '',
-                                '',
+                                'ano_impositivo3',
+                                'rango_inicial',
+                                'rango_final',
                 ],
                
             ];
@@ -107,6 +113,12 @@ class BusquedaMultipleForm extends Model
              [['ano_impositivo2', 'nro_calcomania'],
                   'required', 'on' => 'search_calcomania', 'message' => Yii::t('backend', '{attribute} is required')],
              ['nro_calcomania', 'integer'],
+
+             [['ano_impositivo3', 'rango_inicial', 'rango_final'],
+                  'required', 'on' => 'search_rango', 'message' => Yii::t('backend', '{attribute} is required')],
+             [['rango_inicial','rango_final'] ,'integer'],
+
+
             
         ];
     } 
@@ -123,6 +135,10 @@ class BusquedaMultipleForm extends Model
                 'id_funcionario' => Yii::t('backend', 'Funcionario'), 
                 'ano_impositivo2' => yii::t('backend', 'Año Impositivo'),
                 'nro_calcomania' => yii::t('backend', 'Nro de Calcomania'),
+                'ano_impositivo3' => yii::t('backend', 'Año Impositivo'),
+                'rango_inicial' => yii::t('backend', 'Rango Inicial'),
+                'rango_final' => yii::t('backend', 'Rango Final'),
+
         ];
     }
     
@@ -138,6 +154,11 @@ class BusquedaMultipleForm extends Model
         ];
     }
 
+    /**
+     * [search description] funcion que realiza la busqueda de calcomanias por funcionario y año impositivo en la tabla calcomanias
+     * @param  [type] $model [description] modelo que contiene la informacion para realizar la busqueda
+     * @return [type]        [description] retorna true si consigue la informacion y false si no la consigue
+     */
     public function search($model)
     { 
     // die(var_dump($model));
@@ -152,7 +173,7 @@ class BusquedaMultipleForm extends Model
             'ano_impositivo' => $model->ano_impositivo,
             'entregado' => 0,
             'estatus' => 0,
-            ]);
+        ]);
   
         
        // die(var_dump($query));
@@ -164,6 +185,55 @@ class BusquedaMultipleForm extends Model
 
        
     }
+    /**
+     * [searchCalcomania description] funcion que realiza la busqueda de la calcomania y año impositivo en la tabla calcomania
+     * @param  [type] $model [description] modelo que tiene la informacion para realizar la busqueda
+     * @return [type]        [description] retorna true si consigue informacion y false si no la consigue
+     */
+    public function searchCalcomania($model)
+    {
+          // die(var_dump($model));
+        $query = Calcomania::find();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+           
+        ]);
+        $query->filterWhere([
+           // die('llego'),
+            'nro_calcomania' => $model->nro_calcomania,
+            'ano_impositivo' => $model->ano_impositivo2,           
+            'entregado' => 0,
+            'estatus' => 0,
+        ]);
+  
+        return $dataProvider;
+    }
+
+      public function searchRango($model)
+    {
+          // die(var_dump($model));
+        $query = Calcomania::find();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+           
+        ]);
+        $query->filter([
+                                  
+                                   
+                                    ->where('nro_calco1mania'.' between'.$model->rango_incicial.  and .$model->rango_final)
+                                    ->andWhere('inactivo =:inactivo' , [':inactivo' => 0])
+                                    ->andWhere('estatus=:estatus',[':estatus' => 0])
+                                    ->andWhere('ano_impositivo =:ano_impositivo' , [':ano_impositivo' => $model->ano_impositivo3])
+                                    ->all();        
+            
+        ]);
+  
+        return $dataProvider;
+    }
+
+
 
     public function validarCheck($postCheck)
     {
