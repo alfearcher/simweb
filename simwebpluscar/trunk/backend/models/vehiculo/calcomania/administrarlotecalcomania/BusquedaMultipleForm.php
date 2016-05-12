@@ -214,25 +214,31 @@ class BusquedaMultipleForm extends Model
     {
           // die(var_dump($model));
         $query = Calcomania::find();
+        
+                                   
+
+                                   
+                                   
+                                   
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
            
         ]);
-        $query->filter([
-                                  
-                                   
-                                    ->where('nro_calco1mania'.' between'.$model->rango_incicial.  and .$model->rango_final)
-                                    ->andWhere('inactivo =:inactivo' , [':inactivo' => 0])
-                                    ->andWhere('estatus=:estatus',[':estatus' => 0])
-                                    ->andWhere('ano_impositivo =:ano_impositivo' , [':ano_impositivo' => $model->ano_impositivo3])
-                                    ->all();        
-            
-        ]);
+        $query->filterWhere([
+            'between', 'nro_calcomania', $model->rango_inicial ,$model->rango_final,
+            ])
+         ->andWhere('ano_impositivo =:ano_impositivo' , [':ano_impositivo' => $model->ano_impositivo3]) 
+         ->andWhere('estatus =:estatus' , [':estatus' => 0])
+         ->andWhere('entregado =:entregado' , [':entregado' => 0]) 
+        ->all();
+
+       
+    
   
         return $dataProvider;
     }
-
+    
 
 
     public function validarCheck($postCheck)
