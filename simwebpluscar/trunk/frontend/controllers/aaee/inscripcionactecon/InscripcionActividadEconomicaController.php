@@ -99,7 +99,7 @@
 
 				$r = New SolicitudProcesoEvento($getData['id']);
 
-				$r->getProcesoQueGeneraSolicitudSegunEvento(Yii::$app->evento->crear());
+				$r->getProcesoQueGeneraSolicitudSegunEvento(Yii::$app->solicitud->crear());
 
 
 				// identificador de la configuracion de la solicitud.
