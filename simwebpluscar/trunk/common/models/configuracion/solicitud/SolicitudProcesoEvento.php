@@ -58,7 +58,11 @@
 
 
 
-		/***/
+		/**
+		 * Metodo constructor.
+		 * @param Long $idConfig identificador de configuracion de la entidad "config-solicitudes".
+		 * Autoincremental.
+		 */
 		public function __construct($idConfig)
 		{
 			$this->idConfigSolicitud = $idConfig;
