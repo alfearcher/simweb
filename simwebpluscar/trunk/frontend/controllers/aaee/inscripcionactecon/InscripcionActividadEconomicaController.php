@@ -120,19 +120,16 @@
 					$poseeSolicitud = $modelSearch->yaPoseeSolicitudSimiliar();
 					if ( $poseeSolicitud ) {
 						// Ya posee una solicitud de este tipo y no puede continuar.
-						//return MensajeController::actionMensaje(945);
 						return $this->redirect(['error-operacion', 'cod' => 945]);
 					} else {
 						return $this->redirect(['index-create']);
 					}
 				} else {
 					// Naturaleza del Contribuyente no definido o no corresponde con el tipo de solicitud.
-  					//return MensajeController::actionMensaje(930);
   					return $this->redirect(['error-operacion', 'cod' => 930]);
 				}
 			} else {
 				// No esta definido el identificador de la configuracion de la solicitud.
-				//return MensajeController::actionMensaje(940);
 				return $this->redirect(['error-operacion', 'cod' => 940]);
 			}
 
@@ -177,7 +174,6 @@
 	  		} else {
 	  			// Contribuyente no definido.
 	  			return $this->redirect(['error-operacion', 'cod' => 930]);
-	  			//return MensajeController::actionMensaje(930);
 	  		}
 
 		}
@@ -228,12 +224,10 @@
 
 				} else {
 					// Operacion no ejecutada.
-					//return MensajeController::actionMensaje(920);
 					return $this->redirect(['error-operacion', 'cod' => 920]);
 
 				}
 			} else {
-				//return MensajeController::actionMensaje(920);
 				return $this->redirect(['error-operacion', 'cod' => 920]);
 			}
 			return $result;
