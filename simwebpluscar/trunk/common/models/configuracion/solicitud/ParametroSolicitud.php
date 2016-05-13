@@ -23,7 +23,7 @@
  /**
  *  @file ParametroSolicitud.php
  *
- *  @author Alvaro Jose Fernandez Archer
+ *  @author Jose Rafael Perez Teran
  *
  *  @date 13/05/2016
  *
@@ -71,7 +71,7 @@
 
 
 
-
+		/***/
 		public function __construct($idConfig)
 		{
 			$this->configurar($idConfig);
