@@ -45,7 +45,7 @@
  	use Yii;
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
-	use backend\models\tasa\TasaForm;
+	use backend\models\configuracion\tasasolicitud\TasaMultaSolicitud;
 
 
 	/**
@@ -72,6 +72,17 @@
 		public static function tableName()
 		{
 			return 'varios';
+		}
+
+
+
+		/**
+		 * Relacion con la entidad "config-solic-tasas-multas".
+		 * @return activeRecord.
+		 */
+		public function getTasaMultaSolicitud()
+		{
+			return $this->hasMany(TasaMultaSolicitud::className(), ['id_impuesto' => 'id_impuesto']);
 		}
 
 	}
