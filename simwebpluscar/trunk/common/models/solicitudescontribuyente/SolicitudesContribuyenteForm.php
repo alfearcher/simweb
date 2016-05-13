@@ -151,6 +151,50 @@
         }
 
 
+
+        /**
+         * Metodo que permite obtener un array de datos segun el numero de la solicitud, arma un arreglo
+         * de datos segun le paramtro ($parametros), en este caso el key del array es el nombre del campo
+         * y el valor del elemento es el contenido del campo en base de datos.
+         * @param  Long $nroSolicitud Numero de la solicitud. Autoincremental generado por la entidad al momento
+         * de crear la solicitud.
+         * @param  Array $parametros arreglo de parametros que se requiere, sino existe no devolvera nada, ni el
+         * parametro ni valor.
+         * @return Array Retorna un arreglo de datos donde el key sera el campo en base de datos y el valor del
+         * elemento es el contenido de ese parametros o campo en base de datos. Si el parametro no existe no se
+         * retornara nada para ese parametro.
+         */
+        public function getParametroSolicitudContribuyente($nroSolicitud, $parametros)
+        {
+            $listaParametros = null;
+            if ( count($parametros) > 0 ) {
+                $model = $this->findSolicitudContribuyente($nroSolicitud);
+                foreach ( $parametros as $key => $value ) {
+                    if ( isset($model[$value]) ) {
+                        $listaParametros[$value] = $model[$value];
+                    }
+                }
+            }
+            return $listaParametros;
+        }
+
+
+
+        /**
+         * Metodo que realiza la busqueda del modelo segun el parametro numero de solicitud
+         * ($nroSolicitud).
+         * @param  Long $nroSolicitud que representa el identificador de la entidad. Este es el
+         * numero que se genera cuando se crea la solicitud.
+         * @return Active Record Retorna el modelo de la entidad segun el parametro numero de solicitud
+         * ($nroSolicitud).
+         */
+        public function findSolicitudContribuyente($nroSolicitud)
+        {
+            $modelFind = null;
+            $modelFind = SolicitudesContribuyente::findOne($nroSolicitud);
+            return isset($modelFind) ? $modelFind : null;
+        }
+
     }
 
  ?>
