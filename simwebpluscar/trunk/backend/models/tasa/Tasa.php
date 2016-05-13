@@ -21,13 +21,13 @@
  */
 
  /**
- *  @file ActEcon.php
+ *  @file Tasa.php
  *
  *  @author Jose Rafael Perez Teran
  *
  *  @date 25-10-2015
  *
- *  @class ActEcon
+ *  @class Tasa
  *  @brief Clase Modelo
  *
  *
