@@ -269,7 +269,7 @@ public $layout = "layout-login";
 
     public function actionMenuVertical()
     {
-        return $this->render('/usuario/menu-vertical');
+        return $this->render('/menu/menu-vertical');
     }
 
 
