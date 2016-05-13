@@ -47,6 +47,7 @@
 	use yii\db\ActiveRecord;
 	use backend\models\configuracion\solicitud\ConfigurarSolicitud;
 	use backend\models\configuracion\procesosolicitud\SolicitudProceso;
+	use backend\models\configuracion\tasasolicitud\TasaMultaSolicitud;
 
 	/**
 	* 	Clase
@@ -93,6 +94,16 @@
 		public function getProcesoSolicitud()
 		{
 			return $this->hasOne(SolicitudProceso::className(), ['id_proceso' => 'id_proceso']);
+		}
+
+
+		/**
+		 * Relacion con la entidad "config-solic-tasas-multas".
+		 * @return ActiveRecord;
+		 */
+		public function getTasaMultaSolicitud()
+		{
+			return $this->hasMany(TasaMultaSolicitud::className(), ['id_config_solic_detalle' => 'id_config_solic_detalle']);
 		}
 
 
