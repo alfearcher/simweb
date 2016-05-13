@@ -72,7 +72,7 @@
 
 
 		/***/
-		public function getProcesoQueGeneraSolicitudSegunEvento($evento)
+		public function getEjecutaProcesoSolicitudSegunEvento($evento)
 		{
 			$listaProcesos = $this->getProcesoSegunEvento($evento);
 die(var_dump($listaProcesos));
