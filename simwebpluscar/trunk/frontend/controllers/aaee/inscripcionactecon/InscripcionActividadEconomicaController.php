@@ -61,6 +61,7 @@
 	use common\mensaje\MensajeController;
 	use common\models\session\Session;
 	use common\models\configuracion\solicitud\ParametroSolicitud;
+	use common\models\configuracion\solicitud\SolicitudProcesoEvento;
 	use common\models\contribuyente\ContribuyenteBase;
 
 	session_start();		// Iniciando session
@@ -94,6 +95,12 @@
 			$getData = $request->get();
 
 			if ( isset($getData['id']) && $idContribuyente > 0 ) {
+
+
+				$r = New SolicitudProcesoEvento($getData['id']);
+
+				$r->getProcesoQueGeneraSolicitudSegunEvento(Yii::$app->evento->crear());
+
 
 				// identificador de la configuracion de la solicitud.
 				$id = $getData['id'];
