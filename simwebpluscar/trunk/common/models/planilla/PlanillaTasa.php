@@ -55,6 +55,7 @@
 	*/
 	class PlanillaTasa extends Planilla
 	{
+		public $planilla;
 		private $_idContribuyente;
 		private $_idImpuesto;
 		private $_añoDesde;
@@ -76,6 +77,7 @@
 			$this->_periodosLiquidados = null;
 			$this->conexion = $conexionLocal;
 			$this->conn = $connLocal;
+			parent::__construct();
 		}
 
 
@@ -101,7 +103,8 @@
 						$result[$parametros['ano_impositivo']] = self::generarPeriodoLiquidado($parametros);
 						if ( $result != null && isset($this->_idContribuyente) ) {
 							// Metodo de la clase Planilla().
-							return $this->iniciarGuadarPlanilla($this->conexion, $this->conn, $this->_idContribuyente, $result);
+							$this->iniciarGuadarPlanilla($this->conexion, $this->conn, $this->_idContribuyente, $result);
+die(var_dump($this->getPlanilla()));
 						}
 					}
 				}
@@ -112,10 +115,10 @@
 
 
 		/***/
-		public function getPlanilla()
-		{
-			return $this->getPlanilla();
-		}
+		// public function getPlanilla()
+		// {
+		// 	return $this->getPlanilla();
+		// }
 
 
 		/***/
