@@ -69,6 +69,14 @@
 
 
 
+		/***/
+		public function __construct()
+		{
+			$this->numeroPlanilla = 0;
+		}
+
+
+
 
 		/**
 		 * Metodo que permite obtener el primer periodo liquidado del contribuyente
