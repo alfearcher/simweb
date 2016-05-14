@@ -86,6 +86,7 @@
 					} elseif ( $miProceso == 'GENERA TASA' ) {
 						
 						$result = $this->generaTasa($conexionLocal, $connLocal);
+						$this->accion[$miProceso] = $result;
 
 					} elseif ( $miProceso == 'SOLICITA DOCUMENTOS' ) {
 
@@ -112,8 +113,9 @@
 
 
 		/***/
-		public function generaTasa($conexionLocal, $connLocal)
+		public function generaTasa($evento, $conexionLocal, $connLocal)
 		{
+			$result = [];
 			$idImpuesto = 0;
 			// Se espera los valores de la entidad "config-solic-tasas-multas".
 			$tasas = $this->getDetalleSolicitudTasaMulta($evento);
