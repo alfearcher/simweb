@@ -137,8 +137,8 @@
 						$idImpuesto = $miTasa->determinarTasaParaLiquidar($value);
 						if ( $idImpuesto > 0 ) {
 							$planillaTasa = New PlanillaTasa($idContribuyente, $idImpuesto, $conexionLocal, $connLocal);
-							$result['resultado'] = $planillaTasa->liquidarTasa();
-							$result['planilla'] = $planillaTasa->getPlanilla();
+							$planillaTasa->liquidarTasa();
+							$result = $planillaTasa->getPlanilla();
 die(var_dump($result));
 						}
 					}
