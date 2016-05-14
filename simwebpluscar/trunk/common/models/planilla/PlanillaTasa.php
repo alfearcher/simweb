@@ -110,6 +110,14 @@
 		}
 
 
+
+		/***/
+		public function getPlanilla()
+		{
+			return $this->getPlanilla();
+		}
+
+
 		/***/
 		public function getMontoCalculado()
 		{

@@ -262,6 +262,13 @@
 
 
 
+		/***/
+		public function getPlanilla()
+		{
+			return $this->numeroPlanilla;
+		}
+
+
 
 
 		/**
@@ -376,8 +383,8 @@
 
 			while ( $intentos >= 1 ) {
 				$intentos--;
-				$numeroPlanilla = self::crearNumeroPlanilla($conexion, $conn);
-				if ( $numeroPlanilla > 0 ) {
+				$this->numeroPlanilla = self::crearNumeroPlanilla($conexion, $conn);
+				if ( $this->numeroPlanilla > 0 ) {
 					$intentos = 0;
 					$arregloDatos['id_pago'] = null;
 					$arregloDatos['ente'] = Yii::$app->ente->getEnte();
