@@ -69,7 +69,7 @@
 
 
 		/***/
-		public function __construct($id, $idImpuesto,  $conexionLocal, $connLocal)
+		public function __construct($id, $idImpuesto, $conexionLocal, $connLocal)
 		{
 			$this->_idContribuyente = $id;
 			$this->_idImpuesto = $idImpuesto;
