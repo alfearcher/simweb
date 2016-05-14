@@ -96,11 +96,9 @@
 
 			if ( isset($getData['id']) && $idContribuyente > 0 ) {
 
+				//$r = New SolicitudProcesoEvento($getData['id']);
 
-				$r = New SolicitudProcesoEvento($getData['id']);
-
-				$r->ejecutarProcesoSolicitudSegunEvento(Yii::$app->solicitud->crear());
-
+				//$r->ejecutarProcesoSolicitudSegunEvento(Yii::$app->solicitud->crear());
 
 				// identificador de la configuracion de la solicitud.
 				$id = $getData['id'];
@@ -220,6 +218,8 @@
 								// del contribuyente con los datos anteriormente guardados.
 								$result = self::actionUpdateContribuyente($model, $conexion, $this->conn);
 							}
+
+							$result = self::actionEjecutaProcesoSolicitud($model, $conexion, $conn);
 						}
 						if ( $result ) {
 							$transaccion->commit();
@@ -359,6 +359,8 @@
 				// de resultados donde el key del arrary es el nombre del proceso y el valor del elemento
 				// corresponda a un reultado de la ejecucion.
 				$procesoEvento->ejecutarProcesoSolicitudSegunEvento($model->id_contribuyente, Yii::$app->solicitud->crear(), $conexionLocal, $connLocal);
+
+die(var_dump($procesoEvento->getAccion()));
 			}
 			
 		}
