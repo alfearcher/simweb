@@ -124,7 +124,9 @@
 					if ( $key == 'id_impuesto' ) {
 						$miTasa = New TasaForm();
 						$idImpuesto = $miTasa->determinarTasaParaLiquidar($value);
-die(var_dump($idImpuesto));
+						if ( $idImpuesto > 0 ) {
+die(var_dump(Yii::$app->user->identity));
+						}
 					}
 				}
 			}
