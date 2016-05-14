@@ -75,7 +75,13 @@
 		public function ejecutarProcesoSolicitudSegunEvento($evento)
 		{
 			$listaProcesos = $this->getProcesoSegunEvento($evento);
-die(var_dump($listaProcesos));
+			foreach ( $listaProcesos as $proceso ) {
+				foreach ( $proceso as $key => $value ) {
+					echo $value;
+					echo '<br>';
+				}
+			}
+			die();
 		}
 
 
