@@ -85,7 +85,7 @@
 
 					} elseif ( $miProceso == 'GENERA TASA' ) {
 						
-						$result = $this->generaTasa($conexionLocal, $connLocal);
+						$result = $this->generaTasa($evento, $conexionLocal, $connLocal);
 						$this->accion[$miProceso] = $result;
 
 					} elseif ( $miProceso == 'SOLICITA DOCUMENTOS' ) {
