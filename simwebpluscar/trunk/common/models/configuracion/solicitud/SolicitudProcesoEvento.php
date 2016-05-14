@@ -55,6 +55,7 @@
 	class SolicitudProcesoEvento extends ParametroSolicitud
 	{
 		public $idConfigSolicitud;
+		public $accion = [];
 
 
 
@@ -77,12 +78,38 @@
 			$listaProcesos = $this->getProcesoSegunEvento($evento);
 			foreach ( $listaProcesos as $proceso ) {
 				foreach ( $proceso as $key => $value ) {
-					echo $value;
-					echo '<br>';
+					$miProceso = strtoupper(trim($value));
+					$this->accion[$miProceso];
+					if ( $miProceso == 'LIQUIDACION DIRECTA' ) {
+
+					} elseif ( $miProceso == 'GENERA TASA' ) {
+
+					} elseif ( $miProceso == 'SOLICITA DOCUMENTOS' ) {
+
+					} elseif ( $miProceso == 'GENERA CITA' ) {
+
+					} elseif ( $miProceso == 'GENERA NOTIFICACION' ) {
+
+					} elseif ( $miProceso == 'GENERA MULTA' ) {
+
+					} elseif ( $miProceso == 'GENERA FISCALIZACION' ) {
+
+					} elseif ( $miProceso == 'GENERA AUDITORIA' ) {
+
+					} elseif ( $miProceso == 'GENERA CIERRE' ) {
+
+					} else {
+					}
 				}
 			}
 			die();
 		}
+
+
+
+
+		public function generaTasa()
+		{}
 
 
 	}
