@@ -54,6 +54,9 @@
 	use backend\models\impuesto\Impuesto;
 	use backend\models\configuracion\documentosolicitud\SolicitudDocumento;
 	use backend\models\configuracion\detallesolicitud\SolicitudDetalle;
+	use backend\models\configuracion\tasasolicitud\TasaMultaSolicitud;
+	use backend\models\tasa\Tasa;
+	use backend\models\tasa\TasaForm;
 
 
 	/**
@@ -409,6 +412,35 @@
 		{
 			$nivel = $this->findConfiguracionNivelAprobacion();
 			return $nivel[0]['nivelAprobacion']['descripcion'];
+		}
+
+
+
+
+		/***/
+		public function findDetalleSolicitudTasaMulta($evento)
+		{
+			$modelDetalleSolicitudTasa = null;
+
+			$modelDetalleSolicitudTasa = TasaMultaSolicitud::find()->where(['id_config_solicitud' => $this->getIdConfig(),
+																         SilicitudDetalle::tableName().'.inactivo' => 0,
+																         TasaMultaSolicitud::tableName().'.inactivo' => 0,
+																         'ejecutar_en' => $evento,
+																	])
+																 ->joinWith('detalleSolicitud', false)
+																 ->asArray()
+																 ->all();
+			return $modelDetalleSolicitudTasa;
+		}
+
+
+
+		/***/
+		public function getDetalleSolicitudTasaMulta($evento)
+		{
+			$tasa = $this->findDetalleSolicitudTasaMulta($evento);
+
+die(var_dump($tasa));
 		}
 
 	}

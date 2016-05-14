@@ -73,7 +73,7 @@
 
 
 		/***/
-		public function ejecutarProcesoSolicitudSegunEvento($evento)
+		public function ejecutarProcesoSolicitudSegunEvento($evento, $conexionLocal = null, $connLocal = null)
 		{
 			$listaProcesos = $this->getProcesoSegunEvento($evento);
 			foreach ( $listaProcesos as $proceso ) {
@@ -83,6 +83,7 @@
 					if ( $miProceso == 'LIQUIDACION DIRECTA' ) {
 
 					} elseif ( $miProceso == 'GENERA TASA' ) {
+						$this->getDetalleSolicitudTasaMulta($evento);
 
 					} elseif ( $miProceso == 'SOLICITA DOCUMENTOS' ) {
 
@@ -104,12 +105,6 @@
 			}
 			die();
 		}
-
-
-
-
-		public function generaTasa()
-		{}
 
 
 	}
