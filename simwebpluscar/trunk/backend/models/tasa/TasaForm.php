@@ -192,7 +192,7 @@
 	    				$grupoSubnivel = $parametros['grupo_subnivel'];
 	    				$codigo = $parametros['codigo'];
 
-	    				$model = $this->findTasaSegunParametros($idCodigo, $impuesto, $añoImpositivo, $grupoSubnivel, $codigo, 1);
+	    				$model = $this->findTasaSegunParametros($idCodigo, $impuesto, $añoImpositivo, $grupoSubnivel, $codigo);
 	    				$valores = $model->asArray()->all();
 
 	    				if ( count($valores) > 0 ) {
