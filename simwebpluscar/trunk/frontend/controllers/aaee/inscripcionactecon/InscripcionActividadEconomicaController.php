@@ -208,6 +208,7 @@
 					$nroSolicitud = self::actionCreateSolicitud($conexion, $this->conn);
 					if ( $nroSolicitud > 0 ) {
 						$model->nro_solicitud = $nroSolicitud;
+						// Detalle de la solciitud
 						$result = self::actionCreateInscripcionActEcon($model, $conexion, $this->conn);
 						if ( count($conf) > 0 ) {
 
