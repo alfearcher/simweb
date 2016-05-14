@@ -358,7 +358,7 @@
 				// que en este caso el evento corresponde a "CREAR". Se espera que retorne un arreglo
 				// de resultados donde el key del arrary es el nombre del proceso y el valor del elemento
 				// corresponda a un reultado de la ejecucion.
-				$procesoEvento->ejecutarProcesoSolicitudSegunEvento(Yii::$app->solicitud->crear(), $conexionLocal, $connLocal);
+				$procesoEvento->ejecutarProcesoSolicitudSegunEvento($model->id_contribuyente, Yii::$app->solicitud->crear(), $conexionLocal, $connLocal);
 			}
 			
 		}
