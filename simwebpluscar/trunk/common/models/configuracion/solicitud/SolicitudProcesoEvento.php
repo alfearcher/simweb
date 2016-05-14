@@ -48,6 +48,7 @@
 	use Yii;
 	use common\models\configuracion\solicitud\ParametroSolicitud;
 	use backend\models\tasa\TasaForm;
+	use common\models\planilla\PlanillaTasa;
 
 
 	/**
@@ -106,9 +107,16 @@
 					}
 				}
 			}
-			die();
 		}
 
+
+
+
+		/***/
+		public function getAccion()
+		{
+			return $this->accion;
+		}
 
 
 
@@ -125,11 +133,15 @@
 						$miTasa = New TasaForm();
 						$idImpuesto = $miTasa->determinarTasaParaLiquidar($value);
 						if ( $idImpuesto > 0 ) {
-die(var_dump(Yii::$app->user->identity));
+							$planillaTasa = New PlanillaTasa($idContribuyente, $idImpuesto, $conexionLocal, $connLocal);
+							$result['resultado'] = $planillaTasa->liquidarTasa();
+							$result['planilla'] = $planillaTasa->getPlanill();
 						}
 					}
 				}
 			}
+
+			return $result;
 		}
 
 
