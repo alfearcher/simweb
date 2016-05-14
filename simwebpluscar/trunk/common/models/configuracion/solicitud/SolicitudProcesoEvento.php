@@ -47,6 +47,7 @@
 
 	use Yii;
 	use common\models\configuracion\solicitud\ParametroSolicitud;
+	use backend\models\tasa\TasaForm;
 
 
 	/**
@@ -83,7 +84,8 @@
 					if ( $miProceso == 'LIQUIDACION DIRECTA' ) {
 
 					} elseif ( $miProceso == 'GENERA TASA' ) {
-						$this->getDetalleSolicitudTasaMulta($evento);
+						
+						$result = $this->generaTasa($conexionLocal, $connLocal);
 
 					} elseif ( $miProceso == 'SOLICITA DOCUMENTOS' ) {
 
@@ -104,6 +106,26 @@
 				}
 			}
 			die();
+		}
+
+
+
+
+		/***/
+		public function generaTasa($conexionLocal, $connLocal)
+		{
+			$idImpuesto = 0;
+			// Se espera los valores de la entidad "config-solic-tasas-multas".
+			$tasas = $this->getDetalleSolicitudTasaMulta($evento);
+			foreach ( $tasas as $tasa ) {
+				foreach ( $tasa as $key => $value ) {
+					if ( $key == 'id_impuesto' ) {
+						$miTasa = New TasaForm();
+						$idImpuesto = $miTasa->determinarTasaParaLiquidar($value);
+die(var_dump($idImpuesto));
+					}
+				}
+			}
 		}
 
 

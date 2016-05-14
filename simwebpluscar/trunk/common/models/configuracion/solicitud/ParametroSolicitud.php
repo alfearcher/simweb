@@ -55,8 +55,6 @@
 	use backend\models\configuracion\documentosolicitud\SolicitudDocumento;
 	use backend\models\configuracion\detallesolicitud\SolicitudDetalle;
 	use backend\models\configuracion\tasasolicitud\TasaMultaSolicitud;
-	use backend\models\tasa\Tasa;
-	use backend\models\tasa\TasaForm;
 
 
 	/**
@@ -417,6 +415,7 @@
 
 
 
+
 		/***/
 		public function findDetalleSolicitudTasaMulta($evento)
 		{
@@ -435,12 +434,12 @@
 
 
 
+
 		/***/
 		public function getDetalleSolicitudTasaMulta($evento)
 		{
 			$tasa = $this->findDetalleSolicitudTasaMulta($evento);
-
-die(var_dump($tasa));
+			return $tasa;
 		}
 
 	}
