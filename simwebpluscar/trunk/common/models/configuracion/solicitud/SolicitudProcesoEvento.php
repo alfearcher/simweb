@@ -74,7 +74,7 @@
 
 
 		/***/
-		public function ejecutarProcesoSolicitudSegunEvento($evento, $conexionLocal = null, $connLocal = null)
+		public function ejecutarProcesoSolicitudSegunEvento($idContribuyente, $evento, $conexionLocal = null, $connLocal = null)
 		{
 			$listaProcesos = $this->getProcesoSegunEvento($evento);
 			foreach ( $listaProcesos as $proceso ) {
@@ -85,7 +85,7 @@
 
 					} elseif ( $miProceso == 'GENERA TASA' ) {
 						
-						$result = $this->generaTasa($evento, $conexionLocal, $connLocal);
+						$result = $this->generaTasa($idContribuyente, $evento, $conexionLocal, $connLocal);
 						$this->accion[$miProceso] = $result;
 
 					} elseif ( $miProceso == 'SOLICITA DOCUMENTOS' ) {
@@ -113,7 +113,7 @@
 
 
 		/***/
-		public function generaTasa($evento, $conexionLocal, $connLocal)
+		public function generaTasa($idContribuyente, $evento, $conexionLocal, $connLocal)
 		{
 			$result = [];
 			$idImpuesto = 0;
