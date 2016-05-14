@@ -45,7 +45,7 @@
  	use Yii;
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
-	use backend\models\configuracion\solicitud\SolicitudDetalle;
+	use backend\models\configuracion\detallesolicitud\SolicitudDetalle;
 	use backend\models\tasa\Tasa;
 
 	/**
