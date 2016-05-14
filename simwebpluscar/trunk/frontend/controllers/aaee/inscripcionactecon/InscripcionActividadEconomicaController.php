@@ -352,7 +352,7 @@
 		{
 			$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : null;
 			if ( count($conf) > 0 ) {
-				$procesoEvento = New SolicitudProcesoEvento($conf['id']);
+				$procesoEvento = New SolicitudProcesoEvento($conf['id_config_solicitud']);
 
 				// Se buscan los procesos que genera la solicitud para ejecutarlos, segun el evento.
 				// que en este caso el evento corresponde a "CREAR". Se espera que retorne un arreglo
