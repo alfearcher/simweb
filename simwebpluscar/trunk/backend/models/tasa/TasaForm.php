@@ -193,8 +193,8 @@
 	    				$codigo = $parametros['codigo'];
 
 	    				$model = $this->findTasaSegunParametros($idCodigo, $impuesto, $añoImpositivo, $grupoSubnivel, $codigo);
-die(var_dump($model));
 	    				$valores = $model->asArray();
+die(var_dump($valores));
 	    				if ( count($valores) > 0 ) {
 	    					$idTasa = $valores['id_impuesto'];
 	    				}
