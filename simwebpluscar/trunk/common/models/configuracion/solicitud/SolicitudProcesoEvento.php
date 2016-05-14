@@ -135,7 +135,7 @@
 						if ( $idImpuesto > 0 ) {
 							$planillaTasa = New PlanillaTasa($idContribuyente, $idImpuesto, $conexionLocal, $connLocal);
 							$result['resultado'] = $planillaTasa->liquidarTasa();
-							$result['planilla'] = $planillaTasa->getPlanill();
+							$result['planilla'] = $planillaTasa->getPlanilla();
 						}
 					}
 				}
