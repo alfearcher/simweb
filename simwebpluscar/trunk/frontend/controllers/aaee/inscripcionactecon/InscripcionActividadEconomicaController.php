@@ -208,7 +208,7 @@
 					$nroSolicitud = self::actionCreateSolicitud($conexion, $this->conn);
 					if ( $nroSolicitud > 0 ) {
 						$model->nro_solicitud = $nroSolicitud;
-						// Detalle de la solciitud
+						// Detalle de la solicitud
 						$result = self::actionCreateInscripcionActEcon($model, $conexion, $this->conn);
 						if ( count($conf) > 0 ) {
 
@@ -343,6 +343,22 @@
 
 			return $result;
 		}
+
+
+
+
+		/***/
+		public function actionEjecutaProcesoSolicitud($model, $conexionLocal, $connLocal)
+		{
+			$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : null;
+			if ( count($conf) > 0 ) {
+				$procesoEvento = New SolicitudProcesoEvento($conf['id']);
+
+				$procesoEvento->ejecutarProcesoSolicitudSegunEvento(Yii::$app->solicitud->crear(), $conexionLocal, $connLocal);
+			}
+			
+		}
+
 
 
 
