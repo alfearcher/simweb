@@ -127,6 +127,20 @@
 
 
 
+	    /***/
+	    public function findTasaSegunParametros($idCodigo, $impuesto, $anoImpositivo, $grupoSubnivel, $codigo, $inactivo = 0)
+	    {
+	    	$modelFind = Tasa::find()->where('id_codigo =:id_codigo', [':id_codigo' => $idCodigo])
+	    							 ->andWhere('impuesto =:impuesto', [':impuesto' => $impuesto])
+	    							 ->andWhere('anoImpositivo =:anoImpositivo', [':anoImpositivo' => $anoImpositivo])
+	    							 ->andWhere('grupoSubnivel =:grupoSubnivel', [':grupoSubnivel' => $grupoSubnivel])
+	    							 ->andWhere('codigo =:codigo', [':codigo' => $codigo])
+	    							 ->andWhere('inactivo =:inactivo', [':inactivo' => $inactivo]);
+
+	    	return isset($modelFind) ? $modelFind : null;
+	    }
+
+
 
 	    /**
 	     * Metodo que recibe el model y convierte el mismo en un arraeglo para retornarlo.
@@ -141,6 +155,46 @@
 	    		$parametros = $model->toArray();
 	    	}
 	    	return $parametros;
+	    }
+
+
+
+	    /***/
+	    public function determinarTasaParaLiquidar($idImpuesto)
+	    {
+	    	$idTasa = 0;
+	    	$añoActual = date('Y');
+	    	$result = $this->laTasaCorresponde($idImpuesto, $añoActual);
+	    	if ( $result != null ) {
+	    		if ( $result ) {
+	    			
+	    		}
+	    	}
+	    }
+
+
+
+	    /**
+	     * Metodo que permite determiinar si una tasa corresponde a un año especifico.
+	     * @param  [type] $idImpuesto identificador de la tasa. Autoincremental de la entidad.
+	     * @param  [type] $anoImpositivo año impositivo que se quiere determinar y que sera el
+	     * parametro que corresponda con el año de la tasa.
+	     * @return Boolean Retorna True si corresponde el año a la tasa, False en caso contrario.
+	     * Si retorna Null, significa que la consulta del parametro $idImpuesto no arrojo ningun
+	     * resultado.
+	     */
+	    public function laTasaCorresponde($idImpuesto, $anoImpositivo)
+	    {
+	    	$parametros = $this->getValoresTasa($idImpuesto);
+	    	if ( count($parametros) > 0 ) {
+	    		if ( $anoImpositivo == $parametros['ano_impositivo'] ) {
+	    			// Esta es la tasa
+	    			return true;
+	    		} else {
+	    			return false;
+	    		}
+	    	}
+	    	return null;
 	    }
 
 	}
