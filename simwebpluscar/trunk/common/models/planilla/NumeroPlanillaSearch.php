@@ -98,7 +98,8 @@
 			$model = New NumeroPlanilla();
 
 			$model->ente = Yii::$app->ente->getEnte();
-			$model->usuario = Yii::$app->user->identity->email;
+			$usuario = isset(Yii::$app->user->identity->email) ? Yii::$app->user->identity->email : Yii::$app->user->identity->login;
+			//$model->usuario = Yii::$app->user->identity->email;
 			//$model->usuario = 'PRUEBA';
 			$model->fecha_hora = date('Y-m-d H:i:s');
 
