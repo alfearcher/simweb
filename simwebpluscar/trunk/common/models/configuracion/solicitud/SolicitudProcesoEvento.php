@@ -79,7 +79,7 @@
 			foreach ( $listaProcesos as $proceso ) {
 				foreach ( $proceso as $key => $value ) {
 					$miProceso = strtoupper(trim($value));
-					$this->accion[$miProceso];
+					$this->accion[$miProceso] = [];
 					if ( $miProceso == 'LIQUIDACION DIRECTA' ) {
 
 					} elseif ( $miProceso == 'GENERA TASA' ) {
