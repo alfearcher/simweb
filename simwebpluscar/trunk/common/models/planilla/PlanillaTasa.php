@@ -116,7 +116,7 @@
 
 
 		/***/
-		public function getPlanilla()
+		public function getResultado()
 		{
 			return $this->planilla;
 		}
