@@ -175,8 +175,9 @@
 	    	$idTasa = 0;
 	    	$añoActual = date('Y');
 	    	$result = $this->laTasaCorresponde($idImpuesto, $añoActual);
-die(var_dump($result));
-	    	if ( $result != null ) {
+
+	    	if ( $result !== null ) {
+die('smsmsm');	 
 	    		if ( $result ) {
 	    			// La tasa coresponde con el año.
 	    			$idTasa = $idImpuesto;
