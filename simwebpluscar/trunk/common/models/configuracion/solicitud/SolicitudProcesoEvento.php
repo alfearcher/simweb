@@ -77,6 +77,7 @@
 		/***/
 		public function ejecutarProcesoSolicitudSegunEvento($idContribuyente, $evento, $conexionLocal = null, $connLocal = null)
 		{
+			$result = null;
 			$listaProcesos = $this->getProcesoSegunEvento($evento);
 			foreach ( $listaProcesos as $proceso ) {
 				foreach ( $proceso as $key => $value ) {
@@ -107,6 +108,8 @@
 					}
 				}
 			}
+
+			return $result;
 		}
 
 
@@ -134,8 +137,8 @@
 						$idImpuesto = $miTasa->determinarTasaParaLiquidar($value);
 						if ( $idImpuesto > 0 ) {
 							$planillaTasa = New PlanillaTasa($idContribuyente, $idImpuesto, $conexionLocal, $connLocal);
-							$result['resultado'] = $planillaTasa->liquidarTasa();
-							$result['planilla'] = $planillaTasa->getPlanilla();
+							$result[]['resultado'] = $planillaTasa->liquidarTasa();
+							$result[]['planilla'] = $planillaTasa->getPlanilla();
 						}
 					}
 				}
