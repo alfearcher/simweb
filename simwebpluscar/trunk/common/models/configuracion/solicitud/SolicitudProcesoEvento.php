@@ -138,8 +138,9 @@
 						if ( $idImpuesto > 0 ) {
 							$planillaTasa = New PlanillaTasa($idContribuyente, $idImpuesto, $conexionLocal, $connLocal);
 							$result[]['resultado'] = $planillaTasa->liquidarTasa();
+die(var_dump($result[]['resultado']));
 							$result[]['planilla'] = $planillaTasa->getPlanilla();
-die(var_dump($result));
+
 						}
 					}
 				}
