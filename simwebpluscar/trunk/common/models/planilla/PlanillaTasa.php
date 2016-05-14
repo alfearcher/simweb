@@ -186,6 +186,7 @@
 
 			$liquidacion = New LiquidacionTasa($this->_idImpuesto, $factorMultiplicador);
 			$result = $liquidacion->iniciarCalcularLiquidacionTasa();
+die(var_dump($result));
 			return $result;
 		}
 
