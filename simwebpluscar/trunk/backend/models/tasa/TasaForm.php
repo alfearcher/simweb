@@ -176,8 +176,7 @@
 	    	$añoActual = date('Y');
 	    	$result = $this->laTasaCorresponde($idImpuesto, $añoActual);
 
-	    	if ( $result !== null ) {
-die('smsmsm');	 
+	    	if ( $result !== null ) { 
 	    		if ( $result ) {
 	    			// La tasa coresponde con el año.
 	    			$idTasa = $idImpuesto;
@@ -194,6 +193,7 @@ die('smsmsm');
 	    				$codigo = $parametros['codigo'];
 
 	    				$model = $this->findTasaSegunParametros($idCodigo, $impuesto, $añoImpositivo, $grupoSubnivel, $codigo);
+die(var_dump($model));
 	    				$valores = $model->asArray();
 	    				if ( count($valores) > 0 ) {
 	    					$idTasa = $valores['id_impuesto'];
