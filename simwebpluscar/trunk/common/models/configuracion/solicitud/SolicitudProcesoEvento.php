@@ -139,7 +139,7 @@
 							$planillaTasa = New PlanillaTasa($idContribuyente, $idImpuesto, $conexionLocal, $connLocal);
 							$result['resultado'] = $planillaTasa->liquidarTasa();
 							$result['planilla'] = $planillaTasa->getPlanilla();
-die(var_dump($result['planilla']));
+die(var_dump($result));
 						}
 					}
 				}
