@@ -397,7 +397,7 @@
 					$arregloDatos['id_pago'] = null;
 					$arregloDatos['ente'] = Yii::$app->ente->getEnte();
 					$arregloDatos['id_contribuyente'] = $idContribuyente;
-					$arregloDatos['planilla'] = $numeroPlanilla;
+					$arregloDatos['planilla'] = $this->numeroPlanilla;
 					$arregloDatos['ult_act'] = date('Y-m-d');
 					$arregloDatos['id_moneda'] = 1;
 
