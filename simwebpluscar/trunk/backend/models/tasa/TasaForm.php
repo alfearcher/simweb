@@ -159,7 +159,17 @@
 
 
 
-	    /***/
+	    /**
+	     * Metodo que permite definir el identificador de la tasa que se debe utilizar.
+	     * Se utiliza un identificador inicial ($idImpuesto), para determinar si corresponde
+	     * al año actual, de ser asi, se devuelve este identificador como la tasa que se debe
+	     * utilizar, de no ser asi, se consultan los parametros que acompañan al identificador
+	     * ($idImpuesto), para armar una consulta con estos parametros diferenciando en el año
+	     * impositivo, el cual sera el año actual.
+	     * @param  Long $idImpuesto identificador del registro en la entidad. Autoincremental.
+	     * @return Long Retorna un valor que representa el identificador en la entidad respectiva
+	     * sino encuentra el identificador devolvera cero (0).
+	     */
 	    public function determinarTasaParaLiquidar($idImpuesto)
 	    {
 	    	$idTasa = 0;
@@ -167,17 +177,38 @@
 	    	$result = $this->laTasaCorresponde($idImpuesto, $añoActual);
 	    	if ( $result != null ) {
 	    		if ( $result ) {
-	    			
+	    			// La tasa coresponde con el año.
+	    			$idTasa = $idImpuesto;
+	    		} else {
+	    			// Con el $idImpuesto se buscan los parametros adicionales que permitira
+	    			// localizar otra tasa que corresponda a esos parametros pero diferenciando
+	    			// el año, el cual sera el actual.
+	    			$parametros = $this->getValoresTasa($idImpuesto);
+	    			if ( count($parametros) > 0 ) {
+	    				$idCodigo = $parametros['id_codigo'];
+	    				$impuesto = $parametros['impuesto'];
+	    				$añoImpositivo = $añoActual;
+	    				$grupoSubnivel = $parametros['grupo_subnivel'];
+	    				$codigo = $parametros['codigo'];
+
+	    				$model = $this->findTasaSegunParametros($idCodigo, $impuesto, $añoImpositivo, $grupoSubnivel, $codigo);
+	    				$valores = $model->asArray();
+	    				if ( count($valores) > 0 ) {
+	    					$idTasa = $valores['id_impuesto'];
+	    				}
+	    			}
 	    		}
 	    	}
+
+	    	return $idTasa;
 	    }
 
 
 
 	    /**
 	     * Metodo que permite determiinar si una tasa corresponde a un año especifico.
-	     * @param  [type] $idImpuesto identificador de la tasa. Autoincremental de la entidad.
-	     * @param  [type] $anoImpositivo año impositivo que se quiere determinar y que sera el
+	     * @param  Long $idImpuesto identificador de la tasa. Autoincremental de la entidad.
+	     * @param  Integer $anoImpositivo año impositivo que se quiere determinar y que sera el
 	     * parametro que corresponda con el año de la tasa.
 	     * @return Boolean Retorna True si corresponde el año a la tasa, False en caso contrario.
 	     * Si retorna Null, significa que la consulta del parametro $idImpuesto no arrojo ningun
