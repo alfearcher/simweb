@@ -82,7 +82,7 @@
 		 */
 		public function getDetalleSolicitud()
 		{
-			return $this->hasMany(DetalleSolicitud::className(), ['id_config_solic_detalle' => 'id_config_solic_detalle']);
+			return $this->hasMany(SolicitudDetalle::className(), ['id_config_solic_detalle' => 'id_config_solic_detalle']);
 		}
 
 
