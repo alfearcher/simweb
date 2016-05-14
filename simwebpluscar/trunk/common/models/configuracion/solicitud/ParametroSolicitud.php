@@ -423,7 +423,7 @@
 			$modelDetalleSolicitudTasa = null;
 
 			$modelDetalleSolicitudTasa = TasaMultaSolicitud::find()->where(['id_config_solicitud' => $this->getIdConfig(),
-																         SilicitudDetalle::tableName().'.inactivo' => 0,
+																         SolicitudDetalle::tableName().'.inactivo' => 0,
 																         TasaMultaSolicitud::tableName().'.inactivo' => 0,
 																         'ejecutar_en' => $evento,
 																	])
