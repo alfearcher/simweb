@@ -122,7 +122,6 @@
 			foreach ( $tasas as $tasa ) {
 				foreach ( $tasa as $key => $value ) {
 					if ( $key == 'id_impuesto' ) {
-die(var_dump($value));
 						$miTasa = New TasaForm();
 						$idImpuesto = $miTasa->determinarTasaParaLiquidar($value);
 die(var_dump($idImpuesto));
