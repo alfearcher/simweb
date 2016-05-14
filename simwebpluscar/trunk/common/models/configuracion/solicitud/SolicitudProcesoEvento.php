@@ -126,7 +126,7 @@
 		/***/
 		public function generaTasa($idContribuyente, $evento, $conexionLocal, $connLocal)
 		{
-			$result = [];
+			$result = null;
 			$idImpuesto = 0;
 			// Se espera los valores de la entidad "config-solic-tasas-multas".
 			$tasas = $this->getDetalleSolicitudTasaMulta($evento);
@@ -138,7 +138,7 @@
 						if ( $idImpuesto > 0 ) {
 							$planillaTasa = New PlanillaTasa($idContribuyente, $idImpuesto, $conexionLocal, $connLocal);
 							$planillaTasa->liquidarTasa();
-							$result = $planillaTasa->getPlanilla();
+							$result = $planillaTasa->getResultado();
 die(var_dump($result));
 						}
 					}
