@@ -132,7 +132,7 @@
 	    {
 	    	$modelFind = Tasa::find()->where('id_codigo =:id_codigo', [':id_codigo' => $idCodigo])
 	    							 ->andWhere('impuesto =:impuesto', [':impuesto' => $impuesto])
-	    							 ->andWhere('anoImpositivo =:anoImpositivo', [':anoImpositivo' => $anoImpositivo])
+	    							 ->andWhere('ano_impositivo =:ano_impositivo', [':ano_impositivo' => $anoImpositivo])
 	    							 ->andWhere('grupoSubnivel =:grupoSubnivel', [':grupoSubnivel' => $grupoSubnivel])
 	    							 ->andWhere('codigo =:codigo', [':codigo' => $codigo])
 	    							 ->andWhere('inactivo =:inactivo', [':inactivo' => $inactivo]);
