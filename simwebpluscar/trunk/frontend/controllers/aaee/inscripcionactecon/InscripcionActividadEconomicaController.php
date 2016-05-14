@@ -219,7 +219,7 @@
 								$result = self::actionUpdateContribuyente($model, $conexion, $this->conn);
 							}
 
-							$result = self::actionEjecutaProcesoSolicitud($model, $conexion, $conn);
+							$result = self::actionEjecutaProcesoSolicitud($model, $conexion, $this->conn);
 						}
 						if ( $result ) {
 							$transaccion->commit();
