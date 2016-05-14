@@ -217,6 +217,7 @@
 	    public function laTasaCorresponde($idImpuesto, $anoImpositivo)
 	    {
 	    	$parametros = $this->getValoresTasa($idImpuesto);
+die(var_dump($parametros));
 	    	if ( count($parametros) > 0 ) {
 	    		if ( $anoImpositivo == $parametros['ano_impositivo'] ) {
 	    			// Esta es la tasa
