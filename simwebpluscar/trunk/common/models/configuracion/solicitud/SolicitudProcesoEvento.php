@@ -131,22 +131,20 @@
 			// Se espera los valores de la entidad "config-solic-tasas-multas".
 			$tasas = $this->getDetalleSolicitudTasaMulta($evento);
 			foreach ( $tasas as $tasa ) {
-die(var_dump($tasas));
-				foreach ( $tasa as $key => $value ) {
-					if ( $key == 'id_impuesto' ) {
+				//foreach ( $tasa as $key => $value ) {
+					//if ( $tasa[] == 'id_impuesto' ) {
 						$miTasa = New TasaForm();
-						$idImpuesto = $miTasa->determinarTasaParaLiquidar($value);
+						$idImpuesto = $miTasa->determinarTasaParaLiquidar($tasa['id_impuesto']);
 						if ( $idImpuesto > 0 ) {
-die(var_dump($tasa['nro_veces_liquidar']));
+//die(var_dump($tasa['nro_veces_liquidar']));
 							for ( $i = 1; $i <= $tasa['nro_veces_liquidar']; $i++ ) { 
-								# code...
+								$planillaTasa = New PlanillaTasa($idContribuyente, $idImpuesto, $conexionLocal, $connLocal);
+								$planillaTasa->liquidarTasa();
+								$result[$idImpuesto][$i] = $planillaTasa->getResultado();	
 							}
-							$planillaTasa = New PlanillaTasa($idContribuyente, $idImpuesto, $conexionLocal, $connLocal);
-							$planillaTasa->liquidarTasa();
-							$result[$idImpuesto] = $planillaTasa->getResultado();
 						}
-					}
-				}
+					//}
+				//}
 			}
 
 			return $result;
