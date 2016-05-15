@@ -350,6 +350,7 @@
 		/***/
 		public function actionEjecutaProcesoSolicitud($model, $conexionLocal, $connLocal)
 		{
+			$result = false;
 			$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : null;
 			if ( count($conf) > 0 ) {
 				$procesoEvento = New SolicitudProcesoEvento($conf['id_config_solicitud']);
@@ -361,8 +362,15 @@
 				$procesoEvento->ejecutarProcesoSolicitudSegunEvento($model->id_contribuyente, Yii::$app->solicitud->crear(), $conexionLocal, $connLocal);
 
 				// Se obtiene el resultado de la ejecucion de los procesos
-				$result = $procesoEvento->getAccion();
+				$resultado = $procesoEvento->getAccion();
+				if ( count($resultado) > 0 ) {
+
+				} else {
+					$result = true;
+				}
 			}
+
+			return $result;
 			
 		}
 
