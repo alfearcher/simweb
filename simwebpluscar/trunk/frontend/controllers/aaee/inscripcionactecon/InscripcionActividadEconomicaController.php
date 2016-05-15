@@ -360,7 +360,8 @@
 				// corresponda a un reultado de la ejecucion.
 				$procesoEvento->ejecutarProcesoSolicitudSegunEvento($model->id_contribuyente, Yii::$app->solicitud->crear(), $conexionLocal, $connLocal);
 
-die(var_dump($procesoEvento->getAccion()));
+				// Se obtiene el resultado de la ejecucion de los procesos
+				$result = $procesoEvento->getAccion();
 			}
 			
 		}
