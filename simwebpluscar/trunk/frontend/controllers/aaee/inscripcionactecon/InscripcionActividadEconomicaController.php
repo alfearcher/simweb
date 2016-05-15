@@ -96,10 +96,6 @@
 
 			if ( isset($getData['id']) && $idContribuyente > 0 ) {
 
-				//$r = New SolicitudProcesoEvento($getData['id']);
-
-				//$r->ejecutarProcesoSolicitudSegunEvento(Yii::$app->solicitud->crear());
-
 				// identificador de la configuracion de la solicitud.
 				$id = $getData['id'];
 				$tipoSolicitud = 0;
@@ -362,8 +358,8 @@
 				$procesoEvento->ejecutarProcesoSolicitudSegunEvento($model->id_contribuyente, Yii::$app->solicitud->crear(), $conexionLocal, $connLocal);
 
 				// Se obtiene el resultado de la ejecucion de los procesos
-				$resultado = $procesoEvento->getAccion();
-				if ( count($resultado) > 0 ) {
+				$acciones = $procesoEvento->getAccion();
+				if ( count($acciones) > 0 ) {
 
 				} else {
 					$result = true;
@@ -442,7 +438,6 @@
 							'guardar'
 					];
 		}
-
 
 
 
