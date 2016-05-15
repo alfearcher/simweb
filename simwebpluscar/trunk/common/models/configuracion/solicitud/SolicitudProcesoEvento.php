@@ -143,7 +143,7 @@
 								$result[$idImpuesto][$i] = $planillaTasa->getResultado();	
 							}
 						} else {
-							$result[$tasa['id_impuesto']][1] = null;	
+							$result[$tasa['id_impuesto']] = null;	
 						}
 					//}
 				//}
