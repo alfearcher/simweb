@@ -364,23 +364,15 @@
 						if ( isset($acciones['GENERA TASA']) ) {
 							foreach ( $accion as $items ) {
 								// $items contiene el numero de veces que se liquido la tasa.
+die(var_dump($accion));
 								foreach ( $items as $item ) {
 									// $item contiene la liquidacion de una tasa, numero de planilla
 									// y resultado de la liquidacion.
 									if ( $item['resultado'] == true ) {
-die('se liquido la planilla ' . $item['planilla']);
+
 									}
 								}
 							}
-						}
-					}
-
-
-
-					if ( isset($acciones['GENERA TASA']) ) {
-						$items = $acciones['GENERA TASA'];
-						foreach ( $items as $item ) {
-die(var_dump($items));
 						}
 					}
 				} else {
