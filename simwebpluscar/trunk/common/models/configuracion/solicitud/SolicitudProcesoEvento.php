@@ -112,7 +112,6 @@
 			} else {
 				$this->accion = $result;
 			}
-			//return $result;
 		}
 
 
