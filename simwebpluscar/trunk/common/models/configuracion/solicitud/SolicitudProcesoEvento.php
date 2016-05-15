@@ -142,6 +142,8 @@
 								$planillaTasa->liquidarTasa();
 								$result[$idImpuesto][$i] = $planillaTasa->getResultado();	
 							}
+						} else {
+							$result[$tasa['id_impuesto']][1] = null;	
 						}
 					//}
 				//}
