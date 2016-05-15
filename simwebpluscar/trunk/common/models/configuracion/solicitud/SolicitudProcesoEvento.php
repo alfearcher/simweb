@@ -87,7 +87,7 @@
 						if ( $miProceso == 'LIQUIDACION DIRECTA' ) {
 
 						} elseif ( $miProceso == 'GENERA TASA' ) {
-							
+
 							$result = $this->generaTasa($idContribuyente, $evento, $conexionLocal, $connLocal);
 							$this->accion[$miProceso] = $result;
 
@@ -136,13 +136,13 @@
 				$miTasa = New TasaForm();
 				$idImpuesto = $miTasa->determinarTasaParaLiquidar($tasa['id_impuesto']);
 				if ( $idImpuesto > 0 ) {
-					for ( $i = 1; $i <= $tasa['nro_veces_liquidar']; $i++ ) { 
+					for ( $i = 1; $i <= $tasa['nro_veces_liquidar']; $i++ ) {
 						$planillaTasa = New PlanillaTasa($idContribuyente, $idImpuesto, $conexionLocal, $connLocal);
 						$planillaTasa->liquidarTasa();
-						$result[$idImpuesto][$i] = $planillaTasa->getResultado();	
+						$result[$idImpuesto][$i] = $planillaTasa->getResultado();
 					}
 				} else {
-					$result[$tasa['id_impuesto']] = null;	
+					$result[$tasa['id_impuesto']] = null;
 				}
 			}
 
