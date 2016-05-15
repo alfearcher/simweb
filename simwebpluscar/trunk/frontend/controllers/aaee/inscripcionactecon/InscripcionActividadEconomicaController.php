@@ -362,7 +362,9 @@
 				if ( count($acciones) > 0 ) {
 					foreach ( $acciones as $accion ) {
 						if ( isset($acciones['GENERA TASA']) ) {
-die(var_dump($accion));
+							foreach ( $accion as $items ) {
+die(var_dump($items));
+							}
 						}
 					}
 
