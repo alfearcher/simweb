@@ -359,8 +359,14 @@
 
 				// Se obtiene el resultado de la ejecucion de los procesos
 				$acciones = $procesoEvento->getAccion();
+die(var_dump($acciones));
 				if ( count($acciones) > 0 ) {
-
+					if ( isset($acciones['GENERA TASA']) ) {
+						$items = $acciones['GENERA TASA'];
+						foreach ( $items as $item ) {
+die(var_dump($item));
+						}
+					}
 				} else {
 					$result = true;
 				}
