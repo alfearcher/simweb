@@ -79,37 +79,40 @@
 		{
 			$result = null;
 			$listaProcesos = $this->getProcesoSegunEvento($evento);
-			foreach ( $listaProcesos as $proceso ) {
-				foreach ( $proceso as $key => $value ) {
-					$miProceso = strtoupper(trim($value));
-					$this->accion[$miProceso] = [];
-					if ( $miProceso == 'LIQUIDACION DIRECTA' ) {
+			if ( count($listaProcesos) ) {
+				foreach ( $listaProcesos as $proceso ) {
+					foreach ( $proceso as $key => $value ) {
+						$miProceso = strtoupper(trim($value));
+						$this->accion[$miProceso] = [];
+						if ( $miProceso == 'LIQUIDACION DIRECTA' ) {
 
-					} elseif ( $miProceso == 'GENERA TASA' ) {
-						
-						$result = $this->generaTasa($idContribuyente, $evento, $conexionLocal, $connLocal);
-						$this->accion[$miProceso] = $result;
+						} elseif ( $miProceso == 'GENERA TASA' ) {
+							
+							$result = $this->generaTasa($idContribuyente, $evento, $conexionLocal, $connLocal);
+							$this->accion[$miProceso] = $result;
 
-					} elseif ( $miProceso == 'SOLICITA DOCUMENTOS' ) {
+						} elseif ( $miProceso == 'SOLICITA DOCUMENTOS' ) {
 
-					} elseif ( $miProceso == 'GENERA CITA' ) {
+						} elseif ( $miProceso == 'GENERA CITA' ) {
 
-					} elseif ( $miProceso == 'GENERA NOTIFICACION' ) {
+						} elseif ( $miProceso == 'GENERA NOTIFICACION' ) {
 
-					} elseif ( $miProceso == 'GENERA MULTA' ) {
+						} elseif ( $miProceso == 'GENERA MULTA' ) {
 
-					} elseif ( $miProceso == 'GENERA FISCALIZACION' ) {
+						} elseif ( $miProceso == 'GENERA FISCALIZACION' ) {
 
-					} elseif ( $miProceso == 'GENERA AUDITORIA' ) {
+						} elseif ( $miProceso == 'GENERA AUDITORIA' ) {
 
-					} elseif ( $miProceso == 'GENERA CIERRE' ) {
+						} elseif ( $miProceso == 'GENERA CIERRE' ) {
 
-					} else {
+						} else {
+						}
 					}
 				}
+			} else {
+				$this->accion = $result;
 			}
-
-			return $result;
+			//return $result;
 		}
 
 
