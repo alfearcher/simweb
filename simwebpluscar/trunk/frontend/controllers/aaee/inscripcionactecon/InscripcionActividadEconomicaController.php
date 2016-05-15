@@ -360,21 +360,8 @@
 				// Se obtiene el resultado de la ejecucion de los procesos
 				$acciones = $procesoEvento->getAccion();
 				if ( count($acciones) > 0 ) {
-					foreach ( $acciones as $accion ) {
-						if ( isset($acciones['GENERA TASA']) ) {
-							foreach ( $accion as $items ) {
-								// $items contiene el numero de veces que se liquido la tasa.
-die(var_dump($accion));
-								foreach ( $items as $item ) {
-									// $item contiene la liquidacion de una tasa, numero de planilla
-									// y resultado de la liquidacion.
-									if ( $item['resultado'] == true ) {
-
-									}
-								}
-							}
-						}
-					}
+					$result = $procesoEvento->analizarGeneraTasa($acciones);
+die(var_dump($result));
 				} else {
 					$result = true;
 				}
