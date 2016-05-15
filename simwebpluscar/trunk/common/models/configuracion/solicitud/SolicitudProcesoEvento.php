@@ -117,7 +117,13 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que permite obtener un arreglo de los procesos generados por
+		 * la solicitud, segun el evento de la solicitud.
+		 * @return Array Retorna un arreglo donde el key principal corresponde
+		 * al nonbre del proceso y el valor del elemneto a los resultados de la
+		 * ejecucion de dicho proceso.
+		 */
 		public function getAccion()
 		{
 			return $this->accion;
@@ -125,7 +131,23 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que liquida la tasa correspondiente, segun el evento.
+		 * @param  Long $idContribuyente [description]
+		 * @param  String $evento          [description]
+		 * @param  ConexionController $conexionLocal  instancia de conexion, Clase de tipo Conexioncontroller.
+		 * @param  [type] $connLocal
+		 * @return Array Retorna un arreglo con los resultado de la liquidacion de las tasas.
+		 * el esquema de este arreglo es:
+		 * [1] => array {
+		 * 			[planilla] => numero de planilla
+		 * 			[resultado] => true o false
+		 * }
+		 * [n] => array {
+		 * 			[planilla n] => numero de planilla
+		 * 			[resultado n] => true o false
+		 * }
+		 */
 		public function generaTasa($idContribuyente, $evento, $conexionLocal, $connLocal)
 		{
 			$result = null;
@@ -133,8 +155,14 @@
 			// Se espera los valores de la entidad "config-solic-tasas-multas".
 			$tasas = $this->getDetalleSolicitudTasaMulta($evento);
 			foreach ( $tasas as $tasa ) {
+
 				$miTasa = New TasaForm();
+				// Se determinara la tasa correspondiente al año actual.
+				// Con el id_impuesto se determina si corresponde al año actual, sino
+				// es la del año actual se busca el id_impuesto que corresponda, segun
+				// los parametros existentes del id_impuesto que se mande.
 				$idImpuesto = $miTasa->determinarTasaParaLiquidar($tasa['id_impuesto']);
+
 				if ( $idImpuesto > 0 ) {
 					for ( $i = 1; $i <= $tasa['nro_veces_liquidar']; $i++ ) {
 						$planillaTasa = New PlanillaTasa($idContribuyente, $idImpuesto, $conexionLocal, $connLocal);
