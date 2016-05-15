@@ -367,7 +367,9 @@
 								foreach ( $items as $item ) {
 									// $item contiene la liquidacion de una tasa, numero de planilla
 									// y resultado de la liquidacion.
-die(var_dump($item));
+									if ( $item['resultado'] == true ) {
+die('se liquido la planilla ' . $item['planilla']);
+									}
 								}
 							}
 						}
