@@ -80,6 +80,7 @@
 			$this->_periodosLiquidados = null;
 			$this->conexion = $conexionLocal;
 			$this->conn = $connLocal;
+			parent::__construct();
 		}
 
 
