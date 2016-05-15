@@ -364,7 +364,7 @@
 					if ( isset($acciones['GENERA TASA']) ) {
 						$items = $acciones['GENERA TASA'];
 						foreach ( $items as $item ) {
-die(var_dump($item));
+die(var_dump($items));
 						}
 					}
 				} else {
