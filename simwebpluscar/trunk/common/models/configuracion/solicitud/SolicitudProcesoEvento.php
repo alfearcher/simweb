@@ -150,5 +150,38 @@
 		}
 
 
+
+		/***/
+		public function analizarGeneraTasa($acciones)
+		{
+			$result = true;
+			if ( count($acciones) > 0 ) {
+				foreach ( $acciones as $accion ) {
+					if ( isset($acciones['GENERA TASA']) ) {
+						foreach ( $accion as $items ) {
+							// $items contiene el numero de veces que se liquido la tasa.
+							if ( $items == null ) {
+								$result = false;
+								break;
+							} else {
+								foreach ( $items as $item ) {
+									// $item contiene la liquidacion de una tasa, numero de planilla
+									// y resultado de la liquidacion.
+									if ( $item['resultado'] == false ) {
+										$result = false;
+										break;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			return $result;
+		}
+
+
+
 	}
  ?>
