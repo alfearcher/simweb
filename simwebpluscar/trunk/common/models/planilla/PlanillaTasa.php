@@ -93,6 +93,7 @@
 		 */
 		public function liquidarTasa($factorMultiplicador = 0, $observacion = '')
 		{
+			$resultado = false;
 			if ( isset($this->conexion) && isset($this->conn) ) {
 				$parametros = self::iniciarLiquidarTasa($factorMultiplicador);
 				if ( count($parametros) > 0 ) {
@@ -104,8 +105,9 @@
 						$result[$parametros['ano_impositivo']] = self::generarPeriodoLiquidado($parametros);
 						if ( $result != null && isset($this->_idContribuyente) ) {
 							// Metodo de la clase Planilla().
-							$this->planilla['resultado'] = $this->iniciarGuadarPlanilla($this->conexion, $this->conn, $this->_idContribuyente, $result);
+							$resultado = $this->iniciarGuadarPlanilla($this->conexion, $this->conn, $this->_idContribuyente, $result);
 							$this->planilla['planilla'] = $this->getPlanilla();
+							$this->planilla['resultado'] = $resultado;
 						}
 					}
 				}
