@@ -136,6 +136,10 @@
 						$miTasa = New TasaForm();
 						$idImpuesto = $miTasa->determinarTasaParaLiquidar($value);
 						if ( $idImpuesto > 0 ) {
+die(var_dump($tasa['nro_veces_liquidar']));
+							for ( $i = 1; $i <= $tasa['nro_veces_liquidar']; $i++ ) { 
+								# code...
+							}
 							$planillaTasa = New PlanillaTasa($idContribuyente, $idImpuesto, $conexionLocal, $connLocal);
 							$planillaTasa->liquidarTasa();
 							$result[$idImpuesto] = $planillaTasa->getResultado();
