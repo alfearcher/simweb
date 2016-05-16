@@ -301,16 +301,27 @@
 		/***/
 		private function actionCreateInscripcionActEcon($model, $conexionLocal, $connLocal)
 		{
+			$estatus = 0;
+			$userFuncionario = '';
+			$fechaHoraProceso = '0000-00-00 00:00:00';
 			$result = false;
 			$tabla = $model->tableName();
 			$idContribuyente = $_SESSION['idContribuyente'];
 
+			$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : null;
+			if ( $conf['nivel_aprobacion'] == 1 ) {
+				$estatus = 1;
+				$userFuncionario = Yii::$app->user->identity->login;
+				$fechaHoraProceso = date('Y-m-d H:i:s');
+			}
+
 			$model->origen = 'WEB';
 			$model->fecha = date('Y-m-d', strtotime($model->fecha));
-			$model->estatus = 0;
+			$model->estatus = $estatus;
 			$model->fecha_hora = date('Y-m-d H:i:s');
 			$model->usuario = Yii::$app->user->identity->login;
-			$model->fecha_hora_proceso = '0000-00-00 00:00:00';
+			$model->user_funionario = $userFuncionario;
+			$model->fecha_hora_proceso = $fechaHoraProceso;
 
 			// Arreglo de datos para pasarle los datos del modelo.
 			$arregloDatos = $model->attributes;
