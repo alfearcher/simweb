@@ -163,7 +163,7 @@
 		 * 			[resultado n] => true o false
 		 * }
 		 */
-		protected function generaTasa($idContribuyente, $evento, $conexionLocal, $connLocal)
+		public function generaTasa($idContribuyente, $evento, $conexionLocal, $connLocal)
 		{
 			$result = null;
 			$idImpuesto = 0;
@@ -195,7 +195,7 @@
 
 
 		/***/
-		protected function analizarGeneraTasa($accionesLocal)
+		public function analizarGeneraTasa($accionesLocal)
 		{
 			$result = true;
 			if ( count($accionesLocal) > 0 ) {
