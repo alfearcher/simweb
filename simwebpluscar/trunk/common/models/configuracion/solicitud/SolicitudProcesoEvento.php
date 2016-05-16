@@ -229,12 +229,12 @@
 		/***/
 		public function resultadoEjecutarProcesos()
 		{
-			$result = null;
+			$result = false;
 			if ( count($this->acciones) ) {
 				foreach ( $this->acciones as $key => $value ) {
 					if ( $key == 'LIQUIDACION DIRECTA' ) {
 
-						$result[$key] = null;
+						$result[$key] = false;
 
 					} elseif ( $key == 'GENERA TASA' ) {
 
@@ -242,31 +242,31 @@
 
 					} elseif ( $key == 'SOLICITA DOCUMENTOS' ) {
 
-						$result[$key] = null;
+						$result[$key] = false;
 
 					} elseif ( $key == 'GENERA CITA' ) {
 
-						$result[$key] = null;
+						$result[$key] = false;
 
 					} elseif ( $key == 'GENERA NOTIFICACION' ) {
 
-						$result[$key] = null;
+						$result[$key] = false;
 
 					} elseif ( $key == 'GENERA MULTA' ) {
 
-						$result[$key] = null;
+						$result[$key] = false;
 
 					} elseif ( $key == 'GENERA FISCALIZACION' ) {
 
-						$result[$key] = null;
+						$result[$key] = false;
 
 					} elseif ( $key == 'GENERA AUDITORIA' ) {
 
-						$result[$key] = null;
+						$result[$key] = false;
 
 					} elseif ( $key == 'GENERA CIERRE' ) {
 
-						$result[$key] = null;
+						$result[$key] = false;
 
 					}
 				}
