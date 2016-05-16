@@ -203,13 +203,13 @@
 					if ( isset($accionesLocal['GENERA TASA']) ) {
 //die(var_dump($accion));
 						// $accion tiene el identificador de la tasa y las veces que se liquido.
-						foreach ( $value as $items ) {
+						foreach ( $value as $key1 => $value1 ) {
 							// $items contiene el numero de veces que se liquido la tasa.
-							if ( $items == null ) {
+							if ( $value1 == null ) {
 								$result = false;
 								break;
 							} else {
-								foreach ( $items as $item ) {
+								foreach ( $value1 as $item ) {
 									// $item contiene la liquidacion de una tasa, numero de planilla
 									// y resultado de la liquidacion.
 									if ( $item['resultado'] == false ) {
