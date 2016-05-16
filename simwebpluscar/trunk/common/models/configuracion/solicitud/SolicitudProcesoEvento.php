@@ -195,12 +195,13 @@
 
 
 		/***/
-		protected function analizarGeneraTasa($acciones)
+		protected function analizarGeneraTasa($accionesLocal)
 		{
 			$result = true;
-			if ( count($acciones) > 0 ) {
-				foreach ( $acciones as $accion ) {
-					if ( isset($acciones['GENERA TASA']) ) {
+			if ( count($accionesLocal) > 0 ) {
+				foreach ( $accionesLocal as $accion ) {
+					if ( isset($accionesLocal['GENERA TASA']) ) {
+die(var_dump($accion));
 						foreach ( $accion as $items ) {
 							// $items contiene el numero de veces que se liquido la tasa.
 							if ( $items == null ) {
