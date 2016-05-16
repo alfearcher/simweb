@@ -281,7 +281,7 @@
 				$modelSolicitud->inactivo = 0;
 				$modelSolicitud->estatus = $estatus;
 				$modelSolicitud->nro_control = 0;
-				$modelSolicitud->user_funionario = $userFuncionario;
+				$modelSolicitud->user_funcionario = $userFuncionario;
 				$modelSolicitud->fecha_hora_proceso = $fechaHoraProceso;
 				$modelSolicitud->causa = 0;
 
@@ -320,7 +320,7 @@
 			$model->estatus = $estatus;
 			$model->fecha_hora = date('Y-m-d H:i:s');
 			$model->usuario = Yii::$app->user->identity->login;
-			$model->user_funionario = $userFuncionario;
+			$model->user_funcionario = $userFuncionario;
 			$model->fecha_hora_proceso = $fechaHoraProceso;
 
 			// Arreglo de datos para pasarle los datos del modelo.
