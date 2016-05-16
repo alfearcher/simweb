@@ -249,6 +249,9 @@
 		 */
 		private function actionCreateSolicitud($conexionLocal, $connLocal)
 		{
+			$estatus = 0;
+			$userFuncionario = '';
+			$fechaHoraProceso = '0000-00-00 00:00:00';
 			$nroSolicitud = 0;
 			$modelSolicitud = New SolicitudesContribuyenteForm();
 			$tabla = $modelSolicitud->tableName();
@@ -265,14 +268,21 @@
 				// nivel-aprobacion
 				$modelSolicitud->attributes = $conf;
 
+				if ( $conf['nivel_aprobacion'] == 1 ) {
+					$estatus = 1;
+					$userFuncionario = Yii::$app->user->identity->login;
+					$fechaHoraProceso = date('Y-m-d H:i:s');
+				}
+
 				$modelSolicitud->id_contribuyente = $idContribuyente;
 				$modelSolicitud->id_impuesto = 0;
 				$modelSolicitud->usuario = Yii::$app->user->identity->login;
 				$modelSolicitud->fecha_hora_creacion = date('Y-m-d H:i:s');
 				$modelSolicitud->inactivo = 0;
-				$modelSolicitud->estatus = 0;
+				$modelSolicitud->estatus = $estatus;
 				$modelSolicitud->nro_control = 0;
-				$modelSolicitud->fecha_hora_proceso = '0000-00-00 00:00:00';
+				$modelSolicitud->user_funionario = $userFuncionario;
+				$modelSolicitud->fecha_hora_proceso = $fechaHoraProceso;
 				$modelSolicitud->causa = 0;
 
 				// Arreglo de datos del modelo para guardar los datos.
