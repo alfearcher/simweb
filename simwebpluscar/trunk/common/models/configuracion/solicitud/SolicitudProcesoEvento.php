@@ -203,7 +203,7 @@
 					if ( isset($accionesLocal['GENERA TASA']) ) {
 
 						$accion = $accionesLocal['GENERA TASA'];
-//die(var_dump($accion));
+
 						// $accion tiene el identificador de la tasa y las veces que se liquido.
 						foreach ( $accion as $items ) {
 							// $items contiene el numero de veces que se liquido la tasa.
@@ -230,7 +230,14 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que permite determinar el resultado de cada accion ejecutado (procesos ejecutados)
+		 * para enviar un resumen que contiene un array donde el key del array es el nombre del proceso
+		 * y el valor del elemento es el resultado de la ejecucion del proceso segun la logica de validacion
+		 * de cada proceso.
+		 * @return Array Retorna un array donde el key representa el nombre del proceso y el valor del elemento
+		 * es boolean.
+		 */
 		public function resultadoEjecutarProcesos()
 		{
 			$result = false;
