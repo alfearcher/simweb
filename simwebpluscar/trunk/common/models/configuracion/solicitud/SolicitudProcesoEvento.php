@@ -57,7 +57,7 @@
 	class SolicitudProcesoEvento extends ParametroSolicitud
 	{
 		public $idConfigSolicitud;
-		public $accion = [];
+		public $acciones = [];
 
 
 
@@ -89,7 +89,7 @@
 						} elseif ( $miProceso == 'GENERA TASA' ) {
 
 							$result = $this->generaTasa($idContribuyente, $evento, $conexionLocal, $connLocal);
-							$this->accion[$miProceso] = $result;
+							$this->acciones[$miProceso] = $result;
 
 						} elseif ( $miProceso == 'SOLICITA DOCUMENTOS' ) {
 
@@ -110,7 +110,7 @@
 					}
 				}
 			} else {
-				$this->accion = $result;
+				$this->acciones = $result;
 			}
 		}
 
@@ -126,7 +126,7 @@
 		 */
 		public function getAccion()
 		{
-			return $this->accion;
+			return $this->acciones;
 		}
 
 
@@ -148,7 +148,7 @@
 		 * 			[resultado n] => true o false
 		 * }
 		 */
-		public function generaTasa($idContribuyente, $evento, $conexionLocal, $connLocal)
+		protected function generaTasa($idContribuyente, $evento, $conexionLocal, $connLocal)
 		{
 			$result = null;
 			$idImpuesto = 0;
@@ -180,7 +180,7 @@
 
 
 		/***/
-		public function analizarGeneraTasa($acciones)
+		protected function analizarGeneraTasa($acciones)
 		{
 			$result = true;
 			if ( count($acciones) > 0 ) {
@@ -208,6 +208,41 @@
 
 			return $result;
 		}
+
+
+
+		/***/
+		public function resultadoEjecutarProcesos()
+		{
+			$result = null;
+			if ( count($this->acciones) ) {
+				foreach ( $this->acciones as $key => $value ) {
+					if ( $key == 'LIQUIDACION DIRECTA' ) {
+
+					} elseif ( $key == 'GENERA TASA' ) {
+
+						$result[$key] = $this->analizarGeneraTasa($this->acciones);
+
+					} elseif ( $key == 'SOLICITA DOCUMENTOS' ) {
+
+					} elseif ( $key == 'GENERA CITA' ) {
+
+					} elseif ( $key == 'GENERA NOTIFICACION' ) {
+
+					} elseif ( $key == 'GENERA MULTA' ) {
+
+					} elseif ( $key == 'GENERA FISCALIZACION' ) {
+
+					} elseif ( $key == 'GENERA AUDITORIA' ) {
+
+					} elseif ( $key == 'GENERA CIERRE' ) {
+					}
+				}
+			}
+
+			return $result;
+		}
+
 
 
 
