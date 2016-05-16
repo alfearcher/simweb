@@ -219,23 +219,40 @@
 				foreach ( $this->acciones as $key => $value ) {
 					if ( $key == 'LIQUIDACION DIRECTA' ) {
 
+						$result[$key] = null;
+
 					} elseif ( $key == 'GENERA TASA' ) {
 
 						$result[$key] = $this->analizarGeneraTasa($this->acciones);
 
 					} elseif ( $key == 'SOLICITA DOCUMENTOS' ) {
 
+						$result[$key] = null;
+
 					} elseif ( $key == 'GENERA CITA' ) {
+
+						$result[$key] = null;
 
 					} elseif ( $key == 'GENERA NOTIFICACION' ) {
 
+						$result[$key] = null;
+
 					} elseif ( $key == 'GENERA MULTA' ) {
+
+						$result[$key] = null;
 
 					} elseif ( $key == 'GENERA FISCALIZACION' ) {
 
+						$result[$key] = null;
+
 					} elseif ( $key == 'GENERA AUDITORIA' ) {
 
+						$result[$key] = null;
+
 					} elseif ( $key == 'GENERA CIERRE' ) {
+
+						$result[$key] = null;
+
 					}
 				}
 			}
