@@ -359,6 +359,7 @@
 
 				// Se obtiene el resultado de la ejecucion de los procesos
 				$acciones = $procesoEvento->getAccion();
+die(var_dump($scciones));
 				if ( count($acciones) > 0 ) {
 					$result = $procesoEvento->resultadoEjecutarProcesos();
 die(var_dump($result));
