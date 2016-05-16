@@ -58,6 +58,7 @@
     use backend\models\configuracion\tiposolicitud\TipoSolicitud;
     use backend\models\impuesto\Impuesto;
     use backend\models\funcionario\solicitud\FuncionarioSolicitud;
+    use common\models\configuracion\solicitudplanilla\SolicitudPlanilla;
 
 
     class SolicitudesContribuyente extends ActiveRecord
@@ -108,6 +109,16 @@
         public function getFuncionarioSolicitud()
         {
             return $this->hasMany(FuncionarioSolicitud::className(), ['tipo_solicitud' => 'tipo_solicitud']);
+        }
+
+
+        /**
+         * Relacion con la entidad "solicitudes-planillas"
+         * @return Active Record.
+         */
+        public function getSolicitudPlanilla()
+        {
+            return $this->hasMany(SolicitudPlanilla::className(), ['nro_solicitud' => 'nro_solicitud']);
         }
 
     }
