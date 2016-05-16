@@ -360,7 +360,7 @@
 				// Se obtiene el resultado de la ejecucion de los procesos
 				$acciones = $procesoEvento->getAccion();
 				if ( count($acciones) > 0 ) {
-					$result = $procesoEvento->analizarGeneraTasa($acciones);
+					$result = $procesoEvento->resultadoEjecutarProcesos();
 die(var_dump($result));
 				} else {
 					$result = true;
