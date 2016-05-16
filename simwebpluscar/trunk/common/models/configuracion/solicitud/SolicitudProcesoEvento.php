@@ -252,7 +252,7 @@
             $modelSolicitudPlanilla->nro_solicitud = $nroSolicitud;
             $modelSolicitudPlanilla->inactivo = 0;
             $modelSolicitudPlanilla->usuario = $usuario;
-            $modelSolicitudPlanilla = date('Y-m-d H:i:s');
+            $modelSolicitudPlanilla->fecha_hora = date('Y-m-d H:i:s');
             $modelSolicitudPlanilla->planilla = $planilla;
 
             $arregloDatos = $modelSolicitudPlanilla->attributes;
