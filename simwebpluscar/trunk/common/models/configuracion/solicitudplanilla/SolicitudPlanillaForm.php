@@ -53,7 +53,7 @@
 
 
     /***/
-    class SolicitudePlanillaForm extends SolicitudePlanilla
+    class SolicitudPlanillaForm extends SolicitudPlanilla
     {
         public $id_solicitud_planilla;
         public $nro_solicitud;
@@ -131,6 +131,7 @@
             $modelFind = SolicitudPlanilla::find()->where('nro_solicitud =:nro_solicitud', [':nro_solicitud' => $nroSolicitud]);
             return isset($modelFind) ? $modelFind : null;
         }
+
 
     }
 

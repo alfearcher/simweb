@@ -49,6 +49,7 @@
 	use common\models\configuracion\solicitud\ParametroSolicitud;
 	use backend\models\tasa\TasaForm;
 	use common\models\planilla\PlanillaTasa;
+	use common\models\configuracion\solicitudplanilla\SolicitudPlanillaForm;
 
 
 	/**
@@ -74,8 +75,16 @@
 
 
 
-		/***/
-		public function ejecutarProcesoSolicitudSegunEvento($idContribuyente, $evento, $conexionLocal = null, $connLocal = null)
+		 /**
+		 * [ejecutarProcesoSolicitudSegunEvento description]
+		 * @param  Active Record $model modelo que debe contener el identificador del contribuyente (id_contribuyente)
+		 * y el identificador de la solicitud (nro_solicitud).
+		 * @param  String $evento descripcion del evento relacionado a la solicitud.
+		 * @param  Class $conexionLocal instancia de tipo ConexionController.
+		 * @param  [type] $connLocal     [description]
+		 * @return [type]                [description]
+		 */
+		public function ejecutarProcesoSolicitudSegunEvento($model, $evento, $conexionLocal = null, $connLocal = null)
 		{
 			$result = null;
 			$listaProcesos = $this->getProcesoSegunEvento($evento);
@@ -90,7 +99,7 @@
 
 						} elseif ( $miProceso == 'GENERA TASA' ) {
 
-							$result = $this->generaTasa($idContribuyente, $evento, $conexionLocal, $connLocal);
+							$result = $this->generaTasa($model->id_contribuyente, $evento, $conexionLocal, $connLocal);
 							$this->acciones[$miProceso] = $result;
 
 						} elseif ( $miProceso == 'SOLICITA DOCUMENTOS' ) {
@@ -148,7 +157,7 @@
 
 		/**
 		 * Metodo que liquida la tasa correspondiente, segun el evento.
-		 * @param  Long $idContribuyente [description]
+		 * @param  Active Record $model [description]
 		 * @param  String $evento          [description]
 		 * @param  ConexionController $conexionLocal  instancia de conexion, Clase de tipo Conexioncontroller.
 		 * @param  [type] $connLocal
@@ -163,7 +172,7 @@
 		 * 			[resultado n] => true o false
 		 * }
 		 */
-		public function generaTasa($idContribuyente, $evento, $conexionLocal, $connLocal)
+		public function generaTasa($model, $evento, $conexionLocal, $connLocal)
 		{
 			$result = null;
 			$idImpuesto = 0;
@@ -180,9 +189,10 @@
 
 				if ( $idImpuesto > 0 ) {
 					for ( $i = 1; $i <= $tasa['nro_veces_liquidar']; $i++ ) {
-						$planillaTasa = New PlanillaTasa($idContribuyente, $idImpuesto, $conexionLocal, $connLocal);
+						$planillaTasa = New PlanillaTasa($model->id_contribuyente, $idImpuesto, $conexionLocal, $connLocal);
 						$planillaTasa->liquidarTasa();
 						$result[$idImpuesto][$i] = $planillaTasa->getResultado();
+						self::guardarSolicitudPlanilla($model->nro_solicitud, $result[$idImpuesto][$i]['planilla'], $conexionLocal, $connLocal);
 					}
 				} else {
 					$result[$tasa['id_impuesto']] = null;
@@ -227,6 +237,32 @@
 
 			return $result;
 		}
+
+
+
+
+		/***/
+        public function guardarSolicitudPlanilla($nroSolicitud, $planilla, $conexionLocal, $connLocal)
+        {
+            $result = true;
+            $usuario = isset(Yii::$app->user->identity->login) ? Yii::$app->user->identity->login : Yii::$app->user->identity->email;
+            $modelSolicitudPlanilla = New SolicitudPlanillaForm();
+            $tabla = $modelSolicitudPlanilla->tableName();
+
+            $modelSolicitudPlanilla->nro_solicitud = $nroSolicitud;
+            $modelSolicitudPlanilla->inactivo = 0;
+            $modelSolicitudPlanilla->usuario = $usuario;
+            $modelSolicitudPlanilla = date('Y-m-d H:i:s');
+            $modelSolicitudPlanilla->planilla = $planilla;
+
+            $arregloDatos = $modelSolicitudPlanilla->attributes;
+
+            $result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
+
+            return $result;
+        }
+
+
 
 
 
