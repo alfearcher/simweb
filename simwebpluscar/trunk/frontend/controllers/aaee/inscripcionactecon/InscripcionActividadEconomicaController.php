@@ -204,7 +204,7 @@
 						$model->nro_solicitud = $nroSolicitud;
 						// Detalle de la solicitud
 						$result = self::actionCreateInscripcionActEcon($model, $conexion, $this->conn);
-						if ( count($conf) > 0 ) {
+						if ( count($conf) > 0 && $result == true ) {
 
 							// Se define que tipo de aprobacion se debe aplicar en la solicitud.
 							if ( $conf['nivel_aprobacion'] == 1 ) {
@@ -215,7 +215,9 @@
 								$result = self::actionUpdateContribuyente($model, $conexion, $this->conn);
 							}
 
-							$result = self::actionEjecutaProcesoSolicitud($model, $conexion, $this->conn);
+							if ( $result ) {
+								$result = self::actionEjecutaProcesoSolicitud($model, $conexion, $this->conn);
+							}
 						}
 						if ( $result ) {
 							$transaccion->commit();
@@ -346,7 +348,9 @@
 		/***/
 		public function actionEjecutaProcesoSolicitud($model, $conexionLocal, $connLocal)
 		{
-			$result = false;
+			$result = true;
+			$resultadoProceso = [];
+			$acciones = [];
 			$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : null;
 			if ( count($conf) > 0 ) {
 				$procesoEvento = New SolicitudProcesoEvento($conf['id_config_solicitud']);
@@ -357,13 +361,21 @@
 				// corresponda a un reultado de la ejecucion.
 				$procesoEvento->ejecutarProcesoSolicitudSegunEvento($model->id_contribuyente, Yii::$app->solicitud->crear(), $conexionLocal, $connLocal);
 
-				// Se obtiene el resultado de la ejecucion de los procesos
+				// Se obtiene un array de acciones o procesos ejecutados.
 				$acciones = $procesoEvento->getAccion();
 				if ( count($acciones) > 0 ) {
-					$result = $procesoEvento->resultadoEjecutarProcesos();
-die(var_dump($result));
-				} else {
-					$result = true;
+
+					// Se evalua cada accion o proceso ejecutado para determinar si se realizo satisfactoriamnente.
+					$resultadoProceso = $procesoEvento->resultadoEjecutarProcesos();
+
+					if ( count($resultadoProceso) > 0 ) {
+						foreach ( $resultadoProceso as $key => $value ) {
+							if ( $value == false ) {
+								$result = false;
+								break;
+							}
+						}
+					}
 				}
 			}
 
