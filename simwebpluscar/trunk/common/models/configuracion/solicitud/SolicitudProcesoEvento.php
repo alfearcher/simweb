@@ -86,6 +86,8 @@
 						$this->accion[$miProceso] = [];
 						if ( $miProceso == 'LIQUIDACION DIRECTA' ) {
 
+							$this->acciones[$miProceso] = false;
+
 						} elseif ( $miProceso == 'GENERA TASA' ) {
 
 							$result = $this->generaTasa($idContribuyente, $evento, $conexionLocal, $connLocal);
@@ -93,19 +95,32 @@
 
 						} elseif ( $miProceso == 'SOLICITA DOCUMENTOS' ) {
 
+							$this->acciones[$miProceso] = false;
+
 						} elseif ( $miProceso == 'GENERA CITA' ) {
+
+							$this->acciones[$miProceso] = false;
 
 						} elseif ( $miProceso == 'GENERA NOTIFICACION' ) {
 
+							$this->acciones[$miProceso] = false;
+
 						} elseif ( $miProceso == 'GENERA MULTA' ) {
+
+							$this->acciones[$miProceso] = false;
 
 						} elseif ( $miProceso == 'GENERA FISCALIZACION' ) {
 
+							$this->acciones[$miProceso] = false;
+
 						} elseif ( $miProceso == 'GENERA AUDITORIA' ) {
+
+							$this->acciones[$miProceso] = false;
 
 						} elseif ( $miProceso == 'GENERA CIERRE' ) {
 
-						} else {
+							$this->acciones[$miProceso] = false;
+
 						}
 					}
 				}
