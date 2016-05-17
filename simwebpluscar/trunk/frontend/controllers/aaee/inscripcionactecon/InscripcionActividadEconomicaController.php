@@ -418,7 +418,7 @@
 			$listaDocumento = '';
 			$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : null;
 			if ( count($conf) > 0 ) {
-				$parametroSolicitud = New ParametroSolicitud($_SESSION['id_config_solicitud']);
+				$parametroSolicitud = New ParametroSolicitud($conf['id_config_solicitud']);
 				$nroSolicitud = $model->nro_solicitud;
 				$descripcionSolicitud = $parametroSolicitud->getDescripcionTipoSolicitud();
 				$listaDocumento = $parametroSolicitud->getDocumentoRequisitoSolicitud();
