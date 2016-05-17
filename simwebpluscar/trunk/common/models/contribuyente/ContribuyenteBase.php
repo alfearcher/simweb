@@ -445,7 +445,7 @@
 		 */
 		public static function getEmail($idContribuyente)
 		{
-			return $email = '';
+			$email = '';
 			if ( $idContribuyente > 0 ) {
 				$datos = self::getDatosContribuyenteSegunID($idContribuyente);
 				$email = isset($datos[0]['email']) ? $datos[0]['email'] : '';
