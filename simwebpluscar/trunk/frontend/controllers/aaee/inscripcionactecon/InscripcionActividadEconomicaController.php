@@ -159,6 +159,7 @@
 		      	 		$result = self::actionBeginSave($model);
 		      	 		if ( $result ) {
 		      	 			$this->redirect(['proceso-exitoso']);
+		      	 			//$this->redirect(['buscar-solicitud-creada']);
 		      	 		} else {
 		      	 			$this->redirect(['error-operacion', 'cod' => 920]);
 		      	 		}
@@ -402,6 +403,14 @@
 
 			return $result;
 
+		}
+
+
+
+		/***/
+		public function actionBuscarSolicitudCreada($model)
+		{
+die(var_dump($model));
 		}
 
 
