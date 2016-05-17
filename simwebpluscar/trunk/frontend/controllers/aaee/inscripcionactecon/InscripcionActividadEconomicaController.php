@@ -126,6 +126,7 @@
 						// Ya posee una solicitud de este tipo y no puede continuar.
 						return $this->redirect(['error-operacion', 'cod' => 945]);
 					} else {
+						$_SESSION['begin'] = 1;
 						return $this->redirect(['index-create']);
 					}
 				} else {
@@ -145,7 +146,7 @@
 		public function actionIndexCreate()
 		{
 			$result = false;
-			if ( isset($_SESSION['idContribuyente']) ) {
+			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) ) {
 				$model = New InscripcionActividadEconomicaForm();
 				$model->scenario = self::SCENARIO_FRONTEND;
 
@@ -161,8 +162,6 @@
 		      	 		$_SESSION['guardar'] = 1;
 		      	 		$result = self::actionBeginSave($model);
 		      	 		if ( $result ) {
-		      	 			//$this->redirect(['proceso-exitoso']);
-		      	 			//$this->redirect(['mostrar-solicitud-creada']);
 		      	 			self::actionMostrarSolicitudCreada($model);
 		      	 		} else {
 		      	 			$this->redirect(['error-operacion', 'cod' => 920]);
@@ -464,6 +463,8 @@
 			$modelSearch = New InscripcionActividadEconomicaSearch($id);
 			$model = $modelSearch->findInscripcion($nro);
 
+			self::actionProcesoExitoso();
+
 			return $this->render('/aaee/inscripcion-actividad-economica/view-solicitud', [
 											'caption' => Yii::t('frontend', 'Request Nro. ' . $nro),
 											'model' => $model,
@@ -509,6 +510,7 @@
 		{
 			$varSession = self::actionGetListaSessions();
 			self::actionAnularSession($varSession);
+			return true;
 			//return MensajeController::actionMensaje(100);
 		}
 
@@ -540,6 +542,7 @@
 							'conf',
 							'guardar',
 							'nro_solicitud',
+							'begin',
 					];
 		}
 
