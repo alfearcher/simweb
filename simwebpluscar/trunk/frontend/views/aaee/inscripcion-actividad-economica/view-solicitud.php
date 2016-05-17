@@ -48,34 +48,42 @@
 	use yii\web\View;
 	use yii\widgets\DetailView;
 	use backend\controllers\menu\MenuController;
+	use common\mensaje\MensajeController;
 ?>
 
 <div class="row" style="width: 70%;">
 	<div class="info-solicitud">
-		<h3><?= Html::encode($caption) ?></h3>
-			<?= DetailView::widget([
-					'model' => $model,
-	    			'attributes' => [
-	    				'nro_solicitud',
-	    				'id_contribuyente',
-	    				'num_reg',
-	    				'reg_mercantil',
-	    				'tomo',
-	    				'folio',
-	    				'fecha',
-	    				'capital',
-	    				'num_empleados',
-	    				[
-	    					'label' => Yii::t('frontend', 'DNI Represent'),
-	    					'value' => $model->naturaleza_rep . '-' . $model->cedula_rep,
-	    				],
-	    				'representante',
-	    				'origen',
-	    				'fecha_hora',
+		<div class="row">
+			<div class="alert">
+				<?= MensajeController::actionMensaje($codigoMensaje);  ?>
+			</div>
+		</div>
+		<div class="row">
+			<h3><?= Html::encode($caption) ?></h3>
+				<?= DetailView::widget([
+						'model' => $model,
+		    			'attributes' => [
+		    				'nro_solicitud',
+		    				'id_contribuyente',
+		    				'num_reg',
+		    				'reg_mercantil',
+		    				'tomo',
+		    				'folio',
+		    				'fecha',
+		    				'capital',
+		    				'num_empleados',
+		    				[
+		    					'label' => Yii::t('frontend', 'DNI Represent'),
+		    					'value' => $model->naturaleza_rep . '-' . $model->cedula_rep,
+		    				],
+		    				'representante',
+		    				'origen',
+		    				'fecha_hora',
 
-	        			//'created_at:datetime', // creation date formatted as datetime
-	    			],
-				])
-			?>
+		        			//'created_at:datetime', // creation date formatted as datetime
+		    			],
+					])
+				?>
+		</div>
 	</div>
 </div>
