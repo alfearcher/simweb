@@ -163,8 +163,7 @@
 		      	 		if ( $result ) {
 		      	 			//$this->redirect(['proceso-exitoso']);
 		      	 			//$this->redirect(['mostrar-solicitud-creada']);
-		      	 			return self::actionMostrarSolicitudCreada($model);
-		      	 			$this->redirect(['proceso-exitoso']);
+		      	 			self::actionMostrarSolicitudCreada($model);
 		      	 		} else {
 		      	 			$this->redirect(['error-operacion', 'cod' => 920]);
 		      	 		}
