@@ -457,12 +457,12 @@
 		/***/
 		public function actionViewSolicitud($nro, $id)
 		{
-			$modelSearch = New InscripcionActividadEconomicaSearch($id);
-			$model = $modelSearch->findInscripcion($nro);
+			$model = InscripcionActividadEconomicaForm::findOne($nro);
+			//$model = $modelSearch->findInscripcion($nro);
 
 			return $this->render('/aaee/inscripcion-actividad-economica/view-solicitud', [
 											'caption' => Yii::t('frontend', 'Request Nro. ' . $nro),
-											'model' => $modelSearch,
+											'model' => $model,
 											'codigoMensaje' => 100,
 
 				]);
