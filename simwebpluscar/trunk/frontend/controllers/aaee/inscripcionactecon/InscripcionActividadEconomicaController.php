@@ -63,6 +63,8 @@
 	use common\models\configuracion\solicitud\ParametroSolicitud;
 	use common\models\configuracion\solicitud\SolicitudProcesoEvento;
 	use common\models\contribuyente\ContribuyenteBase;
+	use common\enviaremail\PlantillaEmail;
+
 
 	session_start();		// Iniciando session
 
@@ -221,6 +223,8 @@
 							}
 						}
 						if ( $result ) {
+							// Se envia el email respectivo
+							self::actionEnviarEmail($model);
 							$transaccion->commit();
 						} else {
 							$transaccion->rollBack();
@@ -404,6 +408,29 @@
 			return $result;
 
 		}
+
+
+
+		/***/
+		public actionEnviarEmail($model)
+		{
+			$result = false;
+			$listaDocumento = '';
+			$conf = isset($_SESSION['conf']) : $_SESSION['conf'] : null;
+			if ( count($conf) > 0 ) {
+				$parametroSolicitud = New ParametroSolicitud($_SESSION['id_config_solicitud']);
+				$nroSolicitud = $model->nro_solicitud;
+				$descripcionSolicitud = $parametroSolicitud->getDescripcionTipoSolicitud();
+				$listaDocumento = $parametroSolicitud->getDocumentoRequisitoSolicitud();
+
+				$email = ContribuyenteBase::getEmail($model->id_contribuyente);
+
+				$enviar = New PlantillaEmail();
+				$result = $enviar->planillaEmailSolicitud($email, $descripcionSolicitud, $nroSolicitud, $listaDocumento);
+			}
+			return $result;
+		}
+
 
 
 
