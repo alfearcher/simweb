@@ -450,7 +450,7 @@
 		public function actionMostrarSolicitudCreada($model)
 		{
 			$_SESSION['nro_solicitud'] = $model->nro_solicitud;
-			$this->redirect(['view-solicitud');
+			$this->redirect(['view-solicitud']);
 		}
 
 
