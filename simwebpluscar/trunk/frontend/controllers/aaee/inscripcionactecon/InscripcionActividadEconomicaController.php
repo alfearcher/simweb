@@ -450,13 +450,25 @@
 		/***/
 		public function actionMostrarSolicitudCreada($model)
 		{
+			$this->redirect(['view-solicitud', 'nro' => $model->nro_solicitud]);
+		}
+
+
+
+		/***/
+		public function actionViewSolicitud($nro = 0)
+		{
+			$modelSearch = New InscripcionActividadEconomicaSearch();
+			$model = $modelSearch->findInscripcion($nro);
+
 			return $this->render('/aaee/inscripcion-actividad-economica/view-solicitud', [
-											'caption' => Yii::t('frontend', 'Request Nro. ' . $model->nro_solicitud),
+											'caption' => Yii::t('frontend', 'Request Nro. ' . $nro),
 											'model' => $model,
 											'codigoMensaje' => 100,
 
 				]);
 		}
+
 
 
 
