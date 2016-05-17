@@ -54,7 +54,7 @@
 	use yii\helpers\Url;
 	use yii\web\NotFoundHttpException;
 	use yii\base\Exception;
-	use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomica;
+	//use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomica;
 	use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomicaForm;
 	use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomicaSearch;
 	use common\models\solicitudescontribuyente\SolicitudesContribuyenteForm;
@@ -161,8 +161,8 @@
 		      	 		$_SESSION['guardar'] = 1;
 		      	 		$result = self::actionBeginSave($model);
 		      	 		if ( $result ) {
-		      	 			$this->redirect(['proceso-exitoso']);
-		      	 			//$this->redirect(['buscar-solicitud-creada']);
+		      	 			//$this->redirect(['proceso-exitoso']);
+		      	 			$this->redirect(['mostrar-solicitud-creada']);
 		      	 		} else {
 		      	 			$this->redirect(['error-operacion', 'cod' => 920]);
 		      	 		}
@@ -412,7 +412,14 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que permite enviar un email al contribuyente indicandole
+		 * la confirmacion de la realizacion de la solicitud
+		 * @param  Active Record $model modelo que contiene la informacion
+		 * del identificador del contribuyente.
+		 * @return Boolean Retorna un true si envio el correo o false en caso
+		 * contrario.
+		 */
 		public function actionEnviarEmail($model)
 		{
 			$result = false;
@@ -423,7 +430,7 @@
 				$nroSolicitud = $model->nro_solicitud;
 				$descripcionSolicitud = $parametroSolicitud->getDescripcionTipoSolicitud();
 				$listaDocumento = $parametroSolicitud->getDocumentoRequisitoSolicitud();
-//die(var_dump($listaDocumento));
+
 				$email = ContribuyenteBase::getEmail($model->id_contribuyente);
 				try {
 					$enviar = New PlantillaEmail();
@@ -439,9 +446,13 @@
 
 
 		/***/
-		public function actionBuscarSolicitudCreada($model)
+		public function actionMostrarSolicitudCreada($model)
 		{
-// die(var_dump($model));
+			return $this->render('/aaee/inscripcion-actividad-economica/view-solicitud', [
+											'caption' => Yii::t('frontend', 'Request Nro. ' . $model->nro_solicitud),
+											'model' => $model,
+
+				]);
 		}
 
 
