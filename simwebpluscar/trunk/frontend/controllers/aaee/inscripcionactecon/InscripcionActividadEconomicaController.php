@@ -410,7 +410,7 @@
 		/***/
 		public function actionBuscarSolicitudCreada($model)
 		{
-die(var_dump($model));
+// die(var_dump($model));
 		}
 
 
