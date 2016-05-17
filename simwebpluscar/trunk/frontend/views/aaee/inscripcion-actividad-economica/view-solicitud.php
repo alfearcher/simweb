@@ -46,6 +46,7 @@
 	use yii\helpers\ArrayHelper;
 	use yii\widgets\ActiveForm;
 	use yii\web\View;
+	use yii\widgets\DetailView;
 	use backend\controllers\menu\MenuController;
 ?>
 
