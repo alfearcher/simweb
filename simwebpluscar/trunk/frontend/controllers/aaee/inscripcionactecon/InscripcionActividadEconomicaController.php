@@ -449,15 +449,15 @@
 		/***/
 		public function actionMostrarSolicitudCreada($model)
 		{
-			$this->redirect(['view-solicitud', 'nro' => $model->nro_solicitud]);
+			$this->redirect(['view-solicitud', 'nro' => $model->nro_solicitud, 'id' => $model->id_contribuyente]);
 		}
 
 
 
 		/***/
-		public function actionViewSolicitud($nro = 0)
+		public function actionViewSolicitud($nro, $id)
 		{
-			$modelSearch = New InscripcionActividadEconomicaSearch();
+			$modelSearch = New InscripcionActividadEconomicaSearch($id);
 			$model = $modelSearch->findInscripcion($nro);
 
 			return $this->render('/aaee/inscripcion-actividad-economica/view-solicitud', [
