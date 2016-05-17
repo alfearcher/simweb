@@ -130,11 +130,11 @@ session_start();
 
 			        							['label' => 'Deshabilitar Lote de Calcomanias','url' => ['/vehiculo/calcomania/deshabilitarlote/deshabilitar-lote-calcomania/busqueda-lote-calcomania']],
 
-			        							['label' => 'Administrar Lote de Calcomanias Generadas','url' => ['/vehiculo/calcomania/administrarlotecalcomania/administrar-lote-calcomania/busqueda-lote']],
+			        							['label' => 'Administrar Lote de Calcomanias Generadas','url' => ['/vehiculo/calcomania/administrarlotecalcomania/administrar-lote-calcomania/busqueda-multiple']],
 
 			        							['label' => 'Asignar Calcomanias a funcionario (Distribuir entre funcionario responsables)','url' => ['/vehiculo/calcomania/administrarcalcomaniafuncionario/administrar-calcomania-funcionario/seleccionar-funcionario']],
 
-			        							['label' => 'Administrar Entrega de calcomania','url' => '#'],
+			        							['label' => 'Administrar Entrega de calcomania','url' => ['/vehiculo/calcomania/asignarcalcomaniacontribuyente/asignar-calcomania-contribuyente/seleccionar-tipo-contribuyente']],
 			        							['label' => 'Cierre de Lote','url' => '#'],
 					        				],
 					        			],
