@@ -95,6 +95,16 @@
 	    	return $descripcion = ContribuyenteBase::getTipoNaturalezaDescripcionSegunID($this->id_contribuyente);
 	    }
 
+
+
+
+	    /***/
+	    public function findInscripcion($nroSolicitud)
+	    {
+	    	$modelFind = InscripcionActividadEconomica::findOne($nroSolicitud);
+	    	return isset($modelFind) ? $modelFind : null;
+	    }
+
 	}
 
 ?>
