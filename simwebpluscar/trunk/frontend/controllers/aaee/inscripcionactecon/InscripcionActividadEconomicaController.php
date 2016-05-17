@@ -462,7 +462,7 @@
 
 			return $this->render('/aaee/inscripcion-actividad-economica/view-solicitud', [
 											'caption' => Yii::t('frontend', 'Request Nro. ' . $nro),
-											'model' => $model,
+											'model' => $modelSearch,
 											'codigoMensaje' => 100,
 
 				]);
