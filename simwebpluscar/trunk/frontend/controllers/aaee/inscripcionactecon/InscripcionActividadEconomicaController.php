@@ -538,7 +538,8 @@
 							'getData',
 							'postData',
 							'conf',
-							'guardar'
+							'guardar',
+							'nro_solicitud',
 					];
 		}
 
