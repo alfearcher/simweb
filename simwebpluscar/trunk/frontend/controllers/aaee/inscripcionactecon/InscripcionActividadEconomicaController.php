@@ -53,6 +53,7 @@
 	use yii\web\Response;
 	use yii\helpers\Url;
 	use yii\web\NotFoundHttpException;
+	use yii\base\Exception;
 	use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomica;
 	use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomicaForm;
 	use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomicaSearch;
@@ -424,8 +425,12 @@
 				$listaDocumento = $parametroSolicitud->getDocumentoRequisitoSolicitud();
 //die(var_dump($listaDocumento));
 				$email = ContribuyenteBase::getEmail($model->id_contribuyente);
-				$enviar = New PlantillaEmail();
-				$result = $enviar->plantillaEmailSolicitud($email, $descripcionSolicitud, $nroSolicitud, $listaDocumento);
+				try {
+					$enviar = New PlantillaEmail();
+					$result = $enviar->plantillaEmailSolicitud($email, $descripcionSolicitud, $nroSolicitud, $listaDocumento);
+				} catch (Exception $e) {
+					echo $e->getName();
+				}
 			}
 			return $result;
 		}
