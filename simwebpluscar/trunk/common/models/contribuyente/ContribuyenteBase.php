@@ -437,6 +437,25 @@
 
 
 
+		/**
+		 * Metodo que permite obtener el email del contribuyente
+		 * @param  Long $idContribuyente identificador del contribuyente
+		 * @return String Retorna el email del contribuyente, sino encuentra nada
+		 * retorna vacio.
+		 */
+		public static function getEmail($idContribuyente)
+		{
+			return $mail = '';
+			if ( $idContribuyente > 0 ) {
+				$datos = self::getDatosContribuyenteSegunID($idContribuyente);
+				$email = isset($datos[0]['email']) ? $datos[0]['email'] : '';
+			}
+			return $email;
+		}
+
+
+
+
 
 		/**
 		 * Metodo que permite obtener el ultimo indicador de la sucursal. Cero (0) indica sede principal.
