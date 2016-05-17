@@ -235,9 +235,9 @@ class AdministrarLoteCalcomaniaController extends Controller
        }
     }
     /**
-     * [actionVerificarCalcomaniasAno description] metodo que verifica si una calcomania esta seleccionada y redirecciona al guardado
-
-     */
+    * [actionVerificarCalcomaniasAno description] metodo que verifica si una calcomania esta seleccionada y redirecciona al guardado
+    *  
+    */
     public function actionVerificarCalcomaniasAno()
     {
 
@@ -268,7 +268,7 @@ class AdministrarLoteCalcomaniaController extends Controller
     $errorCheck = ""; 
 
     $idCalcomanias = yii::$app->request->post('chk-deshabilitar-calcomania');
-    // die(var_dump($idCalcomanias));
+//die(var_dump($idCalcomanias));
     $_SESSION['idCalcomanias'] = $idCalcomanias;
 
   
@@ -290,7 +290,7 @@ class AdministrarLoteCalcomaniaController extends Controller
 
     /**
      * [actionDeshabilitarCalcomania description] metodo que direcciona al begin save y espera respuestas para enviar mensaje de controlador
-    
+     *
      */
     public function actionDeshabilitarCalcomania()
     {
@@ -310,11 +310,11 @@ class AdministrarLoteCalcomaniaController extends Controller
      * @param  [type] $idCalcomania [description] id de las calcomanias que se van a deshabilitar
      * @return [type]               [description]
      */
-    public function deshabilitarCalcomania($conn, $conexion,$idCalcomania)
+    public function deshabilitarCalcomania($conn, $conexion)
     {
-    //die('llego a deshabilitar'.$idCalcomania);
+    // die('llego a deshabilitar');
       $tableName = 'calcomanias';
-      $arregloCondition = ['id_calcomania' => $idCalcomania]; //id de la calcomania
+      $arregloCondition = ['id_calcomania' => $_SESSION['idCalcomanias']]; //id del funcionario
       
      
       $arregloDatos['estatus'] = 1;
@@ -332,7 +332,10 @@ class AdministrarLoteCalcomaniaController extends Controller
           }
          
 
-  }
+    }
+         
+
+  
     
   
     /**
@@ -342,49 +345,49 @@ class AdministrarLoteCalcomaniaController extends Controller
      */
  public function beginSave()
   {
-       // die('llego a begin');
-  $idCalcomanias = $_SESSION['idCalcomanias'];
-      
-      $todoBien = true;
+   // die('llego a begin');
+  $idCalcomania = $_SESSION['idCalcomanias'];
+     $todoBien = true;
 
       $conexion = new ConexionController();
 
-          $conn = $conexion->initConectar('db');
+      
 
-          $conn->open();
+        $conn = $conexion->initConectar('db');
 
-          $transaccion = $conn->beginTransaction();
+        $conn->open();
 
-              foreach($idCalcomanias as $key => $value){
+        $transaccion = $conn->beginTransaction();
+
+          foreach($idCalcomania as $key => $value){
 
                 
-                  $deshabilitarCalcomanias = self::deshabilitarCalcomania($conn, $conexion, $value);
+                $deshabilitarCalcomania = self::deshabilitarCalcomania($conn, $conexion);
 
 
-                      if ($deshabilitarCalcomanias == true ){
-                            //die('deshabilito');
-                            $todoBien == false;
+                    if ($deshabilitarCalcomania == true ){
+                           // die('deshabilito');
+                            $todoBien == true;
                             
-                      }
+                    }
                         
                       
-                      if($todoBien == true){
-                      
+                    if($todoBien == true){
+                      //die('esta todo bien');
                        
-                          $transaccion->commit();
-                          $conn->close();
+                        $transaccion->commit();
+                        $conn->close();
                         
-                              return true;
-                      }else{
+                        return true;
+                    }else{
                     
-                          $transaccion->rollback();
-                          $conn->close();
-                              
-                              return false;
+                        $transaccion->rollback();
+                        $conn->close();
+                        return false;
                     }
 
              }
-  }         
+  }
 
 
               
