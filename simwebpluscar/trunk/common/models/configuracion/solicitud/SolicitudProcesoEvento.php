@@ -250,6 +250,8 @@
             $tabla = $modelSolicitudPlanilla->tableName();
 
             $modelSolicitudPlanilla->nro_solicitud = $nroSolicitud;
+            $modelSolicitudPlanilla->id_config_solicitud = 0;
+            $modelSolicitudPlanilla->id_config_solic_tasa_multa = 0;
             $modelSolicitudPlanilla->inactivo = 0;
             $modelSolicitudPlanilla->usuario = $usuario;
             $modelSolicitudPlanilla->fecha_hora = date('Y-m-d H:i:s');
