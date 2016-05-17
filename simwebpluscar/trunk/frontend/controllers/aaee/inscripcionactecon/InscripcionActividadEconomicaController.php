@@ -449,14 +449,18 @@
 		/***/
 		public function actionMostrarSolicitudCreada($model)
 		{
-			$this->redirect(['view-solicitud', 'nro' => $model->nro_solicitud, 'id' => $model->id_contribuyente]);
+			$_SESSION['nro_solicitud'] = $model->nro_solicitud;
+			$this->redirect(['view-solicitud');
 		}
 
 
 
 		/***/
-		public function actionViewSolicitud($nro, $id)
+		public function actionViewSolicitud()
 		{
+			$id = isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : null;
+			$nro = isset($_SESSION['nro_solicitud']) ? $_SESSION['nro_solicitud'] : null;
+
 			$modelSearch = New InscripcionActividadEconomicaSearch($id);
 			$model = $modelSearch->findInscripcion($nro);
 
