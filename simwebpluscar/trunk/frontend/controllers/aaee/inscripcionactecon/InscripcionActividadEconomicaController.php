@@ -455,6 +455,7 @@
 											'codigoMensaje' => 100,
 
 				]);
+			$this->redirect(['proceso-exitoso']);
 		}
 
 
@@ -493,7 +494,7 @@
 		{
 			$varSession = self::actionGetListaSessions();
 			self::actionAnularSession($varSession);
-			return MensajeController::actionMensaje(100);
+			//return MensajeController::actionMensaje(100);
 		}
 
 
