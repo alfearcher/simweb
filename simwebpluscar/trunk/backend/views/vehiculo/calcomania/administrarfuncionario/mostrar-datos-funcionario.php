@@ -53,7 +53,7 @@
     <div class="col-sm-10">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <?= Yii::t('frontend', 'Vehicle Specifications') ?> 
+                <?= Yii::t('frontend', 'Officcer information') ?> 
             </div>
             <div class="panel-body" >
 
