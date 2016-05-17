@@ -245,7 +245,14 @@
         public function guardarSolicitudPlanilla($nroSolicitud, $planilla, $conexionLocal, $connLocal)
         {
             $result = true;
-            $usuario = isset(Yii::$app->user->identity->login) ? Yii::$app->user->identity->login : Yii::$app->user->identity->email;
+            if ( isset(Yii::$app->user->identity->login) ) {
+            	$origen = 'WEB';
+            	$usuario = Yii::$app->user->identity->login;
+            } else {
+            	$origen = 'LAN';
+            	$usuario = Yii::$app->user->identity->email;
+            }
+            //$usuario = isset(Yii::$app->user->identity->login) ? Yii::$app->user->identity->login : Yii::$app->user->identity->email;
             $modelSolicitudPlanilla = New SolicitudPlanillaForm();
             $tabla = $modelSolicitudPlanilla->tableName();
 
@@ -256,6 +263,7 @@
             $modelSolicitudPlanilla->usuario = $usuario;
             $modelSolicitudPlanilla->fecha_hora = date('Y-m-d H:i:s');
             $modelSolicitudPlanilla->planilla = $planilla;
+            $modelSolicitudPlanilla->origen = $origen;
 
             $arregloDatos = $modelSolicitudPlanilla->attributes;
 
