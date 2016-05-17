@@ -424,7 +424,6 @@
 				$listaDocumento = $parametroSolicitud->getDocumentoRequisitoSolicitud();
 //die(var_dump($listaDocumento));
 				$email = ContribuyenteBase::getEmail($model->id_contribuyente);
-die(var_dump($email));
 				$enviar = New PlantillaEmail();
 				$result = $enviar->plantillaEmailSolicitud($email, $descripcionSolicitud, $nroSolicitud, $listaDocumento);
 			}
