@@ -67,9 +67,7 @@
 	    				'num_empleados',
 	    				[
 	    					'label' => Yii::t('frontend', 'DNI Represent'),
-	    					'value' => function($model) {
-	    						return $model->naturaleza_rep . '-' . $model->cedula_rep;
-	    					}
+	    					'value' => $model->naturaleza_rep . '-' . $model->cedula_rep,
 	    				],
 	    				'representante',
 	    				'origen',
