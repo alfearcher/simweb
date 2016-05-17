@@ -448,6 +448,7 @@
 			return $mail = '';
 			if ( $idContribuyente > 0 ) {
 				$datos = self::getDatosContribuyenteSegunID($idContribuyente);
+	die(var_dump($datos));
 				$email = isset($datos[0]['email']) ? $datos[0]['email'] : '';
 			}
 			return $email;
