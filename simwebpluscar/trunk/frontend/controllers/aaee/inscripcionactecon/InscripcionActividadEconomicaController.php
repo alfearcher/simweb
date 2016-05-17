@@ -412,7 +412,7 @@
 
 
 		/***/
-		public actionEnviarEmail($model)
+		public function actionEnviarEmail($model)
 		{
 			$result = false;
 			$listaDocumento = '';
