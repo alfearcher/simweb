@@ -422,11 +422,11 @@
 				$nroSolicitud = $model->nro_solicitud;
 				$descripcionSolicitud = $parametroSolicitud->getDescripcionTipoSolicitud();
 				$listaDocumento = $parametroSolicitud->getDocumentoRequisitoSolicitud();
-
+die(var_dump($listaDocumento));
 				$email = ContribuyenteBase::getEmail($model->id_contribuyente);
 
 				$enviar = New PlantillaEmail();
-				$result = $enviar->planillaEmailSolicitud($email, $descripcionSolicitud, $nroSolicitud, $listaDocumento);
+				$result = $enviar->plantillaEmailSolicitud($email, $descripcionSolicitud, $nroSolicitud, $listaDocumento);
 			}
 			return $result;
 		}
