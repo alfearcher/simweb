@@ -50,7 +50,7 @@
 	use backend\controllers\menu\MenuController;
 ?>
 
-<div class="row">
+<div class="row" style="width: 70%;">
 	<div class="info-solicitud">
 		<h3><?= Html::encode($caption) ?></h3>
 			<?= DetailView::widget([
@@ -64,24 +64,17 @@
 	    				'folio',
 	    				'fecha',
 	    				'capital',
+	    				'num_empleados',
+	    				[
+	    					'label' => Yii::t('frontend', 'DNI Represent'),
+	    					'value' => function($model) {
+	    						return $model->naturaleza_rep . '-' . $model->cedula_rep;
+	    					}
+	    				],
+	    				'representante',
+	    				'origen',
+	    				'fecha_hora',
 
-	    				//'id_administradora',
-	        			// [
-	        			// 	'label' => Yii::t('frontend', 'Nro. Request'),
-	        			// 	'value' => $model->nro_solicitud,
-	        			// ],
-	        			// [
-	           //  			'label' => Yii::t('backend', $model->getAttributeLabel('cod_tlf_oficina_1') . '-' . $model->getAttributeLabel('tlf_oficina_1')  ),
-	           //  			'value' => $model->cod_tlf_oficina_1 . '-' . $model->tlf_oficina_1,
-	        			// ],
-	        			// [
-	           //  			'label' => Yii::t('backend', $model->getAttributeLabel('cod_tlf_oficina_2') . '-' . $model->getAttributeLabel('tlf_oficina_2')  ),
-	           //  			'value' => $model->cod_tlf_oficina_2 . '-' . $model->tlf_oficina_2,
-	        			// ],
-	        			// [
-	           //  			'label' => Yii::t('backend', $model->getAttributeLabel('cod_celular_1') . '-' . $model->getAttributeLabel('tlf_celular_1')  ),
-	           //  			'value' => $model->cod_celular_1 . '-' . $model->tlf_celular_1,
-	        			// ],
 	        			//'created_at:datetime', // creation date formatted as datetime
 	    			],
 				])
