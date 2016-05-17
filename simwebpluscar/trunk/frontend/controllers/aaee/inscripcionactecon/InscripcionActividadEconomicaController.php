@@ -164,6 +164,7 @@
 		      	 			//$this->redirect(['proceso-exitoso']);
 		      	 			//$this->redirect(['mostrar-solicitud-creada']);
 		      	 			return self::actionMostrarSolicitudCreada($model);
+		      	 			$this->redirect(['proceso-exitoso']);
 		      	 		} else {
 		      	 			$this->redirect(['error-operacion', 'cod' => 920]);
 		      	 		}
@@ -455,7 +456,6 @@
 											'codigoMensaje' => 100,
 
 				]);
-			$this->redirect(['proceso-exitoso']);
 		}
 
 
