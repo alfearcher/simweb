@@ -279,6 +279,9 @@
 							<div class="row" style="border-bottom: 0.5px solid #ccc;">
 								<h4><strong><?= Yii::t('backend', 'Details of Request') ?></strong></h4>
 							</div>
+							<div class="row">
+								<div class="detalle"></div>
+							</div>
 						</div>
 					</div>
 <!-- Fin de Detalle de la Solicitud -->
@@ -341,3 +344,10 @@
 </div>
 
 
+<?php
+	$this->registerJs(
+		'$(function() {
+			alert("hola");
+		});'
+
+);?>
