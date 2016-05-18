@@ -59,6 +59,7 @@ use backend\models\vehiculo\calcomania\deshabilitarfuncionario\FuncionarioSearch
 use backend\models\funcionario\calcomania\FuncionarioCalcomania;
 use backend\models\vehiculo\calcomania\deshabilitarfuncionario\DeshabilitarForm;
 use backend\models\vehiculo\calcomania\asignarcalcomaniacontribuyente\BusquedaNaturalForm;
+use common\models\contribuyente\ContribuyenteBase;
 /**
  * Site controller
  */
@@ -88,10 +89,7 @@ class AsignarCalcomaniaContribuyenteController extends Controller
      return $this->render('/vehiculo/calcomania/asignarcalcomaniacontribuyente/seleccionar-tipo-contribuyente');
   }
    
- /**
-  * [actionBusquedaContribuyente description] metodo que realiza la busqueda del contribuyente natural 
-  * 
-  */
+
   public function actionBusquedaNatural()
   {
        $model = new BusquedaNaturalForm();
@@ -111,7 +109,10 @@ class AsignarCalcomaniaContribuyenteController extends Controller
                   $buscarNatural = self::buscarNatural($model);
                       
                       if($buscarNatural == true){
-                        $buscarVehiculo = self::buscarVehiculo($buscarNatural);
+                        $_SESSION['datos'] = $buscarNatural;
+                        
+                         return $this->redirect(['buscar-vehiculo']);
+
                       }else{
                         return MensajeController::actionMensaje(990); 
                       }  
@@ -130,19 +131,23 @@ class AsignarCalcomaniaContribuyenteController extends Controller
 
   public function buscarNatural($model)
   {
-     $buscar = new BusquedaNaturalForm();
+     
+
+
+      $buscar = new BusquedaNaturalForm();
 
         $buscarNatural = $buscar->buscarNatural($model);
 
-            if($buscarNatural ==  true){
-              return $buscarNatural;
-            }else{
-              return false;
+             if($buscarNatural ==  true){
+               return $buscarNatural;
+             }else{
+               return false;
             }
   }
 
-  public function buscarVehiculo($model)
+  public function actionBuscarVehiculo()
   {
+    $model = $_SESSION['datos'];
        $searchModel = new BusquedaNaturalForm();
 
           $dataProvider = $searchModel->buscarVehiculo($model);
@@ -154,86 +159,75 @@ class AsignarCalcomaniaContribuyenteController extends Controller
                                                 ]); 
   }
 
-  public function actionDeshabilitarFuncionario()
+  public function actionVerificarVehiculo()
   {
-   // die('deshabilitar');
-    $errorCheck = ""; 
-     
-      $idFuncionario = yii::$app->request->post('chk-deshabilitar-funcionario');
-      //die(var_dump($idFuncionario));
-      $_SESSION['idFuncionario'] = $idFuncionario;
+    $idVehiculo = yii::$app->request->post('id');
+    $_SESSION['idVehiculo'] = $idVehiculo;
+    
+        $buscar = new BusquedaNaturalForm();
 
-  
-      $validacion = new FuncionarioSearch();
+            $buscarVehiculo = $buscar->buscarPlaca($idVehiculo);
 
-       if ($validacion->validarCheck(yii::$app->request->post('chk-deshabilitar-funcionario')) == true){
-        
-        return $this->redirect(['aceptar-desincorporacion']);
-           
-        
-          
-       }else{
-          $errorCheck = "Please select an Oficcer";
-          return $this->redirect(['busqueda-funcionario' , 'errorCheck' => $errorCheck]); 
+            if($buscarVehiculo == true){
 
-                                                                                             
-       }
+              $_SESSION['datosVehiculo'] = $buscarVehiculo;
+
+                  $buscarCalcomania = $buscar->verificarCalcomaniaEntregada($idVehiculo);
+
+                      if($buscarCalcomania == true){
+                          return MensajeController::actionMensaje(997);  
+                      }else{
+                          return $this->redirect(['seleccionar-calcomania']);
+                      }
+
+            }
   }
 
-  /**
-   * [AceptarDesincorporacion description] metodo que verifica si desea deshabilitar los funcionarios seleccionados
-   */
-  public function actionAceptarDesincorporacion()
+  
+  public function actionSeleccionarCalcomania()
+  {
+   
+       
+
+        $searchModel = new BusquedaNaturalForm();
+
+            $dataProvider = $searchModel->searchRango();
+
+            return $this->render('/vehiculo/calcomania/asignarcalcomaniacontribuyente/seleccionar-rango-calcomania', [
+                                                                                  'searchModel' => $searchModel,
+                                                                                  'dataProvider' => $dataProvider,
+                                                                                
+
+                                                                                          ]);
+    
+  }
+
+
+  public function actionVerificarCalcomanias()
   {
   
-      $model = new DeshabilitarForm();
+      $idCalcomanias = yii::$app->request->post('id');
+      $_SESSION['idCalcomania'] = $idCalcomanias;
 
-             $postData = Yii::$app->request->post();
-
-            if ( $model->load($postData) && Yii::$app->request->isAjax ){
-                  Yii::$app->response->format = Response::FORMAT_JSON;
-                  return ActiveForm::validate($model);
-            }
-
-            if ( $model->load($postData) ) {
-             
-
-               if ($model->validate()){
-
-                 $deshabilitarFuncionario = self::beginSave();
-
-                    if ($deshabilitarFuncionario == true){
-                        return MensajeController::actionMensaje(200); 
-                    }else{
-                        return MensajeController::actionMensaje(920);
-                    }
-                  
-              }
-            }
-                    
-                  
-                
-            return $this->render('/vehiculo/calcomania/deshabilitarfuncionario/aceptar-desincorporacion', [
-                                                              'model' => $model,
-
-                                                              
-            ]);
+        $guardarActualizar = self::beginSave("guardarActualizar");
             
   }
-  /**
-   * [actualizarDesincorporacion description] metodo que realiza la actualizacion del estatus del funcionario 
-   * @param  [type] $conn     [description] instancia a la conexion
-   * @param  [type] $conexion [description] instancia a la conexion
-   * @return [type]           [description] retorna true si todo el proceso se cumple
-   */
-  public function deshabilitarFuncionario($conn, $conexion)
+ 
+  public function actualizarCalcomania($conn, $conexion)
   {
-    // die('llego a deshabilitar');
-      $tableName = 'funcionario_calcomania';
-      $arregloCondition = ['id_funcionario' => $_SESSION['idFuncionario']]; //id del funcionario
+      $idCalcomania = $_SESSION['idCalcomania'];
+      $idVehiculo = $_SESSION['idVehiculo'];
+      $idContribuyente = $_SESSION['datos']->id_contribuyente;
+      $placa = $_SESSION['datosVehiculo']->placa;
+      $tableName = 'calcomanias';
+      $arregloCondition = ['id_calcomania' => $idCalcomania]; //id de la calcomania
       
      
-      $arregloDatos['estatus'] = 1;
+      $arregloDatos['entregado'] = 1;
+      $arregloDatos['fecha_entrega'] = date('Y-m-d h:m:i');
+      $arregloDatos['id_vehiculo'] = $idVehiculo;
+      $arregloDatos['id_contribuyente'] = $idContribuyente;
+      $arregloDatos['placa'] = $placa;
 
       $conexion = new ConexionController();
 
@@ -249,58 +243,95 @@ class AsignarCalcomaniaContribuyenteController extends Controller
          
 
   }
+
+    public function guardarCalcomania($conn, $conexion)
+    {
+      $datos = yii::$app->user->identity;
+      $resultado = false;
+      $tabla = 'calcomanias_entregadas';
+      $arregloDatos = [];
+      $arregloCampo = BuscarNaturalForm::attributeLoteCalcomaniasEntregadas();
+
+      foreach ($arregloCampo as $key=>$value){
+
+          $arregloDatos[$value] =0;
+      }
+
+      $arregloDatos['ano_impositivo'] = $model->ano_impositivo;
+     
+      
+      $arregloDatos['rango_inicial'] = $model->rango_inicial;
+      
+      $arregloDatos['rango_final'] = $model->rango_final;
+
+      $arregloDatos['rango_final'] = $model->rango_final;
+
+      $arregloDatos['inactivo'] = 0;
+
+      $arregloDatos['usuario'] = $datos->email;
+      //die($arregloDatos['usuario']);
+      
+      $arregloDatos['fecha_hora'] = date('Y-m-d h:m:i');
+
+
+          if ($conexion->guardarRegistro($conn, $tabla, $arregloDatos )){
+
+          return true;
+          }
+
+    }
   
 
 
-  /**
-   * [actionBeginSave description] metodo que realiza los procesos del conexion controller y actualiza el estatus del funcionario
-   * @return [type] [description] si retorna true, actualiza el estatus del funcionario pero si retorna false envia un mensaje de error
-   * 
-   */
+  
   public function beginSave()
   {
-   // die('llego a begin');
-  $idFuncionario = $_SESSION['idFuncionario'];
-     $todoBien = true;
-
+    die('llego a begin');
+  
       $conexion = new ConexionController();
 
-      
-
-        $conn = $conexion->initConectar('db');
+      $conn = $conexion->initConectar('db');
 
         $conn->open();
 
         $transaccion = $conn->beginTransaction();
 
-          foreach($idFuncionario as $key => $value){
-
+         
                 
-                $deshabilitarFuncionario = self::deshabilitarFuncionario($conn, $conexion);
+                $actualizarCalcomania = self::actualizarCalcomania($conn, $conexion);
 
 
-                    if ($deshabilitarFuncionario == true ){
-                           // die('deshabilito');
-                            $todoBien == true;
+                    if ($actualizarCalcomania == true ){
+
+                        $guardarCalcomania = self::guardarCalcomania($conn, $conexion);
+                        
+                            if($actualizarCalcomania and $guardarCalcomania == true){
+
+                                $transaccion->commit();
+                                $conn->close();
+                        
+                                return true;
+                              
+                              }else{
+                    
+                                $transaccion->rollback();
+                                $conn->close();
+                                return false;
+                              }
+
+                    }                         
+
+                      
                             
-                    }
+              
                         
                       
-                    if($todoBien == true){
-                      //die('esta todo bien');
+                   
+                      
                        
-                        $transaccion->commit();
-                        $conn->close();
                         
-                        return true;
-                    }else{
-                    
-                        $transaccion->rollback();
-                        $conn->close();
-                        return false;
-                    }
 
-             }
+             
   }
             
         
