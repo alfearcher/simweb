@@ -282,7 +282,7 @@
 	    	$modelFind = null;
 	    	return $modelFind = SolicitudesContribuyente::find()
 	    										->where(['nro_solicitud' => $nroSolicitud])
-                                                ->joinWith('tipoSolicitud', 'impuestos')
+                                                ->joinWith('tipoSolicitud', 'impuestos', 'nivelAprobacion')
                                                 ->one();
                                                 //->asArray()
 	    }
