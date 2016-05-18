@@ -137,7 +137,10 @@ die(var_dump($postData));
 
 
 
-		/***/
+		/**
+		 * Metodo que muestra la solicitud seleccionada por el funcionario.
+		 * @return [type] [description]
+		 */
 		public function actionBuscarSolicitudSeleccionada()
 		{
 			$request = Yii::$app->request;
@@ -148,6 +151,7 @@ die(var_dump($postData));
 			$url = Url::to(['procesar-solicitud']);
 
 			// Identificador de la solicitud seleccionada por el usuario.
+			// nro de solicitud.
 			$id = isset($postData['id']) ? $postData['id'] : null;
 
 			if ( $id != null ) {
