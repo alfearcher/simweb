@@ -105,7 +105,7 @@
 				}
 			}
 
-			return $result;
+			return 'prueba';
 		}
 
 
