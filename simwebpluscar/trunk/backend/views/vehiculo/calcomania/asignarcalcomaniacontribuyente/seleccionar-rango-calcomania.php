@@ -10,16 +10,14 @@ use kartik\icons\Icon;
 
 
 
-$this->title = Yii::t('frontend', 'Select your Stickers lot');
+$this->title = Yii::t('frontend', 'Select the Stickers');
 
 ?>
 
-
-
- <?php $form = ActiveForm::begin([
+<?php $form = ActiveForm::begin([
             'id' => 'form-datosBasicoJuridico-inline',
             'method' => 'post',
-            'action' => ['/vehiculo/calcomania/asignarcalcomaniacontribuyente/asignar-calcomania-contribuyente/verificar-vehiculo'],
+            'action' => ['/vehiculo/calcomania/asignarcalcomaniacontribuyente/asignar-calcomania-contribuyente/verificar-calcomanias'],
             'enableClientValidation' => true,
             'enableAjaxValidation' => true,
             'enableClientScript' => true,
@@ -42,11 +40,10 @@ $this->title = Yii::t('frontend', 'Select your Stickers lot');
         'columns' => [
             //['class' => 'yii\grid\SerialColumn'],
 
-       
-           'id_contribuyente',
-            'marca',
-            'modelo',
-       
+        'id_calcomania',
+           // 'id_contribuyente',
+            //'ano_inicio',
+        'nro_calcomania',
             //'liquidado',
             // 'manzana_limite',
             // 'lote_1',
@@ -57,13 +54,13 @@ $this->title = Yii::t('frontend', 'Select your Stickers lot');
             // 'casa_edf_qta_dom',
             // 'piso_nivel_no_dom',
             // 'apto_dom',
-         
+          //'rango_inicial',
             // 'medidor',
             // 'id_sim',
             // 'observacion:ntext',
             // 'inactivo',
             // 'catastro',
-        
+         // 'rango_final',
             // 'tipo_ejido',
             // 'propiedad_horizontal',
             // 'estado_catastro',
@@ -77,7 +74,7 @@ $this->title = Yii::t('frontend', 'Select your Stickers lot');
             // 'nivel_catastro',
             // 'unidad_catastro',
 
-             [
+                 [
                                     'class' => 'yii\grid\ActionColumn',
                                     'header'=> Yii::t('backend','View'),
                                     'template' => '{view}',
@@ -96,11 +93,17 @@ $this->title = Yii::t('frontend', 'Select your Stickers lot');
                                 ],
         ],
     ]); ?>
+        <div class="col-sm-5">
+    
+     <?= Html::submitButton("Submit", ["class" => "btn btn-success", 'style' => 'height:30px;width:140px;']) ?>
+
+    </div>
 
     <p>
        
         <?= Html::a(Yii::t('backend', 'Back'), ['/menu/menu-vertical'], ['class' => 'btn btn-danger']) ?>
     </p>
 
+  
 </div>
 <?php ActiveForm::end() ?>
