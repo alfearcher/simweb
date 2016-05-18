@@ -195,7 +195,7 @@
 								<p><strong><?= Yii::t('backend', $model->getAttributeLabel('nivel_aprobacion')) ?></strong></p>
 							</div>
 						</div>
-						<div class="col-sm-4" style="padding-left: 0px;">
+						<div class="col-sm-5" style="padding-left: 0px;">
 							<div class="row" class="nivel-aprobacion">
 								<?= $form->field($model, 'nivel_aprobacion')->textInput([
 																					'id' => 'nivel-aprobacion',
