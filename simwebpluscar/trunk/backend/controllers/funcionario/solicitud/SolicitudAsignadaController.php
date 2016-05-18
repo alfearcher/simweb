@@ -190,6 +190,20 @@ die(var_dump($postData));
 
 
 		/***/
+		public function actionBuscarDetalleSolicitud($nroSolicitud)
+		{
+			// Debe retornar una view segun el nro de solicitud, en este caso debe buscar
+			// utilizando el parametro numero de solicitud, el tipo de solicitud para asi
+			// renderizar la vesta respectiva. Esta vista deben ser filtradas por el nivel
+			// de aprobacion ya que solo aquellas que tenga el nivel de aprobacion dos (2)
+			// y tres (3), seran renderizadas.
+		}
+
+
+
+
+
+		/***/
 		public function actionBuscarSolicitudesContribuyente()
 		{
 			$postInicial = isset($_SESSION['postData']) ? $_SESSION['postData'] : null;
