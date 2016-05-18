@@ -259,7 +259,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                      } else {
 
-                            return MensajeController::actionMensaje(920);
+                            return MensajeController::actionMensaje(404);
                      } 
 
                    }else{ 
@@ -323,7 +323,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                                   'tipo_solicitud' => $tipoSolicitud,
                                   'usuario' => yii::$app->user->identity->login,
                                   'fecha_hora_creacion' => date('Y-m-d h:i:s'),
-                                  'nivel_aprobacion' => $nivelAprobacion,
+                                  'nivel_aprobacion' => $nivelAprobacion["nivel_aprobacion"],
                                   'nro_control' => 0,
                                   'firma_digital' => null,
                                   'estatus' => 0,
