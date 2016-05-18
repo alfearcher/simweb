@@ -59,6 +59,7 @@
     use backend\models\impuesto\Impuesto;
     use backend\models\funcionario\solicitud\FuncionarioSolicitud;
     use common\models\configuracion\solicitudplanilla\SolicitudPlanilla;
+    use backend\models\configuracion\nivelaprobacion\NivelAprobacion;
 
 
     class SolicitudesContribuyente extends ActiveRecord
@@ -119,6 +120,16 @@
         public function getSolicitudPlanilla()
         {
             return $this->hasMany(SolicitudPlanilla::className(), ['nro_solicitud' => 'nro_solicitud']);
+        }
+
+
+        /**
+         * Relacion con la entidad "niveles-aprobacion".
+         * @return Active Record.
+         */
+        public function getNivelAprobacion()
+        {
+            return $this->hasOne(NivelAprobacion::className(), ['nivel_aprobacion' => 'nivel_aprobacion']);
         }
 
     }
