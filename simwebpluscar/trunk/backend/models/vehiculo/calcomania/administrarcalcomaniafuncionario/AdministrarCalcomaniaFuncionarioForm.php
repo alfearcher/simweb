@@ -52,9 +52,10 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use backend\models\funcionario\calcomania\FuncionarioCalcomania;
-use backend\mosdels\funcionario\Funcionario;
+use backend\models\funcionario\Funcionario;
 use backend\models\vehiculo\calcomania\generarlote\LoteSearch;
 use common\models\calcomania\calcomaniamodelo\Calcomania;
+
 
 
 
