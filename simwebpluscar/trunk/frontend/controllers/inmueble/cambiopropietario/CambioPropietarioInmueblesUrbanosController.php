@@ -162,7 +162,7 @@ class CambioPropietarioInmueblesUrbanosController extends Controller
 CONTENIDO VENDEDOR (SELLER)
 */
 
-                if ($datosCambio["operacion"] == 1) {
+                if ($datosCambio["operacion"] == 1) { 
                                     
                     if ($datosCambio["tipo_naturaleza1"] == 0) {
                         $tipo = $datosCambio["tipoBuscar1"];

@@ -122,7 +122,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
    
          if ($model->load(Yii::$app->request->post())){
 
-              if($model->validate()){
+              if($model->validate()){ 
 
                  //condicionales     
                    $documento = new DocumentoSolicitud();
