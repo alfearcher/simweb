@@ -134,5 +134,29 @@
 	    }
 
 
+
+	    /***/
+	    public function findNivelAprobacionDeterminada($nivel)
+	    {
+	    	$modelFind = NivelAprobacion::findOne($nivel);
+	    	return isset($modelFind) ? $modelFind : null;
+	    }
+
+
+
+	    /**
+	     * Metodo que permite obtener la descripcion de un nivel de aprobacion
+	     * segun el parametro "nivel-aprobacion".
+	     * @param  Integer $nivel identificador del registro.
+	     * @return String Retorna una cadena que muestra la descripcion del
+	     * identificador.
+	     */
+	    public function getDescripcionNivelAprobacion($nivel)
+	    {
+	    	$model = self::findNivelAprobacionDeterminada($nivel);
+	    	return isset($model->descripcion) ? $model->descripcion : '';
+	    }
+
+
 	}
 ?>

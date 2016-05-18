@@ -46,6 +46,7 @@
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 	use backend\models\configuracion\solicitud\ConfigurarSolicitud;
+	use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 
 	/**
 	* 	Clase
@@ -83,6 +84,18 @@
 		{
 			return $this->hasOne(ConfigurarSolicitud::className(), ['nivel_aprobacion' => 'nivel_aprobacion']);
 		}
+
+
+
+		/**
+		 * Relacion con la entidad "solicitudes-contribuyente".
+		 * @return Active Record.
+		 */
+		public function getSolicitudContribuyente()
+		{
+			return $this->hasMany(SolicitudesContribuyente::className(), ['nivel_aprobacion' => 'nivel_aprobacion']);
+		}
+
 
 	}
 
