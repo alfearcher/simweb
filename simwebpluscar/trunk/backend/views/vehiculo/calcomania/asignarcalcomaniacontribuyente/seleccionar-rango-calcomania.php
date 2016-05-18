@@ -33,14 +33,15 @@ $this->title = Yii::t('frontend', 'Select the Stickers');
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     
-
+    <div class="row">
+    <div class="col-sm-3">
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
        // 'filterModel' => $searchModel,
         'columns' => [
             //['class' => 'yii\grid\SerialColumn'],
 
-        'id_calcomania',
+       
            // 'id_contribuyente',
             //'ano_inicio',
         'nro_calcomania',
@@ -82,7 +83,7 @@ $this->title = Yii::t('frontend', 'Select the Stickers');
                                         'view' => function ($url, $model, $key) {
                                             return Html::submitButton('<div class="item-list" style="color: #337AB7;"><center>'. Icon::show('fa fa-thumbs-up',['class' => 'fa-1x'], Icon::FA) .'</center></div>',
                                                                         [
-                                                                            'value' => $key,
+                                                                            'value' => $model->nro_calcomania,
                                                                             'name' => 'id',
                                                                             'title' => Yii::t('backend', 'View'),
                                                                             'style' => 'margin: 0 auto; display: block;',
@@ -105,5 +106,7 @@ $this->title = Yii::t('frontend', 'Select the Stickers');
     </p>
 
   
+</div>
+</div>
 </div>
 <?php ActiveForm::end() ?>

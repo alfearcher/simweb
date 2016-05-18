@@ -3,14 +3,15 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use kartik\icons\Icon;
-    use yii\widgets\ActiveForm;
+use yii\widgets\ActiveForm;
+use common\models\deuda\Solvente;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\InmueblesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 
 
-$this->title = Yii::t('frontend', 'Select your Stickers lot');
+$this->title = Yii::t('frontend', 'Select your Vehicle');
 
 ?>
 
@@ -43,9 +44,27 @@ $this->title = Yii::t('frontend', 'Select your Stickers lot');
             //['class' => 'yii\grid\SerialColumn'],
 
        
-           'id_contribuyente',
+           'id_vehiculo',
+           'placa',
             'marca',
             'modelo',
+            [
+                'label' => 'Solvente',
+
+                'value' => function($model){
+
+                    $buscarSolvencia = new Solvente();
+                    $buscarSolvencia->setImpuesto(3);
+                    $buscarSolvencia->setIdImpuesto($model->id_vehiculo);
+
+                    $r = $buscarSolvencia->determinarSolvencia();
+                        if($r == true){
+                            return 'Si';
+                        }else{
+                            return 'No';
+                        }
+                }
+            ],
        
             //'liquidado',
             // 'manzana_limite',
@@ -83,14 +102,28 @@ $this->title = Yii::t('frontend', 'Select your Stickers lot');
                                     'template' => '{view}',
                                     'buttons' => [
                                         'view' => function ($url, $model, $key) {
-                                            return Html::submitButton('<div class="item-list" style="color: #337AB7;"><center>'. Icon::show('fa fa-thumbs-up',['class' => 'fa-1x'], Icon::FA) .'</center></div>',
+
+                                                 $buscarSolvencia = new Solvente();
+                                                        $buscarSolvencia->setImpuesto(3);
+                                                        $buscarSolvencia->setIdImpuesto($model->id_vehiculo);
+
+                                                        $r = $buscarSolvencia->determinarSolvencia();
+                                                            if($r == true){
+                                                                
+                                                                  return Html::submitButton('<div class="item-list" style="color: #337AB7;"><center>'. Icon::show('fa fa-thumbs-up',['class' => 'fa-1x'], Icon::FA) .'</center></div>',
                                                                         [
                                                                             'value' => $key,
                                                                             'name' => 'id',
                                                                             'title' => Yii::t('backend', 'View'),
                                                                             'style' => 'margin: 0 auto; display: block;',
+                                                                            //'disable' => $r,
                                                                         ]
                                                                     );
+                                                            }else{
+                                                                return '<span><center>---</span></center>'; 
+                                                            }
+
+                                          
                                         },
                                     ],
                                 ],
