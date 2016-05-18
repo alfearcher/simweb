@@ -21,14 +21,14 @@
  */
 
  /**    
- *  @file BusquedaNaturalForm.php
+ *  @file BusquedaJuridicoForm.php
  *  
  *  @author Manuel Alejandro Zapata Canelon
  * 
- *  @date 14/05/2016
+ *  @date 18/05/2016
  * 
- *  @class BusquedaNaturalForm
- *  @brief Clase contiene las rules y metodos para la busqueda de contribuyentes naturales para la asignacion de calcomanias 
+ *  @class BusquedaJuridicoForm
+ *  @brief Clase contiene las rules y metodos para la busqueda de contribuyentes juridicos para la asignacion de calcomanias
  * 
  *  
  * 
@@ -59,15 +59,18 @@ use common\models\calcomania\calcomaniamodelo\Calcomania;
 
 
 
-class BusquedaNaturalForm extends Model
+class BusquedaJuridicoForm extends Model
 {
 
   public $naturaleza;
   public $cedula;
+  public $tipo;
   public $id;
 
-  const SCENARIO_SEARCH_NATURAL = 'search_natural';
-  const SCENARIO_SEARCH_ID = 'search_id';
+   const SCENARIO_SEARCH_ID_JURIDICO = 'search_id_juridico';
+   const SCENARIO_SEARCH_JURIDICO = 'search_juridico';
+
+ 
 
  
      public function scenarios()
@@ -75,11 +78,12 @@ class BusquedaNaturalForm extends Model
             //bypass scenarios() implementation in the parent class
             //return Model::scenarios();
             return [
-                self::SCENARIO_SEARCH_NATURAL => [
+                self::SCENARIO_SEARCH_JURIDICO => [
                                 'naturaleza',
-                                'cedula'
+                                'cedula',
+                                'tipo',
                 ],
-                self::SCENARIO_SEARCH_ID => [
+                self::SCENARIO_SEARCH_ID_JURIDICO => [
                                 'id',
                                
                 ],
@@ -94,15 +98,19 @@ class BusquedaNaturalForm extends Model
     // die('llegue a las rules');
 
         return [
-           [['naturaleza', 'cedula'],
-                'required', 'on' => 'search_natural', 'message' => Yii::t('backend', '{attribute} is required')],
+           [['naturaleza', 'cedula','tipo'],
+                'required', 'on' => 'search_juridico', 'message' => Yii::t('backend', '{attribute} is required')],
 
             [['id'],
-                'required', 'on' => 'search_id', 'message' => Yii::t('backend', '{attribute} is required')],
+                'required', 'on' => 'search_id_juridico', 'message' => Yii::t('backend', '{attribute} is required')],
              
-            [['cedula','id'],'integer'],
+            [['cedula','id', 'tipo'],'integer'],
 
             ['cedula', 'validarLongitud'],
+
+            ['tipo', 'validarTipo'],
+
+
              
             
         ];
@@ -122,7 +130,21 @@ class BusquedaNaturalForm extends Model
     
     }
 
-    public function buscarNatural($model)
+     public function validarTipo($attribute, $params)
+    {
+      
+
+        $longitud = strlen($this->tipo);
+
+          if ($longitud > 1 ){
+            $this->addError($attribute, Yii::t('frontend', 'Tipo must not have more than 1 characters'));
+          }else{
+            return false;
+          }
+    
+    }
+
+    public function buscarJuridico($model)
     {
 
 
@@ -130,7 +152,8 @@ class BusquedaNaturalForm extends Model
                                     ->where([
                                         'naturaleza' =>$model->naturaleza,
                                         'cedula' => $model->cedula,
-                                        'tipo_naturaleza' => 0,
+                                        'tipo' => $model->tipo,
+                                        'tipo_naturaleza' => 1,
                                         'inactivo' => 0,
                                     ])
                                     ->one();
@@ -143,13 +166,13 @@ class BusquedaNaturalForm extends Model
                 }
     }
 
-    public function buscarId($model)
+    public function buscarIdJuridico($model)
     {
         //die(var_dump($model));
          $buscar = CrearUsuarioNatural::find()
                                     ->where([
                                         'id_contribuyente' => $model->id,
-                                        'tipo_naturaleza' => 0,
+                                        'tipo_naturaleza' => 1,
                                         'inactivo' => 0,
                                     ])
                                     ->one();
@@ -165,94 +188,14 @@ class BusquedaNaturalForm extends Model
 
 
 
-    public function buscarVehiculo($model)
-    {
-     $query = VehiculosSearch::find();
-
-                                
-                             
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-           
-        ]);
-        $query->where([
-            'id_contribuyente' => $model->id_contribuyente,
-            'status_vehiculo' => 0,
-            ])
-  
-        ->all();
-       // die(var_dump($query));
-
-        //die(var_dump($query));
-        return $dataProvider;
-
-    }
-
-    public function buscarPlaca($model)
-    {
-
-
-        $buscar = VehiculosSearch::find()
-                                    ->where([
-                                        'id_vehiculo' =>$model,
-                                        'status_vehiculo' => 0,
-                                        
-                                    ])
-                                    ->all();
-
-                if($buscar == true){
-                    
-                    return $buscar;
-                }else{
-                    return false;
-                }
-    }
-
-    public function verificarCalcomaniaEntregada($model)
-    {
-
-        
-        $buscar = CalcomaniaEntregada::find()
-                                    ->where([
-                                    'id_vehiculo' => $model,
-                                    'ano_impositivo' => date('Y'),
-                                    'status' => 0,
-
-                                      ])
-                                    ->all();
-
-                            if($buscar == true){
-                                return true;
-                            }else{
-                                return false;
-                            }
-    }
-
-    public function searchRango()
-    {
-        $datos = yii::$app->user->identity->id_funcionario;
-        
-        $query = Calcomania::find();
-        
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-           
-        ]);
-        $query->filterWhere([
-            'id_funcionario' => $datos,
-            'entregado' => 0,
-            'estatus' => 0,
-
-            ])
-        
-        ->all();
-
-
-       
     
-  
-        return $dataProvider;
-    }
+
+    
+
+    
+   
+
+   
       
     
     
@@ -262,6 +205,7 @@ class BusquedaNaturalForm extends Model
         return [
                 'cedula' => Yii::t('backend', 'Cedula'), 
                 'naturaleza' => Yii::t('backend', 'Naturaleza'),
+                'tipo' => Yii::t('backend', 'Tipo'),
                 'id' => yii::t('backend', 'ID'),
                 
         ];
