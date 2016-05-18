@@ -209,7 +209,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
               return ActiveForm::validate($model); 
          } 
    
-         if ($model->load($postData)){
+         if ($model->load($postData)){ 
 
               if($model->validate()){ 
 
