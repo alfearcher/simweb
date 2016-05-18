@@ -168,8 +168,8 @@
 		{
 			$result = false;
 
-die(var_dump($ultimoPeriodo));
 			$ultimoPeriodo = Self::getUltimoPeriodoObjeto();
+die(var_dump($ultimoPeriodo));
 			if ( count($ultimoPeriodo) > 0 ) {
 				$periodoActual = self::getPeriodoActualSegunOrdenanza();
 				if ( count($periodoActual) > 0 ) {
