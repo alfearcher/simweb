@@ -59,6 +59,7 @@ use backend\models\vehiculo\calcomania\deshabilitarfuncionario\FuncionarioSearch
 use backend\models\funcionario\calcomania\FuncionarioCalcomania;
 use backend\models\vehiculo\calcomania\deshabilitarfuncionario\DeshabilitarForm;
 use backend\models\vehiculo\calcomania\asignarcalcomaniacontribuyente\BusquedaNaturalForm;
+use backend\models\vehiculo\calcomania\asignarcalcomaniacontribuyente\BusquedaJuridicoForm;
 use common\models\contribuyente\ContribuyenteBase;
 /**
  * Site controller
@@ -73,6 +74,10 @@ session_start();
 class AsignarCalcomaniaContribuyenteController extends Controller
 {
 
+   const SCENARIO_SEARCH_NATURAL = 'search_natural';
+   const SCENARIO_SEARCH_ID = 'search_id';
+   const SCENARIO_SEARCH_ID_JURIDICO = 'search_id_juridico';
+   const SCENARIO_SEARCH_JURIDICO = 'search_juridico';
 
 
     
@@ -93,8 +98,15 @@ class AsignarCalcomaniaContribuyenteController extends Controller
   public function actionBusquedaNatural()
   {
        $model = new BusquedaNaturalForm();
+        $postData = Yii::$app->request->post();
+        //die(var_dump($postData));
+          if(isset($postData['btn-busqueda-natural'])){ 
+              $model->scenario = self::SCENARIO_SEARCH_NATURAL;
+          }elseif(isset($postData['btn-busqueda-id'])){
+              $model->scenario = self::SCENARIO_SEARCH_ID;
+          }
 
-             $postData = Yii::$app->request->post();
+           
 
             if ( $model->load($postData) && Yii::$app->request->isAjax ){
                   Yii::$app->response->format = Response::FORMAT_JSON;
@@ -102,27 +114,113 @@ class AsignarCalcomaniaContribuyenteController extends Controller
             }
 
             if ( $model->load($postData) ) {
-             
 
-               if ($model->validate()){
 
-                  $buscarNatural = self::buscarNatural($model);
+              if(isset($postData['btn-busqueda-natural'])){ 
+              
+                if ($model->validate()){
+                 
+                 $buscarNatural = self::buscarNatural($model);
                       
                       if($buscarNatural == true){
                         $_SESSION['datos'] = $buscarNatural;
                         
                          return $this->redirect(['buscar-vehiculo']);
-
+                  
                       }else{
                         return MensajeController::actionMensaje(990); 
                       }  
-                  
-              }
-            }
                     
+
+                    }
+
+              }elseif(isset($postData['btn-busqueda-id'])){
+                  if ($model->validate()){
                   
+                      $buscarId = self::buscarId($model);
+                      
+                      if($buscarId == true){
+                        $_SESSION['datos'] = $buscarId;
+                        
+                         return $this->redirect(['buscar-vehiculo']);
+                  
+                      }else{
+                        return MensajeController::actionMensaje(990); 
+                      }  
+                  }
+
+              }
+                    
+            }       
                 
             return $this->render('/vehiculo/calcomania/asignarcalcomaniacontribuyente/busqueda-natural', [
+                                                              'model' => $model,
+
+                                                              
+            ]);
+  }
+
+
+
+  public function actionBusquedaJuridico()
+  {
+      $model = new BusquedaJuridicoForm();
+        $postData = Yii::$app->request->post();
+        //die(var_dump($postData));
+          if(isset($postData['btn-busqueda-juridico'])){ 
+              $model->scenario = self::SCENARIO_SEARCH_JURIDICO;
+          }elseif(isset($postData['btn-busqueda-id-juridico'])){
+              $model->scenario = self::SCENARIO_SEARCH_ID_JURIDICO;
+          }
+
+           
+
+            if ( $model->load($postData) && Yii::$app->request->isAjax ){
+                  Yii::$app->response->format = Response::FORMAT_JSON;
+                  return ActiveForm::validate($model);
+            }
+
+            if ( $model->load($postData) ) {
+
+
+              if(isset($postData['btn-busqueda-juridico'])){ 
+              
+                if ($model->validate()){
+                 
+                 $buscarJuridico = self::buscarJuridico($model);
+                      
+                      if($buscarJuridico == true){
+                        $_SESSION['datos'] = $buscarJuridico;
+                        
+                         return $this->redirect(['buscar-vehiculo']);
+                  
+                      }else{
+                        return MensajeController::actionMensaje(990); 
+                      }  
+                    
+
+                    }
+
+              }elseif(isset($postData['btn-busqueda-id-juridico'])){
+                  if ($model->validate()){
+                  
+                      $buscarIdJuridico = self::buscarIdJuridico($model);
+                      
+                      if($buscarIdJuridico == true){
+                        $_SESSION['datos'] = $buscarIdJuridico;
+                        
+                         return $this->redirect(['buscar-vehiculo']);
+                  
+                      }else{
+                        return MensajeController::actionMensaje(990); 
+                      }  
+                  }
+
+              }
+                    
+            }       
+                
+            return $this->render('/vehiculo/calcomania/asignarcalcomaniacontribuyente/busqueda-juridico', [
                                                               'model' => $model,
 
                                                               
@@ -132,9 +230,7 @@ class AsignarCalcomaniaContribuyenteController extends Controller
   public function buscarNatural($model)
   {
      
-
-
-      $buscar = new BusquedaNaturalForm();
+    $buscar = new BusquedaNaturalForm();
 
         $buscarNatural = $buscar->buscarNatural($model);
 
@@ -144,6 +240,46 @@ class AsignarCalcomaniaContribuyenteController extends Controller
                return false;
             }
   }
+
+  public function buscarJuridico($model)
+  {
+      $buscar = new BusquedaJuridicoForm();
+
+        $buscarJuridico = $buscar->buscarJuridico($model);
+
+             if($buscarJuridico ==  true){
+               return $buscarJuridico;
+             }else{
+               return false;
+            }
+  }
+
+  public function buscarId($model)
+  {
+      $buscar = new BusquedaNaturalForm();
+
+        $buscarId = $buscar->buscarId($model);
+
+             if($buscarId ==  true){
+               return $buscarId;
+             }else{
+               return false;
+            }
+  }
+
+    public function buscarIdJuridico($model)
+  {
+      $buscar = new BusquedaJuridicoForm();
+
+        $buscarIdJuridico = $buscar->buscarIdJuridico($model);
+
+             if($buscarIdJuridico ==  true){
+               return $buscarIdJuridico;
+             }else{
+               return false;
+            }
+  }
+
 
   public function actionBuscarVehiculo()
   {
@@ -207,10 +343,45 @@ class AsignarCalcomaniaContribuyenteController extends Controller
   {
   
       $idCalcomanias = yii::$app->request->post('id');
+      ($idCalcomanias);
       $_SESSION['idCalcomania'] = $idCalcomanias;
+
+        self::mostrarDatos($idCalcomanias, $_SESSION['datosVehiculo']);
 
         $guardarActualizar = self::beginSave("guardarActualizar");
             
+  }
+
+  public function mostrarDatos($idCalcomania , $datos)
+  {
+
+        $model = new VerificarTransaccionForm();
+
+            $postData = Yii::$app->request->post();
+
+            if ( $model->load($postData) && Yii::$app->request->isAjax ){
+                  Yii::$app->response->format = Response::FORMAT_JSON;
+                  return ActiveForm::validate($model);
+            }
+
+            if ( $model->load($postData) ) {
+             
+
+               if ($model->validate()){
+
+                   
+                }
+            }
+            
+            return $this->render('/vehiculo/calcomania/asignarcalcomaniacontribuyente/verificar-transaccion', [
+                                                              'model' => $model,
+                                                              'datos' => $datos,
+                                                              'idCalcomania' => $idCalcomania,
+                                                             
+                                                           
+            ]);
+            
+
   }
  
   public function actualizarCalcomania($conn, $conexion)

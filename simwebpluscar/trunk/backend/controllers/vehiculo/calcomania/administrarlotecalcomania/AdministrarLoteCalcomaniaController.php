@@ -365,9 +365,15 @@ class AdministrarLoteCalcomaniaController extends Controller
                 $deshabilitarCalcomania = self::deshabilitarCalcomania($conn, $conexion);
 
 
+<<<<<<< .mine
+                      if ($deshabilitarCalcomanias == true ){
+                            //die('deshabilito');
+                            $todoBien == true;
+=======
                     if ($deshabilitarCalcomania == true ){
                            // die('deshabilito');
                             $todoBien == true;
+>>>>>>> .r2302
                             
                     }
                         
