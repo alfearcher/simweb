@@ -104,7 +104,6 @@
 					$result = self::verificarCondicionObjeto();
 				}
 			}
-
 			return $result;
 		}
 
@@ -125,7 +124,7 @@
 			$ultimo = $planilla->getUltimoPeriodoLiquidadoObjeto($this->idImpuesto, $this->impuesto);
 			if ( count($ultimo) > 0 ) {
 				$ultimoPeriodo['ano_impositivo'] = $ultimo['ano_impositivo'];
-				$ultimoPeriodo['trimestre'] = $ultimo['triemstre'];
+				$ultimoPeriodo['trimestre'] = $ultimo['trimestre'];
 				$ultimoPeriodo['exigibilidad_pago'] = $ultimo['exigibilidad_pago'];
 				$ultimoPeriodo['pago'] = $ultimo['pago'];
 			}
@@ -169,7 +168,6 @@
 			$result = false;
 
 			$ultimoPeriodo = Self::getUltimoPeriodoObjeto();
-die(var_dump($ultimoPeriodo));
 			if ( count($ultimoPeriodo) > 0 ) {
 				$periodoActual = self::getPeriodoActualSegunOrdenanza();
 				if ( count($periodoActual) > 0 ) {
