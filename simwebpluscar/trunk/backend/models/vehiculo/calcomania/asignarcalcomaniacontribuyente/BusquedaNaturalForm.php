@@ -51,9 +51,10 @@ use Yii;
 use yii\base\Model;
 use common\models\contribuyente\ContribuyenteBase;
 use backend\models\vehiculo\VehiculosSearch;
-
-
-
+use yii\data\ActiveDataProvider;
+use frontend\models\usuario\CrearUsuarioNatural;
+use common\models\calcomania\calcomaniaentregada\CalcomaniaEntregada;
+use common\models\calcomania\calcomaniamodelo\Calcomania;
 
 
 
@@ -99,45 +100,113 @@ class BusquedaNaturalForm extends Model
     public function buscarNatural($model)
     {
 
-        $buscar = ContribuyenteBase::find()
+
+        $buscar = CrearUsuarioNatural::find()
                                     ->where([
                                         'naturaleza' =>$model->naturaleza,
                                         'cedula' => $model->cedula,
                                         'tipo_naturaleza' => 0,
                                         'inactivo' => 0,
                                     ])
-                                    ->all();
+                                    ->one();
 
                 if($buscar == true){
+                    
                     return $buscar;
                 }else{
                     return false;
                 }
     }
 
+
+
+
     public function buscarVehiculo($model)
     {
-    //die(var_dump($model));
-        $query = VehiculosSearch::find();
+     $query = VehiculosSearch::find();
 
+                                
+                             
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+           
+        ]);
+        $query->where([
+            'id_contribuyente' => $model->id_contribuyente,
+            'status_vehiculo' => 0,
+            ])
+  
+        ->all();
+       // die(var_dump($query));
+
+        //die(var_dump($query));
+        return $dataProvider;
+
+    }
+
+    public function buscarPlaca($model)
+    {
+
+
+        $buscar = VehiculosSearch::find()
+                                    ->where([
+                                        'id_vehiculo' =>$model,
+                                        'status_vehiculo' => 0,
+                                        
+                                    ])
+                                    ->all();
+
+                if($buscar == true){
+                    
+                    return $buscar;
+                }else{
+                    return false;
+                }
+    }
+
+    public function verificarCalcomaniaEntregada($model)
+    {
+        
+        $buscar = CalcomaniaEntregada::find()
+                                    ->where([
+                                    'id_vehiculo' => $model,
+                                   
+                                    'status' => 0,
+
+                                      ])
+                                    ->all();
+
+                            if($buscar == true){
+                                return true;
+                            }else{
+                                return false;
+                            }
+    }
+
+    public function searchRango()
+    {
+        $datos = yii::$app->user->identity;
+          // die(var_dump($model));
+        $query = Calcomania::find();
+        
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
            
         ]);
         $query->filterWhere([
-            'id_contribuyente' => $model->id_contribuyente,
-            'status_vehiculo' => 0,
-          
-        ]);
-  
+            'id_funcionario' => $datos->id_user,
+            'entregado' => 0,
+            'estatus' => 0,
+
+            ])
         
-       // die(var_dump($query));
+        ->all();
+
+
        
     
-
-
+  
         return $dataProvider;
-
     }
       
     
@@ -163,6 +232,28 @@ class BusquedaNaturalForm extends Model
                 'fecha_hora',
         ];
     }
+
+    public function attributeLoteCalcomaniasEntregadas()
+    {
+        return [
+                'id_contribuyente',
+                'id_vehiculo',
+                'nro_calcomania',
+                'ano_impositivo',
+                'fecha_entrega',
+                'login',
+                'tipo_entrega',
+                'observacion',
+                'planilla',
+                'status',
+                'placa',
+                
+                
+
+        ];
+    }
+
+    
 
 
 
