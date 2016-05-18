@@ -68,7 +68,7 @@ $listaFuncionarios = ArrayHelper::map($busquedaFuncionario, 'id_funcionario', fu
             'id' => 'form-busqueda-inline',
             'method' => 'post',
             //'action' => ['/usuario/crear-usuario-natural/natural'],
-             'enableClientValidation' => true,
+             'enableClientValidation' => false,
              'enableAjaxValidation' => false,
              'enableClientScript' => true,
 
