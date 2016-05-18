@@ -860,9 +860,6 @@
 
 
 
-
-
-
 		/***/
 		public function getDeudaGeneral2()
 		{
