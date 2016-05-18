@@ -36,15 +36,8 @@
 	use backend\models\funcionario\FuncionarioForm;
 	use backend\models\funcionario\Funcionario;
 	use common\conexion\ConexionController;
-	use common\classes\ValueDefault;	// Modulo por desarrollar, buscar los valores por defectos de los campos en las rules del modelo.
-	use common\models\configuracion\solicitud\ParametroSolicitud;
-	use common\models\planilla\Planilla;
-	use common\models\ordenanza\OrdenanzaBase;
-	use common\models\planilla\PlanillaActividadEconomica;
-	use common\models\planilla\PlanillaTasa;
-	//use common\models\calculo\liquidacion\vehiculo\LiquidacionVehiculo;
-	use common\models\planilla\PlanillaVehiculo;
-	use common\models\planilla\PlanillaInmueble;
+	use common\models\deuda\Solvente;
+
 
 
  /**
@@ -155,31 +148,13 @@
 	  	public function actionPrueba()
 	  	{
 
-	  		//$l = New LiquidacionVehiculo(6);
-	  		//$l->setAnoImpositivo(2012);
-	  		//$r = $l->iniciarCalcularLiquidacionVehiculo();
+	  		$s = New Solvente();
+	  		$s->setImpuesto(3);
+	  		$s->setIdImpuesto(269067);
 
-	  			$conexion = New ConexionController();
+	  		$r = $s->determinarSolvencia();
+die(var_dump($r));
 
-			// Instancia de conexion hacia la base de datos.
-			$this->connLocal = $conexion->initConectar('db');
-			$this->connLocal->open();
-
-			// Instancia de tipo transaccion para asegurar la integridad del resguardo de los datos.
-			// Inicio de la transaccion.
-			$transaccion = $this->connLocal->beginTransaction();
-
-			// Parametros IdContribuyente, idImpuesto
-			$planilla = New PlanillaInmueble(2317, $conexion, $this->connLocal);
-
-			$result = $planilla->liquidarEstimadaInmueble();
-			if ( $result ) {
-				$transaccion->commit();
-				die('guardo');
-			} else {
-				$transaccion->rollBack();
-				die('NO guardo');
-			}
 
 	  	}
 	}
