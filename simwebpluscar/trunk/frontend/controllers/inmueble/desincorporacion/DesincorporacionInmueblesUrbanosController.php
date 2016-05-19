@@ -124,6 +124,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
         }
     } 
 
+
     /**
      * Displays a single Inmuebles model.
      * @param integer $id
