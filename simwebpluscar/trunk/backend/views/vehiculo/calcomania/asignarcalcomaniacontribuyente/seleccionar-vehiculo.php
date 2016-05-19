@@ -132,7 +132,7 @@ $this->title = Yii::t('frontend', 'Select your Vehicle');
 
     <p>
        
-        <?= Html::a(Yii::t('backend', 'Back'), ['/menu/menu-vertical'], ['class' => 'btn btn-danger']) ?>
+        <?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) ?>
     </p>
 
 </div>
