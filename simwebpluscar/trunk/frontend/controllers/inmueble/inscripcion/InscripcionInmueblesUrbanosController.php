@@ -260,7 +260,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                         $tipoError = 0; 
                         return $result; 
 
-                    } else {
+                    } else { 
 
                         $arrayDatos3 = [    'id_contribuyente' => $id_contribuyente,
                                             'ano_inicio' => $ano_inicio,

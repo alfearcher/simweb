@@ -156,7 +156,7 @@ class CambioPropietarioInmueblesUrbanosController extends Controller
                 
                 if (!\Yii::$app->user->isGuest){   
                      
-     
+    
               
 /*
 CONTENIDO VENDEDOR (SELLER)

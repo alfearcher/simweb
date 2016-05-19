@@ -94,7 +94,7 @@ class PlantillaEmail{
      * @return [type]            [description] retorna la funcion que hace que envie el correo
      */
     public function plantillaEmailSolicitud($email, $solicitud, $nro_solicitud, $documento)
-    { 
+    {
 
         $docu = '';
         $docu = implode("<br>*", $documento);
