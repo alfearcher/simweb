@@ -34,7 +34,7 @@ $this->title = 'Verificacion de Deshabilitacion';
                   
 
 
-                        <p>¿ESTA SEGURO QUE DESEA COMPLETAR ESTA ACCION?</p>    
+                        <p><b>¿ESTA SEGURO QUE DESEA COMPLETAR ESTA ACCION?</b></p>    
         
                         
                             
