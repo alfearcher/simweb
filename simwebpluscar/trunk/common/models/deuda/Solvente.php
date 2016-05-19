@@ -46,6 +46,7 @@
  	use yii\db\Exception;
  	use common\models\ordenanza\OrdenanzaBase;
  	use common\models\planilla\Planilla;
+ 	use common\models\deuda\Self;
 
 
 
