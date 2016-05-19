@@ -70,7 +70,7 @@ use common\conexion\ConexionController;
 
 class PreguntaSeguridadController extends Controller
 {
-
+    public $layout = "layout-login";
     public $conn;
     public $conexion;
     public $transaccion;
