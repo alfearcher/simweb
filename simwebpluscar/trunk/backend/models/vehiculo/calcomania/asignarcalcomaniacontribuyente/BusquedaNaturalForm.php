@@ -208,6 +208,46 @@ class BusquedaNaturalForm extends Model
                 }
     }
 
+    public function buscarPlacaCalcomania($model)
+    {
+       // die($model);
+
+
+        $buscar = CalcomaniaEntregada::find()
+                                    ->where([
+                                        'placa' =>$model,
+                                        'status' => 0,
+                                        
+                                    ])
+                                    ->all();
+
+                if($buscar == true){
+                    
+                    return true;
+                }else{
+                    return false;
+                }
+    }
+
+    public function buscarIdCalcomania($model)
+    {
+        //die($model);
+        $buscar = Calcomania::find()
+                            ->where([
+
+                                'nro_calcomania' => $model,
+                                'ano_impositivo' => date('Y'),
+                                ])
+                            ->all();
+
+            if($buscar == true){
+               // die(var_dump($buscar));
+                return $buscar;
+            }else{
+                return false;
+            }
+    }
+
     public function verificarCalcomaniaEntregada($model)
     {
 
