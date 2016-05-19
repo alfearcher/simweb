@@ -40,7 +40,7 @@ $this->title = 'Vehicle Specifications change';
                             
                             
                             <div class="col-sm-4">
-                            <?= $form->field($model, 'placa')->textInput(                              [ 'id'=> 'preguntas', 
+                            <?= $form->field($model, 'placa')->textInput(                              [ 'id'=> 'placa', 
                                                                                                            
                                                                                                             'style' => 'width:280px;',
                                                                                                             'value' => $datos[0]['placa']  ,
@@ -53,7 +53,7 @@ $this->title = 'Vehicle Specifications change';
 								
 							<div class="row">
 							<div class="col-sm-4">
-                            <?= $form->field($model, 'marcavieja')->textInput(                              [ 'id'=> 'preguntas', 
+                            <?= $form->field($model, 'marcavieja')->textInput(                              [ 'id'=> 'marcavieja', 
                                                                                                            
                                                                                                             'style' => 'width:280px;',
                                                                                                             'value' => $datos[0]['marca']  ,
@@ -66,7 +66,7 @@ $this->title = 'Vehicle Specifications change';
                             
 							
 							<div class="col-sm-4" style="margin-left: 80px;">
-                            <?= $form->field($model, 'marca')->textInput(                              [ 'id'=> 'preguntas', 
+                            <?= $form->field($model, 'marca')->textInput(                              [ 'id'=> 'marca', 
                                                                                                            
                                                                                                             'style' => 'width:280px;',
                                                                                                             'value' => $datos[0]['marca']  ,
@@ -83,7 +83,7 @@ $this->title = 'Vehicle Specifications change';
                             
 							<div class="row">
 							<div class="col-sm-4">
-                            <?= $form->field($model, 'modeloviejo')->textInput(                              [ 'id'=> 'preguntas', 
+                            <?= $form->field($model, 'modeloviejo')->textInput(                              [ 'id'=> 'modeloviejo', 
                                                                                                            
                                                                                                             'style' => 'width:280px;',
                                                                                                             'value' => $datos[0]['modelo']  ,
@@ -96,7 +96,7 @@ $this->title = 'Vehicle Specifications change';
                             
 							
 							<div class="col-sm-4" style="margin-left: 80px;">
-                            <?= $form->field($model, 'modelo')->textInput(                              [ 'id'=> 'preguntas', 
+                            <?= $form->field($model, 'modelo')->textInput(                              [ 'id'=> 'modelo', 
                                                                                                            
                                                                                                             'style' => 'width:280px;',
                                                                                                             'value' => $datos[0]['modelo']  ,
@@ -111,7 +111,7 @@ $this->title = 'Vehicle Specifications change';
 							
 							<div class="row">
 							<div class="col-sm-4">
-                            <?= $form->field($model, 'colorviejo')->textInput(                              [ 'id'=> 'preguntas', 
+                            <?= $form->field($model, 'colorviejo')->textInput(                              [ 'id'=> 'colorviejo', 
                                                                                                            
                                                                                                             'style' => 'width:280px;',
                                                                                                             'value' => $datos[0]['color']  ,
@@ -124,7 +124,7 @@ $this->title = 'Vehicle Specifications change';
                             
 							
 							<div class="col-sm-4" style="margin-left: 80px;">
-                            <?= $form->field($model, 'color')->textInput(                              [ 'id'=> 'preguntas', 
+                            <?= $form->field($model, 'color')->textInput(                              [ 'id'=> 'color', 
                                                                                                            
                                                                                                             'style' => 'width:280px;',
                                                                                                             'value' => $datos[0]['color']  ,
@@ -136,7 +136,7 @@ $this->title = 'Vehicle Specifications change';
 
                            <div class="row">
 							<div class="col-sm-4">
-                            <?= $form->field($model, 'no_ejes_viejo')->textInput(                              [ 'id'=> 'preguntas', 
+                            <?= $form->field($model, 'no_ejes_viejo')->textInput(                              [ 'id'=> 'no_ejes_viejo', 
                                                                                                            
                                                                                                             'style' => 'width:280px;',
                                                                                                             'value' => $datos[0]['no_ejes']  ,
@@ -149,7 +149,7 @@ $this->title = 'Vehicle Specifications change';
                             
 							
 							<div class="col-sm-4" style="margin-left: 80px;">
-                            <?= $form->field($model, 'no_ejes')->textInput(                              [ 'id'=> 'preguntas', 
+                            <?= $form->field($model, 'no_ejes')->textInput(                              [ 'id'=> 'no_ejes', 
                                                                                                            
                                                                                                             'style' => 'width:280px;',
                                                                                                             'value' => $datos[0]['no_ejes']  ,
@@ -161,7 +161,7 @@ $this->title = 'Vehicle Specifications change';
                             
                            <div class="row">
 							<div class="col-sm-4">
-                            <?= $form->field($model, 'nro_puestos_viejo')->textInput(                              [ 'id'=> 'preguntas', 
+                            <?= $form->field($model, 'nro_puestos_viejo')->textInput(                              [ 'id'=> 'nro_puestos_viejo', 
                                                                                                            
                                                                                                             'style' => 'width:280px;',
                                                                                                             'value' => $datos[0]['nro_puestos']  ,
@@ -174,7 +174,7 @@ $this->title = 'Vehicle Specifications change';
                             
 							
 							<div class="col-sm-4" style="margin-left: 80px;">
-                            <?= $form->field($model, 'nro_puestos')->textInput(                              [ 'id'=> 'preguntas', 
+                            <?= $form->field($model, 'nro_puestos')->textInput(                              [ 'id'=> 'nro_puestos', 
                                                                                                            
                                                                                                             'style' => 'width:280px;',
                                                                                                             'value' => $datos[0]['nro_puestos']  ,
@@ -187,7 +187,7 @@ $this->title = 'Vehicle Specifications change';
 
 							         <div class="row">
 							<div class="col-sm-4">
-                            <?= $form->field($model, 'pesoviejo')->textInput(                              [ 'id'=> 'preguntas', 
+                            <?= $form->field($model, 'pesoviejo')->textInput(                              [ 'id'=> 'pesoviejo', 
                                                                                                            
                                                                                                             'style' => 'width:280px;',
                                                                                                             'value' => $datos[0]['peso']  ,
@@ -200,7 +200,7 @@ $this->title = 'Vehicle Specifications change';
                             
 							
 							<div class="col-sm-4" style="margin-left: 80px;">
-                            <?= $form->field($model, 'peso')->textInput(                              [ 'id'=> 'preguntas', 
+                            <?= $form->field($model, 'peso')->textInput(                              [ 'id'=> 'peso', 
                                                                                                            
                                                                                                             'style' => 'width:280px;',
                                                                                                             'value' => $datos[0]['peso']  ,
@@ -214,8 +214,8 @@ $this->title = 'Vehicle Specifications change';
 
                                 <div class="row">
 							<div class="col-sm-4">
-                            <?= $form->field($model, 'nro_cilindros_viejo')->textInput(                              [ 'id'=> 'preguntas', 
-                                                                                                           
+                            <?= $form->field($model, 'nro_cilindros_viejo')->textInput(                   [ 'id'=> '  nro_cilindros_viejo', 
+                                                                                                            
                                                                                                             'style' => 'width:280px;',
                                                                                                             'value' => $datos[0]['nro_cilindros']  ,
                                                                                                            // die(var_dump($preguntaSeguridad[0]['pregunta'])),
@@ -227,7 +227,7 @@ $this->title = 'Vehicle Specifications change';
                             
 							
 							<div class="col-sm-4" style="margin-left: 80px;">
-                            <?= $form->field($model, 'nro_cilindros')->textInput(                              [ 'id'=> 'preguntas', 
+                            <?= $form->field($model, 'nro_cilindros')->textInput(                         [ 'id'=> 'nro_cilindros', 
                                                                                                            
                                                                                                             'style' => 'width:280px;',
                                                                                                             'value' => $datos[0]['nro_cilindros']  ,
@@ -241,7 +241,7 @@ $this->title = 'Vehicle Specifications change';
 
 							    <div class="row">
 							<div class="col-sm-4">
-                            <?= $form->field($model, 'precio_inicial_viejo')->textInput(                              [ 'id'=> 'preguntas', 
+                            <?= $form->field($model, 'precio_inicial_viejo')->textInput(                    [ 'id'=> 'precio_inicial_viejo', 
                                                                                                            
                                                                                                             'style' => 'width:280px;',
                                                                                                             'value' => $datos[0]['precio_inicial']  ,
@@ -254,7 +254,7 @@ $this->title = 'Vehicle Specifications change';
                             
 							
 							<div class="col-sm-4" style="margin-left: 80px;">
-                            <?= $form->field($model, 'precio_inicial')->textInput(                              [ 'id'=> 'preguntas', 
+                            <?= $form->field($model, 'precio_inicial')->textInput(                           [ 'id'=> 'precio_inicial', 
                                                                                                            
                                                                                                             'style' => 'width:280px;',
                                                                                                             'value' => $datos[0]['precio_inicial']  ,
@@ -266,7 +266,7 @@ $this->title = 'Vehicle Specifications change';
 							
 							<div class="row">
 							<div class="col-sm-4">
-                            <?= $form->field($model, 'capacidad_vieja')->textInput(                              [ 'id'=> 'preguntas', 
+                            <?= $form->field($model, 'capacidad_vieja')->textInput(                              [ 'id'=> 'capacidad_vieja', 
                                                                                                            
                                                                                                             'style' => 'width:280px;',
                                                                                                             'value' => $datos[0]['capacidad']  ,
@@ -279,7 +279,7 @@ $this->title = 'Vehicle Specifications change';
                             
 							
 							<div class="col-sm-4" style="margin-left: 80px;">
-                            <?= $form->field($model, 'capacidad')->textInput(                              [ 'id'=> 'preguntas', 
+                            <?= $form->field($model, 'capacidad')->textInput(                              [ 'id'=> 'capacidad', 
                                                                                                            
                                                                                                             'style' => 'width:280px;',
                                                                                                             'value' => $datos[0]['capacidad']  ,
@@ -292,7 +292,7 @@ $this->title = 'Vehicle Specifications change';
 							
                                  <div class="row">
 							<div class="col-sm-6">
-                            <?= $form->field($model, 'medida_cap_vieja')->textInput(  [ 'id'=> 'preguntas', 
+                            <?= $form->field($model, 'medida_cap_vieja')->textInput(  [ 'id'=> 'medida_cap_vieja', 
                                                                                                             'value' =>  $datos[0]['medida_cap'] ,
                                                                                                             'readOnly' =>true,  
                                                                                                             'style' => 'width:280px;',
