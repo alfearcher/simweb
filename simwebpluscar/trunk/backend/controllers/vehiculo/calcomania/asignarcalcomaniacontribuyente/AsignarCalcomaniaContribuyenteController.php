@@ -61,6 +61,7 @@ use backend\models\vehiculo\calcomania\deshabilitarfuncionario\DeshabilitarForm;
 use backend\models\vehiculo\calcomania\asignarcalcomaniacontribuyente\BusquedaNaturalForm;
 use backend\models\vehiculo\calcomania\asignarcalcomaniacontribuyente\BusquedaJuridicoForm;
 use common\models\contribuyente\ContribuyenteBase;
+use backend\models\vehiculo\calcomania\asignarcalcomaniacontribuyente\VerificarTransaccionForm;
 /**
  * Site controller
  */
@@ -346,14 +347,17 @@ class AsignarCalcomaniaContribuyenteController extends Controller
       ($idCalcomanias);
       $_SESSION['idCalcomania'] = $idCalcomanias;
 
-        self::mostrarDatos($idCalcomanias, $_SESSION['datosVehiculo']);
+      return $this->redirect(['mostrar-datos']);
 
-        $guardarActualizar = self::beginSave("guardarActualizar");
+       
             
   }
 
-  public function mostrarDatos($idCalcomania , $datos)
-  {
+  public function actionMostrarDatos()
+  { 
+  
+  $idCalcomania = $_SESSION['idCalcomania'];
+  $datos = $_SESSION['datosVehiculo'];
 
         $model = new VerificarTransaccionForm();
 
@@ -369,7 +373,13 @@ class AsignarCalcomaniaContribuyenteController extends Controller
 
                if ($model->validate()){
 
-                   
+                     $guardarActualizar = self::beginSave("guardarActualizar");
+
+                     if($guardarActualizar == true){
+                        return MensajeController::actionMensaje(100);  
+                     }else{
+                        return MensajeController::actionMensaje(920);  
+                     }
                 }
             }
             
@@ -386,10 +396,23 @@ class AsignarCalcomaniaContribuyenteController extends Controller
  
   public function actualizarCalcomania($conn, $conexion)
   {
-      $idCalcomania = $_SESSION['idCalcomania'];
+      $nroCalcomania = $_SESSION['idCalcomania'];
+      $buscar = new BusquedaNaturalForm();
+      $buscarIdCalcomania = $buscar->buscarIdCalcomania($nroCalcomania);
+
+      if ($buscarIdCalcomania == true)
+      {
+       // die($buscarIdCalcomania[0]->id_calcomania);
+        $idCalcomania = $buscarIdCalcomania[0]->id_calcomania;
+      }else{
+        return false;
+      }
+
+      
+      //die($idCalcomania);
       $idVehiculo = $_SESSION['idVehiculo'];
       $idContribuyente = $_SESSION['datos']->id_contribuyente;
-      $placa = $_SESSION['datosVehiculo']->placa;
+      $placa = $_SESSION['datosVehiculo'][0]->placa;
       $tableName = 'calcomanias';
       $arregloCondition = ['id_calcomania' => $idCalcomania]; //id de la calcomania
       
@@ -417,33 +440,58 @@ class AsignarCalcomaniaContribuyenteController extends Controller
 
     public function guardarCalcomania($conn, $conexion)
     {
-      $datos = yii::$app->user->identity;
-      $resultado = false;
+
+      //die('llegue a guardar');
+      $datos = yii::$app->user->identity->username;
+      $idContribuyente = $_SESSION['datos']->id_contribuyente;
+      $idVehiculo = $_SESSION['idVehiculo'];
+      $nroCalcomania = $_SESSION['idCalcomania'];
+      $placa = $_SESSION['datosVehiculo'][0]->placa;
+
+
+      $buscar = new BusquedaNaturalForm();
+      $buscarPlaca = $buscar->buscarPlacaCalcomania($placa);
+      //die($buscarPlaca);
+
+         
+
       $tabla = 'calcomanias_entregadas';
       $arregloDatos = [];
-      $arregloCampo = BuscarNaturalForm::attributeLoteCalcomaniasEntregadas();
+
+      $arregloCampo = BusquedaNaturalForm::attributeLoteCalcomaniasEntregadas();
 
       foreach ($arregloCampo as $key=>$value){
 
           $arregloDatos[$value] =0;
       }
 
-      $arregloDatos['ano_impositivo'] = $model->ano_impositivo;
+      $arregloDatos['id_contribuyente'] = $idContribuyente;
+     // die($arregloDatos['id_contribuyente']);
      
+      $arregloDatos['id_vehiculo'] = $idVehiculo;
       
-      $arregloDatos['rango_inicial'] = $model->rango_inicial;
+      $arregloDatos['nro_calcomania'] = $nroCalcomania;
+
+      $arregloDatos['ano_impositivo'] = date('Y');
+
+      $arregloDatos['fecha_entrega'] = date('Y-m-d h:m:i');
+
+      $arregloDatos['login'] = $datos;
+
+      if($buscarPlaca == true){
+
+      $arregloDatos['tipo_entrega'] = 'RENOVACION';
       
-      $arregloDatos['rango_final'] = $model->rango_final;
-
-      $arregloDatos['rango_final'] = $model->rango_final;
-
-      $arregloDatos['inactivo'] = 0;
-
-      $arregloDatos['usuario'] = $datos->email;
-      //die($arregloDatos['usuario']);
+      }else{
       
-      $arregloDatos['fecha_hora'] = date('Y-m-d h:m:i');
+      $arregloDatos['tipo_entrega'] = 'NUEVO';
+      
+      }
 
+      $arregloDatos['status'] = 0;
+
+      $arregloDatos['placa'] = $placa; 
+      //die($arregloDatos['placa']);    
 
           if ($conexion->guardarRegistro($conn, $tabla, $arregloDatos )){
 
@@ -457,7 +505,7 @@ class AsignarCalcomaniaContribuyenteController extends Controller
   
   public function beginSave()
   {
-    die('llego a begin');
+   
   
       $conexion = new ConexionController();
 
@@ -473,6 +521,7 @@ class AsignarCalcomaniaContribuyenteController extends Controller
 
 
                     if ($actualizarCalcomania == true ){
+                      //die('actualizo');
 
                         $guardarCalcomania = self::guardarCalcomania($conn, $conexion);
                         
