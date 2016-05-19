@@ -46,7 +46,7 @@
  	use yii\db\Exception;
  	use common\models\ordenanza\OrdenanzaBase;
  	use common\models\planilla\Planilla;
- 	
+
 
 
 
@@ -168,7 +168,7 @@
 		{
 			$result = false;
 
-			$ultimoPeriodo = Self::getUltimoPeriodoObjeto();
+			$ultimoPeriodo = self::getUltimoPeriodoObjeto();
 			if ( count($ultimoPeriodo) > 0 ) {
 				$periodoActual = self::getPeriodoActualSegunOrdenanza();
 				if ( count($periodoActual) > 0 ) {
