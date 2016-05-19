@@ -80,7 +80,11 @@
         /***/
         private function getDatosSolicitudCreada()
         {
-
+            $solicitud = New SolicitudesContribuyenteForm();
+            $datos = $solicitud->getParametroSolicitudContribuyente($this->nro_solicitud, ['nro_solicitud',
+                                                                                           'tipo_solicitud',
+                                                                                           'nivel_aprobacion']);
+            if ( couunt($datos))
         }
 
 
