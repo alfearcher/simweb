@@ -192,7 +192,7 @@
 						$planillaTasa = New PlanillaTasa($model->id_contribuyente, $idImpuesto, $conexionLocal, $connLocal);
 						$planillaTasa->liquidarTasa();
 						$result[$idImpuesto][$i] = $planillaTasa->getResultado();
-						self::guardarSolicitudPlanilla($model->nro_solicitud, $result[$idImpuesto][$i]['planilla'], $conexionLocal, $connLocal);
+						self::guardarSolicitudPlanilla($model->nro_solicitud, $result[$idImpuesto][$i]['planilla'], $conexionLocal, $connLocal, $evento);
 					}
 				} else {
 					$result[$tasa['id_impuesto']] = null;
