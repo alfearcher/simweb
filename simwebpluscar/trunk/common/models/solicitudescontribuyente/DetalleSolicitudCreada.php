@@ -84,24 +84,40 @@
         {
             $datos = $this->findSolicitudContribuyente($this->nro_solicitud);
             if ( isset($datos) ) {
-               // Se arma un indice de busqueda utilizando los campos:
-               // impuesto.
-               // tipo solicitud.
-               // nivel aprobacion.
-               // Con la intencion de localizar la ruta para renderizar la vista de la solicitud
-               // respectiva. Este directorio de rutas para las vistas de los tipos de solicitudes
-               // estara en un .php
                return self::getViewPorImpuesto($datos);
             }
+            return false;
         }
 
 
-        /***/
+        /**
+         * Metodo que permite renderizar las vistas de las solicitudes por impuesto.
+         * @param  Active Record $model modelo de la solicitud maestro, que previamente
+         * fue localizada utilizando un find.
+         * @return View Retorna una vista con la informacion de los detalles particulares
+         * de la solicitud, sino encuentra los detalles retornara false.
+         */
         public function getViewPorImpuesto($model)
         {
             if ( $model->impuesto == 1 ) {
                 $view = New SolicitudViewActividadEconomicaController($model);
                 return $view->actionInicioView();
+
+            } elseif ( $model->impuesto == 2 ) {
+
+            } elseif ( $model->impuesto == 3 ) {
+
+            } elseif ( $model->impuesto == 4 ) {
+
+            } elseif ( $model->impuesto == 6 ) {
+
+            } elseif ( $model->impuesto == 7 ) {
+
+            } elseif ( $model->impuesto == 10 ) {
+
+            } elseif ( $model->impuesto == 11 ) {
+
+            } elseif ( $model->impuesto == 12 ) {
 
             }
 
