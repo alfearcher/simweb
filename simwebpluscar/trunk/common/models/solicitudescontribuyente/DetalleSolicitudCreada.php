@@ -91,7 +91,7 @@
                // Con la intencion de localizar la ruta para renderizar la vista de la solicitud
                // respectiva. Este directorio de rutas para las vistas de los tipos de solicitudes
                // estara en un .php
-               self::getViewPorImpuesto($datos);
+               return self::getViewPorImpuesto($datos);
             }
         }
 
@@ -101,7 +101,7 @@
         {
             if ( $model->impuesto == 1 ) {
                 $view = New SolicitudViewController($model);
-                $view->actionInicioView();
+                return $view->actionInicioView();
 
             }
         }
