@@ -370,15 +370,15 @@
 		'$(function() {
 			var url = "' . Url::to(['buscar-detalle-solictud']) . '";'.
 			'alert($("#nro-solicitud").val());
-			// $.ajax({
-			// 	url: url,
-			// 	type: POST,
-			// 	dataType: JSON,
-			// 	data: { nro: $("#nro-solicitud").val() },
-			// 	success: function(data) {
-			// 		$("#detalle").html(data);
-			// 	}
-			// });
-			//return false;
+			$.ajax({
+				url: url,
+				type: POST,
+				dataType: JSON,
+				data: { nro: $("#nro-solicitud").val() },
+				success: function(data) {
+					$("#detalle").html(data);
+				}
+			});
+			return false;
 		});'
 );?>
