@@ -62,6 +62,7 @@
 	use common\models\session\Session;
 	use backend\models\impuesto\ImpuestoForm;
 	use backend\models\configuracion\tiposolicitud\TipoSolicitud;
+	use common\models\solicitudescontribuyente\DetalleSolicitudCreada;
 
 	/**
 	 *	Clase principal del formulario.
@@ -197,6 +198,11 @@ die(var_dump($postData));
 			// renderizar la vesta respectiva. Esta vista deben ser filtradas por el nivel
 			// de aprobacion ya que solo aquellas que tenga el nivel de aprobacion dos (2)
 			// y tres (3), seran renderizadas.
+
+die('lalala');
+
+			$view = New DetalleSolicitudCreada($nroSolicitud);
+			return $view->getDatosSolicitudCreada();
 		}
 
 
