@@ -85,6 +85,7 @@
 		{
 			$request = Yii::$app->request;
 			$postData = $request->post();
+			self::actionAnularSession(['idContribuyente']);
 
 			// Modelo del formulario de busqueda de las solicitudes.
 			$model = New SolicitudAsignadaForm();
