@@ -47,6 +47,7 @@ return [
 	'930' => [Yii::t('backend', 'Taxpayer type was not defined'), 'danger', 'fa fa-times'],
 	'940' => [Yii::t('backend', 'Request was not defined'), 'danger', 'fa fa-times'],
 	'945' => [Yii::t('backend', 'Request exists'), 'danger', 'fa fa-times'],
+	'946' => [Yii::t('backend', 'Request details not exists'), 'danger', 'fa fa-times'],
 	'990' => [Yii::t('backend', 'Register not found'), 'danger', 'fa fa-times'],
 	'991' => [Yii::t('backend', 'You can aquire a property you already own '), 'danger', 'fa fa-exclamation-triangle'],
 	'992' => [Yii::t('backend', 'This car plate doesnt exists, please go to your city hall  '), 'danger', 'fa fa-exclamation-triangle'],
