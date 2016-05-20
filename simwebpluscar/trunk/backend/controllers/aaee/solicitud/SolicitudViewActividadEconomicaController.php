@@ -85,32 +85,27 @@
 		 */
 		public function actionInicioView()
 		{
-			if ( isset($this->model) ) {
-				if ( $this->model->nivel_aprobacion == 2 ) {
-					if ( $this->model->impuesto == 1 ) {
+			if ( isset($this->model) && isset($_SESSION['idContribuyente']) ) {
 
-						return self::actionMostarSolicitudActividadEconomica();
+				if ( $this->model->tipo_solicitud == 1 ) {
 
-					} elseif ( $this->model->impuesto == 2 ) {
+					return self::actionMostarSolicitudInscripcionActividadEconomica();
 
-					} elseif ( $this->model->impuesto == 3 ) {
+				} elseif ( $this->model->impuesto == 2 ) {
 
-					} elseif ( $this->model->impuesto == 4 ) {
+				} elseif ( $this->model->impuesto == 3 ) {
 
-					} elseif ( $this->model->impuesto == 6 ) {
+				} elseif ( $this->model->impuesto == 4 ) {
 
-					} elseif ( $this->model->impuesto == 7 ) {
+				} elseif ( $this->model->impuesto == 6 ) {
 
-					} elseif ( $this->model->impuesto == 8 ) {
+				} elseif ( $this->model->impuesto == 7 ) {
 
-					} elseif ( $this->model->impuesto == 10 ) {
+				} elseif ( $this->model->impuesto == 8 ) {
 
-					} elseif ( $this->model->impuesto == 12 ) {
+				} elseif ( $this->model->impuesto == 10 ) {
 
-					} else {
-						return false;
-					}
-				} elseif ( $this->model->nivel_aprobacion == 3 ) {
+				} elseif ( $this->model->impuesto == 12 ) {
 
 				}
 			}
@@ -121,10 +116,9 @@
 
 
 		/***/
-		public function actionMostarSolicitudActividadEconomica()
+		private function actionMostarSolicitudInscripcionActividadEconomica()
 		{
-			if ( $this->model->impuesto == 1 ) {
-				if ( $this->model->tipo_solicitud == 1 ) {
+			if ( $this->model->nivel_aprobacion == 2 ) {
 					$modelSearch = New InscripcionActividadEconomicaSearch($this->model->id_contribuyente);
 					$model = $modelSearch->findInscripcion($this->model->nro_solicitud);
 
@@ -133,9 +127,6 @@
 													'model' => $model,
 
 						]);
-				} elseif ( $this->model->tipo_solicitud == 2 ) {
-
-				}
 			}
 
 			return false;
