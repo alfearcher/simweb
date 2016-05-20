@@ -66,15 +66,29 @@
 	class SolicitudViewController extends Controller
 	{
 
+		private $model;
+
+
+
+		/**
+		 * Constructor de la clase.
+		 * @param model $mod modelo de la solicitud creada.
+		 */
+		public function __construct($mod)
+		{
+			$this->model = $mod;
+		}
+
+
 		/**
 		 * [actionIndex description]
 		 * @return [type] [description]
 		 */
-		public function actionDeterminarNivelAprobacion($model)
+		public function actionInicioView()
 		{
-			if ( isset($model) ) {
-				if ( $model->nivel_aprobacion == 2 ) {
-die(var_dump($model));
+			if ( isset($this->model) ) {
+				if ( $this->model->nivel_aprobacion == 1 ) {
+die(var_dump($this->model));
 				}
 			}
 		}
