@@ -167,16 +167,17 @@ die(var_dump($postData));
 						$_SESSION['idContribuyente'] = $infoSolicitud->id_contribuyente;
 						$detalle = New DetalleSolicitudCreada($id);
 						$viewDetalle = $detalle->getDatosSolicitudCreada();
-//die(var_dump($viewDetalle));
-						return $this->render('/funcionario/solicitud-asignada/view-solicitud-seleccionada', [
-																				'model' => $infoSolicitud,
-																				'caption' => $caption,
-																				'subCaption' => $subCaption,
-																				'listado' => 6,
-																				'url' => $url,
-																				'contribuyente' => $contribuyente,
-																				'viewDetalle' => $viewDetalle,
-							]);
+						if ( !$viewDetalle )
+							return $this->render('/funcionario/solicitud-asignada/view-solicitud-seleccionada', [
+																					'model' => $infoSolicitud,
+																					'caption' => $caption,
+																					'subCaption' => $subCaption,
+																					'listado' => 6,
+																					'url' => $url,
+																					'contribuyente' => $contribuyente,
+																					'viewDetalle' => $viewDetalle,
+								]);
+						}
 					} else {
 						// Contribuyente no definido.
 						return MensajeController::actionMensaje(404);
