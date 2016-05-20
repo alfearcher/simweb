@@ -166,6 +166,7 @@ die(var_dump($postData));
 
 						$detalle = New DetalleSolicitudCreada($id);
 						$viewDetalle = $detalle->getDatosSolicitudCreada();
+die(var_dump($viewDetalle));
 						return $this->render('/funcionario/solicitud-asignada/view-solicitud-seleccionada', [
 																				'model' => $infoSolicitud,
 																				'caption' => $caption,
