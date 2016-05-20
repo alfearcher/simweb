@@ -101,6 +101,7 @@
         {
             if ( $model->impuesto == 1 ) {
                 $view = New SolicitudViewController($model);
+                $view->actionInicioView();
 
             }
         }
