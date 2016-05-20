@@ -163,10 +163,10 @@ die(var_dump($postData));
 				if ( isset($infoSolicitud->id_contribuyente) ) {
 					$contribuyente = $modelSearch->getDatosBasicoContribuyenteSegunId($infoSolicitud->id_contribuyente);
 					if ( count($contribuyente) > 0 ) {
-
+						$_SESSION['idContribuyente'] = $infoSolicitud->id_contribuyente;
 						$detalle = New DetalleSolicitudCreada($id);
 						$viewDetalle = $detalle->getDatosSolicitudCreada();
-die(var_dump($viewDetalle));
+//die(var_dump($viewDetalle));
 						return $this->render('/funcionario/solicitud-asignada/view-solicitud-seleccionada', [
 																				'model' => $infoSolicitud,
 																				'caption' => $caption,
@@ -192,24 +192,6 @@ die(var_dump($viewDetalle));
 			}
 
 		}
-
-
-
-		/***/
-		public function actionBuscarDetalleSolicitud()
-		{
-			// Debe retornar una view segun el nro de solicitud, en este caso debe buscar
-			// utilizando el parametro numero de solicitud, el tipo de solicitud para asi
-			// renderizar la vesta respectiva. Esta vista deben ser filtradas por el nivel
-			// de aprobacion ya que solo aquellas que tenga el nivel de aprobacion dos (2)
-			// y tres (3), seran renderizadas.
-
-return 'lalalala';
-
-			$view = New DetalleSolicitudCreada($nroSolicitud);
-			return $view->getDatosSolicitudCreada();
-		}
-
 
 
 
@@ -313,7 +295,8 @@ return 'lalalala';
 		public function actionGetListaSessions()
 		{
 			return $varSession = [
-							'postData'
+							'postData',
+							'idContribuyente',
 					];
 		}
 
