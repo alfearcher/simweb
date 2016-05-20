@@ -54,8 +54,10 @@
     use Yii;
     use yii\base\Model;
     use yii\db\ActiveRecord;
+    use yii\helpers\Url;
     //use common\models\solicitudescontribuyente\SolicitudesContribuyente;
     use common\models\solicitudescontribuyente\SolicitudesContribuyenteForm;
+    use backend\controllers\aaee\solicitud\SolicitudViewController;
 
 
 
@@ -63,7 +65,7 @@
     class DetalleSolicitudCreada extends SolicitudesContribuyenteForm
     {
 
-        private $nro_solicitud;
+        public $nro_solicitud;
 
 
         /**
@@ -78,15 +80,30 @@
 
 
         /***/
-        private function getDatosSolicitudCreada()
+        public function getDatosSolicitudCreada()
         {
-            $solicitud = New SolicitudesContribuyenteForm();
-            $datos = $solicitud->getParametroSolicitudContribuyente($this->nro_solicitud, ['nro_solicitud',
-                                                                                           'tipo_solicitud',
-                                                                                           'nivel_aprobacion']);
-            if ( couunt($datos))
+            $datos = $this->findSolicitudContribuyente($this->nro_solicitud);
+            if ( isset($datos) ) {
+               // Se arma un indice de busqueda utilizando los campos:
+               // impuesto.
+               // tipo solicitud.
+               // nivel aprobacion.
+               // Con la intencion de localizar la ruta para renderizar la vista de la solicitud
+               // respectiva. Este directorio de rutas para las vistas de los tipos de solicitudes
+               // estara en un .php
+               self::getRutaViewPorImpuesto($datos);
+            }
         }
 
+
+        /***/
+        public function getRutaViewPorImpuesto($model)
+        {
+            if ( $model->impuesto == 1 ) {
+
+
+            }
+        }
 
 
     }
