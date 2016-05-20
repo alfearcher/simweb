@@ -113,6 +113,7 @@
                 'inactivo' => Yii::t('backend', 'Condition'),
                 'usuario' => Yii::t('backend', 'User'),
                 'planilla' => Yii::t('backend', 'Planilla'),
+                'evento' => Yii::t('backend', 'Events'),
 
             ];
         }
