@@ -98,7 +98,12 @@
 
 
 
-	    /***/
+	    /**
+	     * Metodo que realiza una busqueda del detalle de la solicitud (model)
+	     * "inscripciones-actividad-economica".
+	     * @param  Long $nroSolicitud identificador de la entidad "solicitudes-contribuyente".
+	     * @return Active Record.
+	     */
 	    public function findInscripcion($nroSolicitud)
 	    {
 	    	$modelFind = InscripcionActividadEconomica::find()->where('nro_solicitud =:nro_solicitud', [':nro_solicitud' => $nroSolicitud])
