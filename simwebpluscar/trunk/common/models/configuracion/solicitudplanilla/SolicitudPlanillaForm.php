@@ -89,6 +89,7 @@
                 ['usuario', 'default', 'value' => Yii::$app->user->identity->email, 'on' => 'backend'],
                 ['origen', 'default', 'value' => 'LAN', 'on' => 'backend'],
                 ['origen', 'default', 'value' => 'WEB', 'on' => 'frontend'],
+                [['evento'], 'string'],
             ];
         }
 
