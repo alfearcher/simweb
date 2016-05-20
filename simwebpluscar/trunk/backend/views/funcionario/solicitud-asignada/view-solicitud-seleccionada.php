@@ -66,7 +66,7 @@
 		    'method' => 'post',
 		    'action' => $url,
 			'enableClientValidation' => true,
-			//'enableAjaxValidation' => true,
+			'enableAjaxValidation' => true,
 			'enableClientScript' => true,
 		]);
 	?>
@@ -301,7 +301,7 @@
 								<h4><strong><?= Yii::t('backend', 'Details of Request') ?></strong></h4>
 							</div>
 							<div class="row">
-								<div class="detalle" id="detalle"></div>
+								<div class="detalle" id="detalle" style="padding-left: 65px;"><?= $viewDetalle?></div>
 							</div>
 						</div>
 					</div>
@@ -363,22 +363,3 @@
 
 	<?php ActiveForm::end(); ?>
 </div>
-
-
-<?php
-	$this->registerJs(
-		'$(function() {
-			var url = "' . Url::to(['buscar-detalle-solictud']) . '";'.
-			'//alert($("#nro-solicitud").val());
-			$.ajax({
-				url: url,
-				type: POST,
-				dataType: JSON,
-				data: { nro: $("#nro-solicitud").val() },
-				success: function(data) {
-					$("#detalle").html(data);
-				}
-			});
-			return false;
-		});'
-);?>
