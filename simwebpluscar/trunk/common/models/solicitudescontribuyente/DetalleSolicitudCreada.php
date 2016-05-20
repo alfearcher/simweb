@@ -97,7 +97,7 @@
 
 
         /***/
-        public function getRutaViewPorImpuesto($model)
+        public function getViewPorImpuesto($model)
         {
             if ( $model->impuesto == 1 ) {
                 $view = New SolicitudViewController($model);
