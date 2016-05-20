@@ -301,7 +301,7 @@
 								<h4><strong><?= Yii::t('backend', 'Details of Request') ?></strong></h4>
 							</div>
 							<div class="row">
-								<div class="detalle"></div>
+								<div class="detalle" id="detalle"></div>
 							</div>
 						</div>
 					</div>
@@ -368,7 +368,15 @@
 <?php
 	$this->registerJs(
 		'$(function() {
-			alert("hola");
+			var url = ' . Url::to(['buscar-detalle-solictud']) .
+			'$.ajax({
+				url: url,
+				type: POST,
+				dataType: JSON,
+				data: { nro: $("#nro-solicitud").val() },
+				success: function(data) {
+					$("#detalle").html(data);
+				}
+			});
 		});'
-
 );?>
