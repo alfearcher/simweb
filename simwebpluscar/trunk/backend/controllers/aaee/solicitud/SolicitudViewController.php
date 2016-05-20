@@ -86,10 +86,9 @@
 		 */
 		public function actionInicioView()
 		{
-die(var_dump($this->model));
 			if ( isset($this->model) ) {
-				if ( $this->model->nivel_aprobacion == 1 ) {
-die(var_dump($this->model));
+				if ( $this->model->nivel_aprobacion == 2 ) {
+die(var_dump($this->model->nivel_aprobacion));
 				}
 			}
 		}
