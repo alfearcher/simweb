@@ -368,7 +368,7 @@
 <?php
 	$this->registerJs(
 		'$(function() {
-			var url = ' . Url::to(['buscar-detalle-solictud']) . ';'.
+			var url = "' . Url::to(['buscar-detalle-solictud']) . '";'.
 			'alert(url);
 			// $.ajax({
 			// 	url: url,
