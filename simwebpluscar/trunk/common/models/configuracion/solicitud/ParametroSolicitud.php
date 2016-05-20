@@ -55,6 +55,7 @@
 	use backend\models\configuracion\documentosolicitud\SolicitudDocumento;
 	use backend\models\configuracion\detallesolicitud\SolicitudDetalle;
 	use backend\models\configuracion\tasasolicitud\TasaMultaSolicitud;
+	use common\models\configuracion\solicitudplanilla\SolicitudPlanilla;
 
 
 	/**
@@ -441,6 +442,8 @@
 			$tasa = $this->findDetalleSolicitudTasaMulta($evento);
 			return $tasa;
 		}
+
+
 
 	}
 
