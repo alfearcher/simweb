@@ -167,7 +167,7 @@ die(var_dump($postData));
 						$_SESSION['idContribuyente'] = $infoSolicitud->id_contribuyente;
 						$detalle = New DetalleSolicitudCreada($id);
 						$viewDetalle = $detalle->getDatosSolicitudCreada();
-						if ( !$viewDetalle )
+						if ( !$viewDetalle ) {
 							return $this->render('/funcionario/solicitud-asignada/view-solicitud-seleccionada', [
 																					'model' => $infoSolicitud,
 																					'caption' => $caption,
