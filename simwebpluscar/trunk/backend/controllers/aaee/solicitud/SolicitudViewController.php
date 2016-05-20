@@ -54,11 +54,11 @@
 	use yii\web\Response;
 	use yii\helpers\Url;
 	use yii\web\NotFoundHttpException;
-	//use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomicaSearch;
-	use common\conexion\ConexionController;
+	use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomicaSearch;
+	// use common\conexion\ConexionController;
 	use backend\controllers\MenuController;
 
-	session_start();		// Iniciando session
+	//session_start();		// Iniciando session
 
 	/**
 	 *
@@ -88,13 +88,27 @@
 		{
 			if ( isset($this->model) ) {
 				if ( $this->model->nivel_aprobacion == 2 ) {
-die(var_dump($this->model->nivel_aprobacion));
+					return self::actionShowView();
 				} elseif ( $this->model->nivel_aprobacion == 3 ) {
 
 				}
 			}
 		}
 
+
+
+		public function actionShowView()
+		{
+			$modelSearch = New InscripcionActividadEconomicaSearch($this->model->id_contribuyente);
+			$model = $modelSearch->findInscripcion($this->model->nro_solicitud);
+
+			return $this->render('/aaee/inscripcion-actividad-economica/view-solicitud', [
+											'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
+											'model' => $model,
+											'codigoMensaje' => 100,
+
+				]);
+		}
 
 
 
