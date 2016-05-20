@@ -57,7 +57,7 @@
     use yii\helpers\Url;
     //use common\models\solicitudescontribuyente\SolicitudesContribuyente;
     use common\models\solicitudescontribuyente\SolicitudesContribuyenteForm;
-    use backend\controllers\aaee\solicitud\SolicitudViewController;
+    use backend\controllers\aaee\solicitud\SolicitudViewActividadEconomicaController;
 
 
 
@@ -104,6 +104,8 @@
                 return $view->actionInicioView();
 
             }
+
+            return false;
         }
 
 
