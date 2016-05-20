@@ -100,7 +100,7 @@
         public function getRutaViewPorImpuesto($model)
         {
             if ( $model->impuesto == 1 ) {
-
+                $view = New SolicitudViewController($model);
 
             }
         }
