@@ -378,5 +378,6 @@
 					$("#detalle").html(data);
 				}
 			});
+			return false;
 		});'
 );?>
