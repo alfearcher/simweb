@@ -242,7 +242,7 @@
 
 
 		/***/
-        public function guardarSolicitudPlanilla($nroSolicitud, $planilla, $conexionLocal, $connLocal)
+        public function guardarSolicitudPlanilla($nroSolicitud, $planilla, $conexionLocal, $connLocal, $evento)
         {
             $result = true;
             if ( isset(Yii::$app->user->identity->login) ) {
@@ -264,6 +264,7 @@
             $modelSolicitudPlanilla->fecha_hora = date('Y-m-d H:i:s');
             $modelSolicitudPlanilla->planilla = $planilla;
             $modelSolicitudPlanilla->origen = $origen;
+            $modelSolicitudPlanilla->evento = $evento;
 
             $arregloDatos = $modelSolicitudPlanilla->attributes;
 
