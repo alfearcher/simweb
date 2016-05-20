@@ -89,6 +89,8 @@
 			if ( isset($this->model) ) {
 				if ( $this->model->nivel_aprobacion == 2 ) {
 die(var_dump($this->model->nivel_aprobacion));
+				} elseif ( $this->model->nivel_aprobacion == 3 ) {
+
 				}
 			}
 		}
