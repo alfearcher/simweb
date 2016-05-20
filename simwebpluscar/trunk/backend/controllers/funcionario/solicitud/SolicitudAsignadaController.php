@@ -179,21 +179,24 @@ die(var_dump($postData));
 								]);
 						} else {
 							// No se encontraron los detalles de la solicitud.
-							return MensajeController::actionMensaje(946);
+							return self::actionErrorOperacion(946);
 						}
 					} else {
 						// Contribuyente no definido.
-						return MensajeController::actionMensaje(404);
+						return self::actionErrorOperacion(404);
+						//return MensajeController::actionMensaje(404);
 					}
 
 				} else {
 					// Contribuyente no definido.
-					return MensajeController::actionMensaje(404);
+					return self::actionErrorOperacion(404);
+					//return MensajeController::actionMensaje(404);
 				}
 
 			} else {
 				// Solicitud no definida.
-				return MensajeController::actionMensaje(404);
+				return self::actionErrorOperacion(404);
+				// return MensajeController::actionMensaje(404);
 			}
 
 		}
