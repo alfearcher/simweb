@@ -149,7 +149,7 @@
 	  	{
 
 	  		$s = New DetalleSolicitudCreada(22605);
-	  		$s->getDatosSolicitudCreada();
+	  		return $s->getDatosSolicitudCreada();
 
 
 	  	}
