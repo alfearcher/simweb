@@ -369,7 +369,7 @@
 	$this->registerJs(
 		'$(function() {
 			var url = "' . Url::to(['buscar-detalle-solictud']) . '";'.
-			'alert(url);
+			'alert($("#nro-solicitud").val());
 			// $.ajax({
 			// 	url: url,
 			// 	type: POST,
