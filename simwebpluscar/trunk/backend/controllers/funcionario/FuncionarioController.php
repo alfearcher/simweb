@@ -36,7 +36,7 @@
 	use backend\models\funcionario\FuncionarioForm;
 	use backend\models\funcionario\Funcionario;
 	use common\conexion\ConexionController;
-	use common\models\deuda\Solvente;
+	use common\models\solicitudescontribuyente\DetalleSolicitudCreada;
 
 
 
@@ -148,12 +148,9 @@
 	  	public function actionPrueba()
 	  	{
 
-	  		$s = New Solvente();
-	  		$s->setImpuesto(3);
-	  		$s->setIdImpuesto(269067);
-
-	  		$r = $s->determinarSolvencia();
-die(var_dump($r));
+	  		$s = New DetalleSolicitudCreada(22118);
+	  		$s->getDatosSolicitudCreada();
+die();
 
 
 	  	}
