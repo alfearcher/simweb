@@ -47,17 +47,10 @@
 	use yii\widgets\ActiveForm;
 	use yii\web\View;
 	use yii\widgets\DetailView;
-	use backend\controllers\menu\MenuController;
-	use common\mensaje\MensajeController;
 ?>
 
 <div class="row" style="width: 70%;">
 	<div class="info-solicitud">
-		<div class="row">
-			<div class="alert">
-				<?= MensajeController::actionMensaje($codigoMensaje);  ?>
-			</div>
-		</div>
 		<div class="row">
 			<h3><?= Html::encode($caption) ?></h3>
 				<?= DetailView::widget([
