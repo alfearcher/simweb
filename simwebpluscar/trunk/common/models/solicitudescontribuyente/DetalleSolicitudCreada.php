@@ -100,7 +100,7 @@
         public function getViewPorImpuesto($model)
         {
             if ( $model->impuesto == 1 ) {
-                $view = New SolicitudViewController($model);
+                $view = New SolicitudViewActividadEconomicaController($model);
                 return $view->actionInicioView();
 
             }
