@@ -167,7 +167,8 @@ die(var_dump($postData));
 						$_SESSION['idContribuyente'] = $infoSolicitud->id_contribuyente;
 						$detalle = New DetalleSolicitudCreada($id);
 						$viewDetalle = $detalle->getDatosSolicitudCreada();
-						if ( !$viewDetalle ) {
+die(var_dump($viewDetalle));
+						if ( isset($viewDetalle) ) {
 							return $this->render('/funcionario/solicitud-asignada/view-solicitud-seleccionada', [
 																					'model' => $infoSolicitud,
 																					'caption' => $caption,
@@ -177,6 +178,9 @@ die(var_dump($postData));
 																					'contribuyente' => $contribuyente,
 																					'viewDetalle' => $viewDetalle,
 								]);
+						} else {
+							// No se encontraron los detalles de la solicitud.
+							return MensajeController::actionMensaje(404);
 						}
 					} else {
 						// Contribuyente no definido.
