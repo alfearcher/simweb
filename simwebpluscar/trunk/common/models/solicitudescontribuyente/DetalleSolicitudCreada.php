@@ -91,7 +91,7 @@
                // Con la intencion de localizar la ruta para renderizar la vista de la solicitud
                // respectiva. Este directorio de rutas para las vistas de los tipos de solicitudes
                // estara en un .php
-               self::getRutaViewPorImpuesto($datos);
+               self::getViewPorImpuesto($datos);
             }
         }
 
