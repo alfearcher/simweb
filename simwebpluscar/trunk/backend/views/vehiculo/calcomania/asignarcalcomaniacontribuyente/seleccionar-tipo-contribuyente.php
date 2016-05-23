@@ -5,7 +5,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 // 
-$this->title = 'Select your kind of Taxpayer';
+$this->title = 'Seleccione su tipo de registro';
 
 ?>
  
@@ -17,7 +17,7 @@ $this->title = 'Select your kind of Taxpayer';
     'id' => 'formulario',
     'enableClientValidation' => true,
     'enableAjaxValidation' => false,
-    'options' => ['class' => 'form-seleccionar-tipo'],
+    'options' => ['class' => 'form-horizontal'],
         
 ]);
 ?>
@@ -41,7 +41,7 @@ $this->title = 'Select your kind of Taxpayer';
                     <br>
                        <div class="row">
                         <div class="col-sm-6"; style="margin-left:100px; ">
-                            <?= Html::a('<strong><center><span class="glyphicon glyphicon-home" style="font-size:20px"> Persona Juridica</span></center></strong>', ['/vehiculo/calcomania/asignarcalcomaniacontribuyente/asignar-calcomania-contribuyente/busqueda-juridico']); ?>
+                            <?= Html::a('<strong><center><span class="glyphicon glyphicon-home" style="font-size:20px"> Persona Juridica</span></center></strong>', ['/vehiculo/calcomania/asignarcalcomaniacontribuyente/asignar-calcomania-contribuyente/busqueda-juridica']); ?>
                        </div>
                        </div>
                
@@ -52,3 +52,4 @@ $this->title = 'Select your kind of Taxpayer';
 
 <?php $form->end() ?>
 
+  
