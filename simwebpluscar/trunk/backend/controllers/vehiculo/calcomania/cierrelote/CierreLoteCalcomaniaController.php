@@ -100,7 +100,7 @@ class CierreLoteCalcomaniaController extends Controller
 
                if ($model->validate()){
 
-                 if($model->ano_impositivo == 2016){
+                 if($model->ano_impositivo == date('Y')){
 
                  return MensajeController::actionMensaje(998);
                 }else{
@@ -119,7 +119,7 @@ class CierreLoteCalcomaniaController extends Controller
             ]);
   }
 
-  public function actionBuscarCalcomania($errorCheck = "")
+  public function actionBuscarCalcomania()
   {
     
        $model = $_SESSION['datos'];
@@ -131,36 +131,12 @@ class CierreLoteCalcomaniaController extends Controller
           return $this->render('/vehiculo/calcomania/cierrelote/seleccionar-calcomania', [
                                                 'searchModel' => $searchModel,
                                                 'dataProvider' => $dataProvider,
-                                                'errorCheck' => $errorCheck,
+                                               
                                                 ]); 
   }
 
 
-  public function actionDeshabilitarLote()
-  {
-   // die('deshabilitar');
-    $errorCheck = ""; 
-     
-      $idCalcomanias = yii::$app->request->post('chk-deshabilitar-lote');
-      die(var_dump($idCalcomanias));
-      $_SESSION['idFuncionario'] = $idCalcomanias;
-
-  
-      $validacion = new CierreLoteCalcomaniaForm();
-
-       if ($validacion->validarCheck(yii::$app->request->post('chk-deshabilitar-lote')) == true){
-        
-        return $this->redirect(['aceptar-desincorporacion']);
-           
-        
-          
-       }else{
-          $errorCheck = "Please select a Sticker";
-          return $this->redirect(['buscar-calcomania' , 'errorCheck' => $errorCheck]); 
-
-                                                                                             
-       }
-  }
+ 
 
   /**
    * [AceptarDesincorporacion description] metodo que verifica si desea deshabilitar los funcionarios seleccionados
@@ -182,9 +158,9 @@ class CierreLoteCalcomaniaController extends Controller
 
                if ($model->validate()){
 
-                 $deshabilitarFuncionario = self::beginSave();
+                 $deshabilitarCalcomanias = self::beginSave();
 
-                    if ($deshabilitarFuncionario == true){
+                    if ($deshabilitarCalcomanias == true){
                         return MensajeController::actionMensaje(200); 
                     }else{
                         return MensajeController::actionMensaje(920);
@@ -195,27 +171,22 @@ class CierreLoteCalcomaniaController extends Controller
                     
                   
                 
-            return $this->render('/vehiculo/calcomania/deshabilitarfuncionario/aceptar-desincorporacion', [
+            return $this->render('/vehiculo/calcomania/cierrelote/aceptar-desincorporacion', [
                                                               'model' => $model,
 
                                                               
             ]);
             
   }
-  /**
-   * [actualizarDesincorporacion description] metodo que realiza la actualizacion del estatus del funcionario 
-   * @param  [type] $conn     [description] instancia a la conexion
-   * @param  [type] $conexion [description] instancia a la conexion
-   * @return [type]           [description] retorna true si todo el proceso se cumple
-   */
-  public function deshabilitarFuncionario($conn, $conexion)
+  
+  public function deshabilitarCalcomania($conn, $conexion)
   {
     // die('llego a deshabilitar');
-      $tableName = 'funcionario_calcomania';
-      $arregloCondition = ['id_funcionario' => $_SESSION['idFuncionario']]; //id del funcionario
+      $tableName = 'calcomanias';
+      $arregloCondition = ['entregado' => 0 , 'estatus' => 0, 'ano_impositivo' => $_SESSION['datos']->ano_impositivo ]; //id de la calcomania
       
-     
-      $arregloDatos['estatus'] = 1;
+      
+      $arregloDatos['estatus'] = 9;
 
       $conexion = new ConexionController();
 
@@ -242,7 +213,7 @@ class CierreLoteCalcomaniaController extends Controller
   public function beginSave()
   {
    // die('llego a begin');
-  $idFuncionario = $_SESSION['idFuncionario'];
+    
      $todoBien = true;
 
       $conexion = new ConexionController();
@@ -255,26 +226,19 @@ class CierreLoteCalcomaniaController extends Controller
 
         $transaccion = $conn->beginTransaction();
 
-          foreach($idFuncionario as $key => $value){
+       
 
                 
-                $deshabilitarFuncionario = self::deshabilitarFuncionario($conn, $conexion);
+                $deshabilitarCalcomania = self::deshabilitarCalcomania($conn, $conexion);
 
 
-                    if ($deshabilitarFuncionario == true ){
+                    if ($deshabilitarCalcomania == true ){
                            // die('deshabilito');
-                            $todoBien == true;
-                            
-                    }
-                        
-                      
-                    if($todoBien == true){
-                      //die('esta todo bien');
-                       
                         $transaccion->commit();
                         $conn->close();
                         
-                        return true;
+                        return true;   
+                            
                     }else{
                     
                         $transaccion->rollback();
@@ -282,7 +246,7 @@ class CierreLoteCalcomaniaController extends Controller
                         return false;
                     }
 
-             }
+            
   }
             
         
