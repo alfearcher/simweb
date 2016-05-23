@@ -113,7 +113,10 @@ class CierreLoteCalcomaniaForm extends Model
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-           
+
+        'pagination' => [
+        'pagesize' => 100,
+        ],   
         ]);
         $query->where([
             'ano_impositivo' => $model->ano_impositivo,
