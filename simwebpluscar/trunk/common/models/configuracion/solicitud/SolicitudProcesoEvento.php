@@ -53,8 +53,12 @@
 
 
 	/**
-	*
-	*/
+	 * Clase que permite determinar los procesos asociados a una configuracion
+	 * de una solicitud, indicando el identificador de configuracion de la solicitud
+	 * y el evento en que se encuentra dicha solicitud. Permite ejecutar los procesos
+	 * asociados a la configuracion de la solicitud segun el evento, arrojando un resultado
+	 * de dicha ejecucion.
+	 */
 	class SolicitudProcesoEvento extends ParametroSolicitud
 	{
 		public $idConfigSolicitud;
