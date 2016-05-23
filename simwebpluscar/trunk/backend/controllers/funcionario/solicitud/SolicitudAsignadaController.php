@@ -64,8 +64,15 @@
 	use backend\models\configuracion\tiposolicitud\TipoSolicitud;
 	use common\models\solicitudescontribuyente\DetalleSolicitudCreada;
 
+
+
 	/**
-	 *	Clase principal del formulario.
+	 * Clase que le permite al funcionario buscar las solicitudes asignadas a este
+	 * a traves de un buscador que facilita la entrada de algunos parametros de busqueda.
+	 * Una vez indicado los parametros de busqueda podra generar un listado de dichas solicitudes
+	 * Este listado de solicitudes dispone de un boton que permite visualizar el detalle
+	 * de la solicitud, en este formulario de detalle el funcionario podra aprobar o no la
+	 * solicitud a traves de dos botones para dichas acciones.
 	 */
 	class SolicitudAsignadaController extends Controller
 	{
