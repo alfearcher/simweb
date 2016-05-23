@@ -73,6 +73,10 @@
 	 * Este listado de solicitudes dispone de un boton que permite visualizar el detalle
 	 * de la solicitud, en este formulario de detalle el funcionario podra aprobar o no la
 	 * solicitud a traves de dos botones para dichas acciones.
+	 * El detalle de la solicitud debe mostrar:
+	 * - Detalle propio de la solicitud.
+	 * - Planillas relacionadas a la solicitud al monento de crear la misma.
+	 * - Documentos y o requisitos asociados.
 	 */
 	class SolicitudAsignadaController extends Controller
 	{
@@ -87,7 +91,11 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que inicia el modulo.
+		 * @return View Retorna una vista de un formularios de busqueda de solictudes
+		 * a traves de diferentes parametros.
+		 */
 		public function actionIndex()
 		{
 			$request = Yii::$app->request;
@@ -211,7 +219,14 @@ die(var_dump($postData));
 
 
 
-		/***/
+		/**
+		 * Metodo que permite realizar una consulta sobre la entidad "solicitudes-contribuyente"
+		 * para localizar todos las solciitudes que coincidan con los parametros de busqueda.
+		 * Esta busqueda filtra que el funcionario solo pueda ver las solicitudes que le fueron
+		 * asignadaas para su procesamiento.
+		 * @return View Retorna una lista de solicitudes con un boton por cada solicitud. Dicho
+		 * boton permitira ver mas detalle de la solicitud.
+		 */
 		public function actionBuscarSolicitudesContribuyente()
 		{
 			$postInicial = isset($_SESSION['postData']) ? $_SESSION['postData'] : null;
