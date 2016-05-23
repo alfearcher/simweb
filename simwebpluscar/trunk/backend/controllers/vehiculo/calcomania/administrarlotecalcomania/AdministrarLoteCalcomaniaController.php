@@ -235,9 +235,19 @@ class AdministrarLoteCalcomaniaController extends Controller
        }
     }
     /**
+*
+     * [actionVerificarCalcomaniasAno description] metodo que verifica si una calcomania esta seleccionada y redirecciona al guardado
+    *
+     */
+
+     * [actionVerificarCalcomaniasAno description] metodo que verifica si una calcomania esta seleccionada y redirecciona al guardado
+
+     */
+
     * [actionVerificarCalcomaniasAno description] metodo que verifica si una calcomania esta seleccionada y redirecciona al guardado
     *  
     */
+
     public function actionVerificarCalcomaniasAno()
     {
 
@@ -290,7 +300,8 @@ class AdministrarLoteCalcomaniaController extends Controller
 
     /**
      * [actionDeshabilitarCalcomania description] metodo que direcciona al begin save y espera respuestas para enviar mensaje de controlador
-     *
+*
+*
      */
     public function actionDeshabilitarCalcomania()
     {
@@ -314,7 +325,13 @@ class AdministrarLoteCalcomaniaController extends Controller
     {
     // die('llego a deshabilitar');
       $tableName = 'calcomanias';
+
+      $arregloCondition = ['id_calcomania' => $_SESSION['idCalcomanias']]; //id de la calcomania
+
+      $arregloCondition = ['id_calcomania' => $idCalcomania]; //id de la calcomania
+
       $arregloCondition = ['id_calcomania' => $_SESSION['idCalcomanias']]; //id del funcionario
+
       
      
       $arregloDatos['estatus'] = 1;
@@ -362,18 +379,29 @@ class AdministrarLoteCalcomaniaController extends Controller
           foreach($idCalcomania as $key => $value){
 
                 
+
+                  $deshabilitarCalcomanias = self::deshabilitarCalcomania($conn, $conexion);
+
+                  $deshabilitarCalcomanias = self::deshabilitarCalcomania($conn, $conexion, $value);
+
                 $deshabilitarCalcomania = self::deshabilitarCalcomania($conn, $conexion);
 
 
-<<<<<<< .mine
+
+
                       if ($deshabilitarCalcomanias == true ){
                             //die('deshabilito');
+
                             $todoBien == true;
-=======
+
+                            $todoBien == false;
+
+                            $todoBien == true;
+
                     if ($deshabilitarCalcomania == true ){
                            // die('deshabilito');
                             $todoBien == true;
->>>>>>> .r2302
+
                             
                     }
                         
