@@ -99,7 +99,7 @@ class GenerarLoteCalcomaniaController extends Controller
                   $verificarRango = self::verificarRango($model);
 
                       if ($verificarRango == true){
-                        return MensajeController::actionMensaje(994);
+                        return MensajeController::actionMensaje(995);
                       }else{
                         $guardarLote = self::beginSave("guardarLote", $model);
 
