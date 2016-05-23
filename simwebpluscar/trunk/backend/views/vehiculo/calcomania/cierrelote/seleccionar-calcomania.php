@@ -19,7 +19,7 @@ $this->title = Yii::t('frontend', 'Select the Stickers');
  <?php $form = ActiveForm::begin([
             'id' => 'id-chk-deshabilitar-funcionario',
             'method' => 'post',
-            'action' => ['/vehiculo/calcomania/cierrelote/cierre-lote-calcomania/deshabilitar-lote'],
+            'action' => ['/vehiculo/calcomania/cierrelote/cierre-lote-calcomania/aceptar-desincorporacion'],
             'enableClientValidation' => true,
             'enableAjaxValidation' => true,
             'enableClientScript' => true,
@@ -82,17 +82,7 @@ $this->title = Yii::t('frontend', 'Select the Stickers');
             // 'nivel_catastro',
             // 'unidad_catastro',
 
-              [
-                        'class' => 'yii\grid\CheckboxColumn',
-                        'name' => 'chk-deshabilitar-lote',
-                        'checkboxOptions' => [
-                                'id' => 'id-chk-deshabilitar-lote',
-                               
-                                //'onClick' => 'alert("hola " + $(this).val());'
-                                //$(this).is(":checked"), permite determinar si un checkbox esta tildado.
-                        ],
-                        'multiple' => true,
-                    ],
+              
         ],
     ]); ?>
 
@@ -110,12 +100,7 @@ $this->title = Yii::t('frontend', 'Select the Stickers');
 
     </div>
   
-     <div class="col-sm-2" style="float:right; color:red; font: comic sans ms">
-   
-    <p><?php echo $errorCheck ?></p>
-
-   
-    </div>
+ 
     </div>
 
 </div>
