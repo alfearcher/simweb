@@ -166,6 +166,10 @@ class BusquedaMultipleForm extends Model
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+
+             'pagination' => [
+        'pagesize' => false,
+        ], 
            
         ]);
         $query->filterWhere([
@@ -197,6 +201,10 @@ class BusquedaMultipleForm extends Model
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+
+             'pagination' => [
+        'pagesize' => false,
+        ], 
            
         ]);
         $query->filterWhere([
@@ -223,6 +231,10 @@ class BusquedaMultipleForm extends Model
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+
+             'pagination' => [
+        'pagesize' => false,
+        ], 
            
         ]);
         $query->filterWhere([
