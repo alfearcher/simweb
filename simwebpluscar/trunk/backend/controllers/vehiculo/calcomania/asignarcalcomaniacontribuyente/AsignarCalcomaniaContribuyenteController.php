@@ -190,24 +190,6 @@ class AsignarCalcomaniaContribuyenteController extends Controller
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
     /**
      * [actionBuscarFuncionario description] metodo que instancia el modelo busquedaMultipleForm para realizar la busqueda del funcionario
      * @param  [type] $model [description] modelo que contiene la informacion del ano_impositivo y el id del funcionario
