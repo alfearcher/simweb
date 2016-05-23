@@ -239,15 +239,6 @@ class AdministrarLoteCalcomaniaController extends Controller
      * [actionVerificarCalcomaniasAno description] metodo que verifica si una calcomania esta seleccionada y redirecciona al guardado
     *
      */
-
-     * [actionVerificarCalcomaniasAno description] metodo que verifica si una calcomania esta seleccionada y redirecciona al guardado
-
-     */
-
-    * [actionVerificarCalcomaniasAno description] metodo que verifica si una calcomania esta seleccionada y redirecciona al guardado
-    *  
-    */
-
     public function actionVerificarCalcomaniasAno()
     {
 
@@ -328,9 +319,9 @@ class AdministrarLoteCalcomaniaController extends Controller
 
       $arregloCondition = ['id_calcomania' => $_SESSION['idCalcomanias']]; //id de la calcomania
 
-      $arregloCondition = ['id_calcomania' => $idCalcomania]; //id de la calcomania
+  
 
-      $arregloCondition = ['id_calcomania' => $_SESSION['idCalcomanias']]; //id del funcionario
+  
 
       
      
@@ -382,32 +373,15 @@ class AdministrarLoteCalcomaniaController extends Controller
 
                   $deshabilitarCalcomanias = self::deshabilitarCalcomania($conn, $conexion);
 
-                  $deshabilitarCalcomanias = self::deshabilitarCalcomania($conn, $conexion, $value);
-
-                $deshabilitarCalcomania = self::deshabilitarCalcomania($conn, $conexion);
-
-
-
-
-                      if ($deshabilitarCalcomanias == true ){
+                if ($deshabilitarCalcomanias == true ){
                             //die('deshabilito');
+                    $todoBien == true;
 
-                            $todoBien == true;
-
-                            $todoBien == false;
-
-                            $todoBien == true;
-
-                    if ($deshabilitarCalcomania == true ){
-                           // die('deshabilito');
-                            $todoBien == true;
-
-                            
                     }
                         
                       
                     if($todoBien == true){
-                      //die('esta todo bien');
+                      
                        
                         $transaccion->commit();
                         $conn->close();
@@ -421,7 +395,13 @@ class AdministrarLoteCalcomaniaController extends Controller
                     }
 
              }
-  }
+
+   }
+
+     }
+
+
+ 
 
 
               
@@ -437,7 +417,7 @@ class AdministrarLoteCalcomaniaController extends Controller
  
               
             
-}
+
     
 
 
