@@ -58,10 +58,14 @@
 																'model' => $model,
 																'caption' => $caption,
 																'subCaption' => $subCaption,
-																'listado' => 6,
+																'listado' => $listado,
 																'url' => $url,
 																'contribuyente' => $contribuyente,
 																'viewDetalle' => $viewDetalle,
 				]);
 	?>
+</div>
+<!-- Detalle de los documentos a consignar -->
+<div class="row">
+	
 </div>
