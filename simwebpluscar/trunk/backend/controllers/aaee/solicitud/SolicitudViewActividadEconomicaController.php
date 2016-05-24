@@ -98,21 +98,21 @@
 
 					return self::actionMostarSolicitudInscripcionActividadEconomica();
 
-				} elseif ( $this->model->impuesto == 2 ) {
+				} elseif ( $this->model->tipo_solicitud == 2 ) {
 
-				} elseif ( $this->model->impuesto == 3 ) {
+				} elseif ( $this->model->tipo_solicitud == 3 ) {
 
-				} elseif ( $this->model->impuesto == 4 ) {
+				} elseif ( $this->model->tipo_solicitud == 4 ) {
 
-				} elseif ( $this->model->impuesto == 6 ) {
+				} elseif ( $this->model->tipo_solicitud == 6 ) {
 
-				} elseif ( $this->model->impuesto == 7 ) {
+				} elseif ( $this->model->tipo_solicitud == 7 ) {
 
-				} elseif ( $this->model->impuesto == 8 ) {
+				} elseif ( $this->model->tipo_solicitud == 8 ) {
 
-				} elseif ( $this->model->impuesto == 10 ) {
+				} elseif ( $this->model->tipo_solicitud == 10 ) {
 
-				} elseif ( $this->model->impuesto == 12 ) {
+				} elseif ( $this->model->tipo_solicitud == 12 ) {
 
 				}
 			}
