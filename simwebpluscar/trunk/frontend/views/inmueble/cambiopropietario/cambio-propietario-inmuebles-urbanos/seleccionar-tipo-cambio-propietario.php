@@ -31,14 +31,14 @@ $this->title = 'Seleccione su tipo de Gestion';
                
                        <div class="row">
                        <div class="col-sm-6"; style="margin-left:100px; ">
-                            <?= Html::a('<strong><center><span class="glyphicon glyphicon-user" style="font-size:20px"> Comprador</span></center></strong>', ['/vehiculo/cambiopropietario/cambio-propietario-comprador/comprador']); ?>
+                            <?= Html::a('<strong><center><span class="glyphicon glyphicon-user" style="font-size:20px"> Comprador</span></center></strong>', ['/inmueble/cambiopropietario/cambio-propietario-inmuebles-urbanos/cambio-propietario-inmuebles-comprador']); ?>
                        </div>
                        </div>
                        
                     <br>
                        <div class="row">
                         <div class="col-sm-6"; style="margin-left:100px; ">
-                            <?= Html::a('<strong><center><span class="glyphicon glyphicon-home" style="font-size:20px"> Vendedor</span></center></strong>', ['/vehiculo/cambiopropietario/cambio-propietario-vendedor/vendedor']); ?>
+                            <?= Html::a('<strong><center><span class="glyphicon glyphicon-home" style="font-size:20px"> Vendedor</span></center></strong>', ['/inmueble/cambiopropietario/cambio-propietario-inmuebles-urbanos/cambio-propietario-inmuebles-vendedor']); ?>
                        </div>
                        </div>
                
