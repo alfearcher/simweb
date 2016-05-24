@@ -46,7 +46,7 @@
  *  @inherits
  *  
  */
-namespace backend\controllers\inmueble;
+namespace forntend\controllers\inmueble\cambiopropietario;
 error_reporting(0);
 session_start();
 use Yii;
@@ -109,7 +109,25 @@ class CambioPropietarioInmueblesUrbanosController extends Controller
     } 
 
 
+   
+
+
     /**
+     * [actionSeleccionarTipoCambioPropietario description]
+     * @return [type] [description]
+     */
+    public function actionSeleccionarTipoCambioPropietario()
+    {
+        $idConfig = yii::$app->request->get('id');
+        
+        $_SESSION['id'] = $idConfig;
+
+        //die($idConfig);
+
+        return $this->render('seleccionar-tipo-cambio-propietario');
+    } 
+
+     /**
      * [actionSeleccionarTipoContribuyente description]
      * @return [type] [description]
      */
@@ -126,22 +144,6 @@ class CambioPropietarioInmueblesUrbanosController extends Controller
         }  else {
                     echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
         }
-    } 
-
-
-    /**
-     * [actionSeleccionarTipoCambioPropietario description]
-     * @return [type] [description]
-     */
-    public function actionSeleccionarTipoCambioPropietario()
-    {
-        $idConfig = yii::$app->request->get('id');
-        
-        $_SESSION['id'] = $idConfig;
-
-        //die($idConfig);
-
-        return $this->render('seleccionar-tipo-cambio-propietario');
     } 
     /**
      *Metodo: CambioPropietarioInmuebles
