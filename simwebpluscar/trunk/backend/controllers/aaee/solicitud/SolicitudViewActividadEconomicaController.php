@@ -64,7 +64,7 @@
 	 * Clase que permite renderizar las visatas detalles de las solicitudes por tipo de solicitud.
 	 * Las solicitudes aqui representan las del impuesto de Actividades Economicas. El resultado es
 	 * una vista con la informacion del detalle de la solicitud. El constructor de la clase recibe
-	 * el modelo que posee entre sus datos el tipo de solicitud o id-tipo-soliictud.
+	 * el modelo que posee entre sus datos el tipo de solicitud o id-tipo-solicitud.
 	 */
 	class SolicitudViewActividadEconomicaController extends Controller
 	{
