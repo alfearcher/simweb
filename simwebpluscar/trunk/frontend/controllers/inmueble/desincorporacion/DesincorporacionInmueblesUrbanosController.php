@@ -346,7 +346,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                 
                      $tableName2 = 'sl_inmuebles'; 
 
-                    if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ) {
+                    if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ) { 
 
                           $tableName4 = 'sl_desincorporaciones';
                           $arrayDatos4 = [
