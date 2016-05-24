@@ -26,6 +26,7 @@ $this->title = 'Busqueda Persona Juridica';
     'enableClientValidation' => false,
     'enableAjaxValidation' => false,
     'enableClientScript' => true,
+    
 
     'options' => ['class' => 'form-horizontal'],
 

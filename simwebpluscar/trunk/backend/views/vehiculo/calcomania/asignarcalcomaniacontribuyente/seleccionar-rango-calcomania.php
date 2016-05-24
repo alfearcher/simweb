@@ -29,6 +29,7 @@ $this->title = Yii::t('frontend', 'Select the Stickers');
 
 <div class="inmuebles-index">
 
+
     <h2><?= Html::encode($this->title) ?></h2>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 

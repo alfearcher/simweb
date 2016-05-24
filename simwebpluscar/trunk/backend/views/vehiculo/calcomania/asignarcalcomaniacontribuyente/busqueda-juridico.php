@@ -26,6 +26,7 @@ $this->title = 'Busqueda Persona Natural';
     'enableClientValidation' => false,
     'enableAjaxValidation' => false,
     'enableClientScript' => true,
+    
 
     'options' => ['class' => 'form-horizontal'],
 
