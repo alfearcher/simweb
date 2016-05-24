@@ -61,7 +61,11 @@
 
 
 
-    /***/
+    /**
+     * Clase que permite direccionar la busqueda de la informacion detalle de una solicitud
+     * por tipo de impuesto. Utiliza como parametro de entrada el valor del numero de la
+     * solicitud creada, para luego buscar la informacion restante con este parametro.
+     */
     class DetalleSolicitudCreada extends SolicitudesContribuyenteForm
     {
 
@@ -79,7 +83,11 @@
         }
 
 
-        /***/
+
+        /**
+         * Metodo que busca los datos de la solicitud de la entidad "solicitudes-contribuyente"
+         * @return [type] [description]
+         */
         public function getDatosSolicitudCreada()
         {
             $datos = $this->findSolicitudContribuyente($this->nro_solicitud);
