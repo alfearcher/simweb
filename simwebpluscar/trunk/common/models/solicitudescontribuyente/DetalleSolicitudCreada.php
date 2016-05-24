@@ -86,7 +86,10 @@
 
         /**
          * Metodo que busca los datos de la solicitud de la entidad "solicitudes-contribuyente"
-         * @return [type] [description]
+         * para luego enviarlos como parametros a un metodo que se encargara de renderizar las
+         * vistas por tipo de solicitud.
+         * @return View Retorna una vista segun el tipo de solicitud o false si no encuentra la
+         * vista.
          */
         public function getDatosSolicitudCreada()
         {
