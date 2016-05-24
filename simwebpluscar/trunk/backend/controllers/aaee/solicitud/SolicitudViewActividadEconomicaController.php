@@ -136,7 +136,9 @@
 		 * nivel de aprobacion 1: No aplica.
 		 * nivel de aprobacion 2: la vista no permite la edicion de los campos.
 		 * 	- Esquema de esta vista:
-		 *  	* Nombre del campo : Valor del campo  
+		 *  	* Nombre del campo : Valor del campo
+		 * nivel de aprobacion 3: Muestra inhabilitado los datos suministrados previamente y habilita
+		 * aquellos campos que no fueron cargados inicialmente.  
 		 */
 		private function actionMostarSolicitudInscripcionActividadEconomica()
 		{
