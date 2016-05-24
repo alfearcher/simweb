@@ -107,6 +107,42 @@ class CambioPropietarioInmueblesUrbanosController extends Controller
                     echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
         }
     } 
+
+
+    /**
+     * [actionSeleccionarTipoContribuyente description]
+     * @return [type] [description]
+     */
+    public function actionSeleccionarTipoContribuyente()
+    {
+        if ( isset( $_SESSION['idContribuyente'] ) ) {
+        $searchModel = new InmueblesSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]); 
+        }  else {
+                    echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
+        }
+    } 
+
+
+    /**
+     * [actionSeleccionarTipoCambioPropietario description]
+     * @return [type] [description]
+     */
+    public function actionSeleccionarTipoCambioPropietario()
+    {
+        $idConfig = yii::$app->request->get('id');
+        
+        $_SESSION['id'] = $idConfig;
+
+        //die($idConfig);
+
+        return $this->render('seleccionar-tipo-cambio-propietario');
+    } 
     /**
      *Metodo: CambioPropietarioInmuebles
      *Actualiza los datos del numero catastral del inmueble urbano.

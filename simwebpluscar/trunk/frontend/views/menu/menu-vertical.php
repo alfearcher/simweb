@@ -108,7 +108,7 @@
 		        						['label' => 'Renovación de Certificado Catastral', 'url' => '#'],
 		        						['label' => 'Solvencia', 'url' => '#'],
 		        						['label' => 'Cambio de Numero Catastral', 'url' => ['/inmueble/inmuebles-urbanos/index']],
-		        						['label' => 'Cambio de Propietario', 'url' => ['inmueble/cambio-propietario-inmuebles-urbanos/cambio-propietario-inmuebles']],
+		        						['label' => 'Cambio de Propietario', 'url' => ['inmueble/cambiopropietario/cambio-propietario-inmuebles-urbanos/seleccionar-tipo-cambio-propietario','id' =>3]], //  cambio-propietario-inmuebles
 		        						['label' => 'Integración de Parcela', 'url' => ['/inmueble/integracion-inmuebles-urbanos/integracion-inmuebles']],
 		        						['label' => 'Desintegración de Parcela', 'url' => ['inmueble/desintegracion-inmuebles-urbanos/desintegracion']],
 		        						['label' => 'Cambio a Propiedad Horizontal', 'url' => ['/inmueble/inmuebles-urbanos/index']],
