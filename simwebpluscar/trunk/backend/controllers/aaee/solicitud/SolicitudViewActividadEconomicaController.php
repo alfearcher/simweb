@@ -59,8 +59,11 @@
 
 	//session_start();		// Iniciando session
 
+
 	/**
-	 *
+	 * Clase que permite renderizar las visatas detalles de las solicitudes por tipo de solicitud.
+	 * Las solicitudes aqui representan las del impuesto de Actividades Economicas. El resultado es
+	 * una vista con la informacion del detalle de la solicitud.
 	 */
 	class SolicitudViewActividadEconomicaController extends Controller
 	{
