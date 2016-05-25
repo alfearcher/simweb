@@ -100,21 +100,27 @@
 
 					return self::actionMostrarSolicitudInscripcionInmueble();
 
-				} elseif ( $this->model->tipo_solicitud == 2 ) {
+				} elseif ( $this->model->tipo_solicitud == 21 ) {
 
-				} elseif ( $this->model->tipo_solicitud == 3 ) {
+				} elseif ( $this->model->tipo_solicitud == 22 ) {
 
-				} elseif ( $this->model->tipo_solicitud == 4 ) {
+				} elseif ( $this->model->tipo_solicitud == 23 ) {
 
-				} elseif ( $this->model->tipo_solicitud == 6 ) {
+				} elseif ( $this->model->tipo_solicitud == 24 ) {
 
-				} elseif ( $this->model->tipo_solicitud == 7 ) {
+				} elseif ( $this->model->tipo_solicitud == 25 ) {
 
-				} elseif ( $this->model->tipo_solicitud == 8 ) {
+				} elseif ( $this->model->tipo_solicitud == 26 ) {
 
-				} elseif ( $this->model->tipo_solicitud == 10 ) {
+				} elseif ( $this->model->tipo_solicitud == 27 ) {
 
-				} elseif ( $this->model->tipo_solicitud == 12 ) {
+				} elseif ( $this->model->tipo_solicitud == 28 ) {
+
+				} elseif ( $this->model->tipo_solicitud == 29 ) {
+
+				} elseif ( $this->model->tipo_solicitud == 30 ) {
+
+				} elseif ( $this->model->tipo_solicitud == 31 ) {
 
 				}
 			}
