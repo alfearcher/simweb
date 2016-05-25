@@ -132,7 +132,7 @@ class DesincorporacionVehiculoController extends Controller
 
        if ($validacion->validarCheck(yii::$app->request->post('chk-desincorporar-vehiculo')) == true){
            $modelsearch = new VehiculoSearch();
-      $busqueda = $modelsearch->busquedaVehiculo($idVehiculo, $idContribuyente);
+           $busqueda = $modelsearch->busquedaVehiculo($idVehiculo, $idContribuyente);
       //die(var_dump($busqueda));
           if ($busqueda == true){ 
            
