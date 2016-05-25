@@ -58,6 +58,7 @@
     //use common\models\solicitudescontribuyente\SolicitudesContribuyente;
     use common\models\solicitudescontribuyente\SolicitudesContribuyenteForm;
     use backend\controllers\aaee\solicitud\SolicitudViewActividadEconomicaController;
+    use backend\controllers\vehiculo\solicitud\SolicitudViewVehiculoController;
 
 
 
