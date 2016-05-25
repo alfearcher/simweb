@@ -60,7 +60,7 @@
    
 
 
-    class SolicitudesContribuyente extends ActiveRecord
+    class SlVehiculos extends ActiveRecord
     {
 
         public static function getDb()
