@@ -93,6 +93,7 @@
          */
         public function getDatosSolicitudCreada()
         {
+            // find sobre SoliicitudesContribuyente.
             $datos = $this->findSolicitudContribuyente($this->nro_solicitud);
             if ( isset($datos) ) {
                return self::getViewPorImpuesto($datos);
@@ -116,7 +117,10 @@
 
             } elseif ( $model->impuesto == 2 ) {
 
+
             } elseif ( $model->impuesto == 3 ) {
+                 $view = New SolicitudViewVehiculoController($model);
+                return $view->actionInicioView();
 
             } elseif ( $model->impuesto == 4 ) {
 
