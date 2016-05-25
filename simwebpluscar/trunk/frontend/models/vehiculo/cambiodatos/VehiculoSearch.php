@@ -28,7 +28,7 @@
  *  @date 08/03/2016
  * 
  *  @class VehiculoSearch
- *  @brief Clase que realiza contiene las rules para validacion y contiene metodo que realiza la busqueda con un dataprovider para verificar
+ *  @brief Clase que contiene las rules para validacion y contiene metodo que realiza la busqueda con un dataprovider para verificar
  *  la cantidad de vehiculos que tiene el contribuyente. 
  * 
  *  
