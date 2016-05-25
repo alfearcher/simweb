@@ -21,13 +21,13 @@
  */
 
  /**
- *	@file InscripcionActividadEconomicaController.php
+ *	@file SolicitudViewController.php
  *
  *	@author Jose Rafael Perez Teran
  *
  *	@date 19-09-2015
  *
- *  @class InscripcionActividadEconomicaController
+ *  @class SolicitudViewController
  *	@brief Clase InscripcionActividadEconomicaController, inscripcion de contribuyentes
  *	en el area del impuesto Actividad Economica
  *

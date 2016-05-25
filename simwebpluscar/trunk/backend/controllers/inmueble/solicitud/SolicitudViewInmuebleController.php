@@ -21,13 +21,13 @@
  */
 
  /**
- *	@file SolicitudViewnActividadEconomicaController.php
+ *	@file SolicitudViewnInmuebleController.php
  *
- *	@author Jose Rafael Perez Teran
+ *	@author Alvaro Jose Fernandez Archer
  *
- *	@date 19-09-2015
+ *	@date 25-05-2016
  *
- *  @class SolicitudViewnActividadEconomicaController
+ *  @class SolicitudViewnInmuebleController
  *	@brief Clase
  *
  *
@@ -35,7 +35,8 @@
  *
  *
  *	@method
- *
+ * 	actionInicioView
+ * 	MostrarSolicitudInscripcionInmueble
  *
  *	@inherits
  *
@@ -147,11 +148,7 @@
 					$modelSearch = New SlInmueblesUrbanosSearch($this->model->id_contribuyente);
 					$model = $modelSearch->findInscripcion($this->model->nro_solicitud);
 
-					// return $this->render('/aaee/inscripcion-actividad-economica/view-solicitud', [
-					// 								'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
-					// 								'model' => $model,
-
-					// 	]);
+					
 
 					return $this->render('/inmueble/inscripcion-inmuebles-urbano/view-solicitud', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),

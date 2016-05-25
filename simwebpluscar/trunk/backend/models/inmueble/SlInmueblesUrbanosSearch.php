@@ -21,13 +21,13 @@
  */
 
  /**
- *  @file InscripcionActividadEconomicaSearch.php
+ *  @file SlInmueblesUrbanosSearch.php
  *
- *  @author Jose Rafael Perez Teran
+ *  @author Alvaro Jose Fernandez Archer
  *
- *  @date 09-05-2016
+ *  @date 25-05-2016
  *
- *  @class InscripcionActividadEconomicaSearch
+ *  @class SlInmueblesUrbanosSearch
  *  @brief Clase Modelo que maneja la politica de busqueda
  *
  *
