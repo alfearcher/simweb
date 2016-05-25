@@ -59,6 +59,7 @@
     use common\models\solicitudescontribuyente\SolicitudesContribuyenteForm;
     use backend\controllers\aaee\solicitud\SolicitudViewActividadEconomicaController;
     use backend\controllers\vehiculo\solicitud\SolicitudViewVehiculoController;
+    use backend\controllers\inmueble\solicitud\SolicitudViewInmuebleController;
 
 
 
@@ -117,7 +118,8 @@
                 return $view->actionInicioView();
 
             } elseif ( $model->impuesto == 2 ) {
-
+                $view = New SolicitudViewInmuebleController($model);
+                return $view->actionInicioView();
 
             } elseif ( $model->impuesto == 3 ) {
                  $view = New SolicitudViewVehiculoController($model);

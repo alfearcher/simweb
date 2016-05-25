@@ -150,7 +150,7 @@
 		 */
 		private function actionMostrarSolicitudInscripcionInmueble()
 		{
-			if ( $this->model->nivel_aprobacion == 2 ) {
+			if ( $this->model->nivel_aprobacion == 3 ) {
 					$modelSearch = New SlInmueblesUrbanosSearch($this->model->id_contribuyente);
 					$model = $modelSearch->findInscripcion($this->model->nro_solicitud);
 
