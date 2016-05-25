@@ -143,11 +143,17 @@
 		 */
 		private function actionMostrarSolicitudInscripcionInmueble()
 		{
-			if ( $this->model->nivel_aprobacion == 3 ) {
+			if ( $this->model->nivel_aprobacion == 2 ) {
 					$modelSearch = New SlInmueblesUrbanosSearch($this->model->id_contribuyente);
 					$model = $modelSearch->findInscripcion($this->model->nro_solicitud);
 
-					return $this->render('/aaee/inscripcion-actividad-economica/view-solicitud', [
+					// return $this->render('/aaee/inscripcion-actividad-economica/view-solicitud', [
+					// 								'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
+					// 								'model' => $model,
+
+					// 	]);
+
+					return $this->render('/inmueble/inscripcion-inmuebles-urbano/view-solicitud', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
 													'model' => $model,
 
