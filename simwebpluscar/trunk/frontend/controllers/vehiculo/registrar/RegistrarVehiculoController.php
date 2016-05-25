@@ -60,8 +60,8 @@ use common\enviaremail\EnviarEmailSolicitud;
 use common\models\configuracion\solicitud\ParametroSolicitud;
 use common\models\configuracion\solicitud\DocumentoSolicitud;
 use common\enviaremail\PlantillaEmail;
-use common\models\configuracion\solicitud\DocumentoSolicitud;
-use common\enviaremail\PlantillaEmail;
+
+
 /**
  * Site controller
  */
@@ -158,9 +158,9 @@ class RegistrarVehiculoController extends Controller
 
         $buscar->getParametroSolicitud(["tipo_solicitud", "impuesto", "nivel_aprobacion"]);
 
-        $buscar->getDocumentoRequisitoSolciitud();
+       
 
-        $resultadoDocumento = $buscar->getDocumentoRequisitoSolciitud();
+        $resultadoDocumento = $buscar->getDocumentoRequisitoSolicitud();
 
       
 
@@ -290,13 +290,13 @@ class RegistrarVehiculoController extends Controller
 
      
 
-      $arregloDatos['estatus_funcionario'] = 0;
+      //$arregloDatos['estatus_funcionario'] = 0;
 
       $arregloDatos['user_funcionario'] = 0;
 
       $arregloDatos['fecha_funcionario'] = 0;
 
-      $arregloDatos['fecha_hora'] = 0;
+      $arregloDatos['fecha_hora'] = date('Y-m-d H:i:s');
 
       $arregloDatos['nro_cilindros'] = $model->nro_cilindros;
 
