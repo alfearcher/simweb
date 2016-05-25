@@ -138,7 +138,7 @@
 		 * 	- Esquema de esta vista:
 		 *  	* Nombre del campo : Valor del campo
 		 * nivel de aprobacion 3: Muestra inhabilitado los datos suministrados previamente y habilita
-		 * aquellos campos que no fueron cargados inicialmente.  
+		 * aquellos campos que no fueron cargados inicialmente.
 		 */
 		private function actionMostarSolicitudInscripcionActividadEconomica()
 		{
@@ -146,7 +146,7 @@
 					$modelSearch = New InscripcionActividadEconomicaSearch($this->model->id_contribuyente);
 					$model = $modelSearch->findInscripcion($this->model->nro_solicitud);
 
-					return $this->renderAjax('/aaee/inscripcion-actividad-economica/view-solicitud', [
+					return $this->render('/aaee/inscripcion-actividad-economica/view-solicitud', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
 													'model' => $model,
 
