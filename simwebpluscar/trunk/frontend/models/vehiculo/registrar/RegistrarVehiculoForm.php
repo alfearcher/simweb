@@ -207,7 +207,7 @@ public $serial_motor;
               'serial_motor',
               'serial_carroceria',
               'nro_calcomania',
-              'estatus_funcionario',
+             
               'user_funcionario',
               'fecha_funcionario',
               'fecha_hora',
