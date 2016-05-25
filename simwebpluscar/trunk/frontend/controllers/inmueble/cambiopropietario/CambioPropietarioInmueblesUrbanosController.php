@@ -242,7 +242,7 @@ class CambioPropietarioInmueblesUrbanosController extends Controller
               }
          }              
          
-              return $this->render('desincorporacion-inmuebles', ['model' => $model, 'datos'=>$datos]);  
+              return $this->render('cambio-propietario-inmuebles-vendedor', ['model' => $model, 'datos'=>$datos]);  
 
         }  else {
                     echo "No hay Contribuyente Registrado!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['site/login'])."'>";
@@ -341,7 +341,7 @@ class CambioPropietarioInmueblesUrbanosController extends Controller
               }
          }              
          
-              return $this->render('desincorporacion-inmuebles', ['model' => $model, 'datos'=>$datos]);  
+              return $this->render('cambio-propietario-inmuebles-comprador', ['model' => $model, 'datos'=>$datos]);  
 
         }  else {
                     echo "No hay Contribuyente Registrado!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['site/login'])."'>";
@@ -642,7 +642,7 @@ CONTENIDO VENDEDOR (SELLER)
 
 
                         //--------------TRY---------------
-                        $arrayDatos = [
+                        $arrayDatos = [ 
                                         'id_contribuyente' => $id_contribuyenteComprador,
                                       ]; 
                         
