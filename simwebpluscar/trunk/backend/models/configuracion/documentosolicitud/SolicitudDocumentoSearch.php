@@ -47,6 +47,7 @@
 	use yii\data\ActiveDataProvider;
 	use backend\models\configuracion\documentosolicitud\SolicitudDocumento;
 	use common\models\solicitudescontribuyente\SolicitudesContribuyenteForm;
+	use backend\models\utilidad\documento\DocumentoRequisito;
 
 	/**
 	* 	Clase que permite
@@ -89,10 +90,30 @@
 
 
 
+		/**
+		 * [findDocumentoSolicitud description]
+		 * @return [type] [description]
+		 */
+		private function findDocumentoSolicitud()
+		{
+			$modelFind = DocumentoRequisito::find()->where(DocumentoRequisito::tableName().'.inactivo =:inactivo', [':inactivo' => 0])
+												   ->andWhere('id_config_solicitud =:id_config_solicitud', [
+												   										':id_config_solicitud' => $this->id_config_solicitud
+												   										])
+												   ->andWhere(SolicitudDocumento::tableName().'.inactivo =:inactivo', [':inactivo' => 0])
+												   ->joinWith('solicitudDocumento', false)
+												   ->orderBy([
+												   		'id_documento' => SORT_ASC,
+												   	]);
+			return isset($modelFind) ? $modelFind : null;
+		}
 
+
+
+		/***/
 		public function getListaDocumentoSegunSolicitud()
 		{
-
+			return self::findDocumentoSolicitud();
 		}
 
 
