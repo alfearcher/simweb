@@ -301,10 +301,10 @@
 								<h4><strong><?= Yii::t('backend', 'Details of Request') ?></strong></h4>
 							</div>
 							<div class="row">
-								<div class="detalle" id="detalle" style="padding-left: 35px;"><?= $viewDetalle?></div>
+								<div class="detalle" id="detalle" style="padding-left: 40px;"><?= $viewDetalle?></div>
 							</div>
 							<div class="row">
-								<div class="documento-requisito" id="documento-requisito">
+								<div class="documento-requisito" id="documento-requisito" style="padding-left: 40px;">
 									<?= $viewDocumentoRequisito?>
 								</div>
 							</div>
