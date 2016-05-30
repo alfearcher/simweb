@@ -191,7 +191,7 @@ die(var_dump($postData));
 							// Se buscan los Documentos y Requisitos de la Solicitud.
 							$modelDoc = New SolicitudDocumentoSearch($id);
 							$dataProviderDoc = $modelDoc->getDataProvider();
-							$viewDocumentoRequisito = return $this->render('/utilidad/documento-requisito/documento-requisito-gridview', [
+							$viewDocumentoRequisito = $this->render('/utilidad/documento-requisito/documento-requisito-gridview', [
 																			'dataProvider' => $dataProviderDoc,
 														]);
 							//---
