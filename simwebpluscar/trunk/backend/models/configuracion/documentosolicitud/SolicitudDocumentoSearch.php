@@ -104,8 +104,8 @@
 												   ->joinWith('solicitudDocumento', false)
 												   ->orderBy([
 												   		'id_documento' => SORT_ASC,
-												   	])
-												   ->all();
+												   	]);
+
 			return isset($modelFind) ? $modelFind : null;
 		}
 
@@ -114,7 +114,16 @@
 		/***/
 		public function getListaDocumentoSegunSolicitud()
 		{
-			return self::findDocumentoSolicitud();
+			$model = self::findDocumentoSolicitud();
+			return isset($model) ? $model->all() : null;
+		}
+
+
+
+
+		public function getDataProvider()
+		{
+			$query = 
 		}
 
 
