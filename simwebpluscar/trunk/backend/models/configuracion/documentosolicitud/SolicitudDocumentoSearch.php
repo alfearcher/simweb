@@ -46,14 +46,54 @@
 	use yii\base\Model;
 	use yii\data\ActiveDataProvider;
 	use backend\models\configuracion\documentosolicitud\SolicitudDocumento;
+	use common\models\solicitudescontribuyente\SolicitudesContribuyenteForm;
 
 	/**
-	* 	Clase
+	* 	Clase que permite
 	*/
 	class SolicitudDocumentoSearch extends SolicitudDocumento
 	{
 
+		private $id_config_solicitud;
+		private $nro_solicitud;
+
+
+
+		/**
+		 * Metodo constructor de la clase.
+		 * @param Long $nroSolicitud identificador de la solicitud creadapor el contribuyente o funcionario.
+		 */
+		public function __construct($nroSolicitud)
+		{
+			$this->nro_solicitud = $nroSolicitud;
+			self::setIdConfigSolicitud();
+		}
+
+
+
+		/**
+		 * [setIdConfigSolicitud description]
+		 */
+		private function setIdConfigSolicitud()
+		{
+			$result = null;
+			$this->id_config_solicitud = 0;
+			if ( $this->nro_solicitud > 0 ) {
+				$solicitud = New SolicitudesContribuyenteForm();
+				$result = $solicitud->getParametroSolicitudContribuynete();
+				if ( count($result) > 0 ) {
+					$this->id_config_solicitud = $result['id_config_solicitud'];
+				}
+			}
+		}
+
+
+
+
 		public function getListaDocumentoSegunSolicitud()
+		{
+
+		}
 
 
 	}
