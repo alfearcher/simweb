@@ -120,10 +120,16 @@
 
 
 
-
+		/***/
 		public function getDataProvider()
 		{
-			$query = 
+			$query = self::findDocumentoSolicitud();
+
+			$dataProvider = new ActiveDataProvider([
+	            'query' => $query,
+	        ]);
+
+	        return $dataProvider;
 		}
 
 
