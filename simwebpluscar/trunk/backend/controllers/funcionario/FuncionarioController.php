@@ -149,7 +149,7 @@
 	  	public function actionPrueba()
 	  	{
 
-	  		$s = New SolicitudDocumentoSearch(22621)
+	  		$s = New SolicitudDocumentoSearch(22621);
 die(var_dump($s->getListaDocumentoSegunSolicitud()));
 
 
