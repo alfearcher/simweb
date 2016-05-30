@@ -305,7 +305,27 @@
 							</div>
 							<div class="row">
 								<div class="documento-requisito" id="documento-requisito" >
-									<?= $viewDocumentoRequisito?>
+									<?= GridView::widget([
+                'id' => 'grid-lista-documento',
+                'dataProvider' => $dataProvider,
+                'summary' => '',
+                'columns' => [
+                        ['class' => 'yii\grid\SerialColumn'],
+                        [
+                            'label' => 'ID.',
+                            'value' => 'id_documento',
+                        ],
+                        [
+                            'label' => 'Descripcion',
+                            'value' => 'descripcion',
+                        ],
+                        [
+                            'class' => 'yii\grid\CheckboxColumn',
+                            'name' => 'chk-documento-requisito',
+                        ],
+                ]
+            ]);
+        ?>
 								</div>
 							</div>
 						</div>

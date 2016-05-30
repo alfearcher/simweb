@@ -62,7 +62,8 @@
 																'url' => $url,
 																'contribuyente' => $contribuyente,
 																'viewDetalle' => $viewDetalle,
-																'viewDocumentoRequisito' => $viewDocumentoRequisito,
+																'dataProvider' => $dataProvider,
+																//'viewDocumentoRequisito' => $viewDocumentoRequisito,
 				]);
 	?>
 </div>
