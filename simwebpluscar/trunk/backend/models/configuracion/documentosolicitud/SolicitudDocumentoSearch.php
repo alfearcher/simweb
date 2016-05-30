@@ -133,15 +133,5 @@
 		}
 
 
-		/***/
-		public function getViewDocumentoRequisito()
-		{
-			$viewDocumentoRequisito = $this->render('/utilidad/documento-requisito/documento-requisito-gridview.php', [
-																			'dataProvider' => self::getDataProvider(),
-				]);
-			return isset($viewDocumentoRequisito) ? $viewDocumentoRequisito : null;
-		}
-
-
 	}
 ?>
