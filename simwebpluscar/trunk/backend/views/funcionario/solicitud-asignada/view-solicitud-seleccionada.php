@@ -304,7 +304,7 @@
 								<div class="detalle" id="detalle" style="padding-left: 40px;"><?= $viewDetalle?></div>
 							</div>
 							<div class="row">
-								<div class="documento-requisito" id="documento-requisito" style="padding-left: 40px;">
+								<div class="documento-requisito" id="documento-requisito" style="padding-left: 40px; padding-top: -15px; width: 60%;">
 									<?= $viewDocumentoRequisito?>
 								</div>
 							</div>
