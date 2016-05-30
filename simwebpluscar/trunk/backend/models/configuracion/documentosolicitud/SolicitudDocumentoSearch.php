@@ -81,7 +81,7 @@
 			$this->id_config_solicitud = 0;
 			if ( $this->nro_solicitud > 0 ) {
 				$solicitud = New SolicitudesContribuyenteForm();
-				$result = $solicitud->getParametroSolicitudContribuyente();
+				$result = $solicitud->getParametroSolicitudContribuyente($this->nro_solicitud, ['id_config_solicitud']);
 				if ( count($result) > 0 ) {
 					$this->id_config_solicitud = $result['id_config_solicitud'];
 				}
