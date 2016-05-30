@@ -37,6 +37,7 @@
 	use backend\models\funcionario\Funcionario;
 	use common\conexion\ConexionController;
 	use common\models\solicitudescontribuyente\DetalleSolicitudCreada;
+	use backend\models\configuracion\documentosolicitud\SolicitudDocumentoSearch;
 
 
 
@@ -148,8 +149,8 @@
 	  	public function actionPrueba()
 	  	{
 
-	  		$s = New DetalleSolicitudCreada(22605);
-	  		return $s->getDatosSolicitudCreada();
+	  		$s = New SolicitudDocumentoSearch(22621)
+die(var_dump($s->getListaDocumentoSegunSolicitud()));
 
 
 	  	}
