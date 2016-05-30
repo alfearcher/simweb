@@ -67,7 +67,7 @@
 </div>
 <!-- Detalle de los documentos a consignar -->
 <div class="row">
-	<?= $this->render('/utilidad/documento-requisito-gridview', [
+	<?= $this->render('/utilidad/documento-requisito/documento-requisito-gridview', [
 									'dataProvider' => $dataProviderDoc,
 
 		]); 
