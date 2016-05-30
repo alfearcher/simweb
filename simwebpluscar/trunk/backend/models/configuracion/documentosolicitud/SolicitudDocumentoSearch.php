@@ -104,7 +104,8 @@
 												   ->joinWith('solicitudDocumento', false)
 												   ->orderBy([
 												   		'id_documento' => SORT_ASC,
-												   	]);
+												   	])
+												   ->all();
 			return isset($modelFind) ? $modelFind : null;
 		}
 
