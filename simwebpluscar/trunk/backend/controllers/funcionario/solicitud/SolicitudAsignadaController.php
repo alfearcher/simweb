@@ -204,7 +204,8 @@ die(var_dump($postData));
 																					'url' => $url,
 																					'contribuyente' => $contribuyente,
 																					'viewDetalle' => $viewDetalle,
-																					'viewDocumentoRequisito' => $viewDocumentoRequisito,
+																					'dataProvider' => $dataProviderDoc,
+																					//'viewDocumentoRequisito' => $viewDocumentoRequisito,
 								]);
 						} else {
 							// No se encontraron los detalles de la solicitud.
