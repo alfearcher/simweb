@@ -303,6 +303,11 @@
 							<div class="row">
 								<div class="detalle" id="detalle" style="padding-left: 35px;"><?= $viewDetalle?></div>
 							</div>
+							<div class="row">
+								<div class="documento-requisito" id="documento-requisito">
+									<?= $viewDocumentoRequisito?>
+								</div>
+							</div>
 						</div>
 					</div>
 <!-- Fin de Detalle de la Solicitud -->

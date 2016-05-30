@@ -62,14 +62,7 @@
 																'url' => $url,
 																'contribuyente' => $contribuyente,
 																'viewDetalle' => $viewDetalle,
+																'viewDocumentoRequisito' => $viewDocumentoRequisito,
 				]);
-	?>
-</div>
-<!-- Detalle de los documentos a consignar -->
-<div class="row">
-	<?= $this->render('/utilidad/documento-requisito/documento-requisito-gridview', [
-									'dataProvider' => $dataProviderDoc,
-
-		]); 
 	?>
 </div>
