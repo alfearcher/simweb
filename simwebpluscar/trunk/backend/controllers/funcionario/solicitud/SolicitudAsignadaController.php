@@ -187,9 +187,13 @@ die(var_dump($postData));
 						$viewDetalle = $detalle->getDatosSolicitudCreada();
 
 						if ( $viewDetalle !== false ) {
+							
 							// Se buscan los Documentos y Requisitos de la Solicitud.
 							$modelDoc = New SolicitudDocumentoSearch($id);
 							$dataProviderDoc = $modelDoc->getDataProvider();
+							$viewDocumentoRequisito = $modelDoc->getViewDocumentoRequisito();
+							//
+
 							return $this->render('/funcionario/solicitud-asignada/_view', [
 																					'model' => $infoSolicitud,
 																					'caption' => $caption,
@@ -198,8 +202,7 @@ die(var_dump($postData));
 																					'url' => $url,
 																					'contribuyente' => $contribuyente,
 																					'viewDetalle' => $viewDetalle,
-																					'modelDoc' => $modelDoc,
-																					'dataProviderDoc' => $dataProviderDoc,
+																					'viewDocumentoRequisito' => $viewDocumentoRequisito,
 								]);
 						} else {
 							// No se encontraron los detalles de la solicitud.
