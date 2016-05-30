@@ -47,7 +47,7 @@
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 	use common\conexion\ConexionController;
-	use backend\models\configuracion\solicitud\documentosolicitud\SolicitudDocumento;
+	use backend\models\configuracion\documentosolicitud\SolicitudDocumento;
 	/**
 	* 	Clase
 	*/
