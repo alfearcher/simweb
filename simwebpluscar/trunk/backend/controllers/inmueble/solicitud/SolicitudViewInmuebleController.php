@@ -171,14 +171,14 @@
 		 * aquellos campos que no fueron cargados inicialmente.
 		 */
 		private function actionMostrarSolicitudInscripcionInmueble()
-		{
+		{ 
 			if ( $this->model->nivel_aprobacion == 2 ) {
 					$modelSearch = New SlInmueblesUrbanosSearch($this->model->id_contribuyente);
 					$model = $modelSearch->findInscripcion($this->model->nro_solicitud);
 
 					
 
-					return $this->render('/inmueble/inscripcion-inmuebles-urbano/view-solicitud', [
+					return $this->render('/inmueble/inscripcion-inmuebles-urbanos/view-solicitud', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
 													'model' => $model,
 
@@ -196,12 +196,30 @@
 
 					
 
-					return $this->render('/inmueble/inscripcion-inmuebles-urbano/view-solicitud', [
+					return $this->render('/inmueble/cambio-otros-datos-inmuebles-urbanos/view-solicitud', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
 													'model' => $model,
 
 						]);
-			}
+			} 
+
+			return false;
+		}
+
+		private function actionMostrarSolicitudCambioPropietarioInmueble()
+		{//die(var_dump($this->model->nivel_aprobacion));
+			if ( $this->model->nivel_aprobacion == 0 ) {
+					$modelSearch = New SlInmueblesUrbanosSearch($this->model->id_contribuyente);
+					$model = $modelSearch->findActualizacionDatos($this->model->nro_solicitud);
+
+					
+
+					return $this->render('/inmueble/cambio-propietario-inmuebles-urbanos/view-solicitud', [
+													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
+													'model' => $model,
+
+						]);
+			} 
 
 			return false;
 		}
