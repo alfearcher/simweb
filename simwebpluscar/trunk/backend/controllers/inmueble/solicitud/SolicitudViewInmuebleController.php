@@ -63,7 +63,7 @@
 
 
 	/**
-	 * Clase que permite renderizar las visatas detalles de las solicitudes por tipo de solicitud.
+	 * Clase que permite renderizar las vistas detalles de las solicitudes por tipo de solicitud.
 	 * Las solicitudes aqui representan las del impuesto de Actividades Economicas. El resultado es
 	 * una vista con la informacion del detalle de la solicitud. El constructor de la clase recibe
 	 * el modelo que posee entre sus datos el tipo de solicitud o id-tipo-solicitud.
@@ -188,7 +188,178 @@
 			return false;
 		}
 
+		// tipo solicitud 21
+		private function actionMostrarSolicitudAvaluoInmueble()
+		{
+			if ( $this->model->nivel_aprobacion == 2 ) {
+					$modelSearch = New SlInmueblesUrbanosSearch($this->model->id_contribuyente);
+					$model = $modelSearch->findActualizacionDatos($this->model->nro_solicitud);
 
+					
+
+					return $this->render('/inmueble/cambio-propietario-inmuebles-urbanos/view-solicitud', [
+													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
+													'model' => $model,
+
+						]);
+			} 
+
+			return false;
+		}
+
+		// tipo solicitud 22
+		private function actionMostrarSolicitudCertificadoCatastralInmueble()
+		{
+			if ( $this->model->nivel_aprobacion == 2 ) {
+					$modelSearch = New SlInmueblesUrbanosSearch($this->model->id_contribuyente);
+					$model = $modelSearch->findActualizacionDatos($this->model->nro_solicitud);
+
+					
+
+					return $this->render('/inmueble/cambio-propietario-inmuebles-urbanos/view-solicitud', [
+													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
+													'model' => $model,
+
+						]);
+			} 
+
+			return false;
+		}
+
+		// tipo solicitud 23
+		private function actionMostrarSolicitudRenovacionCertificadoCatastralInmueble()
+		{
+			if ( $this->model->nivel_aprobacion == 2 ) {
+					$modelSearch = New SlInmueblesUrbanosSearch($this->model->id_contribuyente);
+					$model = $modelSearch->findActualizacionDatos($this->model->nro_solicitud);
+
+					
+
+					return $this->render('/inmueble/cambio-propietario-inmuebles-urbanos/view-solicitud', [
+													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
+													'model' => $model,
+
+						]);
+			} 
+
+			return false;
+		}
+
+		// tipo solicitud 24
+		private function actionMostrarSolicitudSolvenciaInmueble()
+		{
+			if ( $this->model->nivel_aprobacion == 2 ) {
+					$modelSearch = New SlInmueblesUrbanosSearch($this->model->id_contribuyente);
+					$model = $modelSearch->findActualizacionDatos($this->model->nro_solicitud);
+
+					
+
+					return $this->render('/inmueble/cambio-propietario-inmuebles-urbanos/view-solicitud', [
+													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
+													'model' => $model,
+
+						]);
+			} 
+
+			return false;
+		}
+
+		// tipo solicitud 25
+		private function actionMostrarSolicitudCambioNumeroCatastralInmueble()
+		{
+			if ( $this->model->nivel_aprobacion == 2 ) {
+					$modelSearch = New SlInmueblesUrbanosSearch($this->model->id_contribuyente);
+					$model = $modelSearch->findActualizacionDatos($this->model->nro_solicitud);
+
+					
+
+					return $this->render('/inmueble/cambio-propietario-inmuebles-urbanos/view-solicitud', [
+													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
+													'model' => $model,
+
+						]);
+			} 
+
+			return false;
+		}
+
+		// tipo solicitud 26
+		private function actionMostrarSolicitudCambioPropietarioInmueble()
+		{
+			if ( $this->model->nivel_aprobacion == 2 ) {
+					$modelSearch = New SlInmueblesUrbanosSearch($this->model->id_contribuyente);
+					$model = $modelSearch->findActualizacionDatos($this->model->nro_solicitud);
+
+					
+
+					return $this->render('/inmueble/cambio-propietario-inmuebles-urbanos/view-solicitud', [
+													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
+													'model' => $model,
+
+						]);
+			} 
+
+			return false;
+		}
+
+		// tipo solicitud 27
+		private function actionMostrarSolicitudIntegracionInmueble()
+		{
+			if ( $this->model->nivel_aprobacion == 2 ) {
+					$modelSearch = New SlInmueblesUrbanosSearch($this->model->id_contribuyente);
+					$model = $modelSearch->findActualizacionDatos($this->model->nro_solicitud);
+
+					
+
+					return $this->render('/inmueble/cambio-propietario-inmuebles-urbanos/view-solicitud', [
+													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
+													'model' => $model,
+
+						]);
+			} 
+
+			return false;
+		}
+
+		// tipo solicitud 28
+		private function actionMostrarSolicitudDesintegracionInmueble()
+		{
+			if ( $this->model->nivel_aprobacion == 2 ) {
+					$modelSearch = New SlInmueblesUrbanosSearch($this->model->id_contribuyente);
+					$model = $modelSearch->findActualizacionDatos($this->model->nro_solicitud);
+
+					
+
+					return $this->render('/inmueble/cambio-propietario-inmuebles-urbanos/view-solicitud', [
+													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
+													'model' => $model,
+
+						]);
+			} 
+
+			return false;
+		}
+
+		// tipo solicitud 29
+		private function actionMostrarSolicitudCambioPropiedadHorizontalInmueble()
+		{
+			if ( $this->model->nivel_aprobacion == 2 ) {
+					$modelSearch = New SlInmueblesUrbanosSearch($this->model->id_contribuyente);
+					$model = $modelSearch->findActualizacionDatos($this->model->nro_solicitud);
+
+					
+
+					return $this->render('/inmueble/cambio-propietario-inmuebles-urbanos/view-solicitud', [
+													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
+													'model' => $model,
+
+						]);
+			} 
+
+			return false;
+		}
+
+		// tipo solicitud 30
 		private function actionMostrarSolicitudActualizacionDatosInmueble()
 		{
 			if ( $this->model->nivel_aprobacion == 2 ) {
@@ -207,16 +378,16 @@
 			return false;
 		}
 
-
-		private function actionMostrarSolicitudCambioPropietarioInmueble()
+		// tipo solicitud 31
+		private function actionMostrarSolicitudModificarAvaluoInmueble()
 		{
-			if ( $this->model->nivel_aprobacion == 0 ) {
+			if ( $this->model->nivel_aprobacion == 2 ) {
 					$modelSearch = New SlInmueblesUrbanosSearch($this->model->id_contribuyente);
 					$model = $modelSearch->findActualizacionDatos($this->model->nro_solicitud);
 
 					
 
-					return $this->render('/inmueble/cambio-propietario-inmuebles-urbanos/view-solicitud', [
+					return $this->render('/inmueble/cambio-otros-datos-inmuebles-urbanos/view-solicitud', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
 													'model' => $model,
 
@@ -225,6 +396,7 @@
 
 			return false;
 		}
+
 
 	}
 ?>
