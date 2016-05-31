@@ -187,14 +187,17 @@ die(var_dump($postData));
 						$viewDetalle = $detalle->getDatosSolicitudCreada();
 
 						if ( $viewDetalle !== false ) {
-							
+
 							// Se buscan los Documentos y Requisitos de la Solicitud.
 							$modelDoc = New SolicitudDocumentoSearch($id);
-							$dataProviderDoc = $modelDoc->getDataProvider();
+							$dataProvider = $modelDoc->getDataProvider();
 							$viewDocumentoRequisito = $this->render('@backend/views/utilidad/documento-requisito/documento-requisito-gridview', [
-																			'dataProvider' => $dataProviderDoc,
+																			'dataProvider' => $dataProvider,
 														]);
 							//---
+
+
+							$dataProviderPlanilla = null;
 
 							return $this->render('/funcionario/solicitud-asignada/_view', [
 																					'model' => $infoSolicitud,
@@ -204,7 +207,8 @@ die(var_dump($postData));
 																					'url' => $url,
 																					'contribuyente' => $contribuyente,
 																					'viewDetalle' => $viewDetalle,
-																					'dataProvider' => $dataProviderDoc,
+																					'dataProvider' => $dataProvider,
+																					'dataProviderPlanilla' => $dataProviderPlanilla,
 																					//'viewDocumentoRequisito' => $viewDocumentoRequisito,
 								]);
 						} else {
