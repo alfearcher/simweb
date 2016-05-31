@@ -59,6 +59,7 @@
 		    				'nro_solicitud',
 		    				'id_contribuyente',
 		    				'direccion',
+		    				//'fecha_hora',
 		    				'ano_inicio',
 		    				'casa_edf_qta_dom',
 		    				'apto_dom',
