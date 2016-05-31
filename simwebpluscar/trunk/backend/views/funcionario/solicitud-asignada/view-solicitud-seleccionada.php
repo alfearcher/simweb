@@ -304,7 +304,7 @@
 								<div class="detalle" id="detalle" style="padding-left: 40px;"><?= $viewDetalle?></div>
 							</div>
 							<div class="row">
-								<div class="documento-requisito" id="documento-requisito" style="padding-left: 40px; width: 75%;">
+								<div class="documento-requisito" id="documento-requisito" style="padding-left: 10px; width: 75%;">
 									<?= GridView::widget([
 							                'id' => 'grid-lista-documento',
 							                'dataProvider' => $dataProvider,
@@ -332,21 +332,21 @@
 							<div class="row">
 								<div class="planilla-solicitud" id="planilla-solicitud">
 									 <?//= GridView::widget([
-							  //               'id' => 'grid-lista-planilla',
-							  //               'dataProvider' => $dataProviderPlanilla,
-							  //               'summary' => '',
-							  //               'columns' => [
-						   //                      ['class' => 'yii\grid\SerialColumn'],
-						   //                      [
-						   //                          'label' => 'ID.',
-						   //                          'value' => 'id_documento',
-						   //                      ],
-						   //                      [
-						   //                          'label' => 'Descripcion',
-						   //                          'value' => 'descripcion',
-						   //                      ],
-							  //               ]
-							  //           ]);
+							            //    'id' => 'grid-lista-planilla',
+							            //    'dataProvider' => $dataProviderPlanilla,
+							            //    'summary' => '',
+							            //    'columns' => [
+						                        // ['class' => 'yii\grid\SerialColumn'],
+						                        // [
+						                        //     'label' => 'ID.',
+						                        //     'value' => 'id_documento',
+						                        // ],
+						                        // [
+						                        //     'label' => 'Descripcion',
+						                        //     'value' => 'descripcion',
+						                        // ],
+							             //   ]
+							            //]);
 							        ?>
 								</div>
 							</div>
