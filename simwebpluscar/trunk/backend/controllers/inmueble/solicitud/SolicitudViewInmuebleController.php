@@ -102,25 +102,47 @@
 
 				} elseif ( $this->model->tipo_solicitud == 21 ) {
 
+					return self::actionMostrarSolicitudAvaluoInmueble();
+
 				} elseif ( $this->model->tipo_solicitud == 22 ) {
+
+					return self::actionMostrarSolicitudCertificadoCatastralInmueble();
 
 				} elseif ( $this->model->tipo_solicitud == 23 ) {
 
+					return self::actionMostrarSolicitudRenovacionCertificadoCatastralInmueble();
+
 				} elseif ( $this->model->tipo_solicitud == 24 ) {
+
+					return self::actionMostrarSolicitudSolvenciaInmueble();
 
 				} elseif ( $this->model->tipo_solicitud == 25 ) {
 
+					return self::actionMostrarSolicitudCambioNumeroCatastralInmueble();
+
 				} elseif ( $this->model->tipo_solicitud == 26 ) {
+
+					return self::actionMostrarSolicitudCambioPropietarioInmueble();
 
 				} elseif ( $this->model->tipo_solicitud == 27 ) {
 
+					return self::actionMostrarSolicitudIntegracionInmueble();
+
 				} elseif ( $this->model->tipo_solicitud == 28 ) {
+
+					return self::actionMostrarSolicitudDesintegracionInmueble();
 
 				} elseif ( $this->model->tipo_solicitud == 29 ) {
 
+					return self::actionMostrarSolicitudCambioPropiedadHorizontalInmueble();
+
 				} elseif ( $this->model->tipo_solicitud == 30 ) {
 
+					return self::actionMostrarSolicitudActualizacionDatosInmueble();
+
 				} elseif ( $this->model->tipo_solicitud == 31 ) {
+
+					return self::actionMostrarSolicitudModificarAvaluoInmueble();
 
 				}
 			}
@@ -150,9 +172,27 @@
 		 */
 		private function actionMostrarSolicitudInscripcionInmueble()
 		{
-			if ( $this->model->nivel_aprobacion == 3 ) {
+			if ( $this->model->nivel_aprobacion == 2 ) {
 					$modelSearch = New SlInmueblesUrbanosSearch($this->model->id_contribuyente);
 					$model = $modelSearch->findInscripcion($this->model->nro_solicitud);
+
+					
+
+					return $this->render('/inmueble/inscripcion-inmuebles-urbano/view-solicitud', [
+													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
+													'model' => $model,
+
+						]);
+			}
+
+			return false;
+		}
+
+		private function actionMostrarSolicitudActualizacionDatosInmueble()
+		{
+			if ( $this->model->nivel_aprobacion == 2 ) {
+					$modelSearch = New SlInmueblesUrbanosSearch($this->model->id_contribuyente);
+					$model = $modelSearch->findActualizacionDatos($this->model->nro_solicitud);
 
 					
 
