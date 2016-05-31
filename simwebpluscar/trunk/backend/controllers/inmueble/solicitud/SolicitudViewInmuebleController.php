@@ -188,6 +188,7 @@
 			return false;
 		}
 
+
 		private function actionMostrarSolicitudActualizacionDatosInmueble()
 		{
 			if ( $this->model->nivel_aprobacion == 2 ) {
@@ -206,8 +207,9 @@
 			return false;
 		}
 
+
 		private function actionMostrarSolicitudCambioPropietarioInmueble()
-		{//die(var_dump($this->model->nivel_aprobacion));
+		{
 			if ( $this->model->nivel_aprobacion == 0 ) {
 					$modelSearch = New SlInmueblesUrbanosSearch($this->model->id_contribuyente);
 					$model = $modelSearch->findActualizacionDatos($this->model->nro_solicitud);
@@ -223,12 +225,6 @@
 
 			return false;
 		}
-
-
-
-
-
-
 
 	}
 ?>
