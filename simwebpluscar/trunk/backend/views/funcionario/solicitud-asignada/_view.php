@@ -63,6 +63,7 @@
 																'contribuyente' => $contribuyente,
 																'viewDetalle' => $viewDetalle,
 																'dataProvider' => $dataProvider,
+																'dataProviderPlanilla' => $dataProviderPlanilla,
 																//'viewDocumentoRequisito' => $viewDocumentoRequisito,
 				]);
 	?>

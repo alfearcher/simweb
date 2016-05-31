@@ -331,22 +331,22 @@
 
 							<div class="row">
 								<div class="planilla-solicitud" id="planilla-solicitud">
-									<?= GridView::widget([
-							                'id' => 'grid-lista-planilla',
-							                'dataProvider' => $dataProviderPlanilla,
-							                'summary' => '',
-							                'columns' => [
-						                        ['class' => 'yii\grid\SerialColumn'],
-						                        [
-						                            'label' => 'ID.',
-						                            'value' => 'id_documento',
-						                        ],
-						                        [
-						                            'label' => 'Descripcion',
-						                            'value' => 'descripcion',
-						                        ],
-							                ]
-							            ]);
+									 <?//= GridView::widget([
+							  //               'id' => 'grid-lista-planilla',
+							  //               'dataProvider' => $dataProviderPlanilla,
+							  //               'summary' => '',
+							  //               'columns' => [
+						   //                      ['class' => 'yii\grid\SerialColumn'],
+						   //                      [
+						   //                          'label' => 'ID.',
+						   //                          'value' => 'id_documento',
+						   //                      ],
+						   //                      [
+						   //                          'label' => 'Descripcion',
+						   //                          'value' => 'descripcion',
+						   //                      ],
+							  //               ]
+							  //           ]);
 							        ?>
 								</div>
 							</div>
