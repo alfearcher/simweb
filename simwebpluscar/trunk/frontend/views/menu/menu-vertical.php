@@ -125,7 +125,7 @@
 		        						['label' => 'Inscripci&oacute;n de Vehiculos' , 'url' =>['/vehiculo/registrar/registrar-vehiculo/registrar-vehiculo', 'id' =>60]],
 		        						['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . 'Calcomania',
 					        				'items' => [
-			        							['label' => 'Solicitud de reposición de calcomania por extravió o daño','url' => ['/vehiculo/calcomania/solicitud-extravio/seleccionar-calcomania']],
+			        							['label' => 'Solicitud de reposición de calcomania por extravió o daño','url' => ['/vehiculo/calcomania/solicitud-extravio/seleccionar-calcomania', 'id' => 82]],
 			        							
 					        				],
 					        			],
