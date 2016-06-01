@@ -39,6 +39,7 @@
 	use common\models\solicitudescontribuyente\DetalleSolicitudCreada;
 	use backend\models\configuracion\documentosolicitud\SolicitudDocumentoSearch;
 	use common\models\planilla\PlanillaSearch;
+	use common\models\configuracion\solicitudplanilla\SolicitudPlanillaSearch;
 
 
 
@@ -150,8 +151,9 @@
 	  	public function actionPrueba()
 	  	{
 
-	  		$s = New PlanillaSearch(3905344);
-die(var_dump($s->getResumenGeneral()));
+	  		//$s = New PlanillaSearch(3905344);
+	  		$s = New SolicitudPlanillaSearch(22621);
+die(var_dump($s->getArrayDataProvider()));
 
 
 	  	}

@@ -64,6 +64,7 @@
 	use backend\models\configuracion\tiposolicitud\TipoSolicitud;
 	use common\models\solicitudescontribuyente\DetalleSolicitudCreada;
 	use backend\models\configuracion\documentosolicitud\SolicitudDocumentoSearch;
+	use common\models\configuracion\solicitudplanilla\SolicitudPlanillaSearch;
 
 
 
@@ -173,7 +174,7 @@ die(var_dump($postData));
 			// nro de solicitud.
 			$id = isset($postData['id']) ? $postData['id'] : null;
 
-			if ( $id != null ) {
+			if ( $id !== null ) {
 				$modelSearch = New SolicitudAsignadaSearch();
 				$infoSolicitud = $modelSearch->findSolicitudSeleccionada($id);
 
@@ -192,13 +193,14 @@ die(var_dump($postData));
 							$modelDoc = New SolicitudDocumentoSearch($id);
 							$dataProvider = $modelDoc->getDataProvider();
 
-							$viewDocumentoRequisito = $this->render('@backend/views/utilidad/documento-requisito/documento-requisito-gridview', [
-																			'dataProvider' => $dataProvider,
-														]);
 							//---
 
+							// Se buscan las planillas relacionadas a la solicitud.
+							$modelPlanilla = New SolicitudPlanillaSearch($id);
+							$provider = $modelPlanilla->getArrayDataProvider();
+							//---
 
-							$dataProviderPlanilla = $dataProvider;
+							$dataProviderPlanilla = $provider;
 
 							return $this->render('/funcionario/solicitud-asignada/_view', [
 																					'model' => $infoSolicitud,
