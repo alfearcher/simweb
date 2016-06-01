@@ -300,7 +300,11 @@
 							<div class="row" style="border-bottom: 0.5px solid #ccc;">
 								<h4><strong><?= Yii::t('backend', 'Details of Request') ?></strong></h4>
 							</div>
+
 							<div class="row">
+								<div class="row" style="border-bottom: 0.5px solid blue;">
+									<h4><strong><?= Yii::t('backend', 'Documentos y Requisitos') ?></strong></h4>
+								</div>
 								<div class="detalle" id="detalle" style="padding-left: 40px;"><?= $viewDetalle?></div>
 							</div>
 							<div class="row">
