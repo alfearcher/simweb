@@ -55,7 +55,7 @@ use backend\models\utilidad\tarifa\vehiculo\TarifaVehiculo;
 /**
  * This is the model class for table "causas_desincorporaciones_lote".
  *
-
+* 
  */
 class Calcomania extends \yii\db\ActiveRecord
 {
