@@ -309,7 +309,7 @@
 								<small><strong><?= Yii::t('backend', 'Documentos y Requisitos') ?></strong></small>
 							</div>
 							<div class="row" style="padding-top: 15px;">
-								<div class="documento-requisito" id="documento-requisito" style="padding-left: 10px; width: 75%;">
+								<div class="documento-requisito" id="documento-requisito" style="padding-left: 10px; width: 80%;">
 									<?= GridView::widget([
 							                'id' => 'grid-lista-documento',
 							                'dataProvider' => $dataProvider,
