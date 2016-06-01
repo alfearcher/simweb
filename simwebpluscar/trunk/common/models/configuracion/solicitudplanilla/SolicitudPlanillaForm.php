@@ -120,20 +120,7 @@
 
 
 
-        /**
-         * Metodo que realiza la busqueda del modelo segun el parametro numero de solicitud
-         * ($nroSolicitud).
-         * @param  Long $nroSolicitud que representa el identificador de la entidad. Este es el
-         * numero que se genera cuando se crea la solicitud.
-         * @return Active Record Retorna el modelo de la entidad segun el parametro numero de solicitud
-         * ($nroSolicitud).
-         */
-        public function findSolicitudPlanilla($nroSolicitud)
-        {
-            $modelFind = null;
-            $modelFind = SolicitudPlanilla::find()->where('nro_solicitud =:nro_solicitud', [':nro_solicitud' => $nroSolicitud]);
-            return isset($modelFind) ? $modelFind : null;
-        }
+
 
 
     }
