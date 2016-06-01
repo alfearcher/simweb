@@ -305,10 +305,10 @@
 								<div class="detalle" id="detalle" style="padding-left: 40px;"><?= $viewDetalle?></div>
 							</div>
 
-							<div class="row" style="border-bottom: 0.5px solid #ccc; padding-bottom: 15px;">
+							<div class="row" style="border-bottom: 0.5px solid #ccc;">
 								<small><strong><?= Yii::t('backend', 'Documentos y Requisitos') ?></strong></small>
 							</div>
-							<div class="row">
+							<div class="row" style="padding-top: 15px;">
 								<div class="documento-requisito" id="documento-requisito" style="padding-left: 10px; width: 75%;">
 									<?= GridView::widget([
 							                'id' => 'grid-lista-documento',
