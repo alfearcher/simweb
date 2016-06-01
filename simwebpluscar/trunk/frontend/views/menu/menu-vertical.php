@@ -125,12 +125,8 @@
 		        						['label' => 'Inscripci&oacute;n de Vehiculos' , 'url' =>['/vehiculo/registrar/registrar-vehiculo/registrar-vehiculo', 'id' =>60]],
 		        						['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . 'Calcomania',
 					        				'items' => [
-			        							['label' => 'Administrar funcionarios responsables de entregar calcomania','url' => ['vehiculo/calcomania/funcionario-calcomania/busqueda-funcionario']],
-			        							['label' => 'Generar Lote de Calcomania','url' => ['vehiculo/calcomania/lote-calcomania/create']],
-			        							['label' => 'Administrar Lote de Calcomanias Generadas','url' => ['vehiculo/calcomania/lote-calcomania/busqueda-lote']],
-			        							['label' => 'Asignar Calcomanias a funcionario (Distribuir entre funcionario responsables)','url' => ['vehiculo/calcomania/funcionario-calcomania/distribuir-lote']],
-			        							['label' => 'Administrar Entrega de calcomania','url' => '#'],
-			        							['label' => 'Cierre de Lote','url' => '#'],
+			        							['label' => 'Solicitud de reposición de calcomania por extravió o daño','url' => ['/vehiculo/calcomania/solicitud-extravio/seleccionar-calcomania']],
+			        							
 					        				],
 					        			],
 		        						['label' => 'Solvencia', 'url' => '#'],
