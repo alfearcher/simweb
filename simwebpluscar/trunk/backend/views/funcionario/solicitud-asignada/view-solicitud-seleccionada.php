@@ -313,6 +313,7 @@
 									<?= GridView::widget([
 							                'id' => 'grid-lista-documento',
 							                'dataProvider' => $dataProvider,
+							                'headerRowOptions' => ['class' => 'success'],
 							                'summary' => '',
 							                'columns' => [
 						                        ['class' => 'yii\grid\SerialColumn'],
@@ -341,18 +342,70 @@
 							<div class="row" style="padding-top: 5px;padding-left: 10px;">
 								<div class="planilla-solicitud" id="planilla-solicitud">
 									 <?= GridView::widget([
-							               'id' => 'grid-lista-planilla',
-							               'dataProvider' => $dataProviderPlanilla,
+							         		'id' => 'grid-lista-planilla',
+							               	'dataProvider' => $dataProviderPlanilla,
+							               	'headerRowOptions' => ['class' => 'primary'],
+            								'rowOptions' => function($data) {
+                									if ( $data->pago == 0 ) {
+                    									return ['class' => 'danger'];
+                									} elseif ( $data->pago == 1 ) {
+                										return ['class' => 'success'];
+                									}
+            								},
 							               'summary' => '',
 							               'columns' => [
 						                        ['class' => 'yii\grid\SerialColumn'],
 						                        [
-						                            'label' => 'ID.',
-						                            'value' => 'id_documento',
+						                            'label' => 'Planilla',
+						                            'value' => function($data) {
+						                            	return $data['planilla'];
+						                            },
 						                        ],
 						                        [
-						                            'label' => 'Descripcion',
-						                            'value' => 'descripcion',
+						                            'label' => 'Impuesto',
+						                            'value' => function($data) {
+						                            	return $data['descripcion_impuesto'];
+						                            },
+						                        ],
+						                        [
+						                            'label' => 'Monto',
+						                            'value' => function($data) {
+						                            	return $data['sum_monto'];
+						                            },
+						                        ],
+						                        [
+						                            'label' => 'Recargo',
+						                            'value' => function($data) {
+						                            	return $data['sum_recargo'];
+						                            },
+						                        ],
+						                        [
+						                            'label' => 'Interes',
+						                            'value' => function($data) {
+						                            	return $data['sum_interes'];
+						                            },
+						                        ],
+						                        [
+						                            'label' => 'Descuento',
+						                            'value' => function($data) {
+						                            	return $data['sum_descuento'];
+						                            },
+						                        ],
+						                        [
+						                            'label' => 'Reconoc.',
+						                            'value' => function($data) {
+						                            	return $data['sum_monto_reconocimiento'];
+						                            },
+						                        ],
+						                        [
+						                            'label' => 'Pago',
+						                            'value' => function($data) {
+						                            	if ( $data->pago == 0 ) {
+						                            		return 'NO';
+						                            	} elseif ( $data->pago == 1) {
+						                            		return 'SI';
+						                            	}
+						                            },
 						                        ],
 							               ]
 							            ]);
