@@ -38,6 +38,7 @@
 	use common\conexion\ConexionController;
 	use common\models\solicitudescontribuyente\DetalleSolicitudCreada;
 	use backend\models\configuracion\documentosolicitud\SolicitudDocumentoSearch;
+	use common\models\planilla\PlanillaSearch;
 
 
 
@@ -149,8 +150,8 @@
 	  	public function actionPrueba()
 	  	{
 
-	  		$s = New SolicitudDocumentoSearch(22621);
-die(var_dump($s->getListaDocumentoSegunSolicitud()));
+	  		$s = New PlanillaSearch(3905344);
+die(var_dump($s->getResumenGeneral()));
 
 
 	  	}
