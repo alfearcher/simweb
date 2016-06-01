@@ -49,7 +49,7 @@
 	use yii\widgets\DetailView;
 ?>
 
-<div class="row" style="width: 70%;">
+<div class="row">
 	<div class="info-solicitud">
 		<div class="row">
 			<h3><?= Html::encode($caption) ?></h3>
