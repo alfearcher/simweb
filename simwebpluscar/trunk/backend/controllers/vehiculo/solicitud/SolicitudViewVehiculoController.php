@@ -57,6 +57,8 @@
 	use frontend\models\vehiculo\solicitudes\SlVehiculosForm;
 	// use common\conexion\ConexionController;
 	use backend\controllers\MenuController;
+	use backend\models\vehiculo\VehiculoSearch;
+
 
 	//session_start();		// Iniciando session
 
@@ -147,10 +149,13 @@
 					$modelSearch = New SlVehiculosForm($this->model->id_contribuyente);
 					$model = $modelSearch->findInscripcion($this->model->nro_solicitud);
 
-die(var_dump($model));
-					return $this->render('/inscripcion-actividad-economica/view-solicitud', [
+					$search = new VehiculoSearch();
+
+
+					return $this->render('/vehiculo/solicitudes/inscripcion/view-solicitud', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
 													'model' => $model,
+													'search' => $search,
 
 						]);
 			}
