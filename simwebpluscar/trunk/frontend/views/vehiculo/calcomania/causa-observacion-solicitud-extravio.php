@@ -4,8 +4,8 @@ use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 
 
-use common\models\desincorporacion\CausasDesincorporaciones;
- 
+use common\models\calcomania\causasreposicion\ReposicionCalcomania;
+
  
 $this->title = 'Cause of Aplication';
 
@@ -34,12 +34,12 @@ $this->title = 'Cause of Aplication';
 
 
 						    
-							<?php       $modelpreguntas = CausasDesincorporaciones::find()->where(['inactivo' => 0])->asArray()->all();         //die(var_dump($modelpreguntas));                           
-                                        $listapreguntas = ArrayHelper::map($modelpreguntas,'causa_desincorporacion','descripcion'); 
+							<?php       $modelCausas = ReposicionCalcomania::find()->where(['inactivo' => 0])->asArray()->all();         //die(var_dump($modelpreguntas));                           
+                                        $listaCausas = ArrayHelper::map($modelCausas,'causas_reposicion','descripcion'); 
                                                     ?>
 							<div class="row">
 							<div class="col-sm-7">
-                          	<?= $form->field($model, 'motivos')->dropDownList($listapreguntas, [ 'id'=> 'preguntas', 
+                          	<?= $form->field($model, 'causas')->dropDownList($listaCausas, [ 'id'=> 'causas', 
                                                                                                             'prompt' => Yii::t('backend', 'Select'),
                                                                                                             'style' => 'width:360px;',                                                                                                            
                                                                                                             ]); ?>
@@ -48,7 +48,7 @@ $this->title = 'Cause of Aplication';
 				  			
 				  			<div class="row">
 							<div class="col-sm-6">
-                            <?= $form->field($model, 'otrosMotivos')->textArea(['rows' => '6' ,  'style' => 'width:360px;']) ?>  
+                            <?= $form->field($model, 'observacion')->textArea(['rows' => '6' ,  'style' => 'width:360px;', 'id' => 'observacion']) ?>  
 							</div>
 							</div>
 
