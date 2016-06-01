@@ -338,7 +338,7 @@
 								<small><strong><?= Yii::t('backend', 'Planilla(s)') ?></strong></small>
 							</div>
 
-							<div class="row" style="padding-top: 15px;">
+							<div class="row" style="padding-top: 5px;padding-left: 10px;">
 								<div class="planilla-solicitud" id="planilla-solicitud">
 									 <?= GridView::widget([
 							               'id' => 'grid-lista-planilla',
