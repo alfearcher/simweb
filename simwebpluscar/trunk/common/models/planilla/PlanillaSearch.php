@@ -83,7 +83,6 @@
 													'ano_impositivo' => SORT_ASC,
 													'trimestre' => SORT_ASC,
 												]);
-											->all();
 			return isset($modelFind) ? $modelFind : null;
 		}
 
