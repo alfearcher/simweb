@@ -305,7 +305,7 @@
 								<div class="detalle" id="detalle" style="padding-left: 40px;"><?= $viewDetalle?></div>
 							</div>
 
-							<div class="row" style="border-bottom: 0.5px solid #ccc;">
+							<div class="row" style="border-bottom: 0.5px solid #ccc; padding-bottom: 15px;">
 								<small><strong><?= Yii::t('backend', 'Documentos y Requisitos') ?></strong></small>
 							</div>
 							<div class="row">
