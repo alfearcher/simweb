@@ -62,6 +62,8 @@ use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 use common\models\configuracion\solicitud\DocumentoSolicitud;
 use common\enviaremail\PlantillaEmail;
 use frontend\models\vehiculo\calcomania\CalcomaniaSearch;
+use frontend\models\vehiculo\calcomania\SolicitudExtravioForm;
+
 /**
  * Site controller
  */
@@ -92,7 +94,7 @@ class SolicitudExtravioController extends Controller
     //die('llegue a seleccionar calcomania');
 
        $idConfig = yii::$app->request->get('id');
-
+       //die($idConfig);
       $_SESSION['id'] = $idConfig;
 
       //die($_SESSION['id']);
@@ -124,7 +126,26 @@ class SolicitudExtravioController extends Controller
       //die($idCalcomania);
       $_SESSION['idCalcomania'] = $idCalcomania;
   
-            $model = new SolicitudExtravioForm();
+          
+          $buscar = new SolicitudExtravioForm();
+          $buscarVehiculo = $buscar->verificarCalcomania($idCalcomania);
+
+            if($buscarVehiculo == true){
+              $_SESSION['idVehiculo'] = $buscarVehiculo[0]->id_vehiculo;
+              $_SESSION['nroCalcomania'] = $buscarVehiculo[0]->nro_calcomania;
+
+              return $this->redirect(['reposicion-calcomania']);
+            }else{
+              return MensajeController::actionMensaje(920);
+            }  
+          
+    
+  }
+
+  public function actionReposicionCalcomania()
+  {
+
+      $model = new SolicitudExtravioForm();
 
             $postData = Yii::$app->request->post();
 
@@ -138,19 +159,37 @@ class SolicitudExtravioController extends Controller
 
                if ($model->validate()){
 
-                 
+
+                
+                 $verificar = new SolicitudExtravioForm();
+
+                  $verificarSolicitud = $verificar->VerificarSolicitud($_SESSION['idVehiculo'], $_SESSION['id']);
+
+                          if($verificarSolicitud ==  true){
+
+                              return MensajeController::actionMensaje(945);
+
+                          }else{
+                            
+                            $guardar = self::beginSave("buscarGuardar" , $model);
+
+                                if($guardar == true){
+                                    die('guardo');
+                                }else{
+                                    die(' no guardo');
+                                }
+                          }
+                      
+                     
                 
               }
             }
             
-            return $this->render('/vehiculo/calcomaia/causa-observacion-solicitud-extravio', [
+            return $this->render('/vehiculo/calcomania/causa-observacion-solicitud-extravio', [
                                                               'model' => $model,
                                                              
                                                            
             ]);
-            
-        
-    
   }
 
 
@@ -158,95 +197,13 @@ class SolicitudExtravioController extends Controller
      * [actionRegistrarVehiculo description] metodo que renderiza y valida el formulario de cambio de datos del vehiculo
      * @return [type] [description] render del formulario de cambio de datos de vehiculo
      */
-    public function actionCambioDatosVehiculo()
-    {
    
-     //die($_SESSION['idVehiculo']);
-      
-        
-         if(isset(yii::$app->user->identity->id_contribuyente)){
-
-        
-
-          $datosVehiculo = $_SESSION['datosVehiculo']; 
-
-           if (isset($_SESSION['datosVehiculo'])){ 
 
 
-            $model = new CambioDatosVehiculoForm();
 
-            $postData = Yii::$app->request->post();
-
-            if ( $model->load($postData) && Yii::$app->request->isAjax ){
-                  Yii::$app->response->format = Response::FORMAT_JSON;
-                  return ActiveForm::validate($model);
-            }
-
-            if ( $model->load($postData) ) {
-             // die('valido el postdata');
-
-               if ($model->validate()){
-
-                  $verificarSolicitud = self::verificarSolicitud($datosVehiculo[0]->id_vehiculo , $_SESSION['id']);
-
-                  if($verificarSolicitud == true){
-
-                    return MensajeController::actionMensaje(403);
-                  }else{ 
-
-                   $buscarActualizar = self::beginSave("buscarActualizar", $model);
-
-                   if($buscarActualizar == true){
-                     return MensajeController::actionMensaje(100);
-
-                   }else{
-
-                    return MensajeController::actionMensaje(920);
-                   }
-                 }
-                
-              }
-            }
-            
-            return $this->render('/vehiculo/cambiodatos/seleccionar-vehiculo-cambio-datos', [
-                                                              'model' => $model,
-                                                              'datos' => $datosVehiculo,
-
-                                                           
-            ]);
-            
-             }else{
-               die('no hay datos de vehiculo');
-             } 
-
-         }else{
-
-             die('no existe user');
-
-       }
-    }
-
-       public function verificarSolicitud($idVehiculo,$idConfig)
+    public function buscarNumeroSolicitud($conn, $conexion)
     {
-      $buscar = SolicitudesContribuyente::find()
-                                        ->where([ 
-                                          'id_impuesto' => $idVehiculo,
-                                          'id_config_solicitud' => $idConfig,
-                                          'inactivo' => 0,
-                                        ])
-                                      ->all();
-
-            if($buscar == true){
-             return true;
-            }else{
-             return false;
-            }
-    }
-
-
-    public function buscarNumeroSolicitud($conn, $conexion, $model)
-    {
-      //die('hola');  
+     // die('hola');  
       $buscar = new ParametroSolicitud($_SESSION['id']);
 
       
@@ -256,8 +213,7 @@ class SolicitudExtravioController extends Controller
         $resultado = $buscar->getParametroSolicitud(["tipo_solicitud", "impuesto", "nivel_aprobacion"]);
 
      
-     $datosVehiculo = $_SESSION['datosVehiculo'];
-
+    
 
       $datos = yii::$app->user->identity;
       $tabla = 'solicitudes_contribuyente';
@@ -273,7 +229,7 @@ class SolicitudExtravioController extends Controller
      
       $arregloDatos['id_config_solicitud'] = $_SESSION['id'];
 
-      $arregloDatos['id_impuesto'] = $datosVehiculo[0]->id_vehiculo;
+      $arregloDatos['id_impuesto'] = $_SESSION['idVehiculo'];
 
       //die($arregloDatos['id_impuesto']);
 
@@ -312,61 +268,61 @@ class SolicitudExtravioController extends Controller
     }
 
 
-    public function guardarRegistroVehiculo($conn, $conexion, $model , $idSolicitud)
-    {
-     $datosVehiculo = $_SESSION['datosVehiculo'];
 
+    public function guardarSolicitud($conn, $conexion , $idSolicitud, $model)
+    {
+
+      $buscar = new ParametroSolicitud($_SESSION['id']);
+
+      $buscar->getParametroSolicitud(["nivel_aprobacion"]);
+
+      $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
+      
+      $nroCalcomania = $_SESSION['nroCalcomania'];
+      $idImpuesto = $_SESSION['idVehiculo'];
       $numeroSolicitud = $idSolicitud;
       $resultado = false;
       $datos = yii::$app->user->identity;
-      $tabla = 'sl_vehiculos';
+      $tabla = 'sl_reposiciones_calcomania';
       $arregloDatos = [];
-      $arregloCampo = RegistrarVehiculoForm::attributeSlVehiculo();
+      $arregloCampo = SolicitudExtravioForm::attributeSlReposicionesCalcomania();
 
       foreach ($arregloCampo as $key=>$value){
 
           $arregloDatos[$value] =0;
       }
-      $arregloDatos['id_vehiculo'] = $datosVehiculo[0]->id_vehiculo;;
 
       $arregloDatos['nro_solicitud'] = $numeroSolicitud;
 
       $arregloDatos['id_contribuyente'] = $datos->id_contribuyente;
 
-      $arregloDatos['marca'] = $model->marca;
+      $arregloDatos['id_impuesto'] = $idImpuesto;
 
-      $arregloDatos['modelo'] = $model->modelo;
+      $arregloDatos['nro_calcomania'] = $nroCalcomania;
 
-      $arregloDatos['color'] = $model->color;
+      $arregloDatos['fecha_hora'] = date('Y-m-d h:m:i');
 
-      $arregloDatos['precio_inicial'] = $model->precio_inicial;
+      $arregloDatos['usuario'] = $datos->login;
 
-      $arregloDatos['no_ejes'] = $model->no_ejes;
+      $arregloDatos['causa'] = $model->causas;
 
-      $arregloDatos['liquidado'] = 0;
+      $arregloDatos['observacion'] = $model->observacion;
 
-      $arregloDatos['status_vehiculo'] = 0;
+      if($nivelAprobacion == 1){ 
 
-      $arregloDatos['medida_cap'] = $model->medida_cap;
+      $arregloDatos['fecha_hora_proceso'] = date('Y-m-d h:m:i');
 
-      $arregloDatos['capacidad'] = $model->capacidad;
+      }else{
 
-      $arregloDatos['nro_puestos'] = $model->nro_puestos;
-
-      $arregloDatos['peso'] = $model->peso;
-
-      $arregloDatos['estatus_funcionario'] = 0;
+      $arregloDatos['fecha_hora_proceso'] = 0;
+      }
 
       $arregloDatos['user_funcionario'] = 0;
 
-      $arregloDatos['fecha_funcionario'] = 0;
-
-      $arregloDatos['fecha_hora'] = 0;
-
-      $arregloDatos['nro_cilindros'] = $model->nro_cilindros;
+      $arregloDatos['estatus'] = 0;
 
 
-    if ($conexion->guardarRegistro($conn, $tabla, $arregloDatos )){
+        if ($conexion->guardarRegistro($conn, $tabla, $arregloDatos )){
 
 
 
@@ -380,51 +336,26 @@ class SolicitudExtravioController extends Controller
 
     }
 
-
-     public function actualizarVehiculoMaestro($conn, $conexion, $model)
+    public function actualizarCalcomaniaMaestro($conn, $conexion)
     {
+
+
+      $tableName = 'calcomanias';
+      $arregloCondition = ['id_calcomania' => $_SESSION['idCalcomania']];
+      //die(var_dump($arregloCondition));
      
-   
-     
-
-      $tableName = 'vehiculos';
-      $arregloCondition = ['id_vehiculo' => $_SESSION['idVehiculo']];
-     
-
-      $arregloDatos['placa'] = strtoupper($model->placa);
-
-  
-
-      $arregloDatos['marca'] = $model->marca;
-
-      $arregloDatos['modelo'] = $model->modelo;
-
-      $arregloDatos['color'] = $model->color;
-
-      $arregloDatos['precio_inicial'] = $model->precio_inicial;
-
-      $arregloDatos['no_ejes'] = $model->no_ejes;
-
-      $arregloDatos['liquidado'] = 0;
-
-      $arregloDatos['status_vehiculo'] = 0;
-
-      $arregloDatos['medida_cap'] = $model->medida_cap;
-
-      $arregloDatos['capacidad'] = $model->capacidad;
-
-      $arregloDatos['nro_puestos'] = $model->nro_puestos;
-
-      $arregloDatos['peso'] = $model->peso;
-
-      $arregloDatos['nro_cilindros'] = $model->nro_cilindros;
 
       
+
+      $arregloDatos['estatus'] = 9;
+
       $conexion = new ConexionController();
 
       $conn = $conexion->initConectar('db');
          
       $conn->open();
+
+      //$transaccion = $conn->beginTransaction();
 
           if ($conexion->modificarRegistro($conn, $tableName, $arregloDatos, $arregloCondition)){
 
@@ -432,23 +363,12 @@ class SolicitudExtravioController extends Controller
 
               return true;
               
-          }
-         
-
-  }
-
-     
-
-   
-     
-
-
-
-
+          } 
+    }
 
     public function beginSave($var, $model)
     {
-    
+    // die('llegue a begin');
       
 
       $buscar = new ParametroSolicitud($_SESSION['id']);
@@ -469,9 +389,10 @@ class SolicitudExtravioController extends Controller
 
       $transaccion = $conn->beginTransaction();
 
-          if ($var == "buscarActualizar"){
+          if ($var == "buscarGuardar"){
+            
 
-              $buscar = self::buscarNumeroSolicitud($conn, $conexion, $model);
+              $buscar = self::buscarNumeroSolicitud($conn, $conexion);
 
               if ($buscar > 0){
 
@@ -484,7 +405,7 @@ class SolicitudExtravioController extends Controller
 
               if ($buscar == true){
 
-                  $guardar = self::guardarRegistroVehiculo($conn,$conexion, $model, $idSolicitud);
+                  $guardar = self::guardarSolicitud($conn,$conexion, $idSolicitud, $model);
 
                   if ($nivelAprobacion['nivel_aprobacion'] != 1){ 
 
@@ -500,11 +421,12 @@ class SolicitudExtravioController extends Controller
 
                       $login = yii::$app->user->identity->login;
 
-                      $solicitud = 'Cambio de datos del Vehiculo';
+                      $solicitud = 'Reposicion de Calcomania por extravio o daño';
 
                       $DocumentosRequisito = new DocumentoSolicitud();
 
                       $documentos = $DocumentosRequisito->Documentos();
+                        
                         $enviarNumeroSolicitud->plantillaEmailSolicitud($login,$solicitud, $idSolicitud, $documentos);
 
 
@@ -524,9 +446,9 @@ class SolicitudExtravioController extends Controller
                   }else{
                     //die('es de aprobacion directa');
 
-                      $actualizarVehiculo = self::actualizarVehiculoMaestro($conn,$conexion, $model);
+                      $actualizarCalcomania = self::actualizarCalcomaniaMaestro($conn,$conexion);
 
-                          if ($buscar and $guardar and $actualizarVehiculo == true ){
+                          if ($buscar and $guardar and $actualizarCalcomania == true ){
                             //die('los tres son verdad');
 
                           $transaccion->commit();
@@ -536,7 +458,7 @@ class SolicitudExtravioController extends Controller
 
                       $login = yii::$app->user->identity->login;
 
-                      $solicitud = 'Cambio de datos del Vehiculo';
+                      $solicitud = 'Reposicion de Calcomania por extravio o daño';
 
                       $DocumentosRequisito = new DocumentoSolicitud();
 
