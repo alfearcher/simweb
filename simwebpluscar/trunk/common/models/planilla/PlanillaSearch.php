@@ -75,7 +75,7 @@
 
 
 		/**
-		 * Metodo que permite obtener una informacion resumida de la planilla.
+		 * Metodo que permite obtener una informacion resumida por monto de la planilla.
 		 * Dicha informacion esta representada por totales por los diferentes conceptos,
 		 * descripcion de los periodos, observacion presente en la planilla, descripcion del impuesto,
 		 * estatus de pago, numero de planilla, id del contribuyente.
@@ -106,7 +106,6 @@
 
 			return $query->one();
 		}
-
 
 
 	}
