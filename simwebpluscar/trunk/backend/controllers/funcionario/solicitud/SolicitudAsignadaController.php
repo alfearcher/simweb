@@ -65,6 +65,7 @@
 	use common\models\solicitudescontribuyente\DetalleSolicitudCreada;
 	use backend\models\configuracion\documentosolicitud\SolicitudDocumentoSearch;
 	use common\models\configuracion\solicitudplanilla\SolicitudPlanillaSearch;
+	use common\models\planilla\PlanillaSearch;
 
 
 
@@ -163,7 +164,12 @@ die(var_dump($postData));
 		{
 			$request = Yii::$app->request;
 			$getData = $request->get();
+
 die(var_dump($getData));
+			//$planilla = $getData['p'];
+
+			//$planillaSearch = New PlanillaSearch($planilla);
+
 		}
 
 
