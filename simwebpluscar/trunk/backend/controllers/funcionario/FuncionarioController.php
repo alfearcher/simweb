@@ -153,7 +153,7 @@
 
 	  		$s = New PlanillaSearch(3905344);
 	  		//$s = New SolicitudPlanillaSearch(22621);
-die(var_dump($s->findPlanillaDetalle()->asArray()->all()));
+die(var_dump($s->findPlanillaDetalle()));
 
 
 	  	}
