@@ -157,6 +157,18 @@ die(var_dump($postData));
 
 
 
+
+		/***/
+		public function actionViewPlanilla()
+		{
+			$request = Yii::$app->request;
+			$getData = $request->get();
+die(var_dump($getData));
+		}
+
+
+
+
 		/**
 		 * Metodo que muestra la solicitud seleccionada por el funcionario.
 		 * @return [type] [description]
