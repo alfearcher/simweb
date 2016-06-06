@@ -94,7 +94,7 @@
 							 <?= GridView::widget([
 					         		'id' => 'grid-detalle-planilla',
 					               	'dataProvider' => $dataProvider,
-					               	'headerRowOptions' => ['class' => 'defautl'],
+					               	'headerRowOptions' => ['class' => 'default'],
 									'rowOptions' => function($data) {
 											if ( $data['pago'] == 0 ) {
 		    									return ['class' => 'danger'];
