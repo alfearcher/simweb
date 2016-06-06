@@ -51,6 +51,7 @@
  	use common\models\ordenanza\OrdenanzaBase;
  	use yii\db\Query;
  	use yii\data\ActiveDataProvider;
+ 	use yii\data\ArrayDataProvider;
 
 	/**
 	* 	Clase que permite consultar informacion diversa sobre una planilla.
@@ -114,6 +115,8 @@
 		/***/
 		public function findPlanillaDetalle()
 		{
+			$query = New Query();
+
 			$query->select(['P.planilla',
 							'P.id_contribuyente',
 							'D.id_impuesto',
