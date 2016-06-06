@@ -60,10 +60,10 @@
     Icon::map($this, $typeIcon);
 
 ?>
-<div class="planilla-resumen">
+<div class="planilla-detalle">
 	<?php
 		$form = ActiveForm::begin([
-			'id' => 'view-planilla-resumen',
+			'id' => 'view-planilla-detalle',
 		    'method' => 'post',
 		    'action' => '#',
 			'enableClientValidation' => true,
@@ -92,7 +92,7 @@
 					<div class="row" style="padding-top: 5px;padding-left: 10px;">
 						<div class="planilla-solicitud" id="planilla-solicitud">
 							 <?= GridView::widget([
-					         		'id' => 'grid-resumen-planilla',
+					         		'id' => 'grid-detalle-planilla',
 					               	'dataProvider' => $dataProvider,
 					               	'headerRowOptions' => ['class' => 'primary'],
 									'rowOptions' => function($data) {
