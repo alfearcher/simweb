@@ -363,6 +363,7 @@
 						                        ],
 						                        [
 						                            'label' => 'Impuesto',
+						                            'contentOptions' => ['style'=>'display:block;color: blue;'],
 						                            'value' => function($data) {
 						                            	return $data['descripcion_impuesto'];
 						                            },
