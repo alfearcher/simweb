@@ -96,9 +96,9 @@
 					               	'dataProvider' => $dataProvider,
 					               	'headerRowOptions' => ['class' => 'primary'],
 									'rowOptions' => function($data) {
-											if ( $data->pago == 0 ) {
+											if ( $data['pago'] == 0 ) {
 		    									return ['class' => 'danger'];
-											} elseif ( $data->pago == 1 ) {
+											} elseif ( $data['pago'] == 1 ) {
 												return ['class' => 'success'];
 											}
 									},
@@ -175,9 +175,9 @@
 				                            ],
 				                            //
 				                            'value' => function($data) {
-				                            	if ( $data->pago == 0 ) {
+				                            	if ( $data['pago'] == 0 ) {
 				                            		return Html::tag('strong', 'NO', ['class' => 'danger']);
-				                            	} elseif ( $data->pago == 1) {
+				                            	} elseif ( $data['pago'] == 1) {
 				                            		return Html::tag('strong', 'SI', ['class' => 'success']);
 				                            	}
 				                            },
