@@ -495,9 +495,8 @@ $this->registerJs(
     '$(document).on("click", "#link-view-planilla", (function() {
         $.get(
             $(this).data("url"),
-            $(this).data("planilla"),
             function (data) {
-                $(".modal-body").html(data);
+                $(".modal-body").html(data-planilla);
                 $("#modal").modal();
             }
         );
