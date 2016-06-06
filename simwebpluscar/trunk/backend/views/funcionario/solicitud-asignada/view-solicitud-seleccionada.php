@@ -497,6 +497,6 @@ Modal::begin([
 ]);
  
 //echo "<div class='well'></div>";
- echo "<div class='well' style='width: 160%;'></div>";
+ echo "<div class='well' style='width: 200%;'></div>";
 Modal::end();
 ?>
