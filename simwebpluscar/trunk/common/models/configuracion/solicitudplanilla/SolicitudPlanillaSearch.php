@@ -48,7 +48,7 @@
 	use common\models\planilla\PlanillaSearch;
 
 	/**
-	* 	Clase
+	* 	Clase que permite localizar las planillas asociadas a una solicitud creada.
 	*/
 	class SolicitudPlanillaSearch extends SolicitudPlanilla
 	{
