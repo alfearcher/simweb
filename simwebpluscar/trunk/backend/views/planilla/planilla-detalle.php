@@ -113,33 +113,45 @@
 				                            },
 				                        ],
 				                        [
-				                            'label' => 'Impuesto',
+				                            'label' => 'Año',
 				                            'value' => function($data) {
-				                            	return $data['descripcion_impuesto'];
+				                            	return $data['ano_impositivo'];
+				                            },
+				                        ],
+				                        [
+				                            'label' => 'Periodo',
+				                            'value' => function($data) {
+				                            	return $data['triemstre'];
+				                            },
+				                        ],
+				                        [
+				                            'label' => 'Unidad',
+				                            'value' => function($data) {
+				                            	return $data['unidad'];
 				                            },
 				                        ],
 				                        [
 				                            'label' => 'Monto',
 				                            'value' => function($data) {
-				                            	return $data['sum_monto'];
+				                            	return $data['monto'];
 				                            },
 				                        ],
 				                        [
 				                            'label' => 'Recargo',
 				                            'value' => function($data) {
-				                            	return $data['sum_recargo'];
+				                            	return $data['recargo'];
 				                            },
 				                        ],
 				                        [
 				                            'label' => 'Interes',
 				                            'value' => function($data) {
-				                            	return $data['sum_interes'];
+				                            	return $data['interes'];
 				                            },
 				                        ],
 				                        [
 				                            'label' => 'Descuento',
 				                            'value' => function($data) {
-				                            	return $data['sum_descuento'];
+				                            	return $data['descuento'];
 				                            },
 				                        ],
 				                        [
