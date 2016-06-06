@@ -365,7 +365,7 @@
 																		            //'class' => 'btn btn-success',
 																		            'data-toggle' => 'modal',
 																		            'data-target' => '#modal',
-																		            'data-url' => Url::to(['view-planilla']),
+																		            'data-url' => Url::to(['view-planilla', 'p' => $data['planilla']]),
 																		            'data-planilla' => $data['planilla'],
 																		            'data-pjax' => '0',
 																		        ]);
@@ -496,7 +496,7 @@ $this->registerJs(
         $.get(
             $(this).data("url"),
             function (data) {
-                $(".modal-body").html(data-planilla);
+                $(".modal-body").html(data);
                 $("#modal").modal();
             }
         );
