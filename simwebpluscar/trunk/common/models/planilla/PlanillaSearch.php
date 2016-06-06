@@ -114,14 +114,31 @@
 		/***/
 		public function findPlanillaDetalle()
 		{
-			$model = PagoDetalle::find()->where('planilla =:planilla', [':planilla' => $this->_planilla])
-										->joinWith('pagos')
-										->orderBy([
-											'ano_impositivo' => SORT_ASC,
-											'trimestre' => SORT_ASC
-											]);
+			$query->select(['P.planilla',
+							'P.id_contribuyente',
+							'D.id_impuesto',
+							'D.impuesto',
+							'D.ano_impositivo',
+							'D.trimestre',
+							'D.monto',
+							'D.recargo',
+							'D.interes',
+							'D.descuento',
+							'D.monto_reconocimiento',
+							'D.referencia',
+							'D.pago',
+							'I.descripcion as descripcion_impuesto',
+							'D.descripcion',
+							'E.unidad'
+							])
+				  ->from('pagos as P')
+				  ->join('INNER JOIN', 'pagos_detalle as D', 'P.id_pago = D.id_pago')
+				  ->join('INNER JOIN', 'impuestos as I', 'D.impuesto = I.impuesto')
+				  ->join('INNER JOIN', 'exigibilidades as E', 'D.exigibilidad_pago = E.exigibilidad')
+				  ->where('planilla =:planilla', [':planilla' => $this->_planilla])
+				  ->groupBy('P.planilla');
 
-			return isset($model) ? $model : null;
+			return $query->all();
 		}
 
 
@@ -133,7 +150,6 @@
 		{
 			$query = self::findPlanillaDetalle();
 
-			$query = $query->all();
 			$dataProvider = New ActiveDataProvider([
 					'query' => $query,
 				]);
