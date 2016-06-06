@@ -50,6 +50,7 @@
  	use common\models\contribuyente\ContribuyenteBase;
  	use common\models\ordenanza\OrdenanzaBase;
  	use yii\db\Query;
+ 	use yii\data\ActiveDataProvider;
 
 	/**
 	* 	Clase que permite consultar informacion diversa sobre una planilla.
@@ -106,6 +107,41 @@
 
 			return $query->one();
 		}
+
+
+
+
+		/***/
+		public function findPlanillaDetalle()
+		{
+			$model = PagoDetalle::find()->where('planilla =:planilla', [':planilla' => $this->_planilla])
+										->joinWith('pagos')
+										->orderBy([
+											'ano_impositivo' => SORT_ASC,
+											'trimestre' => SORT_ASC
+											]);
+
+			return isset($model) ? $model : null;
+		}
+
+
+
+
+
+		/***/
+		public function getDataProviderPlanilla()
+		{
+			$query = self::findPlanillaDetalle();
+
+			$query = $query->all();
+			$dataProvider = New ActiveDataProvider([
+					'query' => $query,
+				]);
+
+			return isset($dataProvider) ? $dataProvider : null;
+		}
+
+
 
 
 	}
