@@ -152,7 +152,7 @@
 
 
 		/***/
-		public function getDataProviderPlanilla()
+		public function getArrayProviderPlanilla()
 		{
 			$detalles = self::findPlanillaDetalle();
 
