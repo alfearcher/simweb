@@ -399,14 +399,16 @@
 						                        ],
 						                        [
 						                            'label' => 'Pago',
+						                            // afecta solo a la celda
 						                            'contentOptions' => [
 						                            			'style' => 'display: block;color: red;'
 						                            ],
+						                            //
 						                            'value' => function($data) {
 						                            	if ( $data->pago == 0 ) {
-						                            		return Html::tag('<strong>', 'NO', ['class' => 'danger']);
+						                            		return Html::tag('strong', 'NO', ['class' => 'danger']);
 						                            	} elseif ( $data->pago == 1) {
-						                            		return Html::tag('<strong>', 'SI', ['class' => 'success']);
+						                            		return Html::tag('strong', 'SI', ['class' => 'success']);
 						                            	}
 						                            },
 						                        ],
