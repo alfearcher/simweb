@@ -358,7 +358,7 @@
 						                        [
 						                            'label' => 'Planilla',
 						                            'value' => function($data) {
-						                            	return Html::a($data['planilla'], ['view-planilla' => $data['planilla']]);
+						                            	return Html::a($data['planilla'], ['view-planilla', 'p' => $data['planilla']]);
 						                            },
 						                        ],
 						                        [
