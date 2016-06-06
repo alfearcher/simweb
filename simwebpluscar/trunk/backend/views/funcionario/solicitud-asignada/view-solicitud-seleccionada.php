@@ -65,7 +65,7 @@
 		$form = ActiveForm::begin([
 			'id' => 'view-solicitud-seleccionada-form',
 		    'method' => 'post',
-		    'action' => '#',
+		    'action' => $url,
 			'enableClientValidation' => true,
 			'enableAjaxValidation' => true,
 			'enableClientScript' => true,
