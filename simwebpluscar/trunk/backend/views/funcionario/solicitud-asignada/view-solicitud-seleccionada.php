@@ -493,9 +493,8 @@
 <?php
 $this->registerJs(
     '$(document).on("click", "#link-view-planilla", (function() {
-    	alert($(this).data("url"));
         $.get(
-            $(this).data("url"),
+            $(this).data("url", "planilla"),
             function (data) {
                 $(".modal-body").html(data);
                 $("#modal").modal();
