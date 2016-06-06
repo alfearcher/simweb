@@ -51,6 +51,7 @@
 	use yii\widgets\ActiveForm;
 	use kartik\icons\Icon;
 	use yii\web\View;
+	use yii\bootstrap\Modal;
 	use backend\controllers\menu\MenuController;
 
     $typeIcon = Icon::FA;
@@ -359,7 +360,15 @@
 						                            'label' => 'Planilla',
 						                            'format'=>'raw',
 						                            'value' => function($data) {
-						                            	return Html::a($data['planilla'], ['view-planilla', 'p' => $data['planilla']]);
+						                            	return Html::a($data['planilla'], '#', [
+            																		'id' => 'link-view-planilla',
+																		            'class' => 'btn btn-success',
+																		            'data-toggle' => 'modal',
+																		            'data-target' => '#modal',
+																		            'data-url' => Url::to(['view-planilla']),
+																		            'data-pjax' => '0',
+																		        ]);
+						                            	//return Html::a($data['planilla'], ['view-planilla', 'p' => $data['planilla']]);
 						                            },
 						                        ],
 						                        [
@@ -479,3 +488,28 @@
 
 	<?php ActiveForm::end(); ?>
 </div>
+
+<?php
+$this->registerJs(
+    '$(document).on("click", "#link-view-planilla", (function() {
+        $.get(
+            $(this).data("url"),
+            function (data) {
+                $(".modal-body").html(data);
+                $("#modal").modal();
+            }
+        );
+    }));'
+); ?>
+ 
+<?php
+Modal::begin([
+    'id' => 'modal',
+    'header' => '<h4 class="modal-title">Complete</h4>',
+    'footer' => '<a href="#" class="btn btn-primary" data-dismiss="modal">Cerrar</a>',
+]);
+ 
+echo "<div class='well'></div>";
+ 
+Modal::end();
+?>
