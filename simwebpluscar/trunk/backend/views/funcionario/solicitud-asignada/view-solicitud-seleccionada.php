@@ -492,6 +492,7 @@
 <?php
 $this->registerJs(
     '$(document).on("click", "#link-view-planilla", (function() {
+    	alert($(this).data("url"));
         $.get(
             $(this).data("url"),
             function (data) {
