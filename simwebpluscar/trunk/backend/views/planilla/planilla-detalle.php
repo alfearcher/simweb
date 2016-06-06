@@ -73,7 +73,7 @@
 	?>
 
 	<meta http-equiv="refresh">
-    <div class="panel panel-default"  style="width: 160%;">
+    <div class="panel panel-default"  style="width: 200%;">
         <div class="panel-heading">
         	<div class="row">
         		<div class="col-sm-4" style="padding-top: 10px;">
@@ -94,7 +94,7 @@
 							 <?= GridView::widget([
 					         		'id' => 'grid-detalle-planilla',
 					               	'dataProvider' => $dataProvider,
-					               	'headerRowOptions' => ['class' => 'default'],
+					               	'headerRowOptions' => ['class' => 'success'],
 									'rowOptions' => function($data) {
 											if ( $data['pago'] == 0 ) {
 		    									return ['class' => 'danger'];
