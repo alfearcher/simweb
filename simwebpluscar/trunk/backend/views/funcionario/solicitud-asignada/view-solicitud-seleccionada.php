@@ -362,7 +362,7 @@
 						                            'value' => function($data) {
 						                            	return Html::a($data['planilla'], '#', [
             																		'id' => 'link-view-planilla',
-																		            'class' => 'btn btn-success',
+																		            //'class' => 'btn btn-success',
 																		            'data-toggle' => 'modal',
 																		            'data-target' => '#modal',
 																		            'data-url' => Url::to(['view-planilla']),
