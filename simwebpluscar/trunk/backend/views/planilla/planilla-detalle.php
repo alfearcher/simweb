@@ -73,7 +73,7 @@
 	?>
 
 	<meta http-equiv="refresh">
-    <div class="panel panel-default"  style="width: 85%;">
+    <div class="panel panel-default"  style="width: 120%;">
         <div class="panel-heading">
         	<div class="row">
         		<div class="col-sm-4" style="padding-top: 10px;">
@@ -85,11 +85,11 @@
 		<div class="panel-body">
 			<div class="container-fluid">
 				<div class="col-sm-12">
-					<div class="row" style="padding-left: 10px;">
+					<div class="row">
 						<small><strong><?= Yii::t('backend', 'Planilla') ?></strong></small>
 					</div>
 
-					<div class="row" style="padding-top: 5px;padding-left: 10px;">
+					<div class="row">
 						<div class="planilla-solicitud" id="planilla-solicitud">
 							 <?= GridView::widget([
 					         		'id' => 'grid-detalle-planilla',
