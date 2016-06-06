@@ -368,33 +368,33 @@
 						                            },
 						                        ],
 						                        [
-						                            'label' => 'Monto',
+						                            'label' => 'Total',
 						                            'value' => function($data) {
-						                            	return $data['sum_monto'];
+						                            	return ($data['sum_monto'] + $data['sum_recargo'] + $data['sum_interes']) - ($data['sum_descuento'] + $data['sum_monto_reconocimiento']);
 						                            },
 						                        ],
+						                        // [
+						                        //     'label' => 'Recargo',
+						                        //     'value' => function($data) {
+						                        //     	return $data['sum_recargo'];
+						                        //     },
+						                        // ],
+						                        // [
+						                        //     'label' => 'Interes',
+						                        //     'value' => function($data) {
+						                        //     	return $data['sum_interes'];
+						                        //     },
+						                        // ],
+						                        // [
+						                        //     'label' => 'Descuento',
+						                        //     'value' => function($data) {
+						                        //     	return $data['sum_descuento'];
+						                        //     },
+						                        // ],
 						                        [
-						                            'label' => 'Recargo',
+						                            'label' => 'Observacion',
 						                            'value' => function($data) {
-						                            	return $data['sum_recargo'];
-						                            },
-						                        ],
-						                        [
-						                            'label' => 'Interes',
-						                            'value' => function($data) {
-						                            	return $data['sum_interes'];
-						                            },
-						                        ],
-						                        [
-						                            'label' => 'Descuento',
-						                            'value' => function($data) {
-						                            	return $data['sum_descuento'];
-						                            },
-						                        ],
-						                        [
-						                            'label' => 'Reconoc.',
-						                            'value' => function($data) {
-						                            	return $data['sum_monto_reconocimiento'];
+						                            	return $data['descripcion'];
 						                            },
 						                        ],
 						                        [
