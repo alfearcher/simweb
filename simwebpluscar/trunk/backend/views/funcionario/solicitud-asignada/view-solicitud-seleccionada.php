@@ -358,7 +358,7 @@
 						                        [
 						                            'label' => 'Planilla',
 						                            'value' => function($data) {
-						                            	return $data['planilla'];
+						                            	return Html::a($data['planilla'], ['view-planilla' => $data['planilla']]);
 						                            },
 						                        ],
 						                        [
@@ -406,9 +406,9 @@
 						                            //
 						                            'value' => function($data) {
 						                            	if ( $data->pago == 0 ) {
-						                            		echo Html::tag('strong', 'NO', ['class' => 'danger']);
+						                            		return Html::tag('p', 'NO', ['class' => 'danger']);
 						                            	} elseif ( $data->pago == 1) {
-						                            		echo Html::tag('strong', 'SI', ['class' => 'success']);
+						                            		return Html::tag('p', 'SI', ['class' => 'success']);
 						                            	}
 						                            },
 						                        ],
