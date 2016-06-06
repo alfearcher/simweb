@@ -150,7 +150,7 @@
 			$planillas = null;
         	// Se obtiene(n) la(s) planilla(s), asociadas a la solicitud.
         	// Primero se obtiene el modelo de la entidad.
-        	$model = self::findSolicitudPlanilla($this->_evento);
+        	$model = self::findSolicitudPlanilla();
         	if ( $model !== null ) {
         		$datos = $model->asArray()->all();
         		foreach ( $datos as $dato ) {
