@@ -366,6 +366,7 @@
 																		            'data-toggle' => 'modal',
 																		            'data-target' => '#modal',
 																		            'data-url' => Url::to(['view-planilla']),
+																		            'data-planilla' => $data['planilla'],
 																		            'data-pjax' => '0',
 																		        ]);
 						                            	//return Html::a($data['planilla'], ['view-planilla', 'p' => $data['planilla']]);
