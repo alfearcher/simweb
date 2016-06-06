@@ -136,7 +136,10 @@
 				  ->join('INNER JOIN', 'impuestos as I', 'D.impuesto = I.impuesto')
 				  ->join('INNER JOIN', 'exigibilidades as E', 'D.exigibilidad_pago = E.exigibilidad')
 				  ->where('planilla =:planilla', [':planilla' => $this->_planilla])
-				  ->groupBy('P.planilla');
+				  ->orderBy([
+				  		'ano_impositivo' => SORT_ASC,
+				  		'trimestre' => SORT_ASC,
+				  	]);
 
 			return $query->all();
 		}
@@ -148,13 +151,18 @@
 		/***/
 		public function getDataProviderPlanilla()
 		{
-			$query = self::findPlanillaDetalle();
+			$detalles = self::findPlanillaDetalle();
 
-			$dataProvider = New ActiveDataProvider([
-					'query' => $query,
-				]);
+			if ( count($detalles) > 0 ) {
+        		$provider = New ArrayDataProvider([
+        				'allModels' => $detalles,
+        				'pagination' => [
+        					'pageSize' => 10,
+    					],
+        			]);
+        	}
 
-			return isset($dataProvider) ? $dataProvider : null;
+			return isset($provider) ? $provider : null;
 		}
 
 
