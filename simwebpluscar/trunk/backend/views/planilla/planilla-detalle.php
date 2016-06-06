@@ -121,7 +121,7 @@
 				                        [
 				                            'label' => 'Periodo',
 				                            'value' => function($data) {
-				                            	return $data['triemstre'];
+				                            	return $data['trimestre'];
 				                            },
 				                        ],
 				                        [
@@ -155,6 +155,12 @@
 				                            },
 				                        ],
 				                        [
+				                            'label' => 'Recon.',
+				                            'value' => function($data) {
+				                            	return $data['monto_reconocimiento'];
+				                            },
+				                        ],
+				                         [
 				                            'label' => 'Observacion',
 				                            'value' => function($data) {
 				                            	return $data['descripcion'];
