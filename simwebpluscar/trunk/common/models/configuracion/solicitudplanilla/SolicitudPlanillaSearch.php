@@ -155,7 +155,7 @@
         		$datos = $model->asArray()->all();
         		foreach ( $datos as $dato ) {
         			$search = New PlanillaSearch($dato['planilla']);
-        			$planillas[] = $search->getResumenGeneral();
+        			$planillas[$dato['planilla']] = $search->getResumenGeneral();
         		}
         	}
 
