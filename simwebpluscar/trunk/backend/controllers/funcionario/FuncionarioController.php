@@ -40,7 +40,6 @@
 	use backend\models\configuracion\documentosolicitud\SolicitudDocumentoSearch;
 	use common\models\planilla\PlanillaSearch;
 	use common\models\configuracion\solicitudplanilla\SolicitudPlanillaSearch;
-	use common\models\planilla\PlanillaSearch;
 
 
 
