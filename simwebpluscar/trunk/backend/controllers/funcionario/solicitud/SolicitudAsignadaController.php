@@ -165,10 +165,13 @@ die(var_dump($postData));
 			$request = Yii::$app->request;
 			$getData = $request->get();
 
-die(var_dump($getData));
-			//$planilla = $getData['p'];
+//die(var_dump($getData));
+			$planilla = $getData['p'];
 
-			//$planillaSearch = New PlanillaSearch($planilla);
+			$planillaSearch = New PlanillaSearch($planilla);
+			$dataProvider = $planillaSearch->getDataProviderPlanilla();
+
+			return $this->renderAjax('')
 
 		}
 
