@@ -503,14 +503,18 @@ $this->registerJs(
     }));'
 ); ?>
  
-<?php
+<style type="text/css">
+	.padding-top : 25px;
+</style>
+
+<?php 
 Modal::begin([
     'id' => 'modal',
     'header' => '<h4 class="modal-title">Complete</h4>',
     'footer' => '<a href="#" class="btn btn-primary" data-dismiss="modal">Cerrar</a>',
 ]);
  
-echo "<div class='well'></div>";
+//echo "<div class='well'></div>";
  
 Modal::end();
 ?>
