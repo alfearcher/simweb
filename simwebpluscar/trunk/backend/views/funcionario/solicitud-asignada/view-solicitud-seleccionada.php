@@ -363,7 +363,6 @@
 						                        ],
 						                        [
 						                            'label' => 'Impuesto',
-						                            'contentOptions' => ['style'=>'display:block;color: blue;'],
 						                            'value' => function($data) {
 						                            	return $data['descripcion_impuesto'];
 						                            },
@@ -400,11 +399,14 @@
 						                        ],
 						                        [
 						                            'label' => 'Pago',
+						                            'contentOptions' => [
+						                            			'style' => 'display: block;color: red;'
+						                            ],
 						                            'value' => function($data) {
 						                            	if ( $data->pago == 0 ) {
-						                            		return 'NO';
+						                            		return '<strong>NO</strong>';
 						                            	} elseif ( $data->pago == 1) {
-						                            		return 'SI';
+						                            		return '<strong>SI</strong>';
 						                            	}
 						                            },
 						                        ],
