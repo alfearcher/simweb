@@ -357,6 +357,7 @@
 						                        ['class' => 'yii\grid\SerialColumn'],
 						                        [
 						                            'label' => 'Planilla',
+						                            'format'=>'raw',
 						                            'value' => function($data) {
 						                            	return Html::a($data['planilla'], ['view-planilla', 'p' => $data['planilla']]);
 						                            },
