@@ -171,7 +171,7 @@ die(var_dump($postData));
 			$planillaSearch = New PlanillaSearch($planilla);
 			$dataProvider = $planillaSearch->getArrayDataProviderPlanilla();
 
-			return $this->renderAjax('@backend/views/planilla/planilla-detalle', [
+			return $this->render('@backend/views/planilla/planilla-detalle', [
 										'dataProvider' => $dataProvider,
 										'caption' => $planilla,
 				]);
