@@ -169,8 +169,8 @@ die(var_dump($postData));
 			$planillaSearch = New PlanillaSearch($planilla);
 			$dataProvider = $planillaSearch->getArrayDataProviderPlanilla();
 
-			if ( isset($getData['page']) ) {
-				$planillaSearch->load($request);
+			if ( isset($request->queryParams['page']) ) {
+				$planillaSearch->load($request->queryParams);
 			} else {
 				// $planilla = $getData['p'];
 				// $planillaSearch = New PlanillaSearch($planilla);
