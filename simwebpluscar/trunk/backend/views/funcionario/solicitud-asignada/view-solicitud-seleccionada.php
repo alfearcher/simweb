@@ -493,6 +493,7 @@ $this->registerJs(
 Modal::begin([
     'id' => 'modal',
     'header' => '<h4 class="modal-title">Complete</h4>',
+    'body' => 'hola',
     'footer' => '<a href="#" class="btn btn-primary" data-dismiss="modal">Cerrar</a>',
 ]);
  
