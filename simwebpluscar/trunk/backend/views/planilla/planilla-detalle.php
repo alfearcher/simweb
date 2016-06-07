@@ -73,7 +73,7 @@
 	?>
 
 	<meta http-equiv="refresh">
-    <div class="panel panel-default"  style="width: 110%;">
+    <div class="panel panel-default"  style="width: 90%;">
         <div class="panel-heading">
         	<div class="row">
         		<div class="col-sm-4" style="padding-top: 10px;">
@@ -84,7 +84,7 @@
         </div>
 		<div class="panel-body">
 			<div class="container-fluid">
-				<div class="col-sm-12">
+				<div class="col-sm-10">
 					<div class="row">
 						<small><strong><?= Yii::t('backend', 'Planilla') ?></strong></small>
 					</div>
