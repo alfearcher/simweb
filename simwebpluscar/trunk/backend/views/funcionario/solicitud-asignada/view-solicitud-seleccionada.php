@@ -487,8 +487,9 @@ $this->registerJs(
 ); ?>
  
 <style type="text/css">
-	.modal-content{
-		margin-top: 150px;
+	.modal-content	{
+			margin-top: 150px;
+			width: 150%;
 	}
 </style>
 
