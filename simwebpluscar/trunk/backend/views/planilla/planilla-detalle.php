@@ -170,9 +170,7 @@
 				                            'label' => 'Pago',
 				                            'format' => 'raw',
 				                            // afecta solo a la celda
-				                            'contentOptions' => [
-				                            			'style' => 'display: block;color: black;'
-				                            ],
+				                            'contentOptions' => $data['pago'] == 1 ? ['style' => 'display: block;color: black;'] : ['style' => 'display: block;color: red;'],
 				                            //
 				                            'value' => function($data) {
 				                            	if ( $data['pago'] == 0 ) {
