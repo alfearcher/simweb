@@ -94,7 +94,7 @@
 							 <?= GridView::widget([
 					         		'id' => 'grid-detalle-planilla',
 					               	'dataProvider' => $dataProvider,
-					               	'headerRowOptions' => ['class' => 'success'],
+					               	'headerRowOptions' => ['class' => 'primary'],
 									'rowOptions' => function($data) {
 											if ( $data['pago'] == 0 ) {
 		    									return ['class' => 'danger'];
@@ -171,14 +171,14 @@
 				                            'format'=>'raw',
 				                            // afecta solo a la celda
 				                            'contentOptions' => [
-				                            			'style' => 'display: block;color: red;'
+				                            			'style' => 'display: block;color: black;'
 				                            ],
 				                            //
 				                            'value' => function($data) {
 				                            	if ( $data['pago'] == 0 ) {
 				                            		return Html::tag('strong', 'NO', ['class' => 'danger']);
 				                            	} elseif ( $data['pago'] == 1) {
-				                            		return Html::tag('strong', 'SI', ['class' => 'success']);
+				                            		return Html::tag('strong', $data['fecha_pago'], ['class' => 'success']);
 				                            	}
 				                            },
 				                        ],
