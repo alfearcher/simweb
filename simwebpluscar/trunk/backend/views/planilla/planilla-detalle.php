@@ -66,9 +66,9 @@
 			'id' => 'view-planilla-detalle',
 		    'method' => 'post',
 		    'action' => '#',
-			'enableClientValidation' => true,
-			'enableAjaxValidation' => true,
-			'enableClientScript' => true,
+			//'enableClientValidation' => true,
+			//'enableAjaxValidation' => true,
+			//'enableClientScript' => true,
 		]);
 	?>
 
