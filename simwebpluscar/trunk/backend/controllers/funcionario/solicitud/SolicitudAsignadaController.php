@@ -173,7 +173,7 @@ die(var_dump($postData));
 
 			return $this->renderAjax('@backend/views/planilla/planilla-detalle', [
 										'dataProvider' => $dataProvider,
-										'caption' => 'prueba',
+										'caption' => $planilla,
 				]);
 
 		}
