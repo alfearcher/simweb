@@ -140,7 +140,7 @@
 		        		//	PROPAGANDA COMERCIAL
 		        		['label' => Icon::show('fa fa-file-powerpoint-o',['class' => $typeLong], $typeIcon) . '&nbsp; Propaganda Comercial',
 		        			'items' => [
-		        						['label' => 'Inscripción de Propagandas', 'url' => ['propaganda/propaganda/create']],
+		        						['label' => 'Inscripción de Propagandas', 'url' => ['/propaganda/crearpropaganda/crear-propaganda/crear-propaganda'	, 'id' => 75]],
 		        						//['label' => 'Renovación de Propagandas', 'url' => '#'],
 		        						['label' => 'Desincorporación de Propaganda', 'url' => ['propaganda/propaganda/desincorporacion']],
 		        						['label' => 'Cambio de Otros Datos de Propaganda', 'url' => ['propaganda/propaganda/index']],
