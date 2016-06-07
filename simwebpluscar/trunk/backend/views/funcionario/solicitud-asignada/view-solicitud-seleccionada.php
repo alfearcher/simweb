@@ -486,7 +486,7 @@ $this->registerJs(
 ); ?>
  
 <style type="text/css">
-	.padding-top : 25px;
+	.padding-top : 85px;
 </style>
 
 <?php 
