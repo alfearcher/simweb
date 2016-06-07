@@ -494,7 +494,7 @@ $this->registerJs(
 <style type="text/css">
 	.modal-content	{
 			margin-top: 150px;
-			padding-left: -50px;
+			padding-right: 5px;
 			width: 150%;
 	}
 </style>
