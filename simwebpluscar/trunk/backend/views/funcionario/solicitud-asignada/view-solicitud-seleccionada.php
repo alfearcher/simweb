@@ -490,22 +490,23 @@ $this->registerJs(
         );
     }));'
 ); ?>
- 
+
 <style type="text/css">
 	.modal-content	{
 			margin-top: 150px;
+			padding-left: -50px;
 			width: 150%;
 	}
 </style>
 
-<?php 
+<?php
 Modal::begin([
     'id' => 'modal',
     //'header' => '<h4 class="modal-title">Complete</h4>',
     'size' => 'modal-lg',
     'footer' => '<a href="#" class="btn btn-primary" data-dismiss="modal">Cerrar</a>',
 ]);
- 
+
 //echo "<div class='well'></div>";
 Pjax::begin();
 echo "<div class='planilla'></div>";
