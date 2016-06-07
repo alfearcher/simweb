@@ -498,7 +498,7 @@ Modal::begin([
     'footer' => '<a href="#" class="btn btn-primary" data-dismiss="modal">Cerrar</a>',
 ]);
  
-echo "<div class='well'></div>";
- //echo "<div class='well' style='padding-top:50px;width: 200%;'></div>";
+//echo "<div class='well'></div>";
+echo "<div class='well' style='padding-top:50px;width: 140%;'></div>";
 Modal::end();
 ?>
