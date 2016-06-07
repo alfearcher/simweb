@@ -394,9 +394,13 @@
 						                            'label' => 'Pago',
 						                            'format'=>'raw',
 						                            // afecta solo a la celda
-						                            'contentOptions' => [
-						                            			'style' => 'display: block;color: black;'
-						                            ],
+						                            'contentOptions' => function($data) {
+						                            		if ( $data['pago'] == 0 ) {
+						                            			return ['style' => 'display: block;color: red;'];
+						                            		} elseif ( $data['pago'] == 1 ) {
+						                            			return ['style' => 'display: block;color: blue;'];
+						                            		}
+				                            		},
 						                            //
 						                            'value' => function($data) {
 						                            	if ( $data['pago'] == 0 ) {
