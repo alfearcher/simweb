@@ -493,7 +493,7 @@ $this->registerJs(
 Modal::begin([
     'id' => 'modal',
     'header' => '<h4 class="modal-title">Complete</h4>',
-    'size' => SIZE_LARGE,
+    'size' => 'modal-lg',
     'footer' => '<a href="#" class="btn btn-primary" data-dismiss="modal">Cerrar</a>',
 ]);
  
