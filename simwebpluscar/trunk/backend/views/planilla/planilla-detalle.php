@@ -90,7 +90,7 @@
 					</div>
 
 					<div class="row">
-						<div class="planilla-solicitud" id="planilla-solicitud">
+						<div class="grid-detalle" id="grid-detalle">
 							 <?= GridView::widget([
 					         		'id' => 'grid-detalle-planilla',
 					               	'dataProvider' => $dataProvider,
