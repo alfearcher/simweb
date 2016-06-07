@@ -308,7 +308,7 @@
 							</div>
 
 							<div class="row" style="padding-left: 10px;">
-								<small><strong><?= Yii::t('backend', 'Documentos y Requisitos') ?></strong></small>
+								<small><strong><?= Yii::t('backend', 'Indique los Documentos y Requisitos consignados.') ?></strong></small>
 							</div>
 							<div class="row" style="padding-top: 5px;">
 								<div class="documento-requisito" id="documento-requisito" style="padding-left: 10px; width: 80%;">
@@ -494,7 +494,7 @@ $this->registerJs(
 <style type="text/css">
 	.modal-content	{
 			margin-top: 150px;
-			padding-right: 5px;
+			margin-left: -180px;
 			width: 150%;
 	}
 </style>
