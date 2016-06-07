@@ -67,7 +67,7 @@
 
 
 		        			//'created_at:datetime', // creation date formatted as datetime
-		    			],
+		    			], 
 					])
 				?>
 		</div>
