@@ -201,11 +201,11 @@
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
 													'model' => $model,
 
-						]);
+						]); 
 			} 
 
 			return false;
-		}
+		} 
 
 		// tipo solicitud 22
 		private function actionMostrarSolicitudCertificadoCatastralInmueble()
