@@ -479,7 +479,7 @@ $this->registerJs(
             $(this).data("url"),
             function (data) {
                 //$(".modal-body").html(data);
-                $(".well").html(data);
+                $(".planilla").html(data);
                 $("#modal").modal();
             }
         );
@@ -499,6 +499,6 @@ Modal::begin([
 ]);
  
 //echo "<div class='well'></div>";
-echo "<div class='well' style='padding-top:50px;width: 140%;'></div>";
+echo "<div class='planilla' style='padding-top:100px;width: 180%;'></div>";
 Modal::end();
 ?>
