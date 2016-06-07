@@ -105,13 +105,13 @@
 					               'summary' => '',
 					               'columns' => [
 				                        ['class' => 'yii\grid\SerialColumn'],
-				                        [
-				                            'label' => 'Planilla',
-				                            'format'=>'raw',
-				                            'value' => function($data) {
-				                            	return $data['planilla'];
-				                            },
-				                        ],
+				                        // [
+				                        //     'label' => 'Planilla',
+				                        //     'format'=>'raw',
+				                        //     'value' => function($data) {
+				                        //     	return $data['planilla'];
+				                        //     },
+				                        // ],
 				                        [
 				                            'label' => 'Año',
 				                            'value' => function($data) {
