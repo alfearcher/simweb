@@ -478,7 +478,8 @@ $this->registerJs(
         $.get(
             $(this).data("url"),
             function (data) {
-                $(".modal-body").html(data);
+                //$(".modal-body").html(data);
+                $(".well").html(data);
                 $("#modal").modal();
             }
         );
@@ -497,7 +498,7 @@ Modal::begin([
     'footer' => '<a href="#" class="btn btn-primary" data-dismiss="modal">Cerrar</a>',
 ]);
  
-//echo "<div class='well'></div>";
+echo "<div class='well'></div>";
  //echo "<div class='well' style='padding-top:50px;width: 200%;'></div>";
 Modal::end();
 ?>
