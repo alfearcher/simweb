@@ -84,7 +84,7 @@
         </div>
 		<div class="panel-body">
 			<div class="container-fluid">
-				<div class="col-sm-10">
+				<div class="col-sm-12">
 					<div class="row">
 						<small><strong><?= Yii::t('backend', 'Planilla') ?></strong></small>
 					</div>
