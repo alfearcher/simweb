@@ -395,7 +395,7 @@
 						                            'format'=>'raw',
 						                            // afecta solo a la celda
 						                            'contentOptions' => [
-						                            			'style' => 'display: block;color: red;'
+						                            			'style' => 'display: block;color: black;'
 						                            ],
 						                            //
 						                            'value' => function($data) {
