@@ -473,7 +473,33 @@ function puntitos( donde, caracter, campo ) {
             </div>
             
         <!--FIN DE TIPO -->
+
+
         </div>
+
+        <div class="row">
+
+        <!--INICIO DE MATERIALES -->
+            
+            <?php   
+            $modelMediosDifusion = MediosDifusion::find()->orderBy( [ 'descripcion' => SORT_ASC ] )->asArray()->all();                  
+            $listaMediosDifusion = ArrayHelper::map( $modelMediosDifusion, 'medio_difusion', 'descripcion' );
+            ?>
+            
+            <div class="col-sm-2" style="margin-left: -20px;">
+                        <?= $form->field($model, 'materiales')->dropDownList($listaMediosDifusion,
+                                                            [
+                                                            'prompt' => yii::t('frontend', 'Select'),
+                                                            ]);
+                    ?>
+                
+            </div>
+
+
+        <!--FIN DE MATERIALES -->
+        </div>
+
+
 
 
         
@@ -508,20 +534,10 @@ function puntitos( donde, caracter, campo ) {
                        
              
                     
-                    <table class="table table-striped">                   
-                        <tr>
-                            <td colspan="2">
-                             
-                            </td>
-                        </tr>
-                                   
-                        <tr>
-                            <td>
+                   
                                 <div>
                                     <p><i><small><?=Yii::t( 'backend', 'Through Construction:' ) ?></small></i></p>
-                                    <?php   $modelMediosDifusion = MediosDifusion::find()->orderBy( [ 'descripcion' => SORT_ASC ] )->asArray()->all();                                        
-                                            $listaMediosDifusion = ArrayHelper::map( $modelMediosDifusion, 'medio_difusion', 'descripcion' );
-                                    ?>
+                                    
                                     <?= $form->field( $model, 'medio_difusion' )->label( false )->dropDownList( $listaMediosDifusion, [   'id' => 'medio_difusion',
                                                                                                                                           'prompt' => Yii::t('backend','Select'),
                                                                                                                                           'style' => 'width:107%;'
