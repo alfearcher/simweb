@@ -479,7 +479,7 @@ $this->registerJs(
             $(this).data("url"),
             function (data) {
                 $(".modal-body").html(data);
-                $("#modal").modal(data);
+                $("#modal").modal();
             }
         );
     }));'
