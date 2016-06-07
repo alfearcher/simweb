@@ -226,12 +226,11 @@ die(var_dump($postData));
 							$modelDoc = New SolicitudDocumentoSearch($id);
 							$dataProvider = $modelDoc->getDataProvider();
 
-							//---
 
-							// Se buscan las planillas relacionadas a la solicitud.
+							// Se buscan las planillas relacionadas a la solicitud. Se refiere a las planillas
+							// de impueso "tasa".
 							$modelPlanilla = New SolicitudPlanillaSearch($id);
 							$provider = $modelPlanilla->getArrayDataProvider();
-							//---
 
 							$dataProviderPlanilla = $provider;
 
