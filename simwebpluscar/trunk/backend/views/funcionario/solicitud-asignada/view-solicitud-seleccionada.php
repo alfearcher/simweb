@@ -53,6 +53,7 @@
 	use yii\web\View;
 	use yii\bootstrap\Modal;
 	use backend\controllers\menu\MenuController;
+	use yii\widgets\Pjax;
 
     $typeIcon = Icon::FA;
     $typeLong = 'fa-2x';
@@ -506,6 +507,8 @@ Modal::begin([
 ]);
  
 //echo "<div class='well'></div>";
+Pjax::begin();
 echo "<div class='planilla'></div>";
+Pjax::end();
 Modal::end();
 ?>
