@@ -86,10 +86,10 @@
         		</div>
         		<div class="col-sm-3" style="width: 30%; float:right; padding-right: 50px;">
         			<style type="text/css">
-					.col-sm-3 > ul > li > a:hover {
-						background-color: #F5F5F5;
-					}
-    			</style>
+						.col-sm-3 > ul > li > a:hover {
+							background-color: #F5F5F5;
+						}
+	    			</style>
 	        		<?= MenuController::actionMenuSecundario([
 	        						'back' => '/funcionario/solicitud/solicitud-asignada/buscar-solicitudes-contribuyente',
 	        						'quit' => '/funcionario/solicitud/solicitud-asignada/quit',
@@ -499,6 +499,6 @@ Modal::begin([
 ]);
  
 //echo "<div class='well'></div>";
-echo "<div class='planilla' style='padding-top:100px;width: 180%;'></div>";
+echo "<div class='planilla'></div>";
 Modal::end();
 ?>
