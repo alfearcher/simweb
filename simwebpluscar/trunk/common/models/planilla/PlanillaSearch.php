@@ -162,7 +162,7 @@
         		$provider = New ArrayDataProvider([
         				'allModels' => $detalles,
         				'pagination' => [
-        					'pageSize' => 10,
+        					'pageSize' => 12,
     					],
         			]);
         	}
