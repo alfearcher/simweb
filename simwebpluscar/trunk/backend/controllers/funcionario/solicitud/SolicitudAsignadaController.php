@@ -159,7 +159,12 @@ die(var_dump($postData));
 
 
 
-		/***/
+		/**
+		 * Metodo que permite renderizar una vista de los detalles de la planilla
+		 * que se encuentran en la solicitud.
+		 * @return View Retorna una vista que contiene un grid con los detalles de la
+		 * planilla.
+		 */
 		public function actionViewPlanilla()
 		{
 			$request = Yii::$app->request;
@@ -169,12 +174,11 @@ die(var_dump($postData));
 			$planillaSearch = New PlanillaSearch($planilla);
 			$dataProvider = $planillaSearch->getArrayDataProviderPlanilla();
 
+			// Se determina si la peticion viene de un listado que contiene mas de una
+			// pagina de registros. Esto sucede cuando los detelles de un listado contienen
+			// mas de los manejados para una pagina en la vista.
 			if ( isset($request->queryParams['page']) ) {
 				$planillaSearch->load($request->queryParams);
-			} else {
-				// $planilla = $getData['p'];
-				// $planillaSearch = New PlanillaSearch($planilla);
-				// $dataProvider = $planillaSearch->getArrayDataProviderPlanilla();
 			}
 			return $this->renderAjax('@backend/views/planilla/planilla-detalle', [
 										'dataProvider' => $dataProvider,
