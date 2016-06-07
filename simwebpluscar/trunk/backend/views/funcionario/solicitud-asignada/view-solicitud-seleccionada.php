@@ -498,6 +498,6 @@ Modal::begin([
 ]);
  
 //echo "<div class='well'></div>";
- echo "<div class='well' style='padding-top:50px;width: 200%;'></div>";
+ //echo "<div class='well' style='padding-top:50px;width: 200%;'></div>";
 Modal::end();
 ?>
