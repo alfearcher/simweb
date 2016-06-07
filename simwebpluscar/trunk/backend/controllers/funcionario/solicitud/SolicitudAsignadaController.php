@@ -165,12 +165,17 @@ die(var_dump($postData));
 			$request = Yii::$app->request;
 			$getData = $request->get();
 
-//die(var_dump($getData));
 			$planilla = $getData['p'];
-
 			$planillaSearch = New PlanillaSearch($planilla);
 			$dataProvider = $planillaSearch->getArrayDataProviderPlanilla();
 
+			if ( isset($request['page']) ) {
+				$planillaSearch->load($request);
+			} else {
+				// $planilla = $getData['p'];
+				// $planillaSearch = New PlanillaSearch($planilla);
+				// $dataProvider = $planillaSearch->getArrayDataProviderPlanilla();
+			}
 			return $this->renderAjax('@backend/views/planilla/planilla-detalle', [
 										'dataProvider' => $dataProvider,
 										'caption' => 'Planilla: ' . $planilla,
