@@ -487,7 +487,9 @@ $this->registerJs(
 ); ?>
  
 <style type="text/css">
-	.padding-top : 85px;
+	.modal-content{
+		margin-top: 150px;
+	}
 </style>
 
 <?php 
