@@ -168,7 +168,7 @@
 				                        ],
 				                        [
 				                            'label' => 'Pago',
-				                            'format'=>'raw',
+				                            'format' => 'raw',
 				                            // afecta solo a la celda
 				                            'contentOptions' => [
 				                            			'style' => 'display: block;color: black;'
