@@ -56,7 +56,7 @@
 	/**
 	* 	Clase que permite consultar informacion diversa sobre una planilla.
 	*/
-	class PlanillaSearch
+	class PlanillaSearch extends ActiveRecord
 	{
 
 		private $_planilla;
