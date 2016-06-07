@@ -118,6 +118,7 @@
 			$query = New Query();
 
 			$query->select(['P.planilla',
+							'P.recibo',
 							'P.id_contribuyente',
 							'D.id_impuesto',
 							'D.impuesto',
@@ -130,6 +131,7 @@
 							'D.monto_reconocimiento',
 							'D.referencia',
 							'D.pago',
+							'D.fecha_pago',
 							'I.descripcion as descripcion_impuesto',
 							'D.descripcion',
 							'E.unidad'
