@@ -70,7 +70,7 @@
 
 
 		/***/
-		public function __construct($id, $idImpuesto, $conexionLocal, $connLocal)
+		public function __construct($id, $idImpuesto, $conexionLocal, $connLocal, $monto = 0)
 		{
 			$this->_idContribuyente = $id;
 			$this->_idImpuesto = $idImpuesto;
@@ -78,6 +78,7 @@
 			$this->conexion = $conexionLocal;
 			$this->conn = $connLocal;
 			$this->planilla = null;
+			$this->_montoCalculado = $monto;
 			parent::__construct();
 		}
 
@@ -91,7 +92,7 @@
 		 * @return Bollean Retornara true si guardo la planilla de forma exitosa, retornara false si no
 		 * logra guardar la planilla.
 		 */
-		public function liquidarTasa($factorMultiplicador = 0, $observacion = '', $monto = 0)
+		public function liquidarTasa($factorMultiplicador = 0, $observacion = '')
 		{
 			$resultado = false;
 			if ( isset($this->conexion) && isset($this->conn) ) {
@@ -186,7 +187,7 @@
 
 
 		/***/
-		public function iniciarLiquidarTasa($factorMultiplicador = 0, $monto = 0)
+		public function iniciarLiquidarTasa($factorMultiplicador = 0)
 		{
 			// Array con los parametros principales y el calculo de la tasa anual.
 			// + id-impuesto
@@ -195,8 +196,6 @@
 			// + descripcion
 			// + monto.
 			$result = null;
-
-			if ( $monto > 0 ) { self::setMontoCalculado($monto); }
 
 			$liquidacion = New LiquidacionTasa($this->_idImpuesto, $factorMultiplicador, $this->_montoCalculado);
 			$result = $liquidacion->iniciarCalcularLiquidacionTasa();
