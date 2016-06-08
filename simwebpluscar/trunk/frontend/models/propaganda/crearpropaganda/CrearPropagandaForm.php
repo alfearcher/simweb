@@ -91,7 +91,7 @@ class CrearPropagandaForm extends Model
     {
         return [
 
-            [['observacion', 'clase_propaganda'], 'required'],
+            [['observacion', 'clase_propaganda', 'cigarrillos'], 'required'],
         ]; 
     } 
 
