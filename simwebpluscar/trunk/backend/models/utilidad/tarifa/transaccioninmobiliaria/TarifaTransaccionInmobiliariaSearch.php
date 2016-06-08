@@ -65,6 +65,9 @@
 												  ->where('ano_impositivo =:ano_impositivo',
 												  						[':ano_impositivo' => $añoImpositivo])
 												  ->andWhere('inactivo =:inactivo', [':inactivo' => 0])
+												  ->orderBy([
+												  		'monto_desde' => SORT_ASC,
+												  	])
 			return isset($modelFind) ? $modelFind : null;
 		}
 
@@ -116,9 +119,26 @@
 		/***/
 		public function iniciarCalculoTransaccion($precioInmueble, $añoImpositivo)
 		{
+			settype($añoImpositivo, 'integer');
+			$ut = New UnidadTributariaForm();
+
 			$montoConversion = self::getConvertirPrecioUT($precioInmueble, $añoImpositivo);
 			if ( $montoConversion > 0 ) {
+				$model = self::findTarifaTransaccion($añoImpositivo);
+				if ( $model !== null ) {
+					// Se pasa a determinar en que rango se encuentra ubicado el monto convertido
+					// en unidades tributarias.
+					$tarifas = $model->asArray()->all();
+					foreach ( $tarifas as $tarifa ) {
+						if ( $tarifa['monto_hasta'] > 0 ) {
+							if ( $tarifa['monto_desde'] <= $montoConversion && $tarifa['monto_hasta'] >= $montoConversion ) {
+								$montoAplicar = $ut->getMontoAplicar($tarifa['tipo_rango']);
+							}
+						} elseif ( $tarifa['monto_hasta'] == 0 ) {
 
+						}
+					}
+				}
 			}
 		}
 
