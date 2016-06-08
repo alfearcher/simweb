@@ -99,6 +99,7 @@
 				if ( $this->_montoALiquidar == 0 ) {
 					$monto = $this->_multiplicador > 0 ? $this->getCalculoAnual() * $this->_multiplicador : $this->getCalculoAnual();
 				} else {
+					$this->_calculoAnual = $this->_montoALiquidar;
 					$monto = $this->_montoALiquidar;
 				}
 				$this->_parametro['monto'] = $monto;
