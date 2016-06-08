@@ -50,8 +50,13 @@
 	use backend\models\utilidad\ut\UnidadTributariaForm;
 
 	/**
-	* 	Clase que gestiona el calculo anual del impuesto por actividad economica,
-	*
+	* Clase que gestiona el calculo anual del impuesto por tasa,
+	* esta clase retornara una array que incluye los siguientes datos:
+	* + id-impuesto
+	* + impuesto
+	* + año impositivo
+	* + descripcion
+	* + monto liquidado
 	*/
 	class LiquidacionTasa
 	{
@@ -60,18 +65,22 @@
 		private $_idImpuesto;
 		private $_parametro;
 		private $_multiplicador;
+		private $_montoALiquidar;
 
 
 		/**
-		 * Metodo constructor
-		 * @param Long $id identificador del Contribuyente (IdContribuyente).
+		 * [__construct description]
+		 * @param [type]  $idImpuesto          [description]
+		 * @param integer $factorMultiplicador [description]
+		 * @param integer $monto               [description]
 		 */
-		public function __construct($idImpuesto, $factorMultiplicador = 0)
+		public function __construct($idImpuesto, $factorMultiplicador = 0, $monto = 0)
 		{
 			$this->_calculoAnual = 0;
 			$this->_parametro = null;
 			$this->_idImpuesto = $idImpuesto;
 			$this->_multiplicador = $factorMultiplicador;
+			$this->_montoALiquidar = $monto;
 		}
 
 
@@ -87,7 +96,11 @@
 			$this->_parametro = null;
 			if ( isset($this->_idImpuesto) ) {
 				$this->calculoTasa();
-				$monto = $this->_multiplicador > 0 ? $this->getCalculoAnual() * $this->_multiplicador : $this->getCalculoAnual();
+				if ( $this->_montoALiquidar == 0 ) {
+					$monto = $this->_multiplicador > 0 ? $this->getCalculoAnual() * $this->_multiplicador : $this->getCalculoAnual();
+				} else {
+					$monto = $this->_montoALiquidar;
+				}
 				$this->_parametro['monto'] = $monto;
 			}
 			return $this->_parametro;
