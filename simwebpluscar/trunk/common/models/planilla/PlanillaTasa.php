@@ -99,11 +99,11 @@
 				if ( count($parametros) > 0 ) {
 					if ( $parametros['monto'] > 0 ) {
 						$this->setMontoCalculado($parametros['monto']);
-						if ( trim($observacion) != '' ) {
+						if ( trim($observacion) !== '' ) {
 							$parametros['descripcion'] = strtoupper($observacion) . ' / '. $parametros['descripcion'];
 						}
 						$result[$parametros['ano_impositivo']] = self::generarPeriodoLiquidado($parametros);
-						if ( $result != null && isset($this->_idContribuyente) ) {
+						if ( $result !== null && isset($this->_idContribuyente) ) {
 							// Metodo de la clase Planilla().
 							$resultado = $this->iniciarGuadarPlanilla($this->conexion, $this->conn, $this->_idContribuyente, $result);
 							$this->planilla['planilla'] = $this->getPlanilla();
