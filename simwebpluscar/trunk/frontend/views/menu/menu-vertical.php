@@ -106,7 +106,7 @@
 		        						['label' => 'Avaluo Catastral', 'url' => '#'],
 		        						['label' => 'Certificado Catastral', 'url' => '#'],
 		        						['label' => 'Renovación de Certificado Catastral', 'url' => '#'],
-		        						['label' => 'Solvencia', 'url' => '#'],
+		        						['label' => 'Solvencia', 'url' => '#'], 
 		        						['label' => 'Cambio de Numero Catastral', 'url' => ['/inmueble/inmuebles-urbanos/index']],
 		        						['label' => 'Cambio de Propietario', 'url' => ['inmueble/cambiopropietario/cambio-propietario-inmuebles-urbanos/seleccionar-tipo-cambio-propietario','id' =>3]], //  cambio-propietario-inmuebles
 		        						['label' => 'Integración de Parcela', 'url' => ['/inmueble/integracion-inmuebles-urbanos/integracion-inmuebles']],

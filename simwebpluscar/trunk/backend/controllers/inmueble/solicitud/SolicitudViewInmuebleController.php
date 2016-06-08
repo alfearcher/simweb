@@ -357,7 +357,7 @@
 			} 
 
 			return false;
-		}
+		} 
 
 		// tipo solicitud 30
 		private function actionMostrarSolicitudActualizacionDatosInmueble()
@@ -373,7 +373,7 @@
 													'model' => $model,
 
 						]);
-			} 
+			}  
 
 			return false;
 		}

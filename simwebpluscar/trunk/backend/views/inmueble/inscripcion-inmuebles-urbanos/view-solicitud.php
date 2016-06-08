@@ -65,7 +65,7 @@
 		    				'tlf_hab',
 		    				'medidor',
 
-
+ 
 		        			//'created_at:datetime', // creation date formatted as datetime
 		    			], 
 					])

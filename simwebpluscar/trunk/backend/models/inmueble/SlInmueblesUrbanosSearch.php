@@ -119,7 +119,7 @@
 	    													  ->one();
 	    	return isset($modelFind) ? $modelFind : null;
 	    }
-
+ 
 	}
 
 ?>
