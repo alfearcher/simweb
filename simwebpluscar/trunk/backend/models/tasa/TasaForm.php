@@ -128,6 +128,20 @@
 
 
 	    /***/
+	    public function findTasaSegunAnoDescripcion($añoImpositivoLocal, $descripcionLocal)
+	    {
+	    	$modelFind = Tasa::find()->where('ano_impositivo =:ano_impositivo', [':ano_impositivo' => $añoImpositivoLocal])
+	    							 ->andWhere('inactivo =:inactivo', [':inactivo' => 0])
+	    							 ->andWhere(['LIKE', 'descripcion', $descripcionLocal])
+	    							 ->all();
+
+	    	return isset($modelFind) ? $modelFind : null;
+	    }
+
+
+
+
+	    /***/
 	    public function findTasaSegunParametros($idCodigo, $impuesto, $anoImpositivo, $grupoSubnivel, $codigo, $inactivo = 0)
 	    {
 	    	$modelFind = Tasa::find()->where('id_codigo =:id_codigo', [':id_codigo' => $idCodigo])
