@@ -85,7 +85,7 @@
 
 		/**
 		 * Metodo que inicia la liquiadacion de la tasa
-		 * @param  Integer $factorMultiplicador, entero que indica por cuanto se debe multiplicar
+		 * @param  Double $factorMultiplicador, entero que indica por cuanto se debe multiplicar
 		 * el resultado de la liquidacion, si este valor es cero (0), no se tomara encuenta.
 		 * @param  String  $observacion, Nota que sera agregada en las observaciones de la planilla.
 		 * @return Bollean Retornara true si guardo la planilla de forma exitosa, retornara false si no
