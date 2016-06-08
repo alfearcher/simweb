@@ -74,6 +74,11 @@ class CrearPropagandaForm extends Model
     public $idioma;
     public $fecha_fin;
     public $id_sim;
+    public $tipo_propaganda;
+    public $materiales;
+    public $medio_transporte;
+    public $direccion;
+    public $observacion;
 
 
 
@@ -86,7 +91,7 @@ class CrearPropagandaForm extends Model
     {
         return [
 
-            [['causas', 'observacion'], 'required'],
+            [['observacion', 'clase_propaganda'], 'required'],
         ]; 
     } 
 
@@ -98,9 +103,25 @@ class CrearPropagandaForm extends Model
     public function attributeLabels()
     {
         return [
-                'causa' => Yii::t('frontend', 'Causa'), 
-                'observacion' => Yii::t('frontend', 'Observacion'), 
-        ];
+                'ano_impositivo' => Yii::t('frontend', 'Año Impositivo'), 
+                'clase_propaganda' => Yii::t('frontend', 'Clase de Propaganda'),
+                'uso_propaganda' => Yii::t('frontend', 'Uso de Propaganda'),
+                'fecha_inicial' => Yii::t('frontend', 'Fecha de Inscripcion'),
+                'cantidad_base' => Yii::t('frontend', 'Cantidad Base'),
+                'cigarrillos' => Yii::t('frontend', 'Cigarrillos'),
+                'cantidad_tiempo' => Yii::t('frontend', 'Cantidad de Tiempo'),
+                'base_calculo' => Yii::t('frontend', 'Base de Calculo'),
+                'bebidas_alcoholicas' => Yii::t('frontend', 'Bebidas Alcoholicas'),
+                'tiempo' => Yii::t('frontend', 'Tiempo'),
+                'idioma' => Yii::t('frontend', 'Idiomas'),
+                'fecha_fin' => Yii::t('frontend', 'Fecha Fin  '),
+                'id_sim' => Yii::t('frontend', 'Id Sim'),
+                'tipo_propaganda' => Yii::t('frontend', 'Tipo de Propaganda'),
+                'material' => Yii::t('frontend', 'Medio de Difusion'),
+                'medio_transporte' => Yii::t('frontend', 'Medio de Transporte'),
+                'direccion' => Yii::t('frontend', 'Direccion'),
+                'observacion' => Yii::t('frontend', 'Observacion'),
+        ];      
     }
 
     public function attributeSlReposicionesCalcomania()
@@ -121,41 +142,8 @@ class CrearPropagandaForm extends Model
         ];
     }
 
-    public function verificarSolicitud($idVehiculo,$idConfig)
-    {
-      $buscar = SolicitudesContribuyente::find()
-                                        ->where([ 
-                                          'id_impuesto' => $idVehiculo,
-                                          'id_config_solicitud' => $idConfig,
-                                          'inactivo' => 0,
-                                        ])
-                                      ->all();
 
-            if($buscar == true){
-             return true;
-            }else{
-             return false;
-            }
-    }
-
-    public function verificarCalcomania($calcomania)
-    {
-        //die($calcomania.'llegue');
-    $buscar = Calcomania::find()
-                                        ->where([ 
-                                        'id_calcomania' => $calcomania,
-                                        'estatus' => 0,
-                                        'entregado' => 1,
-                                        ])
-                                      ->all();
-
-            if($buscar == true){
-               // die(var_dump($buscar));
-             return $buscar;
-            }else{
-             return false;
-            }
-    }
+   
 
   
 }
