@@ -13,9 +13,11 @@ use backend\models\TiposPropaganda;
 use backend\models\ClasesPropaganda;
 use backend\models\MediosTransporte;
 use yii\jui\DatePicker;
-
+$fecha_fin = '00/00/0000';
 
 ?>
+
+
 
 <script type = "text/javascript">
 
@@ -158,21 +160,19 @@ function puntitos( donde, caracter, campo ) {
 } 
 </script>
 
-<body onload="recargar_pagina()"/>
-<div class="propagandas-create">
-    <?php   $form = ActiveForm::begin( [  'id' => 'form-propaganda-inline',
-                                          'type' => ActiveForm::TYPE_HORIZONTAL,
-                                          'formConfig' => [ 'showErrors' => true, 
-                                          'deviceSize' => ActiveForm::SIZE_SMALL, 
-                                          'labelSpan' => 2,
-                                          'showLabels' => true ]
-                                     ]  );
-    ?>
+
+
+<?php $form = ActiveForm::begin([
+    
+        
+]);
+
+?>
     
     <?
 
-    $idContribuyente = yii::$app->user->identity->id_contribuyente; 
-    //die($idContribuyente);
+   
+    
     
     ?>
 
@@ -180,24 +180,26 @@ function puntitos( donde, caracter, campo ) {
     <?= Html::activeHiddenInput( $model, 'id_cp', [ 'value' => '0' ] ) ?>
     <?= Html::activeHiddenInput( $model, 'id_sim', [ 'value' => '0' ] ) ?>
     <?= Html::activeHiddenInput( $model, 'inactivo', [ 'value' => '0' ] ) ?>
-    <?= Html::activeHiddenInput( $model, 'id_contribuyente', [ 'value' => 0 ] ) ?>
-    
+  
 
     
-    <div class="col-sm-11" style="margin-left:5%;">
+   <div class="col-sm-12">
         <div class="panel panel-primary">
-            <div class="panel-heading"><?=  Yii::t( 'backend', $this->title )?></div>
-                <div class="panel-body" >
+            <div class="panel-heading">
+                <?= $this->title ?>
+            </div>
+            <div class="panel-body" >
+                
                    
                         
         <div class="row">
 
         <!--INICIO ANO IMPOSITIVO -->
 
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                             <?= $form->field($model, 'ano_impositivo')->textInput(                         [ 'id'=> 'ano_impositivo', 
                                                                                                            
-                                                                                                            'style' => 'width:280px;',
+                                                                                                            
                                                                                                             'value' => date('Y'),
                                                                                                            // die(var_dump($preguntaSeguridad[0]['pregunta'])),
                                                                                                             'readOnly' =>true,                                                                                                          
@@ -215,7 +217,7 @@ function puntitos( donde, caracter, campo ) {
                     $listaClasesPropaganda = ArrayHelper::map( $modelClasesPropaganda, 'clase_propaganda', 'descripcion' ); 
                     ?>
 
-            <div class="col-sm-2" style="margin-left: -20px;">
+            <div class="col-sm-3" >
                         <?= $form->field($model, 'clase_propaganda')->dropDownList($listaClasesPropaganda,
                                                                 [
                                                                 'prompt' => yii::t('frontend', 'Select'),
@@ -235,7 +237,7 @@ function puntitos( donde, caracter, campo ) {
                     ?>
 
 
-            <div class="col-sm-2" style="margin-left: -20px;">
+            <div class="col-sm-2">
                         <?= $form->field($model, 'uso_propaganda')->dropDownList($listaUsosPropaganda,
                                                             [
                                                             'prompt' => yii::t('frontend', 'Select'),
@@ -252,8 +254,8 @@ function puntitos( donde, caracter, campo ) {
         
          <!--INICIO DE FECHA INICIAL -->
 
-            <div class="col-sm-4">
-                <div class="fecha-nac">
+            <div class="col-sm-2">
+               
                 <?= $form->field($model, 'fecha_inicial')->widget(\yii\jui\DatePicker::classname(),[
                                                                                         //'type' => 'date',
                                                                                         'clientOptions' => [
@@ -275,7 +277,7 @@ function puntitos( donde, caracter, campo ) {
                                                                                       
                                                                                     ])
                             ?>
-                </div>
+             
             </div>
 
 
@@ -286,7 +288,7 @@ function puntitos( donde, caracter, campo ) {
 
             <div class="col-sm-3">
                                   
-                <?= $form->field( $model, 'cantidad_base' )->label( false )->textInput( [  'onkeyup' => 'puntitos(this,this.value.charAt(this.value.length-1),2)', 
+                <?= $form->field( $model, 'cantidad_base' )->textInput( [  'onkeyup' => 'puntitos(this,this.value.charAt(this.value.length-1),2)', 
                                                                                                                'inline' => true, 
                                                                                                                'style' => 'width:100%;'
                                                                                                             ] )
@@ -297,8 +299,8 @@ function puntitos( donde, caracter, campo ) {
 
         <!--INICIO DE CIGARRILLOS -->
 
-                <div>
-                    <p><i><small><?= $form->field( $model, 'cigarrillos' )->checkBox( [ 'inline' => true ] )?></small></i></p>
+                <div class="col-sm-3" style="margin-left: 40px; margin-top: 30px;">
+                    <p><i><small><?= $form->field( $model, 'cigarrillos' )->checkBox( [ 'inline' => true ] )?></p>
                 </div> 
 
         <!--FIN DE CIGARRILLOS -->
@@ -312,7 +314,7 @@ function puntitos( donde, caracter, campo ) {
             <div class="col-sm-3">
                             <?= $form->field($model, 'cantidad_tiempo')->textInput(                         [ 'id'=> 'cantidad_tiempo', 
                                                                                                            
-                                                                                                            'style' => 'width:280px;',
+                                                                                                            
                                                                                                           
                                                                                                          
                                                                                                                                                                                                                    
@@ -329,7 +331,7 @@ function puntitos( donde, caracter, campo ) {
             $listaBaseCalculo  = ArrayHelper::map( $modelBaseCalculo, 'base_calculo', 'descripcion' ); 
             ?>
 
-            <div class="col-sm-2" style="margin-left: -20px;">
+            <div class="col-sm-2" >
                         <?= $form->field($model, 'base_calculo')->dropDownList($listaBaseCalculo,
                                                             [
                                                             'prompt' => yii::t('frontend', 'Select'),
@@ -341,8 +343,8 @@ function puntitos( donde, caracter, campo ) {
         <!--FIN DE BASE -->
 
         <!--INICIO DE BEBIDAS ALCOHOLICAS -->
-               <div>
-                    <p><i><small><?= $form->field( $model, 'bebidas_alcoholicas' )->checkBox( [ 'inline' => true ] )?></small></i></p>
+               <div class="col-sm-3" style="margin-left: 40px; margin-top: 30px;">
+                   <?= $form->field( $model, 'bebidas_alcoholicas' )->checkBox( [ 'inline' => true ] )?>
                 </div>
 
          <!--FIN DE BEBIDAS ALCOHOLICAS -->
@@ -432,14 +434,14 @@ function puntitos( donde, caracter, campo ) {
         <!--INICIO DE FECHA FIN -->
 
             <div class="col-sm-3">
-                            <?= $form->field($model, 'fecha_fin')->textInput(                         [ 'id'=> 'cantidad_tiempo', 
+                            <?= $form->field($model, 'fecha_fin')->textInput([ 'id'=> 'cantidad_tiempo', 
                                                                                                            
-                                                                                                            'style' => 'width:280px;',
-                                                                                                            'value' => $fecha_fin,
-                                                                                                            'readonly' => true,
+                                                                                'style' => 'width:280px;',
+                                                                                'value' => $fecha_fin,
+                                                                                'readonly' => true,
                                                                                                          
                                                                                                                                                                                                                    
-                                                                                                            ]); ?>
+                                                                                ]); ?>
             </div> 
 
 
@@ -448,7 +450,7 @@ function puntitos( donde, caracter, campo ) {
         <!--INICIO DE ID SIM -->
 
             <div>
-                <?= $form->field( $model, 'id_sim' )->label( false )->textInput( [ 'inline' => true, 'style' => 'width:100%;' ] )?>
+                <?= $form->field( $model, 'id_sim' )->textInput( [ 'inline' => true, 'style' => 'width:100%;' ] )?>
             </div>
 
         <!--FIN DE ID SIM -->
@@ -466,7 +468,7 @@ function puntitos( donde, caracter, campo ) {
                 $listaTiposPropaganda = ArrayHelper::map( $modelTiposPropaganda, 'tipo_propaganda', 'descripcion' );
                 ?>
                 
-                <?= $form->field( $model, 'tipo_propaganda' )->dropDownList( $listaTiposPropaganda, [  'id' => 'tipo_propaganda',
+                <?= $form->field( $model, 'tipo_propaganda' )->dropDownList( $listaTiposPropaganda, ['id' => 'tipo_propaganda',
                                                                                                                                            ''
                                                                                                      ] );
                 ?>
@@ -497,6 +499,59 @@ function puntitos( donde, caracter, campo ) {
 
 
         <!--FIN DE MATERIALES -->
+
+        <!--INICIO DE MEDIO DE TRANSPORTE -->
+
+            <?php   
+            $modelMediosTransporte = MediosTransporte::find()->orderBy( [ 'descripcion' => SORT_ASC ] )->asArray()->all(); 
+            $listaMediosTransporte = ArrayHelper::map( $modelMediosTransporte, 'medio_transporte', 'descripcion' );
+            ?>
+
+                <div class="col-sm-2" style="margin-left: -20px;">
+                        <?= $form->field($model, 'medio_transporte')->dropDownList($listaMediosTransporte,
+                                                            [
+                                                            'prompt' => yii::t('frontend', 'Select'),
+                                                            ]);
+                    ?>
+                
+            </div>
+
+        <!--FIN DE MEDIO DE TRANSPORTE -->
+
+
+        </div>
+
+
+        <div class="row">
+          
+        <!--INICIO DE DIRECCION -->
+
+            <div class="col-sm-5">
+                            <?= $form->field($model, 'direccion')->textInput(                         [ 'id'=> 'direccion', 
+                                                                                                           
+                                                                                                            'style' => 'width:280px;',
+                                                                                                          
+                                                                                                         
+                                                                                                                                                                                                                   
+                                                                                                            ]); ?>
+            </div> 
+
+        <!--INICIO DE OBSERVACION -->
+
+            <div class="col-sm-3">
+                        <?= $form->field($model, 'observacion')->textInput([ 'id'=> 'observacion', 
+                                                                           
+                                                                            'style' => 'width:280px;',
+                                                                          
+                                                                         
+                                                                                                                                                                                   
+                                                                            ]); ?>
+            </div> 
+
+        <!--FIN DE OBSERVACION -->    
+
+
+
         </div>
 
 
@@ -504,118 +559,11 @@ function puntitos( donde, caracter, campo ) {
 
         
             
-        
-        
-
-
-        
-
-
-                                                                                                                                              '     style' => 'width:
-                            
-                            
-                          
-                        
-                            
-                           
-                          
-                        
-                         
-                                                
-                           
-                          
-                                                
-                        
-                         
-                               
-                           
-                     
-                                                
                        
-             
-                    
-                   
-                                <div>
-                                    <p><i><small><?=Yii::t( 'backend', 'Through Construction:' ) ?></small></i></p>
-                                    
-                                    <?= $form->field( $model, 'medio_difusion' )->label( false )->dropDownList( $listaMediosDifusion, [   'id' => 'medio_difusion',
-                                                                                                                                          'prompt' => Yii::t('backend','Select'),
-                                                                                                                                          'style' => 'width:107%;'
-                                                                                                                                      ] )
-                                    ?> 
-                                </div>
-                            </td>
-                                
-                           <td>
-                                <div>
-                                    <p><i><small><?= Yii::t( 'backend', 'Transport Means:' ) ?></small></i></p>
-                                    <?php   $modelMediosTransporte = MediosTransporte::find()->orderBy( [ 'descripcion' => SORT_ASC ] )->asArray()->all();                                        
-                                            $listaMediosTransporte = ArrayHelper::map( $modelMediosTransporte, 'medio_transporte', 'descripcion' );
-                                    ?>
-                                    <?= $form->field( $model, 'medio_transporte' )->label( false )->dropDownList( $listaMediosTransporte, [  'id' => 'medio_trasnporte',
-                                                                                                                                             'prompt' => Yii::t('backend','Select'),
-                                                                                                                                              'style' => 'width:108%;'
-                                                                                                                                          ] );
-                                    ?> 
-                                </div>
-                            </td>
-                        </tr>
-                           
-                        <tr>
-                            <td>
-                                <div>
-                                    <p><i><small><?= Yii::t( 'backend', 'Address:' ) ?></small></i></p>
-                                    <?= $form->field( $model, 'direccion' )->label( false )->textArea( [ 'maxlength' => true, 'style' => 'width:107%;text-transform:uppercase;' ] )?> 
-                                </div>
-                            </td>
-                               
-                                <td>
-                                    <div>
-                                        <p><i><small><?= Yii::t( 'backend', 'Observation:' ) ?></small></i></p>
-                                        <?= $form->field( $model, 'observacion')->label( false )->textArea( [ 'maxlength' => true,'style' => 'width:108%;text-transform:uppercase;' ] )?> 
-                                    </div>
-                                </td>
-                        </tr>
-                    </table>     
-                    
-                    <table class="table table-striped">                
-                        <tr>
-                            <td width="78%">
-                                <div>
-                                    <p><i><small><?= Yii::t( 'backend', 'State&nbsp;/&nbsp;Town&nbsp;/&nbsp;Parish&nbsp;/&nbsp;Population center:' )?></small></i></p>
-                                    <?= $form->field( $model, 'est_mun_parr_cp' )->label( false )->textInput( [ 'maxlength' => true, 'style' => 'width:120%;' ] )?> 
-                                </div>
-                            </td>
-                                
-                            <td>
-                                <div class="col-md-5">
-                                    <p><i><small><?= Yii::t( 'backend', 'Location:' ) ?></small></i></p>
-                                    <?= $form->field( $model, 'id_cp' )->label( false )->textInput( [ 'maxlength' => true,'style' => 'width:150%;' ] )?> 
-                                </div> 
-                                    
-                                <div class="col-md-3"> 
-                                    <p><i><small><?=Yii::t('backend', '&nbsp;') ?></small></i></p>
-                                    <?= Html::Button( Yii::t( 'backend', 'UPJ' ), [ 'class' => $model->isNewRecord ? 'btn btn-primary' : 'btn btn-primary' ] )?>
-                                </div> 
-                            </td>
-                        </tr>
-                              
-                        <tr>
-                            <td colspan="2">
-                                <?= Html::submitButton( $model->isNewRecord ? 'Create' : 'Update', [ 'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'name'=> 'btn', ' value'=> 'crud' ] ) ?>
-                                
-								<?php if( $_GET['r'] == 'propaganda/propaganda/update' ) { ?>
-								
-																								<?= Html::a(Yii::t('backend', 'Quit'), ['propaganda/propaganda/index'], ['class' => 'btn btn-danger']) ?>
-            					<?php } else { ?>
-																								<?= Html::a(Yii::t('backend', 'Quit'), ['menu/vertical'], ['class' => 'btn btn-danger']) ?>
-								<?php } ?>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
+                          
+            </div>
         </div>
     </div>
                     
         <?php ActiveForm::end(); ?>
-</div>    
+  
