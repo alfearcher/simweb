@@ -91,7 +91,7 @@
 		 * @return Bollean Retornara true si guardo la planilla de forma exitosa, retornara false si no
 		 * logra guardar la planilla.
 		 */
-		public function liquidarTasa($factorMultiplicador = 0, $observacion = '')
+		public function liquidarTasa($factorMultiplicador = 0, $observacion = '', $monto = 0)
 		{
 			$resultado = false;
 			if ( isset($this->conexion) && isset($this->conn) ) {
@@ -186,11 +186,19 @@
 
 
 		/***/
-		public function iniciarLiquidarTasa($factorMultiplicador = 0)
+		public function iniciarLiquidarTasa($factorMultiplicador = 0, $monto = 0)
 		{
-			$result = null;		// Array con los parametros principales y el calculo de la tasa anual.
+			// Array con los parametros principales y el calculo de la tasa anual.
+			// + id-impuesto
+			// + impuesto
+			// + año impositivo
+			// + descripcion
+			// + monto.
+			$result = null;
 
-			$liquidacion = New LiquidacionTasa($this->_idImpuesto, $factorMultiplicador);
+			if ( $monto > 0 ) { self::setMontoCalculado($monto); }
+
+			$liquidacion = New LiquidacionTasa($this->_idImpuesto, $factorMultiplicador, $this->_montoCalculado);
 			$result = $liquidacion->iniciarCalcularLiquidacionTasa();
 			return $result;
 		}
