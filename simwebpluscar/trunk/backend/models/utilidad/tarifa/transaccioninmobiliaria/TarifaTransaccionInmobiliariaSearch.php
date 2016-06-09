@@ -45,7 +45,7 @@
  	use Yii;
 	use yii\base\Model;
 	use yii\data\ActiveDataProvider;
-	use backend\models\utilidad\tarifa\inmueble\TarifaTransaccionInmobiliaria;
+	use backend\models\utilidad\tarifa\transaccioninmobiliaria\TarifaTransaccionInmobiliaria;
 
 	/**
 	* 	Clase
