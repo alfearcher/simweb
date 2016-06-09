@@ -70,7 +70,7 @@
 		 */
 		public static function tableName()
 		{
-			return 'tarifas_trans_inmobiliaria';
+			return 'tarifas_trans_inmobiliarias';
 		}
 
 
