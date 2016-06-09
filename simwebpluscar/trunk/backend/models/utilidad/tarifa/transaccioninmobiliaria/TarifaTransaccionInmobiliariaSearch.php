@@ -60,10 +60,14 @@
 		 * de calculos de la catalogo-tarifas.
 		 * @return Active Record.
 		 */
-		public function findTarifaTransaccion($añoImpositivo)
+		public function findTarifaTransaccion($añoImpositivo, $tipoTransaccion, $precioInmueble)
 		{
 			$modelFind = TarifaTransaccionInmobiliaria::find()->where('ano_impositivo =:ano_impositivo',
-												  						[':ano_impositivo' => $añoImpositivo])
+												  								[':ano_impositivo' => $añoImpositivo])
+															  ->andWhere('tipo_transaccion =:tipo_transaccion',
+															  					[':tipo_transaccion' => $tipoTransaccion])
+															  ->andWhere('monto_desde <=:monto_desde',
+															   					[':monto_desde' => $precioInmueble])
 												  			  ->andWhere('inactivo =:inactivo', [':inactivo' => 0])
 														      ->orderBy([
 																	'monto_desde' => SORT_ASC,
