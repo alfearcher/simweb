@@ -148,12 +148,12 @@
 
 			// Se realiza la conversion del precio a unidades tributarias.
 			$montoConversion = self::getConvertirPrecioUT($precioInmueble, $añoImpositivo);
-die(var_dump($precioInmueble));
+
 			if ( $montoConversion > 0 ) {
 				// Se busca el modelo del catalogo de tarifas para las transacciones inmobiliarias.
 				// Metodo de la clase padre.
 				$model = $this->findTarifaTransaccion($añoImpositivo);
-
+die(var_dump($model));
 				if ( $model !== null ) {
 					// Se pasa a determinar en que rango se encuentra ubicado el monto convertido
 					// en unidades tributarias.
