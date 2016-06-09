@@ -191,10 +191,18 @@
 							break;
 						}
 					}
+
+					// Se determina si existe un descuento para aplicar.
+					if ( $montoAplicar > 0 ) {
+						$montoCalculado = $montoAplicar;
+						if ( $tarifa['porc_descuento'] > 0 ) {
+							$montoCalculado = $montoCalculado * ( 1 - $tarifa['porc_descuento']);
+						}
+					}
 				}
 			}
 
-			$montoCalculado = $montoAplicar;
+			//$montoCalculado = $montoAplicar;
 			return $montoCalculado;
 		}
 
