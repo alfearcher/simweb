@@ -158,8 +158,9 @@
 					// Se pasa a determinar en que rango se encuentra ubicado el monto convertido
 					// en unidades tributarias.
 					$tarifas = $model->asArray()->all();
-die(var_dump($tarifas));
+
 					$ut = New UnidadTributariaForm();
+
 					foreach ( $tarifas as $tarifa ) {
 						if ( $tarifa['monto_hasta'] > 0 ) {
 							$parametros['tipo_rango'] = $tarifa['tipo_rango'];
@@ -174,6 +175,7 @@ die(var_dump($tarifas));
 								// Determina el monto que debe aplicar, si es en unidades tributarias, se realiza
 								// la conversion a moneda nacional.
 								$montoAplicar = $ut->getMontoAplicar($parametros);
+die(var_dump($montoAplicar));
 							}
 						} elseif ( $tarifa['monto_hasta'] == 0 ) {
 							$montoAplicar = $ut->getMontoAplicar($parametros);
