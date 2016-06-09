@@ -157,7 +157,7 @@
 				if ( $model !== null ) {
 					// Se pasa a determinar en que rango se encuentra ubicado el monto convertido
 					// en unidades tributarias.
-					$tarifas = $model->toArray()->all();
+					$tarifas = $model->asArray()->all();
 die(var_dump($tarifas));
 					$ut = New UnidadTributariaForm();
 					foreach ( $tarifas as $tarifa ) {
