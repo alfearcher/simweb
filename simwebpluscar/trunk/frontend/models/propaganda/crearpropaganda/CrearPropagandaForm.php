@@ -79,6 +79,10 @@ class CrearPropagandaForm extends Model
     public $medio_transporte;
     public $direccion;
     public $observacion;
+    public $unidad;
+    public $alto;
+    public $ancho;
+    public $profundidad; 
 
 
 
@@ -91,7 +95,7 @@ class CrearPropagandaForm extends Model
     {
         return [
 
-            [['observacion', 'clase_propaganda', 'cigarrillos'], 'required'],
+            [['observacion', 'clase_propaganda', 'cigarrillos', 'fecha_fin', 'cantidad_tiempo', 'tiempo', 'fecha_inicial'], 'required'],
         ]; 
     } 
 
@@ -124,21 +128,46 @@ class CrearPropagandaForm extends Model
         ];      
     }
 
-    public function attributeSlReposicionesCalcomania()
+    public function attributeSlPropagandas()
     {
 
         return [
+            'id_impuesto',
             'nro_solicitud',
             'id_contribuyente',
-            'id_impuesto',
-            'nro_calcomania',
+            'ano_impositivo',
+            'direccion',
+            'id_cp',
+            'clase_propaganda',
+            'tipo_propaganda',
+            'uso_propaganda',
+            'medio_difusion',
+            'medio_transporte',
+            'fecha_desde',
+            'cantidad_tiempo',
+            'id_tiempo',
+            'inactivo',
+            'id_sim',
+            'cantidad_base',
+            'base_calculo',
+            'cigarros',
+            'bebidas_alcoholicas',
+            'cantidad_propagandas',
+            'planilla',
+            'idioma',
+            'observacion',
+            'fecha_fin',
+            'fecha_guardado',
             'fecha_hora',
             'usuario',
-            'causa',
-            'observacion',
-            'fecha_hora_proceso',
             'user_funcionario',
+            'fecha_hora_proceso',
             'estatus',
+            'alto',
+            'ancho',
+            'profundidad',
+            
+          
         ];
     }
 
