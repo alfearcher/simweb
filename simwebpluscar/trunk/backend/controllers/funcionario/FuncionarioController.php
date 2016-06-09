@@ -151,7 +151,7 @@
 
 	  		$s = New TransaccionInmobiliaria();
 	  		//$s = New SolicitudPlanillaSearch(22621);
-die(var_dump($s->iniciarCalculoTransaccion(225000, 2016)));
+die(var_dump($s->iniciarCalculoTransaccion(625000, 2016)));
 
 
 	  	}
