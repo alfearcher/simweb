@@ -164,11 +164,11 @@
 					foreach ( $tarifas as $tarifa ) {
 						if ( $tarifa['monto_hasta'] > 0 ) {
 							$parametros['tipo_rango'] = $tarifa['tipo_rango'];
-							$parametros['monto_aplicar'] = $tarifa['monto_aplicar'];
+							$parametros['monto'] = $tarifa['monto_aplicar'];
 							$parametros['ano_impositivo'] = $tarifa['ano_impositivo'];
 
-							$descuentos['tipo_monto'] = $tarifa['tipo_rango'];
-							$descuentos['porc_descuento'] = $tarifa['porc_descuento'];
+							$descuentos['tipo_rango'] = $tarifa['tipo_monto'];
+							$descuentos['monto'] = $tarifa['porc_descuento'];
 							$descuentos['ano_impositivo'] = $tarifa['ano_impositivo'];
 
 							if ( $tarifa['monto_desde'] <= $montoConversion && $tarifa['monto_hasta'] >= $montoConversion ) {
