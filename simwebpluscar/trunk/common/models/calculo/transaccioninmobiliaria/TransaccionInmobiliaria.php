@@ -175,7 +175,7 @@
 								// Determina el monto que debe aplicar, si es en unidades tributarias, se realiza
 								// la conversion a moneda nacional.
 								$montoAplicar = $ut->getMontoAplicar($parametros);
-die(var_dump($montoAplicar));
+
 							}
 						} elseif ( $tarifa['monto_hasta'] == 0 ) {
 							$montoAplicar = $ut->getMontoAplicar($parametros);
