@@ -43,7 +43,7 @@
 	namespace backend\models\utilidad\tarifa\transaccioninmobiliaria;
 
  	use Yii;
-	use yii\base\Model;
+	//use yii\base\Model;
 	use yii\data\ActiveDataProvider;
 	use backend\models\utilidad\tarifa\transaccioninmobiliaria\TarifaTransaccionInmobiliaria;
 
