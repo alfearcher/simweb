@@ -54,10 +54,12 @@
 	{
 
 
-
-
-
-		/***/
+		/**
+		 * Metodo que permite obtener el modelo de la entidad tarifas-trans-inmobiliaria.
+		 * @param  Integer $añoImpositivo Año impositivo donde se buscaran los parametros
+		 * de calculos de la catalogo-tarifas.
+		 * @return Active Record.
+		 */
 		public function findTarifaTransaccion($añoImpositivo)
 		{
 			$modelFind = TransaccionInmobiliaria()->find()
@@ -69,10 +71,6 @@
 												  	])
 			return isset($modelFind) ? $modelFind : null;
 		}
-
-
-
-		
 
 
 
