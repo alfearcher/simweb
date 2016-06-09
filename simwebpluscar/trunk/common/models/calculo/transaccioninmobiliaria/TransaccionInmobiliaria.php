@@ -107,14 +107,19 @@
 		/**
 		 * Metodo que inicia el proceso de calculo.
 		 * @param  Double $precioInmueble monto del precio del inmueble.
-		 * @param  Integer $añoImpositivo año impositivo cuando se realizo la transaccion.
+		 * @param  Integer $añoImpositivo año impositivo cuando se realizo la transaccion. 
+		 * Y año del cual se quiere obtener la unidad tributaria.
+		 * @param  Integer $tipoTransaacion identificador del tipo de transaccion, para este
+		 * caso particular de Caroni, se manejan dos tipos:
+		 * - 	VENTA.
+		 * - 	HIPOTECA.
 		 * @return Double Retorna un monto calculado que especifica cuanto se debe pagar
 		 * por la transaccion comercial realizada sobre el inmueble. Si no se realiza el calculo
 		 * retorna cero (0).
 		 */
-		public function iniciarCalculoTransaccion($precioInmueble, $añoImpositivo)
+		public function iniciarCalculoTransaccion($precioInmueble, $añoImpositivo, $tipoTransaccion)
 		{
-			$monto = self::calcularTransaccionCaroni($precioInmueble, $añoImpositivo);
+			$monto = self::calcularTransaccionCaroni($precioInmueble, $añoImpositivo, $tipoTransaccion);
 			return $monto;
 		}
 
@@ -134,10 +139,14 @@
 		 * @param  Double $precioInmueble monto del precio del inmueble.
 		 * @param  Integer $añoImpositivo Año impositivo del que se quiera obtener
 		 * la unidad tributaria.
+		 * @param  Integer $tipoTransaacion identificador del tipo de transaccion, para este
+		 * caso particular de Caroni, se manejan dos tipos:
+		 * - 	VENTA.
+		 * - 	HIPOTECA.
 		 * @return Double Retorna un monto calculado referente a la transaccion inmobiliaria. Sino
 		 * se realiza el calculo retorna cero (0).
 		 */
-		public function calcularTransaccionCaroni($precioInmueble, $añoImpositivo)
+		public function calcularTransaccionCaroni($precioInmueble, $añoImpositivo, $tipoTransaccion)
 		{
 			// Obligar seteando el contenido de la variable a integer.
 			settype($añoImpositivo, 'integer');
@@ -152,7 +161,7 @@
 			if ( $montoConversion > 0 ) {
 				// Se busca el modelo del catalogo de tarifas para las transacciones inmobiliarias.
 				// Metodo de la clase padre.
-				$model = $this->findTarifaTransaccion($añoImpositivo);
+				$model = $this->findTarifaTransaccion($añoImpositivo, $tipoTransaccion, $precioInmueble);
 
 				if ( $model !== null ) {
 					// Se pasa a determinar en que rango se encuentra ubicado el monto convertido
