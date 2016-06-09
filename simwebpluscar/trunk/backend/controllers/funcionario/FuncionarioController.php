@@ -36,10 +36,8 @@
 	use backend\models\funcionario\FuncionarioForm;
 	use backend\models\funcionario\Funcionario;
 	use common\conexion\ConexionController;
-	use common\models\solicitudescontribuyente\DetalleSolicitudCreada;
-	use backend\models\configuracion\documentosolicitud\SolicitudDocumentoSearch;
-	use common\models\planilla\PlanillaSearch;
-	use common\models\configuracion\solicitudplanilla\SolicitudPlanillaSearch;
+	use backend\models\utilidad\tarifa\transaccioninmobiliaria\TarifaTransaccionInmobiliariaSearch;
+	use common\models\calculo\transaccioninmobiliaria\TransaccionInmobiliaria;
 
 
 
@@ -151,9 +149,9 @@
 	  	public function actionPrueba()
 	  	{
 
-	  		$s = New PlanillaSearch(3905344);
+	  		$s = New TransaccionInmobiliaria();
 	  		//$s = New SolicitudPlanillaSearch(22621);
-die(var_dump($s->findPlanillaDetalle()));
+die(var_dump($s->iniciarCalculoTransaccion(225000, 2016)));
 
 
 	  	}
