@@ -45,7 +45,7 @@
  	use Yii;
 	use yii\db\ActiveRecord;
 	use yii\db\Exception;
-	use backend\models\utilidad\tarifa\inmueble\TarifaTransaccionInmobiliariaSearch;
+	use backend\models\utilidad\tarifa\transaccioninmobiliaria\TarifaTransaccionInmobiliariaSearch;
 	use backend\models\utilidad\ut\UnidadTributariaForm;
 
 
