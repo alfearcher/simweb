@@ -153,7 +153,7 @@
 	    	$tipo = 0;
 	    	$continuo = false;
 	    	if ( count($parametros) > 0 ) {
-	    		if ( isset($parametros['tipo_monto']) ) {
+	    		if ( isset($parametros['tipo_rango']) ) {
 	    			$tipo = $parametros['tipo_monto'];
 	    			$continuo = true;
 
