@@ -62,13 +62,12 @@
 		 */
 		public function findTarifaTransaccion($añoImpositivo)
 		{
-			$modelFind = TransaccionInmobiliaria()->find()
-												  ->where('ano_impositivo =:ano_impositivo',
+			$modelFind = TransaccionInmobiliaria::find()->where('ano_impositivo =:ano_impositivo',
 												  						[':ano_impositivo' => $añoImpositivo])
-												  ->andWhere('inactivo =:inactivo', [':inactivo' => 0])
-												  ->orderBy([
-												  		'monto_desde' => SORT_ASC,
-												  	]);
+												  		->andWhere('inactivo =:inactivo', [':inactivo' => 0])
+														->orderBy([
+															'monto_desde' => SORT_ASC,
+														]);
 			return isset($modelFind) ? $modelFind : null;
 		}
 
