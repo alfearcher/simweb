@@ -50,8 +50,8 @@
 
 
 	/**
-	* 	Clase que gestiona el calculo referente a las transacciones inmobiliarias.
-	*
+	* Clase que gestiona el calculo referente a las transacciones inmobiliarias.
+	* Retorna el monto por el concepto de transaccion inmobiliaria.
 	*/
 	class TransaccionInmobiliaria extends TarifaTransaccionInmobiliariaSearch
 	{
@@ -87,7 +87,11 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que permite obtener el monto de la unidad tributaria (expresado en moneda nacional).
+		 * @param  Integer $añoImpositivo Año actual, define cuando se realizo el calculo delimpuesto.
+		 * @return Double Retorna monto expresado en moneda nacional de las unidades tributarias.
+		 */
 		public function getUnidadTributaria($añoImpositivo)
 		{
 			$montoUt = 0;
@@ -100,19 +104,47 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que inicia el proceso de calculo.
+		 * @param  Double $precioInmueble monto del precio del inmueble.
+		 * @param  Integer $añoImpositivo año impositivo cuando se realizo la transaccion.
+		 * @return Double Retorna un monto calculado que especifica cuanto se debe pagar
+		 * por la transaccion comercial realizada sobre el inmueble. Si no se realiza el calculo
+		 * retorna cero (0).
+		 */
 		public function iniciarCalculoTransaccion($precioInmueble, $añoImpositivo)
 		{
-			return self::calcularTransaccionCaroni();
+			$monto = self::calcularTransaccionCaroni($precioInmueble, $añoImpositivo);
+			return $monto;
 		}
 
 
 
-		/***/
+		/**
+		 * Metodo que realiza el calculo de la transaccion inmobiliaria, segun la metodologia
+		 * existente en la Alcaldia de Caroni, Edo. Bolivar. Esta metodologia de calculo consiste
+		 * en convertir el precio por el cual se vendio el inmueble, en unidades tributarias.
+		 * Las unidades tributarias utilizadas seran las del año cuando se registra dicha transaccion
+		 * comercial. Luego dicho monto convertido es comparado contra una lista catalogo que contiene
+		 * una serie de rangos (desde-hasta), lo cual permite determinar en cual rango esta el monto
+		 * convertido (precio del inmueble / unidad tributaria). Una vez determinado esto, la lista
+		 * catalogo de rangos contiene una alicuota que sera la utilizada en los calculos del impuesto
+		 * por transacciones inmobiliaria.
+		 * Este monto calculado luego sera liquidado a traves de una planilla de liquidacion.
+		 * @param  Double $precioInmueble monto del precio del inmueble.
+		 * @param  Integer $añoImpositivo Año impositivo del que se quiera obtener
+		 * la unidad tributaria.
+		 * @return Double Retorna un monto calculado referente a la transaccion inmobiliaria. Sino
+		 * se realiza el calculo retorna cero (0).
+		 */
 		public function calcularTransaccionCaroni($precioInmueble, $añoImpositivo)
 		{
 			// Obligar seteando el contenido de la variable a integer.
 			settype($añoImpositivo, 'integer');
+
+			$montoAplicar = 0;
+			$montoDescuento = 0;
+			$montoCalculado = 0;
 
 			// Se realiza la conversion del precio a unidades tributarias.
 			$montoConversion = self::getConvertirPrecioUT($precioInmueble, $añoImpositivo);
@@ -133,6 +165,10 @@
 							$parametros['monto_aplicar'] = $tarifa['monto_aplicar'];
 							$parametros['ano_impositivo'] = $tarifa['ano_impositivo'];
 
+							$descuentos['tipo_monto'] = $tarifa['tipo_rango'];
+							$descuentos['porc_descuento'] = $tarifa['porc_descuento'];
+							$descuentos['ano_impositivo'] = $tarifa['ano_impositivo'];
+
 							if ( $tarifa['monto_desde'] <= $montoConversion && $tarifa['monto_hasta'] >= $montoConversion ) {
 								// Determina el monto que debe aplicar, si es en unidades tributarias, se realiza
 								// la conversion a moneda nacional.
@@ -144,6 +180,9 @@
 					}
 				}
 			}
+
+			$montoCalculado = $montoAplicar;
+			return $montoCalculado;
 		}
 
 	}
