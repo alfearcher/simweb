@@ -56,8 +56,10 @@
 
 		/**
 		 * Metodo que permite obtener el modelo de la entidad tarifas-trans-inmobiliaria.
-		 * @param  Integer $añoImpositivo Año impositivo donde se buscaran los parametros
+		 * @param  Integer $añoImpositivo año impositivo donde se buscaran los parametros
 		 * de calculos de la catalogo-tarifas.
+		 * @param  Integer $tipoTransaccion identificador del tipo de transaccion.
+		 * @param  Double $precioInmueble monto que se refiere el precio del inmueble.
 		 * @return Active Record.
 		 */
 		public function findTarifaTransaccion($añoImpositivo, $tipoTransaccion, $precioInmueble)
