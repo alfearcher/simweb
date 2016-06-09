@@ -46,7 +46,6 @@
 	use yii\base\Model;
 	use yii\data\ActiveDataProvider;
 	use backend\models\utilidad\tarifa\inmueble\TarifaTransaccionInmobiliaria;
-	use backend\models\utilidad\ut\UnidadTributariaForm;
 
 	/**
 	* 	Clase
@@ -73,75 +72,7 @@
 
 
 
-		/**
-		 * Metodo que realiza la conversion de un monto ($precioInmueble) a unidades
-		 * tributarias, las unidad tributaria se tomara del año ($añoImpositivo)
-		 * @param  Double $precioInmueble monto del precio del inmueble.
-		 * @param  Integer $añoImpositivo Año impositivo del que se quiera obtener
-		 * la unidad tributaria.
-		 * @return Double Retorna un monto equivalente en unidades tributarias del
-		 * precio del inmueble
-		 */
-		public function getConvertirPrecioUT($precioInmueble, $añoImpositivo)
-		{
-			// Precio convertido en unidades tributarias.
-			$precioConvertido = 0;
-
-			settype($añoImpositivo, 'integer');
-
-			// Unidades tributarias del año.
-			$montoUt = 0;
-			$montoUt = self::getUnidadTributaria($añoImpositivo);
-
-			if ( $montoUt > 0 ) {
-				$precioConvertido = $precioInmueble / $montoUt;
-			}
-
-			return $precioConvertido;
-
-		}
-
-
-
-		/***/
-		public function getUnidadTributaria($añoImpositivo)
-		{
-			$montoUt = 0;
-			$ut = New UnidadTributariaForm();
-			$montoUt = $ut->getUnidadTributaria($añoImpositivo);
-
-			if ( $montoUt == null ) { $montoUt = 0; }
-			return $montoUt;
-		}
-
-
-
-		/***/
-		public function iniciarCalculoTransaccion($precioInmueble, $añoImpositivo)
-		{
-			settype($añoImpositivo, 'integer');
-			$ut = New UnidadTributariaForm();
-
-			$montoConversion = self::getConvertirPrecioUT($precioInmueble, $añoImpositivo);
-			if ( $montoConversion > 0 ) {
-				$model = self::findTarifaTransaccion($añoImpositivo);
-				if ( $model !== null ) {
-					// Se pasa a determinar en que rango se encuentra ubicado el monto convertido
-					// en unidades tributarias.
-					$tarifas = $model->asArray()->all();
-					foreach ( $tarifas as $tarifa ) {
-						if ( $tarifa['monto_hasta'] > 0 ) {
-							if ( $tarifa['monto_desde'] <= $montoConversion && $tarifa['monto_hasta'] >= $montoConversion ) {
-								$montoAplicar = $ut->getMontoAplicar($tarifa['tipo_rango']);
-							}
-						} elseif ( $tarifa['monto_hasta'] == 0 ) {
-
-						}
-					}
-				}
-			}
-		}
-
+		
 
 
 
