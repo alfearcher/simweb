@@ -79,6 +79,76 @@ function activar_campos( val ) {
     document.getElementById( 'ms7' ).style.display = tit7;	
     document.getElementById( 'ms8' ).style.display = tit8;
 }
+/**
+ * [bloquea description] funcion que bloquea o muestra campos segun la seleccion de un combo
+
+ */
+
+function bloquea() { 
+   
+
+   // alert('llego');
+// if ($( "#base_Calculo" ).val() == 2) { 
+  
+//         $("#unidad").hide();
+        
+//     } else { 
+
+//         $("#ancho").show();
+//         $("#alto").show();
+               
+//     } 
+
+// if ($( "input:checked" ).val() 
+  
+//         $("#tipo2").hide();
+        
+//     } else { 
+
+//         $("#tipo2").show();
+               
+//     } 
+//     
+    if (document.getElementById("base_calculo").value=='') { 
+    document.getElementById("alto").style.display='none'; 
+    document.getElementById("ancho").style.display='none'; 
+    document.getElementById("unidad").style.display='none';
+    document.getElementById("profundidad").style.display='none';  
+        
+    } 
+
+    if (document.getElementById("base_calculo").value==2) { 
+        document.getElementById("alto").style.display=''; 
+        document.getElementById("ancho").style.display=''; 
+        document.getElementById("unidad").style.display='none';
+        document.getElementById("profundidad").style.display='none';  
+        
+    } 
+
+    if (document.getElementById("base_calculo").value==12) { 
+        document.getElementById("alto").style.display='';
+         document.getElementById("ancho").style.display=''; 
+          document.getElementById("profundidad").style.display=''; 
+        document.getElementById("unidad").style.display='none';
+               
+    }
+
+
+     if (document.getElementById("base_calculo").value != 2) {
+
+    if (document.getElementById("base_calculo").value!=12){ 
+    //     alert('diferente 2 y 12');
+        document.getElementById("alto").style.display='none'; 
+        document.getElementById("ancho").style.display='none'; 
+        document.getElementById("unidad").style.display='';
+        document.getElementById("profundidad").style.display='none';  
+        }
+
+     }
+
+//     
+} 
+
     
 /*****************************************************************************
 Código para colocar los indicadores de miles  y decimales mientras se escribe
@@ -161,9 +231,10 @@ function puntitos( donde, caracter, campo ) {
         }
             donde.focus()
 } 
+
 </script>
 
-
+<body onload = "bloquea()"/>
 
 <?php $form = ActiveForm::begin([
     
@@ -258,7 +329,9 @@ function puntitos( donde, caracter, campo ) {
 
         <div class="row">
         
-         <!--INICIO DE FECHA INICIAL -->
+        
+
+            <!--INICIO DE FECHA INICIAL -->
 
             <div class="col-sm-2">
                
@@ -288,6 +361,9 @@ function puntitos( donde, caracter, campo ) {
 
 
         <!--FIN DE FECHA INICIAL -->
+
+
+      
 
         <!--INICIO DE CANTIDAD TIEMPO -->
 
@@ -326,12 +402,13 @@ function puntitos( donde, caracter, campo ) {
                                      *  Condicional para verificar que fecha fin se le debe colocar a la propaganda dependiendo si es por: ( horas, dias, semanas, mes, anos ).
                                      */
                                     if($model->tiempo == 1) {
+                                       // die('llego a 1');
                                         
                                         $f = $model->fecha_inicial;
                                         $t = $model->cantidad_tiempo;
                                         $fecha = date_create($f);
                                         date_add($fecha, date_interval_create_from_date_string($t.'hours'));
-                                        $fecha_fin = date_format($fecha, 'Y/m/d');
+                                        $fecha_fin = date_format($fecha, 'd-m-Y');
                                     }
 
                                     if( $model->tiempo == 2 ) {
@@ -339,7 +416,7 @@ function puntitos( donde, caracter, campo ) {
                                         $t = $model->cantidad_tiempo;
                                         $fecha = date_create($f);
                                         date_add($fecha, date_interval_create_from_date_string($t.'days'));
-                                        $fecha_fin = date_format($fecha, 'Y/m/d');
+                                        $fecha_fin = date_format($fecha, 'd-m-Y');
                                     }
 
                                     if( $model->tiempo == 3 ) {
@@ -347,7 +424,7 @@ function puntitos( donde, caracter, campo ) {
                                         $t = $model->cantidad_tiempo;
                                         $fecha = date_create($f);
                                         date_add($fecha, date_interval_create_from_date_string($t.'weeks'));
-                                        $fecha_fin = date_format($fecha, 'Y/m/d');
+                                        $fecha_fin = date_format($fecha, 'd-m-Y');
                                     }
 
                                     if( $model->tiempo == 4 ) {
@@ -355,7 +432,7 @@ function puntitos( donde, caracter, campo ) {
                                         $t = $model->cantidad_tiempo;
                                         $fecha = date_create($f);
                                         date_add($fecha, date_interval_create_from_date_string($t.'months'));
-                                        $fecha_fin = date_format($fecha, 'Y/m/d');
+                                        $fecha_fin = date_format($fecha, 'd-m-Y');
                                     }
 
                                     if( $model->tiempo == 5 ) {
@@ -363,7 +440,7 @@ function puntitos( donde, caracter, campo ) {
                                         $t = $model->cantidad_tiempo;
                                         $fecha = date_create($f);
                                         date_add($fecha, date_interval_create_from_date_string($t.'years'));
-                                        $fecha_fin = date_format($fecha, 'Y/m/d');
+                                        $fecha_fin = date_format($fecha, 'd-m-Y');
                                     }
                             ?> 
 
@@ -405,7 +482,7 @@ function puntitos( donde, caracter, campo ) {
         
         <!--FIN DE CANTIDAD -->
 
-              <!--INICIO DE BASE -->
+        <!--INICIO DE BASE -->
             
             <?php  
             $modelBaseCalculo = BasesCalculos::find()->orderBy( [ 'descripcion' => SORT_ASC ] )->asArray()->all();                 
@@ -415,7 +492,9 @@ function puntitos( donde, caracter, campo ) {
             <div class="col-sm-2" >
                         <?= $form->field($model, 'base_calculo')->dropDownList($listaBaseCalculo,
                                                             [
+                                                            'id' => 'base_calculo',
                                                             'prompt' => yii::t('frontend', 'Select'),
+                                                            'onchange' => 'bloquea()',
                                                             ]);
                     ?>
                 
@@ -423,14 +502,72 @@ function puntitos( donde, caracter, campo ) {
 
         <!--FIN DE BASE -->
 
-        <!--INICIO DE ID SIM -->
-            
-            <div class="col-sm-1">
-                <?= $form->field( $model, 'id_sim' )->textInput( [ 'inline' => false, 'style' => 'width:100%;' ] )?>
-            </div>
 
-        <!--FIN DE ID SIM -->
+        <!--INICIO DE UNIDAD -->
 
+
+            <div class="col-sm-1" id="unidad">
+                                  
+                <?= $form->field( $model, 'unidad' )->textInput( [ 
+                                                                                                               'inline' => true, 
+                                                                                                               'style' => 'width:100%;',
+                                                                                                               
+                                                                                                            ] )
+                ?>
+            </div> 
+        
+        <!--FIN DE UNIDAD -->
+
+
+        <!--INICIO DE ALTO -->
+
+
+        <div class="col-sm-1" id="alto">
+                                  
+                <?= $form->field( $model, 'alto' )->textInput( [ 
+                                                                                                               'inline' => true, 
+                                                                                                               'style' => 'width:100%;',
+                                                                                                               
+                                                                                                            ] )
+                ?>
+        </div> 
+        
+        <!--FIN DE ALTO -->
+
+        <!--INICIO DE ANCHO -->
+
+
+        <div class="col-sm-1" id="ancho">
+                                  
+                <?= $form->field( $model, 'ancho' )->textInput( [ 
+                                                                                                               'inline' => true, 
+                                                                                                               'style' => 'width:100%;',
+                                                                                                             
+                                                                                                            ] )
+                ?>
+        </div> 
+        
+        <!--FIN DE ANCHO -->
+
+
+        <!--INICIO DE PROFUNDIDAD -->
+
+
+        <div class="col-sm-1" id="profundidad">
+                                  
+                <?= $form->field( $model, 'profundidad' )->textInput( [ 
+                                                                                                               'inline' => true, 
+                                                                                                               'style' => 'width:100%;',
+                                                                                                               
+                                                                                                            ] )
+                ?>
+        </div> 
+        
+        <!--FIN DE PROFUNDIDAD -->
+
+
+
+     
       
 
         </div>
@@ -565,7 +702,7 @@ function puntitos( donde, caracter, campo ) {
             <div class="col-sm-3">
                         <?= $form->field($model, 'observacion')->textArea([ 'id'=> 'observacion', 
                                                                            
-                                                                            'style' => 'width:280px;',
+                                                                            'style' => 'width:280px; margin-left: -40px;',
                                                                           
                                                                          
                                                                                                                                                                                    
@@ -573,6 +710,15 @@ function puntitos( donde, caracter, campo ) {
             </div> 
 
         <!--FIN DE OBSERVACION -->    
+
+           <!--INICIO DE ID SIM -->
+            
+            <div class="col-sm-1">
+                <?= $form->field( $model, 'id_sim' )->textInput( [ 'inline' => false, 'style' => 'width:100%;' ] )?>
+            </div>
+
+        <!--FIN DE ID SIM -->
+
 
 
 
