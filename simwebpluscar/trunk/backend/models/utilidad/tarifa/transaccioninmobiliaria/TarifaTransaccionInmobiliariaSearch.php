@@ -68,7 +68,7 @@
 												  ->andWhere('inactivo =:inactivo', [':inactivo' => 0])
 												  ->orderBy([
 												  		'monto_desde' => SORT_ASC,
-												  	])
+												  	]);
 			return isset($modelFind) ? $modelFind : null;
 		}
 
