@@ -139,7 +139,7 @@
 		 * @param  Double $precioInmueble monto del precio del inmueble.
 		 * @param  Integer $añoImpositivo Año impositivo del que se quiera obtener
 		 * la unidad tributaria.
-		 * @param  Integer $tipoTransaacion identificador del tipo de transaccion, para este
+		 * @param  Integer $tipoTransaccion identificador del tipo de transaccion, para este
 		 * caso particular de Caroni, se manejan dos tipos:
 		 * - 	VENTA.
 		 * - 	HIPOTECA.
