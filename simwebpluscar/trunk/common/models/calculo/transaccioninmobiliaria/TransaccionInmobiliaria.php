@@ -129,13 +129,17 @@
 					$ut = New UnidadTributariaForm();
 					foreach ( $tarifas as $tarifa ) {
 						if ( $tarifa['monto_hasta'] > 0 ) {
+							$parametros['tipo_rango'] = $tarifa['tipo_rango'];
+							$parametros['monto_aplicar'] = $tarifa['monto_aplicar'];
+							$parametros['ano_impositivo'] = $tarifa['ano_impositivo'];
+
 							if ( $tarifa['monto_desde'] <= $montoConversion && $tarifa['monto_hasta'] >= $montoConversion ) {
 								// Determina el monto que debe aplicar, si es en unidades tributarias, se realiza
 								// la conversion a moneda nacional.
-								$montoAplicar = $ut->getMontoAplicar($tarifa['tipo_rango']);
+								$montoAplicar = $ut->getMontoAplicar($parametros);
 							}
 						} elseif ( $tarifa['monto_hasta'] == 0 ) {
-							$montoAplicar = $ut->getMontoAplicar($tarifa['tipo_rango']);
+							$montoAplicar = $ut->getMontoAplicar($parametros);
 						}
 					}
 				}
