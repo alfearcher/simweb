@@ -119,7 +119,7 @@
 
 
         /***/
-        public function negarSolicitud()
+        public function negarSolicitud($causa = 0, $observacion = '')
         {
             $result = false;
             if ( $this->_accion == Yii::$app->solicitud->negar() ) {
@@ -128,7 +128,7 @@
                 if ( $model !== null && isset($model) ) {
                     // Se asegura que la solicitud este pendiente por aprobar.
                     if ( $model['estatus'] == 0 && $model['inactivo'] == 0 ) {
-                        $result = self::aprobar($model);
+                        $result = self::negar($model);
                     }
                 }
             }
@@ -138,7 +138,7 @@
 
 
         /***/
-        private function negar($model)
+        private function negar($model, $causa, $observacion)
         {
             $result = false;
             if ( $model['nro_solicitud'] == $this->_nro_solicitud ) {
@@ -156,6 +156,8 @@
                 $model->fecha_hora_proceso = date('Y-m-d H:i:s');
                 $model->user_funcionario = $usuario;
                 $model->estatus = 9;
+                $model->causa = $causa;
+                $model->observacion = $observacion;
 
                 // Se pasan los valores que se actualizaran del modelo al arreglo de datos.
                 foreach ( $arregloUpdate as $arreglo ) {
