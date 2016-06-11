@@ -128,7 +128,7 @@
                 if ( $model !== null && isset($model) ) {
                     // Se asegura que la solicitud este pendiente por aprobar.
                     if ( $model['estatus'] == 0 && $model['inactivo'] == 0 ) {
-                        $result = self::negar($model);
+                        $result = self::negar($model, $causa, $observacion);
                     }
                 }
             }
@@ -145,12 +145,10 @@
                 $arregloCondicion = ['nro_solicitud' => $this->_nro_solicitud];
                 $tableName = $model->tableName();
 
-                 $usuario = isset(Yii::$app->user->identity->email) ? Yii::$app->user->identity->email : Yii::$app->user->identity->login;
-
-                $modelForm = New SolicitudesContribuyenteForm();               
+                 $usuario = isset(Yii::$app->user->identity->email) ? Yii::$app->user->identity->email : Yii::$app->user->identity->login;   
 
                 // Se obtienen los campos que se actualizaran.
-                $arregloUpdate = $modelForm->atributosUpdateNegacion();
+                $arregloUpdate = $this->atributosUpdateNegacion();
                 $arregloDatos = null;
 
                 $model->fecha_hora_proceso = date('Y-m-d H:i:s');
@@ -165,7 +163,7 @@
                         $arregloDatos[$arreglo] = $model[$arreglo];
                     }
                 }
-
+die(var_dump($arregloDatos));
                 $result = $this->_conexion->modificarRegistro($this->_conn, $tableName, $arregloDatos, $arregloCondicion);
             }
             return $result;
@@ -216,12 +214,10 @@
                 $arregloCondicion = ['nro_solicitud' => $this->_nro_solicitud];
                 $tableName = $model->tableName();
 
-                 $usuario = isset(Yii::$app->user->identity->email) ? Yii::$app->user->identity->email : Yii::$app->user->identity->login;
-
-                $modelForm = New SolicitudesContribuyenteForm();               
+                 $usuario = isset(Yii::$app->user->identity->email) ? Yii::$app->user->identity->email : Yii::$app->user->identity->login;       
 
                 // Se obtienen los campos que se actualizaran.
-                $arregloUpdate = $modelForm->atributosUpdateAprobacion();
+                $arregloUpdate = $this->atributosUpdateAprobacion();
                 $arregloDatos = null;
 
                 $model->fecha_hora_proceso = date('Y-m-d H:i:s');
