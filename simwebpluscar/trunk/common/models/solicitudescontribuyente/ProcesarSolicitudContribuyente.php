@@ -66,40 +66,92 @@
     class ProcesarSolicitudContribuyente extends SolicitudesContribuyenteForm
     {
 
-        private $nro_solicitud;
+        private $_nro_solicitud;
+        private $_conn;
+        private $_conexion;
 
         /**
          * Especifica el tipo de proceso a ejecutar sobre la solicitud. Los procesos a ejecutar
          * son aquellos definidos por las variables:
-         * - APROBAR    => Yii::$app->solicitud->aprobar()
-         * - NEGAR      => Yii::$app->solicitud->negar()
+         * - Aprobar    => Yii::$app->solicitud->aprobar()
+         * - Negar      => Yii::$app->solicitud->negar()
          * @var String
          */
-        private $accion;
+        private $_accion;
+
 
 
         /**
          * Constructor de la clase.
          * @param Long $nroSolicitud identificador de la solicitud creada por el
          * funcionario o contribuyente.
+         * @param String $accionLocal especifica el proceso a ejecutar sobre la solicitud,
+         * este proceso queda definido por los eventos:
+         * - Aprobar
+         * - Negar
+         * @param [type] $connLocal     [description]
+         * @param [type] $conexionLocal [description]
          */
-        public function __construct($nroSolicitud)
+        public function __construct($nroSolicitud, $accionLocal, $connLocal, $conexionLocal)
         {
-            $this->nro_solicitud = $nroSolicitud;
+            $this->_nro_solicitud = $nroSolicitud;
+            $this->_accion = $accionLocal;
+            $this->_conn = $connLocal;
+            $this->_conexion = $conexionLocal;
         }
 
 
 
         /***/
-        public function getDatosSolicitudCreada()
+        private function getDatosSolicitudCreada()
         {
             // find sobre SoliicitudesContribuyente.
             // Metodo clase padre.
-            $datos = $this->findSolicitudContribuyente($this->nro_solicitud);
+            $datos = $this->findSolicitudContribuyente($this->_nro_solicitud);
             return isset($datos) ? $datos : null;
         }
 
 
+
+
+        /***/
+        public function aprobarSolicitud()
+        {
+            $result = false;
+            if ( $this->_accion == Yii::$app->solicitud->aprobar() ) {
+                $result = selt::beginSave();
+            } else {
+                return false;
+            }
+        }
+
+
+
+        /***/
+        private function beginSave()
+        {
+            $result = false;
+            $arregloCondicion = null;
+            $model = New SolicitudesContribuyente();
+            $tableName = $model->tableName();
+            $usuario = isset(Yii::$app->user->identity->email) ? Yii::$app->user->identity->email : Yii::$app->user->identity->login;
+
+            $arregloDatos = [
+                'estatus' => 1,
+                'user_funcionario' => $usuario,
+                'fecha_hora_proceso' => date('Y-m-d H:i:s')
+            ];
+
+
+            $model->fecha_hora_proceso = date('Y-m-d H:i:s');
+            $model->user_funcionario = $usuario;
+            $model->estatus = 1;
+
+die(var_dump($model));
+
+            $result = $this->_conexion->modificarRegistro($this->_conn, $tableName, $arregloDatos, $arregloCondicion)
+
+        }
 
 
     }
