@@ -102,7 +102,10 @@
 
 
 
-        /***/
+        /**
+         * Metodo que realiza una busqueda de la solicitud con el parametro numero de solicitud.
+         * @return Active Record Retorna un modelo de la solicitud encontrada.
+         */
         private function getDatosSolicitudCreada()
         {
             // find sobre SoliicitudesContribuyente.
@@ -113,18 +116,17 @@
 
 
 
-
         /***/
-        public function aprobarSolicitud()
+        public function negarSolicitud()
         {
             $result = false;
-            if ( $this->_accion == Yii::$app->solicitud->aprobar() ) {
+            if ( $this->_accion == Yii::$app->solicitud->negar() ) {
                 // Model de la entidad SolicitudesContribuyente()
                 $model = self::getDatosSolicitudCreada();
                 if ( $model !== null && isset($model) ) {
                     // Se asegura que la solicitud este pendiente por aprobar.
-                    if ( $model['estatus'] == 0 ) {
-                        $result = self::beginSave($model);
+                    if ( $model['estatus'] == 0 && $model['inactivo'] == 0 ) {
+                        $result = self::aprobar($model);
                     }
                 }
             }
@@ -134,17 +136,87 @@
 
 
         /***/
-        private function beginSave($model)
+        private function negar($model)
         {
             $result = false;
             if ( $model['nro_solicitud'] == $this->_nro_solicitud ) {
-                $arregloCondicion = null;
-
-                $modelForm = New SolicitudesContribuyenteForm();
-
+                $arregloCondicion = ['nro_solicitud' => $this->_nro_solicitud];
                 $tableName = $model->tableName();
-                $usuario = isset(Yii::$app->user->identity->email) ? Yii::$app->user->identity->email : Yii::$app->user->identity->login;
 
+                 $usuario = isset(Yii::$app->user->identity->email) ? Yii::$app->user->identity->email : Yii::$app->user->identity->login;
+
+                $modelForm = New SolicitudesContribuyenteForm();               
+
+                // Se obtienen los campos que se actualizaran.
+                $arregloUpdate = $modelForm->atributosUpdateNegacion();
+                $arregloDatos = null;
+
+                $model->fecha_hora_proceso = date('Y-m-d H:i:s');
+                $model->user_funcionario = $usuario;
+                $model->estatus = 9;
+
+                // Se pasan los valores que se actualizaran del modelo al arreglo de datos.
+                foreach ( $arregloUpdate as $arreglo ) {
+                    if ( isset($model[$arreglo]) ) {
+                        $arregloDatos[$arreglo] = $model[$arreglo];
+                    }
+                }
+
+                $result = $this->_conexion->modificarRegistro($this->_conn, $tableName, $arregloDatos, $arregloCondicion);
+            }
+            return $result;
+
+        }
+
+
+
+
+
+        /**
+         * Metodo que permite verificar la operacion de aprobacion de la solicitud y de verificar
+         * que la solicitud enviada para su aprobacion se encuentre en un estatus de pendiente.
+         * Se realiza una busqueda de la solicitud para su comprobacion.
+         * @return Boolean] Retorna un true si la solicitud se aprobo de manera satisfactoria, o fals
+         * sino se ejecuto la aprobacion de manera correcta.
+         */
+        public function aprobarSolicitud()
+        {
+            $result = false;
+            if ( $this->_accion == Yii::$app->solicitud->aprobar() ) {
+                // Model de la entidad SolicitudesContribuyente()
+                $model = self::getDatosSolicitudCreada();
+                if ( $model !== null && isset($model) ) {
+                    // Se asegura que la solicitud este pendiente por aprobar.
+                    if ( $model['estatus'] == 0 && $model['inactivo'] == 0 ) {
+                        $result = self::aprobar($model);
+                    }
+                }
+            }
+            return $result;
+        }
+
+
+
+        /**
+         * Metodo que aprueba la solicitud, realizando los update respectivos sobre la entidad
+         * maestra de las solicitudes (SolicitudesContribuyente).
+         * @param  Active Record $model modelo de la entidad SolicitudesContribuyente, este modelo
+         * contiene la informacion de la solicitud que se busco con anterioridad.
+         * @return Bollean Retorna un true si la actualizacion se realiza satisfactoriamente o false
+         * en caso contrario.
+         */
+        private function aprobar($model)
+        {
+            $result = false;
+            if ( $model['nro_solicitud'] == $this->_nro_solicitud ) {
+                $arregloCondicion = ['nro_solicitud' => $this->_nro_solicitud];
+                $tableName = $model->tableName();
+
+                 $usuario = isset(Yii::$app->user->identity->email) ? Yii::$app->user->identity->email : Yii::$app->user->identity->login;
+
+                $modelForm = New SolicitudesContribuyenteForm();               
+
+                // Se obtienen los campos que se actualizaran.
                 $arregloUpdate = $modelForm->atributosUpdateAprobacion();
                 $arregloDatos = null;
 
@@ -161,6 +233,7 @@
 
                 $result = $this->_conexion->modificarRegistro($this->_conn, $tableName, $arregloDatos, $arregloCondicion);
             }
+            return $result;
 
         }
 

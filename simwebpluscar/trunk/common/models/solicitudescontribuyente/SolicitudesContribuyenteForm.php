@@ -211,6 +211,20 @@
             ]; 
         }
 
+
+
+        /***/
+        public function atributosUpdateNegacion()
+        {
+            return [
+                'estatus',
+                'user_funcionario',
+                'fecha_hora_proceso',
+                'causa',
+                'observacion'
+            ]; 
+        }
+
     }
 
  ?>
