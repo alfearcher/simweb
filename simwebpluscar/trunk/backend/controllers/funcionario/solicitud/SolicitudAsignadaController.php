@@ -198,7 +198,7 @@ die('no espcificada');
 													$this->_conn,
 													$this->_conexion
 												);
-			$procesar->aprobarSolicitud();	
+			$reult = $procesar->aprobarSolicitud();	
 
 		}
 
