@@ -164,7 +164,10 @@
 						self::actionIniciarAprobarSolicitud($postData, $formName);
 					}
 				} elseif ( isset($postData['btn-approve-reject']) ) {
-die('anular');
+					if ( $postData['btn-approve-request'] == 1 ) {
+						// Se presiono el boto de negacion.
+						self::actionIniciarNegarSolicitud($postData, $formName);
+					}
 				}
 
 			} else {
@@ -199,6 +202,35 @@ die('no espcificada');
 													$this->_conexion
 												);
 			$reult = $procesar->aprobarSolicitud();	
+
+		}
+
+
+
+
+		/***/
+		public function actionIniciarNegarSolicitud($postData, $formName)
+		{
+
+			$datos = $postData[$formName];
+
+			$this->_conexion = New ConexionController();
+
+  			// Instancia de conexion hacia la base de datos.
+  			$this->_conn = $this->_conexion->initConectar('db');
+  			$this->_conn->open();
+
+  			// Instancia de tipo transaccion para asegurar la integridad del resguardo de los datos.
+  			// Inicio de la transaccion.
+			$this->_transaccion = $this->_conn->beginTransaction();
+
+			$procesar = New ProcesarSolicitudContribuyente(
+													$datos['nro_solicitud'],
+													Yii::$app->solicitud->negar(),
+													$this->_conn,
+													$this->_conexion
+												);
+			$reult = $procesar->negarSolicitud(1, 'prueba de negacion');	
 
 		}
 
