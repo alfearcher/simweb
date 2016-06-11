@@ -85,6 +85,7 @@
         public function getDatosSolicitudCreada()
         {
             // find sobre SoliicitudesContribuyente.
+            // Metodo clase padre.
             $datos = $this->findSolicitudContribuyente($this->nro_solicitud);
             return isset($datos) ? $datos : null;
         }
