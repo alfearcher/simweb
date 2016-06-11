@@ -119,37 +119,48 @@
         {
             $result = false;
             if ( $this->_accion == Yii::$app->solicitud->aprobar() ) {
-                $result = selt::beginSave();
-            } else {
-                return false;
+                // Model de la entidad SolicitudesContribuyente()
+                $model = self::getDatosSolicitudCreada();
+                if ( $model !== null && isset($model) ) {
+                    // Se asegura que la solicitud este pendiente por aprobar.
+                    if ( $model['estatus'] == 0 ) {
+                        $result = self::beginSave($model);
+                    }
+                }
             }
+            return $result;
         }
 
 
 
         /***/
-        private function beginSave()
+        private function beginSave($model)
         {
             $result = false;
-            $arregloCondicion = null;
-            $model = New SolicitudesContribuyente();
-            $tableName = $model->tableName();
-            $usuario = isset(Yii::$app->user->identity->email) ? Yii::$app->user->identity->email : Yii::$app->user->identity->login;
+            if ( $model['nro_solicitud'] == $this->_nro_solicitud ) {
+                $arregloCondicion = null;
 
-            $arregloDatos = [
-                'estatus' => 1,
-                'user_funcionario' => $usuario,
-                'fecha_hora_proceso' => date('Y-m-d H:i:s')
-            ];
+                $modelForm = New SolicitudesContribuyenteForm();
 
+                $tableName = $model->tableName();
+                $usuario = isset(Yii::$app->user->identity->email) ? Yii::$app->user->identity->email : Yii::$app->user->identity->login;
 
-            $model->fecha_hora_proceso = date('Y-m-d H:i:s');
-            $model->user_funcionario = $usuario;
-            $model->estatus = 1;
+                $arregloUpdate = $modelForm->atributosUpdateAprobacion();
+                $arregloDatos = null;
 
-die(var_dump($model));
+                $model->fecha_hora_proceso = date('Y-m-d H:i:s');
+                $model->user_funcionario = $usuario;
+                $model->estatus = 1;
 
-            $result = $this->_conexion->modificarRegistro($this->_conn, $tableName, $arregloDatos, $arregloCondicion)
+                // Se pasan los valores que se actualizaran del modelo al arreglo de datos.
+                foreach ( $arregloUpdate as $arreglo ) {
+                    if ( isset($model[$arreglo]) ) {
+                        $arregloDatos[$arreglo] = $model[$arreglo];
+                    }
+                }
+
+                $result = $this->_conexion->modificarRegistro($this->_conn, $tableName, $arregloDatos, $arregloCondicion);
+            }
 
         }
 

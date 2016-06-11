@@ -195,6 +195,22 @@
             return isset($modelFind) ? $modelFind : null;
         }
 
+
+
+        /**
+         * Metodo que permite retornar los campos que seran actualizados cuando
+         * se aprueba la solicitud.
+         * @return Array Retorna arreglo de los campos especificados.
+         */
+        public function atributosUpdateAprobacion()
+        {
+            return [
+                'estatus',
+                'user_funcionario',
+                'fecha_hora_proceso'
+            ]; 
+        }
+
     }
 
  ?>
