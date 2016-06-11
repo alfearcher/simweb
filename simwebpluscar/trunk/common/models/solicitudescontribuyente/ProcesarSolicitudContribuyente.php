@@ -75,6 +75,8 @@
          * son aquellos definidos por las variables:
          * - Aprobar    => Yii::$app->solicitud->aprobar()
          * - Negar      => Yii::$app->solicitud->negar()
+         * Para verificar los procesos o eventos: common\classes\EventoSolicitud
+         * 
          * @var String
          */
         private $_accion;
