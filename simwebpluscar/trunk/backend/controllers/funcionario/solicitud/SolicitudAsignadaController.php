@@ -66,7 +66,8 @@
 	use backend\models\configuracion\documentosolicitud\SolicitudDocumentoSearch;
 	use common\models\configuracion\solicitudplanilla\SolicitudPlanillaSearch;
 	use common\models\planilla\PlanillaSearch;
-
+	use common\models\solicitudescontribuyente\ProcesarSolicitudContribuyente;
+	use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 
 
 	/**
@@ -86,9 +87,9 @@
 
 	   	public $layout = 'layout-main';				//	Layout principal del formulario.
 
-		public $conn;
-		public $conexion;
-		public $transaccion;
+		private $_conn;
+		private $_conexion;
+		private $_transaccion;
 
 
 
@@ -152,9 +153,54 @@
 		{
 			$request = Yii::$app->request;
 			$postData = $request->post();
-die(var_dump($postData));
+
+			$model = New SolicitudesContribuyente();
+			$formName = $model->formName();
+			if ( trim($formName) !== '' ) {
+				// Se pregunta por el boton seleccionado para procesar la solicitud.
+				if ( isset($postData['btn-approve-request']) ) {
+					if ( $postData['btn-approve-request'] == 1 ) {
+						// Se presiono el boto de aprobacion.
+						self::actionIniciarAprobarSolicitud($postData, $formName);
+					}
+				} elseif ( isset($postData['btn-approve-reject']) ) {
+die('anular');
+				}
+
+			} else {
+				// No esta definida la clase de la solicitud
+die('no espcificada');
+			}
 		}
 
+
+
+
+		/***/
+		public function actionIniciarAprobarSolicitud($postData, $formName)
+		{
+
+			$datos = $postData[$formName];
+
+			$this->_conexion = New ConexionController();
+
+  			// Instancia de conexion hacia la base de datos.
+  			$this->_conn = $this->_conexion->initConectar('db');
+  			$this->_conn->open();
+
+  			// Instancia de tipo transaccion para asegurar la integridad del resguardo de los datos.
+  			// Inicio de la transaccion.
+			$this->_transaccion = $this->_conn->beginTransaction();
+
+			$procesar = New ProcesarSolicitudContribuyente(
+													$datos['nro_solicitud'],
+													Yii::$app->solicitud->aprobar(),
+													$this->_conn,
+													$this->_conexion
+												);
+			$procesar->aprobarSolicitud();	
+
+		}
 
 
 
