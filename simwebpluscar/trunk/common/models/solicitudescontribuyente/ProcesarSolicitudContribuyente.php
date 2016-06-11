@@ -66,7 +66,16 @@
     class ProcesarSolicitudContribuyente extends SolicitudesContribuyenteForm
     {
 
-        public $nro_solicitud;
+        private $nro_solicitud;
+
+        /**
+         * Especifica el tipo de proceso a ejecutar sobre la solicitud. Los procesos a ejecutar
+         * son aquellos definidos por las variables:
+         * - APROBAR    => Yii::$app->solicitud->aprobar()
+         * - NEGAR      => Yii::$app->solicitud->negar()
+         * @var String
+         */
+        private $accion;
 
 
         /**
