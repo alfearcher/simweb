@@ -50,7 +50,6 @@
     namespace common\models\solicitudescontribuyente;
 
     use Yii;
-    use common\models\solicitudescontribuyente\SolicitudesContribuyente;
     use common\models\solicitudescontribuyente\SolicitudesContribuyenteForm;
 
 
@@ -115,7 +114,30 @@
         /***/
         public function procesarSolicitudPorImpuesto()
         {
+            $result = false;
+            $model = self::getDatosSolicitudCreada();
+            if ( $model !== null ) {
+                if ( $model['impuesto'] == 1 ) {
+                    // Actividades Economicas
 
+                } elseif ( $model['impuesto'] == 2 ) {
+                    // Inmuebles Urbanos.
+
+                } elseif ( $model['impuesto'] == 3 ) {
+                    // Vehiculos.
+
+                } elseif ( $model['impuesto'] == 4 ) {
+                    // Propaganda Comercial.
+
+                } elseif ( $model['impuesto'] == 6 ) {
+                    // Espectaculo Publico.
+
+                } elseif ( $model['impuesto'] == 7 ) {
+                    // Apuesta Licita.
+
+                }
+            }
+            return $result;
         }
 
 
