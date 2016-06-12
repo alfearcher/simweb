@@ -55,7 +55,7 @@
 
 
     /***/
-    class ProcesarSolicitudDetalle
+    class ProcesarSolicitudDetalleActividadEconomica
     {
         /**
          * $_model, modelo de la entidad "solicitudes-contribuyente", es el modelo de la
