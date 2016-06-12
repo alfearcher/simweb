@@ -163,7 +163,7 @@
                         $arregloDatos[$arreglo] = $model[$arreglo];
                     }
                 }
-die(var_dump($arregloDatos));
+
                 $result = $this->_conexion->modificarRegistro($this->_conn, $tableName, $arregloDatos, $arregloCondicion);
             }
             return $result;
