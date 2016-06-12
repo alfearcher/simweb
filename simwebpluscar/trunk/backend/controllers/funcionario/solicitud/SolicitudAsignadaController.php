@@ -163,8 +163,8 @@
 						// Se presiono el boto de aprobacion.
 						self::actionIniciarAprobarSolicitud($postData, $formName);
 					}
-				} elseif ( isset($postData['btn-approve-reject']) ) {
-					if ( $postData['btn-approve-request'] == 1 ) {
+				} elseif ( isset($postData['btn-reject-request']) ) {
+					if ( $postData['btn-reject-request'] == 1 ) {
 						// Se presiono el boto de negacion.
 						self::actionIniciarNegarSolicitud($postData, $formName);
 					}
@@ -172,7 +172,7 @@
 
 			} else {
 				// No esta definida la clase de la solicitud
-die('no espcificada');
+				return self::actionErrorOperacion(404);
 			}
 		}
 
