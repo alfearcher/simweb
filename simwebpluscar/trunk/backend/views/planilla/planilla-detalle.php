@@ -182,9 +182,13 @@
 				                            //
 				                            'value' => function($data) {
 				                            	if ( $data['pago'] == 0 ) {
-				                            		return Html::tag('strong', 'NO', ['class' => 'label label-danger']);
+				                            		return Html::tag('strong', Html::tag('h3',
+						                            								   	 'NO',
+						                            								   	 ['class' => 'label label-danger']));
 				                            	} elseif ( $data['pago'] == 1) {
-				                            		return Html::tag('strong', $data['fecha_pago'], ['class' => 'success']);
+				                            		return Html::tag('strong', Html::tag('h3',
+						                            			                     	 'SI',
+						                            			                     	 ['class' => 'success']));
 				                            	}
 				                            },
 				                        ],
