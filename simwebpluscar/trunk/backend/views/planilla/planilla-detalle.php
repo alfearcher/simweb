@@ -79,7 +79,7 @@
         		<div class="col-sm-4" style="padding-top: 10px;">
         			<h4><?= Html::encode($caption) ?></h4>
         		</div>
-        		
+
         	</div>
         </div>
 		<div class="panel-body">
@@ -182,7 +182,7 @@
 				                            //
 				                            'value' => function($data) {
 				                            	if ( $data['pago'] == 0 ) {
-				                            		return Html::tag('strong', 'NO', ['class' => 'danger']);
+				                            		return Html::tag('strong', 'NO', ['class' => 'label label-danger']);
 				                            	} elseif ( $data['pago'] == 1) {
 				                            		return Html::tag('strong', $data['fecha_pago'], ['class' => 'success']);
 				                            	}
