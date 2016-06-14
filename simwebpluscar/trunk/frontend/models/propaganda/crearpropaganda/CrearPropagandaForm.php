@@ -97,6 +97,17 @@ class CrearPropagandaForm extends Model
         return [
 
             [['observacion','direccion' ,'clase_propaganda', 'cigarrillos', 'fecha_fin', 'cantidad_tiempo', 'tiempo', 'fecha_inicial'], 'required'],
+            
+            [['alto', 'ancho'], 'required', 'when' => function($model) {
+                                                        return $model->base_calculo == 6;
+            }],
+            [['alto', 'ancho', 'profundidad'], 'required', 'when' => function($model) {
+                                                        return $model->base_calculo == 7;
+         
+            }],
+
+                
+             
         ]; 
     } 
 
