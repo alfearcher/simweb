@@ -688,9 +688,10 @@ function puntitos( donde, caracter, campo ) {
         <!--INICIO DE DIRECCION -->
 
             <div class="col-sm-5">
-                            <?= $form->field($model, 'direccion')->textArea(                         [ 'id'=> 'direccion', 
+                            <?= $form->field($model, 'direccion')->textArea(   
+                                  [ 'id'=> 'direccion', 
                                                                                                            
-                                                                                                            'style' => 'width:280px;',
+                                'style' => 'width:280px;',
                                                                                                           
                                                                                                          
                                                                                                                                                                                                                    
