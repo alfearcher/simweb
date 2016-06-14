@@ -407,7 +407,8 @@
 						                            	if ( $data['pago'] == 0 ) {
 						                            		return Html::tag('h3', Html::tag('strong',
 						                            								   			'NO',
-						                            								   			['class' => 'label label-danger']));
+						                            								   			['class' => 'label label-danger',
+						                            								   			 'style' => 'padding-top: -10px;'	]));
 						                            	} elseif ( $data['pago'] == 1) {
 						                            		return Html::tag('strong', 'SI', ['class' => 'success']);
 						                            	}
