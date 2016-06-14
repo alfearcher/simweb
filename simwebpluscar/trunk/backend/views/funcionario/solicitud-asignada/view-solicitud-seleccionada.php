@@ -409,7 +409,9 @@
 						                            								   			'NO',
 						                            								   			['class' => 'label label-danger']));
 						                            	} elseif ( $data['pago'] == 1) {
-						                            		return Html::tag('strong', 'SI', ['class' => 'success']);
+						                            		return Html::tag('strong', Html::tag('h3',
+						                            			                     			 'SI',
+						                            			                     			 ['class' => 'success']));
 						                            	}
 						                            },
 						                        ],
