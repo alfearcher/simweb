@@ -405,7 +405,7 @@
 						                            //
 						                            'value' => function($data) {
 						                            	if ( $data['pago'] == 0 ) {
-						                            		return Html::tag('strong', Html::tag('h1',
+						                            		return Html::tag('h2', Html::tag('h1',
 						                            								   			'NO',
 						                            								   			['class' => 'label label-danger']));
 						                            	} elseif ( $data['pago'] == 1) {
