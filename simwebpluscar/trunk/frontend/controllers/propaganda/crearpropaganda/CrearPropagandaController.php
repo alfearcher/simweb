@@ -60,6 +60,7 @@ use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 use common\models\configuracion\solicitud\DocumentoSolicitud;
 use common\enviaremail\PlantillaEmail;
 use frontend\models\propaganda\crearpropaganda\CrearPropagandaForm;
+use frontend\models\vehiculo\registrar\RegistrarVehiculoForm;
 
 
 /**
@@ -102,8 +103,22 @@ class CrearPropagandaController extends Controller
 
                if ($model->validate()){
 
-                     
-                
+                 $idContribuyente = yii::$app->user->identity->id_contribuyente;
+
+                  $verificar = new CrearPropagandaForm();
+
+                      $verificarDeclaracion = $verificar->verificarDeclaracion($idContribuyente);
+                      
+                          if($verificarDeclaracion == true){
+                            if($verificarDeclaracion[0]->tipo_naturaleza == 0){
+                              $buscarGuardar = self::beginSave("buscarGuardar", $model);
+                            }else{
+                              die('es juridico');
+                            }
+                          }else{
+                            die('no existe user');
+                          }
+                      
               }
             }
             
@@ -117,92 +132,8 @@ class CrearPropagandaController extends Controller
      
   }
 
-  public function actionVerificarCalcomania()
+  public function buscarNumeroSolicitud($conn, $conexion)
   {
-    //die('llegue a verificar');
-
-      $idContribuyente = yii::$app->user->identity->id_contribuyente;
-      $idCalcomania = yii::$app->request->post('id');
-      //die($idCalcomania);
-      $_SESSION['idCalcomania'] = $idCalcomania;
-  
-          
-          $buscar = new SolicitudExtravioForm();
-          $buscarVehiculo = $buscar->verificarCalcomania($idCalcomania);
-
-            if($buscarVehiculo == true){
-              $_SESSION['idVehiculo'] = $buscarVehiculo[0]->id_vehiculo;
-              $_SESSION['nroCalcomania'] = $buscarVehiculo[0]->nro_calcomania;
-
-              return $this->redirect(['reposicion-calcomania']);
-            }else{
-              return MensajeController::actionMensaje(920);
-            }  
-          
-    
-  }
-
-  public function actionReposicionCalcomania()
-  {
-
-      $model = new SolicitudExtravioForm();
-
-            $postData = Yii::$app->request->post();
-
-            if ( $model->load($postData) && Yii::$app->request->isAjax ){
-                  Yii::$app->response->format = Response::FORMAT_JSON;
-                  return ActiveForm::validate($model);
-            }
-
-            if ( $model->load($postData) ) {
-             // die('valido el postdata');
-
-               if ($model->validate()){
-
-
-                
-                 $verificar = new SolicitudExtravioForm();
-
-                  $verificarSolicitud = $verificar->VerificarSolicitud($_SESSION['idVehiculo'], $_SESSION['id']);
-
-                          if($verificarSolicitud ==  true){
-
-                              return MensajeController::actionMensaje(945);
-
-                          }else{
-                            
-                            $guardar = self::beginSave("buscarGuardar" , $model);
-
-                                if($guardar == true){
-                                    die('guardo');
-                                }else{
-                                    die(' no guardo');
-                                }
-                          }
-                      
-                     
-                
-              }
-            }
-            
-            return $this->render('/vehiculo/calcomania/causa-observacion-solicitud-extravio', [
-                                                              'model' => $model,
-                                                             
-                                                           
-            ]);
-  }
-
-
-    /**
-     * [actionRegistrarVehiculo description] metodo que renderiza y valida el formulario de cambio de datos del vehiculo
-     * @return [type] [description] render del formulario de cambio de datos de vehiculo
-     */
-   
-
-
-
-    public function buscarNumeroSolicitud($conn, $conexion)
-    {
      // die('hola');  
       $buscar = new ParametroSolicitud($_SESSION['id']);
 
@@ -229,7 +160,7 @@ class CrearPropagandaController extends Controller
      
       $arregloDatos['id_config_solicitud'] = $_SESSION['id'];
 
-      $arregloDatos['id_impuesto'] = $_SESSION['idVehiculo'];
+      $arregloDatos['id_impuesto'] = 0;
 
       //die($arregloDatos['id_impuesto']);
 
@@ -271,6 +202,7 @@ class CrearPropagandaController extends Controller
 
     public function guardarSolicitud($conn, $conexion , $idSolicitud, $model)
     {
+      //die(var_dump($model));
 
       $buscar = new ParametroSolicitud($_SESSION['id']);
 
@@ -278,35 +210,75 @@ class CrearPropagandaController extends Controller
 
       $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
       
-      $nroCalcomania = $_SESSION['nroCalcomania'];
-      $idImpuesto = $_SESSION['idVehiculo'];
+     
       $numeroSolicitud = $idSolicitud;
       $resultado = false;
       $datos = yii::$app->user->identity;
-      $tabla = 'sl_reposiciones_calcomania';
+      $tabla = 'sl_propagandas';
       $arregloDatos = [];
-      $arregloCampo = SolicitudExtravioForm::attributeSlReposicionesCalcomania();
+      $arregloCampo = CrearPropagandaForm::attributeSlPropagandas();
 
       foreach ($arregloCampo as $key=>$value){
 
           $arregloDatos[$value] =0;
       }
 
+      $arregloDatos['id_impuesto'] = 0;
+
       $arregloDatos['nro_solicitud'] = $numeroSolicitud;
 
       $arregloDatos['id_contribuyente'] = $datos->id_contribuyente;
 
-      $arregloDatos['id_impuesto'] = $idImpuesto;
+      $arregloDatos['ano_impositivo'] = date('Y');
 
-      $arregloDatos['nro_calcomania'] = $nroCalcomania;
+      $arregloDatos['direccion'] = $model->direccion;
+      //die(var_dump($arregloDatos['direccion']));
+
+      $arregloDatos['id_cp'] = 0;
+
+      $arregloDatos['clase_propaganda'] = $model->clase_propaganda;
+
+      $arregloDatos['tipo_propaganda'] = $model->tipo_propaganda;
+
+      $arregloDatos['uso_propaganda'] = $model->uso_propaganda;
+
+      $arregloDatos['medio_difusion'] = $model->materiales;
+
+      $arregloDatos['medio_transporte'] = $model->medio_transporte;
+
+      $arregloDatos['fecha_desde'] = $model->fecha_inicial;
+
+      $arregloDatos['cantidad_tiempo'] = $model->cantidad_tiempo;
+
+      $arregloDatos['id_tiempo'] = $model->tiempo;
+
+      $arregloDatos['id_sim'] = $model->id_sim;
+
+      $arregloDatos['cantidad_base'] = $model->cantidad_base;
+
+      $arregloDatos['base_calculo'] = $model->base_calculo;
+
+      $arregloDatos['cigarros'] = $model->cigarrillos;
+
+      $arregloDatos['bebidas_alcoholicas'] = $model->bebidas_alcoholicas;
+
+      $arregloDatos['cantidad_propagandas'] = 0;
+
+      $arregloDatos['planilla'] = 0;
+
+      $arregloDatos['idioma'] = $model->idioma;
+
+      $arregloDatos['observacion'] = $model->observacion;
+
+      $arregloDatos['fecha_fin'] = $model->fecha_fin;
+
+      $arregloDatos['fecha_guardado'] = date('Y-m-d');
 
       $arregloDatos['fecha_hora'] = date('Y-m-d h:m:i');
 
       $arregloDatos['usuario'] = $datos->login;
-
-      $arregloDatos['causa'] = $model->causas;
-
-      $arregloDatos['observacion'] = $model->observacion;
+      
+  
 
       if($nivelAprobacion == 1){ 
 
@@ -317,9 +289,20 @@ class CrearPropagandaController extends Controller
       $arregloDatos['fecha_hora_proceso'] = 0;
       }
 
-      $arregloDatos['user_funcionario'] = 0;
+      if ($resultado['nivel_aprobacion'] == 1){
+
+      $arregloDatos['estatus'] = 1;
+
+      }else{
 
       $arregloDatos['estatus'] = 0;
+      }
+
+      $arregloDatos['alto'] = $model->alto;
+
+      $arregloDatos['ancho'] = $model->ancho;
+
+      $arregloDatos['profundidad'] = $model->profundidad;
 
 
         if ($conexion->guardarRegistro($conn, $tabla, $arregloDatos )){
@@ -368,8 +351,7 @@ class CrearPropagandaController extends Controller
 
     public function beginSave($var, $model)
     {
-    // die('llegue a begin');
-      
+    // die('llegue a begin'.var_dump($model));
 
       $buscar = new ParametroSolicitud($_SESSION['id']);
 
@@ -412,7 +394,7 @@ class CrearPropagandaController extends Controller
                     //die('no es de aprobacion directa');
 
                   if ($buscar and $guardar == true ){
-                    //die('actualizo y guardo');
+                    die('actualizo y guardo');
 
                     $transaccion->commit();
                     $conn->close();
