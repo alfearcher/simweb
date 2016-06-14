@@ -52,6 +52,7 @@ namespace frontend\models\propaganda\crearpropaganda;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use frontend\models\usuario\CrearUsuarioNatural;
 
 
 
@@ -95,7 +96,7 @@ class CrearPropagandaForm extends Model
     {
         return [
 
-            [['observacion', 'clase_propaganda', 'cigarrillos', 'fecha_fin', 'cantidad_tiempo', 'tiempo', 'fecha_inicial'], 'required'],
+            [['observacion','direccion' ,'clase_propaganda', 'cigarrillos', 'fecha_fin', 'cantidad_tiempo', 'tiempo', 'fecha_inicial'], 'required'],
         ]; 
     } 
 
@@ -169,6 +170,25 @@ class CrearPropagandaForm extends Model
             
           
         ];
+    }
+
+    public function verificarDeclaracion($idContribuyente)
+    {
+        $buscar = CrearUsuarioNatural::find()
+                                        ->where([ 
+                                          'inactivo' => 0,
+                                          'id_contribuyente' => $idContribuyente,
+                                        
+                                        ])
+                                      ->all();
+                                    //die(var_dump($buscar));
+            if($buscar == true){
+             return $buscar;
+            }else{
+             return false;
+            }
+
+
     }
 
 
