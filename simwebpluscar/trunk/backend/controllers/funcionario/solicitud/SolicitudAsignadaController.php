@@ -201,7 +201,7 @@
 													$this->_conn,
 													$this->_conexion
 												);
-			$reult = $procesar->aprobarSolicitud();	
+			$reult = $procesar->aprobarSolicitud();
 
 		}
 
@@ -230,7 +230,7 @@
 													$this->_conn,
 													$this->_conexion
 												);
-			$reult = $procesar->negarSolicitud(1, 'prueba de negacion');	
+			$reult = $procesar->negarSolicitud(1, 'prueba de negacion');
 
 		}
 
