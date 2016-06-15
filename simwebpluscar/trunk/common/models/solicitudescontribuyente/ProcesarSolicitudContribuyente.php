@@ -76,7 +76,7 @@
          * - Aprobar    => Yii::$app->solicitud->aprobar()
          * - Negar      => Yii::$app->solicitud->negar()
          * Para verificar los procesos o eventos: common\classes\EventoSolicitud
-         * 
+         *
          * @var String
          */
         private $_accion;
@@ -118,6 +118,8 @@
 
 
 
+
+
         /***/
         public function negarSolicitud($causa = 0, $observacion = '')
         {
@@ -145,7 +147,7 @@
                 $arregloCondicion = ['nro_solicitud' => $this->_nro_solicitud];
                 $tableName = $model->tableName();
 
-                 $usuario = isset(Yii::$app->user->identity->email) ? Yii::$app->user->identity->email : Yii::$app->user->identity->login;   
+                 $usuario = isset(Yii::$app->user->identity->email) ? Yii::$app->user->identity->email : Yii::$app->user->identity->login;
 
                 // Se obtienen los campos que se actualizaran.
                 $arregloUpdate = $this->atributosUpdateNegacion();
@@ -214,7 +216,7 @@
                 $arregloCondicion = ['nro_solicitud' => $this->_nro_solicitud];
                 $tableName = $model->tableName();
 
-                 $usuario = isset(Yii::$app->user->identity->email) ? Yii::$app->user->identity->email : Yii::$app->user->identity->login;       
+                 $usuario = isset(Yii::$app->user->identity->email) ? Yii::$app->user->identity->email : Yii::$app->user->identity->login;
 
                 // Se obtienen los campos que se actualizaran.
                 $arregloUpdate = $this->atributosUpdateAprobacion();
