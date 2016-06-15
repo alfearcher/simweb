@@ -116,15 +116,15 @@
         public function getArrayDataProvider()
         {
         	$planillas = self::getListaPlanillaSegunSolicitudCreada();
-        	//$provider = null;
-        	//if ( count($planillas) > 0 ) {
+        	$provider = null;
+        	if ( count($planillas) > 0 ) {
         		$provider = New ArrayDataProvider([
         				'allModels' => $planillas,
         				'pagination' => [
         					'pageSize' => 10,
     					],
         			]);
-        	//}
+        	}
 
         	return $provider;
         }
