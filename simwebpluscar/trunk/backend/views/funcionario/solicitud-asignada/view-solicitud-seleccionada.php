@@ -343,6 +343,7 @@
 
 							<div class="row" style="padding-top: 5px;padding-left: 10px;">
 								<div class="planilla-solicitud" id="planilla-solicitud">
+
 									 <?= GridView::widget([
 							         		'id' => 'grid-lista-planilla',
 							               	'dataProvider' => $dataProviderPlanilla,
