@@ -96,19 +96,27 @@ class CrearPropagandaForm extends Model
     {
         return [
 
-            [['observacion','direccion' ,'clase_propaganda', 'cigarrillos', 'fecha_fin', 'cantidad_tiempo', 'tiempo', 'fecha_inicial'], 'required'],
+            // [['cantidad_base', 'base_calculo','observacion','direccion' ,'clase_propaganda', 'fecha_fin', 'cantidad_tiempo', 'tiempo', 'fecha_inicial', 'uso_propaganda', 'tipo_propaganda'], 'required'],
             
-            [['alto', 'ancho'], 'required', 'when' => function($model) {
-                                                        return $model->base_calculo == 6;
-            }],
-            [['alto', 'ancho', 'profundidad'], 'required', 'when' => function($model) {
-                                                        return $model->base_calculo == 7;
-         
-            }],
+           [['cantidad_base', 'base_calculo','observacion','direccion' ,'clase_propaganda','cigarrillos', 'bebidas_alcoholicas', 'idioma'  ,'fecha_fin', 'cantidad_tiempo', 'tiempo', 'fecha_inicial', 'uso_propaganda', 'tipo_propaganda', 'materiales', 'medio_transporte', 'id_sim'], 'default', 'value' => 0],
 
-                
-             
-        ]; 
+            [['alto','ancho'],'required','when' => function($model) {
+                                                                            if ( $model->base_calculo == 2 ) {
+                                                                                return true; }
+                                                                            }],
+           
+           [['alto','ancho', 'profundidad'],'required','when' => function($model) {
+                                                                            if ( $model->base_calculo == 12 ) {
+                                                                                return true; }
+                                                                            }],
+
+            [['unidad'],'required','when' => function($model) {
+                                                                        if ( $model->base_calculo !== 12 || $model->base_calculo !== 2 ) {
+                                                                                return true; }
+                                                                            }],
+            [['unidad', 'cantidad_tiempo'], 'integer'],
+
+            ]; 
     } 
 
     /**
@@ -136,7 +144,7 @@ class CrearPropagandaForm extends Model
                 'material' => Yii::t('frontend', 'Medio de Difusion'),
                 'medio_transporte' => Yii::t('frontend', 'Medio de Transporte'),
                 'direccion' => Yii::t('frontend', 'Direccion'),
-                'observacion' => Yii::t('frontend', 'Observacion'),
+                'observacion' => Yii::t('frontend', 'Mensaje de la Propaganda'),
         ];      
     }
 
