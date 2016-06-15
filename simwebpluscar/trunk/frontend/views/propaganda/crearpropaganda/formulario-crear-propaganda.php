@@ -18,7 +18,20 @@ use yii\jui\DatePicker;
 $fecha_fin = '00/00/0000';
 
 $this->title = 'Propaganda';
+
+
+
 ?>
+
+   <?php
+        $form = ActiveForm::begin([
+            'id' => 'form-propaganda',
+            'method' => 'post',
+            'enableClientValidation' => true,
+            'enableAjaxValidation' => false,
+            'enableClientScript' => true,
+        ]);
+     ?>
 
 
 
