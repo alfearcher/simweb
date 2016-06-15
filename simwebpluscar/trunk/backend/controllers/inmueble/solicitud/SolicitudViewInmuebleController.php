@@ -205,7 +205,7 @@
 			} 
 
 			return false;
-		} 
+		}  
 
 		// tipo solicitud 22
 		private function actionMostrarSolicitudCertificadoCatastralInmueble()
@@ -224,7 +224,7 @@
 			} 
 
 			return false;
-		}
+		} 
 
 		// tipo solicitud 23
 		private function actionMostrarSolicitudRenovacionCertificadoCatastralInmueble()

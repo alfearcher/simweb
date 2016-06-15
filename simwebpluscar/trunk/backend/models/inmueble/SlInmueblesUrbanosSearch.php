@@ -118,7 +118,7 @@
 	    													  ->andWhere('id_contribuyente =:id_contribuyente', [':id_contribuyente' => $this->id_contribuyente])
 	    													  ->one();
 	    	return isset($modelFind) ? $modelFind : null;
-	    }
+	    } 
  
 	}
 
