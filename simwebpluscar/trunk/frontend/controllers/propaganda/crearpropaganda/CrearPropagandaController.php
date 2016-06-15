@@ -97,11 +97,12 @@ class CrearPropagandaController extends Controller
                   Yii::$app->response->format = Response::FORMAT_JSON;
                   return ActiveForm::validate($model);
             }
-
+            die(var_dump($postData));
             if ( $model->load($postData) ) {
             
 
                if ($model->validate()){
+                die('valido');
 
                  $idContribuyente = yii::$app->user->identity->id_contribuyente;
 
@@ -239,6 +240,7 @@ class CrearPropagandaController extends Controller
       $arregloDatos['clase_propaganda'] = $model->clase_propaganda;
 
       $arregloDatos['tipo_propaganda'] = $model->tipo_propaganda;
+      //die($arregloDatos['tipo_propaganda']);
 
       $arregloDatos['uso_propaganda'] = $model->uso_propaganda;
 
