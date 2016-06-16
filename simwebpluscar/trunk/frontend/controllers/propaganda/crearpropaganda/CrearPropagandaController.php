@@ -97,30 +97,22 @@ class CrearPropagandaController extends Controller
                   Yii::$app->response->format = Response::FORMAT_JSON;
                   return ActiveForm::validate($model);
             }
-            die(var_dump($postData));
+           // die(var_dump($postData));
             if ( $model->load($postData) ) {
             
 
                if ($model->validate()){
-                die('valido');
-
-                 $idContribuyente = yii::$app->user->identity->id_contribuyente;
-
-                  $verificar = new CrearPropagandaForm();
-
-                      $verificarDeclaracion = $verificar->verificarDeclaracion($idContribuyente);
-                      
-                          if($verificarDeclaracion == true){
-                            if($verificarDeclaracion[0]->tipo_naturaleza == 0){
-                              $buscarGuardar = self::beginSave("buscarGuardar", $model);
-                            }else{
-                              die('es juridico');
-                            }
-                          }else{
-                            die('no existe user');
-                          }
+               
+                $buscarGuardar = self::beginSave("buscarGuardar", $model);
+                    
+                    if($buscarGuardar == true){
+                      die('guardo');
+                   }else{
+                    die('no guardo');
+                   }
                       
               }
+                  
             }
             
             return $this->render('/propaganda/crearpropaganda/formulario-crear-propaganda', [
@@ -135,7 +127,7 @@ class CrearPropagandaController extends Controller
 
   public function buscarNumeroSolicitud($conn, $conexion)
   {
-     // die('hola');  
+      //die('hola');  
       $buscar = new ParametroSolicitud($_SESSION['id']);
 
       
@@ -321,34 +313,115 @@ class CrearPropagandaController extends Controller
 
     }
 
-    public function actualizarCalcomaniaMaestro($conn, $conexion)
+    public function guardarPropagandaMaestro($conn, $conexion, $model)
     {
 
-
-      $tableName = 'calcomanias';
-      $arregloCondition = ['id_calcomania' => $_SESSION['idCalcomania']];
-      //die(var_dump($arregloCondition));
      
+      $numeroSolicitud = $idSolicitud;
+      $resultado = false;
+      $datos = yii::$app->user->identity;
+      $tabla = 'propagandas';
+      $arregloDatos = [];
+      $arregloCampo = CrearPropagandaForm::attributePropagandas();
 
+      foreach ($arregloCampo as $key=>$value){
+
+          $arregloDatos[$value] =0;
+      }
+
+      $arregloDatos['id_impuesto'] = 0;
+
+      $arregloDatos['id_contribuyente'] = $datos->id_contribuyente;
+
+      $arregloDatos['ano_impositivo'] = date('Y');
+
+      $arregloDatos['direccion'] = $model->direccion;
+      //die(var_dump($arregloDatos['direccion']));
+
+      $arregloDatos['id_cp'] = 0;
+
+      $arregloDatos['clase_propaganda'] = $model->clase_propaganda;
+
+      $arregloDatos['tipo_propaganda'] = $model->tipo_propaganda;
+      //die($arregloDatos['tipo_propaganda']);
+
+      $arregloDatos['uso_propaganda'] = $model->uso_propaganda;
+
+      $arregloDatos['medio_difusion'] = $model->materiales;
+
+      $arregloDatos['medio_transporte'] = $model->medio_transporte;
+
+      $arregloDatos['fecha_desde'] = $model->fecha_inicial;
+
+      $arregloDatos['cantidad_tiempo'] = $model->cantidad_tiempo;
+
+      $arregloDatos['id_tiempo'] = $model->tiempo;
+
+      $arregloDatos['id_sim'] = $model->id_sim;
+
+      $arregloDatos['cantidad_base'] = $model->cantidad_base;
+
+      $arregloDatos['base_calculo'] = $model->base_calculo;
+
+      $arregloDatos['cigarros'] = $model->cigarrillos;
+
+      $arregloDatos['bebidas_alcoholicas'] = $model->bebidas_alcoholicas;
+
+      $arregloDatos['cantidad_propagandas'] = 0;
+
+      $arregloDatos['planilla'] = 0;
+
+      $arregloDatos['idioma'] = $model->idioma;
+
+      $arregloDatos['observacion'] = $model->observacion;
+
+      $arregloDatos['fecha_fin'] = $model->fecha_fin;
+
+      $arregloDatos['fecha_guardado'] = date('Y-m-d');
+
+      $arregloDatos['fecha_hora'] = date('Y-m-d h:m:i');
+
+      $arregloDatos['usuario'] = $datos->login;
       
+  
 
-      $arregloDatos['estatus'] = 9;
+      if($nivelAprobacion == 1){ 
 
-      $conexion = new ConexionController();
+      $arregloDatos['fecha_hora_proceso'] = date('Y-m-d h:m:i');
 
-      $conn = $conexion->initConectar('db');
-         
-      $conn->open();
+      }else{
 
-      //$transaccion = $conn->beginTransaction();
+      $arregloDatos['fecha_hora_proceso'] = 0;
+      }
 
-          if ($conexion->modificarRegistro($conn, $tableName, $arregloDatos, $arregloCondition)){
+      if ($resultado['nivel_aprobacion'] == 1){
 
-             // die('modifico');
+      $arregloDatos['estatus'] = 1;
 
-              return true;
-              
-          } 
+      }else{
+
+      $arregloDatos['estatus'] = 0;
+      }
+
+      $arregloDatos['alto'] = $model->alto;
+
+      $arregloDatos['ancho'] = $model->ancho;
+
+      $arregloDatos['profundidad'] = $model->profundidad;
+
+
+        if ($conexion->guardarRegistro($conn, $tabla, $arregloDatos )){
+
+
+
+             $resultado = true;
+
+
+              return $resultado;
+
+
+          }
+
     }
 
     public function beginSave($var, $model)
@@ -405,7 +478,7 @@ class CrearPropagandaController extends Controller
 
                       $login = yii::$app->user->identity->login;
 
-                      $solicitud = 'Reposicion de Calcomania por extravio o daño';
+                      $solicitud = 'Inscripcion de Propaganda Comercial';
 
                       $DocumentosRequisito = new DocumentoSolicitud();
 
@@ -430,7 +503,7 @@ class CrearPropagandaController extends Controller
                   }else{
                     //die('es de aprobacion directa');
 
-                      $actualizarCalcomania = self::actualizarCalcomaniaMaestro($conn,$conexion);
+                      $actualizarCalcomania = self::guardarPropagandaMaestro($conn,$conexion, $model);
 
                           if ($buscar and $guardar and $actualizarCalcomania == true ){
                             //die('los tres son verdad');
@@ -442,7 +515,7 @@ class CrearPropagandaController extends Controller
 
                       $login = yii::$app->user->identity->login;
 
-                      $solicitud = 'Reposicion de Calcomania por extravio o daño';
+                      $solicitud = 'Inscripcion de Propaganda Comercial';
 
                       $DocumentosRequisito = new DocumentoSolicitud();
 
