@@ -96,9 +96,9 @@ class CrearPropagandaForm extends Model
     {
         return [
 
-            // [['cantidad_base', 'base_calculo','observacion','direccion' ,'clase_propaganda', 'fecha_fin', 'cantidad_tiempo', 'tiempo', 'fecha_inicial', 'uso_propaganda', 'tipo_propaganda'], 'required'],
+            [['cantidad_base', 'base_calculo','observacion','direccion' ,'clase_propaganda', 'fecha_fin', 'cantidad_tiempo', 'tiempo', 'fecha_inicial', 'uso_propaganda', 'tipo_propaganda'], 'required'],
             
-           [['cantidad_base', 'base_calculo','observacion','direccion' ,'clase_propaganda','cigarrillos', 'bebidas_alcoholicas', 'idioma'  ,'fecha_fin', 'cantidad_tiempo', 'tiempo', 'fecha_inicial', 'uso_propaganda', 'tipo_propaganda', 'materiales', 'medio_transporte', 'id_sim'], 'default', 'value' => 0],
+            [['cantidad_base', 'base_calculo','observacion','direccion' ,'clase_propaganda','cigarrillos', 'bebidas_alcoholicas', 'idioma'  ,'fecha_fin', 'cantidad_tiempo', 'tiempo', 'fecha_inicial', 'uso_propaganda', 'tipo_propaganda', 'materiales', 'medio_transporte', 'id_sim'], 'default', 'value' => 0],
 
             [['alto','ancho'],'required','when' => function($model) {
                                                                             if ( $model->base_calculo == 2 ) {
@@ -111,9 +111,12 @@ class CrearPropagandaForm extends Model
                                                                             }],
 
             [['unidad'],'required','when' => function($model) {
-                                                                        if ( $model->base_calculo !== 12 || $model->base_calculo !== 2 ) {
+                                                                        if ( $model->base_calculo != 2 and $model->base_calculo != 12  ) {
                                                                                 return true; }
                                                                             }],
+
+          
+            
             [['unidad', 'cantidad_tiempo'], 'integer'],
 
             ]; 
@@ -183,6 +186,45 @@ class CrearPropagandaForm extends Model
             'user_funcionario',
             'fecha_hora_proceso',
             'estatus',
+            'alto',
+            'ancho',
+            'profundidad',
+            
+          
+        ];
+    }
+
+
+    public function attributePropagandas()
+    {
+
+        return [
+        
+            'id_impuesto',
+            'id_contribuyente',
+            'ano_impositivo',
+            'direccion',
+            'id_cp',
+            'clase_propaganda',
+            'tipo_propaganda',
+            'uso_propaganda',
+            'medio_difusion',
+            'medio_transporte',
+            'fecha_desde',
+            'cantidad_tiempo',
+            'id_tiempo',
+            'inactivo',
+            'id_sim',
+            'cantidad_base',
+            'base_calculo',
+            'cigarros',
+            'bebidas_alcoholicas',
+            'cantidad_propagandas',
+            'planilla',
+            'idioma',
+            'observacion',
+            'fecha_fin',
+            'fecha_guardado',
             'alto',
             'ancho',
             'profundidad',
