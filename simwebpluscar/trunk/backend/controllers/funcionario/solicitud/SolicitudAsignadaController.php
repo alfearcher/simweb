@@ -313,16 +313,16 @@
 							$dataProviderPlanilla = $provider;
 
 							return $this->render('/funcionario/solicitud-asignada/_view', [
-																					'model' => $infoSolicitud,
-																					'caption' => $caption,
-																					'subCaption' => $subCaption,
-																					'listado' => 6,
-																					'url' => $url,
-																					'contribuyente' => $contribuyente,
-																					'viewDetalle' => $viewDetalle,
-																					'dataProvider' => $dataProvider,
-																					'dataProviderPlanilla' => $dataProviderPlanilla,
-																					//'viewDocumentoRequisito' => $viewDocumentoRequisito,
+																	'model' => $infoSolicitud,
+																	'caption' => $caption,
+																	'subCaption' => $subCaption,
+																	'listado' => 6,
+																	'url' => $url,
+																	'contribuyente' => $contribuyente,
+																	'viewDetalle' => $viewDetalle,
+																	'dataProvider' => $dataProvider,
+																	'dataProviderPlanilla' => $dataProviderPlanilla,
+																					
 								]);
 						} else {
 							// No se encontraron los detalles de la solicitud.
