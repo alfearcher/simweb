@@ -322,7 +322,7 @@
 																	'viewDetalle' => $viewDetalle,
 																	'dataProvider' => $dataProvider,
 																	'dataProviderPlanilla' => $dataProviderPlanilla,
-																					
+
 								]);
 						} else {
 							// No se encontraron los detalles de la solicitud.
