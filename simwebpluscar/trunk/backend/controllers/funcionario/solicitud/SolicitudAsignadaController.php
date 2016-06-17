@@ -201,7 +201,7 @@
 													$this->_conn,
 													$this->_conexion
 												);
-			$reult = $procesar->aprobarSolicitud();
+			$result = $procesar->aprobarSolicitud();
 
 		}
 
