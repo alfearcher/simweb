@@ -106,9 +106,11 @@ class CrearPropagandaController extends Controller
                 $buscarGuardar = self::beginSave("buscarGuardar", $model);
                     
                     if($buscarGuardar == true){
-                      die('guardo');
+                     return MensajeController::actionMensaje(100);
+            }  
                    }else{
-                    die('no guardo');
+                    return MensajeController::actionMensaje(920);
+            }  
                    }
                       
               }
@@ -202,6 +204,7 @@ class CrearPropagandaController extends Controller
       $buscar->getParametroSolicitud(["nivel_aprobacion"]);
 
       $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
+      //die(var_dump($nivelAprobacion));
       
      
       $numeroSolicitud = $idSolicitud;
@@ -240,7 +243,8 @@ class CrearPropagandaController extends Controller
 
       $arregloDatos['medio_transporte'] = $model->medio_transporte;
 
-      $arregloDatos['fecha_desde'] = $model->fecha_inicial;
+      $arregloDatos['fecha_desde'] = date('Y-m-d', strtotime($model->fecha_inicial));
+     // die($arregloDatos['fecha_desde']);
 
       $arregloDatos['cantidad_tiempo'] = $model->cantidad_tiempo;
 
@@ -264,7 +268,7 @@ class CrearPropagandaController extends Controller
 
       $arregloDatos['observacion'] = $model->observacion;
 
-      $arregloDatos['fecha_fin'] = $model->fecha_fin;
+      $arregloDatos['fecha_fin'] = date('Y-m-d', strtotime($model->fecha_fin));
 
       $arregloDatos['fecha_guardado'] = date('Y-m-d');
 
@@ -275,15 +279,17 @@ class CrearPropagandaController extends Controller
   
 
       if($nivelAprobacion == 1){ 
+        //die('1');
 
       $arregloDatos['fecha_hora_proceso'] = date('Y-m-d h:m:i');
 
       }else{
+      //  die('hola');
 
       $arregloDatos['fecha_hora_proceso'] = 0;
       }
 
-      if ($resultado['nivel_aprobacion'] == 1){
+      if ($nivelAprobacion == 1){
 
       $arregloDatos['estatus'] = 1;
 
@@ -317,14 +323,14 @@ class CrearPropagandaController extends Controller
     {
 
      
-      $numeroSolicitud = $idSolicitud;
+    
       $resultado = false;
       $datos = yii::$app->user->identity;
       $tabla = 'propagandas';
       $arregloDatos = [];
       $arregloCampo = CrearPropagandaForm::attributePropagandas();
 
-      foreach ($arregloCampo as $key=>$value){
+         foreach ($arregloCampo as $key=>$value){
 
           $arregloDatos[$value] =0;
       }
@@ -351,11 +357,13 @@ class CrearPropagandaController extends Controller
 
       $arregloDatos['medio_transporte'] = $model->medio_transporte;
 
-      $arregloDatos['fecha_desde'] = $model->fecha_inicial;
+      $arregloDatos['fecha_desde'] = date('Y-m-d', strtotime($model->fecha_inicial));
 
       $arregloDatos['cantidad_tiempo'] = $model->cantidad_tiempo;
 
       $arregloDatos['id_tiempo'] = $model->tiempo;
+
+      $arregloDatos['inactivo'] = 0;
 
       $arregloDatos['id_sim'] = $model->id_sim;
 
@@ -367,7 +375,7 @@ class CrearPropagandaController extends Controller
 
       $arregloDatos['bebidas_alcoholicas'] = $model->bebidas_alcoholicas;
 
-      $arregloDatos['cantidad_propagandas'] = 0;
+      $arregloDatos['cantidad_propagandas'] = 1;
 
       $arregloDatos['planilla'] = 0;
 
@@ -375,33 +383,9 @@ class CrearPropagandaController extends Controller
 
       $arregloDatos['observacion'] = $model->observacion;
 
-      $arregloDatos['fecha_fin'] = $model->fecha_fin;
+      $arregloDatos['fecha_fin'] = date('Y-m-d', strtotime($model->fecha_fin));
 
       $arregloDatos['fecha_guardado'] = date('Y-m-d');
-
-      $arregloDatos['fecha_hora'] = date('Y-m-d h:m:i');
-
-      $arregloDatos['usuario'] = $datos->login;
-      
-  
-
-      if($nivelAprobacion == 1){ 
-
-      $arregloDatos['fecha_hora_proceso'] = date('Y-m-d h:m:i');
-
-      }else{
-
-      $arregloDatos['fecha_hora_proceso'] = 0;
-      }
-
-      if ($resultado['nivel_aprobacion'] == 1){
-
-      $arregloDatos['estatus'] = 1;
-
-      }else{
-
-      $arregloDatos['estatus'] = 0;
-      }
 
       $arregloDatos['alto'] = $model->alto;
 
@@ -421,6 +405,7 @@ class CrearPropagandaController extends Controller
 
 
           }
+
 
     }
 
