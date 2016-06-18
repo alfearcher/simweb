@@ -68,7 +68,7 @@
          * - Aprobar    => Yii::$app->solicitud->aprobar()
          * - Negar      => Yii::$app->solicitud->negar()
          * Para verificar los procesos o eventos: common\classes\EventoSolicitud
-         * 
+         *
          * @var String
          */
         private $_accion;
@@ -112,7 +112,7 @@
 
 
         /***/
-        public function procesarSolicitudPorImpuesto()
+        public function procesarSolicitudPorTipo()
         {
             $result = false;
             $model = self::getDatosSolicitudCreada();

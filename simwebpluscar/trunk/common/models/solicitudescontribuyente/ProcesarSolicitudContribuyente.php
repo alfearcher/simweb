@@ -193,6 +193,9 @@
                     // Se asegura que la solicitud este pendiente por aprobar.
                     if ( $model['estatus'] == 0 && $model['inactivo'] == 0 ) {
                         $result = self::aprobar($model);
+                        if ( $result ) {
+                            $result = self::procesarSolicitudPorImpuesto($model, Yii::$app->solicitud->aprobar());
+                        }
                     }
                 }
             }
@@ -238,6 +241,37 @@
             return $result;
 
         }
+
+
+
+        /***/
+        private function procesarSolicitudPorImpuesto($model, $evento)
+        {
+            $result = false;
+            if ( $model !== null ) {
+                if ( $model['impuesto'] == 1 ) {
+                    // Actividades Economicas
+
+                } elseif ( $model['impuesto'] == 2 ) {
+                    // Inmuebles Urbanos.
+
+                } elseif ( $model['impuesto'] == 3 ) {
+                    // Vehiculos.
+
+                } elseif ( $model['impuesto'] == 4 ) {
+                    // Propaganda Comercial.
+
+                } elseif ( $model['impuesto'] == 6 ) {
+                    // Espectaculo Publico.
+
+                } elseif ( $model['impuesto'] == 7 ) {
+                    // Apuesta Licita.
+
+                }
+            }
+            return $result;
+        }
+
 
 
     }
