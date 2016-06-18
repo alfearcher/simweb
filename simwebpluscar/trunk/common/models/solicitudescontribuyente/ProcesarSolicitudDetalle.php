@@ -57,8 +57,12 @@
     /***/
     class ProcesarSolicitudDetalle extends SolicitudesContribuyenteForm
     {
+        /**
+         * [$_model modelo de la entidad "solicitudes-contribuyente"
+         * @var Active Record.
+         */
+        private $_model;
 
-        private $_nro_solicitud;
         private $_conn;
         private $_conexion;
 
@@ -77,21 +81,20 @@
 
         /**
          * Constructor de la clase.
-         * @param Long $nroSolicitud identificador de la solicitud creada por el
-         * funcionario o contribuyente.
-         * @param String $accionLocal especifica el proceso a ejecutar sobre la solicitud,
+         * @param Active Record $model modelo de la entidad "solicitudes-contribuyente".
+         * @param String $accion especifica el proceso a ejecutar sobre la solicitud,
          * este proceso queda definido por los eventos:
          * - Aprobar
          * - Negar
-         * @param [type] $connLocal     [description]
-         * @param [type] $conexionLocal [description]
+         * @param [type] $conn     [description]
+         * @param [type] $conexion [description]
          */
-        public function __construct($nroSolicitud, $accionLocal, $connLocal, $conexionLocal)
+        public function __construct($model, $accion, $conn, $conexion)
         {
-            $this->_nro_solicitud = $nroSolicitud;
-            $this->_accion = $accionLocal;
-            $this->_conn = $connLocal;
-            $this->_conexion = $conexionLocal;
+            $this->_model = $model;
+            $this->_accion = $accion;
+            $this->_conn = $conn;
+            $this->_conexion = $conexion;
         }
 
 
@@ -115,25 +118,8 @@
         public function procesarSolicitudPorTipo()
         {
             $result = false;
-            $model = self::getDatosSolicitudCreada();
-            if ( $model !== null ) {
-                if ( $model['impuesto'] == 1 ) {
-                    // Actividades Economicas
-
-                } elseif ( $model['impuesto'] == 2 ) {
-                    // Inmuebles Urbanos.
-
-                } elseif ( $model['impuesto'] == 3 ) {
-                    // Vehiculos.
-
-                } elseif ( $model['impuesto'] == 4 ) {
-                    // Propaganda Comercial.
-
-                } elseif ( $model['impuesto'] == 6 ) {
-                    // Espectaculo Publico.
-
-                } elseif ( $model['impuesto'] == 7 ) {
-                    // Apuesta Licita.
+            if ( isset($this->_model) && $this->_model !== null ) {
+                if ( $this->_model->tipo_solicitud == 1 ) {
 
                 }
             }

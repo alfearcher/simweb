@@ -58,8 +58,7 @@
     class ProcesarSolicitudDetalleActividadEconomica
     {
         /**
-         * $_model, modelo de la entidad "solicitudes-contribuyente", es el modelo de la
-         * solicitud maestro.
+         * [$_model modelo de la entidad "solicitudes-contribuyente"
          * @var Active Record.
          */
         private $_model;
@@ -68,12 +67,12 @@
         private $_conexion;
 
         /**
-         * $_accion, especifica el tipo de proceso a ejecutar sobre la solicitud. Los procesos a ejecutar
+         * Especifica el tipo de proceso a ejecutar sobre la solicitud. Los procesos a ejecutar
          * son aquellos definidos por las variables:
          * - Aprobar    => Yii::$app->solicitud->aprobar()
          * - Negar      => Yii::$app->solicitud->negar()
          * Para verificar los procesos o eventos: common\classes\EventoSolicitud
-         * 
+         *
          * @var String
          */
         private $_accion;
@@ -82,27 +81,40 @@
 
         /**
          * Constructor de la clase.
-         * @param Active Record model, modelo de la entidad solicitud maestra, es un find
-         * que posee la informacion de la solicitud a procesar.
-         * @param String $accionLocal especifica el proceso a ejecutar sobre la solicitud,
+         * @param Active Record $model modelo de la entidad "solicitudes-contribuyente".
+         * @param String $accion especifica el proceso a ejecutar sobre la solicitud,
          * este proceso queda definido por los eventos:
          * - Aprobar
          * - Negar
-         * @param [type] $connLocal     [description]
-         * @param [type] $conexionLocal [description]
+         * @param [type] $conn     [description]
+         * @param [type] $conexion [description]
          */
-        public function __construct($model, $accionLocal, $connLocal, $conexionLocal)
+        public function __construct($model, $accion, $conn, $conexion)
         {
             $this->_model = $model;
-            $this->_accion = $accionLocal;
-            $this->_conn = $connLocal;
-            $this->_conexion = $conexionLocal;
+            $this->_accion = $accion;
+            $this->_conn = $conn;
+            $this->_conexion = $conexion;
+        }
+
+
+
+        /***/
+        public function procesarSolicitudPorTipo()
+        {
+            $result = false;
+            if ( isset($this->_model) && $this->_model !== null ) {
+                if ( $this->_model->tipo_solicitud == 1 ) {
+
+                }
+            }
+            return $result;
         }
 
 
 
 
-        
+
 
 
 
