@@ -52,6 +52,7 @@
     use Yii;
     use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomicaForm;
     use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomicaSearch;
+    use common\models\contribuyente\ContribuyenteBase;
 
 
 
@@ -78,6 +79,14 @@
          */
         private $_evento;
 
+        /**
+         * $arregloErrors, array de mensajes que indica que ha sucedido un evento inexperado
+         * que no permitio completar la operacion. Si count($arregloErrors) == 0, indica que
+         * no hubo inconvenientes para realizar la operacion.
+         * @var array
+         */
+        public $arregloErrors = [];
+
 
 
         /**
@@ -100,6 +109,13 @@
         }
 
 
+        /***/
+        private function setErrors($mensajeError = '')
+        {
+            $this->arregloErrors[] = $mensajeError;
+        }
+
+
 
 
         /***/
@@ -110,7 +126,7 @@
                 $result = self::aprobarDetalleSolicitud();
 
             } elseif ( $this->_evento == Yii::$app->solicitud->negar() ) {
-
+                $result = self::negarDetalleSolicitud();
             }
 
             return $result;
@@ -137,25 +153,115 @@
             $modelInscripcion = self::findInscripcionActividadEconomica();
             if ( $modelInscripcion !== null ) {
                 if ( $modelInscripcion['id_contribuyente'] == $this->_model->id_contribuyente ) {
-                    $result = self::updateSolicitudInscripcion();
-
+                    $result = self::updateSolicitudInscripcion($modelInscripcion);
+                    if ( $result ) {
+                        $result = self::updateContribuyente($modelInscripcion);
+                    }
                 }
             }
-die('s');
+
+            return $result;
+        }
+
+
+
+        /***/
+        private function negarDetalleSolicitud()
+        {
+            $result = false;
+            $modelInscripcion = self::findInscripcionActividadEconomica();
+            if ( $modelInscripcion !== null ) {
+                if ( $modelInscripcion['id_contribuyente'] == $this->_model->id_contribuyente ) {
+                    $result = self::updateSolicitudInscripcion($modelInscripcion);
+                }
+            }
+
             return $result;
         }
 
 
         /***/
-        private function updateSolicitudInscripcion()
+        private function updateSolicitudInscripcion($modelInscripcion)
         {
             $result = false;
+            $cancel = false;            // Controla si el proceso se debe cancelar.
+
             // Se crea la instancia del modelo que contiene los campos que seran actualizados.
             $model = New InscripcionActividadEconomicaForm();
             $tableName = $model->tableName();
-die(var_dump($tableName));
+
+            // Se obtienen los campos que seran actualizados en la entidad "sl-".
+            $arregloCampos = $model->atributosUpDateProcesarSolicitud($this->_evento);
+
+            $camposModel = $modelInscripcion->toArray();
+
+            // Se define el arreglo para el where conditon del update.
+            $arregloCondicion['nro_solicitud'] = isset($camposModel['nro_solicitud']) ? $camposModel['nro_solicitud'] : null;
+
+            foreach ( $arregloCampos as $campo ) {
+                if ( isset($camposModel[$campo]) ) {
+                    $arregloDatos[$campo] = $camposModel[$campo];
+                } else {
+                    $cancel = true;
+                    break;
+                }
+            }
+
+            if ( count($arregloCampos) == 0 || count($arregloCondicion) == 0 ) { $cancel = true; }
+
+            // Si no existe en la solicitud un campo que viene del modelo que deba ser
+            // actualizado, entonces el proceso debe ser cancelado.
+            if ( !$cancel ) {
+                $result = $this->_conexion->modificarRegistro($this->_conn, $tableName,
+                                                              $arregloDatos, $arregloCondicion);
+            }
+
+            return $result;
         }
 
+
+
+        /***/
+        private function updateContribuyente($modelInscripcion)
+        {
+            $result = false;
+            $cancel = false;            // Controla si el proceso se debe cancelar.
+
+            $tablaPrincipal = ContribuyenteBase::tableName();
+
+            // Se crea la instancia del modelo que contiene los campos que seran actualizados.
+            $model = New InscripcionActividadEconomicaForm();
+
+            // Se obtienen los campos que seran actualizados en la entidad "contribuyentes".
+            $arregloCampos = $model->atributosUpDate();
+
+            // Se obtienen los campos y valores creados en la solicitud. lo siguiente genera un array de
+            // campos => valores.
+            $camposModel = $modelInscripcion->toArray();
+
+            // Se define el arreglo para el where conditon del update.
+            $arregloCondicion['id_contribuyente'] = isset($camposModel['id_contribuyente']) ? $camposModel['id_contribuyente'] : null;
+
+            foreach ( $arregloCampos as $campo ) {
+                if ( isset($camposModel[$campo]) ) {
+                    $arregloDatos[$campo] = $camposModel[$campo];
+                } else {
+                    $cancel = true;
+                    break;
+                }
+            }
+
+            if ( count($arregloCampos) == 0 || count($arregloCondicion) == 0 ) { $cancel = true; }
+
+            // Si no existe en la solicitud un campo que viene del modelo que deba ser
+            // actualizado, entonces el proceso debe ser cancelado.
+            if ( !$cancel ) {
+                $result = $this->_conexion->modificarRegistro($this->_conn, $tablaPrincipal,
+                                                              $arregloDatos, $arregloCondicion);
+            }
+
+            return $result;
+        }
 
 
 
