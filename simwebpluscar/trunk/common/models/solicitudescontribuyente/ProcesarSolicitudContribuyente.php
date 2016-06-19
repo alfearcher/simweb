@@ -55,6 +55,7 @@
     use yii\helpers\Url;
     use common\models\solicitudescontribuyente\SolicitudesContribuyente;
     use common\models\solicitudescontribuyente\SolicitudesContribuyenteForm;
+    use common\models\solicitudescontribuyente\ProcesarSolicitudDetalleActividadEconomica;
 
 
 
@@ -251,6 +252,7 @@
             if ( $model !== null ) {
                 if ( $model['impuesto'] == 1 ) {
                     // Actividades Economicas
+                    $procesarDetalle = New ProcesarSolicitudDetalleActividadEconomica($model, $evento, $this->_conn, $this->_conexion);
 
                 } elseif ( $model['impuesto'] == 2 ) {
                     // Inmuebles Urbanos.

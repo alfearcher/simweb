@@ -50,7 +50,7 @@
     namespace common\models\solicitudescontribuyente;
 
     use Yii;
-    use common\models\solicitudescontribuyente\ProcesarSolicitudDetalle;
+    use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomicaForm;
 
 
 
@@ -75,24 +75,24 @@
          *
          * @var String
          */
-        private $_accion;
+        private $_evento;
 
 
 
         /**
          * Constructor de la clase.
          * @param Active Record $model modelo de la entidad "solicitudes-contribuyente".
-         * @param String $accion especifica el proceso a ejecutar sobre la solicitud,
+         * @param String $evento especifica el proceso a ejecutar sobre la solicitud,
          * este proceso queda definido por los eventos:
          * - Aprobar
          * - Negar
          * @param [type] $conn     [description]
          * @param [type] $conexion [description]
          */
-        public function __construct($model, $accion, $conn, $conexion)
+        public function __construct($model, $evento, $conn, $conexion)
         {
             $this->_model = $model;
-            $this->_accion = $accion;
+            $this->_evento = $evento;
             $this->_conn = $conn;
             $this->_conexion = $conexion;
         }
