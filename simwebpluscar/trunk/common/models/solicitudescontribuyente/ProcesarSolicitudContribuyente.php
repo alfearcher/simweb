@@ -253,6 +253,7 @@
                 if ( $model['impuesto'] == 1 ) {
                     // Actividades Economicas
                     $procesarDetalle = New ProcesarSolicitudDetalleActividadEconomica($model, $evento, $this->_conn, $this->_conexion);
+                    $result = $procesarDetalle->procesarSolicitudPorTipo();
 
                 } elseif ( $model['impuesto'] == 2 ) {
                     // Inmuebles Urbanos.
