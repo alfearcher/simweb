@@ -195,6 +195,8 @@
                     if ( $model['estatus'] == 0 && $model['inactivo'] == 0 ) {
                         $result = self::aprobar($model);
                         if ( $result ) {
+                            // Lo siguiente inicia las acciones para procesar el detalle
+                            // de la solicitud.
                             $result = self::procesarSolicitudPorImpuesto($model, Yii::$app->solicitud->aprobar());
                         }
                     }
