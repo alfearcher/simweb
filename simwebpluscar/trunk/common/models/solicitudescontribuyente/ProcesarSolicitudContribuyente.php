@@ -55,7 +55,7 @@
     use yii\helpers\Url;
     use common\models\solicitudescontribuyente\SolicitudesContribuyente;
     use common\models\solicitudescontribuyente\SolicitudesContribuyenteForm;
-    use common\models\solicitudescontribuyente\ProcesarSolicitudDetalleActividadEconomica;
+    use common\models\solicitudescontribuyente\aaee\ProcesarSolicitudDetalleActividadEconomica;
 
 
 

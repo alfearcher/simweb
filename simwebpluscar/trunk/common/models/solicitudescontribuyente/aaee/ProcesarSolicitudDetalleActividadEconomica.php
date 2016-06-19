@@ -47,7 +47,7 @@
  *
  */
 
-    namespace common\models\solicitudescontribuyente;
+    namespace common\models\solicitudescontribuyente\aaee;
 
     use Yii;
     use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomicaForm;
