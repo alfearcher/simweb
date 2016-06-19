@@ -109,14 +109,24 @@
         }
 
 
-        /***/
+        /**
+         * Metodo que asigna un mensaje de error al arreglo. Esto permitira
+         * saber si la ejecucion de los procesos de aprobacion o negacion
+         * se realizaron satisfactiamente. Si existe un mensaje en este
+         * arreglo, significa que sucedio algo que impidio la ejecucion del
+         * proceso.
+         * @param string $mensajeError mensaje de error.
+         */
         private function setErrors($mensajeError = '')
         {
             $this->errors[] = $mensajeError;
         }
 
 
-        /***/
+        /**
+         * Metodo que permite obtener el arreglo de mensajes de errores.
+         * @return Array Retorna arreglo con mensaje de errores.
+         */
         public function getErrors()
         {
             return $this->errors
@@ -124,7 +134,11 @@
 
 
 
-        /***/
+        /**
+         * Metodo que inicia el procedimiento de procesar la solcitud.
+         * @return Boolean Retorna un true si todo se ejecuto satisfactoriamente, false
+         * en caso contrario.
+         */
         public function procesarSolicitud()
         {
             $result = false;
@@ -140,7 +154,13 @@
 
 
 
-        /***/
+        /**
+         * Metodo que permite obtener un modelo de los datos de la solicitud,
+         * sobre la entidad "sl-", referente al detalle de la solicitud. Es la
+         * entidad donde se guardan los detalle de esta solicitud.
+         * @return Boolean Retorna un true si todo se ejecuto satisfactoriamente, false
+         * en caso contrario.
+         */
         public function findInscripcionActividadEconomica()
         {
             // Este find retorna el modelo de la entidad "sl-inscripciones-act-econ"
@@ -152,7 +172,11 @@
 
 
 
-        /***/
+        /**
+         * Metodo que inicia la aprobacion del detalle de la solicitud.
+         * @return Boolean Retorna un true si todo se ejecuto satisfactoriamente, false
+         * en caso contrario.
+         */
         private function aprobarDetalleSolicitud()
         {
             $result = false;
@@ -175,7 +199,11 @@
 
 
 
-        /***/
+        /**
+         * Metodo que incia el proceso de negacion de la solicitud.
+         * @return Boolean Retorna un true si todo se ejecuto satisfactoriamente, false
+         * en caso contrario.
+         */
         private function negarDetalleSolicitud()
         {
             $result = false;
@@ -193,7 +221,15 @@
 
 
 
-        /***/
+        /**
+         * Metodo que realiza la actualizacin de los atributos segun el evento a ejecutar
+         * sobre la solicitud.
+         * @param  Active Record $modelInscripcion modelo de la entidad "sl-inscripciones-act-econ".
+         * Este modelo contiene los datos-detalles, referida a los datos cargados al momento de elaborar
+         * la solicitud.
+         * @return Boolean Retorna un true si todo se ejecuto satisfactoriamente, false
+         * en caso contrario.
+         */
         private function updateSolicitudInscripcion($modelInscripcion)
         {
             $result = false;
@@ -234,7 +270,15 @@
 
 
 
-        /***/
+        /**
+         * Metodo que realiza la actualizacion de los atributos sobre la entidad "contribuyentes".
+         * El modelo suministra los atributos que seran actualizados por este metodo, donde dicho
+         * datos fueron los cargados al momento de crear la solicitud.
+         * @param  Active Record $modelInscripcion modelo de la entidad "sl-inscripciones-act-econ",
+         * con los datos cargados.
+         * @return Boolean Retorna un true si todo se ejecuto satisfactoriamente, false
+         * en caso contrario.
+         */
         private function updateContribuyente($modelInscripcion)
         {
             $result = false;
