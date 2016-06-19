@@ -240,6 +240,7 @@
             $tableName = $model->tableName();
 
             // Se obtienen los campos que seran actualizados en la entidad "sl-".
+            // Estos atributos ya vienen con sus datos cargados.
             $arregloCampos = $model->atributosUpDateProcesarSolicitud($this->_evento);
 
             $camposModel = $modelInscripcion->toArray();
