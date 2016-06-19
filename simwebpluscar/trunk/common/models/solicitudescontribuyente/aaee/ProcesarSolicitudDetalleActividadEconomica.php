@@ -105,7 +105,11 @@
             $result = false;
             if ( isset($this->_model) && $this->_model !== null ) {
                 if ( $this->_model->tipo_solicitud == 1 ) {
-
+                    $procesar = New ProcesarInscripcionActividadEconomica($this->_model,
+                                                                          $this->_evento,
+                                                                          $this->_conn,
+                                                                          $this->_conexion);
+                    $result = $procesar->procesarSolicitud();
                 }
             }
             return $result;

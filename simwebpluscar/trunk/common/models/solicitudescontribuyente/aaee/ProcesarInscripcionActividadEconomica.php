@@ -51,16 +51,17 @@
 
     use Yii;
     use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomicaForm;
+    use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomicaSearch;
 
 
 
-    /***/
-    class ProcesarInscripcionActividadEconomica
+    /**
+     * Clase que se encarga de realizar los respectivos inserto update sobre las entidades
+     * que esten relacionada con la aprobacion o negacion de la solicitud. la clase debe
+     * entregar como respuesta un true o false.
+     */
+    class ProcesarInscripcionActividadEconomica extends InscripcionActividadEconomicaSearch
     {
-        /**
-         * [$_model modelo de la entidad "solicitudes-contribuyente"
-         * @var Active Record.
-         */
         private $_model;
 
         private $_conn;
@@ -81,7 +82,7 @@
 
         /**
          * Constructor de la clase.
-         * @param Active Record $model modelo de la entidad "solicitudes-contribuyente".
+         * @param Active Record $model, modelo de la entidad "solicitudes-contribuyente".
          * @param String $evento especifica el proceso a ejecutar sobre la solicitud,
          * este proceso queda definido por los eventos:
          * - Aprobar
@@ -95,16 +96,48 @@
             $this->_evento = $evento;
             $this->_conn = $conn;
             $this->_conexion = $conexion;
+            parent::__construct($model['id_contribuyente']);
+        }
+
+
+
+
+        /***/
+        public function procesarSolicitud()
+        {
+            $result = false;
+            if ( $this->_evento == Yii::$app->solicitud->aprobar() ) {
+                $result = self::aprobarDetalleSolicitud();
+
+            } elseif ( $this->_evento == Yii::$app->solicitud->negar() ) {
+
+            }
+
+            return $result;
         }
 
 
 
         /***/
-        public function procesarSolicitudPorTipo()
+        public function findInscripcion()
+        {
+            // Este find retorna el modelo de la entidad "sl-inscripciones-act-econ"
+            // con datos, ya que en el metodo padre se ejecuta el ->one() que realiza
+            // la consulta.
+            $modelFind = $this->findInscripcion($this->_model->nro_solicitud);
+            return isset($modelFind) ? $modelFind : null;
+        }
+
+
+
+        /***/
+        private function aprobarDetalleSolicitud()
         {
             $result = false;
-            if ( isset($this->_model) && $this->_model !== null ) {
-                if ( $this->_model->tipo_solicitud == 1 ) {
+            $modelInscripcion = self::findInscripcion();
+            if ( $modelInscripcion !== null ) {
+                if ( $modelInscripcion['id_contribuyente'] == $this->_model->id_contribuyente ) {
+                    $result = self::updateSolicitudInscripcion();
 
                 }
             }
@@ -112,7 +145,15 @@
         }
 
 
-
+        /***/
+        private function updateSolicitudInscripcion()
+        {
+            $result = false;
+            // Se crea la instancia del modelo que contiene los campos que seran actualizados.
+            $model = New InscripcionActividadEconomicaForm();
+            $tableName = $model->tableName();
+die(var_dump($tableName));
+        }
 
 
 
