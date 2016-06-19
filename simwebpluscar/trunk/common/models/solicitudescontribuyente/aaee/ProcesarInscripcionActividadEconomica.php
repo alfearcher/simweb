@@ -119,7 +119,7 @@
 
 
         /***/
-        public function findInscripcion()
+        public function findInscripcionActividadEconomica()
         {
             // Este find retorna el modelo de la entidad "sl-inscripciones-act-econ"
             // con datos, ya que en el metodo padre se ejecuta el ->one() que realiza
@@ -134,13 +134,14 @@
         private function aprobarDetalleSolicitud()
         {
             $result = false;
-            $modelInscripcion = self::findInscripcion();
+            $modelInscripcion = self::findInscripcionActividadEconomica();
             if ( $modelInscripcion !== null ) {
                 if ( $modelInscripcion['id_contribuyente'] == $this->_model->id_contribuyente ) {
                     $result = self::updateSolicitudInscripcion();
 
                 }
             }
+die('s');
             return $result;
         }
 

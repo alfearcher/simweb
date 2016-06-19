@@ -110,6 +110,9 @@
                                                                           $this->_conn,
                                                                           $this->_conexion);
                     $result = $procesar->procesarSolicitud();
+
+                } elseif ( $this->_model->tipo_solicitud == 'x' ) {
+
                 }
             }
             return $result;
