@@ -80,12 +80,12 @@
         private $_evento;
 
         /**
-         * $arregloErrors, array de mensajes que indica que ha sucedido un evento inexperado
+         * $errors, array de mensajes que indica que ha sucedido un evento inexperado
          * que no permitio completar la operacion. Si count($arregloErrors) == 0, indica que
          * no hubo inconvenientes para realizar la operacion.
          * @var array
          */
-        public $arregloErrors = [];
+        public $errors = [];
 
 
 
@@ -112,9 +112,15 @@
         /***/
         private function setErrors($mensajeError = '')
         {
-            $this->arregloErrors[] = $mensajeError;
+            $this->errors[] = $mensajeError;
         }
 
+
+        /***/
+        public function getErrors()
+        {
+            return $this->errors
+        }
 
 
 
@@ -157,7 +163,11 @@
                     if ( $result ) {
                         $result = self::updateContribuyente($modelInscripcion);
                     }
+                } else {
+                    self::setErrors(Yii::t('backend', 'Error in the ID of taxpayer'));
                 }
+            } else {
+                self::setErrors(Yii::t('backend', 'Request not find'));
             }
 
             return $result;
@@ -173,11 +183,14 @@
             if ( $modelInscripcion !== null ) {
                 if ( $modelInscripcion['id_contribuyente'] == $this->_model->id_contribuyente ) {
                     $result = self::updateSolicitudInscripcion($modelInscripcion);
+                } else {
+                    self::setErrors(Yii::t('backend', 'Error in the ID of taxpayer'));
                 }
             }
 
             return $result;
         }
+
 
 
         /***/
@@ -215,7 +228,7 @@
                 $result = $this->_conexion->modificarRegistro($this->_conn, $tableName,
                                                               $arregloDatos, $arregloCondicion);
             }
-
+            if (!$result ) { self::setErrors(Yii::t('backend', 'Failed update request')); }
             return $result;
         }
 
@@ -259,6 +272,7 @@
                 $result = $this->_conexion->modificarRegistro($this->_conn, $tablaPrincipal,
                                                               $arregloDatos, $arregloCondicion);
             }
+            if (!$result ) { self::setErrors(Yii::t('backend', 'Failed update taxpayer')); }
 
             return $result;
         }
