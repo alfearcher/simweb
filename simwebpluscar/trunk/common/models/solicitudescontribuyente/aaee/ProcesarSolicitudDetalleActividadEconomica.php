@@ -99,7 +99,10 @@
 
 
 
-        /***/
+        /**
+         * Metodo que redirecciona a la clase que procesa la solicitud por su tipo.
+         * @return Boolean Retorna un true o false.
+         */
         public function procesarSolicitudPorTipo()
         {
             $result = false;
