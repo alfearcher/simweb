@@ -50,7 +50,7 @@
     namespace common\models\solicitudescontribuyente\aaee;
 
     use Yii;
-    use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomicaForm;
+    use common\models\solicitudescontribuyente\aaee\ProcesarInscripcionActividadEconomica;
 
 
 
