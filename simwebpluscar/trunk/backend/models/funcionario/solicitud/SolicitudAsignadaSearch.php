@@ -66,7 +66,6 @@
 	class SolicitudAsignadaSearch extends SolicitudAsignadaForm
 	{
 
-
 	    /**
 	     * Metodo que permite obetene los identificadores de los tipos de solictudes
 	     * asignadas a un funcionario. El paramatro de busqueda utilizado es el login
