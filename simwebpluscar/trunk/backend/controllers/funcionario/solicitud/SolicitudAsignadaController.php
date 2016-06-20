@@ -184,6 +184,7 @@
 		public function actionIniciarAprobarSolicitud($postData, $formName)
 		{
 			$result = false;
+			$evento = Yii::$app->solicitud->aprobar();
 			$datos = $postData[$formName];
 
 			$this->_conexion = New ConexionController();
@@ -198,14 +199,16 @@
 
 			$procesar = New ProcesarSolicitudContribuyente(
 													$datos['nro_solicitud'],
-													Yii::$app->solicitud->aprobar(),
+													$evento,
 													$this->_conn,
 													$this->_conexion
 												);
+
 			$result = $procesar->aprobarSolicitud();
 			if ( $result ) {
 				// Ejecutar procesos asociados al evento (si existen) y enviar correo
 				// comunicando al contribuyente el resultado de su solicitud.
+				$result = self::actionEjecutarProcesoRelacionadoSolicitud($datos, $evento);
 
 			}
 		}
@@ -213,9 +216,37 @@
 
 
 		/***/
-		private function actionEjecutaProcesoSolicitud()
+		private function actionEjecutarProcesoRelacionadoSolicitud($datos, $evento)
 		{
+			$result = true;
+			$model = New SolicitudesContribuyente();
+			$model->id_contribuyente = $datos['id_contribuyente'];
+			$model->nro_solicitud = $datos['nro_solicitud'];
 
+			if ( isset($datos['id_config_solicitud']) ) {
+				$procesoEvento = New SolicitudProcesoEvento($datos['id_config_solicitud']);
+				$procesoEvento->ejecutarProcesoSolicitudSegunEvento($model, $evento, $this->_conexion, $this->_conn);
+				// Se obtiene un array de acciones o procesos ejecutados.
+				$acciones = $procesoEvento->getAccion();
+
+				if ( count($acciones) > 0 ) {
+					// Se evalua cada accion o proceso ejecutado para determinar si se realizo satisfactoriamnente.
+					$resultadoProceso = $procesoEvento->resultadoEjecutarProcesos();
+
+					if ( count($resultadoProceso) > 0 ) {
+						foreach ( $resultadoProceso as $key => $value ) {
+							if ( $value == false ) {
+								$result = false;
+								break;
+							}
+						}
+					}
+				}
+			} else {
+				// No se pudo definir el identificador de la configuracion de la solicitud.
+				$result = false;
+			}
+			return $result;
 		}
 
 
@@ -226,6 +257,7 @@
 		{
 			$result = false;
 			$datos = $postData[$formName];
+			$evento = Yii::$app->solicitud->negar();
 
 			$this->_conexion = New ConexionController();
 
@@ -239,12 +271,11 @@
 
 			$procesar = New ProcesarSolicitudContribuyente(
 													$datos['nro_solicitud'],
-													Yii::$app->solicitud->negar(),
+													$evento,
 													$this->_conn,
 													$this->_conexion
 												);
 			$reult = $procesar->negarSolicitud(1, 'prueba de negacion');
-
 		}
 
 
