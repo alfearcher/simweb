@@ -406,11 +406,15 @@
 						                            	if ( $data['pago'] == 0 ) {
 						                            		return Html::tag('strong', Html::tag('h3',
 						                            								   			'NO',
-						                            								   			['class' => 'label label-danger']));
+						                            								   			['class' => 'label label-danger',
+						                            								   			 'id' => 'pago',
+						                            								   			]));
 						                            	} elseif ( $data['pago'] == 1) {
 						                            		return Html::tag('strong', Html::tag('h3',
 						                            			                     			 'SI',
-						                            			                     			 ['class' => 'success']));
+						                            			                     			 ['class' => 'success',
+						                            								   			  'id' => 'pago',
+						                            								   			]));
 						                            	}
 						                            },
 						                        ],
@@ -467,10 +471,6 @@
 
 					</div>
 <!--  -->
-
-
-
-
 				</div>
 			</div>	<!-- Fin de container-fluid -->
 		</div>		<!-- Fin de panel-body -->
