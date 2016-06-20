@@ -55,6 +55,8 @@
 	use yii\widgets\ActiveForm;
 	use yii\web\Response;
 	use yii\helpers\Url;
+	use yii\web\NotFoundHttpException;
+	use yii\db\Exception;
 	use backend\models\funcionario\solicitud\SolicitudAsignadaSearch;
 	use backend\models\funcionario\solicitud\SolicitudAsignadaForm;
 	use common\conexion\ConexionController;
@@ -218,7 +220,7 @@
 				if ( $result ) {
 					$this->_transaccion->commit();
 					$this->_conn->close();
-					return MensajeController::actionMensaje(101);
+					MensajeController::actionMensaje(101);
 				} else {
 					$this->_transaccion->rollBack();
 					$this->_conn->close();
