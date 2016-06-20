@@ -153,7 +153,7 @@
 		{
 			$request = Yii::$app->request;
 			$postData = $request->post();
-die(var_dump($postData));
+
 			$model = New SolicitudesContribuyente();
 			$formName = $model->formName();
 			if ( trim($formName) !== '' ) {
@@ -334,6 +334,7 @@ die(var_dump($postData));
 																	'viewDetalle' => $viewDetalle,
 																	'dataProvider' => $dataProvider,
 																	'dataProviderPlanilla' => $dataProviderPlanilla,
+
 
 								]);
 						} else {
