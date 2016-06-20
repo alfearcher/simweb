@@ -182,7 +182,7 @@
 		/***/
 		public function actionIniciarAprobarSolicitud($postData, $formName)
 		{
-
+			$result = false;
 			$datos = $postData[$formName];
 
 			$this->_conexion = New ConexionController();
@@ -211,7 +211,7 @@
 		/***/
 		public function actionIniciarNegarSolicitud($postData, $formName)
 		{
-
+			$result = false;
 			$datos = $postData[$formName];
 
 			$this->_conexion = New ConexionController();
