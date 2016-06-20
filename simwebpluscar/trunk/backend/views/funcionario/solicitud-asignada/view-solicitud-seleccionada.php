@@ -76,6 +76,7 @@
 	<?=
 		$form->field($model, 'listado')->hiddenInput(['value' => $listado])->label(false);
 		$form->field($model, 'nro_solicitud')->hiddenInput(['value' => $model->nro_solicitud])->label(false);
+		$form->field($model, 'id_config_solicitud')->hiddenInput(['value' => $model->id_config_solicitud])->label(false);
 	?>
 
 	<meta http-equiv="refresh">
