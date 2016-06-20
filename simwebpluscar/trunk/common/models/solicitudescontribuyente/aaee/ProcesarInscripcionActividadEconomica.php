@@ -148,7 +148,6 @@
             } elseif ( $this->_evento == Yii::$app->solicitud->negar() ) {
                 $result = self::negarDetalleSolicitud();
             }
-
             return $result;
         }
 
@@ -248,23 +247,15 @@
             // Se define el arreglo para el where conditon del update.
             $arregloCondicion['nro_solicitud'] = isset($camposModel['nro_solicitud']) ? $camposModel['nro_solicitud'] : null;
 
-            foreach ( $arregloCampos as $campo ) {
-                if ( isset($camposModel[$campo]) ) {
-                    $arregloDatos[$campo] = $camposModel[$campo];
-                } else {
-                    $cancel = true;
-                    break;
-                }
-            }
-
             if ( count($arregloCampos) == 0 || count($arregloCondicion) == 0 ) { $cancel = true; }
 
             // Si no existe en la solicitud un campo que viene del modelo que deba ser
             // actualizado, entonces el proceso debe ser cancelado.
             if ( !$cancel ) {
                 $result = $this->_conexion->modificarRegistro($this->_conn, $tableName,
-                                                              $arregloDatos, $arregloCondicion);
+                                                              $arregloCampos, $arregloCondicion);
             }
+
             if (!$result ) { self::setErrors(Yii::t('backend', 'Failed update request')); }
             return $result;
         }
@@ -286,6 +277,7 @@
             $cancel = false;            // Controla si el proceso se debe cancelar.
 
             $tablaPrincipal = ContribuyenteBase::tableName();
+            $arregloDatos = null;
 
             // Se crea la instancia del modelo que contiene los campos que seran actualizados.
             $model = New InscripcionActividadEconomicaForm();
