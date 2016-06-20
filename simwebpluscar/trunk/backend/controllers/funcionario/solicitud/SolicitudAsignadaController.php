@@ -208,8 +208,22 @@
 			if ( $result ) {
 				// Ejecutar procesos asociados al evento (si existen) y enviar correo
 				// comunicando al contribuyente el resultado de su solicitud.
-				$result = self::actionEjecutarProcesoRelacionadoSolicitud($datos, $evento);
 
+				$result = self::actionEjecutarProcesoRelacionadoSolicitud($datos, $evento);
+				// Si devuelve TRUE es que se ejecutaron correctamento los procesos relacionados
+				// al evento "aprobar" de la solicitud o no existian procesos relacionados que
+				// ejecutar lo que indica que no se configuraron dichos procesos.
+				// Si retorna FALSE indica que no se logro ejecutar correctamente los procesos
+				// relacionados al evento-solicitud. Aqui acaba el procedimiento sin guardar nada.
+				if ( $result ) {
+					$this->_transaccion->commit();
+					$this->_conn->close();
+					return MensajeController::actionMensaje(101);
+				} else {
+					$this->_transaccion->rollBack();
+					$this->_conn->close();
+					self::actionErrorOperacion(404);
+				}
 			}
 		}
 
