@@ -67,17 +67,14 @@
 			'id' => 'view-solicitud-seleccionada-form',
 		    'method' => 'post',
 		    'action' => $url,
-			'enableClientValidation' => true,
-			'enableAjaxValidation' => true,
+			'enableClientValidation' => false,
+			'enableAjaxValidation' => false,
 			'enableClientScript' => true,
 		]);
 	?>
 
-	<?=
-		$form->field($model, 'listado')->hiddenInput(['value' => $listado])->label(false);
-		$form->field($model, 'nro_solicitud')->hiddenInput(['value' => $model->nro_solicitud])->label(false);
-		$form->field($model, 'id_config_solicitud')->hiddenInput(['value' => $model->id_config_solicitud])->label(false);
-	?>
+	<?=$form->field($model, 'listado')->hiddenInput(['value' => $listado])->label(false);?>
+	<?=$form->field($model, 'id_config_solicitud')->hiddenInput(['value' => $model->id_config_solicitud])->label(false);?>
 
 	<meta http-equiv="refresh">
     <div class="panel panel-default"  style="width: 85%;">
