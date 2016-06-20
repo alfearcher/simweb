@@ -210,7 +210,7 @@
         /**
          * Metodo que aprueba la solicitud, realizando los update respectivos sobre la entidad
          * maestra de las solicitudes (SolicitudesContribuyente).
-         * @param  Active Record $model modelo de la entidad SolicitudesContribuyente, este modelo
+         * @param  Active Record $model modelo de la entidad "solicitudes-contribuyente", este modelo
          * contiene la informacion de la solicitud que se busco con anterioridad.
          * @return Bollean Retorna un true si la actualizacion se realiza satisfactoriamente o false
          * en caso contrario.
