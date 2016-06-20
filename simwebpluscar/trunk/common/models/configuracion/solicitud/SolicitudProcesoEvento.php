@@ -92,48 +92,50 @@
 		{
 			$result = null;
 			$listaProcesos = $this->getProcesoSegunEvento($evento);
-			if ( count($listaProcesos) ) {
+			if ( count($listaProcesos) > 0 ) {
 				foreach ( $listaProcesos as $proceso ) {
-					foreach ( $proceso as $key => $value ) {
-						$miProceso = strtoupper(trim($value));
-						$this->accion[$miProceso] = [];
-						if ( $miProceso == 'LIQUIDACION DIRECTA' ) {
+					if ( $proceso !== null ) {
+						foreach ( $proceso as $key => $value ) {
+							$miProceso = strtoupper(trim($value));
+							$this->accion[$miProceso] = [];
+							if ( $miProceso == 'LIQUIDACION DIRECTA' ) {
 
-							$this->acciones[$miProceso] = false;
+								$this->acciones[$miProceso] = false;
 
-						} elseif ( $miProceso == 'GENERA TASA' ) {
+							} elseif ( $miProceso == 'GENERA TASA' ) {
 
-							$result = $this->generaTasa($model, $evento, $conexionLocal, $connLocal);
-							$this->acciones[$miProceso] = $result;
+								$result = $this->generaTasa($model, $evento, $conexionLocal, $connLocal);
+								$this->acciones[$miProceso] = $result;
 
-						} elseif ( $miProceso == 'SOLICITA DOCUMENTOS' ) {
+							} elseif ( $miProceso == 'SOLICITA DOCUMENTOS' ) {
 
-							$this->acciones[$miProceso] = false;
+								$this->acciones[$miProceso] = false;
 
-						} elseif ( $miProceso == 'GENERA CITA' ) {
+							} elseif ( $miProceso == 'GENERA CITA' ) {
 
-							$this->acciones[$miProceso] = false;
+								$this->acciones[$miProceso] = false;
 
-						} elseif ( $miProceso == 'GENERA NOTIFICACION' ) {
+							} elseif ( $miProceso == 'GENERA NOTIFICACION' ) {
 
-							$this->acciones[$miProceso] = false;
+								$this->acciones[$miProceso] = false;
 
-						} elseif ( $miProceso == 'GENERA MULTA' ) {
+							} elseif ( $miProceso == 'GENERA MULTA' ) {
 
-							$this->acciones[$miProceso] = false;
+								$this->acciones[$miProceso] = false;
 
-						} elseif ( $miProceso == 'GENERA FISCALIZACION' ) {
+							} elseif ( $miProceso == 'GENERA FISCALIZACION' ) {
 
-							$this->acciones[$miProceso] = false;
+								$this->acciones[$miProceso] = false;
 
-						} elseif ( $miProceso == 'GENERA AUDITORIA' ) {
+							} elseif ( $miProceso == 'GENERA AUDITORIA' ) {
 
-							$this->acciones[$miProceso] = false;
+								$this->acciones[$miProceso] = false;
 
-						} elseif ( $miProceso == 'GENERA CIERRE' ) {
+							} elseif ( $miProceso == 'GENERA CIERRE' ) {
 
-							$this->acciones[$miProceso] = false;
+								$this->acciones[$miProceso] = false;
 
+							}
 						}
 					}
 				}

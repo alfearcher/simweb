@@ -310,7 +310,7 @@
 		public function getProcesoSegunEvento($evento = '')
 		{
 			// Array de los procesos que genera la solicitud.
-			$configProcesos = $this->findConfiguracionDetalleProceso();
+			$configProcesos = self::findConfiguracionDetalleProceso();
 
 			// Los diferentes eventos que puede suceder en una solicitud.
 			$eventos = Yii::$app->solicitud->eventos();
@@ -334,7 +334,6 @@
 				$lista[$evento] = isset($listaProcesos) ? $listaProcesos : null;
 				$listaProcesos = null;
 			}
-
 			return $lista;
 		}
 
