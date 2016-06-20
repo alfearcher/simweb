@@ -262,7 +262,6 @@
 										'dataProvider' => $dataProvider,
 										'caption' => 'Planilla: ' . $planilla,
 				]);
-
 		}
 
 
@@ -342,7 +341,6 @@
 				// Solicitud no definida.
 				return self::actionErrorOperacion(404);
 			}
-
 		}
 
 
@@ -389,7 +387,6 @@
 																'url' => $url,
 																'listado' => 5,
 				]);
-
 		}
 
 
