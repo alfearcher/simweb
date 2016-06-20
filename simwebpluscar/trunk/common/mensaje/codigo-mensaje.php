@@ -58,10 +58,9 @@ return [
 	'997' => [Yii::t('backend', 'This Car already has a sticker asigned'), 'danger', 'fa fa-exclamation-triangle'],
 	'998' => [Yii::t('backend', 'The year you selected is not available'), 'danger', 'fa fa-exclamation-triangle'],
 
-
-
 	'404' => [Yii::t('backend', 'The requested page does not exist.'), 'danger', 'fa fa-times'],
 	'100' => [Yii::t('backend', 'Register saved'), 'success', 'fa fa-check-circle-o'],
+	'101' => [Yii::t('backend', 'Request was apporved successfully'), 'success', 'fa fa-check-circle-o'],
 	'200' => [Yii::t('backend', 'Register updated'), 'success', 'fa fa-check-circle-o'],
 	'300' => [Yii::t('backend', 'Operation executed'), 'success', 'fa fa-check-circle-o'],
 	'400' => [Yii::t('backend', 'Register was inactivated'), 'success', 'fa fa-check-circle-o'],
