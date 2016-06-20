@@ -62,12 +62,13 @@
 	use common\models\session\Session;
 	use backend\models\impuesto\ImpuestoForm;
 	use backend\models\configuracion\tiposolicitud\TipoSolicitud;
-	use common\models\solicitudescontribuyente\DetalleSolicitudCreada;
 	use backend\models\configuracion\documentosolicitud\SolicitudDocumentoSearch;
+	use common\models\solicitudescontribuyente\DetalleSolicitudCreada;
 	use common\models\configuracion\solicitudplanilla\SolicitudPlanillaSearch;
 	use common\models\planilla\PlanillaSearch;
 	use common\models\solicitudescontribuyente\ProcesarSolicitudContribuyente;
 	use common\models\solicitudescontribuyente\SolicitudesContribuyente;
+	use common\models\configuracion\solicitud\SolicitudProcesoEvento;
 
 
 	/**
@@ -117,7 +118,6 @@
 			if ( $model->load($postData) ) {
 				if ( $model->validate() ) {
 					if ( isset($postData['btn-search-request']) ) {
-						//return self::actionBuscarSolicitudesContribuyente($model);
 						$_SESSION['postData'] = $postData;
 						return $this->redirect(['buscar-solicitudes-contribuyente']);
 					}
@@ -153,7 +153,7 @@
 		{
 			$request = Yii::$app->request;
 			$postData = $request->post();
-
+die(var_dump($postData));
 			$model = New SolicitudesContribuyente();
 			$formName = $model->formName();
 			if ( trim($formName) !== '' ) {
@@ -166,6 +166,7 @@
 				} elseif ( isset($postData['btn-reject-request']) ) {
 					if ( $postData['btn-reject-request'] == 1 ) {
 						// Se presiono el boto de negacion.
+						// Mostrar formulario para cargar la causa y la observacion.
 						self::actionIniciarNegarSolicitud($postData, $formName);
 					}
 				}
@@ -202,6 +203,18 @@
 													$this->_conexion
 												);
 			$result = $procesar->aprobarSolicitud();
+			if ( $result ) {
+				// Ejecutar procesos asociados al evento (si existen) y enviar correo
+				// comunicando al contribuyente el resultado de su solicitud.
+
+			}
+		}
+
+
+
+		/***/
+		private function actionEjecutaProcesoSolicitud()
+		{
 
 		}
 
