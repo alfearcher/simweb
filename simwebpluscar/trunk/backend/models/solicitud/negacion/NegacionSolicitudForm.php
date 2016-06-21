@@ -43,6 +43,7 @@
 	namespace backend\models\solicitud\negacion;
 
  	use Yii;
+ 	use backend\models\utilidad\causanegacionsolicitud\CausaNegacionSolicitudForm;
 	use yii\base\Model;
 
 	/**
@@ -88,6 +89,16 @@
 	    		'causa' => Yii::t('backend', 'Cause'),
 	    		'observacion' => Yii::t('backend', 'Note'),
 	    	];
+	    }
+
+
+
+	    /***/
+	    public function listaCausasNegacion()
+	    {
+	    	$causa = New CausaNegacionSolicitudForm();
+	    	$lista = $causa->getListaCausasNegacion();
+	    	return isset($lista) ? $lista : null;
 	    }
 
 
