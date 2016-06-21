@@ -86,163 +86,70 @@
         </div>
 		<div class="panel-body">
 			<div class="container-fluid">
-				<div class="col-sm-12">
+				<div class="col-sm-10">
 
 					<div class="row" style="border-bottom: 0.5px solid #ccc;">
-						<h4><strong><?= Yii::t('backend', 'Search for Tax  - Request')?></strong></h4>
+						<h4><strong><?= Yii::t('backend', 'Request reject')?></strong></h4>
 					</div>
 
-<!-- Inicio Impuetos -->
+<!-- Inicio Causas -->
 					<div class="row" style="padding-top: 15px;">
 						<div class="col-sm-2">
 							<div class="row">
-								<p><strong><?= $model->getAttributeLabel('impuesto') ?></strong></p>
+								<strong><?= $model->getAttributeLabel('causa') ?></strong>
 							</div>
 						</div>
 						<div class="col-sm-5">
 							<div class="row">
 								 <?= $form->field($model, 'impuesto')
-								          ->dropDownList($listaImpuesto, [
-                                                                  'id'=> 'impuesto',
-                                                                  'prompt' => Yii::t('backend', 'Select'),
-                                                                  'style' => 'width:280px;',
-                                                                  'onchange' => '$.post( "' . Yii::$app->urlManager
-                                                                                       		           ->createUrl('funcionario/solicitud/solicitud-asignada/list-solicitud') . '&i=' . '" + $(this).val(), function( data ) {
-                                                                                                                 $( "select#tipo-solicitud" ).html( data );
-                                                                                                           });'
-                                                                            ])->label(false);
+								          ->dropDownList($listaCausas, [
+                                                               'id'=> 'causa',
+                                                               'prompt' => Yii::t('backend', 'Select'),
+                                                               'style' => 'width:280px;',
+                                                        ])->label(false);
                                 ?>
 							</div>
 						</div>
 					</div>
-<!-- Fin de Impuestos -->
+<!-- Fin de Causas -->
 
-<!-- Inicio Tipo de Solicitud -->
-					<div class="row">
-						<div class="col-sm-2">
-							<div class="row">
-								<p><strong><?= $model->getAttributeLabel('tipo_solicitud') ?></strong></p>
-							</div>
-						</div>
-						<div class="col-sm-5">
-							<div class="row" class="tipo-solicitud">
-								 <?= $form->field($model, 'tipo_solicitud')
-								          ->dropDownList([], [
-                                                            	'id'=> 'tipo-solicitud',
-                                                            	'prompt' => Yii::t('backend', 'Select'),
-                                                            	'style' => 'width:280px;',
-                                                            ])->label(false);
-                                ?>
-							</div>
-						</div>
-					</div>
-<!-- Fin de Tipo de Solicitud -->
-
-<!-- Inicio Rango de fecha -->
-					<div class="row" style="border-bottom: 0.5px solid #ccc;">
-						<h4><strong><?= Yii::t('backend', 'Rango de Fecha')?></strong></h4>
-					</div>
-
-					<div class="row" style="padding-top: 15px;padding-left: 55px;">
-<!-- Inicio de Fecha Desde -->
-						<div class="row">
-							<div class="col-sm-2">
-								<div class="row">
-									<p><strong><?= $model->getAttributeLabel('fecha_desde') ?></strong></p>
-								</div>
-							</div>
-							<div class="col-sm-2">
-								<div class="row" class="fecha-desde">
-									<?= $form->field($model, 'fecha_desde')->widget(\yii\jui\DatePicker::classname(),[
-																						  'clientOptions' => [
-																								'maxDate' => '+0d',	// Bloquear los dias en el calendario a partir del dia siguiente al actual.
-																								'changeYear' => true,
-																							],
-																						  'language' => 'es-ES',
-																						  'dateFormat' => 'dd-MM-yyyy',
-																						  'options' => [
-																						  		'id' => 'fecha-desde',
-																								'class' => 'form-control',
-																								'readonly' => true,
-																								'style' => 'background-color: white;width:75%;',
-
-																							]
-																							])->label(false) ?>
-								</div>
-							</div>
-						</div>
-
-<!-- Fin Fecha Desde -->
-
-<!-- Inicio de Fecha Hasta -->
-						<div class="row">
-							<div class="col-sm-2">
-								<div class="row">
-									<p><strong><?= $model->getAttributeLabel('fecha_hasta') ?></strong></p>
-								</div>
-							</div>
-							<div class="col-sm-2">
-								<div class="row" class="fecha-hasta">
-									<?= $form->field($model, 'fecha_hasta')->widget(\yii\jui\DatePicker::classname(),[
-																						  'clientOptions' => [
-																								'maxDate' => '+0d',	// Bloquear los dias en el calendario a partir del dia siguiente al actual.
-																								'changeYear' => true,
-																							],
-																						  'language' => 'es-ES',
-																						  'dateFormat' => 'dd-MM-yyyy',
-																						  'options' => [
-																						  		'id' => 'fecha-hasta',
-																								'class' => 'form-control',
-																								'readonly' => true,
-																								'style' => 'background-color: white;width:75%;',
-
-																							]
-																							])->label(false) ?>
-								</div>
-							</div>
-						</div>
-<!-- Fin de Fecha Hasta -->
-					</div>
-
-<!-- Inicio de Nro de Solicitud -->
-					<div class="row" style="border-bottom: 0.5px solid #ccc;">
-						<h4><strong><?= $model->getAttributeLabel('nro_solicitud') ?></strong></h4>
-					</div>
-
+<!-- Inicio de Observacion -->
 					<div class="row" style="padding-top: 15px;">
 						<div class="col-sm-2">
 							<div class="row">
-								<p><strong><?= $model->getAttributeLabel('nro_solicitud') ?></strong></p>
+								<strong><?= $model->getAttributeLabel('observacion') ?></strong>
 							</div>
 						</div>
 						<div class="col-sm-3">
-							<div class="row" class="nro-solicitud">
-								<?= $form->field($model, 'nro_solicitud')->textInput([
-																				'id' => 'nro-solicitud',
+							<div class="row" class="observacion">
+								<?= $form->field($model, 'observacion')->textArea([
+																				'id' => 'observacion',
+																				'rows' => 8,
+																				'style' => 'width: 400px;',
 																			])->label(false) ?>
 							</div>
 						</div>
 					</div>
-<!-- Fin de Nro de Solicitud -->
+<!-- Fin de Observacion -->
 
-
+<!-- Inicio de boton -->
 					<div class="row">
-						<div class="col-sm-3" style="float: right;">
+						<div class="col-sm-3">
 							<div class="form-group">
-								<?= Html::submitButton(Yii::t('backend', 'Search Request'),
-																		  [
-																			'id' => 'btn-search-request',
-																			'class' => 'btn btn-primary',
-																			'value' => 1,
-																			'name' => 'btn-search-request',
-																			'style' => 'width: 100%;',
-																		  ])
+								<?= Html::submitButton(Yii::t('backend', 'Reject Request'),
+													  [
+														'id' => 'btn-reject-request',
+														'class' => 'btn btn-danger',
+														'value' => 2,
+														'name' => 'btn-reject-request',
+														'style' => 'width: 100%;',
+														'data-confirm' => Yii::t('backend', 'Confirm Reject?.'),
+													  ])
 								?>
 							</div>
 						</div>
 					</div>
-<!-- Fin de Rango Fecha -->
-
+<!--  -->
 				</div>
 			</div>	<!-- Fin de container-fluid -->
 		</div>		<!-- Fin de panel-body -->
