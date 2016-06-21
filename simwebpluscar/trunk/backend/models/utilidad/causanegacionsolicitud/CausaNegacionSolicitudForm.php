@@ -80,27 +80,33 @@
 
 
 
+	    /***/
+	    public function attributeLabels()
+	    {
+	    	return [
+	    		'causa' => Yii::t('backend', 'Register No.'),
+	    		'descripcion' => Yii::t('backend', 'Description'),
+	    		'inactivo' => Yii::t('backend', 'Condition')
+	    	];
+	    }
+
+
 
 	    /**
-	     * Metodo que devuelde un dataProvider
-	     * @param $impuesto, integer que identifica al impuesto.
-	     * @return retorna un dataProvider
+	     * Metodo que realiza una consulta sobre los registros de la entidad respectiva.
+	     * "causas-negacion-solicitud".
+	     * @param  integer $inactivo indica condicion del o los registros, 0 => Activo, 1 => Inactivo.
+	     * @return Active Record.
 	     */
-	    public function getDataProviderDocumentosRequisitosSegunImpuesto($impuesto = 0)
+	    public function findCausaNegacion($inactivo = 0)
 	    {
-	    	if ( $impuesto == 0 ) {
-		    	$query = DocumentoRequisito::find();
-	    		$dataProvider = new ActiveDataProvider([
-	        		'query' => $query,
-	    		]);
-	    	} else {
-	    		$query = DocumentoRequisito::find()->where(['impuesto' => $impuesto, 'inactivo' => 0])->orderBy('descripcion');
-	    		$dataProvider = new ActiveDataProvider([
-	        		'query' => $query,
-	    		]);
-	    	}
+    		$modelFind = CausaNegacionSolicitud::find()->where('inactivo =:inactivo', [':inactivo' => $inactivo])
+    												   ->orderBy([
+    												   		'descripcion' => SORT_ASC,
+    												   	])
+    												   ->all();
 
-	    	return $dataProvider;
+    		return isset($modelFind) ? $modelFind : null;
 	    }
 
 
