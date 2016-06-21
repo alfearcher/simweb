@@ -153,6 +153,7 @@
 		/***/
 		public function actionProcesarSolicitud()
 		{
+			$result = false;
 			$request = Yii::$app->request;
 			$postData = $request->post();
 
@@ -163,7 +164,12 @@
 				if ( isset($postData['btn-approve-request']) ) {
 					if ( $postData['btn-approve-request'] == 1 ) {
 						// Se presiono el boto de aprobacion.
-						self::actionIniciarAprobarSolicitud($postData, $formName);
+						$result = self::actionIniciarAprobarSolicitud($postData, $formName);
+						if ( $result ) {
+							return MensajeController::actionMensaje(101);
+						} else {
+							return self::actionErrorOperacion(404);
+						}
 					}
 				} elseif ( isset($postData['btn-reject-request']) ) {
 					if ( $postData['btn-reject-request'] == 1 ) {
@@ -220,11 +226,10 @@
 				if ( $result ) {
 					$this->_transaccion->commit();
 					$this->_conn->close();
-					MensajeController::actionMensaje(101);
+
 				} else {
 					$this->_transaccion->rollBack();
 					$this->_conn->close();
-					self::actionErrorOperacion(404);
 				}
 			}
 		}
