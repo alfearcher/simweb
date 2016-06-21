@@ -111,7 +111,7 @@
          */
         private function getDatosSolicitudCreada()
         {
-            // find sobre SoliicitudesContribuyente.
+            // find sobre SolicitudesContribuyente.
             // Metodo clase padre.
             $datos = $this->findSolicitudContribuyente($this->_nro_solicitud);
             return isset($datos) ? $datos : null;
@@ -148,24 +148,9 @@
                 $arregloCondicion = ['nro_solicitud' => $this->_nro_solicitud];
                 $tableName = $model->tableName();
 
-                 $usuario = isset(Yii::$app->user->identity->email) ? Yii::$app->user->identity->email : Yii::$app->user->identity->login;
-
-                // Se obtienen los campos que se actualizaran.
-                $arregloUpdate = $this->atributosUpdateNegacion();
                 $arregloDatos = null;
-
-                $model->fecha_hora_proceso = date('Y-m-d H:i:s');
-                $model->user_funcionario = $usuario;
-                $model->estatus = 9;
-                $model->causa = $causa;
-                $model->observacion = $observacion;
-
-                // Se pasan los valores que se actualizaran del modelo al arreglo de datos.
-                foreach ( $arregloUpdate as $arreglo ) {
-                    if ( isset($model[$arreglo]) ) {
-                        $arregloDatos[$arreglo] = $model[$arreglo];
-                    }
-                }
+                // Se obtienen los campos que se actualizaran.
+                $arregloDatos = $this->atributosUpdateNegacion($causa, $observacion);
 
                 $result = $this->_conexion->modificarRegistro($this->_conn, $tableName, $arregloDatos, $arregloCondicion);
             }
@@ -222,22 +207,8 @@
                 $arregloCondicion = ['nro_solicitud' => $this->_nro_solicitud];
                 $tableName = $model->tableName();
 
-                 $usuario = isset(Yii::$app->user->identity->email) ? Yii::$app->user->identity->email : Yii::$app->user->identity->login;
-
-                // Se obtienen los campos que se actualizaran.
-                $arregloUpdate = $this->atributosUpdateAprobacion();
                 $arregloDatos = null;
-
-                $model->fecha_hora_proceso = date('Y-m-d H:i:s');
-                $model->user_funcionario = $usuario;
-                $model->estatus = 1;
-
-                // Se pasan los valores que se actualizaran del modelo al arreglo de datos.
-                foreach ( $arregloUpdate as $arreglo ) {
-                    if ( isset($model[$arreglo]) ) {
-                        $arregloDatos[$arreglo] = $model[$arreglo];
-                    }
-                }
+                $arregloDatos = $this->atributosUpdateAprobacion();
 
                 $result = $this->_conexion->modificarRegistro($this->_conn, $tableName, $arregloDatos, $arregloCondicion);
             }

@@ -205,24 +205,24 @@
         public function atributosUpdateAprobacion()
         {
             return [
-                'estatus',
-                'user_funcionario',
-                'fecha_hora_proceso'
-            ]; 
+                'estatus' => 1,
+                'user_funcionario' => isset(Yii::$app->user->identity->username) ? Yii::$app->user->identity->username : Yii::$app->user->identity->login,
+                'fecha_hora_proceso' => date('Y-m-d H:i:s'),
+            ];
         }
 
 
 
         /***/
-        public function atributosUpdateNegacion()
+        public function atributosUpdateNegacion($causa = 0, $observacion = '')
         {
             return [
-                'estatus',
-                'user_funcionario',
-                'fecha_hora_proceso',
-                'causa',
-                'observacion'
-            ]; 
+                'estatus' => 9,
+                'user_funcionario' => isset(Yii::$app->user->identity->username) ? Yii::$app->user->identity->username : Yii::$app->user->identity->login,
+                'fecha_hora_proceso' => date('Y-m-d H:i:s'),
+                'causa' => $causa,
+                'observacion' => $observacion,
+            ];
         }
 
     }
