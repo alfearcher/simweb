@@ -118,9 +118,9 @@
 	     * mostrar un combo-lista.
 	     * @return Array Retorna lista de causas de negacion de solicitudes.
 	     */
-	    public function getListaCausasNegacion()
+	    public function getListaCausasNegacion($inactivo = 0)
 	    {
-	    	$model = $this->findCausaNegacion();
+	    	$model = $this->findCausaNegacion($inactivo);
 	    	if ( isset($model) ) {
 	    		$lista = ArrayHelper::map($model, 'causa', 'descripcion');
 	    	} else {
