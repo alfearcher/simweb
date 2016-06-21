@@ -57,7 +57,7 @@
 	use backend\models\solicitud\negacion\NegacionSolicitudForm;
 
 
-	session_start();		// Iniciando session
+	//session_start();		// Iniciando session
 
 	/**
 	 *
