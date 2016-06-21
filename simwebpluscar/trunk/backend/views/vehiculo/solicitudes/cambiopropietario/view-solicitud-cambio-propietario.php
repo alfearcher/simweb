@@ -21,13 +21,13 @@
  */
 
  /**
- *  @file view-solicitud.php
+ *  @file view-solicitud-cambio-propietario.php
  *
  *  @author Manuel Zapata
  *
- *  @date 17-05-2016
+ *  @date 21-06-2016
  *
- *  @view view-solicitud.php
+ *  @view view-solicitud-cambio-propietario.php
  *
  *
  *  @property
