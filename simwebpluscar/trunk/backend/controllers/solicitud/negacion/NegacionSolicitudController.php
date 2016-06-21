@@ -96,6 +96,7 @@
   			return $this->render('/solicitud/negacion/negacion-solicitud-form.php', [
   														'model' => $model,
   														'listaCausas' => $lista,
+  														'caption' => 'dddd',
   					]);
 
 		}
