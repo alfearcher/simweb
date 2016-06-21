@@ -167,7 +167,7 @@
 						// Se presiono el boto de aprobacion.
 						$result = self::actionIniciarAprobarSolicitud($postData, $formName);
 						if ( $result ) {
-							return MensajeController::actionMensaje(101);
+							return self::actionProcesoExitoso(101);
 						} else {
 							return self::actionErrorOperacion(404);
 						}
