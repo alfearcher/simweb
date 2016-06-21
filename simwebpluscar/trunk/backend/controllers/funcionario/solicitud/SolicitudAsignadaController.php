@@ -363,9 +363,9 @@
 			$postInicial = isset($_SESSION['postData']) ? $_SESSION['postData'] : null;
 			$request = Yii::$app->request;
 			$postData = $request->post();
-			if ( isset($postInicial) ) {
-				$postData = $postInicial;
-			}
+			// if ( isset($postInicial) ) {
+			// 	$postData = $postInicial;
+			// }
 			$contribuyente =null;
 			$caption = Yii::t('backend', 'Infomation of the request');
 			$subCaption = Yii::t('backend', 'Request');
