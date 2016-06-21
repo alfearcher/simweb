@@ -232,6 +232,7 @@
 					$this->_conn->close();
 				}
 			}
+			return $result;
 		}
 
 
