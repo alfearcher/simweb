@@ -88,7 +88,15 @@
 
 	      	 	}
 	  		}
-  			return $this->render('/aaee/inscripcion-sucursal/create', ['model' => $model, 'modelActEcon' => $modelActEcon, ]);
+
+	  		// Se obtiene una lista de causas de negacion de solicitudes para mostrarlo
+	  		// en un combo-lista, esto se obtuvo con el ArrayHelper.
+	  		$lista = $model->listaCausasNegacion();
+
+  			return $this->render('/solicitud/negacion/negacion-solicitud-form.php', [
+  														'model' => $model,
+  														'listaCausas' => $lista,
+  					]);
 
 		}
 
