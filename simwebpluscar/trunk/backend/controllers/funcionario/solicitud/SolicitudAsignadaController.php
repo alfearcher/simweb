@@ -363,7 +363,7 @@
 			$postInicial = isset($_SESSION['postData']) ? $_SESSION['postData'] : null;
 			$request = Yii::$app->request;
 			$postData = $request->post();
-			if isset($postInicial) {
+			if ( isset($postInicial) ) {
 				$postData = $postInicial;
 			}
 			$contribuyente =null;
