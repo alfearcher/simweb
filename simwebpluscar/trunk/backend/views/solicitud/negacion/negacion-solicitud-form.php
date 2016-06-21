@@ -77,7 +77,8 @@
 					}
     			</style>
 	        		<?= MenuController::actionMenuSecundario([
-	        						'undo' => '/funcionario/solicitud/solicitud-asignada/index',
+	        						'back' => '/funcionario/solicitud/solicitud-asignada/buscar-solicitud-seleccionada',
+	        						'undo' => '/funcionario/solicitud/solicitud-asignada/levantar-form-negacion-solicitud',
 	        						'quit' => '/funcionario/solicitud/solicitud-asignada/quit',
 	        			])
 	        		?>
