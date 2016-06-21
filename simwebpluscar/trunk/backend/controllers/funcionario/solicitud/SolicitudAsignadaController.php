@@ -191,7 +191,7 @@
 
 
 		/***/
-		private function actionLevantarFormNegacionSolicitud()
+		public function actionLevantarFormNegacionSolicitud()
 		{
 			$modelNegacion = New NegacionSolicitudForm();
 			// Se obtiene una lista de causas de negacion de solicitudes para mostrarlo
