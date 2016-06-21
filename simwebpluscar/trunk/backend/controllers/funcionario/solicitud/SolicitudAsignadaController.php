@@ -71,6 +71,7 @@
 	use common\models\solicitudescontribuyente\ProcesarSolicitudContribuyente;
 	use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 	use common\models\configuracion\solicitud\SolicitudProcesoEvento;
+	use backend\models\solicitud\negacion\NegacionSolicitudForm;
 
 
 	/**
@@ -175,7 +176,17 @@
 					if ( $postData['btn-reject-request'] == 1 ) {
 						// Se presiono el boto de negacion.
 						// Mostrar formulario para cargar la causa y la observacion.
-						self::actionIniciarNegarSolicitud($postData, $formName);
+						//self::actionIniciarNegarSolicitud($postData, $formName);
+						$modelNegacion = New NegacionSolicitudForm();
+						// Se obtiene una lista de causas de negacion de solicitudes para mostrarlo
+				  		// en un combo-lista, esto se obtuvo con el ArrayHelper.
+				  		$lista = $modelNegacion->listaCausasNegacion();
+
+			  			return $this->render('/solicitud/negacion/negacion-solicitud-form.php', [
+			  														'model' => $modelNegacion,
+			  														'listaCausas' => $lista,
+			  														'caption' => 'dddd',
+			  					]);
 					}
 				}
 
