@@ -101,11 +101,11 @@
 						</div>
 						<div class="col-sm-5">
 							<div class="row">
-								 <?= $form->field($model, 'impuesto')
+								 <?= $form->field($model, 'causa')
 								          ->dropDownList($listaCausas, [
                                                                'id'=> 'causa',
                                                                'prompt' => Yii::t('backend', 'Select'),
-                                                               'style' => 'width:280px;',
+                                                               'style' => 'width:480px;',
                                                         ])->label(false);
                                 ?>
 							</div>
