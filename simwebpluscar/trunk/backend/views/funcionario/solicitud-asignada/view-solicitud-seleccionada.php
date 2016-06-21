@@ -463,7 +463,7 @@
 														'value' => 1,
 														'name' => 'btn-reject-request',
 														'style' => 'width: 100%;',
-														'data-confirm' => Yii::t('backend', 'Confirm Reject?.'),
+														//'data-confirm' => Yii::t('backend', 'Confirm Reject?.'),
 													  ])
 								?>
 							</div>
