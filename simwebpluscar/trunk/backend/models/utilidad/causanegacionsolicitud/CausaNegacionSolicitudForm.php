@@ -45,6 +45,7 @@
  	use Yii;
 	use yii\base\Model;
 	use yii\data\ActiveDataProvider;
+	use yii\helpers\ArrayHelper;
 
 	/**
 	* 	Clase base del formulario
@@ -107,6 +108,25 @@
     												   ->all();
 
     		return isset($modelFind) ? $modelFind : null;
+	    }
+
+
+
+	    /**
+	     * Metodo que permite generar un listado de las causas de negacion
+	     * de una solicitud. Esto se puede utilizar en un formulario para
+	     * mostrar un combo-lista.
+	     * @return Array Retorna lista de causas de negacion de solicitudes.
+	     */
+	    public function getListaCausasNegacion()
+	    {
+	    	$model = $this->findCausaNegacion();
+	    	if ( isset($model) ) {
+	    		$lista = ArrayHelper::map($model, 'causa', 'descripcion');
+	    	} else {
+	    		$lista = null;
+	    	}
+	    	return $lista;
 	    }
 
 
