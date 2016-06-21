@@ -105,7 +105,7 @@
 								          ->dropDownList($listaCausas, [
                                                                'id'=> 'causa',
                                                                'prompt' => Yii::t('backend', 'Select'),
-                                                               'style' => 'width:480px;',
+                                                               'style' => 'width:600px;',
                                                         ])->label(false);
                                 ?>
 							</div>
@@ -124,8 +124,8 @@
 							<div class="row" class="observacion">
 								<?= $form->field($model, 'observacion')->textArea([
 																				'id' => 'observacion',
-																				'rows' => 8,
-																				'style' => 'width: 400px;',
+																				'rows' => 6,
+																				'style' => 'width: 600px;',
 																			])->label(false) ?>
 							</div>
 						</div>
