@@ -177,16 +177,8 @@
 						// Se presiono el boto de negacion.
 						// Mostrar formulario para cargar la causa y la observacion.
 						//self::actionIniciarNegarSolicitud($postData, $formName);
-						$modelNegacion = New NegacionSolicitudForm();
-						// Se obtiene una lista de causas de negacion de solicitudes para mostrarlo
-				  		// en un combo-lista, esto se obtuvo con el ArrayHelper.
-				  		$lista = $modelNegacion->listaCausasNegacion();
+						$this->redirect(['levantar-form-negacion-solicitud']);
 
-			  			return $this->render('/solicitud/negacion/negacion-solicitud-form.php', [
-			  														'model' => $modelNegacion,
-			  														'listaCausas' => $lista,
-			  														'caption' => 'dddd',
-			  					]);
 					}
 				}
 
@@ -195,6 +187,24 @@
 				return self::actionErrorOperacion(404);
 			}
 		}
+
+
+
+		/***/
+		private function actionLevantarFormNegacionSolicitud()
+		{
+			$modelNegacion = New NegacionSolicitudForm();
+			// Se obtiene una lista de causas de negacion de solicitudes para mostrarlo
+	  		// en un combo-lista, esto se obtuvo con el ArrayHelper.
+	  		$lista = $modelNegacion->listaCausasNegacion();
+
+  			return $this->render('/solicitud/negacion/negacion-solicitud-form.php', [
+  														'model' => $modelNegacion,
+  														'listaCausas' => $lista,
+  														'caption' => 'dddd',
+  					]);
+		}
+
 
 
 
