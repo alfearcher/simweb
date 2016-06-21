@@ -39,12 +39,11 @@
  *
  */
 
-	namespace backend\models\utilidad\documento;
+	namespace backend\models\utilidad\causanegacionsolicitud;
 
  	use Yii;
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
-	use backend\models\utilidad\causanegacionsolicitud;
 	use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 
 

@@ -46,7 +46,7 @@
 	use yii\base\Model;
 	use yii\data\ActiveDataProvider;
 	use yii\helpers\ArrayHelper;
-
+	use backend\models\utilidad\causanegacionsolicitud\CausaNegacionSolicitud;
 	/**
 	* 	Clase base del formulario
 	*/
