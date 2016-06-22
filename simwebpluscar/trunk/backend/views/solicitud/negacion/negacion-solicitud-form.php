@@ -125,16 +125,27 @@
 							<div class="row" class="observacion">
 								<?= $form->field($model, 'observacion')->textArea([
 																				'id' => 'observacion',
-																				'rows' => 6,
+																				'rows' => 4,
+																				'maxlength' => 255,
 																				'style' => 'width: 600px;',
 																			])->label(false) ?>
 							</div>
 						</div>
 					</div>
+					<div class="row" style="padding-left: 580px; margin-top: -25px;">
+						<strong><small>
+							<div class="col-sm-2" style="width: 100%;">
+								<div id="contador">255</div>
+							</div>
+							<div class="col-sm-4" style="width: 100%;">
+								<p>caracteres</p>
+							</div>
+						</small></strong>
+					</div>
 <!-- Fin de Observacion -->
 
 <!-- Inicio de boton -->
-					<div class="row">
+					<div class="row" style= "align:left;" >
 						<div class="col-sm-3">
 							<div class="form-group">
 								<?= Html::submitButton(Yii::t('backend', 'Reject Request'),
@@ -159,4 +170,16 @@
 	<?php ActiveForm::end(); ?>
 </div>
 
-
+<?php
+	$this->registerJs(
+		'$(document).ready(function() {
+    		var max_chars = 255;
+    		$("#max").html(max_chars);
+		    $("#observacion").keyup(function() {
+		        var chars = $(this).val().length;
+		        var diff = max_chars - chars;
+		        $("#contador").html(diff);
+		    });
+		});'
+	);
+?>
