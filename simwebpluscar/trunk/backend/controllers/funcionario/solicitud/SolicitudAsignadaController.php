@@ -195,7 +195,7 @@
 		{
 			$request = Yii::$app->request;
 			$postData = $request->post();
-
+//die(var_dump($postData));
 			$modelNegacion = New NegacionSolicitudForm();
 
 			if ( $modelNegacion->load($postData) && Yii::$app->request->isAjax ) {
