@@ -193,12 +193,26 @@
 		/***/
 		public function actionLevantarFormNegacionSolicitud()
 		{
+			$request = Yii::$app->request;
+			$postData = $request->post();
+
 			$modelNegacion = New NegacionSolicitudForm();
+
+			if ( $modelNegacion->load($postData) && Yii::$app->request->isAjax ) {
+				Yii::$app->response->format = Response::FORMAT_JSON;
+				return ActiveForm::validate($modelNegacion);
+			}
+
+			if ( $modelNegacion->load($postData) ) {
+				if ( $modelNegacion->validate() ) {
+				}
+			}
+
 			// Se obtiene una lista de causas de negacion de solicitudes para mostrarlo
 	  		// en un combo-lista, esto se obtuvo con el ArrayHelper.
 	  		$lista = $modelNegacion->listaCausasNegacion();
 
-  			return $this->render('/solicitud/negacion/negacion-solicitud-form.php', [
+  			return $this->render('/solicitud/negacion/negacion-solicitud-form', [
   														'model' => $modelNegacion,
   														'listaCausas' => $lista,
   														'caption' => 'dddd',
