@@ -258,6 +258,7 @@
 				// ejecutar lo que indica que no se configuraron dichos procesos.
 				// Si retorna FALSE indica que no se logro ejecutar correctamente los procesos
 				// relacionados al evento-solicitud. Aqui acaba el procedimiento sin guardar nada.
+
 				if ( $result ) {
 					$this->_transaccion->commit();
 					$this->_conn->close();
@@ -527,11 +528,11 @@
 		 * [actionProcesoExitoso description]
 		 * @return [type] [description]
 		 */
-		public function actionProcesoExitoso()
+		public function actionProcesoExitoso($codigo)
 		{
 			$varSession = self::actionGetListaSessions();
 			self::actionAnularSession($varSession);
-			return MensajeController::actionMensaje(100);
+			return MensajeController::actionMensaje($codigo);
 		}
 
 
