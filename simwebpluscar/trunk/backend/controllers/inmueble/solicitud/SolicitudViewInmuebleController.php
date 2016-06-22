@@ -95,8 +95,8 @@
 		public function actionInicioView()
 		{
 			if ( isset($this->model) && isset($_SESSION['idContribuyente']) ) {
-// id de la configuracion tipo..
-				if ( $this->model->tipo_solicitud == 20 ) {
+// id de la configuracion tipo.. 
+				if ( $this->model->tipo_solicitud == 20 ) { 
 
 					return self::actionMostrarSolicitudInscripcionInmueble();
 
@@ -202,10 +202,10 @@
 													'model' => $model,
 
 						]); 
-			} 
+			}
 
 			return false;
-		}  
+		} 
 
 		// tipo solicitud 22
 		private function actionMostrarSolicitudCertificadoCatastralInmueble()
