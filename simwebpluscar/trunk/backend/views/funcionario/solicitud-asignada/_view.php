@@ -65,6 +65,7 @@
 																'dataProvider' => $dataProvider,
 																'dataProviderPlanilla' => $dataProviderPlanilla,
 																'exigirDocumento' => $exigirDocumento,
+																'errorChk' => $errorChk,
 				]);
 	?>
 </div>

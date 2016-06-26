@@ -74,6 +74,7 @@
 	?>
 
 	<?=$form->field($model, 'listado')->hiddenInput(['value' => $listado])->label(false);?>
+	<?=$form->field($model, 'exigirDocumento')->hiddenInput(['value' => $exigirDocumento])->label(false);?>
 	<?=$form->field($model, 'id_config_solicitud')->hiddenInput(['value' => $model->id_config_solicitud])->label(false);?>
 
 	<meta http-equiv="refresh">
@@ -334,6 +335,13 @@
 							        ?>
 								</div>
 							</div>
+							<?php if ( trim($errorChk) !== '' ) { ?>
+								<div class="row">
+									<div class="error-chk-documento">
+										<div class="well well-sm" style="color: red;"><?=$errorChk; ?></div>
+									</div>
+								</div>
+							<?php } ?>
 
 							<div class="row" style="padding-left: 10px;">
 								<small><strong><?= Yii::t('backend', 'Planilla(s)') ?></strong></small>
@@ -356,6 +364,17 @@
 							               'summary' => '',
 							               'columns' => [
 						                        ['class' => 'yii\grid\SerialColumn'],
+						                        [
+                        							'class' => 'yii\grid\CheckboxColumn',
+                        							'name' => 'chk-planilla',
+                        							'checkboxOptions' => [
+                                							'id' => 'id-chk-planilla',
+                                							'checked' => true,
+                                							'disabled' => true,
+                                					],
+                                					'multiple' => false,
+
+                        						],
 						                        [
 						                            'label' => 'Planilla',
 						                            'format'=>'raw',
