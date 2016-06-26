@@ -377,7 +377,7 @@
                         						],
 						                        [
 						                            'label' => 'Planilla',
-						                            'format'=>'raw',
+						                            'format' => 'raw',
 						                            'value' => function($data) {
 						                            	return Html::a($data['planilla'], '#', [
             																		'id' => 'link-view-planilla',
