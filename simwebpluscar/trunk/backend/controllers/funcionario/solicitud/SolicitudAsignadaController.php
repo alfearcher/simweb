@@ -195,7 +195,7 @@
 		{
 			$request = Yii::$app->request;
 			$postData = $request->post();
-//die(var_dump($postData));
+
 			$modelNegacion = New NegacionSolicitudForm();
 
 			if ( $modelNegacion->load($postData) && Yii::$app->request->isAjax ) {
@@ -400,6 +400,7 @@
 					if ( count($contribuyente) > 0 ) {
 						$_SESSION['idContribuyente'] = $infoSolicitud->id_contribuyente;
 
+						// Vista detalle de la solicitud, es la informacion que se cargo.
 						$detalle = New DetalleSolicitudCreada($id);
 						$viewDetalle = $detalle->getDatosSolicitudCreada();
 
