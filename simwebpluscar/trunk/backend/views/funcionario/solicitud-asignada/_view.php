@@ -64,6 +64,7 @@
 																'viewDetalle' => $viewDetalle,
 																'dataProvider' => $dataProvider,
 																'dataProviderPlanilla' => $dataProviderPlanilla,
+																'exigirDocumento' => $exigirDocumento,
 				]);
 	?>
 </div>
