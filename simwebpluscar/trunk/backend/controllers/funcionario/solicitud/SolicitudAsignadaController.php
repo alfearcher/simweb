@@ -381,7 +381,8 @@
 			// if ( isset($postInicial) ) {
 			// 	$postData = $postInicial;
 			// }
-			$contribuyente =null;
+			$exigirDocumento = false;
+			$contribuyente = null;
 			$caption = Yii::t('backend', 'Infomation of the request');
 			$subCaption = Yii::t('backend', 'Request');
 			$url = Url::to(['procesar-solicitud']);
@@ -409,7 +410,7 @@
 							// Se buscan los Documentos y Requisitos de la Solicitud.
 							$modelDoc = New SolicitudDocumentoSearch($id);
 							$dataProvider = $modelDoc->getDataProvider();
-
+							if ( $dataProvider->count > 0 ) { $exigirDocumento = true; }
 
 							// Se buscan las planillas relacionadas a la solicitud. Se refiere a las planillas
 							// de impueso "tasa".
@@ -428,6 +429,7 @@
 																	'viewDetalle' => $viewDetalle,
 																	'dataProvider' => $dataProvider,
 																	'dataProviderPlanilla' => $dataProviderPlanilla,
+																	'exigirDocumento' => $exigirDocumento,
 
 
 								]);
