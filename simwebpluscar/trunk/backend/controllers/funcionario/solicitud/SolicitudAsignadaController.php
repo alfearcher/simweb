@@ -70,6 +70,7 @@
 	use common\models\planilla\PlanillaSearch;
 	use common\models\solicitudescontribuyente\ProcesarSolicitudContribuyente;
 	use common\models\solicitudescontribuyente\SolicitudesContribuyente;
+	use common\models\solicitudescontribuyente\SolicitudesContribuyenteForm;
 	use common\models\configuracion\solicitud\SolicitudProcesoEvento;
 	use backend\models\solicitud\negacion\NegacionSolicitudForm;
 
@@ -94,6 +95,7 @@
 		private $_conn;
 		private $_conexion;
 		private $_transaccion;
+		private $_exigirDocumento = false;
 
 
 
@@ -157,26 +159,52 @@
 			$result = false;
 			$request = Yii::$app->request;
 			$postData = $request->post();
+die(var_dump($postData));
 
 			$model = New SolicitudesContribuyente();
 			$formName = $model->formName();
+
 			if ( trim($formName) !== '' ) {
+				$this->_exigirDocumento = isset($postData[$formName]['exigirDocumento']) ? $postData[$formName]['exigirDocumento'] : false;
 				// Se pregunta por el boton seleccionado para procesar la solicitud.
 				if ( isset($postData['btn-approve-request']) ) {
 					if ( $postData['btn-approve-request'] == 1 ) {
 						// Se presiono el boto de aprobacion.
-						$result = self::actionIniciarAprobarSolicitud($postData, $formName);
-						if ( $result ) {
-							return self::actionProcesoExitoso(101);
+
+						// Lo siguiente controla que si existe una lista de documentos y requisitos
+						// a consignar por parte del contribuyente, el funcionario lo indique con un
+						// tilde (checkbox), en el formulario de procesamiento de la solicitud.
+						if ( $this->_exigirDocumento == true ) {
+							if ( isset($postData['chk-documento-requisito']) ) {
+								if ( count($postData['chk-documento-requisito']) > 0 ) {
+									$result = self::actionIniciarAprobarSolicitud($postData, $formName);
+									if ( $result ) {
+										return self::actionProcesoExitoso(101);
+									} else {
+										return self::actionErrorOperacion(404);
+									}
+								} else {
+									$_SESSION['mensajeErrorChk'] = Yii::t('backend', 'Debe indicar el documento consignado');
+									$this->redirect(['buscar-solicitud-seleccionada']);
+								}
+							} else {
+								$_SESSION['mensajeErrorChk'] = Yii::t('backend', 'Debe indicar el documento consignado');
+								$this->redirect(['buscar-solicitud-seleccionada']);
+							}
 						} else {
-							return self::actionErrorOperacion(404);
+							// Se presiono el boto de aprobacion.
+							$result = self::actionIniciarAprobarSolicitud($postData, $formName);
+							if ( $result ) {
+								return self::actionProcesoExitoso(101);
+							} else {
+								return self::actionErrorOperacion(404);
+							}
 						}
 					}
 				} elseif ( isset($postData['btn-reject-request']) ) {
 					if ( $postData['btn-reject-request'] == 1 ) {
 						// Se presiono el boto de negacion.
 						// Mostrar formulario para cargar la causa y la observacion.
-						//self::actionIniciarNegarSolicitud($postData, $formName);
 						$this->redirect(['levantar-form-negacion-solicitud']);
 
 					}
@@ -375,12 +403,15 @@
 		 */
 		public function actionBuscarSolicitudSeleccionada()
 		{
-			$postInicial = isset($_SESSION['postData']) ? $_SESSION['postData'] : null;
+			//$postInicial = isset($_SESSION['postData']) ? $_SESSION['postData'] : null;
 			$request = Yii::$app->request;
 			$postData = $request->post();
-			// if ( isset($postInicial) ) {
-			// 	$postData = $postInicial;
-			// }
+
+			$postData = isset($_SESSION['ultimoPost']) ? $_SESSION['ultimoPost'] : $request->post();
+			$_SESSION['ultimoPost'] = $postData;
+
+			$errorChk = isset($_SESSION['mensajeErrorChk']) ? $_SESSION['mensajeErrorChk'] : '';
+//die(var_dump($postData));
 			$exigirDocumento = false;
 			$contribuyente = null;
 			$caption = Yii::t('backend', 'Infomation of the request');
@@ -430,6 +461,7 @@
 																	'dataProvider' => $dataProvider,
 																	'dataProviderPlanilla' => $dataProviderPlanilla,
 																	'exigirDocumento' => $exigirDocumento,
+																	'errorChk' => $errorChk,
 
 
 								]);
@@ -563,6 +595,7 @@
 			return $varSession = [
 							'postData',
 							'idContribuyente',
+							'mensajeErrorChk',
 					];
 		}
 
