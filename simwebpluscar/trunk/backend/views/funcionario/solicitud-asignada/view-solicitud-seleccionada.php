@@ -363,18 +363,20 @@
             								},
 							               'summary' => '',
 							               'columns' => [
-						                        ['class' => 'yii\grid\SerialColumn'],
-						                        [
+							               		[
                         							'class' => 'yii\grid\CheckboxColumn',
                         							'name' => 'chk-planilla',
                         							'checkboxOptions' => [
-                                							'id' => 'id-chk-planilla',
+                                							'id' => 'chk-planilla',
+                                							// Lo siguiente mantiene el checkbox tildado.
+                                							'onClick' => 'javascript: return false;',
                                 							'checked' => true,
-                                							'disabled' => true,
+                                							//'disabled' => true, funciona.
                                 					],
                                 					'multiple' => false,
 
                         						],
+						                        ['class' => 'yii\grid\SerialColumn'],
 						                        [
 						                            'label' => 'Planilla',
 						                            'format' => 'raw',
@@ -427,12 +429,14 @@
 						                            								   			'NO',
 						                            								   			['class' => 'label label-danger',
 						                            								   			 'id' => 'pago',
+						                            								   			 'name' => 'pago',
 						                            								   			]));
 						                            	} elseif ( $data['pago'] == 1) {
 						                            		return Html::tag('strong', Html::tag('h3',
 						                            			                     			 'SI',
 						                            			                     			 ['class' => 'success',
 						                            								   			  'id' => 'pago',
+						                            								   			  'name' => 'pago',
 						                            								   			]));
 						                            	}
 						                            },
