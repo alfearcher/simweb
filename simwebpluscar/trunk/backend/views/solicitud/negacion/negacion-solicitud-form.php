@@ -62,6 +62,7 @@
 		]);
 	?>
 
+	<?=$form->field($model, 'nro_solicitud')->hiddenInput(['value' => $nroSolicitud])->label(false);?>
 
 	<meta http-equiv="refresh">
     <div class="panel panel-default"  style="width: 80%;">
@@ -90,7 +91,7 @@
 				<div class="col-sm-10">
 
 					<div class="row" style="border-bottom: 0.5px solid #ccc;">
-						<h4><strong><?= Yii::t('backend', 'Request reject')?></strong></h4>
+						<h4><strong><?= $subCaption?></strong></h4>
 					</div>
 
 <!-- Inicio Causas -->
