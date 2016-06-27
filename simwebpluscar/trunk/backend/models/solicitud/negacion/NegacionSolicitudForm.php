@@ -53,6 +53,7 @@
 	{
 		public $causa;
 		public $observacion;
+		public $nro_solicitud;
 
 
 		/**
@@ -72,7 +73,7 @@
 	    public function rules()
 	    {
 	        return [
-	        	[['causa', 'observacion'],
+	        	[['causa', 'observacion', 'nro_solicitud'],
 	        	  'required',
 	        	  'message' => Yii::t('backend','{attribute} is required')],
 	        	['causa', 'integer',
