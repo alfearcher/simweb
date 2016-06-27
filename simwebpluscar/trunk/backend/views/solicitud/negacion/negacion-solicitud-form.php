@@ -79,6 +79,7 @@
     			</style>
 	        		<?= MenuController::actionMenuSecundario([
 	        						'back' => '/funcionario/solicitud/solicitud-asignada/buscar-solicitud-seleccionada',
+	        						'list' => '/funcionario/solicitud/solicitud-asignada/buscar-solicitudes-contribuyente',
 	        						'undo' => '/funcionario/solicitud/solicitud-asignada/levantar-form-negacion-solicitud',
 	        						'quit' => '/funcionario/solicitud/solicitud-asignada/quit',
 	        			])
