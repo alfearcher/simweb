@@ -111,6 +111,7 @@
 			$request = Yii::$app->request;
 			$postData = $request->post();
 			self::actionAnularSession(['idContribuyente']);
+			self::actionAnularSession(['mensajeErrorChk']);
 
 			// Modelo del formulario de busqueda de las solicitudes.
 			$model = New SolicitudAsignadaForm();
@@ -159,7 +160,7 @@
 			$result = false;
 			$request = Yii::$app->request;
 			$postData = $request->post();
-die(var_dump($postData));
+//die(var_dump($postData));
 
 			$model = New SolicitudesContribuyente();
 			$formName = $model->formName();
@@ -205,6 +206,9 @@ die(var_dump($postData));
 					if ( $postData['btn-reject-request'] == 1 ) {
 						// Se presiono el boto de negacion.
 						// Mostrar formulario para cargar la causa y la observacion.
+						self::actionAnularSession(['postData']);
+						$_SESSION['postData'] = $postData;
+						$_SESSION['nroSolicitud'] = $postData[$formName]['nro_solicitud'];
 						$this->redirect(['levantar-form-negacion-solicitud']);
 
 					}
@@ -222,28 +226,33 @@ die(var_dump($postData));
 		public function actionLevantarFormNegacionSolicitud()
 		{
 			$request = Yii::$app->request;
-			$postData = $request->post();
+			$post = $request->post();
+			$postData = isset($_SESSION['postData']) ? $_SESSION['postData'] : null;
 
 			$modelNegacion = New NegacionSolicitudForm();
 
-			if ( $modelNegacion->load($postData) && Yii::$app->request->isAjax ) {
+			if ( $modelNegacion->load($post) && Yii::$app->request->isAjax ) {
 				Yii::$app->response->format = Response::FORMAT_JSON;
 				return ActiveForm::validate($modelNegacion);
 			}
 
-			if ( $modelNegacion->load($postData) ) {
+			if ( $modelNegacion->load($post) ) {
 				if ( $modelNegacion->validate() ) {
 				}
 			}
-
+//die(var_dump($post));
 			// Se obtiene una lista de causas de negacion de solicitudes para mostrarlo
 	  		// en un combo-lista, esto se obtuvo con el ArrayHelper.
 	  		$lista = $modelNegacion->listaCausasNegacion();
 
+	  		$caption = Yii::t('backend', 'Reject request ' . $_SESSION['nroSolicitud']);
+	  		$subCaption = Yii::t('backend', 'Request ' . $_SESSION['nroSolicitud']);
   			return $this->render('/solicitud/negacion/negacion-solicitud-form', [
   														'model' => $modelNegacion,
   														'listaCausas' => $lista,
-  														'caption' => 'dddd',
+  														'caption' => $caption,
+  														'subCaption' => $subCaption,
+  														'nroSolicitud' => $_SESSION['nroSolicitud'],
   					]);
 		}
 
