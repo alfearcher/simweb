@@ -561,36 +561,40 @@
 		public function actionBuscarSolicitudesContribuyente()
 		{
 			$postInicial = isset($_SESSION['postBusquedaInicial']) ? $_SESSION['postBusquedaInicial'] : null;
-			$model = New SolicitudAsignadaForm();     // Modelo del formulario de busqueda.
-			$model->load($postInicial);
+			if ( $postInicial !== null ) {
+				$model = New SolicitudAsignadaForm();     // Modelo del formulario de busqueda.
+				$model->load($postInicial);
 
-			$request = Yii::$app->request;
-			$postData = isset($request->queryParams['page']) ? $request->queryParams : $postInicial;
+				$request = Yii::$app->request;
+				$postData = isset($request->queryParams['page']) ? $request->queryParams : $postInicial;
 
-			$url = Url::to(['buscar-solicitud-seleccionada']);
-			$modelSearch = New SolicitudAsignadaSearch();
-			$modelSearch->attributes = $model->attributes;
+				$url = Url::to(['buscar-solicitud-seleccionada']);
+				$modelSearch = New SolicitudAsignadaSearch();
+				$modelSearch->attributes = $model->attributes;
 
-			$modelSearch->load($postData);
+				$modelSearch->load($postData);
 
-			$userLocal = Yii::$app->user->identity->username;
+				$userLocal = Yii::$app->user->identity->username;
 
-			// Lista de los identificadores de los tipos de solicitud asociado al funcionario.
-			$lista = $modelSearch->getTipoSolicitudAsignada($userLocal);
+				// Lista de los identificadores de los tipos de solicitud asociado al funcionario.
+				$lista = $modelSearch->getTipoSolicitudAsignada($userLocal);
 
-			$caption = Yii::t('backend', 'Lists of Request Authorized');
-			$subCaption = Yii::t('backend', 'Lists of Request Authorized');
+				$caption = Yii::t('backend', 'Lists of Request Authorized');
+				$subCaption = Yii::t('backend', 'Lists of Request Authorized');
 
-			$dataProvider = $modelSearch->getDataProviderSolicitudContribuyente($lista);
+				$dataProvider = $modelSearch->getDataProviderSolicitudContribuyente($lista);
 
-			return $this->render('/funcionario/solicitud-asignada/lista-solicitudes-elaboradas', [
-																'model' => $modelSearch,
-																'dataProvider' => $dataProvider,
-																'caption' => $caption,
-																'subCaption' => $subCaption,
-																'url' => $url,
-																'listado' => 5,
-				]);
+				return $this->render('/funcionario/solicitud-asignada/lista-solicitudes-elaboradas', [
+																	'model' => $modelSearch,
+																	'dataProvider' => $dataProvider,
+																	'caption' => $caption,
+																	'subCaption' => $subCaption,
+																	'url' => $url,
+																	'listado' => 5,
+					]);
+			} else {
+				return self::actionQuit();
+			}
 		}
 
 
@@ -660,7 +664,6 @@
 							'mensajeErrorChk',
 							'nroSolicitud',
 							'postBusquedaInicial',
-							'ultimoPost',
 					];
 		}
 
