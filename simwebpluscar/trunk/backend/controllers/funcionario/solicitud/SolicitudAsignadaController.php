@@ -124,7 +124,7 @@
 			if ( $model->load($postData) ) {
 				if ( $model->validate() ) {
 					if ( isset($postData['btn-search-request']) ) {
-						$_SESSION['postData'] = $postData;
+						$_SESSION['postBusquedaInicial'] = $postData;
 						return $this->redirect(['buscar-solicitudes-contribuyente']);
 					}
 				}
@@ -206,7 +206,7 @@
 					if ( $postData['btn-reject-request'] == 1 ) {
 						// Se presiono el boto de negacion.
 						// Mostrar formulario para cargar la causa y la observacion.
-						self::actionAnularSession(['postData']);
+						self::actionAnularSession(['postData', 'nroSolicitud']);
 						$_SESSION['postData'] = $postData;
 						$_SESSION['nroSolicitud'] = $postData[$formName]['nro_solicitud'];
 						$this->redirect(['levantar-form-negacion-solicitud']);
@@ -226,34 +226,64 @@
 		public function actionLevantarFormNegacionSolicitud()
 		{
 			$request = Yii::$app->request;
-			$post = $request->post();
-			$postData = isset($_SESSION['postData']) ? $_SESSION['postData'] : null;
+			$postData = $request->post();
+			$postInicial = isset($_SESSION['postData']) ? $_SESSION['postData'] : null;
 
-			$modelNegacion = New NegacionSolicitudForm();
+			$model = New SolicitudesContribuyente();
+			$formName = $model->formName();
 
-			if ( $modelNegacion->load($post) && Yii::$app->request->isAjax ) {
-				Yii::$app->response->format = Response::FORMAT_JSON;
-				return ActiveForm::validate($modelNegacion);
-			}
+			$postIn = $postInicial[$formName];
+			$modelSolicitud = self::actionFindSolicitudCreada($postIn['nro_solicitud']);
+//die(var_dump($postIn['nro_solicitud']));
+			if ( $modelSolicitud->nro_solicitud == $_SESSION['nroSolicitud'] ) {
+				if ( $modelSolicitud->estatus == 0 && $modelSolicitud->inactivo == 0 ) {
 
-			if ( $modelNegacion->load($post) ) {
-				if ( $modelNegacion->validate() ) {
-				}
-			}
-//die(var_dump($post));
-			// Se obtiene una lista de causas de negacion de solicitudes para mostrarlo
-	  		// en un combo-lista, esto se obtuvo con el ArrayHelper.
-	  		$lista = $modelNegacion->listaCausasNegacion();
+					$modelNegacion = New NegacionSolicitudForm();
 
-	  		$caption = Yii::t('backend', 'Reject request ' . $_SESSION['nroSolicitud']);
-	  		$subCaption = Yii::t('backend', 'Request ' . $_SESSION['nroSolicitud']);
-  			return $this->render('/solicitud/negacion/negacion-solicitud-form', [
-  														'model' => $modelNegacion,
-  														'listaCausas' => $lista,
-  														'caption' => $caption,
-  														'subCaption' => $subCaption,
-  														'nroSolicitud' => $_SESSION['nroSolicitud'],
-  					]);
+					if ( $modelNegacion->load($postData) && Yii::$app->request->isAjax ) {
+						Yii::$app->response->format = Response::FORMAT_JSON;
+						return ActiveForm::validate($modelNegacion);
+					}
+
+					if ( $modelNegacion->load($postData) ) {
+						if ( $modelNegacion->validate() ) {
+die('validate');
+						}
+					}
+
+					// Se obtiene una lista de causas de negacion de solicitudes para mostrarlo
+			  		// en un combo-lista, esto se obtuvo con el ArrayHelper.
+			  		$lista = $modelNegacion->listaCausasNegacion();
+
+			  		$caption = Yii::t('backend', 'Reject request ' . $_SESSION['nroSolicitud']);
+			  		$subCaption = Yii::t('backend', 'Request ' . $_SESSION['nroSolicitud']);
+		  			return $this->render('/solicitud/negacion/negacion-solicitud-form', [
+		  														'model' => $modelNegacion,
+		  														'listaCausas' => $lista,
+		  														'caption' => $caption,
+		  														'subCaption' => $subCaption,
+		  														'nroSolicitud' => $_SESSION['nroSolicitud'],
+		  					]);
+		  		} else {
+		  			// El estatus de la solicitud no corresponde con el requerido para
+		  			// su procesamiento.
+		  			return self::actionErrorOperacion(941);
+		  		}
+		  	} else {
+		  		// El numero de solicitud posteado no corresponde con el que se esta
+		  		// procesando.
+		  		return self::actionErrorOperacion(940);
+		  	}
+		}
+
+
+
+		/***/
+		public function actionFindSolicitudCreada($nroSolicitud)
+		{
+			$model = SolicitudesContribuyente::find()->where('nro_solicitud =:nro_solicitud', [':nro_solicitud' => $nroSolicitud])
+			                                         ->one();
+			return isset($model) ? $model : null;
 		}
 
 
@@ -392,7 +422,7 @@
 			$dataProvider = $planillaSearch->getArrayDataProviderPlanilla();
 
 			// Se determina si la peticion viene de un listado que contiene mas de una
-			// pagina de registros. Esto sucede cuando los detelles de un listado contienen
+			// pagina de registros. Esto sucede cuando los detalles de un listado contienen
 			// mas de los manejados para una pagina en la vista.
 			if ( isset($request->queryParams['page']) ) {
 				$planillaSearch->load($request->queryParams);
@@ -415,9 +445,6 @@
 			//$postInicial = isset($_SESSION['postData']) ? $_SESSION['postData'] : null;
 			$request = Yii::$app->request;
 			$postData = $request->post();
-
-			$postData = isset($_SESSION['ultimoPost']) ? $_SESSION['ultimoPost'] : $request->post();
-			$_SESSION['ultimoPost'] = $postData;
 
 			$errorChk = isset($_SESSION['mensajeErrorChk']) ? $_SESSION['mensajeErrorChk'] : '';
 //die(var_dump($postData));
@@ -507,10 +534,10 @@
 		 */
 		public function actionBuscarSolicitudesContribuyente()
 		{
-			$postInicial = isset($_SESSION['postData']) ? $_SESSION['postData'] : null;
+			$postInicial = isset($_SESSION['postBusquedaInicial']) ? $_SESSION['postBusquedaInicial'] : null;
 			$model = New SolicitudAsignadaForm();     // Modelo del formulario de busqueda.
 			$model->load($postInicial);
-
+die(var_dump($_SESSION['postBusquedaInicial']));
 			$request = Yii::$app->request;
 			$postData = isset($request->queryParams['page']) ? $request->queryParams : $postInicial;
 
@@ -606,6 +633,8 @@
 							'idContribuyente',
 							'mensajeErrorChk',
 							'nroSolicitud',
+							'postBusquedaInicial',
+							'ultimoPost',
 					];
 		}
 
