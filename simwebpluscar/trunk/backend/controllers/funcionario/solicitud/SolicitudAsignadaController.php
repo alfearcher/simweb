@@ -225,6 +225,7 @@
 		/***/
 		public function actionLevantarFormNegacionSolicitud()
 		{
+			$result = false;
 			$request = Yii::$app->request;
 			$postData = $request->post();
 			$postInicial = isset($_SESSION['postData']) ? $_SESSION['postData'] : null;
@@ -234,7 +235,7 @@
 
 			$postIn = $postInicial[$formName];
 			$modelSolicitud = self::actionFindSolicitudCreada($postIn['nro_solicitud']);
-//die(var_dump($postIn['nro_solicitud']));
+
 			if ( $modelSolicitud->nro_solicitud == $_SESSION['nroSolicitud'] ) {
 				if ( $modelSolicitud->estatus == 0 && $modelSolicitud->inactivo == 0 ) {
 
@@ -247,7 +248,12 @@
 
 					if ( $modelNegacion->load($postData) ) {
 						if ( $modelNegacion->validate() ) {
-die('validate');
+							$result = self::actionIniciarNegarSolicitud($postData, $formName);
+							if ( $result ) {
+								return self::actionProcesoExitoso(102);
+							} else {
+								return self::actionErrorOperacion(404);
+							}
 						}
 					}
 
@@ -400,7 +406,28 @@ die('validate');
 													$this->_conn,
 													$this->_conexion
 												);
-			$reult = $procesar->negarSolicitud(1, 'prueba de negacion');
+			$reult = $procesar->negarSolicitud($datos['causa'], $datos['observacion']);
+			if ( $result ) {
+				// Ejecutar procesos asociados al evento (si existen) y enviar correo
+				// comunicando al contribuyente el resultado de su solicitud.
+
+				$result = self::actionEjecutarProcesoRelacionadoSolicitud($datos, $evento);
+				// Si devuelve TRUE es que se ejecutaron correctamento los procesos relacionados
+				// al evento "aprobar" de la solicitud o no existian procesos relacionados que
+				// ejecutar lo que indica que no se configuraron dichos procesos.
+				// Si retorna FALSE indica que no se logro ejecutar correctamente los procesos
+				// relacionados al evento-solicitud. Aqui acaba el procedimiento sin guardar nada.
+
+				if ( $result ) {
+					$this->_transaccion->commit();
+					$this->_conn->close();
+
+				} else {
+					$this->_transaccion->rollBack();
+					$this->_conn->close();
+				}
+			}
+			return $result;
 		}
 
 
@@ -442,12 +469,11 @@ die('validate');
 		 */
 		public function actionBuscarSolicitudSeleccionada()
 		{
-			//$postInicial = isset($_SESSION['postData']) ? $_SESSION['postData'] : null;
 			$request = Yii::$app->request;
 			$postData = $request->post();
 
 			$errorChk = isset($_SESSION['mensajeErrorChk']) ? $_SESSION['mensajeErrorChk'] : '';
-//die(var_dump($postData));
+
 			$exigirDocumento = false;
 			$contribuyente = null;
 			$caption = Yii::t('backend', 'Infomation of the request');
@@ -537,7 +563,7 @@ die('validate');
 			$postInicial = isset($_SESSION['postBusquedaInicial']) ? $_SESSION['postBusquedaInicial'] : null;
 			$model = New SolicitudAsignadaForm();     // Modelo del formulario de busqueda.
 			$model->load($postInicial);
-die(var_dump($_SESSION['postBusquedaInicial']));
+
 			$request = Yii::$app->request;
 			$postData = isset($request->queryParams['page']) ? $request->queryParams : $postInicial;
 
