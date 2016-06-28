@@ -182,7 +182,7 @@
 									if ( $result ) {
 										return self::actionProcesoExitoso(101);
 									} else {
-										return self::actionErrorOperacion(404);
+										return self::actionErrorOperacion(920);
 									}
 								} else {
 									$_SESSION['mensajeErrorChk'] = Yii::t('backend', 'Debe indicar el documento consignado');
@@ -198,7 +198,7 @@
 							if ( $result ) {
 								return self::actionProcesoExitoso(101);
 							} else {
-								return self::actionErrorOperacion(404);
+								return self::actionErrorOperacion(920);
 							}
 						}
 					}
@@ -472,6 +472,12 @@
 			$request = Yii::$app->request;
 			$postData = $request->post();
 
+			if ( isset($_SESSION['postSeleccionado']) ) {
+				$postData = $_SESSION['postSeleccionado'];
+			} else {
+				$_SESSION['postSeleccionado'] = isset($postData) ? $postData : null;
+			}
+
 			$errorChk = isset($_SESSION['mensajeErrorChk']) ? $_SESSION['mensajeErrorChk'] : '';
 
 			$exigirDocumento = false;
@@ -533,12 +539,12 @@
 						}
 					} else {
 						// Contribuyente no definido.
-						return self::actionErrorOperacion(404);
+						return self::actionErrorOperacion(932);
 					}
 
 				} else {
 					// Contribuyente no definido.
-					return self::actionErrorOperacion(404);
+					return self::actionErrorOperacion(932);
 				}
 
 			} else {
@@ -664,6 +670,7 @@
 							'mensajeErrorChk',
 							'nroSolicitud',
 							'postBusquedaInicial',
+							'postSeleccionado',
 					];
 		}
 
