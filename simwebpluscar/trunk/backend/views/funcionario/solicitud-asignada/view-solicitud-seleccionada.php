@@ -432,7 +432,7 @@
 						                            								   			 'name' => 'pago',
 						                            								   			]));
 						                            	} elseif ( $data['pago'] == 1) {
-						                            		return Html::tag('strong', Html::tag('h3',
+						                            		return Html::tag('strong', Html::tag('h4',
 						                            			                     			 'SI',
 						                            			                     			 ['class' => 'success',
 						                            								   			  'id' => 'pago',
@@ -446,6 +446,15 @@
 							        ?>
 								</div>
 							</div>
+
+							<?php if ( trim($planillaNoSolvente) !== '' ) { ?>
+								<div class="row">
+									<div class="planilla-no-solvente" id="planilla-no-solvente">
+										<div class="well well-sm" style="color: red;"><?=$planillaNoSolvente; ?></div>
+									</div>
+								</div>
+							<?php } ?>
+
 						</div>
 					</div>
 <!-- Fin de Detalle de la Solicitud -->
@@ -514,7 +523,15 @@ $this->registerJs(
                 $("#modal").modal();
             }
         );
-    }));'
+    }));
+
+	$(document).ready(function() {
+		var n = $( "#planilla-no-solvente" ).length;
+		if ( n > 0 ) {
+			$("#btn-approve-request").attr("disabled", true);
+		}
+	});
+    '
 ); ?>
 
 <style type="text/css">
