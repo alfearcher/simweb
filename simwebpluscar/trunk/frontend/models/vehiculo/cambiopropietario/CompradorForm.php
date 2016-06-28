@@ -112,6 +112,9 @@ class CompradorForm extends Model
                 'usuario',
                 'fecha_hora',
                 'estatus',
+                'nro_solicitud',
+                'origen',
+                'fecha_hora_proceso',
 
                 
 
