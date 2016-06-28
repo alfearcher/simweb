@@ -99,20 +99,20 @@ class CambioDatosVehiculoForm extends Model
               'nro_puestos','peso','nro_cilindros','precio_inicial',
               'capacidad','medida_cap'],'required'],
              
-            [['color'], 'match' , 'pattern' => "/[a-zA-Z]+/", 'message' => Yii::t('frontend', 'Color must have only letters')],
+            // [['color'], 'match' , 'pattern' => "/[a-zA-Z]+/", 'message' => Yii::t('frontend', 'Color must have only letters')],
             
-            [['no_ejes', 'nro_puestos' ,'peso','nro_cilindros', 'capacidad',
-            ],'integer','message' => yii::t('frontend', '{attribute} must be an integer') ] ,  
+            // [['no_ejes', 'nro_puestos' ,'peso','nro_cilindros', 'capacidad',
+            // ],'integer','message' => yii::t('frontend', '{attribute} must be an integer') ] ,  
 
-              ['marca' , 'string' , 'max' => 25 ],
-            ['modelo' , 'string' , 'max' => 25 ],
-            ['color' , 'string' , 'max' => 25 ],
-            ['no_ejes', 'integer', 'max' => 12, 'min' => 2 ],
-            ['nro_puestos', 'integer', 'max' => 100, 'min' => 2 ],
-            //['nro_calcomania', 'integer' ,'max' => 20, 'min' => 1], a la espera de ser utilizado
-            ['peso', 'integer', 'max' => 100000, 'min' => 1 ],
-            ['nro_cilindros', 'integer', 'max' => 12, 'min' => 2 ],
-            ['precio_inicial', 'double'],
+            //   ['marca' , 'string' , 'max' => 25 ],
+            // ['modelo' , 'string' , 'max' => 25 ],
+            // ['color' , 'string' , 'max' => 25 ],
+            // ['no_ejes', 'integer', 'max' => 12, 'min' => 2 ],
+            // ['nro_puestos', 'integer', 'max' => 100, 'min' => 2 ],
+            // //['nro_calcomania', 'integer' ,'max' => 20, 'min' => 1], a la espera de ser utilizado
+            // ['peso', 'integer', 'max' => 100000, 'min' => 1 ],
+            // ['nro_cilindros', 'integer', 'max' => 12, 'min' => 2 ],
+            // ['precio_inicial', 'double'],
             
 
            
