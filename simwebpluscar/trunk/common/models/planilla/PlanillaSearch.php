@@ -172,6 +172,22 @@
 
 
 
+		/***/
+		public function condicionPlanilla()
+		{
+			$query = New Query();
+
+			$query->select(['P.planilla',
+							'P.id_contribuyente',
+							'D.pago',
+							])
+				  ->from('pagos as P')
+				  ->join('INNER JOIN', 'pagos_detalle as D', 'P.id_pago = D.id_pago')
+				  ->where('planilla =:planilla', [':planilla' => $this->_planilla]);
+			return $query->all();
+		}
+
+
 
 	}
 
