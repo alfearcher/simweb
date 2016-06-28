@@ -50,6 +50,7 @@ return [
 	'941' => [Yii::t('backend', 'Status of request incorrect '), 'danger', 'fa fa-times'],
 	'945' => [Yii::t('backend', 'Request exists'), 'danger', 'fa fa-times'],
 	'946' => [Yii::t('backend', 'Request details not exists'), 'danger', 'fa fa-times'],
+	'950' => [Yii::t('backend', 'Invoice uncreditworthy'), 'danger', 'fa fa-times'],
 	'990' => [Yii::t('backend', 'Register not found'), 'danger', 'fa fa-times'],
 	'991' => [Yii::t('backend', 'You can aquire a property you already own '), 'danger', 'fa fa-exclamation-triangle'],
 	'992' => [Yii::t('backend', 'This car plate doesnt exists, please go to your city hall  '), 'danger', 'fa fa-exclamation-triangle'],
