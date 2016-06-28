@@ -132,6 +132,11 @@
                     // Se asegura que la solicitud este pendiente por aprobar.
                     if ( $model['estatus'] == 0 && $model['inactivo'] == 0 ) {
                         $result = self::negar($model, $causa, $observacion);
+                        if ( $result ) {
+                            // Lo siguiente inicia las acciones para procesar el detalle
+                            // de la solicitud.
+                            $result = self::procesarSolicitudPorImpuesto($model, Yii::$app->solicitud->negar());
+                        }
                     }
                 }
             }
