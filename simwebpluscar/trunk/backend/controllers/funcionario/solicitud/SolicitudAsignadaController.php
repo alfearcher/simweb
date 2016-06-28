@@ -245,6 +245,7 @@
 						Yii::$app->response->format = Response::FORMAT_JSON;
 						return ActiveForm::validate($modelNegacion);
 					}
+					$formName = $modelNegacion->formName();
 
 					if ( $modelNegacion->load($postData) ) {
 						if ( $modelNegacion->validate() ) {
@@ -566,6 +567,7 @@
 		 */
 		public function actionBuscarSolicitudesContribuyente()
 		{
+			self::actionAnularSession(['postSeleccionado']);
 			$postInicial = isset($_SESSION['postBusquedaInicial']) ? $_SESSION['postBusquedaInicial'] : null;
 			if ( $postInicial !== null ) {
 				$model = New SolicitudAsignadaForm();     // Modelo del formulario de busqueda.
