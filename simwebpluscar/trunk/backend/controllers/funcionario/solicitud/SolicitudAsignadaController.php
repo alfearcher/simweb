@@ -262,14 +262,15 @@
 			  		// en un combo-lista, esto se obtuvo con el ArrayHelper.
 			  		$lista = $modelNegacion->listaCausasNegacion();
 
-			  		$caption = Yii::t('backend', 'Reject request ' . $_SESSION['nroSolicitud']);
-			  		$subCaption = Yii::t('backend', 'Request ' . $_SESSION['nroSolicitud']);
+			  		$caption = Yii::t('backend', 'Reject request ' . $modelSolicitud->nro_solicitud);
+			  		$subCaption = Yii::t('backend', 'Request ' . $modelSolicitud->nro_solicitud);
 		  			return $this->render('/solicitud/negacion/negacion-solicitud-form', [
 		  														'model' => $modelNegacion,
 		  														'listaCausas' => $lista,
 		  														'caption' => $caption,
 		  														'subCaption' => $subCaption,
-		  														'nroSolicitud' => $_SESSION['nroSolicitud'],
+		  														'nroSolicitud' => $modelSolicitud->nro_solicitud,
+		  														'idContribuyente' => $modelSolicitud->id_contribuyente,
 		  					]);
 		  		} else {
 		  			// El estatus de la solicitud no corresponde con el requerido para
@@ -407,7 +408,7 @@
 													$this->_conn,
 													$this->_conexion
 												);
-			$reult = $procesar->negarSolicitud($datos['causa'], $datos['observacion']);
+			$result = $procesar->negarSolicitud($datos['causa'], $datos['observacion']);
 			if ( $result ) {
 				// Ejecutar procesos asociados al evento (si existen) y enviar correo
 				// comunicando al contribuyente el resultado de su solicitud.
@@ -418,7 +419,7 @@
 				// ejecutar lo que indica que no se configuraron dichos procesos.
 				// Si retorna FALSE indica que no se logro ejecutar correctamente los procesos
 				// relacionados al evento-solicitud. Aqui acaba el procedimiento sin guardar nada.
-
+die(var_dump($result));
 				if ( $result ) {
 					$this->_transaccion->commit();
 					$this->_conn->close();
