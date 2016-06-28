@@ -158,9 +158,9 @@
 		public function actionProcesarSolicitud()
 		{
 			$result = false;
+			self::actionAnularSession(['planillaNoSolvente', 'mensajeErrorChk']);
 			$request = Yii::$app->request;
 			$postData = $request->post();
-//die(var_dump($postData));
 
 			$model = New SolicitudesContribuyente();
 			$formName = $model->formName();
@@ -171,6 +171,14 @@
 				if ( isset($postData['btn-approve-request']) ) {
 					if ( $postData['btn-approve-request'] == 1 ) {
 						// Se presiono el boto de aprobacion.
+						if ( isset($postData['chk-planilla']) ) {
+							$pagada = self::actionVerificarCondicionPlanilla($postData['chk-planilla']);
+							if ( $pagada == false ) {
+								// Imposible continuar la(s) planilla(s) de la solicitud no estan pagadas.
+								$_SESSION['planillaNoSolvente'] = Yii::t('backend', 'invoice uncreditworthy');
+								$this->redirect(['buscar-solicitud-seleccionada']);
+							}
+						}
 
 						// Lo siguiente controla que si existe una lista de documentos y requisitos
 						// a consignar por parte del contribuyente, el funcionario lo indique con un
@@ -456,9 +464,53 @@
 				$planillaSearch->load($request->queryParams);
 			}
 			return $this->renderAjax('@backend/views/planilla/planilla-detalle', [
-										'dataProvider' => $dataProvider,
-										'caption' => 'Planilla: ' . $planilla,
+									 			'dataProvider' => $dataProvider,
+									 			'caption' => 'Planilla: ' . $planilla,
 				]);
+		}
+
+
+
+		/***/
+		public function actionGetCondicionPlanilla($postPlanilla)
+		{
+			$result = [];
+			if ( count($postPlanilla) > 0 ) {
+				foreach ( $postPlanilla as $planilla ) {
+					$p = New PlanillaSearch($planilla);
+					// Obtenemos los registros de la planilla.
+					$registros = $p->condicionPlanilla(0);
+
+					foreach ( $registros as $key => $value ) {
+						foreach ( $value as $campo ) {
+							if ( $value['pago'] == 1 || $value['pago'] == 7 ) {
+								$result[$value['planilla']] = true;
+							} else {
+								$result[$value['planilla']] = false;
+							}
+						}
+					}
+				}
+			}
+			return $result;
+		}
+
+
+
+
+		/***/
+		public function actionVerificarCondicionPlanilla($postPlanilla)
+		{
+			$result = true;
+			$resultPlanilla = self::actionGetCondicionPlanilla($postPlanilla);
+			if ( count($resultPlanilla) > 0 ) {
+				foreach ( $resultPlanilla as $key => $value ) {
+					if ( $value == false ) {
+						$result = false;
+					}
+				}
+			}
+			return $result;
 		}
 
 
@@ -480,6 +532,7 @@
 			}
 
 			$errorChk = isset($_SESSION['mensajeErrorChk']) ? $_SESSION['mensajeErrorChk'] : '';
+			$planillaNoSolvente = isset($_SESSION['planillaNoSolvente']) ? $_SESSION['planillaNoSolvente'] : '';
 
 			$exigirDocumento = false;
 			$contribuyente = null;
@@ -531,6 +584,7 @@
 																	'dataProviderPlanilla' => $dataProviderPlanilla,
 																	'exigirDocumento' => $exigirDocumento,
 																	'errorChk' => $errorChk,
+																	'planillaNoSolvente' => $planillaNoSolvente,
 
 
 								]);
@@ -660,6 +714,14 @@
 
 
 
+		/***/
+		public function actionPlanillaNoSolvente()
+		{
+			return self::actionErrorOperacion(950);
+		}
+
+
+
 		/**
 		 * [actionGetListaSessions description]
 		 * @return [type] [description]
@@ -673,6 +735,7 @@
 							'nroSolicitud',
 							'postBusquedaInicial',
 							'postSeleccionado',
+							'planillaNoSolvente',
 					];
 		}
 
