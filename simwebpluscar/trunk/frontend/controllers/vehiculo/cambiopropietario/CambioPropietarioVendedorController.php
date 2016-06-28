@@ -335,7 +335,7 @@ class CambioPropietarioVendedorController extends Controller
      
       $arregloDatos['id_config_solicitud'] = $_SESSION['id'];
 
-      $arregloDatos['tipo_solicitud'] = $resultado['tipo_solicitud'];
+      $arregloDatos['tipo_solicitud'] = 35;
 
       $arregloDatos['id_impuesto'] = $datosVehiculo;
 
@@ -394,7 +394,7 @@ class CambioPropietarioVendedorController extends Controller
 
       $arregloDatos['id_impuesto'] = $idImpuesto;
 
-      $arregloDatos['id_impuesto'] = $idImpuesto;
+     
 
       $arregloDatos['impuesto'] = $resultado;
 
@@ -407,6 +407,26 @@ class CambioPropietarioVendedorController extends Controller
       $arregloDatos['fecha_hora'] = date('Y-m-d h:m:i');
 
       $arregloDatos['estatus'] = 0;
+
+      $arregloDatos['nro_solicitud'] = $idSolicitud;
+
+      $arregloDatos['origen'] = 'LAN';
+
+      if ($resultado['nivel_aprobacion'] == 1){
+
+        $arregloDatos['fecha_hora_proceso'] = date('Y-m-d h:m:i');
+
+      }else{
+
+        $arregloDatos['fecha_hora_proceso'] = 0;
+
+      } 
+      
+
+
+      
+
+
 
           if ($conexion->guardarRegistro($conn, $tabla, $arregloDatos )){
 
@@ -423,7 +443,7 @@ class CambioPropietarioVendedorController extends Controller
     {
      
     
-     
+     $idComprador = $_SESSION['idComprador']; 
     //die($idContribuyente);
       $tableName = 'vehiculos';
       $arregloCondition = ['id_vehiculo' => $model[0]->id_vehiculo];
