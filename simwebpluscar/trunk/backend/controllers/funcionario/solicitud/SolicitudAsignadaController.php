@@ -271,6 +271,7 @@
 		  														'subCaption' => $subCaption,
 		  														'nroSolicitud' => $modelSolicitud->nro_solicitud,
 		  														'idContribuyente' => $modelSolicitud->id_contribuyente,
+		  														'idConfig' => $modelSolicitud->id_config_solicitud,
 		  					]);
 		  		} else {
 		  			// El estatus de la solicitud no corresponde con el requerido para
@@ -361,7 +362,6 @@
 				$procesoEvento->ejecutarProcesoSolicitudSegunEvento($model, $evento, $this->_conexion, $this->_conn);
 				// Se obtiene un array de acciones o procesos ejecutados.
 				$acciones = $procesoEvento->getAccion();
-
 				if ( count($acciones) > 0 ) {
 					// Se evalua cada accion o proceso ejecutado para determinar si se realizo satisfactoriamnente.
 					$resultadoProceso = $procesoEvento->resultadoEjecutarProcesos();
@@ -419,7 +419,6 @@
 				// ejecutar lo que indica que no se configuraron dichos procesos.
 				// Si retorna FALSE indica que no se logro ejecutar correctamente los procesos
 				// relacionados al evento-solicitud. Aqui acaba el procedimiento sin guardar nada.
-die(var_dump($result));
 				if ( $result ) {
 					$this->_transaccion->commit();
 					$this->_conn->close();
