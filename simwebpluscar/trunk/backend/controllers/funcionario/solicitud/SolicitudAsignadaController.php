@@ -253,7 +253,7 @@
 							if ( $result ) {
 								return self::actionProcesoExitoso(102);
 							} else {
-								return self::actionErrorOperacion(404);
+								return self::actionErrorOperacion(920);
 							}
 						}
 					}
