@@ -64,6 +64,7 @@
 
 	<?=$form->field($model, 'nro_solicitud')->hiddenInput(['value' => $nroSolicitud])->label(false);?>
 	<?=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $idContribuyente])->label(false);?>
+	<?=$form->field($model, 'id_config_solicitud')->hiddenInput(['value' => $idConfig])->label(false);?>
 
 	<meta http-equiv="refresh">
     <div class="panel panel-default"  style="width: 80%;">
