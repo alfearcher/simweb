@@ -112,7 +112,7 @@ class SlVehiculosForm extends SlVehiculos
 
         /**
          * Metodo que realiza una busqueda del detalle de la solicitud (model)
-         * "inscripciones-actividad-economica".
+         * "inscripcion-vehiculo".
          * @param  Long $nroSolicitud identificador de la entidad "solicitudes-contribuyente".
          * @return Active Record.
          */
@@ -123,7 +123,35 @@ class SlVehiculosForm extends SlVehiculos
                                                     ->one();
             return isset($modelFind) ? $modelFind : null;
         }
-    
+
+
+        /**
+         * Metodo que realiza una busqueda del detalle de la solicitud (model)
+         * "cambio-propietario-vehiculo-vendedor".
+         * @param  Long $nroSolicitud identificador de la entidad "solicitudes-contribuyente".
+         * @return Active Record.
+         */
+        public function findSolicitudCambioPropietarioVendedor($nroSolicitud)
+        {
+            $modelFind = SlCambioPropietarioVehiculo::find()->where('nro_solicitud =:nro_solicitud', [':nro_solicitud' => $nroSolicitud])
+                                                    ->andWhere('id_propietario =:id_propietario', [':id_propietario' => $this->id_contribuyente])
+                                                    ->one();
+            return isset($modelFind) ? $modelFind : null;
+        }
+
+           /**
+         * Metodo que realiza una busqueda del detalle de la solicitud (model)
+         * "cambio-propietario-vehiculo-comprador".
+         * @param  Long $nroSolicitud identificador de la entidad "solicitudes-contribuyente".
+         * @return Active Record.
+         */
+        public function findSolicitudCambioPropietarioComprador($nroSolicitud)
+        {
+            $modelFind = SlCambioPropietarioVehiculo::find()->where('nro_solicitud =:nro_solicitud', [':nro_solicitud' => $nroSolicitud])
+                                                    ->andWhere('id_comprador =:id_comprador', [':id_comprador' => $this->id_contribuyente])
+                                                    ->one();
+            return isset($modelFind) ? $modelFind : null;
+        }
    
 
     }
