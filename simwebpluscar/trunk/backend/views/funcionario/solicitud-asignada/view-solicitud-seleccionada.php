@@ -431,10 +431,18 @@
 						                            								   			 'id' => 'pago',
 						                            								   			 'name' => 'pago',
 						                            								   			]));
-						                            	} elseif ( $data['pago'] == 1) {
+						                            	} elseif ( $data['pago'] == 1 ) {
 						                            		return Html::tag('strong', Html::tag('h4',
 						                            			                     			 'SI',
-						                            			                     			 ['class' => 'success',
+						                            			                     			 ['class' => 'label label-primary',
+						                            								   			  'id' => 'pago',
+						                            								   			  'name' => 'pago',
+						                            								   			]));
+
+						                            	} elseif ( $data['pago'] == 9 ) {
+						                            		return Html::tag('strong', Html::tag('h4',
+						                            			                     			 'ANULADA',
+						                            			                     			 ['class' => 'label label-warning',
 						                            								   			  'id' => 'pago',
 						                            								   			  'name' => 'pago',
 						                            								   			]));
