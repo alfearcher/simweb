@@ -73,6 +73,7 @@
 	use common\models\solicitudescontribuyente\SolicitudesContribuyenteForm;
 	use common\models\configuracion\solicitud\SolicitudProcesoEvento;
 	use backend\models\solicitud\negacion\NegacionSolicitudForm;
+	use backend\models\documento\DocumentoConsignadoForm;
 
 
 	/**
@@ -359,7 +360,7 @@
 				// relacionados al evento-solicitud. Aqui acaba el procedimiento sin guardar nada.
 
 				if ( isset($postData['chk-documento-requisito']) && $result == true ) {
-					$result = self::actionCreateDocumentosConsignados();
+					$result = self::actionCreateDocumentosConsignados($postData, $formName, $this->_conexion, $this->_conn);
 				}
 
 				if ( $result == true ) {
@@ -577,65 +578,58 @@
 
 
 		/***/
-		private static function actionCreateDocumentosConsignados($postDocumento)
+		private static function actionCreateDocumentosConsignados($postData, $formName, $conexionLocal, $connLocal)
 		{
 			$result = false;
-			if ( count($postDocumento) > 0 ) {
+			if ( count($postData) > 0 ) {
+				if ( isset($postData['chk-documento-requisito']) ) {
+					$postDocumento = $postData['chk-documento-requisito'];
 
+					$modelDocumento = new DocumentoConsignadoForm();
+					$tabla = $modelDocumento->tableName();
+					$atributosPorDefecto = $modelDocumento->atributosPorDefecto();
+
+					// Se busca obtener los campos comunes a las entidades de "solicitudes-contribuyente"
+					// y "documentos-consignados", para aprovechar los datos que vienen de la solicitud
+					// creada para guardarlos en la entidad que registra los documentos y/o requisitos
+					// consignados.
+					$campoSolicitud = $postData[$formName];
+
+					// Arreglo [campo] => valor.
+					$arregloDatos = $modelDocumento->attributes;
+
+					foreach ( $arregloDatos as $key => $value ) {
+						if ( isset($campoSolicitud[$key]) ) {
+							$arregloDatos[$key] = $campoSolicitud[$key];
+						}
+					}
+
+					// Se setean los atributos con valores por defecto, segun el modelo.
+					foreach ( $arregloDatos as $key => $value ) {
+						if ( isset($atributosPorDefecto[$key]) ) {
+							$arregloDatos[$key] = $atributosPorDefecto[$key];
+						}
+					}
+
+					$arregloDatos['id_doc_consignado'] = null;
+					foreach ( $postDocumento as $key => $value ) {
+						$arregloDatos['id_documento'] = $value;
+						$result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
+						if ( $result == false ) {
+			 				break;
+						}
+					}
+
+				} else {
+					// No existe en el post los datos de los documento y/o requisitos consignados.
+					return self::actionErrorOperacion(404);
+				}
 			} else {
 				// No se realizo el envio de los documentos y/o requisitos.
-				return self::actionErrorOperacion(940);
+				return self::actionErrorOperacion(404);
 			}
-
 			return $result;
-
-			if ( $idContribuyenteGenerado > 0 ) {
-				if ( isset($conexion) ) {
-					if ( isset($_SESSION['postData']) ) {
-
-						$seleccion = [];
-						$postData = $_SESSION['postData'];
-
-						if ( isset($postData['selection']) ) {
-							$modelDocumento = new DocumentoConsignadoForm();
-
-							$tabla = '';
-			      			$tabla = $modelDocumento->tableName();
-
-							$arregloDatos = $modelDocumento->attributes;
-
-							$arregloDatos['id_contribuyente'] = $idContribuyenteGenerado;
-							$arregloDatos['nro_solicitud'] = 0;
-							$arregloDatos['id_impuesto'] = 0;
-							$arregloDatos['impuesto'] = 1;
-							$arregloDatos['codigo_proceso'] = null;
-							$arregloDatos['fecha_hora'] = date('Y-m-d H:i:s');
-							$arregloDatos['estatus'] = 0;
-							$arregloDatos['usuario'] = Yii::$app->user->identity->username;
-
-							if ( isset($postData['selection']) ) {
-				  				$seleccion = $postData['selection'];
-				  				//die(var_dump($seleccion));
-				  				foreach ( $seleccion as $key => $value ) {
-				  					$arregloDatos['id_documento'] = $seleccion[$key];
-
-				  					if ( !$conexion->guardarRegistro($connLocal, $tabla, $arregloDatos) ) {
-										return false;
-									}
-				  				}
-				  				return true;
-				  			}
-				  		} else {
-				  			return true;
-				  		}
-					}
-				}
-			}
-			return false;
 		}
-
-
-
 
 
 
