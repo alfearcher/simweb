@@ -529,6 +529,8 @@ $this->registerJs(
 		var n = $( "#planilla-no-solvente" ).length;
 		if ( n > 0 ) {
 			$("#btn-approve-request").attr("disabled", true);
+		} else {
+			$( "#btn-approve-request" ).removeAttr("disabled");
 		}
 	});
     '
