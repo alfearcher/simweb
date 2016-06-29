@@ -176,7 +176,7 @@
 							$pagada = self::actionVerificarCondicionPlanilla($postData['chk-planilla']);
 							if ( $pagada == false ) {
 								// Imposible continuar la(s) planilla(s) de la solicitud no estan pagadas.
-								$_SESSION['planillaNoSolvente'] = Yii::t('backend', 'invoice uncreditworthy');
+								$_SESSION['planillaNoSolvente'] = Yii::t('backend', 'Invoice uncreditworthy');
 							}
 						}
 
@@ -197,11 +197,11 @@
 										$this->redirect(['buscar-solicitud-seleccionada']);
 									}
 								} else {
-									$_SESSION['mensajeErrorChk'] = Yii::t('backend', 'Debe indicar el documento consignado');
+									$_SESSION['mensajeErrorChk'] = Yii::t('backend', 'You must indicate the consigned document');
 									$this->redirect(['buscar-solicitud-seleccionada']);
 								}
 							} else {
-								$_SESSION['mensajeErrorChk'] = Yii::t('backend', 'Debe indicar el documento consignado');
+								$_SESSION['mensajeErrorChk'] = Yii::t('backend', 'You must indicate the consigned document');
 								$this->redirect(['buscar-solicitud-seleccionada']);
 							}
 						} else {
@@ -228,7 +228,13 @@
 						$_SESSION['nroSolicitud'] = $postData[$formName]['nro_solicitud'];
 						$this->redirect(['levantar-form-negacion-solicitud']);
 
+					} else {
+						// No esta definida la clase de la solicitud
+						return self::actionErrorOperacion(404);
 					}
+				} else {
+					// No esta definida la opcion seleccionada.
+					return self::actionErrorOperacion(404);
 				}
 
 			} else {
@@ -553,7 +559,7 @@
 		 * @return Boolean retorna un true si todas los elementos del arreglo son true, de lo
 		 * contrario devolvera false.
 		 */
-		public function actionVerificarCondicionPlanilla($postPlanilla)
+		private function actionVerificarCondicionPlanilla($postPlanilla)
 		{
 			$result = true;
 			$resultPlanilla = self::actionGetCondicionPlanilla($postPlanilla);
@@ -566,6 +572,61 @@
 			}
 			return $result;
 		}
+
+
+
+
+		/***/
+		private static function actionCreateDocumentosConsignados($conexion, $connLocal)
+		{
+			if ( $idContribuyenteGenerado > 0 ) {
+				if ( isset($conexion) ) {
+					if ( isset($_SESSION['postData']) ) {
+
+						$seleccion = [];
+						$postData = $_SESSION['postData'];
+
+						if ( isset($postData['selection']) ) {
+							$modelDocumento = new DocumentoConsignadoForm();
+
+							$tabla = '';
+			      			$tabla = $modelDocumento->tableName();
+
+							$arregloDatos = $modelDocumento->attributes;
+
+							$arregloDatos['id_contribuyente'] = $idContribuyenteGenerado;
+							$arregloDatos['nro_solicitud'] = 0;
+							$arregloDatos['id_impuesto'] = 0;
+							$arregloDatos['impuesto'] = 1;
+							$arregloDatos['codigo_proceso'] = null;
+							$arregloDatos['fecha_hora'] = date('Y-m-d H:i:s');
+							$arregloDatos['estatus'] = 0;
+							$arregloDatos['usuario'] = Yii::$app->user->identity->username;
+
+							if ( isset($postData['selection']) ) {
+				  				$seleccion = $postData['selection'];
+				  				//die(var_dump($seleccion));
+				  				foreach ( $seleccion as $key => $value ) {
+				  					$arregloDatos['id_documento'] = $seleccion[$key];
+
+				  					if ( !$conexion->guardarRegistro($connLocal, $tabla, $arregloDatos) ) {
+										return false;
+									}
+				  				}
+				  				return true;
+				  			}
+				  		} else {
+				  			return true;
+				  		}
+					}
+				}
+			}
+			return false;
+		}
+
+
+
+
 
 
 
