@@ -471,15 +471,44 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que recibe un arreglo de planillas para determinar la condicon de cada
+		 * planilla. Este arreglo puede contener una o varias planillas, luego se obtiene
+		 * el numero de planilla para buscar de forma individual que condicion posee
+		 * (Si esta pagado, no pagada, en convenio, anulada, etc.). Con cada planilla se
+		 * puede obtener un arreglo de registros ($registros), este arreglo es del tipo:
+		 * array(1) {
+		 *	  [0]=>
+		 *	  array(3) {
+		 *	    ["planilla"]=>
+		 *	    string(7) "3333333"
+		 *	    ["id_contribuyente"]=>
+		 *	    string(6) "99999"
+		 *	    ["pago"]=>
+		 *	    string(1) "0"
+		 *	  }
+		 *	}
+		 * @param  Array $postPlanilla arreglo de planilla al cual se les quiere determinar su
+		 * condicion. En este caso se buscan si estan pagadas (1) o en convenios (7). Este arreglo
+		 * es del tipo:
+		 * array(1) {
+		 *	  [0]=>
+		 *	  string(7) "3333333"
+		 *	}
+		 * @return Array Retorna un arreglo ($result), donde el indice de cada elemento es el numero
+		 * de planilla y el valor del elemento es un boolean que indica si la planilla esta pagada o
+		 * o no (true o false), si $postPlanilla no contiene planilla, se retornara una arreglo vacio.
+		 */
 		public function actionGetCondicionPlanilla($postPlanilla)
 		{
 			$result = [];
 			if ( count($postPlanilla) > 0 ) {
 				foreach ( $postPlanilla as $planilla ) {
 					$p = New PlanillaSearch($planilla);
-					// Obtenemos los registros de la planilla.
-					$registros = $p->condicionPlanilla(0);
+					// Obtenemos los campos que nos permiten definir la condicion de la planilla
+					// - pago.
+					// - id contribuyente.
+					$registros = $p->condicionPlanilla();
 
 					foreach ( $registros as $key => $value ) {
 						foreach ( $value as $campo ) {
@@ -498,7 +527,23 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que recibe un arreglo de planilla. Este arreglo puede contener una o varias
+		 * planillas, luego se referencia a un metodo que nos retorna una arreglo donde el
+		 * indice del arreglo corresponde al numero de la planilla y el valor del elemento
+		 * es un boolean que indica si la planilla cumple la condicion o no (true o false),
+		 * luego si en el arreglo resultante ($resultPlanilla), todos los elementos son true
+		 * quiere decir que se cumplen las condiciones.
+		 * @param  Array $postPlanilla arreglo de planilla al cual se les quiere determinar
+		 * su condicion. En este caso se buscan si estan pagadas (1) o en convenios (7).
+		 * Este arreglo es del tipo:
+		 * array(1) {
+		 *	  [0]=>
+		 *	  string(7) "3333333"
+		 *	}
+		 * @return Boolean retorna un true si todas los elementos del arreglo son true, de lo
+		 * contrario devolvera false.
+		 */
 		public function actionVerificarCondicionPlanilla($postPlanilla)
 		{
 			$result = true;
