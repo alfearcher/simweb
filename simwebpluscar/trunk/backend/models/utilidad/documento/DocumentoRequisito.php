@@ -48,6 +48,7 @@
 	use yii\db\ActiveRecord;
 	use common\conexion\ConexionController;
 	use backend\models\configuracion\documentosolicitud\SolicitudDocumento;
+	use backend\models\documento\DocumentoConsignado;
 	/**
 	* 	Clase
 	*/
@@ -116,6 +117,18 @@
 		{
 			return $this->hasMany(SolicitudDocumento::className(), ['id_documento' => 'id_documento']);
 		}
+
+
+		/**
+		 * Relacion con la entidada "documentos-consignados".
+		 * @return Active Record.
+		 */
+		public function getDocumentoConsignado()
+		{
+			return $this->hasMany(DocumentoConsignado::className(), ['id_documento' => 'id_documento']);
+		}
+
+
 
 	}
 
