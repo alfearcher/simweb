@@ -608,7 +608,7 @@ class CambioPropietarioInmueblesUrbanosController extends Controller
               //if($modelContribuyente->validate()){ 
            
                 if($model->validate()){ 
-
+ 
                  //condicionales     
                 
                 if (!\Yii::$app->user->isGuest){   
