@@ -76,6 +76,9 @@
 	<?=$form->field($model, 'listado')->hiddenInput(['value' => $listado])->label(false);?>
 	<?=$form->field($model, 'exigirDocumento')->hiddenInput(['value' => $exigirDocumento])->label(false);?>
 	<?=$form->field($model, 'id_config_solicitud')->hiddenInput(['value' => $model->id_config_solicitud])->label(false);?>
+	<?=$form->field($model, 'impuesto')->hiddenInput(['value' => $model->impuesto])->label(false);?>
+	<?=$form->field($model, 'id_impuesto')->hiddenInput(['value' => $model->id_impuesto])->label(false);?>
+
 
 	<meta http-equiv="refresh">
     <div class="panel panel-default"  style="width: 85%;">
@@ -157,8 +160,8 @@
 						</div>
 						<div class="col-sm-5" style="padding-left: 0px;">
 							<div class="row" class="impuesto">
-								<?= $form->field($model, 'impuesto')->textInput([
-																					'id' => 'impuesto',
+								<?= $form->field($model, 'impuesto_descripcion')->textInput([
+																					'id' => 'impuesto_descripcion',
 																					'readonly' => true,
 																					'style' => 'width: 100%; background-color: white;',
 																					'value' =>$model->impuestos['descripcion'],
