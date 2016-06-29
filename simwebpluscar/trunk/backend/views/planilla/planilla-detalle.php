@@ -185,10 +185,21 @@
 				                            		return Html::tag('strong', Html::tag('h3',
 						                            								   	 'NO',
 						                            								   	 ['class' => 'label label-danger']));
-				                            	} elseif ( $data['pago'] == 1) {
+				                            	} elseif ( $data['pago'] == 1 ) {
 				                            		return Html::tag('strong', Html::tag('h3',
-						                            			                     	 'SI',
-						                            			                     	 ['class' => 'success']));
+				                            			                     			 'SI',
+				                            			                     			 ['class' => 'label label-primary',
+				                            								   			  'id' => 'pago',
+				                            								   			  'name' => 'pago',
+				                            								   			]));
+
+				                            	} elseif ( $data['pago'] == 9 ) {
+				                            		return Html::tag('strong', Html::tag('h3',
+				                            			                     			 'ANULADA',
+				                            			                     			 ['class' => 'label label-warning',
+				                            								   			  'id' => 'pago',
+				                            								   			  'name' => 'pago',
+				                            								   			]));
 				                            	}
 				                            },
 				                        ],
