@@ -82,34 +82,24 @@
 	    public function rules()
 	    {
 	        return [
-
+	        	['estatus', 'default', 'value' => 0],
 	        ];
 	    }
 
 
 
 
-	    /**
-	     * Metodo que devuelde un dataProvider
-	     * @param $impuesto, integer que identifica al impuesto.
-	     * @return retorna un dataProvider
-	     */
-	    public function getDataProviderDocumentosRequisitosSegunImpuesto($impuesto = 0)
+	    /***/
+	    public function atributosPorDefecto()
 	    {
-	    	if ( $impuesto == 0 ) {
-		    	$query = DocumentoRequisito::find();
-	    		$dataProvider = new ActiveDataProvider([
-	        		'query' => $query,
-	    		]);
-	    	} else {
-	    		$query = DocumentoRequisito::find()->where(['impuesto' => $impuesto, 'inactivo' => 0])->orderBy('descripcion');
-	    		$dataProvider = new ActiveDataProvider([
-	        		'query' => $query,
-	    		]);
-	    	}
-
-	    	return $dataProvider;
+	    	return [
+	    		'fecha_hora' => date('Y-m-d H:i:s'),
+	    		'estatus' => 0,
+	    		'usuario' => isset(Yii::$app->user->identity->username) ? Yii::$app->user->identity->username : Yii::$app->user->identity->login,
+	    	];
 	    }
+
+
 
 
 	}
