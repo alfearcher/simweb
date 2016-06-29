@@ -347,7 +347,7 @@
 												);
 
 			$result = $procesar->aprobarSolicitud();
-			if ( $result ) {
+			if ( $result == true ) {
 				// Ejecutar procesos asociados al evento (si existen) y enviar correo
 				// comunicando al contribuyente el resultado de su solicitud.
 
@@ -358,15 +358,17 @@
 				// Si retorna FALSE indica que no se logro ejecutar correctamente los procesos
 				// relacionados al evento-solicitud. Aqui acaba el procedimiento sin guardar nada.
 
-				if ( $result ) {
-					$this->_transaccion->commit();
-					$this->_conn->close();
+				if ( isset($postData['chk-documento-requisito']) && $result == true ) {
+					$result = self::actionCreateDocumentosConsignados();
+				}
 
+				if ( $result == true ) {
+					$this->_transaccion->commit();
 				} else {
 					$this->_transaccion->rollBack();
-					$this->_conn->close();
 				}
 			}
+			$this->_conn->close();
 			return $result;
 		}
 
@@ -444,13 +446,11 @@
 				// relacionados al evento-solicitud. Aqui acaba el procedimiento sin guardar nada.
 				if ( $result ) {
 					$this->_transaccion->commit();
-					$this->_conn->close();
-
 				} else {
 					$this->_transaccion->rollBack();
-					$this->_conn->close();
 				}
 			}
+			$this->_conn->close();
 			return $result;
 		}
 
@@ -577,8 +577,18 @@
 
 
 		/***/
-		private static function actionCreateDocumentosConsignados($conexion, $connLocal)
+		private static function actionCreateDocumentosConsignados($postDocumento)
 		{
+			$result = false;
+			if ( count($postDocumento) > 0 ) {
+
+			} else {
+				// No se realizo el envio de los documentos y/o requisitos.
+				return self::actionErrorOperacion(940);
+			}
+
+			return $result;
+
 			if ( $idContribuyenteGenerado > 0 ) {
 				if ( isset($conexion) ) {
 					if ( isset($_SESSION['postData']) ) {
