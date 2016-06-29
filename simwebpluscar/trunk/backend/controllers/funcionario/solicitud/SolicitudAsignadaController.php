@@ -158,6 +158,7 @@
 		public function actionProcesarSolicitud()
 		{
 			$result = false;
+			$pagada = true;
 			self::actionAnularSession(['planillaNoSolvente', 'mensajeErrorChk']);
 			$request = Yii::$app->request;
 			$postData = $request->post();
@@ -176,7 +177,6 @@
 							if ( $pagada == false ) {
 								// Imposible continuar la(s) planilla(s) de la solicitud no estan pagadas.
 								$_SESSION['planillaNoSolvente'] = Yii::t('backend', 'invoice uncreditworthy');
-								$this->redirect(['buscar-solicitud-seleccionada']);
 							}
 						}
 
@@ -186,11 +186,15 @@
 						if ( $this->_exigirDocumento == true ) {
 							if ( isset($postData['chk-documento-requisito']) ) {
 								if ( count($postData['chk-documento-requisito']) > 0 ) {
-									$result = self::actionIniciarAprobarSolicitud($postData, $formName);
-									if ( $result ) {
-										return self::actionProcesoExitoso(101);
+									if ( $pagada == true ) {
+										$result = self::actionIniciarAprobarSolicitud($postData, $formName);
+										if ( $result ) {
+											return self::actionProcesoExitoso(101);
+										} else {
+											return self::actionErrorOperacion(920);
+										}
 									} else {
-										return self::actionErrorOperacion(920);
+										$this->redirect(['buscar-solicitud-seleccionada']);
 									}
 								} else {
 									$_SESSION['mensajeErrorChk'] = Yii::t('backend', 'Debe indicar el documento consignado');
@@ -202,11 +206,16 @@
 							}
 						} else {
 							// Se presiono el boto de aprobacion.
-							$result = self::actionIniciarAprobarSolicitud($postData, $formName);
-							if ( $result ) {
-								return self::actionProcesoExitoso(101);
+							// La solicitud no requiere de documentos y/o requisitos.
+							if ( $pagada == true ) {
+								$result = self::actionIniciarAprobarSolicitud($postData, $formName);
+								if ( $result ) {
+									return self::actionProcesoExitoso(101);
+								} else {
+									return self::actionErrorOperacion(920);
+								}
 							} else {
-								return self::actionErrorOperacion(920);
+								$this->redirect(['buscar-solicitud-seleccionada']);
 							}
 						}
 					}
@@ -567,6 +576,7 @@
 		 */
 		public function actionBuscarSolicitudSeleccionada()
 		{
+			self::actionAnularSession(['planillaNoSolvente']);
 			$request = Yii::$app->request;
 			$postData = $request->post();
 
@@ -577,10 +587,11 @@
 			}
 
 			$errorChk = isset($_SESSION['mensajeErrorChk']) ? $_SESSION['mensajeErrorChk'] : '';
-			$planillaNoSolvente = isset($_SESSION['planillaNoSolvente']) ? $_SESSION['planillaNoSolvente'] : '';
 
 			$exigirDocumento = false;
 			$contribuyente = null;
+			$pagada = true;
+			$planillaNoSolvente = '';
 			$caption = Yii::t('backend', 'Infomation of the request');
 			$subCaption = Yii::t('backend', 'Request');
 			$url = Url::to(['procesar-solicitud']);
@@ -614,8 +625,23 @@
 							// de impueso "tasa".
 							$modelPlanilla = New SolicitudPlanillaSearch($id);
 							$provider = $modelPlanilla->getArrayDataProvider();
-
 							$dataProviderPlanilla = $provider;
+
+							// Lo siguiente permitira bloquear el boton de aprobar la solicitud
+							// si las planillas asociadas a la solicitud no estan pagadas o en
+							// una condicion que permita procesar la solicitud.
+							$listaPlanillas = $modelPlanilla->getListaPlanillaSegunSolicitudCreada();
+							if ( count($listaPlanillas) > 0 ) {
+								// $listaPLanillas, es un arreglo donde el indice del elemento es el numero
+								// de planilla y el valor del elemento es un array con algunos valores obtenido
+								// en la consulta.
+								$arregloPlanilla = array_keys($listaPlanillas);
+								$pagada = self::actionVerificarCondicionPlanilla($arregloPlanilla);
+								if ( $pagada == false ) {
+									$_SESSION['planillaNoSolvente'] = Yii::t('backend', 'invoice uncreditworthy');
+									$planillaNoSolvente = $_SESSION['planillaNoSolvente'];
+								}
+							}
 
 							return $this->render('/funcionario/solicitud-asignada/_view', [
 																	'model' => $infoSolicitud,
