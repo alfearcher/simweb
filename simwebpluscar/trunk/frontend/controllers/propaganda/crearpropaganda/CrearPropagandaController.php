@@ -97,7 +97,7 @@ class CrearPropagandaController extends Controller
                   Yii::$app->response->format = Response::FORMAT_JSON;
                   return ActiveForm::validate($model);
             }
-           // die(var_dump($postData));
+           
             if ( $model->load($postData) ) {
             
 
@@ -107,24 +107,22 @@ class CrearPropagandaController extends Controller
                     
                     if($buscarGuardar == true){
                      return MensajeController::actionMensaje(100);
-            }  
-                   }else{
+                    }else{
+                    
                     return MensajeController::actionMensaje(920);
             }  
-                   }
+          
                       
-              }
-                  
-            }
-            
-            return $this->render('/propaganda/crearpropaganda/formulario-crear-propaganda', [
+           
+              }        
+          }  
+          return $this->render('/propaganda/crearpropaganda/formulario-crear-propaganda', [
                                                               'model' => $model,
                                                              
-                                                           
             ]);
   
 
-     
+    
   }
 
   public function buscarNumeroSolicitud($conn, $conexion)
