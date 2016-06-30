@@ -36,7 +36,7 @@ $this->title = Yii::t('frontend', 'Select the Stickers');
 ?>
 
 
-<div class="inmuebles-index">
+<div class="inmuebles-index" style="width: 300px;">
 
     <h2><?= Html::encode($this->title) ?></h2>
     <?php
@@ -57,6 +57,7 @@ $this->title = Yii::t('frontend', 'Select the Stickers');
                     ],
             
                     [
+
                         'class' => 'yii\grid\CheckboxColumn',
                         'name' => 'chk-seleccionar-calcomania',
                         'checkboxOptions' => [
@@ -65,6 +66,7 @@ $this->title = Yii::t('frontend', 'Select the Stickers');
                                 //'onClick' => 'alert("hola " + $(this).val());'
                                 //$(this).is(":checked"), permite determinar si un checkbox esta tildado.
                         ],
+
                         'multiple' => true,
                     ],
 
@@ -79,17 +81,17 @@ $this->title = Yii::t('frontend', 'Select the Stickers');
     <div class="col-sm-4">
     <p>
        
-        <?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger', 'style' => 'height:30px;width:140px;']) ?>
+        <?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger', 'style' => 'height:30px;width:130px; margin-left:200px;']) ?>
     </p>
     </div>
 
     <div class="col-sm-5" style="margin-left: -200px;">
     
-     <?= Html::submitButton("Submit", ["class" => "btn btn-success", 'style' => 'height:30px;width:140px;']) ?>
+     <?= Html::submitButton("Submit", ["class" => "btn btn-success", 'style' => 'height:30px;width:140px;margin-left:80px;']) ?>
 
     </div>
   
-     <div class="col-sm-2" style="margin-left:170px;color:red; font: comic sans ms">
+     <div class="col-sm-3" style="margin-left:170px;color:red; font: comic sans ms">
    
     <p><?php echo $errorCheck ?></p>
 
