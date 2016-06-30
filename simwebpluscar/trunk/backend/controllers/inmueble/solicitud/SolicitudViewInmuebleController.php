@@ -143,7 +143,6 @@
 				} elseif ( $this->model->tipo_solicitud == 31 ) {
 
 					return self::actionMostrarSolicitudModificarAvaluoInmueble();
-
 				}
 			}
 
