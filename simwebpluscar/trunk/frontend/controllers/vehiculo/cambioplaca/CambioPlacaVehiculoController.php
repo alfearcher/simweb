@@ -239,11 +239,7 @@ class CambioPlacaVehiculoController extends Controller
 
       $buscar = new ParametroSolicitud($_SESSION['id']);
 
-      
-
-        $buscar->getParametroSolicitud(["tipo_solicitud", "impuesto", "nivel_aprobacion"]);
-
-        $resultado = $buscar->getParametroSolicitud(["tipo_solicitud", "impuesto", "nivel_aprobacion"]);
+      $resultado = $buscar->getParametroSolicitud(["tipo_solicitud", "impuesto", "nivel_aprobacion"]);
 
       $datosVehiculo = $_SESSION['idVehiculo'];
 
@@ -303,13 +299,18 @@ class CambioPlacaVehiculoController extends Controller
     public function guardarRegistroCambioPlaca($conn, $conexion, $model , $idSolicitud)
     {
       
-       $datosVehiculo = $_SESSION['idVehiculo'];
+      $buscar = new ParametroSolicitud($_SESSION['id']);
+
+      $resultado = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
+
+      $datosVehiculo = $_SESSION['idVehiculo'];
+      $placaActual = $_SESSION['datosVehiculo'][0]->placa;
       $numeroSolicitud = $idSolicitud;
       $resultado = false;
       $datos = yii::$app->user->identity;
-      $tabla = 'sl_vehiculos';
+      $tabla = 'sl_cambios_placas';
       $arregloDatos = [];
-      $arregloCampo = RegistrarVehiculoForm::attributeSlVehiculo();
+      $arregloCampo = CambioPlacaVehiculoForm::attributeSlCambioPlaca();
 
       foreach ($arregloCampo as $key=>$value){
 
@@ -321,9 +322,25 @@ class CambioPlacaVehiculoController extends Controller
       $arregloDatos['id_vehiculo'] = $datosVehiculo;
 
     
+      $arregloDatos['placa_actual'] = $placaActual;
+
+      $arregloDatos['placa_nueva'] = strtoupper($model->placa);
+
       $arregloDatos['id_contribuyente'] = $datos->id_contribuyente;
 
-      $arregloDatos['placa'] = strtoupper($model->placa);
+      $arregloDatos['usuario'] = $datos->login;
+
+      $arregloDatos['fecha_hora'] = date('Y-m-d h:m:i');
+
+      $arregloDatos['estatus'] = 0;
+
+      $arregloDatos['origen'] = 'LAN';
+
+      if($resultado['nivel_aprobacion'] == 1){
+        $arregloDatos['fecha_hora_proceso'] = date('Y-m-d h:m:i');
+      }else{
+        $arregloDatos['fecha_hora_proceso'] = '0000-00-00 00:00:00';
+      }
 
      // die($arregloDatos['placa']);
 
