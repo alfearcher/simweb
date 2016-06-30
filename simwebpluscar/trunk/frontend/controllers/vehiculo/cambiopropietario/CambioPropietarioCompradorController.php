@@ -271,11 +271,7 @@ class CambioPropietarioCompradorController extends Controller
 
       $buscar = new ParametroSolicitud($_SESSION['id']);
 
-      
-
-        $buscar->getParametroSolicitud(["tipo_solicitud", "impuesto", "nivel_aprobacion"]);
-
-        $resultado = $buscar->getParametroSolicitud(["tipo_solicitud", "impuesto", "nivel_aprobacion"]);
+      $resultado = $buscar->getParametroSolicitud(["tipo_solicitud", "impuesto", "nivel_aprobacion"]);
 
       $datosVehiculo = $model[0]->id_vehiculo;
       //die($datosVehiculo);
@@ -335,7 +331,7 @@ class CambioPropietarioCompradorController extends Controller
 
       $buscar = new ParametroSolicitud($_SESSION['id']);
 
-      $resultado = $buscar->getParametroSolicitud(["impuesto"]);
+      $resultado = $buscar->getParametroSolicitud(["impuesto", "nivel_aprobacion"]);
         //die(var_dump($resultado));
       $idImpuesto = $model[0]->id_vehiculo;
 
@@ -377,7 +373,7 @@ class CambioPropietarioCompradorController extends Controller
 
       }else{
 
-        $arregloDatos['fecha_hora_proceso'] = 0;
+        $arregloDatos['fecha_hora_proceso'] = '0000-00-00 00:00:00';
 
       } 
 
