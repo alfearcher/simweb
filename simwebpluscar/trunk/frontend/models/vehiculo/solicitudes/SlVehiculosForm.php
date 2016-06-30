@@ -152,6 +152,20 @@ class SlVehiculosForm extends SlVehiculos
                                                     ->one();
             return isset($modelFind) ? $modelFind : null;
         }
+
+         /**
+         * Metodo que realiza una busqueda del detalle de la solicitud (model)
+         * "cambio-placa-vehiculo".
+         * @param  Long $nroSolicitud identificador de la entidad "solicitudes-contribuyente".
+         * @return Active Record.
+         */
+        public function findSolicitudCambioPlaca($nroSolicitud)
+        {
+            $modelFind = SlCambioPlaca::find()->where('nro_solicitud =:nro_solicitud', [':nro_solicitud' => $nroSolicitud])
+                                                    ->andWhere('id_contribuyente =:id_contribuyente', [':id_contribuyente' => $this->id_contribuyente])
+                                                    ->one();
+            return isset($modelFind) ? $modelFind : null;
+        }
    
 
     }
