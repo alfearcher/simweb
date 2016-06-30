@@ -125,6 +125,30 @@ class CambioPlacaVehiculoForm extends Model
                 return false;
               }
     }
+
+      /**
+       * [attributeSlCambioPlaca description] metodo que contiene los campos de la tabla sl_cambios_placas
+       * @return [type] [description]
+       */
+      public function attributeSlCambioPlaca()
+      {
+
+          return [
+              'nro_solicitud',
+              'id_vehiculo',
+              'placa_actual',
+              'placa_nueva',
+              'id_contribuyente',
+              'usuario',
+              'fecha_hora',
+              'estatus',
+              'origen',
+              'user_funcionario',
+              'fecha_hora_proceso',
+              
+
+          ];
+      }
     
       
     
