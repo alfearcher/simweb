@@ -130,7 +130,7 @@
 								          ->dropDownList([], [
                                                             	'id'=> 'tipo-solicitud',
                                                             	'prompt' => Yii::t('backend', 'Select'),
-                                                            	'style' => 'width:280px;',
+                                                            	'style' => 'width:320px;',
                                                             ])->label(false);
                                 ?>
 							</div>
