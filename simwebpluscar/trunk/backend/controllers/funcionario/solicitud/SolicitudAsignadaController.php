@@ -476,9 +476,11 @@
 				$cuerpoEmail = self::actionArmarCuerpoEmail($postEnviado['nro_solicitud'], $evento);
 				if ( trim($cuerpoEmail) !== '' ) {
 					// Obtuve un cuerpo de correo, ahora se manda a la clase para que lo envie al contribuyente.
+					$modelSolicitud = New SolicitudesContribuyenteForm();
+					$email = $modelSolicitud->getEmailContribuyente($postEnviado['id_contribuyente']);
+
 					$plantilla = New PlantillaEmail();
-					$result = $plantilla->plantillaSolicitudProcesada($postEnviado['id_contribuyente'] ,$cuerpo);
-die(var_dump($result));
+					$result = $plantilla->plantillaSolicitudProcesada($email, $cuerpo);
 				}
 			}
 			return $result;
