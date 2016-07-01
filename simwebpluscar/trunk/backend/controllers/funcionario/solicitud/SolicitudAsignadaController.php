@@ -502,7 +502,7 @@
 			$cuerpoEncabezado = null;
 
 			if ( $evento == Yii::$app->solicitud->aprobar() ) {
-				$cuerpoEncabezado = 'Estimado contribuyente su solicitud ha sido APROBADA <br><br>' . 'Datos de la solicitud: <br><br>';
+				$cuerpoEncabezado = 'Estimado contribuyente su solicitud ha sido APROBADA exitosamente <br><br>' . 'Datos de la solicitud: <br><br>';
 
 			} elseif( $evento == Yii::$app->solicitud->negar() ) {
 				$cuerpoEncabezado = 'Estimado contribuyente su solicitud ha sido NEGADA <br><br>' . 'Datos de la solicitud: <br><br>';
@@ -516,6 +516,7 @@
 													 ->joinWith('tipoSolicitud')
 													 ->joinWith('impuestos')
 													 ->joinWith('nivelAprobacion')
+													 ->joinWith('causaNegacion')
 													 ->asArray()
 													 ->all();
 				if ( isset($model) ) {
@@ -529,7 +530,11 @@
 								  'Usuario: ' . $value['usuario'] . '<br>' .
 								  'Id. Contribuyente: ' . $value['id_contribuyente'] . '<br>' .
 								  'Fecha/Hora de atencion: ' . $value['fecha_hora_proceso'] . '<br>' .
-								  'Funcionario: ' . $value['user_funcionario'];
+								  'Funcionario: ' . $value['user_funcionario'] . '<br>';
+
+						if ( $value['causaNegacion']['causa'] > 0 ) {
+							$cuerpo = $cuerpo . 'Causa: ' . $value['causaNegacion']['descripcion'] . '<br>';
+						}
 					}
 					$cuerpoCorreo = $cuerpoEncabezado . $cuerpo;
 				}
