@@ -235,7 +235,7 @@
             if ( $idContribuyente > 0 ) {
                 $email = ContribuyenteBase::getEmail($idContribuyente);
             }
-            return null;
+            return $email;
         }
 
     }
