@@ -665,7 +665,11 @@
 
 			$errorChk = isset($_SESSION['mensajeErrorChk']) ? $_SESSION['mensajeErrorChk'] : '';
 
-			$r = SolicitudesContribuyente::find()->where('nro_solicitud =:nro_solicitud',[':nro_solicitud' => $postData['id']]);
+			$r = SolicitudesContribuyente::find()->where('nro_solicitud =:nro_solicitud',
+																			[':nro_solicitud' => $postData['id']]
+														)
+												 ->joinWith('tipoSolicitud')
+												 ->all();
 die(var_dump($r));
 
 			$exigirDocumento = false;
