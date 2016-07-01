@@ -461,9 +461,29 @@
 
 
 		/***/
-		public function actionEnviarEmail()
+		public function actionEnviarEmail($postEnviado)
 		{
+			if ( isset($postEnviado['nro_solicitud']) ) {
+				$cuerpoEmail = self::actionArmarCuerpoEmail($postEnviado['nro_solicitud']);
+			}
+		}
 
+
+		private function actionArmarCuerpoEmail($nroSolicitud)
+		{
+			$model = SolicitudesContribuyente::find()->where('nro_solicitud =:nro_solicitud',
+																			[':nro_solicitud' => $nroSolicitud]
+														)
+												 ->joinWith('tipoSolicitud')
+												 ->joinWith('impuestos')
+												 ->joinWith('nivelAprobacion')
+												 ->asArray()
+												 ->all();
+			if ( isset($model) ) {
+
+			} else {
+				return null;
+			}
 		}
 
 
@@ -664,16 +684,6 @@
 			}
 
 			$errorChk = isset($_SESSION['mensajeErrorChk']) ? $_SESSION['mensajeErrorChk'] : '';
-
-			$r = SolicitudesContribuyente::find()->where('nro_solicitud =:nro_solicitud',
-																			[':nro_solicitud' => $postData['id']]
-														)
-												 ->joinWith('tipoSolicitud')
-												 ->joinWith('impuestos')
-												 ->joinWith('nivelAprobacion')
-												 ->asArray()
-												 ->all();
-die(var_dump($r));
 
 			$exigirDocumento = false;
 			$contribuyente = null;
