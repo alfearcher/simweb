@@ -74,6 +74,7 @@
 	use common\models\configuracion\solicitud\SolicitudProcesoEvento;
 	use backend\models\solicitud\negacion\NegacionSolicitudForm;
 	use backend\models\documento\DocumentoConsignadoForm;
+	use common\enviaremail\PlantillaEmail;
 
 
 	/**
@@ -364,6 +365,7 @@
 				}
 
 				if ( $result == true ) {
+					//self::enviarEmail
 					$this->_transaccion->commit();
 				} else {
 					$this->_transaccion->rollBack();
@@ -454,6 +456,16 @@
 			$this->_conn->close();
 			return $result;
 		}
+
+
+
+
+		/***/
+		public function actionEnviarEmail()
+		{
+
+		}
+
 
 
 
@@ -653,6 +665,9 @@
 
 			$errorChk = isset($_SESSION['mensajeErrorChk']) ? $_SESSION['mensajeErrorChk'] : '';
 
+			$r = SolicitudesContribuyente::find()->where('nro_solicitud =:nro_solicitud',[':nro_solicitud' => $postData['id']]);
+die(var_dump($r));
+
 			$exigirDocumento = false;
 			$contribuyente = null;
 			$pagada = true;
@@ -692,9 +707,9 @@
 							$provider = $modelPlanilla->getArrayDataProvider();
 							$dataProviderPlanilla = $provider;
 
-							// Lo siguiente permitira bloquear el boton de aprobar la solicitud
+							// Lo siguiente permitira bloquear el boton de aprobar de la solicitud
 							// si las planillas asociadas a la solicitud no estan pagadas o en
-							// una condicion que permita procesar la solicitud.
+							// una condicion que no permita procesar la solicitud.
 							$listaPlanillas = $modelPlanilla->getListaPlanillaSegunSolicitudCreada();
 							if ( count($listaPlanillas) > 0 ) {
 								// $listaPLanillas, es un arreglo donde el indice del elemento es el numero
