@@ -56,6 +56,7 @@
     use yii\base\Model;
     use yii\db\ActiveRecord;
     use common\models\solicitudescontribuyente\SolicitudesContribuyente;
+    use common\models\contribuyente\ContribuyenteBase;
 
 
     /***/
@@ -223,6 +224,14 @@
                 'causa' => $causa,
                 'observacion' => $observacion,
             ];
+        }
+
+
+
+        /***/
+        public function getEmailContribuyente($idContribuyente)
+        {
+            return $email = ContribuyenteBase::getEmail($idContribuyente);
         }
 
     }
