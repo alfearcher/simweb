@@ -60,6 +60,7 @@
     use backend\models\funcionario\solicitud\FuncionarioSolicitud;
     use common\models\configuracion\solicitudplanilla\SolicitudPlanilla;
     use backend\models\configuracion\nivelaprobacion\NivelAprobacion;
+    use backend\models\utilidad\causanegacionsolicitud\CausaNegacionSolicitud;
 
 
     class SolicitudesContribuyente extends ActiveRecord
@@ -130,6 +131,16 @@
         public function getNivelAprobacion()
         {
             return $this->hasOne(NivelAprobacion::className(), ['nivel_aprobacion' => 'nivel_aprobacion']);
+        }
+
+
+        /**
+         * Relacion con la entidad "causas- negacion-solicitud".
+         * @return Active Record.
+         */
+        public function getCausaNegacion()
+        {
+            return $this->hasOne(CausaNegacionSolicitud::className(), ['causa' => 'causa']);
         }
 
     }
