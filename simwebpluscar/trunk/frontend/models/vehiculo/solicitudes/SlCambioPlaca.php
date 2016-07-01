@@ -86,7 +86,7 @@
          */
         public function getVehiculo()
         {
-            return $this->hasOne(VehiculosForm::className(), ['nro_solicitud' => 'nro_solicitud']);
+            return $this->hasOne(VehiculosForm::className(), ['id_vehiculo' => 'id_impuesto']);
         }
 
 
