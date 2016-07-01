@@ -669,6 +669,7 @@
 																			[':nro_solicitud' => $postData['id']]
 														)
 												 ->joinWith('tipoSolicitud')
+												 ->joinWith('impuestos')
 												 ->asArray()
 												 ->all();
 die(var_dump($r));
