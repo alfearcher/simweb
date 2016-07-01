@@ -105,7 +105,7 @@
 								          ->dropDownList($listaImpuesto, [
                                                                   'id'=> 'impuesto',
                                                                   'prompt' => Yii::t('backend', 'Select'),
-                                                                  'style' => 'width:300px;',
+                                                                  'style' => 'width:460px;',
                                                                   'onchange' => '$.post( "' . Yii::$app->urlManager
                                                                                        		           ->createUrl('funcionario/solicitud/solicitud-asignada/list-solicitud') . '&i=' . '" + $(this).val(), function( data ) {
                                                                                                                  $( "select#tipo-solicitud" ).html( data );
