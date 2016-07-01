@@ -498,7 +498,7 @@ die('lalal');
 							  'Tipo: ' . $value['tipoSolicitud']['descripcion'] . '<br>' .
 							  'Impuesto: ' . $value['impuestos']['descripcion'] . '<br>' .
 							  'Nivel de atencion: ' . $value['nivelAprobacion']['descripcion'] . '<br>' .
-							  'Fecha/hora creacion: ' . $value['fecha_hora'] . '<br>' .
+							  'Fecha/hora creacion: ' . $value['fecha_hora_creacion'] . '<br>' .
 							  'Usuario: ' . $value['usuario'] . '<br>' .
 							  'Fecha/Hora de atencion: ' . $value['fecha_hora_proceso'] . '<br>' .
 							  'Funcionario: ' . $value['user_funcionario'] . '<br>';
