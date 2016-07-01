@@ -365,10 +365,10 @@
 				}
 
 				if ( $result == true ) {
+					$this->_transaccion->commit();
+
 					// Se envia el correo al contribuyente notificando el resultado del procesamiento de su solicitud.
 					self::actionEnviarEmail($postData[$formName], $evento);
-
-					$this->_transaccion->commit();
 				} else {
 					$this->_transaccion->rollBack();
 				}
@@ -501,7 +501,7 @@ die('lalal');
 							  'Fecha/hora creacion: ' . $value['fecha_hora_creacion'] . '<br>' .
 							  'Usuario: ' . $value['usuario'] . '<br>' .
 							  'Fecha/Hora de atencion: ' . $value['fecha_hora_proceso'] . '<br>' .
-							  'Funcionario: ' . $value['user_funcionario'] . '<br>';
+							  'Funcionario: ' . $value['user_funcionario'];
 				}
 				$cuerpoCorreo = $cuerpoEncabezado . $cuerpo;
 			}
