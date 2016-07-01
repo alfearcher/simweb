@@ -480,7 +480,7 @@
 					$email = $modelSolicitud->getEmailContribuyente($postEnviado['id_contribuyente']);
 
 					$plantilla = New PlantillaEmail();
-					$result = $plantilla->plantillaSolicitudProcesada($email, $cuerpo);
+					$result = $plantilla->plantillaSolicitudProcesada($email, $cuerpoEmail);
 				}
 			}
 			return $result;
