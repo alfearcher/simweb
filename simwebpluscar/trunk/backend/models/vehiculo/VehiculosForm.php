@@ -5,43 +5,44 @@
  */
 
  /**
- * 
- *  > This library is free software; you can redistribute it and/or modify it under 
- *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free 
- *  > Software Foundation; either version 2 of the Licence, or (at your opinion) 
+ *
+ *  > This library is free software; you can redistribute it and/or modify it under
+ *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free
+ *  > Software Foundation; either version 2 of the Licence, or (at your opinion)
  *  > any later version.
- *  > 
- *  > This library is distributed in the hope that it will be usefull, 
- *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability 
- *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence 
+ *  >
+ *  > This library is distributed in the hope that it will be usefull,
+ *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability
+ *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence
  *  > for more details.
- *  > 
+ *  >
  *  > See [LICENSE.TXT](../../LICENSE.TXT) file for more information.
  *
  */
 
- /**    
+ /**
  *  @file VehiculosForm.php
- *  
+ *
  *  @author Hansel Jose Colmenarez Guevara
- * 
+ *
  *  @date 03-08-2015
- * 
+ *
  *  @class VehiculosForm
  *  @brief Modelo del formulario de inscripcion de vehiculos, en el estan las validaciones y textos necesarios
- * 
- *  
- *  
+ *
+ *
+ *
  *  @property
- *  
+ *
  *  @method
- *  
+ *
  *  @inherits
- *  
+ *
  */
 namespace backend\models\vehiculo;
 
 use Yii;
+use frontend\models\vehiculo\solicitudes\SlCambioPlaca;
 
 /**
  * This is the model class for table "vehiculos".
@@ -90,7 +91,7 @@ class VehiculosForm extends \yii\db\ActiveRecord
             [['id_contribuyente', 'tipo_vehiculo','clase_vehiculo','uso_vehiculo' , 'marca', 'modelo', 'color', 'precio_inicial', 'ano_compra', 'ano_vehiculo', 'no_ejes'], 'required'],
             [['id_contribuyente', 'uso_vehiculo', 'ano_compra', 'ano_vehiculo', 'no_ejes', 'liquidado', 'status_vehiculo', 'nro_puestos', 'clase_vehiculo', 'tipo_vehiculo'], 'integer'],
             [[ 'exceso_cap', 'capacidad'], 'number'],
-            [['fecha_inicio'], 'safe'],           
+            [['fecha_inicio'], 'safe'],
             [['marca', 'modelo', 'color'], 'string', 'max' => 25],
             [['marca', 'modelo'], 'filter','filter'=>'ucwords'],
             ['color', 'filter','filter'=>'ucwords'],
@@ -139,5 +140,16 @@ class VehiculosForm extends \yii\db\ActiveRecord
             'serial_carroceria' => Yii::t('backend', 'Serial Body'),
             'nro_calcomania' => Yii::t('backend', 'N° Sticker'),
         ];
+    }
+
+
+
+    /**
+     * Relacion con el entidad "sl-cambios-placas".
+     * @return Active Record.
+     */
+    public function getSolicitudVehiculoDetalle()
+    {
+        return $this->hasOne(SlCambioPlaca::className(), ['nro_solicitud' => 'nro_solicitud']);
     }
 }
