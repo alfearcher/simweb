@@ -78,7 +78,7 @@
 	?>
 
 	<meta http-equiv="refresh">
-    <div class="panel panel-default"  style="width: 85%;">
+    <div class="panel panel-default"  style="width: 115%;">
         <div class="panel-heading">
         	<div class="row">
         		<div class="col-sm-4" style="padding-top: 10px;">
