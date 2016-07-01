@@ -670,7 +670,7 @@
 														)
 												 ->joinWith('tipoSolicitud')
 												 ->joinWith('impuestos')
-												 ->joinWith('nivelaprobacion')
+												 ->joinWith('nivelAprobacion')
 												 ->asArray()
 												 ->all();
 die(var_dump($r));
