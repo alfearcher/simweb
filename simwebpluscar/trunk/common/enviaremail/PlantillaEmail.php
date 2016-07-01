@@ -59,6 +59,10 @@ use common\enviaremail\EnviarEmailSolicitud;
 
 class PlantillaEmail{
 
+  private $_from = 'manuelz0510@gmail.com';
+
+
+
   /**
    * [busquedaTipoContribuyente description] Metodo que realiza la busqueda del tipo de usuario (natural o juridico), para asi poder
    * identificarlo al momento de enviar el correo por su nombre o razon social
