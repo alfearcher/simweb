@@ -231,7 +231,11 @@
         /***/
         public function getEmailContribuyente($idContribuyente)
         {
-            return $email = ContribuyenteBase::getEmail($idContribuyente);
+            $email = null;
+            if ( $idContribuyente > 0 ) {
+                $email = ContribuyenteBase::getEmail($idContribuyente);
+            }
+            return null;
         }
 
     }
