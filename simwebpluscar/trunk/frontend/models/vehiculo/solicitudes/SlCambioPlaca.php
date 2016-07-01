@@ -57,7 +57,8 @@
     use yii\db\ActiveRecord;
     use frontend\models\vehiculo\solicitudes\SlVehiculos;
     use frontend\models\vehiculo\solicitudes\SlVehiculosForm;
-   
+    use backend\models\vehiculo\VehiculosForm;
+
 
 
     class SlCambioPlaca extends ActiveRecord
@@ -79,8 +80,14 @@
         }
 
 
-
-       
+        /**
+         * Relacion con la entidad "VehiculosForm"
+         * @return Active Record.
+         */
+        public function getVehiculo()
+        {
+            return $this->hasOne(VehiculosForm::className(), ['nro_solicitud' => 'nro_solicitud']);
+        }
 
 
 
