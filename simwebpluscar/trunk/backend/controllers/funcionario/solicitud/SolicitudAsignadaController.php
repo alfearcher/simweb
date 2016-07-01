@@ -365,7 +365,9 @@
 				}
 
 				if ( $result == true ) {
-					//self::enviarEmail
+					// Se envia el correo al contribuyente notificando el resultado del procesamiento de su solicitud.
+					self::actionEnviarEmail($postData[$formName], $evento);
+
 					$this->_transaccion->commit();
 				} else {
 					$this->_transaccion->rollBack();
@@ -461,16 +463,26 @@
 
 
 		/***/
-		public function actionEnviarEmail($postEnviado)
+		public function actionEnviarEmail($postEnviado, $evento)
 		{
 			if ( isset($postEnviado['nro_solicitud']) ) {
-				$cuerpoEmail = self::actionArmarCuerpoEmail($postEnviado['nro_solicitud']);
+				$cuerpoEmail = self::actionArmarCuerpoEmail($postEnviado['nro_solicitud'], $evento);
+die(var_dump($cuerpoEmail));
 			}
+
+die('lalal');
 		}
 
 
-		private function actionArmarCuerpoEmail($nroSolicitud)
+		/***/
+		private function actionArmarCuerpoEmail($nroSolicitud, $evento)
 		{
+			$cuerpoCorreo = null;
+			if ( $evento == Yii::$app->solicitud->aprobar() ) {
+				$cuerpoEncabezado = 'Estimado contribuyente su solicitud ha sido APROBADA <br><br>' . 'Datos de la solicitud: <br><br>';
+			} elseif( $evento == Yii::$app->solicitud->negar() ) {
+				$cuerpoEncabezado = 'Estimado contribuyente su solicitud ha sido NEGADA <br><br>' . 'Datos de la solicitud: <br><br>';
+			}
 			$model = SolicitudesContribuyente::find()->where('nro_solicitud =:nro_solicitud',
 																			[':nro_solicitud' => $nroSolicitud]
 														)
@@ -481,9 +493,19 @@
 												 ->all();
 			if ( isset($model) ) {
 				//
-			} else {
-				return null;
+				foreach ( $model as $key => $value ) {
+					$cuerpo = 'Numero: '. $value['nro_solicitud'] . '<br>' .
+							  'Tipo: ' . $value['tipoSolicitud']['descripcion'] . '<br>' .
+							  'Impuesto: ' . $value['impuestos']['descripcion'] . '<br>' .
+							  'Nivel de atencion: ' . $value['nivelAprobacion']['descripcion'] . '<br>' .
+							  'Fecha/hora creacion: ' . $value['fecha_hora'] . '<br>' .
+							  'Usuario: ' . $value['usuario'] . '<br>' .
+							  'Fecha/Hora de atencion: ' . $value['fecha_hora_proceso'] . '<br>' .
+							  'Funcionario: ' . $value['user_funcionario'] . '<br>';
+				}
+				$cuerpoCorreo = $cuerpoEncabezado . $cuerpo;
 			}
+			return $cuerpoCorreo;
 		}
 
 
