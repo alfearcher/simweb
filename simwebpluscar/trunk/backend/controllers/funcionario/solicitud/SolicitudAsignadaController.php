@@ -480,7 +480,7 @@
 												 ->asArray()
 												 ->all();
 			if ( isset($model) ) {
-
+				//
 			} else {
 				return null;
 			}
