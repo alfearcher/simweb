@@ -451,6 +451,9 @@
 				// relacionados al evento-solicitud. Aqui acaba el procedimiento sin guardar nada.
 				if ( $result ) {
 					$this->_transaccion->commit();
+
+					// Se envia el correo al contribuyente notificando el resultado del procesamiento de su solicitud.
+					self::actionEnviarEmail($postData[$formName], $evento);
 				} else {
 					$this->_transaccion->rollBack();
 				}
