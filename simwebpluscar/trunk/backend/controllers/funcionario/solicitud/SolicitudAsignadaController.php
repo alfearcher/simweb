@@ -462,20 +462,38 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que redirecciona a la clase que permitira el envio del correo, previo obtencion de un cuerpo
+		 * de mensaje que resume el resultado del procesamientro de la solicitud del contribuyente.
+		 * @param  [type] $postEnviado [description]
+		 * @param  String $evento Accion ejecutada sobrte la solicitud.
+		 * @return [type]              [description]
+		 */
 		public function actionEnviarEmail($postEnviado, $evento)
 		{
+			$result = false;
 			if ( isset($postEnviado['nro_solicitud']) ) {
 				$cuerpoEmail = self::actionArmarCuerpoEmail($postEnviado['nro_solicitud'], $evento);
 				if ( trim($cuerpoEmail) !== '' ) {
 					// Obtuve un cuerpo de correo, ahora se manda a la clase para que lo envie al contribuyente.
-
+					$plantilla = New PlantillaEmail();
+					$result = $plantilla->plantillaSolicitudProcesada($postEnviado['id_contribuyente'] ,$cuerpo);
+die(var_dump($result));
 				}
 			}
+			return $result;
 		}
 
 
-		/***/
+
+		/**
+		 * Metodo que arma un cuerpo de mensaje que se utilizara para cominicarle al contribuyente
+		 * el resultado del procesamiento de su solicitud.
+		 * @param  Long $nroSolicitud Numero de la solicitud procesada.
+		 * @param  String $evento Evento resultante a la solicitud, es la accion aplicada a la solicitud.
+		 * @return String Retorna un escrito que especifica los datos de la solicitud y el encabezado
+		 * representa un resumen del resultado del procesamiento de la solicitud.
+		 */
 		private function actionArmarCuerpoEmail($nroSolicitud, $evento)
 		{
 			$cuerpoCorreo = null;
