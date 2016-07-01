@@ -150,6 +150,6 @@ class VehiculosForm extends \yii\db\ActiveRecord
      */
     public function getSolicitudVehiculoDetalle()
     {
-        return $this->hasOne(SlCambioPlaca::className(), ['nro_solicitud' => 'nro_solicitud']);
+        return $this->hasOne(SlCambioPlaca::className(), ['id_impuesto' => 'id_vehiculo']);
     }
 }
