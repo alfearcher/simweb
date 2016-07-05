@@ -21,13 +21,13 @@
  */
 
  /**
- *	@file SolicitudViewnActividadEconomicaController.php
+ *	@file SolicitudViewVehiculoController.php
  *
  *	@author Jose Rafael Perez Teran
  *
  *	@date 19-09-2015
  *
- *  @class SolicitudViewnActividadEconomicaController
+ *  @class SolicitudViewVehiculoController
  *	@brief Clase
  *
  *
@@ -114,11 +114,17 @@
 
 					return self::actionMostarSolicitudCambioPlacaVehiculo();
 
-				} elseif ( $this->model->tipo_solicitud == 6 ) {
+				} elseif ( $this->model->tipo_solicitud == 37 ) {
 
-				} elseif ( $this->model->tipo_solicitud == 7 ) {
+					return self::actionDesincorporacionVehiculo();
 
-				} elseif ( $this->model->tipo_solicitud == 8 ) {
+				} elseif ( $this->model->tipo_solicitud == 38 ) {
+
+					return self::actionActualizarDatosVehiculo();
+
+				} elseif ( $this->model->tipo_solicitud == 68 ) {
+
+					return self::actionSolicitudReposicionCalcomaniaExtravio();
 
 				} elseif ( $this->model->tipo_solicitud == 10 ) {
 
@@ -285,6 +291,119 @@
 			return false;
 		}
 
+			/**
+		 * Metodo particular que se encarga de buscar los datos de la solicitud particular sobre
+		 * "Desincorporacion de Vehiculo", y de renderizar una vista del detalle de la solicitud
+		 * Se utiliza un parametro adicional "nivel de aprobacion", este determinara un nivel mas
+		 * determinante de la vista.
+		 * El nivel de aprobacion 3 renderizara un formulario con los datos originales de la solicitud
+		 * inhabilitados y solo permitira la edicion de los campos que no fueron cargados en dicha
+		 * solicitud, esto con la intencion de que el funcionario pueda complementar dicha informacion.
+		 * @return View Retorna un vista con la informacion de la solicitud sino encuentra dicha
+		 * informacion retornara false.
+		 * ---
+		 * nivel de aprobacion 1: No aplica.
+		 * nivel de aprobacion 2: la vista no permite la edicion de los campos.
+		 * 	- Esquema de esta vista:
+		 *  	* Nombre del campo : Valor del campo
+		 * nivel de aprobacion 3: Muestra inhabilitado los datos suministrados previamente y habilita
+		 * aquellos campos que no fueron cargados inicialmente.  
+		 */
+		private function actionDesincorporacionVehiculo()
+		{
+			if ( $this->model->nivel_aprobacion == 2 ) {
+					$modelSearch = New SlVehiculosForm($this->model->id_contribuyente);
+					$model = $modelSearch->findSolicitudDesincorporacionVehiculo($this->model->nro_solicitud);
+
+					$search = new VehiculoSearch();
+
+
+					return $this->render('/vehiculo/solicitudes/desincorporacion/view-solicitud-desincorporacion-vehiculo', [
+													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
+													'model' => $model,
+													'search' => $search,
+
+						]);
+			}
+
+			return false;
+		}
+
+			/**
+		 * Metodo particular que se encarga de buscar los datos de la solicitud particular sobre
+		 * "Actualizar Datos del Vehiculo", y de renderizar una vista del detalle de la solicitud
+		 * Se utiliza un parametro adicional "nivel de aprobacion", este determinara un nivel mas
+		 * determinante de la vista.
+		 * El nivel de aprobacion 3 renderizara un formulario con los datos originales de la solicitud
+		 * inhabilitados y solo permitira la edicion de los campos que no fueron cargados en dicha
+		 * solicitud, esto con la intencion de que el funcionario pueda complementar dicha informacion.
+		 * @return View Retorna un vista con la informacion de la solicitud sino encuentra dicha
+		 * informacion retornara false.
+		 * ---
+		 * nivel de aprobacion 1: No aplica.
+		 * nivel de aprobacion 2: la vista no permite la edicion de los campos.
+		 * 	- Esquema de esta vista:
+		 *  	* Nombre del campo : Valor del campo
+		 * nivel de aprobacion 3: Muestra inhabilitado los datos suministrados previamente y habilita
+		 * aquellos campos que no fueron cargados inicialmente.  
+		 */
+		private function actionActualizarDatosVehiculo()
+		{
+			if ( $this->model->nivel_aprobacion == 2 ) {
+					$modelSearch = New SlVehiculosForm($this->model->id_contribuyente);
+					$model = $modelSearch->findSolicitudActualizarDatosVehiculo($this->model->nro_solicitud);
+
+					$search = new VehiculoSearch();
+
+
+					return $this->render('/vehiculo/solicitudes/actualizardatos/view-solicitud-actualizar-datos-vehiculo', [
+													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
+													'model' => $model,
+													'search' => $search,
+
+						]);
+			}
+
+			return false;
+		}
+
+			/**
+		 * Metodo particular que se encarga de buscar los datos de la solicitud particular sobre
+		 * "Cambiar Calcomania por Daño o Extravio", y de renderizar una vista del detalle de la solicitud
+		 * Se utiliza un parametro adicional "nivel de aprobacion", este determinara un nivel mas
+		 * determinante de la vista.
+		 * El nivel de aprobacion 3 renderizara un formulario con los datos originales de la solicitud
+		 * inhabilitados y solo permitira la edicion de los campos que no fueron cargados en dicha
+		 * solicitud, esto con la intencion de que el funcionario pueda complementar dicha informacion.
+		 * @return View Retorna un vista con la informacion de la solicitud sino encuentra dicha
+		 * informacion retornara false.
+		 * ---
+		 * nivel de aprobacion 1: No aplica.
+		 * nivel de aprobacion 2: la vista no permite la edicion de los campos.
+		 * 	- Esquema de esta vista:
+		 *  	* Nombre del campo : Valor del campo
+		 * nivel de aprobacion 3: Muestra inhabilitado los datos suministrados previamente y habilita
+		 * aquellos campos que no fueron cargados inicialmente.  
+		 */
+		private function actionSolicitudReposicionCalcomaniaExtravio()
+		{
+			if ( $this->model->nivel_aprobacion == 2 ) {
+					$modelSearch = New SlVehiculosForm($this->model->id_contribuyente);
+					$model = $modelSearch->findSolicitudReposicionCalcomaniaExtravio($this->model->nro_solicitud);
+
+					$search = new VehiculoSearch();
+
+
+					return $this->render('/vehiculo/solicitudes/reposicioncalcomania/view-solicitud-reposicion-calcomania-extravio', [
+													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
+													'model' => $model,
+													'search' => $search,
+
+						]);
+			}
+
+			return false;
+		}
 
 
 
