@@ -452,7 +452,7 @@ class CrearPropagandaController extends Controller
                     //die('no es de aprobacion directa');
 
                   if ($buscar and $guardar == true ){
-                    die('actualizo y guardo');
+                    //die('actualizo y guardo');
 
                     $transaccion->commit();
                     $conn->close();
