@@ -311,7 +311,9 @@ class CambioDatosVehiculoController extends Controller
 
           $arregloDatos[$value] =0;
       }
-      $arregloDatos['id_vehiculo'] = $datosVehiculo[0]->id_vehiculo;;
+      $arregloDatos['placa'] = $datosVehiculo[0]->placa;
+
+      $arregloDatos['id_vehiculo'] = $datosVehiculo[0]->id_vehiculo;
 
       $arregloDatos['nro_solicitud'] = $numeroSolicitud;
 
@@ -339,13 +341,13 @@ class CambioDatosVehiculoController extends Controller
 
       $arregloDatos['peso'] = $model->peso;
 
-      $arregloDatos['estatus_funcionario'] = 0;
+      //$arregloDatos['estatus_funcionario'] = 0;
 
       $arregloDatos['user_funcionario'] = 0;
 
       $arregloDatos['fecha_funcionario'] = 0;
 
-      $arregloDatos['fecha_hora'] = 0;
+      $arregloDatos['fecha_hora'] = date('Y-m-d h:m:i');
 
       $arregloDatos['nro_cilindros'] = $model->nro_cilindros;
 
