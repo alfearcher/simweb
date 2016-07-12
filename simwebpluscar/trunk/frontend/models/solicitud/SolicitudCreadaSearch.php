@@ -153,14 +153,17 @@
         /***/
         private function findListaImpuestoSolicitudPendiente()
         {
-            $findModel = SolicitudesContribuyente::find()->where('id_contribuyente =:id_contribuyente',
+            $findModel = SolicitudesContribuyente::find()->select(SolicitudesContribuyente::tableName().'impuesto','descripcion')
+                                                         ->distinct()
+                                                         ->where('id_contribuyente =:id_contribuyente',
                                                                         [':id_contribuyente' => $this->_id_contribuyente])
                                                          ->andWhere('inactivo =:inactivo', [':inactivo' => 0])
                                                          ->joinWith('impuestos')
                                                          ->orderBy([
-                                                                'impuesto' => SORT_ASC,
+                                                                SolicitudesContribuyente::tableName().'impuesto' => SORT_ASC,
                                                             ]);
 
+            //$findModel = SolicitudesContribuyente::find()->select(['impuesto','descripcion'])->distinct();
             return isset($findModel) ? $findModel : null;
         }
 
