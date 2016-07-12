@@ -104,17 +104,83 @@
          */
         public function findSolicitudCreada()
         {
-            $findModel = SolicitudesContribuyente::find()->where(SolicitudesContribuyente::.'.id_contribuyente =:id_contribuyente',
+            $findModel = SolicitudesContribuyente::find()->where(SolicitudesContribuyente::tableName().'.id_contribuyente =:id_contribuyente',
                                                                         [':id_contribuyente' => $this->_id_contribuyente])
                                                          ->joinWith('tipoSolicitud')
-                                                         ->jointWith('impuestos')
+                                                         ->joinWith('impuestos')
                                                          ->joinWith('nivelAprobacion')
                                                          ->orderBy([
                                                                 'fecha_hora' => SORT_ASC,
                                                                 'impuesto' => SORT_ASC,
-                                                            ])
+                                                            ]);
             return isset($findModel) ? $findModel : null;
         }
+
+
+
+
+        /**
+         * Metodo que determina un arreglo de indices que representa los impuestos
+         * presentes en las solicitudes realizadas por el contribueyente, el parametro
+         * $inactivo es un arreglo de la forma:
+         * [0,1,...,n], donde cada valor indica el estatus del registro de la solicitud
+         * que se quieren consultar.
+         * @param  array  $inactivo arreglo de valores que debe contener el atributo "inactivo".
+         * @return array retorna un arreglo con los identificadores de los impuestos.
+         */
+        protected function getListaImpuestoSegunSolicitudes($inactivo = [])
+        {
+             $findModel = SolicitudesContribuyente::find()->where('id_contribuyente =:id_contribuyente',
+                                                                        [':id_contribuyente' => $this->_id_contribuyente])
+                                                         ->andWhere('inactivo  in :inactivo', [':inactivo' => $inactivo])
+                                                         ->joinWith('impuestos')
+                                                         ->orderBy([
+                                                                'impuesto' => SORT_ASC,
+                                                            ]);
+
+            // $modelFind = SolicitudesContribuyente::find()->select('impuesto')
+            //                                                  ->distinct()
+            //                                                  ->where('id_contribuyente =:id_contribuyente',
+            //                                                             [':id_contribuyente' => $this->_id_contribuyente]);
+
+
+            return isset($findModel) ? $findModel : null;
+        }
+
+
+
+
+        /***/
+        private function findListaImpuestoSolicitudPendiente()
+        {
+            $findModel = SolicitudesContribuyente::find()->where('id_contribuyente =:id_contribuyente',
+                                                                        [':id_contribuyente' => $this->_id_contribuyente])
+                                                         ->andWhere('inactivo =:inactivo', [':inactivo' => 0])
+                                                         ->joinWith('impuestos')
+                                                         ->orderBy([
+                                                                'impuesto' => SORT_ASC,
+                                                            ]);
+
+            return isset($findModel) ? $findModel : null;
+        }
+
+
+
+        /***/
+        public function getListaImpuestoSolicitudPendiente()
+        {
+            $model = self::findListaImpuestoSolicitudPendiente();
+            $rs = $model->asArray()->all();
+return $rs;
+            foreach ( $rs as $r ) {
+                if ( $r == 'impuestos') {
+                die(var_dump($r));
+                }
+            }
+        }
+
+
+
 
 
 
