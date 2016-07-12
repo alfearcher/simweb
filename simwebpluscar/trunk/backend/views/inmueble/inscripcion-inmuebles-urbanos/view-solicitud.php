@@ -61,7 +61,7 @@
 		    				'direccion',
 		    				'ano_inicio',
 		    				'casa_edf_qta_dom',
-		    				'apto_dom',
+		    				'apto_dom', 
 		    				'tlf_hab',
 		    				'medidor',  
 
