@@ -188,7 +188,7 @@
 //	Solicitudes Elaboradas
 		        		['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . '&nbsp; Elaboradas',
 		        			'items' => [
-		        						['label' => 'Pendientes', 'url' => '#'],
+		        						['label' => 'Pendientes', 'url' => ['/solicitud/solicitud-creada/prueba']],
 		        						['label' => 'Historico', 'url' => '#'],
 
 		        			]
