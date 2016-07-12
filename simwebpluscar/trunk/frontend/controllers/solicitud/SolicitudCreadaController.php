@@ -42,7 +42,7 @@
  */
 
 
- 	namespace frontend\controllers\solicitud\SolicitudCreadaController;
+ 	namespace frontend\controllers\solicitud;
 
 
  	use Yii;
@@ -57,6 +57,8 @@
 	use common\mensaje\MensajeController;
 	use common\models\session\Session;
 	use common\models\contribuyente\ContribuyenteBase;
+	use frontend\models\solicitud\SolicitudSearchForm;
+	use frontend\models\solicitud\SolicitudCreadaSearch;
 
 
 	session_start();		// Iniciando session
@@ -68,12 +70,123 @@
 	{
 		public $layout = 'layout-main';				//	Layout principal del formulario
 
+		const SCENARIO_SEARCH = 'search';
+        const SCENARIO_SEARCH_ALL = 'search_all';
+
+
+        public function actionPrueba()
+        {
+        	$r = New SolicitudCreadaSearch(458);
+        	$t = $r->getListaImpuestoSolicitudPendiente();
+
+die(var_dump($t));
+        }
 
 
 
 
+		/***/
+		public function actionIndexSearch()
+		{
+			$request = Yii::$app->request;
+			$postData = $request->post();
+
+			$model = New SolicitudSearchForm();
+
+			if ( isset($postData['btn-search']) ) {
+				$model->scenario = self::SCENARIO_SEARCH;
+			} elseif ( isset($postData['btn-search-all']) ) {
+				$model->scenario = self::SCENARIO_SEARCH_ALL;
+			}
+
+			if ( $model->load($postData) && Yii::$app->request->isAjax ) {
+				Yii::$app->response->format = Response::FORMAT_JSON;
+				return ActiveForm::validate($model);
+			}
+
+			if ( $model->load($postData) ) {
+				if ( isset($postData['btn-search']) ) {
+					// Selecciono la busqueda por parametros.
+					if ( $postData['btn-search'] == 1 ) {
+						if ( $model->validate() ) {
+
+						}
+					}
+
+				} elseif ( isset($postData['btn-search-all']) ) {
+					// Selecciono la busqueda de totas las solicitudes.
+					if ( $postData['btn-search-all'] == 1 ) {
+						if ( $model->validate() ) {
+
+						}
+					}
+				}
+			}
 
 
+			// // Modelo adicionales para la busqueda de los funcionarios.
+			// $modelImpuesto = New ImpuestoForm();
+
+			// // Se define la lista de item para el combo de impuestos.
+			// $listaImpuesto = $modelImpuesto->getListaImpuesto();
+
+			// $caption = Yii::t('backend', 'Search of requests');
+			// 	return $this->render('/funcionario/solicitud/funcionario-desincorporar-solicitud-form', [
+			// 																	'model' => $model,
+			// 																	'modelImpuesto' => $modelImpuesto,
+			// 																	'caption' => $caption,
+			// 																	'listaImpuesto' => $listaImpuesto,
+
+			// 		]);
+
+
+
+
+		}
+
+
+
+
+		/**
+		 * Metodo que permite renderizar un combo de tipos de solicitudes
+		 * segun el parametro impuestos.
+		 * @param  integer $i identificador del impuesto.
+		 * @return Renderiza una vista con un combo de impuesto.
+		 */
+		public function actionListSolicitud($i)
+	    {
+	     //   // die('hola, entro a list');
+	     //   	$userLocal = Yii::$app->user->identity->username;
+	    	// $model = New SolicitudAsignadaSearch();
+
+	    	// // Todas las solicitudes asignadas.
+	    	// $listaSolicitud = $model->getTipoSolicitudAsignada($userLocal);
+
+	    	// // Lista de solicitudes filtradas por el impuesto, es decir, las solicitudes
+	    	// // relacionada al impuesto $i.
+	    	// $lista = $model->getFiltrarSolicitudAsignadaSegunImpuesto($i, $listaSolicitud);
+
+	     //    $countSolicitud = TipoSolicitud::find()->where('impuesto =:impuesto', [':impuesto' => $i])
+	     //    									   ->andWhere(['IN', 'id_tipo_solicitud', $lista])
+	     //    									   ->andwhere('inactivo =:inactivo', [':inactivo' => 0])
+	     //    									   ->count();
+
+	     //    //$solicitudes = TipoSolicitud::find()->where(['impuesto' => $i, 'inactivo' => 0])->all();
+
+	     //    $solicitudes = TipoSolicitud::find()->where('impuesto =:impuesto', [':impuesto' => $i])
+	     //    									->andWhere(['IN', 'id_tipo_solicitud', $lista])
+	     //    									->andwhere('inactivo =:inactivo', [':inactivo' => 0])
+	     //    									->all();
+
+	     //    if ( $countSolicitud > 0 ) {
+	     //    	echo "<option value='0'>" . "Select..." . "</option>";
+	     //        foreach ( $solicitudes as $solicitud ) {
+	     //            echo "<option value='" . $solicitud->id_tipo_solicitud . "'>" . $solicitud->descripcion . "</option>";
+	     //        }
+	     //    } else {
+	     //        echo "<option> - </option>";
+	     //    }
+	    }
 
 
 
