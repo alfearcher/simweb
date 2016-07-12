@@ -106,14 +106,14 @@
 		        						['label' => 'Avaluo Catastral', 'url' => '#'],
 		        						['label' => 'Certificado Catastral', 'url' => '#'],
 		        						['label' => 'Renovación de Certificado Catastral', 'url' => '#'],
-		        						['label' => 'Solvencia', 'url' => '#'], 
+		        						['label' => 'Solvencia', 'url' => '#'],
 		        						['label' => 'Cambio de Numero Catastral', 'url' => ['/inmueble/inmuebles-urbanos/index']],
 		        						['label' => 'Cambio de Propietario', 'url' => ['inmueble/cambiopropietario/cambio-propietario-inmuebles-urbanos/seleccionar-tipo-cambio-propietario','id' =>3]], //  cambio-propietario-inmuebles
 		        						['label' => 'Integración de Parcela', 'url' => ['/inmueble/integracion-inmuebles-urbanos/integracion-inmuebles']],
 		        						['label' => 'Desintegración de Parcela', 'url' => ['inmueble/desintegracion-inmuebles-urbanos/desintegracion']],
 		        						['label' => 'Cambio a Propiedad Horizontal', 'url' => ['/inmueble/inmuebles-urbanos/index']],
 		        						['label' => 'Cambio de Otros Datos del Inmueble', 'url' => ['/inmueble/cambiootrosdatos/cambio-otros-datos-inmuebles-urbanos/index','id' =>3]],
-		        						['label' => 'Modificar Avaluo', 'url' => '#'], 
+		        						['label' => 'Modificar Avaluo', 'url' => '#'],
 		        						['label' => 'Desincorporación de Inmueble', 'url' => ['inmueble/desincorporacion/desincorporacion-inmuebles-urbanos/index','id' =>3], 'options' => ['onclick' => "setId(50)"]],
 
 		        			]
@@ -126,7 +126,7 @@
 		        						['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . 'Calcomania',
 					        				'items' => [
 			        							['label' => 'Solicitud de reposición de calcomania por extravió o daño','url' => ['/vehiculo/calcomania/solicitud-extravio/seleccionar-calcomania', 'id' => 82]],
-			        							
+
 					        				],
 					        			],
 		        						['label' => 'Solvencia', 'url' => '#'],
@@ -184,6 +184,16 @@
 		        						//['label' => 'Declaración de Apuestas Licitas', 'url' => '#'],
 		        			]
 		        		],
+
+//	Solicitudes Elaboradas
+		        		['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . '&nbsp; Elaboradas',
+		        			'items' => [
+		        						['label' => 'Pendientes', 'url' => '#'],
+		        						['label' => 'Historico', 'url' => '#'],
+
+		        			]
+		        		],
+
 		        	]
 		        ],
 
