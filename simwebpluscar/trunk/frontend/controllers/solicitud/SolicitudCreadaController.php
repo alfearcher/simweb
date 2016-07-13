@@ -59,7 +59,7 @@
 	use common\models\contribuyente\ContribuyenteBase;
 	use frontend\models\solicitud\SolicitudSearchForm;
 	use frontend\models\solicitud\SolicitudCreadaSearch;
-
+	use backend\models\impuesto\ImpuestoForm;
 
 	session_start();		// Iniciando session
 
@@ -76,7 +76,7 @@
 
         public function actionPrueba()
         {
-        	$r = New SolicitudCreadaSearch(458);
+        	$r = New SolicitudCreadaSearch(922);
         	$t = $r->getListaImpuestoSolicitudPendiente();
 
 die(var_dump($t));
@@ -88,59 +88,68 @@ die(var_dump($t));
 		/***/
 		public function actionIndexSearch()
 		{
-			$request = Yii::$app->request;
-			$postData = $request->post();
+			if ( isset($_SESSION['idContribuyente']) ) {
+				$request = Yii::$app->request;
+				$postData = $request->post();
 
-			$model = New SolicitudSearchForm();
+				$model = New SolicitudSearchForm();
 
-			if ( isset($postData['btn-search']) ) {
-				$model->scenario = self::SCENARIO_SEARCH;
-			} elseif ( isset($postData['btn-search-all']) ) {
-				$model->scenario = self::SCENARIO_SEARCH_ALL;
-			}
-
-			if ( $model->load($postData) && Yii::$app->request->isAjax ) {
-				Yii::$app->response->format = Response::FORMAT_JSON;
-				return ActiveForm::validate($model);
-			}
-
-			if ( $model->load($postData) ) {
 				if ( isset($postData['btn-search']) ) {
-					// Selecciono la busqueda por parametros.
-					if ( $postData['btn-search'] == 1 ) {
-						if ( $model->validate() ) {
-
-						}
-					}
-
+					$model->scenario = self::SCENARIO_SEARCH;
 				} elseif ( isset($postData['btn-search-all']) ) {
-					// Selecciono la busqueda de totas las solicitudes.
-					if ( $postData['btn-search-all'] == 1 ) {
-						if ( $model->validate() ) {
+					$model->scenario = self::SCENARIO_SEARCH_ALL;
+				}
 
+				if ( $model->load($postData) && Yii::$app->request->isAjax ) {
+					Yii::$app->response->format = Response::FORMAT_JSON;
+					return ActiveForm::validate($model);
+				}
+
+				if ( $model->load($postData) ) {
+					if ( isset($postData['btn-search']) ) {
+						// Selecciono la busqueda por parametros.
+						if ( $postData['btn-search'] == 1 ) {
+							if ( $model->validate() ) {
+
+							}
+						}
+
+					} elseif ( isset($postData['btn-search-all']) ) {
+						// Selecciono la busqueda de totas las solicitudes.
+						if ( $postData['btn-search-all'] == 1 ) {
+							if ( $model->validate() ) {
+
+							}
 						}
 					}
 				}
+
+
+				// Se obtiene un arreglo de valores del atributo "impuesto" de las solicitudes
+				// pendientes relacionadas al contribuyente.
+				$id = $_SESSION['idContribuyente'];
+				$solicitudSearch = New SolicitudCreadaSearch($id);
+        		$arregloImpuesto = $solicitudSearch->getListaImpuestoSolicitudPendiente();
+
+				// Se define la lista de item para el combo de impuestos.
+				$modelImpuesto = New ImpuestoForm();
+				$listaImpuesto = $modelImpuesto->getListaImpuesto(0, $arregloImpuesto);
+
+				// Opciones del menu secundario del formulario.
+				$opciones = [
+					'undo' => '#',
+				];
+
+				$caption = Yii::t('backend', 'Search of requests');
+				return $this->render('/solicitud/busqueda-solicitud/solicitud-search-form', [
+			 																	'model' => $model,
+			 																	'caption' => $caption,
+			 																	'listaImpuesto' => $listaImpuesto,
+			 																	'opciones' => $opciones,
+
+			 		]);
+
 			}
-
-
-			// // Modelo adicionales para la busqueda de los funcionarios.
-			// $modelImpuesto = New ImpuestoForm();
-
-			// // Se define la lista de item para el combo de impuestos.
-			// $listaImpuesto = $modelImpuesto->getListaImpuesto();
-
-			// $caption = Yii::t('backend', 'Search of requests');
-			// 	return $this->render('/funcionario/solicitud/funcionario-desincorporar-solicitud-form', [
-			// 																	'model' => $model,
-			// 																	'modelImpuesto' => $modelImpuesto,
-			// 																	'caption' => $caption,
-			// 																	'listaImpuesto' => $listaImpuesto,
-
-			// 		]);
-
-
-
 
 		}
 
