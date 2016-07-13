@@ -150,36 +150,70 @@
 
 
 
-        /***/
+        /**
+         * Metodo que realiza una consulta donde se obtendra una lista de valores
+         * del atributo "impuesto", de las solicitudes pendientes que esten asocidas
+         * al contribuyente.
+         * @return Active Record retorna el modelo de la consulta.
+         */
         private function findListaImpuestoSolicitudPendiente()
         {
-            $findModel = SolicitudesContribuyente::find()->select(SolicitudesContribuyente::tableName().'impuesto','descripcion')
+            $findModel = SolicitudesContribuyente::find()->select('impuesto')
                                                          ->distinct()
                                                          ->where('id_contribuyente =:id_contribuyente',
                                                                         [':id_contribuyente' => $this->_id_contribuyente])
                                                          ->andWhere('inactivo =:inactivo', [':inactivo' => 0])
-                                                         ->joinWith('impuestos')
                                                          ->orderBy([
-                                                                SolicitudesContribuyente::tableName().'impuesto' => SORT_ASC,
+                                                                'impuesto' => SORT_ASC,
                                                             ]);
 
-            //$findModel = SolicitudesContribuyente::find()->select(['impuesto','descripcion'])->distinct();
             return isset($findModel) ? $findModel : null;
         }
 
 
 
-        /***/
+
+        /**
+         * Metodo que obtiene un arreglo de identificadores de registros de la entidad
+         * "impuestos".
+         * $model->asArray()->all() tiene la siguiente estructura:
+         * array(2) {
+         *       [0]=>
+         *         array(1) {
+         *           ["impuesto"]=>
+         *           string(1) "2"
+         *         }
+         *         [1]=>
+         *         array(1) {
+         *           ["impuesto"]=>
+         *           string(1) "3"
+         *         }
+         *   }
+         * @return array retorna una arreglo de valores (no repetidos) del atributo "impuesto".
+         * Estructura de lo retornado ($arregloImpuesto):
+         * array(2) {
+         *     [0]=>
+         *     string(1) "2"
+         *     [1]=>
+         *     string(1) "3"
+         *   }
+         */
         public function getListaImpuestoSolicitudPendiente()
         {
+            $impuestos = [];
+            $arregloImpuesto = [];
             $model = self::findListaImpuestoSolicitudPendiente();
-            $rs = $model->asArray()->all();
-return $rs;
-            foreach ( $rs as $r ) {
-                if ( $r == 'impuestos') {
-                die(var_dump($r));
+            if ( isset($model) ) {
+                $impuestos = $model->asArray()->all();
+                if ( count($impuestos) > 0 ) {
+                    foreach ( $impuestos as $impuesto ) {
+                        foreach ( $impuesto as $key => $value ) {
+                            $arregloImpuesto[] = $value;
+                        }
+                    }
                 }
             }
+            return $arregloImpuesto;
         }
 
 
