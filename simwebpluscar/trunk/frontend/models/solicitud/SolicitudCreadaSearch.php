@@ -55,44 +55,24 @@
     use yii\base\Model;
     use yii\db\ActiveRecord;
     use common\models\solicitudescontribuyente\SolicitudesContribuyente;
+    use frontend\models\solicitud\SolicitudSearchForm;
     use yii\data\ActiveDataProvider;
 
 
     /***/
-    class SolicitudCreadaSearch extends ActiveRecord
+    class SolicitudCreadaSearch extends SolicitudSearchForm
     {
         private $_id_contribuyente;
-        private $_impuesto;
-        private $_tipo_solicitud;
-        private $_fecha_desde;
-        private $_fecha_hasta;
+        public $impuesto;
+        public $tipo_solicitud;
+        public $fecha_desde;
+        public $fecha_hasta;
 
 
         /***/
-        public function __construct($idContribuyente, $impuesto = 0)
+        public function __construct($idContribuyente)
         {
             $this->_id_contribuyente = $idContribuyente;
-            self::setImpuesto($impuesto);
-        }
-
-
-        /***/
-        public function setImpuesto($impuesto)
-        {
-            $this->_impuesto = $impuesto;
-        }
-
-        /***/
-        public function getImpuesto()
-        {
-            return $this->_impuesto;
-        }
-
-
-        /***/
-        public function setTipoSolicitud($tipoSolicitud)
-        {
-            $this->_tipo_solicitud = $tipoSolicitud;
         }
 
 
@@ -119,30 +99,25 @@
 
 
 
-        /**
-         * Metodo que determina un arreglo de indices que representa los impuestos
-         * presentes en las solicitudes realizadas por el contribueyente, el parametro
-         * $inactivo es un arreglo de la forma:
-         * [0,1,...,n], donde cada valor indica el estatus del registro de la solicitud
-         * que se quieren consultar.
-         * @param  array  $inactivo arreglo de valores que debe contener el atributo "inactivo".
-         * @return array retorna un arreglo con los identificadores de los impuestos.
-         */
-        protected function getListaImpuestoSegunSolicitudes($inactivo = [])
+
+
+
+        /***/
+        private function findListaTipoSolicitudPendiente($arrayImpuesto)
         {
-             $findModel = SolicitudesContribuyente::find()->where('id_contribuyente =:id_contribuyente',
-                                                                        [':id_contribuyente' => $this->_id_contribuyente])
-                                                         ->andWhere('inactivo  in :inactivo', [':inactivo' => $inactivo])
-                                                         ->joinWith('impuestos')
-                                                         ->orderBy([
-                                                                'impuesto' => SORT_ASC,
-                                                            ]);
+           if ( count($arrayImpuesto) > 0 ) {
 
-            // $modelFind = SolicitudesContribuyente::find()->select('impuesto')
-            //                                                  ->distinct()
-            //                                                  ->where('id_contribuyente =:id_contribuyente',
-            //                                                             [':id_contribuyente' => $this->_id_contribuyente]);
-
+                $findModel = SolicitudesContribuyente::find()->select('tipo_solicitud')
+                                                             ->distinct()
+                                                             ->where('id_contribuyente =:id_contribuyente',
+                                                                            [':id_contribuyente' => $this->_id_contribuyente])
+                                                             ->andWhere('inactivo =:inactivo', [':inactivo' => 0])
+                                                             ->andWhere(['in', 'impuesto', $arrayImpuesto])
+                                                             ->orderBy([
+                                                                    'impuesto' => SORT_ASC,
+                                                                    'tipo_solicitud' => SORT_ASC,
+                                                                ]);
+            }
 
             return isset($findModel) ? $findModel : null;
         }
@@ -171,11 +146,9 @@
         }
 
 
-
-
         /**
          * Metodo que obtiene un arreglo de identificadores de registros de la entidad
-         * "impuestos".
+         * "impuestos". Lo que se obtiene es una arreglo de valores del atributo "impuesto"
          * $model->asArray()->all() tiene la siguiente estructura:
          * array(2) {
          *       [0]=>
@@ -219,6 +192,27 @@
 
 
 
+        /***/
+        public function getListaTipoSolicitudPendiente($arrayImpuesto)
+        {
+            $arregloTipoSolicitud = [];
+            $model = self::findListaTipoSolicitudPendiente($arrayImpuesto);
+            if ( isset($model) ) {
+                $tipos = $model->asArray()->all();
+                if ( count($tipos) ) {
+                    foreach ( $tipos as $tipo ) {
+                        foreach ( $tipo as $key => $value ) {
+                            $arregloTipoSolicitud[] = $value;
+                        }
+                    }
+                }
+            }
+            return $arregloTipoSolicitud;
+        }
+
+
+
+
 
 
         /**
@@ -228,22 +222,23 @@
          * @param  array  $inactivo arreglo de valores que debe contener el atributo "inactivo".
          * @return dataProvider.
          */
-        public function getDataProviderSolicitudPendiente($inactivo = [])
+        public function getDataProviderSolicitudPendiente($inactivo)
         {
             $query = self::findSolicitudCreada();
 
             $dataProvider = New ActiveDataProvider([
                 'query' => $query,
             ]);
+
             if ( count($inactivo) > 0 ) {
                 $query->andFilterWhere(['in', 'inactivo', $inactivo]);
 
-                if ( $this->_impuesto > 0 ) {
-                    $query->andFilterWhere(['=', 'impuesto', $this->_impuesto]);
+                if ( $this->impuesto > 0 ) {
+                    $query->andFilterWhere(['=', 'impuesto', $this->impuesto]);
                 }
-
-                if ( $this->_tipo_solicitud > 0 ) {
-                    $query->andFilterWhere(['=', 'tipo_solicitud', $this->_tipo_solicitud]);
+die(var_dump($this->impuesto));
+                if ( $this->tipo_solicitud > 0 ) {
+                    $query->andFilterWhere(['=', 'tipo_solicitud', $this->tipo_solicitud]);
                 }
             } else {
                 // Si el campo no cumple las condiciones esto deberia regresar null.

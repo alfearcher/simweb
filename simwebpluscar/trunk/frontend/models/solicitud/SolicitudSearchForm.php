@@ -79,15 +79,15 @@
             //return Model::scenarios();
             return [
                 self::SCENARIO_SEARCH => [
+                            'id_contribuyente',
                             'impuesto',
                             'tipo_solicitud',
                             'fecha_desde',
                             'fecha_hasta',
-                            'id_contribuyente',
 
                 ],
                 self::SCENARIO_SEARCH_ALL => [
-                            'id_contribuyente',
+                    'id_contribuyente',
                 ]
             ];
         }
