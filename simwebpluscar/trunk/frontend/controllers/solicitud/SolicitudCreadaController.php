@@ -153,6 +153,7 @@ die('search-all');
 		{
 			if ( $_SESSION['idContribuyente'] == $model->id_contribuyente ) {
 				$dataProvider = $model->getDataProviderSolicitudPendiente([0]);
+				//return $this->
 
 			}
 		}
