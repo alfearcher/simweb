@@ -60,6 +60,8 @@
 	use frontend\models\solicitud\SolicitudSearchForm;
 	use frontend\models\solicitud\SolicitudCreadaSearch;
 	use backend\models\impuesto\ImpuestoForm;
+	use backend\models\configuracion\tiposolicitud\TipoSolicitud;
+
 
 	session_start();		// Iniciando session
 
@@ -74,16 +76,6 @@
         const SCENARIO_SEARCH_ALL = 'search_all';
 
 
-        public function actionPrueba()
-        {
-        	$r = New SolicitudCreadaSearch(922);
-        	$t = $r->getListaImpuestoSolicitudPendiente();
-
-die(var_dump($t));
-        }
-
-
-
 
 		/***/
 		public function actionIndexSearch()
@@ -92,7 +84,7 @@ die(var_dump($t));
 				$request = Yii::$app->request;
 				$postData = $request->post();
 
-				$model = New SolicitudSearchForm();
+				$model = New SolicitudCreadaSearch($_SESSION['idContribuyente']);
 
 				if ( isset($postData['btn-search']) ) {
 					$model->scenario = self::SCENARIO_SEARCH;
@@ -110,15 +102,15 @@ die(var_dump($t));
 						// Selecciono la busqueda por parametros.
 						if ( $postData['btn-search'] == 1 ) {
 							if ( $model->validate() ) {
-
+								return self::actionBuscarSolicitudSegunParametro($model);
 							}
 						}
 
 					} elseif ( isset($postData['btn-search-all']) ) {
 						// Selecciono la busqueda de totas las solicitudes.
-						if ( $postData['btn-search-all'] == 1 ) {
+						if ( $postData['btn-search-all'] == 3 ) {
 							if ( $model->validate() ) {
-
+die('search-all');
 							}
 						}
 					}
@@ -137,7 +129,7 @@ die(var_dump($t));
 
 				// Opciones del menu secundario del formulario.
 				$opciones = [
-					'undo' => '#',
+					'undo' => '/solicitud/solicitud-creada/index-search',
 				];
 
 				$caption = Yii::t('backend', 'Search of requests');
@@ -146,12 +138,26 @@ die(var_dump($t));
 			 																	'caption' => $caption,
 			 																	'listaImpuesto' => $listaImpuesto,
 			 																	'opciones' => $opciones,
+			 																	'idContribuyente' => $id,
 
 			 		]);
 
 			}
 
 		}
+
+
+
+		/***/
+		public function actionBuscarSolicitudSegunParametro($model)
+		{
+			if ( $_SESSION['idContribuyente'] == $model->id_contribuyente ) {
+				$dataProvider = $model->getDataProviderSolicitudPendiente([0]);
+
+			}
+		}
+
+
 
 
 
@@ -164,37 +170,33 @@ die(var_dump($t));
 		 */
 		public function actionListSolicitud($i)
 	    {
-	     //   // die('hola, entro a list');
-	     //   	$userLocal = Yii::$app->user->identity->username;
-	    	// $model = New SolicitudAsignadaSearch();
+	    	if ( isset($_SESSION['idContribuyente']) ) {
+	    		$id = $_SESSION['idContribuyente'];
+	    		$solicitudSearch = New SolicitudCreadaSearch($id);
 
-	    	// // Todas las solicitudes asignadas.
-	    	// $listaSolicitud = $model->getTipoSolicitudAsignada($userLocal);
+	    		// Lista de identificadorees de tipo de solicitud, asociadas al contribuyente
+	    		// segun el o los impuestos.
+	    		$listaSolicitud = $solicitudSearch->getListaTipoSolicitudPendiente([$i]);
 
-	    	// // Lista de solicitudes filtradas por el impuesto, es decir, las solicitudes
-	    	// // relacionada al impuesto $i.
-	    	// $lista = $model->getFiltrarSolicitudAsignadaSegunImpuesto($i, $listaSolicitud);
+	    		$countSolicitud = TipoSolicitud::find()->where('impuesto =:impuesto', [':impuesto' => $i])
+	         									       ->andWhere(['in', 'id_tipo_solicitud', $listaSolicitud])
+	         									       ->andwhere('inactivo =:inactivo', [':inactivo' => 0])
+	         									       ->count();
 
-	     //    $countSolicitud = TipoSolicitud::find()->where('impuesto =:impuesto', [':impuesto' => $i])
-	     //    									   ->andWhere(['IN', 'id_tipo_solicitud', $lista])
-	     //    									   ->andwhere('inactivo =:inactivo', [':inactivo' => 0])
-	     //    									   ->count();
+	         	$solicitudes = TipoSolicitud::find()->where(['impuesto' => $i, 'inactivo' => 0])
+	         										->andWhere(['in', 'id_tipo_solicitud', $listaSolicitud])
+	         										->all();
 
-	     //    //$solicitudes = TipoSolicitud::find()->where(['impuesto' => $i, 'inactivo' => 0])->all();
+	         	if ( $countSolicitud > 0 ) {
+	        		echo "<option value='0'>" . "Select..." . "</option>";
+		             foreach ( $solicitudes as $solicitud ) {
+		                 echo "<option value='" . $solicitud->id_tipo_solicitud . "'>" . $solicitud->descripcion . "</option>";
+		             }
+		         } else {
+		             echo "<option> - </option>";
+		         }
+	    	}
 
-	     //    $solicitudes = TipoSolicitud::find()->where('impuesto =:impuesto', [':impuesto' => $i])
-	     //    									->andWhere(['IN', 'id_tipo_solicitud', $lista])
-	     //    									->andwhere('inactivo =:inactivo', [':inactivo' => 0])
-	     //    									->all();
-
-	     //    if ( $countSolicitud > 0 ) {
-	     //    	echo "<option value='0'>" . "Select..." . "</option>";
-	     //        foreach ( $solicitudes as $solicitud ) {
-	     //            echo "<option value='" . $solicitud->id_tipo_solicitud . "'>" . $solicitud->descripcion . "</option>";
-	     //        }
-	     //    } else {
-	     //        echo "<option> - </option>";
-	     //    }
 	    }
 
 
