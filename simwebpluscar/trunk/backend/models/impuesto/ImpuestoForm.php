@@ -123,7 +123,14 @@
 
 
 
-	    /***/
+	    /**
+	     * Metodo que permite obtener un o una lista de registro asociada
+	     * a la entidad "impuesto"
+	     * @param  string|array $arrayImpuesto parametro que indica el registro
+	     * a buscar, este parametro puede llegar como un entero o como un arreglo
+	     * de enteros [1,2,..n].
+	     * @return Active Record modelo de la entidad "impuestos".
+	     */
 	    public function findImpuesto($arrayImpuesto = '')
 	    {
 	    	if ( is_array($arrayImpuesto) ) {
