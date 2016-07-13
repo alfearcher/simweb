@@ -61,10 +61,13 @@
 			'enableClientScript' => true,
 		]);
 	?>
-
+	<?= $form->field($model, 'id_contribuyente')->hiddenInput([
+															'id' => 'id-contribuyente',
+															'value' => $idContribuyente,
+														])->label(false);?>
 
 	<meta http-equiv="refresh">
-    <div class="panel panel-default"  style="width: 85%;">
+    <div class="panel panel-default"  style="width: 80%;">
         <div class="panel-heading">
         	<div class="row">
         		<div class="col-sm-4" style="padding-top: 10px;">
@@ -72,9 +75,9 @@
         		</div>
         		<div class="col-sm-3" style="width: 30%; float:right; padding-right: 50px;">
         			<style type="text/css">
-					.col-sm-3 > ul > li > a:hover {
-						background-color: #F5F5F5;
-					}
+						.col-sm-3 > ul > li > a:hover {
+							background-color: #F5F5F5;
+						}
     			</style>
 	        		<?= MenuController::actionMenuSecundario($opciones); ?>
 	        	</div>
@@ -103,7 +106,7 @@
                                                                   'prompt' => Yii::t('backend', 'Select'),
                                                                   'style' => 'width:460px;',
                                                                   'onchange' => '$.post( "' . Yii::$app->urlManager
-                                                                                       		           ->createUrl('funcionario/solicitud/solicitud-asignada/list-solicitud') . '&i=' . '" + $(this).val(), function( data ) {
+                                                                                       		           ->createUrl('solicitud/solicitud-creada/list-solicitud') . '&i=' . '" + $(this).val(), function( data ) {
                                                                                                                  $( "select#tipo-solicitud" ).html( data );
                                                                                                            });'
                                                                             ])->label(false);
@@ -205,10 +208,10 @@
 							<div class="form-group">
 								<?= Html::submitButton(Yii::t('backend', 'Search Request'),
 																		  [
-																			'id' => 'btn-search-request',
+																			'id' => 'btn-search',
 																			'class' => 'btn btn-primary',
 																			'value' => 1,
-																			'name' => 'btn-search-request',
+																			'name' => 'btn-search',
 																			'style' => 'width: 100%;',
 																		  ])
 								?>
@@ -216,6 +219,28 @@
 						</div>
 					</div>
 <!-- Fin de Rango Fecha -->
+
+<!-- Inicia de busqueda de todos los funcionarios -->
+					<div class="row" style="border-bottom: 0.5px solid #ccc;">
+						<h4><strong><?= Yii::t('backend', 'Search All')?></strong></h4>
+					</div>
+					<div class="row" style="padding-top: 15px;">
+						<div class="col-sm-3">
+							<div class="form-group">
+								<?= Html::submitButton(Yii::t('backend', 'Search All'),
+																		  [
+																			'id' => 'btn-search-all',
+																			'class' => 'btn btn-default',
+																			'value' => 3,
+																			'name' => 'btn-search-all',
+																			'style' => 'width: 100%;',
+																		  ])
+								?>
+							</div>
+						</div>
+					</div>
+
+<!-- Fin de busqueda de todos los funcionarios -->
 
 				</div>
 			</div>	<!-- Fin de container-fluid -->
