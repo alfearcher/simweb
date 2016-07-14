@@ -47,7 +47,7 @@
 	use yii\widgets\ActiveForm;
 	use kartik\icons\Icon;
 	use yii\web\View;
-	use yii\jui\DatePicker;
+	use yii\grid\GridView;
 	use backend\controllers\menu\MenuController;
 
 ?>
@@ -63,7 +63,7 @@
 	?>
 	<?= $form->field($model, 'id_contribuyente')->hiddenInput([
 															'id' => 'id-contribuyente',
-															'value' => $idContribuyente,
+															'value' => $model->id_contribuyente,
 														])->label(false);?>
 
 	<meta http-equiv="refresh">
@@ -91,7 +91,73 @@
 						<h4><strong><?= Html::encode($caption) ?></strong></h4>
 					</div>
 
+<!-- Inicio lista de funcionarios -->
+					<div class="row">
+						<div class="lista-solicitud-creada">
+							<?= GridView::widget([
+								'id' => 'id-lista-solicitud-creada',
+								'dataProvider' => $dataProvider,
+								//'filterModel' => $model,
+								'headerRowOptions' => ['class' => 'success'],
+								//'caption' => Yii::t('backend', 'List of Request Taxpayer'),
+								//'summary' => '{begin} - {end} {count} {totalCount} {page} {pageCount}',
+								'summary' => Yii::t('backend', 'Total Register') . ': ' . ' {totalCount}' . ' - ' . Yii::t('backend', 'page') . ': ' . '{page}' . ' ' . Yii::t('backend', 'of') . ' ' . '{pageCount}',
+								'columns' => [
+                					[
+                						'label' => Yii::t('backend', 'Request No.'),
+                						'value' => function($model, $key, $index, $colum) {
+                							return $model->nro_solicitud;
+                						}
+                					],
+									[
+                						'label' => Yii::t('backend', 'Date/Hour'),
+                						'value' => function($model) {
+                							return $model->fecha_hora_creacion;
+                						}
+                					],
+                					[
+                						'label' => Yii::t('backend', 'Request'),
+                						'value' => function($model) {
+                							return $model->tipoSolicitud->descripcion;
+                						}
+                					],
+                					[
+                						'label' => Yii::t('backend', 'Tax'),
+                						'value' => function($model) {
+                							return $model->impuestos->descripcion;
+                						}
+                					],
+                					// [
+                					// 	'label' => Yii::t('backend', 'Id. Taxpayer'),
+                					// 	'value' => function($model) {
+                					// 		return $model->id_contribuyente;
+                					// 	}
+                					// ],
+                					[
+                                    	'class' => 'yii\grid\ActionColumn',
+                                    	'header'=> Yii::t('backend','OK'),
+                                    	'template' => '{view}',
+                                    	'buttons' => [
+                                        	'view' => function ($url, $model, $key) {
+                                            	return Html::submitButton('<div class="item-list" style="color: #337AB7;"><center>'. Icon::show('fa fa-thumbs-up',
+                                            							 ['class' => 'fa-1x'],
+                                            							 Icon::FA) .'</center></div>',
+                                                                        [
+                                                                            'value' => $key,
+                                                                            'name' => 'id',
+                                                                            'title' => Yii::t('backend', $key),
+                                                                            'style' => 'margin: 0 auto; display: block;',
+                                                                        ]);
+                                        			},
+                                    	],
+                                	],
 
+								],
+							]);
+						?>
+						</div>
+					</div>
+<!-- Fin de lista de funcionario -->
 
 
 <!-- Fin de busqueda de todos los funcionarios -->
