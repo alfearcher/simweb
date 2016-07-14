@@ -306,7 +306,8 @@
 		public function actionGetListaSessions()
 		{
 			return $varSession = [
-
+						'postSearch',
+						'postData',
 					];
 		}
 
