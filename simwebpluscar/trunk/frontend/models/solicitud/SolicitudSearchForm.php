@@ -56,10 +56,11 @@
     use yii\db\ActiveRecord;
     use common\models\solicitudescontribuyente\SolicitudesContribuyente;
     use yii\data\ActiveDataProvider;
+    use frontend\models\solicitud\SolicitudCreadaSearch;
 
 
     /***/
-    class SolicitudSearchForm extends Model
+    class SolicitudSearchForm extends SolicitudCreadaSearch
     {
         public $id_contribuyente;
         public $impuesto;
@@ -69,6 +70,17 @@
 
         const SCENARIO_SEARCH = 'search';
         const SCENARIO_SEARCH_ALL = 'search_all';
+
+
+        /***/
+        public function __construct($idContribuyente)
+        {
+            $this->id_contribuyente = $idContribuyente;
+            parent::__construct($idContribuyente);
+        }
+
+
+
 
         /**
         * @inheritdoc
@@ -124,7 +136,7 @@
                             }
                 , 'message' => Yii::t('backend', '{attribute} is required')],
                 [['fecha_hasta'], 'compare',
-                  'compareAttribute' => 'fecha_desde', 'operator' => '>='],
+                  'compareAttribute' => 'fecha_desde', 'operator' => '<='],
                 [['fecha_desde', 'fecha_hasta'], 'default', 'value' => null],
                 ['id_contribuyente', 'default', 'value' => isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : null],
             ];

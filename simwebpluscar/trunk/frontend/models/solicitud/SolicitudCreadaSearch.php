@@ -57,10 +57,11 @@
     use common\models\solicitudescontribuyente\SolicitudesContribuyente;
     use frontend\models\solicitud\SolicitudSearchForm;
     use yii\data\ActiveDataProvider;
+    use backend\models\configuracion\tiposolicitud\TipoSolicitud;
 
 
     /***/
-    class SolicitudCreadaSearch extends SolicitudSearchForm
+    class SolicitudCreadaSearch extends Model
     {
         private $_id_contribuyente;
         public $impuesto;
@@ -90,15 +91,11 @@
                                                          ->joinWith('impuestos')
                                                          ->joinWith('nivelAprobacion')
                                                          ->orderBy([
-                                                                'fecha_hora' => SORT_ASC,
+                                                                'fecha_hora_creacion' => SORT_ASC,
                                                                 'impuesto' => SORT_ASC,
                                                             ]);
             return isset($findModel) ? $findModel : null;
         }
-
-
-
-
 
 
 
@@ -231,15 +228,22 @@
             ]);
 
             if ( count($inactivo) > 0 ) {
-                $query->andFilterWhere(['in', 'inactivo', $inactivo]);
+                $query->andFilterWhere(['in', SolicitudesContribuyente::tableName().'.inactivo', $inactivo]);
 
                 if ( $this->impuesto > 0 ) {
-                    $query->andFilterWhere(['=', 'impuesto', $this->impuesto]);
+                    $query->andFilterWhere(['=', SolicitudesContribuyente::tableName().'.impuesto', $this->impuesto]);
                 }
-die(var_dump($this->impuesto));
+
                 if ( $this->tipo_solicitud > 0 ) {
                     $query->andFilterWhere(['=', 'tipo_solicitud', $this->tipo_solicitud]);
                 }
+
+                if ( $this->fecha_desde != null && $this->fecha_hasta != null ) {
+                    $query->andFilterWhere(['BETWEEN','date(fecha_hora_creacion)',
+                                             date('Y-m-d',strtotime($this->fecha_desde)),
+                                             date('Y-m-d',strtotime($this->fecha_hasta))]);
+                }
+
             } else {
                 // Si el campo no cumple las condiciones esto deberia regresar null.
                 $query->where('0=1');
@@ -248,6 +252,37 @@ die(var_dump($this->impuesto));
 
             return $dataProvider;
         }
+
+
+
+        /***/
+        public function getViewListaTipoSolicitudSegunImpuesto($i)
+        {
+            // Lista de identificadorees de tipo de solicitud, asociadas al contribuyente
+            // segun el o los impuestos.
+            // $listaSolicitud = self::getListaTipoSolicitudPendiente([$i]);
+
+            // $countSolicitud = TipoSolicitud::find()->where('impuesto =:impuesto', [':impuesto' => $i])
+            //                                        ->andWhere(['in', 'id_tipo_solicitud', $listaSolicitud])
+            //                                        ->andwhere('inactivo =:inactivo', [':inactivo' => 0])
+            //                                        ->count();
+
+            // $solicitudes = TipoSolicitud::find()->where(['impuesto' => $i, 'inactivo' => 0])
+            //                                     ->andWhere(['in', 'id_tipo_solicitud', $listaSolicitud])
+            //                                     ->all();
+
+            // if ( $countSolicitud > 0 ) {
+            //     echo "<option value='0'>" . "Select..." . "</option>";
+            //      foreach ( $solicitudes as $solicitud ) {
+            //          echo "<option value='" . $solicitud->id_tipo_solicitud . "'>" . $solicitud->descripcion . "</option>";
+            //      }
+            // } else {
+            //      echo "<option> - </option>";
+            // }
+
+            // return $this;
+        }
+
 
 
     }
