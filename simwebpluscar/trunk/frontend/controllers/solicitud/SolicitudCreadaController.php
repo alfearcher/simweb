@@ -257,7 +257,7 @@
 		{
 			$varSession = self::actionGetListaSessions();
 			self::actionAnularSession($varSession);
-			return $this->render('/funcionario/solicitud-asignada/quit');
+			return $this->render('/solicitud/busqueda-solicitud/quit');
 		}
 
 
