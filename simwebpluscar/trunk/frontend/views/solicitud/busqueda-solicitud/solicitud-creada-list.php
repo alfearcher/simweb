@@ -67,7 +67,7 @@
 														])->label(false);?>
 
 	<meta http-equiv="refresh">
-    <div class="panel panel-default"  style="width: 80%;">
+    <div class="panel panel-default"  style="width: 95%;">
         <div class="panel-heading">
         	<div class="row">
         		<div class="col-sm-4" style="padding-top: 10px;">
@@ -103,6 +103,7 @@
 								//'summary' => '{begin} - {end} {count} {totalCount} {page} {pageCount}',
 								'summary' => Yii::t('backend', 'Total Register') . ': ' . ' {totalCount}' . ' - ' . Yii::t('backend', 'page') . ': ' . '{page}' . ' ' . Yii::t('backend', 'of') . ' ' . '{pageCount}',
 								'columns' => [
+                					[ 'class' => 'yii\grid\SerialColumn', ],
                 					[
                 						'label' => Yii::t('backend', 'Request No.'),
                 						'value' => function($model, $key, $index, $colum) {
@@ -147,6 +148,7 @@
                                                                             'name' => 'id',
                                                                             'title' => Yii::t('backend', $key),
                                                                             'style' => 'margin: 0 auto; display: block;',
+                                                                            'disabled' => ( $model->estatus == 0 ) ? false : true,
                                                                         ]);
                                         			},
                                     	],
