@@ -136,7 +136,7 @@
                             }
                 , 'message' => Yii::t('backend', '{attribute} is required')],
                 [['fecha_hasta'], 'compare',
-                  'compareAttribute' => 'fecha_desde', 'operator' => '<='],
+                  'compareAttribute' => 'fecha_desde', 'operator' => '>='],
                 [['fecha_desde', 'fecha_hasta'], 'default', 'value' => null],
                 ['id_contribuyente', 'default', 'value' => isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : null],
             ];

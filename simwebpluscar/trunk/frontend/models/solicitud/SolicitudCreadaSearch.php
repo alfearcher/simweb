@@ -108,7 +108,7 @@
                                                              ->distinct()
                                                              ->where('id_contribuyente =:id_contribuyente',
                                                                             [':id_contribuyente' => $this->_id_contribuyente])
-                                                             ->andWhere('inactivo =:inactivo', [':inactivo' => 0])
+                                                             ->andWhere('estatus =:estatus', [':estatus' => 0])
                                                              ->andWhere(['in', 'impuesto', $arrayImpuesto])
                                                              ->orderBy([
                                                                     'impuesto' => SORT_ASC,
@@ -134,7 +134,7 @@
                                                          ->distinct()
                                                          ->where('id_contribuyente =:id_contribuyente',
                                                                         [':id_contribuyente' => $this->_id_contribuyente])
-                                                         ->andWhere('inactivo =:inactivo', [':inactivo' => 0])
+                                                         ->andWhere('estatus =:estatus', [':estatus' => 0])
                                                          ->orderBy([
                                                                 'impuesto' => SORT_ASC,
                                                             ]);
@@ -219,7 +219,7 @@
          * @param  array  $inactivo arreglo de valores que debe contener el atributo "inactivo".
          * @return dataProvider.
          */
-        public function getDataProviderSolicitudPendiente($inactivo)
+        public function getDataProviderSolicitudPendiente()
         {
             $query = self::findSolicitudCreada();
 
@@ -227,8 +227,8 @@
                 'query' => $query,
             ]);
 
-            if ( count($inactivo) > 0 ) {
-                $query->andFilterWhere(['in', SolicitudesContribuyente::tableName().'.inactivo', $inactivo]);
+            if ( $this->_id_contribuyente > 0 ) {
+                $query->andFilterWhere(['=', SolicitudesContribuyente::tableName().'.estatus', 0]);
 
                 if ( $this->impuesto > 0 ) {
                     $query->andFilterWhere(['=', SolicitudesContribuyente::tableName().'.impuesto', $this->impuesto]);
@@ -238,7 +238,7 @@
                     $query->andFilterWhere(['=', 'tipo_solicitud', $this->tipo_solicitud]);
                 }
 
-                if ( $this->fecha_desde != null && $this->fecha_hasta != null ) {
+                if ( $this->fecha_desde !== null && $this->fecha_hasta !== null ) {
                     $query->andFilterWhere(['BETWEEN','date(fecha_hora_creacion)',
                                              date('Y-m-d',strtotime($this->fecha_desde)),
                                              date('Y-m-d',strtotime($this->fecha_hasta))]);
