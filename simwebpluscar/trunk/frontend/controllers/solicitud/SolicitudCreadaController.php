@@ -84,7 +84,7 @@
 				$request = Yii::$app->request;
 				$postData = $request->post();
 
-				$model = New SolicitudCreadaSearch($_SESSION['idContribuyente']);
+				$model = New SolicitudSearchForm($_SESSION['idContribuyente']);
 
 				if ( isset($postData['btn-search']) ) {
 					$model->scenario = self::SCENARIO_SEARCH;
@@ -120,8 +120,9 @@ die('search-all');
 				// Se obtiene un arreglo de valores del atributo "impuesto" de las solicitudes
 				// pendientes relacionadas al contribuyente.
 				$id = $_SESSION['idContribuyente'];
-				$solicitudSearch = New SolicitudCreadaSearch($id);
-        		$arregloImpuesto = $solicitudSearch->getListaImpuestoSolicitudPendiente();
+				//$solicitudSearch = New SolicitudCreadaSearch($id);
+        		//$arregloImpuesto = $solicitudSearch->getListaImpuestoSolicitudPendiente();
+        		$arregloImpuesto = $model->getListaImpuestoSolicitudPendiente();
 
 				// Se define la lista de item para el combo de impuestos.
 				$modelImpuesto = New ImpuestoForm();
@@ -152,8 +153,20 @@ die('search-all');
 		public function actionBuscarSolicitudSegunParametro($model)
 		{
 			if ( $_SESSION['idContribuyente'] == $model->id_contribuyente ) {
+				// Parametro que recibe el metodo se refiere a la condicion del registro
+				// Activo o Inactivo.
+				$caption = Yii::t('frontend', 'List of Request');
+				$opciones = [
+					'back' => '',
+					'quit' => 'solicitud/solicitud-creada/quit',
+				];
 				$dataProvider = $model->getDataProviderSolicitudPendiente([0]);
-				//return $this->
+				return $this->render('/solicitud/busqueda-solicitud/solicitud-creada-list', [
+															'model' => $model,
+															'caption' => $caption,
+															'opciones' => $opciones,
+															'dataProvider' => $dataProvider,
+					]);
 
 			}
 		}
