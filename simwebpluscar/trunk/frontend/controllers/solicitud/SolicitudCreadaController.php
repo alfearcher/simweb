@@ -77,9 +77,21 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que inicia el modulo de busqueda de las solicitudes. Mostrando
+		 * una vista que permite al usuario la busqueda de sus solicitudes por
+		 * - impuesto.
+		 * - impuesto/solicitud.
+		 * - impuesto/rango de fecha.
+		 * - impuesto/solicitud/rango de fecha.
+		 * - todos.
+		 * Solo se muetran en los listados de busqueda los impuestos y/o solicitudes
+		 * que el usuario tenga registradas como pendiente.
+		 * @return not.
+		 */
 		public function actionIndexSearch()
 		{
+			self::actionAnularSession(['postSearch']);
 			if ( isset($_SESSION['idContribuyente']) ) {
 				$request = Yii::$app->request;
 				$postData = $request->post();
@@ -102,7 +114,8 @@
 						// Selecciono la busqueda por parametros.
 						if ( $postData['btn-search'] == 1 ) {
 							if ( $model->validate() ) {
-								return self::actionBuscarSolicitudSegunParametro($model);
+								$_SESSION['postSearch'] = $postData;
+								return $this->redirect(['buscar-solicitud-pendiente']);
 							}
 						}
 
@@ -110,7 +123,8 @@
 						// Selecciono la busqueda de totas las solicitudes.
 						if ( $postData['btn-search-all'] == 3 ) {
 							if ( $model->validate() ) {
-die('search-all');
+								$_SESSION['postSearch'] = $postData;
+								return $this->redirect(['buscar-solicitud-pendiente']);
 							}
 						}
 					}
@@ -148,30 +162,46 @@ die('search-all');
 		}
 
 
-
-		/***/
-		public function actionBuscarSolicitudSegunParametro($model)
+		/**
+		 * Metodo que permite realizar la busqueda de las solicitudes pendientes
+		 * segun el parametro de consulta seleccionado por el usuario. Se renderiza
+		 * un vista tipo listado, si el listado sobrepasa un limite de 20 registros
+		 * aparecera una botonera numerada en la perte inferior que permitira el
+		 * desplazamiento entre listada.
+		 * @return not.
+		 */
+		public function actionBuscarSolicitudPendiente()
 		{
-			if ( $_SESSION['idContribuyente'] == $model->id_contribuyente ) {
-				// Parametro que recibe el metodo se refiere a la condicion del registro
-				// Activo o Inactivo.
-				$caption = Yii::t('frontend', 'List of Request');
-				$opciones = [
-					'back' => '',
-					'quit' => 'solicitud/solicitud-creada/quit',
-				];
-				$dataProvider = $model->getDataProviderSolicitudPendiente([0]);
-				return $this->render('/solicitud/busqueda-solicitud/solicitud-creada-list', [
-															'model' => $model,
-															'caption' => $caption,
-															'opciones' => $opciones,
-															'dataProvider' => $dataProvider,
-					]);
+			if ( isset($_SESSION['idContribuyente']) ) {
+				$idContribuyente = $_SESSION['idContribuyente'];
 
+				if ( isset($_SESSION['postSearch']) ) {
+					$request = Yii::$app->request;
+					if ( $request->isGet ) {
+
+					}
+					$postData = $_SESSION['postSearch'];
+					$model = New SolicitudSearchForm($idContribuyente);
+					$model->load($postData);
+					$dataProvider = $model->getDataProviderSolicitudPendiente();
+					$caption = Yii::t('frontend', 'List of Request');
+					$opciones = [
+						'back' => 'solicitud/solicitud-creada/index-search',
+						'quit' => 'solicitud/solicitud-creada/quit',
+					];
+					return $this->render('/solicitud/busqueda-solicitud/solicitud-creada-list', [
+																'model' => $model,
+																'caption' => $caption,
+																'opciones' => $opciones,
+																'dataProvider' => $dataProvider,
+						]);
+				} else {
+					throw new NotFoundHttpException(MensajeController::actionMensaje(404, false));
+				}
+			} else {
+				throw new NotFoundHttpException('Error ');
 			}
 		}
-
-
 
 
 
