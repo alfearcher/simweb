@@ -43,11 +43,59 @@
 
 	use yii\helpers\Html;
 	use yii\helpers\Url;
+	use yii\helpers\ArrayHelper;
+	use yii\widgets\ActiveForm;
+	use kartik\icons\Icon;
 	use yii\web\View;
+	use yii\grid\GridView;
+	use backend\controllers\menu\MenuController;
 
 ?>
 <div class="row">
 	<div class="detalle-solicitud">
-		<?= $viewDetalleSolicitud;?>
+		<?php
+			$form = ActiveForm::begin([
+				'id' => 'id-detalle-solicitud',
+			]);
+		?>
+
+		<meta http-equiv="refresh">
+	    <div class="panel panel-default"  style="width: 85%;">
+	        <div class="panel-heading">
+	        	<div class="row">
+	        		<div class="col-sm-4" style="padding-top: 10px;">
+	        			<h4><?= Html::encode($caption) ?></h4>
+	        		</div>
+	        		<div class="col-sm-3" style="width: 30%; float:right; padding-right: 50px;">
+	        			<style type="text/css">
+							.col-sm-3 > ul > li > a:hover {
+								background-color: #F5F5F5;
+	                             /*#337AB7*/
+							}
+	    			     </style>
+		        		<?= MenuController::actionMenuSecundario($opciones); ?>
+		        	</div>
+	        	</div>
+	        </div>
+			<div class="panel-body">
+				<div class="container-fluid">
+					<div class="col-sm-12">
+
+						<div class="row" style="border-bottom: 0.5px solid #ccc;">
+							<h4><strong><?= Html::encode($caption) ?></strong></h4>
+						</div>
+
+						<div class="row">
+							<div class="view-detalle-solicitud" style="width: 95%; padding-left: 20px;">
+								<?= $viewDetalleSolicitud;?>
+							</div>
+						</div>
+
+					</div>
+				</div>	<!-- Fin de container-fluid -->
+			</div>		<!-- Fin de panel-body -->
+		</div>			<!-- Fin de panel panel-default -->
+
+		<?php ActiveForm::end(); ?>
 	</div>
 </div>
