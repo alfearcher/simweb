@@ -146,7 +146,7 @@
 					$modelSearch = New InscripcionActividadEconomicaSearch($this->model->id_contribuyente);
 					$model = $modelSearch->findInscripcion($this->model->nro_solicitud);
 
-					return $this->render('/aaee/inscripcion-actividad-economica/view-solicitud', [
+					return $this->render('@backend/views/aaee/inscripcion-actividad-economica/view-solicitud', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
 													'model' => $model,
 
