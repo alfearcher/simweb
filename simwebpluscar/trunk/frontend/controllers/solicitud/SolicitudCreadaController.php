@@ -220,10 +220,16 @@
 					$nroSolicitud = $postData['nro_solicitud'];
 					$detalle = New DetalleSolicitudCreada($nroSolicitud);
 					$viewDetalleSolicitud = $detalle->getDatosSolicitudCreada();
-
+					$caption = Yii::t('frontend', 'Request details');
+					$opciones = [
+						'back' => 'solicitud/solicitud-creada/buscar-solicitud-pendiente',
+						'quit' => 'solicitud/solicitud-creada/quit',
+					];
 					if ( $viewDetalleSolicitud !== false ) {
 						return $this->render('/solicitud/busqueda-solicitud/view-detalle-solicitud',[
 														'viewDetalleSolicitud' => $viewDetalleSolicitud,
+														'caption' => $caption,
+														'opciones' => $opciones,
 								]);
 					} else {
 						throw new NotFoundHttpException(MensajeController::actionMensaje(404, false));
