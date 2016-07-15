@@ -61,6 +61,7 @@
 	use frontend\models\solicitud\SolicitudCreadaSearch;
 	use backend\models\impuesto\ImpuestoForm;
 	use backend\models\configuracion\tiposolicitud\TipoSolicitud;
+	use common\models\solicitudescontribuyente\DetalleSolicitudCreada;
 
 
 	session_start();		// Iniciando session
@@ -177,9 +178,9 @@
 
 				if ( isset($_SESSION['postSearch']) ) {
 					$request = Yii::$app->request;
-					if ( $request->isGet ) {
-
-					}
+					// if ( $request->isGet ) {
+					// }
+					$url = Url::to(['view-solicitud-seleccionada']);
 					$postData = $_SESSION['postSearch'];
 					$model = New SolicitudSearchForm($idContribuyente);
 					$model->load($postData);
@@ -194,13 +195,46 @@
 																'caption' => $caption,
 																'opciones' => $opciones,
 																'dataProvider' => $dataProvider,
+																'url' => $url,
 						]);
 				} else {
 					throw new NotFoundHttpException(MensajeController::actionMensaje(404, false));
 				}
 			} else {
-				throw new NotFoundHttpException('Error ');
+				throw new NotFoundHttpException(Yii::t('frontend', 'Error '));
 			}
+		}
+
+
+
+		/***/
+		public function actionViewSolicitudSeleccionada()
+		{
+			$request = Yii::$app->request;
+			$postData = $request->post();
+			$model = New SolicitudSearchForm($_SESSION['idContribuyente']);
+			$formName = $model->formName();
+
+			if ( isset($postData['nro_solicitud']) && isset($postData[$formName]['id_contribuyente']) ) {
+				if ( isset($postData[$formName]['id_contribuyente']) == $_SESSION['idContribuyente'] ) {
+					$nroSolicitud = $postData['nro_solicitud'];
+					$detalle = New DetalleSolicitudCreada($nroSolicitud);
+					$viewDetalleSolicitud = $detalle->getDatosSolicitudCreada();
+
+					if ( $viewDetalleSolicitud !== false ) {
+						return $this->render('/solicitud/busqueda-solicitud/view-detalle-solicitud',[
+														'viewDetalleSolicitud' => $viewDetalleSolicitud,
+								]);
+					} else {
+						throw new NotFoundHttpException(MensajeController::actionMensaje(404, false));
+					}
+				} else {
+					throw new NotFoundHttpException(MensajeController::actionMensaje(404, false));
+				}
+			} else {
+				throw new NotFoundHttpException(MensajeController::actionMensaje(404, false));
+			}
+
 		}
 
 
