@@ -56,6 +56,7 @@
 		$form = ActiveForm::begin([
 			'id' => 'id-solicitud-creada-list',
 		    'method' => 'post',
+            'action' => $url,
 			'enableClientValidation' => true,
 			'enableAjaxValidation' => true,
 			'enableClientScript' => true,
@@ -77,8 +78,9 @@
         			<style type="text/css">
 						.col-sm-3 > ul > li > a:hover {
 							background-color: #F5F5F5;
+                             /*#337AB7*/
 						}
-    			</style>
+    			     </style>
 	        		<?= MenuController::actionMenuSecundario($opciones); ?>
 	        	</div>
         	</div>
@@ -145,7 +147,7 @@
                                             							 Icon::FA) .'</center></div>',
                                                                         [
                                                                             'value' => $key,
-                                                                            'name' => 'id',
+                                                                            'name' => 'nro_solicitud',
                                                                             'title' => Yii::t('backend', $key),
                                                                             'style' => 'margin: 0 auto; display: block;',
                                                                             'disabled' => ( $model->estatus == 0 ) ? false : true,
