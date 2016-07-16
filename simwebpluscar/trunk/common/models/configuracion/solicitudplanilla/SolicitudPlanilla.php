@@ -67,6 +67,11 @@
 
 		/**
 		 * 	Metodo que retorna el nombre de la tabla que utiliza el modelo.
+		 *  Entidad donde se guardan las planillas generadas por la solicitud,
+		 *  ya sea en los eventos:
+		 *  - CREAR.
+		 *  - APROBAR.
+		 *  - NEGAR.
 		 * 	@return Nombre de la tabla del modelo.
 		 */
 		public static function tableName()
