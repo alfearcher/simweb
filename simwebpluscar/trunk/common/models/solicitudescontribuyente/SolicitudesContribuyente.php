@@ -115,7 +115,8 @@
 
 
         /**
-         * Relacion con la entidad "solicitudes-planillas"
+         * Relacion con la entidad "solicitudes-planillas", estas son las planillas
+         * que se generan al momento de: crear, aprobar o negar la solicitud.
          * @return Active Record.
          */
         public function getSolicitudPlanilla()
