@@ -63,6 +63,7 @@
     use backend\models\utilidad\causanegacionsolicitud\CausaNegacionSolicitud;
 
 
+
     class SolicitudesContribuyente extends ActiveRecord
     {
 
