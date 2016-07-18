@@ -570,7 +570,7 @@
 			if ( isset($request->queryParams['page']) ) {
 				$planillaSearch->load($request->queryParams);
 			}
-			return $this->renderAjax('@backend/views/planilla/planilla-detalle', [
+				return $this->renderAjax('@backend/views/planilla/planilla-detalle', [
 									 			'dataProvider' => $dataProvider,
 									 			'caption' => 'Planilla: ' . $planilla,
 				]);
