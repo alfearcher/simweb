@@ -47,6 +47,7 @@
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 	use common\models\solicitudescontribuyente\SolicitudesContribuyente;
+	use common\models\planilla\Pago;
 
 	/**
 	* 	Clase
@@ -88,6 +89,21 @@
 		{
 			return $this->hasOne(SolicitudesContribuyente::className(), ['nro_solicitud' => 'nro_solicitud']);
 		}
+
+
+		// /***/
+  //       public function getPlanilla()
+  //       {
+  //           return $this->hasMany(SolicitudPlanilla::className(), ['nro_solicitud' => 'nro_solicitud'])
+  //                       ->via('pago');
+  //       }
+
+  //       /***/
+  //       public function getPago()
+  //       {
+  //           return $this->hasOne(Pago::className(), ['planilla' => 'planilla']);
+  //       }
+
 	}
 
 
