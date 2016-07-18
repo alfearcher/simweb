@@ -65,6 +65,7 @@
 	use common\models\configuracion\solicitudplanilla\SolicitudPlanilla;
 	use common\models\configuracion\solicitudplanilla\SolicitudPlanillaSearch;
 	use common\models\planilla\PlanillaSearch;
+	use backend\models\documento\DocumentoConsignadoSearch;
 
 
 	session_start();		// Iniciando session
@@ -224,16 +225,29 @@
 					$detalle = New DetalleSolicitudCreada($nroSolicitud);
 					$viewDetalleSolicitud = $detalle->getDatosSolicitudCreada();
 
+					// Se buscan los detalles de los documentos consignados, estos son los item
+					// seleccionado por el funcionario al momento del procesamiento (aprobacion)
+					// de la solicitud y que indica que documanetos y/o requisitos que consigno
+					// el contribuyente.
+
+					$documentoSearch = New DocumentoConsignadoSearch($nroSolicitud);
+					$dataProviderDocumento = $documentoSearch->getDataProviderDocumentoConsignado();
+
+					$viewDocumentoConsignado = $this->renderAjax('@common/views/solicitud-documento-consignado/solicitud-documento-consignado', [
+																	'model' => $documentoSearch,
+																	'dataProviderDocumento' => $dataProviderDocumento,
+											]);
+
+
 					// Se buscan las planillas relacionadas a la solicitud. Se refiere a las planillas
 					// de impueso "tasa".
 					$modelPlanilla = New SolicitudPlanillaSearch($nroSolicitud, Yii::$app->solicitud->crear());
 					$dataProvider = $modelPlanilla->getArrayDataProvider();
 
-
 					$caption = Yii::t('frontend', 'Planilla(s)');
 					$viewSolicitudPlanilla = $this->renderAjax('@common/views/solicitud-planilla/solicitud-planilla', [
-																'caption' => $caption,
-																'dataProvider' => $dataProvider,
+																	'caption' => $caption,
+																	'dataProvider' => $dataProvider,
 						]);
 
 					$caption = Yii::t('frontend', 'Request details');
@@ -245,6 +259,7 @@
 						return $this->render('/solicitud/busqueda-solicitud/view-detalle-solicitud',[
 														'viewDetalleSolicitud' => $viewDetalleSolicitud,
 														'viewSolicitudPlanilla' => $viewSolicitudPlanilla,
+														'viewDocumentoConsignado' => $viewDocumentoConsignado,
 														'caption' => $caption,
 														'opciones' => $opciones,
 								]);
