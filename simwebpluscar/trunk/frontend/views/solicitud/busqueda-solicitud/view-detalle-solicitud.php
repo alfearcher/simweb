@@ -92,6 +92,12 @@
 							</div>
 						</div>
 
+						<div class="row">
+							<div class="view-solicitud-planilla" style="width: 95%; padding-left: 20px;">
+								<?= $viewSolicitudPlanilla;?>
+							</div>
+						</div>
+
 					</div>
 				</div>	<!-- Fin de container-fluid -->
 			</div>		<!-- Fin de panel-body -->
