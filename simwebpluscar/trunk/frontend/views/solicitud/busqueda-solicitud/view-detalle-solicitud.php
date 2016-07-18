@@ -49,6 +49,7 @@
 	use yii\web\View;
 	use yii\grid\GridView;
 	use backend\controllers\menu\MenuController;
+	use yii\widgets\Pjax;
 
 ?>
 <div class="row">
@@ -89,6 +90,9 @@
 						<div class="row">
 							<div class="view-detalle-solicitud" style="width: 95%; padding-left: 20px;">
 								<?= $viewDetalleSolicitud;?>
+							</div>
+							<div class="view-documento-consignado" style="width: 95%; padding-left: 20px;">
+								<?= $viewDocumentoConsignado;?>
 							</div>
 							<div class="view-solicitud-planilla" style="width: 95%; padding-left: 20px;">
 								<?= $viewSolicitudPlanilla;?>
