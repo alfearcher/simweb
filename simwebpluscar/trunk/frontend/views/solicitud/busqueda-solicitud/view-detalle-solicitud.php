@@ -90,9 +90,6 @@
 							<div class="view-detalle-solicitud" style="width: 95%; padding-left: 20px;">
 								<?= $viewDetalleSolicitud;?>
 							</div>
-						</div>
-
-						<div class="row">
 							<div class="view-solicitud-planilla" style="width: 95%; padding-left: 20px;">
 								<?= $viewSolicitudPlanilla;?>
 							</div>
