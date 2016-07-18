@@ -62,6 +62,9 @@
 	use backend\models\impuesto\ImpuestoForm;
 	use backend\models\configuracion\tiposolicitud\TipoSolicitud;
 	use common\models\solicitudescontribuyente\DetalleSolicitudCreada;
+	use common\models\configuracion\solicitudplanilla\SolicitudPlanilla;
+	use common\models\configuracion\solicitudplanilla\SolicitudPlanillaSearch;
+	use common\models\planilla\PlanillaSearch;
 
 
 	session_start();		// Iniciando session
@@ -220,6 +223,19 @@
 					$nroSolicitud = $postData['nro_solicitud'];
 					$detalle = New DetalleSolicitudCreada($nroSolicitud);
 					$viewDetalleSolicitud = $detalle->getDatosSolicitudCreada();
+
+					// Se buscan las planillas relacionadas a la solicitud. Se refiere a las planillas
+					// de impueso "tasa".
+					$modelPlanilla = New SolicitudPlanillaSearch($nroSolicitud, Yii::$app->solicitud->crear());
+					$dataProvider = $modelPlanilla->getArrayDataProvider();
+
+
+					$caption = Yii::t('frontend', 'Planilla(s)');
+					$viewSolicitudPlanilla = $this->renderAjax('@common/views/solicitud-planilla/solicitud-planilla', [
+																'caption' => $caption,
+																'dataProvider' => $dataProvider,
+						]);
+
 					$caption = Yii::t('frontend', 'Request details');
 					$opciones = [
 						'back' => 'solicitud/solicitud-creada/buscar-solicitud-pendiente',
@@ -228,6 +244,7 @@
 					if ( $viewDetalleSolicitud !== false ) {
 						return $this->render('/solicitud/busqueda-solicitud/view-detalle-solicitud',[
 														'viewDetalleSolicitud' => $viewDetalleSolicitud,
+														'viewSolicitudPlanilla' => $viewSolicitudPlanilla,
 														'caption' => $caption,
 														'opciones' => $opciones,
 								]);
@@ -285,7 +302,32 @@
 
 
 
+	    /**
+		 * Metodo que permite renderizar una vista de los detalles de la planilla
+		 * que se encuentran en la solicitud.
+		 * @return View Retorna una vista que contiene un grid con los detalles de la
+		 * planilla.
+		 */
+		public function actionViewPlanilla()
+		{
+			$request = Yii::$app->request;
+			$getData = $request->get();
 
+			$planilla = $getData['p'];
+			$planillaSearch = New PlanillaSearch($planilla);
+			$dataProvider = $planillaSearch->getArrayDataProviderPlanilla();
+
+			// Se determina si la peticion viene de un listado que contiene mas de una
+			// pagina de registros. Esto sucede cuando los detalles de un listado contienen
+			// mas de los manejados para una pagina en la vista.
+			if ( isset($request->queryParams['page']) ) {
+				$planillaSearch->load($request->queryParams);
+			}
+				return $this->renderAjax('@backend/views/planilla/planilla-detalle', [
+									 			'dataProvider' => $dataProvider,
+									 			'caption' => 'Planilla: ' . $planilla,
+				]);
+		}
 
 
 
