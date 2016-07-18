@@ -51,6 +51,7 @@
 	use yii\web\View;
 	use yii\bootstrap\Modal;
 	use backend\controllers\menu\MenuController;
+	use yii\widgets\Pjax;
 
     $typeIcon = Icon::FA;
     $typeLong = 'fa-2x';
@@ -70,135 +71,118 @@
 		]);
 	?>
 
-	<meta http-equiv="refresh">
-    <div class="panel panel-default"  style="width: 100%;">
-        <div class="panel-heading">
-        	<div class="row">
-        		<div class="col-sm-4" style="padding-top: 10px;">
-        			<h4><?= Html::encode($caption) ?></h4>
-        		</div>
+    <div class="row">
+		<div class="row">
+			<small><strong><?= Yii::t('backend', 'Planilla') ?></strong></small>
+		</div>
 
-        	</div>
-        </div>
-		<div class="panel-body">
-			<div class="container-fluid">
-				<div class="col-sm-12">
-					<div class="row">
-						<small><strong><?= Yii::t('backend', 'Planilla') ?></strong></small>
-					</div>
+		<div class="row">
+			<div class="grid-solicitud-planilla-detalle" id="grid-solicitud-planilla-detalle">
+				 <?= GridView::widget([
+		         		'id' => 'id-grid-solicitud-planilla',
+		               	'dataProvider' => $dataProvider,
+		               	'headerRowOptions' => ['class' => 'primary'],
+						'rowOptions' => function($data) {
+								if ( $data['pago'] == 0 ) {
+									return ['class' => 'danger'];
+								} elseif ( $data['pago'] == 1 ) {
+									return ['class' => 'success'];
+								}
+						},
+		               'summary' => '',
+		               'columns' => [
+		               		[
+    							'class' => 'yii\grid\CheckboxColumn',
+    							'name' => 'chk-planilla',
+    							'checkboxOptions' => [
+            							'id' => 'chk-planilla',
+            							// Lo siguiente mantiene el checkbox tildado.
+            							'onClick' => 'javascript: return false;',
+            							'checked' => true,
+            							//'disabled' => true, funciona.
+            					],
+            					'multiple' => false,
 
-					<div class="row">
-						<div class="grid-detalle" id="grid-detalle">
-							 <?= GridView::widget([
-					         		'id' => 'id-grid-solicitud-planilla',
-					               	'dataProvider' => $dataProvider,
-					               	'headerRowOptions' => ['class' => 'primary'],
-    								'rowOptions' => function($data) {
-        									if ( $data['pago'] == 0 ) {
-            									return ['class' => 'danger'];
-        									} elseif ( $data['pago'] == 1 ) {
-        										return ['class' => 'success'];
-        									}
-    								},
-					               'summary' => '',
-					               'columns' => [
-					               		[
-                							'class' => 'yii\grid\CheckboxColumn',
-                							'name' => 'chk-planilla',
-                							'checkboxOptions' => [
-                        							'id' => 'chk-planilla',
-                        							// Lo siguiente mantiene el checkbox tildado.
-                        							'onClick' => 'javascript: return false;',
-                        							'checked' => true,
-                        							//'disabled' => true, funciona.
-                        					],
-                        					'multiple' => false,
+    						],
+	                        ['class' => 'yii\grid\SerialColumn'],
+	                        [
+	                            'label' => 'Planilla',
+	                            'format' => 'raw',
+	                            'value' => function($data) {
+	                            	return Html::a($data['planilla'], '#', [
+															'id' => 'link-view-planilla',
+												            //'class' => 'btn btn-success',
+												            'data-toggle' => 'modal',
+												            'data-target' => '#modal',
+												            'data-url' => Url::to(['view-planilla', 'p' => $data['planilla']]),
+												            'data-planilla' => $data['planilla'],
+												            'data-pjax' => '0',
+												        ]);
+	                            	//return Html::a($data['planilla'], ['view-planilla', 'p' => $data['planilla']]);
+	                            },
+	                        ],
+	                        [
+	                            'label' => 'Impuesto',
+	                            'value' => function($data) {
+	                            	return $data['descripcion_impuesto'];
+	                            },
+	                        ],
+	                        [
+	                            'label' => 'Total',
+	                            'value' => function($data) {
+	                            	return ($data['sum_monto'] + $data['sum_recargo'] + $data['sum_interes']) - ($data['sum_descuento'] + $data['sum_monto_reconocimiento']);
+	                            },
+	                        ],
+	                        [
+	                            'label' => 'Observacion',
+	                            'value' => function($data) {
+	                            	return $data['descripcion'];
+	                            },
+	                        ],
+	                        [
+	                            'label' => 'Pago',
+	                            'format'=>'raw',
+	                            // afecta solo a la celda
+	                            'contentOptions' => function($data) {
+	                            		if ( $data['pago'] == 0 ) {
+	                            			return ['style' => 'display: block;color: red;'];
+	                            		} elseif ( $data['pago'] == 1 ) {
+	                            			return ['style' => 'display: block;color: blue;'];
+	                            		}
+                        		},
+	                            //
+	                            'value' => function($data) {
+	                            	if ( $data['pago'] == 0 ) {
+	                            		return Html::tag('strong', Html::tag('h3',
+	                            								   			'NO',
+	                            								   			['class' => 'label label-danger',
+	                            								   			 'id' => 'pago',
+	                            								   			 'name' => 'pago',
+	                            								   			]));
+	                            	} elseif ( $data['pago'] == 1 ) {
+	                            		return Html::tag('strong', Html::tag('h4',
+	                            			                     			 'SI',
+	                            			                     			 ['class' => 'label label-primary',
+	                            								   			  'id' => 'pago',
+	                            								   			  'name' => 'pago',
+	                            								   			]));
 
-                						],
-				                        ['class' => 'yii\grid\SerialColumn'],
-				                        [
-				                            'label' => 'Planilla',
-				                            'format' => 'raw',
-				                            'value' => function($data) {
-				                            	return Html::a($data['planilla'], '#', [
-																		'id' => 'link-view-planilla',
-															            //'class' => 'btn btn-success',
-															            'data-toggle' => 'modal',
-															            'data-target' => '#modal',
-															            'data-url' => Url::to(['view-planilla', 'p' => $data['planilla']]),
-															            'data-planilla' => $data['planilla'],
-															            'data-pjax' => '0',
-															        ]);
-				                            	//return Html::a($data['planilla'], ['view-planilla', 'p' => $data['planilla']]);
-				                            },
-				                        ],
-				                        [
-				                            'label' => 'Impuesto',
-				                            'value' => function($data) {
-				                            	return $data['descripcion_impuesto'];
-				                            },
-				                        ],
-				                        [
-				                            'label' => 'Total',
-				                            'value' => function($data) {
-				                            	return ($data['sum_monto'] + $data['sum_recargo'] + $data['sum_interes']) - ($data['sum_descuento'] + $data['sum_monto_reconocimiento']);
-				                            },
-				                        ],
-				                        [
-				                            'label' => 'Observacion',
-				                            'value' => function($data) {
-				                            	return $data['descripcion'];
-				                            },
-				                        ],
-				                        [
-				                            'label' => 'Pago',
-				                            'format'=>'raw',
-				                            // afecta solo a la celda
-				                            'contentOptions' => function($data) {
-				                            		if ( $data['pago'] == 0 ) {
-				                            			return ['style' => 'display: block;color: red;'];
-				                            		} elseif ( $data['pago'] == 1 ) {
-				                            			return ['style' => 'display: block;color: blue;'];
-				                            		}
-		                            		},
-				                            //
-				                            'value' => function($data) {
-				                            	if ( $data['pago'] == 0 ) {
-				                            		return Html::tag('strong', Html::tag('h3',
-				                            								   			'NO',
-				                            								   			['class' => 'label label-danger',
-				                            								   			 'id' => 'pago',
-				                            								   			 'name' => 'pago',
-				                            								   			]));
-				                            	} elseif ( $data['pago'] == 1 ) {
-				                            		return Html::tag('strong', Html::tag('h4',
-				                            			                     			 'SI',
-				                            			                     			 ['class' => 'label label-primary',
-				                            								   			  'id' => 'pago',
-				                            								   			  'name' => 'pago',
-				                            								   			]));
-
-				                            	} elseif ( $data['pago'] == 9 ) {
-				                            		return Html::tag('strong', Html::tag('h4',
-				                            			                     			 'ANULADA',
-				                            			                     			 ['class' => 'label label-warning',
-				                            								   			  'id' => 'pago',
-				                            								   			  'name' => 'pago',
-				                            								   			]));
-				                            	}
-				                            },
-				                        ],
-					               ]
-					            ]);
-					        ?>
-						</div>
-					</div>
-
-				</div>
-			</div>	<!-- Fin de container-fluid -->
-		</div>		<!-- Fin de panel-body -->
-	</div>			<!-- Fin de panel panel-default -->
-
+	                            	} elseif ( $data['pago'] == 9 ) {
+	                            		return Html::tag('strong', Html::tag('h4',
+	                            			                     			 'ANULADA',
+	                            			                     			 ['class' => 'label label-warning',
+	                            								   			  'id' => 'pago',
+	                            								   			  'name' => 'pago',
+	                            								   			]));
+	                            	}
+	                            },
+	                        ],
+		               ]
+		            ]);
+		        ?>
+			</div>
+		</div>
+    </div>
 
 	<?php ActiveForm::end(); ?>
 </div>
