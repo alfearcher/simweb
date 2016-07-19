@@ -230,13 +230,14 @@
 					// de la solicitud y que indica que documanetos y/o requisitos que consigno
 					// el contribuyente.
 
-					$documentoSearch = New DocumentoConsignadoSearch($nroSolicitud);
-					$dataProviderDocumento = $documentoSearch->getDataProviderDocumentoConsignado();
+					$viewDocumentoConsignado = '';
+					//$documentoSearch = New DocumentoConsignadoSearch($nroSolicitud);
+					//$dataProviderDocumento = $documentoSearch->getDataProviderDocumentoConsignado();
 
-					$viewDocumentoConsignado = $this->renderAjax('@common/views/solicitud-documento-consignado/solicitud-documento-consignado', [
-																	'model' => $documentoSearch,
-																	'dataProviderDocumento' => $dataProviderDocumento,
-											]);
+					// $viewDocumentoConsignado = $this->renderAjax('@common/views/solicitud-documento-consignado/solicitud-documento-consignado', [
+					// 												'model' => $documentoSearch,
+					// 												'dataProviderDocumento' => $dataProviderDocumento,
+					//						]);
 
 
 					// Se buscan las planillas relacionadas a la solicitud. Se refiere a las planillas
