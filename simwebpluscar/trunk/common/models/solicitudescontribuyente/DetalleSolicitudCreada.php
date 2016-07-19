@@ -60,7 +60,7 @@
     use backend\controllers\aaee\solicitud\SolicitudViewActividadEconomicaController;
     use backend\controllers\vehiculo\solicitud\SolicitudViewVehiculoController;
     use backend\controllers\inmueble\solicitud\SolicitudViewInmuebleController;
-    use backend\controllers\inmueble\solicitud\SolicitudViewPropagandaController;
+    use backend\controllers\propaganda\solicitud\SolicitudViewPropagandaController;
 
 
 
