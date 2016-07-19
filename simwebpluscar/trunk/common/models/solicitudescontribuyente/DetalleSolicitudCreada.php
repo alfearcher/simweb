@@ -60,6 +60,7 @@
     use backend\controllers\aaee\solicitud\SolicitudViewActividadEconomicaController;
     use backend\controllers\vehiculo\solicitud\SolicitudViewVehiculoController;
     use backend\controllers\inmueble\solicitud\SolicitudViewInmuebleController;
+    use backend\controllers\inmueble\solicitud\SolicitudViewPropagandaController;
 
 
 
@@ -122,10 +123,12 @@
                 return $view->actionInicioView();
 
             } elseif ( $model->impuesto == 3 ) {
-                 $view = New SolicitudViewVehiculoController($model); 
+                 $view = New SolicitudViewVehiculoController($model);
                 return $view->actionInicioView();
 
             } elseif ( $model->impuesto == 4 ) {
+                $view = New SolicitudViewPropagandaController($model);
+                return $view->actionInicioView();
 
             } elseif ( $model->impuesto == 6 ) {
 
