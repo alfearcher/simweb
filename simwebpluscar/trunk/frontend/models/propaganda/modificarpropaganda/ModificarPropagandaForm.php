@@ -21,14 +21,14 @@
  */
 
  /**    
- *  @file CrearPorpagandaForm.php
+ *  @file ModificarPorpagandaForm.php
  *  
  *  @author Manuel Alejandro Zapata Canelon
  * 
- *  @date 07/06/2016
+ *  @date 19/07/2016
  * 
- *  @class CrearPropagandaForm
- *  @brief Clase que contiene las rules para validacion del formulario de inscripcion de propaganda
+ *  @class ModificarPropagandaForm
+ *  @brief Clase que contiene las rules para validacion del formulario de la modificacion de propaganda
  * 
  *  
  * 
@@ -47,7 +47,7 @@
  *  @inherits
  *  
  */ 
-namespace frontend\models\propaganda\crearpropaganda;
+namespace frontend\models\propaganda\modificarpropaganda;
 
 use Yii;
 use yii\base\Model;
@@ -59,7 +59,7 @@ use frontend\models\usuario\CrearUsuarioNatural;
 /**
  * InmueblesSearch represents the model behind the search form about `backend\models\Inmuebles`.
  */
-class CrearPropagandaForm extends Model
+class ModificarPropagandaForm extends Model
 {
     public $nombre_propaganda;
     public $ano_impositivo;
@@ -71,7 +71,7 @@ class CrearPropagandaForm extends Model
     public $cantidad_tiempo;
     public $base_calculo;
     public $bebidas_alcoholicas;
-    public $tiempo;
+    public $tiempo; 
     public $idioma;
     public $fecha_fin;
     public $id_sim;
