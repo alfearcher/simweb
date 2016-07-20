@@ -276,8 +276,9 @@ class ModificarPropagandaForm extends Model
                                     'inactivo' => 0,
 
                                 
-                                ->all()
-                                ]);
+                               
+                                ])
+                                ->all();
 
             if ($busqueda == true){
                 return $busqueda;
