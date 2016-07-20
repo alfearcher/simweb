@@ -60,7 +60,7 @@ use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 use common\models\configuracion\solicitud\DocumentoSolicitud;
 use common\enviaremail\PlantillaEmail;
 use frontend\models\propaganda\modificarpropaganda\ModificarPropagandaForm;
-use frontend\models\vehiculo\registrar\RegistrarVehiculoForm;
+
 
 
 /**
@@ -79,7 +79,61 @@ class ModificarPropagandaController extends Controller
 
     
   public $layout = 'layout-main';
-   
+  
+  /**
+   * [actionVistaSeleccion description] metodo que muestra lista de propagandas pertenecientes al contribuyente para seleccionar una
+   * y modificarla
+   * @return [type] [description] devuelve la lista con las propagandas asignadas al contribuyente
+   */
+  public function actionVistaSeleccion()
+  {
+
+       $idConfig = yii::$app->request->get('id');
+
+      $_SESSION['id'] = $idConfig;
+
+      //die($_SESSION['id']);
+      if(isset(yii::$app->user->identity->id_contribuyente)){
+
+          $searchModel = new ModificarPropagandaForm();
+
+          $dataProvider = $searchModel->search();
+       
+
+          return $this->render('/propaganda/modificarpropaganda/seleccionar-propaganda', [
+                                                'searchModel' => $searchModel,
+                                                'dataProvider' => $dataProvider,
+            
+                                                ]); 
+      }else{
+          echo "No existe User";
+      }
+    
+
+  }
+
+  public function actionBuscarPropaganda()
+  {
+
+      $idContribuyente = yii::$app->user->identity->id_contribuyente;
+      $idPropaganda = yii::$app->request->post('id');
+      $_SESSION['idPropaganda'] = $idPropaganda;
+  
+
+      $modelsearch = new ModificarPropagandaForm();
+      $busqueda = $modelsearch->busquedaPropaganda($idPropaganda, $idContribuyente);
+
+          if ($busqueda == true){ 
+        
+              $_SESSION['datosPropaganda'] = $busqueda;
+        
+          return $this->redirect(['modificar-propaganda']);
+        
+          }else{
+
+              die('no existe propaganda asociado a ese ID');
+          }
+  } 
   /**
    * [actionCrearPropaganda description] metodo que renderiza la vista del formulario para la inscripcion de la propaganda
    * @return [type] [description] retorna la vista del formulario
@@ -87,9 +141,8 @@ class ModificarPropagandaController extends Controller
   public function actionModificarPropaganda()
   {
    
-      $idConfig = yii::$app->request->get('id');
-      $_SESSION['id'] = $idConfig;
 
+            $datosPropaganda = $_SESSION['datosPropaganda']; 
             $model = new ModificarPropagandaForm();
 
             $postData = Yii::$app->request->post();
@@ -103,6 +156,12 @@ class ModificarPropagandaController extends Controller
             
 
                if ($model->validate()){
+
+                $verificarSolicitud = self::verificarSolicitud($datosPropaganda[0]->id_impuesto , $_SESSION['id']);
+
+                    if($verificarSolicitud == true){
+                      return MensajeController::actionMensaje(403);
+                    }else{
                
                 $buscarGuardar = self::beginSave("buscarGuardar", $model);
                     
@@ -114,17 +173,36 @@ class ModificarPropagandaController extends Controller
             }  
           
                       
-           
+                }
               }        
           }  
           return $this->render('/propaganda/modificarpropaganda/formulario-modificar-propaganda', [
                                                               'model' => $model,
+                                                              'datos' => $datosPropaganda,
                                                              
             ]);
   
 
     
   }
+
+
+  public function verificarSolicitud($idPropaganda,$idConfig)
+  {
+      $buscar = SolicitudesContribuyente::find()
+                                        ->where([ 
+                                          'id_impuesto' => $idPropaganda,
+                                          'id_config_solicitud' => $idConfig,
+                                          'inactivo' => 0,
+                                        ])
+                                      ->all();
+
+            if($buscar == true){
+             return true;
+            }else{
+             return false;
+            }
+    }
 
   public function buscarNumeroSolicitud($conn, $conexion)
   {

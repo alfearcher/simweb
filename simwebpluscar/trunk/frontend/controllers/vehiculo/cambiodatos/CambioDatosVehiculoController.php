@@ -210,7 +210,7 @@ class CambioDatosVehiculoController extends Controller
        }
     }
 
-       public function verificarSolicitud($idVehiculo,$idConfig)
+    public function verificarSolicitud($idVehiculo,$idConfig)
     {
       $buscar = SolicitudesContribuyente::find()
                                         ->where([ 
