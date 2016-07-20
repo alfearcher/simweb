@@ -52,7 +52,7 @@ namespace frontend\models\propaganda\modificarpropaganda;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use frontend\models\usuario\CrearUsuarioNatural;
+use backend\models\propaganda\PropagandaForm;
 
 
 
@@ -235,23 +235,55 @@ class ModificarPropagandaForm extends Model
         ];
     }
 
-    public function verificarDeclaracion($idContribuyente)
+       /**
+     * Creates data provider instance with search query applied
+     *
+     * @param array $params
+     *
+     * @return ActiveDataProvider
+     */
+    public function search()
+    { 
+       // die('llegue a search');
+
+        $idContribuyente = yii::$app->user->identity->id_contribuyente;
+
+
+        $query = PropagandaForm::find();
+
+                                
+                             
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+           // die(var_dump($dataProvider)),
+        ]);
+        $query->where([
+            'id_contribuyente' =>  $idContribuyente,
+            'inactivo' => 0,
+            ]);
+        
+        return $dataProvider;
+
+       
+    }
+
+    public function busquedaPropaganda($idPropaganda, $idContribuyente)
     {
-        $buscar = CrearUsuarioNatural::find()
-                                        ->where([ 
-                                          'inactivo' => 0,
-                                          'id_contribuyente' => $idContribuyente,
-                                        
-                                        ])
-                                      ->all();
-                                    //die(var_dump($buscar));
-            if($buscar == true){
-             return $buscar;
+        $busqueda = PropagandaForm::find()
+                                ->where([
+                                    'id_contribuyente' => $idContribuyente,
+                                    'id_impuesto' => $idPropaganda,
+                                    'inactivo' => 0,
+
+                                
+                                ->all()
+                                ]);
+
+            if ($busqueda == true){
+                return $busqueda;
             }else{
-             return false;
+                return false;
             }
-
-
     }
 
 
