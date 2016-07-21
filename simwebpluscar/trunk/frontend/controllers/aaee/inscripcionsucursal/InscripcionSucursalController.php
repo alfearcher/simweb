@@ -98,18 +98,15 @@
 
 			if ( isset($_SESSION['idContribuyente']) ) {
 
-				// Se determina el tipo de naturaleza del contribuyente, esto quiere
-				// decir que para que pueda elaborar una solicitud de este tipo, debe
-				// el contribuyente ser 'JURIDICO'.
+				// Se determina si el contribuyente es una sede principal.
 				$idContribuyente = $_SESSION['idContribuyente'];
 				$search = New InscripcionSucursalSearch($idContribuyente);
-				if ( $search->getDescripcionTipoNaturaleza() == 'JURIDICO' ) {
+				if ( $search->getSedePrincipal() == true ) {
 
-					// Se determina si el
 
 				} else {
-					// Naturaleza no corresponde con la correcta.
-					return $this->redirect(['error-operacion', 'cod' => 930]);
+					// El contribuyente no es una sede principal.
+					return $this->redirect(['error-operacion', 'cod' => 936]);
 				}
 			} else {
 				// No esta defino el contribuyente.
