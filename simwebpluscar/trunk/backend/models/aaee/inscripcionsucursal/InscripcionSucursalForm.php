@@ -46,6 +46,7 @@
 	use yii\base\Model;
 	use yii\data\ActiveDataProvider;
 	use backend\models\aaee\inscripcionsucursal\InscripcionSucursal;
+	use common\models\contribuyente\ContribuyenteBase;
 
 	/**
 	* 	Clase base del formulario inscripcion-sucursal-form.
