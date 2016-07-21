@@ -93,7 +93,7 @@
 		        					   	['label' => Icon::show('fa fa-hand-paper-o',['class' => $typeLong], $typeIcon) . '&nbsp; Cesación de Actividades',
 		        					   		'items' => [
 		        					   				['label' => 'Temporal', 'url' => '#'],
-		        					   				['label' => 'Definitiva', 'url' => '#'],
+		        					   				['label' => 'Definitiva', 'url' => '#'], 
 		        					   		]
 		        					   	],
 		        			]
