@@ -87,6 +87,7 @@
 			$tipoNaturaleza = isset($_SESSION['tipoNaturaleza']) ? $_SESSION['tipoNaturaleza'] : null;
 			if ( $tipoNaturaleza == 'JURIDICO') {
 				if ( isset($_SESSION['idContribuyente']) ) {
+
 					$model = New InscripcionSucursalForm();
 					$modelActEcon = New InscripcionActividadEconomicaForm();
 
@@ -101,7 +102,7 @@
 
 			      	if ( $model->load($postData) ) {
 
-			      	 	if ( $model->validate() ) {
+			      	 	if ( $models->validate() ) {
 			      	 		// if ( !self::actionValidateRegistroMercantil($postData) ) {
 			      	 		// 	die('NO se puede continuar faltan valores en el registro merbantil.');
 			      	 		// }
@@ -150,11 +151,12 @@
 			      	 		//$arrayParametros = $request->bodyParams;
 
 			      	 	} else {
-			      	 		//die('validate no');
-			      	 		$model->getErrors();
+//die('validate no');
+			      	 		//$model->getErrors();
 			      	 	}
 			      	} else {
-			      		echo 'No paso Model::loadMultiple';
+//die('ksksks');
+			      		//echo 'No paso Model::loadMultiple';
 			  		}
 
 			  		// Datos de la cede principal.
@@ -186,9 +188,9 @@
 				  		}
 			  		}
 
-			  		if ( isset($_SESSION['model']) ) { $model = $_SESSION['model']; }
+			  		//if ( isset($_SESSION['model']) ) { $model = $_SESSION['model']; }
 
-			  		if ( isset($_SESSION['modelActEcon']) ) { $modelActEcon = $_SESSION['modelActEcon']; }
+			  		//if ( isset($_SESSION['modelActEcon']) ) { $modelActEcon = $_SESSION['modelActEcon']; }
 
 		  			return $this->render('/aaee/inscripcion-sucursal/create', ['model' => $model, 'modelActEcon' => $modelActEcon, ]);
 		  		} else {
