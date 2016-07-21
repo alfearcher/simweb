@@ -48,7 +48,7 @@
 	use yii\web\View;
 	use yii\widgets\DetailView;
 ?>
-
+ 
 <div class="row" style="width: 70%;">
 	<div class="info-solicitud">
 		<div class="row"> 

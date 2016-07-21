@@ -90,11 +90,11 @@ class CambioPropietarioInmueblesUrbanosController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-        ]); 
+        ]);  
         }  else {
                     echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
         }
-    } 
+    }  
 
     /**
      * Displays a single Inmuebles model.
