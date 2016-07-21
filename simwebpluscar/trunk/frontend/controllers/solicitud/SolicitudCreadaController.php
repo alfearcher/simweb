@@ -251,7 +251,7 @@
 																	'dataProvider' => $dataProvider,
 						]);
 
-					$caption = Yii::t('frontend', 'Request details');
+					$caption = Yii::t('frontend', 'Request details. Pendiente');
 					$opciones = [
 						'back' => 'solicitud/solicitud-creada/buscar-solicitud-pendiente',
 						'quit' => 'solicitud/solicitud-creada/quit',
