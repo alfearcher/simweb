@@ -711,5 +711,46 @@
 			}
 		}
 
+
+
+
+		/**
+		 * Metodo que permite determinar si un contribuyente es una sede principal.
+		 * Esto aplica para los contribuyentes juridicos.
+		 * @param  long $idContribuyente identificador del contribuyente.
+		 * @return boolean retorna true si es una sede principal, de lo contrario
+		 * retorna false.
+		 */
+		private static function getEsSedePrincipalSegunID($idContribuyente)
+		{
+			$datos = self::datosContribuyenteSegunID($idContribuyente);
+			if ( isset($datos) ) {
+				if ( self::getTipoNaturalezaDescripcion($datos[0]['tipo_naturaleza']) == 'JURIDICO' ) {
+					if ( $datos[0]['id_rif'] == 0 ) {
+						return true;
+					}
+				}
+			}
+
+			return false;
+		}
+
+
+
+
+		/**
+		 * Metodo que permite determinar si un contribuyente es una sede principal.
+		 * Esto aplica para los contribuyentes juridicos.
+		 * @param  long $idContribuyente identificador del contribuyente.
+		 * @return boolean retorna true si es una sede principal, de lo contrario
+		 * retorna false.
+		 */
+		public static function getEsUnaSedePrincipal($idContribuyente)
+		{
+			return self::getEsSedePrincipalSegunID($idContribuyente);
+		}
+
+
+
 	}
  ?>
