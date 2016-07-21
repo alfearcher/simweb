@@ -163,28 +163,6 @@
 
 
 
-        /**
-         * Metodo que permite obtener una descripcion del estatus del registro.
-         * @param  integer $estatus indica el estatus de la solicitud.
-         * @return string retorna la descripcion del estatus de la solicitud.
-         */
-        public function getDescripcionEstatus($estatus)
-        {
-            $descripcion = '';
-            if ( $estatus == 0 ) {
-                $descripcion = 'PENDIENTE';
-            } elseif ( $estatus == 1 ) {
-                $descripcion = 'APROBADA';
-            } elseif ( $descripcion == 9 ) {
-                $descripcion = 'ANULADA';
-            } else {
-                $descripcion = 'NO DEFINIDA';
-            }
-            return $descripcion;
-        }
-
-
-
     }
 
  ?>
