@@ -130,12 +130,12 @@
                 							return $model->impuestos->descripcion;
                 						}
                 					],
-                					// [
-                					// 	'label' => Yii::t('backend', 'Id. Taxpayer'),
-                					// 	'value' => function($model) {
-                					// 		return $model->id_contribuyente;
-                					// 	}
-                					// ],
+                					[
+                						'label' => Yii::t('backend', 'Status'),
+                						'value' => function($model) {
+                							return $model->getDescripcionEstatus($model->estatus);
+                						}
+                					],
                 					[
                                     	'class' => 'yii\grid\ActionColumn',
                                     	'header'=> Yii::t('backend','OK'),
