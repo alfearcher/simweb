@@ -72,6 +72,10 @@
 		    				'representante',
 		    				'origen',
 		    				'fecha_hora',
+		    				[
+		    					'label' => Yii::t('frontend', 'Status'),
+		    					'value' => $model->getDescripcionEstatusInscripcion($model->estatus),
+		    				],
 
 		        			//'created_at:datetime', // creation date formatted as datetime
 		    			],
