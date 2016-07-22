@@ -46,6 +46,7 @@
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 	use backend\models\aaee\inscripcionsucursal\InscripcionSucursal;
+	use common\models\contribuyente\ContribuyenteBase;
 
 	/**
 	* 	Clase
@@ -82,6 +83,39 @@
 		}
 
 
+
+		/**
+		 * Metodo que permite determinar si un contribuyente es una sede principal.
+		 * Esto solo aplica para los contribuyentes juridicos.
+		 * @return boolean true si es verdadero, false en caso contrario.
+		 */
+		public function getSedePrincipal()
+		{
+			return ContribuyenteBase::getEsUnaSedePrincipal($this->_id_contribuyente);
+		}
+
+
+
+		/**
+		 * Metodo que retorna los datos del contribuyente, segun el identificador
+		 * del contribuyente, lo recibido en este metodo es un arreglo donde el
+		 * indice del arregloes un entero que comienza en cero (0), y el valor del
+		 * arreglo es otro arrelo con los atributos del contribuyente.
+		 * @return array retorna un arreglo con la estructura:
+		 * array {
+		 * 		[0] => array {
+		 *   				atributo0 => valor0
+		 *       			atributo1 => valor1
+		 *
+		 *            		atributon => valorn
+		 *   			}
+		 * }
+		 */
+		public function getDatosContribuyente()
+		{
+			$datos = ContribuyenteBase::getDatosContribuyenteSegunID($this->_id_contribuyente);
+			return (isset($datos)) ? $datos[0] :null;
+		}
 
 
 

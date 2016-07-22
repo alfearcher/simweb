@@ -53,7 +53,7 @@
 	*/
 	class InscripcionSucursalForm extends InscripcionSucursal
 	{
-		public $inscripcion_sucursal;
+		public $id_inscripcion_sucursal;
 		public $nro_solicitud;
 		public $id_sede_principal;
 		public $id_contribuyente;
@@ -76,13 +76,65 @@
 		public $num_tlf_ofic_otro;
 		public $num_celular;
 
+		const SCENARIO_FRONTEND = 'frontend';
+		const SCENARIO_BACKEND = 'backend';
+
 		/**
      	* @inheritdoc
      	*/
     	public function scenarios()
     	{
         	// bypass scenarios() implementation in the parent class
-        	return Model::scenarios();
+        	//return Model::scenarios();
+        	return [
+        		self::SCENARIO_FRONTEND => [
+        					'nro_solicitud',
+        					'id_sede_principal',
+        					'id_contribuyente',
+        					'naturaleza',
+        					'cedula',
+        					'tipo',
+        					'razon_social',
+        					'domicilio_fiscal',
+        					'id_sim',
+        					'tlf_ofic',
+        					'tlf_ofic_otro',
+        					'email',
+        					'tlf_celular',
+        					'fecha_inicio',
+        					'origen',
+        					'fecha_hora',
+        					'usuario',
+        					'estatus',
+        					'num_tlf_ofic',
+        					'num_tlf_ofic_otro',
+        					'num_celular',
+
+        		],
+        		self::SCENARIO_BACKEND => [
+        					'nro_solicitud',
+        					'id_sede_principal',
+        					'id_contribuyente',
+        					'naturaleza',
+        					'cedula',
+        					'tipo',
+        					'razon_social',
+        					'domicilio_fiscal',
+        					'id_sim',
+        					'tlf_ofic',
+        					'tlf_ofic_otro',
+        					'email',
+        					'tlf_celular',
+        					'fecha_inicio',
+        					'origen',
+        					'fecha_hora',
+        					'usuario',
+        					'estatus',
+        					'num_tlf_ofic',
+        					'num_tlf_ofic_otro',
+        					'num_celular',
+        		]
+        	];
     	}
 
 
@@ -104,7 +156,7 @@
 	          	['fecha_hora', 'default', 'value' => date('Y-m-d H:i:s')],
 	          	['id_sim', 'unique'],
 	     		['estatus', 'default', 'value' => 0],
-	     		['usuario', 'default', 'value' => Yii::$app->user->identity->username],
+	     		['usuario', 'default', 'value' => Yii::$app->user->identity->login],
 	     		['origen', 'default', 'value' => 'LAN'],
 	     		['nro_solicitud', 'default', 'value' => 0],
 	     		['id_contribuyente', 'default', 'value' => 0],
