@@ -62,6 +62,11 @@
 	use common\conexion\ConexionController;
 	use yii\base\Model;
 	use common\mensaje\MensajeController;
+	use backend\models\registromaestro\TipoNaturaleza;
+	//use backend\controllers\utilidad\documento\DocumentoRequisitoController;
+	use backend\models\TelefonoCodigo;
+	use yii\helpers\ArrayHelper;
+	use common\models\session\Session;
 
 	session_start();		// Iniciando session
 
@@ -103,6 +108,54 @@
 				$search = New InscripcionSucursalSearch($idContribuyente);
 				if ( $search->getSedePrincipal() == true ) {
 
+					$model = New InscripcionSucursalForm();
+					$modelActEcon = New InscripcionActividadEconomicaForm();
+
+					$postData = Yii::$app->request->post();
+			  		$request = Yii::$app->request;
+
+			  		if ( $model->load($postData)  && Yii::$app->request->isAjax ) {
+						Yii::$app->response->format = Response::FORMAT_JSON;
+						return ActiveForm::validate($model);
+			      	}
+
+			      	if ( $model->load($postData) ) {
+
+			      	 	if ( $models->validate() ) {
+
+			      	 	}
+			      	 }
+
+			      	 // Se muestra el form de la solicitud.
+			      	//$datos = ContribuyenteBase::getDatosContribuyenteSegunID($idContribuyente);
+			      	$datos = $search->getDatosContribuyente($idContribuyente);
+			  		if ( $datos ) {
+			  			// Se crea la lista para los tipos de naturaleza, esta lista se utilizara
+			  			// en el combo-lista.
+			  			$modeloTipoNaturaleza = TipoNaturaleza::find()->where('id_tipo_naturaleza BETWEEN 1 and 4')->all();
+						$listaNaturaleza = ArrayHelper::map($modeloTipoNaturaleza, 'siglas_tnaturaleza', 'nb_naturaleza');
+
+						// Se crea la lista de telefonos para los combo-lista.
+						// Telefono local.
+						$listaTelefonoCodigo = TelefonoCodigo::getListaTelefonoCodigo(false);
+
+						// Se crea la lista de telefonos moviles.
+						$listaTelefonoMovil = TelefonoCodigo::getListaTelefonoCodigo(true);
+
+						$modelTelefono = new TelefonoCodigo();
+
+			  			return $this->render('/aaee/inscripcion-sucursal/_create', [
+			  											'model' => $model,
+			  											'modelActEcon' => $modelActEcon,
+			  											'datos' => $datos,
+			  											'listaNaturaleza' => $listaNaturaleza,
+			  											'listaTelefonoCodigo' => $listaTelefonoCodigo,
+			  											'listaTelefonoMovil' => $listaTelefonoMovil,
+			  											'modelTelefono' => $modelTelefono,
+			  					]);
+			  		} else {
+			  			// No se encontraron los datos del contribuyente principal.
+			  		}
 
 				} else {
 					// El contribuyente no es una sede principal.
@@ -112,129 +165,132 @@
 				// No esta defino el contribuyente.
 				return $this->redirect(['error-operacion', 'cod' => 932]);
 			}
-
-
-
-
-			$tipoNaturaleza = isset($_SESSION['tipoNaturaleza']) ? $_SESSION['tipoNaturaleza'] : null;
-			if ( $tipoNaturaleza == 'JURIDICO') {
-				if ( isset($_SESSION['idContribuyente']) ) {
-
-					$model = New InscripcionSucursalForm();
-					$modelActEcon = New InscripcionActividadEconomicaForm();
-
-					$postData = Yii::$app->request->post();
-			  		$request = Yii::$app->request;
-			  		$models = [$model, $modelActEcon];
-
-			  		if ( $model->load($postData)  && Yii::$app->request->isAjax ) {
-						Yii::$app->response->format = Response::FORMAT_JSON;
-						return ActiveForm::validateMultiple($models);
-			      	}
-
-			      	if ( $model->load($postData) ) {
-
-			      	 	if ( $models->validate() ) {
-			      	 		// if ( !self::actionValidateRegistroMercantil($postData) ) {
-			      	 		// 	die('NO se puede continuar faltan valores en el registro merbantil.');
-			      	 		// }
-			      	 		$modelContribuyente = New ContribuyenteBase();
-
-			      	 		$_SESSION['model'] = $model;
-			      	 		$_SESSION['postData'] = $postData;
-
-			      	 		foreach ( $modelContribuyente->attributes as $key => $value) {
-			      	 			if ( isset($postData[$model->formName()][$key]) ) {
-			      	 				$datosContribuyente[$key] = $postData[$model->formName()][$key];
-
-			      	 			} elseif ( isset($postData[$modelActEcon->formName()][$key]) ) {
-			      	 				$datosContribuyente[$key] = $postData[$modelActEcon->formName()][$key];
-
-			      	 			} else {
-			      	 				if ( $key == 'id_cp' OR $key == 'no_declara' OR $key == 'agente_retencion'
-			      	 					OR $key == 'econ_informal' OR $key == 'inactivo' OR $key == 'no_sujeto'
-			      	 					OR $key == 'foraneo' OR $key == 'manzana_limite' OR $key == 'cuenta'
-			      	 					OR $key == 'licencia' OR $key == 'num_empleados' OR $key == 'grupo_contribuyente'
-			      	 					OR $key == 'cedula_rep' OR $key == 'tipo_contribuyente' OR $key == 'nivel') {
-
-			      	 					$datosContribuyente[$key] = 0;
-
-			      	 				} else {
-			      	 					$datosContribuyente[$key] = null;
-			      	 				}
-			      	 			}
-			      	 		}
-			      	 		$naturaleza = $datosContribuyente['naturaleza'];
-			      	 		$cedula = $datosContribuyente['cedula'];
-			      	 		$tipo = $datosContribuyente['tipo'];
-
-			      	 		$datosContribuyente['id_rif'] = ContribuyenteBase::getUltimoIdRifSucursalSegunRIF($naturaleza, $cedula, $tipo)['id_rif'] + 1;
-			      	 		$datosContribuyente['ente'] = Yii::$app->ente->getEnte();
-			      	 		$datosContribuyente['tipo_naturaleza'] = 1;
-
-			      	 		// Todo bien la validacion es correcta.
-			      	 		// Se redirecciona a una preview para confirmar la creacion del registro.
-			      	 		$_SESSION['datosContribuyente'] = $datosContribuyente;
-
-			      	 		return $this->render('/aaee/inscripcion-sucursal/pre-view', [
-			      	 																	'model' => $datosContribuyente,
-											      	 									'preView' => true
-											      	 									]);
-			      	 		//$arrayParametros = $request->bodyParams;
-
-			      	 	} else {
-//die('validate no');
-			      	 		//$model->getErrors();
-			      	 	}
-			      	} else {
-//die('ksksks');
-			      		//echo 'No paso Model::loadMultiple';
-			  		}
-
-			  		// Datos de la cede principal.
-			  		$datos = ContribuyenteBase::getDatosContribuyenteSegunID($_SESSION['idContribuyente']);
-			  		if ( $datos ) {
-			  			if ( InscripcionSucursalForm::sedePrincipal($datos) ) {
-				  			if ( InscripcionSucursalForm::datosRegistroMercantilValido($datos) ) {
-					  			$_SESSION['datos'] = $datos;
-					  			$model->naturaleza = $datos[0]['naturaleza'];
-					  			$model->cedula = $datos[0]['cedula'];
-					  			$model->tipo = $datos[0]['tipo'];
-					  			$model->razon_social = $datos[0]['razon_social'];
-					  			$model->nro_solicitud = 0;
-
-					  			$modelActEcon->naturaleza_rep = $datos[0]['naturaleza_rep'];
-					  			$modelActEcon->cedula_rep = $datos[0]['cedula_rep'];
-					  			$modelActEcon->representante = $datos[0]['representante'];
-					  			$modelActEcon->num_reg = $datos[0]['num_reg'];
-					  			$modelActEcon->reg_mercantil = $datos[0]['reg_mercantil'];
-					  			$modelActEcon->fecha = $datos[0]['fecha'];
-					  			$modelActEcon->tomo = $datos[0]['tomo'];
-					  			$modelActEcon->folio = $datos[0]['folio'];
-					  			$modelActEcon->capital = $datos[0]['capital'];
-					  		} else {
-					  			return self::gestionarMensajesLocales('Los datos del Registro Mercantil de la sede principal no están completos.');
-					  		}
-				  		} else {
-				  			return self::gestionarMensajesLocales('Contribuyente no aplica para esta opción. La razón social no es una sede principal.');
-				  		}
-			  		}
-
-			  		//if ( isset($_SESSION['model']) ) { $model = $_SESSION['model']; }
-
-			  		//if ( isset($_SESSION['modelActEcon']) ) { $modelActEcon = $_SESSION['modelActEcon']; }
-
-		  			return $this->render('/aaee/inscripcion-sucursal/create', ['model' => $model, 'modelActEcon' => $modelActEcon, ]);
-		  		} else {
-		  			// No esta definido el contribuyente.
-		  			return self::gestionarMensajesLocales('NO esta definido el contribuyente.');
-		  			// die('NO esta definido el contribuyente');
-		  		}
-	  		} else {
-	  			return self::gestionarMensajesLocales('Contribuyente no aplica para esta opción.');
-	  			// echo 'Contribuyente no aplica para esta opción.';
-	  		}
 		}
+
+
+
+
+
+
+// 			$tipoNaturaleza = isset($_SESSION['tipoNaturaleza']) ? $_SESSION['tipoNaturaleza'] : null;
+// 			if ( $tipoNaturaleza == 'JURIDICO') {
+// 				if ( isset($_SESSION['idContribuyente']) ) {
+
+// 					$model = New InscripcionSucursalForm();
+// 					$modelActEcon = New InscripcionActividadEconomicaForm();
+
+// 					$postData = Yii::$app->request->post();
+// 			  		$request = Yii::$app->request;
+// 			  		$models = [$model, $modelActEcon];
+
+// 			  		if ( $model->load($postData)  && Yii::$app->request->isAjax ) {
+// 						Yii::$app->response->format = Response::FORMAT_JSON;
+// 						return ActiveForm::validateMultiple($models);
+// 			      	}
+
+// 			      	if ( $model->load($postData) ) {
+
+// 			      	 	if ( $models->validate() ) {
+// 			      	 		// if ( !self::actionValidateRegistroMercantil($postData) ) {
+// 			      	 		// 	die('NO se puede continuar faltan valores en el registro merbantil.');
+// 			      	 		// }
+// 			      	 		$modelContribuyente = New ContribuyenteBase();
+
+// 			      	 		$_SESSION['model'] = $model;
+// 			      	 		$_SESSION['postData'] = $postData;
+
+// 			      	 		foreach ( $modelContribuyente->attributes as $key => $value) {
+// 			      	 			if ( isset($postData[$model->formName()][$key]) ) {
+// 			      	 				$datosContribuyente[$key] = $postData[$model->formName()][$key];
+
+// 			      	 			} elseif ( isset($postData[$modelActEcon->formName()][$key]) ) {
+// 			      	 				$datosContribuyente[$key] = $postData[$modelActEcon->formName()][$key];
+
+// 			      	 			} else {
+// 			      	 				if ( $key == 'id_cp' OR $key == 'no_declara' OR $key == 'agente_retencion'
+// 			      	 					OR $key == 'econ_informal' OR $key == 'inactivo' OR $key == 'no_sujeto'
+// 			      	 					OR $key == 'foraneo' OR $key == 'manzana_limite' OR $key == 'cuenta'
+// 			      	 					OR $key == 'licencia' OR $key == 'num_empleados' OR $key == 'grupo_contribuyente'
+// 			      	 					OR $key == 'cedula_rep' OR $key == 'tipo_contribuyente' OR $key == 'nivel') {
+
+// 			      	 					$datosContribuyente[$key] = 0;
+
+// 			      	 				} else {
+// 			      	 					$datosContribuyente[$key] = null;
+// 			      	 				}
+// 			      	 			}
+// 			      	 		}
+// 			      	 		$naturaleza = $datosContribuyente['naturaleza'];
+// 			      	 		$cedula = $datosContribuyente['cedula'];
+// 			      	 		$tipo = $datosContribuyente['tipo'];
+
+// 			      	 		$datosContribuyente['id_rif'] = ContribuyenteBase::getUltimoIdRifSucursalSegunRIF($naturaleza, $cedula, $tipo)['id_rif'] + 1;
+// 			      	 		$datosContribuyente['ente'] = Yii::$app->ente->getEnte();
+// 			      	 		$datosContribuyente['tipo_naturaleza'] = 1;
+
+// 			      	 		// Todo bien la validacion es correcta.
+// 			      	 		// Se redirecciona a una preview para confirmar la creacion del registro.
+// 			      	 		$_SESSION['datosContribuyente'] = $datosContribuyente;
+
+// 			      	 		return $this->render('/aaee/inscripcion-sucursal/pre-view', [
+// 			      	 																	'model' => $datosContribuyente,
+// 											      	 									'preView' => true
+// 											      	 									]);
+// 			      	 		//$arrayParametros = $request->bodyParams;
+
+// 			      	 	} else {
+// //die('validate no');
+// 			      	 		//$model->getErrors();
+// 			      	 	}
+// 			      	} else {
+// //die('ksksks');
+// 			      		//echo 'No paso Model::loadMultiple';
+// 			  		}
+
+// 			  		// Datos de la cede principal.
+// 			  		$datos = ContribuyenteBase::getDatosContribuyenteSegunID($_SESSION['idContribuyente']);
+// 			  		if ( $datos ) {
+// 			  			if ( InscripcionSucursalForm::sedePrincipal($datos) ) {
+// 				  			if ( InscripcionSucursalForm::datosRegistroMercantilValido($datos) ) {
+// 					  			$_SESSION['datos'] = $datos;
+// 					  			$model->naturaleza = $datos[0]['naturaleza'];
+// 					  			$model->cedula = $datos[0]['cedula'];
+// 					  			$model->tipo = $datos[0]['tipo'];
+// 					  			$model->razon_social = $datos[0]['razon_social'];
+// 					  			$model->nro_solicitud = 0;
+
+// 					  			$modelActEcon->naturaleza_rep = $datos[0]['naturaleza_rep'];
+// 					  			$modelActEcon->cedula_rep = $datos[0]['cedula_rep'];
+// 					  			$modelActEcon->representante = $datos[0]['representante'];
+// 					  			$modelActEcon->num_reg = $datos[0]['num_reg'];
+// 					  			$modelActEcon->reg_mercantil = $datos[0]['reg_mercantil'];
+// 					  			$modelActEcon->fecha = $datos[0]['fecha'];
+// 					  			$modelActEcon->tomo = $datos[0]['tomo'];
+// 					  			$modelActEcon->folio = $datos[0]['folio'];
+// 					  			$modelActEcon->capital = $datos[0]['capital'];
+// 					  		} else {
+// 					  			return self::gestionarMensajesLocales('Los datos del Registro Mercantil de la sede principal no están completos.');
+// 					  		}
+// 				  		} else {
+// 				  			return self::gestionarMensajesLocales('Contribuyente no aplica para esta opción. La razón social no es una sede principal.');
+// 				  		}
+// 			  		}
+
+// 			  		//if ( isset($_SESSION['model']) ) { $model = $_SESSION['model']; }
+
+// 			  		//if ( isset($_SESSION['modelActEcon']) ) { $modelActEcon = $_SESSION['modelActEcon']; }
+
+// 		  			return $this->render('/aaee/inscripcion-sucursal/create', ['model' => $model, 'modelActEcon' => $modelActEcon, ]);
+// 		  		} else {
+// 		  			// No esta definido el contribuyente.
+// 		  			return self::gestionarMensajesLocales('NO esta definido el contribuyente.');
+// 		  			// die('NO esta definido el contribuyente');
+// 		  		}
+// 	  		} else {
+// 	  			return self::gestionarMensajesLocales('Contribuyente no aplica para esta opción.');
+// 	  			// echo 'Contribuyente no aplica para esta opción.';
+// 	  		}
+//		}
 
 
 
