@@ -71,6 +71,39 @@
 		{
 			return 'sl_inscripciones_sucursales';
 		}
+
+
+
+		 /**
+	    * 	Lista de atributos con sus respectivas etiquetas (labels), las cuales son las que aparecen en las vistas
+	    * 	@return returna arreglo de datos con los atributoe como key y las etiquetas como valor del arreglo.
+	    */
+	    public function attributeLabels()
+	    {
+	        return [
+	        	'id_inscripcion_sucursal' => Yii::t('backend', 'Id. Sucursal'),
+	        	'id_sede_principal' => Yii::t('backend', 'Id. sede'),
+	            'id_contribuyente' => Yii::t('backend', 'Id. Taxpayer'),
+	            'nro_solicitud' => Yii::t('backend', 'Application Number'),
+	            'naturaleza' => Yii::t('backend', 'RIF'),
+	            'cedula' => Yii::t('backend', 'DNI'),
+	            'fecha_inicio' => Yii::t('backend', 'Begin Date'),
+	            'domicilio_fiscal' => Yii::t('backend', 'Home'),
+	            'tlf_ofic' => Yii::t('backend', 'Office No Phone'),
+	            'tlf_ofic_otro' => Yii::t('backend', 'Office No Phone'),
+	            'tlf_celular' => Yii::t('backend', 'Office Celular No'),
+	            'fecha_inicio' => Yii::t('backend', 'Begin Date'),
+	            'email' => Yii::t('backend', 'email'),
+	            'razon_social' => Yii::t('backend', 'Razon Social'),
+	            'id_sim' => Yii::t('backend', 'Licence Number'),
+	            'num_celular' => Yii::t('backend', 'Celular Number'),
+	            'num_tlf_ofic' => Yii::t('backend', 'Office Number 1'),
+	            'num_tlf_ofic_otro' => Yii::t('backend', 'Office Number 2'),
+	            'dni_representante' => Yii::t('backend', 'DNI legal represent'),
+	            'representante' => Yii::t('backend', 'Legal represent'),
+
+	        ];
+	    }
 	}
 
 

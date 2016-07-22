@@ -88,9 +88,7 @@
         	//return Model::scenarios();
         	return [
         		self::SCENARIO_FRONTEND => [
-        					'nro_solicitud',
         					'id_sede_principal',
-        					'id_contribuyente',
         					'naturaleza',
         					'cedula',
         					'tipo',
@@ -112,7 +110,6 @@
 
         		],
         		self::SCENARIO_BACKEND => [
-        					'nro_solicitud',
         					'id_sede_principal',
         					'id_contribuyente',
         					'naturaleza',
@@ -145,19 +142,28 @@
 	    public function rules()
 	    {
 	        return [
-	        	[['id_sede_principal', 'id_contribuyente', 'naturaleza', 'cedula', 'tipo', 'domicilio_fiscal',
-	        	'tlf_ofic', 'tlf_celular', 'email', 'fecha_inicio', 'razon_social'], 'required', 'message' => Yii::t('backend','{attribute} is required')],
-	        	[['id_sede_principal', 'id_contribuyente', 'cedula', 'tipo'], 'integer','message' => Yii::t('backend','{attribute}')],
+	        	[['id_sede_principal', 'naturaleza',
+	        	  'cedula', 'tipo', 'domicilio_fiscal',
+	        	  'tlf_ofic', 'tlf_celular', 'email',
+	        	  'id_sim',
+	        	  'fecha_inicio', 'razon_social',
+	        	  'num_tlf_ofic', 'num_celular',],
+	        	  'required', 'on' => 'frontend', 'message' => Yii::t('backend','{attribute} is required')],
 	        	[['fecha_inicio'], 'date', 'format' => 'dd-MM-yyyy','message' => Yii::t('backend','formatted date no valid')],
 	        	[['email'], 'email', 'message' => Yii::t('backend','{attribute} is email')],
 	        	['email', 'filter','filter'=>'strtolower'],
 	        	['razon_social', 'filter', 'filter' => 'strtoupper'],
-	        	[['domicilio_fiscal', 'naturaleza', 'tlf_celular', 'tlf_ofic', 'tlf_ofic_otro', 'id_sim'], 'string'],
+	        	[['domicilio_fiscal', 'naturaleza',
+	        	  'tlf_celular', 'tlf_ofic',
+	        	  'tlf_ofic_otro', 'id_sim',
+	        	  'num_tlf_ofic', 'num_tlf_ofic_otro',
+	        	  'num_celular'],
+	        	  'string', 'on' => 'frontend',],
 	          	['fecha_hora', 'default', 'value' => date('Y-m-d H:i:s')],
 	          	['id_sim', 'unique'],
 	     		['estatus', 'default', 'value' => 0],
 	     		['usuario', 'default', 'value' => Yii::$app->user->identity->login],
-	     		['origen', 'default', 'value' => 'LAN'],
+	     		['origen', 'default', 'value' => 'WEB'],
 	     		['nro_solicitud', 'default', 'value' => 0],
 	     		['id_contribuyente', 'default', 'value' => 0],
 	     		['razon_social', 'string', 'max' => 75],
@@ -165,7 +171,6 @@
 	     		[['tlf_ofic', 'tlf_ofic_otro', 'tlf_celular'], 'string', 'max' => 12],
 	     		[['tlf_ofic', 'tlf_celular'], 'string', 'min' => 12],
 	     		['id_sede_principal', 'default', 'value' => $_SESSION['idContribuyente']],
-	     		[['num_tlf_ofic', 'num_tlf_ofic_otro', 'num_celular'], 'integer', 'message' => Yii::t('backend', '{attribute} is integer')],
 	        ];
 	    }
 
@@ -199,6 +204,15 @@
 	            'num_celular' => Yii::t('backend', 'Celular Number'),
 	            'num_tlf_ofic' => Yii::t('backend', 'Office Number 1'),
 	            'num_tlf_ofic_otro' => Yii::t('backend', 'Office Number 2'),
+	            'dni_representante' => Yii::t('backend', 'DNI legal represent'),
+	            'representante' => Yii::t('backend', 'Legal represent'),
+	            'num_reg' => Yii::t('backend', 'Number'),
+	            'reg_mercantil' => Yii::t('backend', 'Commercial register'),
+	            'fecha' => Yii::t('backend', 'Date'),
+	            'tomo' => Yii::t('backend', 'Volumen number'),
+	            'folio' => Yii::t('backend', 'Folio'),
+	            'capital' => Yii::t('backend', 'Capital'),
+	            'dni_principal' => Yii::t('backend', 'DNI headquarter main')
 
 	        ];
 	    }
