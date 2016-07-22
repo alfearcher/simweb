@@ -341,7 +341,9 @@
 
 		/**
 		 * Metodo que busca los registros relacionados a las entidades "config-solic-documentos"
-		 * y "config-documentos-requisitos".
+		 * y "config-documentos-requisitos". En la extension "documentoRequisito" se pueden obtener
+		 * los documentos que se deben consignar en la solicitud. A traves de la siguiente nomeclatura
+		 * $configSolicitudDoc['documentoRequiisto'].
 		 * @return array retorna una arreglo de todos los campos de ambas entidades. Segun
 		 * el valor del id-config-solicitud.
 		 */
