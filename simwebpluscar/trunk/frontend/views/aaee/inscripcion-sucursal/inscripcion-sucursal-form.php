@@ -472,9 +472,15 @@
 												                    'label' => 'Descripcion',
 												                    'value' => 'descripcion',
 												                ],
-												                ['class' => 'yii\grid\CheckboxColumn'],
+												                [
+												                	'class' => 'yii\grid\CheckboxColumn',
+												                	'name' => 'chkDocumento',
+												                ],
 											            ]
 													]);?>
+												</div>
+												<div class="row" style="padding-left: 15px;">
+													<div class="wells" style="color : red;"><?=$mensajeErrorChk?></div>
 												</div>
 											</div>
 										</div>
