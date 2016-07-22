@@ -134,7 +134,7 @@
 										?>
 					        	</div>
 					        	<div class="row" id="datos-principal-reg-mercantil" style="padding-left: 15px; width: 100%;">
-					        		<h4><?= Html::encode(Yii::t('backend', 'Info of Registro Mercantil')) ?></h3>
+					        		<h4><?= Html::encode(Yii::t('backend', 'Info of Commercial Register')) ?></h3>
 					        		<?= DetailView::widget([
 												'model' => $model,
 								    			'attributes' => [
@@ -175,7 +175,7 @@
 							<div class="row">
 				        		<div class="panel panel-success" style="width: 100%;">
 									<div class="panel-heading">
-							        	<span><?= Html::encode(Yii::t('backend', 'Datos de la Sucursal')) ?></span>
+							        	<span><?= Html::encode(Yii::t('backend', 'Add the next information')) ?></span>
 							        </div>
 							        <div class="panel-body">
 
@@ -450,7 +450,7 @@
 							<div class="row">
 								<div class="panel panel-success" style="width: 100%;">
 							        <div class="panel-heading">
-							        	<span><?= Html::encode(Yii::t('backend', 'Documents and Requirements Consigned')) ?></span>
+							        	<span><?= Html::encode(Yii::t('backend', 'Select documents and requirements consigned')) ?></span>
 							        </div>
 							        <div class="panel-body">
 							        	<div class="row">
@@ -462,12 +462,6 @@
 											            //'filterModel' => $searchModel,
 											            //'layout'=>"n{pager}\n{items}",
 
-											            //'headerRowOptions' => ['class' => 'success'],
-											            // 'rowOptions' => function($data) {
-											            //     if ( $data->inactivo == 1 ) {
-											            //         return ['class' => 'danger'];
-											            //     }
-											            // },
 											            'columns' => [
 											                	['class' => 'yii\grid\SerialColumn'],
 											                	[
