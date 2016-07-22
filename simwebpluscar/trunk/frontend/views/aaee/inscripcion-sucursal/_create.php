@@ -46,12 +46,13 @@
 
 	    <?= $this->render('inscripcion-sucursal-form', [
 	        'model' => $model,
-	        'modelActEcon' => $modelActEcon,
+	        //'modelActEcon' => $modelActEcon,
 	        'datos' => $datos,
 	        'listaNaturaleza' => $listaNaturaleza,
 			'listaTelefonoCodigo' => $listaTelefonoCodigo,
 			'listaTelefonoMovil' => $listaTelefonoMovil,
 			'modelTelefono' => $modelTelefono,
+
 	    ]) ?>
 
 	</div>

@@ -40,7 +40,7 @@
  *
  */
 
- 	//use yii\web\Response;
+ 	use yii\web\Response;
  	use kartik\icons\Icon;
  	use yii\grid\GridView;
 	use yii\helpers\Html;
@@ -49,6 +49,7 @@
 	use yii\widgets\ActiveForm;
 	use yii\web\View;
 	use yii\jui\DatePicker;
+	use yii\widgets\DetailView;
 	//use backend\models\registromaestro\TipoNaturaleza;
 	use backend\controllers\utilidad\documento\DocumentoRequisitoController;
 	//use backend\models\TelefonoCodigo;
@@ -65,32 +66,25 @@
  	<?php
 
  		$form = ActiveForm::begin([
- 			'id' => 'inscripcion-sucursal-form',
+ 			'id' => 'id-inscripcion-sucursal-form',
  			'method' => 'post',
  			'enableClientValidation' => true,
- 			'enableAjaxValidation' => true,
+ 			//'enableAjaxValidation' => true,
  			'enableClientScript' => true,
  		]);
  	?>
 
 	<meta http-equiv="refresh">
-    <div class="panel panel-primary"  style="width: 90%;">
+    <div class="panel panel-primary"  style="width: 100%;">
         <div class="panel-heading">
         	<h3><?= Html::encode($this->title) ?></h3>
         </div>
-<!--
-	<?//= Html::activeHiddenInput($model, 'id_sede_principal', ['id' => 'id-sede-principal', 'name' => 'id-sede-principal', 'value' => $_SESSION['idContribuyente']]) ?>
- -->
+
 	<?= $form->field($model, 'id_sede_principal')->hiddenInput(['value' => $_SESSION['idContribuyente']])->label(false); ?>
-	<?= $form->field($model, 'naturaleza')->hiddenInput(['value' => $model->naturaleza])->label(false); ?>
-	<?= $form->field($model, 'cedula')->hiddenInput(['value' => $model->cedula])->label(false); ?>
-	<?= $form->field($model, 'tipo')->hiddenInput(['value' => $model->tipo])->label(false); ?>
-	<?= $form->field($model, 'nro_solicitud')->hiddenInput(['value' => $model->nro_solicitud])->label(false); ?>
-	<?= $form->field($model, 'usuario')->hiddenInput(['value' => $model->usuario])->label(false); ?>
+	<?= $form->field($model, 'naturaleza')->hiddenInput(['value' => $datos['naturaleza']])->label(false); ?>
+	<?= $form->field($model, 'cedula')->hiddenInput(['value' => $datos['cedula']])->label(false); ?>
+	<?= $form->field($model, 'tipo')->hiddenInput(['value' => $datos['tipo']])->label(false); ?>
 	<?= $form->field($model, 'id_contribuyente')->hiddenInput(['value' => 0])->label(false); ?>
-	<?= $form->field($model, 'origen')->hiddenInput(['value' => 'LAN'])->label(false); ?>
-	<?= $form->field($model, 'fecha_hora')->hiddenInput(['value' => date('Y-m-d H:i:s')])->label(false); ?>
-	<?= $form->field($model, 'usuario')->hiddenInput(['value' => Yii::$app->user->identity->username])->label(false); ?>
 	<?= $form->field($model, 'estatus')->hiddenInput(['value' => 0])->label(false); ?>
 <!--
 	<?//= $form->field($modelActEcon, 'estatus')->hiddenInput(['value' => 0])->label(false); ?>
@@ -107,274 +101,75 @@
         <div class="panel-body" style="background-color: #F9F9F9;">
         	<div class="container-fluid">
         		<div class="col-sm-12">
-
-<!-- ID SEDE PRINCIPAL, RIF Y DESCRIPCION -->
 		        	<div class="row">
 						<div class="panel panel-success" style="width: 100%;">
 							<div class="panel-heading">
-					        	<span><?= Html::encode(Yii::t('backend', 'Datos sede principal')) ?></span>
+					        	<span><?= Html::encode(Yii::t('backend', 'Info of Headquarters Main')) ?></span>
 					        </div>
 					        <div class="panel-body">
-					        	<div class="row">
-<!--  Id de la sede principal-->
-									<div class="col-sm-3" style="margin-left: 10px;">
-										<div class="row" style="width:100%;">
-											<p style="margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('backend', $model->getAttributeLabel('id_sede_principal')) ?></i></p>
-										</div>
-										<div class="row" >
-											<div class="id-sede-principal">
-												<?= $form->field($model, 'id_sede_principal')->textInput([
-																									'id' => 'id-sede-principal',
-																									'style' => 'width:98%;',
-																									'readonly' => true,
-																									'value' => $datos['id_contribuyente'],
-																						 			])->label(false) ?>
-											</div>
-										</div>
-									</div>
-<!-- Fin de Id de la sede principal -->
+					        	<div class="row" id="datos-principal-primario" style="padding-left: 15px; width: 100%;">
+									<!-- <h4><?//= Html::encode(Yii::t('backend', 'Info of Headquarters Main')) ?></h3> -->
+										<?= DetailView::widget([
+												'model' => $model,
+								    			'attributes' => [
 
-
-<!-- RIF DE LA SEDE PRINCIPAL -->
-<!-- Naturaleza de la sede principal -->
-									<div class="col-sm-3" style="margin-left: 0px;">
-										<div class="row" style="width:100%;">
-											<p style="margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('backend', $model->getAttributeLabel('naturaleza')) ?></i></p>
-										</div>
-										<div class="row">
-											<div class="naturaleza">
-						                        <?= $form->field($model, 'naturaleza')->dropDownList($listaNaturaleza,[
-					                                                                                               	'prompt' => Yii::t('backend', 'Select'),
-					                                                                                                'style' => 'width:70%;',
-					                                                                                                'readonly' => true,
-					                                                                                                'value' => $model->naturaleza,
-					                                                                                             	])->label(false)
-					                			?>
-				                			</div>
-										</div>
-									</div>
-<!-- Fin del Naturaleza de la sede principal -->
-
-
-<!-- Cedula de la sede principal -->
-									<div class="col-sm-2" style="margin-left: -69px; top: 20px;">
-										<div class="row">
-											<div class="cedula">
-				                				<?= $form->field($model, 'cedula')->textInput([
-				                																'id' => 'cedula',
-				                																'maxlength' => 8,
-				                																'style' => 'width:75%;',
-				                																'readonly' => true,
-				                															])->label(false) ?>
-				                			</div>
-				                		</div>
-									</div>
-<!-- Fin de Cedula de la sede principal -->
-
-<!-- Tipo de sede principal -->
-									<div class="col-sm-1" style="margin-left: -53px; top: 20px;">
-										<div class="tipo">
-											<?= $form->field($model, 'tipo')->textInput([
-																						'id' => 'tipo',
-																						'style' => 'width:38px;',
-																						'readonly' => true,
-																						'maxlength' => 1,
-																		  			 ])->label(false) ?>
-										</div>
-									</div>
-<!-- Fin de tipo en sede principal -->
-
-
-									</div>
-<!-- FIN DE RIF DE LA SEDE PRINCIPAL -->
-								</div>
-
-
-<!-- REPRESENTANTE LEGAL -->
-								<?php
-				                	//$modeloTipoNaturaleza1 = TipoNaturaleza::find()->where('id_tipo_naturaleza BETWEEN 2 and 3')->all();
-						            //$listaNaturaleza1 = ArrayHelper::map($modeloTipoNaturaleza1, 'siglas_tnaturaleza', 'nb_naturaleza');
-						        ?>
-								<div class="row">
-<!-- Naturaleza de Representante legal -->
-									<!-- <div class="col-sm-3">
-										<div class="row" style="width:100%;">
-											<p style="margin-left: 25px;margin-top: -20px;margin-bottom: 0px;"><i><?//=Yii::t('backend', $modelActEcon->getAttributeLabel('naturaleza_rep')) ?></i></p>
-										</div>
-										<div class="row">
-											<div class="naturaleza_rep" style="margin-left: 25px;">
-						                        <?/*= $form->field($modelActEcon, 'naturaleza_rep')->dropDownList($listaNaturaleza1,[
-									                        																	'id' => 'naturaleza_rep',
-								                                                                                               	'prompt' => Yii::t('backend', 'Select'),
-								                                                                                                'style' => 'height:32px;width:70%;',
-								                                                                                                'disabled' => true,
-					                                                                                             				])->label(false)
-					                			*/?>
-				                			</div>
-										</div>
-									</div> -->
-<!-- Fi de Naturaleza de Representante Legal -->
-
-
-<!-- Cedula del representante legal -->
-									<!-- <div class="col-sm-2" style="margin-left: -62px;">
-										<div class="row" style="width:100%;">
-											<p style="margin-left: 0px;margin-top: -20px;margin-bottom: 0px;"><i><?//=Yii::t('backend', $modelActEcon->getAttributeLabel('cedula_rep')) ?></i></p>
-										</div>
-										<div class="row">
-											<div class="cedula_rep">
-				                				<?/*= $form->field($modelActEcon, 'cedula_rep')->textInput([
-				                																'id' => 'cedula_rep',
-				                																'maxlength' => 8,
-				                																'style' => 'width:75%;height:32px;',
-				                																'disabled' => true,
-				                															])->label(false) */?>
-				                			</div>
-				                		</div>
-									</div> -->
-<!-- Fin de la cedula del representante legal -->
-
-
-<!-- Apellidos y Nombres de Representante Legal -->
-									<div class="col-sm-6" style="margin-left: 25px; top: -20px;">
-										<div class="row" style="width:100%;">
-											<p style="margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('backend', $modelActEcon->getAttributeLabel('representante')) ?></i></p>
-										</div>
-										<div class="row">
-											<div class="representante">
-												<?= $form->field($modelActEcon, 'representante')->textInput([
-																									'id' => 'representante',
-																									'style' => 'width:100%;',
-																									'readonly' => true,
-																						 			])->label(false) ?>
-											</div>
-										</div>
-									</div>
-<!-- Fin de Apellidos y Nombres de Representante Legal -->
+								    				[
+								    					'label' => $model->getAttributeLabel('id_sede_principal'),
+								    					'value' => $datos['id_contribuyente'],
+								    				],
+								    				[
+								    					'label' => $model->getAttributeLabel('dni_principal'),
+								    					'value' => $datos['naturaleza'] . '-' . $datos['cedula'] . '-' . $datos['tipo'],
+								    				],
+								    				[
+								    					'label' => $model->getAttributeLabel('representante'),
+								    					'value' => $datos['representante'],
+								    				],
+								    				[
+								    					'label' => $model->getAttributeLabel('dni_representante'),
+								    					'value' =>  $datos['naturaleza_rep'] . '-' . $datos['cedula_rep'],
+								    				],
+								    			],
+											])
+										?>
 					        	</div>
-<!-- FIN DE REPRESENTANTE LEGAL -->
+					        	<div class="row" id="datos-principal-reg-mercantil" style="padding-left: 15px; width: 100%;">
+					        		<h4><?= Html::encode(Yii::t('backend', 'Info of Registro Mercantil')) ?></h3>
+					        		<?= DetailView::widget([
+												'model' => $model,
+								    			'attributes' => [
 
-
-<!-- REGISTRO MERCANTIL -->
-					        	<div class="row" style="margin-left: 10px;">
-					        		<div class="panel panel-warning" style="width: 97%;">
-										<div class="panel-heading">
-								        	<span><?= Html::encode(Yii::t('backend', 'Datos del Registro Mercantil')) ?></span>
-								        </div>
-								        <div class="panel-body">
-								        	<div class="row">
-<!-- Numero de Registro Mercantil -->
-												<div class="col-sm-3" style="margin-left: 15px;">
-													<div class="row" style="width:100%;">
-														<p style="margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('backend', $modelActEcon->getAttributeLabel('num_reg')) ?></i></p>
-													</div>
-													<div class="row">
-														<div class="num-reg">
-															<?= $form->field($modelActEcon, 'num_reg')->textInput([
-																												'id' => 'num-reg',
-																												'style' => 'width:100%;',
-																												'readonly' => true,
-																									 			])->label(false) ?>
-														</div>
-													</div>
-												</div>
-<!-- Fin de Numero de Registro Mercantil -->
-
-<!-- Fecha de Registro Mercantil -->
-												<div class="col-sm-2" style="margin-left: 3px;">
-													<div class="row" style="width:100%;">
-														<p style="margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('backend', $modelActEcon->getAttributeLabel('fecha')) ?></i></p>
-													</div>
-													<div class="row">
-														<div class="fecha">
-															<?= $form->field($modelActEcon, 'fecha')->textInput([
-																												'id' => 'fecha',
-																												'style' => 'width:100%;',
-																												'readonly' => true,
-																									 			])->label(false) ?>
-														</div>
-													</div>
-												</div>
-<!-- Fin de Fecha de Registro Mercantil -->
-
-<!-- Nombre del Registro Mercantil -->
-												<div class="col-sm-6" style="margin-left: 3px;">
-													<div class="row" style="width:100%;">
-														<p style="margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('backend', $modelActEcon->getAttributeLabel('reg_mercantil')) ?></i></p>
-													</div>
-													<div class="row">
-														<div class="reg-mercantil">
-															<?= $form->field($modelActEcon, 'reg_mercantil')->textInput([
-																												'id' => 'reg-mercantil',
-																												'style' => 'width:100%;',
-																												'readonly' => true,
-																									 			])->label(false) ?>
-														</div>
-													</div>
-												</div>
-<!-- Fin de Nombre del Registro Mercantil -->
-											</div>    <!-- fin de row -->
-
-											<div class="row">
-<!-- Tomo de Registro Mercantil -->
-												<div class="col-sm-3" style="margin-left: 15px;">
-													<div class="row" style="width:100%;">
-														<p style="margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('backend', $modelActEcon->getAttributeLabel('tomo')) ?></i></p>
-													</div>
-													<div class="row" >
-														<div class="tomo">
-															<?= $form->field($modelActEcon, 'tomo')->textInput([
-																												'id' => 'tomo',
-																												'style' => 'width:98%;',
-																												'readonly' => true,
-																									 			])->label(false) ?>
-														</div>
-													</div>
-												</div>
-<!-- Fin de Tomo de Registro Mercantil -->
-
-<!-- Folio de Registro Mercantil -->
-												<div class="col-sm-3" style="margin-left: 0px;">
-													<div class="row" style="width:100%;">
-														<p style="margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('backend', $modelActEcon->getAttributeLabel('folio')) ?></i></p>
-													</div>
-													<div class="row" >
-														<div class="folio">
-															<?= $form->field($modelActEcon, 'folio')->textInput([
-																												'id' => 'folio',
-																												'style' => 'width:98%;',
-																												'readonly' => true,
-																									 			])->label(false) ?>
-														</div>
-													</div>
-												</div>
-
-<!-- Fin de Folio de Registro Mercantil -->
-												<div class="col-sm-3" style="margin-left: 0px">
-													<div class="row" style="width:100%;">
-														<p style="margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('backend', $modelActEcon->getAttributeLabel('capital')) ?></i></p>
-													</div>
-													<div class="row" >
-														<div class="capital" style="margin-left: 0px;">
-															<?= $form->field($modelActEcon, 'capital')->textInput([
-																												'id' => 'capital',
-																												'style' => 'width:98%;',
-																												'readonly' => true,
-																									 			])->label(false) ?>
-														</div>
-													</div>
-												</div>
-<!-- Capital -->
-
-
-<!-- Fin de Capital -->
-											</div>   <!-- fin de row -->
-										</div>		<!-- fin de panel-body representante -->
-									</div>          <!-- fin de panel panel-warning representante-->
+								    				[
+								    					'label' => $model->getAttributeLabel('reg_mercantil'),
+								    					'value' => $datos['reg_mercantil'],
+								    				],
+								    				[
+								    					'label' => $model->getAttributeLabel('num_reg'),
+								    					'value' => $datos['num_reg'],
+								    				],
+								    				[
+								    					'label' => $model->getAttributeLabel('fecha'),
+								    					'value' => date('d-M-Y', strtotime($datos['fecha'])),
+								    				],
+								    				[
+								    					'label' => $model->getAttributeLabel('tomo'),
+								    					'value' => $datos['tomo'],
+								    				],
+								    				[
+								    					'label' => $model->getAttributeLabel('folio'),
+								    					'value' => $datos['folio'],
+								    				],
+								    				[
+								    					'label' => $model->getAttributeLabel('capital'),
+								    					'value' => $datos['capital'],
+								    				],
+								    			],
+											])
+										?>
 					        	</div>
-<!-- FIN DE REGISTRO MERCANTIL -->
 					        </div>
-
+						</div>
+					</div>
 
 <!-- DATOS DE LA SUCURSAL -->
 							<div class="row">
@@ -696,20 +491,32 @@
 
 
 							<div class="row">
-								<div class="col-sm-2">
+								<div class="col-sm-3">
 									<div class="form-group">
-										<?= Html::submitButton(Yii::t('backend', 'Create'),['id' => 'btn-create', 'class' => 'btn btn-success', 'name' => 'btn-create'])?>
+										<?= Html::submitButton(Yii::t('backend', 'Create'),[
+																						'id' => 'btn-create',
+																						'class' => 'btn btn-success',
+																						'name' => 'btn-create',
+																						'value' => 1,
+																						'style' => 'width: 100%;'
+											])?>
 									</div>
 								</div>
 								<div class="col-sm-2" style="margin-left: 150px;">
 									<div class="form-group">
-										 <?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) ?>
+										 <?= Html::submitButton(Yii::t('backend', 'Quit'),[
+																						'id' => 'btn-quit',
+																						'class' => 'btn btn-danger',
+																						'name' => 'btn-quit',
+																						'value' => 1,
+																						'style' => 'width: 100%;'
+											])?>
 									</div>
 								</div>
 							</div>
 
 						</div>
-		        	</div>
+		        	<!-- </div> -->
 				</div>	<!-- Fin de col-sm-12 -->
 			</div> <!-- Fin de container-fluid -->
 		</div>	<!-- Fin de panel-body -->
