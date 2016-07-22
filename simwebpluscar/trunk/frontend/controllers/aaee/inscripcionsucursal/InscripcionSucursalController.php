@@ -49,7 +49,7 @@
 	use yii\filters\AccessControl;
 	use yii\web\Controller;
 	use yii\filters\VerbFilter;
-	use yii\widgets\ActiveForm;
+	// use yii\widgets\ActiveForm;
 	use yii\web\Response;
 	use yii\helpers\Url;
 	use yii\web\NotFoundHttpException;
@@ -60,13 +60,16 @@
 	use common\models\contribuyente\ContribuyenteBase;
 	use backend\models\documentoconsignado\DocumentoConsignadoForm;
 	use common\conexion\ConexionController;
-	use yii\base\Model;
+	// use yii\base\Model;
 	use common\mensaje\MensajeController;
 	use backend\models\registromaestro\TipoNaturaleza;
 	//use backend\controllers\utilidad\documento\DocumentoRequisitoController;
 	use backend\models\TelefonoCodigo;
 	use yii\helpers\ArrayHelper;
 	use common\models\session\Session;
+	use common\models\configuracion\solicitud\ParametroSolicitud;
+	use common\models\configuracion\solicitud\SolicitudProcesoEvento;
+	use common\enviaremail\PlantillaEmail;
 
 	session_start();		// Iniciando session
 
@@ -88,7 +91,9 @@
 		private $_conexion;
 		private $_transaccion;
 
-
+		const SCENARIO_FRONTEND = 'frontend';
+		const SCENARIO_BACKEND = 'backend';
+		const CONFIG = 83;
 
 
 		/**
@@ -100,72 +105,127 @@
 		{
 			// Se verifica que el contribuyente haya iniciado una session.
 			// Se verifica que el contribuyente sea de tipo naturaleza "Juridico".
+			self::actionAnularSession(['begin', 'conf']);
+			$request = Yii::$app->request;
+			$getData = $request->get();
 
-			if ( isset($_SESSION['idContribuyente']) ) {
+			// identificador de la configuracion de la solicitud.
+			$id = $getData['id'];
+			if ( $id == self::CONFIG ) {
+				if ( isset($_SESSION['idContribuyente']) ) {
+
+					// Se determina si el contribuyente es una sede principal.
+					$idContribuyente = $_SESSION['idContribuyente'];
+					$search = New InscripcionSucursalSearch($idContribuyente);
+					if ( $search->getSedePrincipal() == true ) {
+
+						$tipoSolicitud = 0;
+						$modelParametro = New ParametroSolicitud($id);
+						// // Se obtiene el tipo de solicitud. Se retorna un array donde el key es el nombre
+						// // del parametro y el valor del elemento es el contenido del campo en base de datos.
+						$config = $modelParametro->getParametroSolicitud([
+																'id_config_solicitud',
+																'tipo_solicitud',
+																'impuesto',
+																'nivel_aprobacion'
+													]);
+
+						if ( isset($config) ) {
+							$_SESSION['conf'] = $config;
+							$_SESSION['begin'] = 1;
+							$this->redirect(['index-create']);
+						} else {
+							// No se obtuvieron los parametros de la configuracion.
+							return $this->redirect(['error-operacion', 'cod' => 955]);
+						}
+
+					} else {
+						// El contribuyente no es una sede principal.
+						return $this->redirect(['error-operacion', 'cod' => 936]);
+					}
+				} else {
+					// No esta defino el contribuyente.
+					return $this->redirect(['error-operacion', 'cod' => 932]);
+				}
+			} else {
+				// Parametro de configuracion no coinciden.
+				return $this->redirect(['error-operacion', 'cod' => 955]);
+			}
+		}
+
+
+
+		/***/
+		public function actionIndexCreate()
+		{
+			// Se verifica que el contribuyente haya iniciado una session.
+			// Se verifica que el contribuyente sea de tipo naturaleza "Juridico".
+
+			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) && isset($_SESSION['conf'])) {
+
+				$request = Yii::$app->request;
+				$postData = $request->post();
 
 				// Se determina si el contribuyente es una sede principal.
 				$idContribuyente = $_SESSION['idContribuyente'];
-				$search = New InscripcionSucursalSearch($idContribuyente);
-				if ( $search->getSedePrincipal() == true ) {
 
-					$model = New InscripcionSucursalForm();
-					$modelActEcon = New InscripcionActividadEconomicaForm();
+				//$modelActEcon = New InscripcionActividadEconomicaForm();
 
-					$postData = Yii::$app->request->post();
-			  		$request = Yii::$app->request;
+				$model = New InscripcionSucursalForm();
+				$model->scenario = self::SCENARIO_FRONTEND;
 
-			  		if ( $model->load($postData)  && Yii::$app->request->isAjax ) {
-						Yii::$app->response->format = Response::FORMAT_JSON;
-						return ActiveForm::validate($model);
-			      	}
+		  		if ( $model->load($postData)  && Yii::$app->request->isAjax ) {
+					Yii::$app->response->format = Response::FORMAT_JSON;
+					return ActiveForm::validate($model);
+		      	}
 
-			      	if ( $model->load($postData) ) {
+		      	if ( $model->load($postData) ) {
 
-			      	 	if ( $models->validate() ) {
+		      	 	if ( $model->validate() ) {
 
-			      	 	}
-			      	 }
+		      	 	}
+		      	 }
 
-			      	 // Se muestra el form de la solicitud.
-			      	//$datos = ContribuyenteBase::getDatosContribuyenteSegunID($idContribuyente);
-			      	$datos = $search->getDatosContribuyente($idContribuyente);
-			  		if ( $datos ) {
-			  			// Se crea la lista para los tipos de naturaleza, esta lista se utilizara
-			  			// en el combo-lista.
-			  			$modeloTipoNaturaleza = TipoNaturaleza::find()->where('id_tipo_naturaleza BETWEEN 1 and 4')->all();
-						$listaNaturaleza = ArrayHelper::map($modeloTipoNaturaleza, 'siglas_tnaturaleza', 'nb_naturaleza');
+		      	// Se muestra el form de la solicitud.
+		      	// Datos generales del contribuyente sede principal.
+		      	$search = New InscripcionSucursalSearch($idContribuyente);
+		      	$datos = $search->getDatosContribuyente($idContribuyente);
+		  		if ( $datos ) {
+		  			// Se crea la lista para los tipos de naturaleza, esta lista se utilizara
+		  			// en el combo-lista.
+		  			$modeloTipoNaturaleza = TipoNaturaleza::find()->where('id_tipo_naturaleza BETWEEN 1 and 4')->all();
+					$listaNaturaleza = ArrayHelper::map($modeloTipoNaturaleza, 'siglas_tnaturaleza', 'nb_naturaleza');
 
-						// Se crea la lista de telefonos para los combo-lista.
-						// Telefono local.
-						$listaTelefonoCodigo = TelefonoCodigo::getListaTelefonoCodigo(false);
+					// Se crea la lista de telefonos para los combo-lista.
+					// Telefono local.
+					$listaTelefonoCodigo = TelefonoCodigo::getListaTelefonoCodigo(false);
 
-						// Se crea la lista de telefonos moviles.
-						$listaTelefonoMovil = TelefonoCodigo::getListaTelefonoCodigo(true);
+					// Se crea la lista de telefonos moviles.
+					$listaTelefonoMovil = TelefonoCodigo::getListaTelefonoCodigo(true);
 
-						$modelTelefono = new TelefonoCodigo();
+					$modelTelefono = new TelefonoCodigo();
 
-			  			return $this->render('/aaee/inscripcion-sucursal/_create', [
-			  											'model' => $model,
-			  											'modelActEcon' => $modelActEcon,
-			  											'datos' => $datos,
-			  											'listaNaturaleza' => $listaNaturaleza,
-			  											'listaTelefonoCodigo' => $listaTelefonoCodigo,
-			  											'listaTelefonoMovil' => $listaTelefonoMovil,
-			  											'modelTelefono' => $modelTelefono,
-			  					]);
-			  		} else {
-			  			// No se encontraron los datos del contribuyente principal.
-			  		}
+					$url = Url::to(['index-create']);
+		  			return $this->render('/aaee/inscripcion-sucursal/_create', [
+		  											'model' => $model,
+		  											//'modelActEcon' => $modelActEcon,
+		  											'datos' => $datos,
+		  											'listaNaturaleza' => $listaNaturaleza,
+		  											'listaTelefonoCodigo' => $listaTelefonoCodigo,
+		  											'listaTelefonoMovil' => $listaTelefonoMovil,
+		  											'modelTelefono' => $modelTelefono,
+		  					]);
+		  		} else {
+		  			// No se encontraron los datos del contribuyente principal.
+		  		}
 
-				} else {
-					// El contribuyente no es una sede principal.
-					return $this->redirect(['error-operacion', 'cod' => 936]);
-				}
 			} else {
 				// No esta defino el contribuyente.
 				return $this->redirect(['error-operacion', 'cod' => 932]);
 			}
 		}
+
+
 
 
 
