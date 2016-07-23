@@ -86,6 +86,16 @@
 	<?= $form->field($model, 'tipo')->hiddenInput(['value' => $datos['tipo']])->label(false); ?>
 	<?= $form->field($model, 'id_contribuyente')->hiddenInput(['value' => 0])->label(false); ?>
 	<?= $form->field($model, 'estatus')->hiddenInput(['value' => 0])->label(false); ?>
+	<?= $form->field($model, 'reg_mercantil')->hiddenInput(['value' => $datos['reg_mercantil']])->label(false); ?>
+	<?= $form->field($model, 'tomo')->hiddenInput(['value' => $datos['tomo']])->label(false); ?>
+	<?= $form->field($model, 'num_reg')->hiddenInput(['value' => $datos['num_reg']])->label(false); ?>
+	<?= $form->field($model, 'fecha')->hiddenInput(['value' => $datos['fecha']])->label(false); ?>
+	<?= $form->field($model, 'folio')->hiddenInput(['value' => $datos['folio']])->label(false); ?>
+	<?= $form->field($model, 'capital')->hiddenInput(['value' => $datos['capital']])->label(false); ?>
+	<?= $form->field($model, 'naturaleza_rep')->hiddenInput(['value' => $datos['naturaleza_rep']])->label(false); ?>
+	<?= $form->field($model, 'cedula_rep')->hiddenInput(['value' => $datos['cedula_rep']])->label(false); ?>
+	<?= $form->field($model, 'representante')->hiddenInput(['value' => $datos['representante']])->label(false); ?>
+
 <!--
 	<?//= $form->field($modelActEcon, 'estatus')->hiddenInput(['value' => 0])->label(false); ?>
 	<?//= $form->field($modelActEcon, 'origen')->hiddenInput(['value' => 'LAN'])->label(false); ?>
@@ -409,7 +419,7 @@
 											</div>
 
 											<div class="col-sm-2"  style="margin-left: -58px;">
-												<div class="row" style="width:100%;">
+												<div class="row" style="width:120%;">
 													<p style="margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('backend', $model->getAttributeLabel('num_celular')) ?></i></p>
 												</div>
 												<div class="row" >
@@ -425,7 +435,7 @@
 											</div>
 
 											<div class="col-sm-2"  style="margin-left: 5px;">
-												<div class="row" style="width:100%;">
+												<div class="row" style="width:120%;">
 													<p style="margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('backend', $model->getAttributeLabel('tlf_celular')) ?></i></p>
 												</div>
 												<div class="row" >
