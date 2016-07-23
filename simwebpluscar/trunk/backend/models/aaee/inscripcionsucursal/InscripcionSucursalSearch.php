@@ -47,6 +47,9 @@
 	use yii\db\ActiveRecord;
 	use backend\models\aaee\inscripcionsucursal\InscripcionSucursal;
 	use common\models\contribuyente\ContribuyenteBase;
+	use backend\models\utilidad\documento\DocumentoRequisito;
+	use yii\data\ActiveDataProvider;
+
 
 	/**
 	* 	Clase
@@ -117,6 +120,27 @@
 			return (isset($datos)) ? $datos[0] :null;
 		}
 
+
+
+		/**
+		 * Metodo que crea un ArrayDataProvider que sirva para mostrar un grid view
+		 * de documentos y/o requisitos. El metodo recibe
+		 * @param  array $arrayDocumento arreglo de indices, que indica los item
+		 * seleccionados y a los cuales se les debe buscar para generar el array data
+		 * provider
+		 * @return array data provider retorna un array data provider
+		 */
+		public function getDataProviderDocumentoSeleccionado($arrayDocumento)
+		{
+			$query = DocumentoRequisito::find();
+
+			$dataProvider = New ActiveDataProvider([
+					'query' => $query,
+			]);
+			$query->where(['in', 'id_documento', $arrayDocumento]);
+
+			return isset($dataProvider) ? $dataProvider : null;
+		}
 
 
 	}

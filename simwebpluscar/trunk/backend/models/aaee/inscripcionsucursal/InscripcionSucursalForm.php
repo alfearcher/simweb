@@ -72,6 +72,8 @@
 		public $fecha_hora;
 		public $usuario;
 		public $estatus;
+		public $fecha_hora_proceso;
+		public $user_funcionario;
 		public $num_tlf_ofic;
 		public $num_tlf_ofic_otro;
 		public $num_celular;
@@ -95,18 +97,17 @@
         					'razon_social',
         					'domicilio_fiscal',
         					'id_sim',
-        					'tlf_ofic',
-        					'tlf_ofic_otro',
         					'email',
+        					'tlf_ofic',
         					'tlf_celular',
         					'fecha_inicio',
         					'origen',
         					'fecha_hora',
         					'usuario',
         					'estatus',
-        					'num_tlf_ofic',
-        					'num_tlf_ofic_otro',
-        					'num_celular',
+        					//'num_tlf_ofic',
+        					//'num_tlf_ofic_otro',
+        					//'num_celular',
 
         		],
         		self::SCENARIO_BACKEND => [
@@ -118,10 +119,7 @@
         					'razon_social',
         					'domicilio_fiscal',
         					'id_sim',
-        					'tlf_ofic',
-        					'tlf_ofic_otro',
         					'email',
-        					'tlf_celular',
         					'fecha_inicio',
         					'origen',
         					'fecha_hora',
@@ -144,11 +142,10 @@
 	        return [
 	        	[['id_sede_principal', 'naturaleza',
 	        	  'cedula', 'tipo', 'domicilio_fiscal',
-	        	  'tlf_ofic', 'tlf_celular', 'email',
-	        	  'id_sim',
+	        	  'email', 'id_sim',
 	        	  'fecha_inicio', 'razon_social',
-	        	  'num_tlf_ofic', 'num_celular',],
-	        	  'required', 'on' => 'frontend', 'message' => Yii::t('backend','{attribute} is required')],
+	        	  'tlf_ofic', 'tlf_celular',],
+	        	  'required', 'on' => 'frontend', 'message' => Yii::t('frontend','{attribute} is required')],
 	        	[['fecha_inicio'], 'date', 'format' => 'dd-MM-yyyy','message' => Yii::t('backend','formatted date no valid')],
 	        	[['email'], 'email', 'message' => Yii::t('backend','{attribute} is email')],
 	        	['email', 'filter','filter'=>'strtolower'],
@@ -167,7 +164,7 @@
 	     		['nro_solicitud', 'default', 'value' => 0],
 	     		['id_contribuyente', 'default', 'value' => 0],
 	     		['razon_social', 'string', 'max' => 75],
-	     		[['tlf_ofic', 'tlf_ofic_otro', 'tlf_celular'], 'match', 'pattern' => '/^[0-9]{4}-[0-9]{7}$/', 'message' => Yii::t('backend', '{attribute} not valid')],
+	     		//[['tlf_ofic', 'tlf_ofic_otro', 'tlf_celular'], 'match', 'pattern' => '/^[0-9]{4}-[0-9]{7}$/', 'message' => Yii::t('backend', '{attribute} not valid')],
 	     		[['tlf_ofic', 'tlf_ofic_otro', 'tlf_celular'], 'string', 'max' => 12],
 	     		[['tlf_ofic', 'tlf_celular'], 'string', 'min' => 12],
 	     		['id_sede_principal', 'default', 'value' => $_SESSION['idContribuyente']],
@@ -194,9 +191,9 @@
 	            'cedula' => Yii::t('backend', 'DNI'),
 	            'fecha_inicio' => Yii::t('backend', 'Begin Date'),
 	            'domicilio_fiscal' => Yii::t('backend', 'Home'),
-	            'tlf_ofic' => Yii::t('backend', 'Office No Phone'),
-	            'tlf_ofic_otro' => Yii::t('backend', 'Office No Phone'),
-	            'tlf_celular' => Yii::t('backend', 'Office Celular No'),
+	            'tlf_ofic' => Yii::t('backend', 'Phone Office 1'),
+	            'tlf_ofic_otro' => Yii::t('backend', 'Phone Office 2'),
+	            'tlf_celular' => Yii::t('backend', 'Phone Celular of Office'),
 	            'fecha_inicio' => Yii::t('backend', 'Begin Date'),
 	            'email' => Yii::t('backend', 'email'),
 	            'razon_social' => Yii::t('backend', 'Razon Social'),
@@ -214,6 +211,41 @@
 	            'capital' => Yii::t('backend', 'Capital'),
 	            'dni_principal' => Yii::t('backend', 'DNI headquarter main')
 
+	        ];
+	    }
+
+
+
+
+	    /**
+	     * Metodo que indica los atributos que seran insertados
+	     * @return array retorna arreglo de atributos que seran incluidos en
+	     * la operacion de insercion.
+	     */
+	    public function getAttributeInsert()
+	    {
+	    	return [
+	        	'id_inscripcion_sucursal',
+	        	'nro_solicitud',
+	        	'id_sede_principal',
+	            'id_contribuyente',
+	            'naturaleza',
+	            'cedula',
+	            'tipo',
+	            'razon_social',
+	            'domicilio_fiscal',
+	            'id_sim',
+	            'tlf_ofic',
+	            'tlf_ofic_otro',
+	            'email',
+	            'tlf_celular',
+	            'fecha_inicio',
+	            'origen',
+	            'fecha_hora',
+	            'usuario',
+	            'estatus',
+	            'fecha_hora_proceso',
+	            'user_funcionario',
 	        ];
 	    }
 
