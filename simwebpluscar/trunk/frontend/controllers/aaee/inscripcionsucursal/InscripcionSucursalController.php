@@ -70,6 +70,7 @@
 	use common\models\configuracion\solicitud\ParametroSolicitud;
 	use common\models\configuracion\solicitud\SolicitudProcesoEvento;
 	use common\enviaremail\PlantillaEmail;
+	use common\models\solicitudescontribuyente\SolicitudesContribuyenteForm;
 
 	session_start();		// Iniciando session
 
@@ -105,7 +106,7 @@
 		{
 			// Se verifica que el contribuyente haya iniciado una session.
 			// Se verifica que el contribuyente sea de tipo naturaleza "Juridico".
-			self::actionAnularSession(['begin', 'conf']);
+			self::actionAnularSession(['begin', 'conf', 'exigirDocumento']);
 			$request = Yii::$app->request;
 			$getData = $request->get();
 
@@ -131,6 +132,13 @@
 													]);
 
 						if ( isset($config) ) {
+							$documentoConsignar = $modelParametro->getDocumentoRequisitoSolicitud();
+							if ( $documentoConsignar !== null ) {
+								$_SESSION['exigirDocumento'] = true;
+							} else {
+								$_SESSION['exigirDocumento'] = false;
+							}
+
 							$_SESSION['conf'] = $config;
 							$_SESSION['begin'] = 1;
 							$this->redirect(['index-create']);
@@ -165,14 +173,22 @@
 
 				$request = Yii::$app->request;
 				$postData = $request->post();
+				$exigirDocumento = false;
+				$mensajeErrorChk = '';
 
 				// Se determina si el contribuyente es una sede principal.
 				$idContribuyente = $_SESSION['idContribuyente'];
-
-				//$modelActEcon = New InscripcionActividadEconomicaForm();
+				$exigirDocumento = $_SESSION['exigirDocumento'];
 
 				$model = New InscripcionSucursalForm();
+				$formName = $model->formName();
 				$model->scenario = self::SCENARIO_FRONTEND;
+
+				if ( isset($postData['btn-back-form']) ) {
+					if ( $postData['btn-back-form'] == 3 ) {
+						$model->load($postData);
+					}
+				}
 
 		  		if ( $model->load($postData)  && Yii::$app->request->isAjax ) {
 					Yii::$app->response->format = Response::FORMAT_JSON;
@@ -180,10 +196,42 @@
 		      	}
 
 		      	if ( $model->load($postData) ) {
+		      		if ( !isset($postData['chkDocumento']) && $exigirDocumento ) {
+	      	 			$mensajeErrorChk = Yii::t('frontend', 'Select the documents consigned');
+			      	}
+		      		if ( $model->validate() ) {
+		      			if ( trim($mensajeErrorChk) == '' ) {
+		      				// Validacion correcta.
+		      				if ( isset($postData['btn-create']) ) {
+		      					if ( $postData['btn-create'] == 1 ) {
+		      						// Mostrar vista previa.
+		      						$datosRecibido = $postData[$formName];
+		      						// Se obtiene el arreglo de los items seleccionados en el form para indicar
+		      						// los documentos consignados.
+		      						$arregloDocumetoChk = isset($postData['chkDocumento']) ? $postData['chkDocumento'] : [];
 
-		      	 	if ( $model->validate() ) {
+		      						if ( count($arregloDocumetoChk) > 0 ) {
+			      						// Se crea un DataProvider con los documentos seleccionados
+			      						// por el contribuyente. Para mostrar un grid con la lista de item
+			      						// documentos seleccionados.
+			      						$search = New InscripcionSucursalSearch($idContribuyente);
+			      						$dataProvider = $search->getDataProviderDocumentoSeleccionado($arregloDocumetoChk);
+			      					}
 
-		      	 	}
+			      					$url = Url::to(['begin-save']);
+		      						return $this->render('/aaee/inscripcion-sucursal/pre-view-create', [
+		      																	'model' => $model,
+		      																	'datosRecibido' => $datosRecibido,
+		      																	'dataProvider' => $dataProvider,
+		      																	'url' => $url,
+		      							]);
+		      					}
+		      				} elseif ( isset($postData['btn-confirm-create']) ) {
+		      					if ( $postData['btn-confirm-create'] == 2 ) {
+		      					}
+		      				}
+		      			}
+			      	}
 		      	 }
 
 		      	// Se muestra el form de la solicitud.
@@ -214,6 +262,7 @@
 		  											'listaTelefonoCodigo' => $listaTelefonoCodigo,
 		  											'listaTelefonoMovil' => $listaTelefonoMovil,
 		  											'modelTelefono' => $modelTelefono,
+		  											'mensajeErrorChk' => $mensajeErrorChk,
 		  					]);
 		  		} else {
 		  			// No se encontraron los datos del contribuyente principal.
@@ -354,6 +403,132 @@
 
 
 
+		/**
+		 * Metodo que comienza el proceso para guardar la solicitud y los demas
+		 * procesos relacionados.
+		 * @return [type] [description]
+		 */
+		public function actionBeginSave()
+		{
+			$request = Yii::$app->request;
+			$postData = $request->post();
+			$result = false;
+			$nroSolicitud = 0;
+
+			if ( isset($_SESSION['idContribuyente']) ) {
+				if ( isset($postData['btn-confirm-create']) && $postData['btn-confirm-create'] == 2 ) {
+					if ( isset($_SESSION['conf']) ) {
+						$conf = $_SESSION['conf'];
+
+						$this->_conexion = New ConexionController();
+
+		      			// Instancia de conexion hacia la base de datos.
+		      			$this->_conn = $this->_conexion->initConectar('db');
+		      			$this->_conn->open();
+
+		      			// Instancia de tipo transaccion para asegurar la integridad del resguardo de los datos.
+		      			// Inicio de la transaccion.
+						$this->_transaccion = $this->_conn->beginTransaction();
+
+						$model = New InscripcionSucursalForm();
+						$model->scenario = self::SCENARIO_FRONTEND;
+						$model->load($postData);
+
+						$nroSolicitud = self::actionCreateSolicitud($this->_conexion, $this->_conn, $model);
+						$model->nro_solicitud = $nroSolicitud;
+
+						if ( $conf['nivel_aprobacion'] == 1 ) {
+
+						}
+
+
+
+						if ( $nroSolicitud > 0 ) {
+							$this->_transaccion->commit();
+							$result = true;
+							$this->redirect(['proceso-exitoso', 'cod' => 100]);
+						} else {
+							$this->_transaccion->rollBack();
+							$this->redirect(['error-operacion', 'cod'=> 920]);
+						}
+
+					} else {
+						// No se obtuvieron los parametros de la configuracion.
+						return $this->redirect(['error-operacion', 'cod' => 955]);
+					}
+				} else {
+					// La opcion seleccionada no esta definida.
+					return $this->redirect(['error-operacion', 'cod' => 404]);
+				}
+			} else {
+				// No esta defino el contribuyente.
+				return $this->redirect(['error-operacion', 'cod' => 932]);
+			}
+		}
+
+
+
+
+		/**
+		 * Metodo que guarda el registro respectivo en la entidad "solicitudes-contribuyente".
+		 * @param  Class $conexionLocal instancia de tipo ConexionController
+		 * @param  @param  [type] $connLocal     [description]
+		 * @param  [type] $model         [description]
+		 * @return boolean retorna true si guardo correctamente o false sino guardo.
+		 */
+		private function actionCreateSolicitud($conexionLocal, $connLocal, $model)
+		{
+			$estatus = 0;
+			$userFuncionario = '';
+			$fechaHoraProceso = '0000-00-00 00:00:00';
+			$user = isset(Yii::$app->user->identity->login) ? Yii::$app->user->identity->login : null;
+			$nroSolicitud = 0;
+			$modelSolicitud = New SolicitudesContribuyenteForm();
+			$tabla = $modelSolicitud->tableName();
+			$idContribuyente = $_SESSION['idContribuyente'];
+
+			$nroSolicitud = 0;
+			$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : null;
+
+
+			if ( count($conf) > 0 ) {
+				// Valores que se pasan al modelo:
+				// id-config-solicitud.
+				// impuesto.
+				// tipo-solicitud.
+				// nivel-aprobacion
+				$modelSolicitud->attributes = $conf;
+
+				if ( $conf['nivel_aprobacion'] == 1 ) {
+					$estatus = 1;
+					$userFuncionario = $user;
+					$fechaHoraProceso = date('Y-m-d H:i:s');
+				}
+
+				$modelSolicitud->id_contribuyente = $idContribuyente;
+				$modelSolicitud->id_impuesto = 0;
+				$modelSolicitud->usuario = $user;
+				$modelSolicitud->fecha_hora_creacion = date('Y-m-d H:i:s');
+				$modelSolicitud->inactivo = 0;
+				$modelSolicitud->estatus = $estatus;
+				$modelSolicitud->nro_control = 0;
+				$modelSolicitud->user_funcionario = $userFuncionario;
+				$modelSolicitud->fecha_hora_proceso = $fechaHoraProceso;
+				$modelSolicitud->causa = 0;
+				$modelSolicitud->observacion = '';
+
+				// Arreglo de datos del modelo para guardar los datos.
+				$arregloDatos = $modelSolicitud->attributes;
+
+				if ( $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos) ) {
+					$nroSolicitud = $connLocal->getLastInsertID();
+				}
+			}
+
+			return $nroSolicitud;
+		}
+
+
 
 
 
@@ -448,7 +623,7 @@
 		 */
 		private static function actionCreateContribuyente($conexion, $connLocal)
 		{
-			if ( isset($_SESSION['datosContribuyente']) ) {
+			if ( isset($_SESSION['idContribuyente']) ) {
 
 				$modelContribuyente = new ContribuyenteBase();
 
@@ -470,8 +645,6 @@
 			}
 			return false;
 		}
-
-
 
 
 
@@ -524,47 +697,29 @@
 
 
 
-		/**
-		 * Metodo para guardar la informacion de la sucursal.
-		 * @param  [type]  $conexion               [description]
-		 * @param  [type]  $connLocal              [description]
-		 * @param  integer $idContribuyenteGenerdo [description]
-		 * @return [type]                          [description]
-		 */
-		private static function actionCreateSucursal($conexion, $connLocal, $idContribuyenteGenerado = 0)
+		/***/
+		private static function actionCreateSucursal($conexionLocal, $connLocal, $model)
 		{
-			if ( $idContribuyenteGenerado > 0 ) {
-				if ( isset($conexion) ) {
-					if ( isset($_SESSION['postData']) ) {
+			$result = false;
+			if ( isset($conexionLocal) && isset($connLocal) && isset($model) ) {
+				$tabla = '';
+      			$tabla = $model->tableName();
+				$arrayDatos = $model->getAttributeInsert();
 
-						$postData = $_SESSION['postData'];
-						$model = new InscripcionSucursalForm();
-
-						$arrayDatos = $model->attributes;
-
-						foreach ( $model->attributes as $key => $value ) {
-							if ( isset($postData[$model->formName()][$key] ) ) {
-								$arrayDatos[$key] = $postData[$model->formName()][$key];
-							}
-						}
-						// Campos faltantes.
-						$arrayDatos['id_contribuyente'] = $idContribuyenteGenerado;
-						$arrayDatos['nro_solicitud'] = 0;
-
-						// Se ajusta el formato de fecha incio de dd-mm-aaaa a aaaa-mm-dd.
-						$arrayDatos['fecha_inicio'] = date('Y-m-d', strtotime($arrayDatos['fecha_inicio']));
-
-		      			$tabla = '';
-		      			$tabla = $model->tableName();
-
-						if ( $conexion->guardarRegistro($connLocal, $tabla, $arrayDatos) ) {
-							$idInscripcionSucursal = 0;
-							return $idInscripcionSucursal = $connLocal->getLastInsertID();
-						}
+				foreach ( $model->attributes as $key => $value ) {
+					if ( isset($arrayDatos[$key]) ) {
+						$arrayDatos[$key] = $model[$key];
 					}
 				}
+				$arregloDatos['id_inscripcion_sucursal'] = null;
+
+				// Se ajusta el formato de fecha incio de dd-mm-aaaa a aaaa-mm-dd.
+				$arrayDatos['fecha_inicio'] = date('Y-m-d', strtotime($arrayDatos['fecha_inicio']));
+
+				$result = $conexion->guardarRegistro($connLocal, $tabla, $arrayDatos);
+
 			}
-			return false;
+			return $result;
 		}
 
 
@@ -728,11 +883,11 @@
 		 * [actionProcesoExitoso description]
 		 * @return [type] [description]
 		 */
-		public function actionProcesoExitoso()
+		public function actionProcesoExitoso($cod)
 		{
 			$varSession = self::actionGetListaSessions();
 			self::actionAnularSession($varSession);
-			return true;
+			return MensajeController::actionMensaje($cod);
 		}
 
 
@@ -758,7 +913,10 @@
 		public function actionGetListaSessions()
 		{
 			return $varSession = [
-							'',
+							'postData',
+							'conf',
+							'begin',
+							'exigirDocumento',
 					];
 		}
 
