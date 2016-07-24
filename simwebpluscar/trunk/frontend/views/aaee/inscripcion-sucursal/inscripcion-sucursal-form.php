@@ -447,49 +447,6 @@
 							</div>   <!-- Fin de row de datos sucursal -->
 <!-- FIN DE DATOS DE LA SUCURSAL -->
 
-<!-- LISTA DE DOCUMENTOS Y REQUISITOS -->
-							<div class="row">
-								<div class="panel panel-success" style="width: 100%;">
-							        <div class="panel-heading">
-							        	<span><?= Html::encode(Yii::t('backend', 'Select documents and requirements consigned')) ?></span>
-							        </div>
-							        <div class="panel-body">
-							        	<div class="row">
-							        		<div class="col-sm-8">
-												<div class="documento-requisito-consignado">
-											        <?= GridView::widget([
-											        	'id' => 'grid-list',
-											            'dataProvider' => DocumentoRequisitoController::actionGetDataProviderSegunImpuesto(1),
-											            //'filterModel' => $searchModel,
-											            //'layout'=>"n{pager}\n{items}",
-
-											            'columns' => [
-											                	['class' => 'yii\grid\SerialColumn'],
-											                	[
-												                    'label' => 'ID.',
-												                    'value' => 'id_documento',
-												                ],
-												                [
-												                    'label' => 'Descripcion',
-												                    'value' => 'descripcion',
-												                ],
-												                [
-												                	'class' => 'yii\grid\CheckboxColumn',
-												                	'name' => 'chkDocumento',
-												                ],
-											            ]
-													]);?>
-												</div>
-												<div class="row" style="padding-left: 15px;">
-													<div class="wells" style="color : red;"><?=$mensajeErrorChk?></div>
-												</div>
-											</div>
-										</div>
-									</div>   	<!-- Fin de panel-body documento -->
-								</div>  		<!-- Fin de panel panel-success documento -->
-							</div>				<!-- Fin de row documento -->
-<!-- FINAL DE DOCUMENTOS Y REQUISITOS -->
-
 
 							<div class="row">
 								<div class="col-sm-3">

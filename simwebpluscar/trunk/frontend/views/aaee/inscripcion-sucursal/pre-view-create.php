@@ -240,82 +240,31 @@
 						</div>
 					</div>
 
-<!-- LISTA DE DOCUMENTOS Y REQUISITOS -->
-							<div class="row">
-								<div class="panel panel-success" style="width: 100%;">
-							        <div class="panel-heading">
-							        	<span><?= Html::encode(Yii::t('backend', 'Select documents and requirements consigned')) ?></span>
-							        </div>
-							        <div class="panel-body">
-							        	<div class="row">
-							        		<div class="col-sm-8">
-												<div class="documento-requisito-consignado">
-											        <?= GridView::widget([
-											        	'id' => 'grid-list',
-											            'dataProvider' => $dataProvider,
-											            //'filterModel' => $searchModel,
-											            //'layout'=>"n{pager}\n{items}",
-
-											            'columns' => [
-										                	['class' => 'yii\grid\SerialColumn'],
-										                	[
-											                    'label' => 'ID.',
-											                    'value' => 'id_documento',
-											                ],
-											                [
-											                    'label' => 'Descripcion',
-											                    'value' => 'descripcion',
-											                ],
-												            [
-												            	'class' => 'yii\grid\CheckboxColumn',
-												                'name' => 'chkDocumento',
-												                'checkboxOptions' => [
-                                										'id' => 'chkDocumento',
-			                                							// Lo siguiente mantiene el checkbox tildado.
-			                                							'onClick' => 'javascript: return false;',
-			                                							'checked' => true,
-			                                							//'disabled' => true,
-			                                					],
-			                                					'multiple' => false,
-												            ],
-											            ]
-													]);?>
-												</div>
-											</div>
-										</div>
-									</div>   	<!-- Fin de panel-body documento -->
-								</div>  		<!-- Fin de panel panel-success documento -->
-							</div>				<!-- Fin de row documento -->
-<!-- FINAL DE DOCUMENTOS Y REQUISITOS -->
-
-
-							<div class="row">
-								<div class="col-sm-3">
-									<div class="form-group">
-										<?= Html::submitButton(Yii::t('backend', 'Confirm Create'),[
-																						'id' => 'btn-confirm-create',
-																						'class' => 'btn btn-success',
-																						'name' => 'btn-confirm-create',
-																						'value' => 2,
-																						'style' => 'width: 100%;'
-											])?>
-									</div>
-								</div>
-								<div class="col-sm-2" style="margin-left: 150px;">
-									<div class="form-group">
-										 <?= Html::submitButton(Yii::t('backend', 'Back Form'),[
-																						'id' => 'btn-back-form',
-																						'class' => 'btn btn-danger',
-																						'name' => 'btn-back-form',
-																						'value' => 3,
-																						'style' => 'width: 100%;'
-											])?>
-									</div>
-								</div>
+					<div class="row">
+						<div class="col-sm-3">
+							<div class="form-group">
+								<?= Html::submitButton(Yii::t('backend', 'Confirm Create'),[
+																				'id' => 'btn-confirm-create',
+																				'class' => 'btn btn-success',
+																				'name' => 'btn-confirm-create',
+																				'value' => 2,
+																				'style' => 'width: 100%;'
+									])?>
 							</div>
-
 						</div>
-		        	<!-- </div> -->
+						<div class="col-sm-2" style="margin-left: 150px;">
+							<div class="form-group">
+								 <?= Html::submitButton(Yii::t('backend', 'Back Form'),[
+																				'id' => 'btn-back-form',
+																				'class' => 'btn btn-danger',
+																				'name' => 'btn-back-form',
+																				'value' => 3,
+																				'style' => 'width: 100%;'
+									])?>
+							</div>
+						</div>
+					</div>
+					</div>
 				</div>	<!-- Fin de col-sm-12 -->
 			</div> <!-- Fin de container-fluid -->
 		</div>	<!-- Fin de panel-body -->
