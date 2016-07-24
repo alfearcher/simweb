@@ -174,6 +174,7 @@
 
 <!-- DATOS DE LA SUCURSAL -->
 							<div class="row">
+								<h4><?= Html::encode(Yii::t('backend', 'Branch Office')) ?></h3>
 				        		<div class="panel panel-success" style="width: 100%;">
 									<div class="panel-heading">
 							        	<span><?= Html::encode(Yii::t('backend', 'Add the next information')) ?></span>
