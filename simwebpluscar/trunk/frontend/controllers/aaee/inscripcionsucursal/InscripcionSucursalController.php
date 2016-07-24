@@ -106,7 +106,8 @@
 		{
 			// Se verifica que el contribuyente haya iniciado una session.
 			// Se verifica que el contribuyente sea de tipo naturaleza "Juridico".
-			self::actionAnularSession(['begin', 'conf', 'exigirDocumento']);
+			//self::actionAnularSession(['begin', 'conf', 'exigirDocumento']);
+			self::actionAnularSession(['begin', 'conf']);
 			$request = Yii::$app->request;
 			$getData = $request->get();
 
@@ -132,12 +133,12 @@
 													]);
 
 						if ( isset($config) ) {
-							$documentoConsignar = $modelParametro->getDocumentoRequisitoSolicitud();
-							if ( $documentoConsignar !== null ) {
-								$_SESSION['exigirDocumento'] = true;
-							} else {
-								$_SESSION['exigirDocumento'] = false;
-							}
+							//$documentoConsignar = $modelParametro->getDocumentoRequisitoSolicitud();
+							// if ( $documentoConsignar !== null ) {
+							// 	$_SESSION['exigirDocumento'] = true;
+							// } else {
+							// 	$_SESSION['exigirDocumento'] = false;
+							// }
 
 							$_SESSION['conf'] = $config;
 							$_SESSION['begin'] = 1;
@@ -173,12 +174,12 @@
 
 				$request = Yii::$app->request;
 				$postData = $request->post();
-				$exigirDocumento = false;
-				$mensajeErrorChk = '';
+				// $exigirDocumento = false;
+				// $mensajeErrorChk = '';
 
 				// Se determina si el contribuyente es una sede principal.
 				$idContribuyente = $_SESSION['idContribuyente'];
-				$exigirDocumento = $_SESSION['exigirDocumento'];
+				//$exigirDocumento = $_SESSION['exigirDocumento'];
 
 				$model = New InscripcionSucursalForm();
 				$formName = $model->formName();
@@ -197,10 +198,10 @@
 
 		      	if ( $model->load($postData) ) {
 		      		if ( $model->validate() ) {
-		      			if ( !isset($postData['chkDocumento']) && $exigirDocumento ) {
-	      	 				$mensajeErrorChk = Yii::t('frontend', 'Select the documents consigned');
-			      		}
-		      			if ( trim($mensajeErrorChk) == '' ) {
+		      			// if ( !isset($postData['chkDocumento']) && $exigirDocumento ) {
+	      	 		// 		$mensajeErrorChk = Yii::t('frontend', 'Select the documents consigned');
+			      		// }
+		      			//if ( trim($mensajeErrorChk) == '' ) {
 		      				// Validacion correcta.
 		      				if ( isset($postData['btn-create']) ) {
 		      					if ( $postData['btn-create'] == 1 ) {
@@ -209,22 +210,20 @@
 		      						$datosRecibido = $postData[$formName];
 		      						// Se obtiene el arreglo de los items seleccionados en el form para indicar
 		      						// los documentos consignados.
-		      						$arregloDocumetoChk = isset($postData['chkDocumento']) ? $postData['chkDocumento'] : [];
+		      						//$arregloDocumetoChk = isset($postData['chkDocumento']) ? $postData['chkDocumento'] : [];
 
-		      						if ( count($arregloDocumetoChk) > 0 ) {
-			      						// Se crea un DataProvider con los documentos seleccionados
-			      						// por el contribuyente. Para mostrar un grid con la lista de item
-			      						// documentos seleccionados.
-			      						$search = New InscripcionSucursalSearch($idContribuyente);
-			      						$dataProvider = $search->getDataProviderDocumentoSeleccionado($arregloDocumetoChk);
-			      					}
+		      						// if ( count($arregloDocumetoChk) > 0 ) {
+			      					// 	// Se crea un DataProvider con los documentos seleccionados
+			      					// 	// por el contribuyente. Para mostrar un grid con la lista de item
+			      					// 	// documentos seleccionados.
+			      					// 	$search = New InscripcionSucursalSearch($idContribuyente);
+			      					// 	$dataProvider = $search->getDataProviderDocumentoSeleccionado($arregloDocumetoChk);
+			      					// }
 
-			      					$url = Url::to(['begin-save']);
 		      						return $this->render('/aaee/inscripcion-sucursal/pre-view-create', [
 		      																	'model' => $model,
 		      																	'datosRecibido' => $datosRecibido,
-		      																	'dataProvider' => $dataProvider,
-		      																	//'url' => $url,
+		      																	//'dataProvider' => $dataProvider,
 		      							]);
 		      					}
 		      				} elseif ( isset($postData['btn-confirm-create']) ) {
@@ -240,7 +239,7 @@
 		      						}
 		      					}
 		      				}
-		      			}
+		      			//}
 			      	}
 		      	 }
 
@@ -263,16 +262,14 @@
 
 					$modelTelefono = new TelefonoCodigo();
 
-					$url = Url::to(['index-create']);
 		  			return $this->render('/aaee/inscripcion-sucursal/_create', [
 		  											'model' => $model,
-		  											//'modelActEcon' => $modelActEcon,
 		  											'datos' => $datos,
 		  											'listaNaturaleza' => $listaNaturaleza,
 		  											'listaTelefonoCodigo' => $listaTelefonoCodigo,
 		  											'listaTelefonoMovil' => $listaTelefonoMovil,
 		  											'modelTelefono' => $modelTelefono,
-		  											'mensajeErrorChk' => $mensajeErrorChk,
+		  											//'mensajeErrorChk' => $mensajeErrorChk,
 		  					]);
 		  		} else {
 		  			// No se encontraron los datos del contribuyente principal.
@@ -320,13 +317,11 @@
 
 						$result = self::actionCreateSucursal($this->_conexion, $this->_conn, $model, $conf);
 						if ( $result ) {
-							$result = self::actionCreateDocumentosConsignados($this->_conexion, $this->_conn, $model, $postEnviado);
+							//$result = self::actionCreateDocumentosConsignados($this->_conexion, $this->_conn, $model, $postEnviado);
+							$result = self::actionEjecutaProcesoSolicitud($this->_conexion, $this->_conn, $model, $conf);
 							if ( $result ) {
-								$result = self::actionEjecutaProcesoSolicitud($this->_conexion, $this->_conn, $model, $conf);
-								if ( $result ) {
-									$result = self::actionEnviarEmail($model, $conf);
-									$result = true;
-								}
+								$result = self::actionEnviarEmail($model, $conf);
+								$result = true;
 							}
 						}
 					}
