@@ -82,7 +82,7 @@
         </div>
 
 	<?= $form->field($model, 'id_sede_principal')->hiddenInput(['value' => $_SESSION['idContribuyente']])->label(false); ?>
-	<?= $form->field($model, 'id_contribuyente')->hiddenInput(['value' => 0])->label(false); ?>
+	<?= $form->field($model, 'id_contribuyente')->hiddenInput(['value' => $_SESSION['idContribuyente']])->label(false); ?>
 	<?= $form->field($model, 'naturaleza')->hiddenInput(['value' => $model['naturaleza']])->label(false); ?>
 	<?= $form->field($model, 'cedula')->hiddenInput(['value' => $model['cedula']])->label(false); ?>
 	<?= $form->field($model, 'tipo')->hiddenInput(['value' => $model['tipo']])->label(false); ?>
