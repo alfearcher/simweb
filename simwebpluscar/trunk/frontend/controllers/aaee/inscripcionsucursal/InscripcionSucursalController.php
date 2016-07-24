@@ -94,7 +94,7 @@
 		 * Identificador de  configuracion d ela solicitud. Se crea cuando se
 		 * configura la solicitud que gestiona esta clase.
 		 */
-		const CONFIG = 83;
+		const CONFIG = 85;
 
 
 		/**
@@ -321,6 +321,13 @@
 						$result = self::actionCreateSucursal($this->_conexion, $this->_conn, $model, $conf);
 						if ( $result ) {
 							$result = self::actionCreateDocumentosConsignados($this->_conexion, $this->_conn, $model, $postEnviado);
+							if ( $result ) {
+								$result = self::actionEjecutaProcesoSolicitud($this->_conexion, $this->_conn, $model, $conf);
+								if ( $result ) {
+									$result = self::actionEnviarEmail($model, $conf);
+									$result = true;
+								}
+							}
 						}
 					}
 
@@ -593,7 +600,22 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que se encargara de gestionar la ejecucion y resultados de los procesos relacionados
+		 * a la solicitud. En este caso los proceso relacionados a la solicitud en el evento "CREAR".
+		 * Se verifica si se ejecutaron los procesos y si los mismos fueron todos positivos. Con
+		 * el metodo getAccion(), se determina si se ejecuto algun proceso, este metodo retorna un
+		 * arreglo, si el mismo es null se asume que no habia procesos configurados para que se ejecutaran
+		 * cuando la solicitud fuese creada. El metodo resultadoEjecutarProcesos(), permite determinar el
+		 * resultado de cada proceso que se ejecuto.
+		 * @param  ConexionController $conexionLocal instancia de la clase ConexionController.
+		 * @param  connection $connLocal instancia de conexion que permite ejecutar las acciones en base
+		 * de datos.
+		 * @param  model $model modelo de la instancia InscripcionSucursalForm.
+		 * @param  array $conf arreglo que contiene los parametros principales de la configuracion de la
+		 * solicitud.
+		 * @return boolean retorna true si todo se ejecuto correctamente false en caso contrario.
+		 */
 		private function actionEjecutaProcesoSolicitud($conexionLocal, $connLocal, $model, $conf)
 		{
 			$result = true;
@@ -609,7 +631,9 @@
 				// el identificador del contribuyente que realizo la solicitud y el numero de solicitud.
 				$procesoEvento->ejecutarProcesoSolicitudSegunEvento($model, Yii::$app->solicitud->crear(), $conexionLocal, $connLocal);
 
-				// Se obtiene un array de acciones o procesos ejecutados.
+				// Se obtiene un array de acciones o procesos ejecutados. Sino se obtienen acciones
+				// ejecutadas se asumira que no se configuraro ningun proceso para que se ejecutara
+				// cuando se creara la solicitud.
 				$acciones = $procesoEvento->getAccion();
 				if ( count($acciones) > 0 ) {
 
@@ -631,6 +655,39 @@
 
 			return $result;
 
+		}
+
+
+
+		/**
+		 * Metodo que permite enviar un email al contribuyente indicandole
+		 * la confirmacion de la realizacion de la solicitud.
+		 * @param  model $model modelo que contiene la informacion
+		 * del identificador del contribuyente.
+		 * @param  array $conf arreglo que contiene los parametros principales de la configuracion de la
+		 * solicitud.
+		 * @return Boolean Retorna un true si envio el correo o false en caso
+		 * contrario.
+		 */
+		private function actionEnviarEmail($model, $conf)
+		{
+			$result = false;
+			$listaDocumento = '';
+			if ( count($conf) > 0 ) {
+				$parametroSolicitud = New ParametroSolicitud($conf['id_config_solicitud']);
+				$nroSolicitud = $model->nro_solicitud;
+				$descripcionSolicitud = $parametroSolicitud->getDescripcionTipoSolicitud();
+				$listaDocumento = $parametroSolicitud->getDocumentoRequisitoSolicitud();
+
+				$email = ContribuyenteBase::getEmail($model->id_sede_principal);
+				try {
+					$enviar = New PlantillaEmail();
+					$result = $enviar->plantillaEmailSolicitud($email, $descripcionSolicitud, $nroSolicitud, $listaDocumento);
+				} catch ( Exception $e ) {
+					echo $e->getName();
+				}
+			}
+			return $result;
 		}
 
 

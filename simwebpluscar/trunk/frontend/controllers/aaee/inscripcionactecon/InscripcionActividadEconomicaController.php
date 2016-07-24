@@ -372,7 +372,22 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que se encargara de gestionar la ejecucion y resultados de los procesos relacionados
+		 * a la solicitud. En este caso los proceso relacionados a la solicitud en el evento "CREAR".
+		 * Se verifica si se ejecutaron los procesos y si los mismos fueron todos positivos. Con
+		 * el metodo getAccion(), se determina si se ejecuto algun proceso, este metodo retorna un
+		 * arreglo, si el mismo es null se asume que no habia procesos configurados para que se ejecutaran
+		 * cuando la solicitud fuese creada. El metodo resultadoEjecutarProcesos(), permite determinar el
+		 * resultado de cada proceso que se ejecuto.
+		 * @param  ConexionController $conexionLocal instancia de la clase ConexionController.
+		 * @param  connection $connLocal instancia de conexion que permite ejecutar las acciones en base
+		 * de datos.
+		 * @param  model $model modelo de la instancia InscripcionSucursalForm.
+		 * @param  array $conf arreglo que contiene los parametros principales de la configuracion de la
+		 * solicitud.
+		 * @return boolean retorna true si todo se ejecuto correctamente false en caso contrario.
+		 */
 		public function actionEjecutaProcesoSolicitud($model, $conexionLocal, $connLocal)
 		{
 			$result = true;
