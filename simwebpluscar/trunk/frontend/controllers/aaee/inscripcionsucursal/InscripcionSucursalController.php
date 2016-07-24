@@ -231,7 +231,8 @@
 		      						$result = self::actionBeginSave($model, $postData);
 		      						if ( $result ) {
 										$this->_transaccion->commit();
-										$this->redirect(['proceso-exitoso', 'cod' => 100]);
+										//$this->redirect(['view', 'cod' => 100]);
+										self::actionView($model);
 									} else {
 										$this->_transaccion->rollBack();
 										$this->redirect(['error-operacion', 'cod'=> 920]);
@@ -446,55 +447,6 @@
 
 
 
-
-		/**
-		 * [actionCreateActividadEconomica description]
-		 * @param  [type]  $conexion               [description]
-		 * @param  [type]  $connLocal              [description]
-		 * @param  integer $idContribuyenteGenerdo [description]
-		 * @return [type]                          [description]
-		 */
-		private static function actionCreateActividadEconomica($conexion, $connLocal, $idContribuyenteGenerado = 0)
-		{
-			if ( $idContribuyenteGenerado > 0 ) {
-				if ( isset($conexion) ) {
-					if ( isset($_SESSION['postData']) ) {
-
-						$postData = $_SESSION['postData'];
-						$modelActEcon = new InscripcionActividadEconomicaForm();
-
-						$arrayDatos = $modelActEcon->attributes;
-
-						foreach ( $modelActEcon->attributes as $key => $value ) {
-							if ( isset($postData[$modelActEcon->formName()][$key] ) ) {
-								$arrayDatos[$key] = $postData[$modelActEcon->formName()][$key];
-							}
-						}
-						// Campos faltantes.
-						$arrayDatos['id_contribuyente'] = $idContribuyenteGenerado;
-						$arrayDatos['nro_solicitud'] = 0;
-						$arrayDatos['num_empleados'] = 0;
-						$arrayDatos['cedula_rep'] = 0;
-
-						// Se procede a guardar primero en la entidad correspondiente.
-		      			$tabla = '';
-		      			$tabla = $modelActEcon->tableName();
-
-						if ( $conexion->guardarRegistro($connLocal, $tabla, $arrayDatos) ) {
-
-							return true;
-						}
-					}
-				}
-			}
-			return false;
-		}
-
-
-
-
-
-
 		/**
 		 * [actionCreateSucursal description]
 		 * @param  [type] $conexionLocal [description]
@@ -689,43 +641,45 @@
 
 
 		/**
-		*	Metodo muestra la vista con la informacion que fue guardada.
-		*/
-		public function actionView($idInscripcion)
+		 * Metodo que renderiza una vista con la informacion de la solicitud creada.
+		 * @param  model $model modelo de la entidad InscripcionSucursalForm.
+		 * @return view retorna una vista con la informacion detalle de la solicitud.
+		 * Informacion cargada por el contribuyente.
+		 */
+		public function actionView($model)
     	{
-    		if ( isset($_SESSION['idInscripcion']) ) {
-    			if ( $_SESSION['idInscripcion'] == $idInscripcion ) {
-    				$model = $this->findModel($idInscripcion);
-    				if ( $_SESSION['idInscripcion'] == $model->id_inscripcion_sucursal ) {
-			        	return $this->render('/aaee/inscripcion-sucursal/pre-view',
-			        			['model' => $model, 'preView' => false,
-
-			        			]);
-			        } else {
-			        	return self::gestionarMensajesLocales('Numero de Inscripcion no valido.');
-			        	//echo 'Numero de Inscripcion no valido.';
-			        }
-	        	} else {
-	        		return self::gestionarMensajesLocales('Numero de Inscription no valido.');
-	        		// echo 'Numero de Inscription no valido.';
-	        	}
-        	}
+    		if ( isset($model) ) {
+    			$modelSearch = New InscripcionSucursalSearch($model->id_contribuyente);
+    			$findModel = $modelSearch->findInscripcion($model->nro_solicitud);
+    			if ( isset($findModel) ) {
+    				return $this->render('/aaee/inscripcion-sucursal/view-solicitud-create', [
+    															'model' => $findModel,
+    															'modelSearch' => $modelSearch,
+    					]);
+    			}
+    		}
     	}
 
 
 
 
 		/**
-		*	Metodo que busca el ultimo registro creado.
-		* 	@param $idInscripcion, long que identifica el autonumerico generado al crear el registro.
-		*/
-		protected function findModel($idInscripcion)
+		 * Metodo que realiza la consulta de la solicitud utilizando los parametros de consulta
+		 * numero de solicitud y el identificador del contribuyente.
+		 * @param  long $nroSolicitud identificador de la solicitud creada.
+		 * @param  long $idContribuyente identificador del contribuyente, en este caso corresponde
+		 * al identificador de la sede principal (casa matriz) de la sucursal que se esta solicitando
+		 * su inscripcion.
+		 * @return Active Record si la consulta es exitosa, en caso contrario retorna null.
+		 */
+		protected function findModel($nroSolicitud, $idContribuyente)
     	{
-        	if (($model = InscripcionSucursal::findOne($idInscripcion)) !== null) {
-            	return $model;
-        	} else {
-            	throw new NotFoundHttpException('The requested page does not exist.');
-        	}
+
+			$findModel = InscripcionSucursal::find()->where('nro_solicitud =:nro_solicitud', [':nro_solicitud' => $nroSolicitud])
+    											    ->andWhere('id_contribuyente =:id_contribuyente', [':id_contribuyente' => $idContribuyente])
+    											    ->all();
+
+    		return isset($findModel) ? $findModel : null;
     	}
 
 
