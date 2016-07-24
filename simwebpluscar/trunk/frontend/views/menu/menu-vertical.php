@@ -68,7 +68,7 @@
 		        		['label' => Icon::show('fa fa-briefcase',['class' => $typeLong], $typeIcon) . '&nbsp; Actividades Economicas',
 		        			'items' => [
 		        						['label' => 'Inscripción de Actividades Economicas','url' => ['/aaee/inscripcionactecon/inscripcion-actividad-economica/index', 'id' => 81]],
-		        					   	['label' => 'Inscripción de Sucursales', 'url' => ['/aaee/inscripcionsucursal/inscripcion-sucursal/index', 'id' => 83]],
+		        					   	['label' => 'Inscripción de Sucursales', 'url' => ['/aaee/inscripcionsucursal/inscripcion-sucursal/index', 'id' => 85]],
 		        					   	['label' => 'Autorizar Ramos', 'url' => ['/aaee/autorizarramo/autorizar-ramo/index']],
 		        					   	['label' => 'Renovación de Licencias', 'url' => ['ordenanza/impuesto/ordenanza/index']],
 		        					   	['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Modificion de Datos',
@@ -93,7 +93,7 @@
 		        					   	['label' => Icon::show('fa fa-hand-paper-o',['class' => $typeLong], $typeIcon) . '&nbsp; Cesación de Actividades',
 		        					   		'items' => [
 		        					   				['label' => 'Temporal', 'url' => '#'],
-		        					   				['label' => 'Definitiva', 'url' => '#'], 
+		        					   				['label' => 'Definitiva', 'url' => '#'],
 		        					   		]
 		        					   	],
 		        			]
