@@ -272,28 +272,3 @@
 
  	<?php ActiveForm::end(); ?>
 </div>	 <!-- Fin de inscripcion-act-econ-form -->
-
-
-<script type="text/javascript">
-
-	$('input[name="num-tlf-ofic"]').change(function() {
-	 	$('#tlf-ofic').val( $('#codigo').val() + '-' + $('#num-tlf-ofic').val() );
-	});
-	$('select[name="codigo"]').change(function() {
-	 	$('#tlf-ofic').val( $('#codigo').val() + '-' + $('#num-tlf-ofic').val() );
-	});
-
-	$('input[name="num-tlf-ofic-otro"]').change(function() {
-	 	$('#tlf-ofic-otro').val( $('#codigo2').val() + '-' + $('#num-tlf-ofic-otro').val() );
-	});
-	$('select[name="codigo2"]').change(function() {
-	 	$('#tlf-ofic-otro').val( $('#codigo2').val() + '-' + $('#num-tlf-ofic-otro').val() );
-	});
-
-	$('input[name="num-celular"]').change(function() {
-	 	$('#tlf-celular').val( $('#codigo3').val() + '-' + $('#num-celular').val() );
-	});
-	$('select[name="codigo3"]').change(function() {
-	 	$('#tlf-celular').val( $('#codigo3').val() + '-' + $('#num-celular').val() );
-	});
-</script>
