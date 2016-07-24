@@ -196,14 +196,15 @@
 		      	}
 
 		      	if ( $model->load($postData) ) {
-		      		if ( !isset($postData['chkDocumento']) && $exigirDocumento ) {
-	      	 			$mensajeErrorChk = Yii::t('frontend', 'Select the documents consigned');
-			      	}
 		      		if ( $model->validate() ) {
+		      			if ( !isset($postData['chkDocumento']) && $exigirDocumento ) {
+	      	 				$mensajeErrorChk = Yii::t('frontend', 'Select the documents consigned');
+			      		}
 		      			if ( trim($mensajeErrorChk) == '' ) {
 		      				// Validacion correcta.
 		      				if ( isset($postData['btn-create']) ) {
 		      					if ( $postData['btn-create'] == 1 ) {
+
 		      						// Mostrar vista previa.
 		      						$datosRecibido = $postData[$formName];
 		      						// Se obtiene el arreglo de los items seleccionados en el form para indicar
@@ -223,11 +224,20 @@
 		      																	'model' => $model,
 		      																	'datosRecibido' => $datosRecibido,
 		      																	'dataProvider' => $dataProvider,
-		      																	'url' => $url,
+		      																	//'url' => $url,
 		      							]);
 		      					}
 		      				} elseif ( isset($postData['btn-confirm-create']) ) {
 		      					if ( $postData['btn-confirm-create'] == 2 ) {
+		      						$result = self::actionBeginSave($model);
+		      						if ( $result ) {
+										$this->_transaccion->commit();
+										$this->redirect(['proceso-exitoso', 'cod' => 100]);
+									} else {
+										$this->_transaccion->rollBack();
+										$this->redirect(['error-operacion', 'cod'=> 920]);
+
+		      						}
 		      					}
 		      				}
 		      			}
@@ -402,13 +412,14 @@
 //		}
 
 
-
 		/**
 		 * Metodo que comienza el proceso para guardar la solicitud y los demas
 		 * procesos relacionados.
-		 * @return [type] [description]
+		 * @param model $model modelo de InscripcionSucursalForm.
+		 * @return boolean retorna true si se realizan todas las operacions de
+		 * insercion y actualizacion con exitos o false en caso contrario.
 		 */
-		public function actionBeginSave()
+		private function actionBeginSave($model)
 		{
 			$request = Yii::$app->request;
 			$postData = $request->post();
@@ -416,54 +427,40 @@
 			$nroSolicitud = 0;
 
 			if ( isset($_SESSION['idContribuyente']) ) {
-				if ( isset($postData['btn-confirm-create']) && $postData['btn-confirm-create'] == 2 ) {
-					if ( isset($_SESSION['conf']) ) {
-						$conf = $_SESSION['conf'];
+				if ( isset($_SESSION['conf']) ) {
+					$conf = $_SESSION['conf'];
 
-						$this->_conexion = New ConexionController();
+					$this->_conexion = New ConexionController();
 
-		      			// Instancia de conexion hacia la base de datos.
-		      			$this->_conn = $this->_conexion->initConectar('db');
-		      			$this->_conn->open();
+	      			// Instancia de conexion hacia la base de datos.
+	      			$this->_conn = $this->_conexion->initConectar('db');
+	      			$this->_conn->open();
 
-		      			// Instancia de tipo transaccion para asegurar la integridad del resguardo de los datos.
-		      			// Inicio de la transaccion.
-						$this->_transaccion = $this->_conn->beginTransaction();
+	      			// Instancia de tipo transaccion para asegurar la integridad del resguardo de los datos.
+	      			// Inicio de la transaccion.
+					$this->_transaccion = $this->_conn->beginTransaction();
 
-						$model = New InscripcionSucursalForm();
-						$model->scenario = self::SCENARIO_FRONTEND;
-						$model->load($postData);
-
-						$nroSolicitud = self::actionCreateSolicitud($this->_conexion, $this->_conn, $model);
+					$nroSolicitud = self::actionCreateSolicitud($this->_conexion, $this->_conn, $model, $conf);
+					if ( $nroSolicitud > 0 ) {
 						$model->nro_solicitud = $nroSolicitud;
 
-						if ( $conf['nivel_aprobacion'] == 1 ) {
-
-						}
-
-
-
-						if ( $nroSolicitud > 0 ) {
-							$this->_transaccion->commit();
-							$result = true;
-							$this->redirect(['proceso-exitoso', 'cod' => 100]);
-						} else {
-							$this->_transaccion->rollBack();
-							$this->redirect(['error-operacion', 'cod'=> 920]);
-						}
-
-					} else {
-						// No se obtuvieron los parametros de la configuracion.
-						return $this->redirect(['error-operacion', 'cod' => 955]);
+						$result = self::actionCreateSucursal($this->_conexion, $this->_conn, $model, $conf);
 					}
+
+
+					if ( $conf['nivel_aprobacion'] == 1 ) {
+
+					}
+
 				} else {
-					// La opcion seleccionada no esta definida.
-					return $this->redirect(['error-operacion', 'cod' => 404]);
+					// No se obtuvieron los parametros de la configuracion.
+					$this->redirect(['error-operacion', 'cod' => 955]);
 				}
 			} else {
 				// No esta defino el contribuyente.
-				return $this->redirect(['error-operacion', 'cod' => 932]);
+				$this->redirect(['error-operacion', 'cod' => 932]);
 			}
+			return $result;
 		}
 
 
@@ -474,9 +471,11 @@
 		 * @param  Class $conexionLocal instancia de tipo ConexionController
 		 * @param  @param  [type] $connLocal     [description]
 		 * @param  [type] $model         [description]
+		 * @param  array $conf arreglo que contiene los parametros principales de la configuracion
+		 * de la ordenaza.
 		 * @return boolean retorna true si guardo correctamente o false sino guardo.
 		 */
-		private function actionCreateSolicitud($conexionLocal, $connLocal, $model)
+		private function actionCreateSolicitud($conexionLocal, $connLocal, $model, $conf)
 		{
 			$estatus = 0;
 			$userFuncionario = '';
@@ -488,8 +487,6 @@
 			$idContribuyente = $_SESSION['idContribuyente'];
 
 			$nroSolicitud = 0;
-			$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : null;
-
 
 			if ( count($conf) > 0 ) {
 				// Valores que se pasan al modelo:
@@ -697,27 +694,47 @@
 
 
 
-		/***/
-		private static function actionCreateSucursal($conexionLocal, $connLocal, $model)
+		/**
+		 * [actionCreateSucursal description]
+		 * @param  [type] $conexionLocal [description]
+		 * @param  [type] $connLocal     [description]
+		 * @param  model $model modelo de InscripcionSucursalForm.
+		 * @param  [type] $conf          [description]
+		 * @return [type]                [description]
+		 */
+		private static function actionCreateSucursal($conexionLocal, $connLocal, $model, $conf)
 		{
 			$result = false;
+			$estatus = 0;
+			$user = isset(Yii::$app->user->identity->login) ? Yii::$app->user->identity->login : null;
+			$userFuncionario = '';
+			$fechaHoraProceso = '0000-00-00 00:00:00';
 			if ( isset($conexionLocal) && isset($connLocal) && isset($model) ) {
-				$tabla = '';
-      			$tabla = $model->tableName();
-				$arrayDatos = $model->getAttributeInsert();
-
-				foreach ( $model->attributes as $key => $value ) {
-					if ( isset($arrayDatos[$key]) ) {
-						$arrayDatos[$key] = $model[$key];
+				if ( count($conf) > 0 ) {
+					if ( $conf['nivel_aprobacion'] == 1 ) {
+						$estatus = 1;
+						$userFuncionario = $user;
+						$fechaHoraProceso = date('Y-m-d H:i:s');
 					}
+
+					$tabla = '';
+	      			$tabla = $model->tableName();
+
+	      			// $model->attributes es array {
+	      			// 							[attribute] => valor
+	      			// 						}
+					$arregloDatos = $model->attributes;
+
+					//$arregloDatos['id_inscripcion_sucursal'] = null;
+					$arregloDatos['estatus'] = $estatus;
+					$arregloDatos['user_funcionario'] = $userFuncionario;
+					$arregloDatos['fecha_hora_proceso'] = $fechaHoraProceso;
+
+					// Se ajusta el formato de fecha incio de dd-mm-aaaa a aaaa-mm-dd.
+					$arregloDatos['fecha_inicio'] = date('Y-m-d', strtotime($arregloDatos['fecha_inicio']));
+
+					$result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
 				}
-				$arregloDatos['id_inscripcion_sucursal'] = null;
-
-				// Se ajusta el formato de fecha incio de dd-mm-aaaa a aaaa-mm-dd.
-				$arrayDatos['fecha_inicio'] = date('Y-m-d', strtotime($arrayDatos['fecha_inicio']));
-
-				$result = $conexion->guardarRegistro($connLocal, $tabla, $arrayDatos);
-
 			}
 			return $result;
 		}
