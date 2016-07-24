@@ -81,6 +81,7 @@
         </div>
 
 	<?= $form->field($model, 'id_sede_principal')->hiddenInput(['value' => $_SESSION['idContribuyente']])->label(false); ?>
+	<?= $form->field($model, 'id_contribuyente')->hiddenInput(['value' => 0])->label(false); ?>
 	<?= $form->field($model, 'naturaleza')->hiddenInput(['value' => $datos['naturaleza']])->label(false); ?>
 	<?= $form->field($model, 'cedula')->hiddenInput(['value' => $datos['cedula']])->label(false); ?>
 	<?= $form->field($model, 'tipo')->hiddenInput(['value' => $datos['tipo']])->label(false); ?>
@@ -96,17 +97,7 @@
 	<?= $form->field($model, 'cedula_rep')->hiddenInput(['value' => $datos['cedula_rep']])->label(false); ?>
 	<?= $form->field($model, 'representante')->hiddenInput(['value' => $datos['representante']])->label(false); ?>
 
-<!--
-	<?//= $form->field($modelActEcon, 'estatus')->hiddenInput(['value' => 0])->label(false); ?>
-	<?//= $form->field($modelActEcon, 'origen')->hiddenInput(['value' => 'LAN'])->label(false); ?>
-	<?//= $form->field($modelActEcon, 'fecha_hora')->hiddenInput(['value' => date('Y-m-d H:i:s')])->label(false); ?>
-	<?//= $form->field($modelActEcon, 'usuario')->hiddenInput(['value' => Yii::$app->user->identity->username])->label(false); ?>
 
- --><!--
-	 <?//= $form->field($modelActEcon, 'naturaleza_rep')->hiddenInput(['value' => $modelActEcon->naturaleza_rep])->label(false); ?>
-	 <?//= $form->field($modelActEcon, 'cedula_rep')->hiddenInput(['value' => $modelActEcon->cedula_rep])->label(false); ?>
-	 <?//= $form->field($modelActEcon, 'representante')->hiddenInput(['value' => $modelActEcon->representante])->label(false); ?>
- -->
 <!-- Cuerpo del formulario -->
         <div class="panel-body" style="background-color: #F9F9F9;">
         	<div class="container-fluid">

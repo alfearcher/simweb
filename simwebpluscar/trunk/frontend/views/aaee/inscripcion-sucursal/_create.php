@@ -39,7 +39,7 @@
 	/**
 	*@var $this yii\web\View */
 
-	$this->title = Yii::t('backend', 'Registration of Sucursal');
+	$this->title = Yii::t('backend', 'Inscripcion of Branch Office');
 
 	?>
 	<div class="inscripcion-sucursal-form-create">

@@ -68,7 +68,7 @@
  		$form = ActiveForm::begin([
  			'id' => 'id-pre-view-inscripcion-sucursal-form',
  			'method' => 'post',
- 			'action' => $url,
+ 			//'action' => $url,
  			'enableClientValidation' => true,
  			//'enableAjaxValidation' => true,
  			'enableClientScript' => true,
@@ -82,6 +82,7 @@
         </div>
 
 	<?= $form->field($model, 'id_sede_principal')->hiddenInput(['value' => $_SESSION['idContribuyente']])->label(false); ?>
+	<?= $form->field($model, 'id_contribuyente')->hiddenInput(['value' => 0])->label(false); ?>
 	<?= $form->field($model, 'naturaleza')->hiddenInput(['value' => $model['naturaleza']])->label(false); ?>
 	<?= $form->field($model, 'cedula')->hiddenInput(['value' => $model['cedula']])->label(false); ?>
 	<?= $form->field($model, 'tipo')->hiddenInput(['value' => $model['tipo']])->label(false); ?>
@@ -99,17 +100,6 @@
 	<?= $form->field($model, 'origen')->hiddenInput(['value' => $model->origen])->label(false); ?>
 	<?= $form->field($model, 'estatus')->hiddenInput(['value' => 0])->label(false); ?>
 
-<!--
-	<?//= $form->field($modelActEcon, 'estatus')->hiddenInput(['value' => 0])->label(false); ?>
-	<?//= $form->field($modelActEcon, 'origen')->hiddenInput(['value' => 'LAN'])->label(false); ?>
-	<?//= $form->field($modelActEcon, 'fecha_hora')->hiddenInput(['value' => date('Y-m-d H:i:s')])->label(false); ?>
-	<?//= $form->field($modelActEcon, 'usuario')->hiddenInput(['value' => Yii::$app->user->identity->username])->label(false); ?>
-
- --><!--
-	 <?//= $form->field($modelActEcon, 'naturaleza_rep')->hiddenInput(['value' => $modelActEcon->naturaleza_rep])->label(false); ?>
-	 <?//= $form->field($modelActEcon, 'cedula_rep')->hiddenInput(['value' => $modelActEcon->cedula_rep])->label(false); ?>
-	 <?//= $form->field($modelActEcon, 'representante')->hiddenInput(['value' => $modelActEcon->representante])->label(false); ?>
- -->
 <!-- Cuerpo del formulario -->
         <div class="panel-body" style="background-color: #F9F9F9;">
         	<div class="container-fluid">
@@ -313,7 +303,7 @@
 								</div>
 								<div class="col-sm-2" style="margin-left: 150px;">
 									<div class="form-group">
-										 <?= Html::submitButton(Yii::t('backend', 'Back'),[
+										 <?= Html::submitButton(Yii::t('backend', 'Back Form'),[
 																						'id' => 'btn-back-form',
 																						'class' => 'btn btn-danger',
 																						'name' => 'btn-back-form',
