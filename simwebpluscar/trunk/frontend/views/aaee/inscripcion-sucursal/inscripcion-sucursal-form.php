@@ -85,7 +85,6 @@
 	<?= $form->field($model, 'naturaleza')->hiddenInput(['value' => $datos['naturaleza']])->label(false); ?>
 	<?= $form->field($model, 'cedula')->hiddenInput(['value' => $datos['cedula']])->label(false); ?>
 	<?= $form->field($model, 'tipo')->hiddenInput(['value' => $datos['tipo']])->label(false); ?>
-	<?= $form->field($model, 'id_contribuyente')->hiddenInput(['value' => 0])->label(false); ?>
 	<?= $form->field($model, 'estatus')->hiddenInput(['value' => 0])->label(false); ?>
 	<?= $form->field($model, 'reg_mercantil')->hiddenInput(['value' => $datos['reg_mercantil']])->label(false); ?>
 	<?= $form->field($model, 'tomo')->hiddenInput(['value' => $datos['tomo']])->label(false); ?>

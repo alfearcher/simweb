@@ -94,7 +94,6 @@
 	<?= $form->field($model, 'tlf_ofic')->hiddenInput(['value' => $model['tlf_ofic']])->label(false); ?>
 	<?= $form->field($model, 'tlf_ofic_otro')->hiddenInput(['value' => $model['tlf_ofic_otro']])->label(false); ?>
 	<?= $form->field($model, 'tlf_celular')->hiddenInput(['value' => $model['tlf_celular']])->label(false); ?>
-	<?= $form->field($model, 'id_contribuyente')->hiddenInput(['value' => 0])->label(false); ?>
 	<?= $form->field($model, 'usuario')->hiddenInput(['value' => $model->usuario])->label(false); ?>
 	<?= $form->field($model, 'fecha_hora')->hiddenInput(['value' => $model->fecha_hora])->label(false); ?>
 	<?= $form->field($model, 'origen')->hiddenInput(['value' => $model->origen])->label(false); ?>
