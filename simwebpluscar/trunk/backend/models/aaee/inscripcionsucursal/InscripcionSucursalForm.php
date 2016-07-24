@@ -163,12 +163,13 @@
 	     		['usuario', 'default', 'value' => Yii::$app->user->identity->login],
 	     		['origen', 'default', 'value' => 'WEB'],
 	     		['nro_solicitud', 'default', 'value' => 0],
-	     		['id_contribuyente', 'default', 'value' => 0],
+	     		//['id_contribuyente', 'default', 'value' => 0],
 	     		['razon_social', 'string', 'max' => 75],
 	     		//[['tlf_ofic', 'tlf_ofic_otro', 'tlf_celular'], 'match', 'pattern' => '/^[0-9]{4}-[0-9]{7}$/', 'message' => Yii::t('backend', '{attribute} not valid')],
 	     		[['tlf_ofic', 'tlf_ofic_otro', 'tlf_celular'], 'string', 'max' => 12],
 	     		[['tlf_ofic', 'tlf_celular'], 'string', 'min' => 12],
 	     		['id_sede_principal', 'default', 'value' => $_SESSION['idContribuyente']],
+	     		['id_contribuyente', 'default', 'value' => $_SESSION['idContribuyente']],
 	        ];
 	    }
 
