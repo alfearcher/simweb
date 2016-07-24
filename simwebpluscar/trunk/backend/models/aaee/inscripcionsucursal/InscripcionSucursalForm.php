@@ -91,6 +91,7 @@
         	return [
         		self::SCENARIO_FRONTEND => [
         					'id_sede_principal',
+        					'id_contribuyente',
         					'naturaleza',
         					'cedula',
         					'tipo',
