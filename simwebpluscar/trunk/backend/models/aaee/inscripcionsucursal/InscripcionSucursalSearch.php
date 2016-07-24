@@ -54,7 +54,7 @@
 	/**
 	* 	Clase
 	*/
-	class InscripcionSucursalSearch
+	class InscripcionSucursalSearch extends InscripcionSucursal
 	{
 		private $_id_contribuyente;
 
@@ -142,6 +142,41 @@
 			return isset($dataProvider) ? $dataProvider : null;
 		}
 
+
+
+
+	    /**
+	     * Metodo que realiza una consulta de la solicitud especifica (model)
+	     * "inscripcion de sucursal".
+	     * @param  long $nroSolicitud identificador de la entidad "solicitudes-contribuyente".
+	     * @return Active Record.
+	     */
+	    public function findInscripcion($nroSolicitud)
+	    {
+	    	$modelFind = InscripcionSucursal::find()->where('nro_solicitud =:nro_solicitud', [':nro_solicitud' => $nroSolicitud])
+	    										    ->andWhere('id_contribuyente =:id_contribuyente', [':id_contribuyente' => $this->id_contribuyente])
+	    											->one();
+	    	return isset($modelFind) ? $modelFind : null;
+	    }
+
+
+
+	    /***/
+	    public function getDescripcionEstatus($estatus)
+	    {
+	    	$result = '';
+	    	if ( $estatus == 0 ) {
+	    		$result = 'PENDIENTE';
+	    	} elseif ( $estatus == 1 ) {
+	    		$result = 'APROBADA';
+	    	} elseif ( $estatus == 2 ) {
+	    		$result = 'NEGADA';
+	    	} elseif ( $estatus == 9 ) {
+	    		$result = 'ANULADA';
+	    	}
+
+	    	return $result;
+	    }
 
 	}
 
