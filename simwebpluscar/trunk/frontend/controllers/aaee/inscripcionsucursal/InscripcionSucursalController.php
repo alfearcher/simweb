@@ -49,7 +49,6 @@
 	use yii\filters\AccessControl;
 	use yii\web\Controller;
 	use yii\filters\VerbFilter;
-	// use yii\widgets\ActiveForm;
 	use yii\web\Response;
 	use yii\helpers\Url;
 	use yii\web\NotFoundHttpException;
@@ -60,10 +59,8 @@
 	use common\models\contribuyente\ContribuyenteBase;
 	use backend\models\documento\DocumentoConsignadoForm;
 	use common\conexion\ConexionController;
-	// use yii\base\Model;
 	use common\mensaje\MensajeController;
 	use backend\models\registromaestro\TipoNaturaleza;
-	//use backend\controllers\utilidad\documento\DocumentoRequisitoController;
 	use backend\models\TelefonoCodigo;
 	use yii\helpers\ArrayHelper;
 	use common\models\session\Session;
@@ -73,8 +70,6 @@
 	use common\models\solicitudescontribuyente\SolicitudesContribuyenteForm;
 
 	session_start();		// Iniciando session
-
-
 
 	/**
 	 * Clase principal que controla la creacion de solicitudes de Inscripcion de Sucursales.
@@ -94,6 +89,11 @@
 
 		const SCENARIO_FRONTEND = 'frontend';
 		const SCENARIO_BACKEND = 'backend';
+
+		/**
+		 * Identificador de  configuracion d ela solicitud. Se crea cuando se
+		 * configura la solicitud que gestiona esta clase.
+		 */
 		const CONFIG = 83;
 
 
@@ -122,8 +122,8 @@
 
 						$tipoSolicitud = 0;
 						$modelParametro = New ParametroSolicitud($id);
-						// // Se obtiene el tipo de solicitud. Se retorna un array donde el key es el nombre
-						// // del parametro y el valor del elemento es el contenido del campo en base de datos.
+						// Se obtiene el tipo de solicitud. Se retorna un array donde el key es el nombre
+						// del parametro y el valor del elemento es el contenido del campo en base de datos.
 						$config = $modelParametro->getParametroSolicitud([
 																'id_config_solicitud',
 																'tipo_solicitud',
@@ -346,7 +346,7 @@
 		/**
 		 * Metodo que guarda el registro respectivo en la entidad "solicitudes-contribuyente".
 		 * @param  Class $conexionLocal instancia de tipo ConexionController
-		 * @param  @param  [type] $connLocal     [description]
+		 * @param  [type] $connLocal     [description]
 		 * @param  [type] $model         [description]
 		 * @param  array $conf arreglo que contiene los parametros principales de la configuracion
 		 * de la ordenaza.
@@ -407,14 +407,21 @@
 
 		/**
 		 * [actionCreateContribuyente description]
-		 * @param  [type] $conexion [description]
-		 * @return returna long, id del contribuyente creado. Si la operacion falla returna false.
+		 * @param  [type] $conexionLocal [description]
+		 * @param  [type] $connLocal     [description]
+		 * @param  [type] $model         [description]
+		 * @param  [type] $conf          [description]
+		 * @return [type]                [description]
 		 */
-		private static function actionCreateContribuyente($conexionLocal, $connLocal)
+		private static function actionCreateContribuyente($conexionLocal, $connLocal, $model, $conf)
 		{
-			if ( isset($_SESSION['idContribuyente']) ) {
+			$idContribuyenteGenerado = 0;
+			$result = false;
+			if ( isset($_SESSION['idContribuyente']) == $model->id_sede_principal ) {
+				// id de la sede principal.
+				$id = $model->id_sede_principal;
 
-				$modelContribuyente = new ContribuyenteBase();
+				$modelContribuyente = New ContribuyenteBase();
 
 				$arregloDatos = $_SESSION['datosContribuyente'];
 				$arregloDatos['fecha_inclusion'] = date('Y-m-d');
@@ -565,7 +572,6 @@
 				$datosInsert['usuario'] = $model->user_funcionario;
 				$datosInsert['estatus'] = $model->estatus;
 
-
 				// Se obtiene el arreglo de el o los items de documentos y/o reuisitos
 				// seleccionados. Basicamente lo que se obtiene es el identificador (id_documento)
 				// del registro.
@@ -584,6 +590,48 @@
 			return $result;
 		}
 
+
+
+
+		/***/
+		private function actionEjecutaProcesoSolicitud($conexionLocal, $connLocal, $model, $conf)
+		{
+			$result = true;
+			$resultadoProceso = [];
+			$acciones = [];
+			if ( count($conf) > 0 ) {
+				$procesoEvento = New SolicitudProcesoEvento($conf['id_config_solicitud']);
+
+				// Se buscan los procesos que genera la solicitud para ejecutarlos, segun el evento.
+				// que en este caso el evento corresponde a "CREAR". Se espera que retorne un arreglo
+				// de resultados donde el key del arrary es el nombre del proceso ejecutado y el valor
+				// del elemento corresponda a un reultado de la ejecucion. La variable $model debe contener
+				// el identificador del contribuyente que realizo la solicitud y el numero de solicitud.
+				$procesoEvento->ejecutarProcesoSolicitudSegunEvento($model, Yii::$app->solicitud->crear(), $conexionLocal, $connLocal);
+
+				// Se obtiene un array de acciones o procesos ejecutados.
+				$acciones = $procesoEvento->getAccion();
+				if ( count($acciones) > 0 ) {
+
+					// Se evalua cada accion o proceso ejecutado para determinar si se realizo satisfactoriamnente.
+					$resultadoProceso = $procesoEvento->resultadoEjecutarProcesos();
+
+					if ( count($resultadoProceso) > 0 ) {
+						foreach ( $resultadoProceso as $key => $value ) {
+							if ( $value == false ) {
+								$result = false;
+								break;
+							}
+						}
+					}
+				}
+			} else {
+				$result = false;
+			}
+
+			return $result;
+
+		}
 
 
 
