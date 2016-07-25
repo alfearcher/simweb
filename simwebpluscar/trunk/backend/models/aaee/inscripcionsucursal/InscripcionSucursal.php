@@ -85,7 +85,7 @@
 	        	'id_inscripcion_sucursal' => Yii::t('backend', 'Id. Sucursal'),
 	        	'id_sede_principal' => Yii::t('backend', 'Id. sede'),
 	            'id_contribuyente' => Yii::t('backend', 'Id. Taxpayer'),
-	            'nro_solicitud' => Yii::t('backend', 'Application Number'),
+	            'nro_solicitud' => Yii::t('backend', 'Request No.'),
 	            'naturaleza' => Yii::t('backend', 'RIF'),
 	            'cedula' => Yii::t('backend', 'DNI'),
 	            'fecha_inicio' => Yii::t('backend', 'Begin Date'),
