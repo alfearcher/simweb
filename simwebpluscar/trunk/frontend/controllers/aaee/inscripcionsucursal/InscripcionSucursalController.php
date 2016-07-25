@@ -94,7 +94,7 @@
 		 * Identificador de  configuracion d ela solicitud. Se crea cuando se
 		 * configura la solicitud que gestiona esta clase.
 		 */
-		const CONFIG = 85;
+		const CONFIG = 83;
 
 
 		/**
@@ -229,10 +229,11 @@
 		      				} elseif ( isset($postData['btn-confirm-create']) ) {
 		      					if ( $postData['btn-confirm-create'] == 2 ) {
 		      						$result = self::actionBeginSave($model, $postData);
+		      						self::actionAnularSession(['begin']);
 		      						if ( $result ) {
 										$this->_transaccion->commit();
-										//$this->redirect(['view', 'cod' => 100]);
-										self::actionView($model);
+										//$this->redirect(['view', 'id' => $model->nro_solicitud]);
+										return self::actionView($model->nro_solicitud);
 									} else {
 										$this->_transaccion->rollBack();
 										$this->redirect(['error-operacion', 'cod'=> 920]);
@@ -241,6 +242,8 @@
 		      					}
 		      				}
 		      			//}
+			      	} else {
+			      		$this->redirect(['quit']);
 			      	}
 		      	 }
 
@@ -275,10 +278,6 @@
 		  		} else {
 		  			// No se encontraron los datos del contribuyente principal.
 		  		}
-
-			} else {
-				// No esta defino el contribuyente.
-				return $this->redirect(['error-operacion', 'cod' => 932]);
 			}
 		}
 
@@ -646,41 +645,46 @@
 		 * @return view retorna una vista con la informacion detalle de la solicitud.
 		 * Informacion cargada por el contribuyente.
 		 */
-		public function actionView($model)
+		public function actionView($id)
     	{
-    		if ( isset($model) ) {
-    			$modelSearch = New InscripcionSucursalSearch($model->id_contribuyente);
-    			$findModel = $modelSearch->findInscripcion($model->nro_solicitud);
-    			if ( isset($findModel) ) {
-    				return $this->render('/aaee/inscripcion-sucursal/view-solicitud-create', [
-    															'model' => $findModel,
-    															'modelSearch' => $modelSearch,
-    					]);
-    			}
-    		}
+    		if ( isset($_SESSION['idContribuyente']) ) {
+	    		if ( $id > 0 ) {
+	    			$modelSearch = New InscripcionSucursalSearch($_SESSION['idContribuyente']);
+	    			$findModel = $modelSearch->findInscripcion($id);
+	    			if ( isset($findModel) ) {
+	    				return self::actionShowSolicitud($findModel, $modelSearch);
+	    			} else {
+						throw new NotFoundHttpException('No se encontro el registro');
+					}
+	    		} else {
+	    			throw new NotFoundHttpException('Error ' . $id);
+	    		}
+	    	} else {
+	    		throw new NotFoundHttpException('El contribuyente no esta defino');
+	    	}
     	}
 
 
 
 
-		/**
-		 * Metodo que realiza la consulta de la solicitud utilizando los parametros de consulta
-		 * numero de solicitud y el identificador del contribuyente.
-		 * @param  long $nroSolicitud identificador de la solicitud creada.
-		 * @param  long $idContribuyente identificador del contribuyente, en este caso corresponde
-		 * al identificador de la sede principal (casa matriz) de la sucursal que se esta solicitando
-		 * su inscripcion.
-		 * @return Active Record si la consulta es exitosa, en caso contrario retorna null.
-		 */
-		protected function findModel($nroSolicitud, $idContribuyente)
+    	/***/
+    	private function actionShowSolicitud($findModel, $modelSearch)
     	{
-
-			$findModel = InscripcionSucursal::find()->where('nro_solicitud =:nro_solicitud', [':nro_solicitud' => $nroSolicitud])
-    											    ->andWhere('id_contribuyente =:id_contribuyente', [':id_contribuyente' => $idContribuyente])
-    											    ->all();
-
-    		return isset($findModel) ? $findModel : null;
+    		if ( isset($findModel) && isset($modelSearch) ) {
+				$opciones = [
+					'quit' => '/aaee/inscripcionsucursal/inscripcion-sucursal/quit',
+				];
+				return $this->render('/aaee/inscripcion-sucursal/_view', [
+															'codigo' => 100,
+															'model' => $findModel,
+															'modelSearch' => $modelSearch,
+															'opciones' => $opciones,
+					]);
+			} else {
+				throw new NotFoundHttpException('No se encontro el registro');
+			}
     	}
+
 
 
 
@@ -775,7 +779,6 @@
 							'postData',
 							'conf',
 							'begin',
-							'exigirDocumento',
 					];
 		}
 
