@@ -57,11 +57,20 @@
 			<h3><?= Html::encode($caption) ?></h3>
 				<?= DetailView::widget([
 						'model' => $model,
+
 						
 		    			'attributes' => [
-		    				'id_propietario',
-		    				'id_comprador',
-		    				// 'placa',
+		    				[
+		    				'label' => 'placa',
+		    				'value' => $model[0]->placa,
+		    				],
+
+		    				[
+		    				'label' => 'Id Vehiculo',
+		    				'value' => $model[0]->cambioPropietario->id_impuesto,
+		    				],
+		    				// 'id_comprador',
+		    				//  'placa',
 		    				// 'marca',
 		    				// 'modelo',
 		    				// 'color',
