@@ -287,7 +287,7 @@ function puntitos( donde, caracter, campo ) {
                             <?= $form->field($model, 'ano_impositivo')->textInput(              [ 'id'=> 'ano_impositivo', 
                                                                                                            
                                                                                                             
-                                                                                                'value' => $datos[0]->ano_impositivo,
+                                                                                              //  'value' => $datos[0]->ano_impositivo,
                                                                                                // die(var_dump($preguntaSeguridad[0]['pregunta'])),
                                                                                                 'readOnly' =>true,
                                                                                                 'style' => 'width:60px;'                                                                                                          
@@ -302,7 +302,7 @@ function puntitos( donde, caracter, campo ) {
             <div class="col-sm-3" style="margin-left: -50px;">
                             <?= $form->field($model, 'nombre_propaganda')->textInput(              [ 'id'=> 'nombre_propaganda', 
                                                                                                            
-                                                                                                      'value' => $datos[0]->nombre_propaganda,      
+                                                                                                      //'value' => $datos[0]->nombre_propaganda,      
                                                                                                 
                                                                                                // die(var_dump($preguntaSeguridad[0]['pregunta'])),
                                                                                                 'readOnly' =>false,
@@ -317,15 +317,19 @@ function puntitos( donde, caracter, campo ) {
         <!--INICIO DE CLASE PROPAGANDA -->
 
     
-                  <div class="col-sm-3" style="margin-left: -50px;">
-                            <?= $form->field($model, 'clase_propaganda')->textInput(              [ 'id'=> 'clase_propaganda', 
-                                                                                                           
-                                                                                                      'value' => $datos[0]->clase_propaganda,      
-                                                                                                
-                                                                                               // die(var_dump($preguntaSeguridad[0]['pregunta'])),
-                                                                                                'readOnly' =>false,
-                                                                                                                                                                                                        
-                                                                                                            ]); ?>
+                       <?php   
+                    $modelClasesPropaganda = ClasesPropaganda::find()->orderBy( [ 'descripcion' => SORT_ASC ] )->asArray()->all();       
+                    $listaClasesPropaganda = ArrayHelper::map( $modelClasesPropaganda, 'clase_propaganda', 'descripcion' ); 
+                    ?>
+
+            <div class="col-sm-2" style="margin-left: -20px;">
+                        <?= $form->field($model, 'clase_propaganda')->dropDownList($listaClasesPropaganda,
+                                                                [
+                                                                //'value' => $datos[0]->clase_propaganda,
+                                                                'prompt' => yii::t('frontend', 'Select'),
+                                                                ]);
+                    ?>
+                
             </div>
 
 
@@ -362,7 +366,7 @@ function puntitos( donde, caracter, campo ) {
 
             <div class="col-sm-2">
                
-                <?= $form->field($model, 'fecha_inicial')->widget(\yii\jui\DatePicker::classname(),[
+                <?= $form->field($model, 'fecha_desde')->widget(\yii\jui\DatePicker::classname(),[
                                                                                         //'type' => 'date',
                                                                                         'clientOptions' => [
                                                                                            // 'maxDate' => '+0d', // Bloquear los dias en el calendario a partir del dia siguiente al actual.
@@ -416,7 +420,7 @@ function puntitos( donde, caracter, campo ) {
                                     $listaTiempo = ArrayHelper::map( $modelTiempo, 'id_tiempo', 'descripcion' ); 
                                     ?> 
                                     
-                                    <?= $form->field( $model, 'tiempo' )->dropDownList( $listaTiempo, [   'id' => 'tiempo', 
+                                    <?= $form->field( $model, 'id_tiempo' )->dropDownList( $listaTiempo, [   'id' => 'tiempo', 
                                                                                         'prompt' => Yii::t('backend', 'Select'),
                                                                                         'style' => 'width:100%;',
                                                                                         'onchange' =>'this.form.submit()'
@@ -428,42 +432,42 @@ function puntitos( donde, caracter, campo ) {
                                     /**
                                      *  Condicional para verificar que fecha fin se le debe colocar a la propaganda dependiendo si es por: ( horas, dias, semanas, mes, anos ).
                                      */
-                                    if($model->tiempo == 1) {
+                                    if($model->id_tiempo == 1) {
                                        // die('llego a 1');
                                         
-                                        $f = $model->fecha_inicial;
+                                        $f = $model->fecha_desde;
                                         $t = $model->cantidad_tiempo;
                                         $fecha = date_create($f);
                                         date_add($fecha, date_interval_create_from_date_string($t.'hours'));
                                         $fecha_fin = date_format($fecha, 'd-m-Y');
                                     }
 
-                                    if( $model->tiempo == 2 ) {
-                                        $f = $model->fecha_inicial;
+                                    if( $model->id_tiempo == 2 ) {
+                                        $f = $model->fecha_desde;
                                         $t = $model->cantidad_tiempo;
                                         $fecha = date_create($f);
                                         date_add($fecha, date_interval_create_from_date_string($t.'days'));
                                         $fecha_fin = date_format($fecha, 'd-m-Y');
                                     }
 
-                                    if( $model->tiempo == 3 ) {
-                                        $f = $model->fecha_inicial;
+                                    if( $model->id_tiempo == 3 ) {
+                                        $f = $model->fecha_desde;
                                         $t = $model->cantidad_tiempo;
                                         $fecha = date_create($f);
                                         date_add($fecha, date_interval_create_from_date_string($t.'weeks'));
                                         $fecha_fin = date_format($fecha, 'd-m-Y');
                                     }
 
-                                    if( $model->tiempo == 4 ) {
-                                        $f = $model->fecha_inicial;
+                                    if( $model->id_tiempo == 4 ) {
+                                        $f = $model->fecha_desde;
                                         $t = $model->cantidad_tiempo;
                                         $fecha = date_create($f);
                                         date_add($fecha, date_interval_create_from_date_string($t.'months'));
                                         $fecha_fin = date_format($fecha, 'd-m-Y');
                                     }
 
-                                    if( $model->tiempo == 5 ) {
-                                        $f = $model->fecha_inicial;
+                                    if( $model->id_tiempo == 5 ) {
+                                        $f = $model->fecha_desde;
                                         $t = $model->cantidad_tiempo;
                                         $fecha = date_create($f);
                                         date_add($fecha, date_interval_create_from_date_string($t.'years'));
@@ -607,7 +611,7 @@ function puntitos( donde, caracter, campo ) {
         <!--INICIO DE CIGARRILLOS -->
 
                 <div class="col-sm-3" style="margin-left: 40px; margin-top: 30px;">
-                    <p><i><small><?= $form->field( $model, 'cigarrillos' )->checkBox( [ 'inline' => true ] )?></p>
+                    <p><i><small><?= $form->field( $model, 'cigarros' )->checkBox( [ 'inline' => true ] )?></p>
                 </div> 
 
         <!--FIN DE CIGARRILLOS -->
@@ -677,7 +681,7 @@ function puntitos( donde, caracter, campo ) {
             ?>
             
             <div class="col-sm-2">
-                        <?= $form->field($model, 'materiales')->dropDownList($listaMediosDifusion,
+                        <?= $form->field($model, 'medio_difusion')->dropDownList($listaMediosDifusion,
                                                             [
                                                             'prompt' => yii::t('frontend', 'Select'),
                                                             ]);
