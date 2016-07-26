@@ -269,6 +269,7 @@ class ModificarPropagandaForm extends Model
 
     public function busquedaPropaganda($idPropaganda, $idContribuyente)
     {
+        //
         $busqueda = PropagandaForm::find()
                                 ->where([
                                     'id_contribuyente' => $idContribuyente,
@@ -279,6 +280,7 @@ class ModificarPropagandaForm extends Model
                                
                                 ])
                                 ->all();
+                                //die(var_dump($busqueda));
 
             if ($busqueda == true){
                 return $busqueda;
@@ -286,6 +288,25 @@ class ModificarPropagandaForm extends Model
                 return false;
             }
     }
+
+    public function verificarSolicitud($idConfig, $idPropaganda)
+    {
+        $buscar = SolicitudesContribuyente::find()
+                                        ->where([ 
+                                          'id_impuesto' => $idPropaganda,
+                                          'id_config_solicitud' => $idConfig,
+                                          'inactivo' => 0,
+                                        ])
+                                      ->all();
+
+            if($buscar == true){
+             return true;
+            }else{
+             return false;
+            }
+        
+    }
+
 
 
    
