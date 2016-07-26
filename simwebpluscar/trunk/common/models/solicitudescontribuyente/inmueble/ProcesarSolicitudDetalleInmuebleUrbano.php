@@ -93,6 +93,7 @@
         {
             $this->_model = $model;
             $this->_evento = $evento;
+            
             $this->_conn = $conn;
             $this->_conexion = $conexion;
         }
