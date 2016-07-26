@@ -189,20 +189,17 @@ class ModificarPropagandaController extends Controller
 
   public function verificarSolicitud($idPropaganda,$idConfig)
   {
-      $buscar = SolicitudesContribuyente::find()
-                                        ->where([ 
-                                          'id_impuesto' => $idPropaganda,
-                                          'id_config_solicitud' => $idConfig,
-                                          'inactivo' => 0,
-                                        ])
-                                      ->all();
+      $clase = new ModificarPropagandaForm();
 
-            if($buscar == true){
-             return true;
-            }else{
-             return false;
-            }
-    }
+      $buscar = $clase->verificarSolicitud($idConfig, $idPropaganda);
+
+          if($buscar == true){
+            return true;
+          }else{
+            return false;
+          }
+
+  }
 
   public function buscarNumeroSolicitud($conn, $conexion)
   {
