@@ -287,7 +287,7 @@ function puntitos( donde, caracter, campo ) {
                             <?= $form->field($model, 'ano_impositivo')->textInput(              [ 'id'=> 'ano_impositivo', 
                                                                                                            
                                                                                                             
-                                                                                                'value' => date('Y'),
+                                                                                                'value' => $datos[0]->ano_impositivo,
                                                                                                // die(var_dump($preguntaSeguridad[0]['pregunta'])),
                                                                                                 'readOnly' =>true,
                                                                                                 'style' => 'width:60px;'                                                                                                          
@@ -302,7 +302,7 @@ function puntitos( donde, caracter, campo ) {
             <div class="col-sm-3" style="margin-left: -50px;">
                             <?= $form->field($model, 'nombre_propaganda')->textInput(              [ 'id'=> 'nombre_propaganda', 
                                                                                                            
-                                                                                                            
+                                                                                                      'value' => $datos[0]->nombre_propaganda,      
                                                                                                 
                                                                                                // die(var_dump($preguntaSeguridad[0]['pregunta'])),
                                                                                                 'readOnly' =>false,
@@ -317,18 +317,15 @@ function puntitos( donde, caracter, campo ) {
         <!--INICIO DE CLASE PROPAGANDA -->
 
     
-                    <?php   
-                    $modelClasesPropaganda = ClasesPropaganda::find()->orderBy( [ 'descripcion' => SORT_ASC ] )->asArray()->all();       
-                    $listaClasesPropaganda = ArrayHelper::map( $modelClasesPropaganda, 'clase_propaganda', 'descripcion' ); 
-                    ?>
-
-            <div class="col-sm-2" style="margin-left: -20px;">
-                        <?= $form->field($model, 'clase_propaganda')->dropDownList($listaClasesPropaganda,
-                                                                [
-                                                                'prompt' => yii::t('frontend', 'Select'),
-                                                                ]);
-                    ?>
-                
+                  <div class="col-sm-3" style="margin-left: -50px;">
+                            <?= $form->field($model, 'clase_propaganda')->textInput(              [ 'id'=> 'clase_propaganda', 
+                                                                                                           
+                                                                                                      'value' => $datos[0]->clase_propaganda,      
+                                                                                                
+                                                                                               // die(var_dump($preguntaSeguridad[0]['pregunta'])),
+                                                                                                'readOnly' =>false,
+                                                                                                                                                                                                        
+                                                                                                            ]); ?>
             </div>
 
 
