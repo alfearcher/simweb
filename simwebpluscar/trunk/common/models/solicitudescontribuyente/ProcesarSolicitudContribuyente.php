@@ -235,7 +235,7 @@
 
                 } elseif ( $model['impuesto'] == 2 ) {
                     // Inmuebles Urbanos.
-                    $procesarDetalle = New ProcesarSolicitudDetalleInmueble($model, $evento, $this->_conn, $this->_conexion);
+                    $procesarDetalle = New ProcesarSolicitudDetalleInmuebleUrbano($model, $evento, $this->_conn, $this->_conexion);
                     $result = $procesarDetalle->procesarSolicitudPorTipo();
 
                 } elseif ( $model['impuesto'] == 3 ) {

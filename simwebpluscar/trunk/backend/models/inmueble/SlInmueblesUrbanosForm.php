@@ -101,7 +101,8 @@ class SlInmueblesUrbanosForm extends \yii\db\ActiveRecord
         return 'sl_inmuebles';
     }
  
-
+ 	
+   
   
 
 }
