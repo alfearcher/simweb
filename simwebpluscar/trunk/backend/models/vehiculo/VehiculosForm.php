@@ -43,6 +43,8 @@ namespace backend\models\vehiculo;
 
 use Yii;
 use frontend\models\vehiculo\solicitudes\SlCambioPlaca;
+use frontend\models\vehiculo\solicitudes\SlDesincorporacionesVehiculo;
+use frontend\models\vehiculo\solicitudes\SlCambioPropietarioVehiculo;
 
 /**
  * This is the model class for table "vehiculos".
@@ -152,4 +154,14 @@ class VehiculosForm extends \yii\db\ActiveRecord
     {
         return $this->hasOne(SlCambioPlaca::className(), ['id_impuesto' => 'id_vehiculo']);
     }
+
+    public function getDesincorporacion()
+   {
+      return $this->HasMany(SlDesincorporacionesVehiculo::ClassName(),['id_impuesto' => 'id_vehiculo']);
+   }
+
+   public function getCambioPropietario()
+   {
+     return $this->HasMany(SlCambioPropietarioVehiculo::ClassName(), ['id_impuesto' => 'id_vehiculo']);
+   }
 }
