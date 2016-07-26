@@ -71,7 +71,8 @@
 	session_start();		// Iniciando session
 
 	/**
-	 *
+	 * Clase que gestiona la consulta del contribuyente para visualizar
+	 * las solicitudes que tenga pendiente.
 	 */
 	class SolicitudCreadaController extends Controller
 	{
