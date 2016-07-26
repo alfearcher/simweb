@@ -60,6 +60,7 @@ use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 use common\models\configuracion\solicitud\DocumentoSolicitud;
 use common\enviaremail\PlantillaEmail;
 use frontend\models\propaganda\modificarpropaganda\ModificarPropagandaForm;
+use backend\models\propaganda\Propaganda;
 
 
 
@@ -143,7 +144,10 @@ class ModificarPropagandaController extends Controller
    
 
             $datosPropaganda = $_SESSION['datosPropaganda']; 
-            $model = new ModificarPropagandaForm();
+            
+            $model = Propaganda::findOne($datosPropaganda['id_impuesto']);
+           // die(var_dump($model));
+                        
 
             $postData = Yii::$app->request->post();
 
@@ -176,9 +180,10 @@ class ModificarPropagandaController extends Controller
                 }
               }        
           }  
+          // die(var_dump($datosPropaganda));
           return $this->render('/propaganda/modificarpropaganda/formulario-modificar-propaganda', [
                                                               'model' => $model,
-                                                              'datos' => $datosPropaganda,
+                                                              //'datos' => $datosPropaganda,
                                                              
             ]);
   
