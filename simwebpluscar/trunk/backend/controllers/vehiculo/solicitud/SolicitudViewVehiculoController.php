@@ -58,6 +58,7 @@
 	// use common\conexion\ConexionController;
 	use backend\controllers\MenuController;
 	use backend\models\vehiculo\VehiculoSearch;
+	use backend\models\vehiculo\VehiculosForm;
 
 
 	//session_start();		// Iniciando session
@@ -200,14 +201,16 @@
 			if ( $this->model->nivel_aprobacion == 2 ) {
 					$modelSearch = New SlVehiculosForm($this->model->id_contribuyente);
 					$model = $modelSearch->findSolicitudCambioPropietarioVendedor($this->model->nro_solicitud);
-
+					$modelRelacion = self::busquedaRelacionVehiculoSlCambioPropietario($model->id_impuesto);
+					//die(var_dump($modelRelacion));
 					$search = new VehiculoSearch();
 
 
 					return $this->render('/vehiculo/solicitudes/cambiopropietario/view-solicitud-cambio-propietario-vendedor', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
-													'model' => $model,
+													'model' => $modelRelacion,
 													'search' => $search,
+													//'modelRelacion' => ,
 
 						]);
 			}
@@ -406,7 +409,22 @@
 		}
 
 
+		public function busquedaRelacionVehiculoSlCambioPropietario($idImpuesto)
+		{
+			//die(var_dump($idImpuesto));
+			$model = VehiculosForm::find()
+			                       ->where([
+			                       	'id_vehiculo' => $idImpuesto,
+			                       	'status_vehiculo' => 0,
 
+			                       	])
+			                       ->joinWith('cambioPropietario')
+			                       ->all();
+			                      // die(var_dump($model));
+
+			return isset($model) ? $model : null;
+										
+		}
 
 
 	}
