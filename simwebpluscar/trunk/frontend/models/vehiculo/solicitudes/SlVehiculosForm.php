@@ -135,6 +135,7 @@ class SlVehiculosForm extends SlVehiculos
         {
             $modelFind = SlCambioPropietarioVehiculo::find()->where('nro_solicitud =:nro_solicitud', [':nro_solicitud' => $nroSolicitud])
                                                     ->andWhere('id_propietario =:id_propietario', [':id_propietario' => $this->id_contribuyente])
+                                                
                                                     ->one();
             return isset($modelFind) ? $modelFind : null;
         }

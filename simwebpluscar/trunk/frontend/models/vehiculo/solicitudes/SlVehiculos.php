@@ -57,7 +57,7 @@
     use yii\db\ActiveRecord;
     use frontend\models\vehiculo\solicitudes\SlVehiculos;
     use frontend\models\vehiculo\solicitudes\SlVehiculosForm;
-   
+    use frontend\models\vehiculo\solicitudes\SlDesincorporacionesVehiculo;
 
 
     class SlVehiculos extends ActiveRecord
@@ -80,7 +80,7 @@
 
 
 
-       
+      
 
 
 

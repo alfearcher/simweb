@@ -52,7 +52,7 @@ namespace frontend\models\propaganda\modificarpropaganda;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\propaganda\PropagandaForm;
+use backend\models\propaganda\Propaganda;
 
 
 
@@ -67,16 +67,16 @@ class ModificarPropagandaForm extends Model
     public $uso_propaganda;
     public $fecha_inicial;
     public $cantidad_base;
-    public $cigarrillos;
+    public $cigarros;
     public $cantidad_tiempo;
     public $base_calculo;
     public $bebidas_alcoholicas;
-    public $tiempo; 
+    public $id_tiempo; 
     public $idioma;
     public $fecha_fin;
     public $id_sim;
     public $tipo_propaganda;
-    public $materiales;
+    public $medio_difusion;
     public $medio_transporte;
     public $direccion;
     public $observacion;
@@ -96,9 +96,9 @@ class ModificarPropagandaForm extends Model
     {
         return [
 
-            [['nombre_propaganda','cantidad_base', 'base_calculo','observacion','direccion' ,'clase_propaganda', 'fecha_fin', 'cantidad_tiempo', 'tiempo', 'fecha_inicial', 'uso_propaganda', 'tipo_propaganda'], 'required'],
+            [['nombre_propaganda','cantidad_base', 'base_calculo','observacion','direccion' ,'clase_propaganda', 'fecha_fin', 'cantidad_tiempo', 'id_tiempo', 'fecha_desde', 'uso_propaganda', 'tipo_propaganda'], 'required'],
             
-            [['cantidad_base', 'base_calculo','observacion','direccion' ,'clase_propaganda','cigarrillos', 'bebidas_alcoholicas', 'idioma'  ,'fecha_fin', 'cantidad_tiempo', 'tiempo', 'fecha_inicial', 'uso_propaganda', 'tipo_propaganda', 'materiales', 'medio_transporte', 'id_sim'], 'default', 'value' => 0],
+            [['cantidad_base', 'base_calculo','observacion','direccion' ,'clase_propaganda','cigarrillos', 'bebidas_alcoholicas', 'idioma'  ,'fecha_fin', 'cantidad_tiempo', 'tiempo', 'fecha_inicial', 'uso_propaganda', 'tipo_propaganda', 'medio_difusion', 'medio_transporte', 'id_sim'], 'default', 'value' => 0],
 
             [['alto','ancho'],'required','when' => function($model) {
                                                                             if ( $model->base_calculo == 2 ) {
@@ -134,18 +134,18 @@ class ModificarPropagandaForm extends Model
                 'ano_impositivo' => Yii::t('frontend', 'Año Impositivo'), 
                 'clase_propaganda' => Yii::t('frontend', 'Clase de Propaganda'),
                 'uso_propaganda' => Yii::t('frontend', 'Uso de Propaganda'),
-                'fecha_inicial' => Yii::t('frontend', 'Fecha de Inscripcion'),
+                'fecha_desde' => Yii::t('frontend', 'Fecha de Inscripcion'),
                 'cantidad_base' => Yii::t('frontend', 'Cantidad Base'),
-                'cigarrillos' => Yii::t('frontend', 'Cigarrillos'),
+                'cigarros' => Yii::t('frontend', 'Cigarrillos'),
                 'cantidad_tiempo' => Yii::t('frontend', 'Cantidad de Tiempo'),
                 'base_calculo' => Yii::t('frontend', 'Base de Calculo'),
                 'bebidas_alcoholicas' => Yii::t('frontend', 'Bebidas Alcoholicas'),
-                'tiempo' => Yii::t('frontend', 'Tiempo'),
+                'id_tiempo' => Yii::t('frontend', 'Tiempo'),
                 'idioma' => Yii::t('frontend', 'Idiomas'),
                 'fecha_fin' => Yii::t('frontend', 'Fecha Fin  '),
                 'id_sim' => Yii::t('frontend', 'Id Sim'),
                 'tipo_propaganda' => Yii::t('frontend', 'Tipo de Propaganda'),
-                'material' => Yii::t('frontend', 'Medio de Difusion'),
+                'medio_difusion' => Yii::t('frontend', 'Medio de Difusion'),
                 'medio_transporte' => Yii::t('frontend', 'Medio de Transporte'),
                 'direccion' => Yii::t('frontend', 'Direccion'),
                 'observacion' => Yii::t('frontend', 'Mensaje de la Propaganda'),
@@ -191,6 +191,7 @@ class ModificarPropagandaForm extends Model
             'alto',
             'ancho',
             'profundidad',
+            'unidad',
             
           
         ];
@@ -230,6 +231,7 @@ class ModificarPropagandaForm extends Model
             'alto',
             'ancho',
             'profundidad',
+            'unidad',
             
           
         ];
@@ -249,7 +251,7 @@ class ModificarPropagandaForm extends Model
         $idContribuyente = yii::$app->user->identity->id_contribuyente;
 
 
-        $query = PropagandaForm::find();
+        $query = Propaganda::find();
 
                                 
                              
@@ -270,7 +272,7 @@ class ModificarPropagandaForm extends Model
     public function busquedaPropaganda($idPropaganda, $idContribuyente)
     {
         //
-        $busqueda = PropagandaForm::find()
+        $busqueda = Propaganda::find()
                                 ->where([
                                     'id_contribuyente' => $idContribuyente,
                                     'id_impuesto' => $idPropaganda,
@@ -279,7 +281,7 @@ class ModificarPropagandaForm extends Model
                                 
                                
                                 ])
-                                ->all();
+                                ->one();
                                 //die(var_dump($busqueda));
 
             if ($busqueda == true){
