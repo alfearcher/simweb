@@ -45,6 +45,7 @@ use Yii;
 use frontend\models\vehiculo\solicitudes\SlCambioPlaca;
 use frontend\models\vehiculo\solicitudes\SlDesincorporacionesVehiculo;
 use frontend\models\vehiculo\solicitudes\SlCambioPropietarioVehiculo;
+use common\models\contribuyente\ContribuyenteBase;
 
 /**
  * This is the model class for table "vehiculos".
@@ -157,11 +158,18 @@ class VehiculosForm extends \yii\db\ActiveRecord
 
     public function getDesincorporacion()
    {
-      return $this->HasMany(SlDesincorporacionesVehiculo::ClassName(),['id_impuesto' => 'id_vehiculo']);
+        return $this->HasMany(SlDesincorporacionesVehiculo::ClassName(),['id_impuesto' => 'id_vehiculo']);
    }
 
    public function getCambioPropietario()
    {
-     return $this->HasMany(SlCambioPropietarioVehiculo::ClassName(), ['id_impuesto' => 'id_vehiculo']);
+        return $this->HasMany(SlCambioPropietarioVehiculo::ClassName(), ['id_impuesto' => 'id_vehiculo']);
    }
+
+    public function getContribuyenteVendedor()
+   {
+        return $this->HasOne(ContribuyenteBase::ClassName(), [ 'id_comprador' => 'id_contribuyente']);
+   }
+
+   
 }
