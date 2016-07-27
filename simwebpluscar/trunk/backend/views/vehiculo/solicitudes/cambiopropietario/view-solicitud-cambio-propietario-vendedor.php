@@ -67,7 +67,7 @@
 
 		    				[
 		    				'label' => 'Id Vehiculo',
-		    				'value' => $model[0]->cambioPropietario->id_impuesto,
+		    				'value' => $model[0]->cambioPropietario[0]->id_impuesto,
 		    				],
 		    				// 'id_comprador',
 		    				//  'placa',
