@@ -184,6 +184,7 @@
 			if ( $this->model->nivel_aprobacion == 2 ) {
 					$modelSearch = New InscripcionSucursalSearch($this->model->id_contribuyente);
 					$model = $modelSearch->findInscripcion($this->model->nro_solicitud);
+die(var_dump($model));
 
 					return $this->render('@backend/views/aaee/inscripcion-sucursal/view-solicitud', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
