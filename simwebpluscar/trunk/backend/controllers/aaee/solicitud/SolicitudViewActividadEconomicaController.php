@@ -69,7 +69,7 @@
 	class SolicitudViewActividadEconomicaController extends Controller
 	{
 
-		private $model;
+		private $_model;
 
 
 
@@ -79,7 +79,7 @@
 		 */
 		public function __construct($mod)
 		{
-			$this->model = $mod;
+			$this->_model = $mod;
 		}
 
 
@@ -92,29 +92,29 @@
 		 */
 		public function actionInicioView()
 		{
-			if ( isset($this->model) && isset($_SESSION['idContribuyente']) ) {
+			if ( isset($this->_model) && isset($_SESSION['idContribuyente']) ) {
 
-				if ( $this->model->tipo_solicitud == 1 ) {
+				if ( $this->_model->tipo_solicitud == 1 ) {
 
 					return self::actionMostarSolicitudInscripcionActividadEconomica();
 
-				} elseif ( $this->model->tipo_solicitud == 2 ) {
+				} elseif ( $this->_model->tipo_solicitud == 2 ) {
 
 					return self::actionMostarSolicitudInscripcionSucursal();
 
-				} elseif ( $this->model->tipo_solicitud == 3 ) {
+				} elseif ( $this->_model->tipo_solicitud == 3 ) {
 
-				} elseif ( $this->model->tipo_solicitud == 4 ) {
+				} elseif ( $this->_model->tipo_solicitud == 4 ) {
 
-				} elseif ( $this->model->tipo_solicitud == 6 ) {
+				} elseif ( $this->_model->tipo_solicitud == 6 ) {
 
-				} elseif ( $this->model->tipo_solicitud == 7 ) {
+				} elseif ( $this->_model->tipo_solicitud == 7 ) {
 
-				} elseif ( $this->model->tipo_solicitud == 8 ) {
+				} elseif ( $this->_model->tipo_solicitud == 8 ) {
 
-				} elseif ( $this->model->tipo_solicitud == 10 ) {
+				} elseif ( $this->_model->tipo_solicitud == 10 ) {
 
-				} elseif ( $this->model->tipo_solicitud == 12 ) {
+				} elseif ( $this->_model->tipo_solicitud == 12 ) {
 
 				}
 			}
@@ -144,12 +144,12 @@
 		 */
 		private function actionMostarSolicitudInscripcionActividadEconomica()
 		{
-			if ( $this->model->nivel_aprobacion == 2 ) {
-					$modelSearch = New InscripcionActividadEconomicaSearch($this->model->id_contribuyente);
-					$model = $modelSearch->findInscripcion($this->model->nro_solicitud);
+			if ( $this->_model->nivel_aprobacion == 2 ) {
+					$modelSearch = New InscripcionActividadEconomicaSearch($this->_model->id_contribuyente);
+					$model = $modelSearch->findInscripcion($this->_model->nro_solicitud);
 					if ( isset($model) ) {
 						return $this->render('@backend/views/aaee/inscripcion-actividad-economica/view-solicitud', [
-														'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
+														'caption' => Yii::t('frontend', 'Request Nro. ' . $this->_model->nro_solicitud),
 														'model' => $model,
 
 							]);
