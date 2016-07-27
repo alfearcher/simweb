@@ -147,6 +147,7 @@
 			if ( $this->_model->nivel_aprobacion == 2 ) {
 					$modelSearch = New InscripcionActividadEconomicaSearch($this->_model->id_contribuyente);
 					$model = $modelSearch->findInscripcion($this->_model->nro_solicitud);
+die(var_dump($model));
 					if ( isset($model) ) {
 						return $this->render('@backend/views/aaee/inscripcion-actividad-economica/view-solicitud', [
 														'caption' => Yii::t('frontend', 'Request Nro. ' . $this->_model->nro_solicitud),
