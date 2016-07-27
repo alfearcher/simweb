@@ -183,7 +183,6 @@
 		private function actionMostarSolicitudInscripcionSucursal()
 		{
 			if ( $this->_model->nivel_aprobacion == 2 ) {
-die(var_dump($this->_model));
 					$modelSearch = New InscripcionSucursalSearch($this->_model->id_contribuyente);
 					$model = $modelSearch->findInscripcion($this->_model->nro_solicitud);
 					if ( isset($model) ) {
