@@ -419,8 +419,9 @@
 
 			                       	])
 			                       ->joinWith('cambioPropietario')
+			                       ->rightJoin('contribuyenteVendedor')
 			                       ->all();
-			                      // die(var_dump($model));
+			                       die(var_dump($model));
 
 			return isset($model) ? $model : null;
 										
