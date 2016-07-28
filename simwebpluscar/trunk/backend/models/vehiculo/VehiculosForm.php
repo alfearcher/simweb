@@ -161,15 +161,7 @@ class VehiculosForm extends \yii\db\ActiveRecord
         return $this->HasMany(SlDesincorporacionesVehiculo::ClassName(),['id_impuesto' => 'id_vehiculo']);
    }
 
-   public function getCambioPropietario()
-   {
-        return $this->HasMany(SlCambioPropietarioVehiculo::ClassName(), ['id_impuesto' => 'id_vehiculo']);
-   }
 
-    public function getContribuyenteVendedor()
-   {
-        return $this->HasOne(ContribuyenteBase::ClassName(), [ 'id_comprador' => 'id_contribuyente']);
-   }
 
    
 }
