@@ -506,7 +506,7 @@
 		 */
 		public static function getUltimoIdRifSucursalSegunRIF($naturalezaLocal = '', $cedulaLocal = 0, $tipoLocal = 0)
 		{
-			if ( trim($naturalezaLocal) != '' && $cedulaLocal > 0 ) {
+			if ( trim($naturalezaLocal) !== '' && $cedulaLocal > 0 ) {
 				if ( strlen($naturalezaLocal) == 1 ) {
 					return self::getIdRifUltimaSucursal($naturalezaLocal, $cedulaLocal, $tipoLocal);
 				}
