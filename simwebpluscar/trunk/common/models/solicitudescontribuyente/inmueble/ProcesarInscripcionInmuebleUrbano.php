@@ -281,7 +281,7 @@ die('llego antes de guardar y modificar la solicitud '.'tabla: '.$tableName.' ar
             if ( !$cancel ) {
                 $result = $this->_conexion->modificarRegistro($this->_conn, $tableName,
                                                               $arregloDatos, $arregloCondicion);
-            }
+            } 
 
             if (!$result ) { self::setErrors(Yii::t('backend', 'Failed update request')); }
             return $result;
