@@ -51,10 +51,15 @@
 
     use Yii;
     use common\models\solicitudescontribuyente\aaee\ProcesarInscripcionActividadEconomica;
+    use common\models\solicitudescontribuyente\aaee\ProcesarInscripcionSucursal;
 
 
 
-    /***/
+    /**
+     * Clase que permite rediccional entre las solicitudes pertenecientes al impuesto de
+     * Actividades Economicas. Se determina el tipo de la solicitud y se instancia la  clase
+     * respectiva de dicha solicitud.
+     */
     class ProcesarSolicitudDetalleActividadEconomica
     {
         /**
@@ -86,8 +91,8 @@
          * este proceso queda definido por los eventos:
          * - Aprobar
          * - Negar
-         * @param [type] $conn     [description]
-         * @param [type] $conexion [description]
+         * @param connsction $conn instancia de connection
+         * @param ConexionController $conexion instancia de la clase ConexionController.
          */
         public function __construct($model, $evento, $conn, $conexion)
         {
@@ -114,7 +119,17 @@
                                                                           $this->_conexion);
                     $result = $procesar->procesarSolicitud();
 
-                } elseif ( $this->_model->tipo_solicitud == 'x' ) {
+                } elseif ( $this->_model->tipo_solicitud == 2 ) {
+                    $procesar = New ProcesarInscripcionSucursal($this->_model,
+                                                                $this->_evento,
+                                                                $this->_conn,
+                                                                $this->_conexion);
+                    $result = $procesar->procesarSolicitud();
+
+                } elseif ( $this->_model->tipo_solicitud == 'a' ) {
+
+
+                } elseif ( $this->_model->tipo_solicitud == 'b' ) {
 
                 }
             }

@@ -22,13 +22,13 @@
  */
 
  /**
- *  @file ProcesarInscripcionActividadEconomica.php
+ *  @file ProcesarInscripcionSucursal.php
  *
  *  @author Jose Rafael Perez Teran
  *
- *  @date 19/06/2016
+ *  @date 28/07/2016
  *
- *  @class ProcesarInscripcionActividadEconomica
+ *  @class ProcesarInscripcionSucursal
  *  @brief
  *
  *
@@ -50,8 +50,8 @@
     namespace common\models\solicitudescontribuyente\aaee;
 
     use Yii;
-    use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomicaForm;
-    use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomicaSearch;
+    use backend\models\aaee\inscripcionsucursal\InscripcionSucursalSearch;
+    use backend\models\aaee\inscripcionsucursal\InscripcionSucursalForm;
     use common\models\contribuyente\ContribuyenteBase;
 
 
@@ -61,7 +61,7 @@
      * que esten relacionada con la aprobacion o negacion de la solicitud. la clase debe
      * entregar como respuesta un true o false.
      */
-    class ProcesarInscripcionActividadEconomica extends InscripcionActividadEconomicaSearch
+    class ProcesarInscripcionSucursal extends InscripcionSucursalSearch
     {
         private $_model;
 
@@ -157,10 +157,11 @@
          * Metodo que permite obtener un modelo de los datos de la solicitud,
          * sobre la entidad "sl-", referente al detalle de la solicitud. Es la
          * entidad donde se guardan los detalle de esta solicitud.
-         * @return Boolean Retorna un true si todo se ejecuto satisfactoriamente, false
+         * @return boolean retorna una instancia modelo active record de
+         * InscripcioonSucursal si todo se ejecuto satisfactoriamente, false
          * en caso contrario.
          */
-        public function findInscripcionActividadEconomica()
+        public function findInscripcionSucursal()
         {
             // Este find retorna el modelo de la entidad "sl-inscripciones-act-econ"
             // con datos, ya que en el metodo padre se ejecuta el ->one() que realiza
@@ -179,7 +180,8 @@
         private function aprobarDetalleSolicitud()
         {
             $result = false;
-            $modelInscripcion = self::findInscripcionActividadEconomica();
+            // modelo de InscripcionSucursal.
+            $modelInscripcion = self::findInscripcionSucursal();
             if ( $modelInscripcion !== null ) {
                 if ( $modelInscripcion['id_contribuyente'] == $this->_model->id_contribuyente ) {
                     $result = self::updateSolicitudInscripcion($modelInscripcion);
@@ -206,7 +208,7 @@
         private function negarDetalleSolicitud()
         {
             $result = false;
-            $modelInscripcion = self::findInscripcionActividadEconomica();
+            $modelInscripcion = self::findInscripcionSucursal();
             if ( $modelInscripcion !== null ) {
                 if ( $modelInscripcion['id_contribuyente'] == $this->_model->id_contribuyente ) {
                     $result = self::updateSolicitudInscripcion($modelInscripcion);
@@ -223,10 +225,10 @@
         /**
          * Metodo que realiza la actualizacin de los atributos segun el evento a ejecutar
          * sobre la solicitud.
-         * @param  Active Record $modelInscripcion modelo de la entidad "sl-inscripciones-act-econ".
-         * Este modelo contiene los datos-detalles, referida a los datos cargados al momento de elaborar
-         * la solicitud.
-         * @return Boolean Retorna un true si todo se ejecuto satisfactoriamente, false
+         * @param  Active Record $modelInscripcion modelo de la entidad "sl-inscripciones-sucursales"
+         * (InscripcionSucursal). Este modelo contiene los datos-detalles, referida a los datos cargados
+         * al momento de elaborar la solicitud.
+         * @return boolean retorna un true si todo se ejecuto satisfactoriamente, false
          * en caso contrario.
          */
         private function updateSolicitudInscripcion($modelInscripcion)
@@ -235,7 +237,7 @@
             $cancel = false;            // Controla si el proceso se debe cancelar.
 
             // Se crea la instancia del modelo que contiene los campos que seran actualizados.
-            $model = New InscripcionActividadEconomicaForm();
+            $model = New InscripcionSucursalForm();
             $tableName = $model->tableName();
 
             // Se obtienen los campos que seran actualizados en la entidad "sl-".
@@ -263,15 +265,16 @@
 
 
         /**
-         * Metodo que realiza la actualizacion de los atributos sobre la entidad "contribuyentes".
-         * El modelo suministra los atributos que seran actualizados por este metodo, donde dicho
-         * datos fueron los cargados al momento de crear la solicitud.
-         * @param  Active Record $modelInscripcion modelo de la entidad "sl-inscripciones-act-econ",
+         * Metodo que realiza la insercion del registro sobre la entidad "contribuyentes".
+         * La creacion se hara con los datos de la sede principal de la sucursal execto
+         * aquellos atributos que fueron cargados en la solicitud de inscripcion de sucursal
+         * y que son propios de cada sucursal.
+         * @param  Active Record $modelInscripcion modelo de la entidad "sl-inscripciones-sucursales",
          * con los datos cargados.
-         * @return Boolean Retorna un true si todo se ejecuto satisfactoriamente, false
+         * @return boolean retorna un true si todo se ejecuto satisfactoriamente, false
          * en caso contrario.
          */
-        private function updateContribuyente($modelInscripcion)
+        private function crearContribuyente($modelInscripcion)
         {
             $result = false;
             $cancel = false;            // Controla si el proceso se debe cancelar.
