@@ -65,11 +65,25 @@
 		    				'value' => $model[0]->placa,
 		    				],
 
+<<<<<<< .mine
+				    			 [
+		                    'label' => 'marca',
+		                    'value' => $model[0]->marca,
+			                ],
+		    				 'id_impuesto',
+||||||| .r3059
+		    				[
+		    				'label' => 'Id Vehiculo',
+		    				'value' => $model[0]->cambioPropietario->id_impuesto,
+		    				],
+		    				// 'id_comprador',
+=======
 		    				[
 		    				'label' => 'Id Vehiculo',
 		    				'value' => $model[0]->cambioPropietario[0]->id_impuesto,
 		    				],
 		    				// 'id_comprador',
+>>>>>>> .r3071
 		    				//  'placa',
 		    				// 'marca',
 		    				// 'modelo',
