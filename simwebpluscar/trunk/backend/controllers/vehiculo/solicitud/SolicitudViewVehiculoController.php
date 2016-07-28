@@ -59,7 +59,7 @@
 	use backend\controllers\MenuController;
 	use backend\models\vehiculo\VehiculoSearch;
 	use backend\models\vehiculo\VehiculosForm;
-
+	use yii\db\Query;
 
 	//session_start();		// Iniciando session
 
@@ -201,7 +201,7 @@
 			if ( $this->model->nivel_aprobacion == 2 ) {
 					$modelSearch = New SlVehiculosForm($this->model->id_contribuyente);
 					$model = $modelSearch->findSolicitudCambioPropietarioVendedor($this->model->nro_solicitud);
-					$modelRelacion = self::busquedaRelacionVehiculoSlCambioPropietario($model->id_impuesto);
+					$modelRelacion = self::busquedaRelacionVehiculoSlCambioPropietario($model->id_impuesto, $model->id_comprador);
 					//die(var_dump($modelRelacion));
 					$search = new VehiculoSearch();
 
@@ -409,21 +409,25 @@
 		}
 
 
-		public function busquedaRelacionVehiculoSlCambioPropietario($idImpuesto)
+		public function busquedaRelacionVehiculoSlCambioPropietario($idImpuesto, $idComprador)
 		{
-			//die(var_dump($idImpuesto));
-			$model = VehiculosForm::find()
-			                       ->where([
-			                       	'id_vehiculo' => $idImpuesto,
-			                       	'status_vehiculo' => 0,
+			$query = New Query();
 
-			                       	])
-			                       ->joinWith('cambioPropietario')
-			                       ->rightJoin('contribuyenteVendedor')
-			                       ->all();
-			                       die(var_dump($model));
+			//$row = $query->select('*')->from('ordenanzas')->all();
 
-			return isset($model) ? $model : null;
+			// Select ordenanzas_detalles.* from ordenanzas
+			// INNER JOIN ordenazas_detalles on ordenanzas.id_ordenanza=ordenanzas_detalles.id_ordenanza
+
+			$model = $query->select('*')
+						 ->from('vehiculos')
+					     ->join('INNER JOIN', 'sl_cambios_propietarios', 'vehiculos.id_vehiculo = sl_cambios_propietarios.id_impuesto')
+					     ->where(['id_vehiculo' => $idImpuesto])
+					     ->join('INNER JOIN', 'contribuyentes', 'contribuyentes.id_contribuyente = sl_cambios_propietarios.id_comprador')
+					     ->where(['id_contribuyente' => $idComprador])
+					     
+					     ->all();
+
+			return $model;
 										
 		}
 
