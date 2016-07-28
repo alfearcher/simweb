@@ -180,13 +180,15 @@
         private function aprobarDetalleSolicitud()
         {
             $result = false;
+            $idGenerado = 0;
             // modelo de InscripcionSucursal.
             $modelInscripcion = self::findInscripcionSucursal();
             if ( $modelInscripcion !== null ) {
                 if ( $modelInscripcion['id_contribuyente'] == $this->_model->id_contribuyente ) {
                     $result = self::updateSolicitudInscripcion($modelInscripcion);
                     if ( $result ) {
-                        $result = self::updateContribuyente($modelInscripcion);
+                        $idGenerado = self::crearContribuyente($modelInscripcion);
+                        if ( $idGenerado > 0 ) { $result = true; }
                     }
                 } else {
                     self::setErrors(Yii::t('backend', 'Error in the ID of taxpayer'));
@@ -277,45 +279,75 @@
         private function crearContribuyente($modelInscripcion)
         {
             $result = false;
-            $cancel = false;            // Controla si el proceso se debe cancelar.
+            $idGenerado = 0;
+            $tabla = ContribuyenteBase::tableName();
 
-            $tablaPrincipal = ContribuyenteBase::tableName();
-            $arregloDatos = null;
+            // Se determina si el solicitante es la sede principal de la sucursal.
+            if ( $this->getSedePrincipal() ) {
+                $modelContribuyente = self::findDatosSedePrincipal($modelInscripcion['id_contribuyente']);
+                if ( isset($modelContribuyente) ) {
+                    // Verificar que el RIF o DNI de la sede principal coincidan con el de
+                    // la sucursal creada en la solicitud.
+                    if ( $modelInscripcion['naturaleza'] == $modelContribuyente['naturaleza'] &&
+                         $modelInscripcion['cedula'] == $modelContribuyente['cedula'] &&
+                         $modelInscripcion['tipo'] == $modelContribuyente['tipo'] ) {
 
-            // Se crea la instancia del modelo que contiene los campos que seran actualizados.
-            $model = New InscripcionActividadEconomicaForm();
+                        // Retorna atributos de la entidad "contribuyentes".
+                        $camposContribuyente = $modelContribuyente->attributes;
 
-            // Se obtienen los campos que seran actualizados en la entidad "contribuyentes".
-            $arregloCampos = $model->atributosUpDate();
+                        $modelSucursal = New InscripcionSucursalForm();
+                        // Se obtienen los atributos particulares de las sucursales, que seran guardadas
+                        // al momento de crear el registro.
+                        $camposSucursal = $modelSucursal->getAtributoSucursal();
 
-            // Se obtienen los campos y valores creados en la solicitud. lo siguiente genera un array de
-            // campos => valores.
-            $camposModel = $modelInscripcion->toArray();
+                        foreach ( $camposSucursal as $campo ) {
+                            if ( isset($modelInscripcion[$campo]) ) {
+                                $camposContribuyente[$campo] = $modelInscripcion[$campo];
+                            } else {
+                                $result = false;
+                                self::setErrors(Yii::t('backend', 'Failed fields not match'));
+                                break;
+                            }
+                        }
 
-            // Se define el arreglo para el where conditon del update.
-            $arregloCondicion['id_contribuyente'] = isset($camposModel['id_contribuyente']) ? $camposModel['id_contribuyente'] : null;
-
-            foreach ( $arregloCampos as $campo ) {
-                if ( isset($camposModel[$campo]) ) {
-                    $arregloDatos[$campo] = $camposModel[$campo];
-                } else {
-                    $cancel = true;
-                    break;
+                        if ( $result ) {
+                            // Se pasa a obtener el identificador de la sucursal.
+                            $camposContribuyente['id_rif'] = $this->getIdentificadorSucursalNuevo(
+                                                                                            $modelInscripcion['naturaleza'],
+                                                                                            $modelInscripcion['cedula'],
+                                                                                            $modelInscripcion['tipo']
+                                                                                        );
+                            if ( $camposContribuyente['id_rif'] > 0 ) {
+                                $result = $his->_conexion->guardarRegistro($this->_conn, $tabla, $camposContribuyente);
+                                $idGenerado = $this->_conn->getLastInsertID();
+                            }
+                        }
+                    } else {
+                        // El RIF de la sede principal no coinciden con el de la solicitud.
+                        self::setErrors(Yii::t('backend', 'DNI do not match'));
+                    }
                 }
             }
+            return $idGenerado;
 
-            if ( count($arregloCampos) == 0 || count($arregloCondicion) == 0 ) { $cancel = true; }
-
-            // Si no existe en la solicitud un campo que viene del modelo que deba ser
-            // actualizado, entonces el proceso debe ser cancelado.
-            if ( !$cancel ) {
-                $result = $this->_conexion->modificarRegistro($this->_conn, $tablaPrincipal,
-                                                              $arregloDatos, $arregloCondicion);
-            }
-            if (!$result ) { self::setErrors(Yii::t('backend', 'Failed update taxpayer')); }
-
-            return $result;
         }
+
+
+
+        /**
+         * Metodo que realiza una busqueda de los datos de la sede principal, la sede
+         * principal estara definida por su identificador de registro (idContribuyente)
+         * @param  long $idContribuyente identificador del contribuyente en la entidad.
+         * @return active record retorna un modelo de ContribuyenteBase, sino encuentra el
+         * registro devolvera un null.
+         */
+        public function findDatosSedePrincipal($idContribuyente)
+        {
+            $findModel = ContribuyenteBase::find($idContribuyente);
+            return isset($findModel) ? $findModel : null;
+        }
+
+
 
 
 
