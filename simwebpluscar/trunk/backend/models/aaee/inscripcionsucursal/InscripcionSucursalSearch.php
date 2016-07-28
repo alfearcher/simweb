@@ -178,6 +178,38 @@
 	    	return $result;
 	    }
 
+
+
+
+	    /**
+	     * Metodo que busca el ultimo identificador de las sucursales asociadas a un RIF,
+	     * una vez obtenido este valor se le sumara uno (1), para devolver el siguiente.
+	     * Este valor complementa la clave concatenada de naturaleza-cedula-tipo-idrif.
+	     * @param  string $naturaleza indica el primer valor del RIF o DNI del contribuyente juridico
+	     * - V => Venezolano.
+	     * - E => Extranjero.
+	     * - J => Juridico.
+	     * - G => Gubernamental.
+	     * - P => Pasaporte.
+	     * @param  long $cedula segundo valor del RIF o DNI del contribuyente juridico.
+	     * @param  integer $tipo ultimo valor del RIF o DNI del contribuyente juridico.
+	     * @return integer retorna un identificador que sera el asignado al contribuyente-sucursal
+	     * este valor complementa el registro a nivel de base de datos.
+	     */
+	    public static function getIdentificadorSucursalNuevo($naturaleza, $cedula, $tipo)
+	    {
+	    	$idRif = 0;
+	    	if ( self::getSedePrincipal() ) {
+		    	$datosSedePrincipal = self::getDatosContribuyente();
+		    	if ( isset($datosSedePrincipal) ) {
+		    		if ( $datosSedePrincipal['naturaleza'] = $naturaleza && $datosSedePrincipal['cedula'] = $cedula && $datosSedePrincipal['tipo'] = $tipo ) {
+		    			$idRif = ContribuyenteBase::getUltimoIdRifSucursalSegunRIF($naturaleza, $cedula, $tipo);
+		    		}
+		    	}
+		   	}
+		   	return ($idRif > 0) ? $idRif + 1 : 0;
+	    }
+
 	}
 
 

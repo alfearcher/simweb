@@ -253,6 +253,36 @@
 
 
 
+	    /**
+	     * Metodo que retorna los atributos que seran utilizados para crear la sucursal, estos
+	     * atributos diferencian a cada sucursal entre si mismas y entre las sucursales y la sede
+	     * principal, lo que se busca es solo afectar aquellos atributos particulares de cada
+	     * sucursal. Estos atributos fueron cargados en la solicitud para crear la sucursal, asi
+	     * que cada atributo debe tener un valor especifico en la solicitud relaizada. De no ser
+	     * asi se debe considerar que la solicitud no corresponde con el modelo de negocio de la
+	     * solicitud.
+	     * @return array retorna una arrego de atributos.
+	     */
+	    public function getAtributoSucursal()
+	    {
+	    	return [
+	    		'naturaleza',
+	            'cedula',
+	            'tipo',
+	            'razon_social',
+	            'domicilio_fiscal',
+	            'id_sim',
+	            'tlf_ofic',
+	            'tlf_ofic_otro',
+	            'email',
+	            'tlf_celular',
+	            'fecha_inicio',
+	    	];
+	    }
+
+
+
+
 	     /**
 	     * Metodo que retorna un arreglo de atributos que seran actualizados
 	     * al momento de procesar la solicitud (aprobar o negar). Estos atributos
@@ -321,13 +351,6 @@
 	    	return false;
 	    }
 
-
-
-	    /***/
-	    public static function getIdentificadorSucursal()
-	    {
-
-	    }
 
 
 	}
