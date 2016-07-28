@@ -63,7 +63,8 @@
     /**
      * Clase que procesa la solicitud, es decir, actualiza los valores de la solicitud
      * creada una vez que la misma es procesada. El procesamiento de la solicitud
-     * consiste en una aprobacion o negacion de la misma.
+     * consiste en una aprobacion o negacion de la misma. Se afectan las entidad principal
+     * de la solicitud y las entidades donde se guardan los detalles de la misma.
      */
     class ProcesarSolicitudContribuyente extends SolicitudesContribuyenteForm
     {
@@ -93,8 +94,8 @@
          * este proceso queda definido por los eventos:
          * - Aprobar
          * - Negar
-         * @param [type] $connLocal     [description]
-         * @param [type] $conexionLocal [description]
+         * @param connection $connLocal instancia de connection.
+         * @param ConexionController $conexionLocal instancia de la clase ConexionController.
          */
         public function __construct($nroSolicitud, $accionLocal, $connLocal, $conexionLocal)
         {
@@ -122,7 +123,18 @@
 
 
 
-        /***/
+        /**
+         * Metodo donde se busca la solicitud padre y se asegura que la misma este en un
+         * estatus de pendiente para su procesamiento. Se llama al metodo que realiza la
+         * actualizacion de los atributos respectivos y se recibe una respuesta de dicha
+         * operacion. Luego se redirecciona para negar el detalle de la solicitud.
+         * @param  integer $causa identificador del combo-lista que se selecciono al momento
+         * de inidcar la causa de l negacion de la solicitud.
+         * @param  string  $observacion nota colocada por el funcionario para complementar la
+         * negacion o causa de la solicitud.
+         * @return boolean retorna true si la actualizacion se realiza satisfactoriamente, sino
+         * retorna false.
+         */
         public function negarSolicitud($causa = 0, $observacion = '')
         {
             $result = false;
@@ -146,7 +158,18 @@
 
 
 
-        /***/
+        /**
+         * Metodo que ejecuta la negacion de la solicitud sobre la entidad principal
+         * "solicitudes-contribuyente". Luego se realizara la negacion sobre las entidades
+         * que representan el detalle de la solicitud.
+         * @param  model $model modelo de SolicitudesContyribuyente.
+         * @param  integer $causa identificador del combo-lista que se selecciono al momento
+         * de inidcar la causa de l negacion de la solicitud.
+         * @param  string $observacion nota colocada por el funcionario para complementar la
+         * negacion o causa de la solicitud.
+         * @return boolean retorna true si la actualizacion se realiza satisfactoriamente, sino
+         * retorna false.
+         */
         private function negar($model, $causa, $observacion)
         {
             $result = false;
@@ -224,7 +247,16 @@
 
 
 
-        /***/
+        /**
+         * Metodo que rutea el procesamiento de la solicitud por impuesto de la misma.
+         * Con la intencion de procesar el detalle correspondiente de la solicitud.
+         * @param  model $model modelo de SolicitudesContyribuyente
+         * @param  string $evento evento que se realiza sobre la solicitud:
+         * - Aprobar
+         * - Negar.
+         * @return boolean retorna true si el procesamiento del detalle de la solicitud es
+         * satisfactorio, false en caso contrario.
+         */
         private function procesarSolicitudPorImpuesto($model, $evento)
         {
             $result = false;
