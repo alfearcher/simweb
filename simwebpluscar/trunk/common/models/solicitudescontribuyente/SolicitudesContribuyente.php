@@ -61,6 +61,7 @@
     use common\models\configuracion\solicitudplanilla\SolicitudPlanilla;
     use backend\models\configuracion\nivelaprobacion\NivelAprobacion;
     use backend\models\utilidad\causanegacionsolicitud\CausaNegacionSolicitud;
+    use backend\models\solicitud\estatus\EstatusSolicitud;
 
 
 
@@ -144,6 +145,18 @@
         {
             return $this->hasOne(CausaNegacionSolicitud::className(), ['causa' => 'causa']);
         }
+
+
+
+        /**
+         * Relacion con la entidad "estatus-solicitudes". EstatusSolicitud.
+         * @return Active Record.
+         */
+        public function getEstatusSolicitud()
+        {
+            return $this->hasOne(EstatusSolicitud::className(), ['estatus_solicitud' => 'estatus']);
+        }
+
 
 
          /**
