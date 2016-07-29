@@ -46,6 +46,7 @@
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 	use common\models\solicitudescontribuyente\SolicitudesContribuyente;
+	use backend\models\solicitud\estatus\EstatusSolicitud;
 
 	/**
 	* 	Clase
@@ -105,6 +106,19 @@
 
 	        ];
 	    }
+
+
+
+	    /**
+	     * Relacion con la entidad "estatus-solicitudes", EstatusSolicitud
+	     * @return Active Record
+	     */
+	    public function getEstatusInscripcion()
+	    {
+	    	return $this->hasOne(EstatusSolicitud::className(), ['estatus_solicitud' => 'estatus']);
+	    }
+
+
 	}
 
 

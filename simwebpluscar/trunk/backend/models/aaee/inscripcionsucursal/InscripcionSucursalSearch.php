@@ -49,6 +49,7 @@
 	use common\models\contribuyente\ContribuyenteBase;
 	use backend\models\utilidad\documento\DocumentoRequisito;
 	use yii\data\ActiveDataProvider;
+	use backend\models\solicitud\estatus\EstatusSolicitud;
 
 
 	/**
@@ -155,6 +156,7 @@
 	    {
 	    	$modelFind = InscripcionSucursal::find()->where('nro_solicitud =:nro_solicitud', [':nro_solicitud' => $nroSolicitud])
 	    										    ->andWhere('id_contribuyente =:id_contribuyente', [':id_contribuyente' => $this->_id_contribuyente])
+	    										    ->joinWith('estatusInscripcion')
 	    											->one();
 	    	return isset($modelFind) ? $modelFind : null;
 	    }
