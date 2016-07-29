@@ -212,6 +212,26 @@
 					</div>
 <!-- Fin de Nivel de Aprobacion -->
 
+<!-- Inicio de Estatus Solicitud -->
+					<div class="row" style="padding-left: 15px;">
+						<div class="col-sm-3">
+							<div class="row">
+								<p><strong><?= Yii::t('backend', $model->getAttributeLabel('estatus')) ?></strong></p>
+							</div>
+						</div>
+						<div class="col-sm-5" style="padding-left: 0px;">
+							<div class="row" class="estatus-solicitud">
+								<?= $form->field($model, 'estatus')->textInput([
+																					'id' => 'estatus-solicitud',
+																					'readonly' => true,
+																					'style' => 'width: 100%; background-color: white;',
+																					'value' =>$model->estatusSolicitud['descripcion'],
+																				])->label(false) ?>
+							</div>
+						</div>
+					</div>
+<!-- Fin de Estatus Solicitud -->
+
 
 <!-- Inicio de Datos del CONTRIBUYENTE -->
 					<div class="row" style="border-bottom: 0.5px solid #ccc;">

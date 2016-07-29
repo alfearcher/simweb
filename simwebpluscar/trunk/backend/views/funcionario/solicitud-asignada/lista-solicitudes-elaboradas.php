@@ -142,6 +142,12 @@
                 							return $model->impuestos->descripcion;
                 						}
                 					],
+                					[
+                						'label' => Yii::t('backend', 'Condition'),
+                						'value' => function($model) {
+                							return $model->estatusSolicitud->descripcion;
+                						}
+                					],
                 					// [
                 					// 	'label' => Yii::t('backend', 'User'),
                 					// 	'value' => function($model) {
