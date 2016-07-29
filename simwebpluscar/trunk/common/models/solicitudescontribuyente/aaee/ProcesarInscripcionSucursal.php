@@ -256,8 +256,10 @@
             // Si no existe en la solicitud un campo que viene del modelo que deba ser
             // actualizado, entonces el proceso debe ser cancelado.
             if ( !$cancel ) {
-                $result = $this->_conexion->modificarRegistro($this->_conn, $tableName,
-                                                              $arregloCampos, $arregloCondicion);
+                $result = $this->_conexion->modificarRegistro($this->_conn,
+                                                              $tableName,
+                                                              $arregloCampos,
+                                                              $arregloCondicion);
             }
 
             if (!$result ) { self::setErrors(Yii::t('backend', 'Failed update request')); }
@@ -284,7 +286,7 @@
 
             // Se determina si el solicitante es la sede principal de la sucursal.
             if ( $this->getSedePrincipal() ) {
-                $modelContribuyente = self::findDatosSedePrincipal($modelInscripcion['id_contribuyente']);
+                $modelContribuyente = self::findDatosSedePrincipal($this->_model['id_contribuyente']);
                 if ( isset($modelContribuyente) ) {
                     // Verificar que el RIF o DNI de la sede principal coincidan con el de
                     // la sucursal creada en la solicitud.
