@@ -141,7 +141,8 @@
 							    				],
 							    				[
 							    					'label' => $model->getAttributeLabel('estatus'),
-							    					'value' => $modelSearch->getDescripcionEstatus($model->estatus),
+							    					'value' => $model['estatusInscripcion']->descripcion,
+							    					//'value' => $modelSearch->getDescripcionEstatus($model->estatus),
 							    				],
 
 							    			],
