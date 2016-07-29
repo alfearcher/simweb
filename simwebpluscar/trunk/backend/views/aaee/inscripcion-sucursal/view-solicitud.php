@@ -68,7 +68,11 @@
 		    				'tlf_celular',
 		    				'usuario',
 		    				'fecha_hora',
-		    				'estatus',
+		    				[
+		    					'label' => Yii::t('frontend', 'Condition'),
+		    					'value' => $model->estatusInscripcion->descripcion,
+		    				],
+		    				//'estatus',
 
 		    			],
 					])
