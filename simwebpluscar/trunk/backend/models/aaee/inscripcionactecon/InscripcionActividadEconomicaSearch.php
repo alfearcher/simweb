@@ -108,6 +108,7 @@
 	    {
 	    	$modelFind = InscripcionActividadEconomica::find()->where('nro_solicitud =:nro_solicitud', [':nro_solicitud' => $nroSolicitud])
 	    													  ->andWhere('id_contribuyente =:id_contribuyente', [':id_contribuyente' => $this->id_contribuyente])
+	    													  ->joinWith('estatusInscripcion')
 	    													  ->one();
 	    	return isset($modelFind) ? $modelFind : null;
 	    }
