@@ -317,18 +317,16 @@
 
 						$result = self::actionCreateSucursal($this->_conexion, $this->_conn, $model, $conf);
 						if ( $result ) {
+							$result = self::actionCreateContribuyente($this->_conexion, $this->_conn, $model, $conf);
 							//$result = self::actionCreateDocumentosConsignados($this->_conexion, $this->_conn, $model, $postEnviado);
-							$result = self::actionEjecutaProcesoSolicitud($this->_conexion, $this->_conn, $model, $conf);
 							if ( $result ) {
-								$result = self::actionEnviarEmail($model, $conf);
-								$result = true;
+								$result = self::actionEjecutaProcesoSolicitud($this->_conexion, $this->_conn, $model, $conf);
+								if ( $result ) {
+									$result = self::actionEnviarEmail($model, $conf);
+									$result = true;
+								}
 							}
 						}
-					}
-
-
-					if ( $conf['nivel_aprobacion'] == 1 ) {
-
 					}
 
 				} else {
@@ -347,11 +345,11 @@
 
 		/**
 		 * Metodo que guarda el registro respectivo en la entidad "solicitudes-contribuyente".
-		 * @param  Class $conexionLocal instancia de tipo ConexionController
-		 * @param  [type] $connLocal     [description]
-		 * @param  [type] $model         [description]
-		 * @param  array $conf arreglo que contiene los parametros principales de la configuracion
-		 * de la ordenaza.
+		 * @param  ConexionController $conexionLocal instancia de la lcase ConexionController.
+		 * @param  connection $connLocal instancia de connection
+		 * @param  model $model modelo de InscripcionSucursalForm.
+		 * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
+		 * solicitud.
 		 * @return boolean retorna true si guardo correctamente o false sino guardo.
 		 */
 		private function actionCreateSolicitud($conexionLocal, $connLocal, $model, $conf)
@@ -408,51 +406,101 @@
 
 
 		/**
-		 * [actionCreateContribuyente description]
-		 * @param  [type] $conexionLocal [description]
-		 * @param  [type] $connLocal     [description]
-		 * @param  [type] $model         [description]
-		 * @param  [type] $conf          [description]
-		 * @return [type]                [description]
+		 * Metodo que crea el registro en la entidad "contribuyentes".
+		 * Esta inclusion debe generar un identificador para el registro
+		 * guardado.
+		 * @param  ConexionController $conexionLocal instancia de la lcase ConexionController.
+		 * @param  connection $connLocal instancia de connection
+		 * @param  model $model modelo de InscripcionSucursalForm.
+		 * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
+		 * solicitud.
+		 * @return boolean retorna un true si guardo el registro, false en caso contrario.
 		 */
 		private static function actionCreateContribuyente($conexionLocal, $connLocal, $model, $conf)
 		{
-			$idContribuyenteGenerado = 0;
+			$idGenerado = 0;	// identificador de la sucursal generado.
 			$result = false;
-			if ( isset($_SESSION['idContribuyente']) == $model->id_sede_principal ) {
-				// id de la sede principal.
-				$id = $model->id_sede_principal;
+			$cancel = false;
+			if ( $conf['nivel_aprobacion'] == 1 ) {
+				if ( isset($_SESSION['idContribuyente']) == $model->id_sede_principal ) {
+					// id de la sede principal.
+					$id = $model->id_sede_principal;
 
-				$modelContribuyente = New ContribuyenteBase();
+					$modelContribuyente = New ContribuyenteBase();
+					$tabla = '';
+	      			$tabla = $modelContribuyente->tableName();
 
-				$arregloDatos = $_SESSION['datosContribuyente'];
-				$arregloDatos['fecha_inclusion'] = date('Y-m-d');
+	      			$inscripcionSearch = New InscripcionSucursalSearch($id);
+	      			// Se determina si el solicitante es la sede principal.
+	      			if ( $inscripcionSearch->getSedePrincipal() ) {
+	      				// Se obtienen los datos de la sede peincipal
+	      				$datosSedePrincipal = $inscripcionSearch->getDatosContribuyente();
+	      				if ( isset($datosSedePrincipal) ) {
+	      					// Verificar que el RIF o DNI de la sede principal coincidan con el de
+                    		// la sucursal creada en la solicitud.
+	      					if ( $model['naturaleza'] == $datosSedePrincipal['naturaleza'] &&
+	      						 $model['cedula'] == $datosSedePrincipal['cedula'] &&
+	      						 $model['tipo'] == $datosSedePrincipal['tipo'] ) {
 
-				// Se ajusta el formato de fecha incio de dd-mm-aaaa a aaaa-mm-dd.
-				$arregloDatos['fecha_inicio'] = date('Y-m-d', strtotime($arregloDatos['fecha_inicio']));
+	      						$camposContribuyente = $datosSedePrincipal;
 
-				// Se procede a guardar primero en la entidad contribuyentes, debido a que se requiere el
-				// id generado para guardar en las otras entidades.
-      			$tabla = '';
-      			$tabla = $modelContribuyente->tableName();
+	      						$camposSucursal = $model->getAtributoSucursal();
 
-				if ( $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos) ) {
-					$idContribuyenteGenerado = 0;
-					return $idContribuyenteGenerado = $connLocal->getLastInsertID();
-				}
+								foreach ( $camposSucursal as $campo ) {
+		                            if ( array_key_exists($campo, $datosSedePrincipal) ) {
+		                                $camposContribuyente[$campo] = $model[$campo];
+		                            } else {
+		                                $cancel = true;
+		                                break;
+		                            }
+		                        }
+
+		                        if ( !$cancel ) {
+		                        	// Se actualiza la fecha de inclusion de la suucrsal, se sustituye la colocada
+                            		// de la sede principal por la actual.
+                            		$camposContribuyente['fecha_inclusion'] = date('Y-m-d');
+
+                            		// Se coloca el valor del identificador de la entidad en null, ya que este identificador
+                            		// no es de este registro, sino de la sede principal.
+                            		$camposContribuyente['id_contribuyente'] = null;
+
+                            		// Se pasa a obtener el identificador de la sucursal.
+		                            $idRif = $inscripcionSearch->getIdentificadorSucursalNuevo($model['naturaleza'],
+		                                                                          			   $model['cedula'],
+		                                                                          			   $model['tipo']
+		                                                                        			);
+
+		                            if ( $idRif > 0 ) {
+		                                $camposContribuyente['id_rif'] = $idRif;
+
+		                                $result = $conexionLocal->guardarRegistro($connLocal, $tabla, $camposContribuyente);
+		                                if ( $result ) {
+		                                    $idGenerado = $connLocal->getLastInsertID();
+		                                }
+		                            }
+		                        }
+	      					}
+	      				}
+	      			}
+	      		}
+
+			} else {
+				$result = true;
 			}
-			return false;
+			return $result;
 		}
 
 
 
 		/**
-		 * [actionCreateSucursal description]
-		 * @param  [type] $conexionLocal [description]
-		 * @param  [type] $connLocal     [description]
+		 * Metodo que guarda el registro detalle de la solicitid en la entidad
+		 * "sl" respectiva.
+		 * @param  ConexionController $conexionLocal instancia de la lcase ConexionController.
+		 * @param  connection $connLocal instancia de connection
 		 * @param  model $model modelo de InscripcionSucursalForm.
-		 * @param  [type] $conf          [description]
-		 * @return [type]                [description]
+		 * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
+		 * solicitud.
+		 * @return boolean retorna un true si guardo el registro, false en caso contrario.
 		 */
 		private static function actionCreateSucursal($conexionLocal, $connLocal, $model, $conf)
 		{
@@ -718,8 +766,8 @@
 
 
     	/**
-		 * [actionQuit description]
-		 * @return [type] [description]
+		 * Metodo salida del modulo.
+		 * @return view
 		 */
 		public function actionQuit()
 		{
@@ -731,9 +779,11 @@
 
 
 		/**
-		 * [actionAnularSession description]
-		 * @param  [type] $varSessions [description]
-		 * @return [type]              [description]
+		 * Metodo que ejecuta la anulacion de las variables de session utilizados
+		 * en el modulo.
+		 * @param  array $varSessions arreglo con los nombres de las variables de
+		 * sesion que seran anuladas.
+		 * @return none.
 		 */
 		public function actionAnularSession($varSessions)
 		{
@@ -743,8 +793,11 @@
 
 
 		/**
-		 * [actionProcesoExitoso description]
-		 * @return [type] [description]
+		 * Metodo que renderiza una vista indicando que le proceso se ejecuto
+		 * satisfactoriamente.
+		 * @param  integer $cod codigo que permite obtener la descripcion del
+		 * codigo de la operacion.
+		 * @return view.
 		 */
 		public function actionProcesoExitoso($cod)
 		{
@@ -756,9 +809,11 @@
 
 
 		/**
-		 * [actionErrorOperacion description]
-		 * @param  [type] $codigo [description]
-		 * @return [type]         [description]
+		 * Metodo que renderiza una vista que indica que ocurrio un error en la
+		 * ejecucion del proceso.
+		 * @param  integer $cod codigo que permite obtener la descripcion del
+		 * codigo de la operacion.
+		 * @return view.
 		 */
 		public function actionErrorOperacion($cod)
 		{
@@ -770,8 +825,10 @@
 
 
 		/**
-		 * [actionGetListaSessions description]
-		 * @return [type] [description]
+		 * Metodo que permite obtener un arreglo de las variables de sesion
+		 * que seran utilizadas en el modulo, aqui se pueden agregar o quitar
+		 * los nombres de las variables de sesion.
+		 * @return array retorna un arreglo de nombres.
 		 */
 		public function actionGetListaSessions()
 		{
