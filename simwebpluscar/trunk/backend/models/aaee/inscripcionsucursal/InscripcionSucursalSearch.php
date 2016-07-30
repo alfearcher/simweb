@@ -164,21 +164,21 @@
 
 
 	    /***/
-	    public function getDescripcionEstatus($estatus)
-	    {
-	    	$result = '';
-	    	if ( $estatus == 0 ) {
-	    		$result = 'PENDIENTE';
-	    	} elseif ( $estatus == 1 ) {
-	    		$result = 'APROBADA';
-	    	} elseif ( $estatus == 2 ) {
-	    		$result = 'NEGADA';
-	    	} elseif ( $estatus == 9 ) {
-	    		$result = 'ANULADA';
-	    	}
+	    // public function getDescripcionEstatus($estatus)
+	    // {
+	    // 	$result = '';
+	    // 	if ( $estatus == 0 ) {
+	    // 		$result = 'PENDIENTE';
+	    // 	} elseif ( $estatus == 1 ) {
+	    // 		$result = 'APROBADA';
+	    // 	} elseif ( $estatus == 2 ) {
+	    // 		$result = 'NEGADA';
+	    // 	} elseif ( $estatus == 9 ) {
+	    // 		$result = 'ANULADA';
+	    // 	}
 
-	    	return $result;
-	    }
+	    // 	return $result;
+	    // }
 
 
 
@@ -198,18 +198,23 @@
 	     * @return integer retorna un identificador que sera el asignado al contribuyente-sucursal
 	     * este valor complementa el registro a nivel de base de datos.
 	     */
-	    public static function getIdentificadorSucursalNuevo($naturaleza, $cedula, $tipo)
+	    public  function getIdentificadorSucursalNuevo($naturaleza, $cedula, $tipo)
 	    {
 	    	$idRif = 0;
 	    	if ( self::getSedePrincipal() ) {
 		    	$datosSedePrincipal = self::getDatosContribuyente();
 		    	if ( isset($datosSedePrincipal) ) {
 		    		if ( $datosSedePrincipal['naturaleza'] = $naturaleza && $datosSedePrincipal['cedula'] = $cedula && $datosSedePrincipal['tipo'] = $tipo ) {
+		    			// Lo siguiente retorna una array
+		    			// array(1) {
+  						//		["id_rif"]=>
+  						//			string(1) "valor"
+  						//	}
 		    			$idRif = ContribuyenteBase::getUltimoIdRifSucursalSegunRIF($naturaleza, $cedula, $tipo);
 		    		}
 		    	}
 		   	}
-		   	return ($idRif > 0) ? $idRif + 1 : 0;
+		   	return isset($idRif) ? $idRif['id_rif'] + 1 : 0;
 	    }
 
 	}
