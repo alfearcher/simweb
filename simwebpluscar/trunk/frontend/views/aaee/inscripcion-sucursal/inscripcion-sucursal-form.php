@@ -69,7 +69,7 @@
  			'id' => 'id-inscripcion-sucursal-form',
  			'method' => 'post',
  			'enableClientValidation' => true,
- 			//'enableAjaxValidation' => true,
+ 			'enableAjaxValidation' => true,
  			'enableClientScript' => true,
  		]);
  	?>
