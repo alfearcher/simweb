@@ -190,6 +190,12 @@
 						$model->load($postData);
 					}
 				}
+//die(var_dump($postData));
+				if ( isset($postData['btn-quit']) ) {
+					if ( $postData['btn-quit'] == 1 ) {
+						$this->redirect(['quit']);
+					}
+				}
 
 		  		if ( $model->load($postData)  && Yii::$app->request->isAjax ) {
 					Yii::$app->response->format = Response::FORMAT_JSON;
