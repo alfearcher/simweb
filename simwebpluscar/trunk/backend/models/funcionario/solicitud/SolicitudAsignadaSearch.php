@@ -129,9 +129,11 @@
 	    	                                             ->andWhere(TipoSolicitud::tableName().'.inactivo =:inactivo', [':inactivo' => 0])
 	    	                                             //->andWhere(['tipo_solicitud' => $tipoSolicitud])
 	    	                                             ->joinWith('tipoSolicitud', 'impuestos')
+	    	                                             ->joinWith('estatusSolicitud')
 	    	                                             ->orderBy([
 	    	                                             		'nro_solicitud' => SORT_ASC,
-	    	                                             	]);
+	    	                                             	])
+	    	                                             ->limit(10);
 
 	    	return isset($modelFind) ? $modelFind : null;
 	    }
@@ -145,7 +147,7 @@
 	     */
 	    public function getDataProviderSolicitudContribuyente($tipoSolicitud)
 	    {
-	    	$query = $this->findSolicitudContribuyenteEmitida($tipoSolicitud);
+	    	$query = self::findSolicitudContribuyenteEmitida($tipoSolicitud);
 
 	    	$dataProvider = New ActiveDataProvider([
 	    		'query' => $query,
@@ -282,7 +284,7 @@
 	    	return $modelFind = SolicitudesContribuyente::find()
 	    										->where(['nro_solicitud' => $nroSolicitud])
                                                 ->joinWith('tipoSolicitud', 'impuestos')
-                                                ->joinWith('nivelAprobacion')
+                                                ->joinWith('nivelAprobacion', 'estatusSolicitud')
                                                 ->one();
                                                 //->asArray()
 	    }
