@@ -63,6 +63,10 @@
      */
     class ProcesarInscripcionSucursal extends InscripcionSucursalSearch
     {
+        /**
+         * [$_model modelo de la entidad "solicitudes-contribuyente"
+         * @var Active Record.
+         */
         private $_model;
 
         private $_conn;
@@ -188,7 +192,11 @@
                     $result = self::updateSolicitudInscripcion($modelInscripcion);
                     if ( $result ) {
                         $idGenerado = self::crearContribuyente($modelInscripcion);
-                        if ( $idGenerado > 0 ) { $result = true; }
+                        if ( $idGenerado > 0 ) {
+                            $result = true;
+                        } else {
+                            $result = false;
+                        }
                     }
                 } else {
                     self::setErrors(Yii::t('backend', 'Error in the ID of taxpayer'));
@@ -281,21 +289,25 @@
         private function crearContribuyente($modelInscripcion)
         {
             $result = false;
+            $cancel = false;
             $idGenerado = 0;
+            $idRif = 0;
             $tabla = ContribuyenteBase::tableName();
 
             // Se determina si el solicitante es la sede principal de la sucursal.
             if ( $this->getSedePrincipal() ) {
                 $modelContribuyente = self::findDatosSedePrincipal($this->_model['id_contribuyente']);
-                if ( isset($modelContribuyente) ) {
+                $findArregloContribuyente = $modelContribuyente->asArray()->one();
+
+                if ( count($findArregloContribuyente) > 0 ) {
                     // Verificar que el RIF o DNI de la sede principal coincidan con el de
                     // la sucursal creada en la solicitud.
-                    if ( $modelInscripcion['naturaleza'] == $modelContribuyente['naturaleza'] &&
-                         $modelInscripcion['cedula'] == $modelContribuyente['cedula'] &&
-                         $modelInscripcion['tipo'] == $modelContribuyente['tipo'] ) {
+                    if ( $modelInscripcion['naturaleza'] == $findArregloContribuyente['naturaleza'] &&
+                         $modelInscripcion['cedula'] == $findArregloContribuyente['cedula'] &&
+                         $modelInscripcion['tipo'] == $findArregloContribuyente['tipo'] ) {
 
                         // Retorna atributos de la entidad "contribuyentes".
-                        $camposContribuyente = $modelContribuyente->attributes;
+                        $camposContribuyente = $findArregloContribuyente;
 
                         $modelSucursal = New InscripcionSucursalForm();
                         // Se obtienen los atributos particulares de las sucursales, que seran guardadas
@@ -303,25 +315,36 @@
                         $camposSucursal = $modelSucursal->getAtributoSucursal();
 
                         foreach ( $camposSucursal as $campo ) {
-                            if ( isset($modelInscripcion[$campo]) ) {
+                            if ( array_key_exists($campo, $modelInscripcion->toArray()) ) {
                                 $camposContribuyente[$campo] = $modelInscripcion[$campo];
                             } else {
-                                $result = false;
+                                $cancel = true;
                                 self::setErrors(Yii::t('backend', 'Failed fields not match'));
                                 break;
                             }
                         }
 
-                        if ( $result ) {
+                        if ( !$cancel ) {
+                            // Se actualiza la fecha de inclusion de la suucrsal, se sustituye la colocada
+                            // de la sede principal por la actual.
+                            $camposContribuyente['fecha_inclusion'] = date('Y-m-d');
+
+                            // Se coloca el valor del identificador de la entidad en null, ya que este identificador
+                            // no es de este registro, sino de la sede principal.
+                            $camposContribuyente['id_contribuyente'] = null;
+
                             // Se pasa a obtener el identificador de la sucursal.
-                            $camposContribuyente['id_rif'] = $this->getIdentificadorSucursalNuevo(
-                                                                                            $modelInscripcion['naturaleza'],
-                                                                                            $modelInscripcion['cedula'],
-                                                                                            $modelInscripcion['tipo']
-                                                                                        );
-                            if ( $camposContribuyente['id_rif'] > 0 ) {
-                                $result = $his->_conexion->guardarRegistro($this->_conn, $tabla, $camposContribuyente);
-                                $idGenerado = $this->_conn->getLastInsertID();
+                            $idRif = $this->getIdentificadorSucursalNuevo($modelInscripcion['naturaleza'],
+                                                                          $modelInscripcion['cedula'],
+                                                                          $modelInscripcion['tipo']
+                                                                        );
+
+                            if ( $idRif > 0 ) {
+                                $camposContribuyente['id_rif'] = $idRif;
+                                $result = $this->_conexion->guardarRegistro($this->_conn, $tabla, $camposContribuyente);
+                                if ( $result ) {
+                                    $idGenerado = $this->_conn->getLastInsertID();
+                                }
                             }
                         }
                     } else {
@@ -345,7 +368,7 @@
          */
         public function findDatosSedePrincipal($idContribuyente)
         {
-            $findModel = ContribuyenteBase::find($idContribuyente);
+            $findModel = ContribuyenteBase::find()->where('id_contribuyente =:id_contribuyente', [':id_contribuyente' => $idContribuyente]);
             return isset($findModel) ? $findModel : null;
         }
 
