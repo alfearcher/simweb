@@ -227,6 +227,7 @@
                 'query' => $query,
             ]);
 
+
             if ( $this->_id_contribuyente > 0 ) {
                 $query->andFilterWhere(['=', SolicitudesContribuyente::tableName().'.estatus', 0]);
 
