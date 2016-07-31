@@ -58,7 +58,7 @@
 		    'method' => 'post',
             'action' => $url,
 			'enableClientValidation' => true,
-			'enableAjaxValidation' => true,
+			//'enableAjaxValidation' => true,
 			'enableClientScript' => true,
 		]);
 	?>
