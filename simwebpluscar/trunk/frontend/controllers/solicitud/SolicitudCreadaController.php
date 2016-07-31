@@ -188,7 +188,15 @@
 					$url = Url::to(['view-solicitud-seleccionada']);
 					$postData = $_SESSION['postSearch'];
 					$model = New SolicitudSearchForm($idContribuyente);
+
+					if ( isset($postData['btn-search']) ) {
+						$model->scenario = self::SCENARIO_SEARCH;
+					} elseif ( isset($postData['btn-search-all']) ) {
+						$model->scenario = self::SCENARIO_SEARCH_ALL;
+					}
+
 					$model->load($postData);
+
 					$dataProvider = $model->getDataProviderSolicitudPendiente();
 					$caption = Yii::t('frontend', 'List of Request');
 					$opciones = [
