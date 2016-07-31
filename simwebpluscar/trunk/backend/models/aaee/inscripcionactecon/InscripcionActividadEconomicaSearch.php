@@ -57,6 +57,10 @@
 
 
 
+		/**
+		 * Metodo constructor de la clase
+		 * @param long $idContribuyente identificador del contribuyente.
+		 */
 		public function __construct($idContribuyente)
 		{
 			$this->id_contribuyente = $idContribuyente;
@@ -76,6 +80,23 @@
 			$modelFind = null;
 			$modelFind = InscripcionActividadEconomica::find()->where('id_contribuyente =:id_contribuyente', [':id_contribuyente' => $this->id_contribuyente])
 															  ->andWhere(['IN', 'estatus', [0,1]])
+															  ->count();
+			return ($modelFind > 0) ? true : false;
+		}
+
+
+		/**
+		 * Metodo que permite buscar una solcitud de inscripcion de Actividad Economica
+		 * procesada y activa. Que permita determinar que el contribuyente esta inscrito
+		 * como contribuyente de Actividad Economica.
+		 * @return boolean retorna true si encuntra al menos un registro, false en caso
+		 * contrario.
+		 */
+		public function yaEstaInscritoActividadEconomica()
+		{
+			$modelFind = null;
+			$modelFind = InscripcionActividadEconomica::find()->where('id_contribuyente =:id_contribuyente', [':id_contribuyente' => $this->id_contribuyente])
+															  ->andWhere(['IN', 'estatus', [1]])
 															  ->count();
 			return ($modelFind > 0) ? true : false;
 		}
