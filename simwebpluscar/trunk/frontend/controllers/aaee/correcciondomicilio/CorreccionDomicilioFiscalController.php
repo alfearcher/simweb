@@ -62,6 +62,8 @@
 	use common\models\configuracion\solicitud\SolicitudProcesoEvento;
 	use common\enviaremail\PlantillaEmail;
 	use common\models\solicitudescontribuyente\SolicitudesContribuyenteForm;
+	use backend\models\aaee\correcciondomicilio\CorreccionDomicilioFiscalSearch;
+	use backend\models\aaee\correcciondomicilio\CorreccionDomicilioFiscalForm;
 
 	session_start();		// Iniciando session
 
@@ -88,7 +90,7 @@
 		 * Identificador de  configuracion d ela solicitud. Se crea cuando se
 		 * configura la solicitud que gestiona esta clase.
 		 */
-		const CONFIG = 83;
+		const CONFIG = 84;
 
 
 		/**
@@ -99,7 +101,7 @@
 		public function actionIndex()
 		{
 			// Se verifica que el contribuyente haya iniciado una session.
-			// Se verifica que el contribuyente sea de tipo naturaleza "Juridico".
+
 			self::actionAnularSession(['begin', 'conf']);
 			$request = Yii::$app->request;
 			$getData = $request->get();
@@ -108,42 +110,47 @@
 			$id = $getData['id'];
 			if ( $id == self::CONFIG ) {
 				if ( isset($_SESSION['idContribuyente']) ) {
-
-					// Se determina si el contribuyente es una sede principal.
 					$idContribuyente = $_SESSION['idContribuyente'];
-					$search = New InscripcionSucursalSearch($idContribuyente);
-					if ( $search->getSedePrincipal() == true ) {
+					$searchCorreccion = New CorreccionDomicilioFiscalSearch($idContribuyente);
 
-						$tipoSolicitud = 0;
-						$modelParametro = New ParametroSolicitud($id);
-						// Se obtiene el tipo de solicitud. Se retorna un array donde el key es el nombre
-						// del parametro y el valor del elemento es el contenido del campo en base de datos.
-						$config = $modelParametro->getParametroSolicitud([
-																'id_config_solicitud',
-																'tipo_solicitud',
-																'impuesto',
-																'nivel_aprobacion'
-													]);
+					// Se verifica que el contribuyente sea de tipo naturaleza "Juridico".
+					if ( $searchCorreccion->esUnContribuyenteJuridico() ) {
 
-						if ( isset($config) ) {
-							//$documentoConsignar = $modelParametro->getDocumentoRequisitoSolicitud();
-							// if ( $documentoConsignar !== null ) {
-							// 	$_SESSION['exigirDocumento'] = true;
-							// } else {
-							// 	$_SESSION['exigirDocumento'] = false;
-							// }
+						// Se determina si ya esta inscrito como contribuyente de Actividad Economica.
+						if ( $searchCorreccion->estaInscritoActividadEconomica() ) {
 
-							$_SESSION['conf'] = $config;
-							$_SESSION['begin'] = 1;
-							$this->redirect(['index-create']);
+							// Se determina si ya existe una solicitud pendiente.
+							if ( !$searchCorreccion->yaPoseeSolicitudSimiliarPendiente() ) {
+
+								$modelParametro = New ParametroSolicitud($id);
+								// Se obtiene el tipo de solicitud. Se retorna un array donde el key es el nombre
+								// del parametro y el valor del elemento es el contenido del campo en base de datos.
+								$config = $modelParametro->getParametroSolicitud([
+																		'id_config_solicitud',
+																		'tipo_solicitud',
+																		'impuesto',
+																		'nivel_aprobacion'
+															]);
+
+								if ( isset($config) ) {
+									$_SESSION['conf'] = $config;
+									$_SESSION['begin'] = 1;
+									$this->redirect(['index-create']);
+								} else {
+									// No se obtuvieron los parametros de la configuracion.
+									return $this->redirect(['error-operacion', 'cod' => 955]);
+								}
+							} else {
+								// El contribuyente ya posee una solicitud similar, y la misma esta pendiente.
+								return $this->redirect(['error-operacion', 'cod' => 404]);
+							}
 						} else {
-							// No se obtuvieron los parametros de la configuracion.
-							return $this->redirect(['error-operacion', 'cod' => 955]);
+							// El contribuyente no esta inscrito como contribuyente de Actividad Economica.
+							return $this->redirect(['error-operacion', 'cod' => 404]);
 						}
-
 					} else {
-						// El contribuyente no es una sede principal.
-						return $this->redirect(['error-operacion', 'cod' => 936]);
+						// El contribuyente no es JURIDICO.
+						return $this->redirect(['error-operacion', 'cod' => 404]);
 					}
 				} else {
 					// No esta defino el contribuyente.
@@ -157,24 +164,24 @@
 
 
 
-		/***/
+
+		/**
+		 * Metodo que inicia la carga del formulario que permite realizar la solicitud
+		 * de correccion de domicilio fiscal. Tambien gestiona la ejecucion de las reglas
+		 * de validacion del formulario.
+		 * @return view
+		 */
 		public function actionIndexCreate()
 		{
 			// Se verifica que el contribuyente haya iniciado una session.
-			// Se verifica que el contribuyente sea de tipo naturaleza "Juridico".
 
 			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) && isset($_SESSION['conf'])) {
 
+				$idContribuyente = $_SESSION['idContribuyente'];
 				$request = Yii::$app->request;
 				$postData = $request->post();
-				// $exigirDocumento = false;
-				// $mensajeErrorChk = '';
 
-				// Se determina si el contribuyente es una sede principal.
-				$idContribuyente = $_SESSION['idContribuyente'];
-				//$exigirDocumento = $_SESSION['exigirDocumento'];
-
-				$model = New InscripcionSucursalForm();
+				$model = New CorreccionDomicilioFiscalForm();
 				$formName = $model->formName();
 				$model->scenario = self::SCENARIO_FRONTEND;
 
@@ -197,85 +204,49 @@
 
 		      	if ( $model->load($postData) ) {
 		      		if ( $model->validate() ) {
-		      			// if ( !isset($postData['chkDocumento']) && $exigirDocumento ) {
-	      	 		// 		$mensajeErrorChk = Yii::t('frontend', 'Select the documents consigned');
-			      		// }
-		      			//if ( trim($mensajeErrorChk) == '' ) {
-		      				// Validacion correcta.
-		      				if ( isset($postData['btn-create']) ) {
-		      					if ( $postData['btn-create'] == 1 ) {
 
-		      						// Mostrar vista previa.
-		      						$datosRecibido = $postData[$formName];
-		      						// Se obtiene el arreglo de los items seleccionados en el form para indicar
-		      						// los documentos consignados.
-		      						//$arregloDocumetoChk = isset($postData['chkDocumento']) ? $postData['chkDocumento'] : [];
+	      				// Validacion correcta.
+	      				if ( isset($postData['btn-create']) ) {
+	      					if ( $postData['btn-create'] == 1 ) {
 
-		      						// if ( count($arregloDocumetoChk) > 0 ) {
-			      					// 	// Se crea un DataProvider con los documentos seleccionados
-			      					// 	// por el contribuyente. Para mostrar un grid con la lista de item
-			      					// 	// documentos seleccionados.
-			      					// 	$search = New InscripcionSucursalSearch($idContribuyente);
-			      					// 	$dataProvider = $search->getDataProviderDocumentoSeleccionado($arregloDocumetoChk);
-			      					// }
+	      						// Mostrar vista previa.
+	      						$datosRecibido = $postData[$formName];
+	      						return $this->render('/aaee/correccion-domicilio-fiscal/pre-view-create', [
+	      																	'model' => $model,
+	      																	'datosRecibido' => $datosRecibido,
+	      							]);
+	      					}
+	      				} elseif ( isset($postData['btn-confirm-create']) ) {
+	      					if ( $postData['btn-confirm-create'] == 2 ) {
+	      						$result = self::actionBeginSave($model, $postData);
+	      						self::actionAnularSession(['begin']);
+	      						if ( $result ) {
+									$this->_transaccion->commit();
+									return self::actionView($model->nro_solicitud);
+								} else {
+									$this->_transaccion->rollBack();
+									$this->redirect(['error-operacion', 'cod'=> 920]);
 
-		      						return $this->render('/aaee/inscripcion-sucursal/pre-view-create', [
-		      																	'model' => $model,
-		      																	'datosRecibido' => $datosRecibido,
-		      																	//'dataProvider' => $dataProvider,
-		      							]);
-		      					}
-		      				} elseif ( isset($postData['btn-confirm-create']) ) {
-		      					if ( $postData['btn-confirm-create'] == 2 ) {
-		      						$result = self::actionBeginSave($model, $postData);
-		      						self::actionAnularSession(['begin']);
-		      						if ( $result ) {
-										$this->_transaccion->commit();
-										//$this->redirect(['view', 'id' => $model->nro_solicitud]);
-										return self::actionView($model->nro_solicitud);
-									} else {
-										$this->_transaccion->rollBack();
-										$this->redirect(['error-operacion', 'cod'=> 920]);
-
-		      						}
-		      					}
-		      				}
-		      			//}
-			      	} else {
-			      		$this->redirect(['quit']);
+	      						}
+	      					}
+	      				}
 			      	}
 		      	 }
 
 		      	// Se muestra el form de la solicitud.
-		      	// Datos generales del contribuyente sede principal.
-		      	$search = New InscripcionSucursalSearch($idContribuyente);
-		      	$datos = $search->getDatosContribuyente($idContribuyente);
-		  		if ( $datos ) {
-		  			// Se crea la lista para los tipos de naturaleza, esta lista se utilizara
-		  			// en el combo-lista.
-		  			$modeloTipoNaturaleza = TipoNaturaleza::find()->where('id_tipo_naturaleza BETWEEN 1 and 4')->all();
-					$listaNaturaleza = ArrayHelper::map($modeloTipoNaturaleza, 'siglas_tnaturaleza', 'nb_naturaleza');
-
-					// Se crea la lista de telefonos para los combo-lista.
-					// Telefono local.
-					$listaTelefonoCodigo = TelefonoCodigo::getListaTelefonoCodigo(false);
-
-					// Se crea la lista de telefonos moviles.
-					$listaTelefonoMovil = TelefonoCodigo::getListaTelefonoCodigo(true);
-
-					$modelTelefono = new TelefonoCodigo();
-
-		  			return $this->render('/aaee/inscripcion-sucursal/_create', [
-		  											'model' => $model,
-		  											'datos' => $datos,
-		  											'listaNaturaleza' => $listaNaturaleza,
-		  											'listaTelefonoCodigo' => $listaTelefonoCodigo,
-		  											'listaTelefonoMovil' => $listaTelefonoMovil,
-		  											'modelTelefono' => $modelTelefono,
-		  											//'mensajeErrorChk' => $mensajeErrorChk,
-		  					]);
+		      	// Datos generales del contribuyente.
+		      	$searchCorreccion = New CorreccionDomicilioFiscalSearch($idContribuyente);
+		      	$datos = $searchCorreccion->getDatosContribuyente();
+		  		if ( isset($datos) ) {
+		  			$subCaption = Yii::t('frontend', 'Info of Taxpayer');
+		  			return $this->render('/aaee/correccion-domicilio-fiscal/_create', [
+					  											'model' => $model,
+					  											'datos' => $datos,
+					  											'subCaption' => $subCaption,
+					  					]);
 		  		} else {
 		  			// No se encontraron los datos del contribuyente principal.
+		  			$this->redirect(['error-operacion', 'cod' => 404]);
 		  		}
 			}
 		}
@@ -286,7 +257,7 @@
 		/**
 		 * Metodo que comienza el proceso para guardar la solicitud y los demas
 		 * procesos relacionados.
-		 * @param model $model modelo de InscripcionSucursalForm.
+		 * @param model $model modelo de CorreccionDomicilioFiscalForm.
 		 * @param array $postEnviado post enviado desde el formulario.
 		 * @return boolean retorna true si se realizan todas las operacions de
 		 * insercion y actualizacion con exitos o false en caso contrario.
@@ -310,14 +281,22 @@
 	      			// Inicio de la transaccion.
 					$this->_transaccion = $this->_conn->beginTransaction();
 
-					$nroSolicitud = self::actionCreateSolicitud($this->_conexion, $this->_conn, $model, $conf);
+					$nroSolicitud = self::actionCreateSolicitud($this->_conexion,
+															    $this->_conn,
+															    $model,
+															    $conf);
 					if ( $nroSolicitud > 0 ) {
 						$model->nro_solicitud = $nroSolicitud;
 
-						$result = self::actionCreateSucursal($this->_conexion, $this->_conn, $model, $conf);
+						$result = self::actionCreateCorreccionDomicilio($this->_conexion,
+																	    $this->_conn,
+																	    $model,
+																	    $conf);
 						if ( $result ) {
-							$result = self::actionCreateContribuyente($this->_conexion, $this->_conn, $model, $conf);
-							//$result = self::actionCreateDocumentosConsignados($this->_conexion, $this->_conn, $model, $postEnviado);
+							$result = self::actionUpdateDomicilioFiscal($this->_conexion,
+																	  $this->_conn,
+																	  $model,
+																	  $conf);
 							if ( $result ) {
 								$result = self::actionEjecutaProcesoSolicitud($this->_conexion, $this->_conn, $model, $conf);
 								if ( $result ) {
@@ -344,9 +323,9 @@
 
 		/**
 		 * Metodo que guarda el registro respectivo en la entidad "solicitudes-contribuyente".
-		 * @param  ConexionController $conexionLocal instancia de la lcase ConexionController.
-		 * @param  connection $connLocal instancia de connection
-		 * @param  model $model modelo de InscripcionSucursalForm.
+		 * @param  ConexionController $conexionLocal instancia de la clase ConexionController.
+		 * @param  connection $connLocal instancia de connection.
+		 * @param  model $model modelo de CorreccionDomicilioFiscalForm.
 		 * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
 		 * solicitud.
 		 * @return boolean retorna true si guardo correctamente o false sino guardo.
@@ -356,7 +335,7 @@
 			$estatus = 0;
 			$userFuncionario = '';
 			$fechaHoraProceso = '0000-00-00 00:00:00';
-			$user = isset(Yii::$app->user->identity->login) ? Yii::$app->user->identity->login : null;
+			$user = isset($model->usuario) ? $model->usuario : null;
 			$nroSolicitud = 0;
 			$modelSolicitud = New SolicitudesContribuyenteForm();
 			$tabla = $modelSolicitud->tableName();
@@ -405,107 +384,20 @@
 
 
 		/**
-		 * Metodo que crea el registro en la entidad "contribuyentes".
-		 * Esta inclusion debe generar un identificador para el registro
-		 * guardado.
-		 * @param  ConexionController $conexionLocal instancia de la lcase ConexionController.
-		 * @param  connection $connLocal instancia de connection
-		 * @param  model $model modelo de InscripcionSucursalForm.
-		 * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
-		 * solicitud.
-		 * @return boolean retorna un true si guardo el registro, false en caso contrario.
-		 */
-		private static function actionCreateContribuyente($conexionLocal, $connLocal, $model, $conf)
-		{
-			$idGenerado = 0;	// identificador de la sucursal generado.
-			$result = false;
-			$cancel = false;
-			if ( $conf['nivel_aprobacion'] == 1 ) {
-				if ( isset($_SESSION['idContribuyente']) == $model->id_sede_principal ) {
-					// id de la sede principal.
-					$id = $model->id_sede_principal;
-
-					$modelContribuyente = New ContribuyenteBase();
-					$tabla = '';
-	      			$tabla = $modelContribuyente->tableName();
-
-	      			$inscripcionSearch = New InscripcionSucursalSearch($id);
-	      			// Se determina si el solicitante es la sede principal.
-	      			if ( $inscripcionSearch->getSedePrincipal() ) {
-	      				// Se obtienen los datos de la sede peincipal
-	      				$datosSedePrincipal = $inscripcionSearch->getDatosContribuyente();
-	      				if ( isset($datosSedePrincipal) ) {
-	      					// Verificar que el RIF o DNI de la sede principal coincidan con el de
-                    		// la sucursal creada en la solicitud.
-	      					if ( $model['naturaleza'] == $datosSedePrincipal['naturaleza'] &&
-	      						 $model['cedula'] == $datosSedePrincipal['cedula'] &&
-	      						 $model['tipo'] == $datosSedePrincipal['tipo'] ) {
-
-	      						$camposContribuyente = $datosSedePrincipal;
-
-	      						$camposSucursal = $model->getAtributoSucursal();
-
-								foreach ( $camposSucursal as $campo ) {
-		                            if ( array_key_exists($campo, $datosSedePrincipal) ) {
-		                                $camposContribuyente[$campo] = $model[$campo];
-		                            } else {
-		                                $cancel = true;
-		                                break;
-		                            }
-		                        }
-
-		                        if ( !$cancel ) {
-		                        	// Se actualiza la fecha de inclusion de la suucrsal, se sustituye la colocada
-                            		// de la sede principal por la actual.
-                            		$camposContribuyente['fecha_inclusion'] = date('Y-m-d');
-
-                            		// Se coloca el valor del identificador de la entidad en null, ya que este identificador
-                            		// no es de este registro, sino de la sede principal.
-                            		$camposContribuyente['id_contribuyente'] = null;
-
-                            		// Se pasa a obtener el identificador de la sucursal.
-		                            $idRif = $inscripcionSearch->getIdentificadorSucursalNuevo($model['naturaleza'],
-		                                                                          			   $model['cedula'],
-		                                                                          			   $model['tipo']
-		                                                                        			);
-
-		                            if ( $idRif > 0 ) {
-		                                $camposContribuyente['id_rif'] = $idRif;
-
-		                                $result = $conexionLocal->guardarRegistro($connLocal, $tabla, $camposContribuyente);
-		                                if ( $result ) {
-		                                    $idGenerado = $connLocal->getLastInsertID();
-		                                }
-		                            }
-		                        }
-	      					}
-	      				}
-	      			}
-	      		}
-
-			} else {
-				$result = true;
-			}
-			return $result;
-		}
-
-
-
-		/**
 		 * Metodo que guarda el registro detalle de la solicitid en la entidad
 		 * "sl" respectiva.
 		 * @param  ConexionController $conexionLocal instancia de la lcase ConexionController.
 		 * @param  connection $connLocal instancia de connection
-		 * @param  model $model modelo de InscripcionSucursalForm.
+		 * @param  model $model modelo de CorreccionDomicilioFiscalForm.
 		 * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
 		 * solicitud.
 		 * @return boolean retorna un true si guardo el registro, false en caso contrario.
 		 */
-		private static function actionCreateSucursal($conexionLocal, $connLocal, $model, $conf)
+		private static function actionCreateCorreccionDomicilio($conexionLocal, $connLocal, $model, $conf)
 		{
 			$result = false;
 			$estatus = 0;
-			$user = isset(Yii::$app->user->identity->login) ? Yii::$app->user->identity->login : null;
+			$user = isset($model->usuario) ? $model->usuario : null;
 			$userFuncionario = '';
 			$fechaHoraProceso = '0000-00-00 00:00:00';
 			if ( isset($conexionLocal) && isset($connLocal) && isset($model) ) {
@@ -531,11 +423,37 @@
 					$model->estatus = $estatus;
 					$model->user_funcionario = $userFuncionario;
 
-					// Se ajusta el formato de fecha incio de dd-mm-aaaa a aaaa-mm-dd.
-					$arregloDatos['fecha_inicio'] = date('Y-m-d', strtotime($arregloDatos['fecha_inicio']));
-
 					$result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
 				}
+			}
+			return $result;
+		}
+
+
+
+
+		/**
+		 * Metodo que ejecuta la actualizacion del domicilio del contribuyente, aplica
+		 * solo en aquellos casos donde la aprobacion de la solicitud sea directa.
+		 * @param  ConexionController $conexionLocal instancia de la lcase ConexionController.
+		 * @param  connection $connLocal instancia de connection
+		 * @param  model $model modelo de CorreccionDomicilioFiscalForm.
+		 * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
+		 * solicitud.
+		 * @return boolean retorna true si se ejecuta la actualizacion, sino false.
+		 */
+		private static function actionUpdateDomicilioFiscal($conexionLocal, $connLocal, $model, $conf)
+		{
+			$result = false;
+			if ( $conf['nivel_aprobacion'] == 1 ) {
+				$arregloCondicion = ['id_contribuyente' => $model->id_contribuyente];
+				$arregloDatos = ['domicilio_fiscal' => $model->domicilio_fiscal_new];
+
+				$tabla = ContribuyenteBase::tableName();
+
+				$result = $conexionLocal->modificarRegistro($connLocal, $tabla, $arregloDatos, $arregloCondicion);
+			} else {
+				$result = true;
 			}
 			return $result;
 		}
@@ -604,7 +522,7 @@
 		 * @param  ConexionController $conexionLocal instancia de la clase ConexionController.
 		 * @param  connection $connLocal instancia de conexion que permite ejecutar las acciones en base
 		 * de datos.
-		 * @param  model $model modelo de la instancia InscripcionSucursalForm.
+		 * @param  model $model modelo de la instancia CorrecionDomicilioFiscalForm.
 		 * @param  array $conf arreglo que contiene los parametros principales de la configuracion de la
 		 * solicitud.
 		 * @return boolean retorna true si todo se ejecuto correctamente false en caso contrario.
@@ -628,6 +546,7 @@
 				// ejecutadas se asumira que no se configuraro ningun proceso para que se ejecutara
 				// cuando se creara la solicitud.
 				$acciones = $procesoEvento->getAccion();
+
 				if ( count($acciones) > 0 ) {
 
 					// Se evalua cada accion o proceso ejecutado para determinar si se realizo satisfactoriamnente.
@@ -672,7 +591,7 @@
 				$descripcionSolicitud = $parametroSolicitud->getDescripcionTipoSolicitud();
 				$listaDocumento = $parametroSolicitud->getDocumentoRequisitoSolicitud();
 
-				$email = ContribuyenteBase::getEmail($model->id_sede_principal);
+				$email = ContribuyenteBase::getEmail($model->id_contribuyente);
 				try {
 					$enviar = New PlantillaEmail();
 					$result = $enviar->plantillaEmailSolicitud($email, $descripcionSolicitud, $nroSolicitud, $listaDocumento);
@@ -684,11 +603,9 @@
 		}
 
 
-
-
 		/**
 		 * Metodo que renderiza una vista con la informacion de la solicitud creada.
-		 * @param  model $model modelo de la entidad InscripcionSucursalForm.
+		 * @param  loong $id identificador de la solicitud creada.
 		 * @return view retorna una vista con la informacion detalle de la solicitud.
 		 * Informacion cargada por el contribuyente.
 		 */
@@ -696,8 +613,8 @@
     	{
     		if ( isset($_SESSION['idContribuyente']) ) {
 	    		if ( $id > 0 ) {
-	    			$modelSearch = New InscripcionSucursalSearch($_SESSION['idContribuyente']);
-	    			$findModel = $modelSearch->findInscripcion($id);
+	    			$modelSearch = New CorreccionDomicilioFiscalSearch($_SESSION['idContribuyente']);
+	    			$findModel = $modelSearch->findSolicitudCorreccionDomicilio($id);
 	    			if ( isset($findModel) ) {
 	    				return self::actionShowSolicitud($findModel, $modelSearch);
 	    			} else {
@@ -719,13 +636,13 @@
     	{
     		if ( isset($findModel) && isset($modelSearch) ) {
 				$opciones = [
-					'quit' => '/aaee/inscripcionsucursal/inscripcion-sucursal/quit',
+					'quit' => '/aaee/correcciondomicilio/correccion-domicilio-fiscal/quit',
 				];
-				return $this->render('/aaee/inscripcion-sucursal/_view', [
-															'codigo' => 100,
-															'model' => $findModel,
-															'modelSearch' => $modelSearch,
-															'opciones' => $opciones,
+				return $this->render('/aaee/correccion-domicilio-fiscal/_view', [
+																'codigo' => 100,
+																'model' => $findModel,
+																'modelSearch' => $modelSearch,
+																'opciones' => $opciones,
 					]);
 			} else {
 				throw new NotFoundHttpException('No se encontro el registro');
