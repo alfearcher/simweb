@@ -142,7 +142,7 @@
 								}
 							} else {
 								// El contribuyente ya posee una solicitud similar, y la misma esta pendiente.
-								return $this->redirect(['error-operacion', 'cod' => 404]);
+								return $this->redirect(['error-operacion', 'cod' => 945]);
 							}
 						} else {
 							// El contribuyente no esta inscrito como contribuyente de Actividad Economica.
