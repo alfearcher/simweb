@@ -84,6 +84,7 @@
         	return [
         		self::SCENARIO_FRONTEND => [
         					'id_contribuyente',
+        					'domicilio_fiscal_v',
         					'domicilio_fiscal_new',
         					'origen',
         					'fecha_hora',
@@ -93,6 +94,7 @@
         		],
         		self::SCENARIO_BACKEND => [
         					'id_contribuyente',
+        					'domicilio_fiscal_v',
         					'domicilio_fiscal_new',
         					'origen',
         					'fecha_hora',
@@ -120,6 +122,13 @@
     			  'message' => Yii::t('backend', '{attribute} is required')],
     			['domicilio_fiscal_new', 'filter', 'filter' => 'strtoupper'],
     			[['domicilio_fiscal_new'], 'string', 'max' => 255],
+    			['fecha_hora', 'default', 'value' => date('Y-m-d H:i:s')],
+    			['estatus', 'default', 'value' => 0],
+	     		['usuario', 'default', 'value' => Yii::$app->user->identity->login, 'on' => 'frontend'],
+	     		['usuario', 'default', 'value' => Yii::$app->user->identity->username, 'on' => 'backend'],
+	     		['origen', 'default', 'value' => 'WEB', 'on' => 'frontend'],
+	     		['origen', 'default', 'value' => 'LAN', 'on' => 'backend'],
+
     		];
     	}
 
@@ -139,6 +148,7 @@
 	            'estatus' => Yii::t('frontend', 'Condition'),
 	            'fecha_hora' => Yii::t('frontend', 'Date/Hour'),
 	            'razon_social' => Yii::t('frontend', 'Companies'),
+	            'dni' => Yii::t('frontend', 'DNI'),
 
 	        ];
 	    }

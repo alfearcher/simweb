@@ -80,5 +80,27 @@
 			return $this->hasOne(EstatusSolicitud::className(), ['estatus_solicitud' => 'estatus']);
 		}
 
+
+
+		/**
+	    * Lista de atributos con sus respectivas etiquetas (labels), las cuales son las que aparecen en las vistas
+	    * @return returna arreglo de datos con los atributoe como key y las etiquetas como valor del arreglo.
+	    */
+	    public function attributeLabels()
+	    {
+	        return [
+	        	'id_correccion' => Yii::t('frontend', 'Id. Record'),
+	            'id_contribuyente' => Yii::t('frontend', 'Id. Taxpayer'),
+	            'nro_solicitud' => Yii::t('frontend', 'Request Number'),
+	            'domicilio_fiscal_v' => Yii::t('frontend', 'Current Tax Address'),
+	            'domicilio_fiscal_new' => Yii::t('frontend', 'New Tax Address'),
+	            'estatus' => Yii::t('frontend', 'Condition'),
+	            'fecha_hora' => Yii::t('frontend', 'Date/Hour'),
+	            'razon_social' => Yii::t('frontend', 'Companies'),
+	            'dni' => Yii::t('frontend', 'DNI'),
+
+	        ];
+	    }
+
 	}
  ?>
