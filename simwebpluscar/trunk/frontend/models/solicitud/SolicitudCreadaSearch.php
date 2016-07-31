@@ -238,7 +238,7 @@
                     $query->andFilterWhere(['=', 'tipo_solicitud', $this->tipo_solicitud]);
                 }
 
-                if ( $this->fecha_desde !== null && $this->fecha_hasta !== null ) {
+                if ( $this->fecha_desde !== '' && $this->fecha_hasta !== '' ) {
                     $query->andFilterWhere(['BETWEEN','date(fecha_hora_creacion)',
                                              date('Y-m-d',strtotime($this->fecha_desde)),
                                              date('Y-m-d',strtotime($this->fecha_hasta))]);
