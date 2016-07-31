@@ -62,12 +62,15 @@
 		public $usuario;
 		public $estatus;
 		public $origen;
+		public $fecha_hora_proceso;
+		public $user_funcionario;
 
 		public $naturaleza;
 		public $cedula;
 		public $tipo;
 
-
+		const SCENARIO_FRONTEND = 'frontend';
+		const SCENARIO_BACKEND = 'backend';
 
 
 
@@ -77,7 +80,26 @@
     	public function scenarios()
     	{
         	// bypass scenarios() implementation in the parent class
-        	return Model::scenarios();
+        	//return Model::scenarios();
+        	return [
+        		self::SCENARIO_FRONTEND => [
+        					'id_contribuyente',
+        					'domicilio_fiscal_new',
+        					'origen',
+        					'fecha_hora',
+        					'usuario',
+        					'estatus',
+
+        		],
+        		self::SCENARIO_BACKEND => [
+        					'id_contribuyente',
+        					'domicilio_fiscal_new',
+        					'origen',
+        					'fecha_hora',
+        					'usuario',
+        					'estatus',
+        		]
+        	];
     	}
 
 
@@ -90,9 +112,14 @@
     	public function rules()
     	{
     		return [
-    			[['domicilio_fiscal_new', 'id_contribuyente'],'required','message' => Yii::t('backend', '{attribute} is required')],
+    			[['domicilio_fiscal_new', 'id_contribuyente'],
+    			  'required', 'on' => 'frontend',
+    			  'message' => Yii::t('backend', '{attribute} is required')],
+    			[['domicilio_fiscal_new', 'id_contribuyente'],
+    			  'required', 'on' => 'backend',
+    			  'message' => Yii::t('backend', '{attribute} is required')],
     			['domicilio_fiscal_new', 'filter', 'filter' => 'strtoupper'],
-    			[['domicilio_fiscal_new'], 'string', 'max' => 250],
+    			[['domicilio_fiscal_new'], 'string', 'max' => 255],
     		];
     	}
 
@@ -104,11 +131,14 @@
 	    public function attributeLabels()
 	    {
 	        return [
-	        	'id_correccion' => Yii::t('backend', 'Id. Record'),
-	            'id_contribuyente' => Yii::t('backend', 'Id. Taxpayer'),
-	            'nro_solicitud' => Yii::t('backend', 'Application Number'),
-	            'domicilio_fiscal_v' => Yii::t('backend', 'Current Tax Address'),
-	            'domicilio_fiscal_new' => Yii::t('backend', 'New Tax Address'),
+	        	'id_correccion' => Yii::t('frontend', 'Id. Record'),
+	            'id_contribuyente' => Yii::t('frontend', 'Id. Taxpayer'),
+	            'nro_solicitud' => Yii::t('frontend', 'Request Number'),
+	            'domicilio_fiscal_v' => Yii::t('frontend', 'Current Tax Address'),
+	            'domicilio_fiscal_new' => Yii::t('frontend', 'New Tax Address'),
+	            'estatus' => Yii::t('frontend', 'Condition'),
+	            'fecha_hora' => Yii::t('frontend', 'Date/Hour'),
+	            'razon_social' => Yii::t('frontend', 'Companies'),
 
 	        ];
 	    }

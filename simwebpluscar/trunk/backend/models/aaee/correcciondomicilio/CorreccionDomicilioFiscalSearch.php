@@ -25,7 +25,7 @@
  *
  *  @author Jose Rafael Perez Teran
  *
- *  @date 20-11-2015
+ *  @date 30-07-2016
  *
  *  @class CorreccionDomicilioFiscal
  *  @brief Clase Modelo principal
@@ -47,38 +47,10 @@
 	use yii\db\ActiveRecord;
 	use backend\models\solicitud\estatus\EstatusSolicitud;
 
-	class CorreccionDomicilioFiscal extends ActiveRecord
+	class CorreccionDomicilioFiscalSearch extends CorreccionDomicilioFiscal
 	{
 
-		/**
-		 *	Metodo que retorna el nombre de la base de datos donde se tiene la conexion actual.
-		 * 	Utiliza las propiedades y metodos de Yii2 para traer dicha informacion.
-		 * 	@return Nombre de la base de datos
-		 */
-		public static function getDb()
-		{
-			return Yii::$app->db;
-		}
 
-
-		/**
-		 * 	Metodo que retorna el nombre de la tabla que utiliza el modelo.
-		 * 	@return Nombre de la tabla del modelo.
-		 */
-		public static function tableName()
-		{
-			return 'sl_correcciones_domicilio';
-		}
-
-
-		/**
-		 * Relacion con la entidad "estatus-solicitudes", EstatusSolicitud
-		 * @return Active Record.
-		 */
-		public function getEstatusSolicitud()
-		{
-			return $this->hasOne(EstatusSolicitud::className(), ['estatus_solicitud' => 'estatus']);
-		}
 
 	}
  ?>
