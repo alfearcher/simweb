@@ -90,6 +90,7 @@
                                                          ->joinWith('tipoSolicitud')
                                                          ->joinWith('impuestos')
                                                          ->joinWith('nivelAprobacion')
+                                                         ->joinWith('estatusSolicitud')
                                                          ->orderBy([
                                                                 'fecha_hora_creacion' => SORT_ASC,
                                                                 'impuesto' => SORT_ASC,
