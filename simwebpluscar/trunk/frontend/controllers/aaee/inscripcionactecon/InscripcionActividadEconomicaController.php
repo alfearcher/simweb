@@ -393,15 +393,22 @@
 			$result = true;
 			$resultadoProceso = [];
 			$acciones = [];
+			$evento = '';
 			$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : null;
 			if ( count($conf) > 0 ) {
+				if ( $conf['nivel_aprobacion'] == 1 ) {
+					$evento = Yii::$app->solicitud->aprobar();
+				} else {
+					$evento = Yii::$app->solicitud->crear();
+				}
+
 				$procesoEvento = New SolicitudProcesoEvento($conf['id_config_solicitud']);
 
 				// Se buscan los procesos que genera la solicitud para ejecutarlos, segun el evento.
 				// que en este caso el evento corresponde a "CREAR". Se espera que retorne un arreglo
 				// de resultados donde el key del arrary es el nombre del proceso y el valor del elemento
 				// corresponda a un reultado de la ejecucion.
-				$procesoEvento->ejecutarProcesoSolicitudSegunEvento($model, Yii::$app->solicitud->crear(), $conexionLocal, $connLocal);
+				$procesoEvento->ejecutarProcesoSolicitudSegunEvento($model, $evento, $conexionLocal, $connLocal);
 
 				// Se obtiene un array de acciones o procesos ejecutados.
 				$acciones = $procesoEvento->getAccion();
