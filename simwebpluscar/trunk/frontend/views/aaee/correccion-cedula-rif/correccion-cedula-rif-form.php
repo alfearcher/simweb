@@ -68,9 +68,11 @@
 	<?=$form->field($model, 'cedula_v')->hiddenInput(['value' => $datos['cedula']])->label(false);?>
 	<?=$form->field($model, 'tipo_v')->hiddenInput(['value' => $datos['tipo']])->label(false);?>
 	<?=$form->field($model, 'tipo_naturaleza_v')->hiddenInput(['value' => $datos['tipo_naturaleza']])->label(false);?>
+	<?=$form->field($model, 'tipo_naturaleza_new')->hiddenInput(['value' => $datos['tipo_naturaleza']])->label(false);?>
 	<?=$form->field($model, 'razon_social')->hiddenInput(['value' => $datos['razon_social']])->label(false);?>
 	<?=$form->field($model, 'nro_solicitud')->hiddenInput(['value' => 0])->label(false);?>
-	<?= $form->field($model, 'estatus')->hiddenInput(['value' => 0])->label(false); ?>
+	<?=$form->field($model, 'estatus')->hiddenInput(['value' => $model->estatus])->label(false); ?>
+	<?=$form->field($model, 'id_sim')->hiddenInput(['value' => $datos['id_sim']])->label(false); ?>
 
 	<meta http-equiv="refresh">
     <div class="panel panel-primary"  style="width: 90%;">
@@ -135,7 +137,7 @@
 	                    											},
 									                ],
 									                [
-									                    'label' => Yii::t('backend', 'DNI'),
+									                    'label' => Yii::t('backend', 'Current DNI'),
 									                    'value' => function($data) {
 	                            										return $data->naturaleza . '-' . $data->cedula . '-' . $data->tipo;
 	                    											},
@@ -155,6 +157,14 @@
 									                [
 									                	'class' => 'yii\grid\CheckboxColumn',
 									                	'name' => 'chkSucursal',
+									                	'checkboxOptions' => [
+                                							'id' => 'chk-planilla',
+                                							// Lo siguiente mantiene el checkbox tildado.
+                                							'onClick' => 'javascript: return false;',
+                                							'checked' => true,
+                                							//'disabled' => true, funciona.
+	                                					],
+	                                					'multiple' => false,
 									                ],
 									        	]
 											]);?>
@@ -202,7 +212,7 @@
 <!-- Fin de Cedula o Rif Nuevo -->
 
 <!-- Tipo Nuevo ultimo digito del rif, contribuyentes juridico -->
-												<div class="col-sm-1" style="width: 15%; margin-left: -25px;">
+												<div class="col-sm-1" style="width: 20%; margin-left: -25px;">
 													<div class="tipo-new">
 														<?= $form->field($model, 'tipo_new')->textInput([
 																									'id' => 'tipo_new',
@@ -265,17 +275,3 @@
 	</div>
 	<?php ActiveForm::end(); ?>
 </div>
-
-<?php
-	$this->registerJs(
-		'$(document).ready(function() {
-    		var max_chars = 255;
-    		$("#max").html(max_chars);
-		    $("#domicilio-fiscal-new").keyup(function() {
-		        var chars = $(this).val().length;
-		        var diff = max_chars - chars;
-		        $("#contador").html(diff);
-		    });
-		});'
-	);
-?>
