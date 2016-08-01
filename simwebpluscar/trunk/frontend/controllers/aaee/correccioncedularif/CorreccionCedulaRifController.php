@@ -206,9 +206,18 @@
 
 	      						// Mostrar vista previa.
 	      						$datosRecibido = $postData[$formName];
+	      						$ids = isset($postData['chkSucursal']) ? $postData['chkSucursal'] : null;
+	      						$searchCorreccion = New CorreccionCedulaRifSearch($idContribuyente);
+	      						$dataProvider = $dataProvider = $searchCorreccion->getDataProviderSucursal($ids);
+	      						$caption = Yii::t('frontend', 'Confirm Create. Update of DNI');
+	      						$subCaption = Yii::t('frontend', 'Info of Taxpayer');
+
 	      						return $this->render('/aaee/correccion-cedula-rif/pre-view-create', [
 	      																	'model' => $model,
 	      																	'datosRecibido' => $datosRecibido,
+	      																	'dataProvider' => $dataProvider,
+	      																	'subCaption' => $subCaption,
+	      																	'caption' => $caption,
 	      							]);
 	      					}
 	      				} elseif ( isset($postData['btn-confirm-create']) ) {
@@ -298,7 +307,7 @@
 					if ( $nroSolicitud > 0 ) {
 						$model->nro_solicitud = $nroSolicitud;
 
-						$result = self::actionCreateCorreccionDomicilio($this->_conexion,
+						$result = self::actionCreateCorreccionCedulaRif($this->_conexion,
 																	    $this->_conn,
 																	    $model,
 																	    $conf);
@@ -398,12 +407,12 @@
 		 * "sl" respectiva.
 		 * @param  ConexionController $conexionLocal instancia de la lcase ConexionController.
 		 * @param  connection $connLocal instancia de connection
-		 * @param  model $model modelo de CorreccionDomicilioFiscalForm.
+		 * @param  model $model modelo de CorreccionCedulaRifForm.
 		 * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
 		 * solicitud.
 		 * @return boolean retorna un true si guardo el registro, false en caso contrario.
 		 */
-		private static function actionCreateCorreccionDomicilio($conexionLocal, $connLocal, $model, $conf)
+		private static function actionCreateCorreccionCedulaRif($conexionLocal, $connLocal, $model, $conf)
 		{
 			$result = false;
 			$estatus = 0;
@@ -443,16 +452,17 @@
 
 
 		/**
-		 * Metodo que ejecuta la actualizacion del domicilio del contribuyente, aplica
-		 * solo en aquellos casos donde la aprobacion de la solicitud sea directa.
+		 * Metodo que ejecuta la actualizacion del rif del conjuto de contribuyente,
+		 * relacionados al rif del contribuyente principal. Aplica solo en aquellos
+		 * casos donde la aprobacion de la solicitud sea directa.
 		 * @param  ConexionController $conexionLocal instancia de la lcase ConexionController.
 		 * @param  connection $connLocal instancia de connection
-		 * @param  model $model modelo de CorreccionDomicilioFiscalForm.
+		 * @param  model $model modelo de CorreccionCedulaRifForm.
 		 * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
 		 * solicitud.
 		 * @return boolean retorna true si se ejecuta la actualizacion, sino false.
 		 */
-		private static function actionUpdateDomicilioFiscal($conexionLocal, $connLocal, $model, $conf)
+		private static function actionUpdateCedulaRif($conexionLocal, $connLocal, $model, $conf)
 		{
 			$result = false;
 			if ( $conf['nivel_aprobacion'] == 1 ) {
