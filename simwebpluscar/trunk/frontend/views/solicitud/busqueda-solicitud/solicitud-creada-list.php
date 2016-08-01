@@ -131,9 +131,10 @@
                 						}
                 					],
                 					[
-                						'label' => Yii::t('backend', 'Status'),
+                						'label' => Yii::t('backend', 'Condition'),
                 						'value' => function($model) {
-                							return $model->getDescripcionEstatus($model->estatus);
+                							//return $model->getDescripcionEstatus($model->estatus);
+                                            return $model->estatusSolicitud->descripcion;
                 						}
                 					],
                 					[
