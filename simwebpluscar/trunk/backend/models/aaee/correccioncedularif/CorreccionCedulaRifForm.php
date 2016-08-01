@@ -112,6 +112,7 @@
         					'fecha_hora',
         					'usuario',
         					'estatus',
+
         		]
         	];
     	}
@@ -147,7 +148,6 @@
     			['origen', 'default', 'value' => 'WEB', 'on' => 'frontend'],
 	     		['origen', 'default', 'value' => 'LAN', 'on' => 'backend'],
 	     		['fecha_hora', 'default', 'value' => date('Y-m-d H:i:s')],
-	     		[['cedula_new'], 'integer',  'max' => 9],
 	     		['estatus', 'default', 'value' => 0],
 	     		['usuario', 'default', 'value' => Yii::$app->user->identity->login, 'on' => 'frontend'],
 	     		//['usuario', 'default', 'value' => Yii::$app->user->identity->username, 'on' => 'backend'],
