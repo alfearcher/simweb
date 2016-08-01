@@ -46,6 +46,7 @@ return [
 	'920' => [Yii::t('backend', 'Error. The operation was not executed'), 'danger', 'fa fa-times'],
 	'930' => [Yii::t('backend', 'Taxpayer type was not defined'), 'danger', 'fa fa-times'],
 	'932' => [Yii::t('backend', 'Taxpayer not defined'), 'danger', 'fa fa-times'],
+	'934' => [Yii::t('backend', 'Type of taxpayer incorrect'), 'danger', 'fa fa-times'],
 	'936' => [Yii::t('backend', 'Contribuyente no es sede principal'), 'danger', 'fa fa-times'],
 	'940' => [Yii::t('backend', 'Request was not defined'), 'danger', 'fa fa-times'],
 	'941' => [Yii::t('backend', 'Status of request incorrect '), 'danger', 'fa fa-times'],
