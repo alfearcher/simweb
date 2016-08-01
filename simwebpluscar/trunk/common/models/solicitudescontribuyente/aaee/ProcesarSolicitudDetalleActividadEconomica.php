@@ -52,6 +52,7 @@
     use Yii;
     use common\models\solicitudescontribuyente\aaee\ProcesarInscripcionActividadEconomica;
     use common\models\solicitudescontribuyente\aaee\ProcesarInscripcionSucursal;
+    use common\models\solicitudescontribuyente\aaee\ProcesarCorreccionDomicilioFiscal;
 
 
 
@@ -127,7 +128,11 @@
                     $result = $procesar->procesarSolicitud();
 
                 } elseif ( $this->_model->tipo_solicitud == 13 ) {
-
+                     $procesar = New ProcesarCorreccionDomicilioFiscal($this->_model,
+                                                                       $this->_evento,
+                                                                       $this->_conn,
+                                                                       $this->_conexion);
+                    $result = $procesar->procesarSolicitud();
 
                 } elseif ( $this->_model->tipo_solicitud == 'b' ) {
 
