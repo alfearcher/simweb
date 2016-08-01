@@ -586,7 +586,7 @@
 		 */
 		public static function getListaSucursalesSegunRIF($naturalezaLocal = '', $cedulaLocal = 0, $tipoLocal = 0, $inactivoLocal = 0)
 		{
-			if ( trim($naturalezaLocal) != '' && $cedulaLocal > 0 ) {
+			if ( trim($naturalezaLocal) !== '' && $cedulaLocal > 0 ) {
 				if ( strlen($naturalezaLocal) == 1 ) {
 					return self::getListaSucursales($naturalezaLocal, $cedulaLocal, $tipoLocal, $inactivoLocal);
 				}
@@ -610,7 +610,7 @@
 		 */
 		private static function getListaSucursales($naturalezaLocal = '', $cedulaLocal = 0, $tipoLocal = 0, $inactivoLocal = 0)
 		{
-			if ( trim($naturalezaLocal) != '' && $cedulaLocal > 0 ) {
+			if ( trim($naturalezaLocal) !== '' && $cedulaLocal > 0 ) {
 				try {
 					$conexion = new ConexionController();
 					$conn = $conexion->InitConectar('db');
