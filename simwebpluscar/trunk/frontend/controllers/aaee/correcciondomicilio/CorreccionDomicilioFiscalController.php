@@ -150,7 +150,7 @@
 						}
 					} else {
 						// El contribuyente no es JURIDICO.
-						return $this->redirect(['error-operacion', 'cod' => 404]);
+						return $this->redirect(['error-operacion', 'cod' => 934]);
 					}
 				} else {
 					// No esta defino el contribuyente.
