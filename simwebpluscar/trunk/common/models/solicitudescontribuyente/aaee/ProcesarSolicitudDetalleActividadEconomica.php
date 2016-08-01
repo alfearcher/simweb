@@ -126,7 +126,7 @@
                                                                 $this->_conexion);
                     $result = $procesar->procesarSolicitud();
 
-                } elseif ( $this->_model->tipo_solicitud == 'a' ) {
+                } elseif ( $this->_model->tipo_solicitud == 13 ) {
 
 
                 } elseif ( $this->_model->tipo_solicitud == 'b' ) {
