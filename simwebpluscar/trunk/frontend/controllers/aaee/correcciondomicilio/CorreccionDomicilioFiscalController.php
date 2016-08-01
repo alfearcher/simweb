@@ -532,7 +532,15 @@
 			$result = true;
 			$resultadoProceso = [];
 			$acciones = [];
+			$evento = '';
 			if ( count($conf) > 0 ) {
+				if ( $conf['nivel_aprobacion'] == 1 ) {
+					$evento = Yii::$app->solicitud->aprobar();
+				} else {
+					$evento = Yii::$app->solicitud->crear();
+				}
+
+
 				$procesoEvento = New SolicitudProcesoEvento($conf['id_config_solicitud']);
 
 				// Se buscan los procesos que genera la solicitud para ejecutarlos, segun el evento.
@@ -540,7 +548,7 @@
 				// de resultados donde el key del arrary es el nombre del proceso ejecutado y el valor
 				// del elemento corresponda a un reultado de la ejecucion. La variable $model debe contener
 				// el identificador del contribuyente que realizo la solicitud y el numero de solicitud.
-				$procesoEvento->ejecutarProcesoSolicitudSegunEvento($model, Yii::$app->solicitud->crear(), $conexionLocal, $connLocal);
+				$procesoEvento->ejecutarProcesoSolicitudSegunEvento($model, $evento, $conexionLocal, $connLocal);
 
 				// Se obtiene un array de acciones o procesos ejecutados. Sino se obtienen acciones
 				// ejecutadas se asumira que no se configuraro ningun proceso para que se ejecutara
