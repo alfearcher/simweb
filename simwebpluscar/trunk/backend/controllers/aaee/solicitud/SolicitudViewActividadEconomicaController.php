@@ -55,6 +55,7 @@
 	use yii\web\NotFoundHttpException;
 	use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomicaSearch;
 	use backend\models\aaee\inscripcionsucursal\InscripcionSucursalSearch;
+	use backend\models\aaee\correcciondomicilio\CorreccionDomicilioFiscalSearch;
 	use backend\controllers\MenuController;
 
 	//session_start();		// Iniciando session
@@ -102,7 +103,9 @@
 
 					return self::actionMostarSolicitudInscripcionSucursal();
 
-				} elseif ( $this->_model->tipo_solicitud == 3 ) {
+				} elseif ( $this->_model->tipo_solicitud == 13 ) {
+
+					return self::actionMostarSolicitudCorreccionDomicilioFiscal();
 
 				} elseif ( $this->_model->tipo_solicitud == 4 ) {
 
@@ -197,6 +200,43 @@
 			return false;
 		}
 
+
+
+
+		/**
+		 * Metodo particular que se encarga de buscar los datos de la solicitud particular sobre
+		 * "Correccion de Domicilio Fiscal", y de renderizar una vista del detalle de la solicitud
+		 * Se utiliza un parametro adicional "nivel de aprovacion", este determinara un nivel mas
+		 * determinante de la vista.
+		 * El nivel de aprobacion 3 renderizara un formulario con los datos originales de la solicitud
+		 * inhabilitados y solo permitira la edicion de los campos que no fueron cargados en dicha
+		 * solicitud, esto con la intencion de que el funcionario pueda complementar dicha informacion.
+		 * @return view retorna un vista con la informacion de la solicitud sino encuentra dicha
+		 * informacion retornara false.
+		 * ---
+		 * nivel de aprobacion 1: No aplica.
+		 * nivel de aprobacion 2: la vista no permite la edicion de los campos.
+		 * 	- Esquema de esta vista:
+		 *  	* Nombre del campo : Valor del campo
+		 * nivel de aprobacion 3: Muestra inhabilitado los datos suministrados previamente y habilita
+		 * aquellos campos que no fueron cargados inicialmente.
+		 */
+		private function actionMostarSolicitudCorreccionDomicilioFiscal()
+		{
+			if ( $this->_model->nivel_aprobacion == 2 ) {
+					$modelSearch = New CorreccionDomicilioFiscalSearch($this->_model->id_contribuyente);
+					$model = $modelSearch->findSolicitudCorreccionDomicilio($this->_model->nro_solicitud);
+					if ( isset($model) ) {
+						return $this->render('@backend/views/aaee/correccion-domicilio-fiscal/view-solicitud', [
+														'caption' => Yii::t('frontend', 'Request Nro. ' . $this->_model->nro_solicitud),
+														'model' => $model,
+
+							]);
+					}
+			}
+
+			return false;
+		}
 
 
 
