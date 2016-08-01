@@ -67,8 +67,11 @@
 		public $usuario;
 		public $estatus;
 		public $origen;
+		public $fecha_hora_proceso;
+		public $user_funcionario;
 
-
+		const SCENARIO_FRONTEND = 'frontend';
+		const SCENARIO_BACKEND = 'backend';
 
 
 		/**
@@ -77,7 +80,40 @@
     	public function scenarios()
     	{
         	// bypass scenarios() implementation in the parent class
-        	return Model::scenarios();
+        	//return Model::scenarios();
+        	return [
+        		self::SCENARIO_FRONTEND => [
+        					'id_contribuyente',
+        					'naturaleza_v',
+        					'cedula_v',
+        					'tipo_v',
+        					'tipo_naturaleza_v',
+        					'naturaleza_new',
+        					'cedula_new',
+        					'tipo_new',
+        					'tipo_naturaleza_new',
+        					'origen',
+        					'fecha_hora',
+        					'usuario',
+        					'estatus',
+
+        		],
+        		self::SCENARIO_BACKEND => [
+        					'id_contribuyente',
+        					'naturaleza_v',
+        					'cedula_v',
+        					'tipo_v',
+        					'tipo_naturaleza_v',
+        					'naturaleza_new',
+        					'cedula_new',
+        					'tipo_new',
+        					'tipo_naturaleza_new',
+        					'origen',
+        					'fecha_hora',
+        					'usuario',
+        					'estatus',
+        		]
+        	];
     	}
 
 
@@ -90,6 +126,31 @@
     	public function rules()
     	{
     		return [
+    			[['naturaleza_v', 'cedula_v',
+    			  'tipo_v', 'tipo_naturaleza_v',
+    			   'naturaleza_new', 'cedula_new',
+    			   'tipo_new', 'tipo_naturaleza_new',
+    			   'id_contribuyente'],
+    			   'required', 'on' => 'frontend',
+    			   'message' => Yii::t('backend', '{attribute} is required')],
+    			[['naturaleza_v', 'cedula_v',
+    			  'tipo_v', 'tipo_naturaleza_v',
+    			   'naturaleza_new', 'cedula_new',
+    			   'tipo_new', 'tipo_naturaleza_new',
+    			   'id_contribuyente'],
+    			   'required', 'on' => 'backend',
+    			   'message' => Yii::t('backend', '{attribute} is required')],
+    			[['naturaleza_v', 'naturaleza_new'], 'string', 'max' => 1],
+    			[['tipo_v', 'tipo_new', 'cedula_v', 'cedula_new',
+    			  'tipo_naturaleza_v', 'tipo_naturaleza_new'],
+    			  'integer'],
+    			['origen', 'default', 'value' => 'WEB', 'on' => 'frontend'],
+	     		['origen', 'default', 'value' => 'LAN', 'on' => 'backend'],
+	     		['fecha_hora', 'default', 'value' => date('Y-m-d H:i:s')],
+	     		[['cedula_new'], 'integer',  'max' => 9],
+	     		['estatus', 'default', 'value' => 0],
+	     		['usuario', 'default', 'value' => Yii::$app->user->identity->login, 'on' => 'frontend'],
+	     		//['usuario', 'default', 'value' => Yii::$app->user->identity->username, 'on' => 'backend'],
 
     		];
     	}
@@ -104,9 +165,13 @@
 	    public function attributeLabels()
 	    {
 	        return [
-	        	'id_correccion' => Yii::t('backend', 'Id. Record'),
-	            'id_contribuyente' => Yii::t('backend', 'Id. Taxpayer'),
-	            'nro_solicitud' => Yii::t('backend', 'Application Number'),
+	        	'id_correccion' => Yii::t('frontend', 'Id. Record'),
+	            'id_contribuyente' => Yii::t('frontend', 'Id. Taxpayer'),
+	            'nro_solicitud' => Yii::t('frontend', 'Request Number'),
+	            'dni_v' => Yii::t('frontend', 'Current DNI'),
+	            'dni_new' => Yii::t('frontend', 'New DNI'),
+	            'razon_social' => Yii::t('frontend', 'Companies'),
+	            'id_sim' => Yii::t('frontend', 'License'),
 	        ];
 	    }
 
