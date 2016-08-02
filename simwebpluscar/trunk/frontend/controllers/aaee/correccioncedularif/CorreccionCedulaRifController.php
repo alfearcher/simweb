@@ -290,7 +290,7 @@
 				if ( isset($_SESSION['conf']) ) {
 					$conf = $_SESSION['conf'];
 					$chkSeleccion = $postEnviado['chkSucursal'];
-
+die(var_dump($chkSeleccion));
 					$this->_conexion = New ConexionController();
 
 	      			// Instancia de conexion hacia la base de datos.
