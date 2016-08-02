@@ -174,9 +174,9 @@ class SolicitudExtravioController extends Controller
                             $guardar = self::beginSave("buscarGuardar" , $model);
 
                                 if($guardar == true){
-                                    die('guardo');
+                                    return MensajeController::actionMensaje(100);
                                 }else{
-                                    die(' no guardo');
+                                    return MensajeController::actionMensaje(920);
                                 }
                           }
                       
