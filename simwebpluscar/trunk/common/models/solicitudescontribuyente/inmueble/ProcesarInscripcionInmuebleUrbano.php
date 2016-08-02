@@ -295,12 +295,11 @@
                                             'casa_edf_qta_dom' => $camposModel['casa_edf_qta_dom'], 
                                             'piso_nivel_no_dom' => $camposModel['piso_nivel_no_dom'], 
                                             'apto_dom' => $camposModel['apto_dom'], 
-                                            'tlf_hab' => $camposModel['tlf_hab'], 
                                             'medidor' => $camposModel['medidor'], 
                                             'observacion' => $camposModel['observacion'],
-                                            'inactivo' => $camposModel['inactivo'], 
                                             'tipo_ejido' => $camposModel['id_contribuyente'],
-                                           ];
+
+                                         ];
 
                     $resultInsert = $this->_conexion->guardarRegistro($this->_conn, $tableNameMaster, $arregloDatosMaster);
 
