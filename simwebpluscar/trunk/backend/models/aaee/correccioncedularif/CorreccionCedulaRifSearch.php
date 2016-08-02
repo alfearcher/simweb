@@ -75,6 +75,18 @@
 
 
 
+		/***/
+		public function findSolicitudCorreccionCedulaRif($nroSolicitud)
+		{
+			$findModel = CorreccionCedulaRif::find()->where('nro_solicitud =:nro_solicitud',
+													 			 [':nro_solicitud' => $nroSolicitud])
+													->joinWith('sucursal');
+
+			return isset($findModel) ? $findModel : null;
+		}
+
+
+
 		/**
 		 * Metodo que permite determinar si el contribuyente ya tiene una solicitud pendiente,
 		 * con el objetivo no repetir la solicitud.
@@ -216,6 +228,21 @@
 	    		$query->where('0=1');
 	    	}
 		    return $dataProvider;
+	    }
+
+
+
+	    /***/
+	    public function getDataProviderSolicitud($nroSolicitud)
+	    {
+	    	$query = self::findSolicitudCorreccionCedulaRif($nroSolicitud);
+
+	    	$dataProvider = new ActiveDataProvider([
+            	'query' => $query,
+        	]);
+	    	$query->all();
+
+        	return $dataProvider;
 	    }
 
 

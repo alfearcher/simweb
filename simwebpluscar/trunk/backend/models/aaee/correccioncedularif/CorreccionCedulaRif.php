@@ -46,6 +46,7 @@
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 	use backend\models\solicitud\estatus\EstatusSolicitud;
+	use common\models\aaee\Sucursal;
 
 	class CorreccionCedulaRif extends ActiveRecord
 	{
@@ -72,12 +73,42 @@
 
 
 		/**
+	    * Lista de atributos con sus respectivas etiquetas (labels), las cuales son las que aparecen en las vistas
+	    * @return returna arreglo de datos con los atributoe como key y las etiquetas como valor del arreglo.
+	    */
+	    public function attributeLabels()
+	    {
+	        return [
+	        	'id_correccion' => Yii::t('frontend', 'Id. Record'),
+	            'id_contribuyente' => Yii::t('frontend', 'Id. Taxpayer'),
+	            'nro_solicitud' => Yii::t('frontend', 'Request Number'),
+	            'dni_v' => Yii::t('frontend', 'Current DNI'),
+	            'dni_new' => Yii::t('frontend', 'New DNI'),
+	            'razon_social' => Yii::t('frontend', 'Companies'),
+	            'id_sim' => Yii::t('frontend', 'License'),
+	        ];
+	    }
+
+
+
+		/**
 		 * Relacion con la entidad "estatus-solicitudes", EstatusSolicitud
 		 * @return Active Record.
 		 */
 		public function getEstatusSolicitud()
 		{
 			return $this->hasOne(EstatusSolicitud::className(), ['estatus_solicitud' => 'estatus']);
+		}
+
+
+
+		/**
+		 * Relacion con la entidad "contribuyentes", Sucursal.
+		 * @return Active Record.
+		 */
+		public function getSucursal()
+		{
+			return $this->hasMany(Sucursal::className(), ['id_contribuyente' => 'id_contribuyente']);
 		}
 
 
