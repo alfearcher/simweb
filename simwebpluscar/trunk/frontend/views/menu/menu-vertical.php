@@ -22,7 +22,7 @@
 	<div class="menu-funcionario" style="margin-left:-110px;">
 		<?=
 		  SideNav::widget([
-		    'type' => SideNav::TYPE_DEFAULT,
+		    'type' => SideNav::TYPE_SUCCESS,
 		    'encodeLabels' => false,
 		    'headingOptions' => ['method' => 'post'],
 		    //'heading' => '<span class="fa fa-list-alt fa-2x"></span>&nbsp;<i> Menu Principal</i>',
@@ -64,6 +64,7 @@
 
 		        ['label' => Icon::show('fa fa-laptop',['class' => $typeLong], $typeIcon) . '&nbsp; Solicitudes',
 		        	'items' => [
+		        		
 		        		//	SOLICITUDES DE ACTIVIDADES ECONOMICAS
 		        		['label' => Icon::show('fa fa-briefcase',['class' => $typeLong], $typeIcon) . '&nbsp; Actividades Economicas',
 		        			'items' => [
