@@ -273,14 +273,26 @@
 
             // Se define el arreglo para el where conditon del update.
             $arregloCondicion['nro_solicitud'] = isset($camposModel['nro_solicitud']) ? $camposModel['nro_solicitud'] : null;
-die('llego antes de guardar y modificar la solicitud '.'tabla: '.$tableName.' arreglo datos '.var_dump($arregloDatos));
+die('llego antes de guardar y modificar la solicitud '.'tabla: '.$tableName.' arreglo datos '.var_dump($camposModel));
             if ( count($arregloDatos) == 0 || count($arregloCondicion) == 0 ) { $cancel = true; }
 
             // Si no existe en la solicitud un campo que viene del modelo que deba ser
             // actualizado, entonces el proceso debe ser cancelado.
             if ( !$cancel ) {
-                $result = $this->_conexion->modificarRegistro($this->_conn, $tableName,
+                if($arregloDatos['estatus'] == 9)
+                {
+                    $result = $this->_conexion->modificarRegistro($this->_conn, $tableName,
                                                               $arregloDatos, $arregloCondicion);
+                } elseif($arregloDatos['estatus'] == 1) {
+
+
+                    $resultInsert = $this->_conexion->guardarRegistro($this->_conn, $tableNameMaster, $arregloDatos);
+
+                    $result = $this->_conexion->modificarRegistro($this->_conn, $tableName,
+                                                              $arregloDatos, $arregloCondicion);
+
+                }
+                    
             } 
 
             if (!$result ) { self::setErrors(Yii::t('backend', 'Failed update request')); }
