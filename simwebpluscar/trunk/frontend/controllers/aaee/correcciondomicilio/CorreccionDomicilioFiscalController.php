@@ -90,7 +90,7 @@
 		 * Identificador de  configuracion d ela solicitud. Se crea cuando se
 		 * configura la solicitud que gestiona esta clase.
 		 */
-		const CONFIG = 84;
+		const CONFIG = 86;
 
 
 		/**
