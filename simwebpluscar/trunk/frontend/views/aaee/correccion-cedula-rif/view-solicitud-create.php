@@ -92,7 +92,12 @@
     									'dataProvider' => $dataProvider,
     									'columns' => [
     										//['class' => 'yii\grid\SerialColumn'],
-
+    										[
+							                    'label' => Yii::t('frontend', 'Request Number'),
+							                    'value' => function($data) {
+                        										return $data->nro_solicitud;
+                											},
+							                ],
 							            	[
 							                    'label' => Yii::t('frontend', 'Id. Taxpayer'),
 							                    'value' => function($data) {
@@ -114,7 +119,7 @@
 							                [
 							                    'label' =>Yii::t('frontend', 'Branch Office'),
 							                    'value' => function($data) {
-                        										return $data['sucursal']->razon_social;
+                        										return $data['sucursal']['razon_social'];
                 											},
 							                ],
 							                [
