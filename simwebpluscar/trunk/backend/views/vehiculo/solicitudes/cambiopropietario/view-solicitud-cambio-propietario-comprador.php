@@ -59,12 +59,51 @@
 						'model' => $model,
 						
 		    			'attributes' => [
-		    				'id_propietario',
-		    				'id_comprador',
-		    				// 'placa',
-		    				// 'marca',
-		    				// 'modelo',
-		    				// 'color',
+		    				
+		    				 [
+		                   	'label' => 'Vendedor',
+		                    
+		                     'value' => $model[0]['tipo_naturaleza'] == 1 ? $model[0]['razon_social'] : $model[0]['nombres'].' '.$model[0]['apellidos'],
+		                     ],
+
+		                       [
+		                   	'label' => 'Rif',
+		                    
+		                     'value' => $model[0]['naturaleza'].'-'.$model[0]['cedula'].'-'.$model[0]['tipo'],
+		                     ],
+
+		                     [
+		                   	'label' => 'Placa',
+		                    
+		                     'value' => $model[0]['placa'],
+		                     ],
+
+		                     [ 
+		                     'label' => 'Marca',
+		                    	
+		                     'value' => $model[0]['marca'],
+		                     ],
+
+		                     [ 
+		                     'label' => 'Modelo',
+		                    	
+		                     'value' => $model[0]['modelo'],
+		                     ],
+
+		                      [ 
+		                     'label' => 'Fecha y Hora Solicitud',
+		                    	
+		                     'value' => $model[0]['fecha_hora'],
+		                     ],
+
+		                      [ 
+		                     'label' => 'Usuario',
+		                    	
+		                     'value' => $model[0]['usuario'],
+		                     ],
+
+
+		    			
 		    			
 		    				// 'precio_inicial',
 		    				// 'fecha_inicio',

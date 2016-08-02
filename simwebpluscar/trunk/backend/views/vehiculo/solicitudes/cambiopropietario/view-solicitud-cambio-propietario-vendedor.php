@@ -57,33 +57,60 @@
 			<h3><?= Html::encode($caption) ?></h3>
 				<?= DetailView::widget([
 						'model' => $model,
-
+						//die(var_dump($model)),
 						
 		    			'attributes' => [
-		    				[
-		    				'label' => 'placa',
-		    				'value' => $model[0]->placa,
-		    				],
+		    					
+		    			
 
-<<<<<<< .mine
-				    			 [
-		                    'label' => 'marca',
-		                    'value' => $model[0]->marca,
-			                ],
-		    				 'id_impuesto',
-||||||| .r3059
-		    				[
-		    				'label' => 'Id Vehiculo',
-		    				'value' => $model[0]->cambioPropietario->id_impuesto,
-		    				],
+				    		 [
+		                   	'label' => 'Comprador',
+		                    
+		                     'value' => $model[0]['tipo_naturaleza'] == 1 ? $model[0]['razon_social'] : $model[0]['nombres'].' '.$model[0]['apellidos'],
+		                     ],
+
+		                       [
+		                   	'label' => 'Rif',
+		                    
+		                     'value' => $model[0]['naturaleza'].'-'.$model[0]['cedula'].'-'.$model[0]['tipo'],
+		                     ],
+
+		                     [
+		                   	'label' => 'Placa',
+		                    
+		                     'value' => $model[0]['placa'],
+		                     ],
+
+		                     [ 
+		                     'label' => 'Marca',
+		                    	
+		                     'value' => $model[0]['marca'],
+		                     ],
+
+		                     [ 
+		                     'label' => 'Modelo',
+		                    	
+		                     'value' => $model[0]['modelo'],
+		                     ],
+
+		                     [ 
+		                     'label' => 'Fecha y Hora Solicitud',
+		                    	
+		                     'value' => $model[0]['fecha_hora'],
+		                     ],
+
+		                           [ 
+		                     'label' => 'Usuario',
+		                    	
+		                     'value' => $model[0]['usuario'],
+		                     ],
+		    			
+		    		
+		    		
+
+		    				
 		    				// 'id_comprador',
-=======
-		    				[
-		    				'label' => 'Id Vehiculo',
-		    				'value' => $model[0]->cambioPropietario[0]->id_impuesto,
-		    				],
-		    				// 'id_comprador',
->>>>>>> .r3071
+
 		    				//  'placa',
 		    				// 'marca',
 		    				// 'modelo',

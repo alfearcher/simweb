@@ -86,29 +86,29 @@
 		    				// 'nro_cilindros',
 		    				// 'fecha_hora',
 		    			
-		    				[
-		    					'label' => 'Uso Vehiculo',
+		    				// [
+		    				// 	'label' => 'Uso Vehiculo',
 
-		    					'value' => //$search->getDescripcionUsoVehiculo($model->uso_vehiculo),//function($model){
-		    					 VehiculoSearch::getDescripcionUsoVehiculo($model->uso_vehiculo),
+		    				// 	'value' => //$search->getDescripcionUsoVehiculo($model->uso_vehiculo),//function($model){
+		    				// 	 VehiculoSearch::getDescripcionUsoVehiculo($model->uso_vehiculo),
 		    						
-		    				],
+		    				// ],
 
-		    				[
-		    					'label' => 'Tipo Vehiculo',
+		    				// [
+		    				// 	'label' => 'Tipo Vehiculo',
 
-		    					'value' => //$search->getDescripcionUsoVehiculo($model->uso_vehiculo),//function($model){
-		    					 VehiculoSearch::getDescripcionTipoVehiculo($model->tipo_vehiculo),
+		    				// 	'value' => //$search->getDescripcionUsoVehiculo($model->uso_vehiculo),//function($model){
+		    				// 	 VehiculoSearch::getDescripcionTipoVehiculo($model->tipo_vehiculo),
 		    						
-		    				],
+		    				// ],
 
-		    				[
-		    					'label' => 'Clase Vehiculo',
+		    				// [
+		    				// 	'label' => 'Clase Vehiculo',
 
-		    					'value' => //$search->getDescripcionUsoVehiculo($model->uso_vehiculo),//function($model){
-		    					 VehiculoSearch::getDescripcionClaseVehiculo($model->clase_vehiculo),
+		    				// 	'value' => //$search->getDescripcionUsoVehiculo($model->uso_vehiculo),//function($model){
+		    				// 	 VehiculoSearch::getDescripcionClaseVehiculo($model->clase_vehiculo),
 		    						
-		    				],
+		    				// ],
 
 		        				
 		    			],

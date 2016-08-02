@@ -59,12 +59,23 @@
 						'model' => $model,
 						
 		    			'attributes' => [
-		    				'nro_solicitud',
-		    				'id_contribuyente',
-		    				// 'placa',
-		    				// 'marca',
-		    				// 'modelo',
-		    				// 'color',
+		    				
+		    				[
+	    					'label' => 'Causa Desincorporacion',
+
+	    					'value' => //$search->getDescripcionUsoVehiculo($model->uso_vehiculo),//function($model){
+	    					 VehiculoSearch::getDescripcionCausaDesincorporacion($model->causa_desincorporacion),
+	    						
+		    				],
+		    				
+		    				'observacion',
+		    				'usuario',
+		    				'fecha_hora',
+
+
+
+		    			
+
 		    			
 		    				// 'precio_inicial',
 		    				// 'fecha_inicio',
