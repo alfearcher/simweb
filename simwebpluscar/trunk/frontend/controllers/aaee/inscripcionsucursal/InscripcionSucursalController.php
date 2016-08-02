@@ -49,6 +49,7 @@
 	use yii\filters\AccessControl;
 	use yii\web\Controller;
 	use yii\filters\VerbFilter;
+	use yii\widgets\ActiveForm;
 	use yii\web\Response;
 	use yii\helpers\Url;
 	use yii\web\NotFoundHttpException;
