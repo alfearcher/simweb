@@ -166,7 +166,7 @@
 					$search = new VehiculoSearch();
 
 
-					return $this->render('/vehiculo/solicitudes/inscripcion/view-solicitud', [
+					return $this->render('@backend/views/vehiculo/solicitudes/inscripcion/view-solicitud', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
 													'model' => $model,
 													'search' => $search,
@@ -206,7 +206,7 @@
 					$search = new VehiculoSearch();
 
 
-					return $this->render('/vehiculo/solicitudes/cambiopropietario/view-solicitud-cambio-propietario-vendedor', [
+					return $this->render('@backend/views/vehiculo/solicitudes/cambiopropietario/view-solicitud-cambio-propietario-vendedor', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
 													'model' => $modelRelacion,
 													'search' => $search,
@@ -241,13 +241,15 @@
 			if ( $this->model->nivel_aprobacion == 2 ) {
 					$modelSearch = New SlVehiculosForm($this->model->id_contribuyente);
 					$model = $modelSearch->findSolicitudCambioPropietarioComprador($this->model->nro_solicitud);
+					$modelRelacion = self::busquedaRelacionVehiculoSlCambioPropietarioComprador($model->id_impuesto, $model->id_propietario);
+					//die(var_dump($modelRelacion));
 
 					$search = new VehiculoSearch();
 
 
-					return $this->render('/vehiculo/solicitudes/cambiopropietario/view-solicitud-cambio-propietario-comprador', [
+					return $this->render('@backend/views/vehiculo/solicitudes/cambiopropietario/view-solicitud-cambio-propietario-comprador', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
-													'model' => $model,
+													'model' => $modelRelacion,
 													'search' => $search,
 
 						]);
@@ -283,7 +285,7 @@
 					$search = new VehiculoSearch();
 
 
-					return $this->render('/vehiculo/solicitudes/cambioplaca/view-solicitud-cambio-placa', [
+					return $this->render('@backend/views/vehiculo/solicitudes/cambioplaca/view-solicitud-cambio-placa', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
 													'model' => $model,
 													'search' => $search,
@@ -314,14 +316,15 @@
 		 */
 		private function actionDesincorporacionVehiculo()
 		{
+			//die('llegue a desincorporacion');
 			if ( $this->model->nivel_aprobacion == 2 ) {
 					$modelSearch = New SlVehiculosForm($this->model->id_contribuyente);
 					$model = $modelSearch->findSolicitudDesincorporacionVehiculo($this->model->nro_solicitud);
 
 					$search = new VehiculoSearch();
+					
 
-
-					return $this->render('/vehiculo/solicitudes/desincorporacion/view-solicitud-desincorporacion-vehiculo', [
+					return $this->render('@backend/views/vehiculo/solicitudes/desincorporacion/view-solicitud-desincorporacion-vehiculo', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
 													'model' => $model,
 													'search' => $search,
@@ -359,7 +362,7 @@
 					$search = new VehiculoSearch();
 
 
-					return $this->render('/vehiculo/solicitudes/actualizardatos/view-solicitud-actualizar-datos-vehiculo', [
+					return $this->render('@backend/views/vehiculo/solicitudes/actualizardatos/view-solicitud-actualizar-datos-vehiculo', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
 													'model' => $model,
 													'search' => $search,
@@ -397,7 +400,7 @@
 					$search = new VehiculoSearch();
 
 
-					return $this->render('/vehiculo/solicitudes/reposicioncalcomania/view-solicitud-reposicion-calcomania-extravio', [
+					return $this->render('@backend/views/vehiculo/solicitudes/reposicioncalcomania/view-solicitud-reposicion-calcomania-extravio', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
 													'model' => $model,
 													'search' => $search,
@@ -413,23 +416,43 @@
 		{
 			$query = New Query();
 
-			//$row = $query->select('*')->from('ordenanzas')->all();
-
-			// Select ordenanzas_detalles.* from ordenanzas
-			// INNER JOIN ordenazas_detalles on ordenanzas.id_ordenanza=ordenanzas_detalles.id_ordenanza
+		
 
 			$model = $query->select('*')
 						 ->from('vehiculos')
-					     ->join('INNER JOIN', 'sl_cambios_propietarios', 'vehiculos.id_vehiculo = sl_cambios_propietarios.id_impuesto')
+					     ->Join('INNER JOIN', 'sl_cambios_propietarios', 'vehiculos.id_vehiculo = sl_cambios_propietarios.id_impuesto')
+					     ->Join('INNER JOIN', 'contribuyentes', 'contribuyentes.id_contribuyente = sl_cambios_propietarios.id_comprador')
 					     ->where(['id_vehiculo' => $idImpuesto])
-					     ->join('INNER JOIN', 'contribuyentes', 'contribuyentes.id_contribuyente = sl_cambios_propietarios.id_comprador')
-					     ->where(['id_contribuyente' => $idComprador])
+					     ->andWhere(['contribuyentes.id_contribuyente' => $idComprador])
 					     
 					     ->all();
 
 			return $model;
 										
 		}
+
+
+
+			public function busquedaRelacionVehiculoSlCambioPropietarioComprador($idImpuesto, $idVendedor)
+		{
+			//die('llegue');
+			$query = New Query();
+
+		
+
+			$model = $query->select('*')
+						 ->from('vehiculos')
+					     ->Join('INNER JOIN', 'sl_cambios_propietarios', 'vehiculos.id_vehiculo = sl_cambios_propietarios.id_impuesto')
+					     ->Join('INNER JOIN', 'contribuyentes', 'contribuyentes.id_contribuyente = sl_cambios_propietarios.id_propietario')
+					     ->where(['id_vehiculo' => $idImpuesto])
+					     ->andWhere(['contribuyentes.id_contribuyente' => $idVendedor])
+					     
+					     ->all();
+
+			return $model;
+										
+		}
+
 
 
 	}
