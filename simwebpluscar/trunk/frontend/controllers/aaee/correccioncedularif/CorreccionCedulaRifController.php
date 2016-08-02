@@ -667,7 +667,7 @@
 	    			$findModel = $searchCorreccion->findSolicitudCorreccionCedulaRif($id);
 	    			$dataProvider = $searchCorreccion->getDataProviderSolicitud($id);
 	    			if ( isset($findModel) ) {
-die(var_dump($dataProvider));
+// die(var_dump($dataProvider));
 	    				return self::actionShowSolicitud($findModel, $searchCorreccion, $dataProvider);
 	    			} else {
 						throw new NotFoundHttpException('No se encontro el registro');
