@@ -182,14 +182,14 @@
         {
             $atributos = [
                 Yii::$app->solicitud->aprobar() => [
-                                    'estatus' => 1,
+                                    'estatus_funcionario' => 1,
                                     'user_funcionario' => isset(Yii::$app->user->identity->username) ? Yii::$app->user->identity->username : Yii::$app->user->identity->login,
-                                    'fecha_hora_proceso' => date('Y-m-d H:i:s')
+                                    'fecha_funcionario' => date('Y-m-d H:i:s')
                 ],
                 Yii::$app->solicitud->negar() => [
-                                    'estatus' => 9,
+                                    'estatus_funcionario' => 9,
                                     'user_funcionario' => isset(Yii::$app->user->identity->username) ? Yii::$app->user->identity->username : Yii::$app->user->identity->login,
-                                    'fecha_hora_proceso' => date('Y-m-d H:i:s')
+                                    'fecha_funcionario' => date('Y-m-d H:i:s')
                 ],
             ];
     
@@ -210,9 +210,9 @@
             if ( $modelInscripcion !== null ) {
                 if ( $modelInscripcion['id_contribuyente'] == $this->_model->id_contribuyente ) {
                     $result = self::updateSolicitudInscripcion($modelInscripcion);
-                    if ( $result ) {
-                        $result = self::updateContribuyente($modelInscripcion);
-                    }
+                    // if ( $result ) {
+                    //     $result = self::updateContribuyente($modelInscripcion);
+                    // }
                 } else {
                     self::setErrors(Yii::t('backend', 'Error in the ID of taxpayer'));
                 }
@@ -273,24 +273,43 @@
 
             // Se define el arreglo para el where conditon del update.
             $arregloCondicion['nro_solicitud'] = isset($camposModel['nro_solicitud']) ? $camposModel['nro_solicitud'] : null;
-die('llego antes de guardar y modificar la solicitud '.'tabla: '.$tableName.' arreglo datos '.var_dump($camposModel));
+
             if ( count($arregloDatos) == 0 || count($arregloCondicion) == 0 ) { $cancel = true; }
 
             // Si no existe en la solicitud un campo que viene del modelo que deba ser
             // actualizado, entonces el proceso debe ser cancelado.
             if ( !$cancel ) {
-                if($arregloDatos['estatus'] == 9)
+                if($arregloDatos['estatus_funcionario'] == 9)
                 {
                     $result = $this->_conexion->modificarRegistro($this->_conn, $tableName,
                                                               $arregloDatos, $arregloCondicion);
-                } elseif($arregloDatos['estatus'] == 1) {
+                } elseif($arregloDatos['estatus_funcionario'] == 1) {
 
+                    $tableNameMaster = 'inmuebles';
 
-                    $resultInsert = $this->_conexion->guardarRegistro($this->_conn, $tableNameMaster, $arregloDatos);
+                    $arregloDatosMaster = [
+                                            'id_impuesto' => $camposModel['id_impuesto'],
+                                            'id_contribuyente' => $camposModel['id_contribuyente'],
+                                            'ano_inicio' => $camposModel['ano_inicio'],
+                                            'direccion' => $camposModel['direccion'],
+                                            'casa_edf_qta_dom' => $camposModel['casa_edf_qta_dom'], 
+                                            'piso_nivel_no_dom' => $camposModel['piso_nivel_no_dom'], 
+                                            'apto_dom' => $camposModel['apto_dom'], 
+                                            'tlf_hab' => $camposModel['tlf_hab'], 
+                                            'medidor' => $camposModel['medidor'], 
+                                            'observacion' => $camposModel['observacion'],
+                                            'inactivo' => $camposModel['inactivo'], 
+                                            'tipo_ejido' => $camposModel['id_contribuyente'],
+                                           ];
+
+                    $resultInsert = $this->_conexion->guardarRegistro($this->_conn, $tableNameMaster, $arregloDatosMaster);
 
                     $result = $this->_conexion->modificarRegistro($this->_conn, $tableName,
                                                               $arregloDatos, $arregloCondicion);
 
+                } else {
+                    if (!$result ) { self::setErrors(Yii::t('backend', 'Failed update request')); }
+                    return $result;
                 }
                     
             } 
