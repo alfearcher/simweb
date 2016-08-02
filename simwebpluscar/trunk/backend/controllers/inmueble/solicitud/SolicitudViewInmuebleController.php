@@ -177,7 +177,7 @@
 
 					
 
-					return $this->render('/inmueble/inscripcion-inmuebles-urbanos/view-solicitud', [
+					return $this->render('@inmueble/inscripcion-inmuebles-urbanos/view-solicitud', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
 													'model' => $model,
 
