@@ -289,6 +289,7 @@
 			if ( isset($_SESSION['idContribuyente']) ) {
 				if ( isset($_SESSION['conf']) ) {
 					$conf = $_SESSION['conf'];
+					$chkSeleccion = $postEnviado['chkSucursal'];
 
 					$this->_conexion = New ConexionController();
 
@@ -310,16 +311,18 @@
 						$result = self::actionCreateCorreccionCedulaRif($this->_conexion,
 																	    $this->_conn,
 																	    $model,
-																	    $conf);
+																	    $conf,
+																	    $chkSeleccion);
 						if ( $result ) {
-							$result = self::actionUpdateDomicilioFiscal($this->_conexion,
-																	  $this->_conn,
-																	  $model,
-																	  $conf);
+							$result = self::actionUpdateCedulaRif($this->_conexion,
+															      $this->_conn,
+																  $model,
+																  $conf,
+																  $chkSeleccion);
 							if ( $result ) {
 								$result = self::actionEjecutaProcesoSolicitud($this->_conexion, $this->_conn, $model, $conf);
 								if ( $result ) {
-									$result = self::actionEnviarEmail($model, $conf);
+									$result = self::actionEnviarEmail($model, $conf, $chkSeleccion);
 									$result = true;
 								}
 							}
@@ -410,9 +413,11 @@
 		 * @param  model $model modelo de CorreccionCedulaRifForm.
 		 * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
 		 * solicitud.
+		 * @param  array $chkSeleccion arreglo que contiene los identificadores de los contribuyentes
+		 * a los cuales se se les actualizara el rif.
 		 * @return boolean retorna un true si guardo el registro, false en caso contrario.
 		 */
-		private static function actionCreateCorreccionCedulaRif($conexionLocal, $connLocal, $model, $conf)
+		private static function actionCreateCorreccionCedulaRif($conexionLocal, $connLocal, $model, $conf, $chkSeleccion)
 		{
 			$result = false;
 			$estatus = 0;
@@ -442,7 +447,12 @@
 					$model->estatus = $estatus;
 					$model->user_funcionario = $userFuncionario;
 
-					$result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
+					foreach ( $chkSeleccion as $key => $value ) {
+						$arregloDatos['id_contribuyente'] = $value;
+						$result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
+						if ( !$result ) { break; }
+					}
+
 				}
 			}
 			return $result;
@@ -460,18 +470,28 @@
 		 * @param  model $model modelo de CorreccionCedulaRifForm.
 		 * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
 		 * solicitud.
+		 * @param  array $chkSeleccion arreglo que contiene los identificadores de los contribuyentes
+		 * a los cuales se se les actualizara el rif.
 		 * @return boolean retorna true si se ejecuta la actualizacion, sino false.
 		 */
-		private static function actionUpdateCedulaRif($conexionLocal, $connLocal, $model, $conf)
+		private static function actionUpdateCedulaRif($conexionLocal, $connLocal, $model, $conf, $chkSeleccion)
 		{
 			$result = false;
 			if ( $conf['nivel_aprobacion'] == 1 ) {
-				$arregloCondicion = ['id_contribuyente' => $model->id_contribuyente];
-				$arregloDatos = ['domicilio_fiscal' => $model->domicilio_fiscal_new];
+				$arregloDatos = [
+						'naturaleza' => $model->naturaleza_new,
+						'cedula' => $model->cedula_new,
+						'tipo' => $model->tipo_new
+				];
 
 				$tabla = ContribuyenteBase::tableName();
 
-				$result = $conexionLocal->modificarRegistro($connLocal, $tabla, $arregloDatos, $arregloCondicion);
+				foreach ( $chkSeleccion as $key => $value ) {
+					$arregloCondicion = ['id_contribuyente' => $value];
+					$result = $conexionLocal->modificarRegistro($connLocal, $tabla, $arregloDatos, $arregloCondicion);
+					if ( !$result ) { break; }
+				}
+
 			} else {
 				$result = true;
 			}
@@ -485,7 +505,7 @@
 		 * Metodo para guardar los documentos consignados.
 		 * @param  ConexionController  $conexionLocal instancia de la clase ConexionController
 		 * @param  connection  $connLocal instancia de connection.
-		 * @param  model $model modelo de InscripcionSucursalForm.
+		 * @param  model $model modelo de CorreccionCedulaRifForm.
 		 * @param  array $postEnviado post enviado por el formulario. Lo que
 		 * se busca es determinar los items seleccionados como documentos y/o
 		 * requisitos a consignar para guardarlos.
@@ -542,7 +562,7 @@
 		 * @param  ConexionController $conexionLocal instancia de la clase ConexionController.
 		 * @param  connection $connLocal instancia de conexion que permite ejecutar las acciones en base
 		 * de datos.
-		 * @param  model $model modelo de la instancia CorrecionDomicilioFiscalForm.
+		 * @param  model $model modelo de la instancia CorreccionCedulaRifForm.
 		 * @param  array $conf arreglo que contiene los parametros principales de la configuracion de la
 		 * solicitud.
 		 * @return boolean retorna true si todo se ejecuto correctamente false en caso contrario.
@@ -606,10 +626,12 @@
 		 * del identificador del contribuyente.
 		 * @param  array $conf arreglo que contiene los parametros principales de la configuracion de la
 		 * solicitud.
-		 * @return Boolean Retorna un true si envio el correo o false en caso
+		 * @param  array $chkSeleccion arreglo que contiene los identificadores de los contribuyentes
+		 * a los cuales se se les actualizara el rif.
+		 * @return boolean retorna un true si envio el correo o false en caso
 		 * contrario.
 		 */
-		private function actionEnviarEmail($model, $conf)
+		private function actionEnviarEmail($model, $conf, $chkSeleccion)
 		{
 			$result = false;
 			$listaDocumento = '';
@@ -641,10 +663,12 @@
     	{
     		if ( isset($_SESSION['idContribuyente']) ) {
 	    		if ( $id > 0 ) {
-	    			$modelSearch = New CorreccionDomicilioFiscalSearch($_SESSION['idContribuyente']);
-	    			$findModel = $modelSearch->findSolicitudCorreccionDomicilio($id);
+	    			$searchCorreccion = New CorreccionCedulaRifSearch($_SESSION['idContribuyente']);
+	    			$findModel = $searchCorreccion->findSolicitudCorreccionCedulaRif($id);
+	    			$dataProvider = $searchCorreccion->getDataProviderSolicitud($id);
 	    			if ( isset($findModel) ) {
-	    				return self::actionShowSolicitud($findModel, $modelSearch);
+die(var_dump($dataProvider));
+	    				return self::actionShowSolicitud($findModel, $searchCorreccion, $dataProvider);
 	    			} else {
 						throw new NotFoundHttpException('No se encontro el registro');
 					}
@@ -660,17 +684,18 @@
 
 
     	/***/
-    	private function actionShowSolicitud($findModel, $modelSearch)
+    	private function actionShowSolicitud($findModel, $modelSearch, $dataProvider)
     	{
     		if ( isset($findModel) && isset($modelSearch) ) {
 				$opciones = [
-					'quit' => '/aaee/correcciondomicilio/correccion-domicilio-fiscal/quit',
+					'quit' => '/aaee/correccioncedularif/correccion-cedula-rif/quit',
 				];
-				return $this->render('/aaee/correccion-domicilio-fiscal/_view', [
+				return $this->render('/aaee/correccion-cedula-rif/_view', [
 																'codigo' => 100,
 																'model' => $findModel,
 																'modelSearch' => $modelSearch,
 																'opciones' => $opciones,
+																'dataProvider' => $dataProvider,
 					]);
 			} else {
 				throw new NotFoundHttpException('No se encontro el registro');
