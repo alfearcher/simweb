@@ -176,10 +176,12 @@ class SlVehiculosForm extends SlVehiculos
          */
         public function findSolicitudDesincorporacionVehiculo($nroSolicitud)
         {
-            $modelFind = SlCambioPlaca::find()->where('nro_solicitud =:nro_solicitud', [':nro_solicitud' => $nroSolicitud])
+           // die('llegue a find');
+            $modelFind = SlDesincorporacionesVehiculo::find()->where('nro_solicitud =:nro_solicitud', [':nro_solicitud' => $nroSolicitud])
                                                     ->andWhere('id_contribuyente =:id_contribuyente', [':id_contribuyente' => $this->id_contribuyente])
                                                     ->one();
             return isset($modelFind) ? $modelFind : null;
+           // die(var_dump($modelFind));
         }
 
             /**

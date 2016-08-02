@@ -60,7 +60,7 @@
    
 
 
-    class SlVehiculos extends ActiveRecord
+    class SlReposicionCalcomania extends ActiveRecord
     {
 
         public static function getDb()
