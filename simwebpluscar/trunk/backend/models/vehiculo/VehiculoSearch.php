@@ -9,6 +9,7 @@ use backend\models\vehiculo\VehiculosForm;
 use backend\models\vehiculo\TiposVehiculos;
 use backend\models\vehiculo\ClasesVehiculos;
 use backend\models\vehiculo\UsosVehiculos;
+use common\models\vehiculo\desincorporaciones\CausasDesincorporaciones;
 
 /**
  * VehiculoSearch represents the model behind the search form about `backend\models\VehiculosForm`.
@@ -50,5 +51,20 @@ class VehiculoSearch extends VehiculosForm
         return $model->descripcion;
 
     }
+
+
+   /**
+    * [getDescripcionClaseVehiculo description]
+    * @param  [type] $clase [description]
+    * @return [type]        [description]
+    */
+    public function getDescripcionCausaDesincorporacion($causa)
+    {
+        $model = CausasDesincorporaciones::findOne($causa);
+        return $model->descripcion;
+
+    }
+
+
    
 }
