@@ -134,7 +134,16 @@
 										?>
 					        	</div>
 					        	<div class="row" id="datos-principal-reg-mercantil" style="padding-left: 15px; width: 100%;">
-					        		<h4><?= Html::encode(Yii::t('backend', 'Info of Commercial Register')) ?></h3>
+					        		<h4><?= Html::encode(Yii::t('backend', 'Info of Commercial Register')) . '. ';?>
+			        					<b><span>
+			        						<?php if ( trim($mensajeRegistroMercantil) !== '' ) { ?>
+				        						<div id="info-registro-mercantil-completa" class="info-registro-mercantil-completa">
+													<div class="well well-sm" style="color: red;"><?=$mensajeRegistroMercantil;?></div>
+				        						</div>
+				        					<?php } ?>
+			        					</span></b>
+					        		</h4>
+
 					        		<?= DetailView::widget([
 												'model' => $model,
 								    			'attributes' => [
@@ -505,5 +514,14 @@
 	});
 	$('select[name="codigo3"]').change(function() {
 	 	$('#tlf-celular').val( $('#codigo3').val() + '-' + $('#num-celular').val() );
+	});
+
+	$(document).ready(function() {
+		var n = $( "#info-registro-mercantil-completa" ).length;
+		if ( n > 0 ) {
+			$( "#btn-create" ).attr("disabled", true);
+		} else {
+			$( "#btn-create" ).removeAttr("disabled");
+		}
 	});
 </script>
