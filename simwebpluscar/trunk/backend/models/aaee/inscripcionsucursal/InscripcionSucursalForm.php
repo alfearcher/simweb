@@ -325,9 +325,9 @@
 	    public static function datosRegistroMercantilValido($datos)
 	    {
 	    	if ( is_array($datos) ) {
-	    		if ( !isset($datos[0]['fecha']) ) { return false; }
-	    		if ( !isset($datos[0]['reg_mercantil']) ) { return false; }
-	    		if ( !isset($datos[0]['num_reg']) ) { return false; }
+	    		if ( !isset($datos['fecha']) ) { return false; }
+	    		if ( !isset($datos['reg_mercantil']) ) { return false; }
+	    		if ( !isset($datos['num_reg']) ) { return false; }
 	    	} else {
 	    		return false;
 	    	}

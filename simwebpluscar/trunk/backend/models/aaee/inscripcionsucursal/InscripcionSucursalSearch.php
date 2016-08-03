@@ -217,6 +217,29 @@
 		   	return isset($idRif) ? $idRif['id_rif'] + 1 : 0;
 	    }
 
+
+
+	    /**
+	     * Metodo que permite verificar si un contribuyente posee todos los datos necesarios
+	     * del registro mercantil, esto permitira crear la sucursal y asumir los mismos valores
+	     * que aparece en el registro mercantil de la sede principal.
+	     * @param  $datos, array que posee los datos de la sede que se pretende tomar como principal.
+	     * @return return boolean, true si todos los datos estan bien, false no se puede crear la sucursal.
+	     */
+	    public static function datosRegistroMercantilValido($datos)
+	    {
+	    	if ( is_array($datos) ) {
+	    		if ( !isset($datos['fecha']) ) { return false; }
+	    		if ( !isset($datos['reg_mercantil']) ) { return false; }
+	    		if ( !isset($datos['num_reg']) ) { return false; }
+	    		if ( !isset($datos['tomo']) ) { return false; }
+	    		if ( !isset($datos['folio']) ) { return false; }
+	    	} else {
+	    		return false;
+	    	}
+	    	return true;
+	    }
+
 	}
 
 
