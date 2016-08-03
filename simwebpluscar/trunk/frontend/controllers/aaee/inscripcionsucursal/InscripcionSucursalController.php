@@ -277,7 +277,7 @@
 
 					// Se determina si los daos del registro mercantil son validos.
 					if ( !$search->datosRegistroMercantilValido($datos) ) {
-						$mensajeRegistroMercantil = Yii::t('frontend', 'Info Comercial Register not valid');
+						$mensajeRegistroMercantil = Yii::t('frontend', 'Info Commercial Register not valid');
 					}
 
 		  			return $this->render('/aaee/inscripcion-sucursal/_create', [
