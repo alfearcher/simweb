@@ -236,7 +236,7 @@
 		      				} elseif ( isset($postData['btn-confirm-create']) ) {
 		      					if ( $postData['btn-confirm-create'] == 2 ) {
 		      						$result = self::actionBeginSave($model, $postData);
-		      						self::actionAnularSession(['begin']);
+		      						self::actionAnularSession(['begin', 'conf']);
 		      						if ( $result ) {
 										$this->_transaccion->commit();
 										//$this->redirect(['view', 'id' => $model->nro_solicitud]);
@@ -254,10 +254,12 @@
 			      	}
 		      	 }
 
+		      	$mensajeRegistroMercantil = '';
 		      	// Se muestra el form de la solicitud.
 		      	// Datos generales del contribuyente sede principal.
 		      	$search = New InscripcionSucursalSearch($idContribuyente);
 		      	$datos = $search->getDatosContribuyente($idContribuyente);
+
 		  		if ( $datos ) {
 		  			// Se crea la lista para los tipos de naturaleza, esta lista se utilizara
 		  			// en el combo-lista.
@@ -273,6 +275,11 @@
 
 					$modelTelefono = new TelefonoCodigo();
 
+					// Se determina si los daos del registro mercantil son validos.
+					if ( !$search->datosRegistroMercantilValido($datos) ) {
+						$mensajeRegistroMercantil = Yii::t('frontend', 'Info Comercial Register not valid');
+					}
+
 		  			return $this->render('/aaee/inscripcion-sucursal/_create', [
 		  											'model' => $model,
 		  											'datos' => $datos,
@@ -280,6 +287,7 @@
 		  											'listaTelefonoCodigo' => $listaTelefonoCodigo,
 		  											'listaTelefonoMovil' => $listaTelefonoMovil,
 		  											'modelTelefono' => $modelTelefono,
+		  											'mensajeRegistroMercantil' => $mensajeRegistroMercantil,
 		  											//'mensajeErrorChk' => $mensajeErrorChk,
 		  					]);
 		  		} else {
