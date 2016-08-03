@@ -230,10 +230,11 @@
 	    {
 	    	if ( is_array($datos) ) {
 	    		if ( !isset($datos['fecha']) ) { return false; }
-	    		if ( !isset($datos['reg_mercantil']) ) { return false; }
-	    		if ( !isset($datos['num_reg']) ) { return false; }
-	    		if ( !isset($datos['tomo']) ) { return false; }
-	    		if ( !isset($datos['folio']) ) { return false; }
+	    		if ( strlen(trim($datos['reg_mercantil'])) < 5 ) { return false; }
+	    		if ( $datos['num_reg'] > 0 ) { return false; }
+	    		if ( strlen(trim($datos['tomo'])) == 0 ) { return false; }
+	    		if ( strlen(trim($datos['folio'])) == 0 ) { return false; }
+	    		if ( $datos['capital'] == 0 ||  $datos['capital'] < 0 ) { return false; }
 	    	} else {
 	    		return false;
 	    	}
