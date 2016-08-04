@@ -269,6 +269,7 @@
 					$modelSearch = New CorreccionCedulaRifSearch($this->_model->id_contribuyente);
 					$model = $modelSearch->findSolicitudCorreccionCedulaRif($this->_model->nro_solicitud);
 					$dataProvider = $modelSearch->getDataProviderSolicitud($this->_model->nro_solicitud);
+					$cap = $model->all();
 					$captionTipoSolicitud = $model->getTipoSolicitud();
 			die(var_dump($captionTipoSolicitud));
 					if ( isset($model) ) {
