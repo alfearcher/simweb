@@ -105,7 +105,7 @@
          * @return Boolean Retorna un true o false.
          */
         public function procesarSolicitudPorTipo()
-        {
+        {  
             $result = false;
             if ( isset($this->_model) && $this->_model !== null ) {
                 if ( $this->_model->tipo_solicitud == 20 ) {
@@ -134,7 +134,7 @@
                 } elseif ( $this->_model->tipo_solicitud == 29 ) {
 
                 } elseif ( $this->_model->tipo_solicitud == 30 ) {
-
+ 
                 } elseif ( $this->_model->tipo_solicitud == 31 ) {
 
                 }

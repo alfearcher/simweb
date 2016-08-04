@@ -272,8 +272,8 @@
                     $result = $procesarDetalle->procesarSolicitudPorTipo();
 
                 } elseif ( $model['impuesto'] == 3 ) {
-                    // Vehiculos.
-
+                    // Vehiculos. 
+                    
                 } elseif ( $model['impuesto'] == 4 ) {
                     // Propaganda Comercial.
 

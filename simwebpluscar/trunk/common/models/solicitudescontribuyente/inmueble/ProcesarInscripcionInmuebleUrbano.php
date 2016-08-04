@@ -299,7 +299,7 @@
                                             'observacion' => $camposModel['observacion'],
                                             'tipo_ejido' => $camposModel['id_contribuyente'],
 
-                                         ];
+                                         ];  
 
                     $resultInsert = $this->_conexion->guardarRegistro($this->_conn, $tableNameMaster, $arregloDatosMaster);
 
