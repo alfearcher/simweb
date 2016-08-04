@@ -54,6 +54,7 @@
 	<div class="info-solicitud">
 		<div class="row">
 			<h3><?= Html::encode($caption) ?></h3>
+			<h3><?= Html::encode($captionTipoSolicitud) ?></h3>
 				<?= GridView::widget([
 					'id' => 'grid-contribuyente-asociado',
 					'dataProvider' => $dataProvider,
