@@ -59,8 +59,18 @@
 						'model' => $model,
 						
 		    			'attributes' => [
-		    				'nro_solicitud',
-		    				'id_contribuyente',
+		    				'nro_calcomania',
+
+		    				 [
+		    				 	'label' => 'Causa de Solicitud',
+
+		    				 	'value' => //$search->getDescripcionUsoVehiculo($model->uso_vehiculo),//function($model){
+		    				 	 VehiculoSearch::getDescripcionCausaSolicitudCalcomania($model->causa),
+		    						
+		    				 ],
+
+
+		    				'observacion',
 		    				// 'placa',
 		    				// 'marca',
 		    				// 'modelo',
