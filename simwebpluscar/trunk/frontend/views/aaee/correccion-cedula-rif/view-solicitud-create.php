@@ -112,7 +112,7 @@
                 											},
 							                ],
 							                [
-							                    'label' => Yii::t('frontend', 'Current DNI'),
+							                    'label' => Yii::t('frontend', 'New DNI'),
 							                    'value' => function($model) {
                         										return $model->naturaleza_new . '-' . $model->cedula_new . '-' . $model->tipo_new;
                 											},
