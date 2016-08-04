@@ -322,14 +322,17 @@
 																	    $model,
 																	    $conf,
 																	    $chkSeleccion);
+
 						if ( $result ) {
 							$result = self::actionUpdateCedulaRif($this->_conexion,
 															      $this->_conn,
 																  $model,
 																  $conf,
 																  $chkSeleccion);
+
 							if ( $result ) {
 								$result = self::actionEjecutaProcesoSolicitud($this->_conexion, $this->_conn, $model, $conf);
+
 								if ( $result ) {
 									$result = self::actionEnviarEmail($model, $conf, $chkSeleccion);
 									$result = true;
