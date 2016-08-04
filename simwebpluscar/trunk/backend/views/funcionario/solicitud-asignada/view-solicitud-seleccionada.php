@@ -333,7 +333,7 @@
 								<small><strong><?= Yii::t('backend', 'Indique los Documentos y Requisitos consignados.') ?></strong></small>
 							</div>
 							<div class="row" style="padding-top: 5px;">
-								<div class="documento-requisito" id="documento-requisito" style="padding-left: 10px; width: 80%;">
+								<div class="documento-requisito" id="documento-requisito" style="padding-left: 10px; width: 90%;">
 									<?= GridView::widget([
 							                'id' => 'grid-lista-documento',
 							                'dataProvider' => $dataProvider,
