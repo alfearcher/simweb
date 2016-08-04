@@ -53,6 +53,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use backend\models\propaganda\Propaganda;
+use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 
 
 
@@ -149,6 +150,7 @@ class ModificarPropagandaForm extends Model
                 'medio_transporte' => Yii::t('frontend', 'Medio de Transporte'),
                 'direccion' => Yii::t('frontend', 'Direccion'),
                 'observacion' => Yii::t('frontend', 'Mensaje de la Propaganda'),
+                'unidad' => Yii::t('frontend', 'Unidad'),
         ];      
     }
 
