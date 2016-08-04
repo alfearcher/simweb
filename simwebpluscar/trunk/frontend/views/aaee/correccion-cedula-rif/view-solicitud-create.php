@@ -62,7 +62,7 @@
         <div class="panel-heading">
         	<div class="row">
 	        	<div class="col-sm-4">
-	        		<h3><?= Html::encode(Yii::t('frontend', 'Request Nro. ')) ?></h3>
+	        		<h3><?= Html::encode(Yii::t('frontend', 'Request Nro. ' . $model[0]->nro_solicitud )) ?></h3>
 	        	</div>
 	        	<div class="col-sm-3" style="width: 30%; float:right; padding-right: 50px;">
 	        		<style type="text/css">
