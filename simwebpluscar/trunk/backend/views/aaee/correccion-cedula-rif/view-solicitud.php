@@ -56,7 +56,6 @@
 			<h3><?= Html::encode($caption) ?></h3>
 				<?= GridView::widget([
 					'id' => 'grid-contribuyente-asociado',
-					'caption' => $model->getTipoSolicitud()['descripcion'],
 					'dataProvider' => $dataProvider,
 					//'filterModel' => $model,
 					'columns' => [
@@ -100,13 +99,17 @@
 										},
 		                ],
 		                [
-		                	//'attribute' => 'sucursal.id_sim',
 		                    'label' => Yii::t('frontend', 'Condition'),
 		                    'value' => function($model) {
     										return $model->estatusSolicitud->descripcion;
 										},
 		                ],
-
+		                [
+		                    'label' => Yii::t('frontend', 'Tipo'),
+		                    'value' => function($model) {
+    										return $model->tipoSolicitud->descripcion;
+										},
+		                ],
 		        	]
 				]);
 			?>
