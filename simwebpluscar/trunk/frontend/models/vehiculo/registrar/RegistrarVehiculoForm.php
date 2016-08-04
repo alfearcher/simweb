@@ -196,7 +196,7 @@ public $serial_motor;
               'ano_vehiculo',
               'no_ejes',
               'liquidado',
-              'status_vehiculo',
+              'estatus',
               'exceso_cap',
               'medida_cap',
               'capacidad',
