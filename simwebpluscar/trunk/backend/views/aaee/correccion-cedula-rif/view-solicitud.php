@@ -56,7 +56,7 @@
 			<h3><?= Html::encode($caption) ?></h3>
 				<?= GridView::widget([
 					'id' => 'grid-contribuyente-asociado',
-					'caption' => $model->tipoSolicitud->descripcion,
+					'caption' => $model->getTipoSolicitud()['descripcion'],
 					'dataProvider' => $dataProvider,
 					//'filterModel' => $model,
 					'columns' => [
