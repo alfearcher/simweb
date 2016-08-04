@@ -135,9 +135,18 @@ session_start();
 			        							['label' => 'Asignar Calcomanias a funcionario (Distribuir entre funcionario responsables)','url' => ['/vehiculo/calcomania/administrarcalcomaniafuncionario/administrar-calcomania-funcionario/seleccionar-funcionario']],
 
 
+			        							['label' => 'Administrar Entrega de calcomania','url' => ['/vehiculo/calcomania/asignarcalcomaniacontribuyente/asignar-calcomania-contribuyente/seleccionar-tipo-contribuyente']],
+			        							
+			        							['label' => 'Cierre de Lote','url' => ['/vehiculo/calcomania/cierrelote/cierre-lote-calcomania/busqueda-lote']],
+
+			        							['label' => 'Administrar Entrega de calcomania','url' => ['/vehiculo/calcomania/asignarcalcomaniacontribuyente/asignar-calcomania-contribuyente/seleccionar-tipo-contribuyente']],
+			        							['label' => 'Cierre de Lote','url' => '#'],
+
+
 		                                        ['label' => 'Administrar Entrega de calcomania','url' => ['/vehiculo/calcomania/asignarcalcomaniacontribuyente/asignar-calcomania-contribuyente/seleccionar-tipo-contribuyente']],
 
 			        							['label' => 'Cierre de Lote','url' => ['/vehiculo/calcomania/cierrelote/cierre-lote-calcomania/busqueda-lote']],
+
 					        				],
 					        			],
 		        						['label' => 'Solvencia', 'url' => '#'],
