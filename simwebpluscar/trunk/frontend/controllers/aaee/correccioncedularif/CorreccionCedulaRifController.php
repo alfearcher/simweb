@@ -695,7 +695,7 @@
     	private function actionShowSolicitud($findModel, $modelSearch, $dataProvider)
     	{
     		if ( isset($findModel) && isset($modelSearch) ) {
- 				$model = $findModel->asArray()->all();
+ 				$model = $findModel->all();
  //die(var_dump($model));
 				$opciones = [
 					'quit' => '/aaee/correccioncedularif/correccion-cedula-rif/quit',
