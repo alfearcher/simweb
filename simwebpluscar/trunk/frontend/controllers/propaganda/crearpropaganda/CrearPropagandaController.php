@@ -242,12 +242,12 @@ class CrearPropagandaController extends Controller
 
       $arregloDatos['medio_transporte'] = $model->medio_transporte;
 
-      $arregloDatos['fecha_desde'] = date('Y-m-d', strtotime($model->fecha_inicial));
+      $arregloDatos['fecha_desde'] = date('Y-m-d', strtotime($model->fecha_desde));
      // die($arregloDatos['fecha_desde']);
 
       $arregloDatos['cantidad_tiempo'] = $model->cantidad_tiempo;
 
-      $arregloDatos['id_tiempo'] = $model->tiempo;
+      $arregloDatos['id_tiempo'] = $model->id_tiempo;
 
       $arregloDatos['id_sim'] = $model->id_sim;
 
@@ -255,7 +255,7 @@ class CrearPropagandaController extends Controller
 
       $arregloDatos['base_calculo'] = $model->base_calculo;
 
-      $arregloDatos['cigarros'] = $model->cigarrillos;
+      $arregloDatos['cigarros'] = $model->cigarros;
 
       $arregloDatos['bebidas_alcoholicas'] = $model->bebidas_alcoholicas;
 
@@ -274,6 +274,8 @@ class CrearPropagandaController extends Controller
       $arregloDatos['fecha_hora'] = date('Y-m-d h:m:i');
 
       $arregloDatos['usuario'] = $datos->login;
+
+      $arregloDatos['unidad'] = $model->unidad;
       
   
 
@@ -357,11 +359,11 @@ class CrearPropagandaController extends Controller
 
       $arregloDatos['medio_transporte'] = $model->medio_transporte;
 
-      $arregloDatos['fecha_desde'] = date('Y-m-d', strtotime($model->fecha_inicial));
+      $arregloDatos['fecha_desde'] = date('Y-m-d', strtotime($model->fecha_desde));
 
       $arregloDatos['cantidad_tiempo'] = $model->cantidad_tiempo;
 
-      $arregloDatos['id_tiempo'] = $model->tiempo;
+      $arregloDatos['id_tiempo'] = $model->id_tiempo;
 
       $arregloDatos['inactivo'] = 0;
 
@@ -371,7 +373,7 @@ class CrearPropagandaController extends Controller
 
       $arregloDatos['base_calculo'] = $model->base_calculo;
 
-      $arregloDatos['cigarros'] = $model->cigarrillos;
+      $arregloDatos['cigarros'] = $model->cigarros;
 
       $arregloDatos['bebidas_alcoholicas'] = $model->bebidas_alcoholicas;
 
@@ -392,6 +394,8 @@ class CrearPropagandaController extends Controller
       $arregloDatos['ancho'] = $model->ancho;
 
       $arregloDatos['profundidad'] = $model->profundidad;
+
+      $arregloDatos['unidad'] = $model->unidad;
 
 
         if ($conexion->guardarRegistro($conn, $tabla, $arregloDatos )){

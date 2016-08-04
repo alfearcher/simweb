@@ -61,7 +61,8 @@ use common\models\configuracion\solicitud\DocumentoSolicitud;
 use common\enviaremail\PlantillaEmail;
 use frontend\models\propaganda\modificarpropaganda\ModificarPropagandaForm;
 use backend\models\propaganda\Propaganda;
-
+use frontend\models\vehiculo\registrar\RegistrarVehiculoForm;
+use frontend\models\propaganda\crearpropaganda\CrearPropagandaForm;
 
 
 /**
@@ -161,7 +162,7 @@ class ModificarPropagandaController extends Controller
 
                if ($model->validate()){
 
-                $verificarSolicitud = self::verificarSolicitud($datosPropaganda[0]->id_impuesto , $_SESSION['id']);
+                $verificarSolicitud = self::verificarSolicitud($datosPropaganda->id_impuesto , $_SESSION['id']);
 
                     if($verificarSolicitud == true){
                       return MensajeController::actionMensaje(403);
@@ -280,7 +281,7 @@ class ModificarPropagandaController extends Controller
 
       $buscar = new ParametroSolicitud($_SESSION['id']);
 
-      $buscar->getParametroSolicitud(["nivel_aprobacion"]);
+    
 
       $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
       //die(var_dump($nivelAprobacion));
@@ -319,16 +320,16 @@ class ModificarPropagandaController extends Controller
 
       $arregloDatos['uso_propaganda'] = $model->uso_propaganda;
 
-      $arregloDatos['medio_difusion'] = $model->materiales;
+      $arregloDatos['medio_difusion'] = $model->medio_difusion;
 
       $arregloDatos['medio_transporte'] = $model->medio_transporte;
 
-      $arregloDatos['fecha_desde'] = date('Y-m-d', strtotime($model->fecha_inicial));
+      $arregloDatos['fecha_desde'] = date('Y-m-d', strtotime($model->fecha_desde));
      // die($arregloDatos['fecha_desde']);
 
       $arregloDatos['cantidad_tiempo'] = $model->cantidad_tiempo;
 
-      $arregloDatos['id_tiempo'] = $model->tiempo;
+      $arregloDatos['id_tiempo'] = $model->id_tiempo;
 
       $arregloDatos['id_sim'] = $model->id_sim;
 
@@ -336,7 +337,7 @@ class ModificarPropagandaController extends Controller
 
       $arregloDatos['base_calculo'] = $model->base_calculo;
 
-      $arregloDatos['cigarros'] = $model->cigarrillos;
+      $arregloDatos['cigarros'] = $model->cigarros;
 
       $arregloDatos['bebidas_alcoholicas'] = $model->bebidas_alcoholicas;
 
@@ -384,6 +385,8 @@ class ModificarPropagandaController extends Controller
 
       $arregloDatos['profundidad'] = $model->profundidad;
 
+      $arregloDatos['unidad'] = $model->unidad;
+
 
         if ($conexion->guardarRegistro($conn, $tabla, $arregloDatos )){
 
@@ -401,40 +404,99 @@ class ModificarPropagandaController extends Controller
 
     public function modificarPropagandaMaestro($conn, $conexion, $model)
     {
+      $datos = yii::$app->user->identity;
 
-     
+       $buscar = new ParametroSolicitud($_SESSION['id']);
+
     
+
+      $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
+      //die(var_dump($nivelAprobacion));
+     
       $tableName = 'propagandas';
-      $arregloCondition = ['id_impuesto' => $_SESSION['idVehiculo']];
+      
+      $arregloCondition = ['id_impuesto' => $_SESSION['idPropaganda']];
+     
+      $arregloDatos['nombre_propaganda'] = $model->nombre_propaganda;
+
+      $arregloDatos['id_impuesto'] = 0;
+
+    
+
+      $arregloDatos['id_contribuyente'] = $datos->id_contribuyente;
+
+      $arregloDatos['ano_impositivo'] = date('Y');
+
+      $arregloDatos['direccion'] = $model->direccion;
+      //die(var_dump($arregloDatos['direccion']));
+
+      $arregloDatos['id_cp'] = 0;
+
+      $arregloDatos['clase_propaganda'] = $model->clase_propaganda;
+
+      $arregloDatos['tipo_propaganda'] = $model->tipo_propaganda;
+      //die($arregloDatos['tipo_propaganda']);
+
+      $arregloDatos['uso_propaganda'] = $model->uso_propaganda;
+
+      $arregloDatos['medio_difusion'] = $model->medio_difusion;
+
+      $arregloDatos['medio_transporte'] = $model->medio_transporte;
+
+      $arregloDatos['fecha_desde'] = date('Y-m-d', strtotime($model->fecha_desde));
+     // die($arregloDatos['fecha_desde']);
+
+      $arregloDatos['cantidad_tiempo'] = $model->cantidad_tiempo;
+
+      $arregloDatos['id_tiempo'] = $model->id_tiempo;
+
+      $arregloDatos['id_sim'] = $model->id_sim;
+
+      $arregloDatos['cantidad_base'] = $model->cantidad_base;
+
+      $arregloDatos['base_calculo'] = $model->base_calculo;
+
+      $arregloDatos['cigarros'] = $model->cigarros;
+
+      $arregloDatos['bebidas_alcoholicas'] = $model->bebidas_alcoholicas;
+
+      $arregloDatos['cantidad_propagandas'] = 0;
+
+      $arregloDatos['planilla'] = 0;
+
+      $arregloDatos['idioma'] = $model->idioma;
+
+      $arregloDatos['observacion'] = $model->observacion;
+
+      $arregloDatos['fecha_fin'] = date('Y-m-d', strtotime($model->fecha_fin));
+
+      $arregloDatos['fecha_guardado'] = date('Y-m-d');
+
      
 
-      $arregloDatos['placa'] = strtoupper($model->placa);
+    
 
+
+      
   
 
-      $arregloDatos['marca'] = $model->marca;
 
-      $arregloDatos['modelo'] = $model->modelo;
+      if ($nivelAprobacion == 1){
 
-      $arregloDatos['color'] = $model->color;
+      $arregloDatos['inactivo'] = 1;
 
-      $arregloDatos['precio_inicial'] = $model->precio_inicial;
+      }else{
 
-      $arregloDatos['no_ejes'] = $model->no_ejes;
+      $arregloDatos['inactivo'] = 0;
+      }
 
-      $arregloDatos['liquidado'] = 0;
+      $arregloDatos['alto'] = $model->alto;
 
-      $arregloDatos['status_vehiculo'] = 0;
+      $arregloDatos['ancho'] = $model->ancho;
 
-      $arregloDatos['medida_cap'] = $model->medida_cap;
+      $arregloDatos['profundidad'] = $model->profundidad;
 
-      $arregloDatos['capacidad'] = $model->capacidad;
-
-      $arregloDatos['nro_puestos'] = $model->nro_puestos;
-
-      $arregloDatos['peso'] = $model->peso;
-
-      $arregloDatos['nro_cilindros'] = $model->nro_cilindros;
+      $arregloDatos['unidad'] = $model->unidad;
 
       
       $conexion = new ConexionController();
@@ -450,13 +512,14 @@ class ModificarPropagandaController extends Controller
               return true;
               
           }
+  
 
 
     }
 
     public function beginSave($var, $model)
     {
-    // die('llegue a begin'.var_dump($model));
+    //die('llegue a begin'.var_dump($model));
 
       $buscar = new ParametroSolicitud($_SESSION['id']);
 
@@ -483,7 +546,7 @@ class ModificarPropagandaController extends Controller
 
               if ($buscar > 0){
 
-               // die('consiguio  id');
+                //die('consiguio  id'.$buscar);
 
                   $idSolicitud = $buscar;
 
@@ -508,7 +571,7 @@ class ModificarPropagandaController extends Controller
 
                       $login = yii::$app->user->identity->login;
 
-                      $solicitud = 'Inscripcion de Propaganda Comercial';
+                      $solicitud = 'Modificacion de Datos de Propaganda';
 
                       $DocumentosRequisito = new DocumentoSolicitud();
 
@@ -536,7 +599,7 @@ class ModificarPropagandaController extends Controller
                       $actualizarPropaganda = self::modificarPropagandaMaestro($conn,$conexion, $model);
 
                           if ($buscar and $guardar and $actualizarPropaganda == true ){
-                            //die('los tres son verdad');
+                           // die('los tres son verdad');
 
                           $transaccion->commit();
                           $conn->close();
@@ -545,7 +608,7 @@ class ModificarPropagandaController extends Controller
 
                       $login = yii::$app->user->identity->login;
 
-                      $solicitud = 'Inscripcion de Propaganda Comercial';
+                      $solicitud = 'Modificacion de Datos de Propaganda';
 
                       $DocumentosRequisito = new DocumentoSolicitud();
 
