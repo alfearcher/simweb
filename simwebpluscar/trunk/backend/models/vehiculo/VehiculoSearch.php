@@ -10,6 +10,7 @@ use backend\models\vehiculo\TiposVehiculos;
 use backend\models\vehiculo\ClasesVehiculos;
 use backend\models\vehiculo\UsosVehiculos;
 use common\models\vehiculo\desincorporaciones\CausasDesincorporaciones;
+use common\models\calcomania\solicitudextravio\CausasSolicitudExtravioCalcomania;
 
 /**
  * VehiculoSearch represents the model behind the search form about `backend\models\VehiculosForm`.
@@ -64,6 +65,19 @@ class VehiculoSearch extends VehiculosForm
         return $model->descripcion;
 
     }
+
+     /**
+    * [getDescripcionClaseVehiculo description]
+    * @param  [type] $clase [description]
+    * @return [type]        [description]
+    */
+    public function getDescripcionCausaSolicitudCalcomania($causa)
+    {
+        $model = CausasSolicitudExtravioCalcomania::findOne($causa);
+        return $model->descripcion;
+
+    }
+
 
 
    
