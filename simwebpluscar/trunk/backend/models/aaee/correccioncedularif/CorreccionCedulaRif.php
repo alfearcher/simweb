@@ -47,6 +47,7 @@
 	use yii\db\ActiveRecord;
 	use backend\models\solicitud\estatus\EstatusSolicitud;
 	use common\models\aaee\Sucursal;
+	use backend\models\configuracion\tiposolicitud\TipoSolicitud;
 
 	class CorreccionCedulaRif extends ActiveRecord
 	{
@@ -109,6 +110,14 @@
 		public function getSucursal()
 		{
 			return $this->hasOne(Sucursal::className(), ['id_contribuyente' => 'id_contribuyente']);
+		}
+
+
+
+		/***/
+		public function getTipoSolicitud()
+		{
+			return $this->hasOne(TipoSolicitud::className(), ['id_tipo_solicitud' => 'tipo_solicitud']);
 		}
 
 
