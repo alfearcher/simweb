@@ -51,6 +51,7 @@
 	use backend\models\aaee\correccioncedularif\CorreccionCedulaRif;
 	use common\models\contribuyente\ContribuyenteBase;
 	use common\models\aaee\Sucursal;
+	use backend\models\aaee\inscripcionsucursal\InscripcionSucursalSearch;
 
 
 	/**
@@ -115,6 +116,19 @@
 			$inscripcion = New InscripcionActividadEconomicaSearch($this->_id_contribuyente);
 			$result = $inscripcion->yaEstaInscritoActividadEconomica();
 			return $result;
+		}
+
+
+		/***/
+		public function poseeSolicitudSucursalPendiente()
+		{
+			$inscripcion = New InscripcionSucursalSearch($this->_id_contribuyente);
+			$result = $inscripcion->existeSolicitudPendiente();
+			if ( $result == 0 ) {
+				return false;
+			} else {
+				return true;
+			}
 		}
 
 
