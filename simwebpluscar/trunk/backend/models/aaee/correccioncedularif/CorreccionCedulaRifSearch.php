@@ -80,8 +80,8 @@
 		public function findSolicitudCorreccionCedulaRif($nroSolicitud)
 		{
 			$findModel = CorreccionCedulaRif::find()->where('nro_solicitud =:nro_solicitud',
-													 			 [':nro_solicitud' => $nroSolicitud])
-													->joinWith('sucursal');
+													 			 [':nro_solicitud' => $nroSolicitud]);
+													//->joinWith('sucursal');
 
 			return isset($findModel) ? $findModel : null;
 		}

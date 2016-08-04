@@ -108,7 +108,7 @@
 		 */
 		public function getSucursal()
 		{
-			return $this->hasMany(Sucursal::className(), ['id_contribuyente' => 'id_contribuyente']);
+			return $this->hasOne(Sucursal::className(), ['id_contribuyente' => 'id_contribuyente']);
 		}
 
 
