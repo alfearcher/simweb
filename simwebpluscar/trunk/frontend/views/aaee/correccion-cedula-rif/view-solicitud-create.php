@@ -90,6 +90,7 @@
 									<?= GridView::widget([
 										'id' => 'grid-contribuyente-asociado',
     									'dataProvider' => $dataProvider,
+    									//'filterModel' => $model,
     									'columns' => [
     										//['class' => 'yii\grid\SerialColumn'],
     										[
@@ -117,12 +118,14 @@
                 											},
 							                ],
 							                [
-							                    'label' =>Yii::t('frontend', 'Branch Office'),
+							                	//'attribute' => 'sucursal.razon_social',
+							                   	'label' =>Yii::t('frontend', 'Branch Office'),
 							                    'value' => function($model) {
-                        										return $model['sucursal']->razon_social;
+                        										return $model->sucursal->razon_social;
                 											},
 							                ],
 							                [
+							                	//'attribute' => 'sucursal.id_sim',
 							                    'label' => Yii::t('frontend', 'License'),
 							                    'value' => function($model) {
                         										return $model->sucursal->id_sim;
