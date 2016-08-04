@@ -268,10 +268,12 @@
 			if ( $this->_model->nivel_aprobacion == 2 ) {
 					$modelSearch = New CorreccionCedulaRifSearch($this->_model->id_contribuyente);
 					$model = $modelSearch->findSolicitudCorreccionCedulaRif($this->_model->nro_solicitud);
+					$dataProvider = $modelSearch->getDataProviderSolicitud($this->_model->nro_solicitud);
 					if ( isset($model) ) {
 						return $this->render('@backend/views/aaee/correccion-cedula-rif/view-solicitud', [
 														'caption' => Yii::t('frontend', 'Request Nro. ' . $this->_model->nro_solicitud),
 														'model' => $model,
+														'dataProvider' => $dataProvider,
 
 							]);
 					}
