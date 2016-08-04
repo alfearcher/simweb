@@ -101,6 +101,22 @@
 
 
 		/**
+		 * Metodo que permite determinar si existe al menos una solicitud pendiente por procesar
+		 * de inscripcion de sucursal.
+		 * @return [type] [description]
+		 */
+		public function existeSolicitudPendiente()
+		{
+			$findModel = InscripcionSucursal::find()->where('id_contribuyente =:id_contribuyente',
+																 [':id_contribuyente' => $this->_id_contribuyente])
+													->andWhere('estatus =:estatus', [':estatus' => 0])
+													->count();
+			return isset($findModel) ? $findModel : 0;
+		}
+
+
+
+		/**
 		 * Metodo que retorna los datos del contribuyente, segun el identificador
 		 * del contribuyente, lo recibido en este metodo es un arreglo donde el
 		 * indice del arregloes un entero que comienza en cero (0), y el valor del
