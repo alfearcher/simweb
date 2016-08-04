@@ -274,6 +274,7 @@
 														'caption' => Yii::t('frontend', 'Request Nro. ' . $this->_model->nro_solicitud),
 														'model' => $model,
 														'dataProvider' => $dataProvider,
+														'captionTipoSolicitud' => $model->tipoSolicitud,
 
 							]);
 					}
