@@ -216,4 +216,6 @@ class PropagandaForm extends \yii\db\ActiveRecord
         }
                     return $this->inactivo;
     }
+
+
 }
