@@ -120,23 +120,32 @@
 						// Se determina si ya existe una solicitud pendiente.
 						if ( !$searchCorreccion->yaPoseeSolicitudSimiliarPendiente() ) {
 
-							$modelParametro = New ParametroSolicitud($id);
-							// Se obtiene el tipo de solicitud. Se retorna un array donde el key es el nombre
-							// del parametro y el valor del elemento es el contenido del campo en base de datos.
-							$config = $modelParametro->getParametroSolicitud([
-																	'id_config_solicitud',
-																	'tipo_solicitud',
-																	'impuesto',
-																	'nivel_aprobacion'
-														]);
+							// Se determina si el contribuyente posee una solicitud para crear sucursal
+							// pendiente por aprobar. Si es asi no se le permitira crear esta solicitud.
+							// para evitar crear sucursales con rif diferentes al de la sede principal.
+							if ( !$searchCorreccion->poseeSolicitudSucursalPendiente() ) {
 
-							if ( isset($config) ) {
-								$_SESSION['conf'] = $config;
-								$_SESSION['begin'] = 1;
-								$this->redirect(['index-create']);
+								$modelParametro = New ParametroSolicitud($id);
+								// Se obtiene el tipo de solicitud. Se retorna un array donde el key es el nombre
+								// del parametro y el valor del elemento es el contenido del campo en base de datos.
+								$config = $modelParametro->getParametroSolicitud([
+																		'id_config_solicitud',
+																		'tipo_solicitud',
+																		'impuesto',
+																		'nivel_aprobacion'
+															]);
+
+								if ( isset($config) ) {
+									$_SESSION['conf'] = $config;
+									$_SESSION['begin'] = 1;
+									$this->redirect(['index-create']);
+								} else {
+									// No se obtuvieron los parametros de la configuracion.
+									return $this->redirect(['error-operacion', 'cod' => 955]);
+								}
 							} else {
-								// No se obtuvieron los parametros de la configuracion.
-								return $this->redirect(['error-operacion', 'cod' => 955]);
+								// El contribuyente ya posee una solicitud para crear suucrsal.
+								return $this->redirect(['error-operacion', 'cod' => 960]);
 							}
 						} else {
 							// El contribuyente ya posee una solicitud similar, y la misma esta pendiente.
@@ -265,7 +274,7 @@
 					  					]);
 		  		} else {
 		  			// No se encontraron los datos del contribuyente principal.
-		  			$this->redirect(['error-operacion', 'cod' => 404]);
+		  			$this->redirect(['error-operacion', 'cod' => 938]);
 		  		}
 			}
 		}
@@ -667,7 +676,6 @@
 	    			$findModel = $searchCorreccion->findSolicitudCorreccionCedulaRif($id);
 	    			$dataProvider = $searchCorreccion->getDataProviderSolicitud($id);
 	    			if ( isset($findModel) ) {
-// die(var_dump($dataProvider));
 	    				return self::actionShowSolicitud($findModel, $searchCorreccion, $dataProvider);
 	    			} else {
 						throw new NotFoundHttpException('No se encontro el registro');
@@ -687,12 +695,14 @@
     	private function actionShowSolicitud($findModel, $modelSearch, $dataProvider)
     	{
     		if ( isset($findModel) && isset($modelSearch) ) {
+ 				$model = $findModel->asArray()->all();
+ //die(var_dump($model));
 				$opciones = [
 					'quit' => '/aaee/correccioncedularif/correccion-cedula-rif/quit',
 				];
 				return $this->render('/aaee/correccion-cedula-rif/_view', [
 																'codigo' => 100,
-																'model' => $findModel,
+																'model' => $model,
 																'modelSearch' => $modelSearch,
 																'opciones' => $opciones,
 																'dataProvider' => $dataProvider,
