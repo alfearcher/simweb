@@ -699,7 +699,7 @@
     	{
     		if ( isset($findModel) && isset($modelSearch) ) {
  				$model = $findModel->all();
- //die(var_dump($model));
+
 				$opciones = [
 					'quit' => '/aaee/correccioncedularif/correccion-cedula-rif/quit',
 				];
