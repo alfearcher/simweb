@@ -114,12 +114,5 @@
 
 
 
-		/***/
-		public function getTipoSolicitud()
-		{
-			return $this->hasOne(TipoSolicitud::className(), ['id_tipo_solicitud' => 'tipo_solicitud']);
-		}
-
-
 	}
 ?>
