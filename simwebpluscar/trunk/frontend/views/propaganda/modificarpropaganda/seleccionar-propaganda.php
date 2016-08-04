@@ -10,7 +10,7 @@ use kartik\icons\Icon;
 
 
 
-$this->title = Yii::t('frontend', 'Select your Vehicles');
+$this->title = Yii::t('frontend', 'Select your Advertising');
 
 ?>
 

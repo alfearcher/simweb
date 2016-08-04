@@ -365,7 +365,7 @@ function puntitos( donde, caracter, campo ) {
 
             <div class="col-sm-2">
                
-                <?= $form->field($model, 'fecha_inicial')->widget(\yii\jui\DatePicker::classname(),[
+                <?= $form->field($model, 'fecha_desde')->widget(\yii\jui\DatePicker::classname(),[
                                                                                         //'type' => 'date',
                                                                                         'clientOptions' => [
                                                                                            // 'maxDate' => '+0d', // Bloquear los dias en el calendario a partir del dia siguiente al actual.
@@ -376,7 +376,7 @@ function puntitos( donde, caracter, campo ) {
                                                                                        'dateFormat' => 'dd-MM-yyyy',
                                                                                         'options' => [
                                                                                             //'onClick' => 'alert("calendario")',
-                                                                                            'id' => 'fecha_inicial',
+                                                                                            'id' => 'fecha_desde',
                                                                                             'class' => 'form-control',
                                                                                            'readonly' => true,
                                                                                             //'type' => 'date',
@@ -419,7 +419,7 @@ function puntitos( donde, caracter, campo ) {
                                     $listaTiempo = ArrayHelper::map( $modelTiempo, 'id_tiempo', 'descripcion' ); 
                                     ?> 
                                     
-                                    <?= $form->field( $model, 'tiempo' )->dropDownList( $listaTiempo, [   'id' => 'tiempo', 
+                                    <?= $form->field( $model, 'id_tiempo' )->dropDownList( $listaTiempo, [   'id' => 'id_tiempo', 
                                                                                         'prompt' => Yii::t('backend', 'Select'),
                                                                                         'style' => 'width:100%;',
                                                                                         'onchange' =>'this.form.submit()'
@@ -431,42 +431,42 @@ function puntitos( donde, caracter, campo ) {
                                     /**
                                      *  Condicional para verificar que fecha fin se le debe colocar a la propaganda dependiendo si es por: ( horas, dias, semanas, mes, anos ).
                                      */
-                                    if($model->tiempo == 1) {
+                                    if($model->id_tiempo == 1) {
                                        // die('llego a 1');
                                         
-                                        $f = $model->fecha_inicial;
+                                        $f = $model->fecha_desde;
                                         $t = $model->cantidad_tiempo;
                                         $fecha = date_create($f);
                                         date_add($fecha, date_interval_create_from_date_string($t.'hours'));
                                         $fecha_fin = date_format($fecha, 'd-m-Y');
                                     }
 
-                                    if( $model->tiempo == 2 ) {
-                                        $f = $model->fecha_inicial;
+                                    if( $model->id_tiempo == 2 ) {
+                                        $f = $model->fecha_desde;
                                         $t = $model->cantidad_tiempo;
                                         $fecha = date_create($f);
                                         date_add($fecha, date_interval_create_from_date_string($t.'days'));
                                         $fecha_fin = date_format($fecha, 'd-m-Y');
                                     }
 
-                                    if( $model->tiempo == 3 ) {
-                                        $f = $model->fecha_inicial;
+                                    if( $model->id_tiempo == 3 ) {
+                                        $f = $model->fecha_desde;
                                         $t = $model->cantidad_tiempo;
                                         $fecha = date_create($f);
                                         date_add($fecha, date_interval_create_from_date_string($t.'weeks'));
                                         $fecha_fin = date_format($fecha, 'd-m-Y');
                                     }
 
-                                    if( $model->tiempo == 4 ) {
-                                        $f = $model->fecha_inicial;
+                                    if( $model->id_tiempo == 4 ) {
+                                        $f = $model->fecha_desde;
                                         $t = $model->cantidad_tiempo;
                                         $fecha = date_create($f);
                                         date_add($fecha, date_interval_create_from_date_string($t.'months'));
                                         $fecha_fin = date_format($fecha, 'd-m-Y');
                                     }
 
-                                    if( $model->tiempo == 5 ) {
-                                        $f = $model->fecha_inicial;
+                                    if( $model->id_tiempo == 5 ) {
+                                        $f = $model->fecha_desde;
                                         $t = $model->cantidad_tiempo;
                                         $fecha = date_create($f);
                                         date_add($fecha, date_interval_create_from_date_string($t.'years'));
@@ -610,7 +610,7 @@ function puntitos( donde, caracter, campo ) {
         <!--INICIO DE CIGARRILLOS -->
 
                 <div class="col-sm-3" style="margin-left: 40px; margin-top: 30px;">
-                    <p><i><small><?= $form->field( $model, 'cigarrillos' )->checkBox( [ 'inline' => true ] )?></p>
+                    <p><i><small><?= $form->field( $model, 'cigarros' )->checkBox( [ 'inline' => true ] )?></p>
                 </div> 
 
         <!--FIN DE CIGARRILLOS -->
