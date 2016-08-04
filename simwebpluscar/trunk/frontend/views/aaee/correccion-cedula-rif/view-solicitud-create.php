@@ -94,38 +94,38 @@
     										//['class' => 'yii\grid\SerialColumn'],
     										[
 							                    'label' => Yii::t('frontend', 'Request Number'),
-							                    'value' => function($data) {
-                        										return $data->nro_solicitud;
+							                    'value' => function($model) {
+                        										return $model->nro_solicitud;
                 											},
 							                ],
 							            	[
 							                    'label' => Yii::t('frontend', 'Id. Taxpayer'),
-							                    'value' => function($data) {
-                        										return $data->id_contribuyente;
+							                    'value' => function($model) {
+                        										return $model->id_contribuyente;
                 											},
 							                ],
 							                [
 							                    'label' => Yii::t('frontend', 'Ant DNI'),
-							                    'value' => function($data) {
-                        										return $data->naturaleza_v . '-' . $data->cedula_v . '-' . $data->tipo_v;
+							                    'value' => function($model) {
+                        										return $model->naturaleza_v . '-' . $model->cedula_v . '-' . $model->tipo_v;
                 											},
 							                ],
 							                [
 							                    'label' => Yii::t('frontend', 'Current DNI'),
-							                    'value' => function($data) {
-                        										return $data->naturaleza_new . '-' . $data->cedula_new . '-' . $data->tipo_new;
+							                    'value' => function($model) {
+                        										return $model->naturaleza_new . '-' . $model->cedula_new . '-' . $model->tipo_new;
                 											},
 							                ],
 							                [
 							                    'label' =>Yii::t('frontend', 'Branch Office'),
-							                    'value' => function($data) {
-                        										return $data['sucursal']['razon_social'];
+							                    'value' => function($model) {
+                        										return $model['sucursal']->razon_social;
                 											},
 							                ],
 							                [
 							                    'label' => Yii::t('frontend', 'License'),
-							                    'value' => function($data) {
-                        										return $data->sucursal->id_sim;
+							                    'value' => function($model) {
+                        										return $model->sucursal->id_sim;
                 											},
 							                ],
 
