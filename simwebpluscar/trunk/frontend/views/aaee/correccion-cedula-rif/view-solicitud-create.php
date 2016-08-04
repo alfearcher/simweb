@@ -131,6 +131,13 @@
                         										return $model->sucursal->id_sim;
                 											},
 							                ],
+							                [
+							                	//'attribute' => 'sucursal.id_sim',
+							                    'label' => Yii::t('frontend', 'Condition'),
+							                    'value' => function($model) {
+                        										return $model->estatusSolicitud->descripcion;
+                											},
+							                ],
 
 							        	]
 									]);
