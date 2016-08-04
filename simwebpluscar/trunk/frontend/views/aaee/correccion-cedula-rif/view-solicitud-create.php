@@ -89,7 +89,6 @@
 					        	<div class="row" style="padding-left: 15px; width: 100%;">
 									<?= GridView::widget([
 										'id' => 'grid-contribuyente-asociado',
-										'caption' => $model->tipoSolicitud->descripcion,
     									'dataProvider' => $dataProvider,
     									//'filterModel' => $model,
     									'columns' => [
