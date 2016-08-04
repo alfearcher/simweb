@@ -104,12 +104,6 @@
     										return $model->estatusSolicitud->descripcion;
 										},
 		                ],
-		                [
-		                    'label' => Yii::t('frontend', 'Tipo'),
-		                    'value' => function($model) {
-    										return $model->tipoSolicitud->descripcion;
-										},
-		                ],
 		        	]
 				]);
 			?>
