@@ -325,7 +325,7 @@
 								<h4><strong><?= Yii::t('backend', 'Details of Request') ?></strong></h4>
 							</div>
 
-							<div class="row" style="width: 80%;">
+							<div class="row" style="width: 90%;">
 								<div class="detalle" id="detalle" style="padding-left: 40px;"><?= $viewDetalle?></div>
 							</div>
 
