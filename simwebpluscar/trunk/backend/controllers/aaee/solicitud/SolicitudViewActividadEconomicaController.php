@@ -56,7 +56,7 @@
 	use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomicaSearch;
 	use backend\models\aaee\inscripcionsucursal\InscripcionSucursalSearch;
 	use backend\models\aaee\correcciondomicilio\CorreccionDomicilioFiscalSearch;
-	use backend\models\aaee\correccioncedularif\CorreccionCorreccionCedulaRifSearch;
+	use backend\models\aaee\correccioncedularif\CorreccionCedulaRifSearch;
 	use backend\controllers\MenuController;
 
 	//session_start();		// Iniciando session
