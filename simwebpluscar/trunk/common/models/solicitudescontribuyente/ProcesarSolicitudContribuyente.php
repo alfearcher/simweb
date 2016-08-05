@@ -57,6 +57,8 @@
     use common\models\solicitudescontribuyente\SolicitudesContribuyenteForm;
     use common\models\solicitudescontribuyente\aaee\ProcesarSolicitudDetalleActividadEconomica;
     use common\models\solicitudescontribuyente\inmueble\ProcesarSolicitudDetalleInmuebleUrbano;
+    use common\models\configuracion\solicitudplanilla\SolicitudPlanillaSearch;
+    use common\models\planilla\PlanillaSearch;
 
 
 
@@ -146,6 +148,11 @@
                     if ( $model['estatus'] == 0 && $model['inactivo'] == 0 ) {
                         $result = self::negar($model, $causa, $observacion);
                         if ( $result ) {
+                            // Lo siguiente anula las planillas asociadas a la solicitud, pero
+                            // solo aquellas que esten pendiente.
+                            $result = self::anularPlanillaSolicitud($model, $observacion);
+
+
                             // Lo siguiente inicia las acciones para procesar el detalle
                             // de la solicitud.
                             $result = self::procesarSolicitudPorImpuesto($model, Yii::$app->solicitud->negar());
@@ -247,6 +254,35 @@
 
 
 
+
+        /***/
+        private function anularPlanillaSolicitud($model, $observacion = '')
+        {
+            $result = false;
+            // Se buscan las planillas asociadas a la solicitud.
+            $searchSolicitudPlanilla = New SolicitudPlanillaSearch($model->nro_solicitud);
+
+            // Se obtiene el modelo sin datos.
+            $findModel = $searchSolicitudPlanilla->findSolicitudPlanilla();
+
+            // Se ejecuta el find all, para obtener las planillas asociadas a la solicitud.
+            $listaPlanillas = $findModel->asArray()->all();
+
+            foreach ( $listaPlanillas as $planillas ) {
+                if ( isset($planillas['planilla']) ) {
+                     $searchPlanilla = New PlanillaSearch($planillas['planilla']);
+                     $result = $searchPlanilla->anularMiPlanilla($this->_conexion,
+                                                                 $this->_conn,
+                                                                 $observacion);
+                     if ( !$result ) { break; }
+                }
+            }
+            return $result;
+        }
+
+
+
+
         /**
          * Metodo que rutea el procesamiento de la solicitud por impuesto de la misma.
          * Con la intencion de procesar el detalle correspondiente de la solicitud.
@@ -272,8 +308,8 @@
                     $result = $procesarDetalle->procesarSolicitudPorTipo();
 
                 } elseif ( $model['impuesto'] == 3 ) {
-                    // Vehiculos. 
-                    
+                    // Vehiculos.
+
                 } elseif ( $model['impuesto'] == 4 ) {
                     // Propaganda Comercial.
 
