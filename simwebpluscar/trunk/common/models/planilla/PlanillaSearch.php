@@ -52,6 +52,7 @@
  	use yii\db\Query;
  	use yii\data\ActiveDataProvider;
  	use yii\data\ArrayDataProvider;
+ 	use backend\models\operacionbase\OperacionBase;
 
 	/**
 	* 	Clase que permite consultar informacion diversa sobre una planilla.
@@ -188,6 +189,19 @@
 		}
 
 
+
+
+		/***/
+		public function anularMiPlanilla($conexionLocal, $connLocal, $observacion = '')
+		{
+			$result = false;
+
+			$operacion = New OperacionBase();
+
+			$result = $operacion->anularPlanilla($connLocal, [$this->_planilla], $observacion);
+
+			return $result;
+		}
 
 	}
 
