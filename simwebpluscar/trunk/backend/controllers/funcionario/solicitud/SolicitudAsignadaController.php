@@ -976,7 +976,7 @@
 		 */
 		public function actionListSolicitud($i)
 	    {
-	       // die('hola, entro a list');
+	       	$countSolicitud = 0;
 	       	$userLocal = Yii::$app->user->identity->username;
 	    	$model = New SolicitudAsignadaSearch();
 
@@ -987,17 +987,19 @@
 	    	// relacionada al impuesto $i.
 	    	$lista = $model->getFiltrarSolicitudAsignadaSegunImpuesto($i, $listaSolicitud);
 
-	        $countSolicitud = TipoSolicitud::find()->where('impuesto =:impuesto', [':impuesto' => $i])
-	        									   ->andWhere(['IN', 'id_tipo_solicitud', $lista])
-	        									   ->andwhere('inactivo =:inactivo', [':inactivo' => 0])
-	        									   ->count();
+			if ( count($lista) > 0 ) {
+		        $countSolicitud = TipoSolicitud::find()->where('impuesto =:impuesto', [':impuesto' => $i])
+		        									   ->andWhere(['IN', 'id_tipo_solicitud', $lista])
+		        									   ->andwhere('inactivo =:inactivo', [':inactivo' => 0])
+		        									   ->count();
 
-	        //$solicitudes = TipoSolicitud::find()->where(['impuesto' => $i, 'inactivo' => 0])->all();
+		        //$solicitudes = TipoSolicitud::find()->where(['impuesto' => $i, 'inactivo' => 0])->all();
 
-	        $solicitudes = TipoSolicitud::find()->where('impuesto =:impuesto', [':impuesto' => $i])
-	        									->andWhere(['IN', 'id_tipo_solicitud', $lista])
-	        									->andwhere('inactivo =:inactivo', [':inactivo' => 0])
-	        									->all();
+		        $solicitudes = TipoSolicitud::find()->where('impuesto =:impuesto', [':impuesto' => $i])
+		        									->andWhere(['IN', 'id_tipo_solicitud', $lista])
+		        									->andwhere('inactivo =:inactivo', [':inactivo' => 0])
+		        									->all();
+		    }
 
 	        if ( $countSolicitud > 0 ) {
 	        	echo "<option value='0'>" . "Select..." . "</option>";
