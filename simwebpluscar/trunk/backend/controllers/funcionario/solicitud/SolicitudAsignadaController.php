@@ -888,7 +888,6 @@
 
 
 
-
 		/**
 		 * [actionQuit description]
 		 * @return [type] [description]
