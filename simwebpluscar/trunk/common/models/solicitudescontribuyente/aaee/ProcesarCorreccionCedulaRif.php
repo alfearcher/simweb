@@ -265,11 +265,16 @@
 
 
 
-        /***/
+        /**
+         * Metodo que actualiza el DNI de los contribuyentes que estan en la solcitud
+         * segun el numero de DNI nuevo que se coloco en la solcicitud.
+         * @param  [type] $modelCorreccion [description]
+         * @return [type]                  [description]
+         */
         private function updateCedulaRif($modelCorreccion)
         {
             $result = false;
-
+die(var_dump($modelCorreccion));
             $arregloDatos = [
                 'naturaleza' => $modelCorreccion->naturaleza_new,
                 'cedula' => $modelCorreccion->cedula_new,
