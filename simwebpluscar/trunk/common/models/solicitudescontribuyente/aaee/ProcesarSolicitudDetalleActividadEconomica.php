@@ -53,7 +53,7 @@
     use common\models\solicitudescontribuyente\aaee\ProcesarInscripcionActividadEconomica;
     use common\models\solicitudescontribuyente\aaee\ProcesarInscripcionSucursal;
     use common\models\solicitudescontribuyente\aaee\ProcesarCorreccionDomicilioFiscal;
-
+    use common\models\solicitudescontribuyente\aaee\ProcesarCorreccionCedulaRif;
 
 
     /**

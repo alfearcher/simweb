@@ -22,13 +22,13 @@
  */
 
  /**
- *  @file ProcesarCorreccionDomicilioFiscal.php
+ *  @file ProcesarCorreccionCedulaRif.php
  *
  *  @author Jose Rafael Perez Teran
  *
- *  @date 28/07/2016
+ *  @date 04/08/2016
  *
- *  @class ProcesarCorreccionDomicilioFiscal
+ *  @class ProcesarCorreccionCedulaRif
  *  @brief
  *
  *
@@ -50,8 +50,8 @@
     namespace common\models\solicitudescontribuyente\aaee;
 
     use Yii;
-    use backend\models\aaee\correcciondomicilio\CorreccionDomicilioFiscalSearch;
-    use backend\models\aaee\correcciondomicilio\CorreccionDomicilioFiscalForm;
+    use backend\models\aaee\correccioncedularif\CorreccionCedulaRifSearch;
+    use backend\models\aaee\correccioncedularif\CorreccionCedulaRifForm;
     use common\models\contribuyente\ContribuyenteBase;
 
 
@@ -61,7 +61,7 @@
      * que esten relacionada con la aprobacion o negacion de la solicitud. la clase debe
      * entregar como respuesta un true o false.
      */
-    class ProcesarCorreccionDomicilioFiscal extends CorreccionDomicilioFiscalSearch
+    class ProcesarCorreccionCedulaRif extends CorreccionCedulaRifSearch
     {
         /**
          * [$_model modelo de la entidad "solicitudes-contribuyente"
@@ -162,16 +162,17 @@
          * sobre la entidad "sl-", referente al detalle de la solicitud. Es la
          * entidad donde se guardan los detalle de esta solicitud.
          * @return boolean retorna una instancia modelo active record de
-         * CorreccionDomicilioFiscal si todo se ejecuto satisfactoriamente, false
+         * CorreccionCedulaRif si todo se ejecuto satisfactoriamente, false
          * en caso contrario.
          */
-        public function findCorreccionDomicilio()
+        public function findCorreccionCedulaRif()
         {
-            // Este find retorna el modelo de la entidad "sl-correcciones-domicilios"
-            // con datos, ya que en el metodo padre se ejecuta el ->one() que realiza
-            // la consulta.
-            $modelFind = $this->findSolicitudCorreccionDomicilio($this->_model->nro_solicitud);
-            return isset($modelFind) ? $modelFind : null;
+            // Este find retorna el modelo de la entidad "sl-correcciones-cedula-rif".
+            $findModel = $this->findSolicitudCorreccionCedulaRif($this->_model->nro_solicitud);
+
+            // Lo siguiente puede generar uno o varios registros.
+            $model = $findModel->all();
+            return isset($model) ? $model : null;
         }
 
 
@@ -185,16 +186,13 @@
         {
             $result = false;
             $idGenerado = 0;
-            // modelo de InscripcionSucursal.
-            $modelCorreccion = self::findCorreccionDomicilio();
+            // modelo de CorreccionCedulaRif. Uno o varios registros.
+            $modelCorreccion = self::findCorreccionCedulaRif();
             if ( $modelCorreccion !== null ) {
-                if ( $modelCorreccion['id_contribuyente'] == $this->_model->id_contribuyente ) {
-                    $result = self::updateSolicitudCorreccionDomicilio($modelCorreccion);
-                    if ( $result ) {
-                        $result = self::updateDomicilioFiscal($modelCorreccion);
-                    }
-                } else {
-                    self::setErrors(Yii::t('backend', 'Error in the ID of taxpayer'));
+                // Entidad "sl-".
+                $result = self::updateSolicitudCorreccionCedulaRif($modelCorreccion);
+                if ( $result ) {
+                    $result = self::updateCedulaRif($modelCorreccion);
                 }
             } else {
                 self::setErrors(Yii::t('backend', 'Request not find'));
@@ -207,19 +205,15 @@
 
         /**
          * Metodo que incia el proceso de negacion de la solicitud.
-         * @return Boolean Retorna un true si todo se ejecuto satisfactoriamente, false
+         * @return boolean retorna un true si todo se ejecuto satisfactoriamente, false
          * en caso contrario.
          */
         private function negarDetalleSolicitud()
         {
             $result = false;
-            $modelCorreccion = self::findCorreccionDomicilio();
+            $modelCorreccion = self::findCorreccionCedulaRif();
             if ( $modelCorreccion !== null ) {
-                if ( $modelCorreccion['id_contribuyente'] == $this->_model->id_contribuyente ) {
-                    $result = self::updateSolicitudCorreccionDomicilio($modelCorreccion);
-                } else {
-                    self::setErrors(Yii::t('backend', 'Error in the ID of taxpayer'));
-                }
+                $result = self::updateSolicitudCorreccionCedulaRif($modelCorreccion);
             }
 
             return $result;
@@ -230,19 +224,19 @@
         /**
          * Metodo que realiza la actualizacin de los atributos segun el evento a ejecutar
          * sobre la solicitud.
-         * @param  Active Record $modelCorreccion modelo de la entidad "sl-correciones-domicilios"
-         * (CorreccionDomicilioFiscal). Este modelo contiene los datos-detalles, referida a los
+         * @param  Active Record $modelCorreccion modelo de la entidad "sl-correciones-cedula-rif"
+         * (CorreccionCedulaRif). Este modelo contiene los datos-detalles, referida a los
          * datos cargados al momento de elaborar la solicitud.
          * @return boolean retorna un true si todo se ejecuto satisfactoriamente, false
          * en caso contrario.
          */
-        private function updateSolicitudCorreccionDomicilio($modelCorreccion)
+        private function updateSolicitudCorreccionCedulaRif($modelCorreccion)
         {
             $result = false;
             $cancel = false;            // Controla si el proceso se debe cancelar.
 
             // Se crea la instancia del modelo que contiene los campos que seran actualizados.
-            $model = New CorreccionDomicilioFiscalForm();
+            $model = New CorreccionCedulaRifForm();
             $tableName = $model->tableName();
 
             // Se obtienen los campos que seran actualizados en la entidad "sl-".
@@ -272,15 +266,24 @@
 
 
         /***/
-        private function updateDomicilioFiscal($modelCorreccion)
+        private function updateCedulaRif($modelCorreccion)
         {
             $result = false;
-            $arregloCondicion = ['id_contribuyente' => $modelCorreccion->id_contribuyente];
-            $arregloDatos = ['domicilio_fiscal' => $modelCorreccion->domicilio_fiscal_new];
+
+            $arregloDatos = [
+                'naturaleza' => $modelCorreccion->naturaleza_new,
+                'cedula' => $modelCorreccion->cedula_new,
+                'tipo' => $modelCorreccion->tipo_new,
+            ];
 
             $tabla = ContribuyenteBase::tableName();
 
-            $result = $this->_conexion->modificarRegistro($this->_conn, $tabla, $arregloDatos, $arregloCondicion);
+            foreach ( $modelCorreccion as $key => $value ) {
+                $arregloCondicion = ['id_contribuyente' => $modelCorreccion->id_contribuyente];
+                $result = $this->_conexion->modificarRegistro($this->_conn, $tabla, $arregloDatos, $arregloCondicion);
+                if ( !$result ) { break; }
+            }
+
 
             return $result;
         }
