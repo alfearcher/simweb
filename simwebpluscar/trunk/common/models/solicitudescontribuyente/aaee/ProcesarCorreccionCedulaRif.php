@@ -242,7 +242,7 @@
             // Se obtienen los campos que seran actualizados en la entidad "sl-".
             // Estos atributos ya vienen con sus datos cargados.
             $arregloCampos = $model->atributosUpDateProcesarSolicitud($this->_evento);
-die(var_dump($modelCorreccion->asArray()));
+die(var_dump($modelCorreccion->toArray()));
             $camposModel = $modelCorreccion->asArray();
 
             // Se define el arreglo para el where conditon del update.
