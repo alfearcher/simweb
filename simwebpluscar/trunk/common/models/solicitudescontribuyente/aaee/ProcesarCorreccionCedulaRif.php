@@ -242,11 +242,9 @@
             // Se obtienen los campos que seran actualizados en la entidad "sl-".
             // Estos atributos ya vienen con sus datos cargados.
             $arregloCampos = $model->atributosUpDateProcesarSolicitud($this->_evento);
-die(var_dump($modelCorreccion->toArray()));
-            $camposModel = $modelCorreccion->asArray();
 
             // Se define el arreglo para el where conditon del update.
-            $arregloCondicion['nro_solicitud'] = isset($camposModel['nro_solicitud']) ? $camposModel['nro_solicitud'] : null;
+            $arregloCondicion['nro_solicitud'] = isset($modelCorreccion[0]->nro_solicitud) ? $modelCorreccion[0]->nro_solicitud : null;
 
             if ( count($arregloCampos) == 0 || count($arregloCondicion) == 0 ) { $cancel = true; }
 
