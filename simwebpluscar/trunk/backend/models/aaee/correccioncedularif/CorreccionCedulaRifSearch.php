@@ -76,7 +76,13 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que realiza una busqueda de la solicitud por concepto de correccion
+		 * de cedula-rif. El $findModel retorna sin valores y solo aplicando el ->all()
+		 * se obtienen los registros. Esta solicitud puede contener uno o muchos registros
+		 * @param long $nroSolicitud identificador de la solicitud.
+		 * @return Active Record.
+		 */
 		public function findSolicitudCorreccionCedulaRif($nroSolicitud)
 		{
 			$findModel = CorreccionCedulaRif::find()->where('nro_solicitud =:nro_solicitud',
@@ -90,7 +96,7 @@
 		/**
 		 * Metodo que permite determinar si el contribuyente ya tiene una solicitud pendiente,
 		 * con el objetivo no repetir la solicitud.
-		 * @return Boolean Retorna true si ya posee una solicitud con las caracteristicas
+		 * @return boolean retorna true si ya posee una solicitud con las caracteristicas
 		 * descriptas, caso contrario retornara false.
 		 */
 		public function yaPoseeSolicitudSimiliarPendiente()
@@ -118,7 +124,13 @@
 		}
 
 
-		/***/
+		/**
+		 * Metodo que permite determinar si un contribuyente posee una solicitud
+		 * para inscribir una sucursal pendiente. Esto aplica para los contribuyentes
+		 * juridicos.
+		 * @return boolean retorna un true si ya posee la solicitud de inscripcion de
+		 * sucursal, false en caso contrario
+		 */
 		public function poseeSolicitudSucursalPendiente()
 		{
 			$inscripcion = New InscripcionSucursalSearch($this->_id_contribuyente);
