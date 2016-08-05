@@ -275,7 +275,7 @@
 		{
 			if ( $planilla > 0 ) {
 				try {
-					$whereAdicional = 'estatus_reconocimiento != 9';
+					$whereAdicional = 'estatus_reconocimiento !== 9';
 					$tableName = 'reconocimientos';
 
 					return $this->planillaExisteTabla($connLocal, $tableName, $planilla, $whereAdicional);
