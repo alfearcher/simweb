@@ -272,17 +272,16 @@
         private function updateCedulaRif($modelCorreccion)
         {
             $result = false;
-die(var_dump($modelCorreccion));
-            $arregloDatos = [
-                'naturaleza' => $modelCorreccion->naturaleza_new,
-                'cedula' => $modelCorreccion->cedula_new,
-                'tipo' => $modelCorreccion->tipo_new,
-            ];
-
             $tabla = ContribuyenteBase::tableName();
 
             foreach ( $modelCorreccion as $key => $value ) {
-                $arregloCondicion = ['id_contribuyente' => $modelCorreccion->id_contribuyente];
+                $arregloCondicion = ['id_contribuyente' => $modelCorreccion[$key]->id_contribuyente];
+                $arregloDatos = [
+                    'naturaleza' => $modelCorreccion[$key]->naturaleza_new,
+                    'cedula' => $modelCorreccion[$key]->cedula_new,
+                    'tipo' => $modelCorreccion[$key]->tipo_new,
+                ];
+
                 $result = $this->_conexion->modificarRegistro($this->_conn, $tabla, $arregloDatos, $arregloCondicion);
                 if ( !$result ) { break; }
             }
