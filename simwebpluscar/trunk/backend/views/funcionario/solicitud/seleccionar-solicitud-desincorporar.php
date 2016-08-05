@@ -115,6 +115,7 @@
 								'caption' => Yii::t('backend', 'List of Request'),
 								'summary' => '',
 								'columns' => [
+									[ 'class' => 'yii\grid\SerialColumn',],
                 					[
 										'label' => Yii::t('backend', 'Request'),
 										'value' => function($model) {

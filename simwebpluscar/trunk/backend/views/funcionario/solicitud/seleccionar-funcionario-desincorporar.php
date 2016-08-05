@@ -117,6 +117,7 @@
 								'caption' => Yii::t('backend', 'List of Official Public'),
 								'summary' => '',
 								'columns' => [
+
                 					[
                 						'label' => Yii::t('backend', 'DNI'),
                 						'value' => function($model) {
