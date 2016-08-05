@@ -225,10 +225,16 @@
 	    public function actionTiposSolicitudesSegunFuncionario()
 	    {
 	    	$request = Yii::$app->request;
-	    	$postData = $request->post();
+	    	if ( $request->isGet ) {
+	    		$postData = $request->get();
+	    		$id = $_SESSION['id'];
+	    	} else {
+	    		$postData = $request->post();
+	    		// Se obtiene el identificador del funcionario.
+	    		$id = isset($postData['id']) ? $postData['id'] : 0;
+	    		$_SESSION['id'] = $id;
+	    	}
 
-	    	// Se obtiene el identificador del funcionario.
-	    	$id = isset($postData['id']) ? $postData['id'] : 0;
 	    	if ( $id > 0 ) {
 	    		$_SESSION['id'] = $id;
 	    		// Se muestra un listado con los tipos de solicitudes relacionados
@@ -254,32 +260,8 @@
 																		'url' => $url,
 					]);
 	    	} else {
-	    		if ( $request->get('page') !== null ) {
-	    			$id = $_SESSION['id'];
-	    			$model = New FuncionarioSearch();
-	    			$model->scenario = self::SCENARIO_SEARCH_GLOBAL;
-	    			$model->load($postData);
-
-	    			$dataProvider = $model->getDataProviderTipoSolicitudSegunFuncionario($id);
-
-		    		$caption = Yii::t('backend', 'Remove Request');
-		    		$funcionario = $model->getFuncionarioSegunId($id);
-		    		$subCaption = $funcionario['apellidos'] . ' ' . $funcionario['nombres'];
-		    		$listado = 3;
-		    		$url = Url::to(['inactivar-seleccion-solicitud']);
-		    		return $this->render('/funcionario/solicitud/seleccionar-solicitud-desincorporar', [
-																			'model' => $model,
-																			'dataProvider' => $dataProvider,
-																			'caption' => $caption,
-																			'subCaption' => $subCaption,
-																			'listado' => $listado,
-																			'url' => $url,
-						]);
-
-	    		} else {
-	    			self::actionAnularSession(['id']);
-	    			return MensajeController::actionMensaje(404);
-	    		}
+    			self::actionAnularSession(['id']);
+    			return MensajeController::actionMensaje(404);
 	    	}
 	    }
 
