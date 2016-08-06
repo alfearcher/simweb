@@ -151,11 +151,11 @@
                             // Lo siguiente anula las planillas asociadas a la solicitud, pero
                             // solo aquellas que esten pendiente.
                             $result = self::anularPlanillaSolicitud($model, $observacion);
-
-
-                            // Lo siguiente inicia las acciones para procesar el detalle
-                            // de la solicitud.
-                            $result = self::procesarSolicitudPorImpuesto($model, Yii::$app->solicitud->negar());
+                            if ( $result ) {
+                                 // Lo siguiente inicia las acciones para procesar el detalle
+                                // de la solicitud.
+                                $result = self::procesarSolicitudPorImpuesto($model, Yii::$app->solicitud->negar());
+                            }
                         }
                     }
                 }
