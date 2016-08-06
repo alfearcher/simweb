@@ -266,8 +266,10 @@
         /**
          * Metodo que actualiza el DNI de los contribuyentes que estan en la solcitud
          * segun el numero de DNI nuevo que se coloco en la solcicitud.
-         * @param  [type] $modelCorreccion [description]
-         * @return [type]                  [description]
+         * @param  model $modelCorreccion modelo de CorreccionCedulaRif. Contiene llos datos
+         * del find.
+         * @return boolean retorna true si ejecuta la actualizacion de los DNI, false
+         * en caso contrario.
          */
         private function updateCedulaRif($modelCorreccion)
         {
