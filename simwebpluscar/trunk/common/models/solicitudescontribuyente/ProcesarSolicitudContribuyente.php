@@ -255,7 +255,17 @@
 
 
 
-        /***/
+        /**
+         * Metodo que inicia la anulacion de las planillas asociadas a la solicitud.
+         * Las planillas deben de estar en estatus pendiente (0), para poderser anuladas,
+         * se ejecutan una seriede validaciones para determinar si cualquiera de las planillas
+         * no esta re;acionada a ningun procesos.
+         * @param   model $model modelo de SolicitudesContyribuyente.
+         * @param  string $observacion observacion colocada por el funcionario, la
+         * misma es solicitada alfuncionario en el formulario de anulacion de solicitud.
+         * @return boolean retorna true si se anulan todoas las planillas, false en caso
+         * contrario.
+         */
         private function anularPlanillaSolicitud($model, $observacion = '')
         {
             $result = false;
