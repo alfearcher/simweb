@@ -64,7 +64,7 @@
 
 		        ['label' => Icon::show('fa fa-laptop',['class' => $typeLong], $typeIcon) . '&nbsp; Solicitudes',
 		        	'items' => [
-		        		
+
 		        		//	SOLICITUDES DE ACTIVIDADES ECONOMICAS
 		        		['label' => Icon::show('fa fa-briefcase',['class' => $typeLong], $typeIcon) . '&nbsp; Actividades Economicas',
 		        			'items' => [
@@ -80,7 +80,7 @@
 		        					   				['label' => 'Corrección de Razón Social', 'url' => ['/aaee/correccionrazonsocial/correccion-razon-social/index']],
 		        					   				['label' => 'Cambio de Domicilio Fiscal', 'url' => ['/aaee/correcciondomicilio/correccion-domicilio-fiscal/index', 'id' => 86]],
 		        					   				['label' => 'Cambio de Representante Legal', 'url' => '#'],
-		        					   				['label' => 'Aumento de Capital', 'url' => ['/aaee/correccioncapital/correccion-capital/index']],
+		        					   				['label' => 'Aumento de Capital', 'url' => ['/aaee/correccioncapital/correccion-capital/index', 'id' => 66]],
 		        					   				['label' => 'Cambio de Otros Datos', 'url' => '#'],
 		        					   		]
 		        					   	],
