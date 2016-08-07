@@ -65,7 +65,7 @@
 										'value' => $datos['naturaleza'] . '-' . $datos['cedula'] . '-' . $datos['tipo'],
 								])->label(false);?>
 	<?=$form->field($model, 'nro_solicitud')->hiddenInput(['value' => 0])->label(false);?>
-	<?=$form->field($model, 'capital_v')->hiddenInput(['value' => $model->capital_v])->label(false);?>
+	<?=$form->field($model, 'capital_v')->hiddenInput(['value' => $datos['capital']])->label(false);?>
 	<?=$form->field($model, 'capital_new')->hiddenInput(['value' => $model->capital_new])->label(false);?>
 	<?=$form->field($model, 'estatus')->hiddenInput(['value' => $model->estatus])->label(false); ?>
 	<?=$form->field($model, 'id_sim')->hiddenInput(['value' => $datos['id_sim']])->label(false); ?>
