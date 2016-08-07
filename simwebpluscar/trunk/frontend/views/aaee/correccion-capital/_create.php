@@ -39,16 +39,15 @@
 	/**
 	*@var $this yii\web\View */
 
-	$this->title = Yii::t('backend', 'Update of DNI');
+	$this->title = Yii::t('backend', 'Update of Capital');
 
 	?>
-<div class="correccion-cedula-rif-form-create">
-    <?= $this->render('correccion-cedula-rif-form', [
+<div class="correccion-capital-form-create">
+    <?= $this->render('correccion-capital-form', [
 						        'model' => $model,
 						        'datos' => $datos,
 						        'subCaption' => $subCaption,
 						        'dataProvider' => $dataProvider,
-						        'listaNaturaleza' => $listaNaturaleza,
 
 					    ]) ?>
 </div>

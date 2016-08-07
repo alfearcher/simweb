@@ -22,14 +22,14 @@
  */
 
  /**
- *  @file correccion-cedula-rif-form.php
+ *  @file correccion-capital-form.php
  *
  *  @author Jose Rafael Perez Teran
  *
  *  @date 31-07-2016
  *
- *  @view correccion-cedula-rif-form
- *  @brief vista principal del cambio o correccion de la cedula o rif
+ *  @view correccion-capital-form
+ *  @brief vista principal del cambio o correccion del monto del capital
  *
  */
 
@@ -48,11 +48,11 @@
 
 ?>
 
-<div class="correccion-cedula-rif-form">
+<div class="correccion-capital-form">
  	<?php
 
  		$form = ActiveForm::begin([
- 			'id' => 'id-correccion-cedula-rif-form',
+ 			'id' => 'id-correccion-capital-form',
  			'method' => 'post',
  			'enableClientValidation' => true,
  			//'enableAjaxValidation' => true,
@@ -64,12 +64,6 @@
 	<?=$form->field($model, 'dni_v')->hiddenInput([
 										'value' => $datos['naturaleza'] . '-' . $datos['cedula'] . '-' . $datos['tipo'],
 								])->label(false);?>
-	<?=$form->field($model, 'naturaleza_v')->hiddenInput(['value' => $datos['naturaleza']])->label(false);?>
-	<?=$form->field($model, 'cedula_v')->hiddenInput(['value' => $datos['cedula']])->label(false);?>
-	<?=$form->field($model, 'tipo_v')->hiddenInput(['value' => $datos['tipo']])->label(false);?>
-	<?=$form->field($model, 'tipo_naturaleza_v')->hiddenInput(['value' => $datos['tipo_naturaleza']])->label(false);?>
-	<?=$form->field($model, 'tipo_naturaleza_new')->hiddenInput(['value' => $datos['tipo_naturaleza']])->label(false);?>
-	<?=$form->field($model, 'razon_social')->hiddenInput(['value' => $datos['razon_social']])->label(false);?>
 	<?=$form->field($model, 'nro_solicitud')->hiddenInput(['value' => 0])->label(false);?>
 	<?=$form->field($model, 'estatus')->hiddenInput(['value' => $model->estatus])->label(false); ?>
 	<?=$form->field($model, 'id_sim')->hiddenInput(['value' => $datos['id_sim']])->label(false); ?>
