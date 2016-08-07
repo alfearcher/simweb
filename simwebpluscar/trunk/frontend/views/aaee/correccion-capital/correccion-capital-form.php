@@ -194,11 +194,17 @@
 													<div class="cedula-new">
 														<?= $form->field($model, 'capital_new')->widget(MaskedInput::className(), [
 																										'id' => 'capital-new',
-																										'mask' => '99',
+																										'mask' => '999',
 																										'options' => [
 																											'class' => 'form-control',
 																											'style' => 'width: 120%;',
 																										],
+																										'clientOptions' => [
+																											'alias' =>  'decimal',
+																											'groupSeparator' => '.',
+																											'decimalSeparator' => ',',
+																										],
+
 																					  				  ])->label(false) ?>
 													</div>
 												</div>
