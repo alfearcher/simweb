@@ -102,7 +102,7 @@
 							    				],
 							    				[
 							    					'label' => $model->getAttributeLabel('razon_social'),
-							    					'value' => $datosRecibido['razon_social'],
+							    					'value' => $model['razon_social'],
 							    				],
 							    				[
 							    					'label' => $model->getAttributeLabel('id_sim'),
