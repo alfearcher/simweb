@@ -70,9 +70,6 @@
 	<?=$form->field($model, 'capital_new')->hiddenInput(['value' => $datos['capital']])->label(false);?>
 	<?=$form->field($model, 'estatus')->hiddenInput(['value' => $model->estatus])->label(false); ?>
 	<?=$form->field($model, 'id_sim')->hiddenInput(['value' => $datos['id_sim']])->label(false); ?>
-	<?=$form->field($model, 'naturaleza')->hiddenInput(['value' => $datos['naturaleza']])->label(false); ?>
-	<?=$form->field($model, 'cedula')->hiddenInput(['value' => $datos['cedula']])->label(false); ?>
-	<?=$form->field($model, 'tipo')->hiddenInput(['value' => $datos['tipo']])->label(false); ?>
 	<?=$form->field($model, 'razon_social')->hiddenInput(['value' => $datos['razon_social']])->label(false); ?>
 
 	<meta http-equiv="refresh">
