@@ -194,8 +194,10 @@
 													<div class="cedula-new">
 														<?= $form->field($model, 'capital_new')->widget(\yii\widgets\MaskedInput::className(), [
 																										'id' => 'capital-new',
-																										'style' => 'width: 120%;',
-																										'mask' => '999.999.999.999,99'
+																										'mask' => '999.999.999.999,99',
+																										'options' => [
+																											'style' => 'width: 120%;',
+																										],
 																					  				  ])->label(false) ?>
 													</div>
 												</div>
