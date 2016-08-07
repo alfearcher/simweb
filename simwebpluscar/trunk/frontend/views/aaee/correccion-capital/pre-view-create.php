@@ -61,7 +61,6 @@
  	?>
 
 	<?=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $model['id_contribuyente']])->label(false);?>
-	<?=$form->field($model, 'razon_social')->hiddenInput(['value' => $datosRecibido['razon_social']])->label(false);?>
 	<?=$form->field($model, 'nro_solicitud')->hiddenInput(['value' => 0])->label(false);?>
 	<?=$form->field($model, 'capital_v')->hiddenInput(['value' => $model->capital_v])->label(false);?>
 	<?=$form->field($model, 'capital_new')->hiddenInput(['value' => $model->capital_new])->label(false);?>
