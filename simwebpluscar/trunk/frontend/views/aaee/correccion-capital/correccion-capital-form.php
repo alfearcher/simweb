@@ -194,7 +194,7 @@
 													<div class="cedula-new">
 														<?= $form->field($model, 'capital_new')->widget(MaskedInput::className(), [
 																										'id' => 'capital-new',
-																										'mask' => '{8}9',
+																										'mask' => '99',
 																										'options' => [
 																											'class' => 'form-control',
 																											'style' => 'width: 120%;',
