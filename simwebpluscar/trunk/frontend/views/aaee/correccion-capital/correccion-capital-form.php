@@ -158,7 +158,7 @@
 									                	'class' => 'yii\grid\CheckboxColumn',
 									                	'name' => 'chkSucursal',
 									                	'checkboxOptions' => [
-                                							'id' => 'chk-planilla',
+                                							'id' => 'chk-sucursal',
                                 							// Lo siguiente mantiene el checkbox tildado.
                                 							'onClick' => 'javascript: return false;',
                                 							'checked' => true,
