@@ -187,7 +187,7 @@
 										<div class="row">
 											<div class="form-group">
 <!-- Cedula o Rif Nuevo -->
-												<div class="col-sm-3" style="width: 40%;margin-left: -45px;">
+												<div class="col-sm-3" style="width: 40%;">
 													<div class="cedula-new">
 														<?= $form->field($model, 'capital_new')->textInput([
 																										'id' => 'capital-new',
