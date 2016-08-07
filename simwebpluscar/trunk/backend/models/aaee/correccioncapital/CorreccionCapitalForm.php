@@ -69,6 +69,7 @@
 		public $naturaleza;
 		public $cedula;
 		public $tipo;
+		public $razon_social;
 
 		const SCENARIO_FRONTEND = 'frontend';
 		const SCENARIO_BACKEND = 'backend';
