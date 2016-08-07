@@ -204,7 +204,7 @@
 
 	      						// Mostrar vista previa.
 	      						$datosRecibido = $postData[$formName];
-die(var_dump($postData));
+
 	      						$ids = isset($postData['chkSucursal']) ? $postData['chkSucursal'] : null;
 	      						$searchCorreccion = New CorreccionCapitalSearch($idContribuyente);
 	      						$dataProvider = $dataProvider = $searchCorreccion->getDataProviderSucursal($ids);
