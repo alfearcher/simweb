@@ -21,14 +21,14 @@
  */
 
  /**
- *	@file CorreccionCedulaRifController.php
+ *	@file CorreccionCapitalController.php
  *
  *	@author Jose Rafael Perez Teran
  *
  *	@date 30-07-2016
  *
- *  @class CorreccionCedulaRifController
- *	@brief Clase CorreccionCedulaRifController del lado del contribuyente frontend.
+ *  @class CorreccionCapitalController
+ *	@brief Clase CorreccionCapitalController del lado del contribuyente frontend.
  *
  *
  *	@property
@@ -42,7 +42,7 @@
  */
 
 
- 	namespace frontend\controllers\aaee\correccioncedularif;
+ 	namespace frontend\controllers\aaee\correccioncapital;
 
 
  	use Yii;
@@ -62,21 +62,21 @@
 	use common\models\configuracion\solicitud\SolicitudProcesoEvento;
 	use common\enviaremail\PlantillaEmail;
 	use common\models\solicitudescontribuyente\SolicitudesContribuyenteForm;
-	use backend\models\aaee\correccioncedularif\CorreccionCedulaRifSearch;
-	use backend\models\aaee\correccioncedularif\CorreccionCedulaRifForm;
+	use backend\models\aaee\correccioncapital\CorreccionCapitalSearch;
+	use backend\models\aaee\correccioncapital\CorreccionCapitalForm;
 	use backend\models\registromaestro\TipoNaturaleza;
 
 	session_start();		// Iniciando session
 
 	/**
-	 * Clase principal que controla la creacion de solicitudes de Correccion de Cedula-Rif.
+	 * Clase principal que controla la creacion de solicitudes de Correccion de Capital.
 	 * Solicitud que se realizara del lado del contribuyente (frontend). Se mostrara una vista
 	 * previa de la solicitud realizada por el contribuyente y se le indicara al contribuyente
 	 * que confirme la operacion o retorne a la vista inicial donde cargo la informacion para su
 	 * ajuste. Cuando el contribuyente confirme su intencion de crear la solicitud, es cuando
 	 * se guardara en base de datos.
 	 */
-	class CorreccionCedulaRifController extends Controller
+	class CorreccionCapitalController extends Controller
 	{
 		public $layout = 'layout-main';				//	Layout principal del formulario
 
@@ -714,35 +714,6 @@
 				throw new NotFoundHttpException('No se encontro el registro');
 			}
     	}
-
-
-
-
-
-    	/**
-    	 * Metodo que indica si los valores presentes en el formulario son validos.
-    	 * Se evalua si los campos son validos a traves del modelo. Esto campos se encuentra
-    	 * en el modelo de inscripcion de actividad economica.
-    	 * @param $postData, post enviado desde el formulario.
-    	 * @return returna boolean que indica si los campos en el formulario contienen valores validos.
-    	 * true indica que todo esta bien, false todo lo contrario.
-    	 */
-    	private static function actionValidateRegistroMercantil($postData)
-    	{
-    		$modelActEcon = new InscripcionActividadEconomicaForm();
-    		$nombreForm = $modelActEcon->formName();
-    		foreach ( $postData[$nombreForm] as $key => $value ) {
-    			if ( !isset($postData[$nombreForm]['fecha']) ) {
-    				return false;
-    			} elseif ( !isset($postData[$nombreForm]['num_reg']) ) {
-    				return false;
-    			} elseif ( !isset($postData[$nombreForm]['reg_mercantil']) ) {
-    				return false;
-    			}
-    		}
-    		return true;
-    	}
-
 
 
 
