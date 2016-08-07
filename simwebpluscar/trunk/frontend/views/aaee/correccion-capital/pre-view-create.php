@@ -97,12 +97,12 @@
 							    					'value' => $model['id_contribuyente'],
 							    				],
 							    				[
-							    					'label' => $model->getAttributeLabel('dni_v'),
-							    					'value' => $model['naturaleza'] . '-' . $model['cedula'] . '-' . $model['tipo'],
+							    					'label' => $model->getAttributeLabel('dni'),
+							    					'value' => $datosRecibido['dni'],
 							    				],
 							    				[
 							    					'label' => $model->getAttributeLabel('razon_social'),
-							    					'value' => $model['razon_social'],
+							    					'value' => $datosRecibido['razon_social'],
 							    				],
 							    				[
 							    					'label' => $model->getAttributeLabel('id_sim'),
