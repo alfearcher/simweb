@@ -63,11 +63,11 @@
 		public $usuario;
 		public $estatus;
 		public $origen;
+		public $fecha_hora_proceso;
+		public $user_funcionario;
 
-		public $naturaleza;
-		public $cedula;
-		public $tipo;
-
+		const SCENARIO_FRONTEND = 'frontend';
+		const SCENARIO_BACKEND = 'backend';
 
 		/**
      	* @inheritdoc
@@ -75,7 +75,29 @@
     	public function scenarios()
     	{
         	// bypass scenarios() implementation in the parent class
-        	return Model::scenarios();
+        	//return Model::scenarios();
+        	return [
+        		self::SCENARIO_FRONTEND => [
+        					'id_contribuyente',
+        					'capital_v',
+        					'capital_new',
+        					'origen',
+        					'fecha_hora',
+        					'usuario',
+        					'estatus',
+
+        		],
+        		self::SCENARIO_BACKEND => [
+        					'id_contribuyente',
+        					'capital_v',
+        					'capital_new',
+        					'origen',
+        					'fecha_hora',
+        					'usuario',
+        					'estatus',
+
+        		]
+        	];
     	}
 
 
@@ -87,9 +109,21 @@
     	public function rules()
     	{
     		return [
-    			[['capital_new', 'id_contribuyente', 'capital_v'],'required','message' => Yii::t('backend', '{attribute} is required')],
-    			[['capital_new', 'capital_v'], 'double', 'message' => Yii::t('backend', '{attribute} must be decimal.')],
-    			['capital_new', 'compare', 'compareAttribute' => 'capital_v', 'operator' => '>=', 'message' => Yii::t('backend', '{attribute} must be no less that ')],
+    			[['capital_new', 'id_contribuyente',
+    			  'capital_v'],
+    			  'required', 'on' => 'frontend',
+    			  'message' => Yii::t('backend', '{attribute} is required')],
+    			 [['capital_new', 'id_contribuyente',
+    			  'capital_v'],
+    			  'required', 'on' => 'backend',
+    			  'message' => Yii::t('backend', '{attribute} is required')],
+    			[['capital_new', 'capital_v'],
+    			  'double', 'message' => Yii::t('backend', '{attribute} must be decimal.')],
+    			['capital_new',
+    			 'compare',
+    			 'compareAttribute' => 'capital_v',
+    			 'operator' => '>=', 'message' => Yii::t('backend', '{attribute} must be no less that ')],
+    			 //['capital_new', 'compare'
     			//['capital_new', 'format', Yii::$app->formatted->asDecimal($model->)]
     		];
     	}
@@ -109,7 +143,8 @@
 	            'nro_solicitud' => Yii::t('backend', 'Application Number'),
 	            'capital_v' => Yii::t('backend', 'Current Capital'),
 	            'capital_new' => Yii::t('backend', 'New Capital'),
-
+	            'razon_social' => Yii::t('frontend', 'Companies'),
+	            'id_sim' => Yii::t('frontend', 'License'),
 	        ];
 	    }
 
@@ -187,6 +222,38 @@
 		    	}
 		    }
 		    return false;
+	    }
+
+
+
+
+	    /**
+	     * Metodo que retorna un arreglo de atributos que seran actualizados
+	     * al momento de procesar la solicitud (aprobar o negar). Estos atributos
+	     * afectaran a la entidad respectiva de la clase.
+	     * @param String $evento, define la accion a realizar sobre la solicitud.
+	     * - Aprobar.
+	     * - Negar.
+	     * @return Array Retorna un arreglo de atributos segun el evento.
+	     */
+	    public function atributosUpDateProcesarSolicitud($evento)
+	    {
+	    	$atributos = [
+	    		Yii::$app->solicitud->aprobar() => [
+	    						'estatus' => 1,
+	    						'fecha_hora_proceso' => date('Y-m-d H:i:s'),
+	    						'user_funcionario' => isset(Yii::$app->user->identity->username) ? Yii::$app->user->identity->username : Yii::$app->user->identity->login,
+
+	    		],
+	    		Yii::$app->solicitud->negar() => [
+	    						'estatus' => 9,
+	    						'fecha_hora_proceso' => date('Y-m-d H:i:s'),
+	    						'user_funcionario' => isset(Yii::$app->user->identity->username) ? Yii::$app->user->identity->username : Yii::$app->user->identity->login,
+
+	    		],
+	    	];
+
+	    	return $atributos[$evento];
 	    }
 
 

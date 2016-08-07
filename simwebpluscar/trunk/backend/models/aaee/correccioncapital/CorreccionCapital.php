@@ -45,7 +45,14 @@
  	use Yii;
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
+	use backend\models\solicitud\estatus\EstatusSolicitud;
+	use common\models\aaee\Sucursal;
+	use backend\models\configuracion\tiposolicitud\TipoSolicitud;
 
+
+	/**
+	 * Clase que gestiona el funcionamiento de la solicitud para el aumento de capital.
+	 */
 	class CorreccionCapital extends ActiveRecord
 	{
 
@@ -67,6 +74,27 @@
 		public static function tableName()
 		{
 			return 'sl_correcciones_capital';
+		}
+
+
+		/**
+		 * Relacion con la entidad "estatus-solicitudes", EstatusSolicitud
+		 * @return Active Record.
+		 */
+		public function getEstatusSolicitud()
+		{
+			return $this->hasOne(EstatusSolicitud::className(), ['estatus_solicitud' => 'estatus']);
+		}
+
+
+
+		/**
+		 * Relacion con la entidad "contribuyentes", Sucursal.
+		 * @return Active Record.
+		 */
+		public function getSucursal()
+		{
+			return $this->hasOne(Sucursal::className(), ['id_contribuyente' => 'id_contribuyente']);
 		}
 
 	}
