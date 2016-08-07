@@ -196,6 +196,7 @@
 																										'id' => 'capital-new',
 																										'mask' => '999.999.999.999,99',
 																										'options' => [
+																											'class' => 'form-control',
 																											'style' => 'width: 120%;',
 																										],
 																					  				  ])->label(false) ?>
