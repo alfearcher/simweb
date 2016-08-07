@@ -195,7 +195,7 @@
 														<?= $form->field($model, 'capital_new')->widget(\yii\widgets\MaskedInput::className(), [
 																										'id' => 'capital-new',
 																										'style' => 'width: 120%;',
-																										'999.999.999.999,99'
+																										'mask' => '999.999.999.999,99'
 																					  				  ])->label(false) ?>
 													</div>
 												</div>
