@@ -174,7 +174,7 @@
 					    </div>
 					</div>
 
-<!-- Cedula / Rif NUEVO -->
+<!-- CAPITAL NUEVO -->
 					<div class="row">
 						<div class="panel panel-success" style="width: 103%;margin-left: -15px;">
 							<div class="panel-heading">
@@ -186,42 +186,16 @@
 									<div class="col-sm-5" style="margin-left: 15px;margin-top: 0px">
 										<div class="row">
 											<div class="form-group">
-<!-- Combo Naturaleza Nuevo -->
-				        						<div class="col-sm-3" style="width: 50%;">
-													<div class="naturaleza-new">
-								                		<?= $form->field($model, 'naturaleza_new')->dropDownList($listaNaturaleza,[
-				                																	 			'id' => 'naturaleza_new',
-				                																	 			'style' => 'width: 100%;',
-				                                                                     				 			'prompt' => Yii::t('backend', 'Select..'),
-				                                                                    							])->label(false)
-								    					?>
-													</div>
-				        						</div>
-<!-- Fin de Combo Naturaleza Nuevo -->
-
 <!-- Cedula o Rif Nuevo -->
 												<div class="col-sm-3" style="width: 40%;margin-left: -25px;">
 													<div class="cedula-new">
-														<?= $form->field($model, 'cedula_new')->textInput([
-																										'id' => 'cedula_new',
+														<?= $form->field($model, 'capital_new')->textInput([
+																										'id' => 'capital-new',
 																										'style' => 'width: 100%;',
-																										'maxlength' => ($datos['tipo_naturaleza'] == 1 ) ? 9 : 8,
 																					  				  ])->label(false) ?>
 													</div>
 												</div>
-<!-- Fin de Cedula o Rif Nuevo -->
-
-<!-- Tipo Nuevo ultimo digito del rif, contribuyentes juridico -->
-												<div class="col-sm-1" style="width: 20%; margin-left: -25px;">
-													<div class="tipo-new">
-														<?= $form->field($model, 'tipo_new')->textInput([
-																									'id' => 'tipo_new',
-																									'maxlength' => 1,
-																									'style' => 'width: 100%;',
-																						  			])->label(false) ?>
-													</div>
-												</div>
-<!-- Fin de Tipo Nuevo -->
+<!-- Fin de Capital Nuevo -->
 											</div>
 										</div>
 									</div>
@@ -230,8 +204,8 @@
 							</div>
 						</div>
 					</div>
-<!-- Fin de Cedula / Rif Nueva -->
-<!-- FIN DE Cedula / Rif NUEVO -->
+<!-- Fin de Capital Nueva -->
+<!-- FIN DE CAPITAL NUEVO -->
 
 
 					<div class="row" style="margin-top: 15px;">
