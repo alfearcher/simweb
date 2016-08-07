@@ -178,7 +178,7 @@
 					<div class="row">
 						<div class="panel panel-success" style="width: 103%;margin-left: -15px;">
 							<div class="panel-heading">
-					        	<span><?= Html::encode($model->getAttributeLabel('capital_new_new')) ?></span>
+					        	<span><?= Html::encode($model->getAttributeLabel('capital_new')) ?></span>
 					        </div>
 	        				<div class="panel-body">
 	        					<div class="row">
@@ -187,7 +187,7 @@
 										<div class="row">
 											<div class="form-group">
 <!-- Cedula o Rif Nuevo -->
-												<div class="col-sm-3" style="width: 40%;">
+												<div class="col-sm-3" style="width: 50%;">
 													<div class="cedula-new">
 														<?= $form->field($model, 'capital_new')->textInput([
 																										'id' => 'capital-new',
