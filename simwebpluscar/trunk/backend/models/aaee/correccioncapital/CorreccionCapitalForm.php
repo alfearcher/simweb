@@ -66,6 +66,10 @@
 		public $fecha_hora_proceso;
 		public $user_funcionario;
 
+		public $naturaleza;
+		public $cedula;
+		public $tipo;
+
 		const SCENARIO_FRONTEND = 'frontend';
 		const SCENARIO_BACKEND = 'backend';
 
@@ -145,11 +149,12 @@
 	            'capital_new' => Yii::t('backend', 'New Capital'),
 	            'razon_social' => Yii::t('frontend', 'Companies'),
 	            'id_sim' => Yii::t('frontend', 'License'),
+	            'dni' => Yii::t('frontend', 'DNI'),
 	        ];
 	    }
 
 
-	    	    /**
+	    /**
 	     * Metodo que retorna un dataProvider de los contribuyentes asociados a un rif (sucursales)
 	     * @param  [type] $naturalezaLocal [description]
 	     * @param  [type] $cedulaLocal     [description]
