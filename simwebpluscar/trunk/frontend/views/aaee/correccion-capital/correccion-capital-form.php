@@ -73,6 +73,7 @@
 	<?=$form->field($model, 'naturaleza')->hiddenInput(['value' => $datos['naturaleza']])->label(false); ?>
 	<?=$form->field($model, 'cedula')->hiddenInput(['value' => $datos['cedula']])->label(false); ?>
 	<?=$form->field($model, 'tipo')->hiddenInput(['value' => $datos['tipo']])->label(false); ?>
+	<?=$form->field($model, 'razon_social')->hiddenInput(['value' => $datos['razon_social']])->label(false); ?>
 
 	<meta http-equiv="refresh">
     <div class="panel panel-primary"  style="width: 90%;">
