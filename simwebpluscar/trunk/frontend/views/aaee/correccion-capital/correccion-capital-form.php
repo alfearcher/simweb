@@ -201,7 +201,7 @@
 																										],
 																										'clientOptions' => [
 																											'alias' =>  'decimal',
-																											'groupSeparator' => '.',
+																											'groupSeparator' => ',',
 																											//'decimalSeparator' => ',',
 																										],
 
