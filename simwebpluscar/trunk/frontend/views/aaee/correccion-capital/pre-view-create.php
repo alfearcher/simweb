@@ -22,11 +22,11 @@
  */
 
  /**
- *  @file .php
+ *  @file pre-view-create.php
  *
  *  @author Jose Rafael Perez Teran
  *
- *  @date 31-07-2016
+ *  @date 06-08-2016
  *
  *  @view
  *  @brief vista principal del cambio o correccion
@@ -63,6 +63,8 @@
 	<?=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $model['id_contribuyente']])->label(false);?>
 	<?=$form->field($model, 'razon_social')->hiddenInput(['value' => $datosRecibido['razon_social']])->label(false);?>
 	<?=$form->field($model, 'nro_solicitud')->hiddenInput(['value' => 0])->label(false);?>
+	<?=$form->field($model, 'capital_v')->hiddenInput(['value' => $model->capital_v])->label(false);?>
+	<?=$form->field($model, 'capital_new')->hiddenInput(['value' => $model->capital_new])->label(false);?>
 	<?=$form->field($model, 'fecha_hora')->hiddenInput(['value' => $model->fecha_hora])->label(false); ?>
 	<?=$form->field($model, 'origen')->hiddenInput(['value' => $model->origen])->label(false); ?>
 	<?=$form->field($model, 'estatus')->hiddenInput(['value' => $model->estatus])->label(false); ?>
@@ -142,6 +144,18 @@
 	                    											},
 									                ],
 									                [
+									                    'label' => Yii::t('backend', 'Ant Capital'),
+									                    'value' => function($model) {
+	                            										return $model->capital_v;
+	                    											},
+									                ],
+									                [
+									                    'label' => Yii::t('backend', 'Current Capital'),
+									                    'value' => function($model) {
+	                            										return $model->capital_new;
+	                    											},
+									                ],
+									                [
 									                    'label' => Yii::t('backend', 'License No.'),
 									                    'value' => function($model) {
 	                            										return $model->id_sim;
@@ -151,7 +165,7 @@
 									                	'class' => 'yii\grid\CheckboxColumn',
 									                	'name' => 'chkSucursal',
 									                	'checkboxOptions' => [
-                                							'id' => 'chk-planilla',
+                                							'id' => 'chkSucursal',
                                 							// Lo siguiente mantiene el checkbox tildado.
                                 							'onClick' => 'javascript: return false;',
                                 							'checked' => true,
@@ -171,7 +185,7 @@
 					<div class="row">
 						<div class="panel panel-success" style="width: 103%;margin-left: -15px;">
 							<div class="panel-heading">
-					        	<span><?= Html::encode($model->getAttributeLabel('dni_new')) ?></span>
+					        	<span><?= Html::encode($model->getAttributeLabel('capital_new')) ?></span>
 					        </div>
 	        				<div class="panel-body">
 	        					<div class="row">
@@ -183,8 +197,8 @@
 								    			'attributes' => [
 
 								    				[
-								    					'label' => $model->getAttributeLabel('dni_new'),
-								    					'value' => $model['naturaleza_new'] . '-' . $model['cedula_new'] . '-' . $model['tipo_new'],
+								    					'label' => $model->getAttributeLabel('capital_new'),
+								    					'value' => $model['capital_new'],
 								    				],
 								    			],
 											])

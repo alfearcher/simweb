@@ -21,13 +21,13 @@
  */
 
  /**
- *  @file view-solicitud-create.php
+ *  @file _view.php
  *
  *  @author Jose Rafael Perez Teran
  *
  *  @date 01-08-2016
  *
- *  @view view-solicitud-create.php
+ *  @view _view.php
  *
  *
  *  @property
