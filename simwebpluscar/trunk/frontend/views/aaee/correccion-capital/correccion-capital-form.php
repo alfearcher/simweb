@@ -202,7 +202,7 @@
 																										'clientOptions' => [
 																											'alias' =>  'decimal',
 																											'groupSeparator' => '.',
-																											'decimalSeparator' => ',',
+																											//'decimalSeparator' => ',',
 																										],
 
 																					  				  ])->label(false) ?>
