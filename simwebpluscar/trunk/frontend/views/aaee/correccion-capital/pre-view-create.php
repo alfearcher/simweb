@@ -98,7 +98,7 @@
 							    				],
 							    				[
 							    					'label' => $model->getAttributeLabel('dni_v'),
-							    					'value' => $model['naturaleza_v'] . '-' . $model['cedula_v'] . '-' . $model['tipo_v'],
+							    					'value' => $model['naturaleza'] . '-' . $model['cedula'] . '-' . $model['tipo'],
 							    				],
 							    				[
 							    					'label' => $model->getAttributeLabel('razon_social'),
