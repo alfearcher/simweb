@@ -187,11 +187,11 @@
 										<div class="row">
 											<div class="form-group">
 <!-- Cedula o Rif Nuevo -->
-												<div class="col-sm-3" style="width: 40%;margin-left: -25px;">
+												<div class="col-sm-3" style="width: 40%;margin-left: -45px;">
 													<div class="cedula-new">
 														<?= $form->field($model, 'capital_new')->textInput([
 																										'id' => 'capital-new',
-																										'style' => 'width: 100%;',
+																										'style' => 'width: 120%;',
 																					  				  ])->label(false) ?>
 													</div>
 												</div>
