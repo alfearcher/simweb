@@ -56,7 +56,6 @@
 	use backend\models\documento\DocumentoConsignadoForm;
 	use common\conexion\ConexionController;
 	use common\mensaje\MensajeController;
-	use yii\helpers\ArrayHelper;
 	use common\models\session\Session;
 	use common\models\configuracion\solicitud\ParametroSolicitud;
 	use common\models\configuracion\solicitud\SolicitudProcesoEvento;
@@ -64,7 +63,6 @@
 	use common\models\solicitudescontribuyente\SolicitudesContribuyenteForm;
 	use backend\models\aaee\correccioncapital\CorreccionCapitalSearch;
 	use backend\models\aaee\correccioncapital\CorreccionCapitalForm;
-	use backend\models\registromaestro\TipoNaturaleza;
 
 	session_start();		// Iniciando session
 
@@ -272,7 +270,7 @@
 		/**
 		 * Metodo que comienza el proceso para guardar la solicitud y los demas
 		 * procesos relacionados.
-		 * @param model $model modelo de CorreccionDomicilioFiscalForm.
+		 * @param model $model modelo de CorreccionCapitalForm.
 		 * @param array $postEnviado post enviado desde el formulario.
 		 * @return boolean retorna true si se realizan todas las operacions de
 		 * insercion y actualizacion con exitos o false en caso contrario.
@@ -304,18 +302,18 @@
 					if ( $nroSolicitud > 0 ) {
 						$model->nro_solicitud = $nroSolicitud;
 
-						$result = self::actionCreateCorreccionCedulaRif($this->_conexion,
-																	    $this->_conn,
-																	    $model,
-																	    $conf,
-																	    $chkSeleccion);
+						$result = self::actionCreateCorreccionCapital($this->_conexion,
+																	  $this->_conn,
+																	  $model,
+																	  $conf,
+																	  $chkSeleccion);
 
 						if ( $result ) {
-							$result = self::actionUpdateCedulaRif($this->_conexion,
-															      $this->_conn,
-																  $model,
-																  $conf,
-																  $chkSeleccion);
+							$result = self::actionUpdateCapital($this->_conexion,
+															    $this->_conn,
+																$model,
+																$conf,
+																$chkSeleccion);
 
 							if ( $result ) {
 								$result = self::actionEjecutaProcesoSolicitud($this->_conexion, $this->_conn, $model, $conf);
@@ -413,7 +411,7 @@
 		 * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
 		 * solicitud.
 		 * @param  array $chkSeleccion arreglo que contiene los identificadores de los contribuyentes
-		 * a los cuales se se les actualizara el rif.
+		 * a los cuales se se les actualizara el capital.
 		 * @return boolean retorna un true si guardo el registro, false en caso contrario.
 		 */
 		private static function actionCreateCorreccionCapital($conexionLocal, $connLocal, $model, $conf, $chkSeleccion)
@@ -470,7 +468,7 @@
 		 * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
 		 * solicitud.
 		 * @param  array $chkSeleccion arreglo que contiene los identificadores de los contribuyentes
-		 * a los cuales se se les actualizara el rif.
+		 * a los cuales se se les actualizara el capital.
 		 * @return boolean retorna true si se ejecuta la actualizacion, sino false.
 		 */
 		private static function actionUpdateCapital($conexionLocal, $connLocal, $model, $conf, $chkSeleccion)
