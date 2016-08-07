@@ -45,6 +45,7 @@
 	//use backend\controllers\utilidad\documento\DocumentoRequisitoController;
 	//use common\models\contribuyente\ContribuyenteBase;
 	use yii\widgets\DetailView;
+	use yii\widgets\MaskedInput;
 
 ?>
 
@@ -191,9 +192,10 @@
 <!-- Cedula o Rif Nuevo -->
 												<div class="col-sm-3" style="width: 50%;">
 													<div class="cedula-new">
-														<?= $form->field($model, 'capital_new')->textInput([
+														<?= $form->field($model, 'capital_new')->widget(\yii\widgets\MaskedInput::className(), [
 																										'id' => 'capital-new',
 																										'style' => 'width: 120%;',
+																										'999.999.999.999,99'
 																					  				  ])->label(false) ?>
 													</div>
 												</div>
