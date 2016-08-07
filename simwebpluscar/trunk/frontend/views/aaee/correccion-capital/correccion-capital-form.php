@@ -61,7 +61,7 @@
  	?>
 
 	<?=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $datos['id_contribuyente']])->label(false);?>
-	<?=$form->field($model, 'dni_v')->hiddenInput([
+	<?=$form->field($model, 'dni')->hiddenInput([
 										'value' => $datos['naturaleza'] . '-' . $datos['cedula'] . '-' . $datos['tipo'],
 								])->label(false);?>
 	<?=$form->field($model, 'nro_solicitud')->hiddenInput(['value' => 0])->label(false);?>
@@ -97,7 +97,7 @@
 							    					'value' => $datos['id_contribuyente'],
 							    				],
 							    				[
-							    					'label' => $model->getAttributeLabel('dni_v'),
+							    					'label' => $model->getAttributeLabel('dni'),
 							    					'value' => $datos['naturaleza'] . '-' . $datos['cedula'] . '-' . $datos['tipo'],
 							    				],
 							    				[
@@ -131,7 +131,7 @@
 	                    											},
 									                ],
 									                [
-									                    'label' => Yii::t('backend', 'Current DNI'),
+									                    'label' => Yii::t('backend', 'DNI'),
 									                    'value' => function($data) {
 	                            										return $data->naturaleza . '-' . $data->cedula . '-' . $data->tipo;
 	                    											},
@@ -140,6 +140,12 @@
 									                    'label' => Yii::t('backend', 'Taxpayer'),
 									                    'value' => function($data) {
 	                            										return $data->razon_social;
+	                    											},
+									                ],
+									                [
+									                    'label' => Yii::t('backend', 'Current Capital'),
+									                    'value' => function($data) {
+	                            										return $data->capital;
 	                    											},
 									                ],
 									                [
@@ -172,7 +178,7 @@
 					<div class="row">
 						<div class="panel panel-success" style="width: 103%;margin-left: -15px;">
 							<div class="panel-heading">
-					        	<span><?= Html::encode($model->getAttributeLabel('dni_new')) ?></span>
+					        	<span><?= Html::encode($model->getAttributeLabel('capital_new_new')) ?></span>
 					        </div>
 	        				<div class="panel-body">
 	        					<div class="row">
