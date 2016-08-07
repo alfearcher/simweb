@@ -91,7 +91,7 @@
 		 * Identificador de  configuracion d ela solicitud. Se crea cuando se
 		 * configura la solicitud que gestiona esta clase.
 		 */
-		const CONFIG = 87;
+		const CONFIG = 66;
 
 
 		/**
@@ -112,41 +112,32 @@
 			if ( $id == self::CONFIG ) {
 				if ( isset($_SESSION['idContribuyente']) ) {
 					$idContribuyente = $_SESSION['idContribuyente'];
-					$searchCorreccion = New CorreccionCedulaRifSearch($idContribuyente);
+					$searchCorreccion = New CorreccionCapitalSearch($idContribuyente);
 
 					// Se verifica que el contribuyente sea la sede principal.
 					if ( $searchCorreccion->getSedePrincipal() ) {
 
 						// Se determina si ya existe una solicitud pendiente.
 						if ( !$searchCorreccion->yaPoseeSolicitudSimiliarPendiente() ) {
+							$modelParametro = New ParametroSolicitud($id);
+							// Se obtiene el tipo de solicitud. Se retorna un array donde el key es el nombre
+							// del parametro y el valor del elemento es el contenido del campo en base de datos.
+							$config = $modelParametro->getParametroSolicitud([
+																	'id_config_solicitud',
+																	'tipo_solicitud',
+																	'impuesto',
+																	'nivel_aprobacion'
+														]);
 
-							// Se determina si el contribuyente posee una solicitud para crear sucursal
-							// pendiente por aprobar. Si es asi no se le permitira crear esta solicitud.
-							// para evitar crear sucursales con rif diferentes al de la sede principal.
-							if ( !$searchCorreccion->poseeSolicitudSucursalPendiente() ) {
-
-								$modelParametro = New ParametroSolicitud($id);
-								// Se obtiene el tipo de solicitud. Se retorna un array donde el key es el nombre
-								// del parametro y el valor del elemento es el contenido del campo en base de datos.
-								$config = $modelParametro->getParametroSolicitud([
-																		'id_config_solicitud',
-																		'tipo_solicitud',
-																		'impuesto',
-																		'nivel_aprobacion'
-															]);
-
-								if ( isset($config) ) {
-									$_SESSION['conf'] = $config;
-									$_SESSION['begin'] = 1;
-									$this->redirect(['index-create']);
-								} else {
-									// No se obtuvieron los parametros de la configuracion.
-									return $this->redirect(['error-operacion', 'cod' => 955]);
-								}
+							if ( isset($config) ) {
+								$_SESSION['conf'] = $config;
+								$_SESSION['begin'] = 1;
+								$this->redirect(['index-create']);
 							} else {
-								// El contribuyente ya posee una solicitud para crear suucrsal.
-								return $this->redirect(['error-operacion', 'cod' => 960]);
+								// No se obtuvieron los parametros de la configuracion.
+								return $this->redirect(['error-operacion', 'cod' => 955]);
 							}
+
 						} else {
 							// El contribuyente ya posee una solicitud similar, y la misma esta pendiente.
 							return $this->redirect(['error-operacion', 'cod' => 945]);
@@ -185,7 +176,7 @@
 				$request = Yii::$app->request;
 				$postData = $request->post();
 
-				$model = New CorreccionCedulaRifForm();
+				$model = New CorreccionCapitalForm();
 				$formName = $model->formName();
 				$model->scenario = self::SCENARIO_FRONTEND;
 
@@ -216,12 +207,12 @@
 	      						// Mostrar vista previa.
 	      						$datosRecibido = $postData[$formName];
 	      						$ids = isset($postData['chkSucursal']) ? $postData['chkSucursal'] : null;
-	      						$searchCorreccion = New CorreccionCedulaRifSearch($idContribuyente);
+	      						$searchCorreccion = New CorreccionCapitalSearch($idContribuyente);
 	      						$dataProvider = $dataProvider = $searchCorreccion->getDataProviderSucursal($ids);
-	      						$caption = Yii::t('frontend', 'Confirm Create. Update of DNI');
+	      						$caption = Yii::t('frontend', 'Confirm Create. Update of Capital');
 	      						$subCaption = Yii::t('frontend', 'Info of Taxpayer');
 
-	      						return $this->render('/aaee/correccion-cedula-rif/pre-view-create', [
+	      						return $this->render('/aaee/correccion-capital/pre-view-create', [
 	      																	'model' => $model,
 	      																	'datosRecibido' => $datosRecibido,
 	      																	'dataProvider' => $dataProvider,
@@ -248,7 +239,7 @@
 
 		      	// Se muestra el form de la solicitud.
 		      	// Datos generales del contribuyente.
-		      	$searchCorreccion = New CorreccionCedulaRifSearch($idContribuyente);
+		      	$searchCorreccion = New CorreccionCapitalSearch($idContribuyente);
 		      	$datos = $searchCorreccion->getDatosContribuyente();
 		  		if ( isset($datos) ) {
 		  			// Se buscan las sucursales. Partiendo del identificador de la sede principal
@@ -260,17 +251,13 @@
 		  			if ( count($ids) > 0 ) {
 		  				$dataProvider = $searchCorreccion->getDataProviderSucursal($ids);
 		  			}
-		  			// Se obtiene el combo-lista para la naturaleza del DNI
-		  			$modeloTipoNaturaleza = TipoNaturaleza::find()->where('id_tipo_naturaleza BETWEEN 1 and 4')->all();
-		  			$listaNaturaleza = ArrayHelper::map($modeloTipoNaturaleza, 'siglas_tnaturaleza', 'nb_naturaleza');
 
 		  			$subCaption = Yii::t('frontend', 'Info of Taxpayer');
-		  			return $this->render('/aaee/correccion-cedula-rif/_create', [
+		  			return $this->render('/aaee/correccion-capital/_create', [
 					  											'model' => $model,
 					  											'datos' => $datos,
 					  											'subCaption' => $subCaption,
 					  											'dataProvider' => $dataProvider,
-					  											'listaNaturaleza' => $listaNaturaleza,
 					  					]);
 		  		} else {
 		  			// No se encontraron los datos del contribuyente principal.
@@ -422,14 +409,14 @@
 		 * "sl" respectiva.
 		 * @param  ConexionController $conexionLocal instancia de la lcase ConexionController.
 		 * @param  connection $connLocal instancia de connection
-		 * @param  model $model modelo de CorreccionCedulaRifForm.
+		 * @param  model $model modelo de CorreccionCapitalForm.
 		 * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
 		 * solicitud.
 		 * @param  array $chkSeleccion arreglo que contiene los identificadores de los contribuyentes
 		 * a los cuales se se les actualizara el rif.
 		 * @return boolean retorna un true si guardo el registro, false en caso contrario.
 		 */
-		private static function actionCreateCorreccionCedulaRif($conexionLocal, $connLocal, $model, $conf, $chkSeleccion)
+		private static function actionCreateCorreccionCapital($conexionLocal, $connLocal, $model, $conf, $chkSeleccion)
 		{
 			$result = false;
 			$estatus = 0;
@@ -479,21 +466,19 @@
 		 * casos donde la aprobacion de la solicitud sea directa.
 		 * @param  ConexionController $conexionLocal instancia de la lcase ConexionController.
 		 * @param  connection $connLocal instancia de connection
-		 * @param  model $model modelo de CorreccionCedulaRifForm.
+		 * @param  model $model modelo de CorreccionCapitalForm.
 		 * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
 		 * solicitud.
 		 * @param  array $chkSeleccion arreglo que contiene los identificadores de los contribuyentes
 		 * a los cuales se se les actualizara el rif.
 		 * @return boolean retorna true si se ejecuta la actualizacion, sino false.
 		 */
-		private static function actionUpdateCedulaRif($conexionLocal, $connLocal, $model, $conf, $chkSeleccion)
+		private static function actionUpdateCapital($conexionLocal, $connLocal, $model, $conf, $chkSeleccion)
 		{
 			$result = false;
 			if ( $conf['nivel_aprobacion'] == 1 ) {
 				$arregloDatos = [
-						'naturaleza' => $model->naturaleza_new,
-						'cedula' => $model->cedula_new,
-						'tipo' => $model->tipo_new
+						'capital' => $model->capital_new
 				];
 
 				$tabla = ContribuyenteBase::tableName();
@@ -517,7 +502,7 @@
 		 * Metodo para guardar los documentos consignados.
 		 * @param  ConexionController  $conexionLocal instancia de la clase ConexionController
 		 * @param  connection  $connLocal instancia de connection.
-		 * @param  model $model modelo de CorreccionCedulaRifForm.
+		 * @param  model $model modelo de CorreccionCapitalForm.
 		 * @param  array $postEnviado post enviado por el formulario. Lo que
 		 * se busca es determinar los items seleccionados como documentos y/o
 		 * requisitos a consignar para guardarlos.
@@ -574,7 +559,7 @@
 		 * @param  ConexionController $conexionLocal instancia de la clase ConexionController.
 		 * @param  connection $connLocal instancia de conexion que permite ejecutar las acciones en base
 		 * de datos.
-		 * @param  model $model modelo de la instancia CorreccionCedulaRifForm.
+		 * @param  model $model modelo de la instancia CorreccionCapitalForm.
 		 * @param  array $conf arreglo que contiene los parametros principales de la configuracion de la
 		 * solicitud.
 		 * @return boolean retorna true si todo se ejecuto correctamente false en caso contrario.
@@ -675,8 +660,8 @@
     	{
     		if ( isset($_SESSION['idContribuyente']) ) {
 	    		if ( $id > 0 ) {
-	    			$searchCorreccion = New CorreccionCedulaRifSearch($_SESSION['idContribuyente']);
-	    			$findModel = $searchCorreccion->findSolicitudCorreccionCedulaRif($id);
+	    			$searchCorreccion = New CorreccionCapitalSearch($_SESSION['idContribuyente']);
+	    			$findModel = $searchCorreccion->findSolicitudCorreccionCapital($id);
 	    			$dataProvider = $searchCorreccion->getDataProviderSolicitud($id);
 	    			if ( isset($findModel) ) {
 	    				return self::actionShowSolicitud($findModel, $searchCorreccion, $dataProvider);
@@ -701,9 +686,9 @@
  				$model = $findModel->all();
 
 				$opciones = [
-					'quit' => '/aaee/correccioncedularif/correccion-cedula-rif/quit',
+					'quit' => '/aaee/correccioncapital/correccion-capital/quit',
 				];
-				return $this->render('/aaee/correccion-cedula-rif/_view', [
+				return $this->render('/aaee/correccion-capital/_view', [
 																'codigo' => 100,
 																'model' => $model,
 																'modelSearch' => $modelSearch,
