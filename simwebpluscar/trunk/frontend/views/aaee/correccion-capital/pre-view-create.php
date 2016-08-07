@@ -145,13 +145,7 @@
 									                [
 									                    'label' => Yii::t('backend', 'Ant Capital'),
 									                    'value' => function($model) {
-	                            										return $model->capital_v;
-	                    											},
-									                ],
-									                [
-									                    'label' => Yii::t('backend', 'Current Capital'),
-									                    'value' => function($model) {
-	                            										return $model->capital_new;
+	                            										return $model->capital;
 	                    											},
 									                ],
 									                [
