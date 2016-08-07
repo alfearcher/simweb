@@ -45,6 +45,7 @@
  	use Yii;
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
+	use yii\data\ActiveDataProvider;
 	use common\models\aaee\Sucursal;
 	use backend\models\aaee\correccioncapital\CorreccionCapital;
 	use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomicaSearch;
