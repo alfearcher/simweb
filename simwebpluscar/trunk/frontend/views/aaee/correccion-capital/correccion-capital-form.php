@@ -194,7 +194,7 @@
 													<div class="cedula-new">
 														<?= $form->field($model, 'capital_new')->widget(MaskedInput::className(), [
 																										'id' => 'capital-new',
-																										'mask' => '000.000.000.000.000,00, {reverse: true}',
+																										'mask' => '000.000.000.000.000,00',
 																										'options' => [
 																											'class' => 'form-control',
 																											'style' => 'width: 120%;',
@@ -202,6 +202,7 @@
 																										'clientOptions' => [
 																											'alias' =>  'decimal',
 																											'groupSeparator' => '.',
+																											//reverse: true}'
 																											//'decimalSeparator' => ',',
 																										],
 
