@@ -51,6 +51,7 @@
 
     use Yii;
     use common\models\solicitudescontribuyente\inmueble\ProcesarInscripcionInmuebleUrbano;
+    use common\models\solicitudescontribuyente\inmueble\ProcesarActualizacionDatosInmuebleUrbano;
 
 
 
