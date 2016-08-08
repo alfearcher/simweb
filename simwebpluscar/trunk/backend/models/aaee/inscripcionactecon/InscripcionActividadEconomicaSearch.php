@@ -78,11 +78,31 @@
 		public function yaPoseeSolicitudSimiliar()
 		{
 			$modelFind = null;
-			$modelFind = InscripcionActividadEconomica::find()->where('id_contribuyente =:id_contribuyente', [':id_contribuyente' => $this->id_contribuyente])
+			$modelFind = InscripcionActividadEconomica::find()->where('id_contribuyente =:id_contribuyente',
+			 															[':id_contribuyente' => $this->id_contribuyente])
 															  ->andWhere(['IN', 'estatus', [0,1]])
 															  ->count();
 			return ($modelFind > 0) ? true : false;
 		}
+
+
+
+		/**
+		 * Metodo que permite determinar si el contribuyente posee una solicitud pendiente (estatus = 0)
+		 * del mismo tipo.
+		 * @return boolean retorna true si ya posee una solicitud con las caracteristicas descriptas, caso
+		 * contrario retornara false.
+		 */
+		public function poseeSolicitudPendiente()
+		{
+			$findModel = null;
+			$findModel = InscripcionActividadEconomica::find()->where('id_contribuyente =:id_contribuyente',
+									 									[':id_contribuyente' => $this->id_contribuyente])
+															  ->andWhere(['IN', 'estatus', [0]])
+															  ->count();
+			return ($findModel > 0) ? true : false;
+		}
+
 
 
 		/**
@@ -100,7 +120,6 @@
 															  ->count();
 			return ($modelFind > 0) ? true : false;
 		}
-
 
 
 		 /**
