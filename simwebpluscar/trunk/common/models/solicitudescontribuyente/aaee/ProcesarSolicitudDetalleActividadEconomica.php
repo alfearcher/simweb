@@ -54,6 +54,7 @@
     use common\models\solicitudescontribuyente\aaee\ProcesarInscripcionSucursal;
     use common\models\solicitudescontribuyente\aaee\ProcesarCorreccionDomicilioFiscal;
     use common\models\solicitudescontribuyente\aaee\ProcesarCorreccionCedulaRif;
+    use common\models\solicitudescontribuyente\aaee\ProcesarCorreccionCapital;
 
 
     /**
@@ -134,14 +135,19 @@
                                                                        $this->_conexion);
                     $result = $procesar->procesarSolicitud();
 
+                } elseif ( $this->_model->tipo_solicitud == 15 ) {
+                    $procesar = New ProcesarCorreccionCapital($this->_model,
+                                                              $this->_evento,
+                                                              $this->_conn,
+                                                              $this->_conexion);
+                    $result = $procesar->procesarSolicitud();
+
                 } elseif ( $this->_model->tipo_solicitud == 69 ) {
                     $procesar = New ProcesarCorreccionCedulaRif($this->_model,
                                                                 $this->_evento,
                                                                 $this->_conn,
                                                                 $this->_conexion);
                     $result = $procesar->procesarSolicitud();
-
-                } elseif ( $this->_model->tipo_solicitud == 'a' ) {
 
 
                 } elseif ( $this->_model->tipo_solicitud == 'b' ) {
