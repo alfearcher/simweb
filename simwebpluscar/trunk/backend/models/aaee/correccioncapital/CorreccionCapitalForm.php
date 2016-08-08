@@ -122,7 +122,8 @@
     			['capital_new',
     			 'compare',
     			 'compareAttribute' => 'capital_v',
-    			 'operator' => '>=', 'message' => Yii::t('backend', '{attribute} must be no less that ')],
+    			 'operator' => '>=',
+    			 'message' => Yii::t('backend', '{attribute} must be no less that ' . self::attributeLabels()['capital_v'])],
     			 //['capital_new', 'compare'
     			//['capital_new', 'format', Yii::$app->formatted->asDecimal($model->)]
     		];
