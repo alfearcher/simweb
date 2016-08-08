@@ -50,8 +50,8 @@
     namespace common\models\solicitudescontribuyente\aaee;
 
     use Yii;
-    use backend\models\aaee\correccioncedularif\CorreccionRepresentanteLegalSearch;
-    use backend\models\aaee\correccioncedularif\CorreccionRepresentanteLegalForm;
+    use backend\models\aaee\correccionreplegal\CorreccionRepresentanteLegalSearch;
+    use backend\models\aaee\correccionreplegal\CorreccionRepresentanteLegalForm;
     use common\models\contribuyente\ContribuyenteBase;
 
 
