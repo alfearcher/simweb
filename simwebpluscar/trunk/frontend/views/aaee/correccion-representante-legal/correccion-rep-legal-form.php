@@ -22,14 +22,14 @@
  */
 
  /**
- *  @file correccion-cedula-rif-form.php
+ *  @file correccion-rep-legal-form.php
  *
  *  @author Jose Rafael Perez Teran
  *
- *  @date 31-07-2016
+ *  @date 08-08-2016
  *
- *  @view correccion-cedula-rif-form
- *  @brief vista principal del cambio o correccion de la cedula o rif
+ *  @view correccion-rep-legal-form
+ *  @brief vista principal del cambio o correccion del representante legal
  *
  */
 
@@ -48,7 +48,7 @@
 
 ?>
 
-<div class="correccion-cedula-rif-form">
+<div class="correccion-representante-legal-form">
  	<?php
 
  		$form = ActiveForm::begin([
@@ -61,14 +61,15 @@
  	?>
 
 	<?=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $datos['id_contribuyente']])->label(false);?>
-	<?=$form->field($model, 'dni_v')->hiddenInput([
-										'value' => $datos['naturaleza'] . '-' . $datos['cedula'] . '-' . $datos['tipo'],
+	<?=$form->field($model, 'dni_principal')->hiddenInput([
+												'value' => $datos['naturaleza'] . '-' . $datos['cedula'] . '-' . $datos['tipo'],
 								])->label(false);?>
-	<?=$form->field($model, 'naturaleza_v')->hiddenInput(['value' => $datos['naturaleza']])->label(false);?>
-	<?=$form->field($model, 'cedula_v')->hiddenInput(['value' => $datos['cedula']])->label(false);?>
-	<?=$form->field($model, 'tipo_v')->hiddenInput(['value' => $datos['tipo']])->label(false);?>
-	<?=$form->field($model, 'tipo_naturaleza_v')->hiddenInput(['value' => $datos['tipo_naturaleza']])->label(false);?>
-	<?=$form->field($model, 'tipo_naturaleza_new')->hiddenInput(['value' => $datos['tipo_naturaleza']])->label(false);?>
+	<?=$form->field($model, 'naturaleza_rep_v')->hiddenInput(['value' => $datos['naturaleza_rep']])->label(false);?>
+	<?=$form->field($model, 'cedula_rep_v')->hiddenInput(['value' => $datos['cedula_rep']])->label(false);?>
+	<?=$form->field($model, 'representante_v')->hiddenInput(['value' => $datos['representante']])->label(false);?>
+	<?=$form->field($model, 'naturaleza_rep_new')->hiddenInput(['value' => $datos['naturaleza_rep']])->label(false);?>
+	<?=$form->field($model, 'cedula_rep_new')->hiddenInput(['value' => $datos['cedula_rep']])->label(false);?>
+	<?=$form->field($model, 'representante_new')->hiddenInput(['value' => $datos['representante']])->label(false);?>
 	<?=$form->field($model, 'razon_social')->hiddenInput(['value' => $datos['razon_social']])->label(false);?>
 	<?=$form->field($model, 'nro_solicitud')->hiddenInput(['value' => 0])->label(false);?>
 	<?=$form->field($model, 'estatus')->hiddenInput(['value' => $model->estatus])->label(false); ?>
@@ -103,7 +104,7 @@
 							    					'value' => $datos['id_contribuyente'],
 							    				],
 							    				[
-							    					'label' => $model->getAttributeLabel('dni_v'),
+							    					'label' => $model->getAttributeLabel('dni_principal'),
 							    					'value' => $datos['naturaleza'] . '-' . $datos['cedula'] . '-' . $datos['tipo'],
 							    				],
 							    				[
@@ -188,11 +189,12 @@
 											<div class="form-group">
 <!-- Combo Naturaleza Nuevo -->
 				        						<div class="col-sm-3" style="width: 50%;">
-													<div class="naturaleza-new">
-								                		<?= $form->field($model, 'naturaleza_new')->dropDownList($listaNaturaleza,[
-				                																	 			'id' => 'naturaleza_new',
+													<div class="naturaleza-rep-new">
+								                		<?= $form->field($model, 'naturaleza_rep_new')->dropDownList($listaNaturaleza,[
+				                																	 			'id' => 'naturaleza-rep-new',
 				                																	 			'style' => 'width: 100%;',
 				                                                                     				 			'prompt' => Yii::t('backend', 'Select..'),
+				                                                                     				 			'value' => $datos['naturaleza_rep'],
 				                                                                    							])->label(false)
 								    					?>
 													</div>
@@ -201,27 +203,29 @@
 
 <!-- Cedula o Rif Nuevo -->
 												<div class="col-sm-3" style="width: 40%;margin-left: -25px;">
-													<div class="cedula-new">
-														<?= $form->field($model, 'cedula_new')->textInput([
-																										'id' => 'cedula_new',
+													<div class="cedula-rep-new">
+														<?= $form->field($model, 'cedula_rep_new')->textInput([
+																										'id' => 'cedula-rep-new',
 																										'style' => 'width: 100%;',
-																										'maxlength' => ($datos['tipo_naturaleza'] == 1 ) ? 9 : 8,
+																										'maxlength' => 8,
+																										'value' => $datos['cedula_rep'],
 																					  				  ])->label(false) ?>
 													</div>
 												</div>
 <!-- Fin de Cedula o Rif Nuevo -->
 
-<!-- Tipo Nuevo ultimo digito del rif, contribuyentes juridico -->
-												<div class="col-sm-1" style="width: 20%; margin-left: -25px;">
-													<div class="tipo-new">
-														<?= $form->field($model, 'tipo_new')->textInput([
-																									'id' => 'tipo_new',
-																									'maxlength' => 1,
-																									'style' => 'width: 100%;',
+<!-- Apellidos y nombre del representante legal -->
+												<div class="col-sm-6" style="width: 20%; margin-left: 5px;">
+													<div class="representante-new">
+														<?= $form->field($model, 'representante_new')->textInput([
+																									'id' => 'representante-new',
+																									'maxlength' => 200,
+																									'style' => 'width: 120%;',
+																									'value' => $datos['representante'],
 																						  			])->label(false) ?>
 													</div>
 												</div>
-<!-- Fin de Tipo Nuevo -->
+<!-- Fin de Apellidos y nombre del representante legal -->
 											</div>
 										</div>
 									</div>

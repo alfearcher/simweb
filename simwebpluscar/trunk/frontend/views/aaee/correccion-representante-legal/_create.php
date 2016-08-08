@@ -26,7 +26,7 @@
  *
  *  @author Jose Rafael Perez Teran
  *
- *  @date 01-08-2016
+ *  @date 08-08-2016
  *
  *  @view create.php
  *  @brief vista que canaliza la salida de los formularios.
@@ -39,11 +39,11 @@
 	/**
 	*@var $this yii\web\View */
 
-	$this->title = Yii::t('backend', 'Update of DNI');
+	$this->title = Yii::t('backend', 'Update of Legal Represent');
 
 	?>
-<div class="correccion-cedula-rif-form-create">
-    <?= $this->render('correccion-cedula-rif-form', [
+<div class="correccion-representante-legal-form-create">
+    <?= $this->render('correccion-rep-legal-form', [
 						        'model' => $model,
 						        'datos' => $datos,
 						        'subCaption' => $subCaption,
