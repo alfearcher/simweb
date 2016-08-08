@@ -232,7 +232,7 @@
 	      						$dataProvider = $dataProvider = $searchCorreccion->getDataProviderSucursal($ids);
 	      						$caption = Yii::t('frontend', 'Confirm Create. Update of Legal Represent');
 	      						$subCaption = Yii::t('frontend', 'Info of Taxpayer');
-
+// die(var_dump($postData));
 	      						return $this->render('/aaee/correccion-representante-legal/pre-view-create', [
 	      																	'model' => $model,
 	      																	'datosRecibido' => $datosRecibido,
