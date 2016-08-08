@@ -40,7 +40,7 @@
  *
  */
 
- 	namespace backend\models\aaee\correccionrepleagl;
+ 	namespace backend\models\aaee\correccionreplegal;
 
  	use Yii;
 	use yii\base\Model;

@@ -40,12 +40,12 @@
  *
  */
 
- 	namespace backend\models\aaee\correccionrepleagl;
+ 	namespace backend\models\aaee\correccionreplegal;
 
  	use Yii;
 	use yii\base\Model;
 	use yii\data\ActiveDataProvider;
-	use backend\models\aaee\correccionrepleagl\CorreccionRepresentanteLegal;
+	use backend\models\aaee\correccionreplegal\CorreccionRepresentanteLegal;
 	use common\models\aaee\Sucursal;
 
 
@@ -158,9 +158,10 @@
 	        	'id_correccion' => Yii::t('frontend', 'Id. Record'),
 	            'id_contribuyente' => Yii::t('frontend', 'Id. Taxpayer'),
 	            'nro_solicitud' => Yii::t('frontend', 'Request Number'),
-	            'dni_v' => Yii::t('frontend', 'Current DNI'),
+	            'dni_principal' => Yii::t('frontend', 'DNI'),
+	            'dni_representante_v' => Yii::t('frontend', 'Current DNI'),
 	            'representante_v' => Yii::t('frontend', 'Current Legal Represent'),
-	            'dni_new' => Yii::t('frontend', 'New DNI'),
+	            'dni_representante_new' => Yii::t('frontend', 'New DNI'),
 	            'representante_new' => Yii::t('frontend', 'New Legal Represent'),
 	            'razon_social' => Yii::t('frontend', 'Companies'),
 	            'id_sim' => Yii::t('frontend', 'License'),

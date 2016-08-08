@@ -40,7 +40,7 @@
  *
  */
 
- 	namespace backend\models\aaee\correccionrepleagl;
+ 	namespace backend\models\aaee\correccionreplegal;
 
  	use Yii;
 	use yii\base\Model;
@@ -48,7 +48,7 @@
 	use yii\data\ActiveDataProvider;
 	use backend\models\solicitud\estatus\EstatusSolicitud;
 	use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomicaSearch;
-	use backend\models\aaee\correccionrepleagl\CorreccionRepresentanteLegal;
+	use backend\models\aaee\correccionreplegal\CorreccionRepresentanteLegal;
 	use common\models\contribuyente\ContribuyenteBase;
 	use common\models\aaee\Sucursal;
 	use backend\models\aaee\inscripcionsucursal\InscripcionSucursalSearch;
