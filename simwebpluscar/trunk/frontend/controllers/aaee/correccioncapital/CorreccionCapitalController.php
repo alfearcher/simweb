@@ -221,6 +221,7 @@
 	      					}
 	      				} elseif ( isset($postData['btn-confirm-create']) ) {
 	      					if ( $postData['btn-confirm-create'] == 2 ) {
+//die(var_dump($postData));
 	      						$result = self::actionBeginSave($model, $postData);
 	      						self::actionAnularSession(['begin']);
 	      						if ( $result ) {
@@ -623,7 +624,7 @@
 		 * @param  array $conf arreglo que contiene los parametros principales de la configuracion de la
 		 * solicitud.
 		 * @param  array $chkSeleccion arreglo que contiene los identificadores de los contribuyentes
-		 * a los cuales se se les actualizara el rif.
+		 * a los cuales se se les actualizara el capital.
 		 * @return boolean retorna un true si envio el correo o false en caso
 		 * contrario.
 		 */
