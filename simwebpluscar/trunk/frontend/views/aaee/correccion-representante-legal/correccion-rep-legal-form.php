@@ -67,9 +67,6 @@
 	<?=$form->field($model, 'naturaleza_rep_v')->hiddenInput(['value' => $datos['naturaleza_rep']])->label(false);?>
 	<?=$form->field($model, 'cedula_rep_v')->hiddenInput(['value' => $datos['cedula_rep']])->label(false);?>
 	<?=$form->field($model, 'representante_v')->hiddenInput(['value' => $datos['representante']])->label(false);?>
-	<?=$form->field($model, 'naturaleza_rep_new')->hiddenInput(['value' => $datos['naturaleza_rep']])->label(false);?>
-	<?=$form->field($model, 'cedula_rep_new')->hiddenInput(['value' => $datos['cedula_rep']])->label(false);?>
-	<?=$form->field($model, 'representante_new')->hiddenInput(['value' => $datos['representante']])->label(false);?>
 	<?=$form->field($model, 'razon_social')->hiddenInput(['value' => $datos['razon_social']])->label(false);?>
 	<?=$form->field($model, 'nro_solicitud')->hiddenInput(['value' => 0])->label(false);?>
 	<?=$form->field($model, 'estatus')->hiddenInput(['value' => $model->estatus])->label(false); ?>
@@ -113,7 +110,15 @@
 							    				],
 							    				[
 							    					'label' => $model->getAttributeLabel('id_sim'),
-							    					'value' =>  $datos['id_sim'],
+							    					'value' => $datos['id_sim'],
+							    				],
+							    				[
+							    					'label' => $model->getAttributeLabel('dni_representante_v'),
+							    					'value' => $datos['naturaleza_rep'] . '-' . $datos['cedula_rep'],
+							    				],
+							    				[
+							    					'label' => $model->getAttributeLabel('representante_v'),
+							    					'value' => $datos['representante'],
 							    				],
 							    			],
 										])
@@ -156,6 +161,18 @@
 	                    											},
 									                ],
 									                [
+									                    'label' => Yii::t('backend', 'DNI Legal Represent'),
+									                    'value' => function($data) {
+	                            										return $data->naturaleza_rep . '-' . $data->cedula_rep;
+	                    											},
+									                ],
+									                [
+									                    'label' => Yii::t('backend', 'Legal Represent'),
+									                    'value' => function($data) {
+	                            										return $data->representante;
+	                    											},
+									                ],
+									                [
 									                	'class' => 'yii\grid\CheckboxColumn',
 									                	'name' => 'chkSucursal',
 									                	'checkboxOptions' => [
@@ -179,57 +196,71 @@
 					<div class="row">
 						<div class="panel panel-success" style="width: 103%;margin-left: -15px;">
 							<div class="panel-heading">
-					        	<span><?= Html::encode($model->getAttributeLabel('dni_new')) ?></span>
+					        	<span><?= Html::encode(Yii::t('backend', 'Info of Legal Represent')) ?></span>
 					        </div>
 	        				<div class="panel-body">
 	        					<div class="row">
 <!-- Cedula / Rif Nueva -->
-									<div class="col-sm-5" style="margin-left: 15px;margin-top: 0px">
+									<div class="col-sm-2" style="padding-left: 30px; width:21%;">
 										<div class="row">
-											<div class="form-group">
-<!-- Combo Naturaleza Nuevo -->
-				        						<div class="col-sm-3" style="width: 50%;">
-													<div class="naturaleza-rep-new">
-								                		<?= $form->field($model, 'naturaleza_rep_new')->dropDownList($listaNaturaleza,[
-				                																	 			'id' => 'naturaleza-rep-new',
-				                																	 			'style' => 'width: 100%;',
-				                                                                     				 			'prompt' => Yii::t('backend', 'Select..'),
-				                                                                     				 			'value' => $datos['naturaleza_rep'],
-				                                                                    							])->label(false)
-								    					?>
-													</div>
-				        						</div>
-<!-- Fin de Combo Naturaleza Nuevo -->
-
-<!-- Cedula o Rif Nuevo -->
-												<div class="col-sm-3" style="width: 40%;margin-left: -25px;">
-													<div class="cedula-rep-new">
-														<?= $form->field($model, 'cedula_rep_new')->textInput([
-																										'id' => 'cedula-rep-new',
-																										'style' => 'width: 100%;',
-																										'maxlength' => 8,
-																										'value' => $datos['cedula_rep'],
-																					  				  ])->label(false) ?>
-													</div>
-												</div>
-<!-- Fin de Cedula o Rif Nuevo -->
-
-<!-- Apellidos y nombre del representante legal -->
-												<div class="col-sm-6" style="width: 20%; margin-left: 5px;">
-													<div class="representante-new">
-														<?= $form->field($model, 'representante_new')->textInput([
-																									'id' => 'representante-new',
-																									'maxlength' => 200,
-																									'style' => 'width: 120%;',
-																									'value' => $datos['representante'],
-																						  			])->label(false) ?>
-													</div>
-												</div>
-<!-- Fin de Apellidos y nombre del representante legal -->
-											</div>
+											<p><strong><?= Yii::t('backend', $model->getAttributeLabel('dni_representante_new')) ?></strong></p>
 										</div>
 									</div>
 
+									<div class="col-sm-5" style="margin-left: -20px;margin-top: 0px">
+										<div class="form-group">
+<!-- Combo Naturaleza Nuevo -->
+			        						<div class="col-sm-3" style="width: 50%;">
+												<div class="naturaleza-rep-new">
+							                		<?= $form->field($model, 'naturaleza_rep_new')->dropDownList($listaNaturaleza,[
+			                																	 			'id' => 'naturaleza-rep-new',
+			                																	 			'style' => 'width: 100%;',
+			                                                                     				 			'prompt' => Yii::t('backend', 'Select..'),
+			                                                                     				 			//'value' => $datos['naturaleza_rep'],
+			                                                                    							])->label(false)
+							    					?>
+												</div>
+			        						</div>
+<!-- Fin de Combo Naturaleza Nuevo -->
+
+<!-- Cedula o Rif Nuevo -->
+											<div class="col-sm-3" style="width: 40%;margin-left: -25px;">
+												<div class="cedula-rep-new">
+													<?= $form->field($model, 'cedula_rep_new')->textInput([
+																									'id' => 'cedula-rep-new',
+																									'style' => 'width: 100%;',
+																									'maxlength' => 8,
+																									//'value' => $datos['cedula_rep'],
+																				  				  ])->label(false) ?>
+												</div>
+											</div>
+<!-- Fin de Cedula o Rif Nuevo -->
+										</div>
+									</div>
+								</div>
+
+
+								<div class="row">
+<!-- Apellidos y nombre del representante legal -->
+									<div class="col-sm-2" style="padding-left: 30px; width:20%;">
+										<div class="row">
+											<p><strong><?= Yii::t('backend', $model->getAttributeLabel('representante_new')) ?></strong></p>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<div class="col-sm-6" style="width: 40%; margin-left: 5px;">
+											<div class="representante-new">
+												<?= $form->field($model, 'representante_new')->textInput([
+																							'id' => 'representante-new',
+																							'maxlength' => 200,
+																							'style' => 'width: 120%;',
+																							//'value' => $datos['representante'],
+																				  			])->label(false) ?>
+											</div>
+										</div>
+									</div>
+<!-- Fin de Apellidos y nombre del representante legal -->
 								</div>
 							</div>
 						</div>

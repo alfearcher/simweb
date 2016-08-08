@@ -22,14 +22,14 @@
  */
 
  /**
- *  @file correccion-cedula-rif-form.php
+ *  @file correccion-rep-legal-form.php
  *
  *  @author Jose Rafael Perez Teran
  *
- *  @date 31-07-2016
+ *  @date 08-08-2016
  *
- *  @view correccion-cedula-rif-form
- *  @brief vista principal del cambio o correccion de la cedula o rif
+ *  @view correccion-rep-legal-form
+ *  @brief vista principal del cambio o correccion del representante legal
  *
  */
 
@@ -48,7 +48,7 @@
 
 ?>
 
-<div class="correccion-cedula-rif-form">
+<div class="correccion-representante-legal-form">
  	<?php
 
  		$form = ActiveForm::begin([
@@ -61,24 +61,25 @@
  	?>
 
 	<?=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $model['id_contribuyente']])->label(false);?>
-	<?=$form->field($model, 'naturaleza_v')->hiddenInput(['value' => $model['naturaleza_v']])->label(false);?>
-	<?=$form->field($model, 'cedula_v')->hiddenInput(['value' => $model['cedula_v']])->label(false);?>
-	<?=$form->field($model, 'tipo_v')->hiddenInput(['value' => $model['tipo_v']])->label(false);?>
-	<?=$form->field($model, 'tipo_naturaleza_v')->hiddenInput(['value' => $model['tipo_naturaleza_v']])->label(false);?>
-	<?=$form->field($model, 'naturaleza_new')->hiddenInput(['value' => $model['naturaleza_new']])->label(false);?>
-	<?=$form->field($model, 'cedula_new')->hiddenInput(['value' => $model['cedula_new']])->label(false);?>
-	<?=$form->field($model, 'tipo_new')->hiddenInput(['value' => $model['tipo_new']])->label(false);?>
-	<?=$form->field($model, 'tipo_naturaleza_new')->hiddenInput(['value' => $model['tipo_naturaleza_new']])->label(false);?>
+	<?=$form->field($model, 'dni_principal')->hiddenInput([
+												'value' => $datosRecibido['dni_principal'],
+								])->label(false);?>
+	<?=$form->field($model, 'naturaleza_rep_v')->hiddenInput(['value' => $model['naturaleza_rep_v']])->label(false);?>
+	<?=$form->field($model, 'cedula_rep_v')->hiddenInput(['value' => $model['cedula_rep_v']])->label(false);?>
+	<?=$form->field($model, 'representante_v')->hiddenInput(['value' => $model['representante_v']])->label(false);?>
+	<?=$form->field($model, 'naturaleza_rep_new')->hiddenInput(['value' => $model['naturaleza_rep_new']])->label(false);?>
+	<?=$form->field($model, 'cedula_rep_new')->hiddenInput(['value' => $model['cedula_rep_new']])->label(false);?>
+	<?=$form->field($model, 'representante_new')->hiddenInput(['value' => $model['representante_new']])->label(false);?>
 	<?=$form->field($model, 'razon_social')->hiddenInput(['value' => $datosRecibido['razon_social']])->label(false);?>
 	<?=$form->field($model, 'nro_solicitud')->hiddenInput(['value' => 0])->label(false);?>
+	<?=$form->field($model, 'estatus')->hiddenInput(['value' => $model->estatus])->label(false); ?>
 	<?=$form->field($model, 'fecha_hora')->hiddenInput(['value' => $model->fecha_hora])->label(false); ?>
 	<?=$form->field($model, 'origen')->hiddenInput(['value' => $model->origen])->label(false); ?>
-	<?=$form->field($model, 'estatus')->hiddenInput(['value' => $model->estatus])->label(false); ?>
 
 	<meta http-equiv="refresh">
     <div class="panel panel-primary"  style="width: 90%;">
         <div class="panel-heading">
-        	<h3><?= Html::encode($caption) ?></h3>
+        	<h3><?= Html::encode($this->title) ?></h3>
         </div>
 
 <!-- Cuerpo del formulario -->
@@ -104,8 +105,8 @@
 							    					'value' => $model['id_contribuyente'],
 							    				],
 							    				[
-							    					'label' => $model->getAttributeLabel('dni_v'),
-							    					'value' => $model['naturaleza_v'] . '-' . $model['cedula_v'] . '-' . $model['tipo_v'],
+							    					'label' => $model->getAttributeLabel('dni_principal'),
+							    					'value' => $datosRecibido['dni_principal'],
 							    				],
 							    				[
 							    					'label' => $model->getAttributeLabel('razon_social'),
@@ -113,8 +114,17 @@
 							    				],
 							    				[
 							    					'label' => $model->getAttributeLabel('id_sim'),
-							    					'value' =>  $datosRecibido['id_sim'],
+							    					'value' => $datosRecibido['id_sim'],
 							    				],
+							    				[
+							    					'label' => $model->getAttributeLabel('dni_representante_v'),
+							    					'value' => $datosRecibido['naturaleza_rep_v'] . '-' . $datosRecibido['cedula_rep_v'],
+							    				],
+							    				[
+							    					'label' => $model->getAttributeLabel('representante_v'),
+							    					'value' => $model['representante_v'],
+							    				],
+
 							    			],
 										])
 									?>
@@ -133,33 +143,58 @@
 
 									            	[
 									                    'label' => Yii::t('backend', 'ID.'),
-									                    'value' => function($model) {
-	                            										return $model->id_contribuyente;
+									                    'value' => function($data) {
+	                            										return $data->id_contribuyente;
 	                    											},
 									                ],
 									                [
 									                    'label' => Yii::t('backend', 'Current DNI'),
-									                    'value' => function($model) {
-	                            										return $model->naturaleza . '-' . $model->cedula . '-' . $model->tipo;
+									                    'value' => function($data) {
+	                            										return $data->naturaleza . '-' . $data->cedula . '-' . $data->tipo;
 	                    											},
 									                ],
 									                [
 									                    'label' => Yii::t('backend', 'Taxpayer'),
-									                    'value' => function($model) {
-	                            										return $model->razon_social;
+									                    'value' => function($data) {
+	                            										return $data->razon_social;
 	                    											},
 									                ],
 									                [
 									                    'label' => Yii::t('backend', 'License No.'),
-									                    'value' => function($model) {
-	                            										return $model->id_sim;
+									                    'value' => function($data) {
+	                            										return $data->id_sim;
 	                    											},
 									                ],
+									                [
+									                    'label' => Yii::t('backend', 'Ant DNI Legal Represent'),
+									                    'value' => function($data) {
+	                            										return $data->naturaleza_rep . '-' . $data->cedula_rep;
+	                    											},
+									                ],
+									                [
+									                    'label' => Yii::t('backend', 'Ant Legal Represent'),
+									                    'value' => function($data) {
+	                            										return $data->representante;
+	                    											},
+									                ],
+
+									                /*[
+									                    'label' => Yii::t('backend', 'New DNI Legal Represent'),
+									                    'value' => function($data) {
+	                            										return $data->naturaleza_rep_new . '-' . $data->cedula_rep_new;
+	                    											},
+									                ],
+									                [
+									                    'label' => Yii::t('backend', 'New Legal Represent'),
+									                    'value' => function($data) {
+	                            										return $data->representante_new;
+	                    											},
+									                ],*/
 									                [
 									                	'class' => 'yii\grid\CheckboxColumn',
 									                	'name' => 'chkSucursal',
 									                	'checkboxOptions' => [
-                                							'id' => 'chk-planilla',
+                                							'id' => 'chkSucursal',
                                 							// Lo siguiente mantiene el checkbox tildado.
                                 							'onClick' => 'javascript: return false;',
                                 							'checked' => true,
@@ -175,70 +210,56 @@
 					    </div>
 					</div>
 
-<!-- Cedula / Rif NUEVO -->
+<!-- Representante Legal NUEVO -->
 					<div class="row">
 						<div class="panel panel-success" style="width: 103%;margin-left: -15px;">
 							<div class="panel-heading">
-					        	<span><?= Html::encode($model->getAttributeLabel('dni_new')) ?></span>
+					        	<span><?= Html::encode(Yii::t('backend', 'New Info of Legal Represent')) ?></span>
 					        </div>
 	        				<div class="panel-body">
-	        					<div class="row">
-<!-- Cedula / Rif Nueva -->
-									<div class="col-sm-5" style="margin-left: 15px;margin-top: 0px">
-										<div class="row">
-											<?= DetailView::widget([
-												'model' => $model,
-								    			'attributes' => [
-
-								    				[
-								    					'label' => $model->getAttributeLabel('dni_new'),
-								    					'value' => $model['naturaleza_new'] . '-' . $model['cedula_new'] . '-' . $model['tipo_new'],
-								    				],
-								    			],
-											])
-										?>
-										</div>
-									</div>
-
+	        					<div class="row" style="width: 100%; padding-left: 15px;">
+									<?= DetailView::widget([
+											'model' => $model,
+							    			'attributes' => [
+							    				[
+							    					'label' => $model->getAttributeLabel('dni_new'),
+							    					'value' => $model['naturaleza_rep_new'] . '-' . $model['cedula_rep_new'],
+							    				],
+							    				[
+							    					'label' => $model->getAttributeLabel('representante_new'),
+							    					'value' => $model['representante_new'],
+							    				],
+							    			],
+										])
+									?>
 								</div>
 							</div>
 						</div>
 					</div>
-<!-- Fin de Cedula / Rif Nueva -->
-<!-- FIN DE Cedula / Rif NUEVO -->
-
+<!-- Fin Representante Legal Nueva -->
 
 					<div class="row" style="margin-top: 15px;">
 <!-- Boton para aplicar la actualizacion -->
 						<div class="col-sm-3">
 							<div class="form-group">
-								<?= Html::submitButton(Yii::t('backend', Yii::t('backend', 'Confirm Create')),
-																									  [
-																										'id' => 'btn-confirm-create',
-																										'class' => 'btn btn-success',
-																										'value' => 2,
-																										'style' => 'width: 100%',
-																										'name' => 'btn-confirm-create',
-																									  ])
-								?>
+								<?= Html::submitButton(Yii::t('backend', 'Confirm Create'),[
+																				'id' => 'btn-confirm-create',
+																				'class' => 'btn btn-success',
+																				'name' => 'btn-confirm-create',
+																				'value' => 2,
+																				'style' => 'width: 100%;'
+									])?>
 							</div>
 						</div>
-<!-- Fin de Boton para aplicar la actualizacion -->
-
-						<div class="col-sm-1"></div>
-
-<!-- Boton para salir de la actualizacion -->
-						<div class="col-sm-3" style="margin-left: 50px;">
+						<div class="col-sm-2" style="margin-left: 150px;">
 							<div class="form-group">
-								<?= Html::submitButton(Yii::t('backend', Yii::t('backend', 'Back Form')),
-																									  [
-																										'id' => 'btn-back-form',
-																										'class' => 'btn btn-danger',
-																										'value' => 3,
-																										'style' => 'width: 100%',
-																										'name' => 'btn-back-form',
-																									  ])
-								?>
+								 <?= Html::submitButton(Yii::t('backend', 'Back Form'),[
+																				'id' => 'btn-back-form',
+																				'class' => 'btn btn-danger',
+																				'name' => 'btn-back-form',
+																				'value' => 3,
+																				'style' => 'width: 100%;'
+									])?>
 							</div>
 						</div>
 <!-- Fin de Boton para salir de la actualizacion -->
