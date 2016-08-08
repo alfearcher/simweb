@@ -56,7 +56,7 @@
 
  ?>
 
- <div class="view-inscripcion-sucursal-creada">
+ <div class="view-correccion-rep-legal-creada">
 	<meta http-equiv="refresh">
     <div class="panel panel-primary"  style="width: 100%;">
         <div class="panel-heading">
@@ -106,15 +106,28 @@
                 											},
 							                ],
 							                [
-							                    'label' => Yii::t('frontend', 'Ant DNI'),
+							                    'label' => Yii::t('frontend', 'Ant DNI (Legal Represent)'),
 							                    'value' => function($model) {
-                        										return $model->naturaleza_v . '-' . $model->cedula_v . '-' . $model->tipo_v;
+                        										return $model->naturaleza_rep_v . '-' . $model->cedula_rep_v;
                 											},
 							                ],
 							                [
-							                    'label' => Yii::t('frontend', 'New DNI'),
+							                    'label' => Yii::t('frontend', 'Ant Legal Represent'),
 							                    'value' => function($model) {
-                        										return $model->naturaleza_new . '-' . $model->cedula_new . '-' . $model->tipo_new;
+                        										return $model->representante_v;
+                											},
+							                ],
+
+							                [
+							                    'label' => Yii::t('frontend', 'New DNI (Legal Represent)'),
+							                    'value' => function($model) {
+                        										return $model->naturaleza_rep_new . '-' . $model->cedula_rep_new;
+                											},
+							                ],
+							                [
+							                    'label' => Yii::t('frontend', 'New Legal Represent'),
+							                    'value' => function($model) {
+                        										return $model->representante_new;
                 											},
 							                ],
 							                [
