@@ -50,8 +50,8 @@
     namespace common\models\solicitudescontribuyente\aaee;
 
     use Yii;
-    use backend\models\aaee\correccioncedularif\CorreccionCapitalSearch;
-    use backend\models\aaee\correccioncedularif\CorreccionCapitalForm;
+    use backend\models\aaee\correccioncapital\CorreccionCapitalSearch;
+    use backend\models\aaee\correccioncapital\CorreccionCapitalForm;
     use common\models\contribuyente\ContribuyenteBase;
 
 
