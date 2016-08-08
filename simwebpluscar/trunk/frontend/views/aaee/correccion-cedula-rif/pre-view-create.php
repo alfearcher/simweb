@@ -113,7 +113,7 @@
 							    				],
 							    				[
 							    					'label' => $model->getAttributeLabel('id_sim'),
-							    					'value' =>  $datosRecibido['id_sim'],
+							    					'value' => $datosRecibido['id_sim'],
 							    				],
 							    			],
 										])
