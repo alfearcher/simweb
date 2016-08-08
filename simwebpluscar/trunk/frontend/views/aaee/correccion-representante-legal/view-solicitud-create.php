@@ -86,7 +86,7 @@
 					        	<span><?= Html::encode(Yii::t('backend', 'Summary')) ?></span>
 					        </div>
 					        <div class="panel-body">
-					        	<div class="row" style="padding-left: 15px; width: 100%;">
+					        	<div class="row" style="padding-left: 5px; width: 100%;">
 									<?= GridView::widget([
 										'id' => 'grid-contribuyente-asociado',
     									'dataProvider' => $dataProvider,
