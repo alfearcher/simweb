@@ -329,18 +329,18 @@
 					if ( $nroSolicitud > 0 ) {
 						$model->nro_solicitud = $nroSolicitud;
 
-						$result = self::actionCreateCorreccionCedulaRif($this->_conexion,
-																	    $this->_conn,
-																	    $model,
-																	    $conf,
-																	    $chkSeleccion);
+						$result = self::actionCreateCorreccionRepresentanteLegal($this->_conexion,
+																	    		 $this->_conn,
+																	    		 $model,
+																	    		 $conf,
+																	    		 $chkSeleccion);
 
 						if ( $result ) {
-							$result = self::actionUpdateCedulaRif($this->_conexion,
-															      $this->_conn,
-																  $model,
-																  $conf,
-																  $chkSeleccion);
+							$result = self::actionUpdateRepresentanteLegal($this->_conexion,
+															      		   $this->_conn,
+																  		   $model,
+																  		   $conf,
+																  		   $chkSeleccion);
 
 							if ( $result ) {
 								$result = self::actionEjecutaProcesoSolicitud($this->_conexion, $this->_conn, $model, $conf);
