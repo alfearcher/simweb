@@ -178,18 +178,6 @@
 	                    											},
 									                ],
 
-									                /*[
-									                    'label' => Yii::t('backend', 'New DNI Legal Represent'),
-									                    'value' => function($data) {
-	                            										return $data->naturaleza_rep_new . '-' . $data->cedula_rep_new;
-	                    											},
-									                ],
-									                [
-									                    'label' => Yii::t('backend', 'New Legal Represent'),
-									                    'value' => function($data) {
-	                            										return $data->representante_new;
-	                    											},
-									                ],*/
 									                [
 									                	'class' => 'yii\grid\CheckboxColumn',
 									                	'name' => 'chkSucursal',
