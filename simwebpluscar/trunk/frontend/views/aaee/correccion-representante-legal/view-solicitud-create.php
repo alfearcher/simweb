@@ -58,7 +58,7 @@
 
  <div class="view-correccion-rep-legal-creada">
 	<meta http-equiv="refresh">
-    <div class="panel panel-primary"  style="width: 100%;">
+    <div class="panel panel-primary"  style="width: 110%;">
         <div class="panel-heading">
         	<div class="row">
 	        	<div class="col-sm-4">
@@ -106,26 +106,26 @@
                 											},
 							                ],
 							                [
-							                    'label' => Yii::t('frontend', 'Ant DNI (Legal Represent)'),
+							                    'label' => Yii::t('frontend', 'Ant DNI (Legal Rep.)'),
 							                    'value' => function($model) {
                         										return $model->naturaleza_rep_v . '-' . $model->cedula_rep_v;
                 											},
 							                ],
 							                [
-							                    'label' => Yii::t('frontend', 'Ant Legal Represent'),
+							                    'label' => Yii::t('frontend', 'Ant Legal Rep.'),
 							                    'value' => function($model) {
                         										return $model->representante_v;
                 											},
 							                ],
 
 							                [
-							                    'label' => Yii::t('frontend', 'New DNI (Legal Represent)'),
+							                    'label' => Yii::t('frontend', 'New DNI (Legal Rep.)'),
 							                    'value' => function($model) {
                         										return $model->naturaleza_rep_new . '-' . $model->cedula_rep_new;
                 											},
 							                ],
 							                [
-							                    'label' => Yii::t('frontend', 'New Legal Represent'),
+							                    'label' => Yii::t('frontend', 'New Legal Rep.'),
 							                    'value' => function($model) {
                         										return $model->representante_new;
                 											},

@@ -79,7 +79,7 @@
 	<meta http-equiv="refresh">
     <div class="panel panel-primary"  style="width: 90%;">
         <div class="panel-heading">
-        	<h3><?= Html::encode($this->title) ?></h3>
+        	<h3><?= Html::encode($caption) ?></h3>
         </div>
 
 <!-- Cuerpo del formulario -->
