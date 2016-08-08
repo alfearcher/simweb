@@ -109,6 +109,7 @@
             $result = false;
             if ( isset($this->_model) && $this->_model !== null ) {
                 if ( $this->_model->tipo_solicitud == 20 ) {
+                    //Inscripcion
                     $procesar = New ProcesarInscripcionInmuebleUrbano($this->_model,
                                                                           $this->_evento,
                                                                           $this->_conn,
@@ -116,26 +117,42 @@
                     $result = $procesar->procesarSolicitud();
 
                 } elseif ( $this->_model->tipo_solicitud == 21 ) {
+                    //Avaluo
 
                 } elseif ( $this->_model->tipo_solicitud == 22 ) {
+                    //Certificado Catastral
 
                 } elseif ( $this->_model->tipo_solicitud == 23 ) {
+                    //Renovacion Certificado Catastral
 
                 } elseif ( $this->_model->tipo_solicitud == 24 ) {
+                    //Solvencia
 
                 } elseif ( $this->_model->tipo_solicitud == 25 ) {
+                    //Cambio Numero Catastral
 
                 } elseif ( $this->_model->tipo_solicitud == 26 ) {
+                    //Cambio Propietario
 
                 } elseif ( $this->_model->tipo_solicitud == 27 ) {
+                    //Integracion
 
                 } elseif ( $this->_model->tipo_solicitud == 28 ) {
+                    //Desintegracion
 
                 } elseif ( $this->_model->tipo_solicitud == 29 ) {
+                    //Cambio Propiedad Horizontal
 
                 } elseif ( $this->_model->tipo_solicitud == 30 ) {
+                    //cambio otros datos
+                    $procesar = New ProcesarActualizacionDatosInmuebleUrbano($this->_model,
+                                                                          $this->_evento,
+                                                                          $this->_conn,
+                                                                          $this->_conexion);
+                    $result = $procesar->procesarSolicitud();
  
                 } elseif ( $this->_model->tipo_solicitud == 31 ) {
+                    //Modificar Avaluo
 
                 }
 

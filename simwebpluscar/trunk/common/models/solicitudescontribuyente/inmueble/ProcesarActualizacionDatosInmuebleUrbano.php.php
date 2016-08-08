@@ -22,13 +22,13 @@
  */
 
  /**
- *  @file ProcesarInscripcionInmuebleUrbano.php
+ *  @file ProcesarActualizacionDatosInmuebleUrbano.php
  *
  *  @author Alvaro Jose Fernandez ARcher
  *
- *  @date 19/07/2016
+ *  @date 08/08/2016
  *
- *  @class ProcesarInscripcionInmuebleUrbano
+ *  @class ProcesarActualizacionDatosInmuebleUrbano
  *  @brief
  *
  *
@@ -61,7 +61,7 @@
      * que esten relacionada con la aprobacion o negacion de la solicitud. la clase debe
      * entregar como respuesta un true o false.
      */
-    class ProcesarInscripcionInmuebleUrbano extends SlInmueblesUrbanosSearch
+    class ProcesarActualizacionDatosInmuebleUrbano extends SlInmueblesUrbanosSearch
     {
         private $_model;
 
@@ -160,7 +160,7 @@
          * @return Boolean Retorna un true si todo se ejecuto satisfactoriamente, false
          * en caso contrario.
          */
-        public function findInscripcionInmuebleUrbano()
+        public function findActualizacionInmuebleUrbano()
         {
             // Este find retorna el modelo de la entidad "sl-inscripciones-act-econ"
             // con datos, ya que en el metodo padre se ejecuta el ->one() que realiza
@@ -206,10 +206,10 @@
         private function aprobarDetalleSolicitud()
         {
             $result = false;
-            $modelInscripcion = self::findInscripcionInmuebleUrbano();
+            $modelInscripcion = self::findActualizacionInmuebleUrbano();
             if ( $modelInscripcion !== null ) {
                 if ( $modelInscripcion['id_contribuyente'] == $this->_model->id_contribuyente ) {
-                    $result = self::updateSolicitudInscripcion($modelInscripcion);
+                    $result = self::updateSolicitudActualizacionDatos($modelInscripcion);
                     // if ( $result ) {
                     //     $result = self::updateContribuyente($modelInscripcion);
                     // }
@@ -233,10 +233,10 @@
         private function negarDetalleSolicitud()
         {
             $result = false;
-            $modelInscripcion = self::findInscripcionInmuebleUrbano();
+            $modelInscripcion = self::findActualizacionInmuebleUrbano();
             if ( $modelInscripcion !== null ) {
                 if ( $modelInscripcion['id_contribuyente'] == $this->_model->id_contribuyente ) {
-                    $result = self::updateSolicitudInscripcion($modelInscripcion);
+                    $result = self::updateSolicitudActualizacionDatos($modelInscripcion);
                 } else {
                     self::setErrors(Yii::t('backend', 'Error in the ID of taxpayer'));
                 }
@@ -256,7 +256,7 @@
          * @return Boolean Retorna un true si todo se ejecuto satisfactoriamente, false
          * en caso contrario.
          */
-        private function updateSolicitudInscripcion($modelInscripcion)
+        private function updateSolicitudActualizacionDatos($modelInscripcion)
         { 
             $result = false;
             $cancel = false;            // Controla si el proceso se debe cancelar.
@@ -288,9 +288,7 @@
                     $tableNameMaster = 'inmuebles';
 
                     $arregloDatosMaster = [
-                                            'id_impuesto' => $camposModel['id_impuesto'],
-                                            'id_contribuyente' => $camposModel['id_contribuyente'],
-                                            'ano_inicio' => $camposModel['ano_inicio'],
+                                            
                                             'direccion' => $camposModel['direccion'],
                                             'casa_edf_qta_dom' => $camposModel['casa_edf_qta_dom'], 
                                             'piso_nivel_no_dom' => $camposModel['piso_nivel_no_dom'], 
@@ -300,8 +298,11 @@
                                             'tipo_ejido' => $camposModel['id_contribuyente'],
 
                                          ];  
+                    $arregloCondicionMaster = [
+                                                'id_impuesto' => $camposModel['id_impuesto'],
+                                              ]
 
-                    $resultInsert = $this->_conexion->guardarRegistro($this->_conn, $tableNameMaster, $arregloDatosMaster);
+                    $resultInsert = $this->_conexion->modificarRegistro($this->_conn, $tableNameMaster, $arregloDatosMaster, $arregloCondicionMaster);
 
                     $result = $this->_conexion->modificarRegistro($this->_conn, $tableName,
                                                               $arregloDatos, $arregloCondicion);
