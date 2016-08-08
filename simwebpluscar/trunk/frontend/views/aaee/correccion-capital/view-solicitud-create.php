@@ -106,15 +106,15 @@
                 											},
 							                ],
 							                [
-							                    'label' => Yii::t('frontend', 'Ant DNI'),
+							                    'label' => Yii::t('frontend', 'Ant Capital'),
 							                    'value' => function($model) {
-                        										return $model->naturaleza_v . '-' . $model->cedula_v . '-' . $model->tipo_v;
+                        										return $model->capital_v;
                 											},
 							                ],
 							                [
-							                    'label' => Yii::t('frontend', 'New DNI'),
+							                    'label' => Yii::t('frontend', 'New Capital'),
 							                    'value' => function($model) {
-                        										return $model->naturaleza_new . '-' . $model->cedula_new . '-' . $model->tipo_new;
+                        										return $model->capital_new;
                 											},
 							                ],
 							                [
