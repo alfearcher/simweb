@@ -126,6 +126,11 @@
     			 'message' => Yii::t('backend', '{attribute} must be no less that ' . self::attributeLabels()['capital_v'])],
     			 //['capital_new', 'compare'
     			//['capital_new', 'format', Yii::$app->formatted->asDecimal($model->)]
+    			['origen', 'default', 'value' => 'WEB', 'on' => 'frontend'],
+	     		['origen', 'default', 'value' => 'LAN', 'on' => 'backend'],
+	     		['fecha_hora', 'default', 'value' => date('Y-m-d H:i:s')],
+	     		['estatus', 'default', 'value' => 0],
+	     		['usuario', 'default', 'value' => Yii::$app->user->identity->login, 'on' => 'frontend'],
     		];
     	}
 
