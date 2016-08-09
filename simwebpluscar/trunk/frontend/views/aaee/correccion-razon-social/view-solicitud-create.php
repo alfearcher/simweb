@@ -56,7 +56,7 @@
 
  ?>
 
- <div class="view-inscripcion-sucursal-creada">
+ <div class="view-razon-social-creada">
 	<meta http-equiv="refresh">
     <div class="panel panel-primary"  style="width: 100%;">
         <div class="panel-heading">
@@ -94,7 +94,7 @@
     									'columns' => [
     										//['class' => 'yii\grid\SerialColumn'],
     										[
-							                    'label' => Yii::t('frontend', 'Request Number'),
+							                    'label' => Yii::t('frontend', 'Request'),
 							                    'value' => function($model) {
                         										return $model->nro_solicitud;
                 											},
@@ -106,15 +106,15 @@
                 											},
 							                ],
 							                [
-							                    'label' => Yii::t('frontend', 'Ant Capital'),
+							                    'label' => Yii::t('frontend', 'Ant Company Name'),
 							                    'value' => function($model) {
-                        										return $model->capital_v;
+                        										return $model->razon_social_v;
                 											},
 							                ],
 							                [
-							                    'label' => Yii::t('frontend', 'New Capital'),
+							                    'label' => Yii::t('frontend', 'New Company Name'),
 							                    'value' => function($model) {
-                        										return $model->capital_new;
+                        										return $model->razon_social_new;
                 											},
 							                ],
 							                [
