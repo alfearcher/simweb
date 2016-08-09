@@ -99,7 +99,7 @@ class SlInmueblesUrbanosForm extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'sl_inmuebles';
-    }
+    } 
  
  	
    

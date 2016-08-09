@@ -91,7 +91,7 @@
 	     */
 	    public function getTipoNaturalezaDescripcionSegunID()
 	    {
-	    	$descripcion = null;
+	    	$descripcion = null; 
 	    	return $descripcion = ContribuyenteBase::getTipoNaturalezaDescripcionSegunID($this->id_contribuyente);
 	    }
 

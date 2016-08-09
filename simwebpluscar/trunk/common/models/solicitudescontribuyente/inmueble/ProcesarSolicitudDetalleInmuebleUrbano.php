@@ -54,7 +54,7 @@
     use common\models\solicitudescontribuyente\inmueble\ProcesarActualizacionDatosInmuebleUrbano;
 
 
-
+ 
     /***/
     class ProcesarSolicitudDetalleInmuebleUrbano
     {

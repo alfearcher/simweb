@@ -297,7 +297,7 @@
                                             'observacion' => $camposModel['observacion'],
                                             'tipo_ejido' => $camposModel['id_contribuyente'],
 
-                                         ]; 
+                                         ];  
                     $arregloCondicionMaster = [
                                                 'id_impuesto' => $camposModel['id_impuesto'],
                                               ]; 
