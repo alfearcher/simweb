@@ -223,7 +223,6 @@
 		      					}
 	      					}
 	      				} elseif ( isset($postData['btn-confirm-create']) ) {
-die(var_dump($postData));
 	      					if ( $postData['btn-confirm-create'] == 2 ) {
 	      						$result = self::actionBeginSave($model, $postData);
 	      						self::actionAnularSession(['begin']);
