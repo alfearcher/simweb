@@ -54,6 +54,8 @@ use Yii;
 use yii\base\Model;
 use frontend\models\vehiculo\solicitudes\SlVehiculos;
 use frontend\models\vehiculo\solicitudes\SlVehiculosForm;
+use frontend\models\vehiculo\solicitudes\SlCambioPropietarioVehiculo;
+
 
 
 
@@ -133,6 +135,7 @@ class SlVehiculosForm extends SlVehiculos
          */
         public function findSolicitudCambioPropietarioVendedor($nroSolicitud)
         {
+           // die('find');
             $modelFind = SlCambioPropietarioVehiculo::find()->where('nro_solicitud =:nro_solicitud', [':nro_solicitud' => $nroSolicitud])
                                                     ->andWhere('id_propietario =:id_propietario', [':id_propietario' => $this->id_contribuyente])
                                                 
