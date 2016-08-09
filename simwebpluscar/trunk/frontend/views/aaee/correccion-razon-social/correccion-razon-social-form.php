@@ -144,7 +144,7 @@
 	                    											},
 									                ],
 									                [
-									                    'label' => Yii::t('backend', 'Current Taxpayer'),
+									                    'label' => Yii::t('backend', 'Company Name'),
 									                    'value' => function($data) {
 	                            										return $data->razon_social;
 	                    											},
