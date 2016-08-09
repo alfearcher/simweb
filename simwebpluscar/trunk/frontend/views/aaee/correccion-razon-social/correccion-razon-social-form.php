@@ -70,6 +70,7 @@
 	<?=$form->field($model, 'estatus')->hiddenInput(['value' => $model->estatus])->label(false); ?>
 	<?=$form->field($model, 'id_sim')->hiddenInput(['value' => $datos['id_sim']])->label(false); ?>
 	<?=$form->field($model, 'razon_social')->hiddenInput(['value' => $datos['razon_social']])->label(false); ?>
+	<?=$form->field($model, 'domicilio_fiscal')->hiddenInput(['value' => $datos['domicilio_fiscal']])->label(false); ?>
 
 	<meta http-equiv="refresh">
     <div class="panel panel-primary"  style="width: 90%;">

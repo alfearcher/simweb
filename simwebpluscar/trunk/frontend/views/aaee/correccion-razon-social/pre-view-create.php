@@ -52,7 +52,7 @@
  	<?php
 
  		$form = ActiveForm::begin([
- 			'id' => 'id-correccion-capital-form',
+ 			'id' => 'id-correccion-razon-social-form',
  			'method' => 'post',
  			'enableClientValidation' => true,
  			//'enableAjaxValidation' => true,
@@ -62,14 +62,14 @@
 
 	<?=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $model['id_contribuyente']])->label(false);?>
 	<?=$form->field($model, 'nro_solicitud')->hiddenInput(['value' => 0])->label(false);?>
-	<?=$form->field($model, 'capital_v')->hiddenInput(['value' => $model->capital_v])->label(false);?>
-	<?=$form->field($model, 'capital_new')->hiddenInput(['value' => $model->capital_new])->label(false);?>
+	<?=$form->field($model, 'razon_social_v')->hiddenInput(['value' => $model->razon_social_v])->label(false);?>
+	<?=$form->field($model, 'razon_social_new')->hiddenInput(['value' => $model->razon_social_new])->label(false);?>
 	<?=$form->field($model, 'fecha_hora')->hiddenInput(['value' => $model->fecha_hora])->label(false); ?>
 	<?=$form->field($model, 'origen')->hiddenInput(['value' => $model->origen])->label(false); ?>
 	<?=$form->field($model, 'estatus')->hiddenInput(['value' => $model->estatus])->label(false); ?>
 
 	<meta http-equiv="refresh">
-    <div class="panel panel-primary"  style="width: 90%;">
+    <div class="panel panel-primary" style="width: 95%;">
         <div class="panel-heading">
         	<h3><?= Html::encode($caption) ?></h3>
         </div>
@@ -80,7 +80,7 @@
         		<div class="col-sm-12">
 <!--  -->
 		        	<div class="row">
-						<div class="panel panel-success" style="width: 103%;margin-left: -15px;">
+						<div class="panel panel-success" style="width: 100%;margin-left: -15px;">
 							<div class="panel-heading">
 					        	<span><?= Html::encode($subCaption) ?></span>
 					        </div>
@@ -106,7 +106,11 @@
 							    				],
 							    				[
 							    					'label' => $model->getAttributeLabel('id_sim'),
-							    					'value' =>  $datosRecibido['id_sim'],
+							    					'value' => $datosRecibido['id_sim'],
+							    				],
+							    				[
+							    					'label' => $model->getAttributeLabel('domicilio_fiscal'),
+							    					'value' => $datosRecibido['domicilio_fiscal'],
 							    				],
 							    			],
 										])
@@ -137,15 +141,9 @@
 	                    											},
 									                ],
 									                [
-									                    'label' => Yii::t('backend', 'Taxpayer'),
+									                    'label' => Yii::t('backend', 'Current Company Name'),
 									                    'value' => function($model) {
 	                            										return $model->razon_social;
-	                    											},
-									                ],
-									                [
-									                    'label' => Yii::t('backend', 'Ant Capital'),
-									                    'value' => function($model) {
-	                            										return $model->capital;
 	                    											},
 									                ],
 									                [
@@ -174,37 +172,33 @@
 					    </div>
 					</div>
 
-<!-- Cedula / Rif NUEVO -->
+<!-- RAZON SOCIAL NUEVO -->
 					<div class="row">
-						<div class="panel panel-success" style="width: 103%;margin-left: -15px;">
+						<div class="panel panel-success" style="width: 100%;margin-left: -15px;">
 							<div class="panel-heading">
-					        	<span><?= Html::encode($model->getAttributeLabel('capital_new')) ?></span>
+					        	<span><?= Html::encode($model->getAttributeLabel('razon_social_new')) ?></span>
 					        </div>
 	        				<div class="panel-body">
 	        					<div class="row">
-<!-- Cedula / Rif Nueva -->
 									<div class="col-sm-5" style="margin-left: 15px;margin-top: 0px">
 										<div class="row">
 											<?= DetailView::widget([
 												'model' => $model,
 								    			'attributes' => [
-
 								    				[
-								    					'label' => $model->getAttributeLabel('capital_new'),
-								    					'value' => $model['capital_new'],
+								    					'label' => $model->getAttributeLabel('razon_social_new'),
+								    					'value' => $model['razon_social_new'],
 								    				],
 								    			],
 											])
 										?>
 										</div>
 									</div>
-
 								</div>
 							</div>
 						</div>
 					</div>
-<!-- Fin de Cedula / Rif Nueva -->
-<!-- FIN DE Cedula / Rif NUEVO -->
+<!-- FIN DE RAZON SOCIAL NUEVO -->
 
 
 					<div class="row" style="margin-top: 15px;">
