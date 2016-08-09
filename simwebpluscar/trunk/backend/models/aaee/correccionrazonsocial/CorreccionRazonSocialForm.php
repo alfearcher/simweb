@@ -68,7 +68,8 @@
 		public $cedula;
 		public $tipo;
 
-
+		const SCENARIO_FRONTEND = 'frontend';
+		const SCENARIO_BACKEND = 'backend';
 
 		/**
      	* @inheritdoc
@@ -76,7 +77,29 @@
     	public function scenarios()
     	{
         	// bypass scenarios() implementation in the parent class
-        	return Model::scenarios();
+        	//return Model::scenarios();
+        	return [
+        		self::SCENARIO_FRONTEND => [
+        					'id_contribuyente',
+        					'razon_social_v',
+        					'razon_social_new',
+        					'origen',
+        					'fecha_hora',
+        					'usuario',
+        					'estatus',
+
+        		],
+        		self::SCENARIO_BACKEND => [
+        					'id_contribuyente',
+        					'razon_social_v',
+        					'razon_social_new',
+        					'origen',
+        					'fecha_hora',
+        					'usuario',
+        					'estatus',
+
+        		]
+        	];
     	}
 
 
@@ -89,8 +112,16 @@
     	public function rules()
     	{
     		return [
-    			[['razon_social_new', 'id_contribuyente'],'required','message' => Yii::t('backend', '{attribute} es requerida')],
+    			[['razon_social_new', 'id_contribuyente'],
+    			  'required', 'on' => 'frontend',
+    			  'message' => Yii::t('backend', '{attribute} es requerida')],
     			['razon_social_new', 'filter', 'filter' => 'strtoupper'],
+    			['origen', 'default', 'value' => 'WEB', 'on' => 'frontend'],
+	     		['origen', 'default', 'value' => 'LAN', 'on' => 'backend'],
+	     		['fecha_hora', 'default', 'value' => date('Y-m-d H:i:s')],
+	     		['estatus', 'default', 'value' => 0],
+	     		['usuario', 'default', 'value' => Yii::$app->user->identity->login, 'on' => 'frontend'],
+
     		];
     	}
 
@@ -111,6 +142,7 @@
 	            'razon_social_new' => Yii::t('backend', 'Current Company Name'),
 	            'dni' => Yii::t('backend', 'DNI'),
 	            'id_sim' => Yii::t('backend', 'License'),
+	            'domicilio_fiscal' => Yii::t('backend', 'Addrres Office'),
 	        ];
 	    }
 
@@ -145,9 +177,6 @@
 	    	}
 	    	return false;
 	    }
-
-
-
 
 
 
