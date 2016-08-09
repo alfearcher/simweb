@@ -184,27 +184,22 @@
 
 <!-- RAZON SOCIAL NUEVO -->
 					<div class="row">
-						<div class="panel panel-success" style="width: 103%;margin-left: -15px;">
+						<div class="panel panel-success" style="width: 100%;margin-left: -15px;">
 							<div class="panel-heading">
 					        	<span><?= Html::encode($model->getAttributeLabel('razon_social_new')) ?></span>
 					        </div>
 	        				<div class="panel-body">
 	        					<div class="row">
 									<div class="col-sm-5" style="margin-left: 15px;margin-top: 0px">
-										<div class="row">
-											<div class="form-group">
-												<div class="col-sm-3" style="width: 50%;">
-													<div class="razon-social-new">
-														<?= $form->field($model, 'razon_social_new')->textInput([
-																											'id' => 'razon-social-new',
-																											'style' => 'width: 100%;'
-																					  				  ])->label(false) ?>
-													</div>
-												</div>
+										<div class="form-group">
+											<div class="razon-social-new">
+												<?= $form->field($model, 'razon_social_new')->textInput([
+																									'id' => 'razon-social-new',
+																									'style' => 'width: 100%;'
+																			  				  ])->label(false) ?>
 											</div>
 										</div>
 									</div>
-
 								</div>
 							</div>
 						</div>
