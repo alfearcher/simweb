@@ -195,7 +195,7 @@
 											<div class="razon-social-new">
 												<?= $form->field($model, 'razon_social_new')->textInput([
 																									'id' => 'razon-social-new',
-																									'style' => 'width: 100%;'
+																									'style' => 'width: 120%;'
 																			  				  ])->label(false) ?>
 											</div>
 										</div>
@@ -212,13 +212,13 @@
 						<div class="col-sm-3">
 							<div class="form-group">
 								<?= Html::submitButton(Yii::t('backend', Yii::t('backend', 'Create')),
-																									  [
-																										'id' => 'btn-create',
-																										'class' => 'btn btn-success',
-																										'value' => 1,
-																										'style' => 'width: 100%',
-																										'name' => 'btn-create',
-																									  ])
+																					  [
+																						'id' => 'btn-create',
+																						'class' => 'btn btn-success',
+																						'value' => 1,
+																						'style' => 'width: 100%',
+																						'name' => 'btn-create',
+																					  ])
 								?>
 							</div>
 						</div>
@@ -230,13 +230,13 @@
 						<div class="col-sm-3" style="margin-left: 50px;">
 							<div class="form-group">
 								<?= Html::submitButton(Yii::t('backend', Yii::t('backend', 'Quit')),
-																									  [
-																										'id' => 'btn-quit',
-																										'class' => 'btn btn-danger',
-																										'value' => 1,
-																										'style' => 'width: 100%',
-																										'name' => 'btn-quit',
-																									  ])
+																					  [
+																						'id' => 'btn-quit',
+																						'class' => 'btn btn-danger',
+																						'value' => 1,
+																						'style' => 'width: 100%',
+																						'name' => 'btn-quit',
+																					  ])
 								?>
 							</div>
 						</div>
