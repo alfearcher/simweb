@@ -232,7 +232,7 @@
 	      						$dataProvider = $dataProvider = $searchCorreccion->getDataProviderSucursal($ids);
 	      						$caption = Yii::t('frontend', 'Confirm Create. Update of Legal Represent');
 	      						$subCaption = Yii::t('frontend', 'Info of Taxpayer');
-// die(var_dump($postData));
+
 	      						return $this->render('/aaee/correccion-representante-legal/pre-view-create', [
 	      																	'model' => $model,
 	      																	'datosRecibido' => $datosRecibido,
@@ -495,7 +495,7 @@
 		 * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
 		 * solicitud.
 		 * @param  array $chkSeleccion arreglo que contiene los identificadores de los contribuyentes
-		 * a los cuales se se les actualizara el rif.
+		 * a los cuales se se les actualizara el representante legal.
 		 * @return boolean retorna true si se ejecuta la actualizacion, sino false.
 		 */
 		private static function actionUpdateRepresentanteLegal($conexionLocal, $connLocal, $model, $conf, $chkSeleccion)
