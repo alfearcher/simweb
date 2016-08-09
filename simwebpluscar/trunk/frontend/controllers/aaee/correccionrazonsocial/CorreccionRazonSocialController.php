@@ -481,7 +481,7 @@
 			$result = false;
 			if ( $conf['nivel_aprobacion'] == 1 ) {
 				$arregloDatos = [
-						'capital' => $model->capital_new
+						'razon_social' => $model->razon_social_new
 				];
 
 				$tabla = ContribuyenteBase::tableName();
@@ -505,7 +505,7 @@
 		 * Metodo para guardar los documentos consignados.
 		 * @param  ConexionController  $conexionLocal instancia de la clase ConexionController
 		 * @param  connection  $connLocal instancia de connection.
-		 * @param  model $model modelo de CorreccionCapitalForm.
+		 * @param  model $model modelo de CorreccionRazonSocialForm.
 		 * @param  array $postEnviado post enviado por el formulario. Lo que
 		 * se busca es determinar los items seleccionados como documentos y/o
 		 * requisitos a consignar para guardarlos.
