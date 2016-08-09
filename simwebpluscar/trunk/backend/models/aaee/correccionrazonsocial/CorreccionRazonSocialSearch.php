@@ -240,7 +240,7 @@
 	    /***/
 	    public function getDataProviderSolicitud($nroSolicitud)
 	    {
-	    	$query = self::findSolicitudCorreccionCapital($nroSolicitud);
+	    	$query = self::findSolicitudCorreccionRazonSocial($nroSolicitud);
 
 	    	$dataProvider = new ActiveDataProvider([
             	'query' => $query,
