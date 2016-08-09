@@ -195,8 +195,6 @@
 					return ActiveForm::validate($model);
 		      	}
 
-
-//die(var_dump($postData));
 		      	if ( $model->load($postData) ) {
 		      		if ( $model->validate() ) {
 	      				// Validacion correcta.
@@ -225,6 +223,7 @@
 		      					}
 	      					}
 	      				} elseif ( isset($postData['btn-confirm-create']) ) {
+die(var_dump($postData));
 	      					if ( $postData['btn-confirm-create'] == 2 ) {
 	      						$result = self::actionBeginSave($model, $postData);
 	      						self::actionAnularSession(['begin']);
