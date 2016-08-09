@@ -73,7 +73,7 @@
 	<?=$form->field($model, 'domicilio_fiscal')->hiddenInput(['value' => $datos['domicilio_fiscal']])->label(false); ?>
 
 	<meta http-equiv="refresh">
-    <div class="panel panel-primary"  style="width: 90%;">
+    <div class="panel panel-primary"  style="width: 100%;">
         <div class="panel-heading">
         	<h3><?= Html::encode($this->title) ?></h3>
         </div>
