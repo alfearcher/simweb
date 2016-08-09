@@ -394,7 +394,7 @@
 		 * nivel de aprobacion 3: Muestra inhabilitado los datos suministrados previamente y habilita
 		 * aquellos campos que no fueron cargados inicialmente.
 		 */
-		private function actionMostarSolicitudCorreccionRepresentanteLegal()
+		private function actionMostarSolicitudCorreccionRazonSocial()
 		{
 			if ( $this->_model->nivel_aprobacion == 2 ) {
 					$modelSearch = New CorreccionRazonSocialSearch($this->_model->id_contribuyente);
