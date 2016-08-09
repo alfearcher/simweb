@@ -83,7 +83,7 @@
         		<div class="col-sm-12">
 <!--  -->
 		        	<div class="row">
-						<div class="panel panel-success" style="width: 103%;margin-left: -15px;">
+						<div class="panel panel-success" style="width: 100%;margin-left: -15px;">
 							<div class="panel-heading">
 					        	<span><?= Html::encode($subCaption) ?></span>
 					        </div>
