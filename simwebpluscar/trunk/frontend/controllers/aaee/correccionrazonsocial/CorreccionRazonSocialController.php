@@ -196,7 +196,7 @@
 		      	}
 
 
-die(var_dump($postData));
+//die(var_dump($postData));
 		      	if ( $model->load($postData) ) {
 		      		if ( $model->validate() ) {
 	      				// Validacion correcta.
