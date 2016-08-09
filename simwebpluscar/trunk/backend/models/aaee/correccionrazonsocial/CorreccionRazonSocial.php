@@ -45,6 +45,7 @@
  	use Yii;
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
+	use backend\models\solicitud\estatus\EstatusSolicitud;
 
 	class CorreccionRazonSocial extends ActiveRecord
 	{
@@ -67,6 +68,17 @@
 		public static function tableName()
 		{
 			return 'sl_correcciones_rs';
+		}
+
+
+
+		/**
+		 * Relacion con la entidad "estatus-solicitudes", EstatusSolicitud
+		 * @return Active Record.
+		 */
+		public function getEstatusSolicitud()
+		{
+			return $this->hasOne(EstatusSolicitud::className(), ['estatus_solicitud' => 'estatus']);
 		}
 
 

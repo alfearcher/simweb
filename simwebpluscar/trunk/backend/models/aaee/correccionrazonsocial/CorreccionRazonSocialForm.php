@@ -61,6 +61,8 @@
 		public $usuario;
 		public $estatus;
 		public $origen;
+		public $fecha_hora_proceso;
+		public $user_funcionario;
 
 		public $naturaleza;
 		public $cedula;
@@ -104,9 +106,11 @@
 	        return [
 	        	'id_correccion' => Yii::t('backend', 'Id. Record'),
 	            'id_contribuyente' => Yii::t('backend', 'Id. Taxpayer'),
-	            'nro_solicitud' => Yii::t('backend', 'Application Number'),
+	            'nro_solicitud' => Yii::t('backend', 'Request'),
 	            'razon_social_v' => Yii::t('backend', 'Antique Company Name'),
 	            'razon_social_new' => Yii::t('backend', 'Current Company Name'),
+	            'dni' => Yii::t('backend', 'DNI'),
+	            'id_sim' => Yii::t('backend', 'License'),
 	        ];
 	    }
 
