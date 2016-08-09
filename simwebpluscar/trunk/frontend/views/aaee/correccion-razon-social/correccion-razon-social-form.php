@@ -173,7 +173,9 @@
 									<?php if ( trim($errorChk) !== '' ) { ?>
 										<div class="row">
 											<div class="error-chk-selected">
-												<div class="well well-sm" style="color: red;"><?=$errorChk; ?></div>
+												<div class="well well-sm" style="width:70%; color:red; padding-left:15px;">
+													<?=$errorChk; ?>
+												</div>
 											</div>
 										</div>
 									<?php } ?>
