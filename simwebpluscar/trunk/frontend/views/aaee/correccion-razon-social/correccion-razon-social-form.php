@@ -122,54 +122,61 @@
 
 								<div class="row" style="padding-left: 15px; width: 100%;">
 									<h4><?= Html::encode(Yii::t('frontend', 'Branch Office')) ?></h4>
-										<div class="contribuyente-asociado">
-	    									<?= GridView::widget([
-	    										'id' => 'grid-contribuyente-asociado',
-	        									'dataProvider' => $dataProvider,
-	        									//'filterModel' => $model,
-	        									//'layout'=>"\n{pager}\n{summary}\n{items}",
-	        									'columns' => [
-	        										//['class' => 'yii\grid\SerialColumn'],
+									<div class="contribuyente-asociado">
+    									<?= GridView::widget([
+    										'id' => 'grid-contribuyente-asociado',
+        									'dataProvider' => $dataProvider,
+        									//'filterModel' => $model,
+        									//'layout'=>"\n{pager}\n{summary}\n{items}",
+        									'columns' => [
+        										//['class' => 'yii\grid\SerialColumn'],
 
-									            	[
-									                    'label' => Yii::t('backend', 'ID.'),
-									                    'value' => function($data) {
-	                            										return $data->id_contribuyente;
-	                    											},
-									                ],
-									                [
-									                    'label' => Yii::t('backend', 'DNI'),
-									                    'value' => function($data) {
-	                            										return $data->naturaleza . '-' . $data->cedula . '-' . $data->tipo;
-	                    											},
-									                ],
-									                [
-									                    'label' => Yii::t('backend', 'Company Name'),
-									                    'value' => function($data) {
-	                            										return $data->razon_social;
-	                    											},
-									                ],
-									                [
-									                    'label' => Yii::t('backend', 'License No.'),
-									                    'value' => function($data) {
-	                            										return $data->id_sim;
-	                    											},
-									                ],
-									                [
-									                	'class' => 'yii\grid\CheckboxColumn',
-									                	'name' => 'chkSucursal',
-									                	'checkboxOptions' => [
-                                							'id' => 'chkSucursal',
-                                							// Lo siguiente mantiene el checkbox tildado.
-                                							//'onClick' => 'javascript: return false;',
-                                							//'checked' => true,
-                                							//'disabled' => true, funciona.
-	                                					],
-	                                					'multiple' => false,
-									                ],
-									        	]
-											]);?>
+								            	[
+								                    'label' => Yii::t('backend', 'ID.'),
+								                    'value' => function($data) {
+                            										return $data->id_contribuyente;
+                    											},
+								                ],
+								                [
+								                    'label' => Yii::t('backend', 'DNI'),
+								                    'value' => function($data) {
+                            										return $data->naturaleza . '-' . $data->cedula . '-' . $data->tipo;
+                    											},
+								                ],
+								                [
+								                    'label' => Yii::t('backend', 'Current Company Name'),
+								                    'value' => function($data) {
+                            										return $data->razon_social;
+                    											},
+								                ],
+								                [
+								                    'label' => Yii::t('backend', 'License No.'),
+								                    'value' => function($data) {
+                            										return $data->id_sim;
+                    											},
+								                ],
+								                [
+								                	'class' => 'yii\grid\CheckboxColumn',
+								                	'name' => 'chkSucursal',
+								                	'checkboxOptions' => [
+                            							'id' => 'chkSucursal',
+                            							// Lo siguiente mantiene el checkbox tildado.
+                            							//'onClick' => 'javascript: return false;',
+                            							//'checked' => true,
+                            							//'disabled' => true, funciona.
+                                					],
+                                					'multiple' => false,
+								                ],
+								        	]
+										]);?>
+									</div>
+									<?php if ( trim($errorChk) !== '' ) { ?>
+										<div class="row">
+											<div class="error-chk-selected">
+												<div class="well well-sm" style="color: red;"><?=$errorChk; ?></div>
+											</div>
 										</div>
+									<?php } ?>
 								</div>
 					        </div>
 					    </div>

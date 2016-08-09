@@ -48,6 +48,7 @@
 						        'datos' => $datos,
 						        'subCaption' => $subCaption,
 						        'dataProvider' => $dataProvider,
+						        'errorChk' => $errorChk,
 
 					    ]) ?>
 </div>
