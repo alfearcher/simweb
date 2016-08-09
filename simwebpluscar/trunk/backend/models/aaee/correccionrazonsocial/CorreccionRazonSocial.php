@@ -46,6 +46,7 @@
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 	use backend\models\solicitud\estatus\EstatusSolicitud;
+	use common\models\aaee\Sucursal;
 
 	class CorreccionRazonSocial extends ActiveRecord
 	{
@@ -79,6 +80,17 @@
 		public function getEstatusSolicitud()
 		{
 			return $this->hasOne(EstatusSolicitud::className(), ['estatus_solicitud' => 'estatus']);
+		}
+
+
+
+		/**
+		 * Relacion con la entidad "contribuyentes", Sucursal.
+		 * @return Active Record.
+		 */
+		public function getSucursal()
+		{
+			return $this->hasOne(Sucursal::className(), ['id_contribuyente' => 'id_contribuyente']);
 		}
 
 
