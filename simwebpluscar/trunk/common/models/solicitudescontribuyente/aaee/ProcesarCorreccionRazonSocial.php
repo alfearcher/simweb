@@ -22,13 +22,13 @@
  */
 
  /**
- *  @file ProcesarCorreccionCedulaRif.php
+ *  @file ProcesarCorreccionRazonSocial.php
  *
  *  @author Jose Rafael Perez Teran
  *
- *  @date 04/08/2016
+ *  @date 09/08/2016
  *
- *  @class ProcesarCorreccionCedulaRif
+ *  @class ProcesarCorreccionRazonSocial
  *  @brief
  *
  *
@@ -50,8 +50,8 @@
     namespace common\models\solicitudescontribuyente\aaee;
 
     use Yii;
-    use backend\models\aaee\correccioncapital\CorreccionCapitalSearch;
-    use backend\models\aaee\correccioncapital\CorreccionCapitalForm;
+    use backend\models\aaee\correccionrazonsocial\CorreccionRazonSocialSearch;
+    use backend\models\aaee\correccionrazonsocial\CorreccionRazonSocialForm;
     use common\models\contribuyente\ContribuyenteBase;
 
 
@@ -61,7 +61,7 @@
      * que esten relacionada con la aprobacion o negacion de la solicitud. la clase debe
      * entregar como respuesta un true o false.
      */
-    class ProcesarCorreccionCapital extends CorreccionCapitalSearch
+    class ProcesarCorreccionRazonSocial extends CorreccionRazonSocialSearch
     {
         /**
          * [$_model modelo de la entidad "solicitudes-contribuyente"
@@ -162,13 +162,13 @@
          * sobre la entidad "sl-", referente al detalle de la solicitud. Es la
          * entidad donde se guardan los detalle de esta solicitud.
          * @return boolean retorna una instancia modelo active record de
-         * CorreccionCedulaRif si todo se ejecuto satisfactoriamente, false
+         * CorreccionRazonSocial si todo se ejecuto satisfactoriamente, false
          * en caso contrario.
          */
-        public function findCorreccionCapital()
+        public function findCorreccionRazonSocial()
         {
             // Este find retorna el modelo de la entidad "sl-correcciones-capital".
-            $findModel = $this->findSolicitudCorreccionCapital($this->_model->nro_solicitud);
+            $findModel = $this->findSolicitudCorreccionRazonSocial($this->_model->nro_solicitud);
 
             // Lo siguiente puede generar uno o varios registros.
             $model = $findModel->all();
@@ -187,12 +187,12 @@
             $result = false;
             $idGenerado = 0;
             // modelo de CorreccionCapital. Uno o varios registros.
-            $modelCorreccion = self::findCorreccionCapital();
+            $modelCorreccion = self::findCorreccionRazonSocial();
             if ( $modelCorreccion !== null ) {
                 // Entidad "sl-".
-                $result = self::updateSolicitudCorreccionCapital($modelCorreccion);
+                $result = self::updateSolicitudCorreccionRazonSocial($modelCorreccion);
                 if ( $result ) {
-                    $result = self::updateCapital($modelCorreccion);
+                    $result = self::updateRazonSocial($modelCorreccion);
                 }
             } else {
                 self::setErrors(Yii::t('backend', 'Request not find'));
@@ -211,9 +211,9 @@
         private function negarDetalleSolicitud()
         {
             $result = false;
-            $modelCorreccion = self::findCorreccionCapital();
+            $modelCorreccion = self::findCorreccionRazonSocial();
             if ( $modelCorreccion !== null ) {
-                $result = self::updateSolicitudCorreccionCapital($modelCorreccion);
+                $result = self::updateSolicitudCorreccionRazonSocial($modelCorreccion);
             }
 
             return $result;
@@ -224,8 +224,8 @@
         /**
          * Metodo que realiza la actualizacin de los atributos segun el evento a ejecutar
          * sobre la solicitud.
-         * @param  Active Record $modelCorreccion modelo de la entidad "sl-correciones-capital"
-         * (CorreccionCapital). Este modelo contiene los datos-detalles, referida a los
+         * @param  Active Record $modelCorreccion modelo de la entidad "sl-correciones-rs"
+         * (CorreccionRazonSocial). Este modelo contiene los datos-detalles, referida a los
          * datos cargados al momento de elaborar la solicitud.
          * @return boolean retorna un true si todo se ejecuto satisfactoriamente, false
          * en caso contrario.
@@ -236,7 +236,7 @@
             $cancel = false;            // Controla si el proceso se debe cancelar.
 
             // Se crea la instancia del modelo que contiene los campos que seran actualizados.
-            $model = New CorreccionCapitalForm();
+            $model = New CorreccionRazonSocialForm();
             $tableName = $model->tableName();
 
             // Se obtienen los campos que seran actualizados en la entidad "sl-".
