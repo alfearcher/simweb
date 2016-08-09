@@ -198,7 +198,7 @@
 											<div class="razon-social-new">
 												<?= $form->field($model, 'razon_social_new')->textInput([
 																									'id' => 'razon-social-new',
-																									'style' => 'width: 120%;'
+																									'style' => 'width: 130%;'
 																			  				  ])->label(false) ?>
 											</div>
 										</div>
