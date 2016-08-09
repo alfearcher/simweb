@@ -57,12 +57,12 @@
     use common\models\solicitudescontribuyente\SolicitudesContribuyenteForm;
     use common\models\solicitudescontribuyente\aaee\ProcesarSolicitudDetalleActividadEconomica;
     use common\models\solicitudescontribuyente\inmueble\ProcesarSolicitudDetalleInmuebleUrbano;
-<<<<<<< .mine
+
     use common\models\solicitudescontribuyente\vehiculo\ProcesarSolicitudDetalleVehiculo;
-=======
+
     use common\models\configuracion\solicitudplanilla\SolicitudPlanillaSearch;
     use common\models\planilla\PlanillaSearch;
->>>>>>> .r3357
+
 
 
 

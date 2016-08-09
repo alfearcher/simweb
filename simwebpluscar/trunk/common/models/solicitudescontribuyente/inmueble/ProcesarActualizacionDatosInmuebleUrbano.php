@@ -297,10 +297,10 @@
                                             'observacion' => $camposModel['observacion'],
                                             'tipo_ejido' => $camposModel['id_contribuyente'],
 
-                                         ];  
+                                         ]; 
                     $arregloCondicionMaster = [
                                                 'id_impuesto' => $camposModel['id_impuesto'],
-                                              ];
+                                              ]; 
 
                     $resultInsert = $this->_conexion->modificarRegistro($this->_conn, $tableNameMaster, $arregloDatosMaster, $arregloCondicionMaster);
 
@@ -309,7 +309,7 @@
 
                 } else {
                     if (!$result ) { self::setErrors(Yii::t('backend', 'Failed update request')); }
-                    return $result;
+                    return $result; 
                 }
                     
             } 
