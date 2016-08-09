@@ -51,7 +51,6 @@
 
 	class CorreccionRazonSocialForm extends CorreccionRazonSocial
 	{
-
 		public $id_correcion;
 		public $nro_solicitud;
 		public $id_contribuyente;
