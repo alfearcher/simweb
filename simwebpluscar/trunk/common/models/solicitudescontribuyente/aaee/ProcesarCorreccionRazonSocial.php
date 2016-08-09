@@ -230,7 +230,7 @@
          * @return boolean retorna un true si todo se ejecuto satisfactoriamente, false
          * en caso contrario.
          */
-        private function updateSolicitudCorreccionCapital($modelCorreccion)
+        private function updateSolicitudCorreccionRazonSocial($modelCorreccion)
         {
             $result = false;
             $cancel = false;            // Controla si el proceso se debe cancelar.
