@@ -476,7 +476,7 @@
 		 * a los cuales se se les actualizara la razon social.
 		 * @return boolean retorna true si se ejecuta la actualizacion, sino false.
 		 */
-		private static function actionUpdateCapital($conexionLocal, $connLocal, $model, $conf, $chkSeleccion)
+		private static function actionUpdateRazonSocial($conexionLocal, $connLocal, $model, $conf, $chkSeleccion)
 		{
 			$result = false;
 			if ( $conf['nivel_aprobacion'] == 1 ) {
