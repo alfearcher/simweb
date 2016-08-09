@@ -169,7 +169,7 @@
 			// Se verifica que el contribuyente haya iniciado una session.
 
 			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) && isset($_SESSION['conf'])) {
-
+				$errorChk = '';
 				$idContribuyente = $_SESSION['idContribuyente'];
 				$request = Yii::$app->request;
 				$postData = $request->post();
@@ -195,33 +195,37 @@
 					return ActiveForm::validate($model);
 		      	}
 
+
+die(var_dump($postData));
 		      	if ( $model->load($postData) ) {
 		      		if ( $model->validate() ) {
-
 	      				// Validacion correcta.
 	      				if ( isset($postData['btn-create']) ) {
 	      					if ( $postData['btn-create'] == 1 ) {
+	      						$ids = isset($postData['chkSucursal']) ? $postData['chkSucursal'] : [];
+	      						if ( count($ids) > 0 ) {
 
-	      						// Mostrar vista previa.
-	      						$datosRecibido = $postData[$formName];
+		      						// Mostrar vista previa.
+		      						$datosRecibido = $postData[$formName];
 
-	      						$ids = isset($postData['chkSucursal']) ? $postData['chkSucursal'] : null;
-	      						$searchCorreccion = New CorreccionRazonSocialSearch($idContribuyente);
-	      						$dataProvider = $dataProvider = $searchCorreccion->getDataProviderSucursal($ids);
-	      						$caption = Yii::t('frontend', 'Confirm Create. Update of Razon Social');
-	      						$subCaption = Yii::t('frontend', 'Info of Taxpayer');
+		      						$searchCorreccion = New CorreccionRazonSocialSearch($idContribuyente);
+		      						$dataProvider = $dataProvider = $searchCorreccion->getDataProviderSucursal($ids);
+		      						$caption = Yii::t('frontend', 'Confirm Create. Update of Razon Social');
+		      						$subCaption = Yii::t('frontend', 'Info of Taxpayer');
 
-	      						return $this->render('/aaee/correccion-razon-social/pre-view-create', [
-	      																	'model' => $model,
-	      																	'datosRecibido' => $datosRecibido,
-	      																	'dataProvider' => $dataProvider,
-	      																	'subCaption' => $subCaption,
-	      																	'caption' => $caption,
-	      							]);
+		      						return $this->render('/aaee/correccion-razon-social/pre-view-create', [
+		      																	'model' => $model,
+		      																	'datosRecibido' => $datosRecibido,
+		      																	'dataProvider' => $dataProvider,
+		      																	'subCaption' => $subCaption,
+		      																	'caption' => $caption,
+		      							]);
+		      					} else {
+		      						$errorChk = Yii::t('frontend', 'Don´t had selected company');
+		      					}
 	      					}
 	      				} elseif ( isset($postData['btn-confirm-create']) ) {
 	      					if ( $postData['btn-confirm-create'] == 2 ) {
-//die(var_dump($postData));
 	      						$result = self::actionBeginSave($model, $postData);
 	      						self::actionAnularSession(['begin']);
 	      						if ( $result ) {
@@ -258,6 +262,7 @@
 					  											'datos' => $datos,
 					  											'subCaption' => $subCaption,
 					  											'dataProvider' => $dataProvider,
+					  											'errorChk' => $errorChk,
 					  					]);
 		  		} else {
 		  			// No se encontraron los datos del contribuyente principal.
