@@ -139,7 +139,7 @@
 	            'id_contribuyente' => Yii::t('backend', 'Id. Taxpayer'),
 	            'nro_solicitud' => Yii::t('backend', 'Request'),
 	            'razon_social_v' => Yii::t('backend', 'Antique Company Name'),
-	            'razon_social_new' => Yii::t('backend', 'Current Company Name'),
+	            'razon_social_new' => Yii::t('backend', 'New Company Name'),
 	            'dni' => Yii::t('backend', 'DNI'),
 	            'id_sim' => Yii::t('backend', 'License'),
 	            'domicilio_fiscal' => Yii::t('backend', 'Addrres Office'),
