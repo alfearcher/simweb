@@ -167,7 +167,7 @@
          */
         public function findCorreccionRazonSocial()
         {
-            // Este find retorna el modelo de la entidad "sl-correcciones-capital".
+            // Este find retorna el modelo de la entidad "sl-correcciones-rs".
             $findModel = $this->findSolicitudCorreccionRazonSocial($this->_model->nro_solicitud);
 
             // Lo siguiente puede generar uno o varios registros.
@@ -264,14 +264,14 @@
 
 
         /**
-         * Metodo que actualiza el capital de los contribuyentes que estan en la solicitud
-         * segun el monto de capital nuevo que se coloco en la solicitud.
-         * @param  model $modelCorreccion modelo de CorreccionCapital. Contiene los datos
+         * Metodo que actualiza la razon social de los contribuyentes que estan en la solicitud
+         * segun el contenido nuevo que se coloco en la solicitud.
+         * @param  model $modelCorreccion modelo de CorreccionRazonSocial. Contiene los datos
          * del find.
          * @return boolean retorna true si ejecuta la actualizacion de los montos de los
          * capitales, false en caso contrario.
          */
-        private function updateCapital($modelCorreccion)
+        private function updateRazonSocial($modelCorreccion)
         {
             $result = false;
             $tabla = ContribuyenteBase::tableName();
