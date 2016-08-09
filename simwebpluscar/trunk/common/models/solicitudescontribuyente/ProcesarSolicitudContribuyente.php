@@ -57,8 +57,12 @@
     use common\models\solicitudescontribuyente\SolicitudesContribuyenteForm;
     use common\models\solicitudescontribuyente\aaee\ProcesarSolicitudDetalleActividadEconomica;
     use common\models\solicitudescontribuyente\inmueble\ProcesarSolicitudDetalleInmuebleUrbano;
+<<<<<<< .mine
+    use common\models\solicitudescontribuyente\vehiculo\ProcesarSolicitudDetalleVehiculo;
+=======
     use common\models\configuracion\solicitudplanilla\SolicitudPlanillaSearch;
     use common\models\planilla\PlanillaSearch;
+>>>>>>> .r3357
 
 
 
@@ -318,8 +322,10 @@
                     $result = $procesarDetalle->procesarSolicitudPorTipo();
 
                 } elseif ( $model['impuesto'] == 3 ) {
-                    // Vehiculos.
 
+                    $procesarDetalle = New ProcesarSolicitudDetalleVehiculo($model, $evento, $this->_conn, $this->_conexion);
+                    $result = $procesarDetalle->procesarSolicitudPorTipo();
+                    
                 } elseif ( $model['impuesto'] == 4 ) {
                     // Propaganda Comercial.
 
