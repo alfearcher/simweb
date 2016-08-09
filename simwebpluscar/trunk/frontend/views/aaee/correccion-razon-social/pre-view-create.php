@@ -180,7 +180,7 @@
 					        </div>
 	        				<div class="panel-body">
 	        					<div class="row">
-									<div class="col-sm-5" style="margin-left: 15px;margin-top: 0px">
+									<div class="col-sm-5" style="width:60%; margin-left: 15px;margin-top: 0px">
 										<div class="row">
 											<?= DetailView::widget([
 												'model' => $model,
