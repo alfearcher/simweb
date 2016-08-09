@@ -268,7 +268,6 @@ class RegistrarVehiculoController extends Controller
 
       $arregloDatos['liquidado'] = 0;
 
-      $arregloDatos['status_vehiculo'] = 0;
 
       $arregloDatos['exceso_cap'] = $model->exceso_cap;
 
