@@ -46,6 +46,9 @@
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 	use yii\web\NotFoundHttpException;
+	use backend\models\solicitud\estatus\EstatusSolicitud;
+	use common\models\aaee\Sucursal;
+	use backend\models\aaee\rubro\Rubro;
 
 	/**
 	* 	Clase
@@ -72,6 +75,20 @@
 		{
 			return 'sl_ramos_autorizados';
 		}
+
+
+
+		/**
+		 * Relacion con la entidad "act-econ_ingresos"
+		 * @return Active Record
+		 */
+		public function getRubro()
+		{
+			return $this->hasOne(ActEconIngreso::className(), ['id_rubro' => 'id_rubro']);
+		}
+
+
+
 
 
 
