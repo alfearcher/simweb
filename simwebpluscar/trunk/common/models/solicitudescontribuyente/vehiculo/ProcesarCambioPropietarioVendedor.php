@@ -22,13 +22,13 @@
  */
 
  /**
- *  @file ProcesarInscripcionInmuebleUrbano.php
+ *  @file ProcesarCambioPropietarioVendedor.php
  *
- *  @author Alvaro Jose Fernandez ARcher
+ *  @author Manuel Alejandro Zapata Canelon
  *
- *  @date 19/07/2016
+ *  @date 09/08/2016
  *
- *  @class ProcesarInscripcionInmuebleUrbano
+ *  @class ProcesarCambioPropietarioVendedor
  *  @brief
  *
  *
@@ -162,7 +162,7 @@
 
         /**
          * Metodo que permite obtener un modelo de los datos de la solicitud,
-         * sobre la entidad "sl-", referente al detalle de la solicitud. Es la
+         * sobre la entidad "sl-cambios-propietario", referente al detalle de la solicitud. Es la
          * entidad donde se guardan los detalle de esta solicitud.
          * @return Boolean Retorna un true si todo se ejecuto satisfactoriamente, false
          * en caso contrario.
@@ -264,7 +264,7 @@
         /**
          * Metodo que realiza la actualizacin de los atributos segun el evento a ejecutar
          * sobre la solicitud.
-         * @param  Active Record $modelInscripcion modelo de la entidad "sl-inscripciones-act-econ".
+         * @param  Active Record $modelInscripcion modelo de la entidad "sl-cambios-propietarios".
          * Este modelo contiene los datos-detalles, referida a los datos cargados al momento de elaborar
          * la solicitud.
          * @return Boolean Retorna un true si todo se ejecuto satisfactoriamente, false
@@ -308,12 +308,18 @@
                                             'id_contribuyente' => $camposModel['id_comprador'],
                                             
 
-                                           // die(var_dump($arregloDatosMaster)),
-
+                                           
 
                                          ];
 
-                    $resultInsert = $this->_conexion->modificarRegistro($this->_conn, $tableNameMaster, $arregloDatosMaster);
+                    $arregloCondicionMaster = [
+
+
+                                                'id_vehiculo' => $camposModel['id_impuesto']
+                                                ];
+
+                    $resultInsert = $this->_conexion->modificarRegistro($this->_conn, $tableNameMaster, $arregloDatosMaster, 
+                        $arregloCondicionMaster);
 
                     $result = $this->_conexion->modificarRegistro($this->_conn, $tableName,
                                                               $arregloDatos, $arregloCondicion);

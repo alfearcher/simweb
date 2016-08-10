@@ -131,7 +131,15 @@
 
                     $result = $procesar->procesarSolicitud();
 
-                } elseif ( $this->_model->tipo_solicitud == 22 ) {
+                } elseif ( $this->_model->tipo_solicitud == 66 ) {
+
+                    $procesar = New ProcesarCambioPropietarioComprador($this->_model,
+                                                                  $this->_evento,
+                                                                  $this->_conn,
+                                                                  $this->_conexion);
+
+                    $result = $procesar->procesarSolicitud();
+
 
                 } elseif ( $this->_model->tipo_solicitud == 23 ) {
 

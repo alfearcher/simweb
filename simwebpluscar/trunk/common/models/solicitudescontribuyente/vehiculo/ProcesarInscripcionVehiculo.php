@@ -22,13 +22,13 @@
  */
 
  /**
- *  @file ProcesarInscripcionInmuebleUrbano.php
+ *  @file ProcesarInscripcionVehiculo.php
  *
- *  @author Alvaro Jose Fernandez ARcher
+ *  @author Manuel Alejandro Zapata Canelon
  *
- *  @date 19/07/2016
+ *  @date 05/08/2016
  *
- *  @class ProcesarInscripcionInmuebleUrbano
+ *  @class ProcesarInscripcionVehiculo
  *  @brief
  *
  *
@@ -167,7 +167,7 @@
          */
         public function findInscripcionVehiculo()
         {
-            // Este find retorna el modelo de la entidad "sl-inscripciones-act-econ"
+            // Este find retorna el modelo de la entidad "sl-vehiculos"
             // con datos, ya que en el metodo padre se ejecuta el ->one() que realiza
             // la consulta.
             $SlVehiculos = New SlVehiculosForm($this->_model->id_contribuyente);
@@ -261,7 +261,7 @@
         /**
          * Metodo que realiza la actualizacin de los atributos segun el evento a ejecutar
          * sobre la solicitud.
-         * @param  Active Record $modelInscripcion modelo de la entidad "sl-inscripciones-act-econ".
+         * @param  Active Record $modelInscripcion modelo de la entidad "sl-vehiculos".
          * Este modelo contiene los datos-detalles, referida a los datos cargados al momento de elaborar
          * la solicitud.
          * @return Boolean Retorna un true si todo se ejecuto satisfactoriamente, false
