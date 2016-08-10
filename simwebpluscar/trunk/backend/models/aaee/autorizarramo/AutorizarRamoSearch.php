@@ -259,15 +259,23 @@
 	    /**
 		 * Metodo que permite determinar si un contribuyente tiene registros en
 		 * la entidad de las declaraciones.
-		 * @param  $idContribuyente, Long que identifica al contribuyente.
+		 * @param  integer $añoImpositivo año de la consulta.
 		 * @return returna una instancia con los datos de la entidad act_econ.
 		 * Si retorna false no ss ejecuto la consulta o no encontro nada.
 		 */
-		public function tieneRecordActEcon()
+		public function tieneRecordActEcon($añoImpositivo = 0)
 	    {
-	    	$findModel = ActEcon::find()->where('id_contribuyente =:id_contribuyente',
-	    	 										[':id_contribuyente' => $this->_id_contribuyente])
-	    								->count();
+	    	if ( $añoImpositivo > 0 ) {
+		    	$findModel = ActEcon::find()->where('id_contribuyente =:id_contribuyente',
+		    	 										[':id_contribuyente' => $this->_id_contribuyente])
+		    								->andWhere('ano_impositivo =:ano_impositivo',
+		    								 			[':ano_impositivo' => $añoImpositivo])
+		    								->count();
+		    } else {
+		    	$findModel = ActEcon::find()->where('id_contribuyente =:id_contribuyente',
+		    	 										[':id_contribuyente' => $this->_id_contribuyente])
+		    								->count();
+		    }
 	    	return ( $findModel > 0 ) ? true : false;
 	    }
 
