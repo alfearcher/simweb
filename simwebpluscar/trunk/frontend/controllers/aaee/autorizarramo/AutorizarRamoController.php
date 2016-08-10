@@ -221,6 +221,7 @@
 	      					}
 	      				} elseif ( isset($postData['btn-confirm-create']) ) {
 	      					if ( $postData['btn-confirm-create'] == 2 ) {
+//die(var_dump($postData));
 	      						$result = self::actionBeginSave($model, $postData);
 	      						self::actionAnularSession(['begin']);
 	      						if ( $result ) {
@@ -447,7 +448,6 @@
 
 					foreach ( $chkSeleccion as $key => $value ) {
 						$arregloDatos['id_contribuyente'] = $value;
-						$arregloDatos['capital_v'] = ContribuyenteBase::getCapitalSegunID($value);
 						$result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
 						if ( !$result ) { break; }
 					}
