@@ -474,6 +474,8 @@
 					foreach ( $chkSeleccion as $key => $value ) {
 						$arregloDatos['id_contribuyente'] = $value;
 						$representante = ContribuyenteBase::getDatosRepresentanteSegunID($value);
+
+die(var_dump($representante));
 						if ( isset($representante) ) {
 							$arregloDatos['naturaleza_rep_v'] = $representante['naturaleza_rep'];
 							$arregloDatos['cedula_rep_v'] = $representante['cedula_rep'];
