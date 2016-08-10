@@ -475,7 +475,6 @@
 						$arregloDatos['id_contribuyente'] = $value;
 						$representante = ContribuyenteBase::getDatosRepresentanteSegunID($value);
 
-die(var_dump($representante));
 						if ( count($representante) > 0 ) {
 							$arregloDatos['naturaleza_rep_v'] = $representante['naturaleza_rep'];
 							$arregloDatos['cedula_rep_v'] = $representante['cedula_rep'];
