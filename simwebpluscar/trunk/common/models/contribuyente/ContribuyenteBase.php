@@ -752,5 +752,44 @@
 
 
 
+		/**
+		 * Metodo que permite buscar los datos del representante legal, esto aplica
+		 * para los contribuyente juridicos.
+		 * @param  long $idContribuyente identificador del contribuyente.
+		 * @return array|boolean retorna un arreglo con la informacion de la cedula
+		 * y el nombre del representante legal, sino retorna false.
+		 */
+		private static function datosRepresentante($idContribuyente)
+		{
+			if ( $idContribuyente > 0 ) {
+				$datos = self::datosContribuyenteSegunID($idContribuyente);
+				$datoRepresentante = [];
+				if ( isset($datos) ) {
+					return $datoRepresentante = [
+								'naturaleza_rep' => $datos[0]['naturaleza_rep'],
+								'cedula_rep' => $datos[0]['cedula_rep'],
+								'representante' => $datos[0]['representante'],
+							];
+				}
+			}
+			return false;
+		}
+
+
+
+		/**
+		 * Metodo que redirecciona la busqueda de los datos del representante
+		 * legal. Aplica solo para contribuyentes juridicos,
+		 * @param  long $idContribuyente identificador del contribuyente.
+		 * @return array|boolean retorna un arreglo con la informacion de la cedula
+		 * y el nombre del representante legal, sino retorna false.
+		 */
+		public static function getDatosRepresentanteSegunID($idContribuyente)
+		{
+			return self::datosRepresentante($idContribuyente);
+		}
+
+
+
 	}
  ?>
