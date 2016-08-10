@@ -128,24 +128,24 @@
 	        	  'id_rubro', 'periodo',
 	        	  'fecha_desde', 'fecha_hasta'],
 	        	  'required', 'on' => 'frontend',
-	        	  'message' => Yii::t('backend','{attribute} is required')],
+	        	  'message' => Yii::t('frontend','{attribute} is required')],
 	        	[['id_contribuyente',
 	        	  'fecha_inicio', 'ano_impositivo',
 	        	  'id_rubro', 'periodo',
 	        	  'fecha_desde', 'fecha_hasta'],
-	        	  'required', 'on' => 'backend',
-	        	  'message' => Yii::t('backend','{attribute} is required')],
+	        	  'required', 'on' => 'frontend',
+	        	  'message' => Yii::t('frontend','{attribute} is required')],
 	        	[['nro_solicitud', 'id_contribuyente',
 	        	  'ano_impositivo', 'id_rubro'
 	        	  'periodo', 'estatus'],
-	        	  'integer', 'message' => Yii::t('backend','{attribute}')],
+	        	  'integer', 'message' => Yii::t('frontend','{attribute}')],
 	        	[['fecha_inicio', 'fecha_desde', 'fecha_hasta'],
 	        	  'date', 'format' => 'dd-MM-yyyy',
-	        	  'message' => Yii::t('backend','formatted date no valid')],
+	        	  'message' => Yii::t('frontend','formatted date no valid')],
 	     		['nro_solicitud', 'default', 'value' => 0],
 	     		['id_contribuyente', 'default', 'value' => $_SESSION['idContribuyente']],
 	     		['origen', 'default', 'value' => 'WEB', 'on' => 'frontend'],
-	     		['origen', 'default', 'value' => 'LAN', 'on' => 'backend'],
+	     		['origen', 'default', 'value' => 'LAN', 'on' => 'frontend'],
 	     		['fecha_hora', 'default', 'value' => date('Y-m-d H:i:s')],
 	     		['fecha_hora_proceso', 'default', 'value' => '0000-00-00 00:00:00'],
 	     		['estatus', 'default', 'value' => 0],
@@ -167,10 +167,15 @@
 	        return [
 	        	'id_rubro_aprobado' => Yii::t('backend', 'Id. Record'),
 	            'id_contribuyente' => Yii::t('backend', 'Id. Taxpayer'),
-	            'nro_solicitud' => Yii::t('backend', 'Application Number'),
+	            'nro_solicitud' => Yii::t('backend', 'Request'),
 	            'fecha_inicio' => Yii::t('backend', 'Begin Date'),
+	            'fecha_desde' => Yii::t('backend', 'Fiscal Start Date'),
+	            'fecha_hasta' => Yii::t('backend', 'Fiscal End Date'),
+	            'periodo' => Yii::t('backend', 'Period'),
 	            'ano_impositivo' => Yii::t('backend', 'Fiscal Year'),
 	            'ano_catalogo' => Yii::t('backend', 'Category Year'),
+	            'rubro' => Yii::t('backend', 'Category'),
+
 
 	        ];
 	    }
@@ -253,7 +258,7 @@
 
 
 
-
+	    /***/
 	    public function getAddRubro($arrayRubros)
 	    {
 	    	return RubroForm::getAddDataProviderRubro($arrayRubros);

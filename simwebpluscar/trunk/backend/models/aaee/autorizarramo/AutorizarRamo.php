@@ -84,33 +84,41 @@
 		 */
 		public function getRubro()
 		{
-			return $this->hasOne(ActEconIngreso::className(), ['id_rubro' => 'id_rubro']);
+			return $this->hasOne(Rubro::className(), ['id_rubro' => 'id_rubro']);
+		}
+
+
+
+		/**
+		 * Relacion con la entidad "contribuyentes", Sucursal.
+		 * @return Active Record.
+		 */
+		public function getSucursal()
+		{
+			return $this->hasOne(Sucursal::className(), ['id_contribuyente' => 'id_contribuyente']);
 		}
 
 
 
 
-
-
-
-		/**
-		 * Metodo que permite determinar si un contribuyente tiene registros en
-		 * la entidad de las declaraciones.
-		 * @param  $idContribuyente, Long que identifica al contribuyente.
-		 * @return returna una instancia con los datos de la entidad act_econ.
-		 * Si retorna false no ss ejecuto la consulta o no encontro nada.
-		 */
-		public static function tieneRecordActEcon($idContribuyente = 0)
-	    {
-	    	if ( $idContribuyente > 0 ) {
-	    		$sql = 'SELECT * FROM act_econ WHERE id_contribuyente=:id_contribuyente';
-	    		$actEcon = self::findBySql($sql, [':id_contribuyente' => $idContribuyente])->one();
-	    		if ( isset($actEcon) ) {
-	    			return $actEcon;
-	    		}
-	    	}
-	    	return false;
-	    }
+		// /**
+		//  * Metodo que permite determinar si un contribuyente tiene registros en
+		//  * la entidad de las declaraciones.
+		//  * @param  $idContribuyente, Long que identifica al contribuyente.
+		//  * @return returna una instancia con los datos de la entidad act_econ.
+		//  * Si retorna false no ss ejecuto la consulta o no encontro nada.
+		//  */
+		// public static function tieneRecordActEcon($idContribuyente = 0)
+	 //    {
+	 //    	if ( $idContribuyente > 0 ) {
+	 //    		$sql = 'SELECT * FROM act_econ WHERE id_contribuyente=:id_contribuyente';
+	 //    		$actEcon = self::findBySql($sql, [':id_contribuyente' => $idContribuyente])->one();
+	 //    		if ( isset($actEcon) ) {
+	 //    			return $actEcon;
+	 //    		}
+	 //    	}
+	 //    	return false;
+	 //    }
 	}
 
 
