@@ -63,7 +63,7 @@
          * @var Active Record.
          */
         private $_model;
-
+ 
         private $_conn;
         private $_conexion;
 
