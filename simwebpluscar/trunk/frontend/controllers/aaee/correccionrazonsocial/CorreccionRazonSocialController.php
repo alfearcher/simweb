@@ -451,6 +451,7 @@
 
 					foreach ( $chkSeleccion as $key => $value ) {
 						$arregloDatos['id_contribuyente'] = $value;
+						$arregloDatos['razon_social_v'] = ContribuyenteBase::getContribuyenteDescripcionSegunID($value);
 						$result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
 						if ( !$result ) { break; }
 					}
