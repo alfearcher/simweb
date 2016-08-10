@@ -79,7 +79,7 @@
 
 
 		/**
-		 * Relacion con la entidad "act-econ_ingresos"
+		 * Relacion con la entidad "rubros"
 		 * @return Active Record
 		 */
 		public function getRubro()

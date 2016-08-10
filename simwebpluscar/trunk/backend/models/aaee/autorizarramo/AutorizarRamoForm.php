@@ -61,20 +61,58 @@
 		public $fecha_inicio;
 		public $ano_impositivo;
 		public $id_rubro;
+		public $periodo;
+		public $fecha_desde;
+		public $fecha_hasta;
 		public $fecha_hora;
 		public $usuario;
 		public $estatus;
 		public $origen;						// Basicamente de donde se creo o quien creo el registro LAN o WEB
-
+		public $fecha_hora_proceso;
+		public $user_funcionario;
 
 		public $ano_catalogo;
+
+		const SCENARIO_FRONTEND = 'frontend';
+		const SCENARIO_BACKEND = 'backend';
+
 		/**
      	* @inheritdoc
      	*/
     	public function scenarios()
     	{
         	// bypass scenarios() implementation in the parent class
-        	return Model::scenarios();
+        	//return Model::scenarios();
+        	return [
+        		self::SCENARIO_FRONTEND => [
+        					'id_contribuyente',
+        					'fecha_inicio',
+        					'ano_impositivo',
+        					'id_rubro',
+        					'periodo',
+        					'fecha_desde',
+        					'fecha_hasta',
+        					'origen',
+        					'fecha_hora',
+        					'usuario',
+        					'estatus',
+
+        		],
+        		self::SCENARIO_BACKEND => [
+        					'id_contribuyente',
+        					'fecha_inicio',
+        					'ano_impositivo',
+        					'id_rubro',
+        					'periodo',
+        					'fecha_desde',
+        					'fecha_hasta',
+        					'origen',
+        					'fecha_hora',
+        					'usuario',
+        					'estatus',
+
+        		]
+        	];
     	}
 
 
@@ -85,15 +123,34 @@
 	    public function rules()
 	    {
 	        return [
-	        	[['nro_solicitud', 'id_contribuyente', 'fecha_inicio', 'ano_impositivo', 'id_rubro'], 'required', 'message' => Yii::t('backend','{attribute} is required')],
-	        	[['nro_solicitud', 'id_contribuyente', 'ano_impositivo', 'id_rubro'], 'integer','message' => Yii::t('backend','{attribute}')],
-	        	[['fecha_inicio'], 'date', 'format' => 'dd-MM-yyyy','message' => Yii::t('backend','formatted date no valid')],
-	          	['fecha_hora', 'default', 'value' => date('Y-m-d H:i:s')],
-	     		['estatus', 'default', 'value' => 0],
-	     		['usuario', 'default', 'value' => Yii::$app->user->identity->username],
-	     		['origen', 'default', 'value' => 'LAN'],
+	        	[['id_contribuyente',
+	        	  'fecha_inicio', 'ano_impositivo',
+	        	  'id_rubro', 'periodo',
+	        	  'fecha_desde', 'fecha_hasta'],
+	        	  'required', 'on' => 'frontend',
+	        	  'message' => Yii::t('backend','{attribute} is required')],
+	        	[['id_contribuyente',
+	        	  'fecha_inicio', 'ano_impositivo',
+	        	  'id_rubro', 'periodo',
+	        	  'fecha_desde', 'fecha_hasta'],
+	        	  'required', 'on' => 'backend',
+	        	  'message' => Yii::t('backend','{attribute} is required')],
+	        	[['nro_solicitud', 'id_contribuyente',
+	        	  'ano_impositivo', 'id_rubro'
+	        	  'periodo', 'estatus'],
+	        	  'integer', 'message' => Yii::t('backend','{attribute}')],
+	        	[['fecha_inicio', 'fecha_desde', 'fecha_hasta'],
+	        	  'date', 'format' => 'dd-MM-yyyy',
+	        	  'message' => Yii::t('backend','formatted date no valid')],
 	     		['nro_solicitud', 'default', 'value' => 0],
 	     		['id_contribuyente', 'default', 'value' => $_SESSION['idContribuyente']],
+	     		['origen', 'default', 'value' => 'WEB', 'on' => 'frontend'],
+	     		['origen', 'default', 'value' => 'LAN', 'on' => 'backend'],
+	     		['fecha_hora', 'default', 'value' => date('Y-m-d H:i:s')],
+	     		['fecha_hora_proceso', 'default', 'value' => '0000-00-00 00:00:00'],
+	     		['estatus', 'default', 'value' => 0],
+	     		['usuario', 'default', 'value' => Yii::$app->user->identity->login, 'on' => 'frontend'],
+	     		//['usuario', 'default', 'value' => Yii::$app->user->identity->username, 'on' => 'backend'],
 	        ];
 	    }
 
