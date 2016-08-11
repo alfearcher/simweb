@@ -391,7 +391,7 @@
 		 * @return integer retorna un entero indicando la cantidad de registros con deudas
 		 * sino encuentra registros retorna cero (0).
 		 */
-		public function findDeudaPendienteSegunObjeto($idObjeto, $impuesto)
+		public function getRegistroConDeudaPendienteSegunObjeto($idObjeto, $impuesto)
 		{
 			$findModel = PagoDetalle::find()->where('id_impuesto =:id_impuesto',
 			 											[':id_impuesto' => $idObjeto])
