@@ -47,6 +47,7 @@
  	use yii\db\ActiveRecord;
  	use yii\db\Exception;
  	use common\conexion\ConexionController;
+ 	use common\models\planilla\PagoDetalle;
 
  	/**
  	*
@@ -377,6 +378,31 @@
 		{
 			return $msg = $this->msgError;
 		}
+
+
+
+		/**
+		 * Metodo que determina la cantidad de registros de un objetos
+		 * que estan pendientes por pagar (pago = 0).
+		 * @param  long $idObjeto identificador del objeto. Depende de la entidad
+		 * en la cual se creo.
+		 * @param  integer $impuesto identificador dle impuesto al cual pertenece
+		 * el objeto.
+		 * @return integer retorna un entero indicando la cantidad de registros con deudas
+		 * sino encuentra registros retorna cero (0).
+		 */
+		public function findDeudaPendienteSegunObjeto($idObjeto, $impuesto)
+		{
+			$findModel = PagoDetalle::find()->where('id_impuesto =:id_impuesto',
+			 											[':id_impuesto' => $idObjeto])
+											->andWhere('impuesto =:impuesto',
+											 			[':impuesto' => $impuesto])
+											->andWhere('pago =:pago', [':pago' => 0])
+											->count();
+			return ( $findModel > 0 ) ? $findModel : 0;
+		}
+
+
 
 
  	}
