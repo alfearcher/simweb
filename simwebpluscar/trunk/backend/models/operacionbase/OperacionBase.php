@@ -398,6 +398,7 @@
 											->andWhere('impuesto =:impuesto',
 											 			[':impuesto' => $impuesto])
 											->andWhere('pago =:pago', [':pago' => 0])
+											->andWhere('trimestre =:trimestre', [':trimestre' => 0])
 											->count();
 			return ( $findModel > 0 ) ? $findModel : 0;
 		}
