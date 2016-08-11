@@ -116,7 +116,7 @@
 								<p><strong><?= Yii::t('backend', $model->getAttributeLabel('nro_solicitud')) ?></strong></p>
 							</div>
 						</div>
-						<div class="col-sm-3" style="padding-left: 75px;">
+						<div class="col-sm-3" style="padding-left: 90px;">
 							<div class="row" class="nro-solicitud">
 								<?= $form->field($model, 'nro_solicitud')->textInput([
 																					'id' => 'nro-solicitud',
