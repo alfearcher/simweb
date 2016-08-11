@@ -185,7 +185,7 @@
 			}
 
 			return false;
-		}
+		} 
 
 		// tipo solicitud 21
 		private function actionMostrarSolicitudAvaluoInmueble()
