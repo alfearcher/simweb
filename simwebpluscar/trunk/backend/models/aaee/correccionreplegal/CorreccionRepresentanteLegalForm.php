@@ -157,7 +157,7 @@
 	        return [
 	        	'id_correccion' => Yii::t('frontend', 'Id. Record'),
 	            'id_contribuyente' => Yii::t('frontend', 'Id. Taxpayer'),
-	            'nro_solicitud' => Yii::t('frontend', 'Request Number'),
+	            'nro_solicitud' => Yii::t('frontend', 'Request'),
 	            'dni_principal' => Yii::t('frontend', 'DNI'),
 	            'dni_representante_v' => Yii::t('frontend', 'Current DNI'),
 	            'representante_v' => Yii::t('frontend', 'Current Legal Represent'),
