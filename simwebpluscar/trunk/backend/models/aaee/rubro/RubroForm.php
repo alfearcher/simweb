@@ -182,12 +182,12 @@
 
 	    	$query->where('ano_impositivo = :ano_impositivo', [':ano_impositivo' => $anoImpositivo]);
 
-	    	if ( trim($params) != '' ) {
+	    	if ( trim($params) !== '' ) {
 	    		$primerCaracter = mb_substr($params, 0, 1);
 	    		if ( is_numeric($primerCaracter) ) {
 	    			$arrayCodigos = explode(',', $params);
 	    			$params = '';
-	    			foreach ($arrayCodigos as $key => $value) {
+	    			foreach ( $arrayCodigos as $key => $value ) {
 	    				$arrayCodigo[$key] = (int)$value;
 	    			}
 	    			$query->andFilterWhere(['in', 'rubro', $arrayCodigo]);
