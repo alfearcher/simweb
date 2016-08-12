@@ -279,5 +279,43 @@
 	    	return ( $findModel > 0 ) ? true : false;
 	    }
 
+
+
+
+	    /**
+	     * Metodo que permite obtener un dataProvider que permite generar un catalogo de los
+	     * rubros según un año y paramatros adicionales.
+	     * @param  [type] $anoImpositivo [description]
+	     * @param  string $params        [description]
+	     * @return returna un a instancia de tipo dataProvider.
+	     */
+	    public function searchRubro($anoImpositivo, $params = '')
+	    {
+	    	return RubroForm::getDataProviderRubro($anoImpositivo, $params);
+	    }
+
+
+
+	    /***/
+	    public function getAddRubro($arrayRubros)
+	    {
+	    	return RubroForm::getAddDataProviderRubro($arrayRubros);
+	    }
+
+
+
+	    /***/
+	    public function getAnoSegunFecha($fecha)
+	    {
+	    	if ( isset($fecha) ) {
+	    		if ( $fecha == '0000-00-00' ) {
+	    			return 0;
+	    		} else {
+	    			return date('Y', strtotime($fecha));
+	    		}
+	    	}
+	    	return 0;
+	    }
+
 	}
  ?>

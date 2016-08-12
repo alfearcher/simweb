@@ -72,6 +72,7 @@
 		public $user_funcionario;
 
 		public $ano_catalogo;
+		public $ano_vence_ordenanza;
 
 		const SCENARIO_FRONTEND = 'frontend';
 		const SCENARIO_BACKEND = 'backend';
@@ -136,7 +137,7 @@
 	        	  'required', 'on' => 'frontend',
 	        	  'message' => Yii::t('frontend','{attribute} is required')],
 	        	[['nro_solicitud', 'id_contribuyente',
-	        	  'ano_impositivo', 'id_rubro'
+	        	  'ano_impositivo', 'id_rubro',
 	        	  'periodo', 'estatus'],
 	        	  'integer', 'message' => Yii::t('frontend','{attribute}')],
 	        	[['fecha_inicio', 'fecha_desde', 'fecha_hasta'],
