@@ -42,7 +42,7 @@
  */
 
 
- 	namespace frontend\controllers\aaee\correccioncapital;
+ 	namespace frontend\controllers\aaee\autorizarramo;
 
 
  	use Yii;
@@ -61,20 +61,20 @@
 	use common\models\configuracion\solicitud\SolicitudProcesoEvento;
 	use common\enviaremail\PlantillaEmail;
 	use common\models\solicitudescontribuyente\SolicitudesContribuyenteForm;
-	use backend\models\aaee\correccioncapital\CorreccionCapitalSearch;
-	use backend\models\aaee\correccioncapital\CorreccionCapitalForm;
+	use backend\models\aaee\autorizarramo\AutorizarRamoSearch;
+	use backend\models\aaee\autorizarramo\AutorizarRamoForm;
 
 	session_start();		// Iniciando session
 
 	/**
-	 * Clase principal que controla la creacion de solicitudes de Correccion de Capital.
+	 * Clase principal que controla la creacion de solicitudes de Auto.rizacion de Ramos
 	 * Solicitud que se realizara del lado del contribuyente (frontend). Se mostrara una vista
 	 * previa de la solicitud realizada por el contribuyente y se le indicara al contribuyente
 	 * que confirme la operacion o retorne a la vista inicial donde cargo la informacion para su
 	 * ajuste. Cuando el contribuyente confirme su intencion de crear la solicitud, es cuando
 	 * se guardara en base de datos.
 	 */
-	class CorreccionCapitalController extends Controller
+	class AutorizarRamoController extends Controller
 	{
 		public $layout = 'layout-main';				//	Layout principal del formulario
 
@@ -89,7 +89,7 @@
 		 * Identificador de  configuracion d ela solicitud. Se crea cuando se
 		 * configura la solicitud que gestiona esta clase.
 		 */
-		const CONFIG = 66;
+		const CONFIG = 96;
 
 
 		/**
@@ -110,32 +110,41 @@
 			if ( $id == self::CONFIG ) {
 				if ( isset($_SESSION['idContribuyente']) ) {
 					$idContribuyente = $_SESSION['idContribuyente'];
-					$searchCorreccion = New CorreccionCapitalSearch($idContribuyente);
+					$searchRamo = New AutorizarRamoSearch($idContribuyente);
 
 					// Se verifica que el contribuyente sea la sede principal.
-					if ( $searchCorreccion->getSedePrincipal() ) {
+					if ( $searchRamo->getSedePrincipal() ) {
 
 						// Se determina si ya existe una solicitud pendiente.
-						if ( !$searchCorreccion->yaPoseeSolicitudSimiliarPendiente() ) {
-							$modelParametro = New ParametroSolicitud($id);
-							// Se obtiene el tipo de solicitud. Se retorna un array donde el key es el nombre
-							// del parametro y el valor del elemento es el contenido del campo en base de datos.
-							$config = $modelParametro->getParametroSolicitud([
-																	'id_config_solicitud',
-																	'tipo_solicitud',
-																	'impuesto',
-																	'nivel_aprobacion'
-														]);
+						if ( !$searchRamo->yaPoseeSolicitudSimiliarPendiente() ) {
 
-							if ( isset($config) ) {
-								$_SESSION['conf'] = $config;
-								$_SESSION['begin'] = 1;
-								$this->redirect(['index-create']);
+							// Se determina si el contribuyente posee registros en las entidades
+							// relacionadas a la declaracion.
+							if ( !$searchRamo->tieneRecordActEcon() ) {
+
+								$modelParametro = New ParametroSolicitud($id);
+								// Se obtiene el tipo de solicitud. Se retorna un array donde el key es el nombre
+								// del parametro y el valor del elemento es el contenido del campo en base de datos.
+								$config = $modelParametro->getParametroSolicitud([
+																		'id_config_solicitud',
+																		'tipo_solicitud',
+																		'impuesto',
+																		'nivel_aprobacion'
+															]);
+
+								if ( isset($config) ) {
+									$_SESSION['conf'] = $config;
+									$_SESSION['begin'] = 1;
+									$this->redirect(['index-create']);
+								} else {
+									// No se obtuvieron los parametros de la configuracion.
+									return $this->redirect(['error-operacion', 'cod' => 955]);
+								}
 							} else {
-								// No se obtuvieron los parametros de la configuracion.
-								return $this->redirect(['error-operacion', 'cod' => 955]);
+								// Tiene registros cargados en las entidades relacionadas a la declaracion.
+								// No aplica para este tipo de solicitud.
+								return $this->redirect(['error-operacion', 'cod' => 404]);
 							}
-
 						} else {
 							// El contribuyente ya posee una solicitud similar, y la misma esta pendiente.
 							return $this->redirect(['error-operacion', 'cod' => 945]);
@@ -160,7 +169,7 @@
 
 		/**
 		 * Metodo que inicia la carga del formulario que permite realizar la solicitud
-		 * de correccion de domicilio fiscal. Tambien gestiona la ejecucion de las reglas
+		 * de autorizacion de ramos. Tambien gestiona la ejecucion de las reglas
 		 * de validacion del formulario.
 		 * @return view
 		 */
@@ -174,7 +183,7 @@
 				$request = Yii::$app->request;
 				$postData = $request->post();
 
-				$model = New CorreccionCapitalForm();
+				$model = New AutorizarRamoForm();
 				$formName = $model->formName();
 				$model->scenario = self::SCENARIO_FRONTEND;
 
@@ -205,13 +214,12 @@
 	      						// Mostrar vista previa.
 	      						$datosRecibido = $postData[$formName];
 
-	      						$ids = isset($postData['chkSucursal']) ? $postData['chkSucursal'] : null;
-	      						$searchCorreccion = New CorreccionCapitalSearch($idContribuyente);
-	      						$dataProvider = $dataProvider = $searchCorreccion->getDataProviderSucursal($ids);
-	      						$caption = Yii::t('frontend', 'Confirm Create. Update of Capital');
+	      						$searchRamo = New AutorizarRamoSearch($idContribuyente);
+	      						$dataProvider = $dataProvider = $searchRamo->getDataProviderSucursal($ids);
+	      						$caption = Yii::t('frontend', 'Confirm Create. Autorizar Ramo');
 	      						$subCaption = Yii::t('frontend', 'Info of Taxpayer');
 
-	      						return $this->render('/aaee/correccion-capital/pre-view-create', [
+	      						return $this->render('/aaee/autorizar-ramo/pre-view-create', [
 	      																	'model' => $model,
 	      																	'datosRecibido' => $datosRecibido,
 	      																	'dataProvider' => $dataProvider,
@@ -221,7 +229,6 @@
 	      					}
 	      				} elseif ( isset($postData['btn-confirm-create']) ) {
 	      					if ( $postData['btn-confirm-create'] == 2 ) {
-//die(var_dump($postData));
 	      						$result = self::actionBeginSave($model, $postData);
 	      						self::actionAnularSession(['begin']);
 	      						if ( $result ) {
@@ -239,25 +246,30 @@
 
 		      	// Se muestra el form de la solicitud.
 		      	// Datos generales del contribuyente.
-		      	$searchCorreccion = New CorreccionCapitalSearch($idContribuyente);
-		      	$datos = $searchCorreccion->getDatosContribuyente();
+		      	$searchRamo = New AutorizarRamoSearch($idContribuyente);
+		      	$datos = $searchRamo->getDatosContribuyente();
 		  		if ( isset($datos) ) {
 		  			// Se buscan las sucursales. Partiendo del identificador de la sede principal
 		  			// utilizando el rif de la sede principal se buscan los demas registros que
 		  			// coincidan con este. Se realiza un filtrado para obtener solo los identificadores
 		  			// de los registros (id-contribuyente), para luego utilizarlos en la generacion del
 		  			// dataproviver.
-		  			$ids = $searchCorreccion->getIdSucursales();
-		  			if ( count($ids) > 0 ) {
-		  				$dataProvider = $searchCorreccion->getDataProviderSucursal($ids);
-		  			}
+		  			//$ids = $searchCorreccion->getIdSucursales();
+		  			//if ( count($ids) > 0 ) {
+		  			//	$dataProvider = $searchCorreccion->getDataProviderSucursal($ids);
+		  			//}
 
+		  			$añoCatalogo = $searchRamo->getAnoSegunFecha($datos['fecha_inicio']);
+		  			$añoVenceOrdenanza = 2016;
 		  			$subCaption = Yii::t('frontend', 'Info of Taxpayer');
-		  			return $this->render('/aaee/correccion-capital/_create', [
+		  			return $this->render('/aaee/autorizar-ramo/_create', [
 					  											'model' => $model,
 					  											'datos' => $datos,
 					  											'subCaption' => $subCaption,
-					  											'dataProvider' => $dataProvider,
+					  											'añoCatalogo' => $añoCatalogo,
+					  											'añoVenceOrdenanza' => $añoVenceOrdenanza,
+					  											//'dataProvider' => $dataProvider,
+
 					  					]);
 		  		} else {
 		  			// No se encontraron los datos del contribuyente principal.
