@@ -46,6 +46,7 @@ use Yii;
 use backend\models\Contribuyente;
 use backend\models\UsosPropaganda;
 use backend\models\ClasesPropaganda;
+use backend\models\TiposPropaganda;
 
 
 /**
@@ -86,6 +87,8 @@ use backend\models\ClasesPropaganda;
  */
 class Propaganda extends \yii\db\ActiveRecord
 {
+
+
     
 
     /**
@@ -160,5 +163,16 @@ class Propaganda extends \yii\db\ActiveRecord
                     $this->inactivo = 'INACTIVO';
         }
                     return $this->inactivo;
+    }
+
+    /**
+     * [getTipoPropaganda description] Metodo que realiza la busqueda de la descripcion del tipo de propaganda en base a su indice
+  
+     * @return [type]       [description] devuelve la descripcion de la propaganda encontrada
+     */
+    public function getTipoPropaganda()
+    {
+
+        return $this->hasOne(TiposPropaganda::className(), ['tipo_propaganda' => 'tipo_propaganda']);
     }
 }
