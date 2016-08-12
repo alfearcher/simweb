@@ -52,68 +52,8 @@
 	class ContribuyenteBase extends ActiveRecord
 	{
 
-		public $id_contribuyente;
-		public $ente;
-		public $naturaleza;
-		public $cedula;
-		public $tipo;
-		public $tipo_naturaleza;			// 0 => NATURAL, 1 => JURIDICO.
-		public $id_rif;
-		public $id_cp;
-		public $apellidos;
-		public $nombres;
-		public $razon_social;
-		public $representante;
-		public $nit;
-		public $fecha_nac;
-		public $sexo;
-		public $casa_edf_qta_dom;
-		public $piso_nivel_no_dom;
-		public $apto_dom;
-		public $domicilio_fiscal;
-		public $catastro;
-		public $tlf_hab;
-		public $tlf_hab_otro;
-		public $tlf_ofic;
-		public $tlf_ofic_otro;
-		public $tlf_celular;
-		public $fax;
-		public $email;
-		public $inactivo;					// 0 => ACTIVO, 1 => INACTIVO.
-		public $cuenta;
-		public $reg_mercantil;
-		public $num_reg;
-		public $tomo;
-		public $folio;
-		public $fecha;
-		public $capital;
-		public $horario;
-		public $extension_horario;
-		public $num_empleados;
-		public $tipo_contribuyente;
-		public $licencia;
-		public $agente_retencion;
-		public $id_sim;
-		public $manzana_limite;
-		public $lote_1;
-		public $lote_2;
-		public $nivel;
-		public $lote_3;
-		public $fecha_inclusion;
-		public $fecha_inicio;
-		public $foraneo;
-		public $no_declara;
-		public $econ_informal;
-		public $grupo_contribuyente;
-		public $fe_inic_agente_retencion;
-		public $no_sujeto;
-		public $ruc;
-		public $naturaleza_rep;
-		public $cedula_rep;
+	
 
-
-		// public $conexion;
-		// public $conn;
 
 
 
