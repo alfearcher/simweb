@@ -402,7 +402,7 @@
 											<?= Html::submitButton(Yii::t('frontend', Yii::t('frontend', 'Remove Category Selected')),
 																								  [
 																									'id' => 'btn-remove-category',
-																									'class' => 'btn btn-danger',
+																									'class' => 'btn btn-warning',
 																									'value' => 3,
 																									'style' => 'width: 100%; margin-left: 800px;margin-top:20px;',
 																									'name' => 'btn-remove-category',
