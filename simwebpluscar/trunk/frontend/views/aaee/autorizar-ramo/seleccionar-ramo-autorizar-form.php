@@ -67,10 +67,18 @@
  			'id' => 'autorizar-ramo-form',
  			'method' => 'post',
  			'enableClientValidation' => true,
- 			//'enableAjaxValidation' => true,
+ 			'enableAjaxValidation' => false,
  			'enableClientScript' => true,
  		]);
  	?>
+
+	<?=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $datos['id_contribuyente']])->label(false);?>
+	<?=$form->field($model, 'ano_impositivo')->hiddenInput(['value' => $añoCatalogo])->label(false);?>
+	<?=$form->field($model, 'periodo')->hiddenInput(['value' => $periodo])->label(false);?>
+	<?=$form->field($model, 'fecha_inicio')->hiddenInput(['value' => $datos['fecha_inicio']])->label(false);?>
+	<?=$form->field($model, 'fecha_desde')->hiddenInput(['value' => $fechaDesde])->label(false);?>
+	<?=$form->field($model, 'fecha_hasta')->hiddenInput(['value' => $fechaHasta])->label(false);?>
+
 
 	<meta http-equiv="refresh">
     <div class="panel panel-primary"  style="width: 110%;">
@@ -103,7 +111,7 @@
 																									'name' => 'id-contribuyente',
 																									'style' => 'width:100%;',
 																									'value' => $datos['id_contribuyente'],
-																									'readonly' => true,
+																									'disabled' => true,
 																						 		])->label(false) ?>
 											</div>
 										</div>
@@ -122,7 +130,7 @@
 																								'name' => 'fecha-inicio',
 																								'style' => 'width:70%;',
 																								'value' => $datos['fecha_inicio'],
-																								'readonly' => true,
+																								'disabled' => true,
 																						 	])->label(false) ?>
 											</div>
 										</div>
@@ -132,24 +140,85 @@
 <!-- Año Catalogo de Rubro -->
 									<div class="col-sm-2" style="margin-left: -45px;">
 										<div class="row" style="width:100%;">
-											<p style="margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('backend', $model->getAttributeLabel('ano_catalogo')) ?></i></p>
+											<p style="margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('backend', $model->getAttributeLabel('ano_impositivo')) ?></i></p>
 										</div>
 										<div class="row">
-											<div class="ano-catalogo">
-												<?= $form->field($model, 'ano_catalogo')->textInput([
-																								'id' => 'ano-catalogo',
-																								'name' => 'ano-catalogo',
+											<div class="ano-impositivo">
+												<?= $form->field($model, 'ano_impositivo')->textInput([
+																								'id' => 'ano-impositivo',
+																								'name' => 'ano-impositivo',
 																								'style' => 'width:60%;',
 																								'value' => $añoCatalogo,
-																								'readonly' => true,
+																								'disabled' => true,
 																						 	])->label(false) ?>
 											</div>
 										</div>
 									</div>
 <!-- Fin de Año Catalogo de Rubro -->
 
+<!-- Inicio de Periodo -->
+									<div class="col-sm-2" style="margin-left: -75px;">
+										<div class="row" style="width:100%;">
+											<p style="margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('backend', $model->getAttributeLabel('periodo')) ?></i></p>
+										</div>
+										<div class="row">
+											<div class="periodo">
+												<?= $form->field($model, 'periodo')->textInput([
+																								'id' => 'periodo',
+																								'name' => 'periodo',
+																								'style' => 'width:30%;',
+																								'value' => $periodo,
+																								'disabled' => true,
+																						 	])->label(false) ?>
+											</div>
+										</div>
+									</div>
+<!-- Fin de Periodo -->
+
+
+<!-- Inicio de Fecha Desde -->
+									<div class="col-sm-2" style="margin-left: -120px;">
+										<div class="row" style="width:100%;">
+											<p style="margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('backend', $model->getAttributeLabel('fecha_desde')) ?></i></p>
+										</div>
+										<div class="row">
+											<div class="fecha-desde">
+												<?= $form->field($model, 'fecha_desde')->textInput([
+																								'id' => 'fecha-desde',
+																								'name' => 'fecha-desde',
+																								'style' => 'width:60%;',
+																								'value' => $fechaDesde,
+																								'disabled' => true,
+																						 	])->label(false) ?>
+											</div>
+										</div>
+									</div>
+<!-- Fin de Fecha Desde -->
+
+
+<!-- Inicio de Fecha Hasta -->
+									<div class="col-sm-2" style="margin-left: -75px;">
+										<div class="row" style="width:100%;">
+											<p style="margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('backend', $model->getAttributeLabel('fecha_hasta')) ?></i></p>
+										</div>
+										<div class="row">
+											<div class="fecha-hasta">
+												<?= $form->field($model, 'fecha_hasta')->textInput([
+																								'id' => 'fecha-hasta',
+																								'name' => 'fecha-hasta',
+																								'style' => 'width:60%;',
+																								'value' => $fechaHasta,
+																								'disabled' => true,
+																						 	])->label(false) ?>
+											</div>
+										</div>
+									</div>
+<!-- Fin de Fecha Hasta -->
+
+
+
 <!-- Año de Vencimiento de la Ordenanza, segun el Año Catalogo -->
-									<div class="col-sm-2" style="margin-left: 55px;">
+									<div class="col-sm-2" style="margin-left: -35px;">
 										<div class="row" style="width:100%;">
 											<p style="margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('backend', 'Ordinance Expired') ?></i></p>
 										</div>
@@ -160,7 +229,7 @@
 																									'name' => 'ano-vence-ordenanza',
 																									'style' => 'width:70%;',
 																									'value' => $añoVenceOrdenanza,
-																									'readonly' => true,
+																									'disabled' => true,
 																						 		])->label(false) ?>
 											</div>
 										</div>
@@ -278,7 +347,7 @@
 
 								<div class="row" style="margin-left: 5px;border-bottom: 0.5px solid #ccc;width:99%;"></div>
 <!-- Lista de Rubros seleccionados para autorizar -->
-								<div class="row" style="width: 100%; padding-left: 25px;margin-top: 15px;">
+								<div class="row" style="width: 100%; padding-left: 15px;margin-top: 15px;">
 										<div class="row" style="padding-left: 15px;width:100%;">
 											<span><h4><?= Html::encode(Yii::t('backend', 'Add Category List')) ?></h4></span>
 										</div>
@@ -288,7 +357,7 @@
 	    									'headerRowOptions' => ['class' => 'danger'],
 	    									//'filterModel' => $searchModel,
 	    									'columns' => [
-	    										//['class' => 'yii\grid\SerialColumn'],
+	    										['class' => 'yii\grid\SerialColumn'],
 								            	[
 								                    'label' => Yii::t('frontend', 'Category'),
 								                    'value' => function($data) {
@@ -317,6 +386,15 @@
 									</div>
 								</div>
 <!-- Fin de lista de Rubros seleccionados  para autorizar -->
+								<?php if ( trim($errorRubroSeleccionado) !== '' ) { ?>
+									<div class="row">
+										<div class="error-chk-selected" style="padding-left:35px;">
+											<div class="well well-sm" style="width:70%; color:red; padding-left:35px;">
+												<?=$errorRubroSeleccionado; ?>
+											</div>
+										</div>
+									</div>
+								<?php } ?>
 
 								<div class="row">
 									<div class="col-sm-3">
@@ -328,6 +406,7 @@
 																									'value' => 3,
 																									'style' => 'width: 100%; margin-left: 800px;margin-top:20px;',
 																									'name' => 'btn-remove-category',
+																									'disabled' => ( $activarBotonCreate == 1 ) ? false : true,
 																								  ])
 											?>
 										</div>
@@ -350,6 +429,23 @@
 																				'value' => 4,
 																				'style' => 'width: 100%; margin-left: 100px;margin-top:20px;',
 																				'name' => 'btn-create',
+																				'disabled' => ( $activarBotonCreate == 1 ) ? false : true,
+																			  ])
+						?>
+					</div>
+				</div>
+
+
+				<div class="col-sm-3">
+					<div class="form-group">
+						<?= Html::submitButton(Yii::t('frontend', Yii::t('frontend', 'Quit')),
+																			  [
+																				'id' => 'btn-quit',
+																				'class' => 'btn btn-danger',
+																				'value' => 1,
+																				'style' => 'width: 60%; margin-left: 300px;margin-top:20px;',
+																				'name' => 'btn-quit',
+
 																			  ])
 						?>
 					</div>

@@ -79,9 +79,12 @@
         	<h3><?= Html::encode(Yii::t('frontend', 'Confirm Create. Autorizar Ramo')) ?></h3>
         </div>
 
-	<?= $form->field($model, 'id_contribuyente')->hiddenInput(['value' => $_SESSION['idContribuyente']])->label(false); ?>
-	<?= $form->field($model, 'domicilio_fiscal_v')->hiddenInput(['value' => $model['domicilio_fiscal_v']])->label(false); ?>
-	<?= $form->field($model, 'domicilio_fiscal_new')->hiddenInput(['value' => $model['domicilio_fiscal_new']])->label(false); ?>
+	<?= $form->field($model, 'id_contribuyente')->hiddenInput(['value' => $model->id_contribuyente])->label(false); ?>
+	<?= $form->field($model, 'fecha_inicio')->hiddenInput(['value' => $model->fecha_inicio])->label(false); ?>
+	<?= $form->field($model, 'ano_impositivo')->hiddenInput(['value' => $model->ano_impositivo])->label(false); ?>
+	<?= $form->field($model, 'periodo')->hiddenInput(['value' => $model->periodo])->label(false); ?>
+	<?= $form->field($model, 'fecha_desde')->hiddenInput(['value' => $model->fecha_desde])->label(false); ?>
+	<?= $form->field($model, 'fecha_hasta')->hiddenInput(['value' => $model->fecha_hasta])->label(false); ?>
 	<?= $form->field($model, 'usuario')->hiddenInput(['value' => $model->usuario])->label(false); ?>
 	<?= $form->field($model, 'fecha_hora')->hiddenInput(['value' => $model->fecha_hora])->label(false); ?>
 	<?= $form->field($model, 'origen')->hiddenInput(['value' => $model->origen])->label(false); ?>
@@ -97,34 +100,45 @@
 					        	<span><?= Html::encode(Yii::t('backend', 'Summary')) ?></span>
 					        </div>
 					        <div class="panel-body">
-					        	<div class="row" id="datos-principal-primario" style="padding-left: 15px; width: 100%;">
-									<?= DetailView::widget([
-											'model' => $model,
-							    			'attributes' => [
-
-							    				[
-							    					'label' => $model->getAttributeLabel('id_contribuyente'),
-							    					'value' => $model['id_contribuyente'],
-							    				],
-							    				[
-							    					'label' => $model->getAttributeLabel('dni'),
-							    					'value' => $datosRecibido['dni'],
-							    				],
-							    				[
-							    					'label' => $model->getAttributeLabel('razon_social'),
-							    					'value' => $datosRecibido['razon_social'],
-							    				],
-							    				[
-							    					'label' => $model->getAttributeLabel('domicilio_fiscal_v'),
-							    					'value' => $model['domicilio_fiscal_v'],
-							    				],
-							    				[
-							    					'label' => $model->getAttributeLabel('domicilio_fiscal_new'),
-							    					'value' => $model['domicilio_fiscal_new'],
-							    				],
-							    			],
-										])
-									?>
+					        	<div class="row" id="rubro-seleccionado" style="padding-left: 15px; width: 100%;">
+									<?= GridView::widget([
+											'id' => 'grid-lista-rubro-seleccionado',
+	    									'dataProvider' => $dataProvider,
+	    									'headerRowOptions' => ['class' => 'danger'],
+	    									//'filterModel' => $searchModel,
+	    									'columns' => [
+	    										['class' => 'yii\grid\SerialColumn'],
+								            	[
+								                    'label' => Yii::t('frontend', 'Category'),
+								                    'value' => function($data) {
+	                        										return $data->rubro;
+	                											},
+								                ],
+								                [
+								                    'label' => Yii::t('frontend', 'Year'),
+								                    'value' => function($data) {
+	                        										return $data->ano_impositivo;
+	                											},
+								                ],
+								                [
+								                    'label' => Yii::t('frontend', 'Descripcion'),
+								                    'value' => function($data) {
+	                        										return $data->descripcion;
+	                											},
+								                ],
+								                [
+								                	'class' => 'yii\grid\CheckboxColumn',
+								                	'name' => 'chkRubroSeleccionado',
+								                	'checkboxOptions' => [
+                            							'id' => 'chkSucursal',
+                            							// Lo siguiente mantiene el checkbox tildado.
+                            							'onClick' => 'javascript: return false;',
+                            							'checked' => true,
+                                					],
+								                	'multiple' => false,
+								                ],
+								        	]
+										]);?>
 					        	</div>
 					        </div>
 						</div>
@@ -137,7 +151,7 @@
 																				'id' => 'btn-confirm-create',
 																				'class' => 'btn btn-success',
 																				'name' => 'btn-confirm-create',
-																				'value' => 2,
+																				'value' => 5,
 																				'style' => 'width: 100%;'
 									])?>
 							</div>

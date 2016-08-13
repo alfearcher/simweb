@@ -52,6 +52,11 @@
 						        'dataProvider' => $dataProvider,
 						        'searchModel' => $searchModel,
 						        'dataProviderSeleccionado' => $dataProviderSeleccionado,
+						        'periodo' => $periodo,
+						        'fechaDesde' => $fechaDesde,
+						        'fechaHasta' => $fechaHasta,
+						        'activarBotonCreate' => $activarBotonCreate,
+						        'errorRubroSeleccionado' => $errorRubroSeleccionado,
 
 					    ]) ?>
 </div>
