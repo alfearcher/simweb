@@ -187,6 +187,7 @@
 				$model = New AutorizarRamoForm();
 				$formName = $model->formName();
 				$model->scenario = self::SCENARIO_FRONTEND;
+				$validateRubroSeleccionado = false;
 
 				if ( isset($postData['btn-back-form']) ) {
 					if ( $postData['btn-back-form'] == 3 ) {
@@ -204,7 +205,7 @@
 					Yii::$app->response->format = Response::FORMAT_JSON;
 					return ActiveForm::validate($model);
 		      	}
-// die(var_dump($request->post()));
+
 				if ( isset($postData['btn-search']) ) {
 					if ( $postData['btn-search'] == 1 ) {
 						$params = $postData['inputSearch'];
@@ -224,30 +225,32 @@
 						self::actionRemoveRubro($arregloIdRubro);
 					}
 				} else {
+					$arregloRubro = isset($_SESSION['arrayIdRubros']) ? $_SESSION['arrayIdRubros'] : [];
+					if ( count($arregloRubro) > 0 ) { $validateRubroSeleccionado = true; }
 			   		if ( $model->load($postData) ) {
-			      		if ( $model->validate() ) {
+			      		if ( $model->validate() && $validateRubroSeleccionado ) {
+
 		      				// Validacion correcta.
 		      				if ( isset($postData['btn-create']) ) {
 		      					if ( $postData['btn-create'] == 4 ) {
 
-		      						// Mostrar vista previa.
 		      						$datosRecibido = $postData[$formName];
 
 		      						$searchRamo = New AutorizarRamoSearch($idContribuyente);
-		      						$dataProvider = $dataProvider = $searchRamo->getDataProviderSucursal($ids);
+		      						$dataProviderSeleccionado = $searchRamo->getDataProviderAddRubro($arregloRubro);
 		      						$caption = Yii::t('frontend', 'Confirm Create. Autorizar Ramo');
 		      						$subCaption = Yii::t('frontend', 'Info of Taxpayer');
 
 		      						return $this->render('/aaee/autorizar-ramo/pre-view-create', [
 		      																	'model' => $model,
 		      																	'datosRecibido' => $datosRecibido,
-		      																	'dataProvider' => $dataProvider,
+		      																	'dataProvider' => $dataProviderSeleccionado,
 		      																	'subCaption' => $subCaption,
 		      																	'caption' => $caption,
 		      							]);
 		      					}
 		      				} elseif ( isset($postData['btn-confirm-create']) ) {
-		      					if ( $postData['btn-confirm-create'] == 2 ) {
+		      					if ( $postData['btn-confirm-create'] == 5 ) {
 		      						$result = self::actionBeginSave($model, $postData);
 		      						self::actionAnularSession(['begin']);
 		      						if ( $result ) {
@@ -281,10 +284,26 @@
 
 		  			$arregloRubro = isset($_SESSION['arrayIdRubros']) ? $_SESSION['arrayIdRubros'] : [];
 
+					$activarBotonCreate = 0;
+			  		if ( count($arregloRubro) > 0 ) {
+			  			$activarBotonCreate = 1;
+			  			$validateRubroSeleccionado = true;
+			  		}
+			  		$errorRubroSeleccionado = '';
+		  			if ( !$validateRubroSeleccionado ) {
+		  				// Mensaje que indica que no se haincluido ningun rubro en la lista.
+		  				$errorRubroSeleccionado = Yii::t('frontend', 'Category not select');
+		  			}
+
 		  			$añoInicio = $searchRamo->getAnoSegunFecha($datos['fecha_inicio']);
 		  			$añoCatalogo = $searchRamo->determinarAnoCatalogoSegunAnoInicio($añoInicio);
 		  			$añoVenceOrdenanza = $searchRamo->getVencimientoOrdenanza($añoCatalogo);
 		  			$dataProvider = $searchRamo->getDataProvider($añoCatalogo, $params);
+		  			$periodo = 1;
+		  			$rangoFecha = $searchRamo->getRangoFechaDeclaracion($añoCatalogo);
+
+		  			$fechaDesde = $rangoFecha['fechaDesde'];
+		  			$fechaHasta = $rangoFecha['fechaHasta'];
 
 		  			// Rubros seleccionados
 		  			$dataProviderSeleccionado = $searchRamo->getDataProviderAddRubro($arregloRubro);
@@ -299,6 +318,11 @@
 					  											'dataProvider' => $dataProvider,
 					  											'searchModel' => $searchRamo,
 					  											'dataProviderSeleccionado' => $dataProviderSeleccionado,
+					  											'periodo' => $periodo,
+					  											'fechaDesde' => $fechaDesde,
+						        								'fechaHasta' => $fechaHasta,
+						        								'activarBotonCreate' => $activarBotonCreate,
+						        								'errorRubroSeleccionado' => $errorRubroSeleccionado,
 
 					  					]);
 		  		} else {
