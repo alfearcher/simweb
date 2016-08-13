@@ -63,6 +63,7 @@
 	use common\models\solicitudescontribuyente\SolicitudesContribuyenteForm;
 	use backend\models\aaee\autorizarramo\AutorizarRamoSearch;
 	use backend\models\aaee\autorizarramo\AutorizarRamoForm;
+	use backend\models\aaee\rubro\Rubro;
 
 	session_start();		// Iniciando session
 
@@ -101,7 +102,7 @@
 		{
 			// Se verifica que el contribuyente haya iniciado una session.
 
-			self::actionAnularSession(['begin', 'conf']);
+			self::actionAnularSession(['begin', 'conf', 'arrayIdRubros']);
 			$request = Yii::$app->request;
 			$getData = $request->get();
 
@@ -176,7 +177,7 @@
 		public function actionIndexCreate()
 		{
 			// Se verifica que el contribuyente haya iniciado una session.
-
+			$params = '';
 			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) && isset($_SESSION['conf'])) {
 
 				$idContribuyente = $_SESSION['idContribuyente'];
@@ -203,46 +204,65 @@
 					Yii::$app->response->format = Response::FORMAT_JSON;
 					return ActiveForm::validate($model);
 		      	}
+// die(var_dump($request->post()));
+				if ( isset($postData['btn-search']) ) {
+					if ( $postData['btn-search'] == 1 ) {
+						$params = $postData['inputSearch'];
+					}
 
-		      	if ( $model->load($postData) ) {
-		      		if ( $model->validate() ) {
+			    } elseif ( isset($postData['btn-add-category']) ) {
+			    	if ( $postData['btn-add-category'] == 2 ) {
+			    		// Se obtiene el arreglo de rubros seleccionado para ser incluidos
+			    		// en la lista.
+			    		$arregloIdRubro = isset($postData['chkRubro']) ? $postData['chkRubro'] : [];
+			    		self::actionAddRubro($arregloIdRubro);
+					}
 
-	      				// Validacion correcta.
-	      				if ( isset($postData['btn-create']) ) {
-	      					if ( $postData['btn-create'] == 1 ) {
+			    } elseif ( isset($postData['btn-remove-category']) ) {
+			    	if ( $postData['btn-remove-category'] == 3 ) {
+						$arregloIdRubro = isset($postData['chkRubroSeleccionado']) ? $postData['chkRubroSeleccionado'] : [];
+						self::actionRemoveRubro($arregloIdRubro);
+					}
+				} else {
+			   		if ( $model->load($postData) ) {
+			      		if ( $model->validate() ) {
+		      				// Validacion correcta.
+		      				if ( isset($postData['btn-create']) ) {
+		      					if ( $postData['btn-create'] == 4 ) {
 
-	      						// Mostrar vista previa.
-	      						$datosRecibido = $postData[$formName];
+		      						// Mostrar vista previa.
+		      						$datosRecibido = $postData[$formName];
 
-	      						$searchRamo = New AutorizarRamoSearch($idContribuyente);
-	      						$dataProvider = $dataProvider = $searchRamo->getDataProviderSucursal($ids);
-	      						$caption = Yii::t('frontend', 'Confirm Create. Autorizar Ramo');
-	      						$subCaption = Yii::t('frontend', 'Info of Taxpayer');
+		      						$searchRamo = New AutorizarRamoSearch($idContribuyente);
+		      						$dataProvider = $dataProvider = $searchRamo->getDataProviderSucursal($ids);
+		      						$caption = Yii::t('frontend', 'Confirm Create. Autorizar Ramo');
+		      						$subCaption = Yii::t('frontend', 'Info of Taxpayer');
 
-	      						return $this->render('/aaee/autorizar-ramo/pre-view-create', [
-	      																	'model' => $model,
-	      																	'datosRecibido' => $datosRecibido,
-	      																	'dataProvider' => $dataProvider,
-	      																	'subCaption' => $subCaption,
-	      																	'caption' => $caption,
-	      							]);
-	      					}
-	      				} elseif ( isset($postData['btn-confirm-create']) ) {
-	      					if ( $postData['btn-confirm-create'] == 2 ) {
-	      						$result = self::actionBeginSave($model, $postData);
-	      						self::actionAnularSession(['begin']);
-	      						if ( $result ) {
-									$this->_transaccion->commit();
-									return self::actionView($model->nro_solicitud);
-								} else {
-									$this->_transaccion->rollBack();
-									$this->redirect(['error-operacion', 'cod'=> 920]);
+		      						return $this->render('/aaee/autorizar-ramo/pre-view-create', [
+		      																	'model' => $model,
+		      																	'datosRecibido' => $datosRecibido,
+		      																	'dataProvider' => $dataProvider,
+		      																	'subCaption' => $subCaption,
+		      																	'caption' => $caption,
+		      							]);
+		      					}
+		      				} elseif ( isset($postData['btn-confirm-create']) ) {
+		      					if ( $postData['btn-confirm-create'] == 2 ) {
+		      						$result = self::actionBeginSave($model, $postData);
+		      						self::actionAnularSession(['begin']);
+		      						if ( $result ) {
+										$this->_transaccion->commit();
+										return self::actionView($model->nro_solicitud);
+									} else {
+										$this->_transaccion->rollBack();
+										$this->redirect(['error-operacion', 'cod'=> 920]);
 
-	      						}
-	      					}
-	      				}
+		      						}
+		      					}
+		      				}
+				      	}
 			      	}
-		      	 }
+			    }
 
 		      	// Se muestra el form de la solicitud.
 		      	// Datos generales del contribuyente.
@@ -259,8 +279,16 @@
 		  			//	$dataProvider = $searchCorreccion->getDataProviderSucursal($ids);
 		  			//}
 
-		  			$añoCatalogo = $searchRamo->getAnoSegunFecha($datos['fecha_inicio']);
-		  			$añoVenceOrdenanza = 2016;
+		  			$arregloRubro = isset($_SESSION['arrayIdRubros']) ? $_SESSION['arrayIdRubros'] : [];
+
+		  			$añoInicio = $searchRamo->getAnoSegunFecha($datos['fecha_inicio']);
+		  			$añoCatalogo = $searchRamo->determinarAnoCatalogoSegunAnoInicio($añoInicio);
+		  			$añoVenceOrdenanza = $searchRamo->getVencimientoOrdenanza($añoCatalogo);
+		  			$dataProvider = $searchRamo->getDataProvider($añoCatalogo, $params);
+
+		  			// Rubros seleccionados
+		  			$dataProviderSeleccionado = $searchRamo->getDataProviderAddRubro($arregloRubro);
+
 		  			$subCaption = Yii::t('frontend', 'Info of Taxpayer');
 		  			return $this->render('/aaee/autorizar-ramo/_create', [
 					  											'model' => $model,
@@ -268,13 +296,79 @@
 					  											'subCaption' => $subCaption,
 					  											'añoCatalogo' => $añoCatalogo,
 					  											'añoVenceOrdenanza' => $añoVenceOrdenanza,
-					  											//'dataProvider' => $dataProvider,
+					  											'dataProvider' => $dataProvider,
+					  											'searchModel' => $searchRamo,
+					  											'dataProviderSeleccionado' => $dataProviderSeleccionado,
 
 					  					]);
 		  		} else {
 		  			// No se encontraron los datos del contribuyente principal.
 		  			$this->redirect(['error-operacion', 'cod' => 938]);
 		  		}
+			}
+		}
+
+
+
+
+		/**
+		 * Metodo que agrega el o los rubros seleccionados en una lista previa.
+		 * @param  array $arregloIdRubro arreglo de identificadores del rubro
+		 * seleccionado para incluir. El arreglo que se envia se agrega a los
+		 * existentes de haberlos. El resultado final de arreglos se guarda en
+		 * una variable de session.
+		 * @return not
+		 */
+		public function actionAddRubro($arregloIdRubro)
+		{
+			if ( count($arregloIdRubro) > 0 ) {
+    			foreach ( $arregloIdRubro as $key => $value ) {
+    				if ( !isset($_SESSION['arrayIdRubros']) ) {
+		    			$_SESSION['arrayIdRubros'][] = $value;
+		    		} else {
+		    			$arrayIdRurbros = [];
+		    			$arrayIdRurbros = $_SESSION['arrayIdRubros'];
+		    			if ( !in_array($value, $arrayIdRurbros) ) {
+		    				$_SESSION['arrayIdRubros'][] = $value;
+		    			}
+		    		}
+	    		}
+    		}
+		}
+
+
+
+
+		/**
+		 * Metodo que crea un arreglo nuevo de identificadores de los rubros
+		 * para excluir auqellos que fueron enviados para su eliminacion. Lo
+		 * se busca es suprimir del arreglo principal, aquellos identificadores
+		 * que fueron enviados. Al final el nuevo arreglo se salva en una variable
+		 * de session.
+		 * @param  array $arregloIdRubro arreglo de identificadores de los rubros.
+		 * @return not
+		 */
+		public function actionRemoveRubro($arregloIdRubro)
+		{
+			$nuevoArray = [];
+			$indiceNoVa = [];
+			if ( count($arregloIdRubro) > 0 ) {
+				if ( isset($_SESSION['arrayIdRubros']) ) {
+					// Arreglo de los identificadores existente en la lista.
+					$arreglo = $_SESSION['arrayIdRubros'];
+
+					foreach ( $arreglo as $key => $value) {
+						if ( in_array($value, $arregloIdRubro) ) {
+							$indiceNoVa[] = $value;
+						} else {
+							$nuevoArray[] = $value;
+						}
+					}
+				}
+				if ( count($indiceNoVa) > 0 ) {
+					self::actionAnularSession(['arrayIdRubros']);
+					$_SESSION['arrayIdRubros'] = $nuevoArray;
+				}
 			}
 		}
 
@@ -786,6 +880,7 @@
 							'postData',
 							'conf',
 							'begin',
+							'arrayIdRubros',
 					];
 		}
 
