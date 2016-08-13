@@ -241,6 +241,7 @@
 		      						$caption = Yii::t('frontend', 'Confirm Create. Autorizar Ramo');
 		      						$subCaption = Yii::t('frontend', 'Info of Taxpayer');
 
+
 		      						return $this->render('/aaee/autorizar-ramo/pre-view-create', [
 		      																	'model' => $model,
 		      																	'datosRecibido' => $datosRecibido,
@@ -252,7 +253,7 @@
 		      				} elseif ( isset($postData['btn-confirm-create']) ) {
 		      					if ( $postData['btn-confirm-create'] == 5 ) {
 		      						$result = self::actionBeginSave($model, $postData);
-		      						self::actionAnularSession(['begin']);
+		      						self::actionAnularSession(['begin', 'arrayIdRubros']);
 		      						if ( $result ) {
 										$this->_transaccion->commit();
 										return self::actionView($model->nro_solicitud);
