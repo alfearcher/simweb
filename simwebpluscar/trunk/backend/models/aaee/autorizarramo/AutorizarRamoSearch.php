@@ -51,6 +51,8 @@
 	use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomicaSearch;
 	use common\models\contribuyente\ContribuyenteBase;
 	use backend\models\aaee\actecon\ActEcon;
+	use common\models\ordenanza\OrdenanzaBase;
+	use backend\models\aaee\rubro\RubroForm;
 
 	/**
 	 * Clase que gestiona el funcionamiento de la solicitud para la autorizacion de
@@ -283,13 +285,71 @@
 
 
 	    /**
+	     * [determinarPrimerAnoCatalogoRubro description]
+	     * @return retorna un integer con 4 digitos.
+	     */
+	    public function determinarPrimerAnoCatalogoRubro()
+	    {
+	    	return $anoInicioCatalogo = RubroForm::getPrimerAnoCatalogoRubro();
+	    }
+
+
+
+
+	    /**
+	     * [determinarUltimoAnoCatalogoRubro description]
+	     * @return @return retorna un integer con 4 digitos.
+	     */
+	    public function determinarUltimoAnoCatalogoRubro()
+	    {
+	    	return $anoFinalCatalogo = RubroForm::getUltimoAnoCatalogoRubro();
+	    }
+
+
+
+
+	    /**
+	     * Metodo que permite determinar el año del catalogo de rubro que le corresponde
+	     * según el año de inicio de actividades del contribuyente juridico, la intencion
+	     * es determinar el año del catalogo de rubros para listarlos.
+	     * @param $añoInicio, integer que define el año de inicio de actividades, esto deriva
+	     * de la fecha de inicio del contribuyente.
+	     * @return returna integer, año de 4 digitos o cero (0) si no logra determinar el año.
+	     */
+	    public function determinarAnoCatalogoSegunAnoInicio($añoInicio)
+	    {
+	    	if ( $añoInicio > 0 ) {
+	    		$primerAnoCatalogo = self::determinarPrimerAnoCatalogoRubro();
+	    		$ultimoAnoCatalogo = self::determinarUltimoAnoCatalogoRubro();
+	    		if ( $primerAnoCatalogo > 0 && $ultimoAnoCatalogo > 0 ) {
+	    			if ( $añoInicio == $primerAnoCatalogo ) {
+	    				return $primerAnoCatalogo;
+
+	    			} elseif ( $añoInicio < $primerAnoCatalogo ) {
+	    				return $primerAnoCatalogo;
+
+	    			} elseif ( $añoInicio > $primerAnoCatalogo ) {
+	    				for ($i = $primerAnoCatalogo; $i <= $ultimoAnoCatalogo; $i++ ) {
+	    					if ( $i == $añoInicio ) {
+	    						return $añoInicio;
+	    					}
+	    				}
+	    			}
+	    		}
+	    	}
+	    	return 0;
+	    }
+
+
+
+	    /**
 	     * Metodo que permite obtener un dataProvider que permite generar un catalogo de los
 	     * rubros según un año y paramatros adicionales.
 	     * @param  [type] $anoImpositivo [description]
 	     * @param  string $params        [description]
 	     * @return returna un a instancia de tipo dataProvider.
 	     */
-	    public function searchRubro($anoImpositivo, $params = '')
+	    public function getDataProvider($anoImpositivo, $params = '')
 	    {
 	    	return RubroForm::getDataProviderRubro($anoImpositivo, $params);
 	    }
@@ -297,11 +357,10 @@
 
 
 	    /***/
-	    public function getAddRubro($arrayRubros)
+	    public function getDataProviderAddRubro($arrayRubros)
 	    {
 	    	return RubroForm::getAddDataProviderRubro($arrayRubros);
 	    }
-
 
 
 	    /***/
@@ -315,6 +374,14 @@
 	    		}
 	    	}
 	    	return 0;
+	    }
+
+
+
+	    /***/
+	    public function getVencimientoOrdenanza($añoCatalogo)
+	    {
+	    	return OrdenanzaBase::getAnoVencimientoOrdenanzaSegunAnoImpositivo($añoCatalogo, 1);
 	    }
 
 	}
