@@ -384,5 +384,22 @@
 	    	return OrdenanzaBase::getAnoVencimientoOrdenanzaSegunAnoImpositivo($añoCatalogo, 1);
 	    }
 
+
+
+	    /***/
+	    public function getRangoFechaDeclaracion($añoCatalogo)
+	    {
+	    	$rangoFecha = [];
+	    	if ( strlen($añoCatalogo) == 4 ) {
+	    		// if (is_integer($añoCatalogo) ) {
+	    			$rangoFecha = [
+	    				'fechaDesde' => $añoCatalogo . '-01-01',
+	    				'fechaHasta' => $añoCatalogo . '-12-31'
+	    			];
+	    		// }
+	    	}
+	    	return $rangoFecha;
+	    }
+
 	}
  ?>
