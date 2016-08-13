@@ -70,7 +70,7 @@
 		        			'items' => [
 		        						['label' => 'Inscripción de Actividades Economicas','url' => ['/aaee/inscripcionactecon/inscripcion-actividad-economica/index', 'id' => 81]],
 		        					   	['label' => 'Inscripción de Sucursales', 'url' => ['/aaee/inscripcionsucursal/inscripcion-sucursal/index', 'id' => 85]],
-		        					   	['label' => 'Autorizar Ramos', 'url' => ['/aaee/autorizarramo/autorizar-ramo/index']],
+		        					   	['label' => 'Autorizar Ramo(s)', 'url' => ['/aaee/autorizarramo/autorizar-ramo/index', 'id' => 96]],
 		        					   	['label' => 'Renovación de Licencias', 'url' => ['ordenanza/impuesto/ordenanza/index']],
 		        					   	['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Modificion de Datos',
 		        					   		'items' => [
