@@ -49,7 +49,9 @@
 						        'subCaption' => $subCaption,
 						        'añoCatalogo' => $añoCatalogo,
 					  			'añoVenceOrdenanza' => $añoVenceOrdenanza,
-						        //'dataProvider' => $dataProvider,
+						        'dataProvider' => $dataProvider,
+						        'searchModel' => $searchModel,
+						        'dataProviderSeleccionado' => $dataProviderSeleccionado,
 
 					    ]) ?>
 </div>

@@ -67,23 +67,16 @@
  			'id' => 'autorizar-ramo-form',
  			'method' => 'post',
  			'enableClientValidation' => true,
- 			'enableAjaxValidation' => true,
+ 			//'enableAjaxValidation' => true,
  			'enableClientScript' => true,
  		]);
  	?>
 
 	<meta http-equiv="refresh">
-    <div class="panel panel-primary"  style="width: 100%;">
+    <div class="panel panel-primary"  style="width: 110%;">
         <div class="panel-heading">
         	<h3><?= Html::encode($this->title) ?></h3>
         </div>
-<!--
-	<?//= Html::activeHiddenInput($model, 'id_sede_principal', ['id' => 'id-sede-principal', 'name' => 'id-sede-principal', 'value' => $_SESSION['idContribuyente']]) ?>
-
-	<?//= $form->field($model, 'usuario')->hiddenInput(['value' => Yii::$app->user->identity->username])->label(false); ?>
-	<?//= $form->field($model, 'estatus')->hiddenInput(['value' => 0])->label(false); ?>
--->
-
 
 <!-- Cuerpo del formulario -->
         <div class="panel-body" style="background-color: #F9F9F9;">
@@ -192,39 +185,151 @@
 
 
 <!-- LISTA DE CATALOGO DE RUBROS -->
-								<div class="row">
-									<div class="panel panel-success" style="width: 97%; margin-left: 15px;">
-								        <div class="panel-heading">
-								        	<span><?= Html::encode(Yii::t('backend', 'Category List')) ?></span>
-								        </div>
-								        <div class="panel-body">
-								        	<div class="row">
-								        		<div class="col-sm-12">
-								        			<?php Pjax::begin(); ?>
-													<div id="listaRubro" class="listaRubro">
-													</div>
-													<?php Pjax::end(); ?>
+								<div class="row" >
+									<div class="row" style="padding-left: 35px;">
+										<div class="col-sm-4">
+											<div class="row" style="width: 65%;">
+												<span><?= Html::encode(Yii::t('backend', 'Input Search Category')) ?></span>
+											</div>
+											<div class="row">
+												<?= Html::input('text', 'inputSearch', '',
+												 								[
+												 									'class' => 'form-control',
+												 									'style' => 'width: 120%;'
+												 								])
+												?>
+											</div>
+										</div>
+
+										<div class="col-sm-2">
+											<div class="row">
+												<div class="form-group">
+													<?= Html::submitButton(Yii::t('frontend', Yii::t('frontend', 'Search')),
+																										  [
+																											'id' => 'btn-search',
+																											'class' => 'btn btn-primary',
+																											'value' => 1,
+																											'style' => 'width: 100%; margin-left: 220px;margin-top:20px;',
+																											'name' => 'btn-search',
+																										  ])
+													?>
 												</div>
 											</div>
 										</div>
+
+									</div>
+									<div class="row" style="margin-left: 5px;border-bottom: 0.5px solid #ccc;width:99%;"></div>
+
+									<div class="row" style="width: 100%; padding-left: 25px;margin-top: 15px;">
+										<div class="row" style="padding-left: 15px;width:100%;">
+											<span><h4><?= Html::encode(Yii::t('backend', 'Category List')) ?></h4></span>
+										</div>
+										<?= GridView::widget([
+											'id' => 'grid-lista-rubro',
+	    									'dataProvider' => $dataProvider,
+	    									'headerRowOptions' => ['class' => 'success'],
+	    									//'filterModel' => $searchModel,
+	    									'columns' => [
+	    										//['class' => 'yii\grid\SerialColumn'],
+								            	[
+								                    'label' => Yii::t('frontend', 'Category'),
+								                    'value' => function($data) {
+	                        										return $data->rubro;
+	                											},
+								                ],
+								                [
+								                    'label' => Yii::t('frontend', 'Year'),
+								                    'value' => function($data) {
+	                        										return $data->ano_impositivo;
+	                											},
+								                ],
+								                [
+								                    'label' => Yii::t('frontend', 'Descripcion'),
+								                    'value' => function($data) {
+	                        										return $data->descripcion;
+	                											},
+								                ],
+								                [
+								                	'class' => 'yii\grid\CheckboxColumn',
+								                	'name' => 'chkRubro',
+								                	'multiple' => false,
+								                ],
+								        	]
+										]);?>
 									</div>
 								</div>
 <!-- Fin de LISTA DE CATALOGO DE RUBROS -->
 
-
-<!-- RUBROS AGREGADOS PARA SU APROBACION -->
 								<div class="row">
-									<div class="panel panel-success" style="width: 97%; margin-left: 15px;">
-								        <div class="panel-heading">
-								        	<span><?= Html::encode(Yii::t('backend', 'Added Categorys')) ?></span>
-								        </div>
-								        <div class="panel-body">
-								        	<div class="row">
-								        		<div class="col-sm-12">
-													<div id="lista-rubros-agregados" class="lista-rubros-agregados">
-													</div>
-												</div>
-											</div>
+									<div class="col-sm-3">
+										<div class="form-group">
+											<?= Html::submitButton(Yii::t('frontend', Yii::t('frontend', 'Add Category Selected')),
+																								  [
+																									'id' => 'btn-add-category',
+																									'class' => 'btn btn-primary',
+																									'value' => 2,
+																									'style' => 'width: 100%; margin-left: 800px;margin-top:20px;',
+																									'name' => 'btn-add-category',
+																								  ])
+											?>
+										</div>
+									</div>
+								</div>
+
+								<div class="row" style="margin-left: 5px;border-bottom: 0.5px solid #ccc;width:99%;"></div>
+<!-- Lista de Rubros seleccionados para autorizar -->
+								<div class="row" style="width: 100%; padding-left: 25px;margin-top: 15px;">
+										<div class="row" style="padding-left: 15px;width:100%;">
+											<span><h4><?= Html::encode(Yii::t('backend', 'Add Category List')) ?></h4></span>
+										</div>
+										<?= GridView::widget([
+											'id' => 'grid-lista-rubro-seleccionado',
+	    									'dataProvider' => $dataProviderSeleccionado,
+	    									'headerRowOptions' => ['class' => 'danger'],
+	    									//'filterModel' => $searchModel,
+	    									'columns' => [
+	    										//['class' => 'yii\grid\SerialColumn'],
+								            	[
+								                    'label' => Yii::t('frontend', 'Category'),
+								                    'value' => function($data) {
+	                        										return $data->rubro;
+	                											},
+								                ],
+								                [
+								                    'label' => Yii::t('frontend', 'Year'),
+								                    'value' => function($data) {
+	                        										return $data->ano_impositivo;
+	                											},
+								                ],
+								                [
+								                    'label' => Yii::t('frontend', 'Descripcion'),
+								                    'value' => function($data) {
+	                        										return $data->descripcion;
+	                											},
+								                ],
+								                [
+								                	'class' => 'yii\grid\CheckboxColumn',
+								                	'name' => 'chkRubroSeleccionado',
+								                	'multiple' => false,
+								                ],
+								        	]
+										]);?>
+									</div>
+								</div>
+<!-- Fin de lista de Rubros seleccionados  para autorizar -->
+
+								<div class="row">
+									<div class="col-sm-3">
+										<div class="form-group">
+											<?= Html::submitButton(Yii::t('frontend', Yii::t('frontend', 'Remove Category Selected')),
+																								  [
+																									'id' => 'btn-remove-category',
+																									'class' => 'btn btn-danger',
+																									'value' => 3,
+																									'style' => 'width: 100%; margin-left: 800px;margin-top:20px;',
+																									'name' => 'btn-remove-category',
+																								  ])
+											?>
 										</div>
 									</div>
 								</div>
@@ -234,6 +339,23 @@
 					</div>
 				</div>  <!-- Fin de col-sm-12 -->
 			</div>  	<!-- Fin de container-fluid -->
+
+			<div class="row">
+				<div class="col-sm-3">
+					<div class="form-group">
+						<?= Html::submitButton(Yii::t('frontend', Yii::t('frontend', 'Create Request')),
+																			  [
+																				'id' => 'btn-create',
+																				'class' => 'btn btn-success',
+																				'value' => 4,
+																				'style' => 'width: 100%; margin-left: 100px;margin-top:20px;',
+																				'name' => 'btn-create',
+																			  ])
+						?>
+					</div>
+				</div>
+			</div>
+
 		</div>			<!-- Fin panel-body-->
 
 	</div>	<!-- Fin de panel panel-primary -->
