@@ -414,7 +414,7 @@
 
 				// Aqui reciben datos de la ordenanza, id, año de creacione impuesto.
 				$ordenanza = self::getIdOrdenanzaSegunAnoImpositivo($anoImpositivo, $impuesto);
-				if ( $ordenanza != false ) {
+				if ( $ordenanza !== false ) {
 
 					$idOrdenanza = $ordenanza[0]['id_ordenanza'];
 
