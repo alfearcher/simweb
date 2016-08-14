@@ -880,7 +880,7 @@
 	    			$findModel = $searchRamo->findSolicitudAutorizarRamo($id);
 	    			$dataProvider = $searchRamo->getDataProviderSolicitud($id);
 	    			if ( isset($findModel) ) {
-	    				return self::actionShowSolicitud($findModel, $searchCorreccion, $dataProvider);
+	    				return self::actionShowSolicitud($findModel, $searchRamo, $dataProvider);
 	    			} else {
 						throw new NotFoundHttpException('No se encontro el registro');
 					}
