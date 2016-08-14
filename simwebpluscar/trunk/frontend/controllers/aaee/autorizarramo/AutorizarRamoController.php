@@ -606,7 +606,6 @@
 					$idImpuesto = self::actionCreateActEcon($conexionLocal, $connLocal, $model, $i);
 					if ( $idImpuesto == 0 ) {
 						$result = false;
-						break;
 					} else {
 						if ( $i == $model->ano_impositivo ) {
 							$listaIdRubro = $chkSeleccion;
@@ -619,8 +618,8 @@
 						} else {
 							$result = false;
 						}
-						if ( !$result ) { break; }
 					}
+					if ( !$result ) { break; }
 				}
 			} catch ( Exception $e )  {
 				$result = false;
