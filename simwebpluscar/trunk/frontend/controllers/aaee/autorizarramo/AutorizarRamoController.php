@@ -415,7 +415,7 @@
 		{
 			$result = false;
 			$nroSolicitud = 0;
-
+//die(var_dump($model));
 			if ( isset($_SESSION['idContribuyente']) ) {
 				if ( isset($_SESSION['conf']) ) {
 					$conf = $_SESSION['conf'];
@@ -445,20 +445,21 @@
 																	  $chkSeleccion);
 
 						if ( $result ) {
-							// $result = self::actionUpdateCapital($this->_conexion,
-							// 								    $this->_conn,
-							// 									$model,
-							// 									$conf,
-							// 									$chkSeleccion);
+							if ( $conf['nivel_aprobacion'] == 1 ) {
+								$result = self::actionIniciarCicloAnoImpositivo($this->_conexion,
+																		        $this->_conn,
+																		        $model,
+																		        $chkSeleccion);
+							}
 
-							// if ( $result ) {
-							// 	$result = self::actionEjecutaProcesoSolicitud($this->_conexion, $this->_conn, $model, $conf);
+							if ( $result ) {
+								$result = self::actionEjecutaProcesoSolicitud($this->_conexion, $this->_conn, $model, $conf);
 
-							// 	if ( $result ) {
-							// 		$result = self::actionEnviarEmail($model, $conf, $chkSeleccion);
-							// 		$result = true;
-							// 	}
-							// }
+								if ( $result ) {
+									$result = self::actionEnviarEmail($model, $conf, $chkSeleccion);
+									$result = true;
+								}
+							}
 						}
 					}
 
@@ -593,13 +594,43 @@
 
 
 		/***/
-		private function actionIniciarCicloAnoImpositivo($conexionLocal, $connLocal, $model, $conf, $chkSeleccion)
+		private function actionIniciarCicloAnoImpositivo($conexionLocal, $connLocal, $model, $chkSeleccion)
 		{
 			$result = false;
 			$idImpuesto = 0;
+			$listaIdRubro = [];
+			$searchModel = AutorizarRamoSearch($model['id_contribuyente']);
 
-
+			try {
+				for ( $i = $model->ano_impositivo; $i <= $model->ano_vence_ordenanza ; $i++ ) {
+					$idImpuesto = self::actionCreateActEcon($conexionLocal, $connLocal, $model, $i);
+					if ( $idImpuesto == 0 ) {
+						$result = false;
+						break;
+					} else {
+						if ( $i == $model->ano_impositivo ) {
+							$listaIdRubro = $chkSeleccion;
+						} else {
+							$listaIdRubro = $searchModel->getListaRubro($chkSeleccion, $i);
+						}
+						if ( count($listaIdRubro) > 0 ) {
+							$result = self::actionCreateActEconIngresos($conexionLocal, $connLocal,
+																		$model, $idImpuesto, $listaIdRubro);
+						} else {
+							$result = false;
+						}
+						if ( !$result ) { break; }
+					}
+				}
+			} catch ( Exception $e )  {
+				$result = false;
+				echo 'Excepción capturada: ',  $e->getMessage(), "\n";
+			}
+			return $result
 		}
+
+
+
 
 
 
@@ -630,14 +661,57 @@
 		      			$tabla = $modelActEcon->tableName();
 
 						if ( $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos) ) {
-							$idImpuesto = 0;
-							return $idImpuesto = $connLocal->getLastInsertID();
+							$idImpuesto = $connLocal->getLastInsertID();
 						}
 					}
 		    	}
 		    }
 	    	return $idImpuesto;
 	    }
+
+
+
+	    /***/
+	    private static function actionCreateActEconIngresos($conexionLocal, $connLocal, $model, $idImpuesto, $listaIdRubro)
+	    {
+	    	$result = false;
+	    	if ( isset($_SESSION['idContribuyente']) && isset($connLocal) ) {
+	    		if ( $idImpuesto > 0 ) {
+
+		    		if ( count($listaIdRubro) > 0 ) {
+
+			    		$modelActEconIngreso = New ActEconIngresoForm();
+			    		$arregloDatos = $modelActEconIngreso->attributes;
+
+			    		foreach ( $arregloDatos as $key => $value ) {
+			    			$arregloDatos[$key] = 0;
+			    		}
+			    		$arregloDatos['id_impuesto'] = $idImpuesto;
+			    		$arregloDatos['exigibilidad_periodo'] = $model->periodo;
+			    		$arregloDatos['periodo_fiscal_desde'] = $model->fecha_desde;
+			    		$arregloDatos['periodo_fiscal_hasta'] = $model->fecha_hasta;
+			    		$arregloDatos['fecha_hora'] = $model->fecha_hora;
+
+			    		// Se procede a guardar en la entidad maestra de las declaraciones.
+		      			$tabla = '';
+		      			$tabla = $modelActEconIngreso->tableName();
+		      			$todoBien = false;
+
+		      			foreach ( $listaIdRubro as $key => $value ) {
+		      				$arrayDatos['id_rubro'] = $listaIdRubro[$key];
+		      				if ( !$conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos) ) {
+								$result = false;
+								break;
+							} else {
+								$result = true;
+							}
+		      			}
+		      		}
+	      		}
+	    	}
+	    	return $result;
+	    }
+
 
 
 
