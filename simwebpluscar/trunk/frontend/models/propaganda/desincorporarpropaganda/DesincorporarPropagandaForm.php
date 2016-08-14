@@ -53,6 +53,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use backend\models\propaganda\Propaganda;
+use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 
 
 
@@ -63,29 +64,8 @@ use backend\models\propaganda\Propaganda;
 class DesincorporarPropagandaForm extends Model
 {
 
-        public $nombre_propaganda;
-    public $ano_impositivo;
-    public $clase_propaganda;
-    public $uso_propaganda;
-    public $fecha_desde;
-    public $cantidad_base;
-    public $cigarros;
-    public $cantidad_tiempo;
-    public $base_calculo;
-    public $bebidas_alcoholicas;
-    public $id_tiempo;
-    public $idioma;
-    public $fecha_fin;
-    public $id_sim;
-    public $tipo_propaganda;
-    public $materiales;
-    public $medio_transporte;
-    public $direccion;
+    public $causa;
     public $observacion;
-    public $unidad;
-    public $alto;
-    public $ancho;
-    public $profundidad; 
 
 
 
@@ -98,7 +78,7 @@ class DesincorporarPropagandaForm extends Model
     {
         return [
 
-           //  [['nombre_propaganda','cantidad_base', 'base_calculo','observacion','direccion' ,'clase_propaganda', 'fecha_fin', 'cantidad_tiempo', 'id_tiempo', 'fecha_desde', 'uso_propaganda', 'tipo_propaganda'], 'required'],
+             [['causa','observacion'], 'required'],
             
            //  [['cantidad_base', 'base_calculo','observacion','direccion' ,'clase_propaganda','cigarrillos', 'bebidas_alcoholicas', 'idioma'  ,'fecha_fin', 'cantidad_tiempo', 'tiempo', 'fecha_inicial', 'uso_propaganda', 'tipo_propaganda', 'medio_difusion', 'medio_transporte', 'id_sim'], 'default', 'value' => 0],
 
@@ -294,7 +274,7 @@ class DesincorporarPropagandaForm extends Model
             }
     }
 
-    public function verificarSolicitud($idConfig, $idPropaganda)
+    public function verificarSolicitudPropaganda($idPropaganda, $idConfig)
     {
         $buscar = SolicitudesContribuyente::find()
                                         ->where([ 
@@ -310,6 +290,16 @@ class DesincorporarPropagandaForm extends Model
              return false;
             }
         
+    }
+
+       public function validarCheck($postCheck)
+    {
+        if (count($postCheck) > 0){
+
+            return true;
+        }else{
+            return false;
+        }
     }
 
 
