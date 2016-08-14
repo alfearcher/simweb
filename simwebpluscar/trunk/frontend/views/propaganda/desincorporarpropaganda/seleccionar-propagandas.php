@@ -20,7 +20,7 @@ $this->title = Yii::t('frontend', 'Select your Advertising');
  <?php $form = ActiveForm::begin([
             'id' => 'form-datosPropaganda-inline',
             'method' => 'post',
-            'action' => ['/vehiculo/calcomania/solicitud-extravio/verificar-calcomania'],
+            'action' => ['/propaganda/desincorporarpropaganda/desincorporar-propaganda/verificar-desincorporacion'],
             'enableClientValidation' => true,
             'enableAjaxValidation' => true,
             'enableClientScript' => true,
@@ -93,9 +93,9 @@ $this->title = Yii::t('frontend', 'Select your Advertising');
 
              [
                         'class' => 'yii\grid\CheckboxColumn',
-                        'name' => 'chk-desincorporar-vehiculo',
+                        'name' => 'chk-desincorporar-propaganda',
                         'checkboxOptions' => [
-                                'id' => 'id-chk-desincorporar-vehiculo',
+                                'id' => 'id-chk-desincorporar-propaganda',
                                
                                 //'onClick' => 'alert("hola " + $(this).val());'
                                 //$(this).is(":checked"), permite determinar si un checkbox esta tildado.
@@ -105,10 +105,27 @@ $this->title = Yii::t('frontend', 'Select your Advertising');
         ],
     ]); ?>
 
+     <div class="row">
+    <div class="col-sm-4">
     <p>
        
-        <?= Html::a(Yii::t('backend', 'Back'), ['/site/menu-vertical'], ['class' => 'btn btn-danger']) ?>
+        <?= Html::a(Yii::t('backend', 'Back'), ['/site/menu-vertical'], ['class' => 'btn btn-danger', 'style' => 'height:30px;width:140px;']) ?>
     </p>
+    </div>
+
+    <div class="col-sm-5" style="margin-left: -200px;">
+    
+     <?= Html::submitButton("Submit", ["class" => "btn btn-success", 'style' => 'height:30px;width:140px;']) ?>
+
+    </div>
+  
+    <div class="col-sm-2" style="float:right; color:red; font: comic sans ms">
+   
+    <p><?php echo $errorCheck ?></p>
+
+   
+    </div>
+    </div>
 
 </div>
 <?php ActiveForm::end() ?>
