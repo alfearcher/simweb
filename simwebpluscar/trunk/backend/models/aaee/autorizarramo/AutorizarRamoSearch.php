@@ -462,7 +462,7 @@
 	    			break;
 	    		}
 	    	}
-	    	$return $listaIdRubro;
+	    	return $listaIdRubro;
 	    }
 
 	}
