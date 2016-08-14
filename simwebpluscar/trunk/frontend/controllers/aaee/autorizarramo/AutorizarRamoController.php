@@ -695,10 +695,9 @@
 			    		// Se procede a guardar en la entidad maestra de las declaraciones.
 		      			$tabla = '';
 		      			$tabla = $modelActEconIngreso->tableName();
-		      			$todoBien = false;
 
 		      			foreach ( $listaIdRubro as $key => $value ) {
-		      				$arrayDatos['id_rubro'] = $listaIdRubro[$key];
+		      				$arregloDatos['id_rubro'] = $listaIdRubro[$key];
 		      				if ( !$conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos) ) {
 								$result = false;
 								break;
