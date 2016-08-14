@@ -53,6 +53,7 @@
 	use backend\models\aaee\actecon\ActEcon;
 	use common\models\ordenanza\OrdenanzaBase;
 	use backend\models\aaee\rubro\RubroForm;
+	use backend\models\aaee\rubro\Rubro;
 
 	/**
 	 * Clase que gestiona el funcionamiento de la solicitud para la autorizacion de
@@ -399,6 +400,37 @@
 	    		// }
 	    	}
 	    	return $rangoFecha;
+	    }
+
+
+
+	    /***/
+	    public function getExigibilidadDeclaracionSegunAnoImpositivo($añoCatalogo)
+	    {
+	    	return OrdenanzaBase::getExigibilidadDeclaracion($añoCatalogo, 1);
+	    }
+
+
+	    /**
+	     * Metodo que determina el identificador que corresponde segun el año impositivo
+	     * para el rubro. Se utilizar el $idRubro para buscar los valores de ese registro
+	     * y obtener el valor del rubro, este valor (rubro) se convina con el $añoImpositivo
+	     * para realizar una busqueda añoImpositivo-rubro. Esta busqueda debe resultar en un
+	     * registro donde el identificador del mismo es el valor buscado como idRubro del año
+	     * impositivo.
+	     * @param  long $idRubro identificador del rubro.
+	     * @param  inetger $añoImpositivo año impositivo del catalogo de rubro que quiere consultar
+	     * el $idRubro no deberia corresponder al del año impositivo.
+	     * @return long retonra un identificador del rubro para el año impositivo $añoimpositivo.
+	     */
+	    public function getIdRubro($idRubro, $añoImpositivo)
+	    {
+	    	$idRubroEncoontrado = 0;
+	    	$findModel = Rubro::findOne($idRubro);
+	    	if ( isset($findModel) ) {
+
+	    	}
+	    	return $idRubroEncoontrado;
 	    }
 
 	}
