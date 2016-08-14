@@ -96,6 +96,7 @@
         					'fecha_hora',
         					'usuario',
         					'estatus',
+        					'ano_vence_ordenanza',
 
         		],
         		self::SCENARIO_BACKEND => [
@@ -109,6 +110,7 @@
         					'fecha_hora',
         					'usuario',
         					'estatus',
+        					'ano_vence_ordenanza',
 
         		]
         	];

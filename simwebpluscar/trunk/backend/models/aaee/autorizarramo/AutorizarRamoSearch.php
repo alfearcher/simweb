@@ -407,7 +407,11 @@
 	    /***/
 	    public function getExigibilidadDeclaracionSegunAnoImpositivo($añoCatalogo)
 	    {
-	    	return OrdenanzaBase::getExigibilidadDeclaracion($añoCatalogo, 1);
+	    	$exigibilidad = OrdenanzaBase::getExigibilidadDeclaracion($añoCatalogo, 1);
+	    	if ( count($exigibilidad) > 0 ) {
+	    		return $exigibilidad['exigibilidad_declaracion'];
+	    	}
+	    	return false;
 	    }
 
 
@@ -425,12 +429,33 @@
 	     */
 	    public function getIdRubro($idRubro, $añoImpositivo)
 	    {
-	    	$idRubroEncoontrado = 0;
-	    	$findModel = Rubro::findOne($idRubro);
-	    	if ( isset($findModel) ) {
-
+	    	$idRubroEncontrado = 0;
+	    	$findModelRubro = Rubro::findOne($idRubro);
+	    	if ( isset($findModelRubro) ) {
+	    		$rubro = $findModelRubro->rubro;
+	    		$findModelNew = Rubro::find()->where('ano_impositivo =:ano_impositivo',
+	    													[':ano_impositivo' => $añoImpositivo])
+	    									 ->andWhere('rubro =:rubro', [':rubro' => $rubro])
+	    									 ->andWhere('inactivo =:inactivo',['inactivo' => 0])
+	    									 ->one();
+	    		if ( isset($findModelNew) ) {
+	    			$idRubroEncontrado = $findModelNew->id_rubro;
+	    		}
 	    	}
-	    	return $idRubroEncoontrado;
+	    	return $idRubroEncontrado;
+	    }
+
+
+
+
+	    /***/
+	    public function getListaRubro($chkSeleccion, $añoImpositivo)
+	    {
+	    	$listaIdRubro = [];
+	    	foreach ( $chkSeleccion as $key => $value ) {
+	    		$listaIdRubro[] = self::getIdRubro($value, $añoImpositivo);
+	    	}
+	    	$return $listaIdRubro;
 	    }
 
 	}
