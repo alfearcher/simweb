@@ -78,6 +78,7 @@
 	<?=$form->field($model, 'fecha_inicio')->hiddenInput(['value' => $datos['fecha_inicio']])->label(false);?>
 	<?=$form->field($model, 'fecha_desde')->hiddenInput(['value' => $fechaDesde])->label(false);?>
 	<?=$form->field($model, 'fecha_hasta')->hiddenInput(['value' => $fechaHasta])->label(false);?>
+	<?=$form->field($model, 'ano_vence_ordenanza')->hiddenInput(['value' =>$añoVenceOrdenanza])->label(false);?>
 
 
 	<meta http-equiv="refresh">
