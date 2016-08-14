@@ -625,7 +625,7 @@
 				$result = false;
 				echo 'Excepción capturada: ',  $e->getMessage(), "\n";
 			}
-			return $result
+			return $result;
 		}
 
 
@@ -876,9 +876,9 @@
     	{
     		if ( isset($_SESSION['idContribuyente']) ) {
 	    		if ( $id > 0 ) {
-	    			$searchCorreccion = New CorreccionCapitalSearch($_SESSION['idContribuyente']);
-	    			$findModel = $searchCorreccion->findSolicitudCorreccionCapital($id);
-	    			$dataProvider = $searchCorreccion->getDataProviderSolicitud($id);
+	    			$searchRamo = New AutorizarRamoSearch($_SESSION['idContribuyente']);
+	    			$findModel = $searchRamo->findSolicitudAutorizarRamo($id);
+	    			$dataProvider = $searchRamo->getDataProviderSolicitud($id);
 	    			if ( isset($findModel) ) {
 	    				return self::actionShowSolicitud($findModel, $searchCorreccion, $dataProvider);
 	    			} else {
@@ -902,9 +902,9 @@
  				$model = $findModel->all();
 
 				$opciones = [
-					'quit' => '/aaee/correccioncapital/correccion-capital/quit',
+					'quit' => '/aaee/autorizarramo/autorizar-ramo/quit',
 				];
-				return $this->render('/aaee/correccion-capital/_view', [
+				return $this->render('/aaee/autorizar-ramo/_view', [
 																'codigo' => 100,
 																'model' => $model,
 																'modelSearch' => $modelSearch,
