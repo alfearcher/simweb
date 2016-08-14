@@ -206,6 +206,8 @@
 					return ActiveForm::validate($model);
 		      	}
 
+//die(var_dump($postData));
+
 				if ( isset($postData['btn-search']) ) {
 					if ( $postData['btn-search'] == 1 ) {
 						$params = $postData['inputSearch'];
@@ -252,6 +254,7 @@
 		      					}
 		      				} elseif ( isset($postData['btn-confirm-create']) ) {
 		      					if ( $postData['btn-confirm-create'] == 5 ) {
+//die(var_dump($model));
 		      						$result = self::actionBeginSave($model, $postData);
 		      						self::actionAnularSession(['begin', 'arrayIdRubros']);
 		      						if ( $result ) {
@@ -579,7 +582,6 @@
 
 					foreach ( $chkSeleccion as $key => $value ) {
 						$arregloDatos['id_rubro'] = $value;
-die(var_dump($arregloDatos));
 						$result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
 						if ( !$result ) { break; }
 					}
@@ -590,37 +592,51 @@ die(var_dump($arregloDatos));
 		}
 
 
+		/***/
+		private function actionIniciarCicloAnoImpositivo($conexionLocal, $connLocal, $model, $conf, $chkSeleccion)
+		{
+			$result = false;
+			$idImpuesto = 0;
+
+
+		}
+
 
 
 		/***/
-		private static function actionCreateActEcon($conexionLocal, $connLocal, $model)
+		private static function actionCreateActEcon($conexionLocal, $connLocal, $model, $añoImpositivo)
     	{
     		$idImpuesto = 0;
+    		$exigDeclaracion = 0;
     		if ( isset($_SESSION['idContribuyente']) && isset($connLocal)  ) {
-    			if ( $_SESSION['idContribuyente'] == $model['id-contribuyente'] ) {
+    			if ( $_SESSION['idContribuyente'] == $model['id_contribuyente'] ) {
 
-	    			$modelActEcon = New ActEconForm();
+    				$searchModel = New AutorizarRamoSearch($model['id-contribuyente']);
+    				$exigDeclaracion = $searchModel->getExigibilidadDeclaracionSegunAnoImpositivo($añoImpositivo);
+    				if ( $exigDeclaracion > 0 ) {
+		    			$modelActEcon = New ActEconForm();
 
-	    			$arregloDatos = $modelActEcon->attributes;
-	    			foreach ( $arregloDatos as $key => $value ) {
-	    				$arregloDatos[$key] = 0;
-	    			}
-		    		$arregloDatos['ente'] = Yii::$app->ente->getEnte();
-		    		$arregloDatos['id_contribuyente'] = $model['id-contribuyente'];
-		    		$arregloDatos['ano_impositivo'] = $model['ano-impositivo'];
-		    		$arregloDatos['exigibilidad_declaracion'] = 1;
+		    			$arregloDatos = $modelActEcon->attributes;
+		    			foreach ( $arregloDatos as $key => $value ) {
+		    				$arregloDatos[$key] = 0;
+		    			}
+			    		$arregloDatos['ente'] = Yii::$app->ente->getEnte();
+			    		$arregloDatos['id_contribuyente'] = $model['id_contribuyente'];
+			    		$arregloDatos['ano_impositivo'] = $añoImpositivo;
+			    		$arregloDatos['exigibilidad_declaracion'] = $exigDeclaracion;
 
-		    		// Se procede a guardar en la entidad maestra de las declaraciones.
-	      			$tabla = '';
-	      			$tabla = $modelActEcon->tableName();
+			    		// Se procede a guardar en la entidad maestra de las declaraciones.
+		      			$tabla = '';
+		      			$tabla = $modelActEcon->tableName();
 
-					if ( $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos) ) {
-						$idImpuesto = 0;
-						return $idImpuesto = $connLocal->getLastInsertID();
+						if ( $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos) ) {
+							$idImpuesto = 0;
+							return $idImpuesto = $connLocal->getLastInsertID();
+						}
 					}
 		    	}
 		    }
-	    	return false;
+	    	return $idImpuesto;
 	    }
 
 
