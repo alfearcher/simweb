@@ -416,7 +416,7 @@
 			if ( isset($_SESSION['idContribuyente']) ) {
 				if ( isset($_SESSION['conf']) ) {
 					$conf = $_SESSION['conf'];
-					$chkSeleccion = $postEnviado['chkSucursal'];
+					$chkSeleccion = $postEnviado['chkRubroSeleccionado'];
 
 					$this->_conexion = New ConexionController();
 
@@ -435,27 +435,27 @@
 					if ( $nroSolicitud > 0 ) {
 						$model->nro_solicitud = $nroSolicitud;
 
-						$result = self::actionCreateCorreccionCapital($this->_conexion,
+						$result = self::actionCreateAutorizarRamo($this->_conexion,
 																	  $this->_conn,
 																	  $model,
 																	  $conf,
 																	  $chkSeleccion);
 
 						if ( $result ) {
-							$result = self::actionUpdateCapital($this->_conexion,
-															    $this->_conn,
-																$model,
-																$conf,
-																$chkSeleccion);
+							// $result = self::actionUpdateCapital($this->_conexion,
+							// 								    $this->_conn,
+							// 									$model,
+							// 									$conf,
+							// 									$chkSeleccion);
 
-							if ( $result ) {
-								$result = self::actionEjecutaProcesoSolicitud($this->_conexion, $this->_conn, $model, $conf);
+							// if ( $result ) {
+							// 	$result = self::actionEjecutaProcesoSolicitud($this->_conexion, $this->_conn, $model, $conf);
 
-								if ( $result ) {
-									$result = self::actionEnviarEmail($model, $conf, $chkSeleccion);
-									$result = true;
-								}
-							}
+							// 	if ( $result ) {
+							// 		$result = self::actionEnviarEmail($model, $conf, $chkSeleccion);
+							// 		$result = true;
+							// 	}
+							// }
 						}
 					}
 
@@ -477,7 +477,7 @@
 		 * Metodo que guarda el registro respectivo en la entidad "solicitudes-contribuyente".
 		 * @param  ConexionController $conexionLocal instancia de la clase ConexionController.
 		 * @param  connection $connLocal instancia de connection.
-		 * @param  model $model modelo de CorreccionDomicilioFiscalForm.
+		 * @param  model $model modelo de AutorizarRamoForm.
 		 * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
 		 * solicitud.
 		 * @return boolean retorna true si guardo correctamente o false sino guardo.
@@ -540,14 +540,14 @@
 		 * "sl" respectiva.
 		 * @param  ConexionController $conexionLocal instancia de la lcase ConexionController.
 		 * @param  connection $connLocal instancia de connection
-		 * @param  model $model modelo de CorreccionCapitalForm.
+		 * @param  model $model modelo de CorreccionAutorizarRamoForm.
 		 * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
 		 * solicitud.
 		 * @param  array $chkSeleccion arreglo que contiene los identificadores de los contribuyentes
 		 * a los cuales se se les actualizara el capital.
 		 * @return boolean retorna un true si guardo el registro, false en caso contrario.
 		 */
-		private static function actionCreateCorreccionCapital($conexionLocal, $connLocal, $model, $conf, $chkSeleccion)
+		private static function actionCreateAutorizarRamo($conexionLocal, $connLocal, $model, $conf, $chkSeleccion)
 		{
 			$result = false;
 			$estatus = 0;
@@ -578,7 +578,8 @@
 					$model->user_funcionario = $userFuncionario;
 
 					foreach ( $chkSeleccion as $key => $value ) {
-						$arregloDatos['id_contribuyente'] = $value;
+						$arregloDatos['id_rubro'] = $value;
+die(var_dump($arregloDatos));
 						$result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
 						if ( !$result ) { break; }
 					}
@@ -591,40 +592,36 @@
 
 
 
-		/**
-		 * Metodo que ejecuta la actualizacion del rif del conjuto de contribuyente,
-		 * relacionados al rif del contribuyente principal. Aplica solo en aquellos
-		 * casos donde la aprobacion de la solicitud sea directa.
-		 * @param  ConexionController $conexionLocal instancia de la lcase ConexionController.
-		 * @param  connection $connLocal instancia de connection
-		 * @param  model $model modelo de CorreccionCapitalForm.
-		 * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
-		 * solicitud.
-		 * @param  array $chkSeleccion arreglo que contiene los identificadores de los contribuyentes
-		 * a los cuales se se les actualizara el capital.
-		 * @return boolean retorna true si se ejecuta la actualizacion, sino false.
-		 */
-		private static function actionUpdateCapital($conexionLocal, $connLocal, $model, $conf, $chkSeleccion)
-		{
-			$result = false;
-			if ( $conf['nivel_aprobacion'] == 1 ) {
-				$arregloDatos = [
-						'capital' => $model->capital_new
-				];
+		/***/
+		private static function actionCreateActEcon($conexionLocal, $connLocal, $model)
+    	{
+    		$idImpuesto = 0;
+    		if ( isset($_SESSION['idContribuyente']) && isset($connLocal)  ) {
+    			if ( $_SESSION['idContribuyente'] == $model['id-contribuyente'] ) {
 
-				$tabla = ContribuyenteBase::tableName();
+	    			$modelActEcon = New ActEconForm();
 
-				foreach ( $chkSeleccion as $key => $value ) {
-					$arregloCondicion = ['id_contribuyente' => $value];
-					$result = $conexionLocal->modificarRegistro($connLocal, $tabla, $arregloDatos, $arregloCondicion);
-					if ( !$result ) { break; }
-				}
+	    			$arregloDatos = $modelActEcon->attributes;
+	    			foreach ( $arregloDatos as $key => $value ) {
+	    				$arregloDatos[$key] = 0;
+	    			}
+		    		$arregloDatos['ente'] = Yii::$app->ente->getEnte();
+		    		$arregloDatos['id_contribuyente'] = $model['id-contribuyente'];
+		    		$arregloDatos['ano_impositivo'] = $model['ano-impositivo'];
+		    		$arregloDatos['exigibilidad_declaracion'] = 1;
 
-			} else {
-				$result = true;
-			}
-			return $result;
-		}
+		    		// Se procede a guardar en la entidad maestra de las declaraciones.
+	      			$tabla = '';
+	      			$tabla = $modelActEcon->tableName();
+
+					if ( $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos) ) {
+						$idImpuesto = 0;
+						return $idImpuesto = $connLocal->getLastInsertID();
+					}
+		    	}
+		    }
+	    	return false;
+	    }
 
 
 
