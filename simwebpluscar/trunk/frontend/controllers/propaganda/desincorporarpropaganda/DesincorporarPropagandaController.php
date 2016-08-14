@@ -81,8 +81,9 @@ class DesincorporarPropagandaController extends Controller
   public $layout = 'layout-main';
    
   /**
-   * [actionCrearPropaganda description] metodo que renderiza la vista del formulario para la inscripcion de la propaganda
-   * @return [type] [description] retorna la vista del formulario
+   * [actionVistaSeleccion description] Metodo que renderiza la vista para la seleccion de la o las propagandas a desincorporar
+   * @param  string $errorCheck [description] Mensaje de error
+   * @return [type]             [description] retorna el formulario de seleccion de las propagandas
    */
   public function actionVistaSeleccion($errorCheck = "")
   {
@@ -104,6 +105,138 @@ class DesincorporarPropagandaController extends Controller
 
     
   }
+
+  /**
+   * [actionMotivosDesincorporacion description] 
+   * @return [type] [description]
+   */
+  public function actionVerificarDesincorporacion()
+  {
+    //die('llegue a motivos');
+      $errorCheck = ""; 
+      $idContribuyente = yii::$app->user->identity->id_contribuyente;
+      $idPropaganda = yii::$app->request->post('chk-desincorporar-propaganda');
+      //die(var_dump($idVehiculo));
+      $_SESSION['idPropaganda'] = $idPropaganda;
+//die(var_dump($_SESSION['idPropaganda']));
+  
+      $validacion = new DesincorporarPropagandaForm();
+
+       if ($validacion->validarCheck(yii::$app->request->post('chk-desincorporar-propaganda')) == true){
+           $modelsearch = new DesincorporarPropagandaForm();
+           $busqueda = $modelsearch->busquedaPropaganda($idPropaganda, $idContribuyente);
+      //die(var_dump($busqueda));
+          if ($busqueda == true){ 
+           
+        
+              $_SESSION['datosPropaganda'] = $busqueda;
+             // die(var_dump($_SESSION['datosPropaganda']));
+        
+          return $this->redirect(['desincorporar-propaganda']);
+        
+          }else{
+
+              die('no existe Propaganda asociado a ese ID');
+          }
+       }else{
+          $errorCheck = "Please select an Advertising";
+          return $this->redirect(['vista-seleccion' , 'errorCheck' => $errorCheck]); 
+
+                                                                                             
+       }
+     
+  }
+
+  public function actionDesincorporarPropaganda()
+    {
+
+
+        $todoBien = true;
+      
+        if(isset(yii::$app->user->identity->id_contribuyente)){
+
+        
+
+          $datosPropaganda = $_SESSION['datosPropaganda']; 
+         // die(var_dump($datosVehiculo));
+           if (isset($_SESSION['datosPropaganda'])){ 
+
+
+            $model = new DesincorporarPropagandaForm();
+
+            $postData = Yii::$app->request->post();
+
+            if ( $model->load($postData) && Yii::$app->request->isAjax ){
+                  Yii::$app->response->format = Response::FORMAT_JSON;
+                  return ActiveForm::validate($model);
+            }
+
+            if ( $model->load($postData) ) {
+             // die('valido el postdata');
+
+               if ($model->validate()){
+
+                  //die(var_dump($datosPropaganda));
+                  
+                  foreach($datosPropaganda as $key => $value) {
+                     
+                     $value;
+                    
+                     $verificarSolicitud = new DesincorporarPropagandaForm();
+
+                     $verificacion = $verificarSolicitud->verificarSolicitudPropaganda($value , $_SESSION['id']);
+                      
+
+                      if($verificacion == true){
+                        //die(var_dump($value['id_vehiculo']));
+                        $todoBien = false;
+                      
+                       }
+                  }
+
+
+                    if($todoBien){
+
+                      $buscarActualizar = self::beginSave("buscarActualizar", $model, $datosPropaganda);
+
+                    if($buscarActualizar == true){
+                     
+                        return MensajeController::actionMensaje(100);
+
+                    }else{
+
+                        return MensajeController::actionMensaje(920);
+                    
+                    }
+                    
+                    }else{
+                       return MensajeController::actionMensaje(403);
+
+                    }
+                }
+                
+            
+            }
+            
+            return $this->render('/propaganda/desincorporarpropaganda/causa-motivos-desincorporacion', [
+                                                              'model' => $model,
+                                                              
+
+                                                           
+            ]);
+            
+             }else{
+               die('no hay datos de Propaganda');
+             } 
+
+         }else{
+
+             die('no existe user');
+
+       }
+    }
+
+
 
   public function buscarNumeroSolicitud($conn, $conexion)
   {
@@ -395,7 +528,7 @@ class DesincorporarPropagandaController extends Controller
 
     public function beginSave($var, $model)
     {
-    // die('llegue a begin'.var_dump($model));
+     //die('llegue a begin'.var_dump($model));
 
       $buscar = new ParametroSolicitud($_SESSION['id']);
 
