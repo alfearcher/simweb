@@ -452,8 +452,15 @@
 	    public function getListaRubro($chkSeleccion, $añoImpositivo)
 	    {
 	    	$listaIdRubro = [];
+	    	$id = 0;
 	    	foreach ( $chkSeleccion as $key => $value ) {
-	    		$listaIdRubro[] = self::getIdRubro($value, $añoImpositivo);
+	    		$id = self::getIdRubro($value, $añoImpositivo);
+	    		if ( $id > 0 ) {
+	    			$listaIdRubro[] = $id;
+	    		} else {
+	    			$listaIdRubro = null;
+	    			break;
+	    		}
 	    	}
 	    	$return $listaIdRubro;
 	    }
