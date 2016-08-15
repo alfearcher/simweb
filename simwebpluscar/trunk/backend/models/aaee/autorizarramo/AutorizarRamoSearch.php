@@ -273,10 +273,12 @@
 		    	 										[':id_contribuyente' => $this->_id_contribuyente])
 		    								->andWhere('ano_impositivo =:ano_impositivo',
 		    								 			[':ano_impositivo' => $añoImpositivo])
+		    								->andWhere('estatus =:estatus', [':estatus' => 0])
 		    								->count();
 		    } else {
 		    	$findModel = ActEcon::find()->where('id_contribuyente =:id_contribuyente',
 		    	 										[':id_contribuyente' => $this->_id_contribuyente])
+		    								->andWhere('estatus =:estatus', [':estatus' => 0])
 		    								->count();
 		    }
 	    	return ( $findModel > 0 ) ? true : false;
@@ -409,7 +411,7 @@
 	    {
 	    	$exigibilidad = OrdenanzaBase::getExigibilidadDeclaracion($añoCatalogo, 1);
 	    	if ( count($exigibilidad) > 0 ) {
-	    		return $exigibilidad['exigibilidad_declaracion'];
+	    		return $exigibilidad['exigibilidad'];
 	    	}
 	    	return false;
 	    }
