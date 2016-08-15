@@ -331,6 +331,7 @@ class DesincorporarPropagandaController extends Controller
 
           $arregloDatos[$value] =0;
       }
+     // die(var_dump($arregloDatos));
 
       $arregloDatos['nro_solicitud'] = $numeroSolicitud;
 
@@ -338,7 +339,9 @@ class DesincorporarPropagandaController extends Controller
 
       $arregloDatos['id_impuesto'] = $idPropaganda;
 
-      $arregloDatos['impuesto'] = 4;
+      //die($arregloDatos['id_impuesto']);
+
+      $arregloDatos['impuesto'] = $resultado["impuesto"];
 
      // die($arregloDatos['impuesto']);
 
