@@ -60,6 +60,8 @@ use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 use common\models\configuracion\solicitud\DocumentoSolicitud;
 use common\enviaremail\PlantillaEmail;
 use frontend\models\propaganda\desincorporarpropaganda\DesincorporarPropagandaForm;
+use frontend\models\vehiculo\registrar\RegistrarVehiculoForm;
+
 
 
 
@@ -249,7 +251,7 @@ class DesincorporarPropagandaController extends Controller
 
         $resultado = $buscar->getParametroSolicitud(["tipo_solicitud", "impuesto", "nivel_aprobacion"]);
 
-     
+     // die(var_dump($resultado["impuesto"]));  
     
 
       $datos = yii::$app->user->identity;
@@ -306,120 +308,52 @@ class DesincorporarPropagandaController extends Controller
 
 
 
-    public function guardarSolicitud($conn, $conexion , $idSolicitud, $model)
+    public function guardarSolicitud($conn, $conexion , $model, $idSolicitud,  $idPropaganda)
     {
-      //die(var_dump($model));
+     // die($_SESSION['id']);
 
       $buscar = new ParametroSolicitud($_SESSION['id']);
 
       $buscar->getParametroSolicitud(["nivel_aprobacion"]);
 
-      $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
-      //die(var_dump($nivelAprobacion));
+      $resultado = $buscar->getParametroSolicitud(["tipo_solicitud", "impuesto", "nivel_aprobacion"]);
       
+      //die(var_dump($resultado["impuesto"]).'gl');
      
       $numeroSolicitud = $idSolicitud;
       $resultado = false;
       $datos = yii::$app->user->identity;
-      $tabla = 'sl_propagandas';
+      $tabla = 'sl_desincorporaciones';
       $arregloDatos = [];
-      $arregloCampo = CrearPropagandaForm::attributeSlPropagandas();
+      $arregloCampo = DesincorporarPropagandaForm::attributeSldesincorporaciones();
 
       foreach ($arregloCampo as $key=>$value){
 
           $arregloDatos[$value] =0;
       }
-      $arregloDatos['nombre_propaganda'] = $model->nombre_propaganda;
-
-      $arregloDatos['id_impuesto'] = 0;
 
       $arregloDatos['nro_solicitud'] = $numeroSolicitud;
 
       $arregloDatos['id_contribuyente'] = $datos->id_contribuyente;
 
-      $arregloDatos['ano_impositivo'] = date('Y');
+      $arregloDatos['id_impuesto'] = $idPropaganda;
 
-      $arregloDatos['direccion'] = $model->direccion;
-      //die(var_dump($arregloDatos['direccion']));
+      $arregloDatos['impuesto'] = 4;
 
-      $arregloDatos['id_cp'] = 0;
-
-      $arregloDatos['clase_propaganda'] = $model->clase_propaganda;
-
-      $arregloDatos['tipo_propaganda'] = $model->tipo_propaganda;
-      //die($arregloDatos['tipo_propaganda']);
-
-      $arregloDatos['uso_propaganda'] = $model->uso_propaganda;
-
-      $arregloDatos['medio_difusion'] = $model->materiales;
-
-      $arregloDatos['medio_transporte'] = $model->medio_transporte;
-
-      $arregloDatos['fecha_desde'] = date('Y-m-d', strtotime($model->fecha_desde));
-     // die($arregloDatos['fecha_desde']);
-
-      $arregloDatos['cantidad_tiempo'] = $model->cantidad_tiempo;
-
-      $arregloDatos['id_tiempo'] = $model->id_tiempo;
-
-      $arregloDatos['id_sim'] = $model->id_sim;
-
-      $arregloDatos['cantidad_base'] = $model->cantidad_base;
-
-      $arregloDatos['base_calculo'] = $model->base_calculo;
-
-      $arregloDatos['cigarros'] = $model->cigarros;
-
-      $arregloDatos['bebidas_alcoholicas'] = $model->bebidas_alcoholicas;
-
-      $arregloDatos['cantidad_propagandas'] = 0;
-
-      $arregloDatos['planilla'] = 0;
-
-      $arregloDatos['idioma'] = $model->idioma;
-
-      $arregloDatos['observacion'] = $model->observacion;
-
-      $arregloDatos['fecha_fin'] = date('Y-m-d', strtotime($model->fecha_fin));
-
-      $arregloDatos['fecha_guardado'] = date('Y-m-d');
-
-      $arregloDatos['fecha_hora'] = date('Y-m-d h:m:i');
+     // die($arregloDatos['impuesto']);
 
       $arregloDatos['usuario'] = $datos->login;
 
-      $arregloDatos['unidad'] = $model->unidad;
-      
-  
+      $arregloDatos['causa_desincorporacion'] = $model->causa;
 
-      if($nivelAprobacion == 1){ 
-        //die('1');
+      $arregloDatos['observacion'] = $model->observacion;
 
-      $arregloDatos['fecha_hora_proceso'] = date('Y-m-d h:m:i');
+      $arregloDatos['fecha_hora'] = date('Y-m-d h:m:i');
 
-      }else{
-      //  die('hola');
-
-      $arregloDatos['fecha_hora_proceso'] = 0;
-      }
-
-      if ($nivelAprobacion == 1){
-
-      $arregloDatos['estatus'] = 1;
-
-      }else{
-
-      $arregloDatos['estatus'] = 0;
-      }
-
-      $arregloDatos['alto'] = $model->alto;
-
-      $arregloDatos['ancho'] = $model->ancho;
-
-      $arregloDatos['profundidad'] = $model->profundidad;
+      $arregloDatos['inactivo'] = 0;
 
 
-        if ($conexion->guardarRegistro($conn, $tabla, $arregloDatos )){
+          if ($conexion->guardarRegistro($conn, $tabla, $arregloDatos )){
 
 
 
@@ -428,111 +362,29 @@ class DesincorporarPropagandaController extends Controller
 
               return $resultado;
 
-
-          }
-
     }
 
-    public function guardarPropagandaMaestro($conn, $conexion, $model)
+ }
+
+    public function desincorporarPropagandaMaestro($conn, $conexion, $model)
     {
 
      
     
-      $resultado = false;
-      $datos = yii::$app->user->identity;
-      $tabla = 'propagandas';
-      $arregloDatos = [];
-      $arregloCampo = CrearPropagandaForm::attributePropagandas();
-
-         foreach ($arregloCampo as $key=>$value){
-
-          $arregloDatos[$value] =0;
-      }
-      $arregloDatos['nombre_propaganda'] = $model->nombre_propaganda;
-
-      $arregloDatos['id_impuesto'] = 0;
-
-      $arregloDatos['id_contribuyente'] = $datos->id_contribuyente;
-
-      $arregloDatos['ano_impositivo'] = date('Y');
-
-      $arregloDatos['direccion'] = $model->direccion;
-      //die(var_dump($arregloDatos['direccion']));
-
-      $arregloDatos['id_cp'] = 0;
-
-      $arregloDatos['clase_propaganda'] = $model->clase_propaganda;
-
-      $arregloDatos['tipo_propaganda'] = $model->tipo_propaganda;
-      //die($arregloDatos['tipo_propaganda']);
-
-      $arregloDatos['uso_propaganda'] = $model->uso_propaganda;
-
-      $arregloDatos['medio_difusion'] = $model->materiales;
-
-      $arregloDatos['medio_transporte'] = $model->medio_transporte;
-
-      $arregloDatos['fecha_desde'] = date('Y-m-d', strtotime($model->fecha_desde));
-
-      $arregloDatos['cantidad_tiempo'] = $model->cantidad_tiempo;
-
-      $arregloDatos['id_tiempo'] = $model->id_tiempo;
-
-      $arregloDatos['inactivo'] = 0;
-
-      $arregloDatos['id_sim'] = $model->id_sim;
-
-      $arregloDatos['cantidad_base'] = $model->cantidad_base;
-
-      $arregloDatos['base_calculo'] = $model->base_calculo;
-
-      $arregloDatos['cigarros'] = $model->cigarros;
-
-      $arregloDatos['bebidas_alcoholicas'] = $model->bebidas_alcoholicas;
-
-      $arregloDatos['cantidad_propagandas'] = 1;
-
-      $arregloDatos['planilla'] = 0;
-
-      $arregloDatos['idioma'] = $model->idioma;
-
-      $arregloDatos['observacion'] = $model->observacion;
-
-      $arregloDatos['fecha_fin'] = date('Y-m-d', strtotime($model->fecha_fin));
-
-      $arregloDatos['fecha_guardado'] = date('Y-m-d');
-
-      $arregloDatos['alto'] = $model->alto;
-
-      $arregloDatos['ancho'] = $model->ancho;
-
-      $arregloDatos['profundidad'] = $model->profundidad;
-
-      $arregloDatos['unidad'] = $model->unidad;
-
-
-        if ($conexion->guardarRegistro($conn, $tabla, $arregloDatos )){
-
-
-
-             $resultado = true;
-
-
-              return $resultado;
-
-
-          }
 
 
     }
 
-    public function beginSave($var, $model)
+    public function beginSave($var, $model, $datosPropaganda)
     {
-     //die('llegue a begin'.var_dump($model));
+      
+      $todoBien = true;
 
       $buscar = new ParametroSolicitud($_SESSION['id']);
 
         $buscar->getParametroSolicitud(["nivel_aprobacion"]);
+
+        //die(var_dump($buscar->getParametroSolicitud(["nivel_aprobacion"])));
 
         $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
 
@@ -540,52 +392,69 @@ class DesincorporarPropagandaController extends Controller
 
         $conexion = new ConexionController();
 
-      $idSolicitud = 0;
+        $idSolicitud = 0;
 
-      $conn = $conexion->initConectar('db');
+        $conn = $conexion->initConectar('db');
 
-      $conn->open();
+        $conn->open();
 
-      $transaccion = $conn->beginTransaction();
+        $transaccion = $conn->beginTransaction();
 
-          if ($var == "buscarGuardar"){
-            
+          if ($var == "buscarActualizar"){
 
-              $buscar = self::buscarNumeroSolicitud($conn, $conexion);
+              foreach($datosPropaganda as $key => $value){
 
-              if ($buscar > 0){
-
-               // die('consiguio  id');
-
-                  $idSolicitud = $buscar;
+                $idSolicitud = 0;
+                $idSolicitud = self::buscarNumeroSolicitud($conn, $conexion, $model, $value);
 
 
+                 if ($idSolicitud > 0){
+                 // die($idSolicitud);
+
+                    $guardar = self::guardarSolicitud($conn,$conexion, $model, $idSolicitud , $value);
+
+                      if ($nivelAprobacion['nivel_aprobacion'] != 1){ 
+
+                          if ($idSolicitud and $guardar == true ){
+                            //die('guardo en los dos');
+                            $todoBien == true;
+                          }
+                        
+                      
+                      }else{
+
+
+                            $actualizarDesincorporacion = self::desincorporarPropagandMaestro($conn,$conexion, $model);
+
+                            if ($idSolicitud and $guardar and $actualizarDesincorporacion == true ){
+                              $todoBien == true;
+
+                            }
+                        }
+
+              }else{
+                $todoBien == false;
+                break;
               }
 
-              if ($buscar == true){
+             }
+              
 
-                  $guardar = self::guardarSolicitud($conn,$conexion, $idSolicitud, $model);
-
-                  if ($nivelAprobacion['nivel_aprobacion'] != 1){ 
-
-                    //die('no es de aprobacion directa');
-
-                  if ($buscar and $guardar == true ){
-                    //die('actualizo y guardo');
+             
+                    if ($todoBien == true){
 
                     $transaccion->commit();
                     $conn->close();
-
+                    
                       $enviarNumeroSolicitud = new PlantillaEmail();
 
                       $login = yii::$app->user->identity->login;
 
-                      $solicitud = 'Inscripcion de Propaganda Comercial';
+                      $solicitud = 'Desincorporacion de Propaganda';
 
                       $DocumentosRequisito = new DocumentoSolicitud();
 
                       $documentos = $DocumentosRequisito->Documentos();
-                        
                         $enviarNumeroSolicitud->plantillaEmailSolicitud($login,$solicitud, $idSolicitud, $documentos);
 
 
@@ -594,59 +463,36 @@ class DesincorporarPropagandaController extends Controller
                             return true;
 
 
+                        }else{
+                          return false;
                         }
-                  }else{
 
-                      $transaccion->rollback();
+                    }else{
+
+                       $transaccion->rollback();
                       $conn->close();
                       return false;
-                  }
-                  
-                  }else{
-                    //die('es de aprobacion directa');
+                    }
+                    
 
-                      $actualizarCalcomania = self::guardarPropagandaMaestro($conn,$conexion, $model);
+                   
 
-                          if ($buscar and $guardar and $actualizarCalcomania == true ){
-                            //die('los tres son verdad');
+                      
+                 
 
-                          $transaccion->commit();
-                          $conn->close();
+                      
 
-                         $enviarNumeroSolicitud = new PlantillaEmail();
+                          
+                         
+          
 
-                      $login = yii::$app->user->identity->login;
-
-                      $solicitud = 'Inscripcion de Propaganda Comercial';
-
-                      $DocumentosRequisito = new DocumentoSolicitud();
-
-                      $documentos = $DocumentosRequisito->Documentos();
-                        $enviarNumeroSolicitud->plantillaEmailSolicitud($login,$solicitud, $idSolicitud, $documentos);
-
-
-                             if($enviarNumeroSolicitud == true){
-
-                                 return true;
-
-
-                             }
-                             }else{
-
-                          $transaccion->rollback();
-                          $conn->close();
-                          return false;
-
-                             }
-
-
-
-                  }
-
-          }
-
+        }
+ 
+              
+            
     }
-    }
+
+   
     
 
     
