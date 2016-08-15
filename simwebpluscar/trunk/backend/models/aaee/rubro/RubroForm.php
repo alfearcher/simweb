@@ -180,7 +180,8 @@
 	            'query' => $query,
 	        ]);
 
-	    	$query->where('ano_impositivo = :ano_impositivo', [':ano_impositivo' => $anoImpositivo]);
+	    	$query->where('ano_impositivo =:ano_impositivo', [':ano_impositivo' => $anoImpositivo])
+	    		  ->andWhere('inactivo =:inactivo',[':inactivo' => 0]);
 
 	    	if ( trim($params) !== '' ) {
 	    		$primerCaracter = mb_substr($params, 0, 1);
