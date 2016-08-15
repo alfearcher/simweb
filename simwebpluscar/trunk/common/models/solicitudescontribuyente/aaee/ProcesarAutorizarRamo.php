@@ -53,6 +53,8 @@
     use backend\models\aaee\autorizarramo\AutorizarRamoSearch;
     use backend\models\aaee\autorizarramo\AutorizarRamoForm;
     use common\models\contribuyente\ContribuyenteBase;
+    use backend\models\aaee\actecon\ActEconForm;
+    use backend\models\aaee\acteconingreso\ActEconIngresoForm;
 
 
 
@@ -263,33 +265,80 @@
 
 
 
-        /**
-         * Metodo que actualiza el capital de los contribuyentes que estan en la solicitud
-         * segun el monto de capital nuevo que se coloco en la solicitud.
-         * @param  model $modelCorreccion modelo de CorreccionCapital. Contiene los datos
-         * del find.
-         * @return boolean retorna true si ejecuta la actualizacion de los montos de los
-         * capitales, false en caso contrario.
-         */
-        private function updateCapital($modelCorreccion)
+
+        /***/
+        private function createActEcon($idContribuyente, $añoImpositivo)
         {
-            $result = false;
-            $tabla = ContribuyenteBase::tableName();
+            $idImpuesto = 0;
+            $exigDeclaracion = 0;
 
-            foreach ( $modelCorreccion as $key => $value ) {
-                $arregloCondicion = ['id_contribuyente' => $modelCorreccion[$key]->id_contribuyente];
-                $arregloDatos = [
-                    'capital' => $modelCorreccion[$key]->capital_new,
-                ];
+            $searchModel = New AutorizarRamoSearch($idContribuyente);
+            $exigDeclaracion = $searchModel->getExigibilidadDeclaracionSegunAnoImpositivo($añoImpositivo);
 
-                $result = $this->_conexion->modificarRegistro($this->_conn, $tabla, $arregloDatos, $arregloCondicion);
-                if ( !$result ) { break; }
+            if ( $exigDeclaracion > 0 ) {
+                $modelActEcon = New ActEconForm();
+
+                $arregloDatos = $modelActEcon->attributes;
+                foreach ( $arregloDatos as $key => $value ) {
+                    $arregloDatos[$key] = 0;
+                }
+                $arregloDatos['ente'] = Yii::$app->ente->getEnte();
+                $arregloDatos['id_contribuyente'] = $idContribuyente;
+                $arregloDatos['ano_impositivo'] = $añoImpositivo;
+                $arregloDatos['exigibilidad_declaracion'] = $exigDeclaracion;
+
+                // Se procede a guardar en la entidad maestra de las declaraciones.
+                $tabla = '';
+                $tabla = $modelActEcon->tableName();
+
+                if ( $this->_conexion->guardarRegistro($this->_conn, $tabla, $arregloDatos) ) {
+                    $idImpuesto = $connLocal->getLastInsertID();
+                }
             }
-
-            return $result;
+            return $idImpuesto;
         }
 
 
+
+        /***/
+        private function createActEconIngresos($modelRamo, $idImpuesto, $añoImpositivo, $listaIdRubro)
+        {
+            $result = false;
+            if ( $idImpuesto > 0 && $añoImpositivo > 0 ) {
+                if ( count($listaIdRubro) > 0 ) {
+
+                    $searchModel = New AutorizarRamoSearch($modelRamo[0]->id_contribuyente);
+                    $rangoFecha = $searchModel->getRangoFechaDeclaracion($añoImpositivo);
+
+                    $modelActEconIngreso = New ActEconIngresoForm();
+                    $arregloDatos = $modelActEconIngreso->attributes;
+
+                    foreach ( $arregloDatos as $key => $value ) {
+                        $arregloDatos[$key] = 0;
+                    }
+                    $arregloDatos['id_impuesto'] = $idImpuesto;
+                    $arregloDatos['exigibilidad_periodo'] = $model->periodo;
+                    $arregloDatos['periodo_fiscal_desde'] = isset($rangoFecha['fechaDesde']) ? $rangoFecha['fechaDesde'] : '0000-00-00';
+                    $arregloDatos['periodo_fiscal_hasta'] = isset($rangoFecha['fechaHasta']) ? $rangoFecha['fechaHasta'] : '0000-00-00'
+                    $arregloDatos['fecha_hora'] = $model->fecha_hora;
+
+                    // Se procede a guardar en la entidad maestra de las declaraciones.
+                    $tabla = '';
+                    $tabla = $modelActEconIngreso->tableName();
+
+                    foreach ( $listaIdRubro as $key => $value ) {
+                        $arregloDatos['id_rubro'] = $listaIdRubro[$key];
+                        if ( !$this->_conexion->guardarRegistro($this->_conn, $tabla, $arregloDatos) ) {
+                            $result = false;
+                            break;
+                        } else {
+                            $result = true;
+                        }
+                    }
+                }
+            }
+            return $result;
+        }
 
 
 
