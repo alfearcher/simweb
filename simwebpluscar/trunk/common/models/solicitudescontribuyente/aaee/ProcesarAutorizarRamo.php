@@ -192,9 +192,9 @@
             $modelRamo = self::findAutorizarRamo();
             if ( $modelRamo !== null ) {
                 // Entidad "sl-".
-                $result = self::updateSolicitudCorreccionCapital($modelCorreccion);
+                $result = self::updateSolicitudAutorizarRamo($modelRamo);
                 if ( $result ) {
-                    $result = self::updateCapital($modelCorreccion);
+                    $result = self::iniciarCicloAnoImpositivo($modelRamo);
                 }
             } else {
                 self::setErrors(Yii::t('backend', 'Request not find'));
@@ -265,8 +265,55 @@
 
 
 
+        /**
+         * Metodo que inicia el proceso para guardar y crear los registros en las entidades
+         * respectivas segun los ramos autorizados. Se guarda en la entidad principal por cada
+         * año impositivo, y por cada año se guardan los ramos correspondientes.
+         * @param  model $modelRamo modelo de AutorizarRamo.
+         * @return boolean retorna true si se guarda de forma correcta, false en caso contrario.
+         */
+        private function iniciarCicloAnoImpositivo($modelRamo)
+        {
+            $result = false;
+            $idImpuesto = 0;
+            $a = 0;             // Control del año que se va procesando.
+            $listaIdRubro = [];
+            $rubros = [];
+            $searchModel = New AutorizarRamoSearch($modelRamo[0]->id_contribuyente);
 
-        /***/
+            try {
+                foreach ( $modelRamo as $ramo ) {
+                    if ( $a !== $ramo['ano_impositivo'] ) {
+                        $a = $ramo['ano_impositivo'];
+                        $idImpuesto = self::createActEcon($ramo['id_contribuyente'], $a);
+                        if ( $idImpuesto == 0 ) {
+                            $result = false;
+                            break;
+                        }
+                    }
+                    $result = self::createActEconIngresos($ramo, $idImpuesto);
+                    if ( !$result ) { break; }
+                }
+            } catch ( Exception $e ) {
+
+            }
+
+            return $result;
+
+        }
+
+
+
+
+
+
+        /**
+         * Metodo realiza la insercion en la entidad principal de la declaracion.
+         * La insercion se realiza por año impositivo.
+         * @param long $idContribuyente identificador del contribuyente.
+         * @param  integer $añoImpositivo año impositivo que corresponde.
+         * @return boolean retorna true si guarda, false en caso contrario.
+         */
         private function createActEcon($idContribuyente, $añoImpositivo)
         {
             $idImpuesto = 0;
@@ -292,7 +339,7 @@
                 $tabla = $modelActEcon->tableName();
 
                 if ( $this->_conexion->guardarRegistro($this->_conn, $tabla, $arregloDatos) ) {
-                    $idImpuesto = $connLocal->getLastInsertID();
+                    $idImpuesto = $this->_conn->getLastInsertID();
                 }
             }
             return $idImpuesto;
@@ -300,15 +347,20 @@
 
 
 
-        /***/
-        private function createActEconIngresos($modelRamo, $idImpuesto, $añoImpositivo, $listaIdRubro)
+        /**
+         * Metodo que guarda el detalle de los ramos autorizados, por cada ramo
+         * se realiza una insercion.
+         * @param  array $ramo arreglo de atributos correspondiente a una fila
+         * de la solicitud. Este arreglo contiene los valores que se insertaran
+         * en las entidades detalles donde se guardan los ramos.
+         * @param long $idImpuesto identificador de la entidad maestra (act-econ).
+         * @return boolean retorna true si guarda, false en caso contrario.
+         */
+        private function createActEconIngresos($ramo, $idImpuesto)
         {
             $result = false;
-            if ( $idImpuesto > 0 && $añoImpositivo > 0 ) {
-                if ( count($listaIdRubro) > 0 ) {
-
-                    $searchModel = New AutorizarRamoSearch($modelRamo[0]->id_contribuyente);
-                    $rangoFecha = $searchModel->getRangoFechaDeclaracion($añoImpositivo);
+            if ( $idImpuesto > 0 ) {
+                if ( count($ramo) > 0 ) {
 
                     $modelActEconIngreso = New ActEconIngresoForm();
                     $arregloDatos = $modelActEconIngreso->attributes;
@@ -317,23 +369,19 @@
                         $arregloDatos[$key] = 0;
                     }
                     $arregloDatos['id_impuesto'] = $idImpuesto;
-                    $arregloDatos['exigibilidad_periodo'] = $model->periodo;
-                    $arregloDatos['periodo_fiscal_desde'] = isset($rangoFecha['fechaDesde']) ? $rangoFecha['fechaDesde'] : '0000-00-00';
-                    $arregloDatos['periodo_fiscal_hasta'] = isset($rangoFecha['fechaHasta']) ? $rangoFecha['fechaHasta'] : '0000-00-00'
-                    $arregloDatos['fecha_hora'] = $model->fecha_hora;
+                    $arregloDatos['exigibilidad_periodo'] = $ramo['periodo'];
+                    $arregloDatos['periodo_fiscal_desde'] = isset($ramo['fecha_desde']) ? $ramo['fecha_desde'] : '0000-00-00';
+                    $arregloDatos['periodo_fiscal_hasta'] = isset($ramo['fecha_hasta']) ? $ramo['fecha_hasta'] : '0000-00-00';
+                    $arregloDatos['fecha_hora'] = date('Y-m-d H:i:s');
+                    $arregloDatos['usuario'] = $ramo['usuario'];
+                    $arregloDatos['id_rubro'] = $ramo['id_rubro'];
 
                     // Se procede a guardar en la entidad maestra de las declaraciones.
                     $tabla = '';
                     $tabla = $modelActEconIngreso->tableName();
 
-                    foreach ( $listaIdRubro as $key => $value ) {
-                        $arregloDatos['id_rubro'] = $listaIdRubro[$key];
-                        if ( !$this->_conexion->guardarRegistro($this->_conn, $tabla, $arregloDatos) ) {
-                            $result = false;
-                            break;
-                        } else {
-                            $result = true;
-                        }
+                    if ( $this->_conexion->guardarRegistro($this->_conn, $tabla, $arregloDatos) ) {
+                        $result = true;
                     }
                 }
             }
