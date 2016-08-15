@@ -62,6 +62,7 @@
 		public $ano_impositivo;
 		public $id_rubro;
 		public $periodo;
+		public $ano_hasta;
 		public $fecha_desde;
 		public $fecha_hasta;
 		public $fecha_hora;
@@ -90,6 +91,7 @@
         					'fecha_inicio',
         					'ano_impositivo',
         					'periodo',
+        					'ano_hasta',
         					'fecha_desde',
         					'fecha_hasta',
         					'origen',
@@ -104,6 +106,7 @@
         					'fecha_inicio',
         					'ano_impositivo',
         					'periodo',
+        					'ano_hasta',
         					'fecha_desde',
         					'fecha_hasta',
         					'origen',
@@ -126,18 +129,18 @@
 	        return [
 	        	[['id_contribuyente',
 	        	  'fecha_inicio', 'ano_impositivo',
-	        	  'periodo',
+	        	  'periodo', 'ano_hasta',
 	        	  'fecha_desde', 'fecha_hasta'],
 	        	  'required', 'on' => 'frontend',
 	        	  'message' => Yii::t('frontend','{attribute} is required')],
 	        	[['id_contribuyente',
 	        	  'fecha_inicio', 'ano_impositivo',
-	        	  'periodo',
+	        	  'periodo', 'ano_hasta',
 	        	  'fecha_desde', 'fecha_hasta'],
 	        	  'required', 'on' => 'frontend',
 	        	  'message' => Yii::t('frontend','{attribute} is required')],
 	        	[['nro_solicitud', 'id_contribuyente',
-	        	  'ano_impositivo',
+	        	  'ano_impositivo', 'ano_hasta',
 	        	  'periodo', 'estatus'],
 	        	  'integer', 'message' => Yii::t('frontend','{attribute}')],
 	        	[['fecha_inicio', 'fecha_desde', 'fecha_hasta'],
@@ -263,6 +266,37 @@
 	    public function getAddRubro($arrayRubros)
 	    {
 	    	return RubroForm::getAddDataProviderRubro($arrayRubros);
+	    }
+
+
+
+	    /**
+	     * Metodo que retorna un arreglo de atributos que seran actualizados
+	     * al momento de procesar la solicitud (aprobar o negar). Estos atributos
+	     * afectaran a la entidad respectiva de la clase.
+	     * @param String $evento, define la accion a realizar sobre la solicitud.
+	     * - Aprobar.
+	     * - Negar.
+	     * @return Array Retorna un arreglo de atributos segun el evento.
+	     */
+	    public function atributosUpDateProcesarSolicitud($evento)
+	    {
+	    	$atributos = [
+	    		Yii::$app->solicitud->aprobar() => [
+	    						'estatus' => 1,
+	    						'fecha_hora_proceso' => date('Y-m-d H:i:s'),
+	    						'user_funcionario' => isset(Yii::$app->user->identity->username) ? Yii::$app->user->identity->username : Yii::$app->user->identity->login,
+
+	    		],
+	    		Yii::$app->solicitud->negar() => [
+	    						'estatus' => 9,
+	    						'fecha_hora_proceso' => date('Y-m-d H:i:s'),
+	    						'user_funcionario' => isset(Yii::$app->user->identity->username) ? Yii::$app->user->identity->username : Yii::$app->user->identity->login,
+
+	    		],
+	    	];
+
+	    	return $atributos[$evento];
 	    }
 
 	}
