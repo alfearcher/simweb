@@ -208,8 +208,6 @@
 					return ActiveForm::validate($model);
 		      	}
 
-//die(var_dump($postData));
-
 				if ( isset($postData['btn-search']) ) {
 					if ( $postData['btn-search'] == 1 ) {
 						$params = $postData['inputSearch'];
@@ -256,7 +254,7 @@
 		      					}
 		      				} elseif ( isset($postData['btn-confirm-create']) ) {
 		      					if ( $postData['btn-confirm-create'] == 5 ) {
-//die(var_dump($model));
+
 		      						$result = self::actionBeginSave($model, $postData);
 		      						self::actionAnularSession(['begin', 'arrayIdRubros']);
 		      						if ( $result ) {
@@ -417,7 +415,7 @@
 		{
 			$result = false;
 			$nroSolicitud = 0;
-//die(var_dump($model));
+
 			if ( isset($_SESSION['idContribuyente']) ) {
 				if ( isset($_SESSION['conf']) ) {
 					$conf = $_SESSION['conf'];
@@ -544,19 +542,20 @@
 		/**
 		 * Metodo que guarda el registro detalle de la solicitid en la entidad
 		 * "sl" respectiva.
-		 * @param  ConexionController $conexionLocal instancia de la lcase ConexionController.
+		 * @param  ConexionController $conexionLocal instancia de la clase ConexionController.
 		 * @param  connection $connLocal instancia de connection
 		 * @param  model $model modelo de CorreccionAutorizarRamoForm.
 		 * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
 		 * solicitud.
-		 * @param  array $chkSeleccion arreglo que contiene los identificadores de los contribuyentes
-		 * a los cuales se se les actualizara el capital.
+		 * @param  array $chkSeleccion arreglo que contiene los identificadores de los ramos seleccionados
 		 * @return boolean retorna un true si guardo el registro, false en caso contrario.
 		 */
 		private static function actionCreateAutorizarRamo($conexionLocal, $connLocal, $model, $conf, $chkSeleccion)
 		{
 			$result = false;
+			$cancel = false;
 			$estatus = 0;
+			$id = 0;
 			$user = isset($model->usuario) ? $model->usuario : null;
 			$userFuncionario = '';
 			$fechaHoraProceso = '0000-00-00 00:00:00';
@@ -583,19 +582,64 @@
 					$model->estatus = $estatus;
 					$model->user_funcionario = $userFuncionario;
 
-					foreach ( $chkSeleccion as $key => $value ) {
-						$arregloDatos['id_rubro'] = $value;
-						$result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
-						if ( !$result ) { break; }
-					}
+					$searchModel = New AutorizarRamoSearch($model->id_contribuyente);
 
+					for ( $i = $model->ano_impositivo; $i <= $model->ano_hasta ; $i++ ) {
+						if ( $i == $model->ano_impositivo ) {
+							foreach ( $chkSeleccion as $key => $value ) {
+								$arregloDatos['id_rubro'] = $value;
+								$result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
+								if ( !$result ) {
+									$cancel = true;
+									break;
+								}
+							}
+						} else {
+							$rangoFecha = $searchModel->getRangoFechaDeclaracion($i);
+							$arregloDatos['fecha_desde'] = $rangoFecha['fechaDesde'];
+							$arregloDatos['fecha_hasta'] = $rangoFecha['fechaHasta'];
+							$arregloDatos['id_rubro'] = 0;
+							$arregloDatos['ano_impositivo'] = $i;
+							foreach ( $chkSeleccion as $key => $value ) {
+								$id = $searchModel->getIdRubro($value, $i);
+								if ( $id == 0 ) {
+									$result = false;
+									$cancel = true;
+									break;
+								} else {
+									$arregloDatos['id_rubro'] = $id;
+									$result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
+									if ( !$result ) {
+										$cancel = true;
+										break;
+									}
+								}
+							}
+						}
+						if ( $cancel ) { break; }
+					}
 				}
 			}
 			return $result;
 		}
 
 
-		/***/
+
+
+		/**
+		 * Metodo que crear un ciclo para iniciar el salvado de los datos enviados
+		 * desde la solicitud. Crear como año inicio el año-impositivo y como año
+		 * final del ciclo el año hasta. Con cada año se realiza una insercion en
+		 * la entidad maestro de la declaracion y con esta insercion se debe obtener un
+		 * identificador del registro (id-impuesto). Este identificador se utilizara
+		 * para linkear con la entidad que se utiliza para guardar los detalles (ramos)
+		 * de la solicitud.
+		 * @param  ConexionController $conexionLocal instancia de la clase ConexionController.
+		 * @param  connection $connLocal instancia de connection
+		 * @param  model $model modelo de CorreccionAutorizarRamoForm.
+		 * @param  array $chkSeleccion arreglo que contiene los identificadores de los ramos seleccionados.
+		 * @return boolean retorna un true si guardo el registro, false en caso contrario.
+		 */
 		private function actionIniciarCicloAnoImpositivo($conexionLocal, $connLocal, $model, $chkSeleccion)
 		{
 			$result = false;
@@ -615,8 +659,8 @@
 							$listaIdRubro = $searchModel->getListaRubro($chkSeleccion, $i);
 						}
 						if ( count($listaIdRubro) > 0 ) {
-							$result = self::actionCreateActEconIngresos($conexionLocal, $connLocal,
-																		$model, $idImpuesto, $listaIdRubro);
+							$result = self::actionCreateActEconIngresos($conexionLocal, $connLocal, $model,
+																		$idImpuesto, $listaIdRubro, $i);
 						} else {
 							$result = false;
 						}
@@ -635,7 +679,15 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que realiza el salvado en la entidad maestro de la declaracion.
+		 * @param  ConexionController $conexionLocal instancia de la clase ConexionController.
+		 * @param  connection $connLocal instancia de connection
+		 * @param  model $model modelo de CorreccionAutorizarRamoForm.
+		 * @param  integer $añoImpositivo año impositivo correspondiente. Se realiza una insercion
+		 * por cada año que este en la solicitud.
+		 * @return boolean retorna un true si guardo el registro, false en caso contrario.
+		 */
 		private static function actionCreateActEcon($conexionLocal, $connLocal, $model, $añoImpositivo)
     	{
     		$idImpuesto = 0;
@@ -672,14 +724,31 @@
 
 
 
-	    /***/
-	    private static function actionCreateActEconIngresos($conexionLocal, $connLocal, $model, $idImpuesto, $listaIdRubro)
+	    /**
+	     * Metodo que realiza al insercion de los detalles de los ramos. Se realiza una
+	     * insercion por cada ramo que se autoriza.
+	     * @param  ConexionController $conexionLocal instancia de la clase ConexionController.
+		 * @param  connection $connLocal instancia de connection
+		 * @param  model $model modelo de CorreccionAutorizarRamoForm.
+	     * @param  long $idImpuesto identificador de la entidad maestro de la declaracion
+	     * (act-econ).
+	     * @param  array $listaIdRubro arreglo de identificadores de los ramos (rubros) que se
+	     * han colocados en la solicitud.
+	     * @param  integer $añoImpositivo año impositivo correspondiente. Se realiza una insercion
+		 * por cada año que este en la solicitud.
+	     * @return boolean retorna un true si guardo el registro, false en caso contrario.
+	     */
+	    private static function actionCreateActEconIngresos($conexionLocal, $connLocal, $model,
+	    													$idImpuesto, $listaIdRubro, $añoImpositivo)
 	    {
 	    	$result = false;
 	    	if ( isset($_SESSION['idContribuyente']) && isset($connLocal) ) {
 	    		if ( $idImpuesto > 0 ) {
 
 		    		if ( count($listaIdRubro) > 0 ) {
+
+		    			$searchModel = New AutorizarRamoSearch($model->id_contribuyente);
+                    	$rangoFecha = $searchModel->getRangoFechaDeclaracion($añoImpositivo);
 
 			    		$modelActEconIngreso = New ActEconIngresoForm();
 			    		$arregloDatos = $modelActEconIngreso->attributes;
@@ -689,9 +758,10 @@
 			    		}
 			    		$arregloDatos['id_impuesto'] = $idImpuesto;
 			    		$arregloDatos['exigibilidad_periodo'] = $model->periodo;
-			    		$arregloDatos['periodo_fiscal_desde'] = $model->fecha_desde;
-			    		$arregloDatos['periodo_fiscal_hasta'] = $model->fecha_hasta;
+			    		$arregloDatos['periodo_fiscal_desde'] = isset($rangoFecha['fechaDesde']) ? $rangoFecha['fechaDesde'] : '0000-00-00';
+			    		$arregloDatos['periodo_fiscal_hasta'] = isset($rangoFecha['fechaHasta']) ? $rangoFecha['fechaHasta'] : '0000-00-00';
 			    		$arregloDatos['fecha_hora'] = $model->fecha_hora;
+			    		$arregloDatos['usuario'] = $model->usuario;
 
 			    		// Se procede a guardar en la entidad maestra de las declaraciones.
 		      			$tabla = '';
