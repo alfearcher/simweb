@@ -162,7 +162,7 @@
          * sobre la entidad "sl-", referente al detalle de la solicitud. Es la
          * entidad donde se guardan los detalle de esta solicitud.
          * @return boolean retorna una instancia modelo active record de
-         * CorreccionCedulaRif si todo se ejecuto satisfactoriamente, false
+         * utorizarRamo si todo se ejecuto satisfactoriamente, false
          * en caso contrario.
          */
         public function findAutorizarRamo()
