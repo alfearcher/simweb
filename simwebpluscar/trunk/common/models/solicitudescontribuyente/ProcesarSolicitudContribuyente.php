@@ -282,14 +282,18 @@
             // Se ejecuta el find all, para obtener las planillas asociadas a la solicitud.
             $listaPlanillas = $findModel->asArray()->all();
 
-            foreach ( $listaPlanillas as $planillas ) {
-                if ( isset($planillas['planilla']) ) {
-                     $searchPlanilla = New PlanillaSearch($planillas['planilla']);
-                     $result = $searchPlanilla->anularMiPlanilla($this->_conexion,
-                                                                 $this->_conn,
-                                                                 $observacion);
-                     if ( !$result ) { break; }
+            if ( count($listaPlanillas) > 0 ) {
+                foreach ( $listaPlanillas as $planillas ) {
+                    if ( isset($planillas['planilla']) ) {
+                         $searchPlanilla = New PlanillaSearch($planillas['planilla']);
+                         $result = $searchPlanilla->anularMiPlanilla($this->_conexion,
+                                                                     $this->_conn,
+                                                                     $observacion);
+                         if ( !$result ) { break; }
+                    }
                 }
+            } else {
+                $result = true;
             }
             return $result;
         }
@@ -325,7 +329,7 @@
 
                     $procesarDetalle = New ProcesarSolicitudDetalleVehiculo($model, $evento, $this->_conn, $this->_conexion);
                     $result = $procesarDetalle->procesarSolicitudPorTipo();
-                    
+
                 } elseif ( $model['impuesto'] == 4 ) {
                     // Propaganda Comercial.
 
