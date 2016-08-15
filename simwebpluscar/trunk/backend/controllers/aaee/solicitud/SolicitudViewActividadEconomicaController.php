@@ -60,6 +60,7 @@
 	use backend\models\aaee\correccioncapital\CorreccionCapitalSearch;
 	use backend\models\aaee\correccionreplegal\CorreccionRepresentanteLegalSearch;
 	use backend\models\aaee\correccionrazonsocial\CorreccionRazonSocialSearch;
+	use backend\models\aaee\autorizarramo\AutorizarRamoSearch;
 	use backend\controllers\MenuController;
 
 	//session_start();		// Iniciando session
@@ -127,7 +128,9 @@
 
 					return self::actionMostarSolicitudCorreccionCedulaRif();
 
-				} elseif ( $this->_model->tipo_solicitud == 7 ) {
+				} elseif ( $this->_model->tipo_solicitud == 70 ) {
+
+					return self::actionMostarSolicitudAutorizarRamo();
 
 				} elseif ( $this->_model->tipo_solicitud == 8 ) {
 
@@ -413,6 +416,44 @@
 			return false;
 		}
 
+
+
+		/**
+		 * Metodo particular que se encarga de buscar los datos de la solicitud particular sobre
+		 * "Autorizar Ramo", y de renderizar una vista del detalle de la solicitud
+		 * Se utiliza un parametro adicional "nivel de aprovacion", este determinara un nivel mas
+		 * determinante de la vista.
+		 * El nivel de aprobacion 3 renderizara un formulario con los datos originales de la solicitud
+		 * inhabilitados y solo permitira la edicion de los campos que no fueron cargados en dicha
+		 * solicitud, esto con la intencion de que el funcionario pueda complementar dicha informacion.
+		 * @return view retorna un vista con la informacion de la solicitud sino encuentra dicha
+		 * informacion retornara false.
+		 * ---
+		 * nivel de aprobacion 1: No aplica.
+		 * nivel de aprobacion 2: la vista no permite la edicion de los campos.
+		 * 	- Esquema de esta vista:
+		 *  	* Nombre del campo : Valor del campo
+		 * nivel de aprobacion 3: Muestra inhabilitado los datos suministrados previamente y habilita
+		 * aquellos campos que no fueron cargados inicialmente.
+		 */
+		private function actionMostarSolicitudAutorizarRamo()
+		{
+			if ( $this->_model->nivel_aprobacion == 2 ) {
+					$modelSearch = New AutorizarRamoSearch($this->_model->id_contribuyente);
+					$model = $modelSearch->findSolicitudAutorizarRamo($this->_model->nro_solicitud);
+					$dataProvider = $modelSearch->getDataProviderSolicitud($this->_model->nro_solicitud);
+					if ( isset($model) ) {
+						return $this->render('@backend/views/aaee/autorizar-ramo/view-solicitud', [
+														'caption' => Yii::t('frontend', 'Request Nro. ' . $this->_model->nro_solicitud),
+														'model' => $model,
+														'dataProvider' => $dataProvider,
+
+							]);
+					}
+			}
+
+			return false;
+		}
 
 
 
