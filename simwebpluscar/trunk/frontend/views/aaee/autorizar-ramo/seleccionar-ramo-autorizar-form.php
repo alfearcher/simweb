@@ -78,7 +78,7 @@
 	<?=$form->field($model, 'fecha_inicio')->hiddenInput(['value' => $datos['fecha_inicio']])->label(false);?>
 	<?=$form->field($model, 'fecha_desde')->hiddenInput(['value' => $fechaDesde])->label(false);?>
 	<?=$form->field($model, 'fecha_hasta')->hiddenInput(['value' => $fechaHasta])->label(false);?>
-	<?=$form->field($model, 'ano_vence_ordenanza')->hiddenInput(['value' =>$añoVenceOrdenanza])->label(false);?>
+	<?=$form->field($model, 'ano_hasta')->hiddenInput(['value' =>$añoVenceOrdenanza])->label(false);?>
 
 
 	<meta http-equiv="refresh">
@@ -224,10 +224,10 @@
 											<p style="margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('backend', 'Ordinance Expired') ?></i></p>
 										</div>
 										<div class="row">
-											<div class="ano-vence-ordenanza">
-												<?= $form->field($model, 'ano_vence_ordenanza')->textInput([
-																									'id' => 'ano-vence-ordenanza',
-																									'name' => 'ano-vence-ordenanza',
+											<div class="ano-hasta">
+												<?= $form->field($model, 'ano_hasta')->textInput([
+																									'id' => 'ano-hasta',
+																									'name' => 'ano-hasta',
 																									'style' => 'width:70%;',
 																									'value' => $añoVenceOrdenanza,
 																									'disabled' => true,

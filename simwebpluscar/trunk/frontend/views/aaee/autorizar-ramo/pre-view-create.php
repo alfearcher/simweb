@@ -89,7 +89,7 @@
 	<?= $form->field($model, 'fecha_hora')->hiddenInput(['value' => $model->fecha_hora])->label(false); ?>
 	<?= $form->field($model, 'origen')->hiddenInput(['value' => $model->origen])->label(false); ?>
 	<?= $form->field($model, 'estatus')->hiddenInput(['value' => 0])->label(false); ?>
-	<?=$form->field($model, 'ano_vence_ordenanza')->hiddenInput(['value' => $model->ano_vence_ordenanza])->label(false);?>
+	<?=$form->field($model, 'ano_hasta')->hiddenInput(['value' => $model->ano_hasta])->label(false);?>
 
 <!-- Cuerpo del formulario -->
         <div class="panel-body" style="background-color: #F9F9F9;">
@@ -121,12 +121,21 @@
 	                        										return $data->ano_impositivo;
 	                											},
 								                ],
+								                // [
+								                //     'label' => Yii::t('frontend', 'Year End'),
+								                //     'format' => 'raw',
+								                //     'value' => function($model) {
+								                //     	$a = $model->ano_hasta;
+								                //     	return $a;
+								                //     },
+								                // ],
 								                [
 								                    'label' => Yii::t('frontend', 'Descripcion'),
 								                    'value' => function($data) {
 	                        										return $data->descripcion;
 	                											},
 								                ],
+
 								                [
 								                	'class' => 'yii\grid\CheckboxColumn',
 								                	'name' => 'chkRubroSeleccionado',
