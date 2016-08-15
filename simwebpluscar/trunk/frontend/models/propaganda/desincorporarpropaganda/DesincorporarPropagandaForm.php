@@ -220,6 +220,26 @@ class DesincorporarPropagandaForm extends Model
         ];
     }
 
+        public function attributeSldesincorporaciones()
+    {
+
+
+    return [  'nro_solicitud',
+              'id_contribuyente',
+              'id_impuesto',
+              'impuesto',
+              'causa_desincorporacion',
+              'observacion',
+              'usuario',
+              'fecha_hora',
+              'inactivo',
+              
+              
+
+              ];
+      
+    }
+
        /**
      * Creates data provider instance with search query applied
      *
