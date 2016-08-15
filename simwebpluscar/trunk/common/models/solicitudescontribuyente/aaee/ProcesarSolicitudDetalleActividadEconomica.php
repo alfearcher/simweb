@@ -57,6 +57,7 @@
     use common\models\solicitudescontribuyente\aaee\ProcesarCorreccionCapital;
     use common\models\solicitudescontribuyente\aaee\ProcesarCorreccionRepresentanteLegal;
     use common\models\solicitudescontribuyente\aaee\ProcesarCorreccionRazonSocial;
+    use common\models\solicitudescontribuyente\aaee\ProcesarAutorizarRamo;
 
 
     /**
@@ -168,7 +169,12 @@
                     $result = $procesar->procesarSolicitud();
 
 
-                } elseif ( $this->_model->tipo_solicitud == 'b' ) {
+                } elseif ( $this->_model->tipo_solicitud == 70 ) {
+                     $procesar = New ProcesarAutorizarRamo($this->_model,
+                                                           $this->_evento,
+                                                           $this->_conn,
+                                                           $this->_conexion);
+                    $result = $procesar->procesarSolicitud();
 
                 } elseif ( $this->_model->tipo_solicitud == 'c' ) {
 
