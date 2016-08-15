@@ -64,6 +64,8 @@
 	use backend\models\aaee\autorizarramo\AutorizarRamoSearch;
 	use backend\models\aaee\autorizarramo\AutorizarRamoForm;
 	use backend\models\aaee\rubro\Rubro;
+	use backend\models\aaee\actecon\ActEconForm;
+	use backend\models\aaee\acteconingreso\ActEconIngresoForm;
 
 	session_start();		// Iniciando session
 
@@ -599,10 +601,10 @@
 			$result = false;
 			$idImpuesto = 0;
 			$listaIdRubro = [];
-			$searchModel = AutorizarRamoSearch($model['id_contribuyente']);
+			$searchModel = New AutorizarRamoSearch($model['id_contribuyente']);
 
 			try {
-				for ( $i = $model->ano_impositivo; $i <= $model->ano_vence_ordenanza ; $i++ ) {
+				for ( $i = $model->ano_impositivo; $i <= $model->ano_hasta ; $i++ ) {
 					$idImpuesto = self::actionCreateActEcon($conexionLocal, $connLocal, $model, $i);
 					if ( $idImpuesto == 0 ) {
 						$result = false;
@@ -641,7 +643,7 @@
     		if ( isset($_SESSION['idContribuyente']) && isset($connLocal)  ) {
     			if ( $_SESSION['idContribuyente'] == $model['id_contribuyente'] ) {
 
-    				$searchModel = New AutorizarRamoSearch($model['id-contribuyente']);
+    				$searchModel = New AutorizarRamoSearch($model['id_contribuyente']);
     				$exigDeclaracion = $searchModel->getExigibilidadDeclaracionSegunAnoImpositivo($añoImpositivo);
     				if ( $exigDeclaracion > 0 ) {
 		    			$modelActEcon = New ActEconForm();
