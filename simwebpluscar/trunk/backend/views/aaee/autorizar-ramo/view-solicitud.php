@@ -79,11 +79,18 @@
 										},
 		                ],
 		                [
+		                    'label' => Yii::t('frontend', 'Year End'),
+		                    'value' => function($model) {
+    										return $model->ano_hasta;
+										},
+		                ],
+		                [
 		                    'label' => Yii::t('frontend', 'Descripcion'),
 		                    'value' => function($model) {
     										return $model->rubro->descripcion;
 										},
 		                ],
+
 		                [
 		                    'label' => Yii::t('frontend', 'Condition'),
 		                    'value' => function($model) {
