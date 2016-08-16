@@ -59,9 +59,9 @@ class VehiculoSearch extends VehiculosForm
     * @param  [type] $clase [description]
     * @return [type]        [description]
     */
-    public function getDescripcionCausaDesincorporacion($causa)
+    public function getDescripcionClasePropaganda($clase)
     {
-        $model = CausasDesincorporaciones::findOne($causa);
+        $model = ClasePropaganda::findOne($clase);
         return $model->descripcion;
 
     }
