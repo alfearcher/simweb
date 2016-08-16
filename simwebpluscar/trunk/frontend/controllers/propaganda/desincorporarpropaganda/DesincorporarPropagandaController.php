@@ -379,7 +379,7 @@ class DesincorporarPropagandaController extends Controller
 
       
 
-      $arregloDatos['status_vehiculo'] = 1;
+      $arregloDatos['inactivo'] = 1;
 
       $conexion = new ConexionController();
 
