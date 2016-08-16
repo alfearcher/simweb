@@ -120,7 +120,8 @@ class CambioNumeroCatastralInmueblesForm extends \yii\db\ActiveRecord
             
 
             [['direccion', 'observacion'], 'string', 'max' => 255,'message' => Yii::t('backend', 'Only 255 character')],
-            
+            [['propiedad_horizontal'], 'catastro_registro','when'=>function($model){ return $model->validacion==1;}], 
+            [['propiedad_horizontal'], 'catastro_registro2','when'=>function($model){ return $model->validacion==1;}],
             
         ]; 
     }
@@ -166,4 +167,70 @@ class CambioNumeroCatastralInmueblesForm extends \yii\db\ActiveRecord
             'unidad_catastro' => Yii::t('app', 'Unidad Catastro'),
         ];
     }
+
+    public function catastro_registro($attribute, $params)
+    {
+  
+          //Buscar el email en la tabla 
+          if($this->propiedad_horizontal==0){
+            $table = InmueblesConsulta::find()
+                                    ->where("estado_catastro=:estado_catastro", [":estado_catastro" => $this->estado_catastro])
+                                    ->andwhere("municipio_catastro=:municipio_catastro", [":municipio_catastro" => $this->municipio_catastro])
+                                    ->andwhere("parroquia_catastro=:parroquia_catastro", [":parroquia_catastro" => $this->parroquia_catastro])
+                                    ->andwhere("ambito_catastro=:ambito_catastro", [":ambito_catastro" => $this->ambito_catastro])
+                                    ->andwhere("sector_catastro=:sector_catastro", [":sector_catastro" => $this->sector_catastro])
+                                    ->andwhere("manzana_catastro=:manzana_catastro", [":manzana_catastro" => $this->manzana_catastro])
+                                    ->andwhere("parcela_catastro=:parcela_catastro", [":parcela_catastro" => $this->parcela_catastro])
+                                    ->andwhere("propiedad_horizontal=:propiedad_horizontal", [":propiedad_horizontal" => 0])
+                                    ->andWhere("manzana_limite=:manzana_limite", [":manzana_limite" => $this->manzana_limite])
+                                    ->andWhere("inactivo=:inactivo", [":inactivo" => 0])
+                                    ->asArray()->all(); 
+                                    
+            //$sql = 'SELECT id_impuesto, id_contribuyente FROM inmuebles WHERE manzana_limite=:manzana_limite and catastro=:catastro';
+            //$inmuebles = Inmuebles::findBySql($sql, [':manzana_limite' => $this->manzana_limite, 'catastro'=> $this->catastro])->all();
+                 
+
+            //Si la consulta no cuenta (0) mostrar el error
+            if ($table != null){
+                    
+                    $this->addError($attribute, Yii::t('backend', 'The taxpayer: '.$table[0]['id_contribuyente'].' has already assigned cadestre. Tax: '.$table[0]['id_impuesto']));//Impuesto: '.$table->id_impuesto; 
+            }
+                            
+          }
+     }
+
+     public function catastro_registro2($attribute, $params)
+     {
+  
+          //Buscar el email en la tabla 
+
+         if($this->propiedad_horizontal==1){
+            $nivel_catastro1 = array(['nivela' =>$this->nivela , 'nivelb'=>$this->nivelb ]);              
+            $nivel_catastro = "".$nivel_catastro1[0]['nivela']."".$nivel_catastro1[0]['nivelb'].""; 
+
+            
+            $table = InmueblesConsulta::find()->where("estado_catastro=:estado_catastro", [":estado_catastro" => $this->estado_catastro])
+                                    ->andwhere("municipio_catastro=:municipio_catastro", [":municipio_catastro" => $this->municipio_catastro])
+                                    ->andwhere("parroquia_catastro=:parroquia_catastro", [":parroquia_catastro" => $this->parroquia_catastro])
+                                    ->andwhere("ambito_catastro=:ambito_catastro", [":ambito_catastro" => $this->ambito_catastro])
+                                    ->andwhere("sector_catastro=:sector_catastro", [":sector_catastro" => $this->sector_catastro])
+                                    ->andwhere("manzana_catastro=:manzana_catastro", [":manzana_catastro" => $this->manzana_catastro])
+                                    ->andwhere("propiedad_horizontal=:propiedad_horizontal", [":propiedad_horizontal" => 1])
+                                    ->andwhere("parcela_catastro=:parcela_catastro", [":parcela_catastro" => $this->parcela_catastro])
+                                    ->andwhere("subparcela_catastro=:subparcela_catastro", [":subparcela_catastro" => $this->subparcela_catastro])
+                                    ->andwhere("nivel_catastro=:nivel_catastro", [":nivel_catastro" => $nivel_catastro])
+                                    ->andwhere("unidad_catastro=:unidad_catastro", [":unidad_catastro" => $this->unidad_catastro])
+                                    ->andWhere("manzana_limite=:manzana_limite", [":manzana_limite" => $this->manzana_limite])
+                                    ->andWhere("inactivo=:inactivo", [":inactivo" => 0])
+                                    ->asArray()->all(); 
+                                    
+
+            //Si la consulta no cuenta (0) mostrar el error
+            if ($table != null){
+
+                    $this->addError($attribute, Yii::t('backend', 'The taxpayer: '.$table[0]['id_contribuyente'].' has already assigned cadestre. Tax: '.$table[0]['id_impuesto']));//Impuesto: '.$table->id_impuesto; 
+            } 
+         
+          } 
+     }
 }

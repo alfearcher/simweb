@@ -186,7 +186,7 @@ function bloquea() {
                             </div> 
 
                     </div>  
-                            <div class="row">
+                    <div class="row">
 
                              
                                 <?= Html::beginForm();?>

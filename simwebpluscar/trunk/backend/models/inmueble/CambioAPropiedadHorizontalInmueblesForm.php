@@ -124,13 +124,10 @@ class CambioAPropiedadHorizontalInmueblesForm extends \yii\db\ActiveRecord
         return [ 
             [['id_contribuyente', 'ano_inicio', 'liquidado', 'manzana_limite', 'lote_1', 'lote_2', 'lote_3', 'inactivo', 'id_habitante', 'tipo_ejido', 'propiedad_horizontal', 'estado_catastro', 'municipio_catastro', 'parroquia_catastro', 'sector_catastro', 'manzana_catastro', 'parcela_catastro', 'subparcela_catastro', 'unidad_catastro'], 'integer','message' => Yii::t('backend', 'only integers')],
             [['parcela_catastro', 'subparcela_catastro', 'unidad_catastro','nivela','nivelb'],'required', 'when'=> function($model){ return $model->propiedad_horizontal == 1; }, 'message' => Yii::t('backend', 'Required field')],
-            [['observacion','tipo_naturaleza2','tipo_naturaleza'], 'string'], 
+            [['observacion'], 'string'], 
             [['direccion'], 'string', 'max' => 255,'message' => Yii::t('backend', 'Only 255 character')],
             [['nivel', 'ambito_catastro','validacion'], 'string', 'max' => 4,'message' => Yii::t('backend', 'Only 3 character')],
-            [['av_calle_esq_dom', 'casa_edf_qta_dom'], 'string', 'max' => 50,'message' => Yii::t('backend', 'Only 50 character')],
-            [['piso_nivel_no_dom', 'apto_dom'], 'string', 'max' => 25,'message' => Yii::t('backend', 'Only 25 character')],
-            [['tlf_hab'], 'string', 'max' => 15,'message' => Yii::t('backend', 'Only 15 character')],
-            [['medidor', 'id_sim'], 'string', 'max' => 20,'message' => Yii::t('backend', 'Only 20 character')],
+            
             [['catastro'], 'string', 'max' => 60,'message' => Yii::t('backend', 'Only 60 character')],
             //'liquidado', 'id_habitante'
             [['propiedad_horizontal'], 'catastro_registro','when'=>function($model){ return $model->validacion==1;}], 
