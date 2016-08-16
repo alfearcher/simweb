@@ -131,6 +131,11 @@
 
                 } elseif ( $this->_model->tipo_solicitud == 25 ) {
                     //Cambio Numero Catastral
+                    $procesar = New ProcesarCambioNumeroCatastralInmuebleUrbano($this->_model,
+                                                                          $this->_evento,
+                                                                          $this->_conn,
+                                                                          $this->_conexion);
+                    $result = $procesar->procesarSolicitud(); 
 
                 } elseif ( $this->_model->tipo_solicitud == 26 ) {
                     //Cambio Propietario

@@ -58,12 +58,13 @@
 		    			'attributes' => [
 		    				'nro_solicitud',
 		    				'id_contribuyente',
-		    				'direccion',
-		    				'ano_inicio',
-		    				'casa_edf_qta_dom',
-		    				'apto_dom',
-		    				'tlf_hab',
-		    				'medidor',
+		    				'estado_catastro',
+							'municipio_catastro',
+							'parroquia_catastro',
+							'ambito_catastro',
+							'sector_catastro',
+							'manzana_catastro',
+		    				
 
 
 		        			//'created_at:datetime', // creation date formatted as datetime

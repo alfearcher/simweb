@@ -196,7 +196,7 @@
 
 					
 
-					return $this->render('@backend/views/inmueble/cambio-propietario-inmuebles-urbanos/view-solicitud', [
+					return $this->render('@backend/views/inmueble/avaluo-inmuebles-urbanos/view-solicitud', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
 													'model' => $model,
 
@@ -215,7 +215,7 @@
 
 					
 
-					return $this->render('@backend/views/inmueble/cambio-propietario-inmuebles-urbanos/view-solicitud', [
+					return $this->render('@backend/views/inmueble/certificado-catastral-inmuebles-urbanos/view-solicitud', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
 													'model' => $model,
 
@@ -234,7 +234,7 @@
 
 					
 
-					return $this->render('@backend/views/inmueble/cambio-propietario-inmuebles-urbanos/view-solicitud', [
+					return $this->render('@backend/views/inmueble/renovacion-certificado-catastral-inmuebles-urbanos/view-solicitud', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
 													'model' => $model,
 
@@ -253,7 +253,7 @@
 
 					
 
-					return $this->render('@backend/views/inmueble/cambio-propietario-inmuebles-urbanos/view-solicitud', [
+					return $this->render('@backend/views/inmueble/solvencia-inmuebles-urbanos/view-solicitud', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
 													'model' => $model,
 
@@ -272,7 +272,7 @@
 
 					
 
-					return $this->render('@backend/views/inmueble/cambio-propietario-inmuebles-urbanos/view-solicitud', [
+					return $this->render('@backend/views/inmueble/cambio-numero-catastral-inmuebles-urbanos/view-solicitud', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
 													'model' => $model,
 
@@ -310,7 +310,7 @@
 
 					
 
-					return $this->render('@backend/views/inmueble/cambio-propietario-inmuebles-urbanos/view-solicitud', [
+					return $this->render('@backend/views/inmueble/integracion-inmuebles-urbanos/view-solicitud', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
 													'model' => $model,
 
@@ -329,7 +329,7 @@
 
 					
 
-					return $this->render('@backend/views/inmueble/cambio-propietario-inmuebles-urbanos/view-solicitud', [
+					return $this->render('@backend/views/inmueble/desintegracion-inmuebles-urbanos/view-solicitud', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
 													'model' => $model,
 
@@ -348,7 +348,7 @@
 
 					
 
-					return $this->render('@backend/views/inmueble/cambio-propietario-inmuebles-urbanos/view-solicitud', [
+					return $this->render('@backend/views/inmueble/cambio-propiedad-horizontal-inmuebles-urbanos/view-solicitud', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
 													'model' => $model,
 
@@ -386,7 +386,7 @@
 
 					
 
-					return $this->render('@backend/views/inmueble/cambio-otros-datos-inmuebles-urbanos/view-solicitud', [
+					return $this->render('@backend/views/inmueble/modificar-avaluo-inmuebles-urbanos/view-solicitud', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
 													'model' => $model,
 
