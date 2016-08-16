@@ -118,7 +118,7 @@ class DesincorporarPropagandaController extends Controller
       $errorCheck = ""; 
       $idContribuyente = yii::$app->user->identity->id_contribuyente;
       $idPropaganda = yii::$app->request->post('chk-desincorporar-propaganda');
-      //die(var_dump($idVehiculo));
+      //die(var_dump($idPropaganda));
       $_SESSION['idPropaganda'] = $idPropaganda;
 //die(var_dump($_SESSION['idPropaganda']));
   
@@ -159,9 +159,9 @@ class DesincorporarPropagandaController extends Controller
 
         
 
-          $datosPropaganda = $_SESSION['datosPropaganda']; 
+          $datosPropaganda = $_SESSION['idPropaganda']; 
          // die(var_dump($datosVehiculo));
-           if (isset($_SESSION['datosPropaganda'])){ 
+           if (isset($datosPropaganda)){ 
 
 
             $model = new DesincorporarPropagandaForm();
@@ -183,6 +183,7 @@ class DesincorporarPropagandaController extends Controller
                   foreach($datosPropaganda as $key => $value) {
                      
                      $value;
+                     //die($value.'ho');
                     
                      $verificarSolicitud = new DesincorporarPropagandaForm();
 
@@ -310,15 +311,14 @@ class DesincorporarPropagandaController extends Controller
 
     public function guardarSolicitud($conn, $conexion , $model, $idSolicitud,  $idPropaganda)
     {
-     // die($_SESSION['id']);
+     
+      //die($impuesto);
 
       $buscar = new ParametroSolicitud($_SESSION['id']);
 
-      $buscar->getParametroSolicitud(["nivel_aprobacion"]);
-
       $resultado = $buscar->getParametroSolicitud(["tipo_solicitud", "impuesto", "nivel_aprobacion"]);
       
-      //die(var_dump($resultado["impuesto"]).'gl');
+     // die(var_dump($resultado['impuesto']));
      
       $numeroSolicitud = $idSolicitud;
       $resultado = false;
@@ -329,9 +329,9 @@ class DesincorporarPropagandaController extends Controller
 
       foreach ($arregloCampo as $key=>$value){
 
-          $arregloDatos[$value] =0;
+          $arregloDatos[$value] = 0;
       }
-     // die(var_dump($arregloDatos));
+      //die(var_dump($arregloDatos));
 
       $arregloDatos['nro_solicitud'] = $numeroSolicitud;
 
@@ -339,11 +339,11 @@ class DesincorporarPropagandaController extends Controller
 
       $arregloDatos['id_impuesto'] = $idPropaganda;
 
-      //die($arregloDatos['id_impuesto']);
+     //die($arregloDatos['id_impuesto']);
 
-      $arregloDatos['impuesto'] = $resultado["impuesto"];
+      $arregloDatos['impuesto'] = $resultado['impuesto'];
 
-     // die($arregloDatos['impuesto']);
+     //die($arregloDatos['impuesto']);
 
       $arregloDatos['usuario'] = $datos->login;
 
@@ -369,10 +369,34 @@ class DesincorporarPropagandaController extends Controller
 
  }
 
-    public function desincorporarPropagandaMaestro($conn, $conexion, $model)
+    public function desincorporarPropagandaMaestro($conn, $conexion, $model, $idPropaganda)
     {
 
+      $tableName = 'propagandas';
+      $arregloCondition = ['id_impuesto' => $idPropaganda];
+      //die(var_dump($arregloCondition));
      
+
+      
+
+      $arregloDatos['status_vehiculo'] = 1;
+
+      $conexion = new ConexionController();
+
+      $conn = $conexion->initConectar('db');
+         
+      $conn->open();
+
+      //$transaccion = $conn->beginTransaction();
+
+          if ($conexion->modificarRegistro($conn, $tableName, $arregloDatos, $arregloCondition)){
+
+             // die('modifico');
+
+              return true;
+              
+          }
+         
     
 
 
@@ -389,7 +413,7 @@ class DesincorporarPropagandaController extends Controller
 
         //die(var_dump($buscar->getParametroSolicitud(["nivel_aprobacion"])));
 
-        $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
+        $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion", "impuesto"]);
 
        // die(var_dump($nivelAprobacion));
 
@@ -406,6 +430,7 @@ class DesincorporarPropagandaController extends Controller
           if ($var == "buscarActualizar"){
 
               foreach($datosPropaganda as $key => $value){
+              
 
                 $idSolicitud = 0;
                 $idSolicitud = self::buscarNumeroSolicitud($conn, $conexion, $model, $value);
@@ -427,7 +452,7 @@ class DesincorporarPropagandaController extends Controller
                       }else{
 
 
-                            $actualizarDesincorporacion = self::desincorporarPropagandMaestro($conn,$conexion, $model);
+                            $actualizarDesincorporacion = self::desincorporarPropagandMaestro($conn,$conexion, $model, $value);
 
                             if ($idSolicitud and $guardar and $actualizarDesincorporacion == true ){
                               $todoBien == true;
