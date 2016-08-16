@@ -295,40 +295,45 @@
 			  		}
 			  		$errorRubroSeleccionado = '';
 		  			if ( !$validateRubroSeleccionado ) {
-		  				// Mensaje que indica que no se haincluido ningun rubro en la lista.
+		  				// Mensaje que indica que no se ha incluido ningun rubro en la lista.
 		  				$errorRubroSeleccionado = Yii::t('frontend', 'Category not select');
 		  			}
 
 		  			$añoInicio = $searchRamo->getAnoSegunFecha($datos['fecha_inicio']);
-		  			$añoCatalogo = $searchRamo->determinarAnoCatalogoSegunAnoInicio($añoInicio);
-		  			$añoVenceOrdenanza = $searchRamo->getVencimientoOrdenanza($añoCatalogo);
-		  			$dataProvider = $searchRamo->getDataProvider($añoCatalogo, $params);
-		  			$periodo = 1;
-		  			$rangoFecha = $searchRamo->getRangoFechaDeclaracion($añoCatalogo);
+		  			if ( $añoInicio > 0 ) {
+			  			$añoCatalogo = $searchRamo->determinarAnoCatalogoSegunAnoInicio($añoInicio);
+			  			$añoVenceOrdenanza = $searchRamo->getVencimientoOrdenanza($añoCatalogo);
+			  			$dataProvider = $searchRamo->getDataProvider($añoCatalogo, $params);
+			  			$periodo = 1;
+			  			$rangoFecha = $searchRamo->getRangoFechaDeclaracion($añoCatalogo);
 
-		  			$fechaDesde = $rangoFecha['fechaDesde'];
-		  			$fechaHasta = $rangoFecha['fechaHasta'];
+			  			$fechaDesde = $rangoFecha['fechaDesde'];
+			  			$fechaHasta = $rangoFecha['fechaHasta'];
 
-		  			// Rubros seleccionados
-		  			$dataProviderSeleccionado = $searchRamo->getDataProviderAddRubro($arregloRubro);
+			  			// Rubros seleccionados
+			  			$dataProviderSeleccionado = $searchRamo->getDataProviderAddRubro($arregloRubro);
 
-		  			$subCaption = Yii::t('frontend', 'Info of Taxpayer');
-		  			return $this->render('/aaee/autorizar-ramo/_create', [
-					  											'model' => $model,
-					  											'datos' => $datos,
-					  											'subCaption' => $subCaption,
-					  											'añoCatalogo' => $añoCatalogo,
-					  											'añoVenceOrdenanza' => $añoVenceOrdenanza,
-					  											'dataProvider' => $dataProvider,
-					  											'searchModel' => $searchRamo,
-					  											'dataProviderSeleccionado' => $dataProviderSeleccionado,
-					  											'periodo' => $periodo,
-					  											'fechaDesde' => $fechaDesde,
-						        								'fechaHasta' => $fechaHasta,
-						        								'activarBotonCreate' => $activarBotonCreate,
-						        								'errorRubroSeleccionado' => $errorRubroSeleccionado,
+			  			$subCaption = Yii::t('frontend', 'Info of Taxpayer');
+			  			return $this->render('/aaee/autorizar-ramo/_create', [
+						  											'model' => $model,
+						  											'datos' => $datos,
+						  											'subCaption' => $subCaption,
+						  											'añoCatalogo' => $añoCatalogo,
+						  											'añoVenceOrdenanza' => $añoVenceOrdenanza,
+						  											'dataProvider' => $dataProvider,
+						  											'searchModel' => $searchRamo,
+						  											'dataProviderSeleccionado' => $dataProviderSeleccionado,
+						  											'periodo' => $periodo,
+						  											'fechaDesde' => $fechaDesde,
+							        								'fechaHasta' => $fechaHasta,
+							        								'activarBotonCreate' => $activarBotonCreate,
+							        								'errorRubroSeleccionado' => $errorRubroSeleccionado,
 
-					  					]);
+						  					]);
+			  		} else {
+			  			// NO existe año de inicio de actividad economica.
+		  				$this->redirect(['error-operacion', 'cod' => 964]);
+			  		}
 		  		} else {
 		  			// No se encontraron los datos del contribuyente principal.
 		  			$this->redirect(['error-operacion', 'cod' => 938]);
