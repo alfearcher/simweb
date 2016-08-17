@@ -25,7 +25,7 @@
  *
  *  @author Jose Rafael Perez Teran
  *
- *  @date 31-07-2016
+ *  @date 17-08-2016
  *
  *  @view view-solicitud.php
  *
@@ -58,8 +58,8 @@
 		    			'attributes' => [
 		    				'nro_solicitud',
 		    				'id_contribuyente',
-		    				'domicilio_fiscal_v',
-		    				'domicilio_fiscal_new',
+		    				'fecha_inicio_v',
+		    				'fecha_inicio_new',
 		    				'usuario',
 		    				'fecha_hora',
 		    				[
