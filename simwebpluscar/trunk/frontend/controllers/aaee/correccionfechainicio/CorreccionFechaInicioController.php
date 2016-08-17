@@ -627,7 +627,7 @@
     		if ( isset($_SESSION['idContribuyente']) ) {
 	    		if ( $id > 0 ) {
 	    			$modelSearch = New CorreccionFechaInicioSearch($_SESSION['idContribuyente']);
-	    			$findModel = $modelSearch->findSolicitudFechaInicio($id);
+	    			$findModel = $modelSearch->findSolicitudCorreccionFechaInicio($id);
 	    			if ( isset($findModel) ) {
 	    				return self::actionShowSolicitud($findModel, $modelSearch);
 	    			} else {
