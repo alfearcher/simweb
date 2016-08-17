@@ -264,32 +264,37 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
             if ( $conn->guardarRegistro($conexion, $tableName1,  $arrayDatos1) ){  
                 $result = $conexion->getLastInsertID();
-                
-                $estado_catastro = $model->estado_catastro; 
-                $municipio_catastro = $model->municipio_catastro; 
-                $parroquia_catastro = $model->parroquia_catastro; 
-                $ambito_catastro = $model->ambito_catastro; 
-                $sector_catastro = $model->sector_catastro; 
-                $manzana_catastro = $model->manzana_catastro; 
-                $catastro1 = array(['estado' => $estado_catastro, 'municipio'=> $municipio_catastro, 'parroquia'=>$parroquia_catastro, 'ambito'=>$ambito_catastro, 'sector'=>$sector_catastro, 'manzana' =>$manzana_catastro]);
-                $catastro = "".$catastro1[0]['estado']."-".$catastro1[0]['municipio']."-".$catastro1[0]['parroquia']."-".$catastro1[0]['ambito']."-".$catastro1[0]['sector']."-".$catastro1[0]['manzana']."";
+ ;               
+                if ($model->propiedad_horizontal == 0) {
+
+                          $parcela_catastro = $model->parcela_catastro;                                            //Parcela catastro
+                          $subparcela_catastro = 0;                                                                //Sub parcela catastro
+                          $nivel_catastro = 0;                                                                     //Nivel catastro
+                          $unidad_catastro = 0;                                                                    //Unidad catastro     
+                     }else{ 
+
+                          $parcela_catastro = $model->parcela_catastro;                                            //Parcela catastro
+                          $subparcela_catastro = $model->subparcela_catastro;                                      //Sub parcela catastro
+                          $nivel_c1 = $model->nivela;
+                          $nivel_c2 = $model->nivelb;
+                          $nivel_catastro1 = array(['nivela' =>$nivel_c1 , 'nivelb'=>$nivel_c2 ]);                 //Nivel catastro
+                          $nivel_catastro = "".$nivel_catastro1[0]['nivela']."".$nivel_catastro1[0]['nivelb']."";
+                          $unidad_catastro = $model->unidad_catastro;                                              //Unidad catastro  
+                     }  
 
 
                 $arrayDatos2 = [    'id_contribuyente' => $datos->id_contribuyente,
                                     'id_impuesto' => $datos->id_impuesto,
                                     'nro_solicitud' => $result,
-                                    'estado_catastro' => $model->estado_catastro,
-                                    'municipio_catastro' => $model->municipio_catastro,
-                                    'parroquia_catastro' => $model->parroquia_catastro,
-                                    'ambito_catastro' => $model->ambito_catastro,
-                                    'sector_catastro' => $model->sector_catastro,
-                                    'manzana_catastro' => $model->manzana_catastro,
-                                       //catastro
-                                    'catastro' => $catastro,
+                                    'propiedad_horizontal' => $model->propiedad_horizontal,
+                                    'parcela_catastro' => $parcela_catastro,
+                                    'subparcela_catastro' => $subparcela_catastro,
+                                    'nivel_catastro' => $nivel_catastro,
+                                    'unidad_catastro' => $unidad_catastro,
                                     'fecha_creacion' => date('Y-m-d h:i:s'),
                                 ]; 
 
-            
+           
                  $tableName2 = 'sl_inmuebles'; 
 
                 if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){
@@ -304,14 +309,11 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                     } else {
 
                         $arrayDatos3 = [    'id_contribuyente' => $datos->id_contribuyente,
-                                            'estado_catastro' => $model->estado_catastro,
-                                            'municipio_catastro' => $model->municipio_catastro,
-                                            'parroquia_catastro' => $model->parroquia_catastro,
-                                            'ambito_catastro' => $model->ambito_catastro,
-                                            'sector_catastro' => $model->sector_catastro,
-                                            'manzana_catastro' => $model->manzana_catastro,
-                                               //catastro
-                                            'catastro' => $catastro,
+                                            'propiedad_horizontal' => $model->propiedad_horizontal,
+                                            'parcela_catastro' => $parcela_catastro,
+                                            'subparcela_catastro' => $subparcela_catastro,
+                                            'nivel_catastro' => $nivel_catastro,
+                                            'unidad_catastro' => $unidad_catastro,
                                     
                                         ]; 
 

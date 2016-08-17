@@ -206,10 +206,10 @@
         private function aprobarDetalleSolicitud()
         {
             $result = false;
-            $modelNumeroCatastral = self::findActualizacionInmuebleUrbano();
-            if ( $modelNumeroCatastral !== null ) {
-                if ( $modelNumeroCatastral['id_contribuyente'] == $this->_model->id_contribuyente ) {
-                    $result = self::updateSolicitudCambioNumeroCatastral($modelNumeroCatastral);
+            $modelPropiedadHorizontal = self::findActualizacionInmuebleUrbano();
+            if ( $modelPropiedadHorizontal !== null ) {
+                if ( $modelPropiedadHorizontal['id_contribuyente'] == $this->_model->id_contribuyente ) {
+                    $result = self::updateSolicitudCambioPropiedadHorizontal($modelPropiedadHorizontal);
                     // if ( $result ) {
                     //     $result = self::updateContribuyente($modelInscripcion);
                     // }
@@ -233,10 +233,10 @@
         private function negarDetalleSolicitud()
         {
             $result = false;
-            $modelNumeroCatastral = self::findActualizacionInmuebleUrbano();
-            if ( $modelNumeroCatastral !== null ) {
-                if ( $modelNumeroCatastral['id_contribuyente'] == $this->_model->id_contribuyente ) {
-                    $result = self::updateSolicitudCambioNumeroCatastral($modelNumeroCatastral);
+            $modelPropiedadHorizontal = self::findActualizacionInmuebleUrbano();
+            if ( $modelPropiedadHorizontal !== null ) {
+                if ( $modelPropiedadHorizontal['id_contribuyente'] == $this->_model->id_contribuyente ) {
+                    $result = self::updateSolicitudCambioPropiedadHorizontal($modelPropiedadHorizontal);
                 } else {
                     self::setErrors(Yii::t('backend', 'Error in the ID of taxpayer'));
                 }
@@ -256,20 +256,20 @@
          * @return Boolean Retorna un true si todo se ejecuto satisfactoriamente, false
          * en caso contrario.
          */
-        private function updateSolicitudCambioNumeroCatastral($modelNumeroCatastral)
+        private function updateSolicitudCambioPropiedadHorizontal($modelPropiedadHorizontal)
         { 
             $result = false;
             $cancel = false;            // Controla si el proceso se debe cancelar.
 
             // Se crea la instancia del modelo que contiene los campos que seran actualizados.
-            $model = New SlInmueblesUrbanosSearch($modelNumeroCatastral->id_contribuyente);
+            $model = New SlInmueblesUrbanosSearch($modelPropiedadHorizontal->id_contribuyente);
             $tableName = $model->tableName();
 
             // Se obtienen los campos que seran actualizados en la entidad "sl-".
             // Estos atributos ya vienen con sus datos cargados.
             $arregloDatos = self::atributosUpDateProcesarSolicitud($this->_evento);
 
-            $camposModel = $modelNumeroCatastral->toArray();
+            $camposModel = $modelPropiedadHorizontal->toArray();
 
             // Se define el arreglo para el where conditon del update.
             $arregloCondicion['nro_solicitud'] = isset($camposModel['nro_solicitud']) ? $camposModel['nro_solicitud'] : null;
@@ -290,13 +290,12 @@
                     $arregloDatosMaster = [
                                             
                                             'direccion' => $camposModel['direccion'],
-                                            'estado_catastro' => $camposModel['estado_catastro'],
-                                            'municipio_catastro' => $camposModel['municipio_catastro'],
-                                            'parroquia_catastro' => $camposModel['parroquia_catastro'],
-                                            'ambito_catastro' => $camposModel['ambito_catastro'],
-                                            'sector_catastro' => $camposModel['sector_catastro'],
-                                            'manzana_catastro' => $camposModel['manzana_catastro'],
-                                            'catastro' => $camposModel['catastro'],
+                                            'propiedad_horizontal' => $camposModel['propiedad_horizontal'],
+                                            'parcela_catastro' => $camposModel['parcela_catastro'],
+                                            'subparcela_catastro' => $camposModel['subparcela_catastro'],
+                                            'nivel_catastro' => $camposModel['nivel_catastro'],
+                                            'unidad_catastro' => $camposModel['sector_catastro'],
+                                            
 
                                          ]; 
                     $arregloCondicionMaster = [

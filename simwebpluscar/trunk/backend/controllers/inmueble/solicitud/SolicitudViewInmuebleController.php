@@ -348,7 +348,7 @@
 
 					
 
-					return $this->render('@backend/views/inmueble/cambio-propiedad-horizontal-inmuebles-urbanos/view-solicitud', [
+					return $this->render('@backend/views/inmueble/cambio-a-propiedad-horizontal-inmuebles-urbanos/view-solicitud', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
 													'model' => $model,
 

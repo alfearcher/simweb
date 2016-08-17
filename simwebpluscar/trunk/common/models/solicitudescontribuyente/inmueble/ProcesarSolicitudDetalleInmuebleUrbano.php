@@ -52,6 +52,8 @@
     use Yii;
     use common\models\solicitudescontribuyente\inmueble\ProcesarInscripcionInmuebleUrbano;
     use common\models\solicitudescontribuyente\inmueble\ProcesarActualizacionDatosInmuebleUrbano;
+    use common\models\solicitudescontribuyente\inmueble\ProcesarCambioNumeroCatastralInmuebleUrbano;
+    use common\models\solicitudescontribuyente\inmueble\ProcesarCambioPropiedadHorizontalInmuebleUrbano;
 
 
  
@@ -148,6 +150,11 @@
 
                 } elseif ( $this->_model->tipo_solicitud == 29 ) {
                     //Cambio Propiedad Horizontal
+                    $procesar = New ProcesarCambioPropiedadHorizontalInmuebleUrbano($this->_model,
+                                                                          $this->_evento,
+                                                                          $this->_conn,
+                                                                          $this->_conexion);
+                    $result = $procesar->procesarSolicitud();
 
                 } elseif ( $this->_model->tipo_solicitud == 30 ) {
                     //cambio otros datos

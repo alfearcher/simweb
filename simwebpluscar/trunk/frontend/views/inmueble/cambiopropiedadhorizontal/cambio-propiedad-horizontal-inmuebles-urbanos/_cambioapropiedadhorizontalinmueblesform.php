@@ -109,7 +109,18 @@ function bloquea() {
                                                                     ])->label(false);
                             ?>
                     
-                        </div>   
+                        </div>  
+
+                        <div class="col-sm-2"> 
+                            <?= $form->field($model, 'propiedad_horizontal')->checkbox(['id'=> 'propiedadhorizontal', 
+                                                                                         'style' => 'width:50px;',
+                                                                                         'onclick'=>'bloquea()',
+                                                                                         //'onchange' =>'bloquea()',
+                                                                                         
+                                                                                     ]); 
+
+                                               ?>
+                            </div> 
                     </div>
                                                     
 <!-- Direccion de Catastro  -->         
@@ -173,7 +184,7 @@ function bloquea() {
 <!-- Tipo de Domicilios del catastro --> 
                    <div class="row">
                        
-                            <div class="col-am-1"> 
+                            <div class="col-sm-1"> 
                             <?= Yii::t('backend', 'Plot') ?>
                             </div> 
                         
@@ -193,7 +204,7 @@ function bloquea() {
                             <?= Yii::t('backend', 'Level') ?> <!--</legend> -->
                             </div>
                         
-                            <div class="col-sm-2" id="levelc" style="display:none">
+                            <div class="col-sm-1" id="levelc" style="display:none">
                             <?php
                              $modelParametros = ParametrosNivelesCatastro::find()->asArray()->all();                                         
                              $listaParametros = ArrayHelper::map($modelParametros,'codigo','descripcion'); 
@@ -211,7 +222,7 @@ function bloquea() {
                                                                                                           ?>
                             </div>
                         
-                            <div class="col-sm-3" id="levelc2" style="display:none">
+                            <div class="col-sm-1" id="levelc2" style="display:none">
                             <?= $form->field($model, 'nivelb')->dropDownList(['prompt' => Yii::t('backend', 'Select'),
                                                                                         '00'=>'00','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09',
                                                                                         '10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19',
@@ -246,8 +257,8 @@ function bloquea() {
                             <?= Yii::t('backend', 'Observation') ?>
                             </div>
                         
-                            <div class="col-sm-4">
-                            <?= $form->field($model, 'observacion')->textarea(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?>
+                            <div class="col-sm-6">
+                            <?= $form->field($model, 'observacion')->textarea(['maxlength' => true,'style' => 'width:600px;'])->label(false) ?>
                             </div> 
                                                                                       
                            
@@ -291,61 +302,4 @@ function bloquea() {
 
 
 
-</div><!-- inscripcionInmueblesUrbanos -->
-
-<!-- 
-<tr>
-                        <td><div class="col-lg-5">
-                            
-                            </div>                                                                          
-                        </td>
-                   </tr>
-                   <tr>
-                        <td><div class="col-lg-5">
-                            <? // = $form->field($model, 'lote_1') ?>
-                            </div>                                                                          
-                        </td>
-                   </tr>
-                   <tr>
-                        <td><div class="col-lg-5">
-                            <? // = $form->field($model, 'lote_2') ?>
-                            </div>                                                                          
-                        </td>
-                   </tr>
-                   <tr>
-                        <td><div class="col-lg-5">
-                        <? // = $form->field($model, 'lote_3') ?>
-                        </div>                                                                          
-                        </td>
-                   </tr>  <? // = $form->field($model, 'estado_catastro')->label(false) ?>
-                   <? // = $form->field($model, 'municipio_catastro')->label(false) ?>
-
-
-select E.estado,M.municipio,P.parroquia,A.ambito,S.codigo_ambito,A.descripcion,S.sector,MZ.manzana from estados As E " & _
-             "inner join municipios as M on E.estado=M.estado " & _
-             "inner join parroquias as P on M.estado=P.estado and M.municipio=P.municipio " & _
-             "inner join sectores as S on P.estado=S.estado and P.municipio=S.municipio and P.parroquia=S.parroquia " & _
-             "inner join ambitos as A on S.ambito=A.ambito " & _
-             "inner join urbanizaciones as U on S.id_cp=U.id_cp " & _
-             "inner join manzanas as MZ on U.id_cp=MZ.id_cp and U.urbanizacion=MZ.urbanizacion " & _
-             "inner join manzana_limites as ML on MZ.id_manzana=ML.id_manzana " & _
-             "where ML.manzana_limite=" & Str(nIdManzanaLimite) 
-
-<div class="form-group">
-        <? //= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>
-
-<script>
-function cambio(val) {
-   
-  // alert(''.val);
-     $("#ver").val($("#tipo_propaganda").val());
-       
-    }
-</script>
-
- 'onchange' =>    'cambio()'
-
-  <div class="col-lg-1">
-                            <? //= $form->field($model, 'nivel_catastro')->textInput([])->label(false) ?>
-                            </div>
+</div>
