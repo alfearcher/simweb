@@ -413,6 +413,8 @@
 					$tabla = '';
 	      			$tabla = $model->tableName();
 
+	      			$model->fecha_inicio = date('Y-m-d', strtotime($model->fecha_inicio));
+
 	      			// $model->attributes es array {
 	      			// 							[attribute] => valor
 	      			// 						}
@@ -424,6 +426,8 @@
 
 					$model->estatus = $estatus;
 					$model->user_funcionario = $userFuncionario;
+
+die(var_dump($model));
 
 					$result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
 				}
