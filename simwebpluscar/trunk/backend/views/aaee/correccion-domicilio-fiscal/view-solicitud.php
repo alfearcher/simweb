@@ -25,7 +25,7 @@
  *
  *  @author Jose Rafael Perez Teran
  *
- *  @date 31-07-2016
+ *  @date 17-08-2016
  *
  *  @view view-solicitud.php
  *
