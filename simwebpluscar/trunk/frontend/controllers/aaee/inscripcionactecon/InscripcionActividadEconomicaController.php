@@ -323,6 +323,7 @@
 
 			$model->origen = 'WEB';
 			$model->fecha = date('Y-m-d', strtotime($model->fecha));
+			$model->fecha_inicio = date('Y-m-d', strtotime($model->fecha_inicio));
 			$model->estatus = $estatus;
 			$model->fecha_hora = date('Y-m-d H:i:s');
 			$model->usuario = Yii::$app->user->identity->login;
