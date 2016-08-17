@@ -296,8 +296,7 @@
                                             'nivel_catastro' => $camposModel['nivel_catastro'],
                                             'unidad_catastro' => $camposModel['sector_catastro'],
                                             
-
-                                         ]; 
+                                          ]; 
                     $arregloCondicionMaster = [
                                                 'id_impuesto' => $camposModel['id_impuesto'],
                                               ]; 
