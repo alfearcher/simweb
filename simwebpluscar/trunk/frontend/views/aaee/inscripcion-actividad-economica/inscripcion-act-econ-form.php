@@ -117,17 +117,26 @@
 						<div class="col-sm-3" style="padding-right: 15px;">
 							<div class="row" style="width:100%;">
 								<p style="margin-left: 0px;margin-top: 0px;margin-bottom: 0px;">
-									<strong><?=Yii::t('frontend', $model->getAttributeLabel('nro_solicitud')) ?></strong>
+									<strong><?=Yii::t('frontend', $model->getAttributeLabel('fecha_inicio')) ?></strong>
 								</p>
 							</div>
 							<div class="row">
-									<div class="nro-solicitud" style="margin-left: 0px;">
-										<?= $form->field($model, 'nro_solicitud')->textInput([
-																						'id' => 'nro-solicitud',
-																						'style' => 'width:100%;background-color: white;',
-																						'readonly' => true,
-																						'value' => 0,
-																				 	])->label(false) ?>
+									<div class="fecha-inicio" style="margin-left: 0px;">
+										<?= $form->field($model, 'fecha_inicio')->widget(\yii\jui\DatePicker::classname(),[
+																						  'clientOptions' => [
+																								'maxDate' => '+0d',	// Bloquear los dias en el calendario a partir del dia siguiente al actual.
+																								'changeYear' => true,
+																							],
+																						  'language' => 'es-ES',
+																						  'dateFormat' => 'dd-MM-yyyy',
+																						  'options' => [
+																						  		'id' => 'fecha-inicio',
+																								'class' => 'form-control',
+																								'readonly' => true,
+																								'style' => 'background-color: white;width:55%;',
+
+																							]
+																							])->label(false) ?>
 									</div>
 							</div>
 						</div>
@@ -195,7 +204,7 @@
 																						  		'id' => 'fecha',
 																								'class' => 'form-control',
 																								'readonly' => true,
-																								'style' => 'background-color: white;width:45%;',
+																								'style' => 'background-color: white;width:55%;',
 
 																							]
 																							])->label(false) ?>
@@ -277,7 +286,7 @@
 								<div class="num-empleados" style="margin-left: 0px;">
 									<?= $form->field($model, 'num_empleados')->textInput([
 																						'id' => 'num-empleados',
-																						'style' => 'width:45%;',
+																						'style' => 'width:55%;',
 																						'readonly' => $bloquear,
 																			 			])->label(false) ?>
 								</div>

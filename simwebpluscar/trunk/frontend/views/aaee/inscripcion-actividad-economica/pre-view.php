@@ -64,7 +64,9 @@
                     'num_empleados',
                     'naturaleza_rep',
                     'cedula_rep',
-                    'representante'
+                    'representante',
+                    'fecha_inicio'
+
                 ],
             ]) ?>
         </div>
