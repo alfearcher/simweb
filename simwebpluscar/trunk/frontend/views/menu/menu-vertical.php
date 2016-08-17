@@ -78,6 +78,7 @@
 		        					   				['label' => 'Desincorporacion de Ramo', 'url' => '#'],
 		        					   				['label' => 'Corrección de RIF', 'url' => ['/aaee/correccioncedularif/correccion-cedula-rif/index', 'id' => 87]],
 		        					   				['label' => 'Corrección de Razón Social', 'url' => ['/aaee/correccionrazonsocial/correccion-razon-social/index', 'id' => 95]],
+		        					   				['label' => 'Corrección de la Fecha Inicio de Actividad', 'url' => ['/aaee/correccionfechainicio/correccion-fecha-inicio/index', 'id' => 98]],
 		        					   				['label' => 'Cambio de Domicilio Fiscal', 'url' => ['/aaee/correcciondomicilio/correccion-domicilio-fiscal/index', 'id' => 86]],
 		        					   				['label' => 'Cambio de Representante Legal', 'url' => ['/aaee/correccionreplegal/correccion-representante-legal/index', 'id' => 56]],
 		        					   				['label' => 'Aumento de Capital', 'url' => ['/aaee/correccioncapital/correccion-capital/index', 'id' => 66]],
