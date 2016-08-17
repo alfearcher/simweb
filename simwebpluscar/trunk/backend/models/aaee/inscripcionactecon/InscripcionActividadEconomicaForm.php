@@ -64,6 +64,7 @@
 		public $naturaleza_rep;
 		public $cedula_rep;
 		public $representante;
+		public $fecha_inicio;
 		public $origen;
 		public $estatus;
 		public $fecha_hora;
@@ -95,6 +96,7 @@
         					'naturaleza_rep',
         					'cedula_rep',
         					'representante',
+        					'fecha_inicio',
         		],
         		self::SCENARIO_BACKEND => [
         					'id_contribuyente',
@@ -108,6 +110,7 @@
         					'naturaleza_rep',
         					'cedula_rep',
         					'representante',
+        					'fecha_inicio',
         		]
         	];
     	}
@@ -122,7 +125,8 @@
 	        return [
 	        	[['reg_mercantil', 'tomo', 'folio', 'fecha',
 	        	  'num_reg', 'capital', 'num_empleados',
-	        	  'naturaleza_rep', 'cedula_rep', 'representante'],
+	        	  'naturaleza_rep', 'cedula_rep', 'representante',
+	        	  'fecha_inicio',],
 	        	  'required',
 	        	  'message' => Yii::t('backend', '{attribute} is required')],
 	        	[['id_contribuyente', 'num_reg',
@@ -132,6 +136,9 @@
 	        	[['reg_mercantil', 'tomo', 'folio', 'naturaleza_rep',
 	        	  'representante'],
 	        	  'string'],
+	        	// [['fecha_inicio'],
+	        	//   'date',
+	        	//   'message' => Yii::t('frontend','formatted date no valid')],
 	          	['fecha_hora', 'default', 'value' => date('Y-m-d H:i:s')],
 	          	['num_reg', 'unique'],
 	          	['capital', 'default', 'value' => 0],
@@ -162,15 +169,16 @@
 	            'id_contribuyente' => Yii::t('backend', 'Id. Taxpayer'),
 	            'nro_solicitud' => Yii::t('backend', 'Number Request'),
 	            'reg_mercantil' => Yii::t('backend', 'Commercial Register'),
-	            'num_reg' => Yii::t('backend', 'Number Registration'),
-	            'fecha' => Yii::t('backend', 'Date'),
+	            'num_reg' => Yii::t('backend', 'Number Register'),
+	            'fecha' => Yii::t('backend', 'Date Register'),
 	            'tomo' => Yii::t('backend', 'Volume Number'),
 	            'folio' => Yii::t('backend', 'Folio'),
 	            'capital' => Yii::t('backend', 'Capital'),
 	            'num_empleados' => Yii::t('backend', 'Number of Employees'),
 	            'naturaleza_rep' => Yii::t('backend', 'Natural'),
 	            'cedula_rep' => Yii::t('backend', 'DNI'),
-	            'representante'  => Yii::t('backend', 'Legal Representative'),
+	            'representante' => Yii::t('backend', 'Legal Representative'),
+	            'fecha_inicio' => Yii::t('backend', 'Start Date of Activity'),
 
 	        ];
 	    }
@@ -194,7 +202,8 @@
 	    		'num_empleados',
 	    		'naturaleza_rep',
 	    		'cedula_rep',
-	    		'representante'
+	    		'representante',
+	    		'fecha_inicio',
 	    	];
 	    }
 
