@@ -70,6 +70,7 @@
 		    					'value' => $model->naturaleza_rep . '-' . $model->cedula_rep,
 		    				],
 		    				'representante',
+		    				'fecha_inicio',
 		    				'origen',
 		    				'fecha_hora',
 		    				[
