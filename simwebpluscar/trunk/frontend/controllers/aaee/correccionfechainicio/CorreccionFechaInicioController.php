@@ -413,7 +413,7 @@
 					$tabla = '';
 	      			$tabla = $model->tableName();
 
-	      			$model->fecha_inicio = date('Y-m-d', strtotime($model->fecha_inicio));
+	      			$model->fecha_inicio_new = date('Y-m-d', strtotime($model->fecha_inicio_new);
 
 	      			// $model->attributes es array {
 	      			// 							[attribute] => valor
