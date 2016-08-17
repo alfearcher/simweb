@@ -48,7 +48,6 @@
 	use yii\helpers\ArrayHelper;
 	use yii\widgets\ActiveForm;
 	use yii\web\View;
-	use yii\jui\DatePicker;
 	use yii\widgets\DetailView;
 	// use backend\controllers\utilidad\documento\DocumentoRequisitoController;
 
@@ -76,12 +75,12 @@
 	<meta http-equiv="refresh">
     <div class="panel panel-primary"  style="width: 100%;">
         <div class="panel-heading">
-        	<h3><?= Html::encode(Yii::t('frontend', 'Confirm Create. Update of Address Office')) ?></h3>
+        	<h3><?= Html::encode(Yii::t('frontend', 'Confirm Create. Update of Start Date Activity')) ?></h3>
         </div>
 
 	<?= $form->field($model, 'id_contribuyente')->hiddenInput(['value' => $_SESSION['idContribuyente']])->label(false); ?>
-	<?= $form->field($model, 'domicilio_fiscal_v')->hiddenInput(['value' => $model['domicilio_fiscal_v']])->label(false); ?>
-	<?= $form->field($model, 'domicilio_fiscal_new')->hiddenInput(['value' => $model['domicilio_fiscal_new']])->label(false); ?>
+	<?= $form->field($model, 'fecha_inicio_v')->hiddenInput(['value' => $model['fecha_inicio_v']])->label(false); ?>
+	<?= $form->field($model, 'fecha_inicio_new')->hiddenInput(['value' => $model['fecha_inicio_new']])->label(false); ?>
 	<?= $form->field($model, 'usuario')->hiddenInput(['value' => $model->usuario])->label(false); ?>
 	<?= $form->field($model, 'fecha_hora')->hiddenInput(['value' => $model->fecha_hora])->label(false); ?>
 	<?= $form->field($model, 'origen')->hiddenInput(['value' => $model->origen])->label(false); ?>
@@ -115,12 +114,12 @@
 							    					'value' => $datosRecibido['razon_social'],
 							    				],
 							    				[
-							    					'label' => $model->getAttributeLabel('domicilio_fiscal_v'),
-							    					'value' => $model['domicilio_fiscal_v'],
+							    					'label' => $model->getAttributeLabel('fecha_inicio_v'),
+							    					'value' => $model['fecha_inicio_v'],
 							    				],
 							    				[
-							    					'label' => $model->getAttributeLabel('domicilio_fiscal_new'),
-							    					'value' => $model['domicilio_fiscal_new'],
+							    					'label' => $model->getAttributeLabel('fecha_inicio_new'),
+							    					'value' => $model['fecha_inicio_new'],
 							    				],
 							    			],
 										])
