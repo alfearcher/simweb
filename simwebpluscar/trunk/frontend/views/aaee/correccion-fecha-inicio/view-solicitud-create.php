@@ -104,10 +104,12 @@
 							    				// 	'value' => $model->razon_social,
 							    				// ],
 							    				[
+							    					'format'=>['date', 'dd-MM-yyyy'],
 							    					'label' => $model->getAttributeLabel('fecha_inicio_v'),
 							    					'value' => $model->fecha_inicio_v,
 							    				],
 							    				[
+							    					'format'=>['date', 'dd-MM-yyyy'],
 							    					'label' => $model->getAttributeLabel('fecha_inicio_new'),
 							    					'value' => $model->fecha_inicio_new,
 							    				],
