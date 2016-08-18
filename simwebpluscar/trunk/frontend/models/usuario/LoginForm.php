@@ -142,7 +142,7 @@ class LoginForm extends Model
         if ($this->validate()) {
            
             //die(var_dump($this->getUser()));
-            return Yii::$app->user->login($this->getUser(),  10*1*1);
+            return Yii::$app->user->login($this->getUser(),  10*10*10);
             //3600*24*30 : 0
         } else {
             return false;

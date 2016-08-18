@@ -92,6 +92,11 @@ public $serial_motor;
                'peso', 'nro_cilindros', 'precio_inicial', 'capacidad',  'medida_cap',
               'serial_carroceria', 'serial_motor'],'required'],
 
+              [['placa', 'marca', 'modelo', 'ano_compra' ,'ano_vehiculo', 'clase_vehiculo', 'tipo_vehiculo',
+               'uso_vehiculo', 'color', 'no_ejes', 'nro_puestos', 'fecha_inicio', 
+               'peso', 'nro_cilindros', 'precio_inicial', 'capacidad',  'medida_cap',
+              'serial_carroceria', 'serial_motor'], 'default', 'value' => 0],
+
               ['ano_vehiculo', 'validarAno'],
              
             ['placa', 'buscarPlaca'],
