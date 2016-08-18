@@ -145,8 +145,9 @@
 	            'fecha_inicio_new' => Yii::t('frontend', 'New Start Date Activity'),
 	            'estatus' => Yii::t('frontend', 'Condition'),
 	            'fecha_hora' => Yii::t('frontend', 'Date/Hour'),
-	            'razon_social' => Yii::t('frontend', 'Companies'),
+	            'razon_social' => Yii::t('frontend', 'Company'),
 	            'dni' => Yii::t('frontend', 'DNI'),
+	            'domicilio_fiscal' => Yii::t('frontend', 'Address Office'),
 
 	        ];
 	    }
