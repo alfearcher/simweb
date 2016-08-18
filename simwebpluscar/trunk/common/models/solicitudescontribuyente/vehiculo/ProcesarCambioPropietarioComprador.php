@@ -22,13 +22,13 @@
  */
 
  /**
- *  @file ProcesarInscripcionVehiculo.php
+ *  @file ProcesarCambioPropietarioComprador.php
  *
  *  @author Manuel Alejandro Zapata Canelon
  *
- *  @date 05/08/2016
+ *  @date 17/08/2016
  *
- *  @class ProcesarInscripcionVehiculo
+ *  @class ProcesarCambioPropietarioComprador
  *  @brief
  *
  *
@@ -55,6 +55,8 @@
     use common\models\contribuyente\ContribuyenteBase;
     use frontend\models\vehiculo\solicitudes\SlVehiculos;
     use frontend\models\vehiculo\solicitudes\SlVehiculosForm; 
+    use frontend\models\vehiculo\solicitudes\SlCambioPropietarioVehiculo;
+  
 
 
     /**
@@ -62,7 +64,7 @@
      * que esten relacionada con la aprobacion o negacion de la solicitud. la clase debe
      * entregar como respuesta un true o false.
      */
-    class ProcesarInscripcionVehiculo extends SlVehiculos
+    class ProcesarCambioPropietarioComprador extends SlCambioPropietarioVehiculo
     {
 
         private $_model;
@@ -107,7 +109,7 @@
             $this->_evento = $evento;
             $this->_conn = $conn;
             $this->_conexion = $conexion;
-           // parent::__construct($model['id_contribuyente']);
+           //parent::__construct($model['id_contribuyente']);
 
         }
 
@@ -144,9 +146,10 @@
          */
         public function procesarSolicitud()
         {
-           // die('llegue a procesar');
+           
             $result = false;
             if ( $this->_evento == Yii::$app->solicitud->aprobar() ) {
+               // die('llego a aprobar');
                 $result = self::aprobarDetalleSolicitud();
 
             } elseif ( $this->_evento == Yii::$app->solicitud->negar() ) {
@@ -160,19 +163,20 @@
 
         /**
          * Metodo que permite obtener un modelo de los datos de la solicitud,
-         * sobre la entidad "sl-", referente al detalle de la solicitud. Es la
+         * sobre la entidad "sl-cambios-propietario", referente al detalle de la solicitud. Es la
          * entidad donde se guardan los detalle de esta solicitud.
          * @return Boolean Retorna un true si todo se ejecuto satisfactoriamente, false
          * en caso contrario.
          */
-        public function findInscripcionVehiculo()
+        public function findCambioPropietarioVehiculoComprador()
         {
-            // Este find retorna el modelo de la entidad "sl-vehiculos"
+           // die('llegue al find cambio propietario');
+            // Este find retorna el modelo de la entidad "sl-cambios-propietarios"
             // con datos, ya que en el metodo padre se ejecuta el ->one() que realiza
             // la consulta.
-            $SlVehiculos = New SlVehiculosForm($this->_model->id_contribuyente);
+            $SlCambiosPropietariosComprador = New SlVehiculosForm($this->_model->id_contribuyente);
 
-            $modelFind = $SlVehiculos->findInscripcion($this->_model->nro_solicitud);
+            $modelFind = $SlCambiosPropietariosComprador->findSolicitudCambioPropietarioComprador($this->_model->nro_solicitud);
             return isset($modelFind) ? $modelFind : null;
         }
 
@@ -192,12 +196,12 @@
                 Yii::$app->solicitud->aprobar() => [
                                     'estatus' => 1,
                                     'user_funcionario' => isset(Yii::$app->user->identity->username) ? Yii::$app->user->identity->username : Yii::$app->user->identity->login,
-                                    'fecha_funcionario' => date('Y-m-d H:i:s')
+                                    'fecha_hora_proceso' => date('Y-m-d H:i:s')
                 ],
                 Yii::$app->solicitud->negar() => [
                                     'estatus' => 9,
                                     'user_funcionario' => isset(Yii::$app->user->identity->username) ? Yii::$app->user->identity->username : Yii::$app->user->identity->login,
-                                    'fecha_funcionario' => date('Y-m-d H:i:s')
+                                    'fecha_hora_proceso' => date('Y-m-d H:i:s')
                 ],
             ];
     
@@ -215,12 +219,12 @@
         {
            // die('llego a aprobar');
             $result = false;
-            $modelInscripcion = self::findInscripcionVehiculo();
+            $modelCambioPropietario = self::findCambioPropietarioVehiculoComprador();
             //die(var_dump($modelInscripcion));
-            if ( $modelInscripcion !== null ) {
-                if ( $modelInscripcion['id_contribuyente'] == $this->_model->id_contribuyente ) {
+            if ( $modelCambioPropietario !== null ) {
+                if ( $modelCambioPropietario['id_comprador'] == $this->_model->id_contribuyente ) {
                     //die('comparo');
-                    $result = self::updateSolicitudInscripcion($modelInscripcion);
+                    $result = self::updateSolicitudCambioPropietarioComprador($modelCambioPropietario);
                     // if ( $result ) {
                     //     $result = self::updateContribuyente($modelInscripcion);
                     // }
@@ -244,10 +248,10 @@
         private function negarDetalleSolicitud()
         {
             $result = false;
-            $modelInscripcion = self::findInscripcionVehiculo();
-            if ( $modelInscripcion !== null ) {
-                if ( $modelInscripcion['id_contribuyente'] == $this->_model->id_contribuyente ) {
-                    $result = self::updateSolicitudInscripcion($modelInscripcion);
+            $modelCambioPropietario = self::findCambioPropietarioVehiculoComprador();
+            if ( $modelCambioPropietario !== null ) {
+                if ( $modelCambioPropietario['id_comprador'] == $this->_model->id_contribuyente ) {
+                    $result = self::updateSolicitudCambioPropietarioComprador($modelCambioPropietario);
                 } else {
                     self::setErrors(Yii::t('backend', 'Error in the ID of taxpayer'));
                 }
@@ -261,20 +265,20 @@
         /**
          * Metodo que realiza la actualizacin de los atributos segun el evento a ejecutar
          * sobre la solicitud.
-         * @param  Active Record $modelInscripcion modelo de la entidad "sl-vehiculos".
+         * @param  Active Record $modelInscripcion modelo de la entidad "sl-cambios-propietarios".
          * Este modelo contiene los datos-detalles, referida a los datos cargados al momento de elaborar
          * la solicitud.
          * @return Boolean Retorna un true si todo se ejecuto satisfactoriamente, false
          * en caso contrario.
          */
-        private function updateSolicitudInscripcion($modelInscripcion)
+        private function updateSolicitudCambioPropietarioComprador($modelCambioPropietario)
         { 
            // die('llego a solicitud inscripcion');
             $result = false;
             $cancel = false;            // Controla si el proceso se debe cancelar.
 
             // Se crea la instancia del modelo que contiene los campos que seran actualizados.
-            $model = New SlVehiculos();
+            $model = New SlCambioPropietarioVehiculo();
             $tableName = $model->tableName();
             //die(var_dump($tableName));
             // Se obtienen los campos que seran actualizados en la entidad "sl-".
@@ -283,7 +287,7 @@
             $arregloDatos = self::atributosUpDateProcesarSolicitud($this->_evento);
             //die(var_dump($arregloDatos));
 
-            $camposModel = $modelInscripcion->toArray();
+            $camposModel = $modelCambioPropietario->toArray();
 
             // Se define el arreglo para el where conditon del update.
             $arregloCondicion['nro_solicitud'] = isset($camposModel['nro_solicitud']) ? $camposModel['nro_solicitud'] : null;
@@ -302,37 +306,21 @@
                     $tableNameMaster = 'vehiculos';
 
                     $arregloDatosMaster = [
-                                            'id_contribuyente' => $camposModel['id_contribuyente'],
-                                            'placa' => $camposModel['placa'],
-                                            'marca' => $camposModel['marca'],
-                                            'modelo' => $camposModel['modelo'],
-                                            'color' => $camposModel['color'], 
-                                            'precio_inicial' => $camposModel['precio_inicial'], 
-                                            'fecha_inicio' => $camposModel['fecha_inicio'], 
-                                            'ano_compra' => $camposModel['ano_compra'], 
-                                            'ano_vehiculo' => $camposModel['ano_vehiculo'],
-                                            'no_ejes' => $camposModel['no_ejes'],
-                                            'liquidado' => $camposModel['liquidado'],
-                                            'exceso_cap' => $camposModel['exceso_cap'],
-                                            //die($camposModel['liquidado']),
-                                            'medida_cap' => $camposModel['medida_cap'],
-                                            'capacidad' => $camposModel['capacidad'],
-                                            'nro_puestos' => $camposModel['nro_puestos'],
-                                            'peso' => $camposModel['peso'],
-                                            'clase_vehiculo' => $camposModel['clase_vehiculo'],
-                                            'tipo_vehiculo' => $camposModel['tipo_vehiculo'],
-                                            'serial_motor' => $camposModel['serial_motor'],
-                                            'serial_carroceria' => $camposModel['serial_carroceria'],
-                                            'nro_cilindros' => $camposModel['nro_cilindros'],
-
+                                            'id_contribuyente' => $camposModel['id_comprador'],
                                             
 
+                                           
 
-                                         ];
+                                            ];
 
-                                        // die(var_dump($arregloDatosMaster));
+                    $arregloCondicionMaster = [
 
-                    $resultInsert = $this->_conexion->guardarRegistro($this->_conn, $tableNameMaster, $arregloDatosMaster);
+
+                                                'id_vehiculo' => $camposModel['id_impuesto']
+                                                ];
+
+                    $resultInsert = $this->_conexion->modificarRegistro($this->_conn, $tableNameMaster, $arregloDatosMaster, 
+                        $arregloCondicionMaster);
 
                     $result = $this->_conexion->modificarRegistro($this->_conn, $tableName,
                                                               $arregloDatos, $arregloCondicion);
