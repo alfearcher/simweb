@@ -192,7 +192,7 @@ class DesincorporacionVehiculoController extends Controller
                   foreach($datosVehiculo as $key => $value) {
                      
                      $value['id_vehiculo'];
-                     die($value['id_vehiculo']);
+                    //die($value['id_vehiculo']);
                      $verificarSolicitud = self::verificarSolicitud($value['id_vehiculo'] , $_SESSION['id']);
                       if($verificarSolicitud == true){
                         //die(var_dump($value['id_vehiculo']));

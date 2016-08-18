@@ -270,6 +270,7 @@ class RegistrarVehiculoController extends Controller
 
 
       $arregloDatos['exceso_cap'] = $model->exceso_cap;
+      //die(var_dump($arregloDatos['exceso_cap']));
 
       $arregloDatos['medida_cap'] = $model->medida_cap;
 
