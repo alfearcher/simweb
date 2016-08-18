@@ -58,6 +58,7 @@
     use common\models\solicitudescontribuyente\aaee\ProcesarCorreccionRepresentanteLegal;
     use common\models\solicitudescontribuyente\aaee\ProcesarCorreccionRazonSocial;
     use common\models\solicitudescontribuyente\aaee\ProcesarAutorizarRamo;
+    use common\models\solicitudescontribuyente\aaee\ProcesarCorreccionFechaInicio;
 
 
     /**
