@@ -58,8 +58,14 @@
 		    			'attributes' => [
 		    				'nro_solicitud',
 		    				'id_contribuyente',
-		    				'fecha_inicio_v',
-		    				'fecha_inicio_new',
+		    				[
+		    					'format'=>['date', 'dd-MM-yyyy'],
+		    					'attribute' => 'fecha_inicio_v',
+		    				],
+		    				[
+		    					'format'=>['date', 'dd-MM-yyyy'],
+		    					'attribute' => 'fecha_inicio_new',
+		    				],
 		    				'usuario',
 		    				'fecha_hora',
 		    				[
