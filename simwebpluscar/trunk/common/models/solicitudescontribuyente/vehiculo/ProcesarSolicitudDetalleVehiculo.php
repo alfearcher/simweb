@@ -141,13 +141,44 @@
                     $result = $procesar->procesarSolicitud();
 
 
-                } elseif ( $this->_model->tipo_solicitud == 23 ) {
+                } elseif ( $this->_model->tipo_solicitud == 36 ) {
 
-                } elseif ( $this->_model->tipo_solicitud == 24 ) {
+                    $procesar = New ProcesarCambioPlaca($this->_model,
+                                                                  $this->_evento,
+                                                                  $this->_conn,
+                                                                  $this->_conexion);
 
-                } elseif ( $this->_model->tipo_solicitud == 25 ) {
+                    $result = $procesar->procesarSolicitud();
 
-                } elseif ( $this->_model->tipo_solicitud == 26 ) {
+
+                } elseif ( $this->_model->tipo_solicitud == 37 ) {
+
+                    $procesar = New ProcesarDesincorporacionVehiculo($this->_model,
+                                                                  $this->_evento,
+                                                                  $this->_conn,
+                                                                  $this->_conexion);
+
+                    $result = $procesar->procesarSolicitud();
+
+                } elseif ( $this->_model->tipo_solicitud == 38 ) {
+
+                    $procesar = New ProcesarCambioDatosVehiculo($this->_model,
+                                                                  $this->_evento,
+                                                                  $this->_conn,
+                                                                  $this->_conexion);
+
+                    $result = $procesar->procesarSolicitud();
+
+                } elseif ( $this->_model->tipo_solicitud == 68 ) {
+
+                     $procesar = New ProcesarCambioCalcomaniaExtravio($this->_model,
+                                                                  $this->_evento,
+                                                                  $this->_conn,
+                                                                  $this->_conexion);
+
+                    $result = $procesar->procesarSolicitud();
+
+
 
                 } elseif ( $this->_model->tipo_solicitud == 27 ) {
 

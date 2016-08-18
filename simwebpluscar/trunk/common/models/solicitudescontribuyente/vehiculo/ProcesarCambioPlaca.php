@@ -22,13 +22,13 @@
  */
 
  /**
- *  @file ProcesarCambioPropietarioComprador.php
+ *  @file ProcesarCambioPlaca.php
  *
  *  @author Manuel Alejandro Zapata Canelon
  *
- *  @date 09/08/2016
+ *  @date 18/08/2016
  *
- *  @class ProcesarCambioPropietarioComprador
+ *  @class ProcesarCambioPlaca
  *  @brief
  *
  *
@@ -56,6 +56,7 @@
     use frontend\models\vehiculo\solicitudes\SlVehiculos;
     use frontend\models\vehiculo\solicitudes\SlVehiculosForm; 
     use frontend\models\vehiculo\solicitudes\SlCambioPropietarioVehiculo;
+    use frontend\models\vehiculo\solicitudes\SlCambioPlaca;
   
 
 
@@ -64,7 +65,7 @@
      * que esten relacionada con la aprobacion o negacion de la solicitud. la clase debe
      * entregar como respuesta un true o false.
      */
-    class ProcesarCambioPropietarioComprador extends SlCambioPropietarioVehiculo
+    class ProcesarCambioPlaca extends SlCambioPlaca
     {
 
         private $_model;
@@ -167,15 +168,15 @@
          * @return Boolean Retorna un true si todo se ejecuto satisfactoriamente, false
          * en caso contrario.
          */
-        public function findCambioPropietarioVehiculoComprador()
+        public function findCambioPlaca()
         {
            // die('llegue al find cambio propietario');
             // Este find retorna el modelo de la entidad "sl-cambios-propietarios"
             // con datos, ya que en el metodo padre se ejecuta el ->one() que realiza
             // la consulta.
-            $SlCambiosPropietarioComprador = New SlVehiculosForm($this->_model->id_contribuyente);
+            $SlCambioPlaca = New SlVehiculosForm($this->_model->id_contribuyente);
 
-            $modelFind = $SlCambiosPropietarioComprador->findSolicitudCambioPropietarioComprador($this->_model->nro_solicitud);
+            $modelFind = $SlCambioPlaca->findSolicitudCambioPlaca($this->_model->nro_solicitud);
             return isset($modelFind) ? $modelFind : null;
         }
 
@@ -218,12 +219,12 @@
         {
            // die('llego a aprobar');
             $result = false;
-            $modelCambioPropietarioComprador = self::findCambioPropietarioVehiculoComprador();
+            $modelCambioPlaca = self::findCambioPlaca();
             //die(var_dump($modelInscripcion));
-            if ( $modelCambioPropietarioComprador !== null ) {
-                if ( $modelCambioPropietarioComprador['id_comprador'] == $this->_model->id_contribuyente ) {
+            if ( $modelCambioPlaca !== null ) {
+                if ( $modelCambioPlaca['id_contribuyente'] == $this->_model->id_contribuyente ) {
                     //die('comparo');
-                    $result = self::updateSolicitudCambioPropietarioComprador($modelCambioPropietarioComprador);
+                    $result = self::updateSolicitudCambioPlaca($modelCambioPlaca);
                     // if ( $result ) {
                     //     $result = self::updateContribuyente($modelInscripcion);
                     // }
@@ -247,10 +248,10 @@
         private function negarDetalleSolicitud()
         {
             $result = false;
-            $modelCambioPropietarioComprador = self::findCambioPropietarioVehiculoComprador();
-            if ( $modelCambioPropietarioComprador !== null ) {
-                if ( $modelCambioPropietarioComprador['id_comprador'] == $this->_model->id_contribuyente ) {
-                    $result = self::updateSolicitudCambioPropietarioVendedor($modelCambioPropietarioComprador);
+            $modelCambioPlaca = self::findCambioPlaca();
+            if ( $modelCambioPlaca !== null ) {
+                if ( $modelCambioPlaca['id_contribuyente'] == $this->_model->id_contribuyente ) {
+                    $result = self::updateSolicitudCambioPlaca($modelCambioPlaca);
                 } else {
                     self::setErrors(Yii::t('backend', 'Error in the ID of taxpayer'));
                 }
@@ -264,20 +265,20 @@
         /**
          * Metodo que realiza la actualizacin de los atributos segun el evento a ejecutar
          * sobre la solicitud.
-         * @param  Active Record $modelInscripcion modelo de la entidad "sl-cambios-propietarios".
+         * @param  Active Record $modelInscripcion modelo de la entidad "sl-cambio-placa".
          * Este modelo contiene los datos-detalles, referida a los datos cargados al momento de elaborar
          * la solicitud.
          * @return Boolean Retorna un true si todo se ejecuto satisfactoriamente, false
          * en caso contrario.
          */
-        private function updateSolicitudCambioPropietarioComprador($modelCambioPropietarioComprador)
+        private function updateSolicitudCambioPlaca($modelCambioPlaca)
         { 
            // die('llego a solicitud inscripcion');
             $result = false;
             $cancel = false;            // Controla si el proceso se debe cancelar.
 
             // Se crea la instancia del modelo que contiene los campos que seran actualizados.
-            $model = New SlCambioPropietarioVehiculo();
+            $model = New SlCambioPlaca();
             $tableName = $model->tableName();
             //die(var_dump($tableName));
             // Se obtienen los campos que seran actualizados en la entidad "sl-".
@@ -286,7 +287,7 @@
             $arregloDatos = self::atributosUpDateProcesarSolicitud($this->_evento);
             //die(var_dump($arregloDatos));
 
-            $camposModel = $modelCambioPropietarioComprador->toArray();
+            $camposModel = $modelCambioPlaca->toArray();
 
             // Se define el arreglo para el where conditon del update.
             $arregloCondicion['nro_solicitud'] = isset($camposModel['nro_solicitud']) ? $camposModel['nro_solicitud'] : null;
@@ -305,7 +306,8 @@
                     $tableNameMaster = 'vehiculos';
 
                     $arregloDatosMaster = [
-                                            'id_contribuyente' => $camposModel['id_comprador'],
+
+                                            'placa' => $camposModel['placa_nueva'],
                                             
 
                                         
@@ -316,7 +318,7 @@
                 $arregloCondicionMaster = [
 
 
-                                            'id_vehiculo' => $camposModel['id_impuesto']
+                                            'id_vehiculo' => $camposModel['id_vehiculo'],
                                             
                                           ];
 
