@@ -288,7 +288,7 @@
                     $tableNameMaster = 'inmuebles';
 
                     $arregloDatosMaster = [
-                                            
+                                            'nombre'=>$nombre,
                                             'direccion' => $camposModel['direccion'],
                                             'propiedad_horizontal' => $camposModel['propiedad_horizontal'],
                                             'parcela_catastro' => $camposModel['parcela_catastro'],
@@ -296,7 +296,7 @@
                                             'nivel_catastro' => $camposModel['nivel_catastro'],
                                             'unidad_catastro' => $camposModel['sector_catastro'],
                                             
-                                          ]; 
+                                          ];  
                     $arregloCondicionMaster = [
                                                 'id_impuesto' => $camposModel['id_impuesto'],
                                               ]; 
