@@ -174,7 +174,6 @@ $this->title = Yii::t('frontend', 'Advertising Catalogue');
 
 
 
-
                                     
             //  ],
            // 'id_contribuyente',
