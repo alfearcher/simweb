@@ -170,14 +170,20 @@
 
 
                 } elseif ( $this->_model->tipo_solicitud == 70 ) {
-                     $procesar = New ProcesarAutorizarRamo($this->_model,
-                                                           $this->_evento,
-                                                           $this->_conn,
-                                                           $this->_conexion);
+                    $procesar = New ProcesarAutorizarRamo($this->_model,
+                                                          $this->_evento,
+                                                          $this->_conn,
+                                                          $this->_conexion);
+                    $result = $procesar->procesarSolicitud();
+
+                } elseif ( $this->_model->tipo_solicitud == 71 ) {
+                    $procesar = New ProcesarCorreccionFechaInicio($this->_model,
+                                                                  $this->_evento,
+                                                                  $this->_conn,
+                                                                  $this->_conexion);
                     $result = $procesar->procesarSolicitud();
 
                 } elseif ( $this->_model->tipo_solicitud == 'c' ) {
-
                 }
             }
             return $result;
