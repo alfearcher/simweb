@@ -104,7 +104,7 @@
 							    					'value' => $datos['razon_social'],
 							    				],
 							    				[
-							    					'label' => $model->getAttributeLabel('domicilio_fiscal_v'),
+							    					'label' => $model->getAttributeLabel('domicilio_fiscal'),
 							    					'value' => $datos['domicilio_fiscal'],
 							    				],
 							    				[
