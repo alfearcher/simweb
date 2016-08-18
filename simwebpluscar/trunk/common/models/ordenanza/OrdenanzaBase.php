@@ -599,7 +599,9 @@
 			$añoDesde = 0;
 			$añoInicio = 0;
 			$añoActual = date('Y');
-			$a = $añoActual - 7;		// el 7 debe ser un valor parametrizable.
+
+			//Yii::$app->lapso->anoLimiteNotificado();
+			$a = $añoActual - 7		// el 7 debe ser un valor parametrizable.
 			if ( is_integer($añoImpositivo) ) {
 				$añoInicio = $añoImpositivo;
 				if ( $añoInicio > 0 ) {
