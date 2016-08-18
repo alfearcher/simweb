@@ -71,5 +71,8 @@ return [
 		'solicitud' => [
 			'class' => 'common\classes\EventoSolicitud'
 		],
+		'lapso' => [
+			'class' => 'common\classes\ControlLapso'
+		],
 	],
 ];
