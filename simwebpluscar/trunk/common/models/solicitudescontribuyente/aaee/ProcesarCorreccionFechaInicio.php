@@ -50,8 +50,8 @@
     namespace common\models\solicitudescontribuyente\aaee;
 
     use Yii;
-    use backend\models\aaee\correcciondomicilio\CorreccionFechaInicioSearch;
-    use backend\models\aaee\correcciondomicilio\CorreccionFechaInicioForm;
+    use backend\models\aaee\correccionfechainicio\CorreccionFechaInicioSearch;
+    use backend\models\aaee\correccionfechainicio\CorreccionFechaInicioForm;
     use common\models\contribuyente\ContribuyenteBase;
 
 
