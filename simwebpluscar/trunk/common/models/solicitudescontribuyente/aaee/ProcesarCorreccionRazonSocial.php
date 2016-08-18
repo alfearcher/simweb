@@ -279,7 +279,7 @@
             foreach ( $modelCorreccion as $key => $value ) {
                 $arregloCondicion = ['id_contribuyente' => $modelCorreccion[$key]->id_contribuyente];
                 $arregloDatos = [
-                    'capital' => $modelCorreccion[$key]->capital_new,
+                    'razon_social' => $modelCorreccion[$key]->razon_social_new,
                 ];
 
                 $result = $this->_conexion->modificarRegistro($this->_conn, $tabla, $arregloDatos, $arregloCondicion);
