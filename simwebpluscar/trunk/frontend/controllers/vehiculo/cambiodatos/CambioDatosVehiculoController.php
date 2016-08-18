@@ -216,7 +216,7 @@ class CambioDatosVehiculoController extends Controller
                                         ->where([ 
                                           'id_impuesto' => $idVehiculo,
                                           'id_config_solicitud' => $idConfig,
-                                          'inactivo' => 0,
+                                          'estatus' => 0,
                                         ])
                                       ->all();
 
@@ -331,7 +331,7 @@ class CambioDatosVehiculoController extends Controller
 
       $arregloDatos['liquidado'] = 0;
 
-      $arregloDatos['status_vehiculo'] = 0;
+      $arregloDatos['estatus'] = 0;
 
       $arregloDatos['medida_cap'] = $model->medida_cap;
 

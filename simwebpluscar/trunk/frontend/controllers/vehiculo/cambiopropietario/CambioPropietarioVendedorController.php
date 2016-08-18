@@ -292,7 +292,7 @@ class CambioPropietarioVendedorController extends Controller
                                         ->where([ 
                                           'id_impuesto' => $idVehiculo,
                                           'id_config_solicitud' => $idConfig,
-                                          'inactivo' => 0,
+                                          'estatus' => 0,
                                         ])
                                       ->all();
 
