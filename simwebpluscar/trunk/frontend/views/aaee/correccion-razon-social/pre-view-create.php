@@ -42,13 +42,12 @@
 	use yii\widgets\ActiveForm;
 	use yii\web\View;
 	//use yii\widgets\Pjax;
-	//use backend\controllers\utilidad\documento\DocumentoRequisitoController;
 	//use common\models\contribuyente\ContribuyenteBase;
 	use yii\widgets\DetailView;
 
 ?>
 
-<div class="correccion-capital-form">
+<div class="correccion-razon-social-form">
  	<?php
 
  		$form = ActiveForm::begin([
