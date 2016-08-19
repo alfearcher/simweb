@@ -148,11 +148,11 @@
 					// a considerara.
 
 					$result = self::buscarAnoOrdenanzaMenoresAnoImpositivo($anoImpositivo, $impuesto);
-					if ( $result != false ) {
+					if ( $result !== false ) {
 						$anoOrdenanza = $result['ano_impositivo'];
 					} else {
 						$result = self::buscarAnoOrdenanzaMayoresAnoImpositivo($anoImpositivo, $impuesto);
-						if ( $result != false ) {
+						if ( $result !== false ) {
 							$anoOrdenanza = $result['ano_impositivo'];
 						}
 					}
@@ -238,6 +238,38 @@
 
 
 
+		/***/
+		private static function getBuscarAnoOrdenanzaDesdeAnoImpositivo($impuesto, $añoImpositivo)
+		{
+			$query = New Query();
+
+			if ( $añoImpositivo > 0 ) {
+				$row = $query->select('ordenanzas.id_ordenanza, ordenanzas.ano_impositivo, ordenanzas_detalles.impuesto')
+							 ->from('ordenanzas')
+						     ->join('INNER JOIN', 'ordenanzas_detalles', 'ordenanzas.id_ordenanza = ordenanzas_detalles.id_ordenanza')
+						     ->where('ordenanzas.ano_impositivo >= :ano_impositivo', [':ano_impositivo' => $añoImpositivo])
+						     ->andWhere('ordenanzas_detalles.impuesto = :impuesto', [':impuesto' => $impuesto])
+						     ->andWhere('ordenanzas.status_ordenanza = :status_ordenanza', [':status_ordenanza' => 0])
+						     ->andWhere('ordenanzas_detalles.status_detalle=:status_detalle', [':status_detalle' => 0])
+						     ->orderBy('ano_impositivo ASC')
+						     ->all();
+			} else {
+				$row = $query->select('ordenanzas.id_ordenanza, ordenanzas.ano_impositivo, ordenanzas_detalles.impuesto')
+							 ->from('ordenanzas')
+						     ->join('INNER JOIN', 'ordenanzas_detalles', 'ordenanzas.id_ordenanza = ordenanzas_detalles.id_ordenanza')
+						     ->where('ordenanzas_detalles.impuesto = :impuesto', [':impuesto' => $impuesto])
+						     ->andWhere('ordenanzas.status_ordenanza = :status_ordenanza', [':status_ordenanza' => 0])
+						     ->andWhere('ordenanzas_detalles.status_detalle=:status_detalle', [':status_detalle' => 0])
+						     ->orderBy('ano_impositivo ASC')
+						     ->all();
+
+			}
+
+			return $row;
+
+		}
+
+
 
 
 		/**
@@ -302,12 +334,12 @@
 							     ->orderBy('ano_impositivo ASC')
 							     ->one();
 
-					if ( $row != false ) {
+					if ( $row !== false ) {
 						$anoVencimiento = $row['ano_impositivo'] - 1;
 					} else {
 						// Indica que no existen otras ordenanza vigentes despues de esta.
 						// Se puede tomar como vigencia el año actual.
-						$anoVencimiento = date('Y');	// retorna el año actual.
+						$anoVencimiento = (int)date('Y');	// retorna el año actual.
 					}
 				}
 			}
@@ -601,7 +633,7 @@
 			$añoActual = date('Y');
 
 			//Yii::$app->lapso->anoLimiteNotificado();
-			$a = $añoActual - 7		// el 7 debe ser un valor parametrizable.
+			$a = Yii::$app->lapso->anoLimiteNotificado();	// Año actual - el 7 debe ser un valor parametrizable.
 			if ( is_integer($añoImpositivo) ) {
 				$añoInicio = $añoImpositivo;
 				if ( $añoInicio > 0 ) {
@@ -621,6 +653,50 @@
 			return $añoDesde;
 		}
 
+
+
+		/***/
+		public function getRangoAnoOrdenanzaSegunImpuesto($impuesto, $añoInicioActividad = 0)
+		{
+			$rango = [];
+			if ( $añoInicioActividad > 0 ) {
+				// Lo siguiente corresponde al primer año del rango.
+				// Recibe un entero, 9999.
+				$añoOrdenanzaInicial = self::getAnoOrdenanzaSegunAnoImpositivoImpuesto($añoInicioActividad, $impuesto);
+
+				// Años ordenanza existentes desde año ordenanza inicial.
+				// Si el año ordenanza inicial corresponde a la ordenanza
+				// actual entonces el arreglo sera vacio.
+				// -------------------------------------------------------
+				// recibe un arreglo con:
+				// El identificador de la ordenanza.
+				// El Año impositivo  (año de la ordenanza).
+				// El identificador del impuesto.
+				$config = self::getBuscarAnoOrdenanzaDesdeAnoImpositivo($impuesto, $añoOrdenanzaInicial);
+
+				if ( count($config) ) {
+					foreach ( $config as $conf ) {
+						$rango[$conf['ano_impositivo']] = self::getAnoVencimientoOrdenanzaSegunAnoImpositivo($conf['ano_impositivo'], $impuesto);
+					}
+				}
+			} else {
+				// Años ordenanza existentes desde la ordenanza inicial.
+				// -------------------------------------------------------
+				// recibe un arreglo con:
+				// El identificador de la ordenanza.
+				// El Año impositivo (año de la ordenanza).
+				// El identificador del impuesto.
+				$config = self::getBuscarAnoOrdenanzaDesdeAnoImpositivo($impuesto, $añoInicioActividad);
+
+				if ( count($config) ) {
+					foreach ( $config as $conf ) {
+						$rango[$conf['ano_impositivo']] = self::getAnoVencimientoOrdenanzaSegunAnoImpositivo($conf['ano_impositivo'], $impuesto);
+					}
+				}
+			}
+
+			return $rango;
+		}
 
 
 
