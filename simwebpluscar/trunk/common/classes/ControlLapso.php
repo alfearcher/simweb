@@ -62,8 +62,15 @@
  	 */
  	class ControlLapso
  	{
-	 	const AÑO_LIMITE_NOTIFICADO = 6;
-	 	const AÑO_LIMITE_SIN_NOTIFICAR = 4;
+ 		/**
+ 		 * Contribuyente que han sido notificado.
+ 		 */
+	 	const LAPSO_LIMITE_NOTIFICADO = 7;
+
+	 	/**
+ 		 * Contribuyente que no han sido notificado de su deuda.
+ 		 */
+	 	const LAPSO_LIMITE_SIN_NOTIFICAR = 4;
 
 
 
@@ -73,14 +80,14 @@
 	 	 */
 	 	public function anoLimiteNotificado()
 	 	{
-	 		return self::AÑO_LIMITE_NOTIFICADO;
+	 		return date('Y') - self::LAPSO_LIMITE_NOTIFICADO;
 	 	}
 
 
 	 	/***/
 	 	public function anoLimiteSinNotificar()
 	 	{
-	 		return self::AÑO_LIMITE_SIN_NOTIFICAR;
+	 		return date('Y') - self::LAPSO_LIMITE_SIN_NOTIFICAR;
 	 	}
 
 	 }
