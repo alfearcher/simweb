@@ -286,6 +286,25 @@
 
 
 
+	    /**
+	     * Metodo que determina si existe registro en la entidad "act-econ" validos
+	     * para un rango de fecha especifico.
+	     * @param  integer $añoDesde año inicial de la consulta.
+	     * @param  integer $añoHasta año final de la consulta.
+	     * @return boolean retorna true si existe registro, en caso contrario false.
+	     */
+	    public function existeDeclaracionParaRangoOrdenanza($añoDesde, $añoHasta)
+	    {
+	    	$findModel = ActEcon::find()->where('id_contribuyente =:id_contribuyente',
+		    	 										[':id_contribuyente' => $this->_id_contribuyente])
+		    								->andWhere('IN', 'ano_impositivo',[$añoDesde, $añoHasta])
+		    								->andWhere('estatus =:estatus', [':estatus' => 0])
+		    								->count();
+		    return ( $findModel > 0 ) ? true : false;
+	    }
+
+
+
 
 	    /**
 	     * [determinarPrimerAnoCatalogoRubro description]
@@ -465,6 +484,54 @@
 	    		}
 	    	}
 	    	return $listaIdRubro;
+	    }
+
+
+
+	    /**
+	     * Metodo que determina que rango de ordenanza estan sin registros en
+	     * la entidad "act-econ", segun el año de inicio de actividades y de
+	     * considerar si el mismo esta notificado de su deuda (por defecto se
+	     * asume que si), se realiza una busqueda de todas las ordenanzas y se
+	     * filtra en aquellas que ya existan registros en la entidad "act-econ".
+	     * Se considera el limite para tomar como rango declarable, utilizando
+	     * el parametro $añoLimite.
+	     * @param  integer  $añoInicioActividad año en que inicio la actividad
+	     * economica. Valor que de determina con la fecha inicio del contribuyente.
+	     * @param  boolean $notificado indica si al contribuyente se le ha notificado
+	     * su deuda. Se asume por defecto true.
+	     * @return array retorna un arreglo si encuentra ordenanzas por declarar,
+	     * este arreglo contiene en su indice el año de creacion de la ordenanza y
+	     * el valor del elemento el año de vencimiento de la ordenanza.
+	     */
+	    public function getRangoOrdenanza($añoInicioActividad, $notificado = true)
+	    {
+	    	$rangoOrdenanza = [];
+	    	if ( $notificado ) {
+	    		$añoLimite = Yii::$app->lapso->anoLimiteNotificado();
+	    	} else {
+	    		$añoLimite = Yii::$app->lapso->anoLimiteSinNotificar();
+	    	}
+	    	if ( $añoInicioActividad < $añoLimite ) {
+	    		$añoInicial = $añoLimite;
+	    	} else {
+	    		$añoInicial = $añoInicioActividad;
+	    	}
+
+	    	// Se recibe un array donde el indice del arreglo es al año de creacion de la
+	    	// ordenanza y el valor del elemento es el año de vencimiento de la ordenanza
+	    	// esquema:
+	    	// arreglo[indice] => elemento
+	    	$rango = OrdenanzaBase::getRangoAnoOrdenanzaSegunImpuesto(1, $añoInicial);
+
+	    	if ( count($rango) ) {
+	    		foreach ( $rango as $key => $value ) {
+	    			if ( !self::existeDeclaracionParaRangoOrdenanza($key, $value) ) {
+	    				$rangoOrdenanza[$key] = $value;
+	    			}
+	    		}
+	    	}
+	    	return $rangoOrdenanza;
 	    }
 
 	}
