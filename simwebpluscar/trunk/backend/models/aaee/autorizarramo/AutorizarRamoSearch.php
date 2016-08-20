@@ -103,13 +103,14 @@
 		 * @return boolean retorna true si ya posee una solicitud con las caracteristicas
 		 * descriptas, caso contrario retornara false.
 		 */
-		public function yaPoseeSolicitudSimiliarPendiente()
+		public function yaPoseeSolicitudSimiliarPendiente($añoDesde, $añoHasta)
 		{
 			$modelFind = null;
 			$modelFind = AutorizarRamo::find()->where('id_contribuyente =:id_contribuyente',
 			 													[':id_contribuyente' => $this->_id_contribuyente])
-												    ->andWhere(['IN', 'estatus', [0]])
-													->count();
+											  ->andWhere(['BETWEEN', 'ano_impositivo', $añoDesde, $añoHasta])
+											  ->andWhere(['IN', 'estatus', [0]])
+											  ->count();
 			return ( $modelFind > 0 ) ? true : false;
 		}
 
@@ -509,6 +510,45 @@
 	    public function getRangoOrdenanza($añoInicioActividad, $notificado = true)
 	    {
 	    	$rangoOrdenanza = [];
+	    	$añoInicial = self:: getAnoLimiteSegunAnoInicio($añoInicioActividad, $notificado = true);
+
+	    	if ( $añoInicial > 0 ) {
+		    	// Se recibe un array donde el indice del arreglo es al año de creacion de la
+		    	// ordenanza y el valor del elemento es el año de vencimiento de la ordenanza
+		    	// esquema:
+		    	// arreglo[indice] => elemento
+		    	$rango = OrdenanzaBase::getRangoAnoOrdenanzaSegunImpuesto(1, $añoInicial);
+
+		    	if ( count($rango) ) {
+		    		foreach ( $rango as $key => $value ) {
+		    			if ( !self::existeDeclaracionParaRangoOrdenanza($key, $value) ) {
+		    				$rangoOrdenanza[$key] = $value;
+		    			}
+		    		}
+		    	}
+		    }
+
+	    	return $rangoOrdenanza;
+	    }
+
+
+
+
+	    /**
+	     * Metodo que determina el año de limite de actividades que se puede tomar
+	     * en cuenta para los proceso de declaracion y calculo, segun el año de inicio
+	     * de actividades del contribuyente y los lapso que se deban de considerar, si
+	     * el mismo esta notificado o no.
+	     * @param  integer  $añoInicioActividad año en que inicio la actividad
+	     * economica. Valor que de determina con la fecha inicio del contribuyente.
+	     * @param  boolean $notificado indica si al contribuyente se le ha notificado
+	     * su deuda. Se asume por defecto true.
+	     * @return integer retorna año limite de inicio de actividades para iniciar los
+	     * procesos relacionados a las declaraciones y claculos.
+	     */
+	    public function getAnoLimiteSegunAnoInicio($añoInicioActividad, $notificado = true)
+	    {
+	    	$añoInicial = 0;
 	    	if ( $notificado ) {
 	    		$añoLimite = Yii::$app->lapso->anoLimiteNotificado();
 	    	} else {
@@ -519,22 +559,7 @@
 	    	} else {
 	    		$añoInicial = $añoInicioActividad;
 	    	}
-
-	    	// Se recibe un array donde el indice del arreglo es al año de creacion de la
-	    	// ordenanza y el valor del elemento es el año de vencimiento de la ordenanza
-	    	// esquema:
-	    	// arreglo[indice] => elemento
-	    	$rango = OrdenanzaBase::getRangoAnoOrdenanzaSegunImpuesto(1, $añoInicial);
-
-	    	if ( count($rango) ) {
-	    		foreach ( $rango as $key => $value ) {
-	    			if ( !self::existeDeclaracionParaRangoOrdenanza($key, $value) ) {
-	    				$rangoOrdenanza[$key] = $value;
-	    			}
-	    		}
-	    	}
-
-	    	return $rangoOrdenanza;
+	    	return $añoInicial;
 	    }
 
 
