@@ -21,14 +21,14 @@
  */
 
  /**
- *	@file CorreccionCapitalController.php
+ *	@file AutorizarRamoController.php
  *
  *	@author Jose Rafael Perez Teran
  *
  *	@date 30-07-2016
  *
- *  @class CorreccionCapitalController
- *	@brief Clase CorreccionCapitalController del lado del contribuyente frontend.
+ *  @class AutorizarRamoController
+ *	@brief Clase AutorizarRamoController del lado del contribuyente frontend.
  *
  *
  *	@property
@@ -104,7 +104,7 @@
 		{
 			// Se verifica que el contribuyente haya iniciado una session.
 
-			self::actionAnularSession(['begin', 'conf', 'arrayIdRubros']);
+			self::actionAnularSession(['begin']);
 			$request = Yii::$app->request;
 			$getData = $request->get();
 
@@ -112,11 +112,60 @@
 			$id = $getData['id'];
 			if ( $id == self::CONFIG ) {
 				if ( isset($_SESSION['idContribuyente']) ) {
+					if ( $_SESSION['idContribuyente'] == $request->post('id_contribuyente') ) {
+						if ( $request->post('anoOrdenanza') !== null ) {
+							return $this->redirect(['check', 'id' => $id]);
+						}
+					} else {
+						$idContribuyente = $_SESSION['idContribuyente'];
+						$searchRamo = New AutorizarRamoSearch($idContribuyente);
+						$datos = $searchRamo->getDatosContribuyente();
+
+						$añoInicio = $searchRamo->getAnoSegunFecha($datos['fecha_inicio']);
+
+						if ( $añoInicio > 0 ) {
+							$caption = Yii::t('frontend', 'List of Ordenanzas');
+							$rangoOrdenanza = $searchRamo->getRangoOrdenanza($añoInicio);
+
+							$dataProvider = $searchRamo->getArrayDataProviderOrdenanza($rangoOrdenanza);
+							return $this->render('/aaee/listar-ordenanza/_list', [
+														'caption' => $caption,
+														'dataProvider' => $dataProvider,
+														'idConfig' => $id,
+								]);
+						} else {
+							// No esta definido la fecha de inicio de actividades.
+
+						}
+					}
+				}
+			}
+		}
+
+
+
+		/**
+		 * Metodo que mostrara el formulario de cargar inicial de la solicitud, para
+		 * que el contribuyente ingrese la informacion soliictada.
+		 * @return [type] [description]
+		 */
+		public function actionCheck($id)
+		{
+			// Se verifica que el contribuyente haya iniciado una session.
+
+			self::actionAnularSession(['begin', 'conf', 'arrayIdRubros']);
+			// $request = Yii::$app->request;
+			// $getData = $request->get();
+
+			// identificador de la configuracion de la solicitud.
+			// $id = $getData['id'];
+			if ( $id == self::CONFIG ) {
+				if ( isset($_SESSION['idContribuyente']) ) {
 					$idContribuyente = $_SESSION['idContribuyente'];
 					$searchRamo = New AutorizarRamoSearch($idContribuyente);
 
 					// Se verifica que el contribuyente sea la sede principal.
-					if ( $searchRamo->getSedePrincipal() ) {
+					//if ( $searchRamo->getSedePrincipal() ) {
 
 						// Se determina si ya existe una solicitud pendiente.
 						if ( !$searchRamo->yaPoseeSolicitudSimiliarPendiente() ) {
@@ -153,10 +202,10 @@
 							return $this->redirect(['error-operacion', 'cod' => 945]);
 						}
 
-					} else {
-						// El contribuyente no es la sede principal
-						return $this->redirect(['error-operacion', 'cod' => 934]);
-					}
+					// } else {
+					// 	// El contribuyente no es la sede principal
+					// 	return $this->redirect(['error-operacion', 'cod' => 934]);
+					// }
 				} else {
 					// No esta defino el contribuyente.
 					return $this->redirect(['error-operacion', 'cod' => 932]);
