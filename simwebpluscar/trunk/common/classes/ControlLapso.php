@@ -65,7 +65,7 @@
  		/**
  		 * Contribuyente que han sido notificado.
  		 */
-	 	const LAPSO_LIMITE_NOTIFICADO = 7;
+	 	const LAPSO_LIMITE_NOTIFICADO = 6;
 
 	 	/**
  		 * Contribuyente que no han sido notificado de su deuda.
