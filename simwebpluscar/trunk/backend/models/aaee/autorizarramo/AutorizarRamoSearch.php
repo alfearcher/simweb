@@ -46,6 +46,7 @@
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 	use yii\data\ActiveDataProvider;
+	use yii\data\ArrayDataProvider;
 	use common\models\aaee\Sucursal;
 	use backend\models\aaee\autorizarramo\AutorizarRamo;
 	use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomicaSearch;
@@ -297,9 +298,10 @@
 	    {
 	    	$findModel = ActEcon::find()->where('id_contribuyente =:id_contribuyente',
 		    	 										[':id_contribuyente' => $this->_id_contribuyente])
-		    								->andWhere('IN', 'ano_impositivo',[$añoDesde, $añoHasta])
+		    								->andWhere(['BETWEEN', 'ano_impositivo',$añoDesde, $añoHasta])
 		    								->andWhere('estatus =:estatus', [':estatus' => 0])
 		    								->count();
+
 		    return ( $findModel > 0 ) ? true : false;
 	    }
 
@@ -531,8 +533,43 @@
 	    			}
 	    		}
 	    	}
+
 	    	return $rangoOrdenanza;
 	    }
+
+
+
+	    /***/
+	    public function getArrayDataProviderOrdenanza($rangoOrdenanza = [])
+	    {
+	    	$provider = null;
+	    	$rango = [];
+
+	    	if ( count($rangoOrdenanza) == 0 ) {
+	    		$rangoOrdenanza = self::getRangoOrdenanza($añoInicioActividad, $notificado);
+	    	}
+
+	    	foreach ( $rangoOrdenanza as $key => $value ) {
+    			$rango[$key] = [
+    				'desde' => $key,
+    				'hasta' => $value,
+    			];
+    		}
+
+	    	if ( count($rango) > 0 ) {
+				$provider = New ArrayDataProvider([
+							'allModels' => $rango,
+							'pagination' => [
+								'pageSize' => 10,
+							],
+							'sort' => [
+								'attributes' => ['desde', 'hasta'],
+							],
+					]);
+    		}
+	    	return $provider;
+	    }
+
 
 	}
  ?>
