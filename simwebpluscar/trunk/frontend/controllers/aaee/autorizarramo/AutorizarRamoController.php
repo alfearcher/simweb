@@ -104,9 +104,16 @@
 		{
 			// Se verifica que el contribuyente haya iniciado una session.
 
-			self::actionAnularSession(['begin']);
+			self::actionAnularSession(['begin', 'anoOrdenanza', 'configOrdenanza']);
 			$request = Yii::$app->request;
 			$getData = $request->get();
+
+			$postData = $request->post();
+			if ( isset($postData['btn-quit']) ) {
+				if ( $postData['btn-quit'] == 1 ) {
+					$this->redirect(['quit']);
+				}
+			}
 
 			// identificador de la configuracion de la solicitud.
 			$id = $getData['id'];
@@ -114,6 +121,7 @@
 				if ( isset($_SESSION['idContribuyente']) ) {
 					if ( $_SESSION['idContribuyente'] == $request->post('id_contribuyente') ) {
 						if ( $request->post('anoOrdenanza') !== null ) {
+							$_SESSION['añoOrdenanza'] = $request->post('anoOrdenanza');
 							return $this->redirect(['check', 'id' => $id]);
 						}
 					} else {
@@ -125,6 +133,8 @@
 
 						if ( $añoInicio > 0 ) {
 							$caption = Yii::t('frontend', 'List of Ordenanzas');
+							// Se determina el rango de ordenanza donde puede realizar solicitud de
+							// autorizacion de ramos.
 							$rangoOrdenanza = $searchRamo->getRangoOrdenanza($añoInicio);
 
 							$dataProvider = $searchRamo->getArrayDataProviderOrdenanza($rangoOrdenanza);
@@ -153,7 +163,7 @@
 		{
 			// Se verifica que el contribuyente haya iniciado una session.
 
-			self::actionAnularSession(['begin', 'conf', 'arrayIdRubros']);
+			self::actionAnularSession(['begin', 'conf', 'arrayIdRubros', 'configOrdenanza']);
 			// $request = Yii::$app->request;
 			// $getData = $request->get();
 
@@ -163,16 +173,25 @@
 				if ( isset($_SESSION['idContribuyente']) ) {
 					$idContribuyente = $_SESSION['idContribuyente'];
 					$searchRamo = New AutorizarRamoSearch($idContribuyente);
+					$añoOrdenanza = isset($_SESSION['añoOrdenanza']) ? $_SESSION['añoOrdenanza'] : 0;
 
-					// Se verifica que el contribuyente sea la sede principal.
-					//if ( $searchRamo->getSedePrincipal() ) {
+					if ( $añoOrdenanza > 0 ) {
+						$añoVenceOrdenanza = $searchRamo->getVencimientoOrdenanza($añoOrdenanza);
+						$_SESSION['añoVenceOrdenanza'] = $añoVenceOrdenanza;
+
+						$configOrdenanza = [
+								'añoOrdenanza' => $añoOrdenanza,
+								'añoVenceOrdenanza' => $añoVenceOrdenanza,
+						];
+
+						$_SESSION['configOrdenanza'] = $configOrdenanza;
 
 						// Se determina si ya existe una solicitud pendiente.
-						if ( !$searchRamo->yaPoseeSolicitudSimiliarPendiente() ) {
+						if ( !$searchRamo->yaPoseeSolicitudSimiliarPendiente($añoOrdenanza, $añoVenceOrdenanza) ) {
 
 							// Se determina si el contribuyente posee registros en las entidades
 							// relacionadas a la declaracion.
-							if ( !$searchRamo->tieneRecordActEcon() ) {
+							if ( !$searchRamo->existeDeclaracionParaRangoOrdenanza($añoOrdenanza, $añoVenceOrdenanza) ) {
 
 								$modelParametro = New ParametroSolicitud($id);
 								// Se obtiene el tipo de solicitud. Se retorna un array donde el key es el nombre
@@ -202,10 +221,10 @@
 							return $this->redirect(['error-operacion', 'cod' => 945]);
 						}
 
-					// } else {
-					// 	// El contribuyente no es la sede principal
-					// 	return $this->redirect(['error-operacion', 'cod' => 934]);
-					// }
+					} else {
+						// El año de la ordenanza no esta definido.
+						return $this->redirect(['error-operacion', 'cod' => 404]);
+					}
 				} else {
 					// No esta defino el contribuyente.
 					return $this->redirect(['error-operacion', 'cod' => 932]);
@@ -348,37 +367,54 @@
 		  				$errorRubroSeleccionado = Yii::t('frontend', 'Category not select');
 		  			}
 
+		  			$añoInicial = 0;
 		  			$añoInicio = $searchRamo->getAnoSegunFecha($datos['fecha_inicio']);
 		  			if ( $añoInicio > 0 ) {
-			  			$añoCatalogo = $searchRamo->determinarAnoCatalogoSegunAnoInicio($añoInicio);
-			  			$añoVenceOrdenanza = $searchRamo->getVencimientoOrdenanza($añoCatalogo);
-			  			$dataProvider = $searchRamo->getDataProvider($añoCatalogo, $params);
-			  			$periodo = 1;
-			  			$rangoFecha = $searchRamo->getRangoFechaDeclaracion($añoCatalogo);
+		  				$configOrdenanza = isset($_SESSION['configOrdenanza']) ? $_SESSION['configOrdenanza'] : [];
+		  				if ( count($configOrdenanza) > 0 ) {
 
-			  			$fechaDesde = $rangoFecha['fechaDesde'];
-			  			$fechaHasta = $rangoFecha['fechaHasta'];
+		  					$añoInicial = $searchRamo->getAnoLimiteSegunAnoInicio($añoInicio);
 
-			  			// Rubros seleccionados
-			  			$dataProviderSeleccionado = $searchRamo->getDataProviderAddRubro($arregloRubro);
+		  					if ( $añoInicial > 0 ) {
+		  						if ( $añoInicial > (int)$configOrdenanza['añoOrdenanza'] ) {
+		  							$añoCatalogo = $añoInicial;
+		  						} else {
+		  							$añoCatalogo = (int)$configOrdenanza['añoOrdenanza'];
+		  						}
 
-			  			$subCaption = Yii::t('frontend', 'Info of Taxpayer');
-			  			return $this->render('/aaee/autorizar-ramo/_create', [
-						  											'model' => $model,
-						  											'datos' => $datos,
-						  											'subCaption' => $subCaption,
-						  											'añoCatalogo' => $añoCatalogo,
-						  											'añoVenceOrdenanza' => $añoVenceOrdenanza,
-						  											'dataProvider' => $dataProvider,
-						  											'searchModel' => $searchRamo,
-						  											'dataProviderSeleccionado' => $dataProviderSeleccionado,
-						  											'periodo' => $periodo,
-						  											'fechaDesde' => $fechaDesde,
-							        								'fechaHasta' => $fechaHasta,
-							        								'activarBotonCreate' => $activarBotonCreate,
-							        								'errorRubroSeleccionado' => $errorRubroSeleccionado,
+					  			//$añoCatalogo = $searchRamo->determinarAnoCatalogoSegunAnoInicio($añoInicio);
+					  			//$añoVenceOrdenanza = $searchRamo->getVencimientoOrdenanza($añoCatalogo);
 
-						  					]);
+					  			$añoVenceOrdenanza = (int)$configOrdenanza['añoVenceOrdenanza'];
+					  			$dataProvider = $searchRamo->getDataProvider($añoCatalogo, $params);
+					  			$periodo = 1;
+					  			$rangoFecha = $searchRamo->getRangoFechaDeclaracion($añoCatalogo);
+
+					  			$fechaDesde = $rangoFecha['fechaDesde'];
+					  			$fechaHasta = $rangoFecha['fechaHasta'];
+
+					  			// Rubros seleccionados
+					  			$dataProviderSeleccionado = $searchRamo->getDataProviderAddRubro($arregloRubro);
+
+					  			$subCaption = Yii::t('frontend', 'Info of Taxpayer');
+					  			return $this->render('/aaee/autorizar-ramo/_create', [
+								  											'model' => $model,
+								  											'datos' => $datos,
+								  											'subCaption' => $subCaption,
+								  											'añoCatalogo' => $añoCatalogo,
+								  											'añoVenceOrdenanza' => $añoVenceOrdenanza,
+								  											'dataProvider' => $dataProvider,
+								  											'searchModel' => $searchRamo,
+								  											'dataProviderSeleccionado' => $dataProviderSeleccionado,
+								  											'periodo' => $periodo,
+								  											'fechaDesde' => $fechaDesde,
+									        								'fechaHasta' => $fechaHasta,
+									        								'activarBotonCreate' => $activarBotonCreate,
+									        								'errorRubroSeleccionado' => $errorRubroSeleccionado,
+
+								  					]);
+					  		}
+		  				}
 			  		} else {
 			  			// NO existe año de inicio de actividad economica.
 		  				$this->redirect(['error-operacion', 'cod' => 964]);
@@ -1117,6 +1153,8 @@
 							'conf',
 							'begin',
 							'arrayIdRubros',
+							'añoOrdenanza',
+							'configOrdenanza',
 					];
 		}
 
