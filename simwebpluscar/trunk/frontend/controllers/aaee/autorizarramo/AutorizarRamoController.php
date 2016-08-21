@@ -852,6 +852,7 @@
 			    		$arregloDatos['periodo_fiscal_hasta'] = isset($rangoFecha['fechaHasta']) ? $rangoFecha['fechaHasta'] : '0000-00-00';
 			    		$arregloDatos['fecha_hora'] = $model->fecha_hora;
 			    		$arregloDatos['usuario'] = $model->usuario;
+			    		$arregloDatos['condicion'] = 2;
 
 			    		// Se procede a guardar en la entidad maestra de las declaraciones.
 		      			$tabla = '';
