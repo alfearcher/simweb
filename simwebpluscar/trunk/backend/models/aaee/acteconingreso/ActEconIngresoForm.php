@@ -66,7 +66,7 @@
 		public $rectificatoria;
 		public $auditoria;
 		public $bloqueado;
-		public $condicion;		// 1 => anexado,  9 => desincorporado.
+		public $condicion;		// 1 => anexado, 2 => autorizado, 9 => desincorporado.
 
 
 
