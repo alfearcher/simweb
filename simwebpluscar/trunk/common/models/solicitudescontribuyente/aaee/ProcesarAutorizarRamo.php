@@ -375,6 +375,7 @@
                     $arregloDatos['fecha_hora'] = date('Y-m-d H:i:s');
                     $arregloDatos['usuario'] = $ramo['usuario'];
                     $arregloDatos['id_rubro'] = $ramo['id_rubro'];
+                    $arregloDatos['condicion'] = 2;
 
                     // Se procede a guardar en la entidad maestra de las declaraciones.
                     $tabla = '';
