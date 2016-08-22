@@ -73,7 +73,7 @@
 		 */
 		public static function tableName()
 		{
-			return 'sl_ramos_autorizados';
+			return 'sl_anexos_ramos';
 		}
 
 
