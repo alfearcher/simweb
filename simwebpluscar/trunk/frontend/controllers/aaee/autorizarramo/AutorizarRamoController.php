@@ -137,6 +137,8 @@
 							// autorizacion de ramos.
 							$rangoOrdenanza = $searchRamo->getRangoOrdenanza($añoInicio);
 
+die(var_dump($rangoOrdenanza));
+
 							$dataProvider = $searchRamo->getArrayDataProviderOrdenanza($rangoOrdenanza);
 							return $this->render('/aaee/listar-ordenanza/_list', [
 														'caption' => $caption,
