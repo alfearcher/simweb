@@ -48,7 +48,10 @@
 	use yii\web\View;
 	use yii\widgets\DetailView;
 	use backend\models\vehiculo\VehiculoSearch;
-	//die('llegue a vista');
+	use frontend\models\propaganda\solicitudes\SlPropagandasForm;
+	use common\models\propaganda\tarifaspropaganda\TarifasPropagandas;
+	
+
 ?>
 
 <div class="row" style="width: 70%;">
@@ -61,9 +64,90 @@
 		    			'attributes' => [
 		    				'ano_impositivo',
 		    				'direccion',
-		    				 'clase_propaganda',
-		    				 'tipo_propaganda',
-		    				 'uso_propaganda',
+		    				'nombre_propaganda',
+		    				'nro_solicitud',
+
+
+
+						   	[
+					        'label' => 'Clase Propaganda',
+
+					        'value' => $model->descripcionClasePropaganda->descripcion, //$search->getDescripcionUsoVehiculo($model->uso_vehiculo),//function($model){
+					            
+					            
+					     
+					         ],
+
+					        	  [
+					        'label' => 'Tipo Propaganda',
+
+					        'value' => $model->descripcionTipoPropaganda->descripcion, //$search->getDescripcionUsoVehiculo($model->uso_vehiculo),//function($model){
+					            
+					            
+					     
+					        ],
+
+					        [
+					        'label' => 'Uso Propaganda',
+
+					        'value' => $model->descripcionUsoPropaganda->descripcion, //$search->getDescripcionUsoVehiculo($model->uso_vehiculo),//function($model){
+					            
+					            
+					     
+					        ],
+
+					        [
+					        'label' => 'Medio de Difusion',
+
+					        'value' => $model->descripcionMedioDifusionPropaganda->descripcion, //$search->getDescripcionUsoVehiculo($model->uso_vehiculo),//function($model){
+					            
+					            
+					     
+					        ],
+
+					            [
+					        'label' => 'Medio de Transporte',
+
+					        'value' => $model->descripcionMedioTransportePropaganda->descripcion, //$search->getDescripcionUsoVehiculo($model->uso_vehiculo),//function($model){
+					            
+					            
+					     
+					        ],
+
+					        'fecha_desde',
+					        'cantidad_tiempo',
+					        'cantidad_base',
+					        'alto',
+					        'ancho',
+					        'profundidad',
+					        'unidad',
+
+					        [
+					        'label' => 'Cigarrillos',
+					     	
+					        'value' => $model['cigarros'] == 1 ? 'SI' : 'NO',
+					        ],
+		    				
+		    				[
+					        'label' => 'Bebidas Alcoholicas',
+					     	
+					        'value' => $model['bebidas_alcoholicas'] == 1 ? 'SI' : 'NO',
+					        ],
+
+					        [
+					        'label' => 'Idioma',
+					     	
+					        'value' => $model['idioma'] == 1 ? 'SI' : 'NO',
+					        ],
+		    			
+		    				'observacion',
+
+		    				'fecha_fin',
+
+		    				'usuario',
+
+
+		    				
 		    				// 'color',
 		    			
 		    				// 'precio_inicial',
