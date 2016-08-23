@@ -74,8 +74,12 @@ class SlPropagandasForm extends SlPropagandas
             $this->id_contribuyente = $idContribuyente;
         }
 
+        public function getClasePropaganda($clase)
+        {
 
-
+        $model = Clase::findOne($uso);
+        return $model->descripcion;
+        }
         /**
          * Metodo que permite determinar si el contribuyente posee una solicitud pendiente (estatus = 0)
          * o aprobada (estatus = 1), del mismo tipo, por ser una solicitud de inscripcion

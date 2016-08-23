@@ -58,6 +58,12 @@
     use frontend\models\vehiculo\solicitudes\SlVehiculos;
     use frontend\models\vehiculo\solicitudes\SlVehiculosForm;
     use backend\models\vehiculo\VehiculosForm;
+    use backend\models\ClasesPropaganda;
+    use backend\models\UsosPropaganda;
+    use backend\models\TiposPropaganda;
+    use backend\models\MediosDifusion;
+    use backend\models\MediosTransporte;
+
 
 
 
@@ -78,6 +84,38 @@
         {
           return 'sl_propagandas';
         }
+
+        public function getDescripcionClasePropaganda()
+        {
+
+        return $this->hasOne(ClasesPropaganda::className(), ['clase_propaganda' => 'clase_propaganda']);
+        }
+
+         public function getDescripcionUsoPropaganda()
+        {
+
+        return $this->hasOne(UsosPropaganda::className(), ['uso_propaganda' => 'uso_propaganda']);
+        }
+
+        public function getDescripcionTipoPropaganda()
+        {
+
+        return $this->hasOne(TiposPropaganda::className(), ['tipo_propaganda' => 'tipo_propaganda']);
+        }
+
+        public function getDescripcionMedioDifusionPropaganda()
+        {
+
+        return $this->hasOne(MediosDifusion::className(), ['medio_difusion' => 'medio_difusion']);
+        }
+
+        public function getDescripcionMedioTransportePropaganda()
+        {
+
+        return $this->hasOne(MediosTransporte::className(), ['medio_transporte' => 'medio_transporte']);
+        }
+
+
 
 
       
