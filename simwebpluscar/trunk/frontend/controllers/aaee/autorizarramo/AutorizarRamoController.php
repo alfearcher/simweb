@@ -134,20 +134,25 @@
 						if ( $añoInicio > 0 ) {
 							$caption = Yii::t('frontend', 'List of Ordenanzas');
 							// Se determina el rango de ordenanza donde puede realizar solicitud de
-							// autorizacion de ramos.
+							// autorizacion de ramos. Si retorna array vacio significa que no tiene
+							// rango ordenanza pendientes por realizar solicitud de autorizacion de ramo.
 							$rangoOrdenanza = $searchRamo->getRangoOrdenanza($añoInicio);
 
-//die(var_dump($rangoOrdenanza));
-
-							$dataProvider = $searchRamo->getArrayDataProviderOrdenanza($rangoOrdenanza);
-							return $this->render('/aaee/listar-ordenanza/_list', [
-														'caption' => $caption,
-														'dataProvider' => $dataProvider,
-														'idConfig' => $id,
-								]);
+							if (count($rangoOrdenanza) > 0 ) {
+								$dataProvider = $searchRamo->getArrayDataProviderOrdenanza($rangoOrdenanza);
+								return $this->render('/aaee/listar-ordenanza/_list', [
+															'caption' => $caption,
+															'dataProvider' => $dataProvider,
+															'idConfig' => $id,
+									]);
+							} else {
+								// No esta especificado el rango de la ordenanza.
+								// No existen periodo al cual se les.
+								return $this->redirect(['error-operacion', 'cod' => 970]);
+							}
 						} else {
 							// No esta definido la fecha de inicio de actividades.
-
+							return $this->redirect(['error-operacion', 'cod' => 964]);
 						}
 					}
 				}
