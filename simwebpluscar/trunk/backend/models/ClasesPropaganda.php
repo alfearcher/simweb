@@ -41,4 +41,6 @@ class ClasesPropaganda extends \yii\db\ActiveRecord
             'descripcion' => Yii::t('backend', 'Descripcion'),
         ];
     }
+
+    
 }
