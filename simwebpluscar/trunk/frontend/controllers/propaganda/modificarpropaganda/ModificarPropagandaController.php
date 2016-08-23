@@ -419,7 +419,7 @@ class ModificarPropagandaController extends Controller
      
       $arregloDatos['nombre_propaganda'] = $model->nombre_propaganda;
 
-      $arregloDatos['id_impuesto'] = 0;
+     // $arregloDatos['id_impuesto'] = 0;
 
     
 
