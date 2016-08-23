@@ -570,9 +570,9 @@
 	    	$provider = null;
 	    	$rango = [];
 
-	    	if ( count($rangoOrdenanza) == 0 ) {
-	    		$rangoOrdenanza = self::getRangoOrdenanza($añoInicioActividad, $notificado);
-	    	}
+	    	// if ( count($rangoOrdenanza) == 0 ) {
+	    	// 	$rangoOrdenanza = self::getRangoOrdenanza($añoInicioActividad, $notificado);
+	    	// }
 
 	    	foreach ( $rangoOrdenanza as $key => $value ) {
     			$rango[$key] = [
