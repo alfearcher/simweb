@@ -59,7 +59,7 @@
     use common\models\solicitudescontribuyente\inmueble\ProcesarSolicitudDetalleInmuebleUrbano;
 
     use common\models\solicitudescontribuyente\vehiculo\ProcesarSolicitudDetalleVehiculo;
-
+    use common\models\solicitudescontribuyente\propaganda\ProcesarSolicitudDetallePropaganda;
     use common\models\configuracion\solicitudplanilla\SolicitudPlanillaSearch;
     use common\models\planilla\PlanillaSearch;
 
@@ -313,6 +313,7 @@
          */
         private function procesarSolicitudPorImpuesto($model, $evento)
         {
+        //die('llegue a procesar');
             $result = false;
             if ( $model !== null ) {
                 if ( $model['impuesto'] == 1 ) {
@@ -331,8 +332,10 @@
                     $result = $procesarDetalle->procesarSolicitudPorTipo();
 
                 } elseif ( $model['impuesto'] == 4 ) {
-                    // Propaganda Comercial.
-
+                    //die('es 4');
+                    $procesarDetalle = New ProcesarSolicitudDetallePropaganda($model, $evento, $this->_conn, $this->_conexion);
+                    $result = $procesarDetalle->procesarSolicitudPorTipo();
+                    
                 } elseif ( $model['impuesto'] == 6 ) {
                     // Espectaculo Publico.
 
