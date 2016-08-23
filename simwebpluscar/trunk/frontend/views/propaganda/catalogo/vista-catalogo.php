@@ -85,7 +85,7 @@ $this->title = Yii::t('frontend', 'Advertising Catalogue');
      
          ],
 
-            [
+        [
         'label' => 'Cigarrillos',
         'format' => 'raw',
         
