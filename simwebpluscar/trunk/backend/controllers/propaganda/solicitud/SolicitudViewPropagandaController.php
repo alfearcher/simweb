@@ -58,7 +58,7 @@
 	// use common\conexion\ConexionController;
 	use backend\controllers\MenuController;
 	use backend\models\vehiculo\VehiculoSearch;
-
+	use frontend\models\propaganda\solicitudes\SlPropagandasForm;
 
 	//session_start();		// Iniciando session
 
@@ -162,13 +162,13 @@
 					$modelSearch = New SlPropagandasForm($this->model->id_contribuyente);
 					$model = $modelSearch->findInscripcionPropaganda($this->model->nro_solicitud);
 
-					
+	//die(var_dump($model));
 
 
-					return $this->render('/vehiculo/solicitudes/inscripcion/view-solicitud-inscripcion-propaganda', [
+					return $this->render('/propaganda/solicitudes/inscripcion/view-solicitud-inscripcion-propaganda', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
 													'model' => $model,
-													'search' => $search,
+													
 
 						]);
 			}
