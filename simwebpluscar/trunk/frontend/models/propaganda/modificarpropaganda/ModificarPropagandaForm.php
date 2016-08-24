@@ -60,13 +60,13 @@ use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 /**
  * InmueblesSearch represents the model behind the search form about `backend\models\Inmuebles`.
  */
-class ModificarPropagandaForm extends Model
+class ModificarPropagandaForm extends Propaganda
 {
     public $nombre_propaganda;
     public $ano_impositivo;
     public $clase_propaganda;
     public $uso_propaganda;
-    public $fecha_inicial;
+    public $fecha_desde;
     public $cantidad_base;
     public $cigarros;
     public $cantidad_tiempo;
@@ -97,9 +97,9 @@ class ModificarPropagandaForm extends Model
     {
         return [
 
-            [['nombre_propaganda','cantidad_base', 'base_calculo','observacion','direccion' ,'clase_propaganda', 'fecha_fin', 'cantidad_tiempo', 'id_tiempo', 'fecha_desde', 'uso_propaganda', 'tipo_propaganda'], 'required'],
+            [['nombre_propaganda','cantidad_base', 'base_calculo','observacion','direccion' ,'clase_propaganda', 'fecha_fin', 'cantidad_tiempo', 'id_tiempo', 'fecha_desde', 'uso_propaganda', 'tipo_propaganda', 'ano_impositivo'], 'required'],
             
-            [['cantidad_base', 'base_calculo','observacion','direccion' ,'clase_propaganda','cigarrillos', 'bebidas_alcoholicas', 'idioma'  ,'fecha_fin', 'cantidad_tiempo', 'tiempo', 'fecha_inicial', 'uso_propaganda', 'tipo_propaganda', 'medio_difusion', 'medio_transporte', 'id_sim'], 'default', 'value' => 0],
+            [['cantidad_base', 'base_calculo','observacion','direccion' ,'clase_propaganda','cigarros', 'bebidas_alcoholicas', 'idioma'  ,'fecha_fin', 'cantidad_tiempo', 'id_tiempo', 'fecha_desde', 'uso_propaganda', 'tipo_propaganda', 'medio_difusion', 'medio_transporte', 'alto','ancho','profundidad','id_sim'], 'default', 'value' => 0],
 
             [['alto','ancho'],'required','when' => function($model) {
                                                                             if ( $model->base_calculo == 2 ) {
@@ -299,7 +299,7 @@ class ModificarPropagandaForm extends Model
                                         ->where([ 
                                           'id_impuesto' => $idPropaganda,
                                           'id_config_solicitud' => $idConfig,
-                                          'inactivo' => 0,
+                                          'estatus' => 0,
                                         ])
                                       ->all();
 
@@ -309,6 +309,17 @@ class ModificarPropagandaForm extends Model
              return false;
             }
         
+    }
+
+    public function getClase($dato)
+    {
+       $datos = propaganda::find('clase_propaganda')
+       ->where([
+        'id_impuesto' => $dato,
+
+
+        ])
+       ->all();
     }
 
 

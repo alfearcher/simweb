@@ -128,6 +128,23 @@ class SlPropagandasForm extends SlPropagandas
             return isset($modelFind) ? $modelFind : null;
         }
 
+                /**
+         * Metodo que realiza una busqueda del detalle de la solicitud (model)
+         * "cambio-datos-propagandas".
+         * @param  Long $nroSolicitud identificador de la entidad "solicitudes-contribuyente".
+         * @return Active Record.
+         */
+        public function findCambioDatosPropaganda($nroSolicitud)
+        {
+            $modelFind = SlPropagandas::find()->where('nro_solicitud =:nro_solicitud', [':nro_solicitud' => $nroSolicitud])
+                                                    ->andWhere('id_contribuyente =:id_contribuyente', [':id_contribuyente' => $this->id_contribuyente])
+                                                    ->one();
+            return isset($modelFind) ? $modelFind : null;
+        }
+
+
+
+
 
        
    
