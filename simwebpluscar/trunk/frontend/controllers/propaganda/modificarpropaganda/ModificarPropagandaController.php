@@ -114,20 +114,32 @@ class ModificarPropagandaController extends Controller
 
   }
 
+
+
+
+
+
   public function actionBuscarPropaganda()
   {
 
       $idContribuyente = yii::$app->user->identity->id_contribuyente;
       $idPropaganda = yii::$app->request->post('id');
       $_SESSION['idPropaganda'] = $idPropaganda;
-  
+      
 
-      $modelsearch = new ModificarPropagandaForm();
-      $busqueda = $modelsearch->busquedaPropaganda($idPropaganda, $idContribuyente);
+      $modelSearch = new ModificarPropagandaForm();
+      $model = $modelSearch->busquedaPropaganda($idPropaganda, $idContribuyente);
 
-          if ($busqueda == true){ 
-        
+          if ($model == true){ 
+            $modelSearch->attributes = $model->attributes;
+              return $this->render('/propaganda/modificarpropaganda/formulario-modificar-propaganda', [
+                                                              'model' => $modelSearch,
+
+              ]);
+
+
               $_SESSION['datosPropaganda'] = $busqueda;
+              
         
           return $this->redirect(['modificar-propaganda']);
         
@@ -135,51 +147,53 @@ class ModificarPropagandaController extends Controller
 
               die('no existe propaganda asociado a ese ID');
           }
-  } 
+  }
+
+
+
   /**
    * [actionCrearPropaganda description] metodo que renderiza la vista del formulario para la inscripcion de la propaganda
    * @return [type] [description] retorna la vista del formulario
    */
   public function actionModificarPropaganda()
   {
+            $datosPropaganda = $_SESSION['datosPropaganda'];
    
+            $postData = yii::$app->request->post();
 
-            $datosPropaganda = $_SESSION['datosPropaganda']; 
+            $model = New ModificarPropagandaForm();
+
             
-            $model = Propaganda::findOne($datosPropaganda['id_impuesto']);
-           // die(var_dump($model));
-                        
-
-            $postData = Yii::$app->request->post();
-
             if ( $model->load($postData) && Yii::$app->request->isAjax ){
                   Yii::$app->response->format = Response::FORMAT_JSON;
                   return ActiveForm::validate($model);
             }
            
             if ( $model->load($postData) ) {
+             // die(var_dump($postData));
             
 
                if ($model->validate()){
+               //die('valido');
 
-                $verificarSolicitud = self::verificarSolicitud($datosPropaganda->id_impuesto , $_SESSION['id']);
+                 $verificarSolicitud = self::verificarSolicitud($datosPropaganda->id_impuesto , $_SESSION['id']);
 
-                    if($verificarSolicitud == true){
-                      return MensajeController::actionMensaje(403);
+                     if($verificarSolicitud == true){
+                       return MensajeController::actionMensaje(403);
                     }else{
                
-                $buscarGuardar = self::beginSave("buscarGuardar", $model);
+                 $buscarGuardar = self::beginSave("buscarGuardar", $model);
                     
                     if($buscarGuardar == true){
                      return MensajeController::actionMensaje(100);
                     }else{
                     
                     return MensajeController::actionMensaje(920);
-            }  
+           }  
           
                       
-                }
-              }        
+             }
+              }
           }  
           // die(var_dump($datosPropaganda));
           return $this->render('/propaganda/modificarpropaganda/formulario-modificar-propaganda', [
