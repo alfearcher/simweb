@@ -117,10 +117,10 @@
 					if ( $searchCorreccion->esUnContribuyenteJuridico() ) {
 
 						// Se determina si ya esta inscrito como contribuyente de Actividad Economica.
-						if ( $searchCorreccion->estaInscritoActividadEconomica() ) {
+						//if ( $searchCorreccion->estaInscritoActividadEconomica() ) {
 
 							// Se determina si ya existe una solicitud pendiente.
-							//if ( !$searchCorreccion->yaPoseeSolicitudSimiliarPendiente() ) {
+							if ( !$searchCorreccion->yaPoseeSolicitudSimiliarPendiente() ) {
 
 								$modelParametro = New ParametroSolicitud($id);
 								// Se obtiene el tipo de solicitud. Se retorna un array donde el key es el nombre
@@ -140,14 +140,14 @@
 									// No se obtuvieron los parametros de la configuracion.
 									return $this->redirect(['error-operacion', 'cod' => 955]);
 								}
-							//} else {
+							} else {
 								// El contribuyente ya posee una solicitud similar, y la misma esta pendiente.
-							//	return $this->redirect(['error-operacion', 'cod' => 945]);
-							//}
-						} else {
+								return $this->redirect(['error-operacion', 'cod' => 945]);
+							}
+						//} else {
 							// El contribuyente no esta inscrito como contribuyente de Actividad Economica.
-							return $this->redirect(['error-operacion', 'cod' => 404]);
-						}
+						//	return $this->redirect(['error-operacion', 'cod' => 404]);
+						//}
 					} else {
 						// El contribuyente no es JURIDICO.
 						return $this->redirect(['error-operacion', 'cod' => 934]);
