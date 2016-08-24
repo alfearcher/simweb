@@ -25,6 +25,7 @@ $this->title = 'Propaganda';
 
    <?php
         $form = ActiveForm::begin([
+            'action' => ['modificar-propaganda'],
             'id' => 'form-propaganda',
             'method' => 'post',
             'enableClientValidation' => true,
@@ -438,6 +439,7 @@ function puntitos( donde, caracter, campo ) {
                                         $f = $model->fecha_desde;
                                         $t = $model->cantidad_tiempo;
                                         $fecha = date_create($f);
+                                        
                                         date_add($fecha, date_interval_create_from_date_string($t.'hours'));
                                         $fecha_fin = date_format($fecha, 'd-m-Y');
                                     }
