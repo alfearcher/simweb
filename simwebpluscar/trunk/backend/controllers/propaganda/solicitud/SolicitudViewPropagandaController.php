@@ -200,6 +200,7 @@
 			if ( $this->model->nivel_aprobacion == 2 ) {
 					$modelSearch = New SlPropagandasForm($this->model->id_contribuyente);
 					$model = $modelSearch->findInscripcionPropaganda($this->model->nro_solicitud);
+					
 
 	//die(var_dump($model));
 
