@@ -51,7 +51,7 @@
 	use frontend\models\propaganda\solicitudes\SlPropagandasForm;
 	use common\models\propaganda\tarifaspropaganda\TarifasPropagandas;
 	
-
+//die(var_dump($modelPropaganda));
 ?>
 
 <div class="row" style="width: 50%;">
@@ -60,13 +60,13 @@
 			<div class="col-sm-5">
 			<h3><?= Html::encode('Datos Antiguos') ?></h3>
 				<?= DetailView::widget([
-						'model' => $model,
+						'model' => $modelPropaganda,
 						
 		    			'attributes' => [
 		    				'ano_impositivo',
 		    				'direccion',
 		    				'nombre_propaganda',
-		    				'nro_solicitud',
+		    				//'nro_solicitud',
 
 
 		    				
@@ -147,7 +147,7 @@
 
 		    				'fecha_fin',
 
-		    				'usuario',
+		    				//'usuario',
 
 
 		    				
