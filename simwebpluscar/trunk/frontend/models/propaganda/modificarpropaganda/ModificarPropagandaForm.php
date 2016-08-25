@@ -304,8 +304,10 @@ class ModificarPropagandaForm extends Propaganda
                                       ->all();
 
             if($buscar == true){
+                //die('encontro');
              return true;
             }else{
+               // die('no encontro');
              return false;
             }
         

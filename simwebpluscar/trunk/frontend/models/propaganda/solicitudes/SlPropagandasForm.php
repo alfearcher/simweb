@@ -54,6 +54,8 @@ use Yii;
 use yii\base\Model;
 use frontend\models\vehiculo\solicitudes\SlVehiculos;
 use frontend\models\vehiculo\solicitudes\SlVehiculosForm;
+use backend\models\propaganda\Propaganda;
+use frontend\models\vehiculo\solicitudes\SlDesincorporacionesVehiculo;
 
 
 
@@ -139,6 +141,33 @@ class SlPropagandasForm extends SlPropagandas
             $modelFind = SlPropagandas::find()->where('nro_solicitud =:nro_solicitud', [':nro_solicitud' => $nroSolicitud])
                                                     ->andWhere('id_contribuyente =:id_contribuyente', [':id_contribuyente' => $this->id_contribuyente])
                                                     ->one();
+                                                    //die(var_dump($modelFinf));
+            return isset($modelFind) ? $modelFind : null;
+        }
+
+        
+        public function findCambioDatosPropagandaMaestro($idImpuesto)
+        {
+            $modelFind = Propaganda::find()->where('id_impuesto =:id_impuesto', [':id_impuesto' => $idImpuesto])
+                                                    ->andWhere('id_contribuyente =:id_contribuyente', [':id_contribuyente' => $this->id_contribuyente])
+                                                    ->one();
+                                                    //die(var_dump($modelFinf));
+            return isset($modelFind) ? $modelFind : null;
+        }
+
+
+                     /**
+         * Metodo que realiza una busqueda del detalle de la solicitud (model)
+         * "desincorporar-propaganda".
+         * @param  Long $nroSolicitud identificador de la entidad "solicitudes-contribuyente".
+         * @return Active Record.
+         */
+        public function findDesincorporacionPropaganda($nroSolicitud)
+        {
+            $modelFind = SlDesincorporacionesVehiculo::find()->where('nro_solicitud =:nro_solicitud', [':nro_solicitud' => $nroSolicitud])
+                                                    ->andWhere('id_contribuyente =:id_contribuyente', [':id_contribuyente' => $this->id_contribuyente])
+                                                    ->one();
+                                                    //die(var_dump($modelFinf));
             return isset($modelFind) ? $modelFind : null;
         }
 
