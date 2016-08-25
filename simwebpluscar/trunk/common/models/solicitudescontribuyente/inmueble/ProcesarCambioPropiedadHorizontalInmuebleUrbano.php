@@ -263,7 +263,7 @@
 
             // Se crea la instancia del modelo que contiene los campos que seran actualizados.
             $model = New SlInmueblesUrbanosSearch($modelPropiedadHorizontal->id_contribuyente);
-            $tableName = $model->tableName();
+            $tableName = $model->tableName(); 
 
             // Se obtienen los campos que seran actualizados en la entidad "sl-".
             // Estos atributos ya vienen con sus datos cargados.
@@ -288,7 +288,7 @@
                     $tableNameMaster = 'inmuebles';
 
                     $arregloDatosMaster = [
-                                            'nombre'=>$nombre,
+                                            
                                             'direccion' => $camposModel['direccion'],
                                             'propiedad_horizontal' => $camposModel['propiedad_horizontal'],
                                             'parcela_catastro' => $camposModel['parcela_catastro'],
@@ -296,7 +296,7 @@
                                             'nivel_catastro' => $camposModel['nivel_catastro'],
                                             'unidad_catastro' => $camposModel['sector_catastro'],
                                             
-                                          ];  
+                                          ]; 
                     $arregloCondicionMaster = [
                                                 'id_impuesto' => $camposModel['id_impuesto'],
                                               ]; 
@@ -309,7 +309,7 @@
                 } else {
                     if (!$result ) { self::setErrors(Yii::t('backend', 'Failed update request')); }
                     return $result; 
-                }
+                } 
                     
             } 
 
