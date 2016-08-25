@@ -128,28 +128,18 @@
 
                     $result = $procesar->procesarSolicitud();
 
-                } elseif ( $this->_model->tipo_solicitud == 35 ) {
+                } elseif ( $this->_model->tipo_solicitud == 41 ) {
 
-                    $procesar = New ProcesarCambioPropietarioVendedor($this->_model,
+                    $procesar = New ProcesarCambioDatosPropaganda($this->_model,
                                                                   $this->_evento,
                                                                   $this->_conn,
                                                                   $this->_conexion);
 
                     $result = $procesar->procesarSolicitud();
 
-                } elseif ( $this->_model->tipo_solicitud == 66 ) {
+                } elseif ( $this->_model->tipo_solicitud == 42 ) {
 
-                    $procesar = New ProcesarCambioPropietarioComprador($this->_model,
-                                                                  $this->_evento,
-                                                                  $this->_conn,
-                                                                  $this->_conexion);
-
-                    $result = $procesar->procesarSolicitud();
-
-
-                } elseif ( $this->_model->tipo_solicitud == 36 ) {
-
-                    $procesar = New ProcesarCambioPlaca($this->_model,
+                    $procesar = New ProcesarDesincorporacionPropaganda($this->_model,
                                                                   $this->_evento,
                                                                   $this->_conn,
                                                                   $this->_conexion);
@@ -157,44 +147,7 @@
                     $result = $procesar->procesarSolicitud();
 
 
-                } elseif ( $this->_model->tipo_solicitud == 37 ) {
-
-                    $procesar = New ProcesarDesincorporacionVehiculo($this->_model,
-                                                                  $this->_evento,
-                                                                  $this->_conn,
-                                                                  $this->_conexion);
-
-                    $result = $procesar->procesarSolicitud();
-
-                } elseif ( $this->_model->tipo_solicitud == 38 ) {
-
-                    $procesar = New ProcesarCambioDatosVehiculo($this->_model,
-                                                                  $this->_evento,
-                                                                  $this->_conn,
-                                                                  $this->_conexion);
-
-                    $result = $procesar->procesarSolicitud();
-
-                } elseif ( $this->_model->tipo_solicitud == 68 ) {
-
-                     $procesar = New ProcesarCambioCalcomaniaExtravio($this->_model,
-                                                                  $this->_evento,
-                                                                  $this->_conn,
-                                                                  $this->_conexion);
-
-                    $result = $procesar->procesarSolicitud();
-
-
-
-                } elseif ( $this->_model->tipo_solicitud == 27 ) {
-
-                } elseif ( $this->_model->tipo_solicitud == 28 ) {
-
-                } elseif ( $this->_model->tipo_solicitud == 29 ) {
-
-                } elseif ( $this->_model->tipo_solicitud == 30 ) {
-
-                } elseif ( $this->_model->tipo_solicitud == 31 ) {
+               
 
                 }
 
