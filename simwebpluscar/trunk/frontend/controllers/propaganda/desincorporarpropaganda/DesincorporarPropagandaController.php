@@ -253,8 +253,8 @@ class DesincorporarPropagandaController extends Controller
         $resultado = $buscar->getParametroSolicitud(["tipo_solicitud", "impuesto", "nivel_aprobacion"]);
 
      // die(var_dump($resultado["impuesto"]));  
-    
-
+      $datosPropaganda = $_SESSION['datosPropaganda'];
+      $impuesto = $resultado['impuesto'];
       $datos = yii::$app->user->identity;
       $tabla = 'solicitudes_contribuyente';
       $arregloDatos = [];
@@ -265,11 +265,11 @@ class DesincorporarPropagandaController extends Controller
           $arregloDatos[$value] = 0;
       }
 
-      $arregloDatos['impuesto'] = $resultado['impuesto'];
+      $arregloDatos['impuesto'] = $impuesto;
      
       $arregloDatos['id_config_solicitud'] = $_SESSION['id'];
 
-      $arregloDatos['id_impuesto'] = 0;
+      $arregloDatos['id_impuesto'] = $datosPropaganda->id_impuesto;
 
       //die($arregloDatos['id_impuesto']);
 
@@ -318,8 +318,8 @@ class DesincorporarPropagandaController extends Controller
 
       $resultado = $buscar->getParametroSolicitud(["tipo_solicitud", "impuesto", "nivel_aprobacion"]);
       
-     // die(var_dump($resultado['impuesto']));
-     
+      $impuesto = $resultado['impuesto'];
+      $datosPropaganda = $_SESSION['datosPropaganda'];
       $numeroSolicitud = $idSolicitud;
       $resultado = false;
       $datos = yii::$app->user->identity;
@@ -341,7 +341,7 @@ class DesincorporarPropagandaController extends Controller
 
      //die($arregloDatos['id_impuesto']);
 
-      $arregloDatos['impuesto'] = $resultado['impuesto'];
+      $arregloDatos['impuesto'] = $impuesto;
 
      //die($arregloDatos['impuesto']);
 

@@ -131,6 +131,8 @@ class ModificarPropagandaController extends Controller
       $model = $modelSearch->busquedaPropaganda($idPropaganda, $idContribuyente);
 
           if ($model == true){ 
+
+             $_SESSION['datosPropaganda'] = $model;
             $modelSearch->attributes = $model->attributes;
               return $this->render('/propaganda/modificarpropaganda/formulario-modificar-propaganda', [
                                                               'model' => $modelSearch,
@@ -138,7 +140,7 @@ class ModificarPropagandaController extends Controller
               ]);
 
 
-              $_SESSION['datosPropaganda'] = $busqueda;
+             
               
         
           return $this->redirect(['modificar-propaganda']);
@@ -157,8 +159,8 @@ class ModificarPropagandaController extends Controller
    */
   public function actionModificarPropaganda()
   {
+          // die(var_dump($_SESSION['datosPropaganda']));
             $datosPropaganda = $_SESSION['datosPropaganda'];
-   
             $postData = yii::$app->request->post();
 
             $model = New ModificarPropagandaForm();
@@ -234,7 +236,7 @@ class ModificarPropagandaController extends Controller
 
      
     
-
+      $datosPropaganda = $_SESSION['datosPropaganda'];
       $datos = yii::$app->user->identity;
       $tabla = 'solicitudes_contribuyente';
       $arregloDatos = [];
@@ -249,7 +251,7 @@ class ModificarPropagandaController extends Controller
      
       $arregloDatos['id_config_solicitud'] = $_SESSION['id'];
 
-      $arregloDatos['id_impuesto'] = 0;
+      $arregloDatos['id_impuesto'] = $datosPropaganda->id_impuesto;
 
       //die($arregloDatos['id_impuesto']);
 
@@ -300,7 +302,7 @@ class ModificarPropagandaController extends Controller
       $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
       //die(var_dump($nivelAprobacion));
       
-     
+      $datosPropaganda = $_SESSION['datosPropaganda'];
       $numeroSolicitud = $idSolicitud;
       $resultado = false;
       $datos = yii::$app->user->identity;
@@ -314,7 +316,7 @@ class ModificarPropagandaController extends Controller
       }
       $arregloDatos['nombre_propaganda'] = $model->nombre_propaganda;
 
-      $arregloDatos['id_impuesto'] = 0;
+      $arregloDatos['id_impuesto'] = $datosPropaganda->id_impuesto;
 
       $arregloDatos['nro_solicitud'] = $numeroSolicitud;
 
