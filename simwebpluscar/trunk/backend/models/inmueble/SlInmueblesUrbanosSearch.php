@@ -78,7 +78,7 @@
 															  ->andWhere(['IN', 'estatus', [0,1]])
 															  ->count();
 			return ($modelFind > 0) ? true : false;
-		}    
+		}     
 
 
 

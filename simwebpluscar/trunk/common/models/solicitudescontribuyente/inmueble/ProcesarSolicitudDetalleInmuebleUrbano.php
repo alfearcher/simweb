@@ -146,7 +146,7 @@
                     //Integracion
 
                 } elseif ( $this->_model->tipo_solicitud == 28 ) {
-                    //Desintegracion 
+                    //Desintegracion  
 
                 } elseif ( $this->_model->tipo_solicitud == 29 ) {
                     //Cambio Propiedad Horizontal

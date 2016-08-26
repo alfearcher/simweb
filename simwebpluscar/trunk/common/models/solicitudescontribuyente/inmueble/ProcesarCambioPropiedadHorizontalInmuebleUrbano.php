@@ -263,7 +263,7 @@
 
             // Se crea la instancia del modelo que contiene los campos que seran actualizados.
             $model = New SlInmueblesUrbanosSearch($modelPropiedadHorizontal->id_contribuyente);
-            $tableName = $model->tableName(); 
+            $tableName = $model->tableName();  
 
             // Se obtienen los campos que seran actualizados en la entidad "sl-".
             // Estos atributos ya vienen con sus datos cargados.
