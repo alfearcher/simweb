@@ -258,10 +258,10 @@
 </SETTINGS>
 <METADATA>
 <REGIONS>
-<REGION ID="1154" RegionName="Region_01" XPos="26" YPos="19" Width="888" Height="1486" RegionColor="0" TablePrefix="0" TableType="0" OverwriteTablePrefix="0" OverwriteTableType="0" Comments="" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="20" />
-<REGION ID="1206" RegionName="Region_02" XPos="950" YPos="21" Width="1605" Height="1852" RegionColor="1" TablePrefix="0" TableType="0" OverwriteTablePrefix="0" OverwriteTableType="0" Comments="" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="27" />
-<REGION ID="1368" RegionName="Region_03" XPos="23" YPos="1516" Width="891" Height="432" RegionColor="2" TablePrefix="0" TableType="0" OverwriteTablePrefix="0" OverwriteTableType="0" Comments="" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="35" />
 <REGION ID="1408" RegionName="planilla" XPos="30" YPos="1980" Width="370" Height="267" RegionColor="3" TablePrefix="0" TableType="0" OverwriteTablePrefix="0" OverwriteTableType="0" Comments="" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="39" />
+<REGION ID="1368" RegionName="Region_03" XPos="23" YPos="1516" Width="891" Height="432" RegionColor="2" TablePrefix="0" TableType="0" OverwriteTablePrefix="0" OverwriteTableType="0" Comments="" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="35" />
+<REGION ID="1206" RegionName="Region_02" XPos="950" YPos="21" Width="1605" Height="1852" RegionColor="1" TablePrefix="0" TableType="0" OverwriteTablePrefix="0" OverwriteTableType="0" Comments="" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="27" />
+<REGION ID="1154" RegionName="Region_01" XPos="26" YPos="19" Width="888" Height="1486" RegionColor="0" TablePrefix="0" TableType="0" OverwriteTablePrefix="0" OverwriteTableType="0" Comments="" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="20" />
 </REGIONS>
 <TABLES>
 <TABLE ID="1000" Tablename="config_solicitudes" PrevTableName="Table_01" XPos="37" YPos="61" TableType="1" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="2" >
@@ -2294,7 +2294,7 @@
 </INDEX>
 </INDICES>
 </TABLE>
-<TABLE ID="1635" Tablename="propagandas_patrocinadores" PrevTableName="Table_28" XPos="2183" YPos="48" TableType="1" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="57" >
+<TABLE ID="1635" Tablename="sl_propagandas_patrocinadores" PrevTableName="Table_28" XPos="2183" YPos="48" TableType="1" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="57" >
 <COLUMNS>
 <COLUMN ID="1637" ColName="id_propaganda_patrocinador" PrevColName="" Pos="0" idDatatype="5" DatatypeParams="(9)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="1" IsForeignKey="0" DefaultValue="" Comments="">
 <OPTIONSELECTED>
