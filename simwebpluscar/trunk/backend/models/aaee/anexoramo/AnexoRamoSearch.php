@@ -87,12 +87,13 @@
 		 * @param long $nroSolicitud identificador de la solicitud.
 		 * @return Active Record.
 		 */
-		public function findSolicitudAnexoRamo($nroSolicitud)
+		public function findSolicitudAnexoRamo($nroSolicitud, $estatus)
 		{
 			$findModel = AnexoRamo::find()->where('nro_solicitud =:nro_solicitud',
 													 	[':nro_solicitud' => $nroSolicitud])
 										  ->andWhere('id_contribuyente =:id_contribuyente',
-											   			[':id_contribuyente' => $this->_id_contribuyente]);
+											   			[':id_contribuyente' => $this->_id_contribuyente])
+										  ->andWhere('estatus =:estatus', ['estatus' => $estatus]);
 
 			return isset($findModel) ? $findModel : null;
 		}
