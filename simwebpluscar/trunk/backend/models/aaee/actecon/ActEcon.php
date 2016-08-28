@@ -86,6 +86,17 @@
 			return $this->hasMany(ActEconIngreso::className(), ['id_impuesto' => 'id_impuesto']);
 		}
 
+
+
+		/**
+		 * Relacion con la entidad "exigibilidades"
+		 * @return Active Record.
+		 */
+		public function getExigibilidad()
+		{
+			return $this->hasOne(Exigibilidad::className(), ['exigibilidad' => 'exigibilidad_declaracion']);
+		}
+
 	}
 
 ?>
