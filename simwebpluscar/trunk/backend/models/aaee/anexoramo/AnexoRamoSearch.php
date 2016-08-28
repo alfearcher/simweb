@@ -482,6 +482,56 @@
 
 
 
+	    /**
+	     * Metodo que realiza una find sobre la entidad "ect-econ",
+	     * utilizando el identificador de la entidad.
+	     * @param  long $idImpuesto identificador de la entidad "act-econ".
+	     * @return active record retorna un modelo de la entidad "ect-econ"
+	     * con los datos de la consulta. Sino encuentra nada retorna null.
+	     */
+	    public function findActEcon($idImpuesto)
+	    {
+	    	$findModel = ActEcon::findOne($idImpuesto);
+	    	return isset($findModel) ? $findModel : null;
+	    }
+
+
+
+	    /**
+	     * Metodo que permite obtener los parametros de la exigibilidad, segun
+	     * el id-impuesto enviado. El id-impuesto corresponde al año-periodo
+	     * del al declaracion.
+	     * @param  long $idImpuesto identificador de la entidad "act-econ".
+	     * @return array retorna un arreglo con los atributos de la entidad
+	     * "exigibilidades", sino el arreglo sera vacio.
+	     */
+	    public function getExigibilidadSegunIdImpuesto($idImpuesto)
+	    {
+	    	$exigibilidad = [];
+	    	$findModel = self::findActEcon($idImpuesto);
+	    	if ( isset($findModel) ) {
+	    		$exigibilidad = OrdenanzaBase::getExigibilidadDeclaracion($findModel['ano_impositivo'], 1);
+	    	}
+	    	return $exigibilidad;
+	    }
+
+
+
+
+	    /***/
+	    public function getViewListaExigibilidad($exigibilidad)
+	    {
+	    	echo "<option> - </option>";
+	    	if ( $exigibilidad > 0 ) {
+	    		for ( $i = 1; $i <= $exigibilidad ; $i++) {
+	    			 echo "<option value='" . $i . "'>" . $i . "</option>";
+	    		}
+	    	} else {
+	    		echo "<option> - </option>";
+	    	}
+			return;
+	    }
+
 
 	}
  ?>
