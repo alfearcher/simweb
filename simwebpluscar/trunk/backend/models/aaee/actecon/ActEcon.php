@@ -46,6 +46,7 @@
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 	use backend\models\aaee\acteconingreso\ActEconIngreso;
+	use backend\models\utilidad\exigibilidad\Exigibilidad;
 
 
 	/**
