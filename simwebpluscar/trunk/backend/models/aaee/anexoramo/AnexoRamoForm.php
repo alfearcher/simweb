@@ -156,16 +156,18 @@
 	    public function attributeLabels()
 	    {
 	        return [
-	        	'id_anexo_ramo' => Yii::t('backend', 'Id. Record'),
-	            'id_contribuyente' => Yii::t('backend', 'Id. Taxpayer'),
-	            'nro_solicitud' => Yii::t('backend', 'Request'),
-	            'fecha_inicio' => Yii::t('backend', 'Begin Date'),
-	            'fecha_desde' => Yii::t('backend', 'Fiscal Start Date'),
-	            'fecha_hasta' => Yii::t('backend', 'Fiscal End Date'),
-	            'periodo' => Yii::t('backend', 'Period'),
-	            'ano_impositivo' => Yii::t('backend', 'Fiscal Year'),
-	            'ano_catalogo' => Yii::t('backend', 'Category Year'),
-	            'rubro' => Yii::t('backend', 'Category'),
+	        	'id_anexo_ramo' => Yii::t('frontend', 'Id. Record'),
+	            'id_contribuyente' => Yii::t('frontend', 'Id. Taxpayer'),
+	            'nro_solicitud' => Yii::t('frontend', 'Request'),
+	            'fecha_desde' => Yii::t('frontend', 'Fiscal Start Date'),
+	            'fecha_hasta' => Yii::t('frontend', 'Fiscal End Date'),
+	            'periodo' => Yii::t('frontend', 'Period'),
+	            'ano_impositivo' => Yii::t('frontend', 'Fiscal Year'),
+	            'dni' => Yii::t('frontend', 'DNI'),
+	            'razon_social' => Yii::t('frontend', 'Company Name'),
+	            'domicilio_fiscal' => Yii::t('frontend', 'Addrres Office'),
+	            'id_sim' => Yii::t('frontend', 'License'),
+	            'rubro' => Yii::t('frontend', 'Category'),
 	        ];
 	    }
 
