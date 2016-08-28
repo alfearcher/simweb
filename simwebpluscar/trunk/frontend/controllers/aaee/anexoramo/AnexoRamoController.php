@@ -261,10 +261,19 @@
 		{
 			$idImpuesto = 0;
 			$request = Yii::$app->request;
-//die(var_dump($request->get()));
+
 			// Se capta el id-impuesto de act-econ.
 			$idImpuesto = $request->get('id');
 
+			$idContribuyente = $_SESSION['idContribuyente'];
+			$searchRamo = New AnexoRamoSearch($idContribuyente);
+
+			// Se espera recibir un arreglo con los atributos de la entidad respectiva.
+			$exigibilidad = $searchRamo->getExigibilidadSegunIdImpuesto($idImpuesto);
+			if ( count($exigibilidad) > 0 ) {
+				return $searchRamo->getViewListaExigibilidad($exigibilidad['exigibilidad']);
+			}
+			return "<option> - </option>";
 		}
 
 
