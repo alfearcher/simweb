@@ -185,6 +185,28 @@ class AdministrarCalcomaniaFuncionarioForm extends Model
 
     }
 
+    public function busquedaCalcomaniaAsignada($anoImpositivo, $nroCalcomania)
+    {
+      $buscar =  calcomania::find()
+                          ->where([
+                          'ano_impositivo' => $anoImpositivo,
+                          'nro_calcomania' => $nroCalcomania,
+
+                          ])
+                          ->andWhere([
+                            'in', 'estatus', [0,1]
+
+                            ])
+                          ->all();
+            
+            if($buscar == true)
+            {
+              return true;
+            }else{
+              return false;
+            }
+    }
+
 
 
     
