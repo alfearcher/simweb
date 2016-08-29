@@ -124,13 +124,12 @@
 										<div class="ano-impositivo">
 					                		<?= $form->field($model, 'ano_impositivo')->dropDownList($listaAño,[
 	                																	 			'id' => 'ano-impositivo',
-	                																	 			'name' => 'ano-impositivo',
 	                																	 			'style' => 'width: 100%;',
 	                                                                     				 			'prompt' => Yii::t('backend', 'Select..'),
 	                                                                     				 			'onchange' => '$.post( "' . Yii::$app->urlManager
                                                                                                                                          ->createUrl('/aaee/anexoramo/anexo-ramo/lista-periodo') . '&id=' . '" + $(this).val(),
                                                                                                                                          		 													function( data ) {
-                                                                                                                                                                                                        $( "select#id-periodo" ).html( data );
+                                                                                                                                                                                                        $( "select#periodo" ).html( data );
                                                                                                                                                                                                     });'
 				                                                                			])->label(false)
 					    					?>
@@ -141,7 +140,6 @@
 										<div class="periodo">
 					                		<?= $form->field($model, 'periodo')->dropDownList([],[
             																	 			'id' => 'periodo',
-            																	 			'name' => 'periodo',
             																	 			'style' => 'width: 100%;',
                                                                  				 			'prompt' => Yii::t('backend', '-'),
                                                                 						])->label(false)
