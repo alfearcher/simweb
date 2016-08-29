@@ -87,6 +87,7 @@
 
 		const SCENARIO_FRONTEND = 'frontend';
 		const SCENARIO_BACKEND = 'backend';
+		const SCENARIO_SEARCH = 'search';
 
 		/**
 		 * Identificador de  configuracion d ela solicitud. Se crea cuando se
@@ -198,7 +199,7 @@
 
 				$model = New AnexoRamoForm();
 				$formName = $model->formName();
-				$model->scenario = self::SCENARIO_FRONTEND;
+				$model->scenario = self::SCENARIO_SEARCH;
 
 				if ( isset($postData['btn-back-form']) ) {
 					if ( $postData['btn-back-form'] == 3 ) {
@@ -212,17 +213,33 @@
 					}
 				}
 
+				if ( isset($postData['btn-create']) ) {
+					if ( $postData['btn-create'] == 4 ) {
+						$model->scenario = self::SCENARIO_FRONTEND;
+					}
+				}
+
+
+				if ( isset($postData['btn-accept']) ) {
+					if ( $postData['btn-accept'] == 1 ) {
+						$model->scenario = self::SCENARIO_SEARCH;
+//die(var_dump($postData));
+
+					}
+				}
+
 		  		if ( $model->load($postData)  && Yii::$app->request->isAjax ) {
 					Yii::$app->response->format = Response::FORMAT_JSON;
 					return ActiveForm::validate($model);
 		      	}
 
 
+
 		      	// Se muestra el form de la solicitud.
 		      	// Datos generales del contribuyente.
 		      	$searchRamo = New AnexoRamoSearch($idContribuyente);
-		      	$datos = $searchRamo->getDatosContribuyente();
-		  		if ( isset($datos) ) {
+		      	$findModel = $searchRamo->findContribuyente();
+		  		if ( isset($findModel) ) {
 
 		  			$arregloRubro = isset($_SESSION['arrayIdRubros']) ? $_SESSION['arrayIdRubros'] : [];
 
@@ -242,7 +259,7 @@
 		  			$listaAño = $searchRamo->getListaAnoRegistrado();
 		  			return $this->render('/aaee/anexo-ramo/_create', [
 					  											'model' => $model,
-					  											'datos' => $datos,
+					  											'findModel' => $findModel,
 					  											'activarBotonCreate' => $activarBotonCreate,
 					  											'listaAño' => $listaAño,
 					  					]);
@@ -259,19 +276,23 @@
 		/***/
 		public function actionListaPeriodo()
 		{
+			$model = New AnexoRamoForm();
+			$formName = $model->formName();
+			$model->scenario = self::SCENARIO_SEARCH;
 			$idImpuesto = 0;
 			$request = Yii::$app->request;
 
 			// Se capta el id-impuesto de act-econ.
 			$idImpuesto = $request->get('id');
 
+			$model->load($request->bodyParams);
 			$idContribuyente = $_SESSION['idContribuyente'];
 			$searchRamo = New AnexoRamoSearch($idContribuyente);
 
 			// Se espera recibir un arreglo con los atributos de la entidad respectiva.
 			$exigibilidad = $searchRamo->getExigibilidadSegunIdImpuesto($idImpuesto);
 			if ( count($exigibilidad) > 0 ) {
-				return $searchRamo->getViewListaExigibilidad($exigibilidad['exigibilidad']);
+				return $searchRamo->getViewListaExigibilidad($exigibilidad);
 			}
 			return "<option> - </option>";
 		}
