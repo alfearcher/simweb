@@ -152,9 +152,9 @@ class AdministrarCalcomaniaFuncionarioController extends Controller
 
     public function actionSeleccionarCalcomania($errorCheck = "")
     {
-
+          $buscar = new AdministrarCalcomaniaFuncionarioForm();
+          $anoImpositivo = date('Y');
           $idLote = $_SESSION['idLote'];
-
           $busquedaLote = LoteSearch::find()
                                       ->where([
                                       'id_lote_calcomania' => $idLote,
@@ -165,10 +165,13 @@ class AdministrarCalcomaniaFuncionarioController extends Controller
           $rangoFinal = $busquedaLote[0]->rango_final;
 
           $rango = range($rangoInicial,$rangoFinal);
-
+          $prueba = [];
           foreach($rango as $key=>$value){
-           
-             $prueba[$value] = ['id' => $value, 'Calcomania' => $value];
+             $buscarCalcomania = $buscar->busquedaCalcomaniaAsignada($anoImpositivo, $value);
+
+                if($buscarCalcomania == false){
+                    $prueba[$value] = ['id' => $value, 'Calcomania' => $value];
+                } 
 
           }
           //$p = array_values($prueba);
