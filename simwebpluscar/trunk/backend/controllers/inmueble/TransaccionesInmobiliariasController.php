@@ -115,6 +115,9 @@ class TransaccionesInmobiliariasController extends Controller
                   
                 if (!\Yii::$app->user->isGuest){                                      
             
+                     $calculo = New TransaccionInmobiliaria()
+                     $añoImpositivo = date('Y');
+                     $monto = iniciarCalculoTransaccion($model->precio_inmueble, $añoImpositivo, $model->tipo_transaccion)
 
                      $id_impuesto = $model->id_impuesto;                  //identificador del inpuesto inmobiliario
                      $id_comprador = $model->id_comprador;                //identidad del contribuyente comprador
@@ -123,14 +126,11 @@ class TransaccionesInmobiliariasController extends Controller
                      $planilla = $model->planilla;                        //planilla de la transaccion
                      $precio_inmueble = $model->precio_inmueble;          // precio del inmueble
                      $tipo_transaccion = $model->tipo_transaccion;        //tipo de transaccion inmobiliaria
-                     $usuario = $model->usuario;                          //usuario funcionario
-                     $fecha_hora = $model->fecha_hora;                    //fecha y hora de la transaccion
+                     $usuario = yii::$app->user->username;                          //usuario funcionario
+                     $fecha_hora = date('Y-m-d h:i:s');                   //fecha y hora de la transaccion
                      $observacion = $model->observacion;                  //observaciones
                      $inactivo = $model->inactivo;                        //inactivo
                      
-                     
-                     
-                      
 
                    //--------------TRY---------------
                         $arrayDatos = ['id_comprador' => $id_comprador,
@@ -144,8 +144,7 @@ class TransaccionesInmobiliariasController extends Controller
                                        'fecha_hora' => $fecha_hora,
                                        'observacion' => $observacion,
                                        'inactivo' => $inactivo,
-                                       
-                                       ]; 
+                                      ]; 
 
                         $tableName = 'transacciones_inmobiliarias'; 
 
