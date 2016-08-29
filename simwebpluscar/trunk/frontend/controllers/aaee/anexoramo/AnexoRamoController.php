@@ -88,6 +88,7 @@
 		const SCENARIO_FRONTEND = 'frontend';
 		const SCENARIO_BACKEND = 'backend';
 		const SCENARIO_SEARCH = 'search';
+		const SCENARIO_DEFAULT = 'default';
 
 		/**
 		 * Identificador de  configuracion d ela solicitud. Se crea cuando se
@@ -199,7 +200,15 @@
 
 				$model = New AnexoRamoForm();
 				$formName = $model->formName();
-				$model->scenario = self::SCENARIO_SEARCH;
+				$model->scenario = self::SCENARIO_DEFAULT;
+
+				// Se muestra el form de la solicitud.
+		      	// Datos generales del contribuyente.
+		      	$searchRamo = New AnexoRamoSearch($idContribuyente);
+		      	$findModel = $searchRamo->findContribuyente();
+		      	$modelRubro = $searchRamo->findActEconIngresos(0,0);
+		  		$dataProviderRubro = $searchRamo->inicializarDataProvider($modelRubro);
+
 
 				if ( isset($postData['btn-back-form']) ) {
 					if ( $postData['btn-back-form'] == 3 ) {
@@ -216,6 +225,7 @@
 				if ( isset($postData['btn-create']) ) {
 					if ( $postData['btn-create'] == 4 ) {
 						$model->scenario = self::SCENARIO_FRONTEND;
+						$model->load($postData);
 					}
 				}
 
@@ -223,8 +233,7 @@
 				if ( isset($postData['btn-accept']) ) {
 					if ( $postData['btn-accept'] == 1 ) {
 						$model->scenario = self::SCENARIO_SEARCH;
-//die(var_dump($postData));
-
+						$model->load($postData);
 					}
 				}
 
@@ -234,13 +243,29 @@
 		      	}
 
 
+		      	if ( $model->load($postData) ) {
+			    	if ( $model->validate() ) {
+			    		if ( isset($postData['btn-accept']) ) {
+							if ( $postData['btn-accept'] == 1 ) {
+								// Se validaron los datos de busqueda, año y periodo.
+								$datos = $postData[$formName];
+								$idImpuesto = $datos['ano_impositivo'];		// En el combo aparece el año, pero
+								 											// en realidad los que se envia por el
+								 											// post es el identificador de la entidad
+								 											// "act-econ".
+								$periodo = $datos['periodo'];
+								if ( $datos['id_contribuyente'] == $_SESSION['idContribuyente'] ) {
+									//$searchRamo = New AnexoRamoSearch($_SESSION['idContribuyente']);
+									$dataProviderRubro = $searchRamo->getDataProviderRubrosRegistradosSegunIdImpuesto($idImpuesto, $periodo);
+								}
 
-		      	// Se muestra el form de la solicitud.
-		      	// Datos generales del contribuyente.
-		      	$searchRamo = New AnexoRamoSearch($idContribuyente);
-		      	$findModel = $searchRamo->findContribuyente();
+							}
+						}
+			    	}
+			    }
+
+
 		  		if ( isset($findModel) ) {
-
 		  			$arregloRubro = isset($_SESSION['arrayIdRubros']) ? $_SESSION['arrayIdRubros'] : [];
 
 		  			$validateRubroSeleccionado = false;
@@ -262,6 +287,7 @@
 					  											'findModel' => $findModel,
 					  											'activarBotonCreate' => $activarBotonCreate,
 					  											'listaAño' => $listaAño,
+					  											'dataProviderRubro' => $dataProviderRubro,
 					  					]);
 
 		  		} else {
@@ -276,16 +302,12 @@
 		/***/
 		public function actionListaPeriodo()
 		{
-			$model = New AnexoRamoForm();
-			$formName = $model->formName();
-			$model->scenario = self::SCENARIO_SEARCH;
 			$idImpuesto = 0;
 			$request = Yii::$app->request;
 
 			// Se capta el id-impuesto de act-econ.
 			$idImpuesto = $request->get('id');
 
-			$model->load($request->bodyParams);
 			$idContribuyente = $_SESSION['idContribuyente'];
 			$searchRamo = New AnexoRamoSearch($idContribuyente);
 
