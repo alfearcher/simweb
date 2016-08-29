@@ -95,15 +95,15 @@ $this->title = Yii::t('frontend', 'Select the Stickers');
                                 ],
         ],
     ]); ?>
-        <div class="col-sm-5">
+        <div class="col-sm-7">
     
-     <?= Html::submitButton("Submit", ["class" => "btn btn-success", 'style' => 'height:30px;width:140px;']) ?>
+     <?= Html::submitButton("Submit", ["class" => "btn btn-success", 'style' => 'height:30px;width:80px;']) ?>
 
     </div>
 
     <p>
        
-        <?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) ?>
+        <?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger',  'style' => 'height:30px;width:70px;', 'margin-left:100px;']) ?>
     </p>
 
   
