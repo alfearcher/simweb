@@ -48,6 +48,7 @@
 						        'findModel' => $findModel,
 						        'activarBotonCreate' => $activarBotonCreate,
 						        'listaAño' => $listaAño,
+						        'dataProviderRubro' => $dataProviderRubro,
 					    ]) ?>
 </div>
 
