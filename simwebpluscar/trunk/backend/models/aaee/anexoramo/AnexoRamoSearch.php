@@ -52,6 +52,7 @@
 	use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomicaSearch;
 	use common\models\contribuyente\ContribuyenteBase;
 	use backend\models\aaee\actecon\ActEcon;
+	use backend\models\aaee\acteconingreso\ActEconIngreso;
 	use backend\models\aaee\acteconingreso\ActEconIngresoForm;
 	use common\models\ordenanza\OrdenanzaBase;
 	use backend\models\aaee\rubro\RubroForm;
@@ -316,13 +317,13 @@
 	    /**
 	     * Metodo que permite obtener un dataProvider que permite generar un catalogo de los
 	     * rubros según un año y paramatros adicionales.
-	     * @param  [type] $anoImpositivo [description]
+	     * @param  integer $anoImpositivo [description]
 	     * @param  string $params        [description]
 	     * @return returna un a instancia de tipo dataProvider.
 	     */
-	    public function getDataProvider($anoImpositivo)
+	    public function getDataProvider($anoImpositivo, $params = '')
 	    {
-	    	return RubroForm::getDataProviderRubro($anoImpositivo);
+	    	return RubroForm::getDataProviderRubro($anoImpositivo, $params);
 	    }
 
 
@@ -518,7 +519,12 @@
 
 
 
-	    /***/
+	    /**
+	     * Metodo que crea un vista tipo lista-combo para ser mostrada.
+	     * @param  array $exigibilidad arreglo que contiene los atributos de la entidad
+	     * respectiva.
+	     * @return view retorna una lista de elementos peridod - descripcion.
+	     */
 	    public function getViewListaExigibilidad($exigibilidad)
 	    {
 	    	echo "<option> - </option>";
@@ -534,12 +540,62 @@
 
 
 
-	    /***/
+	    /**
+	     * Metodo que realiza un find del contribuyente. Creando un modelo
+	     * de la entidad respectiva.
+	     * @return active record retorna un modelo de la entidad "contribuyentes".
+	     */
 	    public function findContribuyente()
 	    {
 	    	$findModel = ContribuyenteBase::findOne($this->_id_contribuyente);
 			return isset($findModel) ? $findModel : null;
 	    }
+
+
+
+
+	    /***/
+	    public function findActEconIngresos($idImpuesto, $periodo)
+	    {
+	    	$tabla = ActEconIngreso::tableName();
+	    	$findModel = ActEconIngreso::find()->where('id_impuesto =:id_impuesto',
+	    													[':id_impuesto' => $idImpuesto])
+	    									   ->andWhere('exigibilidad_periodo =:exigibilidad_periodo',
+	    									   				[':exigibilidad_periodo' => $periodo])
+	    									   ->andWhere($tabla . '.inactivo =:inactivo', [':inactivo' => 0]);
+
+	    	return isset($findModel) ? $findModel : null;
+	    }
+
+
+
+
+	    /***/
+	    public function getDataProviderRubrosRegistradosSegunIdImpuesto($idImpuesto, $periodo)
+	    {
+	    	$query = self::findActEconIngresos($idImpuesto, $periodo)->joinWith('rubroDetalle')->all();
+	    	$dataProvider = New ActiveDataProvider([
+	    			'query' => $query,
+	    		]);
+
+	    	return $dataProvider;
+	    }
+
+
+
+	    /***/
+	    public function inicializarDataProvider($model)
+	    {
+	    	$query = $model;
+
+	    	$dataProvider = New ActiveDataProvider([
+	    			'query' => $query,
+	    		]);
+	    	$query->where('0=1');
+
+	    	return $dataProvider;
+	    }
+
 
 
 	}

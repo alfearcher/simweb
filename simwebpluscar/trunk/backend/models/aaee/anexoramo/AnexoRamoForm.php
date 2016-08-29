@@ -73,6 +73,7 @@
 		const SCENARIO_FRONTEND = 'frontend';
 		const SCENARIO_BACKEND = 'backend';
 		const SCENARIO_SEARCH = 'search';
+		const SCENARIO_DEFAULT = 'default';
 
 		/**
      	* @inheritdoc
@@ -110,8 +111,8 @@
         					'id_contribuyente',
         					'ano_impositivo',
         					'periodo',
-        		]
-
+        		],
+        		self::SCENARIO_DEFAULT => Model::scenarios()
         	];
     	}
 
@@ -131,7 +132,7 @@
 	        	[['id_contribuyente', 'ano_impositivo',
 	        	  'periodo',
 	        	  'fecha_desde', 'fecha_hasta'],
-	        	  'required', 'on' => 'frontend',
+	        	  'required', 'on' => 'backend',
 	        	  'message' => Yii::t('frontend','{attribute} is required')],
 	        	 [['id_contribuyente', 'ano_impositivo',
 	        	  'periodo',],
