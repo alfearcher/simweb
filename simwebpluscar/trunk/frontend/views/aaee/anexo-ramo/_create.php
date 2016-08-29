@@ -43,9 +43,9 @@
 
 	?>
 <div class="anexo-ramo-form-create">
-    <?= $this->render('anexo-ramo-form', [
+	<?= $this->render('anexo-ramo-form', [
 						        'model' => $model,
-						        'datos' => $datos,
+						        'findModel' => $findModel,
 						        'activarBotonCreate' => $activarBotonCreate,
 						        'listaAño' => $listaAño,
 					    ]) ?>

@@ -67,13 +67,14 @@
  		$form = ActiveForm::begin([
  			'id' => 'id-anexo-ramo-form',
  			'method' => 'post',
+ 			// 'action' => $url,
  			'enableClientValidation' => true,
  			'enableAjaxValidation' => false,
  			'enableClientScript' => true,
  		]);
  	?>
 
-	<?=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $datos['id_contribuyente']])->label(false);?>
+	<?=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $findModel['id_contribuyente']])->label(false);?>
 
 	<meta http-equiv="refresh">
     <div class="panel panel-primary"  style="width: 110%;">
@@ -97,31 +98,9 @@
 									<div class="col-sm-4" style="margin-left: 15px;width: 90%">
 										<div class="row">
 											<div class="id-contribuyente">
-												<?= DetailView::widget([
-														'model' => $model,
-									    				'attributes' => [
-										    				[
-										    					'label' => $model->getAttributeLabel('id_contribuyente'),
-										    					'value' => $datos['id_contribuyente'],
-										    				],
-										    				[
-										    					'label' => $model->getAttributeLabel('dni'),
-										    					'value' => $datos['naturaleza'] . '-'. $datos['cedula'] . '-'. $datos['cedula'],
-										    				],
-										    				[
-										    					'label' => $model->getAttributeLabel('razon_social'),
-										    					'value' => $datos['razon_social'],
-										    				],
-										    				[
-										    					'label' => $model->getAttributeLabel('domicilio_fiscal'),
-										    					'value' => $datos['domicilio_fiscal'],
-										    				],
-										    				[
-										    					'label' => $model->getAttributeLabel('id_sim'),
-										    					'value' => $datos['id_sim'],
-										    				],
-										    			],
-													])
+												<?= $this->render('@common/views/contribuyente/datos-contribuyente', [
+							        											'model' => $findModel,
+							        							])
 												?>
 											</div>
 										</div>
@@ -144,23 +123,24 @@
 									<div class="col-sm-2" style="width: 12%;">
 										<div class="ano-impositivo">
 					                		<?= $form->field($model, 'ano_impositivo')->dropDownList($listaAño,[
-	                																	 			'id' => 'id-ano-impositivo',
+	                																	 			'id' => 'ano-impositivo',
 	                																	 			'name' => 'ano-impositivo',
 	                																	 			'style' => 'width: 100%;',
 	                                                                     				 			'prompt' => Yii::t('backend', 'Select..'),
 	                                                                     				 			'onchange' => '$.post( "' . Yii::$app->urlManager
-                                                                                                                                             ->createUrl('/aaee/anexoramo/anexo-ramo/lista-periodo') . '&id=' . '" + $(this).val(), function( data ) {
-                                                                                                                                                                                                            $( "select#id-periodo" ).html( data );
-                                                                                                                                                                                                        });'
+                                                                                                                                         ->createUrl('/aaee/anexoramo/anexo-ramo/lista-periodo') . '&id=' . '" + $(this).val(),
+                                                                                                                                         		 													function( data ) {
+                                                                                                                                                                                                        $( "select#id-periodo" ).html( data );
+                                                                                                                                                                                                    });'
 				                                                                			])->label(false)
 					    					?>
 										</div>
 	        						</div>
 
-									<div class="col-sm-2" style="width: 8%;margin-left: -25px;">
+									<div class="col-sm-2" style="width: 25%;margin-left: -25px;">
 										<div class="periodo">
 					                		<?= $form->field($model, 'periodo')->dropDownList([],[
-            																	 			'id' => 'id-periodo',
+            																	 			'id' => 'periodo',
             																	 			'name' => 'periodo',
             																	 			'style' => 'width: 100%;',
                                                                  				 			'prompt' => Yii::t('backend', '-'),
@@ -169,15 +149,19 @@
 										</div>
 	        						</div>
 
-									<div class="col-sm-2" style="width: 20%;margin-left: -25px;">
-										<div class="exigibilidad">
-					                		<?= Html::input('text', 'exigibilidad', '',
-												 								[
-												 									'class' => 'form-control',
-												 									'style' => 'width: 120%;',
-												 									'disabled' => 'disabled',
-												 								])
-					    					?>
+									<div class="col-sm-2" style="width: 18%;margin-top: -22px;">
+										<div class="form-group">
+											<?= Html::submitButton(Yii::t('frontend', Yii::t('frontend', 'Accept')),
+																								  [
+																									'id' => 'btn-accept',
+																									'class' => 'btn btn-primary',
+																									'value' => 4,
+																									'style' => 'width: 100%; margin-left: 100px;margin-top:20px;',
+																									'name' => 'btn-accept',
+																									'value' => 1,
+																									//'disabled' => ( $activarBotonCreate == 1 ) ? false : true,
+																								  ])
+											?>
 										</div>
 	        						</div>
 
