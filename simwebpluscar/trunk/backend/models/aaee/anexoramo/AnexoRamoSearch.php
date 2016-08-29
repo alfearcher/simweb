@@ -522,14 +522,23 @@
 	    public function getViewListaExigibilidad($exigibilidad)
 	    {
 	    	echo "<option> - </option>";
-	    	if ( $exigibilidad > 0 ) {
-	    		for ( $i = 1; $i <= $exigibilidad ; $i++) {
-	    			 echo "<option value='" . $i . "'>" . $i . "</option>";
+	    	if ( count($exigibilidad) > 0 ) {
+	    		for ( $i = 1; $i <= (int)$exigibilidad['exigibilidad']; $i++) {
+	    			 echo "<option value='" . $i . "'>" . $i . " - " . $exigibilidad['unidad'] . "</option>";
 	    		}
 	    	} else {
 	    		echo "<option> - </option>";
 	    	}
 			return;
+	    }
+
+
+
+	    /***/
+	    public function findContribuyente()
+	    {
+	    	$findModel = ContribuyenteBase::findOne($this->_id_contribuyente);
+			return isset($findModel) ? $findModel : null;
 	    }
 
 
