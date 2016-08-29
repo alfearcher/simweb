@@ -74,7 +74,7 @@
 		        					   	['label' => 'Renovación de Licencias', 'url' => ['ordenanza/impuesto/ordenanza/index']],
 		        					   	['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Modificion de Datos',
 		        					   		'items' => [
-		        					   				['label' => 'Anexo de Ramo', 'url' => '#'],
+		        					   				['label' => 'Anexo de Ramo', 'url' => ['/aaee/anexoramo/anexo-ramo/index', 'id' => 70]],
 		        					   				['label' => 'Desincorporacion de Ramo', 'url' => '#'],
 		        					   				['label' => 'Corrección de RIF', 'url' => ['/aaee/correccioncedularif/correccion-cedula-rif/index', 'id' => 87]],
 		        					   				['label' => 'Corrección de Razón Social', 'url' => ['/aaee/correccionrazonsocial/correccion-razon-social/index', 'id' => 95]],
