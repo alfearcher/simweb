@@ -147,6 +147,8 @@
 		        						//['label' => 'Renovación de Propagandas', 'url' => '#'],
 		        						['label' => 'Desincorporación de Propaganda', 'url' => ['propaganda/desincorporarpropaganda/desincorporar-propaganda/vista-seleccion', 'id' => 97]],
 
+		        						['label' => 'Asignar Patrocinador', 'url' => ['propaganda/patrocinador/asignar-patrocinador-propaganda/seleccion', 'id' => 102]],
+
 		        						['label' => 'Catalogo', 'url' => ['propaganda/catalogo/catalogo-propaganda/vista-catalogo-propaganda']],
 
 		        						//['label' => 'Solvencia', 'url' => '#'],
