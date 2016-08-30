@@ -54,6 +54,7 @@
     use common\models\solicitudescontribuyente\inmueble\ProcesarActualizacionDatosInmuebleUrbano;
     use common\models\solicitudescontribuyente\inmueble\ProcesarCambioNumeroCatastralInmuebleUrbano;
     use common\models\solicitudescontribuyente\inmueble\ProcesarCambioPropiedadHorizontalInmuebleUrbano;
+    use common\models\solicitudescontribuyente\inmueble\ProcesarDesincorporacionInmuebleUrbano;
 
 
  
@@ -166,6 +167,14 @@
  
                 } elseif ( $this->_model->tipo_solicitud == 31 ) {
                     //Modificar Avaluo
+
+                } elseif ( $this->_model->tipo_solicitud == 100 ) {
+                    //Desincorporacion
+                    $procesar = New ProcesarDesincorporacionInmuebleUrbano($this->_model,
+                                                                          $this->_evento,
+                                                                          $this->_conn,
+                                                                          $this->_conexion);
+                    $result = $procesar->procesarSolicitud();
 
                 }
 
