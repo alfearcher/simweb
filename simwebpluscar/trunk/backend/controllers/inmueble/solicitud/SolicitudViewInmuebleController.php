@@ -396,6 +396,26 @@
 			return false;
 		}
 
+		// tipo solicitud 100
+		private function actionMostrarSolicitudDesincorporacionInmueble()
+		{
+			if ( $this->model->nivel_aprobacion == 2 ) {
+					$modelSearch = New SlInmueblesUrbanosSearch($this->model->id_contribuyente);
+					$model = $modelSearch->findActualizacionDatos($this->model->nro_solicitud);
+
+					
+
+					return $this->render('@backend/views/inmueble/desincorporacion-inmuebles-urbanos/view-solicitud', [
+													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
+													'model' => $model,
+
+						]);
+			} 
+
+			return false;
+		}
+
+
 
 	}
 ?>

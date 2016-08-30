@@ -152,7 +152,7 @@ class InmueblesSearch extends InmueblesConsulta
     public function BusquedaInmueble($idInmueble, $idContribuyente)
     {
 
-        $buscarVehiculo = InmueblesConsulta::find()
+        $buscarInmueble = InmueblesConsulta::find()
                                             ->where([
                                             'id_impuesto' => $idInmueble,
                                             'id_contribuyente' => $idContribuyente,
@@ -161,9 +161,9 @@ class InmueblesSearch extends InmueblesConsulta
                                                 ])
                                             ->all();
 
-                if ($buscarVehiculo == true){
+                if ($buscarInmueble == true){
                     
-                    return $buscarVehiculo;
+                    return $buscarInmueble;
                 }
     }
 }

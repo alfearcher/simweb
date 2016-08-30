@@ -126,7 +126,7 @@ class TransaccionesInmobiliariasController extends Controller
                      $planilla = $model->planilla;                        //planilla de la transaccion
                      $precio_inmueble = $model->precio_inmueble;          // precio del inmueble
                      $tipo_transaccion = $model->tipo_transaccion;        //tipo de transaccion inmobiliaria
-                     $usuario = yii::$app->user->username;                          //usuario funcionario
+                     $usuario = yii::$app->user->identity->username;                          //usuario funcionario
                      $fecha_hora = date('Y-m-d h:i:s');                   //fecha y hora de la transaccion
                      $observacion = $model->observacion;                  //observaciones
                      $inactivo = $model->inactivo;                        //inactivo

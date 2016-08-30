@@ -150,4 +150,22 @@ class InmueblesSearch extends InmueblesUrbanosForm
 
         return $dataProvider;
     }
+
+    public function BusquedaInmueble($idInmueble, $idContribuyente)
+    {
+
+        $buscarInmueble = InmueblesConsulta::find()
+                                            ->where([
+                                            'id_impuesto' => $idInmueble,
+                                            'id_contribuyente' => $idContribuyente,
+                                            'inactivo' => 0,
+
+                                                ])
+                                            ->all();
+
+                if ($buscarInmueble == true){
+                    
+                    return $buscarInmueble;
+                }
+    }
 }
