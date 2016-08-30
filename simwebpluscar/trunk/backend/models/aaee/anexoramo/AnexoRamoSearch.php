@@ -447,7 +447,7 @@
 	    							   	])
 	    							    ->all();
 	    	if ( isset($findModel) ) {
-	    		$listaAño = ArrayHelper::map($findModel, 'id_impuesto', 'ano_impositivo');
+	    		$listaAño = ArrayHelper::map($findModel, 'ano_impositivo', 'ano_impositivo');
 	    	}
 
 	    	return $listaAño;
@@ -518,6 +518,23 @@
 
 
 
+	    /**
+	     * Metodo que permite obtener los parametros de la exigibilidad, segun el
+	     * año impositivo enviado.
+	     * @param  integer $añoImpositivo año fiscal en cuestion.
+	     * @return array retorna un arreglo con los atributos de la entidad
+	     * "exigibilidades", sino el arreglo sera vacio.
+	     */
+	    public function getExigibilidadSegunAnoImpositivo($añoImpositivo)
+	    {
+	    	$exigibilidad = [];
+	    	if ( $añoImpositivo > 0 ) {
+	    		$exigibilidad = OrdenanzaBase::getExigibilidadDeclaracion($añoImpositivo, 1);
+	    	}
+	    	return $exigibilidad;
+	    }
+
+
 
 	    /**
 	     * Metodo que crea un vista tipo lista-combo para ser mostrada.
@@ -555,15 +572,21 @@
 
 
 	    /***/
-	    public function findActEconIngresos($idImpuesto, $periodo)
+	    public function findRubrosRegistrados($añoImpositivo, $periodo)
 	    {
-	    	$tabla = ActEconIngreso::tableName();
-	    	$findModel = ActEconIngreso::find()->where('id_impuesto =:id_impuesto',
-	    													[':id_impuesto' => $idImpuesto])
+	    	$tablaAct = ActEcon::tableName();
+	    	$tablaRubro = Rubro::tableName();
+	    	$tablaIngreso = ActEconIngreso::tableName();
+	    	$findModel = ActEconIngreso::find()->where('id_contribuyente =:id_contribuyente',
+	    													[':id_contribuyente' => $this->_id_contribuyente])
+	    	                                   ->andwhere($tablaAct . '.ano_impositivo =:ano_impositivo',
+	    													[':ano_impositivo' => $añoImpositivo])
 	    									   ->andWhere('exigibilidad_periodo =:exigibilidad_periodo',
 	    									   				[':exigibilidad_periodo' => $periodo])
-	    									   ->andWhere($tabla . '.inactivo =:inactivo', [':inactivo' => 0]);
-
+	    									   ->andWhere($tablaIngreso . '.inactivo =:inactivo', [':inactivo' => 0])
+	    									   ->andWhere($tablaRubro . '.inactivo =:inactivo', [':inactivo' => 0])
+	    									   ->joinWith('actividadEconomica', 'INNER JOIN', false)
+	    									   ->joinWith('rubroDetalle', 'INNER JOIN');
 	    	return isset($findModel) ? $findModel : null;
 	    }
 
@@ -571,15 +594,18 @@
 
 
 	    /***/
-	    public function getDataProviderRubrosRegistradosSegunIdImpuesto($idImpuesto, $periodo)
+	    public function getDataProviderRubrosRegistrados($añoImpositivo, $periodo)
 	    {
-	    	$query = self::findActEconIngresos($idImpuesto, $periodo)->joinWith('rubroDetalle')->all();
+	    	$query = self::findRubrosRegistrados($añoImpositivo, $periodo);
+// die(var_dump($query));
 	    	$dataProvider = New ActiveDataProvider([
 	    			'query' => $query,
 	    		]);
-
+	    	$query->all();
 	    	return $dataProvider;
 	    }
+
+
 
 
 
