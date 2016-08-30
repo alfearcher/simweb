@@ -162,26 +162,32 @@ class AsignarPatrocinadorPropagandaForm extends Model
        
     }
 
-    public function busquedaPropaganda($idPropaganda, $idContribuyente)
+    public function busquedaPropaganda($anoImpo, $idContribuyente)
     {
-        //
-        $busqueda = Propaganda::find()
-                                ->where([
-                                    'id_contribuyente' => $idContribuyente,
-                                    'id_impuesto' => $idPropaganda,
-                                    'inactivo' => 0,
+     // die('llegue a search');
+
+        $idContribuyente = yii::$app->user->identity->id_contribuyente;
+
+
+        $query = Propaganda::find();
 
                                 
-                               
-                                ])
-                                ->one();
-                                //die(var_dump($busqueda));
+                             
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+           // die(var_dump($dataProvider)),
+        ]);
+        $query->where([
+           'ano_impositivo' => $anoImpo,
+           'id_contribuyente' => $idContribuyente,
+           'inactivo' => 0,
+            
+            ])
+        ->all();
+        
+        return $dataProvider;
 
-            if ($busqueda == true){
-                return $busqueda;
-            }else{
-                return false;
-            }
+        
     }
 
     public function verificarSolicitud($idConfig, $idPropaganda)
