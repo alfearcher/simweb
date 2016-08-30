@@ -22,13 +22,13 @@
  */
 
  /**
- *  @file ProcesarActualizacionDatosInmuebleUrbano.php
+ *  @file ProcesarDesincorporacionInmuebleUrbano.php
  *
  *  @author Alvaro Jose Fernandez ARcher
  *
  *  @date 08/08/2016
  *
- *  @class ProcesarActualizacionDatosInmuebleUrbano
+ *  @class ProcesarDesincorporacionInmuebleUrbano
  *  @brief
  *
  *
@@ -61,7 +61,7 @@
      * que esten relacionada con la aprobacion o negacion de la solicitud. la clase debe
      * entregar como respuesta un true o false.
      */
-    class ProcesarActualizacionDatosInmuebleUrbano extends SlInmueblesUrbanosSearch
+    class ProcesarDesincorporacionInmuebleUrbano extends SlInmueblesUrbanosSearch
     {
         private $_model;
 
@@ -289,13 +289,7 @@
 
                     $arregloDatosMaster = [
                                             
-                                            'direccion' => $camposModel['direccion'],
-                                            'casa_edf_qta_dom' => $camposModel['casa_edf_qta_dom'], 
-                                            'piso_nivel_no_dom' => $camposModel['piso_nivel_no_dom'], 
-                                            'apto_dom' => $camposModel['apto_dom'], 
-                                            'medidor' => $camposModel['medidor'], 
-                                            'observacion' => $camposModel['observacion'],
-                                            'tipo_ejido' => $camposModel['id_contribuyente'],
+                                            'inactivo' => 1,
 
                                          ]; 
                     $arregloCondicionMaster = [
