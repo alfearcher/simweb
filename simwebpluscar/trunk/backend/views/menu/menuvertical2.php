@@ -112,7 +112,7 @@ session_start();
 		        						['label' => 'Cambio a Propiedad Horizontal', 'url' => ['/inmueble/cambio-a-propiedad-horizontal-inmuebles-urbanos/index']],
 		        						['label' => 'Cambio de Otros Datos del Inmueble', 'url' => ['/inmueble/cambio-otros-datos-inmuebles-urbanos/index']],
 		        						['label' => 'Modificar Avaluo', 'url' => '#'],
-		        						['label' => 'Desincorporación de Inmueble', 'url' => '#'],
+		        						['label' => 'Desincorporación de Inmueble', 'url' => ['/inmueble/desincorporacion-inmuebles-urbanos/index']],
 
 		        			]
 		        		],
