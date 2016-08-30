@@ -165,41 +165,43 @@
 								</div> 		<!-- Fin de row -->
 
 <!-- INICIO RUBROS REGISTRADOS PARA EL AÑO-PERIODO -->
-								<div class="row">
-									<?= GridView::widget([
-											// Rubros registrados para el año-periodo.
-											'id' => 'grid-lista-rubro-registrado',
-	    									'dataProvider' => $dataProviderRubro,
-	    									'headerRowOptions' => ['class' => 'success'],
-	    									'columns' => [
-	    										['class' => 'yii\grid\SerialColumn'],
-								            	[
-								                    'label' => Yii::t('frontend', 'Category'),
-								                    'value' => function($data) {
-	                        										return $data->rubroDetalle->rubro;
-	                											},
-								                ],
-								                [
-								                    'label' => Yii::t('frontend', 'Year'),
-								                    'value' => function($data) {
-	                        										return $data->rubroDetalle->ano_impositivo;
-	                											},
-								                ],
-								                [
-								                    'label' => Yii::t('frontend', 'Descripcion'),
-								                    'value' => function($data) {
-	                        										return $data->rubroDetalle->descripcion;
-	                											},
-								                ],
-								                // [
-								                // 	'class' => 'yii\grid\CheckboxColumn',
-								                // 	'name' => 'chkRubro',
-								                // 	'multiple' => false,
-								                // ],
-								        	]
-										]);
-									?>
-
+								<div class="row"  style="padding-left: 10px; width: 100%;">
+									<div class="rubro-registrado">
+										<?= GridView::widget([
+												// Rubros registrados para el año-periodo.
+												'id' => 'grid-lista-rubro-registrado',
+		    									'dataProvider' => $dataProviderRubro,
+		    									'headerRowOptions' => ['class' => 'success'],
+		    									'columns' => [
+		    										['class' => 'yii\grid\SerialColumn'],
+									            	[
+									                    'label' => Yii::t('frontend', 'Category'),
+									                    'value' => function($data) {
+		                        										return $data->rubroDetalle->rubro;
+		                											},
+									                ],
+									                [
+									                    'label' => Yii::t('frontend', 'Year'),
+									                    'value' => function($data) {
+		                        										return $data->rubroDetalle->ano_impositivo;
+		                											},
+									                ],
+									                [
+									                    'label' => Yii::t('frontend', 'Perid'),
+									                    'value' => function($data) {
+		                        										return $data->exigibilidad_periodo;
+		                											},
+									                ],
+									                [
+									                    'label' => Yii::t('frontend', 'Descripcion'),
+									                    'value' => function($data) {
+		                        										return $data->rubroDetalle->descripcion;
+		                											},
+									                ],
+									        	]
+											]);
+										?>
+									</div>
 								</div>
 <!-- FIN DE RUBROS REGISTRADOS PARA EL AÑO-PERIODO -->
 
