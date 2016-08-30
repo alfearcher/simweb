@@ -201,7 +201,7 @@ class AsignarCalcomaniaContribuyenteController extends Controller
                       }  
                     
 
-                    }
+                }
 
               }elseif(isset($postData['btn-busqueda-id-juridico'])){
                   if ($model->validate()){
@@ -325,9 +325,7 @@ class AsignarCalcomaniaContribuyenteController extends Controller
   public function actionSeleccionarCalcomania()
   {
    
-       
-
-        $searchModel = new BusquedaNaturalForm();
+      $searchModel = new BusquedaNaturalForm();
 
             $dataProvider = $searchModel->searchRango();
 
