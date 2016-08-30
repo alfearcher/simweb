@@ -206,7 +206,10 @@
 		      	// Datos generales del contribuyente.
 		      	$searchRamo = New AnexoRamoSearch($idContribuyente);
 		      	$findModel = $searchRamo->findContribuyente();
-		      	$modelRubro = $searchRamo->findActEconIngresos(0,0);
+
+		      	// Se inicializa el dataprovider del grid que contiene los rubros
+		      	// registrados del contribuyente.
+		      	$modelRubro = $searchRamo->findRubrosRegistrados(0,0);
 		  		$dataProviderRubro = $searchRamo->inicializarDataProvider($modelRubro);
 
 
@@ -249,14 +252,12 @@
 							if ( $postData['btn-accept'] == 1 ) {
 								// Se validaron los datos de busqueda, año y periodo.
 								$datos = $postData[$formName];
-								$idImpuesto = $datos['ano_impositivo'];		// En el combo aparece el año, pero
-								 											// en realidad los que se envia por el
-								 											// post es el identificador de la entidad
-								 											// "act-econ".
+								$añoImpositivo = $datos['ano_impositivo'];		// En el combo aparece el año, pero
+								 												// "act-econ".
 								$periodo = $datos['periodo'];
+
 								if ( $datos['id_contribuyente'] == $_SESSION['idContribuyente'] ) {
-									//$searchRamo = New AnexoRamoSearch($_SESSION['idContribuyente']);
-									$dataProviderRubro = $searchRamo->getDataProviderRubrosRegistradosSegunIdImpuesto($idImpuesto, $periodo);
+									$dataProviderRubro = $searchRamo->getDataProviderRubrosRegistrados($añoImpositivo, $periodo);
 								}
 
 							}
@@ -299,22 +300,37 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que permite obtener los periodos que existe en un año especifico,
+		 * los periodos representan el nivel de exigibilidad (cantidad de periodo)
+		 * que se debe cumplir en un año. Cada periodo representa un lapso de tiempo
+		 * especifico. Esquema:
+		 * 1 - Anual.
+		 * 2 - Semestral.
+		 * 3 - Cuatrimestre.
+		 * 4 - Trimestral.
+		 * 6 - Bimensual.
+		 * 12 - Mensual.
+		 * 99 - No definido.
+		 * @return view
+		 */
 		public function actionListaPeriodo()
 		{
-			$idImpuesto = 0;
+			$añoImpositivo = 0;
 			$request = Yii::$app->request;
 
-			// Se capta el id-impuesto de act-econ.
-			$idImpuesto = $request->get('id');
+			// Se capta el año impositivo de act-econ.
+			$añoImpositivo = $request->get('id');
 
-			$idContribuyente = $_SESSION['idContribuyente'];
-			$searchRamo = New AnexoRamoSearch($idContribuyente);
+			$idContribuyente = isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : 0;
+			if ( $idContribuyente > 0 ) {
+				$searchRamo = New AnexoRamoSearch($idContribuyente);
 
-			// Se espera recibir un arreglo con los atributos de la entidad respectiva.
-			$exigibilidad = $searchRamo->getExigibilidadSegunIdImpuesto($idImpuesto);
-			if ( count($exigibilidad) > 0 ) {
-				return $searchRamo->getViewListaExigibilidad($exigibilidad);
+				// Se espera recibir un arreglo con los atributos de la entidad respectiva.
+				$exigibilidad = $searchRamo->getExigibilidadSegunAnoImpositivo($añoImpositivo);
+				if ( count($exigibilidad) > 0 ) {
+					return $searchRamo->getViewListaExigibilidad($exigibilidad);
+				}
 			}
 			return "<option> - </option>";
 		}
