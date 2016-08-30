@@ -118,32 +118,23 @@ class AsignarPatrocinadorPropagandaController extends Controller
 
 
 
-
+  /**
+   * [actionBuscarPropaganda description] Metodo que realiza la busqueda por año impositivo e id contribuyente para mostrar las propagandas asociadas al mismo.
+   * @return [type] [description] Retorna el formulario con las propagandas activas
+   */
   public function actionBuscarPropaganda()
   {
+      $anoImpo = $_SESSION['anoImpositivo'];
+      $idContribuyente = yii::$app->user->identity->id_contribuyente;
+      $modelSearch = new AsignarPatrocinadorPropagandaForm();
+      $model = $modelSearch->busquedaPropaganda($anoImpo, $idContribuyente);
+     // die(var_dump($model));
 
-      $modelSearch = new ModificarPropagandaForm();
-      $model = $modelSearch->busquedaPropaganda($idPropaganda, $idContribuyente);
-
-         
-
-           
-            $modelSearch->attributes = $model->attributes;
-              return $this->render('/propaganda/modificarpropaganda/formulario-modificar-propaganda', [
-                                                              'model' => $modelSearch,
-
-              ]);
+          return $this->render('/propaganda/patrocinador/vista-seleccion-propaganda', [
+                                                              'dataProvider' => $model,
+          ]);
 
 
-             
-              
-        
-          return $this->redirect(['modificar-propaganda']);
-        
-          }else{
-
-              die('no existe propaganda asociado a ese ID');
-          }
   }
 
 
