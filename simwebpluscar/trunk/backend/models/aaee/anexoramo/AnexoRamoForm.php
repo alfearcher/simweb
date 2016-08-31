@@ -70,6 +70,9 @@
 		public $fecha_hora_proceso;
 		public $user_funcionario;
 
+		public $a;		// año
+		public $p;		// periodo
+
 		const SCENARIO_FRONTEND = 'frontend';
 		const SCENARIO_BACKEND = 'backend';
 		const SCENARIO_SEARCH = 'search';

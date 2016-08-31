@@ -321,9 +321,9 @@
 	     * @param  string $params        [description]
 	     * @return returna un a instancia de tipo dataProvider.
 	     */
-	    public function getDataProvider($anoImpositivo, $params = '')
+	    public function getDataProvider($anoImpositivo, $params = '', $exceptoIdRubro = [])
 	    {
-	    	return RubroForm::getDataProviderRubro($anoImpositivo, $params);
+	    	return RubroForm::getDataProviderRubro($anoImpositivo, $params, $exceptoIdRubro);
 	    }
 
 
@@ -571,7 +571,13 @@
 
 
 
-	    /***/
+	    /**
+	     * Metodo que realiza una consulta para encontrar los ramos (rubros) registrados
+	     * del contribuyente para un año-periodo especifico.
+	     * @param  integer $añoImpositivo año impositivo del lapso
+	     * @param  integer $periodo periodo del lapso.
+	     * @return active record retorna un modelo de dicha consulta.
+	     */
 	    public function findRubrosRegistrados($añoImpositivo, $periodo)
 	    {
 	    	$tablaAct = ActEcon::tableName();
@@ -581,10 +587,14 @@
 	    													[':id_contribuyente' => $this->_id_contribuyente])
 	    	                                   ->andwhere($tablaAct . '.ano_impositivo =:ano_impositivo',
 	    													[':ano_impositivo' => $añoImpositivo])
+	    	                                   ->andWhere('estatus =:estatus',
+	    	                                    			[':estatus' => 0])
 	    									   ->andWhere('exigibilidad_periodo =:exigibilidad_periodo',
 	    									   				[':exigibilidad_periodo' => $periodo])
-	    									   ->andWhere($tablaIngreso . '.inactivo =:inactivo', [':inactivo' => 0])
-	    									   ->andWhere($tablaRubro . '.inactivo =:inactivo', [':inactivo' => 0])
+	    									   ->andWhere($tablaIngreso . '.inactivo =:inactivo',
+	    									    			[':inactivo' => 0])
+	    									   ->andWhere($tablaRubro . '.inactivo =:inactivo',
+	    									    			[':inactivo' => 0])
 	    									   ->joinWith('actividadEconomica', 'INNER JOIN', false)
 	    									   ->joinWith('rubroDetalle', 'INNER JOIN');
 	    	return isset($findModel) ? $findModel : null;
@@ -593,11 +603,15 @@
 
 
 
-	    /***/
+	    /**
+	     * Metodo que crea el data provider para los grid.
+	     * @param  integer $añoImpositivo año impositivo del lapso
+	     * @param  integer $periodo periodo del lapso.
+	     * @return active data provider.
+	     */
 	    public function getDataProviderRubrosRegistrados($añoImpositivo, $periodo)
 	    {
 	    	$query = self::findRubrosRegistrados($añoImpositivo, $periodo);
-// die(var_dump($query));
 	    	$dataProvider = New ActiveDataProvider([
 	    			'query' => $query,
 	    		]);
@@ -609,7 +623,13 @@
 
 
 
-	    /***/
+	    /**
+	     * Metodo que permite iniciar el un data provider. Esto se utiliza para iniciar
+	     * el grid donde se muestran los rubros registrados de un contribuyente para un
+	     * lapso determinado.
+	     * @param  model $model modelo respectivo que se refiere a ActEconIngreso.
+	     * @return active data provider sin valores.
+	     */
 	    public function inicializarDataProvider($model)
 	    {
 	    	$query = $model;
@@ -623,6 +643,59 @@
 	    }
 
 
+
+
+	    /***/
+	    public function findCatalogoRubroParaAnexar($añoImpositivo, $listaIdRubro)
+	    {
+	    	$findModel = Rubro::find()->where('ano_impositivo =:ano_impositivo',
+	    												[':ano_impositivo' => $añoImpositivo])
+	    							  ->andWhere('inactivo =:inactivo',
+	    							  					[':inactivo' => 0])
+	    	                          ->andwhere(['NOT IN', 'id_rubro', $listaIdRubro]);
+	    	return isset($findModel) ? $findModel : $findModel;
+	    }
+
+
+
+	    /***/
+	    public function getDataProviderRubroPorAnexar($añoImpositivo, $listaIdRubro, $params = '')
+	    {
+	    	$query = self::findCatalogoRubroParaAnexar($añoImpositivo, $listaIdRubro);
+
+	    	$dataProvider = New ActiveDataProvider([
+	    			'query' => $query,
+	    	]);
+	    	$query->all();
+
+	    	return $dataProvider;
+	    }
+
+
+
+	    /**
+	     * Metodo que realiza una busqueda de los rubros registrados de un contribuyente
+	     * para un año-periodo especifico, luego se extrae los identificadores para generar
+	     * un array de identificadores de rubros.
+	     * @param  integer $añoImpositivo año impositivo del lapso
+	     * @param  integer $periodo periodo del lapso.
+	     * @return array retorna un arreglo de identificadores de rubros, sino el arreglo
+	     * retornado estara vacio.
+	     */
+	    public function getListaIdRubrosRegistrados($añoImpositivo, $periodo)
+	    {
+	    	$listaIdRubro = [];
+	    	$findModel = self::findRubrosRegistrados($añoImpositivo, $periodo);
+	    	if ( isset($findModel) ) {
+	    		$arreglo = $findModel->asArray()->all();
+	    		foreach ( $arreglo as $a ) {
+	    			if ( isset($a['rubroDetalle']) ) {
+	    				$listaIdRubro[] = $a['rubroDetalle']['id_rubro'];
+	    			}
+	    		}
+	    	}
+	    	return $listaIdRubro;
+	    }
 
 	}
  ?>
