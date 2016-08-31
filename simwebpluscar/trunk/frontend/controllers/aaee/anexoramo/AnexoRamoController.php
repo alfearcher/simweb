@@ -194,6 +194,8 @@
 			$params = '';
 			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) && isset($_SESSION['conf'])) {
 
+				$url = Url::toRoute('index-create');
+				$btnSearchCategory = 0;			// Indica se se activa o no.
 				$idContribuyente = $_SESSION['idContribuyente'];
 				$request = Yii::$app->request;
 				$postData = $request->post();
@@ -212,31 +214,32 @@
 		      	$modelRubro = $searchRamo->findRubrosRegistrados(0,0);
 		  		$dataProviderRubro = $searchRamo->inicializarDataProvider($modelRubro);
 
-
 				if ( isset($postData['btn-back-form']) ) {
 					if ( $postData['btn-back-form'] == 3 ) {
 						$model->load($postData);
 					}
-				}
-
-				if ( isset($postData['btn-quit']) ) {
+				} elseif ( isset($postData['btn-quit']) ) {
 					if ( $postData['btn-quit'] == 1 ) {
 						$this->redirect(['quit']);
 					}
-				}
-
-				if ( isset($postData['btn-create']) ) {
+				} elseif ( isset($postData['btn-create']) ) {
 					if ( $postData['btn-create'] == 4 ) {
 						$model->scenario = self::SCENARIO_FRONTEND;
 						$model->load($postData);
 					}
-				}
-
-
-				if ( isset($postData['btn-accept']) ) {
+				} elseif ( isset($postData['btn-accept']) ) {
 					if ( $postData['btn-accept'] == 1 ) {
 						$model->scenario = self::SCENARIO_SEARCH;
 						$model->load($postData);
+					}
+				} elseif ( isset($postData['btn-search-category']) ) {
+					if ( $postData['btn-search-category'] == 1 ) {
+						$model->scenario = self::SCENARIO_SEARCH;
+						$postData[$formName]['periodo'] = $postData[$formName]['p'];
+						$_SESSION['postData'] = $postData;
+						return $this->redirect(['anexar-ramo']);
+						//$model->load($postData);
+						//self::actionAnexarRubro($postData);
 					}
 				}
 
@@ -257,6 +260,7 @@
 								$periodo = $datos['periodo'];
 
 								if ( $datos['id_contribuyente'] == $_SESSION['idContribuyente'] ) {
+									$btnSearchCategory = 1;
 									$dataProviderRubro = $searchRamo->getDataProviderRubrosRegistrados($añoImpositivo, $periodo);
 								}
 
@@ -264,7 +268,6 @@
 						}
 			    	}
 			    }
-
 
 		  		if ( isset($findModel) ) {
 		  			$arregloRubro = isset($_SESSION['arrayIdRubros']) ? $_SESSION['arrayIdRubros'] : [];
@@ -289,6 +292,7 @@
 					  											'activarBotonCreate' => $activarBotonCreate,
 					  											'listaAño' => $listaAño,
 					  											'dataProviderRubro' => $dataProviderRubro,
+					  											'btnSearchCategory' => $btnSearchCategory,
 					  					]);
 
 		  		} else {
@@ -297,6 +301,66 @@
 		  		}
 			}
 		}
+
+
+
+
+		/***/
+		public function actionAnexarRamo()
+		{
+			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) && isset($_SESSION['conf'])) {
+				$request = Yii::$app->request;
+				$postData = isset($request->queryParams['page']) ? $request->queryParams : $_SESSION['postData'];
+
+				$params = '';
+				$url = Url::toRoute(['anexar-ramo']);
+				$model = New AnexoRamoForm();
+				$formName = $model->formName();
+				$model->scenario = self::SCENARIO_SEARCH;
+				$model->load($postData);
+
+				$listaIdRubro = [];
+
+				//$idContribuyente = isset($postData[$formName]) ? $postData[$formName] : 0;
+				$idContribuyente = $_SESSION['idContribuyente'];
+				if ( $idContribuyente == $_SESSION['idContribuyente'] ) {
+					//self::actionAnularSession(['postData']);
+
+					$searchRamo = New AnexoRamoSearch($idContribuyente);
+
+					// Datos del contribuyente.
+					$findModel = $searchRamo->findContribuyente();
+
+					// Rubros registrados segun post enviado.
+					$añoImpositivo = $postData[$formName]['a'];
+					$periodo = $postData[$formName]['p'];
+					$dataProviderRubro = $searchRamo->getDataProviderRubrosRegistrados($añoImpositivo, $periodo);
+
+					// Se buscan los identificadores de los rubros registrados.
+					$listaIdRubro = $searchRamo->getListaIdRubrosRegistrados($añoImpositivo, $periodo);
+					if ( count($listaIdRubro) > 0 ) {
+						 $activarBotonCreate = 0;
+
+						// Catalogo de rubros para anexar, sin considerar los ya registrados.
+						//$dataProviderRubroAnexar = $searchRamo->getDataProviderRubroPorAnexar($añoImpositivo, $listaIdRubro);
+						$dataProviderRubroAnexar = $searchRamo->getDataProvider($añoImpositivo, $params, $listaIdRubro);
+						return $this->render('/aaee/anexo-ramo/seleccionar-ramo-anexar-form', [
+																'model' => $model,
+																'findModel' => $findModel,
+																'dataProviderRubro' => $dataProviderRubro,
+																'dataProviderRubroAnexar' => $dataProviderRubroAnexar,
+																'activarBotonCreate' => $activarBotonCreate,
+							]);
+					}
+
+				} else {
+					// El contribuyente enviado no corresponde al de la session.
+				}
+			} else {
+				// No estan definido los sessiones de inicio del modulo.
+			}
+		}
+
 
 
 
