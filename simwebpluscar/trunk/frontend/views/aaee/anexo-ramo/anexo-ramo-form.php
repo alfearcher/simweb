@@ -142,36 +142,34 @@
 										<div class="periodo">
 					                		<?= $form->field($model, 'periodo')->dropDownList([],[
             																	 			'id' => 'periodo',
-            																	 			'style' => 'width: 100%;',
+            																	 			'style' => 'width: 80%;',
                                                                  				 			'prompt' => Yii::t('backend', '-'),
                                                                 						])->label(false)
 					    					?>
 										</div>
 	        						</div>
 
-									<div class="col-sm-2" style="width: 18%;margin-top: -22px;">
-										<div class="form-group">
+									<div class="form-group">
+										<div class="col-sm-3" style="width: 18%;margin-top: -22px;">
 											<?= Html::submitButton(Yii::t('frontend', Yii::t('frontend', 'Accept')),
 																								  [
 																									'id' => 'btn-accept',
 																									'class' => 'btn btn-primary',
 																									'value' => 4,
-																									'style' => 'width: 100%; margin-left: 100px;margin-top:20px;',
+																									'style' => 'width: 100%; margin-left: 0px;margin-top:20px;',
 																									'name' => 'btn-accept',
 																									'value' => 1,
 																									//'disabled' => ( $activarBotonCreate == 1 ) ? false : true,
 																								  ])
 											?>
 										</div>
-	        						</div>
 
-	        						<div class="col-sm-2" style="width: 18%;margin-top: -22px;">
-										<div class="form-group">
+	        							<div class="col-sm-3" style="width: 25%;margin-top: -22px;">
 											<?= Html::submitButton(Yii::t('frontend', Yii::t('frontend', 'Search Category ' . $model->ano_impositivo)),
 																								  [
 																									'id' => 'btn-search-category',
 																									'class' => 'btn btn-primary',
-																									'style' => 'width: 100%; margin-left: 100px;margin-top:20px;',
+																									'style' => 'width: 100%; margin-left: 0px;margin-top:20px;',
 																									'name' => 'btn-search-category',
 																									'value' => 1,
 																									'disabled' => ( $btnSearchCategory == 0 ) ? true : false,
@@ -243,7 +241,7 @@
 																				'id' => 'btn-quit',
 																				'class' => 'btn btn-danger',
 																				'value' => 1,
-																				'style' => 'width: 60%; margin-left: 300px;margin-top:20px;',
+																				'style' => 'width: 100%; margin-left: 300px;margin-top:20px;',
 																				'name' => 'btn-quit',
 
 																			  ])
