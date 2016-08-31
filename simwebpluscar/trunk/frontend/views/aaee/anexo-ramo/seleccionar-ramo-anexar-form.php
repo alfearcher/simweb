@@ -52,6 +52,7 @@
 	use yii\widgets\Pjax;
 	use yii\widgets\DetailView;
 	use backend\controllers\utilidad\documento\DocumentoRequisitoController;
+	use backend\controllers\menu\MenuController;
 
 	$typeIcon = Icon::FA;
   	$typeLong = 'fa-2x';
@@ -79,7 +80,20 @@
 	<meta http-equiv="refresh">
     <div class="panel panel-primary"  style="width: 110%;">
         <div class="panel-heading">
-        	<h3><?= Html::encode($this->title) ?></h3>
+        	<div class="row">
+				<div class="col-sm-4" style="padding-top: 10px;">
+        			<h3><?= Html::encode(Yii::t('frontend', 'Add New Categories')) ?></h3>
+        		</div>
+        		<div class="col-sm-3" style="width: 30%; float:right; padding-right: 50px;">
+        			<style type="text/css">
+						.col-sm-3 > ul > li > a:hover {
+							background-color: #337AB7;
+						}
+	    			</style>
+	        		<?= MenuController::actionMenuSecundario($opciones);
+	        		?>
+	        	</div>
+			</div>
         </div>
 
 <!-- Cuerpo del formulario -->
@@ -123,7 +137,7 @@
 								<div class="row"  style="padding-left: 10px; width: 100%;">
 									<div class="rubro-registrado">
 										<div class="row" style="margin-left: 5px;">
-											<h3><span><?= Html::encode(Yii::t('frontend', 'Categories Registers ')) ?></span></h3>
+											<h3><span><?= Html::encode(Yii::t('frontend', 'Categories Registered')) ?></span></h3>
 										</div>
 										<?= GridView::widget([
 												// Rubros registrados para el año-periodo.
@@ -162,11 +176,18 @@
 										?>
 									</div>
 								</div>
+							</div>
+						</div>
 <!-- FIN DE RUBROS REGISTRADOS PARA EL AÑO-PERIODO -->
 
 <!-- LISTA DE CATALOGO DE RUBROS -->
-								<div class="row" >
-									<div class="row" style="padding-left: 35px;">
+						<div class="row" style="margin-left: -15px;width: 103%;">
+							<div class="panel panel-success">
+								<div class="panel-heading">
+						        	<span><?= Html::encode(Yii::t('frontend', 'List Categories')) ?></span>
+						        </div>
+						        <div class="panel-body">
+									<div class="row" style="padding-left: 10px; width: 100%;">
 										<div class="col-sm-4">
 											<div class="row" style="width: 65%;">
 												<span><?= Html::encode(Yii::t('backend', 'Input Search Category')) ?></span>
@@ -184,7 +205,7 @@
 										<div class="col-sm-2">
 											<div class="row">
 												<div class="form-group">
-													<?= Html::submitButton(Yii::t('frontend', Yii::t('frontend', 'Search')),
+													<?= Html::submitButton(Yii::t('frontend', Yii::t('frontend', 'Search Category')),
 																										  [
 																											'id' => 'btn-search',
 																											'class' => 'btn btn-primary',
@@ -196,13 +217,13 @@
 												</div>
 											</div>
 										</div>
-
 									</div>
+
 									<div class="row" style="margin-left: 5px;border-bottom: 0.5px solid #ccc;width:99%;"></div>
 
-									<div class="row" style="width: 100%; padding-left: 25px;margin-top: 15px;">
+									<div class="row" style="width: 100%; padding-left: 10px;margin-top: 15px;">
 										<div class="row" style="padding-left: 15px;width:100%;">
-											<span><h4><?= Html::encode(Yii::t('backend', 'Category List')) ?></h4></span>
+											<h3><span><?= Html::encode(Yii::t('backend', 'List Categories')) ?></span></h3>
 										</div>
 										<?= GridView::widget([
 											'id' => 'grid-lista-rubro',
@@ -238,17 +259,10 @@
 										]);?>
 									</div>
 								</div>
-<!-- Fin de LISTA DE CATALOGO DE RUBROS -->
-
-
-
-
 							</div>
 						</div>
+<!-- Fin de LISTA DE CATALOGO DE RUBROS -->
 					</div>
-
-
-
 				</div>  <!-- Fin de col-sm-12 -->
 			</div>  	<!-- Fin de container-fluid -->
 
@@ -268,6 +282,20 @@
 					</div>
 				</div>
 
+				<div class="col-sm-3">
+					<div class="form-group">
+						<?= Html::submitButton(Yii::t('frontend', Yii::t('frontend', 'Back Form')),
+																			  [
+																				'id' => 'btn-back-form',
+																				'class' => 'btn btn-primary',
+																				'value' => 6,
+																				'style' => 'width: 90%; margin-left: 300px;margin-top:20px;',
+																				'name' => 'btn-back-form',
+
+																			  ])
+						?>
+					</div>
+				</div>
 
 				<div class="col-sm-3">
 					<div class="form-group">
@@ -283,8 +311,8 @@
 						?>
 					</div>
 				</div>
-			</div>
 
+			</div>
 		</div>			<!-- Fin panel-body-->
 
 	</div>	<!-- Fin de panel panel-primary -->

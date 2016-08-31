@@ -238,22 +238,6 @@
 			<div class="row">
 				<div class="col-sm-3">
 					<div class="form-group">
-						<?= Html::submitButton(Yii::t('frontend', Yii::t('frontend', 'Create Request')),
-																			  [
-																				'id' => 'btn-create',
-																				'class' => 'btn btn-success',
-																				'value' => 4,
-																				'style' => 'width: 100%; margin-left: 100px;margin-top:20px;',
-																				'name' => 'btn-create',
-																				'disabled' => ( $activarBotonCreate == 1 ) ? false : true,
-																			  ])
-						?>
-					</div>
-				</div>
-
-
-				<div class="col-sm-3">
-					<div class="form-group">
 						<?= Html::submitButton(Yii::t('frontend', Yii::t('frontend', 'Quit')),
 																			  [
 																				'id' => 'btn-quit',
