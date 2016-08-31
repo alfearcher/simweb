@@ -287,7 +287,7 @@
 
                     $tableNameMaster = 'inmuebles';
 
-                    $arregloDatosMaster = [
+                    $arregloDatosMaster = [ 
                                             
                                             'direccion' => $camposModel['direccion'],
                                             'propiedad_horizontal' => $camposModel['propiedad_horizontal'],

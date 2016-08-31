@@ -174,7 +174,7 @@
                                                                           $this->_evento,
                                                                           $this->_conn,
                                                                           $this->_conexion);
-                    $result = $procesar->procesarSolicitud();
+                    $result = $procesar->procesarSolicitud(); 
 
                 }
 

@@ -58,12 +58,11 @@
 		    			'attributes' => [
 		    				'nro_solicitud',
 		    				'id_contribuyente',
-		    				'estado_catastro',
-							'municipio_catastro',
-							'parroquia_catastro',
-							'ambito_catastro',
-							'sector_catastro',
-							'manzana_catastro',
+		    				'id_inmueble',
+		    				'direccion',
+							'casa_edf_qta_dom',
+		    				'apto_dom',
+		    				'tlf_hab',
 		    				
 
 
