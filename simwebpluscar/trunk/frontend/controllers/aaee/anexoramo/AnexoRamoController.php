@@ -195,7 +195,7 @@
 			$params = '';
 			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) && isset($_SESSION['conf'])) {
 
-				$url = Url::toRoute(['index-create']);
+				self::actionAnularSession(['arrayIdRubros']);
 				$btnSearchCategory = 0;			// Indica se se activa o no.
 				$idContribuyente = $_SESSION['idContribuyente'];
 				$request = Yii::$app->request;
@@ -223,11 +223,6 @@
 					if ( $postData['btn-quit'] == 1 ) {
 						$this->redirect(['quit']);
 					}
-				} elseif ( isset($postData['btn-create']) ) {
-					if ( $postData['btn-create'] == 4 ) {
-						$model->scenario = self::SCENARIO_FRONTEND;
-						$model->load($postData);
-					}
 				} elseif ( isset($postData['btn-accept']) ) {
 					if ( $postData['btn-accept'] == 1 ) {
 						$model->scenario = self::SCENARIO_SEARCH;
@@ -239,8 +234,6 @@
 						$postData[$formName]['periodo'] = $postData[$formName]['p'];
 						$_SESSION['postSearch'] = $postData;	// Parametros de busqueda
 						return $this->redirect(['anexar-ramo']);
-						//$model->load($postData);
-						//self::actionAnexarRubro($postData);
 					}
 				}
 
@@ -322,32 +315,83 @@
 				$model = New AnexoRamoForm();
 				$formName = $model->formName();
 
-// die(var_dump($request->post()));
 				if ( $request->isGet ) {
 					$postData = isset($request->queryParams['page']) ? $request->queryParams : $postInicial;
 					$model->scenario = self::SCENARIO_SEARCH;
-//die('get');
+
 				} elseif ( $request->isPost ) {
-// die('post');
 					$postData = $request->post();
+					$model->scenario = self::SCENARIO_SEARCH;
 					if ( isset($postData['btn-search']) ) {
 						if ( $postData['btn-search'] == 1 ) {
 							$params = $postData['inputSearch'];
+
+						}
+					} elseif ( isset($postData['btn-add-category']) ) {
+				    	if ( $postData['btn-add-category'] == 2 ) {
+				    		// Se obtiene el arreglo de rubros seleccionado para ser incluidos
+				    		// en la lista.
+				    		$arregloIdRubro = isset($postData['chkRubro']) ? $postData['chkRubro'] : [];
+				    		self::actionAddRubro($arregloIdRubro);
+						}
+					}  elseif ( isset($postData['btn-remove-category']) ) {
+				    	if ( $postData['btn-remove-category'] == 3 ) {
+							$arregloIdRubro = isset($postData['chkRubroSeleccionado']) ? $postData['chkRubroSeleccionado'] : [];
+							self::actionRemoveRubro($arregloIdRubro);
+						}
+					} elseif ( isset($postData['btn-create']) ) {
+						if ( $postData['btn-create'] == 5 ) {
+							// Se muestra una vista previa con los rubros seleccionados.
 							$model->scenario = self::SCENARIO_SEARCH;
+							$model->load($postData);
+
+							$arregloIdRubro = isset($_SESSION['arrayIdRubros']) ? $_SESSION['arrayIdRubros'] : [];
+							if ( count($arregloIdRubro) > 0 ) { $validateRubroSeleccionado = true; }
+					   		if ( $model->load($postData) ) {
+					      		if ( $model->validate() && $validateRubroSeleccionado ) {
+					      			$searchRamo = New AnexoRamoSearch($model->id_contribuyente);
+					      			$dataProviderRubroAnexar = $searchRamo->getDataProviderAddRubro($arregloIdRubro);
+					      			return $this->render('/aaee/anexo-ramo/pre-view-create', [
+					      					'model' => $model,
+					      					'dataProvider' => $dataProviderRubroAnexar,
+					      				]);
+					      		}
+					      	}
+						}
+					} elseif ( isset($postData['btn-confirm-create']) ) {
+						if ( $postData['btn-confirm-create'] == 5 ) {
+							$model->scenario = self::SCENARIO_FRONTEND;
+							$model->load($postData);
+
+							$result = self::actionBeginSave($model, $postData);
+      						self::actionAnularSession(['begin', 'arrayIdRubros']);
+      						if ( $result ) {
+								$this->_transaccion->commit();
+								return self::actionView($model->nro_solicitud);
+							} else {
+								$this->_transaccion->rollBack();
+								$this->redirect(['error-operacion', 'cod'=> 920]);
+
+      						}
+						}
+					} elseif ( isset($postData['btn-back-form']) ) {
+						if ( $postData['btn-back-form'] == 6 ) {
+							return $this->redirect(['index-create']);
+
+						} elseif ( $postData['btn-back-form'] == 9 ) {
+
 						}
 					}
-
 				} else {
 					$model->scenario = self::SCENARIO_SEARCH;
 				}
 
 				$model->load($postData);
-//die(var_dump($postData));
 
 				$listaIdRubro = [];
 
 				$idContribuyente = isset($postInicial[$formName]['id_contribuyente']) ? $postInicial[$formName]['id_contribuyente'] : 0;
-				//$idContribuyente = $_SESSION['idContribuyente'];
+
 				if ( $idContribuyente == $_SESSION['idContribuyente'] ) {
 					self::actionAnularSession(['postData']);
 
@@ -366,14 +410,23 @@
 					if ( count($listaIdRubro) > 0 ) {
 						 $activarBotonCreate = 0;
 
-						// Catalogo de rubros para anexar, sin considerar los ya registrados.
-						//$dataProviderRubroAnexar = $searchRamo->getDataProviderRubroPorAnexar($añoImpositivo, $listaIdRubro);
-						$dataProviderRubroAnexar = $searchRamo->getDataProvider($añoImpositivo, $params, $listaIdRubro);
+						// Lista de identificadores de los rubros que seran anexados segun solicitud
+						// del usuario.
+						$arregloIdRubro = isset($_SESSION['arrayIdRubros']) ? $_SESSION['arrayIdRubros'] : [];
+						if ( count($arregloIdRubro) > 0 ) { $activarBotonCreate = 1; }
+						$dataProviderRubroAnexar = $searchRamo->getDataProviderAddRubro($arregloIdRubro);
+
+						// Identificadores que no deberia aparecer en el listado de catalogo de rubros.
+						$listaIdRubroIgnorar = array_merge($listaIdRubro, $arregloIdRubro);
+
+						// Catalogo de rubros para anexar, sin considerar los ya registrados y los seleccionados.
+						$dataProviderRubroCatalogo = $searchRamo->getDataProvider($añoImpositivo, $params, $listaIdRubroIgnorar);
 						return $this->render('/aaee/anexo-ramo/seleccionar-ramo-anexar-form', [
 																'model' => $model,
 																'findModel' => $findModel,
 																'dataProviderRubro' => $dataProviderRubro,
 																'dataProviderRubroAnexar' => $dataProviderRubroAnexar,
+																'dataProviderRubroCatalogo' => $dataProviderRubroCatalogo,
 																'activarBotonCreate' => $activarBotonCreate,
 																'opciones' => $opciones,
 							]);
