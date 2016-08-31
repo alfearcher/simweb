@@ -327,6 +327,14 @@
 	    }
 
 
+
+	    /***/
+	    public function getDataProviderAddRubro($arrayRubros)
+	    {
+	    	return RubroForm::getAddDataProviderRubro($arrayRubros);
+	    }
+
+
 	    /***/
 	    public function getAnoSegunFecha($fecha)
 	    {
