@@ -89,6 +89,7 @@
 		const SCENARIO_BACKEND = 'backend';
 		const SCENARIO_SEARCH = 'search';
 		const SCENARIO_DEFAULT = 'default';
+		const SCENARIO_SEARCH_PARAMS = 'search_params';
 
 		/**
 		 * Identificador de  configuracion d ela solicitud. Se crea cuando se
@@ -194,7 +195,7 @@
 			$params = '';
 			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) && isset($_SESSION['conf'])) {
 
-				$url = Url::toRoute('index-create');
+				$url = Url::toRoute(['index-create']);
 				$btnSearchCategory = 0;			// Indica se se activa o no.
 				$idContribuyente = $_SESSION['idContribuyente'];
 				$request = Yii::$app->request;
@@ -236,7 +237,7 @@
 					if ( $postData['btn-search-category'] == 1 ) {
 						$model->scenario = self::SCENARIO_SEARCH;
 						$postData[$formName]['periodo'] = $postData[$formName]['p'];
-						$_SESSION['postData'] = $postData;
+						$_SESSION['postSearch'] = $postData;	// Parametros de busqueda
 						return $this->redirect(['anexar-ramo']);
 						//$model->load($postData);
 						//self::actionAnexarRubro($postData);
@@ -309,22 +310,46 @@
 		public function actionAnexarRamo()
 		{
 			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) && isset($_SESSION['conf'])) {
+				$postInicial = isset($_SESSION['postSearch']) ? $_SESSION['postSearch'] : null;
 				$request = Yii::$app->request;
-				$postData = isset($request->queryParams['page']) ? $request->queryParams : $_SESSION['postData'];
+
+				$opciones = [
+						'back' => '/aaee/anexoramo/anexo-ramo/index-create',
+				];
 
 				$params = '';
 				$url = Url::toRoute(['anexar-ramo']);
 				$model = New AnexoRamoForm();
 				$formName = $model->formName();
-				$model->scenario = self::SCENARIO_SEARCH;
+
+// die(var_dump($request->post()));
+				if ( $request->isGet ) {
+					$postData = isset($request->queryParams['page']) ? $request->queryParams : $postInicial;
+					$model->scenario = self::SCENARIO_SEARCH;
+//die('get');
+				} elseif ( $request->isPost ) {
+// die('post');
+					$postData = $request->post();
+					if ( isset($postData['btn-search']) ) {
+						if ( $postData['btn-search'] == 1 ) {
+							$params = $postData['inputSearch'];
+							$model->scenario = self::SCENARIO_SEARCH;
+						}
+					}
+
+				} else {
+					$model->scenario = self::SCENARIO_SEARCH;
+				}
+
 				$model->load($postData);
+//die(var_dump($postData));
 
 				$listaIdRubro = [];
 
-				//$idContribuyente = isset($postData[$formName]) ? $postData[$formName] : 0;
-				$idContribuyente = $_SESSION['idContribuyente'];
+				$idContribuyente = isset($postInicial[$formName]['id_contribuyente']) ? $postInicial[$formName]['id_contribuyente'] : 0;
+				//$idContribuyente = $_SESSION['idContribuyente'];
 				if ( $idContribuyente == $_SESSION['idContribuyente'] ) {
-					//self::actionAnularSession(['postData']);
+					self::actionAnularSession(['postData']);
 
 					$searchRamo = New AnexoRamoSearch($idContribuyente);
 
@@ -332,8 +357,8 @@
 					$findModel = $searchRamo->findContribuyente();
 
 					// Rubros registrados segun post enviado.
-					$añoImpositivo = $postData[$formName]['a'];
-					$periodo = $postData[$formName]['p'];
+					$añoImpositivo = $postInicial[$formName]['ano_impositivo'];
+					$periodo = $postInicial[$formName]['periodo'];
 					$dataProviderRubro = $searchRamo->getDataProviderRubrosRegistrados($añoImpositivo, $periodo);
 
 					// Se buscan los identificadores de los rubros registrados.
@@ -350,6 +375,7 @@
 																'dataProviderRubro' => $dataProviderRubro,
 																'dataProviderRubroAnexar' => $dataProviderRubroAnexar,
 																'activarBotonCreate' => $activarBotonCreate,
+																'opciones' => $opciones,
 							]);
 					}
 
