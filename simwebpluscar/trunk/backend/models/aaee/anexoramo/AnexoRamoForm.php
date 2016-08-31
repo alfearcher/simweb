@@ -73,6 +73,8 @@
 		public $a;		// año
 		public $p;		// periodo
 
+		public $inputSearch;
+
 		const SCENARIO_FRONTEND = 'frontend';
 		const SCENARIO_BACKEND = 'backend';
 		const SCENARIO_SEARCH = 'search';
