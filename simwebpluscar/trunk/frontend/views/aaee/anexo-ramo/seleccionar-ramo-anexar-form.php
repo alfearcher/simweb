@@ -21,13 +21,13 @@
  */
 
  /**
- *  @file anexo-ramo-form.php
+ *  @file seleccionar-ramo-anexar-form.php
  *
  *  @author Jose Rafael Perez Teran
  *
- *  @date 27-08-2016
+ *  @date 30-08-2016
  *
- *  @view anexo-ramo-form.php
+ *  @view seleccionar-ramo-anexar-form.php
  *
  *
  *  @property
@@ -65,7 +65,7 @@
  	<?php
 
  		$form = ActiveForm::begin([
- 			'id' => 'id-anexo-ramo-form',
+ 			'id' => 'id-seleccionar-anexo-ramo-form',
  			'method' => 'post',
  			//'action' => $url,
  			'enableClientValidation' => true,
@@ -75,8 +75,6 @@
  	?>
 
 	<?=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $findModel['id_contribuyente']])->label(false);?>
-	<?=$form->field($model, 'a')->hiddenInput(['value' => $model->ano_impositivo])->label(false);?>
-	<?=$form->field($model, 'p')->hiddenInput(['value' => $model->periodo])->label(false);?>
 
 	<meta http-equiv="refresh">
     <div class="panel panel-primary"  style="width: 110%;">
@@ -118,74 +116,14 @@
 					<div class="row">
 						<div class="panel panel-success" style="width: 103%;margin-left: -15px;">
 							<div class="panel-heading">
-					        	<span><?= Html::encode(Yii::t('frontend', 'Fiscal Year/Period')) ?></span>
+					        	<span><?= Html::encode(Yii::t('frontend', 'Categories Registers')) ?></span>
 					        </div>
 					        <div class="panel-body">
-					        	<div class="row">
-									<div class="col-sm-2" style="width: 12%;">
-										<div class="ano-impositivo">
-					                		<?= $form->field($model, 'ano_impositivo')->dropDownList($listaAño,[
-	                																	 			'id' => 'ano-impositivo',
-	                																	 			'style' => 'width: 100%;',
-	                                                                     				 			'prompt' => Yii::t('backend', 'Select..'),
-	                                                                     				 			'onchange' => '$.post( "' . Yii::$app->urlManager
-                                                                                                                                         ->createUrl('/aaee/anexoramo/anexo-ramo/lista-periodo') . '&id=' . '" + $(this).val(),
-                                                                                                                                         		 													function( data ) {
-                                                                                                                                                                                                        $( "select#periodo" ).html( data );
-                                                                                                                                                                                                    });'
-				                                                                			])->label(false)
-					    					?>
-										</div>
-	        						</div>
-
-									<div class="col-sm-2" style="width: 25%;margin-left: -25px;">
-										<div class="periodo">
-					                		<?= $form->field($model, 'periodo')->dropDownList([],[
-            																	 			'id' => 'periodo',
-            																	 			'style' => 'width: 100%;',
-                                                                 				 			'prompt' => Yii::t('backend', '-'),
-                                                                						])->label(false)
-					    					?>
-										</div>
-	        						</div>
-
-									<div class="col-sm-2" style="width: 18%;margin-top: -22px;">
-										<div class="form-group">
-											<?= Html::submitButton(Yii::t('frontend', Yii::t('frontend', 'Accept')),
-																								  [
-																									'id' => 'btn-accept',
-																									'class' => 'btn btn-primary',
-																									'value' => 4,
-																									'style' => 'width: 100%; margin-left: 100px;margin-top:20px;',
-																									'name' => 'btn-accept',
-																									'value' => 1,
-																									//'disabled' => ( $activarBotonCreate == 1 ) ? false : true,
-																								  ])
-											?>
-										</div>
-	        						</div>
-
-	        						<div class="col-sm-2" style="width: 18%;margin-top: -22px;">
-										<div class="form-group">
-											<?= Html::submitButton(Yii::t('frontend', Yii::t('frontend', 'Search Category ' . $model->ano_impositivo)),
-																								  [
-																									'id' => 'btn-search-category',
-																									'class' => 'btn btn-primary',
-																									'style' => 'width: 100%; margin-left: 100px;margin-top:20px;',
-																									'name' => 'btn-search-category',
-																									'value' => 1,
-																									'disabled' => ( $btnSearchCategory == 0 ) ? true : false,
-																								  ])
-											?>
-										</div>
-	        						</div>
-								</div> 		<!-- Fin de row -->
-
 <!-- INICIO RUBROS REGISTRADOS PARA EL AÑO-PERIODO -->
 								<div class="row"  style="padding-left: 10px; width: 100%;">
 									<div class="rubro-registrado">
 										<div class="row" style="margin-left: 5px;">
-											<h3><span><?= Html::encode(Yii::t('frontend', 'Categories Registers ' .  $model->ano_impositivo . ' - ' . $model->periodo)) ?></span></h3>
+											<h3><span><?= Html::encode(Yii::t('frontend', 'Categories Registers ')) ?></span></h3>
 										</div>
 										<?= GridView::widget([
 												// Rubros registrados para el año-periodo.
@@ -226,6 +164,85 @@
 								</div>
 <!-- FIN DE RUBROS REGISTRADOS PARA EL AÑO-PERIODO -->
 
+<!-- LISTA DE CATALOGO DE RUBROS -->
+								<div class="row" >
+									<div class="row" style="padding-left: 35px;">
+										<div class="col-sm-4">
+											<div class="row" style="width: 65%;">
+												<span><?= Html::encode(Yii::t('backend', 'Input Search Category')) ?></span>
+											</div>
+											<div class="row">
+												<?= Html::input('text', 'inputSearch', '',
+												 								[
+												 									'class' => 'form-control',
+												 									'style' => 'width: 120%;'
+												 								])
+												?>
+											</div>
+										</div>
+
+										<div class="col-sm-2">
+											<div class="row">
+												<div class="form-group">
+													<?= Html::submitButton(Yii::t('frontend', Yii::t('frontend', 'Search')),
+																										  [
+																											'id' => 'btn-search',
+																											'class' => 'btn btn-primary',
+																											'value' => 1,
+																											'style' => 'width: 100%; margin-left: 220px;margin-top:20px;',
+																											'name' => 'btn-search',
+																										  ])
+													?>
+												</div>
+											</div>
+										</div>
+
+									</div>
+									<div class="row" style="margin-left: 5px;border-bottom: 0.5px solid #ccc;width:99%;"></div>
+
+									<div class="row" style="width: 100%; padding-left: 25px;margin-top: 15px;">
+										<div class="row" style="padding-left: 15px;width:100%;">
+											<span><h4><?= Html::encode(Yii::t('backend', 'Category List')) ?></h4></span>
+										</div>
+										<?= GridView::widget([
+											'id' => 'grid-lista-rubro',
+	    									'dataProvider' => $dataProviderRubroAnexar,
+	    									'headerRowOptions' => ['class' => 'success'],
+	    									//'filterModel' => $searchModel,
+	    									'columns' => [
+	    										//['class' => 'yii\grid\SerialColumn'],
+								            	[
+								                    'label' => Yii::t('frontend', 'Category'),
+								                    'value' => function($data) {
+	                        										return $data->rubro;
+	                											},
+								                ],
+								                [
+								                    'label' => Yii::t('frontend', 'Year'),
+								                    'value' => function($data) {
+	                        										return $data->ano_impositivo;
+	                											},
+								                ],
+								                [
+								                    'label' => Yii::t('frontend', 'Descripcion'),
+								                    'value' => function($data) {
+	                        										return $data->descripcion;
+	                											},
+								                ],
+								                [
+								                	'class' => 'yii\grid\CheckboxColumn',
+								                	'name' => 'chkRubro',
+								                	'multiple' => false,
+								                ],
+								        	]
+										]);?>
+									</div>
+								</div>
+<!-- Fin de LISTA DE CATALOGO DE RUBROS -->
+
+
+
+
 							</div>
 						</div>
 					</div>
@@ -242,7 +259,7 @@
 																			  [
 																				'id' => 'btn-create',
 																				'class' => 'btn btn-success',
-																				'value' => 4,
+																				'value' => 5,
 																				'style' => 'width: 100%; margin-left: 100px;margin-top:20px;',
 																				'name' => 'btn-create',
 																				'disabled' => ( $activarBotonCreate == 1 ) ? false : true,

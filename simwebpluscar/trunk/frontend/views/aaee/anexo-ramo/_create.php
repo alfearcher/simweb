@@ -49,6 +49,7 @@
 						        'activarBotonCreate' => $activarBotonCreate,
 						        'listaAño' => $listaAño,
 						        'dataProviderRubro' => $dataProviderRubro,
+						        'btnSearchCategory' => $btnSearchCategory,
 					    ]) ?>
 </div>
 
