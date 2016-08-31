@@ -170,7 +170,7 @@
 	     * @param  string $params        [description]
 	     * @return [type]                [description]
 	     */
-	    public function getDataProviderRubro($anoImpositivo, $params = '')
+	    public function getDataProviderRubro($anoImpositivo, $params = '', $exceptoIdRubro = [])
 	    {
 
 	    	// Se crea una instancia del tipo yii\db\ActiveQueryInterface
@@ -195,6 +195,10 @@
 	    		} else {
 	    			$query->andFilterWhere(['like', 'descripcion', $params]);
 	    		}
+	   		}
+
+	   		if ( count($exceptoIdRubro) > 0 ) {
+	   			$query->andFilterWhere(['not in', 'id_rubro', $exceptoIdRubro]);
 	   		}
 
 	        return $dataProvider;
