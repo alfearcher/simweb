@@ -46,6 +46,7 @@
 	use yii\base\Model;
 	use yii\data\ActiveDataProvider;
 	use backend\models\aaee\anexoramo\AnexoRamo;
+	use backend\models\aaee\anexoramo\AnexoRamoSearch;
 	use backend\models\aaee\rubro\RubroForm;
 
 
@@ -116,6 +117,12 @@
         					'id_contribuyente',
         					'ano_impositivo',
         					'periodo',
+        					'fecha_desde',
+        					'fecha_hasta',
+        					'origen',
+        					'fecha_hora',
+        					'usuario',
+        					'estatus',
         		],
         		self::SCENARIO_DEFAULT => Model::scenarios()
         	];
@@ -130,13 +137,11 @@
 	    {
 	        return [
 	        	[['id_contribuyente', 'ano_impositivo',
-	        	  'periodo',
-	        	  'fecha_desde', 'fecha_hasta'],
+	        	  'periodo', 'fecha_desde', 'fecha_hasta'],
 	        	  'required', 'on' => 'frontend',
 	        	  'message' => Yii::t('frontend','{attribute} is required')],
 	        	[['id_contribuyente', 'ano_impositivo',
-	        	  'periodo',
-	        	  'fecha_desde', 'fecha_hasta'],
+	        	  'periodo',],
 	        	  'required', 'on' => 'backend',
 	        	  'message' => Yii::t('frontend','{attribute} is required')],
 	        	 [['id_contribuyente', 'ano_impositivo',
@@ -153,11 +158,14 @@
 	     		['nro_solicitud', 'default', 'value' => 0],
 	     		['id_contribuyente', 'default', 'value' => $_SESSION['idContribuyente']],
 	     		['origen', 'default', 'value' => 'WEB', 'on' => 'frontend'],
-	     		['origen', 'default', 'value' => 'LAN', 'on' => 'frontend'],
+	     		['origen', 'default', 'value' => 'LAN', 'on' => 'backend'],
 	     		['fecha_hora', 'default', 'value' => date('Y-m-d H:i:s')],
 	     		['fecha_hora_proceso', 'default', 'value' => '0000-00-00 00:00:00'],
 	     		['estatus', 'default', 'value' => 0],
 	     		['usuario', 'default', 'value' => Yii::$app->user->identity->login, 'on' => 'frontend'],
+	     		// ['fecha_desde', function() {
+	     		// 					return self::rangoFiscal();
+	     		// }],
 	     		//['usuario', 'default', 'value' => Yii::$app->user->identity->username, 'on' => 'backend'],
 	        ];
 	    }
@@ -218,6 +226,17 @@
 	    	];
 
 	    	return $atributos[$evento];
+	    }
+
+
+
+	    /***/
+	    public function rangoFiscal($attribute)
+	    {
+	    	$searchRamo = New AnexoRamoSearch($model->id_contribuyente);
+	    	$rango = $searchRamo->getRangoFechaDeclaracion($model->ano_impositivo);
+	    	$this->attribute = $rango[$this->attribute];
+die(var_dump($rango));
 	    }
 
 	}
