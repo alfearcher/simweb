@@ -75,17 +75,11 @@
  	?>
 
 	<?=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $findModel['id_contribuyente']])->label(false);?>
-	<!-- <?//=$form->field($model, 'a')->hiddenInput(['value' => $model->ano_impositivo])->label(false);?> -->
-	<!-- <?//=$form->field($model, 'p')->hiddenInput(['value' => $model->periodo])->label(false);?> -->
-	<?=$form->field($model, 'ano_impositivo')->hiddenInput(['value' => $model->ano_impositivo])->label(false);?>
-	<?=$form->field($model, 'periodo')->hiddenInput(['value' => $model->periodo])->label(false);?>
-	<?=$form->field($model, 'fecha_desde')->hiddenInput(['value' => $model->fecha_desde])->label(false);?>
-	<?=$form->field($model, 'fecha_hasta')->hiddenInput(['value' => $model->fecha_hasta])->label(false);?>
 
 	<meta http-equiv="refresh">
     <div class="panel panel-primary" style="width: 110%;">
         <div class="panel-heading">
-        	<h3><?= Html::encode($this->title) ?></h3>
+        	<h3><?= Html::encode($caption) ?></h3>
         </div>
 
 <!-- Cuerpo del formulario -->
@@ -96,7 +90,7 @@
 		        	<div class="row">
 						<div class="panel panel-success" style="width: 103%;margin-left: -15px;">
 							<div class="panel-heading">
-					        	<span><?= Html::encode(Yii::t('frontend', 'Info of Taxpayer')) ?></span>
+					        	<b><span><?= Html::encode(Yii::t('frontend', 'Info of Taxpayer')) ?></span></b>
 					        </div>
 					        <div class="panel-body">
 					        	<div class="row">
@@ -122,7 +116,7 @@
 					<div class="row">
 						<div class="panel panel-success" style="width: 103%;margin-left: -15px;">
 							<div class="panel-heading">
-					        	<span><?= Html::encode(Yii::t('frontend', 'Fiscal Year/Period')) ?></span>
+					        	<b><span><?= Html::encode(Yii::t('frontend', 'Search Categories Registered')) ?></span></b>
 					        </div>
 					        <div class="panel-body">
 					        	<div class="row">
@@ -168,87 +162,11 @@
 											?>
 										</div>
 
-	        							<div class="col-sm-3" style="width: 25%;margin-top: -22px;">
-											<?= Html::submitButton(Yii::t('frontend', Yii::t('frontend', 'Search Category ' . $model->ano_impositivo)),
-																								  [
-																									'id' => 'btn-search-category',
-																									'class' => 'btn btn-primary',
-																									'style' => 'width: 100%; margin-left: 0px;margin-top:20px;',
-																									'name' => 'btn-search-category',
-																									'value' => 1,
-																									'disabled' => ( $btnSearchCategory == 0 ) ? true : false,
-																								  ])
-											?>
-										</div>
 	        						</div>
 								</div> 		<!-- Fin de row -->
-
-<!-- INICIO RUBROS REGISTRADOS PARA EL AÑO-PERIODO -->
-								<div class="row"  style="padding-left: 10px; width: 100%;">
-									<div class="rubro-registrado">
-										<div class="row" style="margin-left: 5px;">
-											<h3><span><?= Html::encode(Yii::t('frontend', 'Categories Registers ' .  $model->ano_impositivo . ' - ' . $model->periodo)) ?></span></h3>
-										</div>
-										<div class="row" style="width:35%;padding-left: 15px;">
-											<?= DetailView::widget([
-													'model' => $model,
-													'attributes' => [
-														[
-															'label' => Yii::t('frontend', 'Fiscal Start Date'),
-															'value' => $model->fecha_desde,
-														],
-														[
-															'label' => Yii::t('frontend', 'Fiscal End Date'),
-															'value' => $model->fecha_hasta,
-														],
-													],
-												])
-											?>
-										</div>
-										<?= GridView::widget([
-												// Rubros registrados para el año-periodo.
-												'id' => 'grid-lista-rubro-registrado',
-		    									'dataProvider' => $dataProviderRubro,
-		    									'headerRowOptions' => ['class' => 'success'],
-		    									'summary' => '',
-		    									'columns' => [
-		    										['class' => 'yii\grid\SerialColumn'],
-									            	[
-									                    'label' => Yii::t('frontend', 'Category'),
-									                    'value' => function($data) {
-		                        										return $data->rubroDetalle->rubro;
-		                											},
-									                ],
-									                [
-									                    'label' => Yii::t('frontend', 'Year'),
-									                    'value' => function($data) {
-		                        										return $data->rubroDetalle->ano_impositivo;
-		                											},
-									                ],
-									                [
-									                    'label' => Yii::t('frontend', 'Perid'),
-									                    'value' => function($data) {
-		                        										return $data->exigibilidad_periodo;
-		                											},
-									                ],
-									                [
-									                    'label' => Yii::t('frontend', 'Descripcion'),
-									                    'value' => function($data) {
-		                        										return $data->rubroDetalle->descripcion;
-		                											},
-									                ],
-									        	]
-											]);
-										?>
-									</div>
-								</div>
-<!-- FIN DE RUBROS REGISTRADOS PARA EL AÑO-PERIODO -->
-
 							</div>
 						</div>
 					</div>
-
-
 
 				</div>  <!-- Fin de col-sm-12 -->
 			</div>  	<!-- Fin de container-fluid -->

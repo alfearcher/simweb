@@ -46,10 +46,8 @@
 	<?= $this->render('anexo-ramo-form', [
 						        'model' => $model,
 						        'findModel' => $findModel,
-						        'activarBotonCreate' => $activarBotonCreate,
 						        'listaAño' => $listaAño,
-						        'dataProviderRubro' => $dataProviderRubro,
-						        'btnSearchCategory' => $btnSearchCategory,
+						        'caption' => $caption,
 					    ]) ?>
 </div>
 
