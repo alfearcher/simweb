@@ -752,7 +752,6 @@
 	    		return null;
 	    	} else {
 	    		$result = $findModel->one();
-die(var_dump($result));
 	    		return isset($result->id_impuesto) ? $result->id_impuesto : null;
 	    	}
 	    }
