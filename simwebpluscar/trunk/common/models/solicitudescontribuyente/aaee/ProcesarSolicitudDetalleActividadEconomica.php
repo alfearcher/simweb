@@ -59,6 +59,7 @@
     use common\models\solicitudescontribuyente\aaee\ProcesarCorreccionRazonSocial;
     use common\models\solicitudescontribuyente\aaee\ProcesarAutorizarRamo;
     use common\models\solicitudescontribuyente\aaee\ProcesarCorreccionFechaInicio;
+    use common\models\solicitudescontribuyente\aaee\ProcesarAnexarRamo;
 
 
     /**
@@ -130,6 +131,14 @@
                                                                 $this->_evento,
                                                                 $this->_conn,
                                                                 $this->_conexion);
+                    $result = $procesar->procesarSolicitud();
+
+                } elseif ( $this->_model->tipo_solicitud == 9 ) {
+                    $procesar = New ProcesarAnexarRamo($this->_model,
+                                                       $this->_evento,
+                                                       $this->_conn,
+                                                       $this->_conexion);
+
                     $result = $procesar->procesarSolicitud();
 
                 } elseif ( $this->_model->tipo_solicitud == 12 ) {
