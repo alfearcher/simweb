@@ -185,8 +185,7 @@
 
 		/**
 		 * Metodo que inicia la carga del formulario que permite realizar la solicitud
-		 * de autorizacion de ramos. Tambien gestiona la ejecucion de las reglas
-		 * de validacion del formulario.
+		 * de anexo de ramos.
 		 * @return view
 		 */
 		public function actionIndexCreate()
@@ -291,7 +290,14 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que muestra el catalogo de rubros del lapso seleccionado, rubros registrados
+		 * del contribuyente del lapso selecciona y controla la selecciona de o los rubros por
+		 * anexar. Permite ademas suprimir cualquier rubro que se quiera eliminar de la lista
+		 * final de rubros por anexar. Renderiza hacia una vista previa de los rubros por
+		 * anexar.
+		 * @return not
+		 */
 		public function actionAnexarRamo()
 		{
 			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) && isset($_SESSION['conf']) && isset($_SESSION['postSearch']) ) {
@@ -306,8 +312,6 @@
 				$url = Url::toRoute(['anexar-ramo']);
 				$model = New AnexoRamoForm();
 				$formName = $model->formName();
-
-
 
 				if ( $request->isGet ) {
 					//$postData = isset($request->queryParams['page']) ? $request->queryParams['page'] : $postInicial;
@@ -356,6 +360,7 @@
 					} elseif ( isset($postData['btn-confirm-create']) ) {
 						if ( $postData['btn-confirm-create'] == 5 ) {
 							$model->scenario = self::SCENARIO_FRONTEND;
+							$postData = $request->post();
 							$model->load($postData);
 
 							$result = self::actionBeginSave($model, $postData);
@@ -581,7 +586,7 @@
 					if ( $nroSolicitud > 0 ) {
 						$model->nro_solicitud = $nroSolicitud;
 
-						$result = self::actionCreateAutorizarRamo($this->_conexion,
+						$result = self::actionCreateAnexarRamo($this->_conexion,
 																	  $this->_conn,
 																	  $model,
 																	  $conf,
@@ -687,18 +692,17 @@
 		 * "sl" respectiva.
 		 * @param  ConexionController $conexionLocal instancia de la clase ConexionController.
 		 * @param  connection $connLocal instancia de connection
-		 * @param  model $model modelo de CorreccionAutorizarRamoForm.
+		 * @param  model $model modelo de AnexoRamoForm.
 		 * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
 		 * solicitud.
 		 * @param  array $chkSeleccion arreglo que contiene los identificadores de los ramos seleccionados
 		 * @return boolean retorna un true si guardo el registro, false en caso contrario.
 		 */
-		private static function actionCreateAutorizarRamo($conexionLocal, $connLocal, $model, $conf, $chkSeleccion)
+		private static function actionCreateAnexarRamo($conexionLocal, $connLocal, $model, $conf, $chkSeleccion)
 		{
 			$result = false;
 			$cancel = false;
 			$estatus = 0;
-			$id = 0;
 			$user = isset($model->usuario) ? $model->usuario : null;
 			$userFuncionario = '';
 			$fechaHoraProceso = '0000-00-00 00:00:00';
@@ -725,41 +729,13 @@
 					$model->estatus = $estatus;
 					$model->user_funcionario = $userFuncionario;
 
-					$searchModel = New AutorizarRamoSearch($model->id_contribuyente);
-
-					for ( $i = $model->ano_impositivo; $i <= $model->ano_hasta ; $i++ ) {
-						if ( $i == $model->ano_impositivo ) {
-							foreach ( $chkSeleccion as $key => $value ) {
-								$arregloDatos['id_rubro'] = $value;
-								$result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
-								if ( !$result ) {
-									$cancel = true;
-									break;
-								}
-							}
-						} else {
-							$rangoFecha = $searchModel->getRangoFechaDeclaracion($i);
-							$arregloDatos['fecha_desde'] = $rangoFecha['fechaDesde'];
-							$arregloDatos['fecha_hasta'] = $rangoFecha['fechaHasta'];
-							$arregloDatos['id_rubro'] = 0;
-							$arregloDatos['ano_impositivo'] = $i;
-							foreach ( $chkSeleccion as $key => $value ) {
-								$id = $searchModel->getIdRubro($value, $i);
-								if ( $id == 0 ) {
-									$result = false;
-									$cancel = true;
-									break;
-								} else {
-									$arregloDatos['id_rubro'] = $id;
-									$result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
-									if ( !$result ) {
-										$cancel = true;
-										break;
-									}
-								}
-							}
+					foreach ( $chkSeleccion as $key => $value ) {
+						$arregloDatos['id_rubro'] = $value;
+						$result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
+						if ( !$result ) {
+							$cancel = true;
+							break;
 						}
-						if ( $cancel ) { break; }
 					}
 				}
 			}
