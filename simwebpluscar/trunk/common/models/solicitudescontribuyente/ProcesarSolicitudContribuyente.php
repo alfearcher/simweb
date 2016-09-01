@@ -57,7 +57,6 @@
     use common\models\solicitudescontribuyente\SolicitudesContribuyenteForm;
     use common\models\solicitudescontribuyente\aaee\ProcesarSolicitudDetalleActividadEconomica;
     use common\models\solicitudescontribuyente\inmueble\ProcesarSolicitudDetalleInmuebleUrbano;
-
     use common\models\solicitudescontribuyente\vehiculo\ProcesarSolicitudDetalleVehiculo;
     use common\models\solicitudescontribuyente\propaganda\ProcesarSolicitudDetallePropaganda;
     use common\models\configuracion\solicitudplanilla\SolicitudPlanillaSearch;
@@ -335,7 +334,7 @@
                     //die('es 4');
                     $procesarDetalle = New ProcesarSolicitudDetallePropaganda($model, $evento, $this->_conn, $this->_conexion);
                     $result = $procesarDetalle->procesarSolicitudPorTipo();
-                    
+
                 } elseif ( $model['impuesto'] == 6 ) {
                     // Espectaculo Publico.
 
