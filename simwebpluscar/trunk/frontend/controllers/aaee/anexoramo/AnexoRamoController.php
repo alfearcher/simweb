@@ -205,6 +205,8 @@
 				$formName = $model->formName();
 				$model->scenario = self::SCENARIO_DEFAULT;
 
+				$caption = Yii::t('frontend', 'Add New Categories');
+
 				// Se muestra el form de la solicitud.
 		      	// Datos generales del contribuyente.
 		      	$searchRamo = New AnexoRamoSearch($idContribuyente);
@@ -217,6 +219,8 @@
 
 				if ( isset($postData['btn-back-form']) ) {
 					if ( $postData['btn-back-form'] == 3 ) {
+						$model->scenario = self::SCENARIO_DEFAULT;
+						$postData = [];			// Inicializa el post.
 						$model->load($postData);
 					}
 				} elseif ( isset($postData['btn-quit']) ) {
@@ -227,11 +231,36 @@
 					if ( $postData['btn-accept'] == 1 ) {
 						$model->scenario = self::SCENARIO_SEARCH;
 						$model->load($postData);
+						if ( $model->load($postData) ) {
+			    			if ( $model->validate() ) {
+								$añoImpositivo = $model->ano_impositivo;
+								$periodo = $model->periodo;
+
+								$rango = $searchRamo->getRangoFechaDeclaracion($añoImpositivo);
+								$model->fecha_desde = $rango['fechaDesde'];
+								$model->fecha_hasta = $rango['fechaHasta'];
+
+								$dataProviderRubro = $searchRamo->getDataProviderRubrosRegistrados($añoImpositivo, $periodo);
+								$btnSearchCategory = 1;
+
+								$opciones = [
+									'back' => '/aaee/anexoramo/anexo-ramo/index-create',
+								];
+								$caption = $caption . '. ' . Yii::t('frontend', 'Categories Registered') . ' ' . $model->ano_impositivo . ' - ' . $model->periodo;
+								return $this->render('/aaee/anexo-ramo/view-ramo-registrado', [
+			  													'model' => $model,
+			  													'findModel' => $findModel,
+			  													'dataProviderRubro' => $dataProviderRubro,
+			  													'btnSearchCategory' => $btnSearchCategory,
+			  													'caption' => $caption,
+			  													'opciones' =>$opciones,
+					  					]);
+							}
+						}
 					}
 				} elseif ( isset($postData['btn-search-category']) ) {
 					if ( $postData['btn-search-category'] == 1 ) {
 						$model->scenario = self::SCENARIO_SEARCH;
-						$postData[$formName]['periodo'] = $postData[$formName]['p'];
 						$_SESSION['postSearch'] = $postData;	// Parametros de busqueda
 						return $this->redirect(['anexar-ramo']);
 					}
@@ -242,51 +271,14 @@
 					return ActiveForm::validate($model);
 		      	}
 
-
-		      	if ( $model->load($postData) ) {
-			    	if ( $model->validate() ) {
-			    		if ( isset($postData['btn-accept']) ) {
-							if ( $postData['btn-accept'] == 1 ) {
-								// Se validaron los datos de busqueda, año y periodo.
-								$datos = $postData[$formName];
-								$añoImpositivo = $datos['ano_impositivo'];		// En el combo aparece el año, pero
-								 												// "act-econ".
-								$periodo = $datos['periodo'];
-
-								if ( $datos['id_contribuyente'] == $_SESSION['idContribuyente'] ) {
-									$btnSearchCategory = 1;
-									$dataProviderRubro = $searchRamo->getDataProviderRubrosRegistrados($añoImpositivo, $periodo);
-								}
-
-							}
-						}
-			    	}
-			    }
-
 		  		if ( isset($findModel) ) {
-		  			$arregloRubro = isset($_SESSION['arrayIdRubros']) ? $_SESSION['arrayIdRubros'] : [];
-
-		  			$validateRubroSeleccionado = false;
-					$activarBotonCreate = 0;
-			  		if ( count($arregloRubro) > 0 ) {
-			  			$activarBotonCreate = 1;
-			  			$validateRubroSeleccionado = true;
-			  		}
-
-			  		$errorRubroSeleccionado = '';
-		  			if ( !$validateRubroSeleccionado ) {
-		  				// Mensaje que indica que no se ha incluido ningun rubro en la lista.
-		  				$errorRubroSeleccionado = Yii::t('frontend', 'Category not select');
-		  			}
-
+		  			$caption = $caption . '. ' . Yii::t('frontend', 'Select Fiscal Lapse');
 		  			$listaAño = $searchRamo->getListaAnoRegistrado();
 		  			return $this->render('/aaee/anexo-ramo/_create', [
-					  											'model' => $model,
-					  											'findModel' => $findModel,
-					  											'activarBotonCreate' => $activarBotonCreate,
-					  											'listaAño' => $listaAño,
-					  											'dataProviderRubro' => $dataProviderRubro,
-					  											'btnSearchCategory' => $btnSearchCategory,
+			  											'model' => $model,
+			  											'findModel' => $findModel,
+			  											'listaAño' => $listaAño,
+			  											'caption' => $caption,
 					  					]);
 
 		  		} else {
@@ -302,12 +294,12 @@
 		/***/
 		public function actionAnexarRamo()
 		{
-			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) && isset($_SESSION['conf'])) {
+			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) && isset($_SESSION['conf']) && isset($_SESSION['postSearch']) ) {
 				$postInicial = isset($_SESSION['postSearch']) ? $_SESSION['postSearch'] : null;
 				$request = Yii::$app->request;
 
 				$opciones = [
-						'back' => '/aaee/anexoramo/anexo-ramo/index-create',
+					'back' => '/aaee/anexoramo/anexo-ramo/index-create',
 				];
 
 				$params = '';
@@ -315,13 +307,16 @@
 				$model = New AnexoRamoForm();
 				$formName = $model->formName();
 
+
+
 				if ( $request->isGet ) {
-					$postData = isset($request->queryParams['page']) ? $request->queryParams : $postInicial;
-					$model->scenario = self::SCENARIO_SEARCH;
+					//$postData = isset($request->queryParams['page']) ? $request->queryParams['page'] : $postInicial;
+					$postData = $postInicial;
+					$model->scenario = self::SCENARIO_FRONTEND;
 
 				} elseif ( $request->isPost ) {
 					$postData = $request->post();
-					$model->scenario = self::SCENARIO_SEARCH;
+					$model->scenario = self::SCENARIO_FRONTEND;
 					if ( isset($postData['btn-search']) ) {
 						if ( $postData['btn-search'] == 1 ) {
 							$params = $postData['inputSearch'];
@@ -342,7 +337,7 @@
 					} elseif ( isset($postData['btn-create']) ) {
 						if ( $postData['btn-create'] == 5 ) {
 							// Se muestra una vista previa con los rubros seleccionados.
-							$model->scenario = self::SCENARIO_SEARCH;
+							$model->scenario = self::SCENARIO_FRONTEND;
 							$model->load($postData);
 
 							$arregloIdRubro = isset($_SESSION['arrayIdRubros']) ? $_SESSION['arrayIdRubros'] : [];
@@ -381,9 +376,13 @@
 						} elseif ( $postData['btn-back-form'] == 9 ) {
 
 						}
+					} elseif ( isset($postData['btn-quit']) ) {
+						if ( $postData['btn-quit'] == 1 ) {
+							$this->redirect(['quit']);
+						}
 					}
 				} else {
-					$model->scenario = self::SCENARIO_SEARCH;
+					$model->scenario = self::SCENARIO_FRONTEND;
 				}
 
 				$model->load($postData);
@@ -421,6 +420,7 @@
 
 						// Catalogo de rubros para anexar, sin considerar los ya registrados y los seleccionados.
 						$dataProviderRubroCatalogo = $searchRamo->getDataProvider($añoImpositivo, $params, $listaIdRubroIgnorar);
+
 						return $this->render('/aaee/anexo-ramo/seleccionar-ramo-anexar-form', [
 																'model' => $model,
 																'findModel' => $findModel,
