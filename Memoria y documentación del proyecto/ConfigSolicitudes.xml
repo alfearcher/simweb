@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="yes" ?>
 <DBMODEL Version="4.0">
 <SETTINGS>
-<GLOBALSETTINGS ModelName="ConfigSolicitudes" IDModel="0" IDVersion="0" VersionStr="1.0.0.0" Comments="" UseVersionHistroy="1" AutoIncVersion="1" DatabaseType="MySQL" ZoomFac="105.00" XPos="0" YPos="1704" DefaultDataType="5" DefaultTablePrefix="0" DefSaveDBConn="" DefSyncDBConn="" DefQueryDBConn="" Printer="Samsung ML-2240 Series" HPageCount="4.0" PageAspectRatio="1.431813406177769" PageOrientation="0" PageFormat="A4 (210x297 mm, 8.26x11.7 inches)" SelectedPages="0" UsePositionGrid="0" PositionGridX="20" PositionGridY="20" TableNameInRefs="1" DefaultTableType="0" ActivateRefDefForNewRelations="1" FKPrefix="" FKPostfix="" CreateFKRefDefIndex="1" DBQuoteCharacter="`" CreateSQLforLinkedObjects="0" DefModelFont="Tahoma" CanvasWidth="4096" CanvasHeight="2842" />
+<GLOBALSETTINGS ModelName="ConfigSolicitudes" IDModel="0" IDVersion="0" VersionStr="1.0.0.0" Comments="" UseVersionHistroy="1" AutoIncVersion="1" DatabaseType="MySQL" ZoomFac="105.00" XPos="2463" YPos="0" DefaultDataType="5" DefaultTablePrefix="0" DefSaveDBConn="" DefSyncDBConn="" DefQueryDBConn="" Printer="Samsung ML-2240 Series" HPageCount="4.0" PageAspectRatio="1.431813406177769" PageOrientation="0" PageFormat="A4 (210x297 mm, 8.26x11.7 inches)" SelectedPages="0" UsePositionGrid="0" PositionGridX="20" PositionGridY="20" TableNameInRefs="1" DefaultTableType="0" ActivateRefDefForNewRelations="1" FKPrefix="" FKPostfix="" CreateFKRefDefIndex="1" DBQuoteCharacter="`" CreateSQLforLinkedObjects="0" DefModelFont="Tahoma" CanvasWidth="4096" CanvasHeight="2842" />
 <DATATYPEGROUPS>
 <DATATYPEGROUP Name="Numeric Types" Icon="1" />
 <DATATYPEGROUP Name="Date and Time Types" Icon="2" />
@@ -258,11 +258,11 @@
 </SETTINGS>
 <METADATA>
 <REGIONS>
-<REGION ID="1408" RegionName="planilla" XPos="20" YPos="2211" Width="370" Height="267" RegionColor="3" TablePrefix="0" TableType="0" OverwriteTablePrefix="0" OverwriteTableType="0" Comments="" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="39" />
-<REGION ID="1368" RegionName="Actividad Economica" XPos="27" YPos="1517" Width="886" Height="663" RegionColor="2" TablePrefix="0" TableType="0" OverwriteTablePrefix="0" OverwriteTableType="0" Comments="Modulo que contiene lo relacionado al impuesto de Actividades Economica" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="35" />
+<REGION ID="1408" RegionName="planilla" XPos="30" YPos="2338" Width="370" Height="267" RegionColor="3" TablePrefix="0" TableType="0" OverwriteTablePrefix="0" OverwriteTableType="0" Comments="" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="39" />
+<REGION ID="1368" RegionName="Actividad Economica" XPos="27" YPos="1517" Width="891" Height="784" RegionColor="2" TablePrefix="0" TableType="0" OverwriteTablePrefix="0" OverwriteTableType="0" Comments="Modulo que contiene lo relacionado al impuesto de Actividades Economica" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="35" />
 <REGION ID="1206" RegionName="Region_02" XPos="950" YPos="21" Width="1605" Height="1852" RegionColor="1" TablePrefix="0" TableType="0" OverwriteTablePrefix="0" OverwriteTableType="0" Comments="" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="27" />
 <REGION ID="1154" RegionName="Region_01" XPos="26" YPos="19" Width="888" Height="1486" RegionColor="0" TablePrefix="0" TableType="0" OverwriteTablePrefix="0" OverwriteTableType="0" Comments="" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="20" />
-<REGION ID="1658" RegionName="propaganda" XPos="2583" YPos="23" Width="514" Height="568" RegionColor="4" TablePrefix="0" TableType="0" OverwriteTablePrefix="0" OverwriteTableType="0" Comments="" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="59" />
+<REGION ID="1658" RegionName="propaganda" XPos="2706" YPos="20" Width="514" Height="568" RegionColor="4" TablePrefix="0" TableType="0" OverwriteTablePrefix="0" OverwriteTableType="0" Comments="" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="59" />
 </REGIONS>
 <TABLES>
 <TABLE ID="1000" Tablename="config_solicitudes" PrevTableName="Table_01" XPos="37" YPos="61" TableType="1" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="2" >
@@ -1537,7 +1537,7 @@
 </INDEX>
 </INDICES>
 </TABLE>
-<TABLE ID="1409" Tablename="numeros_planillas" PrevTableName="Table_19" XPos="36" YPos="2235" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="40" >
+<TABLE ID="1409" Tablename="numeros_planillas" PrevTableName="Table_19" XPos="47" YPos="2362" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="40" >
 <COLUMNS>
 <COLUMN ID="1411" ColName="planilla" PrevColName="" Pos="0" idDatatype="5" DatatypeParams="(12)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="1" IsForeignKey="0" DefaultValue="" Comments="">
 <OPTIONSELECTED>
@@ -2412,7 +2412,7 @@
 </INDEX>
 </INDICES>
 </TABLE>
-<TABLE ID="1659" Tablename="propagandas_patrocinadores" PrevTableName="Table_29" XPos="2610" YPos="64" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="60" >
+<TABLE ID="1659" Tablename="propagandas_patrocinadores" PrevTableName="Table_29" XPos="2732" YPos="61" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="60" >
 <COLUMNS>
 <COLUMN ID="1661" ColName="id_propaganda_patrocinador" PrevColName="" Pos="0" idDatatype="5" DatatypeParams="(9)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="1" IsForeignKey="0" DefaultValue="" Comments="">
 <OPTIONSELECTED>
@@ -2607,6 +2607,7 @@
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="1674" LengthParam="0" />
 <INDEXCOLUMN idColumn="1676" LengthParam="0" />
+<INDEXCOLUMN idColumn="1694" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
 <INDEX ID="1743" IndexName="index_identificador" IndexKind="1" FKRefDef_Obj_id="-1">
@@ -2614,6 +2615,7 @@
 <INDEXCOLUMN idColumn="1672" LengthParam="0" />
 <INDEXCOLUMN idColumn="1673" LengthParam="0" />
 <INDEXCOLUMN idColumn="1674" LengthParam="0" />
+<INDEXCOLUMN idColumn="1694" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
 </INDICES>
