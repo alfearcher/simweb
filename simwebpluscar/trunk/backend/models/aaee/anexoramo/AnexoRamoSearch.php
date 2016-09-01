@@ -726,7 +726,7 @@
 	    												[':id_contribuyente' => $this->_id_contribuyente])
 	    								->andWhere('ente =:ente',
 	    												[':ente' => Yii::$app->ente->getEnte()])
-	    								->andWhere(':ano_impositivo =:ano_impositivo',
+	    								->andWhere('ano_impositivo =:ano_impositivo',
 	    												[':ano_impositivo' => $añoImpositivo])
 	    								->andWhere('estatus =:estatus',
 	    												[':estatus' => $estatus]);
