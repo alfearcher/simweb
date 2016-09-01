@@ -78,6 +78,12 @@
 	<?=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $findModel['id_contribuyente']])->label(false);?>
 	<?=$form->field($model, 'ano_impositivo')->hiddenInput(['value' => $model->ano_impositivo])->label(false);?>
 	<?=$form->field($model, 'periodo')->hiddenInput(['value' => $model->periodo])->label(false);?>
+	<?=$form->field($model, 'fecha_desde')->hiddenInput(['value' => $model->fecha_desde])->label(false); ?>
+	<?=$form->field($model, 'fecha_hasta')->hiddenInput(['value' => $model->fecha_hasta])->label(false); ?>
+	<?=$form->field($model, 'usuario')->hiddenInput(['value' => $model->usuario])->label(false); ?>
+	<?=$form->field($model, 'fecha_hora')->hiddenInput(['value' => $model->fecha_hora])->label(false); ?>
+	<?=$form->field($model, 'origen')->hiddenInput(['value' => $model->origen])->label(false); ?>
+	<?=$form->field($model, 'estatus')->hiddenInput(['value' => 0])->label(false); ?>
 
 	<meta http-equiv="refresh">
     <div class="panel panel-primary"  style="width: 110%;">
@@ -140,6 +146,22 @@
 									<div class="rubro-registrado">
 										<div class="row" style="margin-left: 5px;">
 											<h3><span><?= Html::encode(Yii::t('frontend', 'Categories Registered ' . $model->ano_impositivo . ' - ' . $model->periodo)) ?></span></h3>
+										</div>
+										<div class="row" style="width:35%;padding-left: 15px;">
+											<?= DetailView::widget([
+													'model' => $model,
+													'attributes' => [
+														[
+															'label' => Yii::t('frontend', 'Fiscal Start Date'),
+															'value' => $model['fecha_desde'],
+														],
+														[
+															'label' => Yii::t('frontend', 'Fiscal End Date'),
+															'value' => $model['fecha_hasta'],
+														],
+													],
+												])
+											?>
 										</div>
 										<?= GridView::widget([
 												// Rubros registrados para el año-periodo.
