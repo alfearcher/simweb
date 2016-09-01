@@ -88,13 +88,12 @@
 		 * @param long $nroSolicitud identificador de la solicitud.
 		 * @return Active Record.
 		 */
-		public function findSolicitudAnexoRamo($nroSolicitud, $estatus)
+		public function findSolicitudAnexoRamo($nroSolicitud)
 		{
 			$findModel = AnexoRamo::find()->where('nro_solicitud =:nro_solicitud',
 													 	[':nro_solicitud' => $nroSolicitud])
 										  ->andWhere('id_contribuyente =:id_contribuyente',
-											   			[':id_contribuyente' => $this->_id_contribuyente])
-										  ->andWhere('estatus =:estatus', ['estatus' => $estatus]);
+											   			[':id_contribuyente' => $this->_id_contribuyente]);
 
 			return isset($findModel) ? $findModel : null;
 		}
@@ -411,7 +410,12 @@
 
 
 
-	    /***/
+	    /**
+	     * [getListaRubro description]
+	     * @param  array $chkSeleccion arreglo de identificadores de la entidad rubros.
+	     * @param  integer $añoImpositivo año fiscal al cual se desea obtener los identificadores.
+	     * @return array retorna un arreglo de identificadores, en caso contrario una arreglo vacio.
+	     */
 	    public function getListaRubro($chkSeleccion, $añoImpositivo)
 	    {
 	    	$listaIdRubro = [];
@@ -653,31 +657,32 @@
 
 
 
+	    // /***/
+	    // public function findCatalogoRubroParaAnexar($añoImpositivo, $listaIdRubro)
+	    // {
+	    // 	$findModel = Rubro::find()->where('ano_impositivo =:ano_impositivo',
+	    // 												[':ano_impositivo' => $añoImpositivo])
+	    // 							  ->andWhere('inactivo =:inactivo',
+	    // 							  					[':inactivo' => 0])
+	    // 	                          ->andwhere(['NOT IN', 'id_rubro', $listaIdRubro]);
+	    // 	return isset($findModel) ? $findModel : $findModel;
+	    // }
+
+
+
+
 	    /***/
-	    public function findCatalogoRubroParaAnexar($añoImpositivo, $listaIdRubro)
-	    {
-	    	$findModel = Rubro::find()->where('ano_impositivo =:ano_impositivo',
-	    												[':ano_impositivo' => $añoImpositivo])
-	    							  ->andWhere('inactivo =:inactivo',
-	    							  					[':inactivo' => 0])
-	    	                          ->andwhere(['NOT IN', 'id_rubro', $listaIdRubro]);
-	    	return isset($findModel) ? $findModel : $findModel;
-	    }
+	    // public function getDataProviderRubroPorAnexar($añoImpositivo, $listaIdRubro, $params = '')
+	    // {
+	    // 	$query = self::findCatalogoRubroParaAnexar($añoImpositivo, $listaIdRubro);
 
+	    // 	$dataProvider = New ActiveDataProvider([
+	    // 			'query' => $query,
+	    // 	]);
+	    // 	$query->all();
 
-
-	    /***/
-	    public function getDataProviderRubroPorAnexar($añoImpositivo, $listaIdRubro, $params = '')
-	    {
-	    	$query = self::findCatalogoRubroParaAnexar($añoImpositivo, $listaIdRubro);
-
-	    	$dataProvider = New ActiveDataProvider([
-	    			'query' => $query,
-	    	]);
-	    	$query->all();
-
-	    	return $dataProvider;
-	    }
+	    // 	return $dataProvider;
+	    // }
 
 
 
@@ -705,5 +710,51 @@
 	    	return $listaIdRubro;
 	    }
 
+
+
+
+	    /**
+	     * Metodo que realiza un find sobre la entidad "act-econ". Segun los
+	     * parametros enviados.
+	     * @param  integer $añoImpositivo año fiscal consultado.
+	     * @param  integer $estatus condicion del registro.
+	     * @return active record en caso contrario null.
+	     */
+	    private function findLapsoDeclaracion($añoImpositivo, $estatus)
+	    {
+	    	$findModel = ActEcon::find()->where('id_contribuyente =:id_contribuyente',
+	    												[':id_contribuyente' => $this->_id_contribuyente])
+	    								->andWhere('ente =:ente',
+	    												[':ente' => Yii::$app->ente->getEnte()])
+	    								->andWhere(':ano_impositivo =:ano_impositivo',
+	    												[':ano_impositivo' => $añoImpositivo])
+	    								->andWhere('estatus =:estatus',
+	    												[':estatus' => $estatus]);
+	    	return isset($findModel) ? $findModel : null;
+	    }
+
+
+
+
+	    /**
+	     * Metodo que permite obtener el identificador del lapso declarado, recibido
+	     * la consulta realizada filtra y solo retorna el identificador, en caso contrario
+	     * retorna null.
+	     * @param  integer $añoImpositivo año fiscal consultado.
+	     * @param  integer $estatus condicion del registro.
+	     * @return long retorna el identificador de la entidad segun la consulta realizada.
+	     * En caso contrario retorna null.
+	     */
+	    public function getIdentificadorLapsoValido($añoImpositivo)
+	    {
+	    	$findModel = self::findLapsoDeclaracion($añoImpositivo, 0);
+	    	if ( $findModel == null ) {
+	    		return null;
+	    	} else {
+	    		$result = $findModel->one();
+die(var_dump($result));
+	    		return isset($result->id_impuesto) ? $result->id_impuesto : null;
+	    	}
+	    }
 	}
  ?>
