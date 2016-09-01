@@ -731,6 +731,7 @@
 
 					foreach ( $chkSeleccion as $key => $value ) {
 						$arregloDatos['id_rubro'] = $value;
+
 						$result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
 						if ( !$result ) {
 							$cancel = true;
@@ -769,11 +770,11 @@
 
                		if ( $idImpuesto > 0 ) {
                			// Se procede a guardar en la entidad detalle de las declaraciones.
+               			$modelActEconIngreso = New ActEconIngresoForm();
+			    		$arregloDatos = $modelActEconIngreso->attributes;
+
 		      			$tabla = '';
 		      			$tabla = $modelActEconIngreso->tableName();
-
-		      			$modelActEconIngreso = New ActEconIngresoForm();
-			    		$arregloDatos = $modelActEconIngreso->attributes;
 
 			    		foreach ( $arregloDatos as $key => $value ) {
 			    			$arregloDatos[$key] = 0;
