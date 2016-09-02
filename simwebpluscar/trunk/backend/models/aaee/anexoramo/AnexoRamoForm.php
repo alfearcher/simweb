@@ -229,15 +229,5 @@
 	    }
 
 
-
-	    /***/
-	    public function rangoFiscal($attribute)
-	    {
-	    	$searchRamo = New AnexoRamoSearch($model->id_contribuyente);
-	    	$rango = $searchRamo->getRangoFechaDeclaracion($model->ano_impositivo);
-	    	$this->attribute = $rango[$this->attribute];
-die(var_dump($rango));
-	    }
-
 	}
 ?>
