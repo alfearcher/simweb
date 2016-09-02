@@ -54,6 +54,7 @@ use yii\data\ActiveDataProvider;
 
 use backend\models\funcionario\calcomania\FuncionarioCalcomania;
 use backend\models\funcionario\Funcionario;
+use backend\models\vehiculo\calcomania\LoteCalcomaniaForm;
 
 
 /**
@@ -85,16 +86,17 @@ class DeshabilitarForm extends Model
 
      public function verificarFuncionarioLote($login)
      {
-        //die($login);
-         $buscar = LoteCalcomania::find()
+      //die(var_dump($login).'hola');
+         $buscar = LoteCalcomaniaForm::find()
                                 ->where([
-                                'login' => $login,
+                                'usuario' => $login,
                                 'inactivo' => 0,
 
                                     ])
                                 ->all();
 
                 if($buscar == true){
+                   // die('consiguio');
                     return true;
                 }else{
                     return false;
@@ -103,7 +105,7 @@ class DeshabilitarForm extends Model
 
     public function busqueda($id)
     {   
-        //die(var_dump($id));
+        //die(var_dump($id).'hla');
         $buscar = Funcionario::find()
                             ->where([
                                 'id_funcionario' => $id,
