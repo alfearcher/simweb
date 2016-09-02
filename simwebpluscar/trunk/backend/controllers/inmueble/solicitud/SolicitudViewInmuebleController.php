@@ -399,7 +399,7 @@
 		// tipo solicitud 100
 		private function actionMostrarSolicitudDesincorporacionInmueble()
 		{
-			if ( $this->model->nivel_aprobacion == 2 ) { 
+			if ( $this->model->nivel_aprobacion == 2 ) {  
 					$modelSearch = New SlInmueblesUrbanosSearch($this->model->id_contribuyente);
 					$model = $modelSearch->findActualizacionDatos($this->model->nro_solicitud);
 

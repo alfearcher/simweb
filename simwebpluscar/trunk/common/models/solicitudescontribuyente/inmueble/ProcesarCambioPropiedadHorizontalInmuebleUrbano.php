@@ -280,15 +280,14 @@
             // actualizado, entonces el proceso debe ser cancelado.
             if ( !$cancel ) {
                 if($arregloDatos['estatus_funcionario'] == 9)
-                {
+                { 
                     $result = $this->_conexion->modificarRegistro($this->_conn, $tableName,
                                                               $arregloDatos, $arregloCondicion);
                 } elseif($arregloDatos['estatus_funcionario'] == 1) {
 
                     $tableNameMaster = 'inmuebles';
 
-                    $arregloDatosMaster = [ 
-                                            
+                    $arregloDatosMaster = [                                             
                                             'direccion' => $camposModel['direccion'],
                                             'propiedad_horizontal' => $camposModel['propiedad_horizontal'],
                                             'parcela_catastro' => $camposModel['parcela_catastro'],
