@@ -105,28 +105,37 @@ class DeshabilitarFuncionarioController extends Controller
 
   public function actionDeshabilitarFuncionario()
   {
-   $todoBien = true;
+   $todoBien = false;
     $errorCheck = ""; 
      
       $idFuncionario = yii::$app->request->post('chk-deshabilitar-funcionario');
      
       $_SESSION['idFuncionario'] = $idFuncionario;
+     // die(var_dump($idFuncionario));
 
           $buscarFuncionario = new DeshabilitarForm();
-          
-          foreach ($idFuncionario as $key => $value) {
-                
+          //die($value);
+          foreach ($idFuncionario as $key => $value[]) {
+          $value; 
+          //die(var_dump($value));
           $buscar = $buscarFuncionario->busqueda($value);
+          
+              if ($buscar == true){
+                $_SESSION['login'] = $buscar; 
 
-          $todoBien = true;
-     
-              
-              if($todoBien == true){
+                $todoBien = true;
+              }
+         }
+            
+       // die(var_dump($buscar));
 
-                $_SESSION['login'] = $buscar[0]->login; 
+       if($todoBien){
+
+
+       
+        
                 
-              
-
+    
 
               
   
@@ -144,9 +153,9 @@ class DeshabilitarFuncionarioController extends Controller
 
                                                                                              
        }
-      }
+    }
      
-     }
+     
   }
 
   /**
@@ -154,9 +163,9 @@ class DeshabilitarFuncionarioController extends Controller
    */
   public function actionAceptarDesincorporacion()
   {
-      $login = $_SESSION['login'];
-      //die($login);  
-      $todoBien = true;
+      $login[] = $_SESSION['login'];
+      //die(var_dump($login));  
+      $todoBien = false;
       $idFuncionarios = $_SESSION['idFuncionario'];
       $model = new DeshabilitarForm();
 
@@ -175,9 +184,19 @@ class DeshabilitarFuncionarioController extends Controller
                   $verificarFuncionario = new DeshabilitarForm();
                 
                   foreach($login as $key => $value){
-                  $verificar = $verificarFuncionario->verificarFuncionarioLote($value);
-                  $todoBien = true;
-                 
+                  
+                  $value[0]['login'];
+                 // die(var_dump($value[0]['login']));
+                  $verificar = $verificarFuncionario->verificarFuncionarioLote($value[0]['login']);
+                      if($verificar == true){
+                        //die('es verdad');
+
+
+                      
+                      $todoBien = true;
+                    }
+
+                   }
 
                     if($todoBien == true){
 
@@ -185,7 +204,7 @@ class DeshabilitarFuncionarioController extends Controller
                     }else{
 
 
-                 $deshabilitarFuncionario = self::beginSave();
+                    $deshabilitarFuncionario = self::beginSave();
 
                     if ($deshabilitarFuncionario == true){
                         return MensajeController::actionMensaje(200); 
@@ -198,7 +217,7 @@ class DeshabilitarFuncionarioController extends Controller
                     
             }  
 
-             }    
+           
                 
             return $this->render('/vehiculo/calcomania/deshabilitarfuncionario/aceptar-desincorporacion', [
                                                               'model' => $model,
