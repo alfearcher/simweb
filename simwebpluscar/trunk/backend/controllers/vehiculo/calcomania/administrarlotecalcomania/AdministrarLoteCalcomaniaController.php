@@ -63,6 +63,7 @@ use backend\models\funcionario\Funcionario;
 use backend\models\funcionario\calcomania\FuncionarioCalcomania;
 use backend\models\vehiculo\calcomania\administrarlotecalcomania\BusquedaMultipleForm;
 use common\models\calcomania\calcomaniamodelo\Calcomania;
+use backend\models\vehiculo\calcomania\LoteCalcomaniaForm;
 /**
  * Site controller
  */
