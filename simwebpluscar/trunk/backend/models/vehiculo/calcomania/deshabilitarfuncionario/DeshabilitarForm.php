@@ -83,6 +83,42 @@ class DeshabilitarForm extends Model
         return Model::scenarios();
     }
 
+     public function verificarFuncionarioLote($login)
+     {
+        //die($login);
+         $buscar = LoteCalcomania::find()
+                                ->where([
+                                'login' => $login,
+                                'inactivo' => 0,
+
+                                    ])
+                                ->all();
+
+                if($buscar == true){
+                    return true;
+                }else{
+                    return false;
+                }
+     }
+
+    public function busqueda($id)
+    {   
+        //die(var_dump($id));
+        $buscar = Funcionario::find()
+                            ->where([
+                                'id_funcionario' => $id,
+                                'status_funcionario' => 0,
+
+                                ])
+                            ->all();
+            if ($buscar == true){
+                return $buscar;
+            }else{
+                return false;
+            }
+            
+    }
+
    
   
 
