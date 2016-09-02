@@ -141,7 +141,7 @@
 	        	  'required', 'on' => 'frontend',
 	        	  'message' => Yii::t('frontend','{attribute} is required')],
 	        	[['id_contribuyente', 'ano_impositivo',
-	        	  'periodo',],
+	        	  'periodo', 'fecha_desde', 'fecha_hasta'],
 	        	  'required', 'on' => 'backend',
 	        	  'message' => Yii::t('frontend','{attribute} is required')],
 	        	 [['id_contribuyente', 'ano_impositivo',
