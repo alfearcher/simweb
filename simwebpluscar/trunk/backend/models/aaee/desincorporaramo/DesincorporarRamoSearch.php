@@ -742,7 +742,10 @@
 	    	$chkRubroSeleccionado = [];
 	    	$chkRubro = [];
 	    	foreach ( $chkSeleccionJson as $seleccion ) {
-	    		# code...
+	    		// Cada $seleccion es un elemento json, el json_decode genera
+	    		// un objeto json lo que significa
+	    		$chkRubroSeleccionado[] = json_decode($seleccion);
+	    		$ch
 	    	}
 
 	    	$dataProvider = New ActiveDataProvider([
