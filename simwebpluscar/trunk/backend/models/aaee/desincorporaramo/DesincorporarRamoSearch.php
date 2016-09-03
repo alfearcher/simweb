@@ -735,23 +735,42 @@
 
 
 	    /***/
-	    public function getDataProviderVistaPrevia($añoImpositivo, $periodo, $chkSeleccionJson)
+	    public function getDataProviderRubroDesincorporar($añoImpositivo, $periodo, $chkSeleccionJson)
 	    {
-	    	$query = self::findRubrosRegistrados($añoImpositivo, $periodo);
+	    	//$query = self::findRubrosRegistrados($añoImpositivo, $periodo);
+
+	    	$query = ActEconIngreso::find();
 
 	    	$chkRubroSeleccionado = [];
-	    	$chkRubro = [];
+	    	$chkIdRubro = [];
+	    	$chkIdImpuesto = [];
+	    	$chkPeriodo = [];
 	    	foreach ( $chkSeleccionJson as $seleccion ) {
 	    		// Cada $seleccion es un elemento json, el json_decode genera
-	    		// un objeto json lo que significa
+	    		// un objeto json. Cada elemento de $chkRubroSeleccionado[] es un
+	    		// objeto tipo json.
 	    		$chkRubroSeleccionado[] = json_decode($seleccion);
-	    		$ch
+	    	}
+
+	    	if ( count($chkRubroSeleccionado) > 0 ) {
+	    		foreach ( $chkRubroSeleccionado as $objRubro ) {
+	    			$chkIdImpuesto[] = $objRubro->{'id_impuesto'};
+	    			$chkIdRubro[] = $objRubro->{'id_rubro'};
+	    			$chkPeriodo[] = $objRubro->{'exigibilidad_periodo'};
+	    		}
 	    	}
 
 	    	$dataProvider = New ActiveDataProvider([
-	    			$query = $query,
-	    		]);
+	    			'query' => $query,
+	    	]);
 
+	    	$query->where(['in', 'id_impuesto', $chkIdImpuesto])
+	    	 	  ->andFilterWhere(['in', '.id_rubro', $chkIdRubro])
+	    		  ->andFilterWhere(['in', 'exigibilidad_periodo', $chkPeriodo])
+	    		  ->andWhere('inactivo =:inactivo',[':inactivo' => 0])
+	    		  ->andWhere('bloqueado =:bloqueado',[':bloqueado' => 0]);
+
+	    	return $dataProvider;
 
 	    }
 

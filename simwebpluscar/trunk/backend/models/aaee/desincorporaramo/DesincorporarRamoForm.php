@@ -63,8 +63,8 @@
 		public $ano_impositivo;
 		public $periodo;
 		public $id_rubro;
-		public $fecha_desde;
-		public $fecha_hasta;
+		public $periodo_fiscal_desde;
+		public $periodo_fiscal_hasta;
 		public $fecha_hora;
 		public $usuario;
 		public $origen;						// Basicamente de donde se creo o quien creo el registro LAN o WEB
@@ -91,8 +91,8 @@
         					'id_contribuyente',
         					'ano_impositivo',
         					'periodo',
-        					'fecha_desde',
-        					'fecha_hasta',
+        					'periodo_fiscal_desde',
+        					'periodo_fiscal_hasta',
         					'origen',
         					'fecha_hora',
         					'usuario',
@@ -103,8 +103,8 @@
         					'id_contribuyente',
         					'ano_impositivo',
         					'periodo',
-        					'fecha_desde',
-        					'fecha_hasta',
+        					'periodo_fiscal_desde',
+        					'periodo_fiscal_hasta',
         					'origen',
         					'fecha_hora',
         					'usuario',
@@ -115,8 +115,8 @@
         					'id_contribuyente',
         					'ano_impositivo',
         					'periodo',
-        					'fecha_desde',
-        					'fecha_hasta',
+        					'periodo_fiscal_desde',
+        					'periodo_fiscal_hasta',
         					'origen',
         					'fecha_hora',
         					'usuario',
@@ -139,7 +139,7 @@
 	        	  'required', 'on' => 'frontend',
 	        	  'message' => Yii::t('frontend','{attribute} is required')],
 	        	[['id_contribuyente', 'ano_impositivo',
-	        	  'periodo', 'fecha_desde', 'fecha_hasta'],
+	        	  'periodo', 'periodo_fiscal_desde', 'periodo_fiscal_hasta'],
 	        	  'required', 'on' => 'backend',
 	        	  'message' => Yii::t('frontend','{attribute} is required')],
 	        	 [['id_contribuyente', 'ano_impositivo',
@@ -150,7 +150,7 @@
 	        	  'ano_impositivo',
 	        	  'periodo', 'estatus'],
 	        	  'integer', 'message' => Yii::t('frontend','{attribute}')],
-	        	[['fecha_desde', 'fecha_hasta'],
+	        	[['periodo_fiscal_desde', 'periodo_fiscal_hasta'],
 	        	  'date', 'format' => 'yyyy-MM-dd',
 	        	  'message' => Yii::t('frontend','formatted date no valid')],
 	     		['nro_solicitud', 'default', 'value' => 0],
@@ -179,8 +179,8 @@
 	        	'id_desincorporar_ramo' => Yii::t('frontend', 'Id. Record'),
 	            'id_contribuyente' => Yii::t('frontend', 'Id. Taxpayer'),
 	            'nro_solicitud' => Yii::t('frontend', 'Request'),
-	            'fecha_desde' => Yii::t('frontend', 'Fiscal Start Date'),
-	            'fecha_hasta' => Yii::t('frontend', 'Fiscal End Date'),
+	            'periodo_fiscal_desde' => Yii::t('frontend', 'Fiscal Start Date'),
+	            'periodo_fiscal_hasta' => Yii::t('frontend', 'Fiscal End Date'),
 	            'periodo' => Yii::t('frontend', 'Period'),
 	            'ano_impositivo' => Yii::t('frontend', 'Fiscal Year'),
 	            'dni' => Yii::t('frontend', 'DNI'),
