@@ -148,6 +148,11 @@
 												'id' => 'grid-lista-rubro-registrado',
 		    									'dataProvider' => $dataProviderRubro,
 		    									'headerRowOptions' => ['class' => 'success'],
+		    									// 'rowOptions' => [
+		    									// 		'data' => [
+		    									// 			'x' => 5,
+		    									// 		],
+		    									// ],
 		    									'summary' => '',
 		    									'columns' => [
 		    										['class' => 'yii\grid\SerialColumn'],
@@ -192,22 +197,6 @@
 									                	'name' => 'chkRubroSeleccionado',
 									                	'checkboxOptions' => [
 							                                'id' => 'chkRubroSeleccionado',
-							                               	//'onClick' => 'alert($("input[name="chkRubroSeleccionado"]:checked").val());',
-
-
-							             //                    	//'$("#chkRubroSeleccionado").each(function() {
-							             //                    					if($(this).is(":checked")){
-																				// 	$("#btn-create").removeAttr("disabled");
-																				// } else {
-																				// 	$("#btn-create").attr("disabled", true);
-																				// }
-							             //                    	});',
-
-							             //                    	'$(".chkRubroSeleccionado input[type=checkbox]:checked").each {
-																				// $("#btn-create").removeAttr("disabled");
-																			 // } else {
-							             //                                    	$("#btn-create").attr("disabled", true);
-							             //                                     }',
 							                                // 'onClick' => 'if ( $(this).is(":checked") ) {
 							                                //                 $("#btn-create").removeAttr("disabled");
 							                                //               } else {
@@ -285,3 +274,12 @@
 
  	<?php ActiveForm::end(); ?>
 </div>	 <!-- Fin de inscripcion-act-econ-form -->
+
+
+<?php
+	$this->registerJs(
+		'$( "#btn-create").click(function() {
+			$("#btn-create").attr("disabled", true);
+		});'
+	);
+ ?>
