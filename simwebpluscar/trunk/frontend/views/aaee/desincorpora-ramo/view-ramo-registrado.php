@@ -78,8 +78,8 @@
 	<?=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $findModel['id_contribuyente']])->label(false);?>
 	<?=$form->field($model, 'ano_impositivo')->hiddenInput(['value' => $model->ano_impositivo])->label(false);?>
 	<?=$form->field($model, 'periodo')->hiddenInput(['value' => $model->periodo])->label(false);?>
-	<?=$form->field($model, 'fecha_desde')->hiddenInput(['value' => $model->fecha_desde])->label(false);?>
-	<?=$form->field($model, 'fecha_hasta')->hiddenInput(['value' => $model->fecha_hasta])->label(false);?>
+	<?=$form->field($model, 'periodo_fiscal_desde')->hiddenInput(['value' => $model->periodo_fiscal_desde])->label(false);?>
+	<?=$form->field($model, 'periodo_fiscal_hasta')->hiddenInput(['value' => $model->periodo_fiscal_hasta])->label(false);?>
 	<?=$form->field($model, 'totalItem')->hiddenInput(['value' => $totalItem])->label(false);?>
 
 	<meta http-equiv="refresh">

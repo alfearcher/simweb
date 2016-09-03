@@ -82,8 +82,8 @@
 	<?= $form->field($model, 'id_contribuyente')->hiddenInput(['value' => $model->id_contribuyente])->label(false); ?>
 	<?= $form->field($model, 'ano_impositivo')->hiddenInput(['value' => $model->ano_impositivo])->label(false); ?>
 	<?= $form->field($model, 'periodo')->hiddenInput(['value' => $model->periodo])->label(false); ?>
-	<?= $form->field($model, 'fecha_desde')->hiddenInput(['value' => $model->fecha_desde])->label(false); ?>
-	<?= $form->field($model, 'fecha_hasta')->hiddenInput(['value' => $model->fecha_hasta])->label(false); ?>
+	<?= $form->field($model, 'periodo_fiscal_desde')->hiddenInput(['value' => $model->periodo_fiscal_desde])->label(false); ?>
+	<?= $form->field($model, 'periodo_fiscal_hasta')->hiddenInput(['value' => $model->periodo_fiscal_hasta])->label(false); ?>
 	<?= $form->field($model, 'usuario')->hiddenInput(['value' => $model->usuario])->label(false); ?>
 	<?= $form->field($model, 'fecha_hora')->hiddenInput(['value' => $model->fecha_hora])->label(false); ?>
 	<?= $form->field($model, 'origen')->hiddenInput(['value' => $model->origen])->label(false); ?>
@@ -110,13 +110,13 @@
 								            	[
 								                    'label' => Yii::t('frontend', 'Category'),
 								                    'value' => function($data) {
-	                        										return $data->rubro;
+	                        										return $data->rubroDetalle->rubro;
 	                											},
 								                ],
 								                [
 								                    'label' => Yii::t('frontend', 'Year'),
 								                    'value' => function($data) {
-	                        										return $data->ano_impositivo;
+	                        										return $data->actividadEconomica->ano_impositivo;
 	                											},
 								                ],
 								               [
@@ -134,7 +134,7 @@
 								                [
 								                    'label' => Yii::t('frontend', 'Descripcion'),
 								                    'value' => function($data) {
-	                        										return $data->descripcion;
+	                        										return $data->rubroDetalle->descripcion;
 	                											},
 								                ],
 								                [
