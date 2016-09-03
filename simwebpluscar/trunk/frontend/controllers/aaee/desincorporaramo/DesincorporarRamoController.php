@@ -66,6 +66,7 @@
 	use backend\models\aaee\rubro\Rubro;
 	use backend\models\aaee\actecon\ActEconForm;
 	use backend\models\aaee\acteconingreso\ActEconIngresoForm;
+	use backend\models\aaee\acteconingreso\ActEconIngreso;
 
 	session_start();		// Iniciando session
 
@@ -190,20 +191,20 @@
 		public function actionIndexCreate()
 		{
 			// Se verifica que el contribuyente haya iniciado una session.
-			$params = '';
 			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) && isset($_SESSION['conf'])) {
 
-				self::actionAnularSession(['arrayIdRubros']);
 				$btnSearchCategory = 0;			// Indica se se activa o no.
 				$idContribuyente = $_SESSION['idContribuyente'];
 				$request = Yii::$app->request;
 				$postData = $request->post();
 
+//die(var_dump($postData));
+
 				$model = New DesincorporarRamoForm();
 				$formName = $model->formName();
 				$model->scenario = self::SCENARIO_DEFAULT;
 
-				$caption = Yii::t('frontend', 'Add New Categories');
+				$caption = Yii::t('frontend', 'Remove Categories');
 
 				// Se muestra el form de la solicitud.
 		      	// Datos generales del contribuyente.
@@ -212,16 +213,10 @@
 
 		      	// Se inicializa el dataprovider del grid que contiene los rubros
 		      	// registrados del contribuyente.
-		      	$modelRubro = $searchRamo->findRubrosRegistrados(0,0);
-		  		$dataProviderRubro = $searchRamo->inicializarDataProvider($modelRubro);
+		      	//$modelRubro = $searchRamo->findRubrosRegistrados(0,0);
+		  		//$dataProviderRubro = $searchRamo->inicializarDataProvider($modelRubro);
 
-				if ( isset($postData['btn-back-form']) ) {
-					if ( $postData['btn-back-form'] == 3 ) {
-						$model->scenario = self::SCENARIO_DEFAULT;
-						$postData = [];			// Inicializa el post.
-						$model->load($postData);
-					}
-				} elseif ( isset($postData['btn-quit']) ) {
+				if ( isset($postData['btn-quit']) ) {
 					if ( $postData['btn-quit'] == 1 ) {
 						$this->redirect(['quit']);
 					}
@@ -231,36 +226,28 @@
 						$model->load($postData);
 						if ( $model->load($postData) ) {
 			    			if ( $model->validate() ) {
-								$añoImpositivo = $model->ano_impositivo;
-								$periodo = $model->periodo;
+			    				$_SESSION['postSearch'] = $postData;
+			    				return $this->redirect(['rubro-registrados']);
+							// 	$añoImpositivo = $model->ano_impositivo;
+							// 	$periodo = $model->periodo;
 
-								$rango = $searchRamo->getRangoFechaDeclaracion($añoImpositivo);
-								$model->fecha_desde = $rango['fechaDesde'];
-								$model->fecha_hasta = $rango['fechaHasta'];
+							// 	$dataProviderRubro = $searchRamo->getDataProviderRubrosRegistrados($añoImpositivo, $periodo);
+							// 	$btnSearchCategory = 1;
 
-								$dataProviderRubro = $searchRamo->getDataProviderRubrosRegistrados($añoImpositivo, $periodo);
-								$btnSearchCategory = 1;
-
-								$opciones = [
-									'back' => '/aaee/anexoramo/anexo-ramo/index-create',
-								];
-								$caption = $caption . '. ' . Yii::t('frontend', 'Categories Registered') . ' ' . $model->ano_impositivo . ' - ' . $model->periodo;
-								return $this->render('/aaee/anexo-ramo/view-ramo-registrado', [
-			  													'model' => $model,
-			  													'findModel' => $findModel,
-			  													'dataProviderRubro' => $dataProviderRubro,
-			  													'btnSearchCategory' => $btnSearchCategory,
-			  													'caption' => $caption,
-			  													'opciones' =>$opciones,
-					  					]);
+							// 	$opciones = [
+							// 		'back' => '/aaee/desincorporaramo/desincorporar-ramo/index-create',
+							// 	];
+							// 	$caption = $caption . '. ' . Yii::t('frontend', 'Categories Registered') . ' ' . $model->ano_impositivo . ' - ' . $model->periodo;
+							// 	return $this->render('/aaee/desincorpora-ramo/view-ramo-registrado', [
+			  		// 											'model' => $model,
+			  		// 											'findModel' => $findModel,
+			  		// 											'dataProviderRubro' => $dataProviderRubro,
+			  		// 											'btnSearchCategory' => $btnSearchCategory,
+			  		// 											'caption' => $caption,
+			  		// 											'opciones' =>$opciones,
+					  // 					]);
 							}
 						}
-					}
-				} elseif ( isset($postData['btn-search-category']) ) {
-					if ( $postData['btn-search-category'] == 1 ) {
-						$model->scenario = self::SCENARIO_SEARCH;
-						$_SESSION['postSearch'] = $postData;	// Parametros de busqueda
-						return $this->redirect(['anexar-ramo']);
 					}
 				}
 
@@ -272,7 +259,7 @@
 		  		if ( isset($findModel) ) {
 		  			$caption = $caption . '. ' . Yii::t('frontend', 'Select Fiscal Lapse');
 		  			$listaAño = $searchRamo->getListaAnoRegistrado();
-		  			return $this->render('/aaee/anexo-ramo/_create', [
+		  			return $this->render('/aaee/desincorpora-ramo/_create', [
 			  											'model' => $model,
 			  											'findModel' => $findModel,
 			  											'listaAño' => $listaAño,
@@ -285,6 +272,149 @@
 		  		}
 			}
 		}
+
+
+
+
+
+		/**
+		 * Metodo que muetra una vista de los rubros registrados segun el
+		 * lapso seleccionado.
+		 * @return view
+		 */
+		public function actionRubroRegistrados()
+		{
+			// Se verifica que el contribuyente haya iniciado una session.
+			$errorChk = '';
+			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) && isset($_SESSION['conf'])) {
+
+				$postSearch = isset($_SESSION['postSearch']) ? $_SESSION['postSearch'] : [];
+
+				$request = Yii::$app->request;
+				$postData = $request->post();
+				if ( count($postData) == 0 ) {
+					$postData = $postSearch;
+				}
+				//$postData = $request->post();
+
+//die(var_dump($postData));
+
+				$model = New DesincorporarRamoForm();
+				$formName = $model->formName();
+				$model->scenario = self::SCENARIO_FRONTEND;
+
+				$caption = Yii::t('frontend', 'Remove Categories');
+
+				// Se muestra el form de la solicitud.
+		      	// Datos generales del contribuyente.
+		      	$idContribuyente = $_SESSION['idContribuyente'];
+		      	$searchRamo = New DesincorporarRamoSearch($idContribuyente);
+		      	$findModel = $searchRamo->findContribuyente();
+
+				if ( isset($postData['btn-back-form']) ) {
+					if ( $postData['btn-back-form'] == 1 ) {
+						return $this->redirect(['index-create']);
+					}
+				} elseif ( isset($postData['btn-quit']) ) {
+					if ( $postData['btn-quit'] == 1 ) {
+						$this->redirect(['quit']);
+					}
+
+				} elseif ( isset($postData['btn-create']) ) {
+					if ( $postData['btn-create'] == 5 ) {
+						$model->load($postData);
+						if ( isset($postData['chkRubroSeleccionado']) ) {
+//die(var_dump($postData));
+							$chkRubroSeleccionado = [];
+							$chkRubro = [];
+							// Lo siguiente es una estructura json. Por no tener un atributo
+							// clave se envia una convinacion de atributos que representan
+							// la clave de la entidad.
+							$chkSeleccion = $postData['chkRubroSeleccionado'];
+
+							foreach ( $chkSeleccion as $seleccion ) {
+								$chkRubroSeleccionado[] = json_decode($seleccion);
+							}
+							foreach ( $chkRubroSeleccionado as $rubro ) {
+								$chkRubro[] = $rubro->{'id_rubro'};
+							}
+
+//die(var_dump($postData));
+
+							// Total de item seleccionado.
+							$totalChk = (int)count($postData['chkRubroSeleccionado']);
+
+							// Total de item en el grid.
+							$totalItem = $postData[$formName]['totalItem'];
+
+							// Diferencia entre lo selccionado y el total de items que se pueden
+							// seleccionar. Se valida que el total de items seleccionado no sea
+							// mayor al total de items existentes, ademas que la diferencia no sea
+							// igual a cero (0). Es decir no se puede seleccionar todos los items
+							// del grid.
+							$diferencia = $totalItem - $totalChk;
+							if ( $diferencia > 0 ) {
+								// Semuestra pre-view.
+					      		$dataProviderRubroRemove = $searchRamo->getDataProviderAddRubro($chkRubro);
+				      			return $this->render('/aaee/desincorpora-ramo/pre-view-create', [
+			      										'model' => $model,
+			      										'dataProvider' => $dataProviderRubroRemove,
+			      				]);
+							} else {
+								$errorChk = Yii::t('frontend', 'Selected not valid');
+							}
+
+						} else {
+							$errorChk = Yii::t('frontend', 'Dont exist select');
+						}
+					}
+				} elseif ( isset($postData['btn-confirm-create']) ) {
+					if ( $postData['btn-confirm-create'] == 1 ) {
+
+
+
+					}
+				}
+
+		  		if ( $model->load($postData)  && Yii::$app->request->isAjax ) {
+					Yii::$app->response->format = Response::FORMAT_JSON;
+					return ActiveForm::validate($model);
+		      	}
+
+
+		  		if ( isset($findModel) ) {
+		  			$model->load($postData);
+
+		  			$añoImpositivo = $model->ano_impositivo;
+					$periodo = $model->periodo;
+
+					$dataProviderRubro = $searchRamo->getDataProviderRubrosRegistrados($añoImpositivo, $periodo);
+
+					// Total de items ene el grid.
+					$totalItem = $dataProviderRubro->getCount();
+
+					$opciones = [
+						'back' => '/aaee/desincorporaramo/desincorporar-ramo/index-create',
+					];
+					$caption = $caption . '. ' . Yii::t('frontend', 'Categories Registered') . ' ' . $model->ano_impositivo . ' - ' . $model->periodo;
+					return $this->render('/aaee/desincorpora-ramo/view-ramo-registrado', [
+  													'model' => $model,
+  													'findModel' => $findModel,
+  													'dataProviderRubro' => $dataProviderRubro,
+  													'caption' => $caption,
+  													'opciones' =>$opciones,
+  													'errorChk' => $errorChk,
+  													'totalItem' => $totalItem,
+		  					]);
+
+		  		} else {
+		  			// No se encontraron los datos del contribuyente principal.
+		  			$this->redirect(['error-operacion', 'cod' => 938]);
+		  		}
+			}
+		}
+
+
 
 
 
@@ -471,7 +601,7 @@
 
 			$idContribuyente = isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : 0;
 			if ( $idContribuyente > 0 ) {
-				$searchRamo = New AnexoRamoSearch($idContribuyente);
+				$searchRamo = New DesincorporarRamoSearch($idContribuyente);
 
 				// Se espera recibir un arreglo con los atributos de la entidad respectiva.
 				$exigibilidad = $searchRamo->getExigibilidadSegunAnoImpositivo($añoImpositivo);
