@@ -198,8 +198,6 @@
 				$request = Yii::$app->request;
 				$postData = $request->post();
 
-//die(var_dump($postData));
-
 				$model = New DesincorporarRamoForm();
 				$formName = $model->formName();
 				$model->scenario = self::SCENARIO_DEFAULT;
@@ -210,11 +208,6 @@
 		      	// Datos generales del contribuyente.
 		      	$searchRamo = New DesincorporarRamoSearch($idContribuyente);
 		      	$findModel = $searchRamo->findContribuyente();
-
-		      	// Se inicializa el dataprovider del grid que contiene los rubros
-		      	// registrados del contribuyente.
-		      	//$modelRubro = $searchRamo->findRubrosRegistrados(0,0);
-		  		//$dataProviderRubro = $searchRamo->inicializarDataProvider($modelRubro);
 
 				if ( isset($postData['btn-quit']) ) {
 					if ( $postData['btn-quit'] == 1 ) {
@@ -228,24 +221,6 @@
 			    			if ( $model->validate() ) {
 			    				$_SESSION['postSearch'] = $postData;
 			    				return $this->redirect(['rubro-registrados']);
-							// 	$añoImpositivo = $model->ano_impositivo;
-							// 	$periodo = $model->periodo;
-
-							// 	$dataProviderRubro = $searchRamo->getDataProviderRubrosRegistrados($añoImpositivo, $periodo);
-							// 	$btnSearchCategory = 1;
-
-							// 	$opciones = [
-							// 		'back' => '/aaee/desincorporaramo/desincorporar-ramo/index-create',
-							// 	];
-							// 	$caption = $caption . '. ' . Yii::t('frontend', 'Categories Registered') . ' ' . $model->ano_impositivo . ' - ' . $model->periodo;
-							// 	return $this->render('/aaee/desincorpora-ramo/view-ramo-registrado', [
-			  		// 											'model' => $model,
-			  		// 											'findModel' => $findModel,
-			  		// 											'dataProviderRubro' => $dataProviderRubro,
-			  		// 											'btnSearchCategory' => $btnSearchCategory,
-			  		// 											'caption' => $caption,
-			  		// 											'opciones' =>$opciones,
-					  // 					]);
 							}
 						}
 					}
@@ -325,21 +300,10 @@
 						$model->load($postData);
 						if ( isset($postData['chkRubroSeleccionado']) ) {
 //die(var_dump($postData));
-							$chkRubroSeleccionado = [];
-							$chkRubro = [];
 							// Lo siguiente es una estructura json. Por no tener un atributo
 							// clave se envia una convinacion de atributos que representan
 							// la clave de la entidad.
 							$chkSeleccion = $postData['chkRubroSeleccionado'];
-
-							foreach ( $chkSeleccion as $seleccion ) {
-								$chkRubroSeleccionado[] = json_decode($seleccion);
-							}
-							foreach ( $chkRubroSeleccionado as $rubro ) {
-								$chkRubro[] = $rubro->{'id_rubro'};
-							}
-
-//die(var_dump($postData));
 
 							// Total de item seleccionado.
 							$totalChk = (int)count($postData['chkRubroSeleccionado']);
@@ -355,7 +319,9 @@
 							$diferencia = $totalItem - $totalChk;
 							if ( $diferencia > 0 ) {
 								// Semuestra pre-view.
-					      		$dataProviderRubroRemove = $searchRamo->getDataProviderAddRubro($chkRubro);
+					      		$dataProviderRubroRemove = $searchRamo->getDataProviderRubroDesincorporar($model->ano_impositivo,
+					      																				  $model->periodo,
+					      																				  $chkSeleccion);
 				      			return $this->render('/aaee/desincorpora-ramo/pre-view-create', [
 			      										'model' => $model,
 			      										'dataProvider' => $dataProviderRubroRemove,
@@ -415,168 +381,6 @@
 		}
 
 
-
-
-
-
-		/**
-		 * Metodo que muestra el catalogo de rubros del lapso seleccionado, rubros registrados
-		 * del contribuyente del lapso selecciona y controla la selecciona de o los rubros por
-		 * anexar. Permite ademas suprimir cualquier rubro que se quiera eliminar de la lista
-		 * final de rubros por anexar. Renderiza hacia una vista previa de los rubros por
-		 * anexar.
-		 * @return not
-		 */
-		public function actionAnexarRamo()
-		{
-			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) && isset($_SESSION['conf']) && isset($_SESSION['postSearch']) ) {
-				$postInicial = isset($_SESSION['postSearch']) ? $_SESSION['postSearch'] : null;
-				$request = Yii::$app->request;
-
-				$opciones = [
-					'back' => '/aaee/anexoramo/anexo-ramo/index-create',
-				];
-
-				$params = '';
-				$url = Url::toRoute(['anexar-ramo']);
-				$model = New AnexoRamoForm();
-				$formName = $model->formName();
-
-				if ( $request->isGet ) {
-					//$postData = isset($request->queryParams['page']) ? $request->queryParams['page'] : $postInicial;
-					$postData = $postInicial;
-					$model->scenario = self::SCENARIO_FRONTEND;
-
-				} elseif ( $request->isPost ) {
-					$postData = $request->post();
-					$model->scenario = self::SCENARIO_FRONTEND;
-					if ( isset($postData['btn-search']) ) {
-						if ( $postData['btn-search'] == 1 ) {
-							$params = $postData['inputSearch'];
-
-						}
-					} elseif ( isset($postData['btn-add-category']) ) {
-				    	if ( $postData['btn-add-category'] == 2 ) {
-				    		// Se obtiene el arreglo de rubros seleccionado para ser incluidos
-				    		// en la lista.
-				    		$arregloIdRubro = isset($postData['chkRubro']) ? $postData['chkRubro'] : [];
-				    		self::actionAddRubro($arregloIdRubro);
-						}
-					}  elseif ( isset($postData['btn-remove-category']) ) {
-				    	if ( $postData['btn-remove-category'] == 3 ) {
-							$arregloIdRubro = isset($postData['chkRubroSeleccionado']) ? $postData['chkRubroSeleccionado'] : [];
-							self::actionRemoveRubro($arregloIdRubro);
-						}
-					} elseif ( isset($postData['btn-create']) ) {
-						if ( $postData['btn-create'] == 5 ) {
-							// Se muestra una vista previa con los rubros seleccionados.
-							$model->scenario = self::SCENARIO_FRONTEND;
-							$model->load($postData);
-
-							$arregloIdRubro = isset($_SESSION['arrayIdRubros']) ? $_SESSION['arrayIdRubros'] : [];
-							if ( count($arregloIdRubro) > 0 ) { $validateRubroSeleccionado = true; }
-					   		if ( $model->load($postData) ) {
-					      		if ( $model->validate() && $validateRubroSeleccionado ) {
-					      			$searchRamo = New AnexoRamoSearch($model->id_contribuyente);
-					      			$dataProviderRubroAnexar = $searchRamo->getDataProviderAddRubro($arregloIdRubro);
-					      			return $this->render('/aaee/anexo-ramo/pre-view-create', [
-					      					'model' => $model,
-					      					'dataProvider' => $dataProviderRubroAnexar,
-					      				]);
-					      		}
-					      	}
-						}
-					} elseif ( isset($postData['btn-confirm-create']) ) {
-						if ( $postData['btn-confirm-create'] == 5 ) {
-							$model->scenario = self::SCENARIO_FRONTEND;
-							$postData = $request->post();
-							$model->load($postData);
-
-							$result = self::actionBeginSave($model, $postData);
-      						self::actionAnularSession(['begin', 'arrayIdRubros']);
-      						if ( $result ) {
-								$this->_transaccion->commit();
-								return self::actionView($model->nro_solicitud);
-							} else {
-								$this->_transaccion->rollBack();
-								$this->redirect(['error-operacion', 'cod'=> 920]);
-
-      						}
-						}
-					} elseif ( isset($postData['btn-back-form']) ) {
-						if ( $postData['btn-back-form'] == 6 ) {
-							return $this->redirect(['index-create']);
-
-						} elseif ( $postData['btn-back-form'] == 9 ) {
-
-						}
-					} elseif ( isset($postData['btn-quit']) ) {
-						if ( $postData['btn-quit'] == 1 ) {
-							$this->redirect(['quit']);
-						}
-					}
-				} else {
-					$model->scenario = self::SCENARIO_FRONTEND;
-				}
-
-				$model->load($postData);
-
-				$listaIdRubro = [];
-
-				$idContribuyente = isset($postInicial[$formName]['id_contribuyente']) ? $postInicial[$formName]['id_contribuyente'] : 0;
-
-				if ( $idContribuyente == $_SESSION['idContribuyente'] ) {
-					self::actionAnularSession(['postData']);
-
-					$searchRamo = New AnexoRamoSearch($idContribuyente);
-
-					// Datos del contribuyente.
-					$findModel = $searchRamo->findContribuyente();
-
-					// Rubros registrados segun post enviado.
-					$añoImpositivo = $postInicial[$formName]['ano_impositivo'];
-					$periodo = $postInicial[$formName]['periodo'];
-					$dataProviderRubro = $searchRamo->getDataProviderRubrosRegistrados($añoImpositivo, $periodo);
-
-					// Se buscan los identificadores de los rubros registrados.
-					$listaIdRubro = $searchRamo->getListaIdRubrosRegistrados($añoImpositivo, $periodo);
-					if ( count($listaIdRubro) > 0 ) {
-						 $activarBotonCreate = 0;
-
-						// Lista de identificadores de los rubros que seran anexados segun solicitud
-						// del usuario.
-						$arregloIdRubro = isset($_SESSION['arrayIdRubros']) ? $_SESSION['arrayIdRubros'] : [];
-						if ( count($arregloIdRubro) > 0 ) { $activarBotonCreate = 1; }
-						$dataProviderRubroAnexar = $searchRamo->getDataProviderAddRubro($arregloIdRubro);
-
-						// Identificadores que no deberia aparecer en el listado de catalogo de rubros.
-						$listaIdRubroIgnorar = array_merge($listaIdRubro, $arregloIdRubro);
-
-						// Catalogo de rubros para anexar, sin considerar los ya registrados y los seleccionados.
-						$dataProviderRubroCatalogo = $searchRamo->getDataProvider($añoImpositivo, $params, $listaIdRubroIgnorar);
-
-						return $this->render('/aaee/anexo-ramo/seleccionar-ramo-anexar-form', [
-																'model' => $model,
-																'findModel' => $findModel,
-																'dataProviderRubro' => $dataProviderRubro,
-																'dataProviderRubroAnexar' => $dataProviderRubroAnexar,
-																'dataProviderRubroCatalogo' => $dataProviderRubroCatalogo,
-																'activarBotonCreate' => $activarBotonCreate,
-																'opciones' => $opciones,
-							]);
-					}
-
-				} else {
-					// El contribuyente enviado no corresponde al de la session.
-				}
-			} else {
-				// No estan definido los sessiones de inicio del modulo.
-			}
-		}
-
-
-
-
 		/**
 		 * Metodo que permite obtener los periodos que existe en un año especifico,
 		 * los periodos representan el nivel de exigibilidad (cantidad de periodo)
@@ -610,71 +414,6 @@
 				}
 			}
 			return "<option> - </option>";
-		}
-
-
-
-
-
-		/**
-		 * Metodo que agrega el o los rubros seleccionados en una lista previa.
-		 * @param  array $arregloIdRubro arreglo de identificadores del rubro
-		 * seleccionado para incluir. El arreglo que se envia se agrega a los
-		 * existentes de haberlos. El resultado final de arreglos se guarda en
-		 * una variable de session.
-		 * @return not
-		 */
-		public function actionAddRubro($arregloIdRubro)
-		{
-			if ( count($arregloIdRubro) > 0 ) {
-    			foreach ( $arregloIdRubro as $key => $value ) {
-    				if ( !isset($_SESSION['arrayIdRubros']) ) {
-		    			$_SESSION['arrayIdRubros'][] = $value;
-		    		} else {
-		    			$arrayIdRurbros = [];
-		    			$arrayIdRurbros = $_SESSION['arrayIdRubros'];
-		    			if ( !in_array($value, $arrayIdRurbros) ) {
-		    				$_SESSION['arrayIdRubros'][] = $value;
-		    			}
-		    		}
-	    		}
-    		}
-		}
-
-
-
-
-		/**
-		 * Metodo que crea un arreglo nuevo de identificadores de los rubros
-		 * para excluir auqellos que fueron enviados para su eliminacion. Lo
-		 * se busca es suprimir del arreglo principal, aquellos identificadores
-		 * que fueron enviados. Al final el nuevo arreglo se salva en una variable
-		 * de session.
-		 * @param  array $arregloIdRubro arreglo de identificadores de los rubros.
-		 * @return not
-		 */
-		public function actionRemoveRubro($arregloIdRubro)
-		{
-			$nuevoArray = [];
-			$indiceNoVa = [];
-			if ( count($arregloIdRubro) > 0 ) {
-				if ( isset($_SESSION['arrayIdRubros']) ) {
-					// Arreglo de los identificadores existente en la lista.
-					$arreglo = $_SESSION['arrayIdRubros'];
-
-					foreach ( $arreglo as $key => $value) {
-						if ( in_array($value, $arregloIdRubro) ) {
-							$indiceNoVa[] = $value;
-						} else {
-							$nuevoArray[] = $value;
-						}
-					}
-				}
-				if ( count($indiceNoVa) > 0 ) {
-					self::actionAnularSession(['arrayIdRubros']);
-					$_SESSION['arrayIdRubros'] = $nuevoArray;
-				}
-			}
 		}
 
 
