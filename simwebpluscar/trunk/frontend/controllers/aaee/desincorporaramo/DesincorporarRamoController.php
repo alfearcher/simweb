@@ -143,7 +143,7 @@
 		{
 			// Se verifica que el contribuyente haya iniciado una session.
 
-			self::actionAnularSession(['begin', 'conf', 'arrayIdRubros']);
+			self::actionAnularSession(['begin', 'conf', 'postSearch']);
 
 			// identificador de la configuracion de la solicitud.
 			if ( $id == self::CONFIG ) {
@@ -193,6 +193,7 @@
 			// Se verifica que el contribuyente haya iniciado una session.
 			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) && isset($_SESSION['conf'])) {
 
+				self::actionAnularSession(['postSearch']);
 				$btnSearchCategory = 0;			// Indica se se activa o no.
 				$idContribuyente = $_SESSION['idContribuyente'];
 				$request = Yii::$app->request;
@@ -252,6 +253,7 @@
 
 
 
+
 		/**
 		 * Metodo que muetra una vista de los rubros registrados segun el
 		 * lapso seleccionado.
@@ -299,7 +301,7 @@
 					if ( $postData['btn-create'] == 5 ) {
 						$model->load($postData);
 						if ( isset($postData['chkRubroSeleccionado']) ) {
-//die(var_dump($postData));
+die(var_dump($postData));
 							// Lo siguiente es una estructura json. Por no tener un atributo
 							// clave se envia una convinacion de atributos que representan
 							// la clave de la entidad.
@@ -318,13 +320,13 @@
 							// del grid.
 							$diferencia = $totalItem - $totalChk;
 							if ( $diferencia > 0 ) {
-								// Semuestra pre-view.
+								// Se muestra pre-view.
 					      		$dataProviderRubroRemove = $searchRamo->getDataProviderRubroDesincorporar($model->ano_impositivo,
 					      																				  $model->periodo,
 					      																				  $chkSeleccion);
 				      			return $this->render('/aaee/desincorpora-ramo/pre-view-create', [
-			      										'model' => $model,
-			      										'dataProvider' => $dataProviderRubroRemove,
+			      											'model' => $model,
+			      											'dataProvider' => $dataProviderRubroRemove,
 			      				]);
 							} else {
 								$errorChk = Yii::t('frontend', 'Selected not valid');
@@ -335,7 +337,7 @@
 						}
 					}
 				} elseif ( isset($postData['btn-confirm-create']) ) {
-					if ( $postData['btn-confirm-create'] == 1 ) {
+					if ( $postData['btn-confirm-create'] == 5 ) {
 
 
 
@@ -560,13 +562,13 @@
 		 * "sl" respectiva.
 		 * @param  ConexionController $conexionLocal instancia de la clase ConexionController.
 		 * @param  connection $connLocal instancia de connection
-		 * @param  model $model modelo de AnexoRamoForm.
+		 * @param  model $model modelo de DesincorporarRamoForm.
 		 * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
 		 * solicitud.
 		 * @param  array $chkSeleccion arreglo que contiene los identificadores de los ramos seleccionados
 		 * @return boolean retorna un true si guardo el registro, false en caso contrario.
 		 */
-		private static function actionCreateAnexarRamo($conexionLocal, $connLocal, $model, $conf, $chkSeleccion)
+		private static function actionCreateDesincorporarRamo($conexionLocal, $connLocal, $model, $conf, $chkSeleccionJson)
 		{
 			$result = false;
 			$cancel = false;
@@ -597,8 +599,16 @@
 					$model->estatus = $estatus;
 					$model->user_funcionario = $userFuncionario;
 
-					foreach ( $chkSeleccion as $key => $value ) {
-						$arregloDatos['id_rubro'] = $value;
+					$chkRubro = [];
+					foreach ( $chkSeleccionJson as $objetoJson ) {
+						// Cada elemento del arreglo es un objeto json.
+						$chkRubro[] = json_decode($objetoJson);
+					}
+
+					foreach ( $chkRubro as $rubro ) {
+						$arregloDatos['id_impuesto'] = $rubro->{'id_impuesto'};
+						$arregloDatos['id_rubro'] = $rubro->{'id_rubro'};
+						$arregloDatos['periodo'] = $rubro->{'exigibilidad_periodo'};
 
 						$result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
 						if ( !$result ) {
@@ -619,52 +629,35 @@
 	     * @param  ConexionController $conexionLocal instancia de la clase ConexionController.
 		 * @param  connection $connLocal instancia de connection
 		 * @param  model $model modelo de AnexoRamoForm.
-	     * @param  array $listaIdRubro arreglo de identificadores de los ramos (rubros) que se
-	     * han colocados en la solicitud.
+	     * @param  array $chkSeleccion.
 	     * @return boolean retorna un true si guardo el registro, false en caso contrario.
 	     */
-	    private static function actionCreateActEconIngresos($conexionLocal, $connLocal, $model, $listaIdRubro)
+	    private static function actionInactivarRamo($conexionLocal, $connLocal, $model, $chkSeleccionJson)
 	    {
 	    	$result = false;
 	    	if ( isset($_SESSION['idContribuyente']) && isset($connLocal) && isset($conexionLocal) ) {
 	    		$idContribuyente = $_SESSION['idContribuyente'];
-	    		if ( count($listaIdRubro) > 0 && $idContribuyente == $model->id_contribuyente ) {
+	    		if ( count($chkSeleccion) > 0 && $idContribuyente == $model->id_contribuyente ) {
 
-	   				// Se determina el identificador de la entidad maestra de la declaracion,
-	   				// para utilizarlo en el link de la entidad detalle donde se guardaran los
-	   				// identificadores de los rubros.
-	    			$searchRamo = New AnexoRamoSearch($model->id_contribuyente);
-               		$idImpuesto = $searchRamo->getIdentificadorLapsoValido($model->ano_impositivo);
+	    			$chkRubro = [];
+					foreach ( $chkSeleccionJson as $objetoJson ) {
+						// Cada elemento del arreglo es un objeto json.
+						$chkRubro[] = json_decode($objetoJson);
+					}
 
-               		if ( $idImpuesto > 0 ) {
-               			// Se procede a guardar en la entidad detalle de las declaraciones.
-               			$modelActEconIngreso = New ActEconIngresoForm();
-			    		$arregloDatos = $modelActEconIngreso->attributes;
+					$arregloDatos['inactivo'] = 1;
 
-		      			$tabla = '';
-		      			$tabla = $modelActEconIngreso->tableName();
-
-			    		foreach ( $arregloDatos as $key => $value ) {
-			    			$arregloDatos[$key] = 0;
-			    		}
-			    		$arregloDatos['id_impuesto'] = $idImpuesto;
-			    		$arregloDatos['exigibilidad_periodo'] = $model->periodo;
-			    		$arregloDatos['periodo_fiscal_desde'] = isset($model->fecha_desde) ? $model->fecha_desde : '0000-00-00';
-			    		$arregloDatos['periodo_fiscal_hasta'] = isset($model->fecha_hasta) ? $model->fecha_hasta : '0000-00-00';
-			    		$arregloDatos['fecha_hora'] = $model->fecha_hora;
-			    		$arregloDatos['usuario'] = $model->usuario;
-			    		$arregloDatos['condicion'] = 1;		// Anexado
-
-			    		foreach ( $listaIdRubro as $key => $value ) {
-		      				$arregloDatos['id_rubro'] = $value;
-		      				if ( !$conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos) ) {
-								$result = false;
-								break;
-							} else {
-								$result = true;
-							}
-		      			}
-		      		}
+		    		foreach ( $chkRubro as $rubro ) {
+		    			$arregloCondicion['id_impuesto'] = $rubro->{'id_impuesto'};
+	      				$arregloCondicion['id_rubro'] = $rubro->{'id_rubro'};
+	      				$arregloCondicion['exigibilidad_periodo'] = $rubro->{'exigibilidad_periodo'};
+	      				if ( !$conexionLocal->modificarRegistro($connLocal, $tabla, $arregloDatos, $arregloCondicion) ) {
+							$result = false;
+							break;
+						} else {
+							$result = true;
+						}
+	      			}
 	      		}
 	    	}
 	    	return $result;
