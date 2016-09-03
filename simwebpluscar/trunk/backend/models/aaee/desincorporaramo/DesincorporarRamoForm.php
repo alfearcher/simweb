@@ -45,8 +45,8 @@
  	use Yii;
 	use yii\base\Model;
 	use yii\data\ActiveDataProvider;
-	use backend\models\aaee\desincorporramo\DesincorporarRamo;
-	use backend\models\aaee\desincorporramo\DesincorporarRamoSearch;
+	use backend\models\aaee\desincorporaramo\DesincorporarRamo;
+	use backend\models\aaee\desincorporaramo\DesincorporarRamoSearch;
 	use backend\models\aaee\rubro\RubroForm;
 
 
@@ -59,6 +59,7 @@
 		public $id_desincorporar_ramo;
 		public $nro_solicitud;
 		public $id_contribuyente;
+		public $id_impuesto;
 		public $ano_impositivo;
 		public $periodo;
 		public $id_rubro;
@@ -134,11 +135,11 @@
 	    {
 	        return [
 	        	[['id_contribuyente', 'ano_impositivo',
-	        	  'periodo', 'fecha_desde', 'fecha_hasta'],
+	        	  'periodo', ],
 	        	  'required', 'on' => 'frontend',
 	        	  'message' => Yii::t('frontend','{attribute} is required')],
 	        	[['id_contribuyente', 'ano_impositivo',
-	        	  'periodo',],
+	        	  'periodo', 'fecha_desde', 'fecha_hasta'],
 	        	  'required', 'on' => 'backend',
 	        	  'message' => Yii::t('frontend','{attribute} is required')],
 	        	 [['id_contribuyente', 'ano_impositivo',
