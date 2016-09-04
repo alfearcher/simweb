@@ -57,6 +57,10 @@
 						'model' => $model,
 		    			'attributes' => [
 		    				'nro_solicitud',
+		    				[
+			                	'label' => Yii::t('frontend', 'Request Description'),
+			                    'value' => $model->getDescripcionTipoSolicitud($model->nro_solicitud),
+		                	],
 		    				'id_contribuyente',
 		    				'domicilio_fiscal_v',
 		    				'domicilio_fiscal_new',

@@ -66,6 +66,12 @@
     										return $model->nro_solicitud;
 										},
 		                ],
+		                [
+		                    'label' => Yii::t('frontend', 'Request Description'),
+		                    'value' => function($model) {
+    										return $model->getDescripcionTipoSolicitud($model->nro_solicitud);
+										},
+	                	],
 		            	[
 		                    'label' => Yii::t('frontend', 'Id. Taxpayer'),
 		                    'value' => function($model) {
