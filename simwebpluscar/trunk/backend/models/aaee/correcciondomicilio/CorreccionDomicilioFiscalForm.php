@@ -142,7 +142,7 @@
 	        return [
 	        	'id_correccion' => Yii::t('frontend', 'Id. Record'),
 	            'id_contribuyente' => Yii::t('frontend', 'Id. Taxpayer'),
-	            'nro_solicitud' => Yii::t('frontend', 'Request Number'),
+	            'nro_solicitud' => Yii::t('frontend', 'Request'),
 	            'domicilio_fiscal_v' => Yii::t('frontend', 'Current Tax Address'),
 	            'domicilio_fiscal_new' => Yii::t('frontend', 'New Tax Address'),
 	            'estatus' => Yii::t('frontend', 'Condition'),
