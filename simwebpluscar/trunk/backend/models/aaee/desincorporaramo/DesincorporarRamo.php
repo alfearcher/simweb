@@ -49,6 +49,7 @@
 	use backend\models\solicitud\estatus\EstatusSolicitud;
 	use common\models\aaee\Sucursal;
 	use backend\models\aaee\rubro\Rubro;
+	use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 
 	/**
 	* 	Clase
