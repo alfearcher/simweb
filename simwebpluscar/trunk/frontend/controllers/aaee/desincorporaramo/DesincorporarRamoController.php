@@ -201,7 +201,7 @@
 
 				$model = New DesincorporarRamoForm();
 				$formName = $model->formName();
-				$model->scenario = self::SCENARIO_DEFAULT;
+				$model->scenario = self::SCENARIO_SEARCH;
 
 				$caption = Yii::t('frontend', 'Remove Categories');
 
@@ -216,10 +216,15 @@
 					}
 				} elseif ( isset($postData['btn-accept']) ) {
 					if ( $postData['btn-accept'] == 1 ) {
-						$model->scenario = self::SCENARIO_SEARCH;
-						$model->load($postData);
+						//$model->scenario = self::SCENARIO_SEARCH;
+						//$model->load($postData);
+
 						if ( $model->load($postData) ) {
 			    			if ( $model->validate() ) {
+			    				//$model->load($postData);
+
+//die(var_dump($model));
+
 			    				$_SESSION['postSearch'] = $postData;
 			    				return $this->redirect(['rubro-registrados']);
 							}
@@ -299,9 +304,10 @@
 
 				} elseif ( isset($postData['btn-create']) ) {
 					if ( $postData['btn-create'] == 5 ) {
+						$model->scenario = self::SCENARIO_FRONTEND;
 						$model->load($postData);
 						if ( isset($postData['chkRubroSeleccionado']) ) {
-die(var_dump($postData));
+//die(var_dump($postData));
 							// Lo siguiente es una estructura json. Por no tener un atributo
 							// clave se envia una convinacion de atributos que representan
 							// la clave de la entidad.
@@ -338,9 +344,23 @@ die(var_dump($postData));
 					}
 				} elseif ( isset($postData['btn-confirm-create']) ) {
 					if ( $postData['btn-confirm-create'] == 5 ) {
+						$model->scenario = self::SCENARIO_FRONTEND;
+						$postData = $request->post();
+						$model->load($postData);
+						//$model->validate($postData);
 
+//die(var_dump($model));
 
+						$result = self::actionBeginSave($model, $postData);
+  						self::actionAnularSession(['begin', 'postSearch']);
+  						if ( $result ) {
+							$this->_transaccion->commit();
+							return self::actionView($model->nro_solicitud);
+						} else {
+							$this->_transaccion->rollBack();
+							$this->redirect(['error-operacion', 'cod'=> 920]);
 
+  						}
 					}
 				}
 
@@ -360,6 +380,19 @@ die(var_dump($postData));
 
 					// Total de items ene el grid.
 					$totalItem = $dataProviderRubro->getCount();
+
+					$mActEconIngreso = $dataProviderRubro->getModels();
+					$fd = '0000-00-00';
+					$fh = '0000-00-00';
+					foreach ( $mActEconIngreso as $m ) {
+						$fd = $m['periodo_fiscal_desde'];
+						$fh = $m['periodo_fiscal_hasta'];
+					}
+
+					$model->periodo_fiscal_desde = $fd;
+					$model->periodo_fiscal_hasta = $fh;
+
+//die(var_dump($model));
 
 					$opciones = [
 						'back' => '/aaee/desincorporaramo/desincorporar-ramo/index-create',
@@ -381,6 +414,10 @@ die(var_dump($postData));
 		  		}
 			}
 		}
+
+
+
+
 
 
 		/**
@@ -424,7 +461,7 @@ die(var_dump($postData));
 		/**
 		 * Metodo que comienza el proceso para guardar la solicitud y los demas
 		 * procesos relacionados.
-		 * @param model $model modelo de CorreccionCapitalForm.
+		 * @param model $model modelo de DesincorporarRamoForm.
 		 * @param array $postEnviado post enviado desde el formulario.
 		 * @return boolean retorna true si se realizan todas las operacions de
 		 * insercion y actualizacion con exitos o false en caso contrario.
@@ -437,6 +474,9 @@ die(var_dump($postData));
 			if ( isset($_SESSION['idContribuyente']) ) {
 				if ( isset($_SESSION['conf']) ) {
 					$conf = $_SESSION['conf'];
+
+					// Lo siguiente contiene una estructura json para la clave concatenada
+					// de la seleccion realizada.
 					$chkSeleccion = $postEnviado['chkRubroSeleccionado'];
 
 					$this->_conexion = New ConexionController();
@@ -456,18 +496,18 @@ die(var_dump($postData));
 					if ( $nroSolicitud > 0 ) {
 						$model->nro_solicitud = $nroSolicitud;
 
-						$result = self::actionCreateAnexarRamo($this->_conexion,
-															   $this->_conn,
-															   $model,
-															   $conf,
-															   $chkSeleccion);
+						$result = self::actionCreateDesincorporarRamo($this->_conexion,
+															   		  $this->_conn,
+															   		  $model,
+																	  $conf,
+																	  $chkSeleccion);
 
 						if ( $result ) {
 							if ( $conf['nivel_aprobacion'] == 1 ) {
-								$result = self::actionCreateActEconIngresos($this->_conexion,
-																		    $this->_conn,
-																		    $model,
-																		    $chkSeleccion);
+								$result = self::actionInactivarRamo($this->_conexion,
+																    $this->_conn,
+																    $model,
+																    $chkSeleccion);
 							}
 
 							if ( $result ) {
@@ -565,6 +605,8 @@ die(var_dump($postData));
 		 * @param  model $model modelo de DesincorporarRamoForm.
 		 * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
 		 * solicitud.
+		 * @param  array $chkSeleccionJson arreglo de datos donde elindice del arreglo es un entero y
+	     * el valor de cada elemento es una estructura de datos tipo json.
 		 * @param  array $chkSeleccion arreglo que contiene los identificadores de los ramos seleccionados
 		 * @return boolean retorna un true si guardo el registro, false en caso contrario.
 		 */
@@ -580,7 +622,7 @@ die(var_dump($postData));
 				if ( count($conf) > 0 ) {
 					if ( $conf['nivel_aprobacion'] == 1 ) {
 						$estatus = 1;
-						$userFuncionario = $user;
+						$userFuncionario = Yii::$app->user->identity->login;
 						$fechaHoraProceso = date('Y-m-d H:i:s');
 					}
 
@@ -592,9 +634,15 @@ die(var_dump($postData));
 	      			// 						}
 					$arregloDatos = $model->attributes;
 
+// die(var_dump($arregloDatos));
+
 					$arregloDatos['estatus'] = $estatus;
 					$arregloDatos['user_funcionario'] = $userFuncionario;
 					$arregloDatos['fecha_hora_proceso'] = $fechaHoraProceso;
+					$arregloDatos['fecha_hora'] = date('Y-m-d H:i:s');
+					$arregloDatos['usuario'] = Yii::$app->user->identity->login;
+					$arregloDatos['origen'] = 'WEB';
+
 
 					$model->estatus = $estatus;
 					$model->user_funcionario = $userFuncionario;
@@ -610,6 +658,8 @@ die(var_dump($postData));
 						$arregloDatos['id_rubro'] = $rubro->{'id_rubro'};
 						$arregloDatos['periodo'] = $rubro->{'exigibilidad_periodo'};
 
+//die(var_dump($arregloDatos));
+
 						$result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
 						if ( !$result ) {
 							$cancel = true;
@@ -624,20 +674,25 @@ die(var_dump($postData));
 
 
 	    /**
-	     * Metodo que realiza al insercion de los detalles de los ramos. Se realiza una
-	     * insercion por cada ramo que se autoriza a anexar.
+	     * Metodo que utilizando la variable $chkSeleccionJson, determina los valores de la clave
+	     * concatenada id-impuesto / id-rubro / exigibilidad-periodo y ejecuta la inactivacion
+	     * logica del registro. La variable $chkSeleccionJson, es un array que contiene en sus
+	     * elementos los valores de clave concatenada, pero en una estructura de datos json.
 	     * @param  ConexionController $conexionLocal instancia de la clase ConexionController.
 		 * @param  connection $connLocal instancia de connection
-		 * @param  model $model modelo de AnexoRamoForm.
-	     * @param  array $chkSeleccion.
-	     * @return boolean retorna un true si guardo el registro, false en caso contrario.
+		 * @param  model $model modelo de DesincorporarRamoForm.
+	     * @param  array $chkSeleccionJson arreglo de datos donde elindice del arreglo es un entero y
+	     * el valor de cada elemento es una estructura de datos tipo json.
+	     * @return boolean retorna un true si actualiza el registro, false en caso contrario.
 	     */
 	    private static function actionInactivarRamo($conexionLocal, $connLocal, $model, $chkSeleccionJson)
 	    {
 	    	$result = false;
 	    	if ( isset($_SESSION['idContribuyente']) && isset($connLocal) && isset($conexionLocal) ) {
 	    		$idContribuyente = $_SESSION['idContribuyente'];
-	    		if ( count($chkSeleccion) > 0 && $idContribuyente == $model->id_contribuyente ) {
+	    		if ( count($chkSeleccionJson) > 0 && $idContribuyente == $model->id_contribuyente ) {
+
+	    			$tabla = ActEconIngreso::tableName();
 
 	    			$chkRubro = [];
 					foreach ( $chkSeleccionJson as $objetoJson ) {
@@ -646,11 +701,14 @@ die(var_dump($postData));
 					}
 
 					$arregloDatos['inactivo'] = 1;
+					$arregloDatos['condicion'] = 9;
 
 		    		foreach ( $chkRubro as $rubro ) {
 		    			$arregloCondicion['id_impuesto'] = $rubro->{'id_impuesto'};
 	      				$arregloCondicion['id_rubro'] = $rubro->{'id_rubro'};
 	      				$arregloCondicion['exigibilidad_periodo'] = $rubro->{'exigibilidad_periodo'};
+	      				$arregloCondicion['inactivo'] = 0;
+	      				$arregloCondicion['bloqueado'] = 0;
 	      				if ( !$conexionLocal->modificarRegistro($connLocal, $tabla, $arregloDatos, $arregloCondicion) ) {
 							$result = false;
 							break;
@@ -828,8 +886,8 @@ die(var_dump($postData));
     	{
     		if ( isset($_SESSION['idContribuyente']) ) {
 	    		if ( $id > 0 ) {
-	    			$searchRamo = New AnexoRamoSearch($_SESSION['idContribuyente']);
-	    			$findModel = $searchRamo->findSolicitudAnexoRamo($id);
+	    			$searchRamo = New DesincorporarRamoSearch($_SESSION['idContribuyente']);
+	    			$findModel = $searchRamo->findSolicitudDesincorporarRamo($id);
 	    			$dataProvider = $searchRamo->getDataProviderSolicitud($id);
 	    			if ( isset($findModel) ) {
 	    				return self::actionShowSolicitud($findModel, $searchRamo, $dataProvider);
@@ -854,9 +912,9 @@ die(var_dump($postData));
  				$model = $findModel->all();
 
 				$opciones = [
-					'quit' => '/aaee/anexoramo/anexo-ramo/quit',
+					'quit' => '/aaee/desincorporaramo/desincorporar-ramo/quit',
 				];
-				return $this->render('/aaee/anexo-ramo/_view', [
+				return $this->render('/aaee/desincorpora-ramo/_view', [
 																'codigo' => 100,
 																'model' => $model,
 																'modelSearch' => $modelSearch,
