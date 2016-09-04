@@ -72,8 +72,6 @@
 		public $fecha_hora_proceso;
 		public $user_funcionario;
 
-		public $inputSearch;
-
 		const SCENARIO_FRONTEND = 'frontend';
 		const SCENARIO_BACKEND = 'backend';
 		const SCENARIO_SEARCH = 'search';
@@ -135,7 +133,7 @@
 	    {
 	        return [
 	        	[['id_contribuyente', 'ano_impositivo',
-	        	  'periodo', ],
+	        	  'periodo', 'periodo_fiscal_desde', 'periodo_fiscal_hasta',],
 	        	  'required', 'on' => 'frontend',
 	        	  'message' => Yii::t('frontend','{attribute} is required')],
 	        	[['id_contribuyente', 'ano_impositivo',
