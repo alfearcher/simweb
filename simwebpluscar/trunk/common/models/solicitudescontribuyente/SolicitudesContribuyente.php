@@ -179,6 +179,20 @@
             return $descripcion;
         }
 
+
+
+
+        /***/
+        function getDescripcionTipoSolicitud($nroSolicitud)
+        {
+            $findModel = SolicitudesContribuyente::find()->where('nro_solicitud =:nro_solicitud',
+                                                                    [':nro_solicitud' => $nroSolicitud])
+                                                         ->joinWith('tipoSolicitud')
+                                                         ->one();
+            $tipo = $findModel->tipoSolicitud['descripcion'];
+            return $tipo;
+        }
+
     }
 
  ?>
