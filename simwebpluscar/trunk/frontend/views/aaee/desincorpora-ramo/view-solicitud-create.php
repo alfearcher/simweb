@@ -25,7 +25,7 @@
  *
  *  @author Jose Rafael Perez Teran
  *
- *  @date 01-09-2016
+ *  @date 04-09-2016
  *
  *  @view view-solicitud-create.php
  *
@@ -56,7 +56,7 @@
 
  ?>
 
- <div class="view-anexo-ramo-creada">
+ <div class="view-desincorporar-ramo-creada">
 	<meta http-equiv="refresh">
     <div class="panel panel-primary"  style="width: 100%;">
         <div class="panel-heading">
@@ -87,7 +87,7 @@
 					        <div class="panel-body">
 					        	<div class="row" style="padding-left: 15px; width: 100%;">
 									<?= GridView::widget([
-											'id' => 'grid-lista-rubro-anexado',
+											'id' => 'grid-lista-rubro-desincorporar',
 	    									'dataProvider' => $dataProvider,
 	    									'headerRowOptions' => ['class' => 'danger'],
 	    									//'filterModel' => $searchModel,
@@ -117,13 +117,13 @@
 	                        										return $model->rubro->descripcion;
 	                											},
 								                ],
-
 								                [
 								                    'label' => Yii::t('frontend', 'Condition'),
 								                    'value' => function($model) {
 	                        										return $model->estatusSolicitud->descripcion;
 	                											},
 							                	],
+
 								        	]
 										]);?>
 								</div>
