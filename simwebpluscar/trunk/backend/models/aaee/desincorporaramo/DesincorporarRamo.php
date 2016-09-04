@@ -110,6 +110,29 @@
 		}
 
 
+		/**
+		 * Relacion con la entidad "solicitudes-contribuyente".
+		 * @return active record.
+		 */
+		public function getSolicitud()
+		{
+			return $this->hasOne(SolicitudesContribuyente::className(), ['nro_solicitud' => 'nro_solicitud']);
+		}
+
+
+
+		/**
+		 * Metodo que permite obtener la descripcion del tipo de solicitud
+		 * @param  long $nroSolicitud identificacion de la solicitud. Autoincremental
+		 * que se genera al crear la solicitud.
+		 * @return string retorna la descripcion de la solicitud.
+		 */
+		public function getDescripcionTipoSolicitud($nroSolicitud)
+		{
+			return $tipo = SolicitudesContribuyente::getDescripcionTipoSolicitud($nroSolicitud);
+		}
+
+
 	}
 
 

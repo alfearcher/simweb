@@ -49,6 +49,7 @@
 	use backend\models\solicitud\estatus\EstatusSolicitud;
 	use common\models\aaee\Sucursal;
 	use backend\models\aaee\rubro\Rubro;
+	use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 
 	/**
 	* 	Clase
@@ -109,24 +110,16 @@
 		}
 
 
-		// /**
-		//  * Metodo que permite determinar si un contribuyente tiene registros en
-		//  * la entidad de las declaraciones.
-		//  * @param  $idContribuyente, Long que identifica al contribuyente.
-		//  * @return returna una instancia con los datos de la entidad act_econ.
-		//  * Si retorna false no ss ejecuto la consulta o no encontro nada.
-		//  */
-		// public static function tieneRecordActEcon($idContribuyente = 0)
-	 //    {
-	 //    	if ( $idContribuyente > 0 ) {
-	 //    		$sql = 'SELECT * FROM act_econ WHERE id_contribuyente=:id_contribuyente';
-	 //    		$actEcon = self::findBySql($sql, [':id_contribuyente' => $idContribuyente])->one();
-	 //    		if ( isset($actEcon) ) {
-	 //    			return $actEcon;
-	 //    		}
-	 //    	}
-	 //    	return false;
-	 //    }
+		/**
+		 * Metodo que permite obtener la descripcion del tipo de solicitud
+		 * @param  long $nroSolicitud identificacion de la solicitud. Autoincremental
+		 * que se genera al crear la solicitud.
+		 * @return string retorna la descripcion de la solicitud.
+		 */
+		 public function getDescripcionTipoSolicitud($nroSolicitud)
+		 {
+			return $tipo = SolicitudesContribuyente::getDescripcionTipoSolicitud($nroSolicitud);
+		 }
 	}
 
 

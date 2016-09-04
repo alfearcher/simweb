@@ -48,6 +48,7 @@
 	use backend\models\solicitud\estatus\EstatusSolicitud;
 	use common\models\aaee\Sucursal;
 	use backend\models\configuracion\tiposolicitud\TipoSolicitud;
+	use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 
 	class CorreccionCedulaRif extends ActiveRecord
 	{
@@ -113,6 +114,17 @@
 		}
 
 
+
+		/**
+		 * Metodo que permite obtener la descripcion del tipo de solicitud
+		 * @param  long $nroSolicitud identificacion de la solicitud. Autoincremental
+		 * que se genera al crear la solicitud.
+		 * @return string retorna la descripcion de la solicitud.
+		 */
+		 public function getDescripcionTipoSolicitud($nroSolicitud)
+		 {
+			return $tipo = SolicitudesContribuyente::getDescripcionTipoSolicitud($nroSolicitud);
+		 }
 
 	}
 ?>

@@ -49,6 +49,7 @@
 	use backend\models\solicitud\estatus\EstatusSolicitud;
 	use common\models\aaee\Sucursal;
 	use backend\models\aaee\rubro\Rubro;
+	use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 
 	/**
 	* 	Clase
@@ -108,6 +109,18 @@
 			return $this->hasOne(EstatusSolicitud::className(), ['estatus_solicitud' => 'estatus']);
 		}
 
+
+
+		/**
+		 * Metodo que permite obtener la descripcion del tipo de solicitud
+		 * @param  long $nroSolicitud identificacion de la solicitud. Autoincremental
+		 * que se genera al crear la solicitud.
+		 * @return string retorna la descripcion de la solicitud.
+		 */
+		 public function getDescripcionTipoSolicitud($nroSolicitud)
+		 {
+			return $tipo = SolicitudesContribuyente::getDescripcionTipoSolicitud($nroSolicitud);
+		 }
 
 	}
 
