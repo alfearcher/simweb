@@ -94,7 +94,10 @@
 							    					'label' => $model->getAttributeLabel('nro_solicitud'),
 							    					'value' => $model->nro_solicitud,
 							    				],
-
+							    				[
+								                    'label' => Yii::t('frontend', 'Request Description'),
+								                    'value' => $model->getDescripcionTipoSolicitud($model->nro_solicitud),
+								                ],
 							    				[
 							    					'label' => $model->getAttributeLabel('razon_social'),
 							    					'value' => $model->razon_social,

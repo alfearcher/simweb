@@ -94,9 +94,15 @@
     									'columns' => [
     										//['class' => 'yii\grid\SerialColumn'],
     										[
-							                    'label' => Yii::t('frontend', 'Request Number'),
+							                    'label' => Yii::t('frontend', 'Request'),
 							                    'value' => function($model) {
                         										return $model->nro_solicitud;
+                											},
+							                ],
+							                [
+							                    'label' => Yii::t('frontend', 'Request Description'),
+							                    'value' => function($model) {
+                        										return $model->getDescripcionTipoSolicitud($model->nro_solicitud);
                 											},
 							                ],
 							            	[

@@ -95,6 +95,11 @@
 							    					'value' => $model->nro_solicitud,
 							    				],
 							    				[
+								                    'label' => Yii::t('frontend', 'Request Description'),
+								                    'value' => $model->getDescripcionTipoSolicitud($model->nro_solicitud),
+
+								                ],
+							    				[
 							    					'label' => $model->getAttributeLabel('id_contribuyente'),
 							    					'value' => $model->id_contribuyente,
 							    				],
