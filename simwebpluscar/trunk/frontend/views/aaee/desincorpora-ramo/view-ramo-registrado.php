@@ -81,6 +81,10 @@
 	<?=$form->field($model, 'periodo_fiscal_desde')->hiddenInput(['value' => $model->periodo_fiscal_desde])->label(false);?>
 	<?=$form->field($model, 'periodo_fiscal_hasta')->hiddenInput(['value' => $model->periodo_fiscal_hasta])->label(false);?>
 	<?=$form->field($model, 'totalItem')->hiddenInput(['value' => $totalItem])->label(false);?>
+	<?=$form->field($model, 'usuario')->hiddenInput(['value' => $model->usuario])->label(false); ?>
+	<?=$form->field($model, 'fecha_hora')->hiddenInput(['value' => $model->fecha_hora])->label(false); ?>
+	<?=$form->field($model, 'origen')->hiddenInput(['value' => $model->origen])->label(false); ?>
+	<?=$form->field($model, 'estatus')->hiddenInput(['value' => 0])->label(false); ?>
 
 	<meta http-equiv="refresh">
     <div class="panel panel-primary" style="width: 110%;">
@@ -148,11 +152,6 @@
 												'id' => 'grid-lista-rubro-registrado',
 		    									'dataProvider' => $dataProviderRubro,
 		    									'headerRowOptions' => ['class' => 'success'],
-		    									// 'rowOptions' => [
-		    									// 		'data' => [
-		    									// 			'x' => 5,
-		    									// 		],
-		    									// ],
 		    									'summary' => '',
 		    									'columns' => [
 		    										['class' => 'yii\grid\SerialColumn'],
@@ -195,15 +194,15 @@
 									                [
 									                	'class' => 'yii\grid\CheckboxColumn',
 									                	'name' => 'chkRubroSeleccionado',
-									                	'checkboxOptions' => [
-							                                'id' => 'chkRubroSeleccionado',
-							                                // 'onClick' => 'if ( $(this).is(":checked") ) {
-							                                //                 $("#btn-create").removeAttr("disabled");
-							                                //               } else {
-							                                //                 $("#btn-create").attr("disabled", true);
-							                                //               }',
-							                                //$(this).is(":checked"), permite determinar si un checkbox esta tildado.
-                        								],
+									                	// 'checkboxOptions' => [
+							                   //              'id' => 'chkRubroSeleccionado',
+							                   //              // 'onClick' => 'if ( $(this).is(":checked") ) {
+							                   //              //                 $("#btn-create").removeAttr("disabled");
+							                   //              //               } else {
+							                   //              //                 $("#btn-create").attr("disabled", true);
+							                   //              //               }',
+							                   //              //$(this).is(":checked"), permite determinar si un checkbox esta tildado.
+                        		// 						],
 									                	'multiple' => false,
 									                ],
 									        	]

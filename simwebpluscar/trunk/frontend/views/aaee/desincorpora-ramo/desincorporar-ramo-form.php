@@ -75,6 +75,11 @@
  	?>
 
 	<?=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $findModel['id_contribuyente']])->label(false);?>
+	<?=$form->field($model, 'usuario')->hiddenInput(['value' => $model->usuario])->label(false); ?>
+	<?=$form->field($model, 'fecha_hora')->hiddenInput(['value' => $model->fecha_hora])->label(false); ?>
+	<?=$form->field($model, 'origen')->hiddenInput(['value' => $model->origen])->label(false); ?>
+	<?=$form->field($model, 'estatus')->hiddenInput(['value' => 0])->label(false); ?>
+
 
 	<meta http-equiv="refresh">
     <div class="panel panel-primary" style="width: 110%;">
