@@ -142,7 +142,7 @@ class DeshabilitarLoteCalcomaniaController extends Controller
                 $verificarLoteExistente = self::verificarLoteExistente();
 
                   if($verificarLoteExistente == true){
-                    return MensajeController::actionMensaje(995);
+                    return MensajeController::actionMensaje(996);
                   }else{
                     $deshabilitar = self::beginSave($model);
 

@@ -117,15 +117,15 @@
 
 				} elseif ( $this->model->tipo_solicitud == 37 ) {
 
-					return self::actionDesincorporacionVehiculo();
+					return self::actionMostrarDesincorporacionVehiculo();
 
 				} elseif ( $this->model->tipo_solicitud == 38 ) {
 
-					return self::actionActualizarDatosVehiculo();
+					return self::actionMostrarActualizarDatosVehiculo();
 
 				} elseif ( $this->model->tipo_solicitud == 68 ) {
 
-					return self::actionSolicitudReposicionCalcomaniaExtravio();
+					return self::actionMostrarSolicitudReposicionCalcomaniaExtravio();
 
 				} elseif ( $this->model->tipo_solicitud == 10 ) {
 
@@ -314,7 +314,7 @@
 		 * nivel de aprobacion 3: Muestra inhabilitado los datos suministrados previamente y habilita
 		 * aquellos campos que no fueron cargados inicialmente.  
 		 */
-		private function actionDesincorporacionVehiculo()
+		private function actionMostrarDesincorporacionVehiculo()
 		{
 			//die('llegue a desincorporacion');
 			if ( $this->model->nivel_aprobacion == 2 ) {
@@ -353,7 +353,7 @@
 		 * nivel de aprobacion 3: Muestra inhabilitado los datos suministrados previamente y habilita
 		 * aquellos campos que no fueron cargados inicialmente.  
 		 */
-		private function actionActualizarDatosVehiculo()
+		private function actionMostrarActualizarDatosVehiculo()
 		{
 			if ( $this->model->nivel_aprobacion == 2 ) {
 					$modelSearch = New SlVehiculosForm($this->model->id_contribuyente);
@@ -391,7 +391,7 @@
 		 * nivel de aprobacion 3: Muestra inhabilitado los datos suministrados previamente y habilita
 		 * aquellos campos que no fueron cargados inicialmente.  
 		 */
-		private function actionSolicitudReposicionCalcomaniaExtravio()
+		private function actionMostrarSolicitudReposicionCalcomaniaExtravio()
 		{
 			if ( $this->model->nivel_aprobacion == 2 ) {
 					$modelSearch = New SlVehiculosForm($this->model->id_contribuyente);
