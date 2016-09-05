@@ -80,9 +80,14 @@ class GenerarLoteCalcomaniaController extends Controller
      */
     public function actionGenerarLoteCalcomania()
     {
-      //die('llegue a generar lote');
-   
+            
+            
+
+            
+            
             $model = new GenerarLoteForm();
+
+            $dataProvider = $model->search();
 
             $postData = Yii::$app->request->post();
 
@@ -117,7 +122,7 @@ class GenerarLoteCalcomaniaController extends Controller
             
             return $this->render('/vehiculo/calcomania/generarlote/formulario-generar-lote', [
                                                               'model' => $model,
-                                                             
+                                                              'dataProvider' => $dataProvider,
                                                            
             ]);
             
