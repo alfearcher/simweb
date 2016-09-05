@@ -6,7 +6,8 @@
     use yii\helpers\ArrayHelper;
     use yii\helpers\Url;
     use kartik\form\ActiveForm;
-
+    use yii\grid\GridView;
+    use kartik\icons\Icon;
    
 
 
@@ -118,6 +119,62 @@
             </div>
         </div>
     </div>
+
+
+    <div class="inmuebles-index">
+
+ 
+  
+
+    
+
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+       // 'filterModel' => $searchModel,
+        'columns' => [
+            //['class' => 'yii\grid\SerialColumn'],
+
+        'ano_impositivo',
+           // 'id_contribuyente',
+            //'ano_inicio',
+      
+            //'liquidado',
+            // 'manzana_limite',
+            // 'lote_1',
+            // 'lote_2',
+            // 'nivel',
+            // 'lote_3',
+            // 'av_calle_esq_dom',
+            // 'casa_edf_qta_dom',
+            // 'piso_nivel_no_dom',
+            // 'apto_dom',
+          'rango_inicial',
+            // 'medidor',
+            // 'id_sim',
+            // 'observacion:ntext',
+            // 'inactivo',
+            // 'catastro',
+          'rango_final',
+            // 'tipo_ejido',
+            // 'propiedad_horizontal',
+            // 'estado_catastro',
+            // 'municipio_catastro',
+            // 'parroquia_catastro',
+            // 'ambito_catastro',
+             'usuario',
+            // 'manzana_catastro',
+            // 'parcela_catastro',
+            // 'subparcela_catastro',
+            // 'nivel_catastro',
+            // 'unidad_catastro',
+
+         
+        ],
+    ]); ?>
+
+  
+
+</div>
 
 
 
