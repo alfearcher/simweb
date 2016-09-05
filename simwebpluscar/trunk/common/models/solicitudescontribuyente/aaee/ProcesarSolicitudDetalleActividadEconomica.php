@@ -60,6 +60,7 @@
     use common\models\solicitudescontribuyente\aaee\ProcesarAutorizarRamo;
     use common\models\solicitudescontribuyente\aaee\ProcesarCorreccionFechaInicio;
     use common\models\solicitudescontribuyente\aaee\ProcesarAnexarRamo;
+    use common\models\solicitudescontribuyente\aaee\ProcesarDesincorporarRamo;
 
 
     /**
@@ -138,6 +139,14 @@
                                                        $this->_evento,
                                                        $this->_conn,
                                                        $this->_conexion);
+
+                    $result = $procesar->procesarSolicitud();
+
+                } elseif ( $this->_model->tipo_solicitud == 10 ) {
+                    $procesar = New ProcesarDesincorporarRamo($this->_model,
+                                                              $this->_evento,
+                                                              $this->_conn,
+                                                              $this->_conexion);
 
                     $result = $procesar->procesarSolicitud();
 
