@@ -21,13 +21,13 @@
  */
 
  /**    
- *  @file CambioOtrosDatosInmueblesForm.php
+ *  @file DesintegracionInmueblesForm.php
  *  
  *  @author Alvaro Jose Fernandez Archer
  * 
  *  @date 08-03-2016
  * 
- *  @class CambioOtrosDatosInmueblesForm
+ *  @class DesintegracionInmueblesForm
  *  @brief Clase que permite validar cada uno de los datos del formulario de cambio de otros datos de inmuebles 
  *  urbanos, se establecen las reglas para los datos a ingresar y se le asigna el nombre de las etiquetas 
  *  de los campos. 
@@ -89,14 +89,14 @@
  * @property string $unidad_catastro
  */
 
-namespace frontend\models\inmueble\cambiootrosdatos;
+namespace frontend\models\inmueble\desintegracion;
 
 use Yii;
 use backend\models\inmueble\InmueblesConsulta;
 use common\conexion\ConexionController;
 
 
-class CambioOtrosDatosInmueblesForm extends \yii\db\ActiveRecord
+class DesintegracionInmueblesForm extends \yii\db\ActiveRecord
 {
      
     public $validacion;
