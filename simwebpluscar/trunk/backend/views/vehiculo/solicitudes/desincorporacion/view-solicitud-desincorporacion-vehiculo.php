@@ -48,6 +48,7 @@
 	use yii\web\View;
 	use yii\widgets\DetailView;
 	use backend\models\vehiculo\VehiculoSearch;
+	
 	//die('llegue a vista');
 ?>
 
