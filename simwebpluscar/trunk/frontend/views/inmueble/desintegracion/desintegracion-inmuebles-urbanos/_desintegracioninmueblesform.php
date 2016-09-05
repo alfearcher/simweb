@@ -190,7 +190,7 @@ $this->title = Yii::t('frontend', 'Property Update');
 
                         
                             <div class="col-sm-3"> 
-                            <?= $form->field($model, 'direccion')->textarea(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?>
+                            <?= $form->field($model, 'direccion1')->textarea(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?>
                             </div> 
                         
                             <div class="col-sm-1">
@@ -209,7 +209,7 @@ $this->title = Yii::t('frontend', 'Property Update');
 
                           
                             <div class="col-sm-2">
-                            <?= $form->field($model, 'casa_edf_qta_dom')->textInput(['style' => 'width:100px;'])->label(false) ?>
+                            <?= $form->field($model, 'casa_edf_qta_dom1')->textInput(['style' => 'width:100px;'])->label(false) ?>
                             </div> 
                         
 
@@ -221,7 +221,7 @@ $this->title = Yii::t('frontend', 'Property Update');
 
                         
                             <div class="col-sm-2">
-                            <?= $form->field($model, 'piso_nivel_no_dom')->textInput(['style' => 'width:100px;'])->label(false) ?>
+                            <?= $form->field($model, 'piso_nivel_no_dom1')->textInput(['style' => 'width:100px;'])->label(false) ?>
                             </div>
                         
 
@@ -233,7 +233,7 @@ $this->title = Yii::t('frontend', 'Property Update');
 
                         
                             <div class="col-sm-2">
-                            <?= $form->field($model, 'apto_dom')->textInput(['style' => 'width:100px;'])->label(false) ?>
+                            <?= $form->field($model, 'apto_dom1')->textInput(['style' => 'width:100px;'])->label(false) ?>
                             </div>
                     </div> 
                         
@@ -247,7 +247,7 @@ $this->title = Yii::t('frontend', 'Property Update');
 
                         
                             <div class="col-sm-2"> 
-                            <?= $form->field($model, 'tlf_hab')->textInput(['style' => 'width:100px;'])->label(false) ?>
+                            <?= $form->field($model, 'tlf_hab1')->textInput(['style' => 'width:100px;'])->label(false) ?>
                             </div>
                         
 
@@ -259,7 +259,7 @@ $this->title = Yii::t('frontend', 'Property Update');
 
                         
                             <div class="col-sm-2">
-                            <?= $form->field($model, 'medidor')->textInput(['style' => 'width:100px;'])->label(false) ?>
+                            <?= $form->field($model, 'medidor1')->textInput(['style' => 'width:100px;'])->label(false) ?>
                             </div>
                         
                                                  
@@ -275,14 +275,14 @@ $this->title = Yii::t('frontend', 'Property Update');
 
                         
                             <div class="col-sm-3">
-                            <?= $form->field($model, 'observacion')->textarea(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?>
+                            <?= $form->field($model, 'observacion1')->textarea(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?>
                             </div> 
 
                             <div class="col-sm-1">
                             </div> 
                         
                             <div class="col-sm-2"> 
-                            <?= $form->field($model, 'tipo_ejido')->textInput(['style' => 'width:100px;'])->checkbox() ?>
+                            <?= $form->field($model, 'tipo_ejido1')->textInput(['style' => 'width:100px;'])->checkbox() ?>
                             </div> 
                         
                                                  

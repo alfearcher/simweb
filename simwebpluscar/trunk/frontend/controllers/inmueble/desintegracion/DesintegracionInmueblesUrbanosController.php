@@ -60,7 +60,7 @@ use yii\web\Response;
 use common\models\Users;
 use common\models\User;
 use yii\web\Session;
-use frontend\models\inmueble\cambiootrosdatos\DesintegracionInmueblesForm;
+use frontend\models\inmueble\desintegracion\DesintegracionInmueblesForm;
 use frontend\models\inmueble\InmueblesSearch;
 use frontend\models\inmueble\InmueblesConsulta;
 
@@ -215,7 +215,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                    $model->getErrors(); 
               }
          }
-              return $this->render('cambio-otros-datos-inmuebles', ['model' => $model, 'datos'=>$datos]);  
+              return $this->render('desintegracion-inmuebles', ['model' => $model, 'datos'=>$datos]);  
 
         }  else {
                     echo "No hay Contribuyente Registrado!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['site/login'])."'>";
@@ -265,26 +265,24 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
             if ( $conn->guardarRegistro($conexion, $tableName1,  $arrayDatos1) ){  
                 $result = $conexion->getLastInsertID();
 
+                $arrayCampos2 = ['id_contribuyente','nro_solicitud','ano_inicio','direccion','medidor','observacion',
+                                 'tipo_ejido', 'casa_edf_qta_dom', 'piso_nivel_no_dom', 'apto_dom', 'fecha_creacion'];
 
-                $arrayDatos2 = [    'id_contribuyente' => $datos->id_contribuyente,
-                                    'id_impuesto' => $datos->id_impuesto,
-                                    'nro_solicitud' => $result,
-                                    'ano_inicio' => $model->ano_inicio,
-                                    'direccion' => $model->direccion,
-                                    'medidor' => $model->medidor,
-                                    'observacion' => $model->observacion,
-                                    'tipo_ejido' => $model->tipo_ejido,
-                                  //'av_calle_esq_dom' => $av_calle_esq_dom,
-                                    'casa_edf_qta_dom' => $model->casa_edf_qta_dom,
-                                    'piso_nivel_no_dom' => $model->piso_nivel_no_dom,
-                                    'apto_dom' => $model->apto_dom,
-                                    'fecha_creacion' => date('Y-m-d h:i:s'),
+                $arrayDatos2 = [   [$datos->id_contribuyente, $result, $model->ano_inicio,
+                                   $model->direccion, $model->medidor, $model->observacion, $model->tipo_ejido,
+                                   $model->casa_edf_qta_dom, $model->piso_nivel_no_dom, $model->apto_dom,
+                                   date('Y-m-d h:i:s')],
+
+                                   [$datos->id_contribuyente, $result, $model->ano_inicio,
+                                   $model->direccion1, $model->medidor1, $model->observacion1, $model->tipo_ejido1,
+                                   $model->casa_edf_qta_dom1, $model->piso_nivel_no_dom1, $model->apto_dom1,
+                                   date('Y-m-d h:i:s')],
                                 ]; 
 
             
                  $tableName2 = 'sl_inmuebles'; 
 
-                if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){
+                if ( $conn->guardarLoteRegistros($conexion, $tableName2, $arrayCampos2,  $arrayDatos2) ){
 
                     if ($nivelAprobacion['nivel_aprobacion'] != 1){
 
@@ -294,17 +292,16 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                         return $result; 
 
                     } else {
+                        $arrayCampos3 = ['id_contribuyente','ano_inicio','direccion','medidor','observacion',
+                                         'tipo_ejido', 'casa_edf_qta_dom', 'piso_nivel_no_dom', 'apto_dom'];
 
-                        $arrayDatos3 = [    'id_contribuyente' => $datos->id_contribuyente,
-                                            'ano_inicio' => $model->ano_inicio,
-                                            'direccion' => $model->direccion,
-                                            'medidor' => $model->medidor,
-                                            'observacion' => $model->observacion,
-                                            'tipo_ejido' => $model->tipo_ejido,
-                                          //'av_calle_esq_dom' => $av_calle_esq_dom,
-                                            'casa_edf_qta_dom' => $model->casa_edf_qta_dom,
-                                            'piso_nivel_no_dom' => $model->piso_nivel_no_dom,
-                                            'apto_dom' => $model->apto_dom,
+                        $arrayDatos3 = [    [$datos->id_contribuyente, $model->ano_inicio, $model->direccion,
+                                            $model->medidor, $model->observacion, $model->tipo_ejido, 
+                                            $model->casa_edf_qta_dom, $model->piso_nivel_no_dom, $model->apto_dom],
+
+                                            [$datos->id_contribuyente, $model->ano_inicio, $model->direccion1,
+                                            $model->medidor1, $model->observacion1, $model->tipo_ejido1, 
+                                            $model->casa_edf_qta_dom1, $model->piso_nivel_no_dom1, $model->apto_dom1],
                                     
                                         ]; 
 
@@ -312,7 +309,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                         $tableName3 = 'inmuebles';
                         $arrayCondition = ['id_impuesto'=>$datos->id_impuesto];
 
-                        if ( $conn->modificarRegistro($conexion, $tableName3,  $arrayDatos3, $arrayCondition) ){
+                        if ( $conn->guardarLoteRegistros($conexion, $tableName3,  $arrayCampos3, $arrayDatos3) ){
 
                               $transaccion->commit();  
                               $conexion->close(); 
@@ -358,7 +355,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      {
 
          $buscar = ConfiguracionTiposSolicitudes::find()->where("impuesto=:impuesto", [":impuesto" => 2])
-                                                        ->andwhere("descripcion=:descripcion", [":descripcion" => 'ACTUALIZACION DE DATOS'])
+                                                        ->andwhere("descripcion=:descripcion", [":descripcion" => 'DESINTEGRACION DE PARCELA'])
                                                         ->asArray()->all();
 
 

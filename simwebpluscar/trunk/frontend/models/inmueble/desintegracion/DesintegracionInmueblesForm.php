@@ -100,6 +100,14 @@ class DesintegracionInmueblesForm extends \yii\db\ActiveRecord
 {
      
     public $validacion;
+    public $direccion1;
+    public $casa_edf_qta_dom1;
+    public $piso_nivel_no_dom1;
+    public $apto_dom1;
+    public $tlf_hab1;
+    public $medidor1;
+    public $observacion1;
+    public $tipo_ejido1;
     
     
     public static function tableName()
@@ -114,7 +122,7 @@ class DesintegracionInmueblesForm extends \yii\db\ActiveRecord
     {
         return [
             
-            [['ano_inicio', 'manzana_limite',  'inactivo', 'id_habitante', 'tipo_ejido'], 'integer','message' => Yii::t('backend', 'only integers')],
+            [['ano_inicio', 'manzana_limite',  'inactivo', 'id_habitante', 'tipo_ejido', 'tipo_ejido1'], 'integer','message' => Yii::t('backend', 'only integers')],
             // [['observacion','datosVendedor','inmuebleVendedor'], 'string'], 
             [['direccion', 'observacion'], 'string', 'max' => 255,'message' => Yii::t('backend', 'Only 255 character')],
             [['validacion'], 'string', 'max' => 4,'message' => Yii::t('backend', 'Only 3 character')],
@@ -123,6 +131,12 @@ class DesintegracionInmueblesForm extends \yii\db\ActiveRecord
             [['tlf_hab'], 'string', 'max' => 15,'message' => Yii::t('backend', 'Only 15 character')],
             [['medidor'], 'string', 'max' => 20,'message' => Yii::t('backend', 'Only 20 character')],
             
+            //inmueble2
+            [['direccion1', 'observacion1'], 'string', 'max' => 255,'message' => Yii::t('backend', 'Only 255 character')],
+            [['casa_edf_qta_dom1'], 'string', 'max' => 50,'message' => Yii::t('backend', 'Only 50 character')],
+            [['piso_nivel_no_dom1', 'apto_dom1'], 'string', 'max' => 25,'message' => Yii::t('backend', 'Only 25 character')],
+            [['tlf_hab1'], 'string', 'max' => 15,'message' => Yii::t('backend', 'Only 15 character')],
+            [['medidor1'], 'string', 'max' => 20,'message' => Yii::t('backend', 'Only 20 character')],
             
         ]; 
     }
