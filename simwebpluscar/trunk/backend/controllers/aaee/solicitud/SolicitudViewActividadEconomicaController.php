@@ -63,6 +63,7 @@
 	use backend\models\aaee\autorizarramo\AutorizarRamoSearch;
 	use backend\models\aaee\correccionfechainicio\CorreccionFechaInicioSearch;
 	use backend\models\aaee\anexoramo\AnexoRamoSearch;
+	use backend\models\aaee\desincorporaramo\DesincorporarRamoSearch;
 	use backend\controllers\MenuController;
 
 	//session_start();		// Iniciando session
@@ -113,6 +114,10 @@
 				} elseif ( $this->_model->tipo_solicitud == 9 ) {
 
 					return self::actionMostarSolicitudAnexarRamo();
+
+				} elseif ( $this->_model->tipo_solicitud == 10 ) {
+
+					return self::actionMostarSolicitudDesincorporarRamo();
 
 				} elseif ( $this->_model->tipo_solicitud == 12 ) {
 
@@ -530,6 +535,46 @@
 					$dataProvider = $modelSearch->getDataProviderSolicitud($this->_model->nro_solicitud);
 					if ( isset($model) ) {
 						return $this->render('@backend/views/aaee/anexo-ramo/view-solicitud', [
+														'caption' => Yii::t('frontend', 'Request Nro. ' . $this->_model->nro_solicitud),
+														'model' => $model,
+														'dataProvider' => $dataProvider,
+
+							]);
+					}
+			}
+
+			return false;
+		}
+
+
+
+
+		/**
+		 * Metodo particular que se encarga de buscar los datos de la solicitud particular sobre
+		 * "Desincorporar Ramo", y de renderizar una vista del detalle de la solicitud
+		 * Se utiliza un parametro adicional "nivel de aprovacion", este determinara un nivel mas
+		 * determinante de la vista.
+		 * El nivel de aprobacion 3 renderizara un formulario con los datos originales de la solicitud
+		 * inhabilitados y solo permitira la edicion de los campos que no fueron cargados en dicha
+		 * solicitud, esto con la intencion de que el funcionario pueda complementar dicha informacion.
+		 * @return view retorna un vista con la informacion de la solicitud sino encuentra dicha
+		 * informacion retornara false.
+		 * ---
+		 * nivel de aprobacion 1: No aplica.
+		 * nivel de aprobacion 2: la vista no permite la edicion de los campos.
+		 * 	- Esquema de esta vista:
+		 *  	* Nombre del campo : Valor del campo
+		 * nivel de aprobacion 3: Muestra inhabilitado los datos suministrados previamente y habilita
+		 * aquellos campos que no fueron cargados inicialmente.
+		 */
+		private function actionMostarSolicitudDesincorporarRamo()
+		{
+			if ( $this->_model->nivel_aprobacion == 2 ) {
+					$modelSearch = New DesincorporarRamoSearch($this->_model->id_contribuyente);
+					$model = $modelSearch->findSolicitudDesincorporarRamo($this->_model->nro_solicitud);
+					$dataProvider = $modelSearch->getDataProviderSolicitud($this->_model->nro_solicitud);
+					if ( isset($model) ) {
+						return $this->render('@backend/views/aaee/desincorpora-ramo/view-solicitud', [
 														'caption' => Yii::t('frontend', 'Request Nro. ' . $this->_model->nro_solicitud),
 														'model' => $model,
 														'dataProvider' => $dataProvider,
