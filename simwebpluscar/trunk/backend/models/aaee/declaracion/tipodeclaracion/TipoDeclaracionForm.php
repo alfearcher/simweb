@@ -40,12 +40,12 @@
  *
  */
 
-	namespace backend\models\aaee\tipodeclaracion;
+	namespace backend\models\aaee\declaracion\tipodeclaracion;
 
  	use Yii;
 	use yii\base\Model;
 	use yii\data\ActiveDataProvider;
-	use backend\models\aaee\tipodeclaracion\TipoDeclaracion;
+	use backend\models\aaee\declaracion\tipodeclaracion\TipoDeclaracion;
 
 
 

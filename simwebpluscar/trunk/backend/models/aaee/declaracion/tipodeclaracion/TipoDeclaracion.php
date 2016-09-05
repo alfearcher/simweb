@@ -40,7 +40,7 @@
  *
  */
 
-	namespace backend\models\aaee\tipodeclaracion;
+	namespace backend\models\aaee\declaracion\tipodeclaracion;
 
  	use Yii;
 	use yii\base\Model;
