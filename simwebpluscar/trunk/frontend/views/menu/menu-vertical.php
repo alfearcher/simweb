@@ -92,7 +92,7 @@
 		        					   				['label' => 'Sustitutiva', 'url' => '#'],
 		        					   		]
 		        					   	],
-		        					   	['label' => Icon::show('fa fa-hand-paper-o',['class' => $typeLong], $typeIcon) . '&nbsp; Cesación de Actividades',
+		        					   	['label' => Icon::show('fa fa-caret-square-o-up',['class' => $typeLong], $typeIcon) . '&nbsp; Cesación de Actividades',
 		        					   		'items' => [
 		        					   				['label' => 'Temporal', 'url' => '#'],
 		        					   				['label' => 'Definitiva', 'url' => '#'],
