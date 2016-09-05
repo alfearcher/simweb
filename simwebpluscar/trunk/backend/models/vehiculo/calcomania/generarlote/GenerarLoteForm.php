@@ -49,8 +49,8 @@ namespace backend\models\vehiculo\calcomania\generarlote;
 
 use Yii;
 use yii\base\Model;
-
-
+use backend\models\vehiculo\calcomania\generarlote\LoteSearch;
+use yii\data\ActiveDataProvider;
 
 
 
@@ -132,6 +132,33 @@ class GenerarLoteForm extends Model
         }
     }
 
+ public function search()
+    {
+     
+
+  
+        $query = LoteSearch::find();
+
+                                
+                             
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+           
+        ]);
+        $query->where([
+           
+            'inactivo' => 0,
+            ])
+  
+        ->all();
+       // die(var_dump($query));
+
+        
+        return $dataProvider;
+
+     }
+
+ 
 
 
     
