@@ -29,6 +29,7 @@ class VehiculoSearch extends VehiculosForm
 
     }
 
+
     /**
      * [getDescripcionUsoVehiculo description]
      * @param  [type] $uso [description]
@@ -78,27 +79,25 @@ class VehiculoSearch extends VehiculosForm
 
     }
 
-<<<<<<< .mine
+
     public function getDescripcionCausaDesincorporacion($causa)
     {
         $model = CausasDesincorporaciones::findOne($causa);
         return $model->descripcion;
     }
-||||||| .r3471
-=======
+
+
     public function getDescripcionCausaDesincorporacion($causa)
     {
         $model = CausasDesincorporaciones::findOne($causa);
         return $model->descripcion;
->>>>>>> .r3698
 
-<<<<<<< .mine
-||||||| .r3471
 
-=======
+
+
     }
 
->>>>>>> .r3698
+
 
 
    
