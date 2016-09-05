@@ -139,14 +139,11 @@ session_start();
 			        							
 			        							['label' => 'Cierre de Lote','url' => ['/vehiculo/calcomania/cierrelote/cierre-lote-calcomania/busqueda-lote']],
 
-			        							['label' => 'Administrar Entrega de calcomania','url' => ['/vehiculo/calcomania/asignarcalcomaniacontribuyente/asignar-calcomania-contribuyente/seleccionar-tipo-contribuyente']],
-			        							['label' => 'Cierre de Lote','url' => '#'],
+			        							
+			        						
 
 
-		                                        ['label' => 'Administrar Entrega de calcomania','url' => ['/vehiculo/calcomania/asignarcalcomaniacontribuyente/asignar-calcomania-contribuyente/seleccionar-tipo-contribuyente']],
-
-			        							['label' => 'Cierre de Lote','url' => ['/vehiculo/calcomania/cierrelote/cierre-lote-calcomania/busqueda-lote']],
-
+		                                       
 					        				],
 					        			],
 		        						['label' => 'Solvencia', 'url' => '#'],
