@@ -55,6 +55,7 @@
 	use backend\models\aaee\acteconingreso\ActEconIngresoForm;
 	use common\models\ordenanza\OrdenanzaBase;
 	use yii\helpers\ArrayHelper;
+	use backend\models\aaee\rubro\Rubro;
 
 
 
@@ -532,7 +533,7 @@
 	    									   ->andWhere($tablaRubro . '.inactivo =:inactivo',
 	    									    			[':inactivo' => 0])
 	    									   ->joinWith('actividadEconomica', 'INNER JOIN', false)
-	    									   ->joinWith('rubroDetalle', 'INNER JOIN');
+	    									   ->joinWith('rubroDetalle', 'INNER JOIN', false);
 	    	return isset($findModel) ? $findModel : null;
 	    }
 
