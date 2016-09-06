@@ -158,17 +158,17 @@
 
 		    									'summary' => '',
 		    									'columns' => [
-		    										[
-									                	'class' => 'yii\grid\CheckboxColumn',
-									                	'name' => 'chkRubroSeleccionado',
-									                	'checkboxOptions' => [
-	                            							'id' => 'chkRubroSeleccionado',
-	                            							// Lo siguiente mantiene el checkbox tildado.
-	                            							'onClick' => 'javascript: return false;',
-	                            							'checked' => true,
-	                                					],
-									                	'multiple' => false,
-									                ],
+		    										// [
+									       //          	'class' => 'yii\grid\CheckboxColumn',
+									       //          	'name' => 'chkRubroSeleccionado',
+									       //          	'checkboxOptions' => [
+	               //              							'id' => 'chkRubroSeleccionado',
+	               //              							// Lo siguiente mantiene el checkbox tildado.
+	               //              							'onClick' => 'javascript: return false;',
+	               //              							'checked' => true,
+	               //                  					],
+									       //          	'multiple' => false,
+									       //          ],
 		    										['class' => 'yii\grid\SerialColumn'],
 									            	[
 									                    'label' => Yii::t('frontend', 'Category'),
@@ -208,15 +208,15 @@
 									                ],
 									                [
                         								'class' => 'yii\grid\DataColumn',
-                        								'attribute' => 'id_rubro',
+                        								'attribute' => Yii::t('frontend', 'Current'),
                         								'format' => 'raw',
                         								'contentOptions' => [
                         									'style'=>'width: 200px;'
                         								],
                         								'value' => function($data) {
-							                                    return Html::input('ramo['. $data->id_rubro . ']', null, $data->reales, [
+							                                    return Html::input('text', 'id_rubro['. $data->id_rubro . ']', $data->reales, [
 									                                                                                        'class' => 'form-control',
-									                                                                                        'id' => 'ramo'. $data->id_rubro,
+									                                                                                        'id' => 'id_rubro'. $data->id_rubro,
 									                                                                                        //'style' => 'width: 100%;',
 									                                                                                        //'disabled' => 'disabled',
 									                                                                                    ]);
