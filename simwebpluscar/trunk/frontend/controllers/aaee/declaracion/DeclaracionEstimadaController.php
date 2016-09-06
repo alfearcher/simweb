@@ -205,7 +205,7 @@
 				$caption = Yii::t('frontend', 'Presentation Estimated Tax');
 				$subCaption = Yii::t('frontend', 'Select Fiscal Period');
 
-//die(var_dump($postData));
+die(var_dump($postData));
 
 		      	// Datos generales del contribuyente.
 		      	$searchDeclaracion = New DeclaracionBaseSearch($idContribuyente);
