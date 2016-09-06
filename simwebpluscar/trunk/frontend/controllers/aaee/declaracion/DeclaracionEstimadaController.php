@@ -203,16 +203,13 @@
 				$model->scenario = self::SCENARIO_ESTIMADA;
 
 				$caption = Yii::t('frontend', 'Presentation Estimated Tax');
+				$subCaption = Yii::t('frontend', 'Select Fiscal Period');
 
-				// Se muestra el form de la solicitud.
+//die(var_dump($postData));
+
 		      	// Datos generales del contribuyente.
 		      	$searchDeclaracion = New DeclaracionBaseSearch($idContribuyente);
 		      	$findModel = $searchDeclaracion->findContribuyente();
-
-		      	// Se inicializa el dataprovider del grid que contiene los rubros
-		      	// registrados del contribuyente.
-		      	//$modelRubro = $searchDeclaracion->findRubrosRegistrados(0,0);
-		  		//$dataProviderRubro = $searchDeclaracion->inicializarDataProvider($modelRubro);
 
 				if ( isset($postData['btn-back-form']) ) {
 					if ( $postData['btn-back-form'] == 3 ) {
@@ -230,36 +227,28 @@
 						$model->load($postData);
 						if ( $model->load($postData) ) {
 			    			if ( $model->validate() ) {
+			    				$subCaption = Yii::t('frontend', 'Categories Registers');
 								$añoImpositivo = $model->ano_impositivo;
-								$periodo = $model->periodo;
+								$periodo = $model->exigibilidad_periodo;
 
-								$rango = $searchRamo->getRangoFechaDeclaracion($añoImpositivo);
-								$model->fecha_desde = $rango['fechaDesde'];
-								$model->fecha_hasta = $rango['fechaHasta'];
-
-								$dataProviderRubro = $searchRamo->getDataProviderRubrosRegistrados($añoImpositivo, $periodo);
+								$dataProviderRubro = $searchDeclaracion->getDataProviderRubrosRegistrados($añoImpositivo, $periodo);
 								$btnSearchCategory = 1;
 
 								$opciones = [
-									'back' => '/aaee/anexoramo/anexo-ramo/index-create',
+									'back' => '/aaee/declaracion/declaracion-estimada/index-create',
 								];
-								$caption = $caption . '. ' . Yii::t('frontend', 'Categories Registered') . ' ' . $model->ano_impositivo . ' - ' . $model->periodo;
-								return $this->render('/aaee/anexo-ramo/view-ramo-registrado', [
-			  													'model' => $model,
-			  													'findModel' => $findModel,
-			  													'dataProviderRubro' => $dataProviderRubro,
-			  													'btnSearchCategory' => $btnSearchCategory,
-			  													'caption' => $caption,
-			  													'opciones' =>$opciones,
+								$caption = $caption . '. ' . Yii::t('frontend', 'Categories Registered') . ' ' . $añoImpositivo . ' - ' . $periodo;
+								return $this->render('/aaee/declaracion/estimada/declaracion-estimada-ramo-form', [
+			  																	'model' => $model,
+			  																	'findModel' => $findModel,
+			  																	'dataProviderRubro' => $dataProviderRubro,
+			  																	'btnSearchCategory' => $btnSearchCategory,
+			  																	'caption' => $caption,
+			  																	'opciones' =>$opciones,
+			  																	'subCaption' => $subCaption,
 					  					]);
 							}
 						}
-					}
-				} elseif ( isset($postData['btn-search-category']) ) {
-					if ( $postData['btn-search-category'] == 1 ) {
-						$model->scenario = self::SCENARIO_SEARCH;
-						$_SESSION['postSearch'] = $postData;	// Parametros de busqueda
-						return $this->redirect(['anexar-ramo']);
 					}
 				}
 
@@ -269,32 +258,20 @@
 		      	}
 
 		  		if ( isset($findModel) ) {
-		  			$subCaption = Yii::t('frontend', 'Select Fiscal Period');
 					$model = New DeclaracionBaseForm();
 					$listaAño = $searchDeclaracion->getListaAnoRegistrado();
 					$url = Url::to(['index-create']);
 					$rutaLista = "/aaee/declaracion/declaracion-estimada/lista-periodo";
-					return $this->render('@common/views/aaee/seleccionar-lapso/seleccionar-lapso-form',
-															[
-																'model' => $model,
-																'caption' => $caption,
-																'subCaption' => $subCaption,
-																'findModel' => $findModel,
-																'listaAño' => $listaAño,
-																'url' =>$url,
-																'rutaLista' => $rutaLista,
-															]);
-
-
-
-
-		  			//$listaAño = $searchRamo->getListaAnoRegistrado();
-		  			// return $this->render('/aaee/declaracion/_create', [
-			  		// 									'model' => $model,
-			  		// 									'findModel' => $findModel,
-			  		// 									'listaAño' => $listaAño,
-			  		// 									'caption' => $caption,
-					  // 					]);
+					return $this->render('/aaee/declaracion/estimada/_create',
+																[
+																	'model' => $model,
+																	'caption' => $caption,
+																	'subCaption' => $subCaption,
+																	'findModel' => $findModel,
+																	'listaAño' => $listaAño,
+																	'url' =>$url,
+																	'rutaLista' => $rutaLista,
+																]);
 
 		  		} else {
 		  			// No se encontraron los datos del contribuyente principal.
@@ -1097,8 +1074,6 @@
 							'postData',
 							'conf',
 							'begin',
-							'arrayIdRubros',
-							'postSearch',
 					];
 		}
 
