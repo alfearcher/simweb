@@ -25,7 +25,7 @@
  *
  *  @author Jose Rafael Perez Teran
  *
- *  @date 15-10-2015
+ *  @date 05-09-2016
  *
  *  @class TipoDeclaracionForm
  *  @brief Clase Modelo del formulario
