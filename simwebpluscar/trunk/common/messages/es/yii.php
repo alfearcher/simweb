@@ -17,5 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Close' => '',
+    'Are you sure you want to change this password?' => '',
+    'Close' => '@@@@',
 ];
