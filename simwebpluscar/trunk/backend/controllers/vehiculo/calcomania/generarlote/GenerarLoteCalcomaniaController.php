@@ -144,7 +144,7 @@ class GenerarLoteCalcomaniaController extends Controller
                                     ->select('*')
                                    
                                     ->where(['BETWEEN', 'rango_inicial', $model->rango_inicial,$model->rango_final])
-->orWhere(['BETWEEN', 'rango_final', $model->rango_inicial,$model->rango_final])
+                                    ->orWhere(['BETWEEN', 'rango_final', $model->rango_inicial,$model->rango_final])
                                     ->andWhere('inactivo =:inactivo' , [':inactivo' => 0])
                                     ->andWhere('ano_impositivo =:ano_impositivo' , [':ano_impositivo' => $model->ano_impositivo])
                                     ->all();

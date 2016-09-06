@@ -122,7 +122,7 @@ class AdministrarCalcomaniaFuncionarioController extends Controller
      */
     public function actionBusquedaLote()
     {
-    // die('llegue a lote calcomania');
+    die('llegue a lote calcomania');
     
       if(isset(yii::$app->user->identity->id_user)){
           
