@@ -55,6 +55,7 @@
     use common\models\solicitudescontribuyente\inmueble\ProcesarCambioNumeroCatastralInmuebleUrbano;
     use common\models\solicitudescontribuyente\inmueble\ProcesarCambioPropiedadHorizontalInmuebleUrbano;
     use common\models\solicitudescontribuyente\inmueble\ProcesarDesincorporacionInmuebleUrbano;
+    use common\models\solicitudescontribuyente\inmueble\ProcesarDesintegracionInmuebleUrbano;
 
 
  
@@ -147,7 +148,12 @@
                     //Integracion
 
                 } elseif ( $this->_model->tipo_solicitud == 28 ) {
-                    //Desintegracion  
+                    //Desintegracion
+                    $procesar = New ProcesarDesintegracionInmuebleUrbano($this->_model,
+                                                                          $this->_evento,
+                                                                          $this->_conn,
+                                                                          $this->_conexion);
+                    $result = $procesar->procesarSolicitud();  
 
                 } elseif ( $this->_model->tipo_solicitud == 29 ) {
                     //Cambio Propiedad Horizontal
@@ -168,7 +174,7 @@
                 } elseif ( $this->_model->tipo_solicitud == 31 ) {
                     //Modificar Avaluo
 
-                } elseif ( $this->_model->tipo_solicitud == 100 ) {
+                } elseif ( $this->_model->tipo_solicitud == 65 ) {
                     //Desincorporacion
                     $procesar = New ProcesarDesincorporacionInmuebleUrbano($this->_model,
                                                                           $this->_evento,

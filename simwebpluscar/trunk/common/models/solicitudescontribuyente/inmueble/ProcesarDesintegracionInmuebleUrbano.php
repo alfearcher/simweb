@@ -61,7 +61,7 @@
      * que esten relacionada con la aprobacion o negacion de la solicitud. la clase debe
      * entregar como respuesta un true o false.
      */
-    class ProcesarActualizacionDatosInmuebleUrbano extends SlInmueblesUrbanosSearch
+    class ProcesarDesintegracionInmuebleUrbano extends SlInmueblesUrbanosSearch
     {
         private $_model;
 
@@ -165,7 +165,7 @@
             // Este find retorna el modelo de la entidad "sl-inscripciones-act-econ"
             // con datos, ya que en el metodo padre se ejecuta el ->one() que realiza
             // la consulta.
-            $modelFind = $this->findInscripcion($this->_model->nro_solicitud);
+            $modelFind = $this->findDesintegracion($this->_model->nro_solicitud);
             return isset($modelFind) ? $modelFind : null;
         }
 
@@ -209,7 +209,7 @@
             $modelInscripcion = self::findActualizacionInmuebleUrbano();
             if ( $modelInscripcion !== null ) {
                 if ( $modelInscripcion['id_contribuyente'] == $this->_model->id_contribuyente ) {
-                    $result = self::updateSolicitudActualizacionDatos($modelInscripcion);
+                    $result = self::updateSolicitudDesintegracion($modelInscripcion);
                     // if ( $result ) {
                     //     $result = self::updateContribuyente($modelInscripcion);
                     // }
@@ -256,10 +256,10 @@
          * @return Boolean Retorna un true si todo se ejecuto satisfactoriamente, false
          * en caso contrario.
          */
-        private function updateSolicitudActualizacionDatos($modelInscripcion)
+        private function updateSolicitudDesintegracion($modelInscripcion)
         { 
             $result = false;
-            $cancel = false;            // Controla si el proceso se debe cancelar.
+            $cancel = false;          // Controla si el proceso se debe cancelar.
 
             // Se crea la instancia del modelo que contiene los campos que seran actualizados.
             $model = New SlInmueblesUrbanosSearch($modelInscripcion->id_contribuyente);
@@ -287,25 +287,32 @@
 
                     $tableNameMaster = 'inmuebles';
 
-                    $arregloDatosMaster = [
+                    $arregloDatosMasterInactivacion = [
                                             
-                                            'direccion' => $camposModel['direccion'],
-                                            'casa_edf_qta_dom' => $camposModel['casa_edf_qta_dom'], 
-                                            'piso_nivel_no_dom' => $camposModel['piso_nivel_no_dom'], 
-                                            'apto_dom' => $camposModel['apto_dom'], 
-                                            'medidor' => $camposModel['medidor'], 
-                                            'observacion' => $camposModel['observacion'],
-                                            'tipo_ejido' => $camposModel['tipo_ejido'],
+                                            'inactivo' => $camposModel['inactivo'],
 
                                          ]; 
-                    $arregloCondicionMaster = [
+                    $arregloCondicionMasterInactivacion = [
                                                 'id_impuesto' => $camposModel['id_impuesto'],
                                               ]; 
 
-                    $resultInsert = $this->_conexion->modificarRegistro($this->_conn, $tableNameMaster, $arregloDatosMaster, $arregloCondicionMaster);
+                    $arrayCamposMaster = ['id_contribuyente','ano_inicio','direccion','medidor','observacion',
+                                          'tipo_ejido', 'casa_edf_qta_dom', 'piso_nivel_no_dom', 'apto_dom'];
 
-                    $result = $this->_conexion->modificarRegistro($this->_conn, $tableName,
-                                                              $arregloDatos, $arregloCondicion);
+                    $arrayDatosMaster = [   [$camposModel['id_contribuyente'], $camposModel['ano_inicio'], $camposModel['direccion'],
+                                            $camposModel['medidor'], $camposModel['observacion'], $camposModel['tipo_ejido'], 
+                                            $camposModel['casa_edf_qta_dom'], $camposModel['piso_nivel_no_dom'], $camposModel['apto_dom']],
+
+                                            [$camposModel['id_contribuyente'], $camposModel['ano_inicio'], $camposModel['direccion'],
+                                            $camposModel['medidor'], $camposModel['observacion'], $camposModel['tipo_ejido'], 
+                                            $camposModel['casa_edf_qta_dom'], $camposModel['piso_nivel_no_dom'], $camposModel['apto_dom']],
+                                    
+                                     ]; 
+
+
+                    $resultInsert = $this->_conexion->modificarRegistro($this->_conn, $tableNameMaster, $arregloDatosMasterInactivacion, $arregloCondicionMasterInactivacion);
+                    $resultLoteInsert = $conn->guardarLoteRegistros($conexion, $tableNameMaster, $arrayCamposMaster, $arrayDatosMaster);
+                    $result = $this->_conexion->modificarRegistro($this->_conn, $tableName, $arregloDatos, $arregloCondicion);
 
                 } else {
                     if (!$result ) { self::setErrors(Yii::t('backend', 'Failed update request')); }
