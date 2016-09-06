@@ -153,7 +153,7 @@ class AsignarPatrocinadorPropagandaForm extends Model
            // die(var_dump($dataProvider)),
         ]);
         $query->where([
-           
+            
             
             ]);
         
@@ -219,6 +219,16 @@ class AsignarPatrocinadorPropagandaForm extends Model
 
         ])
        ->all();
+    }
+
+      public function validarCheck($postCheck)
+    {
+        if (count($postCheck) > 0){
+
+            return true;
+        }else{
+            return false;
+        }
     }
 
 
