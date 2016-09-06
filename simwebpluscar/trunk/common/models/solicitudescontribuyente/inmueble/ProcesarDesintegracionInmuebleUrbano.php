@@ -208,7 +208,7 @@
             $result = false;
             $modelInscripcion = self::findActualizacionInmuebleUrbano();
             if ( $modelInscripcion !== null ) {
-                if ( $modelInscripcion['id_contribuyente'] == $this->_model->id_contribuyente ) {
+                if ( $modelInscripcion[0]['id_contribuyente'] == $this->_model->id_contribuyente ) {
                     $result = self::updateSolicitudDesintegracion($modelInscripcion);
                     // if ( $result ) {
                     //     $result = self::updateContribuyente($modelInscripcion);
@@ -235,7 +235,7 @@
             $result = false;
             $modelInscripcion = self::findActualizacionInmuebleUrbano();
             if ( $modelInscripcion !== null ) {
-                if ( $modelInscripcion['id_contribuyente'] == $this->_model->id_contribuyente ) {
+                if ( $modelInscripcion[0]['id_contribuyente'] == $this->_model->id_contribuyente ) {
                     $result = self::updateSolicitudActualizacionDatos($modelInscripcion);
                 } else {
                     self::setErrors(Yii::t('backend', 'Error in the ID of taxpayer'));
@@ -262,15 +262,18 @@
             $cancel = false;          // Controla si el proceso se debe cancelar.
 
             // Se crea la instancia del modelo que contiene los campos que seran actualizados.
-            $model = New SlInmueblesUrbanosSearch($modelInscripcion->id_contribuyente);
+            $model = New SlInmueblesUrbanosSearch($modelInscripcion[0]->id_contribuyente);
             $tableName = $model->tableName();
 
             // Se obtienen los campos que seran actualizados en la entidad "sl-".
             // Estos atributos ya vienen con sus datos cargados.
             $arregloDatos = self::atributosUpDateProcesarSolicitud($this->_evento);
 
-            $camposModel = $modelInscripcion->toArray();
-
+            foreach($modelInscripcion as $key => $value){
+            $camposModel[$key] = $value->toArray();
+            //die(var_dump($_SESSION['camposModel']).' llego a foreach adentro.............');
+            }
+//die(var_dump($camposModel[2]).' salio del foreach.............');
             // Se define el arreglo para el where conditon del update.
             $arregloCondicion['nro_solicitud'] = isset($camposModel['nro_solicitud']) ? $camposModel['nro_solicitud'] : null;
 
@@ -289,29 +292,29 @@
 
                     $arregloDatosMasterInactivacion = [
                                             
-                                            'inactivo' => $camposModel['inactivo'],
+                                            'inactivo' => $camposModel[2]['inactivo'],
 
                                          ]; 
                     $arregloCondicionMasterInactivacion = [
-                                                'id_impuesto' => $camposModel['id_impuesto'],
+                                                'id_impuesto' => $camposModel[2]['id_impuesto'],
                                               ]; 
 
-                    $arrayCamposMaster = ['id_contribuyente','ano_inicio','direccion','medidor','observacion',
+                    $arrayCamposMaster = ['id_contribuyente','direccion','medidor','observacion',
                                           'tipo_ejido', 'casa_edf_qta_dom', 'piso_nivel_no_dom', 'apto_dom'];
 
-                    $arrayDatosMaster = [   [$camposModel['id_contribuyente'], $camposModel['ano_inicio'], $camposModel['direccion'],
-                                            $camposModel['medidor'], $camposModel['observacion'], $camposModel['tipo_ejido'], 
-                                            $camposModel['casa_edf_qta_dom'], $camposModel['piso_nivel_no_dom'], $camposModel['apto_dom']],
+                    $arrayDatosMaster = [   [$camposModel[0]['id_contribuyente'], $camposModel[0]['direccion'],
+                                            $camposModel[0]['medidor'], $camposModel[0]['observacion'], $camposModel[0]['tipo_ejido'], 
+                                            $camposModel[0]['casa_edf_qta_dom'], $camposModel[0]['piso_nivel_no_dom'], $camposModel[0]['apto_dom']],
 
-                                            [$camposModel['id_contribuyente'], $camposModel['ano_inicio'], $camposModel['direccion'],
-                                            $camposModel['medidor'], $camposModel['observacion'], $camposModel['tipo_ejido'], 
-                                            $camposModel['casa_edf_qta_dom'], $camposModel['piso_nivel_no_dom'], $camposModel['apto_dom']],
+                                            [$camposModel[1]['id_contribuyente'], $camposModel[1]['direccion'],
+                                            $camposModel[1]['medidor'], $camposModel[1]['observacion'], $camposModel[1]['tipo_ejido'], 
+                                            $camposModel[1]['casa_edf_qta_dom'], $camposModel[1]['piso_nivel_no_dom'], $camposModel[1]['apto_dom']],
                                     
                                      ]; 
 
-
+//die(var_dump($arrayDatosMaster));
                     $resultInsert = $this->_conexion->modificarRegistro($this->_conn, $tableNameMaster, $arregloDatosMasterInactivacion, $arregloCondicionMasterInactivacion);
-                    $resultLoteInsert = $conn->guardarLoteRegistros($conexion, $tableNameMaster, $arrayCamposMaster, $arrayDatosMaster);
+                    $resultLoteInsert = $this->_conexion->guardarLoteRegistros($this->_conn, $tableNameMaster, $arrayCamposMaster, $arrayDatosMaster);
                     $result = $this->_conexion->modificarRegistro($this->_conn, $tableName, $arregloDatos, $arregloCondicion);
 
                 } else {
