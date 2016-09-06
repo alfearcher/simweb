@@ -87,7 +87,7 @@
 		        					   	],
 		        					   	['label' => Icon::show('fa fa-table',['class' => $typeLong], $typeIcon) . '&nbsp; Declaracion',
 		        					   		'items' => [
-		        					   				['label' => 'Estimada', 'url' => '#'],
+		        					   				['label' => 'Estimada', 'url' =>  ['/aaee/declaracion/declaracion-estimada/index', 'id' => 108]],
 		        					   				['label' => 'Definitiva', 'url' => '#'],
 		        					   				['label' => 'Sustitutiva', 'url' => '#'],
 		        					   		]
