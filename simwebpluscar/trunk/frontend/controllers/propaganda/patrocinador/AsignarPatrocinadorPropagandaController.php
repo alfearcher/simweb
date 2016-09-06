@@ -59,10 +59,10 @@ use common\models\configuracion\solicitud\ParametroSolicitud;
 use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 use common\models\configuracion\solicitud\DocumentoSolicitud;
 use common\enviaremail\PlantillaEmail;
-use frontend\models\propaganda\modificarpropaganda\ModificarPropagandaForm;
 use backend\models\propaganda\Propaganda;
-use frontend\models\vehiculo\registrar\RegistrarVehiculoForm;
+use backend\models\propaganda\PropagandaForm;
 use frontend\models\propaganda\patrocinador\AsignarPatrocinadorPropagandaForm;
+use frontend\models\propaganda\patrocinador\BusquedaPatrocinadorNaturalForm;
 
 
 /**
@@ -90,7 +90,7 @@ class AsignarPatrocinadorPropagandaController extends Controller
   {
       $idConfig = yii::$app->request->get('id');
       $_SESSION['id'] = $idConfig;
-      $model = New AsignarPatrocinadorPropagandaForm();
+      $model = New BusquedaPatrocinadorNaturalForm();
       $postData = yii::$app->request->post();
           if ( $model->load($postData) && Yii::$app->request->isAjax ){
                 Yii::$app->response->format = Response::FORMAT_JSON;
@@ -122,34 +122,133 @@ class AsignarPatrocinadorPropagandaController extends Controller
    * [actionBuscarPropaganda description] Metodo que realiza la busqueda por año impositivo e id contribuyente para mostrar las propagandas asociadas al mismo.
    * @return [type] [description] Retorna el formulario con las propagandas activas
    */
-  public function actionBuscarPropaganda()
+  public function actionBuscarPropaganda($errorCheck = "")
   {
+   // die('llegue a buscar propaganda');
       $anoImpo = $_SESSION['anoImpositivo'];
+     // die($anoImpo);
       $idContribuyente = yii::$app->user->identity->id_contribuyente;
+      //die($idContribuyente);
       $modelSearch = new AsignarPatrocinadorPropagandaForm();
-      $model = $modelSearch->busquedaPropaganda($anoImpo, $idContribuyente);
+      $dataProvider = $modelSearch->busquedaPropaganda($anoImpo, $idContribuyente);
      // die(var_dump($model));
 
           return $this->render('/propaganda/patrocinador/vista-seleccion-propaganda', [
-                                                              'dataProvider' => $model,
+                                                              'dataProvider' => $dataProvider,
+                                                              'errorCheck' => $errorCheck,
           ]);
 
 
   }
 
+  /**
+   * [actionVerificarPropaganda description] Metodo que realiza la verificacion de la propaganda y a su vez realiza la busqueda de la misma para almacenar todos los datos de las propagandas encontradas
+   * @return [type] [description]
+   */
+  public function actionVerificarPropaganda()
+  {
+    //die('llegue a verificar');
+      $todoBien = false;
+      $errorCheck = ""; 
+      $idContribuyente = yii::$app->user->identity->id_contribuyente;
+      $idPropaganda = yii::$app->request->post('chk-verificar-propaganda');
+      //die(var_dump($idPropaganda));
+      $_SESSION['idPropaganda'] = $idPropaganda;
+//die(var_dump($_SESSION['idVehiculo']));
+  
+      $validacion = new AsignarPatrocinadorPropagandaForm();
+
+       if ($validacion->validarCheck(yii::$app->request->post('chk-verificar-propaganda')) == true){
+           $modelsearch = new PropagandaForm();
+           foreach($idPropaganda as $key => $value){ 
+            $value;
+            $busqueda[] = $modelsearch->busquedaPropaganda($value, $idContribuyente);
+            $todoBien = true;
+      //die(var_dump($busqueda));
+            }
+
+          if ($todoBien == true){ 
+           
+        
+              $_SESSION['datosPropaganda'] = $busqueda;
+              //die(var_dump($busqueda));
+        
+          return $this->redirect(['busqueda-tipo-patrocinador']);
+        
+          }else{
+
+              die('no existe vehiculo asociado a ese ID');
+          }
+       }else{
+          $errorCheck = "Please select an Advertising";
+          return $this->redirect(['buscar-propaganda' , 'errorCheck' => $errorCheck]); 
+
+                                                                                             
+       }
+  }
+
+  /**
+   * [busquedaTipoPatrocinador description] Metodo que renderiza la vista para la seleccion de tipo de patrocinador , natural o juridico
+  
+   */
+  public function actionBusquedaTipoPatrocinador()
+  {
+      return $this->render('/propaganda/patrocinador/vista-seleccion-tipo-contribuyente');
+  }
+
+  /**
+   * [actionBusquedaNatural description] Metodo que realiza la busqueda del patrocinador como usuario natural para ver si existe
+   * @return [type] [description] retorna la informacion del patrocinador si hace match y retorna un mensaje de error en caso de no 
+   * conseguir 
+   */
+  public function actionBusquedaNatural()
+  {
+    die('llegue');
+
+     
+           
+            $postData = yii::$app->request->post();
+
+            $model = New BusquedaPatrocinadorNaturalForm();
+
+            
+            if ( $model->load($postData) && Yii::$app->request->isAjax ){
+                  Yii::$app->response->format = Response::FORMAT_JSON;
+                  return ActiveForm::validate($model);
+            }
+           
+            if ( $model->load($postData) ) {
+           
+            
+
+               if ($model->validate()){
+              
+
+                 
+
+              }
+          }  
+         
+          return $this->render('/propaganda/modificarpropaganda/formulario-modificar-propaganda', [
+                                                              'model' => $model,
+                                                             
+                                                             
+            ]);
+  
+  }
 
 
   /**
-   * [actionCrearPropaganda description] metodo que renderiza la vista del formulario para la inscripcion de la propaganda
-   * @return [type] [description] retorna la vista del formulario
+   * [actionBusquedaPatrocinador description] Metodo que realiza la busqueda del contribuyente patrocinador de la propaganda, tanto
+   * natural como juridico
    */
-  public function actionModificarPropaganda()
+  public function actionBusquedaPatrocinador()
   {
-          // die(var_dump($_SESSION['datosPropaganda']));
+          //die(var_dump($_SESSION['datosPropaganda']));
             $datosPropaganda = $_SESSION['datosPropaganda'];
             $postData = yii::$app->request->post();
 
-            $model = New ModificarPropagandaForm();
+            $model = New AsignarPatrocinadorPropagandaForm();
 
             
             if ( $model->load($postData) && Yii::$app->request->isAjax ){
@@ -164,23 +263,8 @@ class AsignarPatrocinadorPropagandaController extends Controller
                if ($model->validate()){
                //die('valido');
 
-                 $verificarSolicitud = self::verificarSolicitud($datosPropaganda->id_impuesto , $_SESSION['id']);
+                 
 
-                     if($verificarSolicitud == true){
-                       return MensajeController::actionMensaje(403);
-                    }else{
-               
-                 $buscarGuardar = self::beginSave("buscarGuardar", $model);
-                    
-                    if($buscarGuardar == true){
-                     return MensajeController::actionMensaje(100);
-                    }else{
-                    
-                    return MensajeController::actionMensaje(920);
-           }  
-          
-                      
-             }
               }
           }  
           // die(var_dump($datosPropaganda));
