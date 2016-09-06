@@ -73,6 +73,10 @@
 		public $fecha_hora_proceso;
 		public $user_funcionario;
 
+		const SCENARIO_ESTIMADA = 'estimada';
+		const SCENARIO_DEFINITIVA = 'definitiva';
+		const SCENARIO_SEARCH = 'search';
+
 
 		/**
      	* @inheritdoc
@@ -80,7 +84,44 @@
     	public function scenarios()
     	{
         	// bypass scenarios() implementation in the parent class
-        	return Model::scenarios();
+        	//return Model::scenarios();
+        	return [
+	        	self::SCENARIO_ESTIMADA => [
+	        					'id_contribuyente',
+	        					'ano_impositivo',
+	        					'exigibilidad_periodo',
+	        					'fecha_desde',
+	        					'fecha_hasta',
+	        					'origen',
+	        					'fecha_hora',
+	        					'usuario',
+	        					'estatus',
+
+	        		],
+        		self::SCENARIO_DEFINITIVA => [
+        					'id_contribuyente',
+        					'ano_impositivo',
+        					'exigibilidad_periodo',
+        					'fecha_desde',
+        					'fecha_hasta',
+        					'origen',
+        					'fecha_hora',
+        					'usuario',
+        					'estatus',
+
+        		],
+        		self::SCENARIO_SEARCH => [
+        					'id_contribuyente',
+        					'ano_impositivo',
+        					'exigibilidad_periodo',
+        					'fecha_desde',
+        					'fecha_hasta',
+        					'origen',
+        					'fecha_hora',
+        					'usuario',
+        					'estatus',
+        		],
+	        ];
     	}
 
 
@@ -91,13 +132,16 @@
 	    public function rules()
 	    {
 	        return [
-	        	[['id_contribuyente', 'descripcion',],
-	        	  'required',
+	        	[['id_contribuyente', 'monto_v', 'monto_new'],
+	        	  'required', 'on' => 'estimada',
+	        	  'message' => Yii::t('backend','{attribute} is required')],
+	        	[['id_contribuyente', 'ano_impositivo', 'exigibilidad_periodo'],
+	        	  'required', 'on' => 'search',
 	        	  'message' => Yii::t('backend','{attribute} is required')],
 	        	[['tipo_declaracion', 'inactivo'],
 	        	  'integer',
 	        	  'message' => Yii::t('backend','{attribute}')],
-	          	['inactivo', 'default', 'value' 0],
+	          	['inactivo', 'default', 'value' => 0],
 	        ];
 	    }
 
