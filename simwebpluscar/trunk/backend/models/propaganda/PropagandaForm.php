@@ -217,5 +217,30 @@ class PropagandaForm extends \yii\db\ActiveRecord
                     return $this->inactivo;
     }
 
+    /**
+     * [busquedaPropaganda description] metodo que realiza una busqueda en la tabla propagandas
+     * @param  [type] $idPropaganda    [description] id de la propaganda del contribuyente
+     * @param  [type] $idContribuyente [description] id del contribuyente
+     * @return [type]                  [description] retorna la informacion de la propaganda en caso de hacer match, de lo contrario
+     * retorna false
+     */
+    public function busquedaPropaganda($idPropaganda, $idContribuyente)
+    {
+        
+        $buscar = Propaganda::find()
+                            ->where([
+                            'id_impuesto' => $idPropaganda,
+                            'id_contribuyente' => $idContribuyente,
+                            'inactivo' => 0,
+
+                                ])
+                            ->all();
+            if($buscar == true){
+                return $buscar;
+            }else{
+                return false;
+            }
+    }
+
 
 }
