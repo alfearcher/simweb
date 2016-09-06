@@ -20,7 +20,7 @@ $this->title = Yii::t('frontend', 'Select your Advertising');
  <?php $form = ActiveForm::begin([
             'id' => 'form-datosPropaganda-inline',
             'method' => 'post',
-            'action' => ['/propaganda/desincorporarpropaganda/desincorporar-propaganda/verificar-desincorporacion'],
+            'action' => ['/propaganda/patrocinador/asignar-patrocinador-propaganda/verificar-propaganda'],
             'enableClientValidation' => true,
             'enableAjaxValidation' => true,
             'enableClientScript' => true,
@@ -38,7 +38,7 @@ $this->title = Yii::t('frontend', 'Select your Advertising');
     
 
     <?= GridView::widget([
-        'dataProvider' => $model,
+        'dataProvider' => $dataProvider,
        // 'filterModel' => $searchModel,
         'columns' => [
             //['class' => 'yii\grid\SerialColumn'],
@@ -46,15 +46,17 @@ $this->title = Yii::t('frontend', 'Select your Advertising');
             'id_impuesto',
 
 
-            // [
-            //      'label' => 'Tipo de Propaganda',
+             [
+                  'label' => 'Tipo de Propaganda',
 
-            //     'value' => 
+                 'value' => 
                 
-            //     function($data){
+                 function($data){
 
-            //         return $data->tipoPropaganda->descripcion;
-            //     }
+                     return $data->tipoPropaganda->descripcion;
+                 }
+                 
+                 ],
                 
                                     
             //  ],
@@ -93,9 +95,9 @@ $this->title = Yii::t('frontend', 'Select your Advertising');
 
              [
                         'class' => 'yii\grid\CheckboxColumn',
-                        'name' => 'chk-desincorporar-propaganda',
+                        'name' => 'chk-verificar-propaganda',
                         'checkboxOptions' => [
-                                'id' => 'id-chk-desincorporar-propaganda',
+                                'id' => 'id-chk-verificar-propaganda',
                                
                                 //'onClick' => 'alert("hola " + $(this).val());'
                                 //$(this).is(":checked"), permite determinar si un checkbox esta tildado.
