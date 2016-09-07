@@ -18,8 +18,7 @@ $disabled = true;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_desintegracioninmueblesform', [
-        'disabled'=>$disabled,'modelContribuyente' => $modelContribuyente,
-        'model'=>$model, 'modelBuscar'=>$modelBuscar,'datosVContribuyente'=>$datosVContribuyente, 'datosVInmueble'=>$datosVInmueble
+        'model' => $model, 'datos'=>$datos, 'disabled'=>$disabled,
     ]) ?>
 
 </div>

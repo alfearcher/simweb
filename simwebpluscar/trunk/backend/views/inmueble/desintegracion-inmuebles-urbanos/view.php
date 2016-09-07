@@ -14,7 +14,7 @@ $this->title = Yii::t('backend', 'View Property Urban. Id Tax: '.$model->id_impu
     
 
     <p>
-        <?= Html::a(Yii::t('backend', 'Urban decay properties'), ['inmueble/desintegracion-inmuebles-urbanos/desintegracion-inmuebles','id_impuesto' =>$model->id_impuesto  ], ['class' => 'btn btn-primary']) ?>  
+        <?= Html::a(Yii::t('backend', 'Disintegration of urban property'), ['/inmueble/desintegracion-inmuebles-urbanos/desintegracion-inmuebles'], ['class' => 'btn btn-success']) ?>
         <?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) ?>
     </p> 
 
@@ -40,8 +40,8 @@ $this->title = Yii::t('backend', 'View Property Urban. Id Tax: '.$model->id_impu
             'tlf_hab',
             //'medidor',
             //'id_sim',
-            'observacion:ntext',
-            'inactivo',
+            //'observacion:ntext',
+            //'inactivo',
             //'tipo_ejido',
             //'propiedad_horizontal',
             //'estado_catastro',

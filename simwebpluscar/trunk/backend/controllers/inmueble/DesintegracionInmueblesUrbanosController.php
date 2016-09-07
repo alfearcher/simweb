@@ -25,11 +25,11 @@
  *  
  *  @author Alvaro Jose Fernandez Archer
  * 
- *  @date 17-08-2015
+ *  @date 08-03-2016
  * 
  *  @class DesintegracionInmueblesUrbanosController
- *  @brief Clase que permite controlar la desintegracion del inmueble urbano, 
- *  
+ *  @brief Clase que permite controlar la solicitud del registro o inscripcion de inmuebles urbanos
+ *  en el lado del contribuyente,
  *
  * 
  *  
@@ -38,51 +38,73 @@
  *
  *  
  *  @method
- *  DesintegracionInmuebles
- *  findModel
- *  
- *   
+ *  View
+ *  Index
+ *  CambiosOtrosDatosInmueblesUrbanos
+ *  GuardarCambios
+ *  DatosConfiguracionTiposSolicitudes
+ *  EnviarCorreo
  *  
  *  @inherits
  *  
  */
 namespace backend\controllers\inmueble;
-error_reporting(0);
-session_start();
+
 use Yii;
-use backend\models\inmueble\InmueblesUrbanosForm;
-use backend\models\inmueble\CambioPropietarioInmueblesForm;
-use backend\models\ContribuyentesForm;
-use backend\models\inmueble\InmueblesConsulta;
-use backend\models\inmueble\InmueblesSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
-use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\helpers\Url;
-use common\conexion\ConexionController;
-
-use backend\models\buscargeneral\BuscarGeneralForm;
-use backend\models\buscargeneral\BuscarGeneral;
+ 
+use yii\widgets\ActiveForm;
+use yii\web\Response;
+use common\models\Users;
+use common\models\User;
+use yii\web\Session;
 use backend\models\inmueble\DesintegracionInmueblesForm;
+use frontend\models\inmueble\InmueblesSearch;
+use frontend\models\inmueble\InmueblesConsulta;
 
+//use common\models\Users;
 
-/**
- * CambiosInmueblesUrbanosController implements the CRUD actions for InmueblesUrbanosForm model.
- */
+// mandar url
+use yii\web\UrlManager;
+use yii\base\Component;
+use yii\base\Object;
+use yii\helpers\Url;
+// active record consultas..
+use yii\db\ActiveRecord;
+use common\conexion\ConexionController;
+use common\enviaremail\PlantillaEmail;
+use common\mensaje\MensajeController;
+use frontend\models\inmueble\ConfiguracionTiposSolicitudes;
+use common\models\configuracion\solicitud\ParametroSolicitud;
+use common\models\configuracion\solicitud\DocumentoSolicitud;
+
+session_start();
+/*********************************************************************************************************
+ * InscripcionInmueblesUrbanosController implements the actions for InscripcionInmueblesUrbanosForm model.
+ *********************************************************************************************************/
 class DesintegracionInmueblesUrbanosController extends Controller
-{   
-
+{
+   
     public $conn;
     public $conexion;
-    public $transaccion; 
-    
+    public $transaccion;
 
-     /**
+/* 
+tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
+
+*/
+      /**
      * Lists all Inmuebles models.
      * @return mixed
      */
     public function actionIndex()
     {
+        $idConfig = yii::$app->request->get('id');
+
+         $_SESSION['id'] = $idConfig;
+
         if ( isset( $_SESSION['idContribuyente'] ) ) {
         $searchModel = new InmueblesSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -101,37 +123,43 @@ class DesintegracionInmueblesUrbanosController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionView()
     {
         if ( isset( $_SESSION['idContribuyente'] ) ) {
+
+
+          $idInmueble = yii::$app->request->post('id');
+           
+          $datos = InmueblesConsulta::find()->where("id_impuesto=:impuesto", [":impuesto" => $idInmueble])
+                                            ->andwhere("inactivo=:inactivo", [":inactivo" => 0])
+                                            ->one();
+          $_SESSION['datos'] = $datos;
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $datos,
         ]);
         }  else {
                     echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
         }
-    }
+    } 
 
-     
-    /**
-     *Metodo: DesintegracionInmuebles
-     *Realiza la desintegracion del inmueble urbano.
-     *si el cambio es exitoso, se redireccionara a la  vista 'inmueble/inmuebles-urbanos/view' de la pagina.
-     *@param $id_impuesto, tipo de dato entero y clave primaria de la tabla inmueble,  variable condicional 
-     *para el cambio de otros datos inmuebles
-     *@return model trae los datos del formulario 
+    
+     /**
+     *REGISTRO (inscripcion) INMUEBLES URBANOS
+     *Metodo para crear las cuentas de usuarios de los funcionarios
+     *@return model 
      **/
-    public function actionDesintegracionInmuebles($id_impuesto)
-    { 
-        if ( isset( $_SESSION['idContribuyente'] ) ) {
-        $modelContribuyente = $this->findModelContribuyente($_SESSION['idContribuyente']);
-        
+     public function actionDesintegracionInmuebles()
+     { 
+         
+         if ( isset( $_SESSION['idContribuyente'] ) ) {
+         //Creamos la instancia con el model de validación
+         $model = new DesintegracionInmueblesForm();
 
-        $model = $this->findModel($id_impuesto); 
-
-
+         $datos = $_SESSION['datos'];
+    
          //Mostrará un mensaje en la vista cuando el usuario se haya registrado
-         $msg = null; 
+         $msg = null;
          $url = null; 
          $tipoError = null; 
     
@@ -140,249 +168,240 @@ class DesintegracionInmueblesUrbanosController extends Controller
 
               Yii::$app->response->format = Response::FORMAT_JSON;
               return ActiveForm::validate($model); 
-         } 
-         if ($modelContribuyente->load(Yii::$app->request->post()) && Yii::$app->request->isAjax){ 
-
-              Yii::$app->response->format = Response::FORMAT_JSON;
-              return ActiveForm::validate($modelContribuyente); 
-         } 
-
-         $datosCambio = Yii::$app->request->post("DesintegracionInmueblesForm");
-         $btn = Yii::$app->request->post(); 
-
-
+         }
+   
          if ($model->load(Yii::$app->request->post())){
-            //if ($modelContribuyente->load(Yii::$app->request->post())){
 
-              //if($modelContribuyente->validate()){ 
-           
-                if($model->validate()){
+              if($model->validate()){ 
 
                  //condicionales     
-                die('llegue al proceso desintegracion');
-                if (!\Yii::$app->user->isGuest){ 
-                     
-     
-              
-/*
-CONTENIDO DESINTEGRACION DEL INMUEBLE
--dueños unicos en las parcelas
--aledaños (parcelas vecinas)
--exista en el SIM
--solvencia hasta la fecha (trimestre, mes, año)
--no aplica para propiedad horizontal
--en el catastro solo se edita el numero de parcela
-*/
+                  $documento = new DocumentoSolicitud();
 
-                if ($datosCambio["operacion"] == 1) {
-                                    
-                    if ($datosCambio["tipo_naturaleza1"] == 0) {
-                        $tipo = $datosCambio["tipoBuscar1"];
-                    } else { 
-                        $tipo = 0; 
-                    } 
+                   $requisitos = $documento->documentos();
 
-                    $modelParametros = ContribuyentesForm::find()->where(['naturaleza'=>$datosCambio["naturalezaBuscar1"]])
-                                                                 ->andWhere(['cedula'=>$datosCambio["cedulaBuscar1"]])
-                                                                 ->andWhere(['tipo'=>$tipo])->asArray()->all();                                         
+                if (!\Yii::$app->user->isGuest){                                      
+                      
 
+                     $guardo = self::GuardarCambios($model, $datos);
 
-                    if ($btn['AcceptSeller']!=null) {
+                     if($guardo == true){ 
 
-                        $id_contribuyenteVendedor = $datosCambio["id_contribuyente"];
-                        $id_impuestoVenta = $datosCambio["direccion"];
-                        $ano_traspaso = $datosCambio["ano_traspaso"];
+                          $envio = self::EnviarCorreo($guardo, $requisitos);
 
-                        $id_contribuyenteComprador = $modelParametros[0]['id_contribuyente'];
+                          if($envio == true){ 
 
+                              return MensajeController::actionMensaje(100);
 
-                        //--------------TRY---------------
-                        $arrayDatos = [ 
-                                        'id_contribuyente' => $id_contribuyenteComprador,
-                                      ]; 
-                        
+                          } else { 
+                            
+                              return MensajeController::actionMensaje(920);
 
-                        $tableName = 'inmuebles';  
+                          }
 
-                        $arrayCondition = ['id_impuesto' => $id_impuestoVenta,]; 
+                      } else {
 
-//echo'<pre>'; var_dump($datosCambio); echo '</pre>'; die('hola seller 2'); 
-                        $conn = New ConexionController(); 
+                            return MensajeController::actionMensaje(920);
+                      } 
 
-                        $this->conexion = $conn->initConectar('dbsim');     // instancia de la conexion (Connection)
-                        $this->conexion->open(); 
-
-                        $transaccion = $this->conexion->beginTransaction(); 
-
-                        if ( $conn->modificarRegistro($this->conexion, $tableName, $arrayDatos, $arrayCondition) ){
-
-                            $transaccion->commit(); 
-                            $tipoError = 0; 
-                            $msg = Yii::t('backend', 'SUCCESSFUL UPDATE DATA OF THE URBAN PROPERTY!');//REGISTRO EXITOSO DE LAS PREGUNTAS DE SEGURIDAD
-                            $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['inmueble/inmuebles-urbanos/index', 'id' => $model->id_contribuyente])."'>";                     
-                            return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
-                        }else{ 
-
-                            $transaccion->roolBack();  
-                            $tipoError = 0; 
-                            $msg = Yii::t('backend', 'AN ERROR OCCURRED WHEN UPDATE THE URBAN PROPERTY!');//HA OCURRIDO UN ERROR AL LLENAR LAS PREGUNTAS SECRETAS
-                            $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['inmueble/inmuebles-urbanos/index', 'id' => $model->id_contribuyente])."'>";                     
-                            return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
-                        }   
-
-                        $this->conexion->close();
-                    }
-                }
-/*
-FIN SELLER
-*/
-
-
-/*
-CONTENIDO DEL COMPRADOR (BUYER)
-*/  
-       
-                if ($datosCambio["operacion"] == 2) {
-                    //echo'<pre>'; var_dump($btn['Next']); echo '</pre>'; die();
-                    if ($btn['NextBuyer']!=null) {
-                        $contador = 1;
-
-                        $datosVContribuyente = ContribuyentesForm::find()->where(['naturaleza'=>$datosCambio["naturalezaBuscar"]])
-                                                                     ->andWhere(['cedula'=>$datosCambio["cedulaBuscar"]])
-                                                                     ->andWhere(['tipo'=>$datosCambio["tipoBuscar"]])->asArray()->all();  
-
-   
-                    }
-                    if ($btn['NextBuyer']!=null) {
-                        
-                        if ($datosCambio["datosVendedor"]!=null) {
-
-                     
-                            $contador = $contador+1;
-                            $datosVInmueble = InmueblesUrbanosForm::find()->where(['id_contribuyente'=>$datosCambio["datosVendedor"]])->asArray()->all(); 
-
-                         
-                        } 
-                    } 
-                    if ($btn['AcceptBuyer']!=null) { 
-                        $id_contribuyenteComprador = $datosCambio["id_contribuyente"];
-
-                        $ano_traspaso = $datosCambio["ano_traspaso"];
-                        $id_contribuyenteVendedor = $datosCambio["datosVendedor"];
-                        $id_impuestoVendedor = $datosCambio["inmuebleVendedor"];
-                        //$id_contribuyenteComprador = $modelParametros[0]['id_contribuyente'];  
-
-
-                        //--------------TRY---------------
-                        $arrayDatos = [ 
-                                        'id_contribuyente' => $id_contribuyenteComprador,
-                                      ]; 
-
-                        $tableName = 'inmuebles'; 
-
-                        $arrayCondition = ['id_impuesto' => $id_impuestoVendedor,]; 
-//echo'<pre>'; var_dump($datosCambio); echo '</pre>'; die('aqui buyer 1'); 
-                        $conn = New ConexionController(); 
-
-                        $this->conexion = $conn->initConectar('dbsim');     // instancia de la conexion (Connection)
-                        $this->conexion->open(); 
-
-                        $transaccion = $this->conexion->beginTransaction(); 
-
-                        if ( $conn->modificarRegistro($this->conexion, $tableName, $arrayDatos, $arrayCondition) ){
-
-                            $transaccion->commit(); 
-                            $tipoError = 0; 
-                            $msg = Yii::t('backend', 'SUCCESSFUL UPDATE DATA OF THE URBAN PROPERTY!');//REGISTRO EXITOSO DE LAS PREGUNTAS DE SEGURIDAD
-                            $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['inmueble/inmuebles-urbanos/index', 'id' => $model->id_contribuyente])."'>";                     
-                            return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
-                        }else{ 
-
-                            $transaccion->rollBack();  
-                            $tipoError = 0; 
-                            $msg = Yii::t('backend', 'AN ERROR OCCURRED WHEN UPDATE THE URBAN PROPERTY!');//HA OCURRIDO UN ERROR AL LLENAR LAS PREGUNTAS SECRETAS
-                            $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['inmueble/inmuebles-urbanos/index', 'id' => $model->id_contribuyente])."'>";                     
-                            return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
-                        }   
-
-                        $this->conexion->close();                 
-
-                        
-                    } 
-                }
-/*
-FIN BUYER
-*/
-                 }else{ 
+                   }else{ 
 
                         $msg = Yii::t('backend', 'AN ERROR OCCURRED WHEN FILLING THE URBAN PROPERTY!');//HA OCURRIDO UN ERROR AL LLENAR LAS PREGUNTAS SECRETAS
-                        $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['inmueble/inmuebles-urbanos/view', 'id' => $model->id_impuesto])."'>";                     
+                        $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("site/login")."'>";                     
                         return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
-                 } 
+                   } 
 
               }else{ 
-                $model->getErrors();
-                    //echo var_dump($btn);exit();
-                    /*if ($model->tipo_naturaleza1 =="") {
-
-                        $model->addError('tipo_naturaleza1', Yii::t('backend', 'prueba') ); 
-                    }
-                    if ($model->tipo_naturaleza =="") {
-
-                        $model->addError('cedulaBuscar', Yii::t('backend', 'prueba') ); 
-                    }*/
-                   
-              } 
-            /*}else{ 
-
+                
                    $model->getErrors(); 
               }
-         }*/
-        }
-   
-         return $this->render('desintegracion-inmuebles', [
-                'model' => $model, 'modelContribuyente' => $modelContribuyente, 'modelBuscar' =>$modelBuscar, 'datosVContribuyente'=>$datosVContribuyente,
-                'datosVInmueble'=>$datosVInmueble,
-            ]); 
-        
+         }
+              return $this->render('desintegracion-inmuebles', ['model' => $model, 'datos'=>$datos]);  
+
         }  else {
-                    echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
-        }
-    } 
+                    echo "No hay Contribuyente Registrado!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['site/login'])."'>";
+        }    
+ 
+     } // cierre del metodo inscripcion de inmuebles
+
     
+
      /**
-     * Finds the Inmuebles model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Inmuebles the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    { 
-        if (($model = DesintegracionInmueblesForm::findOne($id)) !== null) {
+      * [GuardarInscripcion description] Metodo que se encarga de guardar los datos de la solicitud 
+      * de inscripcion del inmueble del contribuyente
+      * @param [type] $model [description] arreglo de datos del formulario de inscripcion del
+      * inmueble
+      */
+     public function GuardarCambios($model, $datos)
+     {
+            $buscar = new ParametroSolicitud($_SESSION['id']);
 
-            return $model; 
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
-        } 
-    } 
-    
-    /**
-     * Finds the Contribuyentes model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Contribuyente the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */ 
-    public function findModelContribuyente($id)
-    {//echo'<pre>'; var_dump($_SESSION['idContribuyente']); echo '</pre>'; die('hola');
-        if (($modelContribuyente = ContribuyentesForm::findOne($id)) !== null) {
+            $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
             
-            return $modelContribuyente; 
-        } else { 
-            throw new NotFoundHttpException('The requested page does not exist.');
-        } 
-    }
-    
-}
+            try {
+            // $tableName1 = 'solicitudes_contribuyente'; 
 
+            // $tipoSolicitud = self::DatosConfiguracionTiposSolicitudes();
+
+            // $arrayDatos1 = [  'id_contribuyente' => $datos->id_contribuyente,
+            //                   'id_config_solicitud' => $_SESSION['id'],
+            //                   'impuesto' => 2,
+            //                   'id_impuesto' => $datos->id_impuesto,
+            //                   'tipo_solicitud' => $tipoSolicitud,
+            //                   'usuario' => yii::$app->user->identity->login,
+            //                   'fecha_hora_creacion' => date('Y-m-d h:i:s'),
+            //                   'nivel_aprobacion' => $nivelAprobacion["nivel_aprobacion"],
+            //                   'nro_control' => 0,
+            //                   'firma_digital' => null,
+            //                   'estatus' => 1,
+            //                   'inactivo' => 0,
+            //               ];  
+            
+
+            $conn = New ConexionController();
+            $conexion = $conn->initConectar('dbsim');     // instancia de la conexion (Connection)
+            $conexion->open();  
+            $transaccion = $conexion->beginTransaction();
+
+            // if ( $conn->guardarRegistro($conexion, $tableName1,  $arrayDatos1) ){  
+            //     $result = $conexion->getLastInsertID();
+
+                // $arrayCampos2 = ['id_contribuyente','nro_solicitud','ano_inicio','direccion','medidor','observacion',
+                //                  'tipo_ejido', 'casa_edf_qta_dom', 'piso_nivel_no_dom', 'apto_dom', 'fecha_creacion'];
+
+                // $arrayDatos2 = [   [$datos->id_contribuyente, $result, $model->ano_inicio,
+                //                    $model->direccion, $model->medidor, $model->observacion, $model->tipo_ejido,
+                //                    $model->casa_edf_qta_dom, $model->piso_nivel_no_dom, $model->apto_dom,
+                //                    date('Y-m-d h:i:s')],
+
+                //                    [$datos->id_contribuyente, $result, $model->ano_inicio,
+                //                    $model->direccion1, $model->medidor1, $model->observacion1, $model->tipo_ejido1,
+                //                    $model->casa_edf_qta_dom1, $model->piso_nivel_no_dom1, $model->apto_dom1,
+                //                    date('Y-m-d h:i:s')],
+                //                 ]; 
+
+                // $arrayDatosInactivar2 = [    'id_contribuyente' => $datos->id_contribuyente,
+                //                     'id_impuesto' => $datos->id_impuesto,
+                //                     'nro_solicitud' => $result,
+                //                     'inactivo' => 1,
+                //                     'fecha_creacion' => date('Y-m-d h:i:s'),
+                //                 ];
+
+            
+                //  $tableName2 = 'sl_inmuebles'; 
+
+                // if ( $conn->guardarLoteRegistros($conexion, $tableName2, $arrayCampos2,  $arrayDatos2) and $conn->guardarRegistro($conexion, $tableName2,  $arrayDatosInactivar2)){
+
+                //     if ($nivelAprobacion['nivel_aprobacion'] != 1){
+
+                //         $transaccion->commit(); 
+                //         $conexion->close(); 
+                //         $tipoError = 0;  
+                //         return $result; 
+
+                //     } else {
+                        $arrayCampos3 = ['id_contribuyente','ano_inicio','direccion','medidor','observacion',
+                                         'tipo_ejido', 'casa_edf_qta_dom', 'piso_nivel_no_dom', 'apto_dom'];
+
+                        $arrayDatos3 = [    [$datos->id_contribuyente, $model->ano_inicio, $model->direccion,
+                                            $model->medidor, $model->observacion, $model->tipo_ejido, 
+                                            $model->casa_edf_qta_dom, $model->piso_nivel_no_dom, $model->apto_dom],
+
+                                            [$datos->id_contribuyente, $model->ano_inicio1, $model->direccion1,
+                                            $model->medidor1, $model->observacion1, $model->tipo_ejido1, 
+                                            $model->casa_edf_qta_dom1, $model->piso_nivel_no_dom1, $model->apto_dom1],
+                                    
+                                        ]; 
+                        $arrayDatosInactivacion3 = [    
+                                                    'inactivo' => 1,
+                                            
+                                                ]; 
+
+                    
+                       
+                        $arrayConditionInactivacion3 = ['id_impuesto'=>$model->id_impuesto];
+
+die(var_dump($arrayDatos3));
+                        $tableName3 = 'inmuebles';
+                        $arrayCondition = ['id_impuesto'=>$datos->id_impuesto];
+
+                        if ( $conn->guardarLoteRegistros($conexion, $tableName3,  $arrayCampos3, $arrayDatos3) and $conn->modificarRegistro($conexion, $tableName3,  $arrayDatos3, $arrayConditionInactivacion3) ){
+
+                              $transaccion->commit();  
+                              $conexion->close(); 
+                              $tipoError = 0; 
+                              return true; 
+
+                        } else {
+            
+                              $transaccion->rollBack(); 
+                              $conexion->close(); 
+                              $tipoError = 0; 
+                              return false; 
+
+                        }
+                  //}
+
+
+            //     } else {
+            
+            //         $transaccion->rollBack(); 
+            //         $conexion->close(); 
+            //         $tipoError = 0; 
+            //         return false; 
+
+            //     }
+
+            // }else{ 
+                
+            //     return false;
+            // }   
+            
+          } catch ( Exception $e ) {
+              //echo $e->errorInfo[2];
+          } 
+                       
+     }
+
+    /**
+     * [DatosConfiguracionTiposSolicitudes description] metodo que busca el tipo de solicitud en 
+     * la tabla config_tipos_solicitudes
+     */
+     public function DatosConfiguracionTiposSolicitudes()
+     {
+
+         $buscar = ConfiguracionTiposSolicitudes::find()->where("impuesto=:impuesto", [":impuesto" => 2])
+                                                        ->andwhere("descripcion=:descripcion", [":descripcion" => 'DESINTEGRACION DE PARCELA'])
+                                                        ->asArray()->all();
+
+
+         return $buscar[0]["id_tipo_solicitud"];                                              
+
+     } 
+
+
+    /**
+     * [EnviarCorreo description] Metodo que se encarga de enviar un email al contribuyente 
+     * con el estatus del proceso
+     */
+     public function EnviarCorreo($guardo, $requisitos)
+     {
+         $email = yii::$app->user->identity->login;
+
+         $solicitud = 'Actualizacion de Datos del Inmueble';
+
+         $nro_solicitud = $guardo;
+
+         $enviarEmail = new PlantillaEmail();
+        
+         if ($enviarEmail->plantillaEmailSolicitud($email, $solicitud, $nro_solicitud, $requisitos)){
+
+             return true; 
+         } else { 
+
+             return false; 
+         }
+
+
+     }
+
+}
