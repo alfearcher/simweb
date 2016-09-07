@@ -220,6 +220,7 @@
 							                                     													$real, [
 		                                                                                        							'class' => 'form-control',
 		                                                                                        							'id' => 'id_rubro'. $data->id_rubro,
+		                                                                                        							'style' => '',
 		                                                                                        							//'disabled' => 'disabled',
 									                                                                                    ]);
 								                        }
