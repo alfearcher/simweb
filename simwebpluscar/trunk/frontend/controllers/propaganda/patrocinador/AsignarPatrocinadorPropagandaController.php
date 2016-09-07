@@ -63,7 +63,7 @@ use backend\models\propaganda\Propaganda;
 use backend\models\propaganda\PropagandaForm;
 use frontend\models\propaganda\patrocinador\AsignarPatrocinadorPropagandaForm;
 use frontend\models\propaganda\patrocinador\BusquedaPatrocinadorNaturalForm;
-
+use yii\data\ArrayDataProvider;
 
 /**
  * Site controller
@@ -84,13 +84,13 @@ class AsignarPatrocinadorPropagandaController extends Controller
   
   /**
    * [actionSeleccion description] Metodo que renderiza la vista para la seleccion del año impositivo de la propaganda
- 
+ *
    */
   public function actionSeleccion()
   {
       $idConfig = yii::$app->request->get('id');
       $_SESSION['id'] = $idConfig;
-      $model = New BusquedaPatrocinadorNaturalForm();
+      $model = New AsignarPatrocinadorPropagandaForm();
       $postData = yii::$app->request->post();
           if ( $model->load($postData) && Yii::$app->request->isAjax ){
                 Yii::$app->response->format = Response::FORMAT_JSON;
@@ -189,7 +189,7 @@ class AsignarPatrocinadorPropagandaController extends Controller
 
   /**
    * [busquedaTipoPatrocinador description] Metodo que renderiza la vista para la seleccion de tipo de patrocinador , natural o juridico
-  
+  *
    */
   public function actionBusquedaTipoPatrocinador()
   {
@@ -203,7 +203,7 @@ class AsignarPatrocinadorPropagandaController extends Controller
    */
   public function actionBusquedaNatural()
   {
-    die('llegue');
+   // die('llegue');
 
      
            
@@ -223,20 +223,92 @@ class AsignarPatrocinadorPropagandaController extends Controller
 
                if ($model->validate()){
               
-
-                 
+                  $buscarPatrocinadorNatural = self::buscarPatrocinador($model);
+                      
+                      if ($buscarPatrocinadorNatural == true)
+                      {
+                         $_SESSION['idPatrocinador'] = $buscarPatrocinadorNatural;
+                         return $this->redirect(['mostrar-datos-patrocinador']);
+                      }else{
+                          return MensajeController::actionMensaje(938);
+                      }
 
               }
           }  
          
-          return $this->render('/propaganda/modificarpropaganda/formulario-modificar-propaganda', [
+          return $this->render('/propaganda/patrocinador/busqueda-patrocinador-natural', [
                                                               'model' => $model,
                                                              
                                                              
             ]);
   
   }
+  /**
+   * [buscarPatrocinador description] metodo que instancia una clase donde se encuentra la funcion de busqueda del patrocinador natural
+   * @param  [type] $model [description] modelo que contiene la naturaleza y la cedula del patrocinador
+   *
+   */
+  public function buscarPatrocinador($model)
+  {
 
+     $buscar = new BusquedaPatrocinadorNaturalForm();
+     $buscarPatrocinadorNatural = $buscar->searchContribuyenteNatural($model);
+
+        if($buscarPatrocinadorNatural){
+          return $buscarPatrocinadorNatural[0]->id_contribuyente;
+        }else{
+          return false;
+        }
+  }
+
+  public function actionMostrarDatosPatrocinador()
+  {
+
+
+          $idPatrocinador = $_SESSION['idPatrocinador'];
+          $idPropagandas = $_SESSION['idPropaganda'];
+      
+          $buscar = new BusquedaPatrocinadorNaturalForm();
+
+          $dataProvider = $buscar->busquedaPatrocinador($idPatrocinador);
+          
+        
+          $prueba = [];
+          foreach($idPropagandas as $key=>$value){
+             $buscarPropaganda = $buscar->buscarPropaganda($value);
+
+                if($buscarPropaganda == true){
+                    $prueba[$value] = ['id' => $value, 'Propaganda' => $buscarPropaganda];
+                } 
+
+          }
+
+  
+        
+
+
+        $provider = new ArrayDataProvider([
+            'allModels' => $prueba,
+            
+            'sort' => [
+                 
+            'attributes' => ['id', 'Propaganda'],
+            
+            ],
+          
+            'pagination' => [
+            'pageSize' => 10,
+            ],
+        ]);
+
+                    return $this->render('/propaganda/patrocinador/mostrar-datos-natural', [
+                                                                      'provider' => $provider,
+                                                                     'dataProvider' => $dataProvider,
+                                                                     
+                                                                            ]);   
+
+
+  }
 
   /**
    * [actionBusquedaPatrocinador description] Metodo que realiza la busqueda del contribuyente patrocinador de la propaganda, tanto
