@@ -56,6 +56,7 @@ return [
 	'950' => [Yii::t('backend', 'Invoice uncreditworthy'), 'danger', 'fa fa-times'],
 	'955' => [Yii::t('backend', 'Setup parameter was not defined'), 'danger', 'fa fa-times'],
 	'960' => [Yii::t('backend', 'El contribuyente posee una solicitud para crear sucursal. Hasta que no se procese dicha solicitud no podra crear una para modificacion del rif.'), 'danger', 'fa fa-times'],
+	'961' => [Yii::t('backend', 'Al menos una de las propagandas seleccionadas ya posee un patrocinador activo'), 'danger', 'fa fa-times'],
 	'962' => [Yii::t('backend', 'El contribuyente ya posee una solicitud por inscripcion de actividad economica, dicha solicitud no permite crear la actual'), 'danger', 'fa fa-times'],
 	'964' => [Yii::t('backend', 'Taxpayer doesnt has start date activity'), 'danger', 'fa fa-times'],
 	'970' => [Yii::t('backend', 'No tiene rango ordenazas pendientes.'), 'warning', 'fa fa-info-circle'],
@@ -63,6 +64,7 @@ return [
 	'990' => [Yii::t('backend', 'Register not found'), 'danger', 'fa fa-times'],
 	'991' => [Yii::t('backend', 'You can aquire a property you already own '), 'danger', 'fa fa-exclamation-triangle'],
 	'992' => [Yii::t('backend', 'This car plate doesnt exists, please go to your city hall  '), 'danger', 'fa fa-exclamation-triangle'],
+
 	'993' => [Yii::t('backend', 'The buyer doesnt exists, please go to your city hall  '), 'danger', 'fa fa-exclamation-triangle'],
 	'994' => [Yii::t('backend', 'This oficcer is already enabled'), 'danger', 'fa fa-exclamation-triangle'],
 	'995' => [Yii::t('backend', 'This Stickers lot already exists'), 'danger', 'fa fa-exclamation-triangle'],
