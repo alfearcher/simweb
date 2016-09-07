@@ -54,7 +54,8 @@ use yii\data\ActiveDataProvider;
 use backend\models\propaganda\Propaganda;
 use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 use common\models\contribuyente\ContribuyenteBase;
-
+use common\models\propaganda\patrocinador\SlPropagandasPatrocinadores;
+use common\models\propaganda\patrocinador\PropagandasPatrocinadores;
 
 /**
  * InmueblesSearch represents the model behind the search form about `backend\models\Inmuebles`.
@@ -188,14 +189,15 @@ class BusquedaPatrocinadorNaturalForm extends Model
         $buscar = Propaganda::find()
                             ->where([
                             'id_impuesto' => $idPropaganda,
-                            'inactivo' => 0,
+                            'tipos_propagandas.inactivo' => 0,
 
-                                ])
+                            ])
+                            ->joinWith('tipoPropaganda')
                             ->all();
 
             if ($buscar == true){
                 //die(var_dump($buscar[0]->tipo_propaganda));
-                return $buscar[0]->tipo_propaganda;
+                return $buscar[0]->tipoPropaganda->descripcion;
             }else{
                 return false;
             }
@@ -221,6 +223,41 @@ class BusquedaPatrocinadorNaturalForm extends Model
   
         return $dataProvider;
 
+    }
+
+    public function verificarPatrocinador($idPatrocinador, $idImpuesto)
+    {
+
+        $busqueda = SlPropagandasPatrocinadores::find()
+                                        ->where([
+                                            'id_patrocinador' => $idPatrocinador,
+                                            'id_impuesto' => $idImpuesto,
+                                            'estatus' =>0,
+                                            ])
+                                        ->all();
+            if ($busqueda == true){
+                return true;
+            }else{
+                return false;
+            }
+    }
+
+
+    public function verificarPatrocinadorMaestro($idPatrocinador, $idImpuesto)
+    {
+        $busqueda = PropagandasPatrocinadores::find()
+                                        ->where([
+                                            'id_patrocinador' => $idPatrocinador,
+                                            'id_impuesto' => $idImpuesto,
+                                            'estatus' => 0,
+                                            ])
+                                        ->all();
+
+            if($busqueda == true){
+                return true;
+            }else{
+                return false;
+            }
     }
     
 
