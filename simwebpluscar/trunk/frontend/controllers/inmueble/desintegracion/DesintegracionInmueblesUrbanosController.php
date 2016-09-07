@@ -288,11 +288,11 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
             
                  $tableName2 = 'sl_inmuebles'; 
-
+   
                 if ( $conn->guardarLoteRegistros($conexion, $tableName2, $arrayCampos2,  $arrayDatos2) and $conn->guardarRegistro($conexion, $tableName2,  $arrayDatosInactivar2)){
 
                     if ($nivelAprobacion['nivel_aprobacion'] != 1){
-
+ 
                         $transaccion->commit(); 
                         $conexion->close(); 
                         $tipoError = 0;  
@@ -309,7 +309,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                                             [$datos->id_contribuyente, $model->ano_inicio, $model->direccion1,
                                             $model->medidor1, $model->observacion1, $model->tipo_ejido1, 
                                             $model->casa_edf_qta_dom1, $model->piso_nivel_no_dom1, $model->apto_dom1],
-                                    
+                                       
                                         ]; 
                         $arrayDatosInactivacion3 = [    
                                                     'inactivo' => 1,
@@ -317,12 +317,12 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                                                 ]; 
 
                     
-                       
-                        $arrayConditionInactivacion3 = ['id_impuesto'=>$value['id_impuesto']];
+                   
+                        $arrayConditionInactivacion3 = ['id_impuesto'=>$datos->id_impuesto];
 
             
                         $tableName3 = 'inmuebles';
-                        $arrayCondition = ['id_impuesto'=>$datos->id_impuesto];
+                        //$arrayCondition = ['id_impuesto'=>$datos->id_impuesto];
 
                         if ( $conn->guardarLoteRegistros($conexion, $tableName3,  $arrayCampos3, $arrayDatos3) and $conn->modificarRegistro($conexion, $tableName3,  $arrayDatos3, $arrayConditionInactivacion3) ){
 
