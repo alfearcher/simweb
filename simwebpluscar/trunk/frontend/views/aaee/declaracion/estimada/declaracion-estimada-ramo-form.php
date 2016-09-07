@@ -53,6 +53,7 @@
 	use yii\widgets\DetailView;
 	//use backend\controllers\utilidad\documento\DocumentoRequisitoController;
 	use backend\controllers\menu\MenuController;
+	use yii\widgets\MaskedInput;
 
 	$typeIcon = Icon::FA;
   	$typeLong = 'fa-2x';
@@ -214,11 +215,12 @@
                         									'style'=>'width: 200px;'
                         								],
                         								'value' => function($data) {
-							                                    return Html::input('text', 'id_rubro['. $data->id_rubro . ']', $data->reales, [
-									                                                                                        'class' => 'form-control',
-									                                                                                        'id' => 'id_rubro'. $data->id_rubro,
-									                                                                                        //'style' => 'width: 100%;',
-									                                                                                        //'disabled' => 'disabled',
+                        										$real = $searchDeclaracion->getDefinitivaAnterior($data->ano_impositivo, $data->exigibilidad_periodo, $data->id_rubro),
+							                                    return Html::textInput('id_rubro['. $data->id_rubro . ']',
+							                                     													$real, [
+		                                                                                        							'class' => 'form-control',
+		                                                                                        							'id' => 'id_rubro'. $data->id_rubro,
+		                                                                                        							//'disabled' => 'disabled',
 									                                                                                    ]);
 								                        }
 								                    ],

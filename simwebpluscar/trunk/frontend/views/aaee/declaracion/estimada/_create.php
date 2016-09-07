@@ -50,6 +50,7 @@
 								        			'subCaption' => $subCaption,
 								        			'url' =>$url,
 													'rutaLista' => $rutaLista,
+													'searchDeclaracion' => $searchDeclaracion,
 					    ]) ?>
 </div>
 
