@@ -186,17 +186,17 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                      if($guardo == true){ 
 
-                          $envio = self::EnviarCorreo($guardo, $requisitos);
+                          // $envio = self::EnviarCorreo($guardo, $requisitos);
 
-                          if($envio == true){ 
+                          // if($envio == true){ 
 
                               return MensajeController::actionMensaje(100);
 
-                          } else { 
+                          // } else { 
                             
-                              return MensajeController::actionMensaje(920);
+                          //     return MensajeController::actionMensaje(920);
 
-                          }
+                          // }
 
                       } else {
 
@@ -234,7 +234,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      public function GuardarCambios($model, $datos)
      {
             $buscar = new ParametroSolicitud($_SESSION['id']);
-
+//die(var_dump($datos));
             $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
             
             try {
@@ -318,13 +318,13 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                     
                        
-                        $arrayConditionInactivacion3 = ['id_impuesto'=>$model->id_impuesto];
+                        //$arrayConditionInactivacion3 = ['id_impuesto'=>$model->id_impuesto];
 
-die(var_dump($arrayDatos3));
+
                         $tableName3 = 'inmuebles';
                         $arrayCondition = ['id_impuesto'=>$datos->id_impuesto];
 
-                        if ( $conn->guardarLoteRegistros($conexion, $tableName3,  $arrayCampos3, $arrayDatos3) and $conn->modificarRegistro($conexion, $tableName3,  $arrayDatos3, $arrayConditionInactivacion3) ){
+                        if ( $conn->guardarLoteRegistros($conexion, $tableName3,  $arrayCampos3, $arrayDatos3) and $conn->modificarRegistro($conexion, $tableName3,  $arrayDatosInactivacion3, $arrayCondition) ){
 
                               $transaccion->commit();  
                               $conexion->close(); 

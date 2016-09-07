@@ -270,9 +270,9 @@
             $arregloDatos = self::atributosUpDateProcesarSolicitud($this->_evento);
 
             foreach($modelInscripcion as $key => $value){
-            $camposModel[$key] = $value->toArray();
-            //die(var_dump($_SESSION['camposModel']).' llego a foreach adentro.............');
-            }
+                $camposModel[$key] = $value->toArray();
+            
+            } 
 //die(var_dump($camposModel[2]).' salio del foreach.............');
             // Se define el arreglo para el where conditon del update.
             $arregloCondicion['nro_solicitud'] = isset($camposModel['nro_solicitud']) ? $camposModel['nro_solicitud'] : null;
@@ -312,7 +312,7 @@
                                     
                                      ]; 
 
-//die(var_dump($arrayDatosMaster));
+
                     $resultInsert = $this->_conexion->modificarRegistro($this->_conn, $tableNameMaster, $arregloDatosMasterInactivacion, $arregloCondicionMasterInactivacion);
                     $resultLoteInsert = $this->_conexion->guardarLoteRegistros($this->_conn, $tableNameMaster, $arrayCamposMaster, $arrayDatosMaster);
                     $result = $this->_conexion->modificarRegistro($this->_conn, $tableName, $arregloDatos, $arregloCondicion);
