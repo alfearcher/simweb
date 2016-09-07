@@ -310,7 +310,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                                             $model->medidor1, $model->observacion1, $model->tipo_ejido1, 
                                             $model->casa_edf_qta_dom1, $model->piso_nivel_no_dom1, $model->apto_dom1],
                                     
-                                        ]; 
+                                        ];  
                         $arrayDatosInactivacion3 = [    
                                                     'inactivo' => 1,
                                             
