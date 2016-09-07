@@ -339,6 +339,62 @@
 
 
 	    /**
+	     * Metodo que determina el identificador que corresponde segun el año impositivo
+	     * para el rubro. Se utilizar el $idRubro para buscar los valores de ese registro
+	     * y obtener el valor del rubro, este valor (rubro) se convina con el $añoImpositivo
+	     * para realizar una busqueda añoImpositivo-rubro. Esta busqueda debe resultar en un
+	     * registro donde el identificador del mismo es el valor buscado como idRubro del año
+	     * impositivo.
+	     * @param  long $idRubro identificador del rubro.
+	     * @param  inetger $añoImpositivo año impositivo del catalogo de rubro que quiere consultar
+	     * el $idRubro no deberia corresponder al del año impositivo.
+	     * @return long retonra un identificador del rubro para el año impositivo $añoimpositivo.
+	     */
+	    public function getIdRubro($idRubro, $añoImpositivo)
+	    {
+	    	$idRubroEncontrado = 0;
+	    	$findModelRubro = Rubro::findOne($idRubro);
+	    	if ( isset($findModelRubro) ) {
+	    		$rubro = $findModelRubro->rubro;
+	    		$findModelNew = Rubro::find()->where('ano_impositivo =:ano_impositivo',
+	    													[':ano_impositivo' => $añoImpositivo])
+	    									 ->andWhere('rubro =:rubro', [':rubro' => $rubro])
+	    									 ->andWhere('inactivo =:inactivo',['inactivo' => 0])
+	    									 ->one();
+	    		if ( isset($findModelNew) ) {
+	    			$idRubroEncontrado = $findModelNew->id_rubro;
+	    		}
+	    	}
+	    	return $idRubroEncontrado;
+	    }
+
+
+
+
+	    /***/
+	    public function getDefinitivaAnterior($añoImpositivo, $periodo, $idRubro)
+	    {
+	    	$añoImpositivoAnterior = $anoImpositivo;
+	    	$montoDefinitiva = 0;
+	    	$idImpuesto = self::getIdImpuestoSegunAnoImpositivo($añoImpositivoAnterior);
+	    	$idRubroEncontrado = self::getIdRubro($idRubro, $añoImpositivoAnterior);
+	    	$findModel = self::findRubrosRegistrados($añoImpositivoAnterior, $periodo);
+	    	if ( $findModel !== null ) {
+	    		$modelRamo = $findModel->all();
+	    		foreach ( $modelRamo as $ramo ) {
+	    			if ( $ramo['id_rubro'] == $idRubroEncontrado ) {
+	    				$montoDefinitiva = $ramos['reales'];
+	    			}
+	    		}
+	    	}
+
+	    	return $montoDefinitiva;
+	    }
+
+
+
+
+	    /**
 	     * Metodo que retorna una lista arreglo donde el indice del arreglo es el
 	     * identificador de la entidad "act-econ" y el valor del elemento es el
 	     * año impositivo. Esto permitira crear un combo-lista.
