@@ -19,9 +19,10 @@ use yii\widgets\ActiveForm;
 
 
  <?php $form = ActiveForm::begin([
+
             'id' => 'id-chk-seleccionar-calcomania',
             'method' => 'post',
-            'action' => ['/vehiculo/calcomania/administrarcalcomaniafuncionario/administrar-calcomania-funcionario/verificar-calcomania'],
+            'action' => ['/propaganda/patrocinador/asignar-patrocinador-propaganda/asignar-patrocinador-natural'],
             'enableClientValidation' => true,
             'enableAjaxValidation' => true,
             'enableClientScript' => true,
@@ -30,17 +31,23 @@ use yii\widgets\ActiveForm;
 
 ?>
     <div class="row">
-    <div class="col-sm-3">
+    <div class="col-sm-4">
      <h2><?= Html::encode('Datos del Patrocinador') ?></h2>
+
+
     <?= GridView::widget([
+
         'dataProvider' => $dataProvider,
+        'summary' => '',
       
         'columns' => [
+
           
         'naturaleza',
             'cedula',
              'nombres',
              'apellidos',
+             'id_contribuyente',
 
         ],
     ]); ?>
@@ -50,13 +57,14 @@ use yii\widgets\ActiveForm;
 </div>
 </div>
 
-<div class="inmuebles-index" style="width: 300px;">
+<div class="inmuebles-index" style="width: 500px;">
 
     <h2><?= Html::encode('Datos Propagandas') ?></h2>
     <?php
 
     echo GridView::widget([
         'dataProvider' => $provider,
+        'summary' => '',
 
         'columns' => [
            // ['class' => 'yii\grid\SerialColumn'],
