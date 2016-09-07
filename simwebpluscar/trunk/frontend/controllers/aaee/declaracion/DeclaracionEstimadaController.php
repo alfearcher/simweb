@@ -271,6 +271,7 @@
 																	'listaAño' => $listaAño,
 																	'url' =>$url,
 																	'rutaLista' => $rutaLista,
+																	'searchDeclaracion' => $searchDeclaracion,
 																]);
 
 		  		} else {
