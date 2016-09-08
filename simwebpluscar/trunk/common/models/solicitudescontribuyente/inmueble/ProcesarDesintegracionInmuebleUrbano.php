@@ -236,7 +236,7 @@
             $modelInscripcion = self::findActualizacionInmuebleUrbano();
             if ( $modelInscripcion !== null ) {
                 if ( $modelInscripcion[0]['id_contribuyente'] == $this->_model->id_contribuyente ) {
-                    $result = self::updateSolicitudActualizacionDatos($modelInscripcion);
+                    $result = self::updateSolicitudDesintegracion($modelInscripcion);
                 } else {
                     self::setErrors(Yii::t('backend', 'Error in the ID of taxpayer'));
                 }
@@ -310,7 +310,7 @@
                                             $camposModel[1]['medidor'], $camposModel[1]['observacion'], $camposModel[1]['tipo_ejido'], 
                                             $camposModel[1]['casa_edf_qta_dom'], $camposModel[1]['piso_nivel_no_dom'], $camposModel[1]['apto_dom']],
                                     
-                                     ];  
+                                     ]; 
 
 
                     $resultInsert = $this->_conexion->modificarRegistro($this->_conn, $tableNameMaster, $arregloDatosMasterInactivacion, $arregloCondicionMasterInactivacion);
