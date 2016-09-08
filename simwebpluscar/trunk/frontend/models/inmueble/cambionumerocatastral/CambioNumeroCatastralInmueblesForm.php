@@ -1,4 +1,4 @@
-<?php
+'<?php
 /**
  *  @copyright © by ASIS CONSULTORES 2012 - 2016
  *  All rights reserved - SIMWebPLUS
@@ -21,13 +21,13 @@
  */
 
  /**    
- *  @file CambioOtrosDatosInmueblesForm.php
+ *  @file CambioNumeroCatastralInmueblesForm.php
  *  
  *  @author Alvaro Jose Fernandez Archer
  * 
  *  @date 08-03-2016
  * 
- *  @class CambioOtrosDatosInmueblesForm
+ *  @class CambioNumeroCatastralInmueblesForm
  *  @brief Clase que permite validar cada uno de los datos del formulario de cambio de otros datos de inmuebles 
  *  urbanos, se establecen las reglas para los datos a ingresar y se le asigna el nombre de las etiquetas 
  *  de los campos. 
