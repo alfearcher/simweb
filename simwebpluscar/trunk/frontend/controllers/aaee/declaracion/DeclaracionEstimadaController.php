@@ -246,6 +246,7 @@
 			  																	'caption' => $caption,
 			  																	'opciones' =>$opciones,
 			  																	'subCaption' => $subCaption,
+
 					  					]);
 							}
 						}
