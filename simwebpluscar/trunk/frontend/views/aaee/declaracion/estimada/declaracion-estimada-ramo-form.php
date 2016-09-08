@@ -215,7 +215,7 @@
                         									'style'=>'width: 200px;'
                         								],
                         								'value' => function($data) {
-                        										$real = $searchDeclaracion->getDefinitivaAnterior($data->ano_impositivo, $data->exigibilidad_periodo, $data->id_rubro),
+                        										$real = $searchDeclaracion->getDefinitivaAnterior($data->ano_impositivo, $data->exigibilidad_periodo, $data->id_rubro);
 							                                    return Html::textInput('id_rubro['. $data->id_rubro . ']',
 							                                     													$real, [
 		                                                                                        							'class' => 'form-control',
