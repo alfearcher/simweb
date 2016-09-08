@@ -154,7 +154,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
          
          if ( isset(Yii::$app->user->identity->id_contribuyente) ) {
          //Creamos la instancia con el model de validación
-         $model = new CambioPropiedadHorizontalInmueblesForm();
+         $model = new CambioPropiedadHorizontalInmueblesForm(); 
 
          $datos = $_SESSION['datos'];
     
