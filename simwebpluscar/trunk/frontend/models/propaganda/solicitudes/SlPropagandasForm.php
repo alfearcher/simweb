@@ -56,8 +56,8 @@ use frontend\models\vehiculo\solicitudes\SlVehiculos;
 use frontend\models\vehiculo\solicitudes\SlVehiculosForm;
 use backend\models\propaganda\Propaganda;
 use frontend\models\vehiculo\solicitudes\SlDesincorporacionesVehiculo;
-
-
+use common\models\propaganda\patrocinador\SlPropagandasPatrocinadores;
+use backend\models\TiposPropaganda;
 
 
 
@@ -82,6 +82,8 @@ class SlPropagandasForm extends SlPropagandas
         $model = Clase::findOne($uso);
         return $model->descripcion;
         }
+
+   
         /**
          * Metodo que permite determinar si el contribuyente posee una solicitud pendiente (estatus = 0)
          * o aprobada (estatus = 1), del mismo tipo, por ser una solicitud de inscripcion
@@ -170,6 +172,22 @@ class SlPropagandasForm extends SlPropagandas
                                                     //die(var_dump($modelFinf));
             return isset($modelFind) ? $modelFind : null;
         }
+        /**
+        * Metodo que realiza una busqueda del detalle de la solicitud (model)
+         * "patrocinadores-propagandas".
+         * @param  Long $nroSolicitud identificador de la entidad "solicitudes-contribuyente".
+         * @return Active Record.
+         */
+        public function findPatrocinadorPropaganda($nroSolicitud)
+        {
+            $modelFind = SlPropagandasPatrocinadores::find()->where('nro_solicitud =:nro_solicitud', [':nro_solicitud' => $nroSolicitud])
+                                                    ->andWhere('id_contribuyente =:id_contribuyente', [':id_contribuyente' => $this->id_contribuyente])
+                                                    ->one();
+                                                    //die(var_dump($modelFinf));
+            return isset($modelFind) ? $modelFind : null;
+        }
+
+
 
 
 
