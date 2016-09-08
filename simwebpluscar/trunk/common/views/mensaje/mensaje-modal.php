@@ -24,7 +24,7 @@
 
 ?>
 
-<div class="row" style="width: 60%; alignment: center;">
+<div class="row" style="width: 60%; alignment: center; margin-top:15px; margin-left: 15px;">
 	<?php
 	 	Alert::begin([
 	    	'options' => [

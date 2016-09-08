@@ -62,7 +62,8 @@
     use backend\models\configuracion\nivelaprobacion\NivelAprobacion;
     use backend\models\utilidad\causanegacionsolicitud\CausaNegacionSolicitud;
     use backend\models\solicitud\estatus\EstatusSolicitud;
-   
+   use backend\models\TiposPropaganda;
+   use backend\
 
 
 
@@ -84,7 +85,11 @@
           return 'sl_propagandas_patrocinadores';
         }
 
-
+        public function getDescripcionTipoPropaganda()
+        {   
+              return $this->hasOne(Propaganda::className(), ['tipo_propaganda' => 'tipo_propaganda']);
+        }
+      
 
   
     
