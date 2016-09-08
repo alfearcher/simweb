@@ -119,6 +119,15 @@
 	    													  ->one();
 	    	return isset($modelFind) ? $modelFind : null;
 	    } 
+	    public function findDesincorporacion($nroSolicitud)
+	    {
+	    	$modelFind = SlInmueblesUrbanosForm::find()->where('nro_solicitud =:nro_solicitud', [':nro_solicitud' => $nroSolicitud])
+	    													  ->andWhere('id_contribuyente =:id_contribuyente', [':id_contribuyente' => $this->id_contribuyente])
+	    													  ->all();
+	    													  
+	    	return isset($modelFind) ? $modelFind : null; 
+	    } 
+
 	    public function findDesintegracion($nroSolicitud)
 	    {
 	    	$modelFind = SlInmueblesUrbanosForm::find()->where('nro_solicitud =:nro_solicitud', [':nro_solicitud' => $nroSolicitud])

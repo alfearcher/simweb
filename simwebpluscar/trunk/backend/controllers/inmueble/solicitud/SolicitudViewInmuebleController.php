@@ -143,6 +143,10 @@
 				} elseif ( $this->model->tipo_solicitud == 31 ) {
 
 					return self::actionMostrarSolicitudModificarAvaluoInmueble();
+				
+				} elseif ( $this->model->tipo_solicitud == 65 ) {
+
+					return self::actionMostrarSolicitudDesincorporacionInmueble();
 				}
 			}
 
@@ -396,12 +400,12 @@
 			return false;
 		}
 
-		// tipo solicitud 100
+		// tipo solicitud 65
 		private function actionMostrarSolicitudDesincorporacionInmueble()
 		{
 			if ( $this->model->nivel_aprobacion == 2 ) {  
 					$modelSearch = New SlInmueblesUrbanosSearch($this->model->id_contribuyente);
-					$model = $modelSearch->findActualizacionDatos($this->model->nro_solicitud);
+					$model = $modelSearch->findDesincorporacion($this->model->nro_solicitud);
 
 					
 
