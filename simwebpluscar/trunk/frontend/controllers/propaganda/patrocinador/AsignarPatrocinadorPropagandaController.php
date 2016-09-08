@@ -63,6 +63,7 @@ use backend\models\propaganda\Propaganda;
 use backend\models\propaganda\PropagandaForm;
 use frontend\models\propaganda\patrocinador\AsignarPatrocinadorPropagandaForm;
 use frontend\models\propaganda\patrocinador\BusquedaPatrocinadorNaturalForm;
+use frontend\models\propaganda\patrocinador\BusquedaPatrocinadorJuridicoForm;
 use yii\data\ArrayDataProvider;
 use frontend\models\vehiculo\registrar\RegistrarVehiculoForm;
 /**
@@ -223,12 +224,12 @@ class AsignarPatrocinadorPropagandaController extends Controller
 
                if ($model->validate()){
               
-                  $buscarPatrocinadorNatural = self::buscarPatrocinador($model);
+                  $buscarPatrocinadorNatural = self::buscarPatrocinadorNatural($model);
                       
                       if ($buscarPatrocinadorNatural == true)
                       {
                          $_SESSION['idPatrocinador'] = $buscarPatrocinadorNatural;
-                         return $this->redirect(['mostrar-datos-patrocinador']);
+                         return $this->redirect(['mostrar-datos-patrocinador-natural']);
                       }else{
                           return MensajeController::actionMensaje(938);
                       }
@@ -243,12 +244,57 @@ class AsignarPatrocinadorPropagandaController extends Controller
             ]);
   
   }
+
+
+    public function actionBusquedaJuridico()
+  {
+   // die('llegue');
+
+     
+           
+            $postData = yii::$app->request->post();
+
+            $model = New BusquedaPatrocinadorJuridicoForm();
+
+            
+            if ( $model->load($postData) && Yii::$app->request->isAjax ){
+                  Yii::$app->response->format = Response::FORMAT_JSON;
+                  return ActiveForm::validate($model);
+            }
+           
+            if ( $model->load($postData) ) {
+           
+            
+
+               if ($model->validate()){
+                //die(var_dump($model).'hola');
+              
+                  $buscarPatrocinadorJuridico = self::buscarPatrocinadorJuridico($model);
+                      
+                      if ($buscarPatrocinadorJuridico == true)
+                      {
+                         $_SESSION['idPatrocinador'] = $buscarPatrocinadorJuridico;
+                         return $this->redirect(['mostrar-datos-patrocinador-juridico']);
+                      }else{
+                          return MensajeController::actionMensaje(938);
+                      }
+
+              }
+          }  
+         
+          return $this->render('/propaganda/patrocinador/busqueda-patrocinador-juridico', [
+                                                              'model' => $model,
+                                                             
+                                                             
+            ]);
+  
+  }
   /**
    * [buscarPatrocinador description] metodo que instancia una clase donde se encuentra la funcion de busqueda del patrocinador natural
    * @param  [type] $model [description] modelo que contiene la naturaleza y la cedula del patrocinador
    *
    */
-  public function buscarPatrocinador($model)
+  public function buscarPatrocinadorNatural($model)
   {
 
      $buscar = new BusquedaPatrocinadorNaturalForm();
@@ -261,7 +307,19 @@ class AsignarPatrocinadorPropagandaController extends Controller
         }
   }
 
-  public function actionMostrarDatosPatrocinador()
+  public function buscarPatrocinadorJuridico($model)
+  {
+      $buscar = new BusquedaPatrocinadorJuridicoForm();
+      $buscarPatrocinadorJuridico = $buscar->searchContribuyenteJuridico($model);
+
+          if($buscarPatrocinadorJuridico){
+            return $buscarPatrocinadorJuridico[0]->id_contribuyente;
+          }else{
+            return false;
+          }
+  }
+
+  public function actionMostrarDatosPatrocinadorNatural()
   {
 
 
@@ -271,8 +329,8 @@ class AsignarPatrocinadorPropagandaController extends Controller
           $buscar = new BusquedaPatrocinadorNaturalForm();
 
           $dataProvider = $buscar->busquedaPatrocinador($idPatrocinador);
+          //die(var_dump($model).'holavale');
           
-        
           $prueba = [];
           foreach($idPropagandas as $key=>$value){
              $buscarPropaganda = $buscar->buscarPropaganda($value);
@@ -301,9 +359,58 @@ class AsignarPatrocinadorPropagandaController extends Controller
             ],
         ]);
 
-                    return $this->render('/propaganda/patrocinador/mostrar-datos-natural', [
+                    return $this->render('/propaganda/patrocinador/mostrar-datos-patrocinador', [
                                                                       'provider' => $provider,
-                                                                     'dataProvider' => $dataProvider,
+                                                                      'dataProvider' => $dataProvider,
+                                                                     
+                                                                            ]);   
+
+
+  }
+
+    public function actionMostrarDatosPatrocinadorJuridico()
+  {
+
+
+          $idPatrocinador = $_SESSION['idPatrocinador'];
+          $idPropagandas = $_SESSION['idPropaganda'];
+      
+          $buscar = new BusquedaPatrocinadorJuridicoForm();
+
+          $dataProvider = $buscar->busquedaPatrocinador($idPatrocinador);
+          //die(var_dump($model).'holavale');
+          
+          $prueba = [];
+          foreach($idPropagandas as $key=>$value){
+             $buscarPropaganda = $buscar->buscarPropaganda($value);
+
+                if($buscarPropaganda == true){
+                    $prueba[$value] = ['id' => $value, 'Propaganda' => $buscarPropaganda];
+                } 
+
+          }
+
+  
+        
+
+
+        $provider = new ArrayDataProvider([
+            'allModels' => $prueba,
+            
+            'sort' => [
+                 
+            'attributes' => ['id', 'Propaganda'],
+            
+            ],
+          
+            'pagination' => [
+            'pageSize' => 10,
+            ],
+        ]);
+
+                    return $this->render('/propaganda/patrocinador/mostrar-datos-patrocinador-juridico', [
+                                                                      'provider' => $provider,
+                                                                      'dataProvider' => $dataProvider,
                                                                      
                                                                             ]);   
 
@@ -313,7 +420,7 @@ class AsignarPatrocinadorPropagandaController extends Controller
    * [actionAsignarPatrocinadorNatural description] metodo que verifica si ya las propagandas seleccionadas poseen patrocinador activo y en caso de que no lo posean, realiza el guardado
    
    */
-  public function actionAsignarPatrocinadorNatural()
+  public function actionAsignarPatrocinador()
   {
       $todoBien = false;
       $idPatrocinador = $_SESSION['idPatrocinador'];
@@ -367,25 +474,13 @@ class AsignarPatrocinadorPropagandaController extends Controller
 
   }
 
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  /**
+   * [buscarNumeroSolicitud description] Metodo que realiza la busqueda del numero de solicitud en la tabla solicitudes contribuyente
+   * @param  [type] $conn     [description] parametro de conexion
+   * @param  [type] $conexion [description] parametro de conexion
+   * @param  [type] $value    [description] ids de los impuestos
+   * @return [type]           [description] retorna el numero de solicitud en caso que todo guarde correctamente
+   */
   public function buscarNumeroSolicitud($conn, $conexion, $value)
   {
       //die('hola');  
@@ -453,7 +548,14 @@ class AsignarPatrocinadorPropagandaController extends Controller
     }
 
 
-
+    /**
+     * [guardarSolicitudPatrocinador description] Metodo que realiza el guardado de los datos en la tabla sl_propagandas_patrocinadores
+     * @param  [type] $conn         [description] parametro de conexion
+     * @param  [type] $conexion     [description] parametro de conexion
+     * @param  [type] $idSolicitud  [description] nro de solicitud
+     * @param  [type] $idPropaganda [description] id de las propagandas
+     * @return [type]               [description] retorna true o false 
+     */
     public function guardarSolicitudPatrocinador($conn, $conexion , $idSolicitud, $idPropaganda)
     {
     
@@ -525,6 +627,13 @@ class AsignarPatrocinadorPropagandaController extends Controller
 
     }
 
+    /**
+     * [modificarPropagandaMaestro description] metodo que inserta los datos en la tabla maestro, propagandas_patrocinadores, en caso que la solicitud sea de aprobacion directa
+     * @param  [type] $conn     [description] parametro de conexion
+     * @param  [type] $conexion [description] parametro de conexion
+     * @param  [type] $value    [description] id de las propagandas
+     * @return [type]           [description] retorna true o false
+     */
     public function modificarPropagandaMaestro($conn, $conexion, $value)
     {
       
@@ -569,6 +678,11 @@ class AsignarPatrocinadorPropagandaController extends Controller
 
     }
 
+    /**
+     * [beginSave description] metodo padre que redirecciona a otros metodos los cuales realizan los guardados en las tablas respectivas
+     * @param  [type] $var [description] variable tipo string que acciona el guardado
+     * @return [type]      [description] retorna true o false y realiza el envio de correo electronico al contribuyente
+     */
     public function beginSave($var)
     {
       
@@ -596,7 +710,7 @@ class AsignarPatrocinadorPropagandaController extends Controller
 
           if ($var == "buscarGuardar"){
           
-
+                foreach($idPropagandas as $key => $value){
              
                 $idSolicitud = 0;
                 $idSolicitud = self::buscarNumeroSolicitud($conn, $conexion,$value);
@@ -604,7 +718,7 @@ class AsignarPatrocinadorPropagandaController extends Controller
 
                  if ($idSolicitud > 0){
                
-                  foreach($idPropagandas as $key => $value){
+                  
 
                     $guardar = self::guardarSolicitudPatrocinador($conn,$conexion,$idSolicitud , $value);
 
@@ -626,13 +740,13 @@ class AsignarPatrocinadorPropagandaController extends Controller
 
                             }
                         }
-
+                     }else{
+                $todoBien == false;
+                break;
               
               }
              }
-             }else{
-                $todoBien == false;
-                break;
+            
              
               
 
