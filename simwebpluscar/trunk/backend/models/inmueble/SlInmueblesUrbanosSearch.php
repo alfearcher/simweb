@@ -135,7 +135,7 @@
 	    													  ->all();
 	    													  
 	    	return isset($modelFind) ? $modelFind : null; 
-	    } 
+	    }  
 
 	  
   

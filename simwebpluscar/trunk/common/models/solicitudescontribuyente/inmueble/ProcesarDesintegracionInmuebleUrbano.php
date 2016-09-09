@@ -239,7 +239,7 @@
                     $result = self::updateSolicitudDesintegracion($modelInscripcion);
                 } else {
                     self::setErrors(Yii::t('backend', 'Error in the ID of taxpayer'));
-                }
+                } 
             }
 
             return $result;
