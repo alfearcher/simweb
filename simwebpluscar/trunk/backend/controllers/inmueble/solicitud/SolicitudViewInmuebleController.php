@@ -407,7 +407,7 @@
 					$modelSearch = New SlInmueblesUrbanosSearch($this->model->id_contribuyente);
 					$model = $modelSearch->findDesincorporacion($this->model->nro_solicitud);
 
-					
+					//die(var_dump($model));
 
 					return $this->render('@backend/views/inmueble/desincorporacion-inmuebles-urbanos/view-solicitud', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),

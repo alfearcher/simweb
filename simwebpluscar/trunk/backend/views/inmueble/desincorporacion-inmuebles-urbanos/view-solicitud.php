@@ -47,6 +47,8 @@
 	use yii\widgets\ActiveForm;
 	use yii\web\View;
 	use yii\widgets\DetailView;
+
+
 ?>
 
 <div class="row" style="width: 70%;">
@@ -54,15 +56,15 @@
 		<div class="row">
 			<h3><?= Html::encode($caption) ?></h3>
 				<?= DetailView::widget([
-						'model' => $model,
+						'model' => $model[0],
+						
 		    			'attributes' => [
-		    				'nro_solicitud',
+		    				
 		    				'id_contribuyente',
-		    				'id_inmueble',
-		    				'direccion',
-							'casa_edf_qta_dom',
-		    				'apto_dom',
-		    				'tlf_hab',
+		    				'id_impuesto',
+		    				'inactivo',
+							'fecha_creacion',
+		    				
 		    				
 
 
