@@ -83,6 +83,14 @@ class SlPropagandasForm extends SlPropagandas
         return $model->descripcion;
         }
 
+
+          public function getDescripcionTipoPropaganda($tipo)
+        {
+
+        $model = TiposPropaganda::findOne($tipo);
+        return $model->descripcion;
+        }
+
    
         /**
          * Metodo que permite determinar si el contribuyente posee una solicitud pendiente (estatus = 0)
