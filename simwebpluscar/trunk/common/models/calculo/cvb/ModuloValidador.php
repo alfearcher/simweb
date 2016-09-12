@@ -63,15 +63,19 @@
 		 * acumulado. A este valor acumulado se le calculara el modulo 11.
 		 * Las cifras con montos decimales deben contener 2 digitos para la representacion
 		 * decimal.
-		 * @param  float | integer $valorConvertir guarismo al cual de le calculara el
-		 * digito validador.
+		 * @param string $valorConvertir cadena de digitos al cual se le
+		 * calculara el digito modulo 11. El valor solo debe contener numeros.
 		 * @return integer retorna un entero que representa el digito validador, sino
 		 * retornara null.
 		 */
 		public function getCodigoModuloOnce($valorConvertir)
 		{
 			$modulo11 = null;
-			if ( is_float($valorConvertir) || is_integer($valorConvertir) ) {
+			// if ( !ctype_digit($valorConvertir) ) {
+			// 	$valorConvertir = self::filtrarCaracteresFloat($valorConvertir);
+			// }
+
+			//if ( ctype_digit($valorConvertir) ) {
 				$digito = [];
 				$cadenaDigitos = '';
 
@@ -122,9 +126,44 @@
 				} elseif ( $modulo11 == 11 ) {
 					$modulo11 = 0;
 				}
-			}
-
+			//}
 			return $modulo11;
+		}
+
+
+
+		/**
+		 * Metodo que recibe un valor float y lo convierte en una cadena continua de
+		 * numeros, sin las comas o puntos.
+		 * @param  float $valorFloat valor decimal o float que se transformara.
+		 * @return long retorna una cadena de puros numeros sin signos.
+		 */
+		public function filtrarCaracteresFloat($valorFloat)
+		{
+			$result = null;
+			$cadenaDigito = str_replace(".", "", $valorFloat);
+			$cadenaDigito = str_replace(",", "", $valorFloat);
+
+			return $cadenaDigito;
+
+			// Se obtiene la parte entera y la parte decimal.
+			// $digito = explode(".", $valorFloat);
+			// $parteEntera = $digito[0];
+			// $parteDecimal = isset($digito[1]) ? $digito[1] : null;
+
+			// Se determina si el valor a convertir tiene parte decimal. Sino solo se tomara la
+			// parte entera.
+			// if ( $parteDecimal !== null ) {
+			// 	// Para garantizar que se toman dos decimales.
+			// 	// Se coloca cero al final de la parte decimal.
+			// 	if (strlen($parteDecimal) == 1 ) {
+			// 		$parteDecimal .= "0";
+			// 	}
+
+			// 	$cadenaDigitos = $parteEntera . $parteDecimal;
+			// } else {
+			// 	$cadenaDigitos = $parteEntera;
+			// }
 		}
 
 
