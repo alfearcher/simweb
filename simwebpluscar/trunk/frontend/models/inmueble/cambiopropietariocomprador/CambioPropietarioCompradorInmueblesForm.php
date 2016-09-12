@@ -21,13 +21,13 @@
  */
 
  /**    
- *  @file CambioPropiedadHorizontalInmueblesForm.php
+ *  @file CambioPropietarioCompradorInmueblesForm.php
  *  
  *  @author Alvaro Jose Fernandez Archer
  * 
  *  @date 08-03-2016
  * 
- *  @class CambioPropiedadHorizontalInmueblesForm
+ *  @class CambioPropietarioCompradorInmueblesForm
  *  @brief Clase que permite validar cada uno de los datos del formulario de cambio de otros datos de inmuebles 
  *  urbanos, se establecen las reglas para los datos a ingresar y se le asigna el nombre de las etiquetas 
  *  de los campos. 
@@ -89,7 +89,7 @@
  * @property string $unidad_catastro
  */
 
-namespace frontend\models\inmueble\cambiopropietariovendedor;
+namespace frontend\models\inmueble\cambiopropietariocomprador;
 
 use Yii;
 use backend\models\inmueble\InmueblesConsulta;
@@ -97,7 +97,7 @@ use common\conexion\ConexionController;
 use common\models\contribuyente\ContribuyenteBase;
 
 
-class CambioPropietarioVendedorInmueblesForm extends \yii\db\ActiveRecord
+class CambioPropietarioCompradorInmueblesForm extends \yii\db\ActiveRecord
 {
      
     public $validacion;

@@ -21,13 +21,13 @@
  */
 
  /**    
- *  @file CambioPropietarioVendedorInmueblesUrbanosController.php
+ *  @file CambioPropietarioCompradorInmueblesUrbanosController.php
  *  
  *  @author Alvaro Jose Fernandez Archer
  * 
  *  @date 08-03-2016
  * 
- *  @class CambioPropietarioVendedorInmueblesUrbanosController
+ *  @class CambioPropietarioCompradorInmueblesUrbanosController
  *  @brief Clase que permite controlar la solicitud del registro o inscripcion de inmuebles urbanos
  *  en el lado del contribuyente,
  *
@@ -48,7 +48,7 @@
  *  @inherits
  *  
  */
-namespace frontend\controllers\inmueble\cambiopropietariovendedor;
+namespace frontend\controllers\inmueble\cambiopropietariocomprador;
 
 use Yii;
 use yii\filters\AccessControl;
@@ -60,7 +60,8 @@ use yii\web\Response;
 use common\models\Users;
 use common\models\User;
 use yii\web\Session;
-use frontend\models\inmueble\cambiopropietariovendedor\CambioPropietarioVendedorInmueblesForm;
+use frontend\models\inmueble\cambiopropietariocomprador\CambioPropietarioCompradorInmueblesForm;
+use frontend\models\inmueble\cambiopropietariocomprador\BuscarVendedorForm;
 use frontend\models\inmueble\InmueblesSearch;
 use frontend\models\inmueble\InmueblesConsulta;
 
@@ -84,7 +85,7 @@ session_start();
 /*********************************************************************************************************
  * InscripcionInmueblesUrbanosController implements the actions for InscripcionInmueblesUrbanosForm model.
  *********************************************************************************************************/
-class CambioPropietarioVendedorInmueblesUrbanosController extends Controller
+class CambioPropietarioCompradorInmueblesUrbanosController extends Controller
 {
    
     public $conn;
@@ -95,11 +96,68 @@ class CambioPropietarioVendedorInmueblesUrbanosController extends Controller
 tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
 */
+
+    public function actionBuscarVendedor()
+    {
+        $idConfig = yii::$app->request->get('id');
+
+        $_SESSION['id'] = $idConfig;
+        $model = new BuscarVendedorForm();
+
+
+        if ( isset( $_SESSION['idContribuyente'] ) ) {
+
+           if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax){ 
+
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($model); 
+            }
+
+            if ($model->load(Yii::$app->request->post())){
+
+                if($model->validate()){ 
+                    
+                    $idVendedor = $_SESSION['idVendedor'];
+                    return $this->redirect(['cambio-propietario-comprador-inmuebles-urbanos/index']);
+                    //return Url::toRoute(['menu/vertical']);
+
+                }else{ 
+                
+                    $model->getErrors(); 
+                }
+            }
+        return $this->render('buscar-contribuyente', [
+            'model' => $model,
+        ]); 
+        }  else {
+                    echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
+        }
+    }
+
+    public function actionIndex()
+    {
+        $idConfig = yii::$app->request->get('id');
+die(var_dump(Yii::$app->request->queryParams));
+         $_SESSION['id'] = $idConfig;
+
+        if ( isset( $_SESSION['idContribuyente'] ) ) {
+        $searchModel = new InmueblesSearch();
+        $dataProvider = $searchModel->searchComprador(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]); 
+        }  else {
+                    echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
+        }
+    }
+
       /**
      * Lists all Inmuebles models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndexComprador()
     {
         $idConfig = yii::$app->request->get('id');
 
@@ -149,12 +207,12 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      *Metodo para crear las cuentas de usuarios de los funcionarios
      *@return model 
      **/
-     public function actionCambioPropietarioVendedorInmuebles()
+     public function actionCambioPropietarioCompradorInmuebles()
      { 
          
          if ( isset(Yii::$app->user->identity->id_contribuyente) ) {
          //Creamos la instancia con el model de validación
-         $model = new CambioPropietarioVendedorInmueblesForm(); 
+         $model = new CambioPropietarioCompradorInmueblesForm(); 
 
          $datos = $_SESSION['datos'];
     
@@ -215,7 +273,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                    $model->getErrors(); 
               }
          }
-              return $this->render('cambio-propietario-vendedor-inmuebles', ['model' => $model, 'datos'=>$datos]);  
+              return $this->render('cambio-propietario-comprador-inmuebles', ['model' => $model, 'datos'=>$datos]);  
 
         }  else {
                     echo "No hay Contribuyente Registrado!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['site/login'])."'>";
@@ -364,7 +422,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      {
          $email = yii::$app->user->identity->login;
 
-         $solicitud = 'CAMBIO DE PROPIETARIO (VENDEDOR)';
+         $solicitud = 'CAMBIO DE PROPIETARIO (COMPRADOR)';
 
          $nro_solicitud = $guardo;
 
