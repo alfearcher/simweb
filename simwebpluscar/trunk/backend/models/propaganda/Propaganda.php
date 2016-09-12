@@ -167,7 +167,7 @@ class Propaganda extends \yii\db\ActiveRecord
 
     /**
      * [getTipoPropaganda description] Metodo que realiza la busqueda de la descripcion del tipo de propaganda en base a su indice
-  
+  *
      * @return [type]       [description] devuelve la descripcion de la propaganda encontrada
      */
     public function getTipoPropaganda()
