@@ -418,7 +418,7 @@ class AsignarPatrocinadorPropagandaController extends Controller
   }
   /**
    * [actionAsignarPatrocinadorNatural description] metodo que verifica si ya las propagandas seleccionadas poseen patrocinador activo y en caso de que no lo posean, realiza el guardado
-   
+   *
    */
   public function actionAsignarPatrocinador()
   {
@@ -462,6 +462,14 @@ class AsignarPatrocinadorPropagandaController extends Controller
           }else{
 
             $guardar = self::beginSave("buscarGuardar");
+
+                if($guardar == true){
+
+                    return MensajeController::actionMensaje(100);
+                }else{
+
+                    return MensajeController::actionMensaje(920);
+                }
           }
 
 
@@ -483,9 +491,10 @@ class AsignarPatrocinadorPropagandaController extends Controller
    */
   public function buscarNumeroSolicitud($conn, $conexion, $value)
   {
+    //die(var_dump($value));
       //die('hola');  
       $buscar = new ParametroSolicitud($_SESSION['id']);
-
+      $idImpuesto = $value;
       
 
         $buscar->getParametroSolicitud(["tipo_solicitud", "impuesto", "nivel_aprobacion"]);
@@ -509,9 +518,9 @@ class AsignarPatrocinadorPropagandaController extends Controller
      
       $arregloDatos['id_config_solicitud'] = $_SESSION['id'];
 
-      $arregloDatos['id_impuesto'] = $value;
+      $arregloDatos['id_impuesto'] = $idImpuesto;
 
-      //die($arregloDatos['id_impuesto']);
+     // die($arregloDatos['id_impuesto'].'hpña');
 
       $arregloDatos['tipo_solicitud'] = $resultado['tipo_solicitud'];
 
