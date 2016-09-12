@@ -57,8 +57,9 @@
 	use backend\controllers\mensaje\MensajeController;
 	use common\models\calculo\cvb\CodigoValidadorBancario;
 	use backend\models\recibo\deposito\Deposito;
-	use yii\data\ArrayDataProvider;
-
+	use yii\data\ActiveDataProvider;
+	use arturoliveira\ExcelView;
+	use moonland\phpexcel\Excel;
 
 
 	session_start();		// Iniciando session
@@ -91,18 +92,167 @@
 
 
 
+		public function actionExport()
+		{
+			$findModel = self::findDeposito()->all();
+			Excel::widget([
+    			'models' => $findModel,
+    			//'format' => 'Excel2003XML',
+    			'mode' => 'export', //default value as 'export'
+    			'columns' => [
+    				[
+    					'attribute' => 'idAlcadia',
+    					'value' => function() {
+    						return Yii::$app->ente->getEnte();
+    					},
+    				],
+    				[
+    					'attribute' => 'idContribuyente',
+    					'value' => function() {
+    						return 0;
+    					},
+    				],
+    				[
+    					'attribute' => 'codigoControlContribuyente',
+    					'value' => function() {
+    						return 0;
+    					},
+    				],
+    				[
+    					'attribute' => 'longitudIdContribuyente',
+    					'value' => function() {
+    						return 0;
+    					},
+    				],
+    				'recibo',
+    				[
+    					'attribute' => 'codigoControlRecibo',
+    					'value' => function($model) {
+    						return $model->getCodigoControl($model->recibo);
+    					},
+    				],
+    				[
+    					'attribute' => 'longRecibo',
+    					'value' => function($model) {
+    						return strlen($model->recibo);
+    					},
+    				],
+    				'monto',
+    				[
+    					'attribute' => 'codigoControlMonto',
+    					'value' => function($model) {
+    						return $model->getCodigoControl($model->monto);
+    					},
+    				],
+    				[
+    					'attribute' => 'longMonto',
+    					'value' => function($model) {
+    						$m = str_replace('.', '', $model->monto);
+    						return strlen($m);
+    					},
+    				],
+    				'fecha',
+    				[
+    					'attribute' => 'codigoControlFecha',
+    					'value' => function($model) {
+    						$f = date('d-m-Y', strtotime($model->fecha));
+    						$f1 = str_replace('-', '', $f);
+    						return $model->getCodigoControl($f1);
+    					},
+    				],
+    				[
+    					'attribute' => 'longFecha',
+    					'value' => function($model) {
+    						$f = str_replace('-', '', $model->fecha);
+    						return strlen($f);
+    					},
+    				],
+    				[
+    					'attribute' => 'CVB',
+    					'value' => function($model) {
+    						$idAlcadia = Yii::$app->ente->getEnte();
+    						$cvbIdAlcaldia = '0'.$idAlcadia;
+    						$cvbContribuyente = '00';
+    						$cvbRecibo = $model->getCodigoControl($model->recibo) . strlen($model->recibo);
+    						$m = str_replace('.', '', $model->monto);
+    						$cvbMonto = $model->getCodigoControl($model->monto) . strlen($m);
+    						$f = date('d-m-Y', strtotime($model->fecha));
+    						$f1 = str_replace('-', '', $f);
+    						$cvbFecha = $model->getCodigoControl($f1) . strlen($f1);
+    						return $cvbIdAlcaldia . '-' . $cvbContribuyente . $cvbRecibo . '-' . $cvbMonto . $cvbFecha;
+    					},
+    				],
+    				// [
+    				// 	'attribute' => 'total',
+    				// 	'value' => function() {
+    				// 		return 0;
+    				// 	},
+    				// ]
+    			], //without header working, because the header will be get label from attribute label.
+    			'headers' => [
+    				// 'idAlcadia' => 'Id Alcaldia',
+    				// 'idContribuyente' => 'Id Conribuyente',
+    				// 'codigoControlContribuyente' => 'Cod. Control Id. Cont',
+    				// 'longitudIdContribuyente' => 'Long. Id. Cont.',
+    				// 'codigoControlRecibo' => 'Cod. Control Recibo',
+    				// 'longRecibo' => 'Long. Recibo',
+
+		    		// 'recibo' => 'Header Column 1',
+		    		// 'monto' => 'Header Column 2',
+		    		// 'fecha' => 'Header Column 3',
+		    		// 'total' => 'Header Column 4'
+		    	],
+			]);
+		}
+
+
+
+		public function actionExport1()
+		{
+			$dataProvider = self::getDataProvider();
+			//$findModel = self::findDeposito();
+			 ExcelView::widget([
+            'dataProvider' => $dataProvider,
+            //'filterModel' => $searchModel,
+            'fullExportType'=> 'xlsx', //can change to html,xls,csv and so on
+            'grid_mode' => 'export',
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
+                [
+                    'header' => 'IdAlcaldia',
+                    'format' => 'text',
+                    'value' => 0,
+                ],
+                // [
+                // 	'attribute' => 'id_contribuyente',
+                // 	'header' => 'IdContribuyente',
+                // 	'format' => 'text',
+                // 	'value' => function() {
+                // 		return 0;
+                // 	},
+                // ],
+                'recibo',
+                'monto',
+                'fecha',
+              ],
+        ]);
+		}
+
+
+
 
 		/***/
 		public function findDeposito()
 		{
+			//$findModel = Deposito::find()->limit(5);
 			$findModel = Deposito::find()->where('monto >:monto',
 													[':monto' => 0])
 										 ->andWhere('estatus =:estatus',
-										 			[':estatus' => 1]);
-										 ->andWhere('recibo >:recibo',
-										 			[':recibo' => 55000])
-										 ->limit(5)
-										 ->all();
+										 			[':estatus' => 1])
+										 ->andWhere(['BETWEEN', 'recibo', 50000, 50015])
+										 ->orderBy(['monto' => SORT_DESC]);
+										 //->limit(5);
+										//->all();
 
 			return isset($findModel) ? $findModel : null;
 		}
@@ -113,11 +263,11 @@
 		public function getDataProvider()
 		{
 			$query = self::findDeposito();
-
-			$dataprovider = New ActiveDataProvider([
+// die(var_dump($query->all()));
+			$dataProvider = New ActiveDataProvider([
 							'query' => $query,
 				]);
-
+			$query->all();
 			return $dataProvider;
 		}
 
