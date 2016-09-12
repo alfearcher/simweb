@@ -65,17 +65,52 @@
 		    				
 
 
-		    				'id_impuesto',
+		    			
 							
 
 					       	[
-					        'label' => 'Tipo Propaganda',
+		                   	'label' => 'Datos Patrocinador',
+		                    
+		                     'value' => $model[0]['tipo_naturaleza'] == 1 ? $model[0]['razon_social'] : $model[0]['nombres'].' '.$model[0]['apellidos'],
+		                     ],
 
-					        'value' => $model->tipoPropaganda->descripcion, //$search->getDescripcionUsoVehiculo($model->uso_vehiculo),//function($model){
-					            
-					            
-					     
-					        ],
+		                	[
+		                   	'label' => 'Rif',
+		                    
+		                     'value' => $model[0]['naturaleza'].'-'.$model[0]['cedula'].'-'.$model[0]['tipo'],
+		                     ],
+
+
+		                         	[
+		                   	'label' => 'ID Propaganda',
+		                    
+		                     'value' => $model[0]['id_impuesto'],
+		                     ],
+
+
+		                    [
+		                   	'label' => 'Tipo Propaganda',
+		                    
+		                     'value' => SlPropagandasForm::getDescripcionTipoPropaganda($model[0]['tipo_propaganda']),
+		                     ],
+
+		                       [
+		                   	'label' => 'Usuario',
+		                    
+		                     'value' => $model[0]['usuario'],
+		                     ],
+
+
+		                         [
+		                   	'label' => 'Fecha Hora',
+		                    
+		                     'value' => $model[0]['fecha_hora'],
+		                     ],
+
+
+
+
+
 
 					       
 
