@@ -63,7 +63,7 @@
     use backend\models\utilidad\causanegacionsolicitud\CausaNegacionSolicitud;
     use backend\models\solicitud\estatus\EstatusSolicitud;
    use backend\models\TiposPropaganda;
-   use backend\
+  
 
 
 
