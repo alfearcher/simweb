@@ -21,13 +21,13 @@
  */
 
  /**
- *	@file RubroController.php
+ *	@file CodigoValidadorBancarioController.php
  *
  *	@author Jose Rafael Perez Teran
  *
  *	@date 29-08-2016
  *
- *  @class RubroController
+ *  @class CodigoValidadorBancarioController
  *	@brief Clase RubroController, aprobacion de rubros
  *
  *
