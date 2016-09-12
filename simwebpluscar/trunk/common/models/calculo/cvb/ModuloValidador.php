@@ -134,7 +134,7 @@
 		/***/
 		public function getPesoAgregar($posicion, $indiceModulo = 11)
 		{
-			$indicePeso = Yii::$app->ente->getEnte();
+			$indicePeso = Yii::$app->ente->getEnte();	// Identificacion de la Alcaldia.
 
 			// El digito mas significativo a la dercha.
 			$primerIndice = (int)substr($indicePeso, -1);
