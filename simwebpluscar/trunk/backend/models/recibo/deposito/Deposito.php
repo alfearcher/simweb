@@ -46,6 +46,7 @@
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 	use backend\models\configuracion\tasasolicitud\TasaMultaSolicitud;
+	use common\models\calculo\cvb\ModuloValidador;
 
 
 	/**
@@ -53,6 +54,9 @@
 	*/
 	class Deposito extends ActiveRecord
 	{
+
+		protected $id_contribuyente;
+
 
 		/**
 		 *	Metodo que retorna el nombre de la base de datos donde se tiene la conexion actual.
@@ -74,6 +78,12 @@
 			return 'depositos';
 		}
 
+
+		/***/
+		public function getCodigoControl($valorConvertir)
+		{
+			return ModuloValidador::getCodigoModuloOnce($valorConvertir);
+		}
 
 
 	}
