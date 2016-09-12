@@ -150,6 +150,8 @@
 
 		        						['label' => 'Asignar Patrocinador', 'url' => ['propaganda/patrocinador/asignar-patrocinador-propaganda/seleccion', 'id' => 102]],
 
+										['label' => 'Anular Patrocinador', 'url' => ['propaganda/patrocinador/anular-patrocinador-propaganda/seleccion', 'id' => 109]],		        						
+
 		        						['label' => 'Catalogo', 'url' => ['propaganda/catalogo/catalogo-propaganda/vista-catalogo-propaganda']],
 
 		        						//['label' => 'Solvencia', 'url' => '#'],
