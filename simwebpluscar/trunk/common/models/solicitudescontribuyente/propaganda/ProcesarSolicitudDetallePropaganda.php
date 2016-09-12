@@ -149,11 +149,20 @@
 
                
 
-                }
+                } elseif ( $this->_model->tipo_solicitud == 72 ) {
+
+                    $procesar = New ProcesarAsignacionPatrocinadorPropaganda($this->_model,
+                                                                  $this->_evento,
+                                                                  $this->_conn,
+                                                                  $this->_conexion);
+
+                    $result = $procesar->procesarSolicitud();
 
             }
             return $result;
         }
+
+     }
 
 
 
