@@ -59,7 +59,7 @@
 	use backend\controllers\MenuController;
 	use backend\models\vehiculo\VehiculoSearch;
 	use frontend\models\propaganda\solicitudes\SlPropagandasForm;
-
+	use yii\db\Query;
 	//session_start();		// Iniciando session
 
 
@@ -267,19 +267,42 @@
 			if ( $this->model->nivel_aprobacion == 2 ) {
 					$modelSearch = New SlPropagandasForm($this->model->id_contribuyente);
 					$model = $modelSearch->findPatrocinadorPropaganda($this->model->nro_solicitud);
+					$modelRelacion = self::busquedaRelacionSlPropagandaPatrocinador($this->model->id_impuesto, $this->id_patrocinador);
+					die(var_dump($modelRelacion));
 
 	//die(var_dump($model));
 
 
 					return $this->render('/propaganda/solicitudes/patrocinador/view-solicitud-asignar-patrocinador-propaganda', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
-													'model' => $model,
+													'model' => $modelRelacion,
 													
 
 						]);
 			}
 
 			return false;
+		}
+
+		public function busquedaRelacionSlPropagandaPatrocinador($idPropaganda, $idPatrocinador)
+		{
+			die(var_dump($idPropaganda).'y'. $idPatrocinador);
+
+
+				$query = New Query();
+
+		
+
+			$model = $query->select('*')
+						 ->from('propagandas')
+					     ->Join('INNER JOIN', 'sl_propagandas_patrocinadores', 'sl_propagandas_patrocinadores.id_impuesto =  propagandas.id_impuesto'  )
+					     ->Join('INNER JOIN', 'contribuyentes', 'contribuyentes.id_contribuyente = sl_propagandas_patrocinadores.id_patrocinador')
+					     ->where(['sl_propagandas_patrocinadores.id_impuesto' => $idPropaganda])
+					     ->andWhere(['contribuyentes.id_contribuyente' => $idPatrocinador])
+					     
+					     ->all();
+
+			return $model;
 		}
 
 
