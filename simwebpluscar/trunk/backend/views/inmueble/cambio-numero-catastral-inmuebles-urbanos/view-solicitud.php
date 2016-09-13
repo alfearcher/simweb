@@ -57,6 +57,7 @@
 						'model' => $model,
 		    			'attributes' => [
 		    				'nro_solicitud',
+		    				'id_impuesto',
 		    				'id_contribuyente',
 		    				'estado_catastro',
 							'municipio_catastro',

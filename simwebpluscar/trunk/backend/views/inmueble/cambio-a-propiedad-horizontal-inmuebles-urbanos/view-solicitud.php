@@ -57,6 +57,7 @@
 						'model' => $model,
 		    			'attributes' => [
 		    				'nro_solicitud',
+		    				'id_impuesto',
 		    				'id_contribuyente',
 		    				'propiedad_horizontal',
 		    				'parcela_catastro',
