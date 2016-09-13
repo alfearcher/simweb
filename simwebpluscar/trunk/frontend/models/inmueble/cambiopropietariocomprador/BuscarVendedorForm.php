@@ -215,7 +215,7 @@ class BuscarVendedorForm extends \yii\db\ActiveRecord
     {
   
           //Buscar el contribuyente en la tabla 
-          if($this->tipoBuscar==2){
+          if($this->tipo_naturaleza==1){
               $table = ContribuyenteBase::find()
                                     ->where("naturaleza=:naturalezaBuscar", [":naturalezaBuscar" => $this->naturalezaBuscar])
                                     ->andwhere("cedula=:cedulaBuscar", [":cedulaBuscar" => $this->cedulaBuscar])

@@ -118,7 +118,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                 if($model->validate()){ 
                     
                     $idVendedor = $_SESSION['idVendedor'];
-                    return $this->redirect(['cambio-propietario-comprador-inmuebles-urbanos/index']);
+                    return $this->redirect(['index']);
                     //return Url::toRoute(['menu/vertical']);
 
                 }else{ 
@@ -136,14 +136,14 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
     public function actionIndex()
     {
-        $idConfig = yii::$app->request->get('id');
-die(var_dump(Yii::$app->request->queryParams));
-         $_SESSION['id'] = $idConfig;
+        //$idConfig = yii::$app->request->get('id');
+
+         //$_SESSION['id'] = $idConfig;
 
         if ( isset( $_SESSION['idContribuyente'] ) ) {
         $searchModel = new InmueblesSearch();
         $dataProvider = $searchModel->searchComprador(Yii::$app->request->queryParams);
-
+//die(var_dump($dataProvider));
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -294,13 +294,13 @@ die(var_dump(Yii::$app->request->queryParams));
             $buscar = new ParametroSolicitud($_SESSION['id']);
 
             $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
-            
+
             try {
             $tableName1 = 'solicitudes_contribuyente'; 
 
             $tipoSolicitud = self::DatosConfiguracionTiposSolicitudes();
 
-            $arrayDatos1 = [  'id_contribuyente' => $datos->id_contribuyente,
+            $arrayDatos1 = [  'id_contribuyente' => $_SESSION['idContribuyente'],
                               'id_config_solicitud' => $_SESSION['id'],
                               'impuesto' => 2,
                               'id_impuesto' => $datos->id_impuesto,
@@ -330,14 +330,14 @@ die(var_dump(Yii::$app->request->queryParams));
                                     'id_impuesto' => $datos->id_impuesto,
                                     'impuesto' => 2,
                                     'id_propietario' => $datos->id_contribuyente,
-                                    'id_comprador' => $_SESSION['idComprador'],
+                                    'id_comprador' => $_SESSION['idContribuyente'],
                                     'usuario' => yii::$app->user->identity->login,
                                     'fecha_hora' => date('Y-m-d h:i:s'),
                                     'estatus' => 0,
                                     
                                 ]; 
 
-           
+     
                  $tableName2 = 'sl_cambios_propietarios'; 
 
                 if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){
@@ -351,7 +351,7 @@ die(var_dump(Yii::$app->request->queryParams));
 
                     } else {
 
-                        $arrayDatos3 = [    'id_contribuyente' => $_SESSION['idComprador'],
+                        $arrayDatos3 = [    'id_contribuyente' => $_SESSION['idContribuyente'],
                                                                                 
                                         ]; 
 

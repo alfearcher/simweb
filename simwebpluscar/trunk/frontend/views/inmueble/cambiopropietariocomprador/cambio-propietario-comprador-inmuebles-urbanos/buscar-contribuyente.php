@@ -74,19 +74,7 @@ function bloquea() {
                     
                                                     
 <!-- Datos del comprador  -->         
-                    <div class="row">
-                        
-                           
 
-                                                        <div class="col-sm-2">
-                                                        <?= Yii::t('backend', 'Year over:') ?>
-                                                        </div> 
-
-
-                                                        <div class="col-sm-2" align='left'> 
-                                                        <?= $form->field($model, 'ano_traspaso')->textInput()->label(false) ?> 
-                                                        </div> 
-                    </div>
                     <div class="row">
                                                         <div class="col-sm-2">
                                                         <?= Yii::t('backend', 'type nature (BUYER):') ?>

@@ -484,7 +484,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      {
          $email = yii::$app->user->identity->login;
 
-         $solicitud = 'Actualizacion de Datos del Inmueble';
+         $solicitud = 'Desincorporacion (DUPLICADO Y/O NO EXISTENTE)';
 
          $nro_solicitud = $guardo; 
 

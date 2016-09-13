@@ -384,7 +384,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      {
          $email = yii::$app->user->identity->login;
 
-         $solicitud = 'Actualizacion de Datos del Inmueble';
+         $solicitud = 'Cambio a Propiedad Horizontal';
 
          $nro_solicitud = $guardo;
 

@@ -382,7 +382,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      {
          $email = yii::$app->user->identity->login;
 
-         $solicitud = 'Actualizacion de Datos del Inmueble';
+         $solicitud = 'Cambio de Número Catastral';
 
          $nro_solicitud = $guardo;
 

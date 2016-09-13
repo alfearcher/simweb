@@ -120,8 +120,8 @@ class CambioPropietarioCompradorInmueblesForm extends \yii\db\ActiveRecord
         return [
             [['id_contribuyente', 'tipo_naturaleza' ], 'integer','message' => Yii::t('backend', 'only integers')],
             [['parcela_catastro', 'subparcela_catastro', 'unidad_catastro' ], 'integer','message' => Yii::t('backend', 'only integers')],
-            [['tipoBuscar'],'required', 'when'=> function($model){ return $model->tipo_naturaleza == 1; }, 'message' => Yii::t('backend', 'Required field')],
-            [['naturalezaBuscar','cedulaBuscar','tipo_naturaleza'],'required', 'message' => Yii::t('backend', 'Required field')],
+            //[['tipoBuscar'],'required', 'when'=> function($model){ return $model->tipo_naturaleza == 1; }, 'message' => Yii::t('backend', 'Required field')],
+            //[['naturalezaBuscar','cedulaBuscar','tipo_naturaleza'],'required', 'message' => Yii::t('backend', 'Required field')],
             [['direccion', 'observacion'], 'string', 'max' => 255,'message' => Yii::t('backend', 'Only 255 character')],
             
             //[['ano_traspaso'], 'inmuebleSolvente','when'=>function($model){ return $model->operacion==2;}],

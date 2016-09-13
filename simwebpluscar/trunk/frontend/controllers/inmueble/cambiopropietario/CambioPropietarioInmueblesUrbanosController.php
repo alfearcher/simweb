@@ -547,7 +547,7 @@ class CambioPropietarioInmueblesUrbanosController extends Controller
      {
          $email = yii::$app->user->identity->login;
 
-         $solicitud = 'Actualizacion de Datos del Inmueble';
+         $solicitud = 'Cambio de Propietario';
 
          $nro_solicitud = $guardo; 
 

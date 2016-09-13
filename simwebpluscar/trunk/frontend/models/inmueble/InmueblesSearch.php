@@ -175,11 +175,11 @@ class InmueblesSearch extends InmueblesConsulta
         $query = InmueblesConsulta::find()->where(['id_contribuyente' => $_SESSION['idVendedor']])
                                             ->andWhere(['inactivo' => 0]);
         //$query = InmueblesUrbanosForm::find();
-        
+ 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-
+//die(var_dump($dataProvider).'llego');
         $this->load($params);
 
         if (!$this->validate()) {
