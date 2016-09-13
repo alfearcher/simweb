@@ -121,14 +121,15 @@
 		                [
 		                    'label' => Yii::t('backend', 'd.c.monto'),
 		                    'value' => function($model) {
-    										return $model->getCodigoControl($model->monto);
+    										return $model->getCodigoControl((float)$model->monto);
 										},
 		                ],
 		                [
 		                    'label' => Yii::t('backend', 'lon. monto'),
 		                    'value' => function($model) {
-		                    				$long = str_replace(".", "", (string)$model->monto);
-    										return strlen($long);
+		                    				$long = PruebaModuloOnceController::getDigitoConcatenar($model->monto);
+		                    				//$long = str_replace(".", "", (string)$model->monto);
+    										return $long;
 										},
 		                ],
 		                [
@@ -164,8 +165,8 @@
 		                		$cvbRecibo = $model->getCodigoControl((int)$model->recibo);
 		                		$cvbRecibo = $cvbRecibo . strlen($model->recibo);
 		                		$cvbMonto = $model->getCodigoControl($model->monto);
-		                		$long = str_replace(".", "", (string)$model->monto);
-		                		$cvbMonto = $cvbMonto . strlen($long);
+		                		$long = PruebaModuloOnceController::getDigitoConcatenar($model->monto);
+		                		$cvbMonto = $cvbMonto . $long;
 		                		$f = date('d-m-Y', strtotime($model->fecha));
 		                    	$f1 = str_replace('-', '', $f);
 		                		$cvbFecha = $model->getCodigoControl($f1) . strlen($f1);
