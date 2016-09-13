@@ -49,6 +49,7 @@
 	use yii\widgets\DetailView;
 	use yii\grid\GridView;
 	use arturoliveira\ExcelView;
+	use backend\controllers\cvb\PruebaModuloOnceController;
 ?>
 
 <div class="row">
@@ -74,26 +75,29 @@
 		                ],
 						[
 		                    'label' => Yii::t('backend', 'Id Contr'),
-		                    'value' => function($data) {
-    										return 0;
+		                    'value' => function($model) {
+    										return PruebaModuloOnceController::findContribuyenteSegunRecibo($model->recibo);
 										},
 		                ],
 		                [
 		                    'label' => Yii::t('backend', 'd.c.id Cont'),
 		                    'value' => function($model) {
-    										return '0';
+		                    				$id = PruebaModuloOnceController::findContribuyenteSegunRecibo($model->recibo);
+    										return $model->getCodigoControl((int)$id);
 										},
 		                ],
 		                [
 		                    'label' => Yii::t('backend', 'lon. id. Cont'),
 		                    'value' => function($model) {
-    										return '0';
+		                    				$id = PruebaModuloOnceController::findContribuyenteSegunRecibo($model->recibo);
+		                    				$long = PruebaModuloOnceController::getDigitoConcatenar($id);
+    										return $long;
 										},
 		                ],
 						[
 		                    'label' => Yii::t('backend', 'recibo'),
-		                    'value' => function($data) {
-    										return $data->recibo;
+		                    'value' => function($model) {
+    										return $model->recibo;
 										},
 		                ],
 		                [
@@ -110,8 +114,8 @@
 		                ],
 		                [
 		                    'label' => Yii::t('backend', 'monto a pagar'),
-		                    'value' => function($data) {
-    										return $data->monto;
+		                    'value' => function($model) {
+    										return $model->monto;
 										},
 		                ],
 		                [
@@ -129,8 +133,8 @@
 		                ],
 		                [
 		                    'label' => Yii::t('backend', 'fecha'),
-		                    'value' => function($data) {
-    										return $data->fecha;
+		                    'value' => function($model) {
+    										return $model->fecha;
 										},
 		                ],
 		                [
@@ -153,7 +157,10 @@
 		                	'label' => 'CVB',
 		                	'value' => function($model) {
 		                		$idAlcaldia = '0'.Yii::$app->ente->getEnte();
-		                		$cbvID = '00';
+		                		$id = PruebaModuloOnceController::findContribuyenteSegunRecibo($model->recibo);
+		                    	$long = PruebaModuloOnceController::getDigitoConcatenar($id);
+		                		$cbvID = $model->getCodigoControl((int)$id);
+		                		$cbvID = $cbvID . $long;
 		                		$cvbRecibo = $model->getCodigoControl((int)$model->recibo);
 		                		$cvbRecibo = $cvbRecibo . strlen($model->recibo);
 		                		$cvbMonto = $model->getCodigoControl($model->monto);
