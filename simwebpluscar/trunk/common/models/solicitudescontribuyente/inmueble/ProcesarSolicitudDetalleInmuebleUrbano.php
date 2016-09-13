@@ -56,6 +56,8 @@
     use common\models\solicitudescontribuyente\inmueble\ProcesarCambioPropiedadHorizontalInmuebleUrbano;
     use common\models\solicitudescontribuyente\inmueble\ProcesarDesincorporacionInmuebleUrbano;
     use common\models\solicitudescontribuyente\inmueble\ProcesarDesintegracionInmuebleUrbano;
+    use common\models\solicitudescontribuyente\inmueble\ProcesarCambioPropietarioVendedorInmuebleUrbano;
+    use common\models\solicitudescontribuyente\inmueble\ProcesarCambioPropietarioCompradorInmuebleUrbano;
 
 
  
@@ -142,7 +144,12 @@
                     $result = $procesar->procesarSolicitud(); 
 
                 } elseif ( $this->_model->tipo_solicitud == 26 ) {
-                    //Cambio Propietario
+                    //Cambio Propietario Vendedor
+                    $procesar = New ProcesarCambioPropietarioVendedorInmuebleUrbano($this->_model,
+                                                                          $this->_evento,
+                                                                          $this->_conn,
+                                                                          $this->_conexion);
+                    $result = $procesar->procesarSolicitud();
 
                 } elseif ( $this->_model->tipo_solicitud == 27 ) {
                     //Integracion
@@ -177,6 +184,14 @@
                 } elseif ( $this->_model->tipo_solicitud == 65 ) {
                     //Desincorporacion
                     $procesar = New ProcesarDesincorporacionInmuebleUrbano($this->_model,
+                                                                          $this->_evento,
+                                                                          $this->_conn,
+                                                                          $this->_conexion);
+                    $result = $procesar->procesarSolicitud();  
+
+                } elseif ( $this->_model->tipo_solicitud == 67 ) {
+                    //Cambio Propietario Comprador
+                    $procesar = New ProcesarCambioPropietarioCompradorInmuebleUrbano($this->_model,
                                                                           $this->_evento,
                                                                           $this->_conn,
                                                                           $this->_conexion);
