@@ -134,7 +134,7 @@
 		                [
 		                    'label' => Yii::t('backend', 'fecha'),
 		                    'value' => function($model) {
-    										return $model->fecha;
+    										return $fecha = date('d-m-Y', strtotime($model->fecha));
 										},
 		                ],
 		                [
