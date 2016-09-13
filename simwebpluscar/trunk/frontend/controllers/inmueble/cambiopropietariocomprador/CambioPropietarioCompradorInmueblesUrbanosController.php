@@ -143,7 +143,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
         if ( isset( $_SESSION['idContribuyente'] ) ) {
         $searchModel = new InmueblesSearch();
         $dataProvider = $searchModel->searchComprador(Yii::$app->request->queryParams);
-//die(var_dump($dataProvider));
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
