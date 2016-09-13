@@ -99,7 +99,10 @@
 			$findModel = self::findDeposito()->all();
 			Excel::widget([
     			'models' => $findModel,
-    			//'format' => 'Excel2003XML',
+    			'format' => 'Excel2007',
+                'properties' => [
+
+                ],
     			'mode' => 'export', //default value as 'export'
     			'columns' => [
     				[
@@ -226,6 +229,7 @@
 			//$findModel = self::findDeposito();
 			 ExcelView::widget([
             'dataProvider' => $dataProvider,
+            'fileName' => 'exports_'.date('Y-m-d H:i:s'),
             //'filterModel' => $searchModel,
             'fullExportType'=> 'xlsx', //can change to html,xls,csv and so on
             'grid_mode' => 'export',
@@ -262,7 +266,8 @@
 													[':monto' => 10000000])
 										 ->andWhere('estatus =:estatus',
 										 			[':estatus' => 1])
-										 //->andWhere(['BETWEEN', 'recibo', 90000, 90075])
+										 //->andWhere(['BETWEEN', 'recibo', 663792, 663792])
+                                         //->andWhere(['BETWEEN', 'recibo', 500000, 663792])
 										 ->orderBy(['monto' => SORT_DESC]);
 										 //->limit(5);
 										//->all();
@@ -293,7 +298,7 @@
 			$findModel = DepositoPlanilla::find()->where($tabla.'.recibo =:recibo',
 												 		[':recibo' => $recibo])
 												 ->andWhere('estatus =:estatus',
-												 		['estatus' => 1])
+												 		[':estatus' => 1])
 												 ->joinWith('pago', true,'INNER JOIN')
 												 ->asArray()
 												 ->one();
