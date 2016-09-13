@@ -155,7 +155,13 @@
     						return strlen($m);
     					},
     				],
-    				'fecha',
+    				[
+    					'attribute' => 'fecha',
+    					'value' => function($model) {
+    						$f = date('d-m-Y', strtotime($model->fecha));
+    						return $f;
+    					},
+    				],
     				[
     					'attribute' => 'codigoControlFecha',
     					'value' => function($model) {
@@ -181,8 +187,8 @@
 		                	$cvbContribuyente = $model->getCodigoControl((int)$id);
 		                	$cvbContribuyente = $cvbContribuyente . $long;
     						$cvbRecibo = $model->getCodigoControl($model->recibo) . strlen($model->recibo);
-    						$m = str_replace('.', '', $model->monto);
-    						$cvbMonto = $model->getCodigoControl($model->monto) . strlen($m);
+    						$m = self::getDigitoConcatenar($model->monto);
+    						$cvbMonto = $model->getCodigoControl($model->monto) . $m;
     						$f = date('d-m-Y', strtotime($model->fecha));
     						$f1 = str_replace('-', '', $f);
     						$cvbFecha = $model->getCodigoControl($f1) . strlen($f1);
@@ -253,10 +259,10 @@
 		{
 			//$findModel = Deposito::find()->limit(5);
 			$findModel = Deposito::find()->where('monto >:monto',
-													[':monto' => 0])
+													[':monto' => 10000000])
 										 ->andWhere('estatus =:estatus',
 										 			[':estatus' => 1])
-										 ->andWhere(['BETWEEN', 'recibo', 50000, 50075])
+										 //->andWhere(['BETWEEN', 'recibo', 90000, 90075])
 										 ->orderBy(['monto' => SORT_DESC]);
 										 //->limit(5);
 										//->all();
@@ -306,6 +312,7 @@
 				$filtrado = str_replace('.', '', $filtrado);
 
 				$long = (int)strlen($filtrado);
+
 				if ( $long > 9 ) {
 					// Digito mas significativo a la derecha
 					return (int)substr($long, -1);
