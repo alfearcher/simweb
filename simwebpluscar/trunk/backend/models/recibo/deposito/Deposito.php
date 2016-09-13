@@ -45,8 +45,8 @@
  	use Yii;
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
-	use backend\models\configuracion\tasasolicitud\TasaMultaSolicitud;
 	use common\models\calculo\cvb\ModuloValidador;
+	use backend\models\recibo\depositoplanilla\DepositoPlanilla;
 
 
 	/**
@@ -54,8 +54,6 @@
 	*/
 	class Deposito extends ActiveRecord
 	{
-
-		protected $id_contribuyente;
 
 
 		/**
@@ -83,6 +81,13 @@
 		public function getCodigoControl($valorConvertir)
 		{
 			return ModuloValidador::getCodigoModuloOnce($valorConvertir);
+		}
+
+
+		/***/
+		public function getDepositoPlanilla()
+		{
+			return $this->hasMany(Deposito::className(), ['recibo' => 'recibo']);
 		}
 
 
