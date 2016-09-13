@@ -293,10 +293,10 @@
 
 		// tipo solicitud 26
 		private function actionMostrarSolicitudCambioPropietarioVendedorInmueble()
-		{
-			if ( $this->model->nivel_aprobacion == 2 ) {
+		{ 
+			if ( $this->model->nivel_aprobacion == 2 ) { 
 					$modelSearch = New SlInmueblesUrbanosSearch($this->model->id_contribuyente);
-					$model = $modelSearch->findActualizacionDatos($this->model->nro_solicitud);
+					$model = $modelSearch->findVendedor($this->model->nro_solicitud);
 
 					
 

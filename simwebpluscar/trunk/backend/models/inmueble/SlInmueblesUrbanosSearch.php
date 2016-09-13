@@ -109,6 +109,7 @@
 	    	$modelFind = SlInmueblesUrbanosForm::find()->where('nro_solicitud =:nro_solicitud', [':nro_solicitud' => $nroSolicitud])
 	    													  ->andWhere('id_contribuyente =:id_contribuyente', [':id_contribuyente' => $this->id_contribuyente])
 	    													  ->one();
+
 	    	return isset($modelFind) ? $modelFind : null; 
 	    }
 
@@ -117,6 +118,7 @@
 	    	$modelFind = SlInmueblesUrbanosForm::find()->where('nro_solicitud =:nro_solicitud', [':nro_solicitud' => $nroSolicitud])
 	    													  ->andWhere('id_contribuyente =:id_contribuyente', [':id_contribuyente' => $this->id_contribuyente])
 	    													  ->one();
+	    											
 	    	return isset($modelFind) ? $modelFind : null;
 	    } 
 	    public function findDesincorporacion($nroSolicitud)
@@ -135,6 +137,15 @@
 	    													  ->all();
 	    													  
 	    	return isset($modelFind) ? $modelFind : null; 
+	    } 
+
+	    public function findVendedor($nroSolicitud)
+	    {
+	    	$modelFind = SlInmueblesUrbanosForm::find()->where('nro_solicitud =:nro_solicitud', [':nro_solicitud' => $nroSolicitud])
+	    													  //->andWhere('id_contribuyente =:id_contribuyente', [':id_contribuyente' => $this->id_contribuyente])
+	    													  ->one();
+	    											
+	    	return isset($modelFind) ? $modelFind : null;
 	    }  
 
 	  

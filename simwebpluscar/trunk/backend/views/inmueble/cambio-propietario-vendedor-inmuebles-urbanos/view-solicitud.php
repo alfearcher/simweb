@@ -47,6 +47,7 @@
 	use yii\widgets\ActiveForm;
 	use yii\web\View;
 	use yii\widgets\DetailView;
+	//die(var_dump($model));
 ?>
 
 <div class="row" style="width: 70%;">
