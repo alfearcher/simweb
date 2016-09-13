@@ -256,7 +256,7 @@
 													[':monto' => 0])
 										 ->andWhere('estatus =:estatus',
 										 			[':estatus' => 1])
-										 ->andWhere(['BETWEEN', 'recibo', 50000, 50015])
+										 ->andWhere(['BETWEEN', 'recibo', 50000, 50075])
 										 ->orderBy(['monto' => SORT_DESC]);
 										 //->limit(5);
 										//->all();
