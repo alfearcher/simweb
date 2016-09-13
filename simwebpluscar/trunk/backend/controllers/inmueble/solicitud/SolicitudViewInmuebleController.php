@@ -122,7 +122,7 @@
 
 				} elseif ( $this->model->tipo_solicitud == 26 ) {
 
-					return self::actionMostrarSolicitudCambioPropietarioInmueble();
+					return self::actionMostrarSolicitudCambioPropietarioVendedorInmueble();
 
 				} elseif ( $this->model->tipo_solicitud == 27 ) {
 
@@ -147,6 +147,11 @@
 				} elseif ( $this->model->tipo_solicitud == 65 ) {
 
 					return self::actionMostrarSolicitudDesincorporacionInmueble();
+				
+				} elseif ( $this->model->tipo_solicitud == 67 ) {
+
+					return self::actionMostrarSolicitudCambioPropietarioCompradorInmueble();
+
 				}
 			}
 
