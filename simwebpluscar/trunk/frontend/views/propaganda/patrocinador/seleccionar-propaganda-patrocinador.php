@@ -51,7 +51,22 @@
     use backend\models\vehiculo\VehiculoSearch;
     use frontend\models\propaganda\solicitudes\SlPropagandasForm;
     use common\models\propaganda\tarifaspropaganda\TarifasPropagandas;
+    use common\models\propaganda\patrocinador\PropagandasPatrocinaodres;
+
     
+
+?>
+
+
+ <?php $form = ActiveForm::begin([
+            'id' => 'form-datosBasicoJuridico-inline',
+            'method' => 'post',
+            'action' => ['/propaganda/patrocinador/anular-patrocinador-propaganda/verificar-propaganda'],
+            'enableClientValidation' => true,
+            'enableAjaxValidation' => true,
+            'enableClientScript' => true,
+
+        ]);
 
 ?>
 
@@ -63,101 +78,100 @@
                         'dataProvider' => $dataProvider,
                        // die(var_dump($dataProvider)),
                       'columns'  => [
-                            
-
-
                         
-                            
+                [
 
-                    [
-
-                   'label' =>"Name",
+                    'label' =>"Patrocinador",
 
                    
-                   'value'=>function($data){
+                    'value'=> function($data){ 
 
-                       return $data["nombres"];
+                        if($data->contribuyente->tipo_naturaleza == 1){
 
-                   }
+                            return $data->contribuyente->razon_social;
 
-               ],
+                        }else{
 
+                            return $data->contribuyente->nombres.' '.$data->contribuyente->apellidos;
+                        }
 
-                    [
+                    }
+                   
 
-                   'label' =>"Patrocinador",
+                ],
+
+                [
+
+                    'label' =>"Rif",
 
                    
-                   'value'=>function($data){
+                    'value'=> function($data){ 
 
-                       return $data["tipo_propaganda"];
+                        return $data->contribuyente->naturaleza.' '.$data->contribuyente->cedula.'-'.$data->contribuyente->tipo;
+                    }
 
-                   }
+                ],
 
-               ],
+                [
 
+                    'label' =>"Id Propaganda",
 
-                        
+                   
+                    'value'=> function($data){ 
 
+                        return $data->propaganda->id_impuesto;
+                    }
 
+                ],
 
+                [
 
-                           
+                    'label' =>"Tipo Propaganda",
 
-                           
-                           
+                   
+                    'value'=> function($data){ 
 
-                            
-                            // 'color',
-                        
-                            // 'precio_inicial',
-                            // 'fecha_inicio',
-                            // 'ano_compra',
-                            // 'ano_vehiculo',
-                            // 'no_ejes',
-                            // 'liquidado',
-                            // 'status_vehiculo',
-                            // 'exceso_cap',
-                            // 'medida_cap',
-                            // 'capacidad',
-                            // 'nro_puestos',
-                            // 'peso',
-                            
-                            // 'serial_motor',
-                            // 'serial_carroceria',
-                            // 'nro_calcomania',
-                            
-                            // 'nro_cilindros',
-                            // 'fecha_hora',
-                        
-                            // [
-                            //  'label' => 'Uso Vehiculo',
+                        return $data->propaganda->tipoPropaganda->descripcion;
+                    }
 
-                            //  'value' => //$search->getDescripcionUsoVehiculo($model->uso_vehiculo),//function($model){
-                            //   VehiculoSearch::getDescripcionUsoVehiculo($model->uso_vehiculo),
-                                    
-                            // ],
+                ],
 
-                            // [
-                            //  'label' => 'Tipo Vehiculo',
-
-                            //  'value' => //$search->getDescripcionUsoVehiculo($model->uso_vehiculo),//function($model){
-                            //   VehiculoSearch::getDescripcionTipoVehiculo($model->tipo_vehiculo),
-                                    
-                            // ],
-
-                            // [
-                            //  'label' => 'Clase Vehiculo',
-
-                            //  'value' => //$search->getDescripcionUsoVehiculo($model->uso_vehiculo),//function($model){
-                            //   VehiculoSearch::getDescripcionClaseVehiculo($model->clase_vehiculo),
-                                    
-                            // ],
-
-                                
+                    
+                    [
+                        'class' => 'yii\grid\CheckboxColumn',
+                        'name' => 'chk-verificar-propaganda',
+                        'checkboxOptions' => [
+                                'id' => 'id-chk-verificar-propaganda',
+                               
+                                //'onClick' => 'alert("hola " + $(this).val());'
+                                //$(this).is(":checked"), permite determinar si un checkbox esta tildado.
                         ],
-                    ])
-                ?>
+                        'multiple' => true,
+                    ],
+        ],
+    ]); ?>
+
+     <div class="row">
+    <div class="col-sm-4">
+    <p>
+       
+        <?= Html::a(Yii::t('backend', 'Back'), ['/site/menu-vertical'], ['class' => 'btn btn-danger', 'style' => 'height:30px;width:140px;']) ?>
+    </p>
+    </div>
+
+    <div class="col-sm-5" style="margin-left: 0px;">
+    
+     <?= Html::submitButton("Submit", ["class" => "btn btn-success", 'style' => 'height:30px;width:140px;']) ?>
+
+    </div>
+  
+    <div class="col-sm-2" style="float:right; color:red; font: comic sans ms">
+   
+    <p><?php echo $errorCheck ?></p>
+
+   
+    </div>
+    </div>
         </div>
     </div>
 </div>
