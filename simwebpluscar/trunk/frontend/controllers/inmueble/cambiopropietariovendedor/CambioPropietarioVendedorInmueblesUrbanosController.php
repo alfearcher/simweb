@@ -282,7 +282,17 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
            
                  $tableName2 = 'sl_cambios_propietarios'; 
 
-                if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){
+                 $arrayDatos4 = [   'id_contribuyente' => $_SESSION['idComprador'],
+                                    'id_impuesto' => $datos->id_impuesto,
+                                    'nro_solicitud' => $result,
+                                    'direccion' => $datos->direccion,
+                                    'fecha_creacion' => date('Y-m-d h:i:s'),
+                                ]; 
+
+           
+                 $tableName4 = 'sl_inmuebles';
+
+                if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) and $conn->guardarRegistro($conexion, $tableName4,  $arrayDatos4) ){
 
                     if ($nivelAprobacion['nivel_aprobacion'] != 1){
 

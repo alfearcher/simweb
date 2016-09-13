@@ -337,10 +337,19 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                                     
                                 ]; 
 
-     
                  $tableName2 = 'sl_cambios_propietarios'; 
 
-                if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){
+                 $arrayDatos4 = [   'id_contribuyente' => $_SESSION['idContribuyente'],
+                                    'id_impuesto' => $datos->id_impuesto,
+                                    'nro_solicitud' => $result,
+                                    'direccion' => $datos->direccion,
+                                    'fecha_creacion' => date('Y-m-d h:i:s'),
+                                ]; 
+
+           
+                 $tableName4 = 'sl_inmuebles'; 
+
+                if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) and $conn->guardarRegistro($conexion, $tableName4,  $arrayDatos4) ){
 
                     if ($nivelAprobacion['nivel_aprobacion'] != 1){
 
@@ -405,7 +414,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      {
 
          $buscar = ConfiguracionTiposSolicitudes::find()->where("impuesto=:impuesto", [":impuesto" => 2])
-                                                        ->andwhere("descripcion=:descripcion", [":descripcion" => 'CAMBIO DE PROPIETARIO (VENDEDOR)'])
+                                                        ->andwhere("descripcion=:descripcion", [":descripcion" => 'CAMBIO DE PROPIETARIO (COMPRADOR)'])
                                                         ->asArray()->all();
 
 
