@@ -221,7 +221,7 @@ class AsignarPatrocinadorPropagandaForm extends Model
        ->all();
     }
 
-      public function validarCheck($postCheck)
+    public function validarCheck($postCheck)
     {
         if (count($postCheck) > 0){
 
@@ -230,6 +230,8 @@ class AsignarPatrocinadorPropagandaForm extends Model
             return false;
         }
     }
+
+
 
 
 

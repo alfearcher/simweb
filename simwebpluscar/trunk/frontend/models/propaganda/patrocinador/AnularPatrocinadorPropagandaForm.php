@@ -56,19 +56,17 @@ use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 use common\models\propaganda\patrocinador\PropagandasPatrocinadores;
 use yii\db\Query;
 use yii\data\SqlDataProvider;
+use common\models\contribuyente\ContribuyenteBase;
 
 /**
  * InmueblesSearch represents the model behind the search form about `backend\models\Inmuebles`.
  */
 class AnularPatrocinadorPropagandaForm extends Model
 {
+
+    public $causa;
+    public $observacion;
     
-
-
-
-
-    
-   
     /**
      * @inheritdoc
      */
@@ -76,7 +74,7 @@ class AnularPatrocinadorPropagandaForm extends Model
     {
         return [
 
-            //[[ 'ano_impositivo'], 'required'],
+            [[ 'causa', 'observacion'], 'required'],
             
             ];
     } 
@@ -90,25 +88,29 @@ class AnularPatrocinadorPropagandaForm extends Model
     {
         return [
                
-                //'ano_impositivo' => Yii::t('frontend', 'Año Impositivo'), 
+                'causa' => Yii::t('frontend', 'Causa'), 
+                'observacion' => Yii::t('frontend', 'Observacion'),
               
         ];      
     }
 
-    public function attributeSlPropagandasPatrocinadores()
+    public function attributeSlAnulacionesPatrocinadores()
     {
 
         return [
             'nro_solicitud',
             'id_contribuyente',
             'id_impuesto',
-            'id_patrocinador',
-            'origen',
+            'impuesto',
+            'causa_desincorporacion',
+            'observacion',
             'usuario',
             'fecha_hora',
             'estatus',
-            'fecha_hora_proceso',
             'user_funcionario',
+            'fecha_hora_proceso',
+            'fecha_funcionario',
+            'origen',
          
 
             
@@ -140,47 +142,41 @@ class AnularPatrocinadorPropagandaForm extends Model
      */
     public function busquedaRelacionPropagandaPatrocinador($idContribuyente)
     { 
-   
+        
+            $find = PropagandasPatrocinadores::find()
+                                            ->where([
+                                            'propagandas_patrocinadores.id_contribuyente' => $idContribuyente,
+                                            'estatus' => 0,
+                                            ])
+                                            ->joinWith('propaganda')
+                                            ->joinWith('contribuyente');
+                        return $find;
 
-          $dataProvider = new SqlDataProvider([
-          
-            'sql' => "SELECT * FROM propagandas_patrocinadores INNER JOIN propagandas ON propagandas_patrocinadores.id_impuesto = propagandas.id_impuesto INNER JOIN contribuyentes ON propagandas_patrocinadores.id_patrocinador = contribuyentes.id_contribuyente  WHERE propagandas_patrocinadores.id_contribuyente = '$idContribuyente'",
-      
        
-        ]);
-        return $dataProvider;
 
     }
 
-    public function busquedaPropaganda($anoImpo, $idContribuyente)
+    public function getDataProviderRelacion($idContribuyente)
     {
-     // die('llegue a search');
+    
 
-        $idContribuyente = yii::$app->user->identity->id_contribuyente;
-
-
-        $query = Propaganda::find();
+        $query = Self::busquedaRelacionPropagandaPatrocinador($idContribuyente);
 
                                 
                              
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-           // die(var_dump($dataProvider)),
+           
         ]);
-        $query->where([
-           'ano_impositivo' => $anoImpo,
-           'id_contribuyente' => $idContribuyente,
-           'inactivo' => 0,
+        $query->all();
             
-            ])
-        ->all();
-        
-        return $dataProvider;
+           
+            return $dataProvider;
 
         
     }
 
-    public function verificarSolicitud($idConfig, $idPropaganda)
+    public function verificarSolicitudPatrocinio($idConfig, $idPropaganda)
     {
         $buscar = SolicitudesContribuyente::find()
                                         ->where([ 
@@ -200,26 +196,21 @@ class AnularPatrocinadorPropagandaForm extends Model
         
     }
 
-    public function getClase($dato)
-    {
-       $datos = propaganda::find('clase_propaganda')
-       ->where([
-        'id_impuesto' => $dato,
 
-
-        ])
-       ->all();
-    }
 
       public function validarCheck($postCheck)
     {
+
         if (count($postCheck) > 0){
 
             return true;
         }else{
+         // die('no selecciono nada');
             return false;
         }
     }
+
+
 
 
 
