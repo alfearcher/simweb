@@ -62,10 +62,10 @@
     use backend\models\configuracion\nivelaprobacion\NivelAprobacion;
     use backend\models\utilidad\causanegacionsolicitud\CausaNegacionSolicitud;
     use backend\models\solicitud\estatus\EstatusSolicitud;
+    use backend\models\propaganda\Propaganda;
+    use common\models\contribuyente\ContribuyenteBase;
+    use backend\models\TiposPropaganda;
    
-
-
-
     class PropagandasPatrocinadores extends ActiveRecord
     {
 
@@ -83,6 +83,24 @@
         {
           return 'propagandas_patrocinadores';
         }
+
+        
+        public function getTipoPropaganda()
+        {
+
+        return $this->hasOne(TiposPropaganda::className(), ['tipo_propaganda' => 'tipo_propaganda']);
+        }
+
+        public function getPropaganda()
+        {
+            return $this->HasOne(Propaganda::ClassName(), ['id_impuesto' => 'id_impuesto']);
+        }
+
+        public function getContribuyente()
+        {
+            return $this->HasOne(ContribuyenteBase::ClassName(), ['id_contribuyente' => 'id_patrocinador']);
+        }
+
 
 
 
