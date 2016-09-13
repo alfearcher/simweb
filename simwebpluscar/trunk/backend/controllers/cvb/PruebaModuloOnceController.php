@@ -60,6 +60,8 @@
 	use yii\data\ActiveDataProvider;
 	use arturoliveira\ExcelView;
 	use moonland\phpexcel\Excel;
+	use backend\models\recibo\depositoplanilla\DepositoPlanilla;
+	use common○\models\planilla\Pago;
 
 
 	session_start();		// Iniciando session
@@ -108,20 +110,22 @@
     				],
     				[
     					'attribute' => 'idContribuyente',
-    					'value' => function() {
-    						return 0;
+    					'value' => function($model) {
+    						return self::findContribuyenteSegunRecibo($model->recibo);
     					},
     				],
     				[
     					'attribute' => 'codigoControlContribuyente',
-    					'value' => function() {
-    						return 0;
+    					'value' => function($model) {
+    						return $model->getCodigoControl((int)self::findContribuyenteSegunRecibo($model->recibo));
     					},
     				],
     				[
     					'attribute' => 'longitudIdContribuyente',
-    					'value' => function() {
-    						return 0;
+    					'value' => function($model) {
+    						$id = self::findContribuyenteSegunRecibo($model->recibo);
+    						$long = self::getDigitoConcatenar($id);
+    						return $long;
     					},
     				],
     				'recibo',
@@ -172,7 +176,10 @@
     					'value' => function($model) {
     						$idAlcadia = Yii::$app->ente->getEnte();
     						$cvbIdAlcaldia = '0'.$idAlcadia;
-    						$cvbContribuyente = '00';
+    						$id = PruebaModuloOnceController::findContribuyenteSegunRecibo($model->recibo);
+		                    $long = PruebaModuloOnceController::getDigitoConcatenar($id);
+		                	$cvbContribuyente = $model->getCodigoControl((int)$id);
+		                	$cvbContribuyente = $cvbContribuyente . $long;
     						$cvbRecibo = $model->getCodigoControl($model->recibo) . strlen($model->recibo);
     						$m = str_replace('.', '', $model->monto);
     						$cvbMonto = $model->getCodigoControl($model->monto) . strlen($m);
@@ -263,7 +270,7 @@
 		public function getDataProvider()
 		{
 			$query = self::findDeposito();
-// die(var_dump($query->all()));
+
 			$dataProvider = New ActiveDataProvider([
 							'query' => $query,
 				]);
@@ -272,6 +279,46 @@
 		}
 
 
+
+		/***/
+		public function findContribuyenteSegunRecibo($recibo)
+		{
+			$tabla = DepositoPlanilla::tableName();
+			$findModel = DepositoPlanilla::find()->where($tabla.'.recibo =:recibo',
+												 		[':recibo' => $recibo])
+												 ->andWhere('estatus =:estatus',
+												 		['estatus' => 1])
+												 ->joinWith('pago', true,'INNER JOIN')
+												 ->asArray()
+												 ->one();
+
+			return isset($findModel['pago']['id_contribuyente']) ? $findModel['pago']['id_contribuyente'] : 0;
+		}
+
+
+
+		/***/
+		public function getDigitoConcatenar($valor)
+		{
+			$long = null;
+			if ( is_float($valor) ) {
+				$filtrado = str_replace('.', '', $valor);
+				$filtrado = str_replace('.', '', $filtrado);
+
+				$long = (int)strlen($filtrado);
+				if ( $long > 9 ) {
+					// Digito mas significativo a la derecha
+					return (int)substr($long, -1);
+				}
+			} else {
+				$long = (int)strlen($valor);
+				if ( $long > 9 ) {
+					// Digito mas significativo a la derecha
+					return (int)substr($long, -1);
+				}
+			}
+			return $long;
+		}
 
 
 	}
