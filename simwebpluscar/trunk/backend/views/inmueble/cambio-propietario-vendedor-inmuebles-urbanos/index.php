@@ -22,7 +22,7 @@ $this->title = Yii::t('backend', 'Property Urban');
     <?php $form = ActiveForm::begin([
     'method' => 'post',
     'id' => 'formulario',
-    'action'=> ['/inmueble/cambiopropietariovendedor/cambio-propietario-vendedor-inmuebles-urbanos/view'],
+    'action'=> ['/inmueble/cambio-propietario-vendedor-inmuebles-urbanos/view'],
     'enableClientValidation' => false,
     'enableAjaxValidation' => true,
     'options' => ['class' => 'form-vertical'],]); ?>
@@ -85,8 +85,8 @@ $this->title = Yii::t('backend', 'Property Urban');
     ]); ?>
 
     <p>
-        <?= Html::a(Yii::t('backend', 'Register Property Urban'), ['inmueble/inscripcion/inscripcion-inmuebles-urbanos/inscripcion-inmuebles-urbanos'], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('backend', 'Back'), ['/site/menu-vertical'], ['class' => 'btn btn-danger']) ?>
+        <?= Html::a(Yii::t('backend', 'Register Property Urban'), ['inmueble/inscripcion-inmuebles-urbanos/inscripcion-inmuebles-urbanos'], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) ?>
     </p>
 
 </div>
