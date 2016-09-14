@@ -148,14 +148,14 @@
     				[
     					'attribute' => 'codigoControlMonto',
     					'value' => function($model) {
-    						return $model->getCodigoControl($model->monto);
+    						return $model->getCodigoControl((float)$model->monto);
     					},
     				],
     				[
     					'attribute' => 'longMonto',
     					'value' => function($model) {
-    						$m = str_replace('.', '', $model->monto);
-    						return strlen($m);
+    						$long = self::getDigitoConcatenar((float)$model->monto);
+    						return $long;
     					},
     				],
     				[
@@ -185,8 +185,8 @@
     					'value' => function($model) {
     						$idAlcadia = Yii::$app->ente->getEnte();
     						$cvbIdAlcaldia = '0'.$idAlcadia;
-    						$id = PruebaModuloOnceController::findContribuyenteSegunRecibo($model->recibo);
-		                    $long = PruebaModuloOnceController::getDigitoConcatenar($id);
+    						$id = self::findContribuyenteSegunRecibo($model->recibo);
+		                    $long = self::getDigitoConcatenar($id);
 		                	$cvbContribuyente = $model->getCodigoControl((int)$id);
 		                	$cvbContribuyente = $cvbContribuyente . $long;
     						$cvbRecibo = $model->getCodigoControl($model->recibo) . strlen($model->recibo);
@@ -259,7 +259,7 @@
 
 
 		/***/
-		public function findDeposito()
+		public function findDeposito2()
 		{
 			//$findModel = Deposito::find()->limit(5);
 			$findModel = Deposito::find()->where('monto >:monto',
@@ -274,6 +274,26 @@
 
 			return isset($findModel) ? $findModel : null;
 		}
+
+
+
+        public function findDeposito()
+        {
+            //$findModel = Deposito::find()->limit(5);
+            $findModel = Deposito::find()->where('monto >:monto',
+                                                    [':monto' => 0])
+                                         ->andWhere('estatus =:estatus',
+                                                    [':estatus' => 1])
+                                         ->andWhere(['BETWEEN', 'recibo', 1000000, 1000100])
+                                         //->andWhere(['BETWEEN', 'recibo', 517761, 517761])
+                                         //->andWhere(['BETWEEN', 'recibo', 500000, 500100])
+                                         ->orderBy(['monto' => SORT_DESC]);
+                                         //->limit(5);
+                                        //->all();
+
+            return isset($findModel) ? $findModel : null;
+        }
+
 
 
 
@@ -313,10 +333,9 @@
 		{
 			$long = null;
 			if ( is_float($valor) ) {
-				$filtrado = str_replace('.', '', $valor);
-				$filtrado = str_replace('.', '', $filtrado);
+				$entero = (string)$valor * 100;
 
-				$long = (int)strlen($filtrado);
+				$long = (int)strlen($entero);
 
 				if ( $long > 9 ) {
 					// Digito mas significativo a la derecha
