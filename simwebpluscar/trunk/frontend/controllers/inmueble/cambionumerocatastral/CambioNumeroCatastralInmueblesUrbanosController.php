@@ -63,6 +63,7 @@ use yii\web\Session;
 use frontend\models\inmueble\cambionumerocatastral\CambioNumeroCatastralInmueblesForm;
 use frontend\models\inmueble\InmueblesSearch;
 use frontend\models\inmueble\InmueblesConsulta;
+use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 
 //use common\models\Users;
 
@@ -162,6 +163,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
          $msg = null;
          $url = null; 
          $tipoError = null; 
+         $todoBien = true;
     
          //Validación mediante ajax
          if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax){ 
@@ -182,6 +184,21 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                 if (!\Yii::$app->user->isGuest){                                      
                       
 
+
+                     foreach($datos as $key => $value) {
+                     
+                          $value; 
+                          //die($value['id_vehiculo']);
+                          $verificarSolicitud = self::verificarSolicitud($value , $_SESSION['id']);
+              
+                          if($verificarSolicitud == true){
+                              //die(var_dump($value['id_vehiculo']));
+                              $todoBien = false;
+                          
+                           } 
+                     }
+
+                    if($todoBien == true){
                      $guardo = self::GuardarCambios($model, $datos);
 
                      if($guardo == true){ 
@@ -202,6 +219,10 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                             return MensajeController::actionMensaje(920);
                       } 
+                    } else {
+
+                            return MensajeController::actionMensaje(900);
+                     } 
 
                    }else{ 
 
@@ -372,6 +393,23 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
          return $buscar[0]["id_tipo_solicitud"];                                              
 
      } 
+
+      public function verificarSolicitud($idInmueble,$idConfig)
+    {
+      $buscar = SolicitudesContribuyente::find()
+                                        ->where([ 
+                                          'id_impuesto' => $idInmueble,
+                                          'id_config_solicitud' => $idConfig,
+                                          'inactivo' => 0,
+                                        ])
+                                      ->all();
+
+            if($buscar == true){
+             return true;
+            }else{
+             return false;
+            }
+    }
 
 
     /**
