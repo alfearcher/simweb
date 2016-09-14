@@ -21,13 +21,13 @@
  */
 
  /**
- *  @file view-solicitud-asignar-patrocinador-propaganda.php
+ *  @file view-solicitud-anular-patrocinador-propaganda.php
  *
  *  @author Manuel Zapata
  *
- *  @date 12-09-2016
+ *  @date 05-07-2016
  *
- *  @view view-solicitud-asignar-patrocinador-propaganda.php
+ *  @view view-solicitud-anular-patrocinador-propaganda.php
  *
  *
  *  @property
@@ -92,9 +92,27 @@
 		                   	'label' => 'Tipo Propaganda',
 		                    
 		                     'value' => SlPropagandasForm::getDescripcionTipoPropaganda($model[0]['tipo_propaganda']),
+		                    ],
+
+		                     [
+
+		                     'label' => 'Causa',
+
+		                     'value' => SlPropagandasForm::getCausaDesincorporacion($model[0]['causa_desincorporacion']),
+		                     
 		                     ],
 
-		                       [
+		                     [
+
+		                     'label' => 'Observacion',
+
+		                     'value' => $model[0]['observacion'],
+		                     
+		                     ],
+
+
+		                    
+		                    [
 		                   	'label' => 'Usuario',
 		                    
 		                     'value' => $model[0]['usuario'],
