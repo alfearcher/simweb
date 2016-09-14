@@ -94,7 +94,7 @@ class AnularPatrocinadorPropagandaController extends Controller
 
       $dataProvider = $model->getDataProviderRelacion($idContribuyente);
       
-     // die(var_dump($modelRelacion));
+      //die(var_dump($modelRelacion));
 
           return $this->render('/propaganda/patrocinador/seleccionar-propaganda-patrocinador', [
                                                               'dataProvider' => $dataProvider,
@@ -120,19 +120,32 @@ class AnularPatrocinadorPropagandaController extends Controller
       $errorCheck = ""; 
       $idContribuyente = yii::$app->user->identity->id_contribuyente;
       $idPropaganda = yii::$app->request->post('chk-verificar-propaganda');
-    
+      //die(var_dump($idPropaganda));
+      //
       $_SESSION['idPropaganda'] = $idPropaganda;
 
-  
+
       $validacion = new AnularPatrocinadorPropagandaForm();
 
-       if ($validacion->validarCheck(yii::$app->request->post('chk-verificar-propaganda')) == true){
+      
+      if ($validacion->validarCheck(yii::$app->request->post('chk-verificar-propaganda')) == true){
 
-            foreach($idPropaganda as $key=>$value){
+          $buscar = $validacion->busquedaIdImpuesto($idPropaganda);
+
+          if($buscar == true){
+       
+              $_SESSION['idImpuesto'] = $buscar; 
+          }else{
+
+            return MensajeController::actionMensaje(900);
+
+          }
+
+            foreach($buscar as $key=>$value){
 
                 $value;
 
-                    $verificarSolicitud = $validacion->verificarSolicitudPatrocinio($_SESSION['id'], $value); 
+                    $verificarSolicitud = $validacion->verificarSolicitudPatrocinio($_SESSION['id'], $value['id_impuesto']); 
 
                 if($verificarSolicitud == true){
 
@@ -142,6 +155,8 @@ class AnularPatrocinadorPropagandaController extends Controller
             }
 
             if($todoBien == true){
+
+              // die($value['id_impuesto']);
 
 
         
@@ -218,10 +233,10 @@ class AnularPatrocinadorPropagandaController extends Controller
    */
   public function buscarNumeroSolicitud($conn, $conexion, $value)
   {
-    //die(var_dump($value));
+  // die(var_dump($value));
       //die('hola');  
       $buscar = new ParametroSolicitud($_SESSION['id']);
-      $idImpuesto = $value;
+     
       
 
         $buscar->getParametroSolicitud(["tipo_solicitud", "impuesto", "nivel_aprobacion"]);
@@ -230,7 +245,7 @@ class AnularPatrocinadorPropagandaController extends Controller
 
      
     
-      $datosPropaganda = $_SESSION['datosPropaganda'];
+      $idImpuesto = $value;
       $datos = yii::$app->user->identity;
       $tabla = 'solicitudes_contribuyente';
       $arregloDatos = [];
@@ -247,7 +262,7 @@ class AnularPatrocinadorPropagandaController extends Controller
 
       $arregloDatos['id_impuesto'] = $idImpuesto;
 
-     // die($arregloDatos['id_impuesto'].'hpña');
+    // die($arregloDatos['id_impuesto']);
 
       $arregloDatos['tipo_solicitud'] = $resultado['tipo_solicitud'];
 
@@ -292,11 +307,12 @@ class AnularPatrocinadorPropagandaController extends Controller
      * @param  [type] $idPropaganda [description] id de las propagandas
      * @return [type]               [description] retorna true o false 
      */
-    public function guardarSolicitudAnulacion($conn, $conexion , $idSolicitud, $idPropaganda, $model)
+    public function guardarSolicitudAnulacion($conn, $conexion , $idSolicitud, $idImpuesto, $model, $idPatrocinador)
     {
+     //die('llegue a aguardar');
     
         $buscar = new ParametroSolicitud($_SESSION['id']);
-
+       
         $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion", "impuesto"]);
         $nroSolicitud = $idSolicitud;
         $resultado = false;
@@ -315,9 +331,15 @@ class AnularPatrocinadorPropagandaController extends Controller
 
             $arregloDatos['nro_solicitud'] = $nroSolicitud;
 
+
+
             $arregloDatos['id_contribuyente'] = $datos->id_contribuyente;
 
-            $arregloDatos['id_impuesto'] = $idPropaganda;
+            $arregloDatos['id_impuesto'] = $idImpuesto;
+
+            $arregloDatos['id_patrocinador'] = $idPatrocinador;
+
+             //die(var_dump($arregloDatos['id_impuesto']).'hola');
 
             $arregloDatos['impuesto'] = $nivelAprobacion['impuesto'];
 
@@ -417,7 +439,9 @@ class AnularPatrocinadorPropagandaController extends Controller
      */
     public function beginSave($var, $model)
     {
-      
+     // die(var_dump($model).'llegue a begin');
+     $idImpuesto = $_SESSION['idImpuesto']; 
+    // die(var_dump($idImpuesto)); 
     $idPropagandas = $_SESSION['idPropaganda']; 
     $todoBien = true;
 
@@ -443,17 +467,18 @@ class AnularPatrocinadorPropagandaController extends Controller
           if ($var == "buscarActualizar"){
             //die('llego');
           
-                foreach($idPropagandas as $key => $value){
+                foreach($idImpuesto as $key => $value){
              
                 $idSolicitud = 0;
-                $idSolicitud = self::buscarNumeroSolicitud($conn, $conexion,$value);
+                $idSolicitud = self::buscarNumeroSolicitud($conn, $conexion,$value['id_impuesto']);
 
 
-                 if ($idSolicitud > 0){
+                if ($idSolicitud > 0){
+                 // die(var_dump($idSolicitud));
                
                   
 
-                    $guardar = self::guardarSolicitudAnulacion($conn,$conexion,$idSolicitud , $value, $model);
+                    $guardar = self::guardarSolicitudAnulacion($conn,$conexion,$idSolicitud , $value['id_impuesto'], $model, $value['id_patrocinador']);
 
                       if ($nivelAprobacion['nivel_aprobacion'] != 1){ 
 
