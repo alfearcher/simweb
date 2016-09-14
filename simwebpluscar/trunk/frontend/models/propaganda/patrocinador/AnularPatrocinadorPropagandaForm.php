@@ -111,6 +111,7 @@ class AnularPatrocinadorPropagandaForm extends Model
             'fecha_hora_proceso',
             'fecha_funcionario',
             'origen',
+            'id_patrocinador',
          
 
             
@@ -150,6 +151,9 @@ class AnularPatrocinadorPropagandaForm extends Model
                                             ])
                                             ->joinWith('propaganda')
                                             ->joinWith('contribuyente');
+                                           
+                                     
+                                         
                         return $find;
 
        
@@ -158,6 +162,8 @@ class AnularPatrocinadorPropagandaForm extends Model
 
     public function getDataProviderRelacion($idContribuyente)
     {
+
+        //die('llegue');
     
 
         $query = Self::busquedaRelacionPropagandaPatrocinador($idContribuyente);
@@ -169,18 +175,18 @@ class AnularPatrocinadorPropagandaForm extends Model
            
         ]);
         $query->all();
-            
+                
            
             return $dataProvider;
 
         
     }
 
-    public function verificarSolicitudPatrocinio($idConfig, $idPropaganda)
+    public function verificarSolicitudPatrocinio($idConfig, $idImpuesto)
     {
         $buscar = SolicitudesContribuyente::find()
                                         ->where([ 
-                                          'id_impuesto' => $idPropaganda,
+                                          'id_impuesto' => $idImpuesto,
                                           'id_config_solicitud' => $idConfig,
                                           'estatus' => 0,
                                         ])
@@ -195,6 +201,26 @@ class AnularPatrocinadorPropagandaForm extends Model
             }
         
     }
+
+    public function busquedaIdImpuesto($idPropaganda)
+    {
+
+
+        $find = PropagandasPatrocinadores::find()
+                                            ->where([ 'IN' , 'id_propaganda_patrocinador', $idPropaganda])
+                                            ->asArray()
+                                            ->all();
+
+                                            //die(var_dump($find));
+
+                if($find == true){
+                    return $find;
+                }else{
+                    return false;
+                }
+    }
+
+
 
 
 

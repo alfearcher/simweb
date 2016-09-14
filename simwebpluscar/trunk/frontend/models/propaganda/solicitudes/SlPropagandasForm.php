@@ -58,8 +58,8 @@ use backend\models\propaganda\Propaganda;
 use frontend\models\vehiculo\solicitudes\SlDesincorporacionesVehiculo;
 use common\models\propaganda\patrocinador\SlPropagandasPatrocinadores;
 use backend\models\TiposPropaganda;
-
-
+use common\models\propaganda\patrocinador\SlAnulacionesPatrocinadores;
+use backend\models\CausasDesincorporacion;
 
 class SlPropagandasForm extends SlPropagandas
 {
@@ -81,6 +81,11 @@ class SlPropagandasForm extends SlPropagandas
 
         $model = Clase::findOne($uso);
         return $model->descripcion;
+        }
+
+        public function getCausaDesincorporacion($causa){
+            $model = CausasDesincorporacion::findOne($causa);
+            return $model->descripcion;
         }
 
 
@@ -194,6 +199,23 @@ class SlPropagandasForm extends SlPropagandas
                                                     //die(var_dump($modelFinf));
             return isset($modelFind) ? $modelFind : null;
         }
+
+          /**
+        * Metodo que realiza una busqueda del detalle de la solicitud (model)
+         * "anulaciones-patrocinadores-propagandas".
+         * @param  Long $nroSolicitud identificador de la entidad "solicitudes-contribuyente".
+         * @return Active Record.
+         */
+        public function findAnularPatrocinadorPropaganda($nroSolicitud)
+        {
+            $modelFind = SlAnulacionesPatrocinadores::find()->where('nro_solicitud =:nro_solicitud', [':nro_solicitud' => $nroSolicitud])
+                                                    ->andWhere('id_contribuyente =:id_contribuyente', [':id_contribuyente' => $this->id_contribuyente])
+                                                    ->one();
+                                                    //die(var_dump($modelFinf));
+            return isset($modelFind) ? $modelFind : null;
+        }
+
+   
 
 
 
