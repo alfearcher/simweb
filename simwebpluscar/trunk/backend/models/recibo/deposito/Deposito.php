@@ -80,7 +80,7 @@
 		/***/
 		public function getCodigoControl($valorConvertir)
 		{
-			return ModuloValidador::getCodigoModuloOnce($valorConvertir);
+			return ModuloValidador::getDigitoControl($valorConvertir);
 		}
 
 
