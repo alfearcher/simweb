@@ -25,7 +25,7 @@
  *
  *  @author Manuel Zapata
  *
- *  @date 05-07-2016
+ *  @date 13-09-2016
  *
  *  @view view-solicitud-inscripcion-propaganda.php
  *
@@ -140,9 +140,11 @@
                     [
                         'class' => 'yii\grid\CheckboxColumn',
                         'name' => 'chk-verificar-propaganda',
+
                         'checkboxOptions' => [
                                 'id' => 'id-chk-verificar-propaganda',
-                               
+                              
+
                                 //'onClick' => 'alert("hola " + $(this).val());'
                                 //$(this).is(":checked"), permite determinar si un checkbox esta tildado.
                         ],
