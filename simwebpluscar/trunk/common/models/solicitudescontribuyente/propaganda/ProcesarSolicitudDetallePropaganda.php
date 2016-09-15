@@ -158,7 +158,17 @@
 
                     $result = $procesar->procesarSolicitud();
 
-            }
+                } elseif ($this->_model->tipo_solicitud == 74) {
+
+                    $procesar = New ProcesarAnulacionPatrocinadorPropaganda($this->_model,
+                                                                  $this->_evento,
+                                                                  $this->_conn,
+                                                                  $this->_conexion);
+
+                    $result = $procesar->procesarSolicitud();
+
+
+                }
             return $result;
         }
 

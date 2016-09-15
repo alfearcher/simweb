@@ -22,13 +22,13 @@
  */
 
  /**
- *  @file ProcesarCambioDatosPropaganda.php
+ *  @file ProcesarAsignacionPatrocinadorPropaganda.php
  *
  *  @author Manuel Alejandro Zapata Canelon
  *
- *  @date 25/08/2016
+ *  @date 12/09/2016
  *
- *  @class ProcesarCambioDatosPropaganda
+ *  @class ProcesarAsignacionPatrocinadorPropaganda
  *  @brief
  *
  *
