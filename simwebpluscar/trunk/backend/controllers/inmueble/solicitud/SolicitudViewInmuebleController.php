@@ -56,6 +56,8 @@
 	use yii\web\NotFoundHttpException;
 	use backend\models\inmueble\SlInmueblesUrbanosForm;
 	use backend\models\inmueble\SlInmueblesUrbanosSearch;
+	use backend\models\inmueble\SlCambioPropietarioForm;
+	use backend\models\inmueble\SlCambioPropietarioSearch;
 	// use common\conexion\ConexionController;
 	use backend\controllers\MenuController;
 
@@ -295,7 +297,10 @@
 		private function actionMostrarSolicitudCambioPropietarioVendedorInmueble()
 		{ 
 			if ( $this->model->nivel_aprobacion == 2 ) { 
-					$modelSearch = New SlInmueblesUrbanosSearch($this->model->id_contribuyente);
+					//$modelSearch = New SlInmueblesUrbanosSearch($this->model->id_contribuyente);
+					//$model = $modelSearch->findVendedor($this->model->nro_solicitud);
+
+					$modelSearch = New SlCambioPropietarioSearch($this->model->id_contribuyente);
 					$model = $modelSearch->findVendedor($this->model->nro_solicitud);
 
 					
