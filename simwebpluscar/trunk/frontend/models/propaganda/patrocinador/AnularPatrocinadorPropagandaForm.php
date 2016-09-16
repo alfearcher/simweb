@@ -166,7 +166,7 @@ class AnularPatrocinadorPropagandaForm extends Model
         //die('llegue');
     
 
-        $query = Self::busquedaRelacionPropagandaPatrocinador($idContribuyente);
+        $query = self::busquedaRelacionPropagandaPatrocinador($idContribuyente);
 
                                 
                              
