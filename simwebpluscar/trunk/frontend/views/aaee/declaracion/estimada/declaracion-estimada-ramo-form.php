@@ -54,6 +54,8 @@
 	//use backend\controllers\utilidad\documento\DocumentoRequisitoController;
 	use backend\controllers\menu\MenuController;
 	use yii\widgets\MaskedInput;
+	use backend\models\aaee\declaracion\DeclaracionBaseSearch;
+
 
 	$typeIcon = Icon::FA;
   	$typeLong = 'fa-2x';
@@ -201,11 +203,20 @@
 		                        										return $data->periodo_fiscal_hasta;
 		                											},
 									                ],
+									                // [
+									                //     'label' => Yii::t('frontend', 'Descripcion'),
+									                //     'value' => function($data) {
+		                       //  										return $data->rubroDetalle->descripcion;
+		                							// 				},
+									                // ],
 									                [
-									                    'label' => Yii::t('frontend', 'Descripcion'),
-									                    'value' => function($data) {
-		                        										return $data->rubroDetalle->descripcion;
-		                											},
+									                	'class' => 'yii\grid\DataColumn',
+									                	'attribute' => 'descripcion',
+									                	'format' => 'raw',
+
+									                	'value' => function($data) {
+									                				return $data->rubroDetalle->descripcion;
+									                	},
 									                ],
 									                [
                         								'class' => 'yii\grid\DataColumn',
@@ -215,12 +226,17 @@
                         									'style'=>'width: 200px;'
                         								],
                         								'value' => function($data) {
-                        										$real = $searchDeclaracion->getDefinitivaAnterior($data->ano_impositivo, $data->exigibilidad_periodo, $data->id_rubro);
+                        										$searchDeclaracion = New DeclaracionBaseSearch($data->actividadEconomica->id_contribuyente);
+                        										$a = (int)$data->actividadEconomica->ano_impositivo - 1;
+                        										$p = (int)$data->exigibilidad_periodo;
+                        										$real = $searchDeclaracion->getDefinitivaAnterior($a, $p, $data->id_rubro);
+
 							                                    return Html::textInput('id_rubro['. $data->id_rubro . ']',
-							                                     													$real, [
+							                                     													$real[$data->rubroDetalle->rubro], [
 		                                                                                        							'class' => 'form-control',
 		                                                                                        							'id' => 'id_rubro'. $data->id_rubro,
 		                                                                                        							'style' => '',
+		                                                                                        							//'value' => $real,
 		                                                                                        							//'disabled' => 'disabled',
 									                                                                                    ]);
 								                        }
