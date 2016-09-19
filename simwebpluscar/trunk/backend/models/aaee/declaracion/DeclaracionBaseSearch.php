@@ -372,23 +372,57 @@
 
 
 	    /***/
-	    public function getDefinitivaAnterior($añoImpositivo, $periodo, $idRubro)
+	    public function getDefinitivaAnterior1($añoImpositivoDefinitiva, $periodoDefinitiva, $idRubro)
 	    {
-	    	$añoImpositivoAnterior = $anoImpositivo;
 	    	$montoDefinitiva = 0;
-	    	$idImpuesto = self::getIdImpuestoSegunAnoImpositivo($añoImpositivoAnterior);
-	    	$idRubroEncontrado = self::getIdRubro($idRubro, $añoImpositivoAnterior);
-	    	$findModel = self::findRubrosRegistrados($añoImpositivoAnterior, $periodo);
-	    	if ( $findModel !== null ) {
-	    		$modelRamo = $findModel->all();
-	    		foreach ( $modelRamo as $ramo ) {
-	    			if ( $ramo['id_rubro'] == $idRubroEncontrado ) {
-	    				$montoDefinitiva = $ramos['reales'];
-	    			}
+	    	$rubro = 0;
+	    	$rubroModel = Rubro::findOne($idRubro);
+	    	$rubro = (int)$rubroModel['rubro'];			// Codigo del Rubro.
+
+	    	if ( $rubro > 0 ) {
+	    		$findModel = self::findRubrosRegistrados($añoImpositivoDefinitiva, $periodoDefinitiva);
+	    		$ramoModel = $findModel->all();
+	    		if ( count($ramoModel) > 0 ) {
+		    		foreach ( $ramoModel as $ramo ) {
+		    			if ( $ramo->rubroDetalle->rubro == $rubro ) {
+		    				$montoDefinitiva = $ramo->reales;
+		    			}
+		    		}
 	    		}
 	    	}
+	    	return (float)$montoDefinitiva;
+	    }
 
-	    	return $montoDefinitiva;
+
+
+	    /***/
+	   	public function getDefinitivaAnterior($añoImpositivo, $periodo, $rubro = 0)
+	    {
+	    	$result = null;
+	    	$definitiva = null;
+	    	//$añoImpositivoAnterior = $anoImpositivo - 1;
+	    	//$montoDefinitiva = 0;
+	    	//$idImpuesto = self::getIdImpuestoSegunAnoImpositivo($añoImpositivoAnterior);
+	    	//$idRubroEncontrado = self::getIdRubro($idRubro, $añoImpositivoAnterior);
+	    	$findModel = self::findRubrosRegistrados($añoImpositivo, $periodo);
+	    	if ( isset($findModel) ) {
+	    		$result = $findModel->all();
+	    		foreach ( $result as $r ) {
+	    			$definitiva[$r->rubroDetalle->rubro] = $r['reales'];
+	    		}
+	    	}
+//die(var_dump($definitiva));
+	    	return $definitiva;
+	    	// if ( $findModel !== null ) {
+	    	// 	$modelRamo = $findModel->all();
+	    	// 	foreach ( $modelRamo as $ramo ) {
+	    	// 		if ( $ramo['id_rubro'] == $idRubroEncontrado ) {
+	    	// 			$montoDefinitiva = $ramos['reales'];
+	    	// 		}
+	    	// 	}
+	    	// }
+
+	    	// return $montoDefinitiva;
 	    }
 
 
@@ -588,8 +622,9 @@
 	    									    			[':inactivo' => 0])
 	    									   ->andWhere($tablaRubro . '.inactivo =:inactivo',
 	    									    			[':inactivo' => 0])
-	    									   ->joinWith('actividadEconomica', 'INNER JOIN', false)
-	    									   ->joinWith('rubroDetalle', 'INNER JOIN', false);
+	    									   ->joinWith('actividadEconomica', true, 'INNER JOIN')
+	    									   ->joinWith('rubroDetalle', true, 'INNER JOIN');
+
 	    	return isset($findModel) ? $findModel : null;
 	    }
 
@@ -605,6 +640,7 @@
 	    public function getDataProviderRubrosRegistrados($añoImpositivo, $periodo)
 	    {
 	    	$query = self::findRubrosRegistrados($añoImpositivo, $periodo);
+
 	    	$dataProvider = New ActiveDataProvider([
 	    			'query' => $query,
 	    		]);
