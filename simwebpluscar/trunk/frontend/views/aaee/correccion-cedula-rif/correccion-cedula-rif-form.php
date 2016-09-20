@@ -55,8 +55,8 @@
  			'id' => 'id-correccion-cedula-rif-form',
  			'method' => 'post',
  			'enableClientValidation' => true,
- 			//'enableAjaxValidation' => true,
- 			'enableClientScript' => true,
+ 			'enableAjaxValidation' => false,
+ 			'enableClientScript' => false,
  		]);
  	?>
 
