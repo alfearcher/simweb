@@ -198,6 +198,12 @@
 				$idContribuyente = $_SESSION['idContribuyente'];
 				$request = Yii::$app->request;
 				$postData = $request->post();
+//die(var_dump($postData));
+				if ( isset($postData['btn-quit']) ) {
+					if ( $postData['btn-quit'] == 1 ) {
+						$this->redirect(['quit']);
+					}
+				}
 
 				$model = New DesincorporarRamoForm();
 				$formName = $model->formName();
@@ -210,21 +216,13 @@
 		      	$searchRamo = New DesincorporarRamoSearch($idContribuyente);
 		      	$findModel = $searchRamo->findContribuyente();
 
-				if ( isset($postData['btn-quit']) ) {
-					if ( $postData['btn-quit'] == 1 ) {
-						$this->redirect(['quit']);
-					}
-				} elseif ( isset($postData['btn-accept']) ) {
+				if ( isset($postData['btn-accept']) ) {
 					if ( $postData['btn-accept'] == 1 ) {
 						//$model->scenario = self::SCENARIO_SEARCH;
 						//$model->load($postData);
 
 						if ( $model->load($postData) ) {
 			    			if ( $model->validate() ) {
-			    				//$model->load($postData);
-
-//die(var_dump($model));
-
 			    				$_SESSION['postSearch'] = $postData;
 			    				return $this->redirect(['rubro-registrados']);
 							}
