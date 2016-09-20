@@ -211,7 +211,7 @@
 				$model->scenario = self::SCENARIO_DEFAULT;
 
 				$caption = Yii::t('frontend', 'Add New Categories');
-//die(var_dump($model->scenario));
+
 				// Se muestra el form de la solicitud.
 		      	// Datos generales del contribuyente.
 		      	$searchRamo = New AnexoRamoSearch($idContribuyente);
