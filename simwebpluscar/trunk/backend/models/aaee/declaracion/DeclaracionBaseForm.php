@@ -115,12 +115,7 @@
         					'id_contribuyente',
         					'ano_impositivo',
         					'exigibilidad_periodo',
-        					'fecha_desde',
-        					'fecha_hasta',
-        					'origen',
-        					'fecha_hora',
-        					'usuario',
-        					'estatus',
+
         		],
 	        ];
     	}
@@ -135,13 +130,14 @@
 	        return [
 	        	[['id_contribuyente', 'monto_v', 'monto_new'],
 	        	  'required', 'on' => 'estimada',
-	        	  'message' => Yii::t('backend','{attribute} is required')],
+	        	  'message' => Yii::t('frontend', '{attribute} is required')],
 	        	[['id_contribuyente', 'ano_impositivo', 'exigibilidad_periodo'],
 	        	  'required', 'on' => 'search',
-	        	  'message' => Yii::t('backend','{attribute} is required')],
-	        	[['tipo_declaracion', 'inactivo'],
+	        	  'message' => Yii::t('frontend', '{attribute} is required')],
+	        	[['tipo_declaracion', 'inactivo',
+	        	  'exigibilidad_periodo', 'ano_impositivo'],
 	        	  'integer',
-	        	  'message' => Yii::t('backend','{attribute}')],
+	        	  'message' => Yii::t('frontend', '{attribute} no valid')],
 	          	['inactivo', 'default', 'value' => 0],
 	        ];
 	    }
@@ -155,9 +151,9 @@
 	    public function attributeLabels()
 	    {
 	        return [
-	        	'tipo_declaracion' => Yii::t('backend', 'Id. Register'),
-	            'descripcion' => Yii::t('backend', 'description'),
-	            'inactivo' => Yii::t('backend', 'Condition'),
+	        	'tipo_declaracion' => Yii::t('frontend', 'Id. Register'),
+	            'descripcion' => Yii::t('frontend', 'description'),
+	            'inactivo' => Yii::t('frontend', 'Condition'),
 
 	        ];
 	    }
