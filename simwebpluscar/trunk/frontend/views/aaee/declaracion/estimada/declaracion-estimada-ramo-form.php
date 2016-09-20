@@ -186,41 +186,32 @@
 		                											},
 									                ],
 									                [
-									                    'label' => Yii::t('frontend', 'Perid'),
+									                    'label' => Yii::t('frontend', 'Period'),
 									                    'value' => function($data) {
 		                        										return $data->exigibilidad_periodo;
 		                											},
 									                ],
-									                [
-									                    'label' => Yii::t('frontend', 'Begin Date'),
-									                    'value' => function($data) {
-		                        										return $data->periodo_fiscal_desde;
-		                											},
-									                ],
-									                [
-									                    'label' => Yii::t('frontend', 'End Date'),
-									                    'value' => function($data) {
-		                        										return $data->periodo_fiscal_hasta;
-		                											},
-									                ],
 									                // [
-									                //     'label' => Yii::t('frontend', 'Descripcion'),
+									                //     'label' => Yii::t('frontend', 'Begin Date'),
 									                //     'value' => function($data) {
-		                       //  										return $data->rubroDetalle->descripcion;
+		                       //  										return $data->periodo_fiscal_desde;
+		                							// 				},
+									                // ],
+									                // [
+									                //     'label' => Yii::t('frontend', 'End Date'),
+									                //     'value' => function($data) {
+		                       //  										return $data->periodo_fiscal_hasta;
 		                							// 				},
 									                // ],
 									                [
-									                	'class' => 'yii\grid\DataColumn',
-									                	'attribute' => 'descripcion',
-									                	'format' => 'raw',
-
-									                	'value' => function($data) {
-									                				return $data->rubroDetalle->descripcion;
-									                	},
+									                    'label' => Yii::t('frontend', 'Descripcion'),
+									                    'value' => function($data) {
+		                        										return $data->rubroDetalle->descripcion;
+		                											},
 									                ],
 									                [
                         								'class' => 'yii\grid\DataColumn',
-                        								'attribute' => Yii::t('frontend', 'Current'),
+                        								'attribute' => Yii::t('frontend', 'Minimun'),
                         								'format' => 'raw',
                         								'contentOptions' => [
                         									'style'=>'width: 200px;'
@@ -231,10 +222,33 @@
                         										$p = (int)$data->exigibilidad_periodo;
                         										$real = $searchDeclaracion->getDefinitivaAnterior($a, $p, $data->id_rubro);
 
-							                                    return Html::textInput('id_rubro['. $data->id_rubro . ']',
+							                                    return Html::textInput('minimo['. $data->id_rubro . ']',
 							                                     													$real[$data->rubroDetalle->rubro], [
 		                                                                                        							'class' => 'form-control',
-		                                                                                        							'id' => 'id_rubro'. $data->id_rubro,
+		                                                                                        							'id' => 'minimo'. $data->id_rubro,
+		                                                                                        							'style' => '',
+		                                                                                        							//'value' => $real,
+		                                                                                        							'readonly' => true,
+									                                                                                    ]);
+								                        }
+								                    ],
+									                [
+                        								'class' => 'yii\grid\DataColumn',
+                        								'attribute' => Yii::t('frontend', 'Current'),
+                        								'format' => 'raw',
+                        								'contentOptions' => [
+                        									'style'=>'width: 200px;'
+                        								],
+                        								'value' => function($data) {
+                        										// $searchDeclaracion = New DeclaracionBaseSearch($data->actividadEconomica->id_contribuyente);
+                        										// $a = (int)$data->actividadEconomica->ano_impositivo - 1;
+                        										// $p = (int)$data->exigibilidad_periodo;
+                        										// $real = $searchDeclaracion->getDefinitivaAnterior($a, $p, $data->id_rubro);
+
+							                                    return Html::textInput('definitiva['. $data->id_rubro . ']',
+							                                     													0, [
+		                                                                                        							'class' => 'form-control',
+		                                                                                        							'id' => 'definitiva'. $data->id_rubro,
 		                                                                                        							'style' => '',
 		                                                                                        							//'value' => $real,
 		                                                                                        							//'disabled' => 'disabled',
