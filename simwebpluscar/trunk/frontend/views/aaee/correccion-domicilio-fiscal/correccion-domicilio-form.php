@@ -55,8 +55,8 @@
  			'id' => 'correccion-domicilio-fiscal-form',
  			'method' => 'post',
  			'enableClientValidation' => true,
- 			//'enableAjaxValidation' => true,
- 			'enableClientScript' => true,
+ 			'enableAjaxValidation' => false,
+ 			'enableClientScript' => false,
  		]);
  	?>
 
