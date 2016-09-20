@@ -200,7 +200,7 @@
 
 				$model = New DeclaracionBaseForm();
 				$formName = $model->formName();
-				$model->scenario = self::SCENARIO_ESTIMADA;
+				$model->scenario = self::SCENARIO_SEARCH;
 
 				$caption = Yii::t('frontend', 'Presentation Estimated Tax');
 				$subCaption = Yii::t('frontend', 'Select Fiscal Period');
@@ -225,6 +225,7 @@
 					if ( $postData['btn-accept'] == 1 ) {
 						$model->scenario = self::SCENARIO_SEARCH;
 						$model->load($postData);
+
 						if ( $model->load($postData) ) {
 			    			if ( $model->validate() ) {
 			    				$subCaption = Yii::t('frontend', 'Categories Registers');
@@ -248,6 +249,8 @@
 			  																	'subCaption' => $subCaption,
 
 					  					]);
+							} else {
+//die(var_dump($model->errors));
 							}
 						}
 					}
