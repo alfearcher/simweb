@@ -56,8 +56,8 @@
  			'id' => 'id-correccion-razon-social-form',
  			'method' => 'post',
  			'enableClientValidation' => true,
- 			//'enableAjaxValidation' => true,
- 			'enableClientScript' => true,
+ 			'enableAjaxValidation' => false,
+ 			'enableClientScript' => false,
  		]);
  	?>
 
