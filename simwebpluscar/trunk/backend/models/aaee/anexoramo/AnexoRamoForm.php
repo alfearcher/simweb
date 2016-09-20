@@ -124,7 +124,17 @@
         					'usuario',
         					'estatus',
         		],
-        		self::SCENARIO_DEFAULT => Model::scenarios()
+        		self::SCENARIO_DEFAULT => [
+        					'id_contribuyente',
+        					'ano_impositivo',
+        					'periodo',
+        					// 'fecha_desde',
+        					// 'fecha_hasta',
+        					// 'origen',
+        					// 'fecha_hora',
+        					// 'usuario',
+        					// 'estatus',
+        		],
         	];
     	}
 
