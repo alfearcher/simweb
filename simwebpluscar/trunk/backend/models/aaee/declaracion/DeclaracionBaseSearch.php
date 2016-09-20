@@ -372,57 +372,19 @@
 
 
 	    /***/
-	    public function getDefinitivaAnterior1($añoImpositivoDefinitiva, $periodoDefinitiva, $idRubro)
-	    {
-	    	$montoDefinitiva = 0;
-	    	$rubro = 0;
-	    	$rubroModel = Rubro::findOne($idRubro);
-	    	$rubro = (int)$rubroModel['rubro'];			// Codigo del Rubro.
-
-	    	if ( $rubro > 0 ) {
-	    		$findModel = self::findRubrosRegistrados($añoImpositivoDefinitiva, $periodoDefinitiva);
-	    		$ramoModel = $findModel->all();
-	    		if ( count($ramoModel) > 0 ) {
-		    		foreach ( $ramoModel as $ramo ) {
-		    			if ( $ramo->rubroDetalle->rubro == $rubro ) {
-		    				$montoDefinitiva = $ramo->reales;
-		    			}
-		    		}
-	    		}
-	    	}
-	    	return (float)$montoDefinitiva;
-	    }
-
-
-
-	    /***/
 	   	public function getDefinitivaAnterior($añoImpositivo, $periodo, $rubro = 0)
 	    {
 	    	$result = null;
 	    	$definitiva = null;
-	    	//$añoImpositivoAnterior = $anoImpositivo - 1;
-	    	//$montoDefinitiva = 0;
-	    	//$idImpuesto = self::getIdImpuestoSegunAnoImpositivo($añoImpositivoAnterior);
-	    	//$idRubroEncontrado = self::getIdRubro($idRubro, $añoImpositivoAnterior);
 	    	$findModel = self::findRubrosRegistrados($añoImpositivo, $periodo);
 	    	if ( isset($findModel) ) {
 	    		$result = $findModel->all();
-	    		foreach ( $result as $r ) {
-	    			$definitiva[$r->rubroDetalle->rubro] = $r['reales'];
+	    		foreach ( $result as $ramo ) {
+// die(var_dump($ramo->reales));
+	    			$definitiva[$ramo->rubroDetalle->rubro] = $ramo['reales'];
 	    		}
 	    	}
-//die(var_dump($definitiva));
 	    	return $definitiva;
-	    	// if ( $findModel !== null ) {
-	    	// 	$modelRamo = $findModel->all();
-	    	// 	foreach ( $modelRamo as $ramo ) {
-	    	// 		if ( $ramo['id_rubro'] == $idRubroEncontrado ) {
-	    	// 			$montoDefinitiva = $ramos['reales'];
-	    	// 		}
-	    	// 	}
-	    	// }
-
-	    	// return $montoDefinitiva;
 	    }
 
 

@@ -90,6 +90,7 @@
 	        					'id_contribuyente',
 	        					'ano_impositivo',
 	        					'exigibilidad_periodo',
+	        					'monto_new',
 	        					'fecha_desde',
 	        					'fecha_hasta',
 	        					'origen',
