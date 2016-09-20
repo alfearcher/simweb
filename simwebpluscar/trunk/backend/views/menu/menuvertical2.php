@@ -247,6 +247,117 @@ session_start();
         		],
 
 
+        		//PRESUPUESTOS
+        			['label' => Icon::show('fa fa-bar-chart',['class' => $typeLong], $typeIcon) . '&nbsp; Presupuestos',
+		        	'items' => [
+		        		//	SOLICITUDES DE ACTIVIDADES ECONOMICAS
+		        		['label' => Icon::show('fa fa-briefcase',['class' => $typeLong], $typeIcon) . '&nbsp; Actividades Economicas',
+		        			'items' => [
+		        						['label' => 'Inscripción de Actividades Economicas','url' => ['/aaee/inscripcionactecon/inscripcion-actividad-economica/index']],
+		        					   	['label' => 'Inscripción de Sucursales', 'url' => ['/aaee/inscripcionsucursal/inscripcion-sucursal/index']],
+		        					   	['label' => 'Autorizar Ramos', 'url' => ['/aaee/autorizarramo/autorizar-ramo/index']],
+		        					   	['label' => 'Renovación de Licencias', 'url' => ['ordenanza/impuesto/ordenanza/index']],
+		        					   	['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Modificion de Datos',
+		        					   		'items' => [
+		        					   				['label' => 'Anexo de Ramo', 'url' => '#'],
+		        					   				['label' => 'Desincorporacion de Ramo', 'url' => '#'],
+		        					   				['label' => 'Corrección de RIF', 'url' => ['/aaee/correccioncedularif/correccion-cedula-rif/index']],
+		        					   				['label' => 'Corrección de Razón Social', 'url' => ['/aaee/correccionrazonsocial/correccion-razon-social/index']],
+		        					   				['label' => 'Cambio de Domicilio Fiscal', 'url' => ['/aaee/correcciondomicilio/correccion-domicilio-fiscal/index']],
+		        					   				['label' => 'Cambio de Representante Legal', 'url' => '#'],
+		        					   				['label' => 'Aumento de Capital', 'url' => ['/aaee/correccioncapital/correccion-capital/index']],
+		        					   				['label' => 'Cambio de Otros Datos', 'url' => '#'],
+		        					   		]
+		        					   	],
+		        					   	['label' => Icon::show('fa fa-table',['class' => $typeLong], $typeIcon) . '&nbsp; Declaracion',
+		        					   		'items' => [
+		        					   				['label' => 'Estimada', 'url' => '#'],
+		        					   				['label' => 'Definitiva', 'url' => '#'],
+		        					   				['label' => 'Sustitutiva', 'url' => '#'],
+		        					   		]
+		        					   	],
+		        					   	['label' => Icon::show('fa fa-hand-paper-o',['class' => $typeLong], $typeIcon) . '&nbsp; Cesación de Actividades',
+		        					   		'items' => [
+		        					   				['label' => 'Temporal', 'url' => '#'],
+		        					   				['label' => 'Definitiva', 'url' => '#'],
+		        					   		]
+		        					   	],
+		        			]
+		        		],
+
+		        		//	SOLICITUDES DE INMUEBLES URBANOS
+		        		['label' => Icon::show('fa fa-home',['class' => $typeLong], $typeIcon) . '&nbsp; Inmuebles Urbanos',
+		        			'items' => [
+		        						['label' => 'Inscripción de Inmuebles Urbanos', 'url' => ['/inmueble/inscripcion-inmuebles-urbanos/inscripcion-inmuebles-urbanos']],
+		        						['label' => 'Avaluo Catastral', 'url' => ['/inmueble/avaluo-catastral-inmuebles-urbanos/index']],
+		        						['label' => 'Certificado Catastral', 'url' => '#'],
+		        						['label' => 'Renovación de Certificado Catastral', 'url' => '#'],
+		        						['label' => 'Solvencia', 'url' => '#'],
+		        						['label' => 'Cambio de Numero Catastral', 'url' => ['/inmueble/cambio-numero-catastral-inmuebles-urbanos/index']],
+		        						['label' => 'Cambio de Propietario(VENDEDOR)', 'url' => ['inmueble/cambio-propietario-vendedor-inmuebles-urbanos/index','id' =>12]], // vendedor:12 
+		        						['label' => 'Cambio de Propietario(COMPRADOR)', 'url' => ['inmueble/cambio-propietario-comprador-inmuebles-urbanos/buscar-vendedor','id' =>11]], // comprador:11
+		        						['label' => 'Integración de Parcela', 'url' => ['/inmueble/integracion-inmuebles-urbanos/index']],
+		        						['label' => 'Desintegración de Parcela', 'url' => ['inmueble/desintegracion-inmuebles-urbanos/index']],
+		        						['label' => 'Cambio a Propiedad Horizontal', 'url' => ['/inmueble/cambio-a-propiedad-horizontal-inmuebles-urbanos/index']],
+		        						['label' => 'Cambio de Otros Datos del Inmueble', 'url' => ['/inmueble/cambio-otros-datos-inmuebles-urbanos/index']],
+		        						['label' => 'Modificar Avaluo', 'url' => '#'],
+		        						['label' => 'Desincorporación de Inmueble', 'url' => ['/inmueble/desincorporacion-inmuebles-urbanos/index']],
+
+		        			]
+		        		],
+
+		        		//	SOLICITUDES DE VEHICULOS
+		        		['label' => Icon::show('fa fa-car',['class' => $typeLong], $typeIcon) . '&nbsp; Vehiculos',
+		        			'items' => [
+		        						['label' => 'Inscripci&oacute;n de Vehiculos', 'url' => ['vehiculo/vehiculos/create']],
+		        						['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . 'Calcomania',
+					        				'items' => [
+			        							['label' => 'Administrar funcionarios responsables de entregar calcomania','url' => ['/vehiculo/calcomania/administrarfuncionario/administrar-funcionario/busqueda-funcionario']],
+			        							['label' => 'Deshabilitar Funcionarios para la gestion de Calcomanias','url' => ['/vehiculo/calcomania/deshabilitarfuncionario/deshabilitar-funcionario/busqueda-funcionario']],
+
+			        							['label' => 'Generar Lote de Calcomania','url' => ['/vehiculo/calcomania/generarlote/generar-lote-calcomania/generar-lote-calcomania']],
+
+			        							['label' => 'Deshabilitar Lote de Calcomanias','url' => ['/vehiculo/calcomania/deshabilitarlote/deshabilitar-lote-calcomania/busqueda-lote-calcomania']],
+
+			        							['label' => 'Administrar Lote de Calcomanias Generadas','url' => ['/vehiculo/calcomania/administrarlotecalcomania/administrar-lote-calcomania/busqueda-multiple']],
+
+			        							['label' => 'Asignar Calcomanias a funcionario (Distribuir entre funcionario responsables)','url' => ['/vehiculo/calcomania/administrarcalcomaniafuncionario/administrar-calcomania-funcionario/seleccionar-funcionario']],
+
+
+			        							['label' => 'Administrar Entrega de calcomania','url' => ['/vehiculo/calcomania/asignarcalcomaniacontribuyente/asignar-calcomania-contribuyente/seleccionar-tipo-contribuyente']],
+			        							
+			        							['label' => 'Cierre de Lote','url' => ['/vehiculo/calcomania/cierrelote/cierre-lote-calcomania/busqueda-lote']],
+
+			        							
+			        						
+
+
+		                                       
+					        				],
+					        			],
+		        						['label' => 'Solvencia', 'url' => '#'],
+		        						['label' => 'Cambio de Propietario', 'url' => '#'],
+		        						['label' => 'Cambio de Placa', 'url' => ['vehiculo/vehiculos/cambio-placa']],
+		        						['label' => 'Desincorporaci&oacute;n de Vehiculo', 'url' => '#'],
+		        						['label' => 'Cambio de Otros Datos del Vehiculo', 'url' => ['vehiculo/vehiculos/busqueda']],
+		        			],
+		        		],
+
+		        		//	PROPAGANDA COMERCIAL
+		        	
+
+		        		//	ESPECTACULO PUBLICO
+		        		
+
+		        		//	APUESTAS LICITAS
+		        	
+
+		        	
+		        	]
+		        ],
+
+
+
 		        //	CONFIGURACIONES
         		['label' => Icon::show('fa fa-cog',['class' => $typeLong], $typeIcon) . '&nbsp; Configuraciones',
         			'items' => [
