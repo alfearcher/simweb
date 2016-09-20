@@ -433,10 +433,11 @@
 		private function actionMostrarSolicitudCambioPropietarioCompradorInmueble()
 		{
 			if ( $this->model->nivel_aprobacion == 2 ) {
-					$modelSearch = New SlInmueblesUrbanosSearch($this->model->id_contribuyente);
-					$model = $modelSearch->findActualizacionDatos($this->model->nro_solicitud);
+					// $modelSearch = New SlInmueblesUrbanosSearch($this->model->id_contribuyente);
+					// $model = $modelSearch->findActualizacionDatos($this->model->nro_solicitud);
 
-					
+					$modelSearch = New SlCambioPropietarioSearch($this->model->id_contribuyente);
+					$model = $modelSearch->findVendedor($this->model->nro_solicitud);
 
 					return $this->render('@backend/views/inmueble/cambio-propietario-comprador-inmuebles-urbanos/view-solicitud', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),

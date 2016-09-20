@@ -57,9 +57,10 @@
 						'model' => $model,
 		    			'attributes' => [
 		    				'nro_solicitud',
-		    				'id_contribuyente',
 		    				'id_impuesto',
-		    				'direccion',
+		    				'id_propietario',
+		    				'id_comprador',
+		    				'fecha_hora',
 		    				
 
 
