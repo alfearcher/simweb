@@ -120,7 +120,17 @@
         					'usuario',
         					'estatus',
         		],
-        		self::SCENARIO_DEFAULT => Model::scenarios()
+        		self::SCENARIO_DEFAULT => [
+        					'id_contribuyente',
+        					'ano_impositivo',
+        					'periodo',
+        					// 'periodo_fiscal_desde',
+        					// 'periodo_fiscal_hasta',
+        					// 'origen',
+        					// 'fecha_hora',
+        					// 'usuario',
+        					// 'estatus',
+        		],
         	];
     	}
 
