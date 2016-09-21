@@ -294,7 +294,7 @@
                                          ]; 
                     $arregloCondicionMaster = [
                                                 'id_impuesto' => $camposModel['id_impuesto'],
-                                              ];  
+                                              ];    
 
                     $resultInsert = $this->_conexion->modificarRegistro($this->_conn, $tableNameMaster, $arregloDatosMaster, $arregloCondicionMaster);
 
