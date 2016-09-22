@@ -285,7 +285,7 @@
                                                               $arregloDatos, $arregloCondicion);
                 } elseif($arregloDatos['estatus_funcionario'] == 1) {
 
-                    $tableNameMaster = 'inmuebles';
+                    $tableNameMaster = 'inmuebles';  
 
                     $arregloDatosMaster = [
                                             
@@ -294,7 +294,7 @@
                                          ]; 
                     $arregloCondicionMaster = [
                                                 'id_impuesto' => $camposModel['id_impuesto'],
-                                              ];    
+                                              ];   
 
                     $resultInsert = $this->_conexion->modificarRegistro($this->_conn, $tableNameMaster, $arregloDatosMaster, $arregloCondicionMaster);
 
