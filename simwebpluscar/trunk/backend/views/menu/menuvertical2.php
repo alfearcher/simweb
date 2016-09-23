@@ -255,7 +255,7 @@ session_start();
 		        			'items' => [
 		        						['label' => 'Registro','url' => ['/presupuesto/nivelespresupuesto/registrar/registro-niveles-presupuestarios/registro-niveles-presupuestarios']],
 		        					   	['label' => 'Modifiacion', 'url' => ['/presupuesto/nivelespresupuesto/modificar/modificar-niveles-presupuesto/vista-seleccion']],
-		        					   	['label' => 'Inactivacion', 'url' => ['/aaee/autorizarramo/autorizar-ramo/index']],
+		        					   	['label' => 'Inactivacion', 'url' => ['/presupuesto/nivelespresupuesto/inactivar/inactivar-niveles-presupuesto/vista-seleccion']],
 		        					   
 		        					   	['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Codigos Presupuestarios',
 		        					   		'items' => [
