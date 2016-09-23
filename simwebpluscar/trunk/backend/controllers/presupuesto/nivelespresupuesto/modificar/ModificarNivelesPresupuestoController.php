@@ -22,14 +22,14 @@
  */
 
  /**    
- *  @file RegistroNivelesPresupuestariosController.php
+ *  @file ModificarNivelesPresupuestoController.php
  *  
  *  @author Manuel Alejandro Zapata Canelon
  * 
- *  @date 22/09/16
+ *  @date 23/09/16
  * 
- *  @class RegistroNivelesPresupuestariosController
- *  @brief Controlador que renderiza la vista con el formulario de registro de niveles presupuestarios
+ *  @class ModificarNivelesPresupuestoController
+ *  @brief Controlador que renderiza la vista con el formulario para la modificacion de datos de la tabla niveles_contables
  *  
  * 
  *  
@@ -43,7 +43,7 @@
  *  
  */ 
 
-namespace backend\controllers\presupuesto\nivelespresupuesto\registrar;
+namespace backend\controllers\presupuesto\nivelespresupuesto\modificar;
 
 use Yii;
 
@@ -54,7 +54,8 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\conexion\ConexionController;
 use common\mensaje\MensajeController;
-use backend\models\presupuesto\nivelespresupuesto\registrar\RegistrarNivelesPresupuestariosForm;
+use common\enviaremail\PlantillaEmail;
+use backend\models\presupuesto\nivelespresupuesto\modificar\ModificarNivelesPresupuestoForm;
 /**
  * Site controller
  */
@@ -67,17 +68,52 @@ session_start();
 
 
 
-class RegistroNivelesPresupuestariosController extends Controller
+class ModificarNivelesPresupuestoController extends Controller
 {
   
   public $layout = 'layout-main';
+
+
+  public function actionVistaSeleccion()
+  {
+
+
+  		$busqueda = new ModificarNivelesPresupuestoForm();
+  		$dataProvider = $busqueda->busquedaNivelesPresupuestarios();
+
+
+  			return $this->render('/presupuesto/nivelespresupuesto/modificar/vista-seleccion', [
+
+  															'dataProvider' => $dataProvider,
+
+  																]);
+  }
+
+
+  public function actionVerificarNivelContable()
+  {
+
+  		$nivelContable = yii::$app->request->post('id');
+  		$_SESSION['idContable'] = $nivelContable;
+  		//die(var_dump($nivelContable));
+  			$busqueda = new ModificarNivelesPresupuestoForm();
+  			$model = $busqueda->busquedaNiveles($nivelContable);
+
+  				if($model == true){
+  					$_SESSION['datosNiveles'] = $model;
+
+  					return $this->redirect(['modificar-niveles-contables']);
+  				}else{
+  					return MensajeController::actionMensaje(920);
+  				}
+  }				
    
   
-  public function actionRegistroNivelesPresupuestarios()
-  {
-   // die('llegue a registro');
+  	public function actionModificarNivelesContables()
+  	{
+   		$datos = $_SESSION['datosNiveles'];
 
-      $model = new RegistrarNivelesPresupuestariosForm();
+     	$model = new ModificarNivelesPresupuestoForm();
 
             $postData = Yii::$app->request->post();
 
@@ -93,10 +129,10 @@ class RegistroNivelesPresupuestariosController extends Controller
 
 
                
-                   $guardar = self::beginSave("guardar", $model);
+                   $modificar = self::beginSave("modificar", $model);
 
-                      if($guardar == true){
-                          return MensajeController::actionMensaje(100);
+                      if($modificar == true){
+                          return MensajeController::actionMensaje(200);
                       }else{
                           return MensajeController::actionMensaje(920);
                       }    
@@ -106,8 +142,9 @@ class RegistroNivelesPresupuestariosController extends Controller
               }
             }
             
-            return $this->render('/presupuesto/nivelespresupuesto/registrar/formulario-niveles-presupuestos', [
+            return $this->render('/presupuesto/nivelespresupuesto/modificar/formulario-modificar-niveles-presupuestos', [
                                                               'model' => $model,
+                                                              'datos' => $datos,
                                                              
                                                            
             ]);
@@ -115,44 +152,42 @@ class RegistroNivelesPresupuestariosController extends Controller
 
 
     /**
-     * [guardarNivelesContables description] metodo que realiza el guardado de la informacion ingresada por el funcionario en la tabla niveles contables
+     * [modificarNivelesContables description] metodo que realiza la modificacion de la informacion ingresada por el funcionario en la tabla niveles contables
      * @param  [type] $conn     [description] parametro de conexion
      * @param  [type] $conexion [description] parametro de conexion
      * @param  [type] $model    [description] informacion enviada por el funcionario desde el formulario
-     * @return [type]           [description] retorna true si el proceso guarda y false si el proceso da error
+     * @return [type]           [description] retorna true si el proceso modifica y false si el proceso da error
      */
-    public function guardarNivelesContables($conn, $conexion, $model)
+    public function modificarNivelesContablesMaestro($conn, $conexion, $model)
     {
 
+    	$tableName = 'niveles_contables';
+      	
+      	$arregloCondition = ['nivel_contable' => $_SESSION['idContable']];
+     
+    		$arregloDatos['nivel_contable'] = strtoupper($model->nivel_contable);
+
+     		$arregloDatos['descripcion'] = $model->descripcion;
+
+        	$arregloDatos['ingreso_propio'] = $model->ingreso_propio;
+
+		      $conexion = new ConexionController();
+
+		      $conn = $conexion->initConectar('db');
+		         
+		      $conn->open();
+
       
-      $tabla = 'niveles_contables';
-      $arregloDatos = [];
-      $arregloCampo = RegistrarNivelesPresupuestariosForm::attributeNivelesContables();
 
-      foreach ($arregloCampo as $key=>$value){
+          			if ($conexion->modificarRegistro($conn, $tableName, $arregloDatos, $arregloCondition)){
 
-          $arregloDatos[$value] =0;
-      }
+             
 
-      $arregloDatos['nivel_contable'] = $model->nivel_contable;
-
-      $arregloDatos['descripcion'] = strtoupper($model->descripcion);
-
-      $arregloDatos['ingreso_propio'] = $model->ingreso_propio;
-
-      $arregloDatos['estatus'] = 0;
-
-          if ($conexion->guardarRegistro($conn, $tabla, $arregloDatos )){
-
-
-
-             $resultado = true;
-
-
-              return $resultado;
-
-
-          }
+              			return true;
+              
+          			}
+      
+     
 
     }
 
@@ -169,13 +204,13 @@ class RegistroNivelesPresupuestariosController extends Controller
 
       $transaccion = $conn->beginTransaction();
 
-          if ($var == "guardar"){
+          if ($var == "modificar"){
             
 
-              $guardar = self::guardarNivelesContables($conn, $conexion, $model);
+              $modificar = self::modificarNivelesContablesMaestro($conn, $conexion, $model);
 
              
-              if ($guardar == true){
+              if ($modificar == true){
 
                 
 
