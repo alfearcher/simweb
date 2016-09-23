@@ -250,38 +250,40 @@ session_start();
         		//PRESUPUESTOS
         			['label' => Icon::show('fa fa-bar-chart',['class' => $typeLong], $typeIcon) . '&nbsp; Presupuestos',
 		        	'items' => [
-		        		//	SOLICITUDES DE ACTIVIDADES ECONOMICAS
-		        		['label' => Icon::show('fa fa-briefcase',['class' => $typeLong], $typeIcon) . '&nbsp; Actividades Economicas',
+		        		//	SOLICITUDES DE PRESUPUESTOS
+		        		['label' => Icon::show('fa fa-briefcase',['class' => $typeLong], $typeIcon) . '&nbsp; Niveles de Presupuestos',
 		        			'items' => [
-		        						['label' => 'Inscripción de Actividades Economicas','url' => ['/aaee/inscripcionactecon/inscripcion-actividad-economica/index']],
-		        					   	['label' => 'Inscripción de Sucursales', 'url' => ['/aaee/inscripcionsucursal/inscripcion-sucursal/index']],
-		        					   	['label' => 'Autorizar Ramos', 'url' => ['/aaee/autorizarramo/autorizar-ramo/index']],
-		        					   	['label' => 'Renovación de Licencias', 'url' => ['ordenanza/impuesto/ordenanza/index']],
-		        					   	['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Modificion de Datos',
+		        						['label' => 'Registro','url' => ['/presupuesto/nivelespresupuesto/registrar/registro-niveles-presupuestarios/registro-niveles-presupuestarios']],
+		        					   	['label' => 'Modifiacion', 'url' => ['/aaee/inscripcionsucursal/inscripcion-sucursal/index']],
+		        					   	['label' => 'Inactivacion', 'url' => ['/aaee/autorizarramo/autorizar-ramo/index']],
+		        					   
+		        					   	['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Codigos Presupuestarios',
 		        					   		'items' => [
-		        					   				['label' => 'Anexo de Ramo', 'url' => '#'],
-		        					   				['label' => 'Desincorporacion de Ramo', 'url' => '#'],
-		        					   				['label' => 'Corrección de RIF', 'url' => ['/aaee/correccioncedularif/correccion-cedula-rif/index']],
-		        					   				['label' => 'Corrección de Razón Social', 'url' => ['/aaee/correccionrazonsocial/correccion-razon-social/index']],
-		        					   				['label' => 'Cambio de Domicilio Fiscal', 'url' => ['/aaee/correcciondomicilio/correccion-domicilio-fiscal/index']],
-		        					   				['label' => 'Cambio de Representante Legal', 'url' => '#'],
-		        					   				['label' => 'Aumento de Capital', 'url' => ['/aaee/correccioncapital/correccion-capital/index']],
-		        					   				['label' => 'Cambio de Otros Datos', 'url' => '#'],
+		        					   				['label' => 'Registrar', 'url' => '#'],
+		        					   				['label' => 'Modificar', 'url' => '#'],
+		        					   				['label' => 'Inactivar', 'url' => ['/aaee/correccioncedularif/correccion-cedula-rif/index']],
+		        					   				['label' => 'Cambiar Codigos Presupuestarios entre Niveles Presupuestarios', 'url' => '#'],
+		        					   				
 		        					   		]
 		        					   	],
-		        					   	['label' => Icon::show('fa fa-table',['class' => $typeLong], $typeIcon) . '&nbsp; Declaracion',
+
+		        					   	['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Ordenanza de Presupuestos',
 		        					   		'items' => [
-		        					   				['label' => 'Estimada', 'url' => '#'],
-		        					   				['label' => 'Definitiva', 'url' => '#'],
-		        					   				['label' => 'Sustitutiva', 'url' => '#'],
+		        					   				
+		        					   				['label' => 'Registro', 'url' => '#'],
+		        					   				['label' => 'Modificacion', 'url' => ['/aaee/correccioncedularif/correccion-cedula-rif/index']],
+		        					   				['label' => 'Inactivacion', 'url' => '#'],
+		        					   				['label' => 'Cargar Presupuesto', 'url' => '#'],
+		        					   				
 		        					   		]
 		        					   	],
-		        					   	['label' => Icon::show('fa fa-hand-paper-o',['class' => $typeLong], $typeIcon) . '&nbsp; Cesación de Actividades',
+		        					   	['label' => Icon::show('fa fa-table',['class' => $typeLong], $typeIcon) . '&nbsp; Reportes',
 		        					   		'items' => [
-		        					   				['label' => 'Temporal', 'url' => '#'],
-		        					   				['label' => 'Definitiva', 'url' => '#'],
+		        					   				['label' => 'Generar Reporte', 'url' => '#'],
+		        					   			
 		        					   		]
 		        					   	],
+		        					
 		        			]
 		        		],
 
