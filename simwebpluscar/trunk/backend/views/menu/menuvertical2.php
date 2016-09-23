@@ -254,7 +254,7 @@ session_start();
 		        		['label' => Icon::show('fa fa-briefcase',['class' => $typeLong], $typeIcon) . '&nbsp; Niveles de Presupuestos',
 		        			'items' => [
 		        						['label' => 'Registro','url' => ['/presupuesto/nivelespresupuesto/registrar/registro-niveles-presupuestarios/registro-niveles-presupuestarios']],
-		        					   	['label' => 'Modifiacion', 'url' => ['/aaee/inscripcionsucursal/inscripcion-sucursal/index']],
+		        					   	['label' => 'Modifiacion', 'url' => ['/presupuesto/nivelespresupuesto/modificar/modificar-niveles-presupuesto/vista-seleccion']],
 		        					   	['label' => 'Inactivacion', 'url' => ['/aaee/autorizarramo/autorizar-ramo/index']],
 		        					   
 		        					   	['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Codigos Presupuestarios',
