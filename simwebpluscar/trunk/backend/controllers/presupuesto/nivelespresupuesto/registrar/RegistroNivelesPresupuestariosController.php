@@ -145,14 +145,11 @@ class RegistroNivelesPresupuestariosController extends Controller
 
       $arregloDatos['nivel_contable'] = $model->nivel_contable;
 
-      $arregloDatos['descripcion'] = $model->descripcion;
+      $arregloDatos['descripcion'] = strtoupper($model->descripcion);
 
       $arregloDatos['ingreso_propio'] = $model->ingreso_propio;
 
-     
-
-
-        if ($conexion->guardarRegistro($conn, $tabla, $arregloDatos )){
+          if ($conexion->guardarRegistro($conn, $tabla, $arregloDatos )){
 
 
 
@@ -171,12 +168,7 @@ class RegistroNivelesPresupuestariosController extends Controller
     public function beginSave($var, $model)
     {
      //die('llegue a begin'.var_dump($model));
-      
-
-      
-
-        $conexion = new ConexionController();
-
+      $conexion = new ConexionController();
 
       $conn = $conexion->initConectar('db');
 
