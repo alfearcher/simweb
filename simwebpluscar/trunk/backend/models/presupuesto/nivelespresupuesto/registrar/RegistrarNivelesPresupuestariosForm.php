@@ -119,7 +119,7 @@ class RegistrarNivelesPresupuestariosForm extends Model
                                         ->where([
 
                                       'nivel_contable' => $this->nivel_contable,
-                                    
+                                     // 'estatus' => 0,
 
                                           ])
                                         ->all();
