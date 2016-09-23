@@ -105,9 +105,9 @@ class RegistroNivelesPresupuestariosController extends Controller
                    $guardar = self::beginSave("guardar", $model);
 
                       if($guardar == true){
-                        die('guardo');
+                          return MensajeController::actionMensaje(100);
                       }else{
-                        die('no guardo');
+                          return MensajeController::actionMensaje(920);
                       }    
                       
                      
