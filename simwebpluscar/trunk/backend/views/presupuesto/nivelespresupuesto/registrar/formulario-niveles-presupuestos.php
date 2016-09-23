@@ -60,7 +60,7 @@ $this->title = 'Carga de Niveles Contables';
                                                                                             'id' => 'descripcion',
                                                                                             'style' => 'height:32px;width:200px;',
                                                                                            
-                                                                                            'maxlength' => 1,
+                                                                                           
                                                                                          ]); ?>
                                         </div>
                                     </div>
