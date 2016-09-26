@@ -75,6 +75,9 @@
 	use backend\models\solicitud\negacion\NegacionSolicitudForm;
 	use backend\models\documento\DocumentoConsignadoForm;
 	use common\enviaremail\PlantillaEmail;
+// para prueba
+	use common\models\planilla\Pago;
+	use common\models\planilla\PagoDetalle;
 
 
 	/**
@@ -1008,6 +1011,28 @@
 	        } else {
 	            echo "<option> - </option>";
 	        }
+	    }
+
+
+
+	    /***/
+	    public function actionPagarPlanilla()
+	    {
+	    	$planilla = 0;
+	 		$request = Yii::$app->request;
+	 		// Se obtiene el numero de planilla.
+			$planilla = $request->get('p');
+
+			if ( $planilla > 0 ) {
+				$model = Pago::find()->where('planilla =:planilla', [':planilla' => $planilla])->asArray()->one();
+
+				$id = isset($model['id_pago']) ? $model['id_pago'] : 0;
+
+				PagoDetalle::updateAll(['pago' => 1, 'fecha_pago' => date('Y-m-d')], ['id_pago' => $id]);
+
+				return $this->redirect(['buscar-solicitudes-contribuyente']);
+
+			}
 	    }
 
 	}
