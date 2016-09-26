@@ -10,7 +10,7 @@ use yii\widgets\ActiveForm;
 
 <div class="config-convenios-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(); ?> 
 
     <?= $form->field($model, 'id_config_convenio')->textInput(['maxlength' => true]) ?>
 
