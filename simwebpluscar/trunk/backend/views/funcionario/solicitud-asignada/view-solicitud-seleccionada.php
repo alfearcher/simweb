@@ -472,6 +472,19 @@
 						                            	}
 						                            },
 						                        ],
+
+// Boton para aprobar las solicitudes
+						                        [
+						                            'label' => 'Pagar Planilla',
+						                            'format' => 'raw',
+						                            'value' => function($data) {
+						                            	return Html::a($data['planilla'],
+						                            			 		Url::to(['pagar-planilla', 'p' => $data['planilla']]),
+						                            			 		['class' => 'btn btn-success']);
+						                            },
+						                        ],
+//
+
 							               ]
 							            ]);
 							        ?>
@@ -555,6 +568,7 @@ $this->registerJs(
             }
         );
     }));
+
 
 	$(document).ready(function() {
 		var n = $( "#planilla-no-solvente" ).length;
