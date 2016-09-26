@@ -68,9 +68,9 @@
  		$form = ActiveForm::begin([
  			'id' => 'id-inscripcion-sucursal-form',
  			'method' => 'post',
- 			'enableClientValidation' => true,
- 			'enableAjaxValidation' => true,
- 			'enableClientScript' => true,
+ 			'enableClientValidation' => false,
+ 			'enableAjaxValidation' => false,
+ 			'enableClientScript' => false,
  		]);
  	?>
 
