@@ -249,10 +249,8 @@
 		      					}
 		      				}
 		      			//}
-			      	} else {
-			      		$this->redirect(['quit']);
 			      	}
-		      	 }
+		      	}
 
 		      	$mensajeRegistroMercantil = '';
 		      	// Se muestra el form de la solicitud.
