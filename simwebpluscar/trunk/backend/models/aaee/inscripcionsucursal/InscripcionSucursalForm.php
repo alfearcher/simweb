@@ -126,9 +126,9 @@
         					'fecha_hora',
         					'usuario',
         					'estatus',
-        					'num_tlf_ofic',
-        					'num_tlf_ofic_otro',
-        					'num_celular',
+        					// 'num_tlf_ofic',
+        					// 'num_tlf_ofic_otro',
+        					// 'num_celular',
         		]
         	];
     	}
