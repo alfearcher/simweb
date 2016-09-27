@@ -66,12 +66,16 @@
 		public $tipo_declaracion;
 		public $monto_v;
 		public $monto_new;
+		public $monto_minimo;
 		public $origen;
 		public $usuario;
 		public $fecha_hora;
 		public $estatus;
 		public $fecha_hora_proceso;
 		public $user_funcionario;
+
+		public $rubro;
+		public $descripcion;
 
 		const SCENARIO_ESTIMADA = 'estimada';
 		const SCENARIO_DEFINITIVA = 'definitiva';
@@ -90,9 +94,13 @@
 	        					'id_contribuyente',
 	        					'ano_impositivo',
 	        					'exigibilidad_periodo',
+	        					'id_rubro',
 	        					'monto_new',
-	        					'fecha_desde',
-	        					'fecha_hasta',
+	        					'monto_minimo',
+	        					'rubro',
+	        					'descripcion',
+	        					// 'fecha_desde',
+	        					// 'fecha_hasta',
 	        					'origen',
 	        					'fecha_hora',
 	        					'usuario',
@@ -100,15 +108,20 @@
 
 	        		],
         		self::SCENARIO_DEFINITIVA => [
-        					'id_contribuyente',
-        					'ano_impositivo',
-        					'exigibilidad_periodo',
-        					'fecha_desde',
-        					'fecha_hasta',
-        					'origen',
-        					'fecha_hora',
-        					'usuario',
-        					'estatus',
+        						'id_contribuyente',
+	        					'ano_impositivo',
+	        					'exigibilidad_periodo',
+	        					'id_rubro',
+	        					'monto_new',
+	        					'monto_minimo',
+	        					'rubro',
+	        					'descripcion',
+	        					// 'fecha_desde',
+	        					// 'fecha_hasta',
+	        					'origen',
+	        					'fecha_hora',
+	        					'usuario',
+	        					'estatus',
 
         		],
         		self::SCENARIO_SEARCH => [
@@ -128,7 +141,9 @@
 	    public function rules()
 	    {
 	        return [
-	        	[['id_contribuyente', 'monto_v', 'monto_new'],
+	        	[['id_contribuyente', 'monto_minimo',
+	        	  'monto_new', 'id_rubro',
+	        	  'rubro', 'descripcion'],
 	        	  'required', 'on' => 'estimada',
 	        	  'message' => Yii::t('frontend', '{attribute} is required')],
 	        	[['id_contribuyente', 'ano_impositivo', 'exigibilidad_periodo'],
@@ -139,6 +154,16 @@
 	        	  'integer',
 	        	  'message' => Yii::t('frontend', '{attribute} no valid')],
 	          	['inactivo', 'default', 'value' => 0],
+	          	['monto_minimo', 'default', 'value' => 0],
+	          	['monto_v', 'default', 'value' => 0],
+	          	['monto_new', 'default', 'value' => 0],
+	          	['monto_new',
+    			 'compare',
+    			 'compareAttribute' => 'monto_minimo',
+    			 'operator' => '>=',
+    			 'message' => Yii::t('backend', '{attribute} must be no less that ' . self::attributeLabels()['monto_minimo'])],
+    			[['monto_new', 'monto_v', 'monto_minimo'],
+    			  'double', 'message' => Yii::t('backend', '{attribute} must be decimal.')],
 	        ];
 	    }
 
@@ -151,9 +176,13 @@
 	    public function attributeLabels()
 	    {
 	        return [
-	        	'tipo_declaracion' => Yii::t('frontend', 'Id. Register'),
-	            'descripcion' => Yii::t('frontend', 'description'),
+	        	'tipo_declaracion' => Yii::t('frontend', 'Type'),
+	            'descripcion' => Yii::t('frontend', 'Description'),
 	            'inactivo' => Yii::t('frontend', 'Condition'),
+	            'monto_minimo' => Yii::t('frontend', 'Monto Minimo'),
+	            'monto_new' => Yii::t('frontend', 'Monto Declaracion'),
+	            'rubro' => Yii::t('frontend', 'Category'),
+	            'id_rubro' => Yii::t('frontend', 'Id.'),
 
 	        ];
 	    }
