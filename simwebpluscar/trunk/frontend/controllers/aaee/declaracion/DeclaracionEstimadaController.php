@@ -68,6 +68,7 @@
 	use backend\models\aaee\acteconingreso\ActEconIngresoForm;
 	use backend\models\aaee\declaracion\DeclaracionBaseSearch;
 	use backend\models\aaee\declaracion\DeclaracionBaseForm;
+	use yii\base\Model;
 
 	session_start();		// Iniciando session
 
@@ -191,21 +192,26 @@
 		public function actionIndexCreate()
 		{
 			// Se verifica que el contribuyente haya iniciado una session.
-			$params = '';
+			self::actionAnularSession(['lapso']);
 			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) && isset($_SESSION['conf'])) {
 
 				$idContribuyente = $_SESSION['idContribuyente'];
 				$request = Yii::$app->request;
 				$postData = $request->post();
 
+				if ( isset($postData['btn-quit']) ) {
+					if ( $postData['btn-quit'] == 1 ) {
+						$this->redirect(['quit']);
+					}
+				}
+
 				$model = New DeclaracionBaseForm();
+
 				$formName = $model->formName();
 				$model->scenario = self::SCENARIO_SEARCH;
 
 				$caption = Yii::t('frontend', 'Presentation Estimated Tax');
 				$subCaption = Yii::t('frontend', 'Select Fiscal Period');
-
-//die(var_dump($postData));
 
 		      	// Datos generales del contribuyente.
 		      	$searchDeclaracion = New DeclaracionBaseSearch($idContribuyente);
@@ -217,10 +223,7 @@
 						$postData = [];			// Inicializa el post.
 						$model->load($postData);
 					}
-				} elseif ( isset($postData['btn-quit']) ) {
-					if ( $postData['btn-quit'] == 1 ) {
-						$this->redirect(['quit']);
-					}
+
 				} elseif ( isset($postData['btn-accept']) ) {
 					if ( $postData['btn-accept'] == 1 ) {
 						$model->scenario = self::SCENARIO_SEARCH;
@@ -228,29 +231,11 @@
 
 						if ( $model->load($postData) ) {
 			    			if ( $model->validate() ) {
-			    				$subCaption = Yii::t('frontend', 'Categories Registers');
-								$añoImpositivo = $model->ano_impositivo;
-								$periodo = $model->exigibilidad_periodo;
-
-								$dataProviderRubro = $searchDeclaracion->getDataProviderRubrosRegistrados($añoImpositivo, $periodo);
-								$btnSearchCategory = 1;
-
-								$opciones = [
-									'back' => '/aaee/declaracion/declaracion-estimada/index-create',
-								];
-								$caption = $caption . '. ' . Yii::t('frontend', 'Categories Registered') . ' ' . $añoImpositivo . ' - ' . $periodo;
-								return $this->render('/aaee/declaracion/estimada/declaracion-estimada-ramo-form', [
-			  																	'model' => $model,
-			  																	'findModel' => $findModel,
-			  																	'dataProviderRubro' => $dataProviderRubro,
-			  																	'btnSearchCategory' => $btnSearchCategory,
-			  																	'caption' => $caption,
-			  																	'opciones' =>$opciones,
-			  																	'subCaption' => $subCaption,
-
-					  					]);
-							} else {
-//die(var_dump($model->errors));
+			   					$_SESSION['lapso'] = [
+			   								'a' => $model->ano_impositivo,
+			   								'p' =>$model->exigibilidad_periodo,
+			   					];
+			    				$this->redirect(['declarar-create']);
 							}
 						}
 					}
@@ -262,7 +247,7 @@
 		      	}
 
 		  		if ( isset($findModel) ) {
-					$model = New DeclaracionBaseForm();
+					//$model = New DeclaracionBaseForm();
 					$listaAño = $searchDeclaracion->getListaAnoRegistrado();
 					$url = Url::to(['index-create']);
 					$rutaLista = "/aaee/declaracion/declaracion-estimada/lista-periodo";
@@ -284,6 +269,364 @@
 		  		}
 			}
 		}
+
+
+
+
+
+		/***/
+		public function actionDeclararCreate()
+		{
+			// Se verifica que el contribuyente haya iniciado una session.
+			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) && isset($_SESSION['conf'])) {
+
+				$idContribuyente = $_SESSION['idContribuyente'];
+				$request = Yii::$app->request;
+
+				$lapso = isset($_SESSION['lapso']) ? $_SESSION['lapso'] : null;
+
+				if ( count($lapso) > 0 ) {
+					$postData = $request->post();
+
+					if ( isset($postData['btn-quit']) ) {
+						if ( $postData['btn-quit'] == 1 ) {
+							$this->redirect(['quit']);
+						}
+					}
+
+//die(var_dump($postData));
+
+					// Lo siguiente crea un array del modelo DeclaracionBaseForm(), para la validacion
+					// individual de cada uno de los input (campos) del mismo tipo. En este caso el
+					// campo donde se registrara la declracion sera tantas veces como ramos (rubros) tenga
+					// registrado el contribuyente.
+					$model = New DeclaracionBaseForm();
+
+					$modelMultiplex = [$model];
+					$formName = $model->formName();
+					$model->scenario = self::SCENARIO_ESTIMADA;
+
+					$caption = Yii::t('frontend', 'Presentation Estimated Tax');
+					$subCaption = Yii::t('frontend', 'Select Fiscal Period');
+
+//die(var_dump($modelMultiplex));
+//die(var_dump($postData));
+
+			      	// Datos generales del contribuyente.
+			      	$searchDeclaracion = New DeclaracionBaseSearch($idContribuyente);
+			      	$findModel = $searchDeclaracion->findContribuyente();
+
+					if ( isset($postData['btn-back-form']) ) {
+						if ( $postData['btn-back-form'] == 1 ) {
+							$model->scenario = self::SCENARIO_SEARCH;
+							$postData = [];			// Inicializa el post.
+							$model->load($postData);
+							$this->redirect(['index-create']);
+						}
+					} elseif( isset($postData['btn-create']) ) {
+						if ( $postData['btn-create'] == 3 ) {
+							$model->scenario = self::SCENARIO_ESTIMADA;
+							$result = false;
+							$modelMultiplex = [$model];
+							Model::loadMultiple($modelMultiplex, $postData);
+							$result = Model::validateMultiple($modelMultiplex);
+die(var_dump($result));
+						}
+					}
+
+
+			  		if ( Model::loadMultiple($modelMultiplex, $postData)  && Yii::$app->request->isAjax ) {
+						Yii::$app->response->format = Response::FORMAT_JSON;
+						return ActiveForm::validateMultiple($modelMultiplex);
+			      	}
+
+
+
+			  		if ( isset($findModel) ) {
+						$subCaption = Yii::t('frontend', 'Categories Registers');
+						$añoImpositivo = (int)$lapso['a'];
+						$periodo = (int)$lapso['p'];
+
+						$model->ano_impositivo = $añoImpositivo;
+						$model->exigibilidad_periodo = $periodo;
+
+						$btnSearchCategory = 1;
+						$declaracionDefinitiva = $searchDeclaracion->getDefinitivaAnterior($añoImpositivo-1, $periodo);
+						$definitiva = json_encode($declaracionDefinitiva);
+
+						$rubroRegistradoModels = $searchDeclaracion->findRubrosRegistrados($añoImpositivo, $periodo)->all();
+
+						$opciones = [
+							'back' => '/aaee/declaracion/declaracion-estimada/index-create',
+						];
+						$caption = $caption . '. ' . Yii::t('frontend', 'Categories Registered') . ' ' . $añoImpositivo . ' - ' . $periodo;
+						return $this->render('/aaee/declaracion/estimada/declaracion-estimada-form', [
+	  																	'model' => $model,
+	  																	'findModel' => $findModel,
+	  																	'rubroRegistradoModels' => $rubroRegistradoModels,
+	  																	'btnSearchCategory' => $btnSearchCategory,
+	  																	'caption' => $caption,
+	  																	'opciones' =>$opciones,
+	  																	'subCaption' => $subCaption,
+	  																	'definitiva' => $definitiva,
+
+			  					]);
+
+			  		} else {
+			  			// No se encontraron los datos del contribuyente principal.
+			  			$this->redirect(['error-operacion', 'cod' => 938]);
+			  		}
+			  	}
+			}
+		}
+
+
+
+
+
+
+
+
+/**
+		 * Metodo que inicia la carga del formulario que permite realizar la solicitud
+		 * de anexo de ramos.
+		 * @return view
+		 */
+		public function actionIndexCreate2()
+		{
+			// Se verifica que el contribuyente haya iniciado una session.
+			$params = '';
+			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) && isset($_SESSION['conf'])) {
+
+				$idContribuyente = $_SESSION['idContribuyente'];
+				$request = Yii::$app->request;
+				$postData = $request->post();
+
+
+				if ( isset($postData['btn-quit']) ) {
+					if ( $postData['btn-quit'] == 1 ) {
+						$this->redirect(['quit']);
+					}
+				}
+
+				// Lo siguiente crea un array del modelo DeclaracionBaseForm(), para la validacion
+				// individual de cada uno de los input (campos) del mismo tipo. En este caso el
+				// campo donde se registrara la declracion sera tantas veces como ramos (rubros) tenga
+				// registrado el contribuyente.
+				$model = New DeclaracionBaseForm();
+
+				$modelMultiplex = [$model];
+				$formName = $model->formName();
+				$model->scenario = self::SCENARIO_SEARCH;
+
+				$caption = Yii::t('frontend', 'Presentation Estimated Tax');
+				$subCaption = Yii::t('frontend', 'Select Fiscal Period');
+
+//die(var_dump($modelMultiplex));
+//die(var_dump($postData));
+
+		      	// Datos generales del contribuyente.
+		      	$searchDeclaracion = New DeclaracionBaseSearch($idContribuyente);
+		      	$findModel = $searchDeclaracion->findContribuyente();
+
+				if ( isset($postData['btn-back-form']) ) {
+					if ( $postData['btn-back-form'] == 3 ) {
+						$model->scenario = self::SCENARIO_SEARCH;
+						$postData = [];			// Inicializa el post.
+						$model->load($postData);
+					}
+
+				} elseif ( isset($postData['btn-accept']) ) {
+					if ( $postData['btn-accept'] == 1 ) {
+						$model->scenario = self::SCENARIO_SEARCH;
+						$model->load($postData);
+
+						if ( $model->load($postData) ) {
+			    			if ( $model->validate() ) {
+			    				$subCaption = Yii::t('frontend', 'Categories Registers');
+								$añoImpositivo = $model->ano_impositivo;
+								$periodo = $model->exigibilidad_periodo;
+
+								$dataProviderRubro = $searchDeclaracion->getDataProviderRubrosRegistrados($añoImpositivo, $periodo);
+								$btnSearchCategory = 1;
+
+								$opciones = [
+									'back' => '/aaee/declaracion/declaracion-estimada/index-create',
+								];
+								$caption = $caption . '. ' . Yii::t('frontend', 'Categories Registered') . ' ' . $añoImpositivo . ' - ' . $periodo;
+								return $this->render('/aaee/declaracion/estimada/prueba-declaracion', [
+			  																	'model' => $modelMultiplex,
+			  																	'findModel' => $findModel,
+			  																	'dataProviderRubro' => $dataProviderRubro,
+			  																	'btnSearchCategory' => $btnSearchCategory,
+			  																	'caption' => $caption,
+			  																	'opciones' =>$opciones,
+			  																	'subCaption' => $subCaption,
+
+					  					]);
+							}
+						}
+					}
+				} elseif( isset($postData['btn-create']) ) {
+					if ( $postData['btn-create'] == 3 ) {
+						Model::loadMultiple($modelMultiplex, $postData);
+						// $modelMultiplex->loadMultiple($postData);
+//die(var_dump($modelMultiplex));
+					}
+				}
+
+		  		if ( $model->load($postData)  && Yii::$app->request->isAjax ) {
+					Yii::$app->response->format = Response::FORMAT_JSON;
+					return ActiveForm::validate($model);
+		      	}
+
+		  		if ( isset($findModel) ) {
+					//$model = New DeclaracionBaseForm();
+					$listaAño = $searchDeclaracion->getListaAnoRegistrado();
+					$url = Url::to(['index-create']);
+					$rutaLista = "/aaee/declaracion/declaracion-estimada/lista-periodo";
+					return $this->render('/aaee/declaracion/estimada/_create',
+																[
+																	'model' => $model,
+																	'caption' => $caption,
+																	'subCaption' => $subCaption,
+																	'findModel' => $findModel,
+																	'listaAño' => $listaAño,
+																	'url' =>$url,
+																	'rutaLista' => $rutaLista,
+																	'searchDeclaracion' => $searchDeclaracion,
+																]);
+
+		  		} else {
+		  			// No se encontraron los datos del contribuyente principal.
+		  			$this->redirect(['error-operacion', 'cod' => 938]);
+		  		}
+			}
+		}
+
+
+
+
+/***/
+		public function actionIndexCreate23()
+		{
+			// Se verifica que el contribuyente haya iniciado una session.
+			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) && isset($_SESSION['conf'])) {
+
+				$idContribuyente = $_SESSION['idContribuyente'];
+				$request = Yii::$app->request;
+				$postData = $request->post();
+
+				if ( isset($postData['btn-quit']) ) {
+					if ( $postData['btn-quit'] == 1 ) {
+						$this->redirect(['quit']);
+					}
+				}
+
+				// Lo siguiente crea un array del modelo DeclaracionBaseForm(), para la validacion
+				// individual de cada uno de los input (campos) del mismo tipo. En este caso el
+				// campo donde se registrara la declracion sera tantas veces como ramos (rubros) tenga
+				// registrado el contribuyente.
+				$model = New DeclaracionBaseForm();
+
+				$modelMultiplex = [$model];
+				$formName = $model->formName();
+				$model->scenario = self::SCENARIO_SEARCH;
+
+				$caption = Yii::t('frontend', 'Presentation Estimated Tax');
+				$subCaption = Yii::t('frontend', 'Select Fiscal Period');
+
+//die(var_dump($modelMultiplex));
+
+
+		      	// Datos generales del contribuyente.
+		      	$searchDeclaracion = New DeclaracionBaseSearch($idContribuyente);
+		      	$findModel = $searchDeclaracion->findContribuyente();
+
+				if ( isset($postData['btn-back-form']) ) {
+					if ( $postData['btn-back-form'] == 3 ) {
+						$model->scenario = self::SCENARIO_SEARCH;
+						$postData = [];			// Inicializa el post.
+						$model->load($postData);
+					}
+
+				} elseif ( isset($postData['btn-accept']) ) {
+					if ( $postData['btn-accept'] == 1 ) {
+						$model->scenario = self::SCENARIO_SEARCH;
+						$model->load($postData);
+
+						if ( $model->load($postData) ) {
+			    			if ( $model->validate() ) {
+			    				$subCaption = Yii::t('frontend', 'Categories Registers');
+								$añoImpositivo = $model->ano_impositivo;
+								$periodo = $model->exigibilidad_periodo;
+
+								//$dataProviderRubro = $searchDeclaracion->getDataProviderRubrosRegistrados($añoImpositivo, $periodo);
+								$btnSearchCategory = 1;
+
+								$opciones = [
+									'back' => '/aaee/declaracion/declaracion-estimada/index-create',
+								];
+
+								$id = [2703,2704,2705];
+								$rubroModel = Rubro::findAll($id);
+//die(var_dump($rubroModel));
+								$caption = $caption . '. ' . Yii::t('frontend', 'Categories Registered') . ' ' . $añoImpositivo . ' - ' . $periodo;
+								return $this->render('/aaee/declaracion/estimada/prueba-tabular-form', [
+			  																	'model' => $modelMultiplex,
+			  																	'rubroModel' => $rubroModel,
+			  																	'findModel' => $findModel,
+			  																	// 'dataProviderRubro' => $dataProviderRubro,
+			  																	// 'btnSearchCategory' => $btnSearchCategory,
+			  																	// 'caption' => $caption,
+			  																	// 'opciones' =>$opciones,
+			  																	// 'subCaption' => $subCaption,
+
+					  					]);
+							}
+						}
+					}
+				} elseif( isset($postData['btn-create']) ) {
+					if ( $postData['btn-create'] == 3 ) {
+						Model::loadMultiple($modelMultiplex, $postData);
+						// $modelMultiplex->loadMultiple($postData);
+//die(var_dump($modelMultiplex));
+					}
+				}
+
+		  		if ( $model->load($postData)  && Yii::$app->request->isAjax ) {
+					Yii::$app->response->format = Response::FORMAT_JSON;
+					return ActiveForm::validate($model);
+		      	}
+
+		  		if ( isset($findModel) ) {
+					//$model = New DeclaracionBaseForm();
+					$listaAño = $searchDeclaracion->getListaAnoRegistrado();
+					$url = Url::to(['index-create']);
+					$rutaLista = "/aaee/declaracion/declaracion-estimada/lista-periodo";
+					return $this->render('/aaee/declaracion/estimada/_create',
+																[
+																	'model' => $model,
+																	'caption' => $caption,
+																	'subCaption' => $subCaption,
+																	'findModel' => $findModel,
+																	'listaAño' => $listaAño,
+																	'url' =>$url,
+																	'rutaLista' => $rutaLista,
+																	'searchDeclaracion' => $searchDeclaracion,
+																]);
+
+		  		} else {
+		  			// No se encontraron los datos del contribuyente principal.
+		  			$this->redirect(['error-operacion', 'cod' => 938]);
+		  		}
+			}
+		}
+
+
+
+
+
 
 
 
@@ -1079,6 +1422,7 @@
 							'postData',
 							'conf',
 							'begin',
+							'lapso'
 					];
 		}
 
