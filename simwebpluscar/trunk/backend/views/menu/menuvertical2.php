@@ -259,7 +259,7 @@ session_start();
 		        					   
 		        					   	['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Codigos Presupuestarios',
 		        					   		'items' => [
-		        					   				['label' => 'Registrar', 'url' => '#'],
+		        					   				['label' => 'Registrar', 'url' => ['/presupuesto/codigopresupuesto/registrar/registrar-codigo-presupuestario/registro-codigo-presupuesto']],
 		        					   				['label' => 'Modificar', 'url' => '#'],
 		        					   				['label' => 'Inactivar', 'url' => ['/aaee/correccioncedularif/correccion-cedula-rif/index']],
 		        					   				['label' => 'Cambiar Codigos Presupuestarios entre Niveles Presupuestarios', 'url' => '#'],
