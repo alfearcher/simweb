@@ -48,7 +48,7 @@ class ConfigConvenios extends \yii\db\ActiveRecord
             [['monto_minimo', 'monto_inicial', 'porcentaje_inicial', 'interes'], 'number'],
             [['fecha_hora'], 'safe'],
             [['usuario'], 'string', 'max' => 80]
-        ];
+        ]; 
     } 
 
     /**
