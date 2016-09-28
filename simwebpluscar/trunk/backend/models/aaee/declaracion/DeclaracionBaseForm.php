@@ -61,6 +61,7 @@
 		public $ano_impositivo;
 		public $id_rubro;
 		public $exigibilidad_periodo;
+		public $fecha_inicio;
 		public $periodo_fiscal_desde;
 		public $periodo_fiscal_hasta;
 		public $tipo_declaracion;
@@ -94,6 +95,7 @@
 	        					'id_contribuyente',
 	        					'ano_impositivo',
 	        					'exigibilidad_periodo',
+	        					'fecha_inicio',
 	        					'id_impuesto',
 	        					'id_rubro',
 	        					'monto_new',
@@ -114,6 +116,7 @@
         						'id_contribuyente',
 	        					'ano_impositivo',
 	        					'exigibilidad_periodo',
+	        					'fecha_inicio',
 	        					'id_impuesto',
 	        					'id_rubro',
 	        					'monto_new',
