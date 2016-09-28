@@ -371,7 +371,13 @@
 
 
 
-	    /***/
+	    /**
+	     * Metodo que retorna un [rubro] => definitiva del año anterior
+	     * @param  [type]  $añoImpositivo [description]
+	     * @param  [type]  $periodo       [description]
+	     * @param  integer $rubro         [description]
+	     * @return [type]                 [description]
+	     */
 	   	public function getDefinitivaAnterior($añoImpositivo, $periodo, $rubro = 0)
 	    {
 	    	$result = null;
@@ -380,7 +386,6 @@
 	    	if ( isset($findModel) ) {
 	    		$result = $findModel->all();
 	    		foreach ( $result as $ramo ) {
-// die(var_dump($ramo->reales));
 	    			$definitiva[$ramo->rubroDetalle->rubro] = $ramo['reales'];
 	    		}
 	    	}
