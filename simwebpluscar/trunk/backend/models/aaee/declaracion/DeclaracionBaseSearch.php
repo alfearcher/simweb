@@ -466,6 +466,24 @@
 
 
 
+	    /***/
+	    public function findActEconIngresos($idImpuesto, $periodo)
+	    {
+	    	$findModel = ActEconIngreso::find()->where('id_impuesto =:id_impuesto',
+	    													[':id_impuesto' => $idImpuesto])
+	    									   ->andWhere('exigibilidad_periodo =:exigibilidad_periodo',
+	    										 			[':exigibilidad_periodo' => $periodo])
+	    									   ->andWhere('inactivo =:inactivo',
+	    										 			[':inactivo' => 0])
+	    									   ->andWhere('bloqueado =:bloqueado',
+	    										 			[':bloqueado' => 0]);
+
+	    	return isset($findModel) ? $findModel : null;
+	    }
+
+
+
+
 	    /**
 	     * Metodo que realiza una busqueda del identificador de año declarado. El identificador
 	     * corresponde a la entidad "act-econ".
