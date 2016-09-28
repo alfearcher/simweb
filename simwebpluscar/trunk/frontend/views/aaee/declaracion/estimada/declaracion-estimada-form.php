@@ -78,18 +78,7 @@
  		]);
 
  	?>
-<!--
-	<?//=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $findModel['id_contribuyente']])->label(false);?>
-	<?//=$form->field($model, 'ano_impositivo')->hiddenInput(['value' => $model->ano_impositivo])->label(false);?>
-	<?//=$form->field($model, 'exigibilidad_periodo')->hiddenInput(['value' => $model->exigibilidad_periodo])->label(false);?>
-	<?//=$form->field($model, 'periodo_fiscal_desde')->hiddenInput(['value' => $model->periodo_fiscal_desde])->label(false);?>
-	<?//=$form->field($model, 'periodo_fiscal_hasta')->hiddenInput(['value' => $model->periodo_fiscal_hasta])->label(false);?>
-	<?//=$form->field($model, 'totalItem')->hiddenInput(['value' => $totalItem])->label(false);?>
-	<?//=$form->field($model, 'usuario')->hiddenInput(['value' => $model->usuario])->label(false); ?>
-	<?//=$form->field($model, 'fecha_hora')->hiddenInput(['value' => $model->fecha_hora])->label(false); ?>
-	<?//=$form->field($model, 'origen')->hiddenInput(['value' => $model->origen])->label(false); ?>
-	<?//=$form->field($model, 'estatus')->hiddenInput(['value' => 0])->label(false); ?>
- -->
+
 	<meta http-equiv="refresh">
     <div class="panel panel-primary" style="width: 110%;">
         <div class="panel-heading">
@@ -149,7 +138,7 @@
 								<div class="row"  style="padding-left: 10px; width: 100%;">
 									<div class="rubro-registrado">
 										<div class="row" style="margin-left: 5px;">
-											<h3><span><?= Html::encode(Yii::t('frontend', $subCaption . ' ' .  $model[0]->ano_impositivo . ' - ' . $model[0]->exigibilidad_periodo)) ?></span></h3>
+											<h3><span><?= Html::encode(Yii::t('frontend', $subCaption)) ?></span></h3>
 										</div>
 
 										 <div class="container-items">
@@ -181,7 +170,6 @@
 								                        	<div class="col-sm-2" style="padding-right:0px;padding-top:0px">
 								                                <?= $form->field($mod, "[{$i}]rubro")->textInput([
 						                                													'readonly' => true,
-						                                													//'value' => $rubroModel->rubroDetalle->rubro,
 								                                	])
 								                                ?>
 								                            </div>
@@ -189,7 +177,6 @@
 								                                <?= $form->field($mod, "[{$i}]descripcion")->textArea([
 						                                														'readonly' => true,
 						                                														'rows' => 2,
-						                                														//'value' => $rubroModel->rubroDetalle->descripcion,
 								                                	])
 								                                ?>
 								                            </div>
@@ -198,13 +185,11 @@
 								                        	<div class="col-sm-2" style="padding-right:6px;">
 								                                <?= $form->field($mod, "[{$i}]monto_minimo")->textInput([
 					                                															'readonly' => true,
-					                                															//'value' => ( $definitiva[$mod->rubro] !== null ) ? $definitiva[$mod->rubro] : 0,
 								                                	])->hint('minimo a declarar');
 								                                ?>
 								                            </div>
 								                        	<div class="col-sm-2" style="padding-left:0px;">
 								                                <?= $form->field($mod, "[{$i}]monto_new")->textInput([
-					                                															'value' => 0,
 					                                															'hintOptions' =>
 					                                																	['class' => 'hint-block'],
 								                                	])
