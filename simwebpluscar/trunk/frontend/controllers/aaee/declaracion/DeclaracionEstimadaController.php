@@ -286,7 +286,7 @@
 				$lapso = isset($_SESSION['lapso']) ? $_SESSION['lapso'] : null;
 
 				if ( count($lapso) > 0 ) {
-					$msg = '';
+					$btnSearchCategory = 1;
 					$postData = $request->post();
 
 					if ( isset($postData['btn-quit']) ) {
@@ -304,7 +304,6 @@
 					$modelMultiplex = [New DeclaracionBaseForm()];
 
 					$caption = Yii::t('frontend', 'Presentation Estimated Tax');
-					$subCaption = Yii::t('frontend', 'Select Fiscal Period');
 
 			      	// Datos generales del contribuyente.
 			      	$searchDeclaracion = New DeclaracionBaseSearch($idContribuyente);
@@ -333,6 +332,24 @@
 							Model::loadMultiple($modelMultiplex, $postData);
 //die(var_dump($modelMultiplex));
 							$result = Model::validateMultiple($modelMultiplex);
+							//if ( !$result ) {
+									$opciones = [
+									'back' => '/aaee/declaracion/declaracion-estimada/index-create',
+								];
+								$caption = $caption . '. ' . Yii::t('frontend', 'Categories Registered') . ' ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo;
+								$subCaption = Yii::t('frontend', 'Categories Registers ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
+								return $this->render('/aaee/declaracion/estimada/declaracion-estimada-form', [
+			  																	'model' => $modelMultiplex,
+			  																	'findModel' => $findModel,
+			  																	'btnSearchCategory' => $btnSearchCategory,
+			  																	'caption' => $caption,
+			  																	'opciones' =>$opciones,
+			  																	'subCaption' => $subCaption,
+
+
+
+					  					]);
+							//}
 //die(var_dump($result));
 						}
 					}
@@ -346,11 +363,9 @@
 
 
 			  		if ( isset($findModel) ) {
-						$subCaption = Yii::t('frontend', 'Categories Registers');
-						$añoImpositivo = (int)$lapso['a'];
+			  			$añoImpositivo = (int)$lapso['a'];
 						$periodo = (int)$lapso['p'];
-
-						$btnSearchCategory = 1;
+						$subCaption = Yii::t('frontend', 'Categories Registers ' . $añoImpositivo . ' - ' . $periodo);
 
 						// Lo siguiente obtiene una declracion de la definitiva del año anterior.
 						// [ramo] => monto estimada
