@@ -179,22 +179,12 @@
 
 
 
-	    /***/
-	    // public function getDescripcionEstatus($estatus)
-	    // {
-	    // 	$result = '';
-	    // 	if ( $estatus == 0 ) {
-	    // 		$result = 'PENDIENTE';
-	    // 	} elseif ( $estatus == 1 ) {
-	    // 		$result = 'APROBADA';
-	    // 	} elseif ( $estatus == 2 ) {
-	    // 		$result = 'NEGADA';
-	    // 	} elseif ( $estatus == 9 ) {
-	    // 		$result = 'ANULADA';
-	    // 	}
 
-	    // 	return $result;
-	    // }
+	   	/***/
+	   	public function fechaInicioPrincipal($natura)
+	   	{
+
+	   	}
 
 
 
