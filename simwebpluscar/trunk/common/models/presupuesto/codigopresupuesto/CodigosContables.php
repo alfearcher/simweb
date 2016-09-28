@@ -65,6 +65,7 @@
     use backend\models\propaganda\Propaganda;
     use common\models\contribuyente\ContribuyenteBase;
     use backend\models\TiposPropaganda;
+    use common\models\presupuesto\nivelespresupuesto\NivelesContables;
    
     class CodigosContables extends ActiveRecord
     {
@@ -84,6 +85,11 @@
           return 'codigos_contables';
         }
 
+        public function getNivelPresupuesto()
+        {
+            return $this->hasOne(NivelesContables::className(), ['nivel_contable' => 'nivel_contable']);
+        }
+        
         
 
 
