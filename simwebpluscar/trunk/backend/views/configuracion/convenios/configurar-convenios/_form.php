@@ -121,7 +121,7 @@ use backend\models\impuesto\Impuesto;
                             <div class="col-sm-2">
                                     <?= $form->field($model, 'id_tiempo')->textInput(['maxlength' => true]) ?>
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col-sm-2">  
                                     <?= Yii::t('backend', 'Veceteo Date') ?>
                             </div>
 
@@ -144,32 +144,14 @@ use backend\models\impuesto\Impuesto;
                             </div>
                             <div class="col-sm-2">
                                     <?= Yii::t('backend', 'Id Tax') ?>
-                            </div>
+                            </div> 
 
                             <div class="col-sm-2">
                                     <?= $form->field($model, 'id_impuesto')->textInput(['maxlength' => true]) ?>
                             </div>
-                            <div class="col-sm-2">
-                                    <?= Yii::t('backend', 'User') ?>
-                            </div>
+                            
 
-                            <div class="col-sm-2">
-                                    <?= $form->field($model, 'usuario')->textInput(['maxlength' => true]) ?>
-                            </div>
-                            <div class="col-sm-2">
-                                    <?= Yii::t('backend', 'Date-Time') ?>
-                            </div>
-
-                            <div class="col-sm-2">
-                                    <?= $form->field($model, 'fecha_hora')->textInput() ?>
-                            </div>
-                            <div class="col-sm-2">
-                                    <?= Yii::t('backend', 'Inactive') ?>
-                            </div>
-
-                            <div class="col-sm-2">
-                                    <?= $form->field($model, 'inactivo')->textInput() ?>
-                            </div>
+                            
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('backend', 'Create') : Yii::t('backend', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
@@ -181,3 +163,25 @@ use backend\models\impuesto\Impuesto;
     <?= Html::endForm();?>
 
 </div>
+</div>
+</div>
+                           <!--  
+                           <div class="col-sm-2">
+                                    <?= Yii::t('backend', 'User') ?>
+                            </div>
+
+                            <div class="col-sm-2">
+                                    <?= $form->field($model, 'usuario')->textInput(['maxlength' => true]) ?>
+                            </div>
+                            <div class="col-sm-2">
+                                    <?= Yii::t('backend', 'Date-Time') ?>
+                            </div><div class="col-sm-2">
+                                    <?= $form->field($model, 'fecha_hora')->textInput() ?>
+                            </div>
+                            <div class="col-sm-2">
+                                    <?= Yii::t('backend', 'Inactive') ?>
+                            </div>
+
+                            <div class="col-sm-2">
+                                    <?= $form->field($model, 'inactivo')->textInput() ?>
+                            </div> -->
