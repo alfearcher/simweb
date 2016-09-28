@@ -359,6 +359,7 @@
 						$rubroRegistradoModels = $searchDeclaracion->findRubrosRegistrados($añoImpositivo, $periodo)->all();
 
 						foreach ( $rubroRegistradoModels as $i => $rubroModel ) {
+							$monto = isset($declaracionDefinitiva[$rubroModel->rubroDetalle->rubro]) ? $declaracionDefinitiva[$rubroModel->rubroDetalle->rubro] : 0;
 							$modelMultiplex[$i] = New DeclaracionBaseForm();
 							$modelMultiplex[$i]['id_contribuyente'] = $rubroModel->actividadEconomica->id_contribuyente;
 							$modelMultiplex[$i]['ano_impositivo'] = $rubroModel->actividadEconomica->ano_impositivo;
@@ -372,7 +373,7 @@
 							$modelMultiplex[$i]['descripcion'] = $rubroModel->rubroDetalle->descripcion;
 							$modelMultiplex[$i]['monto_new'] = 0;
 							$modelMultiplex[$i]['monto_v'] = 0;
-							$modelMultiplex[$i]['monto_minimo'] = $declaracionDefinitiva[$rubroModel->rubroDetalle->rubro];
+							$modelMultiplex[$i]['monto_minimo'] = $monto;
 							$modelMultiplex[$i]['usuario'] = '';
 							$modelMultiplex[$i]['fecha_hora'] = '0000-00-00';
 							$modelMultiplex[$i]['origen'] = '';
