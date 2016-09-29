@@ -550,7 +550,7 @@
 		if ( n > 0 ) {
 			$( "#btn-create" ).attr("disabled", true);
 		} else {
-			$( "#btn-create" ).removeAttr("disabled");
+			//$( "#btn-create" ).removeAttr("disabled");
 		}
 	});
 
@@ -560,7 +560,7 @@
 		if ( n > 0 ) {
 			$( "#btn-create" ).attr("disabled", true);
 		} else {
-			$( "#btn-create" ).removeAttr("disabled");
+			//$( "#btn-create" ).removeAttr("disabled");
 		}
 	});
 </script>
