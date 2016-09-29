@@ -14,7 +14,7 @@ return [
        ],
         'i18n' => [
         	'translations' => [
-        		'frontend*' => [
+        		'frontend' => [
         			'class' => 'yii\i18n\PhpMessageSource',
         			'basePath' => '@common/messages'
         		],
@@ -25,5 +25,5 @@ return [
         	],
         ],
     ],
-    'language' => 'en',     // Lenguaje en que apareceran los mensajes y etiquetas del sistema
+    'language' => 'es',     // Lenguaje en que apareceran los mensajes y etiquetas del sistema
 ];
