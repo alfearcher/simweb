@@ -178,6 +178,10 @@
 				// $exigirDocumento = false;
 				// $mensajeErrorChk = '';
 
+				// Mensaje de error para indicar que la fecha de inicio de la sede principal no es
+				// valido.
+				$errorMensajeFechaInicioSedePrincipal = '';
+
 				// Se determina si el contribuyente es una sede principal.
 				$idContribuyente = $_SESSION['idContribuyente'];
 				//$exigirDocumento = $_SESSION['exigirDocumento'];
@@ -278,6 +282,11 @@
 						$mensajeRegistroMercantil = Yii::t('frontend', 'Info Commercial Register not valid');
 					}
 
+					$errorMensajeFechaInicioSedePrincipal = '';
+					if ( $datos['fecha_inicio'] == null || $datos['fecha_inicio'] == '0000-00-00' ) {
+						$errorMensajeFechaInicioSedePrincipal = Yii::t('frontend', 'The begin date of headquarters main , not is valid.');
+					}
+
 		  			return $this->render('/aaee/inscripcion-sucursal/_create', [
 		  											'model' => $model,
 		  											'datos' => $datos,
@@ -286,6 +295,7 @@
 		  											'listaTelefonoMovil' => $listaTelefonoMovil,
 		  											'modelTelefono' => $modelTelefono,
 		  											'mensajeRegistroMercantil' => $mensajeRegistroMercantil,
+		  											'errorMensajeFechaInicioSedePrincipal' => $errorMensajeFechaInicioSedePrincipal,
 		  											//'mensajeErrorChk' => $mensajeErrorChk,
 		  					]);
 		  		} else {
