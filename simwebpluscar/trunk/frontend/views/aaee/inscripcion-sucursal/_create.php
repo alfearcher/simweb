@@ -52,6 +52,7 @@
 			'listaTelefonoMovil' => $listaTelefonoMovil,
 			'modelTelefono' => $modelTelefono,
 			'mensajeRegistroMercantil' => $mensajeRegistroMercantil,
+			'errorMensajeFechaInicioSedePrincipal' => $errorMensajeFechaInicioSedePrincipal,
 			//'mensajeErrorChk' => $mensajeErrorChk,
 
 	    ]) ?>

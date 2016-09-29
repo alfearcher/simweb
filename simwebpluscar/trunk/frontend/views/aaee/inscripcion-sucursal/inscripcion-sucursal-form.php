@@ -68,9 +68,9 @@
  		$form = ActiveForm::begin([
  			'id' => 'id-inscripcion-sucursal-form',
  			'method' => 'post',
- 			'enableClientValidation' => false,
+ 			'enableClientValidation' => true,
  			'enableAjaxValidation' => false,
- 			'enableClientScript' => false,
+ 			'enableClientScript' => true,
  		]);
  	?>
 
@@ -129,16 +129,31 @@
 								    					'label' => $model->getAttributeLabel('dni_representante'),
 								    					'value' =>  $datos['naturaleza_rep'] . '-' . $datos['cedula_rep'],
 								    				],
+								    				[
+								    					'format'=>['date', 'dd-MM-yyyy'],
+								    					'label' => $model->getAttributeLabel('fecha_inicio'),
+								    					'value' =>  $datos['fecha_inicio'],
+								    				],
 								    			],
 											])
 										?>
 					        	</div>
+
+								<?php if ( trim($errorMensajeFechaInicioSedePrincipal) !== '' ) { ?>
+									<div class="row" id="mensaje-error-fecha-inicio-principal" style="padding-left:50px;">
+										<div class="well well-sm" style="padding-top:0px;margin-left:0px; width:60%; color: red;">
+											<h3><?=Html::encode($errorMensajeFechaInicioSedePrincipal); ?></h3>
+										</div>
+									</div>
+								<?php } ?>
+
+
 					        	<div class="row" id="datos-principal-reg-mercantil" style="padding-left: 15px; width: 100%;">
 					        		<h4><?= Html::encode(Yii::t('backend', 'Info of Commercial Register')) . '. ';?>
 			        					<b><span>
 			        						<?php if ( trim($mensajeRegistroMercantil) !== '' ) { ?>
 				        						<div id="info-registro-mercantil-completa" class="info-registro-mercantil-completa">
-													<div class="well well-sm" style="color: red;"><?=$mensajeRegistroMercantil;?></div>
+													<div class="well well-sm" style="color: red;"><?=Html::encode($mensajeRegistroMercantil);?></div>
 				        						</div>
 				        					<?php } ?>
 			        					</span></b>
@@ -157,6 +172,7 @@
 								    					'value' => $datos['num_reg'],
 								    				],
 								    				[
+								    					'format'=>['date', 'dd-MM-yyyy'],
 								    					'label' => $model->getAttributeLabel('fecha'),
 								    					'value' => date('d-M-Y', strtotime($datos['fecha'])),
 								    				],
@@ -230,9 +246,20 @@
 												</div>
 												<div class="row" >
 													<div class="fecha-inicio">
+														<?php
+															$f = '';
+															if ( $datos['fecha_inicio'] !== null || $datos['fecha_inicio'] !== '0000-00-00' ) {
+																$añoLimite = (int)date('Y') - (int)date('Y', strtotime($datos['fecha_inicio']));
+																$mesLimite = (int)date('m') - (int)date('m', strtotime($datos['fecha_inicio']));
+																$diaLimite = (int)date('d') - (int)date('d', strtotime($datos['fecha_inicio']));
+																$f = '-'.$añoLimite.'Y -'.$mesLimite.'M -'.$diaLimite.'D';
+															}
+														?>
 														<?= $form->field($model, 'fecha_inicio')->widget(\yii\jui\DatePicker::classname(),['id' => 'fecha-inicio',
 																																			'clientOptions' => [
+																																				'minDate' => $f,
 																																				'maxDate' => '+0d',	// Bloquear los dias en el calendario a partir del dia siguiente al actual.
+																																				'changeMonth' => true,
 																																				'changeYear' => true,
 																																			],
 																																			'language' => 'es-ES',
@@ -243,7 +270,9 @@
 																																					'style' => 'background-color: white;',
 
 																																			]
-																																			])->label(false) ?>
+																																			])->label(false)
+																																			  ->hint('Limite ' . date('d-M-Y', strtotime($datos['fecha_inicio'])));
+														?>
 													</div>
 												</div>
 											</div>
@@ -465,7 +494,7 @@
 																						'class' => 'btn btn-success',
 																						'name' => 'btn-create',
 																						'value' => 1,
-																						'style' => 'width: 100%;'
+																						'style' => 'width: 100%;',
 											])?>
 									</div>
 								</div>
@@ -518,6 +547,16 @@
 
 	$(document).ready(function() {
 		var n = $( "#info-registro-mercantil-completa" ).length;
+		if ( n > 0 ) {
+			$( "#btn-create" ).attr("disabled", true);
+		} else {
+			$( "#btn-create" ).removeAttr("disabled");
+		}
+	});
+
+
+	$(document).ready(function() {
+		var n = $( "#mensaje-error-fecha-inicio-principal" ).length;
 		if ( n > 0 ) {
 			$( "#btn-create" ).attr("disabled", true);
 		} else {
