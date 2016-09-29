@@ -180,14 +180,6 @@
 
 
 
-	   	/***/
-	   	public function fechaInicioPrincipal($natura)
-	   	{
-
-	   	}
-
-
-
 
 	    /**
 	     * Metodo que busca el ultimo identificador de las sucursales asociadas a un RIF,
