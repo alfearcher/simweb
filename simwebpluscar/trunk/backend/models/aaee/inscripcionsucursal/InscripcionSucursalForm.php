@@ -150,7 +150,10 @@
 	        	  'tlf_ofic', 'tlf_celular',],
 	        	  'required', 'on' => 'frontend', 'message' => Yii::t('frontend','{attribute} is required')],
 	        	[['fecha_inicio'], 'date', 'format' => 'dd-MM-yyyy','message' => Yii::t('backend','formatted date no valid')],
-	        	[['fecha_inicio'], 'fechaInicioValida'],
+	        	// [['fecha_inicio'], 'required', 'when' => function($model) {
+	        	// 										return self::fechaInicioValida();
+	        	// 									}
+	        	// ],
 	        	[['email'], 'email', 'message' => Yii::t('backend','{attribute} is email')],
 	        	['email', 'filter','filter'=>'strtolower'],
 	        	['razon_social', 'filter', 'filter' => 'strtoupper'],
@@ -358,20 +361,21 @@
 	    /***/
 	    public function fechaInicioValida()
 	    {
-	    	$result = false;
+	    	$result = true;
 			// Se determina la fecha de inicio de la principal, sino tiene la
 			// validacion no debe realizarse.
 			$findModel = ContribuyenteBase::find($this->id_sede_principal);
 			if ( count($findModel) > 0 ) {
 				if ( $findModel->fecha_inicio !== null && $findModel->fecha_inicio !== '0000-00-00' ) {
-					if ( $this->fecha_inicio < $findModel->fecha_inicio ) {
-						$result	= true;
+					if ( $this->fecha_inicio >= $findModel->fecha_inicio ) {
+						$result	= false;
 					}
 				}
 			}
 
 			return $result;
 	    }
+
 
 
 
