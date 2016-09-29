@@ -76,7 +76,7 @@ class ConfigConvenios extends \yii\db\ActiveRecord
             'usuario' => Yii::t('app', 'Usuario'),
             'fecha_hora' => Yii::t('app', 'Fecha Hora'),
             'inactivo' => Yii::t('app', 'Inactivo'),
-        ];  
+        ];   
     }
 
     /**

@@ -24,7 +24,7 @@ class ConfigurarConveniosController extends Controller
                 ],
             ],
         ];
-    }
+    } 
 
     /**
      * Lists all ConfigConvenios models.

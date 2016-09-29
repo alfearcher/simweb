@@ -121,7 +121,7 @@ use backend\models\impuesto\Impuesto;
                             <div class="col-sm-2">
                                     <?= $form->field($model, 'id_tiempo')->textInput(['maxlength' => true]) ?>
                             </div>
-                            <div class="col-sm-2">  
+                            <div class="col-sm-2">   
                                     <?= Yii::t('backend', 'Veceteo Date') ?>
                             </div>
 
