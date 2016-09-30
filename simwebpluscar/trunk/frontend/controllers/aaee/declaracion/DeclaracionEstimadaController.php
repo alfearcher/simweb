@@ -349,6 +349,9 @@
 						$result = Model::validateMultiple($modelMultiplex);
 					}
 
+//die(var_dump($modelMultiplex));
+
+
 			      	// Datos generales del contribuyente.
 			      	$searchDeclaracion = New DeclaracionBaseSearch($idContribuyente);
 			      	$findModel = $searchDeclaracion->findContribuyente();
@@ -414,7 +417,7 @@
 						}
 					} elseif( isset($postData['btn-confirm-create']) ) {
 						if ( $postData['btn-confirm-create'] == 5 ) {
-
+die(var_dump($modelMultiplex));
 						}
 					}
 
