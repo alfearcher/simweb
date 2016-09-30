@@ -745,7 +745,6 @@
 			$sede = null;
 			$datos = self::getListaSucursalesSegunRIF($naturalezaLocal = '', $cedulaLocal = 0, $tipoLocal = 0, $inactivoLocal = 0);
 			if ( count($datos) > 0 ) {
-die(var_dump($datos));
 				foreach ( $datos as $dato ) {
 					if ( $dato['id_rif'] == 0 ) {
 						$sede = $dato;
