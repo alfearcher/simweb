@@ -243,7 +243,7 @@
 		      	$searchCorreccion = New CorreccionFechaInicioSearch($idContribuyente);
 		      	$datos = $searchCorreccion->getDatosContribuyente();
 		  		if ( count($datos) > 0 ) {
-
+die(var_dump($datos));
 		  			// Se determina los datos basicos de la sede principal. Para controlar la colocacion de la
 		  			// fecha de inicio de actividad de las sucursales. Si resulta que es la sede principal, entonces
 		  			// podra colocar una fecha que no sea superior a ningunas de las sucursales.
