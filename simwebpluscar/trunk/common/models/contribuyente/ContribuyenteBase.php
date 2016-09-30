@@ -743,8 +743,9 @@
 		public static function getCualEsLaSedePrincipalSegunRIF($naturalezaLocal = '', $cedulaLocal = 0, $tipoLocal = 0, $inactivoLocal = 0)
 		{
 			$sede = null;
-			$datos = self::getListaSucursalesSegunRIF($naturalezaLocal = '', $cedulaLocal = 0, $tipoLocal = 0, $inactivoLocal = 0);
-			if ( count($datos) > 0 ) {
+			$datos = self::getListaSucursalesSegunRIF($naturalezaLocal, $cedulaLocal, $tipoLocal, $inactivoLocal);
+
+			if ( $datos !== false && $datos !== null ) {
 				foreach ( $datos as $dato ) {
 					if ( $dato['id_rif'] == 0 ) {
 						$sede = $dato;
