@@ -325,7 +325,6 @@
 						}
 					}
 
-//die(var_dump($postData));
 
 					// Lo siguiente crea un array del modelo DeclaracionBaseForm(), para la validacion
 					// individual de cada uno de los input (campos) del mismo tipo. En este caso el
@@ -334,6 +333,23 @@
 					$modelMultiplex = [New DeclaracionBaseForm()];
 
 					$caption = Yii::t('frontend', 'Presentation Estimated Tax');
+					$formName = $modelMultiplex[0]->formName();
+
+					// Se obtienen solo los campos.
+					$datos = isset($postData[$formName]) ? $postData[$formName] : [];
+
+					$count = ( count($datos) > 0 ) ? count($datos) : 0;
+					$result = false;
+					if ( $count > 0 ) {
+						foreach ( $datos as $key => $value ) {
+							$modelMultiplex[$key] = New DeclaracionBaseForm();
+							$modelMultiplex[$key]->scenario = self::SCENARIO_ESTIMADA;
+						}
+					}
+
+					Model::loadMultiple($modelMultiplex, $postData);
+						$result = Model::validateMultiple($modelMultiplex);
+
 
 			      	// Datos generales del contribuyente.
 			      	$searchDeclaracion = New DeclaracionBaseSearch($idContribuyente);
@@ -343,27 +359,44 @@
 						if ( $postData['btn-back-form'] == 1 ) {
 							$postData = [];			// Inicializa el post.
 							$this->redirect(['index-create']);
+						} elseif ( $postData['btn-back-form'] == 9 ) {
+							$opciones = [
+									'back' => '/aaee/declaracion/declaracion-estimada/index-create',
+							];
+							$caption = $caption . '. ' . Yii::t('frontend', 'Categories Registered') . ' ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo;
+							$subCaption = Yii::t('frontend', 'Categories Registers ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
+							return $this->render('/aaee/declaracion/estimada/declaracion-estimada-form', [
+		  																	'model' => $modelMultiplex,
+		  																	'findModel' => $findModel,
+		  																	'btnSearchCategory' => $btnSearchCategory,
+		  																	'caption' => $caption,
+		  																	'opciones' =>$opciones,
+		  																	'subCaption' => $subCaption,
+
+
+
+				  					]);
 						}
 					} elseif( isset($postData['btn-create']) ) {
 						if ( $postData['btn-create'] == 3 ) {
-							$formName = $modelMultiplex[0]->formName();
-							// Se obtienen solo los campos.
-							$datos = $postData[$formName];
+							if ( $result ) {
+								// Presentar preview.
+								$opciones = [
+									'back' => '/aaee/declaracion/declaracion-estimada/index-create',
+								];
+								$caption = Yii::t('frontend', 'Confirm') . ' ' . $caption . '. ' . Yii::t('frontend', 'Pre View');
+								$subCaption = Yii::t('frontend', 'Categories Registers ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
 
-							$count = ( count($datos) > 0 ) ? count($datos) : 0;
-							if ( $count > 0 ) {
-								foreach ( $datos as $key => $value ) {
-									$modelMultiplex[$key] = New DeclaracionBaseForm();
-									$modelMultiplex[$key]->scenario = self::SCENARIO_ESTIMADA;
-								}
-							}
+								return $this->render('/aaee/declaracion/estimada/pre-view-create', [
+																	'model' => $modelMultiplex,
+																	'findModel' => $findModel,
+																	'caption' => $caption,
+	  																'opciones' =>$opciones,
+	  																'subCaption' => $subCaption,
+									]);
 
-							$result = false;
-							Model::loadMultiple($modelMultiplex, $postData);
-//die(var_dump($modelMultiplex));
-							$result = Model::validateMultiple($modelMultiplex);
-							//if ( !$result ) {
-									$opciones = [
+							} else {
+								$opciones = [
 									'back' => '/aaee/declaracion/declaracion-estimada/index-create',
 								];
 								$caption = $caption . '. ' . Yii::t('frontend', 'Categories Registered') . ' ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo;
@@ -379,8 +412,11 @@
 
 
 					  					]);
-							//}
-//die(var_dump($result));
+							}
+						}
+					} elseif( isset($postData['btn-confirm-create']) ) {
+						if ( $postData['btn-confirm-create'] == 5 ) {
+
 						}
 					}
 
@@ -389,7 +425,6 @@
 						Yii::$app->response->format = Response::FORMAT_JSON;
 						return ActiveForm::validateMultiple($modelMultiplex);
 			      	}
-
 
 
 			  		if ( isset($findModel) ) {
@@ -411,6 +446,7 @@
 							$modelMultiplex[$i]['id_rubro'] = $rubroModel->id_rubro;
 							$modelMultiplex[$i]['id_impuesto'] = $rubroModel->id_impuesto;
 							$modelMultiplex[$i]['exigibilidad_periodo'] = $rubroModel->exigibilidad_periodo;
+							$modelMultiplex[$i]['fecha_inicio'] = $findModel->fecha_inicio;
 							$modelMultiplex[$i]['periodo_fiscal_desde'] = $rubroModel->periodo_fiscal_desde;
 							$modelMultiplex[$i]['periodo_fiscal_hasta'] = $rubroModel->periodo_fiscal_hasta;
 							$modelMultiplex[$i]['tipo_declaracion'] = 1;
@@ -420,8 +456,8 @@
 							$modelMultiplex[$i]['monto_v'] = 0;
 							$modelMultiplex[$i]['monto_minimo'] = $monto;
 							$modelMultiplex[$i]['usuario'] = '';
-							$modelMultiplex[$i]['fecha_hora'] = '0000-00-00';
-							$modelMultiplex[$i]['origen'] = '';
+							//$modelMultiplex[$i]['fecha_hora'] = '0000-00-00';
+							$modelMultiplex[$i]['origen'] = 'WEB';
 							$modelMultiplex[$i]['estatus'] = 0;
 
 						}
@@ -447,166 +483,6 @@
 			  			$this->redirect(['error-operacion', 'cod' => 938]);
 			  		}
 			  	}
-			}
-		}
-
-
-
-
-
-
-		/**
-		 * Metodo que muestra el catalogo de rubros del lapso seleccionado, rubros registrados
-		 * del contribuyente del lapso selecciona y controla la selecciona de o los rubros por
-		 * anexar. Permite ademas suprimir cualquier rubro que se quiera eliminar de la lista
-		 * final de rubros por anexar. Renderiza hacia una vista previa de los rubros por
-		 * anexar.
-		 * @return not
-		 */
-		public function actionAnexarRamo()
-		{
-			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) && isset($_SESSION['conf']) && isset($_SESSION['postSearch']) ) {
-				$postInicial = isset($_SESSION['postSearch']) ? $_SESSION['postSearch'] : null;
-				$request = Yii::$app->request;
-
-				$opciones = [
-					'back' => '/aaee/anexoramo/anexo-ramo/index-create',
-				];
-
-				$params = '';
-				$url = Url::toRoute(['anexar-ramo']);
-				$model = New AnexoRamoForm();
-				$formName = $model->formName();
-
-				if ( $request->isGet ) {
-					//$postData = isset($request->queryParams['page']) ? $request->queryParams['page'] : $postInicial;
-					$postData = $postInicial;
-					$model->scenario = self::SCENARIO_FRONTEND;
-
-				} elseif ( $request->isPost ) {
-					$postData = $request->post();
-					$model->scenario = self::SCENARIO_FRONTEND;
-					if ( isset($postData['btn-search']) ) {
-						if ( $postData['btn-search'] == 1 ) {
-							$params = $postData['inputSearch'];
-
-						}
-					} elseif ( isset($postData['btn-add-category']) ) {
-				    	if ( $postData['btn-add-category'] == 2 ) {
-				    		// Se obtiene el arreglo de rubros seleccionado para ser incluidos
-				    		// en la lista.
-				    		$arregloIdRubro = isset($postData['chkRubro']) ? $postData['chkRubro'] : [];
-				    		self::actionAddRubro($arregloIdRubro);
-						}
-					}  elseif ( isset($postData['btn-remove-category']) ) {
-				    	if ( $postData['btn-remove-category'] == 3 ) {
-							$arregloIdRubro = isset($postData['chkRubroSeleccionado']) ? $postData['chkRubroSeleccionado'] : [];
-							self::actionRemoveRubro($arregloIdRubro);
-						}
-					} elseif ( isset($postData['btn-create']) ) {
-						if ( $postData['btn-create'] == 5 ) {
-							// Se muestra una vista previa con los rubros seleccionados.
-							$model->scenario = self::SCENARIO_FRONTEND;
-							$model->load($postData);
-
-							$arregloIdRubro = isset($_SESSION['arrayIdRubros']) ? $_SESSION['arrayIdRubros'] : [];
-							if ( count($arregloIdRubro) > 0 ) { $validateRubroSeleccionado = true; }
-					   		if ( $model->load($postData) ) {
-					      		if ( $model->validate() && $validateRubroSeleccionado ) {
-					      			$searchRamo = New AnexoRamoSearch($model->id_contribuyente);
-					      			$dataProviderRubroAnexar = $searchRamo->getDataProviderAddRubro($arregloIdRubro);
-					      			return $this->render('/aaee/anexo-ramo/pre-view-create', [
-					      					'model' => $model,
-					      					'dataProvider' => $dataProviderRubroAnexar,
-					      				]);
-					      		}
-					      	}
-						}
-					} elseif ( isset($postData['btn-confirm-create']) ) {
-						if ( $postData['btn-confirm-create'] == 5 ) {
-							$model->scenario = self::SCENARIO_FRONTEND;
-							$postData = $request->post();
-							$model->load($postData);
-
-							$result = self::actionBeginSave($model, $postData);
-      						self::actionAnularSession(['begin', 'arrayIdRubros']);
-      						if ( $result ) {
-								$this->_transaccion->commit();
-								return self::actionView($model->nro_solicitud);
-							} else {
-								$this->_transaccion->rollBack();
-								$this->redirect(['error-operacion', 'cod'=> 920]);
-
-      						}
-						}
-					} elseif ( isset($postData['btn-back-form']) ) {
-						if ( $postData['btn-back-form'] == 6 ) {
-							return $this->redirect(['index-create']);
-
-						} elseif ( $postData['btn-back-form'] == 9 ) {
-
-						}
-					} elseif ( isset($postData['btn-quit']) ) {
-						if ( $postData['btn-quit'] == 1 ) {
-							$this->redirect(['quit']);
-						}
-					}
-				} else {
-					$model->scenario = self::SCENARIO_FRONTEND;
-				}
-
-				$model->load($postData);
-
-				$listaIdRubro = [];
-
-				$idContribuyente = isset($postInicial[$formName]['id_contribuyente']) ? $postInicial[$formName]['id_contribuyente'] : 0;
-
-				if ( $idContribuyente == $_SESSION['idContribuyente'] ) {
-					self::actionAnularSession(['postData']);
-
-					$searchRamo = New AnexoRamoSearch($idContribuyente);
-
-					// Datos del contribuyente.
-					$findModel = $searchRamo->findContribuyente();
-
-					// Rubros registrados segun post enviado.
-					$añoImpositivo = $postInicial[$formName]['ano_impositivo'];
-					$periodo = $postInicial[$formName]['periodo'];
-					$dataProviderRubro = $searchRamo->getDataProviderRubrosRegistrados($añoImpositivo, $periodo);
-
-					// Se buscan los identificadores de los rubros registrados.
-					$listaIdRubro = $searchRamo->getListaIdRubrosRegistrados($añoImpositivo, $periodo);
-					if ( count($listaIdRubro) > 0 ) {
-						 $activarBotonCreate = 0;
-
-						// Lista de identificadores de los rubros que seran anexados segun solicitud
-						// del usuario.
-						$arregloIdRubro = isset($_SESSION['arrayIdRubros']) ? $_SESSION['arrayIdRubros'] : [];
-						if ( count($arregloIdRubro) > 0 ) { $activarBotonCreate = 1; }
-						$dataProviderRubroAnexar = $searchRamo->getDataProviderAddRubro($arregloIdRubro);
-
-						// Identificadores que no deberia aparecer en el listado de catalogo de rubros.
-						$listaIdRubroIgnorar = array_merge($listaIdRubro, $arregloIdRubro);
-
-						// Catalogo de rubros para anexar, sin considerar los ya registrados y los seleccionados.
-						$dataProviderRubroCatalogo = $searchRamo->getDataProvider($añoImpositivo, $params, $listaIdRubroIgnorar);
-
-						return $this->render('/aaee/anexo-ramo/seleccionar-ramo-anexar-form', [
-																'model' => $model,
-																'findModel' => $findModel,
-																'dataProviderRubro' => $dataProviderRubro,
-																'dataProviderRubroAnexar' => $dataProviderRubroAnexar,
-																'dataProviderRubroCatalogo' => $dataProviderRubroCatalogo,
-																'activarBotonCreate' => $activarBotonCreate,
-																'opciones' => $opciones,
-							]);
-					}
-
-				} else {
-					// El contribuyente enviado no corresponde al de la session.
-				}
-			} else {
-				// No estan definido los sessiones de inicio del modulo.
 			}
 		}
 
@@ -651,75 +527,10 @@
 
 
 
-
-		/**
-		 * Metodo que agrega el o los rubros seleccionados en una lista previa.
-		 * @param  array $arregloIdRubro arreglo de identificadores del rubro
-		 * seleccionado para incluir. El arreglo que se envia se agrega a los
-		 * existentes de haberlos. El resultado final de arreglos se guarda en
-		 * una variable de session.
-		 * @return not
-		 */
-		public function actionAddRubro($arregloIdRubro)
-		{
-			if ( count($arregloIdRubro) > 0 ) {
-    			foreach ( $arregloIdRubro as $key => $value ) {
-    				if ( !isset($_SESSION['arrayIdRubros']) ) {
-		    			$_SESSION['arrayIdRubros'][] = $value;
-		    		} else {
-		    			$arrayIdRurbros = [];
-		    			$arrayIdRurbros = $_SESSION['arrayIdRubros'];
-		    			if ( !in_array($value, $arrayIdRurbros) ) {
-		    				$_SESSION['arrayIdRubros'][] = $value;
-		    			}
-		    		}
-	    		}
-    		}
-		}
-
-
-
-
-		/**
-		 * Metodo que crea un arreglo nuevo de identificadores de los rubros
-		 * para excluir auqellos que fueron enviados para su eliminacion. Lo
-		 * se busca es suprimir del arreglo principal, aquellos identificadores
-		 * que fueron enviados. Al final el nuevo arreglo se salva en una variable
-		 * de session.
-		 * @param  array $arregloIdRubro arreglo de identificadores de los rubros.
-		 * @return not
-		 */
-		public function actionRemoveRubro($arregloIdRubro)
-		{
-			$nuevoArray = [];
-			$indiceNoVa = [];
-			if ( count($arregloIdRubro) > 0 ) {
-				if ( isset($_SESSION['arrayIdRubros']) ) {
-					// Arreglo de los identificadores existente en la lista.
-					$arreglo = $_SESSION['arrayIdRubros'];
-
-					foreach ( $arreglo as $key => $value) {
-						if ( in_array($value, $arregloIdRubro) ) {
-							$indiceNoVa[] = $value;
-						} else {
-							$nuevoArray[] = $value;
-						}
-					}
-				}
-				if ( count($indiceNoVa) > 0 ) {
-					self::actionAnularSession(['arrayIdRubros']);
-					$_SESSION['arrayIdRubros'] = $nuevoArray;
-				}
-			}
-		}
-
-
-
-
 		/**
 		 * Metodo que comienza el proceso para guardar la solicitud y los demas
 		 * procesos relacionados.
-		 * @param model $model modelo de CorreccionCapitalForm.
+		 * @param model $model modelo de DeclaracionBaseForm.
 		 * @param array $postEnviado post enviado desde el formulario.
 		 * @return boolean retorna true si se realizan todas las operacions de
 		 * insercion y actualizacion con exitos o false en caso contrario.
