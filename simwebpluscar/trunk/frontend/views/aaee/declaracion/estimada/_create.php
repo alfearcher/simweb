@@ -41,6 +41,14 @@
 	*@var $this yii\web\View */
 
 	?>
+<div class="error-mensaje">
+	<?php if( trim($errorMensaje) !== '' ) {?>
+		<div class="well well-sm" style="color: red;padding-left: 35px;">
+			<h3><b><?=Html::encode($errorMensaje) ?></b></h3>
+		</div>
+	<?php } ?>
+</div>
+
 <div class="seleccionar-lapso-form-create">
 	<?= $this->render('@common/views/aaee/seleccionar-lapso/seleccionar-lapso-form', [
 								        			'model' => $model,
@@ -51,6 +59,7 @@
 								        			'url' =>$url,
 													'rutaLista' => $rutaLista,
 													'searchDeclaracion' => $searchDeclaracion,
+													'errorMensaje' => $errorMensaje,
 					    ]) ?>
 </div>
 
