@@ -132,50 +132,32 @@
 
                 
 
-                    
-                    [
-                                    'class' => 'yii\grid\ActionColumn',
-                                    'header'=> Yii::t('backend','Modificar'),
-                                    'template' => '{view}',
-                                    'buttons' => [
-                                        'view' => function ($url, $model, $key) {
-                                            return Html::submitButton('<div class="item-list" style="color: #337AB7;"><center>'. Icon::show('fa fa-pencil',['class' => 'fa-1x'], Icon::FA) .'</center></div>',
-                                                                        [
-                                                                            'value' => $key,
-                                                                            'name' => 'btn-prueba',
-                                                                            'title' => Yii::t('backend', 'View'),
-                                                                            'style' => 'margin: 0 auto; display: block;',
-                                                                            
-
-                                                                        ]
-                                                                       
-                                                                    );
-                                        },
-                                    ],
-                                ],
+             [
+                    'class' => 'yii\grid\ActionColumn',
+                    'header'=>'modificar',
+                    'template' => '{modificar}',
+                    'buttons' => [
+                        'modificar' => function ($url, $model, $key) {
+                            
+                                return Html::a('<center><span class= "fa fa-pencil"></span></center>',['modificar-codigo-presupuestario', 'value'=> $key]);
+                            
+                        },
+                    ],
+                ],
 
                                 
-                                [
-
-                                    'class' => 'yii\grid\ActionColumn',
-                                   
-                                    'header'=> Yii::t('backend','Inactivar'),
-                                    'template' => '{view}',
-                                    'buttons' => [
-
-                                        'view' => function ($url, $model, $key) {
-                                            return Html::submitButton('<div class="item-list" style="color: #337AB7;"><center>'. Icon::show('fa fa-ban',['class' => 'fa-1x'], Icon::FA) .'</center></div>',
-                                                                        [
-                                                                            'value' => $key,
-                                                                            'name' => 'idModificar',
-                                                                            'title' => Yii::t('backend', 'View'),
-                                                                            'style' => 'margin: 0 auto; display: block;',
-
-                                                                        ]
-                                                                    );
-                                        },
-                                    ],
-                                ],
+                         [
+                    'class' => 'yii\grid\ActionColumn',
+                    'header'=>'inactivar',
+                    'template' => '{inactivar}',
+                    'buttons' => [
+                        'inactivar' => function ($url, $model, $key) {
+                           
+                                return Html::a('<center><span class= "fa fa-ban"></span></center>',['inactivar','idContribuyente' => $key]);
+                        
+                        },
+                    ],
+                ],
         ],
     ]); ?>
 

@@ -35,7 +35,26 @@ $this->title = 'Registro de Codigo de Presupuesto';
                     <div class="panel-body" >
                
                   
+<!-- NIVEL CONTABLE -->
+                           
+                               <div class="row" style="margin-left:10px;">
+                            
+                                    <div class="col-sm-5" >
+                                      
+                                            <?= $form->field($model, 'nivel_contable')->dropDownList($listaNiveles,[
+                                                                                                    'id' => 'nivel_contable',
+                                                                                                    'prompt' => Yii::t('backend', 'Select'),
+                                                                                                    //'style' => //'height:32px;width:150px;',
+                                                                                                    
+                                                                                                    ])
+                                            ?>
+                                        </div>
+                                   
+<!-- FIN DE NIVEL CONTABLE -->
 
+
+
+                                    </div>
 
 
 <!-- CODIGO -->
@@ -70,58 +89,7 @@ $this->title = 'Registro de Codigo de Presupuesto';
                                 </div>
 <!-- FIN DE DESCRIPCION -->                       
                          
-<!-- NIVEL CONTABLE -->
-                           
-                               <div class="row" style="margin-left:10px;">
-                            
-                                    <div class="col-sm-5" >
-                                      
-                                            <?= $form->field($model, 'nivel_contable')->dropDownList($listaNiveles,[
-                                                                                                    'id' => 'nivel_contable',
-                                                                                                    'prompt' => Yii::t('backend', 'Select'),
-                                                                                                    //'style' => //'height:32px;width:150px;',
-                                                                                                    
-                                                                                                    ])
-                                            ?>
-                                        </div>
-                                   
-<!-- FIN DE NIVEL CONTABLE -->
 
-<!-- MONTO -->
-                                    <div class="row">
-                                    <div class="col-sm-4" style="margin-left:10px;">
-
-                                          
-                                                 <?= $form->field($model, 'monto')->textInput([
-                                                                                            'id' => 'monto',
-                                                                                           // 'style' => 'height:32px;width:122px;',
-                                                                                           
-                                                                                            //'maxlength' => $maxLength,
-                                                                                          ]) ?>
-                                              
-
-                                    </div>
-                                    </div>
-
-                                   
-<!-- FIN DE MONTO -->
-
-
-<!-- CODIGO CONTABLE -->
-                                    <div class="col-sm-4">
-
-                                          
-                                               <div class="cedula">
-                                                 <?= $form->field($model, 'codigo_contable')->textInput([
-                                                                                            'id' => 'codigo_contable',
-                                                                                           // 'style' => 'height:32px;width:122px;',
-                                                                                           
-                                                                                            //'maxlength' => $maxLength,
-                                                                                          ]) ?>
-                                                </div>
-                                    </div>
-
-                                    </div>
 <!-- FIN DE CODIGO CONTABLE -->
 
                            
