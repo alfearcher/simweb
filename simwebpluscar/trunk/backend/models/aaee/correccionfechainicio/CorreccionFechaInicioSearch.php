@@ -178,7 +178,7 @@
 		public function getDatosBasicoSedePrincipal($naturalezaLocal = '', $cedulaLocal = 0, $tipoLocal = 0)
 		{
 			$dato = null;
-			$datos = ContribuyenteBase::getCualEsLaSedePrincipalSegunRIF($naturalezaLocal = '', $cedulaLocal = 0, $tipoLocal = 0);
+			$datos = ContribuyenteBase::getCualEsLaSedePrincipalSegunRIF($naturalezaLocal, $cedulaLocal, $tipoLocal);
 			if ( count($datos) > 0 ) {
 				$dato['id_contribuyente'] = $datos['id_contribuyente'];
 				$dato['fecha_inicio'] = $datos['fecha_inicio'];
