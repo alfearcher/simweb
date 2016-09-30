@@ -151,5 +151,40 @@
 			return isset($findModel) ? $findModel : null;
 		}
 
+
+
+		/**
+		 * Metodo que permite determinar si un contribuyente es una sede principal.
+		 * Esto solo aplica para los contribuyentes juridicos.
+		 * @return boolean true si es verdadero, false en caso contrario.
+		 */
+		public function getSedePrincipal()
+		{
+			return ContribuyenteBase::getEsUnaSedePrincipal($this->_id_contribuyente);
+		}
+
+
+
+		/**
+		 * Metodo que permite obtener algunos atributos basicos que permitiran la ejecucion
+		 * y control de la fecha de inicio a colocar para el contribuyente en caso de que el
+		 * mismo sea una sucursal y no la sede principal, ya que las sucursales no pueden
+		 * tener fecha de inicio de actividades superiores a la de la sede principal.
+		 * @param  $naturalezaLocal string que indica la primera letra del RIF del contribuyente.
+		 * @param  $cedulaLocal integer que indica los numeros en el centro del RIF.
+		 * @param  $tipoLocal integer que indica el ultimo digito del RIF del contribuyente juridico.
+		 * @return array retorna un arreglo de algunos atributos basicos.
+		 */
+		public function getDatosBasicoSedePrincipal($naturalezaLocal = '', $cedulaLocal = 0, $tipoLocal = 0)
+		{
+			$dato = null;
+			$datos = ContribuyenteBase::getCualEsLaSedePrincipalSegunRIF($naturalezaLocal = '', $cedulaLocal = 0, $tipoLocal = 0);
+			if ( count($datos) > 0 ) {
+				$dato['id_contribuyente'] = $datos['id_contribuyente'];
+				$dato['fecha_inicio'] = $datos['fecha_inicio'];
+			}
+			return $dato;
+		}
+
 	}
  ?>
