@@ -198,6 +198,7 @@
 				$idContribuyente = $_SESSION['idContribuyente'];
 				$request = Yii::$app->request;
 				$postData = $request->post();
+				$errorMensaje = '';
 
 				if ( isset($postData['btn-quit']) ) {
 					if ( $postData['btn-quit'] == 1 ) {
@@ -231,11 +232,16 @@
 
 						if ( $model->load($postData) ) {
 			    			if ( $model->validate() ) {
-			   					$_SESSION['lapso'] = [
-			   								'a' => $model->ano_impositivo,
-			   								'p' =>$model->exigibilidad_periodo,
-			   					];
-			    				$this->redirect(['declarar-create']);
+			    				$result = self::actionPuedeDeclararEstimada($idContribuyente, $model->ano_impositivo, $model->exigibilidad_periodo);
+		    					if ( $result['r'] == true ) {
+				   					$_SESSION['lapso'] = [
+				   								'a' => $model->ano_impositivo,
+				   								'p' => $model->exigibilidad_periodo,
+				   					];
+				   					$this->redirect(['declarar-create']);
+				   				} else {
+				    				$errorMensaje = $result['m'];
+				   				}
 							}
 						}
 					}
@@ -247,7 +253,8 @@
 		      	}
 
 		  		if ( isset($findModel) ) {
-					//$model = New DeclaracionBaseForm();
+					// Se busca la lista de años que se mostraran en al combo de años.
+					// Solo se considerara el año actual para la declaracion estimada.
 					$listaAño = $searchDeclaracion->getListaAnoRegistrado();
 					$url = Url::to(['index-create']);
 					$rutaLista = "/aaee/declaracion/declaracion-estimada/lista-periodo";
@@ -261,6 +268,7 @@
 																	'url' =>$url,
 																	'rutaLista' => $rutaLista,
 																	'searchDeclaracion' => $searchDeclaracion,
+																	'errorMensaje' => $errorMensaje,
 																]);
 
 		  		} else {
@@ -272,9 +280,31 @@
 
 
 
+		/**
+		 * Metodo que determina si la declaracion estimada se puede realizar
+		 * segun las politicas del negocio establecidas en el modelo.
+		 * @param  integer $añoImpositivo año impositivo del lapso en donde se quiere
+	     * cargar la declaracion estimada.
+	     * @param  integer $periodo periodo del lapso.
+		 * @return array retorna un arreglo donde dicho arreglo contiene dos
+	     * key, uno indica si se puede iniciar la declaracion y el otro es
+	     * un string con un mensaje.
+		 */
+		public function actionPuedeDeclararEstimada($idContribuyente, $añoImpositivo, $periodo)
+		{
+			$declaracionEstimada = New DeclaracionBaseSearch($idContribuyente);
+			$result = $declaracionEstimada->puedoDeclararEstimada($añoImpositivo, $periodo);
+
+			return $result;
+		}
 
 
-		/***/
+
+
+		/**
+		 * Metodo que permite mostrar el formulario para la carga de la declaracion.
+		 * @return [type] [description]
+		 */
 		public function actionDeclararCreate()
 		{
 			// Se verifica que el contribuyente haya iniciado una session.
