@@ -345,11 +345,9 @@
 							$modelMultiplex[$key] = New DeclaracionBaseForm();
 							$modelMultiplex[$key]->scenario = self::SCENARIO_ESTIMADA;
 						}
-					}
-
-					Model::loadMultiple($modelMultiplex, $postData);
+						Model::loadMultiple($modelMultiplex, $postData);
 						$result = Model::validateMultiple($modelMultiplex);
-
+					}
 
 			      	// Datos generales del contribuyente.
 			      	$searchDeclaracion = New DeclaracionBaseSearch($idContribuyente);
