@@ -47,6 +47,8 @@
 						        'model' => $model,
 						        'datos' => $datos,
 						        'subCaption' => $subCaption,
+						        'esSedePrincipal' => $esSedePrincipal,
+					  			'errorMensajeFechaInicioSedePrincipal' => $errorMensajeFechaInicioSedePrincipal,
 
 					    ]) ?>
 </div>

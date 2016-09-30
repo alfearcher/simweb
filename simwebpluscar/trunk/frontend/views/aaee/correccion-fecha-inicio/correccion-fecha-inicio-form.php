@@ -122,6 +122,14 @@
 					    </div>
 					</div>
 
+					<?php if ( trim($errorMensajeFechaInicioSedePrincipal) !== '' ) { ?>
+						<div class="row" id="mensaje-error-fecha-inicio-principal" style="padding-left:50px;">
+							<div class="well well-sm" style="padding-top:0px;margin-left:0px; width:60%; color: red;">
+								<h3><?=Html::encode($errorMensajeFechaInicioSedePrincipal); ?></h3>
+							</div>
+						</div>
+					<?php } ?>
+
 					<div class="row">
 						<div class="panel panel-success" style="width: 103%;margin-left: -15px;">
 							<div class="panel-heading">
