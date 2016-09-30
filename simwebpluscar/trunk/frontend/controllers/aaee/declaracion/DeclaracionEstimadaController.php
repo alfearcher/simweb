@@ -338,7 +338,7 @@
 					// Se obtienen solo los campos.
 					$datos = isset($postData[$formName]) ? $postData[$formName] : [];
 
-					$count = ( count($datos) > 0 ) ? count($datos) : [];
+					$count = ( count($datos) > 0 ) ? count($datos) : 0;
 					$result = false;
 					if ( $count > 0 ) {
 						foreach ( $datos as $key => $value ) {
