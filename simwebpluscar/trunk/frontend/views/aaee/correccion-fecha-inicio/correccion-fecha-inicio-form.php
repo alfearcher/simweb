@@ -108,8 +108,8 @@
 							    					'value' => $datos['domicilio_fiscal'],
 							    				],
 							    				[
-//							    					'format'=>['date', 'dd-MM-yyyy'],
-							    					'format' => ['raw', 'd-m-Y'],
+							    					'format'=>['date', 'dd-MM-yyyy'],
+							    					//'format' => ['raw', 'd-m-Y'],
 							    					//'format' =>  ['date', 'php:d-m-Y H:i:s'],
 							    					'label' => $model->getAttributeLabel('fecha_inicio_v'),
 							    					'value' => $datos['fecha_inicio'],
