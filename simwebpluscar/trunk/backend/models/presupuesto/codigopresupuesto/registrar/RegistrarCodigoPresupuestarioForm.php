@@ -78,15 +78,15 @@ class RegistrarCodigoPresupuestarioForm extends Model
     {
         return [
 
-            [['codigo', 'descripcion', 'nivel_contable', 'monto', 'codigo_contable'], 'required'],
+            [['codigo', 'descripcion', 'nivel_contable'], 'required'],
 
-            [['nivel_contable', 'codigo_contable'], 'integer'],
+            [['nivel_contable'], 'integer'],
 
-            ['monto', 'double'],
+            
 
             ['codigo', 'verificarCodigo'],
 
-            ['codigo_contable', 'verificarCodigoContable'],
+          //  ['codigo_contable', 'verificarCodigoContable'],
             
         ]; 
     } 
@@ -142,25 +142,25 @@ class RegistrarCodigoPresupuestarioForm extends Model
     }
 
 
-        public function verificarCodigoContable($attribute, $params)
-    {
-         $busqueda = CodigosContables::find()
-                                        ->where([
+    //     public function verificarCodigoContable($attribute, $params)
+    // {
+    //      $busqueda = CodigosContables::find()
+    //                                     ->where([
 
-                                      'codigo_contable' => $this->codigo_contable,
-                                     // 'estatus' => 0,
+    //                                   'codigo_contable' => $this->codigo_contable,
+    //                                  // 'estatus' => 0,
 
-                                          ])
-                                        ->all();
+    //                                       ])
+    //                                     ->all();
 
-              if ($busqueda != null){
+    //           if ($busqueda != null){
 
-                $this->addError($attribute, Yii::t('frontend', 'Este codigo contable ya existe' ));
-              }else{
-                return false;
-              }
+    //             $this->addError($attribute, Yii::t('frontend', 'Este codigo contable ya existe' ));
+    //           }else{
+    //             return false;
+    //           }
 
-    }
+    // }
 
    
     public function attributeCodigosContables()
