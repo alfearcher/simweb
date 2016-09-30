@@ -166,6 +166,7 @@
 	          	['monto_minimo', 'default', 'value' => 0],
 	          	['monto_v', 'default', 'value' => 0],
 	          	['monto_new', 'default', 'value' => 0],
+	          	['fecha_hora', 'default', 'value' => date('Y-m-d H:i:s')],
 	          	['monto_new',
     			 'compare',
     			 'compareAttribute' => 'monto_minimo',
