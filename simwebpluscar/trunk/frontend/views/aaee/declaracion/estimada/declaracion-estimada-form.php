@@ -154,6 +154,7 @@
 								                    	<?=$form->field($mod, "[{$i}]id_contribuyente")->hiddenInput()->label(false);?>
 								                    	<?=$form->field($mod, "[{$i}]ano_impositivo")->hiddenInput()->label(false);?>
 														<?=$form->field($mod, "[{$i}]exigibilidad_periodo")->hiddenInput()->label(false);?>
+														<?=$form->field($mod, "[{$i}]fecha_inicio")->hiddenInput()->label(false);?>
 														<?=$form->field($mod, "[{$i}]id_impuesto")->hiddenInput()->label(false);?>
 														<?=$form->field($mod, "[{$i}]id_rubro")->hiddenInput()->label(false);?>
 														<?=$form->field($mod, "[{$i}]periodo_fiscal_desde")->hiddenInput()->label(false);?>
