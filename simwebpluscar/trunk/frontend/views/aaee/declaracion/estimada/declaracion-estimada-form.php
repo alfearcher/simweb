@@ -72,7 +72,7 @@
  			'id' => 'id-ramo-registrado-form',
  			'method' => 'post',
  			//'action' => $url,
- 			'enableClientValidation' => true,
+ 			'enableClientValidation' => false,
  			'enableAjaxValidation' => false,
  			'enableClientScript' => true,
  		]);
