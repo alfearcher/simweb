@@ -235,16 +235,47 @@
 			      	}
 		      	 }
 
+		      	 $esSedePrincipal = false;
+		      	 $errorMensajeFechaInicioSedePrincipal = '';
+		      	 $datoSedePrincipal = null;
 		      	// Se muestra el form de la solicitud.
 		      	// Datos generales del contribuyente.
 		      	$searchCorreccion = New CorreccionFechaInicioSearch($idContribuyente);
 		      	$datos = $searchCorreccion->getDatosContribuyente();
-		  		if ( isset($datos) ) {
+		  		if ( count($datos) > 0 ) {
+
+		  			// Se determina los datos basicos de la sede principal. Para controlar la colocacion de la
+		  			// fecha de inicio de actividad de las sucursales. Si resulta que es la sede principal, entonces
+		  			// podra colocar una fecha que no sea superior a ningunas de las sucursales.
+		  			$datoSedePrincipal = $searchCorreccion->getDatosBasicoSedePrincipal($datos['naturaleza'], $datos['cedula'], $datos['tipo']);
+		  			if ( count($datoSedePrincipal) > 0 ) {
+
+		  				// Se comparan los dos ID's para determinar si el mismo es una sede principal.
+		  				if ( $datoSedePrincipal['id_contribuyente'] == $datos['id_contribuyente'] ) {
+		  					$esSedePrincipal = true;
+		  				} else {
+							if ( $datoSedePrincipal['fecha_inicio'] == null || $datoSedePrincipal['fecha_inicio'] == '0000-00-00' ) {
+								// Hasta que la sede principal no tenga una fecha de inicio de actividad valida, no se podra
+								// realizar la solicitud de modificacion de la fechas de inicios de las sucursales.
+								$errorMensajeFechaInicioSedePrincipal = Yii::t('frontend', 'The begin date of headquarters main , not is valid.');
+							}
+						}
+
+
+
+
+		  			}
+
+
+
 		  			$subCaption = Yii::t('frontend', 'Info of Taxpayer');
 		  			return $this->render('/aaee/correccion-fecha-inicio/_create', [
 					  											'model' => $model,
 					  											'datos' => $datos,
 					  											'subCaption' => $subCaption,
+					  											'esSedePrincipal' => $esSedePrincipal,
+					  											'errorMensajeFechaInicioSedePrincipal' => $errorMensajeFechaInicioSedePrincipal,
+
 					  					]);
 		  		} else {
 		  			// No se encontraron los datos del contribuyente principal.
