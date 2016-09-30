@@ -146,9 +146,12 @@ class ModificarCodigoPresupuestarioController extends Controller
             ]);
   }
 
-  public function actionDeshabilitarCodigoPresupuestario()
+  public function actionModificarCodigoPresupuestario()
   {
-      die('llegue a deshabilitar');
+      $idCodigo = yii::$app->request->get('value');
+      
+          $buscar = new BusquedaCodigoMultipleForm();
+          $busqueda = $buscar->busquedaCodigo($idCodigo);
   }
 
 

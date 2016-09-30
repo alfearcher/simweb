@@ -134,17 +134,19 @@ class RegistrarCodigoPresupuestarioController extends Controller
           $arregloDatos[$value] =0;
       }
 
+      $arregloDatos['nivel_contable'] = $model->nivel_contable;
+
       $arregloDatos['codigo'] = $model->codigo;
 
       $arregloDatos['descripcion'] = $model->descripcion;
 
-      $arregloDatos['nivel_contable'] = $model->nivel_contable;
+     
 
-      $arregloDatos['monto'] = $model->monto;
+      $arregloDatos['monto'] = 0;
 
       $arregloDatos['inactivo'] = 0;
 
-      $arregloDatos['codigo_contable'] = $model->codigo_contable;
+      $arregloDatos['codigo_contable'] = $model->codigo;
 
           if ($conexion->guardarRegistro($conn, $tabla, $arregloDatos )){
 
