@@ -430,7 +430,7 @@
 				'r' => false,
 				'm' => '',
 			];
-
+			$mensaje1 = "Para continuar con la Declaracion Estimada {$añoImpositivo}, debe realizar primero la cargar de la definitiva indicada.";
 			// Año actual
 			$añoActual = date('Y');
 
@@ -468,13 +468,13 @@
 						} else {
 							$result = [
 								'r' => false,
-								'm' => Yii::t('frontend', "Los montos de la declaracion definitiva del año {$añoAnterior}, suman cero (0). Para continuar con la Declaracion Estimada {$añoImpositivo}, debe realizar primero la cargar de la definitiva indicada."),
+								'm' => Yii::t('frontend', "Los montos de la declaracion definitiva del año {$añoAnterior}, suman cero (0). " . $mensaje1),
 							];
 						}
 					} else {
 						$result = [
 							'r' => false,
-							'm' => Yii::t('frontend', "La declaracion definitiva del año {$añoAnterior}, no esta definida."),
+							'm' => Yii::t('frontend', "La declaracion definitiva del año {$añoAnterior}, no esta definida. " . $mensaje1),
 						];
 					}
 				}
