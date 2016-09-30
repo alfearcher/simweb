@@ -243,11 +243,12 @@
 		      	$searchCorreccion = New CorreccionFechaInicioSearch($idContribuyente);
 		      	$datos = $searchCorreccion->getDatosContribuyente();
 		  		if ( count($datos) > 0 ) {
-die(var_dump($datos));
+
 		  			// Se determina los datos basicos de la sede principal. Para controlar la colocacion de la
 		  			// fecha de inicio de actividad de las sucursales. Si resulta que es la sede principal, entonces
 		  			// podra colocar una fecha que no sea superior a ningunas de las sucursales.
 		  			$datoSedePrincipal = $searchCorreccion->getDatosBasicoSedePrincipal($datos['naturaleza'], $datos['cedula'], $datos['tipo']);
+
 		  			if ( count($datoSedePrincipal) > 0 ) {
 
 		  				// Se comparan los dos ID's para determinar si el mismo es una sede principal.
@@ -262,14 +263,8 @@ die(var_dump($datos));
 						}
 
 
-
-
-		  			}
-
-
-
-		  			$subCaption = Yii::t('frontend', 'Info of Taxpayer');
-		  			return $this->render('/aaee/correccion-fecha-inicio/_create', [
+						$subCaption = Yii::t('frontend', 'Info of Taxpayer');
+		  				return $this->render('/aaee/correccion-fecha-inicio/_create', [
 					  											'model' => $model,
 					  											'datos' => $datos,
 					  											'subCaption' => $subCaption,
@@ -277,6 +272,10 @@ die(var_dump($datos));
 					  											'errorMensajeFechaInicioSedePrincipal' => $errorMensajeFechaInicioSedePrincipal,
 
 					  					]);
+		  			} else {
+		  				$this->redirect(['error-operacion', 'cod' => 404]);
+
+		  			}
 		  		} else {
 		  			// No se encontraron los datos del contribuyente principal.
 		  			$this->redirect(['error-operacion', 'cod' => 404]);
