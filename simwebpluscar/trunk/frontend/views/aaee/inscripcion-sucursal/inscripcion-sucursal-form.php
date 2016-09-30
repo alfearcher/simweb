@@ -368,10 +368,6 @@
 												</div>
 											</div>
 
-<!-- Boton para borrar el contenido -->
-											<div class="col-sm-2" style="margin-left: 5px;top:23px;">
-												<i class="fa fa-pencil-square-o fa-2x"></i>
-											</div>
 <!-- Fin de Boton para borrar el contenido -->
 										</div>
 <!-- Fin de Telefonos de Oficinas 1 -->
