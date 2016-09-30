@@ -153,6 +153,19 @@
 
 
 		/**
+		 * Metodo que retorna la fecha de inicio de actividades del contribuyente
+		 * @return string retorna una fecha o en su defecto un null.
+		 */
+		public function getFechaInicioActividad()
+		{
+			return ContribuyenteBase::getFechaInicio($this->_id_contribuyente);
+		}
+
+
+
+
+
+		/**
 		 * Metodo que realiza una modelo consulta de las sucursales que posee el mismo rif
 		 * y que sean juridicos.
 		 * @return Active Record.
@@ -396,6 +409,90 @@
 
 
 	    /**
+	     * Metodo que permite determinar si la carga de la declaracion estimada
+	     * del año actual se puede realizar tomando en consideracion que si
+	     * la fecha de inicio de actividad corresponde al año actual, no se exigira
+	     * que exista la declaracion definitiva del año anterior. Solo si el año
+	     * de inicio de actividad del contribuyente corresponde a años anteriores
+	     * al actual, se exigira la definitiva correspondiente. Ademas se considerara
+	     * que una declaracion definitiva es valida si la sumatoria de los montos
+	     * de los rubros, es mayor a cero (0).
+	     * @param  integer $añoImpositivo año impositivo del lapso en donde se quiere
+	     * cargar la declaracion estimada.
+	     * @param  integer $periodo periodo del lapso.
+	     * @return array retorna un arreglo donde dicho arreglo contiene dos
+	     * key, uno indica si se puede iniciar la declaracion y el otro es
+	     * un string con un mensaje.
+	     */
+		public function puedoDeclararEstimada($añoImpositivo, $periodo)
+		{
+			$result = [
+				'r' => false,
+				'm' => '',
+			];
+
+			// Año actual
+			$añoActual = date('Y');
+
+			$añoAnterior = $añoImpositivo - 1;
+
+			$fechaInicio = null;
+
+			// Se obtiene la fecha de inicio de actividad economica
+			$fechaInicio = self::getFechaInicioActividad();
+
+			if ( $fechaInicio !== null ) {
+				$añoInicio = date('Y', strtotime($fechaInicio));
+				if ( $añoInicio == $añoActual ) {
+					$result = [
+						'r' => true,
+						'm' => 'OK',
+					];
+				} else {
+					$sumaDefinitiva = 0;
+					// Como la fecha de inicio no corresponde con el año actual, se
+					// debe verificar que exista la declaracion definitiva del año
+					// anterior, lo que implica que la suma de los rubros de dicha
+					// declaracion, sumen un monto mayor a cero (0).
+					$definitivas = self::getDefinitivaAnterior($añoAnterior, $periodo);
+
+					if ( $definitivas !== null ) {
+						foreach ( $definitivas as $key => $value ) {
+							$sumaDefinitiva = $sumaDefinitiva + $value;
+						}
+						if ( $sumaDefinitiva > 0 ) {
+							$result = [
+								'r' => true,
+								'm' => 'OK',
+							];
+						} else {
+							$result = [
+								'r' => false,
+								'm' => Yii::t('frontend', "Los montos de la declaracion definitiva del año {$añoAnterior}, suman cero (0). Para continuar con la Declaracion Estimada {$añoImpositivo}, debe realizar primero la cargar de la definitiva indicada."),
+							];
+						}
+					} else {
+						$result = [
+							'r' => false,
+							'm' => Yii::t('frontend', "La declaracion definitiva del año {$añoAnterior}, no esta definida."),
+						];
+					}
+				}
+			} else {
+				$result = [
+					'r' => false,
+					'm' => Yii::t('frontend', "La fecha de inicio de actividad de la empresa no esta definida."),
+				];
+			}
+			return $result;
+		}
+
+
+
+
+
+
+	    /**
 	     * Metodo que retorna una lista arreglo donde el indice del arreglo es el
 	     * identificador de la entidad "act-econ" y el valor del elemento es el
 	     * año impositivo. Esto permitira crear un combo-lista.
@@ -407,18 +504,30 @@
 	    public function getListaAnoRegistrado()
 	    {
 	    	$listaAño = [];
+	    	$añoActual = date('Y');
 	    	$añoLimite = Yii::$app->lapso->anoLimiteNotificado();
 
 	    	$findModel = ActEcon::find()->distinct('ano_impositivo')
 	    								->where('id_contribuyente =:id_contribuyente',
 	    	 										['id_contribuyente' => $this->_id_contribuyente])
 	    			  				    ->andWhere('estatus =:estatus', [':estatus' => 0])
-	    							    ->andWhere('ano_impositivo >=:ano_impositivo',
-	    							    			[':ano_impositivo' => $añoLimite])
+	    							    ->andWhere('ano_impositivo =:ano_impositivo',
+	    							    			[':ano_impositivo' => $añoActual])
 	    							    ->orderBy([
 	    							   		'ano_impositivo' => SORT_ASC,
 	    							   	])
 	    							    ->all();
+
+	    	// $findModel = ActEcon::find()->distinct('ano_impositivo')
+	    	// 							->where('id_contribuyente =:id_contribuyente',
+	    	//  										['id_contribuyente' => $this->_id_contribuyente])
+	    	// 		  				    ->andWhere('estatus =:estatus', [':estatus' => 0])
+	    	// 						    ->andWhere('ano_impositivo >=:ano_impositivo',
+	    	// 						    			[':ano_impositivo' => $añoLimite])
+	    	// 						    ->orderBy([
+	    	// 						   		'ano_impositivo' => SORT_ASC,
+	    	// 						   	])
+	    	// 						    ->all();
 	    	if ( isset($findModel) ) {
 	    		$listaAño = ArrayHelper::map($findModel, 'ano_impositivo', 'ano_impositivo');
 	    	}
