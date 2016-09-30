@@ -52,7 +52,7 @@
 	class ContribuyenteBase extends ActiveRecord
 	{
 
-	
+
 
 
 
@@ -728,6 +728,33 @@
 		{
 			return self::datosRepresentante($idContribuyente);
 		}
+
+
+
+		/**
+		 * Metodo que determina a traves de un RIF, quien es ña sede principal.
+		 * @param  $naturalezaLocal string que indica la primera letra del RIF del contribuyente.
+		 * @param  $cedulaLocal integer que indica los numeros en el centro del RIF.
+		 * @param  $tipoLocal integer que indica el ultimo digito del RIF del contribuyente juridico.
+		 * @param  integer $inactivoLocal que indica condicion del registro.
+		 * @return array retorna un arreglo de atributos de la sede principal. Todos los atributos
+		 * de la entidad respectiva.
+		 */
+		public static function getCualEsLaSedePrincipalSegunRIF($naturalezaLocal = '', $cedulaLocal = 0, $tipoLocal = 0, $inactivoLocal = 0)
+		{
+			$sede = null;
+			$datos = self::getListaSucursalesSegunRIF($naturalezaLocal = '', $cedulaLocal = 0, $tipoLocal = 0, $inactivoLocal = 0);
+			if ( count($datos) > 0 ) {
+				foreach ( $datos as $dato ) {
+					if ( $dato['id_rif'] == 0 ) {
+						$sede = $dato;
+						break;
+					}
+				}
+			}
+			return $sede;
+		}
+
 
 
 
