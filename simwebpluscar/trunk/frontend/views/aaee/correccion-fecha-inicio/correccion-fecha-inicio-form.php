@@ -208,9 +208,3 @@
 	<?php ActiveForm::end(); ?>
 </div>
 
-<?php $this->registerJs(
-	'$( "#btn-create").click(function() {
-		$("#btn-create").attr("disabled", true);
-	});
-');
-?>
