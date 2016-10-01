@@ -72,7 +72,11 @@ class InactivarNivelesPresupuestoController extends Controller
   
   public $layout = 'layout-main';
 
-
+  /**
+   * [actionVistaSeleccion description] metodo que renderiza formulario para la seleccion de niveles presupuestarios disponibles
+   * @param  string $errorCheck [description] variable de error
+   * @return [type]             [description] retorna el formulario
+   */
   public function actionVistaSeleccion($errorCheck = "")
   {
 
@@ -169,7 +173,12 @@ class InactivarNivelesPresupuestoController extends Controller
     }
 
    
-
+    /**
+     * [beginSave description] metodo padre de inactivacion que redirecciona hacia otros metodos encargados de finalizar la inactivacion
+     * @param  [type] $var   [description] variable tipo string para la redireccion
+     * @param  [type] $model [description] informacion enviada desde el form
+     * @return [type]        [description] retorna true o false
+     */
     public function beginSave($var)
     {
 

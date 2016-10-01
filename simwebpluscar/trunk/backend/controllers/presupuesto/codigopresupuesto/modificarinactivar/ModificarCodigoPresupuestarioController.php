@@ -55,7 +55,7 @@ use yii\filters\AccessControl;
 use common\conexion\ConexionController;
 use common\mensaje\MensajeController;
 use backend\models\presupuesto\codigopresupuesto\modificarinactivar\BusquedaCodigoMultipleForm;
-
+use backend\models\presupuesto\codigopresupuesto\modificarinactivar\ModificarCodigoPresupuestarioForm;
 /**
  * Site controller
  */
@@ -76,7 +76,11 @@ class ModificarCodigoPresupuestarioController extends Controller
   
   public $layout = 'layout-main';
    
-  
+  /**
+   * [actionBusquedaCodigoMultiple description] metodo que renderiza la vista con la busqueda multiple del codigo presupuestario, tanto por dicho codigo
+   * como por nivel contable
+   * @return [type] [description] retorna la vista
+   */
   public function actionBusquedaCodigoMultiple()
   { 
 
@@ -113,7 +117,7 @@ class ModificarCodigoPresupuestarioController extends Controller
           }elseif(isset($post['btn-busqueda-codigo'])){
               if ($model->validate()){
                  $_SESSION['datos'] = $model;
-                 return self::actionBuscarCodigoPresupuestario();
+                 return self::actionBuscarCodigoPresupuestario($model->codigo);
               }
         
              
@@ -131,11 +135,15 @@ class ModificarCodigoPresupuestarioController extends Controller
   
   }
 
-
+  /**
+   * [buscarNivelPresupuestario description] metodo que realiza la busqueda de la informacion del codigo presupuestario en la tabla codigos_contables
+   * @param  [type] $nivel [description] nivel presupuesario
+   * @return [type]        [description] retorna la informacion por niveles presupuestarios 
+   */
   public function  buscarNivelPresupuestario($nivel)
   {
    // die($model)
-    ;
+    
       $model = new BusquedaCodigoMultipleForm();
 
           $dataProvider = $model->busquedaNivelPresupuesto($nivel);
@@ -146,63 +154,179 @@ class ModificarCodigoPresupuestarioController extends Controller
             ]);
   }
 
+  /**
+   * [actionBuscarCodigoPresupuestario description]  metodo que realiza la busqueda por codigo del nivel contable
+   * @param  [type] $codigo [description] codigo contable
+   * @return [type]        [description] retorna el gridview con el dataprovider si consigue y false si no consigue
+   */
+  public function actionBuscarCodigoPresupuestario($codigo){
+
+      $model = new BusquedaCodigoMultipleForm();
+
+          $dataProvider = $model->busquedaNivelPresupuestoCodigo($codigo);
+
+             return $this->render('/presupuesto/codigopresupuesto/modificarinactivar/mostrar-informacion-nivel-presupuestario-codigo',[ 
+                                  'dataProvider' => $dataProvider,
+
+            ]);
+  }
+
+  /**
+   * [actionModificarCodigoPresupuestario description] metodo que renderiza el formulario para la modificacion de codigo presupuestario
+   * @return [type] [description] retorna la vista con el formulario
+   */
   public function actionModificarCodigoPresupuestario()
   {
-      $idCodigo = yii::$app->request->get('value');
-      
-          $buscar = new BusquedaCodigoMultipleForm();
-          $busqueda = $buscar->busquedaCodigo($idCodigo);
+        
+           $idCodigo = yii::$app->request->get('value');
+           $_SESSION['idCodigo'] =  $idCodigo; 
+
+          $model = new ModificarCodigoPresupuestarioForm();
+
+          $datos = $model->busquedaDatosCodigoPresupuestario($idCodigo);
+
+            $postData = Yii::$app->request->post();
+
+            if ( $model->load($postData) && Yii::$app->request->isAjax ){
+                  Yii::$app->response->format = Response::FORMAT_JSON;
+                  return ActiveForm::validate($model);
+            }
+
+            if ( $model->load($postData) ) {
+             // die('valido el postdata');
+
+               if ($model->validate()){
+
+
+               
+                 $modificar = self::beginSave("modificar", $model);
+
+                    if($modificar == true){
+                          return MensajeController::actionMensaje(200);
+                      }else{
+                          return MensajeController::actionMensaje(920);
+                      }    
+                      
+                     
+                
+              }
+            }
+            
+            return $this->render('/presupuesto/codigopresupuesto/modificarinactivar/view-modificar-codigo-presupuestario', [
+                                                              'model' => $model,
+                                                              'datos' => $datos,
+                                                           
+            ]);
+  }
+
+  /**
+   * [actionInactivarCodigoPresupuestario description] metodo que realiza la inactivacion del codigo presupuestario
+   * @return [type] [description] renderiza mensajes modales para indicar si se realizo la operacion o esta fue rechazada
+   */
+  public function actionInactivarCodigoPresupuestario()
+  {
+
+         $idCodigo = yii::$app->request->get('value');
+          $_SESSION['idCodigo'] =  $idCodigo; 
+
+              $inactivar = self::beginSave("inactivar", 0);
+
+              if($inactivar == true){
+                          return MensajeController::actionMensaje(200);
+                      }else{
+                          return MensajeController::actionMensaje(920);
+                      }  
+
   }
 
 
-    /**
-     * [guardarNivelesContables description] metodo que realiza el guardado de la informacion ingresada por el funcionario en la tabla niveles contables
-     * @param  [type] $conn     [description] parametro de conexion
-     * @param  [type] $conexion [description] parametro de conexion
-     * @param  [type] $model    [description] informacion enviada por el funcionario desde el formulario
-     * @return [type]           [description] retorna true si el proceso guarda y false si el proceso da error
-     */
-    public function guardarCodigosContables($conn, $conexion, $model)
+ /**
+  * [modificarCodigosContables description] metodo que realiza el update en la tabla codigos_contables con la informacion enviada desde el modelo
+  * @param  [type] $conn     [description] parametro de conexion
+  * @param  [type] $conexion [description] parametro de conexion
+  * @param  [type] $model    [description] modelo que contiene los datos
+  * @return [type]           [description] retorna true si modifica y false si no.
+  */
+    public function modificarCodigosContables($conn, $conexion, $model)
     {
+       $idCodigo = $_SESSION['idCodigo'];
 
       
-      $tabla = 'codigos_contables';
-      $arregloDatos = [];
-      $arregloCampo = RegistrarCodigoPresupuestarioForm::attributeCodigosContables();
+        $tableName = 'codigos_contables';
+        
+        $arregloCondition = ['id_codigo' => $idCodigo];
+     
+        $arregloDatos['nivel_contable'] = $model->nivel_contable;
 
-      foreach ($arregloCampo as $key=>$value){
+         $arregloDatos['codigo'] = $model->codigo;
 
-          $arregloDatos[$value] =0;
-      }
+        $arregloDatos['descripcion'] = $model->descripcion;
 
-      $arregloDatos['codigo'] = $model->codigo;
+         
 
-      $arregloDatos['descripcion'] = $model->descripcion;
+          $conexion = new ConexionController();
 
-      $arregloDatos['nivel_contable'] = $model->nivel_contable;
+          $conn = $conexion->initConectar('db');
+             
+          $conn->open();
 
-      $arregloDatos['monto'] = $model->monto;
+      
 
-      $arregloDatos['inactivo'] = 0;
+                if ($conexion->modificarRegistro($conn, $tableName, $arregloDatos, $arregloCondition)){
 
-      $arregloDatos['codigo_contable'] = $model->codigo_contable;
+             
 
-          if ($conexion->guardarRegistro($conn, $tabla, $arregloDatos )){
+                    return true;
+              
+                }
+
+    }
+
+    /**
+     * [inactivarCodigoContable description] metodo que realiza el update de la tabla codigos_contables e inactiva el codigo, dejandolo en estatus 1
+     * @param  [type] $conn     [description] parametro de conexion
+     * @param  [type] $conexion [description] parametro de conexion
+     * @return [type]           [description] retorna true si modifica y false si no.
+     */
+    public function inactivarCodigoContable($conn, $conexion)
+    {
+       $idCodigo = $_SESSION['idCodigo'];
+
+      
+        $tableName = 'codigos_contables';
+        
+        $arregloCondition = ['id_codigo' => $idCodigo];
+     
+        $arregloDatos['inactivo'] = 1;
 
 
+         
 
-             $resultado = true;
+          $conexion = new ConexionController();
 
+          $conn = $conexion->initConectar('db');
+             
+          $conn->open();
 
-              return $resultado;
+      
 
+                if ($conexion->modificarRegistro($conn, $tableName, $arregloDatos, $arregloCondition)){
 
-          }
+             
+
+                    return true;
+              
+                }
 
     }
 
    
-
+    /**
+     * [beginSave description] metodo padre que direcciona hacia los metodos de modificacion o inactivacion de codigo contable
+     * @param  [type] $var   [description] variable tipo string que sirve para el redireccionamiento de metodos de inactivacion o modificacion
+     * @param  [type] $model [description] datos enviados desde los formularios
+     * @return [type]        [description] retorna true si el proceso se cumple y false si no se cumple
+     */
     public function beginSave($var, $model)
     {
      //die('llegue a begin'.var_dump($model));
@@ -214,13 +338,13 @@ class ModificarCodigoPresupuestarioController extends Controller
 
       $transaccion = $conn->beginTransaction();
 
-          if ($var == "guardar"){
+          if ($var == "modificar"){
             
 
-              $guardar = self::guardarCodigosContables($conn, $conexion, $model);
+              $modificar = self::modificarCodigosContables($conn, $conexion, $model);
 
              
-              if ($guardar == true){
+              if ($modificar == true){
 
                 
 
@@ -239,6 +363,29 @@ class ModificarCodigoPresupuestarioController extends Controller
               }
                   
                  
+          }else if($var == "inactivar"){
+
+               $inactivar = self::inactivarCodigoContable($conn, $conexion);
+
+             
+              if ($inactivar == true){
+
+                
+
+                    $transaccion->commit();
+                    $conn->close();
+
+                     
+                    return true;
+
+
+              }else{
+
+                    $transaccion->rollback();
+                    $conn->close();
+                    return false;
+              }
+
           }
 
   }

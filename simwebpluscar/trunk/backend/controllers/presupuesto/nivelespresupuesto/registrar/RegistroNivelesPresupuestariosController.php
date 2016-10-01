@@ -72,7 +72,10 @@ class RegistroNivelesPresupuestariosController extends Controller
   
   public $layout = 'layout-main';
    
-  
+  /**
+   * [actionRegistroNivelesPresupuestarios description] metodo que renderiza un formulario para el registro de niveles presupuestarios
+   * @return [type] [description] retorna el formulario
+   */
   public function actionRegistroNivelesPresupuestarios()
   {
    // die('llegue a registro');
@@ -157,7 +160,13 @@ class RegistroNivelesPresupuestariosController extends Controller
     }
 
    
-
+     
+    /**
+     * [beginSave description] metodo padre que redirecciona a otros metodos para realizar tanto guardado, como modificacion de procesos
+     * @param  [type] $var   [description] variable tipo string que define la redireccion entre metodos
+     * @param  [type] $model [description] informacion enviada desde el formulario
+     * @return [type]        [description] retorna true o false
+     */
     public function beginSave($var, $model)
     {
      //die('llegue a begin'.var_dump($model));

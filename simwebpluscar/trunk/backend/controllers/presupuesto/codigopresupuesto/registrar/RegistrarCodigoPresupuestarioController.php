@@ -73,7 +73,10 @@ class RegistrarCodigoPresupuestarioController extends Controller
   
   public $layout = 'layout-main';
    
-  
+  /**
+   * [actionRegistroCodigoPresupuesto description] metodo que renderiza la vista con el formulario de registro de codigo presupuestario
+   * @return [type] [description] retorna el formulario 
+   */
   public function actionRegistroCodigoPresupuesto()
   { 
     
@@ -115,7 +118,7 @@ class RegistrarCodigoPresupuestarioController extends Controller
 
 
     /**
-     * [guardarNivelesContables description] metodo que realiza el guardado de la informacion ingresada por el funcionario en la tabla niveles contables
+     * [guardarCodigosContables description] metodo que realiza el guardado de la informacion ingresada por el funcionario en la tabla codigos contables
      * @param  [type] $conn     [description] parametro de conexion
      * @param  [type] $conexion [description] parametro de conexion
      * @param  [type] $model    [description] informacion enviada por el funcionario desde el formulario
@@ -163,7 +166,12 @@ class RegistrarCodigoPresupuestarioController extends Controller
     }
 
    
-
+    /**
+     * [beginSave description] metodo padre de guardado que redirecciona hacia otros metodos encargados de finalizar el guardado
+     * @param  [type] $var   [description] variable tipo string para la redireccion
+     * @param  [type] $model [description] informacion enviada desde el form
+     * @return [type]        [description] retorna true o false
+     */
     public function beginSave($var, $model)
     {
      //die('llegue a begin'.var_dump($model));

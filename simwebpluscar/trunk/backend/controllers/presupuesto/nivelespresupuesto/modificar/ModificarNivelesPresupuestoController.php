@@ -73,7 +73,10 @@ class ModificarNivelesPresupuestoController extends Controller
   
   public $layout = 'layout-main';
 
-
+  /**
+   * [actionVistaSeleccion description] metodo que renderiza el formulario para seleccionar los diferentes niveles presupuestarios
+   * @return [type] [description] retorna el formulario
+   */
   public function actionVistaSeleccion()
   {
 
@@ -89,7 +92,10 @@ class ModificarNivelesPresupuestoController extends Controller
   																]);
   }
 
-
+  /**
+   * [actionVerificarNivelContable description] metodo que realiza la busqueda de niveles contables
+   * @return [type] [description] redirecciona hacia otro metodo de modificacion
+   */
   public function actionVerificarNivelContable()
   {
 
@@ -108,7 +114,10 @@ class ModificarNivelesPresupuestoController extends Controller
   				}
   }				
    
-  
+    /**
+     * [actionModificarNivelesContables description] metodo que renderiza formulario para la modificacion de niveles contables
+     * @return [type] [description] retorna el formulario
+     */
   	public function actionModificarNivelesContables()
   	{
    		$datos = $_SESSION['datosNiveles'];
@@ -152,7 +161,7 @@ class ModificarNivelesPresupuestoController extends Controller
 
 
     /**
-     * [modificarNivelesContables description] metodo que realiza la modificacion de la informacion ingresada por el funcionario en la tabla niveles contables
+     * [modificarNivelesContablesMaestro description] metodo que realiza la modificacion de la informacion ingresada por el funcionario en la tabla niveles contables
      * @param  [type] $conn     [description] parametro de conexion
      * @param  [type] $conexion [description] parametro de conexion
      * @param  [type] $model    [description] informacion enviada por el funcionario desde el formulario
@@ -192,7 +201,12 @@ class ModificarNivelesPresupuestoController extends Controller
     }
 
    
-
+    /**
+     * [beginSave description] metodo padre que redirecciona a otros metodos para realizar tanto guardado, como modificacion de procesos
+     * @param  [type] $var   [description] variable tipo string que define la redireccion entre metodos
+     * @param  [type] $model [description] informacion enviada desde el formulario
+     * @return [type]        [description] retorna true o false
+     */
     public function beginSave($var, $model)
     {
      //die('llegue a begin'.var_dump($model));
