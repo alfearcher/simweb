@@ -144,6 +144,7 @@
 												<?= $form->field($model, 'fecha_inicio_new')->widget(\yii\jui\DatePicker::classname(),[
 																									  'clientOptions' => [
 																											'maxDate' => '+0d',	// Bloquear los dias en el calendario a partir del dia siguiente al actual.
+																											'changeMonth' => true,
 																											'changeYear' => true,
 																										],
 																									  'language' => 'es-ES',
