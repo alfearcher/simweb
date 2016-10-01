@@ -1,7 +1,7 @@
 <?php
 
     use yii\web\Response;
-  use kartik\icons\Icon;
+    use kartik\icons\Icon;
     use yii\helpers\Html;
     use yii\helpers\Url;
     use yii\helpers\ArrayHelper;
@@ -22,7 +22,8 @@
 
  <?php $form = ActiveForm::begin([
             'id' => 'form-datosNivelContable-inline',
-            
+            'method' => 'post',
+            'action' => ['/presupuesto/codigopresupuesto/cambiarcodigo/cambiar-codigo-presupuestario/modificar-nivel-presupuestario-entre-codigo-presupuestario'],
             'enableClientValidation' => true,
             'enableAjaxValidation' => true,
             'enableClientScript' => true,
@@ -104,33 +105,26 @@
 
 
                 
-
-             [
-                    'class' => 'yii\grid\ActionColumn',
-                    'header'=>'modificar',
-                    'template' => '{modificar}',
-                    'buttons' => [
-                        'modificar' => function ($url, $model, $key) {
-                            
-                                return Html::a('<center><span class= "fa fa-pencil"></span></center>',['modificar-codigo-presupuestario', 'value'=> $key]);
-                            
-                        },
-                    ],
-                ],
+                                 [
+                                    'class' => 'yii\grid\ActionColumn',
+                                    'header'=> Yii::t('backend','View'),
+                                    'template' => '{view}',
+                                    'buttons' => [
+                                        'view' => function ($url, $model, $key) {
+                                            return Html::submitButton('<div class="item-list" style="color: #337AB7;"><center>'. Icon::show('fa fa-thumbs-up',['class' => 'fa-1x'], Icon::FA) .'</center></div>',
+                                                                        [
+                                                                            'value' => $key,
+                                                                            'name' => 'id',
+                                                                            'title' => Yii::t('backend', 'View'),
+                                                                            'style' => 'margin: 0 auto; display: block;',
+                                                                        ]
+                                                                    );
+                                        },
+                                    ],
+                                ],
 
                                 
-                         [
-                    'class' => 'yii\grid\ActionColumn',
-                    'header'=>'inactivar',
-                    'template' => '{inactivar}',
-                    'buttons' => [
-                        'inactivar' => function ($url, $model, $key) {
-                           
-                                return Html::a('<center><span class= "fa fa-ban"></span></center>',['inactivar-codigo-presupuestario', 'value'=> $key]);
-                        
-                        },
-                    ],
-                ],
+                
         ],
     ]); ?>
 

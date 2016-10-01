@@ -8,14 +8,15 @@ use common\models\presupuesto\nivelespresupuesto\NivelesContables;
 use backend\models\presupuesto\codigopresupuesto\modificarinactivar\ModificarCodigoPresupuestarioForm;  
 
 
+
+$modeloNivelesContables = NivelesContables::find()->asArray()->all();
+$listaNiveles = ArrayHelper::map($modeloNivelesContables, 'nivel_contable', 'descripcion');
+
        // die(var_dump($datos[0]['codigo']).'hola');                          
 
-$this->title = 'Modificacion de Codigo Contable';
+$this->title = 'Asignacion de nivel contable a Codigo Contable';
 ?>
  
-
-
-
 <?php $form = ActiveForm::begin([
    // 'method' => 'post',
     'id' => 'formulario',
@@ -26,7 +27,7 @@ $this->title = 'Modificacion de Codigo Contable';
 ]);
 ?>
 
-<div class="col-sm-7">
+<div class="col-sm-8">
     <div class="panel panel-primary">
         <div class="panel-heading">
             <?= $this->title ?>
@@ -65,28 +66,38 @@ $this->title = 'Modificacion de Codigo Contable';
                                                                                             'id' => 'codigo',
                                                                                            // 'style' => 'height:32px;width:38px;',
                                                                                            'value' => $datos[0]['codigo'],
-                                                                                            
+                                                                                            'readOnly' => true,
                                                                                          ]) ?>
                                         </div>
                                     </div>
                                
 <!-- FIN DE CODIGO -->    
 
+<!-- NUEVO NIVEL CONTABLE -->
 
-<!-- DESCRIPCION -->
-                                    <div class="col-sm-5" style="padding-right: 0px;padding-left: 40px;">
-                                     
-                                            <div>
-                                               <?= $form->field($model, 'descripcion')->textInput([
-                                                                                            'id' => 'descripcion',
-                                                                                           // 'style' => 'height:32px;width:38px;',
-                                                                                            'value' => $datos[0]['descripcion'],
-                                                                                            //'maxlength' => 1,
-                                                                                         ]) ?>
-                                        </div>
-                                    </div>
                                 </div>
-<!-- FIN DE DESCRIPCION -->                       
+
+
+                                            <div class="row">  
+                                            <div class="col-sm-10" style="margin-left:25px;">
+                                        
+                                            <?= $form->field($model, 'nuevo_nivel_contable')->dropDownList($listaNiveles,[
+                                                                                                    'id' => 'nuevo_nivel_contable',
+                                                                                                    'prompt' => Yii::t('backend', 'Select'),
+                                                                                                   // 'style' => 'height:32px;width:150px;',
+                                                                                                    
+                                                                                                    ])
+                                            ?>
+                                        
+                
+                                             </div>
+
+            
+                                            </div>
+
+
+
+  <!-- FIN DE NUEVO NIVEL CONTABLE -->                    
                          
 
 
