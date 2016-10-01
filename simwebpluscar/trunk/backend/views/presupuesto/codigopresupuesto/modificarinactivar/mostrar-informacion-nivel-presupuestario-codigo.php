@@ -53,6 +53,7 @@
     use frontend\models\propaganda\solicitudes\SlPropagandasForm;
     use common\models\propaganda\tarifaspropaganda\TarifasPropagandas;
     use common\models\propaganda\patrocinador\PropagandasPatrocinaodres;
+    use backend\models\presupuesto\codigopresupuesto\modificarinactivar\ModificarCodigoPresupuestarioForm;
 
     
 
@@ -123,9 +124,8 @@
 
                    
                     'value'=> function($data){ 
-                     //   die(var_dump($data->nivelPresupuesto));
-
-                        return $data->nivelPresupuesto->descripcion;
+                    
+                        return ModificarCodigoPresupuestarioForm::buscarNivelPresupuesto($data->nivel_contable);
                     }
 
                 ],

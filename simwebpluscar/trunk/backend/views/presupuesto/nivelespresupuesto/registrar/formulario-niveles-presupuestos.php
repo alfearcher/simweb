@@ -38,33 +38,36 @@ $this->title = 'Carga de Niveles Contables';
 
 <!-- NIVEL CONTABLE -->
                                     <div class="row">
-                                    <div class="col-sm-4" style="margin-left: 27px;">
+                                    <div class="col-sm-2" style="margin-left: 27px;">
 
                                           
                                                <div class="cedula">
                                                  <?= $form->field($model, 'nivel_contable')->textInput([
                                                                                             'id' => 'nivel_contable',
-                                                                                            'style' => 'height:32px;width:122px;',
+                                                                                          //  'style' => 'height:32px;width:122px;',
                                                                                            
                                                                                             //'maxlength' => $maxLength,
                                                                                           ]);?>
                                                 </div>
                                     </div>
+                                     </div>
 <!-- FIN DE NIVEL CONTABLE -->
 
 <!-- DESCRIPCION -->
-                                    <div class="col-sm-4" style="padding-right: 0px;padding-left: 40px;">
+                                    <div class="row">
+                                    <div class="col-sm-8" style="padding-right: 0px;padding-left: 40px;">
                                      
                                             <div class="tipo">
                                                <?= $form->field($model, 'descripcion')->textInput([
                                                                                             'id' => 'descripcion',
-                                                                                            'style' => 'height:32px;width:200px;',
+                                                                                          //  'style' => 'height:32px;width:200px;',
                                                                                            
                                                                                            
                                                                                          ]); ?>
                                         </div>
                                     </div>
                                     </div>
+                                   
                                
 <!-- FIN DE DESCRIPCION -->
 

@@ -23,7 +23,21 @@ $this->title = 'Carga de Niveles Contables';
 ]);
 ?>
 
-<div class="col-sm-7">
+     <div class="col-sm-4" style="margin-left: 27px;">
+
+                                          
+                                               <div class="cedula">
+                                                 <?= $form->field($model, 'nivel_contable')->HiddenInput([
+                                                                                            'id' => 'nivel_contable',
+                                                                                            'style' => 'height:32px;width:122px;',
+                                                                                            'value' => $datos[0]->nivel_contable,
+                                                                                           // 'maxlength' => $maxLength,
+                                                                                           
+                                                                                           ])->label(false);?> 
+                                                </div>
+                                    </div>
+
+<div class="col-sm-7" style="margin-right:200px;">
     <div class="panel panel-primary">
         <div class="panel-heading">
             <?= $this->title ?>
@@ -38,27 +52,16 @@ $this->title = 'Carga de Niveles Contables';
 
 <!-- NIVEL CONTABLE -->
                                     <div class="row">
-                                    <div class="col-sm-4" style="margin-left: 27px;">
-
-                                          
-                                               <div class="cedula">
-                                                 <?= $form->field($model, 'nivel_contable')->textInput([
-                                                                                            'id' => 'nivel_contable',
-                                                                                            'style' => 'height:32px;width:122px;',
-                                                                                            'value' => $datos[0]->nivel_contable,
-                                                                                            //'maxlength' => $maxLength,
-                                                                                          ]);?>
-                                                </div>
-                                    </div>
+                               
 <!-- FIN DE NIVEL CONTABLE -->
 
 <!-- DESCRIPCION -->
-                                    <div class="col-sm-4" style="padding-right: 0px;padding-left: 40px;">
+                                    <div class="col-sm-8" style="padding-right: 0px;padding-left: 40px;">
                                      
                                             <div class="tipo">
                                                <?= $form->field($model, 'descripcion')->textInput([
                                                                                             'id' => 'descripcion',
-                                                                                            'style' => 'height:32px;width:200px;',
+                                                                                            //'style' => 'height:32px;width:200px;',
                                                                                            
                                                                                               'value' => $datos[0]->descripcion,
                                                                                          ]); ?>
