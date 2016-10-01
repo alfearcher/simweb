@@ -89,7 +89,9 @@
         {
             return $this->hasOne(NivelesContables::className(), ['nivel_contable' => 'nivel_contable']);
         }
-        
+
+
+     
         
 
 
