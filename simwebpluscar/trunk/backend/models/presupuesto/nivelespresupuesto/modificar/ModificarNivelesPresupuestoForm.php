@@ -72,11 +72,11 @@ class ModificarNivelesPresupuestoForm extends Model
     {
         return [
 
-            [['nivel_contable', 'descripcion', 'ingreso_propio'], 'required'],
+            [[ 'descripcion', 'ingreso_propio'], 'required'],
 
-            ['nivel_contable', 'integer'],
+            //['nivel_contable', 'integer'],
 
-            ['nivel_contable', 'verificarNivelContable'],
+           // ['nivel_contable', 'verificarNivelContable'],
             
         ]; 
     } 
@@ -132,7 +132,11 @@ class ModificarNivelesPresupuestoForm extends Model
 
     }
 
-
+    /**
+     * [busquedaNiveles description] metodo que realiza la busqueda de los niveles presupuestarios
+     * @param  [type] $nivelContable [description] nivel contable para realizar la busqueda
+     * @return [type]                [description] retorna la informacion o retorna false
+     */
     public function busquedaNiveles($nivelContable)
     {
 

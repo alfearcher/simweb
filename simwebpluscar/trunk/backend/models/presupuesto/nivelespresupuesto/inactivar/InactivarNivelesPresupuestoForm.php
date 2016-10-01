@@ -123,7 +123,11 @@ class InactivarNivelesPresupuestoForm extends Model
 
     }
 
-
+    /**
+     * [busquedaNiveles description] metodo que realiza la busqueda del nivel contable en la tabla niveles_contables
+     * @param  [type] $nivelContable [description] id del nivel contable para realizar la busqueda
+     * @return [type]                [description] retorna el nivel contable
+     */
     public function busquedaNiveles($nivelContable)
     {
 
@@ -170,7 +174,7 @@ class InactivarNivelesPresupuestoForm extends Model
     }
 
 
-
+    //metodo que valida si el chekbox esta seteado
      public function validarCheck($postCheck)
     {
         //die($postCheck);

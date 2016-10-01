@@ -109,6 +109,7 @@ class BusquedaCodigoMultipleForm extends Model
             ['codigo', 'integer'],
 
 
+            ['codigo', 'verificarCodigo'],
             
         ];
     } 
@@ -145,7 +146,7 @@ class BusquedaCodigoMultipleForm extends Model
     /**
      * [search description] funcion que realiza la busqueda de calcomanias por funcionario y año impositivo en la tabla calcomanias
      * @param  [type] $model [description] modelo que contiene la informacion para realizar la busqueda
-     * @return [type]        [description] retorna true si consigue la informacion y false si no la consigue
+     * @return [type]        [description] redirecciona a una busqueda alterna para completar la relacion
      */
     public function busquedaNivelPresupuesto($nivel)
     { 
@@ -168,17 +169,97 @@ class BusquedaCodigoMultipleForm extends Model
        
     }
 
+    /**
+     * [busquedaNivelPresupuestoCodigo description] metodo que realiza el nivel presupuestario en base al codigo contable
+     * @param  [type] $nivel [description] codigo presupuestario
+     * @return [type]        [description] redirecciona a una busqueda alterna para completar la relacion
+     */
+    public function busquedaNivelPresupuestoCodigo($codigo)
+    { 
+     //die($nivel.'hola');
+        $query = self::buscarCodigoContableRelacionPorCodigo($codigo);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+
+             'pagination' => [
+        'pagesize' => 10,
+        ], 
+           
+        ]);
+        
+        $query->all();
+  
+        return $dataProvider;
+
+       
+    }
+
+
+    /**
+     * [buscarCodigoContableRelacion description] metodo que realiza la relacion entre la tabla codigos_contables y niveles_presupuesto
+     * @param  [type] $nivel [description] nivel presupuestario para enlazar las tablas
+     * @return [type]        [description] retorna la relacion
+     */
     public function buscarCodigoContableRelacion($nivel)
     {
 
         $buscar = CodigosContables::find()
                                     ->where([
                                     'codigos_contables.nivel_contable' => $nivel,
+                                    'inactivo' => 0,
                                     ])
                                     ->joinWith('nivelPresupuesto');
-
+                                    //die(var_dump($buscar));
                                 return $buscar;
     }
+
+    /**
+     * [buscarCodigoContableRelacionPorCodigo description] metodo que realiza la relacion entre la tabla codigos_contables y niveles_presupuesto 
+     * pero hace la busqueda en base al codigo presupuestario
+     * @param  [type] $nivel [description] nivel presupuestario para enlazar las tablas
+     * @return [type]        [description] retorna la relacion
+     */
+    public function buscarCodigoContableRelacionPorCodigo($codigo)
+    {
+
+             $buscar = CodigosContables::find()
+                                    ->where([
+                                    'codigos_contables.codigo' => $codigo,
+                                    'inactivo' => 0,
+                                    ]);
+                                   // ->joinWith('nivelPresupuesto');
+                                   // die(var_dump($buscar));
+                                return $buscar;
+
+    }
+
+    /**
+     * [verificarCodigo description] metodo que verifica si el codigo contable ya existe
+     * @param  [type] $attribute [description] atributos
+     * @param  [type] $params    [description] parametros
+     * @return [type]            [description] retorna mensaje si el codigo existe
+     */
+    public function verificarCodigo($attribute, $params)
+    {
+         $busqueda = CodigosContables::find()
+                                        ->where([
+
+                                      'codigo' => $this->codigo,
+                                     // 'estatus' => 0,
+
+                                          ])
+                                        ->all();
+
+              if ($busqueda == null){
+
+                $this->addError($attribute, Yii::t('frontend', 'Este codigo no existe' ));
+              }else{
+                return false;
+              }
+
+    }
+
     
 
 

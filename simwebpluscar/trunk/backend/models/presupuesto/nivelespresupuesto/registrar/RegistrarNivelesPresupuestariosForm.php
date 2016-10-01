@@ -112,7 +112,12 @@ class RegistrarNivelesPresupuestariosForm extends Model
                 
         ];
     }
-
+    /**
+     * [verificarNivelContable description] metodo que verifica que el nivel contable no exista en la tabla
+     * @param  [type] $attribute [description] atributo
+     * @param  [type] $params    [description] parametro
+     * @return [type]            [description] retorna mensaje de error si el nivel contable ya existe
+     */
     public function verificarNivelContable($attribute, $params)
     {
          $busqueda = NivelesContables::find()
@@ -133,7 +138,7 @@ class RegistrarNivelesPresupuestariosForm extends Model
 
     }
 
-   
+   // atributos de la tabla niveles_contables
     public function attributeNivelesContables()
     {
 
