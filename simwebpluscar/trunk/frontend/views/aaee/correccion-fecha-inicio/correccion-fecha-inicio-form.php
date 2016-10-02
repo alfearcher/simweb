@@ -177,6 +177,9 @@
 																								'value' => 1,
 																								'style' => 'width: 100%',
 																								'name' => 'btn-create',
+																								'onClick' => [
+																									'class' => 'btn btn-success disabled'
+																								],
 																							  ])
 								?>
 							</div>
@@ -208,3 +211,11 @@
 	<?php ActiveForm::end(); ?>
 </div>
 
+<?php $this->registerJs(
+	'$(document).ready(function() {
+		$( "#btn-create").click(function() {
+			$("#btn-create").attr("disabled", true);
+		});
+	})
+');
+?>
