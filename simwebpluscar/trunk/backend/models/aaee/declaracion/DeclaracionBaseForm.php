@@ -200,11 +200,13 @@
 
 
 	    /***/
-	    public function beforeValidate()
+	    public function beforeValidate1()
 	    {
 	    	if ( $this->scenario == self::SCENARIO_ESTIMADA ) {
 	    		//$this->monto_minimo = str_replace(',', '.', $this->monto_minimo);
-	    		$this->monto_minimo = Yii::$app->formatter->asDecimal($this->monto_minimo);
+	    		//$this->monto_new = str_replace('.', '', $this->monto_new);
+	    		//$this->monto_new = str_replace(',', '.', $this->monto_new);
+	    		//$this->monto_minimo = Yii::$app->formatter->asDecimal($this->monto_minimo);
 	    	}
 	    	return true;
 
