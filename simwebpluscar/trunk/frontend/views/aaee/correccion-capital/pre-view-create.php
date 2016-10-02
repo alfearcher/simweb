@@ -193,6 +193,7 @@
 								    				[
 								    					'label' => $model->getAttributeLabel('capital_new'),
 								    					'value' => $model['capital_new'],
+								    					'format' => ['decimal', 2],
 								    				],
 								    			],
 											])
