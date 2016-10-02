@@ -411,12 +411,12 @@
 	    /**
 	     * Metodo que permite determinar si la carga de la declaracion estimada
 	     * del año actual se puede realizar tomando en consideracion que si
-	     * la fecha de inicio de actividad corresponde al año actual, no se exigira
-	     * que exista la declaracion definitiva del año anterior. Solo si el año
-	     * de inicio de actividad del contribuyente corresponde a años anteriores
-	     * al actual, se exigira la definitiva correspondiente. Ademas se considerara
-	     * que una declaracion definitiva es valida si la sumatoria de los montos
-	     * de los rubros, es mayor a cero (0).
+	     * la fecha de inicio de actividad del contribuyente corresponde al año
+	     * actual, no se exigira que exista la declaracion definitiva del año
+	     * anterior. Solo si el año de inicio de actividad del contribuyente
+	     * corresponde a años anteriores al actual, se exigira la definitiva
+	     * correspondiente. Ademas se considerara que una declaracion definitiva
+	     * es valida si la sumatoria de los montos de los rubros, es mayor a cero (0).
 	     * @param  integer $añoImpositivo año impositivo del lapso en donde se quiere
 	     * cargar la declaracion estimada.
 	     * @param  integer $periodo periodo del lapso.
@@ -507,27 +507,27 @@
 	    	$añoActual = date('Y');
 	    	$añoLimite = Yii::$app->lapso->anoLimiteNotificado();
 
-	    	$findModel = ActEcon::find()->distinct('ano_impositivo')
-	    								->where('id_contribuyente =:id_contribuyente',
-	    	 										['id_contribuyente' => $this->_id_contribuyente])
-	    			  				    ->andWhere('estatus =:estatus', [':estatus' => 0])
-	    							    ->andWhere('ano_impositivo =:ano_impositivo',
-	    							    			[':ano_impositivo' => $añoActual])
-	    							    ->orderBy([
-	    							   		'ano_impositivo' => SORT_ASC,
-	    							   	])
-	    							    ->all();
-
 	    	// $findModel = ActEcon::find()->distinct('ano_impositivo')
 	    	// 							->where('id_contribuyente =:id_contribuyente',
 	    	//  										['id_contribuyente' => $this->_id_contribuyente])
 	    	// 		  				    ->andWhere('estatus =:estatus', [':estatus' => 0])
-	    	// 						    ->andWhere('ano_impositivo >=:ano_impositivo',
-	    	// 						    			[':ano_impositivo' => $añoLimite])
+	    	// 						    ->andWhere('ano_impositivo =:ano_impositivo',
+	    	// 						    			[':ano_impositivo' => $añoActual])
 	    	// 						    ->orderBy([
 	    	// 						   		'ano_impositivo' => SORT_ASC,
 	    	// 						   	])
 	    	// 						    ->all();
+
+	    	$findModel = ActEcon::find()->distinct('ano_impositivo')
+	    								->where('id_contribuyente =:id_contribuyente',
+	    	 										['id_contribuyente' => $this->_id_contribuyente])
+	    			  				    ->andWhere('estatus =:estatus', [':estatus' => 0])
+	    							    ->andWhere('ano_impositivo >=:ano_impositivo',
+	    							    			[':ano_impositivo' => $añoLimite])
+	    							    ->orderBy([
+	    							   		'ano_impositivo' => SORT_ASC,
+	    							   	])
+	    							    ->all();
 	    	if ( isset($findModel) ) {
 	    		$listaAño = ArrayHelper::map($findModel, 'ano_impositivo', 'ano_impositivo');
 	    	}

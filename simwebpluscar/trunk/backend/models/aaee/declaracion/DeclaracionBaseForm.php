@@ -174,6 +174,7 @@
     			 'message' => Yii::t('backend', '{attribute} must be no less that ' . self::attributeLabels()['monto_minimo'])],
     			[['monto_new', 'monto_v', 'monto_minimo'],
     			  'double', 'message' => Yii::t('backend', '{attribute} must be decimal.')],
+
 	        ];
 	    }
 
@@ -195,6 +196,24 @@
 	            'id_rubro' => Yii::t('frontend', 'Id.'),
 
 	        ];
+	    }
+
+
+	    /***/
+	    public function beforeValidate()
+	    {
+	    	if ( $this->scenario == self::SCENARIO_ESTIMADA ) {
+	    		//$this->monto_minimo = str_replace(',', '.', $this->monto_minimo);
+	    		$this->monto_minimo = Yii::$app->formatter->asDecimal($this->monto_minimo);
+	    	}
+	    	return true;
+
+// 	    	$monto = [
+// 	    		$this->monto_new,
+// 	    		str_replace(',','.', $this->monto_minimo),
+// 	    		$this->scenario,
+// 	    	];
+// die(var_dump($monto));
 	    }
 
 	}
