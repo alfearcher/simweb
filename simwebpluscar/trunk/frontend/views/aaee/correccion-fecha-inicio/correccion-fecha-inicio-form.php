@@ -54,7 +54,7 @@
  			'id' => 'correccion-fecha-inicio-fiscal-form',
  			'method' => 'post',
  			'enableClientValidation' => true,
- 			'enableAjaxValidation' => true,
+ 			'enableAjaxValidation' => false,
  			'enableClientScript' => true,
  		]);
  	?>
