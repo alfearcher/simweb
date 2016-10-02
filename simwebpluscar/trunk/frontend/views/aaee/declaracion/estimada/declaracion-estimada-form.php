@@ -55,6 +55,7 @@
 	use backend\controllers\menu\MenuController;
 	use yii\widgets\MaskedInput;
 	use backend\models\aaee\declaracion\DeclaracionBaseSearch;
+	//use yii\yii\i18n\Formatter;
 
 
 	$typeIcon = Icon::FA;
@@ -145,7 +146,7 @@
 <!-- Aqui se coloca le foreach para replicar el formulario tantos rubros tenga declarado. -->
 											<?php foreach ( $model as $i => $mod ): ?>
 
-												<div class="item panel panel-default"><!-- widgetItem -->
+												<div class="item panel panel-primary"><!-- widgetItem -->
 													<div class="panel-heading">
 														<h3 class="panel-title pull-left"><b><?=Html::encode( $i+1 .'. '. Yii::t('frontend', 'Category') . ' ' . $mod->rubro); ?></b></h3>
 									                    <div class="clearfix"></div>
@@ -168,35 +169,57 @@
 
 
 								                        <div class="row" style="padding-top:0px">
-								                        	<div class="col-sm-2" style="padding-right:0px;padding-top:0px">
+								                        	<div class="col-sm-2" style="padding-right:0px;padding-top:0px;margin-left: 0px;border-right: 0px;">
 								                                <?= $form->field($mod, "[{$i}]rubro")->textInput([
 						                                													'readonly' => true,
+						                                													'style' => 'width: 100%;margin-left: 0px;margin-right:0px;'
 								                                	])
 								                                ?>
 								                            </div>
-								                            <div class="col-sm-7" style="width: 80%;">
+								                            <div class="col-sm-5" style="width: 45%;padding-left: -20px;">
 								                                <?= $form->field($mod, "[{$i}]descripcion")->textArea([
 						                                														'readonly' => true,
 						                                														'rows' => 2,
+						                                														'style' => 'width: 100%;'
 								                                	])
 								                                ?>
 								                            </div>
-								                        </div>
-								                        <div class="row" style="padding-top: 5px;">
+
 								                        	<div class="col-sm-2" style="padding-right:6px;">
 								                                <?= $form->field($mod, "[{$i}]monto_minimo")->textInput([
 					                                															'readonly' => true,
+
 								                                	])->hint('minimo a declarar');
 								                                ?>
 								                            </div>
 								                        	<div class="col-sm-2" style="padding-left:0px;">
-								                                <?= $form->field($mod, "[{$i}]monto_new")->textInput([
-					                                															'hintOptions' =>
-					                                																	['class' => 'hint-block'],
-								                                	])
-								                                ?>
+								                                <?= $form->field($mod, "[{$i}]monto_new")->widget(MaskedInput::className(), [
+																															'id' => 'monto-new',
+																															'name' => 'monto-new',
+																															//'mask' => '',
+																															'options' => [
+																																'class' => 'form-control',
+																																'style' => 'width: 100%;',
+																																//'placeholder' => '0.00',
+
+																															],
+																															'clientOptions' => [
+																																'alias' =>  'decimal',
+																																'digits' => 2,
+																																'digitsOptional' => false,
+																																'groupSeparator' => ',',
+																																'removeMaskOnSubmit' => true,
+																																// 'allowMinus'=>false,
+																																//'groupSize' => 3,
+																																'radixPoint'=> ".",
+																																'autoGroup' => true,
+																																//'decimalSeparator' => ',',
+																															],
+																										  				  ]);
+																?>
 								                            </div>
 								                        </div>
+
 								                    </div>
 								                </div>
 
