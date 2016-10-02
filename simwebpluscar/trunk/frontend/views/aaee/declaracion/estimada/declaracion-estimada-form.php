@@ -72,7 +72,7 @@
  			'id' => 'id-ramo-registrado-form',
  			'method' => 'post',
  			//'action' => $url,
- 			'enableClientValidation' => false,
+ 			'enableClientValidation' => true,
  			'enableAjaxValidation' => false,
  			'enableClientScript' => true,
  		]);
@@ -261,12 +261,3 @@
 
  	<?php ActiveForm::end(); ?>
 </div>	 <!-- Fin de inscripcion-act-econ-form -->
-
-
-<?php
-	$this->registerJs(
-		'$( "#btn-create").click(function() {
-			$("#btn-create").attr("disabled", true);
-		});'
-	);
- ?>
