@@ -349,6 +349,10 @@
 						$result = Model::validateMultiple($modelMultiplex);
 					}
 
+					if ( Model::loadMultiple($modelMultiplex, $postData)  && Yii::$app->request->isAjax ) {
+						Yii::$app->response->format = Response::FORMAT_JSON;
+						return ActiveForm::validateMultiple($modelMultiplex);
+			      	}
 //die(var_dump($modelMultiplex));
 
 
@@ -422,10 +426,10 @@ die(var_dump($modelMultiplex));
 					}
 
 
-			  		if ( Model::loadMultiple($modelMultiplex, $postData)  && Yii::$app->request->isAjax ) {
-						Yii::$app->response->format = Response::FORMAT_JSON;
-						return ActiveForm::validateMultiple($modelMultiplex);
-			      	}
+			  	// 	if ( Model::loadMultiple($modelMultiplex, $postData)  && Yii::$app->request->isAjax ) {
+						// Yii::$app->response->format = Response::FORMAT_JSON;
+						// return ActiveForm::validateMultiple($modelMultiplex);
+			   //    	}
 
 
 			  		if ( isset($findModel) ) {
