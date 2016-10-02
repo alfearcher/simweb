@@ -507,27 +507,27 @@
 	    	$añoActual = date('Y');
 	    	$añoLimite = Yii::$app->lapso->anoLimiteNotificado();
 
-	    	// $findModel = ActEcon::find()->distinct('ano_impositivo')
-	    	// 							->where('id_contribuyente =:id_contribuyente',
-	    	//  										['id_contribuyente' => $this->_id_contribuyente])
-	    	// 		  				    ->andWhere('estatus =:estatus', [':estatus' => 0])
-	    	// 						    ->andWhere('ano_impositivo =:ano_impositivo',
-	    	// 						    			[':ano_impositivo' => $añoActual])
-	    	// 						    ->orderBy([
-	    	// 						   		'ano_impositivo' => SORT_ASC,
-	    	// 						   	])
-	    	// 						    ->all();
-
 	    	$findModel = ActEcon::find()->distinct('ano_impositivo')
 	    								->where('id_contribuyente =:id_contribuyente',
 	    	 										['id_contribuyente' => $this->_id_contribuyente])
 	    			  				    ->andWhere('estatus =:estatus', [':estatus' => 0])
-	    							    ->andWhere('ano_impositivo >=:ano_impositivo',
-	    							    			[':ano_impositivo' => $añoLimite])
+	    							    ->andWhere('ano_impositivo =:ano_impositivo',
+	    							    			[':ano_impositivo' => $añoActual])
 	    							    ->orderBy([
 	    							   		'ano_impositivo' => SORT_ASC,
 	    							   	])
 	    							    ->all();
+
+	    	// $findModel = ActEcon::find()->distinct('ano_impositivo')
+	    	// 							->where('id_contribuyente =:id_contribuyente',
+	    	//  										['id_contribuyente' => $this->_id_contribuyente])
+	    	// 		  				    ->andWhere('estatus =:estatus', [':estatus' => 0])
+	    	// 						    ->andWhere('ano_impositivo >=:ano_impositivo',
+	    	// 						    			[':ano_impositivo' => $añoLimite])
+	    	// 						    ->orderBy([
+	    	// 						   		'ano_impositivo' => SORT_ASC,
+	    	// 						   	])
+	    	// 						    ->all();
 	    	if ( isset($findModel) ) {
 	    		$listaAño = ArrayHelper::map($findModel, 'ano_impositivo', 'ano_impositivo');
 	    	}
