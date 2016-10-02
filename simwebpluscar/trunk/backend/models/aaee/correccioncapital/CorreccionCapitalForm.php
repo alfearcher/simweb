@@ -117,6 +117,7 @@
     			  'capital_v'],
     			  'required', 'on' => 'backend',
     			  'message' => Yii::t('backend', '{attribute} is required')],
+    			//[['capital_new'], 'number', 'numberPattern' => '/^\s*[-+]?[0-9]*[.,]?[0-9]+([eE][-+]?[0-9]+)?\s*$/'],
     			[['capital_new', 'capital_v'],
     			  'double', 'message' => Yii::t('backend', '{attribute} must be decimal.')],
     			['capital_new',
@@ -124,7 +125,6 @@
     			 'compareAttribute' => 'capital_v',
     			 'operator' => '>=',
     			 'message' => Yii::t('backend', '{attribute} must be no less that ' . self::attributeLabels()['capital_v'])],
-    			 //['capital_new', 'compare'
     			//['capital_new', 'format', Yii::$app->formatted->asDecimal($model->)]
     			['origen', 'default', 'value' => 'WEB', 'on' => 'frontend'],
 	     		['origen', 'default', 'value' => 'LAN', 'on' => 'backend'],
