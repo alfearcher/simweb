@@ -188,6 +188,7 @@
 								                        	<div class="col-sm-2" style="padding-right:6px;">
 								                                <?= $form->field($mod, "[{$i}]monto_minimo")->textInput([
 					                                															'readonly' => true,
+					                                															//'value' => Yii::$app->formatter->asDecimal($mod->monto_minimo, 2),
 
 								                                	])->hint('minimo a declarar');
 								                                ?>
