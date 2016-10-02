@@ -147,6 +147,7 @@
 									                    'value' => function($model) {
 	                            										return $model->capital;
 	                    											},
+	                    								'format' => ['decimal', 2],
 									                ],
 									                [
 									                    'label' => Yii::t('backend', 'License No.'),

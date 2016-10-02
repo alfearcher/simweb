@@ -150,6 +150,7 @@
 									                    'value' => function($data) {
 	                            										return $data->capital;
 	                    											},
+	                    								'format' => ['decimal', 2],
 									                ],
 									                [
 									                    'label' => Yii::t('backend', 'License No.'),
@@ -195,22 +196,22 @@
 														<?= $form->field($model, 'capital_new')->widget(MaskedInput::className(), [
 																										'id' => 'capital-new',
 																										'name' => 'capital-new',
-																										'mask' => '9{10}',
+																										//'mask' => '9{1,3}[,9{1,3}][,9{1,3}]',
 																										'options' => [
 																											'class' => 'form-control',
 																											'style' => 'width: 120%;',
-																											'placeholder' => '0',
+																											'placeholder' => '0.00',
 																										],
 																										'clientOptions' => [
 																											'alias' =>  'decimal',
+																											'digits' => 2,
+																											'digitsOptional' => false,
 																											'groupSeparator' => ',',
 																											'removeMaskOnSubmit' => true,
 																											// 'allowMinus'=>false,
 																											//'groupSize' => 3,
 																											'radixPoint'=> ".",
-																											//'autoGroup' => true,
-																											// 'removeMaskOnSubmit' => true
-
+																											'autoGroup' => true,
 																											//'decimalSeparator' => ',',
 																										],
 
@@ -271,3 +272,4 @@
 	</div>
 	<?php ActiveForm::end(); ?>
 </div>
+
