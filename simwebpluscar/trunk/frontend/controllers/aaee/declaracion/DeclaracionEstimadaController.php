@@ -280,6 +280,8 @@
 
 
 
+
+
 		/**
 		 * Metodo que determina si la declaracion estimada se puede realizar
 		 * segun las politicas del negocio establecidas en el modelo.
