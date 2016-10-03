@@ -101,7 +101,9 @@ class PlantillaEmail{
     {
 
         $docu = '';
-        $docu = implode("<br>*", $documento);
+        if ( $documento !== null ) {
+            $docu =  implode("<br>*", $documento);
+        }
 
         $contribuyente = self::busquedaTipoContribuyente();
         //die(var_dump($contribuyente));
