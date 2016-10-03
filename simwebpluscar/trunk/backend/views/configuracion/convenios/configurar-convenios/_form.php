@@ -109,7 +109,7 @@ use backend\models\impuesto\Impuesto;
                             </div>
                             <div class="col-sm-2">
                                     <?= Yii::t('backend', 'Time-Lapse') ?>
-                            </div>
+                            </div>  
 
                             <div class="col-sm-2">
                                     <?= $form->field($model, 'lapso_tiempo')->textInput() ?>

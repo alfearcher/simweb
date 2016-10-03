@@ -67,9 +67,9 @@ class ConfigurarConveniosController extends Controller
         } else {
             return $this->render('create', [
                 'model' => $model,
-            ]);     
-        }
-    }
+            ]);     //contra maestre
+        }   
+    } 
 
     /**
      * Updates an existing ConfigConvenios model.

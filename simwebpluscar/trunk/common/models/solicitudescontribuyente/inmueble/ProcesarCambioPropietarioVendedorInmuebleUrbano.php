@@ -306,7 +306,7 @@
                     return $result; 
                 }
                     
-            } 
+            }   
 
             if (!$result ) { self::setErrors(Yii::t('backend', 'Failed update request')); }
             return $result;

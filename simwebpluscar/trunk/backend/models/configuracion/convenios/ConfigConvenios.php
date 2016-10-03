@@ -71,7 +71,7 @@ class ConfigConvenios extends \yii\db\ActiveRecord
             'id_tiempo' => Yii::t('app', 'Id Tiempo'),
             'vcto_dif_ano' => Yii::t('app', 'Vcto Dif Ano'),
             'aplicar_interes' => Yii::t('app', 'Aplicar Interes'),
-            'interes' => Yii::t('app', 'Interes'),
+            'interes' => Yii::t('app', 'Interes'),  
             'id_impuesto' => Yii::t('app', 'Id Impuesto'),
             'usuario' => Yii::t('app', 'Usuario'),
             'fecha_hora' => Yii::t('app', 'Fecha Hora'),
