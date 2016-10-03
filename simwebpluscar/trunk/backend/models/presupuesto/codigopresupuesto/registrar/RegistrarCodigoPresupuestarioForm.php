@@ -120,7 +120,12 @@ class RegistrarCodigoPresupuestarioForm extends Model
                 
         ];
     }
-
+    /**
+     * [verificarCodigo description] Metodo que verifica si el codigo presupuestario ya existe
+     * @param  [type] $attribute [description] atributos
+     * @param  [type] $params    [description] parametros
+     * @return [type]            [description] retorna un mensaje de error si existe
+     */
     public function verificarCodigo($attribute, $params)
     {
          $busqueda = CodigosContables::find()
