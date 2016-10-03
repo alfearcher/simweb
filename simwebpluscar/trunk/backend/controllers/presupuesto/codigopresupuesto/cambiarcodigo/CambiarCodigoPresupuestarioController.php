@@ -93,6 +93,16 @@ class CambiarCodigoPresupuestarioController extends Controller
   
   }
 
+  public function actionVerificarIdCodigo(){
+
+   // die('llegue a verificar');
+
+           $idCodigo = yii::$app->request->post('id');
+          $_SESSION['idCodigo'] = $idCodigo;
+
+            return $this->redirect(['modificar-nivel-presupuestario-entre-codigo-presupuestario']);
+  }
+
 
 
   /**
@@ -101,11 +111,10 @@ class CambiarCodigoPresupuestarioController extends Controller
    */
   public function actionModificarNivelPresupuestarioEntreCodigoPresupuestario()
   {
-        
-           $idCodigo = yii::$app->request->post('id');
-          $codigoContable = $idCodigo;
-           
-         // die($codigoContable);
+      
+            $idCodigo = $_SESSION['idCodigo']; 
+
+         
 
           $model = new CambiarCodigoPresupuestarioForm();
 
@@ -126,7 +135,7 @@ class CambiarCodigoPresupuestarioController extends Controller
 
                  // die('valido');
                
-                 $modificar = self::beginSave("modificar", $model, $codigoContable);
+                 $modificar = self::beginSave("modificar", $model);
 
                     if($modificar == true){
                           return MensajeController::actionMensaje(200);
@@ -156,14 +165,14 @@ class CambiarCodigoPresupuestarioController extends Controller
   * @param  [type] $model    [description] modelo que contiene los datos
   * @return [type]           [description] retorna true si modifica y false si no.
   */
-    public function modificarNivelesContablesEntreCodigosContables($conn, $conexion, $model, $idCodigo)
+    public function modificarNivelesContablesEntreCodigosContables($conn, $conexion, $model)
     {
      
-       
+        $idCodigo = $_SESSION['idCodigo'];
       
         $tableName = 'codigos_contables';
         
-        $arregloCondition = ['id_codigo' => 2];
+        $arregloCondition = ['id_codigo' => $idCodigo];
        
         $arregloDatos['nivel_contable'] = $model->nuevo_nivel_contable;
 
@@ -198,7 +207,7 @@ class CambiarCodigoPresupuestarioController extends Controller
      * @param  [type] $model [description] datos enviados desde los formularios
      * @return [type]        [description] retorna true si el proceso se cumple y false si no se cumple
      */
-    public function beginSave($var, $model, $idCodigo)
+    public function beginSave($var, $model)
     {
    // die('llegue a begin'.var_dump($idCodigo));
       $conexion = new ConexionController();
@@ -212,7 +221,7 @@ class CambiarCodigoPresupuestarioController extends Controller
           if ($var == "modificar"){
             
 
-              $modificar = self::modificarNivelesContablesEntreCodigosContables($conn, $conexion, $model, $idCodigo);
+              $modificar = self::modificarNivelesContablesEntreCodigosContables($conn, $conexion, $model);
 
              
               if ($modificar == true){
