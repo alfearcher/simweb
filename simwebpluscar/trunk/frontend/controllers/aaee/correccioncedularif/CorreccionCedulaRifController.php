@@ -189,6 +189,7 @@
 				$formName = $model->formName();
 				$model->scenario = self::SCENARIO_FRONTEND;
 
+				$errorRif = '';
 				if ( isset($postData['btn-back-form']) ) {
 					if ( $postData['btn-back-form'] == 3 ) {
 						$model->load($postData);
@@ -213,21 +214,25 @@
 	      				if ( isset($postData['btn-create']) ) {
 	      					if ( $postData['btn-create'] == 1 ) {
 
-	      						// Mostrar vista previa.
-	      						$datosRecibido = $postData[$formName];
-	      						$ids = isset($postData['chkSucursal']) ? $postData['chkSucursal'] : null;
-	      						$searchCorreccion = New CorreccionCedulaRifSearch($idContribuyente);
-	      						$dataProvider = $dataProvider = $searchCorreccion->getDataProviderSucursal($ids);
-	      						$caption = Yii::t('frontend', 'Confirm Create. Update of DNI');
-	      						$subCaption = Yii::t('frontend', 'Info of Taxpayer');
+	      						if ( $model->validateRif() ) {
+		      						// Mostrar vista previa.
+		      						$datosRecibido = $postData[$formName];
+		      						$ids = isset($postData['chkSucursal']) ? $postData['chkSucursal'] : null;
+		      						$searchCorreccion = New CorreccionCedulaRifSearch($idContribuyente);
+		      						$dataProvider = $dataProvider = $searchCorreccion->getDataProviderSucursal($ids);
+		      						$caption = Yii::t('frontend', 'Confirm Create. Update of DNI');
+		      						$subCaption = Yii::t('frontend', 'Info of Taxpayer');
 
-	      						return $this->render('/aaee/correccion-cedula-rif/pre-view-create', [
-	      																	'model' => $model,
-	      																	'datosRecibido' => $datosRecibido,
-	      																	'dataProvider' => $dataProvider,
-	      																	'subCaption' => $subCaption,
-	      																	'caption' => $caption,
-	      							]);
+		      						return $this->render('/aaee/correccion-cedula-rif/pre-view-create', [
+		      																	'model' => $model,
+		      																	'datosRecibido' => $datosRecibido,
+		      																	'dataProvider' => $dataProvider,
+		      																	'subCaption' => $subCaption,
+		      																	'caption' => $caption,
+		      							]);
+		      					} else {
+		      						$errorRif = Yii::t('frontend', 'El DNI ya existe. No se puede incluir.');
+		      					}
 	      					}
 	      				} elseif ( isset($postData['btn-confirm-create']) ) {
 	      					if ( $postData['btn-confirm-create'] == 2 ) {
@@ -271,6 +276,7 @@
 					  											'subCaption' => $subCaption,
 					  											'dataProvider' => $dataProvider,
 					  											'listaNaturaleza' => $listaNaturaleza,
+					  											'errorRif' => $errorRif,
 					  					]);
 		  		} else {
 		  			// No se encontraron los datos del contribuyente principal.
