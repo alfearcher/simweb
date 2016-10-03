@@ -61,6 +61,7 @@
     use common\models\solicitudescontribuyente\aaee\ProcesarCorreccionFechaInicio;
     use common\models\solicitudescontribuyente\aaee\ProcesarAnexarRamo;
     use common\models\solicitudescontribuyente\aaee\ProcesarDesincorporarRamo;
+    use common\models\solicitudescontribuyente\aaee\ProcesarDeclaracionEstimada;
 
 
     /**
@@ -201,6 +202,14 @@
                                                                   $this->_conn,
                                                                   $this->_conexion);
                     $result = $procesar->procesarSolicitud();
+
+                } elseif ( $this->_model->tipo_solicitud == 73 ) {
+                    $procesar = New ProcesarDeclaracionEstimada($this->_model,
+                                                                $this->_evento,
+                                                                $this->_conn,
+                                                                $this->_conexion);
+                    $result = $procesar->procesarSolicitud();
+
 
                 } elseif ( $this->_model->tipo_solicitud == 'c' ) {
                 }
