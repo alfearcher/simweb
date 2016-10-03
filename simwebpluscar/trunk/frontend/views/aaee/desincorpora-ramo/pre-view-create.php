@@ -162,7 +162,7 @@
 																				'id' => 'btn-confirm-create',
 																				'class' => 'btn btn-success',
 																				'name' => 'btn-confirm-create',
-																				'value' => 5,
+																				'value' => 6,
 																				'style' => 'width: 100%;'
 									])?>
 							</div>
