@@ -68,7 +68,7 @@
  			'method' => 'post',
  			//'action' => $url,
  			'enableClientValidation' => true,
- 			//'enableAjaxValidation' => true,
+ 			'enableAjaxValidation' => false,
  			'enableClientScript' => true,
  		]);
  	?>
@@ -185,12 +185,3 @@
 
  	<?php ActiveForm::end(); ?>
 </div>	 <!-- Fin de inscripcion-act-econ-form -->
-
-
-<?php
-	$this->registerJs(
-		'$( "#btn-confirm-create").click(function() {
-			$("#btn-confirm-create").attr("disabled", true);
-		});'
-	);
- ?>
