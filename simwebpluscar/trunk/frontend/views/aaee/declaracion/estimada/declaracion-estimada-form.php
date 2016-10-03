@@ -158,6 +158,7 @@
 														<?=$form->field($mod, "[{$i}]fecha_inicio")->hiddenInput()->label(false);?>
 														<?=$form->field($mod, "[{$i}]id_impuesto")->hiddenInput()->label(false);?>
 														<?=$form->field($mod, "[{$i}]id_rubro")->hiddenInput()->label(false);?>
+														<?=$form->field($mod, "[{$i}]monto_v")->hiddenInput()->label(false);?>
 														<?=$form->field($mod, "[{$i}]periodo_fiscal_desde")->hiddenInput()->label(false);?>
 														<?=$form->field($mod, "[{$i}]periodo_fiscal_hasta")->hiddenInput()->label(false);?>
 														<?=$form->field($mod, "[{$i}]tipo_declaracion")->hiddenInput()->label(false);?>
