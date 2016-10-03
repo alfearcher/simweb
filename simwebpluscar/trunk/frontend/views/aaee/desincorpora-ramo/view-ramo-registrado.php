@@ -273,12 +273,3 @@
 
  	<?php ActiveForm::end(); ?>
 </div>	 <!-- Fin de inscripcion-act-econ-form -->
-
-
-<?php
-	$this->registerJs(
-		'$( "#btn-create").click(function() {
-			$("#btn-create").attr("disabled", true);
-		});'
-	);
- ?>
