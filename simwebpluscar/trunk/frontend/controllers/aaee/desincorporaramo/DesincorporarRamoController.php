@@ -275,9 +275,7 @@
 				if ( count($postData) == 0 ) {
 					$postData = $postSearch;
 				}
-				//$postData = $request->post();
 
-//die(var_dump($postData));
 
 				$model = New DesincorporarRamoForm();
 				$formName = $model->formName();
@@ -305,7 +303,7 @@
 						$model->scenario = self::SCENARIO_FRONTEND;
 						$model->load($postData);
 						if ( isset($postData['chkRubroSeleccionado']) ) {
-//die(var_dump($postData));
+
 							// Lo siguiente es una estructura json. Por no tener un atributo
 							// clave se envia una convinacion de atributos que representan
 							// la clave de la entidad.
@@ -345,9 +343,6 @@
 						$model->scenario = self::SCENARIO_FRONTEND;
 						$postData = $request->post();
 						$model->load($postData);
-						//$model->validate($postData);
-
-//die(var_dump($model));
 
 						$result = self::actionBeginSave($model, $postData);
   						self::actionAnularSession(['begin', 'postSearch']);
