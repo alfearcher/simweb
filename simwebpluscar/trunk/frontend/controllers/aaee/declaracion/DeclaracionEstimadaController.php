@@ -355,8 +355,6 @@
 						Yii::$app->response->format = Response::FORMAT_JSON;
 						return ActiveForm::validateMultiple($modelMultiplex);
 			      	}
-//die(var_dump($modelMultiplex));
-
 
 			      	// Datos generales del contribuyente.
 			      	$searchDeclaracion = New DeclaracionBaseSearch($idContribuyente);
@@ -423,13 +421,10 @@
 						}
 					} elseif( isset($postData['btn-confirm-create']) ) {
 						if ( $postData['btn-confirm-create'] == 5 ) {
-// die(var_dump($modelMultiplex));
 							$result = self::actionBeginSave($modelMultiplex, $postData);
-// die(var_dump($modelMultiplex));
 							if ( $result ) {
 								$this->_transaccion->commit();
 								return self::actionView($modelMultiplex[0]->nro_solicitud);
-// die(var_dump($modelMultiplex));
 							} else {
 								$this->_transaccion->rollBack();
 								$this->redirect(['error-operacion', 'cod'=> 920]);
