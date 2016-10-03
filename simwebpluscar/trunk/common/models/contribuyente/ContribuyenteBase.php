@@ -489,7 +489,7 @@
 		 */
 		private static function getCantidadSucursales($naturalezaLocal = '', $cedulaLocal = 0, $tipoLocal = 0, $inactivoLocal = 0)
 		{
-			if ( trim($naturalezaLocal) != '' && $cedulaLocal > 0 ) {
+			if ( trim($naturalezaLocal) !== '' && $cedulaLocal > 0 ) {
 				try {
 					$conexion = new ConexionController();
 					$conn = $conexion->InitConectar('db');
