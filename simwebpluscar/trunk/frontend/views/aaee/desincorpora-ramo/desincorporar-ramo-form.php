@@ -158,7 +158,6 @@
 																								  [
 																									'id' => 'btn-accept',
 																									'class' => 'btn btn-primary',
-																									'value' => 4,
 																									'style' => 'width: 100%; margin-left: 0px;margin-top:20px;',
 																									'name' => 'btn-accept',
 																									'value' => 1,
