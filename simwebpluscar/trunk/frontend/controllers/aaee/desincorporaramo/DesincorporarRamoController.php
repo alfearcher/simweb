@@ -299,7 +299,7 @@
 					}
 
 				} elseif ( isset($postData['btn-create']) ) {
-					if ( $postData['btn-create'] == 5 ) {
+					if ( $postData['btn-create'] == 4 ) {
 						$model->scenario = self::SCENARIO_FRONTEND;
 						$model->load($postData);
 						if ( isset($postData['chkRubroSeleccionado']) ) {
