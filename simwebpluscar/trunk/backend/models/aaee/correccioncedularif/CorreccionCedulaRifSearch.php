@@ -271,5 +271,25 @@
 	    }
 
 
+
+
+	    /***/
+	    public function validarRif($naturalezaNew, $cedulaNew, $tipoNew)
+	    {
+	    	$result = false;
+
+	    	$rifs = ContribuyenteBase::getListaSucursalesSegunRIF($naturalezaNew, $cedulaNew, $tipoNew);
+	    	if ( count($rifs) > 0 ) {
+	    		$result = false;
+	    	} else {
+	    		// Significa que no existe el nuevo rif que se pretende tomar como cambio.
+	    		$result = true;
+	    	}
+
+	    	return $result;
+	    }
+
+
+
 	}
 ?>

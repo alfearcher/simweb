@@ -47,6 +47,7 @@
 	use yii\data\ActiveDataProvider;
 	use backend\models\aaee\correccioncedularif\CorreccionCedulaRif;
 	use common\models\aaee\Sucursal;
+	use backend\models\aaee\correccioncedularif\CorreccionCedulaRifSearch;
 
 
 	class CorreccionCedulaRifForm extends CorreccionCedulaRif
@@ -289,6 +290,19 @@
 		    	}
 		    }
 		    return false;
+	    }
+
+
+
+	    /***/
+	    public function validateRif()
+	    {
+	    	$result = false;
+	    	$correcion = New CorreccionCedulaRifSearch($this->id_contribuyente);
+
+	    	$result = $correcion->validarRif($this->naturaleza_new, $this->cedula_new, $this->tipo_new);
+
+	    	return $result;
 	    }
 
 	}
