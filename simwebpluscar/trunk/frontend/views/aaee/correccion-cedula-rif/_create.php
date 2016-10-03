@@ -49,6 +49,7 @@
 						        'subCaption' => $subCaption,
 						        'dataProvider' => $dataProvider,
 						        'listaNaturaleza' => $listaNaturaleza,
+						        'errorRif' => $errorRif,
 
 					    ]) ?>
 </div>

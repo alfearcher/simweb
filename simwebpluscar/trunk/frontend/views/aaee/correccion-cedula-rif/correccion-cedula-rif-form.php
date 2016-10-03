@@ -222,6 +222,13 @@
 													</div>
 												</div>
 <!-- Fin de Tipo Nuevo -->
+												<div class="col-sm-2" style="width: 100%;">
+													<?php if ( trim($errorRif) !== '' ) { ?>
+														<div class="well well-sm" style="color: red">
+															<b><?=Html::encode($errorRif); ?></b>
+														</div>
+													<?php } ?>
+												</div>
 											</div>
 										</div>
 									</div>
