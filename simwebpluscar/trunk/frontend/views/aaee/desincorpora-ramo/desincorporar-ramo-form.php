@@ -70,7 +70,7 @@
  			//'action' => $url,
  			'enableClientValidation' => true,
  			'enableAjaxValidation' => false,
- 			'enableClientScript' => false,
+ 			'enableClientScript' => true,
  		]);
  	?>
 
