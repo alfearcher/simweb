@@ -385,8 +385,6 @@
 					$model->periodo_fiscal_desde = $fd;
 					$model->periodo_fiscal_hasta = $fh;
 
-//die(var_dump($model));
-
 					$opciones = [
 						'back' => '/aaee/desincorporaramo/desincorporar-ramo/index-create',
 					];
