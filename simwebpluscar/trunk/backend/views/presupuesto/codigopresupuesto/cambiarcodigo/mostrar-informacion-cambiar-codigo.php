@@ -23,7 +23,7 @@
  <?php $form = ActiveForm::begin([
             'id' => 'form-datosNivelContable-inline',
             'method' => 'post',
-            'action' => ['/presupuesto/codigopresupuesto/cambiarcodigo/cambiar-codigo-presupuestario/modificar-nivel-presupuestario-entre-codigo-presupuestario'],
+            'action' => ['/presupuesto/codigopresupuesto/cambiarcodigo/cambiar-codigo-presupuestario/verificar-id-codigo'],
             'enableClientValidation' => true,
             'enableAjaxValidation' => true,
             'enableClientScript' => true,

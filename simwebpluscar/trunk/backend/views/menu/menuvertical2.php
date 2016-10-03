@@ -270,7 +270,7 @@ session_start();
 		        					   	['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Ordenanza de Presupuestos',
 		        					   		'items' => [
 		        					   				
-		        					   				['label' => 'Registro', 'url' => '#'],
+		        					   				['label' => 'Registro', 'url' => ['/presupuesto/ordenanza/registrar/registrar-ordenanza-presupuesto/registrar-ordenanza-presupuesto']],
 		        					   				['label' => 'Modificacion', 'url' => ['/aaee/correccioncedularif/correccion-cedula-rif/index']],
 		        					   				['label' => 'Inactivacion', 'url' => '#'],
 		        					   				['label' => 'Cargar Presupuesto', 'url' => '#'],
