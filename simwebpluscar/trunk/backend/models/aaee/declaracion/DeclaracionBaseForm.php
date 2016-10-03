@@ -198,5 +198,37 @@
 	        ];
 	    }
 
+
+
+	    /**
+	     * Metodo que retorna un arreglo de atributos que seran actualizados
+	     * al momento de procesar la solicitud (aprobar o negar). Estos atributos
+	     * afectaran a la entidad respectiva de la clase.
+	     * @param String $evento, define la accion a realizar sobre la solicitud.
+	     * - Aprobar.
+	     * - Negar.
+	     * @return Array Retorna un arreglo de atributos segun el evento.
+	     */
+	    public function atributosUpDateProcesarSolicitud($evento)
+	    {
+	    	$atributos = [
+	    		Yii::$app->solicitud->aprobar() => [
+	    						'estatus' => 1,
+	    						'fecha_hora_proceso' => date('Y-m-d H:i:s'),
+	    						'user_funcionario' => isset(Yii::$app->user->identity->username) ? Yii::$app->user->identity->username : Yii::$app->user->identity->login,
+
+	    		],
+	    		Yii::$app->solicitud->negar() => [
+	    						'estatus' => 9,
+	    						'fecha_hora_proceso' => date('Y-m-d H:i:s'),
+	    						'user_funcionario' => isset(Yii::$app->user->identity->username) ? Yii::$app->user->identity->username : Yii::$app->user->identity->login,
+
+	    		],
+	    	];
+
+	    	return $atributos[$evento];
+	    }
+
+
 	}
 ?>
