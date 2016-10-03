@@ -428,8 +428,8 @@
 // die(var_dump($modelMultiplex));
 							if ( $result ) {
 								$this->_transaccion->commit();
-								//return self::actionView($model->nro_solicitud);
-die(var_dump($modelMultiplex));
+								return self::actionView($modelMultiplex[0]->nro_solicitud);
+// die(var_dump($modelMultiplex));
 							} else {
 								$this->_transaccion->rollBack();
 								$this->redirect(['error-operacion', 'cod'=> 920]);
@@ -898,7 +898,7 @@ die(var_dump($modelMultiplex));
 			$listaDocumento = '';
 			if ( count($conf) > 0 ) {
 				$parametroSolicitud = New ParametroSolicitud($conf['id_config_solicitud']);
-				$nroSolicitud = $model->nro_solicitud;
+				$nroSolicitud = $models[0]->nro_solicitud;
 				$descripcionSolicitud = $parametroSolicitud->getDescripcionTipoSolicitud();
 				$listaDocumento = $parametroSolicitud->getDocumentoRequisitoSolicitud();
 
@@ -950,9 +950,9 @@ die(var_dump($modelMultiplex));
  				$model = $findModel->all();
 
 				$opciones = [
-					'quit' => '/aaee/anexoramo/anexo-ramo/quit',
+					'quit' => '/aaee/declaracion/declaracion-estimada/quit',
 				];
-				return $this->render('/aaee/anexo-ramo/_view', [
+				return $this->render('/aaee/declaracion/estimada/_view', [
 																'codigo' => 100,
 																'model' => $model,
 																'modelSearch' => $modelSearch,
