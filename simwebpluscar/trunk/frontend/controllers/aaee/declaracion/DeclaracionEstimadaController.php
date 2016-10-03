@@ -423,15 +423,20 @@
 						}
 					} elseif( isset($postData['btn-confirm-create']) ) {
 						if ( $postData['btn-confirm-create'] == 5 ) {
+// die(var_dump($modelMultiplex));
+							$result = self::actionBeginSave($modelMultiplex, $postData);
+// die(var_dump($modelMultiplex));
+							if ( $result ) {
+								$this->_transaccion->commit();
+								//return self::actionView($model->nro_solicitud);
 die(var_dump($modelMultiplex));
+							} else {
+								$this->_transaccion->rollBack();
+								$this->redirect(['error-operacion', 'cod'=> 920]);
+
+      						}
 						}
 					}
-
-
-			  	// 	if ( Model::loadMultiple($modelMultiplex, $postData)  && Yii::$app->request->isAjax ) {
-						// Yii::$app->response->format = Response::FORMAT_JSON;
-						// return ActiveForm::validateMultiple($modelMultiplex);
-			   //    	}
 
 
 			  		if ( isset($findModel) ) {
@@ -460,10 +465,10 @@ die(var_dump($modelMultiplex));
 							$modelMultiplex[$i]['rubro'] = $rubroModel->rubroDetalle->rubro;
 							$modelMultiplex[$i]['descripcion'] = $rubroModel->rubroDetalle->descripcion;
 							$modelMultiplex[$i]['monto_new'] = 0;
-							$modelMultiplex[$i]['monto_v'] = 0;
+							$modelMultiplex[$i]['monto_v'] = $rubroModel->estimado;
 							$modelMultiplex[$i]['monto_minimo'] = $monto;
-							$modelMultiplex[$i]['usuario'] = '';
-							//$modelMultiplex[$i]['fecha_hora'] = '0000-00-00';
+							$modelMultiplex[$i]['usuario'] = isset(Yii::$app->user->identity->login) ? Yii::$app->user->identity->login : null;
+							$modelMultiplex[$i]['fecha_hora'] = date('Y-m-d H:i:s');
 							$modelMultiplex[$i]['origen'] = 'WEB';
 							$modelMultiplex[$i]['estatus'] = 0;
 
@@ -537,12 +542,12 @@ die(var_dump($modelMultiplex));
 		/**
 		 * Metodo que comienza el proceso para guardar la solicitud y los demas
 		 * procesos relacionados.
-		 * @param model $model modelo de DeclaracionBaseForm.
+		 * @param model $models modelo de DeclaracionBaseForm.
 		 * @param array $postEnviado post enviado desde el formulario.
 		 * @return boolean retorna true si se realizan todas las operacions de
 		 * insercion y actualizacion con exitos o false en caso contrario.
 		 */
-		private function actionBeginSave($model, $postEnviado)
+		private function actionBeginSave($models, $postEnviado)
 		{
 			$result = false;
 			$nroSolicitud = 0;
@@ -550,7 +555,6 @@ die(var_dump($modelMultiplex));
 			if ( isset($_SESSION['idContribuyente']) ) {
 				if ( isset($_SESSION['conf']) ) {
 					$conf = $_SESSION['conf'];
-					$chkSeleccion = $postEnviado['chkRubroSeleccionado'];
 
 					$this->_conexion = New ConexionController();
 
@@ -564,32 +568,36 @@ die(var_dump($modelMultiplex));
 
 					$nroSolicitud = self::actionCreateSolicitud($this->_conexion,
 															    $this->_conn,
-															    $model,
+															    $models[0],
 															    $conf);
 					if ( $nroSolicitud > 0 ) {
-						$model->nro_solicitud = $nroSolicitud;
+						foreach ( $models as $key => $model ) {
+							$model->nro_solicitud = $nroSolicitud;
 
-						$result = self::actionCreateAnexarRamo($this->_conexion,
-															   $this->_conn,
-															   $model,
-															   $conf,
-															   $chkSeleccion);
-
-						if ( $result ) {
-							if ( $conf['nivel_aprobacion'] == 1 ) {
-								$result = self::actionCreateActEconIngresos($this->_conexion,
-																		    $this->_conn,
-																		    $model,
-																		    $chkSeleccion);
-							}
+							// Se pasa a guardar en la sl_declaraciones.
+							$result = self::actionCreateDeclaracionEstimada($this->_conexion,
+																   			$this->_conn,
+																   			$model,
+																   			$conf);
 
 							if ( $result ) {
-								$result = self::actionEjecutaProcesoSolicitud($this->_conexion, $this->_conn, $model, $conf);
+								if ( $conf['nivel_aprobacion'] == 1 ) {
+									$result = self::actionUpdateActEconIngresos($this->_conexion,
+																			    $this->_conn,
+																			    $model);
 
-								if ( $result ) {
-									$result = self::actionEnviarEmail($model, $conf, $chkSeleccion);
-									$result = true;
 								}
+							}
+							if ( !$result ) { break; }
+
+						}		// Fin del ciclo de models.
+
+						if ( $result ) {
+							$result = self::actionEjecutaProcesoSolicitud($this->_conexion, $this->_conn, $models, $conf);
+
+							if ( $result ) {
+								$result = self::actionEnviarEmail($models, $conf);
+								$result = true;
 							}
 						}
 					}
@@ -612,7 +620,7 @@ die(var_dump($modelMultiplex));
 		 * Metodo que guarda el registro respectivo en la entidad "solicitudes-contribuyente".
 		 * @param  ConexionController $conexionLocal instancia de la clase ConexionController.
 		 * @param  connection $connLocal instancia de connection.
-		 * @param  model $model modelo de AutorizarRamoForm.
+		 * @param  model $model modelo de DeclaracionBaseForm.
 		 * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
 		 * solicitud.
 		 * @return boolean retorna true si guardo correctamente o false sino guardo.
@@ -675,16 +683,14 @@ die(var_dump($modelMultiplex));
 		 * "sl" respectiva.
 		 * @param  ConexionController $conexionLocal instancia de la clase ConexionController.
 		 * @param  connection $connLocal instancia de connection
-		 * @param  model $model modelo de AnexoRamoForm.
+		 * @param  model $model modelo de DeclaracionBaseForm.
 		 * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
 		 * solicitud.
-		 * @param  array $chkSeleccion arreglo que contiene los identificadores de los ramos seleccionados
 		 * @return boolean retorna un true si guardo el registro, false en caso contrario.
 		 */
-		private static function actionCreateAnexarRamo($conexionLocal, $connLocal, $model, $conf, $chkSeleccion)
+		private static function actionCreateDeclaracionEstimada($conexionLocal, $connLocal, $model, $conf)
 		{
 			$result = false;
-			$cancel = false;
 			$estatus = 0;
 			$user = isset($model->usuario) ? $model->usuario : null;
 			$userFuncionario = '';
@@ -712,15 +718,7 @@ die(var_dump($modelMultiplex));
 					$model->estatus = $estatus;
 					$model->user_funcionario = $userFuncionario;
 
-					foreach ( $chkSeleccion as $key => $value ) {
-						$arregloDatos['id_rubro'] = $value;
-
-						$result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
-						if ( !$result ) {
-							$cancel = true;
-							break;
-						}
-					}
+					$result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
 				}
 			}
 			return $result;
@@ -733,53 +731,30 @@ die(var_dump($modelMultiplex));
 	     * insercion por cada ramo que se autoriza a anexar.
 	     * @param  ConexionController $conexionLocal instancia de la clase ConexionController.
 		 * @param  connection $connLocal instancia de connection
-		 * @param  model $model modelo de AnexoRamoForm.
-	     * @param  array $listaIdRubro arreglo de identificadores de los ramos (rubros) que se
-	     * han colocados en la solicitud.
+		 * @param  model $model modelo de DeclaracionBaseForm.
 	     * @return boolean retorna un true si guardo el registro, false en caso contrario.
 	     */
-	    private static function actionCreateActEconIngresos($conexionLocal, $connLocal, $model, $listaIdRubro)
+	    private static function actionUpdateActEconIngresos($conexionLocal, $connLocal, $model)
 	    {
 	    	$result = false;
 	    	if ( isset($_SESSION['idContribuyente']) && isset($connLocal) && isset($conexionLocal) ) {
 	    		$idContribuyente = $_SESSION['idContribuyente'];
-	    		if ( count($listaIdRubro) > 0 && $idContribuyente == $model->id_contribuyente ) {
+	    		if ( $idContribuyente == $model->id_contribuyente ) {
 
-	   				// Se determina el identificador de la entidad maestra de la declaracion,
-	   				// para utilizarlo en el link de la entidad detalle donde se guardaran los
-	   				// identificadores de los rubros.
-	    			$searchRamo = New AnexoRamoSearch($model->id_contribuyente);
-               		$idImpuesto = $searchRamo->getIdentificadorLapsoValido($model->ano_impositivo);
+	    			$ingresoModel = New ActEconIngresoForm();
+	    			$tabla = $ingresoModel->tableName();
 
-               		if ( $idImpuesto > 0 ) {
-               			// Se procede a guardar en la entidad detalle de las declaraciones.
-               			$modelActEconIngreso = New ActEconIngresoForm();
-			    		$arregloDatos = $modelActEconIngreso->attributes;
+	    			// Condiciones para modificar el registro.
+	    			$arregloCondicion['id_impuesto'] = $model->id_impuesto;
+	    			$arregloCondicion['id_rubro'] = $model->id_rubro;
+	    			$arregloCondicion['exigibilidad_periodo'] = $model->exigibilidad_periodo;
+	    			$arregloCondicion['bloqueado'] = 0;
+	    			$arregloCondicion['inactivo'] = 0;
 
-		      			$tabla = '';
-		      			$tabla = $modelActEconIngreso->tableName();
+	    			// Atributo a modificar.
+	    			$arregloDatos['estimado'] = $model->monto_new;
 
-			    		foreach ( $arregloDatos as $key => $value ) {
-			    			$arregloDatos[$key] = 0;
-			    		}
-			    		$arregloDatos['id_impuesto'] = $idImpuesto;
-			    		$arregloDatos['exigibilidad_periodo'] = $model->periodo;
-			    		$arregloDatos['periodo_fiscal_desde'] = isset($model->fecha_desde) ? $model->fecha_desde : '0000-00-00';
-			    		$arregloDatos['periodo_fiscal_hasta'] = isset($model->fecha_hasta) ? $model->fecha_hasta : '0000-00-00';
-			    		$arregloDatos['fecha_hora'] = $model->fecha_hora;
-			    		$arregloDatos['usuario'] = $model->usuario;
-			    		$arregloDatos['condicion'] = 1;		// Anexado
-
-			    		foreach ( $listaIdRubro as $key => $value ) {
-		      				$arregloDatos['id_rubro'] = $value;
-		      				if ( !$conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos) ) {
-								$result = false;
-								break;
-							} else {
-								$result = true;
-							}
-		      			}
-		      		}
+	   				$result = $conexionLocal->modificarRegistro($connLocal, $tabla, $arregloDatos, $arregloCondicion);
 	      		}
 	    	}
 	    	return $result;
@@ -793,16 +768,16 @@ die(var_dump($modelMultiplex));
 		 * Metodo para guardar los documentos consignados.
 		 * @param  ConexionController  $conexionLocal instancia de la clase ConexionController
 		 * @param  connection  $connLocal instancia de connection.
-		 * @param  model $model modelo de AnexoRamoForm.
+		 * @param  model $models arreglo de modelo de DeclaracionBaseForm.
 		 * @param  array $postEnviado post enviado por el formulario. Lo que
 		 * se busca es determinar los items seleccionados como documentos y/o
 		 * requisitos a consignar para guardarlos.
 		 * @return boolean retorna true si guarda efectivamente o false en caso contrario.
 		 */
-		private static function actionCreateDocumentosConsignados($conexionLocal, $connLocal, $model, $postEnviado)
+		private static function actionCreateDocumentosConsignados($conexionLocal, $connLocal, $models, $postEnviado)
 		{
 			$result = false;
-			if ( isset($conexionLocal) && isset($connLocal) && isset($model) && count($postEnviado) > 0 ) {
+			if ( isset($conexionLocal) && isset($connLocal) && isset($models) && count($postEnviado) > 0 ) {
 				$modelDocumento = New DocumentoConsignadoForm();
 				$tabla = $modelDocumento->tableName();
 				$arregloCampos = $modelDocumento->attributes();
@@ -850,12 +825,12 @@ die(var_dump($modelMultiplex));
 		 * @param  ConexionController $conexionLocal instancia de la clase ConexionController.
 		 * @param  connection $connLocal instancia de conexion que permite ejecutar las acciones en base
 		 * de datos.
-		 * @param  model $model modelo de la instancia AnexoRamoForm.
+		 * @param  model $models arreglo de modelo de la instancia DeclaracionBaseForm.
 		 * @param  array $conf arreglo que contiene los parametros principales de la configuracion de la
 		 * solicitud.
 		 * @return boolean retorna true si todo se ejecuto correctamente false en caso contrario.
 		 */
-		private function actionEjecutaProcesoSolicitud($conexionLocal, $connLocal, $model, $conf)
+		private function actionEjecutaProcesoSolicitud($conexionLocal, $connLocal, $models, $conf)
 		{
 			$result = true;
 			$resultadoProceso = [];
@@ -876,7 +851,7 @@ die(var_dump($modelMultiplex));
 				// de resultados donde el key del arrary es el nombre del proceso ejecutado y el valor
 				// del elemento corresponda a un reultado de la ejecucion. La variable $model debe contener
 				// el identificador del contribuyente que realizo la solicitud y el numero de solicitud.
-				$procesoEvento->ejecutarProcesoSolicitudSegunEvento($model, $evento, $conexionLocal, $connLocal);
+				$procesoEvento->ejecutarProcesoSolicitudSegunEvento($models[0], $evento, $conexionLocal, $connLocal);
 
 				// Se obtiene un array de acciones o procesos ejecutados. Sino se obtienen acciones
 				// ejecutadas se asumira que no se configuraro ningun proceso para que se ejecutara
@@ -910,15 +885,14 @@ die(var_dump($modelMultiplex));
 		/**
 		 * Metodo que permite enviar un email al contribuyente indicandole
 		 * la confirmacion de la realizacion de la solicitud.
-		 * @param  model $model modelo que contiene la informacion
+		 * @param  model $models array de modelo DeclaracionBaseForm que contiene la informacion
 		 * del identificador del contribuyente.
 		 * @param  array $conf arreglo que contiene los parametros principales de la configuracion de la
 		 * solicitud.
-		 * @param  array $chkSeleccion arreglo que contiene los identificadores de los rubros.
 		 * @return boolean retorna un true si envio el correo o false en caso
 		 * contrario.
 		 */
-		private function actionEnviarEmail($model, $conf, $chkSeleccion)
+		private function actionEnviarEmail($models, $conf)
 		{
 			$result = false;
 			$listaDocumento = '';
@@ -928,7 +902,7 @@ die(var_dump($modelMultiplex));
 				$descripcionSolicitud = $parametroSolicitud->getDescripcionTipoSolicitud();
 				$listaDocumento = $parametroSolicitud->getDocumentoRequisitoSolicitud();
 
-				$email = ContribuyenteBase::getEmail($model->id_contribuyente);
+				$email = ContribuyenteBase::getEmail($models[0]->id_contribuyente);
 				try {
 					$enviar = New PlantillaEmail();
 					$result = $enviar->plantillaEmailSolicitud($email, $descripcionSolicitud, $nroSolicitud, $listaDocumento);
@@ -950,11 +924,11 @@ die(var_dump($modelMultiplex));
     	{
     		if ( isset($_SESSION['idContribuyente']) ) {
 	    		if ( $id > 0 ) {
-	    			$searchRamo = New AnexoRamoSearch($_SESSION['idContribuyente']);
-	    			$findModel = $searchRamo->findSolicitudAnexoRamo($id);
-	    			$dataProvider = $searchRamo->getDataProviderSolicitud($id);
+	    			$searchDeclaracion = New DeclaracionBaseSearch($_SESSION['idContribuyente']);
+	    			$findModel = $searchDeclaracion->findSolicitudDeclaracion($id);
+	    			$dataProvider = $searchDeclaracion->getDataProviderSolicitud($id);
 	    			if ( isset($findModel) ) {
-	    				return self::actionShowSolicitud($findModel, $searchRamo, $dataProvider);
+	    				return self::actionShowSolicitud($findModel, $searchDeclaracion, $dataProvider);
 	    			} else {
 						throw new NotFoundHttpException('No se encontro el registro');
 					}
