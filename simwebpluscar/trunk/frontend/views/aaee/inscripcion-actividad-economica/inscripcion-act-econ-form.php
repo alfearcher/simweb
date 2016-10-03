@@ -49,6 +49,7 @@
 	use yii\jui\DatePicker;
 	use backend\models\registromaestro\TipoNaturaleza;
 	use backend\controllers\menu\MenuController;
+	use yii\widgets\MaskedInput;
 
  ?>
 
@@ -60,7 +61,7 @@
  			'method' => 'post',
  			'action' => $url,
  			'enableClientValidation' => true,
- 			//'enableAjaxValidation' => true,
+ 			'enableAjaxValidation' => false,
  			'enableClientScript' => true,
  		]);
  	?>
@@ -125,6 +126,7 @@
 										<?= $form->field($model, 'fecha_inicio')->widget(\yii\jui\DatePicker::classname(),[
 																						  'clientOptions' => [
 																								'maxDate' => '+0d',	// Bloquear los dias en el calendario a partir del dia siguiente al actual.
+																								'changeMonth' => true,
 																								'changeYear' => true,
 																							],
 																						  'language' => 'es-ES',
@@ -196,6 +198,7 @@
 									<?= $form->field($model, 'fecha')->widget(\yii\jui\DatePicker::classname(),[
 																						  'clientOptions' => [
 																								'maxDate' => '+0d',	// Bloquear los dias en el calendario a partir del dia siguiente al actual.
+																								'changeMonth' => true,
 																								'changeYear' => true,
 																							],
 																						  'language' => 'es-ES',
@@ -265,11 +268,31 @@
 							</div>
 							<div class="row" >
 								<div class="capital" style="margin-left: 0px;">
-									<?= $form->field($model, 'capital')->textInput([
-																			'id' => 'capital',
-																			'style' => 'width:98%;',
-																			'readonly' => $bloquear,
-																		])->label(false) ?>
+									<?= $form->field($model, 'capital')->widget(MaskedInput::className(), [
+																							'id' => 'capital',
+																							'name' => 'capital',
+																							//'mask' => '',
+																							'options' => [
+																								'class' => 'form-control',
+																								'style' => 'width: 98%;',
+																								'placeholder' => '0.00',
+																								'readonly' => $bloquear,
+
+																							],
+																							'clientOptions' => [
+																								'alias' =>  'decimal',
+																								'digits' => 2,
+																								'digitsOptional' => false,
+																								'groupSeparator' => ',',
+																								'removeMaskOnSubmit' => true,
+																								// 'allowMinus'=>false,
+																								//'groupSize' => 3,
+																								'radixPoint'=> ".",
+																								'autoGroup' => true,
+																								//'decimalSeparator' => ',',
+																							],
+																		  				  ])->label(false);
+									?>
 								</div>
 							</div>
 						</div>
