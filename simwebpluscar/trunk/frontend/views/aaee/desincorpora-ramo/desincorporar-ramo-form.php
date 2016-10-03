@@ -162,7 +162,6 @@
 																									'style' => 'width: 100%; margin-left: 0px;margin-top:20px;',
 																									'name' => 'btn-accept',
 																									'value' => 1,
-																									//'onClick' => ''
 																									//'disabled' => ( $activarBotonCreate == 1 ) ? false : true,
 																								  ])
 											?>
