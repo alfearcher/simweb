@@ -407,7 +407,7 @@
 		 */
 		private static function getIdRifUltimaSucursal($naturalezaLocal = '', $cedulaLocal = 0, $tipoLocal = 0)
 		{
-			if ( trim($naturalezaLocal) != '' && $cedulaLocal > 0 ) {
+			if ( trim($naturalezaLocal) !== '' && $cedulaLocal > 0 ) {
 				try {
 					$conexion = new ConexionController();
 					$conn = $conexion->InitConectar('db');
@@ -467,7 +467,7 @@
 		 */
 		public static function getCantidadSucursalesSegunRIF($naturalezaLocal = '', $cedulaLocal = 0, $tipoLocal = 0, $inactivoLocal = 0)
 		{
-			if ( trim($naturalezaLocal) != '' && $cedulaLocal > 0 ) {
+			if ( trim($naturalezaLocal) !== '' && $cedulaLocal > 0 ) {
 				if ( strlen($naturalezaLocal) == 1 ) {
 					return self::getCantidadSucursales($naturalezaLocal, $cedulaLocal, $tipoLocal, $inactivoLocal);
 				}
