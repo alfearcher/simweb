@@ -457,6 +457,7 @@
 	    			  				    ->andWhere('bloqueado =:bloqueado', [':bloqueado' => 0])
 	    							    ->andWhere('ano_impositivo >=:ano_impositivo',
 	    							    			[':ano_impositivo' => $añoLimite])
+	    							    ->joinWith('actividadDetalle', 'INNER JOIN', false)
 	    							    ->orderBy([
 	    							   		'ano_impositivo' => SORT_ASC,
 	    							   	])
