@@ -81,13 +81,15 @@ class RegistrarOrdenanzaPresupuestoForm extends Model
     {
         return [
 
-            [['nro_presupuesto',  'fecha_desde', 'fecha_hasta', 'observacion'], 'required'],
+            [['nro_presupuesto',  'fecha_desde', 'fecha_hasta'], 'required'],
 
             ['nro_presupuesto', 'verificarNroPresupuesto'],
 
-            
+             ['observacion', 'default', 'value' => 0],
 
-           // ['codigo', 'verificarCodigo'],
+            ['fecha_hasta', 'verificarRangoFechas'],
+
+              ['fecha_hasta', 'verificarFechaMayorMenor'],
 
           //  ['codigo_contable', 'verificarCodigoContable'],
             
@@ -147,6 +149,46 @@ class RegistrarOrdenanzaPresupuestoForm extends Model
                 return false;
               }
 
+    }
+
+    /**
+     * [verificarRangoFechas description] metodo que verifica que las fechas ingresadas no sobrepasen el año impositivo ni sean menores
+     * @param  [type] $attribute [description] atributos
+     * @param  [type] $params    [description] parametros
+     * @return [type]            [description] retorna mensaje de error si la condicion no se cumple
+     */
+    public function verificarRangoFechas($attribute, $params){
+
+        $fecha_desde = $this->fecha_desde;
+        $fecha_hasta = $this->fecha_hasta;
+
+        if ($fecha_desde > $fecha_hasta){
+
+          $this->addError($attribute, Yii::t('frontend', 'La fecha inicial no puede ser mayor a la fecha final' ));
+        
+        }
+
+        
+        
+    }
+
+
+    public function verificarFechaMayorMenor($attribute, $params){
+
+        $fecha_desde = $this->fecha_desde;
+        $fecha_hasta = $this->fecha_hasta;
+        $añoDesde = date("Y", strtotime($this->fecha_desde));
+        $añoHasta = date("Y", strtotime($this->fecha_hasta));
+       // $prueba = '01/01/'.$añoDesde;
+       // die($prueba);
+        if($fecha_desde < '01/01/'.$añoDesde){
+
+            $this->addError($attribute, Yii::t('frontend', 'La fecha no puede ser ni mayor ni menor al año de registro del presupuesto' ));
+        }
+        
+
+        
+        
     }
     /**
      * [busquedaOrdenanzaPresupuesto description] metodo que devuelve datos de la tabla ordenanzas presupuestos
