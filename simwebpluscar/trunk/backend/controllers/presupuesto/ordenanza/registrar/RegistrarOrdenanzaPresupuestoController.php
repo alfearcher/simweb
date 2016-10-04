@@ -84,7 +84,7 @@ class RegistrarOrdenanzaPresupuestoController extends Controller
 
       $model = new RegistrarOrdenanzaPresupuestoForm();
 
-     // $dataProvider = $model->busquedaOrdenanzaPresupuesto();
+       $dataProvider = $model->busquedaOrdenanzaPresupuesto();
 
             $postData = Yii::$app->request->post();
 
@@ -97,6 +97,8 @@ class RegistrarOrdenanzaPresupuestoController extends Controller
              // die('valido el postdata');
 
                if ($model->validate()){
+
+
 
 
                   $guardar = self::beginSave("guardar", $model);
@@ -113,46 +115,51 @@ class RegistrarOrdenanzaPresupuestoController extends Controller
             
             return $this->render('/presupuesto/ordenanza/registrar/formulario-registro-ordenanza-presupuesto', [
                                                               'model' => $model,
-                                                           //   'dataProvider' => $dataProvider,
+                                                             'dataProvider' => $dataProvider,
                                                             
             ]);
   
   }
 
 
-    /**
-     * [guardarCodigosContables description] metodo que realiza el guardado de la informacion ingresada por el funcionario en la tabla codigos contables
-     * @param  [type] $conn     [description] parametro de conexion
-     * @param  [type] $conexion [description] parametro de conexion
-     * @param  [type] $model    [description] informacion enviada por el funcionario desde el formulario
-     * @return [type]           [description] retorna true si el proceso guarda y false si el proceso da error
-     */
-    public function guardarCodigosContables($conn, $conexion, $model)
+   /**
+    * [guardarNroPresupuesto description] metodo que realiza el guardado de los datos de ordenanzas presupuestos en la tabla ordenanzas_presupuestos
+    * @param  [type] $conn     [description] parametro de conexion
+    * @param  [type] $conexion [description] parametro de conexion
+    * @param  [type] $model    [description] modelo que contiene la informacion
+    * @return [type]           [description] retorna true si realiza el guardado , sino retorna false
+    */
+    public function guardarNroPresupuesto($conn, $conexion, $model)
     {
 
       
-      $tabla = 'codigos_contables';
+      $tabla = 'ordenanzas_presupuestos';
       $arregloDatos = [];
-      $arregloCampo = RegistrarCodigoPresupuestarioForm::attributeCodigosContables();
+      $arregloCampo = RegistrarOrdenanzaPresupuestoForm::attributeOrdenanzasPresupuesto();
 
       foreach ($arregloCampo as $key=>$value){
 
           $arregloDatos[$value] =0;
       }
 
-      $arregloDatos['nivel_contable'] = $model->nivel_contable;
+      $arregloDatos['nro_presupuesto'] = $model->nro_presupuesto;
 
-      $arregloDatos['codigo'] = $model->codigo;
+      $arregloDatos['ano_impositivo'] = date('Y');
 
-      $arregloDatos['descripcion'] = $model->descripcion;
 
-     
-
-      $arregloDatos['monto'] = 0;
+      $arregloDatos['fecha_desde'] = date("Y-m-d" ,strtotime($model->fecha_desde));
+     // die($arregloDatos['fecha_desde']);
+      $arregloDatos['fecha_hasta'] = date("Y-m-d" ,strtotime($model->fecha_hasta));
+       // die($arregloDatos['fecha_hasta']);
+      $arregloDatos['descripcion'] = 'Ordenanza De Presupuesto'.' '.date('Y');
+      
+      $arregloDatos['observacion'] = $model->observacion;
+      
+      $arregloDatos['fecha_hasta'] = $model->fecha_hasta;
 
       $arregloDatos['inactivo'] = 0;
 
-      $arregloDatos['codigo_contable'] = $model->codigo;
+      $arregloDatos['fecha_modificacion'] = 0;
 
           if ($conexion->guardarRegistro($conn, $tabla, $arregloDatos )){
 
@@ -189,7 +196,7 @@ class RegistrarOrdenanzaPresupuestoController extends Controller
           if ($var == "guardar"){
             
 
-              $guardar = self::guardarCodigosContables($conn, $conexion, $model);
+              $guardar = self::guardarNroPresupuesto($conn, $conexion, $model);
 
              
               if ($guardar == true){
