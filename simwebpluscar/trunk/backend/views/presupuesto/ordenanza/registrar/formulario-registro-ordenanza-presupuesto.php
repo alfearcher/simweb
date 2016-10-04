@@ -6,8 +6,8 @@ use backend\models\registromaestro\TipoNaturaleza;
 use yii\helpers\ArrayHelper;
 use common\models\presupuesto\nivelespresupuesto\NivelesContables;
 use backend\models\presupuesto\codigopresupuesto\modificarinactivar\ModificarCodigoPresupuestarioForm;  
-
-
+use yii\grid\GridView;
+use kartik\icons\Icon;
 
 $modeloNivelesContables = NivelesContables::find()->asArray()->all();
 $listaNiveles = ArrayHelper::map($modeloNivelesContables, 'nivel_contable', 'descripcion');
@@ -39,7 +39,7 @@ $this->title = 'Registrar Ordenanza de Presupuestos';
                            
                                <div class="row" style="margin-left:10px;">
                             
-                                    <div class="col-sm-5" >
+                                    <div class="col-sm-2" >
                                       
                                             <?= $form->field($model, 'nro_presupuesto')->textInput([
                                                                                                     'id' => 'nro_presupuesto',
@@ -75,36 +75,12 @@ $this->title = 'Registrar Ordenanza de Presupuestos';
                                
 <!-- FIN DE ANO IMPOSITIVO -->    
 
-<!-- DESCRIPCION -->
 
-                               
-
-
-                                            <div class="row">  
-                                             
-                                    <div class="col-sm-7" style="padding-right: 0px;padding-left: 40px;">
-                                     
-                                            <div>
-                                               <?= $form->field($model, 'descripcion')->textInput([
-                                                                                            'id' => 'descripcion',
-                                                                                           // 'style' => 'height:32px;width:38px;',
-                                                                                          // 'value' => date('Y'),
-                                                                                          //  'readOnly' => true,
-                                                                                         ]) ?>
-                                        </div>
-                                      </div>
-
-            
-                                            </div>
-
-
-
-  <!-- FIN DE DESCRIPCION -->   
 
     <!-- FECHA DESDE -->   
 
           <div class="row">
-             <div class="col-sm-3">
+             <div class="col-sm-3" style="margin-left:20px;">
                        
                             <?= $form->field($model, 'fecha_desde')->widget(\yii\jui\DatePicker::classname(),[
                                                                                         //'type' => 'date',
@@ -121,7 +97,7 @@ $this->title = 'Registrar Ordenanza de Presupuestos';
                                                                                             'class' => 'form-control',
                                                                                            'readonly' => true,
                                                                                             //'type' => 'date',
-                                                                                            'style' => 'background-color: white; margin-left:20px;',
+                                                                                           
                                                                                         ],
 
                                                                                       
@@ -134,7 +110,7 @@ $this->title = 'Registrar Ordenanza de Presupuestos';
 <!-- FIN DE FECHA DESDE --> 
 
 <!-- FECHA HASTA -->
-<div class="col-sm-3" style="margin-left:50px;">
+<div class="col-sm-3" style="margin-left:20px;">
                        
                             <?= $form->field($model, 'fecha_hasta')->widget(\yii\jui\DatePicker::classname(),[
                                                                                         //'type' => 'date',
@@ -163,27 +139,22 @@ $this->title = 'Registrar Ordenanza de Presupuestos';
 
 <!-- FIN DE FECHA HASTA --> 
 
-<!-- DESCRIPCION -->
+<!-- OBSERVACION -->
                            
       <div class="row">
         
           
-               <div class="col-sm-7" style="padding-right: 0px;padding-left: 40px;">
+               <div class="col-sm-7"  style="margin-left: 35px;">
                                      
                                             <div>
-                                               <?= $form->field($model, 'descripcion')->textInput([
-                                                                                            'id' => 'descripcion',
-                                                                                           // 'style' => 'height:32px;width:38px;',
-                                                                                          // 'value' => date('Y'),
-                                                                                          //  'readOnly' => true,
-                                                                                         ]) ?>
+                                              <?= $form->field($model, 'observacion')->textArea(['rows' => '6']) ?>
                                         </div>
                                       </div>
 
       </div>
 
 
-<!--FIN DE DESCRIPCION -->
+<!--FIN DE OBSERVACION-->
             
 
 
@@ -221,6 +192,102 @@ $this->title = 'Registrar Ordenanza de Presupuestos';
        </div>
     </div>
   </div> 
+
+    <div class="row" style="width: 70%; margin-left:40px;">
+    <div class="info-solicitud">
+        <div class="row">
+            <h3><?= Html::encode('Ordenanzas de Presupuesto') ?></h3>
+                <?= GridView::widget([
+                        'dataProvider' => $dataProvider,
+                       // die(var_dump($dataProvider)),
+                      'columns'  => [
+                
+                 [
+
+                    'label' =>" Nro Presupuesto",
+
+                   
+                    'value'=> function($data){ 
+
+                        return $data->nro_presupuesto;
+                    }
+
+                ],
+    
+         
+
+                [
+
+                    'label' =>"Año Impositivo",
+
+                   
+                    'value'=> function($data){ 
+
+                        return $data->ano_impositivo;
+                    }
+
+                ],
+
+                     [
+
+                    'label' =>"Fecha Desde",
+
+                   
+                    'value'=> function($data){ 
+
+                        return date("d-m-Y", strtotime($data->fecha_desde));
+                    }
+
+                ],
+
+                 [
+
+                    'label' =>"Fecha Hasta",
+
+                   
+                    'value'=> function($data){ 
+                    
+                        return  date("d-m-Y", strtotime($data->fecha_hasta));
+                    }
+
+                ],
+
+                   [
+
+                    'label' =>"Descripcion",
+
+                   
+                    'value'=> function($data){ 
+
+                        return $data->descripcion;
+                    }
+
+                ],
+
+                [
+
+                    'label' =>"Observacion",
+
+                   
+                    'value'=> function($data){ 
+
+                        return $data->observacion;
+                    }
+
+                ],
+
+
+                
+
+                                
+                
+        ],
+    ]); ?>
+
+
+        </div>
+    </div>
+</div>
 </div> 
     
 
