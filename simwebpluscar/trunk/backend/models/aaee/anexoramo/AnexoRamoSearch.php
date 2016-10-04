@@ -459,7 +459,7 @@
 	    							   		'ano_impositivo' => SORT_ASC,
 	    							   	])
 	    							    ->all();
-	    	if ( isset($findModel) ) {
+	    	if ( count($findModel) > 0 ) {
 	    		$listaAño = ArrayHelper::map($findModel, 'ano_impositivo', 'ano_impositivo');
 	    	}
 
