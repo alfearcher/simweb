@@ -454,7 +454,7 @@
 	    			  				    ->andWhere('estatus =:estatus', [':estatus' => 0])
 	    							    ->andWhere('ano_impositivo >=:ano_impositivo',
 	    							    			[':ano_impositivo' => $añoLimite])
-	    							    ->joinWith('actEconIngreso', 'INNER JOIN', false)
+	    							    ->joinWith('actividadDetalle', 'INNER JOIN', false)
 	    							    ->orderBy([
 	    							   		'ano_impositivo' => SORT_ASC,
 	    							   	])
