@@ -164,7 +164,7 @@ $this->title = 'Registrar Ordenanza de Presupuestos';
  <!-- Boton para aplicar la actualizacion -->
                                     <div class="col-sm-4" >
                                         
-                                            <?= Html::submitButton(Yii::t('frontend' , 'Search'),
+                                            <?= Html::submitButton(Yii::t('frontend' , 'Registrar'),
                                                                                                       [
                                                                                                         'id' => 'btn-search',
                                                                                                         'class' => 'btn btn-success',
