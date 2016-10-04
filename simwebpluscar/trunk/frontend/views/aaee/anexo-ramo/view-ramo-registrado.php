@@ -85,10 +85,10 @@
     <div class="panel panel-primary" style="width: 110%;">
         <div class="panel-heading">
         	<div class="row">
-	        	<div class="col-sm-6" style="padding-top: 10px;width: 75%;">
+	        	<div class="col-sm-6" style="padding-top: 10px;width: 70%;">
 	    			<h3><?= Html::encode($caption) ?></h3>
 	    		</div>
-	    		<div class="col-sm-3" style="width: 30%; float:right; padding-right: 50px;">
+	    		<div class="col-sm-3" style="width: 25%; float:right; padding-right: 50px;">
 	    			<style type="text/css">
 						.col-sm-3 > ul > li > a:hover {
 							background-color: #337AB7;
