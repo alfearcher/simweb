@@ -54,7 +54,7 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use frontend\models\vehiculo\cambiodatos\BusquedaVehiculos;
 use common\models\calcomania\calcomaniamodelo\Calcomania;
-use common\models\presupuesto\ordenanzas\OrdenanzasPresupuestos;
+use common\models\presupuesto\ordenanzas\OrdenanzaPresupuesto;
 /**
  * InmueblesSearch represents the model behind the search form about `backend\models\Inmuebles`.
  */
@@ -81,7 +81,7 @@ class RegistrarOrdenanzaPresupuestoForm extends Model
     {
         return [
 
-            [['nro_presupuesto',  'fecha_desde', 'fecha_hasta', 'descripcion', 'observacion'], 'required'],
+            [['nro_presupuesto',  'fecha_desde', 'fecha_hasta', 'observacion'], 'required'],
 
             ['nro_presupuesto', 'verificarNroPresupuesto'],
 
@@ -112,7 +112,7 @@ class RegistrarOrdenanzaPresupuestoForm extends Model
         'nro_presupuesto' => Yii::t('frontend', 'Nro Presupuesto'),
         'fecha_desde' => Yii::t('frontend', 'Fecha Inicial'), 
         'fecha_hasta' => Yii::t('frontend', 'Fecha Final'),
-        'descripcion' => Yii::t('frontend','Descripcion'),
+        
         'observacion' => Yii::t('frontend','Observacion'),
                
                 
@@ -131,10 +131,10 @@ class RegistrarOrdenanzaPresupuestoForm extends Model
      */
     public function verificarNroPresupuesto($attribute, $params){
 
-         $busqueda = OrdenanzasPresupuesto::find()
+         $busqueda = OrdenanzaPresupuesto::find()
                                         ->where([
 
-                                      'nro_impuesto' => $this->nro_impuesto,
+                                      'nro_presupuesto' => $this->nro_presupuesto,
                                      // 'estatus' => 0,
 
                                           ])
@@ -142,7 +142,7 @@ class RegistrarOrdenanzaPresupuestoForm extends Model
 
               if ($busqueda != null){
 
-                $this->addError($attribute, Yii::t('frontend', 'Este numero de impuesto ya existe' ));
+                $this->addError($attribute, Yii::t('frontend', 'Este numero de presupuesto ya existe' ));
               }else{
                 return false;
               }
@@ -156,18 +156,20 @@ class RegistrarOrdenanzaPresupuestoForm extends Model
     {
 
 
-           $query = OrdenanzasPresupuestos::find();
+           $query = OrdenanzaPresupuesto::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-           // die(var_dump($dataProvider)),
+           'pagination' => [
+        'pageSize' => 5,
+    ],
         ]);
         $query->where([
             'inactivo' => 0,
             ])
         ->all();
          
-          
+        
         return $dataProvider;
 
 
