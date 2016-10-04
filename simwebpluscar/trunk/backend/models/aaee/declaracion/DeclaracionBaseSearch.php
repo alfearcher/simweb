@@ -511,8 +511,11 @@
 	    								->where('id_contribuyente =:id_contribuyente',
 	    	 										['id_contribuyente' => $this->_id_contribuyente])
 	    			  				    ->andWhere('estatus =:estatus', [':estatus' => 0])
-	    							    ->andWhere('ano_impositivo =:ano_impositivo',
-	    							    			[':ano_impositivo' => $añoActual])
+	    			  				    ->andWhere('inactivo =:inactivo', [':inactivo' => 0])
+	    			  				    ->andWhere('bloqueado =:bloqueado', [':bloqueado' => 0])
+	    							    ->andWhere('ano_impositivo >=:ano_impositivo',
+	    							    			[':ano_impositivo' => $añoLimite])
+	    							    ->joinWith('actividadDetalle', 'INNER JOIN', false)
 	    							    ->orderBy([
 	    							   		'ano_impositivo' => SORT_ASC,
 	    							   	])
@@ -528,7 +531,7 @@
 	    	// 						   		'ano_impositivo' => SORT_ASC,
 	    	// 						   	])
 	    	// 						    ->all();
-	    	if ( isset($findModel) ) {
+	    	if ( count($findModel) > 0 ) {
 	    		$listaAño = ArrayHelper::map($findModel, 'ano_impositivo', 'ano_impositivo');
 	    	}
 
