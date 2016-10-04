@@ -414,7 +414,7 @@
 
 					// Se buscan los identificadores de los rubros registrados.
 					$listaIdRubro = $searchRamo->getListaIdRubrosRegistrados($añoImpositivo, $periodo);
-					if ( count($listaIdRubro) > 0 ) {
+					//if ( count($listaIdRubro) > 0 ) {
 						 $activarBotonCreate = 0;
 
 						// Lista de identificadores de los rubros que seran anexados segun solicitud
@@ -438,7 +438,7 @@
 																'activarBotonCreate' => $activarBotonCreate,
 																'opciones' => $opciones,
 							]);
-					}
+					//}
 
 				} else {
 					// El contribuyente enviado no corresponde al de la session.
