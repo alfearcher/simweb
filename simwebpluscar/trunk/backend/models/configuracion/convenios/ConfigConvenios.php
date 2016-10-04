@@ -47,7 +47,7 @@ class ConfigConvenios extends \yii\db\ActiveRecord
             [['id_config_convenio', 'impuesto', 'tipo_monto', 'ano_ut', 'solo_deuda_morosa', 'tipo_periodo', 'nro_max_cuotas', 'lapso_tiempo', 'id_tiempo', 'vcto_dif_ano', 'aplicar_interes', 'id_impuesto', 'inactivo'], 'integer'],
             [['monto_minimo', 'monto_inicial', 'porcentaje_inicial', 'interes'], 'number'],
             [['fecha_hora'], 'safe'],
-            [['usuario'], 'string', 'max' => 80]
+            [['usuario'], 'string', 'max' => 80] 
         ]; 
     } 
 

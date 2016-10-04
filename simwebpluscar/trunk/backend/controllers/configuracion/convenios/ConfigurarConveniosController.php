@@ -68,7 +68,7 @@ class ConfigurarConveniosController extends Controller
             return $this->render('create', [
                 'model' => $model,
             ]);     //contra maestre
-        }   
+        }     
     } 
 
     /**
@@ -83,7 +83,7 @@ class ConfigurarConveniosController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id_config_convenio]);
-        } else {
+        }else {
             return $this->render('update', [
                 'model' => $model,
             ]);

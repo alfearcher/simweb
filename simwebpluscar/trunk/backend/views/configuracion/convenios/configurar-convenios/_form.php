@@ -47,108 +47,134 @@ use backend\models\impuesto\Impuesto;
                                     <?= $form->field($model, 'impuesto')->dropDownList($listaParametros, [ 
                                                                                                             'id'=> 'impuesto', 
                                                                                                             'prompt' => Yii::t('backend', 'Select'),
-                                                                                                            'style' => 'width:100px;',
+                                                                                                            'style' => 'width:200px;',
                                                                                                             ])->label(false); ?>
-                            </div>
-
-                            <div class="col-sm-2">
-                                    <?= Yii::t('backend', 'Minimum Amount') ?>
-                            </div> 
-                            <div class="col-sm-2">
-                                    <?= $form->field($model, 'monto_minimo')->textInput(['maxlength' => true]) ?>
-                            </div>
-
-                            <div class="col-sm-2">
-                                    <?= Yii::t('backend', 'Amount Type') ?>
-                            </div>
-
-                            <div class="col-sm-2"> 
-                                    <?= $form->field($model, 'tipo_monto')->textInput(['maxlength' => true]) ?>
-                            </div>
-                            <div class="col-sm-2">
-                                    <?= Yii::t('backend', 'Year Tax Unit') ?>
-                            </div>
-
-                            <div class="col-sm-2">
-                                    <?= $form->field($model, 'ano_ut')->textInput(['maxlength' => true]) ?>
                             </div>
                             <div class="col-sm-2">
                                     <?= Yii::t('backend', 'Only Bad Debt') ?>
                             </div>
 
                             <div class="col-sm-2">
-                                    <?= $form->field($model, 'solo_deuda_morosa')->textInput() ?>
+                                    <?= $form->field($model, 'solo_deuda_morosa')->textInput()->label(false) ?>
+                            </div>
+                    </div>
+<div class="panel panel-primary">
+<div class="panel-heading">
+                <?= Yii::t('frontend', 'Minumo Amount of Agreement') ?> 
+</div>
+                    <div class="row" style="margin-left:20px; margin-top:20px;">
+                            <div class="col-sm-2">
+                                    <?= Yii::t('backend', 'Minimum Amount') ?>
+                            </div> 
+                            <div class="col-sm-2">
+                                    <?= $form->field($model, 'monto_minimo')->textInput(['maxlength' => true])->label(false) ?>
+                            </div>
+                    </div>
+
+                    <div class="row" style="margin-left:20px;">
+                            <div class="col-sm-2">
+                                    <?= Yii::t('backend', 'Amount Type') ?>
+                            </div>
+
+                            <div class="col-sm-2"> 
+                                    <?= $form->field($model, 'tipo_monto')->textInput(['maxlength' => true])->label(false) ?>
                             </div>
                             <div class="col-sm-2">
-                                    <?= Yii::t('backend', 'Period Type') ?>
+                                    <?= Yii::t('backend', 'Year Tax Unit') ?>
                             </div>
 
                             <div class="col-sm-2">
-                                    <?= $form->field($model, 'tipo_periodo')->textInput() ?>
+                                    <?= $form->field($model, 'ano_ut')->textInput(['maxlength' => true])->label(false) ?>
                             </div>
-                            <div class="col-sm-2">
-                                    <?= Yii::t('backend', 'Initial Amount') ?>
-                            </div>
+                    </div>
+</div> 
 
-                            <div class="col-sm-2">
-                                    <?= $form->field($model, 'monto_inicial')->textInput() ?>
-                            </div>
-                            <div class="col-sm-2">
-                                    <?= Yii::t('backend', 'Initial Percentage') ?>
-                            </div>
-
-                            <div class="col-sm-2">
-                                    <?= $form->field($model, 'porcentaje_inicial')->textInput() ?>
-                            </div>
+<div class="panel panel-primary">
+<div class="panel-heading">
+                <?= Yii::t('frontend', 'Set Initial Amount and Fees') ?> 
+</div>    
+                    <div class="row" style="margin-left:20px; margin-top:20px;">
                             <div class="col-sm-2">
                                     <?= Yii::t('backend', 'Maximum Number of Shares') ?>
                             </div>
 
                             <div class="col-sm-2">
-                                    <?= $form->field($model, 'nro_max_cuotas')->textInput() ?>
+                                    <?= $form->field($model, 'nro_max_cuotas')->textInput()->label(false) ?>
                             </div>
                             <div class="col-sm-2">
                                     <?= Yii::t('backend', 'Time-Lapse') ?>
                             </div>  
 
                             <div class="col-sm-2">
-                                    <?= $form->field($model, 'lapso_tiempo')->textInput() ?>
+                                    <?= $form->field($model, 'lapso_tiempo')->textInput()->label(false) ?>
                             </div>
+                    </div>
+
+                    <div class="row" style="margin-left:20px;">
+                            <div class="col-sm-2">
+                                    <?= Yii::t('backend', 'Period Type') ?>
+                            </div>
+
+                            <div class="col-sm-2">
+                                    <?= $form->field($model, 'tipo_periodo')->textInput()->label(false) ?>
+                            </div>
+                            <div class="col-sm-2">
+                                    <?= Yii::t('backend', 'Initial Amount') ?>
+                            </div>
+
+                            <div class="col-sm-2">
+                                    <?= $form->field($model, 'monto_inicial')->textInput()->label(false) ?>
+                            </div>
+                            <div class="col-sm-2">
+                                    <?= Yii::t('backend', 'Initial Percentage') ?>
+                            </div>
+
+                            <div class="col-sm-2">
+                                    <?= $form->field($model, 'porcentaje_inicial')->textInput()->label(false) ?>
+                            </div>
+                    </div>
+                            
+</div> 
+                    <div class="row">
                             <div class="col-sm-2"> 
                                     <?= Yii::t('backend', 'Id Time') ?>
                             </div>
 
                             <div class="col-sm-2">
-                                    <?= $form->field($model, 'id_tiempo')->textInput(['maxlength' => true]) ?>
+                                    <?= $form->field($model, 'id_tiempo')->textInput(['maxlength' => true])->label(false) ?>
                             </div>
                             <div class="col-sm-2">    
                                     <?= Yii::t('backend', 'Veceteo Date') ?>
                             </div>
 
                             <div class="col-sm-2">
-                                    <?= $form->field($model, 'vcto_dif_ano')->textInput() ?>
+                                    <?= $form->field($model, 'vcto_dif_ano')->textInput()->label(false) ?>
                             </div>
+                    </div>
+
+                    <div class="row">
                             <div class="col-sm-2">
                                     <?= Yii::t('backend', 'Applying Interest') ?>
                             </div>
 
                             <div class="col-sm-2">
-                                    <?= $form->field($model, 'aplicar_interes')->textInput() ?>
+                                    <?= $form->field($model, 'aplicar_interes')->textInput()->label(false) ?>
                             </div>
                             <div class="col-sm-2">
                                     <?= Yii::t('backend', 'Interest') ?>
                             </div>
 
                             <div class="col-sm-2">
-                                    <?= $form->field($model, 'interes')->textInput() ?>
+                                    <?= $form->field($model, 'interes')->textInput()->label(false) ?>
                             </div>
                             <div class="col-sm-2">
                                     <?= Yii::t('backend', 'Id Tax') ?>
                             </div> 
 
                             <div class="col-sm-2">
-                                    <?= $form->field($model, 'id_impuesto')->textInput(['maxlength' => true]) ?>
+                                    <?= $form->field($model, 'id_impuesto')->textInput(['maxlength' => true])->label(false) ?>
                             </div>
+                    </div>
                             
 
                             

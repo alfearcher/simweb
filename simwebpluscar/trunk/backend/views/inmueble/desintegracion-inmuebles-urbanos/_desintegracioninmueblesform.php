@@ -68,27 +68,26 @@ $this->title = Yii::t('frontend', 'Property Update');
                 <?= Yii::t('frontend', 'Property Specifications 1') ?> 
 </div>
                 
-</div>
-                   <div class="row">
+ 
+                   <div class="row" style="margin-left:20px; margin-top:40px;">
                         
-                            <div class="col-sm-2"> 
+                            <div class="col-sm-2" > 
                             <?= Yii::t('backend', 'Street Addres') ?>
                             </div> 
                         
 
                         
-                            <div class="col-sm-3"> 
+                            <div class="col-sm-5"> 
                             <?= $form->field($model, 'direccion')->textarea(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?>
                             </div> 
                         
-                            <div class="col-sm-1">
-                            </div>
+                            
                         
                             
                         
                    </div>
  <!-- Direccio del domicilio -->                    
-                   <div class="row">
+                   <div class="row" style="margin-left:20px;">
                         
                             <div class="col-sm-2" > 
                             <?= Yii::t('backend', 'Hse/Building/Ctryhse') ?>
@@ -126,7 +125,7 @@ $this->title = Yii::t('frontend', 'Property Update');
                     </div> 
                         
                   
-                   <div class="row">
+                   <div class="row" style="margin-left:20px;">
                         
                             <div class="col-sm-2"> 
                             <?= Yii::t('backend', 'Phone') ?>
@@ -153,7 +152,7 @@ $this->title = Yii::t('frontend', 'Property Update');
 
                    </div>
 
-                   <div class="row">
+                   <div class="row" style="margin-left:20px;">
                         
                             <div class="col-sm-2"> 
                             <?= Yii::t('backend', 'Observation') ?>
@@ -174,14 +173,14 @@ $this->title = Yii::t('frontend', 'Property Update');
                         
 
                     </div>     
-
+</div>
 <div class="panel panel-primary">
 <div class="panel-heading">
                 <?= Yii::t('frontend', 'Property Specifications 2') ?> 
 </div>
                 
-</div>
-                   <div class="row">
+
+                   <div class="row" style="margin-left:20px; margin-top:40px;">
                         
                             <div class="col-sm-2"> 
                             <?= Yii::t('backend', 'Street Addres') ?>
@@ -200,7 +199,7 @@ $this->title = Yii::t('frontend', 'Property Update');
                         
                    </div>
  <!-- Direccio del domicilio -->                    
-                   <div class="row">
+                   <div class="row" style="margin-left:20px;">
                         
                             <div class="col-sm-2" > 
                             <?= Yii::t('backend', 'Hse/Building/Ctryhse') ?>
@@ -238,7 +237,7 @@ $this->title = Yii::t('frontend', 'Property Update');
                     </div> 
                         
                   
-                   <div class="row">
+                   <div class="row" style="margin-left:20px;">
                         
                             <div class="col-sm-2"> 
                             <?= Yii::t('backend', 'Phone') ?>
@@ -266,7 +265,7 @@ $this->title = Yii::t('frontend', 'Property Update');
                         
                    </div>
 
-                   <div class="row">
+                   <div class="row" style="margin-left:20px;">
                         
                             <div class="col-sm-2"> 
                             <?= Yii::t('backend', 'Observation') ?>
@@ -287,8 +286,9 @@ $this->title = Yii::t('frontend', 'Property Update');
                         
                                                  
 
-                    </div>     
-                    <div class="row">
+                    </div> 
+</div>    
+                    <div class="row" style="margin-left:20px;">
 
                              
                                 <?= Html::beginForm();?>
