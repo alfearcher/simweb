@@ -52,8 +52,8 @@ namespace backend\models\presupuesto\ordenanza\registrar;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use frontend\models\vehiculo\cambiodatos\BusquedaVehiculos;
-use common\models\calcomania\calcomaniamodelo\Calcomania;
+
+
 use common\models\presupuesto\ordenanzas\OrdenanzaPresupuesto;
 /**
  * InmueblesSearch represents the model behind the search form about `backend\models\Inmuebles`.
@@ -81,15 +81,27 @@ class RegistrarOrdenanzaPresupuestoForm extends Model
     {
         return [
 
-            [['nro_presupuesto',  'fecha_desde', 'fecha_hasta'], 'required'],
+            [['nro_presupuesto',  'fecha_desde', 'ano_impositivo', 'fecha_hasta'], 'required'],
 
-            ['nro_presupuesto', 'verificarNroPresupuesto'],
+           // ['nro_presupuesto', 'verificarNroPresupuesto'],
 
              ['observacion', 'default', 'value' => 0],
 
-            ['fecha_hasta', 'verificarRangoFechas'],
+             ['ano_impositivo', 'verificarAnoImpositivo'],
 
-              ['fecha_hasta', 'verificarFechaMayorMenor'],
+            ['fecha_desde', 'verificarFechaDesde'],
+
+           ['fecha_hasta', 'verificarFechaHasta'],
+
+
+           
+             ['fecha_desde',
+           'compare',
+           'compareAttribute' => 'fecha_hasta',
+           'operator' => '<=',
+           'message' => Yii::t('backend', '{attribute} no puede ser mayor ' . self::attributeLabels()['fecha_hasta'])],
+
+            
 
           //  ['codigo_contable', 'verificarCodigoContable'],
             
@@ -117,7 +129,7 @@ class RegistrarOrdenanzaPresupuestoForm extends Model
         
         'observacion' => Yii::t('frontend','Observacion'),
                
-                
+              
 
 
 
@@ -125,68 +137,67 @@ class RegistrarOrdenanzaPresupuestoForm extends Model
                 
         ];
     }
+   /**
+    * [verificarFechaDesde description] metodo que verifica que la fecha inicial no sea menor al año impositivo
+    * @param  [type] $attribute [description] atributo 
+    * @param  [type] $params    [description] parametros
+    * @return [type]            [description] retorna mensaje de error
+    */
+    public function verificarFechaDesde($attribute, $params){
+
+            
+                $fecha = date("Y", strtotime($this->fecha_desde));
+                //die($this->ano_impositivo);
+                if($fecha != $this->ano_impositivo){ 
+
+                $this->addError($attribute, Yii::t('frontend', 'Fecha Inicial no coincide con año impositivo'));
+                
+                }
+
+    }
+
+
+
     /**
-     * [verificarNroPresupuesto description] metodo que verifica la existencia del nro de impuesto
+     * [verificarFechaHasta description] metodo que verifica que la fecha final no sea mayor al año impositivo
+     * @param  [type] $attribute [description]
+     * @param  [type] $params    [description]
+     * @return [type]            [description]
+     */
+    public function verificarFechaHasta($attribute, $params){
+
+     
+            $fecha = date("Y", strtotime($this->fecha_hasta));
+                
+            if($fecha != $this->ano_impositivo){ 
+
+            $this->addError($attribute, Yii::t('frontend', 'Fecha Final no coincide con año impositivo'));
+            
+            }
+
+    }
+
+    /**
+     * [verificarAnoImpositivo description] metodo que verifica que el año impositivo no exista en la tabla para evitar registrar dos presupuestos en un año con el mismo año impositivo
      * @param  [type] $attribute [description] atributo
      * @param  [type] $params    [description] parametro
-     * @return [type]            [description] devuelve un mensae de error si el codigo ya existe
+     * @return [type]            [description] devuelve mensaje de error 
      */
-    public function verificarNroPresupuesto($attribute, $params){
+    public function verificarAnoImpositivo($attribute, $params){
+    
 
-         $busqueda = OrdenanzaPresupuesto::find()
-                                        ->where([
+        $busqueda = OrdenanzaPresupuesto::find()
+                                            ->where([
+                                            
+                                            'ano_impositivo' => $this->ano_impositivo,
 
-                                      'nro_presupuesto' => $this->nro_presupuesto,
-                                     // 'estatus' => 0,
+                                                ])
+                                            ->all();
 
-                                          ])
-                                        ->all();
-
-              if ($busqueda != null){
-
-                $this->addError($attribute, Yii::t('frontend', 'Este numero de presupuesto ya existe' ));
-              }else{
-                return false;
-              }
-
-    }
-
-    /**
-     * [verificarRangoFechas description] metodo que verifica que las fechas ingresadas no sobrepasen el año impositivo ni sean menores
-     * @param  [type] $attribute [description] atributos
-     * @param  [type] $params    [description] parametros
-     * @return [type]            [description] retorna mensaje de error si la condicion no se cumple
-     */
-    public function verificarRangoFechas($attribute, $params){
-
-        $fecha_desde = $this->fecha_desde;
-        $fecha_hasta = $this->fecha_hasta;
-
-        if ($fecha_desde > $fecha_hasta){
-
-          $this->addError($attribute, Yii::t('frontend', 'La fecha inicial no puede ser mayor a la fecha final' ));
-        
+        if($busqueda == true){
+            
+        $this->addError($attribute, Yii::t('frontend', 'Ya este año tiene un presupuesto registrado'));
         }
-
-        
-        
-    }
-
-
-    public function verificarFechaMayorMenor($attribute, $params){
-
-        $fecha_desde = $this->fecha_desde;
-        $fecha_hasta = $this->fecha_hasta;
-        $añoDesde = date("Y", strtotime($this->fecha_desde));
-        $añoHasta = date("Y", strtotime($this->fecha_hasta));
-       // $prueba = '01/01/'.$añoDesde;
-       // die($prueba);
-        if($fecha_desde < '01/01/'.$añoDesde){
-
-            $this->addError($attribute, Yii::t('frontend', 'La fecha no puede ser ni mayor ni menor al año de registro del presupuesto' ));
-        }
-        
-
         
         
     }
