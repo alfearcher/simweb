@@ -138,7 +138,7 @@
     <div class="col-sm-4">
     <p>
        
-        <?= Html::a(Yii::t('backend', 'Back'), ['/site/vertical'], ['class' => 'btn btn-danger', 'style' => 'height:30px;width:140px;']) ?>
+        <?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger', 'style' => 'height:30px;width:140px;']) ?>
     </p>
     </div>
 

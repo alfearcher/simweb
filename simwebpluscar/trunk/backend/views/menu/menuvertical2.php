@@ -271,8 +271,8 @@ session_start();
 		        					   		'items' => [
 		        					   				
 		        					   				['label' => 'Registro', 'url' => ['/presupuesto/ordenanza/registrar/registrar-ordenanza-presupuesto/registrar-ordenanza-presupuesto']],
-		        					   				['label' => 'Modificacion', 'url' => ['/aaee/correccioncedularif/correccion-cedula-rif/index']],
-		        					   				['label' => 'Inactivacion', 'url' => '#'],
+		        					   				['label' => 'Modificar/Inactivar', 'url' => ['/presupuesto/ordenanza/modificarinactivar/modificar-inactivar-ordenanza-presupuesto/busqueda-ordenanza-presupuesto']],
+		        					   				
 		        					   				['label' => 'Cargar Presupuesto', 'url' => '#'],
 		        					   				
 		        					   		]

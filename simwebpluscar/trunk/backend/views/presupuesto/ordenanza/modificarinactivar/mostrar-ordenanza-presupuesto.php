@@ -34,7 +34,7 @@
 <div class="row" style="width: 70%;">
     <div class="info-solicitud">
         <div class="row">
-            <h3><?= Html::encode('Seleccione el Codigo Contable') ?></h3>
+            <h3><?= Html::encode('Seleccione la Ordenanza') ?></h3>
                 <?= GridView::widget([
                         'dataProvider' => $dataProvider,
                        // die(var_dump($dataProvider)),
@@ -42,12 +42,12 @@
                 
                  [
 
-                    'label' =>" ID Codigo",
+                    'label' =>" Nro de Presupuesto",
 
                    
                     'value'=> function($data){ 
 
-                        return $data->id_codigo;
+                        return $data->nro_presupuesto;
                     }
 
                 ],
@@ -56,49 +56,61 @@
 
                 [
 
-                    'label' =>"Codigo",
+                    'label' =>"Año Impositivo",
 
                    
                     'value'=> function($data){ 
 
-                        return $data->codigo;
+                        return $data->ano_impositivo;
                     }
 
                 ],
 
                      [
 
-                    'label' =>"Descripcion",
+                    'label' =>"Fecha Inicial",
 
                    
                     'value'=> function($data){ 
 
-                        return $data->descripcion;
+                        return $data->fecha_desde;
+                    }
+
+                ],
+
+                        [
+
+                    'label' =>"Fecha Final",
+
+                   
+                    'value'=> function($data){ 
+
+                        return $data->fecha_hasta;
                     }
 
                 ],
 
                  [
 
-                    'label' =>"Nivel Contable",
+                    'label' =>"Descripcion",
 
                    
                     'value'=> function($data){ 
                      //   die(var_dump($data->nivelPresupuesto));
 
-                        return $data->nivelPresupuesto->descripcion;
+                        return $data->descripcion;
                     }
 
                 ],
 
                    [
 
-                    'label' =>"Monto",
+                    'label' =>"Observacion",
 
                    
                     'value'=> function($data){ 
 
-                        return $data->monto;
+                        return $data->observacion;
                     }
 
                 ],
@@ -113,7 +125,7 @@
                     'buttons' => [
                         'modificar' => function ($url, $model, $key) {
                             
-                                return Html::a('<center><span class= "fa fa-pencil"></span></center>',['modificar-codigo-presupuestario', 'value'=> $key]);
+                                return Html::a('<center><span class= "fa fa-pencil"></span></center>',['verificar-ordenanza-presupuesto', 'value'=> $key]);
                             
                         },
                     ],
@@ -127,7 +139,7 @@
                     'buttons' => [
                         'inactivar' => function ($url, $model, $key) {
                            
-                                return Html::a('<center><span class= "fa fa-ban"></span></center>',['inactivar-codigo-presupuestario', 'value'=> $key]);
+                                return Html::a('<center><span class= "fa fa-ban"></span></center>',['inactivar-ordenanza-presupuesto', 'value'=> $key]);
                         
                         },
                     ],
