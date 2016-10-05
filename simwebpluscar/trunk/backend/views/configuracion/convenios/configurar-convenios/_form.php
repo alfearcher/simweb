@@ -4,6 +4,8 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveField;
+use yii\helpers\BaseHtml;
+use yii\helpers\BaseModel;
 
 use backend\models\impuesto\Impuesto;
 
@@ -43,26 +45,34 @@ use backend\models\impuesto\Impuesto;
                                     ?>
                                     <?= Yii::t('backend', 'Tax') ?>
                             </div>
-                            <div class="col-sm-2"> 
+                            <div class="col-sm-3"> 
                                     <?= $form->field($model, 'impuesto')->dropDownList($listaParametros, [ 
                                                                                                             'id'=> 'impuesto', 
                                                                                                             'prompt' => Yii::t('backend', 'Select'),
                                                                                                             'style' => 'width:200px;',
                                                                                                             ])->label(false); ?>
                             </div>
-                            <div class="col-sm-2">
+                            <!-- <div class="col-sm-2">
                                     <?= Yii::t('backend', 'Only Bad Debt') ?>
-                            </div>
+                            </div> -->
 
                             <div class="col-sm-2">
-                                    <?= $form->field($model, 'solo_deuda_morosa')->textInput()->label(false) ?>
+                                    <?= $form->field($model, 'solo_deuda_morosa')->checkBox()->label(false) ?>
                             </div>
                     </div>
 <div class="panel panel-primary">
 <div class="panel-heading">
-                <?= Yii::t('frontend', 'Minumo Amount of Agreement') ?> 
+                <?= Yii::t('frontend', 'Minimum Amount of Agreement') ?> 
 </div>
                     <div class="row" style="margin-left:20px; margin-top:20px;">
+
+                        <div class="col-sm-2">
+                                    <?= Yii::t('backend', 'Amount Type') ?>
+                            </div> 
+
+                            <div class="col-sm-2"> 
+                                    <?= $form->field($model, 'tipo_monto')->radioList(['1'=>'BsF','2'=>'UT'])->label(false) ?>
+                            </div>
                             <div class="col-sm-2">
                                     <?= Yii::t('backend', 'Minimum Amount') ?>
                             </div> 
@@ -72,19 +82,13 @@ use backend\models\impuesto\Impuesto;
                     </div>
 
                     <div class="row" style="margin-left:20px;">
-                            <div class="col-sm-2">
-                                    <?= Yii::t('backend', 'Amount Type') ?>
-                            </div>
-
-                            <div class="col-sm-2"> 
-                                    <?= $form->field($model, 'tipo_monto')->textInput(['maxlength' => true])->label(false) ?>
-                            </div>
+                            
                             <div class="col-sm-2">
                                     <?= Yii::t('backend', 'Year Tax Unit') ?>
                             </div>
 
                             <div class="col-sm-2">
-                                    <?= $form->field($model, 'ano_ut')->textInput(['maxlength' => true])->label(false) ?>
+                                    <?= $form->field($model, 'ano_ut')->radioList(['1'=>'Anterior','2'=>'Actual'])->label(false) ?>
                             </div>
                     </div>
 </div> 
@@ -131,6 +135,23 @@ use backend\models\impuesto\Impuesto;
 
                             <div class="col-sm-2">
                                     <?= $form->field($model, 'porcentaje_inicial')->textInput()->label(false) ?>
+                            </div>   
+                    </div>
+                    <div class="row" style="margin-left:20px;">
+
+                             <div class="col-sm-2">
+                                    <?= Yii::t('backend', 'Applying Interest') ?>
+                            </div>
+
+                            <div class="col-sm-2">
+                                    <?= $form->field($model, 'aplicar_interes')->textInput()->label(false) ?>
+                            </div>
+                            <div class="col-sm-2">
+                                    <?= Yii::t('backend', 'Interest') ?>
+                            </div>
+
+                            <div class="col-sm-2">
+                                    <?= $form->field($model, 'interes')->textInput()->label(false) ?>
                             </div>
                     </div>
                             
@@ -153,20 +174,7 @@ use backend\models\impuesto\Impuesto;
                     </div>
 
                     <div class="row">
-                            <div class="col-sm-2">
-                                    <?= Yii::t('backend', 'Applying Interest') ?>
-                            </div>
-
-                            <div class="col-sm-2">
-                                    <?= $form->field($model, 'aplicar_interes')->textInput()->label(false) ?>
-                            </div>
-                            <div class="col-sm-2">
-                                    <?= Yii::t('backend', 'Interest') ?>
-                            </div>
-
-                            <div class="col-sm-2">
-                                    <?= $form->field($model, 'interes')->textInput()->label(false) ?>
-                            </div>
+                           
                             <div class="col-sm-2">
                                     <?= Yii::t('backend', 'Id Tax') ?>
                             </div> 
