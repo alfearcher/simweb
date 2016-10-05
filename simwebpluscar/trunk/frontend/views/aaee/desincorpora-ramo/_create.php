@@ -42,6 +42,14 @@
 	$this->title = Yii::t('frontend', 'Remove Categories');
 
 	?>
+<div class="error-mensaje">
+	<?php if( trim($errorMensaje) !== '' ) {?>
+		<div class="well well-sm" style="color: red;padding-left: 35px;">
+			<h3><b><?=Html::encode($errorMensaje) ?></b></h3>
+		</div>
+	<?php } ?>
+</div>
+
 <div class="anexo-ramo-form-create">
 	<?= $this->render('desincorporar-ramo-form', [
 						        'model' => $model,
