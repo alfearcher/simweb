@@ -777,5 +777,59 @@
 
 	    }
 
+
+
+	    /**
+	     * Metodo que permite determinar si se puede realizar otra solicitud de
+	     * desincorporacion, tomando en consideracion la cantidad de rubros registrados
+	     * en el año-periodo consultado y la cantidad de solicitudes de desincorporacion
+	     * existentes de estos mismo rubros. Ejemplo.
+	     *
+	     * Sea:
+	     * 		i = Cantidad de rubros registrados validos y activos.
+	     *   	d = Cantidad de solicitudes pendientes por desincorporacion de dichos rubros.
+	     *
+	     * Si i == d ó i == d + 1 ó i < d, entonces no se podra permitir otra solicitud de
+	     * desincorporacion.
+	     * No deberia ocurrir i == d, por eso se considera aqui para evitar otra solicitud.
+	     * @param  integer $añoImpositivo año impositivo del lapso
+	     * @param  integer $periodo periodo del lapso.
+	     * @return boolean retorna true si puede realizar otra solicitud, en caso contrario
+	     * retornara false.
+	     */
+	    public function puedoIniciarOtraSolicitud($añoImpositivo, $periodo)
+	    {
+	    	$result = false;
+	    	$countIdRubro = 0;
+
+	    	// Se busca los identificadores de los rubros registrados, segun el año-periodo
+	    	// especificado. Se espera recibir un array de identificadores.
+	    	$listaIdRubro = self::getListaIdRubrosRegistrados($añoImpositivo, $periodo);
+	    	$countIdRubro = count($listaIdRubro);
+
+	    	if ( count($countIdRubro) > 0 ) {
+
+	    		// Contador de las solicitudes pendientes.
+	    		$countSolicitud = 0;
+
+
+	    		// Una vez encontrado el o los identificadores, se debe verificar cuales de
+	    		// estos rubros poseen ya una solicitud de desincorporacion pendiente.
+	    		foreach ( $listaIdRubro as $key => $value ) {
+	    			if ( self::yaPoseeSolicitudSimiliarPendiente($value) ) {
+	    				$countSolicitud = ++$countSolicitud;
+	    			}
+	    		}
+// die(var_dump($countIdRubro));
+	    		if ( $countIdRubro == $countSolicitud || $countIdRubro == ++$countSolicitud || $countIdRubro < $countSolicitud ) {
+	    			$result = false;
+	    		} else {
+	    			$result = true;
+	    		}
+	    	}
+
+	    	return $result;
+	    }
+
 	}
  ?>
