@@ -55,7 +55,7 @@ use yii\filters\AccessControl;
 use common\conexion\ConexionController;
 use common\mensaje\MensajeController;
 use backend\models\presupuesto\codigopresupuesto\modificarinactivar\BusquedaCodigoMultipleForm;
-use backend\models\presupuesto\codigopresupuesto\modificarinactivar\ModificarCodigoPresupuestarioForm;
+use backend\models\presupuesto\ordenanza\modificarinactivar\ModificarInactivarOrdenanzaPresupuestoForm;
 /**
  * Site controller
  */
@@ -76,114 +76,47 @@ class ModificarInactivarOrdenanzaPresupuestoController extends Controller
   public $layout = 'layout-main';
    
   /**
-   * [actionBusquedaCodigoMultiple description] metodo que renderiza la vista con la busqueda multiple del codigo presupuestario, tanto por dicho codigo
-   * como por nivel contable
-   * @return [type] [description] retorna la vista
+   * [actionBusquedaOrdenanzaPresupuesto description] metodo que realiza la busqueda de las ordenanzas de presupuesto para su modificacion
+   * @return [type] [description] retorna un gridview con la informacion buscada
    */
-  public function actionBusquedaCodigoMultiple()
+  public function actionBusquedaOrdenanzaPresupuesto()
   { 
 
-          $post = yii::$app->request->post();
-         // die(var_dump($post));
-          $model = new BusquedaCodigoMultipleForm();
-          
-          if(isset($post['btn-busqueda-nivel'])){ 
-              $model->scenario = self::SCENARIO_SEARCH_NIVEL_CONTABLE;
-          }elseif(isset($post['btn-busqueda-codigo'])){
-              $model->scenario = self::SCENARIO_SEARCH_CODIGO_CONTABLE;
-         
-          } 
+      $model = new ModificarInactivarOrdenanzaPresupuestoForm();
 
-            $postData = Yii::$app->request->post();
+      $dataProvider = $model->busquedaOrdenanzaPresupuesto();
 
-            if ( $model->load($postData) && Yii::$app->request->isAjax ){
-                  Yii::$app->response->format = Response::FORMAT_JSON;
-                  return ActiveForm::validate($model);
-            }
-
-            if ( $model->load($postData) ) {
-
-
-          if(isset($post['btn-busqueda-nivel'])){ 
-              if ($model->validate()){
-               //die(var_dump($model->nivel_contable));
-                  $_SESSION['datos'] = $model;
-                  return self::buscarNivelPresupuestario($model->nivel_contable);
- 
-                  
-              }
-
-          }elseif(isset($post['btn-busqueda-codigo'])){
-              if ($model->validate()){
-                 $_SESSION['datos'] = $model;
-                 return self::actionBuscarCodigoPresupuestario($model->codigo);
-              }
-        
-             
-
-               
-          }
-
-         }
-            
-            return $this->render('/presupuesto/codigopresupuesto/modificarinactivar/busqueda-codigo-multiple', [
-                                                              'model' => $model,
-                                                             
-                                                           
-            ]);
-  
+          return $this->render('/presupuesto/ordenanza/modificarinactivar/mostrar-ordenanza-presupuesto',[ 
+                                  'dataProvider' => $dataProvider,
+          ]);
   }
 
   /**
-   * [buscarNivelPresupuestario description] metodo que realiza la busqueda de la informacion del codigo presupuestario en la tabla codigos_contables
-   * @param  [type] $nivel [description] nivel presupuesario
-   * @return [type]        [description] retorna la informacion por niveles presupuestarios 
+   * [actionVerificarOrdenanzaPresupuesto description] metodo que recibe los parametros por get para redireccionar hacia el metodo que realizara la modificacion
+   * @return [type] [description] redirecciona al metodo que se le indique en el return redirect
    */
-  public function  buscarNivelPresupuestario($nivel)
+  public function  actionVerificarOrdenanzaPresupuesto()
   {
-   // die($model)
     
-      $model = new BusquedaCodigoMultipleForm();
+      $idOrdenanza = yii::$app->request->get('value');
+      $_SESSION['idOrdenanza'] = $idOrdenanza;
 
-          $dataProvider = $model->busquedaNivelPresupuesto($nivel);
-
-          return $this->render('/presupuesto/codigopresupuesto/modificarinactivar/mostrar-informacion-nivel-presupuestario',[ 
-                                  'dataProvider' => $dataProvider,
-
-            ]);
+          return $this->redirect(['modificar-ordenanza-presupuesto']);
   }
 
-  /**
-   * [actionBuscarCodigoPresupuestario description]  metodo que realiza la busqueda por codigo del nivel contable
-   * @param  [type] $codigo [description] codigo contable
-   * @return [type]        [description] retorna el gridview con el dataprovider si consigue y false si no consigue
-   */
-  public function actionBuscarCodigoPresupuestario($codigo){
 
-      $model = new BusquedaCodigoMultipleForm();
-
-          $dataProvider = $model->busquedaNivelPresupuestoCodigo($codigo);
-
-             return $this->render('/presupuesto/codigopresupuesto/modificarinactivar/mostrar-informacion-nivel-presupuestario-codigo',[ 
-                                  'dataProvider' => $dataProvider,
-
-            ]);
-  }
-
-  /**
-   * [actionModificarCodigoPresupuestario description] metodo que renderiza el formulario para la modificacion de codigo presupuestario
-   * @return [type] [description] retorna la vista con el formulario
-   */
-  public function actionModificarCodigoPresupuestario()
+  public function actionModificarOrdenanzaPresupuesto()
   {
-        
-           $idCodigo = yii::$app->request->get('value');
-           $_SESSION['idCodigo'] =  $idCodigo; 
 
-          $model = new ModificarCodigoPresupuestarioForm();
+            $idOrdenanza = $_SESSION['idOrdenanza']; 
 
-          $datos = $model->busquedaDatosCodigoPresupuestario($idCodigo);
+         
 
+          $model = new ModificarInactivarOrdenanzaPresupuestoForm();
+
+          $datos = $model->busquedaDatosOrdenanzaPresupuesto($idOrdenanza);
+          //$_SESSION['idCodigo'] = $datos[0]['id_codigo'];
+         
             $postData = Yii::$app->request->post();
 
             if ( $model->load($postData) && Yii::$app->request->isAjax ){
@@ -196,7 +129,7 @@ class ModificarInactivarOrdenanzaPresupuestoController extends Controller
 
                if ($model->validate()){
 
-
+                 // die('valido');
                
                  $modificar = self::beginSave("modificar", $model);
 
@@ -211,22 +144,26 @@ class ModificarInactivarOrdenanzaPresupuestoController extends Controller
               }
             }
             
-            return $this->render('/presupuesto/codigopresupuesto/modificarinactivar/view-modificar-codigo-presupuestario', [
+            return $this->render('/presupuesto/ordenanza/modificarinactivar/view-modificar-ordenanza-presupuesto', [
                                                               'model' => $model,
                                                               'datos' => $datos,
                                                            
             ]);
   }
 
+
+
+  
+
   /**
-   * [actionInactivarCodigoPresupuestario description] metodo que realiza la inactivacion del codigo presupuestario
+   * [actionInactivarOrdenanzaPresupuesto description] metodo que realiza la inactivacion de la ordenanza de presupuesto
    * @return [type] [description] renderiza mensajes modales para indicar si se realizo la operacion o esta fue rechazada
    */
-  public function actionInactivarCodigoPresupuestario()
+  public function actionInactivarOrdenanzaPresupuesto()
   {
 
-         $idCodigo = yii::$app->request->get('value');
-          $_SESSION['idCodigo'] =  $idCodigo; 
+         $idOrdenanza = yii::$app->request->get('value');
+          $_SESSION['idOrdenanza'] =  $idOrdenanza; 
 
               $inactivar = self::beginSave("inactivar", 0);
 
@@ -240,26 +177,30 @@ class ModificarInactivarOrdenanzaPresupuestoController extends Controller
 
 
  /**
-  * [modificarCodigosContables description] metodo que realiza el update en la tabla codigos_contables con la informacion enviada desde el modelo
+  * [modificarOrdenanzaPresupuesto description] metodo que realiza la modificacion de la ordenanza de presupuestos
   * @param  [type] $conn     [description] parametro de conexion
   * @param  [type] $conexion [description] parametro de conexion
-  * @param  [type] $model    [description] modelo que contiene los datos
-  * @return [type]           [description] retorna true si modifica y false si no.
+  * @param  [type] $model    [description] modelo que contiene los datos enviados desde el formulario
+  * @return [type]           [description] retorna true o false
   */
-    public function modificarCodigosContables($conn, $conexion, $model)
+    public function modificarOrdenanzaPresupuesto($conn, $conexion, $model)
     {
-       $idCodigo = $_SESSION['idCodigo'];
+       $idPresupuesto = $_SESSION['idOrdenanza'];
 
       
-        $tableName = 'codigos_contables';
+        $tableName = 'ordenanzas_presupuestos';
         
-        $arregloCondition = ['id_codigo' => $idCodigo];
+        $arregloCondition = ['id_presupuesto' => $idPresupuesto];
      
-        $arregloDatos['nivel_contable'] = $model->nivel_contable;
+        $arregloDatos['fecha_desde'] = date("Y-m-d", strtotime($model->fecha_desde));
 
-         $arregloDatos['codigo'] = $model->codigo;
+        $arregloDatos['fecha_hasta'] = date("Y-m-d", strtotime($model->fecha_hasta));
+         
+        $arregloDatos['observacion'] = $model->observacion;
 
-        $arregloDatos['descripcion'] = $model->descripcion;
+        $arregloDatos['fecha_modificacion'] = date('Y-m-d');
+
+        
 
          
 
@@ -281,20 +222,22 @@ class ModificarInactivarOrdenanzaPresupuestoController extends Controller
 
     }
 
+    
+
     /**
-     * [inactivarCodigoContable description] metodo que realiza el update de la tabla codigos_contables e inactiva el codigo, dejandolo en estatus 1
+     * [inactivarOrdenanzaPresupuesto description] metodo que realiza el update de la tabla ordenanzas_presupuestos e inactiva el presupuesto, dejandolo en estatus 1
      * @param  [type] $conn     [description] parametro de conexion
      * @param  [type] $conexion [description] parametro de conexion
      * @return [type]           [description] retorna true si modifica y false si no.
      */
-    public function inactivarCodigoContable($conn, $conexion)
+    public function inactivarOrdenanzaPresupuesto($conn, $conexion)
     {
-       $idCodigo = $_SESSION['idCodigo'];
+       $idPresupuesto = $_SESSION['idOrdenanza'];
 
       
-        $tableName = 'codigos_contables';
+        $tableName = 'ordenanzas_presupuestos';
         
-        $arregloCondition = ['id_codigo' => $idCodigo];
+        $arregloCondition = ['id_presupuesto' => $idPresupuesto];
      
         $arregloDatos['inactivo'] = 1;
 
@@ -321,7 +264,7 @@ class ModificarInactivarOrdenanzaPresupuestoController extends Controller
 
    
     /**
-     * [beginSave description] metodo padre que direcciona hacia los metodos de modificacion o inactivacion de codigo contable
+     * [beginSave description] metodo padre que direcciona hacia los metodos de modificacion o inactivacion de ordenanza de presupuestos
      * @param  [type] $var   [description] variable tipo string que sirve para el redireccionamiento de metodos de inactivacion o modificacion
      * @param  [type] $model [description] datos enviados desde los formularios
      * @return [type]        [description] retorna true si el proceso se cumple y false si no se cumple
@@ -340,7 +283,7 @@ class ModificarInactivarOrdenanzaPresupuestoController extends Controller
           if ($var == "modificar"){
             
 
-              $modificar = self::modificarCodigosContables($conn, $conexion, $model);
+              $modificar = self::modificarOrdenanzaPresupuesto($conn, $conexion, $model);
 
              
               if ($modificar == true){
@@ -364,7 +307,7 @@ class ModificarInactivarOrdenanzaPresupuestoController extends Controller
                  
           }else if($var == "inactivar"){
 
-               $inactivar = self::inactivarCodigoContable($conn, $conexion);
+               $inactivar = self::inactivarOrdenanzaPresupuesto($conn, $conexion);
 
              
               if ($inactivar == true){

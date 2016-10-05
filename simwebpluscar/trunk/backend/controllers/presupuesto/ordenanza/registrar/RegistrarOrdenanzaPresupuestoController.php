@@ -144,14 +144,14 @@ class RegistrarOrdenanzaPresupuestoController extends Controller
 
       $arregloDatos['nro_presupuesto'] = $model->nro_presupuesto;
 
-      $arregloDatos['ano_impositivo'] = date('Y');
+      $arregloDatos['ano_impositivo'] = $model->ano_impositivo;
 
 
       $arregloDatos['fecha_desde'] = date("Y-m-d" ,strtotime($model->fecha_desde));
      // die($arregloDatos['fecha_desde']);
       $arregloDatos['fecha_hasta'] = date("Y-m-d" ,strtotime($model->fecha_hasta));
        // die($arregloDatos['fecha_hasta']);
-      $arregloDatos['descripcion'] = 'Ordenanza De Presupuesto'.' '.date('Y');
+      $arregloDatos['descripcion'] = 'Ordenanza De Presupuesto'.' '.$model->ano_impositivo;
       
       $arregloDatos['observacion'] = $model->observacion;
       
