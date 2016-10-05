@@ -193,6 +193,7 @@
 			// Se verifica que el contribuyente haya iniciado una session.
 			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) && isset($_SESSION['conf'])) {
 
+				$errorMensaje = '';
 				self::actionAnularSession(['postSearch']);
 				$btnSearchCategory = 0;			// Indica se se activa o no.
 				$idContribuyente = $_SESSION['idContribuyente'];
@@ -223,8 +224,18 @@
 
 						if ( $model->load($postData) ) {
 			    			if ( $model->validate() ) {
-			    				$_SESSION['postSearch'] = $postData;
-			    				return $this->redirect(['rubro-registrados']);
+
+			    				$result = false;
+			    				$result = $searchRamo->puedoIniciarOtraSolicitud($model->ano_impositivo, $model->periodo);
+// die(var_dump($result));
+			    				if ( $result ) {
+			    					$_SESSION['postSearch'] = $postData;
+			    					return $this->redirect(['rubro-registrados']);
+
+			    				} else {
+			    					$errorMensaje = Yii::t('frontend', "No es posible realizar solicitudes de este tipo para el lapso {$model->ano_impositivo} - {$model->periodo}");
+			    				}
+
 							}
 						}
 					}
@@ -243,6 +254,7 @@
 			  											'findModel' => $findModel,
 			  											'listaAño' => $listaAño,
 			  											'caption' => $caption,
+			  											'errorMensaje' => $errorMensaje,
 					  					]);
 
 		  		} else {
