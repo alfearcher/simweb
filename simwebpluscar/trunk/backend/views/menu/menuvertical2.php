@@ -273,7 +273,7 @@ session_start();
 		        					   				['label' => 'Registro', 'url' => ['/presupuesto/ordenanza/registrar/registrar-ordenanza-presupuesto/registrar-ordenanza-presupuesto']],
 		        					   				['label' => 'Modificar/Inactivar', 'url' => ['/presupuesto/ordenanza/modificarinactivar/modificar-inactivar-ordenanza-presupuesto/busqueda-ordenanza-presupuesto']],
 		        					   				
-		        					   				['label' => 'Cargar Presupuesto', 'url' => '#'],
+		        					   				['label' => 'Cargar Presupuesto', 'url' => ['/presupuesto/cargarpresupuesto/registrar/cargar-presupuesto/vista-ordenanza-presupuesto']],
 		        					   				
 		        					   		]
 		        					   	],

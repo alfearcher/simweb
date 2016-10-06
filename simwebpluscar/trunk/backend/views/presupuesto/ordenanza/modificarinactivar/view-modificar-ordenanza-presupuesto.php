@@ -55,7 +55,7 @@ $this->title = 'Modificar Ordenanza de Presupuestos';
                                                                                                     //'prompt' => Yii::t('backend', 'Select'),
                                                                                                    // 'style' => height:32px;width:150px;',''
                                                                                                    'value' => $datos[0]['ano_impositivo'],
-                                                                                                   'readOnly' => true,
+                                                                                                  // 'readOnly' => true,
                                                                                                     
                                                                                                     ])
                                             ?>
@@ -139,7 +139,7 @@ $this->title = 'Modificar Ordenanza de Presupuestos';
                      
                     </div>                 
                          
-
+ </div>
 <!-- FIN DE FECHA HASTA --> 
 
 <!-- OBSERVACION -->
@@ -147,11 +147,11 @@ $this->title = 'Modificar Ordenanza de Presupuestos';
       <div class="row">
         
           
-               <div class="col-sm-7"  style="margin-left: 35px;">
+               <div class="col-sm-7"  style="margin-left: 20px;">
                                      
                                             <div>
                                               <?= $form->field($model, 'observacion')->textArea(['rows' => '6',
-
+                                                                                                'id' => 'observacion',
                                                                                                 'value' => $datos[0]['observacion'],
 
 
