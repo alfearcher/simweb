@@ -77,9 +77,9 @@ class ModificarInactivarOrdenanzaPresupuestoForm extends Model
 
              [['fecha_desde', 'fecha_hasta'], 'required'],
 
-           //   ['fecha_desde', 'verificarFechaDesde'],
+              ['fecha_desde', 'verificarFechaDesde'],
 
-           // ['fecha_hasta', 'verificarFechaHasta'],
+           ['fecha_hasta', 'verificarFechaHasta'],
 
              ['fecha_desde',
            'compare',
@@ -153,11 +153,11 @@ class ModificarInactivarOrdenanzaPresupuestoForm extends Model
     * @return [type]            [description] retorna mensaje de error
     */
     public function verificarFechaDesde($attribute, $params){
-
+                $anoImpo = $_SESSION['anoImpo'];
             
                 $fecha = date("Y", strtotime($this->fecha_desde));
                 //die($this->ano_impositivo);
-                if($fecha != $this->ano_impositivo){ 
+                if($fecha != $anoImpo){ 
 
                 $this->addError($attribute, Yii::t('frontend', 'Fecha Inicial no coincide con año impositivo'));
                 
@@ -174,11 +174,11 @@ class ModificarInactivarOrdenanzaPresupuestoForm extends Model
      * @return [type]            [description]
      */
     public function verificarFechaHasta($attribute, $params){
-
+             $anoImpo = $_SESSION['anoImpo'];
             //die($this->ano_impositivo);
             $fecha = date("Y", strtotime($this->fecha_hasta));
                 
-            if($fecha != $this->ano_impositivo){ 
+            if($fecha != $anoImpo){ 
 
             $this->addError($attribute, Yii::t('frontend', 'Fecha Final no coincide con año impositivo'));
             
