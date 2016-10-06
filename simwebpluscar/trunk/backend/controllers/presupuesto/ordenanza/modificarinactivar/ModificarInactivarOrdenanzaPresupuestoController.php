@@ -115,7 +115,7 @@ class ModificarInactivarOrdenanzaPresupuestoController extends Controller
           $model = new ModificarInactivarOrdenanzaPresupuestoForm();
 
           $datos = $model->busquedaDatosOrdenanzaPresupuesto($idOrdenanza);
-          //$_SESSION['idCodigo'] = $datos[0]['id_codigo'];
+          $_SESSION['anoImpo'] = $datos[0]['ano_impositivo'];
          
             $postData = Yii::$app->request->post();
 
