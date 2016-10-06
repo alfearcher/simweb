@@ -95,7 +95,7 @@ use backend\models\impuesto\Impuesto;
 
 <div class="panel panel-primary">
 <div class="panel-heading">
-                <?= Yii::t('frontend', 'Set Initial Amount and Fees') ?> 
+                <?= Yii::t('frontend', 'Set Initial Amount and Fees') ?>  
 </div>    
                     <div class="row" style="margin-left:20px; margin-top:20px;">
                             <div class="col-sm-2">
@@ -115,13 +115,7 @@ use backend\models\impuesto\Impuesto;
                     </div>
 
                     <div class="row" style="margin-left:20px;">
-                            <div class="col-sm-2">
-                                    <?= Yii::t('backend', 'Period Type') ?>
-                            </div>
-
-                            <div class="col-sm-2">
-                                    <?= $form->field($model, 'tipo_periodo')->textInput()->label(false) ?>
-                            </div>
+                            
                             <div class="col-sm-2">
                                     <?= Yii::t('backend', 'Initial Amount') ?>
                             </div>
@@ -144,7 +138,7 @@ use backend\models\impuesto\Impuesto;
                             </div>
 
                             <div class="col-sm-2">
-                                    <?= $form->field($model, 'aplicar_interes')->textInput()->label(false) ?>
+                                    <?= $form->field($model, 'aplicar_interes')->radioList(['1'=>'Fijo','2'=>'variable'])->label(false) ?>
                             </div>
                             <div class="col-sm-2">
                                     <?= Yii::t('backend', 'Interest') ?>
@@ -152,6 +146,15 @@ use backend\models\impuesto\Impuesto;
 
                             <div class="col-sm-2">
                                     <?= $form->field($model, 'interes')->textInput()->label(false) ?>
+                            </div>
+                    </div>
+                    <div class="row" style="margin-left:20px;">
+                            <div class="col-sm-2">
+                                    <?= Yii::t('backend', 'Period Type') ?>
+                            </div>
+                                
+                            <div class="col-sm-2">
+                                    <?= $form->field($model, 'tipo_periodo')->textInput()->label(false) ?>
                             </div>
                     </div>
                             

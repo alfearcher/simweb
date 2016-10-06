@@ -66,7 +66,7 @@ class ConfigurarConveniosController extends Controller
             return $this->redirect(['view', 'id' => $model->id_config_convenio]);
         } else {
             return $this->render('create', [
-                'model' => $model,
+                'model' => $model, 
             ]);     //contra maestre
         }     
     } 
@@ -86,7 +86,7 @@ class ConfigurarConveniosController extends Controller
         }else {
             return $this->render('update', [
                 'model' => $model,
-            ]);
+            ]); 
         }
     }
 
