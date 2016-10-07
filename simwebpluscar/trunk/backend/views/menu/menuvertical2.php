@@ -273,7 +273,19 @@ session_start();
 		        					   				['label' => 'Registro', 'url' => ['/presupuesto/ordenanza/registrar/registrar-ordenanza-presupuesto/registrar-ordenanza-presupuesto']],
 		        					   				['label' => 'Modificar/Inactivar', 'url' => ['/presupuesto/ordenanza/modificarinactivar/modificar-inactivar-ordenanza-presupuesto/busqueda-ordenanza-presupuesto']],
 		        					   				
+		        					   				
+		        					   				
+		        					   		]
+		        					   	],
+
+
+		        					   	 	['label' => Icon::show('fa fa-briefcase',['class' => $typeLong], $typeIcon) . '&nbsp; Presupuestos',
+		        					   		'items' => [
+		        					   				
+		        					   				
+		        					   				
 		        					   				['label' => 'Cargar Presupuesto', 'url' => ['/presupuesto/cargarpresupuesto/registrar/cargar-presupuesto/vista-ordenanza-presupuesto']],
+		        					   				['label' => 'Modificar/Inactivar', 'url' => ['/presupuesto/cargarpresupuesto/modificarinactivar/modificar-inactivar-presupuesto/vista-presupuesto']],
 		        					   				
 		        					   		]
 		        					   	],
