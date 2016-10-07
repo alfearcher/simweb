@@ -69,7 +69,7 @@ class ConfigurarConveniosController extends Controller
                 'model' => $model, 
             ]);     //contra maestre
         }     
-    } 
+    }   
 
     /**
      * Updates an existing ConfigConvenios model.
