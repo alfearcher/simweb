@@ -513,24 +513,14 @@
 	    			  				    ->andWhere('estatus =:estatus', [':estatus' => 0])
 	    			  				    ->andWhere('inactivo =:inactivo', [':inactivo' => 0])
 	    			  				    ->andWhere('bloqueado =:bloqueado', [':bloqueado' => 0])
-	    							    ->andWhere('ano_impositivo >=:ano_impositivo',
-	    							    			[':ano_impositivo' => $añoLimite])
+	    							    ->andWhere('ano_impositivo =:ano_impositivo',
+	    							    			[':ano_impositivo' => $añoActual])
 	    							    ->joinWith('actividadDetalle', 'INNER JOIN', false)
 	    							    ->orderBy([
 	    							   		'ano_impositivo' => SORT_ASC,
 	    							   	])
 	    							    ->all();
 
-	    	// $findModel = ActEcon::find()->distinct('ano_impositivo')
-	    	// 							->where('id_contribuyente =:id_contribuyente',
-	    	//  										['id_contribuyente' => $this->_id_contribuyente])
-	    	// 		  				    ->andWhere('estatus =:estatus', [':estatus' => 0])
-	    	// 						    ->andWhere('ano_impositivo >=:ano_impositivo',
-	    	// 						    			[':ano_impositivo' => $añoLimite])
-	    	// 						    ->orderBy([
-	    	// 						   		'ano_impositivo' => SORT_ASC,
-	    	// 						   	])
-	    	// 						    ->all();
 	    	if ( count($findModel) > 0 ) {
 	    		$listaAño = ArrayHelper::map($findModel, 'ano_impositivo', 'ano_impositivo');
 	    	}
