@@ -125,6 +125,11 @@
 					'label' => Yii::t('frontend', 'License'),
 					'value' => $model['id_sim'],
 				],
+				[
+					'format'=>['date', 'dd-MM-yyyy'],
+					'label' => Yii::t('frontend', 'Begin Date'),
+					'value' => $model['fecha_inicio'],
+				],
 			],
 		])
 	?>
