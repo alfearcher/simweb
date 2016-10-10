@@ -2,7 +2,7 @@
 
 
     use yii\web\Response;
-  use kartik\icons\Icon;
+    use kartik\icons\Icon;
     use yii\helpers\Html;
     use yii\helpers\Url;
     use yii\helpers\ArrayHelper;

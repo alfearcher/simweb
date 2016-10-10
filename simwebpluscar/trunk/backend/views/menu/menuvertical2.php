@@ -299,6 +299,52 @@ session_start();
 		        			]
 		        		],
 
+
+
+		        				//TASAS
+        			['label' => Icon::show('fa fa-bar-chart',['class' => $typeLong], $typeIcon) . '&nbsp; Tasas',
+		        	'items' => [
+		        		//	SOLICITUDES DE PRESUPUESTOS
+		        		['label' => Icon::show('fa fa-briefcase',['class' => $typeLong], $typeIcon) . '&nbsp; Catalogo de Tasas',
+		        			'items' => [
+		        						['label' => 'Registro','url' => ['/tasas/registrar/registrar-tasas/registro-tasas']],
+		        					   
+		        					   	['label' => 'Modificar/inactivar', 'url' => ['/presupuesto/nivelespresupuesto/modificar/modificar-niveles-presupuesto/vista-seleccion']],
+		        					   
+		        					   
+		        					   	
+		        					   	['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Codigos Presupuestarios',
+		        					   		'items' => [
+		        					   				['label' => 'Registrar', 'url' => ['/presupuesto/codigopresupuesto/registrar/registrar-codigo-presupuestario/registro-codigo-presupuesto']],
+		        					   				['label' => 'Modificar/Inactivar', 'url' => ['/presupuesto/codigopresupuesto/modificarinactivar/modificar-codigo-presupuestario/busqueda-codigo-multiple']],
+		        					   				
+		        					   				['label' => 'Cambiar Codigos Presupuestarios entre Niveles Presupuestarios', 'url' => ['presupuesto/codigopresupuesto/cambiarcodigo/cambiar-codigo-presupuestario/busqueda-codigo-presupuestario']],
+		        					   				
+		        					   		]
+		        					   	],
+
+		        					   	['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Ordenanza de Presupuestos',
+		        					   		'items' => [
+		        					   				
+		        					   				['label' => 'Registro', 'url' => ['/presupuesto/ordenanza/registrar/registrar-ordenanza-presupuesto/registrar-ordenanza-presupuesto']],
+		        					   				['label' => 'Modificar/Inactivar', 'url' => ['/presupuesto/ordenanza/modificarinactivar/modificar-inactivar-ordenanza-presupuesto/busqueda-ordenanza-presupuesto']],
+		        					   				
+		        					   				
+		        					   				
+		        					   		]
+		        					   	],
+
+
+		        					   
+		        				
+		        					
+		        			]
+		        		],
+
+		        		],
+
+		        		],
+
 		        		//	SOLICITUDES DE INMUEBLES URBANOS
 		        		['label' => Icon::show('fa fa-home',['class' => $typeLong], $typeIcon) . '&nbsp; Inmuebles Urbanos',
 		        			'items' => [
