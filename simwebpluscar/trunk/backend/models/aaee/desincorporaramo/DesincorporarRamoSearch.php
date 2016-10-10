@@ -58,6 +58,8 @@
 	use backend\models\aaee\rubro\RubroForm;
 	use backend\models\aaee\rubro\Rubro;
 	use yii\helpers\ArrayHelper;
+	use backend\models\aaee\declaracion\DeclaracionBase;
+
 
 	/**
 	 * Clase que gestiona el funcionamiento de la solicitud para el anexo de
@@ -97,6 +99,33 @@
 
 			return isset($findModel) ? $findModel : null;
 		}
+
+
+
+		/**
+		 * Metodo que realice una conaulta para determinar si existe una solicitud
+		 * pendiente para desincorporar ramo segun el año-periodo indicado.
+		 * @param  integer $añoImpositivo año del lapso que se desea consultar.
+	     * @param  integer $periodo periodo del lapso que se desea consultar.
+		 * @return active record retorna una modelo de la entidad "sl", donde
+		 * se guarda la solicitud. En casocontrario un arreglo vacio.
+		 */
+		public function findSolicitudDesincorporarRamoSegunLapso($añoImpositivo, $periodo)
+		{
+			$findModel = DesincorporarRamo::find()->where('id_contribuyente =:id_contribuyente',
+	    												[':id_contribuyente' => $this->_id_contribuyente])
+	    								          ->andWhere('estatus =:estatus',
+	    												[':estatus' => 0])
+			    								  ->andWhere(DesincorporarRamo::tableName().'.ano_impositivo =:ano_impositivo',
+			    									  			[':ano_impositivo' => $añoImpositivo])
+			    								  ->andWhere('periodo =:periodo',
+			    									  			[':periodo' => $periodo])
+			    								  ->orderBy([
+			    									  'nro_solicitud' => SORT_ASC,
+			    									]);
+	    	return ( count($findModel) > 0 ) ? $findModel : [];
+		}
+
 
 
 
@@ -820,7 +849,7 @@
 	    				$countSolicitud = ++$countSolicitud;
 	    			}
 	    		}
-// die(var_dump($countIdRubro));
+
 	    		if ( $countIdRubro == $countSolicitud || $countIdRubro == ++$countSolicitud || $countIdRubro < $countSolicitud ) {
 	    			$result = false;
 	    		} else {
@@ -829,6 +858,169 @@
 	    	}
 
 	    	return $result;
+	    }
+
+
+
+	    /**
+	     * Metodo que genera el modelo para realizar las consultas en la entidad
+	     * "sl-declaraciones".
+	     * @param  integer $añoImpositivo año del lapso a consultar.
+	     * @param  integer $periodo periodo del lapso a consultar
+	     * @param  integer $tipoDeclaracion tipo de declaracion:
+	     * - tipo 1: estimada.
+	     * - tipo 2: definitiva.
+	     * @param  integer $estatus condicion del registro.
+	     * @return active record retorna un modelo de la entidad "sl-declaraciones".
+	     */
+	    private function findSolicitudDeclacionSegunLapso($añoImpositivo, $periodo, $tipoDeclaracion, $estatus)
+	    {
+	    	$findModel = DeclaracionBase::find()->where('id_contribuyente =:id_contribuyente',
+	    												['id_contribuyente' => $this->_id_contribuyente])
+	    										->andWhere('estatus =:estatus',
+	    												[':estatus' => $estatus])
+	    										->andWhere('ano_impositivo =:ano_impositivo',
+	    												[':ano_impositivo' => $añoImpositivo])
+	    										->andWhere('exigibilidad_periodo =:exigibilidad_periodo',
+	    												[':exigibilidad_periodo' => $periodo])
+	    										->andWhere('tipo_declaracion =:tipo_declaracion',
+	    												[':tipo_declaracion' => $tipoDeclaracion]);
+
+	    	return ( count($findModel) > 0 ) ? $findModel : [];
+	    }
+
+
+
+
+
+	    /***/
+	    public function yaPoseeSolicitudDeclaracionEstimada($añoImpositivo, $periodo, $estatus)
+	    {
+	    	$count = 0;
+	    	$result = false;
+	    	$findModel = self::findSolicitudDeclacionSegunLapso($añoImpositivo, $periodo, 1, $estatus);
+
+	    	$count = (int)$findModel->count();
+
+	    	if ( $count > 0 ) { $result = true; }
+
+	    	return $result;
+
+	    }
+
+
+
+
+	    /**
+	     * Metodo que permite validar la logica de negocio que se aplicara para
+	     * elaborar una soliciitud de Desincorporacion de Ramo. Cada instancia que
+	     * no se cumpla satisfactoriamente generara un mensaje que luego sera incluido
+	     * en un arreglo de mensajes.
+	     * @param  integer $añoImpositivo año del lapso a consultar.
+	     * @param  integer $periodo periodo del lapso a consultar
+	     * @return array retorna un arreglo de mensajes, el mismo puede ser vacio.
+	     */
+	    public function validarEvento($añoImpositivo, $periodo)
+	    {
+	    	$mensajes = [];
+	    	$mensajeEstimada = '';
+	    	$mensajeIniciar = '';
+
+	    	// Se verifica si existe una solicitud de declaracion estimada pendiente.
+	    	$estimada = self::yaPoseeSolicitudDeclaracionEstimada($añoImpositivo, $periodo, 0);
+	    	if ( $estimada ) {
+	    		$mensajeEstimada = Yii::t('backend', "Existe una solicitud pendiente para el lapso {$añoImpositivo} - {$periodo}");
+	    	}
+
+	    	// Se verifica que el total de rubros registrados no sea igual a la cantidad
+	    	// de solicitudes de deincorporacion que desee hacer. No se podra realizar la
+	    	// solicitud si solo le queda un rubro por desincorporar. Lo siguinete retorna
+	    	// un boolean.
+	    	$puedo = self::puedoIniciarOtraSolicitud($añoImpositivo, $periodo);
+	    	if ( !$puedo ) {
+	    		$mensajeIniciar = Yii::t('frontend', "No es posible realizar solicitudes de este tipo para el lapso {$añoImpositivo} - {$periodo}");
+	    	}
+
+
+	    	// Se arma el arreglo de mensajes.
+	    	if ( trim($mensajeEstimada) !== '' ) {
+	    		$mensajes[] = $mensajeEstimada;
+	    	}
+
+	    	if ( trim($mensajeIniciar) !== '' ) {
+	    		$mensajes[] = $mensajeIniciar;
+	    	}
+
+	    	return $mensajes;
+	    }
+
+
+
+
+
+	    /**
+	     * Metodo que permite varificar si el rubro ya tiene una solicitud elaborada
+	     * pendiente, o si la cantidad de rubros que tienen solicitud es menor a la
+	     * cantidad de rubros registrados.
+	     * @param array $checkItems arreglo de identificadores de rubros. Los key del
+	     * arreglo son enteros, mientras el valor de los elementos son los identificadores
+	     * de los rubros.
+	     * @param integer $totalRubro entero que indica la candidad de rubros existentes
+	     * en el grid o puede ser la cantidad de rubros existentes en un lapso determinado.
+	     * @param  integer $añoImpositivo año del lapso a consultar.
+	     * @param  integer $periodo periodo del lapso a consultar
+	     * @return array retorna un arreglo de mensajes, dicho arreglo puede retornar
+	     * vacio si todo se valida satisfactoriamente.
+	     */
+	    public function validarSeleccion($checkItems, $totalRubro, $añoImpositivo, $periodo)
+	    {
+	    	// foreach ( $checkItems as $jsonItems ) {
+	    	// 	$checks[] = json_decode($jsonItems, true);
+	    	// }
+
+	    	// Contador de rubros que tenga registrado una solicitud pendiente.
+	    	$countItemConSolicitud = 0;
+	    	$mensajes = [];
+
+	    	if ( count($checkItems) > 0 ) {
+	    		foreach ( $checkItems as $i => $check ) {
+	    			$result = false;
+	    			$result = self::yaPoseeSolicitudSimiliarPendiente($check);
+	    			if ( $result ) {
+	    				$countItemConSolicitud = ++$countItemConSolicitud;
+	    				$model = Rubro::findOne($check);
+	    				$mensajes[] = Yii::t('backend', 'Ya existe una solicitud pendiente para el rubro: ' . $model->descripcion);
+	    			}
+	    		}
+	    	}
+
+	    	// Total de items seleccionados.
+	    	$totalCheck = count($checkItems);
+
+	    	// Se controla que el total de rubros seleccionados no sea igual al total de rubros
+	    	// que presente declarados.
+	    	if ( $totalCheck == $totalRubro ) {
+	    		$mensajes[] = Yii::t('backend', 'No es posible realizar la solicitud, ya que ha seleccionado todos los rubros');
+	    	}
+
+
+	    	// Total de items seleccionados mas los items que ya tienen una solicitud pendiente.
+	    	$total = $totalCheck + $countItemConSolicitud;
+	    	if ( $total >= $totalRubro ) {
+	    		$mensajes[] = Yii::t('backend', "No es posible seleccionar {$totalCheck} rubro(s), ya existe(n) {$countItemConSolicitud} rubro(s) con solicitud(es)");
+	    	}
+
+
+	    	// Se controla que la cantidad de rubros con solicitud mas los rubros seleccionados
+	    	// no supere el numero de rubros registrados menos 1.
+	    	$diferencia = 0;
+	    	$diferencia = $countItemConSolicitud + $totalCheck;
+	    	if ( ( $totalRubro - 1 ) < $diferencia ) {
+	    		$mensajes[] = Yii::t('backend', 'No es posible realizar la solicitud, porque ha superado el limite permitido para este lapso');
+	    	}
+
+	    	return $mensajes;
+
 	    }
 
 	}
