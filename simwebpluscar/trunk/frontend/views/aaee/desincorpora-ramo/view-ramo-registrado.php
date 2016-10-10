@@ -59,6 +59,8 @@
 
     Icon::map($this, $typeIcon);
 
+    $rubro = json_decode($rubroSeleccionado, true);
+
  ?>
 
 
@@ -194,15 +196,23 @@
 									                [
 									                	'class' => 'yii\grid\CheckboxColumn',
 									                	'name' => 'chkRubroSeleccionado',
-									                	// 'checkboxOptions' => [
-							                   //              'id' => 'chkRubroSeleccionado',
+									                	'checkboxOptions' => [
+							                            		'id' => 'chkRubroSeleccionado',
+							                            		//'value' => true,
+							                            		// 'checked' => function($data) {
+							                            		// 		if ( isset($rubro[$data->rubroDetalle->rubro]) ) {
+							                            		// 			return false;
+							                            		// 		} else {
+							                            		// 			return false;
+							                            		// 		}
+							                            		// },
 							                   //              // 'onClick' => 'if ( $(this).is(":checked") ) {
 							                   //              //                 $("#btn-create").removeAttr("disabled");
 							                   //              //               } else {
 							                   //              //                 $("#btn-create").attr("disabled", true);
 							                   //              //               }',
 							                   //              //$(this).is(":checked"), permite determinar si un checkbox esta tildado.
-                        		// 						],
+                        								],
 									                	'multiple' => false,
 									                ],
 									        	]

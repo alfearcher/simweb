@@ -22,13 +22,13 @@
  */
 
  /**
- *  @file _create.php
+ *  @file _view-ramo.php
  *
  *  @author Jose Rafael Perez Teran
  *
  *  @date 27-08-2016
  *
- *  @view create.php
+ *  @view _view-ramo.php
  *  @brief vista.
  *
  */
@@ -38,8 +38,6 @@
 
 	/**
 	*@var $this yii\web\View */
-
-	$this->title = Yii::t('frontend', 'Remove Categories');
 
 	$mensajes = json_decode($errorMensaje, true);
 ?>
@@ -62,15 +60,17 @@
 	<?php } ?>
 </div>
 
-
-
-
-<div class="anexo-ramo-form-create">
-	<?= $this->render('desincorporar-ramo-form', [
+<div class="desincorporar-ramo-seleccion-form">
+	<?= $this->render('view-ramo-registrado', [
 						        'model' => $model,
-						        'findModel' => $findModel,
-						        'listaAño' => $listaAño,
-						        'caption' => $caption,
+								'findModel' => $findModel,
+								'dataProviderRubro' => $dataProviderRubro,
+								'caption' => $caption,
+								'opciones' =>$opciones,
+								'errorChk' => $errorChk,
+								'totalItem' => $totalItem,
+								'chkSeleccion' => $chkSeleccion,
+								'rubroSeleccionado' => $rubroSeleccionado,
 					    ]) ?>
 </div>
 
