@@ -56,6 +56,8 @@
 	use common\models\ordenanza\OrdenanzaBase;
 	use yii\helpers\ArrayHelper;
 	use backend\models\aaee\rubro\Rubro;
+	use backend\models\aaee\anexoramo\AnexoRamoSearch;
+	use backend\models\aaee\desincorporaramo\DesincorporarRamoSearch;
 
 
 
@@ -101,27 +103,90 @@
 
 
 
+
 		/**
-		 * Metodo que permite determinar si el contribuyente ya tiene una solicitud pendiente,
-		 * con el objetivo no repetir la solicitud.
-		 * @return boolean retorna true si ya posee una solicitud con las caracteristicas
-		 * descriptas, caso contrario retornara false.
+		 * Metodo que permite determinar si existe una solicitud similar pendiente
+		 * segun los parametros de consulta.
+		 * @param  integer $añoImpositivo año del lapso a consultar.
+		 * @param  integer $periodo periodo del lapso a consultar.
+		 * @param  integer $tipoDeclaracion tipo de declaracion que se desea
+		 * consultar.
+		 * - tipo 1: estimada.
+		 * - tipo 2: definitiva.
+		 * @return boolean retorna un true si ya existe solicitud similar pendiente, sino
+		 * retorna false.
 		 */
-		public function yaPoseeSolicitudSimiliarPendiente($añoImpositivo, $periodo, $idRubro, $tipoDeclaracion)
+		public function yaPoseeSolicitudSimiliarPendiente($añoImpositivo, $periodo, $tipoDeclaracion)
 		{
-			$modelFind = null;
-			$modelFind = DeclaracionBase::find()->where('id_contribuyente =:id_contribuyente',
-			 													[':id_contribuyente' => $this->_id_contribuyente])
-										  	     ->andWhere('id_impuesto =:id_impuesto',
-										  	      				[':id_impuesto' => $anoImpositivo])
-										  	     ->andWhere('id_rubro =:id_rubro',
-										  	      				[':id_rubro' => $idRubro])
-										  	     ->andWhere('exigibilidad_periodo =:exigibilidad_periodo',
-										  	      				[':exigibilidad_periodo' => $periodo])
-											     ->andWhere(['IN', 'estatus', [0]])
-											     ->count();
-			return ( $modelFind > 0 ) ? true : false;
+			$count = 0;
+			$findModel = self::yaPoseeSolicitud($añoImpositivo, $periodo, $tipoDeclaracion, 0);
+
+			if ( count($findModel) > 0 ) {
+				$count = $findModel->count();
+			}
+
+			return ( $count > 0 ) ? true : false;
 		}
+
+
+
+		/**
+		 * Metodo que permite determinar si existe una solicitud similar aprobada
+		 * segun los parametros de consulta.
+		 * @param  integer $añoImpositivo año del lapso a consultar.
+		 * @param  integer $periodo periodo del lapso a consultar.
+		 * @param  integer $tipoDeclaracion tipo de declaracion que se desea
+		 * consultar.
+		 * - tipo 1: estimada.
+		 * - tipo 2: definitiva.
+		 * @return boolean retorna un true si ya existe solicitud similar aprobada, sino
+		 * retorna false.
+		 */
+		public function yaPoseeSolicitudSimiliarAprobada($añoImpositivo, $periodo, $tipoDeclaracion)
+		{
+			$count = 0;
+			$findModel = self::yaPoseeSolicitud($añoImpositivo, $periodo, $tipoDeclaracion, 1);
+
+			if ( count($findModel) > 0 ) {
+				$count = $findModel->count();
+			}
+
+			return ( $count > 0 ) ? true : false;
+		}
+
+
+
+
+		/**
+		 * Metodo para determinar si existe una solicitud segun los parametros
+		 * de consultas.
+		 * @param  integer $añoImpositivo año del lapso a consultar.
+		 * @param  integer $periodo periodo del lapso a consultar.
+		 * @param  integer $tipoDeclaracion tipo de declaracion que se desea
+		 * consultar.
+		 * - tipo 1: estimada.
+		 * - tipo 2: definitiva.
+		 * @param  integer $estatus condicion del registro.
+		 * @return active record retorna el modelo de la consulta, que esta determinada
+		 * por un array, sino retorna un array vacio.
+		 */
+		private function yaPoseeSolicitud($añoImpositivo, $periodo, $tipoDeclaracion, $estatus)
+		{
+			$findModel = DeclaracionBase::find()->where('id_contribuyente =:id_contribuyente',
+			 													[':id_contribuyente' => $this->_id_contribuyente])
+										  	    ->andWhere('ano_impositivo =:ano_impositivo',
+										  	      				[':ano_impositivo' => $añoImpositivo])
+										  	    ->andWhere('tipo_declaracion =:tipo_declaracion',
+										  	      				[':tipo_declaracion' => $tipoDeclaracion])
+										  	    ->andWhere('exigibilidad_periodo =:exigibilidad_periodo',
+										  	      				[':exigibilidad_periodo' => $periodo])
+											    ->andWhere('estatus =:estatus',
+											     				[':estatus' => $estatus]);
+
+			return ( count($findModel) > 0 ) ? $findModel : [];
+		}
+
+
 
 
 
@@ -407,7 +472,6 @@
 
 
 
-
 	    /**
 	     * Metodo que permite determinar si la carga de la declaracion estimada
 	     * del año actual se puede realizar tomando en consideracion que si
@@ -420,16 +484,13 @@
 	     * @param  integer $añoImpositivo año impositivo del lapso en donde se quiere
 	     * cargar la declaracion estimada.
 	     * @param  integer $periodo periodo del lapso.
-	     * @return array retorna un arreglo donde dicho arreglo contiene dos
-	     * key, uno indica si se puede iniciar la declaracion y el otro es
-	     * un string con un mensaje.
+	     * @return string retorna un string con un mensaje o un string vacio sino
+	     * sucede nada excepcional.
 	     */
 		public function puedoDeclararEstimada($añoImpositivo, $periodo)
 		{
-			$result = [
-				'r' => false,
-				'm' => '',
-			];
+			$result = '';
+
 			$mensaje1 = "Para continuar con la Declaracion Estimada {$añoImpositivo}, debe realizar primero la cargar de la definitiva indicada.";
 			// Año actual
 			$añoActual = date('Y');
@@ -444,10 +505,8 @@
 			if ( $fechaInicio !== null ) {
 				$añoInicio = date('Y', strtotime($fechaInicio));
 				if ( $añoInicio == $añoActual ) {
-					$result = [
-						'r' => true,
-						'm' => 'OK',
-					];
+					$result = '';
+
 				} else {
 					$sumaDefinitiva = 0;
 					// Como la fecha de inicio no corresponde con el año actual, se
@@ -461,28 +520,19 @@
 							$sumaDefinitiva = $sumaDefinitiva + $value;
 						}
 						if ( $sumaDefinitiva > 0 ) {
-							$result = [
-								'r' => true,
-								'm' => 'OK',
-							];
+							$result = '';
+
 						} else {
-							$result = [
-								'r' => false,
-								'm' => Yii::t('frontend', "Los montos de la declaracion definitiva del año {$añoAnterior}, suman cero (0). " . $mensaje1),
-							];
+							$result = Yii::t('frontend', "Los montos de la declaracion definitiva del año {$añoAnterior}, suman cero (0). " . $mensaje1);
+
 						}
 					} else {
-						$result = [
-							'r' => false,
-							'm' => Yii::t('frontend', "La declaracion definitiva del año {$añoAnterior}, no esta definida. " . $mensaje1),
-						];
+						$result = Yii::t('frontend', "La declaracion definitiva del año {$añoAnterior}, no esta definida. " . $mensaje1);
+
 					}
 				}
 			} else {
-				$result = [
-					'r' => false,
-					'm' => Yii::t('frontend', "La fecha de inicio de actividad de la empresa no esta definida."),
-				];
+				$result = Yii::t('frontend', "La fecha de inicio de actividad de la empresa no esta definida.");
 			}
 			return $result;
 		}
@@ -494,32 +544,56 @@
 
 	    /**
 	     * Metodo que retorna una lista arreglo donde el indice del arreglo es el
-	     * identificador de la entidad "act-econ" y el valor del elemento es el
+	     * año impositivo de la entidad "act-econ" y el valor del elemento es el
 	     * año impositivo. Esto permitira crear un combo-lista.
+	     * @param integer $tipoDeclaracion entero que identifica el tipo de declaracion
+	     * que se dese realizar.
 	     * @return array retorna una arreglo, con el siguiente esquema:
 	     * array {
-	     * 		[id-impuesto] => año
+	     * 		[año] => año
 	     * }
 	     */
-	    public function getListaAnoRegistrado()
+	    public function getListaAnoRegistrado($tipoDeclaracion)
 	    {
 	    	$listaAño = [];
 	    	$añoActual = date('Y');
 	    	$añoLimite = Yii::$app->lapso->anoLimiteNotificado();
 
-	    	$findModel = ActEcon::find()->distinct('ano_impositivo')
-	    								->where('id_contribuyente =:id_contribuyente',
-	    	 										['id_contribuyente' => $this->_id_contribuyente])
-	    			  				    ->andWhere('estatus =:estatus', [':estatus' => 0])
-	    			  				    ->andWhere('inactivo =:inactivo', [':inactivo' => 0])
-	    			  				    ->andWhere('bloqueado =:bloqueado', [':bloqueado' => 0])
-	    							    ->andWhere('ano_impositivo =:ano_impositivo',
-	    							    			[':ano_impositivo' => $añoActual])
-	    							    ->joinWith('actividadDetalle', 'INNER JOIN', false)
-	    							    ->orderBy([
-	    							   		'ano_impositivo' => SORT_ASC,
-	    							   	])
-	    							    ->all();
+	    	if ( $tipoDeclaracion == 1 ) {		// Estimada
+
+		    	$findModel = ActEcon::find()->distinct('ano_impositivo')
+		    								->where('id_contribuyente =:id_contribuyente',
+		    	 										['id_contribuyente' => $this->_id_contribuyente])
+		    			  				    ->andWhere('estatus =:estatus', [':estatus' => 0])
+		    			  				    ->andWhere('inactivo =:inactivo', [':inactivo' => 0])
+		    			  				    ->andWhere('bloqueado =:bloqueado', [':bloqueado' => 0])
+		    							    ->andWhere('ano_impositivo =:ano_impositivo',
+		    							    			[':ano_impositivo' => $añoActual])
+		    							    ->joinWith('actividadDetalle', 'INNER JOIN', false)
+		    							    ->orderBy([
+		    							   		'ano_impositivo' => SORT_ASC,
+		    							   	])
+		    							    ->all();
+
+		    } elseif ( $tipoDeclaracion == 2 ) {	// Definitiva
+
+		    	$findModel = ActEcon::find()->distinct('ano_impositivo')
+		    								->where('id_contribuyente =:id_contribuyente',
+		    	 										['id_contribuyente' => $this->_id_contribuyente])
+		    			  				    ->andWhere('estatus =:estatus', [':estatus' => 0])
+		    			  				    ->andWhere('inactivo =:inactivo', [':inactivo' => 0])
+		    			  				    ->andWhere('bloqueado =:bloqueado', [':bloqueado' => 0])
+		    							    ->andWhere(['BETWEEN', 'ano_impositivo', $añoLimite, $añoActual - 1])
+		    							    ->joinWith('actividadDetalle', 'INNER JOIN', false)
+		    							    ->orderBy([
+		    							   		'ano_impositivo' => SORT_ASC,
+		    							   	])
+		    							    ->all();
+
+		    } elseif ( $tipoDeclaracion == 3 ) {
+
+
+		    }
 
 	    	if ( count($findModel) > 0 ) {
 	    		$listaAño = ArrayHelper::map($findModel, 'ano_impositivo', 'ano_impositivo');
@@ -818,7 +892,6 @@
 	     * la consulta realizada filtra y solo retorna el identificador, en caso contrario
 	     * retorna null.
 	     * @param  integer $añoImpositivo año fiscal consultado.
-	     * @param  integer $estatus condicion del registro.
 	     * @return long retorna el identificador de la entidad segun la consulta realizada.
 	     * En caso contrario retorna null.
 	     */
@@ -832,5 +905,160 @@
 	    		return isset($result->id_impuesto) ? $result->id_impuesto : null;
 	    	}
 	    }
+
+
+
+	    /**
+	     * Metodo que permite determinar si existe una solicitud pendiente del tipo:
+	     * 1- Desincorporacion de Ramo.
+	     * 2- Anexo de Ramo.
+	     * Si existe algunas de estas solicitudes pendientes, no se podra permitir
+	     * la creacion de una solicitud para declarar. La solicitud debe ser del año
+	     * periodo considerado.
+	     * @param  integer $añoImpositivo año del lapso que se desea declrar.
+	     * @param  integer $periodo periodo del lapso que se desea declarar.
+	     * @return array retorna un arreglo, donde el indice es un integer y el valor
+	     * del elemento es un string. El string sera un mensaje indicando la solicitud
+	     * pendiente. Sino encuentra nada el arreglo sera vacio, es decir count() = 0.
+	     */
+	    public function getOtraSolicitudPendiente($añoImpositivo, $periodo)
+	    {
+	    	$arregloMsjs = [];
+
+	    	// Se buscan las solicitudes por anexo de ramos que esten pendiente.
+	    	$anexoSearch = New AnexoRamoSearch($this->_id_contribuyente);
+	    	$anexoSolicitud = $anexoSearch->findSolicitudAnexoRamoSegunLapso($añoImpositivo, $periodo);
+
+	    	$modelAnexo = $anexoSolicitud->joinWith('rubro', 'INNER JOIN')
+	    	                             ->all();
+
+	    	if ( count($modelAnexo) > 0 ) {
+	    		$arregloMsjs[] = self::getMensaje($modelAnexo);
+	    	}
+
+	    	// Se buscan las solicitudes por desincorporacion de ramos que esten pendiente.
+	    	$desincorporarSearch = New DesincorporarRamoSearch($this->_id_contribuyente);
+	    	$desincorporarSolicitud = $desincorporarSearch->findSolicitudDesincorporarRamoSegunLapso($añoImpositivo, $periodo);
+
+	    	$modelDesincorporar = $desincorporarSolicitud->joinWith('rubro', 'INNER JOIN')
+	    	                                             ->all();
+
+	    	if ( count($modelDesincorporar) > 0 ) {
+	    		$arregloMsjs[] = self::getMensaje($modelDesincorporar);
+	    	}
+
+	    	return $arregloMsjs;
+
+	    }
+
+
+
+	    /**
+	     * Metodo que permite realizar un resumen de la solicitud y su detalles.
+	     * @param model $model modelo de la entidad "sl" que posee el detalle
+	     * de la solicitud.
+	     * @return array retorna un arreglo que indica en su key un integer y el
+	     * valor del elemento es otro arraglo que posee tres elementos:
+	     * - Numero de Solicitud.
+	     * - Descripcion del tipo de solicitud.
+	     * - Descripcion del detalle del tipo de solicitud. En este caso muestra es
+	     * la descripcion del ramo.
+	     */
+	    private function getMensaje($model)
+	    {
+	    	$mensaje = '';
+	    	$result = [];
+	    	if ( count($model) > 0 ) {
+	    		foreach ( $model as $mod ) {
+	    			$mensaje = '';
+	    			$mensaje = isset($mod['nro_solicitud']) ? 'Solicitud Pendiente: ' . $mod['nro_solicitud'] : '';
+	    			$mensaje = $mensaje . ' - ' . $mod->getDescripcionTipoSolicitud($mod['nro_solicitud']);
+	    			$mensaje = isset($mod['rubro']['descripcion']) ? $mensaje . ' - ' . $mod['rubro']['descripcion'] : $mensaje;
+		    		$result[] = $mensaje;
+		    	}
+	    	}
+	    	return $result;
+	    }
+
+
+
+
+	    /**
+	     * Metodo que permite validar la logica del negocio que se aplicara para
+	     * la solicitud de declaracion estimada. Si no se cumple algunas de las
+	     * consideraciones que se tienen para esta solicitud, el metodo asigna un
+	     * mensaje en un arreglo. Cada consideracion generara un mensaje sino se
+	     * cumple.
+	     * @param  integer $añoImpositivo año del lapso a consultar.
+		 * @param  integer $periodo periodo del lapso a consultar.
+		 * @param  integer $tipoDeclaracion tipo de declaracion que se desea
+		 * consultar.
+		 * - tipo 1: estimada.
+		 * - tipo 2: definitiva.
+	     * @return array retorna un arreglo de mensajes o en su defecto un arreglo
+	     * vacio si todo resulta satisfactoriamente.
+	     */
+	    public function validarEvento($añoImpositivo, $periodo, $tipoDeclaracion)
+	    {
+	    	$mensajes = [];
+
+	    	$solicitud = '';
+	    	$declaracion = '';
+	    	$mensajePendiente = '';
+	    	$mensajeAprobada = '';
+
+	    	// Se determina si existen otras solicitudes que no permitan la creacion
+	    	// de la solicitud de declaracion estimada. Lo siguiente debe retornar
+	    	// un arreglo de mensajes o un arreglo vacio.
+	    	$solicitud = self::getOtraSolicitudPendiente($añoImpositivo, $periodo);
+
+	    	if ( $tipoDeclaracion == 1 ) {			// Estimada
+
+		    	// Se controla si existe la definitiva del periodo anterior, solo aplica
+		    	// para los contribuyentes que su año de inicio es anterior al actual.
+		    	// Lo siguiente debe retornar un mensaje o un string vacio.
+		    	$declaracion = self::puedoDeclararEstimada($añoImpositivo, $periodo);
+
+		    } elseif ( $tipoDeclaracion == 2 ) {	// Definitiva
+
+
+		    } elseif ( $tipoDeclaracion == 3 ) {
+
+		    }
+	    	// Lo siguiente controla si existe una solicitud similar pendiente o
+	    	// aprobada. Retorna un boolean que indica.
+	    	$pendiente = self::yaPoseeSolicitudSimiliarPendiente($añoImpositivo, $periodo, $tipoDeclaracion);
+	    	if ( $pendiente ) {
+	    		$mensajePendiente = Yii::t('backend', "Existe solicitud similar pendiente para el lapso {$añoImpositivo} - {$periodo}");
+	    	}
+
+	    	$aprobada = self::yaPoseeSolicitudSimiliarAprobada($añoImpositivo, $periodo, $tipoDeclaracion);
+	    	if ( $aprobada ) {
+	    		$mensajeAprobada = Yii::t('backend', "Existe solicitud similar aprobada para el lapso {$añoImpositivo} - {$periodo}");
+	    	}
+
+
+	    	// Se arma todo el arreglo de mensajes.
+	    	if ( count($solicitud) > 0 ) {
+	    		$mensajes[] = $solicitud;
+	    	}
+
+	    	if ( trim($declaracion) !== '' ) {
+	    		$mensajes[] = $declaracion;
+	    	}
+
+	    	if ( trim($mensajePendiente) !== '' ) {
+	    		$mensajes[] = $mensajePendiente;
+	    	}
+
+	    	if ( trim($mensajeAprobada) !== '' ) {
+	    		$mensajes[] = $mensajeAprobada;
+	    	}
+
+	    	return $mensajes;
+
+	    }
+
+
 	}
  ?>

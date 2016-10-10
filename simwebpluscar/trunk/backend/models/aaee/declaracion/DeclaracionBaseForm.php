@@ -74,6 +74,21 @@
 		public $estatus;
 		public $fecha_hora_proceso;
 		public $user_funcionario;
+		public $islr;
+		public $pp_industria;
+		public $pagos_retencion;
+		public $iva_enero;
+		public $iva_febrero;
+		public $iva_marzo;
+		public $iva_abril;
+		public $iva_mayo;
+		public $iva_junio;
+		public $iva_julio;
+		public $iva_agosto;
+		public $iva_septiembre;
+		public $iva_octubre;
+		public $iva_noviembre;
+		public $iva_diciembre;
 
 		public $rubro;
 		public $descripcion;
@@ -110,6 +125,21 @@
 	        					'fecha_hora',
 	        					'usuario',
 	        					'estatus',
+	        					'iva_enero',
+	        					'iva_febrero',
+	        					'iva_marzo',
+	        					'iva_abril',
+	        					'iva_mayo',
+	        					'iva_junio',
+	        					'iva_julio',
+	        					'iva_agosto',
+	        					'iva_septiembre',
+	        					'iva_octubre',
+	        					'iva_noviembre',
+	        					'iva_diciembre',
+	        					'islr',
+	        					'pp_industria',
+	        					'pagos_retencion',
 
 	        		],
         		self::SCENARIO_DEFINITIVA => [
@@ -131,6 +161,21 @@
 	        					'fecha_hora',
 	        					'usuario',
 	        					'estatus',
+	        					'iva_enero',
+	        					'iva_febrero',
+	        					'iva_marzo',
+	        					'iva_abril',
+	        					'iva_mayo',
+	        					'iva_junio',
+	        					'iva_julio',
+	        					'iva_agosto',
+	        					'iva_septiembre',
+	        					'iva_octubre',
+	        					'iva_noviembre',
+	        					'iva_diciembre',
+	        					'islr',
+	        					'pp_industria',
+	        					'pagos_retencion',
 
         		],
         		self::SCENARIO_SEARCH => [
@@ -151,9 +196,14 @@
 	    {
 	        return [
 	        	[['id_contribuyente', 'monto_minimo',
-	        	  'monto_new', 'id_rubro',
+	        	  'monto_new', 'id_rubro', 'tipo_declaracion',
 	        	  'rubro', 'descripcion'],
 	        	  'required', 'on' => 'estimada',
+	        	  'message' => Yii::t('frontend', '{attribute} is required')],
+	        	[['id_contribuyente',
+	        	  'monto_new', 'id_rubro', 'tipo_declaracion',
+	        	  'rubro', 'descripcion'],
+	        	  'required', 'on' => 'definitiva',
 	        	  'message' => Yii::t('frontend', '{attribute} is required')],
 	        	[['id_contribuyente', 'ano_impositivo', 'exigibilidad_periodo'],
 	        	  'required', 'on' => 'search',
@@ -166,14 +216,26 @@
 	          	['monto_minimo', 'default', 'value' => 0],
 	          	['monto_v', 'default', 'value' => 0],
 	          	['monto_new', 'default', 'value' => 0],
+	          	[['islr', 'pp_industria', 'pagos_retencion',
+	          	  'iva_enero', 'iva_febrero', 'iva_marzo',
+	          	  'iva_abril', 'iva_mayo', 'iva_abril',
+	          	  'iva_junio', 'iva_julio', 'iva_agosto',
+	          	  'iva_septiembre', 'iva_octubre', 'iva_noviembre', 'iva_diciembre'],
+	          	  'default', 'value' => 0],
 	          	['fecha_hora', 'default', 'value' => date('Y-m-d H:i:s')],
 	          	['monto_new',
     			 'compare',
     			 'compareAttribute' => 'monto_minimo',
-    			 'operator' => '>=',
+    			 'operator' => '>=', 'on' => 'estimada',
+    			 'message' => Yii::t('backend', '{attribute} must be no less that ' . self::attributeLabels()['monto_minimo'])],
+    			 ['monto_new',
+    			 'compare',
+    			 'compareAttribute' => 'monto_minimo',
+    			 'operator' => '>=', 'on' => 'definitiva',
     			 'message' => Yii::t('backend', '{attribute} must be no less that ' . self::attributeLabels()['monto_minimo'])],
     			[['monto_new', 'monto_v', 'monto_minimo'],
     			  'double', 'message' => Yii::t('backend', '{attribute} must be decimal.')],
+    			['monto_new', 'compare', 'compareValue' => 0, 'operator' => '>='],
 
 	        ];
 	    }
@@ -194,7 +256,21 @@
 	            'monto_new' => Yii::t('frontend', 'Monto Declaracion'),
 	            'rubro' => Yii::t('frontend', 'Category'),
 	            'id_rubro' => Yii::t('frontend', 'Id.'),
-
+	            'islr' => Yii::t('frontend', 'ISLR'),
+	            'pp_industria' => Yii::t('frontend', 'Pago por Industria'),
+	            'pagos_retencion' => Yii::t('frontend', 'Pago por Retencion'),
+	            'iva_enero' => Yii::t('frontend', 'iva enero'),
+	            'iva_febrero' => Yii::t('frontend', 'iva febrero'),
+	            'iva_marzo' => Yii::t('frontend', 'iva marzo'),
+	            'iva_abril' => Yii::t('frontend', 'iva abril'),
+	            'iva_mayo' => Yii::t('frontend', 'iva mayo'),
+	            'iva_junio' => Yii::t('frontend', 'iva junio'),
+	            'iva_julio' => Yii::t('frontend', 'iva julio'),
+	            'iva_agosto' => Yii::t('frontend', 'iva agosto'),
+	            'iva_septiembre' => Yii::t('frontend', 'iva septiembre'),
+	            'iva_octubre' => Yii::t('frontend', 'iva octubre'),
+	            'iva_noviembre' => Yii::t('frontend', 'iva noviembre'),
+	            'iva_diciembre' => Yii::t('frontend', 'iva diciembre'),
 	        ];
 	    }
 
