@@ -40,12 +40,23 @@
 	/**
 	*@var $this yii\web\View */
 
-	?>
+	$mensajes = json_decode($errorMensaje, true);
+
+?>
 <div class="error-mensaje">
-	<?php if( trim($errorMensaje) !== '' ) {?>
+	<?php if( is_array($mensajes) ) {?>
 		<div class="well well-sm" style="color: red;padding-left: 35px;">
-			<h3><b><?=Html::encode($errorMensaje) ?></b></h3>
+			<p><strong>
+				<?= $this->render('warnings',[
+								'mensajes' => $mensajes,
+					]);
+				?>
+			</p></strong>
 		</div>
+	<?php } elseif ( trim($errorMensaje) !== '' ) { ?>
+			<div class="well well-sm" style="color: red;padding-left: 35px;">
+				<h4><b><?=Html::encode($errorMensaje) ?></b></h4>
+			</div>
 	<?php } ?>
 </div>
 
@@ -59,7 +70,7 @@
 								        			'url' =>$url,
 													'rutaLista' => $rutaLista,
 													'searchDeclaracion' => $searchDeclaracion,
-													'errorMensaje' => $errorMensaje,
+													//'errorMensaje' => $errorMensaje,
 					    ]) ?>
 </div>
 
