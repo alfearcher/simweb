@@ -62,12 +62,17 @@ use common\models\presupuesto\codigopresupuesto\CodigosContables;
 class RegistrarCodigoPresupuestarioForm extends Model
 {
 
-
+    public $id_impuesto;
+    public $id_codigo;
+    public $impuesto;
+    public $ano_impositivo;
+    public $grupo_subnivel
     public $codigo;
     public $descripcion;
     public $nivel_contable;
     public $monto;
     public $codigo_contable;
+
 
     
    
