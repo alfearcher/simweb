@@ -129,7 +129,7 @@ use backend\models\impuesto\Impuesto;
 
                             <div class="col-sm-2">
                                     <?= $form->field($model, 'porcentaje_inicial')->textInput()->label(false) ?>
-                            </div>     
+                            </div>      
                     </div>
                     <div class="row" style="margin-left:20px;">
 

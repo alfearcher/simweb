@@ -427,7 +427,7 @@
 			} 
 
 			return false;
-		}   
+		}    
 
 		// tipo solicitud 67
 		private function actionMostrarSolicitudCambioPropietarioCompradorInmueble()
