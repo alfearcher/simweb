@@ -25,10 +25,10 @@
  *
  *	@author Jose Rafael Perez Teran
  *
- *	@date 06-09-2016
+ *	@date 10-10-2016
  *
- *  @class DeclaracionEstimadaController
- *	@brief Clase DeclaracionEstimadaController del lado del contribuyente frontend.
+ *  @class DeclaracionDefinitivaController
+ *	@brief Clase DeclaracionDefinitivaController del lado del contribuyente frontend.
  *
  *
  *	@property
@@ -74,13 +74,11 @@
 
 	/**
 	 * Clase principal que controla la creacion de solicitudes de Declaraciones
-	 * Solicitud que se realizara del lado del contribuyente (frontend). Se mostrara una vista
-	 * previa de la solicitud realizada por el contribuyente y se le indicara al contribuyente
-	 * que confirme la operacion o retorne a la vista inicial donde cargo la informacion para su
-	 * ajuste. Cuando el contribuyente confirme su intencion de crear la solicitud, es cuando
-	 * se guardara en base de datos.
+	 * Solicitud. Se le mostrara los años que puede declarar la definitiva en
+	 * orden cronologico. Se controlara la existencia de solicitudes similares
+	 * pendientes y aprobadas.
 	 */
-	class DeclaracionEstimadaController extends Controller
+	class DeclaracionDefinitivaController extends Controller
 	{
 		public $layout = 'layout-main';				//	Layout principal del formulario
 
@@ -88,14 +86,14 @@
 		private $_conexion;
 		private $_transaccion;
 
-		const SCENARIO_ESTIMADA = 'estimada';
+		const SCENARIO_DEFINITIVA = 'definitiva';
 		const SCENARIO_SEARCH = 'search';
 
 		/**
 		 * Identificador de  configuracion d ela solicitud. Se crea cuando se
 		 * configura la solicitud que gestiona esta clase.
 		 */
-		const CONFIG = 108;	// Estimada
+		const CONFIG = 110;	// Definitiva
 
 
 		/**
@@ -214,7 +212,7 @@
 				$formName = $model->formName();
 				$model->scenario = self::SCENARIO_SEARCH;
 
-				$caption = Yii::t('frontend', 'Presentation Estimated Tax');
+				$caption = Yii::t('frontend', 'Declaracion Definitiva');
 				$subCaption = Yii::t('frontend', 'Select Fiscal Period');
 
 		      	// Datos generales del contribuyente.
@@ -236,7 +234,7 @@
 						if ( $model->load($postData) ) {
 			    			if ( $model->validate() ) {
 
-			    				$msjControls = $searchDeclaracion->validarEvento($model->ano_impositivo, $model->exigibilidad_periodo, 1);
+			    				//$msjControls = $searchDeclaracion->validarEvento($model->ano_impositivo, $model->exigibilidad_periodo, 2);
 
 		    					if ( count($msjControls) == 0 ) {
 				   					$_SESSION['lapso'] = [
@@ -259,22 +257,22 @@
 
 		  		if ( isset($findModel) ) {
 					// Se busca la lista de años que se mostraran en al combo de años.
-					// Solo se considerara el año actual para la declaracion estimada.
-					$listaAño = $searchDeclaracion->getListaAnoRegistrado(1);
+					// Solo se considerara los año anteriores al actual para la declaracion definitiva.
+					$listaAño = $searchDeclaracion->getListaAnoRegistrado(2);
 					if ( count($listaAño) == 0 ) {
 						$errorListaAño = Yii::t('frontend', 'No se encontraron RUBROS AUTORIZADOS cargados ');
 						$errorMensaje = ( trim($errorMensaje) !== '' ) ? $errorMensaje = $errorMensaje . '. ' . $errorListaAño : $errorListaAño;
 					}
 					$url = Url::to(['index-create']);
-					$rutaLista = "/aaee/declaracion/declaracion-estimada/lista-periodo";
-					return $this->render('/aaee/declaracion/estimada/_create',
+					$rutaLista = "/aaee/declaracion/declaracion-definitiva/lista-periodo";
+					return $this->render('/aaee/declaracion/definitiva/_create',
 																[
 																	'model' => $model,
 																	'caption' => $caption,
 																	'subCaption' => $subCaption,
 																	'findModel' => $findModel,
 																	'listaAño' => $listaAño,
-																	'url' =>$url,
+																	'url' => $url,
 																	'rutaLista' => $rutaLista,
 																	'searchDeclaracion' => $searchDeclaracion,
 																	'errorMensaje' => $errorMensaje,
@@ -286,45 +284,6 @@
 		  		}
 			}
 		}
-
-
-
-
-
-		/**
-		 * Metodo que determina si la declaracion estimada se puede realizar
-		 * segun las politicas del negocio establecidas en el modelo.
-		 * @param  integer $añoImpositivo año impositivo del lapso en donde se quiere
-	     * cargar la declaracion estimada.
-	     * @param  integer $periodo periodo del lapso.
-		 * @return array retorna un arreglo donde dicho arreglo contiene dos
-	     * key, uno indica si se puede iniciar la declaracion y el otro es
-	     * un string con un mensaje.
-		 */
-		// public function actionPuedeDeclararEstimada($idContribuyente, $añoImpositivo, $periodo)
-		// {
-		// 	$result = '';
-		// 	$declaracionEstimada = New DeclaracionBaseSearch($idContribuyente);
-		// 	$result = $declaracionEstimada->puedoDeclararEstimada($añoImpositivo, $periodo);
-
-		// 	return ( trim($result) !== '' ) ? $result : null;
-		// }
-
-
-
-		/***/
-		// public function actionPoseeSolicitud($idContribuyente, $añoImpositivo, $periodo)
-		// {
-		// 	$mensaje = '';
-		// 	$declaracionEstimada = New DeclaracionBaseSearch($idContribuyente);
-		// 	$result = $declaracionEstimada->yaPoseeSolicitudSimiliarPendiente($añoImpositivo, $periodo, 1, 0);
-		// 	if ( $result ) {
-		// 		$mensaje = Yii::t('frontend', "Ya existe una solciitud similar para el lapso {$$añoImpositivo} - {$periodo}");
-		// 	}
-
-		// 	return $mensaje;
-		// }
-
 
 
 
@@ -360,7 +319,7 @@
 					// registrado el contribuyente.
 					$modelMultiplex = [New DeclaracionBaseForm()];
 
-					$caption = Yii::t('frontend', 'Presentation Estimated Tax');
+					$caption = Yii::t('frontend', 'Declaracion Definitiva');
 					$formName = $modelMultiplex[0]->formName();
 
 					// Se obtienen solo los campos.
@@ -371,7 +330,7 @@
 					if ( $count > 0 ) {
 						foreach ( $datos as $key => $value ) {
 							$modelMultiplex[$key] = New DeclaracionBaseForm();
-							$modelMultiplex[$key]->scenario = self::SCENARIO_ESTIMADA;
+							$modelMultiplex[$key]->scenario = self::SCENARIO_DEFINITIVA;
 						}
 						Model::loadMultiple($modelMultiplex, $postData);
 						$result = Model::validateMultiple($modelMultiplex);
@@ -392,11 +351,11 @@
 							$this->redirect(['index-create']);
 						} elseif ( $postData['btn-back-form'] == 9 ) {
 							$opciones = [
-									'back' => '/aaee/declaracion/declaracion-estimada/index-create',
+									'back' => '/aaee/declaracion/declaracion-definitiva/index-create',
 							];
 							$caption = $caption . '. ' . Yii::t('frontend', 'Categories Registered') . ' ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo;
 							$subCaption = Yii::t('frontend', 'Categories Registers ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
-							return $this->render('/aaee/declaracion/estimada/declaracion-estimada-form', [
+							return $this->render('/aaee/declaracion/definitiva/declaracion-definitiva-form', [
 		  																	'model' => $modelMultiplex,
 		  																	'findModel' => $findModel,
 		  																	'btnSearchCategory' => $btnSearchCategory,
@@ -410,15 +369,16 @@
 						}
 					} elseif( isset($postData['btn-create']) ) {
 						if ( $postData['btn-create'] == 3 ) {
+//die(var_dump($postData));
 							if ( $result ) {
 								// Presentar preview.
 								$opciones = [
-									'back' => '/aaee/declaracion/declaracion-estimada/index-create',
+									'back' => '/aaee/declaracion/declaracion-definitiva/index-create',
 								];
 								$caption = Yii::t('frontend', 'Confirm') . ' ' . $caption . '. ' . Yii::t('frontend', 'Pre View');
 								$subCaption = Yii::t('frontend', 'Categories Registers ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
 
-								return $this->render('/aaee/declaracion/estimada/pre-view-create', [
+								return $this->render('/aaee/declaracion/definitiva/pre-view-create', [
 																	'model' => $modelMultiplex,
 																	'findModel' => $findModel,
 																	'caption' => $caption,
@@ -428,11 +388,11 @@
 
 							} else {
 								$opciones = [
-									'back' => '/aaee/declaracion/declaracion-estimada/index-create',
+									'back' => '/aaee/declaracion/declaracion-definitiva/index-create',
 								];
 								$caption = $caption . '. ' . Yii::t('frontend', 'Categories Registered') . ' ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo;
 								$subCaption = Yii::t('frontend', 'Categories Registers ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
-								return $this->render('/aaee/declaracion/estimada/declaracion-estimada-form', [
+								return $this->render('/aaee/declaracion/definitiva/declaracion-definitiva-form', [
 			  																	'model' => $modelMultiplex,
 			  																	'findModel' => $findModel,
 			  																	'btnSearchCategory' => $btnSearchCategory,
@@ -465,10 +425,6 @@
 						$periodo = (int)$lapso['p'];
 						$subCaption = Yii::t('frontend', 'Categories Registers ' . $añoImpositivo . ' - ' . $periodo);
 
-						// Lo siguiente obtiene una declracion de la definitiva del año anterior.
-						// [ramo] => monto estimada
-						$declaracionDefinitiva = $searchDeclaracion->getDefinitivaAnterior($añoImpositivo-1, $periodo);
-
 						$rubroRegistradoModels = $searchDeclaracion->findRubrosRegistrados($añoImpositivo, $periodo)->all();
 
 						foreach ( $rubroRegistradoModels as $i => $rubroModel ) {
@@ -482,32 +438,45 @@
 							$modelMultiplex[$i]['fecha_inicio'] = $findModel->fecha_inicio;
 							$modelMultiplex[$i]['periodo_fiscal_desde'] = $rubroModel->periodo_fiscal_desde;
 							$modelMultiplex[$i]['periodo_fiscal_hasta'] = $rubroModel->periodo_fiscal_hasta;
-							$modelMultiplex[$i]['tipo_declaracion'] = 1;
+							$modelMultiplex[$i]['tipo_declaracion'] = 2;
 							$modelMultiplex[$i]['rubro'] = $rubroModel->rubroDetalle->rubro;
 							$modelMultiplex[$i]['descripcion'] = $rubroModel->rubroDetalle->descripcion;
 							$modelMultiplex[$i]['monto_new'] = 0;
-							$modelMultiplex[$i]['monto_v'] = $rubroModel->estimado;
+							$modelMultiplex[$i]['monto_v'] = $rubroModel->reales;
 							$modelMultiplex[$i]['monto_minimo'] = $monto;
 							$modelMultiplex[$i]['usuario'] = isset(Yii::$app->user->identity->login) ? Yii::$app->user->identity->login : null;
 							$modelMultiplex[$i]['fecha_hora'] = date('Y-m-d H:i:s');
 							$modelMultiplex[$i]['origen'] = 'WEB';
 							$modelMultiplex[$i]['estatus'] = 0;
+							$modelMultiplex[$i]['iva_enero'] = 0;
+							$modelMultiplex[$i]['iva_febrero'] = 0;
+							$modelMultiplex[$i]['iva_marzo'] = 0;
+							$modelMultiplex[$i]['iva_abril'] = 0;
+							$modelMultiplex[$i]['iva_mayo'] = 0;
+							$modelMultiplex[$i]['iva_junio'] = 0;
+							$modelMultiplex[$i]['iva_julio'] = 0;
+							$modelMultiplex[$i]['iva_agosto'] = 0;
+							$modelMultiplex[$i]['iva_septiembre'] = 0;
+							$modelMultiplex[$i]['iva_octubre'] = 0;
+							$modelMultiplex[$i]['iva_noviembre'] = 0;
+							$modelMultiplex[$i]['iva_diciembre'] = 0;
+							$modelMultiplex[$i]['islr'] = 0;
+							$modelMultiplex[$i]['pp_industria'] = 0;
+							$modelMultiplex[$i]['pagos_retencion'] = 0;
 
 						}
 
 						$opciones = [
-							'back' => '/aaee/declaracion/declaracion-estimada/index-create',
+							'back' => '/aaee/declaracion/declaracion-definitiva/index-create',
 						];
 						$caption = $caption . '. ' . Yii::t('frontend', 'Categories Registered') . ' ' . $añoImpositivo . ' - ' . $periodo;
-						return $this->render('/aaee/declaracion/estimada/declaracion-estimada-form', [
+						return $this->render('/aaee/declaracion/definitiva/declaracion-definitiva-form', [
 	  																	'model' => $modelMultiplex,
 	  																	'findModel' => $findModel,
 	  																	'btnSearchCategory' => $btnSearchCategory,
 	  																	'caption' => $caption,
 	  																	'opciones' =>$opciones,
 	  																	'subCaption' => $subCaption,
-
-
 
 			  					]);
 
