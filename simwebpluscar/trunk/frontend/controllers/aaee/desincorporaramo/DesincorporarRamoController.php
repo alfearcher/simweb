@@ -194,6 +194,7 @@
 			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) && isset($_SESSION['conf'])) {
 
 				$errorMensaje = '';
+				$msjControls = '';
 				self::actionAnularSession(['postSearch']);
 				$btnSearchCategory = 0;			// Indica se se activa o no.
 				$idContribuyente = $_SESSION['idContribuyente'];
@@ -219,23 +220,19 @@
 
 				if ( isset($postData['btn-accept']) ) {
 					if ( $postData['btn-accept'] == 1 ) {
-						//$model->scenario = self::SCENARIO_SEARCH;
-						//$model->load($postData);
 
 						if ( $model->load($postData) ) {
 			    			if ( $model->validate() ) {
 
-			    				$result = false;
-			    				$result = $searchRamo->puedoIniciarOtraSolicitud($model->ano_impositivo, $model->periodo);
-// die(var_dump($result));
-			    				if ( $result ) {
+			    				$msjControls = $searchRamo->validarEvento($model->ano_impositivo, $model->periodo);
+
+			    				if ( count($msjControls) == 0 ) {
 			    					$_SESSION['postSearch'] = $postData;
 			    					return $this->redirect(['rubro-registrados']);
 
 			    				} else {
-			    					$errorMensaje = Yii::t('frontend', "No es posible realizar solicitudes de este tipo para el lapso {$model->ano_impositivo} - {$model->periodo}");
+			    					$errorMensaje = json_encode($msjControls);
 			    				}
-
 							}
 						}
 					}
@@ -288,6 +285,12 @@
 					$postData = $postSearch;
 				}
 
+				$msjControls = [];
+				$errorMensaje = '';
+				$chkSeleccion = [];
+				$chkItems = [];
+				$rubroJson = '';
+				$rubroSeleccionado = '';
 
 				$model = New DesincorporarRamoForm();
 				$formName = $model->formName();
@@ -304,6 +307,21 @@
 				if ( isset($postData['btn-back-form']) ) {
 					if ( $postData['btn-back-form'] == 1 ) {
 						return $this->redirect(['index-create']);
+
+					} elseif ( $postData['btn-back-form'] == 9 ) {
+						if ( isset($postData['chkRubroSeleccionado']) ) {
+							$chkRubros = $postData['chkRubroSeleccionado'];
+							foreach ( $chkRubros as $jsonRubro ) {
+								$rubroJson[] = json_decode($jsonRubro);
+							}
+
+							// El arreglo de objetos json $rubroJson se obtiene
+							foreach ( $rubroJson as $rubro ) {
+								$items[$rubro->{'id_rubro'}] = $rubro->{'id_rubro'};
+							}
+
+							$rubroSeleccionado = json_encode($items);
+						}
 					}
 				} elseif ( isset($postData['btn-quit']) ) {
 					if ( $postData['btn-quit'] == 1 ) {
@@ -315,11 +333,27 @@
 						$model->scenario = self::SCENARIO_FRONTEND;
 						$model->load($postData);
 						if ( isset($postData['chkRubroSeleccionado']) ) {
+							$añoImpositivo = $model->ano_impositivo;
+							$periodo = $model->periodo;
 
 							// Lo siguiente es una estructura json. Por no tener un atributo
 							// clave se envia una convinacion de atributos que representan
 							// la clave de la entidad.
 							$chkSeleccion = $postData['chkRubroSeleccionado'];
+							if ( count($chkSeleccion) > 0 ) {
+								foreach ( $chkSeleccion as $key => $value ) {
+									$chkItems[] = json_decode($value, true);
+								}
+							}
+
+							$itemsRubro = [];
+							if ( count($chkItems) ) {
+								foreach ( $chkItems as $key => $value ) {
+									$itemsRubro[] = $value['id_rubro'];
+								}
+							}
+
+//die(var_dump($rubroJson));
 
 							// Total de item seleccionado.
 							$totalChk = (int)count($postData['chkRubroSeleccionado']);
@@ -327,14 +361,9 @@
 							// Total de item en el grid.
 							$totalItem = $postData[$formName]['totalItem'];
 
-							// Diferencia entre lo selccionado y el total de items que se pueden
-							// seleccionar. Se valida que el total de items seleccionado no sea
-							// mayor al total de items existentes, ademas que la diferencia no sea
-							// igual a cero (0). Es decir no se puede seleccionar todos los items
-							// del grid.
-							$diferencia = $totalItem - $totalChk;
-							if ( $diferencia > 0 ) {
-								// Se muestra pre-view.
+							$msjControls = $searchRamo->validarSeleccion($itemsRubro, $totalItem, $añoImpositivo, $periodo);
+
+							if ( count($msjControls) == 0 ) {
 					      		$dataProviderRubroRemove = $searchRamo->getDataProviderRubroDesincorporar($model->ano_impositivo,
 					      																				  $model->periodo,
 					      																				  $chkSeleccion);
@@ -342,11 +371,13 @@
 			      											'model' => $model,
 			      											'dataProvider' => $dataProviderRubroRemove,
 			      				]);
-							} else {
-								$errorChk = Yii::t('frontend', 'Selected not valid');
-							}
+			      			} else {
+			      				$errorMensaje = json_encode($msjControls);
+			      			}
 
 						} else {
+							$msjControls[] = Yii::t('frontend', 'Dont exist select');
+							$errorMensaje = json_encode($msjControls);
 							$errorChk = Yii::t('frontend', 'Dont exist select');
 						}
 					}
@@ -401,7 +432,7 @@
 						'back' => '/aaee/desincorporaramo/desincorporar-ramo/index-create',
 					];
 					$caption = $caption . '. ' . Yii::t('frontend', 'Categories Registered') . ' ' . $model->ano_impositivo . ' - ' . $model->periodo;
-					return $this->render('/aaee/desincorpora-ramo/view-ramo-registrado', [
+					return $this->render('/aaee/desincorpora-ramo/_view-ramo', [
   													'model' => $model,
   													'findModel' => $findModel,
   													'dataProviderRubro' => $dataProviderRubro,
@@ -409,6 +440,9 @@
   													'opciones' =>$opciones,
   													'errorChk' => $errorChk,
   													'totalItem' => $totalItem,
+  													'errorMensaje' => $errorMensaje,
+  													'chkSeleccion' => $chkSeleccion,
+  													'rubroSeleccionado' => $rubroSeleccionado,
 		  					]);
 
 		  		} else {
@@ -637,8 +671,6 @@
 	      			// 						}
 					$arregloDatos = $model->attributes;
 
-// die(var_dump($arregloDatos));
-
 					$arregloDatos['estatus'] = $estatus;
 					$arregloDatos['user_funcionario'] = $userFuncionario;
 					$arregloDatos['fecha_hora_proceso'] = $fechaHoraProceso;
@@ -660,8 +692,6 @@
 						$arregloDatos['id_impuesto'] = $rubro->{'id_impuesto'};
 						$arregloDatos['id_rubro'] = $rubro->{'id_rubro'};
 						$arregloDatos['periodo'] = $rubro->{'exigibilidad_periodo'};
-
-//die(var_dump($arregloDatos));
 
 						$result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
 						if ( !$result ) {
