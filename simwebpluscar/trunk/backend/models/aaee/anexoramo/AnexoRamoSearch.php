@@ -101,6 +101,35 @@
 
 
 		/**
+		 * Metodo que realice una conaulta para determinar si existe una solicitud
+		 * pendiente para anexar un ramo segun el año-periodo indicado.
+		 * @param  integer $añoImpositivo año del lapso que se desea consultar.
+	     * @param  integer $periodo periodo del lapso que se desea consultar.
+		 * @return active record retorna una modelo de la entidad "sl", donde
+		 * se guarda la solicitud. En casocontrario un arreglo vacio.
+		 */
+		public function findSolicitudAnexoRamoSegunLapso($añoImpositivo, $periodo)
+		{
+			$findModel = AnexoRamo::find()->where('id_contribuyente =:id_contribuyente',
+	    											[':id_contribuyente' => $this->_id_contribuyente])
+	    								  ->andWhere('estatus =:estatus',
+	    											[':estatus' => 0])
+	    								  ->andWhere(AnexoRamo::tableName().'.ano_impositivo =:ano_impositivo',
+	    									  		[':ano_impositivo' => $añoImpositivo])
+	    								  ->andWhere('periodo =:periodo',
+	    									  		[':periodo' => $periodo])
+	    								  ->orderBy([
+	    									  'nro_solicitud' => SORT_ASC,
+	    									]);
+
+	    	return ( count($findModel) > 0 ) ? $findModel : [];
+		}
+
+
+
+
+
+		/**
 		 * Metodo que permite determinar si el contribuyente ya tiene una solicitud pendiente,
 		 * con el objetivo no repetir la solicitud.
 		 * @return boolean retorna true si ya posee una solicitud con las caracteristicas

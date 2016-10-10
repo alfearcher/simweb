@@ -100,6 +100,18 @@
 		}
 
 
+
+
+		/**
+		 * Relacion con la entidad "solicitudes-contribuyente".
+		 * @return active record.
+		 */
+		public function getSolicitud()
+		{
+			return $this->hasOne(SolicitudesContribuyente::className(), ['nro_solicitud' => 'nro_solicitud']);
+		}
+
+
 		/**
 		 * Relacion con la entidad "estatus-solicitudes", EstatusSolicitud
 		 * @return Active Record.
