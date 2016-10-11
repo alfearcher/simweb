@@ -6,9 +6,12 @@
   	use kartik\sidenav\SideNav;
   	use kartik\icons\Icon;
   	use yii\helpers\Url;
+  	//use rmrevin\yii\fontawesome\FontAwesome;
 
 
   	//session_start();
+
+  	//rmrevin\yii\fontawesome\AssetBundle::register($this);
 
   	$typeIcon = Icon::FA;
   	$typeLong = 'fa-2x';
@@ -88,7 +91,7 @@
 		        					   	['label' => Icon::show('fa fa-table',['class' => $typeLong], $typeIcon) . '&nbsp; Declaracion',
 		        					   		'items' => [
 		        					   				['label' => 'Estimada', 'url' =>  ['/aaee/declaracion/declaracion-estimada/index', 'id' => 108]],
-		        					   				['label' => 'Definitiva', 'url' => '#'],
+		        					   				['label' => 'Definitiva', 'url' => ['/aaee/declaracion/declaracion-definitiva/index', 'id' => 110]],
 		        					   				['label' => 'Sustitutiva', 'url' => '#'],
 		        					   		]
 		        					   	],
@@ -110,7 +113,7 @@
 		        						['label' => 'Renovación de Certificado Catastral', 'url' => '#'],
 		        						['label' => 'Solvencia', 'url' => '#'],
 		        						['label' => 'Cambio de Numero Catastral', 'url' => ['/inmueble/cambionumerocatastral/cambio-numero-catastral-inmuebles-urbanos/index', 'id' =>7]],
-		        						['label' => 'Cambio de Propietario(VENDEDOR)', 'url' => ['inmueble/cambiopropietariovendedor/cambio-propietario-vendedor-inmuebles-urbanos/index','id' =>12]], // vendedor:12 
+		        						['label' => 'Cambio de Propietario(VENDEDOR)', 'url' => ['inmueble/cambiopropietariovendedor/cambio-propietario-vendedor-inmuebles-urbanos/index','id' =>12]], // vendedor:12
 		        						['label' => 'Cambio de Propietario(COMPRADOR)', 'url' => ['inmueble/cambiopropietariocomprador/cambio-propietario-comprador-inmuebles-urbanos/buscar-vendedor','id' =>11]], // comprador:11
 		        						['label' => 'Integración de Parcela', 'url' => ['/inmueble/integracion-inmuebles-urbanos/integracion-inmuebles', 'id' =>107]],
 		        						['label' => 'Desintegración de Parcela', 'url' => ['inmueble/desintegracion/desintegracion-inmuebles-urbanos/index', 'id' =>106]],
@@ -150,7 +153,7 @@
 
 		        						['label' => 'Asignar Patrocinador', 'url' => ['propaganda/patrocinador/asignar-patrocinador-propaganda/seleccion', 'id' => 102]],
 
-										['label' => 'Anular Patrocinador', 'url' => ['propaganda/patrocinador/anular-patrocinador-propaganda/seleccion', 'id' => 109]],		        						
+										['label' => 'Anular Patrocinador', 'url' => ['propaganda/patrocinador/anular-patrocinador-propaganda/seleccion', 'id' => 109]],
 
 		        						['label' => 'Catalogo', 'url' => ['propaganda/catalogo/catalogo-propaganda/vista-catalogo-propaganda']],
 
