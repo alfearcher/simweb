@@ -717,12 +717,31 @@
 								                            </div>
 
 								                        	<div class="col-sm-2" style="padding-right:6px;">
-								                                <?= $form->field($mod, "[{$i}]monto_minimo")->textInput([
-					                                															'readonly' => true,
-					                                															//'value' => Yii::$app->formatter->asDecimal($mod->monto_minimo, 2),
+								                                <?= $form->field($mod, "[{$i}]monto_minimo")->widget(MaskedInput::className(), [
+																															'id' => 'monto-minimo',
+																															'name' => 'monto-minimo',
+																															//'mask' => '',
+																															'options' => [
+																																'class' => 'form-control',
+																																'style' => 'width: 100%;',
+																																'readonly' => true,
+																																'placeholder' => '0.00',
 
-								                                	])->label('Estimada');
-								                                ?>
+																															],
+																															'clientOptions' => [
+																																'alias' =>  'decimal',
+																																'digits' => 2,
+																																'digitsOptional' => false,
+																																'groupSeparator' => ',',
+																																'removeMaskOnSubmit' => true,
+																																// 'allowMinus'=>false,
+																																//'groupSize' => 3,
+																																'radixPoint'=> ".",
+																																'autoGroup' => true,
+																																//'decimalSeparator' => ',',
+																															],
+																										  				  ])->label('Estimada');
+																?>
 								                            </div>
 
 
