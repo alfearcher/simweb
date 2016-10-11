@@ -55,7 +55,7 @@ class ConfigurarConveniosController extends Controller
 
     /**
      * Creates a new ConfigConvenios model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
+     * If creation is successful, the browser will be redirected to the 'view' page.n
      * @return mixed
      */
     public function actionCreate()
@@ -67,8 +67,8 @@ class ConfigurarConveniosController extends Controller
         } else {
             return $this->render('create', [
                 'model' => $model, 
-            ]);      
-        }     
+            ]);        
+        }      
     }   
 
     /**
