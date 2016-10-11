@@ -54,7 +54,7 @@
 	 </div>
 	 <div class="row">
 		<div class="solicitud-creada">
-			<?= $this->render('/aaee/declaracion/estimada/view-solicitud-create', [
+			<?= $this->render('/aaee/declaracion/definitiva/view-solicitud-create', [
 	    															'model' => $model,
 	    															'modelSearch' => $modelSearch,
 	    															'opciones' => $opciones,

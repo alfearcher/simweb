@@ -142,7 +142,7 @@
 											<h3><span><?= Html::encode(Yii::t('frontend', 'Declaracion del IVA')) ?></span></h3>
 										</div>
 <!-- Declaracion del IVA -->
-										<div class="container-items-iva">
+										<div class="container-items-iva" style="padding-left: 15px;">
 											<?php
 												$mod = $model[0];
 												$i = 0;
@@ -536,8 +536,8 @@
 													?>
 					                            </div>
 				                            </div>
-
 										</div>
+
 									</div>
 
 <!-- Declaracion del islr y otros -->
@@ -546,7 +546,7 @@
 											<h3><span><?= Html::encode(Yii::t('frontend', 'Declaracion del ISLR')) ?></span></h3>
 										</div>
 
-										<div class="container-items-islr">
+										<div class="container-items-islr" style="padding-left: 15px;">
 
 											<div class="row">
 												<div class="col-sm-2" style="width: 12%; padding-top: 5px;">
@@ -587,8 +587,8 @@
 												</div>
 												<div class="col-sm-2" style="padding-left:0px;padding-right:0px;padding-top:-10px;margin-left: 0px;border-right: 0px;">
 					                                <?= $form->field($mod, "[{$i}]pp_industria")->widget(MaskedInput::className(), [
-																												'id' => 'id-pp_industria',
-																												'name' => 'pp_industria',
+																												'id' => 'id-pp-industria',
+																												'name' => 'pp-industria',
 																												//'mask' => '',
 																												'options' => [
 																													'class' => 'form-control',
@@ -614,6 +614,37 @@
 				                            </div>
 
 
+											<div class="row">
+												<div class="col-sm-2" style="width: 12%; padding-top: 5px;">
+													<strong><?= Html::encode($mod->getAttributeLabel('pagos_retencion') . ':')?></strong>
+												</div>
+												<div class="col-sm-2" style="padding-left:0px;padding-right:0px;padding-top:-10px;margin-left: 0px;border-right: 0px;">
+					                                <?= $form->field($mod, "[{$i}]pagos_retencion")->widget(MaskedInput::className(), [
+																												'id' => 'id-pagos-retencion',
+																												'name' => 'pagos-retencion',
+																												//'mask' => '',
+																												'options' => [
+																													'class' => 'form-control',
+																													'style' => 'width: 100%;',
+																													//'placeholder' => '0.00',
+
+																												],
+																												'clientOptions' => [
+																													'alias' =>  'decimal',
+																													'digits' => 2,
+																													'digitsOptional' => false,
+																													'groupSeparator' => ',',
+																													'removeMaskOnSubmit' => true,
+																													// 'allowMinus'=>false,
+																													//'groupSize' => 3,
+																													'radixPoint'=> ".",
+																													'autoGroup' => true,
+																													//'decimalSeparator' => ',',
+																												],
+																							  				  ])->label(false);
+													?>
+					                            </div>
+				                            </div>
 
 										</div>
 									</div>

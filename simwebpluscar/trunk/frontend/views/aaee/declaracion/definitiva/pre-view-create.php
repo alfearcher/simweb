@@ -21,13 +21,13 @@
  */
 
  /**
- *  @file declarar-estimada-ramo-form.php
+ *  @file declarar-definitiva-ramo-form.php
  *
  *  @author Jose Rafael Perez Teran
  *
- *  @date 06-09-2016
+ *  @date 10-10-2016
  *
- *  @view declarar-estimada-ramo-form.php
+ *  @view declarar-definitiva-ramo-form.php
  *
  *
  *  @property
@@ -49,12 +49,13 @@
 	use yii\widgets\ActiveForm;
 	use yii\web\View;
 	// use yii\jui\DatePicker;
-	use yii\widgets\Pjax;
+	//use yii\widgets\Pjax;
 	use yii\widgets\DetailView;
 	//use backend\controllers\utilidad\documento\DocumentoRequisitoController;
 	use backend\controllers\menu\MenuController;
 	use yii\widgets\MaskedInput;
 	use backend\models\aaee\declaracion\DeclaracionBaseSearch;
+	//use yii\yii\i18n\Formatter;
 
 
 	$typeIcon = Icon::FA;
@@ -65,11 +66,11 @@
  ?>
 
 
- <div class="pre-view-create-declaracion-estimada">
+ <div class="ramo-registrado-form">
  	<?php
 
  		$form = ActiveForm::begin([
- 			'id' => 'id-pre-view-create-declaracion-estimada',
+ 			'id' => 'id-ramo-registrado-form',
  			'method' => 'post',
  			//'action' => $url,
  			'enableClientValidation' => false,
@@ -128,6 +129,536 @@
 					</div>
 
 
+<!-- INICIO DE LA DECLARACION DEL IVA -->
+					<div class="row">
+						<div class="panel panel-success" style="width: 104%;margin-left: -25px;">
+							<div class="panel-heading">
+					        	<b><span><?= Html::encode('Declaracion del IVA e ISLR') ?></span></b>
+					        </div>
+					        <div class="panel-body">
+								<div class="row"  style="padding-left: 10px; width: 100%;">
+									<div class="iva-registrado">
+										<div class="row" style="margin-left: 5px;margin-bottom: 15px;border-bottom: solid 1px #ccc;">
+											<h3><span><?= Html::encode(Yii::t('frontend', 'Declaracion del IVA')) ?></span></h3>
+										</div>
+<!-- Declaracion del IVA -->
+										<div class="container-items-iva" style="padding-left: 15px;">
+											<?php
+												$mod = $model[0];
+												$i = 0;
+											?>
+											<div class="row">
+												<div class="col-sm-2" style="width: 12%; padding-top: 5px;">
+													<strong><?= Html::encode($mod->getAttributeLabel('iva_enero') . ':')?></strong>
+												</div>
+												<div class="col-sm-2" style="padding-left:0px;padding-right:0px;padding-top:-10px;margin-left: 0px;border-right: 0px;">
+					                                <?= $form->field($mod, "[{$i}]iva_enero")->widget(MaskedInput::className(), [
+																												'id' => 'id-iva-enero',
+																												'name' => 'iva-enero',
+																												//'mask' => '',
+																												'options' => [
+																													'class' => 'form-control',
+																													'style' => 'width: 100%;',
+																													//'placeholder' => '0.00',
+
+																												],
+																												'clientOptions' => [
+																													'alias' =>  'decimal',
+																													'digits' => 2,
+																													'digitsOptional' => false,
+																													'groupSeparator' => ',',
+																													'removeMaskOnSubmit' => true,
+																													// 'allowMinus'=>false,
+																													//'groupSize' => 3,
+																													'radixPoint'=> ".",
+																													'autoGroup' => true,
+																													//'decimalSeparator' => ',',
+																												],
+																							  				  ])->label(false);
+													?>
+					                            </div>
+				                            </div>
+
+											<div class="row">
+					                            <div class="col-sm-2" style="width: 12%; padding-top: 5px;">
+													<strong><?= Html::encode($mod->getAttributeLabel('iva_febrero') . ':')?></strong>
+												</div>
+												<div class="col-sm-2" style="padding-left:0px;padding-right:0px;padding-top:-10px;margin-left: 0px;border-right: 0px;">
+					                                <?= $form->field($mod, "[{$i}]iva_febrero")->widget(MaskedInput::className(), [
+																												'id' => 'id-iva-febrero',
+																												'name' => 'iva-febrero',
+																												//'mask' => '',
+																												'options' => [
+																													'class' => 'form-control',
+																													'style' => 'width: 100%;',
+																													//'placeholder' => '0.00',
+
+																												],
+																												'clientOptions' => [
+																													'alias' =>  'decimal',
+																													'digits' => 2,
+																													'digitsOptional' => false,
+																													'groupSeparator' => ',',
+																													'removeMaskOnSubmit' => true,
+																													// 'allowMinus'=>false,
+																													//'groupSize' => 3,
+																													'radixPoint'=> ".",
+																													'autoGroup' => true,
+																													//'decimalSeparator' => ',',
+																												],
+																							  				  ])->label(false);
+													?>
+					                            </div>
+				                            </div>
+
+				                            <div class="row">
+												<div class="col-sm-2" style="width: 12%; padding-top: 5px;">
+													<strong><?= Html::encode($mod->getAttributeLabel('iva_marzo') . ':')?></strong>
+												</div>
+												<div class="col-sm-2" style="padding-left:0px;padding-right:0px;padding-top:-10px;margin-left: 0px;border-right: 0px;">
+					                                <?= $form->field($mod, "[{$i}]iva_marzo")->widget(MaskedInput::className(), [
+																												'id' => 'id-iva-marzo',
+																												'name' => 'iva-marzo',
+																												//'mask' => '',
+																												'options' => [
+																													'class' => 'form-control',
+																													'style' => 'width: 100%;',
+																													//'placeholder' => '0.00',
+
+																												],
+																												'clientOptions' => [
+																													'alias' =>  'decimal',
+																													'digits' => 2,
+																													'digitsOptional' => false,
+																													'groupSeparator' => ',',
+																													'removeMaskOnSubmit' => true,
+																													// 'allowMinus'=>false,
+																													//'groupSize' => 3,
+																													'radixPoint'=> ".",
+																													'autoGroup' => true,
+																													//'decimalSeparator' => ',',
+																												],
+																							  				  ])->label(false);
+													?>
+					                            </div>
+				                            </div>
+
+				                            <div class="row">
+												<div class="col-sm-2" style="width: 12%; padding-top: 5px;">
+													<strong><?= Html::encode($mod->getAttributeLabel('iva_abril') . ':')?></strong>
+												</div>
+												<div class="col-sm-2" style="padding-left:0px;padding-right:0px;padding-top:-10px;margin-left: 0px;border-right: 0px;">
+					                                <?= $form->field($mod, "[{$i}]iva_abril")->widget(MaskedInput::className(), [
+																												'id' => 'id-iva-abril',
+																												'name' => 'iva-abril',
+																												//'mask' => '',
+																												'options' => [
+																													'class' => 'form-control',
+																													'style' => 'width: 100%;',
+																													//'placeholder' => '0.00',
+
+																												],
+																												'clientOptions' => [
+																													'alias' =>  'decimal',
+																													'digits' => 2,
+																													'digitsOptional' => false,
+																													'groupSeparator' => ',',
+																													'removeMaskOnSubmit' => true,
+																													// 'allowMinus'=>false,
+																													//'groupSize' => 3,
+																													'radixPoint'=> ".",
+																													'autoGroup' => true,
+																													//'decimalSeparator' => ',',
+																												],
+																							  				  ])->label(false);
+													?>
+					                            </div>
+				                            </div>
+
+											<div class="row">
+												<div class="col-sm-2" style="width: 12%; padding-top: 5px;">
+													<strong><?= Html::encode($mod->getAttributeLabel('iva_mayo') . ':')?></strong>
+												</div>
+												<div class="col-sm-2" style="padding-left:0px;padding-right:0px;padding-top:-10px;margin-left: 0px;border-right: 0px;">
+					                                <?= $form->field($mod, "[{$i}]iva_mayo")->widget(MaskedInput::className(), [
+																												'id' => 'id-iva-mayo',
+																												'name' => 'iva-mayo',
+																												//'mask' => '',
+																												'options' => [
+																													'class' => 'form-control',
+																													'style' => 'width: 100%;',
+																													//'placeholder' => '0.00',
+
+																												],
+																												'clientOptions' => [
+																													'alias' =>  'decimal',
+																													'digits' => 2,
+																													'digitsOptional' => false,
+																													'groupSeparator' => ',',
+																													'removeMaskOnSubmit' => true,
+																													// 'allowMinus'=>false,
+																													//'groupSize' => 3,
+																													'radixPoint'=> ".",
+																													'autoGroup' => true,
+																													//'decimalSeparator' => ',',
+																												],
+																							  				  ])->label(false);
+													?>
+					                            </div>
+				                            </div>
+
+
+											<div class="row">
+												<div class="col-sm-2" style="width: 12%; padding-top: 5px;">
+													<strong><?= Html::encode($mod->getAttributeLabel('iva_junio') . ':')?></strong>
+												</div>
+												<div class="col-sm-2" style="padding-left:0px;padding-right:0px;padding-top:-10px;margin-left: 0px;border-right: 0px;">
+					                                <?= $form->field($mod, "[{$i}]iva_junio")->widget(MaskedInput::className(), [
+																												'id' => 'id-iva-junio',
+																												'name' => 'iva-junio',
+																												//'mask' => '',
+																												'options' => [
+																													'class' => 'form-control',
+																													'style' => 'width: 100%;',
+																													//'placeholder' => '0.00',
+
+																												],
+																												'clientOptions' => [
+																													'alias' =>  'decimal',
+																													'digits' => 2,
+																													'digitsOptional' => false,
+																													'groupSeparator' => ',',
+																													'removeMaskOnSubmit' => true,
+																													// 'allowMinus'=>false,
+																													//'groupSize' => 3,
+																													'radixPoint'=> ".",
+																													'autoGroup' => true,
+																													//'decimalSeparator' => ',',
+																												],
+																							  				  ])->label(false);
+													?>
+					                            </div>
+				                            </div>
+
+											<div class="row">
+												<div class="col-sm-2" style="width: 12%; padding-top: 5px;">
+													<strong><?= Html::encode($mod->getAttributeLabel('iva_julio') . ':')?></strong>
+												</div>
+												<div class="col-sm-2" style="padding-left:0px;padding-right:0px;padding-top:-10px;margin-left: 0px;border-right: 0px;">
+					                                <?= $form->field($mod, "[{$i}]iva_julio")->widget(MaskedInput::className(), [
+																												'id' => 'id-iva-julio',
+																												'name' => 'iva-julio',
+																												//'mask' => '',
+																												'options' => [
+																													'class' => 'form-control',
+																													'style' => 'width: 100%;',
+																													//'placeholder' => '0.00',
+
+																												],
+																												'clientOptions' => [
+																													'alias' =>  'decimal',
+																													'digits' => 2,
+																													'digitsOptional' => false,
+																													'groupSeparator' => ',',
+																													'removeMaskOnSubmit' => true,
+																													// 'allowMinus'=>false,
+																													//'groupSize' => 3,
+																													'radixPoint'=> ".",
+																													'autoGroup' => true,
+																													//'decimalSeparator' => ',',
+																												],
+																							  				  ])->label(false);
+													?>
+					                            </div>
+				                            </div>
+
+
+											<div class="row">
+												<div class="col-sm-2" style="width: 12%; padding-top: 5px;">
+													<strong><?= Html::encode($mod->getAttributeLabel('iva_agosto') . ':')?></strong>
+												</div>
+												<div class="col-sm-2" style="padding-left:0px;padding-right:0px;padding-top:-10px;margin-left: 0px;border-right: 0px;">
+					                                <?= $form->field($mod, "[{$i}]iva_agosto")->widget(MaskedInput::className(), [
+																												'id' => 'id-iva-agosto',
+																												'name' => 'iva-agosto',
+																												//'mask' => '',
+																												'options' => [
+																													'class' => 'form-control',
+																													'style' => 'width: 100%;',
+																													//'placeholder' => '0.00',
+
+																												],
+																												'clientOptions' => [
+																													'alias' =>  'decimal',
+																													'digits' => 2,
+																													'digitsOptional' => false,
+																													'groupSeparator' => ',',
+																													'removeMaskOnSubmit' => true,
+																													// 'allowMinus'=>false,
+																													//'groupSize' => 3,
+																													'radixPoint'=> ".",
+																													'autoGroup' => true,
+																													//'decimalSeparator' => ',',
+																												],
+																							  				  ])->label(false);
+													?>
+					                            </div>
+				                            </div>
+
+
+											<div class="row">
+												<div class="col-sm-2" style="width: 12%; padding-top: 5px;">
+													<strong><?= Html::encode($mod->getAttributeLabel('iva_septiembre') . ':')?></strong>
+												</div>
+												<div class="col-sm-2" style="padding-left:0px;padding-right:0px;padding-top:-10px;margin-left: 0px;border-right: 0px;">
+					                                <?= $form->field($mod, "[{$i}]iva_septiembre")->widget(MaskedInput::className(), [
+																												'id' => 'id-iva-septiembre',
+																												'name' => 'iva-septiembre',
+																												//'mask' => '',
+																												'options' => [
+																													'class' => 'form-control',
+																													'style' => 'width: 100%;',
+																													//'placeholder' => '0.00',
+
+																												],
+																												'clientOptions' => [
+																													'alias' =>  'decimal',
+																													'digits' => 2,
+																													'digitsOptional' => false,
+																													'groupSeparator' => ',',
+																													'removeMaskOnSubmit' => true,
+																													// 'allowMinus'=>false,
+																													//'groupSize' => 3,
+																													'radixPoint'=> ".",
+																													'autoGroup' => true,
+																													//'decimalSeparator' => ',',
+																												],
+																							  				  ])->label(false);
+													?>
+					                            </div>
+				                            </div>
+
+
+											<div class="row">
+												<div class="col-sm-2" style="width: 12%; padding-top: 5px;">
+													<strong><?= Html::encode($mod->getAttributeLabel('iva_octubre') . ':')?></strong>
+												</div>
+												<div class="col-sm-2" style="padding-left:0px;padding-right:0px;padding-top:-10px;margin-left: 0px;border-right: 0px;">
+					                                <?= $form->field($mod, "[{$i}]iva_octubre")->widget(MaskedInput::className(), [
+																												'id' => 'id-iva-octubre',
+																												'name' => 'iva-octubre',
+																												//'mask' => '',
+																												'options' => [
+																													'class' => 'form-control',
+																													'style' => 'width: 100%;',
+																													//'placeholder' => '0.00',
+
+																												],
+																												'clientOptions' => [
+																													'alias' =>  'decimal',
+																													'digits' => 2,
+																													'digitsOptional' => false,
+																													'groupSeparator' => ',',
+																													'removeMaskOnSubmit' => true,
+																													// 'allowMinus'=>false,
+																													//'groupSize' => 3,
+																													'radixPoint'=> ".",
+																													'autoGroup' => true,
+																													//'decimalSeparator' => ',',
+																												],
+																							  				  ])->label(false);
+													?>
+					                            </div>
+				                            </div>
+
+
+											<div class="row">
+												<div class="col-sm-2" style="width: 12%; padding-top: 5px;">
+													<strong><?= Html::encode($mod->getAttributeLabel('iva_noviembre') . ':')?></strong>
+												</div>
+												<div class="col-sm-2" style="padding-left:0px;padding-right:0px;padding-top:-10px;margin-left: 0px;border-right: 0px;">
+					                                <?= $form->field($mod, "[{$i}]iva_noviembre")->widget(MaskedInput::className(), [
+																												'id' => 'id-iva-noviembre',
+																												'name' => 'iva-noviembre',
+																												//'mask' => '',
+																												'options' => [
+																													'class' => 'form-control',
+																													'style' => 'width: 100%;',
+																													//'placeholder' => '0.00',
+
+																												],
+																												'clientOptions' => [
+																													'alias' =>  'decimal',
+																													'digits' => 2,
+																													'digitsOptional' => false,
+																													'groupSeparator' => ',',
+																													'removeMaskOnSubmit' => true,
+																													// 'allowMinus'=>false,
+																													//'groupSize' => 3,
+																													'radixPoint'=> ".",
+																													'autoGroup' => true,
+																													//'decimalSeparator' => ',',
+																												],
+																							  				  ])->label(false);
+													?>
+					                            </div>
+				                            </div>
+
+
+											<div class="row">
+												<div class="col-sm-2" style="width: 12%; padding-top: 5px;">
+													<strong><?= Html::encode($mod->getAttributeLabel('iva_diciembre') . ':')?></strong>
+												</div>
+												<div class="col-sm-2" style="padding-left:0px;padding-right:0px;padding-top:-10px;margin-left: 0px;border-right: 0px;">
+					                                <?= $form->field($mod, "[{$i}]iva_diciembre")->widget(MaskedInput::className(), [
+																												'id' => 'id-iva-diciembre',
+																												'name' => 'iva-diciembre',
+																												//'mask' => '',
+																												'options' => [
+																													'class' => 'form-control',
+																													'style' => 'width: 100%;',
+																													//'placeholder' => '0.00',
+
+																												],
+																												'clientOptions' => [
+																													'alias' =>  'decimal',
+																													'digits' => 2,
+																													'digitsOptional' => false,
+																													'groupSeparator' => ',',
+																													'removeMaskOnSubmit' => true,
+																													// 'allowMinus'=>false,
+																													//'groupSize' => 3,
+																													'radixPoint'=> ".",
+																													'autoGroup' => true,
+																													//'decimalSeparator' => ',',
+																												],
+																							  				  ])->label(false);
+													?>
+					                            </div>
+				                            </div>
+										</div>
+
+									</div>
+
+<!-- Declaracion del islr y otros -->
+									<div class="islr-registrado">
+										<div class="row" style="margin-left: 5px;margin-bottom: 15px;border-bottom: solid 1px #ccc;">
+											<h3><span><?= Html::encode(Yii::t('frontend', 'Declaracion del ISLR')) ?></span></h3>
+										</div>
+
+										<div class="container-items-islr" style="padding-left: 15px;">
+
+											<div class="row">
+												<div class="col-sm-2" style="width: 12%; padding-top: 5px;">
+													<strong><?= Html::encode($mod->getAttributeLabel('islr') . ':')?></strong>
+												</div>
+												<div class="col-sm-2" style="padding-left:0px;padding-right:0px;padding-top:-10px;margin-left: 0px;border-right: 0px;">
+					                                <?= $form->field($mod, "[{$i}]islr")->widget(MaskedInput::className(), [
+																												'id' => 'id-islr',
+																												'name' => 'islr',
+																												//'mask' => '',
+																												'options' => [
+																													'class' => 'form-control',
+																													'style' => 'width: 100%;',
+																													//'placeholder' => '0.00',
+
+																												],
+																												'clientOptions' => [
+																													'alias' =>  'decimal',
+																													'digits' => 2,
+																													'digitsOptional' => false,
+																													'groupSeparator' => ',',
+																													'removeMaskOnSubmit' => true,
+																													// 'allowMinus'=>false,
+																													//'groupSize' => 3,
+																													'radixPoint'=> ".",
+																													'autoGroup' => true,
+																													//'decimalSeparator' => ',',
+																												],
+																							  				  ])->label(false);
+													?>
+					                            </div>
+				                            </div>
+
+
+											<div class="row">
+												<div class="col-sm-2" style="width: 12%; padding-top: 5px;">
+													<strong><?= Html::encode($mod->getAttributeLabel('pp_industria') . ':')?></strong>
+												</div>
+												<div class="col-sm-2" style="padding-left:0px;padding-right:0px;padding-top:-10px;margin-left: 0px;border-right: 0px;">
+					                                <?= $form->field($mod, "[{$i}]pp_industria")->widget(MaskedInput::className(), [
+																												'id' => 'id-pp-industria',
+																												'name' => 'pp-industria',
+																												//'mask' => '',
+																												'options' => [
+																													'class' => 'form-control',
+																													'style' => 'width: 100%;',
+																													//'placeholder' => '0.00',
+
+																												],
+																												'clientOptions' => [
+																													'alias' =>  'decimal',
+																													'digits' => 2,
+																													'digitsOptional' => false,
+																													'groupSeparator' => ',',
+																													'removeMaskOnSubmit' => true,
+																													// 'allowMinus'=>false,
+																													//'groupSize' => 3,
+																													'radixPoint'=> ".",
+																													'autoGroup' => true,
+																													//'decimalSeparator' => ',',
+																												],
+																							  				  ])->label(false);
+													?>
+					                            </div>
+				                            </div>
+
+
+											<div class="row">
+												<div class="col-sm-2" style="width: 12%; padding-top: 5px;">
+													<strong><?= Html::encode($mod->getAttributeLabel('pagos_retencion') . ':')?></strong>
+												</div>
+												<div class="col-sm-2" style="padding-left:0px;padding-right:0px;padding-top:-10px;margin-left: 0px;border-right: 0px;">
+					                                <?= $form->field($mod, "[{$i}]pagos_retencion")->widget(MaskedInput::className(), [
+																												'id' => 'id-pagos-retencion',
+																												'name' => 'pagos-retencion',
+																												//'mask' => '',
+																												'options' => [
+																													'class' => 'form-control',
+																													'style' => 'width: 100%;',
+																													//'placeholder' => '0.00',
+
+																												],
+																												'clientOptions' => [
+																													'alias' =>  'decimal',
+																													'digits' => 2,
+																													'digitsOptional' => false,
+																													'groupSeparator' => ',',
+																													'removeMaskOnSubmit' => true,
+																													// 'allowMinus'=>false,
+																													//'groupSize' => 3,
+																													'radixPoint'=> ".",
+																													'autoGroup' => true,
+																													//'decimalSeparator' => ',',
+																												],
+																							  				  ])->label(false);
+													?>
+					                            </div>
+				                            </div>
+
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+<!-- FIN DE LA DECLARACION DEL IVA -->
+
+
+
 					<div class="row">
 						<div class="panel panel-success" style="width: 104%;margin-left: -25px;">
 							<div class="panel-heading">
@@ -145,7 +676,7 @@
 <!-- Aqui se coloca le foreach para replicar el formulario tantos rubros tenga declarado. -->
 											<?php foreach ( $model as $i => $mod ): ?>
 
-												<div class="item panel panel-default"><!-- widgetItem -->
+												<div class="item panel panel-primary"><!-- widgetItem -->
 													<div class="panel-heading">
 														<h3 class="panel-title pull-left"><b><?=Html::encode( $i+1 .'. '. Yii::t('frontend', 'Category') . ' ' . $mod->rubro); ?></b></h3>
 									                    <div class="clearfix"></div>
@@ -188,22 +719,43 @@
 								                        	<div class="col-sm-2" style="padding-right:6px;">
 								                                <?= $form->field($mod, "[{$i}]monto_minimo")->textInput([
 					                                															'readonly' => true,
-								                                	])->hint('minimo a declarar');
+					                                															//'value' => Yii::$app->formatter->asDecimal($mod->monto_minimo, 2),
+
+								                                	])->label('Estimada');
 								                                ?>
 								                            </div>
 								                        	<div class="col-sm-2" style="padding-left:0px;">
-								                                <?= $form->field($mod, "[{$i}]monto_new")->textInput([
-								                                												'readonly' => true,
+								                                <?= $form->field($mod, "[{$i}]monto_new")->widget(MaskedInput::className(), [
+																															'id' => 'monto-new',
+																															'name' => 'monto-new',
+																															//'mask' => '',
+																															'options' => [
+																																'class' => 'form-control',
+																																'style' => 'width: 100%;',
+																																//'placeholder' => '0.00',
 
-								                                	])
-								                                ?>
+																															],
+																															'clientOptions' => [
+																																'alias' =>  'decimal',
+																																'digits' => 2,
+																																'digitsOptional' => false,
+																																'groupSeparator' => ',',
+																																'removeMaskOnSubmit' => true,
+																																// 'allowMinus'=>false,
+																																//'groupSize' => 3,
+																																'radixPoint'=> ".",
+																																'autoGroup' => true,
+																																//'decimalSeparator' => ',',
+																															],
+																										  				  ]);
+																?>
 								                            </div>
 								                        </div>
 
 								                    </div>
 								                </div>
 
-											 <?php endforeach; ?>
+											<?php endforeach; ?>
 										 </div>
 
 									</div>
@@ -218,24 +770,43 @@
 
 			<div class="row">
 				<div class="form-group">
-					<div class="col-sm-3">
-						<?= Html::submitButton(Yii::t('backend', 'Confirm Create'),[
-																		'id' => 'btn-confirm-create',
-																		'class' => 'btn btn-success',
-																		'name' => 'btn-confirm-create',
-																		'value' => 5,
-																		'style' => 'width: 100%;'
-							])?>
+					<div class="col-sm-3" style="width: 20%;margin-left:100px;">
+						<?= Html::submitButton(Yii::t('frontend', 'Create Request'),
+																			  [
+																				'id' => 'btn-create',
+																				'class' => 'btn btn-success',
+																				'value' => 3,
+																				'style' => 'width: 100%; margin-left:0px;margin-top:20px;',
+																				'name' => 'btn-create',
+																				//'disabled' => true,
+																			  ]);
+						?>
 					</div>
 
-					<div class="col-sm-3" style="margin-left: 150px;">
-						 <?= Html::submitButton(Yii::t('backend', 'Back Form'),[
-																		'id' => 'btn-back-form',
-																		'class' => 'btn btn-danger',
-																		'name' => 'btn-back-form',
-																		'value' => 9,
-																		'style' => 'width: 100%;'
-							])?>
+					<div class="col-sm-3" style="width: 20%;margin-left:100px;">
+						<?= Html::submitButton(Yii::t('frontend', 'Back Form'),
+																		  [
+																			'id' => 'btn-back-form',
+																			'class' => 'btn btn-danger',
+																			'value' => 1,
+																			'style' => 'width: 100%; margin-left:0px;margin-top:20px;',
+																			'name' => 'btn-back-form',
+
+																		  ]);
+						?>
+					</div>
+
+					<div class="col-sm-3" style="width: 20%;margin-left:100px;">
+						<?= Html::submitButton(Yii::t('frontend', Yii::t('frontend', 'Quit')),
+																			  [
+																				'id' => 'btn-quit',
+																				'class' => 'btn btn-danger',
+																				'value' => 1,
+																				'style' => 'width: 100%; margin-left:0px;margin-top:20px;',
+																				'name' => 'btn-quit',
+
+																			  ])
+						?>
 					</div>
 				</div>
 			</div>
@@ -245,12 +816,3 @@
 
  	<?php ActiveForm::end(); ?>
 </div>	 <!-- Fin de inscripcion-act-econ-form -->
-
-
-<?php
-	$this->registerJs(
-		'$( "#btn-create").click(function() {
-			$("#btn-create").attr("disabled", true);
-		});'
-	);
- ?>
