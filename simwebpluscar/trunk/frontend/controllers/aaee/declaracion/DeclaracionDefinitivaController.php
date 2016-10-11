@@ -320,6 +320,7 @@
 					$modelMultiplex = [New DeclaracionBaseForm()];
 
 					$caption = Yii::t('frontend', 'Declaracion Definitiva');
+					$subCaption = Yii::t('frontend', 'Declaracion Definitiva');
 					$formName = $modelMultiplex[0]->formName();
 
 					// Se obtienen solo los campos.
@@ -350,11 +351,12 @@
 							$postData = [];			// Inicializa el post.
 							$this->redirect(['index-create']);
 						} elseif ( $postData['btn-back-form'] == 9 ) {
+
 							$opciones = [
 									'back' => '/aaee/declaracion/declaracion-definitiva/index-create',
 							];
 							$caption = $caption . '. ' . Yii::t('frontend', 'Categories Registered') . ' ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo;
-							$subCaption = Yii::t('frontend', 'Categories Registers ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
+							$subCaption = $subCaption . '. ' . Yii::t('frontend', 'Categories Registers ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
 							return $this->render('/aaee/declaracion/definitiva/declaracion-definitiva-form', [
 		  																	'model' => $modelMultiplex,
 		  																	'findModel' => $findModel,
@@ -369,14 +371,14 @@
 						}
 					} elseif( isset($postData['btn-create']) ) {
 						if ( $postData['btn-create'] == 3 ) {
-//die(var_dump($postData));
+
 							if ( $result ) {
 								// Presentar preview.
 								$opciones = [
 									'back' => '/aaee/declaracion/declaracion-definitiva/index-create',
 								];
 								$caption = Yii::t('frontend', 'Confirm') . ' ' . $caption . '. ' . Yii::t('frontend', 'Pre View');
-								$subCaption = Yii::t('frontend', 'Categories Registers ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
+								$subCaption = $subCaption . '. ' . Yii::t('frontend', 'Categories Registers ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
 
 								return $this->render('/aaee/declaracion/definitiva/pre-view-create', [
 																	'model' => $modelMultiplex,
@@ -391,7 +393,7 @@
 									'back' => '/aaee/declaracion/declaracion-definitiva/index-create',
 								];
 								$caption = $caption . '. ' . Yii::t('frontend', 'Categories Registered') . ' ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo;
-								$subCaption = Yii::t('frontend', 'Categories Registers ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
+								$subCaption = $subCaption . '. ' . Yii::t('frontend', 'Categories Registers ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
 								return $this->render('/aaee/declaracion/definitiva/declaracion-definitiva-form', [
 			  																	'model' => $modelMultiplex,
 			  																	'findModel' => $findModel,
@@ -407,6 +409,30 @@
 						}
 					} elseif( isset($postData['btn-confirm-create']) ) {
 						if ( $postData['btn-confirm-create'] == 5 ) {
+
+							if ( count($modelMultiplex) > 1 ) {
+								foreach ( $modelMultiplex as $key => $model ) {
+									if ( $key > 0 ) {
+										$modelMultiplex[$key]->iva_enero = $modelMultiplex[0]->iva_enero;
+										$modelMultiplex[$key]->iva_febrero = $modelMultiplex[0]->iva_febrero;
+										$modelMultiplex[$key]->iva_marzo = $modelMultiplex[0]->iva_marzo;
+										$modelMultiplex[$key]->iva_abril = $modelMultiplex[0]->iva_abril;
+										$modelMultiplex[$key]->iva_mayo = $modelMultiplex[0]->iva_mayo;
+										$modelMultiplex[$key]->iva_junio = $modelMultiplex[0]->iva_junio;
+										$modelMultiplex[$key]->iva_julio = $modelMultiplex[0]->iva_julio;
+										$modelMultiplex[$key]->iva_agosto = $modelMultiplex[0]->iva_agosto;
+										$modelMultiplex[$key]->iva_septiembre = $modelMultiplex[0]->iva_septiembre;
+										$modelMultiplex[$key]->iva_octubre = $modelMultiplex[0]->iva_octubre;
+										$modelMultiplex[$key]->iva_noviembre = $modelMultiplex[0]->iva_noviembre;
+										$modelMultiplex[$key]->iva_diciembre = $modelMultiplex[0]->iva_diciembre;
+
+										$modelMultiplex[$key]->pp_industria = $modelMultiplex[0]->pp_industria;
+										$modelMultiplex[$key]->pagos_retencion = $modelMultiplex[0]->pagos_retencion;
+										$modelMultiplex[$key]->islr = $modelMultiplex[0]->islr;
+									}
+								}
+							}
+
 							$result = self::actionBeginSave($modelMultiplex, $postData);
 							if ( $result ) {
 								$this->_transaccion->commit();
@@ -423,7 +449,7 @@
 			  		if ( isset($findModel) ) {
 			  			$añoImpositivo = (int)$lapso['a'];
 						$periodo = (int)$lapso['p'];
-						$subCaption = Yii::t('frontend', 'Categories Registers ' . $añoImpositivo . ' - ' . $periodo);
+						$subCaption = $subCaption . '. ' . Yii::t('frontend', 'Categories Registers ' . $añoImpositivo . ' - ' . $periodo);
 
 						$rubroRegistradoModels = $searchDeclaracion->findRubrosRegistrados($añoImpositivo, $periodo)->all();
 
@@ -443,7 +469,7 @@
 							$modelMultiplex[$i]['descripcion'] = $rubroModel->rubroDetalle->descripcion;
 							$modelMultiplex[$i]['monto_new'] = 0;
 							$modelMultiplex[$i]['monto_v'] = $rubroModel->reales;
-							$modelMultiplex[$i]['monto_minimo'] = $monto;
+							$modelMultiplex[$i]['monto_minimo'] = $rubroModel->estimado;
 							$modelMultiplex[$i]['usuario'] = isset(Yii::$app->user->identity->login) ? Yii::$app->user->identity->login : null;
 							$modelMultiplex[$i]['fecha_hora'] = date('Y-m-d H:i:s');
 							$modelMultiplex[$i]['origen'] = 'WEB';
@@ -532,7 +558,7 @@
 		/**
 		 * Metodo que comienza el proceso para guardar la solicitud y los demas
 		 * procesos relacionados.
-		 * @param model $models modelo de DeclaracionBaseForm.
+		 * @param model $models modelos de DeclaracionBaseForm.
 		 * @param array $postEnviado post enviado desde el formulario.
 		 * @return boolean retorna true si se realizan todas las operacions de
 		 * insercion y actualizacion con exitos o false en caso contrario.
@@ -565,16 +591,22 @@
 							$model->nro_solicitud = $nroSolicitud;
 
 							// Se pasa a guardar en la sl_declaraciones.
-							$result = self::actionCreateDeclaracionEstimada($this->_conexion,
+							$result = self::actionCreateDeclaracionDefinitiva($this->_conexion,
 																   			$this->_conn,
 																   			$model,
 																   			$conf);
 
 							if ( $result ) {
 								if ( $conf['nivel_aprobacion'] == 1 ) {
-									$result = self::actionUpdateActEconIngresos($this->_conexion,
+									$result = self::actionUpdateMontoDefinitiva($this->_conexion,
 																			    $this->_conn,
 																			    $model);
+
+									if ( $result ) {
+										$result = self::actionUpdateMontoIva($this->_conexion,
+																			 $this->_conn,
+																			 $model);
+									}
 
 								}
 							}
@@ -678,7 +710,7 @@
 		 * solicitud.
 		 * @return boolean retorna un true si guardo el registro, false en caso contrario.
 		 */
-		private static function actionCreateDeclaracionEstimada($conexionLocal, $connLocal, $model, $conf)
+		private static function actionCreateDeclaracionDefinitiva($conexionLocal, $connLocal, $model, $conf)
 		{
 			$result = false;
 			$estatus = 0;
@@ -716,15 +748,21 @@
 
 
 
+
+
 	    /**
-	     * Metodo que realiza al insercion de los detalles de los ramos. Se realiza una
-	     * insercion por cada ramo que se autoriza a anexar.
+	     * Metodo que realiza la actualizacion del atributo "reales", colocandole
+	     * el monto que el usuario ingreso como monto de la declaracion definitiva.
+	     * Esta actualizacion se realizara por rubro. Si el monto de la estimada del
+	     * mismo periodo es igual a cero para un rubro, se actualizara tambien con el
+	     * mismo monto declarado como definitiva para dicho rubro. En el modelo, el
+	     * monto de la estimada de dicho lapso, se guarda en model->monto_minimo.
 	     * @param  ConexionController $conexionLocal instancia de la clase ConexionController.
 		 * @param  connection $connLocal instancia de connection
 		 * @param  model $model modelo de DeclaracionBaseForm.
 	     * @return boolean retorna un true si guardo el registro, false en caso contrario.
 	     */
-	    private static function actionUpdateActEconIngresos($conexionLocal, $connLocal, $model)
+	    private static function actionUpdateMontoDefinitiva($conexionLocal, $connLocal, $model)
 	    {
 	    	$result = false;
 	    	if ( isset($_SESSION['idContribuyente']) && isset($connLocal) && isset($conexionLocal) ) {
@@ -741,14 +779,71 @@
 	    			$arregloCondicion['bloqueado'] = 0;
 	    			$arregloCondicion['inactivo'] = 0;
 
-	    			// Atributo a modificar.
-	    			$arregloDatos['estimado'] = $model->monto_new;
+	    			$arregloDatos['reales'] = $model->monto_new;
+	    			if ( $model->monto_minimo == 0 ) {
+		    			// Atributo a modificar.
+		    			$arregloDatos['estimado'] = $model->monto_new;
+		    		}
 
 	   				$result = $conexionLocal->modificarRegistro($connLocal, $tabla, $arregloDatos, $arregloCondicion);
 	      		}
 	    	}
 	    	return $result;
 	    }
+
+
+
+
+
+	    /**
+	     * Metodo que realiza la actualizacion de los montos por iva, dicho atributos
+	     * se encuentran en la entidad "act_econ".
+	     * @param  ConexionController $conexionLocal instancia de la clase ConexionController.
+		 * @param  connection $connLocal instancia de connection
+		 * @param  model $model modelo de DeclaracionBaseForm.
+	     * @return boolean retorna un true si guardo el registro, false en caso contrario.
+	     */
+	    private static function actionUpdateMontoIva($conexionLocal, $connLocal, $model)
+	    {
+	    	$result = false;
+	    	if ( isset($_SESSION['idContribuyente']) && isset($connLocal) && isset($conexionLocal) ) {
+	    		$idContribuyente = $_SESSION['idContribuyente'];
+	    		if ( $idContribuyente == $model->id_contribuyente ) {
+
+	    			$actModel = New ActEconForm();
+	    			$tabla = $actModel->tableName();
+
+	    			// Condiciones para modificar el registro.
+	    			$arregloCondicion['id_contribuyente'] = $model->id_contribuyente;
+	    			$arregloCondicion['id_impuesto'] = $model->id_impuesto;
+	    			$arregloCondicion['ente'] = Yii::$app->ente->getEnte();
+	    			$arregloCondicion['estatus'] = 0;
+
+
+	    			// Atributos a modificar.
+	    			$arregloDatos['iva_enero'] = $model->iva_enero;
+	    			$arregloDatos['iva_febrero'] = $model->iva_febrero;
+	    			$arregloDatos['iva_marzo'] = $model->iva_marzo;
+	    			$arregloDatos['iva_abril'] = $model->iva_abril;
+	    			$arregloDatos['iva_mayo'] = $model->iva_mayo;
+	    			$arregloDatos['iva_junio'] = $model->iva_junio;
+	    			$arregloDatos['iva_julio'] = $model->iva_julio;
+	    			$arregloDatos['iva_agosto'] = $model->iva_agosto;
+	    			$arregloDatos['iva_septiembre'] = $model->iva_septiembre;
+	    			$arregloDatos['iva_octubre'] = $model->iva_octubre;
+	    			$arregloDatos['iva_noviembre'] = $model->iva_noviembre;
+	    			$arregloDatos['iva_diciembre'] = $model->iva_diciembre;
+
+	    			$arregloDatos['islr'] = $model->islr;
+	    			$arregloDatos['pp_industria'] = $model->pp_industria;
+	    			$arregloDatos['pagos_retencion'] = $model->pagos_retencion;
+
+	   				$result = $conexionLocal->modificarRegistro($connLocal, $tabla, $arregloDatos, $arregloCondicion);
+	      		}
+	    	}
+	    	return $result;
+	    }
+
 
 
 
@@ -938,11 +1033,11 @@
     	{
     		if ( isset($findModel) && isset($modelSearch) ) {
  				$model = $findModel->all();
-
+ 				self::actionAnularSession(['begin']);
 				$opciones = [
-					'quit' => '/aaee/declaracion/declaracion-estimada/quit',
+					'quit' => '/aaee/declaracion/declaracion-definitiva/quit',
 				];
-				return $this->render('/aaee/declaracion/estimada/_view', [
+				return $this->render('/aaee/declaracion/definitiva/_view', [
 																'codigo' => 100,
 																'model' => $model,
 																'modelSearch' => $modelSearch,
