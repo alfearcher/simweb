@@ -1004,6 +1004,7 @@
 
 	    	$solicitud = '';
 	    	$declaracion = '';
+	    	$definitiva = '';
 	    	$mensajePendiente = '';
 	    	$mensajeAprobada = '';
 
@@ -1020,7 +1021,9 @@
 		    	$declaracion = self::puedoDeclararEstimada($añoImpositivo, $periodo);
 
 		    } elseif ( $tipoDeclaracion == 2 ) {	// Definitiva
-
+		    	// Lo siguiente controla la exisyencia de las declaraciones definitivas anteriores
+		    	// a la que se desea realizar.
+		    	$definitiva = self::controlDefinitivasAnteriores($añoImpositivo, $periodo);
 
 		    } elseif ( $tipoDeclaracion == 3 ) {
 
@@ -1055,9 +1058,72 @@
 	    		$mensajes[] = $mensajeAprobada;
 	    	}
 
+	    	if ( count($definitiva) > 0 ) {
+	    		$mensajes[] = $definitiva;
+	    	}
+
 	    	return $mensajes;
 
 	    }
+
+
+
+	    /**
+	     * Metodo que controla la existencia de las declaraciones definitivas anteriores
+	     * al lapso que se pretende declarar. Se determina la fecha de inicio de actividades
+	     * para saber desde donde se debe controlar la definitiva. Si el $añoInicio es igual
+	     * al año actual no sera necesario realizar al control.
+	     * @param  integer $añoImpositivo año del lapso a consultar.
+		 * @param  integer $periodo periodo del lapso a consultar.
+	     * @return array retorna un arreglo de mensjaes, en caso de que todo salga satisfactoriamente
+	     * retorna un arreglo vacio.
+	     */
+	    public function controlDefinitivasAnteriores($añoImpositivo, $periodo)
+	    {
+	    	$mensajes = [];
+	    	$result = '';
+	    	$añoActual = (int)date('Y');
+	    	$añoLimite = Yii::$app->lapso->anoLimiteNotificado();
+	    	$mensaje1 = Yii::t('frontend', "Para continuar con la Declaracion Definitiva {$añoImpositivo} - {$periodo}, debe realizar primero la cargar de la declaracion definitiva");
+
+	    	// Se determina la fecha de inicio de actividades para saber desde donde
+	    	// se debe controlar la definitiva. Si el $añoInicio es igual al año actual
+	    	// no sera necesario realizar al control.
+	    	$fechaInicio = ContribuyenteBase::getFechaInicio($this->_id_contribuyente);
+	    	$añoInicio = (int)date('Y', strtotime($fechaInicio));
+
+	    	if ( $añoInicio == $añoActual && $añoInicio == $añoImpositivo ) {
+	    		$mensajes = [];
+	    	} else {
+	    		if ( $añoInicio < $añoLimite ) {
+	    			$añoBegin = $añoLimite;
+	    		} else {
+	    			$añoBegin = $añoInicio;
+	    		}
+
+	    		for ( $i = $añoBegin; $i <= $añoImpositivo - 1; $i++ ) {
+	    			$result = null;
+	    			$result = self::getDefinitivaAnterior($i, $periodo);
+
+	    			if ( count($result) == 0 || $result == null ) {
+	    				$mensajes[] = $mensaje1 . ' ' . "{$i} - {$periodo}";
+
+	    			} else {
+	    				$suma = 0;
+	    				foreach ( $result as $key => $value ) {
+	    					$suma = $value + $suma;
+	    				}
+	    				if ( $suma == 0 ) {
+	    					$mensajes[] = $mensaje1 . ' ' . "{$i} - {$periodo}";
+	    				}
+	    			}
+	    		}
+
+	    	}
+	    	return $mensajes;
+	    }
+
+
 
 
 	}
