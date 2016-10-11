@@ -233,7 +233,7 @@
     			 'compareAttribute' => 'monto_minimo',
     			 'operator' => '>=', 'on' => 'definitiva',
     			 'message' => Yii::t('backend', '{attribute} must be no less that ' . self::attributeLabels()['monto_minimo'])],
-    			[['monto_new', 'monto_v', 'monto_minimo'],
+    			[['monto_new', 'monto_v',],
     			  'double', 'message' => Yii::t('backend', '{attribute} must be decimal.')],
     			['monto_new', 'compare', 'compareValue' => 0, 'operator' => '>='],
 
