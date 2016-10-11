@@ -80,14 +80,118 @@
         	<div class="container-fluid">
         		<div class="col-sm-12">
 					<div class="row">
-		        		<div class="panel panel-success" style="width: 100%;">
+		        		<div class="panel panel-success" style="width: 102%;">
 							<div class="panel-heading">
 					        	<span><?= Html::encode(Yii::t('backend', 'Summary')) ?></span>
 					        </div>
 					        <div class="panel-body">
+					        	<div class="row" style="width:95%;margin-left: 5px;margin-bottom: 15px;border-bottom: solid 1px #ccc;">
+									<h3><span><?= Html::encode(Yii::t('frontend', 'Declaracion del IVA')) ?></span></h3>
+								</div>
+
+					        	<div class="row" style="padding-left: 15px; width: 50%;">
+									<?= DetailView::widget([
+											'model' => $model[0],
+											'attributes' => [
+												[
+													'label' => Yii::t('frontend', $model[0]->getAttributeLabel('iva_enero')),
+													'value' =>  Yii::$app->formatter->asDecimal($model[0]->iva_enero, 2),
+												],
+												[
+													'label' => Yii::t('frontend', $model[0]->getAttributeLabel('iva_febrero')),
+													'value' =>  Yii::$app->formatter->asDecimal($model[0]->iva_febrero, 2),
+												],
+												[
+													'label' => Yii::t('frontend', $model[0]->getAttributeLabel('iva_marzo')),
+													'value' =>  Yii::$app->formatter->asDecimal($model[0]->iva_marzo, 2),
+												],
+												[
+													'label' => Yii::t('frontend', $model[0]->getAttributeLabel('iva_abril')),
+													'value' =>  Yii::$app->formatter->asDecimal($model[0]->iva_abril, 2),
+												],
+												[
+													'label' => Yii::t('frontend', $model[0]->getAttributeLabel('iva_mayo')),
+													'value' =>  Yii::$app->formatter->asDecimal($model[0]->iva_mayo, 2),
+												],
+												[
+													'label' => Yii::t('frontend', $model[0]->getAttributeLabel('iva_junio')),
+													'value' =>  Yii::$app->formatter->asDecimal($model[0]->iva_junio, 2),
+												],
+												[
+													'label' => Yii::t('frontend', $model[0]->getAttributeLabel('iva_julio')),
+													'value' =>  Yii::$app->formatter->asDecimal($model[0]->iva_julio, 2),
+												],
+												[
+													'label' => Yii::t('frontend', $model[0]->getAttributeLabel('iva_agosto')),
+													'value' =>  Yii::$app->formatter->asDecimal($model[0]->iva_agosto, 2),
+												],
+												[
+													'label' => Yii::t('frontend', $model[0]->getAttributeLabel('iva_septiembre')),
+													'value' =>  Yii::$app->formatter->asDecimal($model[0]->iva_septiembre, 2),
+												],
+												[
+													'label' => Yii::t('frontend', $model[0]->getAttributeLabel('iva_octubre')),
+													'value' =>  Yii::$app->formatter->asDecimal($model[0]->iva_octubre, 2),
+												],
+												[
+													'label' => Yii::t('frontend', $model[0]->getAttributeLabel('iva_noviembre')),
+													'value' =>  Yii::$app->formatter->asDecimal($model[0]->iva_noviembre, 2),
+												],
+												[
+													'label' => Yii::t('frontend', $model[0]->getAttributeLabel('iva_diciembre')),
+													'value' =>  Yii::$app->formatter->asDecimal($model[0]->iva_diciembre, 2),
+												],
+
+												// [
+												// 	'label' => Yii::t('frontend', 'Id. Taxpayer'),
+												// 	'value' => $model['id_contribuyente'],
+												// ],
+											],
+										])
+									?>
+								</div>
+
+								<div class="row" style="width:95%;margin-left: 5px;margin-bottom: 15px;border-bottom: solid 1px #ccc;">
+									<h3><span><?= Html::encode(Yii::t('frontend', 'Declaracion ISLR')) ?></span></h3>
+								</div>
+
+					        	<div class="row" style="padding-left: 15px; width: 50%;">
+									<?= DetailView::widget([
+											'model' => $model[0],
+											'attributes' => [
+												[
+													'label' => Yii::t('frontend', $model[0]->getAttributeLabel('islr')),
+													'value' =>  Yii::$app->formatter->asDecimal($model[0]->islr, 2),
+												],
+												[
+													'label' => Yii::t('frontend', $model[0]->getAttributeLabel('pp_industria')),
+													'value' => Yii::$app->formatter->asDecimal($model[0]->pp_industria, 2),
+												],
+												[
+													'label' => Yii::t('frontend', $model[0]->getAttributeLabel('pagos_retencion')),
+													'value' => Yii::$app->formatter->asDecimal($model[0]->pagos_retencion, 2),
+													'options' => [
+														'class' => 'text-right',
+													],
+												],
+
+												// [
+												// 	'label' => Yii::t('frontend', 'Id. Taxpayer'),
+												// 	'value' => $model['id_contribuyente'],
+												// ],
+											],
+										])
+									?>
+								</div>
+
+
+								<div class="row" style="width:95%;margin-left: 5px;margin-bottom: 15px;border-bottom: solid 1px #ccc;">
+									<h3><span><?= Html::encode(Yii::t('frontend', 'Declaracion Definitiva')) ?></span></h3>
+								</div>
+
 					        	<div class="row" style="padding-left: 15px; width: 100%;">
 									<?= GridView::widget([
-											'id' => 'grid-declaracion-estimada',
+											'id' => 'grid-declaracion-definitiva',
 	    									'dataProvider' => $dataProvider,
 	    									'headerRowOptions' => ['class' => 'danger'],
 	    									//'filterModel' => $searchModel,
