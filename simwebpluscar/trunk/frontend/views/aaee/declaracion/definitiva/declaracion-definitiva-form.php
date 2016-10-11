@@ -725,7 +725,7 @@
 																																'class' => 'form-control',
 																																'style' => 'width: 100%;',
 																																'readonly' => true,
-																																//'placeholder' => '0.00',
+																																'placeholder' => '0.00',
 
 																															],
 																															'clientOptions' => [
