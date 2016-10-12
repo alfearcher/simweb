@@ -179,6 +179,15 @@
 									'label' => Yii::t('backend', 'diciembre'),
 									'value' =>  Yii::$app->formatter->asDecimal($model->iva_diciembre, 2),
 								],
+								[
+									'label' => Yii::t('backend', 'Total'),
+									'value' => Yii::$app->formatter->asDecimal($model->iva_enero + $model->iva_febrero +
+																			   $model->iva_marzo + $model->iva_abril +
+																			   $model->iva_mayo + $model->iva_junio +
+																			   $model->iva_junio + $model->iva_agosto +
+																			   $model->iva_septiembre + $model->iva_octubre +
+																			   $model->iva_noviembre + $model->iva_diciembre, 2),
+								],
 
 							],
 						])
@@ -202,12 +211,18 @@
 								],
 								[
 									'label' => Yii::t('backend','Pagos por Industria'),
-									'value' =>  Yii::$app->formatter->asDecimal($model->pp_industria, 2),
+									'value' => Yii::$app->formatter->asDecimal($model->pp_industria, 2),
 								],
 								[
 									'label' => Yii::t('backend', 'Pagos Retencion'),
-									'value' =>  Yii::$app->formatter->asDecimal($model->pagos_retencion, 2),
+									'value' => Yii::$app->formatter->asDecimal($model->pagos_retencion, 2),
 								],
+								[
+									'label' => Yii::t('backend', 'Total'),
+									'value' => Yii::$app->formatter->asDecimal($model->islr +
+																			   $model->pp_industria +
+																			   $model->pagos_retencion, 2),
+								]
 							],
 						])
 					?>
