@@ -1004,7 +1004,7 @@
 
 	    	$solicitud = '';
 	    	$declaracion = '';
-	    	$definitiva = '';
+	    	$definitiva = [];
 	    	$mensajePendiente = '';
 	    	$mensajeAprobada = '';
 

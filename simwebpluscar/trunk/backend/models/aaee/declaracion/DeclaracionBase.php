@@ -68,6 +68,7 @@
 		}
 
 
+
 		/**
 		 * 	Metodo que retorna el nombre de la tabla que utiliza el modelo.
 		 * 	@return Nombre de la tabla del modelo.
