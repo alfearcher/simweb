@@ -135,6 +135,14 @@
                                                                 $this->_conexion);
                     $result = $procesar->procesarSolicitud();
 
+                } elseif ( $this->_model->tipo_solicitud == 8 ) {
+                     $procesar = New ProcesarDeclaracionDefinitiva($this->_model,
+                                                                   $this->_evento,
+                                                                   $this->_conn,
+                                                                   $this->_conexion);
+                    $result = $procesar->procesarSolicitud();
+
+
                 } elseif ( $this->_model->tipo_solicitud == 9 ) {
                     $procesar = New ProcesarAnexarRamo($this->_model,
                                                        $this->_evento,

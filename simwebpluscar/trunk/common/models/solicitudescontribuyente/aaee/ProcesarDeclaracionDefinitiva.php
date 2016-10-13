@@ -22,13 +22,13 @@
  */
 
  /**
- *  @file ProcesarDeclaracionEstimada.php
+ *  @file ProcesarDeclaracionDefinitiva.php
  *
  *  @author Jose Rafael Perez Teran
  *
- *  @date 01/10/2016
+ *  @date 12/10/2016
  *
- *  @class ProcesarDeclaracionEstimada
+ *  @class ProcesarDeclaracionDefinitiva
  *  @brief
  *
  *
@@ -53,6 +53,7 @@
     use backend\models\aaee\declaracion\DeclaracionBaseSearch;
     use backend\models\aaee\declaracion\DeclaracionBaseForm;
     use common\models\contribuyente\ContribuyenteBase;
+    use backend\models\aaee\actecon\ActEconForm;
     use backend\models\aaee\acteconingreso\ActEconIngresoForm;
 
 
@@ -62,7 +63,7 @@
      * que esten relacionada con la aprobacion o negacion de la solicitud. la clase debe
      * entregar como respuesta un true o false.
      */
-    class ProcesarDeclaracionEstimada extends DeclaracionBaseSearch
+    class ProcesarDeclaracionDefinitiva extends DeclaracionBaseSearch
     {
         /**
          * [$_model modelo de la entidad "solicitudes-contribuyente"
@@ -166,9 +167,9 @@
          * DeclaracionBase si todo se ejecuto satisfactoriamente, false
          * en caso contrario.
          */
-        public function findDeclaracionEstimada()
+        public function findDeclaracionDefinitiva()
         {
-            // Este find retorna el modelo de la entidad "sl-anexos-ramos".
+            // Este find retorna el modelo de la entidad "sl-declaraciones".
             $findModel = $this->findSolicitudDeclaracion($this->_model->nro_solicitud);
 
             // Lo siguiente puede generar uno o varios registros.
@@ -188,12 +189,17 @@
             $result = false;
             $idGenerado = 0;
             // modelo de DeclaracionBase. Uno o varios registros.
-            $modelDeclaracion = self::findDeclaracionEstimada();
+            $modelDeclaracion = self::findDeclaracionDefinitiva();
             if ( $modelDeclaracion !== null ) {
                 // Entidad "sl-".
-                $result = self::updateSolicitudDeclaracionEstimada($modelDeclaracion);
+                $result = self::updateSolicitudDeclaracionDefinitiva($modelDeclaracion);
                 if ( $result ) {
-                    $result = self::updateActEconIngresos($modelDeclaracion);
+                    $result = self::updateMontoDefinitiva($modelDeclaracion);
+                    if ( $result ) {
+                        //$findModel = $this->findSolicitudDeclaracion($this->_model->nro_solicitud);
+                        // $modelDeclaracion = $findModel->one();
+                        $result = self::updateMontoIva($modelDeclaracion[0]);
+                    }
                 }
             } else {
                 self::setErrors(Yii::t('backend', 'Request not find'));
@@ -212,9 +218,9 @@
         private function negarDetalleSolicitud()
         {
             $result = false;
-            $modelDeclaracion = self::findDeclaracionEstimada();
+            $modelDeclaracion = self::findDeclaracionDefinitiva();
             if ( $modelDeclaracion !== null ) {
-                $result = self::updateSolicitudDeclaracionEstimada($modelDeclaracion);
+                $result = self::updateSolicitudDeclaracionDefinitiva($modelDeclaracion);
             }
 
             return $result;
@@ -231,7 +237,7 @@
          * @return boolean retorna un true si todo se ejecuto satisfactoriamente, false
          * en caso contrario.
          */
-        private function updateSolicitudDeclaracionEstimada($modelDeclaracion)
+        private function updateSolicitudDeclaracionDefinitiva($modelDeclaracion)
         {
             $result = false;
             $cancel = false;            // Controla si el proceso se debe cancelar.
@@ -266,13 +272,16 @@
 
 
         /**
-         * Metodo que actualiza el atributo "estimado", de la entidad "act-econ-ingresos"
-         * Toma los montos del atributo monto_new, para actualizar "estimado".
+         * Metodo que realiza la actualizacion del atributo "reales", colocandole
+         * el monto que el usuario ingreso como monto de la declaracion definitiva.
+         * Esta actualizacion se realizara por rubro. Si el monto de la estimada del
+         * mismo periodo es igual a cero para un rubro, se actualizara tambien con el
+         * mismo monto declarado como definitiva para dicho rubro.
          * @param active record $modelDeclaracion modelo de DeclaracionBase,
          * entidad "sl-declaraciones".
          * @return boolean retorna true si guarda, false en caso contrario.
          */
-        private function updateActEconIngresos($modelDeclaracion)
+        private function updateMontoDefinitiva($modelDeclaracion)
         {
             $result = false;
             if ( $modelDeclaracion !== null ) {
@@ -287,8 +296,11 @@
                     $arregloCondicion['bloqueado'] = 0;
                     $arregloCondicion['inactivo'] = 0;
 
-                    // Atributo a modificar.
-                    $arregloDatos['estimado'] = $model->monto_new;
+                    $arregloDatos['reales'] = $model->monto_new;
+                    if ( $model->monto_minimo == 0 ) {
+                        // Atributo a modificar.
+                        $arregloDatos['estimado'] = $model->monto_new;
+                    }
 
                     $result = $this->_conexion->modificarRegistro($this->_conn, $tabla, $arregloDatos, $arregloCondicion);
                     if ( !$result ) { break; }
@@ -297,6 +309,45 @@
             return $result;
         }
 
+
+
+        /***/
+        private function updateMontoIva($modelDeclaracion)
+        {
+            $result = false;
+            if ( $modelDeclaracion !== null ) {
+                $actModel = New ActEconForm();
+                $tabla = $actModel->tableName();
+
+                // Condiciones para modificar el registro.
+                $arregloCondicion['id_contribuyente'] = $modelDeclaracion->id_contribuyente;
+                $arregloCondicion['id_impuesto'] = $modelDeclaracion->id_impuesto;
+                $arregloCondicion['ente'] = Yii::$app->ente->getEnte();
+                $arregloCondicion['estatus'] = 0;
+
+
+                // Atributos a modificar.
+                $arregloDatos['iva_enero'] = $modelDeclaracion->iva_enero;
+                $arregloDatos['iva_febrero'] = $modelDeclaracion->iva_febrero;
+                $arregloDatos['iva_marzo'] = $modelDeclaracion->iva_marzo;
+                $arregloDatos['iva_abril'] = $modelDeclaracion->iva_abril;
+                $arregloDatos['iva_mayo'] = $modelDeclaracion->iva_mayo;
+                $arregloDatos['iva_junio'] = $modelDeclaracion->iva_junio;
+                $arregloDatos['iva_julio'] = $modelDeclaracion->iva_julio;
+                $arregloDatos['iva_agosto'] = $modelDeclaracion->iva_agosto;
+                $arregloDatos['iva_septiembre'] = $modelDeclaracion->iva_septiembre;
+                $arregloDatos['iva_octubre'] = $modelDeclaracion->iva_octubre;
+                $arregloDatos['iva_noviembre'] = $modelDeclaracion->iva_noviembre;
+                $arregloDatos['iva_diciembre'] = $modelDeclaracion->iva_diciembre;
+
+                $arregloDatos['islr'] = $modelDeclaracion->islr;
+                $arregloDatos['pp_industria'] = $modelDeclaracion->pp_industria;
+                $arregloDatos['pagos_retencion'] = $modelDeclaracion->pagos_retencion;
+
+                $result = $this->_conexion->modificarRegistro($this->_conn, $tabla, $arregloDatos, $arregloCondicion);
+            }
+            return $result;
+        }
 
 
     }
