@@ -139,7 +139,7 @@
 				// Este año ( $anoImpositivo ), corresponde a cualquier periodo.
 
 				$result = self::buscarAnoOrdenanza($anoImpositivo, $impuesto);
-				if ( $result != false ) {
+				if ( $result !== false ) {
 					$anoOrdenanza = $result['ano_impositivo'];
 				} else {
 					// Si se llega aqui es porque el año impositivo es muy viejo y no existe
