@@ -58,6 +58,8 @@
 	use backend\models\aaee\rubro\Rubro;
 	use backend\models\aaee\anexoramo\AnexoRamoSearch;
 	use backend\models\aaee\desincorporaramo\DesincorporarRamoSearch;
+	use backend\models\aaee\correccionfechainicio\CorreccionFechaInicioSearch;
+	use common\models\planilla\HistoricoSearch;
 
 
 
@@ -947,6 +949,22 @@
 	    		$arregloMsjs[] = self::getMensaje($modelDesincorporar);
 	    	}
 
+
+
+	    	// Se busca las solicitudes por correccion de fecha de inicio.
+	    	$fechaInicioSearch = New CorreccionFechaInicioSearch($this->_id_contribuyente);
+	    	$fechaInicioSolicitud = $fechaInicioSearch->findSolicitudFechaInicio(0);
+
+	    	$modelFechaInicio = $fechaInicioSolicitud->joinWith('estatusSolicitud')
+	    											 ->all();
+
+	    	if ( count($modelFechaInicio) > 0 ) {
+	    		$arregloMsjs[] = self::getMensaje($modelFechaInicio);
+	    	}
+
+
+
+
 	    	return $arregloMsjs;
 
 	    }
@@ -973,7 +991,7 @@
 	    			$mensaje = '';
 	    			$mensaje = isset($mod['nro_solicitud']) ? 'Solicitud Pendiente: ' . $mod['nro_solicitud'] : '';
 	    			$mensaje = $mensaje . ' - ' . $mod->getDescripcionTipoSolicitud($mod['nro_solicitud']);
-	    			$mensaje = isset($mod['rubro']['descripcion']) ? $mensaje . ' - ' . $mod['rubro']['descripcion'] : $mensaje;
+	    			//$mensaje = isset($mod['rubro']['descripcion']) ? $mensaje . ' - ' . $mod['rubro']['descripcion'] : $mensaje;
 		    		$result[] = $mensaje;
 		    	}
 	    	}
@@ -1007,6 +1025,7 @@
 	    	$definitiva = [];
 	    	$mensajePendiente = '';
 	    	$mensajeAprobada = '';
+	    	$mensajePago = [];
 
 	    	// Se determina si existen otras solicitudes que no permitan la creacion
 	    	// de la solicitud de declaracion estimada. Lo siguiente debe retornar
@@ -1041,6 +1060,11 @@
 	    	}
 
 
+	    	// Lo siguiente controla los pagos existentes para un lapso y tipo de declaracion
+	    	// especifica.
+	    	$mensajePago = self::controlPagoExistenteDelLapso($añoImpositivo, $periodo, $tipoDeclaracion);
+
+
 	    	// Se arma todo el arreglo de mensajes.
 	    	if ( count($solicitud) > 0 ) {
 	    		$mensajes[] = $solicitud;
@@ -1060,6 +1084,10 @@
 
 	    	if ( count($definitiva) > 0 ) {
 	    		$mensajes[] = $definitiva;
+	    	}
+
+	    	if ( count($mensajePago) > 0 ) {
+	    		$mensajes[] = $mensajePago;
 	    	}
 
 	    	return $mensajes;
@@ -1123,6 +1151,41 @@
 	    	return $mensajes;
 	    }
 
+
+
+	    /**
+	     * Metodo que permite determinar si existe un pago existente en un lapso determinado
+	     * y para un tipo de declaracion especifica. Si existe un pago se generara un mensaje
+	     * indicando la situacion.
+	     * @param  integer $añoImpositivo año del lapso a consultar.
+		 * @param  integer $periodo periodo del lapso a consultar.
+	     * @param  integer $tipoDeclaracion tipo de declaracion que se desea
+		 * consultar.
+		 * - tipo 1: estimada.
+		 * - tipo 2: definitiva.
+	     * @return array retorna un arreglo de mensajes.
+	     */
+	    private function controlPagoExistenteDelLapso($añoImpositivo, $periodo, $tipoDeclaracion)
+	    {
+	    	$result = false;
+	    	$mensajes = [];
+	    	$mensaje2 = Yii::t('backend', "La DECLARACION DEFINITIVA que desea realizar ya posee un pago realizado");
+	    	$mensaje1 = Yii::t('backend', "La DECLARACION ESTIMADA que desea realizar ya posee un pago realizado");
+
+	    	if ( $tipoDeclaracion == 1 ) {
+
+	    	} elseif ( $tipoDeclaracion == 2 ) {
+	    		$historico = New HistoricoSearch();
+	    		$result = $historico->condicionDefinitiva($añoImpositivo, $periodo, $this->_id_contribuyente);
+	    		if ( is_integer($result) ) {
+	    			if ( $result == 1 ) {
+	    				$mensajes[] = $mensaje2;
+	    			}
+	    		}
+	    	}
+
+	    	return $mensajes;
+	    }
 
 
 	}
