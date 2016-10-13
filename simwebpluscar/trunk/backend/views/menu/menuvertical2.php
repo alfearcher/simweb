@@ -309,7 +309,7 @@ session_start();
 		        			'items' => [
 		        						['label' => 'Registro','url' => ['/tasas/registrar/registrar-tasas/registro-tasas']],
 		        					   
-		        					   	['label' => 'Modificar/inactivar', 'url' => ['/presupuesto/nivelespresupuesto/modificar/modificar-niveles-presupuesto/vista-seleccion']],
+		        					   	['label' => 'Modificar/inactivar', 'url' => ['/tasas/modificarinactivar/modificar-inactivar-tasas/busqueda-tasa']],
 		        					   
 		        					   
 		        					   	
