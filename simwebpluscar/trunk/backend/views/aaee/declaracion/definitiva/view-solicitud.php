@@ -184,7 +184,7 @@
 									'value' => Yii::$app->formatter->asDecimal($model->iva_enero + $model->iva_febrero +
 																			   $model->iva_marzo + $model->iva_abril +
 																			   $model->iva_mayo + $model->iva_junio +
-																			   $model->iva_junio + $model->iva_agosto +
+																			   $model->iva_julio + $model->iva_agosto +
 																			   $model->iva_septiembre + $model->iva_octubre +
 																			   $model->iva_noviembre + $model->iva_diciembre, 2),
 								],
