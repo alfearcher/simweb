@@ -85,6 +85,7 @@
 
 
 
+
 		/**
 		 * Metodo que realiza una busqueda para determinar si esta inscrito como contribuyente
 		 * de Actividad Economica.
@@ -151,6 +152,20 @@
 			return isset($findModel) ? $findModel : null;
 		}
 
+
+
+
+
+		/***/
+		public function findSolicitudFechaInicio($estatus)
+		{
+			$findModel = CorreccionFechaInicio::find()->where('id_contribuyente =:id_contribuyente',
+																 [':id_contribuyente' => $this->_id_contribuyente])
+													  ->andWhere('estatus =:estatus',
+													  			[':estatus' => $estatus]);
+			return isset($findModel) ? $findModel : null;
+
+		}
 
 
 		/**
