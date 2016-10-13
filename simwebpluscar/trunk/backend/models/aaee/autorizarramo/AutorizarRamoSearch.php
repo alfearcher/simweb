@@ -510,7 +510,7 @@
 	    public function getRangoOrdenanza($añoInicioActividad, $notificado = true)
 	    {
 	    	$rangoOrdenanza = [];
-	    	$añoInicial = self:: getAnoLimiteSegunAnoInicio($añoInicioActividad, $notificado = true);
+	    	$añoInicial = self::getAnoLimiteSegunAnoInicio($añoInicioActividad, $notificado = true);
 
 	    	if ( $añoInicial > 0 ) {
 		    	// Se recibe un array donde el indice del arreglo es al año de creacion de la
