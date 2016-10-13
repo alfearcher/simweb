@@ -46,8 +46,10 @@
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 	use backend\models\configuracion\tasasolicitud\TasaMultaSolicitud;
-
-
+	use common\models\presupuesto\codigopresupuesto\CodigosContables;
+	use backend\models\impuesto\Impuesto;
+	use common\models\tasas\GrupoSubnivel;
+	use common\models\tasas\TiposRangos;
 	/**
 	* 	Clase
 	*/
@@ -85,6 +87,24 @@
 			return $this->hasMany(TasaMultaSolicitud::className(), ['id_impuesto' => 'id_impuesto']);
 		}
 
-	}
+		public function getCodigoContable()
+		{
+			return $this->hasMany(CodigosContables::className(), ['id_codigo' => 'id_codigo']);
+		}
 
-?>
+		public function getImpuestos()
+		{
+			return $this->hasMany(Impuesto::className(), ['impuesto' => 'impuesto']);
+		}
+
+		public function getGrupoSubNivel()
+		{
+			return $this->hasMany(GrupoSubnivel::className(), ['grupo_subnivel' => 'grupo_subnivel']);
+		}
+
+			public function getTipoRango()
+		{
+			return $this->hasMany(TiposRangos::className(), ['tipo_rango' => 'tipo_rango']);
+		}
+
+ }

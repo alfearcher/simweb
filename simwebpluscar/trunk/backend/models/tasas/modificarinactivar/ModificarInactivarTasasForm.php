@@ -21,14 +21,14 @@
  */
 
  /**    
- *  @file RegistrarTasasForm.php
+ *  @file ModificarInactivarTasasForm.php
  *  
  *  @author Manuel Alejandro Zapata Canelon
  * 
- *  @date 10/10/2016
+ *  @date 13/10/2016
  * 
- *  @class RegistrarTasasForm
- *  @brief Clase que contiene las rules para validacion  del formulario de registro de tasas
+ *  @class ModificarInactivarTasasForm
+ *  @brief Clase que contiene las rules para validacion  del formulario de modificacion de tasas
  * 
  *  
  * 
@@ -47,7 +47,7 @@
  *  @inherits
  *  
  */ 
-namespace backend\models\tasas\registrar;
+namespace backend\models\tasas\modificarinactivar;
 
 use Yii;
 use yii\base\Model;
@@ -55,13 +55,16 @@ use yii\data\ActiveDataProvider;
 use frontend\models\vehiculo\cambiodatos\BusquedaVehiculos;
 use common\models\calcomania\calcomaniamodelo\Calcomania;
 use common\models\presupuesto\codigopresupuesto\CodigosContables;
+use common\models\presupuesto\nivelespresupuesto\NivelesContables;
 use backend\models\tasa\Tasa;
 
-class RegistrarTasasForm extends Model
+/**
+ * InmueblesSearch represents the model behind the search form about `backend\models\Inmuebles`.
+ */
+class ModificarInactivarTasasForm extends Model
 {
 
-
-    public $id_impuesto;
+      public $id_impuesto;
     public $id_codigo;
     public $impuesto;
     public $ano_impositivo;
@@ -73,6 +76,9 @@ class RegistrarTasasForm extends Model
     public $inactivo;
     public $cantidad_ut;
 
+
+  
+ 
     
    
     /**
@@ -82,13 +88,11 @@ class RegistrarTasasForm extends Model
     {
         return [
 
-            [['impuesto', 'id_codigo', 'ano_impositivo', 'grupo_subnivel', 'tipo_rango', 'codigo', 'descripcion', 'monto', 'tipo_rango', 'cantidad_ut'], 'required'],
+            [['impuesto', 'id_codigo', 'ano_impositivo', 'codigo'], 'required'],
 
-            [['codigo' , 'monto' , 'cantidad_ut'], 'integer'],
+            
 
-            ['grupo_subnivel', 'verificarGrupoSubnivel' ],
-
-            ['codigo', 'verificarGrupoEspecifico'],
+            //['codigo', 'verificarCodigo'],
 
           //  ['codigo_contable', 'verificarCodigoContable'],
             
@@ -119,66 +123,52 @@ class RegistrarTasasForm extends Model
  
    
        
-               
-                
-
-
-
-              
-                
         ];
     }
+
+
     
-    /**
-     * [verificarGrupoSubnivel description] metodo que verifica que un grupo subnivel no se repita dentro de un impuesto
-     * @param  [type] $attribute [description] atributos
-     * @param  [type] $params    [description] parametros
-     * @return [type]            [description] retorna mensaje de error si consigue la informacion buscada
-     */
-    public function verificarGrupoSubnivel($attribute, $params)
-    {
-         $busqueda = Tasa::find()
-                                        ->where([
+    public function relacionBusquedaTasas($modelo){
 
-                                      'impuesto' => $this->impuesto,
-                                      'grupo_subnivel' => $this->grupo_subnivel,
-                                     // 'estatus' => 0,
+     //   die(var_dump($modelo));
 
-                                          ])
-                                        ->all();
+        $busqueda = Tasa::find()
+                        ->where([
+                            'varios.id_codigo' => $modelo->id_codigo,
+                            'varios.impuesto' => $modelo->impuesto,
+                            'varios.ano_impositivo' => $modelo->ano_impositivo,
+                          //  die($modelo->ano_impositivo),
+                            'varios.codigo' => $modelo->codigo,
+                            'varios.inactivo' => 0,
 
-              if ($busqueda != null){
 
-                $this->addError($attribute, Yii::t('backend', 'Este impuesto ya posee este grupo de subnivel' ));
-              }else{
-                return false;
-              }
+                            ])
+                        ->joinWith('codigoContable')
+                        ->joinWith('impuestos')
+                        ->joinWith('grupoSubNivel')
+                        ->joinWith('tipoRango');
 
+                       // die(var_dump($busqueda));
+
+                        return $busqueda;
     }
 
+    public function busquedaTasas($modelo){
 
-    public function verificarGrupoEspecifico($attribute, $params)
-    {
-         $busqueda = Tasa::find()
-                                        ->where([
+               $query = self::relacionBusquedaTasas($modelo);
 
-                                      'codigo' => $this->codigo,
-                                      'grupo_subnivel' => $this->grupo_subnivel,
-                                     // 'estatus' => 0,
-
-                                          ])
-                                        ->all();
-
-              if ($busqueda != null){
-
-                $this->addError($attribute, Yii::t('backend', 'Este Grupo de Subnivel ya posee este codigo especifico' ));
-              }else{
-                return false;
-              }
-
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            
+        ]);
+        $query
+        ->all();
+         
+          
+        return $dataProvider;
     }
 
-
+    //atributos de la tabla codigos_contables
    
     public function attributeVarios()
     {
