@@ -138,7 +138,7 @@
 							// rango ordenanza pendientes por realizar solicitud de autorizacion de ramo.
 							$rangoOrdenanza = $searchRamo->getRangoOrdenanza($añoInicio);
 
-							if (count($rangoOrdenanza) > 0 ) {
+							if ( count($rangoOrdenanza) > 0 ) {
 								$dataProvider = $searchRamo->getArrayDataProviderOrdenanza($rangoOrdenanza);
 								return $this->render('/aaee/listar-ordenanza/_list', [
 															'caption' => $caption,
