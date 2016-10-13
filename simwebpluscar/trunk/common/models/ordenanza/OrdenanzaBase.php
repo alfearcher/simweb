@@ -674,7 +674,7 @@
 				// El identificador del impuesto.
 				$config = self::getBuscarAnoOrdenanzaDesdeAnoImpositivo($impuesto, $añoOrdenanzaInicial);
 
-				if ( count($config) ) {
+				if ( count($config) > 0 ) {
 					foreach ( $config as $conf ) {
 						$rango[$conf['ano_impositivo']] = self::getAnoVencimientoOrdenanzaSegunAnoImpositivo($conf['ano_impositivo'], $impuesto);
 					}
@@ -688,7 +688,7 @@
 				// El identificador del impuesto.
 				$config = self::getBuscarAnoOrdenanzaDesdeAnoImpositivo($impuesto, $añoInicioActividad);
 
-				if ( count($config) ) {
+				if ( count($config) > 0 ) {
 					foreach ( $config as $conf ) {
 						$rango[$conf['ano_impositivo']] = self::getAnoVencimientoOrdenanzaSegunAnoImpositivo($conf['ano_impositivo'], $impuesto);
 					}
