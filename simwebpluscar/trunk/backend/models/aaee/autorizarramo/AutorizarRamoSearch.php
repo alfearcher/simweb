@@ -519,7 +519,7 @@
 		    	// arreglo[indice] => elemento
 		    	$rango = OrdenanzaBase::getRangoAnoOrdenanzaSegunImpuesto(1, $añoInicial);
 
-		    	if ( count($rango) ) {
+		    	if ( count($rango) > 0 ) {
 		    		foreach ( $rango as $key => $value ) {
 		    			if ( !self::existeDeclaracionParaRangoOrdenanza($key, $value) ) {
 		    				$rangoOrdenanza[$key] = $value;
