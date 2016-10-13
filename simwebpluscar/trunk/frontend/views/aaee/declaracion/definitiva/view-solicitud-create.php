@@ -141,6 +141,15 @@
 													'label' => Yii::t('frontend', $model[0]->getAttributeLabel('iva_diciembre')),
 													'value' =>  Yii::$app->formatter->asDecimal($model[0]->iva_diciembre, 2),
 												],
+												[
+													'label' => Yii::t('frontend', 'Total'),
+													'value' => Yii::$app->formatter->asDecimal($model[0]->iva_enero + $model[0]->iva_febrero +
+																							   $model[0]->iva_marzo + $model[0]->iva_abril +
+																							   $model[0]->iva_mayo + $model[0]->iva_junio +
+																							   $model[0]->iva_julio + $model[0]->iva_agosto +
+																							   $model[0]->iva_septiembre + $model[0]->iva_octubre +
+																							   $model[0]->iva_noviembre + $model[0]->iva_diciembre, 2),
+												],
 
 												// [
 												// 	'label' => Yii::t('frontend', 'Id. Taxpayer'),
@@ -174,6 +183,12 @@
 														'class' => 'text-right',
 													],
 												],
+												[
+													'label' => Yii::t('frontend', 'Total'),
+													'value' => Yii::$app->formatter->asDecimal($model[0]->islr + $model[0]->pp_industria +
+																							   $model[0]->pagos_retencion, 2),
+												],
+
 
 												// [
 												// 	'label' => Yii::t('frontend', 'Id. Taxpayer'),
