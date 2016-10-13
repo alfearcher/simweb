@@ -60,6 +60,7 @@
 	use backend\models\aaee\desincorporaramo\DesincorporarRamoSearch;
 	use backend\models\aaee\correccionfechainicio\CorreccionFechaInicioSearch;
 	use common\models\planilla\HistoricoSearch;
+	use backend\models\recibo\depositoplanilla\DepositoPlanillaSearch;
 
 
 
@@ -1026,6 +1027,7 @@
 	    	$mensajePendiente = '';
 	    	$mensajeAprobada = '';
 	    	$mensajePago = [];
+	    	$mensajeReciboPendiente = [];
 
 	    	// Se determina si existen otras solicitudes que no permitan la creacion
 	    	// de la solicitud de declaracion estimada. Lo siguiente debe retornar
@@ -1065,6 +1067,11 @@
 	    	$mensajePago = self::controlPagoExistenteDelLapso($añoImpositivo, $periodo, $tipoDeclaracion);
 
 
+	    	// Lo siguiente controla que el lapso que se desea declararno este relacionado a ninguna
+	    	// planilla que este en un recibo pendiente.
+	    	$mensajeReciboPendiente = self::controlReciboPendiente($añoImpositivo, $periodo, $tipoDeclaracion);
+
+
 	    	// Se arma todo el arreglo de mensajes.
 	    	if ( count($solicitud) > 0 ) {
 	    		$mensajes[] = $solicitud;
@@ -1089,6 +1096,11 @@
 	    	if ( count($mensajePago) > 0 ) {
 	    		$mensajes[] = $mensajePago;
 	    	}
+
+	    	if ( count($mensajeReciboPendiente) > 0 ) {
+	    		$mensajes[] = $mensajeReciboPendiente;
+	    	}
+
 
 	    	return $mensajes;
 
@@ -1180,6 +1192,62 @@
 	    		if ( is_integer($result) ) {
 	    			if ( $result == 1 ) {
 	    				$mensajes[] = $mensaje2;
+	    			}
+	    		}
+	    	}
+
+	    	return $mensajes;
+	    }
+
+
+
+
+	    /**
+	     * Metodo que determina si el lapso al cual se quiere declarar esta asociado
+	     * a una planilla que este relacionada a un recibo pndiente por pagar.
+	     * Se realiza una consulta para determinar primero las planillas asociadas
+	     * al lapso y luego se determina si dichas planillas estan relacionadas a un
+	     * recibo, si dicha relacion esta en un estatus pendiente, esto generara un
+	     * mensaje que se colocara en un arreglo de mensajes.
+	     * @param  integer $añoImpositivo año del lapso a consultar.
+		 * @param  integer $periodo periodo del lapso a consultar.
+	     * @param  integer $tipoDeclaracion tipo de declaracion que se desea
+		 * consultar.
+		 * - tipo 1: estimada.
+		 * - tipo 2: definitiva.
+	     * @return array retorna un arreglo de mensajes.
+	     */
+	    private function controlReciboPendiente($añoImpositivo, $periodo, $tipoDeclaracion)
+	    {
+	    	$planillas = [];
+	    	$result = '';
+	    	$mensajes = [];
+
+	    	if ( $tipoDeclaracion == 1 ) {
+
+	    	} elseif ( $tipoDeclaracion == 2 ) {
+	    		$historico = New HistoricoSearch();
+	    		// Lo siguinete retorna un arreglo de planillas.
+	    		$planillas = $historico->planillaDefinitivaRelacionadaLapso($añoImpositivo, $periodo, $this->_id_contribuyente);
+
+	    		if ( count($planillas) > 0 ) {
+	    			// Se determina si algunas de las planillass encontradas esta en un recibo de pago,
+	    			// y si las planillas aun estan pendiente por pagar en dicho recibo.
+	    			$deposito = New DepositoPlanillaSearch();
+	    			foreach ( $planillas as $planilla ) {
+	    				$result = '';
+	    				// Lo siguiente retorna un arreglo donde el indice del arreglo es el numero del
+	    				// identificador de la entidad "depositos-planillas" y el valor del elemneto
+	    				// es otro arreglo donde se obtienen el numero de recibo, planilla y la condicion
+	    				// del regsitro(estatus).
+	    				$result = $deposito->planillaRelacionadaReciboPendiente($planilla);
+	    				if ( count($result) > 0 ) {
+	    					foreach ( $result as $datos ) {
+	    						if ( $datos['estatus'] == 0 ) {
+	    							$mensajes[] = Yii::t('backend', "La planilla numero " . $datos['planilla'] . " esta relacionada al lapso que desea declarar. Dicha planilla esta relacionada al recibo " . $datos['recibo'] . " que aun aparece pendiente por pagar");
+	    						}
+	    					}
+	    				}
 	    			}
 	    		}
 	    	}
