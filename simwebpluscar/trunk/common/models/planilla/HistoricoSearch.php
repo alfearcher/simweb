@@ -47,6 +47,7 @@
 	use yii\db\ActiveRecord;
 	use common\models\planilla\Pago;
 	use common\models\planilla\PagoDetalle;
+	use backend\models\recibo\depositoplanilla\DepositoPlanillaSearch;
 
 	/**
 	* 	Clase
@@ -92,6 +93,8 @@
 									  				[':ano_impositivo' => $añoImpositivo])
 									  ->andWhere('trimestre =:trimestre',
 									  				[':trimestre' => $periodo])
+									  ->andWhere('impuesto =:impuesto',
+									  				[':impuesto' => 1])
 									  ->andWhere('referencia =:referencia',
 									  				[':referencia' => 1]);
 			}
@@ -123,6 +126,44 @@
 				return (int)$result->pago;
 			}
 		}
+
+
+
+		/**
+		 * Metodo que permite buscar la o las planillas de definitivas relacionadas
+		 * a un lapso. Las planillas deben estar pendiente.
+		 * @param  integer $añoImpositivo año del lapso a consultar.
+		 * @param  integer $periodo periodo del lapso a consultar.
+		 * @param  integer $idContribuyente identificador del contribuyente.
+		 * @return array retorna un arreglo de planillas.
+		 */
+		public function planillaDefinitivaRelacionadaLapso($añoImpositivo, $periodo, $idContribuyente)
+		{
+			// Datos de prueba
+			$añoImpositivo = 2012;
+			$periodo = 1;
+			$idContribuyente = 10797;
+
+			$planilla = [];
+			// Se busca las planillas de definitivas asociadas a los parametros enviados
+			// las planillas deben estar pendientes por pagar. pago=0
+			$findDefinitiva = self::definitivaLiquidadas($añoImpositivo, $periodo, $idContribuyente);
+
+			$result = $findDefinitiva->andWhere('pago =:pago',
+											[':pago' => 0])
+									 ->asArray()
+			                         ->all();
+
+			if ( count($result) > 0 ) {
+				foreach ( $result as $planillas ) {
+					$planilla[] = $planillas['pagos']['planilla'];
+				}
+			}
+
+			return $planilla;
+
+		}
+
 
 
 
