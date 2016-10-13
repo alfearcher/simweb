@@ -92,7 +92,7 @@ class RegistrarTasasController extends Controller
              // die('valido el postdata');
 
                if ($model->validate()){
-
+              //  die('valiudo');
 
                   $guardar = self::beginSave("guardar", $model);
                   
@@ -128,26 +128,38 @@ class RegistrarTasasController extends Controller
       
       $tabla = 'varios';
       $arregloDatos = [];
-      $arregloCampo = RegistrarTasasForm::attributeTasas();
+      $arregloCampo = RegistrarTasasForm::attributeVarios();
 
       foreach ($arregloCampo as $key=>$value){
 
           $arregloDatos[$value] =0;
       }
 
-      $arregloDatos['nivel_contable'] = $model->nivel_contable;
+      $arregloDatos['id_codigo'] = $model->id_codigo;
+
+      $arregloDatos['impuesto'] = $model->impuesto;
+
+      $arregloDatos['ano_impositivo'] = $model->ano_impositivo;
+
+      $arregloDatos['grupo_subnivel'] = $model->grupo_subnivel;
 
       $arregloDatos['codigo'] = $model->codigo;
 
       $arregloDatos['descripcion'] = $model->descripcion;
 
+      $arregloDatos['monto'] = $model->monto;
+
+      $arregloDatos['tipo_rango'] = $model->tipo_rango;
+
+      $arregloDatos['inactivo'] = 0;    
+
+      $arregloDatos['cantidad_ut'] = $model->cantidad_ut;
+
+
+
      
 
-      $arregloDatos['monto'] = 0;
-
-      $arregloDatos['inactivo'] = 0;
-
-      $arregloDatos['codigo_contable'] = $model->codigo;
+    
 
           if ($conexion->guardarRegistro($conn, $tabla, $arregloDatos )){
 
@@ -184,7 +196,7 @@ class RegistrarTasasController extends Controller
           if ($var == "guardar"){
             
 
-              $guardar = self::guardarCodigosContables($conn, $conexion, $model);
+              $guardar = self::guardarTasas($conn, $conexion, $model);
 
              
               if ($guardar == true){
