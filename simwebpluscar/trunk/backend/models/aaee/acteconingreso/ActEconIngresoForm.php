@@ -66,7 +66,13 @@
 		public $rectificatoria;
 		public $auditoria;
 		public $bloqueado;
-		public $condicion;		// 1 => anexado, 2 => autorizado, 9 => desincorporado.
+		public $inactivo;
+		public $usuario;
+		public $fecha_hora;
+		public $condicion;		// 1 => anexado,
+								// 2 => autorizado,
+								// 3 => agregado por declaracion definitiva.
+								// 9 => desincorporado.
 
 
 
@@ -88,6 +94,23 @@
 	    public function rules()
 	    {
 	        return [
+	        	[['id_impuesto', 'id_rubro', 'exigibilidad_periodo',
+	        	  'impuestos', 'liquidado', 'notificado', 'bloqueado',
+	        	  'condicion', 'inactivo'],
+	        	  'integer'],
+	        	[['exigibilidad_periodo'],
+	        	  'default', 'value' => 1],
+	        	[['impuestos', 'liquidado', 'notificado',
+	        	  'bloqueado', 'condicion', 'inactivo'],
+	        	  'default' , 'value' => 0],
+	        	[['estimado', 'reales', 'sustitutiva',
+	        	  'rectificatoria', 'auditoria'],
+	        	  'default', 'value' => 0],
+	        	[['periodo_fiscal_desde', 'periodo_fiscal_hasta'],
+	        	  'date', 'format' => 'yyyy-M-d'],
+	        	[['periodo_fiscal_desde', 'periodo_fiscal_hasta'],
+	        	  'default', 'value' => date('Y-m-d', strtotime('0000-00-00'))],
+	        	[['fecha_hora'], 'default', 'value' => date('Y-m-d H:i:s')],
 	        ];
 	    }
 
