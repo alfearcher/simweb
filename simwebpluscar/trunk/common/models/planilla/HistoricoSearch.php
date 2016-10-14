@@ -140,9 +140,9 @@
 		public function planillaDefinitivaRelacionadaLapso($añoImpositivo, $periodo, $idContribuyente)
 		{
 			// Datos de prueba
-			$añoImpositivo = 2012;
-			$periodo = 1;
-			$idContribuyente = 10797;
+			// $añoImpositivo = 2012;
+			// $periodo = 1;
+			// $idContribuyente = 10797;
 
 			$planilla = [];
 			// Se busca las planillas de definitivas asociadas a los parametros enviados
