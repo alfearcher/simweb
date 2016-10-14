@@ -164,7 +164,7 @@ class ConfigurarConveniosController extends Controller
 
                    $requisitos = $documento->documentos();
 
-                if (!\Yii::$app->user->isGuest){                                       
+                if (!\Yii::$app->user->isGuest){                                         
                       
 
                      $guardo = self::GuardarCambios($model, $datos);

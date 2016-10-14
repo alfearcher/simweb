@@ -112,7 +112,7 @@ use backend\models\impuesto\Impuesto;
                             <div class="col-sm-2">
                                     <?= $form->field($model, 'lapso_tiempo')->textInput()->label(false) ?>
                             </div>
-                    </div>
+                    </div>  
 
                     <div class="row" style="margin-left:20px;">
                             

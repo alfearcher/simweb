@@ -49,7 +49,7 @@ class ConfigConvenios extends \yii\db\ActiveRecord
             [['fecha_hora'], 'safe'],
             [['usuario'], 'string', 'max' => 80] 
         ];       
-    }   
+    }     
 
     /**
      * @inheritdoc
