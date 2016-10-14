@@ -85,6 +85,29 @@
 
 		}
 
+		/**
+		 * [RangoFechaOrdenanza description] metodo que calcula el rango de entre dos fechas enviadas como parametros
+		 * @param [type] $fecha_desde [description] fecha inicial
+		 * @param [type] $fecha_hasta [description] fecha final
+		 */
+		public function RangoFechaOrdenanza($fecha_desde, $fecha_hasta)
+		{
+			
+			foreach (range($fecha_desde , $fecha_hasta) as $fecha[]){
+
+
+			}
+			
+			foreach ($fecha as $f){
+
+				$array[] = ['id' => $f, 'campo' => $f];
+			}
+
+			return $array;
+
+		}
+
+
 
 
 
