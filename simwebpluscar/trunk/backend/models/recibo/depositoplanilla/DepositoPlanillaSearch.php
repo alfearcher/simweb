@@ -66,7 +66,8 @@
 
 		/**
 		 * Metodo que genera el modelo principal de la relacion entre las entidades
-		 * "pagos" y "pagos-detalle".
+		 * "depositos-planillas" y "pagos". En realidad es un inner join entre las
+		 * dos entidades
 		 * @return active record retorna un model principal de consulta.
 		 */
 		private function findDepositoPlanillaPago()
