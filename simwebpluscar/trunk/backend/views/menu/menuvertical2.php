@@ -311,6 +311,7 @@ session_start();
 		        					   
 		        					   	['label' => 'Modificar/inactivar', 'url' => ['/tasas/modificarinactivar/modificar-inactivar-tasas/busqueda-tasa']],
 		        					   
+		        					   	['label' => 'Replicar Tasas', 'url' => ['/tasas/replicar/replicar-tasas/busqueda-lote-tasas']],
 		        					   
 		        					   	
 		        					   	['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Codigos Presupuestarios',

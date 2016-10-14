@@ -54,6 +54,7 @@ $this->title = 'Registrar Tasas';
  
 <?php $form = ActiveForm::begin([
    // 'method' => 'post',
+  'action' => ['formulario-modificar-tasa'],
     'id' => 'formulario',
     'enableClientValidation' => true,
     'enableAjaxValidation' => false,
@@ -173,7 +174,7 @@ $this->title = 'Registrar Tasas';
                                                                                                     'id' => 'codigo',
                                                                                                 
                                                                                                    // 'value' => ModificarCodigoPresupuestarioForm::buscarNivelPresupuesto($datos[0]['nivel_contable']),
-                                                                                                   // 'readOnly' => true,
+                                                                                                   'readOnly' => true,
                                                                                                     ])
                                             ?>
                                         </div>
@@ -188,7 +189,7 @@ $this->title = 'Registrar Tasas';
                                                                                                     'id' => 'descripcion',
                                                                                                 
                                                                                                    // 'value' => ModificarCodigoPresupuestarioForm::buscarNivelPresupuesto($datos[0]['nivel_contable']),
-                                                                                                   // 'readOnly' => true,
+                                                                                                   'readOnly' => true,
                                                                                                     ])
                                             ?>
                                         </div>
@@ -209,7 +210,7 @@ $this->title = 'Registrar Tasas';
                                                                                               'id' => 'monto',
                                                                                                 
                                                                                               // 'value' => ModificarCodigoPresupuestarioForm::buscarNivelPresupuesto($datos[0]['nivel_contable']),
-                                                                                              // 'readOnly' => true,
+                                                                                              'readOnly' => true,
                                                                                                     ])
                                             ?>
                                   </div>
@@ -224,8 +225,8 @@ $this->title = 'Registrar Tasas';
                                     <?= $form->field($model, 'tipo_rango')->dropDownList($tiposRangos,[
                                                                                             'id' => 'tipo_rango',
                                                                                             'prompt' => Yii::t('backend', 'Select'),
-                                                                                           // 'style' => 'height:32px;width:150px;',
-                                                                                            
+                                                                                           //'disabled'  => 'disabled',
+                                                                                              
                                                                                             ])
                                     ?>
                                 
@@ -242,7 +243,7 @@ $this->title = 'Registrar Tasas';
                                                                                               'id' => 'cantidad_ut',
                                                                                                 
                                                                                               // 'value' => ModificarCodigoPresupuestarioForm::buscarNivelPresupuesto($datos[0]['nivel_contable']),
-                                                                                              // 'readOnly' => true,
+                                                                                             'readOnly' => true,
                                                                                                     ])
                                             ?>
                                   </div>

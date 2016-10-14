@@ -22,7 +22,8 @@
 
  <?php $form = ActiveForm::begin([
             'id' => 'form-datosNivelContable-inline',
-            
+           'method' => 'post',
+            'action' => ['/tasas/replicar/replicar-tasas/verificar-tasas'],
             'enableClientValidation' => true,
             'enableAjaxValidation' => true,
             'enableClientScript' => true,
@@ -163,43 +164,21 @@
                 ],
 
 
-    
-         
-
-               
-
-                
-
-             [
-                    'class' => 'yii\grid\ActionColumn',
-                    'header'=>'modificar',
-                    'template' => '{modificar}',
-                    'buttons' => [
-                        'modificar' => function ($url, $model, $key) {
-                            
-                                return Html::a('<center><span class= "fa fa-pencil"></span></center>',['modificar-tasa', 'value'=> $key]);
-                            
-                        },
+                 [
+                        'class' => 'yii\grid\CheckboxColumn',
+                        'name' => 'chk-replicar-tasas',
+                        'checkboxOptions' => [
+                                'id' => 'id-chk-replicar-tasas',
+                               
+                                //'onClick' => 'alert("hola " + $(this).val());'
+                                //$(this).is(":checked"), permite determinar si un checkbox esta tildado.
+                        ],
+                        'multiple' => true,
                     ],
-                ],
-
-                                
-                         [
-                    'class' => 'yii\grid\ActionColumn',
-                    'header'=>'inactivar',
-                    'template' => '{inactivar}',
-                    'buttons' => [
-                        'inactivar' => function ($url, $model, $key) {
-                           
-                                return Html::a('<center><span class= "fa fa-ban"></span></center>',['inactivar-tasa', 'value'=> $key]);
-                        
-                        },
-                    ],
-                ],
         ],
     ]); ?>
 
-     <div class="row">
+    <div class="row">
     <div class="col-sm-4">
     <p>
        
@@ -207,9 +186,18 @@
     </p>
     </div>
 
+    <div class="col-sm-5" style="margin-left: 20px;;">
+    
+     <?= Html::submitButton("Seleccionar", ["class" => "btn btn-success", 'style' => 'height:30px;width:140px;']) ?>
 
+    </div>
   
+    <div class="col-sm-2" style="float:right; color:red; font: comic sans ms">
+   
+    <p><?php echo $errorCheck ?></p>
 
+   
+    </div>
     </div>
         </div>
     </div>
