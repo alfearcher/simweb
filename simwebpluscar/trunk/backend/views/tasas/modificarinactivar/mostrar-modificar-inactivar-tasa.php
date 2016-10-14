@@ -177,7 +177,7 @@
                     'buttons' => [
                         'modificar' => function ($url, $model, $key) {
                             
-                                return Html::a('<center><span class= "fa fa-pencil"></span></center>',['verificar-id-tasa-modificar', 'value'=> $key]);
+                                return Html::a('<center><span class= "fa fa-pencil"></span></center>',['modificar-tasa', 'value'=> $key]);
                             
                         },
                     ],
