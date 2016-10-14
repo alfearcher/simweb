@@ -164,7 +164,7 @@ class ModificarInactivarTasasController extends Controller
 
               ]);
 
-          return $this->redirect(['formulario-modifar-tasa']);
+          return $this->redirect(['formulario-modificar-tasa']);
         
           }else{
 
@@ -178,7 +178,7 @@ class ModificarInactivarTasasController extends Controller
  */
   public function actionFormularioModificarTasa()
   {
- //  die('llegue aqui');
+  //die('llegue aqui');
             $datosTasa = $_SESSION['datosTasa'];
             $postData = yii::$app->request->post();
 
@@ -195,45 +195,81 @@ class ModificarInactivarTasasController extends Controller
             
 
                if ($model->validate()){
-               die('valido');
+               
+                  $modificar = self::beginSave("modificar" , $model);
+
+                      if($modificar == true){
+                          return MensajeController::actionMensaje(200);
+                      }else{
+                          return MensajeController::actionMensaje(920);
+                      }
 
                 
               }
           }  
-          // die(var_dump($datosPropaganda));
+          
             return $this->render('/tasas/modificarinactivar/view-modificar-tasa', [
                                                               'model' => $model,
-                                                              //'datos' => $datosPropaganda,
+                                                             
                                                              
             ]);
   
 
   }
+  /**
+   * [actionInactivarTasa description] metodo que inactiva la tasa seleccionada
+   * @return [type] [description] retorna true o false
+   */
+  public function actionInactivarTasa(){
+
+      $idTasa = yii::$app->request->get('value');
+
+          $_SESSION['idTasa'] = $idTasa;
+
+              $inactivar = self::beginSave("inactivar" , 0);
+
+                  if($inactivar == true){
+                          return MensajeController::actionMensaje(200);
+                      }else{
+                          return MensajeController::actionMensaje(920);
+                      }
+  }
 
 
  /**
-  * [modificarCodigosContables description] metodo que realiza el update en la tabla codigos_contables con la informacion enviada desde el modelo
+  * [modificarTasas description] metodo que realiza el update en la tabla varios con la informacion enviada desde el modelo
   * @param  [type] $conn     [description] parametro de conexion
   * @param  [type] $conexion [description] parametro de conexion
   * @param  [type] $model    [description] modelo que contiene los datos
   * @return [type]           [description] retorna true si modifica y false si no.
   */
-    public function modificarCodigosContables($conn, $conexion, $model)
+    public function modificarTasas($conn, $conexion, $model)
     {
-       $idCodigo = $_SESSION['idCodigo'];
+       $idTasa = $_SESSION['idTasa'];
 
       
-        $tableName = 'codigos_contables';
+        $tableName = 'varios';
         
-        $arregloCondition = ['id_codigo' => $idCodigo];
+        $arregloCondition = ['id_impuesto' => $idTasa];
      
-        $arregloDatos['nivel_contable'] = $model->nivel_contable;
+        
+        $arregloDatos['id_codigo'] = $model->id_codigo;
 
-         $arregloDatos['codigo'] = $model->codigo;
+        $arregloDatos['impuesto'] = $model->impuesto;
+
+        $arregloDatos['ano_impositivo'] = $model->ano_impositivo;
+
+        $arregloDatos['grupo_subnivel'] = $model->grupo_subnivel;
+
+        $arregloDatos['codigo'] = $model->codigo;
 
         $arregloDatos['descripcion'] = $model->descripcion;
 
-         
+        $arregloDatos['monto'] = $model->monto;
+
+        $arregloDatos['tipo_rango'] = $model->tipo_rango;
+
+        $arregloDatos['cantidad_ut'] = $model->cantidad_ut; 
 
           $conexion = new ConexionController();
 
@@ -254,19 +290,19 @@ class ModificarInactivarTasasController extends Controller
     }
 
     /**
-     * [inactivarCodigoContable description] metodo que realiza el update de la tabla codigos_contables e inactiva el codigo, dejandolo en estatus 1
+     * [inactivarTasa description] metodo que realiza el update de la tabla varios e inactiva la tasa, dejandola en estatus 1
      * @param  [type] $conn     [description] parametro de conexion
      * @param  [type] $conexion [description] parametro de conexion
      * @return [type]           [description] retorna true si modifica y false si no.
      */
-    public function inactivarCodigoContable($conn, $conexion)
+    public function inactivarTasa($conn, $conexion)
     {
-       $idCodigo = $_SESSION['idCodigo'];
+       $idTasa = $_SESSION['idTasa'];
 
       
-        $tableName = 'codigos_contables';
+        $tableName = 'varios';
         
-        $arregloCondition = ['id_codigo' => $idCodigo];
+        $arregloCondition = ['id_impuesto' => $idTasa];
      
         $arregloDatos['inactivo'] = 1;
 
@@ -293,7 +329,7 @@ class ModificarInactivarTasasController extends Controller
 
    
     /**
-     * [beginSave description] metodo padre que direcciona hacia los metodos de modificacion o inactivacion de codigo contable
+     * [beginSave description] metodo padre que direcciona hacia los metodos de modificacion o inactivacion de tasas
      * @param  [type] $var   [description] variable tipo string que sirve para el redireccionamiento de metodos de inactivacion o modificacion
      * @param  [type] $model [description] datos enviados desde los formularios
      * @return [type]        [description] retorna true si el proceso se cumple y false si no se cumple
@@ -312,7 +348,7 @@ class ModificarInactivarTasasController extends Controller
           if ($var == "modificar"){
             
 
-              $modificar = self::modificarCodigosContables($conn, $conexion, $model);
+              $modificar = self::modificarTasas($conn, $conexion, $model);
 
              
               if ($modificar == true){
@@ -336,7 +372,7 @@ class ModificarInactivarTasasController extends Controller
                  
           }else if($var == "inactivar"){
 
-               $inactivar = self::inactivarCodigoContable($conn, $conexion);
+               $inactivar = self::inactivarTasa($conn, $conexion);
 
              
               if ($inactivar == true){
