@@ -56,6 +56,7 @@ use common\conexion\ConexionController;
 use common\mensaje\MensajeController;
 use backend\models\presupuesto\codigopresupuesto\modificarinactivar\BusquedaCodigoMultipleForm;
 use backend\models\tasas\modificarinactivar\ModificarInactivarTasasForm;
+use backend\models\tasas\modificarinactivar\BusquedaTasasForm;
 /**
  * Site controller
  */
@@ -84,7 +85,7 @@ class ModificarInactivarTasasController extends Controller
 
         $post = yii::$app->request->post();
          // die(var_dump($post));
-          $model = new ModificarInactivarTasasForm();
+          $model = new BusquedaTasasForm();
           
           $postData = Yii::$app->request->post();
 
@@ -96,7 +97,7 @@ class ModificarInactivarTasasController extends Controller
             if ( $model->load($postData) ) {
                 
                 if ($model->validate()){
-               // die(var_dump($model->ano_impositivo));
+               //die(var_dump($model).'hola');
                $_SESSION['datosTasa'] = $model;
 
                 return $this->redirect(['mostrar-modificar-inactivar-tasa']);
@@ -134,18 +135,7 @@ class ModificarInactivarTasasController extends Controller
             ]);
   }
 
-  /**
-   * [actionVerificarIdTasaModificar description] metodo que verifica el id de la tasa y redirecciona al metodo que renderiza la vista para su modificacion
-   * @return [type] [description] redirecciona a otro metodo encargado de renderizar la vista con el formulario
-   */
-  public function actionVerificarIdTasaModificar()
-  {
-      $idTasa = yii::$app->request->get('value');
 
-        $_SESSION['idTasa'] = $idTasa;
-
-        return $this->redirect(['modificar-tasa']);
-  }
 
   /**
    * [actionModificarTasa description] metodo que renderiza formulario para modificacion de tasa
@@ -153,58 +143,70 @@ class ModificarInactivarTasasController extends Controller
    */
   public function actionModificarTasa()
   {
+  //die('llego a modificar'.$_SESSION['idTasa']);
         
-           
-           $_SESSION['idTasa'] =  $idTasa; 
+      $idTasa = yii::$app->request->get('value');
+     
+      $_SESSION['idTasa'] = $idTasa;
+      
 
-          $model = new ModificarInactivarTasaForm();
+      $modelSearch = new ModificarInactivarTasasForm();
+      $model = $modelSearch->busquedaTasasModificar($idTasa);
 
-          $datos = $model->($idCodigo);
+          if ($model == true){ 
+          //  die(var_dump($model));
+           $_SESSION['datosTasa'] = $model;
+            
+            $modelSearch->attributes = $model->attributes;
+          // die(var_dump($model->attributes));
+              return $this->render('/tasas/modificarinactivar/view-modificar-tasa', [
+                                                              'model' => $modelSearch,
 
-            $postData = Yii::$app->request->post();
+              ]);
 
+          return $this->redirect(['formulario-modifar-tasa']);
+        
+          }else{
+
+              die('no existe propaganda asociado a ese ID');
+          }
+  }
+
+/**
+ * [actionFormularioModificarTasa description] metodo que renderiza el formulario para la modificacion de la tasa
+ * @return [type] [description] retorna el formulario con sus validaciones
+ */
+  public function actionFormularioModificarTasa()
+  {
+ //  die('llegue aqui');
+            $datosTasa = $_SESSION['datosTasa'];
+            $postData = yii::$app->request->post();
+
+            $model = New ModificarInactivarTasasForm();
+
+            
             if ( $model->load($postData) && Yii::$app->request->isAjax ){
                   Yii::$app->response->format = Response::FORMAT_JSON;
                   return ActiveForm::validate($model);
             }
-
+           
             if ( $model->load($postData) ) {
-             // die('valido el postdata');
+             // die(var_dump($postData));
+            
 
                if ($model->validate()){
+               die('valido');
 
-
-    
-                      
-                     
                 
               }
-            }
-            
-            return $this->render('/tasa/modificarinactivar/view-modificar-tasa', [
+          }  
+          // die(var_dump($datosPropaganda));
+            return $this->render('/tasas/modificarinactivar/view-modificar-tasa', [
                                                               'model' => $model,
+                                                              //'datos' => $datosPropaganda,
                                                              
-                                                           
             ]);
-  }
-
-  /**
-   * [actionInactivarCodigoPresupuestario description] metodo que realiza la inactivacion del codigo presupuestario
-   * @return [type] [description] renderiza mensajes modales para indicar si se realizo la operacion o esta fue rechazada
-   */
-  public function actionInactivarCodigoPresupuestario()
-  {
-
-         $idCodigo = yii::$app->request->get('value');
-          $_SESSION['idCodigo'] =  $idCodigo; 
-
-              $inactivar = self::beginSave("inactivar", 0);
-
-              if($inactivar == true){
-                          return MensajeController::actionMensaje(200);
-                      }else{
-                          return MensajeController::actionMensaje(920);
-                      }  
+  
 
   }
 
