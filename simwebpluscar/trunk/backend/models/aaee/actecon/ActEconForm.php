@@ -58,7 +58,7 @@
 		public $ano_impositivo;
 		public $liquidado;
 		public $exigibilidad_declaracion;
-		public $isrl;
+		public $islr;
 		public $pp_industria;
 		public $pagos_retencion;
 		public $iva_total;
@@ -97,6 +97,22 @@
 	    public function rules()
 	    {
 	        return [
+	        	[['liquidado', 'ano_impositivo',
+	        	  'exigibilidad_declaracion', 'estatus',
+	        	  'condicion_estatus', 'ente',
+	        	  'id_contribuyente',],
+	        	  'integer'],
+	        	[['liquidado', 'ano_impositivo',
+	        	  'exigibilidad_declaracion', 'estatus',
+	        	  'condicion_estatus'],
+	        	  'default', 'value' => 0],
+	        	[['ente'], 'default', 'value' => Yii::$app->ente->getEnte()],
+	        	[['islr', 'pp_industria', 'pagos_retencion',
+	        	  'iva_enero', 'iva_febrero', 'iva_marzo',
+	        	  'iva_abril', 'iva_mayo', 'iva_junio',
+	        	  'iva_julio', 'iva_agosto', 'iva_septiembre',
+	        	  'iva_octubre', 'iva_noviembre', 'iva_diciembre'],
+	        	  'default', 'value' => 0],
 	        ];
 	    }
 
