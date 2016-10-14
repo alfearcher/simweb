@@ -1024,6 +1024,7 @@
 	    	$solicitud = '';
 	    	$declaracion = '';
 	    	$definitiva = [];
+	    	$definitivaExistente = '';
 	    	$mensajePendiente = '';
 	    	$mensajeAprobada = '';
 	    	$mensajePago = [];
@@ -1042,9 +1043,14 @@
 		    	$declaracion = self::puedoDeclararEstimada($añoImpositivo, $periodo);
 
 		    } elseif ( $tipoDeclaracion == 2 ) {	// Definitiva
-		    	// Lo siguiente controla la exisyencia de las declaraciones definitivas anteriores
+		    	// Lo siguiente controla la existencia de las declaraciones definitivas anteriores
 		    	// a la que se desea realizar.
 		    	$definitiva = self::controlDefinitivasAnteriores($añoImpositivo, $periodo);
+
+		    	// Lo sguiente controla si los montos de la definitiva estan todos en cero.
+		    	// Sino es asi se considera como valida dicha declaracion definitiva y no se
+		    	// podra cagar otra. Solo a traves dle modulo de sustitutiva.
+		    	$definitivaExistente = self::controlDefinitivaExistente($añoImpositivo, $periodo);
 
 		    } elseif ( $tipoDeclaracion == 3 ) {
 
@@ -1061,15 +1067,18 @@
 	    		$mensajeAprobada = Yii::t('backend', "Existe solicitud similar aprobada para el lapso {$añoImpositivo} - {$periodo}");
 	    	}
 
+	    	if ( $tipoDeclaracion == 1 || $tipoDeclaracion == 2 ) {
 
-	    	// Lo siguiente controla los pagos existentes para un lapso y tipo de declaracion
-	    	// especifica.
-	    	$mensajePago = self::controlPagoExistenteDelLapso($añoImpositivo, $periodo, $tipoDeclaracion);
+		    	// Lo siguiente controla los pagos existentes para un lapso y tipo de declaracion
+		    	// especifica.
+		    	$mensajePago = self::controlPagoExistenteDelLapso($añoImpositivo, $periodo, $tipoDeclaracion);
 
 
-	    	// Lo siguiente controla que el lapso que se desea declararno este relacionado a ninguna
-	    	// planilla que este en un recibo pendiente.
-	    	$mensajeReciboPendiente = self::controlReciboPendiente($añoImpositivo, $periodo, $tipoDeclaracion);
+		    	// Lo siguiente controla que el lapso que se desea declararno este relacionado a ninguna
+		    	// planilla que este en un recibo pendiente.
+		    	$mensajeReciboPendiente = self::controlReciboPendiente($añoImpositivo, $periodo, $tipoDeclaracion);
+		    }
+
 
 
 	    	// Se arma todo el arreglo de mensajes.
@@ -1101,6 +1110,10 @@
 	    		$mensajes[] = $mensajeReciboPendiente;
 	    	}
 
+
+	    	if ( count($definitivaExistente) > 0 ) {
+	    		$mensajes[] = $definitivaExistente;
+	    	}
 
 	    	return $mensajes;
 
@@ -1253,6 +1266,49 @@
 	    	}
 
 	    	return $mensajes;
+	    }
+
+
+
+
+	    /**
+	     * Metodo que realiza una busqueda de los registros pertenecientes al lapso
+	     * que se desea consultar, para sumar los montos existentes en el atributo
+	     * "reales". Si la suma de dichos atributos es mayor a cero (0), se considera
+	     * que este lapso ya fue declarado (declaracion definitiva).
+	     * @param  integer $añoImpositivo año del lapso a consultar.
+		 * @param  integer $periodo periodo del lapso a consultar.
+	     * @return array retorna un arreglo de mensaje. Si todo resulta satisfactorio
+	     * retorna un arreglo vacio.
+	     */
+	    private function controlDefinitivaExistente($añoImpositivo, $periodo)
+	    {
+	    	$result = false;
+	    	$mensajes = [];
+	    	$suma = 0;
+
+	    	$findModel = self::findRubrosRegistrados($añoImpositivo, $periodo);
+	    	if ( count($findModel) > 0 ) {
+	    		$result = $findModel->asArray()->all();
+	    		if ( count($result) > 0 ) {
+	    			foreach ( $result as $dato ) {
+	    				$suma = $suma + $dato['reales'];
+	    			}
+	    			if ( $suma > 0 ) {
+	    				$mensajes[] = Yii::t('backend', "La Declaracion Definitiva {$añoImpositivo} - {$periodo}, ya se encuentra registrada");
+	    			}
+	    		}
+	    	}
+	    	return $mensajes;
+
+	    }
+
+
+
+
+	    protected function cargarEstimadaPorOficio($añoImpositivoDefinitiva, $periodo)
+	    {
+	    	$añoImpositivo = $añoImpositivoDefinitiva + 1;
 	    }
 
 
