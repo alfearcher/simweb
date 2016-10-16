@@ -301,7 +301,7 @@ session_start();
 
 
 
-		        				//TASAS
+		        	//TASAS
         			['label' => Icon::show('fa fa-bar-chart',['class' => $typeLong], $typeIcon) . '&nbsp; Tasas',
 		        	'items' => [
 		        		//	SOLICITUDES DE PRESUPUESTOS
@@ -313,27 +313,20 @@ session_start();
 		        					   
 		        					   	['label' => 'Replicar Tasas', 'url' => ['/tasas/replicar/replicar-tasas/busqueda-lote-tasas']],
 		        					   
+		        					   ['label' => 'Reportes', 'url' => ['/tasas/reportes/reportes-tasas/busqueda-multiple-reportes']],
 		        					   	
-		        					   	['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Codigos Presupuestarios',
+		        					   	['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Codigo Subniveles',
 		        					   		'items' => [
-		        					   				['label' => 'Registrar', 'url' => ['/presupuesto/codigopresupuesto/registrar/registrar-codigo-presupuestario/registro-codigo-presupuesto']],
-		        					   				['label' => 'Modificar/Inactivar', 'url' => ['/presupuesto/codigopresupuesto/modificarinactivar/modificar-codigo-presupuestario/busqueda-codigo-multiple']],
+		        					   				['label' => 'Registrar', 'url' => ['/tasas/codigosubnivel/registrar/registrar-codigo-subnivel/registro-codigo-subnivel']],
 		        					   				
-		        					   				['label' => 'Cambiar Codigos Presupuestarios entre Niveles Presupuestarios', 'url' => ['presupuesto/codigopresupuesto/cambiarcodigo/cambiar-codigo-presupuestario/busqueda-codigo-presupuestario']],
+		        					   				['label' => 'Modificar/Inactivar', 'url' => ['/tasas/codigosubnivel/modificarinactivar/modificar-inactivar-codigo-subnivel/modificar-codigo-subnivel']],
+		        					   				
+		        					   				
 		        					   				
 		        					   		]
 		        					   	],
 
-		        					   	['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Ordenanza de Presupuestos',
-		        					   		'items' => [
-		        					   				
-		        					   				['label' => 'Registro', 'url' => ['/presupuesto/ordenanza/registrar/registrar-ordenanza-presupuesto/registrar-ordenanza-presupuesto']],
-		        					   				['label' => 'Modificar/Inactivar', 'url' => ['/presupuesto/ordenanza/modificarinactivar/modificar-inactivar-ordenanza-presupuesto/busqueda-ordenanza-presupuesto']],
-		        					   				
-		        					   				
-		        					   				
-		        					   		]
-		        					   	],
+		        					
 
 
 		        					   
