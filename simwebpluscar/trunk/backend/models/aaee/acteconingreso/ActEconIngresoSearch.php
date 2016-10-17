@@ -198,10 +198,111 @@
 
 
 
+	    /***/
+	    public function guardar($arregloDatos, $conexion, $conn)
+	    {
+	    	$result = false;
+	    	$tabla = $this->tableName();
+	    	$arreglo = $this->attributes;
+
+	    	foreach ( $arreglo as $key => $value ) {
+	    		if ( isset($arregloDatos[$key]) ) {
+	    			$arreglo[$key] = $arregloDatos[$key];
+	    		} else {
+	    			$arreglo[$key] = 0;
+	    		}
+	    	}
+
+	    	$result = $conexion->guardarRegistro($conn, $tabla, $arreglo);
+
+	    	return $result;
+	    }
 
 
 
+	    /***/
+	    public function inactivarAll($idImpuesto)
+	    {
+	    	$result = false;
+	    	$tabla = $this->tableName();
 
+	    	$arregloCondicion = [
+	    		'id_impuesto' => $idImpuesto,
+	    		'inactivo' => 0,
+	    	];
+
+	    	$arregloDatos = [
+	    		'inactivo' => 1,
+	    	];
+
+	    	$result = $conexion->modificarRegistro($conn, $tabla, $arregloDatos, $arregloCondicion);
+
+	    	return $result;
+	    }
+
+
+
+	    /***/
+	    public function inactivarItem($idImpuesto, $idRubro, $periodo, $conexion, $conn)
+	    {
+	    	$result = false;
+	    	$tabla = $this->tableName();
+
+	    	$arregloCondicion = [
+	    		'id_impuesto' => $idImpuesto,
+	    		'id_rubro' => $idRubro,
+	    		'exigibilidad_periodo' => $periodo,
+	    		'inactivo' => 0,
+	    	];
+
+	    	$arregloDatos = [
+	    		'inactivo' => 1,
+	    	];
+
+	    	$result = $conexion->modificarRegistro($conn, $tabla, $arregloDatos, $arregloCondicion);
+
+	    	return $result;
+	    }
+
+
+
+	    /**
+	     * Metodo que determina si un grupo de identificadores de rubros, corresponden
+	     * al mismo codigo de rubro.
+	     * @param  array $arregloIdRubro arreglo de identificadores de rubros, son enteros.
+	     * @return boolaen retorna true si el conjunto de identificadores corresponde al
+	     * mismo codigo de rubro, en caso contrario retornara false.
+	     */
+	    public function rubroSimilar($arregloIdRubro)
+	    {
+	    	$result = false;
+	    	$rubro = [];
+	    	$cancel = false;
+	    	if ( count($arregloIdRubro) > 0 ) {
+	    		foreach ( $arregloIdRubro as $key => $value ) {
+	    			$rubro[$key] = Rubro::findOne($value);
+	    			if ( !isset($rubro[$key]) ) {
+	    				$result = false;
+	    				$cancel = true;
+	    				break;
+	    			}
+	    		}
+
+	    		if ( !$cancel ) {
+		    		$rubroMaestro = $rubro[0];
+		    		foreach ( $rubro as $key => $value ) {
+		    			if ( $rubroMaestro !== $value ) {
+		    				$result = false;
+		    				break;
+		    			} else {
+		    				$result = true;
+		    			}
+		    		}
+		    	}
+	    	}
+
+	    	return $result;
+	    }
 
 	}
  ?>
