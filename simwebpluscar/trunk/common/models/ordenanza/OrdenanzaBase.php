@@ -158,7 +158,7 @@
 					}
 				}
 			}
-			return $anoOrdenanza;
+			return (int)$anoOrdenanza;
 		}
 
 
@@ -697,6 +697,37 @@
 
 			return $rango;
 		}
+
+
+
+		/**
+		 * Metodo que determina si dos años especificos pertenecen a la misma ordenanza
+		 * segun el impuesto.
+		 * @param  integer $añoUno año impositivo uno de consulta.
+		 * @param  integer $añoDos año impositivo dos de consulta.
+		 * @param  integer $impuesto identificador del impuesto.
+		 * @return boolean retorna true si ambos años estan en la misma ordenanza, false
+		 * en caso contrario.
+		 */
+		public function anoMismaOrdenanza($añoUno, $añoDos, $impuesto)
+		{
+			$result = false;
+			$añoOrdenanzaUno = 0;
+			$añoOrdenanzaDos = 0;
+
+			$añoOrdenanzaUno = self::getAnoOrdenanzaSegunAnoImpositivoImpuesto($añoUno, $impuesto);
+
+			$añoOrdenanzaDos = self::getAnoOrdenanzaSegunAnoImpositivoImpuesto($añoDos, $impuesto);
+
+			if ( $añoOrdenanzaUno > 0 ) {
+				if ( $añoOrdenanzaUno == $añoOrdenanzaDos ) {
+					$result = true;
+				}
+			}
+
+			return $result;
+		}
+
 
 
 
