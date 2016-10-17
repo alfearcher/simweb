@@ -51,6 +51,7 @@
 	use backend\models\aaee\actecon\ActEcon;
 	use backend\models\aaee\acteconingreso\ActEconIngreso;
 	use common\models\solicitudescontribuyente\SolicitudesContribuyente;
+	use backend\models\aaee\declaracion\tipodeclaracion\TipoDeclaracion;
 
 	/**
 	* 	Clase que gestiona la solicitud base de la declaracion.
@@ -132,6 +133,16 @@
 		 public function getActEconIngreso()
 		 {
 		 	return $this->hasMany(ActEconIngreso::className(), ['id_impuesto' => 'id_impuesto']);
+		 }
+
+
+		 /**
+		  * Relacion con la entidad "tipo-declaracion"
+		  * @return active record
+		  */
+		 public function getTipoDeclaracion()
+		 {
+		 	return $this->hasOne(TipoDeclaracion::className(), ['tipo_declaracion' => 'tipo_declaracion']);
 		 }
 
 
