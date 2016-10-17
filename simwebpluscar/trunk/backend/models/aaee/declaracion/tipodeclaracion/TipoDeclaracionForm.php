@@ -81,7 +81,7 @@
 	        	[['tipo_declaracion', 'inactivo'],
 	        	  'integer',
 	        	  'message' => Yii::t('backend','{attribute}')],
-	          	['inactivo', 'default', 'value' 0],
+	          	['inactivo', 'default', 'value' => 0],
 	        ];
 	    }
 
@@ -99,6 +99,26 @@
 	            'inactivo' => Yii::t('backend', 'Condition'),
 
 	        ];
+	    }
+
+
+
+	    /***/
+	    public function getListaTipoDeclaracion($listaTipo)
+	    {
+	    	$findModel = [];
+	    	if ( count($listaTipo) > 0 ) {
+	    		if ( $listaTipo[0] == '*' ) {	// Quiere seleccionar todos.
+	    			$findModel = TipoDeclaracion::findAll($listaTipo);
+	    		} else {
+	    			return $findModel = TipoDeclaracion::find()->where('inactivo =:inactivo',
+	    															[':inactivo' => 0])
+	    													   ->andWhere(['IN', 'tipo_declaracion', $listaTipo])
+	    													   ->all();
+	    		}
+	    	}
+
+	    	return $findModel;
 	    }
 
 	}
