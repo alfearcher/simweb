@@ -59,6 +59,7 @@
 	use backend\models\aaee\anexoramo\AnexoRamoSearch;
 	use backend\models\aaee\desincorporaramo\DesincorporarRamoSearch;
 	use backend\models\aaee\correccionfechainicio\CorreccionFechaInicioSearch;
+	use backend\models\aaee\declaracion\tipodeclaracion\TipoDeclaracionForm;
 
 
 
@@ -81,6 +82,18 @@
 		public function __construct($idContribuyente)
 		{
 			$this->_id_contribuyente = $idContribuyente;
+		}
+
+
+
+		/***/
+		public function getListaTipoDeclaracion($listaTipo)
+		{
+			$findModel = TipoDeclaracionForm::getListaTipoDeclaracion($listaTipo);
+			if ( count($findModel) > 0 ) {
+				return ArrayHelper::map($findModel, 'tipo_declaracion', 'descripcion');
+			}
+			return false;
 		}
 
 
@@ -447,7 +460,7 @@
 		    			  				    ->andWhere('estatus =:estatus', [':estatus' => 0])
 		    			  				    ->andWhere('inactivo =:inactivo', [':inactivo' => 0])
 		    			  				    ->andWhere('bloqueado =:bloqueado', [':bloqueado' => 0])
-		    							    ->andWhere(['BETWEEN', 'ano_impositivo', $añoLimite, $añoActual - 1])
+		    							    ->andWhere(['BETWEEN', 'ano_impositivo', $añoLimite, $añoActual])
 		    							    ->joinWith('actividadDetalle', false, 'INNER JOIN')
 		    							    ->orderBy([
 		    							   		'ano_impositivo' => SORT_ASC,

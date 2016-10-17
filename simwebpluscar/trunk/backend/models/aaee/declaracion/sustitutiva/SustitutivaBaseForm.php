@@ -66,6 +66,7 @@
 		public $sustitutiva;
 		public $rectificatoria;
 		public $auditoria;
+		public $tipo_declaracion;
 		public $periodo_fiscal_desde;
 		public $periodo_fiscal_hasta;
 		public $origen;
@@ -75,13 +76,14 @@
 		public $fecha_hora_proceso;
 		public $user_funcionario;
 
-
+		public $ano_impositivo;
 		public $rubro;
 		public $descripcion;
 
 		const SCENARIO_ESTIMADA = 'estimada';
 		const SCENARIO_DEFINITIVA = 'definitiva';
 		const SCENARIO_SEARCH = 'search';
+		const SCENARIO_SEARCH_TIPO = 'search_tipo';
 
 
 		/**
@@ -103,6 +105,7 @@
 	        					'sustitutiva',
 	        					'rectificatoria',
 	        					'auditoria',
+	        					'tipo_declaracion',
 	        					'periodo_fiscal_desde',
 	        					'periodo_fiscal_hasta',
 	        					'rubro',
@@ -111,6 +114,7 @@
 	        					'fecha_hora',
 	        					'usuario',
 	        					'estatus',
+	        					'ano_impositivo',
 
 
 	        		],
@@ -125,6 +129,7 @@
 	        					'sustitutiva',
 	        					'rectificatoria',
 	        					'auditoria',
+	        					'tipo_declaracion',
 	        					'periodo_fiscal_desde',
 	        					'periodo_fiscal_hasta',
 	        					'rubro',
@@ -133,14 +138,22 @@
 	        					'fecha_hora',
 	        					'usuario',
 	        					'estatus',
+	        					'ano_impositivo',
 
-        		],
+        			],
         		self::SCENARIO_SEARCH => [
         					'id_contribuyente',
         					'ano_impositivo',
+        					'tipo_declaracion',
         					'exigibilidad_periodo',
 
-        		],
+        			],
+
+        		self::SCENARIO_SEARCH_TIPO => [
+        					'id_contribuyente',
+        					'tipo_declaracion',
+
+        			],
 	        ];
     	}
 
@@ -154,26 +167,31 @@
 	        return [
 	        	[['id_contribuyente', 'estimado',
 	        	  'id_impuesto', 'id_rubro',
-	        	  'exigibilidad_periodo'
+	        	  'exigibilidad_periodo', 'tipo_declaracion',
 	        	  'rubro', 'descripcion'],
 	        	  'required', 'on' => 'estimada',
 	        	  'message' => Yii::t('frontend', '{attribute} is required')],
 	        	[['id_contribuyente', 'reales',
 	        	  'id_impuesto', 'id_rubro',
-	        	  'exigibilidad_periodo'
+	        	  'exigibilidad_periodo', 'tipo_declaracion',
 	        	  'rubro', 'descripcion'],
 	        	  'required', 'on' => 'definitiva',
 	        	  'message' => Yii::t('frontend', '{attribute} is required')],
-	        	[['id_contribuyente', 'ano_impositivo', 'exigibilidad_periodo'],
+	        	[['id_contribuyente', 'ano_impositivo',
+	        	  'exigibilidad_periodo', 'tipo_declaracion'],
 	        	  'required', 'on' => 'search',
 	        	  'message' => Yii::t('frontend', '{attribute} is required')],
+	        	[['id_contribuyente', 'tipo_declaracion'],
+	        	  'required', 'on' => 'search_tipo',
+	        	  'message' => Yii::t('frontend', '{attribute} is required')],
 	        	[['id_rubro', 'estatus', 'id_contribuyente',
-	        	  'exigibilidad_periodo', 'id_impuesto'],
+	        	  'exigibilidad_periodo', 'id_impuesto', 'tipo_declaracion'],
 	        	  'integer',
 	        	  'message' => Yii::t('frontend', '{attribute} no valid')],
-	          	['estatus', 'default', 'value' => 0],
+	          	[['estatus', 'tipo_declaracion'],
+	          	  'default', 'value' => 0],
 	          	[['estimado','reales', 'sustitutiva',
-	          	  'rectificatoria', 'auditoria']
+	          	  'rectificatoria', 'auditoria'],
 	          	  'default', 'value' => 0],
 	          	['fecha_hora', 'default', 'value' => date('Y-m-d H:i:s')],
 	          	// ['monto_new',
