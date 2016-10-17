@@ -870,11 +870,6 @@
 
 
 
-
-
-
-
-
 		/**
 		 * Metodo para guardar los documentos consignados.
 		 * @param  ConexionController  $conexionLocal instancia de la clase ConexionController
