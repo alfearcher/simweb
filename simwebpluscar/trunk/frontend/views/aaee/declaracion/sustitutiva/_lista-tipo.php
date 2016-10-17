@@ -22,15 +22,14 @@
  */
 
  /**
- *  @file _create.php
+ *  @file _lista-tipo.php
  *
  *  @author Jose Rafael Perez Teran
  *
- *  @date 27-08-2016
+ *  @date 17-10-2016
  *
- *  @view create.php
- *  @brief vista intermedia para renderizar el formulario principal de la solicitud para
- *  la declaracion estimada.
+ *  @view _lista-tipo.php
+ *  @brief vista intermedia para renderizar el formulario principal que muestra los tipos de declaraciones
  *
  */
 
@@ -60,18 +59,15 @@
 	<?php } ?>
 </div>
 
-<div class="seleccionar-lapso-form-create">
-	<?= $this->render('@common/views/aaee/seleccionar-lapso/seleccionar-lapso-form', [
-								        			'model' => $model,
-								        			'findModel' => $findModel,
-								        			'listaAño' => $listaAño,
-								        			'caption' => $caption,
-								        			'subCaption' => $subCaption,
-								        			'url' =>$url,
-													'rutaLista' => $rutaLista,
-													'searchDeclaracion' => $searchDeclaracion,
-													'btnBack' => 1,
-													//'errorMensaje' => $errorMensaje,
+<div class="seleccionar-tipo-declaracion-create">
+	<?= $this->render('@common/views/aaee/seleccionar-tipo-declaracion/seleccionar-tipo-declaracion-form', [
+											        			'model' => $model,
+											        			'findModel' => $findModel,
+											        			'listaTipoDeclaracion' => $listaTipoDeclaracion,
+											        			'caption' => $caption,
+											        			'subCaption' => $subCaption,
 					    ]) ?>
 </div>
+
+
 
