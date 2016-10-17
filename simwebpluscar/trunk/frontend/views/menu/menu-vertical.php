@@ -92,7 +92,7 @@
 		        					   		'items' => [
 		        					   				['label' => 'Estimada', 'url' =>  ['/aaee/declaracion/declaracion-estimada/index', 'id' => 108]],
 		        					   				['label' => 'Definitiva', 'url' => ['/aaee/declaracion/declaracion-definitiva/index', 'id' => 110]],
-		        					   				['label' => 'Sustitutiva', 'url' => '#'],
+		        					   				['label' => 'Sustitutiva', 'url' => ['/aaee/declaracion/sustitutiva/sustitutiva/index', 'id' => 111]],
 		        					   		]
 		        					   	],
 		        					   	['label' => Icon::show('fa fa-caret-square-o-up',['class' => $typeLong], $typeIcon) . '&nbsp; Cesación de Actividades',
