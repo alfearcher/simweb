@@ -592,9 +592,9 @@
 
 							// Se pasa a guardar en la sl_declaraciones.
 							$result = self::actionCreateDeclaracionDefinitiva($this->_conexion,
-																   			$this->_conn,
-																   			$model,
-																   			$conf);
+																   			  $this->_conn,
+																   			  $model,
+																   			  $conf);
 
 							if ( $result ) {
 								if ( $conf['nivel_aprobacion'] == 1 ) {
@@ -615,7 +615,13 @@
 						}		// Fin del ciclo de models.
 
 						if ( $result ) {
-							$result = self::actionEjecutaProcesoSolicitud($this->_conexion, $this->_conn, $models, $conf);
+							if ( $result ) {
+								$result = self::actionGenerarEstimada($this->_conexion, $this->_conn, $models);
+							}
+
+							if ( $result ) {
+								$result = self::actionEjecutaProcesoSolicitud($this->_conexion, $this->_conn, $models, $conf);
+							}
 
 							if ( $result ) {
 								$result = self::actionEnviarEmail($models, $conf);
@@ -843,6 +849,26 @@
 	    	}
 	    	return $result;
 	    }
+
+
+
+	    /***/
+	    private function actionGenerarEstimada($conexionLocal, $connLocal, $models)
+	    {
+	    	$result = false;
+	    	$idContribuyente = $_SESSION['idContribuyente'];
+	    	$declaracionSearch = New DeclaracionBaseSearch($idContribuyente);
+
+	    	$mensaje = $declaracionSearch->cargarEstimadaPorOficio($models, $conexionLocal, $connLocal);
+
+	    	if ( count($mensaje) == 0 ) { $result = true; }
+
+	    	return $result;
+	    }
+
+
+
+
 
 
 
