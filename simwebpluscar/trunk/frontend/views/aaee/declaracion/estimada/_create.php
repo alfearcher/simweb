@@ -70,6 +70,7 @@
 								        			'url' =>$url,
 													'rutaLista' => $rutaLista,
 													'searchDeclaracion' => $searchDeclaracion,
+													'btnBack' => 0,
 													//'errorMensaje' => $errorMensaje,
 					    ]) ?>
 </div>
