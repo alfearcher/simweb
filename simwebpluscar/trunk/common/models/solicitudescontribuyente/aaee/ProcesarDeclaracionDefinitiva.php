@@ -199,6 +199,10 @@
                         //$findModel = $this->findSolicitudDeclaracion($this->_model->nro_solicitud);
                         // $modelDeclaracion = $findModel->one();
                         $result = self::updateMontoIva($modelDeclaracion[0]);
+
+                        if ( $result ) {
+                            $result = self::generarEstimada($modelDeclaracion);
+                        }
                     }
                 }
             } else {
@@ -346,6 +350,23 @@
 
                 $result = $this->_conexion->modificarRegistro($this->_conn, $tabla, $arregloDatos, $arregloCondicion);
             }
+            return $result;
+        }
+
+
+
+
+         /***/
+        private function generarEstimada($modelDeclaracion)
+        {
+            $result = false;
+            $idContribuyente = $_SESSION['idContribuyente'];
+            $declaracionSearch = New DeclaracionBaseSearch($idContribuyente);
+
+            $mensaje = $declaracionSearch->cargarEstimadaPorOficio($modelDeclaracion, $this->_conexion, $this->_conn);
+
+            if ( count($mensaje) == 0 ) { $result = true; }
+
             return $result;
         }
 
