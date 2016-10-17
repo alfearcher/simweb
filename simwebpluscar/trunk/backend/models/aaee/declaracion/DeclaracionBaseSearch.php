@@ -46,13 +46,14 @@
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 	use yii\data\ActiveDataProvider;
-	use yii\data\ArrayDataProvider;
 	use backend\models\aaee\declaracion\DeclaracionBase;
 	use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomicaSearch;
 	use common\models\contribuyente\ContribuyenteBase;
 	use backend\models\aaee\actecon\ActEcon;
+	use backend\models\aaee\actecon\ActEconSearch;
 	use backend\models\aaee\acteconingreso\ActEconIngreso;
 	use backend\models\aaee\acteconingreso\ActEconIngresoForm;
+	use backend\models\aaee\acteconingreso\ActEconIngresoSearch;
 	use common\models\ordenanza\OrdenanzaBase;
 	use yii\helpers\ArrayHelper;
 	use backend\models\aaee\rubro\Rubro;
@@ -425,11 +426,12 @@
 	     * y obtener el valor del rubro, este valor (rubro) se convina con el $añoImpositivo
 	     * para realizar una busqueda añoImpositivo-rubro. Esta busqueda debe resultar en un
 	     * registro donde el identificador del mismo es el valor buscado como idRubro del año
-	     * impositivo.
+	     * impositivo. El identificador retornado corresponde al de la entidad "rubros".
 	     * @param  long $idRubro identificador del rubro.
 	     * @param  inetger $añoImpositivo año impositivo del catalogo de rubro que quiere consultar
 	     * el $idRubro no deberia corresponder al del año impositivo.
 	     * @return long retonra un identificador del rubro para el año impositivo $añoimpositivo.
+	     * de lo contraro retorna cero (0).
 	     */
 	    public function getIdRubro($idRubro, $añoImpositivo)
 	    {
@@ -1024,7 +1026,7 @@
 	    	$solicitud = '';
 	    	$declaracion = '';
 	    	$definitiva = [];
-	    	$definitivaExistente = '';
+	    	$definitivaExistente = [];
 	    	$mensajePendiente = '';
 	    	$mensajeAprobada = '';
 	    	$mensajePago = [];
@@ -1058,6 +1060,7 @@
 	    	// Lo siguiente controla si existe una solicitud similar pendiente o
 	    	// aprobada. Retorna un boolean que indica.
 	    	$pendiente = self::yaPoseeSolicitudSimiliarPendiente($añoImpositivo, $periodo, $tipoDeclaracion);
+
 	    	if ( $pendiente ) {
 	    		$mensajePendiente = Yii::t('backend', "Existe solicitud similar pendiente para el lapso {$añoImpositivo} - {$periodo}");
 	    	}
@@ -1080,21 +1083,20 @@
 		    }
 
 
-
 	    	// Se arma todo el arreglo de mensajes.
 	    	if ( count($solicitud) > 0 ) {
 	    		$mensajes[] = $solicitud;
 	    	}
 
-	    	if ( trim($declaracion) !== '' ) {
+	    	if ( trim($declaracion) !== "" ) {
 	    		$mensajes[] = $declaracion;
 	    	}
 
-	    	if ( trim($mensajePendiente) !== '' ) {
+	    	if ( trim($mensajePendiente) !== "" ) {
 	    		$mensajes[] = $mensajePendiente;
 	    	}
 
-	    	if ( trim($mensajeAprobada) !== '' ) {
+	    	if ( trim($mensajeAprobada) !== "" ) {
 	    		$mensajes[] = $mensajeAprobada;
 	    	}
 
@@ -1299,17 +1301,186 @@
 	    			}
 	    		}
 	    	}
+
 	    	return $mensajes;
 
 	    }
 
 
 
-
-	    protected function cargarEstimadaPorOficio($añoImpositivoDefinitiva, $periodo)
+	    /**
+	     * Metodo que se encarga de crear y guardar la declaracion estimada del lapso
+	     * siguiente al de la declaracion definitiva. Con la variable $modelDefinitiva
+	     * que debe ser de la instancia "DeclaracionBaseForm", cuando crea la solicitud
+	     * y la instancia "DeclaracionBase" cuando se aprueba la solicitud.
+	     * @param  model $modelDeclaracion modelo que contiene los datos dela entidad
+	     * "sl-declaraciones" donde se guarda el identificador del rubro, año impositivo,
+	     * periodo, monto-new (monto de la declaracion), id-contribuyente, identificador
+	     * del maestro de la declaracion (id-impuesto), entre otros.
+	     * @param  [type] $conexion        [description]
+	     * @param  [type] $conn            [description]
+	     * @return [type]                  [description]
+	     */
+	    public function cargarEstimadaPorOficio($modelDeclaracion, $conexion, $conn)
 	    {
-	    	$añoImpositivo = $añoImpositivoDefinitiva + 1;
+	    	$result = false;
+	    	$mensajes = [];
+	    	$añoActual = (int)date('Y');
+    		$añoImpositivo = (int)$modelDeclaracion[0]['ano_impositivo'];
+    		$usuario = '';
+			if ( isset(Yii::$app->user->identity->login) ) {
+				$usuario = Yii::$app->user->identity->login;
+			} elseif ( isset(Yii::$app->user->identity->username) ) {
+				$usuario = Yii::$app->user->identity->username;
+			}
+
+    		// Año de la estimada a cargar.
+	    	$añoEstimada = $añoImpositivo + 1;
+
+	    	if ( $añoEstimada > $añoActual + 1 ) {
+
+				$mensajes[] = Yii::t('backend', 'Año de declracion fuera de rango');
+
+			} else {
+
+				// Se determina si ambos años, el de la definitiva y el de la estimada
+		    	// corresponden a la misma ordenaza.
+				$ordenanzaValida = OrdenanzaBase::anoMismaOrdenanza($añoImpositivo, $añoEstimada, 1);
+				if ( $ordenanzaValida ) {
+
+					$actSearch = New ActEconSearch($this->_id_contribuyente);
+
+					$exigibilidadDecla = self::getExigibilidadSegunAnoImpositivo($añoEstimada);
+					$arregloDatos = [
+							'ente' => Yii::$app->ente->getEnte(),
+							'id_contribuyente' => $this->_id_contribuyente,
+							'ano_impositivo' => $añoEstimada,
+							'exigibilidad_declaracion' => $exigibilidadDecla['exigibilidad'],
+
+					];
+
+					// Se determina el identificador de la entidad maestro donde se guarda la declaraciones.
+
+					// Debe retornar un arreglo con la informacion de la operacion, este arreglo
+					// tiene dos parametros, 'r' => indica si el identificador ya exite o se genero
+					// en la operacion e 'id' => el identificador de la entidad.
+					$idActEcon = $actSearch->guardar($arregloDatos, $conexion, $conn);
+
+					$periodo = $modelDeclaracion[0]['exigibilidad_periodo'];
+					if ( $idActEcon['id'] > 0 ) {
+
+						// Si se llega aqui significa que se pudo obtener el identificador de la
+						// entidad "act-econ" para incluir la estimada del lapso.
+						// -----
+						// Ahora se buscan los registros de la estimada para determinar si existen
+						$findModel = self::findActEconIngresos($idActEcon['id'], $periodo);
+						$modelIngresos = $findModel->asArray()->all();
+						if ( count($modelIngresos) > 0 ) {
+
+							// Existe registros en la estimada.
+							$searchIngreso = New ActEconIngresoSearch($this->_id_contribuyente);
+
+							// Se inactiva lo registros existentes.
+							// ----
+							// Se determina la suma de los montos exitentes en las estimadas.
+							$suma = 0;
+							foreach ( $modelIngresos as $ingreso ) {
+								$suma = $ingreso['estimado'] + $suma;
+							}
+
+							// Se inactiva los registros existentes.
+							foreach ( $modelIngresos as $ingreso ) {
+
+								$result = $searchIngreso->inactivarItem($ingreso['id_impuesto'],
+																	 	$ingreso['id_rubro'],
+																	 	$ingreso['exigibilidad_periodo'],
+																	 	$conexion,
+																	 	$conn);
+
+								if ( !$result ) {
+									$mensajes[] = Yii::t('backend', 'Operacion cancelada no de pudo cargar la estimada del lapso continuo');
+									break;
+								}
+
+							}
+
+							if ( $result ) {
+
+								$result = false;
+								$modelActEconIngreso = New ActEconIngreso();
+
+								// Se anulo las registros existentes ahora se cargan los nuevos.
+								foreach ( $modelDeclaracion as $declaracion ) {
+
+									// Se crea el arreglo de datos para guardar el registro
+									$arreglo = $modelActEconIngreso->attributes;
+
+									$idRubro = (int)$searchIngreso->getIdRubro($declaracion['id_rubro'], $añoEstimada);
+									$rangoFecha = self::getRangoFechaDeclaracion($añoEstimada);
+
+									$arreglo['id_impuesto'] = (int)$idActEcon['id'];
+									$arreglo['id_rubro'] = $declaracion['id_rubro'];
+									$arreglo['exigibilidad_periodo'] = (int)$declaracion['exigibilidad_periodo'];
+									$arreglo['periodo_fiscal_desde'] = $rangoFecha['fechaDesde'];
+									$arreglo['periodo_fiscal_hasta'] = $rangoFecha['fechaHasta'];
+
+									$arreglo['estimado'] = $declaracion['monto_new'];
+									$arreglo['usuario'] = $usuario;
+									$arreglo['fecha_hora'] = date('Y-m-d H:i:s');
+									$arreglo['inactivo'] = 0;
+									$arreglo['condicion'] = 3;
+
+									$result = $searchIngreso->guardar($arreglo, $conexion, $conn);
+									if ( !$result ) {
+										$mensajes[] = Yii::t('backend', 'No se guardo la estimada');
+										break;
+									}
+								}
+							}
+
+						} else {
+
+							// No Existe registros en la estimada.
+							$searchIngreso = New ActEconIngresoSearch($this->_id_contribuyente);
+
+							$result = false;
+							$modelActEconIngreso = New ActEconIngreso();
+
+							// Se anulo las registros existentes ahora se cargan los nuevos.
+							foreach ( $modelDeclaracion as $declaracion ) {
+
+								// Se crea el arreglo de datos para guardar el registro
+								$arreglo = $modelActEconIngreso->attributes;
+
+								$idRubro = (int)$searchIngreso->getIdRubro($declaracion['id_rubro'], $añoEstimada);
+								$rangoFecha = self::getRangoFechaDeclaracion($añoEstimada);
+
+								$arreglo['id_impuesto'] = (int)$idActEcon['id'];
+								$arreglo['id_rubro'] = $idRubro;
+								$arreglo['exigibilidad_periodo'] = (int)$declaracion['exigibilidad_periodo'];
+								$arreglo['periodo_fiscal_desde'] = $rangoFecha['fechaDesde'];
+								$arreglo['periodo_fiscal_hasta'] = $rangoFecha['fechaHasta'];
+
+								$arreglo['estimado'] = $declaracion['monto_new'];
+								$arreglo['usuario'] = $usuario;
+								$arreglo['fecha_hora'] = date('Y-m-d H:i:s');
+								$arreglo['inactivo'] = 0;
+								$arreglo['condicion'] = 3;
+
+								$result = $searchIngreso->guardar($arreglo, $conexion, $conn);
+								if ( !$result ) {
+									$mensajes[] = Yii::t('backend', 'No se guardo la estimada');
+									break;
+								}
+							}
+						}
+					}
+	    		}
+	    	}
+
+			return $mensajes;
 	    }
+
 
 
 	}
