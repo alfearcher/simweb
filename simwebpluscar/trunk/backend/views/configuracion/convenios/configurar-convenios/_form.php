@@ -185,7 +185,7 @@ use backend\models\impuesto\Impuesto;
                             <div class="col-sm-2">
                                     <?= $form->field($model, 'id_impuesto')->textInput(['maxlength' => true])->label(false) ?>
                             </div>
-                    </div>
+                    </div>  
                             
 
                             

@@ -24,7 +24,7 @@ use backend\models\ContribuyentesForm;
 /* @var $this yii\web\View */
 /* @var $model backend\models\InscripcionInmueblesUrbanosForm */
 /* @var $form ActiveForm */
-$this->title = Yii::t('backend', 'Change of Ownership of Property Urban'). '<p>Id Taxpayer: ' . $modelContribuyente->id_contribuyente.'</p>';
+$this->title = Yii::t('backend', 'Change of property values'). '<p>Id Taxpayer: ' . $modelContribuyente->id_contribuyente.'</p>';
  
 
  ?>
@@ -165,69 +165,66 @@ $variablephp=$_COOKIE['variablephp'];
                 <?= $this->title ?>
             </div> 
             <div class="panel-body" > 
-                <table class="table table-striped ">
+                
                     
+ 
 
-                                              <tr>
-                                                     <td colspan="5"> 
+ 
 
-                                                         <?= DetailView::widget([
-                                                                                    'model' => $model,
-                                                                                    'attributes' => [ 
-                                                                                    'id_contribuyente',
-                                                                                    'id_impuesto',
-                                                                                    'catastro',
-                                                                                    'direccion',
-                                                                                    'tlf_hab',                                                        
-                                                                                     ],
-                                                         
-                                                          ]) ?> 
-
-                                                     </td>
-                        
-                                               </tr>
-
-                                               <tr>
-                                                    <td colspan="1" style="max-width: 100px" align="right">
+<div class="panel panel-primary">
+<div class="panel-heading">
+                <?= Yii::t('frontend', 'Property Values') ?>  
+</div>
+                                                    <div class="row" style="margin-left:20px; margin-top:20px;">
                                                         <div class="col-sm-2"> 
                                                         <?= Yii::t('backend', 'Meters Construction') ?>
                                                         </div> 
-                                                    </td>
-
-                                                    <td  colspan="4" style="max-width: 100px" align="right">
-                                                        <div class="col-sm-3"> 
+                                                    
+                                                        <div class="col-sm-2"> 
                                                         <?= $form->field($model, 'metros_construcion')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?>
                                                         </div> 
-                                                    </td> 
 
-                                                    
-                                                                                                        
-                                                </tr>   
+                                                        <div class="col-sm-2"> 
+                                                        <?= Yii::t('backend', 'Value of Construction') ?>
+                                                        </div> 
 
-                                                <tr>                     
-                                
+                                                        <div class="col-sm-2"> 
+                                                        <?= $form->field($model, 'valor_construcion')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?>
+                                                        </div> 
+                                                    </div>
 
-                                                    <td colspan="1" style="max-width: 100px" align="right">
+                                            
+                                                    <div class="row" style="margin-left:20px; margin-top:20px;">
                                                         <div class="col-sm-2"> 
                                                         <?= Yii::t('backend', 'Meters of Land') ?>
                                                         </div> 
-                                                    </td>
-
-                                                    <td colspan="4" style="max-width: 100px" align="right">
+                                                    
                                                         <div class="col-sm-2"> 
                                                         <?= $form->field($model, 'metros_terreno')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?> 
                                                         </div>
-                                                    </td>         
-                                                </tr>
 
-                                                <tr>
-                                                    <td colspan="5" style="max-width: 100px">
+                                                        <div class="col-sm-2"> 
+                                                        <?= Yii::t('backend', 'Value of Land') ?>
+                                                        </div> 
+
+                                                        <div class="col-sm-2"> 
+                                                        <?= $form->field($model, 'valor_terreno')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?>
+                                                        </div> 
+                                                    </div>         
+                                                
+</div>
+                                                
+                                                    <div class="row" style="margin-left:20px; margin-top:20px;">
+                                                        <div class="col-sm-2">
                                                         <?php 
                                                         echo Html::submitButton(Yii::t('backend', 'Accept'), ['class' => 'btn btn-primary', 'name'=>'AcceptBuyer', 'value'=>'Accept']); 
                                                         ?> 
+                                                        </div> 
+                                                        <div class="col-sm-2">
                                                         <?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) ?>
-                                                    </td>
-                                                </tr> 
+                                                        </div> 
+                                                    </div> 
+                                                 
                                        
                                                    
                   </div>      
@@ -255,7 +252,7 @@ $variablephp=$_COOKIE['variablephp'];
                                                     
                    
 
-                </table>
+                
 
    
 
