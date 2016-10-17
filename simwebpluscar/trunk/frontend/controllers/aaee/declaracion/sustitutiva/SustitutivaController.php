@@ -294,12 +294,15 @@
 				$formName = $model->formName();
 				$model->scenario = self::SCENARIO_SEARCH;
 
-				$caption = Yii::t('frontend', 'Declaracion Sustitutiva');
-				$subCaption = Yii::t('frontend', 'Seleccione el periodo fiscal');
-
 		      	// Datos generales del contribuyente.
-		      	$searchDeclaracion = New SustitutivaBaseSearch($idContribuyente);
-		      	$findModel = $searchDeclaracion->findContribuyente();
+		      	$searchSustitutiva = New SustitutivaBaseSearch($idContribuyente);
+		      	$findModel = $searchSustitutiva->findContribuyente();
+
+		      	$tipoDeclaracionDescripcion = $searchSustitutiva->getListaTipoDeclaracion([$tipoDeclaracion]);
+		      	$descripcion = 'Declaracion ' . $tipoDeclaracionDescripcion[$tipoDeclaracion];
+
+		      	$caption = Yii::t('frontend', 'Declaracion Sustitutiva') . '. ' . Yii::t('backend', $descripcion);
+				$subCaption = Yii::t('frontend', 'Seleccione el periodo fiscal') . '. ' . Yii::t('backend', $descripcion);
 
 				if ( isset($postData['btn-back-form']) ) {
 					if ( $postData['btn-back-form'] == 3 ) {
@@ -344,7 +347,7 @@
 		  		if ( isset($findModel) ) {
 					// Se busca la lista de años que se mostraran en al combo de años.
 					// Solo se considerara los año anteriores al actual para la declaracion definitiva.
-					$listaAño = $searchDeclaracion->getListaAnoRegistrado($tipoDeclaracion);
+					$listaAño = $searchSustitutiva->getListaAnoRegistrado($tipoDeclaracion);
 					if ( count($listaAño) == 0 ) {
 						$errorListaAño = Yii::t('frontend', 'No se encontraron RUBROS AUTORIZADOS cargados ');
 						$errorMensaje = ( trim($errorMensaje) !== '' ) ? $errorMensaje = $errorMensaje . '. ' . $errorListaAño : $errorListaAño;
@@ -360,7 +363,7 @@
 																	'listaAño' => $listaAño,
 																	'url' => $url,
 																	'rutaLista' => $rutaLista,
-																	'searchDeclaracion' => $searchDeclaracion,
+																	'searchSustitutiva' => $searchSustitutiva,
 																	'errorMensaje' => $errorMensaje,
 																]);
 
