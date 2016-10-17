@@ -319,6 +319,7 @@
 					if ( $postData['btn-accept'] == 1 ) {
 						$model->scenario = self::SCENARIO_SEARCH;
 						$model->load($postData);
+						$model->tipo_declaracion = $tipoDeclaracion;
 
 						if ( $model->load($postData) ) {
 			    			if ( $model->validate() ) {
@@ -329,8 +330,10 @@
 				   					$_SESSION['lapso'] = [
 				   								'a' => $model->ano_impositivo,
 				   								'p' => $model->exigibilidad_periodo,
+				   								'tipo' => $tipoDeclaracion,
+				   								'descripcion' => $descripcion,
 				   					];
-				   					$this->redirect(['declarar-create']);
+				   					$this->redirect(['sustitutiva-create']);
 				   				} else {
 				   					$errorMensaje = json_encode($msjControls);
 				   				}
@@ -381,7 +384,7 @@
 		 * Metodo que permite mostrar el formulario para la carga de la declaracion.
 		 * @return [type] [description]
 		 */
-		public function actionDeclararCreate()
+		public function actionSustitutivaCreate()
 		{
 			// Se verifica que el contribuyente haya iniciado una session.
 			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) && isset($_SESSION['conf'])) {
@@ -389,7 +392,7 @@
 				$idContribuyente = $_SESSION['idContribuyente'];
 				$request = Yii::$app->request;
 
-				$lapso = isset($_SESSION['lapso']) ? $_SESSION['lapso'] : null;
+				$lapso = isset($_SESSION['lapso']) ? $_SESSION['lapso'] : [];
 
 				if ( count($lapso) > 0 ) {
 					$btnSearchCategory = 1;
@@ -402,14 +405,14 @@
 					}
 
 
-					// Lo siguiente crea un array del modelo DeclaracionBaseForm(), para la validacion
+					// Lo siguiente crea un array del modelo SustitutivaBaseForm(), para la validacion
 					// individual de cada uno de los input (campos) del mismo tipo. En este caso el
 					// campo donde se registrara la declracion sera tantas veces como ramos (rubros) tenga
 					// registrado el contribuyente.
-					$modelMultiplex = [New DeclaracionBaseForm()];
+					$modelMultiplex = [New SustitutivaBaseForm()];
 
-					$caption = Yii::t('frontend', 'Declaracion Definitiva');
-					$subCaption = Yii::t('frontend', 'Declaracion Definitiva');
+					$caption = Yii::t('frontend', 'Declaracion Sustitutiva') . ' ' . $descripcion;
+					$subCaption = Yii::t('frontend', 'Declaracion Sustitutiva') . ' ' . $descripcion;
 					$formName = $modelMultiplex[0]->formName();
 
 					// Se obtienen solo los campos.
@@ -419,8 +422,12 @@
 					$result = false;
 					if ( $count > 0 ) {
 						foreach ( $datos as $key => $value ) {
-							$modelMultiplex[$key] = New DeclaracionBaseForm();
-							$modelMultiplex[$key]->scenario = self::SCENARIO_DEFINITIVA;
+							$modelMultiplex[$key] = New SustitutivaBaseForm();
+							if ( $lapso['tipo'] == 1 ) {
+								$modelMultiplex[$key]->scenario = self::SCENARIO_ESTIMADA;
+							} elseif ( $lapso['tipo'] == 2 ) {
+								$modelMultiplex[$key]->scenario = self::SCENARIO_DEFINITIVA;
+							}
 						}
 						Model::loadMultiple($modelMultiplex, $postData);
 						$result = Model::validateMultiple($modelMultiplex);
@@ -432,7 +439,7 @@
 			      	}
 
 			      	// Datos generales del contribuyente.
-			      	$searchDeclaracion = New DeclaracionBaseSearch($idContribuyente);
+			      	$searchSustitutiva = New SustitutivaBaseSearch($idContribuyente);
 			      	$findModel = $searchDeclaracion->findContribuyente();
 
 					if ( isset($postData['btn-back-form']) ) {
@@ -442,11 +449,11 @@
 						} elseif ( $postData['btn-back-form'] == 9 ) {
 
 							$opciones = [
-									'back' => '/aaee/declaracion/declaracion-definitiva/index-create',
+									'back' => '/aaee/declaracion/sustitutiva/sustitutiva/index-create',
 							];
-							$caption = $caption . '. ' . Yii::t('frontend', 'Categories Registered') . ' ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo;
-							$subCaption = $subCaption . '. ' . Yii::t('frontend', 'Categories Registers ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
-							return $this->render('/aaee/declaracion/definitiva/declaracion-definitiva-form', [
+							$caption = $caption . '. ' . Yii::t('frontend', 'Rubro(s) Registrado(s)') . ' ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo;
+							$subCaption = $subCaption . '. ' . Yii::t('frontend', 'Rubro(s) Registrado(s) ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
+							return $this->render('/aaee/declaracion/sustitutiva/sustitutiva/declaracion-definitiva-form', [
 		  																	'model' => $modelMultiplex,
 		  																	'findModel' => $findModel,
 		  																	'btnSearchCategory' => $btnSearchCategory,
@@ -538,13 +545,13 @@
 			  		if ( isset($findModel) ) {
 			  			$añoImpositivo = (int)$lapso['a'];
 						$periodo = (int)$lapso['p'];
-						$subCaption = $subCaption . '. ' . Yii::t('frontend', 'Categories Registers ' . $añoImpositivo . ' - ' . $periodo);
+						$subCaption = $subCaption . '. ' . Yii::t('frontend', 'Rubro(s) Registrado(s) ' . $añoImpositivo . ' - ' . $periodo . '. Tipo Declaracion: ' . $lapso['descripcion'] );
 
-						$rubroRegistradoModels = $searchDeclaracion->findRubrosRegistrados($añoImpositivo, $periodo)->all();
+						$rubroRegistradoModels = $searchSustitutiva->findRubrosRegistrados($añoImpositivo, $periodo)->all();
 
 						foreach ( $rubroRegistradoModels as $i => $rubroModel ) {
 							$monto = isset($declaracionDefinitiva[$rubroModel->rubroDetalle->rubro]) ? $declaracionDefinitiva[$rubroModel->rubroDetalle->rubro] : 0;
-							$modelMultiplex[$i] = New DeclaracionBaseForm();
+							$modelMultiplex[$i] = New SustitutivaBaseForm();
 							$modelMultiplex[$i]['id_contribuyente'] = $rubroModel->actividadEconomica->id_contribuyente;
 							$modelMultiplex[$i]['ano_impositivo'] = $rubroModel->actividadEconomica->ano_impositivo;
 							$modelMultiplex[$i]['id_rubro'] = $rubroModel->id_rubro;
@@ -553,39 +560,27 @@
 							$modelMultiplex[$i]['fecha_inicio'] = $findModel->fecha_inicio;
 							$modelMultiplex[$i]['periodo_fiscal_desde'] = $rubroModel->periodo_fiscal_desde;
 							$modelMultiplex[$i]['periodo_fiscal_hasta'] = $rubroModel->periodo_fiscal_hasta;
-							$modelMultiplex[$i]['tipo_declaracion'] = 2;
+							$modelMultiplex[$i]['tipo_declaracion'] = $lapso['tipo'];
 							$modelMultiplex[$i]['rubro'] = $rubroModel->rubroDetalle->rubro;
 							$modelMultiplex[$i]['descripcion'] = $rubroModel->rubroDetalle->descripcion;
-							$modelMultiplex[$i]['monto_new'] = 0;
-							$modelMultiplex[$i]['monto_v'] = $rubroModel->reales;
-							$modelMultiplex[$i]['monto_minimo'] = $rubroModel->estimado;
+							$modelMultiplex[$i]['estimado'] = $rubroModel->estimado;;
+							$modelMultiplex[$i]['reales'] = $rubroModel->reales;
+							$modelMultiplex[$i]['sustitutiva'] = $rubroModel->sustitutiva;
+							$modelMultiplex[$i]['rectificatoria'] = $rubroModel->rectificatoria;
+							$modelMultiplex[$i]['auditoria'] = $rubroModel->auditoria;
 							$modelMultiplex[$i]['usuario'] = isset(Yii::$app->user->identity->login) ? Yii::$app->user->identity->login : null;
 							$modelMultiplex[$i]['fecha_hora'] = date('Y-m-d H:i:s');
 							$modelMultiplex[$i]['origen'] = 'WEB';
 							$modelMultiplex[$i]['estatus'] = 0;
-							$modelMultiplex[$i]['iva_enero'] = 0;
-							$modelMultiplex[$i]['iva_febrero'] = 0;
-							$modelMultiplex[$i]['iva_marzo'] = 0;
-							$modelMultiplex[$i]['iva_abril'] = 0;
-							$modelMultiplex[$i]['iva_mayo'] = 0;
-							$modelMultiplex[$i]['iva_junio'] = 0;
-							$modelMultiplex[$i]['iva_julio'] = 0;
-							$modelMultiplex[$i]['iva_agosto'] = 0;
-							$modelMultiplex[$i]['iva_septiembre'] = 0;
-							$modelMultiplex[$i]['iva_octubre'] = 0;
-							$modelMultiplex[$i]['iva_noviembre'] = 0;
-							$modelMultiplex[$i]['iva_diciembre'] = 0;
-							$modelMultiplex[$i]['islr'] = 0;
-							$modelMultiplex[$i]['pp_industria'] = 0;
-							$modelMultiplex[$i]['pagos_retencion'] = 0;
+
 
 						}
 
 						$opciones = [
-							'back' => '/aaee/declaracion/declaracion-definitiva/index-create',
+							'back' => '/aaee/declaracion/sustitutiva/sustitutiva/index-create',
 						];
-						$caption = $caption . '. ' . Yii::t('frontend', 'Categories Registered') . ' ' . $añoImpositivo . ' - ' . $periodo;
-						return $this->render('/aaee/declaracion/definitiva/declaracion-definitiva-form', [
+						$caption = $caption . '. ' . Yii::t('frontend', 'Rubro(s) Registrado(s)') . ' ' . $añoImpositivo . ' - ' . $periodo;
+						return $this->render('/aaee/declaracion/sustitutiva/declaracion-sustitutiva-form', [
 	  																	'model' => $modelMultiplex,
 	  																	'findModel' => $findModel,
 	  																	'btnSearchCategory' => $btnSearchCategory,
