@@ -61,12 +61,14 @@
 	use common\models\configuracion\solicitud\SolicitudProcesoEvento;
 	use common\enviaremail\PlantillaEmail;
 	use common\models\solicitudescontribuyente\SolicitudesContribuyenteForm;
-	use backend\models\aaee\anexoramo\AnexoRamoSearch;
-	use backend\models\aaee\anexoramo\AnexoRamoForm;
+	// use backend\models\aaee\anexoramo\AnexoRamoSearch;
+	// use backend\models\aaee\anexoramo\AnexoRamoForm;
 	use backend\models\aaee\rubro\Rubro;
-	use backend\models\aaee\actecon\ActEconForm;
-	use backend\models\aaee\acteconingreso\ActEconIngresoForm;
+	// use backend\models\aaee\actecon\ActEconForm;
+	// use backend\models\aaee\acteconingreso\ActEconIngresoForm;
 	use yii\base\Model;
+	use backend\models\aaee\declaracion\sustitutiva\SustitutivaBaseForm;
+	use backend\models\aaee\declaracion\sustitutiva\SustitutivaBaseSearch;
 
 	session_start();		// Iniciando session
 
@@ -87,6 +89,7 @@
 		const SCENARIO_ESTIMADA = 'estimada';
 		const SCENARIO_DEFINITIVA = 'definitiva';
 		const SCENARIO_SEARCH = 'search';
+		const SCENARIO_SEARCH_TIPO = 'search_tipo';
 
 		/**
 		 * Identificador de  configuracion d ela solicitud. Se crea cuando se
@@ -146,8 +149,6 @@
 			// identificador de la configuracion de la solicitud.
 			if ( $id == self::CONFIG ) {
 				if ( isset($_SESSION['idContribuyente']) ) {
-					//$idContribuyente = $_SESSION['idContribuyente'];
-					//$searchDeclaracion = New DeclaracionBaseSearch($idContribuyente);
 
 					$modelParametro = New ParametroSolicitud($id);
 					// Se obtiene el tipo de solicitud. Se retorna un array donde el key es el nombre
@@ -162,7 +163,7 @@
 					if ( isset($config) ) {
 						$_SESSION['conf'] = $config;
 						$_SESSION['begin'] = 1;
-						$this->redirect(['index-create']);
+						$this->redirect(['seleccion-tipo-declaracion']);
 					} else {
 						// No se obtuvieron los parametros de la configuracion.
 						return $this->redirect(['error-operacion', 'cod' => 955]);
@@ -181,6 +182,86 @@
 
 
 
+		/***/
+		public function actionSeleccionTipoDeclaracion()
+		{
+			// Se verifica que el contribuyente haya iniciado una session.
+			self::actionAnularSession(['lapso', 'tipo']);
+			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) && isset($_SESSION['conf'])) {
+
+				$idContribuyente = $_SESSION['idContribuyente'];
+				$request = Yii::$app->request;
+				$postData = $request->post();
+				$errorMensaje = '';
+				$errorListaTipoDeclaracion = '';
+
+				if ( isset($postData['btn-quit']) ) {
+					if ( $postData['btn-quit'] == 1 ) {
+						$this->redirect(['quit']);
+					}
+				}
+
+				$model = New SustitutivaBaseForm();
+
+				$formName = $model->formName();
+				$model->scenario = self::SCENARIO_SEARCH_TIPO;
+
+				$caption = Yii::t('frontend', 'Declaracion Sustitutiva. Seleccionar Tipo Declaracion.');
+				$subCaption = Yii::t('frontend', 'Seleccione el tipo de declaracion');
+
+		      	// Datos generales del contribuyente.
+		      	$searchSustitutiva = New SustitutivaBaseSearch($idContribuyente);
+		      	$findModel = $searchSustitutiva->findContribuyente();
+
+				if ( isset($postData['btn-accept']) ) {
+					if ( $postData['btn-accept'] == 1 ) {
+						$model->scenario = self::SCENARIO_SEARCH_TIPO;
+						$model->load($postData);
+
+						if ( $model->load($postData) ) {
+			    			if ( $model->validate() ) {
+			    				$_SESSION['tipo'] = $model->tipo_declaracion;
+								$this->redirect(['index-create']);
+
+							}
+						}
+					}
+				}
+
+		  		if ( $model->load($postData)  && Yii::$app->request->isAjax ) {
+					Yii::$app->response->format = Response::FORMAT_JSON;
+					return ActiveForm::validate($model);
+		      	}
+
+		  		if ( isset($findModel) ) {
+					// Se busca la lista de los tipos declaraciones. Solo estimada y definitiva.
+					$listaTipoDeclaracion = $searchSustitutiva->getListaTipoDeclaracion([1,2]);
+					if ( count($listaTipoDeclaracion) == 0 ) {
+						$errorListaTipoDeclaracion = Yii::t('frontend', 'No se encontraron los TIPOS DE DECLARACION');
+						$errorMensaje = ( trim($errorMensaje) !== '' ) ? $errorMensaje = $errorMensaje . '. ' . $errorListaTipoDeclaracion : $errorListaTipoDeclaracion;
+					}
+					$rutaLista = "/aaee/declaracion/sustitutiva/sustitutiva/lista-periodo";
+					return $this->render('/aaee/declaracion/sustitutiva/_lista-tipo',
+																		[
+																			'model' => $model,
+																			'caption' => $caption,
+																			'subCaption' => $subCaption,
+																			'findModel' => $findModel,
+																			'listaTipoDeclaracion' => $listaTipoDeclaracion,
+																			'errorMensaje' => $errorMensaje,
+																		]);
+
+		  		} else {
+		  			// No se encontraron los datos del contribuyente principal.
+		  			$this->redirect(['error-operacion', 'cod' => 938]);
+		  		}
+			}
+		}
+
+
+
+
+
 		/**
 		 * Metodo que inicia la carga del formulario que permite realizar la solicitud
 		 * de anexo de ramos.
@@ -190,9 +271,11 @@
 		{
 			// Se verifica que el contribuyente haya iniciado una session.
 			self::actionAnularSession(['lapso']);
-			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) && isset($_SESSION['conf'])) {
+			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) && isset($_SESSION['conf']) && isset($_SESSION['tipo']) ) {
 
 				$idContribuyente = $_SESSION['idContribuyente'];
+				$tipoDeclaracion = $_SESSION['tipo'];
+
 				$request = Yii::$app->request;
 				$postData = $request->post();
 				$errorMensaje = '';
@@ -206,16 +289,16 @@
 					}
 				}
 
-				$model = New DeclaracionBaseForm();
+				$model = New SustitutivaBaseForm();
 
 				$formName = $model->formName();
 				$model->scenario = self::SCENARIO_SEARCH;
 
-				$caption = Yii::t('frontend', 'Declaracion Definitiva');
-				$subCaption = Yii::t('frontend', 'Select Fiscal Period');
+				$caption = Yii::t('frontend', 'Declaracion Sustitutiva');
+				$subCaption = Yii::t('frontend', 'Seleccione el periodo fiscal');
 
 		      	// Datos generales del contribuyente.
-		      	$searchDeclaracion = New DeclaracionBaseSearch($idContribuyente);
+		      	$searchDeclaracion = New SustitutivaBaseSearch($idContribuyente);
 		      	$findModel = $searchDeclaracion->findContribuyente();
 
 				if ( isset($postData['btn-back-form']) ) {
@@ -223,6 +306,10 @@
 						$model->scenario = self::SCENARIO_SEARCH;
 						$postData = [];			// Inicializa el post.
 						$model->load($postData);
+					} elseif ( $postData['btn-back-form'] == 1 ) {
+						$postData = [];			// Inicializa el post.
+						$model->load($postData);
+						$this->redirect(['seleccion-tipo-declaracion']);
 					}
 
 				} elseif ( isset($postData['btn-accept']) ) {
@@ -233,7 +320,7 @@
 						if ( $model->load($postData) ) {
 			    			if ( $model->validate() ) {
 
-			    				$msjControls = $searchDeclaracion->validarEvento((int)$model->ano_impositivo, (int)$model->exigibilidad_periodo, 2);
+			    				//$msjControls = $searchDeclaracion->validarEvento((int)$model->ano_impositivo, (int)$model->exigibilidad_periodo, 2);
 
 		    					if ( count($msjControls) == 0 ) {
 				   					$_SESSION['lapso'] = [
@@ -257,14 +344,14 @@
 		  		if ( isset($findModel) ) {
 					// Se busca la lista de años que se mostraran en al combo de años.
 					// Solo se considerara los año anteriores al actual para la declaracion definitiva.
-					$listaAño = $searchDeclaracion->getListaAnoRegistrado(2);
+					$listaAño = $searchDeclaracion->getListaAnoRegistrado($tipoDeclaracion);
 					if ( count($listaAño) == 0 ) {
 						$errorListaAño = Yii::t('frontend', 'No se encontraron RUBROS AUTORIZADOS cargados ');
 						$errorMensaje = ( trim($errorMensaje) !== '' ) ? $errorMensaje = $errorMensaje . '. ' . $errorListaAño : $errorListaAño;
 					}
 					$url = Url::to(['index-create']);
-					$rutaLista = "/aaee/declaracion/declaracion-definitiva/lista-periodo";
-					return $this->render('/aaee/declaracion/definitiva/_create',
+					$rutaLista = "/aaee/declaracion/sustitutiva/sustitutiva/lista-periodo";
+					return $this->render('/aaee/declaracion/sustitutiva/_create',
 																[
 																	'model' => $model,
 																	'caption' => $caption,
@@ -540,7 +627,7 @@
 
 			$idContribuyente = isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : 0;
 			if ( $idContribuyente > 0 ) {
-				$searchRamo = New DeclaracionBaseSearch($idContribuyente);
+				$searchRamo = New SustitutivaBaseSearch($idContribuyente);
 
 				// Se espera recibir un arreglo con los atributos de la entidad respectiva.
 				$exigibilidad = $searchRamo->getExigibilidadSegunAnoImpositivo($añoImpositivo);
