@@ -40,21 +40,22 @@
  *
  */
 
-	namespace backend\models\aaee\declaracion;
+	namespace backend\models\aaee\declaracion\sustitutiva;
 
  	use Yii;
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 	use yii\web\NotFoundHttpException;
 	use backend\models\solicitud\estatus\EstatusSolicitud;
-	use backend\models\aaee\declaracion\tipodeclaracion\TipoDeclaracion;
 	use backend\models\aaee\rubro\Rubro;
+	use backend\models\aaee\actecon\ActEcon;
+	use backend\models\aaee\acteconingreso\ActEconIngreso;
 	use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 
 	/**
 	* 	Clase que gestiona la solicitud base de la declaracion.
 	*/
-	class DeclaracionBase extends ActiveRecord
+	class SustitutivaBase extends ActiveRecord
 	{
 
 		/**
@@ -75,7 +76,7 @@
 		 */
 		public static function tableName()
 		{
-			return 'sl_declaraciones';
+			return 'sl_sustitutivas';
 		}
 
 
@@ -115,13 +116,24 @@
 
 
 		 /**
-		  * Relacion con la entidad "tipos-declaraciones".
-		  * @return active record.
+		  * Relacion con la entidad "act-econ"
+		  * @return active record
 		  */
-		 public function getTipoDeclaracion()
+		 public function getActEcon()
 		 {
-		 	return $this->hasOne(TipoDeclaracion::className(), ['tipo_declaracion' => 'tipo_declaracion']);
+		 	return $this->hasOne(ActEcon::className(), ['id_impuesto' => 'id_impuesto']);
 		 }
+
+
+		 /**
+		  * Relacion con la entidad "act-econ-ingresos"
+		  * @return active record
+		  */
+		 public function getActEconIngreso()
+		 {
+		 	return $this->hasMany(ActEconIngreso::className(), ['id_impuesto' => 'id_impuesto']);
+		 }
+
 
 	}
 
