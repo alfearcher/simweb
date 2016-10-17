@@ -21,13 +21,13 @@
  */
 
  /**
- *  @file seleccionar-lapso-form.php
+ *  @file seleccionar-tipo-declaracion-form.php
  *
  *  @author Jose Rafael Perez Teran
  *
- *  @date 06-09-2016
+ *  @date 17-10-2016
  *
- *  @view seleccionar-lapso-form.php
+ *  @view seleccionar-tipo-declaracion-form.php
  *
  *
  *  @property
@@ -56,13 +56,13 @@
  ?>
 
 
- <div class="seleccionar-lapso-form">
+ <div class="seleccionar-tipo-declaracion-form">
  	<?php
 
  		$form = ActiveForm::begin([
- 			'id' => 'id-seleccionar-lapso-form',
+ 			'id' => 'id-seleccionar-tipo-declaracion-form',
  			'method' => 'post',
- 			'action' => $url,
+ 			//'action' => $url,
  			'enableClientValidation' => true,
  			'enableAjaxValidation' => false,
  			'enableClientScript' => false,
@@ -115,29 +115,18 @@
 					        </div>
 					        <div class="panel-body">
 					        	<div class="row">
-									<div class="col-sm-2" style="width: 12%;">
-										<div class="ano-impositivo">
-					                		<?= $form->field($model, 'ano_impositivo')->dropDownList($listaAño,[
-	                																	 			'id' => 'ano-impositivo',
+									<div class="col-sm-2" style="width: 25%;">
+										<div class="tipo-declaracion">
+					                		<?= $form->field($model, 'tipo_declaracion')->dropDownList($listaTipoDeclaracion,[
+	                																	 			'id' => 'tipo-declaracion',
 	                																	 			'style' => 'width: 100%;',
 	                                                                     				 			'prompt' => Yii::t('backend', 'Select..'),
-	                                                                     				 			'onchange' => '$.post( "' . Yii::$app->urlManager
-                                                                                                                                         ->createUrl($rutaLista) . '&id=' . '" + $(this).val(),
-                                                                                                                             		 													function( data ) {
-                                                                                                                                                                                            $( "select#id-exigibilidad-periodo" ).html( data );
-                                                                                                                                                                                        });'
+	                                                                     				 			// 'onchange' => '$.post( "' . Yii::$app->urlManager
+                                                                              //                                                            ->createUrl($rutaLista) . '&id=' . '" + $(this).val(),
+                                                                                                       		 													// function( data ) {
+                                                                                                                       //                                                                      $( "select#id-exigibilidad-periodo" ).html( data );
+                                                                                                                       //                                                                  });'
 				                                                                			])->label(false)
-					    					?>
-										</div>
-	        						</div>
-
-									<div class="col-sm-2" style="width: 25%;margin-left: -25px;">
-										<div class="periodo">
-					                		<?= $form->field($model, 'exigibilidad_periodo')->dropDownList([],[
-            																	 			'id' => 'id-exigibilidad-periodo',
-            																	 			'style' => 'width: 80%;',
-                                                                 				 			'prompt' => Yii::t('backend', '-'),
-                                                                						])->label(false)
 					    					?>
 										</div>
 	        						</div>
@@ -180,27 +169,6 @@
 						?>
 					</div>
 				</div>
-
-				<div class="col-sm-1" style="width: 6%;"></div>
-
-
-				<?php if ( $btnBack == 1 ) { ?>
-					<div class="col-sm-3">
-						<div class="form-group">
-							<?= Html::submitButton(Yii::t('frontend', Yii::t('frontend', 'Back')),
-																				  [
-																					'id' => 'btn-back-form',
-																					'class' => 'btn btn-danger',
-																					'value' => 1,
-																					'style' => 'width: 100%; margin-left: 300px;margin-top:20px;',
-																					'name' => 'btn-back-form',
-
-																				  ])
-							?>
-						</div>
-					</div>
-				<?php } ?>
-
 			</div>
 
 		</div>			<!-- Fin panel-body-->
