@@ -69,7 +69,7 @@
 								        			'subCaption' => $subCaption,
 								        			'url' =>$url,
 													'rutaLista' => $rutaLista,
-													'searchDeclaracion' => $searchDeclaracion,
+													'searchSustitutiva' => $searchSustitutiva,
 													'btnBack' => 1,
 													//'errorMensaje' => $errorMensaje,
 					    ]) ?>
