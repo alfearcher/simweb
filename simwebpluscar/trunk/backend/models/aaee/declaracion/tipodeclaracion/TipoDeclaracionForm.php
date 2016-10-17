@@ -103,7 +103,16 @@
 
 
 
-	    /***/
+	    /**
+	     * Metodo que realiza un find de los tipos de declaracion. Si se envia
+	     * como parametro el asterisco ("*"), se asume que se quieren todos los
+	     * registros. El find cuando se realiza con los identificadores se busca
+	     * a los que estan activo solamente.
+	     * @param  array $listaTipo arreglo de los identificadores de la entidad
+	     * respectiva.
+	     * @return active record retorna un modelo con la consulta generada, sino se
+	     * ejecuta retorna un arreglo vacio.
+	     */
 	    public function getListaTipoDeclaracion($listaTipo)
 	    {
 	    	$findModel = [];
