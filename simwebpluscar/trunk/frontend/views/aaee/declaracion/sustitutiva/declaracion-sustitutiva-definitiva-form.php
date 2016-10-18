@@ -22,13 +22,13 @@
 
 
  /**
- *  @file declarar-sustitutiva-estimada-form.php
+ *  @file declarar-sustitutiva-definitiva-form.php
  *
  *  @author Jose Rafael Perez Teran
  *
  *  @date 17-10-2016
  *
- *  @view declarar-sustitutiva-estimada-form.php
+ *  @view declarar-sustitutiva-definitiva-form.php
  *
  *
  *  @property
@@ -190,9 +190,9 @@
 								                            </div>
 
 								                        	<div class="col-sm-2" style="padding-right:6px;">
-								                                <?= $form->field($mod, "[{$i}]estimado")->widget(MaskedInput::className(), [
-																															'id' => 'estimado',
-																															'name' => 'estimado',
+								                                <?= $form->field($mod, "[{$i}]reales")->widget(MaskedInput::className(), [
+																															'id' => 'reales',
+																															'name' => 'reales',
 																															//'mask' => '',
 																															'options' => [
 																																'class' => 'form-control',
@@ -213,7 +213,7 @@
 																																'autoGroup' => true,
 																																//'decimalSeparator' => ',',
 																															],
-																										  				  ])->label('Estimada');
+																										  				  ])->label('Definitiva');
 																?>
 								                            </div>
 
