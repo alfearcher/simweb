@@ -100,33 +100,13 @@ class IntegracionInmueblesForm extends \yii\db\ActiveRecord
     public $conn;
     public $conexion;
     public $transaccion;   
-    public $nivela;
-    public $nivelb;
-    public $validacion; 
-    public $operacion; 
-    public $ano_traspaso;
-    public $tipo_naturaleza;
-    public $naturaleza;
-    public $cedula;
-    public $tipo;
-    public $naturalezaBuscar;
-    public $cedulaBuscar;
-    public $tipoBuscar;
-    
-    public $ano_traspaso1;
-    public $tipo_naturaleza1;
-    public $naturalezaBuscar1;
-    public $cedulaBuscar1;
-    public $tipoBuscar1;
-
-    public $variablephp;
-    public $datosVendedor;
-    public $inmuebleVendedor;
-    public $datosVContribuyente;
-    public $datosVInmueble;
-    public $direccion;
+       
+    public $direccion1;
     public $direccion2;
-
+    public $validacion;
+    
+    Public  $nivela;
+    Public  $nivelb;
 
     public static function tableName()
     {
@@ -140,13 +120,22 @@ class IntegracionInmueblesForm extends \yii\db\ActiveRecord
 
         return [ 
 
-            [['id_contribuyente','id_impuesto', 'validacion'], 'integer','message' => Yii::t('backend', 'only integers')],
+            [['id_contribuyente','id_impuesto','ano_inicio', 'validacion','propiedad_horizontal',], 'integer','message' => Yii::t('backend', 'only integers')],
             //[['estado_catastro', 'municipio_catastro', 'parroquia_catastro', 'sector_catastro', 'manzana_catastro', 'parcela_catastro', 'subparcela_catastro', 'unidad_catastro'], 'string'],
             
-            [['direccion', 'direccion2'], 'string', 'max' => 255,'message' => Yii::t('backend', 'Only 255 character')],
-            [['direccion', 'direccion2'], 'required', 'message' => Yii::t('backend', 'Cannot be blank')],                
+            [['direccion1', 'direccion2'], 'string', 'max' => 255,'message' => Yii::t('backend', 'Only 255 character')],
+            [['direccion1', 'direccion2'], 'required', 'message' => Yii::t('backend', 'Cannot be blank')],                
             //Validacion 
-            [['direccion', 'direccion2'], 'cercanos'],
+            [['direccion1', 'direccion2'], 'cercanos','message' => Yii::t('backend', 'Los inmuebles deben ser aledaños')],
+
+            [['parcela_catastro','casa_edf_qta_dom','piso_nivel_no_dom','apto_dom', 'tipo_ejido', 'propiedad_horizontal', 'estado_catastro', 'municipio_catastro', 'parroquia_catastro','ambito_catastro', 'sector_catastro', 'manzana_catastro', 'direccion'], 'required','message' => Yii::t('backend', 'Required field')],
+            [['subparcela_catastro', 'unidad_catastro','nivela','nivelb'],'required', 'when'=> function($model){ return $model->propiedad_horizontal == 1; }, 'message' => Yii::t('backend', 'Required field')],
+            [['tlf_hab'], 'string', 'max' => 15,'message' => Yii::t('backend', 'Only 15 character')],
+            [['medidor'], 'string', 'max' => 20,'message' => Yii::t('backend', 'Only 20 character')],
+            [['observacion'], 'string'],
+
+            [['propiedad_horizontal'], 'catastro_registro','when'=> function($model){ return $model->propiedad_horizontal == 0; }],
+            [['propiedad_horizontal'], 'catastro_registro2','when'=> function($model){ return $model->propiedad_horizontal == 1; }],
         ];
     } 
 
@@ -459,6 +448,69 @@ class IntegracionInmueblesForm extends \yii\db\ActiveRecord
 
 
             $table = InmueblesConsulta::find()->where("estado_catastro=:estado_catastro", [":estado_catastro" => $this->estado_catastro])
+                                    ->andwhere("municipio_catastro=:municipio_catastro", [":municipio_catastro" => $this->municipio_catastro])
+                                    ->andwhere("parroquia_catastro=:parroquia_catastro", [":parroquia_catastro" => $this->parroquia_catastro])
+                                    ->andwhere("ambito_catastro=:ambito_catastro", [":ambito_catastro" => $this->ambito_catastro])
+                                    ->andwhere("sector_catastro=:sector_catastro", [":sector_catastro" => $this->sector_catastro])
+                                    ->andwhere("manzana_catastro=:manzana_catastro", [":manzana_catastro" => $this->manzana_catastro])
+                                    ->andwhere("propiedad_horizontal=:propiedad_horizontal", [":propiedad_horizontal" => 1])
+                                    ->andwhere("parcela_catastro=:parcela_catastro", [":parcela_catastro" => $this->parcela_catastro])
+                                    ->andwhere("subparcela_catastro=:subparcela_catastro", [":subparcela_catastro" => $this->subparcela_catastro])
+                                    ->andwhere("nivel_catastro=:nivel_catastro", [":nivel_catastro" => $nivel_catastro])
+                                    ->andwhere("unidad_catastro=:unidad_catastro", [":unidad_catastro" => $this->unidad_catastro])
+                                    ->andWhere("manzana_limite=:manzana_limite", [":manzana_limite" => $this->manzana_limite])
+                                    ->andWhere("inactivo=:inactivo", [":inactivo" => 0])
+                                    ->asArray()->all(); 
+
+
+          //Si la consulta no cuenta (0) mostrar el error
+            if ($table != null){
+
+                    $this->addError($attribute, Yii::t('backend', 'The taxpayer: '.$table[0]['id_contribuyente'].' has already assigned cadestre. Tax: '.$table[0]['id_impuesto']));//Impuesto: '.$table->id_impuesto; 
+            } 
+     }
+
+      public function catastro_registro($attribute, $params)
+    {
+  
+          //Buscar el email en la tabla 
+         
+            $table = InmueblesUrbanosForm::find()
+                                    ->where("estado_catastro=:estado_catastro", [":estado_catastro" => $this->estado_catastro])
+                                    ->andwhere("municipio_catastro=:municipio_catastro", [":municipio_catastro" => $this->municipio_catastro])
+                                    ->andwhere("parroquia_catastro=:parroquia_catastro", [":parroquia_catastro" => $this->parroquia_catastro])
+                                    ->andwhere("ambito_catastro=:ambito_catastro", [":ambito_catastro" => $this->ambito_catastro])
+                                    ->andwhere("sector_catastro=:sector_catastro", [":sector_catastro" => $this->sector_catastro])
+                                    ->andwhere("manzana_catastro=:manzana_catastro", [":manzana_catastro" => $this->manzana_catastro])
+                                    ->andwhere("parcela_catastro=:parcela_catastro", [":parcela_catastro" => $this->parcela_catastro])
+                                    ->andwhere("propiedad_horizontal=:propiedad_horizontal", [":propiedad_horizontal" => 0])
+                                    ->andWhere("manzana_limite=:manzana_limite", [":manzana_limite" => $this->manzana_limite])
+                                    ->andWhere("inactivo=:inactivo", [":inactivo" => 0])
+                                    ->asArray()->all(); 
+                                   
+          //$sql = 'SELECT id_impuesto, id_contribuyente FROM inmuebles WHERE manzana_limite=:manzana_limite and catastro=:catastro';
+          //$inmuebles = Inmuebles::findBySql($sql, [':manzana_limite' => $this->manzana_limite, 'catastro'=> $this->catastro])->all();
+                 
+
+          //Si la consulta no cuenta (0) mostrar el error
+            if ($table != null){
+
+                    $this->addError($attribute, Yii::t('backend', 'The taxpayer: '.$table[0]['id_contribuyente'].' has already assigned cadestre. Tax: '.$table[0]['id_impuesto']));//Impuesto: '.$table->id_impuesto; 
+            } 
+     }
+    
+
+     public function catastro_registro2($attribute, $params)
+     {
+  
+          //Buscar el email en la tabla 
+
+         
+            $nivel_catastro1 = array(['nivela' =>$this->nivela , 'nivelb'=>$this->nivelb ]);              
+            $nivel_catastro = "".$nivel_catastro1[0]['nivela']."".$nivel_catastro1[0]['nivelb']."";
+
+
+            $table = InmueblesUrbanosForm::find()->where("estado_catastro=:estado_catastro", [":estado_catastro" => $this->estado_catastro])
                                     ->andwhere("municipio_catastro=:municipio_catastro", [":municipio_catastro" => $this->municipio_catastro])
                                     ->andwhere("parroquia_catastro=:parroquia_catastro", [":parroquia_catastro" => $this->parroquia_catastro])
                                     ->andwhere("ambito_catastro=:ambito_catastro", [":ambito_catastro" => $this->ambito_catastro])

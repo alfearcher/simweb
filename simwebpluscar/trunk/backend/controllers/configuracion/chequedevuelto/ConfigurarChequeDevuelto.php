@@ -21,13 +21,13 @@
  */
 
  /**    
- *  @file IntegracionInmueblesUrbanosController.php
+ *  @file ConfigurarConveniosController.php
  *  
  *  @author Alvaro Jose Fernandez Archer
  * 
- *  @date 17-08-2015
+ *  @date 05-10-2016
  * 
- *  @class IntegracionInmueblesUrbanosController
+ *  @class configurarConveniosController
  *  @brief Clase que permite controlar la integracion del inmueble urbano, 
  *  
  *
@@ -46,7 +46,9 @@
  *  @inherits
  *  
  */
-namespace backend\controllers\inmueble;
+namespace backend\controllers\configuracion\chequedevuelto;
+
+
 error_reporting(0);
 session_start();
 use Yii;
@@ -61,24 +63,21 @@ use yii\filters\VerbFilter;
 use yii\helpers\Url;
 use common\conexion\ConexionController;
 use backend\models\inmueble\IntegracionInmueblesForm;
-
+use backend\models\configuracion\convenios\ConfigChequeDevuelto;
+use backend\models\configuracion\convenios\ConfigChequeDevueltoSearch;
 use backend\models\buscargeneral\BuscarGeneralForm;
 use backend\models\buscargeneral\BuscarGeneral;
-use common\mensaje\MensajeController;
-use frontend\models\inmueble\ConfiguracionTiposSolicitudes;
-use common\models\configuracion\solicitud\ParametroSolicitud;
-use common\models\configuracion\solicitud\DocumentoSolicitud;
 /**
  * CambiosInmueblesUrbanosController implements the CRUD actions for InmueblesUrbanosForm model.
  */
-class IntegracionInmueblesUrbanosController extends Controller
+class ConfigurarChequeDevueltoController extends Controller
 {   
 
     public $conn;
     public $conexion;
     public $transaccion; 
 
-      /**
+     /**
      * Lists all Inmuebles models.
      * @return mixed
      */
@@ -124,7 +123,8 @@ class IntegracionInmueblesUrbanosController extends Controller
         }  else {
                     echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
         }
-    } 
+    }   
+
 
     /**
      *Metodo: IntegracionInmuebles
@@ -134,11 +134,12 @@ class IntegracionInmueblesUrbanosController extends Controller
      *para el cambio de otros datos inmuebles
      *@return model 
      **/
-    public function actionIntegracionInmuebles()
-    { 
-        if ( isset( $_SESSION['idContribuyente'] ) ) {
+    public function actionCreate()
+     { 
+         
+         if ( isset( $_SESSION['idContribuyente'] ) ) {
          //Creamos la instancia con el model de validación
-         $model = new IntegracionInmueblesForm();
+         $model = new ConfigConvenios();
 
          $datos = $_SESSION['datos'];
     
@@ -163,7 +164,7 @@ class IntegracionInmueblesUrbanosController extends Controller
 
                    $requisitos = $documento->documentos();
 
-                if (!\Yii::$app->user->isGuest){                                      
+                if (!\Yii::$app->user->isGuest){                                         
                       
 
                      $guardo = self::GuardarCambios($model, $datos);
@@ -199,7 +200,7 @@ class IntegracionInmueblesUrbanosController extends Controller
                    $model->getErrors(); 
               }
          }
-              return $this->render('integracion-inmuebles', ['model' => $model, 'datos'=>$datos]);  
+              return $this->render('create', ['model' => $model, 'datos'=>$datos]);  
 
         }  else {
                     echo "No hay Contribuyente Registrado!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['site/login'])."'>";
@@ -207,6 +208,7 @@ class IntegracionInmueblesUrbanosController extends Controller
  
      } // cierre del metodo inscripcion de inmuebles
     
+
     /**
       * [GuardarInscripcion description] Metodo que se encarga de guardar los datos de la solicitud 
       * de inscripcion del inmueble del contribuyente
@@ -216,7 +218,7 @@ class IntegracionInmueblesUrbanosController extends Controller
      public function GuardarCambios($model, $datos)
      {
             $buscar = new ParametroSolicitud($_SESSION['id']);
-
+//die(var_dump($datos));
             $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
             
             try {
@@ -281,69 +283,18 @@ class IntegracionInmueblesUrbanosController extends Controller
                 //         return $result; 
 
                 //     } else {
-                
-               
-                     $catastro1 = array(['estado' => $model->estado_catastro, 'municipio'=> $model->municipio_catastro, 'parroquia'=>$model->parroquia_catastro, 'ambito'=>$model->ambito_catastro, 'sector'=>$model->sector_catastro, 'manzana' =>$model->manzana_catastro]);
-                     $catastro = "".$catastro1[0]['estado']."-".$catastro1[0]['municipio']."-".$catastro1[0]['parroquia']."-".$catastro1[0]['ambito']."-".$catastro1[0]['sector']."-".$catastro1[0]['manzana']."";
-                     
-                     
-                     if ($propiedad_horizontal == 0) {
+                        $arrayCampos3 = ['id_contribuyente','ano_inicio','direccion','medidor','observacion',
+                                         'tipo_ejido', 'casa_edf_qta_dom', 'piso_nivel_no_dom', 'apto_dom'];
 
-                          $parcela_catastro = $model->parcela_catastro;                                     //Parcela catastro
-                          $subparcela_catastro = 0;                                                         //Sub parcela catastro
-                          $nivel_catastro = 0;                                                              //Nivel catastro
-                          $unidad_catastro = 0;                                                             //Unidad catastro     
-                     }else{ 
+                        $arrayDatos3 = [    [$datos->id_contribuyente, $model->ano_inicio, $model->direccion,
+                                            $model->medidor, $model->observacion, $model->tipo_ejido, 
+                                            $model->casa_edf_qta_dom, $model->piso_nivel_no_dom, $model->apto_dom],
 
-                          $parcela_catastro = $model->parcela_catastro;                                     //Parcela catastro
-                          $subparcela_catastro = $model->subparcela_catastro;                               //Sub parcela catastro
-                          $nivel_c1 = $model->nivela;
-                          $nivel_c2 = $model->nivelb;
-                          $nivel_catastro1 = array(['nivela' =>$nivel_c1 , 'nivelb'=>$nivel_c2 ]);              //Nivel catastro
-                          $nivel_catastro = "".$nivel_catastro1[0]['nivela']."".$nivel_catastro1[0]['nivelb']."";
-                          $unidad_catastro = $model->unidad_catastro;                                       //Unidad catastro  
-                          
-                     }
-
-                      $arrayDatos = ['id_contribuyente' =>  $_SESSION['idContribuyente'],
-                                       'ano_inicio' => $model->ano_inicio,
-                                       'direccion' => $model->direccion,
-                                       'manzana_limite' => 0,
-                                       'nivel' => 0,
-                                       //direcciones
-                                       'av_calle_esq_dom' => $model->av_calle_esq_dom,
-                                       'casa_edf_qta_dom' => $model->casa_edf_qta_dom,
-                                       'piso_nivel_no_dom' => $model->piso_nivel_no_dom,
-                                       'apto_dom' => $model->apto_dom,
-                                       //otros datos
-                                       'tlf_hab' => $model->tlf_hab,
-                                       'medidor' => $model->medidor,
-                                       'observacion' => $model->observacion,
-                                       'inactivo' => 0,
-                                       'catastro' => $catastro,
-                                       'id_habitante' => 0,
-                                       'tipo_ejido' => $model->tipo_ejido,
-                                       'propiedad_horizontal' => $model->propiedad_horizontal,
-                                       //catastro inmueble
-                                       'estado_catastro' => $model->estado_catastro,
-                                       'municipio_catastro' => $model->municipio_catastro,
-                                       'parroquia_catastro' => $model->parroquia_catastro,
-                                       'ambito_catastro' => $model->ambito_catastro,
-                                       'sector_catastro' => $model->sector_catastro,
-                                       'manzana_catastro' => $model->manzana_catastro,
-                                       //parcelas 
-                                       'parcela_catastro' => $parcela_catastro,
-                                       'subparcela_catastro' => $subparcela_catastro,
-                                       'nivel_catastro' => $nivel_catastro,
-                                       'unidad_catastro' => $unidad_catastro,
-
-                                       'liquidado' => null, 
-                                       'lote_1' => 0,
-                                       'lote_2' => 0,
-                                       'lote_3' => 0, 
-                                       
-                                       ]; 
-                                                
+                                            [$datos->id_contribuyente, $model->ano_inicio1, $model->direccion1,
+                                            $model->medidor1, $model->observacion1, $model->tipo_ejido1, 
+                                            $model->casa_edf_qta_dom1, $model->piso_nivel_no_dom1, $model->apto_dom1],
+                                    
+                                        ];  
                         $arrayDatosInactivacion3 = [    
                                                     'inactivo' => 1,
                                             
@@ -355,10 +306,9 @@ class IntegracionInmueblesUrbanosController extends Controller
 
 
                         $tableName3 = 'inmuebles';
-                        $arrayCondition1 = ['id_impuesto'=>$model->direccion1];
-                        $arrayCondition2 = ['id_impuesto'=>$model->direccion2];
+                        $arrayCondition = ['id_impuesto'=>$datos->id_impuesto];
 
-                        if ( $conn->guardarRegistro($conexion, $tableName3,  $arrayDatos) and $conn->modificarRegistro($conexion, $tableName3,  $arrayDatosInactivacion3, $arrayCondition1) and $conn->modificarRegistro($conexion, $tableName3,  $arrayDatosInactivacion3, $arrayCondition2) ){
+                        if ( $conn->guardarLoteRegistros($conexion, $tableName3,  $arrayCampos3, $arrayDatos3) and $conn->modificarRegistro($conexion, $tableName3,  $arrayDatosInactivacion3, $arrayCondition) ){
 
                               $transaccion->commit();  
                               $conexion->close(); 
@@ -397,6 +347,48 @@ class IntegracionInmueblesUrbanosController extends Controller
      }
 
     /**
+     * [DatosConfiguracionTiposSolicitudes description] metodo que busca el tipo de solicitud en 
+     * la tabla config_tipos_solicitudes
+     */
+     public function DatosConfiguracionTiposSolicitudes()
+     {
+
+         $buscar = ConfiguracionTiposSolicitudes::find()->where("impuesto=:impuesto", [":impuesto" => 2])
+                                                        ->andwhere("descripcion=:descripcion", [":descripcion" => 'DESINTEGRACION DE PARCELA'])
+                                                        ->asArray()->all();
+
+
+         return $buscar[0]["id_tipo_solicitud"];                                              
+
+     } 
+
+
+    /**
+     * [EnviarCorreo description] Metodo que se encarga de enviar un email al contribuyente 
+     * con el estatus del proceso
+     */
+     public function EnviarCorreo($guardo, $requisitos)
+     {
+         $email = yii::$app->user->identity->login;
+
+         $solicitud = 'Actualizacion de Datos del Inmueble';
+
+         $nro_solicitud = $guardo;
+
+         $enviarEmail = new PlantillaEmail();
+        
+         if ($enviarEmail->plantillaEmailSolicitud($email, $solicitud, $nro_solicitud, $requisitos)){
+
+             return true; 
+         } else { 
+
+             return false; 
+         }
+
+
+     }
+
+    /**
      * Finds the Inmuebles model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
@@ -430,4 +422,3 @@ class IntegracionInmueblesUrbanosController extends Controller
         }
     }
 }
-

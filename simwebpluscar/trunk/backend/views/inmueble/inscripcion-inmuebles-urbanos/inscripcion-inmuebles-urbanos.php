@@ -49,6 +49,7 @@ function bloquea() {
 } 
 
 </script> 
+<body onload = "bloquea()"/>
 <div class="inscripcionInmueblesUrbanos">
 
     <?php $form = ActiveForm::begin([
