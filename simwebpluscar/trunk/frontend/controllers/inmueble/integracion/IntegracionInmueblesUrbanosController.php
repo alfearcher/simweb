@@ -21,15 +21,15 @@
  */
 
  /**    
- *  @file DesintegracionInmueblesUrbanosController.php
+ *  @file IntegracionInmueblesUrbanosController.php
  *  
  *  @author Alvaro Jose Fernandez Archer
  * 
- *  @date 08-03-2016
+ *  @date 17-08-2015
  * 
- *  @class DesintegracionInmueblesUrbanosController
- *  @brief Clase que permite controlar la solicitud del registro o inscripcion de inmuebles urbanos
- *  en el lado del contribuyente,
+ *  @class IntegracionInmueblesUrbanosController
+ *  @brief Clase que permite controlar la integracion del inmueble urbano, 
+ *  
  *
  * 
  *  
@@ -38,63 +38,47 @@
  *
  *  
  *  @method
- *  View
- *  Index
- *  CambiosOtrosDatosInmueblesUrbanos
- *  GuardarCambios
- *  DatosConfiguracionTiposSolicitudes
- *  EnviarCorreo
+ *  IntegracionInmuebles
+ *  findModel
+ *  
+ *   
  *  
  *  @inherits
  *  
  */
-namespace frontend\controllers\inmueble\desintegracion;
-
+namespace frontend\controllers\inmueble\integracion;
+error_reporting(0);
+session_start();
 use Yii;
-use yii\filters\AccessControl;
+use backend\models\inmueble\InmueblesUrbanosForm;
+use backend\models\inmueble\CambioPropietarioInmueblesForm;
+use backend\models\ContribuyentesForm;
+use backend\models\inmueble\InmueblesConsulta;
+use backend\models\inmueble\InmueblesSearch;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
- 
-use yii\widgets\ActiveForm;
-use yii\web\Response;
-use common\models\Users;
-use common\models\User;
-use yii\web\Session;
-use frontend\models\inmueble\desintegracion\DesintegracionInmueblesForm;
-use frontend\models\inmueble\InmueblesSearch;
-use frontend\models\inmueble\InmueblesConsulta;
-
-//use common\models\Users;
-
-// mandar url
-use yii\web\UrlManager;
-use yii\base\Component;
-use yii\base\Object;
 use yii\helpers\Url;
-// active record consultas..
-use yii\db\ActiveRecord;
 use common\conexion\ConexionController;
-use common\enviaremail\PlantillaEmail;
+use frontend\models\inmueble\integracion\IntegracionInmueblesForm;
+
+use backend\models\buscargeneral\BuscarGeneralForm;
+use backend\models\buscargeneral\BuscarGeneral;
 use common\mensaje\MensajeController;
+use common\enviaremail\PlantillaEmail;
 use frontend\models\inmueble\ConfiguracionTiposSolicitudes;
 use common\models\configuracion\solicitud\ParametroSolicitud;
 use common\models\configuracion\solicitud\DocumentoSolicitud;
+/**
+ * CambiosInmueblesUrbanosController implements the CRUD actions for InmueblesUrbanosForm model.
+ */
+class IntegracionInmueblesUrbanosController extends Controller
+{   
 
-session_start();
-/*********************************************************************************************************
- * InscripcionInmueblesUrbanosController implements the actions for InscripcionInmueblesUrbanosForm model.
- *********************************************************************************************************/
-class DesintegracionInmueblesUrbanosController extends Controller
-{
-   
     public $conn;
     public $conexion;
-    public $transaccion;
+    public $transaccion; 
 
-/* 
-tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
-
-*/
       /**
      * Lists all Inmuebles models.
      * @return mixed
@@ -143,18 +127,19 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
         }
     } 
 
-    
-     /**
-     *REGISTRO (inscripcion) INMUEBLES URBANOS
-     *Metodo para crear las cuentas de usuarios de los funcionarios
+    /**
+     *Metodo: IntegracionInmuebles
+     *Realiza la itegracion del inmueble urbano.
+     *si el cambio es exitoso, se redireccionara a la  vista 'inmueble/inmuebles-urbanos/view' de la pagina.
+     *@param $id_impuesto, tipo de dato entero y clave primaria de la tabla inmueble,  variable condicional 
+     *para el cambio de otros datos inmuebles
      *@return model 
      **/
-     public function actionDesintegracionInmuebles()
-     { 
-         
-         if ( isset(Yii::$app->user->identity->id_contribuyente) ) {
+    public function actionIntegracionInmuebles()
+    { 
+        if ( isset( $_SESSION['idContribuyente'] ) ) {
          //Creamos la instancia con el model de validación
-         $model = new DesintegracionInmueblesForm();
+         $model = new IntegracionInmueblesForm();
 
          $datos = $_SESSION['datos'];
     
@@ -186,9 +171,9 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                      if($guardo == true){ 
 
-                          $envio = self::EnviarCorreo($guardo, $requisitos);
+                           $envio = self::EnviarCorreo($guardo, $requisitos);
 
-                          if($envio == true){ 
+                           if($envio == true){ 
 
                               return MensajeController::actionMensaje(100);
 
@@ -215,24 +200,22 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                    $model->getErrors(); 
               }
          }
-              return $this->render('desintegracion-inmuebles', ['model' => $model, 'datos'=>$datos]);  
+              return $this->render('integracion-inmuebles', ['model' => $model, 'datos'=>$datos]);  
 
         }  else {
                     echo "No hay Contribuyente Registrado!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['site/login'])."'>";
         }    
  
      } // cierre del metodo inscripcion de inmuebles
-
     
-
-     /**
+    /**
       * [GuardarInscripcion description] Metodo que se encarga de guardar los datos de la solicitud 
       * de inscripcion del inmueble del contribuyente
       * @param [type] $model [description] arreglo de datos del formulario de inscripcion del
       * inmueble
       */
      public function GuardarCambios($model, $datos)
-     {
+     { 
             $buscar = new ParametroSolicitud($_SESSION['id']);
 
             $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
@@ -242,21 +225,20 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
             $tipoSolicitud = self::DatosConfiguracionTiposSolicitudes();
 
-            $arrayDatos1 = [  'id_contribuyente' => $datos->id_contribuyente,
+            $arrayDatos1 = [  'id_contribuyente' => $_SESSION['idContribuyente'],
                               'id_config_solicitud' => $_SESSION['id'],
                               'impuesto' => 2,
-                              'id_impuesto' => $datos->id_impuesto,
+                              'id_impuesto' => 0,
                               'tipo_solicitud' => $tipoSolicitud,
                               'usuario' => yii::$app->user->identity->login,
                               'fecha_hora_creacion' => date('Y-m-d h:i:s'),
                               'nivel_aprobacion' => $nivelAprobacion["nivel_aprobacion"],
                               'nro_control' => 0,
                               'firma_digital' => null,
-                              'estatus' => 0,
+                              'estatus' => 1,
                               'inactivo' => 0,
                           ];  
-            
-
+           
             $conn = New ConexionController();
             $conexion = $conn->initConectar('dbsim');     // instancia de la conexion (Connection)
             $conexion->open();  
@@ -265,22 +247,31 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
             if ( $conn->guardarRegistro($conexion, $tableName1,  $arrayDatos1) ){  
                 $result = $conexion->getLastInsertID();
 
-                $arrayCampos2 = ['id_contribuyente','nro_solicitud','ano_inicio','direccion','medidor','observacion',
-                                 'tipo_ejido', 'casa_edf_qta_dom', 'piso_nivel_no_dom', 'apto_dom', 'fecha_creacion'];
-
-                $arrayDatos2 = [   [$datos->id_contribuyente, $result, $model->ano_inicio,
-                                   $model->direccion, $model->medidor, $model->observacion, $model->tipo_ejido,
-                                   $model->casa_edf_qta_dom, $model->piso_nivel_no_dom, $model->apto_dom,
-                                   date('Y-m-d h:i:s')],
-
-                                   [$datos->id_contribuyente, $result, $model->ano_inicio,
-                                   $model->direccion1, $model->medidor1, $model->observacion1, $model->tipo_ejido1,
-                                   $model->casa_edf_qta_dom1, $model->piso_nivel_no_dom1, $model->apto_dom1,
-                                   date('Y-m-d h:i:s')],
+               $arrayDatos2 = [  'id_contribuyente' =>  $_SESSION['idContribuyente'],
+                                       'nro_solicitud'=> $result,
+                                       'direccion' => $model->direccion,
+                                       'ano_inicio' => $model->ano_inicio,
+                                       //direcciones
+                                       'casa_edf_qta_dom' => $model->casa_edf_qta_dom,
+                                       'piso_nivel_no_dom' => $model->piso_nivel_no_dom,
+                                       'apto_dom' => $model->apto_dom,
+                                       //otros datos
+                                       'tlf_hab' => $model->tlf_hab,
+                                       'medidor' => $model->medidor,
+                                       'observacion' => $model->observacion,
+                                       'fecha_creacion' => date('Y-m-d h:i:s')
+                                       
                                 ]; 
+                                   
 
-                $arrayDatosInactivar2 = [    'id_contribuyente' => $datos->id_contribuyente,
-                                    'id_impuesto' => $datos->id_impuesto,
+                $arrayDatosInactivarSl1 = [    'id_contribuyente' => $datos->id_contribuyente,
+                                    'id_impuesto' => $model->direccion1,
+                                    'nro_solicitud' => $result,
+                                    'inactivo' => 1,
+                                    'fecha_creacion' => date('Y-m-d h:i:s'),
+                                ];
+                $arrayDatosInactivarSl2 = [    'id_contribuyente' => $datos->id_contribuyente,
+                                    'id_impuesto' => $model->direccion2,
                                     'nro_solicitud' => $result,
                                     'inactivo' => 1,
                                     'fecha_creacion' => date('Y-m-d h:i:s'),
@@ -288,43 +279,46 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
             
                  $tableName2 = 'sl_inmuebles'; 
-   
-                if ( $conn->guardarLoteRegistros($conexion, $tableName2, $arrayCampos2,  $arrayDatos2) and $conn->guardarRegistro($conexion, $tableName2,  $arrayDatosInactivar2)){
+
+                if ( $conn->guardarRegistro($conexion, $tableName2, $arrayCampos2,  $arrayDatos2) and $conn->guardarRegistro($conexion, $tableName2,  $arrayDatosInactivarSl1) and $conn->guardarRegistro($conexion, $tableName2,  $arrayDatosInactivarSl2)){
 
                     if ($nivelAprobacion['nivel_aprobacion'] != 1){
- 
+
                         $transaccion->commit(); 
                         $conexion->close(); 
                         $tipoError = 0;  
                         return $result; 
 
                     } else {
-                        $arrayCampos3 = ['id_contribuyente','ano_inicio','direccion','medidor','observacion',
-                                         'tipo_ejido', 'casa_edf_qta_dom', 'piso_nivel_no_dom', 'apto_dom'];
+                
+               
+                     
 
-                        $arrayDatos3 = [    [$datos->id_contribuyente, $model->ano_inicio, $model->direccion,
-                                            $model->medidor, $model->observacion, $model->tipo_ejido, 
-                                            $model->casa_edf_qta_dom, $model->piso_nivel_no_dom, $model->apto_dom],
-
-                                            [$datos->id_contribuyente, $model->ano_inicio, $model->direccion1,
-                                            $model->medidor1, $model->observacion1, $model->tipo_ejido1, 
-                                            $model->casa_edf_qta_dom1, $model->piso_nivel_no_dom1, $model->apto_dom1],
+                      $arrayDatos3 = [  'id_contribuyente' =>  $_SESSION['idContribuyente'],
+                                        'direccion' => $model->direccion,
+                                       'ano_inicio' => $model->ano_inicio,
+                                       //direcciones
+                                       'casa_edf_qta_dom' => $model->casa_edf_qta_dom,
+                                       'piso_nivel_no_dom' => $model->piso_nivel_no_dom,
+                                       'apto_dom' => $model->apto_dom,
+                                       //otros datos
+                                       'tlf_hab' => $model->tlf_hab,
+                                       'medidor' => $model->medidor,
+                                       'observacion' => $model->observacion,
+                                      
                                        
-                                        ]; 
+                                ]; 
+                                                
                         $arrayDatosInactivacion3 = [    
                                                     'inactivo' => 1,
                                             
                                                 ]; 
 
-                    
-                   
-                        $arrayConditionInactivacion3 = ['id_impuesto'=>$datos->id_impuesto];
-
-            
                         $tableName3 = 'inmuebles';
-                        //$arrayCondition = ['id_impuesto'=>$datos->id_impuesto];
+                        $arrayConditionMaster1 = ['id_impuesto'=>$model->direccion1];
+                        $arrayConditionMaster2 = ['id_impuesto'=>$model->direccion2];
 
-                        if ( $conn->guardarLoteRegistros($conexion, $tableName3,  $arrayCampos3, $arrayDatos3) and $conn->modificarRegistro($conexion, $tableName3,  $arrayDatos3, $arrayConditionInactivacion3) ){
+                        if ( $conn->guardarRegistro($conexion, $tableName3,  $arrayDatos3) and $conn->modificarRegistro($conexion, $tableName3,  $arrayDatosInactivacion3, $arrayConditionMaster1) and $conn->modificarRegistro($conexion, $tableName3,  $arrayDatosInactivacion3, $arrayConditionMaster2) ){
 
                               $transaccion->commit();  
                               $conexion->close(); 
@@ -362,7 +356,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                        
      }
 
-    /**
+     /**
      * [DatosConfiguracionTiposSolicitudes description] metodo que busca el tipo de solicitud en 
      * la tabla config_tipos_solicitudes
      */
@@ -370,7 +364,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      {
 
          $buscar = ConfiguracionTiposSolicitudes::find()->where("impuesto=:impuesto", [":impuesto" => 2])
-                                                        ->andwhere("descripcion=:descripcion", [":descripcion" => 'DESINTEGRACION DE PARCELA'])
+                                                        ->andwhere("descripcion=:descripcion", [":descripcion" => 'INTEGRACION DE PARCELAS'])
                                                         ->asArray()->all();
 
 
@@ -387,7 +381,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      {
          $email = yii::$app->user->identity->login;
 
-         $solicitud = 'Desintegracion del Inmueble';
+         $solicitud = 'Integracion del Inmueble';
 
          $nro_solicitud = $guardo;
 
@@ -404,4 +398,37 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
      }
 
+    /**
+     * Finds the Inmuebles model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return Inmuebles the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id)
+    { 
+        if (($model = IntegracionInmueblesForm::findOne($id)) !== null) {
+
+            return $model; 
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        } 
+    } 
+    
+    /**
+     * Finds the Contribuyentes model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return Contribuyente the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function findModelContribuyente($id)
+    {//echo'<pre>'; var_dump($_SESSION['idContribuyente']); echo '</pre>'; die('hola');
+        if (($modelContribuyente = ContribuyentesForm::findOne($id)) !== null) {
+            
+            return $modelContribuyente; 
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
 }
