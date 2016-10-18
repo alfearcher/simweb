@@ -310,22 +310,13 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                               return false; 
 
                         }
-                  }
+                  
 
 
-                } else {
-            
-                    $transaccion->rollBack(); 
-                    $conexion->close(); 
-                    $tipoError = 0; 
-                    return false; 
-
-                }
-
-            }else{ 
                 
-                return false;
-            }   
+
+
+               
             
           } catch ( Exception $e ) {
               //echo $e->errorInfo[2];
