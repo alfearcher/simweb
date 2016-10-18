@@ -205,14 +205,14 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
                             $transaccion->commit(); 
                             $tipoError = 0; 
                             $msg = Yii::t('backend', 'SUCCESSFUL UPDATE DATA OF THE URBAN PROPERTY!');//REGISTRO EXITOSO DE LAS PREGUNTAS DE SEGURIDAD
-                            $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['inmueble/inmuebles-urbanos/view', 'id' => $model->id_impuesto])."'>";                     
+                            $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical', 'id' => $model->id_impuesto])."'>";                     
                             return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
                         }else{ 
 
                             $transaccion->rollBack(); 
                             $tipoError = 0; 
                             $msg = Yii::t('backend', 'AN ERROR OCCURRED WHEN UPDATE THE URBAN PROPERTY!');//HA OCURRIDO UN ERROR AL LLENAR LAS PREGUNTAS SECRETAS
-                            $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['inmueble/inmuebles-urbanos/view', 'id' => $model->id_impuesto])."'>";                     
+                            $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical', 'id' => $model->id_impuesto])."'>";                     
                             return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
                         }   
 
@@ -222,7 +222,7 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
                    }else{ 
 
                         $msg = Yii::t('backend', 'AN ERROR OCCURRED WHEN FILLING THE URBAN PROPERTY!');//HA OCURRIDO UN ERROR AL LLENAR LAS PREGUNTAS SECRETAS
-                        $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['inmueble/inmuebles-urbanos/view', 'id' => $model->id_impuesto])."'>";                     
+                        $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical', 'id' => $model->id_impuesto])."'>";                     
                         return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
                    } 
 
