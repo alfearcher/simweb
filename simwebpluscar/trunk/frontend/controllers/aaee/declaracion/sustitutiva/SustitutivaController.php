@@ -411,8 +411,8 @@
 					// registrado el contribuyente.
 					$modelMultiplex = [New SustitutivaBaseForm()];
 
-					$caption = Yii::t('frontend', 'Declaracion Sustitutiva') . ' ' . $descripcion;
-					$subCaption = Yii::t('frontend', 'Declaracion Sustitutiva') . ' ' . $descripcion;
+					$caption = Yii::t('frontend', 'Declaracion Sustitutiva') . ' ' . $lapso['descripcion'];
+					$subCaption = Yii::t('frontend', 'Declaracion Sustitutiva') . ' ' . $lapso['descripcion'];
 					$formName = $modelMultiplex[0]->formName();
 
 					// Se obtienen solo los campos.
@@ -580,15 +580,26 @@
 							'back' => '/aaee/declaracion/sustitutiva/sustitutiva/index-create',
 						];
 						$caption = $caption . '. ' . Yii::t('frontend', 'Rubro(s) Registrado(s)') . ' ' . $añoImpositivo . ' - ' . $periodo;
-						return $this->render('/aaee/declaracion/sustitutiva/declaracion-sustitutiva-form', [
-	  																	'model' => $modelMultiplex,
-	  																	'findModel' => $findModel,
-	  																	'btnSearchCategory' => $btnSearchCategory,
-	  																	'caption' => $caption,
-	  																	'opciones' =>$opciones,
-	  																	'subCaption' => $subCaption,
 
-			  					]);
+						if ( $lapso['tipo'] == 1 ) {
+							return $this->render('/aaee/declaracion/sustitutiva/declaracion-sustitutiva-estimada-form', [
+		  																	'model' => $modelMultiplex,
+		  																	'findModel' => $findModel,
+		  																	'btnSearchCategory' => $btnSearchCategory,
+		  																	'caption' => $caption,
+		  																	'opciones' =>$opciones,
+		  																	'subCaption' => $subCaption,
+
+				  					]);
+						} elseif ( $lapso['tipo'] == 2 ) {
+							return $this->render('/aaee/declaracion/sustitutiva/declaracion-sustitutiva-definitiva-form', [
+		  																	'model' => $modelMultiplex,
+		  																	'findModel' => $findModel,
+		  																	'btnSearchCategory' => $btnSearchCategory,
+		  																	'caption' => $caption,
+		  																	'opciones' =>$opciones,
+		  																	'subCaption' => $subCaption,
+						}
 
 			  		} else {
 			  			// No se encontraron los datos del contribuyente principal.
