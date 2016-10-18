@@ -264,13 +264,13 @@ class IntegracionInmueblesUrbanosController extends Controller
                                 ]; 
                                    
 
-                $arrayDatosInactivarSl1 = [    'id_contribuyente' => $datos->id_contribuyente,
+                $arrayDatosInactivarSl1 = [    'id_contribuyente' => $_SESSION['idContribuyente'],
                                     'id_impuesto' => $model->direccion1,
                                     'nro_solicitud' => $result,
                                     'inactivo' => 1,
                                     'fecha_creacion' => date('Y-m-d h:i:s'),
                                 ];
-                $arrayDatosInactivarSl2 = [    'id_contribuyente' => $datos->id_contribuyente,
+                $arrayDatosInactivarSl2 = [    'id_contribuyente' => $_SESSION['idContribuyente'],
                                     'id_impuesto' => $model->direccion2,
                                     'nro_solicitud' => $result,
                                     'inactivo' => 1,
