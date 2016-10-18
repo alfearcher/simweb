@@ -429,6 +429,7 @@
 								$modelMultiplex[$key]->scenario = self::SCENARIO_DEFINITIVA;
 							}
 						}
+
 						Model::loadMultiple($modelMultiplex, $postData);
 						$result = Model::validateMultiple($modelMultiplex);
 					}
@@ -451,46 +452,24 @@
 							$opciones = [
 									'back' => '/aaee/declaracion/sustitutiva/sustitutiva/index-create',
 							];
+
 							$caption = $caption . '. ' . Yii::t('frontend', 'Rubro(s) Registrado(s)') . ' ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo;
 							$subCaption = $subCaption . '. ' . Yii::t('frontend', 'Rubro(s) Registrado(s) ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
-							return $this->render('/aaee/declaracion/sustitutiva/sustitutiva/declaracion-definitiva-form', [
-		  																	'model' => $modelMultiplex,
-		  																	'findModel' => $findModel,
-		  																	'btnSearchCategory' => $btnSearchCategory,
-		  																	'caption' => $caption,
-		  																	'opciones' =>$opciones,
-		  																	'subCaption' => $subCaption,
+
+							if ( $lapso['tipo'] == 1 ) {
+								return $this->render('/aaee/declaracion/sustitutiva/declaracion-sustitutiva-estimada-form', [
+			  																	'model' => $modelMultiplex,
+			  																	'findModel' => $findModel,
+			  																	'btnSearchCategory' => $btnSearchCategory,
+			  																	'caption' => $caption,
+			  																	'opciones' =>$opciones,
+			  																	'subCaption' => $subCaption,
 
 
 
-				  					]);
-						}
-					} elseif( isset($postData['btn-create']) ) {
-						if ( $postData['btn-create'] == 3 ) {
-
-							if ( $result ) {
-								// Presentar preview.
-								$opciones = [
-									'back' => '/aaee/declaracion/declaracion-definitiva/index-create',
-								];
-								$caption = Yii::t('frontend', 'Confirm') . ' ' . $caption . '. ' . Yii::t('frontend', 'Pre View');
-								$subCaption = $subCaption . '. ' . Yii::t('frontend', 'Categories Registers ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
-
-								return $this->render('/aaee/declaracion/definitiva/pre-view-create', [
-																	'model' => $modelMultiplex,
-																	'findModel' => $findModel,
-																	'caption' => $caption,
-	  																'opciones' =>$opciones,
-	  																'subCaption' => $subCaption,
-									]);
-
-							} else {
-								$opciones = [
-									'back' => '/aaee/declaracion/declaracion-definitiva/index-create',
-								];
-								$caption = $caption . '. ' . Yii::t('frontend', 'Categories Registered') . ' ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo;
-								$subCaption = $subCaption . '. ' . Yii::t('frontend', 'Categories Registers ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
-								return $this->render('/aaee/declaracion/definitiva/declaracion-definitiva-form', [
+					  					]);
+							} elseif ( $lapso['tipo'] == 2 ) {
+								return $this->render('/aaee/declaracion/sustitutiva/declaracion-sustitutiva-definitiva-form', [
 			  																	'model' => $modelMultiplex,
 			  																	'findModel' => $findModel,
 			  																	'btnSearchCategory' => $btnSearchCategory,
@@ -503,31 +482,65 @@
 					  					]);
 							}
 						}
+					} elseif( isset($postData['btn-create']) ) {
+						if ( $postData['btn-create'] == 3 ) {
+
+							if ( $result ) {
+								// Presentar preview.
+								$opciones = [
+									'back' => '/aaee/declaracion/sustitutiva/sustitutiva/index-create',
+								];
+								$caption = Yii::t('frontend', 'Confirm') . ' ' . $caption . '. ' . Yii::t('frontend', 'Pre View');
+								$subCaption = $subCaption . '. ' . Yii::t('frontend', 'Categories Registers ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
+
+								if ( $lapso['tipo'] == 1 ) {
+									return $this->render('/aaee/declaracion/sustitutiva/pre-view-sustitutiva-estimada', [
+																		'model' => $modelMultiplex,
+																		'findModel' => $findModel,
+																		'caption' => $caption,
+		  																'opciones' =>$opciones,
+		  																'subCaption' => $subCaption,
+										]);
+								} elseif ( $lapso['tipo'] == 2 ) {
+									return $this->render('/aaee/declaracion/sustitutiva/pre-view-sustitutiva-definitiva', [
+																		'model' => $modelMultiplex,
+																		'findModel' => $findModel,
+																		'caption' => $caption,
+		  																'opciones' =>$opciones,
+		  																'subCaption' => $subCaption,
+										]);
+								}
+
+							} else {
+								$opciones = [
+									'back' => '/aaee/declaracion/sustitutiva/sustitutiva/index-create',
+								];
+
+								$caption = Yii::t('frontend', 'Confirm') . ' ' . $caption . '. ' . Yii::t('frontend', 'Pre View');
+								$subCaption = $subCaption . '. ' . Yii::t('frontend', 'Categories Registers ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
+
+								if ( $lapso['tipo'] == 1 ) {
+									return $this->render('/aaee/declaracion/sustitutiva/pre-view-sustitutiva-estimada', [
+																		'model' => $modelMultiplex,
+																		'findModel' => $findModel,
+																		'caption' => $caption,
+		  																'opciones' =>$opciones,
+		  																'subCaption' => $subCaption,
+										]);
+								} elseif ( $lapso['tipo'] == 2 ) {
+									return $this->render('/aaee/declaracion/sustitutiva/pre-view-sustitutiva-definitiva', [
+																		'model' => $modelMultiplex,
+																		'findModel' => $findModel,
+																		'caption' => $caption,
+		  																'opciones' =>$opciones,
+		  																'subCaption' => $subCaption,
+										]);
+								}
+
+							}
+						}
 					} elseif( isset($postData['btn-confirm-create']) ) {
 						if ( $postData['btn-confirm-create'] == 5 ) {
-
-							if ( count($modelMultiplex) > 1 ) {
-								foreach ( $modelMultiplex as $key => $model ) {
-									if ( $key > 0 ) {
-										$modelMultiplex[$key]->iva_enero = $modelMultiplex[0]->iva_enero;
-										$modelMultiplex[$key]->iva_febrero = $modelMultiplex[0]->iva_febrero;
-										$modelMultiplex[$key]->iva_marzo = $modelMultiplex[0]->iva_marzo;
-										$modelMultiplex[$key]->iva_abril = $modelMultiplex[0]->iva_abril;
-										$modelMultiplex[$key]->iva_mayo = $modelMultiplex[0]->iva_mayo;
-										$modelMultiplex[$key]->iva_junio = $modelMultiplex[0]->iva_junio;
-										$modelMultiplex[$key]->iva_julio = $modelMultiplex[0]->iva_julio;
-										$modelMultiplex[$key]->iva_agosto = $modelMultiplex[0]->iva_agosto;
-										$modelMultiplex[$key]->iva_septiembre = $modelMultiplex[0]->iva_septiembre;
-										$modelMultiplex[$key]->iva_octubre = $modelMultiplex[0]->iva_octubre;
-										$modelMultiplex[$key]->iva_noviembre = $modelMultiplex[0]->iva_noviembre;
-										$modelMultiplex[$key]->iva_diciembre = $modelMultiplex[0]->iva_diciembre;
-
-										$modelMultiplex[$key]->pp_industria = $modelMultiplex[0]->pp_industria;
-										$modelMultiplex[$key]->pagos_retencion = $modelMultiplex[0]->pagos_retencion;
-										$modelMultiplex[$key]->islr = $modelMultiplex[0]->islr;
-									}
-								}
-							}
 
 							$result = self::actionBeginSave($modelMultiplex, $postData);
 							if ( $result ) {
