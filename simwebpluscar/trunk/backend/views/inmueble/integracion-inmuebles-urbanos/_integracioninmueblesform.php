@@ -184,10 +184,10 @@ $variablephp=$_COOKIE['variablephp'];
                         
                                                     <td colspan="2"> 
 
-                                                        <div class="col-lg-4">
+                                                        <div class="col-sm-4">
                                                             <?= Yii::t('backend', 'Select the First Urban Property') ?>
                                                         </div>
-                                                        <div class="col-lg-5" align='left'> 
+                                                        <div class="col-sm-5" align='left'> 
                                                             
                                                             <?php 
                                                             $modelParametros = InmueblesUrbanosForm::find()->where(['id_contribuyente'=>$modelContribuyente->id_contribuyente])->asArray()->all();                                         
@@ -209,10 +209,10 @@ $variablephp=$_COOKIE['variablephp'];
                         
                                                     <td colspan="2"> 
 
-                                                        <div class="col-lg-4">
+                                                        <div class="col-sm-4">
                                                             <?= Yii::t('backend', 'Select the Second Urban Property') ?>
                                                         </div>
-                                                        <div class="col-lg-5" align='left'> 
+                                                        <div class="col-sm-5" align='left'> 
                                                             
                                                             <?php 
                                                             $modelParametros = InmueblesUrbanosForm::find()->where(['id_contribuyente'=>$modelContribuyente->id_contribuyente])->asArray()->all();                                         

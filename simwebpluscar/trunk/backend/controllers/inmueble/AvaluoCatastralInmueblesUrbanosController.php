@@ -64,6 +64,12 @@ use common\conexion\ConexionController;
 
 use backend\models\buscargeneral\BuscarGeneralForm;
 use backend\models\buscargeneral\BuscarGeneral;
+
+use common\enviaremail\PlantillaEmail;
+use common\mensaje\MensajeController;
+use frontend\models\inmueble\ConfiguracionTiposSolicitudes;
+use common\models\configuracion\solicitud\ParametroSolicitud;
+use common\models\configuracion\solicitud\DocumentoSolicitud;
 /**
  * CambiosInmueblesUrbanosController implements the CRUD actions for InmueblesUrbanosForm model.
  */
@@ -277,30 +283,43 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                 //         return $result; 
 
                 //     } else {
+                
+                        $avaluoConstruccion = $model->metros_construccion * $model->valor_construccion;
+                        $avaluoTerreno = $model->metros_terreno * $model->valor_terreno;
 
-                        $arrayDatos3 = [    'id_contribuyente' => $datos->id_contribuyente,
-                                            'ano_inicio' => $model->ano_inicio,
-                                            'direccion' => $model->direccion,
-                                            'medidor' => $model->medidor,
-                                            'observacion' => $model->observacion,
-                                            'tipo_ejido' => $model->tipo_ejido,
-                                          //'av_calle_esq_dom' => $av_calle_esq_dom,
-                                            'casa_edf_qta_dom' => $model->casa_edf_qta_dom,
-                                            'piso_nivel_no_dom' => $model->piso_nivel_no_dom,
-                                            'apto_dom' => $model->apto_dom,
+                        $arrayDatos1 = [    'id_impuesto' => $datos->id_impuesto,
+                                            'metros_cuadrados' => $model->metros_construccion,
+                                            'valor_unitario' => $model->valor_construccion,
+                                            'avaluo_construccion' => $avaluoConstruccion,
+                                            'inactivo' => 0,
+                                            'fecha_creador' => date('Y'),
+                                            'usuario_creador' => $_SESSION['idContribuyente'],
+                                            
                                     
                                         ]; 
 
             
-                        $tableName3 = 'inmuebles';
-                        $arrayCondition = ['id_impuesto'=>$datos->id_impuesto];
+                        $tableName1 = 'avaluos_construccion';
+                        $arrayDatos2 = [    'id_impuesto' => $datos->id_impuesto,
+                                            'metros_cuadrados' => $model->metros_terreno,
+                                            'valor_mts2' => $model->valor_construccion,
+                                            'avaluo_terreno' => $avaluoTerreno,
+                                            'inactivo' => 0,
+                                            'fecha_creador' => date('Y'),
+                                            'usuario_creador' => $_SESSION['idContribuyente'],
+                                            
+                                    
+                                        ]; 
 
-                        if ( $conn->modificarRegistro($conexion, $tableName3,  $arrayDatos3, $arrayCondition) ){
+            
+                        $tableName2 = 'avaluos_terreno';
+//die(var_dump($arrayDatos1).var_dump($arrayDatos2));
+                        if ( $conn->guardarRegistro($conexion, $tableName1,  $arrayDatos1) and $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){
 
                               $transaccion->commit();  
                               $conexion->close(); 
                               $tipoError = 0; 
-                              return $result; 
+                              return true; 
 
                         } else {
             
@@ -314,9 +333,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
 
                 
-
-
-               
+ 
             
           } catch ( Exception $e ) {
               //echo $e->errorInfo[2];

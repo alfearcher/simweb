@@ -181,7 +181,7 @@ $variablephp=$_COOKIE['variablephp'];
                                                         </div> 
                                                     
                                                         <div class="col-sm-2"> 
-                                                        <?= $form->field($model, 'metros_construcion')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?>
+                                                        <?= $form->field($model, 'metros_construccion')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?>
                                                         </div> 
 
                                                         <div class="col-sm-2"> 
@@ -189,7 +189,7 @@ $variablephp=$_COOKIE['variablephp'];
                                                         </div> 
 
                                                         <div class="col-sm-2"> 
-                                                        <?= $form->field($model, 'valor_construcion')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?>
+                                                        <?= $form->field($model, 'valor_construccion')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?>
                                                         </div> 
                                                     </div>
 
