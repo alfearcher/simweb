@@ -404,15 +404,15 @@
 						}
 					}
 
-
+// die(var_dump($postData));
 					// Lo siguiente crea un array del modelo SustitutivaBaseForm(), para la validacion
 					// individual de cada uno de los input (campos) del mismo tipo. En este caso el
 					// campo donde se registrara la declracion sera tantas veces como ramos (rubros) tenga
 					// registrado el contribuyente.
 					$modelMultiplex = [New SustitutivaBaseForm()];
 
-					$caption = Yii::t('frontend', 'Declaracion Sustitutiva') . ' ' . $lapso['descripcion'];
-					$subCaption = Yii::t('frontend', 'Declaracion Sustitutiva') . ' ' . $lapso['descripcion'];
+					$caption = Yii::t('frontend', 'Declaracion Sustitutiva') . '. ' . $lapso['descripcion'];
+					$subCaption = Yii::t('frontend', 'Declaracion Sustitutiva') . '. ' . $lapso['descripcion'];
 					$formName = $modelMultiplex[0]->formName();
 
 					// Se obtienen solo los campos.
@@ -440,7 +440,7 @@
 
 			      	// Datos generales del contribuyente.
 			      	$searchSustitutiva = New SustitutivaBaseSearch($idContribuyente);
-			      	$findModel = $searchDeclaracion->findContribuyente();
+			      	$findModel = $searchSustitutiva->findContribuyente();
 
 					if ( isset($postData['btn-back-form']) ) {
 						if ( $postData['btn-back-form'] == 1 ) {
@@ -545,7 +545,7 @@
 			  		if ( isset($findModel) ) {
 			  			$añoImpositivo = (int)$lapso['a'];
 						$periodo = (int)$lapso['p'];
-						$subCaption = $subCaption . '. ' . Yii::t('frontend', 'Rubro(s) Registrado(s) ' . $añoImpositivo . ' - ' . $periodo . '. Tipo Declaracion: ' . $lapso['descripcion'] );
+						$subCaption = $subCaption . '. ' . Yii::t('frontend', 'Rubro(s) Registrado(s) ' . $añoImpositivo . ' - ' . $periodo);
 
 						$rubroRegistradoModels = $searchSustitutiva->findRubrosRegistrados($añoImpositivo, $periodo)->all();
 
@@ -599,6 +599,7 @@
 		  																	'caption' => $caption,
 		  																	'opciones' =>$opciones,
 		  																	'subCaption' => $subCaption,
+		  							]);
 						}
 
 			  		} else {
