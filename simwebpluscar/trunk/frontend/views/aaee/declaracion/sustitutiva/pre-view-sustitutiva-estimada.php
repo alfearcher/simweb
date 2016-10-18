@@ -22,13 +22,13 @@
 
 
  /**
- *  @file declarar-sustitutiva-estimada-form.php
+ *  @file pre-view-sustitutiva-estimada.php
  *
  *  @author Jose Rafael Perez Teran
  *
  *  @date 17-10-2016
  *
- *  @view declarar-sustitutiva-estimada-form.php
+ *  @view pre-view-sustitutiva-estimada.php
  *
  *
  *  @property
@@ -67,11 +67,11 @@
  ?>
 
 
- <div class="ramo-registrado-form">
+ <div class="pre-view-sustitutiva-form">
  	<?php
 
  		$form = ActiveForm::begin([
- 			'id' => 'id-sustitutiva-form',
+ 			'id' => 'id-sustitutiva-estimada-form',
  			'method' => 'post',
  			//'action' => $url,
  			'enableClientValidation' => false,
@@ -147,7 +147,7 @@
 <!-- Aqui se coloca le foreach para replicar el formulario tantos rubros tenga declarado. -->
 											<?php foreach ( $model as $i => $mod ): ?>
 
-												<div class="item panel panel-primary"><!-- widgetItem -->
+												<div class="item panel panel-default"><!-- widgetItem -->
 													<div class="panel-heading">
 														<h3 class="panel-title pull-left"><b><?=Html::encode( $i+1 .'. '. Yii::t('frontend', 'Rubro') . ' ' . $mod->rubro); ?></b></h3>
 									                    <div class="clearfix"></div>
@@ -228,6 +228,7 @@
 																																'class' => 'form-control',
 																																'style' => 'width: 100%;',
 																																'placeholder' => '0.00',
+																																'readonly' => true,
 
 																															],
 																															'clientOptions' => [
@@ -263,48 +264,31 @@
 				</div>  <!-- Fin de col-sm-12 -->
 			</div>  	<!-- Fin de container-fluid -->
 
+
 			<div class="row">
 				<div class="form-group">
-					<div class="col-sm-3" style="width: 20%;margin-left:100px;">
-						<?= Html::submitButton(Yii::t('frontend', 'Create Request'),
-																			  [
-																				'id' => 'btn-create',
-																				'class' => 'btn btn-success',
-																				'value' => 3,
-																				'style' => 'width: 100%; margin-left:0px;margin-top:20px;',
-																				'name' => 'btn-create',
-																				//'disabled' => true,
-																			  ]);
-						?>
+					<div class="col-sm-3">
+						<?= Html::submitButton(Yii::t('backend', 'Confirm Create'),[
+																		'id' => 'btn-confirm-create',
+																		'class' => 'btn btn-success',
+																		'name' => 'btn-confirm-create',
+																		'value' => 5,
+																		'style' => 'width: 100%;'
+							])?>
 					</div>
 
-					<div class="col-sm-3" style="width: 20%;margin-left:100px;">
-						<?= Html::submitButton(Yii::t('frontend', 'Back Form'),
-																		  [
-																			'id' => 'btn-back-form',
-																			'class' => 'btn btn-danger',
-																			'value' => 1,
-																			'style' => 'width: 100%; margin-left:0px;margin-top:20px;',
-																			'name' => 'btn-back-form',
-
-																		  ]);
-						?>
-					</div>
-
-					<div class="col-sm-3" style="width: 20%;margin-left:100px;">
-						<?= Html::submitButton(Yii::t('frontend', Yii::t('frontend', 'Quit')),
-																			  [
-																				'id' => 'btn-quit',
-																				'class' => 'btn btn-danger',
-																				'value' => 1,
-																				'style' => 'width: 100%; margin-left:0px;margin-top:20px;',
-																				'name' => 'btn-quit',
-
-																			  ])
-						?>
+					<div class="col-sm-3" style="margin-left: 150px;">
+						 <?= Html::submitButton(Yii::t('backend', 'Back Form'),[
+																		'id' => 'btn-back-form',
+																		'class' => 'btn btn-danger',
+																		'name' => 'btn-back-form',
+																		'value' => 9,
+																		'style' => 'width: 100%;'
+							])?>
 					</div>
 				</div>
 			</div>
+
 		</div>			<!-- Fin panel-body-->
 
 	</div>	<!-- Fin de panel panel-primary -->

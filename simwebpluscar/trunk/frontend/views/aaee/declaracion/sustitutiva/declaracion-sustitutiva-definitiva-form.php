@@ -159,6 +159,7 @@
 														<?=$form->field($mod, "[{$i}]fecha_inicio")->hiddenInput()->label(false);?>
 														<?=$form->field($mod, "[{$i}]id_impuesto")->hiddenInput()->label(false);?>
 														<?=$form->field($mod, "[{$i}]id_rubro")->hiddenInput()->label(false);?>
+														<?=$form->field($mod, "[{$i}]estimado")->hiddenInput()->label(false);?>
 														<?=$form->field($mod, "[{$i}]rectificatoria")->hiddenInput()->label(false);?>
 														<?=$form->field($mod, "[{$i}]auditoria")->hiddenInput()->label(false);?>
 														<?=$form->field($mod, "[{$i}]rectificatoria")->hiddenInput()->label(false);?>
