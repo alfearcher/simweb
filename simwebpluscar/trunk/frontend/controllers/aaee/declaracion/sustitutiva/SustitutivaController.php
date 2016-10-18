@@ -65,7 +65,7 @@
 	// use backend\models\aaee\anexoramo\AnexoRamoForm;
 	use backend\models\aaee\rubro\Rubro;
 	// use backend\models\aaee\actecon\ActEconForm;
-	// use backend\models\aaee\acteconingreso\ActEconIngresoForm;
+	use backend\models\aaee\acteconingreso\ActEconIngresoSearch;
 	use yii\base\Model;
 	use backend\models\aaee\declaracion\sustitutiva\SustitutivaBaseForm;
 	use backend\models\aaee\declaracion\sustitutiva\SustitutivaBaseSearch;
@@ -545,7 +545,7 @@
 							$result = self::actionBeginSave($modelMultiplex, $postData);
 							if ( $result ) {
 								$this->_transaccion->commit();
-								return self::actionView($modelMultiplex[0]->nro_solicitud);
+								//return self::actionView($modelMultiplex[0]->nro_solicitud);
 							} else {
 								$this->_transaccion->rollBack();
 								$this->redirect(['error-operacion', 'cod'=> 920]);
@@ -699,24 +699,18 @@
 						foreach ( $models as $key => $model ) {
 							$model->nro_solicitud = $nroSolicitud;
 
-							// Se pasa a guardar en la sl_declaraciones.
-							$result = self::actionCreateDeclaracionDefinitiva($this->_conexion,
-																   			  $this->_conn,
-																   			  $model,
-																   			  $conf);
+							// Se pasa a guardar en la sl_sustitutivas.
+							$result = self::actionCreateSustitutiva($this->_conexion,
+																   	$this->_conn,
+																   	$model,
+																   	$conf);
 
 							if ( $result ) {
 								if ( $conf['nivel_aprobacion'] == 1 ) {
-									$result = self::actionUpdateMontoDefinitiva($this->_conexion,
-																			    $this->_conn,
-																			    $model);
-
-									if ( $result ) {
-										$result = self::actionUpdateMontoIva($this->_conexion,
-																			 $this->_conn,
-																			 $model);
-									}
-
+									$result = self::actionCreateIngreso($this->_conexion,
+																		$this->_conn,
+																		$model,
+																		$conf);
 								}
 							}
 							if ( !$result ) { break; }
@@ -724,10 +718,6 @@
 						}		// Fin del ciclo de models.
 
 						if ( $result ) {
-							if ( $result ) {
-								$result = self::actionGenerarEstimada($this->_conexion, $this->_conn, $models);
-							}
-
 							if ( $result ) {
 								$result = self::actionEjecutaProcesoSolicitud($this->_conexion, $this->_conn, $models, $conf);
 							}
@@ -820,12 +810,12 @@
 		 * "sl" respectiva.
 		 * @param  ConexionController $conexionLocal instancia de la clase ConexionController.
 		 * @param  connection $connLocal instancia de connection
-		 * @param  model $model modelo de DeclaracionBaseForm.
+		 * @param  model $model modelo de SustitutivaBaseForm.
 		 * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
 		 * solicitud.
 		 * @return boolean retorna un true si guardo el registro, false en caso contrario.
 		 */
-		private static function actionCreateDeclaracionDefinitiva($conexionLocal, $connLocal, $model, $conf)
+		private static function actionCreateSustitutiva($conexionLocal, $connLocal, $model, $conf)
 		{
 			$result = false;
 			$estatus = 0;
@@ -864,116 +854,26 @@
 
 
 
+		/***/
+		private static function actionCreateIngreso($conexionLocal, $connLocal, $model, $conf)
+		{
+			$result = false;
 
-	    /**
-	     * Metodo que realiza la actualizacion del atributo "reales", colocandole
-	     * el monto que el usuario ingreso como monto de la declaracion definitiva.
-	     * Esta actualizacion se realizara por rubro. Si el monto de la estimada del
-	     * mismo periodo es igual a cero para un rubro, se actualizara tambien con el
-	     * mismo monto declarado como definitiva para dicho rubro. En el modelo, el
-	     * monto de la estimada de dicho lapso, se guarda en model->monto_minimo.
-	     * @param  ConexionController $conexionLocal instancia de la clase ConexionController.
-		 * @param  connection $connLocal instancia de connection
-		 * @param  model $model modelo de DeclaracionBaseForm.
-	     * @return boolean retorna un true si guardo el registro, false en caso contrario.
-	     */
-	    private static function actionUpdateMontoDefinitiva($conexionLocal, $connLocal, $model)
-	    {
-	    	$result = false;
-	    	if ( isset($_SESSION['idContribuyente']) && isset($connLocal) && isset($conexionLocal) ) {
-	    		$idContribuyente = $_SESSION['idContribuyente'];
-	    		if ( $idContribuyente == $model->id_contribuyente ) {
+			if ( isset($conexionLocal) && isset($connLocal) && isset($model) && count($conf) > 0 ) {
 
-	    			$ingresoModel = New ActEconIngresoForm();
-	    			$tabla = $ingresoModel->tableName();
-
-	    			// Condiciones para modificar el registro.
-	    			$arregloCondicion['id_impuesto'] = $model->id_impuesto;
-	    			$arregloCondicion['id_rubro'] = $model->id_rubro;
-	    			$arregloCondicion['exigibilidad_periodo'] = $model->exigibilidad_periodo;
-	    			$arregloCondicion['bloqueado'] = 0;
-	    			$arregloCondicion['inactivo'] = 0;
-
-	    			$arregloDatos['reales'] = $model->monto_new;
-	    			if ( $model->monto_minimo == 0 ) {
-		    			// Atributo a modificar.
-		    			$arregloDatos['estimado'] = $model->monto_new;
-		    		}
-
-	   				$result = $conexionLocal->modificarRegistro($connLocal, $tabla, $arregloDatos, $arregloCondicion);
-	      		}
-	    	}
-	    	return $result;
-	    }
+				$ingresoSearch = New ActEconIngresoSearch($model->id_contribuyente);
+				$ingresoSearch->attributes = $model->attributes;
+				$arregloDatos = $ingresoSearch->attributes;
 
 
+				$result = $ingresoSearch->guardar($model->attributes, $conexionLocal, $conn);
+			}
 
 
+			return $result;
 
-	    /**
-	     * Metodo que realiza la actualizacion de los montos por iva, dicho atributos
-	     * se encuentran en la entidad "act_econ".
-	     * @param  ConexionController $conexionLocal instancia de la clase ConexionController.
-		 * @param  connection $connLocal instancia de connection
-		 * @param  model $model modelo de DeclaracionBaseForm.
-	     * @return boolean retorna un true si guardo el registro, false en caso contrario.
-	     */
-	    private static function actionUpdateMontoIva($conexionLocal, $connLocal, $model)
-	    {
-	    	$result = false;
-	    	if ( isset($_SESSION['idContribuyente']) && isset($connLocal) && isset($conexionLocal) ) {
-	    		$idContribuyente = $_SESSION['idContribuyente'];
-	    		if ( $idContribuyente == $model->id_contribuyente ) {
+		}
 
-	    			$actModel = New ActEconForm();
-	    			$tabla = $actModel->tableName();
-
-	    			// Condiciones para modificar el registro.
-	    			$arregloCondicion['id_contribuyente'] = $model->id_contribuyente;
-	    			$arregloCondicion['id_impuesto'] = $model->id_impuesto;
-	    			$arregloCondicion['ente'] = Yii::$app->ente->getEnte();
-	    			$arregloCondicion['estatus'] = 0;
-
-
-	    			// Atributos a modificar.
-	    			$arregloDatos['iva_enero'] = $model->iva_enero;
-	    			$arregloDatos['iva_febrero'] = $model->iva_febrero;
-	    			$arregloDatos['iva_marzo'] = $model->iva_marzo;
-	    			$arregloDatos['iva_abril'] = $model->iva_abril;
-	    			$arregloDatos['iva_mayo'] = $model->iva_mayo;
-	    			$arregloDatos['iva_junio'] = $model->iva_junio;
-	    			$arregloDatos['iva_julio'] = $model->iva_julio;
-	    			$arregloDatos['iva_agosto'] = $model->iva_agosto;
-	    			$arregloDatos['iva_septiembre'] = $model->iva_septiembre;
-	    			$arregloDatos['iva_octubre'] = $model->iva_octubre;
-	    			$arregloDatos['iva_noviembre'] = $model->iva_noviembre;
-	    			$arregloDatos['iva_diciembre'] = $model->iva_diciembre;
-
-	    			$arregloDatos['islr'] = $model->islr;
-	    			$arregloDatos['pp_industria'] = $model->pp_industria;
-	    			$arregloDatos['pagos_retencion'] = $model->pagos_retencion;
-
-	   				$result = $conexionLocal->modificarRegistro($connLocal, $tabla, $arregloDatos, $arregloCondicion);
-	      		}
-	    	}
-	    	return $result;
-	    }
-
-
-
-	    /***/
-	    private function actionGenerarEstimada($conexionLocal, $connLocal, $models)
-	    {
-	    	$result = false;
-	    	$idContribuyente = $_SESSION['idContribuyente'];
-	    	$declaracionSearch = New DeclaracionBaseSearch($idContribuyente);
-
-	    	$mensaje = $declaracionSearch->cargarEstimadaPorOficio($models, $conexionLocal, $connLocal);
-
-	    	if ( count($mensaje) == 0 ) { $result = true; }
-
-	    	return $result;
-	    }
 
 
 
