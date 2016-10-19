@@ -239,7 +239,7 @@ class IntegracionInmueblesUrbanosController extends Controller
                               'nivel_aprobacion' => $nivelAprobacion["nivel_aprobacion"],
                               'nro_control' => 0,
                               'firma_digital' => null,
-                              'estatus' => 1,
+                              'estatus' => 0,
                               'inactivo' => 0,
                           ];  
            
@@ -312,7 +312,7 @@ class IntegracionInmueblesUrbanosController extends Controller
                                       
                                        
                                 ]; 
-                                                
+                          die(var_dump($arrayDatos3));                      
                         $arrayDatosInactivacion3 = [    
                                                     'inactivo' => 1,
                                             
