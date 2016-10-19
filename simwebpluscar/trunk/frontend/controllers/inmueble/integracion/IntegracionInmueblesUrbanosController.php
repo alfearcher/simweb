@@ -267,7 +267,7 @@ class IntegracionInmueblesUrbanosController extends Controller
                                        
                                 ]; 
                                    
-
+die(var_dump($arrayDatos2));
                 $arrayDatosInactivarSl1 = [    'id_contribuyente' => $_SESSION['idContribuyente'],
                                     'id_impuesto' => $model->direccion1,
                                     'nro_solicitud' => $result,
@@ -312,7 +312,7 @@ class IntegracionInmueblesUrbanosController extends Controller
                                       
                                        
                                 ]; 
-                          die(var_dump($arrayDatos3));                      
+                                               
                         $arrayDatosInactivacion3 = [    
                                                     'inactivo' => 1,
                                             
