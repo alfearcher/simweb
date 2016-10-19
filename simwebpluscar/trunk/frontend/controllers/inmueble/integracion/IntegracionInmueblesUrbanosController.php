@@ -267,7 +267,7 @@ class IntegracionInmueblesUrbanosController extends Controller
                                        
                                 ]; 
                                    
-die(var_dump($arrayDatos2));
+
                 $arrayDatosInactivarSl1 = [    'id_contribuyente' => $_SESSION['idContribuyente'],
                                     'id_impuesto' => $model->direccion1,
                                     'nro_solicitud' => $result,
@@ -284,8 +284,9 @@ die(var_dump($arrayDatos2));
             
                  $tableName2 = 'sl_inmuebles'; 
 
-                if ( $conn->guardarRegistro($conexion, $tableName2, $arrayCampos2,  $arrayDatos2) and $conn->guardarRegistro($conexion, $tableName2,  $arrayDatosInactivarSl1) and $conn->guardarRegistro($conexion, $tableName2,  $arrayDatosInactivarSl2)){
-
+                if ( $conn->guardarRegistro($conexion, $tableName2, $arrayCampos2,  $arrayDatos2)){
+                  if($conn->guardarRegistro($conexion, $tableName2,  $arrayDatosInactivarSl1)) {
+                   if($conn->guardarRegistro($conexion, $tableName2,  $arrayDatosInactivarSl2)) {
                     if ($nivelAprobacion['nivel_aprobacion'] != 1){
 
                         $transaccion->commit(); 
@@ -338,7 +339,22 @@ die(var_dump($arrayDatos2));
 
                         }
                   }
+                  } else {
+            
+                    $transaccion->rollBack(); 
+                    $conexion->close(); 
+                    $tipoError = 0; 
+                    return false; 
 
+                }
+                } else {
+            
+                    $transaccion->rollBack(); 
+                    $conexion->close(); 
+                    $tipoError = 0; 
+                    return false; 
+
+                }
 
                 } else {
             
@@ -348,6 +364,7 @@ die(var_dump($arrayDatos2));
                     return false; 
 
                 }
+
 
             }else{ 
                 

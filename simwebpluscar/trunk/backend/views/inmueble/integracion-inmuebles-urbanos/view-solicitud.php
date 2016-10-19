@@ -53,8 +53,10 @@
 	<div class="info-solicitud">
 		<div class="row">
 			<h3><?= Html::encode($caption) ?></h3>
+				
+				<div>
 				<?= DetailView::widget([
-						'model' => $model,
+						'model' => $model[0],
 		    			'attributes' => [
 		    				'nro_solicitud',
 		    				'id_contribuyente',
@@ -70,6 +72,39 @@
 		    			],
 					])
 				?>
+			</div>
+				<div>
+				<?= DetailView::widget([
+						'model' => $model[1],
+		    			'attributes' => [
+		    				'nro_solicitud',
+		    				'id_contribuyente',
+		    				'id_impuesto',
+		    				'inactivo',
+		    				
+
+
+		        			//'created_at:datetime', // creation date formatted as datetime
+		    			],
+					])
+				?>
+			</div>
+			<div>
+				<?= DetailView::widget([
+						'model' => $model[2],
+		    			'attributes' => [
+		    				'nro_solicitud',
+		    				'id_contribuyente',
+		    				'id_impuesto',
+		    				'inactivo',
+		    				
+
+
+		        			//'created_at:datetime', // creation date formatted as datetime
+		    			],
+					])
+				?>
+			</div>
 		</div>
 	</div>
 </div>
