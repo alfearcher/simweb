@@ -284,7 +284,7 @@ class IntegracionInmueblesUrbanosController extends Controller
             
                  $tableName2 = 'sl_inmuebles'; 
 
-                if ( $conn->guardarRegistro($conexion, $tableName2, $arrayCampos2,  $arrayDatos2)){
+                if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2)){
                   if($conn->guardarRegistro($conexion, $tableName2,  $arrayDatosInactivarSl1)) {
                    if($conn->guardarRegistro($conexion, $tableName2,  $arrayDatosInactivarSl2)) {
                     if ($nivelAprobacion['nivel_aprobacion'] != 1){
