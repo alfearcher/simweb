@@ -142,6 +142,10 @@ class IntegracionInmueblesUrbanosController extends Controller
          $model = new IntegracionInmueblesForm();
 
          $datos = $_SESSION['datos'];
+
+         $idConfig = yii::$app->request->get('id');
+
+         $_SESSION['id'] = $idConfig;
     
          //Mostrará un mensaje en la vista cuando el usuario se haya registrado
          $msg = null;
