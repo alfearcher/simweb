@@ -298,7 +298,7 @@ class ConfigurarChequeDevueltoController extends Controller
                         $arrayDatosInactivacion3 = [    
                                                     'inactivo' => 1,
                                             
-                                                ]; 
+                                                ];  
 
                     
                        
@@ -358,7 +358,7 @@ class ConfigurarChequeDevueltoController extends Controller
                                                         ->asArray()->all();
 
 
-         return $buscar[0]["id_tipo_solicitud"];                                              
+         return $buscar[0]["id_tipo_solicitud"];                                               
 
      } 
 
