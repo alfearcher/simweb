@@ -318,7 +318,7 @@
 	    /***/
 	    public function getDataProviderSolicitud($nroSolicitud)
 	    {
-	    	$query = self::findSolicitudDeclaracion($nroSolicitud);
+	    	$query = self::findSolicitudSustitutiva($nroSolicitud);
 
 	    	$dataProvider = new ActiveDataProvider([
             	'query' => $query,
@@ -894,6 +894,8 @@
 	    	$mensajePago = [];
 	    	$mensajeReciboPendiente = [];
 	    	$idImpuesto = 0;
+	    	$aprobada = false;
+	    	$pendiente = false;
 
 	    	$idImpuesto = self::getIdImpuestoSegunAnoImpositivo($añoImpositivo);
 
@@ -910,7 +912,8 @@
 	    		$mensajePendiente = Yii::t('backend', "Existe solicitud similar pendiente para el lapso {$añoImpositivo} - {$periodo}");
 	    	}
 
-	    	$aprobada = self::yaPoseeSolicitudSimiliarAprobada($idImpuesto, $periodo);
+	    	//no va
+	    	//$aprobada = self::yaPoseeSolicitudSimiliarAprobada($idImpuesto, $periodo);
 	    	if ( $aprobada ) {
 	    		$mensajeAprobada = Yii::t('backend', "Existe solicitud similar aprobada para el lapso {$añoImpositivo} - {$periodo}");
 	    	}

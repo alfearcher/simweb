@@ -75,10 +75,12 @@
 		public $estatus;
 		public $fecha_hora_proceso;
 		public $user_funcionario;
+		public $condicion;
 
 		public $ano_impositivo;
 		public $rubro;
 		public $descripcion;
+		public $chkHabilitar;
 
 		const SCENARIO_ESTIMADA = 'estimada';
 		const SCENARIO_DEFINITIVA = 'definitiva';
@@ -115,6 +117,8 @@
 	        					'usuario',
 	        					'estatus',
 	        					'ano_impositivo',
+	        					'condicion',
+	        					'chkHabilitar',
 
 
 	        		],
@@ -139,6 +143,8 @@
 	        					'usuario',
 	        					'estatus',
 	        					'ano_impositivo',
+	        					'condicion',
+	        					'chkHabilitar',
 
         			],
         		self::SCENARIO_SEARCH => [
@@ -168,14 +174,24 @@
 	        	[['id_contribuyente', 'estimado',
 	        	  'id_impuesto', 'id_rubro',
 	        	  'exigibilidad_periodo', 'tipo_declaracion',
-	        	  'rubro', 'descripcion'],
-	        	  'required', 'on' => 'estimada',
+	        	  'rubro', 'descripcion', 'chkHabilitar'],
+	        	  'required', 'when' => function($model) {
+	        	  							if ( $model->chkHabilitar == 1 ) {
+	        	  								return true;
+	        	  							}
+	        	  },
+	        	  'on' => 'estimada',
 	        	  'message' => Yii::t('frontend', '{attribute} is required')],
 	        	[['id_contribuyente', 'reales',
 	        	  'id_impuesto', 'id_rubro',
 	        	  'exigibilidad_periodo', 'tipo_declaracion',
-	        	  'rubro', 'descripcion'],
-	        	  'required', 'on' => 'definitiva',
+	        	  'rubro', 'descripcion', 'chkHabilitar'],
+	        	  'required', 'when' => function($model) {
+	        	  							if ( $model->chkHabilitar == 1 ) {
+	        	  								return true;
+	        	  							}
+	        	  },
+	        	   'on' => 'definitiva',
 	        	  'message' => Yii::t('frontend', '{attribute} is required')],
 	        	[['id_contribuyente', 'ano_impositivo',
 	        	  'exigibilidad_periodo', 'tipo_declaracion'],
@@ -185,10 +201,11 @@
 	        	  'required', 'on' => 'search_tipo',
 	        	  'message' => Yii::t('frontend', '{attribute} is required')],
 	        	[['id_rubro', 'estatus', 'id_contribuyente',
-	        	  'exigibilidad_periodo', 'id_impuesto', 'tipo_declaracion'],
+	        	  'exigibilidad_periodo', 'id_impuesto',
+	        	  'tipo_declaracion', 'chkHabilitar'],
 	        	  'integer',
 	        	  'message' => Yii::t('frontend', '{attribute} no valid')],
-	          	[['estatus', 'tipo_declaracion'],
+	          	[['estatus', 'tipo_declaracion', 'condicion'],
 	          	  'default', 'value' => 0],
 	          	[['estimado','reales', 'sustitutiva',
 	          	  'rectificatoria', 'auditoria'],
