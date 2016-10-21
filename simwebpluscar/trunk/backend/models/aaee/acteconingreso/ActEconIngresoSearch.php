@@ -220,8 +220,16 @@
 
 
 
-	    /***/
-	    public function inactivarAll($idImpuesto)
+	    /**
+	     * Metodo que anula el registro maestro de la declracion. Solo aplicaria
+	     * a los registros que se encuentran activo.
+	     * @param  integer $idImpuesto identificador del año de la declaracion. Entidad
+	     * "act-econ".
+	     * @param  conexioncontroller $conexion  instancia de la clase especifica.
+	     * @param  connection $conn instancia de connection.
+	     * @return boolean retorna true si ejecuta todo bien, de lo contrario flase.
+	     */
+	    public function inactivarAll($idImpuesto, $conexion, $conn)
 	    {
 	    	$result = false;
 	    	$tabla = $this->tableName();
@@ -242,7 +250,17 @@
 
 
 
-	    /***/
+	    /**
+	     * Metodo que anula un registro especifico. Solo aplicaria a los registros
+	     * que se encuentran activo.
+	     * @param  integer $idImpuesto identificador del año de la declaracion. Entidad
+	     * "act-econ".
+	     * @param  integer $idRubro identificador del rubro. Entidad "rubros".
+	     * @param  integer $periodo periodo de la declaracion.
+	     * @param  conexioncontroller $conexion instancia de la clase especifica.
+	     * @param  connection $conn instancia de connection.
+	     * @return boolean retorna true si ejecuta todo bien, de lo contrario flase.
+	     */
 	    public function inactivarItem($idImpuesto, $idRubro, $periodo, $conexion, $conn)
 	    {
 	    	$result = false;
