@@ -149,6 +149,16 @@
 
 												<div class="item panel panel-default"><!-- widgetItem -->
 													<div class="panel-heading">
+														<div class="checkbox"><?= Html::activeCheckbox($mod, "[{$i}]chkHabilitar",
+																												[
+																													'id' => 'id-chkHabilitar[' . $i . ']',
+																													//'name' => 'chkHabilitar[' . $i . ']',
+																													'label' => '<strong>Sustitutiva Habilitada</strong>',
+																													'disabled' => 'disabled',
+																												]
+																									);
+																			?>
+														</div>
 														<h3 class="panel-title pull-left"><b><?=Html::encode( $i+1 .'. '. Yii::t('frontend', 'Rubro') . ' ' . $mod->rubro); ?></b></h3>
 									                    <div class="clearfix"></div>
 									                </div>
@@ -170,6 +180,8 @@
 														<?=$form->field($mod, "[{$i}]fecha_hora")->hiddenInput()->label(false);?>
 														<?=$form->field($mod, "[{$i}]origen")->hiddenInput()->label(false);?>
 														<?=$form->field($mod, "[{$i}]estatus")->hiddenInput()->label(false);?>
+														<?=$form->field($mod, "[{$i}]condicion")->hiddenInput()->label(false);?>
+														<?=$form->field($mod, "[{$i}]chkHabilitar")->hiddenInput()->label(false);?>
 														<!-- <?//=$form->field($mod, "[{$i}]user_funcionario")->hiddenInput()->label(false);?> -->
 
 
@@ -221,14 +233,14 @@
 
 								                        	<div class="col-sm-2" style="padding-left:0px;">
 								                                <?= $form->field($mod, "[{$i}]sustitutiva")->widget(MaskedInput::className(), [
-																															'id' => 'sustitutiva',
-																															'name' => 'sustitutiva',
+																															'name' => 'sustitutiva' . $i,
 																															//'mask' => '',
 																															'options' => [
 																																'class' => 'form-control',
 																																'style' => 'width: 100%;',
 																																'placeholder' => '0.00',
 																																'readonly' => true,
+																																'id' => 'sustitutiva' . $i,
 
 																															],
 																															'clientOptions' => [

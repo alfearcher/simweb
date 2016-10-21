@@ -64,7 +64,7 @@
 
     Icon::map($this, $typeIcon);
 
- ?>
+?>
 
 
  <div class="ramo-registrado-form">
@@ -136,6 +136,20 @@
 					        	<b><span><?= Html::encode($subCaption) ?></span></b>
 					        </div>
 					        <div class="panel-body">
+					        	<div class="row" style="padding-left: 15px;">
+					        		<div class="well well-sm" style="width: 50%;padding-left: 10px;">
+  										<h4><strong>Importante:</strong></h4>Debe habilitar la sustitutiva del rubro para que los cambio se apliquen.
+									</div>
+					        	</div>
+
+								<?php if ( $errorHabilitar ) { ?>
+									<div class="row" style="padding-left: 15px;">
+						        		<div class="well well-sm" style="width: 50%;padding-left: 10px;color: red;">
+											<h4><strong><?=Html::encode(Yii::t('frontend', 'No ha habilitado ningun rubro. Tilde opcion Habilitar Sustitutiva')); ?></strong></h4>
+										</div>
+						        	</div>
+						        <?php } ?>
+
 <!-- INICIO RUBROS REGISTRADOS PARA EL AÑO-PERIODO -->
 								<div class="row"  style="padding-left: 10px; width: 100%;">
 									<div class="rubro-registrado">
@@ -149,6 +163,23 @@
 
 												<div class="item panel panel-primary"><!-- widgetItem -->
 													<div class="panel-heading">
+														<div class="checkbox"><?= Html::activeCheckbox($mod, "[{$i}]chkHabilitar",
+																									 [
+																									 	'label' => 'Habilitar Sustitutiva',
+																									 	'id' => 'id-chkHabilitar[' . $i . ']',
+
+																									 	'onChange' => 'if ( $(this).is(":checked") ) {
+																		                                                var input = "#sustitutiva" + ' . $i . '
+																		                                                $(input).removeAttr("readonly");
+																		                                              } else {
+																		                                                var input = "#sustitutiva" + ' . $i . '
+																		                                                $(input).attr("readonly", true);
+																		                                              }',
+
+																									 ]
+																							);
+																				?>
+														</div>
 														<h3 class="panel-title pull-left"><b><?=Html::encode( $i+1 .'. '. Yii::t('frontend', 'Rubro') . ' ' . $mod->rubro); ?></b></h3>
 									                    <div class="clearfix"></div>
 									                </div>
@@ -170,6 +201,7 @@
 														<?=$form->field($mod, "[{$i}]fecha_hora")->hiddenInput()->label(false);?>
 														<?=$form->field($mod, "[{$i}]origen")->hiddenInput()->label(false);?>
 														<?=$form->field($mod, "[{$i}]estatus")->hiddenInput()->label(false);?>
+														<?=$form->field($mod, "[{$i}]condicion")->hiddenInput()->label(false);?>
 														<!-- <?//=$form->field($mod, "[{$i}]user_funcionario")->hiddenInput()->label(false);?> -->
 
 
@@ -192,14 +224,14 @@
 
 								                        	<div class="col-sm-2" style="padding-right:6px;">
 								                                <?= $form->field($mod, "[{$i}]estimado")->widget(MaskedInput::className(), [
-																															'id' => 'estimado',
-																															'name' => 'estimado',
+								                                															'id' => 'estimado' . $i,
+																															'name' => 'estimado' . $i,
 																															//'mask' => '',
 																															'options' => [
 																																'class' => 'form-control',
 																																'style' => 'width: 100%;',
+																																'placeholder' => '0.00',
 																																'readonly' => true,
-																																//'placeholder' => '0.00',
 
 																															],
 																															'clientOptions' => [
@@ -218,16 +250,24 @@
 																?>
 								                            </div>
 
+<?php
+	if ( $mod->chkHabilitar == 1 ) {
+		$readOnly = false;
+ 	} else {
+ 		$readOnly = true;
+ 	}
+ ?>
 
 								                        	<div class="col-sm-2" style="padding-left:0px;">
 								                                <?= $form->field($mod, "[{$i}]sustitutiva")->widget(MaskedInput::className(), [
-																															'id' => 'sustitutiva',
-																															'name' => 'sustitutiva',
+																															'name' => 'sustitutiva' . $i,
 																															//'mask' => '',
 																															'options' => [
 																																'class' => 'form-control',
 																																'style' => 'width: 100%;',
 																																'placeholder' => '0.00',
+																																'id' => 'sustitutiva' . $i,
+																																'readonly' => $readOnly,
 
 																															],
 																															'clientOptions' => [
@@ -241,6 +281,7 @@
 																																'radixPoint'=> ".",
 																																'autoGroup' => true,
 																																//'decimalSeparator' => ',',
+
 																															],
 																										  				  ]);
 																?>
