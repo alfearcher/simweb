@@ -25,7 +25,7 @@
  *
  *  @author Jose Rafael Perez Teran
  *
- *  @date 01-10-2016
+ *  @date 18-10-2016
  *
  *  @view _view.php
  *
