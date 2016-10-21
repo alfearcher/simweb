@@ -1,41 +1,41 @@
-<?php 
+<?php
 /**
  *	@copyright © by ASIS CONSULTORES 2012 - 2016
  *  All rights reserved - SIMWebPLUS
  */
 
  /**
- * 
- *	> This library is free software; you can redistribute it and/or modify it under 
- *	> the terms of the GNU Lesser Gereral Public Licence as published by the Free 
- *	> Software Foundation; either version 2 of the Licence, or (at your opinion) 
+ *
+ *	> This library is free software; you can redistribute it and/or modify it under
+ *	> the terms of the GNU Lesser Gereral Public Licence as published by the Free
+ *	> Software Foundation; either version 2 of the Licence, or (at your opinion)
  *	> any later version.
- *  > 
- *	> This library is distributed in the hope that it will be usefull, 
- *	> but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability 
- *	> or fitness for a particular purpose. See the GNU Lesser General Public Licence 
+ *  >
+ *	> This library is distributed in the hope that it will be usefull,
+ *	> but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability
+ *	> or fitness for a particular purpose. See the GNU Lesser General Public Licence
  *	> for more details.
- *  > 
+ *  >
  *	> See [LICENSE.TXT](../../LICENSE.TXT) file for more information.
  *
  */
 
- /**	
+ /**
  *	@file Ente.php
- *	
+ *
  *	@author Jose Rafael Perez Teran
- * 
+ *
  *	@date 13-05-2015
- * 
+ *
  *  @class Ente
  *	@brief Clase que posee los datos basicos de la institucion o alcaldia, para
  *  @brief customizar la aplicacion.
- * 
- *  
- *  
+ *
+ *
+ *
  *	@property
  *  protected $noPais;
- *  protected $pais; 
+ *  protected $pais;
  *  protected $noEnte;
  *  protected $alcaldia;
  *	protected $alias;
@@ -44,19 +44,19 @@
  *	protected $direccion;
  *	protected $telefonos;
  *	protected $email
- * 
+ *
  *  protected $noEstado;
  *  protected $estado;
  *
  *  protected $noMunicipio;
- *	protected $municipio; 
- * 
- * 	protected $id	
- *  
+ *	protected $municipio;
+ *
+ * 	protected $id
+ *
  *	@method
- *  
+ *
  *	@inherits
- *	
+ *
  */
 	namespace common\classes;
 
@@ -67,7 +67,7 @@
 	class Ente
 	{
 		protected $noPais = 1;
-		protected $pais = 'Republic Bolivarian of Venezuela';
+		protected $pais = 'Republica Bolivariana de Venezuela';
 
 		protected $noEnte = 13;
 		protected $alcaldia = 'Alcaldia del Municipio Bolivariano de Caroni';
@@ -80,7 +80,7 @@
 		protected $email = ['alcaldiacaroni@gmail.com'];
 
 		protected $noEstado = 0;
-		protected $estado = 'Bolivar';
+		protected $estado = 'Estado Bolivar';
 
 		protected $noMunicipio = 0;
 		protected $municipio = 'Caroni';
@@ -103,7 +103,7 @@
 
 		public function getPais()
 		{
-			return Yii::t('backend', $this->pais);
+			return $this->pais;
 		}
 
 		public function getEnte()
@@ -134,7 +134,7 @@
 		public function getDireccion()
 		{
 			return $this->direccionLocalidad;
-		} 
+		}
 
 		public function getTelefonos()
 		{
@@ -153,7 +153,7 @@
 
 		public function getEstado()
 		{
-			//return $this->estado;
+			return $this->estado;
 		}
 
 		public function getnoMunicipio()
