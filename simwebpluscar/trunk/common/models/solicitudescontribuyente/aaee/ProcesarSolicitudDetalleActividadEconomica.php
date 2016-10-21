@@ -62,6 +62,8 @@
     use common\models\solicitudescontribuyente\aaee\ProcesarAnexarRamo;
     use common\models\solicitudescontribuyente\aaee\ProcesarDesincorporarRamo;
     use common\models\solicitudescontribuyente\aaee\ProcesarDeclaracionEstimada;
+    use common\models\solicitudescontribuyente\aaee\ProcesarDeclaracionDefinitiva;
+    use common\models\solicitudescontribuyente\aaee\ProcesarDeclaracionSustitutiva;
 
 
     /**
@@ -187,6 +189,14 @@
                                                               $this->_evento,
                                                               $this->_conn,
                                                               $this->_conexion);
+                    $result = $procesar->procesarSolicitud();
+
+
+                } elseif ( $this->_model->tipo_solicitud == 17 ) {
+                    $procesar = New ProcesarDeclaracionSustitutiva($this->_model,
+                                                                   $this->_evento,
+                                                                   $this->_conn,
+                                                                   $this->_conexion);
                     $result = $procesar->procesarSolicitud();
 
                 } elseif ( $this->_model->tipo_solicitud == 69 ) {
