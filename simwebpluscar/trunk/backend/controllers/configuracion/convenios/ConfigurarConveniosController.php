@@ -383,7 +383,7 @@ class ConfigurarConveniosController extends Controller
          } else { 
 
              return false; 
-         }
+         }  
  
 
      }

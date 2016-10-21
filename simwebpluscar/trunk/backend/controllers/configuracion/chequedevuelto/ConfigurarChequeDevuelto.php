@@ -133,7 +133,7 @@ class ConfigurarChequeDevueltoController extends Controller
      *@param $id_impuesto, tipo de dato entero y clave primaria de la tabla inmueble,  variable condicional 
      *para el cambio de otros datos inmuebles
      *@return model 
-     **/
+     **/ 
     public function actionCreate()
      { 
          
