@@ -1297,7 +1297,7 @@
 	    				$suma = $suma + $dato['reales'];
 	    			}
 	    			if ( $suma > 0 ) {
-	    				$mensajes[] = Yii::t('backend', "La Declaracion Definitiva {$añoImpositivo} - {$periodo}, ya se encuentra registrada");
+	    				$mensajes[] = Yii::t('backend', "La Declaracion Definitiva {$añoImpositivo} - {$periodo}, ya se encuentra registrada. Utilice el modulo de DECLARACION SUSTITUTIVA.");
 	    			}
 	    		}
 	    	}
