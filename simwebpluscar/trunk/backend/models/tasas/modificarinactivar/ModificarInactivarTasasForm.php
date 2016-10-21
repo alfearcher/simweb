@@ -73,7 +73,7 @@ class ModificarInactivarTasasForm extends Model
     public $descripcion;
     public $monto;
     public $tipo_rango;
-    public $inactivo;
+  public $inactivo;
     public $cantidad_ut;
 
 
