@@ -324,7 +324,7 @@
 						if ( $model->load($postData) ) {
 			    			if ( $model->validate() ) {
 
-			    				//$msjControls = $searchDeclaracion->validarEvento((int)$model->ano_impositivo, (int)$model->exigibilidad_periodo, 2);
+			    				//$msjControls = $searchSustitutiva->validarEvento((int)$model->ano_impositivo, (int)$model->exigibilidad_periodo, $tipoDeclaracion);
 
 		    					if ( count($msjControls) == 0 ) {
 				   					$_SESSION['lapso'] = [
@@ -395,7 +395,7 @@
 				$lapso = isset($_SESSION['lapso']) ? $_SESSION['lapso'] : [];
 
 				if ( count($lapso) > 0 ) {
-					$btnSearchCategory = 1;
+					$errorHabilitar = false;
 					$postData = $request->post();
 
 					if ( isset($postData['btn-quit']) ) {
@@ -404,7 +404,6 @@
 						}
 					}
 
-// die(var_dump($postData));
 					// Lo siguiente crea un array del modelo SustitutivaBaseForm(), para la validacion
 					// individual de cada uno de los input (campos) del mismo tipo. En este caso el
 					// campo donde se registrara la declracion sera tantas veces como ramos (rubros) tenga
@@ -418,10 +417,16 @@
 					// Se obtienen solo los campos.
 					$datos = isset($postData[$formName]) ? $postData[$formName] : [];
 
+					$chkHabilitar = 0;
+
 					$count = ( count($datos) > 0 ) ? count($datos) : 0;
 					$result = false;
 					if ( $count > 0 ) {
 						foreach ( $datos as $key => $value ) {
+							if ( $value['chkHabilitar'] == 1 ) {
+								$chkHabilitar = ++$chkHabilitar;
+							}
+
 							$modelMultiplex[$key] = New SustitutivaBaseForm();
 							if ( $lapso['tipo'] == 1 ) {
 								$modelMultiplex[$key]->scenario = self::SCENARIO_ESTIMADA;
@@ -430,8 +435,15 @@
 							}
 						}
 
+// die(var_dump($chkHabilitar));
+
 						Model::loadMultiple($modelMultiplex, $postData);
 						$result = Model::validateMultiple($modelMultiplex);
+
+						if ( $chkHabilitar == 0 ) {
+							$errorHabilitar = true;
+							$result = false;
+						}
 					}
 
 					if ( Model::loadMultiple($modelMultiplex, $postData)  && Yii::$app->request->isAjax ) {
@@ -460,10 +472,10 @@
 								return $this->render('/aaee/declaracion/sustitutiva/declaracion-sustitutiva-estimada-form', [
 			  																	'model' => $modelMultiplex,
 			  																	'findModel' => $findModel,
-			  																	'btnSearchCategory' => $btnSearchCategory,
 			  																	'caption' => $caption,
 			  																	'opciones' =>$opciones,
 			  																	'subCaption' => $subCaption,
+			  																	'errorHabilitar' => $errorHabilitar,
 
 
 
@@ -472,10 +484,10 @@
 								return $this->render('/aaee/declaracion/sustitutiva/declaracion-sustitutiva-definitiva-form', [
 			  																	'model' => $modelMultiplex,
 			  																	'findModel' => $findModel,
-			  																	'btnSearchCategory' => $btnSearchCategory,
 			  																	'caption' => $caption,
 			  																	'opciones' =>$opciones,
 			  																	'subCaption' => $subCaption,
+			  																	'errorHabilitar' => $errorHabilitar,
 
 
 
@@ -485,6 +497,7 @@
 					} elseif( isset($postData['btn-create']) ) {
 						if ( $postData['btn-create'] == 3 ) {
 
+// die(var_dump($errorHabilitar));
 							if ( $result ) {
 								// Presentar preview.
 								$opciones = [
@@ -500,6 +513,7 @@
 																		'caption' => $caption,
 		  																'opciones' =>$opciones,
 		  																'subCaption' => $subCaption,
+		  																'errorHabilitar' => $errorHabilitar,
 										]);
 								} elseif ( $lapso['tipo'] == 2 ) {
 									return $this->render('/aaee/declaracion/sustitutiva/pre-view-sustitutiva-definitiva', [
@@ -508,6 +522,7 @@
 																		'caption' => $caption,
 		  																'opciones' =>$opciones,
 		  																'subCaption' => $subCaption,
+		  																'errorHabilitar' => $errorHabilitar,
 										]);
 								}
 
@@ -520,20 +535,22 @@
 								$subCaption = $subCaption . '. ' . Yii::t('frontend', 'Categories Registers ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
 
 								if ( $lapso['tipo'] == 1 ) {
-									return $this->render('/aaee/declaracion/sustitutiva/pre-view-sustitutiva-estimada', [
+									return $this->render('/aaee/declaracion/sustitutiva/declaracion-sustitutiva-estimada-form', [
 																		'model' => $modelMultiplex,
 																		'findModel' => $findModel,
 																		'caption' => $caption,
 		  																'opciones' =>$opciones,
 		  																'subCaption' => $subCaption,
+		  																'errorHabilitar' => $errorHabilitar,
 										]);
 								} elseif ( $lapso['tipo'] == 2 ) {
-									return $this->render('/aaee/declaracion/sustitutiva/pre-view-sustitutiva-definitiva', [
+									return $this->render('/aaee/declaracion/sustitutiva/declaracion-sustitutiva-definitiva-form', [
 																		'model' => $modelMultiplex,
 																		'findModel' => $findModel,
 																		'caption' => $caption,
 		  																'opciones' =>$opciones,
 		  																'subCaption' => $subCaption,
+		  																'errorHabilitar' => $errorHabilitar,
 										]);
 								}
 
@@ -545,7 +562,8 @@
 							$result = self::actionBeginSave($modelMultiplex, $postData);
 							if ( $result ) {
 								$this->_transaccion->commit();
-								//return self::actionView($modelMultiplex[0]->nro_solicitud);
+								self::actionAnularSession(['begin', 'lapso']);
+								return self::actionView($modelMultiplex[0]->nro_solicitud);
 							} else {
 								$this->_transaccion->rollBack();
 								$this->redirect(['error-operacion', 'cod'=> 920]);
@@ -555,7 +573,7 @@
 					}
 
 
-			  		if ( isset($findModel) ) {
+			  		if ( isset($findModel) && isset($_SESSION['begin'])) {
 			  			$añoImpositivo = (int)$lapso['a'];
 						$periodo = (int)$lapso['p'];
 						$subCaption = $subCaption . '. ' . Yii::t('frontend', 'Rubro(s) Registrado(s) ' . $añoImpositivo . ' - ' . $periodo);
@@ -578,14 +596,15 @@
 							$modelMultiplex[$i]['descripcion'] = $rubroModel->rubroDetalle->descripcion;
 							$modelMultiplex[$i]['estimado'] = $rubroModel->estimado;;
 							$modelMultiplex[$i]['reales'] = $rubroModel->reales;
-							$modelMultiplex[$i]['sustitutiva'] = $rubroModel->sustitutiva;
+							$modelMultiplex[$i]['sustitutiva'] = 0;
 							$modelMultiplex[$i]['rectificatoria'] = $rubroModel->rectificatoria;
 							$modelMultiplex[$i]['auditoria'] = $rubroModel->auditoria;
 							$modelMultiplex[$i]['usuario'] = isset(Yii::$app->user->identity->login) ? Yii::$app->user->identity->login : null;
 							$modelMultiplex[$i]['fecha_hora'] = date('Y-m-d H:i:s');
 							$modelMultiplex[$i]['origen'] = 'WEB';
 							$modelMultiplex[$i]['estatus'] = 0;
-
+							$modelMultiplex[$i]['condicion'] = $rubroModel->condicion;
+							$modelMultiplex[$i]['chkHabilitar'] = 0;
 
 						}
 
@@ -598,20 +617,20 @@
 							return $this->render('/aaee/declaracion/sustitutiva/declaracion-sustitutiva-estimada-form', [
 		  																	'model' => $modelMultiplex,
 		  																	'findModel' => $findModel,
-		  																	'btnSearchCategory' => $btnSearchCategory,
 		  																	'caption' => $caption,
 		  																	'opciones' =>$opciones,
 		  																	'subCaption' => $subCaption,
+		  																	'errorHabilitar' => $errorHabilitar,
 
 				  					]);
 						} elseif ( $lapso['tipo'] == 2 ) {
 							return $this->render('/aaee/declaracion/sustitutiva/declaracion-sustitutiva-definitiva-form', [
 		  																	'model' => $modelMultiplex,
 		  																	'findModel' => $findModel,
-		  																	'btnSearchCategory' => $btnSearchCategory,
 		  																	'caption' => $caption,
 		  																	'opciones' =>$opciones,
 		  																	'subCaption' => $subCaption,
+		  																	'errorHabilitar' => $errorHabilitar,
 		  							]);
 						}
 
@@ -699,22 +718,25 @@
 						foreach ( $models as $key => $model ) {
 							$model->nro_solicitud = $nroSolicitud;
 
-							// Se pasa a guardar en la sl_sustitutivas.
-							$result = self::actionCreateSustitutiva($this->_conexion,
-																   	$this->_conn,
-																   	$model,
-																   	$conf);
+							if ( $model->chkHabilitar == 1 ) {
 
-							if ( $result ) {
-								if ( $conf['nivel_aprobacion'] == 1 ) {
-									$result = self::actionCreateIngreso($this->_conexion,
-																		$this->_conn,
-																		$model,
-																		$conf);
+								// Se pasa a guardar en la sl_sustitutivas.
+								$result = self::actionCreateSustitutiva($this->_conexion,
+																	   	$this->_conn,
+																	   	$model,
+																	   	$conf);
+
+								if ( $result ) {
+									if ( $conf['nivel_aprobacion'] == 1 ) {
+										$result = self::actionCreateIngreso($this->_conexion,
+																			$this->_conn,
+																			$model,
+																			$conf);
+									}
 								}
-							}
-							if ( !$result ) { break; }
+								if ( !$result ) { break; }
 
+							}
 						}		// Fin del ciclo de models.
 
 						if ( $result ) {
@@ -854,19 +876,50 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que inserta el registro del ingreso ( la declaracion sustitutiva )
+		 * pero realiza una inactivacion del registro similar existente, para evitar
+		 * la duplicidad del registro activo.
+		 * @param  conexioncontroller $conexionLocal instancia de la clase especifica.
+		 * @param  connection $connLocal  instancia de connection.
+		 * @param  model $model modelo de la instancia SustitutivaBaseForm.
+		 * @param  array $conf arreglo que contiene algunos valores de la configuracion
+		 * de la solicitud.
+		 * @return boolean retorna true si todo se ejecuta satisfactoriamente, de lo
+		 * contrario false.
+		 */
 		private static function actionCreateIngreso($conexionLocal, $connLocal, $model, $conf)
 		{
 			$result = false;
+			$inactive = false;
 
 			if ( isset($conexionLocal) && isset($connLocal) && isset($model) && count($conf) > 0 ) {
 
 				$ingresoSearch = New ActEconIngresoSearch($model->id_contribuyente);
-				$ingresoSearch->attributes = $model->attributes;
-				$arregloDatos = $ingresoSearch->attributes;
 
+				// Se inactiva el registro.
+				$inactive = $ingresoSearch->inactivarItem($model->id_impuesto, $model->id_rubro,
+				                                          $model->exigibilidad_periodo,
+				                                          $conexionLocal, $connLocal);
 
-				$result = $ingresoSearch->guardar($model->attributes, $conexionLocal, $conn);
+				if ( $inactive ) {
+
+					$s = $model->sustitutiva;
+					if ( $model->tipo_declaracion == 1 ) {
+						$model->estimado = $s;
+
+					} elseif ( $model->tipo_declaracion == 2 ) {
+						$model->reales = $s;
+
+					}
+
+					// Se inserta la declaracion sustitutiva.
+					$ingresoSearch->attributes = $model->attributes;
+					$arregloDatos = $ingresoSearch->attributes;
+
+					$result = $ingresoSearch->guardar($model->attributes, $conexionLocal, $connLocal);
+
+				}
 			}
 
 
@@ -1039,8 +1092,8 @@
     	{
     		if ( isset($_SESSION['idContribuyente']) ) {
 	    		if ( $id > 0 ) {
-	    			$searchDeclaracion = New DeclaracionBaseSearch($_SESSION['idContribuyente']);
-	    			$findModel = $searchDeclaracion->findSolicitudDeclaracion($id);
+	    			$searchDeclaracion = New SustitutivaBaseSearch($_SESSION['idContribuyente']);
+	    			$findModel = $searchDeclaracion->findSolicitudSustitutiva($id);
 	    			$dataProvider = $searchDeclaracion->getDataProviderSolicitud($id);
 	    			if ( isset($findModel) ) {
 	    				return self::actionShowSolicitud($findModel, $searchDeclaracion, $dataProvider);
@@ -1065,7 +1118,7 @@
  				$model = $findModel->all();
  				self::actionAnularSession(['begin']);
 				$opciones = [
-					'quit' => '/aaee/declaracion//declaracion-definitiva/quit',
+					'quit' => '/aaee/declaracion/sustitutiva/sustitutiva/quit',
 				];
 				return $this->render('/aaee/declaracion/sustitutiva/_view', [
 																'codigo' => 100,
