@@ -112,17 +112,18 @@ class ReportesTasasController extends Controller
           if(isset($post['btn-busqueda-ano'])){ 
               if ($model->validate()){
                //die(var_dump($model->nivel_contable));
-                  $_SESSION['datos'] = $model;
-                  return self::actionBuscarReporteAno($model->ano_impositivo);
+                  $_SESSION['datosAno'] = $model;
+                  return $this->redirect(['buscar-reporte-ano']);
  
                   
               }
 
           }elseif(isset($post['btn-busqueda-ano-impuesto'])){
               if ($model->validate()){
-                 $_SESSION['datos'] = $model;
+                 $_SESSION['datosAnoImpuesto'] = $model;
 
-                 return self::actionBuscarReporteAnoImpuesto($model->ano_impositivo2, $model->impuesto);
+                return $this->redirect(['buscar-reporte-ano-impuesto']);
+ 
               }
         
              
@@ -131,8 +132,9 @@ class ReportesTasasController extends Controller
           }elseif(isset($post['btn-busqueda-ano-impuesto-codigo'])){
               if($model->validate()){
 
-                $_SESSION['datos'] = $model;
-                return self::actionBuscarReporteAnoImpuestoCodigo($model->ano_impositivo3, $model->impuesto2,$model->codigo);
+                $_SESSION['datosAnoImpuestoCodigo'] = $model;
+                return $this->redirect(['buscar-reporte-ano-impuesto-codigo']);
+ 
               }
 
 
@@ -159,9 +161,9 @@ class ReportesTasasController extends Controller
   * [actionBuscarReporteAno description] metodo que renderiza un dataprovider con la informacion de la tasa buscada 
   * @return [type]        [description] retorna el formulario
   */
-  public function  actionBuscarReporteAno($anoImpositivo)
+  public function  actionBuscarReporteAno()
   {
-      
+      $anoImpositivo = $_SESSION['datosAno']->ano_impositivo;
     
       $model = new BusquedaMultipleReportesForm();
 
@@ -178,10 +180,11 @@ class ReportesTasasController extends Controller
   * [actionBuscarReporteAnoImpuesto description] metodo que renderiza un dataprovider con la informacion de la tasa buscada 
   * @return [type]        [description] retorna el formulario
   */
-  public function  actionBuscarReporteAnoImpuesto($anoImpositivo, $impuesto)
+  public function  actionBuscarReporteAnoImpuesto()
   {
       
-    
+      $anoImpositivo = $_SESSION['datosAnoImpuesto']->ano_impositivo2;
+      $impuesto = $_SESSION['datosAnoImpuesto']->impuesto;
       $model = new BusquedaMultipleReportesForm();
 
           $dataProvider = $model->busquedaReporteAnoImpuesto($anoImpositivo, $impuesto);
@@ -196,9 +199,11 @@ class ReportesTasasController extends Controller
   * [actionBuscarReporteAnoImpuestoCodigo description] metodo que renderiza un dataprovider con la informacion de la tasa buscada 
   * @return [type]        [description] retorna el formulario
   */
-  public function  actionBuscarReporteAnoImpuestoCodigo($anoImpositivo, $impuesto, $codigo)
+  public function  actionBuscarReporteAnoImpuestoCodigo()
   {
-      
+      $anoImpositivo = $_SESSION['datosAnoImpuestoCodigo']->ano_impositivo3; 
+      $impuesto = $_SESSION['datosAnoImpuestoCodigo']->impuesto2;
+      $codigo = $_SESSION['datosAnoImpuestoCodigo']->codigo;
     
       $model = new BusquedaMultipleReportesForm();
 

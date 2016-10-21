@@ -143,7 +143,7 @@ class ModificarInactivarTasasController extends Controller
    */
   public function actionModificarTasa()
   {
-  //die('llego a modificar'.$_SESSION['idTasa']);
+  die(var_dump(yii::$app->request->get()));
         
       $idTasa = yii::$app->request->get('value');
      
