@@ -1,37 +1,37 @@
-<?php 
+<?php
 /**
  *	@copyright © by ASIS CONSULTORES 2012 - 2016
  *  All rights reserved - SIMWebPLUS
  */
 
  /**
- * 
- *	> This library is free software; you can redistribute it and/or modify it under 
- *	> the terms of the GNU Lesser Gereral Public Licence as published by the Free 
- *	> Software Foundation; either version 2 of the Licence, or (at your opinion) 
+ *
+ *	> This library is free software; you can redistribute it and/or modify it under
+ *	> the terms of the GNU Lesser Gereral Public Licence as published by the Free
+ *	> Software Foundation; either version 2 of the Licence, or (at your opinion)
  *	> any later version.
- *  > 
- *	> This library is distributed in the hope that it will be usefull, 
- *	> but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability 
- *	> or fitness for a particular purpose. See the GNU Lesser General Public Licence 
+ *  >
+ *	> This library is distributed in the hope that it will be usefull,
+ *	> but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability
+ *	> or fitness for a particular purpose. See the GNU Lesser General Public Licence
  *	> for more details.
- *  > 
+ *  >
  *	> See [LICENSE.TXT](../../LICENSE.TXT) file for more information.
  *
  */
 
- /**	
+ /**
  *	@file Oficina.php
- *	
+ *
  *	@author Jose Rafael Perez Teran
- * 
+ *
  *	@date 13-05-2015
- * 
+ *
  *  @class Oficina
- *	@brief Clase que posee los datos basicos de la Dirección u Oficina encargada de la 
+ *	@brief Clase que posee los datos basicos de la Dirección u Oficina encargada de la
  * 	@brief recaudacion de los impuestos, permitiendo asi la customización la aplicacion.
- * 
- *  
+ *
+ *
  *	@property
  *  protected $nombre;
  *	protected $nombreCargo;
@@ -40,22 +40,23 @@
  *	protected $direccionLocalidad;
  *	protected $telefonos;
  *	protected $email;
- *  
+ *
  *	@method
- *  
+ *
  *	@inherits
- *	
+ *
  */
 
  	namespace common\classes;
  	/**
- 	* 
+ 	*
  	*/
  	class Oficina
  	{
- 		
+
  		protected $nombre = 'Dirección de Rentas';
- 		protected $nombreCargo = '';
+ 		protected $nombreCargo = 'Director(a) de Hacienda Municipal';
+ 		protected $director = 'José Pérez';
 
  		//	Inddentificador de la oficina
  		protected $id = 1;
@@ -67,7 +68,13 @@
 
 
  		public function __construct()
- 		{	
+ 		{
+ 		}
+
+
+ 		public function	getDirector()
+ 		{
+ 			return $this->director;
  		}
 
 
