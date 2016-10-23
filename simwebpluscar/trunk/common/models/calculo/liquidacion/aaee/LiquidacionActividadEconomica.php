@@ -71,7 +71,19 @@
 		// alicuota.
 		// minimo.
 		// impuesto.
-		private $_calculoDetallado = [];
+		private $_calculoDetallado = [
+						'ano_impositivo' => 0,
+						'periodo' => 0,
+						'descripcion' => '',	// Descripcion del periodo.
+						'monto' => 0,
+						'recargo' => 0,
+						'interes' => 0,
+						'descuento' => 0,
+						'monto_reconocimiento' => 0,
+						'periodo_pago' => '',		// Descripcion del periodo limite para pagar el periodo respectivo.
+						'periodo_recargo' => '' ,	// Descripcion del periodo a partir de donde se calcularan los recargos.
+						'periodo_interes' => '', 	// Descripcion del periodo a partir de donde se calcularan el interes.
+				];
 
 
 
@@ -151,6 +163,11 @@
 				}
 			}
 		}
+
+
+
+
+
 
 
 
