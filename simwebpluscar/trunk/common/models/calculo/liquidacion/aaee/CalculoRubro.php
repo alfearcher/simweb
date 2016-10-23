@@ -65,9 +65,15 @@
 
 
 
-		/***/
+		/**
+		 * Metodo constructor de la clase.
+		 * @param array $datosDeclaracion datos de la entidad "ect-econ-ingresos",
+		 * detalles de la declaracion de un item de esta entidad. Previamente consultada.
+		 *
+		 */
 		public function __construct($datosDeclaracion)
 		{
+
 			$this->_calculo = 0;
 			$this->_rubro = null;
 
@@ -91,6 +97,7 @@
 			$this->_calculo = 0;
 			// Se obtiene los datos del rubro.
 			$this->_rubro = $this->getInfoRubro();
+
 			if ( isset($this->_rubro) ) {
 				if ( $this->_rubro->id_metodo == 1 ) {				// Calculo por declaracion de ingresos brutos.
 					$this->getCalculoPorDeclaracion($tipoDeclaracion);

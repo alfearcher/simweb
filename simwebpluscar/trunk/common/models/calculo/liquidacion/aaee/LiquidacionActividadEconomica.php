@@ -99,9 +99,13 @@
 
 		/**
 		 * Metodo donde comienza el proceso.
-		 * @param  [type] $año             [description]
-		 * @param  [type] $periodo         [description]
-		 * @param  [type] $tipoDeclaracion [description]
+		 * @param  integer $año Año impositivo que se desea calcular
+		 * @param  integer $periodo periodo del año.
+		 * @param  string $tipoDeclaracion descripcion del atributo que especifica el tipo de
+		 * ladeclaracion:
+		 * - estimado
+		 * - reales
+		 * - etc
 		 * @return [type]                  [description]
 		 */
 		public function iniciarCalcularLiquidacion($año, $periodo, $tipoDeclaracion)
@@ -138,6 +142,7 @@
 				// Se comienza un ciclo donde se calcularan los impuestos por rubro declarado.
 				foreach ( $rubros as $rubro ) {
 					$calculoRubro = New CalculoRubro($rubro);
+
 					$montoCalculadoRubro = $calculoRubro->getCalcularPorTipoDeclaracion($this->_tipoDeclaracion);
 					//$this->_calculoDetallado[] = [];
 
