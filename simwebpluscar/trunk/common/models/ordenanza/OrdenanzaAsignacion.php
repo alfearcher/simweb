@@ -21,13 +21,13 @@
  */
 
  /**
- *  @file Ordenanza.php
+ *  @file OrdenanzaAsignacion.php
  *
  *  @author Jose Rafael Perez Teran
  *
  *  @date 04-12-2015
  *
- *  @class Ordenanza
+ *  @class OrdenanzaAsignacion
  *  @brief Clase Modelo principal
  *
  *
@@ -45,11 +45,12 @@
  	use Yii;
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
+	use backend\models\configuracion\asignacion\Asignacion;
+	use backend\models\configuracion\tipoasignacion\TipoAsignacion;
+	use backend\models\configuracion\aplicacionasignacion\AplicacionAsignacion;
 
-	class Ordenanza extends ActiveRecord
+	class OrdenanzaAsignacion extends ActiveRecord
 	{
-
-		public $nameTable;
 
 
 		/**
@@ -69,9 +70,40 @@
 		 */
 		public static function tableName()
 		{
-			return 'ordenanzas';
+			return 'ordenanzas_asignaciones';
 		}
 
+
+		/**
+		 * Relacion con la entidad "asignaciones".
+		 * @return active record
+		 */
+		public function getAsignacion()
+		{
+			return $this->hasOne(Asignacion::className(), ['id_asignacion' => 'id_asignacion']);
+		}
+
+
+
+		/**
+		 * Relacion con la entidad "aplicacion-asignaciones".
+		 * @return active record
+		 */
+		public function getAplicacion()
+		{
+			return $this->hasOne(AplicacionAsignacion::className(), ['id_aplicacion' => 'id_aplicacion']);
+		}
+
+
+
+		/**
+		 * Relacion con la entidad "tipos-asignaciones".
+		 * @return active record
+		 */
+		public function getTipoAsignacion()
+		{
+			return $this->hasOne(TipoAsignacion::className(), ['tipo_asignacion' => 'tipo_asignacion']);
+		}
 
 
 	}

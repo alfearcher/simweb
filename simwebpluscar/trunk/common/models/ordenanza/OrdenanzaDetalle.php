@@ -21,13 +21,13 @@
  */
 
  /**
- *  @file Ordenanza.php
+ *  @file OrdenanzaDetalle.php
  *
  *  @author Jose Rafael Perez Teran
  *
  *  @date 04-12-2015
  *
- *  @class Ordenanza
+ *  @class OrdenanzaDetalle
  *  @brief Clase Modelo principal
  *
  *
@@ -46,10 +46,8 @@
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 
-	class Ordenanza extends ActiveRecord
+	class OrdenanzaDetalle extends ActiveRecord
 	{
-
-		public $nameTable;
 
 
 		/**
@@ -69,7 +67,7 @@
 		 */
 		public static function tableName()
 		{
-			return 'ordenanzas';
+			return 'ordenanzas_detalles';
 		}
 
 

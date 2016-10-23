@@ -731,6 +731,39 @@
 
 
 
+		/**
+		 * Metodo que determina la fecha de inicio de un lapso de tiempo, segun año
+		 * impositivo, periodo y exigibilidad de liquidacion.
+		 * @param  integer $añoImpositivo año del lapso.
+		 * @param  integer $periodo periodo del lapso.
+		 * @param  integer $exigibilidadLiquidacion cantidad de veces que se debe
+		 * liquidar en un periodo.
+		 * @param boolean $todas indica si se quiere todas las fechas de un año.
+		 * @return string|array retorna fecha de inicio de cada periodo.
+		 */
+		public function getFechaInicioSegunPeriodo($añoImpositivo, $periodo, $exigibilidadLiquidacion, $todas = false)
+		{
+			$fechas = [];
+			$fecha = '';
+			if ( $exigibilidadLiquidacion ) {
+				$resto = fmod(12, $exigibilidadLiquidacion);
+
+				if ( $resto == 0 ) {		// Division exacta.
+					$periodos = 12 / $exigibilidadLiquidacion;
+					for ( $i = 1; $i <= 12; $periodos++ ) {
+						$mes = '0' . $i;
+						$mes = substr(trim($mes), -2);
+						$fechas[$i] = $añoImpositivo . '-' . $mes . '-01';
+					}
+				}
+			}
+
+			if ( !$todas ) {
+				return $fechas[$periodo];
+			} else {
+				return $fechas;
+			}
+		}
 
 	}
  ?>
