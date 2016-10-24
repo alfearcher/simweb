@@ -93,6 +93,7 @@
 		        					   				['label' => 'Estimada', 'url' =>  ['/aaee/declaracion/declaracion-estimada/index', 'id' => 108]],
 		        					   				['label' => 'Definitiva', 'url' => ['/aaee/declaracion/declaracion-definitiva/index', 'id' => 110]],
 		        					   				['label' => 'Sustitutiva', 'url' => ['/aaee/declaracion/sustitutiva/sustitutiva/index', 'id' => 111]],
+		        					   				['label' => 'Consulta', 'url' => ['/aaee/declaracion/consulta/consulta-declaracion/index']],
 		        					   		]
 		        					   	],
 		        					   	['label' => Icon::show('fa fa-caret-square-o-up',['class' => $typeLong], $typeIcon) . '&nbsp; Cesación de Actividades',
@@ -103,6 +104,18 @@
 		        					   	],
 		        			]
 		        		],
+
+
+		        		['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . '&nbsp; Prueba de Mpdf',
+		        			'items' => [
+		        						['label' => 'Prueba', 'url' => ['/mpdf/prueba-mpdf/pdf']],
+		        						['label' => 'Consulta', 'url' => ['/mpdf/prueba-mpdf/datos']],
+		        						['label' => 'fecha', 'url' => ['/mpdf/prueba-mpdf/fecha']],
+		        						// ['label' => 'Solicitar Anulación de Recibo', 'url' => '#'],
+		        			]
+		        		],
+
+
 
 		        		//	SOLICITUDES DE INMUEBLES URBANOS
 		        		['label' => Icon::show('fa fa-home',['class' => $typeLong], $typeIcon) . '&nbsp; Inmuebles Urbanos',
@@ -179,6 +192,16 @@
 		        						['label' => 'Declaración de Apuestas Licitas', 'url' => '#'],
 		        			]
 		        		],
+
+		        		//	Recibo
+		        		['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . '&nbsp; Recibo',
+		        			'items' => [
+		        						['label' => 'Crear Recibo de Pago', 'url' => '#'],
+		        						['label' => 'Consulta de Recibos', 'url' => '#'],
+		        						['label' => 'Solicitar Anulación de Recibo', 'url' => '#'],
+		        			]
+		        		],
+
 
 		        		//	Otras
 		        		['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . '&nbsp; Otras',
