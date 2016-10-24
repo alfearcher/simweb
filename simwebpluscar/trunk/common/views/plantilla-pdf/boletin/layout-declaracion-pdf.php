@@ -65,8 +65,6 @@
 		'enableClientScript' => false,
 	]);
 
-	$tipoDeclaracion = 'ESTIMADA';
-	$periodoFiscal = '01-01-2016 al 31-12-2016';
 	$fechaEmision = date('Y-m-d');
 
 	$sumaDelaracion = 0;
