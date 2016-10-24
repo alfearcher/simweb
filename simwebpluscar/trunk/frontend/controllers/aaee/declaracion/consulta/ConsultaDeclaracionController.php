@@ -21,14 +21,14 @@
  */
 
  /**
- *	@file ConsultaController.php
+ *	@file ConsultaDeclaracionController.php
  *
  *	@author Jose Rafael Perez Teran
  *
  *	@date 22-10-2016
  *
- *  @class ConsultaController
- *	@brief Clase ConsultaController del lado del contribuyente frontend.
+ *  @class ConsultaDeclaracionController
+ *	@brief Clase ConsultaDeclaracionController del lado del contribuyente frontend.
  *
  *
  *	@property
@@ -55,6 +55,9 @@
 	use common\mensaje\MensajeController;
 	use common\models\session\Session;
 	use yii\base\Model;
+	use backend\models\aaee\declaracion\sustitutiva\SustitutivaBaseForm;
+	use backend\models\aaee\declaracion\sustitutiva\SustitutivaBaseSearch;
+	use backend\models\aaee\declaracion\DeclaracionBaseSearch;
 
 	session_start();		// Iniciando session
 
@@ -66,43 +69,206 @@
 	 * ajuste. Cuando el contribuyente confirme su intencion de crear la solicitud, es cuando
 	 * se guardara en base de datos.
 	 */
-	class ConsultaController extends Controller
+	class ConsultaDeclaracionController extends Controller
 	{
 		public $layout = 'layout-main';				//	Layout principal del formulario
 
+		const SCENARIO_SEARCH = 'search';
+		const SCENARIO_SEARCH_TIPO = 'search_tipo';
 
-		/**
-		 * Metodo que mostrara el formulario de cargar inicial de la solicitud, para
-		 * que el contribuyente ingrese la informacion soliictada.
-		 * @return [type] [description]
-		 */
+
+
+		/***/
 		public function actionIndex()
 		{
 			// Se verifica que el contribuyente haya iniciado una session.
+			self::actionAnularSession(['lapso', 'tipo']);
+			if ( isset($_SESSION['idContribuyente']) ) {
 
-			self::actionAnularSession(['begin', 'anoOrdenanza', 'configOrdenanza']);
-			$request = Yii::$app->request;
-			$getData = $request->get();
+				$idContribuyente = $_SESSION['idContribuyente'];
+				$request = Yii::$app->request;
+				$postData = $request->post();
+				$errorMensaje = '';
+				$errorListaTipoDeclaracion = '';
 
-			$postData = $request->post();
-			if ( isset($postData['btn-quit']) ) {
-				if ( $postData['btn-quit'] == 1 ) {
-					$this->redirect(['quit']);
+				if ( isset($postData['btn-quit']) ) {
+					if ( $postData['btn-quit'] == 1 ) {
+						$this->redirect(['quit']);
+					}
 				}
-			}
 
-			// identificador de la configuracion de la solicitud.
-			$id = $getData['id'];
-			if ( $id == self::CONFIG ) {
-				if ( isset($_SESSION['idContribuyente']) ) {
-					return $this->redirect(['check', 'id' => $id]);
+				$model = New SustitutivaBaseForm();
 
-				} else {
-					// No esta definido el contribuyente.
-					return $this->redirect(['error-operacion', 'cod' => 404]);
+				$formName = $model->formName();
+				$model->scenario = self::SCENARIO_SEARCH_TIPO;
+
+				$caption = Yii::t('frontend', 'Consulta. Seleccionar Tipo Declaracion.');
+				$subCaption = Yii::t('frontend', 'Seleccione el tipo de declaracion');
+
+		      	// Datos generales del contribuyente.
+		      	$searchSustitutiva = New SustitutivaBaseSearch($idContribuyente);
+		      	$findModel = $searchSustitutiva->findContribuyente();
+
+				if ( isset($postData['btn-accept']) ) {
+					if ( $postData['btn-accept'] == 1 ) {
+						$model->scenario = self::SCENARIO_SEARCH_TIPO;
+						$model->load($postData);
+
+						if ( $model->load($postData) ) {
+			    			if ( $model->validate() ) {
+			    				$_SESSION['tipo'] = $model->tipo_declaracion;
+								$this->redirect(['index-consulta']);
+
+							}
+						}
+					}
 				}
+
+		  		if ( $model->load($postData)  && Yii::$app->request->isAjax ) {
+					Yii::$app->response->format = Response::FORMAT_JSON;
+					return ActiveForm::validate($model);
+		      	}
+
+		  		if ( isset($findModel) ) {
+					// Se busca la lista de los tipos declaraciones. Solo estimada y definitiva.
+					$listaTipoDeclaracion = $searchSustitutiva->getListaTipoDeclaracion([1,2]);
+					if ( count($listaTipoDeclaracion) == 0 ) {
+						$errorListaTipoDeclaracion = Yii::t('frontend', 'No se encontraron los TIPOS DE DECLARACION');
+						$errorMensaje = ( trim($errorMensaje) !== '' ) ? $errorMensaje = $errorMensaje . '. ' . $errorListaTipoDeclaracion : $errorListaTipoDeclaracion;
+					}
+					$rutaLista = "/aaee/declaracion/consulta/consulta-declaracion/lista-periodo";
+					return $this->render('/aaee/declaracion/consulta/_lista-tipo',
+																		[
+																			'model' => $model,
+																			'caption' => $caption,
+																			'subCaption' => $subCaption,
+																			'findModel' => $findModel,
+																			'listaTipoDeclaracion' => $listaTipoDeclaracion,
+																			'errorMensaje' => $errorMensaje,
+																		]);
+
+		  		} else {
+		  			// No se encontraron los datos del contribuyente principal.
+		  			$this->redirect(['error-operacion', 'cod' => 938]);
+		  		}
 			}
 		}
+
+
+
+
+		/***/
+		public function actionIndexConsulta()
+		{
+			// Se verifica que el contribuyente haya iniciado una session.
+			self::actionAnularSession(['lapso']);
+			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['tipo']) ) {
+
+				$idContribuyente = $_SESSION['idContribuyente'];
+				$tipoDeclaracion = $_SESSION['tipo'];
+
+				$request = Yii::$app->request;
+				$postData = $request->post();
+				$errorMensaje = '';
+				$errorListaAño = '';
+				$msjControls = [];
+
+				if ( isset($postData['btn-quit']) ) {
+					if ( $postData['btn-quit'] == 1 ) {
+						$this->redirect(['quit']);
+					}
+				}
+
+				$model = New SustitutivaBaseForm();
+
+				$formName = $model->formName();
+				$model->scenario = self::SCENARIO_SEARCH;
+
+		      	// Datos generales del contribuyente.
+		      	$searchSustitutiva = New SustitutivaBaseSearch($idContribuyente);
+		      	$findModel = $searchSustitutiva->findContribuyente();
+
+		      	$tipoDeclaracionDescripcion = $searchSustitutiva->getListaTipoDeclaracion([$tipoDeclaracion]);
+		      	$descripcion = 'Declaracion ' . $tipoDeclaracionDescripcion[$tipoDeclaracion];
+
+		      	$caption = Yii::t('frontend', 'Consulta Declaracion') . '. ' . Yii::t('backend', $descripcion);
+				$subCaption = Yii::t('frontend', 'Seleccione el periodo fiscal') . '. ' . Yii::t('backend', $descripcion);
+
+				if ( isset($postData['btn-back-form']) ) {
+					if ( $postData['btn-back-form'] == 3 ) {
+						$model->scenario = self::SCENARIO_SEARCH;
+						$postData = [];			// Inicializa el post.
+						$model->load($postData);
+						$this->redirect(['index']);
+					} elseif ( $postData['btn-back-form'] == 1 ) {
+						$postData = [];			// Inicializa el post.
+						$model->load($postData);
+						$this->redirect(['index']);
+					}
+
+				} elseif ( isset($postData['btn-accept']) ) {
+					if ( $postData['btn-accept'] == 1 ) {
+						$model->scenario = self::SCENARIO_SEARCH;
+						$model->load($postData);
+						$model->tipo_declaracion = $tipoDeclaracion;
+
+						if ( $model->load($postData) ) {
+			    			if ( $model->validate() ) {
+
+			    				$msjControls = [];
+
+		    					if ( count($msjControls) == 0 ) {
+				   					$_SESSION['lapso'] = [
+				   								'a' => $model->ano_impositivo,
+				   								'p' => $model->exigibilidad_periodo,
+				   								'tipo' => $tipoDeclaracion,
+				   								'descripcion' => $descripcion,
+				   					];
+				   					$this->redirect(['show-declaracion']);
+				   				} else {
+				   					$errorMensaje = json_encode($msjControls);
+				   				}
+							}
+						}
+					}
+				}
+
+		  		if ( $model->load($postData)  && Yii::$app->request->isAjax ) {
+					Yii::$app->response->format = Response::FORMAT_JSON;
+					return ActiveForm::validate($model);
+		      	}
+
+		  		if ( isset($findModel) ) {
+					// Se busca la lista de años que se mostraran en al combo de años.
+					// Solo se considerara los año anteriores al actual para la declaracion definitiva.
+					$listaAño = $searchSustitutiva->getListaAnoRegistrado($tipoDeclaracion);
+					if ( count($listaAño) == 0 ) {
+						$errorListaAño = Yii::t('frontend', 'No se encontraron RUBROS AUTORIZADOS cargados ');
+						$errorMensaje = ( trim($errorMensaje) !== '' ) ? $errorMensaje = $errorMensaje . '. ' . $errorListaAño : $errorListaAño;
+					}
+					$url = '';//Url::to(['index-create']);
+					$rutaLista = "/aaee/declaracion/consulta/consulta-declaracion/lista-periodo";
+					return $this->render('/aaee/declaracion/consulta/_create',
+																[
+																	'model' => $model,
+																	'caption' => $caption,
+																	'subCaption' => $subCaption,
+																	'findModel' => $findModel,
+																	'listaAño' => $listaAño,
+																	'url' => $url,
+																	'rutaLista' => $rutaLista,
+																	'searchSustitutiva' => $searchSustitutiva,
+																	'errorMensaje' => $errorMensaje,
+																]);
+
+		  		} else {
+		  			// No se encontraron los datos del contribuyente principal.
+		  			$this->redirect(['error-operacion', 'cod' => 938]);
+		  		}
+			}
+		}
+
+
 
 
 
@@ -141,6 +307,55 @@
 			}
 			return "<option> - </option>";
 		}
+
+
+
+		/***/
+		public function actionShowDeclaracion()
+		{
+			if ( isset($_SESSION['lapso']) && isset($_SESSION['idContribuyente']) ) {
+				$idContribuyente = $_SESSION['idContribuyente'];
+				$lapso = $_SESSION['lapso'];
+
+				$request = Yii::$app->request;
+				$postData = $request->post();
+
+				if ( isset($postData['btn-quit']) ) {
+					if ( $postData['btn-quit'] == 1 ) {
+						$this->redirect(['quit']);
+					}
+
+				} elseif ( isset($postData['btn-back-form']) ) {
+					if ( $postData['btn-back-form'] == 1 ) {
+						$this->redirect(['index-consulta']);
+					}
+
+				} elseif ( isset($postData['btn-boletin']) ) {
+					if ( $postData['btn-boletin'] == 1 ) {
+
+					} elseif ( $postData['btn-boletin'] == 2 ) {
+
+					}
+				}
+
+				$declaracionSearch = New DeclaracionBaseSearch($idContribuyente);
+
+				$dataProvider = $declaracionSearch->getDataProviderRubrosRegistrados($lapso['a'], $lapso['p']);
+
+				$opciones = [
+					'quit' => '/aaee/declaracion/consulta/consulta-declaracion/quit',
+				];
+
+				return $this->render('/aaee/declaracion/consulta/_declaracion', [
+															'lapso' => $lapso,
+															'dataProvider' => $dataProvider,
+															'caption' => $lapso['descripcion'],
+															'opciones' => $opciones,
+					]);
+			}
+		}
+
+
 
 
 
@@ -217,6 +432,7 @@
 							'begin',
 							'lapso'
 					];
+
 		}
 
 	}
