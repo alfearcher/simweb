@@ -58,6 +58,9 @@
 	use backend\models\aaee\declaracion\sustitutiva\SustitutivaBaseForm;
 	use backend\models\aaee\declaracion\sustitutiva\SustitutivaBaseSearch;
 	use backend\models\aaee\declaracion\DeclaracionBaseSearch;
+	use common\models\aaee\boletin\Boletin;
+
+
 
 	session_start();		// Iniciando session
 
@@ -310,6 +313,8 @@
 
 
 
+
+
 		/***/
 		public function actionShowDeclaracion()
 		{
@@ -320,6 +325,7 @@
 				$request = Yii::$app->request;
 				$postData = $request->post();
 
+// die(var_dump($postData));
 				if ( isset($postData['btn-quit']) ) {
 					if ( $postData['btn-quit'] == 1 ) {
 						$this->redirect(['quit']);
@@ -332,6 +338,8 @@
 
 				} elseif ( isset($postData['btn-boletin']) ) {
 					if ( $postData['btn-boletin'] == 1 ) {
+
+						$this->redirect(['generar-boletin-estimada']);
 
 					} elseif ( $postData['btn-boletin'] == 2 ) {
 
@@ -355,6 +363,21 @@
 			}
 		}
 
+
+
+
+		/***/
+		public function actionGenerarBoletinEstimada()
+		{
+
+			$id = $_SESSION['idContribuyente'];
+			$lapso = $_SESSION['lapso'];
+			$a = $lapso['a'];
+			$p = $lapso['p'];
+
+			$boletin = New Boletin($id, $a, $p);
+			$boletin->generarBeletinEstimada();
+		}
 
 
 
