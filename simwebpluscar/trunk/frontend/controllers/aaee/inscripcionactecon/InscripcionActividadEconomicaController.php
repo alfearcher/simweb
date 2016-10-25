@@ -196,7 +196,7 @@
 				if ( $_SESSION['idContribuyente'] > 0 && $_SESSION['guardar'] == 1 ) {
 
 					$conexion = New ConexionController();
-die('teteet');
+
 					// Instancia de conexion hacia la base de datos.
 			      	$this->conn = $conexion->initConectar('db');
 			      	$this->conn->open();
@@ -206,9 +206,11 @@ die('teteet');
 					$transaccion = $this->conn->beginTransaction();
 					$nroSolicitud = self::actionCreateSolicitud($conexion, $this->conn);
 					if ( $nroSolicitud > 0 ) {
+die(var_dump($nroSolicitud));
 						$model->nro_solicitud = $nroSolicitud;
 						// Detalle de la solicitud
 						$result = self::actionCreateInscripcionActEcon($model, $conexion, $this->conn);
+die('xaxaxa');
 						if ( count($conf) > 0 && $result == true ) {
 
 							// Se define que tipo de aprobacion se debe aplicar en la solicitud.
