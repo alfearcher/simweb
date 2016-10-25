@@ -423,7 +423,7 @@
 
 					// Se evalua cada accion o proceso ejecutado para determinar si se realizo satisfactoriamnente.
 					$resultadoProceso = $procesoEvento->resultadoEjecutarProcesos();
-die(var_dump($resultadoProceso));
+
 					if ( count($resultadoProceso) > 0 ) {
 						foreach ( $resultadoProceso as $key => $value ) {
 							if ( $value == false ) {
