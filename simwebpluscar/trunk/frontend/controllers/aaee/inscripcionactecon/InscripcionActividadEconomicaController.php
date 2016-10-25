@@ -236,10 +236,12 @@
 
 				} else {
 					// Operacion no ejecutada.
+die('oaoaoao');
 					return $this->redirect(['error-operacion', 'cod' => 920]);
 
 				}
 			} else {
+die('aeaeea');
 				return $this->redirect(['error-operacion', 'cod' => 920]);
 			}
 			return $result;
