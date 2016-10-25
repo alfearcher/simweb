@@ -298,7 +298,7 @@ class ConfigurarChequeDevueltoController extends Controller
                         $arrayDatosInactivacion3 = [    
                                                     'inactivo' => 1,
                                             
-                                                ];  
+                                                ];   
 
                     
                        
@@ -371,9 +371,9 @@ class ConfigurarChequeDevueltoController extends Controller
      {
          $email = yii::$app->user->identity->login;
 
-         $solicitud = 'Actualizacion de Datos del Inmueble';
+         $solicitud = 'Cheque devuelto';   
 
-         $nro_solicitud = $guardo;
+         $nro_solicitud = $guardo; 
 
          $enviarEmail = new PlantillaEmail();
         
