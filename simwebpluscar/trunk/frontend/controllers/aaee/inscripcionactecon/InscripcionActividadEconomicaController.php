@@ -164,7 +164,7 @@
 		      	 		if ( $result ) {
 		      	 			self::actionMostrarSolicitudCreada($model);
 		      	 		} else {
-die('hahahahah');
+
 		      	 			$this->redirect(['error-operacion', 'cod' => 920]);
 		      	 		}
 		      	 	}
@@ -196,7 +196,7 @@ die('hahahahah');
 				if ( $_SESSION['idContribuyente'] > 0 && $_SESSION['guardar'] == 1 ) {
 
 					$conexion = New ConexionController();
-
+die('teteet');
 					// Instancia de conexion hacia la base de datos.
 			      	$this->conn = $conexion->initConectar('db');
 			      	$this->conn->open();
@@ -237,12 +237,12 @@ die('hahahahah');
 
 				} else {
 					// Operacion no ejecutada.
-die('oaoaoao');
+
 					return $this->redirect(['error-operacion', 'cod' => 920]);
 
 				}
 			} else {
-die('aeaeea');
+
 				return $this->redirect(['error-operacion', 'cod' => 920]);
 			}
 			return $result;
