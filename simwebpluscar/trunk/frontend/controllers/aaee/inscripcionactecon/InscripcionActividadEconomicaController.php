@@ -225,7 +225,7 @@
 							if ( $result ) {
 								$result = self::actionEjecutaProcesoSolicitud($model, $conexion, $this->conn);
 							}
-die(var_dump($result));
+
 						}
 						if ( $result ) {
 							// Se envia el email respectivo
@@ -419,6 +419,7 @@ die(var_dump($result));
 
 				// Se obtiene un array de acciones o procesos ejecutados.
 				$acciones = $procesoEvento->getAccion();
+die(var($acciones));
 				if ( count($acciones) > 0 ) {
 
 					// Se evalua cada accion o proceso ejecutado para determinar si se realizo satisfactoriamnente.
