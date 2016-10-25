@@ -184,6 +184,7 @@
 			$idImpuesto = 0;
 			// Se espera los valores de la entidad "config-solic-tasas-multas".
 			$tasas = $this->getDetalleSolicitudTasaMulta($evento);
+die(var_dump($tasas));
 			foreach ( $tasas as $tasa ) {
 
 				$miTasa = New TasaForm();
