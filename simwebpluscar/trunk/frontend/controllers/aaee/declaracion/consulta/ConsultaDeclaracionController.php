@@ -58,7 +58,7 @@
 	use backend\models\aaee\declaracion\sustitutiva\SustitutivaBaseForm;
 	use backend\models\aaee\declaracion\sustitutiva\SustitutivaBaseSearch;
 	use backend\models\aaee\declaracion\DeclaracionBaseSearch;
-	use common\models\aaee\boletin\Boletin;
+	use common\controllers\pdf\boletin\BoletinController;
 
 
 
@@ -375,8 +375,8 @@
 			$a = $lapso['a'];
 			$p = $lapso['p'];
 
-			$boletin = New Boletin($id, $a, $p);
-			$boletin->generarBeletinEstimada();
+			$boletin = New BoletinController($id, $a, $p);
+			return $boletin->generarBoletinEstimada();
 		}
 
 
