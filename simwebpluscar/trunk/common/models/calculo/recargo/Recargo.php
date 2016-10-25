@@ -73,13 +73,23 @@
 		private $_exigibilidadLiq = [];
 		private $_recargo = 0;
 
+
+		/**
+		 * Arreglo donde se guardara la descripcion de la configuracion.
+		 * Que se aplica en el recargo. Tebdra la siguiente estructura
+		 * ['mes' => 'aplicacion']
+		 * [
+		 * 		'febrero' => '2%']
+		 * @var array
+		 */
+		private $_tipoConfig = [];
+
 		/**
 		 * Configuracion de la ordenanza y los parametros por mora.
 		 * @var array
 		 */
 		private $_configOrdAsignacion = [];
 
-		private $_lapso_vencido = false;
 
 
 		/**
@@ -113,7 +123,7 @@
 			}
 
 			$this->_recargo = $recargo;
-			return $recargo;
+			//return $recargo;
 		}
 
 
@@ -125,6 +135,12 @@
 
 
 
+		/***/
+		public function getConfigPenalidad()
+		{
+			return $this->_tipoConfig;
+		}
+
 
 		/**
 		 * Metodo que busca el identificador de la ordenanza y setea la vatiable
@@ -134,11 +150,13 @@
 		private function getOrdenanza()
 		{
 			$ordenanza = [];
+			$this->_id_ordenanza = 0;
 			// Se obtiene el identificador de la ordenanza segun el año y el impuesto.
-			$ordenanza = OrdenanzaBase::getIdOrdenanza($this->_año_impositivo, $this->_impuesto);
+			$ordenanza = OrdenanzaBase::getIdOrdenanzaSegunAnoImpositivo($this->_año_impositivo, $this->_impuesto);
 			if ( count($ordenanza) > 0 && $ordenanza !== false ) {
-				$this->_id_ordenanza = $ordenanza['id_ordenanza'];
+				$this->_id_ordenanza = $ordenanza[0]['id_ordenanza'];
 			}
+			return;
 		}
 
 
@@ -158,6 +176,7 @@
 			if ( count($exigibilidad) > 0 && $exigibilidad !== false ) {
 				$this->_exigibilidadLiq = $exigibilidad;
 			}
+			return;
 		}
 
 
@@ -171,13 +190,14 @@
 		private function findConfiguracion()
 		{
 			if ( $this->_id_ordenanza > 0 ) {
+				$tabla = OrdenanzaAsignacion::tableName();
 				// Se busca la configuracion que se aplicara al proceso del calculo
 				// del recargo.
 				$findModel = OrdenanzaAsignacion::find()->where('id_ordenanza =:id_ordenanza',
 																[':id_ordenanza' => $this->_id_ordenanza])
-														->andWhere('tipo_asignacion >:tipo_asignacion',
+														->andWhere($tabla . '.tipo_asignacion >:tipo_asignacion',
 																[':tipo_asignacion' => 0])
-														->andWhere('id_asignacion =:id_asignacion',
+														->andWhere($tabla . '.id_asignacion =:id_asignacion',
 																[':id_asignacion' => 1])
 														->andWhere('impuesto =:impuesto',
 																[':impuesto' => $this->_impuesto])
@@ -201,10 +221,16 @@
 		{
 			$this->_configOrdAsignacion = [];
 			$findModel = self::findConfiguracion();
-			$config = $findModel->all();
-			if ( count($config) > 0 ) {
-				$this->_configOrdAsignacion = $config;
+
+			if ( count($findModel) > 0 ) {
+				$config = $findModel->joinWith('tipoAsignacion', true, 'INNER JOIN')
+								    ->joinWith('asignacion', true, 'INNER JOIN')
+				                    ->asArray()->one();
+				if ( count($config) > 0 ) {
+					$this->_configOrdAsignacion = $config;
+				}
 			}
+			return;
 		}
 
 
@@ -244,12 +270,13 @@
 							$meses = (int)$this->_configOrdAsignacion['mes_aplicacion'];
 
 							// Cantidad de meses entre las fechas.
-							$interval = date_diff($fechaInicioPeriodo, $fechaActual);
+							$interval = date_diff(date_create($fechaInicioPeriodo), date_create($fechaActual));
 							$cantMeses = $interval->{'m'};
 
-							if ( $cantMeses > $meses ) {
+							if ( $cantMeses >= $meses ) {
 								$montoRecargo = self::determinarMontoRecargo();
 							}
+
 						}
 
 
@@ -259,6 +286,7 @@
 						// Al mes siguiente del ultimo mes de cada periodo.
 
 						if ( $fechaInicioPeriodo !== '' ) {
+
 							if ( $this->_año_impositivo < $añoActual ) {
 
 								$montoRecargo = self::determinarMontoRecargo();
@@ -278,15 +306,18 @@
 						// La penalización se aplica transcurrido los N dias de cada mes
 						// incluido el 1er mes de cada periodo tambien.
 
-						// Cantidad de dias que se tienen para pagar el periodo.
-						$dias = (int)$this->_configOrdAsignacion['dias_aplicacion'];
+						if ( $fechaInicioPeriodo !== '' ) {
 
-						// Cantidad de dias entre las fechas.
-						$interval = date_diff($fechaInicioPeriodo, $fechaActual);
-						$cantDias = $interval->{'days'};
+							// Cantidad de dias que se tienen para pagar el periodo.
+							$dias = (int)$this->_configOrdAsignacion['dias_aplicacion'];
 
-						if ( $cantDias > $dias ) {
-							$montoRecargo = self::determinarMontoRecargo();
+							// Cantidad de dias entre las fechas.
+							$interval = date_diff(date_create($fechaInicioPeriodo), date_create($fechaActual));
+							$cantDias = $interval->{'days'};
+
+							if ( $cantDias >= $dias ) {
+								$montoRecargo = self::determinarMontoRecargo();
+							}
 						}
 
 
@@ -296,23 +327,26 @@
 						// Aplica transcurrido N meses del 1er mes del periodo y contando
 						// N dias para ese mes(1ero de cada periodo).
 
-						// Cantidad de meses que se tienen para pagar el periodo.
-						$meses = (int)$this->_configOrdAsignacion['mes_aplicacion'];
+						if ( $fechaInicioPeriodo !== '' ) {
 
-						// Cantidad de dias que se tienen para pagar el periodo.
-						$dias = (int)$this->_configOrdAsignacion['dias_aplicacion'];
+							// Cantidad de meses que se tienen para pagar el periodo.
+							$meses = (int)$this->_configOrdAsignacion['mes_aplicacion'];
 
-						$interval = date_diff($fechaInicioPeriodo, $fechaActual);
-						$cantMeses = $interval->{'m'};
-						$cantDias = $interval->{'d'}
+							// Cantidad de dias que se tienen para pagar el periodo.
+							$dias = (int)$this->_configOrdAsignacion['dias_aplicacion'];
 
-						if ( $cantMeses > $meses ) {
-							$montoRecargo = self::determinarMontoRecargo();
+							$interval = date_diff(date_create($fechaInicioPeriodo), date_create($fechaActual));
+							$cantMeses = $interval->{'m'};
+							$cantDias = $interval->{'d'};
 
-						} elseif ( $cantMeses == $meses ) {
-							if ( $cantDias > $dias ) {
+							if ( $cantMeses >= $meses ) {
 								$montoRecargo = self::determinarMontoRecargo();
 
+							} elseif ( $cantMeses == $meses ) {
+								if ( $cantDias >= $dias ) {
+									$montoRecargo = self::determinarMontoRecargo();
+
+								}
 							}
 						}
 
@@ -325,23 +359,25 @@
 						// N dias para todos los meses que vienen.
 
 
-						// Cantidad de meses que se tienen para pagar el periodo.
-						$meses = (int)$this->_configOrdAsignacion['mes_aplicacion'];
+						if ( $fechaInicioPeriodo !== '' ) {
+							// Cantidad de meses que se tienen para pagar el periodo.
+							$meses = (int)$this->_configOrdAsignacion['mes_aplicacion'];
 
-						// Cantidad de dias que se tienen para pagar el periodo.
-						$dias = (int)$this->_configOrdAsignacion['dias_aplicacion'];
+							// Cantidad de dias que se tienen para pagar el periodo.
+							$dias = (int)$this->_configOrdAsignacion['dias_aplicacion'];
 
-						$interval = date_diff($fechaInicioPeriodo, $fechaActual);
-						$cantMeses = $interval->{'m'};
-						$cantDias = $interval->{'d'}
+							$interval = date_diff(date_create($fechaInicioPeriodo), date_create($fechaActual));
+							$cantMeses = $interval->{'m'};
+							$cantDias = $interval->{'d'};
 
-						if ( $cantMeses > $meses ) {
-							$montoRecargo = self::determinarMontoRecargo();
-
-						} elseif ( $cantMeses == $meses ) {
-							if ( $cantDias > $dias ) {
+							if ( $cantMeses >= $meses ) {
 								$montoRecargo = self::determinarMontoRecargo();
 
+							} elseif ( $cantMeses == $meses ) {
+								if ( $cantDias >= $dias ) {
+									$montoRecargo = self::determinarMontoRecargo();
+
+								}
 							}
 						}
 
@@ -351,15 +387,17 @@
 						// --------------------------------------------------------------
 						// Contar a partir del primer dia del 1er mes de cada periodo.
 
-						// Cantidad de dias que se tienen para pagar el periodo.
-						$dias = (int)$this->_configOrdAsignacion['dias_aplicacion'];
+						if ( $fechaInicioPeriodo !== '' ) {
+							// Cantidad de dias que se tienen para pagar el periodo.
+							$dias = (int)$this->_configOrdAsignacion['dias_aplicacion'];
 
-						// Cantidad de dias entre las fechas.
-						$interval = date_diff($fechaInicioPeriodo, $fechaActual);
-						$cantDias = $interval->{'days'};
+							// Cantidad de dias entre las fechas.
+							$interval = date_diff(date_create($fechaInicioPeriodo), date_create($fechaActual));
+							$cantDias = $interval->{'days'};
 
-						if ( $cantDias > $dias ) {
-							$montoRecargo = self::determinarMontoRecargo();
+							if ( $cantDias >= $dias ) {
+								$montoRecargo = self::determinarMontoRecargo();
+							}
 						}
 					}
 
@@ -382,7 +420,7 @@
 		{
 			$montoRecargo = 0;
 			if ( $this->_configOrdAsignacion['tipo_asignacion'] == 1 ) {
-				$montoRecargo = self::aplicarMontoFijo();
+				$montoRecargo = self::aplicarPorcentajeFijo();
 
 			} elseif (  $this->_configOrdAsignacion['tipo_asignacion'] == 2 ) {
 				$montoRecargo = self::aplicarUnidadTributaria();
@@ -460,11 +498,256 @@
 		 */
 		private function getFechaInicioPeriodo()
 		{
-			return $fecha = OrdenanzaBase::getFechaInicioSegunPeriodo($this->_año_impositivo, $this->_periodo,
-					        										  $this->_exigibilidadLiq['exigibilidad']);
+			$fecha = OrdenanzaBase::getFechaInicioSegunPeriodo($this->_año_impositivo, $this->_periodo,
+					        								   $this->_exigibilidadLiq['exigibilidad']);
+
+			return date_format(date_create($fecha), 'Y-m-d');
 
 		}
 
+
+
+
+
+		/***/
+		public function generarEtiquetaRecargo()
+		{
+			self::getOrdenanza();
+			self::getConfiguracion();
+			self::getExigibilidadLiquidacion();
+			$fechaActual = date('Y-m-d');
+			$meses = 0;
+			$dias = 0;
+			$aplico = '';
+
+			$this->_tipoConfig = [];
+
+			if ( count($this->_configOrdAsignacion) > 0 ) {
+				if ( $this->_id_ordenanza > 0 && count($this->_exigibilidadLiq) > 0 ) {
+
+					$fechaInicioPeriodo = self::getFechaInicioPeriodo();
+					$periodoActual = OrdenanzaBase::getPeriodoSegunFecha($this->_exigibilidadLiq['exigibilidad'], $fechaActual);
+
+					if ( $this->_configOrdAsignacion['id_aplicacion'] == 1 ) {
+						// Al N mes del primer mes del periodo
+						// ------------------------------------------------------
+						// Contar los N meses a partir del primer mes del periodo
+						// sin tomar este en el conteo.
+
+						if ( $fechaInicioPeriodo !== '' ) {
+
+							// Cantidad de meses que se tienen para pagar el periodo.
+							$meses = (int)$this->_configOrdAsignacion['mes_aplicacion'];
+
+							$pagarEn = (int)date('m', strtotime($fechaInicioPeriodo));
+							// indico a partir de que fecha aplica el recargo.
+							if ( $meses == 0 ) {
+
+								$this->_tipoConfig[$this->_periodo] = [
+															'pagarEn' => Yii::$app->mesdias->getMes($pagarEn),
+															'recargoEn' => self::getDescripcionPenalidad(),
+								];
+
+							} else {
+								$aplico = $meses . ' month';
+								$f = date_create($fechaInicioPeriodo);
+								date_add($f, date_interval_create_from_date_string($aplico));
+								$fecha = date_format($f, 'Y-m-d');
+								$m = date('m', strtotime($fecha));
+
+								$this->_tipoConfig[$this->_periodo] = [
+															'pagarEn' => Yii::$app->mesdias->getMes($pagarEn),
+															'recargoEn' => Yii::$app->mesdias->getMes((int)$m) . '(' . self::getDescripcionPenalidad() . ')',
+								];
+							}
+
+						}
+
+
+					} elseif ( $this->_configOrdAsignacion['id_aplicacion'] == 2 ) {
+						// Al vencer el periodo.
+						// ---------------------------------------------------------
+						// Al mes siguiente del ultimo mes de cada periodo.
+
+						// Cantidad de meses que se tienen para pagar el periodo.
+						$meses = (int)$this->_configOrdAsignacion['mes_aplicacion'];
+
+						if ( $fechaInicioPeriodo !== '' ) {
+							$pagarEn = (int)date('m', strtotime($fechaInicioPeriodo));
+
+							$aplico = $meses . ' month';
+							$f = date_create($fechaInicioPeriodo);
+							date_add($f, date_interval_create_from_date_string($aplico));
+							$fecha = date_format($f, 'Y-m-d');
+							$m = date('m', strtotime($fecha));
+
+							$this->_tipoConfig[$this->_periodo] = [
+														'pagarEn' => Yii::$app->mesdias->getMes($pagarEn),
+														'recargoEn' => Yii::$app->mesdias->getMes((int)$m) . '(' . self::getDescripcionPenalidad() . ')',
+							];
+						}
+
+
+
+					} elseif ( $this->_configOrdAsignacion['id_aplicacion'] == 3 ) {
+						// A los N dias de cada mes.
+						// ------------------------------------------------------------
+						// La penalización se aplica transcurrido los N dias de cada mes
+						// incluido el 1er mes de cada periodo tambien.
+
+						if ( $fechaInicioPeriodo !== '' ) {
+
+							// Cantidad de dias que se tienen para pagar el periodo.
+							$dias = (int)$this->_configOrdAsignacion['dias_aplicacion'];
+
+							$pagarEn = (int)date('m', strtotime($fechaInicioPeriodo));
+
+							$aplico = $dias . ' days';
+							$f = date_create($fechaInicioPeriodo);
+							date_add($f, date_interval_create_from_date_string($aplico));
+							$fecha = date_format($f, 'Y-m-d');
+							$m = date('m', strtotime($fecha));
+							$d = date('d', strtotime($fecha));
+
+							$this->_tipoConfig[$this->_periodo] = [
+														'pagarEn' => Yii::$app->mesdias->getMes($pagarEn),
+														'recargoEn' => $d . '/' . Yii::$app->mesdias->getMes((int)$m) . '(' . self::getDescripcionPenalidad() . ')',
+							];
+
+						}
+
+
+					} elseif ( $this->_configOrdAsignacion['id_aplicacion'] == 4 ) {
+						// N meses a partir del 1er mes del periodo x N dias de ese mes.
+						// --------------------------------------------------------------
+						// Aplica transcurrido N meses del 1er mes del periodo y contando
+						// N dias para ese mes(1ero de cada periodo).
+
+						if ( $fechaInicioPeriodo !== '' ) {
+
+							// Cantidad de meses que se tienen para pagar el periodo.
+							$meses = (int)$this->_configOrdAsignacion['mes_aplicacion'];
+
+							// Cantidad de dias que se tienen para pagar el periodo.
+							$dias = (int)$this->_configOrdAsignacion['dias_aplicacion'];
+
+
+							$pagarEn = (int)date('m', strtotime($fechaInicioPeriodo));
+
+							$aplico = $meses . ' month';
+							$f = date_create($fechaInicioPeriodo);
+							date_add($f, date_interval_create_from_date_string($aplico));
+
+							$aplico = $dias . ' days';
+							date_add($f, date_interval_create_from_date_string($aplico));
+
+							$fecha = date_format($f, 'Y-m-d');
+							$m = date('m', strtotime($fecha));
+							$d = date('d', strtotime($fecha));
+
+							$this->_tipoConfig[$this->_periodo] = [
+														'pagarEn' => Yii::$app->mesdias->getMes($pagarEn),
+														'recargoEn' => $d . '/' . Yii::$app->mesdias->getMes((int)$m) . '(' . self::getDescripcionPenalidad() . ')',
+							];
+
+
+
+						}
+
+
+					} elseif ( $this->_configOrdAsignacion['id_aplicacion'] == 5 ) {
+						// N meses a partir del 1er mes del periodo x N dias de todos
+						// los meses.
+						// --------------------------------------------------------------
+						// Aplica transcurrido N meses del 1er mes del periodo y contando
+						// N dias para todos los meses que vienen.
+
+
+						if ( $fechaInicioPeriodo !== '' ) {
+							// Cantidad de meses que se tienen para pagar el periodo.
+							$meses = (int)$this->_configOrdAsignacion['mes_aplicacion'];
+
+							// Cantidad de dias que se tienen para pagar el periodo.
+							$dias = (int)$this->_configOrdAsignacion['dias_aplicacion'];
+
+							$pagarEn = (int)date('m', strtotime($fechaInicioPeriodo));
+
+							$aplico = $meses . ' month';
+							$f = date_create($fechaInicioPeriodo);
+							date_add($f, date_interval_create_from_date_string($aplico));
+
+							$aplico = $dias . ' days';
+							date_add($f, date_interval_create_from_date_string($aplico));
+
+							$fecha = date_format($f, 'Y-m-d');
+							$m = date('m', strtotime($fecha));
+							$d = date('d', strtotime($fecha));
+
+							$this->_tipoConfig[$this->_periodo] = [
+														'pagarEn' => Yii::$app->mesdias->getMes($pagarEn),
+														'recargoEn' => $d . '/' . Yii::$app->mesdias->getMes((int)$m) . '(' . self::getDescripcionPenalidad() . ')',
+							];
+						}
+
+
+					} elseif ( $this->_configOrdAsignacion['id_aplicacion'] == 9 ) {
+						// Despues de transcurrido N dias del periodo.
+						// --------------------------------------------------------------
+						// Contar a partir del primer dia del 1er mes de cada periodo.
+
+						if ( $fechaInicioPeriodo !== '' ) {
+							// Cantidad de dias que se tienen para pagar el periodo.
+							$dias = (int)$this->_configOrdAsignacion['dias_aplicacion'];
+
+							$pagarEn = (int)date('m', strtotime($fechaInicioPeriodo));
+
+							$aplico = $dias . ' days';
+							$f = date_create($fechaInicioPeriodo);
+							date_add($f, date_interval_create_from_date_string($aplico));
+
+							$fecha = date_format($f, 'Y-m-d');
+							$m = date('m', strtotime($fecha));
+							$d = date('d', strtotime($fecha));
+
+							$this->_tipoConfig[$this->_periodo] = [
+														'pagarEn' => Yii::$app->mesdias->getMes($pagarEn),
+														'recargoEn' => $d . '/' . Yii::$app->mesdias->getMes((int)$m) . '(' . self::getDescripcionPenalidad() . ')',
+							];
+						}
+					}
+
+				}
+			}
+
+			return;
+		}
+
+
+
+		/***/
+		public function getDescripcionPenalidad()
+		{
+			$result = '';
+			if ( count($this->_configOrdAsignacion) > 0 ) {
+				if ( $this->_configOrdAsignacion['tipo_asignacion'] == 0 ) {
+					$result = $this->_configOrdAsignacion['tipoAsignacion']['descripcion'];
+
+				} elseif ( $this->_configOrdAsignacion['tipo_asignacion'] == 1 ) {
+					$result = $this->_configOrdAsignacion['monto'] . '%';
+
+				} elseif ( $this->_configOrdAsignacion['tipo_asignacion'] == 2 ) {
+					$result = $this->_configOrdAsignacion['monto'] . 'UT';
+
+				} elseif ( $this->_configOrdAsignacion['tipo_asignacion'] == 3 ) {
+					$result = $this->_configOrdAsignacion['monto'];
+
+				} elseif ( $this->_configOrdAsignacion['tipo_asignacion'] == 9 ) {
+					$result = '%BCV';
+				}
+			}
+
+			return $result;
+		}
 
 
 	}
