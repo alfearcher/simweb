@@ -164,6 +164,7 @@
 		      	 		if ( $result ) {
 		      	 			self::actionMostrarSolicitudCreada($model);
 		      	 		} else {
+die('hahahahah');
 		      	 			$this->redirect(['error-operacion', 'cod' => 920]);
 		      	 		}
 		      	 	}
