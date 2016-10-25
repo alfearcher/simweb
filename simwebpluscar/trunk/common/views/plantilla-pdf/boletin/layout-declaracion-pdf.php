@@ -67,7 +67,6 @@
 
 	$fechaEmision = date('Y-m-d');
 
-	$sumaDelaracion = 0;
 	$sumaImpuesto = 0;
 ?>
 
@@ -96,25 +95,18 @@
 		<th class="label-declaracion" colspan="1"><?=Html::encode('IMPUESTO'); ?></th>
 	</tr>
 
-	<?php foreach ( $declaracionModel as $i => $declaracion ) {?>
+	<?php foreach ( $resumen as $i => $r ) {?>
 		<?php
-			$sumaDelaracion = $sumaDelaracion + 1;
-			$calculo = New CalculoRubro($declaracion);
-
-			$result = $calculo->getCalcularPorTipoDeclaracion('estimado');
-			$minimo = $calculo->getMinimoTributableRubro();
-
-			$sumaImpuesto = $sumaImpuesto + $result;
-
+			$sumaImpuesto = $sumaImpuesto + $r['impuesto'];
 		?>
 		<tr class="cuerpo">
-			<td class="info-declaracion" colspan="1"><?=Html::encode($declaracionModel[$i]['rubroDetalle']['rubro']); ?></td>
-			<td class="info-declaracion-x" colspan="3"><?=Html::encode($declaracionModel[$i]['rubroDetalle']['descripcion']); ?></td>
-			<td class="info-declaracion" colspan="1"><?=Html::encode($declaracionModel[$i]['rubroDetalle']['alicuota']); ?></td>
-			<td class="info-declaracion" colspan="1"><?=Html::encode($declaracionModel[$i]['rubroDetalle']['minimo_ut']); ?></td>
-			<td class="info-declaracion" colspan="2"><?=Html::encode(Yii::$app->formatter->asDecimal($declaracionModel[$i]['estimado'], 2)); ?></td>
-			<td class="info-declaracion" colspan="1"><?=Html::encode(Yii::$app->formatter->asDecimal($minimo, 2)); ?></td>
-			<td class="info-declaracion" colspan="1"><?=Html::encode(Yii::$app->formatter->asDecimal($result, 2)); ?></td>
+			<td class="info-declaracion" colspan="1"><?=Html::encode($r['rubro']); ?></td>
+			<td class="info-declaracion-x" colspan="3"><?=Html::encode($r['descripcion']); ?></td>
+			<td class="info-declaracion" colspan="1"><?=Html::encode($r['alicuota']); ?></td>
+			<td class="info-declaracion" colspan="1"><?=Html::encode($r['minimo_ut']); ?></td>
+			<td class="info-declaracion" colspan="2" style="text-align: right;"><?=Html::encode(Yii::$app->formatter->asDecimal($r['estimado'], 2)); ?></td>
+			<td class="info-declaracion" colspan="1" style="text-align: right;"><?=Html::encode(Yii::$app->formatter->asDecimal($r['minimo'], 2)); ?></td>
+			<td class="info-declaracion" colspan="1" style="text-align: right;"><?=Html::encode(Yii::$app->formatter->asDecimal($r['impuesto'], 2)); ?></td>
 		</tr>
 	<?php } ?>
 
