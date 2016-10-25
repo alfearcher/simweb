@@ -173,18 +173,22 @@
 							?>
 						</div>
 
-						<div class="col-sm-3" style="width: 20%;margin-left:100px;">
-							<?= Html::submitButton(Yii::t('frontend', 'Boletin'),
-																	  [
-																		'id' => 'btn-boletin',
-																		'class' => 'btn btn-primary',
-																		'value' => $lapso['tipo'],
-																		'style' => 'width: 100%; margin-left:0px;margin-top:20px;',
-																		'name' => 'btn-boletin',
 
-																	  ]);
+						<div class="col-sm-3" style="width: 20%;margin-left:100px;">
+							<?= Html::a(Yii::t('frontend', 'Descargar Boletin'),
+																		['generar-boletin-estimada'],
+																	  	[
+																			'id' => 'btn-boletin',
+																			'class' => 'btn btn-primary',
+																			'value' => $lapso['tipo'],
+																			'style' => 'width: 100%; margin-left:0px;margin-top:20px;',
+																			'name' => 'btn-boletin',
+																			'target' => '_blank',
+
+																	  	]);
 							?>
 						</div>
+
 					</div>
 				</div>
 
