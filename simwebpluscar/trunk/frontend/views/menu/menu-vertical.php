@@ -106,14 +106,14 @@
 		        		],
 
 
-		        		['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . '&nbsp; Prueba de Mpdf',
-		        			'items' => [
-		        						['label' => 'Prueba', 'url' => ['/mpdf/prueba-mpdf/pdf']],
-		        						['label' => 'Consulta', 'url' => ['/mpdf/prueba-mpdf/datos']],
-		        						['label' => 'fecha', 'url' => ['/mpdf/prueba-mpdf/fecha']],
-		        						// ['label' => 'Solicitar Anulación de Recibo', 'url' => '#'],
-		        			]
-		        		],
+		        		// ['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . '&nbsp; Prueba de Mpdf',
+		        		// 	'items' => [
+		        		// 				['label' => 'Prueba', 'url' => ['/mpdf/prueba-mpdf/pdf']],
+		        		// 				['label' => 'Consulta', 'url' => ['/mpdf/prueba-mpdf/datos']],
+		        		// 				['label' => 'fecha', 'url' => ['/mpdf/prueba-mpdf/fecha']],
+		        		// 				// ['label' => 'Solicitar Anulación de Recibo', 'url' => '#'],
+		        		// 	]
+		        		// ],
 
 
 
