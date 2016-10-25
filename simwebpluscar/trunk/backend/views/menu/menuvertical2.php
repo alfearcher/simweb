@@ -233,7 +233,7 @@ session_start();
 
 
         		//	PAGOS
-        		['label' => Icon::show('fa fa-money',['class' => $typeLong], $typeIcon) . '&nbsp; Pagos',
+        		['label' => Icon::show('fa fa-money',['class' => $typeLong], $typeIcon) . '&nbsp; Pagos y Deudas',
         			'items' => [
         						['label' => 'Recibo', 'url' => '#'],
         						['label' => 'Caja', 'url' => '#'],
@@ -243,7 +243,26 @@ session_start();
         						['label' => 'Cuentas Por Cobrar', 'url' => '#'],
         						['label' => 'Procesar Pagos en Lote', 'url' => '#'],
         						['label' => 'Registros TXT', 'url' => '#'],
+
+        						['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Deudas',
+    					   		
+    					   		'items' => [
+    					   				['label' => 'Verificar Deudas', 'url' => ['/deudas/deudascontribuyente/deudas-contribuyente/verificar-deudas-contribuyente']],
+		        					   				
+		        					   				
+		        					   				
+		        					   				
+		        					   				
+		        					   		]
+		        					   	],
         			]
+
+
+
+
+
+
+
         		],
 
 
