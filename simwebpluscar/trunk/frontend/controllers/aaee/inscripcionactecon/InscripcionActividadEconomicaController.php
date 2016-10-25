@@ -419,12 +419,11 @@
 
 				// Se obtiene un array de acciones o procesos ejecutados.
 				$acciones = $procesoEvento->getAccion();
-die(var_dump($acciones));
 				if ( count($acciones) > 0 ) {
 
 					// Se evalua cada accion o proceso ejecutado para determinar si se realizo satisfactoriamnente.
 					$resultadoProceso = $procesoEvento->resultadoEjecutarProcesos();
-
+die(var_dump($resultadoProceso));
 					if ( count($resultadoProceso) > 0 ) {
 						foreach ( $resultadoProceso as $key => $value ) {
 							if ( $value == false ) {
