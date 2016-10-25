@@ -206,7 +206,7 @@
 					$transaccion = $this->conn->beginTransaction();
 					$nroSolicitud = self::actionCreateSolicitud($conexion, $this->conn);
 					if ( $nroSolicitud > 0 ) {
-die(var_dump($nroSolicitud));
+
 						$model->nro_solicitud = $nroSolicitud;
 						// Detalle de la solicitud
 						$result = self::actionCreateInscripcionActEcon($model, $conexion, $this->conn);
