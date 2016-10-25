@@ -65,6 +65,7 @@
 	]);
 
 	$sumaImpuesto = 0;
+	$subTotal = 0;
 ?>
 
 <!-- Especificaciones de los periodos a pagar -->
@@ -76,22 +77,28 @@
 		<th class="label-liquidacion" colspan="1"><?=Html::encode('DESCRIPCION'); ?></th>
 		<th class="label-liquidacion" colspan="2"><?=Html::encode('MONTO A PAGAR'); ?></th>
 		<th class="label-liquidacion" colspan="1"><?=Html::encode('PERIODO PAGO'); ?></th>
-		<th class="label-liquidacion" colspan="1"><?=Html::encode('PERIDDO RECARGO()'); ?></th>
-		<th class="label-liquidacion" colspan="1"><?=Html::encode('PERIDDO INTERES()'); ?></th>
+		<th class="label-liquidacion" colspan="1"><?=Html::encode('RECARGO EN'); ?></th>
+		<th class="label-liquidacion" colspan="1"><?=Html::encode('INTERES EN'); ?></th>
 		<th class="label-liquidacion" colspan="1"><?=Html::encode('DESCUENTO'); ?></th>
-		<th class="label-liquidacion" colspan="2"><?=Html::encode('SUBTOTAL A PAGAR'); ?></th>
+		<th class="label-liquidacion" colspan="2"><?=Html::encode('SUBTOTAL'); ?></th>
 	</tr>
 
-	<?php for ( $i = 1;  $i <= $exigibilidad['exigibilidad'];  $i++ ) {?>
+
+
+	<?php foreach ( $resumen as $i => $r ) { ?>
+		<?php
+			$sumaImpuesto = $sumaImpuesto + $r['monto'];
+			$subTotal = $r['monto'];
+		?>
 		<tr class="cuerpo-liquidacion">
-			<td class="info-liquidacion" colspan="1"><?=Html::encode($i); ?></td>
-			<td class="info-liquidacion" colspan="1"><?=Html::encode($exigibilidad['unidad']); ?></td>
-			<td class="info-liquidacion" colspan="2"><?=Html::encode(0); ?></td>
-			<td class="info-liquidacion" colspan="1"><?=Html::encode(0); ?></td>
-			<td class="info-liquidacion" colspan="1"><?=Html::encode(0); ?></td>
-			<td class="info-liquidacion" colspan="1"><?=Html::encode(0); ?></td>
-			<td class="info-liquidacion" colspan="1"><?=Html::encode(0); ?></td>
-			<td class="info-liquidacion" colspan="2"><?=Html::encode(0); ?></td>
+			<td class="info-liquidacion" colspan="1"><?=Html::encode($r['periodo']); ?></td>
+			<td class="info-liquidacion" colspan="1"><?=Html::encode($r['descripcion']); ?></td>
+			<td class="info-liquidacion" colspan="2"><?=Html::encode(Yii::$app->formatter->asDecimal($r['monto'])); ?></td>
+			<td class="info-liquidacion" colspan="1"><?=Html::encode($r['pagarEn']); ?></td>
+			<td class="info-liquidacion" colspan="1"><?=Html::encode($r['recargoEn']); ?></td>
+			<td class="info-liquidacion" colspan="1"><?=Html::encode('-'); ?></td>
+			<td class="info-liquidacion" colspan="1"><?=Html::encode(Yii::$app->formatter->asDecimal(0)); ?></td>
+			<td class="info-liquidacion" colspan="2" style="text-align: right;"><?=Html::encode(Yii::$app->formatter->asDecimal($subTotal)); ?></td>
 		</tr>
 	<?php }?>
 	<tr>
@@ -112,6 +119,9 @@
 
 	.label-liquidacion {
 		border-bottom: solid 2px #000;
+		font-size: 68%;
+		text-align: center;
+		font-family: Arial, Helvetica, sans-serif;
 	}
 
 	.info-liquidacion {
@@ -123,8 +133,7 @@
 		font-size: 70%;
 	}
 
-	.info-liquidacion,
-	.label-liquidacion {
+	.info-liquidacion {
 		text-align: center;
 		font-size: 70%;
 	}
