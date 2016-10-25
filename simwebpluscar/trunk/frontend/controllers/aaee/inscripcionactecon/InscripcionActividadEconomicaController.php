@@ -210,7 +210,7 @@
 						$model->nro_solicitud = $nroSolicitud;
 						// Detalle de la solicitud
 						$result = self::actionCreateInscripcionActEcon($model, $conexion, $this->conn);
-die('xaxaxa');
+die(var_dump($result));
 						if ( count($conf) > 0 && $result == true ) {
 
 							// Se define que tipo de aprobacion se debe aplicar en la solicitud.
@@ -225,6 +225,7 @@ die('xaxaxa');
 							if ( $result ) {
 								$result = self::actionEjecutaProcesoSolicitud($model, $conexion, $this->conn);
 							}
+die(var_dump($result));
 						}
 						if ( $result ) {
 							// Se envia el email respectivo
