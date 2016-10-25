@@ -93,7 +93,7 @@
 
 <div class="row">
 	<div class="col-sm-3" id="titulo">
-		<p><?=strtoupper(Html::encode('BOLETIN DE NOTIFICACION - ESTIMADA'))?></div></p>
+		<p><?=strtoupper(Html::encode('BOLETIN DE NOTIFICACION'))?></div></p>
 	</div>
 </div>
 
