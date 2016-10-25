@@ -750,10 +750,14 @@
 
 				if ( $resto == 0 ) {		// Division exacta.
 					$periodos = 12 / $exigibilidadLiquidacion;
-					for ( $i = 1; $i <= 12; $periodos++ ) {
-						$mes = '0' . $i;
+
+					$m = 1;
+					for ( $i = 1; $i <= $exigibilidadLiquidacion; $i++ ) {
+						$mes = '0' . $m;
 						$mes = substr(trim($mes), -2);
 						$fechas[$i] = $añoImpositivo . '-' . $mes . '-01';
+
+						$m = $m + $periodos;
 					}
 				}
 			}
