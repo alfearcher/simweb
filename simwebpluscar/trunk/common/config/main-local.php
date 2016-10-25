@@ -74,5 +74,9 @@ return [
 		'lapso' => [
 			'class' => 'common\classes\ControlLapso'
 		],
+		'mesdias' => [
+			'class' => 'common\classes\MesDias'
+		],
+
 	],
 ];
