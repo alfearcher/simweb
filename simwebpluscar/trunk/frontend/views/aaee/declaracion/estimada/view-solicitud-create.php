@@ -58,11 +58,11 @@
 
  <div class="view-anexo-ramo-creada">
 	<meta http-equiv="refresh">
-    <div class="panel panel-primary"  style="width: 100%;">
+    <div class="panel panel-primary"  style="width: 103%;">
         <div class="panel-heading">
         	<div class="row">
 	        	<div class="col-sm-4">
-	        		<h3><?= Html::encode(Yii::t('frontend', 'Request Nro. ' . $model[0]->nro_solicitud )) ?></h3>
+	        		<h3><?= Html::encode(Yii::t('frontend', 'Request Nro. ' . $model[0]->nro_solicitud ) . '. ' . Yii::t('backend', 'Summary')) ?></h3>
 	        	</div>
 	        	<div class="col-sm-3" style="width: 30%; float:right; padding-right: 50px;">
 	        		<style type="text/css">
@@ -76,83 +76,131 @@
         </div>
 
 <!-- Cuerpo del formulario -->
-        <div class="panel-body" style="background-color: #F9F9F9;">
+        <div class="panel-body">
         	<div class="container-fluid">
-        		<div class="col-sm-12">
+        		<div class="col-sm-10">
+					<div class="row" style="margin: 0px;padding-left: -5px; width: 98%;">
+						<?= GridView::widget([
+								'id' => 'grid-declaracion-estimada',
+								'dataProvider' => $dataProvider,
+								'headerRowOptions' => ['class' => 'danger'],
+								'options' => [
+									'style' => 'padding-left: -15px;width:110%;'
+								],
+								//'filterModel' => $searchModel,
+								'columns' => [
+									['class' => 'yii\grid\SerialColumn'],
+									[
+					                    'label' => Yii::t('frontend', 'Request'),
+					                    'value' => function($model) {
+                										return $model->nro_solicitud;
+        											},
+					                ],
+					                [
+					                    'label' => Yii::t('frontend', 'Request Description'),
+					                    'value' => function($model) {
+                										return $model->getDescripcionTipoSolicitud($model->nro_solicitud);
+        											},
+					                ],
+					                [
+					                    'label' => Yii::t('frontend', 'Year'),
+					                    'value' => function($model) {
+                										return $model->ano_impositivo;
+        											},
+					                ],
+					            	[
+					                    'label' => Yii::t('frontend', 'Category'),
+					                    'value' => function($model) {
+                										return $model->rubro->rubro;
+        											},
+					                ],
+					                [
+					                    'label' => Yii::t('frontend', 'Descripcion'),
+					                    'value' => function($model) {
+                										return $model->rubro->descripcion;
+        											},
+					                ],
+					                [
+					                    'label' => Yii::t('frontend', 'Monto Declaracion'),
+					                    'value' => function($model) {
+                										return Yii::$app->formatter->asDecimal($model->monto_new, 2);
+        											},
+					                ],
+					                [
+					                    'label' => Yii::t('frontend', 'Monto Anterior'),
+					                    'value' => function($model) {
+                										return Yii::$app->formatter->asDecimal($model->monto_v, 2);
+        											},
+					                ],
+					                [
+					                    'label' => Yii::t('frontend', 'Monto Minimo'),
+					                    'value' => function($model) {
+                										return Yii::$app->formatter->asDecimal($model->monto_minimo, 2);
+        											},
+					                ],
+					                [
+					                    'label' => Yii::t('frontend', 'Condition'),
+					                    'value' => function($model) {
+                										return $model->estatusSolicitud->descripcion;
+        											},
+				                	],
+					        	]
+						]);?>
+					</div>
+
+					<div class="row" style="border-top: 1px solid #ccc; padding-bottom: 10px;"></div>
+
 					<div class="row">
-		        		<div class="panel panel-success" style="width: 100%;">
-							<div class="panel-heading">
-					        	<span><?= Html::encode(Yii::t('backend', 'Summary')) ?></span>
-					        </div>
-					        <div class="panel-body">
-					        	<div class="row" style="padding-left: 15px; width: 100%;">
-									<?= GridView::widget([
-											'id' => 'grid-declaracion-estimada',
-	    									'dataProvider' => $dataProvider,
-	    									'headerRowOptions' => ['class' => 'danger'],
-	    									//'filterModel' => $searchModel,
-	    									'columns' => [
-	    										['class' => 'yii\grid\SerialColumn'],
-	    										[
-								                    'label' => Yii::t('frontend', 'Request'),
-								                    'value' => function($model) {
-	                        										return $model->nro_solicitud;
-	                											},
-								                ],
-								                [
-								                    'label' => Yii::t('frontend', 'Request Description'),
-								                    'value' => function($model) {
-	                        										return $model->getDescripcionTipoSolicitud($model->nro_solicitud);
-	                											},
-								                ],
-								                [
-								                    'label' => Yii::t('frontend', 'Year'),
-								                    'value' => function($model) {
-	                        										return $model->ano_impositivo;
-	                											},
-								                ],
-								            	[
-								                    'label' => Yii::t('frontend', 'Category'),
-								                    'value' => function($model) {
-	                        										return $model->rubro->rubro;
-	                											},
-								                ],
-								                [
-								                    'label' => Yii::t('frontend', 'Descripcion'),
-								                    'value' => function($model) {
-	                        										return $model->rubro->descripcion;
-	                											},
-								                ],
-								                [
-								                    'label' => Yii::t('frontend', 'Monto Declaracion'),
-								                    'value' => function($model) {
-	                        										return Yii::$app->formatter->asDecimal($model->monto_new, 2);
-	                											},
-								                ],
-								                [
-								                    'label' => Yii::t('frontend', 'Monto Anterior'),
-								                    'value' => function($model) {
-	                        										return Yii::$app->formatter->asDecimal($model->monto_v, 2);
-	                											},
-								                ],
-								                [
-								                    'label' => Yii::t('frontend', 'Monto Minimo'),
-								                    'value' => function($model) {
-	                        										return Yii::$app->formatter->asDecimal($model->monto_minimo, 2);
-	                											},
-								                ],
-								                [
-								                    'label' => Yii::t('frontend', 'Condition'),
-								                    'value' => function($model) {
-	                        										return $model->estatusSolicitud->descripcion;
-	                											},
-							                	],
-								        	]
-										]);?>
-								</div>
+						<div class="form-group">
+							<div class="col-sm-3" style="width: 20%;margin-left:25px;">
+								<?= Html::a(Yii::t('frontend', 'Descargar Boletin'),
+																			['generar-boletin-estimada'],
+																		  	[
+																				'id' => 'btn-boletin',
+																				'class' => 'btn btn-primary',
+																				'value' => 1,
+																				'style' => 'width: 100%; margin-left:0px;margin-top:20px;',
+																				'name' => 'btn-boletin',
+																				'target' => '_blank',
+
+																		  	]);
+								?>
 							</div>
+
+							<div class="col-sm-3" style="width: 20%;margin-left:25px;">
+								<?= Html::a(Yii::t('frontend', 'Descargar Certificado'),
+																			['generar-certificado-estimada'],
+																		  	[
+																				'id' => 'btn-certificado',
+																				'class' => 'btn btn-primary',
+																				'value' => 2,
+																				'style' => 'width: 100%; margin-left:0px;margin-top:20px;',
+																				'name' => 'btn-certificado',
+																				'target' => '_blank',
+
+																		  	]);
+								?>
+							</div>
+
+							<div class="col-sm-3" style="width: 20%;margin-left:25px;">
+								<?= Html::a(Yii::t('frontend', 'Descargar Declaracion'),
+																			['generar-declaracion-estimada'],
+																		  	[
+																				'id' => 'btn-declaracion',
+																				'class' => 'btn btn-primary',
+																				'value' => 3,
+																				'style' => 'width: 100%; margin-left:0px;margin-top:20px;',
+																				'name' => 'btn-declaracion',
+																				'target' => '_blank',
+
+																		  	]);
+								?>
+							</div>
+
+
 						</div>
 					</div>
+
 				</div>	<!-- Fin de col-sm-12 -->
 			</div> <!-- Fin de container-fluid -->
 		</div>	<!-- Fin de panel-body -->
