@@ -147,34 +147,8 @@
 
 				<div class="row">
 					<div class="form-group">
-						<div class="col-sm-3" style="width: 20%;margin-left:100px;">
-							<?= Html::submitButton(Yii::t('frontend', Yii::t('frontend', 'Quit')),
-																				  [
-																					'id' => 'btn-quit',
-																					'class' => 'btn btn-danger',
-																					'value' => 1,
-																					'style' => 'width: 100%; margin-left:0px;margin-top:20px;',
-																					'name' => 'btn-quit',
 
-																				  ]);
-							?>
-						</div>
-
-						<div class="col-sm-3" style="width: 20%;margin-left:100px;">
-							<?= Html::submitButton(Yii::t('frontend', 'Back'),
-																	  [
-																		'id' => 'btn-back-form',
-																		'class' => 'btn btn-danger',
-																		'value' => 1,
-																		'style' => 'width: 100%; margin-left:0px;margin-top:20px;',
-																		'name' => 'btn-back-form',
-
-																	  ]);
-							?>
-						</div>
-
-
-						<div class="col-sm-3" style="width: 20%;margin-left:100px;">
+						<div class="col-sm-3" style="width: 20%;margin-left:25px;">
 							<?= Html::a(Yii::t('frontend', 'Descargar Boletin'),
 																		['generar-boletin-estimada'],
 																	  	[
@@ -188,6 +162,56 @@
 																	  	]);
 							?>
 						</div>
+
+
+
+						<div class="col-sm-3" style="width: 20%;margin-left:50px;">
+							<?= Html::a(Yii::t('frontend', 'Descargar Certificado'),
+																		['generar-certificado-estimada'],
+																	  	[
+																			'id' => 'btn-ceriticado',
+																			'class' => 'btn btn-primary',
+																			'value' => $lapso['tipo'],
+																			'style' => 'width: 100%; margin-left:0px;margin-top:20px;',
+																			'name' => 'btn-ceriticado',
+																			'target' => '_blank',
+
+																	  	]);
+							?>
+						</div>
+
+
+
+						<div class="col-sm-3" style="width: 20%;margin-left:50px;">
+							<?= Html::a(Yii::t('frontend', 'Descargar Declaracion'),
+																		['generar-declaracion-estimada'],
+																	  	[
+																			'id' => 'btn-declaracion',
+																			'class' => 'btn btn-primary',
+																			'value' => $lapso['tipo'],
+																			'style' => 'width: 100%; margin-left:0px;margin-top:20px;',
+																			'name' => 'btn-declaracion',
+																			'target' => '_blank',
+
+																	  	]);
+							?>
+						</div>
+
+
+						<div class="col-sm-3" style="width: 20%;margin-left:50px;">
+							<?= Html::submitButton(Yii::t('frontend', 'Back'),
+																	  [
+																		'id' => 'btn-back-form',
+																		'class' => 'btn btn-danger',
+																		'value' => 1,
+																		'style' => 'width: 100%; margin-left:0px;margin-top:20px;',
+																		'name' => 'btn-back-form',
+
+																	  ]);
+							?>
+						</div>
+
+
 
 					</div>
 				</div>
