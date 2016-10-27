@@ -79,15 +79,27 @@
 		<div class="row" id="renta-municipal"><?=strtoupper(Html::encode('Direccion de Renta'))?></div>
 		<div class="row" id="rif"><?=strtoupper(Html::encode(Yii::$app->ente->getRif()))?></div>
 	</div>
-	<div class="col-sm-4" id="codigo-barra">
-		<?=Html::img('@common/public/imagen/customize/codigo.png');
-		?>
+	<div class="col-sm-3" id="codigo-barra">
+		<div class="row">
+			<?=Html::tag('barcode','',[
+									'class' => ['barcode'],
+									'height' => '0.96',
+									'type' => 'C128A',
+									'code' => $barcode,
+									'size' => '0.8',
+						])
+			 ?>
+		</div>
+		<div class="row" id="code">
+			<?=Html::encode($barcode)?>
+		</div>
+		<!-- <barcode code=<?//=$barcode;?> type="C128A"  height="0.66" width="1.8" text="1" class="barcode" /> -->
 	</div>
 </div>
 
 <div class="row">
 	<div class="col-sm-3" id="titulo">
-		<p><?=strtoupper(Html::encode('BOLETIN DE NOTIFICACION'))?></div></p>
+		<p><?=strtoupper(Html::encode($caption))?></div></p>
 	</div>
 </div>
 
@@ -99,6 +111,17 @@
 		padding-left: -30px;
 		margin: 0;
 		border: 0;
+	}
+
+	.barcode {
+		padding-left: -90px;
+		padding-top: 10px;
+	}
+
+	#code {
+		font-family: Arial, Helvetica, sans-serif;
+		font-size: 60%;
+		text-align: justify;
 	}
 
 	#pais, #estado, #alcaldia, #renta-municipal, #rif {
