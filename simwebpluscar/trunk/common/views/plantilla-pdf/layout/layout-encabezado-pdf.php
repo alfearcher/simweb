@@ -42,17 +42,11 @@
 
  	//use yii\web\Response;
  	use kartik\icons\Icon;
- 	use yii\grid\GridView;
 	use yii\helpers\Html;
 	use yii\helpers\Url;
 	use yii\helpers\ArrayHelper;
 	use yii\widgets\ActiveForm;
 	use yii\web\View;
-	use yii\jui\DatePicker;
-	use yii\widgets\Pjax;
-	use yii\widgets\DetailView;
-	use backend\controllers\utilidad\documento\DocumentoRequisitoController;
-	use backend\controllers\menu\MenuController;
 
 	// $typeIcon = Icon::FA;
  //  	$typeLong = 'fa-2x';
@@ -66,9 +60,9 @@
 		'id' => 'id-layout-encabezado-pdf',
 		'method' => 'post',
 		//'action' => $url,
-		'enableClientValidation' => true,
+		'enableClientValidation' => false,
 		'enableAjaxValidation' => false,
-		'enableClientScript' => true,
+		'enableClientScript' => false,
 	]);
 ?>
 
@@ -101,7 +95,7 @@
 <style type="text/css">
 
 	#logo {
-		padding-top: -15;
+		padding-top: -10;
 		padding-left: -30px;
 		margin: 0;
 		border: 0;
