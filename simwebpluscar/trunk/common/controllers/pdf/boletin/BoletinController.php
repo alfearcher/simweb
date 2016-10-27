@@ -147,7 +147,6 @@
             $mpdf->WriteHTML($htmlCobro);
             $mpdf->WriteHTML($htmlPiePagina);
 
-
            // $mpdf->WriteHTML($html);
             $mpdf->Output($nombrePDF, 'I');
             exit;
