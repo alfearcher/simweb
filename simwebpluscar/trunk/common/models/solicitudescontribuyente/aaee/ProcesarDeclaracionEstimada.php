@@ -54,6 +54,7 @@
     use backend\models\aaee\declaracion\DeclaracionBaseForm;
     use common\models\contribuyente\ContribuyenteBase;
     use backend\models\aaee\acteconingreso\ActEconIngresoForm;
+    use backend\models\aaee\rubro\Rubro;
 
 
 
@@ -168,7 +169,7 @@
          */
         public function findDeclaracionEstimada()
         {
-            // Este find retorna el modelo de la entidad "sl-anexos-ramos".
+            // Este find retorna el modelo de la entidad "sl-declaraciones".
             $findModel = $this->findSolicitudDeclaracion($this->_model->nro_solicitud);
 
             // Lo siguiente puede generar uno o varios registros.
@@ -194,6 +195,9 @@
                 $result = self::updateSolicitudDeclaracionEstimada($modelDeclaracion);
                 if ( $result ) {
                     $result = self::updateActEconIngresos($modelDeclaracion);
+                    if ( $result ) {
+                        $result = self::createHistoricoDeclaracion($modelDeclaracion);
+                    }
                 }
             } else {
                 self::setErrors(Yii::t('backend', 'Request not find'));
@@ -297,6 +301,64 @@
             return $result;
         }
 
+
+
+
+        /***/
+        private function createHistoricoDeclaracion($modelDeclaracion)
+        {
+             $result = false;
+            if ( $modelDeclaracion !== null ) {
+                $historico = New HistoricoDeclaracionSearch($idContribuyente);
+
+                foreach ( $modelDeclaracion as $model ) {
+                    $findModel = self::findRubro($model['id_rubro']);
+                    $rjson[] = [
+                            'nro_solicitud' => $model['nro_solicitud'],
+                            'id_contribuyente' => $model['id_contribuyente'],
+                            'id_impuesto' => $model['id_impuesto'],
+                            'ano_impositivo' => $model['ano_impositivo'],
+                            'exigibilidad_periodo' => $model['exigibilidad_periodo'],
+                            'id_rubro' => $model['id_rubro'],
+                            'rubro' => $findModel->rubro,
+                            'descripcion' => $findModel->descripcion,
+                            'tipo_declaracion' => $model['tipo_declaracion'],
+                            'monto_v' => $model['monto_v'],
+                            'monto_new' => $model['monto_new'],
+                        ];
+                }
+
+                $arregloDatos = $historico->attributes;
+                foreach ( $historico->attributes as $key => $value ) {
+
+                    if ( isset($modelDeclaracion[0]->$key) ) {
+                        $arregloDatos[$key] = $modelDeclaracion[0]->$key;
+                    }
+
+                }
+
+                $arregloDatos['periodo'] = $modelDeclaracion[0]->exigibilidad_periodo;
+                $arregloDatos['json_rubro'] = json_encode($rjson);
+                $arregloDatos['observacion'] = 'APROBACION DE SOLICITUD DECLARACION ESTIMADA';
+
+                $result = $historico->guardar($arregloDatos, $conexionLocal, $connLocal);
+                if ( $result['id'] > 0 ) {
+                    return true;
+                }
+
+            return false;
+
+            }
+        }
+
+
+
+        /***/
+        private function findRubro($idRubro)
+        {
+            $findModel = Rubro::findOne($idRubro);
+            return $findModel;
+        }
 
 
     }
