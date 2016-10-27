@@ -371,7 +371,7 @@ class ConfigurarChequeDevueltoController extends Controller
      {
          $email = yii::$app->user->identity->login;
 
-         $solicitud = 'Cheque devuelto';   
+         $solicitud = 'Cheque devuelto';     
 
          $nro_solicitud = $guardo; 
 
