@@ -69,6 +69,8 @@
 	use backend\models\aaee\declaracion\DeclaracionBaseSearch;
 	use backend\models\aaee\declaracion\DeclaracionBaseForm;
 	use yii\base\Model;
+	use backend\models\aaee\historico\declaracion\HistoricoDeclaracionSearch;
+	use common\controllers\pdf\boletin\BoletinController;
 
 	session_start();		// Iniciando session
 
@@ -289,46 +291,6 @@
 
 
 
-
-
-		/**
-		 * Metodo que determina si la declaracion estimada se puede realizar
-		 * segun las politicas del negocio establecidas en el modelo.
-		 * @param  integer $añoImpositivo año impositivo del lapso en donde se quiere
-	     * cargar la declaracion estimada.
-	     * @param  integer $periodo periodo del lapso.
-		 * @return array retorna un arreglo donde dicho arreglo contiene dos
-	     * key, uno indica si se puede iniciar la declaracion y el otro es
-	     * un string con un mensaje.
-		 */
-		// public function actionPuedeDeclararEstimada($idContribuyente, $añoImpositivo, $periodo)
-		// {
-		// 	$result = '';
-		// 	$declaracionEstimada = New DeclaracionBaseSearch($idContribuyente);
-		// 	$result = $declaracionEstimada->puedoDeclararEstimada($añoImpositivo, $periodo);
-
-		// 	return ( trim($result) !== '' ) ? $result : null;
-		// }
-
-
-
-		/***/
-		// public function actionPoseeSolicitud($idContribuyente, $añoImpositivo, $periodo)
-		// {
-		// 	$mensaje = '';
-		// 	$declaracionEstimada = New DeclaracionBaseSearch($idContribuyente);
-		// 	$result = $declaracionEstimada->yaPoseeSolicitudSimiliarPendiente($añoImpositivo, $periodo, 1, 0);
-		// 	if ( $result ) {
-		// 		$mensaje = Yii::t('frontend', "Ya existe una solciitud similar para el lapso {$$añoImpositivo} - {$periodo}");
-		// 	}
-
-		// 	return $mensaje;
-		// }
-
-
-
-
-
 		/**
 		 * Metodo que permite mostrar el formulario para la carga de la declaracion.
 		 * @return [type] [description]
@@ -447,15 +409,18 @@
 						}
 					} elseif( isset($postData['btn-confirm-create']) ) {
 						if ( $postData['btn-confirm-create'] == 5 ) {
+							self::actionAnularSession(['begin']);
 							$result = self::actionBeginSave($modelMultiplex, $postData);
 							if ( $result ) {
 								$this->_transaccion->commit();
+								$this->_conn->close();
 								return self::actionView($modelMultiplex[0]->nro_solicitud);
 							} else {
 								$this->_transaccion->rollBack();
+								$this->_conn->close();
 								$this->redirect(['error-operacion', 'cod'=> 920]);
-
       						}
+
 						}
 					}
 
@@ -614,6 +579,10 @@
 						}		// Fin del ciclo de models.
 
 						if ( $result ) {
+							if ( $result ) {
+								$result = self::actionCreateHistoricoDeclaracion($this->_conexion, $this->_conn, $models, $conf);
+							}
+
 							$result = self::actionEjecutaProcesoSolicitud($this->_conexion, $this->_conn, $models, $conf);
 
 							if ( $result ) {
@@ -749,7 +718,7 @@
 
 	    /**
 	     * Metodo que realiza al insercion de los detalles de los ramos. Se realiza una
-	     * insercion por cada ramo que se autoriza a anexar.
+	     * insercion por cada ramo que se declare.
 	     * @param  ConexionController $conexionLocal instancia de la clase ConexionController.
 		 * @param  connection $connLocal instancia de connection
 		 * @param  model $model modelo de DeclaracionBaseForm.
@@ -781,6 +750,112 @@
 	    	return $result;
 	    }
 
+
+
+
+	    /**
+	     * Metodo que crea el historico de declaraciones, esto aplica si la solicitud de declaracion
+	     * es de aprobacion directa.
+	     * @param  ConexionController $conexionLocal instancia de la clase ConexionController.
+		 * @param  connection $connLocal instancia de connection
+		 * @param  model $models modelo de DeclaracionBaseForm.
+	     * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
+		 * solicitud.
+	     * @return boolean retorna true si guarda satisfactoriamente.
+	     */
+	    private static function actionCreateHistoricoDeclaracion($conexionLocal, $connLocal, $models, $conf)
+	    {
+	    	$result = [];
+	    	if ( $conf['nivel_aprobacion'] == 1 ) {
+		    	if ( isset($_SESSION['idContribuyente']) && count($models) > 0 ) {
+		    		$idContribuyente = $_SESSION['idContribuyente'];
+		    		$historico = New HistoricoDeclaracionSearch($idContribuyente);
+
+					foreach ( $models as $model ) {
+						$rjson[] = [
+								'nro_solicitud' => $model['nro_solicitud'],
+								'id_contribuyente' => $model['id_contribuyente'],
+								'id_impuesto' => $model['id_impuesto'],
+								'ano_impositivo' => $model['ano_impositivo'],
+								'exigibilidad_periodo' => $model['exigibilidad_periodo'],
+								'id_rubro' => $model['id_rubro'],
+								'rubro' => $model['rubro'],
+								'descripcion' => $model['descripcion'],
+								'tipo_declaracion' => $model['tipo_declaracion'],
+								'monto_v' => $model['monto_v'],
+								'monto_new' => $model['monto_new'],
+							];
+					}
+
+					$arregloDatos = $historico->attributes;
+					foreach ( $historico->attributes as $key => $value ) {
+
+						if ( isset($models[0]->$key) ) {
+							$arregloDatos[$key] = $models[0]->$key;
+						}
+
+					}
+					$arregloDatos['periodo'] = $models[0]->exigibilidad_periodo;
+					$arregloDatos['json_rubro'] = json_encode($rjson);
+					$arregloDatos['observacion'] = 'SOLICITUD DECLARACION ESTIMADA';
+
+					$result = $historico->guardar($arregloDatos, $conexionLocal, $connLocal);
+					if ( $result['id'] > 0 ) {
+						return true;
+					}
+
+				}
+			return false;
+
+	    	}
+	    }
+
+
+
+	    /***/
+		public function actionGenerarBoletinEstimada()
+		{
+
+			$id = $_SESSION['idContribuyente'];
+			$lapso = $_SESSION['lapso'];
+			$a = $lapso['a'];
+			$p = $lapso['p'];
+
+			$boletin = New BoletinController($id, $a, $p);
+			return $boletin->generarBoletinEstimada();
+		}
+
+
+
+		/***/
+		public function actionGenerarCertificadoEstimada()
+		{
+
+			$id = $_SESSION['idContribuyente'];
+			$lapso = $_SESSION['lapso'];
+			$a = $lapso['a'];
+			$p = $lapso['p'];
+
+			//$boletin = New BoletinPruebaController($id, $a, $p);
+			$boletin = New BoletinController($id, $a, $p);
+			return $boletin->generarBoletinEstimada();
+		}
+
+
+
+		/***/
+		public function actionGenerarDeclaracionEstimada()
+		{
+
+			$id = $_SESSION['idContribuyente'];
+			$lapso = $_SESSION['lapso'];
+			$a = $lapso['a'];
+			$p = $lapso['p'];
+
+			//$boletin = New BoletinPruebaController($id, $a, $p);
+			$boletin = New BoletinController($id, $a, $p);
+			return $boletin->generarBoletinEstimada();
+		}
 
 
 

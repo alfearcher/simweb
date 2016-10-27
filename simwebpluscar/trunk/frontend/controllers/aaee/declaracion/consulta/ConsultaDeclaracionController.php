@@ -59,6 +59,9 @@
 	use backend\models\aaee\declaracion\sustitutiva\SustitutivaBaseSearch;
 	use backend\models\aaee\declaracion\DeclaracionBaseSearch;
 	use common\controllers\pdf\boletin\BoletinController;
+	// test class
+	use common\controllers\pdf\boletin\BoletinPruebaController;
+
 
 
 
@@ -325,7 +328,6 @@
 				$request = Yii::$app->request;
 				$postData = $request->post();
 
-// die(var_dump($postData));
 				if ( isset($postData['btn-quit']) ) {
 					if ( $postData['btn-quit'] == 1 ) {
 						$this->redirect(['quit']);
@@ -375,6 +377,7 @@
 			$a = $lapso['a'];
 			$p = $lapso['p'];
 
+			//$boletin = New BoletinPruebaController($id, $a, $p);
 			$boletin = New BoletinController($id, $a, $p);
 			return $boletin->generarBoletinEstimada();
 		}
