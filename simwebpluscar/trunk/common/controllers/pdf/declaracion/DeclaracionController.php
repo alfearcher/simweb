@@ -177,9 +177,21 @@
                                     ]);
 
 
+            // Informacion de la declaracion.
+            $declaracionSearch = New DeclaracionBaseSearch($this->_id_contribuyente);
+            $rangoFecha = $declaracionSearch->getRangoFechaDeclaracion($this->_año_impositivo);
+            $periodoFiscal = date('d-m-Y', strtotime($rangoFecha['fechaDesde'])) . ' AL ' . date('d-m-Y', strtotime($rangoFecha['fechaHasta']));
+
+            // Informacion del texto.
+            $htmlTexto = $this->renderPartial('@common/views/plantilla-pdf/certificado/layout-certificado-declaracion-estimada-pdf',[
+                                                            'historico' => $historicoModel,
+                                                            'periodoFiscal' => $periodoFiscal,
+                                    ]);
+
+
 
             // informacion del pie de pagina.
-            $htmlPiePagina = $this->renderPartial('@common/views/plantilla-pdf/declaracion/layout-piepagina-pdf',[
+            $htmlPiePagina = $this->renderPartial('@common/views/plantilla-pdf/certificado/layout-piepagina-pdf',[
                                                             'director'=> Yii::$app->oficina->getDirector(),
                                                             'nombreCargo' => Yii::$app->oficina->getNombreCargo(),
                                                             'barcode' => $historicoModel['serial_control'],
@@ -193,7 +205,7 @@
             $mpdf->SetHeader($nombre);
             $mpdf->WriteHTML($htmlEncabezado);
             $mpdf->WriteHTML($htmlContribuyente);
-
+            $mpdf->WriteHTML($htmlTexto);
 
             $mpdf->SetHTMLFooter($htmlPiePagina);
 
