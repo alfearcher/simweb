@@ -54,7 +54,7 @@
 <?php
 
 	$titulo1 = '';
-	$director = 'José Pérez';
+	// $director = 'José Pérez';
 	//$nombreCargo = 'Direccion de Rentas';
 ?>
 
