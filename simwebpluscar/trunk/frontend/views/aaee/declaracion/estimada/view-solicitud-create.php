@@ -153,7 +153,7 @@
 					<div class="row">
 						<div class="form-group">
 
-							<?php if ( isset($historico) ) { ?>
+							<?php if ( count($historico) > 0 ) { ?>
 								<div class="col-sm-3" style="width: 40%;margin-left:25px;">
 									<?= Html::a(Yii::t('frontend', 'Descargar Declaracion ' . $historico[0]['serial_control']),
 																				['generar-declaracion-estimada', 'id' => $historico[0]['id_historico']],
