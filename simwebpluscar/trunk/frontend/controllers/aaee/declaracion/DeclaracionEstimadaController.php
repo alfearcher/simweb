@@ -1079,6 +1079,7 @@
 
  				$search = New HistoricoDeclaracionSearch($model[0]->id_contribuyente);
  				$historico = $search->findHistoricoDeclaracionSegunSolicitud($model[0]->nro_solicitud);
+die(var_dump($historico));
 
  				$_SESSION['id_historico'] = $historico['id_historico'];
 
