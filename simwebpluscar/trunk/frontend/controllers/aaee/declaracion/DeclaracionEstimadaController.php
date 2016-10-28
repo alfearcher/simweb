@@ -1079,9 +1079,8 @@
 
  				$search = New HistoricoDeclaracionSearch($model[0]->id_contribuyente);
  				$historico = $search->findHistoricoDeclaracionSegunSolicitud($model[0]->nro_solicitud);
-die(var_dump($historico));
 
- 				$_SESSION['id_historico'] = $historico['id_historico'];
+ 				$_SESSION['id_historico'] = isset($historico[0]['id_historico']) ? $historico[0]['id_historico'] : null;
 
 				$opciones = [
 					'quit' => '/aaee/declaracion/declaracion-estimada/quit',
