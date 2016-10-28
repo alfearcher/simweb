@@ -88,7 +88,7 @@
 
             // Informacion del encabezado.
             $htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/layout/layout-encabezado-pdf', [
-                                                            'caption' => 'BOLETIN ESTIMADA',
+                                                            'caption' => 'BOLETIN DE NOTIFICACION',
                                     ]);
 
             // Informacion del congtribuyente.
