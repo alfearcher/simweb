@@ -580,11 +580,10 @@
 						}		// Fin del ciclo de models.
 
 						if ( $result ) {
+							$result = self::actionCreateHistoricoDeclaracion($this->_conexion, $this->_conn, $models, $conf);
 							if ( $result ) {
-								$result = self::actionCreateHistoricoDeclaracion($this->_conexion, $this->_conn, $models, $conf);
+								$result = self::actionEjecutaProcesoSolicitud($this->_conexion, $this->_conn, $models, $conf);
 							}
-
-							$result = self::actionEjecutaProcesoSolicitud($this->_conexion, $this->_conn, $models, $conf);
 
 							if ( $result ) {
 								$result = self::actionEnviarEmail($models, $conf);
@@ -803,12 +802,12 @@
 					$result = $search->guardar($arregloDatos, $conexionLocal, $connLocal);
 					if ( $result['id'] > 0 ) {
 						return true;
+					} else {
+						return false;
 					}
-
 				}
-			return false;
-
 	    	}
+	    	return true;
 	    }
 
 
