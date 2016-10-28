@@ -66,6 +66,8 @@
 	use yii\base\Model;
 	use backend\models\aaee\declaracion\sustitutiva\SustitutivaBaseForm;
 	use backend\models\aaee\declaracion\sustitutiva\SustitutivaBaseSearch;
+	use backend\models\aaee\historico\declaracion\HistoricoDeclaracionSearch;
+	use common\controllers\pdf\declaracion\DeclaracionController;
 
 	session_start();		// Iniciando session
 
@@ -432,8 +434,6 @@
 							}
 						}
 
-// die(var_dump($chkHabilitar));
-
 						Model::loadMultiple($modelMultiplex, $postData);
 						$result = Model::validateMultiple($modelMultiplex);
 
@@ -494,7 +494,6 @@
 					} elseif( isset($postData['btn-create']) ) {
 						if ( $postData['btn-create'] == 3 ) {
 
-// die(var_dump($errorHabilitar));
 							if ( $result ) {
 								// Presentar preview.
 								$opciones = [
@@ -559,7 +558,7 @@
 							$result = self::actionBeginSave($modelMultiplex, $postData);
 							if ( $result ) {
 								$this->_transaccion->commit();
-								self::actionAnularSession(['begin', 'lapso']);
+								self::actionAnularSession(['begin']);
 								return self::actionView($modelMultiplex[0]->nro_solicitud);
 							} else {
 								$this->_transaccion->rollBack();
@@ -737,8 +736,9 @@
 						}		// Fin del ciclo de models.
 
 						if ( $result ) {
+							$result = self::actionEjecutaProcesoSolicitud($this->_conexion, $this->_conn, $models, $conf);
 							if ( $result ) {
-								$result = self::actionEjecutaProcesoSolicitud($this->_conexion, $this->_conn, $models, $conf);
+								$result = self::actionCreateHistoricoDeclaracion($this->_conexion, $this->_conn, $models, $conf);
 							}
 
 							if ( $result ) {
@@ -890,7 +890,7 @@
 			$result = false;
 			$inactive = false;
 
-			if ( isset($conexionLocal) && isset($connLocal) && isset($model) && count($conf) > 0 ) {
+			if ( isset($conexionLocal) && isset($connLocal) && count($model) > 0 && count($conf) > 0 ) {
 
 				$ingresoSearch = New ActEconIngresoSearch($model->id_contribuyente);
 
@@ -923,6 +923,132 @@
 			return $result;
 
 		}
+
+
+
+
+
+		 /**
+	     * Metodo que crea el historico de declaraciones, esto aplica si la solicitud de declaracion
+	     * es de aprobacion directa.
+	     * @param  ConexionController $conexionLocal instancia de la clase ConexionController.
+		 * @param  connection $connLocal instancia de connection
+		 * @param  model $models modelos de SustitutivaBaseForm.
+	     * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
+		 * solicitud.
+	     * @return boolean retorna true si guarda satisfactoriamente.
+	     */
+	    private static function actionCreateHistoricoDeclaracion($conexionLocal, $connLocal, $models, $conf)
+	    {
+
+	    	$result = [];
+	    	if ( $conf['nivel_aprobacion'] == 1 ) {
+		    	if ( isset($_SESSION['idContribuyente']) && count($models) > 0 ) {
+		    		$idContribuyente = $_SESSION['idContribuyente'];
+		    		$search = New HistoricoDeclaracionSearch($idContribuyente);
+
+					foreach ( $models as $model ) {
+
+						if ( $model->chkHabilitar == 1 ) {
+							$s = $model->sustitutiva;
+							if ( $model->tipo_declaracion == 1 ) {
+								$model->estimado = $s;
+
+							} elseif ( $model->tipo_declaracion == 2 ) {
+								$model->reales = $s;
+
+							}
+						}
+
+						$rjson[] = [
+								'nro_solicitud' => $model['nro_solicitud'],
+								'id_contribuyente' => $model['id_contribuyente'],
+								'id_impuesto' => $model['id_impuesto'],
+								'ano_impositivo' => $model['ano_impositivo'],
+								'exigibilidad_periodo' => $model['exigibilidad_periodo'],
+								'id_rubro' => $model['id_rubro'],
+								'rubro' => $model['rubro'],
+								'descripcion' => $model['descripcion'],
+								'tipo_declaracion' => $model['tipo_declaracion'],
+								'estimado' => $model['estimado'],
+								'reales' => $model['reales'],
+								'sustitutiva' => $model['sustitutiva'],
+							];
+					}
+
+					$arregloDatos = $search->attributes;
+					foreach ( $search->attributes as $key => $value ) {
+
+						if ( isset($models[0]->$key) ) {
+							$arregloDatos[$key] = $models[0]->$key;
+						}
+
+					}
+					$arregloDatos['periodo'] = $models[0]->exigibilidad_periodo;
+					$arregloDatos['json_rubro'] = json_encode($rjson);
+					$arregloDatos['observacion'] = 'SOLICITUD DECLARACION SUSTITUTIVA';
+
+					$result = $search->guardar($arregloDatos, $conexionLocal, $connLocal);
+					if ( $result['id'] > 0 ) {
+						return true;
+					} else {
+						return false;
+					}
+
+				}
+	    	}
+	    	return true;
+
+	    }
+
+
+
+
+	    /**
+		 * Metodo para responser a la solicitud de generacion de la declaracion estimada.
+		 * Lo que aparecera sera un pdf con el resumen de la declaracion.
+		 * @return [type] [description]
+		 */
+		public function actionGenerarComprobante()
+		{
+
+			$idContribuyente = $_SESSION['idContribuyente'];
+			$lapso = $_SESSION['lapso'];
+			$a = $lapso['a'];
+			$p = $lapso['p'];
+			$request = Yii::$app->request;
+
+			$idEnviado = 0;
+			if ( $request->isGet ) {
+				if ( $request->get('id') !== null ) {
+					$idEnviado = $request->get('id');
+				}
+
+
+				if ( isset($_SESSION['id_historico']) ) {
+
+					$id = $_SESSION['id_historico'];
+					if ( $idEnviado == $id ) {
+
+						// Controlador para emitir el comprobante de declaracion.
+						$declaracion = New DeclaracionController($idContribuyente, $a, $p);
+						$declaracion->actionGenerarComprobanteSegunHistorico($id);
+
+					} else {
+						throw new NotFoundHttpException(Yii::t('frontend', 'Numero de control no valido'));
+					}
+
+				} else {
+					throw new NotFoundHttpException(Yii::t('frontend', 'Numero de control no definido'));
+				}
+			} else {
+				throw new NotFoundHttpException(Yii::t('frontend', 'Solicitud no valida'));
+			}
+
+		}
+
+
+
 
 
 
@@ -1113,7 +1239,13 @@
     	{
     		if ( isset($findModel) && isset($modelSearch) ) {
  				$model = $findModel->all();
- 				self::actionAnularSession(['begin']);
+ 				self::actionAnularSession(['begin', 'id_historico']);
+
+ 				$search = New HistoricoDeclaracionSearch($model[0]->id_contribuyente);
+ 				$historico = $search->findHistoricoDeclaracionSegunSolicitud($model[0]->nro_solicitud);
+
+ 				$_SESSION['id_historico'] = isset($historico[0]['id_historico']) ? $historico[0]['id_historico'] : null;
+
 				$opciones = [
 					'quit' => '/aaee/declaracion/sustitutiva/sustitutiva/quit',
 				];
@@ -1123,6 +1255,7 @@
 																'modelSearch' => $modelSearch,
 																'opciones' => $opciones,
 																'dataProvider' => $dataProvider,
+																'historico' => $historico,
 					]);
 			} else {
 				throw new NotFoundHttpException('No se encontro el registro');
