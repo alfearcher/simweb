@@ -88,6 +88,30 @@
 
 
 
+
+        /***/
+        public function actionGenerarComprobanteSegunHistorico($idHistorico)
+        {
+            $findHistoricoModel = self::findHistorico($idHistorico);
+            if ( count($findHistoricoModel) > 0 ) {
+
+                if ( $findHistoricoModel['tipo_declaracion'] == 1 ) {
+
+                    // Comprobante de declaracion estimada.
+                    self::actionGenerarComprobanteEstimadaSegunHistorico($findHistoricoModel);
+
+                } elseif ( $findHistoricoModel['tipo_declaracion'] == 2 ) {
+
+                    // Comprobante de declaracion definitiva.
+                    self::actionGenerarComprobanteDefinitivaSegunHistorico($findHistoricoModel);
+
+                }
+            }
+        }
+
+
+
+
         /**
          * Metodo que realiza la consulta del historico de la declaracion segun el
          * parametro del identificador del historico.
@@ -105,7 +129,7 @@
 
 
         /**
-         * Metodo que recaba todo al informacion necesaria para la emision del pdf con
+         * Metodo que reciba todo al informacion necesaria para la emision del pdf con
          * la informacion de la declaracion. Se arma todos las modulos para luego emitir
          * un unico documente, la informacion de la declaracion viene de la solicitud
          * realizada en posteriores ocasiones, las informacion relevente de la declaracion
@@ -118,22 +142,20 @@
          *
          * Dicho formato es la agrupacionde varios datos que esta contenido em el historico al
          * momento de aprobar la solicitud de declaracion.
-         * @param  model $idHistorico modelo de la entidad HistoricoDeclaracion, es una busqueda
+         * @param  model $historcioModel modelo de la entidad HistoricoDeclaracion, es una busqueda
          * por el identificador de la entidad mas el identificador del contribuyente.
          * @return string retorna renderiza una vista en formato pdf. Este formato es el comprobante
          * de declaracion.
          */
-        public function generarDeclaracionEstimadaSegunIdHistorico($idHistorico)
+        public function actionGenerarComprobanteEstimadaSegunHistorico($historicoModel)
         {
-             // Se busca la informacion del historico
-            $historico = self::findHistorico($idHistorico);
-            $nombre = $historico['serial_control'];
+            $nombre = $historicoModel['serial_control'];
 
 
             // Informacion del encabezado.
             $htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/layout/layout-encabezado-pdf', [
                                                             'caption' => 'DECLARACION DE INGRESOS BRUTOS',
-                                                            'barcode' => $historico['serial_control'],
+                                                            'barcode' => $historicoModel['serial_control'],
                                     ]);
 
             // Informacion del congtribuyente.
@@ -151,13 +173,13 @@
             $periodoFiscal = $rangoFecha['fechaDesde'] . ' AL ' . $rangoFecha['fechaHasta'];
 
             // Esta informacion se sacara del historico que se guardo.
-            $resumen = self::actionResumenDeclarado($historico);
+            $resumen = self::actionResumenDeclaradoEstimado($historicoModel);
 
             $htmlDeclaracion = $this->renderPartial('@common/views/plantilla-pdf/declaracion/layout-declaracion-base-pdf',[
                                                             'resumen'=> $resumen,
                                                             'tipoDeclaracion' => 'ESTIMADA',
                                                             'periodoFiscal' => $periodoFiscal,
-                                                            'fechaEmision' => $historico['fecha_hora'],
+                                                            'fechaEmision' => $historicoModel['fecha_hora'],
                                     ]);
 
 
@@ -165,7 +187,7 @@
             $htmlPiePagina = $this->renderPartial('@common/views/plantilla-pdf/declaracion/layout-piepagina-pdf',[
                                                             'director'=> Yii::$app->oficina->getDirector(),
                                                             'nombreCargo' => Yii::$app->oficina->getNombreCargo(),
-                                                            'barcode' => $historico['serial_control'],
+                                                            'barcode' => $historicoModel['serial_control'],
                                     ]);
 
 
@@ -194,7 +216,7 @@
          * vista que genere el pdf respectivo.
          * @return array retorna un arreglo de los datos basicos de la declaracion
          */
-        private function actionResumenDeclarado($historicoModel)
+        private function actionResumenDeclaradoEstimado($historicoModel)
         {
             $resumen = [];
 
@@ -213,6 +235,45 @@
                     'rubro' => $rubro['rubro'],
                     'descripcion' => $rubro['descripcion'],
                     'estimado' => $rubro['estimado'],
+                    'alicuota' => $rubroModel->alicuota,
+                    'minimo_ut' => $rubroModel->minimo_ut,
+                    'id_contribuyente' => $rubro['id_contribuyente'],
+                    'ano_impositivo' => $rubro['ano_impositivo'],
+                    'exigibilidad_periodo' => $rubro['id_contribuyente'],
+                    'id_impuesto' => $rubro['id_impuesto'],
+                    'nro_solicitud' => $rubro['nro_solicitud'],
+
+                ];
+
+            }
+
+            return $resumen;
+
+        }
+
+
+
+        /***/
+        private function actionResumenDeclaradoDefinitiva($historicoModel)
+        {
+            $resumen = [];
+
+            // $historicoModel['json_rubro'], es una estructura json guardada, donde se
+            // coloco un resumen de los datos de la declaracion que se hizo cuando se
+            // realizo la solicitud de declaracion.
+            $jsonRubros = json_decode($historicoModel['json_rubro'], true);
+
+            foreach ( $jsonRubros as $rubro ) {
+
+                // Se buscan los datos faltantes de la declaracion, estos datos son propios del rubro
+                // y no tienen que ver con la declaracion realizada por el usuario.
+                $rubroModel = Rubro::findOne($rubro['id_rubro']);
+
+                $resumen[] = [
+                    'rubro' => $rubro['rubro'],
+                    'descripcion' => $rubro['descripcion'],
+                    'estimado' => $rubro['estimado'],
+                    'reales' => $rubro['reales'],
                     'alicuota' => $rubroModel->alicuota,
                     'minimo_ut' => $rubroModel->minimo_ut,
                     'id_contribuyente' => $rubro['id_contribuyente'],
