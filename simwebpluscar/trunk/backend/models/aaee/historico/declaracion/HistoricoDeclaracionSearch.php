@@ -168,6 +168,7 @@
 	    	$i = 0;
 	    	$maximo = 10;
 	    	$nroControl = 0;
+
 	    	// Se genera el numero de control
 	    	$control = New NumeroControlSearch();
 	    	while ( $i <= $maximo ) {
@@ -178,6 +179,7 @@
 	    		$i++;
 	    	}
 
+
 	    	if ( $nroControl > 0 ) {
 		    	foreach ( $model->attributes as $key => $value ) {
 		    		if ( isset($arregloDatos[$key]) ) {
@@ -186,6 +188,8 @@
 		    			$model[$key] = 0;
 		    		}
 		    	}
+
+
 		    	$model['id_historico'] = null;
 		    	$model['nro_control'] = $nroControl;
 		    	$campos = [
@@ -195,9 +199,15 @@
 		    		'id_contribuyente' => $model['id_contribuyente'],
 		    		'nro_control' => $nroControl,
 		    	];
+
+		    	// Se obtiene los atributos que formaran el serial de control, con sus respectiva
+		    	// configuracion de formacion.
 		    	$configSerial = self::getArregloConfigSerial($campos);
+
+		    	// Se arma el serial de cada atributo.
 		    	$seriales = self::generarSerialControl($configSerial);
 
+		    	// Se arma todo el serial control.
 		    	$model['serial_control'] = $prefijo[$model['tipo_declaracion']] . '-' . self::getSerialControl($seriales);
 
 		    	$resultado = $conexion->guardarRegistro($conn, $tabla, $model->attributes);
