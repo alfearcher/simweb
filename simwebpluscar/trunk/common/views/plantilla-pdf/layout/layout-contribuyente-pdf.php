@@ -56,14 +56,6 @@
  ?>
 
 <?php
-	$form = ActiveForm::begin([
-		'id' => 'id-layout-contribuyente-pdf',
-		'method' => 'post',
-		//'action' => $url,
-		'enableClientValidation' => false,
-		'enableAjaxValidation' => false,
-		'enableClientScript' => false,
-	]);
 
 	$rif = 0;
 	$contribuyente = '';
@@ -96,13 +88,16 @@
 		<td class="info-contribuyente" colspan="2"><?=Html::encode($model->id_contribuyente); ?></td>
 	</tr>
 
+<?php if( $showDireccion ) {?>
 	<tr>
 		<th class="label-contribuyente" colspan="10"><?=Html::encode('DIRECCION'); ?></td>
 	</tr>
 	<tr class="cuerpo">
 		<td class="info-contribuyente" colspan="10"><?=Html::encode($model->domicilio_fiscal); ?></td>
 	</tr>
+<?php } ?>
 
+<?php if ( $showRepresentante ) {?>
 	<tr>
 		<th class="label-representante" colspan="2"><?=Html::encode('NRO. CATASTRO'); ?></th>
 		<th class="label-representante" colspan="6"><?=Html::encode('REPRESENTANTE LEGAL'); ?></th>
@@ -114,6 +109,7 @@
 		<td class="info-representante" colspan="2"><?=Html::encode($ciRep); ?></td>
 	</tr>
 
+<?php } ?>
 </table>
 
 
@@ -152,6 +148,3 @@
 		/*margin-top: 35px;*/
 	}
 </style>
-
-
-<?php ActiveForm::end(); ?>
