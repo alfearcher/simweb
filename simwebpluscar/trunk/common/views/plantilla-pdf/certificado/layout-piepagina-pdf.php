@@ -77,10 +77,10 @@
 			</tr>
 
 			<tr>
-				<td class="label-pie-pagina-1-a" colspan="5" style="font-weight: bold;font-size: 90%;font-family: Verdana, Arial, Helvetica, sans-serif;">
+				<td class="label-pie-pagina-1-a" colspan="9" style="font-weight: bold;font-size: 90%;font-family: Verdana, Arial, Helvetica, sans-serif;">
 					<?=Html::encode('Firma Autorizada:  ' . $director); ?>
 				</td>
-				<td class="label-pie-pagina-1-c" colspan="5"></td>
+				<td class="label-pie-pagina-1-c" colspan="1"></td>
 
 			</tr>
 			<tr>
