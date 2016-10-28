@@ -64,7 +64,7 @@
 		'enableClientScript' => false,
 	]);
 
-	$fechaEmision = date('Y-m-d');
+	//$fechaEmision = date('Y-m-d');
 
 	$sumaImpuesto = 0;
 ?>
