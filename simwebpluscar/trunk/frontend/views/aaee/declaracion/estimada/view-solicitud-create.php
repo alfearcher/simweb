@@ -58,7 +58,7 @@
 
  <div class="view-anexo-ramo-creada">
 	<meta http-equiv="refresh">
-    <div class="panel panel-primary"  style="width: 103%;">
+    <div class="panel panel-primary"  style="width: 105%;">
         <div class="panel-heading">
         	<div class="row">
 	        	<div class="col-sm-4">
@@ -78,14 +78,14 @@
 <!-- Cuerpo del formulario -->
         <div class="panel-body">
         	<div class="container-fluid">
-        		<div class="col-sm-10">
-					<div class="row" style="margin: 0px;padding-left: -5px; width: 98%;">
+        		<div class="col-sm-12" style="width: 99%;padding-left: -5px;">
+					<div class="row" style="margin: 0px;padding-left: -5px; width: 100%;">
 						<?= GridView::widget([
 								'id' => 'grid-declaracion-estimada',
 								'dataProvider' => $dataProvider,
 								'headerRowOptions' => ['class' => 'danger'],
 								'options' => [
-									'style' => 'padding-left: -15px;width:110%;'
+									'style' => 'padding-left: -15px;width:100%;'
 								],
 								//'filterModel' => $searchModel,
 								'columns' => [
@@ -152,23 +152,25 @@
 
 					<div class="row">
 						<div class="form-group">
-							<div class="col-sm-3" style="width: 20%;margin-left:25px;">
-								<?= Html::a(Yii::t('frontend', 'Descargar Boletin'),
-																			['generar-boletin-estimada'],
+
+							<div class="col-sm-3" style="width: 40%;margin-left:25px;">
+								<?= Html::a(Yii::t('frontend', 'Descargar Declaracion ' . $historico[0]['serial_control']),
+																			['generar-declaracion-estimada', 'id' => $historico[0]['id_historico']],
 																		  	[
-																				'id' => 'btn-boletin',
-																				'class' => 'btn btn-primary',
-																				'value' => 1,
+																				'id' => 'btn-declaracion',
+																				'class' => 'btn btn-default',
+																				'value' => 3,
 																				'style' => 'width: 100%; margin-left:0px;margin-top:20px;',
-																				'name' => 'btn-boletin',
+																				'name' => 'btn-declaracion',
 																				'target' => '_blank',
 
 																		  	]);
 								?>
 							</div>
 
-							<div class="col-sm-3" style="width: 20%;margin-left:25px;">
-								<?= Html::a(Yii::t('frontend', 'Descargar Certificado'),
+
+							<div class="col-sm-3" style="width: 40%;margin-left:25px;">
+								<?= Html::a(Yii::t('frontend', 'Descargar Certificado ' . $historico[0]['serial_control']),
 																			['generar-certificado-estimada'],
 																		  	[
 																				'id' => 'btn-certificado',
@@ -183,20 +185,19 @@
 							</div>
 
 							<div class="col-sm-3" style="width: 20%;margin-left:25px;">
-								<?= Html::a(Yii::t('frontend', 'Descargar Declaracion'),
-																			['generar-declaracion-estimada'],
+								<?= Html::a(Yii::t('frontend', 'Descargar Boletin'),
+																			['generar-boletin-estimada'],
 																		  	[
-																				'id' => 'btn-declaracion',
+																				'id' => 'btn-boletin',
 																				'class' => 'btn btn-primary',
-																				'value' => 3,
+																				'value' => 1,
 																				'style' => 'width: 100%; margin-left:0px;margin-top:20px;',
-																				'name' => 'btn-declaracion',
+																				'name' => 'btn-boletin',
 																				'target' => '_blank',
 
 																		  	]);
 								?>
 							</div>
-
 
 						</div>
 					</div>
