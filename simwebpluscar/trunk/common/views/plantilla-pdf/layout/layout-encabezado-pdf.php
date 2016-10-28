@@ -55,18 +55,6 @@
 
  ?>
 
-<?php
-	$form = ActiveForm::begin([
-		'id' => 'id-layout-encabezado-pdf',
-		'method' => 'post',
-		//'action' => $url,
-		'enableClientValidation' => false,
-		'enableAjaxValidation' => false,
-		'enableClientScript' => false,
-	]);
-?>
-
-
 <div class="row">
 	<div class="col-sm-3" id="logo">
 		<?=Html::img('@common/public/imagen/customize/logo.jpg');
@@ -81,17 +69,17 @@
 	</div>
 	<div class="col-sm-3" id="codigo-barra">
 		<div class="row">
-			<?=Html::tag('barcode','',[
-									'class' => ['barcode'],
-									'height' => '0.96',
-									'type' => 'C128A',
-									'code' => $barcode,
-									'size' => '0.8',
-						])
-			 ?>
+			<!-- <?//=Html::tag('barcode','',[
+						// 			'class' => ['barcode'],
+						// 			'height' => '0.96',
+						// 			'type' => 'C128A',
+						// 			'code' => $barcode,
+						// 			'size' => '0.8',
+						// ])
+			 ?> -->
 		</div>
 		<div class="row" id="code">
-			<?=Html::encode($barcode)?>
+			<!-- <?//=Html::encode($barcode)?> -->
 		</div>
 		<!-- <barcode code=<?//=$barcode;?> type="C128A"  height="0.66" width="1.8" text="1" class="barcode" /> -->
 	</div>
@@ -170,18 +158,8 @@
 		font-family: Arial, Helvetica, sans-serif;
 		font-size: 100%;
 		font-weight: bold;
-		padding-top: -250px;
+		padding-top: -260px;
 		/*width: 60%;*/
 	}
 
 </style>
-
-
-
-
-
-
-
-
-
-<?php ActiveForm::end(); ?>
