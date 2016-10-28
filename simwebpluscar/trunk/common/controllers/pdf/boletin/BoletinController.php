@@ -95,6 +95,8 @@
             $findModel = ContribuyenteBase::findOne($this->_id_contribuyente);
             $htmlContribuyente =  $this->renderPartial('@common/views/plantilla-pdf/layout/layout-contribuyente-pdf',[
                                                             'model' => $findModel,
+                                                            'showDireccion' => true,
+                                                            'showRepresentante' => true,
                                     ]);
 
 
