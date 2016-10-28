@@ -159,7 +159,7 @@
         /***/
         public function actionGenerarCertificadoEstimada($historicoModel)
         {
-            $nombre = $historicoModel['serial_control'];
+            $nombre = $historicoModel['serial_control'] . '-C';
 
             // Informacion del encabezado.
             $htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/layout/layout-encabezado-pdf', [
