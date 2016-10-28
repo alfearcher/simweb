@@ -30,7 +30,7 @@
  *  @view layout-piepagina-pdf.php
  *
  *
- *  pie de pagina del pdf del comprobante de declaracion.
+ *  pie de pagina del pdf del certificado electronico de declaracion.
  *
  *
  *  @inherits
