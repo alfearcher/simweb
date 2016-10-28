@@ -175,7 +175,7 @@
 
 								<div class="col-sm-3" style="width: 40%;margin-left:25px;">
 									<?= Html::a(Yii::t('frontend', 'Descargar Certificado ' . $historico[0]['serial_control']),
-																				['generar-certificado-estimada'],
+																				['generar-certificado', 'id' => $historico[0]['id_historico']],
 																			  	[
 																					'id' => 'btn-certificado',
 																					'class' => 'btn btn-primary',
