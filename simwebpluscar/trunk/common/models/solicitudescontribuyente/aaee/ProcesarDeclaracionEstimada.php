@@ -55,6 +55,7 @@
     use common\models\contribuyente\ContribuyenteBase;
     use backend\models\aaee\acteconingreso\ActEconIngresoForm;
     use backend\models\aaee\rubro\Rubro;
+    use backend\models\aaee\historico\declaracion\HistoricoDeclaracionSearch;
 
 
 
@@ -307,9 +308,9 @@
         /***/
         private function createHistoricoDeclaracion($modelDeclaracion)
         {
-             $result = false;
+            $result = [];
             if ( $modelDeclaracion !== null ) {
-                $historico = New HistoricoDeclaracionSearch($idContribuyente);
+                $historico = New HistoricoDeclaracionSearch($this->_model['id_contribuyente']);
 
                 foreach ( $modelDeclaracion as $model ) {
                     $findModel = self::findRubro($model['id_rubro']);
@@ -323,8 +324,8 @@
                             'rubro' => $findModel->rubro,
                             'descripcion' => $findModel->descripcion,
                             'tipo_declaracion' => $model['tipo_declaracion'],
-                            'monto_v' => $model['monto_v'],
-                            'monto_new' => $model['monto_new'],
+                            'estimado_v' => $model['monto_v'],
+                            'estimado' => $model['monto_new'],
                         ];
                 }
 
@@ -339,9 +340,9 @@
 
                 $arregloDatos['periodo'] = $modelDeclaracion[0]->exigibilidad_periodo;
                 $arregloDatos['json_rubro'] = json_encode($rjson);
-                $arregloDatos['observacion'] = 'APROBACION DE SOLICITUD DECLARACION ESTIMADA';
+                $arregloDatos['observacion'] = 'APROBADA POR FUNCIONARIO, SOLICITUD DECLARACION ESTIMADA';
 
-                $result = $historico->guardar($arregloDatos, $conexionLocal, $connLocal);
+                $result = $historico->guardar($arregloDatos, $this->_conexion, $this->_conn);
                 if ( $result['id'] > 0 ) {
                     return true;
                 }
