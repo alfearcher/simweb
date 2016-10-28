@@ -360,7 +360,7 @@ class ConfigurarConveniosController extends Controller
 
          return $buscar[0]["id_tipo_solicitud"];                                              
 
-     }      
+     }        
 
 
     /**
