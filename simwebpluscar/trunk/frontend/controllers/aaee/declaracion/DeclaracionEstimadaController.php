@@ -71,6 +71,7 @@
 	use yii\base\Model;
 	use backend\models\aaee\historico\declaracion\HistoricoDeclaracionSearch;
 	use common\controllers\pdf\boletin\BoletinController;
+	use common\controllers\pdf\declaracion\DeclaracionController;
 
 	session_start();		// Iniciando session
 
@@ -769,7 +770,7 @@
 	    	if ( $conf['nivel_aprobacion'] == 1 ) {
 		    	if ( isset($_SESSION['idContribuyente']) && count($models) > 0 ) {
 		    		$idContribuyente = $_SESSION['idContribuyente'];
-		    		$historico = New HistoricoDeclaracionSearch($idContribuyente);
+		    		$search = New HistoricoDeclaracionSearch($idContribuyente);
 
 					foreach ( $models as $model ) {
 						$rjson[] = [
@@ -782,13 +783,13 @@
 								'rubro' => $model['rubro'],
 								'descripcion' => $model['descripcion'],
 								'tipo_declaracion' => $model['tipo_declaracion'],
-								'monto_v' => $model['monto_v'],
-								'monto_new' => $model['monto_new'],
+								'estimado_v' => $model['monto_v'],
+								'estimado' => $model['monto_new'],
 							];
 					}
 
-					$arregloDatos = $historico->attributes;
-					foreach ( $historico->attributes as $key => $value ) {
+					$arregloDatos = $search->attributes;
+					foreach ( $search->attributes as $key => $value ) {
 
 						if ( isset($models[0]->$key) ) {
 							$arregloDatos[$key] = $models[0]->$key;
@@ -799,7 +800,7 @@
 					$arregloDatos['json_rubro'] = json_encode($rjson);
 					$arregloDatos['observacion'] = 'SOLICITUD DECLARACION ESTIMADA';
 
-					$result = $historico->guardar($arregloDatos, $conexionLocal, $connLocal);
+					$result = $search->guardar($arregloDatos, $conexionLocal, $connLocal);
 					if ( $result['id'] > 0 ) {
 						return true;
 					}
@@ -843,18 +844,47 @@
 
 
 
-		/***/
+		/**
+		 * Metodo para responser a la solicitud de generacion de la declaracion estimada.
+		 * Lo que aparecera sera un pdf con el resumen de la declaracion.
+		 * @return [type] [description]
+		 */
 		public function actionGenerarDeclaracionEstimada()
 		{
 
-			$id = $_SESSION['idContribuyente'];
+			$idContribuyente = $_SESSION['idContribuyente'];
 			$lapso = $_SESSION['lapso'];
 			$a = $lapso['a'];
 			$p = $lapso['p'];
+			$request = Yii::$app->request;
 
-			//$boletin = New BoletinPruebaController($id, $a, $p);
-			$boletin = New BoletinController($id, $a, $p);
-			return $boletin->generarBoletinEstimada();
+			$idEnviado = 0;
+			if ( $request->isGet ) {
+				if ( $request->get('id') !== null ) {
+					$idEnviado = $request->get('id');
+				}
+
+
+				if ( isset($_SESSION['id_historico']) ) {
+
+					$id = $_SESSION['id_historico'];
+					if ( $idEnviado == $id ) {
+
+						// Controlador para emitir el comprobante de declaracion.
+						$declaracion = New DeclaracionController($idContribuyente, $a, $p);
+						$declaracion->generarDeclaracionEstimadaSegunIdHistorico($id);
+
+					} else {
+						throw new NotFoundHttpException(Yii::t('frontend', 'Numero de control no valido'));
+					}
+
+				} else {
+					throw new NotFoundHttpException(Yii::t('frontend', 'Numero de control no definido'));
+				}
+			} else {
+				throw new NotFoundHttpException(Yii::t('frontend', 'Solicitud no valida'));
+			}
+
 		}
 
 
@@ -1044,6 +1074,13 @@
     	{
     		if ( isset($findModel) && isset($modelSearch) ) {
  				$model = $findModel->all();
+ 				self::actionAnularSession(['id_historico']);
+
+
+ 				$search = New HistoricoDeclaracionSearch($model[0]->id_contribuyente);
+ 				$historico = $search->findHistoricoDeclaracionSegunSolicitud($model[0]->nro_solicitud);
+
+ 				$_SESSION['id_historico'] = $historico[0]['id_historico'];
 
 				$opciones = [
 					'quit' => '/aaee/declaracion/declaracion-estimada/quit',
@@ -1054,6 +1091,7 @@
 																'modelSearch' => $modelSearch,
 																'opciones' => $opciones,
 																'dataProvider' => $dataProvider,
+																'historico' => $historico,
 					]);
 			} else {
 				throw new NotFoundHttpException('No se encontro el registro');
