@@ -89,7 +89,12 @@
 
 
 
-        /***/
+        /**
+         * Metodo que permite renderizar al metodo que generar y emitira el
+         * comprobante de declaracion.
+         * @param  integer $idHistorico identificador del historico de declaracion;
+         * @return
+         */
         public function actionGenerarComprobanteSegunHistorico($idHistorico)
         {
             $findHistoricoModel = self::findHistorico($idHistorico);
@@ -112,6 +117,30 @@
 
 
 
+        /***/
+        public function actionGenerarCertificadoDeclaracionSegunHistorico($idHistorico)
+        {
+            $findHistoricoModel = self::findHistorico($idHistorico);
+            if ( count($findHistoricoModel) > 0 ) {
+
+                if ( $findHistoricoModel['tipo_declaracion'] == 1 ) {
+
+                    // Certificado de declaracion estimada.
+                    self::actionGenerarCertificadoEstimada($findHistoricoModel);
+
+                } elseif ( $findHistoricoModel['tipo_declaracion'] == 2 ) {
+
+                    // Certificado de declaracion definitiva.
+                    self::actionGenerarCertificadoDefinitiva($findHistoricoModel);
+
+                }
+            }
+        }
+
+
+
+
+
         /**
          * Metodo que realiza la consulta del historico de la declaracion segun el
          * parametro del identificador del historico.
@@ -122,6 +151,55 @@
         {
             $search = New HistoricoDeclaracionSearch($this->_id_contribuyente);
             return $historico = $search->findHistoricoDeclaracion($idHistorico);
+        }
+
+
+
+
+        /***/
+        public function actionGenerarCertificadoEstimada($historicoModel)
+        {
+            $nombre = $historicoModel['serial_control'];
+
+            // Informacion del encabezado.
+            $htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/layout/layout-encabezado-pdf', [
+                                                            'caption' => 'CERTIFICADO DE DECLARACION',
+                                                            'barcode' => $historicoModel['serial_control'],
+                                    ]);
+
+
+            // Informacion del contribuyente.
+            $findModel = ContribuyenteBase::findOne($this->_id_contribuyente);
+            $htmlContribuyente =  $this->renderPartial('@common/views/plantilla-pdf/layout/layout-contribuyente-pdf',[
+                                                            'model' => $findModel,
+                                                            'showDireccion' => false,
+                                                            'showRepresentante' => false,
+                                    ]);
+
+
+
+            // informacion del pie de pagina.
+            $htmlPiePagina = $this->renderPartial('@common/views/plantilla-pdf/declaracion/layout-piepagina-pdf',[
+                                                            'director'=> Yii::$app->oficina->getDirector(),
+                                                            'nombreCargo' => Yii::$app->oficina->getNombreCargo(),
+                                                            'barcode' => $historicoModel['serial_control'],
+                                    ]);
+
+
+            $nombrePDF = $nombre.'.pdf';
+
+            $mpdf = new mPDF;
+
+            $mpdf->SetHeader($nombre);
+            $mpdf->WriteHTML($htmlEncabezado);
+            $mpdf->WriteHTML($htmlContribuyente);
+
+
+            $mpdf->SetHTMLFooter($htmlPiePagina);
+
+            $mpdf->Output($nombrePDF, 'I');
+            exit;
+
         }
 
 
@@ -158,10 +236,12 @@
                                                             'barcode' => $historicoModel['serial_control'],
                                     ]);
 
-            // Informacion del congtribuyente.
+            // Informacion del contribuyente.
             $findModel = ContribuyenteBase::findOne($this->_id_contribuyente);
             $htmlContribuyente =  $this->renderPartial('@common/views/plantilla-pdf/layout/layout-contribuyente-pdf',[
                                                             'model' => $findModel,
+                                                            'showDireccion' => true,
+                                                            'showRepresentante' => true,
                                     ]);
 
 
