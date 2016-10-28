@@ -45,6 +45,8 @@
  	use Yii;
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
+	use backend\models\aaee\declaracion\tipodeclaracion\TipoDeclaracion;
+	use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 
 
 	/**
@@ -72,6 +74,28 @@
 		{
 			return 'historico_declaraciones';
 		}
+
+
+		 /**
+		  * Relacion con la entidad "tipos-declaraciones".
+		  * @return active record.
+		  */
+		 public function getTipoDeclaracion()
+		 {
+		 	return $this->hasOne(TipoDeclaracion::className(), ['tipo_declaracion' => 'tipo_declaracion']);
+		 }
+
+
+		 /**
+		 * Metodo que permite obtener la descripcion del tipo de solicitud
+		 * @param  long $nroSolicitud identificacion de la solicitud. Autoincremental
+		 * que se genera al crear la solicitud.
+		 * @return string retorna la descripcion de la solicitud.
+		 */
+		 public function getDescripcionTipoSolicitud($nroSolicitud)
+		 {
+			return $tipo = SolicitudesContribuyente::getDescripcionTipoSolicitud($nroSolicitud);
+		 }
 
 
 	}

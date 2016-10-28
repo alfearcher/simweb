@@ -83,6 +83,49 @@
 
 
 
+		/***/
+		public function findHistoricoDeclaracionSegunSolicitud($nroSolicitud)
+		{
+			$findModel = self::findHistoricoDeclaracionModel();
+			$model = $findModel->andWhere('nro_solicitud =:nro_solicitud',
+										[':nro_solicitud' => $nroSolicitud])
+							   ->joinWith('tipoDeclaracion', true, 'INNER JOIN')
+							   ->all();
+
+			return ( count($model) > 0 ) ? $model : [];
+		}
+
+
+
+		/***/
+		public function findHistoricoDeclaracion($idHistorico)
+		{
+			$findModel = self::findHistoricoDeclaracionModel();
+			$model = $findModel->andWhere('id_historico =:id_historico',
+										[':id_historico' => $idHistorico])
+							   ->joinWith('tipoDeclaracion', true, 'INNER JOIN')
+							   ->one();
+
+			return ( count($model) > 0 ) ? $model : [];
+		}
+
+
+
+
+		/***/
+		public function findHistoricoDeclaracionSegunNroControl($nroControl)
+		{
+			$findModel = self::findHistoricoDeclaracionModel();
+			$model = $findModel->andWhere('nro_control =:nro_control',
+										[':nro_control' => $nroControl])
+							   ->joinWith('tipoDeclaracion', false, 'INNER JOIN')
+							   ->all();
+
+			return ( count($model) > 0 ) ? $model : [];
+		}
+
+
+
 		 /**
 		  * Metodo que realiza el salvado del registro en la entidad respectiva.
 		  * Al guardar debe gemerar el identificador del registro y colocarlo en
@@ -111,6 +154,10 @@
 	    	$result = [
 	    		'r' => null,
 	    		'id' => 0,
+	    	];
+	    	$prefijo = [
+	    		1 => 'DE',
+	    		2 => 'DD',
 	    	];
 	    	$resultado = false;
 	    	$id = 0;
@@ -151,7 +198,7 @@
 		    	$configSerial = self::getArregloConfigSerial($campos);
 		    	$seriales = self::generarSerialControl($configSerial);
 
-		    	$model['serial_control'] = self::getSerialControl($seriales);
+		    	$model['serial_control'] = $prefijo[$model['tipo_declaracion']] . '-' . self::getSerialControl($seriales);
 
 		    	$resultado = $conexion->guardarRegistro($conn, $tabla, $model->attributes);
 				if ( $resultado ) {
@@ -204,6 +251,9 @@
 	    	 return $seriales['id_impuesto'] . '-' . $seriales['ano_impositivo'] . '-' .
 	    	 		$seriales['periodo'] . '-' . $seriales['id_contribuyente'] . '-' .
 	    	 		$seriales['nro_control'];
+
+	    	 // return $seriales['id_contribuyente'] . '-' .
+	  				// $seriales['nro_control'];
 	    }
 
 
@@ -229,7 +279,7 @@
 			    		],
 			    		'nro_control' => [
 			    				'valor' => $campos['nro_control'],
-			    				'prefix' => 5,
+			    				'prefix' => 6,
 			    		],
 			    	];
 	    }
