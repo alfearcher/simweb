@@ -87,7 +87,9 @@
         {
 
             // Informacion del encabezado.
-            $htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/layout/layout-encabezado-pdf');
+            $htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/layout/layout-encabezado-pdf', [
+                                                            'caption' => 'BOLETIN ESTIMADA',
+                                    ]);
 
             // Informacion del congtribuyente.
             $findModel = ContribuyenteBase::findOne($this->_id_contribuyente);
@@ -260,6 +262,14 @@
             }
 
             return $resumen;
+        }
+
+
+
+
+        public function generarDeclaracionEstimada()
+        {
+
         }
 
 
