@@ -73,8 +73,8 @@
 			Quien suscribe: <strong><?=Html::encode(Yii::$app->oficina->getDirector())?></strong>, Director(a) de Dirección de Hacienda Municipal de la
 			<strong><?=Html::encode(Yii::$app->ente->getAlcaldia())?></strong>, del Municipio <strong><?=Html::encode(Yii::$app->ente->getMunicipio())?></strong> del <strong><?=Html::encode(Yii::$app->ente->getEstado())?></strong>,
 			de conformidad con lo dispuesto en el Artículo 138 del Código Orgánico Tributario, certifica
-			la recepción de la <strong>Declaración Estimada</strong> de Ingresos Brutos del Impuesto Sobre Actividades
-			Económicas de Industria, Comercio, Servicios y Conexos, ejecicio fiscal <strong><?=Html::encode($periodoFiscal)?></strong>,
+			la recepción de la <strong>Declaración Estimada de Ingresos Brutos del Impuesto Sobre Actividades
+			Económicas de Industria, Comercio, Servicios y Conexos</strong>, ejecicio fiscal <strong><?=Html::encode($periodoFiscal)?></strong>,
 			procesada por usted a través del portal web: <strong><?=Html::encode(Yii::$app->ente->getPortalWeb())?></strong>,
 			Formulario Electrónico N° <strong><?=Html::encode($historico['serial_control'])?></strong>, en fecha: <strong><?=Html::encode(date('d-m-Y', strtotime($historico['fecha_hora'])))?></strong>
 		</p>
