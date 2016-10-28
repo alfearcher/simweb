@@ -62,7 +62,7 @@
         <div class="panel-heading">
         	<div class="row">
 	        	<div class="col-sm-4">
-	        		<h3><?= Html::encode(Yii::t('frontend', 'Request Nro. ' . $model[0]->nro_solicitud )) ?></h3>
+	        		<h3><?= Html::encode(Yii::t('frontend', 'Request Nro. ' . $model[0]->nro_solicitud) . '. ' . Yii::t('backend', 'Summary')  ) ?></h3>
 	        	</div>
 	        	<div class="col-sm-3" style="width: 30%; float:right; padding-right: 50px;">
 	        		<style type="text/css">
@@ -76,89 +76,136 @@
         </div>
 
 <!-- Cuerpo del formulario -->
-        <div class="panel-body" style="background-color: #F9F9F9;">
+        <div class="panel-body">
         	<div class="container-fluid">
-        		<div class="col-sm-12">
-<!-- DATOS DE LA SUCURSAL -->
-					<div class="row" style="width: 103%;padding-left: -10px;">
-		        		<div class="panel panel-success" style="width: 100%;padding-left: -5px;">
-							<div class="panel-heading">
-					        	<span><?= Html::encode(Yii::t('backend', 'Summary')) ?></span>
-					        </div>
-					        <div class="panel-body">
-					        	<div class="row" style="padding-left: 5px; width: 100%;">
-									<?= GridView::widget([
-											'id' => 'grid-sustitutiva',
-	    									'dataProvider' => $dataProvider,
-	    									'headerRowOptions' => ['class' => 'danger'],
-	    									//'filterModel' => $searchModel,
-	    									'columns' => [
-	    										['class' => 'yii\grid\SerialColumn'],
-	    										[
-								                    'label' => Yii::t('frontend', 'Request'),
-								                    'value' => function($model) {
-	                        										return $model->nro_solicitud;
-	                											},
-								                ],
-								                [
-								                    'label' => Yii::t('frontend', 'Declaracion'),
-								                    'value' => function($model) {
-	                        										return $model->tipoDeclaracion->descripcion;
-	                											},
-								                ],
-								                [
-								                    'label' => Yii::t('frontend', 'Año'),
-								                    'value' => function($model) {
-	                        										return $model->actEcon->ano_impositivo;
-	                											},
-								                ],
-								                [
-								                    'label' => Yii::t('frontend', 'Periodo'),
-								                    'value' => function($model) {
-	                        										return $model->exigibilidad_periodo;
-	                											},
-								                ],
-								                [
-								                    'label' => Yii::t('frontend', 'Rubro'),
-								                    'value' => function($model) {
-	                        										return $model->rubro->rubro;
-	                											},
-								                ],
-								                [
-								                    'label' => Yii::t('frontend', 'Rubro/Descrip'),
-								                    'value' => function($model) {
-	                        										return $model->rubro->descripcion;
-	                											},
-								                ],
-								                [
-								                    'label' => Yii::t('frontend', 'Monto Anterior'),
-								                    'value' => function($model) {
-								                    				if ( $model->tipo_declaracion == 1 ) {
-								                    					return $model->estimado;
-								                    				} elseif ( $model->tipo_declaracion == 2 ) {
-								                    					return $model->reales;
-								                    				}
-	                											},
-								                ],
-								            	[
-								                    'label' => Yii::t('frontend', 'Sustitutiva'),
-								                    'value' => function($model) {
-	                        										return $model->sustitutiva;
-	                											},
-								                ],
+        		<div class="col-sm-12" style="width: 99%;padding-left: -5px;">
 
-								                [
-								                    'label' => Yii::t('frontend', 'Condition'),
-								                    'value' => function($model) {
-	                        										return $model->estatusSolicitud->descripcion;
-	                											},
-							                	],
-								        	]
-										]);?>
+					<div class="row" style="margin: 0px;padding-left: -5px; width: 100%;">
+						<?= GridView::widget([
+								'id' => 'grid-sustitutiva',
+								'dataProvider' => $dataProvider,
+								'headerRowOptions' => ['class' => 'danger'],
+								//'filterModel' => $searchModel,
+								'columns' => [
+									['class' => 'yii\grid\SerialColumn'],
+									[
+					                    'label' => Yii::t('frontend', 'Request'),
+					                    'value' => function($model) {
+                										return $model->nro_solicitud;
+        											},
+					                ],
+					                [
+					                    'label' => Yii::t('frontend', 'Declaracion'),
+					                    'value' => function($model) {
+                										return $model->tipoDeclaracion->descripcion;
+        											},
+					                ],
+					                [
+					                    'label' => Yii::t('frontend', 'Año'),
+					                    'value' => function($model) {
+                										return $model->actEcon->ano_impositivo;
+        											},
+					                ],
+					                [
+					                    'label' => Yii::t('frontend', 'Periodo'),
+					                    'value' => function($model) {
+                										return $model->exigibilidad_periodo;
+        											},
+					                ],
+					                [
+					                    'label' => Yii::t('frontend', 'Rubro'),
+					                    'value' => function($model) {
+                										return $model->rubro->rubro;
+        											},
+					                ],
+					                [
+					                    'label' => Yii::t('frontend', 'Rubro/Descrip'),
+					                    'value' => function($model) {
+                										return $model->rubro->descripcion;
+        											},
+					                ],
+					                [
+					                    'label' => Yii::t('frontend', 'Monto Anterior'),
+					                    'value' => function($model) {
+					                    				if ( $model->tipo_declaracion == 1 ) {
+					                    					return $model->estimado;
+					                    				} elseif ( $model->tipo_declaracion == 2 ) {
+					                    					return $model->reales;
+					                    				}
+        											},
+					                ],
+					            	[
+					                    'label' => Yii::t('frontend', 'Sustitutiva'),
+					                    'value' => function($model) {
+                										return $model->sustitutiva;
+        											},
+					                ],
+
+					                [
+					                    'label' => Yii::t('frontend', 'Condition'),
+					                    'value' => function($model) {
+                										return $model->estatusSolicitud->descripcion;
+        											},
+				                	],
+					        	]
+							]);?>
+					</div>
+
+					<div class="row" style="border-top: 1px solid #ccc; padding-bottom: 10px;"></div>
+
+					<div class="row">
+						<div class="form-group">
+
+							<?php if ( count($historico) > 0 ) { ?>
+								<div class="col-sm-3" style="width: 40%;margin-left:25px;">
+									<?= Html::a(Yii::t('frontend', 'Descargar Declaracion ' . $historico[0]['serial_control']),
+																				['generar-comprobante', 'id' => $historico[0]['id_historico']],
+																			  	[
+																					'id' => 'btn-declaracion',
+																					'class' => 'btn btn-default',
+																					'value' => 3,
+																					'style' => 'width: 100%; margin-left:0px;margin-top:20px;',
+																					'name' => 'btn-declaracion',
+																					'target' => '_blank',
+
+																			  	]);
+									?>
 								</div>
-							</div>
+
+
+								<div class="col-sm-3" style="width: 40%;margin-left:25px;">
+									<?= Html::a(Yii::t('frontend', 'Descargar Certificado ' . $historico[0]['serial_control']),
+																				['generar-certificado-estimada'],
+																			  	[
+																					'id' => 'btn-certificado',
+																					'class' => 'btn btn-primary',
+																					'value' => 2,
+																					'style' => 'width: 100%; margin-left:0px;margin-top:20px;',
+																					'name' => 'btn-certificado',
+																					'target' => '_blank',
+
+																			  	]);
+									?>
+								</div>
+
+								<div class="col-sm-3" style="width: 20%;margin-left:25px;">
+									<?= Html::a(Yii::t('frontend', 'Descargar Boletin'),
+																				['generar-boletin-estimada'],
+																			  	[
+																					'id' => 'btn-boletin',
+																					'class' => 'btn btn-primary',
+																					'value' => 1,
+																					'style' => 'width: 100%; margin-left:0px;margin-top:20px;',
+																					'name' => 'btn-boletin',
+																					'target' => '_blank',
+
+																			  	]);
+									?>
+								</div>
+							<?php } ?>
 						</div>
 					</div>
+
 				</div>	<!-- Fin de col-sm-12 -->
 			</div> <!-- Fin de container-fluid -->
 		</div>	<!-- Fin de panel-body -->
