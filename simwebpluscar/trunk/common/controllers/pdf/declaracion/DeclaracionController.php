@@ -157,7 +157,7 @@
                                                             'resumen'=> $resumen,
                                                             'tipoDeclaracion' => 'ESTIMADA',
                                                             'periodoFiscal' => $periodoFiscal,
-                                                            'fechaEmison' => $historico['fecha_hora'],
+                                                            'fechaEmision' => $historico['fecha_hora'],
                                     ]);
 
 
