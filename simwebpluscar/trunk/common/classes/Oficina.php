@@ -56,7 +56,7 @@
 
  		protected $nombre = 'Dirección de Rentas';
  		protected $nombreCargo = 'Director(a) de Hacienda Municipal';
- 		protected $director = 'José Pérez';
+ 		protected $director = 'Lcdo. Nombre Director Encargado';
 
  		//	Inddentificador de la oficina
  		protected $id = 1;

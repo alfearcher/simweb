@@ -78,7 +78,7 @@
 		protected $direccionLocalidad = 'Pto Ordaz';
 		protected $telefonos = ['0238-123232'];
 		protected $email = ['alcaldiacaroni@gmail.com'];
-
+		protected $portalWeb = 'www.alcaldiadigital.com.ve';
 		protected $noEstado = 0;
 		protected $estado = 'Estado Bolivar';
 
@@ -93,6 +93,12 @@
 
 		public function __construct()
 		{
+		}
+
+
+		public function getPortalWeb()
+		{
+			return $this->portalWeb;
 		}
 
 
@@ -163,7 +169,7 @@
 
 		public function getMunicipio()
 		{
-			//return $this->municipio;
+			return $this->municipio;
 		}
 
 		public function getId()
