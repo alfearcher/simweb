@@ -1003,6 +1003,46 @@
 
 
 
+	    /***/
+		public function actionGenerarCertificado()
+		{
+
+			$idContribuyente = $_SESSION['idContribuyente'];
+			$lapso = $_SESSION['lapso'];
+			$a = $lapso['a'];
+			$p = $lapso['p'];
+			$request = Yii::$app->request;
+
+			$idEnviado = 0;
+			if ( $request->isGet ) {
+				if ( $request->get('id') !== null ) {
+					$idEnviado = $request->get('id');
+				}
+
+
+				if ( isset($_SESSION['id_historico']) ) {
+
+					$id = $_SESSION['id_historico'];
+					if ( $idEnviado == $id ) {
+
+						// Controlador para emitir el comprobante de declaracion.
+						$declaracion = New DeclaracionController($idContribuyente, $a, $p);
+						$declaracion->actionGenerarCertificadoDeclaracionSegunHistorico($id);
+
+					} else {
+						throw new NotFoundHttpException(Yii::t('frontend', 'Numero de control no valido'));
+					}
+
+				} else {
+					throw new NotFoundHttpException(Yii::t('frontend', 'Numero de control no definido'));
+				}
+			} else {
+				throw new NotFoundHttpException(Yii::t('frontend', 'Solicitud no valida'));
+			}
+
+		}
+
+
 
 	    /**
 		 * Metodo para responser a la solicitud de generacion de la declaracion estimada.
