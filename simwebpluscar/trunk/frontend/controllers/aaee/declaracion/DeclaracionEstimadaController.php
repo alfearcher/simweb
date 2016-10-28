@@ -848,7 +848,7 @@
 		 * Lo que aparecera sera un pdf con el resumen de la declaracion.
 		 * @return [type] [description]
 		 */
-		public function actionGenerarDeclaracionEstimada()
+		public function actionGenerarComprobanteEstimada()
 		{
 
 			$idContribuyente = $_SESSION['idContribuyente'];
@@ -871,7 +871,7 @@
 
 						// Controlador para emitir el comprobante de declaracion.
 						$declaracion = New DeclaracionController($idContribuyente, $a, $p);
-						$declaracion->generarDeclaracionEstimadaSegunIdHistorico($id);
+						$declaracion->actionGenerarComprobanteSegunHistorico($id);
 
 					} else {
 						throw new NotFoundHttpException(Yii::t('frontend', 'Numero de control no valido'));
@@ -1074,7 +1074,6 @@
     		if ( isset($findModel) && isset($modelSearch) ) {
  				$model = $findModel->all();
  				self::actionAnularSession(['id_historico']);
-
 
  				$search = New HistoricoDeclaracionSearch($model[0]->id_contribuyente);
  				$historico = $search->findHistoricoDeclaracionSegunSolicitud($model[0]->nro_solicitud);
