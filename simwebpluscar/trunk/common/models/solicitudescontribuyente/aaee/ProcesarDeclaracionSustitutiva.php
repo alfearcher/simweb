@@ -47,6 +47,7 @@
  *
  */
 
+
     namespace common\models\solicitudescontribuyente\aaee;
 
     use Yii;
@@ -54,6 +55,9 @@
     use backend\models\aaee\declaracion\sustitutiva\SustitutivaBaseForm;
     use common\models\contribuyente\ContribuyenteBase;
     use backend\models\aaee\acteconingreso\ActEconIngresoSearch;
+    use backend\models\aaee\actecon\ActEcon;
+    use backend\models\aaee\rubro\Rubro;
+    use backend\models\aaee\historico\declaracion\HistoricoDeclaracionSearch;
 
 
 
@@ -193,6 +197,9 @@
                 $result = self::updateSolicitudDeclaracionSustitutiva($modelDeclaracion);
                 if ( $result ) {
                     $result = self::createIngreso($modelDeclaracion);
+                    if ( $result ) {
+                        $result = self::createHistoricoDeclaracion($modelDeclaracion);
+                    }
                 }
             } else {
                 self::setErrors(Yii::t('backend', 'Request not find'));
@@ -317,6 +324,80 @@
             return $result;
 
         }
+
+
+
+
+         /***/
+        private function createHistoricoDeclaracion($modelDeclaracion)
+        {
+            $result = [];
+            if ( $modelDeclaracion !== null ) {
+                $historico = New HistoricoDeclaracionSearch($this->_model['id_contribuyente']);
+
+               foreach ( $modelDeclaracion as $model ) {
+                    $actModel = $this->findActEcon($model['id_impuesto']);
+                    $rubroModel = self::findRubro($model['id_rubro']);
+
+                    $s = $model['sustitutiva'];
+                    if ( $model['tipo_declaracion'] == 1 ) {
+                        $model['estimado'] = $s;
+
+                    } elseif ( $model['tipo_declaracion'] == 2 ) {
+                        $model['reales'] = $s;
+
+                    }
+
+                    $rjson[] = [
+                            'nro_solicitud' => $model['nro_solicitud'],
+                            'id_contribuyente' => $model['id_contribuyente'],
+                            'id_impuesto' => $model['id_impuesto'],
+                            'ano_impositivo' => $actModel->ano_impositivo,
+                            'exigibilidad_periodo' => $model['exigibilidad_periodo'],
+                            'id_rubro' => $model['id_rubro'],
+                            'rubro' => $rubroModel->rubro,
+                            'descripcion' => $rubroModel->descripcion,
+                            'tipo_declaracion' => $model['tipo_declaracion'],
+                            'estimado' => $model['estimado'],
+                            'reales' => $model['reales'],
+                            'sustitutiva' => $model['sustitutiva'],
+                        ];
+                }
+
+
+                $arregloDatos = $historico->attributes;
+                foreach ( $historico->attributes as $key => $value ) {
+
+                    if ( isset($modelDeclaracion[0]->$key) ) {
+                        $arregloDatos[$key] = $modelDeclaracion[0]->$key;
+                    }
+
+                }
+
+                $arregloDatos['periodo'] = $modelDeclaracion[0]->exigibilidad_periodo;
+                $arregloDatos['ano_impositivo'] = $actModel->ano_impositivo;
+                $arregloDatos['json_rubro'] = json_encode($rjson);
+                $arregloDatos['observacion'] = 'APROBADA POR FUNCIONARIO, SOLICITUD DECLARACION SUSTITUTIVA';
+
+                $result = $historico->guardar($arregloDatos, $this->_conexion, $this->_conn);
+                if ( $result['id'] > 0 ) {
+                    return true;
+                }
+
+            return false;
+
+            }
+        }
+
+
+
+        /***/
+        private function findRubro($idRubro)
+        {
+            $findModel = Rubro::findOne($idRubro);
+            return $findModel;
+        }
+
 
 
 
