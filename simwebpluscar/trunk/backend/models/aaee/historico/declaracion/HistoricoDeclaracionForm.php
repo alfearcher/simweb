@@ -65,6 +65,7 @@
 		public $fecha_hora;
 		public $inactivo;
 		public $observacion;
+		public $por_sustitutiva;
 
 
 
@@ -88,11 +89,11 @@
 	        return [
 	        	['fecha_hora', 'default', 'value' => date('Y-m-d H:i:s')],
 	        	[['inactivo', 'tipo_declaracion', 'ano_impositivo',
-	        	  'periodo', 'id_impuesto', 'nro_control'],
+	        	  'periodo', 'id_impuesto', 'nro_control', 'por_sustitutiva',],
 	        	  'default', 'value' => 0],
 	        	[['id_contribuyente', 'ano_impositivo',
 	        	  'periodo', 'id_impuesto', 'nro_control',
-	        	  'tipo_declaracion'],
+	        	  'tipo_declaracion', 'por_sustitutiva'],
 	        	  'integer'],
 	        ];
 	    }
