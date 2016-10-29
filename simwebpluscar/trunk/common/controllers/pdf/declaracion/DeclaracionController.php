@@ -202,7 +202,7 @@
 
             $mpdf = new mPDF;
 
-            $mpdf->SetHeader($nombre);
+            //$mpdf->SetHeader($nombre);
             $mpdf->WriteHTML($htmlEncabezado);
             $mpdf->WriteHTML($htmlContribuyente);
             $mpdf->WriteHTML($htmlTexto);
