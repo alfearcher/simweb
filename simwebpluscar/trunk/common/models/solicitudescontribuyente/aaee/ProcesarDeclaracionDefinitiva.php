@@ -55,7 +55,8 @@
     use common\models\contribuyente\ContribuyenteBase;
     use backend\models\aaee\actecon\ActEconForm;
     use backend\models\aaee\acteconingreso\ActEconIngresoForm;
-
+    use backend\models\aaee\rubro\Rubro;
+    use backend\models\aaee\historico\declaracion\HistoricoDeclaracionSearch;
 
 
     /**
@@ -202,6 +203,10 @@
 
                         if ( $result ) {
                             $result = self::generarEstimada($modelDeclaracion);
+
+                            if ( $result ) {
+                                $result = self::createHistoricoDeclaracion($modelDeclaracion);
+                            }
                         }
                     }
                 }
@@ -368,6 +373,66 @@
             if ( count($mensaje) == 0 ) { $result = true; }
 
             return $result;
+        }
+
+
+
+
+         /***/
+        private function createHistoricoDeclaracion($modelDeclaracion)
+        {
+            $result = [];
+            if ( $modelDeclaracion !== null ) {
+                $historico = New HistoricoDeclaracionSearch($this->_model['id_contribuyente']);
+
+                foreach ( $modelDeclaracion as $model ) {
+                    $findModel = self::findRubro($model['id_rubro']);
+                    $rjson[] = [
+                            'nro_solicitud' => $model['nro_solicitud'],
+                            'id_contribuyente' => $model['id_contribuyente'],
+                            'id_impuesto' => $model['id_impuesto'],
+                            'ano_impositivo' => $model['ano_impositivo'],
+                            'exigibilidad_periodo' => $model['exigibilidad_periodo'],
+                            'id_rubro' => $model['id_rubro'],
+                            'rubro' => $findModel->rubro,
+                            'descripcion' => $findModel->descripcion,
+                            'tipo_declaracion' => $model['tipo_declaracion'],
+                            'reales_v' => $model['monto_v'],
+                            'reales' => $model['monto_new'],
+                        ];
+                }
+
+                $arregloDatos = $historico->attributes;
+                foreach ( $historico->attributes as $key => $value ) {
+
+                    if ( isset($modelDeclaracion[0]->$key) ) {
+                        $arregloDatos[$key] = $modelDeclaracion[0]->$key;
+                    }
+
+                }
+
+                $arregloDatos['periodo'] = $modelDeclaracion[0]->exigibilidad_periodo;
+                $arregloDatos['json_rubro'] = json_encode($rjson);
+                $arregloDatos['observacion'] = 'APROBADA POR FUNCIONARIO, SOLICITUD DECLARACION DEFINITIVA';
+                $arregloDatos['por_sustitutiva'] = 0;
+
+                $result = $historico->guardar($arregloDatos, $this->_conexion, $this->_conn);
+                if ( $result['id'] > 0 ) {
+                    return true;
+                }
+
+            return false;
+
+            }
+        }
+
+
+
+        /***/
+        private function findRubro($idRubro)
+        {
+            $findModel = Rubro::findOne($idRubro);
+            return $findModel;
         }
 
 
