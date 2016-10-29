@@ -59,6 +59,7 @@
 	    															'modelSearch' => $modelSearch,
 	    															'opciones' => $opciones,
 	    															'dataProvider' => $dataProvider,
+	    															'historico' => $historico,
 	    					]);
 	    	?>
 		</div>
