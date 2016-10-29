@@ -69,6 +69,9 @@
 	use backend\models\aaee\declaracion\DeclaracionBaseSearch;
 	use backend\models\aaee\declaracion\DeclaracionBaseForm;
 	use yii\base\Model;
+	use backend\models\aaee\historico\declaracion\HistoricoDeclaracionSearch;
+	use common\controllers\pdf\boletin\BoletinController;
+	use common\controllers\pdf\declaracion\DeclaracionController;
 
 	session_start();		// Iniciando session
 
@@ -615,8 +618,9 @@
 						}		// Fin del ciclo de models.
 
 						if ( $result ) {
+							$result = self::actionGenerarEstimada($this->_conexion, $this->_conn, $models);
 							if ( $result ) {
-								$result = self::actionGenerarEstimada($this->_conexion, $this->_conn, $models);
+								$result = self::actionCreateHistoricoDeclaracion($this->_conexion, $this->_conn, $models, $conf);
 							}
 
 							if ( $result ) {
@@ -869,6 +873,157 @@
 
 
 
+	     /**
+	     * Metodo que crea el historico de declaraciones, esto aplica si la solicitud de declaracion
+	     * es de aprobacion directa.
+	     * @param  ConexionController $conexionLocal instancia de la clase ConexionController.
+		 * @param  connection $connLocal instancia de connection
+		 * @param  model $models modelo de DeclaracionBaseForm.
+	     * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
+		 * solicitud.
+	     * @return boolean retorna true si guarda satisfactoriamente.
+	     */
+	    private static function actionCreateHistoricoDeclaracion($conexionLocal, $connLocal, $models, $conf)
+	    {
+	    	$result = [];
+	    	if ( $conf['nivel_aprobacion'] == 1 ) {
+		    	if ( isset($_SESSION['idContribuyente']) && count($models) > 0 ) {
+		    		$idContribuyente = $_SESSION['idContribuyente'];
+		    		$search = New HistoricoDeclaracionSearch($idContribuyente);
+
+					foreach ( $models as $model ) {
+						$rjson[] = [
+								'nro_solicitud' => $model['nro_solicitud'],
+								'id_contribuyente' => $model['id_contribuyente'],
+								'id_impuesto' => $model['id_impuesto'],
+								'ano_impositivo' => $model['ano_impositivo'],
+								'exigibilidad_periodo' => $model['exigibilidad_periodo'],
+								'id_rubro' => $model['id_rubro'],
+								'rubro' => $model['rubro'],
+								'descripcion' => $model['descripcion'],
+								'tipo_declaracion' => $model['tipo_declaracion'],
+								'reales_v' => $model['monto_v'],
+								'reales' => $model['monto_new'],
+							];
+					}
+
+					$arregloDatos = $search->attributes;
+					foreach ( $search->attributes as $key => $value ) {
+
+						if ( isset($models[0]->$key) ) {
+							$arregloDatos[$key] = $models[0]->$key;
+						}
+
+					}
+					$arregloDatos['periodo'] = $models[0]->exigibilidad_periodo;
+					$arregloDatos['json_rubro'] = json_encode($rjson);
+					$arregloDatos['observacion'] = 'SOLICITUD DECLARACION DEFINITIVA';
+					$arregloDatos['por_sustitutiva'] = 0;
+
+					$result = $search->guardar($arregloDatos, $conexionLocal, $connLocal);
+					if ( $result['id'] > 0 ) {
+						return true;
+					} else {
+						return false;
+					}
+				}
+	    	}
+	    	return true;
+	    }
+
+
+
+
+
+	    /**
+	     * Metodo que muestra una vista con el pdf del certificado de la declaracion
+	     * @return retorna un pdf con la informacion del certificado
+	     */
+		public function actionGenerarCertificadoDefinitiva()
+		{
+
+			$idContribuyente = $_SESSION['idContribuyente'];
+			$lapso = $_SESSION['lapso'];
+			$a = $lapso['a'];
+			$p = $lapso['p'];
+
+			$request = Yii::$app->request;
+
+			$idEnviado = 0;
+			if ( $request->isGet ) {
+				if ( $request->get('id') !== null ) {
+					$idEnviado = $request->get('id');
+				}
+
+				if ( isset($_SESSION['id_historico']) ) {
+
+					$id = $_SESSION['id_historico'];
+					if ( $idEnviado == $id ) {
+
+						// Controlador para emitir el certificado de declaracion.
+						$declaracion = New DeclaracionController($idContribuyente, $a, $p);
+						$declaracion->actionGenerarCertificadoDeclaracionSegunHistorico($id);
+
+					} else {
+						throw new NotFoundHttpException(Yii::t('frontend', 'Numero de control no valido'));
+					}
+
+				} else {
+					throw new NotFoundHttpException(Yii::t('frontend', 'Numero de control no definido'));
+				}
+			} else {
+				throw new NotFoundHttpException(Yii::t('frontend', 'Solicitud no valida'));
+			}
+		}
+
+
+
+		/**
+		 * Metodo para responser a la solicitud de generacion de la declaracion estimada.
+		 * Lo que aparecera sera un pdf con el resumen de la declaracion.
+		 * @return retorna un pdf con la informacion de la declaracion.
+		 */
+		public function actionGenerarComprobanteDefinitiva()
+		{
+
+			$idContribuyente = $_SESSION['idContribuyente'];
+			$lapso = $_SESSION['lapso'];
+			$a = $lapso['a'];
+			$p = $lapso['p'];
+			$request = Yii::$app->request;
+
+			$idEnviado = 0;
+			if ( $request->isGet ) {
+				if ( $request->get('id') !== null ) {
+					$idEnviado = $request->get('id');
+				}
+
+
+				if ( isset($_SESSION['id_historico']) ) {
+
+					$id = $_SESSION['id_historico'];
+					if ( $idEnviado == $id ) {
+
+						// Controlador para emitir el comprobante de declaracion.
+						$declaracion = New DeclaracionController($idContribuyente, $a, $p);
+						$declaracion->actionGenerarComprobanteSegunHistorico($id);
+
+					} else {
+						throw new NotFoundHttpException(Yii::t('frontend', 'Numero de control no valido'));
+					}
+
+				} else {
+					throw new NotFoundHttpException(Yii::t('frontend', 'Numero de control no definido'));
+				}
+			} else {
+				throw new NotFoundHttpException(Yii::t('frontend', 'Solicitud no valida'));
+			}
+
+		}
+
+
+
+
 
 		/**
 		 * Metodo para guardar los documentos consignados.
@@ -1054,7 +1209,13 @@
     	{
     		if ( isset($findModel) && isset($modelSearch) ) {
  				$model = $findModel->all();
- 				self::actionAnularSession(['begin']);
+ 				self::actionAnularSession(['begin', 'id_historico']);
+
+ 				$search = New HistoricoDeclaracionSearch($model[0]->id_contribuyente);
+ 				$historico = $search->findHistoricoDeclaracionSegunSolicitud($model[0]->nro_solicitud);
+
+ 				$_SESSION['id_historico'] = isset($historico[0]['id_historico']) ? $historico[0]['id_historico'] : null;
+
 				$opciones = [
 					'quit' => '/aaee/declaracion/declaracion-definitiva/quit',
 				];
@@ -1064,6 +1225,7 @@
 																'modelSearch' => $modelSearch,
 																'opciones' => $opciones,
 																'dataProvider' => $dataProvider,
+																'historico' => $historico,
 					]);
 			} else {
 				throw new NotFoundHttpException('No se encontro el registro');
