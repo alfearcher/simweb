@@ -798,6 +798,7 @@
 					$arregloDatos['periodo'] = $models[0]->exigibilidad_periodo;
 					$arregloDatos['json_rubro'] = json_encode($rjson);
 					$arregloDatos['observacion'] = 'SOLICITUD DECLARACION ESTIMADA';
+					$arregloDatos['por_sustitutiva'] = 0;
 
 					$result = $search->guardar($arregloDatos, $conexionLocal, $connLocal);
 					if ( $result['id'] > 0 ) {
