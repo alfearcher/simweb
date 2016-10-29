@@ -341,6 +341,7 @@
                 $arregloDatos['periodo'] = $modelDeclaracion[0]->exigibilidad_periodo;
                 $arregloDatos['json_rubro'] = json_encode($rjson);
                 $arregloDatos['observacion'] = 'APROBADA POR FUNCIONARIO, SOLICITUD DECLARACION ESTIMADA';
+                $arregloDatos['por_sustitutiva'] = 0;
 
                 $result = $historico->guardar($arregloDatos, $this->_conexion, $this->_conn);
                 if ( $result['id'] > 0 ) {
