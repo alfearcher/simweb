@@ -958,9 +958,8 @@
 								$model->reales = $s;
 
 							}
-						}
 
-						$rjson[] = [
+							$rjson[] = [
 								'nro_solicitud' => $model['nro_solicitud'],
 								'id_contribuyente' => $model['id_contribuyente'],
 								'id_impuesto' => $model['id_impuesto'],
@@ -974,7 +973,9 @@
 								'reales' => $model['reales'],
 								'sustitutiva' => $model['sustitutiva'],
 							];
-					}
+						}
+
+					}	// Fin del ciclo.
 
 					$arregloDatos = $search->attributes;
 					foreach ( $search->attributes as $key => $value ) {
