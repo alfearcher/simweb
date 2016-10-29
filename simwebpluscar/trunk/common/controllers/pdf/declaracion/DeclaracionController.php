@@ -156,7 +156,14 @@
 
 
 
-        /***/
+        /**
+         * Metodo que genera un documento pdf que representa un certificado electronico
+         * de declaracion de ingresos de estimada. Utiliza como base la infromacion del
+         * historico, este historico se guarda cada vez que se realiza o modifica una
+         * declaracion.
+         * @param  model $historicoModel model de la entidad HistoricoDeclaracion
+         * @return view retorna una documento pdf.
+         */
         public function actionGenerarCertificadoEstimada($historicoModel)
         {
             $nombre = $historicoModel['serial_control'] . '-C';
@@ -219,18 +226,88 @@
 
 
         /**
+         * Metodo que genera un documento pdf que representa un certificado electronico
+         * de declaracion de ingresos de estimada. Utiliza como base la infromacion del
+         * historico, este historico se guarda cada vez que se realiza o modifica una
+         * declaracion.
+         * @param  model $historicoModel model de la entidad HistoricoDeclaracion
+         * @return view retorna una documento pdf.
+         */
+        public function actionGenerarCertificadoDefinitiva($historicoModel)
+        {
+            $nombre = $historicoModel['serial_control'] . '-C';
+
+            // Informacion del encabezado.
+            $htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/layout/layout-encabezado-pdf', [
+                                                            'caption' => 'CERTIFICADO DE DECLARACION',
+                                                            'barcode' => $historicoModel['serial_control'],
+                                    ]);
+
+
+            // Informacion del contribuyente.
+            $findModel = ContribuyenteBase::findOne($this->_id_contribuyente);
+            $htmlContribuyente =  $this->renderPartial('@common/views/plantilla-pdf/layout/layout-contribuyente-pdf',[
+                                                            'model' => $findModel,
+                                                            'showDireccion' => false,
+                                                            'showRepresentante' => false,
+                                    ]);
+
+
+            // Informacion de la declaracion.
+            $declaracionSearch = New DeclaracionBaseSearch($this->_id_contribuyente);
+            $rangoFecha = $declaracionSearch->getRangoFechaDeclaracion($this->_año_impositivo);
+            $periodoFiscal = date('d-m-Y', strtotime($rangoFecha['fechaDesde'])) . ' AL ' . date('d-m-Y', strtotime($rangoFecha['fechaHasta']));
+
+            // Informacion del texto.
+            $htmlTexto = $this->renderPartial('@common/views/plantilla-pdf/certificado/layout-certificado-declaracion-definitiva-pdf',[
+                                                            'historico' => $historicoModel,
+                                                            'periodoFiscal' => $periodoFiscal,
+                                    ]);
+
+
+
+            // informacion del pie de pagina.
+            $htmlPiePagina = $this->renderPartial('@common/views/plantilla-pdf/certificado/layout-piepagina-pdf',[
+                                                            'director'=> Yii::$app->oficina->getDirector(),
+                                                            'nombreCargo' => Yii::$app->oficina->getNombreCargo(),
+                                                            'barcode' => $historicoModel['serial_control'],
+                                    ]);
+
+
+            $nombrePDF = $nombre.'.pdf';
+
+            $mpdf = new mPDF;
+
+            //$mpdf->SetHeader($nombre);
+            $mpdf->WriteHTML($htmlEncabezado);
+            $mpdf->WriteHTML($htmlContribuyente);
+            $mpdf->WriteHTML($htmlTexto);
+
+            $mpdf->SetHTMLFooter($htmlPiePagina);
+
+            $mpdf->Output($nombrePDF, 'I');
+            exit;
+
+        }
+
+
+
+
+
+
+        /**
          * Metodo que reciba todo al informacion necesaria para la emision del pdf con
-         * la informacion de la declaracion. Se arma todos las modulos para luego emitir
-         * un unico documente, la informacion de la declaracion viene de la solicitud
-         * realizada en posteriores ocasiones, las informacion relevente de la declaracion
-         * como lo son el rubro y los montos declarados, se gusraron en una estructura json
+         * la informacion del historico de la declaracion. Se arma todos las modulos para
+         * luego emitir un unico documente, la informacion de la declaracion viene de la
+         * solicitud realizada en posteriores procesos, las informacion relevente de la declaracion
+         * como lo son el rubro y los montos declarados, se guardaron en una estructura json
          * para facilitar y unificar la emision del documento. La informacion de este documento
          * servira de base para el Certificado de Declaracion. El cual debe hacer referencia
-         * al numero de declaracion. El numero de declaracion tiene el formato:
+         * al numero de declaracion (serial-control). El numero de declaracion tiene el formato:
          *
          * AA-123456-12-12-1234-12345.
          *
-         * Dicho formato es la agrupacionde varios datos que esta contenido em el historico al
+         * Dicho formato es la agrupacion de varios datos que esta contenido em el historico al
          * momento de aprobar la solicitud de declaracion.
          * @param  model $historcioModel modelo de la entidad HistoricoDeclaracion, es una busqueda
          * por el identificador de la entidad mas el identificador del contribuyente.
@@ -301,6 +378,99 @@
 
 
 
+
+
+
+
+
+        /**
+         * Metodo que reciba todo al informacion necesaria para la emision del pdf con
+         * la informacion del historico de la declaracion. Se arma todos las modulos para
+         * luego emitir un unico documente, la informacion de la declaracion viene de la
+         * solicitud realizada en posteriores procesos, las informacion relevente de la declaracion
+         * como lo son el rubro y los montos declarados, se guardaron en una estructura json
+         * para facilitar y unificar la emision del documento. La informacion de este documento
+         * servira de base para el Certificado de Declaracion. El cual debe hacer referencia
+         * al numero de declaracion (serial-control). El numero de declaracion tiene el formato:
+         *
+         * AA-123456-12-12-1234-12345.
+         *
+         * Dicho formato es la agrupacion de varios datos que esta contenido em el historico al
+         * momento de aprobar la solicitud de declaracion.
+         * @param  model $historcioModel modelo de la entidad HistoricoDeclaracion, es una busqueda
+         * por el identificador de la entidad mas el identificador del contribuyente.
+         * @return string retorna renderiza una vista en formato pdf. Este formato es el comprobante
+         * de declaracion.
+         */
+        public function actionGenerarComprobanteDefinitivaSegunHistorico($historicoModel)
+        {
+            $nombre = $historicoModel['serial_control'];
+
+
+            // Informacion del encabezado.
+            $htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/layout/layout-encabezado-pdf', [
+                                                            'caption' => 'DECLARACION DE INGRESOS BRUTOS',
+                                                            'barcode' => $historicoModel['serial_control'],
+                                    ]);
+
+            // Informacion del contribuyente.
+            $findModel = ContribuyenteBase::findOne($this->_id_contribuyente);
+            $htmlContribuyente =  $this->renderPartial('@common/views/plantilla-pdf/layout/layout-contribuyente-pdf',[
+                                                            'model' => $findModel,
+                                                            'showDireccion' => true,
+                                                            'showRepresentante' => true,
+                                    ]);
+
+
+
+
+            // Informacion de la declaracion.
+            $declaracionSearch = New DeclaracionBaseSearch($this->_id_contribuyente);
+            $rangoFecha = $declaracionSearch->getRangoFechaDeclaracion($this->_año_impositivo);
+            $periodoFiscal = $rangoFecha['fechaDesde'] . ' AL ' . $rangoFecha['fechaHasta'];
+
+            // Esta informacion se sacara del historico que se guardo.
+            $resumen = self::actionResumenDeclaradoDefinitiva($historicoModel);
+
+            $htmlDeclaracion = $this->renderPartial('@common/views/plantilla-pdf/declaracion/layout-declaracion-base-definitiva-pdf',[
+                                                            'resumen'=> $resumen,
+                                                            'tipoDeclaracion' => 'DEFINITIVA',
+                                                            'periodoFiscal' => $periodoFiscal,
+                                                            'fechaEmision' => $historicoModel['fecha_hora'],
+                                    ]);
+
+
+            // informacion del pie de pagina.
+            $htmlPiePagina = $this->renderPartial('@common/views/plantilla-pdf/declaracion/layout-piepagina-pdf',[
+                                                            'director'=> Yii::$app->oficina->getDirector(),
+                                                            'nombreCargo' => Yii::$app->oficina->getNombreCargo(),
+                                                            'barcode' => $historicoModel['serial_control'],
+                                    ]);
+
+
+
+            $nombrePDF = $nombre.'.pdf';
+
+            $mpdf = new mPDF;
+
+            $mpdf->SetHeader($nombre);
+            $mpdf->WriteHTML($htmlEncabezado);
+            $mpdf->WriteHTML($htmlContribuyente);
+            $mpdf->WriteHTML($htmlDeclaracion);
+
+            $mpdf->SetHTMLFooter($htmlPiePagina);
+
+            $mpdf->Output($nombrePDF, 'I');
+            exit;
+        }
+
+
+
+
+
+
+
+
         /**
          * Metodo que arma los datos basicos de la declaracion que existe en el historico.
          * @param  model $historicoModel modelo de la consulta realizada sobre el historico de declaracion
@@ -364,7 +534,7 @@
                 $resumen[] = [
                     'rubro' => $rubro['rubro'],
                     'descripcion' => $rubro['descripcion'],
-                    'estimado' => $rubro['estimado'],
+                    //'estimado' => $rubro['estimado'],
                     'reales' => $rubro['reales'],
                     'alicuota' => $rubroModel->alicuota,
                     'minimo_ut' => $rubroModel->minimo_ut,
