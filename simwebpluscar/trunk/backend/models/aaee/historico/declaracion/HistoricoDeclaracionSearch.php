@@ -126,6 +126,32 @@
 
 
 
+
+		/**
+		 * Metodo que realiza la consulta de los historico de declaracion, segun
+		 * el lapso. Tomando los tipos de declaracion que existan.
+		 * @param  integer $añoImpositivo año del lapso consultado.
+		 * @param  integer $periodo periodo del lapso consultado.
+		 * @return model retorna un modelo de la entidad "HistoricoDeclaracion".
+		 */
+		public function findHistoricoDeclaracionSegunLapso($añoImpositivo, $periodo)
+		{
+			$findModel = self::findHistoricoDeclaracionModel();
+			$model = $findModel->andWhere('ano_impositivo =:ano_impositivo',
+										[':ano_impositivo' => $añoImpositivo])
+							   ->andWhere('periodo =:periodo',
+										[':periodo' => $periodo])
+							   ->joinWith('tipoDeclaracion', true, 'INNER JOIN');
+							  // ->all();
+
+			return ( count($model) > 0 ) ? $model : [];
+		}
+
+
+
+
+
+
 		 /**
 		  * Metodo que realiza el salvado del registro en la entidad respectiva.
 		  * Al guardar debe gemerar el identificador del registro y colocarlo en
