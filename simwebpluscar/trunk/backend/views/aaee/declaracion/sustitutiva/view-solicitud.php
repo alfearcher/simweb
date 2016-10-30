@@ -99,6 +99,9 @@
 		                ],
 		                [
 		                    'label' => Yii::t('frontend', 'Monto Anterior'),
+		                    'contentOptions' => [
+		                    	'style' => 'text-align: right',
+		                    ],
 		                    'value' => function($model) {
 		                    				if ( $model->tipo_declaracion == 1 ) {
 		                    					return $model->estimado;
@@ -109,6 +112,9 @@
 		                ],
 		            	[
 		                    'label' => Yii::t('frontend', 'Sustitutiva'),
+		                    'contentOptions' => [
+		                    	'style' => 'text-align: right',
+		                    ],
 		                    'value' => function($model) {
     										return $model->sustitutiva;
 										},
