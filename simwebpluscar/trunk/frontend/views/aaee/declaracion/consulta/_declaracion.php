@@ -75,10 +75,10 @@
 	    <div class="panel panel-primary" style="width: 100%;">
 	        <div class="panel-heading">
 	        	<div class="row">
-		        	<div class="col-sm-4">
+		        	<div class="col-sm-4" style="width: 70%;">
 		        		<h3><?= Html::encode(Yii::t('frontend', $caption)) ?></h3>
 		        	</div>
-		        	<div class="col-sm-3" style="width: 30%; float:right; padding-right: 50px;">
+		        	<div class="col-sm-3" style="width: 25%; float:right; padding-right: 50px;">
 		        		<style type="text/css">
 							.col-sm-3 > ul > li > a:hover {
 								background-color: #337AB7;
@@ -93,7 +93,7 @@
 	        <div class="panel-body">
 	        	<div class="container-fluid">
 	        		<div class="col-sm-12">
-			        	<div class="row" style="margin: -20; padding-left: -10px; width: 105%;">
+			        	<div class="row" style="margin: -25px; padding-top: 20px; width: 105%;">
 							<?= GridView::widget([
 									'id' => 'grid-declaracion',
 									'dataProvider' => $dataProvider,
@@ -104,6 +104,9 @@
 
 										[
 						                    'label' => Yii::t('frontend', 'Año'),
+						                     'contentOptions' => [
+						                    	//'style' => 'text-align: center',
+						                    ],
 						                    'value' => function($model) {
 	                										return $model->actividadEconomica->ano_impositivo;
 	        											},
@@ -122,14 +125,20 @@
 						                ],
 						                [
 						                    'label' => Yii::t('frontend', 'Estimada'),
+						                    'contentOptions' => [
+						                    	'style' => 'text-align: right',
+						                    ],
 						                    'value' => function($model) {
-	                										return $model->estimado;
+	                										return Yii::$app->formatter->asDecimal($model->estimado, 2);
 	        											},
 						                ],
 						                [
 						                    'label' => Yii::t('frontend', 'Definitiva'),
+						                    'contentOptions' => [
+						                    	'style' => 'text-align: right',
+						                    ],
 						                    'value' => function($model) {
-	                										return $model->reales;
+	                										return Yii::$app->formatter->asDecimal($model->reales, 2);
 	        											},
 						                ],
 
@@ -142,61 +151,118 @@
 						        	]
 								]);?>
 						</div>
+
+						<div class="row">
+							<div class="form-group">
+
+								<div class="col-sm-3" style="width: 40%;margin-left:25px;">
+									<?= Html::a(Yii::t('frontend', 'Descargar Boletin: ' . $caption),
+																				[$urlBoletin],
+																			  	[
+																					'id' => 'btn-boletin',
+																					'class' => 'btn btn-primary',
+																					'value' => $lapso['tipo'],
+																					'style' => 'width: 100%; margin-left:0px;margin-top:20px;',
+																					'name' => 'btn-boletin',
+																					'target' => '_blank',
+
+																			  	]);
+									?>
+								</div>
+							</div>
+						</div>
+
+
+						<div class="row" style="border-bottom: 1px solid #ccc;margin-top: 20px;;margin-bottom: 20px;">
+							<h4><strong><?=Html::encode(Yii::t('frontend', 'HISTORICO LAPSO: ') . $lapso['a'] . ' - ' . $lapso['p'])?></strong></h4>
+						</div>
+
+						<div class="row" style="margin: -25px; padding-top: 20px; width: 105%;">
+							<?= GridView::widget([
+									'id' => 'grid-historico-declaracion',
+									'dataProvider' => $dataProviderHistorico,
+									'headerRowOptions' => ['class' => 'success'],
+									'columns' => [
+										//['class' => 'yii\grid\SerialColumn'],
+
+										[
+						                    'label' => Yii::t('frontend', 'Id'),
+						                   	'contentOptions' => [
+						                    	'style' => 'text-align: center;font-size: 85%;',
+						                    ],
+						                    'value' => function($model) {
+	                										return $model->id_historico;
+	        											},
+						                ],
+
+										[
+						                    'label' => Yii::t('frontend', 'Fecha/Hora'),
+						                    'contentOptions' => [
+						                    	'style' => 'text-align: center;font-size: 85%;',
+						                    ],
+						                    'value' => function($model) {
+	                										return $model->fecha_hora;
+	        											},
+						                ],
+
+						            	[
+						                    'label' => Yii::t('frontend', 'Tipo'),
+						                    'contentOptions' => [
+						                    	'style' => 'text-align: center;font-size: 85%;',
+						                    ],
+						                    'value' => function($model) {
+	                										return $model->tipoDeclaracion->descripcion;
+	        											},
+						                ],
+
+						                [
+				                            'label' => 'Certificado',
+				                            'format' => 'raw',
+				                            'value' => function($data) {
+				                            	return Html::a($data['serial_control'],
+				                            			 		Url::to(['generar-certificado', 'id' => $data['id_historico'], 'idC' => $data['id_contribuyente']]),
+				                            			 		[
+				                            			 			'class' => 'btn btn-success',
+				                            			 			'style' => 'font-size: 85%;',
+				                            			 			'title' => 'Certificado ' . $data['serial_control'],
+				                            			 			'target' => '_blank',
+				                            			 		]);
+				                            },
+				                        ],
+
+				                        [
+				                            'label' => 'Comprobante',
+				                            'format' => 'raw',
+				                            'value' => function($data) {
+				                            	return Html::a($data['serial_control'],
+				                            			 		Url::to(['generar-comprobante', 'id' => $data['id_historico'], 'idC' => $data['id_contribuyente']]),
+				                            			 		[
+				                            			 			'class' => 'btn btn-primary',
+				                            			 			'style' => 'font-size: 85%;',
+				                            			 			'title' => 'Comprobante ' . $data['serial_control'],
+				                            			 			'target' => '_blank',
+				                            			 		]);
+				                            },
+				                        ],
+
+						                [
+						                    'label' => Yii::t('frontend', 'Observación'),
+						                    'contentOptions' => [
+						                    	'style' => 'font-size: 85%;',
+						                    ],
+						                    'value' => function($model) {
+	                										return $model->observacion;
+	        											},
+						                ],
+
+						        	]
+								]);?>
+						</div>
 					</div>	<!-- Fin de col-sm-12 -->
 				</div> <!-- Fin de container-fluid -->
 
 				<div class="row">
 					<div class="form-group">
-
-						<div class="col-sm-3" style="width: 20%;margin-left:25px;">
-							<?= Html::a(Yii::t('frontend', 'Descargar Boletin'),
-																		['generar-boletin-estimada'],
-																	  	[
-																			'id' => 'btn-boletin',
-																			'class' => 'btn btn-primary',
-																			'value' => $lapso['tipo'],
-																			'style' => 'width: 100%; margin-left:0px;margin-top:20px;',
-																			'name' => 'btn-boletin',
-																			'target' => '_blank',
-
-																	  	]);
-							?>
-						</div>
-
-
-
-						<div class="col-sm-3" style="width: 20%;margin-left:50px;">
-							<?= Html::a(Yii::t('frontend', 'Descargar Certificado'),
-																		['generar-certificado-estimada'],
-																	  	[
-																			'id' => 'btn-ceriticado',
-																			'class' => 'btn btn-primary',
-																			'value' => $lapso['tipo'],
-																			'style' => 'width: 100%; margin-left:0px;margin-top:20px;',
-																			'name' => 'btn-ceriticado',
-																			'target' => '_blank',
-
-																	  	]);
-							?>
-						</div>
-
-
-
-						<div class="col-sm-3" style="width: 20%;margin-left:50px;">
-							<?= Html::a(Yii::t('frontend', 'Descargar Declaracion'),
-																		['generar-declaracion-estimada'],
-																	  	[
-																			'id' => 'btn-declaracion',
-																			'class' => 'btn btn-primary',
-																			'value' => $lapso['tipo'],
-																			'style' => 'width: 100%; margin-left:0px;margin-top:20px;',
-																			'name' => 'btn-declaracion',
-																			'target' => '_blank',
-
-																	  	]);
-							?>
-						</div>
-
 
 						<div class="col-sm-3" style="width: 20%;margin-left:50px;">
 							<?= Html::submitButton(Yii::t('frontend', 'Back'),
@@ -210,8 +276,6 @@
 																	  ]);
 							?>
 						</div>
-
-
 
 					</div>
 				</div>
