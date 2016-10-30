@@ -339,7 +339,7 @@
             // Informacion de la declaracion.
             $declaracionSearch = New DeclaracionBaseSearch($this->_id_contribuyente);
             $rangoFecha = $declaracionSearch->getRangoFechaDeclaracion($this->_año_impositivo);
-            $periodoFiscal = $rangoFecha['fechaDesde'] . ' AL ' . $rangoFecha['fechaHasta'];
+            $periodoFiscal = date('d-m-Y', strtotime($rangoFecha['fechaDesde'])) . ' AL ' . date('d-m-Y', strtotime($rangoFecha['fechaHasta']));
 
             // Esta informacion se sacara del historico que se guardo.
             $resumen = self::actionResumenDeclaradoEstimado($historicoModel);
@@ -348,7 +348,7 @@
                                                             'resumen'=> $resumen,
                                                             'tipoDeclaracion' => 'ESTIMADA',
                                                             'periodoFiscal' => $periodoFiscal,
-                                                            'fechaEmision' => $historicoModel['fecha_hora'],
+                                                            'fechaEmision' => date('d-m-Y', strtotime($historicoModel['fecha_hora'])),
                                     ]);
 
 
