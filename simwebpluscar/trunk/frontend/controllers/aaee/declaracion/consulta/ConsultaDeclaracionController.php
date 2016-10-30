@@ -59,9 +59,8 @@
 	use backend\models\aaee\declaracion\sustitutiva\SustitutivaBaseSearch;
 	use backend\models\aaee\declaracion\DeclaracionBaseSearch;
 	use common\controllers\pdf\boletin\BoletinController;
-	// test class
-	use common\controllers\pdf\boletin\BoletinPruebaController;
-
+	use backend\models\aaee\historico\declaracion\HistoricoDeclaracionSearch;
+	use common\controllers\pdf\declaracion\DeclaracionController;
 
 
 
@@ -352,18 +351,114 @@
 
 				$dataProvider = $declaracionSearch->getDataProviderRubrosRegistrados($lapso['a'], $lapso['p']);
 
+				$dataProviderHistorico = $declaracionSearch->getDataProviderHistoricoDeclaracionSegunLapso($lapso['a'], $lapso['p']);
+
 				$opciones = [
 					'quit' => '/aaee/declaracion/consulta/consulta-declaracion/quit',
 				];
+				if ( $lapso['tipo'] == 1 ) {
+					$urlBoletin = 'generar-boletin-estimada';
+				} elseif ( $lapso['tipo'] == 2 ) {
+					$urlBoletin = 'generar-boletin-definitiva';
+				}
 
+				$caption = $lapso['descripcion'] . ' ' . $lapso['a'] . ' - ' . $lapso['p'];
 				return $this->render('/aaee/declaracion/consulta/_declaracion', [
 															'lapso' => $lapso,
 															'dataProvider' => $dataProvider,
-															'caption' => $lapso['descripcion'],
+															'caption' => $caption,
 															'opciones' => $opciones,
+															'dataProviderHistorico' => $dataProviderHistorico,
+															'urlBoletin' => $urlBoletin,
 					]);
 			}
 		}
+
+
+
+
+
+		/**
+		 * Metodo que permite renderizar el certificado de declaracion, el renderizado
+		 * es un pdf.
+		 * @return renderiza un pdf.
+		 */
+		public function actionGenerarCertificado()
+		{
+
+			$idContribuyente = $_SESSION['idContribuyente'];
+			$lapso = $_SESSION['lapso'];
+			$a = $lapso['a'];
+			$p = $lapso['p'];
+			$request = Yii::$app->request;
+
+			$idEnviado = 0;
+			if ( $request->isGet ) {
+				if ( $request->get('id') !== null ) {
+					$idEnviado = $request->get('id');			// el identificador del historico.
+					$idContEnviado = $request->get('idC');		// el identificador del contribuyente.
+				}
+
+				if ( $idEnviado > 0 && $idContEnviado == $idContribuyente ) {
+
+					// Controlador para emitir el comprobante de declaracion.
+					$declaracion = New DeclaracionController($idContribuyente, $a, $p);
+					$declaracion->actionGenerarCertificadoDeclaracionSegunHistorico($idEnviado);
+
+				} else {
+					throw new NotFoundHttpException(Yii::t('frontend', 'Numero de control no valido'));
+				}
+
+			} else {
+				throw new NotFoundHttpException(Yii::t('frontend', 'Solicitud no valida'));
+			}
+
+		}
+
+
+
+	    /**
+		 * Metodo para responser a la solicitud de generacion de la declaracion estimada.
+		 * Lo que aparecera sera un pdf con el resumen de la declaracion.
+		 * @return [type] [description]
+		 */
+		public function actionGenerarComprobante()
+		{
+
+			$idContribuyente = $_SESSION['idContribuyente'];
+			$lapso = $_SESSION['lapso'];
+			$a = $lapso['a'];
+			$p = $lapso['p'];
+			$request = Yii::$app->request;
+
+			$idEnviado = 0;
+			if ( $request->isGet ) {
+				if ( $request->get('id') !== null ) {
+					$idEnviado = $request->get('id');			// el identificador del historico.
+					$idContEnviado = $request->get('idC');		// el identificador del contribuyente.
+				}
+
+				if ( $idEnviado > 0 && $idContEnviado == $idContribuyente ) {
+
+					// Controlador para emitir el comprobante de declaracion.
+					$declaracion = New DeclaracionController($idContribuyente, $a, $p);
+					$declaracion->actionGenerarComprobanteSegunHistorico($idEnviado);
+
+				} else {
+					throw new NotFoundHttpException(Yii::t('frontend', 'Numero de control no valido'));
+				}
+
+			} else {
+				throw new NotFoundHttpException(Yii::t('frontend', 'Solicitud no valida'));
+			}
+
+		}
+
+
+
+
+
+
 
 
 
