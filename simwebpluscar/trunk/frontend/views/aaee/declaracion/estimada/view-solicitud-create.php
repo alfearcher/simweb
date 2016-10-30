@@ -122,18 +122,27 @@
 					                ],
 					                [
 					                    'label' => Yii::t('frontend', 'Monto Declaracion'),
+					                    'contentOptions' => [
+						                    'style' => 'text-align: right',
+						                ],
 					                    'value' => function($model) {
                 										return Yii::$app->formatter->asDecimal($model->monto_new, 2);
         											},
 					                ],
 					                [
 					                    'label' => Yii::t('frontend', 'Monto Anterior'),
+					                    'contentOptions' => [
+						                    'style' => 'text-align: right',
+						                ],
 					                    'value' => function($model) {
                 										return Yii::$app->formatter->asDecimal($model->monto_v, 2);
         											},
 					                ],
 					                [
 					                    'label' => Yii::t('frontend', 'Monto Minimo'),
+					                    'contentOptions' => [
+						                    'style' => 'text-align: right',
+						                ],
 					                    'value' => function($model) {
                 										return Yii::$app->formatter->asDecimal($model->monto_minimo, 2);
         											},
