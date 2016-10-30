@@ -115,6 +115,12 @@
                                     ]);
 
 
+
+            $htmlCobro = $this->renderPartial('@common/views/plantilla-pdf/boletin/definitiva/layout-cobro-anticipado-pdf',[
+                                                            'resumen'=> 0,
+                                    ]);
+
+
             // informacion del pie de pagina.
             $htmlPiePagina = $this->renderPartial('@common/views/plantilla-pdf/boletin/layout-piepagina-pdf',[
                                                             'director'=> Yii::$app->oficina->getDirector(),
@@ -139,6 +145,7 @@
             $mpdf->WriteHTML($htmlEncabezado);
             $mpdf->WriteHTML($htmlContribuyente);
             $mpdf->WriteHTML($htmlDeclaracion);
+            $mpdf->WriteHTML($htmlCobro);
             $mpdf->SetHTMLFooter($htmlPiePagina);
 
             $mpdf->Output($nombrePDF, 'I');
