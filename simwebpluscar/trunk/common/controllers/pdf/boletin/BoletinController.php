@@ -85,10 +85,11 @@
         /***/
         public function generarBoletinEstimada()
         {
-
+            $barcode = 152222;
             // Informacion del encabezado.
             $htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/layout/layout-encabezado-pdf', [
                                                             'caption' => 'BOLETIN DE NOTIFICACION',
+
                                     ]);
 
             // Informacion del congtribuyente.
@@ -129,6 +130,7 @@
             $htmlPiePagina = $this->renderPartial('@common/views/plantilla-pdf/boletin/layout-piepagina-pdf',[
                                                             'director'=> Yii::$app->oficina->getDirector(),
                                                             'nombreCargo' => Yii::$app->oficina->getNombreCargo(),
+                                                            'barcode' => $barcode,
                                     ]);
 
 
@@ -149,7 +151,7 @@
             $mpdf->WriteHTML($htmlContribuyente);
             $mpdf->WriteHTML($htmlDeclaracion);
             $mpdf->WriteHTML($htmlCobro);
-            $mpdf->WriteHTML($htmlPiePagina);
+            $mpdf->SetHTMLFooter($htmlPiePagina);
 
            // $mpdf->WriteHTML($html);
             $mpdf->Output($nombrePDF, 'I');
