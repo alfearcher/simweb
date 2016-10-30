@@ -56,17 +56,7 @@
  ?>
 
 <?php
-	$form = ActiveForm::begin([
-		'id' => 'id-layout-declaracion-pdf',
-		'method' => 'post',
-		//'action' => $url,
-		'enableClientValidation' => false,
-		'enableAjaxValidation' => false,
-		'enableClientScript' => false,
-	]);
-
 	$fechaEmision = date('d-m-Y');
-
 	$sumaImpuesto = 0;
 ?>
 
@@ -192,6 +182,3 @@
 		border-bottom: solid 1px #ccc;
 	}
 </style>
-
-
-<?php ActiveForm::end(); ?>

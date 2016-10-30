@@ -55,15 +55,6 @@
  ?>
 
 <?php
-	$form = ActiveForm::begin([
-		'id' => 'id-layout-cobro-anticipado-pdf',
-		'method' => 'post',
-		//'action' => $url,
-		'enableClientValidation' => false,
-		'enableAjaxValidation' => false,
-		'enableClientScript' => false,
-	]);
-
 	$sumaImpuesto = 0;
 	$subTotal = 0;
 ?>
@@ -166,6 +157,3 @@
 		border-bottom: solid 1px #ccc;
 	}
 </style>
-
-
-<?php ActiveForm::end(); ?>
