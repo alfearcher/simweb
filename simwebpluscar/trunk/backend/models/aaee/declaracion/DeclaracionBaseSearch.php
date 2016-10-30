@@ -62,6 +62,7 @@
 	use backend\models\aaee\correccionfechainicio\CorreccionFechaInicioSearch;
 	use common\models\planilla\HistoricoSearch;
 	use backend\models\recibo\depositoplanilla\DepositoPlanillaSearch;
+	use backend\models\aaee\historico\declaracion\HistoricoDeclaracionSearch;
 
 
 
@@ -1481,6 +1482,37 @@
 			return $mensajes;
 	    }
 
+
+
+
+	    /**
+	     * Metodo que retorna la consulta del historico de declaraciones por el
+	     * lapso declarado, estructura del lapso:
+	     * 9999 - 9.
+	     * @param  integer $añoImpositivo año del lapso consultado.
+		 * @param  integer $periodo periodo del lapso consultado.
+		 * @return array retorna un arreglo con la informacion de la consulta
+		 * sobre la entidad "HistoricoDeclaracion".
+	     */
+	    public function getHistoricoDeclaracionSegunLapso($añoImpositivo, $periodo)
+	    {
+	    	$historico = New HistoricoDeclaracionSearch($this->_id_contribuyente);
+	    	return $historico->findHistoricoDeclaracionSegunLapso($añoImpositivo, $periodo);
+	    }
+
+
+
+	    /***/
+	    public function getDataProviderHistoricoDeclaracionSegunLapso($añoImpositivo, $periodo)
+	    {
+	    	$query = self::getHistoricoDeclaracionSegunLapso($añoImpositivo, $periodo);
+
+	    	$dataProvider = New ActiveDataProvider([
+	    						'query' => $query,
+	    		]);
+	    	$query->all();
+	    	return $dataProvider;
+	    }
 
 
 	}
