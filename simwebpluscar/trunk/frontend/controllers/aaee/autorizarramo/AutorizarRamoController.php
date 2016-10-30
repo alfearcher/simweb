@@ -128,7 +128,7 @@
 						$idContribuyente = $_SESSION['idContribuyente'];
 						$searchRamo = New AutorizarRamoSearch($idContribuyente);
 						$datos = $searchRamo->getDatosContribuyente();
-
+die(var_dump($datos));
 						$añoInicio = $searchRamo->getAnoSegunFecha($datos['fecha_inicio']);
 
 						if ( $añoInicio > 0 ) {
