@@ -65,7 +65,7 @@
 		'enableClientScript' => false,
 	]);
 
-	$fechaEmision = date('Y-m-d');
+	$fechaEmision = date('d-m-Y');
 
 	$sumaImpuesto = 0;
 ?>
@@ -104,7 +104,11 @@
 			<td class="info-declaracion-x" colspan="3"><?=Html::encode($r['descripcion']); ?></td>
 			<td class="info-declaracion" colspan="1"><?=Html::encode($r['alicuota']); ?></td>
 			<td class="info-declaracion" colspan="1"><?=Html::encode($r['minimo_ut']); ?></td>
-			<td class="info-declaracion" colspan="2" style="text-align: right;"><?=Html::encode(Yii::$app->formatter->asDecimal($r['estimado'], 2)); ?></td>
+			<?php if ( $tipoDeclaracion == 'ESTIMADA' ) {?>
+				<td class="info-declaracion" colspan="2" style="text-align: right;"><?=Html::encode(Yii::$app->formatter->asDecimal($r['estimado'], 2)); ?></td>
+			<?php } elseif ( $tipoDeclaracion == 'DEFINITIVA' ) {?>
+				<td class="info-declaracion" colspan="2" style="text-align: right;"><?=Html::encode(Yii::$app->formatter->asDecimal($r['reales'], 2)); ?></td>
+			<?php } ?>
 			<td class="info-declaracion" colspan="1" style="text-align: right;"><?=Html::encode(Yii::$app->formatter->asDecimal($r['minimo'], 2)); ?></td>
 			<td class="info-declaracion" colspan="1" style="text-align: right;"><?=Html::encode(Yii::$app->formatter->asDecimal($r['impuesto'], 2)); ?></td>
 		</tr>
