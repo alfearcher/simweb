@@ -83,6 +83,74 @@
 
 
         /***/
+        public function generarBoletinDefinitiva()
+        {
+            $barcode = 152222;
+            // Informacion del encabezado.
+            $htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/layout/layout-encabezado-pdf', [
+                                                            'caption' => 'BOLETIN DE NOTIFICACION',
+
+                                    ]);
+
+            // Informacion del congtribuyente.
+            $findModel = ContribuyenteBase::findOne($this->_id_contribuyente);
+            $htmlContribuyente =  $this->renderPartial('@common/views/plantilla-pdf/layout/layout-contribuyente-pdf',[
+                                                            'model' => $findModel,
+                                                            'showDireccion' => true,
+                                                            'showRepresentante' => true,
+                                    ]);
+
+
+            // Informacion de la declaracion.
+            $declaracionSearch = New DeclaracionBaseSearch($this->_id_contribuyente);
+            $rangoFecha = $declaracionSearch->getRangoFechaDeclaracion($this->_año_impositivo);
+            $periodoFiscal = date('d-m-Y', strtotime($rangoFecha['fechaDesde'])) . ' AL ' . date('d-m-Y', strtotime($rangoFecha['fechaHasta']));
+
+            $resumen = self::actionResumenDeclaracion('reales');
+
+            $htmlDeclaracion = $this->renderPartial('@common/views/plantilla-pdf/boletin/layout-declaracion-pdf',[
+                                                            'resumen'=> $resumen,
+                                                            'tipoDeclaracion' => 'DEFINITIVA',
+                                                            'periodoFiscal' => $periodoFiscal,
+                                    ]);
+
+
+            // informacion del pie de pagina.
+            $htmlPiePagina = $this->renderPartial('@common/views/plantilla-pdf/boletin/layout-piepagina-pdf',[
+                                                            'director'=> Yii::$app->oficina->getDirector(),
+                                                            'nombreCargo' => Yii::$app->oficina->getNombreCargo(),
+                                                            'barcode' => $barcode,
+                                    ]);
+
+
+
+
+
+            // Nombre del archivo.
+            $nombrePDF = 'BD-' . $this->_id_contribuyente . '-' . $this->_año_impositivo . $this->_periodo;
+            $nombre = $nombrePDF;
+            $nombrePDF .= '.pdf';
+
+            //$html = $htmlEncabezado . $htmlContribuyente . $htmlDeclaracion . $htmlCobro . $htmlPiePagina;
+
+            $mpdf = new mPDF;
+
+            $mpdf->SetHeader($nombre);
+            $mpdf->WriteHTML($htmlEncabezado);
+            $mpdf->WriteHTML($htmlContribuyente);
+            $mpdf->WriteHTML($htmlDeclaracion);
+            $mpdf->SetHTMLFooter($htmlPiePagina);
+
+            $mpdf->Output($nombrePDF, 'I');
+            exit;
+        }
+
+
+
+
+
+
+        /***/
         public function generarBoletinEstimada()
         {
             $barcode = 152222;
@@ -104,7 +172,7 @@
             // Informacion de la declaracion.
             $declaracionSearch = New DeclaracionBaseSearch($this->_id_contribuyente);
             $rangoFecha = $declaracionSearch->getRangoFechaDeclaracion($this->_año_impositivo);
-            $periodoFiscal = $rangoFecha['fechaDesde'] . ' AL ' . $rangoFecha['fechaHasta'];
+            $periodoFiscal = date('d-m-Y', strtotime($rangoFecha['fechaDesde'])) . ' AL ' . date('d-m-Y', strtotime($rangoFecha['fechaHasta']));
 
             $resumen = self::actionResumenDeclaracion('estimado');
 
@@ -164,7 +232,7 @@
         /**
          * Metodo que entrega un resumen de la declaracion, con sus respectivos calculos por
          * rubro.
-         * @param  string $atributo descripcion del atributo que se utuliza para el calculo
+         * @param  string $atributo descripcion del atributo que se utiliza para el calculo
          * - estimado.
          * - reales.
          * - sustitutiva.
@@ -181,7 +249,7 @@
             foreach ( $declaracionModel as $declaracion ) {
                 $calculo = New CalculoRubro($declaracion);
 
-                $estimadaImpuesto = $calculo->getCalcularPorTipoDeclaracion($atributo);
+                $calculoImpuesto = $calculo->getCalcularPorTipoDeclaracion($atributo);
                 $minimo = $calculo->getMinimoTributableRubro();
 
                 $resumen[] = [
@@ -192,7 +260,7 @@
                     'alicuota' => $declaracion['rubroDetalle']['alicuota'],
                     'minimo_ut' => $declaracion['rubroDetalle']['minimo_ut'],
                     'minimo' => $minimo,
-                    'impuesto' => $estimadaImpuesto,
+                    'impuesto' => $calculoImpuesto,
                     'estimado' => $declaracion['estimado'],
                     'reales' => $declaracion['reales'],
                     'sustitutiva' => $declaracion['sustitutiva'],
