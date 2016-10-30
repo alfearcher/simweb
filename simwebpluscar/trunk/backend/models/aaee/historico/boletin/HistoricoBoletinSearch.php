@@ -47,6 +47,7 @@
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 	use backend\models\aaee\historico\boletin\HistoricoBoletin;
+	use common\models\numerocontrol\NumeroControlSearch;
 
 	/**
 	* 	Clase
@@ -111,27 +112,53 @@
 	    		'r' => null,
 	    		'id' => 0,
 	    	];
+	    	$prefijo = [
+	    		1 => 'BE',
+	    		2 => 'BD',
+	    	];
 	    	$resultado = false;
 	    	$id = 0;
 	    	$model = New HistoricoBoletin();
 	    	$tabla = $model->tableName();
 
-	    	foreach ( $model->attributes as $key => $value ) {
-	    		if ( isset($arregloDatos[$key]) ) {
-	    			$model[$key] = $arregloDatos[$key];
-	    		} else {
-	    			$model[$key] = 0;
-	    		}
-	    	}
-	    	$model['id_historico'] = null;
+	    	// Se inicializa un contador de oportunidades para generar numero control
+	    	$i = 0;
+	    	$maximo = 10;
+	    	$nroControl = 0;
 
-	    	$resultado = $conexion->guardarRegistro($conn, $tabla, $model->attributes);
-			if ( $resultado ) {
-				$id = $conn->getLastInsertID();
-				$result = [
-					'r' => 'new',
-					'id' => $id,
-				];
+	    	// Se genera el numero de control
+	    	$control = New NumeroControlSearch();
+	    	while ( $i <= $maximo ) {
+	    		$nroControl = $control->generarNumeroControl();
+	    		if ( $nroControl > 0 ) {
+	    			break;
+	    		}
+	    		$i++;
+	    	}
+
+	    	if ( $nroControl > 0 ) {
+	    		foreach ( $model->attributes as $key => $value ) {
+		    		if ( isset($arregloDatos[$key]) ) {
+		    			$model[$key] = $arregloDatos[$key];
+		    		} else {
+		    			$model[$key] = 0;
+		    		}
+		    	}
+
+		    	$model['id_historico'] = null;
+		    	if ( $model['fecha_hora'] == null ) {
+		    		$model['fecha_hora'] = date('Y-m-d H:i:s');
+		    	}
+
+
+		    	$resultado = $conexion->guardarRegistro($conn, $tabla, $model->attributes);
+				if ( $resultado ) {
+					$id = $conn->getLastInsertID();
+					$result = [
+						'r' => 'new',
+						'id' => $id,
+					];
+				}
 			}
 
 	    	return $result;
@@ -177,6 +204,8 @@
 	    	 		$seriales['periodo'] . '-' . $seriales['id_contribuyente'] . '-' .
 	    	 		$seriales['nro_control'];
 	    }
+
+
 
 
 	    /***/

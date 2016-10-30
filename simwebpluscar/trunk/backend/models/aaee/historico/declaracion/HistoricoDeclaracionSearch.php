@@ -218,6 +218,10 @@
 
 		    	$model['id_historico'] = null;
 		    	$model['nro_control'] = $nroControl;
+		    	if ( $model['fecha_hora'] == null ) {
+		    		$model['fecha_hora'] = date('Y-m-d H:i:s');
+		    	}
+
 		    	$campos = [
 		    		'id_impuesto' => $model['id_impuesto'],
 		    		'ano_impositivo' => $model['ano_impositivo'],
