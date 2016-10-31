@@ -89,7 +89,7 @@ class CrearUsuarioNaturalForm extends CrearUsuarioNatural{
          // ['cedula', 'existe'],
           [['tipo_naturaleza', 'tipo'],'default', 'value' => 0],
           [['cedula'], 'integer'],
-          [['cedula'], 'validarLongitud'],
+        //  [['cedula'], 'validarLongitud'],
          
            // [['naturaleza','cedula','tipo'x],'unique', 'message' => 'Datos repetidos en la base de datos'],
         ];

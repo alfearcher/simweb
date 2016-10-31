@@ -88,7 +88,8 @@ class CrearUsuarioJuridicoForm extends CrearUsuarioJuridico{
           [['tipo_naturaleza'],'default', 'value' => 1],
           [['cedula', 'tipo'], 'integer'],
           ['cedula', 'integer'],
-          [['cedula'], 'validarLongitud'],
+          // [['cedula'], 'validarLongitud'],
+       //   ['cedula', 'string', 'max' => 2],
 
          
            // [['naturaleza','cedula','tipo'x],'unique', 'message' => 'Datos repetidos en la base de datos'],
@@ -100,15 +101,19 @@ class CrearUsuarioJuridicoForm extends CrearUsuarioJuridico{
       public function validarLongitud($attribute, $params)
       {
 
-       $longitud = strlen($this->naturaleza.$this->cedula.$this->tipo);
+      //  $longitud = strlen($this->naturaleza.$this->cedula.$this->tipo);
 
 
-      // die($longitud));
+      // // die($longitud));
 
-        if ($longitud > 10){
-          $this->addError($attribute, Yii::t('frontend', 'The rif must not have more than 10 characters'));
+      //   if ($longitud > 10){
+      //     $this->addError($attribute, Yii::t('frontend', 'The rif must not have more than 10 characters'));
        
-        }
+      //   }
+      //   
+           if (!preg_match('/^[0-9]{8}$/', $this->$attribute)) {
+        $this->addError($attribute, 'must contain exactly 8 digits.');
+    }
       }
 
 
