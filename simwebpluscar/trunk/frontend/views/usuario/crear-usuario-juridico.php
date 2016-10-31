@@ -66,7 +66,7 @@ $this->title = 'Busqueda Persona Juridica';
                                                                                             'id' => 'cedula',
                                                                                             'style' => 'height:32px;width:122px;',
                                                                                            
-                                                                                            //'maxlength' => $maxLength,
+                                                                                            'maxlength' => 8,
                                                                                           ])->label(false) ?>
                                                 </div>
                                     </div>

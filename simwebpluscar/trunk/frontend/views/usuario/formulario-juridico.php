@@ -227,7 +227,7 @@
                             ?>
                             </div>
                             <div class="col-sm-4">
-                            <?= $form->field($model, 'tlf_ofic')->textInput(['maxlength' => 12,
+                            <?= $form->field($model, 'tlf_ofic')->textInput(['maxlength' => 7,
                                                                         'style' => 'width:150px;',
                                                                         'placeholder' => false,
                                                                         'style' => 'margin-left:-5px;',
@@ -261,7 +261,7 @@
                             </div>
 
                             <div class="col-sm-4"> 
-                            <?= $form->field($model, 'tlf_ofic_otro')->textInput(['maxlength' => 12,
+                            <?= $form->field($model, 'tlf_ofic_otro')->textInput(['maxlength' => 7,
                                                                         'style' => 'width:150px;',
                                                                         'placeholder' => false,
                                                                         'style' => 'margin-left:-5px;',
@@ -296,7 +296,7 @@
                                         </div>
                                         <div class="col-sm-4">
                                     
-                                    <?= $form->field($model, 'tlf_celular')->textInput(['maxlength' => 12,
+                                    <?= $form->field($model, 'tlf_celular')->textInput(['maxlength' => 7,
                                                                         'style' => 'width:150px;',
                                                                         'style' => 'margin-left:-5px;',
                                                                         'placeholder' => false,

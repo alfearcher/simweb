@@ -99,7 +99,9 @@
                                                                                         'clientOptions' => [
                                                                                            // 'maxDate' => '+0d', // Bloquear los dias en el calendario a partir del dia siguiente al actual.
                                                                                         'changeYear' => 'true', 
-                                                                                         
+                                                                                       // 'changeMonth' => 'true', 
+                                                                                        'showAnim'=>'fold',
+                                                                                       
                                                                                          ],
                                                                                        'language' => 'es-ES',
                                                                                        'dateFormat' => 'dd-MM-yyyy',
@@ -164,7 +166,7 @@
 
                     </div>
                     <did class="col-sm-3" >
-                        <?= $form->field($model, 'tlf_celular')->textInput(['maxlength' => 12,
+                        <?= $form->field($model, 'tlf_celular')->textInput(['maxlength' => 7,
                                                             'style' => 'width:150px;',
                                                             'placeholder' => false,
                                                             'id' => 'tlf_celular',
