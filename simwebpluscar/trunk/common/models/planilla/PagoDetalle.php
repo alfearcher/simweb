@@ -50,6 +50,9 @@
 	use backend\models\inmueble\InmueblesUrbanosForm;
 	use backend\models\vehiculo\VehiculoForm;
 	use backend\models\propaganda\Propaganda;
+	use backend\models\utilidad\exigibilidad\Exigibilidad;
+	use backend\models\tasa\Tasa;
+
 
 	/**
 	* 	Clase
@@ -154,6 +157,29 @@
 			return $this->hasOne(Propaganda::className(), ['id_impuesto' => 'id_impuesto']);
 		}
 
+
+		/**
+		 * Relacion con la entidad "exigibilidades"
+		 * @return active record
+		 */
+		public function getExigibilidad()
+		{
+			return $this->hasOne(Exigibilidad::className(), ['exigibilidad' => 'exigibilidad_pago']);
+		}
+
+
+		/**
+		 * Relacion con la entidad "tasas"
+		 * @return active record
+		 */
+		public function getTasa()
+		{
+			return $this->hasOne(Tasa::className(),
+									[
+										'id_impuesto' => 'id_impuesto',
+									 	'impuesto' => 'impuesto',
+									]);
+		}
 
 	}
 
