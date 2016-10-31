@@ -435,7 +435,7 @@ $listaAño2  = ArrayHelper::map($listaFecha2, 'id' , 'campo');
                     <div class="col-sm-5">
                         <?= $form->field($model, 'serial_carroceria')->input(
                                                                 [
-                                                                
+                                                                'maxlenght' => 17,
                                                                 'id'=> 'serial_carroceria',
                                                                 ]);
                     ?>
@@ -454,7 +454,7 @@ $listaAño2  = ArrayHelper::map($listaFecha2, 'id' , 'campo');
                     <div class="col-sm-5" style="margin-left: -20px;">
                         <?= $form->field($model, 'serial_motor')->input(
                                                                 [
-                                                                
+                                                                'maxlenght' => 17,
                                                                 'id'=> 'serial_motor',
                                                                 ]);
                     ?>
