@@ -46,7 +46,10 @@
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 	use common\models\planilla\Pago;
-
+	use backend\models\impuesto\Impuesto;
+	use backend\models\inmueble\InmueblesUrbanosForm;
+	use backend\models\vehiculo\VehiculoForm;
+	use backend\models\propaganda\Propaganda;
 
 	/**
 	* 	Clase
@@ -107,6 +110,50 @@
 		{
 			return $this->hasOne(Pago::className(), ['id_pago' => 'id_pago']);
 		}
+
+
+		/**
+		 * Relacion con la entidad "impuestos"
+		 * @return active record.
+		 */
+		public function getImpuestos()
+		{
+			return $this->hasOne(Impuesto::className(), ['impuesto' => 'impuesto']);
+		}
+
+
+
+		/**
+		 * Relacion con la entidad "inmuebles"
+		 * @return active record.
+		 */
+		public function getInmueble()
+		{
+			return $this->hasOne(InmueblesUrbanosForm::className(), ['id_impuesto' => 'id_impuesto']);
+		}
+
+
+
+		/**
+		 * Relacion con la entidad "vehiculos"
+		 * @return active record.
+		 */
+		public function getVehiculo()
+		{
+			return $this->hasOne(VehiculoForm::className(), ['id_vehiculo' => 'id_impuesto']);
+		}
+
+
+
+		/**
+		 * Relacion con la entidad "propagandas"
+		 * @return active record.
+		 */
+		public function getPropaganda()
+		{
+			return $this->hasOne(Propaganda::className(), ['id_impuesto' => 'id_impuesto']);
+		}
+
 
 	}
 
