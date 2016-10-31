@@ -336,7 +336,7 @@
 
 		// tipo solicitud 28
 		private function actionMostrarSolicitudDesintegracionInmueble()
-		{ 
+		{   
 			if ( $this->model->nivel_aprobacion == 2 ) {
 					$modelSearch = New SlInmueblesUrbanosSearch($this->model->id_contribuyente);
 					$model = $modelSearch->findDesintegracion($this->model->nro_solicitud);

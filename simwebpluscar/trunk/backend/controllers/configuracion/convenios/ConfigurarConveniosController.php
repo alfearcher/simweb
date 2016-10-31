@@ -373,7 +373,7 @@ class ConfigurarConveniosController extends Controller
 
          $solicitud = 'Actualizacion de Datos del Inmueble';
 
-         $nro_solicitud = $guardo;
+         $nro_solicitud = $guardo;    
 
          $enviarEmail = new PlantillaEmail();
         
