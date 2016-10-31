@@ -83,7 +83,7 @@
 			$findModel = PagoDetalle::find()->alias('D')
 										    ->where('P.id_contribuyente =:id_contribuyente',
 														[':id_contribuyente' => $this->_id_contribuyente])
-											->andWhere('pago =:pago',
+											->andWhere('D.pago =:pago',
 														[':pago' => 0]);
 
 			return ( count($findModel) > 0 ) ? $findModel : [];
@@ -191,7 +191,7 @@
 		 */
 		private function deudaPeriodoMayorCero($impuesto)
 		{
-			return self::deudaPorImpuesto($impuesto);
+			return self::deudaPorImpuestoPeriodo($impuesto);
 		}
 
 
@@ -204,7 +204,7 @@
 		 */
 		private function deudaPeriodoIgualCero($impuesto)
 		{
-			return self::deudaPorImpuesto($impuesto, '=');
+			return self::deudaPorImpuestoPeriodo($impuesto, '=');
 		}
 
 
@@ -217,7 +217,7 @@
 		 */
 		private function deudaPeriodoMayorIgualCero($impuesto)
 		{
-			return self::deudaPorImpuesto($impuesto, '>=');
+			return self::deudaPorImpuestoPeriodo($impuesto, '>=');
 		}
 
 
@@ -248,7 +248,7 @@
 		 * informacion o estar vacion. Sino entra en la condicion que exige el tipoPeriodo el valor
 		 * retornado sera null.
 		 */
-		private function deudaPorImpuesto($impuesto, $tipoPeriodo = '>')
+		private function deudaPorImpuestoPeriodo($impuesto, $tipoPeriodo = '>')
 		{
 			$deuda = null;
 			$arregloTipo = ['>', '>=', '='];	// > 0, >=0, =0
@@ -288,24 +288,25 @@
 		 */
 		public function getDeudaPorListaObjeto($impuesto)
 		{
+			$deuda = null;
 			if ( $impuesto == 2 ) {
 
 				// Deuda de Inmuebles Urbanos.
-				return self::deudaPorListaInmueble();
+				$deuda = self::deudaPorListaInmueble();
 
 			} elseif ( $impuesto == 3 ) {
 
 				// Deuda de Vehiculos.
-				return self::deudaPorListaVehiculo();
+				$deuda = self::deudaPorListaVehiculo();
 
 			} elseif ( $impuesto == 4 ) {
 
 				// Deuda de Propaganda Comercial.
-				return self::deudaPorListaPropaganda();
+				$deuda = self::deudaPorListaPropaganda();
 
 			}
 
-			return null;
+			return $deuda;
 		}
 
 
@@ -368,7 +369,7 @@
 		 *         	['t'] => monto de la deuda del vehiculo.
 		 * 		}
 		 * }
-		 * Por cada inmmueble retorna una estructura similar a la descripta arriba.
+		 * Por cada vehiculo retorna una estructura similar a la descripta arriba.
 		 * @return array retorna un arreglo.
 		 */
 		private function deudaPorListaVehiculo()
@@ -401,7 +402,22 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que realiza la consulta y busca las deudas de laas propagandas pertenecientes
+		 * al contribuyente, las propagandas deben estar activas. El arreglo contiene los atributos
+		 * que se encuentran en el select. Estructura del arreglo:
+		 * {
+		 * 		[0] => {
+		 *   		['impuesto'] => identificador del impuesto,
+		 *     		['descripcion'] => descripcion del impuesto,
+		 *       	['id_impuesto'] => identificador de la propaganda,
+		 *        	['observacion'] => observacion colocad en la propaganda,
+		 *         	['t'] => monto de la deuda de la propaganda.
+		 * 		}
+		 * }
+		 * Por cada propaganda retorna una estructura similar a la descripta arriba.
+		 * @return array retorna un arreglo.
+		 */
 		private function deudaPorListaPropaganda()
 		{
 			$findModel = self::getModelGeneral();
@@ -418,10 +434,357 @@
 							   ->joinWith('impuestos I', false, 'INNER JOIN')
 							   ->joinWith('propaganda A', false, 'INNER JOIN')
 							   ->andWhere('D.impuesto =:impuesto',[':impuesto' => 4])
-							   ->andWhere('A.inactivo =:inactivo',
-							   					[':inactivo' => 0])
+							   ->andWhere('A.inactivo =:inactivo',[':inactivo' => 0])
 							   ->andWhere('trimestre =:trimestre',[':trimestre' => 0])
 							   ->groupBy('A.id_impuesto')
+							   ->asArray()
+							   ->all();
+
+			return $deuda;
+		}
+
+
+
+
+		/***/
+		private function deudaPorListaEspectaculo()
+		{}
+
+
+
+		/***/
+		private function deudaPorListaApuesta()
+		{}
+
+
+
+
+		/**
+		 * Metodo que renderiza al metodo que realice la consulta de la deuda del objeto
+		 * segun el impuesto. El retorno es un arreglo con los datos del select. La deuda
+		 * se muestra general del objeto.
+		 * @param  integer $impuesto identificador del impuesto.
+		 * @param  integer $idImpuesto identificador del objeto.
+		 * @return array retorna un arreglo.
+		 */
+		public function getDeudaPorObjetoEspecifico($impuesto, $idImpuesto)
+		{
+			$deuda = null;
+			if ( $impuesto == 2 ) {
+
+				$deuda = self::deudaPorInmuebleEspecifico($idImpuesto);
+
+			} elseif ( $impuesto == 3 ) {
+
+				$deuda = self::deudaPorVehiculoEspecifico($idImpuesto);
+
+			} elseif ( $impuesto == 4 ) {
+
+				$deuda = self::deudaPorPropagandaEspecifica($idImpuesto);
+
+			} elseif ( $impuesto == 6 ) {
+
+				$deuda = self::deudaPorEspectaculoEspecifico($idImpuesto);
+
+			} elseif ( $impuesto == 7 ) {
+
+				$deuda = self::deudaPorApuestaEspecifica($idImpuesto);
+
+			}
+
+			return $deuda;
+		}
+
+
+
+		/***/
+		private function deudaPorInmuebleEspecifico($idImpuesto)
+		{
+			$findModel = self::getModelGeneral();
+
+			$deuda = $findModel->select([
+									'D.impuesto',
+									'I.descripcion',
+									'A.id_impuesto',
+									'A.direccion',
+									'(sum(monto+recargo+interes)-sum(descuento+monto_reconocimiento)) as t',
+
+								])
+							   ->joinWith('pagos P', false, 'INNER JOIN')
+							   ->joinWith('impuestos I', false, 'INNER JOIN')
+							   ->joinWith('inmueble A', false, 'INNER JOIN')
+							   ->andWhere('D.impuesto =:impuesto',[':impuesto' => 2])
+							   ->andWhere('D.id_impuesto =:id_impuesto',
+							   						[':id_impuesto' => $idImpuesto])
+							   ->andWhere('A.inactivo =:inactivo',[':inactivo' => 0])
+							   ->andWhere('trimestre >:trimestre',[':trimestre' => 0])
+							   ->groupBy('A.id_impuesto')
+							   ->asArray()
+							   ->all();
+
+			return $deuda;
+		}
+
+
+
+
+		/***/
+		private function deudaPorVehiculoEspecifico($idImpuesto)
+		{
+			$findModel = self::getModelGeneral();
+
+			$deuda = $findModel->select([
+									'D.impuesto',
+									'I.descripcion',
+									'V.id_vehiculo',
+									'V.placa',
+									'(sum(monto+recargo+interes)-sum(descuento+monto_reconocimiento)) as t',
+
+								])
+							   ->joinWith('pagos P', false, 'INNER JOIN')
+							   ->joinWith('impuestos I', false, 'INNER JOIN')
+							   ->joinWith('vehiculo V', false, 'INNER JOIN')
+							   ->andWhere('D.impuesto =:impuesto',[':impuesto' => 3])
+							   ->andWhere('D.id_impuesto =:id_impuesto',
+							   						[':id_impuesto' => $idImpuesto])
+							   ->andWhere('V.status_vehiculo =:status_vehiculo',
+							   					[':status_vehiculo' => 0])
+							   ->andWhere('trimestre >:trimestre',[':trimestre' => 0])
+							   ->groupBy('V.id_vehiculo')
+							   ->asArray()
+							   ->all();
+
+			return $deuda;
+		}
+
+
+
+		/***/
+		private function deudaPorPropagandaEspecifica($idImpuesto)
+		{
+			$findModel = self::getModelGeneral();
+
+			$deuda = $findModel->select([
+									'D.impuesto',
+									'I.descripcion',
+									'A.id_impuesto',
+									'A.observacion',
+									'(sum(monto+recargo+interes)-sum(descuento+monto_reconocimiento)) as t',
+
+								])
+							   ->joinWith('pagos P', false, 'INNER JOIN')
+							   ->joinWith('impuestos I', false, 'INNER JOIN')
+							   ->joinWith('propaganda A', false, 'INNER JOIN')
+							   ->andWhere('D.impuesto =:impuesto',[':impuesto' => 4])
+							   ->andWhere('D.id_impuesto =:id_impuesto',
+							   						[':id_impuesto' => $idImpuesto])
+							   ->andWhere('A.inactivo =:inactivo',[':inactivo' => 0])
+							   ->andWhere('trimestre =:trimestre',[':trimestre' => 0])
+							   ->groupBy('A.id_impuesto')
+							   ->asArray()
+							   ->all();
+
+			return $deuda;
+		}
+
+
+
+		/***/
+		private function deudaPorEspectaculoEspecifico($idImpuesto)
+		{}
+
+
+		/***/
+		private function deudaPorApuestaEspecifica($idImpuesto)
+		{}
+
+
+
+
+
+		/***/
+		public function getDeudaPorListaTasa()
+		{
+			return self::deudaPorListaTasa();
+		}
+
+
+
+		/**
+		 * Metodo que crea un arreglo de deudas por tipos de tasas, muestra la totalizacion
+		 * por tipo de tasa dentro del mismo impuesto. Se agrupa la deuda por tipos de tasas
+		 * dentro de cada impuesto.
+		 * @return array retorna arreglo.
+		 */
+		private function deudaPorListaTasa()
+		{
+			$findModel = self::getModelGeneral();
+
+			$deuda = $findModel->select([
+									'I.impuesto',
+									'I.descripcion',
+									'A.id_impuesto',
+									'A.ano_impositivo as a',
+									'A.id_codigo',
+									'A.grupo_subnivel',
+									'A.codigo',
+									'A.descripcion as concepto',
+									'(sum(D.monto+D.recargo+D.interes)-sum(D.descuento+D.monto_reconocimiento)) as t',
+
+								])
+							   ->joinWith('pagos P', false, 'INNER JOIN')
+							   ->joinWith('impuestos I', false, 'INNER JOIN')
+							   ->joinWith('tasa A', false, 'INNER JOIN')
+							   ->andWhere('trimestre =:trimestre',[':trimestre' => 0])
+							   ->groupBy('A.id_impuesto')
+							   ->orderBy([
+							   		'I.impuesto' => SORT_ASC,
+
+							   	])
+							   ->asArray()
+							   ->all();
+
+			return $deuda;
+		}
+
+
+
+
+
+		/***/
+		public function getDeudaPorImpuestoTasa()
+		{
+			return self::deudaPorImpuestoTasa();
+		}
+
+
+		/**
+		 * Metodo que realiza la contabilizacion de la deuda por tipo de impuesto tasa.
+		 * Se agrupa la deuda por el impuesto de tasa.
+		 * @return array retorna un arreglo.
+		 */
+		private function deudaPorImpuestoTasa()
+		{
+			$findModel = self::getModelGeneral();
+
+			$deuda = $findModel->select([
+									'I.impuesto',
+									'I.descripcion',
+									'A.id_impuesto',
+									'A.ano_impositivo as a',
+									'A.id_codigo',
+									'A.grupo_subnivel',
+									'A.codigo',
+									'A.descripcion as concepto',
+									'(sum(D.monto+D.recargo+D.interes)-sum(D.descuento+D.monto_reconocimiento)) as t',
+
+								])
+							   ->joinWith('pagos P', false, 'INNER JOIN')
+							   ->joinWith('impuestos I', false, 'INNER JOIN')
+							   ->joinWith('tasa A', false, 'INNER JOIN')
+							   ->andWhere('trimestre =:trimestre',[':trimestre' => 0])
+							   ->groupBy('A.impuesto')
+							   ->orderBy([
+							   		'I.impuesto' => SORT_ASC,
+
+							   	])
+							   ->asArray()
+							   ->all();
+
+			return $deuda;
+		}
+
+
+
+		/***/
+		public function getDetalleDeudaPorObjeto($impuesto, $idImpuesto)
+		{
+			return self::detalleDeudaPorObjeto($impuesto, $idImpuesto);
+		}
+
+
+
+		/***/
+		private function detalleDeudaPorObjeto($impuesto, $idImpuesto)
+		{
+			$findModel = self::getModelGeneral();
+
+			$deuda = $findModel->joinWith('pagos P', true, 'INNER JOIN')
+							   ->joinWith('impuestos I', true, 'INNER JOIN')
+							   ->joinWith('exigibilidad E', true, 'INNER JOIN')
+							   ->andWhere('D.impuesto =:impuesto',[':impuesto' => $impuesto])
+							   ->andWhere('D.id_impuesto =:id_impuesto',
+							   						[':id_impuesto' => $idImpuesto])
+							   ->andWhere('trimestre >:trimestre',[':trimestre' => 0])
+							   ->orderBy([
+							   		'D.ano_impositivo' => SORT_ASC,
+							   		'D.trimestre' => SORT_ASC,
+
+							   	])
+							   ->asArray()
+							   ->all();
+
+			return $deuda;
+		}
+
+
+
+
+		/***/
+		public function getDetalleDeudadActividadEconomica()
+		{
+			return self::detalleDeudaActividadEconomica();
+		}
+
+
+		/***/
+		private function detalleDeudaActividadEconomica()
+		{
+			$findModel = self::getModelGeneral();
+
+			$deuda = $findModel->joinWith('pagos P', true, 'INNER JOIN')
+							   ->joinWith('impuestos I', true, 'INNER JOIN')
+							   ->joinWith('exigibilidad E', true, 'INNER JOIN')
+							   ->andWhere('D.impuesto =:impuesto',[':impuesto' => 1])
+							   ->andWhere('trimestre >:trimestre',[':trimestre' => 0])
+							   ->orderBy([
+							   		'D.ano_impositivo' => SORT_ASC,
+							   		'D.trimestre' => SORT_ASC,
+
+							   	])
+							   ->asArray()
+							   ->all();
+
+			return $deuda;
+		}
+
+
+
+		/***/
+		public function getDetalleDeudaTasa()
+		{
+			return self::detalleDeudaTasa();
+		}
+
+
+
+		/***/
+		private function detalleDeudaTasa()
+		{
+			$findModel = self::getModelGeneral();
+
+			$deuda = $findModel->joinWith('pagos P', true, 'INNER JOIN')
+							   ->joinWith('impuestos I', true, 'INNER JOIN')
+							   ->joinWith('exigibilidad E', true, 'INNER JOIN')
+							   ->joinWith('tasa A', true, 'INNER JOIN')
+							   ->andWhere('trimestre =:trimestre',[':trimestre' => 0])
+							   ->orderBy([
+							   		'D.impuesto' => SORT_ASC,
+							   		'D.id_impuesto' => SORT_ASC,
+							   		'D.ano_impositivo' => SORT_ASC,
+							   		'D.trimestre' => SORT_ASC,
+
+							   	])
 							   ->asArray()
 							   ->all();
 
