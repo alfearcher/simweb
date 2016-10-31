@@ -497,7 +497,11 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que contabiliza la deuda que posee un inmueble especifico.
+		 * @param  integer $idImpuesto identificador del inmueble.
+		 * @return array retorna un aareglo con los atributos que aparecen en el select.
+		 */
 		private function deudaPorInmuebleEspecifico($idImpuesto)
 		{
 			$findModel = self::getModelGeneral();
@@ -528,7 +532,11 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que contabiliza la deuda que posee un vehiculo especifico.
+		 * @param  integer $idImpuesto identificador del vehiculo.
+		 * @return array retorna un aareglo con los atributos que aparecen en el select.
+		 */
 		private function deudaPorVehiculoEspecifico($idImpuesto)
 		{
 			$findModel = self::getModelGeneral();
@@ -548,7 +556,7 @@
 							   ->andWhere('D.id_impuesto =:id_impuesto',
 							   						[':id_impuesto' => $idImpuesto])
 							   ->andWhere('V.status_vehiculo =:status_vehiculo',
-							   					[':status_vehiculo' => 0])
+							   						[':status_vehiculo' => 0])
 							   ->andWhere('trimestre >:trimestre',[':trimestre' => 0])
 							   ->groupBy('V.id_vehiculo')
 							   ->asArray()
@@ -559,7 +567,11 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que contabiliza la deuda que posee una propaganda especifica.
+		 * @param  integer $idImpuesto identificador de la propaganda.
+		 * @return array retorna un aareglo con los atributos que aparecen en el select.
+		 */
 		private function deudaPorPropagandaEspecifica($idImpuesto)
 		{
 			$findModel = self::getModelGeneral();
