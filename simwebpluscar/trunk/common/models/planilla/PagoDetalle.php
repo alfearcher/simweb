@@ -48,7 +48,7 @@
 	use common\models\planilla\Pago;
 	use backend\models\impuesto\Impuesto;
 	use backend\models\inmueble\InmueblesUrbanosForm;
-	use backend\models\vehiculo\VehiculoForm;
+	use backend\models\vehiculo\VehiculosForm;
 	use backend\models\propaganda\Propaganda;
 	use backend\models\utilidad\exigibilidad\Exigibilidad;
 	use backend\models\tasa\Tasa;
@@ -143,7 +143,7 @@
 		 */
 		public function getVehiculo()
 		{
-			return $this->hasOne(VehiculoForm::className(), ['id_vehiculo' => 'id_impuesto']);
+			return $this->hasOne(VehiculosForm::className(), ['id_vehiculo' => 'id_impuesto']);
 		}
 
 
@@ -175,10 +175,10 @@
 		public function getTasa()
 		{
 			return $this->hasOne(Tasa::className(),
-									[
-										'id_impuesto' => 'id_impuesto',
-									 	'impuesto' => 'impuesto',
-									]);
+										[
+											'id_impuesto' => 'id_impuesto',
+										 	'impuesto' => 'impuesto',
+										]);
 		}
 
 	}
