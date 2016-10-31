@@ -304,6 +304,11 @@
 				// Deuda de Propaganda Comercial.
 				$deuda = self::deudaPorListaPropaganda();
 
+			} elseif ( $impuesto == 12 ) {
+
+				// Deuda de Aseo.
+				$deuda = self::deudaPorListaAseo();
+
 			}
 
 			return $deuda;
@@ -446,6 +451,49 @@
 
 
 
+		/**
+		 * Metodo que realiza la consulta y busca las deudas de los inmuebles pertenecientes
+		 * al contribuyente, los inmuebles deben estar activos. El arreglo contiene los atributos
+		 * que se encuentran en el select. Estructura del arreglo:
+		 * {
+		 * 		[0] => {
+		 *   		['impuesto'] => identificador del impuesto,
+		 *     		['descripcion'] => descripcion del impuesto,
+		 *       	['id_impuesto'] => identificador del inmueble,
+		 *        	['direccion'] => direccion del inmueble,
+		 *         	['t'] => monto de la deuda del inmueble.
+		 * 		}
+		 * }
+		 * Por cada inmmueble retorna una estructura similar a la descripta arriba.
+		 * @return array retorna un arreglo.
+		 */
+		private function deudaPorListaAseo()
+		{
+			$findModel = self::getModelGeneral();
+
+			$deuda = $findModel->select([
+									'D.impuesto',
+									'I.descripcion',
+									'A.id_impuesto',
+									'A.direccion',
+									'(sum(monto+recargo+interes)-sum(descuento+monto_reconocimiento)) as t',
+
+								])
+							   ->joinWith('pagos P', false, 'INNER JOIN')
+							   ->joinWith('impuestos I', false, 'INNER JOIN')
+							   ->joinWith('inmueble A', false, 'INNER JOIN')
+							   ->andWhere('D.impuesto =:impuesto',[':impuesto' => 12])
+							   ->andWhere('A.inactivo =:inactivo',[':inactivo' => 0])
+							   ->andWhere('trimestre >:trimestre',[':trimestre' => 0])
+							   ->groupBy('A.id_impuesto')
+							   ->asArray()
+							   ->all();
+
+			return $deuda;
+		}
+
+
+
 		/***/
 		private function deudaPorListaEspectaculo()
 		{}
@@ -489,6 +537,10 @@
 			} elseif ( $impuesto == 7 ) {
 
 				$deuda = self::deudaPorApuestaEspecifica($idImpuesto);
+
+			} elseif ( $impuesto == 12 ) {
+
+				$deuda = self::deudaPorAseoEspecifica($idImpuesto);
 
 			}
 
@@ -598,6 +650,45 @@
 
 			return $deuda;
 		}
+
+
+
+
+
+		/**
+		 * Metodo que contabiliza la deuda que posee un inmueble especifico.
+		 * @param  integer $idImpuesto identificador del inmueble.
+		 * @return array retorna un aareglo con los atributos que aparecen en el select.
+		 */
+		private function deudaPorAseoEspecifico($idImpuesto)
+		{
+			$findModel = self::getModelGeneral();
+
+			$deuda = $findModel->select([
+									'D.impuesto',
+									'I.descripcion',
+									'A.id_impuesto',
+									'A.direccion',
+									'(sum(monto+recargo+interes)-sum(descuento+monto_reconocimiento)) as t',
+
+								])
+							   ->joinWith('pagos P', false, 'INNER JOIN')
+							   ->joinWith('impuestos I', false, 'INNER JOIN')
+							   ->joinWith('inmueble A', false, 'INNER JOIN')
+							   ->andWhere('D.impuesto =:impuesto',[':impuesto' => 12])
+							   ->andWhere('D.id_impuesto =:id_impuesto',
+							   						[':id_impuesto' => $idImpuesto])
+							   ->andWhere('A.inactivo =:inactivo',[':inactivo' => 0])
+							   ->andWhere('trimestre >:trimestre',[':trimestre' => 0])
+							   ->groupBy('A.id_impuesto')
+							   ->asArray()
+							   ->all();
+
+			return $deuda;
+		}
+
+
+
 
 
 
