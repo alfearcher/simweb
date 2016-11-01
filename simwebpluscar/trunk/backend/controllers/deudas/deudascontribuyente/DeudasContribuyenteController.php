@@ -55,7 +55,7 @@ use yii\filters\AccessControl;
 use common\conexion\ConexionController;
 use common\mensaje\MensajeController;
 use backend\models\presupuesto\cargarpresupuesto\registrar\CargarPresupuestoForm;
-use common\models\deuda\Deuda;
+use common\models\deuda\DeudaSearch;
 use backend\models\deudas\deudascontribuyente\DeudasContribuyenteForm;
 use yii\data\ArrayDataProvider;
 /**
@@ -90,10 +90,10 @@ class DeudasContribuyenteController extends Controller
         $idContribuyente = $_SESSION['idContribuyente'];
         //die('hay uno seteado');
 
-      $model = new Deuda('db');
+      $model = new DeudaSearch($idContribuyente);
 
-      $dataProvider = $model->getDeudaPorImpuesto($idContribuyente);
-
+      $dataProvider = $model->getDeudaGeneralPorImpuesto();
+      die(var_dump($dataProvider));
       foreach($dataProvider as $key=>$value){
 
         $suma1 = $value['tmonto'] + $value['trecargo'] + $value['tinteres'] + $suma1;
