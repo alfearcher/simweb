@@ -81,9 +81,7 @@ class DeudasContribuyenteController extends Controller
    */
   public function actionVerificarDeudasContribuyente()
   { 
-      $suma1 = 0;
-      $suma2 = 0;
-      $total = 0;
+      
 
       if (isset($_SESSION['idContribuyente'])){ 
         
@@ -93,19 +91,16 @@ class DeudasContribuyenteController extends Controller
       $model = new DeudaSearch($idContribuyente);
 
       $dataProvider = $model->getDeudaGeneralPorImpuesto();
-      die(var_dump($dataProvider));
+      
       foreach($dataProvider as $key=>$value){
 
-        $suma1 = $value['tmonto'] + $value['trecargo'] + $value['tinteres'] + $suma1;
-        $suma2 = $value['tdescuento'] + $value['tmonto_reconocimiento'] + $suma2;
-        $st[$key] = $suma1-$suma2; 
-        $total = $st[$key] + $total;
+    
       
 
         $array[] = [
           'impuesto' => $value['impuesto'],
           'descripcion' => $value['descripcion'],
-          'monto' => $st[$key],
+          'monto' => $value['t'],
         ]; 
 
       }
@@ -114,7 +109,7 @@ class DeudasContribuyenteController extends Controller
 
 
       //die(var_dump($st));
-     // die(var_dump($total));
+     // die(var_dump($array));
 
      
         $dataProvider = new ArrayDataProvider([
@@ -155,8 +150,8 @@ class DeudasContribuyenteController extends Controller
       $idContribuyente = $_SESSION['idContribuyente'];
       $impuesto = yii::$app->request->post('id');
 
-          $model = new Deuda('db');
-
+          $model = new DeudaSearch($idContribuyente);
+          
       $dataProvider = $model->getDeudaEspecificaSegunImpuesto($idContribuyente, $impuesto);
       die(var_dump($dataProvider));
       foreach($dataProvider as $key=>$value){
