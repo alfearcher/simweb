@@ -93,8 +93,7 @@ abstract class Application extends Module
     /**
      * @var string the application name.
      */
-    //public $name = 'My Application';
-    public $name = 'SIM WEB PLUS';
+    public $name = 'My Application';
     /**
      * @var string the version of this application.
      */
@@ -124,8 +123,7 @@ abstract class Application extends Module
      * @var string|boolean the layout that should be applied for views in this application. Defaults to 'main'.
      * If this is false, layout will be disabled.
      */
-    //public $layout = 'main';
-     public $layout = 'layout-main';
+    public $layout = 'main';
     /**
      * @var string the requested route
      */
@@ -142,7 +140,7 @@ abstract class Application extends Module
      * @var array list of installed Yii extensions. Each array element represents a single extension
      * with the following structure:
      *
-     * ~~~
+     * ```php
      * [
      *     'name' => 'extension name',
      *     'version' => 'version number',
@@ -152,7 +150,7 @@ abstract class Application extends Module
      *         '@alias2' => 'to/path2',
      *     ],
      * ]
-     * ~~~
+     * ```
      *
      * The "bootstrap" class listed above will be instantiated during the application
      * [[bootstrap()|bootstrapping process]]. If the class implements [[BootstrapInterface]],
@@ -197,7 +195,7 @@ abstract class Application extends Module
     public function __construct($config = [])
     {
         Yii::$app = $this;
-        $this->setInstance($this);
+        static::setInstance($this);
 
         $this->state = self::STATE_BEGIN;
 
@@ -289,10 +287,10 @@ abstract class Application extends Module
             if (isset($extension['bootstrap'])) {
                 $component = Yii::createObject($extension['bootstrap']);
                 if ($component instanceof BootstrapInterface) {
-                    Yii::trace("Bootstrap with " . get_class($component) . '::bootstrap()', __METHOD__);
+                    Yii::trace('Bootstrap with ' . get_class($component) . '::bootstrap()', __METHOD__);
                     $component->bootstrap($this);
                 } else {
-                    Yii::trace("Bootstrap with " . get_class($component), __METHOD__);
+                    Yii::trace('Bootstrap with ' . get_class($component), __METHOD__);
                 }
             }
         }
@@ -313,10 +311,10 @@ abstract class Application extends Module
             }
 
             if ($component instanceof BootstrapInterface) {
-                Yii::trace("Bootstrap with " . get_class($component) . '::bootstrap()', __METHOD__);
+                Yii::trace('Bootstrap with ' . get_class($component) . '::bootstrap()', __METHOD__);
                 $component->bootstrap($this);
             } else {
-                Yii::trace("Bootstrap with " . get_class($component), __METHOD__);
+                Yii::trace('Bootstrap with ' . get_class($component), __METHOD__);
             }
         }
     }

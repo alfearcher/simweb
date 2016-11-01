@@ -1,54 +1,5 @@
 [
     {
-        "name": "yiisoft/yii2-composer",
-        "version": "2.0.3",
-        "version_normalized": "2.0.3.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/yiisoft/yii2-composer.git",
-            "reference": "ca8d23707ae47d20b0454e4b135c156f6da6d7be"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/yiisoft/yii2-composer/zipball/ca8d23707ae47d20b0454e4b135c156f6da6d7be",
-            "reference": "ca8d23707ae47d20b0454e4b135c156f6da6d7be",
-            "shasum": ""
-        },
-        "require": {
-            "composer-plugin-api": "1.0.0"
-        },
-        "time": "2015-03-01 06:22:44",
-        "type": "composer-plugin",
-        "extra": {
-            "class": "yii\\composer\\Plugin",
-            "branch-alias": {
-                "dev-master": "2.0.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "yii\\composer\\": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Qiang Xue",
-                "email": "qiang.xue@gmail.com"
-            }
-        ],
-        "description": "The composer plugin for Yii extension installer",
-        "keywords": [
-            "composer",
-            "extension installer",
-            "yii2"
-        ]
-    },
-    {
         "name": "ezyang/htmlpurifier",
         "version": "v4.6.0",
         "version_normalized": "4.6.0.0",
@@ -66,7 +17,7 @@
         "require": {
             "php": ">=5.2"
         },
-        "time": "2013-11-30 08:25:19",
+        "time": "2013-11-30T08:25:19+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -118,7 +69,7 @@
             "facebook/xhprof": "*@dev",
             "phpunit/phpunit": "4.1.*"
         },
-        "time": "2015-03-06 05:28:07",
+        "time": "2015-03-06T05:28:07+00:00",
         "bin": [
             "bin/markdown"
         ],
@@ -200,60 +151,6 @@
             "javascript",
             "jquery",
             "library"
-        ]
-    },
-    {
-        "name": "bower-asset/jquery.inputmask",
-        "version": "3.1.63",
-        "version_normalized": "3.1.63.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/RobinHerbots/jquery.inputmask.git",
-            "reference": "c40c7287eadc31e341ebbf0c02352eb55b9cbc48"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/RobinHerbots/jquery.inputmask/zipball/c40c7287eadc31e341ebbf0c02352eb55b9cbc48",
-            "reference": "c40c7287eadc31e341ebbf0c02352eb55b9cbc48",
-            "shasum": ""
-        },
-        "require": {
-            "bower-asset/jquery": ">=1.7"
-        },
-        "type": "bower-asset-library",
-        "extra": {
-            "bower-asset-main": [
-                "./dist/inputmask/jquery.inputmask.js",
-                "./dist/inputmask/jquery.inputmask.extensions.js",
-                "./dist/inputmask/jquery.inputmask.date.extensions.js",
-                "./dist/inputmask/jquery.inputmask.numeric.extensions.js",
-                "./dist/inputmask/jquery.inputmask.phone.extensions.js",
-                "./dist/inputmask/jquery.inputmask.regex.extensions.js"
-            ],
-            "bower-asset-ignore": [
-                "**/.*",
-                "qunit/",
-                "nuget/",
-                "tools/",
-                "js/",
-                "*.md",
-                "build.properties",
-                "build.xml",
-                "jquery.inputmask.jquery.json"
-            ]
-        },
-        "installation-source": "dist",
-        "license": [
-            "http://opensource.org/licenses/mit-license.php"
-        ],
-        "description": "jquery.inputmask is a jquery plugin which create an input mask.",
-        "keywords": [
-            "form",
-            "input",
-            "inputmask",
-            "jquery",
-            "mask",
-            "plugins"
         ]
     },
     {
@@ -340,7 +237,7 @@
             "swiftmailer/swiftmailer": "~5.0",
             "yiisoft/yii2": ">=2.0.4"
         },
-        "time": "2015-05-10 22:12:32",
+        "time": "2015-05-10T22:12:32+00:00",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -391,7 +288,7 @@
         "require": {
             "yiisoft/yii2": ">=2.0.4"
         },
-        "time": "2015-05-10 22:08:30",
+        "time": "2015-05-10T22:08:30+00:00",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -418,7 +315,8 @@
         "keywords": [
             "codeception",
             "yii2"
-        ]
+        ],
+        "abandoned": "codeception/codeception"
     },
     {
         "name": "yiisoft/yii2-bootstrap",
@@ -439,7 +337,7 @@
             "bower-asset/bootstrap": "3.3.* | 3.2.* | 3.1.*",
             "yiisoft/yii2": ">=2.0.4"
         },
-        "time": "2015-05-10 22:08:17",
+        "time": "2015-05-10T22:08:17+00:00",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -491,7 +389,7 @@
             "yiisoft/yii2": ">=2.0.4",
             "yiisoft/yii2-bootstrap": "*"
         },
-        "time": "2015-05-10 22:08:56",
+        "time": "2015-05-10T22:08:56+00:00",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -565,7 +463,7 @@
             "reference": "30e103d19519fe678ae64a60d77884ef3d71b28a",
             "shasum": ""
         },
-        "time": "2013-11-01 13:02:21",
+        "time": "2013-11-01T13:02:21+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -607,7 +505,7 @@
             "yiisoft/yii2": ">=2.0.4",
             "yiisoft/yii2-bootstrap": "~2.0"
         },
-        "time": "2015-05-10 22:09:31",
+        "time": "2015-05-10T22:09:31+00:00",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -660,7 +558,7 @@
             "fzaninotto/faker": "*",
             "yiisoft/yii2": "*"
         },
-        "time": "2015-03-01 06:22:44",
+        "time": "2015-03-01T06:22:44+00:00",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -705,7 +603,7 @@
             "reference": "db9d702ac15e74a84d5d859c9f3b1ce4c1882304",
             "shasum": ""
         },
-        "time": "2015-03-26 16:41:06",
+        "time": "2015-03-26T16:41:06+00:00",
         "type": "component",
         "extra": {
             "component": {
@@ -749,7 +647,7 @@
             "jekyll": "1.0.2",
             "lessc": "1.4.2"
         },
-        "time": "2015-01-22 18:09:42",
+        "time": "2015-01-22T18:09:42+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -826,7 +724,7 @@
             "bower-asset/jquery-ui": "1.11.*@stable",
             "yiisoft/yii2": ">=2.0.4"
         },
-        "time": "2015-05-10 22:09:43",
+        "time": "2015-05-10T22:09:43+00:00",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -880,7 +778,7 @@
             "kartik-v/yii2-krajee-base": "*",
             "yiisoft/yii2-jui": "*"
         },
-        "time": "2015-04-21 15:15:10",
+        "time": "2015-04-21T15:15:10+00:00",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -928,7 +826,7 @@
             "ext-mbstring": "*",
             "php": ">=4.3.10"
         },
-        "time": "2015-05-05 07:34:49",
+        "time": "2015-05-05T07:34:49+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -972,7 +870,7 @@
         "require": {
             "kartik-v/mpdf": "*"
         },
-        "time": "2014-11-10 18:09:37",
+        "time": "2014-11-10T18:09:37+00:00",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1021,7 +919,7 @@
         "require": {
             "yiisoft/yii2": "*"
         },
-        "time": "2015-04-01 09:55:57",
+        "time": "2015-04-01T09:55:57+00:00",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1068,7 +966,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "*"
         },
-        "time": "2014-12-08 04:31:32",
+        "time": "2014-12-08T04:31:32+00:00",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1117,7 +1015,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "*"
         },
-        "time": "2014-12-04 12:53:04",
+        "time": "2014-12-04T12:53:04+00:00",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1169,7 +1067,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "*"
         },
-        "time": "2014-11-08 20:01:29",
+        "time": "2014-11-08T20:01:29+00:00",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1220,7 +1118,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "*"
         },
-        "time": "2015-01-14 16:27:26",
+        "time": "2015-01-14T16:27:26+00:00",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1272,7 +1170,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "*"
         },
-        "time": "2014-11-09 05:02:05",
+        "time": "2014-11-09T05:02:05+00:00",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1322,7 +1220,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "*"
         },
-        "time": "2014-11-09 08:07:23",
+        "time": "2014-11-09T08:07:23+00:00",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1374,7 +1272,7 @@
             "kartik-v/bootstrap-star-rating": "*",
             "kartik-v/yii2-krajee-base": "*"
         },
-        "time": "2014-11-08 19:30:37",
+        "time": "2014-11-08T19:30:37+00:00",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1426,7 +1324,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "*"
         },
-        "time": "2014-11-08 21:15:27",
+        "time": "2014-11-08T21:15:27+00:00",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1477,7 +1375,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "*"
         },
-        "time": "2015-05-03 08:23:04",
+        "time": "2015-05-03T08:23:04+00:00",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1528,7 +1426,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "*"
         },
-        "time": "2015-01-25 16:36:55",
+        "time": "2015-01-25T16:36:55+00:00",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1579,7 +1477,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "*"
         },
-        "time": "2014-11-08 21:10:18",
+        "time": "2014-11-08T21:10:18+00:00",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1630,7 +1528,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "*"
         },
-        "time": "2014-11-19 06:44:12",
+        "time": "2014-11-19T06:44:12+00:00",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1682,7 +1580,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "*"
         },
-        "time": "2014-11-09 04:56:27",
+        "time": "2014-11-09T04:56:27+00:00",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1751,7 +1649,7 @@
             "kartik-v/yii2-widget-touchspin": "*",
             "kartik-v/yii2-widget-typeahead": "*"
         },
-        "time": "2014-11-09 19:54:17",
+        "time": "2014-11-09T19:54:17+00:00",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1797,7 +1695,7 @@
         "require": {
             "kartik-v/yii2-dropdown-x": "*"
         },
-        "time": "2014-12-06 18:38:52",
+        "time": "2014-12-06T18:38:52+00:00",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1846,7 +1744,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "*"
         },
-        "time": "2014-11-25 09:06:15",
+        "time": "2014-11-25T09:06:15+00:00",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1896,7 +1794,7 @@
             "ext-mbstring": "*",
             "php": ">=4.3.10"
         },
-        "time": "2015-03-01 10:27:49",
+        "time": "2015-03-01T10:27:49+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1937,7 +1835,7 @@
             "reference": "ce1d165af25f6e6caaf97083e20b5a3ad7c7b7c6",
             "shasum": ""
         },
-        "time": "2015-03-18 13:08:39",
+        "time": "2015-03-18T13:08:39+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1966,96 +1864,6 @@
             "modal-popover",
             "popover",
             "popover-x"
-        ]
-    },
-    {
-        "name": "yiisoft/yii2",
-        "version": "2.0.5",
-        "version_normalized": "2.0.5.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/yiisoft/yii2-framework.git",
-            "reference": "ea8c13b9f5cd437bd7bf73cad8a3457a155f3727"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/ea8c13b9f5cd437bd7bf73cad8a3457a155f3727",
-            "reference": "ea8c13b9f5cd437bd7bf73cad8a3457a155f3727",
-            "shasum": ""
-        },
-        "require": {
-            "bower-asset/jquery": "2.1.*@stable | 1.11.*@stable",
-            "bower-asset/jquery.inputmask": "3.1.*",
-            "bower-asset/punycode": "1.3.*",
-            "bower-asset/yii2-pjax": ">=2.0.1",
-            "cebe/markdown": "~1.0.0 | ~1.1.0",
-            "ext-mbstring": "*",
-            "ezyang/htmlpurifier": "4.6.*",
-            "lib-pcre": "*",
-            "php": ">=5.4.0",
-            "yiisoft/yii2-composer": "*"
-        },
-        "time": "2015-07-11 02:37:59",
-        "bin": [
-            "yii"
-        ],
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.0.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "yii\\": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Qiang Xue",
-                "email": "qiang.xue@gmail.com",
-                "homepage": "http://www.yiiframework.com/",
-                "role": "Founder and project lead"
-            },
-            {
-                "name": "Alexander Makarov",
-                "email": "sam@rmcreative.ru",
-                "homepage": "http://rmcreative.ru/",
-                "role": "Core framework development"
-            },
-            {
-                "name": "Maurizio Domba",
-                "homepage": "http://mdomba.info/",
-                "role": "Core framework development"
-            },
-            {
-                "name": "Carsten Brandt",
-                "email": "mail@cebe.cc",
-                "homepage": "http://cebe.cc/",
-                "role": "Core framework development"
-            },
-            {
-                "name": "Timur Ruziev",
-                "email": "resurtm@gmail.com",
-                "homepage": "http://resurtm.com/",
-                "role": "Core framework development"
-            },
-            {
-                "name": "Paul Klimov",
-                "email": "klimov.paul@gmail.com",
-                "role": "Core framework development"
-            }
-        ],
-        "description": "Yii PHP Framework Version 2",
-        "homepage": "http://www.yiiframework.com/",
-        "keywords": [
-            "framework",
-            "yii2"
         ]
     },
     {
@@ -2127,7 +1935,7 @@
         "require": {
             "yiisoft/yii2-bootstrap": "@dev"
         },
-        "time": "2015-06-16 05:19:57",
+        "time": "2015-06-16T05:19:57+00:00",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -2175,7 +1983,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "~1.7"
         },
-        "time": "2015-07-08 11:36:38",
+        "time": "2015-07-08T11:36:38+00:00",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -2225,7 +2033,7 @@
             "kartik-v/bootstrap-popover-x": "~1.4",
             "kartik-v/yii2-krajee-base": "~1.7"
         },
-        "time": "2015-07-01 16:51:32",
+        "time": "2015-07-01T16:51:32+00:00",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -2277,7 +2085,7 @@
         "require-dev": {
             "mockery/mockery": "~0.9.1,<0.9.4"
         },
-        "time": "2015-06-06 14:19:39",
+        "time": "2015-06-06T14:19:39+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2336,7 +2144,7 @@
         "suggest": {
             "ext-intl": "*"
         },
-        "time": "2015-05-29 06:29:14",
+        "time": "2015-05-29T06:29:14+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2383,7 +2191,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "~1.7"
         },
-        "time": "2015-07-19 04:49:03",
+        "time": "2015-07-19T04:49:03+00:00",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -2431,7 +2239,7 @@
             "reference": "03b086d7ec51fc773aab064d7204adbbaa807ec4",
             "shasum": ""
         },
-        "time": "2015-07-14 09:54:25",
+        "time": "2015-07-14T09:54:25+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -2479,7 +2287,7 @@
             "kartik-v/dependent-dropdown": "~1.4",
             "kartik-v/yii2-krajee-base": "~1.7"
         },
-        "time": "2015-06-26 20:20:32",
+        "time": "2015-06-26T20:20:32+00:00",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -2526,7 +2334,7 @@
             "reference": "e8a712d4840ba9abe7c1302808e86e55e91aab7f",
             "shasum": ""
         },
-        "time": "2015-07-26 20:29:14",
+        "time": "2015-07-26T20:29:14+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -2580,7 +2388,7 @@
             "kartik-v/bootstrap-fileinput": "~4.2",
             "kartik-v/yii2-krajee-base": "~1.7"
         },
-        "time": "2015-06-26 20:23:24",
+        "time": "2015-06-26T20:23:24+00:00",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -2631,7 +2439,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "~1.7"
         },
-        "time": "2015-07-01 15:20:59",
+        "time": "2015-07-01T15:20:59+00:00",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -2681,7 +2489,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "~1.7"
         },
-        "time": "2015-06-28 18:05:41",
+        "time": "2015-06-28T18:05:41+00:00",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -2728,7 +2536,7 @@
             "reference": "bd9c52db6ac71cb270620c1aee601d142ab2cc00",
             "shasum": ""
         },
-        "time": "2015-06-18 14:42:46",
+        "time": "2015-06-18T14:42:46+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -2771,7 +2579,7 @@
             "reference": "7d3dc3495dd10bd1909c0dfdecd673967019cc21",
             "shasum": ""
         },
-        "time": "2015-06-18 15:14:51",
+        "time": "2015-06-18T15:14:51+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -2822,7 +2630,7 @@
             "kartik-v/php-date-formatter": ">1.3",
             "kartik-v/yii2-krajee-base": "~1.7"
         },
-        "time": "2015-07-19 05:01:43",
+        "time": "2015-07-19T05:01:43+00:00",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -2908,7 +2716,7 @@
         "require-dev": {
             "phpunit/phpunit": "4.*"
         },
-        "time": "2015-04-02 11:48:05",
+        "time": "2015-04-02T11:48:05+00:00",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -2945,6 +2753,199 @@
             "widget",
             "yii",
             "yii 2",
+            "yii2"
+        ]
+    },
+    {
+        "name": "yiisoft/yii2-composer",
+        "version": "2.0.4",
+        "version_normalized": "2.0.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/yiisoft/yii2-composer.git",
+            "reference": "7452fd908a5023b8bb5ea1b123a174ca080de464"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/yiisoft/yii2-composer/zipball/7452fd908a5023b8bb5ea1b123a174ca080de464",
+            "reference": "7452fd908a5023b8bb5ea1b123a174ca080de464",
+            "shasum": ""
+        },
+        "require": {
+            "composer-plugin-api": "^1.0"
+        },
+        "time": "2016-02-06T00:49:24+00:00",
+        "type": "composer-plugin",
+        "extra": {
+            "class": "yii\\composer\\Plugin",
+            "branch-alias": {
+                "dev-master": "2.0.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "yii\\composer\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Qiang Xue",
+                "email": "qiang.xue@gmail.com"
+            }
+        ],
+        "description": "The composer plugin for Yii extension installer",
+        "keywords": [
+            "composer",
+            "extension installer",
+            "yii2"
+        ]
+    },
+    {
+        "name": "bower-asset/jquery.inputmask",
+        "version": "3.2.7",
+        "version_normalized": "3.2.7.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/RobinHerbots/Inputmask.git",
+            "reference": "5a72c563b502b8e05958a524cdfffafe9987be38"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/RobinHerbots/Inputmask/zipball/5a72c563b502b8e05958a524cdfffafe9987be38",
+            "reference": "5a72c563b502b8e05958a524cdfffafe9987be38",
+            "shasum": ""
+        },
+        "require": {
+            "bower-asset/jquery": ">=1.7"
+        },
+        "type": "bower-asset-library",
+        "extra": {
+            "bower-asset-main": [
+                "./dist/inputmask/inputmask.js"
+            ],
+            "bower-asset-ignore": [
+                "**/*",
+                "!dist/*",
+                "!dist/inputmask/*",
+                "!dist/min/*",
+                "!dist/min/inputmask/*",
+                "!extra/bindings/*",
+                "!extra/dependencyLibs/*",
+                "!extra/phone-codes/*"
+            ]
+        },
+        "installation-source": "dist",
+        "license": [
+            "http://opensource.org/licenses/mit-license.php"
+        ],
+        "description": "jquery.inputmask is a jquery plugin which create an input mask.",
+        "keywords": [
+            "form",
+            "input",
+            "inputmask",
+            "jquery",
+            "mask",
+            "plugins"
+        ]
+    },
+    {
+        "name": "yiisoft/yii2",
+        "version": "2.0.10",
+        "version_normalized": "2.0.10.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/yiisoft/yii2-framework.git",
+            "reference": "5bfcb7a6dfa9771e2248eb8c4448613330f343ff"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/5bfcb7a6dfa9771e2248eb8c4448613330f343ff",
+            "reference": "5bfcb7a6dfa9771e2248eb8c4448613330f343ff",
+            "shasum": ""
+        },
+        "require": {
+            "bower-asset/jquery": "2.2.*@stable | 2.1.*@stable | 1.11.*@stable | 1.12.*@stable",
+            "bower-asset/jquery.inputmask": "~3.2.2",
+            "bower-asset/punycode": "1.3.*",
+            "bower-asset/yii2-pjax": "~2.0.1",
+            "cebe/markdown": "~1.0.0 | ~1.1.0",
+            "ext-ctype": "*",
+            "ext-mbstring": "*",
+            "ezyang/htmlpurifier": "~4.6",
+            "lib-pcre": "*",
+            "php": ">=5.4.0",
+            "yiisoft/yii2-composer": "~2.0.4"
+        },
+        "time": "2016-10-20T12:02:50+00:00",
+        "bin": [
+            "yii"
+        ],
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.0.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "yii\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Qiang Xue",
+                "email": "qiang.xue@gmail.com",
+                "homepage": "http://www.yiiframework.com/",
+                "role": "Founder and project lead"
+            },
+            {
+                "name": "Alexander Makarov",
+                "email": "sam@rmcreative.ru",
+                "homepage": "http://rmcreative.ru/",
+                "role": "Core framework development"
+            },
+            {
+                "name": "Maurizio Domba",
+                "homepage": "http://mdomba.info/",
+                "role": "Core framework development"
+            },
+            {
+                "name": "Carsten Brandt",
+                "email": "mail@cebe.cc",
+                "homepage": "http://cebe.cc/",
+                "role": "Core framework development"
+            },
+            {
+                "name": "Timur Ruziev",
+                "email": "resurtm@gmail.com",
+                "homepage": "http://resurtm.com/",
+                "role": "Core framework development"
+            },
+            {
+                "name": "Paul Klimov",
+                "email": "klimov.paul@gmail.com",
+                "role": "Core framework development"
+            },
+            {
+                "name": "Dmitry Naumenko",
+                "email": "d.naumenko.a@gmail.com",
+                "role": "Core framework development"
+            }
+        ],
+        "description": "Yii PHP Framework Version 2",
+        "homepage": "http://www.yiiframework.com/",
+        "keywords": [
+            "framework",
             "yii2"
         ]
     }
