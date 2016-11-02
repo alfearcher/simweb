@@ -56,6 +56,7 @@
     use common\models\calculo\recargo\Recargo;
     use common\models\calculo\interes\Interes;
     use backend\models\configuracion\descuento\DescuentoSearch;
+    use common\models\pago\PagoSearch;
 
 
 
@@ -118,8 +119,13 @@
 
 
 
+            $pagos = New PagoSearch();
+            $pagos->setIdContribuyente($this->_id_contribuyente);
+            $resumenPago = $pagos->getResumenPagoDefinitiva($this->_año_impositivo, $this->_periodo);
+
+
             $htmlCobro = $this->renderPartial('@common/views/plantilla-pdf/boletin/definitiva/layout-cobro-anticipado-pdf',[
-                                                            'resumen'=> 0,
+                                                            'resumen'=> $resumenPago,
                                     ]);
 
 
