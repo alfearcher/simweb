@@ -76,7 +76,7 @@
 
 		/**
 		 * Arreglo donde se guardara la descripcion de la configuracion.
-		 * Que se aplica en el recargo. Tebdra la siguiente estructura
+		 * Que se aplica en el recargo. Tendra la siguiente estructura
 		 * ['mes' => 'aplicacion']
 		 * [
 		 * 		'febrero' => '2%']
