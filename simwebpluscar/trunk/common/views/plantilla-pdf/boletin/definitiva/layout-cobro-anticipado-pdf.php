@@ -57,7 +57,7 @@
 
 <?php
 
-	$sumaImpuesto = 15000000;
+	$sumaImpuesto = $resumen['pagoEstimada'] + $resumen['pagoDefinitiva'] + $resumen['pagoAbono'] + $resumen['pagoRetencion'] + $resumen['pagoIndustria'];
 	$subTotal = 0;
 ?>
 
@@ -67,23 +67,23 @@
 
 	<tr>
 		<td class="label-caption" colspan="5"><?=Html::encode('TOTAL PAGOS POR ESTIMADA'); ?></td>
-		<td class="monto" colspan="5"><?=Html::encode(Yii::$app->formatter->asDecimal(0,2)); ?></td>
+		<td class="monto" colspan="5"><?=Html::encode(Yii::$app->formatter->asDecimal($resumen['pagoEstimada'], 2)); ?></td>
 	</tr>
 	<tr>
 		<td class="label-caption" colspan="5"><?=Html::encode('TOTAL PAGOS COMPLEMENTARIOS'); ?></td>
-		<td class="monto" colspan="5"><?=Html::encode(Yii::$app->formatter->asDecimal(0,2)); ?></td>
+		<td class="monto" colspan="5"><?=Html::encode(Yii::$app->formatter->asDecimal($resumen['pagoDefinitiva'], 2)); ?></td>
 	</tr>
 	<tr>
 		<td class="label-caption" colspan="5"><?=Html::encode('TOTAL PAGOS POR ABONOS Y/O SIMILARES'); ?></td>
-		<td class="monto" colspan="5"><?=Html::encode(Yii::$app->formatter->asDecimal(0,2)); ?></td>
+		<td class="monto" colspan="5"><?=Html::encode(Yii::$app->formatter->asDecimal($resumen['pagoAbono'], 2)); ?></td>
 	</tr>
 	<tr>
 		<td class="label-caption" colspan="5"><?=Html::encode('TOTAL PAGOS POR RETENCIONES Y/O RECONOCIMIENTOS'); ?></td>
-		<td class="monto" colspan="5"><?=Html::encode(Yii::$app->formatter->asDecimal(0,2)); ?></td>
+		<td class="monto" colspan="5"><?=Html::encode(Yii::$app->formatter->asDecimal($resumen['pagoRetencion'], 2)); ?></td>
 	</tr>
 	<tr>
 		<td class="label-caption" colspan="5"><?=Html::encode('TOTAL PAGOS POR SEDE DE INDUSTRIA'); ?></td>
-		<td class="monto" colspan="5"><?=Html::encode(Yii::$app->formatter->asDecimal(0,2)); ?></td>
+		<td class="monto" colspan="5"><?=Html::encode(Yii::$app->formatter->asDecimal($resumen['pagoIndustria'], 2)); ?></td>
 	</tr>
 
 	<tr>
@@ -92,7 +92,7 @@
 	</tr>
 	<tr>
 		<td class="label-causado" colspan="6"><?=Html::encode('IMPUESTO CAUSADOS Y NO PAGADOS PERIODO:'); ?></th>
-		<td class="monto-causado" colspan="4"><?=Html::encode(Yii::$app->formatter->asDecimal($sumaImpuesto, 2)); ?></td>
+		<td class="monto-causado" colspan="4"><?=Html::encode(Yii::$app->formatter->asDecimal(0, 2)); ?></td>
 	</tr>
 
 
