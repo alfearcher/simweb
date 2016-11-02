@@ -57,6 +57,7 @@
 <?php
 	$sumaImpuesto = 0;
 	$subTotal = 0;
+	$sumaDescuento = 0;
 ?>
 
 <!-- Especificaciones de los periodos a pagar -->
@@ -80,21 +81,31 @@
 		<?php
 			$sumaImpuesto = $sumaImpuesto + $r['monto'];
 			$subTotal = $r['monto'];
+			$sumaDescuento = $sumaDescuento + $r['descuento'];
 		?>
 		<tr class="cuerpo-liquidacion">
 			<td class="info-liquidacion" colspan="1"><?=Html::encode($r['periodo']); ?></td>
 			<td class="info-liquidacion" colspan="1"><?=Html::encode($r['descripcion']); ?></td>
-			<td class="info-liquidacion" colspan="2"><?=Html::encode(Yii::$app->formatter->asDecimal($r['monto'])); ?></td>
+			<td class="info-liquidacion" colspan="2" style="width: 70%;"><?=Html::encode(Yii::$app->formatter->asDecimal($r['monto'])); ?></td>
 			<td class="info-liquidacion" colspan="1"><?=Html::encode($r['pagarEn']); ?></td>
 			<td class="info-liquidacion" colspan="1"><?=Html::encode($r['recargoEn']); ?></td>
-			<td class="info-liquidacion" colspan="1"><?=Html::encode('-'); ?></td>
+			<td class="info-liquidacion" colspan="1"><?=Html::encode($r['interesEn']); ?></td>
 			<td class="info-liquidacion" colspan="1"><?=Html::encode(Yii::$app->formatter->asDecimal(0)); ?></td>
 			<td class="info-liquidacion" colspan="2" style="text-align: right;"><?=Html::encode(Yii::$app->formatter->asDecimal($subTotal)); ?></td>
 		</tr>
 	<?php }?>
 	<tr>
-		<td class="label-total-liquidacion" colspan="6"><?=Html::encode('SI PAGA TODO EL AÑO:'); ?></th>
+		<td class="label-total-liquidacion" colspan="6"><?=Html::encode('MONTO A PAGAR EN EL AÑO:'); ?></th>
 		<td class="info-total-liquidacion" colspan="4"><?=Html::encode(Yii::$app->formatter->asDecimal($sumaImpuesto, 2)); ?></td>
+	</tr>
+	<tr>
+		<td class="label-total-descuento" colspan="6"><?=Html::encode('DESCUENTO SI PAGA TODO EL AÑO ANTES DEL ' . $resumen[1]['fechaHasta'] . ':'); ?></th>
+		<td class="info-total-descuento" colspan="4"><?=Html::encode(Yii::$app->formatter->asDecimal($sumaDescuento, 2)); ?></td>
+	</tr>
+
+	<tr>
+		<td class="label-total" colspan="6"><?=Html::encode('TOTAL A PAGAR:'); ?></th>
+		<td class="info-total" colspan="4"><?=Html::encode(Yii::$app->formatter->asDecimal($sumaImpuesto-$sumaDescuento, 2)); ?></td>
 	</tr>
 
 </table>
@@ -103,7 +114,11 @@
 <style type="text/css">
 
 	.label-total-liquidacion,
-	.info-total-liquidacion {
+	.info-total-liquidacion,
+	.label-total-descuento,
+	.info-total-descuento,
+	.label-total,
+	.info-total {
 		border-top: solid 2px #000;
 	}
 
@@ -130,12 +145,25 @@
 	}
 
 
-	.label-total-liquidacion, .info-total-liquidacion {
+	.label-total-liquidacion,
+	.info-total-liquidacion,
+	.label-total-descuento,
+	.info-total-descuento {
+		text-align: right;
+		font-family: Arial, Helvetica, sans-serif;
+		font-size: 85%;
+		font-weight: bold;
+	}
+
+
+	.label-total,
+	.info-total {
 		text-align: right;
 		font-family: Arial, Helvetica, sans-serif;
 		font-size: 100%;
 		font-weight: bold;
 	}
+
 
 
 	caption {
