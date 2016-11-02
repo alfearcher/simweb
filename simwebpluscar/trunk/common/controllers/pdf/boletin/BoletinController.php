@@ -54,6 +54,8 @@
     use common\models\calculo\liquidacion\aaee\LiquidacionActividadEconomica;
     use common\models\ordenanza\OrdenanzaBase;
     use common\models\calculo\recargo\Recargo;
+    use common\models\calculo\interes\Interes;
+    use backend\models\configuracion\descuento\DescuentoSearch;
 
 
 
@@ -308,14 +310,19 @@
             $diferencia = (float)number_format($diferencia, 2, '.', '');
 
             $recargo = New Recargo(1);
+            $interes = New Interes(1);
+            $descuento = New DescuentoSearch(1);
 
             for ( $i = 1; $i <= (int)$exigibilidad['exigibilidad']; $i++ ) {
 
                 $monto = 0;
                 $calculoRecargo = 0;
                 $etiqueta = [];
+                $etiquetaInt = [];
                 $pagarEn = '';
                 $recargoEn = '';
+                $ipagarEn = '';
+                $interesEn = '';
 
                 if ( $i == 1 ) {
                     $monto = $montoPorPeriodo + $diferencia;
@@ -327,16 +334,35 @@
                 $recargo->generarEtiquetaRecargo();
                 $etiqueta = $recargo->getConfigPenalidad();
 
+                $interes->setAnoImpositivo($this->_año_impositivo);
+                $interes->setPeriodo($i);
+                $interes->generarEtiquetaInteres();
+                $etiquetaInt = $interes->getConfigPenalidad();
+
+                // Se recibe un arreglo donde
+                $config = $descuento->getMontoDescuentoAnual($this->_año_impositivo, $monto);
+
                 if ( count($etiqueta) > 0 ) {
                     $pagarEn = $etiqueta[$i]['pagarEn'];
                     $recargoEn = $etiqueta[$i]['recargoEn'];
                 }
+
+                if ( count($etiquetaInt) > 0 ) {
+                    $ipagarEn = $etiquetaInt[$i]['ipagarEn'];
+                    $interesEn = $etiquetaInt[$i]['interesEn'];
+                }
+
                 $resumen[$i] = [
                     'periodo' => $i,
                     'descripcion' => $exigibilidad['unidad'],
                     'monto' => $monto,
                     'pagarEn' => $pagarEn,
                     'recargoEn' => $recargoEn,
+                    'ipagarEn' => $ipagarEn,
+                    'interesEn' => $interesEn,
+                    'descuento' => isset($config['descuento']) ? $config['descuento'] : 0,
+                    'fechaDesde' => isset($config['fecha_desde']) ? date('d-m-Y', strtotime($config['fecha_desde'])) : null,
+                    'fechaHasta' => isset($config['fecha_hasta']) ? date('d-m-Y', strtotime($config['fecha_hasta'])) : null,
                 ];
             }
 
