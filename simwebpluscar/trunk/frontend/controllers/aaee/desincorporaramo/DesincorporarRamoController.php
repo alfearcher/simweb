@@ -310,7 +310,10 @@
 
 					} elseif ( $postData['btn-back-form'] == 9 ) {
 						if ( isset($postData['chkRubroSeleccionado']) ) {
-							$chkRubros = $postData['chkRubroSeleccionado'];
+							$chkRubros = $searchRamo->getConvertirJson($postData['chkRubroSeleccionado']);
+							//$chkRubros = $postData['chkRubroSeleccionado'];
+
+
 							foreach ( $chkRubros as $jsonRubro ) {
 								$rubroJson[] = json_decode($jsonRubro);
 							}
@@ -339,10 +342,14 @@
 							// Lo siguiente es una estructura json. Por no tener un atributo
 							// clave se envia una convinacion de atributos que representan
 							// la clave de la entidad.
-							$chkSeleccion = $postData['chkRubroSeleccionado'];
+							$chkSeleccion1 = $postData['chkRubroSeleccionado'];
+
+							$chkSeleccion = $searchRamo->getConvertirJson($chkSeleccion1);
+
 							if ( count($chkSeleccion) > 0 ) {
 								foreach ( $chkSeleccion as $key => $value ) {
 									$chkItems[] = json_decode($value, true);
+
 								}
 							}
 
@@ -352,8 +359,6 @@
 									$itemsRubro[] = $value['id_rubro'];
 								}
 							}
-
-//die(var_dump($rubroJson));
 
 							// Total de item seleccionado.
 							$totalChk = (int)count($postData['chkRubroSeleccionado']);
@@ -387,7 +392,9 @@
 						$postData = $request->post();
 						$model->load($postData);
 
-						$result = self::actionBeginSave($model, $postData);
+						$chkSeleccionJson = $searchRamo->getConvertirJson($postData['chkRubroSeleccionado']);
+
+						$result = self::actionBeginSave($model, $postData, $chkSeleccionJson);
   						self::actionAnularSession(['begin', 'postSearch']);
   						if ( $result ) {
 							$this->_transaccion->commit();
@@ -503,7 +510,7 @@
 		 * @return boolean retorna true si se realizan todas las operacions de
 		 * insercion y actualizacion con exitos o false en caso contrario.
 		 */
-		private function actionBeginSave($model, $postEnviado)
+		private function actionBeginSave($model, $postEnviado, $chkSeleccionJson)
 		{
 			$result = false;
 			$nroSolicitud = 0;
@@ -514,7 +521,9 @@
 
 					// Lo siguiente contiene una estructura json para la clave concatenada
 					// de la seleccion realizada.
-					$chkSeleccion = $postEnviado['chkRubroSeleccionado'];
+					//$chkSeleccion = $postEnviado['chkRubroSeleccionado'];
+
+					$chkSeleccion = $chkSeleccionJson;
 
 					$this->_conexion = New ConexionController();
 
