@@ -735,11 +735,10 @@
 									'(sum(D.monto+D.recargo+D.interes)-sum(D.descuento+D.monto_reconocimiento)) as t',
 
 								])
-							   ->andWhere('D.impuesto =:impuesto',
-							   					[':impuesto' => $impuesto])
 							   ->joinWith('pagos P', false, 'INNER JOIN')
 							   ->joinWith('impuestos I', false, 'INNER JOIN')
 							   ->joinWith('tasa A', false, 'INNER JOIN')
+							   ->andWhere('D.impuesto =:impuesto',[':impuesto' => $impuesto])
 							   ->andWhere('trimestre =:trimestre',[':trimestre' => 0])
 							   ->groupBy('A.id_impuesto')
 							   ->orderBy([
@@ -866,15 +865,15 @@
 
 
 		/***/
-		public function getDetalleDeudaTasa()
+		public function getDetalleDeudaTasa($impuesto)
 		{
-			return self::detalleDeudaTasa();
+			return self::detalleDeudaTasa($impuesto);
 		}
 
 
 
 		/***/
-		private function detalleDeudaTasa()
+		private function detalleDeudaTasa($impuesto)
 		{
 			$findModel = self::getModelGeneral();
 
@@ -883,6 +882,7 @@
 							   ->joinWith('exigibilidad E', true, 'INNER JOIN')
 							   ->joinWith('tasa A', true, 'INNER JOIN')
 							   ->andWhere('trimestre =:trimestre',[':trimestre' => 0])
+							   ->andWhere('D.impuesto =:impuesto',[':impuesto' => $impuesto])
 							   ->orderBy([
 							   		'D.impuesto' => SORT_ASC,
 							   		'D.id_impuesto' => SORT_ASC,
