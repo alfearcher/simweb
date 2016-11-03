@@ -706,9 +706,9 @@
 
 
 		/***/
-		public function getDeudaPorListaTasa()
+		public function getDeudaPorListaTasa($impuesto)
 		{
-			return self::deudaPorListaTasa();
+			return self::deudaPorListaTasa($impuesto);
 		}
 
 
@@ -719,7 +719,7 @@
 		 * dentro de cada impuesto.
 		 * @return array retorna arreglo.
 		 */
-		private function deudaPorListaTasa()
+		private function deudaPorListaTasa($impuesto)
 		{
 			$findModel = self::getModelGeneral();
 
@@ -735,6 +735,8 @@
 									'(sum(D.monto+D.recargo+D.interes)-sum(D.descuento+D.monto_reconocimiento)) as t',
 
 								])
+							   ->andWhere('D.impuesto =:impuesto',
+							   					[':impuesto' => $impuesto])
 							   ->joinWith('pagos P', false, 'INNER JOIN')
 							   ->joinWith('impuestos I', false, 'INNER JOIN')
 							   ->joinWith('tasa A', false, 'INNER JOIN')
