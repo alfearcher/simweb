@@ -119,9 +119,9 @@
 
 
 
-            $pagos = New PagoSearch();
-            $pagos->setIdContribuyente($this->_id_contribuyente);
-            $resumenPago = $pagos->getResumenPagoDefinitiva($this->_año_impositivo, $this->_periodo);
+            $pago = New PagoSearch();
+            $pago->setIdContribuyente($this->_id_contribuyente);
+            $resumenPago = $pago->getResumenPagoDefinitiva($this->_año_impositivo, $this->_periodo);
 
 
             $htmlCobro = $this->renderPartial('@common/views/plantilla-pdf/boletin/definitiva/layout-cobro-anticipado-pdf',[
