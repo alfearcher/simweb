@@ -152,7 +152,7 @@ class DeudasContribuyenteController extends Controller
 
           $model = new DeudaSearch($idContribuyente);
           
-      $dataProvider = $model->getDeudaEspecificaSegunImpuesto($idContribuyente, $impuesto);
+      $dataProvider = $model->getDeudaGeneralPorImpuesto();
       die(var_dump($dataProvider));
       foreach($dataProvider as $key=>$value){
 
