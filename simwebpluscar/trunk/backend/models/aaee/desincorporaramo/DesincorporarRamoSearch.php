@@ -659,9 +659,11 @@
 	    public function getDataProviderRubrosRegistrados($añoImpositivo, $periodo)
 	    {
 	    	$query = self::findRubrosRegistrados($añoImpositivo, $periodo);
+
 	    	$dataProvider = New ActiveDataProvider([
 	    			'query' => $query,
 	    		]);
+
 	    	$query->all();
 	    	return $dataProvider;
 	    }
@@ -1021,6 +1023,37 @@
 
 	    	return $mensajes;
 
+	    }
+
+
+
+	    /**
+	     * Metodo que recibe un arreglo de identificadores de la entidad "act-econ-ingresos"
+	     * y realiza una busqueda de cada identificador para obtener los atributos id-impuesto,
+	     * id-rubro y exigibilidad. Con estos atributos se crerar una estructura tipo json que
+	     * sera retornanda.
+	     * @param  array $chkIdIngresoSeleccion arreglo de identificadores de la entidad
+	     * "act-econ-ingresos".
+	     * @return array retorna una estructura tipo json.
+	     */
+	    public function getConvertirJson($chkIdIngresoSeleccion)
+	    {
+	    	$actIngreso = null;
+	    	$jsonRubro = [];
+	    	$rubro = [];
+	    	if ( count($chkIdIngresoSeleccion) > 0 ) {
+	    		foreach ( $chkIdIngresoSeleccion as $key => $value ) {
+	    			$actIngreso = ActEconIngreso::findOne((int)$value);
+	    			$rubro['id_impuesto'] = $actIngreso->id_impuesto;
+	    			$rubro['id_rubro'] = $actIngreso->id_rubro;
+	    			$rubro['exigibilidad_periodo'] = $actIngreso->exigibilidad_periodo;
+
+	    			$jsonRubro[] = json_encode($rubro);
+	    		}
+	    	}
+
+// die(var_dump($jsonRubro));
+	    	return $jsonRubro;
 	    }
 
 	}

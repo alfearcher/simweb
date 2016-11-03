@@ -70,6 +70,18 @@
 
 
 
+
+		/**
+		 * Metodo que realiza la consulta por el id de la entidad.
+		 * @param  integer $idIngreso identificador de la entidad.
+		 * @return array retorna un active record con los datos de la entidad.
+		 */
+		public function findActEconDetallePorId($idIngreso)
+		{
+			return ActEconIngreso::findOne($idIngreso);
+		}
+
+
 		/**
 		 * Metodo que determina si existe un rubro registrado para un periodo
 		 * especifico.
