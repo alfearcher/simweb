@@ -77,15 +77,14 @@
         public function __construct($idContribuyente)
         {
             $this->_id_contribuyente = $idContribuyente;
-            $this->_año_impositivo = $añoImpositivo;
-            $this->_periodo = $periodo;
+            
         }
 
 
 
 
         /***/
-        public function generarBoletinDefinitiva()
+        public function generarCedulaCatastral()
         {
             $barcode = 152222;
             // Informacion del encabezado.
@@ -96,82 +95,7 @@
 
             // Informacion del congtribuyente.
             $findModel = ContribuyenteBase::findOne($this->_id_contribuyente);
-            $htmlContribuyente =  $this->renderPartial('@common/views/plantilla-pdf/layout/layout-contribuyente-pdf',[
-                                                            'model' => $findModel,
-                                                            'showDireccion' => true,
-                                                            'showRepresentante' => true,
-                                    ]);
-
-
-            // Informacion de la declaracion.
-            $declaracionSearch = New DeclaracionBaseSearch($this->_id_contribuyente);
-            $rangoFecha = $declaracionSearch->getRangoFechaDeclaracion($this->_año_impositivo);
-            $periodoFiscal = date('d-m-Y', strtotime($rangoFecha['fechaDesde'])) . ' AL ' . date('d-m-Y', strtotime($rangoFecha['fechaHasta']));
-
-            $resumen = self::actionResumenDeclaracion('reales');
-
-            $htmlDeclaracion = $this->renderPartial('@common/views/plantilla-pdf/boletin/layout-declaracion-pdf',[
-                                                            'resumen'=> $resumen,
-                                                            'tipoDeclaracion' => 'DEFINITIVA',
-                                                            'periodoFiscal' => $periodoFiscal,
-                                    ]);
-
-
-
-            $htmlCobro = $this->renderPartial('@common/views/plantilla-pdf/boletin/definitiva/layout-cobro-anticipado-pdf',[
-                                                            'resumen'=> 0,
-                                    ]);
-
-
-            // informacion del pie de pagina.
-            $htmlPiePagina = $this->renderPartial('@common/views/plantilla-pdf/boletin/layout-piepagina-pdf',[
-                                                            'director'=> Yii::$app->oficina->getDirector(),
-                                                            'nombreCargo' => Yii::$app->oficina->getNombreCargo(),
-                                                            'barcode' => $barcode,
-                                    ]);
-
-
-
-
-
-            // Nombre del archivo.
-            $nombrePDF = 'BD-' . $this->_id_contribuyente . '-' . $this->_año_impositivo . $this->_periodo;
-            $nombre = $nombrePDF;
-            $nombrePDF .= '.pdf';
-
-            //$html = $htmlEncabezado . $htmlContribuyente . $htmlDeclaracion . $htmlCobro . $htmlPiePagina;
-
-            $mpdf = new mPDF;
-
-            $mpdf->SetHeader($nombre);
-            $mpdf->WriteHTML($htmlEncabezado);
-            $mpdf->WriteHTML($htmlContribuyente);
-            $mpdf->WriteHTML($htmlDeclaracion);
-            $mpdf->WriteHTML($htmlCobro);
-            $mpdf->SetHTMLFooter($htmlPiePagina);
-
-            $mpdf->Output($nombrePDF, 'I');
-            exit;
-        }
-
-
-
-
-
-
-        /***/
-        public function generarBoletinEstimada()
-        {
-            $barcode = 152222;
-            // Informacion del encabezado.
-            $htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/layout/layout-encabezado-pdf', [
-                                                            'caption' => 'BOLETIN DE NOTIFICACION',
-
-                                    ]);
-
-            // Informacion del congtribuyente.
-            $findModel = ContribuyenteBase::findOne($this->_id_contribuyente);
-            $htmlContribuyente =  $this->renderPartial('@common/views/plantilla-pdf/layout/layout-contribuyente-pdf',[
+            $htmlContribuyente =  $this->renderPartial('@common/views/plantilla-pdf/cedulacatastral/layout-contribuyente-pdf',[
                                                             'model' => $findModel,
                                                             'showDireccion' => true,
                                                             'showRepresentante' => true,
@@ -185,11 +109,11 @@
 
             $resumen = self::actionResumenDeclaracion('estimado');
 
-            $htmlDeclaracion = $this->renderPartial('@common/views/plantilla-pdf/boletin/layout-declaracion-pdf',[
+            $htmlDeclaracion = $this->renderPartial('@common/views/plantilla-pdf/cedulacatastral/layout-declaracion-pdf',[
                                                             'resumen'=> $resumen,
                                                             'tipoDeclaracion' => 'ESTIMADA',
                                                             'periodoFiscal' => $periodoFiscal,
-                                    ]);
+                                    ]);   
 
 
             // Informacion de las cuotas por cobrar.
@@ -198,13 +122,13 @@
             }
             $resumenCobro = self::actionResumenCobroPenalidad($rubroCalculo);
 
-            $htmlCobro = $this->renderPartial('@common/views/plantilla-pdf/boletin/estimada/layout-cobro-anticipado-pdf',[
+            $htmlCobro = $this->renderPartial('@common/views/plantilla-pdf/cedulacatastral/layout-cobro-anticipado-pdf',[
                                                             'resumen'=> $resumenCobro,
                                     ]);
 
 
             // informacion del pie de pagina.
-            $htmlPiePagina = $this->renderPartial('@common/views/plantilla-pdf/boletin/layout-piepagina-pdf',[
+            $htmlPiePagina = $this->renderPartial('@common/views/plantilla-pdf/cedulacatastral/layout-piepagina-pdf',[
                                                             'director'=> Yii::$app->oficina->getDirector(),
                                                             'nombreCargo' => Yii::$app->oficina->getNombreCargo(),
                                                             'barcode' => $barcode,
