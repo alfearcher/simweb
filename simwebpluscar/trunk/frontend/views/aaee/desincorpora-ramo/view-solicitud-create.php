@@ -62,7 +62,7 @@
         <div class="panel-heading">
         	<div class="row">
 	        	<div class="col-sm-4">
-	        		<h3><?= Html::encode(Yii::t('frontend', 'Request Nro. ' . $model[0]->nro_solicitud )) ?></h3>
+	        		<h3><?= Html::encode(Yii::t('frontend', 'Request Nro. ' . $model[0]->nro_solicitud) . '. ' . Yii::t('backend', 'Summary')) ?></h3>
 	        	</div>
 	        	<div class="col-sm-3" style="width: 30%; float:right; padding-right: 50px;">
 	        		<style type="text/css">
@@ -76,65 +76,58 @@
         </div>
 
 <!-- Cuerpo del formulario -->
-        <div class="panel-body" style="background-color: #F9F9F9;">
+<!-- style="background-color: #F9F9F9;" -->
+        <div class="panel-body">
         	<div class="container-fluid">
         		<div class="col-sm-12">
-					<div class="row">
-		        		<div class="panel panel-success" style="width: 100%;">
-							<div class="panel-heading">
-					        	<span><?= Html::encode(Yii::t('backend', 'Summary')) ?></span>
-					        </div>
-					        <div class="panel-body">
-					        	<div class="row" style="padding-left: 15px; width: 100%;">
-									<?= GridView::widget([
-											'id' => 'grid-lista-rubro-desincorporar',
-	    									'dataProvider' => $dataProvider,
-	    									'headerRowOptions' => ['class' => 'danger'],
-	    									//'filterModel' => $searchModel,
-	    									'columns' => [
-	    										['class' => 'yii\grid\SerialColumn'],
-	    										[
-								                    'label' => Yii::t('frontend', 'Request'),
-								                    'value' => function($model) {
-	                        										return $model->nro_solicitud;
-	                											},
-								                ],
-								                [
-								                    'label' => Yii::t('frontend', 'Request Description'),
-								                    'value' => function($model) {
-	                        										return $model->getDescripcionTipoSolicitud($model->nro_solicitud);
-	                											},
-								                ],
-								            	[
-								                    'label' => Yii::t('frontend', 'Category'),
-								                    'value' => function($model) {
-	                        										return $model->rubro->rubro;
-	                											},
-								                ],
-								                [
-								                    'label' => Yii::t('frontend', 'Year'),
-								                    'value' => function($model) {
-	                        										return $model->ano_impositivo;
-	                											},
-								                ],
-								                [
-								                    'label' => Yii::t('frontend', 'Descripcion'),
-								                    'value' => function($model) {
-	                        										return $model->rubro->descripcion;
-	                											},
-								                ],
-								                [
-								                    'label' => Yii::t('frontend', 'Condition'),
-								                    'value' => function($model) {
-	                        										return $model->estatusSolicitud->descripcion;
-	                											},
-							                	],
+					<div class="row" style="padding-left: 5px; width: 100%;">
+						<?= GridView::widget([
+								'id' => 'grid-lista-rubro-desincorporar',
+								'dataProvider' => $dataProvider,
+								'headerRowOptions' => ['class' => 'danger'],
+								//'filterModel' => $searchModel,
+								'columns' => [
+									['class' => 'yii\grid\SerialColumn'],
+									[
+					                    'label' => Yii::t('frontend', 'Request'),
+					                    'value' => function($model) {
+                										return $model->nro_solicitud;
+        											},
+					                ],
+					                [
+					                    'label' => Yii::t('frontend', 'Request Description'),
+					                    'value' => function($model) {
+                										return $model->getDescripcionTipoSolicitud($model->nro_solicitud);
+        											},
+					                ],
+					            	[
+					                    'label' => Yii::t('frontend', 'Category'),
+					                    'value' => function($model) {
+                										return $model->rubro->rubro;
+        											},
+					                ],
+					                [
+					                    'label' => Yii::t('frontend', 'Year'),
+					                    'value' => function($model) {
+                										return $model->ano_impositivo;
+        											},
+					                ],
+					                [
+					                    'label' => Yii::t('frontend', 'Descripcion'),
+					                    'value' => function($model) {
+                										return $model->rubro->descripcion;
+        											},
+					                ],
+					                [
+					                    'label' => Yii::t('frontend', 'Condition'),
+					                    'value' => function($model) {
+                										return $model->estatusSolicitud->descripcion;
+        											},
+				                	],
 
-								        	]
-										]);?>
-								</div>
-							</div>
-						</div>
+					        	]
+							]);
+						?>
 					</div>
 				</div>	<!-- Fin de col-sm-12 -->
 			</div> <!-- Fin de container-fluid -->

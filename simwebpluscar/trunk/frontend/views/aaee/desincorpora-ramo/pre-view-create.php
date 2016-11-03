@@ -76,7 +76,7 @@
 	<meta http-equiv="refresh">
     <div class="panel panel-primary"  style="width: 100%;">
         <div class="panel-heading">
-        	<h3><?= Html::encode(Yii::t('frontend', 'Confirm Create. Remove Categories')) ?></h3>
+        	<h3><?= Html::encode(Yii::t('frontend', 'Confirm Create. Remove Categories') . '. '. Yii::t('backend', 'Summary')) ?></h3>
         </div>
 
 	<?= $form->field($model, 'id_contribuyente')->hiddenInput(['value' => $model->id_contribuyente])->label(false); ?>
@@ -90,70 +90,61 @@
 	<?= $form->field($model, 'estatus')->hiddenInput(['value' => 0])->label(false); ?>
 
 <!-- Cuerpo del formulario -->
-        <div class="panel-body" style="background-color: #F9F9F9;">
+        <div class="panel-body">
         	<div class="container-fluid">
         		<div class="col-sm-12">
-		        	<div class="row">
-						<div class="panel panel-success" style="width: 100%;">
-							<div class="panel-heading">
-					        	<b><span><?= Html::encode(Yii::t('backend', 'Summary')) ?></span></b>
-					        </div>
-					        <div class="panel-body">
-					        	<div class="row" id="rubro-seleccionado" style="padding-left: 15px; width: 100%;">
-									<?= GridView::widget([
-											'id' => 'grid-lista-rubro-seleccionado',
-	    									'dataProvider' => $dataProvider,
-	    									'headerRowOptions' => ['class' => 'danger'],
-	    									//'filterModel' => $searchModel,
-	    									'columns' => [
-	    										['class' => 'yii\grid\SerialColumn'],
-								            	[
-								                    'label' => Yii::t('frontend', 'Category'),
-								                    'value' => function($data) {
-	                        										return $data->rubroDetalle->rubro;
-	                											},
-								                ],
-								                [
-								                    'label' => Yii::t('frontend', 'Year'),
-								                    'value' => function($data) {
-	                        										return $data->actividadEconomica->ano_impositivo;
-	                											},
-								                ],
-								               [
-									                    'label' => Yii::t('frontend', 'Begin Date'),
-									                    'value' => function($data) {
-		                        										return $data->periodo_fiscal_desde;
-		                											},
-								                ],
-								                [
-								                    'label' => Yii::t('frontend', 'End Date'),
-								                    'value' => function($data) {
-	                        										return $data->periodo_fiscal_hasta;
-	                											},
-								                ],
-								                [
-								                    'label' => Yii::t('frontend', 'Descripcion'),
-								                    'value' => function($data) {
-	                        										return $data->rubroDetalle->descripcion;
-	                											},
-								                ],
-								                [
-								                	'class' => 'yii\grid\CheckboxColumn',
-								                	'name' => 'chkRubroSeleccionado',
-								                	'checkboxOptions' => [
-                            							'id' => 'chkSucursal',
-                            							// Lo siguiente mantiene el checkbox tildado.
-                            							'onClick' => 'javascript: return false;',
-                            							'checked' => true,
-                                					],
-								                	'multiple' => false,
-								                ],
-								        	]
-										]);?>
-					        	</div>
-					        </div>
-						</div>
-					</div>
+		        	<div class="row" id="rubro-seleccionado" style="padding-left: 5px; width: 100%;">
+						<?= GridView::widget([
+								'id' => 'grid-lista-rubro-seleccionado',
+								'dataProvider' => $dataProvider,
+								'headerRowOptions' => ['class' => 'danger'],
+								//'filterModel' => $searchModel,
+								'columns' => [
+									['class' => 'yii\grid\SerialColumn'],
+					            	[
+					                    'label' => Yii::t('frontend', 'Category'),
+					                    'value' => function($data) {
+                										return $data->rubroDetalle->rubro;
+        											},
+					                ],
+					                [
+					                    'label' => Yii::t('frontend', 'Year'),
+					                    'value' => function($data) {
+                										return $data->actividadEconomica->ano_impositivo;
+        											},
+					                ],
+					               [
+						                    'label' => Yii::t('frontend', 'Begin Date'),
+						                    'value' => function($data) {
+                    										return $data->periodo_fiscal_desde;
+            											},
+					                ],
+					                [
+					                    'label' => Yii::t('frontend', 'End Date'),
+					                    'value' => function($data) {
+                										return $data->periodo_fiscal_hasta;
+        											},
+					                ],
+					                [
+					                    'label' => Yii::t('frontend', 'Descripcion'),
+					                    'value' => function($data) {
+                										return $data->rubroDetalle->descripcion;
+        											},
+					                ],
+					                [
+					                	'class' => 'yii\grid\CheckboxColumn',
+					                	'name' => 'chkRubroSeleccionado',
+					                	'checkboxOptions' => [
+                							'id' => 'chkSucursal',
+                							// Lo siguiente mantiene el checkbox tildado.
+                							'onClick' => 'javascript: return false;',
+                							'checked' => true,
+                    					],
+					                	'multiple' => false,
+					                ],
+					        	]
+							]);?>
+		        	</div>
 
 					<div class="row">
 						<div class="form-group">
