@@ -1052,7 +1052,6 @@
 	    		}
 	    	}
 
-// die(var_dump($jsonRubro));
 	    	return $jsonRubro;
 	    }
 
