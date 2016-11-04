@@ -60,6 +60,7 @@
 	    															'opciones' => $opciones,
 	    															'dataProvider' => $dataProvider,
 	    															'historico' => $historico,
+	    															//'lapso' => $lapso,
 	    					]);
 	    	?>
 		</div>
