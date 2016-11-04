@@ -131,9 +131,9 @@
 						                ],
 					                    'value' => function($model) {
 					                    				if ( $model->tipo_declaracion == 1 ) {
-					                    					return $model->estimado;
+					                    					return Yii::$app->formatter->asDecimal($model->estimado, 2);
 					                    				} elseif ( $model->tipo_declaracion == 2 ) {
-					                    					return $model->reales;
+					                    					return Yii::$app->formatter->asDecimal($model->reales, 2);
 					                    				}
         											},
 					                ],
@@ -143,7 +143,7 @@
 						                    'style' => 'text-align: right',
 						                ],
 					                    'value' => function($model) {
-                										return $model->sustitutiva;
+                										return Yii::$app->formatter->asDecimal($model->sustitutiva, 2);
         											},
 					                ],
 
@@ -194,9 +194,9 @@
 									?>
 								</div>
 
-								<div class="col-sm-3" style="width: 20%;margin-left:25px;">
-									<?= Html::a(Yii::t('frontend', 'Descargar Boletin'),
-																				['generar-boletin-estimada'],
+								<div class="col-sm-3" style="width: 40%;margin-left:25px;">
+									<?= Html::a(Yii::t('frontend', 'Descargar Boletin. ' . $lapso['descripcion'] . ' ' . $lapso['a'] . ' - ' . $lapso['p']),
+																				[$urlBoletin],
 																			  	[
 																					'id' => 'btn-boletin',
 																					'class' => 'btn btn-primary',

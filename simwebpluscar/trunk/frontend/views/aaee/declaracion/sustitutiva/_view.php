@@ -60,6 +60,8 @@
 	    															'opciones' => $opciones,
 	    															'dataProvider' => $dataProvider,
 	    															'historico' => $historico,
+	    															'lapso' => $lapso,
+	    															'urlBoletin' => $urlBoletin,
 	    					]);
 	    	?>
 		</div>
