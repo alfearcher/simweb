@@ -27,7 +27,7 @@ $this->title = Yii::t('frontend', 'Deuda General ');
 
 
  <?php $form = ActiveForm::begin([
-            'id' => 'id-chk-seleccionar-calcomania',
+           // 'id' => 'id-chk-seleccionar-calcomania',
             'method' => 'post',
             'action' => ['/deudas/deudascontribuyente/deudas-contribuyente/verificar-impuesto'],
             'enableClientValidation' => true,
