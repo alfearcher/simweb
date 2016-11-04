@@ -863,6 +863,15 @@
 	      			// $model->attributes es array {
 	      			// 							[attribute] => valor
 	      			// 						}
+
+					if ( $model->chkHabilitar == 0 ) {
+						if ( $model->tipo_declaracion == 1 ) {
+							$model->sustitutiva = $model->estimado;
+						} elseif ( $model->tipo_declaracion == 2 ) {
+							$model->sustitutiva = $model->reales;
+						}
+					}
+
 					$arregloDatos = $model->attributes;
 
 					$arregloDatos['estatus'] = $estatus;
@@ -962,8 +971,14 @@
 							if ( $model->tipo_declaracion == 1 && $model->chkHabilitar == 1 ) {
 								$model->estimado = $s;
 
+							} elseif ( $model->tipo_declaracion == 1 && $model->chkHabilitar == 0 ) {
+								$model->sustitutiva = $model->estimado;
+
 							} elseif ( $model->tipo_declaracion == 2 && $model->chkHabilitar == 1 ) {
 								$model->reales = $s;
+
+							} elseif ( $model->tipo_declaracion == 2 && $model->chkHabilitar == 0 ) {
+								$model->sustitutiva = $model->reales;
 
 							}
 
