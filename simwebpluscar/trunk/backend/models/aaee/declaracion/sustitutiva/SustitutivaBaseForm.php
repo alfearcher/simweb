@@ -191,7 +191,7 @@
 	        	  								return true;
 	        	  							}
 	        	  },
-	        	   'on' => 'definitiva',
+	        	  'on' => 'definitiva',
 	        	  'message' => Yii::t('frontend', '{attribute} is required')],
 	        	[['id_contribuyente', 'ano_impositivo',
 	        	  'exigibilidad_periodo', 'tipo_declaracion'],
@@ -210,6 +210,10 @@
 	          	[['estimado','reales', 'sustitutiva',
 	          	  'rectificatoria', 'auditoria'],
 	          	  'default', 'value' => 0],
+	          	[['sustitutiva'], 'default', 'value' => function($model) {
+	          												return self::getMontoDefault($model);
+	          											},
+	          	],
 	          	['fecha_hora', 'default', 'value' => date('Y-m-d H:i:s')],
 	          	// ['monto_new',
     			 // 'compare',
@@ -285,6 +289,21 @@
 	    	return $atributos[$evento];
 	    }
 
+
+
+	    /***/
+	    public function getMontoDefault($model)
+	    {
+	    	if ( $model->chkHabilitar == 0 ) {
+	    		if ( $model->tipo_declaracion == 1 ) {
+	    			return $model->estimado;
+	    		} elseif ( $model->tipo_declaracion == 2 ) {
+	    			return $model->reales;
+	    		}
+	    	}
+
+	    	return 0;
+	    }
 
 	}
 ?>
