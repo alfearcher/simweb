@@ -898,5 +898,40 @@
 		}
 
 
+
+
+
+
+		/***/
+		public function getDetalleDeudaPorTasaEspecifica($impuesto, $idImpuesto)
+		{
+			return self::detalleDeudaPorTasaEspecifica($impuesto, $idImpuesto);
+		}
+
+
+
+
+		/***/
+		private function detalleDeudaPorTasaEspecifica($impuesto, $idImpuesto)
+		{
+			$findModel = self::getModelGeneral();
+
+			$deuda = $findModel->joinWith('pagos P', true, 'INNER JOIN')
+							   ->joinWith('impuestos I', true, 'INNER JOIN')
+							   ->joinWith('tasa A', true, 'INNER JOIN')
+							   ->joinWith('exigibilidad E', true, 'INNER JOIN')
+							   ->andWhere('D.impuesto =:impuesto',[':impuesto' => $impuesto])
+							   ->andWhere('D.id_impuesto =:id_impuesto',
+							   						[':id_impuesto' => $idImpuesto])
+							   ->andWhere('trimestre =:trimestre',[':trimestre' => 0])
+							   ->asArray()
+							   ->all();
+
+			return $deuda;
+		}
+
+
+
+
 	}
  ?>
