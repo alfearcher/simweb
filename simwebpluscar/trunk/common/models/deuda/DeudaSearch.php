@@ -735,6 +735,7 @@
 									'(sum(D.monto+D.recargo+D.interes)-sum(D.descuento+D.monto_reconocimiento)) as t',
 
 								])
+
 							   ->joinWith('pagos P', false, 'INNER JOIN')
 							   ->joinWith('impuestos I', false, 'INNER JOIN')
 							   ->joinWith('tasa A', false, 'INNER JOIN')
