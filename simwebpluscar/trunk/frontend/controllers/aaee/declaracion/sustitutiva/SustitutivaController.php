@@ -68,6 +68,7 @@
 	use backend\models\aaee\declaracion\sustitutiva\SustitutivaBaseSearch;
 	use backend\models\aaee\historico\declaracion\HistoricoDeclaracionSearch;
 	use common\controllers\pdf\declaracion\DeclaracionController;
+	use common\controllers\pdf\boletin\BoletinController;
 
 	session_start();		// Iniciando session
 
@@ -510,6 +511,7 @@
 		  																'opciones' =>$opciones,
 		  																'subCaption' => $subCaption,
 		  																'errorHabilitar' => $errorHabilitar,
+		  																'lapso' => $lapso,
 										]);
 								} elseif ( $lapso['tipo'] == 2 ) {
 									return $this->render('/aaee/declaracion/sustitutiva/pre-view-sustitutiva-definitiva', [
@@ -519,6 +521,7 @@
 		  																'opciones' =>$opciones,
 		  																'subCaption' => $subCaption,
 		  																'errorHabilitar' => $errorHabilitar,
+		  																'lapso' => $lapso,
 										]);
 								}
 
@@ -538,6 +541,7 @@
 		  																'opciones' =>$opciones,
 		  																'subCaption' => $subCaption,
 		  																'errorHabilitar' => $errorHabilitar,
+		  																'lapso' => $lapso,
 										]);
 								} elseif ( $lapso['tipo'] == 2 ) {
 									return $this->render('/aaee/declaracion/sustitutiva/declaracion-sustitutiva-definitiva-form', [
@@ -547,6 +551,7 @@
 		  																'opciones' =>$opciones,
 		  																'subCaption' => $subCaption,
 		  																'errorHabilitar' => $errorHabilitar,
+		  																'lapso' => $lapso,
 										]);
 								}
 
@@ -714,7 +719,10 @@
 						foreach ( $models as $key => $model ) {
 							$model->nro_solicitud = $nroSolicitud;
 
-							if ( $model->chkHabilitar == 1 ) {
+							//if ( $model->chkHabilitar == 1 ) {
+								if ( $model->chkHabilitar == 0 ) {
+									$model->sustitutiva = 0;
+								}
 
 								// Se pasa a guardar en la sl_sustitutivas.
 								$result = self::actionCreateSustitutiva($this->_conexion,
@@ -732,7 +740,7 @@
 								}
 								if ( !$result ) { break; }
 
-							}
+							//}
 						}		// Fin del ciclo de models.
 
 						if ( $result ) {
@@ -902,10 +910,10 @@
 				if ( $inactive ) {
 
 					$s = $model->sustitutiva;
-					if ( $model->tipo_declaracion == 1 ) {
+					if ( $model->tipo_declaracion == 1 && $model->chkHabilitar == 1 ) {
 						$model->estimado = $s;
 
-					} elseif ( $model->tipo_declaracion == 2 ) {
+					} elseif ( $model->tipo_declaracion == 2 && $model->chkHabilitar == 1 ) {
 						$model->reales = $s;
 
 					}
@@ -949,12 +957,12 @@
 
 					foreach ( $models as $model ) {
 
-						if ( $model->chkHabilitar == 1 ) {
+						//if ( $model->chkHabilitar == 1 ) {
 							$s = $model->sustitutiva;
-							if ( $model->tipo_declaracion == 1 ) {
+							if ( $model->tipo_declaracion == 1 && $model->chkHabilitar == 1 ) {
 								$model->estimado = $s;
 
-							} elseif ( $model->tipo_declaracion == 2 ) {
+							} elseif ( $model->tipo_declaracion == 2 && $model->chkHabilitar == 1 ) {
 								$model->reales = $s;
 
 							}
@@ -973,7 +981,7 @@
 								'reales' => $model['reales'],
 								'sustitutiva' => $model['sustitutiva'],
 							];
-						}
+						//}
 
 					}	// Fin del ciclo.
 
@@ -1095,13 +1103,21 @@
 		public function actionGenerarBoletinEstimada()
 		{
 
-			$id = $_SESSION['idContribuyente'];
-			$lapso = $_SESSION['lapso'];
-			$a = $lapso['a'];
-			$p = $lapso['p'];
+			$id = isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : 0;
+			if ( $id > 0 ) {
+				$lapso = isset($_SESSION['lapso']) ? $_SESSION['lapso'] : null;
+				if ( $lapso !== null ) {
+					$a = $lapso['a'];
+					$p = $lapso['p'];
 
-			$boletin = New BoletinController($id, $a, $p);
-			return $boletin->generarBoletinEstimada();
+					$boletin = New BoletinController($id, $a, $p);
+					return $boletin->generarBoletinEstimada();
+				} else {
+					throw new NotFoundHttpException(Yii::t('frontend', 'No esta especificado el lapso'));
+				}
+			} else {
+				throw new NotFoundHttpException(Yii::t('frontend', 'No esta especificado el contribuyente'));
+			}
 		}
 
 
@@ -1111,13 +1127,21 @@
 		public function actionGenerarBoletinDefinitiva()
 		{
 
-			$id = $_SESSION['idContribuyente'];
-			$lapso = $_SESSION['lapso'];
-			$a = $lapso['a'];
-			$p = $lapso['p'];
+			$id = isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : 0;
+			if ( $id > 0 ) {
+				$lapso = isset($_SESSION['lapso']) ? $_SESSION['lapso'] : null;
+				if ( $lapso !== null ) {
+					$a = $lapso['a'];
+					$p = $lapso['p'];
 
-			$boletin = New BoletinController($id, $a, $p);
-			return $boletin->generarBoletinDefinitiva();
+					$boletin = New BoletinController($id, $a, $p);
+					return $boletin->generarBoletinDefinitiva();
+				} else {
+					throw new NotFoundHttpException(Yii::t('frontend', 'No esta especificado el lapso'));
+				}
+			} else {
+				throw new NotFoundHttpException(Yii::t('frontend', 'No esta especificado el contribuyente'));
+			}
 		}
 
 
@@ -1310,6 +1334,12 @@
     		if ( isset($findModel) && isset($modelSearch) ) {
  				$model = $findModel->all();
  				self::actionAnularSession(['begin', 'id_historico']);
+ 				$lapso = isset($_SESSION['lapso']) ? $_SESSION['lapso'] : null;
+ 				if ( $lapso['tipo'] == 1 ) {
+ 					$urlBoletin = 'generar-boletin-estimada';
+ 				} elseif ( $lapso['tipo'] == 2 ) {
+ 					$urlBoletin = 'generar-boletin-definitiva';
+ 				}
 
  				$search = New HistoricoDeclaracionSearch($model[0]->id_contribuyente);
  				$historico = $search->findHistoricoDeclaracionSegunSolicitud($model[0]->nro_solicitud);
@@ -1326,6 +1356,8 @@
 																'opciones' => $opciones,
 																'dataProvider' => $dataProvider,
 																'historico' => $historico,
+																'lapso' => $lapso,
+																'urlBoletin' => $urlBoletin,
 					]);
 			} else {
 				throw new NotFoundHttpException('No se encontro el registro');
