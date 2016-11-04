@@ -149,7 +149,7 @@ class DeudasContribuyenteController extends Controller
 
       $idContribuyente = $_SESSION['idContribuyente'];
       $impuesto = yii::$app->request->post('id');
-      die(var_dump($impuesto));
+    //  die(var_dump($impuesto));
           $model = new DeudaSearch($idContribuyente);
           
       $dataProvider = $model->getDeudaPorListaTasa($impuesto);
