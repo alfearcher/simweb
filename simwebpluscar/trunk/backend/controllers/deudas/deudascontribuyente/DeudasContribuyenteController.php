@@ -91,7 +91,7 @@ class DeudasContribuyenteController extends Controller
       $model = new DeudaSearch($idContribuyente);
 
       $dataProvider = $model->getDeudaGeneralPorImpuesto();
-      
+     // die(var_dump($dataProvider));  
       foreach($dataProvider as $key=>$value){
 
     
@@ -121,9 +121,7 @@ class DeudasContribuyenteController extends Controller
             
             ],
           
-            'pagination' => [
-            'pageSize' => 10,
-            ],
+            
         ]);
 
           return $this->render('/deudas/deudascontribuyente/view-deuda-general', [
@@ -149,23 +147,28 @@ class DeudasContribuyenteController extends Controller
 
       $idContribuyente = $_SESSION['idContribuyente'];
       $impuesto = yii::$app->request->post('id');
-    //  die(var_dump($impuesto));
+      $_SESSION['impuesto'] = $impuesto;
           $model = new DeudaSearch($idContribuyente);
           
       $dataProvider = $model->getDeudaPorListaTasa($impuesto);
-      die(var_dump($dataProvider));
+      //die(var_dump($dataProvider));
       foreach($dataProvider as $key=>$value){
 
-        $suma1 = $value['tmonto'] + $value['trecargo'] + $value['tinteres'] + $suma1;
-        $suma2 = $value['tdescuento'] + $value['tmonto_reconocimiento'] + $suma2;
-        $st[$key] = $suma1-$suma2; 
-        $total = $st[$key] + $total;
+
       
 
         $array[] = [
+        'id_impuesto' => $value['id_impuesto'],
           'impuesto' => $value['impuesto'],
           'descripcion' => $value['descripcion'],
-          'monto' => $st[$key],
+          
+          'ano_impositivo' => $value['a'],
+          'id_codigo' => $value['id_codigo'],
+          'grupo_subnivel' => $value['grupo_subnivel'],
+          'codigo' => $value['codigo'],
+          'concepto' => $value['concepto'],
+
+          'monto' => $value['t'],
         ]; 
 
       }
@@ -186,12 +189,69 @@ class DeudasContribuyenteController extends Controller
             
             ],
           
-            'pagination' => [
-            'pageSize' => 10,
-            ],
+            
         ]);
 
-          return $this->render('/deudas/deudascontribuyente/view-deuda-general', [
+          return $this->render('/deudas/deudascontribuyente/view-deuda-por-impuesto', [
+            'dataProvider' => $dataProvider,
+          
+
+            ]);
+  }
+
+
+    public function actionVerificarObjetoEspecifico()
+  {
+
+      $idContribuyente = $_SESSION['idContribuyente'];
+      $idImpuesto = yii::$app->request->post('id');
+      $impuesto = $_SESSION['impuesto'];
+      //die(var_dump($idImpuesto.' '.$impuesto));   
+          $model = new DeudaSearch($idContribuyente);
+          
+      $dataProvider = $model->getDetalleDeudaPorObjeto($impuesto, $idImpuesto);
+      //die(var_dump($dataProvider));
+      foreach($dataProvider as $key=>$value){
+
+
+      
+
+        $array[] = [
+        'id_impuesto' => $value['id_impuesto'],
+          'impuesto' => $value['impuesto'],
+          'descripcion' => $value['descripcion'],
+          
+          'ano_impositivo' => $value['a'],
+          'id_codigo' => $value['id_codigo'],
+          'grupo_subnivel' => $value['grupo_subnivel'],
+          'codigo' => $value['codigo'],
+          'concepto' => $value['concepto'],
+
+          'monto' => $value['t'],
+        ]; 
+
+      }
+
+     
+
+
+      //die(var_dump($st));
+     // die(var_dump($total));
+
+     
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => $array,
+           // 'Models' => $st,
+            'sort' => [
+                 
+            
+            
+            ],
+          
+            
+        ]);
+
+          return $this->render('/deudas/deudascontribuyente/view-deuda-por-impuesto', [
             'dataProvider' => $dataProvider,
           
 
