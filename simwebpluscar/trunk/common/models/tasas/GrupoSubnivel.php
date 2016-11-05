@@ -82,6 +82,21 @@ class GrupoSubnivel extends \yii\db\ActiveRecord
         return $this->hasMany(TarifaVehiculo::className(), ['clase_vehiculo' => 'clase_vehiculo']);
     }
 
+    public function getGrupoSubnivel($grupo)
+    {
+      //die($grupo);
+       $datos = GrupoSubnivel::find()
+       ->where([
+        'grupo_subnivel' => $grupo,
+
+
+        ])
+       ->all();
+       //die(var_dump($datos));
+
+       return $datos[0]->descripcion;
+    }
+
 
 
 }

@@ -90,6 +90,15 @@
             return $this->hasOne(NivelesContables::className(), ['nivel_contable' => 'nivel_contable']);
         }
 
+        public function getDescripcionCodigoContable($codigo)
+        {
+            //die(var_dump($codigo));
+            $model = CodigosContables::find()
+                                    ->where(['id_codigo' => $codigo])
+                                    ->one();
+           return $model->descripcion;
+        }
+
 
      
         
