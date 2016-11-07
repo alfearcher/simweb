@@ -189,7 +189,7 @@ $variablephp=$_COOKIE['variablephp'];
     'method' => 'post',
     'id' => 'formulario',
     'enableClientValidation' => false,
-    'enableAjaxValidation' => true,
+    'enableAjaxValidation' => false,
     'options' => ['class' => 'form-vertical'],]); ?>
 
 

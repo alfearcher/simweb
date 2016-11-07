@@ -19,7 +19,7 @@ $this->title = Yii::t('frontend', 'Property Update');
     'method' => 'post',
     'id' => 'formulario',
     'enableClientValidation' => false,
-    'enableAjaxValidation' => true,
+    'enableAjaxValidation' => false,
     'options' => ['class' => 'form-vertical'],]); ?>
 
 <div class="container" style="width:1280px">
