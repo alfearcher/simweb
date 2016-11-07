@@ -133,23 +133,28 @@
 
 		      	$total = 0;
 		  		if ( isset($findModel) ) {
-		  			foreach ( $dataProvider->allModels as $item ) {
-		  				$total = $item['deuda'] + $total;
-		  			}
+		  			if ( count($dataProvider) > 0 ) {
+			  			foreach ( $dataProvider->allModels as $item ) {
+			  				$total = $item['deuda'] + $total;
+			  			}
 
-		  			//$url = Url::to(['buscar-deuda']);
-					return $this->render('/recibo/recibo-create-form',
-															[
-																'model' => $model,
-																'caption' => $caption,
-																'subCaption' => $subCaption,
-																'findModel' => $findModel,
-																'dataProvider' => $dataProvider,
-																'total' => $total,
-																//'url' => $url,
-																'html' => $html,
+			  			//$url = Url::to(['buscar-deuda']);
+						return $this->render('/recibo/recibo-create-form',
+																[
+																	'model' => $model,
+																	'caption' => $caption,
+																	'subCaption' => $subCaption,
+																	'findModel' => $findModel,
+																	'dataProvider' => $dataProvider,
+																	'total' => $total,
+																	//'url' => $url,
+																	'html' => $html,
 
-															]);
+																]);
+					} else {
+						// No presenta deuda pendiente
+						$this->redirect(['error-operacion', 'cod' => 501]);
+					}
 
 		  		} else {
 		  			// No se encontraron los datos del contribuyente principal.
