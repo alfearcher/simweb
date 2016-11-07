@@ -52,7 +52,7 @@ session_start();
 use Yii;
 use backend\models\inmueble\InmueblesUrbanosForm;
 use backend\models\inmueble\ContribuyentesForm;
-use backend\models\inmueble\AvaluoCatastralForm;
+use frontend\models\inmueble\avaluocatastral\AvaluoCatastralForm;
 
 use backend\models\inmueble\InmueblesConsulta;
 use backend\models\inmueble\InmueblesSearch;
