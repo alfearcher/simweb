@@ -138,174 +138,191 @@ class DeudasContribuyenteController extends Controller
   
   }
 
-  /**
-   * [actionVerificarImpuesto description] metodo para verificar el impuesto enviado y verificar las deudas mas especificas
-   * @return [type] [description]
-   */
+/**
+ * [actionVerificarImpuesto description] metodo que recibe el impuesto y determina que vista renderizara
+ * @param  [type] $searchRecibo [description]
+ * @param  [type] $postJson     [description]
+ * @return [type]               [description]
+ */
   public function actionVerificarImpuesto()
   {
 
-      $idContribuyente = $_SESSION['idContribuyente'];
-      $impuesto = yii::$app->request->post('id');
-      $_SESSION['impuesto'] = $impuesto;
-          $model = new DeudaSearch($idContribuyente);
-          
-      $dataProvider = $model->getDeudaPorListaTasa($impuesto);
-      //die(var_dump($dataProvider));
-      foreach($dataProvider as $key=>$value){
+      $variables = yii::$app->request->post('id');
+      $postJson = $variables;
 
+    $html = null;
+      //$impuestos = [2,3];
+      // Lo siguiente crea un objeto json.
+      $jsonObj = json_decode($postJson);
+      //die(var_dump($jsonObj));
+
+      if ( $jsonObj->{'impuesto'} == 9 ) {
+       // die('es 9');
+        $html = self::actionGetViewDeudaTasa($jsonObj->{'impuesto'});
+
+      } elseif ( $jsonObj->{'impuesto'} == 10 ) {
+       
+          // Se buscan todas la planilla que cumplan con esta condicion
+          $html = self::actionGetViewDeudaTasa($jsonObj->{'impuesto'});
+
+      } elseif ( $jsonObj->{'impuesto'} == 11 ) {
+       
+          // Se buscan todas la planilla que cumplan con esta condicion
+          $html = self::actionGetViewDeudaTasa($jsonObj->{'impuesto'});
+
+      } elseif ( $jsonObj->{'impuesto'} == 1 ) {
+       
+          // Se buscan todas la planilla que cumplan con esta condicion
+          $html = self::actionGetViewDeudaTasa($jsonObj->{'impuesto'});
+      
+     } elseif ( $jsonObj->{'impuesto'} == 3 ) {
+     // die('bueno');
+       
+          // Se buscan todas la planilla que cumplan con esta condicion
+          $html = self::actionGetViewDeudaVehiculo($jsonObj->{'impuesto'});
+     
+     } elseif ( $jsonObj->{'impuesto'} == 2 ) {
+     // die('bueno');
+       
+          // Se buscan todas la planilla que cumplan con esta condicion
+          $html = self::actionGetViewDeudaVehiculo($jsonObj->{'impuesto'});
+     } elseif ( $jsonObj->{'impuesto'} == 12 ) {
+     // die('bueno');
+       
+          // Se buscan todas la planilla que cumplan con esta condicion
+          $html = self::actionGetViewDeudaVehiculo($jsonObj->{'impuesto'});
+     } 
+
+
+    
+      return $html;
+      
+  }
+
+    /**
+     * [actionGetViewDeudaTasa description] metodo que renderiza la vista de la deuda especifica de las tasas
+     * @param  [type] $impuesto [description] impuesto de la tasa
+     * @return [type]           [description] retorna la vista
+     */
+    public function actionGetViewDeudaTasa($impuesto)
+    { 
+
+      $monto = 0;
+      $recargo = 0;
+      $interes = 0;
+      $descuento = 0;
+      $montoR = 0; //monto reconocimiento
+
+      $idContribuyente = $_SESSION['idContribuyente'];
+        //die('hay uno seteado');
+
+      $model = new DeudaSearch($idContribuyente);
+      $caption = Yii::t('frontend', 'Deuda segun Impuesto');
+     
+      $provider = $model->getDetalleDeudaTasa($impuesto);
+    // die(var_dump($provider));
+          foreach($provider as $key=>$value){
+
+              $monto = ($value['monto'] + $value['recargo'] + $value['interes']) - ($value['descuento'] - $value['monto_reconocimiento']);
 
       
 
-        $array[] = [
-        'id_impuesto' => $value['id_impuesto'],
-          'impuesto' => $value['impuesto'],
-          'descripcion' => $value['descripcion'],
-          
-          'ano_impositivo' => $value['a'],
-          'id_codigo' => $value['id_codigo'],
-          'grupo_subnivel' => $value['grupo_subnivel'],
-          'codigo' => $value['codigo'],
-          'concepto' => $value['concepto'],
+              $array[] = [
+              'planilla' => $value['pagos']['planilla'],
+              'impuesto' => $value['tasa']['descripcion'],
+              'ano_impositivo' => $value['ano_impositivo'],
+              'periodo' => $value['trimestre'],
+              'unidad' => $value['exigibilidad']['unidad'],
+              'monto' => $monto,
+              ]; 
 
-          'monto' => $value['t'],
-        ]; 
+          }
 
-      }
-
-     
-
-
-      //die(var_dump($st));
-     // die(var_dump($total));
-
-     
-        $dataProvider = new ArrayDataProvider([
-            'allModels' => $array,
-           // 'Models' => $st,
-            'sort' => [
+            
+              $dataProvider = new ArrayDataProvider([
+                  'allModels' => $array,
+                 // 'Models' => $st,
+                  'sort' => [
                  
             
             
-            ],
+                  ],
           
             
-        ]);
+              ]);
 
-          return $this->render('/deudas/deudascontribuyente/view-deuda-por-impuesto', [
-            'dataProvider' => $dataProvider,
+              return $this->render('/deudas/deudascontribuyente/view-deuda-especifica-tasa', [
+                'dataProvider' => $dataProvider,
           
 
-            ]);
-  }
+              ]);
+    }
 
+    /**
+     * [actionGetViewDeudaVehiculo description] metodo que renderiza la vista con la deuda del vehiculo general
+     * @param  [type] $impuesto [description] impuesto del vehiculo
+     * @return [type]           [description] retorna la vista con la deuda
+     */
+    public function actionGetViewDeudaVehiculo($impuesto)
+    { 
 
-    public function actionVerificarObjetoEspecifico()
-  {
+      $monto = 0;
+      $recargo = 0;
+      $interes = 0;
+      $descuento = 0;
+      $montoR = 0; //monto reconocimiento
 
       $idContribuyente = $_SESSION['idContribuyente'];
-      $idImpuesto = yii::$app->request->post('id');
-      $impuesto = $_SESSION['impuesto'];
-      //die(var_dump($idImpuesto.' '.$impuesto));   
-          $model = new DeudaSearch($idContribuyente);
-          
-      $dataProvider = $model->getDetalleDeudaPorObjeto($impuesto, $idImpuesto);
-      //die(var_dump($dataProvider));
-      foreach($dataProvider as $key=>$value){
+        //die('hay uno seteado');
 
+      $model = new DeudaSearch($idContribuyente);
+      $caption = Yii::t('frontend', 'Deuda segun Impuesto');
+    
+      $provider = $model->getDeudaPorImpuestoPeriodo($impuesto);
+     //die(var_dump($provider));
+          foreach($provider as $key=>$value){
+
+             
 
       
 
-        $array[] = [
-        'id_impuesto' => $value['id_impuesto'],
-          'impuesto' => $value['impuesto'],
-          'descripcion' => $value['descripcion'],
-          
-          'ano_impositivo' => $value['a'],
-          'id_codigo' => $value['id_codigo'],
-          'grupo_subnivel' => $value['grupo_subnivel'],
-          'codigo' => $value['codigo'],
-          'concepto' => $value['concepto'],
+              $array[] = [
+              'impuesto' => $value['impuesto'],
+              'descripcion' => $value['descripcion'],
+              'monto' => $value['t'],
+              'tipo' => $value['tipo'],
+              ]; 
 
-          'monto' => $value['t'],
-        ]; 
+          }
 
-      }
-
-     
-
-
-      //die(var_dump($st));
-     // die(var_dump($total));
-
-     
-        $dataProvider = new ArrayDataProvider([
-            'allModels' => $array,
-           // 'Models' => $st,
-            'sort' => [
+            
+              $dataProvider = new ArrayDataProvider([
+                  'allModels' => $array,
+                 // 'Models' => $st,
+                  'sort' => [
                  
             
             
-            ],
+                  ],
           
             
-        ]);
+              ]);
 
-          return $this->render('/deudas/deudascontribuyente/view-deuda-por-impuesto', [
-            'dataProvider' => $dataProvider,
+              return $this->render('/deudas/deudascontribuyente/view-deuda-general-vehiculo', [
+                'dataProvider' => $dataProvider,
           
 
-            ]);
-  }
+              ]);
+    }
+
+
+
+  
 
  
 
    
-    /**
-     * [beginSave description] metodo padre de guardado que redirecciona hacia otros metodos encargados de finalizar el guardado
-     * @param  [type] $var   [description] variable tipo string para la redireccion
-     * @param  [type] $model [description] informacion enviada desde el form
-     * @return [type]        [description] retorna true o false
-     */
-    public function beginSave($var, $model)
-    {
-     //die('llegue a begin'.var_dump($model));
-      $conexion = new ConexionController();
-
-      $conn = $conexion->initConectar('db');
-
-      $conn->open();
-
-      $transaccion = $conn->beginTransaction();
-
-          if ($var == "guardar"){
-            
-           // die('llegue a guardar');
-              $guardar = self::guardarDetallePresupuesto($conn, $conexion, $model);
-
-             
-              if ($guardar == true){
-
-                
-
-                    $transaccion->commit();
-                    $conn->close();
-
-                     
-                    return true;
-
-
-              }else{
-
-                    $transaccion->rollback();
-                    $conn->close();
-                    return false;
-              }
-                  
-                 
-          }
-
-  }
+   
  
 
 
