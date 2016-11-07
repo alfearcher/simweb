@@ -69,6 +69,10 @@
 
 	<!-- <?//=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $findModel['id_contribuyente']])->label(false);?> -->
 
+	<div class="row" style="border-bottom: 1px solid #ccc;padding-left: 0px;">
+		<h4><?=Html::encode($caption)?></h4>
+	</div>
+
 	<div class="row" class="deuda" style="padding-top: 10px;">
 		<?= GridView::widget([
 			'id' => 'grid-deuda-por-periodo-impuesto',

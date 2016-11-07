@@ -94,7 +94,7 @@
 									'id' => 'grid-deuda-general-contribuyente',
 									'dataProvider' => $dataProvider,
 									//'filterModel' => $model,
-
+									'summary' => '',
 									'columns' => [
 
 						            	[
@@ -159,7 +159,7 @@
 						</div>
 
 
-						<div class="col-sm-4" style="margin-left:40px;margin-top:62px;padding-left:0; width: 40%;">
+						<div class="col-sm-4" style="margin-left:40px;margin-top:0px;padding-left:0; width: 40%;">
 							<?php Pjax::begin() ?>
 							<div class="deuda-en-periodo">
 								<?=$html;?>
