@@ -66,15 +66,14 @@ $this->title = Yii::t('frontend', 'Deuda por Impuesto');
                     [
                      'label' => 'Descripcion',
                      'value' => function($data){
-                            
-                            if($data['tipo'] == 'periodo>0'){ 
-                            
-                             return  'VEHICULO';
+                        
+                        $t = ($data['tipo'] == 'periodo=0') ? ' (tasa)' : '';
 
-                             }else{
+                            
+                            
+                             return  $data['descripcion'].$t;
 
-                                return 'TASA';
-                             }
+                            
 
                      },
                      ],
