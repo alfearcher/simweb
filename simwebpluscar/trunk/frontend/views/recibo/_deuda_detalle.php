@@ -78,6 +78,9 @@
 			'id' => 'grid-deuda-detalle',
 			'dataProvider' => $dataProvider,
 			//'filterModel' => $model,
+			'options' => [
+				'style' => 'overflow: auto;',
+			],
 			'summary' => '',
 			'columns' => [
                 [

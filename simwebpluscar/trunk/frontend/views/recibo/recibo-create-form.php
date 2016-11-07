@@ -82,7 +82,7 @@
         		<div class="col-sm-12">
 
 					<div class="row" style="width: 105%;padding-left: 10px;">
-						<div class="col-sm-4" style="margin-left:0px;padding-left:0; width: 40%;">
+						<div class="col-sm-4" style="margin-left:0px;padding-left:0; width: 30%;">
 
 							<div class="row" style="border-bottom: 1px solid #ccc;padding-left: 0px;">
 								<h4><?= Html::encode(Yii::t('frontend', 'Deuda por impuestos')) ?></h4>
@@ -159,7 +159,7 @@
 						</div>
 
 
-						<div class="col-sm-4" style="margin-left:40px;margin-top:0px;padding-left:0; width: 40%;">
+						<div class="col-sm-4" style="margin-left:40px;margin-top:0px;padding-left:0; width: 60%;">
 							<?php Pjax::begin() ?>
 							<div class="deuda-en-periodo">
 								<?=$html;?>
