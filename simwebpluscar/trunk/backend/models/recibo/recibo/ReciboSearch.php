@@ -185,6 +185,59 @@
 
 
 
+
+		/***/
+		public function getDeudaDetalleActividadEconomica()
+		{
+
+			return $this->_deuda->getDetalleDeudadActividadEconomica();
+		}
+
+
+
+		/***/
+		public function getDataProviderDeudaDetalleActEcon()
+		{
+			$provider = null;
+			$data = [];
+			$deudas = self::getDeudaDetalleActividadEconomica();
+			if ( count($deudas) > 0 ) {
+				foreach ( $deudas as $deuda ) {
+					$t = ($deuda['monto'] + $deuda['recargo'] + $deuda['interes']) - ($deuda['descuento'] + $deuda['monto_reconocimiento']);
+					$data[$deuda['id_detalle']] = [
+						'planilla' => $deuda['pagos']['planilla'],
+						'año' => $deuda['ano_impositivo'],
+						'periodo' => $deuda['trimestre'],
+						'unidad' => $deuda['exigibilidad']['unidad'],
+						'monto' => $deuda['monto'],
+						'descuento' => $deuda['descuento'],
+						'recargo' => $deuda['recargo'],
+						'interes' => $deuda['interes'],
+						'monto_reconocimiento' => $deuda['monto_reconocimiento'],
+						'descripcion' => $deuda['descripcion'],
+						'deuda' => $t,
+						'id_contribuyente' => $deuda['pagos']['id_contribuyente'],
+					];
+				}
+
+				$provider = New ArrayDataProvider([
+								'allModels' => $data,
+								'pagination' => [
+									'pageSize' => 30,
+								],
+				]);
+			}
+			return $provider;
+		}
+
+
+
+
+
+
+
+
+
 		/***/
 		public function getDataProviderDeudaDetalle($impuesto, $idImpuesto = 0)
 		{
@@ -213,7 +266,7 @@
 				$provider = New ArrayDataProvider([
 								'allModels' => $data,
 								'pagination' => [
-									'pageSize' => 20,
+									'pageSize' => 30,
 								],
 				]);
 			}
