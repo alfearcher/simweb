@@ -184,16 +184,32 @@
 		public function actionGetViewDeuda($searchRecibo, $postJson)
 		{
 			$html = null;
-
+			$impuestos = [2,3];
 			// Lo siguiente crea un objeto json.
 			$jsonObj = json_decode($postJson);
 
 			if ( $jsonObj->{'view'} == 1 ) {
 				$html = self::actionGetViewDeudaEnPeriodo($searchRecibo, $jsonObj->{'i'});
+
 			} elseif ( $jsonObj->{'view'} == 2 ) {
+				if ( $jsonObj->{'tipo'} == 'periodo=0' ) {
+					// Se buscan todas la planilla que cumplan con esta condicion
+					$html = self::actionGetViewDeudaTasa($searchRecibo, $jsonObj->{'i'});
 
+				} elseif ( $jsonObj->{'tipo'} == 'periodo>0' ) {
+					if ( $jsonObj->{'i'} == 1 ) {
+						// Se buscan todas las planillas.
+
+					} elseif ( $jsonObj->{'i'} == 2 || $jsonObj->{'i'} == 3 ) {
+						// Se buscan los objetos con sus deudas.
+
+					}
+				}
 			} elseif ( $jsonObj->{'view'} == 3 ) {
+				if ( $jsonObj->{'i'} == 2 || $jsonObj->{'i'} == 3 ) {
+					// Se buscan las planillas pertenecientes al objetos.
 
+				}
 			}
 
 			return $html;
@@ -207,6 +223,20 @@
 			$caption = Yii::t('frontend', 'Deuda segun tipo');
 			$provider = $searchRecibo->getDataProviderEnPeriodo($impuesto);
 			return $this->renderAjax('/recibo/_deuda_en_periodo', [
+												'caption' => $caption,
+												'dataProvider' => $provider,
+				]);
+		}
+
+
+
+
+		/***/
+		public function actionGetViewDeudaTasa($searchRecibo, $impuesto)
+		{
+			$caption = Yii::t('frontend', 'Deuda - Detalle');
+			$provider = $searchRecibo->getDataProviderDeudaDetalle($impuesto);
+			return $this->renderAjax('/recibo/_deuda_detalle', [
 												'caption' => $caption,
 												'dataProvider' => $provider,
 				]);
