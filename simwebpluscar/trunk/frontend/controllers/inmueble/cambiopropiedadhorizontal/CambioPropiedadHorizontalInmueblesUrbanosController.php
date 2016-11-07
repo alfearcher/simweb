@@ -86,7 +86,7 @@ session_start();
  *********************************************************************************************************/
 class CambioPropiedadHorizontalInmueblesUrbanosController extends Controller
 {
-   
+   public $layout="layout-main";
     public $conn;
     public $conexion;
     public $transaccion;

@@ -75,7 +75,7 @@ use common\models\configuracion\solicitud\DocumentoSolicitud;
  */
 class AvaluoCatastralInmueblesUrbanosController extends Controller
 {   
-
+    public $layout="layout-main";
     public $conn;
     public $conexion;
     public $transaccion;

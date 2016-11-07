@@ -248,8 +248,8 @@ $variablephp=$_COOKIE['variablephp'];
 
 <?= $form->field($model, 'validacion')->hiddenInput(['value' => 4])->label(false) ?>
 
-<?= Html::endForm();?> 
-                                                    
+<?//= Html::endForm();?> 
+  <?php ActiveForm::end(); ?>                                                   
                    
 
                 

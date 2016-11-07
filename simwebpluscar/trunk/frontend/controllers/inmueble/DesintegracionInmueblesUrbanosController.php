@@ -71,7 +71,7 @@ use frontend\models\inmueble\DesintegracionInmueblesForm;
  */
 class DesintegracionInmueblesUrbanosController extends Controller
 {   
-
+public $layout="layout-main";
     public $conn;
     public $conexion;
     public $transaccion; 

@@ -24,7 +24,7 @@ $this->title = Yii::t('backend', 'Property Urban');
     'id' => 'formulario',
     'action'=> ['/inmueble/cambionumerocatastral/cambio-numero-catastral-inmuebles-urbanos/view'],
     'enableClientValidation' => false,
-    'enableAjaxValidation' => true,
+    'enableAjaxValidation' => false,
     'options' => ['class' => 'form-vertical'],]); ?>  
 
     <?= GridView::widget([
@@ -90,4 +90,5 @@ $this->title = Yii::t('backend', 'Property Urban');
     </p>
 
 </div>
-<?= Html::endForm();?>
+<?//= Html::endForm();?>
+<?php ActiveForm::end(); ?> 

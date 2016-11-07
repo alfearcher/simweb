@@ -72,7 +72,7 @@ session_start();
 
 class CambioPropietarioInmueblesUrbanosController extends Controller
 {   
-
+public $layout="layout-main";
     public $conn;
     public $conexion;
     public $transaccion; 

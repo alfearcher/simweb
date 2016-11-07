@@ -90,8 +90,8 @@ $this->title = Yii::t('backend', 'Property Urban');
     </p>
 <p><?php echo $errorCheck ?></p>
 </div>
-<?= Html::endForm();?>
-
+<?//= Html::endForm();?>
+<?php ActiveForm::end(); ?> 
 
 <?php 
 // ['class' => 'yii\grid\ActionColumn', 'template' => '{view}', 'buttons' => [

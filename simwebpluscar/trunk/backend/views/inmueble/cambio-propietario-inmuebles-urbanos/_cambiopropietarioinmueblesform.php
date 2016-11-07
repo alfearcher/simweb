@@ -451,8 +451,8 @@ $variablephp=$_COOKIE['variablephp'];
 <?= $form->field($model, 'id_impuesto')->hiddenInput(['value' => $model->id_impuesto])->label(false) ?>
 
 <?= $form->field($model, 'validacion')->hiddenInput(['value' => 4])->label(false) ?>
-
-<?= Html::endForm();?> 
+<?php ActiveForm::end(); ?> 
+<?// = Html::endForm();?> 
                                                     </td>
                                                 </tr>
 

@@ -296,9 +296,9 @@ function bloquea() {
 
 <?php $validacion = 1; ?>
 <?= $form->field($model, 'validacion')->hiddenInput(['value' => '1'])->label(false) ?> 
-<?= Html::endForm();?> 
+<? //= Html::endForm();?> 
 
-<?php //ActiveForm::end(); ?> 
+<?php ActiveForm::end(); ?> 
 
 
 

@@ -64,7 +64,7 @@ session_start();
  ***************************************************************************************************/
 class CambioOtrosDatosInmueblesUrbanosController extends Controller
 {   
-    
+    public $layout="layout-main";
     public $conn;
     public $conexion;
     public $transaccion;
@@ -134,7 +134,7 @@ class CambioOtrosDatosInmueblesUrbanosController extends Controller
 
               if($model->validate()){
 
-                
+               
                   
                 if (!\Yii::$app->user->isGuest){
 

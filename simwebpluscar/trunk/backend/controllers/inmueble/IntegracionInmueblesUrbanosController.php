@@ -73,7 +73,7 @@ use common\models\configuracion\solicitud\DocumentoSolicitud;
  */
 class IntegracionInmueblesUrbanosController extends Controller
 {   
-
+    public $layout="layout-main";
     public $conn;
     public $conexion;
     public $transaccion; 

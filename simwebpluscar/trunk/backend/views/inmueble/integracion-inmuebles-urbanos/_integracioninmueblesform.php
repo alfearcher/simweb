@@ -556,7 +556,7 @@ $variablephp=$_COOKIE['variablephp'];
 
 <?= $form->field($model, 'validacion')->hiddenInput(['value' => 4])->label(false) ?>
 
-<?= Html::endForm();?> 
+<?//= Html::endForm();?> 
                                                   
                     </div>
             </div>
@@ -565,7 +565,7 @@ $variablephp=$_COOKIE['variablephp'];
 
             
 
-
+<?php ActiveForm::end(); ?> 
 <?php //$form->end(); ?>
  
 </div><!-- inscripcionInmueblesUrbanos 

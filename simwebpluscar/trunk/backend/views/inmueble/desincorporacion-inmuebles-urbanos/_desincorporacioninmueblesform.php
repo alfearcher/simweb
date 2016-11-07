@@ -113,8 +113,8 @@ $this->title = Yii::t('frontend', 'Property Update');
 
 
 <?= $form->field($model, 'validacion')->hiddenInput(['value' => '2'])->label(false) ?> 
-<?= Html::endForm();?> 
-<?php //ActiveForm::end(); ?> 
+<?//= Html::endForm();?> 
+<?php ActiveForm::end(); ?> 
 
 
 

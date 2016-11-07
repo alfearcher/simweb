@@ -56,7 +56,7 @@ function bloquea() {
     'method' => 'post',
     'id' => 'formulario',
     'enableClientValidation' => false,
-    'enableAjaxValidation' => true,
+    'enableAjaxValidation' => false,
     'options' => ['class' => 'form-vertical'],]); ?>
 
 
@@ -418,8 +418,8 @@ function bloquea() {
 <?= $form->field($model, 'tlf_hab')->hiddenInput(['style' => 'width:80px;','value' =>0])->label(false) ?>
 
 
-
-<?= Html::endForm();?>
+<?php ActiveForm::end(); ?> 
+<?//= Html::endForm();?>
 
 </div><!-- inscripcionInmueblesUrbanos -->
 

@@ -19,7 +19,7 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
     'method' => 'post',
     'id' => 'formulario',
     'enableClientValidation' => false,
-    'enableAjaxValidation' => true,
+    'enableAjaxValidation' => false,
     'options' => ['class' => 'form-vertical'],]); ?>
 
 <div class="container" style="width:1280px">
@@ -186,8 +186,8 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
 
 
 <?= $form->field($model, 'validacion')->hiddenInput(['value' => '2'])->label(false) ?> 
-<?= Html::endForm();?> 
-<?php //ActiveForm::end(); ?> 
+<? //= Html::endForm();?> 
+<?php ActiveForm::end(); ?> 
 
 
 

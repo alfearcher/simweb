@@ -82,7 +82,7 @@ session_start();
  *********************************************************************************************************/
 class InscripcionInmueblesUrbanosController extends Controller
 {
-
+    public $layout="layout-main";
     public $conn;
     public $conexion;
     public $transaccion;
