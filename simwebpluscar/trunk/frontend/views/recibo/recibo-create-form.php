@@ -81,7 +81,7 @@
         	<div class="container-fluid">
         		<div class="col-sm-12">
 
-					<div class="row" style="width: 90%;padding-left: 10px;">
+					<div class="row" style="width: 105%;padding-left: 10px;">
 						<div class="col-sm-4" style="margin-left:0px;padding-left:0; width: 40%;">
 
 							<div class="row" style="border-bottom: 1px solid #ccc;padding-left: 0px;">

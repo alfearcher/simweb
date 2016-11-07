@@ -104,7 +104,7 @@
                     							[
                     								'id' => 'id-deuda-por-periodo',
                     								'value' => json_encode([
-                    												'view' => 1,
+                    												'view' => 2,
                     												'i' => $model['impuesto'],
                     												'idC' => $model['id_contribuyente'],
                     												'tipo' => $model['tipo'],
