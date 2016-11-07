@@ -199,6 +199,7 @@
 				} elseif ( $jsonObj->{'tipo'} == 'periodo>0' ) {
 					if ( $jsonObj->{'i'} == 1 ) {
 						// Se buscan todas las planillas.
+						$html = self::actionGetViewDeudaActividadEconomica($searchRecibo);
 
 					} elseif ( $jsonObj->{'i'} == 2 || $jsonObj->{'i'} == 3 ) {
 						// Se buscan los objetos con sus deudas.
@@ -241,6 +242,22 @@
 												'dataProvider' => $provider,
 				]);
 		}
+
+
+
+
+		/***/
+		public function actionGetViewDeudaActividadEconomica($searchRecibo)
+		{
+			$caption = Yii::t('frontend', 'Deuda - Detalle');
+			$provider = $searchRecibo->getDataProviderDeudaDetalleActEcon();
+			return $this->renderAjax('/recibo/_deuda_detalle', [
+												'caption' => $caption,
+												'dataProvider' => $provider,
+				]);
+		}
+
+
 
 
 
