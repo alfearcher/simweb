@@ -88,7 +88,7 @@ $this->title = Yii::t('frontend', 'Deuda General');
                                         'view' => function ($url, $model, $key) {
                                             return Html::submitButton('<div class="item-list" style="color: #337AB7;"><center>'. Icon::show('fa fa-thumbs-up',['class' => 'fa-1x'], Icon::FA) .'</center></div>',
                                                                         [
-                                                                            'value' => $model['impuesto'],
+                                                                            'value' => json_encode(['impuesto' => $model['impuesto']]),
                                                                             'name' => 'id',
                                                                             'title' => Yii::t('backend', 'View'),
                                                                             'style' => 'margin: 0 auto; display: block;',
