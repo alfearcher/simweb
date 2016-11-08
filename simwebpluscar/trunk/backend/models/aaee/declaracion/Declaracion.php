@@ -150,6 +150,7 @@
 												'id_contribuyente' => $this->_idContribuyente,
 												'ano_impositivo' => $this->_añoImpositivo,
 												'exigibilidad_periodo' => $this->_periodo,
+												'estatus' => 0,
 												'inactivo' => 0,
 													])
 				                            ->joinWith('actividadDetalle')
