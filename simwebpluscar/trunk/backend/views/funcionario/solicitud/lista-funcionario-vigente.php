@@ -200,10 +200,13 @@
 							</div>
 						<?}?>
 					</div>
+
+					<?php Pjax::begin()?>
 					<div class="row" style="border-bottom: 0.5px solid #ccc;">
 						<div class="lista-impuesto-solicitud" id="lista-impuesto-solicitud">
 						</div>
 					</div>
+					<?php Pjax::end()?>
 <!-- Fin de lista de Solicitudes -->
 
 
