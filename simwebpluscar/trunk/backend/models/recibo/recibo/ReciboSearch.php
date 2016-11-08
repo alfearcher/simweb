@@ -223,7 +223,7 @@
 				$provider = New ArrayDataProvider([
 								'allModels' => $data,
 								'pagination' => [
-									'pageSize' => 30,
+									'pageSize' => 20,
 								],
 				]);
 			}
