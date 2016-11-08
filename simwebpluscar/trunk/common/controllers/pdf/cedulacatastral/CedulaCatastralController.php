@@ -99,7 +99,7 @@
                                                             'model' => $findModel,
                                                             'showDireccion' => true,
                                                             'showRepresentante' => true,
-                                    ]);
+                                    ]);      
 
 
             // Informacion de la declaracion.

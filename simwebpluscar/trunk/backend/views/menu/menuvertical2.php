@@ -102,7 +102,7 @@ session_start();
 		        			'items' => [
 		        						['label' => 'Inscripción de Inmuebles Urbanos', 'url' => ['/inmueble/inscripcion-inmuebles-urbanos/inscripcion-inmuebles-urbanos']],
 		        						['label' => 'Avaluo Catastral', 'url' => ['/inmueble/avaluo-catastral-inmuebles-urbanos/index']],
-		        						['label' => 'Certificado Catastral', 'url' => '#'],
+		        						['label' => 'Certificado Catastral', 'url' => ['common/pdf/cedulacatastral/cedula-catastral/generar-cedula-catastral']],
 		        						['label' => 'Renovación de Certificado Catastral', 'url' => '#'],
 		        						['label' => 'Solvencia', 'url' => '#'],
 		        						['label' => 'Cambio de Numero Catastral', 'url' => ['/inmueble/cambio-numero-catastral-inmuebles-urbanos/index']],
