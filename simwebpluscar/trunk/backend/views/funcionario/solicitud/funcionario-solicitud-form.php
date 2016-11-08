@@ -60,7 +60,7 @@
 		    'method' => 'post',
 			'enableClientValidation' => true,
 			'enableAjaxValidation' => true,
-			'enableClientScript' => true,
+			'enableClientScript' => false,
 		]);
 	?>
 
