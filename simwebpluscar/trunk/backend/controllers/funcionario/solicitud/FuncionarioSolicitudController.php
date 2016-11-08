@@ -274,7 +274,7 @@
 			if ( trim($params) != '' ) {
 				//	Lista de funcionarios, si saber que solicitudes tienen asociada.
 				$listado = 2;
-				//$url = Url::to(['prueba']);
+
 				$url = Url::to(['tipos-solicitudes-segun-funcionario']);
 				$model = New FuncionarioSearch();
 				$model->scenario = self::SCENARIO_SEARCH_GLOBAL;
@@ -745,6 +745,7 @@
 			$getData = $request->get();
 			$impuesto = $getData['id'];		// Indice del combo impuesto.
 			$modelSolicitud = New TipoSolicitudSearch();
+			$modelSolicitud->load($getData);
 			$dataProvider = $modelSolicitud->getDataProviderSolicitudImpuesto($impuesto);
 
 			return $this->renderAjax('/funcionario/solicitud/lista-impuesto-solicitud', [
