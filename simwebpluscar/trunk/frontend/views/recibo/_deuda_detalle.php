@@ -47,10 +47,11 @@
 	use yii\widgets\MaskedInput;
 
 
-	$typeIcon = Icon::FA;
-  	$typeLong = 'fa-2x';
+	// $typeIcon = Icon::FA;
+ //  	$typeLong = 'fa-2x';
 
-    Icon::map($this, $typeIcon);
+ //    Icon::map($this, $typeIcon);
+  $acumulado = [];
 
 ?>
 
@@ -88,31 +89,16 @@
                       },
 			'summary' => '',
 			'columns' => [
-          [
-              'class' => 'yii\grid\CheckboxColumn',
-              'name' => 'chkSeleccionDeuda',
-              'checkboxOptions' => function ($model, $key, $index, $column) {
-                                     //if ( in_array($model['id_detalle'], $idSeleccionado ) ) {
-                                     // if ( $model['id_detalle'] == 1 ) {
 
-                                     //    return [
-                                     //        'id' => 'id-chkSeleccionDeuda',
-                                     //        'onClick' => 'javascript: return false;',
-                                     //        'checked' => true,
-                                     //    ];
-                                    //}
-                                  },
-              'multiple' => false,
-          ],
-          [
-              'contentOptions' => [
-                   'style' => 'font-size: 90%;',
-              ],
-              'label' => Yii::t('frontend', 'id'),
-              'value' => function($data) {
-                            return $data['id_detalle'];
-                         },
-          ],
+          // [
+          //     'contentOptions' => [
+          //          'style' => 'font-size: 90%;',
+          //     ],
+          //     'label' => Yii::t('frontend', 'nro.'),
+          //     'value' => function($data) {
+          //                   return $data['id_detalle'];
+          //                },
+          // ],
           [
               'contentOptions' => [
               	   'style' => 'font-size: 90%;',
@@ -214,7 +200,12 @@
 					               },
           ],
 
-
+          [
+              'attribute' => 'aumulado',
+              'value' => function($model) {
+                            return 0;
+              }
+          ]
 
               //   [
               //   	'contentOptions' => [
