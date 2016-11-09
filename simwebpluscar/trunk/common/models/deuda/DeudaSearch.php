@@ -386,6 +386,7 @@
 									'I.descripcion',
 									'V.id_vehiculo',
 									'V.placa',
+									'P.id_contribuyente',
 									'(sum(monto+recargo+interes)-sum(descuento+monto_reconocimiento)) as t',
 
 								])
