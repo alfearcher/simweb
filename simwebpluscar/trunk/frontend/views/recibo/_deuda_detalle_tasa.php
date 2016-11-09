@@ -78,7 +78,7 @@
 			'dataProvider' => $dataProvider,
 			//'filterModel' => $model,
       'rowOptions' => function($data, $idSeleccionado) {
-                        if ( in_array($data['id_detalle'], []) ) {
+                        if ( in_array($data['id_detalle'], $idSeleccionado) ) {
                             return [
                               'class' => 'success',
                             ];
