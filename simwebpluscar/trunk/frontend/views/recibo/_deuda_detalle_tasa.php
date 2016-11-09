@@ -78,10 +78,12 @@
 			'dataProvider' => $dataProvider,
 			//'filterModel' => $model,
       'rowOptions' => function($data, $idSeleccionado) {
-                        if ( in_array($data['id_detalle'], $idSeleccionado) ) {
-                            return [
-                              'class' => 'success',
-                            ];
+                        if ( count($idSeleccionado) > 0 ) {
+                          if ( in_array($data['id_detalle'], $idSeleccionado) ) {
+                              return [
+                                'class' => 'success',
+                              ];
+                          }
                         }
       },
 			'summary' => '',
