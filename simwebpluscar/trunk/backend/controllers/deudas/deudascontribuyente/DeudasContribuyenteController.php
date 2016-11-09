@@ -91,7 +91,12 @@ class DeudasContribuyenteController extends Controller
       $model = new DeudaSearch($idContribuyente);
 
       $dataProvider = $model->getDeudaGeneralPorImpuesto();
-     // die(var_dump($dataProvider));  
+      
+     
+        if($dataProvider == null) { 
+         
+          //die('es null');
+        }else{  
       foreach($dataProvider as $key=>$value){
 
     
@@ -129,11 +134,14 @@ class DeudasContribuyenteController extends Controller
           
 
             ]);
+
+          }
       
       }else{
 
         return MensajeController::actionMensaje(938);
 
+     
      }
   
   }
@@ -148,6 +156,7 @@ class DeudasContribuyenteController extends Controller
   {
 
       $variables = yii::$app->request->post('id');
+
       $postJson = $variables;
 
     $html = null;
@@ -279,7 +288,9 @@ class DeudasContribuyenteController extends Controller
       $caption = Yii::t('frontend', 'Deuda segun Impuesto');
     
       $provider = $model->getDeudaPorImpuestoPeriodo($impuesto);
-     //die(var_dump($provider));
+      if ($provider == 0){ 
+          die('hjola');
+      }else{  
           foreach($provider as $key=>$value){
 
              
@@ -287,6 +298,7 @@ class DeudasContribuyenteController extends Controller
       
 
               $array[] = [
+              'id_impuesto' => $value['id_impuesto'],
               'impuesto' => $value['impuesto'],
               'descripcion' => $value['descripcion'],
               'monto' => $value['t'],
@@ -313,10 +325,102 @@ class DeudasContribuyenteController extends Controller
           
 
               ]);
+              }
     }
 
 
+    public function actionViewDeudaEspecificaPorObjeto()
+    {
+      $variables = yii::$app->request->post('id');
+        
+        $postJson = $variables;
 
+    $html = null;
+      //$impuestos = [2,3];
+      // Lo siguiente crea un objeto json.
+      $jsonObj = json_decode($postJson);
+      //die(var_dump($jsonObj));
+
+      if ( $jsonObj->{'impuesto'} == 3 ) {
+       // die('es 9');
+        $html = self::actionGetViewDeudaEspecifica($jsonObj->{'impuesto'}, $jsonObj->{'id_impuesto'});
+
+      } elseif ( $jsonObj->{'impuesto'} == 2 ) {
+       
+          // Se buscan todas la planilla que cumplan con esta condicion
+         $html = self::actionGetViewDeudaEspecifica($jsonObj->{'impuesto'}, $jsonObj->{'id_impuesto'});
+
+      } elseif ( $jsonObj->{'impuesto'} == 12 ) {
+       
+          // Se buscan todas la planilla que cumplan con esta condicion
+         $html = self::actionGetViewDeudaEspecifica($jsonObj->{'impuesto'}, $jsonObj->{'id_impuesto'});
+
+         }
+    
+      return $html;
+
+    }
+
+
+    public function actionGetViewDeudaEspecifica($impuesto, $idImpuesto){
+
+      $monto = 0;
+      $recargo = 0;
+      $interes = 0;
+      $descuento = 0;
+      $montoR = 0; //monto reconocimiento
+
+      $idContribuyente = $_SESSION['idContribuyente'];
+        //die('hay uno seteado');
+
+      $model = new DeudaSearch($idContribuyente);
+      $caption = Yii::t('frontend', 'Deuda Especifica por Objeto');
+    
+      $provider = $model->getDetalleDeudaPorObjeto($impuesto, $idImpuesto);
+     //die(var_dump($provider));
+          foreach($provider as $key=>$value){
+
+             
+            $monto = ($value['monto'] + $value['recargo'] + $value['interes']) - ($value['descuento'] - $value['monto_reconocimiento']);
+      
+
+              $array[] = [
+
+              'planilla' => $value['pagos']['planilla'],
+              'ano_impositivo' => $value['ano_impositivo'],
+              'trimestre' => $value['trimestre'],
+              'monto' => $value['monto'],
+              'descuento' => $value['descuento'],
+              'recargo' => $value['recargo'],
+
+              //'id_impuesto' => $value['id_impuesto'],
+              //'impuesto' => $value['impuesto'],
+           // 'descripcion' => $value['descripcion'],
+             'monto_reconocimiento' => $value['monto_reconocimiento'],
+              'monto_total' => $monto,
+              ]; 
+
+          }
+
+            
+              $dataProvider = new ArrayDataProvider([
+                  'allModels' => $array,
+                 // 'Models' => $st,
+                  'sort' => [
+                 
+            
+            
+                  ],
+          
+            
+              ]);
+
+              return $this->render('/deudas/deudascontribuyente/view-deuda-especifica', [
+                'dataProvider' => $dataProvider,
+          
+
+              ]);
+    }
   
 
  
