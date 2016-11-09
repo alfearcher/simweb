@@ -94,9 +94,9 @@
                                       // $index, autonumerico que comienza en 0, es como
                                       // el indice en un array.
 
-                                      if ( $model['planilla'] == 3905357 ) {
-                                      die(var_dump($column));
-                                    }
+                                    //   if ( $model['planilla'] == 3905357 ) {
+                                    //   die(var_dump($column));
+                                    // }
                                       if ( in_array($model['id_detalle'], []) ) {
 
                                           return [
