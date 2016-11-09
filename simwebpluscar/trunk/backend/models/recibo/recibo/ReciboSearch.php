@@ -217,6 +217,9 @@
 						'descripcion' => $deuda['descripcion'],
 						'deuda' => $t,
 						'id_contribuyente' => $deuda['pagos']['id_contribuyente'],
+						'id_impuesto' => $deuda['id_impuesto'],
+						'impuesto' => $deuda['impuesto'],
+						'id_detalle' => $deuda['id_detalle'],
 					];
 				}
 
@@ -258,6 +261,8 @@
 						'id_contribuyente' => $deuda['pagos']['id_contribuyente'],
 						'id_impuesto' => $deuda['id_impuesto'],
 						'impuesto' => $deuda['impuesto'],
+						'id_detalle' => $deuda['id_detalle'],
+
 					];
 				}
 
