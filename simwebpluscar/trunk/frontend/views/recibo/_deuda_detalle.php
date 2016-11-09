@@ -77,11 +77,13 @@
 			'id' => 'grid-deuda-detalle',
 			'dataProvider' => $dataProvider,
 			//'filterModel' => $model,
-      'rowOptions' => function($data) {
-                        if ( in_array($data['id_detalle'], $idSeleccionado ) ) {
-                            return [
-                              'class' => 'success',
-                            ];
+      'rowOptions' => function($data, $idSeleccionado) {
+                        if ( count($idSeleccionado) > 0 ) {
+                          if ( in_array($data['id_detalle'], $idSeleccionado) ) {
+                              return [
+                                'class' => 'success',
+                              ];
+                          }
                         }
       },
 			'summary' => '',
@@ -90,7 +92,9 @@
               'class' => 'yii\grid\CheckboxColumn',
               'name' => 'chkSeleccionDeuda',
               'checkboxOptions' => function ($model, $key, $index, $column) {
-                                     if ( in_array($model['id_detalle'], $idSeleccionado ) ) {
+                                     //if ( in_array($model['id_detalle'], $idSeleccionado ) ) {
+                                     if ( $model['id_detalle'] == 1 ) ) {
+
                                         return [
                                             'id' => 'id-chkSeleccionDeuda',
                                             'onClick' => 'javascript: return false;',
