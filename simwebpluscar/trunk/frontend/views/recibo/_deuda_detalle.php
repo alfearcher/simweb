@@ -93,7 +93,7 @@
               'name' => 'chkSeleccionDeuda',
               'checkboxOptions' => function ($model, $key, $index, $column) {
                                      //if ( in_array($model['id_detalle'], $idSeleccionado ) ) {
-                                     if ( $model['id_detalle'] == 1 ) ) {
+                                     if ( $model['id_detalle'] == 1 ) {
 
                                         return [
                                             'id' => 'id-chkSeleccionDeuda',
