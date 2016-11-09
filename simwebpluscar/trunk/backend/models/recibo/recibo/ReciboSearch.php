@@ -171,6 +171,21 @@
 
 
 
+		public function initDataPrivider()
+		{
+			$provider = null;
+			$data = [];
+			$provider = New ArrayDataProvider([
+							'allModels' => $data,
+							'pagination' => false,
+			]);
+
+			return $provider;
+		}
+
+
+
+
 		/***/
 		public function getDeudaDetalle($impuesto, $idImpuesto = 0)
 		{
