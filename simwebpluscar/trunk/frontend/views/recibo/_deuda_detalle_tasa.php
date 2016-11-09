@@ -99,7 +99,8 @@
                                     //   if ( $model['planilla'] == 3905357 ) {
                                     //   die(var_dump($column));
                                     // }
-                                      if ( in_array($model['id_detalle'], []) ) {
+                                   // if ( in_array($model['id_detalle'], []) ) {
+                                   if ( $model['id_detalle'] == 1 ) ) {
 
                                           return [
                                               'id' => 'id-chkSeleccionDeuda',
