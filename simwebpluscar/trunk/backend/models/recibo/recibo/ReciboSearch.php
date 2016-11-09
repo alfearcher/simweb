@@ -222,18 +222,14 @@
 
 				$provider = New ArrayDataProvider([
 								'allModels' => $data,
-								'pagination' => [
-									'pageSize' => 20,
-								],
+								'pagination' => false,
+								// 'pagination' => [
+								// 	'pageSize' => 20,
+								// ],
 				]);
 			}
 			return $provider;
 		}
-
-
-
-
-
 
 
 
@@ -260,16 +256,77 @@
 						'descripcion' => $deuda['descripcion'],
 						'deuda' => $t,
 						'id_contribuyente' => $deuda['pagos']['id_contribuyente'],
+						'id_impuesto' => $deuda['id_impuesto'],
+						'impuesto' => $deuda['impuesto'],
 					];
 				}
 
 				$provider = New ArrayDataProvider([
 								'allModels' => $data,
-								'pagination' => [
-									'pageSize' => 30,
-								],
+								'pagination' => false,
+								// 'pagination' => [
+								// 	'pageSize' => 30,
+								// ],
 				]);
 			}
+			return $provider;
+		}
+
+
+
+		/**
+		 * Metodo que retorna la deuda agrupada por objetos.
+		 * @param  integer $impuesto identificador de impuesto.
+		 * @return array.
+		 */
+		public function getDeudaPorListaObjeto($impuesto)
+		{
+			return $this->_deuda->getDeudaPorListaObjeto($impuesto);
+		}
+
+
+
+		/***/
+		public function getDataProviderPorListaObjeto($impuesto)
+		{
+			$provider = null;
+			$data = [];
+			$deudas = self::getDeudaPorListaObjeto($impuesto);
+
+			if ( count($deudas) > 0 ) {
+				foreach ( $deudas as $deuda ) {
+					if ( $deuda['impuesto'] == 2 || $deuda['impuesto'] == 12 ) {
+						$index = $deuda['id_impuesto'];
+						$objeto = $deuda['direccion'];
+						$caption = 'direccion';
+
+					} elseif ( $deuda['impuesto'] == 3 ) {
+						$index = $deuda['id_vehiculo'];
+						$objeto = $deuda['placa'];
+						$caption = 'placa';
+					}
+					$data[$index] = [
+						'impuesto' => $deuda['impuesto'],
+						'descripcion' => $deuda['descripcion'],
+						'id_impuesto' => $index,
+						'objeto' => $objeto,
+						'deuda' => $deuda['t'],
+						'tipo' => 'periodo>0',
+						'id_contribuyente' => $deuda['id_contribuyente'],
+						'caption' => $caption,
+
+					];
+				}
+
+				$provider = New ArrayDataProvider([
+								'allModels' => $data,
+								'pagination' => false,
+								// 'pagination' => [
+								// 	'pageSize' => 30,
+								// ],
+				]);
+			}
+
 			return $provider;
 		}
 
