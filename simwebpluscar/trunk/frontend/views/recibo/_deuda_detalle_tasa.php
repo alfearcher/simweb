@@ -22,14 +22,14 @@
  */
 
  /**
- *  @file _deuda_detalle.php
+ *  @file _deuda_detalle_tasa.php
  *
  *  @author Jose Rafael Perez Teran
  *
  *  @date 04-11-2016
  *
- *  @view _deuda_detalle
- *  @brief vista detalle de las planillas
+ *  @view _deuda_detalle_tasa
+ *  @brief vista detalle de las planillas que poseen periodos en cero.
  *
  */
 
@@ -54,10 +54,10 @@
 
 ?>
 
-<div class="deuda-detalle">
+<div class="deuda-detalle-tasa">
  	<?php
  		$form = ActiveForm::begin([
- 			'id' => 'id-deuda-detalle',
+ 			'id' => 'id-deuda-detalle-tasa',
  			//'method' => 'post',
  			//'action'=> $url,
  			//'enableClientValidation' => true,
@@ -72,13 +72,13 @@
 		<h4><?=Html::encode($caption)?></h4>
 	</div>
 
-	<div class="row" class="deuda" style="padding-top: 10px;">
+	<div class="row" class="deuda-tasa" style="padding-top: 10px;">
 		<?= GridView::widget([
-			'id' => 'grid-deuda-detalle',
+			'id' => 'grid-deuda-detalle-tasa',
 			'dataProvider' => $dataProvider,
 			//'filterModel' => $model,
-      'rowOptions' => function($data) {
-                        if ( in_array($data['id_detalle'], $idSeleccionado ) ) {
+      'rowOptions' => function($data, $idSeleccionado) {
+                        if ( in_array($data['id_detalle'], []) ) {
                             return [
                               'class' => 'success',
                             ];
@@ -90,25 +90,33 @@
               'class' => 'yii\grid\CheckboxColumn',
               'name' => 'chkSeleccionDeuda',
               'checkboxOptions' => function ($model, $key, $index, $column) {
-                                     if ( in_array($model['id_detalle'], $idSeleccionado ) ) {
-                                        return [
-                                            'id' => 'id-chkSeleccionDeuda',
-                                            'onClick' => 'javascript: return false;',
-                                            'checked' => true,
-                                        ];
+                                      // $key, identificador de la tabla, pagos-detalle.
+                                      // $index, autonumerico que comienza en 0, es como
+                                      // el indice en un array.
+
+                                      if ( $model['planilla'] == 3905357 ) {
+                                      die(var_dump($column));
+                                    }
+                                      if ( in_array($model['id_detalle'], []) ) {
+
+                                          return [
+                                              'id' => 'id-chkSeleccionDeuda',
+                                              'onClick' => 'javascript: return false;',
+                                              'checked' => true,
+                                          ];
                                     }
               },
               'multiple' => false,
           ],
-          [
-              'contentOptions' => [
-                   'style' => 'font-size: 90%;',
-              ],
-              'label' => Yii::t('frontend', 'id'),
-              'value' => function($data) {
-                            return $data['id_detalle'];
-                         },
-          ],
+          // [
+          //     'contentOptions' => [
+          //          'style' => 'font-size: 90%;',
+          //     ],
+          //     'label' => Yii::t('frontend', 'id'),
+          //     'value' => function($data) {
+          //                   return $data['id_detalle'];
+          //                },
+          // ],
           [
               'contentOptions' => [
               	   'style' => 'font-size: 90%;',
@@ -192,7 +200,7 @@
           ],
           [
               'contentOptions' => [
-                  'style' => 'font-size: 90%;text-align:right;',
+                  'style' => 'font-size: 100%;text-align:right;font-weight: bold;',
               ],
               'label' => Yii::t('frontend', 'subtotal'),
               'value' => function($data) {
@@ -210,38 +218,7 @@
 					               },
           ],
 
-
-
-              //   [
-              //   	'contentOptions' => [
-              //       	'style' => 'font-size: 90%;text-align:right;',
-              //   	],
-              //       'class' => 'yii\grid\ActionColumn',
-            		// 'header'=> Yii::t('frontend', 'Deuda'),
-            		// 'template' => '{view}',
-            		// 'buttons' => [
-              //   		'view' => function ($url, $model, $key) {
-              //   				$url =  Url::to(['buscar-deuda']);
-              //      				return Html::submitButton('<div class="item-list" style="color: #000000;"><center>'. $model['deuda'] .'</center></div>',
-              //       							[
-              //       								'id' => 'id-deuda-por-periodo',
-              //       								'value' => json_encode([
-              //       												'view' => 2,
-              //       												'i' => $model['impuesto'],
-              //       												'idC' => $model['id_contribuyente'],
-              //       												'tipo' => $model['tipo'],
-              //       											]),
-	             //            						'name' => 'id',
-	             //            						'class' => 'btn btn-default',
-	             //            						'title' => 'deuda '. $model['deuda'],
-	             //            						//'data-url' => $url,
-	             //            						'style' => 'text-align:right;',
-				          //               		]
-			           //              		);
-              //   				},
-              //   	],
-              //   ],
-        	]
+      ]
 		]);?>
 	</div>
 

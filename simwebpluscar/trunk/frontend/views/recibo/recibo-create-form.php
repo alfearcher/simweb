@@ -52,6 +52,7 @@
 
     Icon::map($this, $typeIcon);
 
+    $totalSeleccionado = 0;
 ?>
 
 <div class="recibo-pago-form">
@@ -191,6 +192,16 @@
 								<div class="deuda-detalle" id="deuda-detalle">
 								</div>
 							<?php Pjax::end() ?>
+						</div>
+					</div>
+
+
+					<div class="row" style="padding-top: 0px;padding-top: 20px;background-color: #F1F1F1;width: 40%;">
+						<div class="col-sm-3" style="width: 60%;text-align: left;">
+							<h3><strong><p>Total Seleccionado:</p></strong></h3>
+						</div>
+						<div class="col-sm-3" style="width: 35%;text-align: right;">
+							<h3><strong><p><?=Html::encode(Yii::$app->formatter->asDecimal($totalSeleccionado, 2))?></p></strong></h3>
 						</div>
 					</div>
 
