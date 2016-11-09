@@ -15,7 +15,7 @@ use common\models\tasas\GrupoSubnivel;
 
 //die(var_dump($Hola));
 
-$this->title = Yii::t('frontend', 'Deuda por Impuesto');
+$this->title = Yii::t('frontend', 'Detalle de la Deuda');
 
 
 
@@ -64,14 +64,10 @@ $this->title = Yii::t('frontend', 'Deuda por Impuesto');
                      // ],
 
                     [
-                     'label' => 'Descripcion',
+                     'label' => 'Planilla',
                      'value' => function($data){
                         
-                        $t = ($data['tipo'] == 'periodo=0') ? ' (tasa)' : '';
-
-                            
-                            
-                             return  $data['descripcion'].$t;
+                       return $data['planilla'];
 
                             
 
@@ -79,11 +75,56 @@ $this->title = Yii::t('frontend', 'Deuda por Impuesto');
                      ],
 
                     [
+                    'label' => 'Año Impositivo',
+                    'value' => function($data){
+                        return $data['ano_impositivo'];
+                    },
+                    ],
+
+                      [
+                    'label' => 'Trimestre',
+                    'value' => function($data){
+                        return $data['trimestre'];
+                    },
+                    ],
+
+                    [
                     'label' => 'Monto',
                     'value' => function($data){
                         return $data['monto'];
                     },
                     ],
+
+                    [
+                    'label' => 'Descuento',
+                    'value' => function($data){
+                        return $data['descuento'];
+                    },
+                    ],
+
+                    [
+                    'label' => 'Recargo',
+                    'value' => function($data){
+                        return $data['recargo'];
+                    },
+                    ],
+
+                    [
+                    'label' => 'Monto Reconocimiento',
+                    'value' => function($data){
+                        return $data['monto_reconocimiento'];
+                    },
+                    ],
+
+                       [
+                    'label' => 'Monto Total',
+                    'value' => function($data){
+                        return $data['monto_total'];
+                    },
+                    ],
+
+
+
 
                     // [
                     // 'label' => 'Periodo',
@@ -134,23 +175,7 @@ $this->title = Yii::t('frontend', 'Deuda por Impuesto');
                     // ],
 
 
-                     [
-                                    'class' => 'yii\grid\ActionColumn',
-                                    'header'=> Yii::t('backend','View'),
-                                    'template' => '{view}',
-                                    'buttons' => [
-                                        'view' => function ($url, $model, $key) {
-                                            return Html::submitButton('<div class="item-list" style="color: #337AB7;"><center>'. Icon::show('fa fa-thumbs-up',['class' => 'fa-1x'], Icon::FA) .'</center></div>',
-                                                                        [
-                                                                            'value' => json_encode(['impuesto' => $model['impuesto'] , 'id_impuesto' => $model['id_impuesto']]),
-                                                                            'name' => 'id',
-                                                                            'title' => Yii::t('backend', 'View'),
-                                                                            'style' => 'margin: 0 auto; display: block;',
-                                                                        ]
-                                                                    );
-                                        },
-                                    ],
-                                ],
+           
              
 
                        
