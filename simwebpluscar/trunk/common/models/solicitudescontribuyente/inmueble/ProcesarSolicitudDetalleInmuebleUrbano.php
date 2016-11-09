@@ -165,7 +165,7 @@
                                                                           $this->_evento,
                                                                           $this->_conn,
                                                                           $this->_conexion);
-                    $result = $procesar->procesarSolicitud();  
+                    $result = $procesar->procesarSolicitud();   
 
                 } elseif ( $this->_model->tipo_solicitud == 29 ) {
                     //Cambio Propiedad Horizontal

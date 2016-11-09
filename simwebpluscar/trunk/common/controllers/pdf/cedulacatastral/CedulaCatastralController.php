@@ -67,7 +67,7 @@
     class CedulaCatastralController extends Controller
     {
 	   public $layout = 'layout-main';
-
+       
 	   private $_año_impositivo;
        private $_periodo;
        private $_id_contribuyente;
@@ -248,10 +248,11 @@
                 $ipagarEn = '';
                 $interesEn = '';
 
+  
                 if ( $i == 1 ) {
                     $monto = $montoPorPeriodo + $diferencia;
                 } else {
-                    $monto = $montoPorPeriodo;
+                    $monto = $montoPorPeriodo; $total = $monto+$interes;
                 }
                 $recargo->calcularRecargo($this->_año_impositivo, $i, $monto);
                 $calculoRecargo = $recargo->getRecargo();
@@ -269,12 +270,12 @@
                 if ( count($etiqueta) > 0 ) {
                     $pagarEn = $etiqueta[$i]['pagarEn'];
                     $recargoEn = $etiqueta[$i]['recargoEn'];
-                }
+                } 
 
                 if ( count($etiquetaInt) > 0 ) {
                     $ipagarEn = $etiquetaInt[$i]['ipagarEn'];
                     $interesEn = $etiquetaInt[$i]['interesEn'];
-                }
+                } 
 
                 $resumen[$i] = [
                     'periodo' => $i,
