@@ -22,14 +22,14 @@
  */
 
  /**
- *  @file recibo-create-form.php
+ *  @file _deuda_en_periodo.php
  *
  *  @author Jose Rafael Perez Teran
  *
  *  @date 04-11-2016
  *
- *  @view recibo-create-form
- *  @brief vista principal del formulario para la creacion de los recibos de pago.
+ *  @view _deuda_en_periodo
+ *  @brief vista
  *
  */
 
@@ -61,9 +61,9 @@
  			'id' => 'id-deudad-en-periodo',
  			'method' => 'post',
  			//'action'=> $url,
- 			'enableClientValidation' => true,
- 			'enableAjaxValidation' => false,
- 			'enableClientScript' => false,
+ 			// 'enableClientValidation' => true,
+ 			// 'enableAjaxValidation' => false,
+ 			// 'enableClientScript' => false,
  		]);
  	?>
 
@@ -99,21 +99,28 @@
             		'template' => '{view}',
             		'buttons' => [
                 		'view' => function ($url, $model, $key) {
-                				$url =  Url::to(['buscar-deuda']);
-                   				return Html::submitButton('<div class="item-list" style="color: #000000;"><center>'. $model['deuda'] .'</center></div>',
+                				$rutaAjax = 'deuda-detalle';
+                				if ( $model['impuesto'] == 2 || $model['impuesto'] == 3 || $model['impuesto'] == 12 ) {
+                					if ( $model['tipo'] == 'periodo>0' ) {
+                						$rutaAjax = 'deuda-por-objeto';
+                					}
+                				}
+
+                				$u = Yii::$app->urlManager
+							                  ->createUrl('recibo/recibo/buscar-deuda-detalle') . '&view=2' . '&i=' . $model['impuesto'] . '&idC=' . $model['id_contribuyente'] . '&tipo=' . $model['tipo'];
+                   				return Html::submitButton('<div class="item-list" style="color: #000000;"><center>'. Yii::$app->formatter->asDecimal($model['deuda'], 2) .'</center></div>',
                     							[
                     								'id' => 'id-deuda-por-periodo',
-                    								'value' => json_encode([
-                    												'view' => 2,
-                    												'i' => $model['impuesto'],
-                    												'idC' => $model['id_contribuyente'],
-                    												'tipo' => $model['tipo'],
-                    											]),
 	                        						'name' => 'id',
 	                        						'class' => 'btn btn-default',
 	                        						'title' => 'deuda '. $model['deuda'],
-	                        						//'data-url' => $url,
 	                        						'style' => 'text-align:right;',
+	                        						'onClick' => '$.post("' . $u . '", function( data ) {
+	                        																$( "#deuda-por-objeto" ).html("");
+	                        																$( "#deuda-detalle" ).html("");
+																							$( "#' . $rutaAjax . '" ).html( data );
+							                        								   }
+							                        					);return false;',
 				                        		]
 			                        		);
                 				},

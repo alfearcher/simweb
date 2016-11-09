@@ -61,9 +61,9 @@
  			'id' => 'id-recibo-create-form',
  			'method' => 'post',
  			//'action'=> $url,
- 			'enableClientValidation' => true,
- 			'enableAjaxValidation' => false,
- 			'enableClientScript' => false,
+ 			// 'enableClientValidation' => true,
+ 			// 'enableAjaxValidation' => true,
+ 			// 'enableClientScript' => true,
  		]);
  	?>
 
@@ -125,8 +125,10 @@
 				                    		'template' => '{view}',
 				                    		'buttons' => [
 				                        		'view' => function ($url, $model, $key) {
-				                        				$url =  Url::to(['buscar-deuda']);
-				                           				return Html::submitButton('<div class="item-list" style="color: #000000;"><center>'. $model['deuda'] .'</center></div>',
+				                        				// $url =  Url::to(['buscar-deuda']);
+				                        				$u = Yii::$app->urlManager
+							                                          ->createUrl('recibo/recibo/buscar-deuda-detalle') . '&view=1' . '&i=' . $model['impuesto'] . '&idC='.$model['id_contribuyente'];
+				                           				return Html::submitButton('<div class="item-list" style="color: #000000;"><center>'. Yii::$app->formatter->asDecimal($model['deuda'], 2) .'</center></div>',
 					                        							[
 					                        								'id' => 'id-deuda',
 					                        								'value' => json_encode([
@@ -137,8 +139,14 @@
 							                        						'name' => 'id',
 							                        						'class' => 'btn btn-default',
 							                        						'title' => 'deuda '. $model['deuda'],
-							                        						//'data-url' => $url,
 							                        						'style' => 'text-align:right;',
+							                        						//'onClick' => 'alert("' . $u. '")',
+							                        						'onClick' => '$.post("' . $u . '", function( data ) {
+							                        																$( "#deuda-por-objeto" ).html("");
+							                        																$( "#deuda-detalle" ).html("");
+																													$( "#deuda-en-periodo" ).html( data );
+							                        														   }
+							                        											);return false;',
 										                        		]
 									                        		);
 				                        				},
@@ -153,20 +161,37 @@
 									<h3><strong><p>Total:</p></strong></h3>
 								</div>
 								<div class="col-sm-3" style="width: 55%;text-align: right;">
-									<h3><strong><p><?=Html::encode($total)?></p></strong></h3>
+									<h3><strong><p><?=Html::encode(Yii::$app->formatter->asDecimal($total, 2))?></p></strong></h3>
 								</div>
 							</div>
+
 						</div>
 
 
 						<div class="col-sm-4" style="margin-left:40px;margin-top:0px;padding-left:0; width: 60%;">
 							<?php Pjax::begin() ?>
-							<div class="deuda-en-periodo">
-								<?=$html;?>
-							</div>
+								<div class="deuda-en-periodo" id="deuda-en-periodo">
+								</div>
 							<?php Pjax::end() ?>
 						</div>
 
+
+						<div class="col-sm-4" style="margin-left:40px;margin-top:0px;padding-left:0; width: 60%;">
+							<?php Pjax::begin(['enablePushState' => false]) ?>
+								<div class="deuda-por-objeto" id="deuda-por-objeto">
+								</div>
+							<?php Pjax::end() ?>
+						</div>
+
+					</div>
+
+					<div class="row" style="padding-top: 50px;">
+						<div class="col-sm-10" style="margin-left:10px;margin-top:0px;padding-left:0; width: 95%;">
+							<?php Pjax::begin(['enablePushState' => false]) ?>
+								<div class="deuda-detalle" id="deuda-detalle">
+								</div>
+							<?php Pjax::end() ?>
+						</div>
 					</div>
 
 					<div class="row" style="margin-top: 15px;">
@@ -211,12 +236,3 @@
 	</div>
 	<?php ActiveForm::end(); ?>
 </div>
-
-<?php
-	$script ='
-		$( "#id-deuda" ).click(function() {
-			alert("hola");
-		})';
-
-	$this->registerJs($script);
-?>

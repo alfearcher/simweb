@@ -56,14 +56,13 @@
 
 <div class="deuda-detalle">
  	<?php
-
  		$form = ActiveForm::begin([
  			'id' => 'id-deuda-detalle',
- 			'method' => 'post',
+ 			//'method' => 'post',
  			//'action'=> $url,
- 			'enableClientValidation' => true,
- 			'enableAjaxValidation' => false,
- 			'enableClientScript' => false,
+ 			//'enableClientValidation' => true,
+ 			// 'enableAjaxValidation' => false,
+ 			//'enableClientScript' => true,
  		]);
  	?>
 
@@ -78,65 +77,108 @@
 			'id' => 'grid-deuda-detalle',
 			'dataProvider' => $dataProvider,
 			//'filterModel' => $model,
-			'options' => [
-				'style' => 'overflow: auto;',
-			],
 			'summary' => '',
 			'columns' => [
-                [
-                	'contentOptions' => [
-                    	'style' => 'font-size: 90%;',
-                	],
-                    'label' => Yii::t('frontend', 'planilla'),
-                    'value' => function($data) {
-									return $data['planilla'];
-								},
-                ],
-                [
-                	'contentOptions' => [
-                    	'style' => 'font-size: 90%;',
-                	],
-                    'label' => Yii::t('frontend', 'año'),
-                    'value' => function($data) {
-									return $data['año'];
-								},
-                ],
-                [
-                	'contentOptions' => [
-                    	'style' => 'font-size: 90%;',
-                	],
-                    'label' => Yii::t('frontend', 'periodo'),
-                    'value' => function($data) {
-									return $data['periodo'];
-								},
-                ],
-                [
-                	'contentOptions' => [
-                    	'style' => 'font-size: 90%;',
-                	],
-                    'label' => Yii::t('frontend', 'unidad'),
-                    'value' => function($data) {
-									return $data['unidad'];
-								},
-                ],
-                [
-                	'contentOptions' => [
-                    	'style' => 'font-size: 90%;',
-                	],
-                    'label' => Yii::t('frontend', 'monto'),
-                    'value' => function($data) {
-									return $data['monto'];
-								},
-                ],
-                [
-                	'contentOptions' => [
-                    	'style' => 'font-size: 90%;',
-                	],
-                    'label' => Yii::t('frontend', 'concepto'),
-                    'value' => function($data) {
-									return $data['descripcion'];
-								},
-                ],
+          [
+              'contentOptions' => [
+              	   'style' => 'font-size: 90%;',
+          	  ],
+              'label' => Yii::t('frontend', 'planilla'),
+              'value' => function($data) {
+    				                return $data['planilla'];
+    			               },
+          ],
+          [
+              'contentOptions' => [
+              	   'style' => 'font-size: 90%;text-align:center;',
+              ],
+              'label' => Yii::t('frontend', 'año'),
+              'value' => function($data) {
+						                return $data['año'];
+					               },
+          ],
+          [
+              'contentOptions' => [
+                  'style' => 'font-size: 90%;text-align:center;',
+              ],
+              'label' => Yii::t('frontend', 'periodo'),
+              'value' => function($data) {
+					                 return $data['periodo'];
+				                 },
+          ],
+          [
+              'contentOptions' => [
+                  'style' => 'font-size: 90%;text-align:center;',
+              ],
+              'label' => Yii::t('frontend', 'unidad'),
+              'value' => function($data) {
+					                 return $data['unidad'];
+					               },
+          ],
+          [
+              'contentOptions' => [
+                  'style' => 'font-size: 90%;text-align:right;',
+              ],
+              'label' => Yii::t('frontend', 'monto'),
+              'value' => function($data) {
+					                 return Yii::$app->formatter->asDecimal($data['monto'], 2);
+					               },
+          ],
+          [
+              'contentOptions' => [
+                  'style' => 'font-size: 90%;text-align:right;',
+              ],
+              'label' => Yii::t('frontend', 'recargo'),
+              'value' => function($data) {
+                           return Yii::$app->formatter->asDecimal($data['recargo'], 2);
+                         },
+          ],
+          [
+              'contentOptions' => [
+                  'style' => 'font-size: 90%;text-align:right;',
+              ],
+              'label' => Yii::t('frontend', 'interes'),
+              'value' => function($data) {
+                           return Yii::$app->formatter->asDecimal($data['interes'], 2);
+                         },
+          ],
+          [
+              'contentOptions' => [
+                  'style' => 'font-size: 90%;text-align:right;',
+              ],
+              'label' => Yii::t('frontend', 'descuento'),
+              'value' => function($data) {
+                           return Yii::$app->formatter->asDecimal($data['descuento'], 2);
+                         },
+          ],
+          [
+              'contentOptions' => [
+                  'style' => 'font-size: 90%;text-align:right;',
+              ],
+              'label' => Yii::t('frontend', 'recon./reten.'),
+              'value' => function($data) {
+                           return Yii::$app->formatter->asDecimal($data['monto_reconocimiento'], 2);
+                         },
+          ],
+          [
+              'contentOptions' => [
+                  'style' => 'font-size: 90%;text-align:right;',
+              ],
+              'label' => Yii::t('frontend', 'subtotal'),
+              'value' => function($data) {
+                            $st = ( $data['monto'] + $data['recargo'] + $data['interes'] ) - ( $data['descuento'] + $data['monto_reconocimiento'] );
+                            return Yii::$app->formatter->asDecimal($st, 2);
+                         },
+          ],
+          [
+              'contentOptions' => [
+                  'style' => 'font-size: 90%;',
+              ],
+              'label' => Yii::t('frontend', 'concepto'),
+              'value' => function($data) {
+					                 return $data['descripcion'];
+					               },
+          ],
 
 
 
@@ -173,5 +215,6 @@
 		]);?>
 	</div>
 
-	<?php ActiveForm::end(); ?>
+	<?php ActiveForm::end();?>
+
 </div>
