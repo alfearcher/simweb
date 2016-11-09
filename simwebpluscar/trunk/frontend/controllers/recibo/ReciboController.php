@@ -56,6 +56,7 @@
 	use common\models\session\Session;
 	use backend\models\recibo\recibo\ReciboSearch;
 	use backend\models\recibo\recibo\ReciboForm;
+	use backend\models\impuesto\Impuesto;
 
 
 
@@ -88,11 +89,6 @@
 					}
 				}
 
-				// Vista donde se guarda la consulta de la deuda segun parametros.
-				$html = null;
-
-// die(var_dump($postData));
-
 
 				$model = New ReciboForm();
 
@@ -101,6 +97,13 @@
 
 				$caption = Yii::t('frontend', 'Recibo de Pago. Crear');
 				$subCaption = Yii::t('frontend', 'SubTitulo');
+
+				// if ( $request->get() !== null ) {
+				// 	$this->load($request->get());
+				// }
+
+				// Vista donde se guarda la consulta de la deuda segun parametros.
+				$html = null;
 
 		      	// Datos generales del contribuyente.
 		      	$searchRecibo = New ReciboSearch($idContribuyente);
@@ -165,21 +168,83 @@
 
 
 
-		/***/
-		public function actionBuscarDeuda()
+
+		public function actionPrueba()
 		{
 			$request = Yii::$app->request;
 
-//die(var_dump($request->post()));
-// 			if ( $request->isGet ) {
-// 				$getData = $request->get();
-// 				if ( $getData['n'] == 1 ) {
-// 					$s = $request->getCsrfToken();
-// die(var_dump($s));
-			// 	}
-			// }
-			//
-			return $this->renderAjax('/recibo/prueba');
+
+		}
+
+
+
+
+
+
+		/***/
+		public function actionBuscarDeudaDetalle()
+		{
+			$request = Yii::$app->request;
+			$getData = $request->get();
+
+			$idContribuyente = isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : 0;
+
+			if ( isset($getData['view']) ) {
+				$idC = $getData['idC'];
+				if ( $idC == $idContribuyente ) {
+					$searchRecibo = New ReciboSearch($idContribuyente);
+
+					if ( $getData['view'] == 1 ) {	//Request desde deuda general.
+						return $html = self::actionGetViewDeudaEnPeriodo($searchRecibo, (int)$getData['i']);
+
+					} elseif ( $getData['view'] == 2 ) {	// Request desde deuda por tipo.
+						if ( isset($getData['tipo']) ) {
+
+							if ( $getData['tipo'] == 'periodo>0' ) {
+								if ( $getData['i'] == 1 ) {
+
+									// Se buscan todas las planillas.
+									return $html = self::actionGetViewDeudaActividadEconomica($searchRecibo);
+
+								} elseif ( $getData['i'] == 2 || $getData['i'] == 3 || $getData['i'] == 12 ) {
+
+									// Se buscan los objetos con sus deudas.
+									return $html = self::actionGetViewDeudaPorObjeto($searchRecibo, (int)$getData['i']);
+								}
+
+							} elseif ( $getData['tipo'] == 'periodo=0' ) {
+
+								// Se buscan todas la planilla que cumplan con esta condicion
+								return $html = self::actionGetViewDeudaTasa($searchRecibo, (int)$getData['i']);
+							}
+						} else {
+							// Peticion no valida.
+
+						}
+					} elseif ( $getData['view'] == 3 ) {	// Request desde deuda por objeto.
+						if ( $getData['tipo'] == 'periodo>0' ) {
+							if ( $getData['i'] == 1 ) {
+
+								// Se buscan todas las planillas.
+								return $html = self::actionGetViewDeudaActividadEconomica($searchRecibo);
+
+							} elseif ( $getData['i'] == 2 || $getData['i'] == 3 || $getData['i'] == 12 ) {
+								if ( isset($getData['idO']) ) {
+
+									// Se busca las deudas detalladas de un objeto especifico.
+									return $html = self::actionGetViewDeudaPorObjetoEspecifico($searchRecibo, (int)$getData['i'], (int)$getData['idO']);
+								}
+							}
+						}
+					}
+				} else {
+					// El contribuyente solicitante no coincide con la session.
+					$this->redirect(['error-operacion', 'cod' => 938]);
+				}
+			}
+
+			return null;
+
 		}
 
 
@@ -254,7 +319,7 @@
 		/***/
 		public function actionGetViewDeudaActividadEconomica($searchRecibo)
 		{
-			$caption = Yii::t('frontend', 'Deuda - Detalle');
+			$caption = Yii::t('frontend', 'Deuda - Detalle: Actividad Economica');
 			$provider = $searchRecibo->getDataProviderDeudaDetalleActEcon();
 			return $this->renderAjax('/recibo/_deuda_detalle', [
 												'caption' => $caption,
@@ -262,6 +327,40 @@
 				]);
 		}
 
+
+
+		/***/
+		public function actionGetViewDeudaPorObjeto($searchRecibo, $impuesto)
+		{
+			$provider = $searchRecibo->getDataProviderPorListaObjeto($impuesto);
+			if ( $impuesto == 2 ) {
+				$labelObjeto = Yii::t('frontend', 'direccion');
+			} elseif ($impuesto == 3 ) {
+				$labelObjeto = Yii::t('frontend', 'placa');
+			}
+			$i = Impuesto::findOne($impuesto);
+			$caption = Yii::t('frontend', 'Deuda - Por: ' . $i->descripcion);
+			return $this->renderAjax('/recibo/_deuda_por_objeto', [
+												'caption' => $caption,
+												'dataProvider' => $provider,
+												'labelObjeto' => $labelObjeto,
+				]);
+		}
+
+
+
+
+		/***/
+		public function actionGetViewDeudaPorObjetoEspecifico($searchRecibo, $impuesto, $idImpuesto)
+		{
+			$provider = $searchRecibo->getDataProviderDeudaDetalle($impuesto, $idImpuesto);
+			$caption = Yii::t('frontend', 'Deuda - Detalle: ');
+			return $this->renderAjax('/recibo/_deuda_detalle', [
+												'caption' => $caption,
+												'dataProvider' => $provider,
+				]);
+
+		}
 
 
 
