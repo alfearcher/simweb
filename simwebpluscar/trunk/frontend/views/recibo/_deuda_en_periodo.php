@@ -118,6 +118,7 @@
 	                        						'onClick' => '$.post("' . $u . '", function( data ) {
 	                        																$( "#deuda-por-objeto" ).html("");
 	                        																$( "#deuda-detalle" ).html("");
+	                        																$( "#id-suma" ).val("0");
 																							$( "#' . $rutaAjax . '" ).html( data );
 							                        								   }
 							                        					);return false;',

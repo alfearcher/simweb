@@ -116,6 +116,7 @@
                                     'title' => 'deuda '. $model['deuda'],
                                     'style' => 'text-align:right;',
                                     'onClick' => '$.post("' . $u . '", function( data ) {
+                                                                          $( "#id-suma" ).val("0");
                                                                           $( "#deuda-detalle" ).html( data );
                                                                        }
                                             );return false;',

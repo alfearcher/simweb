@@ -140,12 +140,11 @@
 							                        						//'onClick' => 'alert("' . $u. '")',
 							                        						'onClick' => '
 							                        										$.post("' . $u . '", function( data ) {
-							                        													//$.ajaxStart({"Espere"});
 							                        																$( "#deuda-por-objeto" ).html("");
 							                        																$( "#deuda-detalle" ).html("");
+							                        																$( "#id-suma" ).val("0");
 																													$( "#deuda-en-periodo" ).html( data );
 							                        														   }
-																										//$.ajaxStop({});
 							                        											);return false;',
 										                        		]
 									                        		);
@@ -195,14 +194,33 @@
 					</div>
 
 
-					<div class="row" style="padding-top: 0px;padding-top: 20px;background-color: #F1F1F1;width: 40%;">
-						<div class="col-sm-3" style="width: 60%;text-align: left;">
+					<div class="row" style="padding-bottom: 10px;padding-top: 10px;width: 80%;">
+
+						<div class="col-sm-3" style="width: 20%;text-align: left;margin-top:0px;background-color: #F1F1F1;padding-top:25px;">
 							<h4><strong><p>Suma Seleccion:</p></strong></h4>
 						</div>
-						<div class="col-sm-3" style="width: 35%;text-align: right;">
-							<h4><strong><p><?=Html::encode(Yii::$app->formatter->asDecimal($sumaSeleccion, 2))?></p></strong></h4>
+
+						<div class="col-sm-3" id="suma-seleccion" style="width:30%;text-align: right;background-color: #F1F1F1;">
+							<h3><strong><p><?= Html::textInput('suma', 0, [
+																			'id' => 'id-suma',
+																			'class' => 'form-control',
+																			'readOnly' => true,
+																			'style' => 'width:100%;text-align: right;font-size:90%;background-color:#FFFFFF;',
+																		  ]) ?></p></strong></h3>
+						</div>
+						<div class="col-sm-4" style="width: 30%;padding-top: 15px;float: left;">
+							<?= Html::submitButton(Yii::t('backend', 'Agregar Planllas Seleccionadas'),
+																		  [
+																			'id' => 'btn-add-seleccion',
+																			'class' => 'btn btn-success',
+																			'value' => 1,
+																			'style' => 'width: 100%',
+																			'name' => 'btn-add-seleccion',
+																		  ])
+							?>
 						</div>
 					</div>
+
 
 
 <!-- Aqui se muestra lo seleccionado por el contribuyente -->
@@ -362,12 +380,17 @@
 
 <!-- Fin de lo seleccionado -->
 
-					<div class="row" style="padding-top: 0px;padding-top: 20px;background-color: #F1F1F1;width: 40%;">
-						<div class="col-sm-3" style="width: 60%;text-align: left;">
+					<div class="row" style="padding-bottom: 10px;padding-top: 10px;background-color: #F1F1F1;width: 50%;">
+						<div class="col-sm-3" style="width: 45%;text-align: left;">
 							<h3><strong><p>Total Seleccionado:</p></strong></h3>
 						</div>
-						<div class="col-sm-3" style="width: 35%;text-align: right;">
-							<h3><strong><p><?=Html::encode(Yii::$app->formatter->asDecimal($totalSeleccionado, 2))?></p></strong></h3>
+						<div class="col-sm-3" style="width: 50%;text-align: right;background-color: #FFFFFF;">
+							<h3><strong><p><?= Html::textInput('total', 0, [
+																			'id' => 'id-total',
+																			'class' => 'form-control',
+																			'readOnly' => true,
+																			'style' => 'text-align: right;font-size:100%;',
+																		  ]) ?></p></strong></h3>
 						</div>
 					</div>
 
