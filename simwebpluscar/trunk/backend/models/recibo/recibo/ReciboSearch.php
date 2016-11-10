@@ -350,6 +350,72 @@
 			return $provider;
 		}
 
+
+
+
+		/**
+		 * Metodo donde se busca las deudas agrupdas por planilla, segun el impuesto
+		 * y el identificador del objeto. En caso de buscar las deudas de actividad
+		 * economica la variabla $idImpuesto sera cero(0).
+		 * @param  ineteger $impuesto identificador del impuesto.
+		 * @param  ineteger $idImpuesto identificador del objeto (para impuestos 2, 3, 12).
+		 * Cuando se trate de un objeto.
+		 * @return array.
+		 */
+		public function getDeudaPorObjetoPlanilla($impuesto, $idImpuesto = 0, $periodo = '>')
+		{
+			return $this->_deuda->getDetalleDeudaObjetoPorPlanilla($impuesto, $idImpuesto, $periodo);
+		}
+
+
+
+
+
+		/**
+		 * Metodo que arma un provider del tipo array data provider. Con la informacion de
+		 * la deuda agrupada por planialla, segun impuesto e id-impuesto.
+		 * @param  ineteger $impuesto identificador del impuesto.
+		 * @param  ineteger $idImpuesto identificador del objeto (para impuestos 2, 3, 12).
+		 * Cuando se trate de un objeto.
+		 * @return array.
+		 */
+		public function getDataProviderDeudaPorObjetoPlanilla($impuesto, $idImpuesto = 0, $periodo = '>')
+		{
+			$data = [];
+			$provider = null;
+			$deudas = self::getDeudaPorObjetoPlanilla($impuesto, $idImpuesto, $periodo);
+
+			if ( count($deudas) > 0 && $deudas !== null ) {
+				foreach ( $deudas as $deuda ) {
+					$t = ( $deuda['tmonto'] + $deuda['trecargo'] + $deuda['tinteres'] ) - ( $deuda['tdescuento'] + $deuda['tmonto_reconocimiento'] );
+					$data[$deuda['planilla']] = [
+						'planilla' => $deuda['planilla'],
+						'id_pago' => $deuda['id_pago'],
+						'id_contribuyente' => $deuda['id_contribuyente'],
+						'tmonto' => $deuda['tmonto'],
+						'trecargo' => $deuda['trecargo'],
+						'tinteres' => $deuda['tinteres'],
+						'tdescuento' => $deuda['tdescuento'],
+						'tmonto_reconocimiento' => $deuda['tmonto_reconocimiento'],
+						't' => $t,
+						'impuesto' => $deuda['impuesto'],
+						'descripcion' => $deuda['descripcion'],
+
+					];
+				}
+
+				$provider = New ArrayDataProvider([
+								'allModels' => $data,
+								'pagination' => false,
+								// 'pagination' => [
+								// 	'pageSize' => 30,
+								// ],
+				]);
+			}
+			return $provider;
+
+		}
+
 	}
 
 ?>
