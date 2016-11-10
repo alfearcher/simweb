@@ -933,6 +933,166 @@
 
 
 
+		/**
+		 * Mtodo que retorna la deuda agrupada por planilla segun un objetoe impuesto.
+		 * @param  integer $impuesto identificador del impuesto.
+		 * @param  integer $idImpuesto identificador del objeto.
+		 * @return array
+		 */
+		public function getDetalleDeudaObjetoPorPlanilla($impuesto, $idImpuesto = 0, $periodo = '>')
+		{
+			if ( in_array($periodo, ['>', '=']) ) {
+				return self::detalleDeudaObjetoPorPlanilla($impuesto, $idImpuesto, $periodo);
+			}
+			return null;
+		}
+
+
+
+
+		/**
+		 * Metodo agrupa la deuda por planilla, segun el impuesto y el identificador
+		 * del objeto.
+		 * @param  integer $impuesto identificador del impuesto.
+		 * @param  integer $idImpuesto identificador del objeto.
+		 * @return array retorna un arreglo con los atributos que aparecen en elselect.
+		 */
+		private function detalleDeudaObjetoPorPlanilla($impuesto, $idImpuesto, $periodo = '>')
+		{
+			$findModel = self::getModelGeneral();
+			$deuda = [];
+
+			if ( $idImpuesto == 0 && $impuesto == 1 && $periodo == '>' ) {
+
+				$deuda = $findModel->select([
+										'P.planilla',
+										'P.id_contribuyente',
+										'P.id_pago',
+										'P.ente',
+										'sum(D.monto) as tmonto',
+										'sum(D.recargo) as trecargo',
+										'sum(D.interes) as tinteres',
+										'sum(D.descuento) as tdescuento',
+										'sum(D.monto_reconocimiento) as tmonto_reconocimiento',
+										'D.descripcion',
+										'D.impuesto',
+										])
+								   ->joinWith('pagos P', false, 'INNER JOIN')
+								   ->joinWith('impuestos I', true, 'INNER JOIN')
+								   ->andWhere('trimestre >:trimestre',[':trimestre' => 0])
+								   ->andWhere('D.impuesto =:impuesto',[':impuesto' => $impuesto])
+								   ->groupBy('P.planilla')
+								   ->orderBy([
+								   		'D.ano_impositivo' => SORT_ASC,
+								   		'D.trimestre' => SORT_ASC,
+
+								   	])
+								   ->asArray()
+								   ->all();
+
+			} elseif ( $idImpuesto > 0 && $impuesto > 1 && $periodo = '>' ) {
+
+				$deuda = $findModel->select([
+										'P.planilla',
+										'P.id_contribuyente',
+										'P.id_pago',
+										'P.ente',
+										'sum(D.monto) as tmonto',
+										'sum(D.recargo) as trecargo',
+										'sum(D.interes) as tinteres',
+										'sum(D.descuento) as tdescuento',
+										'sum(D.monto_reconocimiento) as tmonto_reconocimiento',
+										'D.descripcion',
+										'D.impuesto',
+										])
+							       ->joinWith('pagos P', false, 'INNER JOIN')
+								   ->joinWith('impuestos I', true, 'INNER JOIN')
+								   ->andWhere('trimestre >:trimestre',[':trimestre' => 0])
+								   ->andWhere('D.impuesto =:impuesto',[':impuesto' => $impuesto])
+								   ->andWhere('D.id_impuesto =:id_impuesto',[':id_impuesto' => $idImpuesto])
+								   ->groupBy('P.planilla')
+								   ->orderBy([
+								   		'D.ano_impositivo' => SORT_ASC,
+								   		'D.trimestre' => SORT_ASC,
+
+								   	])
+								   ->asArray()
+								   ->all();
+
+			} elseif ( $idImpuesto == 0 && $impuesto > 0 && $periodo == '=' ) {
+
+				$deuda = $findModel->select([
+										'P.planilla',
+										'P.id_contribuyente',
+										'P.id_pago',
+										'P.ente',
+										'sum(D.monto) as tmonto',
+										'sum(D.recargo) as trecargo',
+										'sum(D.interes) as tinteres',
+										'sum(D.descuento) as tdescuento',
+										'sum(D.monto_reconocimiento) as tmonto_reconocimiento',
+										'D.descripcion',
+										'D.impuesto',
+										])
+							       ->joinWith('pagos P', true, 'INNER JOIN')
+								   ->joinWith('impuestos I', true, 'INNER JOIN')
+								   ->andWhere('trimestre =:trimestre',[':trimestre' => 0])
+								   ->andWhere('D.impuesto =:impuesto',[':impuesto' => $impuesto])
+								   ->groupBy('P.planilla')
+								   ->orderBy([
+								   		'D.ano_impositivo' => SORT_ASC,
+								   		'D.trimestre' => SORT_ASC,
+
+								   	])
+								   ->asArray()
+								   ->all();
+
+			}
+
+			return $deuda;
+		}
+
+
+
+		/**
+		 * Metodo retorna el resultado de la consulta
+		 * @param  integer $planilla numero de planilla generado em la liquidacion.
+		 * @return array con todos los atributos de las entidades, pagos y pagos-detalle.
+		 */
+		public function getDeudaPorPlanilla($planilla)
+		{
+			return self::detalleDeudaPorPlanilla($planilla);
+		}
+
+
+
+		/**
+		 * Metodo que retorna el detalle de una deuda segun el numero de planilla que
+		 * la contiene. El numero de planilla es utilizado para labusqueda general.
+		 * @param  integer $planilla numero de planilla generado em la liquidacion.
+		 * @return array retorna una arreglo que contiene todos los atributos de las
+		 * entidades pagos y pagos-detalle.
+		 */
+		private function detalleDeudaPorPlanilla($planilla)
+		{
+			$findModel = self::getModelGeneral();
+
+			$deuda = $findModel->joinWith('pagos P', true, 'INNER JOIN')
+							   ->joinWith('impuestos I', true, 'INNER JOIN')
+							   ->joinWith('exigibilidad E', true, 'INNER JOIN')
+							   ->andWhere('P.planilla =:planilla',[':planilla' => $planilla])
+							   ->orderBy([
+							   		'D.ano_impositivo' => SORT_ASC,
+							   		'D.trimestre' => SORT_ASC,
+
+							   	])
+							   ->asArray()
+							   ->all();
+
+			return $deuda;
+		}
+
+
 
 	}
  ?>
