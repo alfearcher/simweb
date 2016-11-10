@@ -103,7 +103,7 @@
 
 
             // Informacion de la declaracion.
-            $declaracionSearch = New DeclaracionBaseSearch($this->_id_contribuyente);
+            $declaracionSearch = New DeclaracionBaseSearch($this->_id_contribuyente); 
             $rangoFecha = $declaracionSearch->getRangoFechaDeclaracion($this->_año_impositivo);
             $periodoFiscal = date('d-m-Y', strtotime($rangoFecha['fechaDesde'])) . ' AL ' . date('d-m-Y', strtotime($rangoFecha['fechaHasta']));
 
