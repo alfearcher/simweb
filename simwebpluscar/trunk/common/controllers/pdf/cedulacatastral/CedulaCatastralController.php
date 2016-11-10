@@ -113,7 +113,7 @@
                                                             'resumen'=> $resumen,
                                                             'tipoDeclaracion' => 'ESTIMADA',
                                                             'periodoFiscal' => $periodoFiscal,
-                                    ]);   
+                                    ]);               
 
 
             // Informacion de las cuotas por cobrar.
