@@ -93,14 +93,9 @@
 				$model = New ReciboForm();
 
 				$formName = $model->formName();
-				//$model->scenario = self::SCENARIO_SEARCH_TIPO;
 
 				$caption = Yii::t('frontend', 'Recibo de Pago. Crear');
 				$subCaption = Yii::t('frontend', 'SubTitulo');
-
-				// if ( $request->get() !== null ) {
-				// 	$this->load($request->get());
-				// }
 
 				// Vista donde se guarda la consulta de la deuda segun parametros.
 				$html = null;
@@ -110,15 +105,8 @@
 		      	$findModel = $searchRecibo->findContribuyente();
 		      	$dataProvider = $searchRecibo->getDataProviderDeuda();
 
-		      	// Es indicativo que se selecciono una deuda.
-		      	if ( isset($postData['id']) ) {
-					$html = self::actionGetViewDeuda($searchRecibo, $postData['id']);
-				}
-
-
 				if ( isset($postData['btn-accept']) ) {
 					if ( $postData['btn-accept'] == 1 ) {
-						//$model->scenario = self::SCENARIO_SEARCH_TIPO;
 						$model->load($postData);
 
 						if ( $model->load($postData) ) {
@@ -141,7 +129,7 @@
 			  				$total = $item['deuda'] + $total;
 			  			}
 
-			  			//$url = Url::to(['buscar-deuda']);
+			  			$providerPlanillaSeleccionada = $searchRecibo->initDataPrivider();
 						return $this->render('/recibo/recibo-create-form',
 																[
 																	'model' => $model,
@@ -150,8 +138,7 @@
 																	'findModel' => $findModel,
 																	'dataProvider' => $dataProvider,
 																	'total' => $total,
-																	//'url' => $url,
-																	'html' => $html,
+																	'providerPlanillaSeleccionada' => $providerPlanillaSeleccionada,
 
 																]);
 					} else {
@@ -269,11 +256,12 @@
 		{
 			$idSeleccionado = [];
 			$caption = Yii::t('frontend', 'Deuda - Detalle');
-			$provider = $searchRecibo->getDataProviderDeudaDetalle($impuesto);
-			return $this->renderAjax('/recibo/_deuda_detalle_tasa', [
+			//$provider = $searchRecibo->getDataProviderDeudaDetalle($impuesto);
+			$provider = $searchRecibo->getDataProviderDeudaPorObjetoPlanilla($impuesto, 0, '=');
+			return $this->renderAjax('/recibo/_deuda_detalle_planilla', [
 												'caption' => $caption,
 												'dataProvider' => $provider,
-												'idSeleccionado' => $idSeleccionado,
+
 				]);
 		}
 
@@ -285,11 +273,11 @@
 		{
 			$idSeleccionado = [];
 			$caption = Yii::t('frontend', 'Deuda - Detalle: Actividad Economica');
-			$provider = $searchRecibo->getDataProviderDeudaDetalleActEcon();
-			return $this->renderAjax('/recibo/_deuda_detalle', [
+			//$provider = $searchRecibo->getDataProviderDeudaDetalleActEcon();
+			$provider = $searchRecibo->getDataProviderDeudaPorObjetoPlanilla(1, 0, '>');
+			return $this->renderAjax('/recibo/_deuda_detalle_planilla', [
 												'caption' => $caption,
 												'dataProvider' => $provider,
-												'idSeleccionado' => $idSeleccionado,
 				]);
 		}
 
@@ -320,12 +308,12 @@
 		public function actionGetViewDeudaPorObjetoEspecifico($searchRecibo, $impuesto, $idImpuesto)
 		{
 			$idSeleccionado = [];
-			$provider = $searchRecibo->getDataProviderDeudaDetalle($impuesto, $idImpuesto);
+			//$provider = $searchRecibo->getDataProviderDeudaDetalle($impuesto, $idImpuesto);
+			$provider = $searchRecibo->getDataProviderDeudaPorObjetoPlanilla($impuesto, $idImpuesto, '>');
 			$caption = Yii::t('frontend', 'Deuda - Detalle: ');
-			return $this->renderAjax('/recibo/_deuda_detalle', [
+			return $this->renderAjax('/recibo/_deuda_detalle_planilla', [
 												'caption' => $caption,
 												'dataProvider' => $provider,
-												'idSeleccionado' => $idSeleccionado,
 				]);
 
 		}
