@@ -57,6 +57,7 @@
 	use backend\models\recibo\recibo\ReciboSearch;
 	use backend\models\recibo\recibo\ReciboForm;
 	use backend\models\impuesto\Impuesto;
+	use common\models\planilla\PlanillaSearch;
 
 
 
@@ -261,6 +262,8 @@
 			return $this->renderAjax('/recibo/_deuda_detalle_planilla', [
 												'caption' => $caption,
 												'dataProvider' => $provider,
+												'periodoMayorCero' => false,
+												'primeraPlanilla' => 0,
 
 				]);
 		}
@@ -275,9 +278,15 @@
 			$caption = Yii::t('frontend', 'Deuda - Detalle: Actividad Economica');
 			//$provider = $searchRecibo->getDataProviderDeudaDetalleActEcon();
 			$provider = $searchRecibo->getDataProviderDeudaPorObjetoPlanilla(1, 0, '>');
+
+			// Se obtiene la primera planilla del provider.
+			$primeraPlanilla = array_keys($provider->allModels)[0];
+
 			return $this->renderAjax('/recibo/_deuda_detalle_planilla', [
 												'caption' => $caption,
 												'dataProvider' => $provider,
+												'periodoMayorCero' => true,
+												'primeraPlanilla' => $primeraPlanilla,
 				]);
 		}
 
@@ -311,13 +320,18 @@
 			//$provider = $searchRecibo->getDataProviderDeudaDetalle($impuesto, $idImpuesto);
 			$provider = $searchRecibo->getDataProviderDeudaPorObjetoPlanilla($impuesto, $idImpuesto, '>');
 			$caption = Yii::t('frontend', 'Deuda - Detalle: ');
+
+			// Se obtiene la primera planilla del provider.
+			$primeraPlanilla = array_keys($provider->allModels)[0];
+
 			return $this->renderAjax('/recibo/_deuda_detalle_planilla', [
 												'caption' => $caption,
 												'dataProvider' => $provider,
+												'periodoMayorCero' => true,
+												'primeraPlanilla' => $primeraPlanilla,
 				]);
 
 		}
-
 
 
 
