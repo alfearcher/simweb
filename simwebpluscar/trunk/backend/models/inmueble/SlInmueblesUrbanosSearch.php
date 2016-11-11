@@ -136,7 +136,7 @@
 	    													  ->andWhere('id_contribuyente =:id_contribuyente', [':id_contribuyente' => $this->id_contribuyente])
 	    													  ->all();
 	    													  
-	    	return isset($modelFind) ? $modelFind : null;   
+	    	return isset($modelFind) ? $modelFind : null;    
 	    } 
 
 	    public function findIntegracion($nroSolicitud)

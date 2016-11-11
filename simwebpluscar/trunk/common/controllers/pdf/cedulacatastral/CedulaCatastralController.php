@@ -99,7 +99,7 @@
                                                             'model' => $findModel,
                                                             'showDireccion' => true,
                                                             'showRepresentante' => true,
-                                    ]);      
+                                    ]);        
 
 
             // Informacion de la declaracion.
@@ -113,7 +113,7 @@
                                                             'resumen'=> $resumen,
                                                             'tipoDeclaracion' => 'ESTIMADA',
                                                             'periodoFiscal' => $periodoFiscal,
-                                    ]);               
+                                    ]);              
 
 
             // Informacion de las cuotas por cobrar.
