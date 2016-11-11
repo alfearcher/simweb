@@ -142,7 +142,7 @@ $this->title = Yii::t('frontend', 'Deuda por Impuesto');
                                         'view' => function ($url, $model, $key) {
                                             return Html::submitButton('<div class="item-list" style="color: #337AB7;"><center>'. Icon::show('fa fa-thumbs-up',['class' => 'fa-1x'], Icon::FA) .'</center></div>',
                                                                         [
-                                                                            'value' => json_encode(['impuesto' => $model['impuesto'] , 'id_impuesto' => $model['id_impuesto']]),
+                                                                            'value' => json_encode(['impuesto' => $model['impuesto'] , 'id_impuesto' => $model['id_impuesto'] , 'tipo' => $model['tipo']]),
                                                                             'name' => 'id',
                                                                             'title' => Yii::t('backend', 'View'),
                                                                             'style' => 'margin: 0 auto; display: block;',
