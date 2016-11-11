@@ -91,7 +91,7 @@ class DeudasContribuyenteController extends Controller
       $model = new DeudaSearch($idContribuyente);
 
       $dataProvider = $model->getDeudaGeneralPorImpuesto();
-      
+     // die(var_dump($dataProvider));
      
         if($dataProvider == null) { 
          
@@ -185,7 +185,7 @@ class DeudasContribuyenteController extends Controller
           $html = self::actionGetViewDeudaTasa($jsonObj->{'impuesto'});
       
      } elseif ( $jsonObj->{'impuesto'} == 3 ) {
-     // die('bueno');
+    // die('bueno');
        
           // Se buscan todas la planilla que cumplan con esta condicion
           $html = self::actionGetViewDeudaVehiculo($jsonObj->{'impuesto'});
@@ -332,7 +332,7 @@ class DeudasContribuyenteController extends Controller
     public function actionViewDeudaEspecificaPorObjeto()
     {
       $variables = yii::$app->request->post('id');
-        
+        //die(var_dump($variables));
         $postJson = $variables;
 
     $html = null;
@@ -342,8 +342,16 @@ class DeudasContribuyenteController extends Controller
       //die(var_dump($jsonObj));
 
       if ( $jsonObj->{'impuesto'} == 3 ) {
-       // die('es 9');
-        $html = self::actionGetViewDeudaEspecifica($jsonObj->{'impuesto'}, $jsonObj->{'id_impuesto'});
+
+        if($jsonObj->{'tipo'} == 'periodo>0'){ 
+        //die('es 9');
+        $html = self::actionGetViewDeudaEspecifica($jsonObj->{'impuesto'}, $jsonObj->{'id_impuesto'}, '>');
+
+        }elseif ($jsonObj->{'tipo'} == 'periodo=0'){ 
+
+          $html = self::actionGetViewDeudaPlanilla($jsonObj->{'impuesto'}, 0, '=');
+
+        }  
 
       } elseif ( $jsonObj->{'impuesto'} == 2 ) {
        
@@ -351,9 +359,17 @@ class DeudasContribuyenteController extends Controller
          $html = self::actionGetViewDeudaEspecifica($jsonObj->{'impuesto'}, $jsonObj->{'id_impuesto'});
 
       } elseif ( $jsonObj->{'impuesto'} == 12 ) {
+
+            if($jsonObj->{'tipo'} == 'periodo>0'){ 
        
           // Se buscan todas la planilla que cumplan con esta condicion
-         $html = self::actionGetViewDeudaEspecifica($jsonObj->{'impuesto'}, $jsonObj->{'id_impuesto'});
+         $html = self::actionGetViewDeudaEspecifica($jsonObj->{'impuesto'}, $jsonObj->{'id_impuesto'}, '>');
+            
+            } elseif ($jsonObj->{'tipo'} == 'periodo=0'){ 
+
+          $html = self::actionGetViewDeudaPlanilla($jsonObj->{'impuesto'},0 , '=');
+
+         }
 
          }
     
@@ -362,7 +378,7 @@ class DeudasContribuyenteController extends Controller
     }
 
 
-    public function actionGetViewDeudaEspecifica($impuesto, $idImpuesto){
+    public function actionGetViewDeudaEspecifica($impuesto, $idImpuesto, $tipo){
 
       $monto = 0;
       $recargo = 0;
@@ -376,7 +392,7 @@ class DeudasContribuyenteController extends Controller
       $model = new DeudaSearch($idContribuyente);
       $caption = Yii::t('frontend', 'Deuda Especifica por Objeto');
     
-      $provider = $model->getDetalleDeudaPorObjeto($impuesto, $idImpuesto);
+      $provider = $model->getDetalleDeudaObjetoPorPlanilla($impuesto, $idImpuesto, $tipo);
      //die(var_dump($provider));
           foreach($provider as $key=>$value){
 
@@ -420,6 +436,69 @@ class DeudasContribuyenteController extends Controller
           
 
               ]);
+    }
+
+
+    public function actionGetViewDeudaPlanilla($impuesto, $idImpuesto, $tipo)
+    {
+
+           $monto = 0;
+      $recargo = 0;
+      $interes = 0;
+      $descuento = 0;
+      $montoR = 0; //monto reconocimiento
+
+      $idContribuyente = $_SESSION['idContribuyente'];
+        //die('hay uno seteado');
+
+      $model = new DeudaSearch($idContribuyente);
+      $caption = Yii::t('frontend', 'Deuda Especifica por Objeto');
+    
+      $provider = $model->getDetalleDeudaObjetoPorPlanilla($impuesto, $idImpuesto, $tipo);
+      //die(var_dump($provider));
+          foreach($provider as $key=>$value){
+
+             
+            $monto = ($value['monto'] + $value['recargo'] + $value['interes']) - ($value['descuento'] - $value['monto_reconocimiento']);
+      
+
+              $array[] = [
+
+              'planilla' => $value['pagos']['planilla'],
+              'ano_impositivo' => $value['ano_impositivo'],
+              'trimestre' => $value['trimestre'],
+              'monto' => $value['monto'],
+              'descuento' => $value['descuento'],
+              'recargo' => $value['recargo'],
+
+              //'id_impuesto' => $value['id_impuesto'],
+              //'impuesto' => $value['impuesto'],
+           // 'descripcion' => $value['descripcion'],
+             'monto_reconocimiento' => $value['monto_reconocimiento'],
+              'monto_total' => $monto,
+              ]; 
+
+          }
+
+            
+              $dataProvider = new ArrayDataProvider([
+                  'allModels' => $array,
+                 // 'Models' => $st,
+                  'sort' => [
+                 
+            
+            
+                  ],
+          
+            
+              ]);
+
+              return $this->render('/deudas/deudascontribuyente/view-deuda-especifica', [
+                'dataProvider' => $dataProvider,
+          
+
+              ]);
+
     }
   
 
