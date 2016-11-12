@@ -90,7 +90,7 @@
 					}
 				}
 
-
+// die(var_dump($postData));
 				$model = New ReciboForm();
 
 				$formName = $model->formName();
@@ -160,7 +160,9 @@
 		public function actionPrueba()
 		{
 			$request = Yii::$app->request;
+			$postData = $request->post();
 
+die(var_dump($postData));
 
 		}
 
@@ -220,7 +222,7 @@
 								if ( isset($getData['idO']) ) {
 
 									// Se busca las deudas detalladas de un objeto especifico.
-									return $html = self::actionGetViewDeudaPorObjetoEspecifico($searchRecibo, (int)$getData['i'], (int)$getData['idO']);
+									return $html = self::actionGetViewDeudaPorObjetoEspecifico($searchRecibo, (int)$getData['i'], (int)$getData['idO'], $getData['objeto']);
 								}
 							}
 						}
@@ -259,7 +261,7 @@
 			$caption = Yii::t('frontend', 'Deuda - Detalle');
 			//$provider = $searchRecibo->getDataProviderDeudaDetalle($impuesto);
 			$provider = $searchRecibo->getDataProviderDeudaPorObjetoPlanilla($impuesto, 0, '=');
-			return $this->renderAjax('/recibo/_deuda_detalle_planilla', [
+			return $this->renderAjax('/recibo/_deuda_detalle_planilla_tasa', [
 												'caption' => $caption,
 												'dataProvider' => $provider,
 												'periodoMayorCero' => false,
@@ -295,6 +297,7 @@
 		/***/
 		public function actionGetViewDeudaPorObjeto($searchRecibo, $impuesto)
 		{
+
 			$provider = $searchRecibo->getDataProviderPorListaObjeto($impuesto);
 			if ( $impuesto == 2 ) {
 				$labelObjeto = Yii::t('frontend', 'direccion');
@@ -314,12 +317,12 @@
 
 
 		/***/
-		public function actionGetViewDeudaPorObjetoEspecifico($searchRecibo, $impuesto, $idImpuesto)
+		public function actionGetViewDeudaPorObjetoEspecifico($searchRecibo, $impuesto, $idImpuesto, $objetoDescripcion)
 		{
 			$idSeleccionado = [];
 			//$provider = $searchRecibo->getDataProviderDeudaDetalle($impuesto, $idImpuesto);
 			$provider = $searchRecibo->getDataProviderDeudaPorObjetoPlanilla($impuesto, $idImpuesto, '>');
-			$caption = Yii::t('frontend', 'Deuda - Detalle: ');
+			$caption = Yii::t('frontend', 'Deuda - Detalle: ') . ' Id: ' . $idImpuesto  . ' Descripcion: ' . $objetoDescripcion;
 
 			// Se obtiene la primera planilla del provider.
 			$primeraPlanilla = array_keys($provider->allModels)[0];
