@@ -50,6 +50,7 @@
 	use common\models\deuda\DeudaSearch;
 	use common\models\contribuyente\ContribuyenteBase;
 	use yii\data\ArrayDataProvider;
+	use backend\models\recibo\depositoplanilla\DepositoPlanillaSearch;
 
 
 	/**
@@ -216,36 +217,8 @@
 			$provider = null;
 			$data = [];
 			$deudas = self::getDeudaDetalleActividadEconomica();
-			if ( count($deudas) > 0 ) {
-				foreach ( $deudas as $deuda ) {
-					$t = ($deuda['monto'] + $deuda['recargo'] + $deuda['interes']) - ($deuda['descuento'] + $deuda['monto_reconocimiento']);
-					$data[$deuda['id_detalle']] = [
-						'planilla' => $deuda['pagos']['planilla'],
-						'año' => $deuda['ano_impositivo'],
-						'periodo' => $deuda['trimestre'],
-						'unidad' => $deuda['exigibilidad']['unidad'],
-						'monto' => $deuda['monto'],
-						'descuento' => $deuda['descuento'],
-						'recargo' => $deuda['recargo'],
-						'interes' => $deuda['interes'],
-						'monto_reconocimiento' => $deuda['monto_reconocimiento'],
-						'descripcion' => $deuda['descripcion'],
-						'deuda' => $t,
-						'id_contribuyente' => $deuda['pagos']['id_contribuyente'],
-						'id_impuesto' => $deuda['id_impuesto'],
-						'impuesto' => $deuda['impuesto'],
-						'id_detalle' => $deuda['id_detalle'],
-					];
-				}
+			$provider = self::getArmarDataProviderDeudaDetalle($deudas);
 
-				$provider = New ArrayDataProvider([
-								'allModels' => $data,
-								'pagination' => false,
-								// 'pagination' => [
-								// 	'pageSize' => 20,
-								// ],
-				]);
-			}
 			return $provider;
 		}
 
@@ -258,37 +231,8 @@
 			$provider = null;
 			$data = [];
 			$deudas = self::getDeudaDetalle($impuesto, $idImpuesto);
-			if ( count($deudas) > 0 ) {
-				foreach ( $deudas as $deuda ) {
-					$t = ($deuda['monto'] + $deuda['recargo'] + $deuda['interes']) - ($deuda['descuento'] + $deuda['monto_reconocimiento']);
-					$data[$deuda['id_detalle']] = [
-						'planilla' => $deuda['pagos']['planilla'],
-						'año' => $deuda['ano_impositivo'],
-						'periodo' => $deuda['trimestre'],
-						'unidad' => $deuda['exigibilidad']['unidad'],
-						'monto' => $deuda['monto'],
-						'descuento' => $deuda['descuento'],
-						'recargo' => $deuda['recargo'],
-						'interes' => $deuda['interes'],
-						'monto_reconocimiento' => $deuda['monto_reconocimiento'],
-						'descripcion' => $deuda['descripcion'],
-						'deuda' => $t,
-						'id_contribuyente' => $deuda['pagos']['id_contribuyente'],
-						'id_impuesto' => $deuda['id_impuesto'],
-						'impuesto' => $deuda['impuesto'],
-						'id_detalle' => $deuda['id_detalle'],
+			$provider = self::getArmarDataProviderDeudaDetalle($deudas);
 
-					];
-				}
-
-				$provider = New ArrayDataProvider([
-								'allModels' => $data,
-								'pagination' => false,
-								// 'pagination' => [
-								// 	'pageSize' => 30,
-								// ],
-				]);
-			}
 			return $provider;
 		}
 
@@ -384,10 +328,24 @@
 			$data = [];
 			$provider = null;
 			$deudas = self::getDeudaPorObjetoPlanilla($impuesto, $idImpuesto, $periodo);
+			$provider = self::getArmarDataProviderDeudaPlanilla($deudas);
 
+			return $provider;
+
+		}
+
+
+
+
+		/***/
+		private function getArmarDataProviderDeudaPlanilla($deudas)
+		{
+			$provider = null;
 			if ( count($deudas) > 0 && $deudas !== null ) {
+				$acumulado = 0;
 				foreach ( $deudas as $deuda ) {
 					$t = ( $deuda['tmonto'] + $deuda['trecargo'] + $deuda['tinteres'] ) - ( $deuda['tdescuento'] + $deuda['tmonto_reconocimiento'] );
+					$acumulado = $acumulado + $t;
 					$data[$deuda['planilla']] = [
 						'planilla' => $deuda['planilla'],
 						'id_pago' => $deuda['id_pago'],
@@ -400,6 +358,8 @@
 						't' => $t,
 						'impuesto' => $deuda['impuesto'],
 						'descripcion' => $deuda['descripcion'],
+						'acumulado' => $acumulado,
+						'seleccionado' => 0,
 
 					];
 				}
@@ -413,7 +373,70 @@
 				]);
 			}
 			return $provider;
+		}
 
+
+
+
+		private function getArmarDataProviderDeudaDetalle($deudas)
+		{
+			$provider = null;
+			if ( count($deudas) > 0 && $deudas !== null ) {
+				foreach ( $deudas as $deuda ) {
+					$t = ($deuda['monto'] + $deuda['recargo'] + $deuda['interes']) - ($deuda['descuento'] + $deuda['monto_reconocimiento']);
+					$data[$deuda['id_detalle']] = [
+						'planilla' => $deuda['pagos']['planilla'],
+						'año' => $deuda['ano_impositivo'],
+						'periodo' => $deuda['trimestre'],
+						'unidad' => $deuda['exigibilidad']['unidad'],
+						'monto' => $deuda['monto'],
+						'descuento' => $deuda['descuento'],
+						'recargo' => $deuda['recargo'],
+						'interes' => $deuda['interes'],
+						'monto_reconocimiento' => $deuda['monto_reconocimiento'],
+						'descripcion' => $deuda['descripcion'],
+						'deuda' => $t,
+						'id_contribuyente' => $deuda['pagos']['id_contribuyente'],
+						'id_impuesto' => $deuda['id_impuesto'],
+						'impuesto' => $deuda['impuesto'],
+						'id_detalle' => $deuda['id_detalle'],
+
+					];
+				}
+
+				$provider = New ArrayDataProvider([
+								'allModels' => $data,
+								'pagination' => false,
+								// 'pagination' => [
+								// 	'pageSize' => 30,
+								// ],
+				]);
+			}
+			return $provider;
+		}
+
+
+
+
+		public  function puedoSeleccionarPlanilla($planilla)
+		{
+
+		}
+
+
+
+		/***/
+		public function getPlanillaSeleccionada($postEnviado, $planillaYaSeleccionada)
+		{
+			$depositoSearch = New DepositoPlanillaSearch();
+			$planillas = [];
+
+			if ( count($postEnviado['chkSeleccionDeuda']) > 0 ) {
+				$chkPlanilla = $postEnviado['chkSeleccionDeuda'];
+				$planillaInicial = $postEnviado['planillaInicial'];
+				$planillaFinal = $postEnviado['planillaFinal'];
+
+			}
 		}
 
 	}
