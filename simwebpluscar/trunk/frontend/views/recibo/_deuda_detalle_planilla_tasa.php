@@ -22,13 +22,13 @@
  */
 
  /**
- *  @file _deuda_detalle_planilla.php
+ *  @file _deuda_detalle_planilla_tasa.php
  *
  *  @author Jose Rafael Perez Teran
  *
  *  @date 04-11-2016
  *
- *  @view _deuda_detalle_planilla
+ *  @view _deuda_detalle_planilla_tasa
  *  @brief vista detalle de la deuda segun planilla
  *
  */
@@ -52,15 +52,16 @@
  //  	$typeLong = 'fa-2x';
 
  //    Icon::map($this, $typeIcon);
+  $acumulado = [];
 
 ?>
 
-<div class="deuda-detalle-planilla">
+<div class="deuda-detalle-planilla-tasa">
  	<?php
  		$form = ActiveForm::begin([
-        'id' => 'id-deuda-detalle-planilla',
- 			  'method' => 'post',
-        'action'=> Url::to(['prueba']),
+        'id' => 'id-deuda-detalle-planilla-tasa',
+ 			  // 'method' => 'post',
+      //   'action'=> $url,
         'enableClientValidation' => false,
  			  'enableAjaxValidation' => false,
  			  'enableClientScript' => true,
@@ -126,15 +127,36 @@
                         'name' => 'chkSeleccionDeuda',
 
                         'checkboxOptions' => function ($model, $key, $index, $column) {
+
                                 return [
-                                    'readOnly' => true,
-                                    'onClick' => 'javascript: return false;',
-                                    'checked' => true,
+
+                                    'id' => 'id-chkSeleccionDeuda',
+                                    //'disabled' => 'disabled',
+                                    'onClick' => 'if ( $(this).is(":checked") ) {
+                                                      var suma = parseFloat($( "#id-suma" ).val());
+                                                      var item = parseFloat(' . $model['t'] . ');
+                                                      var total = suma + item;
+                                                      $( "#id-suma" ).val(total);
+                                                  } else {
+                                                      var suma = parseFloat($( "#id-suma" ).val());
+                                                      var item = parseFloat(' . $model['t'] . ');
+                                                      if ( suma > 0 ) {
+                                                          var total = suma - item;
+                                                          $( "#id-suma" ).val(total);
+                                                      }
+                                                  }
+                                                  var n = $( "#id-suma" ).val();
+                                                  if ( n <= 0 ) {
+                                                      $("#btn-add-seleccion").attr("disabled", true);
+                                                  } else {
+                                                      $( "#btn-add-seleccion" ).removeAttr("disabled");
+                                                  }
+                                                  ',
                                 ];
 
                         },
                         'multiple' => false,
-                        'visible' => ( $periodoMayorCero ) ? true : false,
+                        'visible' => ( $periodoMayorCero ) ? false : true,
 
                     ],
 
@@ -219,48 +241,7 @@
         					               },
                         'visible' => ( $periodoMayorCero ) ? false : true,
                     ],
-                    // [
-                    //     'contentOptions' => [
-                    //         'style' => 'font-size: 90%;;text-align:right;',
-                    //     ],
-                    //     'label' => Yii::t('frontend', 'acumulado'),
-                    //     'value' => function($data) {
-                    //                  return Yii::$app->formatter->asDecimal($data['acumulado'], 2);
-                    //              },
-                    //     'visible' => ( $periodoMayorCero ) ? true : false,
-                    // ],
-                    [
-                        'contentOptions' => [
-                            'style' => 'font-size: 90%;text-align:right;',
-                        ],
-                        'class' => 'yii\grid\ActionColumn',
-                        'header'=> Yii::t('frontend', 'Total'),
-                        'template' => '{view}',
-                        'buttons' => [
-                            'view' => function ($url, $model, $key) {
-                                      return Html::button('<div class="item-list" style="color: #000000;"><center>' . Yii::$app->formatter->asDecimal($model['acumulado'], 2) .'</center></div>',
-                                                              [
-                                                                  'id' => 'id-acumulado' . $model['planilla'],
-                                                                  'name' => 'acumulado[' . $model['planilla'] . ']',
-                                                                  'class' => 'btn btn-default',
-                                                                  'title' => 'total '. $model['acumulado'],
-                                                                  'onClick' => '$("#id-pf").val("' . $model['planilla'] . '");
-                                                                                $("#id-suma").val("' . $model['acumulado'] . '");
-                                                                                var n = $( "#id-suma" ).val();
-                                                                                if ( n <= 0 ) {
-                                                                                    $("#btn-add-seleccion").attr("disabled", true);
-                                                                                } else {
-                                                                                    $( "#btn-add-seleccion" ).removeAttr("disabled");
-                                                                                }
-                                                                                ',
 
-                                                              ]
-                                                    );
-                            },
-                            '',
-                        ],
-                        'visible' => ( $periodoMayorCero ) ? true : false,
-                    ],
               ]
     		]);?>
       </div>
@@ -275,45 +256,24 @@
     </div>
 
     <div class="col-sm-3" id="suma-seleccion" style="width:30%;text-align: right;background-color: #F1F1F1;">
-      <h3><strong><p><?= MaskedInput::widget([
-                              'name' => 'suma',
+      <h3><strong><p><?= Html::textInput('suma', 0, [
                               'id' => 'id-suma',
-                              'options' => [
-                                  'class' => 'form-control',
-                                  'style' => 'width:100%;text-align: right;font-size:90%;background-color:#FFFFFF;',
-                                  'readonly' => true,
-                                  'placeholder' => '0.00',
-
-                              ],
-                                  'clientOptions' => [
-                                      'alias' =>  'decimal',
-                                      'digits' => 2,
-                                      'digitsOptional' => false,
-                                      'groupSeparator' => ',',
-                                      'removeMaskOnSubmit' => true,
-                                      // 'allowMinus'=>false,
-                                      //'groupSize' => 3,
-                                      'radixPoint'=> ".",
-                                      'autoGroup' => true,
-                                      //'decimalSeparator' => ',',
-                                ],
-
-                        ]);?></p></strong></h3>
+                              'class' => 'form-control',
+                              'readOnly' => true,
+                              'style' => 'width:100%;text-align: right;font-size:90%;background-color:#FFFFFF;',
+                              ]) ?></p></strong></h3>
     </div>
-
-
-
     <div class="col-sm-4" style="width: 30%;padding-top: 15px;float: left;">
-        <?= Html::submitButton(Yii::t('backend', 'Agregar Monto Seleccionado'),
-                                                    [
-                                                        'id' => 'btn-add-seleccion',
-                                                        'class' => 'btn btn-success',
-                                                        'value' => 1,
-                                                        'disabled' => 'disabled',
-                                                        'style' => 'width: 100%',
-                                                        'name' => 'btn-add-seleccion',
-                                                    ])
-        ?>
+      <?= Html::submitButton(Yii::t('backend', 'Agregar Planllas Seleccionadas'),
+                              [
+                              'id' => 'btn-add-seleccion',
+                              'class' => 'btn btn-success',
+                              'value' => 1,
+                              'disabled' => 'disabled',
+                              'style' => 'width: 100%',
+                              'name' => 'btn-add-seleccion',
+                              ])
+      ?>
     </div>
   </div>
 

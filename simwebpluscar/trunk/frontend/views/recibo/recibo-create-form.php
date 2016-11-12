@@ -63,9 +63,9 @@
  			'id' => 'id-recibo-create-form',
  			'method' => 'post',
  			//'action'=> $url,
- 			// 'enableClientValidation' => true,
- 			// 'enableAjaxValidation' => true,
- 			// 'enableClientScript' => true,
+ 			'enableClientValidation' => false,
+ 			'enableAjaxValidation' => false,
+ 			'enableClientScript' => true,
  		]);
  	?>
 
@@ -192,35 +192,6 @@
 							<?php Pjax::end() ?>
 						</div>
 					</div>
-
-
-					<div class="row" style="padding-bottom: 10px;padding-top: 10px;width: 80%;">
-
-						<div class="col-sm-3" style="width: 20%;text-align: left;margin-top:0px;background-color: #F1F1F1;padding-top:25px;">
-							<h4><strong><p>Suma Seleccion:</p></strong></h4>
-						</div>
-
-						<div class="col-sm-3" id="suma-seleccion" style="width:30%;text-align: right;background-color: #F1F1F1;">
-							<h3><strong><p><?= Html::textInput('suma', 0, [
-																			'id' => 'id-suma',
-																			'class' => 'form-control',
-																			'readOnly' => true,
-																			'style' => 'width:100%;text-align: right;font-size:90%;background-color:#FFFFFF;',
-																		  ]) ?></p></strong></h3>
-						</div>
-						<div class="col-sm-4" style="width: 30%;padding-top: 15px;float: left;">
-							<?= Html::submitButton(Yii::t('backend', 'Agregar Planllas Seleccionadas'),
-																		  [
-																			'id' => 'btn-add-seleccion',
-																			'class' => 'btn btn-success',
-																			'value' => 1,
-																			'style' => 'width: 100%',
-																			'name' => 'btn-add-seleccion',
-																		  ])
-							?>
-						</div>
-					</div>
-
 
 
 <!-- Aqui se muestra lo seleccionado por el contribuyente -->
