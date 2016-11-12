@@ -64,6 +64,43 @@
 		{}
 
 
+
+		/**
+		 * Metodo que genera el modelo de consulta para la entidad "depositos-planillas".
+		 * @param  integer $planilla numero de planilla.
+		 * @return active record.
+		 */
+		private function findDepositoPlanillaSegunPlanilla($planilla)
+		{
+			return DepositoPlanilla::find()->alias('DP')
+										   ->where('DP.planilla =:planilla',
+														[':planilla' => $planilla]);
+		}
+
+
+
+		/**
+		 * Metodo que permite determinar si una planilla puede ser seleccionada para
+		 * crear un recibo. Esta informacion solo permite determinar si la planilla
+		 * no esta relacionada a una recibo de pago que este en un estatus que no permita
+		 * su utilizacion en la creacion de un recibo. La informacion no verifica si la
+		 * planilla esta asociada a otro proceso o si esta en un estatus que no permita
+		 * su utilizacion en la creeacion de un recibo.
+		 * @param  integer $planilla numero de planilla.
+		 * @return boolean retorna true o false.
+		 */
+		public function puedoSeleccionarPlanillaParaRecibo($planilla)
+		{
+			$result = true;
+			$findModel = self::findDepositoPlanillaSegunPlanilla($planilla);
+			if ( count($findModel) > 0 ) {
+				$result = $findModel->exists()->where('IN', 'estatus', '0,1');
+			}
+			return $result;
+		}
+
+
+
 		/**
 		 * Metodo que genera el modelo principal de la relacion entre las entidades
 		 * "depositos-planillas" y "pagos". En realidad es un inner join entre las
@@ -72,7 +109,8 @@
 		 */
 		private function findDepositoPlanillaPago()
 		{
-			return DepositoPlanilla::find()->joinWith('pago', true, 'INNER JOIN');
+			return DepositoPlanilla::find()->alis('DP')
+										   ->joinWith('pago P', true, 'INNER JOIN');
 		}
 
 
@@ -88,12 +126,12 @@
 		 */
 		private function findRelacionPlanillaRecibo($planilla, $estatus)
 		{
-			$tablaDepPlanilla = DepositoPlanilla::tableName();
-			$tablaPago = Pago::tableName();
+			//$tablaDepPlanilla = DepositoPlanilla::tableName();
+			//$tablaPago = Pago::tableName();
 
 			$findModel = self::findDepositoPlanillaPago();
 			if ( count($findModel) > 0 ) {
-				$model = $findModel->where($tablaDepPlanilla . '.planilla =:planilla',
+				$model = $findModel->where('DP.planilla =:planilla',
 											[':planilla' => $planilla])
 								   ->andWhere('estatus =:estatus',
 								   			[':estatus' => $estatus]);
