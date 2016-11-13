@@ -377,7 +377,10 @@
 
 					if ( !in_array($deuda['planilla'], $listaSeleccionada) ) {
 
-						$acumulado = $acumulado + $t;
+						// $acumulado = $acumulado + $t;
+						if ( $b == 0 ) {
+							$acumulado = $acumulado + $t;
+						}
 						$data[$deuda['planilla']] = [
 							'planilla' => $deuda['planilla'],
 							'id_pago' => $deuda['id_pago'],

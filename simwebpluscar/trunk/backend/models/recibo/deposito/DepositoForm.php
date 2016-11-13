@@ -64,6 +64,9 @@
 		public $id_contribuyente;
 		public $nro_control;
 
+		public $totalSeleccionado;
+		public $fechaCreacion;
+
 		/**
      	* @inheritdoc
      	*/
@@ -81,13 +84,15 @@
 	    public function rules()
 	    {
 	        return [
-	        	[['id_contribuyente', 'nro_control',
-	        	  'estatus', 'fecha', 'monto'],
-	        	  'require']
+	        	// [['id_contribuyente', 'nro_control',
+	        	//   'estatus', 'fecha', 'monto'],
+	        	//   'require']
 	        	[['recibo', 'id_contribuyente',
 	        	  'nro_control', 'estatus'],
 	        	  'integer'],
-	        	[['fecha'], 'date'],
+	        	[['observacion', 'proceso'], 'string'],
+	        	[['fecha', 'fechaCreacion'], 'date'],
+	        	[['fecha'], 'default', 'value' => date('Y-m-d')],
 	        	[['estatus'], 'default', 'value' => 0],
 
 	        ];
