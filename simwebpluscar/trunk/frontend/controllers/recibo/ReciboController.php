@@ -288,7 +288,8 @@
 
 				$dataProvider = $searchRecibo->getDataProviderAgruparDeudaPorPlanilla($chkPlanillas);
 
-				$model->totalSeleccionado = self::actionTotalSeleccionado($dataProvider);
+				//$model->totalSeleccionado = self::actionTotalSeleccionado($dataProvider);
+				$model->totalSeleccionado = $postEnviado['total'];
 				return $this->render('/recibo/pre-view-recibo-create-form', [
 													'dataProvider' => $dataProvider,
 													'model' => $model,
