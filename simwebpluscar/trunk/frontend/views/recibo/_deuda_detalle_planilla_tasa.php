@@ -328,7 +328,7 @@
       <?= Html::submitButton(Yii::t('backend', 'Agregar Monto Seleccionadas'),
                               [
                               'id' => 'btn-add-seleccion',
-                              'class' => 'btn btn-success',
+                              'class' => 'btn btn-warning',
                               'value' => 5,
                               'disabled' => 'disabled',
                               'style' => 'width: 100%',
