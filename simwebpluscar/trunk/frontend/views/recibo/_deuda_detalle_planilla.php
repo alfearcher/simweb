@@ -115,7 +115,7 @@
 	</div>
 
 	<div class="row" class="deuda-planilla" style="padding-top: 10px;">
-      <div class="row" id="grid" style="padding-left: 10px;width: 50%;">
+      <div class="row" id="grid" style="padding-left: 10px;width: 70%;">
 
     		<?= GridView::widget([
               'id' => 'grid-deuda-detalle-planilla',
