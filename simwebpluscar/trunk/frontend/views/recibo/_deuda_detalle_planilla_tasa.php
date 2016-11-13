@@ -33,7 +33,7 @@
  *
  */
 
- 	use yii\web\Response;
+  use yii\web\Response;
  	use kartik\icons\Icon;
  	use yii\grid\GridView;
 	use yii\helpers\Html;
@@ -60,8 +60,8 @@
  	<?php
  		$form = ActiveForm::begin([
         'id' => 'id-deuda-detalle-planilla-tasa',
- 			  // 'method' => 'post',
-      //   'action'=> $url,
+ 			  'method' => 'post',
+        'action'=> Url::to(['index']),
         'enableClientValidation' => false,
  			  'enableAjaxValidation' => false,
  			  'enableClientScript' => true,
@@ -69,6 +69,8 @@
  	?>
 
 	<!-- <?//=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $findModel['id_contribuyente']])->label(false);?> -->
+
+  <?=Html::hiddenInput('id_contribuyente', $idContribuyente) ?>
 
   <?php if ( $periodoMayorCero ) { ?>
       <div class="row">
@@ -120,6 +122,11 @@
               'id' => 'grid-deuda-detalle-planilla',
               'dataProvider' => $dataProvider,
               'headerRowOptions' => ['class' => 'success'],
+              'rowOptions' => function($model) {
+                    if ( $model['bloquear'] == 1 ) {
+                        return [ 'class' => 'danger', ];
+                    }
+              },
               'summary' => '',
               'columns' => [
                     [
@@ -128,31 +135,40 @@
 
                         'checkboxOptions' => function ($model, $key, $index, $column) {
 
-                                return [
+                              if ( $model['bloquear'] == 1 ) {
+                                  return [
 
-                                    'id' => 'id-chkSeleccionDeuda',
-                                    //'disabled' => 'disabled',
-                                    'onClick' => 'if ( $(this).is(":checked") ) {
-                                                      var suma = parseFloat($( "#id-suma" ).val());
-                                                      var item = parseFloat(' . $model['t'] . ');
-                                                      var total = suma + item;
-                                                      $( "#id-suma" ).val(total);
-                                                  } else {
-                                                      var suma = parseFloat($( "#id-suma" ).val());
-                                                      var item = parseFloat(' . $model['t'] . ');
-                                                      if ( suma > 0 ) {
-                                                          var total = suma - item;
-                                                          $( "#id-suma" ).val(total);
-                                                      }
-                                                  }
-                                                  var n = $( "#id-suma" ).val();
-                                                  if ( n <= 0 ) {
-                                                      $("#btn-add-seleccion").attr("disabled", true);
-                                                  } else {
-                                                      $( "#btn-add-seleccion" ).removeAttr("disabled");
-                                                  }
-                                                  ',
-                                ];
+                                      'id' => 'id-chkSeleccionDeuda',
+                                      'disabled' => 'disabled',
+                                  ];
+                              } else {
+                                  return [
+
+                                      'id' => 'id-chkSeleccionDeuda',
+                                      'onClick' => 'if ( $(this).is(":checked") ) {
+                                                        var suma = parseFloat($( "#id-suma" ).val());
+                                                        var item = parseFloat(' . $model['t'] . ');
+                                                        if ( isNaN(suma) ) { suma = 0; }
+                                                        var total = suma + item;
+                                                        $( "#id-suma" ).val(total);
+                                                    } else {
+                                                        var suma = parseFloat($( "#id-suma" ).val());
+                                                        var item = parseFloat(' . $model['t'] . ');
+                                                        if ( suma > 0 ) {
+                                                            var total = suma - item;
+                                                            $( "#id-suma" ).val(total);
+                                                        }
+                                                    }
+
+                                                    var n = $( "#id-suma" ).val();
+                                                    if ( n > 0 ) {
+                                                        $( "#btn-add-seleccion" ).removeAttr("disabled");
+                                                    } else {
+                                                        $("#btn-add-seleccion").attr("disabled", true);
+                                                    }
+                                                    ',
+                                  ];
+                              }
 
                         },
                         'multiple' => false,
@@ -241,6 +257,30 @@
         					               },
                         'visible' => ( $periodoMayorCero ) ? false : true,
                     ],
+                    [
+                        'contentOptions' => [
+                            'style' => 'font-size: 90%;;text-align:center;',
+                        ],
+                        'label' => Yii::t('frontend', 'bloqueado'),
+                        'value' => function($data) {
+                                      if ( $data['bloquear'] == 1 ) {
+                                          return 'SI';
+                                      } else {
+                                          return 'NO';
+                                      }
+                                 },
+                        'visible' => true,
+                    ],
+                    [
+                        'contentOptions' => [
+                            'style' => 'font-size: 90%;;text-align:center;',
+                        ],
+                        'label' => Yii::t('frontend', 'causa'),
+                        'value' => function($data) {
+                                     return $data['causaBloquear'];
+                                 },
+                        'visible' => true,
+                    ],
 
               ]
     		]);?>
@@ -256,19 +296,40 @@
     </div>
 
     <div class="col-sm-3" id="suma-seleccion" style="width:30%;text-align: right;background-color: #F1F1F1;">
-      <h3><strong><p><?= Html::textInput('suma', 0, [
+      <h3><strong><p><?= MaskedInput::widget([
+                              'name' => 'suma',
                               'id' => 'id-suma',
-                              'class' => 'form-control',
-                              'readOnly' => true,
-                              'style' => 'width:100%;text-align: right;font-size:90%;background-color:#FFFFFF;',
-                              ]) ?></p></strong></h3>
+                              //'value' => 0,
+                              'options' => [
+                                  'class' => 'form-control',
+                                  'style' => 'width:100%;text-align: right;font-size:90%;background-color:#FFFFFF;',
+                                  'readonly' => true,
+                                  'placeholder' => '0.00',
+
+                              ],
+                                  'clientOptions' => [
+                                      'alias' =>  'decimal',
+                                      'digits' => 2,
+                                      'digitsOptional' => false,
+                                      'groupSeparator' => ',',
+                                      'removeMaskOnSubmit' => true,
+                                      // 'allowMinus'=>false,
+                                      //'groupSize' => 3,
+                                      'radixPoint'=> ".",
+                                      'autoGroup' => true,
+                                      //'decimalSeparator' => ',',
+                                ],
+
+                        ]);?></p></strong></h3>
     </div>
+
+
     <div class="col-sm-4" style="width: 30%;padding-top: 15px;float: left;">
-      <?= Html::submitButton(Yii::t('backend', 'Agregar Planllas Seleccionadas'),
+      <?= Html::submitButton(Yii::t('backend', 'Agregar Monto Seleccionadas'),
                               [
                               'id' => 'btn-add-seleccion',
                               'class' => 'btn btn-success',
-                              'value' => 1,
+                              'value' => 5,
                               'disabled' => 'disabled',
                               'style' => 'width: 100%',
                               'name' => 'btn-add-seleccion',

@@ -60,7 +60,7 @@
  		$form = ActiveForm::begin([
         'id' => 'id-deuda-detalle-planilla',
  			  'method' => 'post',
-        'action'=> Url::to(['prueba']),
+        'action'=> Url::to(['index']),
         'enableClientValidation' => false,
  			  'enableAjaxValidation' => false,
  			  'enableClientScript' => true,
@@ -68,6 +68,8 @@
  	?>
 
 	<!-- <?//=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $findModel['id_contribuyente']])->label(false);?> -->
+
+  <?=Html::hiddenInput('id_contribuyente', $idContribuyente) ?>
 
   <?php if ( $periodoMayorCero ) { ?>
       <div class="row">
@@ -119,6 +121,11 @@
               'id' => 'grid-deuda-detalle-planilla',
               'dataProvider' => $dataProvider,
               'headerRowOptions' => ['class' => 'success'],
+              'rowOptions' => function($model) {
+                    if ( $model['bloquear'] == 1 ) {
+                        return [ 'class' => 'danger', ];
+                    }
+              },
               'summary' => '',
               'columns' => [
                     [
@@ -126,11 +133,22 @@
                         'name' => 'chkSeleccionDeuda',
 
                         'checkboxOptions' => function ($model, $key, $index, $column) {
-                                return [
-                                    'readOnly' => true,
-                                    'onClick' => 'javascript: return false;',
-                                    'checked' => true,
-                                ];
+
+                              if ( $model['bloquear'] == 1 ) {
+                                   return [
+                                      'readOnly' => true,
+                                      'disabled' => 'disabled',
+                                      'onClick' => 'javascript: return false;',
+                                      'checked' => false,
+                                  ];
+                              } else {
+                                  return [
+                                      'readOnly' => true,
+                                      'onClick' => 'javascript: return false;',
+                                      'checked' => true,
+                                  ];
+                              }
+
 
                         },
                         'multiple' => false,
@@ -219,16 +237,30 @@
         					               },
                         'visible' => ( $periodoMayorCero ) ? false : true,
                     ],
-                    // [
-                    //     'contentOptions' => [
-                    //         'style' => 'font-size: 90%;;text-align:right;',
-                    //     ],
-                    //     'label' => Yii::t('frontend', 'acumulado'),
-                    //     'value' => function($data) {
-                    //                  return Yii::$app->formatter->asDecimal($data['acumulado'], 2);
-                    //              },
-                    //     'visible' => ( $periodoMayorCero ) ? true : false,
-                    // ],
+                    [
+                        'contentOptions' => [
+                            'style' => 'font-size: 90%;;text-align:center;',
+                        ],
+                        'label' => Yii::t('frontend', 'bloqueado'),
+                        'value' => function($data) {
+                                      if ( $data['bloquear'] == 1 ) {
+                                          return 'SI';
+                                      } else {
+                                          return 'NO';
+                                      }
+                                 },
+                        'visible' => true,
+                    ],
+                    [
+                        'contentOptions' => [
+                            'style' => 'font-size: 90%;;text-align:center;',
+                        ],
+                        'label' => Yii::t('frontend', 'causa'),
+                        'value' => function($data) {
+                                     return $data['causaBloquear'];
+                                 },
+                        'visible' => true,
+                    ],
                     [
                         'contentOptions' => [
                             'style' => 'font-size: 90%;text-align:right;',
@@ -238,6 +270,20 @@
                         'template' => '{view}',
                         'buttons' => [
                             'view' => function ($url, $model, $key) {
+                                  if ( $model['bloquear'] == 1 ) {
+
+                                      return Html::button('<div class="item-list" style="color: #000000;"><center>' . Yii::$app->formatter->asDecimal($model['acumulado'], 2) .'</center></div>',
+                                                              [
+                                                                  'id' => 'id-acumulado' . $model['planilla'],
+                                                                  'name' => 'acumulado[' . $model['planilla'] . ']',
+                                                                  'class' => 'btn btn-default',
+                                                                  'title' => 'total '. $model['acumulado'],
+                                                                  'disabled' => 'disabled',
+                                                              ]
+                                                    );
+
+                                  } else {
+
                                       return Html::button('<div class="item-list" style="color: #000000;"><center>' . Yii::$app->formatter->asDecimal($model['acumulado'], 2) .'</center></div>',
                                                               [
                                                                   'id' => 'id-acumulado' . $model['planilla'],
@@ -256,8 +302,9 @@
 
                                                               ]
                                                     );
+                                  }
                             },
-                            '',
+
                         ],
                         'visible' => ( $periodoMayorCero ) ? true : false,
                     ],
@@ -308,7 +355,7 @@
                                                     [
                                                         'id' => 'btn-add-seleccion',
                                                         'class' => 'btn btn-success',
-                                                        'value' => 1,
+                                                        'value' => 3,
                                                         'disabled' => 'disabled',
                                                         'style' => 'width: 100%',
                                                         'name' => 'btn-add-seleccion',

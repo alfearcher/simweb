@@ -196,191 +196,211 @@
 
 <!-- Aqui se muestra lo seleccionado por el contribuyente -->
 
-					<div class="row" style="border-bottom: 1px solid #ccc;padding-left: 0px;padding-top: 30px;">
-						<h4><?=Html::encode('Planilla(s) Seleccionadas')?></h4>
+					<div class="row" style="width: 60%;margin-top: 80px;">
+						<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding-left: 5px;padding-top: 0px;">
+							<h4><?=Html::encode('Planilla(s) Seleccionadas')?></h4>
+						</div>
+
+						<div class="row" class="deuda-seleccionda" style="padding-top: 10px;">
+							<?= GridView::widget([
+								'id' => 'grid-deuda-seleccionada',
+								'dataProvider' => $providerPlanillaSeleccionada,
+								'summary' => '',
+								'columns' => [
+									[
+				                        'class' => 'yii\grid\CheckboxColumn',
+				                        'name' => 'chkPlanillaSeleccionadas',
+				                        'checkboxOptions' => function ($model, $key, $index, $column) {
+			                                  return [
+			                                      'onClick' => 'javascript: return false;',
+			                                      'checked' => true,
+			                                  ];
+				                        },
+				                        'multiple' => false,
+				                    ],
+
+				                    [
+				                        'contentOptions' => [
+				                              'style' => 'font-size: 90%;',
+				                        ],
+				                        'label' => Yii::t('frontend', 'planilla'),
+				                        'value' => function($data) {
+				                                      return $data['planilla'];
+				            			                 },
+				                        //'visible' => ( $periodoMayorCero ) ? false : true,
+				                    ],
+
+				                    [
+				                        'contentOptions' => [
+				                              'style' => 'font-size: 90%;text-align:right;',
+				                        ],
+				                        'label' => Yii::t('frontend', 'monto'),
+				                        'value' => function($data) {
+				                                      return Yii::$app->formatter->asDecimal($data['tmonto'], 2);
+				        					                 },
+				                        'visible' => false,
+				                    ],
+				                    [
+				                        'contentOptions' => [
+				                              'style' => 'font-size: 90%;text-align:right;',
+				                        ],
+				                        'label' => Yii::t('frontend', 'recargo'),
+				                        'value' => function($data) {
+				                                        return Yii::$app->formatter->asDecimal($data['trecargo'], 2);
+				                                  },
+				                        'visible' => false,
+				                    ],
+				                    [
+				                        'contentOptions' => [
+				                            'style' => 'font-size: 90%;text-align:right;',
+				                        ],
+				                        'label' => Yii::t('frontend', 'interes'),
+				                        'value' => function($data) {
+				                                      return Yii::$app->formatter->asDecimal($data['tinteres'], 2);
+				                                 },
+				                       'visible' => false,
+				                    ],
+				                    [
+				                        'contentOptions' => [
+				                              'style' => 'font-size: 90%;text-align:right;',
+				                        ],
+				                        'label' => Yii::t('frontend', 'descuento'),
+				                        'value' => function($data) {
+				                                        return Yii::$app->formatter->asDecimal($data['tdescuento'], 2);
+				                                  },
+				                        'visible' => false,
+				                    ],
+				                    [
+				                        'contentOptions' => [
+				                            'style' => 'font-size: 90%;text-align:right;',
+				                        ],
+				                        'label' => Yii::t('frontend', 'recon./reten.'),
+				                        'value' => function($data) {
+				                                        return Yii::$app->formatter->asDecimal($data['tmonto_reconocimiento'], 2);
+				                                   },
+				                        'visible' => false,
+				                    ],
+				                    [
+				                        'contentOptions' => [
+				                            'style' => 'font-size: 90%;text-align:right;',
+				                        ],
+				                        'label' => Yii::t('frontend', 'sub-total'),
+				                        'value' => function($data) {
+				                                        $st = ( $data['tmonto'] + $data['trecargo'] + $data['tinteres'] ) - ( $data['tdescuento'] + $data['tmonto_reconocimiento'] );
+				                                        return Yii::$app->formatter->asDecimal($st, 2);
+				                                  },
+				                    ],
+				                    [
+				                        'contentOptions' => [
+				                            'style' => 'font-size: 90%;',
+				                        ],
+				                        'label' => Yii::t('frontend', 'concepto'),
+				                        'value' => function($data) {
+				        					                   return $data['descripcion'];
+				        					               },
+				                        'visible' => true,
+				                    ],
+				                    [
+				                        'contentOptions' => [
+				                            'style' => 'font-size: 90%;',
+				                        ],
+				                        'label' => Yii::t('frontend', 'impuesto'),
+				                        'value' => function($data) {
+				        					                   return $data['descripcion_impuesto'];
+				        					               },
+				                        'visible' => true,
+				                    ],
+				                    [
+				                        'contentOptions' => [
+				                            'style' => 'font-size: 90%;text-align:right;',
+				                        ],
+				                        'class' => 'yii\grid\ActionColumn',
+				                        'header'=> Yii::t('frontend', 'Quitar'),
+				                        'template' => '{view}',
+				                        'buttons' => [
+				                            'view' => function ($url, $model, $key) {
+
+			                                      return Html::submitButton(Yii::t('frontend', 'Quitar'),
+							                                                              [
+							                                                                  'id' => 'id-quitar',
+							                                                                  'name' => 'quitar',
+							                                                                  'class' => 'btn btn-warning',
+							                                                                  'title' => 'Quitar',
+							                                                              ]
+							                                    );
+
+				                            },
+
+				                        ],
+				                    ],
+					        	]
+							]);?>
+						</div>
 					</div>
-
-					<div class="row" class="deuda-seleccionda" style="padding-top: 10px;">
-						<?= GridView::widget([
-							'id' => 'grid-deuda-seleccionada',
-							'dataProvider' => $providerPlanillaSeleccionada,
-							'summary' => '',
-							'columns' => [
-
-				          // [
-				          //     'contentOptions' => [
-				          //          'style' => 'font-size: 90%;',
-				          //     ],
-				          //     'label' => Yii::t('frontend', 'nro.'),
-				          //     'value' => function($data) {
-				          //                   return $data['id_detalle'];
-				          //                },
-				          // ],
-				          [
-				              'contentOptions' => [
-				              	   'style' => 'font-size: 90%;',
-				          	  ],
-				              'label' => Yii::t('frontend', 'planilla'),
-				              'value' => function($data) {
-				    				                return $data['planilla'];
-				    			               },
-				          ],
-				          [
-				              'contentOptions' => [
-				              	   'style' => 'font-size: 90%;text-align:center;',
-				              ],
-				              'label' => Yii::t('frontend', 'año'),
-				              'value' => function($data) {
-										                return $data['año'];
-									               },
-				          ],
-				          [
-				              'contentOptions' => [
-				                  'style' => 'font-size: 90%;text-align:center;',
-				              ],
-				              'label' => Yii::t('frontend', 'periodo'),
-				              'value' => function($data) {
-									                 return $data['periodo'];
-								                 },
-				          ],
-				          [
-				              'contentOptions' => [
-				                  'style' => 'font-size: 90%;text-align:center;',
-				              ],
-				              'label' => Yii::t('frontend', 'unidad'),
-				              'value' => function($data) {
-									                 return $data['unidad'];
-									               },
-				          ],
-				          [
-				              'contentOptions' => [
-				                  'style' => 'font-size: 90%;text-align:right;',
-				              ],
-				              'label' => Yii::t('frontend', 'monto'),
-				              'value' => function($data) {
-									                 return Yii::$app->formatter->asDecimal($data['monto'], 2);
-									               },
-				          ],
-				          [
-				              'contentOptions' => [
-				                  'style' => 'font-size: 90%;text-align:right;',
-				              ],
-				              'label' => Yii::t('frontend', 'recargo'),
-				              'value' => function($data) {
-				                           return Yii::$app->formatter->asDecimal($data['recargo'], 2);
-				                         },
-				          ],
-				          [
-				              'contentOptions' => [
-				                  'style' => 'font-size: 90%;text-align:right;',
-				              ],
-				              'label' => Yii::t('frontend', 'interes'),
-				              'value' => function($data) {
-				                           return Yii::$app->formatter->asDecimal($data['interes'], 2);
-				                         },
-				          ],
-				          [
-				              'contentOptions' => [
-				                  'style' => 'font-size: 90%;text-align:right;',
-				              ],
-				              'label' => Yii::t('frontend', 'descuento'),
-				              'value' => function($data) {
-				                           return Yii::$app->formatter->asDecimal($data['descuento'], 2);
-				                         },
-				          ],
-				          [
-				              'contentOptions' => [
-				                  'style' => 'font-size: 90%;text-align:right;',
-				              ],
-				              'label' => Yii::t('frontend', 'recon./reten.'),
-				              'value' => function($data) {
-				                           return Yii::$app->formatter->asDecimal($data['monto_reconocimiento'], 2);
-				                         },
-				          ],
-				          [
-				              'contentOptions' => [
-				                  'style' => 'font-size: 90%;text-align:right;',
-				              ],
-				              'label' => Yii::t('frontend', 'subtotal'),
-				              'value' => function($data) {
-				                            $st = ( $data['monto'] + $data['recargo'] + $data['interes'] ) - ( $data['descuento'] + $data['monto_reconocimiento'] );
-				                            return Yii::$app->formatter->asDecimal($st, 2);
-				                         },
-				          ],
-				          [
-				              'contentOptions' => [
-				                  'style' => 'font-size: 90%;',
-				              ],
-				              'label' => Yii::t('frontend', 'concepto'),
-				              'value' => function($data) {
-									                 return $data['descripcion'];
-									               },
-				          ],
-				              //   [
-				              //   	'contentOptions' => [
-				              //       	'style' => 'font-size: 90%;text-align:right;',
-				              //   	],
-				              //       'class' => 'yii\grid\ActionColumn',
-				            		// 'header'=> Yii::t('frontend', 'Deuda'),
-				            		// 'template' => '{view}',
-				            		// 'buttons' => [
-				              //   		'view' => function ($url, $model, $key) {
-				              //   				$url =  Url::to(['buscar-deuda']);
-				              //      				return Html::submitButton('<div class="item-list" style="color: #000000;"><center>'. $model['deuda'] .'</center></div>',
-				              //       							[
-				              //       								'id' => 'id-deuda-por-periodo',
-				              //       								'value' => json_encode([
-				              //       												'view' => 2,
-				              //       												'i' => $model['impuesto'],
-				              //       												'idC' => $model['id_contribuyente'],
-				              //       												'tipo' => $model['tipo'],
-				              //       											]),
-					             //            						'name' => 'id',
-					             //            						'class' => 'btn btn-default',
-					             //            						'title' => 'deuda '. $model['deuda'],
-					             //            						//'data-url' => $url,
-					             //            						'style' => 'text-align:right;',
-								          //               		]
-							           //              		);
-				              //   				},
-				              //   	],
-				              //   ],
-				        	]
-						]);?>
-					</div>
-
 <!-- Fin de lo seleccionado -->
 
-					<div class="row" style="padding-bottom: 10px;padding-top: 10px;background-color: #F1F1F1;width: 50%;">
+					<div class="row" style="padding-bottom: 10px;padding-top: 10px;background-color: #F1F1F1;width: 60%;">
 						<div class="col-sm-3" style="width: 45%;text-align: left;">
 							<h3><strong><p>Total Seleccionado:</p></strong></h3>
 						</div>
 						<div class="col-sm-3" style="width: 50%;text-align: right;background-color: #FFFFFF;">
-							<h3><strong><p><?= Html::textInput('total', 0, [
-																			'id' => 'id-total',
-																			'class' => 'form-control',
-																			'readOnly' => true,
-																			'style' => 'text-align: right;font-size:100%;',
-																		  ]) ?></p></strong></h3>
+							<h3><strong><p><?= MaskedInput::widget([
+						                              'name' => 'total',
+						                              'id' => 'id-total',
+						                              'value' => $model->totalSeleccionado,
+						                              'options' => [
+						                                  'class' => 'form-control',
+						                                  'style' => 'width:100%;text-align: right;font-size:90%;background-color:#FFFFFF;',
+						                                  'readonly' => true,
+						                                  'placeholder' => '0.00',
+
+						                              ],
+						                                  'clientOptions' => [
+						                                      'alias' =>  'decimal',
+						                                      'digits' => 2,
+						                                      'digitsOptional' => false,
+						                                      'groupSeparator' => ',',
+						                                      'removeMaskOnSubmit' => true,
+						                                      // 'allowMinus'=>false,
+						                                      //'groupSize' => 3,
+						                                      'radixPoint'=> ".",
+						                                      'autoGroup' => true,
+						                                      //'decimalSeparator' => ',',
+						                                ],
+
+						                        ]);?>
+						    </p></strong></h3>
+
+							<div class="col-sm-3" style="width: 100%;">
+								<div class="form-group">
+									<?= Html::submitButton(Yii::t('frontend', 'Crear Recibo'),
+																			  [
+																				'id' => 'btn-create',
+																				'class' => 'btn btn-success',
+																				'value' => 1,
+																				'style' => 'width: 100%',
+																				'name' => 'btn-create',
+																			  ])
+									?>
+								</div>
+							</div>
 						</div>
+
 					</div>
 
 
-
-
-
-					<div class="row" style="margin-top: 15px;">
+					<div class="row" style="margin-top: 55px;">
 <!-- Boton para aplicar la actualizacion -->
 						<div class="col-sm-3">
 							<div class="form-group">
-								<?= Html::submitButton(Yii::t('backend', Yii::t('backend', 'Create')),
-																					  [
-																						'id' => 'btn-create',
-																						'class' => 'btn btn-success',
-																						'value' => 1,
-																						'style' => 'width: 80%',
-																						'name' => 'btn-create',
-																					  ])
+								<?= Html::submitButton(Yii::t('frontend', 'Reset'),
+																		  [
+																			'id' => 'btn-reset',
+																			'class' => 'btn btn-danger',
+																			'value' => 9,
+																			'style' => 'width: 80%',
+																			'name' => 'btn-reset',
+																		  ])
 								?>
 							</div>
 						</div>
@@ -391,14 +411,14 @@
 <!-- Boton para salir de la actualizacion -->
 						<div class="col-sm-3" style="margin-left: 50px;">
 							<div class="form-group">
-								<?= Html::submitButton(Yii::t('backend', Yii::t('backend', 'Quit')),
-																					  [
-																						'id' => 'btn-quit',
-																						'class' => 'btn btn-danger',
-																						'value' => 1,
-																						'style' => 'width: 80%',
-																						'name' => 'btn-quit',
-																					  ])
+								<?= Html::submitButton(Yii::t('backend', 'Quit'),
+																		  [
+																			'id' => 'btn-quit',
+																			'class' => 'btn btn-danger',
+																			'value' => 1,
+																			'style' => 'width: 80%',
+																			'name' => 'btn-quit',
+																		  ])
 								?>
 							</div>
 						</div>
