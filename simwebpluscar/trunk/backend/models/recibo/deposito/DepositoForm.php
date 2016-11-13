@@ -108,14 +108,5 @@
 	    }
 
 
-
-	    /***/
-	    public function guardar($arregloDatos)
-	    {
-
-	    }
-
-
-
 	}
 ?>
