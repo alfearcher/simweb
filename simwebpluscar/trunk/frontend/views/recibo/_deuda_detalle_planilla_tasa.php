@@ -109,14 +109,22 @@
       </div>
   <?php } ?>
 
-	<div class="row" style="border-bottom: 1px solid #ccc;padding-left: 0px;background-color: #F1F1F1;margin-top: 25px;">
-      <div class="col-sm-3" style="margin-left:-10px;width: 100%;font-family: verdana;font-size:60%;">
-		     <strong><h4><?=Html::encode($caption)?></h4></strong>
+	<div class="row" style="padding-left: 0px;margin-top: 25px;width: 105%;">
+      <div class="col-sm-3" style="margin-left:0px;width: 50%;font-family: verdana;font-size:60%;border-bottom: 1px solid #ccc;background-color: #F1F1F1;">
+         <strong><h4><?=Html::encode($caption)?></h4></strong>
       </div>
-	</div>
+
+       <div class="col-sm-3" style="margin-left: 10px; width: 45%;font-family: verdana;font-size:60%;border-bottom: 1px solid #ccc;background-color: #F1F1F1;">
+         <strong><h4><?=Html::encode('Planilla(s) Bloqueada(s)')?></h4></strong>
+      </div>
+  </div>
+
+
+
 
 	<div class="row" class="deuda-planilla" style="padding-top: 10px;">
-      <div class="row" id="grid" style="padding-left: 10px;width: 70%;">
+
+      <div class="col-sm-3" id="grid" style="padding-left: 0px;width: 52%;">
 
     		<?= GridView::widget([
               'id' => 'grid-deuda-detalle-planilla',
@@ -124,9 +132,12 @@
               'headerRowOptions' => ['class' => 'success'],
               'rowOptions' => function($model) {
                     if ( $model['bloquear'] == 1 ) {
-                        return [ 'class' => 'danger', ];
+                        return [ 'class' => 'hidden'];
                     }
               },
+              'tableOptions' => [
+                    'class' => 'table table-hover',
+              ],
               'summary' => '',
               'columns' => [
                     [
@@ -159,8 +170,12 @@
                                                             $( "#id-suma" ).val(total);
                                                         }
                                                     }
-
                                                     var n = $( "#id-suma" ).val();
+                                                    var total = $( "#id-total" ).val();
+                                                    var s = parseFloat(n) + parseFloat(total);
+
+                                                    $( "#id-sub-total" ).val(s);
+
                                                     if ( n > 0 ) {
                                                         $( "#btn-add-seleccion" ).removeAttr("disabled");
                                                     } else {
@@ -269,7 +284,7 @@
                                           return 'NO';
                                       }
                                  },
-                        'visible' => true,
+                        'visible' => false,
                     ],
                     [
                         'contentOptions' => [
@@ -279,12 +294,139 @@
                         'value' => function($data) {
                                      return $data['causaBloquear'];
                                  },
-                        'visible' => true,
+                        'visible' => false,
                     ],
 
               ]
     		]);?>
       </div>
+
+      <!-- planillas bloqueadas -->
+      <div class="col-sm-3" id="grid-bloqueada" style="padding-left: 0px;width: 47%;">
+
+        <?= GridView::widget([
+              'id' => 'grid-deuda-detalle-planilla-bloqueda',
+              'dataProvider' => $dataProvider,
+              'headerRowOptions' => ['class' => 'danger'],
+              'rowOptions' => function($model) {
+                    if ( $model['bloquear'] == 0 ) {
+                        return [ 'class' => 'hidden', ];
+                    }
+              },
+              'summary' => '',
+              'columns' => [
+
+                    [
+                        'contentOptions' => [
+                              'style' => 'font-size: 90%;',
+                        ],
+                        'label' => Yii::t('frontend', 'planilla'),
+                        'value' => function($data) {
+                                      return $data['planilla'];
+                                   },
+                        //'visible' => ( $periodoMayorCero ) ? false : true,
+                    ],
+
+                    [
+                        'contentOptions' => [
+                              'style' => 'font-size: 90%;text-align:right;',
+                        ],
+                        'label' => Yii::t('frontend', 'monto'),
+                        'value' => function($data) {
+                                      return Yii::$app->formatter->asDecimal($data['tmonto'], 2);
+                                   },
+                        'visible' => false,
+                    ],
+                    [
+                        'contentOptions' => [
+                              'style' => 'font-size: 90%;text-align:right;',
+                        ],
+                        'label' => Yii::t('frontend', 'recargo'),
+                        'value' => function($data) {
+                                        return Yii::$app->formatter->asDecimal($data['trecargo'], 2);
+                                  },
+                        'visible' => false,
+                    ],
+                    [
+                        'contentOptions' => [
+                            'style' => 'font-size: 90%;text-align:right;',
+                        ],
+                        'label' => Yii::t('frontend', 'interes'),
+                        'value' => function($data) {
+                                      return Yii::$app->formatter->asDecimal($data['tinteres'], 2);
+                                 },
+                       'visible' => false,
+                    ],
+                    [
+                        'contentOptions' => [
+                              'style' => 'font-size: 90%;text-align:right;',
+                        ],
+                        'label' => Yii::t('frontend', 'descuento'),
+                        'value' => function($data) {
+                                        return Yii::$app->formatter->asDecimal($data['tdescuento'], 2);
+                                  },
+                        'visible' => false,
+                    ],
+                    [
+                        'contentOptions' => [
+                            'style' => 'font-size: 90%;text-align:right;',
+                        ],
+                        'label' => Yii::t('frontend', 'recon./reten.'),
+                        'value' => function($data) {
+                                        return Yii::$app->formatter->asDecimal($data['tmonto_reconocimiento'], 2);
+                                   },
+                        'visible' => false,
+                    ],
+                    [
+                        'contentOptions' => [
+                            'style' => 'font-size: 90%;text-align:right;',
+                        ],
+                        'label' => Yii::t('frontend', 'sub-total'),
+                        'value' => function($data) {
+                                        $st = ( $data['tmonto'] + $data['trecargo'] + $data['tinteres'] ) - ( $data['tdescuento'] + $data['tmonto_reconocimiento'] );
+                                        return Yii::$app->formatter->asDecimal($st, 2);
+                                  },
+                    ],
+                    [
+                        'contentOptions' => [
+                            'style' => 'font-size: 90%;',
+                        ],
+                        'label' => Yii::t('frontend', 'concepto'),
+                        'value' => function($data) {
+                                     return $data['descripcion'];
+                                 },
+                        'visible' => ( $periodoMayorCero ) ? false : true,
+                    ],
+                    [
+                        'contentOptions' => [
+                            'style' => 'font-size: 90%;;text-align:center;',
+                        ],
+                        'label' => Yii::t('frontend', 'bloqueado'),
+                        'value' => function($data) {
+                                      if ( $data['bloquear'] == 1 ) {
+                                          return 'SI';
+                                      } else {
+                                          return 'NO';
+                                      }
+                                 },
+                        'visible' => false,
+                    ],
+                    [
+                        'contentOptions' => [
+                            'style' => 'font-size: 90%;',
+                        ],
+                        'label' => Yii::t('frontend', 'causa'),
+                        'value' => function($data) {
+                                     return $data['causaBloquear'];
+                                 },
+                        'visible' => true,
+                    ],
+
+                ]
+          ]);?>
+      </div>
+  <!--  Final de planillas bloqueadas-->
+
 	</div>
 
 
@@ -336,6 +478,41 @@
                               ])
       ?>
     </div>
+  </div>
+
+
+  <div class="row" >
+      <div class="row" style="width: 39%;background-color: #F1F1F1;padding-left:0px;margin-left:0px;">
+          <div class="col-sm-3" style="width: 40%;">
+              <h6><strong><p>+ Total Seleccionado:</p></strong></h6>
+          </div>
+          <div class="col-sm-3" id="id-sub-totales" style="width: 60%;">
+              <h3><strong><p><?= MaskedInput::widget([
+                              'name' => 'subtotal',
+                              'id' => 'id-sub-total',
+                              'options' => [
+                                  'class' => 'form-control',
+                                  'style' => 'width:100%;text-align: right;font-size:90%;background-color:#FFFFFF;',
+                                  'readonly' => true,
+                                  'placeholder' => '0.00',
+
+                              ],
+                                  'clientOptions' => [
+                                      'alias' =>  'decimal',
+                                      'digits' => 2,
+                                      'digitsOptional' => false,
+                                      'groupSeparator' => ',',
+                                      'removeMaskOnSubmit' => true,
+                                      // 'allowMinus'=>false,
+                                      //'groupSize' => 3,
+                                      'radixPoint'=> ".",
+                                      'autoGroup' => true,
+                                      //'decimalSeparator' => ',',
+                                ],
+
+                        ]);?></p></strong></h3>
+          </div>
+      </div>
   </div>
 
 

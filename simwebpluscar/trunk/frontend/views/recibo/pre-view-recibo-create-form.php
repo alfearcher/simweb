@@ -242,11 +242,11 @@
 								<div class="form-group">
 									<?= Html::submitButton(Yii::t('frontend', 'Confirmar Crear Recibo'),
 																			  [
-																				'id' => 'btn-create-confirm',
+																				'id' => 'btn-confirm-create',
 																				'class' => 'btn btn-success',
-																				'value' => 1,
+																				'value' => 5,
 																				'style' => 'width: 100%',
-																				'name' => 'btn-create-confirm',
+																				'name' => 'btn-confirm-create',
 																			  ])
 									?>
 								</div>
