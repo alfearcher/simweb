@@ -67,6 +67,12 @@
 		 */
 		private $_deuda;
 
+		/**
+		 * Planillas ya seleccionadas
+		 * @var array
+		 */
+		private $_planillas = [];
+
 
 		/**
 		 * Metodo constructor de clase
@@ -76,6 +82,13 @@
 		{
 			$this->_id_contribuyente = $idContribuyente;
 			$this->_deuda = New DeudaSearch($this->_id_contribuyente);
+		}
+
+
+		/***/
+		public function setPlanillas($planillas)
+		{
+			$this->_planillas = $planillas;
 		}
 
 
@@ -317,7 +330,7 @@
 
 		/**
 		 * Metodo que arma un provider del tipo array data provider. Con la informacion de
-		 * la deuda agrupada por planialla, segun impuesto e id-impuesto.
+		 * la deuda agrupada por planilla, segun impuesto e id-impuesto.
 		 * @param  ineteger $impuesto identificador del impuesto.
 		 * @param  ineteger $idImpuesto identificador del objeto (para impuestos 2, 3, 12).
 		 * Cuando se trate de un objeto.
@@ -337,31 +350,54 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que arma un provider del tipo array data provider a atrir de una conasulta
+		 * ($deudas). Dicha consulta debe agrupar la deuda por planilla para entregar el resultado
+		 * en el provider. Se realiza una consulta adicional para determinar si la planilla  esta
+		 * disponible para ser utilizada en la creacion de un recibo, sino no esta se setea una
+		 * variable (bloquear y causaBlouear). Esto se realiza para indicar en la vista respectiva
+		 * si la planilla puede ser utilizada.
+		 * @param  array $deudas arreglo que posee la deuda agrupada por planilla.
+		 * @return array data provider (ArrayDataProvider).
+		 */
 		private function getArmarDataProviderDeudaPlanilla($deudas)
 		{
 			$provider = null;
 			if ( count($deudas) > 0 && $deudas !== null ) {
 				$acumulado = 0;
-				foreach ( $deudas as $deuda ) {
-					$t = ( $deuda['tmonto'] + $deuda['trecargo'] + $deuda['tinteres'] ) - ( $deuda['tdescuento'] + $deuda['tmonto_reconocimiento'] );
-					$acumulado = $acumulado + $t;
-					$data[$deuda['planilla']] = [
-						'planilla' => $deuda['planilla'],
-						'id_pago' => $deuda['id_pago'],
-						'id_contribuyente' => $deuda['id_contribuyente'],
-						'tmonto' => $deuda['tmonto'],
-						'trecargo' => $deuda['trecargo'],
-						'tinteres' => $deuda['tinteres'],
-						'tdescuento' => $deuda['tdescuento'],
-						'tmonto_reconocimiento' => $deuda['tmonto_reconocimiento'],
-						't' => $t,
-						'impuesto' => $deuda['impuesto'],
-						'descripcion' => $deuda['descripcion'],
-						'acumulado' => $acumulado,
-						'seleccionado' => 0,
+				$listaSeleccionada = ( count($this->_planillas) > 0 ) ? $this->_planillas : [];
 
-					];
+				foreach ( $deudas as $deuda ) {
+
+					$b = 0;
+					$result = self::puedoSeleccionarPlanilla((int)$deuda['planilla']);
+					if ( $result['r'] == false ) { $b = 1; }
+
+					$t = ( $deuda['tmonto'] + $deuda['trecargo'] + $deuda['tinteres'] ) - ( $deuda['tdescuento'] + $deuda['tmonto_reconocimiento'] );
+
+					if ( !in_array($deuda['planilla'], $listaSeleccionada) ) {
+
+						$acumulado = $acumulado + $t;
+						$data[$deuda['planilla']] = [
+							'planilla' => $deuda['planilla'],
+							'id_pago' => $deuda['id_pago'],
+							'id_contribuyente' => $deuda['id_contribuyente'],
+							'tmonto' => $deuda['tmonto'],
+							'trecargo' => $deuda['trecargo'],
+							'tinteres' => $deuda['tinteres'],
+							'tdescuento' => $deuda['tdescuento'],
+							'tmonto_reconocimiento' => $deuda['tmonto_reconocimiento'],
+							't' => $t,
+							'impuesto' => $deuda['impuesto'],
+							'descripcion_impuesto' => $deuda['descripcion_impuesto'],
+							'descripcion' => $deuda['descripcion'],
+							'acumulado' => $acumulado,
+							'seleccionado' => 0,
+							'bloquear' => $b,
+							'causaBloquear' => $result['m'],				// Descripcion de bloquear
+
+						];
+					}
 				}
 
 				$provider = New ArrayDataProvider([
@@ -377,7 +413,7 @@
 
 
 
-
+		/***/
 		private function getArmarDataProviderDeudaDetalle($deudas)
 		{
 			$provider = null;
@@ -395,11 +431,14 @@
 						'interes' => $deuda['interes'],
 						'monto_reconocimiento' => $deuda['monto_reconocimiento'],
 						'descripcion' => $deuda['descripcion'],
-						'deuda' => $t,
+						't' => $t,
 						'id_contribuyente' => $deuda['pagos']['id_contribuyente'],
 						'id_impuesto' => $deuda['id_impuesto'],
 						'impuesto' => $deuda['impuesto'],
 						'id_detalle' => $deuda['id_detalle'],
+						'seleccionado' => 0,
+						'bloquear' => 0,
+						'causaBloquear' => '',				// Descripcion de bloquear
 
 					];
 				}
@@ -418,26 +457,51 @@
 
 
 
+		/**
+		 * Metodo que permite determinar la condicion de una planilla, para asi considerarla
+		 * el la elaboracion de un recibo.
+		 * @param  integer $planilla numero de la planilla.
+		 * @return array retorna un arreglo con el resulta de la oeracion y un mesanje de la
+		 * resultante.
+		 */
 		public  function puedoSeleccionarPlanilla($planilla)
 		{
+			$result = [
+				'r' => true,		// Resultado de la consulta.
+				'm' => '',			// Mensaje del resultado
 
-		}
+			];
 
-
-
-		/***/
-		public function getPlanillaSeleccionada($postEnviado, $planillaYaSeleccionada)
-		{
 			$depositoSearch = New DepositoPlanillaSearch();
-			$planillas = [];
-
-			if ( count($postEnviado['chkSeleccionDeuda']) > 0 ) {
-				$chkPlanilla = $postEnviado['chkSeleccionDeuda'];
-				$planillaInicial = $postEnviado['planillaInicial'];
-				$planillaFinal = $postEnviado['planillaFinal'];
-
+			$puedo = $depositoSearch->puedoSeleccionarPlanillaParaRecibo($planilla);
+			if ( !$puedo ) {
+				$result = [
+					'r' => $puedo,
+					'm' => '1 - La planilla esta contenida en un recibo',
+				];
 			}
+
+			return $result;
 		}
+
+
+
+		/**
+		 * Metodo que arma un data provider del tipo ArrayDataProvider. Este metodo se utiliza para
+		 * armar el gridview de las planillas seleccionadas.
+		 * @param  array $planillas arreglo de numero de planillas.
+		 * @return array data provider.
+		 */
+		public function getDataProviderAgruparDeudaPorPlanilla($planillas)
+		{
+			$data = [];
+			$provider = null;
+			$deudas = $this->_deuda->getAgruparDeudaPorPlanillas($planillas);
+			$provider = self::getArmarDataProviderDeudaPlanilla($deudas);
+
+			return $provider;
+		}
+
 
 	}
 

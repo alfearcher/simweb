@@ -21,13 +21,13 @@
  */
 
  /**
- *  @file DepositoPlanillaSearch.php
+ *  @file DepositoSearch.php
  *
  *  @author Jose Rafael Perez Teran
  *
- *  @date 13-10-2016
+ *  @date 04-11-2016
  *
- *  @class DepositoPlanillaSearch
+ *  @class DepositoSearch
  *  @brief Clase Modelo
  *
  *
@@ -40,14 +40,13 @@
  *
  */
 
-	namespace backend\models\recibo\depositoplanilla;
+	namespace backend\models\recibo\deposito;
 
  	use Yii;
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 	use backend\models\recibo\depositoplanilla\DepositoPlanilla;
 	use common\models\planilla\Pago;
-	use yii\base\ErrorException;
 
 
 	/**
@@ -65,49 +64,6 @@
 		{}
 
 
-
-		/**
-		 * Metodo que genera el modelo de consulta para la entidad "depositos-planillas".
-		 * @param  integer $planilla numero de planilla.
-		 * @return active record.
-		 */
-		private function findDepositoPlanillaSegunPlanilla($planilla)
-		{
-			return DepositoPlanilla::find()->alias('DP')
-										   ->where('DP.planilla =:planilla',
-														[':planilla' => $planilla]);
-		}
-
-
-
-		/**
-		 * Metodo que permite determinar si una planilla puede ser seleccionada para
-		 * crear un recibo. Esta informacion solo permite determinar si la planilla
-		 * no esta relacionada a una recibo de pago que este en un estatus que no permita
-		 * su utilizacion en la creacion de un recibo. La informacion no verifica si la
-		 * planilla esta asociada a otro proceso o si esta en un estatus que no permita
-		 * su utilizacion en la creeacion de un recibo.
-		 * @param  integer $planilla numero de planilla.
-		 * @return boolean retorna true o false.
-		 */
-		public function puedoSeleccionarPlanillaParaRecibo($planilla)
-		{
-
-			$recibos = [];
-			$result = true;
-			$findModel = self::findDepositoPlanillaSegunPlanilla($planilla);
-			if ( count($findModel) > 0 ) {
-				$recibos = $findModel->andWhere(['IN', 'estatus', [0,1]])->all();
-				if ( count($recibos) > 0 ) {
-					$result = false;
-				}
-			}
-			return $result;
-
-		}
-
-
-
 		/**
 		 * Metodo que genera el modelo principal de la relacion entre las entidades
 		 * "depositos-planillas" y "pagos". En realidad es un inner join entre las
@@ -116,8 +72,7 @@
 		 */
 		private function findDepositoPlanillaPago()
 		{
-			return DepositoPlanilla::find()->alis('DP')
-										   ->joinWith('pago P', true, 'INNER JOIN');
+			return DepositoPlanilla::find()->joinWith('pago', true, 'INNER JOIN');
 		}
 
 
@@ -133,12 +88,12 @@
 		 */
 		private function findRelacionPlanillaRecibo($planilla, $estatus)
 		{
-			//$tablaDepPlanilla = DepositoPlanilla::tableName();
-			//$tablaPago = Pago::tableName();
+			$tablaDepPlanilla = DepositoPlanilla::tableName();
+			$tablaPago = Pago::tableName();
 
 			$findModel = self::findDepositoPlanillaPago();
 			if ( count($findModel) > 0 ) {
-				$model = $findModel->where('DP.planilla =:planilla',
+				$model = $findModel->where($tablaDepPlanilla . '.planilla =:planilla',
 											[':planilla' => $planilla])
 								   ->andWhere('estatus =:estatus',
 								   			[':estatus' => $estatus]);

@@ -21,14 +21,14 @@
  */
 
  /**
- *  @file ReciboForm.php
+ *  @file DepositoPlanillaForm.php
  *
  *  @author Jose Rafael Perez Teran
  *
- *  @date 04-11-2016
+ *  @date 12-11-2016
  *
- *  @class ReciboForm
- *  @brief Clase Modelo del formulario para
+ *  @class DepositoPlanillaForm
+ *  @brief Clase Modelo del formulario
  *
  *
  *  @property
@@ -40,21 +40,26 @@
  *
  */
 
-	namespace backend\models\recibo\recibo;
+	namespace backend\models\recibo\depositoplanilla;
 
  	use Yii;
 	use yii\base\Model;
-	use yii\data\ActiveDataProvider;
-	use backend\models\recibo\deposito\Deposito;
+	use backend\models\recibo\deposito\DepositoPlanilla;
+
 
 	/**
-	* 	Clase
+	* 	Clase base del formulario
 	*/
-	class ReciboForm extends Deposito
+	class DepositoPlanillaForm extends DepositoPlanilla
 	{
+		public $linea;			// Autoincremental
 		public $recibo;
-		public $totalSeleccionado;
-
+		public $monto;
+		public $planilla;
+		public $impuesto;		// Descripcion del impuesto.
+		public $descripcion;	// Descripcion del contribuyente, apellidos nombres o razon social.
+		public $codigo;
+		public $estatus;
 
 
 		/**
@@ -69,16 +74,24 @@
 
 
 		/**
-    	 *	Metodo que permite fijar la reglas de validacion del formulario inscripcion-accionista-form.
+    	 *	Metodo que permite fijar la reglas de validacion del formulario inscripcion-act-econ-form.
     	 */
 	    public function rules()
 	    {
 	        return [
+	        	[['recibo', 'impuesto',
+	        	  'estatus', 'planilla', 'monto'],
+	        	  'require'],
+	        	[['recibo', 'planilla',
+	        	  'estatus'],
+	        	  'integer'],
+	        	[['immpuesto', 'descripcion'],
+	        	  'string'],
+	        	[['estatus', 'codigo'], 'default', 'value' => 0],
+
+
 	        ];
 	    }
-
-
-
 
 
 
@@ -89,8 +102,13 @@
 	    public function attributeLabels()
 	    {
 	        return [
+
+
 	        ];
 	    }
+
+
+
 
 
 

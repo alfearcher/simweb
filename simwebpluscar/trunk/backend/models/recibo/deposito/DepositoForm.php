@@ -21,14 +21,14 @@
  */
 
  /**
- *  @file ReciboForm.php
+ *  @file DepositoForm.php
  *
  *  @author Jose Rafael Perez Teran
  *
- *  @date 04-11-2016
+ *  @date 12-11-2016
  *
- *  @class ReciboForm
- *  @brief Clase Modelo del formulario para
+ *  @class DepositoForm
+ *  @brief Clase Modelo del formulario
  *
  *
  *  @property
@@ -40,22 +40,29 @@
  *
  */
 
-	namespace backend\models\recibo\recibo;
+	namespace backend\models\recibo\deposito;
 
  	use Yii;
 	use yii\base\Model;
-	use yii\data\ActiveDataProvider;
 	use backend\models\recibo\deposito\Deposito;
 
+
 	/**
-	* 	Clase
+	* 	Clase base del formulario
 	*/
-	class ReciboForm extends Deposito
+	class DepositoForm extends Deposito
 	{
-		public $recibo;
-		public $totalSeleccionado;
-
-
+		public $recibo;			// Autoincremental
+		public $proceso;
+		public $fecha;
+		public $monto;
+		public $estatus;
+		public $ultima_impresion;
+		public $observacion;
+		public $usuario;
+		//public $fecha_hora;
+		public $id_contribuyente;
+		public $nro_control;
 
 		/**
      	* @inheritdoc
@@ -69,16 +76,22 @@
 
 
 		/**
-    	 *	Metodo que permite fijar la reglas de validacion del formulario inscripcion-accionista-form.
+    	 *	Metodo que permite fijar la reglas de validacion del formulario inscripcion-act-econ-form.
     	 */
 	    public function rules()
 	    {
 	        return [
+	        	[['id_contribuyente', 'nro_control',
+	        	  'estatus', 'fecha', 'monto'],
+	        	  'require']
+	        	[['recibo', 'id_contribuyente',
+	        	  'nro_control', 'estatus'],
+	        	  'integer'],
+	        	[['fecha'], 'date'],
+	        	[['estatus'], 'default', 'value' => 0],
+
 	        ];
 	    }
-
-
-
 
 
 
@@ -89,7 +102,17 @@
 	    public function attributeLabels()
 	    {
 	        return [
+
+
 	        ];
+	    }
+
+
+
+	    /***/
+	    public function guardar($arregloDatos)
+	    {
+
 	    }
 
 
