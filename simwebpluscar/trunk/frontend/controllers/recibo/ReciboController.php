@@ -70,8 +70,9 @@
 	{
 		public $layout = 'layoutbase';				//	Layout principal del formulario
 
-
-
+		private $_conn;
+		private $_conexion;
+		private $_transaccion;
 
 
 
@@ -79,7 +80,7 @@
 		public function actionIndex()
 		{
 			// Se verifica que el contribuyente haya iniciado una session.
-			self::actionAnularSession(['begin']);
+			self::actionAnularSession(['begin', 'planillaSeleccionadas']);
 			if ( isset($_SESSION['idContribuyente']) ) {
 
 				$idContribuyente = $_SESSION['idContribuyente'];
@@ -92,7 +93,7 @@
 					}
 				}
 
-				$model = New ReciboForm();
+				$model = New DepositoForm();
 
 				$formName = $model->formName();
 
@@ -121,17 +122,16 @@
 			  			$totalSeleccionado = self::actionTotalSeleccionado($providerPlanillaSeleccionada);
 			  			$model->totalSeleccionado = $totalSeleccionado;
 
-						return $this->render('/recibo/recibo-create-form',
-																[
-																	'model' => $model,
-																	'caption' => $caption,
-																	'subCaption' => $subCaption,
-																	'findModel' => $findModel,
-																	'dataProvider' => $dataProvider,
-																	'total' => $total,
-																	'providerPlanillaSeleccionada' => $providerPlanillaSeleccionada,
+						return $this->render('/recibo/recibo-create-form', [
+																'model' => $model,
+																'caption' => $caption,
+																'subCaption' => $subCaption,
+																'findModel' => $findModel,
+																'dataProvider' => $dataProvider,
+																'total' => $total,
+																'providerPlanillaSeleccionada' => $providerPlanillaSeleccionada,
 
-																]);
+															]);
 					} else {
 						// No presenta deuda pendiente
 						$this->redirect(['error-operacion', 'cod' => 501]);
@@ -169,19 +169,18 @@
 					}
 				}
 
-
 				// Datos generales del contribuyente.
 		      	$searchRecibo = New ReciboSearch($idContribuyente);
 		      	$dataProvider = $searchRecibo->getDataProviderDeuda();
 
 		      	$providerPlanillaSeleccionada = $searchRecibo->initDataPrivider();
 
-				$model = New ReciboForm();
+				$model = New DepositoForm();
 				$formName = $model->formName();
 
 				$caption = Yii::t('frontend', 'Recibo de Pago. Crear');
 				$subCaption = Yii::t('frontend', 'SubTitulo');
-
+// die(var_dump($postData));
 				if ( isset($postData['btn-add-seleccion']) ) {
 					if ( $postData['btn-add-seleccion'] == 3 ) {
 						// Seleccion de las deudas de periodos.
@@ -199,10 +198,21 @@
 						$this->redirect(['mostrar-vista-previa']);
 
 					}
-				} elseif ( isset($postData['btn-create-confirm']) ) {
-					if ( $postData['btn-create-confirm'] == 5 ) {
+				} elseif ( isset($postData['btn-confirm-create']) ) {
+					if ( $postData['btn-confirm-create'] == 5 ) {
+die(var_dump($postData));
+						$result = self::actionBeginSave($model, $postData);
+						if ( $result ) {
+							$this->_transaccion->commit();
+							self::actionAnularSession(['begin', 'planillaSeleccionadas']);
+							return self::actionView($modelMultiplex[0]->nro_solicitud);
+						} else {
+							$this->_transaccion->rollBack();
+							$this->redirect(['error-operacion', 'cod'=> 920]);
 
+  						}
 					}
+
 				} elseif ( isset($postData['btn-back']) ) {
 					$providerPlanillaSeleccionada = $searchRecibo->getDataProviderAgruparDeudaPorPlanilla($_SESSION['planillaSeleccionadas']);
 				}
@@ -272,13 +282,19 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que permite renderizar una vista con la informacion esumida de las
+		 * planillas seleccionadas por ele usuario. Esto permite que se observe la
+		 * informacion antes de gusrdarla finalmente.
+		 * @return view retorna vista con un resumen de las planillas seleccionada y
+		 * total del monto.
+		 */
 		public function actionMostrarVistaPrevia()
 		{
 			if ( isset($_SESSION['begin']) && isset($_SESSION['idContribuyente']) && isset($_SESSION['postEnviado']) ) {
 				$idContribuyente = $_SESSION['idContribuyente'];
 				$searchRecibo = New ReciboSearch($idContribuyente);
-				$model = New ReciboForm();
+				$model = New DepositoForm();
 
 				$caption = 'Pre-View';
 				$postEnviado = $_SESSION['postEnviado'];
