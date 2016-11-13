@@ -58,6 +58,8 @@
 	use backend\models\recibo\recibo\ReciboForm;
 	use backend\models\impuesto\Impuesto;
 	use common\models\planilla\PlanillaSearch;
+	use backend\models\recibo\deposito\DepositoForm;
+	use backend\models\recibo\depositoplanilla\DepositoPlanillaForm;
 
 
 
@@ -77,7 +79,7 @@
 		public function actionIndex()
 		{
 			// Se verifica que el contribuyente haya iniciado una session.
-			self::actionAnularSession(['lapso', 'tipo']);
+			self::actionAnularSession(['begin']);
 			if ( isset($_SESSION['idContribuyente']) ) {
 
 				$idContribuyente = $_SESSION['idContribuyente'];
@@ -88,9 +90,13 @@
 					if ( $postData['btn-quit'] == 1 ) {
 						$this->redirect(['quit']);
 					}
+				} elseif ( isset($postData['btn-reset']) ) {
+					if ( $postData['btn-reset'] == 9 ) {
+						self::actionAnularSession(['planillaSeleccionadas']);
+					}
 				}
 
-// die(var_dump($postData));
+
 				$model = New ReciboForm();
 
 				$formName = $model->formName();
@@ -106,6 +112,8 @@
 		      	$findModel = $searchRecibo->findContribuyente();
 		      	$dataProvider = $searchRecibo->getDataProviderDeuda();
 
+		      	$providerPlanillaSeleccionada = $searchRecibo->initDataPrivider();
+
 				if ( isset($postData['btn-accept']) ) {
 					if ( $postData['btn-accept'] == 1 ) {
 						$model->load($postData);
@@ -115,6 +123,16 @@
 
 							}
 						}
+					}
+				} elseif ( isset($postData['btn-add-seleccion']) ) {
+					if ( $postData['btn-add-seleccion'] == 3 ) {
+						// Seleccion de las deudas de periodos.
+						$providerPlanillaSeleccionada = self::actionAjustarListaPlanillaSeleccionada($postData);
+
+					} elseif ( $postData['btn-add-seleccion'] == 5 ) {
+						// Seleccion de las deudas por tasa.
+						$providerPlanillaSeleccionada = self::actionAjustarListaPlanillaSeleccionada($postData);
+
 					}
 				}
 
@@ -130,7 +148,9 @@
 			  				$total = $item['deuda'] + $total;
 			  			}
 
-			  			$providerPlanillaSeleccionada = $searchRecibo->initDataPrivider();
+			  			$totalSeleccionado = self::actionTotalSeleccionado($providerPlanillaSeleccionada);
+			  			$model->totalSeleccionado = $totalSeleccionado;
+
 						return $this->render('/recibo/recibo-create-form',
 																[
 																	'model' => $model,
@@ -157,6 +177,26 @@
 
 
 
+		/**
+		 * Metodo que contabiliza el total del monto por las planillas seleccionadas.
+		 * Se utiliza para la contabilizacion un provider de tipo ArrayDataProvider.
+		 * @param  ArrayDataProvider $provider array data provider de las planillas que ya
+		 * fueron seleccionadas.
+		 * @return double retorna un monto de lo contabilizado.
+		 */
+		private function actionTotalSeleccionado($provider)
+		{
+			$total = 0;
+			if ( count($provider) > 0 ) {
+	  			foreach ( $provider->allModels as $item ) {
+	  				$total = $item['t'] + $total;
+	  			}
+	  		}
+	  		return $total;
+		}
+
+
+
 		public function actionPrueba()
 		{
 			$request = Yii::$app->request;
@@ -164,6 +204,87 @@
 
 die(var_dump($postData));
 
+		}
+
+
+
+		/***/
+		private function actionAjustarListaPlanillaSeleccionada($postEnviado)
+		{
+			$providerPlanillaSeleccionada = null;
+			$idContribuyente = $_SESSION['idContribuyente'];
+			$chkPlanillas = [];
+			if ( $idContribuyente == $postEnviado['id_contribuyente'] ) {
+
+				if ( $postEnviado['btn-add-seleccion'] == 3 ) {
+					// Se obtienen las planillas seleccionadas.
+					$listaPlanillas = $postEnviado['chkSeleccionDeuda'];
+
+					$planillaInicial = $postEnviado['planillaInicial'];
+					$planillaFinal = $postEnviado['planillaFinal'];
+
+					foreach ( $listaPlanillas as $planilla ) {
+						array_push($chkPlanillas, $planilla);
+						if ( $planilla == $planillaFinal ) {
+							break;
+						}
+					}
+
+				} elseif ( $postEnviado['btn-add-seleccion'] == 5 ) {
+					// Se obtienen las planillas seleccionadas.
+					$chkPlanillas = $postEnviado['chkSeleccionDeuda'];
+				}
+
+				if ( count($chkPlanillas) > 0 ) {
+					// Suma de la deuda.
+					$sumaDeuda = $postEnviado['suma'];
+
+					// Se genera el provider para mostrar las planillas seleccionadas.
+					// Se utilizaran las planillas para generar el provider.
+					$planillaSeleccionadas = isset($_SESSION['planillaSeleccionadas']) ? $_SESSION['planillaSeleccionadas'] : [];
+					if ( count($planillaSeleccionadas) == 0 ) {
+
+						//Indica que es la primera seleccion. No existe seleccion anterior.
+						if ( count($chkPlanillas) > 0 ) {
+							$planillaSeleccionadas = $chkPlanillas;
+							$_SESSION['planillaSeleccionadas'] = $chkPlanillas;
+						}
+
+					} else {
+
+						self::actionAnularSession(['planillaSeleccionadas']);
+
+						// Se verifica que cualquiera de las planillas no este en al array anterior.
+						if ( count($chkPlanillas) > 0 ) {
+							foreach ( $chkPlanillas as $planilla ) {
+								if ( !in_array($planilla, $planillaSeleccionadas ) ) {
+
+									// Se agrega el elemento al array de planillas.
+									array_push($planillaSeleccionadas, $planilla);
+								}
+							}
+						}
+
+						$_SESSION['planillaSeleccionadas'] = $planillaSeleccionadas;
+
+					}
+					if ( count($planillaSeleccionadas) > 0 ) {
+						// Se manda a crear el provider con las planillas.
+						$searchRecibo = New ReciboSearch($idContribuyente);
+						$providerPlanillaSeleccionada = $searchRecibo->getDataProviderAgruparDeudaPorPlanilla($planillaSeleccionadas);
+
+					}
+				} else {
+					// No se encontraron planillas seleccionadas.
+
+				}
+
+			} else {
+				// El contribuyente del request no concuerda con el de la session..
+
+			}
+
+			return $providerPlanillaSeleccionada;
 		}
 
 
@@ -243,11 +364,13 @@ die(var_dump($postData));
 		/***/
 		public function actionGetViewDeudaEnPeriodo($searchRecibo, $impuesto)
 		{
+			$idContribuyente = $_SESSION['idContribuyente'];
 			$caption = Yii::t('frontend', 'Deuda segun tipo');
 			$provider = $searchRecibo->getDataProviderEnPeriodo($impuesto);
 			return $this->renderAjax('/recibo/_deuda_en_periodo', [
 												'caption' => $caption,
 												'dataProvider' => $provider,
+												'idContribuyente' => $idContribuyente,
 				]);
 		}
 
@@ -257,15 +380,21 @@ die(var_dump($postData));
 		/***/
 		public function actionGetViewDeudaTasa($searchRecibo, $impuesto)
 		{
-			$idSeleccionado = [];
+			$idContribuyente = $_SESSION['idContribuyente'];
 			$caption = Yii::t('frontend', 'Deuda - Detalle');
 			//$provider = $searchRecibo->getDataProviderDeudaDetalle($impuesto);
+
+			// Setear las planillas ya seleccionadas.
+			$planillaSeleccionadas = isset($_SESSION['planillaSeleccionadas']) ? $_SESSION['planillaSeleccionadas'] : [];
+			$searchRecibo->setPlanillas($planillaSeleccionadas);
+
 			$provider = $searchRecibo->getDataProviderDeudaPorObjetoPlanilla($impuesto, 0, '=');
 			return $this->renderAjax('/recibo/_deuda_detalle_planilla_tasa', [
 												'caption' => $caption,
 												'dataProvider' => $provider,
 												'periodoMayorCero' => false,
 												'primeraPlanilla' => 0,
+												'idContribuyente' => $idContribuyente,
 
 				]);
 		}
@@ -276,9 +405,14 @@ die(var_dump($postData));
 		/***/
 		public function actionGetViewDeudaActividadEconomica($searchRecibo)
 		{
-			$idSeleccionado = [];
+			$idContribuyente = $_SESSION['idContribuyente'];
 			$caption = Yii::t('frontend', 'Deuda - Detalle: Actividad Economica');
 			//$provider = $searchRecibo->getDataProviderDeudaDetalleActEcon();
+
+			// Setear las planillas ya seleccionadas.
+			$planillaSeleccionadas = isset($_SESSION['planillaSeleccionadas']) ? $_SESSION['planillaSeleccionadas'] : [];
+			$searchRecibo->setPlanillas($planillaSeleccionadas);
+
 			$provider = $searchRecibo->getDataProviderDeudaPorObjetoPlanilla(1, 0, '>');
 
 			// Se obtiene la primera planilla del provider.
@@ -289,6 +423,7 @@ die(var_dump($postData));
 												'dataProvider' => $provider,
 												'periodoMayorCero' => true,
 												'primeraPlanilla' => $primeraPlanilla,
+												'idContribuyente' => $idContribuyente,
 				]);
 		}
 
@@ -297,6 +432,12 @@ die(var_dump($postData));
 		/***/
 		public function actionGetViewDeudaPorObjeto($searchRecibo, $impuesto)
 		{
+
+			$idContribuyente = $_SESSION['idContribuyente'];
+
+			// Setear las planillas ya seleccionadas.
+			$planillaSeleccionadas = isset($_SESSION['planillaSeleccionadas']) ? $_SESSION['planillaSeleccionadas'] : [];
+			$searchRecibo->setPlanillas($planillaSeleccionadas);
 
 			$provider = $searchRecibo->getDataProviderPorListaObjeto($impuesto);
 			if ( $impuesto == 2 ) {
@@ -310,6 +451,7 @@ die(var_dump($postData));
 												'caption' => $caption,
 												'dataProvider' => $provider,
 												'labelObjeto' => $labelObjeto,
+												'idContribuyente' => $idContribuyente,
 				]);
 		}
 
@@ -319,8 +461,13 @@ die(var_dump($postData));
 		/***/
 		public function actionGetViewDeudaPorObjetoEspecifico($searchRecibo, $impuesto, $idImpuesto, $objetoDescripcion)
 		{
-			$idSeleccionado = [];
+			$idContribuyente = $_SESSION['idContribuyente'];
 			//$provider = $searchRecibo->getDataProviderDeudaDetalle($impuesto, $idImpuesto);
+
+			// Setear las planillas ya seleccionadas.
+			$planillaSeleccionadas = isset($_SESSION['planillaSeleccionadas']) ? $_SESSION['planillaSeleccionadas'] : [];
+			$searchRecibo->setPlanillas($planillaSeleccionadas);
+
 			$provider = $searchRecibo->getDataProviderDeudaPorObjetoPlanilla($impuesto, $idImpuesto, '>');
 			$caption = Yii::t('frontend', 'Deuda - Detalle: ') . ' Id: ' . $idImpuesto  . ' Descripcion: ' . $objetoDescripcion;
 
@@ -332,6 +479,7 @@ die(var_dump($postData));
 												'dataProvider' => $provider,
 												'periodoMayorCero' => true,
 												'primeraPlanilla' => $primeraPlanilla,
+												'idContribuyente' => $idContribuyente,
 				]);
 
 		}
@@ -410,7 +558,7 @@ die(var_dump($postData));
 							'postData',
 							'conf',
 							'begin',
-							'lapso'
+							'planillaSeleccionadas',
 					];
 
 		}
