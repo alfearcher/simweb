@@ -61,7 +61,7 @@
  		$form = ActiveForm::begin([
         'id' => 'id-deuda-detalle-planilla-tasa',
  			  'method' => 'post',
-        'action'=> Url::to(['index']),
+        'action'=> Url::to(['index-create']),
         'enableClientValidation' => false,
  			  'enableAjaxValidation' => false,
  			  'enableClientScript' => true,

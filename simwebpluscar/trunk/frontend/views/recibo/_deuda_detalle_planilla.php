@@ -42,8 +42,6 @@
 	use yii\widgets\ActiveForm;
 	use yii\web\View;
 	use yii\widgets\Pjax;
-	//use common\models\contribuyente\ContribuyenteBase;
-	//use yii\widgets\DetailView;
   use yii\bootstrap\Modal;
 	use yii\widgets\MaskedInput;
 
@@ -60,7 +58,7 @@
  		$form = ActiveForm::begin([
         'id' => 'id-deuda-detalle-planilla',
  			  'method' => 'post',
-        'action'=> Url::to(['index']),
+        'action'=> Url::to(['index-create']),
         'enableClientValidation' => false,
  			  'enableAjaxValidation' => false,
  			  'enableClientScript' => true,

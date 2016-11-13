@@ -22,13 +22,13 @@
  */
 
  /**
- *  @file recibo-create-form.php
+ *  @file pre-view-recibo-create-form.php
  *
  *  @author Jose Rafael Perez Teran
  *
  *  @date 04-11-2016
  *
- *  @view recibo-create-form
+ *  @view pre-view-recibo-create-form
  *  @brief vista principal del formulario para la creacion de los recibos de pago.
  *
  */
@@ -56,11 +56,11 @@
     $sumaSeleccion = 0;
 ?>
 
-<div class="recibo-pago-form">
+<div class="pre-view-recibo-pago-form">
  	<?php
 
  		$form = ActiveForm::begin([
- 			'id' => 'id-recibo-create-form',
+ 			'id' => 'id-pre-view-recibo-create-form',
  			'method' => 'post',
  			'action'=> Url::to(['index-create']),
  			'enableClientValidation' => false,
@@ -69,7 +69,7 @@
  		]);
  	?>
 
-	<?=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $findModel['id_contribuyente']])->label(false);?>
+	<?=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $idContribuyente])->label(false);?>
 
 	<meta http-equiv="refresh">
     <div class="panel panel-primary"  style="width: 95%;margin: auto;">
@@ -83,117 +83,6 @@
         	<div class="container-fluid">
         		<div class="col-sm-12">
 
-					<div class="row" style="width: 105%;padding-left: 10px;">
-						<div class="col-sm-4" style="margin-left:0px;padding-left:0; width: 30%;">
-
-							<div class="row" style="border-bottom: 1px solid #ccc;padding-left: 0px;">
-								<h4><?= Html::encode(Yii::t('frontend', 'Deuda por impuestos')) ?></h4>
-							</div>
-
-							<div class="row" class="deuda-por-impuesto" style="padding-top: 10px;">
-
-								<?= GridView::widget([
-									'id' => 'grid-deuda-general-contribuyente',
-									'dataProvider' => $dataProvider,
-									//'filterModel' => $model,
-									'summary' => '',
-									'columns' => [
-
-						            	[
-						            		'contentOptions' => [
-						                    	'style' => 'font-size: 90%;width:20%;text-align:center;',
-						                	],
-						                    'label' => Yii::t('frontend', 'Impuesto'),
-						                    'value' => function($data) {
-	                										return $data['impuesto'];
-	        											},
-						                ],
-						                [
-						                	'contentOptions' => [
-						                    	'style' => 'font-size: 90%;',
-						                	],
-						                    'label' => Yii::t('frontend', 'Descripcion'),
-						                    'value' => function($data) {
-	                										return $data['descripcion'];
-	        											},
-						                ],
-
-						                [
-						                	'contentOptions' => [
-						                    	'style' => 'font-size: 90%;text-align:right;',
-						                	],
-						                    'class' => 'yii\grid\ActionColumn',
-				                    		'header'=> Yii::t('backend','Deuda'),
-				                    		'template' => '{view}',
-				                    		'buttons' => [
-				                        		'view' => function ($url, $model, $key) {
-				                        				// $url =  Url::to(['buscar-deuda']);
-				                        				$u = Yii::$app->urlManager
-							                                          ->createUrl('recibo/recibo/buscar-deuda-detalle') . '&view=1' . '&i=' . $model['impuesto'] . '&idC='.$model['id_contribuyente'];
-				                           				return Html::submitButton('<div class="item-list" style="color: #000000;"><center>'. Yii::$app->formatter->asDecimal($model['deuda'], 2) .'</center></div>',
-					                        							[
-					                        								'id' => 'id-deuda',
-							                        						'name' => 'id',
-							                        						'class' => 'btn btn-default',
-							                        						'title' => 'deuda '. $model['deuda'],
-							                        						'style' => 'text-align:right;',
-							                        						//'onClick' => 'alert("' . $u. '")',
-							                        						'onClick' => '
-							                        										$.post("' . $u . '", function( data ) {
-							                        																$( "#deuda-por-objeto" ).html("");
-							                        																$( "#deuda-detalle" ).html("");
-							                        																$( "#id-suma" ).val("0");
-																													$( "#deuda-en-periodo" ).html( data );
-							                        														   }
-							                        											);return false;',
-										                        		]
-									                        		);
-				                        				},
-						                	],
-						                ],
-						        	]
-								]);?>
-							</div>
-
-							<div class="row" style="padding-top: 0px;margin-top: -10px;background-color: #F1F1F1;">
-								<div class="col-sm-3" style="width: 45%;text-align: right;">
-									<h3><strong><p>Total:</p></strong></h3>
-								</div>
-								<div class="col-sm-3" style="width: 55%;text-align: right;">
-									<h3><strong><p><?=Html::encode(Yii::$app->formatter->asDecimal($total, 2))?></p></strong></h3>
-								</div>
-							</div>
-
-						</div>
-
-
-						<div class="col-sm-4" style="margin-left:40px;margin-top:0px;padding-left:0; width: 60%;">
-							<?php Pjax::begin() ?>
-								<div class="deuda-en-periodo" id="deuda-en-periodo">
-								</div>
-							<?php Pjax::end() ?>
-						</div>
-
-
-						<div class="col-sm-4" style="margin-left:40px;margin-top:0px;padding-left:0; width: 60%;">
-							<?php Pjax::begin(['enablePushState' => false]) ?>
-								<div class="deuda-por-objeto" id="deuda-por-objeto">
-								</div>
-							<?php Pjax::end() ?>
-						</div>
-
-					</div>
-
-					<div class="row" style="padding-top: 50px;">
-						<div class="col-sm-10" style="margin-left:10px;margin-top:0px;padding-left:0; width: 95%;">
-							<?php Pjax::begin(['enablePushState' => false]) ?>
-								<div class="deuda-detalle" id="deuda-detalle">
-								</div>
-							<?php Pjax::end() ?>
-						</div>
-					</div>
-
-
 <!-- Aqui se muestra lo seleccionado por el contribuyente -->
 
 					<div class="row" style="width: 70%;margin-top: 80px;">
@@ -201,10 +90,10 @@
 							<h4><?=Html::encode('Planilla(s) Seleccionadas')?></h4>
 						</div>
 
-						<div class="row" class="deuda-seleccionda" style="padding-top: 10px;">
+						<div class="row" class="deuda-seleccionda-pre-view" style="padding-top: 10px;">
 							<?= GridView::widget([
-								'id' => 'grid-deuda-seleccionada',
-								'dataProvider' => $providerPlanillaSeleccionada,
+								'id' => 'grid-deuda-seleccionada-pre-view',
+								'dataProvider' => $dataProvider,
 								'summary' => '',
 								'columns' => [
 									[
@@ -310,30 +199,7 @@
 				        					               },
 				                        'visible' => true,
 				                    ],
-				                    [
-				                        'contentOptions' => [
-				                            'style' => 'font-size: 90%;text-align:right;',
-				                        ],
-				                        'class' => 'yii\grid\ActionColumn',
-				                        'header'=> Yii::t('frontend', 'Quitar'),
-				                        'template' => '{view}',
-				                        'buttons' => [
-				                            'view' => function ($url, $model, $key) {
 
-			                                      return Html::submitButton(Yii::t('frontend', 'Quitar'),
-							                                                              [
-							                                                                  'id' => 'id-quitar',
-							                                                                  'name' => 'quitar',
-							                                                                  'class' => 'btn btn-warning',
-							                                                                  'title' => 'Quitar',
-							                                                              ]
-							                                    );
-
-				                            },
-
-				                        ],
-				                        'visible' => false,
-				                    ],
 					        	]
 							]);?>
 						</div>
@@ -374,13 +240,13 @@
 
 							<div class="col-sm-3" style="width: 100%;">
 								<div class="form-group">
-									<?= Html::submitButton(Yii::t('frontend', 'Crear Recibo'),
+									<?= Html::submitButton(Yii::t('frontend', 'Confirmar Crear Recibo'),
 																			  [
-																				'id' => 'btn-create',
+																				'id' => 'btn-create-confirm',
 																				'class' => 'btn btn-success',
 																				'value' => 1,
 																				'style' => 'width: 100%',
-																				'name' => 'btn-create',
+																				'name' => 'btn-create-confirm',
 																			  ])
 									?>
 								</div>
@@ -394,13 +260,13 @@
 <!-- Boton para aplicar la actualizacion -->
 						<div class="col-sm-3">
 							<div class="form-group">
-								<?= Html::submitButton(Yii::t('frontend', 'Reset'),
+								<?= Html::submitButton(Yii::t('frontend', 'Back'),
 																		  [
-																			'id' => 'btn-reset',
+																			'id' => 'btn-back',
 																			'class' => 'btn btn-danger',
 																			'value' => 9,
 																			'style' => 'width: 80%',
-																			'name' => 'btn-reset',
+																			'name' => 'btn-back',
 																		  ])
 								?>
 							</div>
