@@ -74,19 +74,8 @@ $this->title = Yii::t('frontend', 'Detalle de la Deuda');
                      },
                      ],
 
-                    [
-                    'label' => 'Año Impositivo',
-                    'value' => function($data){
-                        return $data['ano_impositivo'];
-                    },
-                    ],
 
-                      [
-                    'label' => 'Trimestre',
-                    'value' => function($data){
-                        return $data['trimestre'];
-                    },
-                    ],
+              
 
                     [
                     'label' => 'Monto',
