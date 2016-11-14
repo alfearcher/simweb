@@ -257,6 +257,7 @@
 				$findModel = self::getModelGeneral();
 
 				$deuda = $findModel->select([
+										'D.id_impuesto',
 										'D.impuesto',
 										'I.descripcion',
 										'(sum(monto+recargo+interes)-sum(descuento+monto_reconocimiento)) as t',
@@ -959,6 +960,7 @@
 		 */
 		private function detalleDeudaObjetoPorPlanilla($impuesto, $idImpuesto, $periodo = '')
 		{
+			//die(var_dump($idImpuesto).'hola');
 			$findModel = self::getModelGeneral();
 			$deuda = [];
 
@@ -991,8 +993,8 @@
 								   ->asArray()
 								   ->all();
 
-			} elseif ( $idImpuesto > 0 && $impuesto > 1 && $periodo = '>' ) {
-
+			} elseif ( $idImpuesto > 0 && $impuesto >= 1 && $periodo = '>' ) {
+				//die('por aqui si');
 				$deuda = $findModel->select([
 										'P.planilla',
 										'P.id_contribuyente',
