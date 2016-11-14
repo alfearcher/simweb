@@ -69,7 +69,15 @@
  		]);
  	?>
 
-	<?=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $idContribuyente])->label(false);?>
+	<?=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $model->id_contribuyente])->label(false);?>
+	<?=$form->field($model, 'nro_control')->hiddenInput(['value' => $model->nro_control])->label(false);?>
+	<?=$form->field($model, 'fecha')->hiddenInput(['value' => $model->fecha])->label(false);?>
+	<?=$form->field($model, 'usuario')->hiddenInput(['value' => $model->usuario])->label(false);?>
+	<?=$form->field($model, 'estatus')->hiddenInput(['value' => $model->estatus])->label(false);?>
+	<?=$form->field($model, 'proceso')->hiddenInput(['value' => ''])->label(false);?>
+	<?=$form->field($model, 'observacion')->hiddenInput(['value' => ''])->label(false);?>
+	<?=$form->field($model, 'ultima_impresion')->hiddenInput(['value' => $model->ultima_impresion])->label(false);?>
+	<?=$form->field($model, 'monto')->hiddenInput(['value' => $model->monto])->label(false);?>
 
 	<meta http-equiv="refresh">
     <div class="panel panel-primary"  style="width: 95%;margin: auto;">
