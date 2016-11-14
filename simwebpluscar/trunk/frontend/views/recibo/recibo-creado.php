@@ -236,14 +236,18 @@
 
 						<div class="col-sm-3" style="width: 20%;padding-left: 30px;">
 							<div class="form-group">
-								<?= Html::submitButton(Yii::t('frontend', 'Imprimir Recibo'),
-																		  [
-																			'id' => 'btn-printer',
+								<?= Html::a(Yii::t('frontend', 'Generar Recibo'),[
+																			'request-recibo-creado',
+																		   	'nro' => $model->nro_control,
+																		],
+																		[
+																			'id' => 'btn-generate',
 																			'class' => 'btn btn-success',
 																			'value' => 2,
 																			'style' => 'width: 100%',
-																			'name' => 'btn-printer',
-																		  ])
+																			'name' => 'btn-generate',
+																			'target' => '_blank',
+																		])
 								?>
 							</div>
 						</div>
