@@ -44,7 +44,7 @@
 
  	use Yii;
 	use yii\base\Model;
-	use backend\models\recibo\deposito\DepositoPlanilla;
+	use backend\models\recibo\depositoplanilla\DepositoPlanilla;
 
 
 	/**
@@ -79,9 +79,9 @@
 	    public function rules()
 	    {
 	        return [
-	        	[['recibo', 'impuesto',
-	        	  'estatus', 'planilla', 'monto'],
-	        	  'require'],
+	        	// [['recibo', 'impuesto',
+	        	//   'estatus', 'planilla', 'monto'],
+	        	//   'require'],
 	        	[['recibo', 'planilla',
 	        	  'estatus'],
 	        	  'integer'],

@@ -50,6 +50,7 @@
 	use common\models\deuda\DeudaSearch;
 	use common\models\contribuyente\ContribuyenteBase;
 	use yii\data\ArrayDataProvider;
+	use yii\data\ActiveDataProvider;
 	use backend\models\recibo\depositoplanilla\DepositoPlanillaSearch;
 
 
@@ -503,6 +504,32 @@
 			$provider = self::getArmarDataProviderDeudaPlanilla($deudas);
 
 			return $provider;
+		}
+
+
+
+
+		/***/
+		public function getDepositoPlanilla()
+		{
+			return $findModel = DepositoPlanilla::find()->alias('DP')
+			                                    ->joinWith('deposito', true, 'INNER JOIN');
+		}
+
+
+
+		/***/
+		public function getDataProviderDepositoPlanilla($recibo)
+		{
+			$query = self::getDepositoPlanilla();
+
+			$dataProvider = New ActiveDataProvider([
+								'query' => $query,
+				]);
+			$query->where('DP.recibo =:recibo', [':recibo' => $recibo])
+				  ->all();
+
+			return $dataProvider;
 		}
 
 

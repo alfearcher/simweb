@@ -87,7 +87,7 @@
 		/***/
 		public function getDepositoPlanilla()
 		{
-			return $this->hasMany(Deposito::className(), ['recibo' => 'recibo']);
+			return $this->hasMany(DepositoPlanilla::className(), ['recibo' => 'recibo']);
 		}
 
 

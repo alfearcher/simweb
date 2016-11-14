@@ -90,10 +90,12 @@
 	        	[['recibo', 'id_contribuyente',
 	        	  'nro_control', 'estatus'],
 	        	  'integer'],
-	        	[['observacion', 'proceso'], 'string'],
-	        	[['fecha', 'fechaCreacion'], 'date'],
+	        	[['observacion', 'proceso', 'usuario',
+	        	  'ultima_impresion'], 'string'],
+	        	[['fecha', 'fechaCreacion'], 'date', 'format' => 'php:Y-m-d'],
 	        	[['fecha'], 'default', 'value' => date('Y-m-d')],
 	        	[['estatus'], 'default', 'value' => 0],
+	        	[['monto'], 'double'],
 
 	        ];
 	    }
@@ -107,9 +109,37 @@
 	    public function attributeLabels()
 	    {
 	        return [
-
+	        	'recibo' => Yii::t('frontend', 'Nro. Recibo'),
+	        	'fecha' => Yii::t('frontend', 'Fecha'),
+	        	'monto' => Yii::t('frontend', 'Monto'),
+	        	'estatus' => Yii::t('frontend', 'Condicion'),
+	        	'id_contribuyente' => Yii::t('frontend', 'Id. Contribuyente'),
+	        	'usuario' => Yii::t('frontend', 'Usuario'),
 
 	        ];
+	    }
+
+
+
+	    /***/
+	    public function getUsuario()
+	    {
+	    	$user = '';
+	    	if ( isset(Yii::$app->user->identity->username) ) {
+				$user = Yii::$app->user->identity->username;
+			} elseif ( isset(Yii::$app->user->identity->login) ) {
+				$user = Yii::$app->user->identity->login;
+			}
+
+			return $user;
+	    }
+
+
+
+	    /***/
+	    public function findDeposito($recibo)
+	    {
+	    	return Deposito::findOne($recibo);
 	    }
 
 
