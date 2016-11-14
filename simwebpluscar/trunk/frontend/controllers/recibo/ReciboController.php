@@ -60,6 +60,11 @@
 	use common\models\planilla\PlanillaSearch;
 	use backend\models\recibo\deposito\DepositoForm;
 	use backend\models\recibo\depositoplanilla\DepositoPlanillaForm;
+	use common\models\numerocontrol\NumeroControlSearch;
+	use common\models\deuda\DeudaSearch;
+	use common\conexion\ConexionController;
+	use common\models\contribuyente\ContribuyenteBase;
+
 
 
 
@@ -76,7 +81,10 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que inicia el modulo
+		 * @return
+		 */
 		public function actionIndex()
 		{
 			// Se verifica que el contribuyente haya iniciado una session.
@@ -148,7 +156,10 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que inicia la carga de las planillas y la creacion del recibo
+		 * @return
+		 */
 		public function actionIndexCreate()
 		{
 			// Se verifica que el contribuyente haya iniciado una session.
@@ -180,7 +191,7 @@
 
 				$caption = Yii::t('frontend', 'Recibo de Pago. Crear');
 				$subCaption = Yii::t('frontend', 'SubTitulo');
-// die(var_dump($postData));
+
 				if ( isset($postData['btn-add-seleccion']) ) {
 					if ( $postData['btn-add-seleccion'] == 3 ) {
 						// Seleccion de las deudas de periodos.
@@ -200,17 +211,26 @@
 					}
 				} elseif ( isset($postData['btn-confirm-create']) ) {
 					if ( $postData['btn-confirm-create'] == 5 ) {
-die(var_dump($postData));
-						$result = self::actionBeginSave($model, $postData);
-						if ( $result ) {
-							$this->_transaccion->commit();
-							self::actionAnularSession(['begin', 'planillaSeleccionadas']);
-							return self::actionView($modelMultiplex[0]->nro_solicitud);
-						} else {
-							$this->_transaccion->rollBack();
-							$this->redirect(['error-operacion', 'cod'=> 920]);
 
-  						}
+						if ( $model->load($postData) ) {
+							if ( $model->validate() ) {
+
+								$result = self::actionBeginSave($model, $postData);
+								if ( $result ) {
+									$this->_transaccion->commit();
+									$this->_conn->close();
+									self::actionAnularSession(['begin', 'planillaSeleccionadas']);
+									return self::actionView($model);
+
+								} else {
+									$this->_transaccion->rollBack();
+									$this->_conn->close();
+									$this->redirect(['error-operacion', 'cod'=> 920]);
+
+		  						}
+
+							}
+						}
 					}
 
 				} elseif ( isset($postData['btn-back']) ) {
@@ -260,6 +280,150 @@ die(var_dump($postData));
 
 
 
+		/**
+		 * Metodo que incia el proceso de guardar el recibo y las planillas asociadas
+		 * @param  DepositoForm $model modelo de la entidad "DepositoForm".
+		 * @param  array $postEnviado post enviado desde la vista previa.
+		 * @return boolean retorna true si guarda satisfactoriamente, flase en caso
+		 * contrario.
+		 */
+		private function actionBeginSave($model, $postEnviado)
+		{
+			$result = false;
+			$recibo = 0;
+
+			if ( isset($_SESSION['idContribuyente']) ) {
+
+					$this->_conexion = New ConexionController();
+
+	      			// Instancia de conexion hacia la base de datos.
+	      			$this->_conn = $this->_conexion->initConectar('db');
+	      			$this->_conn->open();
+
+	      			// Instancia de tipo transaccion para asegurar la integridad del resguardo de los datos.
+	      			// Inicio de la transaccion.
+					$this->_transaccion = $this->_conn->beginTransaction();
+
+					$recibo = self::actionCreateDeposito($model);
+					if ( $recibo > 0 ) {
+
+						$model->recibo = $recibo;
+
+						// Se pasa a guardar las planillas.
+						$result = self::actionCreateDepositoPlanilla($model, $postEnviado);
+
+						if ( $result ) {
+							//$result = self::actionEnviarEmail($model, $postEnviado);
+							$result = true;
+						}
+					}
+
+			} else {
+				// No esta defino el contribuyente.
+				$this->redirect(['error-operacion', 'cod' => 932]);
+			}
+			return $result;
+		}
+
+
+
+
+		/**
+		 * Metodo que permite guardar el registro correspondiente, esto genera un numero de
+		 * recibo de pago, el cual se retornara si todo sale satisfactoriamente. Si no logra
+		 * guardar satisfactoriamente retorna cero (0).
+		 * @param  DepositoForm $model modelo de la entidad DepositoForm. Maestro del recibo.
+		 * @return integer retorna un numero de recibo.
+		 */
+		private function actionCreateDeposito($model)
+		{
+			$recibo = 0;
+			if ( isset($model) && isset($_SESSION['idContribuyente']) ) {
+				if ( $model->id_contribuyente == $_SESSION['idContribuyente'] ) {
+					$tabla = $model->tableName();
+
+					if ( $this->_conexion->guardarRegistro($this->_conn, $tabla, $model->attributes) ) {
+						$recibo = $this->_conn->getLastInsertID();
+					}
+				}
+			}
+
+			return $recibo;
+		}
+
+
+
+
+		/**
+		 * Metodo que guarda el detalle delrecibo de pago, el cual corresponde a las
+		 * planillas seleccionadas por el usuario para generar dicho recibo. Cada planilla
+		 * genera un registro en la entidad "depositos-planillas"
+		 * @param  DepositoForm $model modelo de la entidad "DepositoForm" (deposito). De
+		 * este modelo se obtendra el numero de recibo generado.
+		 * @param  array $postEnviado post enviado desde el formulario de vista previa. Esta
+		 * se envia una vez que el usuario confirma la creacion del recibo.
+		 * @return boolean retorna true(verdadero) si guarda satisfactoriamente, false(falso)
+		 * en caso contrario.
+		 */
+		private function actionCreateDepositoPlanilla($model, $postEnviado)
+		{
+			$result = false;
+			$cancel = false;
+			if ( isset($model) && $_SESSION['idContribuyente'] && count($postEnviado) > 0 ) {
+				if ( $model->id_contribuyente == $_SESSION['idContribuyente'] ) {
+
+					$chkPlanillaSeleccionadas = $postEnviado['chkPlanillaSeleccionadas'];
+					$idContribuyente = $_SESSION['idContribuyente'];
+					$modelDepPlanilla = New DepositoPlanillaForm();
+					$modelDepPlanilla->recibo = $model->recibo;
+
+					$arregloDatos = $modelDepPlanilla->attributes;
+
+					$tabla = $modelDepPlanilla->tableName();
+					$infoContribuyente = ContribuyenteBase::getContribuyenteDescripcionSegunID($idContribuyente);
+
+					$searchDeuda = New DeudaSearch($idContribuyente);
+
+					$acumulado = 0;
+					$total = 0;
+
+					foreach ( $chkPlanillaSeleccionadas as $key => $value ) {
+
+						$deudas = $searchDeuda->getAgruparDeudaPorPlanillas([$value]);
+						$deuda = $deudas[0];
+
+						$total = ( $deuda['tmonto'] + $deuda['trecargo'] + $deuda['tinteres'] ) - ( $deuda['tdescuento'] + $deuda['tmonto_reconocimiento'] );
+						$acumulado = $acumulado + $total;
+
+						$modelDepPlanilla->monto = $total;
+						$modelDepPlanilla->planilla = $value;
+						$modelDepPlanilla->impuesto = $deuda['descripcion_impuesto'];
+						$modelDepPlanilla->descripcion = $infoContribuyente;
+						$modelDepPlanilla->codigo = 0;
+						$modelDepPlanilla->estatus = 0;
+
+// die(var_dump($modelDepPlanilla->attributes));
+						$result = $this->_conexion->guardarRegistro($this->_conn, $tabla, $modelDepPlanilla->attributes);
+						if ( !$result ) {
+							break;
+						}
+					}
+
+					if ( (float)$model->monto !== $acumulado ) {
+						$result = false;
+					}
+				}
+
+			}
+			return $result;
+
+		}
+
+
+
+
+
+
 
 		/**
 		 * Metodo que contabiliza el total del monto por las planillas seleccionadas.
@@ -296,7 +460,7 @@ die(var_dump($postData));
 				$searchRecibo = New ReciboSearch($idContribuyente);
 				$model = New DepositoForm();
 
-				$caption = 'Pre-View';
+				$caption = 'Vista previa. Confirmar crear recibo';
 				$postEnviado = $_SESSION['postEnviado'];
 				self::actionAnularSession(['postEnviado']);
 
@@ -306,6 +470,18 @@ die(var_dump($postData));
 
 				//$model->totalSeleccionado = self::actionTotalSeleccionado($dataProvider);
 				$model->totalSeleccionado = $postEnviado['total'];
+				$model->monto = $postEnviado['total'];
+				$model->id_contribuyente = $idContribuyente;
+				$model->fecha = date('Y-m-d');
+
+				$numero = New NumeroControlSearch();
+				$model->nro_control = $numero->generarNumeroControl();
+				$model->estatus = 0;
+				$model->observacion = '';
+				$model->proceso = '';
+				$model->usuario = $model->getUsuario();
+				$model->ultima_impresion = '0000-00-00 00:00:00';
+
 				return $this->render('/recibo/pre-view-recibo-create-form', [
 													'dataProvider' => $dataProvider,
 													'model' => $model,
@@ -615,6 +791,52 @@ die(var_dump($postData));
 
 		}
 
+
+
+
+		/***/
+		private function actionView($model)
+		{
+
+			$searchRecibo = New ReciboSearch($model->id_contribuyente);
+
+			$deposito = DepositoForm::findDeposito($model->recibo);
+
+			$dataProvider = $searchRecibo->getDataProviderDepositoPlanilla($model->recibo);
+
+			$caption = Yii::t('frontend', 'Recibo creado Nro. ' . $deposito->recibo);
+			return $this->render('/recibo/_view', [
+									'model' => $deposito,
+									'dataProvider' => $dataProvider,
+									'caption' => $caption,
+									'codigo' => 100,
+					]);
+
+		}
+
+
+
+
+		/***/
+		public function actionRequestPreView()
+		{
+			$request = Yii::$app->request;
+			$postData = $request->post();
+
+			if ( isset($postData['btn-quit']) ) {
+				if ( $postData['btn-quit'] == 1 ) {
+					$this->redirect(['quit']);
+				}
+			} elseif ( isset($postData['btn-printer']) ) {
+				if ( $postData['btn-printer'] == 2 ) {
+die('imprimier');
+				}
+			} elseif ( isset($postData['btn-create-other']) ) {
+				if ( $postData['btn-create-other'] == 3 ) {
+					$this->redirect(['index']);
+				}
+			}
+		}
 
 
 
