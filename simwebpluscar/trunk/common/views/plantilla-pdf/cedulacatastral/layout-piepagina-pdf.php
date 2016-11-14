@@ -88,20 +88,12 @@
 					<?=Html::encode($nombreCargo); ?>
 				</td>
 			</tr>
-			<tr>
-				<td class="label-pie-pagina-3" colspan="10" style="text-align: justify;color: red;background-color: #FFE061; font-size: 80%;">
-					<div class="nota-pie-1" >
-						Con la aceptación de la información contenida en la presente Declaración de Ingresos Brutos, la
-						Administración Tributaria, de conformida con el artículo 171 y el numeral 3 del artículo 172 del
-						Código Orgánico Tributario publicado en Gaceta Oficial Extraordinaria N° 6152 de fecha 28/11/2014,
-						emite, en este mismo acto, el Certificado de Declaración y el Boletín de Notificación, mediante el
-						cual se le notifica formalmente, los deberes formales y materiales que origina tal Declaración, así
-						como los recursos que frente al acto administrativo notificado tiene derecho a ejercer.
-					</div>
-				</td>
-			</tr>
+			
 			<tr>
 				<td class="label-pie-pagina-4" colspan="10" style="text-align: center;font-size: 55%;font-family: Verdana, Arial, Helvetica, sans-serif;">
+					<div class="row" style="color: red;">
+						LA IMPRESION DEBE SER LEGIBLE Y DE ALTA CALIDAD.
+					</div>
 					<div class="row" style="color: red;">
 						LA AUTENTICIDAD Y VIGENCIA DE ESTA NOTIFICACION PUEDE VERIFICARSE A TRAVES DEL CODIGO QR
 						QUE SE ENCUENTRA EN LA PARTE INFERIOR DERECHA.

@@ -60,36 +60,24 @@
 	$sumaImpuesto = 0;
 ?>
 
-<table repeat_header="1" cellpadding="1" cellspacing="1" width="100%" border="0">
-	<caption>CODIGO CATASTRAL</caption>
+<table repeat_header="1" cellpadding="1" cellspacing="1" width="100%" border="0" margin-top:"50">
+	<caption>ASPECTOS VALORATIVOS DEL INMUEBLE</caption>
     
 	  
 <!-- Datos especificos de la declaracion -->
 	<tr>
-		<th class="label-declaracion" colspan="1"><?=Html::encode('EDO'); ?></th>
-		<th class="label-declaracion" colspan="3"><?=Html::encode('MUN'); ?></th>
-		<th class="label-declaracion" colspan="1"><?=Html::encode('PARR'); ?></th>
-		<th class="label-declaracion" colspan="1"><?=Html::encode('AMBITO'); ?></th>
-		<th class="label-declaracion" colspan="2"><?=Html::encode('SECTOR'); ?></th>
-		<th class="label-declaracion" colspan="1"><?=Html::encode('MANZ'); ?></th>
-		<th class="label-declaracion" colspan="1"><?=Html::encode('PARCELA'); ?></th>
-		<th class="label-declaracion" colspan="1"><?=Html::encode('SUB-P'); ?></th>
-		<th class="label-declaracion" colspan="1"><?=Html::encode('NIVEL'); ?></th>
-		<th class="label-declaracion" colspan="1"><?=Html::encode('UNIDAD'); ?></th>
+		<th class="label-declaracion" colspan="2.5"><?=Html::encode('VALOR TERRENO (mts2)'); ?></th>
+		<th class="label-declaracion" colspan="2.5"><?=Html::encode('VALOR CONSTRUCCION (mts2)'); ?></th>
+		<th class="label-declaracion" colspan="2"><?=Html::encode('VALOR CATASTRAL'); ?></th>
+		
 	</tr>  
 
 	
 		<tr class="cuerpo">
-			<td class="info-declaracion" colspan="1"><?=Html::encode($resumen['estado_catastro']); ?></td>
-			<td class="info-declaracion-x" colspan="3"><?=Html::encode($resumen['municipio_catastro']); ?></td>
-			<td class="info-declaracion" colspan="1"><?=Html::encode($resumen['parroquia_catastro']); ?></td>
-			<td class="info-declaracion" colspan="1"><?=Html::encode($resumen['ambito_catastro']); ?></td>
-			<td class="info-declaracion" colspan="2"><?=Html::encode($resumen['sector_catastro']); ?></td>
-			<td class="info-declaracion-x" colspan="1"><?=Html::encode($resumen['manzana_catastro']); ?></td>
-			<td class="info-declaracion" colspan="1"><?=Html::encode($resumen['parcela_catastro']); ?></td>
-			<td class="info-declaracion" colspan="1"><?=Html::encode($resumen['subparcela_catastro']); ?></td>
-			<td class="info-declaracion" colspan="1"><?=Html::encode($resumen['nivel_catastro']); ?></td>
-			<td class="info-declaracion" colspan="1"><?=Html::encode($resumen['unidad_catastro']); ?></td>
+			<td class="info-declaracion" colspan="2.5"><?=Html::encode($resumen['parroquia_catastro']); ?></td>
+			<td class="info-declaracion" colspan="2.5"><?=Html::encode($resumen['sector_catastro']); ?></td>
+			<td class="info-declaracion" colspan="2"><?=Html::encode($resumen['id_impuesto']); ?></td>
+			
 			
 			
 		</tr>  
