@@ -494,16 +494,6 @@
 
 
 
-		public function actionPrueba()
-		{
-			$request = Yii::$app->request;
-			$postData = $request->post();
-
-die(var_dump($postData));
-
-		}
-
-
 
 		/***/
 		private function actionAjustarListaPlanillaSeleccionada($postEnviado)
@@ -589,7 +579,12 @@ die(var_dump($postData));
 
 
 
-		/***/
+		/**
+		 * Metodo que gestiona y establece q que metodo debe invocar segun el request
+		 * enviado desde la vista que muestra las deudas. Una vez recibido la respuesta
+		 * renderiza la vista resultante.
+		 * @return view|null.
+		 */
 		public function actionBuscarDeudaDetalle()
 		{
 			$request = Yii::$app->request;
@@ -659,7 +654,15 @@ die(var_dump($postData));
 
 
 
-		/***/
+		/**
+		 * Metodo que renderiza una vista con la contabilizacion de la deuda
+		 * segun el impuesto separando la deuda en dos tipos:
+		 * - Deudas de periodos: periodos mayores a cero (trimestre>0).
+		 * - Deudas de tasas: periodos iguales a cero (trimestre=0).
+		 * @param  ReciboSearch $searchRecibo clase de la entidad "ReciboSearch".
+		 * @param  integer $impuesto identificador del impuesto.
+		 * @return view retorna una vista.
+		 */
 		public function actionGetViewDeudaEnPeriodo($searchRecibo, $impuesto)
 		{
 			if ( isset($_SESSION['begin']) ) {
@@ -677,7 +680,14 @@ die(var_dump($postData));
 
 
 
-		/***/
+		/**
+		 * Metodo que renderiza una vista con la informacion de la tasas y
+		 * sus respectivas deudas. Se muestra la descripcin de la tasa y su
+		 * respectiva deuda.
+		 * @param  ReciboSearch $searchRecibo clase de la entidad "ReciboSearch".
+		 * @param  integer $impuesto identificador del impuesto.
+		 * @return view retorna una vista.
+		 */
 		public function actionGetViewDeudaTasa($searchRecibo, $impuesto)
 		{
 			if ( isset($_SESSION['begin']) ) {
@@ -704,7 +714,13 @@ die(var_dump($postData));
 
 
 
-		/***/
+		/**
+		 * Metodo que renderiza una vista con la informacion de la deuda resumida.
+		 * En realidad mustra la descripcion del impuesto con la deuda que se
+		 * contabilizao
+		 * @param  ReciboSearch $searchRecibo clase de la entidad "ReciboSearch".
+		 * @return view retorna una vista.
+		 */
 		public function actionGetViewDeudaActividadEconomica($searchRecibo)
 		{
 			if ( isset($_SESSION['begin']) ) {
@@ -733,7 +749,13 @@ die(var_dump($postData));
 
 
 
-		/***/
+		/**
+		 * Metodo que renderiza una vista donde se muestran los objetos imponibles
+		 * con sus respectivas deudas. Es una lista de objetos y sus deudas.
+		 * @param  ReciboSearch $searchRecibo clase de la entidad "ReciboSearch".
+		 * @param  integer $impuesto identificador del impuesto.
+		 * @return view retorna una vista.
+		 */
 		public function actionGetViewDeudaPorObjeto($searchRecibo, $impuesto)
 		{
 			if ( isset($_SESSION['begin']) ) {
@@ -763,7 +785,17 @@ die(var_dump($postData));
 
 
 
-		/***/
+		/**
+		 * Metodo que renderiza la deuda de un objeto especifico, mostrando
+		 * lainformacion del objeto, y de sus planillas con sus respectivos
+		 * totales de la deuda.
+		 * @param  ReciboSearch $searchRecibo clase de la entidad "ReciboSearch".
+		 * @param  integer $impuesto identificador del impuesto.
+		 * @param  integer $idImpuesto identificador del objeto.
+		 * @param  string $objetoDescripcion informacion de la direccion o
+		 * de la placa.
+		 * @return view retorna una vista.
+		 */
 		public function actionGetViewDeudaPorObjetoEspecifico($searchRecibo, $impuesto, $idImpuesto, $objetoDescripcion)
 		{
 			if ( isset($_SESSION['begin']) ) {
@@ -794,7 +826,15 @@ die(var_dump($postData));
 
 
 
-		/***/
+		/**
+		 * Metodo que renderiza la vista del recibo creado.
+		 * @param  DepositoForm $model modelo de la clase "DepositoForm",
+		 * es el resultado de haber gusrdado el recibo, solo contiene la data
+		 * de "depositos". Esta vista contiene las opciones para crear otro,
+		 * salida e imprimir el recibo recientemente creado.
+		 * @return view retorna una vista con la informacion del recibo creado
+		 * y sus planillas contenidas.
+		 */
 		private function actionView($model)
 		{
 
@@ -817,7 +857,14 @@ die(var_dump($postData));
 
 
 
-		/***/
+		/**
+		 * Metodo que gestina las peticiones desde la vista de recibo creado.
+		 * Se gestiona:
+		 * - La Salida.
+		 * - Crear otro.
+		 * - Imprimir el recibo.
+		 * @return
+		 */
 		public function actionRequestReciboCreado()
 		{
 			$request = Yii::$app->request;
@@ -829,7 +876,7 @@ die(var_dump($postData));
 				}
 			} elseif ( isset($postData['btn-printer']) ) {
 				if ( $postData['btn-printer'] == 2 ) {
-die('imprimier');
+
 				}
 			} elseif ( isset($postData['btn-create-other']) ) {
 				if ( $postData['btn-create-other'] == 3 ) {
