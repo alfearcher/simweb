@@ -77,6 +77,8 @@ return [
 		'mesdias' => [
 			'class' => 'common\classes\MesDias'
 		],
-
+		'identidad' => [
+			'class' => 'common\classes\Identidad'
+		],
 	],
 ];
