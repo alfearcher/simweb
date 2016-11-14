@@ -120,28 +120,5 @@
 	    }
 
 
-
-	    /***/
-	    public function getUsuario()
-	    {
-	    	$user = '';
-	    	if ( isset(Yii::$app->user->identity->username) ) {
-				$user = Yii::$app->user->identity->username;
-			} elseif ( isset(Yii::$app->user->identity->login) ) {
-				$user = Yii::$app->user->identity->login;
-			}
-
-			return $user;
-	    }
-
-
-
-	    /***/
-	    public function findDeposito($recibo)
-	    {
-	    	return Deposito::findOne($recibo);
-	    }
-
-
 	}
 ?>

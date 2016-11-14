@@ -86,7 +86,10 @@
 		}
 
 
-		/***/
+		/**
+		 * planillas ya seleccionadas para que no aparezcan en el array data provider
+		 * @param array $planillas arreglo de planillas
+		 */
 		public function setPlanillas($planillas)
 		{
 			$this->_planillas = $planillas;
