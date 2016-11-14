@@ -818,7 +818,7 @@ die(var_dump($postData));
 
 
 		/***/
-		public function actionRequestPreView()
+		public function actionRequestReciboCreado()
 		{
 			$request = Yii::$app->request;
 			$postData = $request->post();
