@@ -342,6 +342,7 @@
 				if ( $model->id_contribuyente == $_SESSION['idContribuyente'] ) {
 					$tabla = $model->tableName();
 
+					$model->proceso = date('Y-m-d H:i:s');
 					if ( $this->_conexion->guardarRegistro($this->_conn, $tabla, $model->attributes) ) {
 						$recibo = $this->_conn->getLastInsertID();
 					}
@@ -402,7 +403,6 @@
 						$modelDepPlanilla->codigo = 0;
 						$modelDepPlanilla->estatus = 0;
 
-// die(var_dump($modelDepPlanilla->attributes));
 						$result = $this->_conexion->guardarRegistro($this->_conn, $tabla, $modelDepPlanilla->attributes);
 						if ( !$result ) {
 							break;
