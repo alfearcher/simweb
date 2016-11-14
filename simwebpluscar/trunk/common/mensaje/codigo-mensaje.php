@@ -71,7 +71,7 @@ return [
 	'996' => [Yii::t('backend', 'This Stickers lot has already been asigned'), 'danger', 'fa fa-exclamation-triangle'],
 	'997' => [Yii::t('backend', 'This Car already has a sticker asigned'), 'danger', 'fa fa-exclamation-triangle'],
 	'998' => [Yii::t('backend', 'The year you selected is not available'), 'danger', 'fa fa-exclamation-triangle'],
-	'999' => [Yii::t('backend', 'At least 1 officer still have a sticker lot asigned'), 'danger', 'fa fa-exclamation-triangle'],
+	'899' => [Yii::t('backend', 'At least 1 officer still have a sticker lot asigned'), 'danger', 'fa fa-exclamation-triangle'],
 
 	'404' => [Yii::t('backend', 'The requested page does not exist.'), 'danger', 'fa fa-times'],
 	'100' => [Yii::t('backend', 'Register saved'), 'success', 'fa fa-check-circle-o'],
@@ -83,7 +83,7 @@ return [
 	'401' => [Yii::t('backend', 'Security Answers not Created'), 'warning', 'fa fa-exclamation-triangle'],
 	'402' => [Yii::t('backend', 'We have sent you an email with your user and Password'), 'success', 'fa fa-exclamation-triangle'],
 	'403' => [Yii::t('backend', 'You already have an open request for this '), 'success', 'fa fa-exclamation-triangle'],
-
+	
 	'501' => [Yii::t('frontend', 'No presenta deudas pendientes'), 'success', 'fa fa-info-circle'],
 
 ]
