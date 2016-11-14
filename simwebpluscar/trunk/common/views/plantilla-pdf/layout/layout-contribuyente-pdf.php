@@ -21,13 +21,13 @@
  */
 
  /**
- *  @file anexo-ramo-form.php
+ *  @file layout-contribuyente-pdf.php
  *
  *  @author Jose Rafael Perez Teran
  *
- *  @date 27-08-2016
+ *  @date 27-10-2016
  *
- *  @view anexo-ramo-form.php
+ *  @view layout-contribuyente-pdf.php
  *
  *
  *  @property
@@ -41,7 +41,7 @@
  */
 
  	//use yii\web\Response;
- 	use kartik\icons\Icon;
+ 	//use kartik\icons\Icon;
 	use yii\helpers\Html;
 	use yii\helpers\Url;
 	use yii\widgets\ActiveForm;
@@ -90,10 +90,10 @@
 
 <?php if( $showDireccion ) {?>
 	<tr>
-		<th class="label-contribuyente" colspan="10"><?=Html::encode('DIRECCION'); ?></td>
+		<th class="label-direccion" colspan="10"><?=Html::encode('DIRECCION FISCAL'); ?></td>
 	</tr>
 	<tr class="cuerpo">
-		<td class="info-contribuyente" colspan="10"><?=Html::encode($model->domicilio_fiscal); ?></td>
+		<td class="info-direccion" colspan="10"><?=Html::encode($model->domicilio_fiscal); ?></td>
 	</tr>
 <?php } ?>
 
@@ -116,7 +116,15 @@
 <style type="text/css">
 
 	.info-contribuyente {
-		border-bottom: solid 2px #000;
+		/*border-bottom: solid 2px #000;*/
+	}
+
+	.label-direccion,
+	.label-representante {
+		border-top: solid 2px #000;
+		text-align: center;
+		font-family: Arial, Helvetica, sans-serif;
+		font-size: 90%;
 	}
 
 	.label-contribuyente,
@@ -128,7 +136,8 @@
 	}
 
 	.info-contribuyente,
-	.info-representante {
+	.info-representante,
+	.info-direccion {
 		text-align: center;
 		font-size: 90%;
 	}
