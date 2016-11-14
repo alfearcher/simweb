@@ -62,7 +62,7 @@
  		$form = ActiveForm::begin([
  			'id' => 'id-recibo-create-creado',
  			'method' => 'post',
- 			'action'=> Url::to(['request-pre-view']),
+ 			'action'=> Url::to(['request-recibo-creado']),
  			'enableClientValidation' => false,
  			'enableAjaxValidation' => false,
  			'enableClientScript' => false,
@@ -219,7 +219,7 @@
 					</div>
 <!-- Fin de lo seleccionado -->
 
-					<div class="row" style="padding-top: 15px;">
+					<div class="row" style="padding-top: 20px;">
 						<div class="col-sm-3" style="width: 20%;padding-left: 30px;">
 							<div class="form-group">
 								<?= Html::submitButton(Yii::t('frontend', 'Crear otro'),
@@ -234,7 +234,7 @@
 							</div>
 						</div>
 
-						<div class="col-sm-3" style="width: 20%;padding-left: 10px;">
+						<div class="col-sm-3" style="width: 20%;padding-left: 30px;">
 							<div class="form-group">
 								<?= Html::submitButton(Yii::t('frontend', 'Imprimir Recibo'),
 																		  [
@@ -249,7 +249,7 @@
 						</div>
 
 
-						<div class="col-sm-3" style="width: 20%;">
+						<div class="col-sm-3" style="width: 20%;padding-left: 30px;">
 							<div class="form-group">
 								<?= Html::submitButton(Yii::t('frontend', 'Quit'),
 																		  [
