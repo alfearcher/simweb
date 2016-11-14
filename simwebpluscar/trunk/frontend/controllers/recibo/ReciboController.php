@@ -59,11 +59,13 @@
 	use backend\models\impuesto\Impuesto;
 	use common\models\planilla\PlanillaSearch;
 	use backend\models\recibo\deposito\DepositoForm;
+	use backend\models\recibo\deposito\Deposito;
 	use backend\models\recibo\depositoplanilla\DepositoPlanillaForm;
 	use common\models\numerocontrol\NumeroControlSearch;
 	use common\models\deuda\DeudaSearch;
 	use common\conexion\ConexionController;
 	use common\models\contribuyente\ContribuyenteBase;
+	use common\controllers\pdf\deposito\DepositoController;
 
 
 
@@ -479,7 +481,7 @@
 				$model->estatus = 0;
 				$model->observacion = '';
 				$model->proceso = '';
-				$model->usuario = $model->getUsuario();
+				$model->usuario = Yii::$app->identidad->getUsuario();
 				$model->ultima_impresion = '0000-00-00 00:00:00';
 
 				return $this->render('/recibo/pre-view-recibo-create-form', [
@@ -840,18 +842,25 @@
 
 			$searchRecibo = New ReciboSearch($model->id_contribuyente);
 
-			$deposito = DepositoForm::findDeposito($model->recibo);
+			$deposito = Deposito::findOne($model->recibo);
 
-			$dataProvider = $searchRecibo->getDataProviderDepositoPlanilla($model->recibo);
+			if ( count($deposito) > 0 ) {
+				$dataProvider = $searchRecibo->getDataProviderDepositoPlanilla($model->recibo);
 
-			$caption = Yii::t('frontend', 'Recibo creado Nro. ' . $deposito->recibo);
-			return $this->render('/recibo/_view', [
-									'model' => $deposito,
-									'dataProvider' => $dataProvider,
-									'caption' => $caption,
-									'codigo' => 100,
-					]);
+				$caption = Yii::t('frontend', 'Recibo creado Nro. ' . $deposito->recibo);
+				$_SESSION['recibo'] = $model->recibo;
+				$_SESSION['nro_control'] = $model->nro_control;
 
+				return $this->render('/recibo/_view', [
+										'model' => $deposito,
+										'dataProvider' => $dataProvider,
+										'caption' => $caption,
+										'codigo' => 100,
+						]);
+			} else {
+				// No se encontro el recibo.
+				$this->redirect(['error-operacion', 'cod' => 410]);
+			}
 		}
 
 
@@ -862,28 +871,62 @@
 		 * Se gestiona:
 		 * - La Salida.
 		 * - Crear otro.
-		 * - Imprimir el recibo.
+		 * - Generar el recibo.
 		 * @return
 		 */
 		public function actionRequestReciboCreado()
 		{
 			$request = Yii::$app->request;
-			$postData = $request->post();
 
-			if ( isset($postData['btn-quit']) ) {
-				if ( $postData['btn-quit'] == 1 ) {
-					$this->redirect(['quit']);
-				}
-			} elseif ( isset($postData['btn-printer']) ) {
-				if ( $postData['btn-printer'] == 2 ) {
+			if ( $request->isPost ) {
+				$postData = $request->post();
 
+				$model = New Deposito();
+				$formName = $model->formName();
+
+				$datos = $postData[$formName];
+
+				if ( isset($postData['btn-quit']) ) {
+					if ( $postData['btn-quit'] == 1 ) {
+						$this->redirect(['quit']);
+					}
+				} elseif ( isset($postData['btn-create-other']) ) {
+					if ( $postData['btn-create-other'] == 3 ) {
+						$this->redirect(['index']);
+					}
 				}
-			} elseif ( isset($postData['btn-create-other']) ) {
-				if ( $postData['btn-create-other'] == 3 ) {
-					$this->redirect(['index']);
+			} elseif ( $request->isGet ) {
+				$getData = $request->get();
+				if ( $getData['nro'] == $_SESSION['nro_control'] ) {
+
+					$this->redirect(['generar-recibo']);
 				}
 			}
 		}
+
+
+
+
+		/**
+		 * Metodo que renderiza la vista del pdf.
+		 * @return view retorna un pdf.
+		 */
+		public function actionGenerarRecibo()
+		{
+			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['recibo']) && isset($_SESSION['nro_control']) ) {
+
+				// Controlador que gestiona la generacion del pdf.
+				$depositoPdf = New DepositoController((int)$_SESSION['recibo'],
+													  (int)$_SESSION['idContribuyente'],
+													  (int)$_SESSION['nro_control']
+													);
+				return $depositoPdf->actionGenerarReciboPdf();
+
+			} else {
+				// Session no valida
+			}
+		}
+
 
 
 
