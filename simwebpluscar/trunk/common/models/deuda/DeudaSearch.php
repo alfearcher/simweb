@@ -262,7 +262,7 @@
 
 				$deuda = $findModel->select([
 
-										
+
 										'D.id_impuesto',
 										'D.impuesto',
 										'I.descripcion',
@@ -1083,7 +1083,7 @@
 
 		/**
 		 * Metodo que retorna el detalle de una deuda segun el numero de planilla que
-		 * la contiene. El numero de planilla es utilizado para labusqueda general.
+		 * la contiene. El numero de planilla es utilizado para la busqueda general.
 		 * @param  integer $planilla numero de planilla generado em la liquidacion.
 		 * @return array retorna una arreglo que contiene todos los atributos de las
 		 * entidades pagos y pagos-detalle.
