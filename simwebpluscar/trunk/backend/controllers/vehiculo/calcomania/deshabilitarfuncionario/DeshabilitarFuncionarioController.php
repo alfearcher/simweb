@@ -200,7 +200,7 @@ class DeshabilitarFuncionarioController extends Controller
 
                     if($todoBien == true){
 
-                       return MensajeController::actionMensaje(999);
+                       return MensajeController::actionMensaje(899);
                     }else{
 
 

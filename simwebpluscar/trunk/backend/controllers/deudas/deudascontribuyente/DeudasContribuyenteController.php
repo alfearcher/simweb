@@ -356,8 +356,15 @@ class DeudasContribuyenteController extends Controller
 
       } elseif ( $jsonObj->{'impuesto'} == 2 ) {
        
-          // Se buscan todas la planilla que cumplan con esta condicion
-         $html = self::actionGetViewDeudaEspecifica($jsonObj->{'impuesto'}, $jsonObj->{'id_impuesto'});
+           if($jsonObj->{'tipo'} == 'periodo>0'){ 
+        //die('es 9');
+        $html = self::actionGetViewDeudaEspecifica($jsonObj->{'impuesto'}, $jsonObj->{'id_impuesto'}, '>');
+
+        }elseif ($jsonObj->{'tipo'} == 'periodo=0'){ 
+
+          $html = self::actionGetViewDeudaPlanilla($jsonObj->{'impuesto'}, 0, '=');
+
+        }
 
       } elseif ( $jsonObj->{'impuesto'} == 12 ) {
 
@@ -378,7 +385,7 @@ class DeudasContribuyenteController extends Controller
             if($jsonObj->{'tipo'} == 'periodo>0'){
               //die('mayor');
 
-                $html = self::actionGetViewDeudaEspecifica($jsonObj->{'impuesto'}, $jsonObj->{'id_impuesto'}, '>');
+                $html = self::actionGetViewDeudaEspecifica($jsonObj->{'impuesto'}, 0, '>');
             
             }elseif($jsonObj->{'tipo'} == 'periodo=0'){
               die('igual');
@@ -407,7 +414,7 @@ class DeudasContribuyenteController extends Controller
       $caption = Yii::t('frontend', 'Deuda Especifica por Objeto');
     
       $provider = $model->getDetalleDeudaObjetoPorPlanilla($impuesto, $idImpuesto, $tipo);
-   // die(var_dump($provider));
+   die(var_dump($provider));
           foreach($provider as $key=>$value){
 
              
@@ -456,7 +463,7 @@ class DeudasContribuyenteController extends Controller
     public function actionGetViewDeudaPlanilla($impuesto, $idImpuesto, $tipo)
     {
 
-           $monto = 0;
+      $monto = 0;
       $recargo = 0;
       $interes = 0;
       $descuento = 0;
@@ -473,22 +480,23 @@ class DeudasContribuyenteController extends Controller
           foreach($provider as $key=>$value){
 
              
-            $monto = ($value['monto'] + $value['recargo'] + $value['interes']) - ($value['descuento'] - $value['monto_reconocimiento']);
+            $monto = ($value['tmonto'] + $value['trecargo'] + $value['tinteres']) - ($value['tdescuento'] - $value['tmonto_reconocimiento']);
       
 
               $array[] = [
 
-              'planilla' => $value['pagos']['planilla'],
-              'ano_impositivo' => $value['ano_impositivo'],
-              'trimestre' => $value['trimestre'],
-              'monto' => $value['monto'],
-              'descuento' => $value['descuento'],
-              'recargo' => $value['recargo'],
+              'planilla' => $value['planilla'],
+              'impuesto' => $value['descripcion'],
+             // 'ano_impositivo' => $value['ano_impositivo'],
+            //  'trimestre' => $value['trimestre'],
+              'monto' => $value['tmonto'],
+              'descuento' => $value['tdescuento'],
+              'recargo' => $value['trecargo'],
 
               //'id_impuesto' => $value['id_impuesto'],
               //'impuesto' => $value['impuesto'],
            // 'descripcion' => $value['descripcion'],
-             'monto_reconocimiento' => $value['monto_reconocimiento'],
+             'monto_reconocimiento' => $value['tmonto_reconocimiento'],
               'monto_total' => $monto,
               ]; 
 
