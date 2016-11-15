@@ -406,23 +406,37 @@ class DeudasContribuyenteController extends Controller
       $interes = 0;
       $descuento = 0;
       $montoR = 0; //monto reconocimiento
-
+      $buscarDatos = 0;
       $idContribuyente = $_SESSION['idContribuyente'];
         //die('hay uno seteado');
 
       $model = new DeudaSearch($idContribuyente);
       $caption = Yii::t('frontend', 'Deuda Especifica por Objeto');
-    
+      $buscarDatos = $model->getDeudaPorObjetoEspecifico($impuesto, $idImpuesto);
+      
+      if ($impuesto == 3){
+        $descripcion = $buscarDatos[0]['placa'];
+      }elseif($impuesto == 2 ){
+        $descripcion = $buscarDatos[0]['direccion'];
+      }elseif($impuesto == 4){
+        $descripcion = $buscarDatos[0]['observacion'];
+      }elseif($impuesto == 12){
+        $descripcion = $buscarDatos[0]['direccion'];
+      }elseif($impuesto == 1){
+        $descripcion = 'ACTIVIDAD ECONOMICA';
+      }
+     // die(var_dump($buscarDatos));
       $provider = $model->getDetalleDeudaObjetoPorPlanilla($impuesto, $idImpuesto, $tipo);
-   die(var_dump($provider));
+  //die(var_dump($provider));
           foreach($provider as $key=>$value){
 
              
             $monto = ($value['tmonto'] + $value['trecargo'] + $value['tinteres']) - ($value['tdescuento'] - $value['tmonto_reconocimiento']);
-      
+            $descripcion;
 
               $array[] = [
-
+              'id_impuesto' => $value['id_impuesto'],
+              'descripcion' => $descripcion,
               'planilla' => $value['planilla'],
              // 'ano_impositivo' => $value['ano_impositivo'],
              // 'trimestre' => $value['trimestre'],
@@ -435,6 +449,7 @@ class DeudasContribuyenteController extends Controller
            // 'descripcion' => $value['descripcion'],
              'monto_reconocimiento' => $value['tmonto_reconocimiento'],
               'monto_total' => $monto,
+
               ]; 
 
           }
@@ -454,6 +469,7 @@ class DeudasContribuyenteController extends Controller
 
               return $this->render('/deudas/deudascontribuyente/view-deuda-especifica', [
                 'dataProvider' => $dataProvider,
+
           
 
               ]);
