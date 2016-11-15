@@ -62,6 +62,17 @@ $this->title = Yii::t('frontend', 'Detalle de la Deuda');
                      //     return $data['impuesto'];
                      // },
                      // ],
+                     // 
+                    [
+                     'label' => 'Id. Objeto',
+                     'value' => function($data){
+                        
+                       return $data['id_impuesto'];
+
+                            
+
+                     },
+                     ],
 
                     [
                      'label' => 'Planilla',
@@ -74,41 +85,52 @@ $this->title = Yii::t('frontend', 'Detalle de la Deuda');
                      },
                      ],
 
+                          [
+                     'label' => 'Informacion del Objeto',
+                     'value' => function($data){
+                        
+                       return $data['descripcion'];
+
+                            
+
+                     },
+                     ],
+
 
               
 
                     [
                     'label' => 'Monto',
                     'value' => function($data){
-                        return $data['monto'];
+                        return $data['monto'].' Bs.f';
                     },
                     ],
 
                     [
                     'label' => 'Descuento',
                     'value' => function($data){
-                        return $data['descuento'];
+                        return $data['descuento'].' Bs.f';
                     },
                     ],
 
                     [
                     'label' => 'Recargo',
                     'value' => function($data){
-                        return $data['recargo'];
+                        return $data['recargo'].' Bs.f';
                     },
                     ],
 
                     [
                     'label' => 'Monto Reconocimiento',
                     'value' => function($data){
-                        return $data['monto_reconocimiento'];
+                        return $data['monto_reconocimiento'].' Bs.f';
                     },
                     ],
 
                        [
                     'label' => 'Monto Total',
                     'value' => function($data){
-                        return $data['monto_total'];
+                        return $data['monto_total'].' Bs.f';
                     },
                     ],
 

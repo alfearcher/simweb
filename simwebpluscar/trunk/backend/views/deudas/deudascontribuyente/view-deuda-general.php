@@ -72,7 +72,7 @@ $this->title = Yii::t('frontend', 'Deuda General');
                     [
                     'label' => 'Monto',
                     'value' => function($data){
-                        return $data['monto'];
+                        return $data['monto'].' Bs.f';
                     },
                     ],
 
