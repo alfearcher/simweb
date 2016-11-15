@@ -548,7 +548,7 @@
 
 			} elseif ( $impuesto == 12 ) {
 
-				$deuda = self::deudaPorAseoEspecifica($idImpuesto);
+				$deuda = self::deudaPorAseoEspecifico($idImpuesto);
 
 			}
 
@@ -812,6 +812,8 @@
 		/***/
 		public function getDetalleDeudaPorObjeto($impuesto, $idImpuesto)
 		{
+			//die(var_dump($impuesto));
+			//die(var_dump($idImpuesto));
 			return self::detalleDeudaPorObjeto($impuesto, $idImpuesto);
 		}
 
@@ -836,7 +838,7 @@
 							   	])
 							   ->asArray()
 							   ->all();
-
+							  
 			return $deuda;
 		}
 
@@ -939,6 +941,8 @@
 		}
 
 
+	
+
 
 		/**
 		 * Mtodo que retorna la deuda agrupada por planilla segun un objetoe impuesto.
@@ -954,6 +958,7 @@
 			}
 			return null;
 		}
+
 
 
 
@@ -974,6 +979,7 @@
 			if ( $idImpuesto == 0 && $impuesto == 1 && $periodo == '>' ) {
 
 				$deuda = $findModel->select([
+
 										'P.planilla',
 										'P.id_contribuyente',
 										'P.id_pago',
@@ -984,6 +990,7 @@
 										'sum(D.descuento) as tdescuento',
 										'sum(D.monto_reconocimiento) as tmonto_reconocimiento',
 										'D.descripcion',
+										'D.id_impuesto',
 										'D.impuesto',
 										'I.descripcion as descripcion_impuesto',
 										])
@@ -1015,6 +1022,7 @@
 										'sum(D.descuento) as tdescuento',
 										'sum(D.monto_reconocimiento) as tmonto_reconocimiento',
 										'D.descripcion',
+										'D.id_impuesto',
 										'D.impuesto',
 										'I.descripcion as descripcion_impuesto',
 										])
