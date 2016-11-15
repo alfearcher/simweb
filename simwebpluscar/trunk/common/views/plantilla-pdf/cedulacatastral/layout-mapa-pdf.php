@@ -58,7 +58,7 @@
 <?php
     
 	$sumaImpuesto = $resumen['pagoEstimada'] + $resumen['pagoDefinitiva'] + $resumen['pagoAbono'] + $resumen['pagoRetencion'] + $resumen['pagoIndustria'];
-	$subTotal = 0;
+	$subTotal = 0; 
 ?>
 
 <!-- Especificaciones de los periodos a pagar -->

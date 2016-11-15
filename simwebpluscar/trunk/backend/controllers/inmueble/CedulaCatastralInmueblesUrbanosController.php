@@ -213,7 +213,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
             // Nombre del archivo.
             $nombrePDF = 'CC-' . $_SESSION['idContribuyente'] . '-' . $_SESSION['datos']['id_impuesto'];
             $nombre = $nombrePDF;
-            $nombrePDF .= '.pdf';
+            $nombrePDF .= '.pdf';    
 
             //$html = $htmlEncabezado . $htmlContribuyente . $htmlDeclaracion . $htmlCobro . $htmlPiePagina;
 

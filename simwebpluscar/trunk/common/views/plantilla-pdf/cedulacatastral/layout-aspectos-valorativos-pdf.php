@@ -71,7 +71,7 @@
 		<th class="label-declaracion" colspan="2"><?=Html::encode('VALOR CATASTRAL'); ?></th>
 		
 	</tr>  
-
+  
 	
 		<tr class="cuerpo">
 			<td class="info-declaracion" colspan="2.5"><?=Html::encode($resumen['parroquia_catastro']); ?></td>
