@@ -106,15 +106,15 @@
 		        		],
 
 
-		        		// ['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . '&nbsp; Prueba de Mpdf',
-		        		// 	'items' => [
-		        		// 				['label' => 'Prueba', 'url' => ['/mpdf/prueba-mpdf/pdf']],
-		        		// 				['label' => 'Consulta', 'url' => ['/mpdf/prueba-mpdf/liquidar']],
-		        		// 				['label' => 'deuda', 'url' => ['/mpdf/prueba-mpdf/deuda']],
-		        		// 				['label' => 'pago', 'url' => ['/mpdf/prueba-mpdf/pago']],
-		        		// 				// ['label' => 'Solicitar Anulación de Recibo', 'url' => '#'],
-		        		// 	]
-		        		// ],
+		        		['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . '&nbsp; Prueba de Mpdf',
+		        			'items' => [
+		        						['label' => 'Prueba', 'url' => ['/mpdf/prueba-mpdf/pdf']],
+		        						['label' => 'Consulta', 'url' => ['/mpdf/prueba-mpdf/liquidar']],
+		        						['label' => 'deuda', 'url' => ['/mpdf/prueba-mpdf/deuda']],
+		        						['label' => 'pago', 'url' => ['/mpdf/prueba-mpdf/pago']],
+		        						// ['label' => 'Solicitar Anulación de Recibo', 'url' => '#'],
+		        			]
+		        		],
 
 
 
@@ -198,7 +198,7 @@
 		        		['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . '&nbsp; Recibo',
 		        			'items' => [
 		        						['label' => 'Crear Recibo de Pago', 'url' => ['recibo/recibo/index']],
-		        						['label' => 'Consulta de Recibos', 'url' => '#'],
+		        						['label' => 'Consulta de Recibos', 'url' => ['recibo/recibo-consulta/index']],
 		        						['label' => 'Solicitar Anulación de Recibo', 'url' => '#'],
 		        			]
 		        		],
