@@ -21,13 +21,13 @@
  */
 
  /**
- *  @file Deposito.php
+ *  @file EstatusDeposito.php
  *
  *  @author Jose Rafael Perez Teran
  *
  *  @date 11-09-2016
  *
- *  @class Deposito
+ *  @class EstatusDeposito
  *  @brief Clase Modelo
  *
  *
@@ -40,21 +40,18 @@
  *
  */
 
-	namespace backend\models\recibo\deposito;
+	namespace backend\models\recibo\estatus;
 
  	use Yii;
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
-	use common\models\calculo\cvb\ModuloValidador;
-	use backend\models\recibo\depositoplanilla\DepositoPlanilla;
-	use backend\models\recibo\estatus\EstatusDeposito;
-
+	use backend\models\recibo\deposito\Deposito;
 
 
 	/**
 	* 	Clase
 	*/
-	class Deposito extends ActiveRecord
+	class EstatusDeposito extends ActiveRecord
 	{
 
 
@@ -75,32 +72,17 @@
 		 */
 		public static function tableName()
 		{
-			return 'depositos';
+			return 'estatus_depositos';
 		}
-
-
-		/***/
-		public function getCodigoControl($valorConvertir)
-		{
-			return ModuloValidador::getDigitoControl($valorConvertir);
-		}
-
-
-		/***/
-		public function getDepositoPlanilla()
-		{
-			return $this->hasMany(DepositoPlanilla::className(), ['recibo' => 'recibo']);
-		}
-
 
 
 		/**
-		 * Relacion con la entidad "estatus".
-		 * @return active record
+		 * Relacion con la entidad "depositos"
+		 * @return [type] [description]
 		 */
-		public function getCondicion()
+		public function getDeposito()
 		{
-			return $this->hasOne(EstatusDeposito::className(), ['estatus' => 'estatus']);
+			return $this->hasMany(Deposito::className(), ['estatus' => 'estatus']);
 		}
 
 
