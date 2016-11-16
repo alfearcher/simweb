@@ -536,6 +536,89 @@
 		}
 
 
+
+		/**
+		 * Metodo que generara el detalle de montos de las planillas contenidas
+		 * en un recibo de manera siguiente:
+		 * impuesto - deudad morosa - deudad actual.
+		 * Este detalle servira para formar el pdf del recibo de pago.
+		 * @param  integer $recibo identificador del recibo de pago.
+		 * @return array
+		 */
+		public function getDepositoPlanillaPorAnoImpositivoSegunRecibo($recibo)
+		{
+			$findModel = self::getDepositoPlanilla();
+
+			$planillas = $findModel->where('DP.recibo =:recibo',[':recibo' => $recibo])
+								   ->asArray()
+								   ->all();
+			$listaPlanillas= [];
+			foreach ( $planillas as $planilla ) {
+				$listaPlanillas[] = $planilla['planilla'];
+			}
+
+			$deudas = [];
+			if ( count($listaPlanillas) > 0 ) {
+				$añoActual = date('Y');
+				$deudas['morosa'] = $this->_deuda->getAgruparDeudaPorImpuestoAnoImpositivoPlanilla($añoActual, '<', $listaPlanillas);
+				$deudas['actual'] = $this->_deuda->getAgruparDeudaPorImpuestoAnoImpositivoPlanilla($añoActual, '=', $listaPlanillas);
+			}
+
+			// Se arma un arreglo de impuestos existentes
+			$deudaImpuesto = [];
+			foreach ( $deudas as $key => $deuda ) {
+				foreach ( $deuda as $j => $d ) {
+					if ( !in_array($d['impuesto'], $deudaImpuesto) ) {
+						$deudaImpuesto[$d['impuesto']] = [
+									'impuesto' => $d['impuesto'],
+									'descripcion' => $d['descripcion_impuesto'],
+									'morosa' => (float)0,
+									'actual' => (float)0,
+
+						];
+					}
+				}
+			}
+
+			foreach ( $deudas as $key => $deuda ) {
+				foreach ( $deuda as $j => $d ) {
+
+					$total = self::totalizarDeuda($d);
+					$deudaImpuesto[$d['impuesto']][$key] = $total;
+
+				}
+			}
+
+
+			return $deudaImpuesto;
+
+		}
+
+
+
+
+
+		/**
+		 * Metodo que totaliza las deudas, dichas deudas vienes subtotalizadas
+		 * por conceptos de montos, es decir, total por monto, total por recargo,
+		 * total por interes, total por descuento y total por monto reconocimiento.
+		 * Se sumaran estos subtotales para entregar un total general.
+		 *
+		 * @param  array $deuda array con las consultas.
+		 * @return double retorna un monto de la totalizacion.
+		 */
+		private function totalizarDeuda($deudas)
+		{
+			$total = 0;
+			if ( count($deudas) > 0 ) {
+				foreach ( $deudas as $key => $value ) {
+					$total = (float)$deudas['tmonto'] + (float)$deudas['trecargo'] + (float)$deudas['tinteres'] - ( (float)$deudas['tdescuento'] + (float)$deudas['tmonto_reconocimiento'] ) ;
+				}
+			}
+			return $total;
+		}
+
+
 	}
 
 ?>
