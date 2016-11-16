@@ -67,7 +67,7 @@
 
 
 		/**
-		 * Metodo constructor d ela clase, el parametro del metodo es opcional
+		 * Metodo constructor de la clase, el parametro del metodo es opcional
 		 * en cuyo caso se toma el valor por defecto.
 		 * @param string $db nombre de la conexion a base de datos.
 		 */
