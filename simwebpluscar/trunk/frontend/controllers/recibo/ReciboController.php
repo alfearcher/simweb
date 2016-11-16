@@ -191,6 +191,8 @@
 				$model = New DepositoForm();
 				$formName = $model->formName();
 
+// die(var_dump($postData));
+
 				$caption = Yii::t('frontend', 'Recibo de Pago. Crear');
 				$subCaption = Yii::t('frontend', 'SubTitulo');
 
@@ -216,7 +218,7 @@
 
 						if ( $model->load($postData) ) {
 							if ( $model->validate() ) {
-
+// die(var_dump($model->attributes));
 								$result = self::actionBeginSave($model, $postData);
 								if ( $result ) {
 									$this->_transaccion->commit();
@@ -231,6 +233,8 @@
 
 		  						}
 
+							} else {
+die(var_dump($model->getErrors()));
 							}
 						}
 					}
@@ -318,6 +322,9 @@
 							//$result = self::actionEnviarEmail($model, $postEnviado);
 							$result = true;
 						}
+					} else {
+						// No genero el recibo
+
 					}
 
 			} else {
@@ -345,6 +352,7 @@
 					$tabla = $model->tableName();
 
 					$model->proceso = date('Y-m-d H:i:s');
+					$model->fecha_hora_creacion = date('Y-m-d H:i:s');
 					if ( $this->_conexion->guardarRegistro($this->_conn, $tabla, $model->attributes) ) {
 						$recibo = $this->_conn->getLastInsertID();
 					}
@@ -474,15 +482,19 @@
 				$model->totalSeleccionado = $postEnviado['total'];
 				$model->monto = $postEnviado['total'];
 				$model->id_contribuyente = $idContribuyente;
-				$model->fecha = date('Y-m-d');
+				$model->fecha_hora_creacion = '';
+
 
 				$numero = New NumeroControlSearch();
 				$model->nro_control = $numero->generarNumeroControl();
 				$model->estatus = 0;
 				$model->observacion = '';
 				$model->proceso = '';
-				$model->usuario = Yii::$app->identidad->getUsuario();
-				$model->ultima_impresion = '0000-00-00 00:00:00';
+				$model->usuario_creador = Yii::$app->identidad->getUsuario();
+
+				$model->ultima_impresion = '';
+				$model->fecha = '';
+				$model->fecha_hora_proceso = '';
 
 				return $this->render('/recibo/pre-view-recibo-create-form', [
 													'dataProvider' => $dataProvider,
