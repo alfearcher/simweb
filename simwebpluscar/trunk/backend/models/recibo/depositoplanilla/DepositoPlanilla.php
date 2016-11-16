@@ -47,6 +47,7 @@
 	use yii\db\ActiveRecord;
 	use backend\models\recibo\deposito\Deposito;
 	use common\models\planilla\Pago;
+	use backend\models\recibo\estatus\EstatusDeposito;
 
 
 	/**
@@ -79,7 +80,10 @@
 		}
 
 
-		/***/
+		/**
+		 * Relacion con la entidad "depositos"
+		 * @return [type] [description]
+		 */
 		public function getDeposito()
 		{
 			return $this->hasOne(Deposito::className(), ['recibo' => 'recibo']);
@@ -87,12 +91,24 @@
 
 
 
-		/***/
+		/**
+		 * Relacion con la entidad "pagos"
+		 * @return active record
+		 */
 		public function getPago()
 		{
 			return $this->hasOne(Pago::className(), ['planilla' => 'planilla']);
 		}
 
+
+		/**
+		 * Relacion con la entidad "estatus".
+		 * @return active record
+		 */
+		public function getCondicion()
+		{
+			return $this->hasOne(EstatusDeposito::className(), ['estatus' => 'estatus']);
+		}
 
 	}
 
