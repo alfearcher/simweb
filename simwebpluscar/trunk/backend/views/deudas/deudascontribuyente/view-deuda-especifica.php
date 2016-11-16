@@ -29,7 +29,7 @@ $this->title = Yii::t('frontend', 'Detalle de la Deuda');
  <?php $form = ActiveForm::begin([
            // 'id' => 'id-chk-seleccionar-calcomania',
             'method' => 'post',
-            'action' => ['/deudas/deudascontribuyente/deudas-contribuyente/view-deuda-especifica-por-objeto'],
+            'action' => ['/deudas/deudascontribuyente/deudas-contribuyente/generar-pdf-deuda-especifica'],
             'enableClientValidation' => true,
             'enableAjaxValidation' => true,
             'enableClientScript' => true,
@@ -186,6 +186,10 @@ $this->title = Yii::t('frontend', 'Detalle de la Deuda');
                     // ],
 
 
+
+
+
+
            
              
 
@@ -202,7 +206,11 @@ $this->title = Yii::t('frontend', 'Detalle de la Deuda');
     
     ?>
 
+   <div class="col-sm-5" style="margin-left: 500px;">
+    
+     <?= Html::submitButton("Generar Reporte", ["class" => "btn btn-success", 'style' => 'height:30px;width:140px;margin-left:80px;']) ?>
 
+    </div>
 
 </div>
 <?php ActiveForm::end() ?>
