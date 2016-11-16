@@ -62,6 +62,7 @@
 	use backend\models\recibo\estatus\EstatusDeposito;
 	use backend\models\recibo\estatus\EstatusDepositoSearch;
 	use backend\models\recibo\recibo\ReciboConsultaForm;
+	use backend\models\recibo\deposito\Deposito;
 
 
 
@@ -158,29 +159,77 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que renderiza la lista de los recibos creados
+		 * @return [type] [description]
+		 */
 		public function actionSearchDeposito()
 		{
-			if ( isset($_SESSION['postEnviado']) ) {
-				$postEnviado = $_SESSION['postEnviado'];
-				//self::actionAnularSession(['postEnviado']);
-			} else {
+			self::actionAnularSession(['recibo', 'nro_control']);
+			if ( isset($_SESSION['idContribuyente']) ) {
+
+				$recibo = 0;
+				$idContribuyente = $_SESSION['idContribuyente'];
+				$model = New ReciboConsultaForm();
+				$formName = $model->formName();
+
 				$request = Yii::$app->request;
-				$postEnviado = $request->queryParams;
+				$postData = $request->post();
+
+				if ( isset($postData['btn-back']) ) {
+					if ( $postData['btn-back'] == 2 ) {
+						// Viene del listado de recibo
+						$this->redirect(['index']);
+
+					} elseif ( $postData['btn-back'] == 1 ) {
+						// Viene del recibo encontrado
+					}
+				} elseif ( isset($postData['btn-quit']) ) {
+					$this->redirect(['quit']);
+
+				} elseif ( isset($postData['id']) ) {
+					if ( (int)$postData[$formName]['id_contribuyente'] == (int)$idContribuyente ) {
+						$recibo = (int)$postData['id'];
+					}
+				}
+
+				if ( isset($_SESSION['postEnviado']) ) {
+					$postEnviado = $_SESSION['postEnviado'];
+				} else {
+					$postEnviado = $request->queryParams;
+				}
+
+				$model->load($postEnviado);
+				$model->id_contribuyente = $idContribuyente;
+				$dataProvider = $model->searchDeposito($postEnviado);
+
+				if ( $recibo == 0 ) {
+					$dataProvider = $model->searchDeposito();
+					return $this->render('/recibo/consulta/lista-recibo',[
+													'model' => $model,
+													'caption' => 'Lista de Recibos',
+													'dataProvider' => $dataProvider,
+						]);
+
+				} else {
+
+					$dataProvider = $model->searchDepositoPlanilla($recibo);
+					$deposito = Deposito::find()->where('recibo =:recibo',[':recibo' => $recibo])
+											    ->joinWith('condicion C', true)
+											    ->one();
+
+					if ( $model->estatus == 0 ) {
+						$_SESSION['recibo'] = $recibo;
+						$_SESSION['nro_control'] = $deposito->nro_control;
+					}
+					return $this->render('/recibo/consulta/recibo-consultado',[
+													'model' => $deposito,
+													'caption' => 'Recibo consultado ' . $recibo,
+													'dataProvider' => $dataProvider,
+						]);
+				}
 			}
-// die(var_dump($postEnviado));
-			$model = New ReciboConsultaForm();
-			$model->load($postEnviado);
-
-			$dataProvider = $model->searchDeposito($postEnviado);
-			return $this->render('/recibo/consulta/lista-recibo',[
-											'caption' => 'Lista de Recibos',
-											'dataProvider' => $dataProvider,
-				]);
 		}
-
-
-
 
 
 
@@ -192,14 +241,23 @@
 		 */
 		public function actionGenerarRecibo()
 		{
-			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['recibo']) && isset($_SESSION['nro_control']) ) {
+			$request = Yii::$app->request;
+			$getData = $request->get();
 
-				// Controlador que gestiona la generacion del pdf.
-				$depositoPdf = New DepositoController((int)$_SESSION['recibo'],
-													  (int)$_SESSION['idContribuyente'],
-													  (int)$_SESSION['nro_control']
-													);
-				return $depositoPdf->actionGenerarReciboPdf();
+			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['recibo'])
+				 && isset($_SESSION['nro_control']) ) {
+
+				if ( $_SESSION['nro_control'] == $getData['nro']) {
+					$recibo = (int)$_SESSION['recibo'];
+					$nro = (int)$_SESSION['nro_control'];
+					//self::actionAnularSession(['recibo', 'nro_control']);
+
+					// Controlador que gestiona la generacion del pdf.
+					$depositoPdf = New DepositoController($recibo, (int)$_SESSION['idContribuyente'], $nro);
+					return $depositoPdf->actionGenerarReciboPdf();
+				} else {
+					// recibo no valido.
+				}
 
 			} else {
 				// Session no valida
