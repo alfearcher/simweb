@@ -162,7 +162,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                                                             'model' => $findModel,
                                                             'showDireccion' => true,
                                                             'showRepresentante' => true,
-                                    ]);        
+                                    ]);          
 
 
             // Informacion de la declaracion.
@@ -194,7 +194,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
             $htmlMapa = $this->renderPartial('@common/views/plantilla-pdf/cedulacatastral/layout-mapa-pdf',[
                                                             'resumen'=> $resumen,
                                     ]);
-            $resumenAspectosValorativos = self::actionResumenAspectosValorativos($_SESSION['datos']['id_impuesto']);
+            //$resumenAspectosValorativos = self::actionResumenAspectosValorativos($_SESSION['datos']['id_impuesto']);
             $htmlAspectosValorativos = $this->renderPartial('@common/views/plantilla-pdf/cedulacatastral/layout-aspectos-valorativos-pdf',[
                                                             'resumen'=> $resumen,
                                     ]);
@@ -205,8 +205,6 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                                                             'nombreCargo' => Yii::$app->oficina->getNombreCargo(),
                                                             'barcode' => $barcode,
                                     ]); 
-
-
 
 
 

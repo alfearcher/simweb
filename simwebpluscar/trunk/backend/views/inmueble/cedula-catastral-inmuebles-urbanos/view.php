@@ -17,7 +17,7 @@ $this->title = Yii::t('backend', 'View Property Urban');
         <?= Html::a(Yii::t('backend', 'Cedula Catastral'), ['inmueble/cedula-catastral-inmuebles-urbanos/cedula-catastral-inmuebles'], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) ?>
     </p> 
-
+  
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [ 

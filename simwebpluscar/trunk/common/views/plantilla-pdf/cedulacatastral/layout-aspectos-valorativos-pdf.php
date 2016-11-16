@@ -54,7 +54,7 @@
  //    Icon::map($this, $typeIcon);
 
  ?>
-
+  
 <?php
 	$fechaEmision = date('d-m-Y');
 	$sumaImpuesto = 0;
