@@ -18,7 +18,7 @@
     $_SESSION['sesion'] = $sesion;
 
     //die(var_dump($sesion));
-    
+
     $typeIcon = Icon::FA;
     $typeLong = 'fa-2x';
 
@@ -53,11 +53,16 @@ AppAsset::register($this);
     <!-- Aqui comienza el encabezado -->
                 <?php
                     NavBar::begin([
-                        'brandLabel' => Yii::$app->name . ' '. Yii::$app->ente->getAlias(),
+                        //'brandLabel' => Yii::$app->name . ' '. Yii::$app->ente->getAlias(),
+                        'brandLabel' => 'FFF '. Html::img('@common/public/imagen/customize/logo.jpg',[
+                                                        'style' => 'display:inline; vertical-align: top; height:32px;',
+                            ]),
+
                         'brandUrl' => Yii::$app->homeUrl,
                         'options' => [
                             //-inverse
                             //'class' => 'navbar-inverse navbar-fixed-top',
+
                         ],
                     ]);
 
@@ -77,12 +82,11 @@ AppAsset::register($this);
                        $menuItems[] = [
                             'label' => Icon::show('user',['class' => 'fa-2x'], $typeIcon) . ' ' . Yii::t('frontend', 'user') . ' (' . Yii::$app->user->identity->login . ')',
 
-                                //die(var_dump(Yii::$app->user)),
                             'url' => '#',
                             //'linkOptions' => ['data-method' => 'post'],
                                     'items' => [['label' => Yii::t('backend', 'Change Security Questions'), 'url' =>  ['usuario/cambiar-pregunta-seguridad/buscar-cambiar-pregunta-seguridad']],
                                             ['label' => Yii::t('backend', 'Change Password'), 'url' =>  ['usuario/mostrar-pregunta-seguridad/buscar-mostrar-pregunta-seguridad']],
-                                            ['label' => 'Logout', 'url' => ['site/logout2'],'linkOptions' => ['data-method' => 'post'], 
+                                            ['label' => 'Logout', 'url' => ['site/logout2'],'linkOptions' => ['data-method' => 'post'],
                                             ],
                                     ]
 
@@ -90,7 +94,7 @@ AppAsset::register($this);
 
 
 
-                                   
+
                     }
 
                     echo Nav::widget([
@@ -101,21 +105,21 @@ AppAsset::register($this);
 
                     NavBar::end();
                 ?>
-                
+
 
 
         </div>
         <div class="barra-inferior">
 
             <?php
-          
+
                 if (!Yii::$app->user->isGuest) {
-                    
+
                     require('boton-search-contribuyente.php');
                     //require('barra-inferior.php');
                     //require('boton-undo.php');
                     //require('opciones-nav.php');
-                
+
                 }
             ?>
         </div>
