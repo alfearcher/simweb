@@ -111,7 +111,7 @@
 	.info-detalle-pago {
 		text-align: left;
 		font-weight: bold;
-		font-size: 100%;
+		font-size: 80%;
 		font-family: Arial, Helvetica, sans-serif;
 		border-bottom: solid 0.25px #175778;
 	}
@@ -122,8 +122,8 @@
 	.info-total,
 	.label-total {
 		text-align: right;
-		font-weight: bold;
-		font-size: 90%;
+		/*font-weight: bold;*/
+		font-size: 70%;
 		font-family: Arial, Helvetica, sans-serif;
 		border-bottom: solid 0.25px #175778;
 	}
@@ -131,6 +131,7 @@
 
 	.info-total,
 	.label-total {
+		font-weight: bold;
 		font-size: 120%;
 		border-bottom: solid 2.5px #175778;
 		border-top: solid 2px #175778;
