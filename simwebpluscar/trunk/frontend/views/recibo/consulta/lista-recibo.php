@@ -63,7 +63,7 @@
  		]);
  	?>
 
-	<!-- <?//=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $model->id_contribuyente])->label(false);?> -->
+	<?=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $model->id_contribuyente])->label(false);?>
 
 	<meta http-equiv="refresh">
     <div class="panel panel-primary"  style="width: 95%;margin: auto;">
@@ -86,37 +86,56 @@
 							<?= GridView::widget([
 								'id' => 'grid-lista-recibo',
 								'dataProvider' => $dataProvider,
+								'headerRowOptions' => [
+									'class' => 'success',
+								],
+								'tableOptions' => [
+                    				'class' => 'table table-hover',
+              					],
 								'summary' => '',
 								'columns' => [
 									['class' => 'yii\grid\SerialColumn'],
 
+				                    // [
+				                    //     'contentOptions' => [
+				                    //           'style' => 'font-size: 90%;',
+				                    //     ],
+				                    //     'label' => Yii::t('frontend', 'recibo'),
+				                    //     'value' => function($data) {
+				                    //                		return $data['recibo'];
+				            			     //       },
+				                    // ],
+				                    [
+					                	'contentOptions' => [
+					                    	'style' => 'font-size: 90%;text-align:center;width:22%;',
+					                	],
+				                    	'class' => 'yii\grid\ActionColumn',
+				            			'header'=> Yii::t('frontend', 'Recibo'),
+				            			'template' => '{view}',
+				            			'buttons' => [
+				                			'view' => function ($url, $model, $key) {
+
+				                   					return Html::submitButton('<div class="item-list" style="color: #000000;"><center>'. $model['recibo'] .'</center></div>',
+				                    							[
+				                    								'id' => 'id-recibo',
+					                        						'name' => 'id',
+					                        						'value' => $model['recibo'],
+					                        						'class' => 'btn btn-default',
+					                        						'title' => 'recibo '. $model['recibo'],
+								                        		]
+							                        		);
+				                				},
+				                		],
+				                	],
 				                    [
 				                        'contentOptions' => [
-				                              'style' => 'font-size: 90%;',
-				                        ],
-				                        'label' => Yii::t('frontend', 'recibo'),
-				                        'value' => function($data) {
-				                                   		return $data['recibo'];
-				            			           },
-				                    ],
-				                    [
-				                        'contentOptions' => [
-				                              'style' => 'font-size: 90%;',
+				                              'style' => 'font-size: 90%;text-align:center;width:10%;',
 				                        ],
 				                        'label' => Yii::t('frontend', 'fecha'),
 				                        'value' => function($data) {
 				                                   		return date('d-m-Y', strtotime($data['fecha']));
 				            			           },
 				                    ],
-				                    // [
-				                    //     'contentOptions' => [
-				                    //           'style' => 'font-size: 90%;',
-				                    //     ],
-				                    //     'label' => Yii::t('frontend', 'impuesto'),
-				                    //     'value' => function($data) {
-				                    //                   return $data['impuesto'];
-				            			     //             },
-				                    // ],
 				                    [
 				                        'contentOptions' => [
 				                              'style' => 'font-size: 90%;text-align:right;',
@@ -128,7 +147,7 @@
 				                    ],
 				                    [
 				                        'contentOptions' => [
-				                              'style' => 'font-size: 90%;',
+				                              'style' => 'font-size: 90%;text-align:center;',
 				                        ],
 				                        'label' => Yii::t('frontend', 'condicion'),
 				                        'value' => function($data) {
@@ -139,6 +158,22 @@
 					        	]
 							]);?>
 
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-3" style="width:20%;padding-top: 15px;">
+							<div class="form-group">
+								<?= Html::submitButton(Yii::t('frontend', 'Back'),
+																		[
+																			'id' => 'btn-back',
+																			'class' => 'btn btn-danger',
+																			'value' => 2,
+																			'style' => 'width: 100%',
+																			'name' => 'btn-back',
+																		])
+								?>
+							</div>
 						</div>
 					</div>
 				</div>
