@@ -60,9 +60,11 @@
 		public $ultima_impresion;
 		public $observacion;
 		public $usuario;
-		//public $fecha_hora;
 		public $id_contribuyente;
 		public $nro_control;
+		public $usuario_creador;
+		public $fecha_hora_creacion;
+		public $fecha_hora_proceso;
 
 		public $totalSeleccionado;
 		public $fechaCreacion;
@@ -91,10 +93,18 @@
 	        	  'nro_control', 'estatus'],
 	        	  'integer'],
 	        	[['observacion', 'proceso', 'usuario',
-	        	  'ultima_impresion'], 'string'],
-	        	[['fecha', 'fechaCreacion'], 'date', 'format' => 'php:Y-m-d'],
+	        	  'usuario_creador'],
+	        	  'string'],
+	        	[['fecha'], 'date', 'format' => 'php:Y-m-d'],
+	        	[['fecha_hora_creacion', 'ultima_impresion',
+	        	  'fecha_hora_proceso'],
+	        	  'date', 'format' => 'php:Y-m-d H:i:s'],
 	        	[['fecha'], 'default', 'value' => date('Y-m-d')],
 	        	[['estatus'], 'default', 'value' => 0],
+	        	[['ultima_impresion', 'fecha_hora_proceso'],
+	        	  'default', 'value' => '0000-00-00 00:00:00'],
+	        	[['fecha_hora_creacion', 'proceso',],
+	        	  'default', 'value' => date('Y-m-d H:i:s')],
 	        	[['monto'], 'double'],
 
 	        ];
