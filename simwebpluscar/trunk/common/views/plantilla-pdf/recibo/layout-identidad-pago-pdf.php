@@ -69,8 +69,8 @@
 		<td class="info-identidad-pago" colspan="2"><?=Html::encode($model->id_contribuyente); ?></td>
 		<td class="info-identidad-pago" colspan="2"><?=Html::encode($model->recibo); ?></td>
 		<td class="info-identidad-pago" colspan="4"><?=Html::encode($cvb); ?></td>
-		<td class="info-identidad-pago" colspan="1"><?=Html::encode($model->fecha); ?></td>
-		<td class="info-identidad-pago" colspan="1"><?=Html::encode($model->fecha); ?></td>
+		<td class="info-identidad-pago" colspan="1"><?=Html::encode(date('d-m-Y', strtotime($model->fecha))); ?></td>
+		<td class="info-identidad-pago" colspan="1"><?=Html::encode(date('d-m-Y', strtotime($model->fecha))); ?></td>
 
 	</tr>
 </table>

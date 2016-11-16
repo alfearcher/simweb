@@ -53,6 +53,8 @@
 
  //    Icon::map($this, $typeIcon);
 
+	$total = 0;
+
  ?>
 
 <table repeat_header="1" cellpadding="1" cellspacing="1" width="100%" border="0">
@@ -61,15 +63,24 @@
 	<tr>
 		<th class="label-detalle-pago" colspan="4"><?=Html::encode('IMPUESTO Y/O TASA'); ?></th>
 		<th class="label-detalle-pago" colspan="2"><?=Html::encode('AÑOS ANTERIORES'); ?></th>
-		<th class="label-detalle-pago" colspan="2"><?=Html::encode('ANO ACTUAL'); ?></th>
-		<th class="label-detalle-pago" colspan="2"><?=Html::encode('TOTAL'); ?></th>
+		<th class="label-detalle-pago" colspan="2"><?=Html::encode('AÑO ACTUAL'); ?></th>
+		<th class="label-detalle-pago" colspan="2"><?=Html::encode('SUBTOTAL'); ?></th>
 	</tr>
-	<tr class="cuerpo">
-		<td class="info-detalle-pago" colspan="4"><?=Html::encode($model->id_contribuyente); ?></td>
-		<td class="info-detalle-pago" colspan="2"><?=Html::encode($model->recibo); ?></td>
-		<td class="info-detalle-pago" colspan="2"><?=Html::encode($cvb); ?></td>
-		<td class="info-detalle-pago" colspan="2"><?=Html::encode($model->fecha); ?></td>
 
+	<?php foreach ( $deudas as $deuda ) {
+		$total = ($deuda['morosa'] + $deuda['actual']) + $total;
+	?>
+		<tr class="cuerpo">
+			<td class="info-detalle-pago" colspan="4"><?=Html::encode($deuda['descripcion']); ?></td>
+			<td class="info-detalle-monto" colspan="2"><?=Html::encode(Yii::$app->formatter->asDecimal($deuda['morosa'], 2)); ?></td>
+			<td class="info-detalle-monto" colspan="2"><?=Html::encode(Yii::$app->formatter->asDecimal($deuda['actual'], 2)); ?></td>
+			<td class="info-detalle-monto-t" colspan="2"><?=Html::encode(Yii::$app->formatter->asDecimal($deuda['morosa'] + $deuda['actual'], 2)); ?></td>
+
+		</tr>
+	<?php } ?>
+	<tr>
+		<td class="label-total" colspan="6"><?=Html::encode('TOTAL A PAGAR'); ?></td>
+		<td class="info-total" colspan="4"><?=Html::encode(Yii::$app->formatter->asDecimal($total, 2)); ?></td>
 	</tr>
 </table>
 
@@ -80,19 +91,53 @@
 		/*border-bottom: solid 2px #000;*/
 	}
 
-	.label-identidad-pago {
+
+	.label-detalle-pago,
+	.label-detalle-pago-a {
 		text-align: center;
 		font-family: Arial, Helvetica, sans-serif;
 		font-size: 80%;
+		border-bottom: solid 0.25px #175778;
+
+	}
+
+
+	.label-detalle-pago {
 		border-bottom: solid 2px #175778;
 
 	}
 
-	.info-identidad-pago {
-		text-align: center;
+
+	.info-detalle-pago {
+		text-align: left;
 		font-weight: bold;
 		font-size: 100%;
+		font-family: Arial, Helvetica, sans-serif;
+		border-bottom: solid 0.25px #175778;
 	}
+
+
+	.info-detalle-monto,
+	.info-detalle-monto-t,
+	.info-total,
+	.label-total {
+		text-align: right;
+		font-weight: bold;
+		font-size: 90%;
+		font-family: Arial, Helvetica, sans-serif;
+		border-bottom: solid 0.25px #175778;
+	}
+
+
+	.info-total,
+	.label-total {
+		font-size: 120%;
+		border-bottom: solid 2.5px #175778;
+		border-top: solid 2px #175778;
+	}
+
+
+
 
 	caption {
 		color: white;
