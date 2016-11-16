@@ -94,10 +94,12 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que renderiza un recibo de pago en pdf
+		 * @return view retorna un pdf del recibo de pago.
+		 */
 		public function actionGenerarReciboPdf()
 		{
-			$barcode = 152222;
             // Informacion del encabezado.
             $htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/layout/layout-encabezado-pdf', [
                                                             'caption' => 'RECIBO DE PAGO MULTIPLE',
@@ -120,8 +122,22 @@
             					]);
 
 
+
+            $searchDeuda = New ReciboSearch($this->_id_contribuyente);
+            $deudas = $searchDeuda->getDepositoPlanillaPorAnoImpositivoSegunRecibo($this->_recibo);
+
+
             // Detalle del pago.
-            $htmlDetallePago =
+            $htmlDetallePago = $this->renderPartial('@common/views/plantilla-pdf/recibo/layout-detalle-pago-pdf', [
+            																'deudas' => $deudas,
+            					]);
+
+
+            // QR
+            $barcode = $this->_recibo;
+            $htmlQR = $this->renderPartial('@common/views/plantilla-pdf/layout/layout-qr-pdf',[
+            											'barcode' => $barcode,
+            					]);
 
 
 
@@ -137,10 +153,24 @@
 	        $mpdf->WriteHTML($htmlContribuyente);
 	        $mpdf->WriteHTML($htmlIdentidadPago);
 	        $mpdf->WriteHTML($htmlDetallePago);
-	        /*$mpdf->SetHTMLFooter($htmlPiePagina);*/
 
-	        $mpdf->Output($nombrePDF, 'I');
-	        exit;
+	       //funciona
+	       // $mpdf->Rect(18, 230, 100, 30, D);
+
+	        // eje x, y, w=width, h=height, r=radius, estilo de la linea
+	        // 											D = dibuja linea
+	        // 											F
+	        // 											DF
+	       $mpdf->RoundedRect(18, 230, 120, 30, 3, D);
+	       $mpdf->SetFont('Arial', 'B', 8);
+	       $mpdf->Text(60,258,"Validacion terminal caja");
+
+	       // Se coloca el QR
+	       $mpdf->WriteFixedPosHTML($htmlQR, 100, 220, 120, 30);
+
+
+	       $mpdf->Output($nombrePDF, 'I');
+	       exit;
 		}
 
 
