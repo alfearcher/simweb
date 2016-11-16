@@ -122,8 +122,7 @@
 						    				// ],
 						    				[
 						    					'label' => $model->getAttributeLabel('estatus'),
-						    					'value' => $model->estatus,
-						    					//'value' => $model['estatusSolicitud']->descripcion,
+						    					'value' => $model->condicion->descripcion,
 						    				],
 
 						    			],

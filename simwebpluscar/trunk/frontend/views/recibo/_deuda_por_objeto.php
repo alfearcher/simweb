@@ -76,7 +76,7 @@
 		<?= GridView::widget([
 			'id' => 'grid-deuda-por-objeto',
 			'dataProvider' => $dataProvider,
-      'headerRowOptions' => ['class' => 'info'],
+            'headerRowOptions' => ['class' => 'info'],
 			//'filterModel' => $model,
 			'summary' => '',
 			'columns' => [
