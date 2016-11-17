@@ -191,8 +191,6 @@
 				$model = New DepositoForm();
 				$formName = $model->formName();
 
-// die(var_dump($postData));
-
 				$caption = Yii::t('frontend', 'Recibo de Pago. Crear');
 				$subCaption = Yii::t('frontend', 'SubTitulo');
 
@@ -218,7 +216,7 @@
 
 						if ( $model->load($postData) ) {
 							if ( $model->validate() ) {
-// die(var_dump($model->attributes));
+
 								$result = self::actionBeginSave($model, $postData);
 								if ( $result ) {
 									$this->_transaccion->commit();
@@ -233,8 +231,6 @@
 
 		  						}
 
-							} else {
-die(var_dump($model->getErrors()));
 							}
 						}
 					}
