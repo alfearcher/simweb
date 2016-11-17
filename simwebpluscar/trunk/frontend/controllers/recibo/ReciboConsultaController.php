@@ -250,7 +250,7 @@
 				if ( $_SESSION['nro_control'] == $getData['nro']) {
 					$recibo = (int)$_SESSION['recibo'];
 					$nro = (int)$_SESSION['nro_control'];
-					self::actionAnularSession(['recibo', 'nro_control']);
+					//self::actionAnularSession(['recibo', 'nro_control']);
 
 					// Controlador que gestiona la generacion del pdf.
 					$depositoPdf = New DepositoController($recibo, (int)$_SESSION['idContribuyente'], $nro);
