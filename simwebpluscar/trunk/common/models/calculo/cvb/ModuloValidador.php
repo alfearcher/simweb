@@ -72,35 +72,14 @@
 		{
 			$modulo11 = null;
 			if ( ctype_digit($valorBase) ) {
-				//$digito = [];
-				//$cadenaDigitos = '';
 				$arregloDigitos = [];
-//die(var_dump($valorBase));
-				// // Se obtiene la parte entera y la parte decimal.
-				// $digito = explode(".", $valorConvertir);
-				// $parteEntera = $digito[0];
-				// $parteDecimal = isset($digito[1]) ? $digito[1] : null;
-
-				// Se determina si el valor a convertir tiene parte decimal. Sino solo se tomara la
-				// parte entera.
-				// if ( $parteDecimal !== null ) {
-				// 	// Para garantizar que se toman dos decimales.
-				// 	// Se coloca cero al final de la parte decimal.
-				// 	if (strlen($parteDecimal) == 1 ) {
-				// 		$parteDecimal .= "0";
-				// 	}
-
-				// 	$cadenaDigitos = $parteEntera . $parteDecimal;
-				// } else {
-				// 	$cadenaDigitos = $parteEntera;
-				// }
 
 				// Crea un array con los digitos resultantes.
 				$arregloDigitos = str_split($valorBase);
 
 				// Se invierte el arreglo.
 				$arregloDigitos = array_reverse($arregloDigitos);
-//die(var_dump($valorBase));
+
 				$suma = 0;
 				$operacion = 0;
 				$ponderado = 0;
@@ -113,9 +92,7 @@
 					// Permite ver los parametros resultantes
 					$v[] = [$value, $ponderado, $operacion];
 				}
-if ( $valorBase == '252' ) {
-die(var_dump($v));
-}
+
 				// Se obtiene el resto de la division $suma entre 11. Modulo 11.
 				$resto = fmod($suma, 11);
 				$modulo11 = (int)(11 - $resto);
@@ -135,43 +112,8 @@ die(var_dump($v));
 		public function getDigitoControl($valor)
 		{
 			$digitoControl = null;
-			if ( is_real($valor) ) {
-				// Se convierte el valor en un entero, para facilitar la aplicacion
-				// del algortimo para encontrar el digito control.
 
-				// $digito = explode(".", $valor);
-				// $parteEntera = $digito[0];
-				// $parteDecimal = isset($digito[1]) ? $digito[1] : null;
-				// if ( $parteDecimal !== null ) {
-				//  	// Para garantizar que se toman dos decimales.
-				//  	// Se coloca cero al final de la parte decimal.
-				//  	if (strlen($parteDecimal) == 1 ) {
-				//  		$parteDecimal .= "0";
-				//  	} else {
-				//  		$parteDecimal .= "00";
-				//  	}
-				// 	$cadenaDigitos = $parteEntera . $parteDecimal;
-				// } else {
-				//  	$cadenaDigitos = $parteEntera;
-				// }
-				// $entero = $cadenaDigitos;
-
-				$entero = $valor * 100;
-				$entero = (string)$entero;
-//die(var_dump($entero));
-				$digitoControl = self::getCodigoModuloOnce($entero);
-
-			} elseif ( is_integer($valor) ) {
-				$entero = $valor;
-//die(var_dump($entero));
-				$digitoControl = self::getCodigoModuloOnce($entero);
-			} else {
-				// El valor enviado para los formato fechas deben ser ddmmyyyy
-				$entero = $valor;
-//die(var_dump($entero));
-				$digitoControl = self::getCodigoModuloOnce($entero);
-			}
-
+			$digitoControl = self::getCodigoModuloOnce($valor);
 			return $digitoControl;
 		}
 
@@ -187,28 +129,10 @@ die(var_dump($v));
 		{
 			$result = null;
 			$cadenaDigito = str_replace(".", "", $valorFloat);
-			$cadenaDigito = str_replace(",", "", $valorFloat);
+			//$cadenaDigito = str_replace(",", "", $valorFloat);
+			$cadenaDigito = str_replace(",", "", $cadenaDigito);
 
 			return $cadenaDigito;
-
-			// Se obtiene la parte entera y la parte decimal.
-			// $digito = explode(".", $valorFloat);
-			// $parteEntera = $digito[0];
-			// $parteDecimal = isset($digito[1]) ? $digito[1] : null;
-
-			// Se determina si el valor a convertir tiene parte decimal. Sino solo se tomara la
-			// parte entera.
-			// if ( $parteDecimal !== null ) {
-			// 	// Para garantizar que se toman dos decimales.
-			// 	// Se coloca cero al final de la parte decimal.
-			// 	if (strlen($parteDecimal) == 1 ) {
-			// 		$parteDecimal .= "0";
-			// 	}
-
-			// 	$cadenaDigitos = $parteEntera . $parteDecimal;
-			// } else {
-			// 	$cadenaDigitos = $parteEntera;
-			// }
 		}
 
 
