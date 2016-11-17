@@ -59,6 +59,7 @@
 	// use common\models\numerocontrol\NumeroControlSearch;
 	use common\conexion\ConexionController;
 	use common\models\contribuyente\ContribuyenteBase;
+	use common\models\historico\cvbrecibo\GenerarValidadorRecibo;
 
 	use mPDF;
 
@@ -100,6 +101,7 @@
 		 */
 		public function actionGenerarReciboPdf()
 		{
+			$cvb = '';
             // Informacion del encabezado.
             $htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/layout/layout-encabezado-pdf', [
                                                             'caption' => 'RECIBO DE PAGO MULTIPLE',
@@ -116,11 +118,15 @@
 
             // Identificacion del pago.
             $deposito = Deposito::findOne($this->_recibo);
+
+            // Se determina el codigo validador bancario del recibo.
+            $validador = New GenerarValidadorRecibo($deposito);
+            $cvb = $validador->getCodigoValidadorRecibo();
+
             $htmlIdentidadPago = $this->renderPartial('@common/views/plantilla-pdf/recibo/layout-identidad-pago-pdf', [
             												'model' => $deposito,
-            												'cvb' => '123-4567-8970',
+            												'cvb' => $cvb,
             					]);
-
 
 
             $searchDeuda = New ReciboSearch($this->_id_contribuyente);
@@ -128,6 +134,7 @@
 
 
             // Detalle del pago.
+            // Detalle del pdf, planillas contenidas en el recibo.
             $htmlDetallePago = $this->renderPartial('@common/views/plantilla-pdf/recibo/layout-detalle-pago-pdf', [
             																'deudas' => $deudas,
             					]);
