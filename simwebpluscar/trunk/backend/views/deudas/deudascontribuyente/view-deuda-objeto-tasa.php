@@ -15,7 +15,7 @@ use common\models\tasas\GrupoSubnivel;
 
 //die(var_dump($Hola));
 
-$this->title = Yii::t('frontend', 'Deuda Especifica ');
+$this->title = Yii::t('frontend', 'Detalle de la Tasa');
 
 
 
@@ -29,7 +29,7 @@ $this->title = Yii::t('frontend', 'Deuda Especifica ');
  <?php $form = ActiveForm::begin([
            // 'id' => 'id-chk-seleccionar-calcomania',
             'method' => 'post',
-          //  'action' => ['/deudas/deudascontribuyente/deudas-contribuyente/verificar-objeto-especifico'],
+            'action' => ['/deudas/deudascontribuyente/deudas-contribuyente/generar-pdf-deuda-especifica'],
             'enableClientValidation' => true,
             'enableAjaxValidation' => true,
             'enableClientScript' => true,
@@ -54,47 +54,63 @@ $this->title = Yii::t('frontend', 'Deuda Especifica ');
             
            // 'id',
            // 'Calcomania',
-                     [
-                    'label' => 'Planilla',
-                    'value' => function($data){
-                        return $data['planilla'];
-                    },
-                    ],
+                
                     
-                     [
-                     'label' => 'Impuesto',
-                     'value' => function($data){
-                         return $data['impuesto'];
-                     },
-                     ],
+                     // [
+                     // 'label' => 'Impuesto',
+                     // 'value' => function($data){
+                     //     return $data['impuesto'];
+                     // },
+                     // ],
+                     // 
+          
 
                     [
-                     'label' => 'Año Impositivo',
+                     'label' => 'Planilla',
                      'value' => function($data){
-                         return $data['ano_impositivo'];
+                        
+                       return $data['planilla'];
+
+                            
+
                      },
                      ],
 
                           [
-                    'label' => 'Periodo',
-                    'value' => function($data){
-                        return $data['periodo'];
-                    },
-                    ],
+                     'label' => 'Informacion del Objeto',
+                     'value' => function($data){
+                        
+                       return $data['descripcion'];
 
-                         [
-                    'label' => 'Unidad',
-                    'value' => function($data){
-                        return $data['unidad'];
-                    },
-                    ],
+                            
 
-                       [
+                     },
+                     ],
+
+
+              
+
+                    [
                     'label' => 'Monto',
                     'value' => function($data){
                         return $data['monto'].' Bs.f';
                     },
                     ],
+
+                    
+
+
+                    // [
+                    // 'label' => 'Periodo',
+                    // 'value' => function($data){
+                    //     if( $data['tipo'] == 'periodo>0'){
+
+                    //         return 'Vehiculo';
+                    //     }else{
+                    //         return 'Vehiculo(tasa)';
+                    //     } ;
+                    // },
+                    // ],
 
                     //       [
                     // 'label' => 'Año Impositivo',
@@ -137,7 +153,7 @@ $this->title = Yii::t('frontend', 'Deuda Especifica ');
 
 
 
-                 
+           
              
 
                        
@@ -153,23 +169,16 @@ $this->title = Yii::t('frontend', 'Deuda Especifica ');
     
     ?>
 
-
    <div class="col-sm-5" >
     
-     <?= Html::a('Generar Reporte',['/deudas/deudascontribuyente/deudas-contribuyente/generar-pdf-deuda-tasa'],
+     <?= Html::a('Generar Reporte',['/deudas/deudascontribuyente/deudas-contribuyente/generar-pdf-deuda-especifica'],
         [
          'class'=>'btn btn-success',
          'target'=> '_blank',
          'data-toggle'=>'tooltip',
-         //'value' => 'hola',
-        'title'=>'Generate the pdf']); 
-
-
-         ?> 
+         'title'=>'Generate the pdf']); ?> 
 
     </div>
-
-
 
 </div>
 <?php ActiveForm::end() ?>
