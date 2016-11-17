@@ -58,7 +58,7 @@ use backend\models\presupuesto\cargarpresupuesto\registrar\CargarPresupuestoForm
 use common\models\deuda\DeudaSearch;
 use backend\models\deudas\deudascontribuyente\DeudasContribuyenteForm;
 use yii\data\ArrayDataProvider;
-use kartik\mpdf\Pdf;
+use mPDF;
 /**
  * Site controller
  */
@@ -155,6 +155,7 @@ class DeudasContribuyenteController extends Controller
  */
   public function actionVerificarImpuesto()
   {
+    //die('aqui');
 
       $variables = yii::$app->request->post('id');
 
@@ -201,9 +202,13 @@ class DeudasContribuyenteController extends Controller
        
           // Se buscan todas la planilla que cumplan con esta condicion
           $html = self::actionGetViewDeudaObjeto($jsonObj->{'impuesto'});
-     } 
+     } elseif ( $jsonObj->{'impuesto'} == 4 ) {
+     
+       
+          // Se buscan todas la planilla que cumplan con esta condicion
+          $html = self::actionGetViewDeudaObjeto($jsonObj->{'impuesto'});
 
-
+     }
     
       return $html;
       
@@ -248,7 +253,7 @@ class DeudasContribuyenteController extends Controller
 
           }
 
-            
+            $_SESSION['datosPdf'] = $array;
               $dataProvider = new ArrayDataProvider([
                   'allModels' => $array,
                  // 'Models' => $st,
@@ -309,6 +314,7 @@ class DeudasContribuyenteController extends Controller
 
           }
 
+              $_SESSION['datosPdf'] = $array;
             
               $dataProvider = new ArrayDataProvider([
                   'allModels' => $array,
@@ -389,7 +395,20 @@ class DeudasContribuyenteController extends Controller
                 $html = self::actionGetViewDeudaEspecifica($jsonObj->{'impuesto'}, 0, '>');
             
             }elseif($jsonObj->{'tipo'} == 'periodo=0'){
-              die('igual');
+              //die('igual');
+                $html = self::actionGetViewDeudaPlanilla($jsonObj->{'impuesto'},0 , '=');
+            }
+
+         }elseif ( $jsonObj->{'impuesto'} == 4){
+          //die('hola');
+
+            if($jsonObj->{'tipo'} == 'periodo>0'){
+              //die('mayor');
+
+                $html = self::actionGetViewDeudaEspecifica($jsonObj->{'impuesto'}, $jsonObj->{'id_impuesto'}, '>');
+            
+            }elseif($jsonObj->{'tipo'} == 'periodo=0'){
+              //die('igual');
                 $html = self::actionGetViewDeudaPlanilla($jsonObj->{'impuesto'},0 , '=');
             }
 
@@ -428,7 +447,7 @@ class DeudasContribuyenteController extends Controller
       }
      // die(var_dump($buscarDatos));
       $provider = $model->getDetalleDeudaObjetoPorPlanilla($impuesto, $idImpuesto, $tipo);
-  //die(var_dump($provider));
+ // die(var_dump($provider));
           foreach($provider as $key=>$value){
 
              
@@ -454,6 +473,8 @@ class DeudasContribuyenteController extends Controller
               ]; 
 
           }
+
+            $_SESSION['datosPdf'] = $array;
 
             
               $dataProvider = new ArrayDataProvider([
@@ -493,7 +514,7 @@ class DeudasContribuyenteController extends Controller
       $caption = Yii::t('frontend', 'Deuda Especifica por Objeto');
     
       $provider = $model->getDetalleDeudaObjetoPorPlanilla($impuesto, $idImpuesto, $tipo);
-      die(var_dump($provider));
+    //  die(var_dump($provider).'hola');
           foreach($provider as $key=>$value){
 
              
@@ -501,9 +522,9 @@ class DeudasContribuyenteController extends Controller
       
 
               $array[] = [
-
+              'descripcion' => $value['descripcion'],
               'planilla' => $value['planilla'],
-              'impuesto' => $value['descripcion'],
+              'impuesto' => $value['descripcion_impuesto'],
              // 'ano_impositivo' => $value['ano_impositivo'],
             //  'trimestre' => $value['trimestre'],
               'monto' => $value['tmonto'],
@@ -519,6 +540,7 @@ class DeudasContribuyenteController extends Controller
 
           }
 
+              $_SESSION['datosPdf'] = $array;
             
               $dataProvider = new ArrayDataProvider([
                   'allModels' => $array,
@@ -532,7 +554,7 @@ class DeudasContribuyenteController extends Controller
             
               ]);
 
-              return $this->render('/deudas/deudascontribuyente/view-deuda-especifica', [
+              return $this->render('/deudas/deudascontribuyente/view-deuda-objeto-tasa', [
                 'dataProvider' => $dataProvider,
           
 
@@ -541,20 +563,54 @@ class DeudasContribuyenteController extends Controller
     }
 
     public function actionGenerarPdfDeudaEspecifica(){
+      $datos = $_SESSION['datosPdf'];
+      //die(var_dump($_SESSION['datosPdf']).'hola');
 
-       $pdf = new Pdf([
-        'mode' => Pdf::MODE_CORE, // leaner size using standard fonts
-        'content' => $this->renderPartial('/deudas/deudascontribuyente/prueba'),
-        'options' => [
-            'title' => 'Privacy Policy - Krajee.com',
-            'subject' => 'Generating PDF files via yii2-mpdf extension has never been easy'
-        ],
-        'methods' => [
-            'SetHeader' => ['Generated By: Krajee Pdf Component||Generated On: ' . date("r")],
-            'SetFooter' => ['|Page {PAGENO}|'],
-        ]
-    ]);
-    return $pdf->render();
+      
+
+        $mpdf=new mPDF();
+
+            $htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/deudas/layout-deuda-especifica-pdf', [
+                                                            'caption' => 'Deuda Especifica',
+                                                            'datos' => $datos,
+                                                            'target'=>'_blank',
+
+                                    ]);
+
+       
+
+        $mpdf->WriteHTML($htmlEncabezado);
+
+        $mpdf->Output();
+
+        exit;
+
+    }
+
+
+    public function actionGenerarPdfDeudaTasa(){
+      $datos = $_SESSION['datosPdf'];
+      //die(var_dump($_SESSION['datosPdf']).'hola');
+
+      
+
+        $mpdf=new mPDF();
+
+            $htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/deudas/layout-deuda-tasa', [
+                                                            'caption' => 'Deuda Especifica',
+                                                            'datos' => $datos,
+                                                            'target'=>'_blank',
+
+                                    ]);
+
+       
+
+        $mpdf->WriteHTML($htmlEncabezado);
+
+        $mpdf->Output();
+
+        exit;
+
     }
   
 
@@ -562,7 +618,7 @@ class DeudasContribuyenteController extends Controller
 
    
    
- 
+  
 
 
 }
