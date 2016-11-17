@@ -182,7 +182,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                                                             'resumen'=> $_SESSION['datos'],
                                                             'tipoDeclaracion' => 'ESTIMADA',
                                                             'periodoFiscal' => $periodoFiscal,
-                                    ]);               
+                                    ]);                
 
 
             // Informacion de las cuotas por cobrar.
