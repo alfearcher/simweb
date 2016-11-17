@@ -94,6 +94,7 @@
 		text-align: center;
 		font-weight: bold;
 		font-size: 100%;
+		font-family: Arial, Helvetica, sans-serif;
 	}
 
 	caption {
