@@ -60,11 +60,14 @@
 	use common\conexion\ConexionController;
 	use common\models\contribuyente\ContribuyenteBase;
 	use common\models\historico\cvbrecibo\GenerarValidadorRecibo;
+	use common\models\historico\cvbrecibo\HistoricoCodigoValidadorBancarioForm;
 
 	use mPDF;
 
 
-	/***/
+	/**
+	 * Clase controller que gestiona la emision del comprobante de recibo de pago en pdf
+	 */
 	class DepositoController extends Controller
 	{
 		public $layout = 'layout-main';				//	Layout principal del formulario
@@ -122,6 +125,11 @@
             // Se determina el codigo validador bancario del recibo.
             $validador = New GenerarValidadorRecibo($deposito);
             $cvb = $validador->getCodigoValidadorRecibo();
+
+            // Se guarda el historico del documento.
+            $historico = New HistoricoCodigoValidadorBancarioForm($deposito);
+            $historico->guardarHistorico('Se genero cvb ' . $cvb . ', antes de emitir el pdf del recibo');
+
 
             $htmlIdentidadPago = $this->renderPartial('@common/views/plantilla-pdf/recibo/layout-identidad-pago-pdf', [
             												'model' => $deposito,
