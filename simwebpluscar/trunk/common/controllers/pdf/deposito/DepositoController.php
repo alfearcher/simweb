@@ -157,13 +157,14 @@
 
 
             // Nombre del archivo.
-	        $nombrePDF = 'RC-' . $this->_id_contribuyente . '-' . $this->_recibo . '-' . $this->_nro_control;
-	        $nombre = $nombrePDF;
-	        $nombrePDF .= '.pdf';
+	        $nombrePDF = self::actionGenerarNombreArchivo($deposito);
+	        if ( trim($nombrePDF) !== '' ) {
+	        	$nombre = $nombrePDF . '.pdf';
+	        }
 
 	        $mpdf = new mPDF;
 
-	        $mpdf->SetHeader($nombre);
+	        $mpdf->SetHeader($nombrePDF);
 	        $mpdf->WriteHTML($htmlEncabezado);
 	        $mpdf->WriteHTML($htmlContribuyente);
 	        $mpdf->WriteHTML($htmlIdentidadPago);
@@ -184,8 +185,43 @@
 	       $mpdf->WriteFixedPosHTML($htmlQR, 100, 220, 120, 30);
 
 
-	       $mpdf->Output($nombrePDF, 'I');
+	       $mpdf->Output($nombre, 'I');
 	       exit;
+		}
+
+
+
+		/**
+		 * Metodo que arma el nombre del archivo del recibo. Archivo PDF.
+		 * @param  Deposito $model modelo de tipo clase "Deposito".
+		 * @return string retorna un nombre que se utilizara como nombre de
+		 * archivo para el PDF.
+		 */
+		private function actionGenerarNombreArchivo($model)
+		{
+			$ceroAgregado = '0000000';
+			$codigo = 'RC';
+			$nombrePDF = $codigo . '-';
+			$preSerial = '';
+			$serial = '';
+			$parametros = [
+				'recibo' => 7,
+				'id_contribuyente' => 6,
+				'nro_control' => 6,
+			];
+
+			foreach ( $parametros as $key => $value ) {
+				if ( isset($model->$key) ) {
+					$preSerial = '';
+					$serial = '';
+					$preSerial = $ceroAgregado . $model->$key;
+					$serial = substr($preSerial, -($value));
+					$nombrePDF = $nombrePDF . '-' . $serial;
+				} else {
+					$nombrePDF = '';
+				}
+			}
+			return $nombrePDF;
 		}
 
 
