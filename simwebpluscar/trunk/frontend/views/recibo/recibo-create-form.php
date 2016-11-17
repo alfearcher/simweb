@@ -42,7 +42,6 @@
 	use yii\widgets\ActiveForm;
 	use yii\web\View;
 	use yii\widgets\Pjax;
-	//use common\models\contribuyente\ContribuyenteBase;
 	use yii\widgets\DetailView;
 	use yii\widgets\MaskedInput;
 
