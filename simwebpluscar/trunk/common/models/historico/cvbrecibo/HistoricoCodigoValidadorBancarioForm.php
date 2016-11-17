@@ -120,7 +120,7 @@
 			// Aqui se define quien esta generando el historico.
 			$arregloDatos['cvb'] = $this->_validador->getCodigoValidadorRecibo();
 			$arregloDatos['usuario'] = Yii::$app->identidad->getUsuario();
-			$arregloDatos['fecha_hora'] = date('Y-m-d');
+			$arregloDatos['fecha_hora'] = date('Y-m-d H:i:s');
 			$arregloDatos['inactivo'] = 0;
 			$arregloDatos['observacion'] = $observacion;
 
