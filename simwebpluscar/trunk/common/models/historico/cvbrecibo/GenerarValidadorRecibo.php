@@ -170,12 +170,13 @@
 			// se debe quitar los separadores de punto y decimales del monto.
 			// El resultado debe ser una cadena de digito.
 			$cadena = str_replace(".", "", $monto);
-			$cadena = str_replace(".", "", $cadena);
+			$cadena = str_replace(",", "", $cadena);
 
 			$digito = self::getDigitoControlNumero($cadena);
 			$long = self::getLongitud($cadena);
 
 			$this->_codigoMonto = $digito . $long;
+
 		}
 
 
@@ -199,6 +200,7 @@
 			$long = self::getLongitud($cadena);
 
 			$this->_codigoFechaVcto = $digito . $long;
+
 		}
 
 

@@ -40,7 +40,7 @@
  *
  */
 
-	namespace commmon\models\historico\cvbrecibo;
+	namespace common\models\historico\cvbrecibo;
 
  	use Yii;
 	use yii\base\Model;
@@ -72,6 +72,7 @@
 		{
 			return 'historico_cvb';
 		}
+
 
 
 	}

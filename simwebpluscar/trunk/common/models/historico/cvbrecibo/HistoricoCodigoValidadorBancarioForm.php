@@ -46,6 +46,8 @@
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 	use common\models\historico\cvbrecibo\HistoricoCodigoValidadorBancario;
+	use common\conexion\ConexionController;
+	use common\models\historico\cvbrecibo\GenerarValidadorRecibo;
 
 
 	/**
@@ -54,24 +56,86 @@
 	* que se genere y el mismo se guardara en un historico con otros datos
 	* que sirvieron para generar dicho cvb.
 	*/
-	class HistoricoCodigoValidadorBancarioForm
+	class HistoricoCodigoValidadorBancarioForm extends HistoricoCodigoValidadorBancario
 	{
 
 		/**
-		 * recibo de pago
-		 * @var integer
+		 * modelo del tipo clase "Deposito"
+		 * @var clase Deposito
 		 */
-		private $_recibo;
+		private $_model;
+
+		private $_conexion;
+		private $_conn;
+		private $_transaccion;
+		private $_validador;
+
+
 
 
 		/**
 		 * Constructor de la clase
-		 * @param integer $recibo recibo de pago.
+		 * @param Deposito $model modelo de la clase Deposito.
 		 */
-		public function __construct($recibo)
+		public function __construct($model)
 		{
+			$this->_model = $model;
+			$this->_conexion = New ConexionController();
 
+  			// Instancia de conexion hacia la base de datos.
+  			$this->_conn = $this->_conexion->initConectar('db');
+
+  			// Instancia del generador de codigo validador bancario.
+  			$this->_validador = New GenerarValidadorRecibo($this->_model);
 		}
+
+
+
+
+		/**
+		 * Metodo que guarda el historico
+		 * @param string $observacion observaciones que se crea conveniente guardar.
+		 * @return boolean retorna un true si guarda o un false en caso contrario.
+		 */
+		public function guardarHistorico($observacion = '')
+		{
+			$result = false;
+			$this->_conn->open();
+
+			// Instancia de tipo transaccion para asegurar la integridad del resguardo de los datos.
+  			// Inicio de la transaccion.
+			$this->_transaccion = $this->_conn->beginTransaction();
+
+			$tabla = $this->tableName();
+
+			$arregloDatos = $this->attributes;
+
+			// Se recorre los atributo de la entidad del historico
+			foreach ( $this->attributes as $key => $value ) {
+				if ( isset($this->_model->attributes[$key]) ) {
+					$arregloDatos[$key] = $this->_model->attributes[$key];
+				}
+			}
+
+			// Aqui se define quien esta generando el historico.
+			$arregloDatos['cvb'] = $this->_validador->getCodigoValidadorRecibo();
+			$arregloDatos['usuario'] = Yii::$app->identidad->getUsuario();
+			$arregloDatos['fecha_hora'] = date('Y-m-d');
+			$arregloDatos['inactivo'] = 0;
+			$arregloDatos['observacion'] = $observacion;
+
+			if ( $this->_conexion->guardarRegistro($this->_conn, $tabla, $arregloDatos) ) {
+				$this->_transaccion->commit();
+				$result = true;
+			} else {
+				$this->_transaccion->rollBack();
+			}
+
+			$this->_conn->close();
+			return $result;
+		}
+
+
 
 	}
 
