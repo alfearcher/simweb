@@ -165,7 +165,7 @@
 		 */
 		private function generarCodigoMonto()
 		{
-			$monto = $this->_model->monto;
+			$monto = number_format($this->_model->monto, 2);
 
 			// se debe quitar los separadores de punto y decimales del monto.
 			// El resultado debe ser una cadena de digito.
