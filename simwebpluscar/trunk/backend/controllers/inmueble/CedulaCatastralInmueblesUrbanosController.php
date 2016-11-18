@@ -133,7 +133,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
         return $this->render('view', [
             'model' => $datos,
-        ]);
+        ]); 
         }  else {
                     echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
         }
@@ -182,7 +182,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                                                             'resumen'=> $_SESSION['datos'],
                                                             'tipoDeclaracion' => 'ESTIMADA',
                                                             'periodoFiscal' => $periodoFiscal,
-                                    ]);                
+                                    ]);                   
 
 
             // Informacion de las cuotas por cobrar.
