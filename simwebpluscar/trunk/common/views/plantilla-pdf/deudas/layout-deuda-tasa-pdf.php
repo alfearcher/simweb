@@ -67,16 +67,16 @@
 
 
 	<tr>
-		<td class="label-caption" colspan="5"><?=Html::encode('ID del Objeto'); ?></td>
-			<td class="info-declaracion-principal" colspan="3"><?=Html::encode($datos[0]['id_impuesto']); ?></td>
+		<td class="label-caption" colspan="7"><?=Html::encode('Planilla'); ?></td>
+			<td class="info-declaracion-principal" colspan="3"><?=Html::encode($datos[0]['planilla']); ?></td>
 	</tr>
 	<tr>
-		<td class="label-caption" colspan="5"><?=Html::encode('Informacion del Objeto'); ?></td>
-		<td class="info-declaracion-principal" colspan="3"><?=Html::encode($datos[0]['descripcion']); ?></td>
+		<td class="label-caption" colspan="7"><?=Html::encode('Informacion de la Tasa'); ?></td>
+		<td class="info-declaracion-principal" colspan="3"><?=Html::encode($datos[0]['impuesto']); ?></td>
 	</tr>
 	<tr>
-		<td class="label-caption" colspan="5"><?=Html::encode('Nro. Planilla'); ?></td>
-		<td class="info-declaracion-principal" colspan="3"><?=Html::encode($datos[0]['planilla']); ?></td>
+		<td class="label-caption" colspan="7"><?=Html::encode('Año Impositivo'); ?></td>
+		<td class="info-declaracion-principal" colspan="3"><?=Html::encode($datos[0]['ano_impositivo']); ?></td>
 	</tr>
 
 
@@ -86,7 +86,7 @@
 	</tr>
 	<tr>
 		<td class="label-causado" colspan="6"><?=Html::encode('MONTO TOTAL:'); ?></th>
-		<td class="monto-causado" colspan="4"><?=Html::encode(Yii::$app->formatter->asDecimal($datos[0]['monto_total']).' Bs.F'); ?></td>
+		<td class="monto-causado" colspan="4"><?=Html::encode(Yii::$app->formatter->asDecimal($datos[0]['monto']).' Bs.F'); ?></td>
 	</tr>
 
 
@@ -94,6 +94,11 @@
 
 
 <style type="text/css">
+
+  .info-declaracion-principal{
+
+    margin-left:-100px;
+  }
 
 	.label-caption {
 		border-bottom: solid 0.5px #000;
