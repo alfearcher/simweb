@@ -65,6 +65,7 @@
 		public $usuario_creador;
 		public $fecha_hora_creacion;
 		public $fecha_hora_proceso;
+		public $fecha_vcto;
 
 		public $totalSeleccionado;
 		public $fechaCreacion;
@@ -103,7 +104,7 @@
 	        	[['estatus'], 'default', 'value' => 0],
 	        	[['ultima_impresion', 'fecha_hora_proceso'],
 	        	  'default', 'value' => '0000-00-00 00:00:00'],
-	        	[['fecha_hora_creacion', 'proceso',],
+	        	[['fecha_hora_creacion', 'proceso', 'fecha_vcto'],
 	        	  'default', 'value' => date('Y-m-d H:i:s')],
 	        	[['monto'], 'double'],
 
