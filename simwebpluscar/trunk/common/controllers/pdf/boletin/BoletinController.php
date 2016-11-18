@@ -145,8 +145,6 @@
             $nombre = $nombrePDF;
             $nombrePDF .= '.pdf';
 
-            //$html = $htmlEncabezado . $htmlContribuyente . $htmlDeclaracion . $htmlCobro . $htmlPiePagina;
-
             $mpdf = new mPDF;
 
             $mpdf->SetHeader($nombre);
@@ -154,7 +152,8 @@
             $mpdf->WriteHTML($htmlContribuyente);
             $mpdf->WriteHTML($htmlDeclaracion);
             $mpdf->WriteHTML($htmlCobro);
-            $mpdf->SetHTMLFooter($htmlPiePagina);
+            //$mpdf->SetHTMLFooter($htmlPiePagina);
+            $mpdf->WriteFixedPosHTML($htmlPiePagina, 15, 220, 180, 30);
 
             $mpdf->Output($nombrePDF, 'I');
             exit;
@@ -234,7 +233,8 @@
             $mpdf->WriteHTML($htmlContribuyente);
             $mpdf->WriteHTML($htmlDeclaracion);
             $mpdf->WriteHTML($htmlCobro);
-            $mpdf->SetHTMLFooter($htmlPiePagina);
+            //$mpdf->SetHTMLFooter($htmlPiePagina);
+            $mpdf->WriteFixedPosHTML($htmlPiePagina, 15, 220, 180, 30);
 
            // $mpdf->WriteHTML($html);
             $mpdf->Output($nombrePDF, 'I');
