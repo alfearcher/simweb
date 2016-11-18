@@ -22,7 +22,7 @@
  */
 
  /**
- *  @file pre-view-recibo-create-form.php
+ *  @file lista-recibo.php
  *
  *  @author Jose Rafael Perez Teran
  *
