@@ -214,8 +214,8 @@
             $mpdf->WriteHTML($htmlContribuyente);
             $mpdf->WriteHTML($htmlTexto);
 
-            $mpdf->SetHTMLFooter($htmlPiePagina);
-
+            //$mpdf->SetHTMLFooter($htmlPiePagina);
+            $mpdf->WriteFixedPosHTML($htmlPiePagina, 15, 220, 180, 30);
             $mpdf->Output($nombrePDF, 'I');
             exit;
 
@@ -283,8 +283,8 @@
             $mpdf->WriteHTML($htmlContribuyente);
             $mpdf->WriteHTML($htmlTexto);
 
-            $mpdf->SetHTMLFooter($htmlPiePagina);
-
+            //$mpdf->SetHTMLFooter($htmlPiePagina);
+            $mpdf->WriteFixedPosHTML($htmlPiePagina, 15, 220, 180, 30);
             $mpdf->Output($nombrePDF, 'I');
             exit;
 
@@ -370,8 +370,8 @@
             $mpdf->WriteHTML($htmlContribuyente);
             $mpdf->WriteHTML($htmlDeclaracion);
 
-            $mpdf->SetHTMLFooter($htmlPiePagina);
-
+            //$mpdf->SetHTMLFooter($htmlPiePagina);
+            $mpdf->WriteFixedPosHTML($htmlPiePagina, 15, 220, 180, 30);
             $mpdf->Output($nombrePDF, 'I');
             exit;
         }
@@ -458,8 +458,8 @@
             $mpdf->WriteHTML($htmlContribuyente);
             $mpdf->WriteHTML($htmlDeclaracion);
 
-            $mpdf->SetHTMLFooter($htmlPiePagina);
-
+            //$mpdf->SetHTMLFooter($htmlPiePagina);
+            $mpdf->WriteFixedPosHTML($htmlPiePagina, 15, 220, 180, 30);
             $mpdf->Output($nombrePDF, 'I');
             exit;
         }
