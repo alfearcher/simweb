@@ -58,6 +58,7 @@ use backend\models\presupuesto\cargarpresupuesto\registrar\CargarPresupuestoForm
 use common\models\deuda\DeudaSearch;
 use backend\models\deudas\deudascontribuyente\DeudasContribuyenteForm;
 use yii\data\ArrayDataProvider;
+use common\models\contribuyente\ContribuyenteBase;
 use mPDF;
 /**
  * Site controller
@@ -570,10 +571,20 @@ class DeudasContribuyenteController extends Controller
 
         $mpdf=new mPDF();
 
+       
+        $modelo = ContribuyenteBase::findOne([$_SESSION['idContribuyente']]);
+
         $htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/layout/layout-encabezado-pdf', [
 
 
                                 ]);
+
+        $htmlContribuyente = $this->renderPartial('@common/views/plantilla-pdf/layout/layout-contribuyente-pdf', [
+                                                  'model' => $modelo,
+
+                                ]);
+
+
 
 
         $htmlCuerpo = $this->renderPartial('@common/views/plantilla-pdf/deudas/layout-deuda-especifica-pdf', [
@@ -592,6 +603,7 @@ class DeudasContribuyenteController extends Controller
 
 
         $mpdf->WriteHTML($htmlEncabezado);
+        $mpdf->WriteHTML($htmlContribuyente);
         $mpdf->WriteHTML($htmlCuerpo);
         $mpdf->WriteHTML($htmlPiePagina);
         $mpdf->Output();
@@ -609,9 +621,18 @@ class DeudasContribuyenteController extends Controller
 
         $mpdf=new mPDF();
 
+        $modelo = ContribuyenteBase::findOne([$_SESSION['idContribuyente']]);
 
         $htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/layout/layout-encabezado-pdf', [
 
+
+                                ]);
+
+
+
+
+         $htmlContribuyente = $this->renderPartial('@common/views/plantilla-pdf/layout/layout-contribuyente-pdf', [
+                                                  'model' => $modelo,
 
                                 ]);
 
@@ -637,6 +658,62 @@ class DeudasContribuyenteController extends Controller
 
 
         $mpdf->WriteHTML($htmlEncabezado);
+        $mpdf->WriteHTML($htmlContribuyente);
+        $mpdf->WriteHTML($htmlCuerpo);
+        $mpdf->WriteHTML($htmlPiePagina);
+
+        $mpdf->Output();
+
+        exit;
+
+    }
+
+
+
+    public function actionGenerarPdfDeudaEspecificaTasa(){
+      $datos = $_SESSION['datosPdf'];
+      //die(var_dump($_SESSION['datosPdf']).'hola');
+
+
+
+        $mpdf=new mPDF();
+
+        $modelo = ContribuyenteBase::findOne([$_SESSION['idContribuyente']]);
+
+        $htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/layout/layout-encabezado-pdf', [
+
+
+                                ]);
+
+
+        $htmlContribuyente = $this->renderPartial('@common/views/plantilla-pdf/layout/layout-contribuyente-pdf', [
+                                                  'model' => $modelo,
+
+                                ]);
+
+
+        $htmlCuerpo = $this->renderPartial('@common/views/plantilla-pdf/deudas/layout-deuda-especifica-tasa-pdf', [
+
+                                                            'datos' => $datos,
+
+
+                                    ]);
+
+
+        $htmlPiePagina = $this->renderPartial('@common/views/plantilla-pdf/deudas/layout-piepagina-pdf', [
+
+
+
+
+        ]);
+
+
+
+
+
+
+        $mpdf->WriteHTML($htmlEncabezado);
+        $mpdf->WriteHTML($htmlContribuyente);
         $mpdf->WriteHTML($htmlCuerpo);
         $mpdf->WriteHTML($htmlPiePagina);
 
