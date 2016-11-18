@@ -6,42 +6,42 @@
  */
 
  /**
- * 
- *  > This library is free software; you can redistribute it and/or modify it under 
- *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free 
- *  > Software Foundation; either version 2 of the Licence, or (at your opinion) 
+ *
+ *  > This library is free software; you can redistribute it and/or modify it under
+ *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free
+ *  > Software Foundation; either version 2 of the Licence, or (at your opinion)
  *  > any later version.
- *  > 
- *  > This library is distributed in the hope that it will be usefull, 
- *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability 
- *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence 
+ *  >
+ *  > This library is distributed in the hope that it will be usefull,
+ *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability
+ *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence
  *  > for more details.
- *  > 
+ *  >
  *  > See [LICENSE.TXT](../../LICENSE.TXT) file for more information.
  *
  */
 
- /**    
+ /**
  *  @file DeudasContribuyenteController.php
- *  
+ *
  *  @author Manuel Alejandro Zapata Canelon
- * 
+ *
  *  @date 25/10/16
- * 
+ *
  *  @class DeudasContribuyenteController
  *  @brief Controlador que renderiza la vista el detalle de las deudas de un contribuyente
- *  
- * 
- *  
- *  
+ *
+ *
+ *
+ *
  *  @property
  *
  *
- *  
+ *
  *
  *  @inherits
- *  
- */ 
+ *
+ */
 
 namespace backend\controllers\deudas\deudascontribuyente;
 
@@ -73,7 +73,7 @@ session_start();
 
 class DeudasContribuyenteController extends Controller
 {
-  
+
   public $layout = 'layout-main';
 
   /**
@@ -81,11 +81,11 @@ class DeudasContribuyenteController extends Controller
    * @return [type] [description] renderizacion de vista con deudas del contribuyente
    */
   public function actionVerificarDeudasContribuyente()
-  { 
-      
+  {
 
-      if (isset($_SESSION['idContribuyente'])){ 
-        
+
+      if (isset($_SESSION['idContribuyente'])){
+
         $idContribuyente = $_SESSION['idContribuyente'];
         //die('hay uno seteado');
 
@@ -93,58 +93,58 @@ class DeudasContribuyenteController extends Controller
 
       $dataProvider = $model->getDeudaGeneralPorImpuesto();
      // die(var_dump($dataProvider));
-     
-        if($dataProvider == null) { 
-         
+
+        if($dataProvider == null) {
+
             return MensajeController::actionMensaje(501);
-        }else{  
+        }else{
       foreach($dataProvider as $key=>$value){
 
-    
-      
+
+
 
         $array[] = [
           'impuesto' => $value['impuesto'],
           'descripcion' => $value['descripcion'],
           'monto' => $value['t'],
-        ]; 
+        ];
 
       }
 
-     
+
 
 
       //die(var_dump($st));
      // die(var_dump($array));
 
-     
+
         $dataProvider = new ArrayDataProvider([
             'allModels' => $array,
            // 'Models' => $st,
             'sort' => [
-                 
-            
-            
+
+
+
             ],
-          
-            
+
+
         ]);
 
           return $this->render('/deudas/deudascontribuyente/view-deuda-general', [
             'dataProvider' => $dataProvider,
-          
+
 
             ]);
 
           }
-      
+
       }else{
 
         return MensajeController::actionMensaje(938);
 
-     
+
      }
-  
+
   }
 
 /**
@@ -172,46 +172,46 @@ class DeudasContribuyenteController extends Controller
         $html = self::actionGetViewDeudaTasa($jsonObj->{'impuesto'});
 
       } elseif ( $jsonObj->{'impuesto'} == 10 ) {
-       
+
           // Se buscan todas la planilla que cumplan con esta condicion
           $html = self::actionGetViewDeudaTasa($jsonObj->{'impuesto'});
 
       } elseif ( $jsonObj->{'impuesto'} == 11 ) {
-       
+
           // Se buscan todas la planilla que cumplan con esta condicion
           $html = self::actionGetViewDeudaTasa($jsonObj->{'impuesto'});
 
       } elseif ( $jsonObj->{'impuesto'} == 1 ) {
-       
+
           // Se buscan todas la planilla que cumplan con esta condicion
           $html = self::actionGetViewDeudaObjeto($jsonObj->{'impuesto'});
-      
+
      } elseif ( $jsonObj->{'impuesto'} == 3 ) {
     // die('bueno');
-       
+
           // Se buscan todas la planilla que cumplan con esta condicion
           $html = self::actionGetViewDeudaObjeto($jsonObj->{'impuesto'});
-     
+
      } elseif ( $jsonObj->{'impuesto'} == 2 ) {
      // die('bueno');
-       
+
           // Se buscan todas la planilla que cumplan con esta condicion
           $html = self::actionGetViewDeudaObjeto($jsonObj->{'impuesto'});
      } elseif ( $jsonObj->{'impuesto'} == 12 ) {
      // die('bueno');
-       
+
           // Se buscan todas la planilla que cumplan con esta condicion
           $html = self::actionGetViewDeudaObjeto($jsonObj->{'impuesto'});
      } elseif ( $jsonObj->{'impuesto'} == 4 ) {
-     
-       
+
+
           // Se buscan todas la planilla que cumplan con esta condicion
           $html = self::actionGetViewDeudaObjeto($jsonObj->{'impuesto'});
 
      }
-    
+
       return $html;
-      
+
   }
 
     /**
@@ -220,7 +220,7 @@ class DeudasContribuyenteController extends Controller
      * @return [type]           [description] retorna la vista
      */
     public function actionGetViewDeudaTasa($impuesto)
-    { 
+    {
 
       $monto = 0;
       $recargo = 0;
@@ -233,14 +233,14 @@ class DeudasContribuyenteController extends Controller
 
       $model = new DeudaSearch($idContribuyente);
       $caption = Yii::t('frontend', 'Deuda segun Impuesto');
-     
+
       $provider = $model->getDetalleDeudaTasa($impuesto);
     // die(var_dump($provider));
           foreach($provider as $key=>$value){
 
               $monto = ($value['monto'] + $value['recargo'] + $value['interes']) - ($value['descuento'] - $value['monto_reconocimiento']);
 
-      
+
 
               $array[] = [
               'planilla' => $value['pagos']['planilla'],
@@ -249,7 +249,7 @@ class DeudasContribuyenteController extends Controller
               'periodo' => $value['trimestre'],
               'unidad' => $value['exigibilidad']['unidad'],
               'monto' => $monto,
-              ]; 
+              ];
 
           }
 
@@ -258,17 +258,17 @@ class DeudasContribuyenteController extends Controller
                   'allModels' => $array,
                  // 'Models' => $st,
                   'sort' => [
-                 
-            
-            
+
+
+
                   ],
-          
-            
+
+
               ]);
 
               return $this->render('/deudas/deudascontribuyente/view-deuda-especifica-tasa', [
                 'dataProvider' => $dataProvider,
-          
+
 
               ]);
     }
@@ -279,7 +279,7 @@ class DeudasContribuyenteController extends Controller
      * @return [type]           [description] retorna la vista con la deuda
      */
     public function actionGetViewDeudaObjeto($impuesto)
-    { 
+    {
 
       $monto = 0;
       $recargo = 0;
@@ -292,17 +292,17 @@ class DeudasContribuyenteController extends Controller
 
       $model = new DeudaSearch($idContribuyente);
       $caption = Yii::t('frontend', 'Deuda segun Impuesto');
-    
+
       $provider = $model->getDeudaPorImpuestoPeriodo($impuesto);
       //die(var_dump($provider));
-      if ($provider == 0){ 
+      if ($provider == 0){
           //die('hjola');
-      }else{  
+      }else{
           foreach($provider as $key=>$value){
 
-             
 
-      
+
+
 
               $array[] = [
               'id_impuesto' => $value['id_impuesto'],
@@ -310,27 +310,27 @@ class DeudasContribuyenteController extends Controller
               'descripcion' => $value['descripcion'],
               'monto' => $value['t'],
               'tipo' => $value['tipo'],
-              ]; 
+              ];
 
           }
 
               $_SESSION['datosPdf'] = $array;
-            
+
               $dataProvider = new ArrayDataProvider([
                   'allModels' => $array,
                  // 'Models' => $st,
                   'sort' => [
-                 
-            
-            
+
+
+
                   ],
-          
-            
+
+
               ]);
 
               return $this->render('/deudas/deudascontribuyente/view-deuda-general-vehiculo', [
                 'dataProvider' => $dataProvider,
-          
+
 
               ]);
               }
@@ -351,23 +351,23 @@ class DeudasContribuyenteController extends Controller
 
       if ( $jsonObj->{'impuesto'} == 3 ) {
 
-        if($jsonObj->{'tipo'} == 'periodo>0'){ 
+        if($jsonObj->{'tipo'} == 'periodo>0'){
         //die('es 9');
         $html = self::actionGetViewDeudaEspecifica($jsonObj->{'impuesto'}, $jsonObj->{'id_impuesto'}, '>');
 
-        }elseif ($jsonObj->{'tipo'} == 'periodo=0'){ 
+        }elseif ($jsonObj->{'tipo'} == 'periodo=0'){
 
           $html = self::actionGetViewDeudaPlanilla($jsonObj->{'impuesto'}, 0, '=');
 
-        }  
+        }
 
       } elseif ( $jsonObj->{'impuesto'} == 2 ) {
-       
-           if($jsonObj->{'tipo'} == 'periodo>0'){ 
+
+           if($jsonObj->{'tipo'} == 'periodo>0'){
         //die('es 9');
         $html = self::actionGetViewDeudaEspecifica($jsonObj->{'impuesto'}, $jsonObj->{'id_impuesto'}, '>');
 
-        }elseif ($jsonObj->{'tipo'} == 'periodo=0'){ 
+        }elseif ($jsonObj->{'tipo'} == 'periodo=0'){
 
           $html = self::actionGetViewDeudaPlanilla($jsonObj->{'impuesto'}, 0, '=');
 
@@ -375,12 +375,12 @@ class DeudasContribuyenteController extends Controller
 
       } elseif ( $jsonObj->{'impuesto'} == 12 ) {
 
-            if($jsonObj->{'tipo'} == 'periodo>0'){ 
-       
+            if($jsonObj->{'tipo'} == 'periodo>0'){
+
           // Se buscan todas la planilla que cumplan con esta condicion
          $html = self::actionGetViewDeudaEspecifica($jsonObj->{'impuesto'}, $jsonObj->{'id_impuesto'}, '>');
-            
-            } elseif ($jsonObj->{'tipo'} == 'periodo=0'){ 
+
+            } elseif ($jsonObj->{'tipo'} == 'periodo=0'){
 
           $html = self::actionGetViewDeudaPlanilla($jsonObj->{'impuesto'},0 , '=');
 
@@ -393,7 +393,7 @@ class DeudasContribuyenteController extends Controller
               //die('mayor');
 
                 $html = self::actionGetViewDeudaEspecifica($jsonObj->{'impuesto'}, 0, '>');
-            
+
             }elseif($jsonObj->{'tipo'} == 'periodo=0'){
               //die('igual');
                 $html = self::actionGetViewDeudaPlanilla($jsonObj->{'impuesto'},0 , '=');
@@ -406,14 +406,14 @@ class DeudasContribuyenteController extends Controller
               //die('mayor');
 
                 $html = self::actionGetViewDeudaEspecifica($jsonObj->{'impuesto'}, $jsonObj->{'id_impuesto'}, '>');
-            
+
             }elseif($jsonObj->{'tipo'} == 'periodo=0'){
               //die('igual');
                 $html = self::actionGetViewDeudaPlanilla($jsonObj->{'impuesto'},0 , '=');
             }
 
          }
-    
+
       return $html;
 
     }
@@ -433,7 +433,7 @@ class DeudasContribuyenteController extends Controller
       $model = new DeudaSearch($idContribuyente);
       $caption = Yii::t('frontend', 'Deuda Especifica por Objeto');
       $buscarDatos = $model->getDeudaPorObjetoEspecifico($impuesto, $idImpuesto);
-      
+
       if ($impuesto == 3){
         $descripcion = $buscarDatos[0]['placa'];
       }elseif($impuesto == 2 ){
@@ -450,7 +450,7 @@ class DeudasContribuyenteController extends Controller
  // die(var_dump($provider));
           foreach($provider as $key=>$value){
 
-             
+
             $monto = ($value['tmonto'] + $value['trecargo'] + $value['tinteres']) - ($value['tdescuento'] - $value['tmonto_reconocimiento']);
             $descripcion;
 
@@ -470,29 +470,29 @@ class DeudasContribuyenteController extends Controller
              'monto_reconocimiento' => $value['tmonto_reconocimiento'],
               'monto_total' => $monto,
 
-              ]; 
+              ];
 
           }
 
             $_SESSION['datosPdf'] = $array;
 
-            
+
               $dataProvider = new ArrayDataProvider([
                   'allModels' => $array,
                  // 'Models' => $st,
                   'sort' => [
-                 
-            
-            
+
+
+
                   ],
-          
-            
+
+
               ]);
 
               return $this->render('/deudas/deudascontribuyente/view-deuda-especifica', [
                 'dataProvider' => $dataProvider,
 
-          
+
 
               ]);
     }
@@ -512,14 +512,14 @@ class DeudasContribuyenteController extends Controller
 
       $model = new DeudaSearch($idContribuyente);
       $caption = Yii::t('frontend', 'Deuda Especifica por Objeto');
-    
+
       $provider = $model->getDetalleDeudaObjetoPorPlanilla($impuesto, $idImpuesto, $tipo);
     //  die(var_dump($provider).'hola');
           foreach($provider as $key=>$value){
 
-             
+
             $monto = ($value['tmonto'] + $value['trecargo'] + $value['tinteres']) - ($value['tdescuento'] - $value['tmonto_reconocimiento']);
-      
+
 
               $array[] = [
               'descripcion' => $value['descripcion'],
@@ -536,27 +536,27 @@ class DeudasContribuyenteController extends Controller
            // 'descripcion' => $value['descripcion'],
              'monto_reconocimiento' => $value['tmonto_reconocimiento'],
               'monto_total' => $monto,
-              ]; 
+              ];
 
           }
 
               $_SESSION['datosPdf'] = $array;
-            
+
               $dataProvider = new ArrayDataProvider([
                   'allModels' => $array,
                  // 'Models' => $st,
                   'sort' => [
-                 
-            
-            
+
+
+
                   ],
-          
-            
+
+
               ]);
 
               return $this->render('/deudas/deudascontribuyente/view-deuda-objeto-tasa', [
                 'dataProvider' => $dataProvider,
-          
+
 
               ]);
 
@@ -566,21 +566,34 @@ class DeudasContribuyenteController extends Controller
       $datos = $_SESSION['datosPdf'];
       //die(var_dump($_SESSION['datosPdf']).'hola');
 
-      
+
 
         $mpdf=new mPDF();
 
-            $htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/deudas/layout-deuda-especifica-pdf', [
-                                                            'caption' => 'Deuda Especifica',
+        $htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/layout/layout-encabezado-pdf', [
+
+
+                                ]);
+
+
+        $htmlCuerpo = $this->renderPartial('@common/views/plantilla-pdf/deudas/layout-deuda-especifica-pdf', [
+
                                                             'datos' => $datos,
-                                                            'target'=>'_blank',
+
 
                                     ]);
 
-       
+        $htmlPiePagina = $this->renderPartial('@common/views/plantilla-pdf/deudas/layout-piepagina-pdf', [
+
+
+
+
+        ]);
+
 
         $mpdf->WriteHTML($htmlEncabezado);
-
+        $mpdf->WriteHTML($htmlCuerpo);
+        $mpdf->WriteHTML($htmlPiePagina);
         $mpdf->Output();
 
         exit;
@@ -592,51 +605,71 @@ class DeudasContribuyenteController extends Controller
       $datos = $_SESSION['datosPdf'];
       //die(var_dump($_SESSION['datosPdf']).'hola');
 
-      
+
 
         $mpdf=new mPDF();
 
-            $htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/deudas/layout-deuda-tasa', [
-                                                            'caption' => 'Deuda Especifica',
+
+        $htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/layout/layout-encabezado-pdf', [
+
+
+                                ]);
+
+
+        $htmlCuerpo = $this->renderPartial('@common/views/plantilla-pdf/deudas/layout-deuda-tasa-pdf', [
+
                                                             'datos' => $datos,
-                                                            'target'=>'_blank',
+
 
                                     ]);
 
-       
+
+        $htmlPiePagina = $this->renderPartial('@common/views/plantilla-pdf/deudas/layout-piepagina-pdf', [
+
+
+
+
+        ]);
+
+
+
+
+
 
         $mpdf->WriteHTML($htmlEncabezado);
+        $mpdf->WriteHTML($htmlCuerpo);
+        $mpdf->WriteHTML($htmlPiePagina);
 
         $mpdf->Output();
 
         exit;
 
     }
-  
 
- 
 
-   
-   
-  
+
+
+
+
+
 
 
 }
 
 
 
-    
 
 
 
-    
-
-   
 
 
-    
 
-    
+
+
+
+
+
+
 
 
 
