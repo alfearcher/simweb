@@ -116,7 +116,7 @@ class DeudasContribuyenteController extends Controller
 
 
       //die(var_dump($st));
-     // die(var_dump($array));
+     //die(var_dump($array));
 
 
         $dataProvider = new ArrayDataProvider([
@@ -236,7 +236,7 @@ class DeudasContribuyenteController extends Controller
       $caption = Yii::t('frontend', 'Deuda segun Impuesto');
 
       $provider = $model->getDetalleDeudaTasa($impuesto);
-    // die(var_dump($provider));
+    //die(var_dump($provider));
           foreach($provider as $key=>$value){
 
               $monto = ($value['monto'] + $value['recargo'] + $value['interes']) - ($value['descuento'] - $value['monto_reconocimiento']);
@@ -448,7 +448,7 @@ class DeudasContribuyenteController extends Controller
       }
      // die(var_dump($buscarDatos));
       $provider = $model->getDetalleDeudaObjetoPorPlanilla($impuesto, $idImpuesto, $tipo);
- // die(var_dump($provider));
+ //die(var_dump($provider));
           foreach($provider as $key=>$value){
 
 
@@ -459,7 +459,7 @@ class DeudasContribuyenteController extends Controller
               'id_impuesto' => $value['id_impuesto'],
               'descripcion' => $descripcion,
               'planilla' => $value['planilla'],
-             // 'ano_impositivo' => $value['ano_impositivo'],
+             'ano_impositivo' => $value['ano_impositivo'],
              // 'trimestre' => $value['trimestre'],
               'monto' => $value['tmonto'],
               'descuento' => $value['tdescuento'],
@@ -523,10 +523,11 @@ class DeudasContribuyenteController extends Controller
 
 
               $array[] = [
+
               'descripcion' => $value['descripcion'],
               'planilla' => $value['planilla'],
               'impuesto' => $value['descripcion_impuesto'],
-             // 'ano_impositivo' => $value['ano_impositivo'],
+              'ano_impositivo' => $value['ano_impositivo'],
             //  'trimestre' => $value['trimestre'],
               'monto' => $value['tmonto'],
               'descuento' => $value['tdescuento'],
@@ -571,7 +572,7 @@ class DeudasContribuyenteController extends Controller
 
         $mpdf=new mPDF();
 
-       
+
         $modelo = ContribuyenteBase::findOne([$_SESSION['idContribuyente']]);
 
         $htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/layout/layout-encabezado-pdf', [
