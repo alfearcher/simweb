@@ -70,6 +70,10 @@
 		<td class="label-caption" colspan="5"><?=Html::encode('Nro. Planilla'); ?></td>
 			<td class="info-declaracion-principal" colspan="3"><?=Html::encode($datos[0]['planilla']); ?></td>
 	</tr>
+  <tr>
+    <td class="label-caption" colspan="5"><?=Html::encode('Año Impositivo'); ?></td>
+      <td class="info-declaracion-principal" colspan="3"><?=Html::encode($datos[0]['ano_impositivo']); ?></td>
+  </tr>
 	<tr>
 		<td class="label-caption" colspan="5"><?=Html::encode('Descripcion'); ?></td>
 		<td class="info-declaracion-principal" colspan="3"><?=Html::encode($datos[0]['impuesto']); ?></td>

@@ -70,6 +70,10 @@
 		<td class="label-caption" colspan="5"><?=Html::encode('ID del Objeto'); ?></td>
 			<td class="info-declaracion-principal" colspan="3"><?=Html::encode($datos[0]['id_impuesto']); ?></td>
 	</tr>
+  <tr>
+    <td class="label-caption" colspan="5"><?=Html::encode('Año Impositivo'); ?></td>
+      <td class="info-declaracion-principal" colspan="3"><?=Html::encode($datos[0]['ano_impositivo']); ?></td>
+  </tr>
 	<tr>
 		<td class="label-caption" colspan="5"><?=Html::encode('Informacion del Objeto'); ?></td>
 		<td class="info-declaracion-principal" colspan="3"><?=Html::encode($datos[0]['descripcion']); ?></td>
