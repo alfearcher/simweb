@@ -199,7 +199,7 @@
 		        			'items' => [
 		        						['label' => 'Crear Recibo de Pago', 'url' => ['recibo/recibo/index']],
 		        						['label' => 'Consulta de Recibos', 'url' => ['recibo/recibo-consulta/index']],
-		        						['label' => 'Solicitar Anulación de Recibo', 'url' => '#'],
+		        						['label' => 'Solicitar Anulación de Recibo', 'url' => ['recibo/anular-recibo/index']],
 		        			]
 		        		],
 
