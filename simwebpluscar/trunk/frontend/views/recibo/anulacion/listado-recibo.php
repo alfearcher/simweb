@@ -99,7 +99,7 @@
 									['class' => 'yii\grid\SerialColumn'],
 
 				                    [
-				                    	'class' => 'yii\grid\CheckBoxColumn',
+				                    	'class' => 'yii\grid\CheckboxColumn',
 				                    	'name' => 'chkRecibo',
 
 				                    ],
