@@ -51,25 +51,25 @@ $this->title = Yii::t('frontend', 'Detalle de la Deuda');
        // die(var_dump($st)),
         'columns' => [
            // ['class' => 'yii\grid\SerialColumn'],
-            
+
            // 'id',
            // 'Calcomania',
-                
-                    
-                     // [
-                     // 'label' => 'Impuesto',
-                     // 'value' => function($data){
-                     //     return $data['impuesto'];
-                     // },
-                     // ],
-                     // 
+
+
+                     [
+                     'label' => 'Año Impositivo',
+                     'value' => function($data){
+                         return $data['ano_impositivo'];
+                     },
+                     ],
+
                     [
                      'label' => 'Id. Objeto',
                      'value' => function($data){
-                        
+
                        return $data['id_impuesto'];
 
-                            
+
 
                      },
                      ],
@@ -77,10 +77,10 @@ $this->title = Yii::t('frontend', 'Detalle de la Deuda');
                     [
                      'label' => 'Planilla',
                      'value' => function($data){
-                        
+
                        return $data['planilla'];
 
-                            
+
 
                      },
                      ],
@@ -88,16 +88,16 @@ $this->title = Yii::t('frontend', 'Detalle de la Deuda');
                           [
                      'label' => 'Informacion del Objeto',
                      'value' => function($data){
-                        
+
                        return $data['descripcion'];
 
-                            
+
 
                      },
                      ],
 
 
-              
+
 
                     [
                     'label' => 'Monto',
@@ -190,36 +190,36 @@ $this->title = Yii::t('frontend', 'Detalle de la Deuda');
 
 
 
-           
-             
 
-                       
 
-                        
-            
-          
+
+
+
+
+
+
 
         ]
 ]);
 
- 
-    
+
+
     ?>
 
 
 
    <div class="col-sm-5" >
-    
+
      <?= Html::a('Generar Reporte',['/deudas/deudascontribuyente/deudas-contribuyente/generar-pdf-deuda-especifica'],
         [
          'class'=>'btn btn-success',
          'target'=> '_blank',
          'data-toggle'=>'tooltip',
          //'value' => 'hola',
-        'title'=>'Generate the pdf']); 
+        'title'=>'Generate the pdf']);
 
 
-         ?> 
+         ?>
 
     </div>
 

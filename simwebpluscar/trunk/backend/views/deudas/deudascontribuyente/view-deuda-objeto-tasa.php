@@ -51,27 +51,27 @@ $this->title = Yii::t('frontend', 'Detalle de la Tasa');
        // die(var_dump($st)),
         'columns' => [
            // ['class' => 'yii\grid\SerialColumn'],
-            
+
            // 'id',
            // 'Calcomania',
-                
-                    
-                     // [
-                     // 'label' => 'Impuesto',
-                     // 'value' => function($data){
-                     //     return $data['impuesto'];
-                     // },
-                     // ],
-                     // 
-          
+
+
+                     [
+                     'label' => 'Año Impositivo',
+                     'value' => function($data){
+                         return $data['ano_impositivo'];
+                     },
+                     ],
+
+
 
                     [
                      'label' => 'Planilla',
                      'value' => function($data){
-                        
+
                        return $data['planilla'];
 
-                            
+
 
                      },
                      ],
@@ -79,16 +79,16 @@ $this->title = Yii::t('frontend', 'Detalle de la Tasa');
                           [
                      'label' => 'Informacion del Objeto',
                      'value' => function($data){
-                        
+
                        return $data['descripcion'];
 
-                            
+
 
                      },
                      ],
 
 
-              
+
 
                     [
                     'label' => 'Monto',
@@ -97,7 +97,7 @@ $this->title = Yii::t('frontend', 'Detalle de la Tasa');
                     },
                     ],
 
-                    
+
 
 
                     // [
@@ -153,30 +153,30 @@ $this->title = Yii::t('frontend', 'Detalle de la Tasa');
 
 
 
-           
-             
 
-                       
 
-                        
-            
-          
+
+
+
+
+
+
 
         ]
 ]);
 
- 
-    
+
+
     ?>
 
    <div class="col-sm-5" >
-    
-     <?= Html::a('Generar Reporte',['/deudas/deudascontribuyente/deudas-contribuyente/generar-pdf-deuda-especifica'],
+
+     <?= Html::a('Generar Reporte',['/deudas/deudascontribuyente/deudas-contribuyente/generar-pdf-deuda-especifica-tasa'],
         [
          'class'=>'btn btn-success',
          'target'=> '_blank',
          'data-toggle'=>'tooltip',
-         'title'=>'Generate the pdf']); ?> 
+         'title'=>'Generate the pdf']); ?>
 
     </div>
 
