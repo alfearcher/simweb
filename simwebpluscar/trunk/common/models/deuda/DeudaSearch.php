@@ -838,7 +838,7 @@
 							   	])
 							   ->asArray()
 							   ->all();
-							  
+
 			return $deuda;
 		}
 
@@ -941,7 +941,7 @@
 		}
 
 
-	
+
 
 
 		/**
@@ -981,7 +981,7 @@
 				$deuda = $findModel->select([
 
 										'P.planilla',
-										'P.id_contribuyente',
+                    'P.id_contribuyente',
 										'P.id_pago',
 										'P.ente',
 										'sum(D.monto) as tmonto',
@@ -990,6 +990,7 @@
 										'sum(D.descuento) as tdescuento',
 										'sum(D.monto_reconocimiento) as tmonto_reconocimiento',
 										'D.descripcion',
+                    'D.ano_impositivo',
 										'D.id_impuesto',
 										'D.impuesto',
 										'I.descripcion as descripcion_impuesto',
@@ -1014,6 +1015,7 @@
 				$deuda = $findModel->select([
 										'P.planilla',
 										'P.id_contribuyente',
+
 										'P.id_pago',
 										'P.ente',
 										'sum(D.monto) as tmonto',
@@ -1022,6 +1024,7 @@
 										'sum(D.descuento) as tdescuento',
 										'sum(D.monto_reconocimiento) as tmonto_reconocimiento',
 										'D.descripcion',
+                    'D.ano_impositivo',
 										'D.id_impuesto',
 										'D.impuesto',
 										'I.descripcion as descripcion_impuesto',
@@ -1054,6 +1057,7 @@
 										'sum(D.descuento) as tdescuento',
 										'sum(D.monto_reconocimiento) as tmonto_reconocimiento',
 										'D.descripcion',
+                    'D.ano_impositivo',
 										'D.impuesto',
 										'I.descripcion as descripcion_impuesto',
 										])
