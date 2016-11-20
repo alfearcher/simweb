@@ -57,9 +57,10 @@
 	use common\conexion\ConexionController;
 	use common\models\contribuyente\ContribuyenteBase;
 	use backend\models\recibo\recibo\AnularReciboForm;
-	use backend\models\recibo\deposito\Deposito;
-
-
+	use backend\models\recibo\recibo\AnularReciboSearch;
+	use common\models\configuracion\solicitud\ParametroSolicitud;
+	use common\models\solicitudescontribuyente\SolicitudesContribuyenteForm;
+	use yii\helpers\ArrayHelper;
 
 
 	session_start();		// Iniciando session
@@ -74,85 +75,16 @@
 		private $_transaccion;
 
 
+		const CONFIG = 112;	// Anulacion de recibo
+
 
 		/**
 		 * Metodo que inicia el modulo
 		 * @return
 		 */
-		public function actionIndex1()
-		{
-			// Se verifica que el contribuyente haya iniciado una session.
-			self::actionAnularSession(['begin']);
-			if ( isset($_SESSION['idContribuyente']) ) {
-
-				$request = Yii::$app->request;
-				$postData = $request->post();
-
-				if ( isset($postData['quit']) ) {
-					if ( $postData['quit'] == 1 ) {
-						$this->redirect(['quit']);
-					}
-				}
-
-
-				$model = New AnularReciboForm();
-				$formName = $model->formName();
-
-
-				if ( $model->load($postData)  && Yii::$app->request->isAjax ) {
-					Yii::$app->response->format = Response::FORMAT_JSON;
-					return ActiveForm::validate($model);
-		      	}
-
-		      	$idContribuyente = $_SESSION['idContribuyente'];
-		      	$findModel = ContribuyenteBase::findOne($idContribuyente);
-
-		      	if ( $model->load($postData) ) {
-
-					if ( isset($postData['btn-delete-batch']) ) {
-						if ( $postData['btn-delete-batch'] == 2 ) {
-							if ( $model->validate(['id_contribuyente', 'estatus']) ) {
-
-			      			}
-						}
-					} elseif ( isset($postData['btn-delete-one']) ) {
-						if ( $postData['btn-delete-one'] == 3 ) {
-							if ( $model->validate(['recibo', 'id_contribuyente', 'estatus']) ) {
-
-			      			}
-			      		}
-					}
-				}
-
-				if ( isset($postData['btn-search-recibo']) ) {
-					if ( $postData['btn-search-recibo'] == 5 ) {
-						$this->render('/recibo/anulacion/_view',[
-											'findModel' => $findModel,
-
-							]);
-					}
-				}
-
-
-				if ( count($findModel) > 0 ) {
-					$dataProvider = $model->searchListaDeposito();
-					return $this->render('/recibo/anulacion/_list',[
-													'model' => $deposito,
-													'caption' => 'Lista de Recibos Pendientes',
-													'dataProvider' => $dataProvider,
-						]);
-				}
-
-
-			}
-		}
-
-
-
-		/***/
 		public function actionIndex()
 		{
-			self::actionAnularSession(['recibo']);
+			self::actionAnularSession(['recibo', 'begin']);
 			if ( isset($_SESSION['idContribuyente']) ) {
 
 				$request = Yii::$app->request;
@@ -161,6 +93,7 @@
 				$idContribuyente = $_SESSION['idContribuyente'];
 				$model = New AnularReciboForm();
 				$formName = $model->formName();
+				$model->load($postData);
 
 				if ( isset($postData['btn-quit']) ) {
 					if ( $postData['btn-quit'] == 1 ) {
@@ -184,7 +117,19 @@
 								// Se verifica que esten seleccionados los recibos.
 								if ( isset($postData['chkRecibo']) ) {
 									if ( count($postData['chkRecibo']) > 0 ) {
-die(var_dump($postData['chkRecibo']));
+										$_SESSION['begin'] = 1;
+										$chkRecibo = $postData['chkRecibo'];
+										$depositos =  $model->findListaDeposito($chkRecibo);
+
+										$result = self::actionBeginSave($depositos);
+										if ( $result ) {
+											$this->_transaccion->commit();
+											$this->_conn->close();
+											return self::actionViewSolicitud($depositos);
+										} else {
+											$this->_transaccion->rollBack();
+											$this->_conn->close();
+										}
 									}
 								}
 
@@ -193,10 +138,8 @@ die(var_dump($postData['chkRecibo']));
 					}
 				}
 
-
 				$model->id_contribuyente = $idContribuyente;
 				$model->estatus = 0;
-
 				$dataProvider = $model->searchListaDeposito();
 				return $this->render('/recibo/anulacion/_list',[
 										'model' => $model,
@@ -219,7 +162,7 @@ die(var_dump($postData['chkRecibo']));
 		{
 
 			$request = Yii::$app->request;
-
+			$result = false;
 			if ( isset($_SESSION['recibo']) ) {
 
 				$recibo = (int)$_SESSION['recibo'];
@@ -233,24 +176,26 @@ die(var_dump($postData['chkRecibo']));
 					$model->recibo = $recibo;
 					$model->estatus = 0;
 
-					$dataProvider = $model->searchDepositoPlanilla($recibo);
-
-					$deposito = Deposito::find()->where('recibo =:recibo',[':recibo' => $recibo])
-										        ->joinWith('condicion C', true)
-										        ->one();
-
+					$dataProvider = $model->searchDepositoPlanilla();
+					$deposito = $model->findDeposito();
 
 					if ( $deposito['estatus'] == 0 ) {
+						if ( $dataProvider->getTotalCount() > 0 ) {
+							$_SESSION['begin'] = 1;
+							return $this->render('/recibo/anulacion/recibo-seleccionado',[
+														'model' => $model,
+														'deposito' => $deposito,
+														'dataProvider' => $dataProvider,
+														'caption' => 'Recibo seleccionado ' . $recibo,
+								]);
+						} else {
+							// No se encontraron las planillas asociadas en la tabla respectiva.
 
-						return $this->render('/recibo/anulacion/recibo-seleccionado',[
-												'model' => $model,
-												'deposito' => $deposito,
-												'dataProvider' => $dataProvider,
-												'caption' => 'Recibo seleccionado ' . $recibo,
-							]);
+						}
 					}
 				}
 			} else {
+
 				$request = Yii::$app->request;
 				$postData = $request->post();
 				$model = New AnularReciboForm();
@@ -273,138 +218,26 @@ die(var_dump($postData['chkRecibo']));
 				} elseif ( isset($postData['btn-delete-one']) ) {
 					if ( $postData['btn-delete-one'] ) {
 						// Anular este recibo.
+						if ( isset($_SESSION['begin']) ) {
+							$deposito = $model->findDeposito();
 
-					}
-				}
-			}
+							$result = self::actionBeginSave($deposito);
+							if ( $result ) {
+								$this->_transaccion->commit();
+								$this->_conn->close();
+								self::actionAnularSession(['begin']);
+								return self::actionViewSolicitud($deposito);
 
-
-		}
-
-
-
-
-
-
-		/**
-		 * Metodo que inicia la carga de las planillas y la creacion del recibo
-		 * @return
-		 */
-		public function actionIndexCreate()
-		{
-			// Se verifica que el contribuyente haya iniciado una session.
-
-			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) ) {
-
-				$idContribuyente = $_SESSION['idContribuyente'];
-				$request = Yii::$app->request;
-				$postData = $request->post();
-
-				if ( isset($postData['btn-quit']) ) {
-					if ( $postData['btn-quit'] == 1 ) {
-						$this->redirect(['quit']);
-					}
-				} elseif ( isset($postData['btn-reset']) ) {
-					if ( $postData['btn-reset'] == 9 ) {
-						self::actionAnularSession(['planillaSeleccionadas']);
-					}
-				}
-
-				// Datos generales del contribuyente.
-		      	$searchRecibo = New ReciboSearch($idContribuyente);
-		      	$dataProvider = $searchRecibo->getDataProviderDeuda();
-
-		      	$providerPlanillaSeleccionada = $searchRecibo->initDataPrivider();
-
-				$model = New DepositoForm();
-				$formName = $model->formName();
-
-				$caption = Yii::t('frontend', 'Recibo de Pago. Crear');
-				$subCaption = Yii::t('frontend', 'SubTitulo');
-
-				if ( isset($postData['btn-add-seleccion']) ) {
-					if ( $postData['btn-add-seleccion'] == 3 ) {
-						// Seleccion de las deudas de periodos.
-						$providerPlanillaSeleccionada = self::actionAjustarListaPlanillaSeleccionada($postData);
-
-					} elseif ( $postData['btn-add-seleccion'] == 5 ) {
-						// Seleccion de las deudas por tasa.
-						$providerPlanillaSeleccionada = self::actionAjustarListaPlanillaSeleccionada($postData);
-
-					}
-				} elseif ( isset($postData['btn-create']) ) {
-					if ( $postData['btn-create'] == 1 ) {
-						// Se muestra un pre-view de la informacion seleccionada.
-						$_SESSION['postEnviado'] = $postData;
-						$this->redirect(['mostrar-vista-previa']);
-
-					}
-				} elseif ( isset($postData['btn-confirm-create']) ) {
-					if ( $postData['btn-confirm-create'] == 5 ) {
-
-						if ( $model->load($postData) ) {
-							if ( $model->validate() ) {
-
-								$result = self::actionBeginSave($model, $postData);
-								if ( $result ) {
-									$this->_transaccion->commit();
-									$this->_conn->close();
-									self::actionAnularSession(['begin', 'planillaSeleccionadas']);
-									return self::actionView($model);
-
-								} else {
-									$this->_transaccion->rollBack();
-									$this->_conn->close();
-									$this->redirect(['error-operacion', 'cod'=> 920]);
-
-		  						}
-
+							} else {
+								$this->_transaccion->rollBack();
+								$this->_conn->close();
 							}
 						}
 					}
-
-				} elseif ( isset($postData['btn-back']) ) {
-					$providerPlanillaSeleccionada = $searchRecibo->getDataProviderAgruparDeudaPorPlanilla($_SESSION['planillaSeleccionadas']);
 				}
-
-		      	$findModel = $searchRecibo->findContribuyente();
-
-		  		if ( $model->load($postData)  && Yii::$app->request->isAjax ) {
-					Yii::$app->response->format = Response::FORMAT_JSON;
-					return ActiveForm::validate($model);
-		      	}
-
-		      	$total = 0;
-		  		if ( isset($findModel) ) {
-		  			if ( count($dataProvider) > 0 ) {
-			  			foreach ( $dataProvider->allModels as $item ) {
-			  				$total = $item['deuda'] + $total;
-			  			}
-
-			  			$totalSeleccionado = self::actionTotalSeleccionado($providerPlanillaSeleccionada);
-			  			$model->totalSeleccionado = $totalSeleccionado;
-
-						return $this->render('/recibo/recibo-create-form',
-																[
-																	'model' => $model,
-																	'caption' => $caption,
-																	'subCaption' => $subCaption,
-																	'findModel' => $findModel,
-																	'dataProvider' => $dataProvider,
-																	'total' => $total,
-																	'providerPlanillaSeleccionada' => $providerPlanillaSeleccionada,
-
-																]);
-					} else {
-						// No presenta deuda pendiente
-						$this->redirect(['error-operacion', 'cod' => 501]);
-					}
-
-		  		} else {
-		  			// No se encontraron los datos del contribuyente principal.
-		  			$this->redirect(['error-operacion', 'cod' => 938]);
-		  		}
 			}
+
+
 		}
 
 
@@ -412,18 +245,18 @@ die(var_dump($postData['chkRecibo']));
 
 		/**
 		 * Metodo que incia el proceso de guardar el recibo y las planillas asociadas
-		 * @param  DepositoForm $model modelo de la entidad "DepositoForm".
-		 * @param  array $postEnviado post enviado desde la vista previa.
+		 * @param  Deposito $depositos modelo de la clase "Deposito" con datos.
 		 * @return boolean retorna true si guarda satisfactoriamente, flase en caso
 		 * contrario.
 		 */
-		private function actionBeginSave($model, $postEnviado)
+		private function actionBeginSave($depositos)
 		{
 			$result = false;
-			$recibo = 0;
+			$nroSolicitud = 0;
 
-			if ( isset($_SESSION['idContribuyente']) ) {
-
+			if ( isset($_SESSION['begin']) ) {
+				if ( isset($_SESSION['idContribuyente']) ) {
+					$idContribuyente = $_SESSION['idContribuyente'];
 					$this->_conexion = New ConexionController();
 
 	      			// Instancia de conexion hacia la base de datos.
@@ -434,30 +267,205 @@ die(var_dump($postData['chkRecibo']));
 	      			// Inicio de la transaccion.
 					$this->_transaccion = $this->_conn->beginTransaction();
 
-					$recibo = self::actionCreateDeposito($model);
-					if ( $recibo > 0 ) {
+					$modelParametro = New ParametroSolicitud(self::CONFIG);
+					// Se obtiene el tipo de solicitud. Se retorna un array donde el key es el nombre
+					// del parametro y el valor del elemento es el contenido del campo en base de datos.
+					$conf = $modelParametro->getParametroSolicitud([
+														'id_config_solicitud',
+														'tipo_solicitud',
+														'impuesto',
+														'nivel_aprobacion'
+												]);
 
-						$model->recibo = $recibo;
 
-						// Se pasa a guardar las planillas.
-						$result = self::actionCreateDepositoPlanilla($model, $postEnviado);
+					$model = New AnularReciboForm();
+					if ( is_array($depositos) ) {
+						foreach ( $depositos as $deposito ) {
 
-						if ( $result ) {
-							//$result = self::actionEnviarEmail($model, $postEnviado);
-							$result = true;
+							$model->recibo = $deposito->recibo;
+							$model->id_contribuyente = $idContribuyente;
+							$model->estatus = 0;
+
+							$nroSolicitud = self::actionCreateSolicitud($conf);
+
+							if ( $nroSolicitud > 0 ) {
+								$model->nro_solicitud = $nroSolicitud;
+								$result = self::actionCreateAnularRecibo($model, $deposito, $conf);
+								if ( $result ) {
+									$result = self::actionAnularRecibo($this->_conexion, $this->_conn,
+																	   $deposito, $conf);
+								}
+							}
+							if ( !$result ) { break; }
 						}
+
 					} else {
-						// No genero el recibo
+						$model->recibo = $depositos->recibo;
+						$model->id_contribuyente = $idContribuyente;
+						$model->estatus = 0;
+
+						$nroSolicitud = self::actionCreateSolicitud($conf);
+
+						if ( $nroSolicitud > 0 ) {
+							$model->nro_solicitud = $nroSolicitud;
+							$result = self::actionCreateAnularRecibo($model, $depositos, $conf);
+							if ( $result ) {
+								$result = self::actionAnularRecibo($this->_conexion, $this->_conn,
+																   $depositos, $conf);
+							}
+						}
 
 					}
 
-			} else {
-				// No esta defino el contribuyente.
-				$this->redirect(['error-operacion', 'cod' => 932]);
+					//$result = self::actionEnviarEmail($model, $postEnviado);
+					//$result = true;
+
+				} else {
+					// No esta defino el contribuyente.
+					$this->redirect(['error-operacion', 'cod' => 932]);
+				}
 			}
 			return $result;
 		}
 
+
+
+
+
+		/**
+		 * Metodo que guarda el registro respectivo en la entidad "solicitudes-contribuyente".
+		 * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
+		 * solicitud.
+		 * @return boolean retorna true si guardo correctamente o false sino guardo.
+		 */
+		private function actionCreateSolicitud($conf)
+		{
+			$estatus = 0;
+			$userFuncionario = '';
+			$fechaHoraProceso = '0000-00-00 00:00:00';
+			$user = Yii::$app->identidad->getUsuario();
+			$nroSolicitud = 0;
+			$modelSolicitud = New SolicitudesContribuyenteForm();
+			$tabla = $modelSolicitud->tableName();
+			$idContribuyente = $_SESSION['idContribuyente'];
+
+			$nroSolicitud = 0;
+
+			if ( count($conf) > 0 ) {
+				// Valores que se pasan al modelo:
+				// id-config-solicitud.
+				// impuesto.
+				// tipo-solicitud.
+				// nivel-aprobacion
+				$modelSolicitud->attributes = $conf;
+
+				if ( $conf['nivel_aprobacion'] == 1 ) {
+					$estatus = 1;
+					$userFuncionario = $user;
+					$fechaHoraProceso = date('Y-m-d H:i:s');
+				}
+
+				$modelSolicitud->id_contribuyente = $idContribuyente;
+				$modelSolicitud->id_impuesto = 0;
+				$modelSolicitud->usuario = $user;
+				$modelSolicitud->fecha_hora_creacion = date('Y-m-d H:i:s');
+				$modelSolicitud->inactivo = 0;
+				$modelSolicitud->estatus = $estatus;
+				$modelSolicitud->nro_control = 0;
+				$modelSolicitud->user_funcionario = $userFuncionario;
+				$modelSolicitud->fecha_hora_proceso = $fechaHoraProceso;
+				$modelSolicitud->causa = 0;
+				$modelSolicitud->observacion = '';
+
+				// Arreglo de datos del modelo para guardar los datos.
+				$arregloDatos = $modelSolicitud->attributes;
+
+				if ( $this->_conexion->guardarRegistro($this->_conn, $tabla, $arregloDatos) ) {
+					$nroSolicitud = $this->_conn->getLastInsertID();
+				}
+			}
+
+			return $nroSolicitud;
+		}
+
+
+
+
+		/**
+		 * Metodo que guarda el detalle de la solicitud por anulacion de recibo.
+		 * @param  AnularReciboForm $model modelo del tipo clase "AnularReciboForm".
+		 * @param  Deposito $deposito modelo del tipo clase "Deposito".
+		 * @param  array $conf arreglo que contiene los parametros principales de
+		 * configuracion de la solicitud.
+		 * @return boolean retorna true si guarda satisfactoriamente, false en caso
+		 * contrario.
+		 */
+		private function actionCreateAnularRecibo($model, $deposito, $conf)
+		{
+			$result = false;
+			$tabla = $model->tableName();
+			$model->recibo = $deposito->recibo;
+			$model->id_contribuyente = $deposito->id_contribuyente;
+			$user = '';
+			$model->usuario = Yii::$app->identidad->getUsuario();
+			$model->estatus = 0;
+			$model->fecha_hora = date('Y-m-d H:i:s');
+			$model->user_funcionario = '';
+			$model->fecha_hora_proceso = '0000-00-00 00:00:00';
+
+			$arregloDatos = $model->attributes;
+			if ( $conf['nivel_aprobacion'] == 1 ) {
+				$model->estatus = 1;
+				$model->user_funcionario = Yii::$app->identidad->getUsuario();
+				$model->fecha_hora_proceso = date('Y-m-d H:i:s');
+			}
+
+			return $result = $this->_conexion->guardarRegistro($this->_conn, $tabla, $model->attributes);
+
+		}
+
+
+
+		/***/
+		private function actionAnularRecibo($conexion, $conn, $deposito, $conf)
+		{
+			$result = true;
+			if ( $conf['nivel_aprobacion'] == 1 ) {
+				$result = false;
+				$model = New AnularReciboSearch($deposito->recibo);
+				$result = $model->anularRecibo($conexion, $conn);
+			}
+
+			return $result;
+		}
+
+
+
+		/***/
+		public function actionViewSolicitud($depositos)
+		{
+			$model = New AnularReciboForm();
+
+			if ( is_array($depositos) ) {
+				foreach ( $depositos as $deposito ) {
+					$listaRecibo[] = $deposito->recibo;
+				}
+			} else {
+				$listaRecibo[] = $depositos->recibo;
+			}
+
+			$dataProvider = $model->searchSolicitud($listaRecibo);
+
+			if ( $dataProvider->getTotalCount() > 0 ) {
+				return $this->render('/recibo/anulacion/_view',[
+								'dataProvider' => $dataProvider,
+								'caption' => 'Solicitud',
+								'codigo' => 100,
+					]);
+			} else {
+				throw new NotFoundHttpException('No se encontro el registro');
+			}
+		}
 
 
 
