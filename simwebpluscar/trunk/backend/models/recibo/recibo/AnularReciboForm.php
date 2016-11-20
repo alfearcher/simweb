@@ -47,6 +47,7 @@
 	use yii\data\ActiveDataProvider;
 	use backend\models\recibo\deposito\Deposito;
 	use backend\models\recibo\depositoplanilla\DepositoPlanilla;
+	use backend\models\recibo\recibo\AnularRecibo;
 
 
 
@@ -54,34 +55,12 @@
 	/**
 	* Clase
 	*/
-	class AnularReciboForm extends Model
+	class AnularReciboForm extends AnularRecibo
 	{
 		public $recibo;
 		public $id_contribuyente;
 		public $estatus;
-
-
-
-
-		/**
-		 *	Metodo que retorna el nombre de la base de datos donde se tiene la conexion actual.
-		 * 	Utiliza las propiedades y metodos de Yii2 para traer dicha informacion.
-		 * 	@return Nombre de la base de datos
-		 */
-		public static function getDb()
-		{
-			return Yii::$app->db;
-		}
-
-
-		/**
-		 * 	Metodo que retorna el nombre de la tabla que utiliza el modelo.
-		 * 	@return Nombre de la tabla del modelo.
-		 */
-		public static function tableName()
-		{
-			return 'sl_anulaciones_recibos';
-		}
+		// public $nro_solicitud;
 
 
 
@@ -104,6 +83,9 @@
 	        return [
 	        	[['id_contribuyente', 'recibo', 'estatus'],
 	        	  'integer', 'message' => Yii::t('backend', 'Valor no valido')],
+	        	[['usuario'], 'default', 'value' => Yii::$app->identidad->getUsuario()],
+
+	        	// [['nro_solicitud'], 'integer'],
 	        ];
 	    }
 
@@ -122,10 +104,10 @@
 
 
 
-	     /**
-	      * Metodo que permite localizar los recibos que se encuentran pendientes.
-	      * @return data provider.
-	      */
+	    /**
+	     * Metodo que permite localizar los recibos que se encuentran pendientes.
+	     * @return data provider.
+	     */
 		public function searchListaDeposito()
 		{
 			$query = Deposito::find();
@@ -148,8 +130,12 @@
 
 
 
-		/***/
-		public function searchDepositoPlanilla($recibo)
+		/**
+		 * Metodo que genera el data provider para las planillas que estan contenidas
+		 * en el recibo.
+		 * @return Active Data Provider
+		 */
+		public function searchDepositoPlanilla()
 		{
 			$query = DepositoPlanilla::find();
 
@@ -159,8 +145,8 @@
 
 			$query->where('id_contribuyente =:id_contribuyente',
 									[':id_contribuyente' => $this->id_contribuyente]);
-			if ( $recibo > 0 ) {
-				$query->andWhere('DP.recibo =:recibo',[':recibo' => $recibo]);
+			if ( $this->recibo > 0 ) {
+				$query->andWhere('DP.recibo =:recibo',[':recibo' => $this->recibo]);
 			}
 
 			$query->alias('DP')
@@ -171,6 +157,91 @@
 
 		}
 
+
+
+		/**
+		 * Metodo que realiza la consulta del recibo y devielve una instancio de la
+		 * clase Deposito.
+		 * @return Deposito retorna una instancia de la clase Deposito
+		 */
+		public function findDeposito()
+		{
+			$deposito = New Deposito();
+
+			return $deposito->find()->where('recibo =:recibo',[':recibo' => $this->recibo])
+							        ->joinWith('condicion C', true)
+							        ->one();
+		}
+
+
+
+		/***/
+		public function findListaDeposito($listaRecibo)
+		{
+			if ( is_array($listaRecibo) ) {
+				$deposito = New Deposito();
+
+				return $deposito->find()
+							    ->where(['IN', 'recibo', $listaRecibo])
+								->joinWith('condicion C', true)
+								->all();
+			}
+		}
+
+
+
+
+		/**
+	     * Metodo que permite localizar los recibos anulados
+	     * @param array $listaRecibo arreglo de recibos que se desea consultar.
+	     * @return data provider.
+	     */
+		public function searchListaDepositoAnulado($listaRecibo)
+		{
+			$query = Deposito::find();
+
+			$dataProvider = New ActiveDataProvider([
+									'query' => $query,
+				]);
+
+			$query->where(['IN', 'recibo', $listaRecibo])
+				  ->andWhere('R.estatus =:estatus',
+				  					[':estatus' => 9]);
+
+			$query->alias('R')
+				  ->joinWith('condicion', true, 'INNER JOIN');
+
+			return $dataProvider;
+
+		}
+
+
+
+
+
+
+		/***/
+		public function searchSolicitud($listaRecibo)
+		{
+			$query = self::findSolicitudAnulacionRecibo($listaRecibo);
+
+			$dataProvider = New ActiveDataProvider([
+									'query' => $query,
+				]);
+
+			$query->alias('A')
+				  ->joinWith('estatusSolicitud', true);
+
+			return $dataProvider;
+		}
+
+
+
+		/***/
+		public function findSolicitudAnulacionRecibo($listaRecibo)
+		{
+			return $findModel = AnularRecibo::find()->where(['IN', 'recibo', $listaRecibo]);
+		}
 
 
 	}
