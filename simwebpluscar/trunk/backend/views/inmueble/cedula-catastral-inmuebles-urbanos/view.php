@@ -19,7 +19,7 @@ $this->title = Yii::t('backend', 'View Property Urban');
         <?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) ?>
     </p> 
   
-    <?= DetailView::widget([
+    <?= DetailView::widget([ 
         'model' => $model,
         'attributes' => [ 
             'id_impuesto',  
