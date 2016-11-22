@@ -15,7 +15,7 @@ use common\models\tasas\GrupoSubnivel;
 
 //die(var_dump($Hola));
 
-$this->title = Yii::t('frontend', 'Deuda por Impuesto');
+
 
 
 
@@ -37,9 +37,13 @@ $this->title = Yii::t('frontend', 'Deuda por Impuesto');
         ]);
 
 ?>
+<div class="panel panel-primary" style="width:460px;">
+    <div class="panel-heading" style="height: 80px;">
+       <p style="font-size:30px; margin-top:10px;">Deuda Por Impuesto</p>
+            </div>
+                <div class="panel-body" >
 
-
-<div class="deudas-index" style="width: 600px;">
+<div class="deudas-index" style="width: 400px;">
 
     <h2><?= Html::encode($this->title) ?></h2>
     <?php
@@ -78,12 +82,7 @@ $this->title = Yii::t('frontend', 'Deuda por Impuesto');
                      },
                      ],
 
-                    [
-                    'label' => 'Monto',
-                    'value' => function($data){
-                        return $data['monto'].' Bs.f';
-                    },
-                    ],
+              
 
                     // [
                     // 'label' => 'Periodo',
@@ -133,24 +132,31 @@ $this->title = Yii::t('frontend', 'Deuda por Impuesto');
                     // },
                     // ],
 
-
-                     [
-                                    'class' => 'yii\grid\ActionColumn',
-                                    'header'=> Yii::t('backend','View'),
-                                    'template' => '{view}',
-                                    'buttons' => [
-                                        'view' => function ($url, $model, $key) {
-                                            return Html::submitButton('<div class="item-list" style="color: #337AB7;"><center>'. Icon::show('fa fa-thumbs-up',['class' => 'fa-1x'], Icon::FA) .'</center></div>',
-                                                                        [
-                                                                            'value' => json_encode(['impuesto' => $model['impuesto'] , 'id_impuesto' => $model['id_impuesto'] , 'tipo' => $model['tipo']]),
-                                                                            'name' => 'id',
-                                                                            'title' => Yii::t('backend', 'View'),
-                                                                            'style' => 'margin: 0 auto; display: block;',
-                                                                        ]
-                                                                    );
-                                        },
-                                    ],
-                                ],
+        [
+                    'contentOptions' => [
+                        'style' => 'font-size: 90%;',
+                    ],
+                    'class' => 'yii\grid\ActionColumn',
+                    'header'=> Yii::t('frontend', 'Monto'),
+                    'template' => '{view}',
+                    'buttons' => [
+                        'view' => function ($url, $model, $key) {
+                                
+                                
+                                return Html::submitButton('<div class="item-list" style="color: #000000;"><center>'. Yii::$app->formatter->asDecimal($model['monto'], 2) .'</center></div>',
+                                                [
+                                                    'value' => json_encode(['impuesto' => $model['impuesto'] , 'id_impuesto' => $model['id_impuesto'] , 'tipo' => $model['tipo']]),
+                                                    'id' => 'id-deuda-por-periodo',
+                                                    'name' => 'id',
+                                                    'class' => 'btn btn-default',
+                                                    'title' => 'deuda '. $model['monto'],
+                                                    'style' => 'text-align:right;',
+                                                    
+                                                ]
+                                            );
+                                },
+                    ],
+                ],
              
 
                        
@@ -167,6 +173,8 @@ $this->title = Yii::t('frontend', 'Deuda por Impuesto');
     ?>
 
 
+</div>
+</div>
 
 </div>
 <?php ActiveForm::end() ?>

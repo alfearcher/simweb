@@ -38,10 +38,14 @@ $this->title = Yii::t('frontend', 'Deuda Especifica ');
 
 ?>
 
-
+<div class="panel panel-primary" style="width:650px;">
+    <div class="panel-heading" style="height: 80px;">
+       <p style="font-size:30px; margin-top:10px;">Detalle de la Tasa</p>
+            </div>
+                <div class="panel-body" >
 <div class="deudas-index" style="width: 600px;">
 
-    <h2><?= Html::encode($this->title) ?></h2>
+   
     <?php
 
     echo GridView::widget([
@@ -169,7 +173,8 @@ $this->title = Yii::t('frontend', 'Deuda Especifica ');
 
     </div>
 
-
+   </div>
+      </div>
 
 </div>
 <?php ActiveForm::end() ?>

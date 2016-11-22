@@ -15,7 +15,7 @@ use common\models\tasas\GrupoSubnivel;
 
 //die(var_dump($Hola));
 
-$this->title = Yii::t('frontend', 'Detalle de la Deuda');
+
 
 
 
@@ -38,7 +38,11 @@ $this->title = Yii::t('frontend', 'Detalle de la Deuda');
 
 ?>
 
-
+<div class="panel panel-primary" style="width:1000px;">
+    <div class="panel-heading" style="height: 80px;">
+       <p style="font-size:30px; margin-top:10px;">Deuda Especifica</p>
+            </div>
+                <div class="panel-body" >
 <div class="deudas-index" style="width: 600px;">
 
     <h2><?= Html::encode($this->title) ?></h2>
@@ -222,6 +226,10 @@ $this->title = Yii::t('frontend', 'Detalle de la Deuda');
          ?>
 
     </div>
+
+      </div>
+
+        </div>
 
 </div>
 <?php ActiveForm::end() ?>

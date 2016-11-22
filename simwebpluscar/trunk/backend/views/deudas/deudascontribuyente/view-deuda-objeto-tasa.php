@@ -15,7 +15,7 @@ use common\models\tasas\GrupoSubnivel;
 
 //die(var_dump($Hola));
 
-$this->title = Yii::t('frontend', 'Detalle de la Tasa');
+
 
 
 
@@ -29,7 +29,7 @@ $this->title = Yii::t('frontend', 'Detalle de la Tasa');
  <?php $form = ActiveForm::begin([
            // 'id' => 'id-chk-seleccionar-calcomania',
             'method' => 'post',
-            'action' => ['/deudas/deudascontribuyente/deudas-contribuyente/generar-pdf-deuda-especifica'],
+           // 'action' => ['/deudas/deudascontribuyente/deudas-contribuyente/generar-pdf-deuda-especifica'],
             'enableClientValidation' => true,
             'enableAjaxValidation' => true,
             'enableClientScript' => true,
@@ -37,148 +37,148 @@ $this->title = Yii::t('frontend', 'Detalle de la Tasa');
         ]);
 
 ?>
+<div class="panel panel-primary" style="width:650px;">
+    <div class="panel-heading" style="height: 80px;">
+       <p style="font-size:30px; margin-top:10px;">Detalle de la Tasa</p>
+            </div>
+                <div class="panel-body danger" >
+
+                        <div class="deudas-index" style="width: 600px;">
+
+                            <h2><?= Html::encode($this->title) ?></h2>
+                            <?php
+
+                            echo GridView::widget([
+                                'dataProvider' => $dataProvider,
+                               //die(var_dump($dataProvider)),
+                              // 'st' => $st,
+                               // die(var_dump($st)),
+                                'columns' => [
+                                   // ['class' => 'yii\grid\SerialColumn'],
+
+                                   // 'id',
+                                   // 'Calcomania',
 
 
-<div class="deudas-index" style="width: 600px;">
-
-    <h2><?= Html::encode($this->title) ?></h2>
-    <?php
-
-    echo GridView::widget([
-        'dataProvider' => $dataProvider,
-       //die(var_dump($dataProvider)),
-      // 'st' => $st,
-       // die(var_dump($st)),
-        'columns' => [
-           // ['class' => 'yii\grid\SerialColumn'],
-
-           // 'id',
-           // 'Calcomania',
-
-
-                     [
-                     'label' => 'Año Impositivo',
-                     'value' => function($data){
-                         return $data['ano_impositivo'];
-                     },
-                     ],
-
-
-
-                    [
-                     'label' => 'Planilla',
-                     'value' => function($data){
-
-                       return $data['planilla'];
+                                             [
+                                             'label' => 'Año Impositivo',
+                                             'value' => function($data){
+                                                 return $data['ano_impositivo'];
+                                             },
+                                             ],
 
 
 
-                     },
-                     ],
+                                            [
+                                             'label' => 'Planilla',
+                                             'value' => function($data){
 
-                          [
-                     'label' => 'Informacion del Objeto',
-                     'value' => function($data){
-
-                       return $data['descripcion'];
+                                               return $data['planilla'];
 
 
 
-                     },
-                     ],
+                                             },
+                                             ],
+
+                                                  [
+                                             'label' => 'Informacion del Objeto',
+                                             'value' => function($data){
+
+                                               return $data['descripcion'];
 
 
 
-
-                    [
-                    'label' => 'Monto',
-                    'value' => function($data){
-                        return $data['monto'].' Bs.f';
-                    },
-                    ],
+                                             },
+                                             ],
 
 
 
 
-                    // [
-                    // 'label' => 'Periodo',
-                    // 'value' => function($data){
-                    //     if( $data['tipo'] == 'periodo>0'){
-
-                    //         return 'Vehiculo';
-                    //     }else{
-                    //         return 'Vehiculo(tasa)';
-                    //     } ;
-                    // },
-                    // ],
-
-                    //       [
-                    // 'label' => 'Año Impositivo',
-                    // 'value' => function($data){
-                    //     return $data['ano_impositivo'];
-                    // },
-
-                    // ],
-
-                    //       [
-                    // 'label' => 'Codigo Contable',
-                    // 'value' => function($data){
-                    //     return CodigosContables::getDescripcionCodigoContable($data['id_codigo']);
-                    // },
-                    // ],
-
-                    //       [
-                    // 'label' => 'Grupo Subnivel',
-                    // 'value' => function($data){
-                    //     return GrupoSubnivel::getGrupoSubnivel( $data['grupo_subnivel']);
-                    // },
-                    // ],
-
-                    //       [
-                    // 'label' => 'Codigo',
-                    // 'value' => function($data){
-                    //     return $data['codigo'];
-                    // },
-                    // ],
-
-                    //       [
-                    // 'label' => 'Concepto',
-                    // 'value' => function($data){
-                    //     return $data['concepto'];
-                    // },
-                    // ],
+                                            [
+                                            'label' => 'Monto',
+                                            'value' => function($data){
+                                                return $data['monto'].' Bs.f';
+                                            },
+                                            ],
 
 
 
 
+                                            // [
+                                            // 'label' => 'Periodo',
+                                            // 'value' => function($data){
+                                            //     if( $data['tipo'] == 'periodo>0'){
+
+                                            //         return 'Vehiculo';
+                                            //     }else{
+                                            //         return 'Vehiculo(tasa)';
+                                            //     } ;
+                                            // },
+                                            // ],
+
+                                            //       [
+                                            // 'label' => 'Año Impositivo',
+                                            // 'value' => function($data){
+                                            //     return $data['ano_impositivo'];
+                                            // },
+
+                                            // ],
+
+                                            //       [
+                                            // 'label' => 'Codigo Contable',
+                                            // 'value' => function($data){
+                                            //     return CodigosContables::getDescripcionCodigoContable($data['id_codigo']);
+                                            // },
+                                            // ],
+
+                                            //       [
+                                            // 'label' => 'Grupo Subnivel',
+                                            // 'value' => function($data){
+                                            //     return GrupoSubnivel::getGrupoSubnivel( $data['grupo_subnivel']);
+                                            // },
+                                            // ],
+
+                                            //       [
+                                            // 'label' => 'Codigo',
+                                            // 'value' => function($data){
+                                            //     return $data['codigo'];
+                                            // },
+                                            // ],
+
+                                            //       [
+                                            // 'label' => 'Concepto',
+                                            // 'value' => function($data){
+                                            //     return $data['concepto'];
+                                            // },
+                                            // ],
 
 
 
+                                    ]
+                                ]);
 
 
 
+                        ?>
+
+                    <div class="col-sm-5" >
+
+    
 
 
+                <?= Html::a('Generar Reporte',['/deudas/deudascontribuyente/deudas-contribuyente/generar-pdf-deuda-especifica-tasa'],
 
+                [
+                 'class'=>'btn btn-success',
+                 'target'=> '_blank',
+                 'data-toggle'=>'tooltip',
+                 'title'=>'Generate the pdf']); ?>
 
-
-        ]
-]);
-
-
-
-    ?>
-
-   <div class="col-sm-5" >
-
-     <?= Html::a('Generar Reporte',['/deudas/deudascontribuyente/deudas-contribuyente/generar-pdf-deuda-especifica-tasa'],
-        [
-         'class'=>'btn btn-success',
-         'target'=> '_blank',
-         'data-toggle'=>'tooltip',
-         'title'=>'Generate the pdf']); ?>
+        </div>
 
     </div>
+
+</div>
 
 </div>
 <?php ActiveForm::end() ?>
