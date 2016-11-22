@@ -80,7 +80,7 @@
 		 */
 		private function getModelGeneral()
 		{
-			//die('bueno');
+			
 			$findModel = PagoDetalle::find()->alias('D')
 										    ->where('P.id_contribuyente =:id_contribuyente',
 														[':id_contribuyente' => $this->_id_contribuyente])
@@ -172,7 +172,7 @@
 		 */
 		public function getDeudaPorImpuestoPeriodo($impuesto)
 		{
-			//die($impuesto);
+			
 			// Deuda con periodos mayores a cero.
 			$deudaMayor = self::deudaPeriodoMayorCero($impuesto);
 
@@ -279,6 +279,7 @@
 								   ->all();
 
 			}
+
 			return $deuda;
 
 		}
@@ -812,8 +813,7 @@
 		/***/
 		public function getDetalleDeudaPorObjeto($impuesto, $idImpuesto)
 		{
-			//die(var_dump($impuesto));
-			//die(var_dump($idImpuesto));
+			
 			return self::detalleDeudaPorObjeto($impuesto, $idImpuesto);
 		}
 
@@ -952,7 +952,7 @@
 		 */
 		public function getDetalleDeudaObjetoPorPlanilla($impuesto, $idImpuesto = 0, $periodo = '>')
 		{
-			//die(var_dump($periodo));
+			
 			if ( in_array($periodo, ['>', '=']) ) {
 				return self::detalleDeudaObjetoPorPlanilla($impuesto, $idImpuesto, $periodo);
 			}
@@ -972,7 +972,7 @@
 		 */
 		private function detalleDeudaObjetoPorPlanilla($impuesto, $idImpuesto, $periodo = '')
 		{
-			//die(var_dump($idImpuesto).'hola');
+		
 			$findModel = self::getModelGeneral();
 			$deuda = [];
 
@@ -1010,7 +1010,7 @@
 
 
 			} elseif ( $idImpuesto > 0 && $impuesto > 1 && $periodo = '>' ) {
-				//die('por aqui si');
+				
 
 				$deuda = $findModel->select([
 										'P.planilla',
@@ -1044,8 +1044,7 @@
 								   ->all();
 
 			} elseif ( $idImpuesto == 0 && $impuesto > 0 && $periodo == '=' ) {
-				//die('hola');
-
+			
 				$deuda = $findModel->select([
 										'P.planilla',
 										'P.id_contribuyente',
