@@ -21,14 +21,14 @@
  */
 
  /**
- *  @file Rubro.php
+ *  @file Licencia.php
  *
  *  @author Jose Rafael Perez Teran
  *
- *  @date 15-10-2015
+ *  @date 17-11-2016
  *
- *  @class Rubro
- *  @brief Clase modelo de rubro
+ *  @class Licencia
+ *  @brief Clase modelo de la sustitutiva
  *
  *
  *  @property
@@ -40,17 +40,18 @@
  *
  */
 
-	namespace backend\models\aaee\rubro;
+	namespace backend\models\aaee\licencia;
 
  	use Yii;
-	use yii\base\Model;
 	use yii\db\ActiveRecord;
+	use yii\web\NotFoundHttpException;
+	use backend\models\aaee\actecon\ActEcon;
 	use backend\models\aaee\acteconingreso\ActEconIngreso;
 
 	/**
-	* 	Clase
+	* Clase principal de la entidad "licencias".
 	*/
-	class Rubro extends ActiveRecord
+	class Licencia extends ActiveRecord
 	{
 
 		/**
@@ -64,24 +65,39 @@
 		}
 
 
+
 		/**
 		 * 	Metodo que retorna el nombre de la tabla que utiliza el modelo.
 		 * 	@return Nombre de la tabla del modelo.
 		 */
 		public static function tableName()
 		{
-			return 'rubros';
+			return 'licencias';
 		}
+
+
+
+		/**
+		 * Relacion con la entidad "act-econ"
+		 * @return active record
+		 */
+		 public function getActEcon()
+		 {
+		 	return $this->hasOne(ActEcon::className(), ['id_impuesto' => 'id_impuesto']);
+		 }
 
 
 		/**
 		 * Relacion con la entidad "act-econ-ingresos"
-		 * @return [type] [description]
+		 * @return active record
 		 */
-		public function getActividadIngreso()
-		{
-			return $this->hasMany(ActEconIngreso::className(), ['id_rubro' => 'id_rubro']);
-		}
+		 public function getActEconIngreso()
+		 {
+		 	return $this->hasMany(ActEconIngreso::className(), ['id_impuesto' => 'id_impuesto']);
+		 }
+
+
+
 	}
 
 

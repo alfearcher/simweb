@@ -21,15 +21,14 @@
  */
 
  /**
- *  @file Rubro.php
+ *  @file LicenciaSolicitud.php
  *
  *  @author Jose Rafael Perez Teran
  *
- *  @date 15-10-2015
+ *  @date 17-11-2016
  *
- *  @class Rubro
- *  @brief Clase modelo de rubro
- *
+ *  @class LicenciaSolicitud
+ *  @brief Clase modelo
  *
  *  @property
  *
@@ -40,17 +39,22 @@
  *
  */
 
-	namespace backend\models\aaee\rubro;
+	namespace backend\models\aaee\licencia;
 
  	use Yii;
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
-	use backend\models\aaee\acteconingreso\ActEconIngreso;
+	use yii\web\NotFoundHttpException;
+	use backend\models\solicitud\estatus\EstatusSolicitud;
+	use backend\models\aaee\actecon\ActEcon;
+	use common\models\solicitudescontribuyente\SolicitudesContribuyente;
+
 
 	/**
-	* 	Clase
+	* Clase que permite gestionar las solicitudes de emision de licencias de Actividades
+	* Economicas.
 	*/
-	class Rubro extends ActiveRecord
+	class LicenciaSolicitud extends ActiveRecord
 	{
 
 		/**
@@ -64,24 +68,27 @@
 		}
 
 
+
 		/**
 		 * 	Metodo que retorna el nombre de la tabla que utiliza el modelo.
 		 * 	@return Nombre de la tabla del modelo.
 		 */
 		public static function tableName()
 		{
-			return 'rubros';
+			return 'sl_licencias';
 		}
 
 
 		/**
-		 * Relacion con la entidad "act-econ-ingresos"
-		 * @return [type] [description]
+		 * Relacion con la entidad "estatus-solicitudes", EstatusSolicitud
+		 * @return Active Record.
 		 */
-		public function getActividadIngreso()
+		public function getEstatusSolicitud()
 		{
-			return $this->hasMany(ActEconIngreso::className(), ['id_rubro' => 'id_rubro']);
+			return $this->hasOne(EstatusSolicitud::className(), ['estatus_solicitud' => 'estatus']);
 		}
+
+
 	}
 
 
