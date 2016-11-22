@@ -89,11 +89,11 @@ class DeudasContribuyenteController extends Controller
 
         $idContribuyente = $_SESSION['idContribuyente'];
         //die('hay uno seteado');
-
+      $monto = 0;
       $model = new DeudaSearch($idContribuyente);
 
       $dataProvider = $model->getDeudaGeneralPorImpuesto();
-     // die(var_dump($dataProvider));
+    // die(var_dump($dataProvider));
 
         if($dataProvider == null) {
 
@@ -101,7 +101,7 @@ class DeudasContribuyenteController extends Controller
         }else{
       foreach($dataProvider as $key=>$value){
 
-
+        $monto = $value['t'] + $monto;
 
 
         $array[] = [
@@ -133,6 +133,7 @@ class DeudasContribuyenteController extends Controller
 
           return $this->render('/deudas/deudascontribuyente/view-deuda-general', [
             'dataProvider' => $dataProvider,
+            'total' => $monto,
 
 
             ]);
@@ -188,7 +189,7 @@ class DeudasContribuyenteController extends Controller
           $html = self::actionGetViewDeudaObjeto($jsonObj->{'impuesto'});
 
      } elseif ( $jsonObj->{'impuesto'} == 3 ) {
-    // die('bueno');
+  //  die('bueno');
 
           // Se buscan todas la planilla que cumplan con esta condicion
           $html = self::actionGetViewDeudaObjeto($jsonObj->{'impuesto'});
@@ -295,7 +296,7 @@ class DeudasContribuyenteController extends Controller
       $caption = Yii::t('frontend', 'Deuda segun Impuesto');
 
       $provider = $model->getDeudaPorImpuestoPeriodo($impuesto);
-      //die(var_dump($provider));
+   //   die(var_dump($provider));
       if ($provider == 0){
           //die('hjola');
       }else{
@@ -314,6 +315,8 @@ class DeudasContribuyenteController extends Controller
               ];
 
           }
+
+          //die(var_dump($array).'hola');
 
               $_SESSION['datosPdf'] = $array;
 
@@ -350,10 +353,11 @@ class DeudasContribuyenteController extends Controller
       $jsonObj = json_decode($postJson);
       //die(var_dump($jsonObj));
 
-      if ( $jsonObj->{'impuesto'} == 3 ) {
+      if ( $jsonObj->{'impuesto'} == 3 ) { 
+       
 
         if($jsonObj->{'tipo'} == 'periodo>0'){
-        //die('es 9');
+       
         $html = self::actionGetViewDeudaEspecifica($jsonObj->{'impuesto'}, $jsonObj->{'id_impuesto'}, '>');
 
         }elseif ($jsonObj->{'tipo'} == 'periodo=0'){
@@ -434,7 +438,7 @@ class DeudasContribuyenteController extends Controller
       $model = new DeudaSearch($idContribuyente);
       $caption = Yii::t('frontend', 'Deuda Especifica por Objeto');
       $buscarDatos = $model->getDeudaPorObjetoEspecifico($impuesto, $idImpuesto);
-
+      //die(var_dump($buscarDatos));
       if ($impuesto == 3){
         $descripcion = $buscarDatos[0]['placa'];
       }elseif($impuesto == 2 ){
