@@ -90,6 +90,18 @@
             'title' => Yii::t('backend', 'Undo'),
             'url' => '#',
         ],
+        'help' => [
+            'icon' => 'fa fa-question-circle',
+            'class' => 'fa-2x',
+            'color' => $color,
+            'tipoIcon' => $tipoIcon[0],
+            'caption' => Yii::t('backend', 'Help'),
+            'title' => Yii::t('backend', 'Help'),
+            'url' => '#',
+            'target' => '_blank',
+
+        ],
+        //fa fa-question-circle
     ];
 
 ?>
