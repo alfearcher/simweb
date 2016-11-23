@@ -63,6 +63,12 @@
 	use common\models\solicitudescontribuyente\SolicitudesContribuyenteForm;
 	use backend\models\aaee\licencia\LicenciaSolicitudSearch;
 	use backend\models\aaee\licencia\LicenciaSolicitudForm;
+	use backend\models\aaee\rubro\Rubro;
+	use common\models\numerocontrol\NumeroControlSearch;
+	use backend\models\aaee\historico\licencia\HistoricoLicenciaSearch;
+
+
+
 
 	session_start();		// Iniciando session
 
@@ -250,19 +256,41 @@
 
 				} elseif ( isset($postData['btn-create']) ) {
 					if ( $postData['btn-create'] == 5 ) {
-						$model->load($postData);
-
 						if ( $model->load($postData) ) {
 			    			if ( $model->validate() ) {
+			    				// Vista previa
+			    				$caption = 'Confirmar ' . $caption . '. ' . $tipoLicencia;
+			    				$dataProvider = $searchLicencia->getDataProviderRubrosRegistrados($model->ano_impositivo, 1);
+			    				return $this->render('/aaee/licencia/pre-view-create',[
+		  												'model' => $model,
+		  												'dataProvider' => $dataProvider,
+		  												// 'tipo' => $tipoLicencia,
+		  												// 'ano_impositivo' => $añoImpositivo,
+		  												'periodo' => 1,
+		  												'caption' => $caption,
 
-
+		  					]);
 							}
 						}
 					}
-				} elseif ( isset($postData['btn-confirm-create']) ) {
-					if ( $postData['btn-confirm-create'] == 2 ) {
-					}
 
+				} elseif ( isset($postData['btn-confirm-create']) ) {
+					if ( $postData['btn-confirm-create'] == 3 ) {
+						// Guardar la confirmacion
+						$result = self::actionBeginSave($model, $postData);
+						self::actionAnularSession(['begin']);
+  						if ( $result ) {
+							$this->_transaccion->commit();
+							$this->_conn->close();
+							return self::actionView($model->nro_solicitud);
+						} else {
+							$this->_transaccion->rollBack();
+							$this->_conn->close();
+							$this->redirect(['error-operacion', 'cod'=> 920]);
+
+  						}
+
+					}
 				}
 
 		  		if ( $model->load($postData)  && Yii::$app->request->isAjax ) {
@@ -278,10 +306,11 @@
 		  			$model->tipo = $tipoLicencia;
 		  			$model->usuario = Yii::$app->identidad->getUsuario();
 		  			$model->fecha_hora = date('Y-m-d H:i:s');
+		  			$model->origen = 'WEB';
 
 		  			// Nro de licencia actual.
 		  			$model->licencia = $findModel->id_sim;
-
+		  			$caption .= '. ' . $tipoLicencia;
 		  			return $this->render('/aaee/licencia/_create',[
 		  												'model' => $model,
 		  												'dataProvider' => $dataProvider,
@@ -307,12 +336,12 @@
 		/**
 		 * Metodo que comienza el proceso para guardar la solicitud y los demas
 		 * procesos relacionados.
-		 * @param model $models modelo de DeclaracionBaseForm.
+		 * @param model $model modelo del tipo de clase LicenciaSolicitudForm.
 		 * @param array $postEnviado post enviado desde el formulario.
 		 * @return boolean retorna true si se realizan todas las operacions de
 		 * insercion y actualizacion con exitos o false en caso contrario.
 		 */
-		private function actionBeginSave($models, $postEnviado)
+		private function actionBeginSave($model, $postEnviado)
 		{
 			$result = false;
 			$nroSolicitud = 0;
@@ -321,50 +350,38 @@
 				if ( isset($_SESSION['conf']) ) {
 					$conf = $_SESSION['conf'];
 
-					$this->_conexion = New ConexionController();
+					// Identificadores de rurbos.
+					$chkRubros = $postEnviado['chkRubro'];
 
-	      			// Instancia de conexion hacia la base de datos.
-	      			$this->_conn = $this->_conexion->initConectar('db');
-	      			$this->_conn->open();
+					if ( count($chkRubros) > 0 ) {
+						$this->_conexion = New ConexionController();
 
-	      			// Instancia de tipo transaccion para asegurar la integridad del resguardo de los datos.
-	      			// Inicio de la transaccion.
-					$this->_transaccion = $this->_conn->beginTransaction();
+		      			// Instancia de conexion hacia la base de datos.
+		      			$this->_conn = $this->_conexion->initConectar('db');
+		      			$this->_conn->open();
 
-					$nroSolicitud = self::actionCreateSolicitud($this->_conexion,
-															    $this->_conn,
-															    $models[0],
-															    $conf);
-					if ( $nroSolicitud > 0 ) {
-						foreach ( $models as $key => $model ) {
+		      			// Instancia de tipo transaccion para asegurar la integridad del resguardo de los datos.
+		      			// Inicio de la transaccion.
+						$this->_transaccion = $this->_conn->beginTransaction();
+
+						$nroSolicitud = self::actionCreateSolicitud($model, $conf);
+						if ( $nroSolicitud > 0 ) {
+
 							$model->nro_solicitud = $nroSolicitud;
 
-							// Se pasa a guardar en la sl_declaraciones.
-							$result = self::actionCreateDeclaracionEstimada($this->_conexion,
-																   			$this->_conn,
-																   			$model,
-																   			$conf);
+							// Se pasa a guardar en la sl_licencias.
+							$result = self::actionCreateSolicitudLicencia($model, $conf, $chkRubros, $this->_conexion, $this->_conn);
 
 							if ( $result ) {
-								if ( $conf['nivel_aprobacion'] == 1 ) {
-									$result = self::actionUpdateActEconIngresos($this->_conexion,
-																			    $this->_conn,
-																			    $model);
-
-								}
-							}
-							if ( !$result ) { break; }
-
-						}		// Fin del ciclo de models.
-
-						if ( $result ) {
-							$result = self::actionCreateHistoricoDeclaracion($this->_conexion, $this->_conn, $models, $conf);
-							if ( $result ) {
-								$result = self::actionEjecutaProcesoSolicitud($this->_conexion, $this->_conn, $models, $conf);
+								$result = self::actionCreateHistoricoLicencia($model, $conf, $chkRubros, $this->_conexion, $this->_conn);
 							}
 
 							if ( $result ) {
-								$result = self::actionEnviarEmail($models, $conf);
+								$result = self::actionEjecutaProcesoSolicitud($this->_conexion, $this->_conn, $model, $conf);
+							}
+
+							if ( $result ) {
+								$result = self::actionEnviarEmail($model, $conf);
 								$result = true;
 							}
 						}
@@ -393,12 +410,12 @@
 		 * solicitud.
 		 * @return boolean retorna true si guardo correctamente o false sino guardo.
 		 */
-		private function actionCreateSolicitud($conexionLocal, $connLocal, $model, $conf)
+		private function actionCreateSolicitud($model, $conf)
 		{
 			$estatus = 0;
 			$userFuncionario = '';
 			$fechaHoraProceso = '0000-00-00 00:00:00';
-			$user = isset($model->usuario) ? $model->usuario : null;
+			$user = isset($model->usuario) ? $model->usuario : Yii::$app->identidad->getUsuario();
 			$nroSolicitud = 0;
 			$modelSolicitud = New SolicitudesContribuyenteForm();
 			$tabla = $modelSolicitud->tableName();
@@ -435,8 +452,8 @@
 				// Arreglo de datos del modelo para guardar los datos.
 				$arregloDatos = $modelSolicitud->attributes;
 
-				if ( $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos) ) {
-					$nroSolicitud = $connLocal->getLastInsertID();
+				if ( $this->_conexion->guardarRegistro($this->_conn, $tabla, $arregloDatos) ) {
+					$nroSolicitud = $this->_conn->getLastInsertID();
 				}
 			}
 
@@ -448,49 +465,119 @@
 	    /**
 	     * Metodo que crea el historico de declaraciones, esto aplica si la solicitud de declaracion
 	     * es de aprobacion directa.
-	     * @param  ConexionController $conexionLocal instancia de la clase ConexionController.
-		 * @param  connection $connLocal instancia de connection
-		 * @param  model $models modelo de DeclaracionBaseForm.
+		 * @param  model $model modelo del tipo de clase LicenciaSolicitudForm.
 	     * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
 		 * solicitud.
+		 * @param array $chkRubros arreglo de identificadores de los rubros.(id-rubro).
 	     * @return boolean retorna true si guarda satisfactoriamente.
 	     */
-	    private static function actionCreateHistoricoDeclaracion($conexionLocal, $connLocal, $models, $conf)
+	    private static function actionCreateSolicitudLicencia($model, $conf, $chkRubros, $conexion, $conn)
+	    {
+	    	$result = false;
+
+	    	if ( isset($_SESSION['idContribuyente']) && count($chkRubros) > 0 ) {
+	    		$idContribuyente = $_SESSION['idContribuyente'];
+
+	    		$estatus = 0;
+				$userFuncionario = '';
+				$fechaHoraProceso = '0000-00-00 00:00:00';
+
+	    		if ( $conf['nivel_aprobacion'] == 1 ) {
+					$estatus = 1;
+					$userFuncionario = Yii::$app->identidad->getUsuario();
+					$fechaHoraProceso = date('Y-m-d H:i:s');
+				}
+
+				$model->estatus = $estatus;
+				$model->user_funcionario = $userFuncionario;
+				$model->fecha_hora_proceso = $fechaHoraProceso;
+
+	    		// Tabla
+	    		$tabla = $model->tableName();
+
+	    		// Arreglo de solo campos
+	    		// [indice] => campo.
+	    		// donde incice comienza en cero (0).
+	    		$arregloCampos = $model->attributes();
+
+	    		foreach ( $chkRubros as $key => $value ) {
+
+	    			// Se crea un arreglo de valores para realizar la insercion en lote.
+	    			$model->id_rubro = $value;
+	    			$arregloDatos = $model->attributes;
+	    			$arregloValores[] = array_values($arregloDatos);
+
+	    		}
+
+	    		$result = $conexion->guardarLoteRegistros($conn, $tabla, $arregloCampos, $arregloValores);
+
+			}
+
+	    	return $result;
+	    }
+
+
+
+
+
+	    /***/
+	    private static function actionCreateHistoricoLicencia($model, $conf, $chkRubros, $conexionLocal, $connLocal)
 	    {
 	    	$result = [];
 	    	if ( $conf['nivel_aprobacion'] == 1 ) {
-		    	if ( isset($_SESSION['idContribuyente']) && count($models) > 0 ) {
+		    	if ( isset($_SESSION['idContribuyente']) && count($chkRubros) > 0 ) {
 		    		$idContribuyente = $_SESSION['idContribuyente'];
-		    		$search = New HistoricoDeclaracionSearch($idContribuyente);
+		    		$search = New HistoricoLicenciaSearch($idContribuyente);
 
-					foreach ( $models as $model ) {
+		    		// Se arma la informacion del contribuyente para la licencia.
+		    		$contribuyente = ContribuyenteBase::findOne($idContribuyente);
+
+		    		$arregloContribuyente = [
+		    				'id_contribuyente' => $idContribuyente,
+		    				'nro_solicitud' => $model['nro_solicitud'],
+		    				'rif' => $contribuyente->naturaleza . '-' . $contribuyente->cedula . '-' . $contribuyente->tipo,
+		    				'descripcion' => $contribuyente->razon_social,
+		    				'domicilio' => $contribuyente->domicilio_fiscal,
+		    				'capital' => $contribuyente->capital,
+		    				'representante' => $contribuyente->representante,
+		    				'cedulaRep' => $contribuyente->naturaleza_rep . '-' . $contribuyente->cedula_rep,
+
+		    		];
+
+		    		$fuente_json = json_encode($arregloContribuyente);
+
+
+		    		// Se arma la informacion de los rubros.
+					foreach ( $chkRubros as $key => $value ) {
+						$infoRubro = Rubro::findOne($value);
+
 						$rjson[] = [
 								'nro_solicitud' => $model['nro_solicitud'],
 								'id_contribuyente' => $model['id_contribuyente'],
-								'id_impuesto' => $model['id_impuesto'],
 								'ano_impositivo' => $model['ano_impositivo'],
-								'exigibilidad_periodo' => $model['exigibilidad_periodo'],
-								'id_rubro' => $model['id_rubro'],
-								'rubro' => $model['rubro'],
-								'descripcion' => $model['descripcion'],
-								'tipo_declaracion' => $model['tipo_declaracion'],
-								'estimado_v' => $model['monto_v'],
-								'estimado' => $model['monto_new'],
+								'id_rubro' => $infoRubro->id_rubro,
+								'rubro' => $infoRubro->rubro,
+								'descripcion' => $infoRubro->descripcion,
+								'alicuota' => $infoRubro->alicuota,
+								'minimo' => $infoRubro->minimo_ut,
 							];
 					}
 
 					$arregloDatos = $search->attributes;
-					foreach ( $search->attributes as $key => $value ) {
 
-						if ( isset($models[0]->$key) ) {
-							$arregloDatos[$key] = $models[0]->$key;
-						}
-
-					}
-					$arregloDatos['periodo'] = $models[0]->exigibilidad_periodo;
-					$arregloDatos['json_rubro'] = json_encode($rjson);
-					$arregloDatos['observacion'] = 'SOLICITUD DECLARACION ESTIMADA';
-					$arregloDatos['por_sustitutiva'] = 0;
+					$arregloDatos['id_contribuyente'] = $model->id_contribuyente;
+					$arregloDatos['ano_impositivo'] = $model->ano_impositivo;
+					$arregloDatos['nro_solicitud'] = $model->nro_solicitud;
+					$arregloDatos['tipo'] = $model->tipo;
+					$arregloDatos['licencia'] = $model->licencia;
+					$arregloDatos['nro_control'] = '';
+					$arregloDatos['serial_control'] = '';
+					$arregloDatos['fuente_json'] = $fuente_json;
+					$arregloDatos['rubro_json'] = json_encode($rjson);
+					$arregloDatos['observacion'] = 'SOLICITUD LICENCIA';
+					$arregloDatos['inactivo'] = 0;
+					$arregloDatos['usuario'] = $model->usuario;
+					$arregloDatos['fecha_hora'] = $model->fecha_hora;
 
 					$result = $search->guardar($arregloDatos, $conexionLocal, $connLocal);
 					if ( $result['id'] > 0 ) {
@@ -502,6 +589,7 @@
 	    	}
 	    	return true;
 	    }
+
 
 
 
@@ -569,12 +657,12 @@
 		 * @param  ConexionController $conexionLocal instancia de la clase ConexionController.
 		 * @param  connection $connLocal instancia de conexion que permite ejecutar las acciones en base
 		 * de datos.
-		 * @param  model $models arreglo de modelo de la instancia DeclaracionBaseForm.
+		 * @param  model $model modelo de la instancia LicenciaSolicitudForm.
 		 * @param  array $conf arreglo que contiene los parametros principales de la configuracion de la
 		 * solicitud.
 		 * @return boolean retorna true si todo se ejecuto correctamente false en caso contrario.
 		 */
-		private function actionEjecutaProcesoSolicitud($conexionLocal, $connLocal, $models, $conf)
+		private function actionEjecutaProcesoSolicitud($conexionLocal, $connLocal, $model, $conf)
 		{
 			$result = true;
 			$resultadoProceso = [];
@@ -595,7 +683,7 @@
 				// de resultados donde el key del arrary es el nombre del proceso ejecutado y el valor
 				// del elemento corresponda a un reultado de la ejecucion. La variable $model debe contener
 				// el identificador del contribuyente que realizo la solicitud y el numero de solicitud.
-				$procesoEvento->ejecutarProcesoSolicitudSegunEvento($models[0], $evento, $conexionLocal, $connLocal);
+				$procesoEvento->ejecutarProcesoSolicitudSegunEvento($model, $evento, $conexionLocal, $connLocal);
 
 				// Se obtiene un array de acciones o procesos ejecutados. Sino se obtienen acciones
 				// ejecutadas se asumira que no se configuraro ningun proceso para que se ejecutara
@@ -629,24 +717,24 @@
 		/**
 		 * Metodo que permite enviar un email al contribuyente indicandole
 		 * la confirmacion de la realizacion de la solicitud.
-		 * @param  model $models array de modelo DeclaracionBaseForm que contiene la informacion
+		 * @param  model $model modelo LicenciaSolicitudForm que contiene la informacion
 		 * del identificador del contribuyente.
 		 * @param  array $conf arreglo que contiene los parametros principales de la configuracion de la
 		 * solicitud.
 		 * @return boolean retorna un true si envio el correo o false en caso
 		 * contrario.
 		 */
-		private function actionEnviarEmail($models, $conf)
+		private function actionEnviarEmail($model, $conf)
 		{
 			$result = false;
 			$listaDocumento = '';
 			if ( count($conf) > 0 ) {
 				$parametroSolicitud = New ParametroSolicitud($conf['id_config_solicitud']);
-				$nroSolicitud = $models[0]->nro_solicitud;
+				$nroSolicitud = $model->nro_solicitud;
 				$descripcionSolicitud = $parametroSolicitud->getDescripcionTipoSolicitud();
 				$listaDocumento = $parametroSolicitud->getDocumentoRequisitoSolicitud();
 
-				$email = ContribuyenteBase::getEmail($models[0]->id_contribuyente);
+				$email = ContribuyenteBase::getEmail($model->id_contribuyente);
 				try {
 					$enviar = New PlantillaEmail();
 					$result = $enviar->plantillaEmailSolicitud($email, $descripcionSolicitud, $nroSolicitud, $listaDocumento);
@@ -668,11 +756,11 @@
     	{
     		if ( isset($_SESSION['idContribuyente']) ) {
 	    		if ( $id > 0 ) {
-	    			$searchDeclaracion = New DeclaracionBaseSearch($_SESSION['idContribuyente']);
-	    			$findModel = $searchDeclaracion->findSolicitudDeclaracion($id);
-	    			$dataProvider = $searchDeclaracion->getDataProviderSolicitud($id);
+	    			$searchLicencia = New LicenciaSolicitudSearch($_SESSION['idContribuyente']);
+	    			$findModel = $searchLicencia->findSolicitudLicencia($id);
+	    			$dataProvider = $searchLicencia->getDataProviderSolicitud($id);
 	    			if ( isset($findModel) ) {
-	    				return self::actionShowSolicitud($findModel, $searchDeclaracion, $dataProvider);
+	    				return self::actionShowSolicitud($findModel, $searchLicencia, $dataProvider);
 	    			} else {
 						throw new NotFoundHttpException('No se encontro el registro');
 					}
@@ -687,6 +775,8 @@
 
 
 
+
+
     	/***/
     	private function actionShowSolicitud($findModel, $modelSearch, $dataProvider)
     	{
@@ -694,21 +784,22 @@
  				$model = $findModel->all();
  				self::actionAnularSession(['id_historico']);
 
- 				$search = New HistoricoDeclaracionSearch($model[0]->id_contribuyente);
- 				$historico = $search->findHistoricoDeclaracionSegunSolicitud($model[0]->nro_solicitud);
+ 				$search = New HistoricoLicenciaSearch($model[0]->id_contribuyente);
+ 				$historico = $search->findHistoricoLicenciaSegunSolicitud($model[0]->nro_solicitud);
 
  				$_SESSION['id_historico'] = isset($historico[0]['id_historico']) ? $historico[0]['id_historico'] : null;
 
 				$opciones = [
-					'quit' => '/aaee/declaracion/declaracion-estimada/quit',
+					'quit' => '/aaee/licencia/licencia-solicitud/quit',
 				];
-				return $this->render('/aaee/declaracion/estimada/_view', [
-																'codigo' => 100,
-																'model' => $model,
-																'modelSearch' => $modelSearch,
-																'opciones' => $opciones,
-																'dataProvider' => $dataProvider,
-																'historico' => $historico,
+				return $this->render('/aaee/licencia/_view', [
+														'codigo' => 100,
+														'model' => $model,
+														'modelSearch' => $modelSearch,
+														'opciones' => $opciones,
+														'dataProvider' => $dataProvider,
+														'historico' => $historico,
+														'caption' => 'Solicitud Creada Nro. ' . $model[0]->nro_solicitud,
 					]);
 			} else {
 				throw new NotFoundHttpException('No se encontro el registro');
