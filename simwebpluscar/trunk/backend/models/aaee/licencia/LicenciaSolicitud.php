@@ -48,6 +48,7 @@
 	use backend\models\solicitud\estatus\EstatusSolicitud;
 	use backend\models\aaee\actecon\ActEcon;
 	use common\models\solicitudescontribuyente\SolicitudesContribuyente;
+	use backend\models\aaee\rubro\Rubro;
 
 
 	/**
@@ -87,6 +88,21 @@
 		{
 			return $this->hasOne(EstatusSolicitud::className(), ['estatus_solicitud' => 'estatus']);
 		}
+
+
+
+		/**
+		 * Relacion con la entidad "rubros"
+		 * @return active record
+		 */
+		public function getRubro()
+		{
+			return $this->hasOne(Rubro::className(), ['id_rubro' => 'id_rubro']);
+		}
+
+
+
+
 
 
 	}

@@ -91,7 +91,7 @@
 	        	[['id_contribuyente', 'ano_impositivo',
 	        	  'estatus', 'nro_solicitud', 'id_rubro'],
 	        	  'integer', 'message' => Yii::t('backend', 'Formato de valores incorrecto')],
-	        	[['tipo', 'licencia'],
+	        	[['tipo', 'licencia', 'origen'],
 	        	  'string', 'message' => Yii::t('backend', 'Formato de valores incorrecto')],
 	        	[['estatus'], 'default', 'value' => 0],
 	        	[['usuario'], 'default', 'value' => Yii::$app->identidad->getUsuario()],
