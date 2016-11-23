@@ -150,7 +150,7 @@
 			$infoImpuesto = null;
 			$model = self::findImpuestoSegunSolicitud($tipoSolicitud);
 			if ( count($model) > 0 ) {
-				$infoImpuesto['impuesto'] = [$model->impuestos->impuesto => $model->impuestos->descripcion]; 
+				$infoImpuesto['impuesto'] = [$model->impuestos->impuesto => $model->impuestos->descripcion];
 				$infoImpuesto['solicitud'] = [$model->id_tipo_solicitud => $model->descripcion];
 			}
 			return $infoImpuesto;
@@ -169,6 +169,7 @@
 
 			$dataProvider = New ActiveDataProvider([
 	    						'query' => $query,
+	    						'pagination' => false,
 	    	]);
 
 			if ( $impuesto == 0 ) {
