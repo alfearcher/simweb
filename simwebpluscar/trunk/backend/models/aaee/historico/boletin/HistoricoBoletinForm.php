@@ -45,7 +45,7 @@
  	use Yii;
 	use yii\base\Model;
 	use yii\data\ActiveDataProvider;
-	use backend\models\aaee\historico\boletin;
+	use backend\models\aaee\historico\boletin\HistoricoBoletin;
 
 	/**
 	* 	Clase
