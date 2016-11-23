@@ -520,7 +520,15 @@
 
 
 
-	    /***/
+	    /**
+	     * Metodo que crea el historico de declaraciones, esto aplica si la solicitud de declaracion
+	     * es de aprobacion directa.
+		 * @param  model $model modelo del tipo de clase LicenciaSolicitudForm.
+	     * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
+		 * solicitud.
+		 * @param array $chkRubros arreglo de identificadores de los rubros.(id-rubro).
+	     * @return boolean retorna true si guarda satisfactoriamente.
+	     */
 	    private static function actionCreateHistoricoLicencia($model, $conf, $chkRubros, $conexionLocal, $connLocal)
 	    {
 	    	$result = [];
