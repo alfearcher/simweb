@@ -295,9 +295,9 @@
 
 			$findModel = self::findUltimoHistoricoSegunAnoImpositivo($añoImpositivo);
 
-			$model = $findModel->andWhere('inactivo1 =:inactivo',
+			$model = $findModel->andWhere('inactivo =:inactivo',
 										[':inactivo' => 0])
-							   ->one();
+							   ->limit(1);
 die(var_dump($mdoel));
 			return $model;
 
