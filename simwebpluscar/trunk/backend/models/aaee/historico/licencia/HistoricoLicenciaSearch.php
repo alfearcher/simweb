@@ -298,7 +298,7 @@
 			$model = $findModel->andWhere('inactivo =:inactivo',
 										[':inactivo' => 0])
 							   ->limit(1);
-die(var_dump($mdoel));
+die(var_dump($model));
 			return $model;
 
 		}
