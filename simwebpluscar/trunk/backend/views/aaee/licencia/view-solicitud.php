@@ -82,10 +82,10 @@
 	    					'label' => Yii::t('frontend', 'Tipo de Licencia'),
 	    					'value' => $model[0]['tipo'],
 	    				],
-	    				// [
-	    				// 	'label' => Yii::t('frontend', 'condicion'),
-	    				// 	'value' => $model['estatusSolicitud']['descripcion'],
-	    				// ],
+	    				[
+	    					'label' => Yii::t('frontend', 'Licencia'),
+	    					'value' => $model[0]['licencia'],
+	    				],
 	    			],
 				])
 			?>
