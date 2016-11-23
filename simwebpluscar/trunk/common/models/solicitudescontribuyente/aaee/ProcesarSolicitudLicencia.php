@@ -285,6 +285,7 @@
                 // Se arma la informacion del contribuyente para la licencia.
                 $contribuyente = ContribuyenteBase::findOne($idContribuyente);
 
+                $fechaVcto = date('Y') . '-12-31';
                 $arregloContribuyente = [
                         'id_contribuyente' => $idContribuyente,
                         'nro_solicitud' => $modelLicencia[0]['nro_solicitud'],
@@ -294,7 +295,9 @@
                         'capital' => $contribuyente->capital,
                         'representante' => $contribuyente->representante,
                         'cedulaRep' => $contribuyente->naturaleza_rep . '-' . $contribuyente->cedula_rep,
-
+                        'catastro' => 0,
+                        'fechaEmision' => date('Y-m-d'),
+                        'fechaVcto' => $fechaVcto,
                 ];
 
                 $fuente_json = json_encode($arregloContribuyente);
