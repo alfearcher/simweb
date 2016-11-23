@@ -753,7 +753,7 @@
 				$model = $modelSearch->findSolicitudLicencia($this->_model->nro_solicitud);
 				$dataProvider = $modelSearch->getDataProviderSolicitud($this->_model->nro_solicitud);
 				$model = $model->all();
-// die(var_dump($model->all()));
+
 				if ( isset($model) ) {
 					return $this->render('@backend/views/aaee/licencia/view-solicitud', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->_model->nro_solicitud),
