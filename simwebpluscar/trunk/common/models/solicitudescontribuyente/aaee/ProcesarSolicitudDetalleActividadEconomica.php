@@ -64,6 +64,7 @@
     use common\models\solicitudescontribuyente\aaee\ProcesarDeclaracionEstimada;
     use common\models\solicitudescontribuyente\aaee\ProcesarDeclaracionDefinitiva;
     use common\models\solicitudescontribuyente\aaee\ProcesarDeclaracionSustitutiva;
+    use common\models\solicitudescontribuyente\aaee\ProcesarSolicitudLicencia;
 
 
     /**
@@ -135,6 +136,13 @@
                                                                 $this->_evento,
                                                                 $this->_conn,
                                                                 $this->_conexion);
+                    $result = $procesar->procesarSolicitud();
+
+                } elseif ( $this->_model->tipo_solicitud == 3 ) {
+                    $procesar = New ProcesarSolicitudLicencia($this->_model,
+                                                              $this->_evento,
+                                                              $this->_conn,
+                                                              $this->_conexion);
                     $result = $procesar->procesarSolicitud();
 
                 } elseif ( $this->_model->tipo_solicitud == 8 ) {
