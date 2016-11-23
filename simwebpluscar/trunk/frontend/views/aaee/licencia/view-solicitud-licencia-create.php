@@ -21,13 +21,13 @@
  */
 
  /**
- *  @file create-licencia-form.php
+ *  @file view-solicitud-licencia-create.php
  *
  *  @author Jose Rafael Perez Teran
  *
  *  @date 21-11-2016
  *
- *  @view create-licencia-form.php
+ *  @view view-solicitud-licencia-create.php
  *
  *
  *  @property
@@ -48,6 +48,7 @@
 	use yii\helpers\ArrayHelper;
 	use yii\widgets\ActiveForm;
 	use yii\web\View;
+	use yii\widgets\DetailView;
 
 	$typeIcon = Icon::FA;
   	$typeLong = 'fa-2x';
@@ -57,11 +58,11 @@
  ?>
 
 
-<div class="crear-licencia-form">
+<div class="licencia-creada">
  	<?php
 
  		$form = ActiveForm::begin([
- 			'id' => 'id-create-licencia-form',
+ 			'id' => 'id-view-solicitud-creada',
  			'method' => 'post',
  			//'action' => $url,
  			'enableClientValidation' => true,
@@ -69,14 +70,6 @@
  			'enableClientScript' => true,
  		]);
  	?>
-
-	<?=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $model->id_contribuyente])->label(false);?>
-	<?=$form->field($model, 'usuario')->hiddenInput(['value' => $model->usuario])->label(false); ?>
-	<?=$form->field($model, 'fecha_hora')->hiddenInput(['value' => $model->fecha_hora])->label(false); ?>
-	<?=$form->field($model, 'origen')->hiddenInput(['value' => $model->origen])->label(false); ?>
-	<?=$form->field($model, 'estatus')->hiddenInput(['value' => 0])->label(false); ?>
-	<?=$form->field($model, 'licencia')->hiddenInput(['value' => $model->licencia])->label(false); ?>
-	<?=$form->field($model, 'nro_solicitud')->hiddenInput(['value' => $model->nro_solicitud])->label(false); ?>
 
 
 	<meta http-equiv="refresh">
@@ -87,64 +80,42 @@
 
 <!-- Cuerpo del formulario -->
 <!-- style="background-color: #F9F9F9; -->
-        <div class="panel-body" style="background-color: #F9F9F9;">
+        <div class="panel-body" >
         	<div class="container-fluid">
         		<div class="col-sm-12">
 
 					<div class="row">
-						<div class="col-sm-2" style="width: 10%;">
-							<h4><strong>Lapso</strong></h4>
-						</div>
-						<div class="col-sm-2" style="width: 10%;padding: 0px;">
-							<div class="lapso" style="margin-left: 0px;">
-								<?= $form->field($model, 'ano_impositivo')->textInput([
-																			'id' => 'id-ano-impositivo',
-																			'style' => 'width:98%;background-color:white;',
-																			'value' => $model->ano_impositivo,
-																			'readOnly' => true,
+						<div class="row" style="padding-left: 0px; width: 50%;">
+			        		<h4><?= Html::encode(Yii::t('frontend', 'Main Information')) ?></h4>
+							<?= DetailView::widget([
+									'model' => $model,
+					    			'attributes' => [
 
-																	])->label(false) ?>
-							</div>
-						</div>
-						<div class="col-sm-2" style="width: 5%;padding: 0px;padding-right: 5px;">
-							<div class="lapso" style="margin-left: 0px;">
-								<?= $form->field($model, 'periodo')->textInput([
-																			'id' => 'id-periodo',
-																			'style' => 'width:98%;background-color:white;',
-																			'value' => $periodo,
-																			'readOnly' => true,
-																	])->label(false) ?>
-							</div>
-						</div>
-
-						<div class="col-sm-2" style="width: 15%;padding: 0px;padding-left: 15px;">
-							<h4><strong>Tipo de Licencia</strong></h4>
-						</div>
-						<div class="col-sm-2" style="width: 15%;padding: 0px;">
-							<div class="tipo-licencia" style="margin-left: 0px;">
-								<?= $form->field($model, 'tipo')->textInput([
-																			'id' => 'id-tipo',
-																			'style' => 'width:98%;background-color:white;',
-																			'value' => $tipo,
-																			'readOnly' => true,
-																	])->label(false) ?>
-							</div>
+					    				[
+					    					'label' => Yii::t('frontend', 'Nro de Solicitud'),
+					    					'value' => $model[0]['nro_solicitud'],
+					    				],
+					    				[
+					    					'label' => Yii::t('frontend', 'Id. Contribuyente'),
+					    					'value' => $model[0]['id_contribuyente'],
+					    				],
+					    				[
+					    					'label' => Yii::t('frontend', 'Año'),
+					    					'value' => $model[0]['ano_impositivo'],
+					    				],
+					    				[
+					    					'label' => Yii::t('frontend', 'Tipo de Licencia'),
+					    					'value' => $model[0]['tipo'],
+					    				],
+					    				// [
+					    				// 	'label' => Yii::t('frontend', 'condicion'),
+					    				// 	'value' => $model['estatusSolicitud']['descripcion'],
+					    				// ],
+					    			],
+								])
+							?>
 						</div>
 
-
-						<div class="col-sm-2" style="width: 15%;padding: 0px;padding-left: 15px;">
-							<h4><strong>Nro. de Licencia</strong></h4>
-						</div>
-						<div class="col-sm-2" style="width: 17%;padding: 0px;">
-							<div class="licencia" style="margin-left: 0px;">
-								<?= $form->field($model, 'licencia')->textInput([
-																			'id' => 'id-licencia',
-																			'style' => 'width:100%;background-color:white;',
-																			'value' => $model->licencia,
-																			'readOnly' => true,
-																	])->label(false) ?>
-							</div>
-						</div>
 					</div>
 
 
@@ -184,7 +155,7 @@
 				                        ],
 				                        'label' => Yii::t('frontend', 'rubro'),
 				                        'value' => function($data) {
-				                                   		return $data->rubroDetalle->rubro;
+				                                   		return $data->rubro->rubro;
 				            			           },
 				                    ],
 				                    [
@@ -193,7 +164,7 @@
 				                        ],
 				                        'label' => Yii::t('frontend', 'descripcion'),
 				                        'value' => function($data) {
-				                                   		return $data->rubroDetalle->descripcion;
+				                                   		return $data->rubro->descripcion;
 				            			           },
 				                    ],
 
@@ -201,14 +172,23 @@
 				                        'contentOptions' => [
 				                              'style' => 'font-size: 90%;',
 				                        ],
-				                        'label' => Yii::t('frontend', 'Licor'),
+				                        'label' => Yii::t('frontend', 'licor'),
 				                        'value' => function($data) {
-				                        				if ( $data->rubroDetalle->licores == 1 ) {
+				                        				if ( $data->rubro->licores == 1 ) {
 				                        					return 'SI';
 				                        				} else {
 				                        					return 'NO';
 				                        				}
 
+				            			           },
+				                    ],
+				                    [
+				                        'contentOptions' => [
+				                              'style' => 'font-size: 90%;',
+				                        ],
+				                        'label' => Yii::t('frontend', 'condicion'),
+				                        'value' => function($data) {
+				                                   		return $data->estatusSolicitud->descripcion;
 				            			           },
 				                    ],
 
@@ -231,47 +211,19 @@
 					</div>
 
 					<div class="row" style="width: 100%;padding: 0px;margin-top: 20px;">
-							<div class="col-sm-3" style="width: 25%;padding: 0px;padding-left: 15px;">
-								<div class="form-group">
-									<?= Html::submitButton(Yii::t('frontend', Yii::t('frontend', 'Crear Solicitud')),
-																						  [
-																							'id' => 'btn-create',
-																							'class' => 'btn btn-success',
-																							'value' => 5,
-																							'style' => 'width: 100%;',
-																							'name' => 'btn-create',
-
-																						  ])
-									?>
-								</div>
-							</div>
-
-							<div class="col-sm-3" style="width: 25%;padding: 0px;padding-left: 25px;margin-left:30px;">
-								<div class="form-group">
-									<?= Html::submitButton(Yii::t('frontend', Yii::t('frontend', 'Back')),
-																						  [
-																							'id' => 'btn-back-form',
-																							'class' => 'btn btn-danger',
-																							'value' => 3,
-																							'style' => 'width: 100%;',
-																							'name' => 'btn-back-form',
-
-																						  ])
-									?>
-								</div>
-							</div>
 
 							<div class="col-sm-3" style="width: 25%;padding: 0px; padding-left: 25px;margin-left:30px;">
 								<div class="form-group">
-									<?= Html::submitButton(Yii::t('frontend', Yii::t('frontend', 'Quit')),
-																						  [
-																							'id' => 'btn-quit',
-																							'class' => 'btn btn-danger',
-																							'value' => 1,
-																							'style' => 'width: 100%;',
-																							'name' => 'btn-quit',
+									<?= Html::a(Yii::t('frontend', Yii::t('frontend', 'Quit')),
+																					['quit'],
+																				  	[
+																						'id' => 'btn-quit',
+																						'class' => 'btn btn-danger',
+																						'value' => 1,
+																						'style' => 'width: 100%;',
+																						'name' => 'btn-quit',
 
-																						  ])
+																				  	])
 									?>
 								</div>
 							</div>

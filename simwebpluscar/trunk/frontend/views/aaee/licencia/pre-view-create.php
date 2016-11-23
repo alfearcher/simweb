@@ -21,13 +21,13 @@
  */
 
  /**
- *  @file create-licencia-form.php
+ *  @file pre-view-create.php
  *
  *  @author Jose Rafael Perez Teran
  *
  *  @date 21-11-2016
  *
- *  @view create-licencia-form.php
+ *  @view pre-view-create.php
  *
  *
  *  @property
@@ -57,11 +57,11 @@
  ?>
 
 
-<div class="crear-licencia-form">
+<div class="pre-view-create">
  	<?php
 
  		$form = ActiveForm::begin([
- 			'id' => 'id-create-licencia-form',
+ 			'id' => 'id-pre-view-create',
  			'method' => 'post',
  			//'action' => $url,
  			'enableClientValidation' => true,
@@ -87,7 +87,7 @@
 
 <!-- Cuerpo del formulario -->
 <!-- style="background-color: #F9F9F9; -->
-        <div class="panel-body" style="background-color: #F9F9F9;">
+        <div class="panel-body" >
         	<div class="container-fluid">
         		<div class="col-sm-12">
 
@@ -125,12 +125,11 @@
 								<?= $form->field($model, 'tipo')->textInput([
 																			'id' => 'id-tipo',
 																			'style' => 'width:98%;background-color:white;',
-																			'value' => $tipo,
+																			'value' => $model->tipo,
 																			'readOnly' => true,
 																	])->label(false) ?>
 							</div>
 						</div>
-
 
 						<div class="col-sm-2" style="width: 15%;padding: 0px;padding-left: 15px;">
 							<h4><strong>Nro. de Licencia</strong></h4>
@@ -233,13 +232,13 @@
 					<div class="row" style="width: 100%;padding: 0px;margin-top: 20px;">
 							<div class="col-sm-3" style="width: 25%;padding: 0px;padding-left: 15px;">
 								<div class="form-group">
-									<?= Html::submitButton(Yii::t('frontend', Yii::t('frontend', 'Crear Solicitud')),
+									<?= Html::submitButton(Yii::t('frontend', Yii::t('frontend', 'Comfirmar Crear Solicitud')),
 																						  [
-																							'id' => 'btn-create',
+																							'id' => 'btn-confirm-create',
 																							'class' => 'btn btn-success',
-																							'value' => 5,
+																							'value' => 3,
 																							'style' => 'width: 100%;',
-																							'name' => 'btn-create',
+																							'name' => 'btn-confirm-create',
 
 																						  ])
 									?>
@@ -252,7 +251,7 @@
 																						  [
 																							'id' => 'btn-back-form',
 																							'class' => 'btn btn-danger',
-																							'value' => 3,
+																							'value' => 6,
 																							'style' => 'width: 100%;',
 																							'name' => 'btn-back-form',
 
