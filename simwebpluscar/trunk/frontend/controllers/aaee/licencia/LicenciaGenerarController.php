@@ -119,7 +119,6 @@
 					}
 
 				} else {
-die(var_dump($model));
 					$_SESSION['id_historico'] = $model->id_historico;
 					$_SESSION['nro_control'] = $model->nro_control;
 					return $this->render('/aaee/licencia/historico/historico-licencia', [
