@@ -276,7 +276,7 @@
 			$model = $findModel->andWhere('ano_impositivo =:ano_impositivo',
 												[':ano_impositivo' => $añoImpositivo])
 							   ->orderBy([
-							   		'ano_impositivo' => SORT_DESC,
+							   		'id_historico' => SORT_DESC,
 							   	]);
 			return $model;
 
