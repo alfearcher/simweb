@@ -55,7 +55,7 @@
 	class HistoricoLicenciaSearch extends HistoricoLicencia
 	{
 		private $_id_contribuyente;
-
+		protected $id_historico;
 
 
 		/**
@@ -260,6 +260,70 @@
 			return ( count($model) > 0 ) ? $model : [];
 		}
 
+
+
+
+
+		/**
+		 * Metodo que permite realizar una consulta del ultimo historico de licencia
+		 * para un año determinado.
+		 * @param  integer $añoImpositivo año impositivo
+		 * @return active record
+		 */
+		private function findUltimoHistoricoSegunAnoImpositivo($añoImpositivo)
+		{
+			$findModel = self::findHistoricoLicenciaModel();
+			$model = $findModel->andWhere('ano_impositivo =:ano_impositivo',
+												[':ano_impositivo' => $añoImpositivo])
+							   ->orderBy([
+							   		'ano_impositivo' => SORT_DESC,
+							   	]);
+			return $model;
+
+		}
+
+
+
+
+		/**
+		 * Metodo realiza la consulta del ultimo historico del año actual activo.
+		 * @return HistoricoLicencia returna una mdoelo con la consulta.
+		 */
+		public function findUltimoHistoricoAnoActual()
+		{
+			$añoImpositivo = (int)date('Y');
+
+			$findModel = self::findUltimoHistoricoSegunAnoImpositivo($añoImpositivo);
+
+			$model = $findModel->andWhere('inactivo =:inactivo',
+										[':inactivo' => 0])
+							   ->one();
+
+			return $model;
+
+		}
+
+
+		/***/
+		public function setHistorico($idHistorico)
+		{
+			$this->id_historico = $idHistorico;
+		}
+
+
+		/**
+		 * Metodo que realiza la busqueda por identificador del historico
+		 * @return array retorna un arreglo con la informacion del historico.
+		 */
+		public function findHistoricoLicencia()
+		{
+			$findModel = self::findHistoricoLicenciaModel();
+			$model =  $findModel->andWhere('id_historico =:id_historico',
+											[':id_historico' => $this->id_historico])
+								->one();
+
+			return $model;
+		}
 
 
 	}
