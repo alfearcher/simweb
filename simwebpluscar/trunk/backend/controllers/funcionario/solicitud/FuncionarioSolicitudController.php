@@ -563,6 +563,7 @@
 			$varPost = $postData[$formName];
 			$listado = $varPost['listado'];
 
+
 			if ( isset($postData['btn-send-request']) ) {
 				if ( $postData['btn-send-request'] == 1 ) {
 
@@ -570,6 +571,8 @@
 					// Se verifica que haya seleccionado algun funcionario y solicitud de las listas.
 					$chkFuncionario = isset($postData['chk-funcionario']) ? $postData['chk-funcionario'] : null;
 					$chkSolicitud = isset($postData['chk-solicitud']) ? $postData['chk-solicitud'] : null;
+
+// die(var_dump($postData));
 
 					if ( count($chkFuncionario) > 0 && count($chkSolicitud) > 0 ) {
 						// Todo bien. Se puede guardar.
