@@ -115,7 +115,6 @@
 	            $datosContribuyente = json_decode($model['fuente_json'], true);
 	            $datosRubro = json_decode($model['rubro_json'], true);
 
-die(var_dump($datosContribuyente));
 	            // Informacion del contribuyente.
 	            $htmlContribuyente = $this->renderPartial('@common/views/plantilla-pdf/licencia/layout-contribuyente-pdf', [
 	                                                            'model' => $model,
