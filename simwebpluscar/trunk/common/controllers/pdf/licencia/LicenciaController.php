@@ -132,11 +132,21 @@
 
 
 	            // Informacion de los rubros aprobados
-	            $htmlRubro =  $this->renderPartial('@common/views/plantilla-pdf/licencia/layout-rubro-autorizado-pdf', [
+	            $htmlRubro = $this->renderPartial('@common/views/plantilla-pdf/licencia/layout-rubro-autorizado-pdf', [
 	            												'model' => $model,
 	            												'datosRubro' => $datosRubro,
 	            						]);
 
+
+	            // Informacion del pie de pagina
+	            $htmlPiePagina = $this->renderPartial('@common/views/plantilla-pdf/licencia/layout-piepagina-pdf');
+
+
+	            // Informacion del director
+	            $htmlDirector = $this->renderPartial('@common/views/plantilla-pdf/licencia/layout-director-pdf', [
+	            												'director'=> Yii::$app->oficina->getDirector(),
+                                                            	'nombreCargo' => Yii::$app->oficina->getNombreCargo(),
+	            						]);
 
 	            // QR
 	            $barcode = $model['serial_control'];
@@ -159,6 +169,11 @@
 		        $mpdf->WriteHTML($htmlContribuyente);
 		        $mpdf->WriteHTML($htmlLicencia);
 		        $mpdf->WriteHTML($htmlRubro);
+		        // $mpdf->WriteHTML($htmlPiePagina);
+		        $mpdf->WriteFixedPosHTML($htmlDirector, 15, 245, 170, 30);
+		       	$mpdf->WriteFixedPosHTML($htmlPiePagina, 15, 260, 170, 30);
+		        // Se coloca el QR
+		       $mpdf->WriteFixedPosHTML($htmlQR, 100, 212, 120, 30);
 
 		       //funciona
 		       // $mpdf->Rect(18, 230, 100, 30, D);
@@ -171,8 +186,7 @@
 		       // $mpdf->SetFont('Arial', 'B', 8);
 		       // $mpdf->Text(60,258,"Validacion terminal caja");
 
-		       // Se coloca el QR
-		       $mpdf->WriteFixedPosHTML($htmlQR, 100, 220, 120, 30);
+
 
 
 		       $mpdf->Output($nombre, 'I');
