@@ -78,6 +78,9 @@
 			<td class="info-rubro-minimo" colspan="1"><?=Html::encode(Yii::$app->formatter->asDecimal($rubro['minimo'],2)); ?></td>
 		</tr>
 	<?php } ?>
+		<tr class="cuerpo">
+			<td class="linea" colspan="10"><?=Html::encode(''); ?></td>
+		</tr>
 </table>
 
 
@@ -87,6 +90,10 @@
 		/*border-bottom: solid 2px #000;*/
 	}
 
+	.linea {
+		border-bottom: solid 2px #000;
+		width: 100%;
+	}
 
 	.label-rubro {
 		text-align: center;
@@ -108,7 +115,7 @@
 	.info-rubro-minimo {
 		font-family: Arial, Helvetica, sans-serif;
 		font-size: 80%;
-		border-bottom: solid 0.5px #000;
+		border-bottom: solid 0.25px #000;
 		font-weight: bold;
 	}
 
