@@ -206,7 +206,7 @@
             $htmlCobro = $this->renderPartial('@common/views/plantilla-pdf/boletin/estimada/layout-cobro-anticipado-pdf',[
                                                             'resumen'=> $resumenCobro,
                                     ]);
-
+  
 
             // informacion del pie de pagina.
             $htmlPiePagina = $this->renderPartial('@common/views/plantilla-pdf/boletin/layout-piepagina-pdf',[

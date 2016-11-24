@@ -42,7 +42,7 @@
 
 	namespace common\models\calculo\liquidacion\inmueble;
 
-
+  
  	use Yii;
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
