@@ -101,7 +101,7 @@
 			$cvb = '';
             // Informacion del encabezado.
             $htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/layout/layout-encabezado-pdf', [
-                                                            'caption' => 'LICENCIA SOBRE ACTIVIDADES ECONOMICAS DE INDUSTRIA, COMERCIO Y SERVICION',
+                                                            'caption' => 'LICENCIA SOBRE ACTIVIDADES ECONOMICAS DE INDUSTRIA, COMERCIO Y SERVICIOS',
 
                                     ]);
 
