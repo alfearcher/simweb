@@ -156,7 +156,7 @@
 		padding: 0px;
 		margin: 0px;
 		font-family: Arial, Helvetica, sans-serif;
-		font-size: 100%;
+		font-size: 120%;
 		font-weight: bold;
 		padding-top: -260px;
 		/*width: 60%;*/

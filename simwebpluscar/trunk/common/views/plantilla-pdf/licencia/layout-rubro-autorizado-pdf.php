@@ -67,7 +67,7 @@
 		<th class="label-rubro" colspan="1"><?=Html::encode('CODIGO'); ?></th>
 		<th class="label-rubro" colspan="7"><?=Html::encode('DESCRIPCION'); ?></th>
 		<th class="label-rubro" colspan="1"><?=Html::encode('ALICUOTA'); ?></th>
-		<th class="label-rubro" colspan="1"><?=Html::encode('MINIMO'); ?></th>
+		<th class="label-rubro" colspan="1"><?=Html::encode('MINIMO TRIBUTABLE'); ?></th>
 	</tr>
 
 	<?php foreach ( $datosRubro as $rubro ) { ?>
