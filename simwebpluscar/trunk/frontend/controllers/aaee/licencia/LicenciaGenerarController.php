@@ -194,10 +194,6 @@
 
 
 
-
-
-
-
     	/**
 		 * Metodo salida del modulo.
 		 * @return view
@@ -267,6 +263,7 @@
 		{
 			return $varSession = [
 						'id_historico',
+						'nro_control',
 						'begin',
 					];
 		}
