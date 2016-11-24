@@ -60,13 +60,23 @@ use common\models\tasas\GrupoSubnivel;
            // 'Calcomania',
 
 
-                  
+                    
+                    [
+                     'label' => 'Planilla',
+                     'value' => function($data){
+
+                       return $data['planilla'];
+
+
+
+                     },
+                     ],
 
                     [
                      'label' => 'Id. Objeto',
                      'value' => function($data){
 
-                       return $data['id_objeto'];
+                       return $data['id_impuesto'];
 
 
 
@@ -74,10 +84,10 @@ use common\models\tasas\GrupoSubnivel;
                      ],
 
                           [
-                     'label' => 'Placa',
+                     'label' => 'Descripcion',
                      'value' => function($data){
 
-                       return $data['placa'];
+                       return $data['descripcion'];
 
 
 
