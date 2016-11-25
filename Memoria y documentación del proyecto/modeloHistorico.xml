@@ -708,7 +708,7 @@
 <OPTIONSELECT Value="0" />
 </OPTIONSELECTED>
 </COLUMN>
-<COLUMN ID="2999" ColName="id_contribuyente" PrevColName="" Pos="1" idDatatype="6" DatatypeParams="(20)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="0" DefaultValue="0" Comments="">
+<COLUMN ID="2999" ColName="id_contribuyente" PrevColName="" Pos="1" idDatatype="6" DatatypeParams="(20)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="0" DefaultValue="0" Comments="">
 <OPTIONSELECTED>
 <OPTIONSELECT Value="0" />
 <OPTIONSELECT Value="0" />
@@ -783,7 +783,6 @@
 <INDEX ID="2998" IndexName="PRIMARY" IndexKind="0" FKRefDef_Obj_id="-1">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="2997" LengthParam="0" />
-<INDEXCOLUMN idColumn="2999" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
 <INDEX ID="3014" IndexName="index_objeto" IndexKind="1" FKRefDef_Obj_id="-1">
