@@ -184,14 +184,14 @@
 							</div>
 
 							<div class="col-sm-2" style="width: 20%;padding: 0px; padding-top: 10px;padding-left: 5px;">
-								<div class="id-contribuyente" style="margin-left: 0px;">
-									<?= $form->field($model, 'id_contribuyente')->textInput([
-																				'id' => 'id-contribuyente',
+								<div class="capital" style="margin-left: 0px;">
+									<?= $form->field($model, 'capital')->textInput([
+																				'id' => 'id-capital',
 																				'style' => 'width:100%;background-color:white;',
-																				'value' => $datosContribuyente['id_contribuyente'],
+																				'value' => $datosContribuyente['capital'],
 																				'readOnly' => true,
 
-																		])->label('ID Contribuyente') ?>
+																		])->label('Capital') ?>
 								</div>
 							</div>
 						</div>
