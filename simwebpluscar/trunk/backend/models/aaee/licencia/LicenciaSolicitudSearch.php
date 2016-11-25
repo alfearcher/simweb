@@ -207,7 +207,7 @@
 
 
 		/**
-		 * Metodo que realice una conaulta para determinar si existe una solicitud
+		 * Metodo que realice una consulta para determinar si existe una solicitud
 		 * pendiente para cambiar el representante legal.
 		 * @return active record retorna una modelo de la entidad "sl", donde
 		 * se guarda la solicitud. En caso contrario un arreglo vacio.
@@ -215,6 +215,29 @@
 		public function findSolicitudCambioRepresentantePendienta()
 		{
 			$findModel = CorreccionDomicilioFiscal::find()->alias('A')
+			                              ->where('id_contribuyente =:id_contribuyente',
+	    											[':id_contribuyente' => $this->_id_contribuyente])
+	    								  ->andWhere('estatus =:estatus',
+	    											[':estatus' => 0])
+	    								  ->orderBy([
+	    									  'nro_solicitud' => SORT_ASC,
+	    									]);
+
+	    	return ( count($findModel) > 0 ) ? $findModel : [];
+		}
+
+
+
+
+		/**
+		 * Metodo que realiza una consulta para determinar si existe una solictud pendiente
+		 * de Modificacion del Noombre de la Razon Social.
+		 * @return [active record retorna una modelo de la entidad "sl", donde
+		 * se guarda la solicitud. En caso contrario un arreglo vacio.
+		 */
+		public function findSolicitudCambioRazonSocial()
+		{
+			$findModel = CorreccionRazonSocial::find()->alias('A')
 			                              ->where('id_contribuyente =:id_contribuyente',
 	    											[':id_contribuyente' => $this->_id_contribuyente])
 	    								  ->andWhere('estatus =:estatus',
@@ -284,6 +307,18 @@
 
 			// Se determina si tiene una solicitud de desincorporacion de ramo pendiente.
 			$findModel = self::findSolicitudDesincorporacionRamoPendienta($añoImpositivo);
+			if ( count($findModel) > 0 ) {
+				$model = $findModel->all();
+
+				foreach ( $model as $mod ) {
+					$tipo = $mod->getDescripcionTipoSolicitud($mod['nro_solicitud']);
+					$mensaje[] = 'La Solicitud Nro. ' . $mod['nro_solicitud'] . ' ('. $tipo .'), se encuentra ' . $mod->estatusSolicitud->descripcion . ', rubro: ' . $mod->rubro->rubro . ' ' . $mod->rubro->descripcion;
+				}
+			}
+
+
+			// Se determina si tiene una solicitud de Cambio de Razon Social.
+			$findModel = self::findSolicitudCambioRazonSocial();
 			if ( count($findModel) > 0 ) {
 				$model = $findModel->all();
 

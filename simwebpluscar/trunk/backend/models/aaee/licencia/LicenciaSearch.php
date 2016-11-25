@@ -245,7 +245,7 @@
 					$arregloDatos = [
 							'status_licencia' => 1,
 					];
-					$result = $this->_conexion($this->_conn, $tabla, $arregloDatos, $arregloCondicion);
+					$result = $this->_conexion->modificarRegistro($this->_conn, $tabla, $arregloDatos, $arregloCondicion);
 					if ( $result ) {
 						$result = $this->_conexion->guardarRegistro($this->_conn, $tabla, $model->attribute);
 					}
@@ -268,7 +268,7 @@
 		 * @param  string $db nombre de la instabcia de conexion a bd
 		 * @return boolean retorna true
 		 */
-		public function generarLicencia($db = 'db')
+		public function generarNumeroLicencia($db = 'db')
 		{
 			$this->_conexion = New ConexionController();
 			$this->_conn = $this->_conexion->initConectar($db);
@@ -278,7 +278,7 @@
 			$this->_transaccion = $this->_conn->beginTransaction();
 			$result = self::guardar();
 			if ( $result ) {
-				$this->_transaccion->comit();
+				$this->_transaccion->commit();
 			} else {
 				$this->_transaccion->rollBack();
 			}
