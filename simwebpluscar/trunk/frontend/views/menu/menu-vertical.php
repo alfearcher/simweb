@@ -77,11 +77,17 @@
 		        					   	//['label' => 'Licencias', 'url' => ['/aaee/licencia/licencia-base/index']],
 		        					   	['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Licencia',
 		        					   		'items' => [
-		        					   				['label' => 'Solicitar Emision', 'url' => ['/aaee/licencia/licencia-solicitud/index', 'id' => 113]],
-		        					   				['label' => 'Generar Licencia', 'url' => ['/aaee/licencia/licencia-generar/index']],
+	        					   				['label' => 'Solicitar Emision', 'url' => ['/aaee/licencia/licencia-solicitud/index', 'id' => 113]],
+	        					   				['label' => 'Descargar Licencia', 'url' => ['/aaee/licencia/licencia-generar/index']],
 		        					   		]
 		        					   	],
 
+	        					   		['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Solvencia',
+		        					   		'items' => [
+	        					   				['label' => 'Solicitar Emision', 'url' => ['/aaee/solvencia/solvencia-solicitud/index', 'id' => 113]],
+	        					   				['label' => 'Descargar Solvencia', 'url' => ['/aaee/solvencia/solvencia-generar/index']],
+		        					   		]
+		        					   	],
 
 		        					   	['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Modificion de Datos',
 		        					   		'items' => [
