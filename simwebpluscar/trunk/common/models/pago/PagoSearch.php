@@ -49,6 +49,7 @@
 	use yii\db\Command;
 	use common\models\planilla\Pago;
 	use common\models\planilla\PagoDetalle;
+	use common\models\ordenanza\OrdenanzaBase;
 
 
 
@@ -60,6 +61,7 @@
 
 		private $_id_contribuyente;
 		private $_id_impuesto;
+		private $_impuesto;
 
 
 		/**
@@ -71,7 +73,10 @@
 		}
 
 
-		/***/
+		/**
+		 * Metodo que setea el valor del identificador del contribuyente
+		 * @param integer $idContribuyente identificador del contribuyente.
+		 */
 		public function setIdContribuyente($idContribuyente)
 		{
 			$this->_id_contribuyente = $idContribuyente;
@@ -79,12 +84,24 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que setea el valor del identificador del objeto.
+		 * @param integer $idImpuesto identificador del objteo (inmueble, vehiculo)
+		 */
 		public function setIdImpuesto($idImpuesto)
 		{
 			$this->_id_impuesto = $idImpuesto;
 		}
 
+
+		/**
+		 * Metodo que setea el valor del identificador del impuesto.
+		 * @param integer $impuesto identificador del impuesto.
+		 */
+		public function setImpuesto($impuesto)
+		{
+			$this->_impuesto = $impuesto;
+		}
 
 
 		/**
@@ -116,6 +133,39 @@
 									      			[':id_contribuyente' => $this->_id_contribuyente]);
 			}
 			return $findModelAct;
+		}
+
+
+
+		/**
+		 * Metodo que genera el modelo general de consulta de los impuestos de Inmuebles.
+		 * @return model retorna modelo de consulta para inmuebles urbanos.
+		 */
+		private function getModelGeneralInmueble()
+		{
+			$findModelInmueble = null;
+			$findModel = self::getModelGeneral();
+			if ( count($findModel) > 0 ) {
+				$findModelInmueble = $findModel->andWhere('D.impuesto =:impuesto',[':impuesto' => 2]);
+			}
+			return $findModelInmueble;
+		}
+
+
+
+
+		/**
+		 * Metodo que genera el modelo general de consulta de los impuestos de Vehiculs.
+		 * @return model retorna modelo de consulta para Vehiculos.
+		 */
+		private function getModelGeneralVehiculo()
+		{
+			$findModelVehiculo = null;
+			$findModel = self::getModelGeneral();
+			if ( count($findModel) > 0 ) {
+				$findModelVehiculo = $findModel->andWhere('D.impuesto =:impuesto',[':impuesto' => 3]);
+			}
+			return $findModelVehiculo;
 		}
 
 
@@ -455,6 +505,211 @@
 			];
 
 			return $resumen;
+		}
+
+
+
+
+
+		/**
+		 * Metodo que consulta los pagos de un inmueble especifico, solo considerando los
+		 * periodos mayores a cero.
+		 * @param  integer $idImpuesto idenificador del inmueble.
+		 * @return active record retorna los registros de pagos del inmueble. null si no
+		 * encuentra nada.
+		 */
+		public function getPagoInmuebleEspecifico($idImpuesto)
+		{
+			self::setImpuesto($idImpuesto);
+			self::setImpuesto(2);
+			$model = self::getModelPagoObjetoImpositivo('>');	// Periodos mayores a cero.
+			$pagos = $model->joinWith('exigibilidad E')
+			               ->joinWith('impuestos I')
+			               ->asArra()
+			               ->all();
+			if ( count($pagos) > 0 ) {
+				return $pagos;
+			}
+			return null;
+		}
+
+
+
+
+		/**
+		 * Metodo que consulta los pagos de un Aseo especifico, solo considerando los
+		 * periodos mayores a cero.
+		 * @param  integer $idImpuesto idenificador del Aseo.
+		 * @return active record retorna los registros de pagos del Aseo. null si no
+		 * encuentra nada.
+		 */
+		public function getPagoAseoEspecifico($idImpuesto)
+		{
+			self::setImpuesto($idImpuesto);
+			self::setImpuesto(12);
+			$model = self::getModelPagoObjetoImpositivo('>');	// Periodos mayores a cero.
+			$pagos = $model->joinWith('exigibilidad E')
+			               ->joinWith('impuestos I')
+			               ->asArra()
+			               ->all();
+			if ( count($pagos) > 0 ) {
+				return $pagos;
+			}
+			return null;
+		}
+
+
+
+
+		/**
+		 * Metodo que consulta los pagos de un vehiculo especifico, solo considerando los
+		 * periodos mayores a cero.
+		 * @param  integer $idImpuesto idenificador del vehiculo.
+		 * @return active record retorna los registros de pagos del vehiculo. null si no
+		 * encuentra nada.
+		 */
+		public function getPagoVehiculoEspecifico($idImpuesto)
+		{
+			self::setImpuesto($idImpuesto);
+			self::setImpuesto(3);
+			$model = self::getModelPagoObjetoImpositivo('>');	// Periodos mayores a cero.
+			$pagos = $model->joinWith('exigibilidad E')
+			               ->joinWith('impuestos I')
+			               ->asArra()
+			               ->all();
+			if ( count($pagos) > 0 ) {
+				return $pagos;
+			}
+			return null;
+		}
+
+
+
+
+		/**
+		 * Metodo que realiza la consulta de los pagos sobre Actividades Economicas
+		 * @return active record modelo con la consulta realziadas.
+		 */
+		public function getPagoPeriodoActividadEconomica()
+		{
+			$findModel = self::getModelGeneralActividadEconomica();
+			$model = $findModel->andWhere('trimestre >:trimestre',
+			 									[':trimestre' => 0])
+							   ->joinWith('exigibilidad E')
+							   ->joinWith('impuestos I')
+							   ->asArray()
+							   ->all();
+
+			return $model;
+
+		}
+
+
+
+
+		/**
+		 * Metodo que retorna el ultimo lapso liquidado pagado.
+		 * @return array retorna el arrego con los datos del ultimo periodo pagado.
+		 */
+		public function getUltimoLapsoPagoActividadEconomica()
+		{
+			$ultimo = null;
+			$pagos = self::getPagoPeriodoActividadEconomica();
+			if ( count($pagos) > 0 ) {
+				$ultimo = end($pagos);
+			}
+			return $ultimo;
+		}
+
+
+
+
+
+		/**
+		 * Metodo que retorna el ultimo lapso liquidado pagado.
+		 * @return array retorna el arrego con los datos del ultimo periodo pagado.
+		 */
+		public function getUltimoLapsoPagoObjeto($impuesto, $idImpuesto)
+		{
+			$ultimo = null;
+			$pagos = null;
+
+			if ( $impuesto == 2 ) {
+
+				$pagos = self::getPagoInmuebleEspecifico($idImpuesto);
+
+			} elseif ( $impuesto == 3 ) {
+
+				$pagos = self::getPagoVehiculoEspecifico($idImpuesto);
+
+			} elseif ( $impuesto == 12 ) {
+
+				$pagos = self::getPagoAseoEspecifico($idImpuesto);
+
+			}
+
+			if ( count($pagos) > 0 ) {
+				$ultimo = end($pagos);
+			}
+			return $ultimo;
+		}
+
+
+
+
+
+
+		/**
+		 * Metodo que retorna el modelo de consulta para los pagos existentes de un objeto
+		 * imponible. Objeto imponible se refiere a Inmuebles, Vehiculos, Propagandas, etc.
+		 * Los registros se ordenan por año impositivo, trimestres ascendente.
+		 * @param  string $tipoPeriodo tipo de periodo que se requiere en la consulta. Aqui
+		 * periodo se refiere al atributo "trimestre" de la entidad "pagos-detalle".
+		 * - los tipos de periodos seran:
+		 * 1. =, iguales a cero.
+		 * 2. >, mayores a cero.
+		 * 3. >=, mayores e iguales a cero.
+		 * @return active record retorna un modelo para la consulta.
+		 */
+		private function getModelPagoObjetoImpositivo($tipoPeriodo)
+		{
+			$model = null;
+
+			// Se controla el tipo de periodo.
+			if ( in_array($tipoPeriodo, ['=', '>', '>=']) ) {
+
+				if ( $this->_impuesto == 2 || $this->_impuesto == 12 ) {
+
+					// Pagos de inmuebles.
+					$findModel = self::getModelGeneralInmueble();
+					$model = $findModel->andWhere('id_impuesto =:id_impuesto',
+														[':id_impuesto' => $this->_id_impuesto])
+									   ->andWhere('impuesto =:impuesto',
+									   					[':impuesto' => $this->_impuesto])
+									   ->andWhere('trimestre '. $tipoPeriodo .':trimestre',
+									   					[':trimestre' => 0])
+									   ->orderBy([
+									   		'ano_impositivo' => SORT_ASC,
+									   		'trimestre' => SORT_ASC
+									   	]);
+
+				} elseif ( $this->_impuesto == 3 ) {
+
+					// Pagos de vehiculos.
+					$findModel = self::getModelGeneralVehiculo();
+					$model = $findModel->andWhere('id_impuesto =:id_impuesto',
+														[':id_impuesto' => $this->_id_impuesto])
+									   ->andWhere('trimestre '. $tipoPeriodo .':trimestre',
+									   					[':trimestre' => 0])
+									   ->orderBy([
+									   		'ano_impositivo' => SORT_ASC,
+									   		'trimestre' => SORT_ASC
+									   	]);
+
+				}
+			}
+
+			return $model;
 		}
 
 	}
