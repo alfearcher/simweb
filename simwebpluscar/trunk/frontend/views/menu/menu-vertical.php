@@ -84,7 +84,7 @@
 
 	        					   		['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Solvencia',
 		        					   		'items' => [
-	        					   				['label' => 'Solicitar Emision', 'url' => ['/aaee/solvencia/solvencia-solicitud/index', 'id' => 113]],
+	        					   				['label' => 'Solicitar Emision', 'url' => ['/aaee/solvencia/solvencia-actividad-economica-solicitud/index', 'id' => 114]],
 	        					   				['label' => 'Descargar Solvencia', 'url' => ['/aaee/solvencia/solvencia-generar/index']],
 		        					   		]
 		        					   	],
