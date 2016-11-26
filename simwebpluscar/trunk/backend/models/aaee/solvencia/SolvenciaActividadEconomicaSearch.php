@@ -50,6 +50,9 @@
 	use backend\models\aaee\correccioncedularif\CorreccionCedulaRif;
 	use backend\models\aaee\correccionrazonsocial\CorreccionRazonSocial;
 	use backend\models\aaee\correcciondomicilio\CorreccionDomicilioFiscal;
+	use backend\models\aaee\actecon\ActEcon;
+	use yii\helpers\ArrayHelper;
+	use common\models\ordenanza\OrdenanzaBase;
 
 
 	/**
@@ -127,7 +130,7 @@
 			// "id-sim" de la entidad "contribuyentes" es diferente a null o si la longitud
 			// de dicho valor del atributo es mayor a 1.
 			if ( !self::poseeLicencia() ) {
-				$mensaje[] = Yii::t('frontend', 'Elcontribuyente no posee un Nro. de Licencia');
+				$mensaje[] = Yii::t('frontend', 'El contribuyente no posee un Nro. de Licencia');
 			}
 
 
@@ -199,8 +202,10 @@
 			$findModel = self::findSolicitudSolvenciaActEconomicaModel();
 			$model = $findModel->andWhere('ano_impositivo =:ano_impositivo',
 												[':ano_impositivo' => $añoImpositivo])
-							   ->andWhere('estatus =:estatus',[':estatus' => 0]);
-			return ( $findModel > 0 ) ? true : false;
+							   ->andWhere('estatus =:estatus',[':estatus' => 0])
+							   ->count();
+
+			return ( $model > 0 ) ? true : false;
 		}
 
 
@@ -326,6 +331,28 @@
 
 
 
+
+	    /**
+	     * Metodo que permimte obtener el identificador de la entidad "act-econ", segun el
+	     * año impositivo. Solo se busca el registro valido.
+	     * @param  integer $añoImpositivo año impositivo.
+	     * @return integer retorna el entero que representa el identificador de la entidad
+	     * "act-econ"
+	     */
+	    public function getIdImpuestoSegunAnoImpositivo($añoImpositivo)
+	    {
+	    	$findModel = ActEcon::find()->where('id_contribuyente =:id_contribuyente',
+	    											[':id_contribuyente' => $this->_id_contribuyente])
+	    							    ->andWhere('ano_impositivo =:ano_impositivo',
+	    							    			[':ano_impositivo' => $añoImpositivo])
+	    							    ->andWhere('estatus =:estatus', [':estatus' => 0])
+	    							    ->limit(1)
+	    							    ->one();
+	    	return ( count($findModel) > 0 ) ? $findModel->id_impuesto : 0;
+	    }
+
+
+
 	    /**
 	     * Metodo que realiza un find del contribuyente. Creando un modelo
 	     * de la entidad respectiva.
@@ -374,6 +401,18 @@
 	    {
 	    	return $this->_licencia;
 	    }
+
+
+
+	    /***/
+	    public function determinarFechaVctoSolvencia()
+	    {}
+
+
+
+	    /***/
+	    public function determinarLapsoVctoSolvencia()
+	    {}
 	}
 
 ?>
