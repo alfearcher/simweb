@@ -119,14 +119,19 @@
 			$id = $getData['id'];
 			if ( $id == self::CONFIG ) {
 				if ( isset($_SESSION['idContribuyente']) ) {
-					// Se muestra un sud-menu de opciones donde el usuario especifica el tipo
-					// de licencia, "Nueva" o "Renovacion".
-					return $this->render('/aaee/licencia/sub-menu-tipo',[
-												'urlNueva' => $urlNueva,
-												'urlRenovacion' => $urlRenovacion,
-												'urlSalida' => $urlSalida,
-												'caption' => Yii::t('frontend', 'Seleccionar tipo de Licencia'),
-						]);
+					if ( ContribuyenteBase::getTipoNaturalezaDescripcionSegunID($_SESSION['idContribuyente']) == 'JURIDICO' ) {
+						// Se muestra un sud-menu de opciones donde el usuario especifica el tipo
+						// de licencia, "Nueva" o "Renovacion".
+						return $this->render('/aaee/licencia/sub-menu-tipo',[
+													'urlNueva' => $urlNueva,
+													'urlRenovacion' => $urlRenovacion,
+													'urlSalida' => $urlSalida,
+													'caption' => Yii::t('frontend', 'Seleccionar tipo de Licencia'),
+							]);
+					} else {
+						// El tipo de naturaleza no es valido
+						return $this->redirect(['error-operacion', 'cod' => 934]);
+					}
 
 				} else {
 					// No esta definido el contribuyente.
