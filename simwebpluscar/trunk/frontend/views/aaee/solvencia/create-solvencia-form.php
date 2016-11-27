@@ -79,6 +79,7 @@
 	<?=$form->field($model, 'impuesto')->hiddenInput(['value' => $model->impuesto])->label(false); ?>
 	<?=$form->field($model, 'id_impuesto')->hiddenInput(['value' => $model->id_impuesto])->label(false); ?>
 	<?=$form->field($model, 'nro_solicitud')->hiddenInput(['value' => $model->nro_solicitud])->label(false); ?>
+	<?=$form->field($model, 'ultimo_pago')->hiddenInput(['value' => $model->ultimo_pago])->label(false); ?>
 
 	<meta http-equiv="refresh">
     <div class="panel panel-primary" style="width: 100%;">
@@ -97,11 +98,23 @@
 							<div class="lapso" style="margin-left: 0px;">
 								<?= $form->field($model, 'ano_impositivo')->textInput([
 																			'id' => 'id-ano-impositivo',
-																			'style' => 'width:98%;background-color:white;',
+																			'style' => 'width:100%;background-color:white;',
 																			'value' => $model->ano_impositivo,
 																			'readOnly' => true,
 
-																	])->label('Lapso') ?>
+																	])->label('Año') ?>
+							</div>
+						</div>
+
+						<div class="col-sm-2" style="width: 20%;padding: 0px;">
+							<div class="ultimo-pago" style="margin-left: 5px;">
+								<?= $form->field($model, 'ultimo_pago')->textInput([
+																			'id' => 'id-ultimo-pago',
+																			'style' => 'width:100%;background-color:white;',
+																			'value' => $model->ultimo_pago,
+																			'readOnly' => true,
+
+																	])->label('Ultimo lapso pagado') ?>
 							</div>
 						</div>
 
