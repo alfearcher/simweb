@@ -46,6 +46,7 @@
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 	use backend\models\solicitud\estatus\EstatusSolicitud;
+	use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 
 
 	/**
@@ -83,6 +84,29 @@
 		public function getEstatusSolicitud()
 		{
 			return $this->hasOne(EstatusSolicitud::className(), ['estatus_solicitud' => 'estatus']);
+		}
+
+
+		/**
+		 * Relacion con la entidad "solicitudes-contribuyente", SolicitudesContribuyente
+		 * @return active record.
+		 */
+		public function getSolicitud()
+		{
+			return $this->hasOne(SolicitudesContribuyente::className(), ['nro_solicitud' => 'nro_solicitud']);
+		}
+
+
+
+		/**
+		 * Metodo que permite obtener la descripcion de la solicitud.
+		 * @param integer $nroSolicitud identificador de la solicitud creada.
+		 * @return string retorna La descripcion del tipo de solicitud.
+		 */
+		public function getDescripcionTipoSolicitud($nroSolicitud)
+		{
+			$solicitud = New SolicitudesContribuyente();
+			return $solicitud->getDescripcionTipoSolicitud($nroSolicitud);
 		}
 
 	}

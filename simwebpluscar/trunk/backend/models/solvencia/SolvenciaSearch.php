@@ -45,16 +45,13 @@
  	use Yii;
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
-	use backend\models\aaee\solvencia\Solvencia;
+	use backend\models\solvencia\Solvencia;
 	use common\models\contribuyente\ContribuyenteBase;
 	use yii\helpers\ArrayHelper;
 	use common\models\ordenanza\OrdenanzaBase;
 
 
-	/**
-	* Clase donde se controla la politica de negocio para realizar la solicitudes
-	* de solvencias de Actividad Economicas.
-	*/
+	/***/
 	class SolvenciaSearch
 	{
 		private $_id_contribuyente;
@@ -74,12 +71,18 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que realiza una insercion en la entidad "solvencias",
+		 * @param array $arregloDatos arreglo de datos que seran actualizados.
+		 * @param  ConexionController $conexion instancia de la clase.
+		 * @param  Connection $conn instancia de Connection
+		 * @return boolean retorna true si realizo el update, false en caso contrario.
+		 */
 		public function guardar($arregloDatos, $conexion, $conn)
 		{
 			$result = false;
 
-			$model = New Solvencia()
+			$model = New Solvencia();
 			$tabla = $model->tableName();
 
 			foreach ( $model->attributes as $key => $value ) {
@@ -90,13 +93,47 @@
 	    		}
 			}
 
+			// Condiciones para inactivar los registros anteriores
+			$arregloCondicion = [
+					'id_contribuyente' => $model->id_contribuyente,
+					'impuesto' => $model->impuesto,
+					'id_impuesto' => $model->id_impuesto,
+			];
 
-			$result = $conexion->guardarRegistros($conn, $tabla, $arregloDatos);
+			$arreglo['status_solvencias'] = 1;
+
+			$result = self::update($arreglo, $arregloCondicion, $conexion, $conn);
+
+			if ( $result ) {
+				$result = $conexion->guardarRegistro($conn, $tabla, $arregloDatos);
+			}
 
 			return $result;
 		}
 
 
+
+
+		/**
+		 * Metodo que realiza el update sobre la entidad "solvencias"
+		 * @param array $arregloDatos arreglo de datos que seran actualizados.
+		 * @param  array $arregloCondicion arreglo de datos que indica el where condition de la
+		 * actualizacion
+		 * @param  ConexionController $conexion instancia de la clase.
+		 * @param  Connection $conn instancia de Connection
+		 * @return boolean retorna true si realizo el update, false en caso contrario.
+		 */
+		public function update($arregloDatos, $arregloCondicion, $conexion, $conn)
+		{
+			$result = false;
+
+			$model = New Solvencia();
+			$tabla = $model->tableName();
+
+			$result = $conexion->modificarRegistro($conn, $tabla, $arregloDatos, $arregloCondicion);
+
+			return $result;
+		}
 
 	}
 
