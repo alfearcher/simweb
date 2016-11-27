@@ -64,6 +64,7 @@
 	use backend\models\aaee\solvencia\SolvenciaActividadEconomicaForm;
 	use backend\models\aaee\solvencia\SolvenciaActividadEconomicaSearch;
 	use backend\models\solvencia\SolvenciaForm;
+	use backend\models\solvencia\SolvenciaSearch;
 	use backend\models\aaee\historico\solvencia\HistoricoSolvenciaSearch;
 
 
@@ -220,6 +221,8 @@
 
 		      	// Datos generales del contribuyente.
 		      	$searchSolvencia = New SolvenciaActividadEconomicaSearch($idContribuyente);
+		      	$model->ultimo_pago = $searchSolvencia->getDescripcionUltimoPago();
+
 		      	$findModel = $searchSolvencia->findContribuyente();
 
 				if ( isset($postData['btn-back-form']) ) {
@@ -245,7 +248,7 @@
 				} elseif ( isset($postData['btn-confirm-create']) ) {
 					if ( $postData['btn-confirm-create'] == 5 ) {
 						// Guardar la confirmacion
-// die(var_dump($postData));
+
 						$result = self::actionBeginSave($model, $postData);
 						self::actionAnularSession(['begin']);
   						if ( $result ) {
@@ -484,10 +487,15 @@
 		    		$idContribuyente = $_SESSION['idContribuyente'];
 		    		$search = New HistoricoSolvenciaSearch($idContribuyente);
 
+		    		$searchSolvenciaActividad = New SolvenciaActividadEconomicaSearch($idContribuyente);
+	    			$fechaVcto = $searchSolvenciaActividad->determinarFechaVctoSolvencia();
+	    			if ( $fechaVcto == '' ) {
+	    				$fechaVcto = '0000-00-00';
+	    			}
+
 		    		// Se arma la informacion del contribuyente para la licencia.
 		    		$contribuyente = ContribuyenteBase::findOne($idContribuyente);
 
-		    		$fechaVcto = date('Y') . '-12-31';
 		    		$arregloContribuyente = [
 		    				'id_contribuyente' => $idContribuyente,
 		    				'nro_solicitud' => $model['nro_solicitud'],
@@ -535,12 +543,12 @@
 
 
 	    /**
-	     * [actionCreateSolvencia description]
+	     * Metodo que realiza la insercion en la entidad "solvencias".
 	     * @param  model $model modelo del tipo de clase SolvenciaActividadEconomicaForm.
 	     * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
 	     * solicitud.
-	     * @param  [type] $conexionLocal [description]
-	     * @param  [type] $connLocal     [description]
+	     * @param  conexioncontroller $conexionLocal clase ConexionController
+	     * @param  connection $connLocal instancia.
 	     * @return boolean retorna true si guarda de forma satisfactoria, false en caso contrario.
 	     */
 	    private static function actionCreateSolvencia($model, $conf, $conexionLocal, $connLocal)
@@ -549,6 +557,12 @@
 	    	if ( $conf['nivel_aprobacion'] == 1 ) {
 	    		if ( isset($_SESSION['idContribuyente']) ) {
 	    			$idContribuyente = $_SESSION['idContribuyente'];
+
+	    			$searchSolvenciaActividad = New SolvenciaActividadEconomicaSearch($idContribuyente);
+	    			$fechaVcto = $searchSolvenciaActividad->determinarFechaVctoSolvencia();
+	    			if ( $fechaVcto == '' ) {
+	    				$fechaVcto = '0000-00-00';
+	    			}
 
 	    			$solvencia = New SolvenciaForm();
 
@@ -564,11 +578,14 @@
 	    			$arregloDatos['ente'] = Yii::$app->ente->getEnte();
 	    			$arregloDatos['serial_solvencia'] = '';
 	    			$arregloDatos['fecha_emision'] = date('Y-m-d', strtotime($model->fecha_hora));
-	    			$arregloDatos['fecha_vcto'] = '0000-00-00';
+	    			$arregloDatos['fecha_vcto'] = $fechaVcto;
 	    			$arregloDatos['status_solvencias'] = 0;
 	    			$arregloDatos['nro_solvencia'] = 0;
 
-	    			$result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
+	    			$searchSolvencia = New SolvenciaSearch($idContribuyente);
+	    			$result = $searchSolvencia->guardar($arregloDatos, $conexionLocal, $connLocal);
+	    			// $result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
+
 
 	    		}
 	    	}
@@ -742,11 +759,11 @@
     	{
     		if ( isset($_SESSION['idContribuyente']) ) {
 	    		if ( $id > 0 ) {
-	    			$searchLicencia = New LicenciaSolicitudSearch($_SESSION['idContribuyente']);
-	    			$findModel = $searchLicencia->findSolicitudLicencia($id);
-	    			$dataProvider = $searchLicencia->getDataProviderSolicitud($id);
+	    			$searchSolvencia = New SolvenciaActividadEconomicaSearch($_SESSION['idContribuyente']);
+	    			$findModel = $searchSolvencia->findSolicitudSolvencia($id);
+	    			$dataProvider = $searchSolvencia->getDataProviderSolicitud($id);
 	    			if ( isset($findModel) ) {
-	    				return self::actionShowSolicitud($findModel, $searchLicencia, $dataProvider);
+	    				return self::actionShowSolicitud($findModel, $searchSolvencia, $dataProvider);
 	    			} else {
 						throw new NotFoundHttpException('No se encontro el registro');
 					}
@@ -770,15 +787,18 @@
  				$model = $findModel->all();
  				self::actionAnularSession(['id_historico']);
 
- 				$search = New HistoricoLicenciaSearch($model[0]->id_contribuyente);
- 				$historico = $search->findHistoricoLicenciaSegunSolicitud($model[0]->nro_solicitud);
+ 				$search = New HistoricoSolvenciaSearch($model[0]->id_contribuyente);
+ 				$historico = $search->findHistoricoSolvenciaSegunSolicitud($model[0]->nro_solicitud);
 
  				$_SESSION['id_historico'] = isset($historico[0]['id_historico']) ? $historico[0]['id_historico'] : null;
 
 				$opciones = [
-					'quit' => '/aaee/licencia/licencia-solicitud/quit',
+					'quit' => '/aaee/solvencia/solvencia-actividad-economica-solicitud/quit',
 				];
-				return $this->render('/aaee/licencia/_view', [
+
+				$tipoSolicitud = $modelSearch->getDescripcionTipoSolicitud($model[0]->nro_solicitud);
+
+				return $this->render('/aaee/solvencia/_view', [
 														'codigo' => 100,
 														'model' => $model,
 														'modelSearch' => $modelSearch,
@@ -786,6 +806,7 @@
 														'dataProvider' => $dataProvider,
 														'historico' => $historico,
 														'caption' => 'Solicitud Creada Nro. ' . $model[0]->nro_solicitud,
+														'tipoSolicitud' => $tipoSolicitud,
 					]);
 			} else {
 				throw new NotFoundHttpException('No se encontro el registro');
