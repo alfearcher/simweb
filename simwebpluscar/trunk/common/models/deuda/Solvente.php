@@ -223,6 +223,7 @@
 			$lapso = '';
 			// Lo siguiente retorna un arreglo.
 			$pagos = $search->getUltimoLapsoPagoActividadEconomica();
+
 			if ( $pagos !== null ) {
 				$lapso['a'] = $pagos['ano_impositivo'];
 				$lapso['p'] = $pagos['trimestre'];
@@ -239,7 +240,7 @@
 		{
 			$fechaVcto = '';
 			$ultimoPago = self::getUltimoPeriodoActividadEconomica();
-			if ( count($ultimoPago) > 0 ) {
+			if ( $ultimoPago !== null ) {
 				$fechaVcto = OrdenanzaBase::getFechaVencimientoLapso($ultimoPago['a'], $ultimoPago['p'], 1);
 			}
 			return $fechaVcto;
