@@ -553,7 +553,7 @@
 	     */
 	    private static function actionCreateSolvencia($model, $conf, $conexionLocal, $connLocal)
 	    {
-	    	$result = false;
+	    	$result = true;
 	    	if ( $conf['nivel_aprobacion'] == 1 ) {
 	    		if ( isset($_SESSION['idContribuyente']) ) {
 	    			$idContribuyente = $_SESSION['idContribuyente'];
@@ -584,8 +584,6 @@
 
 	    			$searchSolvencia = New SolvenciaSearch($idContribuyente);
 	    			$result = $searchSolvencia->guardar($arregloDatos, $conexionLocal, $connLocal);
-	    			// $result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
-
 
 	    		}
 	    	}
