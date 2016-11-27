@@ -484,11 +484,34 @@ class DeudasContribuyenteController extends Controller
 
 
       $provider = $model->getDeudaPorListaObjeto($impuesto);
-        
+       // die(var_dump($provider));
+        if($provider == null){
+
+          return MensajeController::actionMensaje(501);
+        }else{ 
+
 
          foreach($provider as $key=>$value){ 
 
+            if($impuesto == 12){
 
+              $informacion = $value['direccion'];
+              $idObjeto = $value['id_impuesto'];
+            }elseif ($impuesto == 3){
+
+              $idObjeto = $value['id_vehiculo'];
+              $informacion = $value['placa'];
+            
+            }elseif ($impuesto == 2) {
+
+              $idObjeto = $value['id_impuesto'];
+              $informacion = $value['direccion'];
+
+            }elseif ($impuesto == 4){
+
+              $idObjeto = $value['id_impuesto'];
+              $informacion = $value['descripcion'];
+            }
 
             
 
@@ -496,9 +519,9 @@ class DeudasContribuyenteController extends Controller
 
                  
 
-              'id_objeto' => $value['id_impuesto'],
-              }
-              'placa' => $value['placa'],
+              'id_objeto' => $idObjeto,
+            
+              'informacion' => $informacion,
              // 'trimestre' => $value['trimestre'],
               'monto' => $value['t'],
              
@@ -527,7 +550,7 @@ class DeudasContribuyenteController extends Controller
 
 
               ]);
-
+              }
         }
     }
 
