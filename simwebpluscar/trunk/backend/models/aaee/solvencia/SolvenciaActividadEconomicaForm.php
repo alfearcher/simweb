@@ -66,6 +66,7 @@
 		public $fecha_hora_proceso;
 		public $user_funcionario;
 		public $observacion;
+		public $ultimo_pago;
 
 
 
@@ -91,7 +92,7 @@
 	        	  'estatus', 'nro_solicitud',
 	        	  'id_impuesto', 'impuesto'],
 	        	  'integer', 'message' => Yii::t('backend', 'Formato de valores incorrecto')],
-	        	[['origen', 'observacion'],
+	        	[['origen', 'observacion', 'ultimo_pago'],
 	        	  'string', 'message' => Yii::t('backend', 'Formato de valores incorrecto')],
 	        	[['estatus'], 'default', 'value' => 0],
 	        	[['usuario'], 'default', 'value' => Yii::$app->identidad->getUsuario()],

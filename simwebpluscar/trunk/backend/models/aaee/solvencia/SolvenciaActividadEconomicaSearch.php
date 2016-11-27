@@ -45,6 +45,7 @@
  	use Yii;
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
+	use yii\data\ActiveDataProvider;
 	use backend\models\aaee\solvencia\SolvenciaActividadEconomica;
 	use common\models\contribuyente\ContribuyenteBase;
 	use backend\models\aaee\correccioncedularif\CorreccionCedulaRif;
@@ -52,7 +53,8 @@
 	use backend\models\aaee\correcciondomicilio\CorreccionDomicilioFiscal;
 	use backend\models\aaee\actecon\ActEcon;
 	use yii\helpers\ArrayHelper;
-	use common\models\ordenanza\OrdenanzaBase;
+	use common\models\deuda\Solvente;
+	use common\models\pago\PagoSearch;
 
 
 	/**
@@ -404,15 +406,71 @@
 
 
 
-	    /***/
+
+	     /***/
+	    public function getDataProviderSolicitud($nroSolicitud)
+	    {
+	    	$query = self::findSolicitudSolvencia($nroSolicitud);
+
+	    	$dataProvider = new ActiveDataProvider([
+            	'query' => $query,
+        	]);
+	    	$query->all();
+
+        	return $dataProvider;
+	    }
+
+
+
+
+	    /**
+	     * Metodo que devuelve la fecha de vencimiento
+	     * @return string.
+	     */
 	    public function determinarFechaVctoSolvencia()
-	    {}
+	    {
+	    	$solvente = New Solvente();
+	    	$solvente->setIdContribuyente($this->_id_contribuyente);
+	    	$fechaVcto = $solvente->getFechaVctoSolvenciaActividadEconomica();
+	    	return $fechaVcto;
+	    }
 
 
 
 	    /***/
 	    public function determinarLapsoVctoSolvencia()
 	    {}
+
+
+
+	    /***/
+	    public function determinarUltimoPago()
+	    {
+	    	$searchPago = New PagoSearch();
+	    	$searchPago->setIdContribuyente($this->_id_contribuyente);
+	    	$ultimo = $searchPago->getUltimoLapsoPagoActividadEconomica();
+	    	if ( count($ultimo) > 0 ) {
+		    	return [
+		    		'año' => $ultimo['ano_impositivo'],
+		    		'periodo' => $ultimo['trimestre'],
+		    		'exigibilidad' => $ultimo['exigibilidad']['unidad'],
+		    	];
+		    }
+		    return null;
+	    }
+
+
+
+	    /***/
+	    public function getDescripcionUltimoPago()
+	    {
+	    	$result = '';
+	    	$ultimo = self::determinarUltimoPago();
+	    	if ( $ultimo !== null ) {
+	    		$result = $ultimo['año'] . ' - ' . $ultimo['periodo'] . ' - ' . $ultimo['exigibilidad'];
+	    	}
+	    	return $result;
+	    }
 	}
 
 ?>
