@@ -220,7 +220,7 @@
 			$search->setIdContribuyente($this->_id_contribuyente);
 			$search->setImpuesto(1);
 
-			$lapso = '';
+			$lapso = null;
 			// Lo siguiente retorna un arreglo.
 			$pagos = $search->getUltimoLapsoPagoActividadEconomica();
 
