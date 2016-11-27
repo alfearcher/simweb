@@ -615,6 +615,18 @@
 
 
 
+		/**
+		 * Metodo que permite obetener el ultimo dia de un mes segun al año y mes.
+		 * @param  integer $año año.
+		 * @param  integer $mes mes.
+		 * @return integer retorna el dia final del mes.
+		 */
+		public function getUltimoDia($año, $mes)
+		{
+			return date("d",(mktime(0,0,0,$mes+1,1,$año)-1));
+		}
+
+
 
 
 		/**
@@ -732,7 +744,7 @@
 
 
 		/**
-		 * Metodo que determina la fecha de inicio de un lapso de tiempo, segun año
+		 * Metodo que determina las fechas de inicio de un lapso de tiempo, segun año
 		 * impositivo, periodo y exigibilidad de liquidacion.
 		 * @param  integer $añoImpositivo año del lapso.
 		 * @param  integer $periodo periodo del lapso.
@@ -767,6 +779,37 @@
 			} else {
 				return $fechas;
 			}
+		}
+
+
+
+		/**
+		 * Metodo que determina la fecha de vencimiento de un lapso. En un formato de
+		 * YYYY-mm-dd.
+		 * @param  integer $año año del lapso.
+		 * @param  integer $periodo periodo del lapso.
+		 * @param  integer $impuesto identificador del impuesto.
+		 * @return date retorna fecha o un string vacion.
+		 */
+		public function getFechaVencimientoLapso($año, $periodo, $impuesto)
+		{
+			$exigibilidadLiq = self::getExigibilidadLiquidacion($año, $impuesto);
+			$fechaVcto = '';
+
+			if ( count($exigibilidadLiq) > 0 ) {
+				$e = (int)$exigibilidadLiq['exigibilidad'];
+
+				// Se busca determinar el tiempo dentro de un lapso.
+				$rango = 12/$e;
+				if ( is_integer($rango) && $rango > 0 ) {
+					$mes = $periodo * $rango;
+					$dia = self::getUltimoDia($año, $mes);
+					$fechaVcto = $año . '-' . $mes . '-' . $dia;
+				}
+			}
+
+			return $fechaVcto;
+
 		}
 
 	}
