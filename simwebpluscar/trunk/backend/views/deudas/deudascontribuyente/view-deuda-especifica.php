@@ -74,10 +74,10 @@ use common\models\tasas\GrupoSubnivel;
                      ],
 
                           [
-                     'label' => 'Placa',
+                     'label' => 'Informacion del Objeto',
                      'value' => function($data){
 
-                       return $data['placa'];
+                       return $data['informacion'];
 
 
 

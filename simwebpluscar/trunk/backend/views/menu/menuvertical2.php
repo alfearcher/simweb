@@ -255,6 +255,16 @@ session_start();
 		        					   				
 		        					   		]
 		        					   	],
+
+
+	        					['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Pagos',
+					   		
+					   				'items' => [
+					   				['label' => 'Verificar Pagos', 'url' => ['/pagos/pagoscontribuyente/pagos-contribuyente/verificar-pagos-contribuyente']],
+	        					   				
+	        					   				
+	        					   	]
+	        					],
         			]
 
 
