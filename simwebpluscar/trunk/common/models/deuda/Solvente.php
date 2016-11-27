@@ -46,8 +46,7 @@
  	use yii\db\Exception;
  	use common\models\ordenanza\OrdenanzaBase;
  	use common\models\planilla\Planilla;
-
-
+ 	use common\models\pago\PagoSearch;
 
 
 	/**
@@ -58,7 +57,7 @@
 
 		private $impuesto;				// Identificador del impuesto.
 		private $idImpuesto;			// Identificador del objeto ( execto para impuesto = 1).
-		private $idContribuyente;		// Identificador del Contribuyente.
+		private $_id_contribuyente;		// Identificador del Contribuyente.
 		private $añoImpositivo;
 		private $periodo;
 
@@ -90,6 +89,12 @@
 			$this->idImpuesto = $idObjeto;
 		}
 
+
+		/***/
+		public function setIdContribuyente($idContribuyente)
+		{
+			$this->_id_contribuyente = $idContribuyente;
+		}
 
 
 		/**
@@ -205,6 +210,41 @@
 
 			return $result;
 		}
+
+
+
+		/***/
+		public function getUltimoPeriodoActividadEconomica()
+		{
+			$search = New PagoSearch();
+			$search->setIdContribuyente($this->_id_contribuyente);
+			$search->setImpuesto(1);
+
+			// Lo siguiente retorna un arreglo.
+			$pagos = $search->getUltimoLapsoPagoActividadEconomica();
+			if ( $pagos !== null ) {
+				$lapso['a'] = $pagos['ano_impositivo'];
+				$lapso['p'] = $pagos['trimestre'];
+			}
+
+			return $lapso;
+
+		}
+
+
+
+		/***/
+		public function getFechaVctoSolvenciaActividadEconomica()
+		{
+			$fechaVcto = '';
+			$ultimoPago = self::getUltimoPeriodoActividadEconomica();
+			if ( count($ultimoPago) > 0 ) {
+				$fechaVcto = OrdenanzaBase::getFechaVencimientoLapso($ultimoPago['a'], $ultimoPago['p'], 1);
+			}
+			return $fechaVcto;
+		}
+
+
 
 
 
