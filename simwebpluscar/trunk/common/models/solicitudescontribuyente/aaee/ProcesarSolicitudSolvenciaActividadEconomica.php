@@ -58,6 +58,8 @@
     use backend\models\solvencia\SolvenciaSearch;
     use backend\models\solvencia\SolvenciaForm;
     use yii\base\ErrorException;
+    use common\models\configuracion\solicitudplanilla\SolicitudPlanillaSearch;
+    use backend\models\impuesto\Impuesto;
 
 
 
@@ -297,6 +299,22 @@
                     $fechaVcto = '0000-00-00';
                 }
 
+                // Se identifica con una descripcion el tipo de impuesto
+                $impuesto = Impuesto::findOne($modelSolvencia[0]->impuesto);
+                $tipoImpuesto = $impuesto->descripcion;
+
+                // Se identifica la tasa liquidada por el concepto de solicitud de solvencia
+                $searchPlanilla = New SolicitudPlanillaSearch($modelSolvencia[0]->nro_solicitud,
+                                                              Yii::$app->solicitud->crear());
+
+                $findModel = $searchPlanilla->findSolicitudPlanilla();
+                $planillas = $findModel->one();
+
+                $liquidacion = 0;
+                if ( isset($planillas->planilla) ) {
+                    $liquidacion = $planillas->planilla;
+                }
+
                 // Se arma la informacion del contribuyente para la licencia.
                 $contribuyente = ContribuyenteBase::findOne($idContribuyente);
 
@@ -311,6 +329,9 @@
                         'catastro' => 0,
                         'fechaEmision' => date('Y-m-d', strtotime($modelSolvencia[0]->fecha_hora)),
                         'fechaVcto' => $fechaVcto,
+                        'liquidacion' => $liquidacion,
+                        'tipoImpuesto' => $tipoImpuesto,
+                        // 'id_impuesto' => $model->id_impuesto;
                 ];
 
                 $fuente_json = json_encode($arregloContribuyente);
