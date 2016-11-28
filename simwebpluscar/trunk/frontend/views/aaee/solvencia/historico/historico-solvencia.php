@@ -252,7 +252,7 @@
 									<?= $form->field($model, 'tipo_impuesto')->textInput([
 																				'id' => 'id-tipo-impuesto',
 																				'style' => 'width:100%;background-color:white;',
-																				'value' => $datosSolvencia['tipoImpuesto'],
+																				'value' => isset($datosSolvencia['tipoImpuesto']) ? $datosSolvencia['tipoImpuesto'] : '',
 																				'readOnly' => true,
 
 																		])->label('Tipo de Impuesto') ?>
@@ -276,7 +276,7 @@
 									<?= $form->field($model, 'licencia')->textInput([
 																				'id' => 'id-licencia',
 																				'style' => 'width:100%;background-color:white;',
-																				'value' => $datosSolvencia['licencia'],
+																				'value' => isset($datosSolvencia['licencia']) ? $datosSolvencia['licencia'] : 0,
 																				'readOnly' => true,
 
 																		])->label('Nro. Licencia') ?>
@@ -288,7 +288,7 @@
 									<?= $form->field($model, 'liquidacion')->textInput([
 																				'id' => 'id-liquidacion',
 																				'style' => 'width:100%;background-color:white;',
-																				'value' => $datosSolvencia['liquidacion'],
+																				'value' => isset($datosSolvencia['liquidacion']) ? $datosSolvencia['liquidacion'] : 0,
 																				'readOnly' => true,
 
 																		])->label('Nro. Liquidacion') ?>
