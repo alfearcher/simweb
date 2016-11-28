@@ -571,10 +571,10 @@ $this->registerJs(
 
 
 	$(document).ready(function() {
-		var solvente = $( "#id-solvente" ).length;
+		var solvente = $( "#id-solvente" ).val();
 		var n = $( "#planilla-no-solvente" ).length;
 
-		if ( ( n > 0 ) || ( solvente > 0 ) ) {
+		if ( ( n > 0 ) || ( solvente == "NO SOLVENTE" )  || ( solvente == "" ) ) {
 			$("#btn-approve-request").attr("disabled", true);
 		} else {
 			$( "#btn-approve-request" ).removeAttr("disabled");
