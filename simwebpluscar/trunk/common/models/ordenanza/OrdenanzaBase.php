@@ -805,6 +805,7 @@
 					$mes = $periodo * $rango;
 					$dia = self::getUltimoDia($año, $mes);
 					$fechaVcto = $año . '-' . $mes . '-' . $dia;
+					$fechaVcto = date('Y-m-d', strtotime($fechaVcto));
 				}
 			}
 
