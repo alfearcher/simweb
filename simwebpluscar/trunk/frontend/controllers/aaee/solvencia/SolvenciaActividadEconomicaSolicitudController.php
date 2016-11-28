@@ -485,7 +485,7 @@
 	    	if ( $conf['nivel_aprobacion'] == 1 ) {
 		    	if ( isset($_SESSION['idContribuyente']) ) {
 		    		$idContribuyente = $_SESSION['idContribuyente'];
-		    		$search = New HistoricoSolvenciaSearch($idContribuyente);
+		    		$search = New HistoricoSolvenciaSearch($idContribuyente, 1);
 
 		    		$searchSolvenciaActividad = New SolvenciaActividadEconomicaSearch($idContribuyente);
 	    			$fechaVcto = $searchSolvenciaActividad->determinarFechaVctoSolvencia();
@@ -785,7 +785,7 @@
  				$model = $findModel->all();
  				self::actionAnularSession(['id_historico']);
 
- 				$search = New HistoricoSolvenciaSearch($model[0]->id_contribuyente);
+ 				$search = New HistoricoSolvenciaSearch($model[0]->id_contribuyente, 1);
  				$historico = $search->findHistoricoSolvenciaSegunSolicitud($model[0]->nro_solicitud);
 
  				$_SESSION['id_historico'] = isset($historico[0]['id_historico']) ? $historico[0]['id_historico'] : null;
