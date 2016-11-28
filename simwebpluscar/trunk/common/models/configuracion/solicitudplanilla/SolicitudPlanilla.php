@@ -48,6 +48,7 @@
 	use yii\db\ActiveRecord;
 	use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 	use common\models\planilla\Pago;
+	use common\models\planilla\PagoDetalle;
 
 	/**
 	* 	Clase
