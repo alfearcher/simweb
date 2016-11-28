@@ -28,7 +28,7 @@
  *	@date 14-11-2016
  *
  *  @class DepositoController
- *	@brief Clase que gestiona la generacion del pdf de la licencia
+ *	@brief Clase que gestiona la generacion del pdf de la solvencia
  *
  *
  *	@property
@@ -42,7 +42,7 @@
  */
 
 
- 	namespace common\controllers\pdf\licencia;
+ 	namespace common\controllers\pdf\solvencia;
 
 
  	use Yii;
@@ -54,15 +54,15 @@
 	use yii\web\NotFoundHttpException;
 	use common\mensaje\MensajeController;
 	use common\models\session\Session;
-	use backend\models\aaee\historico\licencia\HistoricoLicenciaSearch;
+	use backend\models\aaee\historico\solvencia\HistoricoSolvenciaSearch;
 
 	use mPDF;
 
 
 	/**
-	 * Clase controller que gestiona la emision de la licencia en pdf
+	 * Clase controller que gestiona la emision de las solvencias en pdf.
 	 */
-	class LicenciaController extends Controller
+	class SolvenciaController extends Controller
 	{
 		public $layout = 'layout-main';				//	Layout principal del formulario
 
@@ -96,45 +96,43 @@
 		 * Metodo que renderiza un recibo de pago en pdf
 		 * @return view retorna un pdf del recibo de pago.
 		 */
-		public function actionGenerarLicenciaPdf()
+		public function actionGenerarSolvenciaActividadEconomicaPdf()
 		{
-			$cvb = '';
             // Informacion del encabezado.
             $htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/layout/layout-encabezado-pdf', [
-                                                            'caption' => 'LICENCIA SOBRE ACTIVIDADES ECONOMICAS DE INDUSTRIA, COMERCIO Y SERVICIOS',
+                                                            'caption' => 'CERTIFICADO DE SOLVENCIA',
 
                                     ]);
 
 
             // Informacion del Historico
-            $historico = New HistoricoLicenciaSearch($this->_id_contribuyente);
+            $historico = New HistoricoSolvenciaSearch($this->_id_contribuyente, 1);
             $historico->setHistorico($this->_id_historico);
-            $model = $historico->findHistoricoLicencia();
+            $model = $historico->findHistoricoSolvencia();
 
             if ( count($model) > 0 ) {
 	            $datosContribuyente = json_decode($model['fuente_json'], true);
-	            $datosRubro = json_decode($model['rubro_json'], true);
 
 	            // Informacion del contribuyente.
-	            $htmlContribuyente = $this->renderPartial('@common/views/plantilla-pdf/licencia/layout-contribuyente-pdf', [
+	            $htmlContribuyente = $this->renderPartial('@common/views/plantilla-pdf/solvencia/aaee/layout-contribuyente-pdf', [
 	                                                            'model' => $model,
 	                                                            'datosContribuyente' => $datosContribuyente,
-	                                                            'showDireccion' => true,
-	                                                            'showRepresentante' => true,
+	                                                            'showDireccion' => false,
+	                                                            'showRepresentante' => false,
 	                                    ]);
 
 
-	            // Informacion de la licencia
-	            $htmlLicencia = $this->renderPartial('@common/views/plantilla-pdf/licencia/layout-identificacion-licencia-pdf', [
+	            // Informacion de la Solvencia
+	            $htmlSolvencia = $this->renderPartial('@common/views/plantilla-pdf/solvencia/aaee/layout-identificacion-solvencia-pdf', [
 	            												'model' => $model,
 	            												'datosContribuyente' => $datosContribuyente,
 	            						]);
 
 
-	            // Informacion de los rubros aprobados
-	            $htmlRubro = $this->renderPartial('@common/views/plantilla-pdf/licencia/layout-rubro-autorizado-pdf', [
+	            // Informacion general del impuesto
+	            $htmlImpuesto =  $this->renderPartial('@common/views/plantilla-pdf/solvencia/aaee/layout-info-general-impuesto-pdf', [
 	            												'model' => $model,
-	            												'datosRubro' => $datosRubro,
+	            												'datosContribuyente' => $datosContribuyente,
 	            						]);
 
 
@@ -148,7 +146,7 @@
                                                             	'nombreCargo' => Yii::$app->oficina->getNombreCargo(),
 	            						]);
 
-	            // QR
+	           // QR
 	            $barcode = $model['serial_control'];
 	            $htmlQR = $this->renderPartial('@common/views/plantilla-pdf/layout/layout-qr-pdf',[
 	            											'barcode' => $barcode,
@@ -167,9 +165,9 @@
 		        $mpdf->SetHeader($nombrePDF);
 		        $mpdf->WriteHTML($htmlEncabezado);
 		        $mpdf->WriteHTML($htmlContribuyente);
-		        $mpdf->WriteHTML($htmlLicencia);
-		        $mpdf->WriteHTML($htmlRubro);
-		        // $mpdf->WriteHTML($htmlPiePagina);
+		        $mpdf->WriteHTML($htmlSolvencia);
+		        $mpdf->WriteHTML($htmlImpuesto);
+		        // $mpdf->WriteHTML($htmlRubro);
 		        $mpdf->WriteFixedPosHTML($htmlDirector, 15, 245, 170, 30);
 		       	$mpdf->WriteFixedPosHTML($htmlPiePagina, 15, 260, 170, 30);
 		        // Se coloca el QR
