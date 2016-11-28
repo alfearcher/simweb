@@ -179,7 +179,7 @@
 				$searchLicencia = New LicenciaSolicitudSearch($idContribuyente);
 
 				$tipo = $_SESSION['tipo'];
-				//$mensajes = $searchLicencia->validarEvento(date('Y'), $tipo);
+				$mensajes = $searchLicencia->validarEvento(date('Y'), $tipo);
 
 				$mensajes = [];
 				if ( count($mensajes) == 0 ) {
