@@ -798,8 +798,8 @@
  				$search = New HistoricoSolvenciaSearch($model[0]->id_contribuyente, 1);
  				$historico = $search->findHistoricoSolvenciaSegunSolicitud($model[0]->nro_solicitud);
 
- 				if ( isset($historico) ) {
- 					self::actionUpdateTasaHistorico($historico['id_historico'], $search, $historico['nro_solicitud']);
+ 				if ( isset($historico[0]['id_historico']) ) {
+ 					self::actionUpdateTasaHistorico($historico[0]['id_historico'], $search, $historico[0]['nro_solicitud']);
  				}
 
  				$_SESSION['id_historico'] = isset($historico[0]['id_historico']) ? $historico[0]['id_historico'] : null;
