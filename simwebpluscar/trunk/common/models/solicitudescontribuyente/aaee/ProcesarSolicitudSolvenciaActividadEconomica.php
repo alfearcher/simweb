@@ -289,7 +289,7 @@
 
             if ( isset($_SESSION['idContribuyente']) ) {
                 $idContribuyente = $_SESSION['idContribuyente'];
-                $search = New HistoricoSolvenciaSearch($idContribuyente);
+                $search = New HistoricoSolvenciaSearch($idContribuyente, 1);
 
                 $searchSolvenciaActividad = New SolvenciaActividadEconomicaSearch($idContribuyente);
                 $fechaVcto = $searchSolvenciaActividad->determinarFechaVctoSolvencia();
