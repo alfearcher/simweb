@@ -795,6 +795,7 @@
  				$model = $findModel->all();
  				self::actionAnularSession(['id_historico']);
 
+die(var_dump($model));
  				$search = New HistoricoSolvenciaSearch($model[0]->id_contribuyente, 1);
  				$historico = $search->findHistoricoSolvenciaSegunSolicitud($model[0]->nro_solicitud);
 
