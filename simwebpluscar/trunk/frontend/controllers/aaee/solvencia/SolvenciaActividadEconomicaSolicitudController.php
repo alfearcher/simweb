@@ -66,6 +66,9 @@
 	use backend\models\solvencia\SolvenciaForm;
 	use backend\models\solvencia\SolvenciaSearch;
 	use backend\models\aaee\historico\solvencia\HistoricoSolvenciaSearch;
+	use backend\models\impuesto\Impuesto;
+	use common\models\configuracion\solicitudplanilla\SolicitudPlanillaSearch;
+
 
 
 	session_start();		// Iniciando session
@@ -485,6 +488,7 @@
 	    	if ( $conf['nivel_aprobacion'] == 1 ) {
 		    	if ( isset($_SESSION['idContribuyente']) ) {
 		    		$idContribuyente = $_SESSION['idContribuyente'];
+
 		    		$search = New HistoricoSolvenciaSearch($idContribuyente, 1);
 
 		    		$searchSolvenciaActividad = New SolvenciaActividadEconomicaSearch($idContribuyente);
@@ -493,12 +497,15 @@
 	    				$fechaVcto = '0000-00-00';
 	    			}
 
+	    			$impuesto = Impuesto::findOne($model->impuesto);
+	    			$tipoImpuesto = $impuesto->descripcion;
+
 		    		// Se arma la informacion del contribuyente para la licencia.
 		    		$contribuyente = ContribuyenteBase::findOne($idContribuyente);
 
 		    		$arregloContribuyente = [
 		    				'id_contribuyente' => $idContribuyente,
-		    				'nro_solicitud' => $model['nro_solicitud'],
+		    				'nro_solicitud' => $model->nro_solicitud,
 		    				'rif' => $contribuyente->naturaleza . '-' . $contribuyente->cedula . '-' . $contribuyente->tipo,
 		    				'descripcion' => $contribuyente->razon_social,
 		    				'domicilio' => $contribuyente->domicilio_fiscal,
@@ -507,6 +514,9 @@
 		    				'catastro' => 0,
 		    				'fechaEmision' => date('Y-m-d', strtotime($model->fecha_hora)),
 		    				'fechaVcto' => $fechaVcto,
+		    				'liquidacion' => 0,
+		    				'tipoImpuesto' => $tipoImpuesto,
+		    				// 'id_impuesto' => $model->id_impuesto;
 		    		];
 
 		    		$fuente_json = json_encode($arregloContribuyente);
@@ -671,7 +681,7 @@
 			$evento = '';
 			if ( count($conf) > 0 ) {
 				if ( $conf['nivel_aprobacion'] == 1 ) {
-					$evento = Yii::$app->solicitud->aprobar();
+					$evento = Yii::$app->solicitud->crear();
 				} else {
 					$evento = Yii::$app->solicitud->crear();
 				}
@@ -788,6 +798,8 @@
  				$search = New HistoricoSolvenciaSearch($model[0]->id_contribuyente, 1);
  				$historico = $search->findHistoricoSolvenciaSegunSolicitud($model[0]->nro_solicitud);
 
+ 				self::actionUpdateTasaHistorico($historico[0]['id_historico'], $search, $historico[0]['nro_solicitud']);
+
  				$_SESSION['id_historico'] = isset($historico[0]['id_historico']) ? $historico[0]['id_historico'] : null;
 
 				$opciones = [
@@ -809,6 +821,38 @@
 			} else {
 				throw new NotFoundHttpException('No se encontro el registro');
 			}
+    	}
+
+
+
+
+
+    	/**
+    	 * Metodo que invoca una funcion para actualizar el atributo "fuente-json"
+    	 * de la entidad "historico-solvencias"
+    	 * @param integer $idHistorico identificador del historico.
+    	 * @param  HistoricoSolvenciaSearch $historicoSearch
+    	 * @param  integer $nroSolicitud identificador de la solicitud creada.
+    	 * @return
+    	 */
+    	private function actionUpdateTasaHistorico($idHistorico, $historicoSearch, $nroSolicitud)
+    	{
+
+			// Se identifica la tasa liquidada por el concepto de solicitud de solvencia
+            $searchPlanilla = New SolicitudPlanillaSearch($nroSolicitud,
+                                                          Yii::$app->solicitud->crear());
+
+            $findModel = $searchPlanilla->findSolicitudPlanilla();
+            $planillas = $findModel->one();
+
+            $liquidacion = 0;
+            if ( isset($planillas->planilla) ) {
+                $liquidacion = $planillas->planilla;
+                $historicoSearch->actualizarLiquidacionHistorico($idHistorico, $liquidacion);
+            }
+
+            return true;
+
     	}
 
 
