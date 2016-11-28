@@ -44,7 +44,7 @@
 
  	use Yii;
 	use yii\db\ActiveRecord;
-
+	use backend\models\impuesto\Impuesto;
 
 	/**
 	* Clase
@@ -70,6 +70,16 @@
 		public static function tableName()
 		{
 			return 'historico_solvencias';
+		}
+
+
+		/**
+		 * Relacion con la entidad impuesto
+		 * @return active record
+		 */
+		public function getImpuestos()
+		{
+			return $this->hasOne(Impuesto::className(),['impuesto' => 'impuesto']);
 		}
 
 

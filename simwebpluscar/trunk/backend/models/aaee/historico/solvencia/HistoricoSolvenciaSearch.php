@@ -71,6 +71,22 @@
 		}
 
 
+		/**
+		 * Metodo para determinar la descripcion del impuesto
+		 * @return string retorna la descripcion del impuesto.
+		 */
+		public function tipoImpuesto()
+		{
+			$findModel = self::findHistoricoSolvenciaModel();
+
+			$model = $findModel->joinWith('impuestos', true)
+							   ->one();
+
+			return $model->impuestos->descripcion;
+		}
+
+
+
 
 		/**
 		 * Metodo que setea el identificador del objeto.
@@ -376,6 +392,39 @@
 								->one();
 
 			return $model;
+		}
+
+
+
+
+		/**
+		 * Metodo que realiza una actualizacion sobre el atributo "fuente-json"
+		 * en el indice "liquidacion" de dicho atributo json. Este atributo tiene
+		 * una estructura json, se debe localizar dentro de dicha estructura el indice
+		 * "liquidacion" y asignarle el valor de $planilla. Esto con la ayuda del
+		 * identificador del historico de la solvencia.
+		 * @param  integer $idHistorico identificador del historico de la solvencia.
+		 * @param  integer $planilla numero de planilla. Tasa liquidada.
+		 * @return boolean retorna.
+		 */
+		public function actualizarLiquidacionHistorico($idHistorico, $planilla)
+		{
+			self::setHistorico($idHistorico);
+			$model = self::findHistoricoSolvencia();
+
+			if ( count($model) > 0 ) {
+				$fuente = json_decode($model->fuente_json, true);
+				$fuente['liquidacion'] = $planilla;
+
+				$fuente_json = json_encode($fuente);
+
+				HistoricoSolvencia::updateAll(
+										['fuente_json' => $fuente_json,],
+										['id_historico' => $idHistorico,]
+									);
+
+			}
+
 		}
 
 
