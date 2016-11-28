@@ -227,6 +227,7 @@
 			if ( $pagos !== null ) {
 				$lapso['a'] = $pagos['ano_impositivo'];
 				$lapso['p'] = $pagos['trimestre'];
+				$lapso['exigibilidad'] = $pagos['exigibilidad_pago'];
 			}
 
 			return $lapso;
@@ -246,6 +247,38 @@
 			return $fechaVcto;
 		}
 
+
+
+
+		/***/
+		public function estaSolventeActividadEconomica()
+		{
+			$result = false;
+
+			$ultimoPeriodo = self::getUltimoPeriodoActividadEconomica();
+			if ( count($ultimoPeriodo) > 0 ) {
+				$periodoActual = self::getPeriodoActualSegunOrdenanza();
+				if ( count($periodoActual) > 0 ) {
+					if ( $ultimoPeriodo['a'] == $periodoActual['año'] ) {
+
+						if ( $ultimoPeriodo['p'] == $periodoActual['periodo'] ) {
+							$result = true;
+						}
+
+					} elseif ( $ultimoPeriodo['a'] > $periodoActual['año'] ) {
+
+						$result = true;
+
+					} elseif ( $ultimoPeriodo['a'] == date('Y') - 1 ) {
+						if ( $ultimoPeriodo['p'] == $ultimoPeriodo['exigibilidad'] ) {
+							if ( date('m') == 1 ) { $result = true; }
+						}
+					}
+				}
+			}
+
+			return $result;
+		}
 
 
 
