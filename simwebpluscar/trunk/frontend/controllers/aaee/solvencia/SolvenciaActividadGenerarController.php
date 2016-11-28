@@ -120,16 +120,22 @@
 					}
 
 				} else {
-					$_SESSION['id_historico'] = $model->id_historico;
-					$_SESSION['nro_control'] = $model->nro_control;
-					$solicitudSolvencia = New SolvenciaActividadEconomica();
-					$search = $solicitudSolvencia->find()->where('nro_solicitud =:nro_solicitud',
-																	[':nro_solicitud' => $model->nro_solicitud])
-					                                     ->one();
-					return $this->render('/aaee/solvencia/historico/historico-solvencia', [
-																	'model' => $model,
-																	'searchSolicitud' => $search,
-							]);
+
+					if ( count($model) > 0 ) {
+						$_SESSION['id_historico'] = $model->id_historico;
+						$_SESSION['nro_control'] = $model->nro_control;
+						$solicitudSolvencia = New SolvenciaActividadEconomica();
+						$search = $solicitudSolvencia->find()->where('nro_solicitud =:nro_solicitud',
+																		[':nro_solicitud' => $model->nro_solicitud])
+						                                     ->one();
+						return $this->render('/aaee/solvencia/historico/historico-solvencia', [
+																		'model' => $model,
+																		'searchSolicitud' => $search,
+								]);
+					} else {
+						// No existe el historico para mostrar.
+						throw new NotFoundHttpException(Yii::t('frontend', 'No se encontro un historico valido'));
+					}
 				}
 
 			} else {
