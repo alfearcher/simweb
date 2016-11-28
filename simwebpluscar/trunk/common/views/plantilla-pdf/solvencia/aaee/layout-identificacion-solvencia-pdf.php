@@ -71,7 +71,7 @@
 	<tr class="cuerpo">
 		<td class="info-contribuyente" colspan="4"><?=Html::encode($datosContribuyente['id_contribuyente']); ?></td>
 		<td class="info-contribuyente" colspan="3"><?=Html::encode(date('d-m-Y', strtotime($datosContribuyente['fechaEmision']))); ?></td>
-		<td class="info-contribuyente" colspan="3"><?=Html::encode(date('d-m-Y', strtotime($datosContribuyente['fechaVcto']))); ?></td>
+		<td class="info-contribuyente" colspan="3"><?=Html::encode(isset($datosContribuyente['fechaVcto']) ? date('d-m-Y', strtotime($datosContribuyente['fechaVcto'])) : ''); ?></td>
 	</tr>
 
 </table>
