@@ -55,6 +55,8 @@
 	class HistoricoSolvenciaSearch extends HistoricoSolvencia
 	{
 		private $_id_contribuyente;
+		private $_impuesto;
+		private $_id_impuesto;
 		protected $id_historico;
 
 
@@ -62,10 +64,23 @@
 		 * Metodo constuctor de la clase.
 		 * @param integer $idContribuyente identificador del contribuyente.
 		 */
-		public function __construct($idContribuyente)
+		public function __construct($idContribuyente, $impuesto)
 		{
 			$this->_id_contribuyente = $idContribuyente;
+			$this->_impuesto = $impuesto;
 		}
+
+
+
+		/**
+		 * Metodo que setea el identificador del objeto.
+		 * @param integer $idObjeto identificador del objeto imponible
+		 */
+		public function setIdImpuesto($idObjeto)
+		{
+			$this->_id_impuesto = $idObjeto;
+		}
+
 
 
 
@@ -75,11 +90,26 @@
 		 */
 		private function findHistoricoSolvenciaModel()
 		{
-			$findModel = HistoricoSolvencia::find()->where('id_contribuyente =:id_contribuyente',
-													[':id_contribuyente' => $this->_id_contribuyente]);
+			if ( $this->_impuesto == 1 ) {
 
+				$findModel = HistoricoSolvencia::find()->where('id_contribuyente =:id_contribuyente',
+															[':id_contribuyente' => $this->_id_contribuyente])
+													   ->andWhere('impuesto =:impuesto',
+													   		[':impuesto' => $this->_impuesto]);
+
+			} elseif ( $this->_impuesto == 2 || $this->_impuesto == 3 ) {
+
+				$findModel = HistoricoSolvencia::find()->where('id_contribuyente =:id_contribuyente',
+															[':id_contribuyente' => $this->_id_contribuyente])
+													   ->andWhere('impuesto =:impuesto',
+													   		[':impuesto' => $this->_impuesto])
+													   ->andWhere('id_impuesto =:id_impuesto',
+													   		[':id_impuesto' => $this->_id_impuesto]);
+
+			}
 			return $findModel;
 		}
+
 
 
 
@@ -277,22 +307,27 @@
 		 * @param  integer $añoImpositivo año impositivo
 		 * @return active record
 		 */
-		private function findUltimoHistoricoSegunAnoImpositivo($añoImpositivo, $impuesto, $idImpuesto = 0)
+		private function findUltimoHistoricoSegunAnoImpositivo($añoImpositivo)
 		{
 			$findModel = self::findHistoricoSolvenciaModel();
-			if ( $impuesto == 1 ) {
+			if ( $this->_impuesto == 1 ) {
+
 				$model = $findModel->andWhere('ano_impositivo =:ano_impositivo',
 													[':ano_impositivo' => $añoImpositivo])
-								   ->andWhere('impuesto =:impuesto',[':impuesto' => $impuesto])
+								   ->andWhere('impuesto =:impuesto',
+								   					[':impuesto' => $this->_impuesto])
 								   ->orderBy([
 								   		'id_historico' => SORT_DESC,
 								   	]);
 
-			} elseif ( $impuesto == 2 || $impuesto == 3 ) {
+			} elseif ( $this->_impuesto == 2 || $this->_impuesto == 3 ) {
+
 				$model = $findModel->andWhere('ano_impositivo =:ano_impositivo',
 													[':ano_impositivo' => $añoImpositivo])
-								   ->andWhere('impuesto =:impuesto',[':impuesto' => $impuesto])
-								   ->andWhere('id_impuesto =:id_impuesto',[':id_impuesto' => $idImpuesto])
+								   ->andWhere('impuesto =:impuesto',
+								   					[':impuesto' => $this->_impuesto])
+								   ->andWhere('id_impuesto =:id_impuesto',
+								   					[':id_impuesto' => $this->_id_impuesto])
 								   ->orderBy([
 								   		'id_historico' => SORT_DESC,
 								   	]);
@@ -308,11 +343,11 @@
 		 * Metodo realiza la consulta del ultimo historico del año actual activo.
 		 * @return HistoricoLicencia returna una mdoelo con la consulta.
 		 */
-		public function findUltimoHistoricoAnoActual($impuesto, $idImpuesto = 0)
+		public function findUltimoHistoricoAnoActual()
 		{
 			$añoImpositivo = (int)date('Y');
 
-			$findModel = self::findUltimoHistoricoSegunAnoImpositivo($añoImpositivo, $impuesto, $idImpuesto);
+			$findModel = self::findUltimoHistoricoSegunAnoImpositivo($añoImpositivo);
 
 			$model = $findModel->andWhere('inactivo =:inactivo',
 										[':inactivo' => 0])
