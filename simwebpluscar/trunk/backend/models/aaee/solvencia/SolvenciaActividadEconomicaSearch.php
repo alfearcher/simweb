@@ -471,6 +471,20 @@
 	    	}
 	    	return $result;
 	    }
+
+
+
+
+	    /***/
+	    public function getEstaSolvente()
+	    {
+	    	$solvente = New Solvente();
+	    	$solvente->setIdContribuyente($this->_id_contribuyente);
+
+	    	return $solvente->estaSolventeActividadEconomica();
+	    }
+
+
 	}
 
 ?>
