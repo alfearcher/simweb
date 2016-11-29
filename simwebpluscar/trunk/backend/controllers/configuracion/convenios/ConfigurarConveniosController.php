@@ -119,7 +119,7 @@ class ConfigurarConveniosController extends Controller
 
         return $this->render('view', [
             'model' => $datos,
-        ]);    
+        ]);      
         }  else {
                     echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
         }
