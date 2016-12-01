@@ -21,13 +21,13 @@
  */
 
  /**
- *  @file SolvenciaActividadEconomica.php
+ *  @file SolvenciaActividadEconomicaSearch.php
  *
  *  @author Jose Rafael Perez Teran
  *
  *  @date 25-11-2016
  *
- *  @class SolvenciaActividadEconomica
+ *  @class SolvenciaActividadEconomicaSearch
  *  @brief Clase Modelo
  *
  *
