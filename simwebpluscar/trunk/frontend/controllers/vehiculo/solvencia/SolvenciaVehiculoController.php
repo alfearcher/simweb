@@ -46,6 +46,8 @@
 
 
  	use Yii;
+ 	use yii\base\Model;
+ 	use yii\helpers\ArrayHelper;
 	use yii\filters\AccessControl;
 	use yii\web\Controller;
 	use yii\filters\VerbFilter;
@@ -89,7 +91,7 @@
 		 * Identificador de  configuracion de la solicitud. Se crea cuando se
 		 * configura la solicitud que gestiona esta clase.
 		 */
-		const CONFIG = 114;
+		const CONFIG = 115;
 
 
 		/**
@@ -257,8 +259,6 @@
 		  															'dataProvider' => $provider,
 		  															'findModel' => $findModel,
 		  								]);
-							} else {
-								die(var_dump($controlSeleccion));
 							}
 						}
 					}
@@ -266,8 +266,23 @@
 				} elseif ( isset($postData['btn-confirm-create']) ) {
 					if ( $postData['btn-confirm-create'] == 5 ) {
 						// Guardar la confirmacion
+						$modelMultiplex = [New SolvenciaVehiculoForm];
+						$formName = $modelMultiplex[0]->formName();
 
-						$result = self::actionBeginSave($model, $postData);
+
+
+						$chkIdImpuesto = $postData['chkIdImpuesto'];
+						foreach ( $chkIdImpuesto as $key => $value ) {
+							// $search = New SolvenciaVehiculoSearch($idContribuyente, $value);
+
+							$models[$key] = New SolvenciaVehiculoForm();
+							$models[$key]->load($postData);
+							$models[$key]['id_impuesto'] = $value;
+							$models[$key]['ultimo_pago'] = $provider->allModels[$value]['ultimoPago'];
+							$models[$key]['placa'] = $provider->allModels[$value]['descripcion'];
+						}
+
+						$result = self::actionBeginSave($models, $postData);
 						self::actionAnularSession(['begin']);
   						if ( $result ) {
 							$this->_transaccion->commit();
@@ -300,6 +315,7 @@
 		  				$model->usuario = Yii::$app->identidad->getUsuario();
 		  				$model->fecha_hora = date('Y-m-d H:i:s');
 		  				$model->origen = 'WEB';
+		  				$model->placa = '';
 
 		  				// Mostrar lista de vehiculo(s).
 			  			return $this->render('/vehiculo/solvencia/_list',[
@@ -334,7 +350,7 @@
 		 * @return boolean retorna true si se realizan todas las operacions de
 		 * insercion y actualizacion con exitos o false en caso contrario.
 		 */
-		private function actionBeginSave($model, $postEnviado)
+		private function actionBeginSave($models, $postEnviado)
 		{
 			$result = false;
 			$nroSolicitud = 0;
@@ -342,6 +358,9 @@
 			if ( isset($_SESSION['idContribuyente']) ) {
 				if ( isset($_SESSION['conf']) ) {
 					$conf = $_SESSION['conf'];
+
+					// Solicitudes generadas.
+					$listaNroSolicitud = [];
 
 					$this->_conexion = New ConexionController();
 
@@ -353,8 +372,7 @@
 	      			// Inicio de la transaccion.
 					$this->_transaccion = $this->_conn->beginTransaction();
 
-					$chkIdImpuesto = $postData['chkIdImpuesto'];
-					if ( count( $chkIdImpuesto) > 0 ) {
+					foreach ( $models as $model ) {
 
 						$nroSolicitud = self::actionCreateSolicitud($model, $conf);
 						if ( $nroSolicitud > 0 ) {
@@ -376,11 +394,16 @@
 								$result = self::actionEjecutaProcesoSolicitud($this->_conexion, $this->_conn, $model, $conf);
 							}
 
-							if ( $result ) {
+							if ( !$result ) { break; }
+						}
+
+						if ( $result ) {
+							foreach ( $models as $model ) {
 								$result = self::actionEnviarEmail($model, $conf);
 								$result = true;
 							}
 						}
+
 					}
 
 				} else {
@@ -411,7 +434,7 @@
 			$estatus = 0;
 			$userFuncionario = '';
 			$fechaHoraProceso = '0000-00-00 00:00:00';
-			$user = isset($model->usuario) ? $model->usuario : Yii::$app->identidad->getUsuario();
+			$user = Yii::$app->identidad->getUsuario();
 			$nroSolicitud = 0;
 			$modelSolicitud = New SolicitudesContribuyenteForm();
 			$tabla = $modelSolicitud->tableName();
@@ -459,9 +482,9 @@
 
 
 	    /**
-	     * Metodo que crea el historico de declaraciones, esto aplica si la solicitud de declaracion
+	     * Metodo que crea el historico de solvencias, esto aplica si la solicitud de solvencia
 	     * es de aprobacion directa.
-		 * @param  model $model modelo del tipo de clase SolvenciaActividadEconomicaForm.
+		 * @param  model $model modelo del tipo de clase SolvenciaVehiculoForm.
 	     * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
 		 * solicitud.
 	     * @return boolean retorna true si guarda satisfactoriamente.
@@ -507,7 +530,7 @@
 	    /**
 	     * Metodo que crea el historico de declaraciones, esto aplica si la solicitud de declaracion
 	     * es de aprobacion directa.
-		 * @param  model $model modelo del tipo de clase SolvenciaActividadEconomicaForm.
+		 * @param  model $model modelo del tipo de clase SolvenciaVehiculoForm.
 	     * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
 		 * solicitud.
 	     * @return boolean retorna true si guarda satisfactoriamente.
@@ -521,8 +544,8 @@
 
 		    		$search = New HistoricoSolvenciaSearch($idContribuyente, 1);
 
-		    		$searchSolvenciaActividad = New SolvenciaActividadEconomicaSearch($idContribuyente);
-	    			$fechaVcto = $searchSolvenciaActividad->determinarFechaVctoSolvencia();
+		    		$searchSolvencia = New SolvenciaVehiculoSearch($idContribuyente, $model->id_impuesto);
+	    			$fechaVcto = $searchSolvencia->determinarFechaVctoSolvencia();
 	    			if ( $fechaVcto == '' ) {
 	    				$fechaVcto = '0000-00-00';
 	    			}
@@ -532,15 +555,22 @@
 
 		    		// Se arma la informacion del contribuyente para la licencia.
 		    		$contribuyente = ContribuyenteBase::findOne($idContribuyente);
+		    		if ( $contribuyente->tipo_naturaleza == 0 ) {
+						$cedualRif = $contribuyente->naturaleza . '-' . $contribuyente->cedula;
+						$descripcion = $contribuyente->apellidos . ' ' . $contribuyente->nombres;
+		    		} elseif ( $contribuyente->tipo_naturaleza == 1 ) {
+		    			$cedualRif = $contribuyente->naturaleza . '-' . $contribuyente->cedula . '-' . $contribuyente->tipo;
+						$descripcion = $contribuyente->razon_social;
+		    		}
 
 		    		$arregloContribuyente = [
 		    				'id_contribuyente' => $idContribuyente,
 		    				'nro_solicitud' => $model->nro_solicitud,
-		    				'rif' => $contribuyente->naturaleza . '-' . $contribuyente->cedula . '-' . $contribuyente->tipo,
-		    				'descripcion' => $contribuyente->razon_social,
+		    				'rif' => $cedualRif,
+		    				'descripcion' => $descripcion,
 		    				'domicilio' => $contribuyente->domicilio_fiscal,
 		    				'licencia' => $contribuyente->id_sim,
-		    				'placa' => 0,
+		    				'placa' => $model->placa,
 		    				'catastro' => 0,
 		    				'fechaEmision' => date('Y-m-d', strtotime($model->fecha_hora)),
 		    				'fechaVcto' => $fechaVcto,
@@ -563,7 +593,7 @@
 					$arregloDatos['nro_control'] = '';
 					$arregloDatos['serial_control'] = '';
 					$arregloDatos['fuente_json'] = $fuente_json;
-					$arregloDatos['observacion'] = 'SOLICITUD SOLVENCIA ' . $model->observacion;
+					$arregloDatos['observacion'] = 'SOLICITUD SOLVENCIA VEHICULO' . $model->observacion;
 					$arregloDatos['inactivo'] = 0;
 					$arregloDatos['usuario'] = $model->usuario;
 					$arregloDatos['fecha_hora'] = $model->fecha_hora;
@@ -584,7 +614,7 @@
 
 	    /**
 	     * Metodo que realiza la insercion en la entidad "solvencias".
-	     * @param  model $model modelo del tipo de clase SolvenciaActividadEconomicaForm.
+	     * @param  model $model modelo del tipo de clase SolvenciaVehiculoForm.
 	     * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
 	     * solicitud.
 	     * @param  conexioncontroller $conexionLocal clase ConexionController
@@ -598,8 +628,8 @@
 	    		if ( isset($_SESSION['idContribuyente']) ) {
 	    			$idContribuyente = $_SESSION['idContribuyente'];
 
-	    			$searchSolvenciaActividad = New SolvenciaActividadEconomicaSearch($idContribuyente);
-	    			$fechaVcto = $searchSolvenciaActividad->determinarFechaVctoSolvencia();
+	    			$searchSolvencia = New SolvenciaVehiculoSearch($idContribuyente, $model->id_impuesto);
+	    			$fechaVcto = $searchSolvencia->determinarFechaVctoSolvencia();
 	    			if ( $fechaVcto == '' ) {
 	    				$fechaVcto = '0000-00-00';
 	    			}
