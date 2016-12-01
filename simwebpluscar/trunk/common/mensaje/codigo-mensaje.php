@@ -87,6 +87,7 @@ return [
 	'410' => [Yii::t('backend', 'Recibo no encontrado'), 'danger', 'fa fa-exclamation-triangle'],
 
 	'501' => [Yii::t('frontend', 'No presenta deudas pendientes'), 'success', 'fa fa-info-circle'],
+	'505' => [Yii::t('frontend', 'No presenta vehiculos registrados activos'), 'warning', 'fa fa-info-circle'],
 
 ]
 
