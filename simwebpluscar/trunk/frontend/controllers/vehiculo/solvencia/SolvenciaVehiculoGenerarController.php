@@ -116,9 +116,9 @@
 						$historicoSearch->setIdImpuesto($idImpuesto);
 
 						$model = $historicoSearch->findUltimoHistoricoAnoActual();
-						$_SESSION['id_historico'] = $model->id_historico;
-						$_SESSION['nro_control'] = $model->nro_control;
-						$_SESSION['id_impuesto'] = $model->id_impuesto;
+						$_SESSION['id_historico'] = $model['id_historico'];
+						$_SESSION['nro_control'] = $model['nro_control'];
+						$_SESSION['id_impuesto'] = $model['id_impuesto'];
 
 						return $this->render('/vehiculo/solvencia/historico/historico-solvencia',[
 																	'model' => $model,
