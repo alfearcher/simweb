@@ -109,7 +109,7 @@
 		private function findVehiculoGeneralModel()
 		{
 			return VehiculosForm::find()->alias('V')
-									   ->where('id_contribuyente =:id_contribuyente',
+									   ->where('V.id_contribuyente =:id_contribuyente',
 													[':id_contribuyente' => $this->_id_contribuyente]);
 		}
 
@@ -238,7 +238,8 @@
 		 */
 		public function findSolicitudSolvenciaVehiculoModel()
 		{
-			return SolvenciaVehiculo::find()->where('id_contribuyente =:id_contribuyente',
+			return SolvenciaVehiculo::find()->alias('S')
+									        ->where('S.id_contribuyente =:id_contribuyente',
 															[':id_contribuyente' => $this->_id_contribuyente])
 											->andWhere('impuesto =:impuesto',
 											 				[':impuesto' => self::IMPUESTO]);
