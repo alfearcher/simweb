@@ -251,6 +251,45 @@
 
 
 		/***/
+		public function getUltimoPeriodoPagoObjeto()
+		{
+			$search = New PagoSearch();
+			$search->setIdImpuesto($this->idImpuesto);
+			$search->setImpuesto($this->impuesto);
+
+			$lapso = null;
+			// Lo siguiente retorna un arreglo.
+			$pagos = $search->getUltimoLapsoPagoObjeto($this->impuesto, $this->idImpuesto);
+
+			if ( $pagos !== null ) {
+				$lapso['a'] = $pagos['ano_impositivo'];
+				$lapso['p'] = $pagos['trimestre'];
+				$lapso['exigibilidad'] = $pagos['exigibilidad_pago'];
+			}
+
+			return $lapso;
+
+		}
+
+
+
+
+		/***/
+		public function getFechaVctoSolvenciaObjeto()
+		{
+			$fechaVcto = '';
+			$ultimoPago = self::getUltimoPeriodoPagoObjeto();
+			if ( $ultimoPago !== null ) {
+				$fechaVcto = OrdenanzaBase::getFechaVencimientoLapso($ultimoPago['a'], $ultimoPago['p'], 1);
+			}
+			return $fechaVcto;
+		}
+
+
+
+
+
+		/***/
 		public function estaSolventeActividadEconomica()
 		{
 			$result = false;
