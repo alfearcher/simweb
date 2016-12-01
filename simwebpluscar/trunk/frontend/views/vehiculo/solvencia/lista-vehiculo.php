@@ -78,6 +78,10 @@
 	<?=$form->field($model, 'id_impuesto')->hiddenInput(['value' => $model->id_impuesto])->label(false); ?>
 	<?=$form->field($model, 'impuesto')->hiddenInput(['value' => $model->impuesto])->label(false); ?>
 	<?=$form->field($model, 'nro_solicitud')->hiddenInput(['value' => $model->nro_solicitud])->label(false); ?>
+	<?=$form->field($model, 'ano_impositivo')->hiddenInput(['value' => $model->ano_impositivo])->label(false); ?>
+	<?=$form->field($model, 'ultimo_pago')->hiddenInput(['value' => $model->ultimo_pago])->label(false); ?>
+	<?=$form->field($model, 'observacion')->hiddenInput(['value' => $model->observacion])->label(false); ?>
+	<?=$form->field($model, 'placa')->hiddenInput(['value' => $model->placa])->label(false); ?>
 
 
 	<meta http-equiv="refresh">
@@ -170,7 +174,7 @@
 				                                   		return $data['ultimoPago'];
 				            			           },
 				                    ],
-				                     [
+				                    [
 				                        'contentOptions' => [
 				                              'style' => 'font-size: 90%;',
 				                        ],
@@ -190,21 +194,6 @@
 														return $m;
 				            			           },
 				                    ],
-
-				                    // [
-				                    //     'contentOptions' => [
-				                    //           'style' => 'font-size: 90%;',
-				                    //     ],
-				                    //     'label' => Yii::t('frontend', 'condicion'),
-				                    //     'value' => function($data) {
-				                    //     				if ( $data->status_vehiculo == 1 ) {
-				                    //     					return 'SI';
-				                    //     				} else {
-				                    //     					return 'NO';
-				                    //     				}
-
-				            			     //       },
-				                    // ],
 
 					        	]
 							]);?>

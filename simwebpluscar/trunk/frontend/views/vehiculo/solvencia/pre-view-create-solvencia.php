@@ -78,6 +78,10 @@
 	<?=$form->field($model, 'id_impuesto')->hiddenInput(['value' => $model->id_impuesto])->label(false); ?>
 	<?=$form->field($model, 'impuesto')->hiddenInput(['value' => $model->impuesto])->label(false); ?>
 	<?=$form->field($model, 'nro_solicitud')->hiddenInput(['value' => $model->nro_solicitud])->label(false); ?>
+	<?=$form->field($model, 'ano_impositivo')->hiddenInput(['value' => $model->ano_impositivo])->label(false); ?>
+	<?=$form->field($model, 'ultimo_pago')->hiddenInput(['value' => $model->ultimo_pago])->label(false); ?>
+	<?=$form->field($model, 'observacion')->hiddenInput(['value' => $model->observacion])->label(false); ?>
+	<?=$form->field($model, 'placa')->hiddenInput(['value' => $model->placa])->label(false); ?>
 
 
 	<meta http-equiv="refresh">
@@ -112,7 +116,7 @@
 									['class' => 'yii\grid\SerialColumn'],
 									[
 				                        'class' => 'yii\grid\CheckboxColumn',
-				                        'name' => 'chkIdImuesto',
+				                        'name' => 'chkIdImpuesto',
 				                        'checkboxOptions' => function ($model, $key, $index, $column) {
 					                            	return [
 					                                    'onClick' => 'javascript: return false;',
