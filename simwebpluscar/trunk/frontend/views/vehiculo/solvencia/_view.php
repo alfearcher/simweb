@@ -54,14 +54,12 @@
 	 </div>
 	 <div class="row">
 		<div class="solicitud-solvencia-creada">
-			<?= $this->render('/aaee/solvencia/view-solicitud-solvencia-create', [
+			<?= $this->render('/vehiculo/solvencia/view-solicitud-solvencia-create', [
 															'model' => $model,
-															'modelSearch' => $modelSearch,
 															'opciones' => $opciones,
 															'dataProvider' => $dataProvider,
-															'historico' => $historico,
 															'caption' => $caption,
-															'tipoSolicitud' => $tipoSolicitud,
+															'subCaption' => $subCaption,
 	    					]);
 	    	?>
 		</div>

@@ -206,15 +206,15 @@
 					<div class="row" style="width: 100%;padding: 0px;margin-top: 20px;">
 							<div class="col-sm-3" style="width: 25%;padding: 0px;padding-left: 15px;">
 								<div class="form-group">
-									<?= Html::submitButton(Yii::t('frontend', Yii::t('frontend', 'Crear Solicitud')),
-																						  [
-																							'id' => 'btn-create',
-																							'class' => 'btn btn-success',
-																							'value' => 5,
-																							'style' => 'width: 100%;',
-																							'name' => 'btn-create',
+									<?= Html::submitButton(Yii::t('frontend', 'Crear Solicitud'),
+																					  [
+																						'id' => 'btn-create',
+																						'class' => 'btn btn-success',
+																						'value' => 5,
+																						'style' => 'width: 100%;',
+																						'name' => 'btn-create',
 
-																						  ])
+																					  ])
 									?>
 								</div>
 							</div>
@@ -222,15 +222,15 @@
 
 							<div class="col-sm-3" style="width: 25%;padding: 0px; padding-left: 25px;margin-left:30px;">
 								<div class="form-group">
-									<?= Html::submitButton(Yii::t('frontend', Yii::t('frontend', 'Quit')),
-																						  [
-																							'id' => 'btn-quit',
-																							'class' => 'btn btn-danger',
-																							'value' => 1,
-																							'style' => 'width: 100%;',
-																							'name' => 'btn-quit',
+									<?= Html::submitButton(Yii::t('frontend', 'Quit'),
+																			  [
+																				'id' => 'btn-quit',
+																				'class' => 'btn btn-danger',
+																				'value' => 1,
+																				'style' => 'width: 100%;',
+																				'name' => 'btn-quit',
 
-																						  ])
+																			  ])
 									?>
 								</div>
 							</div>
