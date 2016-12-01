@@ -116,14 +116,19 @@
 						$historicoSearch->setIdImpuesto($idImpuesto);
 
 						$model = $historicoSearch->findUltimoHistoricoAnoActual();
-						$_SESSION['id_historico'] = $model['id_historico'];
-						$_SESSION['nro_control'] = $model['nro_control'];
-						$_SESSION['id_impuesto'] = $model['id_impuesto'];
+						if ( count($model) > 0 ) {
+							$_SESSION['id_historico'] = $model['id_historico'];
+							$_SESSION['nro_control'] = $model['nro_control'];
+							$_SESSION['id_impuesto'] = $model['id_impuesto'];
 
-						return $this->render('/vehiculo/solvencia/historico/historico-solvencia',[
-																	'model' => $model,
-																	'searchSolvencia' => $searchSolvencia,
-									]);
+							return $this->render('/vehiculo/solvencia/historico/historico-solvencia',[
+																		'model' => $model,
+																		'searchSolvencia' => $searchSolvencia,
+										]);
+						} else {
+							// No presenta historico de solvencias que mostrar.
+							return $this->redirect(['error-operacion' => 507]);
+						}
 					}
 
 				} elseif ( isset($postData['btn-back']) ) {
