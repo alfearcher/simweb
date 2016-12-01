@@ -128,7 +128,7 @@
 										]);
 						} else {
 							// No presenta historico de solvencias que mostrar.
-							return $this->redirect(['error-operacion' => 507]);
+							return $this->redirect(['error-operacion', 'cod' => 507]);
 						}
 					}
 
