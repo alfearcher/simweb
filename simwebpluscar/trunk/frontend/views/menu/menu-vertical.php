@@ -163,7 +163,12 @@
 
 					        				],
 					        			],
-		        						['label' => 'Solvencia', 'url' => '#'],
+		        						['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Solvencia',
+		        					   		'items' => [
+	        					   				['label' => 'Solicitar Emision', 'url' => ['/vehiculo/solvencia/solvencia-vehiculo/index', 'id' => 115]],
+	        					   				['label' => 'Descargar Solvencia', 'url' => ['/vehiculo/solvencia/solvencia-vehiculo-generar/index']],
+		        					   		]
+		        					   	],
 		        						['label' => 'Cambio de Propietario', 'url' => ['/vehiculo/cambiopropietario/opcion-cambio-propietario/seleccionar-tipo-cambio-propietario', 'id' => 9]],
 		        						['label' => 'Cambio de Placa', 'url' => ['/vehiculo/cambioplaca/cambio-placa-vehiculo/vista-seleccion', 'id' => 74], 'options' => []],
 		        						['label' => 'Desincorporaci&oacute;n de Vehiculo', 'url' => ['/vehiculo/desincorporacion/desincorporacion-vehiculo/vista-seleccion', 'id' => 4]],
