@@ -92,11 +92,10 @@
 		 * @param  integer $nroSolicitud numero de la solicitud
 		 * @return active record.
 		 */
-		public function findSolicitudSolvencia($nroSolicitud)
+		public function findSolicitudSolvencia($nroSolicitud = [])
 		{
 			$findModel = self::findSolicitudSolvenciaVehiculoModel();
-			$model = $findModel->andWhere('nro_solicitud =:nro_solicitud',
-												[':nro_solicitud' => $nroSolicitud]);
+			$model = $findModel->andWhere(['IN', 'nro_solicitud', $nroSolicitud]);
 
 			return $model;
 		}
@@ -575,7 +574,7 @@
 
 
 	     /***/
-	    public function getDataProviderSolicitud($nroSolicitud)
+	    public function getDataProviderSolicitud($nroSolicitud = [])
 	    {
 	    	$query = self::findSolicitudSolvencia($nroSolicitud);
 

@@ -46,6 +46,7 @@
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 	use backend\models\solvencia\SolvenciaSolicitud;
+	use backend\models\vehiculo\VehiculosForm;
 
 
 	/**
@@ -54,6 +55,15 @@
 	class SolvenciaVehiculo extends SolvenciaSolicitud
 	{
 
+
+		/**
+		 * Relacion con la entidad "vehiculos"
+		 * @return
+		 */
+		public function getVehiculo()
+		{
+			return $this->hasOne(VehiculosForm::className(),['id_vehiculo' => 'id_impuesto']);
+		}
 	}
 
 ?>
