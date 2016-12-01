@@ -69,6 +69,7 @@
 		private $_id_historico;
 		private $_id_contribuyente;
 		private $_nro_control;
+		private $_id_impuesto;
 
 
 
@@ -191,6 +192,116 @@
 		       exit;
 		    }
 		}
+
+
+
+
+
+		/**
+		 * Metodo que renderiza una solvencia de vehiculo en pdf
+		 * @return view retorna un pdf de la solvencia.
+		 */
+		public function actionGenerarSolvenciaVehiculoPdf($idImpuesto)
+		{
+
+            // Informacion del encabezado.
+            $htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/layout/layout-encabezado-pdf', [
+                                                            'caption' => 'CERTIFICADO DE SOLVENCIA',
+
+                                    ]);
+
+
+            // Informacion del Historico
+            $historico = New HistoricoSolvenciaSearch($this->_id_contribuyente, 3);
+            $historico->setHistorico($this->_id_historico);
+            $historico->setIdImpuesto($idImpuesto);
+            $model = $historico->findHistoricoSolvencia();
+
+            if ( count($model) > 0 ) {
+	            $datosContribuyente = json_decode($model['fuente_json'], true);
+
+	            // Informacion del contribuyente.
+	            $htmlContribuyente = $this->renderPartial('@common/views/plantilla-pdf/solvencia/aaee/layout-contribuyente-pdf', [
+	                                                            'model' => $model,
+	                                                            'datosContribuyente' => $datosContribuyente,
+	                                                            'showDireccion' => false,
+	                                                            'showRepresentante' => false,
+	                                    ]);
+
+
+	            // Informacion de la Solvencia
+	            $htmlSolvencia = $this->renderPartial('@common/views/plantilla-pdf/solvencia/aaee/layout-identificacion-solvencia-pdf', [
+	            												'model' => $model,
+	            												'datosContribuyente' => $datosContribuyente,
+	            						]);
+
+
+	            // Informacion general del impuesto
+	            $htmlImpuesto =  $this->renderPartial('@common/views/plantilla-pdf/solvencia/vehiculo/layout-info-general-impuesto-pdf', [
+	            												'model' => $model,
+	            												'datosContribuyente' => $datosContribuyente,
+	            						]);
+
+
+	            // Informacion del pie de pagina
+	            $htmlPiePagina = $this->renderPartial('@common/views/plantilla-pdf/licencia/layout-piepagina-pdf');
+
+
+	            // Informacion del director
+	            $htmlDirector = $this->renderPartial('@common/views/plantilla-pdf/licencia/layout-director-pdf', [
+	            												'director'=> Yii::$app->oficina->getDirector(),
+                                                            	'nombreCargo' => Yii::$app->oficina->getNombreCargo(),
+	            						]);
+
+	           // QR
+	            $barcode = $model['serial_control'];
+	            $htmlQR = $this->renderPartial('@common/views/plantilla-pdf/layout/layout-qr-pdf',[
+	            											'barcode' => $barcode,
+	            					]);
+
+
+
+	            // Nombre del archivo.
+		        $nombrePDF = $model['serial_control'];
+		        if ( trim($nombrePDF) !== '' ) {
+		        	$nombre = $nombrePDF . '.pdf';
+		        }
+
+		        $mpdf = new mPDF;
+
+		        $mpdf->SetHeader($nombrePDF);
+		        $mpdf->WriteHTML($htmlEncabezado);
+		        $mpdf->WriteHTML($htmlContribuyente);
+		        $mpdf->WriteHTML($htmlSolvencia);
+		        $mpdf->WriteHTML($htmlImpuesto);
+		        // $mpdf->WriteHTML($htmlRubro);
+		        $mpdf->WriteFixedPosHTML($htmlDirector, 15, 245, 170, 30);
+		       	$mpdf->WriteFixedPosHTML($htmlPiePagina, 15, 260, 170, 30);
+		        // Se coloca el QR
+		       $mpdf->WriteFixedPosHTML($htmlQR, 100, 212, 120, 30);
+
+		       //funciona
+		       // $mpdf->Rect(18, 230, 100, 30, D);
+
+		        // eje x, y, w=width, h=height, r=radius, estilo de la linea
+		        // 											D = dibuja linea
+		        // 											F
+		        // 											DF
+		       // $mpdf->RoundedRect(18, 230, 120, 30, 3, D);
+		       // $mpdf->SetFont('Arial', 'B', 8);
+		       // $mpdf->Text(60,258,"Validacion terminal caja");
+
+
+
+
+		       $mpdf->Output($nombre, 'I');
+		       exit;
+		    }
+		}
+
+
+
+
 
 
 
