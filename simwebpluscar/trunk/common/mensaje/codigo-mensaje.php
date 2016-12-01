@@ -88,7 +88,7 @@ return [
 
 	'501' => [Yii::t('frontend', 'No presenta deudas pendientes'), 'success', 'fa fa-info-circle'],
 	'505' => [Yii::t('frontend', 'No presenta vehiculos registrados activos'), 'warning', 'fa fa-info-circle'],
-
+	'507' => [Yii::t('frontend', 'El vehiculo no presenta historico de solvencias'), 'warning', 'fa fa-info-circle'],
 ]
 
 
