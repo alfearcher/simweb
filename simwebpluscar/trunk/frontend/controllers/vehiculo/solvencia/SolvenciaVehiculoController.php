@@ -283,11 +283,11 @@
 						}
 
 						$result = self::actionBeginSave($models, $postData);
-						self::actionAnularSession(['begin']);
+						self::actionAnularSession(['begin', 'conf']);
   						if ( $result ) {
 							$this->_transaccion->commit();
 							$this->_conn->close();
-							return self::actionView($model->nro_solicitud);
+							return self::actionView($models);
 						} else {
 							$this->_transaccion->rollBack();
 							$this->_conn->close();
@@ -396,14 +396,13 @@
 
 							if ( !$result ) { break; }
 						}
+					}
 
-						if ( $result ) {
-							foreach ( $models as $model ) {
-								$result = self::actionEnviarEmail($model, $conf);
-								$result = true;
-							}
+					if ( $result ) {
+						foreach ( $models as $model ) {
+							$result = self::actionEnviarEmail($model, $conf);
+							$result = true;
 						}
-
 					}
 
 				} else {
@@ -817,26 +816,31 @@
 		}
 
 
+
+
 		/**
-		 * Metodo que renderiza una vista con la informacion de la solicitud creada.
-		 * @param  loong $id identificador de la solicitud creada.
-		 * @return view retorna una vista con la informacion detalle de la solicitud.
-		 * Informacion cargada por el contribuyente.
+		 * Metodo que permite incocar las functiones que permitira actualizar el json del historico
+		 * @param  SolvenciaVehiculoForm $models modelo que permitio guardar las solicitudes.
+		 * @return view
 		 */
-		public function actionView($id)
+		public function actionView($models)
     	{
     		if ( isset($_SESSION['idContribuyente']) ) {
-	    		if ( $id > 0 ) {
-	    			$searchSolvencia = New SolvenciaActividadEconomicaSearch($_SESSION['idContribuyente']);
-	    			$findModel = $searchSolvencia->findSolicitudSolvencia($id);
-	    			$dataProvider = $searchSolvencia->getDataProviderSolicitud($id);
-	    			if ( isset($findModel) ) {
-	    				return self::actionShowSolicitud($findModel, $searchSolvencia, $dataProvider);
-	    			} else {
-						throw new NotFoundHttpException('No se encontro el registro');
-					}
+	    		if ( count($models) > 0 ) {
+	    			foreach ( $models as $model ) {
+
+	    				$search = New HistoricoSolvenciaSearch($model->id_contribuyente,  $model->impuesto);
+ 						$historico = $search->findHistoricoSolvenciaSegunSolicitud($model->nro_solicitud);
+
+		 				if ( isset($historico[0]['id_historico']) ) {
+		 					self::actionUpdateTasaHistorico($historico[0]['id_historico'], $search, $historico[0]['nro_solicitud']);
+		 				}
+	    			}
+
+	    			return self::actionMostrarSolicitudCreada($models);
+
 	    		} else {
-	    			throw new NotFoundHttpException('Error ' . $id);
+	    			throw new NotFoundHttpException('Error ');
 	    		}
 	    	} else {
 	    		throw new NotFoundHttpException('El contribuyente no esta defino');
@@ -844,6 +848,36 @@
     	}
 
 
+
+
+    	/***/
+    	public function actionMostrarSolicitudCreada($models)
+    	{
+    		if ( count($models) > 0 ) {
+    			foreach ( $models as $model ) {
+    				$listaNroSolicitud[] = $model->nro_solicitud;
+    				$idContribuyente = $model->id_contribuyente;
+    			}
+
+	    		$search = New SolvenciaVehiculoSearch($idContribuyente);
+	    		$dataProvider = $search->getDataProviderSolicitud($listaNroSolicitud);
+
+	    		$opciones = [
+					'quit' => '/vehiculo/solvencia/solvencia-vehiculo/quit',
+				];
+
+				$caption = Yii::t('frontend', 'Solicitud Creada');
+				$subCaption = Yii::t('frontend', 'Solicitud');
+	    		return $this->render('/vehiculo/solvencia/_view',[
+												'model' => $models,
+												'dataProvider' => $dataProvider,
+												'codigo' => 100,
+												'opciones' => $opciones,
+												'caption' => $caption,
+												'subCaption' => $subCaption,
+	    					]);
+    		}
+    	}
 
 
 
