@@ -183,9 +183,9 @@
 
 
         /***/
-        function getDescripcionTipoSolicitud($nroSolicitud)
+        public function getDescripcionTipoSolicitud($nroSolicitud)
         {
-            $findModel = $this->find()->where('nro_solicitud =:nro_solicitud',
+            $findModel = SolicitudesContribuyente::find()->where('nro_solicitud =:nro_solicitud',
                                                                     [':nro_solicitud' => $nroSolicitud])
                                                          ->joinWith('tipoSolicitud')
                                                          ->one();
