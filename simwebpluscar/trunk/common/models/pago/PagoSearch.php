@@ -520,12 +520,12 @@
 		 */
 		public function getPagoInmuebleEspecifico($idImpuesto)
 		{
-			self::setImpuesto($idImpuesto);
+			self::setIdImpuesto($idImpuesto);
 			self::setImpuesto(2);
 			$model = self::getModelPagoObjetoImpositivo('>');	// Periodos mayores a cero.
 			$pagos = $model->joinWith('exigibilidad E')
 			               ->joinWith('impuestos I')
-			               ->asArra()
+			               ->asArray()
 			               ->all();
 			if ( count($pagos) > 0 ) {
 				return $pagos;
@@ -545,12 +545,12 @@
 		 */
 		public function getPagoAseoEspecifico($idImpuesto)
 		{
-			self::setImpuesto($idImpuesto);
+			self::setIdImpuesto($idImpuesto);
 			self::setImpuesto(12);
 			$model = self::getModelPagoObjetoImpositivo('>');	// Periodos mayores a cero.
 			$pagos = $model->joinWith('exigibilidad E')
 			               ->joinWith('impuestos I')
-			               ->asArra()
+			               ->asArray()
 			               ->all();
 			if ( count($pagos) > 0 ) {
 				return $pagos;
@@ -570,13 +570,14 @@
 		 */
 		public function getPagoVehiculoEspecifico($idImpuesto)
 		{
-			self::setImpuesto($idImpuesto);
+			self::setIdImpuesto($idImpuesto);
 			self::setImpuesto(3);
 			$model = self::getModelPagoObjetoImpositivo('>');	// Periodos mayores a cero.
 			$pagos = $model->joinWith('exigibilidad E')
 			               ->joinWith('impuestos I')
-			               ->asArra()
+			               ->asArray()
 			               ->all();
+
 			if ( count($pagos) > 0 ) {
 				return $pagos;
 			}
