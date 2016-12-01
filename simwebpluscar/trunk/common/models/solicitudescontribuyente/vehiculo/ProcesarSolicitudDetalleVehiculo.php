@@ -51,7 +51,7 @@
 
     use Yii;
     use common\models\solicitudescontribuyente\vehiculo\ProcesarInscripcionVehiculo;
-   
+
 
 
 
@@ -94,10 +94,10 @@
         {
             $this->_model = $model;
             $this->_evento = $evento;
-            
+
             $this->_conn = $conn;
             $this->_conexion = $conexion;
-           
+
         }
 
 
@@ -109,10 +109,10 @@
         public function procesarSolicitudPorTipo()
         {
             //die(var_dump($this->_model));
-          
+
             $result = false;
             if ( isset($this->_model) && $this->_model !== null ) {
-             
+
                 if ( $this->_model->tipo_solicitud == 32 ) {
 
                     $procesar = New ProcesarInscripcionVehiculo($this->_model,
@@ -190,6 +190,15 @@
 
                 } elseif ( $this->_model->tipo_solicitud == 31 ) {
 
+
+                } elseif ( $this->_model->tipo_solicitud == 83 ) {
+
+                    $procesar = New ProcesarSolicitudSolvenciaVehiculo($this->_model,
+                                                                       $this->_evento,
+                                                                       $this->_conn,
+                                                                       $this->_conexion);
+
+                    $result = $procesar->procesarSolicitud();
                 }
 
             }
