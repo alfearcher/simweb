@@ -116,6 +116,7 @@
 						$historicoSearch->setIdImpuesto($idImpuesto);
 
 						$model = $historicoSearch->findUltimoHistoricoAnoActual();
+die(var_dump($model));
 						if ( count($model) > 0 ) {
 							$_SESSION['id_historico'] = $model['id_historico'];
 							$_SESSION['nro_control'] = $model['nro_control'];
