@@ -79,7 +79,7 @@
 			$this->_montoCalculado = 0;
 			$this->_añoImpositivo = $añoImpositivo;
 			$this->_datosInmueble = $datosInmueble;
-		}      
+		}       
 
 
 

@@ -210,7 +210,7 @@
             if ( $modelCambioPropietarioV !== null ) {
                 if ( $modelCambioPropietarioV['id_contribuyente'] == $this->_model->id_contribuyente ) {
                     $result = self::updateSolicitudCambioPopietarioVendedor($modelCambioPropietarioV);
-                    // if ( $result ) {
+                    // if ( $result )  {
                     //     $result = self::updateContribuyente($modelInscripcion);
                     // }
                 } else {

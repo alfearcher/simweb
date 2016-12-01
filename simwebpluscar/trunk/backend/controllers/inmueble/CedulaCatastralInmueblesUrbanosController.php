@@ -204,9 +204,9 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                                                             'director'=> Yii::$app->oficina->getDirector(),
                                                             'nombreCargo' => Yii::$app->oficina->getNombreCargo(),
                                                             'barcode' => $barcode,
-                                    ]);    
+                                    ]);         
 
-
+ 
 
             // Nombre del archivo.
             $nombrePDF = 'CC-' . $_SESSION['idContribuyente'] . '-' . $_SESSION['datos']['id_impuesto'];
