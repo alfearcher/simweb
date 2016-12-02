@@ -148,6 +148,9 @@
 															'caption' => $caption,
 															'subCaption' => $subCaption,
 						]);
+				} else {
+					// No tiene inmuebles activos.
+					$this->redirect(['error-operacion', 'cod' => 509]);
 				}
 
 
