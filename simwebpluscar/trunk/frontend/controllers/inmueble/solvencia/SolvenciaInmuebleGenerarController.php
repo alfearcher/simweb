@@ -106,13 +106,13 @@
 				}
 
 				$searchSolvencia = New SolvenciaInmuebleSearch($idContribuyente);
-				$provider = $searchSolvencia->getDataProviderVehiculo();
+				$provider = $searchSolvencia->getDataProviderInmueble();
 
 				if ( isset($postData['id']) ) {
 					if ( $idContribuyente == $postData['id_contribuyente'] ) {
 						// Buscar el historico de este inmueble.
 						$idImpuesto = $postData['id'];
-						$historicoSearch = New HistoricoSolvenciaSearch($idContribuyente, 3);
+						$historicoSearch = New HistoricoSolvenciaSearch($idContribuyente, 2);
 						$historicoSearch->setIdImpuesto($idImpuesto);
 
 						$model = $historicoSearch->findUltimoHistoricoAnoActual();
@@ -128,7 +128,7 @@
 										]);
 						} else {
 							// No presenta historico de solvencias que mostrar.
-							return $this->redirect(['error-operacion', 'cod' => 507]);
+							return $this->redirect(['error-operacion', 'cod' => 510]);
 						}
 					}
 
