@@ -22,13 +22,13 @@
  */
 
  /**
- *  @file ProcesarSolicitudSolvenciaActividadEconomica.php
+ *  @file ProcesarSolicitudSolvenciaVehiculo.php
  *
  *  @author Jose Rafael Perez Teran
  *
  *  @date 22/11/2016
  *
- *  @class ProcesarSolicitudSolvenciaActividadEconomica
+ *  @class ProcesarSolicitudSolvenciaVehiculo
  *  @brief
  *
  *
