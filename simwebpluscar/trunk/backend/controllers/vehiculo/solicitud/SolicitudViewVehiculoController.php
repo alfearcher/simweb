@@ -55,6 +55,7 @@
 	use yii\web\NotFoundHttpException;
 	use frontend\models\vehiculo\solicitudes\SlVehiculos;
 	use frontend\models\vehiculo\solicitudes\SlVehiculosForm;
+	use backend\models\vehiculo\solvencia\SolvenciaVehiculoSearch;
 	// use common\conexion\ConexionController;
 	use backend\controllers\MenuController;
 	use backend\models\vehiculo\VehiculoSearch;
@@ -131,6 +132,11 @@
 
 				} elseif ( $this->model->tipo_solicitud == 12 ) {
 
+
+				} elseif ( $this->model->tipo_solicitud == 83 ) {
+
+					return self::actionMostrarSolicitudSolvenciaVehiculo();
+
 				}
 			}
 
@@ -155,7 +161,7 @@
 		 * 	- Esquema de esta vista:
 		 *  	* Nombre del campo : Valor del campo
 		 * nivel de aprobacion 3: Muestra inhabilitado los datos suministrados previamente y habilita
-		 * aquellos campos que no fueron cargados inicialmente.  
+		 * aquellos campos que no fueron cargados inicialmente.
 		 */
 		private function actionMostarSolicitudInscripcionVehiculo()
 		{
@@ -194,7 +200,7 @@
 		 * 	- Esquema de esta vista:
 		 *  	* Nombre del campo : Valor del campo
 		 * nivel de aprobacion 3: Muestra inhabilitado los datos suministrados previamente y habilita
-		 * aquellos campos que no fueron cargados inicialmente.  
+		 * aquellos campos que no fueron cargados inicialmente.
 		 */
 		private function actionMostarSolicitudCambioPropietarioVendedorVehiculo()
 		{
@@ -234,7 +240,7 @@
 		 * 	- Esquema de esta vista:
 		 *  	* Nombre del campo : Valor del campo
 		 * nivel de aprobacion 3: Muestra inhabilitado los datos suministrados previamente y habilita
-		 * aquellos campos que no fueron cargados inicialmente.  
+		 * aquellos campos que no fueron cargados inicialmente.
 		 */
 		private function actionMostarSolicitudCambioPropietarioCompradorVehiculo()
 		{
@@ -274,7 +280,7 @@
 		 * 	- Esquema de esta vista:
 		 *  	* Nombre del campo : Valor del campo
 		 * nivel de aprobacion 3: Muestra inhabilitado los datos suministrados previamente y habilita
-		 * aquellos campos que no fueron cargados inicialmente.  
+		 * aquellos campos que no fueron cargados inicialmente.
 		 */
 		private function actionMostarSolicitudCambioPlacaVehiculo()
 		{
@@ -312,7 +318,7 @@
 		 * 	- Esquema de esta vista:
 		 *  	* Nombre del campo : Valor del campo
 		 * nivel de aprobacion 3: Muestra inhabilitado los datos suministrados previamente y habilita
-		 * aquellos campos que no fueron cargados inicialmente.  
+		 * aquellos campos que no fueron cargados inicialmente.
 		 */
 		private function actionMostrarDesincorporacionVehiculo()
 		{
@@ -322,7 +328,7 @@
 					$model = $modelSearch->findSolicitudDesincorporacionVehiculo($this->model->nro_solicitud);
 
 					$search = new VehiculoSearch();
-					
+
 
 					return $this->render('@backend/views/vehiculo/solicitudes/desincorporacion/view-solicitud-desincorporacion-vehiculo', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
@@ -334,6 +340,9 @@
 
 			return false;
 		}
+
+
+
 
 			/**
 		 * Metodo particular que se encarga de buscar los datos de la solicitud particular sobre
@@ -351,7 +360,7 @@
 		 * 	- Esquema de esta vista:
 		 *  	* Nombre del campo : Valor del campo
 		 * nivel de aprobacion 3: Muestra inhabilitado los datos suministrados previamente y habilita
-		 * aquellos campos que no fueron cargados inicialmente.  
+		 * aquellos campos que no fueron cargados inicialmente.
 		 */
 		private function actionMostrarActualizarDatosVehiculo()
 		{
@@ -373,7 +382,9 @@
 			return false;
 		}
 
-			/**
+
+
+		/**
 		 * Metodo particular que se encarga de buscar los datos de la solicitud particular sobre
 		 * "Cambiar Calcomania por Daño o Extravio", y de renderizar una vista del detalle de la solicitud
 		 * Se utiliza un parametro adicional "nivel de aprobacion", este determinara un nivel mas
@@ -389,7 +400,7 @@
 		 * 	- Esquema de esta vista:
 		 *  	* Nombre del campo : Valor del campo
 		 * nivel de aprobacion 3: Muestra inhabilitado los datos suministrados previamente y habilita
-		 * aquellos campos que no fueron cargados inicialmente.  
+		 * aquellos campos que no fueron cargados inicialmente.
 		 */
 		private function actionMostrarSolicitudReposicionCalcomaniaExtravio()
 		{
@@ -416,7 +427,7 @@
 		{
 			$query = New Query();
 
-		
+
 
 			$model = $query->select('*')
 						 ->from('vehiculos')
@@ -424,11 +435,11 @@
 					     ->Join('INNER JOIN', 'contribuyentes', 'contribuyentes.id_contribuyente = sl_cambios_propietarios.id_comprador')
 					     ->where(['id_vehiculo' => $idImpuesto])
 					     ->andWhere(['contribuyentes.id_contribuyente' => $idComprador])
-					     
+
 					     ->all();
 
 			return $model;
-										
+
 		}
 
 
@@ -438,7 +449,7 @@
 			//die('llegue');
 			$query = New Query();
 
-		
+
 
 			$model = $query->select('*')
 						 ->from('vehiculos')
@@ -446,14 +457,71 @@
 					     ->Join('INNER JOIN', 'contribuyentes', 'contribuyentes.id_contribuyente = sl_cambios_propietarios.id_propietario')
 					     ->where(['id_vehiculo' => $idImpuesto])
 					     ->andWhere(['contribuyentes.id_contribuyente' => $idVendedor])
-					     
+
 					     ->all();
 
 			return $model;
-										
+
 		}
 
 
 
+
+		/**
+		 * Metodo particular que se encarga de buscar los datos de la solicitud particular sobre
+		 * "Solvencia de Vehiculo", y de renderizar una vista del detalle de la solicitud
+		 * Se utiliza un parametro adicional "nivel de aprobacion", este determinara un nivel mas
+		 * determinante de la vista.
+		 * El nivel de aprobacion 3 renderizara un formulario con los datos originales de la solicitud
+		 * inhabilitados y solo permitira la edicion de los campos que no fueron cargados en dicha
+		 * solicitud, esto con la intencion de que el funcionario pueda complementar dicha informacion.
+		 * @return View Retorna un vista con la informacion de la solicitud sino encuentra dicha
+		 * informacion retornara false.
+		 * ---
+		 * nivel de aprobacion 1: No aplica.
+		 * nivel de aprobacion 2: la vista no permite la edicion de los campos.
+		 * 	- Esquema de esta vista:
+		 *  	* Nombre del campo : Valor del campo
+		 * nivel de aprobacion 3: Muestra inhabilitado los datos suministrados previamente y habilita
+		 * aquellos campos que no fueron cargados inicialmente.
+		 */
+		private function actionMostrarSolicitudSolvenciaVehiculo()
+		{
+			if ( $this->model->nivel_aprobacion == 2 ) {
+				$modelSearch = New SolvenciaVehiculoSearch($this->model->id_contribuyente);
+				$modelSolvencia = $modelSearch->findSolicitudSolvencia($this->model->nro_solicitud);
+
+				$dataProvider = $modelSearch->getDataProviderSolicitud($this->model->nro_solicitud);
+				$modelSolvencia = $modelSolvencia->joinWith('estatusSolicitud E', true)
+												 ->joinWith('vehiculo V1', true, 'INNER JOIN');
+
+				$tipoSolicitud = $modelSearch->getDescripcionTipoSolicitud($this->model->nro_solicitud);
+
+				$modelSolvencia = $modelSolvencia->all();
+				if ( isset($modelSolvencia) ) {
+					$ultimoPago = $modelSearch->getDescripcionUltimoPago();
+
+					$lapso = explode('-', $ultimoPago);
+					$solvente = 'SOLVENTE';	//Aqui se coloca no solvente.
+					if ( $modelSearch->getEstaSolvente() ) {
+						$solvente = 'SOLVENTE';
+					}
+
+					return $this->render('@backend/views/vehiculo/solvencia/view-solicitud', [
+													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
+													'model' => $modelSolvencia,
+													'tipoSolicitud' => $tipoSolicitud,
+													'lapso' => $lapso,
+													'solvente' => $solvente,
+
+						]);
+				}
+			}
+
+			return false;
+		}
+
+
 	}
+
 ?>
