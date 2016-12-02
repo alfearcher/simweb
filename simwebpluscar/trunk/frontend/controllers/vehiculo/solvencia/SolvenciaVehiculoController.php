@@ -456,7 +456,7 @@
 				}
 
 				$modelSolicitud->id_contribuyente = $idContribuyente;
-				$modelSolicitud->id_impuesto = 0;
+				$modelSolicitud->id_impuesto = $model->id_impuesto;
 				$modelSolicitud->usuario = $user;
 				$modelSolicitud->fecha_hora_creacion = date('Y-m-d H:i:s');
 				$modelSolicitud->inactivo = 0;
