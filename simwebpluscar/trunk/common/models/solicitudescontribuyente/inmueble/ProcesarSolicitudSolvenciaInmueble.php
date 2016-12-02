@@ -248,7 +248,7 @@
             $cancel = false;            // Controla si el proceso se debe cancelar.
 
             // Se crea la instancia del modelo que contiene los campos que seran actualizados.
-            $model = New SolvenciaVehiculoForm();
+            $model = New SolvenciaInmuebleForm();
             $tableName = $model->tableName();
 
             // Se obtienen los campos que seran actualizados en la entidad "sl-".

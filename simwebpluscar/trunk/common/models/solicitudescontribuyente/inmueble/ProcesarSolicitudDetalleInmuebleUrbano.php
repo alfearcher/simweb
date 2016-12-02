@@ -58,9 +58,10 @@
     use common\models\solicitudescontribuyente\inmueble\ProcesarDesintegracionInmuebleUrbano;
     use common\models\solicitudescontribuyente\inmueble\ProcesarCambioPropietarioVendedorInmuebleUrbano;
     use common\models\solicitudescontribuyente\inmueble\ProcesarCambioPropietarioCompradorInmuebleUrbano;
+    use common\models\solicitudescontribuyente\inmueble\ProcesarSolicitudSolvenciaInmueble;
 
 
- 
+
     /***/
     class ProcesarSolicitudDetalleInmuebleUrbano
     {
@@ -69,7 +70,7 @@
          * @var Active Record.
          */
         private $_model;
- 
+
         private $_conn;
         private $_conexion;
 
@@ -100,7 +101,7 @@
         {
             $this->_model = $model;
             $this->_evento = $evento;
-            
+
             $this->_conn = $conn;
             $this->_conexion = $conexion;
         }
@@ -112,7 +113,7 @@
          * @return Boolean Retorna un true o false.
          */
         public function procesarSolicitudPorTipo()
-        {  
+        {
             $result = false;
             if ( isset($this->_model) && $this->_model !== null ) {
                 if ( $this->_model->tipo_solicitud == 20 ) {
@@ -141,7 +142,7 @@
                                                                           $this->_evento,
                                                                           $this->_conn,
                                                                           $this->_conexion);
-                    $result = $procesar->procesarSolicitud(); 
+                    $result = $procesar->procesarSolicitud();
 
                 } elseif ( $this->_model->tipo_solicitud == 26 ) {
                     //Cambio Propietario Vendedor
@@ -157,7 +158,7 @@
                                                                           $this->_evento,
                                                                           $this->_conn,
                                                                           $this->_conexion);
-                    $result = $procesar->procesarSolicitud();  
+                    $result = $procesar->procesarSolicitud();
 
                 } elseif ( $this->_model->tipo_solicitud == 28 ) {
                     //Desintegracion
@@ -165,7 +166,7 @@
                                                                           $this->_evento,
                                                                           $this->_conn,
                                                                           $this->_conexion);
-                    $result = $procesar->procesarSolicitud();   
+                    $result = $procesar->procesarSolicitud();
 
                 } elseif ( $this->_model->tipo_solicitud == 29 ) {
                     //Cambio Propiedad Horizontal
@@ -181,8 +182,8 @@
                                                                           $this->_evento,
                                                                           $this->_conn,
                                                                           $this->_conexion);
-                    $result = $procesar->procesarSolicitud(); 
- 
+                    $result = $procesar->procesarSolicitud();
+
                 } elseif ( $this->_model->tipo_solicitud == 31 ) {
                     //Modificar Avaluo
 
@@ -192,7 +193,7 @@
                                                                           $this->_evento,
                                                                           $this->_conn,
                                                                           $this->_conexion);
-                    $result = $procesar->procesarSolicitud();  
+                    $result = $procesar->procesarSolicitud();
 
                 } elseif ( $this->_model->tipo_solicitud == 67 ) {
                     //Cambio Propietario Comprador
@@ -200,12 +201,20 @@
                                                                           $this->_evento,
                                                                           $this->_conn,
                                                                           $this->_conexion);
-                    $result = $procesar->procesarSolicitud();  
+                    $result = $procesar->procesarSolicitud();
+
+                } elseif ( $this->_model->tipo_solicitud == 82 ) {
+
+                    $procesar = New ProcesarSolicitudSolvenciaInmueble($this->_model,
+                                                                       $this->_evento,
+                                                                       $this->_conn,
+                                                                       $this->_conexion);
+                    $result = $procesar->procesarSolicitud();
 
                 }
 
-            } 
-            return $result;     
+            }
+            return $result;
         }
 
 
