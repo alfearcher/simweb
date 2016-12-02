@@ -151,7 +151,7 @@
 
 				$mensajes = [];
 				$searchSolvencia = New SolvenciaVehiculoSearch($idContribuyente);
-				//$mensajes = $searchSolvencia->validarEvento(date('Y'));
+				$mensajes = $searchSolvencia->validarEvento(date('Y'));
 
 				if ( count($mensajes) == 0 ) {
 					$modelParametro = New ParametroSolicitud(self::CONFIG);

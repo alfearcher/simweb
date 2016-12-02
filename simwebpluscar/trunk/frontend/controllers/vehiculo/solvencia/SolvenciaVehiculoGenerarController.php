@@ -148,6 +148,9 @@
 															'caption' => $caption,
 															'subCaption' => $subCaption,
 						]);
+				} else {
+					// No tiene vehiculos activos que mostrar.
+		  			$this->redirect(['error-operacion', 'cod' => 505]);
 				}
 
 
