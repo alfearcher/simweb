@@ -270,7 +270,6 @@
 						// Guardar la confirmacion
 						$chkIdImpuesto = $postData['chkIdImpuesto'];
 						foreach ( $chkIdImpuesto as $key => $value ) {
-							// $search = New SolvenciaVehiculoSearch($idContribuyente, $value);
 
 							$models[$key] = New SolvenciaInmuebleForm();
 							$models[$key]->load($postData);

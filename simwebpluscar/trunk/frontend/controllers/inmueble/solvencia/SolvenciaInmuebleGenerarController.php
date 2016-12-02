@@ -21,14 +21,14 @@
  */
 
  /**
- *	@file SolvenciaVehiculoGenerarController.php
+ *	@file SolvenciaInmuebleGenerarController.php
  *
  *	@author Jose Rafael Perez Teran
  *
  *	@date 20-11-2016
  *
- *  @class SolvenciaVehiculoGenerarController
- *	@brief Clase SolvenciaVehiculoGenerarController del lado del contribuyente frontend.
+ *  @class SolvenciaInmuebleGenerarController
+ *	@brief Clase SolvenciaInmuebleGenerarController del lado del contribuyente frontend.
  *
  *
  *	@property
@@ -42,7 +42,7 @@
  */
 
 
- 	namespace frontend\controllers\vehiculo\solvencia;
+ 	namespace frontend\controllers\inmueble\solvencia;
 
 
  	use Yii;
@@ -60,9 +60,9 @@
 	use common\models\numerocontrol\NumeroControlSearch;
 	use backend\models\aaee\historico\solvencia\HistoricoSolvenciaSearch;
 	use common\models\configuracion\solicitud\ParametroSolicitud;
-	use backend\models\vehiculo\solvencia\SolvenciaVehiculo;
+	use backend\models\inmueble\solvencia\SolvenciaInmueble;
 	use common\controllers\pdf\solvencia\SolvenciaController;
-	use backend\models\vehiculo\solvencia\SolvenciaVehiculoSearch;
+	use backend\models\inmueble\solvencia\SolvenciaInmuebleSearch;
 
 
 
@@ -73,7 +73,7 @@
 	 * Clase principal que permite mostrar la ultima solvencia generada segun el historico
 	 * y permite a traves de una vista descargar dicha solvencia.
 	 */
-	class SolvenciaVehiculoGenerarController extends Controller
+	class SolvenciaInmuebleGenerarController extends Controller
 	{
 		public $layout = 'layout-main';				//	Layout principal del formulario
 
@@ -105,12 +105,12 @@
 					}
 				}
 
-				$searchSolvencia = New SolvenciaVehiculoSearch($idContribuyente);
+				$searchSolvencia = New SolvenciaInmuebleSearch($idContribuyente);
 				$provider = $searchSolvencia->getDataProviderVehiculo();
 
 				if ( isset($postData['id']) ) {
 					if ( $idContribuyente == $postData['id_contribuyente'] ) {
-						// Buscar el historico de este vehiculo.
+						// Buscar el historico de este inmueble.
 						$idImpuesto = $postData['id'];
 						$historicoSearch = New HistoricoSolvenciaSearch($idContribuyente, 3);
 						$historicoSearch->setIdImpuesto($idImpuesto);
@@ -122,7 +122,7 @@
 							$_SESSION['nro_control'] = $model['nro_control'];
 							$_SESSION['id_impuesto'] = $model['id_impuesto'];
 
-							return $this->render('/vehiculo/solvencia/historico/historico-solvencia',[
+							return $this->render('/inmueble/solvencia/historico/historico-solvencia',[
 																		'model' => $model,
 																		'searchSolvencia' => $searchSolvencia,
 										]);
@@ -141,9 +141,9 @@
 				}
 
 				$caption = Yii::t('frontend', 'Descargar Solvencia');
-				$subCaption = Yii::t('frontend', 'Listado de Vehiculo(s) Existente(s)');
+				$subCaption = Yii::t('frontend', 'Listado de Inmueble(s) Existente(s)');
 				if ( $provider !== null ) {
-					return $this->render('/vehiculo/solvencia/historico/listado-vehiculo-existentes',[
+					return $this->render('/inmueble/solvencia/historico/listado-inmueble-existentes',[
 															'dataProvider' => $provider,
 															'caption' => $caption,
 															'subCaption' => $subCaption,
@@ -177,7 +177,7 @@
 					$nroControl = $_SESSION['nro_control'];
 					$idImpuesto = $_SESSION['id_impuesto'];
 					$solvencia = New SolvenciaController($idHistorico, $idContribuyente, $nroControl);
-					$solvencia->actionGenerarSolvenciaVehiculoPdf($idImpuesto);
+					$solvencia->actionGenerarSolvenciaInmueblePdf($idImpuesto);
 
 				} else {
 					// El numero de control de la request no coincide con el de la session
