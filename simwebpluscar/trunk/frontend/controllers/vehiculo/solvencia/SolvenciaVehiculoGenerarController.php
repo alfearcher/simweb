@@ -92,7 +92,7 @@
 		{
 			// Se verifica que el contribuyente haya iniciado una session.
 
-			self::actionAnularSession(['begin', 'nro_control', 'id_historico']);
+			self::actionAnularSession(['begin', 'nro_control', 'id_historico', 'id_impuesto']);
 			if ( $_SESSION['idContribuyente']) {
 				$idContribuyente = $_SESSION['idContribuyente'];
 
@@ -296,6 +296,7 @@
 						'id_historico',
 						'nro_control',
 						'begin',
+						'id_impuesto',
 					];
 		}
 
