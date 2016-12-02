@@ -502,7 +502,7 @@
 					$ultimoPago = $modelSearch->getDescripcionUltimoPago();
 
 					$lapso = explode('-', $ultimoPago);
-					$solvente = 'SOLVENTE';	//Aqui se coloca no solvente.
+					$solvente = 'NO SOLVENTE';
 					if ( $modelSearch->getEstaSolvente() ) {
 						$solvente = 'SOLVENTE';
 					}
