@@ -685,8 +685,6 @@
 					$findModel = self::getModelGeneralInmueble();
 					$model = $findModel->andWhere('id_impuesto =:id_impuesto',
 														[':id_impuesto' => $this->_id_impuesto])
-									   ->andWhere('impuesto =:impuesto',
-									   					[':impuesto' => $this->_impuesto])
 									   ->andWhere('trimestre '. $tipoPeriodo .':trimestre',
 									   					[':trimestre' => 0])
 									   ->orderBy([
