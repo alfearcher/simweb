@@ -90,6 +90,7 @@ return [
 	'505' => [Yii::t('frontend', 'No presenta vehiculos registrados activos'), 'warning', 'fa fa-info-circle'],
 	'507' => [Yii::t('frontend', 'El vehiculo no presenta historico de solvencias'), 'warning', 'fa fa-info-circle'],
 	'509' => [Yii::t('frontend', 'No presenta inmuebles registrados activos'), 'warning', 'fa fa-info-circle'],
+	'510' => [Yii::t('frontend', 'El inmueble no presenta historico de solvencias'), 'warning', 'fa fa-info-circle'],
 ]
 
 
