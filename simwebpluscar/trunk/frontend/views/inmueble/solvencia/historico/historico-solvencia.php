@@ -298,7 +298,7 @@
 						</div>
 
 						<div class="row">
-							<div class="col-sm-4" style="width: 20%;padding: 0px;padding-left: 5px;">
+							<div class="col-sm-4" style="width: 80%;padding: 0px;padding-left: 5px;">
 								<div class="domicilio" style="margin-left: 0px;">
 									<?= $form->field($model, 'domicilio')->textInput([
 																				'id' => 'id-domicilio',
