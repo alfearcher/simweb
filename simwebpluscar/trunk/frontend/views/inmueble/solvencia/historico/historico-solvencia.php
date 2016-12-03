@@ -296,6 +296,21 @@
 							</div>
 
 						</div>
+
+						<div class="row">
+							<div class="col-sm-4" style="width: 20%;padding: 0px;padding-left: 5px;padding-top: 10px;">
+								<div class="domicilio" style="margin-left: 0px;">
+									<?= $form->field($model, 'domicilio')->textInput([
+																				'id' => 'id-domicilio',
+																				'style' => 'width:100%;background-color:white;',
+																				'value' => isset($datosSolvencia['domicilio']) ? $datosSolvencia['liquidacion'] : 0,
+																				'readOnly' => true,
+
+																		])->label('Direccion') ?>
+								</div>
+							</div>
+						</div>
+
 					</div>
 
 					<div class="row" style="border-bottom: 2px solid #ccc;padding: 0px;width: 103%;margin-left: -30px;">
