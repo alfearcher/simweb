@@ -27,7 +27,7 @@
  *
  *  @date 21-11-2016
  *
- *  @view historico-solvencia.php
+ *  @view historico-solvencia de inmueble
  *
  *
  *  @property
@@ -279,7 +279,7 @@
 																				'value' => isset($datosSolvencia['catastro']) ? $datosSolvencia['placa'] : 0,
 																				'readOnly' => true,
 
-																		])->label('Nro. Placa') ?>
+																		])->label('Nro. Catastro') ?>
 								</div>
 							</div>
 
