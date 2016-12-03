@@ -306,7 +306,7 @@
 																				'value' => isset($datosSolvencia['domicilio']) ? $datosSolvencia['domicilio'] : 0,
 																				'readOnly' => true,
 
-																		])->label('Direccion') ?>
+																		])->label('Direccion del Inmueble') ?>
 								</div>
 							</div>
 						</div>
