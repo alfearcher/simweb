@@ -123,10 +123,10 @@
 						    					'label' => Yii::t('frontend', 'Fecha Vcto'),
 						    					'value' => $model['fecha_vcto'],
 						    				],
-						    				// [
-						    				// 	'label' => Yii::t('frontend', 'Ultimo pago cuando se realizo la solicitud'),
-						    				// 	'value' => $searchSolicitud->ultimo_pago,
-						    				// ],
+						    				[
+						    					'label' => Yii::t('frontend', 'Direccion del Inmueble'),
+						    					'value' => $model['inmueble']['direccion'],
+						    				],
 						    				// [
 						    				// 	'label' => Yii::t('frontend', 'condicion'),
 						    				// 	'value' => $model['estatusSolicitud']['descripcion'],
