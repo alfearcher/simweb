@@ -303,7 +303,7 @@
 									<?= $form->field($model, 'domicilio')->textInput([
 																				'id' => 'id-domicilio',
 																				'style' => 'width:100%;background-color:white;',
-																				'value' => isset($datosSolvencia['domicilio']) ? $datosSolvencia['liquidacion'] : 0,
+																				'value' => isset($datosSolvencia['domicilio']) ? $datosSolvencia['domicilio'] : 0,
 																				'readOnly' => true,
 
 																		])->label('Direccion') ?>
