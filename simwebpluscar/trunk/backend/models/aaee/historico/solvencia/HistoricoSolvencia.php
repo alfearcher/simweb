@@ -45,6 +45,7 @@
  	use Yii;
 	use yii\db\ActiveRecord;
 	use backend\models\impuesto\Impuesto;
+	use backend\models\inmueble\InmueblesConsulta;
 
 	/**
 	* Clase
@@ -80,6 +81,16 @@
 		public function getImpuestos()
 		{
 			return $this->hasOne(Impuesto::className(),['impuesto' => 'impuesto']);
+		}
+
+
+		/**
+		 * Relacion con la entidad "inmuebles"
+		 * @return active record
+		 */
+		public function getInmueble()
+		{
+			return $this->hasOne(InmueblesConsulta::className(),['impuesto' => 'impuesto', 'id_impuesto' => 'id_impuesto']);
 		}
 
 
