@@ -90,7 +90,8 @@
 		 */
 		public function getInmueble()
 		{
-			return $this->hasOne(InmueblesConsulta::className(),['impuesto' => 'impuesto', 'id_impuesto' => 'id_impuesto']);
+			return $this->hasOne(InmueblesConsulta::className(),['id_impuesto' => 'id_impuesto'])
+			            ->andWhere('impuesto =:impuesto',[':impuesto' => 2]);
 		}
 
 
