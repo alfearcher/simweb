@@ -46,6 +46,7 @@
 	use yii\db\ActiveRecord;
 	use backend\models\impuesto\Impuesto;
 	use backend\models\inmueble\InmueblesConsulta;
+	use backend\models\vehiculo\VehiculosForm;
 
 	/**
 	* Clase
@@ -90,8 +91,18 @@
 		 */
 		public function getInmueble()
 		{
-			return $this->hasOne(InmueblesConsulta::className(),['id_impuesto' => 'id_impuesto'])
-			            ->andWhere('impuesto =:impuesto',[':impuesto' => 2]);
+			return $this->hasOne(InmueblesConsulta::className(),['id_impuesto' => 'id_impuesto']);
+		}
+
+
+
+		/**
+		 * Relacion con la entidad "vehiculos"
+		 * @return active record
+		 */
+		public function getVehiculo()
+		{
+			return $this->hasOne(VehiculosForm::className(),['id_vehiculo' => 'id_impuesto']);
 		}
 
 
