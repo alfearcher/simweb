@@ -120,7 +120,7 @@
 			$idMetodo = 0;
 			$model = self::getDatosInmueble();
 
-			if ( $model != null ) {
+			if ( $model !== null ) {
 				$this->_datosInmueble = $model->toArray();
 
 				if ( count($this->_datosInmueble) > 0 ) {
