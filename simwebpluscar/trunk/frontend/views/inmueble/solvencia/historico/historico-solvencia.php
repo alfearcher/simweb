@@ -124,8 +124,12 @@
 						    					'value' => $model['fecha_vcto'],
 						    				],
 						    				[
-						    					'label' => Yii::t('frontend', 'Direccion del Inmueble'),
+						    					'label' => Yii::t('frontend', 'Direccion del Inmueble Actual'),
 						    					'value' => $model['inmueble']['direccion'],
+						    				],
+						    				[
+						    					'label' => Yii::t('frontend', 'Catastro del Inmueble Actual'),
+						    					'value' => $model['inmueble']['catastro'],
 						    				],
 						    				// [
 						    				// 	'label' => Yii::t('frontend', 'condicion'),
