@@ -194,7 +194,7 @@
             ];
     
            return $atributos[$evento];
-        } 
+        }   
 
 
 
