@@ -53,6 +53,7 @@
  	use yii\data\ActiveDataProvider;
  	use yii\data\ArrayDataProvider;
  	use backend\models\operacionbase\OperacionBase;
+ 	use common\models\presupuesto\codigopresupuesto\CodigosContables;
 
 	/**
 	* 	Clase que permite consultar informacion diversa sobre una planilla.
@@ -68,11 +69,11 @@
 
 		/**
 		 * Metodo constructor de la clase.
-		 * @param Long $planilla numero de planilla que se desea consultar.
+		 * @param integer $planilla numero de planilla que se desea consultar.
 		 */
 		public function __construct($planilla)
 		{
-			$this->_planilla = $planilla;
+			$this->_planilla = (int)$planilla;
 		}
 
 
@@ -202,6 +203,85 @@
 
 			return $result;
 		}
+
+
+
+		/**
+		 * Metodo que retorna el modelo general de consulta.
+		 * @return PagoDetalle retorna clase del tipo PagoDetalle.
+		 */
+		private function findPlanillaGeneralModel()
+		{
+			return $findMmodel = PagoDetalle::find()->alias('D')
+			                                        ->joinWith('pagos P', true, 'INNER JOIN')
+			                                        ->where('planilla =:planilla',
+			                                        			[':planilla' => $this->_planilla]);
+		}
+
+
+
+		/**
+		 * Metodo que retorna un modelo de
+		 * @return [type] [description]
+		 */
+		public function getDetallePlanilla()
+		{
+			$findModel = self::findPlanillaGeneralModel();
+
+			// Se determina el tipo de impuesto y tipo de periodo.
+			// Solo se trae un registro para determinar
+			$model = $findModel->joinWith('impuestos I', true, 'INNER JOIN')
+							   ->joinWith('exigibilidad E', true);
+
+			$result = $model->asArray()->all();
+
+			if ( $result[0]['trimestre'] > 0 ) {
+				if ( $result[0]['impuesto'] == 1 ) {
+
+					return $model;
+
+				} elseif ( $result[0]['impuesto'] == 2 || $result[0]['impuesto'] == 12 ) {
+
+					return $model = $model->joinWith('inmueble as O', true, 'INNER JOIN');
+
+				} elseif ( $result[0]['impuesto'] == 3 ) {
+
+					return $model = $model->joinWith('vehiculo as O', true, 'INNER JOIN');
+
+				}
+
+			} elseif ( $result[0]['trimestre'] == 0 ) {
+				if ( $result[0]['impuesto'] == 9 || $result[0]['impuesto'] == 10 || $result[0]['impuesto'] == 11 ) {
+
+					return $model = $model->joinWith('tasa O', true, 'INNER JOIN');
+
+				} else {
+
+					return $model;
+
+				}
+
+			}
+
+			return null;
+
+		}
+
+
+		/**
+		 * Metodo que realiza una consulta para determinar la informacion del codigo presupueatario
+		 * segun el identificador de la entidad "codigos-contables".
+		 * @param  integer $idCodigo identificador de la entodad "codigos-contables"
+		 * @return CodigosContables retorna un modelo con datos del tipo clase CodigosContables.
+		 */
+		public function getDatosCodigoPresupuesto($idCodigo)
+		{
+			$codigo = New CodigosContables();
+			$model = $codigo->findOne($idCodigo);
+
+			return $model;
+		}
+
 
 
 	}

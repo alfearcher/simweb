@@ -52,6 +52,7 @@
 	use backend\models\propaganda\Propaganda;
 	use backend\models\utilidad\exigibilidad\Exigibilidad;
 	use backend\models\tasa\Tasa;
+	use common\models\presupuesto\codigopresupuesto\CodigosContables;
 
 
 	/**
@@ -178,7 +179,30 @@
 										[
 											'id_impuesto' => 'id_impuesto',
 										 	'impuesto' => 'impuesto',
+										 	'ano_impositivo' => 'ano_impositivo',
 										]);
+		}
+
+
+
+
+		/***/
+		public function getCodigoContable($idImpuesto)
+		{
+
+die('kak');
+			$tasa = New Tasa;
+			$model = $tasa->find()->alias('T')
+			                      ->joinWith('codigoContable C', true, 'INNER JOIN')
+			                      ->where('id_impuesto =:id_impuesto',
+			                      				[':id_impuesto' => $idImpuesto])
+			                      ->one();
+die(var_dump($model));
+			return [
+				'codigo' => $model->codigoContable->codigo,
+				'descripcion' => $model->codigoContable->descripcion,
+			];
+
 		}
 
 	}
