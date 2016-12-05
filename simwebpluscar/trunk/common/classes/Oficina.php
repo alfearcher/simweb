@@ -54,7 +54,7 @@
  	class Oficina
  	{
 
- 		protected $nombre = 'Dirección de Rentas';
+ 		protected $nombre = 'Direccion de Hacienda Municipal';
  		protected $nombreCargo = 'Director(a) de Hacienda Municipal';
  		protected $director = 'Lcdo. Nombre Director Encargado';
 
