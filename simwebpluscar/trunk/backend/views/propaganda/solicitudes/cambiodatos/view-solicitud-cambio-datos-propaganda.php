@@ -111,9 +111,9 @@
 					            [
 					        'label' => 'Medio de Transporte',
 
+					        'value' => $model->descripcionMedioTransportePropaganda->descripcion, //$search->getDescripcionUsoVehiculo($model->uso_vehiculo),//function($model){
 
 
-					        'value' => $model->descripcionMedioTransportePropaganda->descripcion != null ? $model->descripcionMedioTransportePropaganda->descripcion : 'NO DISPONIBLE',
 
 					        ],
 
