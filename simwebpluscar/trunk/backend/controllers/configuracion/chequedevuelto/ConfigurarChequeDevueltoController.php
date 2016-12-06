@@ -298,7 +298,7 @@ class ConfigurarChequeDevueltoController extends Controller
                         $arrayDatosInactivacion3 = [    
                                                     'inactivo' => 1,
                                             
-                                                ];     
+                                                ];       
 
                     
                        

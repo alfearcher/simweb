@@ -206,7 +206,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                                                             'barcode' => $barcode,
                                     ]);         
 
-   
+     
 
             // Nombre del archivo.
             $nombrePDF = 'CC-' . $_SESSION['idContribuyente'] . '-' . $_SESSION['datos']['id_impuesto'];
