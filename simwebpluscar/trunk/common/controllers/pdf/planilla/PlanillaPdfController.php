@@ -190,7 +190,7 @@
 			$y = 122;
 			self::actionViewEncabezadoPrincipal($mpdf, $y);
 			$mpdf->Ln(10);
-			self::actionGetViewPrimerEncabezado($mpdf, $detallePlanilla);
+			self::actionGetViewPrimerEncabezado($mpdf, $detallePlanilla, $y);
 			self::actionGetSubTituloDetalle($mpdf, $detallePlanilla , $y);
 			self::actionGetViewSegundoDetalle($mpdf, $detallePlanilla, $detallePresupuesto, $y);
 			self::actionGetViewTercerDetalle($mpdf, $detallePlanilla, $y);
@@ -222,10 +222,12 @@
 		 * @param MPDF $mpdf instancia de la clase MPDF.
 		 * @param  array $detallePlanilla arreglo con los detalles de la planilla de liquidacion.
 		 * Posee entre otros datos, el impuesto, exigibilidad, etc.
+		 * @param  integer $y entero que permite variar la posicion vetrical de la opcion.
 		 * @return pdf retorna pdf de la vista superior de la planilla con la informacion indicada.
 		 */
-		private function actionGetViewPrimerEncabezado($mpdf, $detallePlanilla)
+		private function actionGetViewPrimerEncabezado($mpdf, $detallePlanilla, $y = 0)
 		{
+			$mpdf->SetY(35 + $y);
 			// Primeros datos de los detalles de la planilla.
 			// Esto es el encabezado inicial:
 			// Fecha Emision
@@ -260,7 +262,7 @@
 			// Nro Liquidacion
 			$mpdf->Cell(45, 5, $detallePlanilla[0]['pagos']['planilla'], 1, 0, 'C');
 			// Control
-			$control = 00000;
+			$control = '00000';
 			$mpdf->Cell(35, 5, $control, 1, 1, 'C');
 
 		}
@@ -337,12 +339,10 @@
 
 	       	$mpdf->Cell(125, 2, strtoupper($contribuyente), 0, 0, 'C');
 
-	       	//$mpdf->WriteText(120, 2, strtoupper($contribuyente));
-
 	       	// Datos de la Domicilio principal
-	       	$mpdf->Ln(2);
+	       	$mpdf->Ln(4);
 	       	$mpdf->Cell(60);
-			$mpdf->MultiCell(125, 2, strtoupper($this->_contribuyente->domicilio_fiscal), 0, 'J');
+			$mpdf->MultiCell(125, 2, strtoupper($this->_contribuyente->domicilio_fiscal), 0, 'C');
 			$mpdf->Cell(0, 0, '', 0, 1, 'C');
 
 			if ( $this->_contribuyente->tipo_naturaleza == 0 ) {
@@ -353,10 +353,7 @@
 
 			$labelCatastro = 'Catastro: ';
 
-	       	//$mpdf->Cell(55);
-			//$mpdf->Cell(128, 0, $labelCedulaRif . strtoupper($cedulaRif) . '    ' . $labelCatastro, 0, 1, 'C');
 			$mpdf->Text(100, 26 + $y, $labelCedulaRif . strtoupper($cedulaRif) . '    ' . $labelCatastro);
-			$mpdf->Ln(6);
 
 		}
 
@@ -386,7 +383,7 @@
 			$mpdf->Cell(-10);
 			$mpdf->SetFillColor(205, 205, 205);
 			$mpdf->Cell(195, 5, $titulo, 1, 1, 'C', true);
-			$mpdf->Rect(5, 51 + $y, 195, 5);
+
 		}
 
 
@@ -454,9 +451,8 @@
 			$mpdf->Cell(28, 5, number_format($sumaInteres, 2), 0, 0, 'C');
 			$mpdf->Cell(40, 5, number_format($subTotal, 2), 0, 1, 'C');
 
-			//$mpdf->Rect(5, 51 + $y, 195, 5);
+			$mpdf->Rect(5, 50 + $y, 195, 5);
 
-			//$mpdf->RoundedRect(5, 51 + $y, 195, 5, 0, FD);
 		}
 
 
@@ -535,7 +531,7 @@
 			$mpdf->MultiCell(195, 5, $detallePlanilla[0]['descripcion'], 0, 'J');
 
 			$mpdf->Cell(-10);
-			$mpdf->Rect(5, 66 + $y, 195, 5);
+			$mpdf->Rect(5, 65 + $y, 195, 5);
 
 
 		}
