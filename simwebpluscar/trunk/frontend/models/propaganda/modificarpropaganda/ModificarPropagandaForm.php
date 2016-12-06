@@ -103,7 +103,7 @@ class ModificarPropagandaForm extends Propaganda
 
             [['alto','ancho'],'required','when' => function($model) {
                                                                           return $model->base_calculo == 2;
-                                                                        }, 'whenClient' => "function (attribute, value) {
+                                                                        },'enableClientValidation' => false, 'whenClient' => "function (attribute, value) {
                                                                             return ($('#user-type').value == 2  );
                                                                         }"],
 
@@ -111,13 +111,13 @@ class ModificarPropagandaForm extends Propaganda
 
 
                                                                                 return $model->base_calculo == 12;
-                                                                            }, 'whenClient' => "function (attribute, value) {
+                                                                            },'enableClientValidation' => false, 'whenClient' => "function (attribute, value) {
                                                                                 return ($('#user-type').value == 12  );
                                                                             }"],
 
             [['unidad'],'required','when' => function($model) {
                                                                         return $model->base_calculo != 2 and $model->base_calculo != 12 ;
-                                                                      }, 'whenClient' => "function (attribute, value) {
+                                                                      }, 'enableClientValidation' => false,'whenClient' => "function (attribute, value) {
                                                                           return ($('#user-type').value != 2 and ($('#user-type').value != 12  );
                                                                       }"],
 
