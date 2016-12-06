@@ -104,7 +104,7 @@
 				$result = $model->asArray()->all();
 
 				$this->_contribuyente = ContribuyenteBase::findOne($result[0]['pagos']['id_contribuyente']);
-// die(var_dump($this->_contribuyente));
+
 				// Determinar tipo de periodo (periodo > 0 o peridoo = 0) y el tipo
 				// de impuesto para renderizar a la planilla pdf correspondiente.
 				if ( $result[0]['trimestre'] > 0 ) {
@@ -126,13 +126,19 @@
 						$codigo = $this->_searchPlanilla->getDatosCodigoPresupuesto($result[0]['tasa']['id_codigo']);
 						if ( count($codigo) > 0 ) {
 
-							return self::actionCrearPlanillaTasaPdf($result, $codigo->toArray());
+							self::actionCrearPlanillaTasaPdf($result, $codigo->toArray());
 
 						}
 
 					} else {
 
-						return $model;
+						// Informacion del codigo presupuestario de la tasa. Tipo modelo
+						$codigo = $this->_searchPlanilla->getDatosCodigoPresupuesto($result[0]['tasa']['id_codigo']);
+						if ( count($codigo) > 0 ) {
+
+							self::actionCrearPlanillaTasaPdf($result, $codigo->toArray());
+
+						}
 
 					}
 
@@ -146,46 +152,315 @@
 
 
 
+
 		/***/
 		public function actionCrearPlanillaTasaPdf($detallePlanilla, $detallePresupuesto = null)
 		{
+
+			$y = 0;
+
+			$mpdf = new mPDF;
+			$nombre = 'P' . $detallePlanilla[0]['pagos']['planilla'] . ' - ' . date('Y-m-d H:i:s') . '.pdf';
+
+			self::actionViewEncabezadoPrincipal($mpdf);
+
+			$mpdf->Ln(8);
+
+			self::actionGetViewPrimerEncabezado($mpdf, $detallePlanilla);
+			self::actionGetSubTituloDetalle($mpdf, $detallePlanilla);
+			self::actionGetViewSegundoDetalle($mpdf, $detallePlanilla, $detallePresupuesto);
+			self::actionGetViewTercerDetalle($mpdf, $detallePlanilla);
+
+			self::actionGetViewRafaga($mpdf);
+			self::actionGetViewInfoCuentaRecaudadoraPaginaWeb($mpdf);
+			self::actionGetViewCodigoValidador($mpdf);
+
+			self::actionGetViewInfoRestante($mpdf);
+
+
+			$mpdf->Ln(60);
+
+			$y = 122;
+			self::actionViewEncabezadoPrincipal($mpdf, $y);
+			$mpdf->Ln(12);
+			self::actionGetViewPrimerEncabezado($mpdf, $detallePlanilla);
+			self::actionGetSubTituloDetalle($mpdf, $detallePlanilla , $y);
+			self::actionGetViewSegundoDetalle($mpdf, $detallePlanilla, $detallePresupuesto, $y);
+			self::actionGetViewTercerDetalle($mpdf, $detallePlanilla, $y);
+
+			self::actionGetViewRafaga($mpdf, $y);
+			self::actionGetViewInfoCuentaRecaudadoraPaginaWeb($mpdf, $y);
+
+			self::actionGetViewCodigoValidador($mpdf, $y);
+			self::actionGetViewInfoRestante($mpdf, strtoupper(Yii::$app->oficina->getNombre()), $y);
+
+			$mpdf->Output($nombre, 'I');
+	       	exit;
+
+		}
+
+
+
+
+
+
+
+
+		/***/
+		public function actionCrearPlanillaTasaPdf_1($detallePlanilla, $detallePresupuesto = null)
+		{
+
+			$y = 0;
+
+			// Datos del Rif o Cedula del Contribuyente.
+			// $cedulaRif = ContribuyenteBase::getCedulaRifDescripcion(
+			// 									$this->_contribuyente->tipo_naturaleza,
+			//  									$this->_contribuyente->naturaleza,
+			//  									$this->_contribuyente->cedula,
+			//  									$this->_contribuyente->tipo);
+
+
 			$mpdf = new mPDF;
 			$nombre = 'prueba2.pdf';
 
-			// Logo de la Alcaldia.
-			$htmlLogo = $this->renderPartial('@common/views/plantilla-pdf/planilla/layout/layout-identificador-alcaldia-pdf',[
+			// // Logo de la Alcaldia.
+			// $htmlLogo = $this->renderPartial('@common/views/plantilla-pdf/planilla/layout/layout-identificador-alcaldia-pdf');
 
-            					]);
+			// // Los parametros siguientes se definen de la siguiente manera:
+			// // x, y, width, height.
+			// $mpdf->WriteFixedPosHTML($htmlLogo, 20, 8 + $y, 32, 32);
+
+			// // Informacion de la Oficina de Rentas
+			// // Los parametros sguientes son:
+			// // tipo de fuente, negrita o no, tamaño de la fuente.
+			// $mpdf->SetFont('Arial', '', 7);
+	  //      	$mpdf->Text(15, 28 + $y, strtoupper(Yii::$app->oficina->getNombre()));		// Coorenadas x, y.
+
+	  //      	// Informacion del RIF de la Alcaldia
+			// $mpdf->SetFont('Arial', '', 7);
+	  //      	$mpdf->Text(28, 31 + $y, Yii::$app->ente->getRif());
+
+	  //      	// Rectangulo angulo superior derecho
+	  //      	$mpdf->RoundedRect(72, 8, 130, 22 + $y, 3, D);
+
+
+			self::actionViewEncabezadoPrincipal($mpdf);
+
+	  //      	// Informacion que va adentro del rectangulo superior derecho.
+	  //      	$mpdf->SetFont('Arial', 'B', 7);
+	  //      	$mpdf->Text(109, 11 + $y, "INFORMACION GENERAL DEL CONTRIBUYENTE");
+
+	  //      	$contribuyente = ContribuyenteBase::getContribuyenteDescripcion(
+	  //      												$this->_contribuyente->tipo_naturaleza,
+	  //      												$this->_contribuyente->razon_social,
+	  //      												$this->_contribuyente->apellidos,
+	  //      												$this->_contribuyente->nombres);
+	  //      	$mpdf->SetFont('Arial', '', 8);
+
+	  //      	// Mover a 55 milimetro a la derecha.
+	  //      	$mpdf->Cell(55);
+	  //      	// Parametros significa lo siguiente:
+	  //      	// width, height, texto, 0 => no se dibuja la linea, 1 => si,
+	  //      	// La 'C' centrar
+	  //      	$mpdf->Cell(128, 0, strtoupper($contribuyente), 0, 1, 'C');
+
+	  //      	// Datos de la Direccion
+	  //      	$mpdf->Ln(3);
+	  //      	$mpdf->Cell(55);
+			// $mpdf->Cell(128, 0, strtoupper($this->_contribuyente->domicilio_fiscal), 0, 1, 'C');
+
+			// if ( $this->_contribuyente->tipo_naturaleza == 0 ) {
+			// 	$labelCedulaRif = 'CEDULA: ';
+			// } else {
+			// 	$labelCedulaRif = 'R.I.F: ';
+			// }
+
+			// $labelCatastro = 'Catastro: ';
+
+			// $mpdf->Ln(8);
+	  //      	$mpdf->Cell(55);
+			// $mpdf->Cell(128, 0, $labelCedulaRif . strtoupper($cedulaRif) . '    ' . $labelCatastro, 0, 1, 'C');
+
+			// Informacion de la liquidacion
+			//$htmlDetalleLiquidacion = $this->renderPartial('@common/views/plantilla-pdf/planilla/tasa/layout-detalle-tasa-pdf',[
+																	// 				'datosContribuyente' => $this->_contribuyente,
+																	// 				'datosLiquidacion' => $detallePlanilla,
+																	// 				'datosPresupuesto' => $detallePresupuesto,
+																	// 				'fechaEmision' => date('d-m-Y'),
+																	// 				'fechaVcto' => date('d-m-Y'),
+																	// 				'control' => $control,
+            					// ]);
+			$mpdf->Ln(8);
+			//$mpdf->WriteHTML($htmlDetalleLiquidacion);
+
+			self::actionGetViewPrimerEncabezado($mpdf, $detallePlanilla);
+			self::actionGetSubTituloDetalle($mpdf, $detallePlanilla);
+			self::actionGetViewSegundoDetalle($mpdf, $detallePlanilla, $detallePresupuesto);
+			self::actionGetViewTercerDetalle($mpdf, $detallePlanilla);
+
+			self::actionGetViewRafaga($mpdf);
+			self::actionGetViewInfoCuentaRecaudadoraPaginaWeb($mpdf);
+			self::actionGetViewCodigoValidador($mpdf);
+
+			self::actionGetViewInfoRestante($mpdf);
+
+			// // Recuadro para imprimir la rafaga bancaria.
+			// // Validacion Terminal Caja.
+	  //      	$mpdf->RoundedRect(5, 88, 110, 25, 3, D);
+
+	  //      	// Validacion terminal caja
+			// $mpdf->SetFont('Arial', 'B', 7);
+	  //      	$mpdf->Text(10, 92, 'VALIDACION TERMINAL: CAJA');
+
+
+	       	// // Informacion de la Cuenta Recaudadora
+	       	// $cuentaRecaudadora = '0128-0063-18-6300031652';
+	       	// $mpdf->SetFont('Arial', 'I', 8);
+	       	// $mpdf->Text(125, 85, 'Nro: Cuenta Recaudadora: ' . $cuentaRecaudadora);
+
+
+	       	// // Informacion de acceso web
+	       	// $accesoWeb = Yii::$app->ente->getPortalWeb();
+	       	// $mpdf->SetFont('Arial', 'I', 7);
+	       	// $mpdf->Text(138, 90, 'Ahora puede acceder desde el portal');
+
+	       	// $mpdf->SetFont('Arial', 'I', 7);
+	       	// $mpdf->Text(143, 93, $accesoWeb);
+
+
+	       	// // Informacion del Codigo validador Bamcario
+	       	// $mpdf->SetFillColor(225, 225, 225);
+	       	// $mpdf->RoundedRect(117, 98, 45, 8, 2, DF);
+
+	       	// $mpdf->SetFont('Arial', 'B', 7);
+	       	// $mpdf->Text(119, 103, 'CODIGO VERIFICADOR BANCARIO');
+
+
+	       	// // Donde se coloca el CVB
+	       	// $mpdf->RoundedRect(162, 98, 30, 8, 2, D);
+
+	       	// $cvb = '123456';
+	       	// $mpdf->SetFont('Arial', 'B', 8);
+	       	// $mpdf->Text(172, 103, $cvb);
+
+
+	       	// // Linea punteado inferior
+	       	// $mpdf->SetDash(1, 1);
+	       	// $mpdf->Line(5, 120, 200, 120);
+
+
+	       	// // Informacion del Operador
+	       	// $user = Yii::$app->identidad->getUsuario();
+	       	// $mpdf->SetFont('Arial', '', 6);
+	       	// $mpdf->Text(8, 118, 'Operador    ' . $user);
+
+
+	       	// // Informacion de tipo de copia
+	       	// $mpdf->SetFont('Arial', 'B', 6);
+	       	// $mpdf->Text(70, 118, 'ORIGINAL: CONTRIBUYENTE');
+
+
+	       	// // Informacion del momento de la descarga.
+	       	// $mpdf->SetFont('Arial', '', 6);
+	       	// $mpdf->Text(116, 110, date('Y-m-d H:i:s'));
+
+			$mpdf->Output($nombre, 'I');
+	       	exit;
+
+		}
+
+
+
+
+
+		/**
+		 * funciona
+		 * @param  [type] $mpdf            [description]
+		 * @param  [type] $detallePlanilla [description]
+		 * @return [type]                  [description]
+		 */
+		private function actionGetViewPrimerEncabezado($mpdf, $detallePlanilla)
+		{
+			// Primeros datos de los detalles de la planilla.
+			// Esto es el encabezado inicial:
+			// Fecha Emision
+			// Fecha vcto
+			// ID
+			// Nro Liquidacion
+			// Control.
+			$mpdf->SetFont('Arial', 'B', 7);
+
+			$mpdf->Cell(-10);
+			$mpdf->SetFillColor(205, 205, 205);
+			$mpdf->Cell(35, 5, 'FECHA EMISION', 1, 0, 'C', true);
+
+			$mpdf->Cell(35, 5, 'FECHA VENCIMIENTO', 1, 0, 'C', true);
+
+			$mpdf->Cell(45, 5, 'ID', 1, 0, 'C', true);
+
+			$mpdf->Cell(45, 5, 'Nro. LIQUIDACION', 1, 0, 'C', true);
+
+			$mpdf->Cell(35, 5, 'CONTROL', 1, 1, 'C', true);
+
+			// Ahora se solocan los datos de los encabezados anteriores.
+			$mpdf->SetFont('Arial', 'B', 8);
+			$mpdf->Cell(-10);
+			// Fecha Emision
+			$mpdf->Cell(35, 5, date('d-m-Y'), 1, 0, 'C');
+			// Fecha Vcto
+			$fechaVcto = date('d-m-Y');		// Invocar metodo que devuelva la fecha final de un mes.
+			$mpdf->Cell(35, 5, $fechaVcto, 1, 0, 'C');
+			// ID Contribuyente
+			$mpdf->Cell(45, 5, $this->_contribuyente->id_contribuyente, 1, 0, 'C');
+			// Nro Liquidacion
+			$mpdf->Cell(45, 5, $detallePlanilla[0]['pagos']['planilla'], 1, 0, 'C');
+			// Control
+			$control = 00000;
+			$mpdf->Cell(35, 5, $control, 1, 1, 'C');
+
+		}
+
+
+
+		/***/
+		private function actionViewEncabezadoPrincipal($mpdf, $y = 0, $datosObjeto = [])
+		{
+			// Logo de la Alcaldia.
+			$htmlLogo = $this->renderPartial('@common/views/plantilla-pdf/planilla/layout/layout-identificador-alcaldia-pdf');
 
 			// Los parametros siguientes se definen de la siguiente manera:
 			// x, y, width, height.
-			$mpdf->WriteFixedPosHTML($htmlLogo, 20, 10, 32, 32);
+			$mpdf->WriteFixedPosHTML($htmlLogo, 20, 8 + $y, 32, 32);
 
 			// Informacion de la Oficina de Rentas
 			// Los parametros sguientes son:
 			// tipo de fuente, negrita o no, tamaño de la fuente.
 			$mpdf->SetFont('Arial', '', 7);
-	       	$mpdf->Text(15, 30, strtoupper(Yii::$app->oficina->getNombre()));		// Coorenadas x, y.
+	       	$mpdf->Text(15, 28 + $y, strtoupper(Yii::$app->oficina->getNombre()));		// Coorenadas x, y.
 
 	       	// Informacion del RIF de la Alcaldia
 			$mpdf->SetFont('Arial', '', 7);
-	       	$mpdf->Text(28, 33, Yii::$app->ente->getRif());
+	       	$mpdf->Text(28, 31 + $y, Yii::$app->ente->getRif());
 
 	       	// Rectangulo angulo superior derecho
-	       	$mpdf->RoundedRect(72, 12, 130, 22, 3, D);
+	       	$mpdf->RoundedRect(72, 8 + $y, 130, 22, 3, D);
 
 	       	// Informacion que va adentro del rectangulo superior derecho.
 	       	$mpdf->SetFont('Arial', 'B', 7);
-	       	$mpdf->Text(109, 15, "INFORMACION GENERAL DEL CONTRIBUYENTE");
+	       	$mpdf->Text(109, 11 + $y, "INFORMACION GENERAL DEL CONTRIBUYENTE");
+
+	       	$cedulaRif = ContribuyenteBase::getCedulaRifDescripcion(
+												$this->_contribuyente->tipo_naturaleza,
+			 									$this->_contribuyente->naturaleza,
+			 									$this->_contribuyente->cedula,
+			 									$this->_contribuyente->tipo);
 
 	       	$contribuyente = ContribuyenteBase::getContribuyenteDescripcion(
 	       												$this->_contribuyente->tipo_naturaleza,
 	       												$this->_contribuyente->razon_social,
 	       												$this->_contribuyente->apellidos,
 	       												$this->_contribuyente->nombres);
-	       	$mpdf->SetFont('Arial', '', 8);
-
-	       	$mpdf->Ln(2);	// Salto de linea.
+	       	$mpdf->SetFont('Arial', '', 7);
 
 	       	// Mover a 55 milimetro a la derecha.
 	       	$mpdf->Cell(55);
@@ -195,16 +470,11 @@
 	       	$mpdf->Cell(128, 0, strtoupper($contribuyente), 0, 1, 'C');
 
 	       	// Datos de la Direccion
-	       	$mpdf->Ln(3);
-	       	$mpdf->Cell(55);
-			$mpdf->Cell(128, 0, strtoupper($this->_contribuyente->domicilio_fiscal), 0, 1, 'C');
+	       	$mpdf->Ln(2);
+	       	$mpdf->Cell(60);
+			$mpdf->MultiCell(125, 2, strtoupper($this->_contribuyente->domicilio_fiscal), 1, 'J');
+			$mpdf->Cell(0, 0, '', 0, 1, 'C');
 
-			// Datos del Rif o Cedula del Contribuyente.
-			$cedulaRif = ContribuyenteBase::getCedulaRifDescripcion(
-												$this->_contribuyente->tipo_naturaleza,
-			 									$this->_contribuyente->naturaleza,
-			 									$this->_contribuyente->cedula,
-			 									$this->_contribuyente->tipo);
 			if ( $this->_contribuyente->tipo_naturaleza == 0 ) {
 				$labelCedulaRif = 'CEDULA: ';
 			} else {
@@ -213,88 +483,243 @@
 
 			$labelCatastro = 'Catastro: ';
 
-			$mpdf->Ln(10);
-	       	$mpdf->Cell(55);
-			$mpdf->Cell(128, 0, $labelCedulaRif . strtoupper($cedulaRif) . '    ' . $labelCatastro, 0, 1, 'C');
-
-
-			// Recuadro para imprimir la rafaga bancaria.
-			// Validacion Terminal Caja.
-	       	$mpdf->RoundedRect(5, 88, 110, 25, 3, D);
-
-	       	// Validacion terminal caja
-			$mpdf->SetFont('Arial', 'B', 7);
-	       	$mpdf->Text(10, 92, 'VALIDACION TERMINAL: CAJA');
-
-
-	       	// Informacion de la Cuenta Recaudadora
-	       	$cuentaRecaudadora = '0128-0063-18-6300031652';
-	       	$mpdf->SetFont('Arial', 'I', 8);
-	       	$mpdf->Text(125, 85, 'Nro: Cuenta Recaudadora: ' . $cuentaRecaudadora);
-
-
-	       	// Informacion de acceso web
-	       	$accesoWeb = Yii::$app->ente->getPortalWeb();
-	       	$mpdf->SetFont('Arial', 'I', 7);
-	       	$mpdf->Text(138, 90, 'Ahora puede acceder desde el portal');
-
-	       	$mpdf->SetFont('Arial', 'I', 7);
-	       	$mpdf->Text(143, 93, $accesoWeb);
-
-
-	       	// Informacion del Codigo validador Bamcario
-	       	$mpdf->SetFillColor(225, 225, 225);
-	       	$mpdf->RoundedRect(117, 98, 45, 8, 2, DF);
-
-	       	$mpdf->SetFont('Arial', 'B', 7);
-	       	$mpdf->Text(119, 103, 'CODIGO VERIFICADOR BANCARIO');
-
-
-	       	// Donde se coloca el CVB
-	       	$mpdf->RoundedRect(162, 98, 30, 8, 2, D);
-
-	       	$cvb = '123456';
-	       	$mpdf->SetFont('Arial', 'B', 8);
-	       	$mpdf->Text(172, 103, $cvb);
-
-
-	       	// Linea punteado inferior
-	       	$mpdf->SetDash(1, 1);
-	       	$mpdf->Line(5, 120, 200, 120);
-
-
-	       	// Informacion del Operador
-	       	$user = Yii::$app->identidad->getUsuario();
-	       	$mpdf->SetFont('Arial', 'B', 6);
-	       	$mpdf->Text(8, 118, 'Operador    ' . $user);
-
-
-	       	// Informacion de tipo de copia
-	       	$mpdf->SetFont('Arial', 'B', 6);
-	       	$mpdf->Text(70, 118, 'ORIGINAL: CONTRIBUYENTE');
-
-
-	       	// Informacion del momento de la descarga.
-	       	$mpdf->SetFont('Arial', '', 6);
-	       	$mpdf->Text(116, 110, date('Y-m-d H:i:s'));
-
-
-			$mpdf->Output($nombre, 'I');
-	       	exit;
+	       	//$mpdf->Cell(55);
+			//$mpdf->Cell(128, 0, $labelCedulaRif . strtoupper($cedulaRif) . '    ' . $labelCatastro, 0, 1, 'C');
+			$mpdf->Text(100, 28 + $y, $labelCedulaRif . strtoupper($cedulaRif) . '    ' . $labelCatastro);
+			$mpdf->Ln(6);
 
 		}
+
 
 
 
 		/**
-		 * Metodo que dibuja un rectangulo
-		 * @param  mPDF $mpdf instancia de la clase.
-		 * @return view retorna un rectangulo vacio.
+		 * funciona
+		 * @param  [type] $mpdf            [description]
+		 * @param  [type] $detallePlanilla [description]
+		 * @return [type]                  [description]
 		 */
-		private function actionDibujarRectangulo($mpdf, $x, $y, $width, $height)
+		private function actionGetSubTituloDetalle($mpdf, $detallePlanilla, $y = 0)
 		{
-			return $mpdf->RoundedRect($x, $y, 110, 25, 3, D);
+			$titulo = '';
+			if ( $detallePlanilla[0]['impuesto'] == 9 || $detallePlanilla[0]['impuesto'] == 10 || $detallePlanilla[0]['impuesto'] == 11 ) {
+				$titulo = 'DETALLE DE PAGO DE IMPUESTOS VARIOS';
+			} else {
+				$titulo = 'DETALLE DE PAGO DE ' . strtoupper($detallePlanilla[0]['impuestos']['descripcion'])  ;
+			}
+
+			// Segunda encabezado con datos.
+			$mpdf->SetFont('Arial', 'B', 7);
+
+			$mpdf->Cell(-10);
+			$mpdf->SetFillColor(205, 205, 205);
+			$mpdf->Cell(195, 5, $titulo, 1, 1, 'C', true);
+			$mpdf->Rect(5, 51 + $y, 195, 5);
 		}
+
+
+
+
+		/**
+		 * funciona
+		 * @param  [type] $mpdf               [description]
+		 * @param  [type] $detallePlanilla    [description]
+		 * @param  [type] $detallePresupuesto [description]
+		 * @return [type]                     [description]
+		 */
+		private function actionGetViewSegundoDetalle($mpdf, $detallePlanilla, $detallePresupuesto, $y = 0)
+		{
+			$sumaMonto = 0;
+			$sumaRecargo = 0;
+			$sumaInteres = 0;
+			$sumaDescuento = 0;
+			$sumaReconocimiento = 0;
+			$subTotal = 0;
+
+			//Detalle que van debajo del subtitulo
+			$mpdf->SetFont('Arial', 'B', 7);
+
+			$mpdf->Cell(-10);
+			$mpdf->Cell(15, 5, 'AÑO', 0, 0, 'C');
+			$mpdf->Cell(25, 5, 'IMPUESTO', 0, 0, 'C');
+			$mpdf->Cell(24, 5, 'CODIGO', 0, 0, 'C');
+			$mpdf->Cell(35, 5, 'MONTO IMPUESTO O TASA', 0, 0, 'C');
+			$mpdf->Cell(28, 5, 'RECARGOS', 0, 0, 'C');
+			$mpdf->Cell(28, 5, 'INTERES', 0, 0, 'C');
+			$mpdf->Cell(40, 5, 'SUBTOTAL', 0, 1, 'C');
+
+			foreach ( $detallePlanilla as $detalle ) {
+				$sumaMonto = (float)$detalle['monto'] + $sumaMonto;
+				$sumaRecargo = (float)$detalle['recargo'] + $sumaRecargo;
+				$sumaInteres = (float)$detalle['interes'] + $sumaInteres;
+				$sumaDescuento = (float)$detalle['descuento'] + $sumaDescuento;
+				$sumaReconocimiento = (float)$detalle['monto_reconocimiento'] + $sumaReconocimiento;
+			}
+
+			$subTotal = (float)(($sumaMonto + $sumaRecargo + $sumaInteres));
+
+		 	$mpdf->SetFont('Arial', '', 7);
+			// Datos del encabezado anterior.
+			$mpdf->Cell(-10);
+			$mpdf->Cell(15, 5, $detallePlanilla[0]['ano_impositivo'], 0, 0, 'C');
+			$mpdf->Cell(25, 5, $detallePlanilla[0]['impuestos']['descripcion'], 0, 0, 'C');
+			$mpdf->Cell(24, 5, $detallePresupuesto['codigo'], 0, 0, 'C');
+			$mpdf->Cell(35, 5, number_format($sumaMonto, 2), 0, 0, 'C');
+			$mpdf->Cell(28, 5, number_format($sumaRecargo, 2), 0, 0, 'C');
+			$mpdf->Cell(28, 5, number_format($sumaInteres, 2), 0, 0, 'C');
+			$mpdf->Cell(40, 5, number_format($subTotal, 2), 0, 1, 'C');
+
+			//$mpdf->Rect(5, 51 + $y, 195, 5);
+
+			//$mpdf->RoundedRect(5, 51 + $y, 195, 5, 0, FD);
+		}
+
+
+
+
+
+		/***/
+		private function actionGetViewTercerDetalle($mpdf, $detallePlanilla, $y = 0)
+		{
+			$sumaMonto = 0;
+			$sumaRecargo = 0;
+			$sumaInteres = 0;
+			$sumaDescuento = 0;
+			$sumaReconocimiento = 0;
+
+			// Tercer detalle de la planilla
+			$mpdf->SetFont('Arial', 'B', 6);
+
+			$mpdf->Cell(-10);
+			$mpdf->SetFillColor(205, 205, 205);
+			$mpdf->Cell(30, 5, 'RET/REC', 1, 0, 'C', true);
+			$mpdf->Cell(30, 5, 'DESCUENTO', 1, 0, 'C', true);
+			$mpdf->Cell(35, 5, 'IMPUESTO O TASA', 1, 0, 'C', true);
+			$mpdf->Cell(30, 5, 'RECARGOS', 1, 0, 'C', true);
+			$mpdf->Cell(30, 5, 'INTERES', 1, 0, 'C', true);
+			$mpdf->Cell(40, 5, 'TOTAL A PAGAR(Bs.F.)', 1, 1, 'C', true);
+
+			// Datos del encabezado anterio
+			foreach ( $detallePlanilla as $detalle ) {
+				$sumaMonto = (float)$detalle['monto'] + $sumaMonto;
+				$sumaRecargo = (float)$detalle['recargo'] + $sumaRecargo;
+				$sumaInteres = (float)$detalle['interes'] + $sumaInteres;
+				$sumaDescuento = (float)$detalle['descuento'] + $sumaDescuento;
+				$sumaReconocimiento = (float)$detalle['monto_reconocimiento'] + $sumaReconocimiento;
+			}
+
+			$total = (float)(($sumaMonto + $sumaRecargo + $sumaInteres) - ($sumaDescuento + $sumaReconocimiento));
+
+			$mpdf->SetFont('Arial', '', 6);
+
+			$mpdf->Cell(-10);
+			$mpdf->Cell(30, 5, number_format($sumaReconocimiento, 2), 0, 0, 'C');
+			$mpdf->Cell(30, 5, number_format($sumaDescuento, 2), 0, 0, 'C');
+			$mpdf->Cell(35, 5, number_format($sumaMonto, 2), 0, 0, 'C');
+			$mpdf->Cell(30, 5, number_format($sumaRecargo, 2), 0, 0, 'C');
+			$mpdf->Cell(30, 5, number_format($sumaInteres, 2), 0, 0, 'C');
+			$mpdf->Cell(40, 5, number_format($total, 2), 0, 1, 'C');
+
+			// Campo donde se muestra la observacion de la planilla.
+			$mpdf->Cell(-10);
+			$mpdf->MultiCell(195, 5, $detallePlanilla[0]['descripcion'], 0, 'J');
+
+			$mpdf->Cell(-10);
+			$mpdf->Rect(5, 66 + $y, 195, 5);
+
+
+		}
+
+
+
+
+
+		/***/
+		private function actionGetViewRafaga($mpdf, $y = 0)
+		{
+			// Recuadro para imprimir la rafaga bancaria.
+			// Validacion Terminal Caja.
+	       	$mpdf->RoundedRect(5, 88 + $y, 110, 25, 3, D);
+
+	       	// Validacion terminal caja
+			$mpdf->SetFont('Arial', 'B', 7);
+	       	$mpdf->Text(10, 92 + $y, 'VALIDACION TERMINAL: CAJA');
+		}
+
+
+
+
+
+		/***/
+		private function actionGetViewInfoCuentaRecaudadoraPaginaWeb($mpdf, $y = 0)
+		{
+			// Informacion de la Cuenta Recaudadora
+	       	$cuentaRecaudadora = '0128-0063-18-6300031652';
+	       	$mpdf->SetFont('Arial', 'I', 8);
+	       	$mpdf->Text(125, 90 + $y, 'Nro: Cuenta Recaudadora: ' . $cuentaRecaudadora);
+
+	       	// Informacion de acceso web
+	       	$accesoWeb = Yii::$app->ente->getPortalWeb();
+	       	$mpdf->SetFont('Arial', 'I', 7);
+	       	$mpdf->Text(138, 95 + $y, 'Ahora puede acceder desde el portal');
+
+	       	$mpdf->SetFont('Arial', 'I', 7);
+	       	$mpdf->Text(143, 98 + $y, $accesoWeb);
+
+		}
+
+
+
+		/***/
+		private function actionGetViewCodigoValidador($mpdf, $y = 0)
+		{
+			// Informacion del Codigo validador Bamcario
+	       	$mpdf->SetFillColor(225, 225, 225);
+	       	$mpdf->RoundedRect(117, 103 + $y, 45, 8, 2, DF);
+
+	       	$mpdf->SetFont('Arial', 'B', 7);
+	       	$mpdf->Text(119, 108 + $y, 'CODIGO VERIFICADOR BANCARIO');
+
+
+	       	// Donde se coloca el CVB
+	       	$mpdf->RoundedRect(162, 103 + $y, 30, 8, 2, D);
+
+	       	$cvb = '123456';
+	       	$mpdf->SetFont('Arial', 'B', 8);
+	       	$mpdf->Text(172, 108 + $y, $cvb);
+
+		}
+
+
+
+
+		/***/
+		private function actionGetViewInfoRestante($mpdf, $captionCopia = 'ORIGINAL: CONTRIBUYENTE', $y = 0)
+		{
+			// Linea punteado inferior
+	       	$mpdf->SetDash(1, 1);
+	       	$mpdf->Line(5, 120 + $y, 200, 120 + $y);
+
+
+	       	// Informacion del Operador
+	       	$user = Yii::$app->identidad->getUsuario();
+	       	$mpdf->SetFont('Arial', '', 6);
+	       	$mpdf->Text(8, 118 + $y, 'Operador    ' . $user);
+
+
+	       	// Informacion de tipo de copia
+	       	$mpdf->SetFont('Arial', 'B', 6);
+	       	$mpdf->Text(70, 118 + $y, $captionCopia);
+
+
+	       	// Informacion del momento de la descarga.
+	       	$mpdf->SetFont('Arial', '', 6);
+	       	$mpdf->Text(116, 115 + $y, date('Y-m-d H:i:s'));
+
+		}
+
+
+
 
 
 		/***/
