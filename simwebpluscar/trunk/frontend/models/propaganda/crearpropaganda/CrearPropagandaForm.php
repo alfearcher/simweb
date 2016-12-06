@@ -5,48 +5,48 @@
  */
 
  /**
- * 
- *  > This library is free software; you can redistribute it and/or modify it under 
- *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free 
- *  > Software Foundation; either version 2 of the Licence, or (at your opinion) 
+ *
+ *  > This library is free software; you can redistribute it and/or modify it under
+ *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free
+ *  > Software Foundation; either version 2 of the Licence, or (at your opinion)
  *  > any later version.
- *  > 
- *  > This library is distributed in the hope that it will be usefull, 
- *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability 
- *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence 
+ *  >
+ *  > This library is distributed in the hope that it will be usefull,
+ *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability
+ *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence
  *  > for more details.
- *  > 
+ *  >
  *  > See [LICENSE.TXT](../../LICENSE.TXT) file for more information.
  *
  */
 
- /**    
+ /**
  *  @file CrearPorpagandaForm.php
- *  
+ *
  *  @author Manuel Alejandro Zapata Canelon
- * 
+ *
  *  @date 07/06/2016
- * 
+ *
  *  @class CrearPropagandaForm
  *  @brief Clase que contiene las rules para validacion del formulario de inscripcion de propaganda
- * 
- *  
- * 
- *  
- *  
+ *
+ *
+ *
+ *
+ *
  *  @property
  *
- *  
+ *
  *  @method
  *  rules
  *  scenarios
  *  search
  *
- *  
+ *
  *
  *  @inherits
- *  
- */ 
+ *
+ */
 namespace frontend\models\propaganda\crearpropaganda;
 
 use Yii;
@@ -83,12 +83,12 @@ class CrearPropagandaForm extends Model
     public $unidad;
     public $alto;
     public $ancho;
-    public $profundidad; 
+    public $profundidad;
 
 
 
-    
-   
+
+
     /**
      * @inheritdoc
      */
@@ -97,41 +97,46 @@ class CrearPropagandaForm extends Model
         return [
 
             [['nombre_propaganda','cantidad_base', 'base_calculo','observacion','direccion' ,'clase_propaganda', 'fecha_fin', 'cantidad_tiempo', 'id_tiempo', 'fecha_desde', 'uso_propaganda', 'tipo_propaganda'], 'required'],
-            
+
             [['cantidad_base', 'base_calculo','observacion','direccion' ,'clase_propaganda','cigarros', 'bebidas_alcoholicas', 'idioma'  ,'fecha_fin', 'cantidad_tiempo', 'id_tiempo', 'fecha_desde', 'uso_propaganda', 'tipo_propaganda', 'materiales', 'medio_transporte', 'id_sim'], 'default', 'value' => 0],
 
             [['alto','ancho'],'required','when' => function($model) {
-                                                                            if ( $model->base_calculo == 2 ) {
-                                                                                return true; }
-                                                                            }],
-           
+                                                                          return $model->base_calculo == 2;
+                                                                        }, 'whenClient' => "function (attribute, value) {
+                                                                            return ($('#user-type').value == 2  );
+                                                                        }"],
+
            [['alto','ancho', 'profundidad'],'required','when' => function($model) {
-                                                                            if ( $model->base_calculo == 12 ) {
-                                                                                return true; }
-                                                                            }],
+
+
+                                                                                return $model->base_calculo == 12;
+                                                                            }, 'whenClient' => "function (attribute, value) {
+                                                                                return ($('#user-type').value == 12  );
+                                                                            }"],
 
             [['unidad'],'required','when' => function($model) {
-                                                                        if ( $model->base_calculo != 2 and $model->base_calculo != 12  ) {
-                                                                                return true; }
-                                                                            }],
+                                                                        return $model->base_calculo != 2 and $model->base_calculo != 12 ;
+                                                                      }, 'whenClient' => "function (attribute, value) {
+                                                                          return ($('#user-type').value != 2 and ($('#user-type').value != 12  );
+                                                                      }"],
 
-          
-            
+
+
             [['unidad', 'cantidad_tiempo'], 'integer'],
 
-            ]; 
-    } 
+            ];
+    }
 
     /**
      * @inheritdoc
      */
-   
+
 
     public function attributeLabels()
     {
         return [
-                'nombre_propaganda' => Yii::t('frontend', 'Nombre de la propaganda'), 
-                'ano_impositivo' => Yii::t('frontend', 'Año Impositivo'), 
+                'nombre_propaganda' => Yii::t('frontend', 'Nombre de la propaganda'),
+                'ano_impositivo' => Yii::t('frontend', 'Año Impositivo'),
                 'clase_propaganda' => Yii::t('frontend', 'Clase de Propaganda'),
                 'uso_propaganda' => Yii::t('frontend', 'Uso de Propaganda'),
                 'fecha_desde' => Yii::t('frontend', 'Fecha de Inscripcion'),
@@ -149,7 +154,7 @@ class CrearPropagandaForm extends Model
                 'medio_transporte' => Yii::t('frontend', 'Medio de Transporte'),
                 'direccion' => Yii::t('frontend', 'Direccion'),
                 'observacion' => Yii::t('frontend', 'Mensaje de la Propaganda'),
-        ];      
+        ];
     }
 
     public function attributeSlPropagandas()
@@ -191,8 +196,8 @@ class CrearPropagandaForm extends Model
             'alto',
             'ancho',
             'profundidad',
-            
-          
+
+
         ];
     }
 
@@ -230,18 +235,18 @@ class CrearPropagandaForm extends Model
             'alto',
             'ancho',
             'profundidad',
-            
-          
+
+
         ];
     }
 
     public function verificarDeclaracion($idContribuyente)
     {
         $buscar = CrearUsuarioNatural::find()
-                                        ->where([ 
+                                        ->where([
                                           'inactivo' => 0,
                                           'id_contribuyente' => $idContribuyente,
-                                        
+
                                         ])
                                       ->all();
                                     //die(var_dump($buscar));
@@ -255,7 +260,7 @@ class CrearPropagandaForm extends Model
     }
 
 
-   
 
-  
+
+
 }
