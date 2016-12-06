@@ -6,42 +6,42 @@
  */
 
  /**
- * 
- *  > This library is free software; you can redistribute it and/or modify it under 
- *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free 
- *  > Software Foundation; either version 2 of the Licence, or (at your opinion) 
+ *
+ *  > This library is free software; you can redistribute it and/or modify it under
+ *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free
+ *  > Software Foundation; either version 2 of the Licence, or (at your opinion)
  *  > any later version.
- *  > 
- *  > This library is distributed in the hope that it will be usefull, 
- *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability 
- *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence 
+ *  >
+ *  > This library is distributed in the hope that it will be usefull,
+ *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability
+ *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence
  *  > for more details.
- *  > 
+ *  >
  *  > See [LICENSE.TXT](../../LICENSE.TXT) file for more information.
  *
  */
 
- /**    
+ /**
  *  @file ModificarPropagandaController.php
- *  
+ *
  *  @author Manuel Alejandro Zapata Canelon
- * 
+ *
  *  @date 18/07/16
- * 
+ *
  *  @class ModificarPropagandaController
  *  @brief Controlador que renderiza la vista con el formulario para la modificacion de la propaganda
- *  
- * 
- *  
- *  
+ *
+ *
+ *
+ *
  *  @property
  *
  *
- *  
+ *
  *
  *  @inherits
- *  
- */ 
+ *
+ */
 
 namespace frontend\controllers\propaganda\modificarpropaganda;
 
@@ -79,9 +79,9 @@ class ModificarPropagandaController extends Controller
 
 
 
-    
+
   public $layout = 'layout-main';
-  
+
   /**
    * [actionVistaSeleccion description] metodo que muestra lista de propagandas pertenecientes al contribuyente para seleccionar una
    * y modificarla
@@ -100,17 +100,17 @@ class ModificarPropagandaController extends Controller
           $searchModel = new ModificarPropagandaForm();
 
           $dataProvider = $searchModel->search();
-       
+
 
           return $this->render('/propaganda/modificarpropaganda/seleccionar-propaganda', [
                                                 'searchModel' => $searchModel,
                                                 'dataProvider' => $dataProvider,
-            
-                                                ]); 
+
+                                                ]);
       }else{
           echo "No existe User";
       }
-    
+
 
   }
 
@@ -123,14 +123,18 @@ class ModificarPropagandaController extends Controller
   {
 
       $idContribuyente = yii::$app->user->identity->id_contribuyente;
+
+      $_SESSION['idContribuyente'] = $idContribuyente;
+
       $idPropaganda = yii::$app->request->post('id');
+
       $_SESSION['idPropaganda'] = $idPropaganda;
-      
+
 
       $modelSearch = new ModificarPropagandaForm();
-      $model = $modelSearch->busquedaPropaganda($idPropaganda, $idContribuyente);
-
-          if ($model == true){ 
+      $model = $modelSearch->busquedaPropaganda($_SESSION['idPropaganda'], $_SESSION['idContribuyente']);
+    //  die(var_dump($model));
+          if ($model == true ){
 
              $_SESSION['datosPropaganda'] = $model;
             $modelSearch->attributes = $model->attributes;
@@ -140,11 +144,11 @@ class ModificarPropagandaController extends Controller
               ]);
 
 
-             
-              
-        
+
+
+
           return $this->redirect(['modificar-propaganda']);
-        
+
           }else{
 
               die('no existe propaganda asociado a ese ID');
@@ -159,53 +163,33 @@ class ModificarPropagandaController extends Controller
    */
   public function actionModificarPropaganda()
   {
-          // die(var_dump($_SESSION['datosPropaganda']));
+          // die(var_dump($_SESSION['datosPropaganda']).'hola');
             $datosPropaganda = $_SESSION['datosPropaganda'];
-            $postData = yii::$app->request->post();
 
-            $model = New ModificarPropagandaForm();
 
-            
-            if ( $model->load($postData) && Yii::$app->request->isAjax ){
-                  Yii::$app->response->format = Response::FORMAT_JSON;
-                  return ActiveForm::validate($model);
-            }
-           
-            if ( $model->load($postData) ) {
-             // die(var_dump($postData));
-            
-
-               if ($model->validate()){
-               //die('valido');
-
-                 $verificarSolicitud = self::verificarSolicitud($datosPropaganda->id_impuesto , $_SESSION['id']);
+              $verificarSolicitud = self::verificarSolicitud($datosPropaganda->id_impuesto , $_SESSION['id']);
 
                      if($verificarSolicitud == true){
                        return MensajeController::actionMensaje(403);
                     }else{
-               
+
                  $buscarGuardar = self::beginSave("buscarGuardar", $model);
-                    
+
                     if($buscarGuardar == true){
                      return MensajeController::actionMensaje(100);
                     }else{
-                    
-                    return MensajeController::actionMensaje(920);
-           }  
-          
-                      
-             }
-              }
-          }  
-          // die(var_dump($datosPropaganda));
-          return $this->render('/propaganda/modificarpropaganda/formulario-modificar-propaganda', [
-                                                              'model' => $model,
-                                                              //'datos' => $datosPropaganda,
-                                                             
-            ]);
-  
 
-    
+                    return MensajeController::actionMensaje(920);
+           }
+
+
+             }
+
+
+
+
+
+
   }
 
 
@@ -225,17 +209,17 @@ class ModificarPropagandaController extends Controller
 
   public function buscarNumeroSolicitud($conn, $conexion)
   {
-      //die('hola');  
+      //die('hola');
       $buscar = new ParametroSolicitud($_SESSION['id']);
 
-      
+
 
         $buscar->getParametroSolicitud(["tipo_solicitud", "impuesto", "nivel_aprobacion"]);
 
         $resultado = $buscar->getParametroSolicitud(["tipo_solicitud", "impuesto", "nivel_aprobacion"]);
 
-     
-    
+
+
       $datosPropaganda = $_SESSION['datosPropaganda'];
       $datos = yii::$app->user->identity;
       $tabla = 'solicitudes_contribuyente';
@@ -248,7 +232,7 @@ class ModificarPropagandaController extends Controller
       }
 
       $arregloDatos['impuesto'] = $resultado['impuesto'];
-     
+
       $arregloDatos['id_config_solicitud'] = $_SESSION['id'];
 
       $arregloDatos['id_impuesto'] = $datosPropaganda->id_impuesto;
@@ -283,7 +267,7 @@ class ModificarPropagandaController extends Controller
               $idSolicitud = $conn->getLastInsertID();
 
           }
-         
+
 
           return $idSolicitud;
 
@@ -297,11 +281,11 @@ class ModificarPropagandaController extends Controller
 
       $buscar = new ParametroSolicitud($_SESSION['id']);
 
-    
+
 
       $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
       //die(var_dump($nivelAprobacion));
-      
+
       $datosPropaganda = $_SESSION['datosPropaganda'];
       $numeroSolicitud = $idSolicitud;
       $resultado = false;
@@ -372,10 +356,10 @@ class ModificarPropagandaController extends Controller
       $arregloDatos['fecha_hora'] = date('Y-m-d h:m:i');
 
       $arregloDatos['usuario'] = $datos->login;
-      
-  
 
-      if($nivelAprobacion == 1){ 
+
+
+      if($nivelAprobacion == 1){
         //die('1');
 
       $arregloDatos['fecha_hora_proceso'] = date('Y-m-d h:m:i');
@@ -424,20 +408,20 @@ class ModificarPropagandaController extends Controller
 
        $buscar = new ParametroSolicitud($_SESSION['id']);
 
-    
+
 
       $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
       //die(var_dump($nivelAprobacion));
-     
+
       $tableName = 'propagandas';
-      
+
       $arregloCondition = ['id_impuesto' => $_SESSION['idPropaganda']];
-     
+
       $arregloDatos['nombre_propaganda'] = $model->nombre_propaganda;
 
      // $arregloDatos['id_impuesto'] = 0;
 
-    
+
 
       $arregloDatos['id_contribuyente'] = $datos->id_contribuyente;
 
@@ -488,13 +472,13 @@ class ModificarPropagandaController extends Controller
 
       $arregloDatos['fecha_guardado'] = date('Y-m-d');
 
-     
-
-    
 
 
-      
-  
+
+
+
+
+
 
 
       if ($nivelAprobacion == 1){
@@ -514,11 +498,11 @@ class ModificarPropagandaController extends Controller
 
       $arregloDatos['unidad'] = $model->unidad;
 
-      
+
       $conexion = new ConexionController();
 
       $conn = $conexion->initConectar('db');
-         
+
       $conn->open();
 
           if ($conexion->modificarRegistro($conn, $tableName, $arregloDatos, $arregloCondition)){
@@ -526,9 +510,9 @@ class ModificarPropagandaController extends Controller
              // die('modifico');
 
               return true;
-              
+
           }
-  
+
 
 
     }
@@ -556,7 +540,7 @@ class ModificarPropagandaController extends Controller
       $transaccion = $conn->beginTransaction();
 
           if ($var == "buscarGuardar"){
-            
+
 
               $buscar = self::buscarNumeroSolicitud($conn, $conexion);
 
@@ -573,7 +557,7 @@ class ModificarPropagandaController extends Controller
 
                   $guardar = self::guardarSolicitud($conn,$conexion, $idSolicitud, $model);
 
-                  if ($nivelAprobacion['nivel_aprobacion'] != 1){ 
+                  if ($nivelAprobacion['nivel_aprobacion'] != 1){
 
                     //die('no es de aprobacion directa');
 
@@ -592,7 +576,7 @@ class ModificarPropagandaController extends Controller
                       $DocumentosRequisito = new DocumentoSolicitud();
 
                       $documentos = $DocumentosRequisito->Documentos();
-                        
+
                         $enviarNumeroSolicitud->plantillaEmailSolicitud($login,$solicitud, $idSolicitud, $documentos);
 
 
@@ -608,7 +592,7 @@ class ModificarPropagandaController extends Controller
                       $conn->close();
                       return false;
                   }
-                  
+
                   }else{
                     //die('es de aprobacion directa');
 
@@ -654,26 +638,26 @@ class ModificarPropagandaController extends Controller
 
     }
     }
-    
 
-    
 
- 
-              
-            
+
+
+
+
+
 }
-    
 
 
 
-    
-
-   
 
 
-    
 
-    
+
+
+
+
+
+
 
 
 
