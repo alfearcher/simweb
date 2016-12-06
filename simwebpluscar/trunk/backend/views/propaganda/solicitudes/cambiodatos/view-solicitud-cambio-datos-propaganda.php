@@ -111,9 +111,9 @@
 					            [
 					        'label' => 'Medio de Transporte',
 
-					        
 
-					        'value' => $model->descripcionMedioTransportePropaganda->descripcion == true ? $model->descripcionMedioTransportePropaganda->descripcion : 'NO DISPONIBLE',
+
+					        'value' => $model->descripcionMedioTransportePropaganda->descripcion != null ? $model->descripcionMedioTransportePropaganda->descripcion : 'NO DISPONIBLE',
 
 					        ],
 
