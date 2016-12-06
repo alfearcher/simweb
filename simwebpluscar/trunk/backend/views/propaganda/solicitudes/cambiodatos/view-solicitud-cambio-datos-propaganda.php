@@ -50,7 +50,7 @@
 	use backend\models\vehiculo\VehiculoSearch;
 	use frontend\models\propaganda\solicitudes\SlPropagandasForm;
 	use common\models\propaganda\tarifaspropaganda\TarifasPropagandas;
-	
+
 //die(var_dump($modelPropaganda));
 ?>
 
@@ -61,7 +61,7 @@
 			<h3><?= Html::encode('Datos Antiguos') ?></h3>
 				<?= DetailView::widget([
 						'model' => $modelPropaganda,
-						
+
 		    			'attributes' => [
 		    				'ano_impositivo',
 		    				'direccion',
@@ -69,52 +69,52 @@
 		    				//'nro_solicitud',
 
 
-		    				
+
 
 
 						   	[
 					        'label' => 'Clase Propaganda',
 
 					        'value' => $model->descripcionClasePropaganda->descripcion, //$search->getDescripcionUsoVehiculo($model->uso_vehiculo),//function($model){
-					            
-					            
-					     
+
+
+
 					         ],
 
 					        	  [
 					        'label' => 'Tipo Propaganda',
 
 					        'value' => $model->descripcionTipoPropaganda->descripcion, //$search->getDescripcionUsoVehiculo($model->uso_vehiculo),//function($model){
-					            
-					            
-					     
+
+
+
 					        ],
 
 					        [
 					        'label' => 'Uso Propaganda',
 
 					        'value' => $model->descripcionUsoPropaganda->descripcion, //$search->getDescripcionUsoVehiculo($model->uso_vehiculo),//function($model){
-					            
-					            
-					     
+
+
+
 					        ],
 
 					        [
 					        'label' => 'Medio de Difusion',
 
 					        'value' => $model->descripcionMedioDifusionPropaganda->descripcion, //$search->getDescripcionUsoVehiculo($model->uso_vehiculo),//function($model){
-					            
-					            
-					     
+
+
+
 					        ],
 
 					            [
 					        'label' => 'Medio de Transporte',
 
-					        'value' => $model->descripcionMedioTransportePropaganda->descripcion, //$search->getDescripcionUsoVehiculo($model->uso_vehiculo),//function($model){
-					            
-					            
-					     
+					        
+
+					        'value' => $model->descripcionMedioTransportePropaganda->descripcion == true ? $model->descripcionMedioTransportePropaganda->descripcion : 'NO DISPONIBLE',
+
 					        ],
 
 					        'fecha_desde',
@@ -127,22 +127,22 @@
 
 					        [
 					        'label' => 'Cigarrillos',
-					     	
+
 					        'value' => $model['cigarros'] == 1 ? 'SI' : 'NO',
 					        ],
-		    				
+
 		    				[
 					        'label' => 'Bebidas Alcoholicas',
-					     	
+
 					        'value' => $model['bebidas_alcoholicas'] == 1 ? 'SI' : 'NO',
 					        ],
 
 					        [
 					        'label' => 'Idioma',
-					     	
+
 					        'value' => $model['idioma'] == 1 ? 'SI' : 'NO',
 					        ],
-		    			
+
 		    				'observacion',
 
 		    				'fecha_fin',
@@ -150,9 +150,9 @@
 		    				//'usuario',
 
 
-		    				
+
 		    				// 'color',
-		    			
+
 		    				// 'precio_inicial',
 		    				// 'fecha_inicio',
 		    				// 'ano_compra',
@@ -165,20 +165,20 @@
 		    				// 'capacidad',
 		    				// 'nro_puestos',
 		    				// 'peso',
-		    				
+
 		    				// 'serial_motor',
 		    				// 'serial_carroceria',
 		    				// 'nro_calcomania',
-		    				
+
 		    				// 'nro_cilindros',
 		    				// 'fecha_hora',
-		    			
+
 		    				// [
 		    				// 	'label' => 'Uso Vehiculo',
 
 		    				// 	'value' => //$search->getDescripcionUsoVehiculo($model->uso_vehiculo),//function($model){
 		    				// 	 VehiculoSearch::getDescripcionUsoVehiculo($model->uso_vehiculo),
-		    						
+
 		    				// ],
 
 		    				// [
@@ -186,7 +186,7 @@
 
 		    				// 	'value' => //$search->getDescripcionUsoVehiculo($model->uso_vehiculo),//function($model){
 		    				// 	 VehiculoSearch::getDescripcionTipoVehiculo($model->tipo_vehiculo),
-		    						
+
 		    				// ],
 
 		    				// [
@@ -194,10 +194,10 @@
 
 		    				// 	'value' => //$search->getDescripcionUsoVehiculo($model->uso_vehiculo),//function($model){
 		    				// 	 VehiculoSearch::getDescripcionClaseVehiculo($model->clase_vehiculo),
-		    						
+
 		    				// ],
 
-		        				
+
 		    			],
 					])
 				?>
@@ -208,7 +208,7 @@
 				<?= DetailView::widget([
 
 						'model' => $model,
-						
+
 		    			'attributes' => [
 		    				'ano_impositivo',
 		    				'direccion',
@@ -216,52 +216,52 @@
 		    				'nro_solicitud',
 
 
-		    				
+
 
 
 						   	[
 					        'label' => 'Clase Propaganda',
 
 					        'value' => $model->descripcionClasePropaganda->descripcion, //$search->getDescripcionUsoVehiculo($model->uso_vehiculo),//function($model){
-					            
-					            
-					     
+
+
+
 					         ],
 
 					        	  [
 					        'label' => 'Tipo Propaganda',
 
 					        'value' => $model->descripcionTipoPropaganda->descripcion, //$search->getDescripcionUsoVehiculo($model->uso_vehiculo),//function($model){
-					            
-					            
-					     
+
+
+
 					        ],
 
 					        [
 					        'label' => 'Uso Propaganda',
 
 					        'value' => $model->descripcionUsoPropaganda->descripcion, //$search->getDescripcionUsoVehiculo($model->uso_vehiculo),//function($model){
-					            
-					            
-					     
+
+
+
 					        ],
 
 					        [
 					        'label' => 'Medio de Difusion',
 
 					        'value' => $model->descripcionMedioDifusionPropaganda->descripcion, //$search->getDescripcionUsoVehiculo($model->uso_vehiculo),//function($model){
-					            
-					            
-					     
+
+
+
 					        ],
 
 					            [
 					        'label' => 'Medio de Transporte',
 
 					        'value' => $model->descripcionMedioTransportePropaganda->descripcion, //$search->getDescripcionUsoVehiculo($model->uso_vehiculo),//function($model){
-					            
-					            
-					     
+
+
+
 					        ],
 
 					        'fecha_desde',
@@ -274,22 +274,22 @@
 
 					        [
 					        'label' => 'Cigarrillos',
-					     	
+
 					        'value' => $model['cigarros'] == 1 ? 'SI' : 'NO',
 					        ],
-		    				
+
 		    				[
 					        'label' => 'Bebidas Alcoholicas',
-					     	
+
 					        'value' => $model['bebidas_alcoholicas'] == 1 ? 'SI' : 'NO',
 					        ],
 
 					        [
 					        'label' => 'Idioma',
-					     	
+
 					        'value' => $model['idioma'] == 1 ? 'SI' : 'NO',
 					        ],
-		    			
+
 		    				'observacion',
 
 		    				'fecha_fin',
@@ -297,9 +297,9 @@
 		    				'usuario',
 
 
-		    				
+
 		    				// 'color',
-		    			
+
 		    				// 'precio_inicial',
 		    				// 'fecha_inicio',
 		    				// 'ano_compra',
@@ -312,20 +312,20 @@
 		    				// 'capacidad',
 		    				// 'nro_puestos',
 		    				// 'peso',
-		    				
+
 		    				// 'serial_motor',
 		    				// 'serial_carroceria',
 		    				// 'nro_calcomania',
-		    				
+
 		    				// 'nro_cilindros',
 		    				// 'fecha_hora',
-		    			
+
 		    				// [
 		    				// 	'label' => 'Uso Vehiculo',
 
 		    				// 	'value' => //$search->getDescripcionUsoVehiculo($model->uso_vehiculo),//function($model){
 		    				// 	 VehiculoSearch::getDescripcionUsoVehiculo($model->uso_vehiculo),
-		    						
+
 		    				// ],
 
 		    				// [
@@ -333,7 +333,7 @@
 
 		    				// 	'value' => //$search->getDescripcionUsoVehiculo($model->uso_vehiculo),//function($model){
 		    				// 	 VehiculoSearch::getDescripcionTipoVehiculo($model->tipo_vehiculo),
-		    						
+
 		    				// ],
 
 		    				// [
@@ -341,10 +341,10 @@
 
 		    				// 	'value' => //$search->getDescripcionUsoVehiculo($model->uso_vehiculo),//function($model){
 		    				// 	 VehiculoSearch::getDescripcionClaseVehiculo($model->clase_vehiculo),
-		    						
+
 		    				// ],
 
-		        				
+
 		    			],
 					])
 				?>
