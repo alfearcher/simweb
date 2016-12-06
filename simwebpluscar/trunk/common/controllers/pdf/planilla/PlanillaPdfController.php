@@ -153,14 +153,21 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que arma la planilla de periodos iguales a cero que fueron liquidadas
+		 * @param  array $detallePlanilla arreglo con los detalles de la planilla de liquidacion.
+		 * Posee entre otros datos, el impuesto, exigibilidad, etc.
+		 * @param  array $detallePresupuesto arreglo con los datos del codigo presupuestario al cual
+		 * esta asociado la planilla.
+		 * @return pdf retorna una vista en pdf de la planilla de liqiudacion.
+		 */
 		public function actionCrearPlanillaTasaPdf($detallePlanilla, $detallePresupuesto = null)
 		{
 
 			$y = 0;
 
 			$mpdf = new mPDF;
-			$nombre = 'P' . $detallePlanilla[0]['pagos']['planilla'] . ' - ' . date('Y-m-d H:i:s') . '.pdf';
+			$nombre = 'PL' . $detallePlanilla[0]['pagos']['planilla'] . ' - ' . date('Y-m-d H:i:s') . '.pdf';
 
 			self::actionViewEncabezadoPrincipal($mpdf);
 
@@ -182,7 +189,7 @@
 
 			$y = 122;
 			self::actionViewEncabezadoPrincipal($mpdf, $y);
-			$mpdf->Ln(12);
+			$mpdf->Ln(10);
 			self::actionGetViewPrimerEncabezado($mpdf, $detallePlanilla);
 			self::actionGetSubTituloDetalle($mpdf, $detallePlanilla , $y);
 			self::actionGetViewSegundoDetalle($mpdf, $detallePlanilla, $detallePresupuesto, $y);
@@ -203,181 +210,19 @@
 
 
 
-
-
-
-		/***/
-		public function actionCrearPlanillaTasaPdf_1($detallePlanilla, $detallePresupuesto = null)
-		{
-
-			$y = 0;
-
-			// Datos del Rif o Cedula del Contribuyente.
-			// $cedulaRif = ContribuyenteBase::getCedulaRifDescripcion(
-			// 									$this->_contribuyente->tipo_naturaleza,
-			//  									$this->_contribuyente->naturaleza,
-			//  									$this->_contribuyente->cedula,
-			//  									$this->_contribuyente->tipo);
-
-
-			$mpdf = new mPDF;
-			$nombre = 'prueba2.pdf';
-
-			// // Logo de la Alcaldia.
-			// $htmlLogo = $this->renderPartial('@common/views/plantilla-pdf/planilla/layout/layout-identificador-alcaldia-pdf');
-
-			// // Los parametros siguientes se definen de la siguiente manera:
-			// // x, y, width, height.
-			// $mpdf->WriteFixedPosHTML($htmlLogo, 20, 8 + $y, 32, 32);
-
-			// // Informacion de la Oficina de Rentas
-			// // Los parametros sguientes son:
-			// // tipo de fuente, negrita o no, tamaño de la fuente.
-			// $mpdf->SetFont('Arial', '', 7);
-	  //      	$mpdf->Text(15, 28 + $y, strtoupper(Yii::$app->oficina->getNombre()));		// Coorenadas x, y.
-
-	  //      	// Informacion del RIF de la Alcaldia
-			// $mpdf->SetFont('Arial', '', 7);
-	  //      	$mpdf->Text(28, 31 + $y, Yii::$app->ente->getRif());
-
-	  //      	// Rectangulo angulo superior derecho
-	  //      	$mpdf->RoundedRect(72, 8, 130, 22 + $y, 3, D);
-
-
-			self::actionViewEncabezadoPrincipal($mpdf);
-
-	  //      	// Informacion que va adentro del rectangulo superior derecho.
-	  //      	$mpdf->SetFont('Arial', 'B', 7);
-	  //      	$mpdf->Text(109, 11 + $y, "INFORMACION GENERAL DEL CONTRIBUYENTE");
-
-	  //      	$contribuyente = ContribuyenteBase::getContribuyenteDescripcion(
-	  //      												$this->_contribuyente->tipo_naturaleza,
-	  //      												$this->_contribuyente->razon_social,
-	  //      												$this->_contribuyente->apellidos,
-	  //      												$this->_contribuyente->nombres);
-	  //      	$mpdf->SetFont('Arial', '', 8);
-
-	  //      	// Mover a 55 milimetro a la derecha.
-	  //      	$mpdf->Cell(55);
-	  //      	// Parametros significa lo siguiente:
-	  //      	// width, height, texto, 0 => no se dibuja la linea, 1 => si,
-	  //      	// La 'C' centrar
-	  //      	$mpdf->Cell(128, 0, strtoupper($contribuyente), 0, 1, 'C');
-
-	  //      	// Datos de la Direccion
-	  //      	$mpdf->Ln(3);
-	  //      	$mpdf->Cell(55);
-			// $mpdf->Cell(128, 0, strtoupper($this->_contribuyente->domicilio_fiscal), 0, 1, 'C');
-
-			// if ( $this->_contribuyente->tipo_naturaleza == 0 ) {
-			// 	$labelCedulaRif = 'CEDULA: ';
-			// } else {
-			// 	$labelCedulaRif = 'R.I.F: ';
-			// }
-
-			// $labelCatastro = 'Catastro: ';
-
-			// $mpdf->Ln(8);
-	  //      	$mpdf->Cell(55);
-			// $mpdf->Cell(128, 0, $labelCedulaRif . strtoupper($cedulaRif) . '    ' . $labelCatastro, 0, 1, 'C');
-
-			// Informacion de la liquidacion
-			//$htmlDetalleLiquidacion = $this->renderPartial('@common/views/plantilla-pdf/planilla/tasa/layout-detalle-tasa-pdf',[
-																	// 				'datosContribuyente' => $this->_contribuyente,
-																	// 				'datosLiquidacion' => $detallePlanilla,
-																	// 				'datosPresupuesto' => $detallePresupuesto,
-																	// 				'fechaEmision' => date('d-m-Y'),
-																	// 				'fechaVcto' => date('d-m-Y'),
-																	// 				'control' => $control,
-            					// ]);
-			$mpdf->Ln(8);
-			//$mpdf->WriteHTML($htmlDetalleLiquidacion);
-
-			self::actionGetViewPrimerEncabezado($mpdf, $detallePlanilla);
-			self::actionGetSubTituloDetalle($mpdf, $detallePlanilla);
-			self::actionGetViewSegundoDetalle($mpdf, $detallePlanilla, $detallePresupuesto);
-			self::actionGetViewTercerDetalle($mpdf, $detallePlanilla);
-
-			self::actionGetViewRafaga($mpdf);
-			self::actionGetViewInfoCuentaRecaudadoraPaginaWeb($mpdf);
-			self::actionGetViewCodigoValidador($mpdf);
-
-			self::actionGetViewInfoRestante($mpdf);
-
-			// // Recuadro para imprimir la rafaga bancaria.
-			// // Validacion Terminal Caja.
-	  //      	$mpdf->RoundedRect(5, 88, 110, 25, 3, D);
-
-	  //      	// Validacion terminal caja
-			// $mpdf->SetFont('Arial', 'B', 7);
-	  //      	$mpdf->Text(10, 92, 'VALIDACION TERMINAL: CAJA');
-
-
-	       	// // Informacion de la Cuenta Recaudadora
-	       	// $cuentaRecaudadora = '0128-0063-18-6300031652';
-	       	// $mpdf->SetFont('Arial', 'I', 8);
-	       	// $mpdf->Text(125, 85, 'Nro: Cuenta Recaudadora: ' . $cuentaRecaudadora);
-
-
-	       	// // Informacion de acceso web
-	       	// $accesoWeb = Yii::$app->ente->getPortalWeb();
-	       	// $mpdf->SetFont('Arial', 'I', 7);
-	       	// $mpdf->Text(138, 90, 'Ahora puede acceder desde el portal');
-
-	       	// $mpdf->SetFont('Arial', 'I', 7);
-	       	// $mpdf->Text(143, 93, $accesoWeb);
-
-
-	       	// // Informacion del Codigo validador Bamcario
-	       	// $mpdf->SetFillColor(225, 225, 225);
-	       	// $mpdf->RoundedRect(117, 98, 45, 8, 2, DF);
-
-	       	// $mpdf->SetFont('Arial', 'B', 7);
-	       	// $mpdf->Text(119, 103, 'CODIGO VERIFICADOR BANCARIO');
-
-
-	       	// // Donde se coloca el CVB
-	       	// $mpdf->RoundedRect(162, 98, 30, 8, 2, D);
-
-	       	// $cvb = '123456';
-	       	// $mpdf->SetFont('Arial', 'B', 8);
-	       	// $mpdf->Text(172, 103, $cvb);
-
-
-	       	// // Linea punteado inferior
-	       	// $mpdf->SetDash(1, 1);
-	       	// $mpdf->Line(5, 120, 200, 120);
-
-
-	       	// // Informacion del Operador
-	       	// $user = Yii::$app->identidad->getUsuario();
-	       	// $mpdf->SetFont('Arial', '', 6);
-	       	// $mpdf->Text(8, 118, 'Operador    ' . $user);
-
-
-	       	// // Informacion de tipo de copia
-	       	// $mpdf->SetFont('Arial', 'B', 6);
-	       	// $mpdf->Text(70, 118, 'ORIGINAL: CONTRIBUYENTE');
-
-
-	       	// // Informacion del momento de la descarga.
-	       	// $mpdf->SetFont('Arial', '', 6);
-	       	// $mpdf->Text(116, 110, date('Y-m-d H:i:s'));
-
-			$mpdf->Output($nombre, 'I');
-	       	exit;
-
-		}
-
-
-
-
-
 		/**
-		 * funciona
-		 * @param  [type] $mpdf            [description]
-		 * @param  [type] $detallePlanilla [description]
-		 * @return [type]                  [description]
+		 * Metodo que renderiza una vista con la siguiente informacion:
+		 * Encabezado:
+		 * - Fecha Emision.
+		 * - Fecha Vencimiento.
+		 * - ID.
+		 * - Nro Liquidacion.
+		 * - Control.
+		 * Ademas de los datos de cada uno de estos encabezados.
+		 * @param MPDF $mpdf instancia de la clase MPDF.
+		 * @param  array $detallePlanilla arreglo con los detalles de la planilla de liquidacion.
+		 * Posee entre otros datos, el impuesto, exigibilidad, etc.
+		 * @return pdf retorna pdf de la vista superior de la planilla con la informacion indicada.
 		 */
 		private function actionGetViewPrimerEncabezado($mpdf, $detallePlanilla)
 		{
@@ -422,7 +267,29 @@
 
 
 
-		/***/
+
+		/**
+		  * Metodo que renderiza una vista de la planilla de liquidacion que contiene:
+		 * - Logo de la Alcaldia.
+		 * - Descripcion de la oficona recaudadora.
+		 * - Rif de la Alcaldia.
+		 * - Rectangulo superior derecho.
+		 * 	 + Etiqueta que indica "INFORMACION GENRAL DEL CONTRIBUYENTE"
+		 *   + Descripcion del Contribuyente.
+		 *   + Domicilio principal del contribuyente, en caso de que la planilla
+		 * sea de Inmuebles Urbano debe mostrar la direccion del inmueble.
+		 * 	 + Rif o Cedula de contribuyente.
+		 *   + Si la planilla es de Vehiculos de mostrar:
+		 *   	a - Placa.
+		 *    	b - Marca.
+		 *      c - Modelo.
+		 *      d - Color.
+		 * @param MPDF $mpdf instancia de la clase MPDF.
+		 * @param  integer $y entero que permite variar la posicion vetrical de la opcion.
+		 * @param  array  $datosObjeto arreglo con la informacion particular de un objeto imponible
+		 * ( sea Inmueble o Vehiculo).
+		 * @return pdf retorna pdf de la vista superior de la planilla con la informacion indicada.
+		 */
 		private function actionViewEncabezadoPrincipal($mpdf, $y = 0, $datosObjeto = [])
 		{
 			// Logo de la Alcaldia.
@@ -462,17 +329,20 @@
 	       												$this->_contribuyente->nombres);
 	       	$mpdf->SetFont('Arial', '', 7);
 
-	       	// Mover a 55 milimetro a la derecha.
-	       	$mpdf->Cell(55);
+	       	// Mover a 60 milimetro a la derecha.
+	       	$mpdf->Cell(60);
 	       	// Parametros significa lo siguiente:
 	       	// width, height, texto, 0 => no se dibuja la linea, 1 => si,
 	       	// La 'C' centrar
-	       	$mpdf->Cell(128, 0, strtoupper($contribuyente), 0, 1, 'C');
 
-	       	// Datos de la Direccion
+	       	$mpdf->Cell(125, 2, strtoupper($contribuyente), 0, 0, 'C');
+
+	       	//$mpdf->WriteText(120, 2, strtoupper($contribuyente));
+
+	       	// Datos de la Domicilio principal
 	       	$mpdf->Ln(2);
 	       	$mpdf->Cell(60);
-			$mpdf->MultiCell(125, 2, strtoupper($this->_contribuyente->domicilio_fiscal), 1, 'J');
+			$mpdf->MultiCell(125, 2, strtoupper($this->_contribuyente->domicilio_fiscal), 0, 'J');
 			$mpdf->Cell(0, 0, '', 0, 1, 'C');
 
 			if ( $this->_contribuyente->tipo_naturaleza == 0 ) {
@@ -485,7 +355,7 @@
 
 	       	//$mpdf->Cell(55);
 			//$mpdf->Cell(128, 0, $labelCedulaRif . strtoupper($cedulaRif) . '    ' . $labelCatastro, 0, 1, 'C');
-			$mpdf->Text(100, 28 + $y, $labelCedulaRif . strtoupper($cedulaRif) . '    ' . $labelCatastro);
+			$mpdf->Text(100, 26 + $y, $labelCedulaRif . strtoupper($cedulaRif) . '    ' . $labelCatastro);
 			$mpdf->Ln(6);
 
 		}
@@ -494,10 +364,12 @@
 
 
 		/**
-		 * funciona
-		 * @param  [type] $mpdf            [description]
-		 * @param  [type] $detallePlanilla [description]
-		 * @return [type]                  [description]
+		 * Metodo que renderiza una vista con la etiqueta de un subtitulo.
+		 * @param MPDF $mpdf instancia de la clase MPDF.
+		 * @param  array $detallePlanilla arreglo con los detalles de la planilla de liquidacion.
+		 * Posee entre otros datos, el impuesto, exigibilidad, etc.
+		 * @param  integer $y entero que permite variar la posicion vetrical de la opcion.
+		 * @return pdf retorna pdf de la vista de la planilla con la informacion indicada.
 		 */
 		private function actionGetSubTituloDetalle($mpdf, $detallePlanilla, $y = 0)
 		{
@@ -520,12 +392,25 @@
 
 
 
+
 		/**
-		 * funciona
-		 * @param  [type] $mpdf               [description]
-		 * @param  [type] $detallePlanilla    [description]
-		 * @param  [type] $detallePresupuesto [description]
-		 * @return [type]                     [description]
+		 * Metodo que renderiza una vista con la siguiente informacion:
+		 * Encabezado:
+		 * - Año.
+		 * - Impuesto.
+		 * - Codigo.
+		 * - Monto Impuesto o Tasa.
+		 * - Recargos.
+		 * - Interes.
+		 * - SubTotal.
+		 * Ademas de los datos de cada uno de los encabezados mencionados.
+		 * @param MPDF $mpdf instancia de la clase MPDF.
+		 * @param  array $detallePlanilla arreglo con los detalles de la planilla de liquidacion.
+		 * Posee entre otros datos, el impuesto, exigibilidad, etc.
+		 * @param  array $detallePresupuesto arreglo con los datos del codigo presupuestario al cual
+		 * esta asociado la planilla.
+		 * @param  integer $y entero que permite variar la posicion vetrical de la opcion.
+		 * @return pdf retorna pdf de la vista de la planilla con la informacion indicada.
 		 */
 		private function actionGetViewSegundoDetalle($mpdf, $detallePlanilla, $detallePresupuesto, $y = 0)
 		{
@@ -578,7 +463,32 @@
 
 
 
-		/***/
+
+
+		/**
+		 * Metodo que renderiza una vista con la siguiente informacion:
+		 * Encabezado:
+		 * - Rec/Ret.
+		 * - Descuento.
+		 * - Impuestos o Tasa.
+		 * - Recargos.
+		 * - Interes.
+		 * - Total a pagar (Bs.F).
+		 * Ademas de los datos de cada uno de los encabezados.
+		 * Se realiza la contabilizacion total de la deuda de la planilla y por conceptos:
+		 * - Retenciones y/o Reconocimiento.
+		 * - Impuestos
+		 * - Descuento
+		 * - Recargo
+		 * - Interes
+		 * - Total
+		 * Se coloca la observacion de la planilla que viene con ella.
+		 * @param MPDF $mpdf instancia de la clase MPDF.
+		 * @param  array $detallePlanilla arreglo con los detalles de la planilla de liquidacion.
+		 * Posee entre otros datos, el impuesto, exigibilidad, etc.
+		 * @param  integer $y entero que permite variar la posicion vetrical de la opcion.
+		 * @return pdf retorna pdf de la vista de la planilla con la informacion indicada.
+		 */
 		private function actionGetViewTercerDetalle($mpdf, $detallePlanilla, $y = 0)
 		{
 			$sumaMonto = 0;
@@ -634,7 +544,14 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que renderiza la siguiente informacion:
+		 * - Etiqueta con la descripcion:"VALIDACION TERMINAL: CAJA".
+		 * - Recuadro donde se colocara la rafag validador del banco.
+		 * @param MPDF $mpdf instancia de la clase MPDF.
+		 * @param  integer $y entero que permite variar la posicion vetrical de la opcion.
+		 * @return pdf retorna pdf de la vista de la planilla con la informacion indicada.
+		 */
 		private function actionGetViewRafaga($mpdf, $y = 0)
 		{
 			// Recuadro para imprimir la rafaga bancaria.
@@ -650,7 +567,14 @@
 
 
 
-		/***/
+		/**
+		 * Metodoq ue renderiza una vista con la siguiente informacion:
+		 * - Cuenta recaudadora.
+		 * - Informacion del acceso a la pagina web.
+		 * @param MPDF $mpdf instancia de la clase MPDF.
+		 * @param  integer $y entero que permite variar la posicion vetrical de la opcion.
+		 * @return pdf retorna pdf de la vista de la planilla con la informacion indicada.
+		 */
 		private function actionGetViewInfoCuentaRecaudadoraPaginaWeb($mpdf, $y = 0)
 		{
 			// Informacion de la Cuenta Recaudadora
@@ -670,7 +594,14 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que renderiza una vista con la siguiente informacion:
+		 * - Etiqueta con la descripcion: "CODIGO VERIFICADOR BANCARIO".
+		 * - Recuadro donde se coloca la etiqueta y donde aparece el Codigo Validador Bancario.
+		 * @param MPDF $mpdf instancia de la clase MPDF.
+		 * @param  integer $y entero que permite variar la posicion vetrical de la opcion.
+		 * @return  pdf retorna pdf de la vista de la planilla con la informacion indicada.
+		 */
 		private function actionGetViewCodigoValidador($mpdf, $y = 0)
 		{
 			// Informacion del Codigo validador Bamcario
@@ -693,7 +624,16 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que renderiza la siguiente informacion:
+		 * - Datos del usuario.
+		 * - Linea punteada inferior.
+		 * - Etiqueta que indica el tipo de copia del documento.
+		 * @param MPDF $mpdf instancia de la clase MPDF.
+		 * @param  string  $captionCopia etiqueta.
+		 * @param  integer $y entero que permite variar la posicion vetrical de la opcion.
+		 * @return  pdf retorna pdf de la vista de la planilla con la informacion indicada.
+		 */
 		private function actionGetViewInfoRestante($mpdf, $captionCopia = 'ORIGINAL: CONTRIBUYENTE', $y = 0)
 		{
 			// Linea punteado inferior
