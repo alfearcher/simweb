@@ -111,14 +111,14 @@
 
         public function getDescripcionMedioTransportePropaganda()
         {
-
+          
         return $this->hasOne(MediosTransporte::className(), ['medio_transporte' => 'medio_transporte']);
         }
 
 
 
 
-      
+
 
 
 
