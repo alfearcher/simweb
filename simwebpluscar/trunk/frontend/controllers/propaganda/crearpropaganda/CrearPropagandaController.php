@@ -6,42 +6,42 @@
  */
 
  /**
- * 
- *  > This library is free software; you can redistribute it and/or modify it under 
- *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free 
- *  > Software Foundation; either version 2 of the Licence, or (at your opinion) 
+ *
+ *  > This library is free software; you can redistribute it and/or modify it under
+ *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free
+ *  > Software Foundation; either version 2 of the Licence, or (at your opinion)
  *  > any later version.
- *  > 
- *  > This library is distributed in the hope that it will be usefull, 
- *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability 
- *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence 
+ *  >
+ *  > This library is distributed in the hope that it will be usefull,
+ *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability
+ *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence
  *  > for more details.
- *  > 
+ *  >
  *  > See [LICENSE.TXT](../../LICENSE.TXT) file for more information.
  *
  */
 
- /**    
+ /**
  *  @file CrearPropagandaController.php
- *  
+ *
  *  @author Manuel Alejandro Zapata Canelon
- * 
+ *
  *  @date 07/06/16
- * 
+ *
  *  @class CrearPropagandaController
  *  @brief Controlador que renderiza la vista con el formulario para la inscripcion de la propaganda
- *  
- * 
- *  
- *  
+ *
+ *
+ *
+ *
  *  @property
  *
  *
- *  
+ *
  *
  *  @inherits
- *  
- */ 
+ *
+ */
 
 namespace frontend\controllers\propaganda\crearpropaganda;
 
@@ -77,9 +77,9 @@ class CrearPropagandaController extends Controller
 
 
 
-    
+
   public $layout = 'layout-main';
-   
+
   /**
    * [actionCrearPropaganda description] metodo que renderiza la vista del formulario para la inscripcion de la propaganda
    * @return [type] [description] retorna la vista del formulario
@@ -97,47 +97,47 @@ class CrearPropagandaController extends Controller
                   Yii::$app->response->format = Response::FORMAT_JSON;
                   return ActiveForm::validate($model);
             }
-           
+
             if ( $model->load($postData) ) {
-            
+//die(var_dump($postData));
 
                if ($model->validate()){
-               
+
                 $buscarGuardar = self::beginSave("buscarGuardar", $model);
-                    
+
                     if($buscarGuardar == true){
                      return MensajeController::actionMensaje(100);
                     }else{
-                    
+
                     return MensajeController::actionMensaje(920);
-            }  
-          
-                      
-           
-              }        
-          }  
+            }
+
+
+
+              }
+          }
           return $this->render('/propaganda/crearpropaganda/formulario-crear-propaganda', [
                                                               'model' => $model,
-                                                             
-            ]);
-  
 
-    
+            ]);
+
+
+
   }
 
   public function buscarNumeroSolicitud($conn, $conexion)
   {
-      //die('hola');  
+      //die('hola');
       $buscar = new ParametroSolicitud($_SESSION['id']);
 
-      
+
 
         $buscar->getParametroSolicitud(["tipo_solicitud", "impuesto", "nivel_aprobacion"]);
 
         $resultado = $buscar->getParametroSolicitud(["tipo_solicitud", "impuesto", "nivel_aprobacion"]);
 
-     
-    
+
+
 
       $datos = yii::$app->user->identity;
       $tabla = 'solicitudes_contribuyente';
@@ -150,7 +150,7 @@ class CrearPropagandaController extends Controller
       }
 
       $arregloDatos['impuesto'] = $resultado['impuesto'];
-     
+
       $arregloDatos['id_config_solicitud'] = $_SESSION['id'];
 
       $arregloDatos['id_impuesto'] = 0;
@@ -185,7 +185,7 @@ class CrearPropagandaController extends Controller
               $idSolicitud = $conn->getLastInsertID();
 
           }
-         
+
 
           return $idSolicitud;
 
@@ -203,8 +203,8 @@ class CrearPropagandaController extends Controller
 
       $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
       //die(var_dump($nivelAprobacion));
-      
-     
+
+
       $numeroSolicitud = $idSolicitud;
       $resultado = false;
       $datos = yii::$app->user->identity;
@@ -276,10 +276,10 @@ class CrearPropagandaController extends Controller
       $arregloDatos['usuario'] = $datos->login;
 
       $arregloDatos['unidad'] = $model->unidad;
-      
-  
 
-      if($nivelAprobacion == 1){ 
+
+
+      if($nivelAprobacion == 1){
         //die('1');
 
       $arregloDatos['fecha_hora_proceso'] = date('Y-m-d h:m:i');
@@ -323,8 +323,8 @@ class CrearPropagandaController extends Controller
     public function guardarPropagandaMaestro($conn, $conexion, $model)
     {
 
-     
-    
+
+
       $resultado = false;
       $datos = yii::$app->user->identity;
       $tabla = 'propagandas';
@@ -436,7 +436,7 @@ class CrearPropagandaController extends Controller
       $transaccion = $conn->beginTransaction();
 
           if ($var == "buscarGuardar"){
-            
+
 
               $buscar = self::buscarNumeroSolicitud($conn, $conexion);
 
@@ -453,7 +453,7 @@ class CrearPropagandaController extends Controller
 
                   $guardar = self::guardarSolicitud($conn,$conexion, $idSolicitud, $model);
 
-                  if ($nivelAprobacion['nivel_aprobacion'] != 1){ 
+                  if ($nivelAprobacion['nivel_aprobacion'] != 1){
 
                     //die('no es de aprobacion directa');
 
@@ -472,7 +472,7 @@ class CrearPropagandaController extends Controller
                       $DocumentosRequisito = new DocumentoSolicitud();
 
                       $documentos = $DocumentosRequisito->Documentos();
-                        
+
                         $enviarNumeroSolicitud->plantillaEmailSolicitud($login,$solicitud, $idSolicitud, $documentos);
 
 
@@ -488,7 +488,7 @@ class CrearPropagandaController extends Controller
                       $conn->close();
                       return false;
                   }
-                  
+
                   }else{
                     //die('es de aprobacion directa');
 
@@ -534,26 +534,26 @@ class CrearPropagandaController extends Controller
 
     }
     }
-    
 
-    
 
- 
-              
-            
+
+
+
+
+
 }
-    
 
 
 
-    
-
-   
 
 
-    
 
-    
+
+
+
+
+
+
 
 
 
