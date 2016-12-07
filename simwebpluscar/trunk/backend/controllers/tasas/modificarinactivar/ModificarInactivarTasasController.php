@@ -6,42 +6,42 @@
  */
 
  /**
- * 
- *  > This library is free software; you can redistribute it and/or modify it under 
- *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free 
- *  > Software Foundation; either version 2 of the Licence, or (at your opinion) 
+ *
+ *  > This library is free software; you can redistribute it and/or modify it under
+ *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free
+ *  > Software Foundation; either version 2 of the Licence, or (at your opinion)
  *  > any later version.
- *  > 
- *  > This library is distributed in the hope that it will be usefull, 
- *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability 
- *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence 
+ *  >
+ *  > This library is distributed in the hope that it will be usefull,
+ *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability
+ *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence
  *  > for more details.
- *  > 
+ *  >
  *  > See [LICENSE.TXT](../../LICENSE.TXT) file for more information.
  *
  */
 
- /**    
+ /**
  *  @file ModificarInactivarTasasController.php
- *  
+ *
  *  @author Manuel Alejandro Zapata Canelon
- * 
+ *
  *  @date 13/10/16
- * 
+ *
  *  @class ModificarInactivarTasasController
  *  @brief Controlador que contiene los metodos para la modificacion e inactivacion de las tasas
- *  
- * 
- *  
- *  
+ *
+ *
+ *
+ *
  *  @property
  *
  *
- *  
+ *
  *
  *  @inherits
- *  
- */ 
+ *
+ */
 
 namespace backend\controllers\tasas\modificarinactivar;
 
@@ -73,9 +73,9 @@ class ModificarInactivarTasasController extends Controller
 {
 
 
-  
+
   public $layout = 'layout-main';
-   
+
   /**
    * [actionBusquedaTasa description] metodo que renderiza el formulario para la modificacion de las tasas
    * @return [type] [description]
@@ -86,7 +86,7 @@ class ModificarInactivarTasasController extends Controller
         $post = yii::$app->request->post();
          // die(var_dump($post));
           $model = new BusquedaTasasForm();
-          
+
           $postData = Yii::$app->request->post();
 
             if ( $model->load($postData) && Yii::$app->request->isAjax ){
@@ -95,23 +95,23 @@ class ModificarInactivarTasasController extends Controller
             }
 
             if ( $model->load($postData) ) {
-                
+
                 if ($model->validate()){
                //die(var_dump($model).'hola');
                $_SESSION['datosTasa'] = $model;
 
                 return $this->redirect(['mostrar-modificar-inactivar-tasa']);
-                    
+
                 }
 
             }
-            
+
             return $this->render('/tasas/modificarinactivar/busqueda-tasas', [
                                                               'model' => $model,
-                                                             
-                                                           
+
+
             ]);
-  
+
   }
 
 
@@ -124,12 +124,12 @@ class ModificarInactivarTasasController extends Controller
   public function  actionMostrarModificarInactivarTasa()
   {
       $modelo = $_SESSION['datosTasa'];
-    
+
       $model = new ModificarInactivarTasasForm();
 
           $dataProvider = $model->busquedaTasas($modelo);
 
-          return $this->render('/tasas/modificarinactivar/mostrar-modificar-inactivar-tasa',[ 
+          return $this->render('/tasas/modificarinactivar/mostrar-modificar-inactivar-tasa',[
                                   'dataProvider' => $dataProvider,
 
             ]);
@@ -143,20 +143,20 @@ class ModificarInactivarTasasController extends Controller
    */
   public function actionModificarTasa()
   {
-  die(var_dump(yii::$app->request->get()));
-        
+  //die(var_dump(yii::$app->request->get()));
+
       $idTasa = yii::$app->request->get('value');
-     
+
       $_SESSION['idTasa'] = $idTasa;
-      
+
 
       $modelSearch = new ModificarInactivarTasasForm();
       $model = $modelSearch->busquedaTasasModificar($idTasa);
 
-          if ($model == true){ 
+          if ($model == true){
           //  die(var_dump($model));
            $_SESSION['datosTasa'] = $model;
-            
+
             $modelSearch->attributes = $model->attributes;
           // die(var_dump($model->attributes));
               return $this->render('/tasas/modificarinactivar/view-modificar-tasa', [
@@ -165,7 +165,7 @@ class ModificarInactivarTasasController extends Controller
               ]);
 
           return $this->redirect(['formulario-modificar-tasa']);
-        
+
           }else{
 
               die('no existe propaganda asociado a ese ID');
@@ -184,18 +184,18 @@ class ModificarInactivarTasasController extends Controller
 
             $model = New ModificarInactivarTasasForm();
 
-            
+
             if ( $model->load($postData) && Yii::$app->request->isAjax ){
                   Yii::$app->response->format = Response::FORMAT_JSON;
                   return ActiveForm::validate($model);
             }
-           
+
             if ( $model->load($postData) ) {
              // die(var_dump($postData));
-            
+
 
                if ($model->validate()){
-               
+
                   $modificar = self::beginSave("modificar" , $model);
 
                       if($modificar == true){
@@ -204,16 +204,16 @@ class ModificarInactivarTasasController extends Controller
                           return MensajeController::actionMensaje(920);
                       }
 
-                
+
               }
-          }  
-          
+          }
+
             return $this->render('/tasas/modificarinactivar/view-modificar-tasa', [
                                                               'model' => $model,
-                                                             
-                                                             
+
+
             ]);
-  
+
 
   }
   /**
@@ -247,12 +247,12 @@ class ModificarInactivarTasasController extends Controller
     {
        $idTasa = $_SESSION['idTasa'];
 
-      
+
         $tableName = 'varios';
-        
+
         $arregloCondition = ['id_impuesto' => $idTasa];
-     
-        
+
+
         $arregloDatos['id_codigo'] = $model->id_codigo;
 
         $arregloDatos['impuesto'] = $model->impuesto;
@@ -269,22 +269,22 @@ class ModificarInactivarTasasController extends Controller
 
         $arregloDatos['tipo_rango'] = $model->tipo_rango;
 
-        $arregloDatos['cantidad_ut'] = $model->cantidad_ut; 
+        $arregloDatos['cantidad_ut'] = $model->cantidad_ut;
 
           $conexion = new ConexionController();
 
           $conn = $conexion->initConectar('db');
-             
+
           $conn->open();
 
-      
+
 
                 if ($conexion->modificarRegistro($conn, $tableName, $arregloDatos, $arregloCondition)){
 
-             
+
 
                     return true;
-              
+
                 }
 
     }
@@ -299,35 +299,35 @@ class ModificarInactivarTasasController extends Controller
     {
        $idTasa = $_SESSION['idTasa'];
 
-      
+
         $tableName = 'varios';
-        
+
         $arregloCondition = ['id_impuesto' => $idTasa];
-     
+
         $arregloDatos['inactivo'] = 1;
 
 
-         
+
 
           $conexion = new ConexionController();
 
           $conn = $conexion->initConectar('db');
-             
+
           $conn->open();
 
-      
+
 
                 if ($conexion->modificarRegistro($conn, $tableName, $arregloDatos, $arregloCondition)){
 
-             
+
 
                     return true;
-              
+
                 }
 
     }
 
-   
+
     /**
      * [beginSave description] metodo padre que direcciona hacia los metodos de modificacion o inactivacion de tasas
      * @param  [type] $var   [description] variable tipo string que sirve para el redireccionamiento de metodos de inactivacion o modificacion
@@ -346,19 +346,19 @@ class ModificarInactivarTasasController extends Controller
       $transaccion = $conn->beginTransaction();
 
           if ($var == "modificar"){
-            
+
 
               $modificar = self::modificarTasas($conn, $conexion, $model);
 
-             
+
               if ($modificar == true){
 
-                
+
 
                     $transaccion->commit();
                     $conn->close();
 
-                     
+
                     return true;
 
 
@@ -368,21 +368,21 @@ class ModificarInactivarTasasController extends Controller
                     $conn->close();
                     return false;
               }
-                  
-                 
+
+
           }else if($var == "inactivar"){
 
                $inactivar = self::inactivarTasa($conn, $conexion);
 
-             
+
               if ($inactivar == true){
 
-                
+
 
                     $transaccion->commit();
                     $conn->close();
 
-                     
+
                     return true;
 
 
@@ -396,25 +396,25 @@ class ModificarInactivarTasasController extends Controller
           }
 
   }
- 
+
 
 
 }
 
 
 
-    
 
 
 
-    
-
-   
 
 
-    
 
-    
+
+
+
+
+
+
 
 
 
