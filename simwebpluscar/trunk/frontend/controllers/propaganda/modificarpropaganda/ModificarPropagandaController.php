@@ -163,11 +163,26 @@ class ModificarPropagandaController extends Controller
    */
   public function actionModificarPropaganda()
   {
-          // die(var_dump($_SESSION['datosPropaganda']).'hola');
+           //die(var_dump($_SESSION['datosPropaganda']));
             $datosPropaganda = $_SESSION['datosPropaganda'];
+            $postData = yii::$app->request->post();
+            die(var_dump($postData));
+            $model = New ModificarPropagandaForm();
 
 
-              $verificarSolicitud = self::verificarSolicitud($datosPropaganda->id_impuesto , $_SESSION['id']);
+            if ( $model->load($postData) && Yii::$app->request->isAjax ){
+                  Yii::$app->response->format = Response::FORMAT_JSON;
+                  return ActiveForm::validate($model);
+            }
+
+            if ( $model->load($postData) ) {
+             // die(var_dump($postData));
+
+
+               if ($model->validate()){
+               //die('valido');
+
+                 $verificarSolicitud = self::verificarSolicitud($datosPropaganda->id_impuesto , $_SESSION['id']);
 
                      if($verificarSolicitud == true){
                        return MensajeController::actionMensaje(403);
@@ -184,9 +199,14 @@ class ModificarPropagandaController extends Controller
 
 
              }
+              }
+          }
+          // die(var_dump($datosPropaganda));
+          return $this->render('/propaganda/modificarpropaganda/formulario-modificar-propaganda', [
+                                                              'model' => $model,
+                                                              //'datos' => $datosPropaganda,
 
-
-
+            ]);
 
 
 
