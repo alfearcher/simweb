@@ -110,7 +110,7 @@
 				if ( $result[0]['trimestre'] > 0 ) {
 					if ( $result[0]['impuesto'] == 1 ) {	// Actividad Economica.
 
-						return self::actionCrearPlanillaActEconPdf($result);
+						self::actionCrearPlanillaActEconPdf($result);
 
 					} elseif ( $result[0]['impuesto'] == 2 || $result[0]['impuesto'] == 12 ) {	// Inmueble
 
@@ -152,6 +152,54 @@
 
 
 
+		/***/
+		private function actionCrearPlanillaActEconPdf($detallePlanilla)
+		{
+
+			$y = 0;
+
+			$mpdf = new mPDF;
+			$nombre = 'PL' . $detallePlanilla[0]['pagos']['planilla'] . ' - ' . date('Y-m-d H:i:s') . '.pdf';
+
+			self::actionViewEncabezadoPrincipal($mpdf);
+			$mpdf->Ln(8);
+
+			self::actionGetViewPrimerEncabezado($mpdf, $detallePlanilla);
+			self::actionGetSubTituloDetalle($mpdf, $detallePlanilla);
+			self::actionGetViewSegundoDetalle($mpdf, $detallePlanilla, $detallePresupuesto);
+			self::actionGetViewTercerDetalle($mpdf, $detallePlanilla);
+
+			self::actionGetViewRafaga($mpdf);
+			self::actionGetViewInfoCuentaRecaudadoraPaginaWeb($mpdf);
+			self::actionGetViewCodigoValidador($mpdf);
+
+			self::actionGetViewInfoRestante($mpdf);
+
+			// Parte inferior
+			$mpdf->Ln(71);
+
+			$y = 132;
+			self::actionViewEncabezadoPrincipal($mpdf, $y);
+			$mpdf->Ln(15);
+			self::actionGetViewPrimerEncabezado($mpdf, $detallePlanilla, $y);
+			self::actionGetSubTituloDetalle($mpdf, $detallePlanilla , $y);
+			self::actionGetViewSegundoDetalle($mpdf, $detallePlanilla, $detallePresupuesto, $y);
+			self::actionGetViewTercerDetalle($mpdf, $detallePlanilla, $y);
+
+			self::actionGetViewRafaga($mpdf, $y);
+			self::actionGetViewInfoCuentaRecaudadoraPaginaWeb($mpdf, $y);
+
+			self::actionGetViewCodigoValidador($mpdf, $y);
+			self::actionGetViewInfoRestante($mpdf, strtoupper(Yii::$app->oficina->getNombre()), $y);
+
+			$mpdf->Output($nombre, 'I');
+	       	exit;
+
+		}
+
+
+
+
 
 		/**
 		 * Metodo que arma la planilla de periodos iguales a cero que fueron liquidadas
@@ -184,10 +232,10 @@
 
 			self::actionGetViewInfoRestante($mpdf);
 
+			// Parte inferior
+			$mpdf->Ln(71);
 
-			$mpdf->Ln(60);
-
-			$y = 122;
+			$y = 132;
 			self::actionViewEncabezadoPrincipal($mpdf, $y);
 			$mpdf->Ln(10);
 			self::actionGetViewPrimerEncabezado($mpdf, $detallePlanilla, $y);
@@ -329,23 +377,9 @@
 	       												$this->_contribuyente->razon_social,
 	       												$this->_contribuyente->apellidos,
 	       												$this->_contribuyente->nombres);
-	       	$mpdf->SetFont('Arial', '', 7);
 
-	       	// Mover a 60 milimetro a la derecha.
-	       	$mpdf->Cell(60);
-	       	// Parametros significa lo siguiente:
-	       	// width, height, texto, 0 => no se dibuja la linea, 1 => si,
-	       	// La 'C' centrar
 
-	       	$mpdf->Cell(125, 2, strtoupper($contribuyente), 0, 0, 'C');
-
-	       	// Datos de la Domicilio principal
-	       	$mpdf->Ln(4);
-	       	$mpdf->Cell(60);
-			$mpdf->MultiCell(125, 2, strtoupper($this->_contribuyente->domicilio_fiscal), 0, 'C');
-			$mpdf->Cell(0, 0, '', 0, 1, 'C');
-
-			if ( $this->_contribuyente->tipo_naturaleza == 0 ) {
+	       	if ( $this->_contribuyente->tipo_naturaleza == 0 ) {
 				$labelCedulaRif = 'CEDULA: ';
 			} else {
 				$labelCedulaRif = 'R.I.F: ';
@@ -353,7 +387,31 @@
 
 			$labelCatastro = 'Catastro: ';
 
+			$mpdf->SetFont('Arial', '', 7);
+
 			$mpdf->Text(100, 26 + $y, $labelCedulaRif . strtoupper($cedulaRif) . '    ' . $labelCatastro);
+
+	       	// Mover a 60 milimetro a la derecha.
+	       	$mpdf->Cell(60);
+	       	// Parametros significa lo siguiente:
+	       	// width, height, texto, 0 => no se dibuja la linea, 1 => si,
+	       	// La 'C' centrar
+
+
+	       	$mpdf->Cell(125, 2, strtoupper($contribuyente), 0, 1, 'C');
+
+	       	// Datos de la Domicilio principal
+	       	$mpdf->Ln(1);
+	       	$mpdf->Cell(60);
+	       	$justificar = 'J';
+	       	$espacio = 3;
+	       	$lengDomicilio = strlen(trim($this->_contribuyente->domicilio_fiscal));
+	       	if ( $lengDomicilio <= 85 ) {
+	       		$justificar = 'C';
+	       		$espacio = 2;
+	       	}
+			$mpdf->MultiCell(125, $espacio, strtoupper($this->_contribuyente->domicilio_fiscal), 0, $justificar);
+			$mpdf->Cell(0, 0, '', 0, 1, 'C');
 
 		}
 
@@ -417,41 +475,124 @@
 			$sumaDescuento = 0;
 			$sumaReconocimiento = 0;
 			$subTotal = 0;
+			$lapsos = [];
 
 			//Detalle que van debajo del subtitulo
 			$mpdf->SetFont('Arial', 'B', 7);
 
 			$mpdf->Cell(-10);
-			$mpdf->Cell(15, 5, 'AÑO', 0, 0, 'C');
-			$mpdf->Cell(25, 5, 'IMPUESTO', 0, 0, 'C');
-			$mpdf->Cell(24, 5, 'CODIGO', 0, 0, 'C');
-			$mpdf->Cell(35, 5, 'MONTO IMPUESTO O TASA', 0, 0, 'C');
-			$mpdf->Cell(28, 5, 'RECARGOS', 0, 0, 'C');
-			$mpdf->Cell(28, 5, 'INTERES', 0, 0, 'C');
-			$mpdf->Cell(40, 5, 'SUBTOTAL', 0, 1, 'C');
+			$mpdf->Cell(10, 5, 'AÑO', 0, 0, 'C');
 
-			foreach ( $detallePlanilla as $detalle ) {
-				$sumaMonto = (float)$detalle['monto'] + $sumaMonto;
-				$sumaRecargo = (float)$detalle['recargo'] + $sumaRecargo;
-				$sumaInteres = (float)$detalle['interes'] + $sumaInteres;
-				$sumaDescuento = (float)$detalle['descuento'] + $sumaDescuento;
-				$sumaReconocimiento = (float)$detalle['monto_reconocimiento'] + $sumaReconocimiento;
+			if ( $detallePlanilla[0]['trimestre'] > 0 ) {
+				$mpdf->Cell(30, 5, 'PERIODO(S)', 0, 0, 'C');
+				$lapsos = $this->_searchPlanilla->getArmarLapso($detallePlanilla);
+
+				$mpdf->Cell(55, 5, 'MONTO IMPUESTO O TASA', 0, 0, 'C');
+				$mpdf->Cell(30, 5, 'RECARGOS', 0, 0, 'C');
+				$mpdf->Cell(30, 5, 'INTERES', 0, 0, 'C');
+				$mpdf->Cell(40, 5, 'SUBTOTAL', 0, 1, 'C');
+
+			} elseif ( $detallePlanilla[0]['trimestre'] == 0 ) {
+				$mpdf->Cell(30, 5, 'IMPUESTO', 0, 0, 'C');
+				$mpdf->Cell(24, 5, 'CODIGO', 0, 0, 'C');
+				$mpdf->Cell(35, 5, 'MONTO IMPUESTO O TASA', 0, 0, 'C');
+				$mpdf->Cell(28, 5, 'RECARGOS', 0, 0, 'C');
+				$mpdf->Cell(28, 5, 'INTERES', 0, 0, 'C');
+				$mpdf->Cell(40, 5, 'SUBTOTAL', 0, 1, 'C');
+
 			}
+			$mpdf->Rect(5, 50 + $y, 195, 5);
 
-			$subTotal = (float)(($sumaMonto + $sumaRecargo + $sumaInteres));
 
+			$mpdf->SetX(5);
 		 	$mpdf->SetFont('Arial', '', 7);
 			// Datos del encabezado anterior.
-			$mpdf->Cell(-10);
-			$mpdf->Cell(15, 5, $detallePlanilla[0]['ano_impositivo'], 0, 0, 'C');
-			$mpdf->Cell(25, 5, $detallePlanilla[0]['impuestos']['descripcion'], 0, 0, 'C');
-			$mpdf->Cell(24, 5, $detallePresupuesto['codigo'], 0, 0, 'C');
-			$mpdf->Cell(35, 5, number_format($sumaMonto, 2), 0, 0, 'C');
-			$mpdf->Cell(28, 5, number_format($sumaRecargo, 2), 0, 0, 'C');
-			$mpdf->Cell(28, 5, number_format($sumaInteres, 2), 0, 0, 'C');
-			$mpdf->Cell(40, 5, number_format($subTotal, 2), 0, 1, 'C');
+			//$mpdf->Cell(-10);
 
-			$mpdf->Rect(5, 50 + $y, 195, 5);
+			if ( $detallePlanilla[0]['trimestre'] > 0 ) {
+
+				// Esto permitira saber cuanto periodos faltan para completar los doces.
+				$espacioPeriodo = 30;
+
+				foreach ( $lapsos as $key => $value ) {		// año => arreglo de periodos.
+					$sumaMonto = 0;
+					$sumaRecargo = 0;
+					$sumaInteres = 0;
+					$sumaDescuento = 0;
+					$sumaReconocimiento = 0;
+					$subTotal = 0;
+
+					$espacioFaltante = 0;
+
+					// Contabilizacion de la deuda por año.
+					foreach ( $detallePlanilla as $detalle ) {
+						if ( $key == $detalle['ano_impositivo'] ) {
+
+							$sumaMonto = (float)$detalle['monto'] + $sumaMonto;
+							$sumaRecargo = (float)$detalle['recargo'] + $sumaRecargo;
+							$sumaInteres = (float)$detalle['interes'] + $sumaInteres;
+							$sumaDescuento = (float)$detalle['descuento'] + $sumaDescuento;
+							$sumaReconocimiento = (float)$detalle['monto_reconocimiento'] + $sumaReconocimiento;
+
+						}
+					}
+
+					$espacioFaltante = $espacioPeriodo;
+
+					// Totalizacion de impuesto + recargo + interes.
+					$subTotal = (float)(($sumaMonto + $sumaRecargo + $sumaInteres));
+
+					$mpdf->SetX(5);
+					// Se coloca el año respectivo.
+					$mpdf->Cell(10, 3, $key, 0, 0, 'C');
+
+					// Lo siguiente muestra los periodo uno al lado de otro.
+					foreach ( $value as $i => $periodo ) {
+						if ( $periodo >= 10 ) {
+							$espacio = 4;
+							$espacioFaltante = $espacioFaltante - $espacio;
+
+						} else {
+							$espacio = 2;
+							$espacioFaltante = $espacioFaltante - $espacio;
+
+						}
+						$mpdf->Cell($espacio, 3, $periodo, 0, 0, 'C');
+					}
+					$mpdf->Cell($espacioFaltante, 3, '', 0, 0, 'C');
+
+					$mpdf->Cell(55, 3, number_format($sumaMonto, 2), 0, 0, 'C');
+					$mpdf->Cell(30, 3, number_format($sumaRecargo, 2), 0, 0, 'C');
+					$mpdf->Cell(30, 3, number_format($sumaInteres, 2), 0, 0, 'C');
+					$mpdf->Cell(40, 3, number_format($subTotal, 2), 0, 1, 'C');
+
+				}
+
+
+			} elseif ( $detallePlanilla[0]['trimestre'] == 0 ) {
+
+				foreach ( $detallePlanilla as $detalle ) {
+					$sumaMonto = (float)$detalle['monto'] + $sumaMonto;
+					$sumaRecargo = (float)$detalle['recargo'] + $sumaRecargo;
+					$sumaInteres = (float)$detalle['interes'] + $sumaInteres;
+					$sumaDescuento = (float)$detalle['descuento'] + $sumaDescuento;
+					$sumaReconocimiento = (float)$detalle['monto_reconocimiento'] + $sumaReconocimiento;
+				}
+
+				$subTotal = (float)(($sumaMonto + $sumaRecargo + $sumaInteres));
+
+				$mpdf->Cell(10, 5, $detallePlanilla[0]['ano_impositivo'], 0, 0, 'C');
+				$mpdf->Cell(30, 5, $detallePlanilla[0]['impuestos']['descripcion'], 0, 0, 'C');
+				$mpdf->Cell(24, 5, $detallePresupuesto['codigo'], 0, 0, 'C');
+				$mpdf->Cell(35, 5, number_format($sumaMonto, 2), 0, 0, 'C');
+				$mpdf->Cell(28, 5, number_format($sumaRecargo, 2), 0, 0, 'C');
+				$mpdf->Cell(28, 5, number_format($sumaInteres, 2), 0, 0, 'C');
+				$mpdf->Cell(40, 5, number_format($subTotal, 2), 0, 1, 'C');
+
+			}
+
+
+
 
 		}
 
@@ -531,7 +672,7 @@
 			$mpdf->MultiCell(195, 5, $detallePlanilla[0]['descripcion'], 0, 'J');
 
 			$mpdf->Cell(-10);
-			$mpdf->Rect(5, 65 + $y, 195, 5);
+			//$mpdf->Rect(5, 65 + $y, 195, 5);
 
 
 		}
@@ -552,11 +693,11 @@
 		{
 			// Recuadro para imprimir la rafaga bancaria.
 			// Validacion Terminal Caja.
-	       	$mpdf->RoundedRect(5, 88 + $y, 110, 25, 3, D);
+	       	$mpdf->RoundedRect(5, 100 + $y, 110, 25, 3, D);
 
 	       	// Validacion terminal caja
 			$mpdf->SetFont('Arial', 'B', 7);
-	       	$mpdf->Text(10, 92 + $y, 'VALIDACION TERMINAL: CAJA');
+	       	$mpdf->Text(10, 114 + $y, 'VALIDACION TERMINAL: CAJA');
 		}
 
 
@@ -576,15 +717,15 @@
 			// Informacion de la Cuenta Recaudadora
 	       	$cuentaRecaudadora = '0128-0063-18-6300031652';
 	       	$mpdf->SetFont('Arial', 'I', 8);
-	       	$mpdf->Text(125, 90 + $y, 'Nro: Cuenta Recaudadora: ' . $cuentaRecaudadora);
+	       	$mpdf->Text(125, 102 + $y, 'Nro: Cuenta Recaudadora: ' . $cuentaRecaudadora);
 
 	       	// Informacion de acceso web
 	       	$accesoWeb = Yii::$app->ente->getPortalWeb();
 	       	$mpdf->SetFont('Arial', 'I', 7);
-	       	$mpdf->Text(138, 95 + $y, 'Ahora puede acceder desde el portal');
+	       	$mpdf->Text(138, 107 + $y, 'Ahora puede acceder desde el portal');
 
 	       	$mpdf->SetFont('Arial', 'I', 7);
-	       	$mpdf->Text(143, 98 + $y, $accesoWeb);
+	       	$mpdf->Text(143, 110 + $y, $accesoWeb);
 
 		}
 
@@ -602,18 +743,18 @@
 		{
 			// Informacion del Codigo validador Bamcario
 	       	$mpdf->SetFillColor(225, 225, 225);
-	       	$mpdf->RoundedRect(117, 103 + $y, 45, 8, 2, DF);
+	       	$mpdf->RoundedRect(117, 115 + $y, 45, 8, 2, DF);
 
 	       	$mpdf->SetFont('Arial', 'B', 7);
-	       	$mpdf->Text(119, 108 + $y, 'CODIGO VERIFICADOR BANCARIO');
+	       	$mpdf->Text(119, 120 + $y, 'CODIGO VERIFICADOR BANCARIO');
 
 
 	       	// Donde se coloca el CVB
-	       	$mpdf->RoundedRect(162, 103 + $y, 30, 8, 2, D);
+	       	$mpdf->RoundedRect(162, 115 + $y, 30, 8, 2, D);
 
 	       	$cvb = '123456';
 	       	$mpdf->SetFont('Arial', 'B', 8);
-	       	$mpdf->Text(172, 108 + $y, $cvb);
+	       	$mpdf->Text(172, 120 + $y, $cvb);
 
 		}
 
@@ -634,64 +775,25 @@
 		{
 			// Linea punteado inferior
 	       	$mpdf->SetDash(1, 1);
-	       	$mpdf->Line(5, 120 + $y, 200, 120 + $y);
+	       	$mpdf->Line(5, 132 + $y, 200, 132 + $y);
 
 
 	       	// Informacion del Operador
 	       	$user = Yii::$app->identidad->getUsuario();
 	       	$mpdf->SetFont('Arial', '', 6);
-	       	$mpdf->Text(8, 118 + $y, 'Operador    ' . $user);
+	       	$mpdf->Text(8, 130 + $y, 'Operador    ' . $user);
 
 
 	       	// Informacion de tipo de copia
 	       	$mpdf->SetFont('Arial', 'B', 6);
-	       	$mpdf->Text(70, 118 + $y, $captionCopia);
+	       	$mpdf->Text(70, 130 + $y, $captionCopia);
 
 
 	       	// Informacion del momento de la descarga.
 	       	$mpdf->SetFont('Arial', '', 6);
-	       	$mpdf->Text(116, 115 + $y, date('Y-m-d H:i:s'));
+	       	$mpdf->Text(116, 127 + $y, date('Y-m-d H:i:s'));
 
 		}
-
-
-
-
-
-		/***/
-		private function actionCrearPlanillaActEconPdf($model)
-		{
-			// Encabezado e identificador de la Alcaldia
-			$htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/planilla/layout/layout-identificador-alcaldia-pdf',[
-
-            					]);
-
-
-			 $mpdf = new mPDF;
-
-			 $nombre = 'prueba.pdf';
-	        //$mpdf->SetHeader($nombrePDF);
-	       // $mpdf->WriteHTML($htmlEncabezado);
-
-	       //funciona
-	       // $mpdf->Rect(18, 230, 100, 30, D);
-
-	        // eje x, y, w=width, h=height, r=radius, estilo de la linea
-	        // 											D = dibuja linea
-	        // 											F
-	        // 											DF
-	       $mpdf->RoundedRect(18, 230, 120, 30, 3, D);
-	       $mpdf->SetFont('Arial', 'B', 8);
-	       $mpdf->Text(60,258,"Validacion terminal caja");
-
-	       // Se coloca el QR
-	       $mpdf->WriteFixedPosHTML($htmlEncabezado, 100, 220, 120, 30);
-
-
-	       $mpdf->Output($nombre, 'I');
-	       exit;
-		}
-
 
 
 
@@ -728,6 +830,7 @@
 			}
 			return $nombrePDF;
 		}
+
 
 
 	}
