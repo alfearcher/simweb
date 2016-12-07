@@ -25,9 +25,9 @@ $this->title = 'Propaganda';
 
    <?php
         $form = ActiveForm::begin([
-            //'action' => ['modificar-propaganda'],
+            'action' => ['modificar-propaganda'],
             'id' => 'form-propaganda',
-            'method' => 'post',
+          //  'method' => 'post',
             'enableClientValidation' => true,
             'enableAjaxValidation' => false,
             'enableClientScript' => true,
@@ -761,9 +761,19 @@ function puntitos( donde, caracter, campo ) {
 
         <div class="row">
 
-            <div class="col-sm-6">
-              <?= Html::a('Modificar', ['modificar-propaganda'], ['class'=>'btn btn-primary']) ?>
-            </div>
+          <div class="col-sm-4" >
+
+                  <?= Html::submitButton(Yii::t('frontend' , 'Modificar'),
+                                                                            [
+                                                                              'id' => 'btn-search',
+                                                                              'class' => 'btn btn-success',
+                                                                              'name' => 'btn-search',
+                                                                              'value' => 1,
+                                                                              'style' => 'height:30px;width:100px;margin-right:0px;',
+                                                                            ])
+                  ?>
+
+          </div>
 
 
             <div class="col-sm-3" >
