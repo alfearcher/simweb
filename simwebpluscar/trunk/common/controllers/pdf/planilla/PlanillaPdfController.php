@@ -484,10 +484,10 @@
 			$mpdf->Cell(10, 5, 'AÑO', 0, 0, 'C');
 
 			if ( $detallePlanilla[0]['trimestre'] > 0 ) {
-				$mpdf->Cell(30, 5, 'PERIODO(S)', 0, 0, 'C');
+				$mpdf->Cell(40, 5, 'PERIODO(S)', 0, 0, 'C');
 				$lapsos = $this->_searchPlanilla->getArmarLapso($detallePlanilla);
 
-				$mpdf->Cell(55, 5, 'MONTO IMPUESTO O TASA', 0, 0, 'C');
+				$mpdf->Cell(45, 5, 'MONTO IMPUESTO O TASA', 0, 0, 'C');
 				$mpdf->Cell(30, 5, 'RECARGOS', 0, 0, 'C');
 				$mpdf->Cell(30, 5, 'INTERES', 0, 0, 'C');
 				$mpdf->Cell(40, 5, 'SUBTOTAL', 0, 1, 'C');
@@ -561,8 +561,8 @@
 					}
 					$mpdf->Cell($espacioFaltante, 3, '', 0, 0, 'C');
 
-					$mpdf->Cell(55, 3, number_format($sumaMonto, 2), 0, 0, 'C');
-					$mpdf->Cell(30, 3, number_format($sumaRecargo, 2), 0, 0, 'C');
+					$mpdf->Cell(60, 3, number_format($sumaMonto, 2), 0, 0, 'C');
+					$mpdf->Cell(25, 3, number_format($sumaRecargo, 2), 0, 0, 'C');
 					$mpdf->Cell(30, 3, number_format($sumaInteres, 2), 0, 0, 'C');
 					$mpdf->Cell(40, 3, number_format($subTotal, 2), 0, 1, 'C');
 
