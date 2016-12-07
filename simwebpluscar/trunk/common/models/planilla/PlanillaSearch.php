@@ -257,7 +257,7 @@
 
 				} else {
 
-					return $model;
+					return $model = $model->joinWith('tasa O', true, 'INNER JOIN');
 
 				}
 
@@ -280,6 +280,61 @@
 			$model = $codigo->findOne($idCodigo);
 
 			return $model;
+		}
+
+
+
+
+		/**
+		 * Metodo que arma un arraglo de años y sa cada año se le asocia sus periodos
+		 * respectivo.
+		 * @param  array  $detallePlanilla arreglo de datos de la detalle de la planilla.
+		 * @return array retorna un arreglo.
+		 */
+		public function getArmarLapso($detallePlanilla = [])
+		{
+			$lapso = [];
+			$año = [];
+			$periodo = [];
+
+			foreach ( $detallePlanilla as $detalle ) {
+				// Se arma un arreglo de solo años impositivos.
+				if ( count($año) > 0 ) {
+					$año[$detalle['ano_impositivo']] = $detalle['ano_impositivo'];
+				} else {
+					if ( !array_key_exists($detalle['ano_impositivo'], $año) ) {
+						$año[$detalle['ano_impositivo']] = $detalle['ano_impositivo'];
+					}
+				}
+			}
+
+			// Se asegura que el array quede ordenado por año de manera ascendente.
+			ksort($año);
+
+			// Se crear un rango de año
+			$primero = reset($año);
+			$ultimo = end($año);
+
+			foreach ( $año as $i => $value) {
+				$periodo = null;
+
+				// Ahora a cada año se le asociara su conjunto de periodos correspondiente
+				// Si el año posee ese periodo se le asignara.
+				foreach ( $detallePlanilla as $detalle ) {
+					if ( (int)$año[$i] == (int)$detalle['ano_impositivo'] ) {
+						$periodo[] = $detalle['trimestre'];
+					}
+				}
+				if ( $periodo !== null ) {
+					ksort($periodo);
+					$año[$i] = $periodo;
+				}
+
+			}
+			$lapso = $año;
+
+			return $lapso;
+
 		}
 
 
