@@ -660,12 +660,15 @@
 			$mpdf->SetFont('Arial', '', 6);
 
 			$mpdf->Cell(-10);
-			$mpdf->Cell(30, 5, number_format($sumaReconocimiento, 2), 0, 0, 'C');
-			$mpdf->Cell(30, 5, number_format($sumaDescuento, 2), 0, 0, 'C');
-			$mpdf->Cell(35, 5, number_format($sumaMonto, 2), 0, 0, 'C');
-			$mpdf->Cell(30, 5, number_format($sumaRecargo, 2), 0, 0, 'C');
-			$mpdf->Cell(30, 5, number_format($sumaInteres, 2), 0, 0, 'C');
-			$mpdf->Cell(40, 5, number_format($total, 2), 0, 1, 'C');
+			$mpdf->Cell(30, 3, number_format($sumaReconocimiento, 2), 0, 0, 'C');
+			$mpdf->Cell(30, 3, number_format($sumaDescuento, 2), 0, 0, 'C');
+			$mpdf->Cell(35, 3, number_format($sumaMonto, 2), 0, 0, 'C');
+			$mpdf->Cell(30, 3, number_format($sumaRecargo, 2), 0, 0, 'C');
+			$mpdf->Cell(30, 3, number_format($sumaInteres, 2), 0, 0, 'C');
+			$mpdf->Cell(40, 3, number_format($total, 2), 0, 0, 'C');
+
+			$mpdf->SetX(5);
+			$mpdf->Cell(195, 5, '', 1, 1, 'C');
 
 			// Campo donde se muestra la observacion de la planilla.
 			$mpdf->Cell(-10);
@@ -697,7 +700,7 @@
 
 	       	// Validacion terminal caja
 			$mpdf->SetFont('Arial', 'B', 7);
-	       	$mpdf->Text(10, 114 + $y, 'VALIDACION TERMINAL: CAJA');
+	       	$mpdf->Text(10, 103 + $y, 'VALIDACION TERMINAL: CAJA');
 		}
 
 
