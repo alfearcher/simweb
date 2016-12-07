@@ -410,6 +410,7 @@
 			$mpdf->Cell(35, 5, date('d-m-Y'), 1, 0, 'C');
 			// Fecha Vcto
 			$fechaVcto = date('d-m-Y');		// Invocar metodo que devuelva la fecha final de un mes.
+			$mpdf->SetFont('Arial', 'B', 10);
 			$mpdf->Cell(35, 5, $fechaVcto, 1, 0, 'C');
 			// ID Contribuyente
 			$mpdf->Cell(45, 5, $this->_contribuyente->id_contribuyente, 1, 0, 'C');
@@ -808,6 +809,7 @@
 			$mpdf->Cell(35, 3, number_format($sumaMonto, 2), 0, 0, 'C');
 			$mpdf->Cell(30, 3, number_format($sumaRecargo, 2), 0, 0, 'C');
 			$mpdf->Cell(30, 3, number_format($sumaInteres, 2), 0, 0, 'C');
+			$mpdf->SetFont('Arial', 'B', 9);
 			$mpdf->Cell(40, 3, number_format($total, 2), 0, 0, 'C');
 
 			$mpdf->SetX(5);
@@ -899,7 +901,7 @@
 	       	$mpdf->RoundedRect(162, 115 + $y, 30, 8, 2, D);
 
 	       	$cvb = '123456';
-	       	$mpdf->SetFont('Arial', 'B', 8);
+	       	$mpdf->SetFont('Arial', 'B', 10);
 	       	$mpdf->Text(172, 120 + $y, $cvb);
 
 		}
