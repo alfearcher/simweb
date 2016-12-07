@@ -114,7 +114,11 @@
 
 					} elseif ( $result[0]['impuesto'] == 2 || $result[0]['impuesto'] == 12 ) {	// Inmueble
 
+						self::actionCrearPlanillaInmueblePdf($result);
+
 					} elseif ( $result[0]['impuesto'] == 3 ) {	// Vehiculo
+
+						self::actionCrearPlanillaVehiculoPdf($result);
 
 					}
 
@@ -148,6 +152,108 @@
 
 			return false;
 		}
+
+
+
+
+		/***/
+		private function actionCrearPlanillaInmueblePdf($detallePlanilla)
+		{
+
+			$y = 0;
+			$datosVehiculo = $detallePlanilla[0]['inmueble'];
+
+			$mpdf = new mPDF;
+			$nombre = 'PL' . $detallePlanilla[0]['pagos']['planilla'] . ' - ' . date('Y-m-d H:i:s') . '.pdf';
+
+			self::actionViewEncabezadoPrincipal($mpdf, 0, $datosVehiculo);
+			$mpdf->Ln(8);
+
+			self::actionGetViewPrimerEncabezado($mpdf, $detallePlanilla);
+			self::actionGetSubTituloDetalle($mpdf, $detallePlanilla);
+			self::actionGetViewSegundoDetalle($mpdf, $detallePlanilla, $detallePresupuesto);
+			self::actionGetViewTercerDetalle($mpdf, $detallePlanilla);
+
+			self::actionGetViewRafaga($mpdf);
+			self::actionGetViewInfoCuentaRecaudadoraPaginaWeb($mpdf);
+			self::actionGetViewCodigoValidador($mpdf);
+
+			self::actionGetViewInfoRestante($mpdf);
+
+			// Parte inferior
+			$mpdf->Ln(71);
+
+			$y = 132;
+			self::actionViewEncabezadoPrincipal($mpdf, $y, $datosVehiculo);
+			$mpdf->Ln(15);
+			self::actionGetViewPrimerEncabezado($mpdf, $detallePlanilla, $y);
+			self::actionGetSubTituloDetalle($mpdf, $detallePlanilla , $y);
+			self::actionGetViewSegundoDetalle($mpdf, $detallePlanilla, $detallePresupuesto, $y);
+			self::actionGetViewTercerDetalle($mpdf, $detallePlanilla, $y);
+
+			self::actionGetViewRafaga($mpdf, $y);
+			self::actionGetViewInfoCuentaRecaudadoraPaginaWeb($mpdf, $y);
+
+			self::actionGetViewCodigoValidador($mpdf, $y);
+			self::actionGetViewInfoRestante($mpdf, strtoupper(Yii::$app->oficina->getNombre()), $y);
+
+			$mpdf->Output($nombre, 'I');
+	       	exit;
+
+		}
+
+
+
+
+
+		/***/
+		private function actionCrearPlanillaVehiculoPdf($detallePlanilla)
+		{
+
+			$y = 0;
+			$datosVehiculo = $detallePlanilla[0]['vehiculo'];
+
+			$mpdf = new mPDF;
+			$nombre = 'PL' . $detallePlanilla[0]['pagos']['planilla'] . ' - ' . date('Y-m-d H:i:s') . '.pdf';
+
+			self::actionViewEncabezadoPrincipal($mpdf, 0, $datosVehiculo);
+			$mpdf->Ln(8);
+
+			self::actionGetViewPrimerEncabezado($mpdf, $detallePlanilla);
+			self::actionGetSubTituloDetalle($mpdf, $detallePlanilla);
+			self::actionGetViewSegundoDetalle($mpdf, $detallePlanilla, $detallePresupuesto);
+			self::actionGetViewTercerDetalle($mpdf, $detallePlanilla);
+
+			self::actionGetViewRafaga($mpdf);
+			self::actionGetViewInfoCuentaRecaudadoraPaginaWeb($mpdf);
+			self::actionGetViewCodigoValidador($mpdf);
+
+			self::actionGetViewInfoRestante($mpdf);
+
+			// Parte inferior
+			$mpdf->Ln(71);
+
+			$y = 132;
+			self::actionViewEncabezadoPrincipal($mpdf, $y, $datosVehiculo);
+			$mpdf->Ln(15);
+			self::actionGetViewPrimerEncabezado($mpdf, $detallePlanilla, $y);
+			self::actionGetSubTituloDetalle($mpdf, $detallePlanilla , $y);
+			self::actionGetViewSegundoDetalle($mpdf, $detallePlanilla, $detallePresupuesto, $y);
+			self::actionGetViewTercerDetalle($mpdf, $detallePlanilla, $y);
+
+			self::actionGetViewRafaga($mpdf, $y);
+			self::actionGetViewInfoCuentaRecaudadoraPaginaWeb($mpdf, $y);
+
+			self::actionGetViewCodigoValidador($mpdf, $y);
+			self::actionGetViewInfoRestante($mpdf, strtoupper(Yii::$app->oficina->getNombre()), $y);
+
+			$mpdf->Output($nombre, 'I');
+	       	exit;
+
+		}
+
+
+
 
 
 
@@ -378,26 +484,55 @@
 	       												$this->_contribuyente->apellidos,
 	       												$this->_contribuyente->nombres);
 
+	       	$placa = '';
+			$marca = '';
+			$modelo = '';
+			$añoVehiculo = '';
+			$color = '';
+			$domicilio = '';
+			$labelVehiculo = '';
+			$domicilio = trim($this->_contribuyente->domicilio_fiscal);
+
+	       	if ( count($datosObjeto) > 0 ) {
+				if ( isset($datosObjeto['placa']) ) {
+					$placa = 'PLACA: ' . $datosObjeto['placa'];
+					$marca = 'MARCA: ' . $datosObjeto['marca'];
+					$modelo = 'MODELO: ' . $datosObjeto['modelo'];
+					$añoVehiculo = 'AÑO: ' . $datosObjeto['ano_vehiculo'];
+					$color = 'COLOR: ' . $datosObjeto['color'];
+					$labelVehiculo = $marca . ' ' . $modelo . ' ' . $añoVehiculo . ' ' . $color;
+
+				} elseif ( isset($datosObjeto['direccion']) ) {
+					$domicilio = trim($datosObjeto['direccion']);
+
+				}
+			} else {
+				$domicilio = trim($this->_contribuyente->domicilio_fiscal);
+			}
+
 
 	       	if ( $this->_contribuyente->tipo_naturaleza == 0 ) {
-				$labelCedulaRif = 'CEDULA: ';
+				$labelCedulaRif = 'CEDULA: ' . strtoupper($cedulaRif) . '  ' . $placa;
 			} else {
-				$labelCedulaRif = 'R.I.F: ';
+				$labelCedulaRif = 'R.I.F: ' . strtoupper($cedulaRif) . '  ' . $placa;
 			}
 
 			$labelCatastro = 'Catastro: ';
 
 			$mpdf->SetFont('Arial', '', 7);
 
-			$mpdf->Text(100, 26 + $y, $labelCedulaRif . strtoupper($cedulaRif) . '    ' . $labelCatastro);
-
 	       	// Mover a 60 milimetro a la derecha.
-	       	$mpdf->Cell(60);
+	       	//$mpdf->Cell(60);
 	       	// Parametros significa lo siguiente:
 	       	// width, height, texto, 0 => no se dibuja la linea, 1 => si,
 	       	// La 'C' centrar
 
-
+			if ( $y == 0 ) {
+				$mpdf->SetY(14);
+			} else {
+				$mpdf->SetY(146);
+			}
+			$mpdf->Cell(60);
 	       	$mpdf->Cell(125, 2, strtoupper($contribuyente), 0, 1, 'C');
 
 	       	// Datos de la Domicilio principal
@@ -405,14 +540,20 @@
 	       	$mpdf->Cell(60);
 	       	$justificar = 'J';
 	       	$espacio = 3;
-	       	$lengDomicilio = strlen(trim($this->_contribuyente->domicilio_fiscal));
+
+	       	$lengDomicilio = strlen(trim($domicilio));
 	       	if ( $lengDomicilio <= 85 ) {
 	       		$justificar = 'C';
 	       		$espacio = 2;
 	       	}
-			$mpdf->MultiCell(125, $espacio, strtoupper($this->_contribuyente->domicilio_fiscal), 0, $justificar);
+			$mpdf->MultiCell(125, $espacio, $domicilio, 0, $justificar);
 			$mpdf->Cell(0, 0, '', 0, 1, 'C');
 
+			$mpdf->Text(100, 26 + $y, $labelCedulaRif . '    ' . $labelCatastro);
+
+			if ( trim($labelVehiculo) !== '' ) {
+				$mpdf->Text(80, 29 + $y, $labelVehiculo);
+			}
 		}
 
 
@@ -559,7 +700,9 @@
 						}
 						$mpdf->Cell($espacio, 3, $periodo, 0, 0, 'C');
 					}
-					$mpdf->Cell($espacioFaltante, 3, '', 0, 0, 'C');
+					if ( $espacioFaltante > 0 ) {
+						$mpdf->Cell($espacioFaltante, 3, '', 0, 0, 'C');
+					}
 
 					$mpdf->Cell(60, 3, number_format($sumaMonto, 2), 0, 0, 'C');
 					$mpdf->Cell(25, 3, number_format($sumaRecargo, 2), 0, 0, 'C');
