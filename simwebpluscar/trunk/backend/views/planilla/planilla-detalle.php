@@ -167,7 +167,7 @@
 				                            },
 				                        ],
 				                        [
-				                            'label' => 'Pago',
+				                            'label' => 'Condicion',
 				                            'format' => 'raw',
 				                            // afecta solo a la celda
 				                            'contentOptions' => function($data) {
@@ -183,11 +183,11 @@
 				                            'value' => function($data) {
 				                            	if ( $data['pago'] == 0 ) {
 				                            		return Html::tag('strong', Html::tag('h3',
-						                            								   	 'NO',
+						                            								   	 $data['estatus'],
 						                            								   	 ['class' => 'label label-danger']));
 				                            	} elseif ( $data['pago'] == 1 ) {
 				                            		return Html::tag('strong', Html::tag('h3',
-				                            			                     			 'SI',
+				                            			                     			 $data['estatus'],
 				                            			                     			 ['class' => 'label label-primary',
 				                            								   			  'id' => 'pago',
 				                            								   			  'name' => 'pago',
@@ -195,7 +195,7 @@
 
 				                            	} elseif ( $data['pago'] == 9 ) {
 				                            		return Html::tag('strong', Html::tag('h3',
-				                            			                     			 'ANULADA',
+				                            			                     			 $data['estatus'],
 				                            			                     			 ['class' => 'label label-warning',
 				                            								   			  'id' => 'pago',
 				                            								   			  'name' => 'pago',
