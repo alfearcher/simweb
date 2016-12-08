@@ -53,6 +53,7 @@
 	use backend\models\utilidad\exigibilidad\Exigibilidad;
 	use backend\models\tasa\Tasa;
 	use common\models\presupuesto\codigopresupuesto\CodigosContables;
+	use backend\models\recibo\estatus\EstatusDeposito;
 
 
 	/**
@@ -149,6 +150,7 @@
 
 
 
+
 		/**
 		 * Relacion con la entidad "propagandas"
 		 * @return active record.
@@ -159,6 +161,7 @@
 		}
 
 
+
 		/**
 		 * Relacion con la entidad "exigibilidades"
 		 * @return active record
@@ -167,6 +170,7 @@
 		{
 			return $this->hasOne(Exigibilidad::className(), ['exigibilidad' => 'exigibilidad_pago']);
 		}
+
 
 
 		/**
@@ -186,18 +190,28 @@
 
 
 
+		/**
+		 * Relacion con la entidad "estatus-depositos"
+		 * @return active record
+		 */
+		public function getEstatus()
+		{
+			return $this->hasOne(EstatusDeposito::className(),['estatus' => 'pago']);
+		}
+
+
+
+
 		/***/
 		public function getCodigoContable($idImpuesto)
 		{
 
-die('kak');
 			$tasa = New Tasa;
 			$model = $tasa->find()->alias('T')
 			                      ->joinWith('codigoContable C', true, 'INNER JOIN')
 			                      ->where('id_impuesto =:id_impuesto',
 			                      				[':id_impuesto' => $idImpuesto])
 			                      ->one();
-die(var_dump($model));
 			return [
 				'codigo' => $model->codigoContable->codigo,
 				'descripcion' => $model->codigoContable->descripcion,

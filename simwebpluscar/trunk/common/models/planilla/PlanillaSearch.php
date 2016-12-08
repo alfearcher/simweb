@@ -55,6 +55,7 @@
  	use backend\models\operacionbase\OperacionBase;
  	use common\models\presupuesto\codigopresupuesto\CodigosContables;
 
+
 	/**
 	* 	Clase que permite consultar informacion diversa sobre una planilla.
 	*/
@@ -136,12 +137,14 @@
 							'D.fecha_pago',
 							'I.descripcion as descripcion_impuesto',
 							'D.descripcion',
-							'E.unidad'
+							'E.unidad',
+							'S.descripcion as estatus',
 							])
 				  ->from('pagos as P')
 				  ->join('INNER JOIN', 'pagos_detalle as D', 'P.id_pago = D.id_pago')
 				  ->join('INNER JOIN', 'impuestos as I', 'D.impuesto = I.impuesto')
 				  ->join('INNER JOIN', 'exigibilidades as E', 'D.exigibilidad_pago = E.exigibilidad')
+				  ->join('INNER JOIN', 'estatus_depositos as S', 'D.pago = S.estatus')
 				  ->where('planilla =:planilla', [':planilla' => $this->_planilla])
 				  ->orderBy([
 				  		'ano_impositivo' => SORT_ASC,
