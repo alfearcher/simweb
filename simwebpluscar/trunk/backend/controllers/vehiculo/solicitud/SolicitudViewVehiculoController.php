@@ -488,7 +488,7 @@
 		private function actionMostrarSolicitudSolvenciaVehiculo()
 		{
 			if ( $this->model->nivel_aprobacion == 2 ) {
-				$modelSearch = New SolvenciaVehiculoSearch($this->model->id_contribuyente);
+				$modelSearch = New SolvenciaVehiculoSearch($this->model->id_contribuyente, $this->model->id_impuesto);
 				$modelSolvencia = $modelSearch->findSolicitudSolvencia($this->model->nro_solicitud);
 
 				$dataProvider = $modelSearch->getDataProviderSolicitud($this->model->nro_solicitud);
