@@ -200,6 +200,13 @@
 				                            								   			  'id' => 'pago',
 				                            								   			  'name' => 'pago',
 				                            								   			]));
+				                            	} else {
+				                            		return Html::tag('strong', Html::tag('h3',
+				                            			                     			 $data['estatus'],
+				                            			                     			 ['class' => 'label label-warning',
+				                            								   			  'id' => 'pago',
+				                            								   			  'name' => 'pago',
+				                            								   			]));
 				                            	}
 				                            },
 				                        ],
