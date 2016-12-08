@@ -449,14 +449,14 @@
 						                            'value' => function($data) {
 						                            	if ( $data['pago'] == 0 ) {
 						                            		return Html::tag('strong', Html::tag('h3',
-						                            								   			'NO',
+						                            								   			$data['estatus'],
 						                            								   			['class' => 'label label-danger',
 						                            								   			 'id' => 'pago',
 						                            								   			 'name' => 'pago',
 						                            								   			]));
 						                            	} elseif ( $data['pago'] == 1 ) {
 						                            		return Html::tag('strong', Html::tag('h4',
-						                            			                     			 'SI',
+						                            			                     			 $data['estatus'],
 						                            			                     			 ['class' => 'label label-primary',
 						                            								   			  'id' => 'pago',
 						                            								   			  'name' => 'pago',
@@ -464,7 +464,13 @@
 
 						                            	} elseif ( $data['pago'] == 9 ) {
 						                            		return Html::tag('strong', Html::tag('h4',
-						                            			                     			 'ANULADA',
+						                            			                     			 $data['estatus'],						                            			                     			 ['class' => 'label label-warning',
+						                            								   			  'id' => 'pago',
+						                            								   			  'name' => 'pago',
+						                            								   			]));
+						                            	} else {
+						                            		return Html::tag('strong', Html::tag('h4',
+						                            			                     			 $data['estatus'],
 						                            			                     			 ['class' => 'label label-warning',
 						                            								   			  'id' => 'pago',
 						                            								   			  'name' => 'pago',
