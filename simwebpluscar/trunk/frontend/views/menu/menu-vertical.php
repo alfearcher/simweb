@@ -228,7 +228,7 @@
 		        			]
 		        		],
 
-		        		//	Recibo
+		        		//	Planilla
 		        		['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . '&nbsp; Planilla',
 		        			'items' => [
 		        						['label' => 'Planilla', 'url' => '#'],
