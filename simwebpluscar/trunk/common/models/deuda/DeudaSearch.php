@@ -49,6 +49,7 @@
 	use yii\db\Command;
 	use common\models\planilla\Pago;
 	use common\models\planilla\PagoDetalle;
+	use yii\helpers\ArrayHelper;
 
 
 
@@ -80,7 +81,7 @@
 		 */
 		private function getModelGeneral()
 		{
-			
+
 			$findModel = PagoDetalle::find()->alias('D')
 										    ->where('P.id_contribuyente =:id_contribuyente',
 														[':id_contribuyente' => $this->_id_contribuyente])
@@ -172,7 +173,7 @@
 		 */
 		public function getDeudaPorImpuestoPeriodo($impuesto)
 		{
-			
+
 			// Deuda con periodos mayores a cero.
 			$deudaMayor = self::deudaPeriodoMayorCero($impuesto);
 
@@ -813,7 +814,7 @@
 		/***/
 		public function getDetalleDeudaPorObjeto($impuesto, $idImpuesto)
 		{
-			
+
 			return self::detalleDeudaPorObjeto($impuesto, $idImpuesto);
 		}
 
@@ -952,7 +953,7 @@
 		 */
 		public function getDetalleDeudaObjetoPorPlanilla($impuesto, $idImpuesto = 0, $periodo = '>')
 		{
-			
+
 			if ( in_array($periodo, ['>', '=']) ) {
 				return self::detalleDeudaObjetoPorPlanilla($impuesto, $idImpuesto, $periodo);
 			}
@@ -972,7 +973,7 @@
 		 */
 		private function detalleDeudaObjetoPorPlanilla($impuesto, $idImpuesto, $periodo = '')
 		{
-		
+
 			$findModel = self::getModelGeneral();
 			$deuda = [];
 
@@ -1010,7 +1011,7 @@
 
 
 			} elseif ( $idImpuesto > 0 && $impuesto > 1 && $periodo = '>' ) {
-				
+
 
 				$deuda = $findModel->select([
 										'P.planilla',
@@ -1044,7 +1045,7 @@
 								   ->all();
 
 			} elseif ( $idImpuesto == 0 && $impuesto > 0 && $periodo == '=' ) {
-			
+
 				$deuda = $findModel->select([
 										'P.planilla',
 										'P.id_contribuyente',
@@ -1244,6 +1245,25 @@
 							   ->all();
 			}
 			return $deuda;
+		}
+
+
+
+		/**
+		 * Metodo que permite obtener los identificadores de los impuestos que poseen deudas
+		 * segun el contribuyente. Se creara un array con los identificadores de impuestos
+		 * encontrados.
+		 * @return array|null retorna un arreglo de enteros donde cada entero representa un identificador
+		 * de un impuesto.
+		 */
+		public function getImpuestoConDeuda()
+		{
+			$results = self::deudaGeneralPorImpuesto();
+			if ( is_array($results) ) {
+				return ArrayHelper::map($results, 'impuesto', 'descripcion');
+			}
+			return null;
+
 		}
 
 
