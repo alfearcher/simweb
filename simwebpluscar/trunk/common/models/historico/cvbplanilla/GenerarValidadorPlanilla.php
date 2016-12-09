@@ -46,7 +46,6 @@
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 	use common\models\planilla\PlanillaSearch;
-	//use common\models\calculo\cvb\ModuloValidador;
 
 
 	/**
