@@ -129,33 +129,27 @@
 
 							<div class="row" style="padding: 0px;padding-top: 10px;width: 100%;">
 								<div class="col-sm-3" style="width: 100%;padding: 0px;">
+
+<?php
+	$item = [];
+	foreach ( $listaImpuesto as $key => $value ) {
+		$item[] = [
+			'label' => $value,
+			'content' => Html::submitButton((string)$key, [
+												'class'=> 'btn btn-success',
+												'data' => [
+													'method' => 'post',
+													'params' => [
+														'planilla' => $key,
+													],
+												],
+												]),
+		];
+	}
+
+ ?>
 									<?php echo Collapse::widget([
-    'items' => [
-        // equivalent to the above
-        [
-            'label' => 'Collapsible Group Item #1',
-            'content' => 'Anim pariatur cliche...',
-            // open its content by default
-            //'contentOptions' => ['class' => 'in']
-        ],
-        // another group item
-        [
-            'label' => 'Collapsible Group Item #1',
-            'content' => 'Anim pariatur cliche...',
-            'contentOptions' => [],
-            'options' => [],
-        ],
-        // if you want to swap out .panel-body with .list-group, you may use the following
-        [
-            'label' => 'Collapsible Group Item #1',
-            'content' => "kk",
-
-
-            'contentOptions' => [],
-            'options' => [],
-            'footer' => 'Footer' // the footer label in list-group
-        ],
-    ]
+    'items' => $item,
 ]); ?>
 								</div>
 							</div>
