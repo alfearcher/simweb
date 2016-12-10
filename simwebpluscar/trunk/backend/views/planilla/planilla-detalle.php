@@ -79,6 +79,17 @@
         		<div class="col-sm-4" style="padding-top: 10px;">
         			<h4><?= Html::encode($caption) ?></h4>
         		</div>
+        		<div class="col-sm-3" style="width: 30%; float:right; padding-right: 50px;">
+        			<style type="text/css">
+						.col-sm-3 > ul > li > a:hover {
+							background-color: #F5F5F5;
+						}
+	    			</style>
+	        		<?= MenuController::actionMenuSecundario([
+	        						'print' => $url,
+	        			])
+	        		?>
+	        	</div>
 
         	</div>
         </div>
