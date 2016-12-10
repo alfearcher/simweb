@@ -60,6 +60,8 @@
 	use common\models\historico\cvbplanilla\HistoricoCodigoValidadorPlanillaForm;
 	use common\models\deuda\DeudaSearch;
 	use backend\models\planilla\consulta\PlanillaConsultaForm;
+	use common\models\planilla\PlanillaSearch;
+	use common\controllers\pdf\planilla\PlanillaPdfController;
 
 
 	session_start();
@@ -69,9 +71,6 @@
 	class PlanillaConsultaController extends Controller
 	{
 		public $layout = 'layout-main';				//	Layout principal del formulario
-
-		const SCENARIO_CONTRIBUYENTE = 'contribuyente';
-		const SCENARIO_OBJETOS = 'objetos';
 
 
 
@@ -94,15 +93,11 @@
 					}
 				}
 
-// die(var_dump($postData));
 
 				$model = New PlanillaConsultaForm();
 				$model->load($postData);
-// die(var_dump($model));
 
 				$formName = $model->formName();
-
-				$model->scenario = self::SCENARIO_CONTRIBUYENTE;
 
 				if ( isset($postData['btn-search-planillas']) ) {
 					if ( $postData['btn-search-planillas'] == 5 ) {
@@ -116,7 +111,11 @@
 
 				$model->id_contribuyente = $idContribuyente;
 				$deudaSearch = New DeudaSearch($idContribuyente);
+
+				// Crea un arreglo de impuestos que indica donde existen deudas del contribuyente.
 				$listaImpuesto = $deudaSearch->getImpuestoConDeuda();
+
+				$collapseDeuda = $model->generarCollapseDeuda();
 
 				$caption = Yii::t('frontend', 'Consulta de Planilla(s)');
 				$subCaption = Yii::t('frontend', 'Seleccione el Impuesto');
@@ -126,6 +125,8 @@
 												'caption' => $caption,
 												'subCaption' => $subCaption,
 												'listaImpuesto' => $listaImpuesto,
+												'collapseDeuda' => $collapseDeuda,
+												'url' => Url::to(['generar-pdf']),
 						]);
 
 
@@ -137,31 +138,50 @@
 
 
 
-		public function actionPrueba()
+		/**
+		 * Metodo que permite renderizar una vista de los detalles de la planilla
+		 * que se encuentran en la solicitud.
+		 * @return View Retorna una vista que contiene un grid con los detalles de la
+		 * planilla.
+		 */
+		public function actionViewPlanilla()
 		{
 			$request = Yii::$app->request;
-				$postData = $request->post();
+			$getData = $request->get();
 
-die(var_dump($postData));
+			$planilla = $getData['p'];
+			$planillaSearch = New PlanillaSearch($planilla);
+			$dataProvider = $planillaSearch->getArrayDataProviderPlanilla();
+
+			// Se determina si la peticion viene de un listado que contiene mas de una
+			// pagina de registros. Esto sucede cuando los detalles de un listado contienen
+			// mas de los manejados para una pagina en la vista.
+			if ( isset($request->queryParams['page']) ) {
+				$planillaSearch->load($request->queryParams);
+			}
+			$url = Url::to(['generar-pdf']);
+			return $this->renderAjax('@backend/views/planilla/planilla-detalle', [
+								 			'dataProvider' => $dataProvider,
+								 			'caption' => 'Planilla: ' . $planilla,
+								 			'p' => $planilla,
+			]);
 		}
 
 
 
 
-
-		private function actionMostrarPdfPlanilla()
+		/***/
+		public function actionGenerarPdf()
 		{
-			$numero = 1088994;
-			// $numero =1078731;
-			// $numero =3216421;
-			//$numero = 769965;
-			 $numero = 2179852;
-			// $numero = 1078731;
-			// $numero = 945628;
-			// $numero = 967620;
-			 $numero = 963146;
-			$planillaPdf = New PlanillaPdfController($numero);
-			$result = $planillaPdf->actionGenerarPlanillaPdf();
+			$request = Yii::$app->request;
+			$postData = $request->post();
+
+			if ( isset($postData['p']) ) {
+				$planilla = $postData['p'];
+				$pdf = New PlanillaPdfController($planilla);
+				$pdf->actionGenerarPlanillaPdf();
+
+			}
 
 		}
 
