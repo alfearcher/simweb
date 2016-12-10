@@ -58,6 +58,8 @@
 	use common\conexion\ConexionController;
 	use common\models\contribuyente\ContribuyenteBase;
 	use common\models\planilla\PlanillaSearch;
+	use common\models\historico\cvbplanilla\GenerarValidadorPlanilla;
+	use common\models\ordenanza\OrdenanzaBase;
 
 	use mPDF;
 
@@ -75,6 +77,8 @@
 		private $_contribuyente;
 		private $_cvb_planilla;
 		private $_searchPlanilla;
+		private $_codigoValidador;
+		private $_fechaVcto;
 
 
 
@@ -87,8 +91,43 @@
 		{
 			$this->_planilla = (int)$planilla;
 			$this->_searchPlanilla = New PlanillaSearch($this->_planilla);
+
 		}
 
+
+		/***/
+		private function determinarFechaVctoPlanilla()
+		{
+			// Se detremina la fecha de vencimiento de la planilla.
+			$fecha = OrdenanzaBase::getFechaVencimientoSegunFecha(date('Y-m-d'));
+			$this->_fechaVcto = $fecha;
+
+		}
+
+
+		/***/
+		private function determinarCodigoValidadorBancario()
+		{
+			// Se detremina el codigo validador bancario de la planilla.
+			$generador = New GenerarValidadorPlanilla($this->_planilla);
+       		$this->_codigoValidador = $generador->getCodigoValidadorBancarioPlanilla();
+		}
+
+
+
+		/***/
+		public function getFechaVctoPlanilla()
+		{
+			return $this->_fechaVcto;
+		}
+
+
+
+		/***/
+		public function getCodigoValidadorBancarioPlanilla()
+		{
+			return $this->_codigoValidador;
+		}
 
 
 
@@ -99,9 +138,13 @@
 		public function actionGenerarPlanillaPdf()
 		{
 			if ( $this->_planilla > 0 ) {
+
 				$model = $this->_searchPlanilla->getDetallePlanilla();
 
 				$result = $model->asArray()->all();
+
+				self::determinarCodigoValidadorBancario();
+				self::determinarFechaVctoPlanilla();
 
 				$this->_contribuyente = ContribuyenteBase::findOne($result[0]['pagos']['id_contribuyente']);
 
@@ -409,7 +452,7 @@
 			// Fecha Emision
 			$mpdf->Cell(35, 5, date('d-m-Y'), 1, 0, 'C');
 			// Fecha Vcto
-			$fechaVcto = date('d-m-Y');		// Invocar metodo que devuelva la fecha final de un mes.
+			$fechaVcto = self::getFechaVctoPlanilla();		// Invocar metodo que devuelva la fecha final de un mes.
 			$mpdf->SetFont('Arial', 'B', 10);
 			$mpdf->Cell(35, 5, $fechaVcto, 1, 0, 'C');
 			// ID Contribuyente
@@ -864,7 +907,7 @@
 		private function actionGetViewInfoCuentaRecaudadoraPaginaWeb($mpdf, $y = 0)
 		{
 			// Informacion de la Cuenta Recaudadora
-	       	$cuentaRecaudadora = '0128-0063-18-6300031652';
+	       	$cuentaRecaudadora = Yii::$app->ente->getCuentaRecaudadoraPrincipal(0);
 	       	$mpdf->SetFont('Arial', 'I', 8);
 	       	$mpdf->Text(125, 102 + $y, 'Nro: Cuenta Recaudadora: ' . $cuentaRecaudadora);
 
@@ -901,9 +944,8 @@
 	       	// Donde se coloca el CVB
 	       	$mpdf->RoundedRect(162, 115 + $y, 30, 8, 2, D);
 
-	       	$cvb = '123456';
 	       	$mpdf->SetFont('Arial', 'B', 10);
-	       	$mpdf->Text(172, 120 + $y, $cvb);
+	       	$mpdf->Text(172, 120 + $y, self::getCodigoValidadorBancarioPlanilla());
 
 		}
 
