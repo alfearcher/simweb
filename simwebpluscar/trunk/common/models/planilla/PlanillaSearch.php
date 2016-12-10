@@ -317,8 +317,8 @@
 			ksort($año);
 
 			// Se crear un rango de año
-			$primero = reset($año);
-			$ultimo = end($año);
+			// $primero = reset($año);
+			// $ultimo = end($año);
 
 			foreach ( $año as $i => $value) {
 				$periodo = null;
