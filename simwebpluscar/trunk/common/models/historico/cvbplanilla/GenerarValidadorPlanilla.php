@@ -46,6 +46,7 @@
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 	use common\models\planilla\PlanillaSearch;
+	use common\models\historico\cvbplanilla\HistoricoCodigoValidadorPlanillaForm;
 
 
 	/**
@@ -182,6 +183,9 @@
 		private $_searchPlanilla;
 
 
+		private $_historico;	// Instacia de la clase HistoricoCodigoValidadorPlanillaForm()
+
+
 		/**
 		 * Metodo constructor de la clase.
 		 * @param integer $planilla numero de planilla de la liquidacion.
@@ -195,6 +199,8 @@
 
 			// Instancia de la clase padre.
 			parent::__construct($planilla);
+
+			$this->_historico = New HistoricoCodigoValidadorPlanillaForm($this->_planilla);
 		}
 
 
@@ -226,6 +232,13 @@
 			// Segunda fase
 			if ( strlen($this->_cvbPrimeraFase) == 6 ) {
 				$this->_cvbPlanilla = self::aplicarSegundaFaseAlgoritmo();
+				$arregloDatos = $this->_historico->attributes;
+				$arregloDatos['planilla'] = $this->_planilla;
+				$arregloDatos['id_contribuyente'] = $this->_id_contribuyente;
+				$arregloDatos['codigo'] = $this->_cvbPlanilla;
+				$arregloDatos['monto'] = self::getMontoPlanilla();
+
+				$this->_historico->guardarHistorico($arregloDatos);
 			}
 
 			return $this->_cvbPlanilla;
@@ -248,7 +261,7 @@
 
 
 		/***/
-		public function getcodigoMonto()
+		public function getCodigoMonto()
 		{
 			return $this->_codigoMonto;
 		}

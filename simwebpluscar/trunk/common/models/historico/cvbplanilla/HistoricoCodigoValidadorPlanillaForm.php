@@ -89,9 +89,6 @@
 
   			$this->_observacion = $observacion;
 
-  			// Instancia del generador de codigo validador bancario.
-  			$this->_validador = New GenerarValidadorPlanilla($this->_planilla);
-
 		}
 
 
@@ -102,10 +99,11 @@
 		 * @param string $observacion observaciones que se crea conveniente guardar.
 		 * @return boolean retorna un true si guarda o un false en caso contrario.
 		 */
-		public function guardarHistorico($observacion = '')
+		public function guardarHistorico($arregloDatos)
 		{
 			$result = false;
 			$this->_conn->open();
+			$observacion = '';
 
 			// Instancia de tipo transaccion para asegurar la integridad del resguardo de los datos.
   			// Inicio de la transaccion.
@@ -113,14 +111,9 @@
 
 			$tabla = $this->tableName();
 
-			$arregloDatos = $this->attributes;
+			$this->attributes = $arregloDatos;
 
 			// Aqui se define quien esta generando el historico.
-			$arregloDatos['planilla'] = $this->_planilla;
-			$arregloDatos['codigo'] = $this->_validador->getCodigoValidadorBancarioPlanilla();
-
-			$arregloDatos['id_contribuyente'] = $this->_validador->getIdContribuyente();
-			$arregloDatos['monto'] = $this->_validador->getMontoPlanilla();
 			$arregloDatos['usuario'] = Yii::$app->identidad->getUsuario();
 			$arregloDatos['fecha_hora'] = date('Y-m-d H:i:s');
 			$arregloDatos['estatus'] = 0;
