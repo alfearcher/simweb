@@ -85,6 +85,10 @@
 		protected $noMunicipio = 0;
 		protected $municipio = 'Caroni';
 
+		protected $cuentaRecaudadora = [
+						'1234-1234-12-1234567890'
+					];
+
 		// identificador dentro del sistema, generado por el mismo.
 		protected $id = 0;
 
@@ -93,6 +97,12 @@
 
 		public function __construct()
 		{
+		}
+
+
+		public function getCuentaRecaudadoraPrincipal($nro)
+		{
+			return $this->cuentaRecaudadora[$nro];
 		}
 
 
