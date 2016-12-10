@@ -50,6 +50,7 @@
 	use common\models\planilla\Pago;
 	use common\models\planilla\PagoDetalle;
 	use yii\helpers\ArrayHelper;
+	use yii\data\ArrayDataProvider;
 
 
 
@@ -1253,6 +1254,10 @@
 		 * Metodo que permite obtener los identificadores de los impuestos que poseen deudas
 		 * segun el contribuyente. Se creara un array con los identificadores de impuestos
 		 * encontrados.
+		 * Retorna una estructura:
+		 * array {
+		 * 		[impuesto] => 'Descripcion del impuesto'
+		 * }
 		 * @return array|null retorna un arreglo de enteros donde cada entero representa un identificador
 		 * de un impuesto.
 		 */
@@ -1264,6 +1269,162 @@
 			}
 			return null;
 
+		}
+
+
+
+
+		/**
+		 * Metodo que genera un arreglo donde se obtiene un listado de planillas agrupadas
+		 * por impuesto. Se contabiliza la deuda por planilla y se muestra por impuestos.
+		 * @param integer $impuesto identificador del impuesto.
+		 * @param string $tipoPeriodo descripcion del tipo de periodo a consultar.
+		 * @return array retorna un arreglo
+		 */
+		public function getPlanillaConDeudaPorImpuesto($impuesto, $idImpuesto, $tipoPeriodo)
+		{
+			$findModel = self::getModelGeneral();
+			$planillas = [];
+
+			if ( in_array($tipoPeriodo, ['=', '>', '>=']) ) {
+				if ( $impuesto > 0 ) {
+					if ( $impuesto == 1 ) {
+						$planillas = $findModel->select([
+													'P.id_pago',
+													'P.ente',
+													'P.planilla',
+													'P.id_contribuyente',
+													'D.trimestre',
+													'(sum(D.monto+D.recargo+D.interes)-sum(D.descuento+D.monto_reconocimiento)) as t',
+													'D.impuesto',
+													'D.id_impuesto',
+													'I.descripcion as descripcion_impuesto',
+													'D.descripcion',
+												])
+											   ->andWhere('D.impuesto =:impuesto',[':impuesto' => $impuesto])
+											   ->andWhere('trimestre ' . $tipoPeriodo . ':trimestre',[':trimestre' => 0])
+											   ->joinWith('pagos P', false, 'INNER JOIN')
+											   ->joinWith('impuestos I', true, 'INNER JOIN')
+											   ->groupBy('P.planilla')
+											   ->orderBy([
+											   		'D.impuesto' => SORT_ASC,
+
+											   	])
+											   ->asArray()
+											   ->all();
+
+					} else {
+						if ( trim($tipoPeriodo == '=') && ( $idImpuesto == 0 ) ) {
+							$planillas = $findModel->select([
+														'P.id_pago',
+														'P.ente',
+														'P.planilla',
+														'P.id_contribuyente',
+														'D.trimestre',
+														'(sum(D.monto+D.recargo+D.interes)-sum(D.descuento+D.monto_reconocimiento)) as t',
+														'D.impuesto',
+														'D.id_impuesto',
+														'I.descripcion as descripcion_impuesto',
+														'D.descripcion',
+													])
+												   ->andWhere('D.impuesto =:impuesto',[':impuesto' => $impuesto])
+												   ->andWhere('trimestre ' . $tipoPeriodo . ':trimestre',[':trimestre' => 0])
+												   ->joinWith('pagos P', false, 'INNER JOIN')
+												   ->joinWith('impuestos I', true, 'INNER JOIN')
+												   ->groupBy('P.planilla')
+												   ->orderBy([
+												   		'D.impuesto' => SORT_ASC,
+
+												   	])
+												   ->asArray()
+												   ->all();
+						} elseif ( trim($tipoPeriodo == '>') && ( $idImpuesto > 0 ) ) {
+							$planillas = $findModel->select([
+														'P.id_pago',
+														'P.ente',
+														'P.planilla',
+														'P.id_contribuyente',
+														'D.trimestre',
+														'(sum(D.monto+D.recargo+D.interes)-sum(D.descuento+D.monto_reconocimiento)) as t',
+														'D.impuesto',
+														'D.id_impuesto',
+														'I.descripcion as descripcion_impuesto',
+														'D.descripcion',
+													])
+												   ->andWhere('D.impuesto =:impuesto',[':impuesto' => $impuesto])
+												   ->andWhere('D.id_impuesto =:id_impuesto',[':id_impuesto' => $idImpuesto])
+												   ->andWhere('trimestre ' . $tipoPeriodo . ':trimestre',[':trimestre' => 0])
+												   ->joinWith('pagos P', false, 'INNER JOIN')
+												   ->joinWith('impuestos I', true, 'INNER JOIN')
+												   ->groupBy('P.planilla')
+												   ->orderBy([
+												   		'D.impuesto' => SORT_ASC,
+
+												   	])
+												   ->asArray()
+												   ->all();
+
+						}
+					}
+				} elseif ( $impuesto == 0 ) {
+
+					$planillas = $findModel->select([
+												'P.id_pago',
+												'P.ente',
+												'P.planilla',
+												'P.id_contribuyente',
+												'D.trimestre',
+												'(sum(D.monto+D.recargo+D.interes)-sum(D.descuento+D.monto_reconocimiento)) as t',
+												'D.impuesto',
+												'D.id_impuesto',
+												'I.descripcion as descripcion_impuesto',
+												'D.descripcion',
+											])
+										   ->andWhere('trimestre ' . $tipoPeriodo . ':trimestre',[':trimestre' => 0])
+										   ->joinWith('pagos P', false, 'INNER JOIN')
+										   ->joinWith('impuestos I', true, 'INNER JOIN')
+										   ->groupBy('P.planilla')
+										   ->orderBy([
+										   		'D.impuesto' => SORT_ASC,
+
+										   	])
+										   ->asArray()
+										   ->all();
+
+				}
+			}
+
+			return $planillas;
+		}
+
+
+
+		/***/
+		public function getProviderDeudaPlanillaPorImpuesto($impuesto, $idImpuesto, $tipoPeriodo)
+		{
+			$provider = null;
+			$planillas = self::getPlanillaConDeudaPorImpuesto($impuesto, $idImpuesto, $tipoPeriodo);
+
+			if ( count($planillas) > 0 ) {
+				foreach ( $planillas as $planilla ) {
+					$data[$planilla['planilla']] = [
+						'planilla' => $planilla['planilla'],
+						'total' => $planilla['t'],
+						'periodo' => ( $planilla['trimestre'] > 0 ) ? 1 : 0,
+						'impuesto' => $planilla['impuesto'],
+						'id_impuesto' => $planilla['id_impuesto'],
+						'impuestoDescripcion' => $planilla['descripcion_impuesto'],
+						'observacion' => $planilla['descripcion'],
+					];
+				}
+				$provider = New ArrayDataProvider([
+								'key' => 'planilla',
+								'allModels' => $data,
+								'pagination' => false,
+						]);
+			}
+
+			return $provider;
 		}
 
 
