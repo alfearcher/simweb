@@ -817,7 +817,8 @@
 
 			// Campo donde se muestra la observacion de la planilla.
 			$mpdf->Cell(-10);
-			$mpdf->MultiCell(195, 5, $detallePlanilla[0]['descripcion'], 0, 'J');
+			$mpdf->SetFont('Arial', '', 6);
+			$mpdf->MultiCell(195, 5, utf8_decode($detallePlanilla[0]['descripcion']), 0, 'J');
 
 			$mpdf->Cell(-10);
 			//$mpdf->Rect(5, 65 + $y, 195, 5);
