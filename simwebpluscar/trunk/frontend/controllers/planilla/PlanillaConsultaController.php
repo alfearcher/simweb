@@ -188,6 +188,83 @@
 
 
 
+		/**
+		 * Metodo salida del modulo.
+		 * @return view
+		 */
+		public function actionQuit()
+		{
+			$varSession = self::actionGetListaSessions();
+			self::actionAnularSession($varSession);
+			return $this->render('/menu/menu-vertical');
+		}
+
+
+
+		/**
+		 * Metodo que ejecuta la anulacion de las variables de session utilizados
+		 * en el modulo.
+		 * @param  array $varSessions arreglo con los nombres de las variables de
+		 * sesion que seran anuladas.
+		 * @return none.
+		 */
+		public function actionAnularSession($varSessions)
+		{
+			Session::actionDeleteSession($varSessions);
+		}
+
+
+
+		/**
+		 * Metodo que renderiza una vista indicando que le proceso se ejecuto
+		 * satisfactoriamente.
+		 * @param  integer $cod codigo que permite obtener la descripcion del
+		 * codigo de la operacion.
+		 * @return view.
+		 */
+		public function actionProcesoExitoso($cod)
+		{
+			$varSession = self::actionGetListaSessions();
+			self::actionAnularSession($varSession);
+			return MensajeController::actionMensaje($cod);
+		}
+
+
+
+		/**
+		 * Metodo que renderiza una vista que indica que ocurrio un error en la
+		 * ejecucion del proceso.
+		 * @param  integer $cod codigo que permite obtener la descripcion del
+		 * codigo de la operacion.
+		 * @return view.
+		 */
+		public function actionErrorOperacion($cod)
+		{
+			$varSession = self::actionGetListaSessions();
+			self::actionAnularSession($varSession);
+			return MensajeController::actionMensaje($cod);
+		}
+
+
+
+		/**
+		 * Metodo que permite obtener un arreglo de las variables de sesion
+		 * que seran utilizadas en el modulo, aqui se pueden agregar o quitar
+		 * los nombres de las variables de sesion.
+		 * @return array retorna un arreglo de nombres.
+		 */
+		public function actionGetListaSessions()
+		{
+			return $varSession = [
+							'postData',
+							'conf',
+							'begin',
+					];
+
+		}
+
+
+
 
 
 	}
