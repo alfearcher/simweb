@@ -813,5 +813,23 @@
 
 		}
 
+
+
+		/**
+		 * Metodo que determina la ultima fecha de una mes segun la fecha enviada.
+		 * @param  date $fecha fecha consultada.
+		 * @return date retorna una fecha en formato YYYY-mm-dd.
+		 */
+		public function getFechaVencimientoSegunFecha($fecha)
+		{
+			$a = date('Y', strtotime($fecha));
+			$m = date('m', strtotime($fecha));
+			$d = date('d', strtotime($fecha));
+
+			$ultimo = self::getUltimoDia($a, $m);
+			$fechaVcto = $a . '-' . $m .  '-' . $ultimo;
+			return $fechaVcto = date('Y-m-d', strtotime($fechaVcto));
+		}
+
 	}
  ?>
