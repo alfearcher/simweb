@@ -89,7 +89,7 @@
 
 				if ( isset($postData['btn-quit']) ) {
 					if ( $postData['btn-quit'] == 1 ) {
-
+						$this->redirect(['quit']);
 					}
 				}
 
