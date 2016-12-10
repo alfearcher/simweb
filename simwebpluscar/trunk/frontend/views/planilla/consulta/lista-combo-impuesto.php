@@ -50,6 +50,8 @@
 	use yii\web\View;
 	use yii\widgets\DetailView;
 	use yii\bootstrap\Collapse;
+	use yii\bootstrap\Modal;
+	use yii\widgets\Pjax;
 
 	$typeIcon = Icon::FA;
   	$typeLong = 'fa-2x';
@@ -65,7 +67,10 @@
  		$form = ActiveForm::begin([
  			'id' => 'id-view-lista-impuesto',
  			'method' => 'post',
- 			//'action' => $url,
+ 			'action' => $url,
+ 			'options' => [
+ 				'target' => '_blank',
+ 			],
  			'enableClientValidation' => true,
  			'enableAjaxValidation' => false,
  			'enableClientScript' => true,
@@ -87,40 +92,7 @@
         		<div class="col-sm-12">
 
 					<div class="row" style="width:105%;">
-						<div class="col-sm-3" style="width:45%;">
-							<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding: 0px;width:100%;">
-								<div class="col-sm-3" style="width: 100%;">
-									<h4><?=Html::encode(Yii::t('frontend', $subCaption))?></h4>
-								</div>
-							</div>
-
-							<div class="row" style="padding-left: 0px;padding-top: 10px;width:100%;">
-								<div class="col-sm-3" style="padding: 0px; width: 60%;">
-									<div class="lista-impuesto" style="padding: 0px;">
-					                        <?= $form->field($model, 'impuesto')->dropDownList($listaImpuesto,[
-					                                                                           	'prompt' => Yii::t('backend', 'Select'),
-					                                                                            'style' => 'width:100%;'
-					                                                                         ])->label(false)
-					            			?>
-			        				</div>
-			        			</div>
-
-			        			<div class="col-sm-2" style="padding: 0px; width: 40%;padding-left: 20px;">
-									<?= Html::submitButton(Yii::t('frontend', 'Aceptar'),
-																				  	[
-																						'id' => 'btn-search-planillas',
-																						'class' => 'btn btn-success',
-																						'value' => 1,
-																						'style' => 'width: 100%;',
-																						'name' => 'btn-search-planillas',
-
-																				  	])
-									?>
-			        			</div>
-			        		</div>
-			        	</div>
-
-			        	<div class="col-sm-5" style="width: 55%;">
+			        	<div class="col-sm-5" style="width: 75%;">
 			        		<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding-top: 0px;width:100%;">
 								<div class="col-sm-3" style="width: 100%;">
 									<h4><?=Html::encode(Yii::t('frontend', $subCaption))?></h4>
@@ -129,32 +101,10 @@
 
 							<div class="row" style="padding: 0px;padding-top: 10px;width: 100%;">
 								<div class="col-sm-3" style="width: 100%;padding: 0px;">
-
-<?php
-	$item = [];
-	foreach ( $listaImpuesto as $key => $value ) {
-		$item[] = [
-			'label' => $value,
-			'content' => Html::submitButton((string)$key, [
-												'class'=> 'btn btn-success',
-												'data' => [
-													'method' => 'post',
-													'params' => [
-														'planilla' => $key,
-													],
-												],
-												]),
-		];
-	}
-
- ?>
-									<?php echo Collapse::widget([
-    'items' => $item,
-]); ?>
+									<?=$collapseDeuda;?>
 								</div>
 							</div>
 			        	</div>
-
 		        	</div>
 
 					<div class="row" style="width: 100%;padding: 0px;margin-top: 20px;">
@@ -189,3 +139,39 @@
 </div>	 <!-- Fin de inscripcion-act-econ-form -->
 
 
+<?php
+$this->registerJs(
+    '$(document).on("click", "#link-view-planilla", (function() {
+        $.get(
+            $(this).data("url"),
+            function (data) {
+                //$(".modal-body").html(data);
+                $(".planilla").html(data);
+                $("#modal").modal();
+            }
+        );
+    }));'
+); ?>
+
+<style type="text/css">
+	.modal-content	{
+			margin-top: 150px;
+			margin-left: -180px;
+			width: 150%;
+	}
+</style>
+
+<?php
+Modal::begin([
+    'id' => 'modal',
+    //'header' => '<h4 class="modal-title">Complete</h4>',
+    'size' => 'modal-lg',
+    'footer' => '<a href="#" class="btn btn-primary" data-dismiss="modal">Cerrar</a>',
+]);
+
+//echo "<div class='well'></div>";
+Pjax::begin();
+echo "<div class='planilla'></div>";
+Pjax::end();
+Modal::end();
+?>

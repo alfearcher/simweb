@@ -55,7 +55,9 @@
 													'model' => $model,
 													'caption' => $caption,
 													'subCaption' => $subCaption,
-													'listaImpuesto' => $listaImpuesto
+													'listaImpuesto' => $listaImpuesto,
+													'collapseDeuda' => $collapseDeuda,
+													'url' => $url,
     					]);
     	?>
 	</div>
