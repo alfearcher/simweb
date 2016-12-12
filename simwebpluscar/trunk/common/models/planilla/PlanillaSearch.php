@@ -291,9 +291,11 @@
 
 
 		/**
-		 * Metodo que arma un arraglo de años y sa cada año se le asocia sus periodos
+		 * Metodo que arma un arraglo de años y a cada año se le asocia sus periodos
 		 * respectivo.
 		 * @param  array  $detallePlanilla arreglo de datos de la detalle de la planilla.
+		 * Esto es un "select * from pagos as P inner join pagos_detalle as D on
+		 * P.id_pago = D.id_pago"
 		 * @return array retorna un arreglo.
 		 */
 		public function getArmarLapso($detallePlanilla = [])
