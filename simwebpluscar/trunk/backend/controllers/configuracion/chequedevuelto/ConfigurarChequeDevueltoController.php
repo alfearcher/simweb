@@ -299,7 +299,7 @@ class ConfigurarChequeDevueltoController extends Controller
                                                     'inactivo' => 1,
                                             
                                                 ];       
-
+  
                     
                        
                         //$arrayConditionInactivacion3 = ['id_impuesto'=>$model->id_impuesto];
