@@ -53,6 +53,19 @@
 	class ExigibilidadSearch
 	{
 
+		/***/
+		public function findExigibilidad($exigibilidad)
+		{
+			return $findModel = Exigibilidad::findOne($exigibilidad);
+		}
+
+
+		/***/
+		public function descripcion($exigibilidad)
+		{
+			$findModel = self::findExigibilidad($exigibilidad);
+			return $findModel->unidad;
+		}
 
 	}
 
