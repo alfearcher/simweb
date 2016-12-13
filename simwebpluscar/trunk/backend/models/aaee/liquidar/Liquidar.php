@@ -25,7 +25,7 @@
  *
  *  @author Jose Rafael Perez Teran
  *
- *  @date 17-11-2016
+ *  @date 11-12-2016
  *
  *  @class Liquidar
  *  @brief Clase modelo que gestiona la liquidacion de Actividad Economica en el formato
@@ -54,6 +54,8 @@
 	use common\models\calculo\liquidacion\aaee\CalculoRubro;
 	use backend\models\aaee\actecon\ActEconSearch;
 	use common\models\calculo\recargo\Recargo;
+	use yii\data\ArrayDataProvider;
+
 
 
 
@@ -69,12 +71,13 @@
 	class Liquidar
 	{
 
-		private $_planilla;				// Numero de planilla para los nuevos lapsos.
-		private $_detalleUltimoLapso;	// Ultimo lapso liquidado.
+		private $_planilla;					// Numero de planilla para los nuevos lapsos.
+		private $_id_pago = 0;
+		private $_detalleUltimoLapso;		// Ultimo lapso liquidado.
 
-		private $_contribuyente;		// Instancia de la clase ContribuyenteBase().
+		private $_contribuyente;			// Instancia de la clase ContribuyenteBase().
 		private $_detalleLiquidacion = [];	// Detalle de los lapsos liquidados con sus
-										// repesctivos montos.
+											// repesctivos montos.
 
 		private $_liquidarActividadEconomica;	// Instabcia de la clase LiquidacionActividadEconomica().
 		private $_tipoLiquidacion;
@@ -96,6 +99,7 @@
 			$this->_contribuyente = ContribuyenteBase::findOne($idContribuyente);
 			$this->_tipoLiquidacion = $tipoLiquidacion;
 			$this->_liquidarActividadEconomica = New LiquidacionActividadEconomica($idContribuyente);
+			$this->_id_pago = 0;
 		}
 
 
@@ -107,7 +111,7 @@
 		 */
 		public function iniciarProcesoLiquidacion()
 		{
-			$this->_detalleLiquidacion;
+			$this->_detalleLiquidacion = [];
 
 			$rangoInicio = self::armarRangoLiquidacionInicial();
 			$rangoFinal = self::getUltimoLapso();				// Ultimo lapso del año actual.
@@ -120,13 +124,11 @@
 			if ( trim(self::getAtributoDeclaracion()) == 'estimado' ) {
 				for ( $i = $añoInicio; $i <= $añoFinal; $i++ ) {
 					if ( $i == $añoInicio ) {
-						self::liquidarAnoImpositivo($i, $periodoInicio);
-						//$this->_detalleLiquidacion = self::liquidarAnoImpositivo($i, $periodoInicio);
+						self::liquidarAnoImpositivoEstimada($i, $periodoInicio);
 
 					} elseif ( $i > $añoInicio ) {
 
-						self::liquidarAnoImpositivo($i, 1);
-						//$this->_detalleLiquidacion = self::liquidarAnoImpositivo($i, 1);
+						self::liquidarAnoImpositivoEstimada($i, 1);
 
 					}
 				}
@@ -150,10 +152,14 @@
 		 */
 		private function armarRangoLiquidacionInicial()
 		{
+			$this->_id_pago = 0;
 			$ultimoLapso = self::getUltimoLapsoLiquidado();
 			if ( count($ultimoLapso) > 0 ) {
 				$ultimoAño = (int)$ultimoLapso['ano_impositivo'];
 				$ultimoPeriodo = (int)$ultimoLapso['trimestre'];
+				if ( $ultimoLapso['pago'] == 0 ) {
+					$this->_id_pago = $ultimoLapso['id_pago'];
+				}
 
 				// Ultimo año es igual al año actual.
 				if ( $ultimoAño == (int)date('Y') ) {
@@ -251,7 +257,7 @@
 		 * del calculo.
 		 * @return array retorna un arreglo con los detalles de la liquidacion.
 		 */
-		private function liquidarAnoImpositivo($año, $desdePeriodo)
+		private function liquidarAnoImpositivoEstimada($año, $desdePeriodo)
 		{
 			$montoCalculado = 0;			// Monto calculado para el año impositivo.
 
@@ -271,49 +277,52 @@
 
 				// Se realiza el calculo de la liquidacion del año.
 				$this->_liquidarActividadEconomica->iniciarCalcularLiquidacion($año, $periodo, $atributo);
-				$montoCalculado = number_format($this->_liquidarActividadEconomica->getCalculoAnual(), 2);
+				$montoCalculado = $this->_liquidarActividadEconomica->getCalculoAnual();
 
 				if ( $montoCalculado > 0 ) {
+					$idImpuesto = 0;
 					$exigLiq = (int)$exigibilidadLiq['exigibilidad'];
 					$montoPeriodo = self::getMontoPorPeriodo($montoCalculado, $exigLiq);
-
-die(var_dump($montoPeriodo));
 
 					// Se crea unu ciclo con los periodos faltantes
 					$hastaPeriodo = $exigLiq;
 
 					$idImpuesto = self::getIdImpuesto($año);
-					$fechaVcto = OrdenanzaBase::getFechaVencimientoSegunFecha(date('Y-m-d'));
+					if ( $idImpuesto > 0  ) {
+						$fechaVcto = OrdenanzaBase::getFechaVencimientoSegunFecha(date('Y-m-d'));
 
-					$recargo = New Recargo(self::IMPUESTO);
+						$recargo = New Recargo(self::IMPUESTO);
 
-					$j = 0;
-					for ( $i = $desdePeriodo; $i <= $hastaPeriodo; $i++) {
+						$j = 0;
+						for ( $i = $desdePeriodo; $i <= $hastaPeriodo; $i++) {
 
-						$montoRecargo = 0;
-						$recargo->calcularRecargo($año, $i, $montoPeriodo);
-						$montoRecargo = $recargo->getRecargo();
+							$montoRecargo = 0;
+							$recargo->calcularRecargo($año, $i, $montoPeriodo);
+							$montoRecargo = $recargo->getRecargo();
 
-						$modelDetalle[$j] = New PagoDetalle();
-						$modelDetalle[$j]->id_pago = 0;
-						$modelDetalle[$j]->id_impuesto = $idImpuesto;
-						$modelDetalle[$j]->impuesto = self::IMPUESTO;
-						$modelDetalle[$j]->ano_impositivo = $año;
-						$modelDetalle[$j]->trimestre = $i;
-						$modelDetalle[$j]->monto = $montoPeriodo;
-						$modelDetalle[$j]->recargo = $montoRecargo;
-						$modelDetalle[$j]->interes = 0;
-						$modelDetalle[$j]->descuento = 0;
-						$modelDetalle[$j]->pago = 0;
-						$modelDetalle[$j]->fecha_pago = '0000-00-00';
-						$modelDetalle[$j]->referencia = 0;
-						$modelDetalle[$j]->descripcion = 'LIQUIDACION DE ACTIVIDAD ECONOMICA';
-						$modelDetalle[$j]->monto_reconocimiento = 0;
-						$modelDetalle[$j]->fecha_emision = date('Y-m-d');
-						$modelDetalle[$j]->fecha_vcto = $fechaVcto;
-						$modelDetalle[$j]->exigibilidad_pago = $exigibilidadLiq['exigibilidad'];
+							$modelDetalle[$j] = New PagoDetalle();
+							$modelDetalle[$j]->id_pago = $this->_id_pago;
+							$modelDetalle[$j]->id_impuesto = $idImpuesto;
+							$modelDetalle[$j]->impuesto = self::IMPUESTO;
+							$modelDetalle[$j]->ano_impositivo = $año;
+							$modelDetalle[$j]->trimestre = $i;
+							$modelDetalle[$j]->monto = $montoPeriodo;
+							$modelDetalle[$j]->recargo = $montoRecargo;
+							$modelDetalle[$j]->interes = 0;
+							$modelDetalle[$j]->descuento = 0;
+							$modelDetalle[$j]->pago = 0;
+							$modelDetalle[$j]->fecha_pago = '0000-00-00';
+							$modelDetalle[$j]->referencia = 0;
+							$modelDetalle[$j]->descripcion = 'LIQUIDACION DE ACTIVIDAD ECONOMICA';
+							$modelDetalle[$j]->monto_reconocimiento = 0;
+							$modelDetalle[$j]->fecha_emision = date('Y-m-d');
+							$modelDetalle[$j]->fecha_vcto = $fechaVcto;
+							$modelDetalle[$j]->exigibilidad_pago = $exigibilidadLiq['exigibilidad'];
 
-						$j++;
+							$j++;
+						}
+					} else {
+						self::setErrors("No se pudo determinar el identificador para el año {$año}");
 					}
 				} else {
 					self::setErrors('El calculo de la liquidacion resulto en cero (0)');
@@ -325,6 +334,7 @@ die(var_dump($montoPeriodo));
 
 						$model[$key] = $value->attributes;
 						$this->_detalleLiquidacion[] = $value->attributes;
+
 					}
 				}
 				return $model;
@@ -417,6 +427,7 @@ die(var_dump($montoPeriodo));
 		}
 
 
+
 		/***/
 		private function getExigibilidadLiquidacion($año)
 		{
@@ -437,12 +448,12 @@ die(var_dump($montoPeriodo));
 			$monto = 0;
 			if ( $montoCalculado > 0 ) {
 				$exigibilidadLiq;
-// die(var_dump($montoCalculado));
+
 				if ( $exigibilidadLiq > 0 ) {
 					$monto = $montoCalculado / $exigibilidadLiq;
 				}
 			}
-die(var_dump($exigibilidadLiq));
+
 			return $monto;
 		}
 
@@ -452,8 +463,8 @@ die(var_dump($exigibilidadLiq));
 		/**
 		 * Metodo que determina el lapso para iniciar los calculos del impuesto de Actividad Economica.
 		 * Esto aplica cuando el contribuyente no posee liquidaciones y se procede a liquidadrlo por
-		 * primeravez en el impuesto de Actividad Economica. Se toma como parametro para la determinacion
-		 * de este lapsola fechade inicio de actividades del contribuyente, se compara contra un año
+		 * primera vez en el impuesto de Actividad Economica. Se toma como parametro para la determinacion
+		 * de este lapso la fecha de inicio de actividades del contribuyente, se compara contra un año
 		 * limite para iniciar los calculos de los impuestos. Si el año de la fecha de inicio es menor al
 		 * año limite establecido para los calculos se tomara el año limite como el inicio del lapso para
 		 * los calculos.
@@ -524,6 +535,27 @@ die(var_dump($exigibilidadLiq));
 		public function getErrors()
 		{
 			return $this->_controlErrors;
+		}
+
+
+
+		/**
+		 * Metodo que genera un provider del tipo ArrayDataProvider
+		 * @return ArrayDataProvider
+		 */
+		public function getDataProviderDetalle()
+		{
+			if ( count($this->_detalleLiquidacion) > 0 ) {
+
+				$provider = New ArrayDataProvider([
+									'allModels' => $this->_detalleLiquidacion,
+									'pagination' => false,
+						]);
+
+				return $provider;
+			}
+
+			return null;
 		}
 
 
