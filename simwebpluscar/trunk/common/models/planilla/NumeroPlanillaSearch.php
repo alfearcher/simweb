@@ -46,9 +46,16 @@
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 	use common\models\planilla\NumeroPlanilla;
+	use common\conexion\ConexionController;
+
+
 
 	/**
-	* 	Clase
+	* Clase que se encarga de generar un numero de planilla para la liquidacion.
+	* Se genera el nuemro de planilla y se envia por metodo. La generacion del
+	* numero es independiente del proceso que lo solicite, es decir, si el proceso
+	* que solicita el numero de planilla no termina satisfactoriamente, el numero
+	* de planilla igualmente se generara y guardara el tabla.
 	*/
 	class NumeroPlanillaSearch extends NumeroPlanilla
 	{
@@ -58,18 +65,46 @@
 		protected $usuario;
 		protected $fecha_hora;
 
-		public $conexion;
-		public $conn;
+		private $_conexion;
+		private $_conn;
+		private $_transaccion;
 
 
 
-		/***/
-		public function __construct($conexionLocal, $connLocal)
+		/**
+		 * Metodo constructor de la clase
+		 * @param string $db nombre de la configuracion de conexion a base de datos.
+		 */
+		public function __construct($db = 'db')
 		{
 			$this->planilla = 0;
-			$this->conexion = $conexionLocal;
-			$this->conn = $connLocal;
+
+			$this->usuario = Yii::$app->identidad->getUsuario();
+			if ( trim($db) == '' ) { $db = 'db';}
+			self::init($db);
+
+			// $this->conexion = $conexionLocal;
+			// $this->conn = $connLocal;
 		}
+
+
+
+		/**
+		 * Metodo que inicia la conexion a base de datos, asi como el seteo de
+		 * los atributos de la clase para su posterior conexion e insercion a
+		 * la base de datos. El metodo exige que el usuario este seteado antes
+		 * de iniciar la conexion.
+		 * @param  string $db nomobre de conecxion a bade de datos.
+		 * @return no retorna.
+		 */
+		public function init($db)
+		{
+			if ( trim($this->usuario) !== '' && trim($db) !== '' ) {
+				$this->_conexion = New ConexionController();
+				$this->_conn = $this->_conexion->initConectar($db);
+			}
+		}
+
 
 
 
@@ -98,13 +133,25 @@
 			$model = New NumeroPlanilla();
 
 			$model->ente = Yii::$app->ente->getEnte();
-			$usuario = isset(Yii::$app->user->identity->email) ? Yii::$app->user->identity->email : Yii::$app->user->identity->login;
+			// $usuario = Yii::$app->identidad->getUsuario();
 			//$model->usuario = Yii::$app->user->identity->email;
-			$model->usuario = $usuario;
+			$model->usuario = $this->usuario;
 			$model->fecha_hora = date('Y-m-d H:i:s');
 
-			$this->guardarNumeroPlanilla($model);
-			return $this->getPlanilla();
+			$this->_conn->open();
+			$this->_transaccion = $this->_conn->beginTransaction();
+
+			self::guardarNumeroPlanilla($model);
+
+			// Se pregunta si se guardo el numero de planilla.
+			if ( self::getPlanilla() > 0 ) {
+				$this->_transaccion->commit();
+			} else {
+				$this->_transaccion->rollBack();
+			}
+			$this->_conn->close();
+
+			return self::getPlanilla();
 		}
 
 
@@ -133,8 +180,8 @@
 				$arregloDatos = $model->attributes;
 				$arregloDatos = $model->toArray();
 
-				if ( $this->conexion->guardarRegistro($this->conn, $tableName, $arregloDatos) ) {
-					$this->planilla = $this->conn->getLastInsertID();
+				if ( $this->_conexion->guardarRegistro($this->_conn, $tableName, $arregloDatos) ) {
+					$this->planilla = $this->_conn->getLastInsertID();
 				}
 			}
 		}
