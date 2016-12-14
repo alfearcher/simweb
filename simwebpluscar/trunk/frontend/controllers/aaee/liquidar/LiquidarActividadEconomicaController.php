@@ -90,19 +90,96 @@
 
 			if ( isset($_SESSION['idContribuyente']) ) {
 
-				$_SESSION['begin'] = 1;
 				$idContribuyente = $_SESSION['idContribuyente'];
+				$_SESSION['begin'] = 1;
+				if ( ContribuyenteBase::getTipoNaturalezaDescripcionSegunID($idContribuyente) == 'JURIDICO' ) {
 
-				$request = Yii::$app->request;
-				$postData = $request->post();
+					$request = Yii::$app->request;
+					$postData = $request->post();
 
-				if ( isset($postData['btn-quit']) ) {
-					if ( $postData['btn-quit'] == 1 ) {
-						return $this->redirect(['quit']);
+					if ( isset($postData['btn-quit']) ) {
+						if ( $postData['btn-quit'] == 1 ) {
+							return $this->redirect(['quit']);
+						}
+					} elseif ( isset($postData['data-ano-impositivo']) && isset($postData['data-periodo'])
+						       && isset($postData['data-key']) && isset($postData['data-id-pago']) ) {
+						// Vista previa.
+						// Lo siguiente recibe un segun parametro, "tipo liquidacion", este parametro es
+						// opcional y por defecto se setea a "ESTIMADA".
+						$liquidar = New Liquidar($idContribuyente);
+						$ultimoLapsoLiquidado = $liquidar->getUltimoLapsoLiquidado();
+
+						// Lapsos liquidados.
+						$detalles = $liquidar->iniciarProcesoLiquidacion();
+
+						$dataIdPago = 0;
+						$dataKey = 0;
+						$dataIdPago = (int)$postData['data-id-pago'];
+						$dataKey = (int)$postData['data-key'];
+
+						if ( $dataIdPago > 0 ) {
+							// data provider de lo seleccionado.
+							foreach ( $detalles as $key => $value ) {
+								if ( $key <= $dataKey ) {
+									$detalleSeleccion[$key] = $detalles[$key];
+								}
+							}
+
+							if ( count($detalleSeleccion) > 0 ) {
+
+								$provider = New ArrayDataProvider([
+												'allModels' => $detalleSeleccion,
+												'pagination' => false,
+									]);
+
+								$caption = Yii::t('frontend', 'Confirme seleccion de lapsos');
+								$subCaption = Yii::t('frontend', 'Confirmar. Detalle de la liquidacion');
+								return $this->render('/aaee/liquidar/pre-view-liquidacion',[
+																		'caption' => $caption,
+																		'subCaption' => $subCaption,
+																		'dataProvider' => $provider,
+										]);
+							}
+						}
+
+					} elseif ( isset($postData['btn-confirm-create']) ) {
+						if ( $postData['btn-confirm-create'] == 3 ) {
+
+							$chkSeleccion = $postData['chkLapso'];
+							$liquidar = New Liquidar($idContribuyente);
+
+							// Lapsos liquidados.
+							$detalles = $liquidar->iniciarProcesoLiquidacion();
+
+							foreach ( $chkSeleccion as $key => $value ) {
+								$models[$key] = New PagoDetalle();
+								foreach ( $models[$key]->attributes as $i => $valor ) {
+									if ( isset($detalles[$key][$i]) ) {
+										$models[$key]->$i = $detalles[$key][$i];
+									}
+								}
+							}
+
+							if ( count($models) > 0 ) {
+								$result = self::actionBeginSave($models, $idContribuyente);
+								self::actionAnularSession(['begin']);
+								if ( $result ) {
+									$this->_transaccion->commit();
+									$this->_conn->close();
+									// Mostrar resultado.
+									return self::actionMostrarLiquidacionGuardada($models);
+
+								} else {
+									$this->_transaccion->rollBack();
+									$this->_conn->close();
+									$this->redirect(['error-operacion', 'id' => 920]);
+								}
+							}
+
+						}
 					}
-				} elseif ( isset($postData['data-ano-impositivo']) && isset($postData['data-periodo'])
-					       && isset($postData['data-key']) && isset($postData['data-id-pago']) ) {
-					// Vista previa.
+
+
 					// Lo siguiente recibe un segun parametro, "tipo liquidacion", este parametro es
 					// opcional y por defecto se setea a "ESTIMADA".
 					$liquidar = New Liquidar($idContribuyente);
@@ -111,105 +188,32 @@
 					// Lapsos liquidados.
 					$detalles = $liquidar->iniciarProcesoLiquidacion();
 
-					$dataIdPago = 0;
-					$dataKey = 0;
-					$dataIdPago = (int)$postData['data-id-pago'];
-					$dataKey = (int)$postData['data-key'];
-
-					if ( $dataIdPago > 0 ) {
-						// data provider de lo seleccionado.
-						foreach ( $detalles as $key => $value ) {
-							if ( $key <= $dataKey ) {
-								$detalleSeleccion[$key] = $detalles[$key];
-							}
-						}
-
-						if ( count($detalleSeleccion) > 0 ) {
-
-							$provider = New ArrayDataProvider([
-											'allModels' => $detalleSeleccion,
-											'pagination' => false,
-								]);
-
-							$caption = Yii::t('frontend', 'Confirme seleccion de lapsos');
-							$subCaption = Yii::t('frontend', 'Confirmar. Detalle de la liquidacion');
-							return $this->render('/aaee/liquidar/pre-view-liquidacion',[
-																	'caption' => $caption,
-																	'subCaption' => $subCaption,
-																	'dataProvider' => $provider,
-									]);
-						}
-					}
-
-				} elseif ( isset($postData['btn-confirm-create']) ) {
-					if ( $postData['btn-confirm-create'] == 3 ) {
-
-						$chkSeleccion = $postData['chkLapso'];
-						$liquidar = New Liquidar($idContribuyente);
-
-						// Lapsos liquidados.
-						$detalles = $liquidar->iniciarProcesoLiquidacion();
-
-						foreach ( $chkSeleccion as $key => $value ) {
-							$models[$key] = New PagoDetalle();
-							foreach ( $models[$key]->attributes as $i => $valor ) {
-								if ( isset($detalles[$key][$i]) ) {
-									$models[$key]->$i = $detalles[$key][$i];
-								}
-							}
-						}
-
-						if ( count($models) > 0 ) {
-							$result = self::actionBeginSave($models, $idContribuyente);
-							self::actionAnularSession(['begin']);
-							if ( $result ) {
-								$this->_transaccion->commit();
-								$this->_conn->close();
-								// Mostrar resultado.
-								return self::actionMostrarLiquidacionGuardada($models);
-
-							} else {
-								$this->_transaccion->rollBack();
-								$this->_conn->close();
-								$this->redirect(['error-operacion', 'id' => 920]);
-							}
-						}
-
-					}
-				}
-
-
-				// Lo siguiente recibe un segun parametro, "tipo liquidacion", este parametro es
-				// opcional y por defecto se setea a "ESTIMADA".
-				$liquidar = New Liquidar($idContribuyente);
-				$ultimoLapsoLiquidado = $liquidar->getUltimoLapsoLiquidado();
-
-				// Lapsos liquidados.
-				$detalles = $liquidar->iniciarProcesoLiquidacion();
-
-				if ( count($detalles) > 0 ) {
-					$provider = $liquidar->getDataProviderDetalle();
-					$fechaInicio = $liquidar->getFechaInicioActividad();
-
-					// Vista inicial.
 					if ( count($detalles) > 0 ) {
-						$caption = Yii::t('frontend', 'Detalle de la Liquidacion');
-						$subCaption = Yii::t('frontend', 'Informacion relevante');
+						$provider = $liquidar->getDataProviderDetalle();
+						$fechaInicio = $liquidar->getFechaInicioActividad();
 
-						return $this->render('/aaee/liquidar/_view-detalle',[
-														'dataProvider' => $provider,
-														'caption' => $caption,
-														'subCaption' => $subCaption,
-														'fechaInicio' => $fechaInicio,
-														'ultimoLapsoLiquidado' => $ultimoLapsoLiquidado,
+						// Vista inicial.
+						if ( count($detalles) > 0 ) {
+							$caption = Yii::t('frontend', 'Detalle de la Liquidacion');
+							$subCaption = Yii::t('frontend', 'Informacion relevante');
 
-							]);
+							return $this->render('/aaee/liquidar/_view-detalle',[
+															'dataProvider' => $provider,
+															'caption' => $caption,
+															'subCaption' => $subCaption,
+															'fechaInicio' => $fechaInicio,
+															'ultimoLapsoLiquidado' => $ultimoLapsoLiquidado,
+
+								]);
+						}
+
+					} else {
+						// No se encontraron detalles pendientes.
+						$r = $liquidar->getErrors();
+						return $this->render('/aaee/liquidar/warning',['mensajes' => $r]);
 					}
-
 				} else {
-					// No se encontraron detalles pendientes.
-					$r = $liquidar->getErrors();
-					return $this->render('/aaee/liquidar/warning',['mensajes' => $r]);
+					return $this->redirect(['error-operacion', 'cod' => 934]);
 				}
 
 			} else {
