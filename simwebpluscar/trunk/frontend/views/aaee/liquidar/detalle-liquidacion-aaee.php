@@ -190,7 +190,7 @@
 			               		 		'contentOptions' => [
 				                              'style' => 'font-size: 100%;',
 				                        ],
-			                            // 'label' => 'Imprimir',
+			                           	'label' => 'Seleccionar lapso',
 			                            'format' => 'raw',
 			                            'value' => function($data, $key) {
 			                            		return Html::submitButton($data['ano_impositivo'] . ' - ' . $data['trimestre'],
