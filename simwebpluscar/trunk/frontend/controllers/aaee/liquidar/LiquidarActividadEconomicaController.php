@@ -106,14 +106,14 @@
 					$request = Yii::$app->request;
 					$postData = $request->post();
 
-die(var_dump($postData));
+// die(var_dump($postData));
 
 					if ( isset($postData['btn-quit']) ) {
 						if ( $postData['btn-quit'] == 1 ) {
 							return $this->redirect(['quit']);
 						}
 					} elseif ( isset($postData['data-ano-impositivo']) && isset($postData['data-periodo'])
-						       && isset($postData['data-key']) && isset($postData['data-id-pago']) ) {
+						       && isset($postData['data-key']) ) {
 						// Vista previa.
 						// Lo siguiente recibe un segun parametro, "tipo liquidacion", este parametro es
 						// opcional y por defecto se setea a "ESTIMADA".
@@ -123,35 +123,32 @@ die(var_dump($postData));
 						// Lapsos liquidados.
 						$detalles = $liquidar->iniciarProcesoLiquidacion();
 
-						$dataIdPago = 0;
 						$dataKey = 0;
-						$dataIdPago = (int)$postData['data-id-pago'];
 						$dataKey = (int)$postData['data-key'];
 
-						if ( $dataIdPago > 0 ) {
-							// data provider de lo seleccionado.
-							foreach ( $detalles as $key => $value ) {
-								if ( $key <= $dataKey ) {
-									$detalleSeleccion[$key] = $detalles[$key];
-								}
-							}
-
-							if ( count($detalleSeleccion) > 0 ) {
-
-								$provider = New ArrayDataProvider([
-												'allModels' => $detalleSeleccion,
-												'pagination' => false,
-									]);
-
-								$caption = Yii::t('frontend', 'Confirme seleccion de lapsos');
-								$subCaption = Yii::t('frontend', 'Confirmar. Detalle de la liquidacion');
-								return $this->render('/aaee/liquidar/pre-view-liquidacion',[
-																		'caption' => $caption,
-																		'subCaption' => $subCaption,
-																		'dataProvider' => $provider,
-										]);
+						// data provider de lo seleccionado.
+						foreach ( $detalles as $key => $value ) {
+							if ( $key <= $dataKey ) {
+								$detalleSeleccion[$key] = $detalles[$key];
 							}
 						}
+
+						if ( count($detalleSeleccion) > 0 ) {
+
+							$provider = New ArrayDataProvider([
+											'allModels' => $detalleSeleccion,
+											'pagination' => false,
+								]);
+
+							$caption = Yii::t('frontend', 'Confirme seleccion de lapsos');
+							$subCaption = Yii::t('frontend', 'Confirmar. Detalle de la liquidacion');
+							return $this->render('/aaee/liquidar/pre-view-liquidacion',[
+																	'caption' => $caption,
+																	'subCaption' => $subCaption,
+																	'dataProvider' => $provider,
+									]);
+						}
+
 
 					} elseif ( isset($postData['btn-confirm-create']) ) {
 						if ( $postData['btn-confirm-create'] == 3 ) {
