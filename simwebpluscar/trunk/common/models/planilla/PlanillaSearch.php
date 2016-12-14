@@ -137,6 +137,7 @@
 							'D.referencia',
 							'D.pago',
 							'D.fecha_pago',
+							'D.fecha_vcto',
 							'I.descripcion as descripcion_impuesto',
 							'D.descripcion',
 							'E.unidad',
@@ -168,9 +169,7 @@
 			if ( count($detalles) > 0 ) {
         		$provider = New ArrayDataProvider([
         				'allModels' => $detalles,
-        				'pagination' => [
-        					'pageSize' => 12,
-    					],
+        				'pagination' => false,
         			]);
         	}
 
@@ -220,8 +219,33 @@
 			return $findMmodel = PagoDetalle::find()->alias('D')
 			                                        ->joinWith('pagos P', true, 'INNER JOIN')
 			                                        ->where('planilla =:planilla',
-			                                        			[':planilla' => $this->_planilla]);
+			                                        			[':planilla' => $this->_planilla])
+			                                        ->andWhere('D.pago =:pago',[':pago' => 0]);
 		}
+
+
+
+		/***/
+		public function getProviderPlanilla($estatus)
+		{
+			$findModel = self::findPlanillaGeneralModel();
+			$query = $findModel
+			->andWhere('pago =:pago',[':pago' => $estatus])
+			->joinWith('exigibilidad E', true, 'INNER JOIN')
+			                   ->joinWith('estatus S', true, 'INNER JOIN')
+			                   ->joinWith('impuestos I', true, 'INNER JOIN')->asArray()->all();
+
+			$provider = New ArrayDataProvider([
+								'allModels' => $query,
+								'pagination' => false,
+						]);
+
+			// $query->andWhere('pago =:pago',[':pago' => $estatus])->all();
+
+			return $provider;
+
+		}
+
 
 
 

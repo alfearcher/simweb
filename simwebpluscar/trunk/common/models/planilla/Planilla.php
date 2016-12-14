@@ -289,7 +289,7 @@
 		 */
 		public function crearNumeroPlanilla($conexion, $conn)
 		{
-			$planilla = New NumeroPlanillaSearch($conexion, $conn);
+			$planilla = New NumeroPlanillaSearch();
 			$ultimaPlanilla = $planilla->getGenerarNumeroPlanilla();
 
 			return $ultimaPlanilla;
