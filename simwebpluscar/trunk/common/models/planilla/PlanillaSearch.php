@@ -149,6 +149,7 @@
 				  ->join('INNER JOIN', 'exigibilidades as E', 'D.exigibilidad_pago = E.exigibilidad')
 				  ->join('INNER JOIN', 'estatus_depositos as S', 'D.pago = S.estatus')
 				  ->where('planilla =:planilla', [':planilla' => $this->_planilla])
+				  ->andWhere('pago =:pago',[':pago' => 0])
 				  ->orderBy([
 				  		'ano_impositivo' => SORT_ASC,
 				  		'trimestre' => SORT_ASC,
