@@ -56,13 +56,14 @@
 	use common\mensaje\MensajeController;
 	use common\models\session\Session;
 	use common\conexion\ConexionController;
-	use common\models\contribuyente\ContribuyenteBase;
-	use common\models\historico\cvbplanilla\GenerarValidadorPlanilla;
-	use common\models\deuda\DeudaSearch;
-	use backend\models\planilla\consulta\PlanillaConsultaForm;
-	use common\models\planilla\PlanillaSearch;
+	//use common\models\contribuyente\ContribuyenteBase;
+	//use backend\models\planilla\consulta\PlanillaConsultaForm;
 	use common\controllers\pdf\planilla\PlanillaPdfController;
 	use backend\models\aaee\liquidar\Liquidar;
+	use common\models\planilla\PagoDetalle;
+	use common\models\planilla\Pago;
+	use common\models\planilla\NumeroPlanillaSearch;
+	use common\models\planilla\PlanillaSearch;
 
 
 	session_start();
@@ -73,16 +74,24 @@
 	{
 		public $layout = 'layout-main';				//	Layout principal del formulario
 
+		private $_conn;
+		private $_conexion;
+		private $_transaccion;
 
 
 
 
-		/***/
+
+		/**
+		 * Metodo que inicia el modulo de lqiquidacion.
+		 * @return [type] [description]
+		 */
 		public function actionIndex()
 		{
 
 			if ( isset($_SESSION['idContribuyente']) ) {
 
+				$_SESSION['begin'] = 1;
 				$idContribuyente = $_SESSION['idContribuyente'];
 
 				$request = Yii::$app->request;
@@ -94,14 +103,267 @@
 					}
 				}
 
-				$liquidar = New Liquidar($idContribuyente);
-				$r = $liquidar->iniciarProcesoLiquidacion();
 
-die(var_dump($r));
+				// Lo siguiente recibe un segun parametro, "tipo liquidacion", este parametro es
+				// opcional y por defecto se setea a "ESTIMADA".
+				$liquidar = New Liquidar($idContribuyente);
+				$ultimoLapsoLiquidado = $liquidar->getUltimoLapsoLiquidado();
+
+				// Lapsos liquidados.
+				$detalles = $liquidar->iniciarProcesoLiquidacion();
+
+				if ( count($detalles) > 0 ) {
+					$provider = $liquidar->getDataProviderDetalle();
+					$fechaInicio = $liquidar->getFechaInicioActividad();
+
+					if ( isset($postData['data-ano-impositivo']) && isset($postData['data-periodo']) && isset($postData['data-key']) ) {
+
+						foreach ( $detalles as $key => $value ) {
+
+							if ( $key <= (int)$postData['data-key']) {
+
+								$models[$key] = New PagoDetalle();
+								foreach ( $models[$key]->attributes as $i => $valor ) {
+									if ( isset($detalles[$key][$i]) ) {
+										$models[$key]->$i = $detalles[$key][$i];
+									}
+								}
+
+							} else {
+								break;
+							}
+						}
+
+						if ( count($models) > 0 ) {
+							$result = self::actionBeginSave($models, $idContribuyente);
+							self::actionAnularSession(['begin']);
+							if ( $result ) {
+								$this->_transaccion->commit();
+								$this->_conn->close();
+								// Mostrar resultado.
+								return self::actionMostrarLiquidacionGuardada($models);
+
+							} else {
+								$this->_transaccion->rollBack();
+								$this->_conn->close();
+								$this->redirect(['error-operacion', 'id' => 920]);
+							}
+						}
+					}
+
+					if ( count($detalles) > 0 ) {
+						$caption = Yii::t('frontend', 'Detalle de la Liquidacion');
+						$subCaption = Yii::t('frontend', 'Informacion relevante');
+
+						return $this->render('/aaee/liquidar/_view-detalle',[
+														'dataProvider' => $provider,
+														'caption' => $caption,
+														'subCaption' => $subCaption,
+														'fechaInicio' => $fechaInicio,
+														'ultimoLapsoLiquidado' => $ultimoLapsoLiquidado,
+
+							]);
+					}
+
+				} else {
+					// No se encontraron detalles pendientes.
+					$r = $liquidar->getErrors();
+					return $this->render('/aaee/liquidar/warning',['mensajes' => $r]);
+				}
 
 			} else {
 				// No esta definida la session del contribuyente.
 			}
+		}
+
+
+
+
+
+		/**
+		 * Metodo que inicia el proceos para guardar la liquidacion
+		 * @param PagoDetall $models arreglo de modelo de la clase PagoDetalle().
+		 * @param integer $idContribuyente identificador del contribuyente.
+		 * @return boolean retorna true o false.
+		 */
+		private function actionBeginSave($models, $idContribuyente)
+		{
+
+			$result = false;
+			$idPago = 0;
+			$this->_conexion = New ConexionController();
+
+  			// Instancia de conexion hacia la base de datos.
+  			$this->_conn = $this->_conexion->initConectar('db');
+  			$this->_conn->open();
+
+  			// Instancia de tipo transaccion para asegurar la integridad del resguardo de los datos.
+  			// Inicio de la transaccion.
+			$this->_transaccion = $this->_conn->beginTransaction();
+
+			if ( $models[0]['id_pago'] > 0 ) {
+
+				$findModel = self::actionInfoPlanilla((int)$models[0]['id_pago'])->asArray()->one();
+
+				// Se verifica que la planilla donde se guardaran los detalle este disponible.
+				// Sino es asi se genrara otra planilla.
+				if ( $findModel['pago'] == 0 ) {
+
+					$result = self::actionGuardarDetalle($models, $this->_conexion, $this->_conn);
+
+				} else {
+
+					// Se genera otra planilla para los detalles de la liquiadcion.
+					$idPago = self::actionGuardarPago($this->_conexion, $this->_conn, $idContribuyente);
+					if ( $idPago > 0 ) {
+						foreach ( $models as $model ) {
+							$model['id_pago'] = $idPago;
+						}
+
+						$result = self::actionGuardarDetalle($models, $this->_conexion, $this->_conn);
+					}
+				}
+
+			} elseif ( $models[0]['id_pago'] == 0 ) {
+
+				$idPago = self::actionGuardarPago($this->_conexion, $this->_conn, $idContribuyente);
+				if ( $idPago > 0 ) {
+					foreach ( $models as $model ) {
+						$model['id_pago'] = $idPago;
+					}
+
+					$result = self::actionGuardarDetalle($models, $this->_conexion, $this->_conn);
+				}
+			}
+
+			return $result;
+
+		}
+
+
+
+
+		/**
+		 * Metodo que guarda los detalle de la liquidacion
+		 * @param PagoDetalle $models arreglo de modelo de la clase PagoDetella().
+		 * @param ConexionController $conexion [description]
+		 * @param  [type] $conn     [description]
+		 * @return boolean retorna true o false.
+		 */
+		private function actionGuardarDetalle($models, $conexion, $conn)
+		{
+			$result = false;
+			if ( count($models) > 0 ) {
+				$tabla = $models[0]->tableName();
+
+				foreach ( $models as $model ) {
+					if ( $model['id_pago'] > 0 ) {
+						$result = $conexion->guardarRegistro($conn, $tabla, $model->attributes);
+						if ( !$result ) { break; }
+					} else {
+						break;
+					}
+				}
+			}
+
+			return $result;
+		}
+
+
+
+
+
+		/**
+		 * Metodo que guarda el maetro de la planilla y ademas se genera el numero de la misma.
+		 * @param  ConexionController $conexion        [description]
+		 * @param  [type] $conn            [description]
+		 * @param  integer $idContribuyente identificador del contribuyente.
+		 * @return integer retorna el identificador de la entidad "pagos".
+		 */
+		private function actionGuardarPago($conexion, $conn, $idContribuyente)
+		{
+			$idPago = 0;
+			$numero = 0;
+			$pago = New Pago();
+			$tabla = $pago->tableName();
+
+			$planillaSearch = New NumeroPlanillaSearch();
+
+			$intento = 10;
+			while ( $intento >= 1 ) {
+				$numero = $planillaSearch->getGenerarNumeroPlanilla();
+				if ( $numero > 0 ) {
+					break;
+				} else {
+					$intento--;
+				}
+			}
+
+			if ( $numero > 0 ) {
+				$pago->ente = Yii::$app->ente->getEnte();
+				$pago->id_contribuyente = $idContribuyente;
+				$pago->planilla = $numero;
+				$pago->status_pago = 0;
+				$pago->notificado = 0;
+				$pago->ult_act = date('Y-m-d');
+				$pago->recibo = 0;
+				$pago->id_moneda = 1;
+				$pago->exigibilidad_deuda = 0;
+
+				$arregloDatos = $pago->attributes;
+
+				if ( $conexion->guardarRegistro($conn, $tabla, $arregloDatos) ) {
+					$idPago = $conn->getLastInsertID();
+				}
+			}
+
+
+			return $idPago;
+
+		}
+
+
+
+		/***/
+		public function actionMostrarLiquidacionGuardada($models)
+		{
+			$findModel = self::actionInfoPlanilla($models[0]['id_pago']);
+			$detalles = $findModel->asArray()->one();
+
+			if ( count($detalles) > 0 ) {
+
+				$planilla = (int)$detalles['pagos']['planilla'];
+				$planillaSearch = New PlanillaSearch($planilla);
+				$dataProvider = $planillaSearch->getProviderPlanilla(0);
+				$url = Url::to(['generar-pdf']);
+				$caption = Yii::t('frontend', 'Detalle de la planilla ' . $planilla);
+				$subCaption = Yii::t('frontend', 'Lapsos liquiaddos');
+
+				return $this->render('/aaee/liquidar/view-liquidacion-resultante',[
+															'caption' => $caption,
+															'subCaption' => $subCaption,
+															'dataProvider' => $dataProvider,
+															'planilla' => $planilla,
+															'url' => $url,
+						]);
+			} else {
+				// No se encontraro detalles liquidados.
+
+			}
+		}
+
+
+
+
+
+
+		/***/
+		private function actionInfoPlanilla($idPago)
+		{
+			return $findModel = PagoDetalle::find()->alias('D')
+		                                   		   ->where('D.id_pago =:id_pago',[':id_pago'=>$idPago])
+		                                           ->joinWith('pagos P', true, 'INNER JOIN');
+
 		}
 
 
@@ -145,8 +407,8 @@ die(var_dump($r));
 			$request = Yii::$app->request;
 			$postData = $request->post();
 
-			if ( isset($postData['p']) ) {
-				$planilla = $postData['p'];
+			if ( isset($postData['planilla']) ) {
+				$planilla = $postData['planilla'];
 				$pdf = New PlanillaPdfController($planilla);
 				$pdf->actionGenerarPlanillaPdf();
 
