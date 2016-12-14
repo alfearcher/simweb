@@ -57,6 +57,7 @@
 	use common\models\pago\PagoSearch;
 	use backend\models\inmueble\InmueblesConsulta;
 	use backend\models\aaee\actecon\ActEcon;
+	use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomicaSearch;
 
 
 	/**
@@ -331,6 +332,20 @@
 			return $mensaje;
 		}
 
+
+
+
+		/**
+		 * Metodo que realiza una busqueda para determinar si esta inscrito como contribuyente
+		 * de Actividad Economica.
+		 * @return boolean retorna true si ya esta inscrito, false en caso contrario.
+		 */
+		public function estaInscritoActividadEconomica() {
+			$result      = false;
+			$inscripcion = New InscripcionActividadEconomicaSearch($this->_id_contribuyente);
+			$result      = $inscripcion->yaEstaInscritoActividadEconomica();
+			return $result;
+		}
 
 
 
