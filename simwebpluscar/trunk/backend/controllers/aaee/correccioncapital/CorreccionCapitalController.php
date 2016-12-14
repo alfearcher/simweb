@@ -81,6 +81,7 @@
 		 */
 		public function actionIndex()
 		{
+
 			if ( isset($_SESSION['idContribuyente']) ) {
 				$idContribuyente = $_SESSION['idContribuyente'];
 				$tipoNaturaleza = isset($_SESSION['tipoNaturaleza']) ? $_SESSION['tipoNaturaleza'] : null;
@@ -97,7 +98,6 @@
 							return ActiveForm::validate($model);
 				      	}
 
-//die(var_dump($postData));
 				      	if ( $model->load($postData) ) {
 
 				      		if ( $model->validate() ) {
