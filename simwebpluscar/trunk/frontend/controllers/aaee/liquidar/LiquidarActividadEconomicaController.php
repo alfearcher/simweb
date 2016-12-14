@@ -106,7 +106,7 @@
 					$request = Yii::$app->request;
 					$postData = $request->post();
 
-// die(var_dump($postData));
+die(var_dump($postData));
 
 					if ( isset($postData['btn-quit']) ) {
 						if ( $postData['btn-quit'] == 1 ) {
