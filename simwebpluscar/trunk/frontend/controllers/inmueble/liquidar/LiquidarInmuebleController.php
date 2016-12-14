@@ -136,15 +136,19 @@
 				$searchSolvencia = New SolvenciaInmuebleSearch($idContribuyente);
 				$provider = $searchSolvencia->getDataProviderInmueble();
 
-				$caption = Yii::t('frontend', 'Lista de Inmuebles');
-				$subCaption = Yii::t('frontend', $caption .'. Seleccione el o los inmueble(s) para liquidar el impuesto');
-				return $this->render('/inmueble/liquidar/_list',[
-												'caption' => $caption,
-												'subCaption' => $subCaption,
-												'dataProvider' => $provider,
-												'controlSeleccion' => $controlSeleccion,
-							]);
+				if ( $provider !== null ) {
+					$caption = Yii::t('frontend', 'Lista de Inmuebles');
+					$subCaption = Yii::t('frontend', $caption .'. Seleccione el o los inmueble(s) para liquidar el impuesto');
+					return $this->render('/inmueble/liquidar/_list',[
+													'caption' => $caption,
+													'subCaption' => $subCaption,
+													'dataProvider' => $provider,
+													'controlSeleccion' => $controlSeleccion,
+								]);
+				} else {
+					return $this->redirect(['error-operacion', 'cod' => 509]);
 
+				}
 
 			} else {
 				return $this->redirect(['quit']);
