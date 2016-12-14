@@ -63,6 +63,7 @@
 	use common\models\planilla\NumeroPlanillaSearch;
 	use common\models\planilla\PlanillaSearch;
 	use yii\data\ArrayDataProvider;
+	use common\models\contribuyente\ContribuyenteBase;
 
 
 	session_start();
@@ -80,18 +81,26 @@
 
 
 
+		public function actionIndex()
+		{
+			$_SESSION['begin'] = 1;
+			$this->redirect(['index-create']);
+		}
+
+
+
+
 
 		/**
 		 * Metodo que inicia el modulo de lqiquidacion.
 		 * @return [type] [description]
 		 */
-		public function actionIndex()
+		public function actionIndexCreate()
 		{
 
-			if ( isset($_SESSION['idContribuyente']) ) {
+			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) ) {
 
 				$idContribuyente = $_SESSION['idContribuyente'];
-				$_SESSION['begin'] = 1;
 				if ( ContribuyenteBase::getTipoNaturalezaDescripcionSegunID($idContribuyente) == 'JURIDICO' ) {
 
 					$request = Yii::$app->request;
@@ -218,6 +227,7 @@
 
 			} else {
 				// No esta definida la session del contribuyente.
+				return $this->redirect(['quit']);
 			}
 		}
 
