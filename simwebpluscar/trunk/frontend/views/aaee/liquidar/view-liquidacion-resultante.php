@@ -138,7 +138,16 @@
 				            			           },
 				            			'visible' => false,
 				                    ],
-
+				                     [
+				                        'contentOptions' => [
+				                              'style' => 'font-size: 90%;text-align: center;',
+				                        ],
+				                        'label' => Yii::t('frontend', 'Planilla'),
+				                        'value' => function($data) {
+				                                   		return $data['pagos']['planilla'];
+				            			           },
+				            			//'visible' => false,
+				                    ],
 				                    [
 				                        'contentOptions' => [
 				                              'style' => 'font-size: 90%;text-align: center;',
