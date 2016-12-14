@@ -132,6 +132,7 @@
 
 			} else {
 				// No esta definida la session del contribuyente.
+				$this->redirect(['quit']);
 			}
 		}
 
