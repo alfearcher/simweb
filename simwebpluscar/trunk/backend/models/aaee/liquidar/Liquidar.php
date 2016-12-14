@@ -55,6 +55,7 @@
 	use backend\models\aaee\actecon\ActEconSearch;
 	use common\models\calculo\recargo\Recargo;
 	use yii\data\ArrayDataProvider;
+	use common\models\planilla\Pago;
 
 
 
@@ -104,6 +105,26 @@
 
 
 
+
+
+
+
+
+		/***/
+		public function getFechaInicioActividad()
+		{
+			return $this->_contribuyente->fecha_inicio;
+		}
+
+
+
+		/***/
+		public function getLapsoLiquidado()
+		{
+			return $this->_detalleLiquidacion;
+		}
+
+
 		/**
 		 * Metodo que inicia el proceso de liquidacion y el mismo debe devolver una arreglo
 		 * con los laspsos liquidados y sus respectivos montos.
@@ -113,33 +134,41 @@
 		{
 			$this->_detalleLiquidacion = [];
 
-			$rangoInicio = self::armarRangoLiquidacionInicial();
-			$rangoFinal = self::getUltimoLapso();				// Ultimo lapso del año actual.
+			try {
+				$rangoInicio = self::armarRangoLiquidacionInicial();
 
-			$añoInicio = (int)$rangoInicio['ano_impositivo'];
-			$periodoInicio = (int)$rangoInicio['periodo'];
-			$añoFinal = (int)$rangoFinal['ano_impositivo'];
-			$periodoFinal = (int)$rangoFinal['periodo'];
+				if ( count($rangoInicio) > 0 ) {
+					$rangoFinal = self::getUltimoLapso();				// Ultimo lapso del año actual.
 
-			if ( trim(self::getAtributoDeclaracion()) == 'estimado' ) {
-				for ( $i = $añoInicio; $i <= $añoFinal; $i++ ) {
-					if ( $i == $añoInicio ) {
-						self::liquidarAnoImpositivoEstimada($i, $periodoInicio);
+					$añoInicio = (int)$rangoInicio['ano_impositivo'];
+					$periodoInicio = (int)$rangoInicio['periodo'];
+					$añoFinal = (int)$rangoFinal['ano_impositivo'];
+					$periodoFinal = (int)$rangoFinal['periodo'];
 
-					} elseif ( $i > $añoInicio ) {
+					if ( trim(self::getAtributoDeclaracion()) == 'estimado' ) {
+						for ( $i = $añoInicio; $i <= $añoFinal; $i++ ) {
+							if ( $i == $añoInicio ) {
+								self::liquidarAnoImpositivoEstimada($i, $periodoInicio);
 
-						self::liquidarAnoImpositivoEstimada($i, 1);
+							} elseif ( $i > $añoInicio ) {
 
+								self::liquidarAnoImpositivoEstimada($i, 1);
+
+							}
+						}
+
+					} elseif ( trim(self::getAtributoDeclaracion()) == 'reales' ) {
+
+					} else {
+						self::setErrors('No se definio el tipo de liquidacion a realizar');
 					}
 				}
+				return $this->_detalleLiquidacion;
 
-			} elseif ( trim(self::getAtributoDeclaracion()) == 'reales' ) {
-
-			} else {
-				self::setErrors('No se definio el tipo de liquidacion a realizar');
+			} catch (Exception $e ) {
+				return null;
 			}
 
-			return $this->_detalleLiquidacion;
 		}
 
 
@@ -153,6 +182,9 @@
 		private function armarRangoLiquidacionInicial()
 		{
 			$this->_id_pago = 0;
+			$añoComienzo = 0;
+			$periodoComienzo = 0;
+			$lapsoInicio = [];
 			$ultimoLapso = self::getUltimoLapsoLiquidado();
 			if ( count($ultimoLapso) > 0 ) {
 				$ultimoAño = (int)$ultimoLapso['ano_impositivo'];
@@ -192,10 +224,12 @@
 					}
 				}
 
-				$lapsoInicio = [
-					'ano_impositivo' => $añoComienzo,
-					'periodo' => $periodoComienzo,
-				];
+				if ( $añoComienzo > 0 && $periodoComienzo > 0 ) {
+					$lapsoInicio = [
+						'ano_impositivo' => $añoComienzo,
+						'periodo' => $periodoComienzo,
+					];
+				}
 
 			} else {
 				// Significa que no tiene periodos liquidados.
@@ -260,7 +294,7 @@
 		private function liquidarAnoImpositivoEstimada($año, $desdePeriodo)
 		{
 			$montoCalculado = 0;			// Monto calculado para el año impositivo.
-
+			$modelDetalle = [];
 			$exigibilidadLiq = self::getExigibilidadLiquidacion($año);
 			$exigibilidadDec = self::getExigibilidadDeclaracion($año);
 
