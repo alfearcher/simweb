@@ -204,6 +204,7 @@
 														            								'data-ano-impositivo' => $data['ano_impositivo'],
 														            								'data-periodo' => $data['trimestre'],
 														            								'data-key' => $key,
+														            								'data-id-pago' => $data['id_pago'],
 														            							],
 														            						],
 														            					]);

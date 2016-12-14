@@ -278,25 +278,6 @@
 
 					</div>
 
-
-					<div class="row" style="width: 100%;padding: 0px;margin-top: 20px;">
-						<div class="col-sm-3" style="width: 25%;padding: 0px; padding-left: 25px;margin-left:30px;">
-							<div class="form-group">
-								<?= Html::submitButton(Yii::t('frontend', 'Quit'),
-																	  [
-																		'id' => 'btn-quit',
-																		'class' => 'btn btn-danger',
-																		'value' => 1,
-																		'style' => 'width: 100%;',
-																		'name' => 'btn-quit',
-
-																	  ])
-								?>
-							</div>
-						</div>
-
-					</div>
-
 				</div>  <!-- Fin de col-sm-12 -->
 			</div>  	<!-- Fin de container-fluid -->
 
