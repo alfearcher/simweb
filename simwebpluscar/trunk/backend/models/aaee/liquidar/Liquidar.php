@@ -390,7 +390,7 @@
 			return PagoDetalle::find()->alias('D')
 									  ->where('id_contribuyente=:id_contribuyente',
 													[':id_contribuyente' => $this->_contribuyente->id_contribuyente])
-									  ->andWhere(['IN', 'pago', [0,1]])
+									  ->andWhere(['IN', 'pago', [0, 1, 7]])
 									  ->andWhere('trimestre >:trimestre',['trimestre' => 0])
 									  ->andWhere('impuesto =:impuesto',[':impuesto' => self::IMPUESTO])
 									  ->joinWith('pagos P', true, 'INNER JOIN')
