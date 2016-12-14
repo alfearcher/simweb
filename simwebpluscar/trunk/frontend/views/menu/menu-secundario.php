@@ -82,7 +82,7 @@
 
     $menuItem = '';
     $menuItems = '';
-    foreach ($opciones as $key => $value) {
+    foreach ( $opciones as $key => $value ) {
     	if ( count($menuOpciones[$key]) > 0 ) {
     		$item = $menuOpciones[$key];
     		$menuItem = ['label' => Icon::show($item['icon'],
@@ -90,6 +90,7 @@
     										   		'class' => $item['class'],
     										   		'style' => $item['color'],
     										   		'title' => $item['title'],
+                                                    //'target' => ( isset($item['target']) ) ? $item['target'] : '',
     										   ],
     										   $item['tipoIcon']
     										   ),// . ' ' . $iconCaption[$key],

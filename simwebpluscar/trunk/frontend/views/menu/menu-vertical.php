@@ -120,15 +120,15 @@
 		        		],
 
 
-		        		['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . '&nbsp; Prueba de Mpdf',
-		        			'items' => [
-		        						['label' => 'Prueba', 'url' => ['/mpdf/prueba-mpdf/pdf']],
-		        						['label' => 'Consulta', 'url' => ['/mpdf/prueba-mpdf/liquidar']],
-		        						['label' => 'deuda', 'url' => ['/mpdf/prueba-mpdf/deuda']],
-		        						['label' => 'pago', 'url' => ['/mpdf/prueba-mpdf/pago']],
-		        						// ['label' => 'Solicitar Anulación de Recibo', 'url' => '#'],
-		        			]
-		        		],
+		        		// ['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . '&nbsp; Prueba de Mpdf',
+		        		// 	'items' => [
+		        		// 				['label' => 'Prueba', 'url' => ['/mpdf/prueba-mpdf/pdf']],
+		        		// 				['label' => 'Consulta', 'url' => ['/mpdf/prueba-mpdf/liquidar']],
+		        		// 				['label' => 'deuda', 'url' => ['/mpdf/prueba-mpdf/deuda']],
+		        		// 				['label' => 'pago', 'url' => ['/mpdf/prueba-mpdf/pago']],
+		        		// 				// ['label' => 'Solicitar Anulación de Recibo', 'url' => '#'],
+		        		// 	]
+		        		// ],
 
 
 
@@ -229,11 +229,12 @@
 		        		],
 
 		        		//	Planilla
-		        		['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . '&nbsp; Planilla',
+		        		['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . '&nbsp; Liquidacion',
 		        			'items' => [
-		        						['label' => 'Planilla', 'url' => '#'],
+		        						['label' => 'Liquidar Actividad Economica', 'url' => ['aaee/liquidar/liquidar-actividad-economica/index']],
+		        						['label' => 'Liquidar Inmueble Urbano', 'url' => ['inmueble/liquidar/liquidar-inmueble/index']],
+		        						['label' => 'Liquidar Vehiculo', 'url' => ['vehiculo/liquidar/liquidar-vehiculo/index']],
 		        						['label' => 'Consulta de Planilla', 'url' => ['planilla/planilla-consulta/index']],
-		        						//['label' => 'Solicitar Anulación de Recibo', 'url' => ['recibo/anular-recibo/index']],
 		        			]
 		        		],
 
