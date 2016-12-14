@@ -73,12 +73,7 @@
 		 */
 		public function __construct($db = '')
 		{
-			$user = '';
-			if ( isset(Yii::$app->user->identity->username) ) {
-				$user = Yii::$app->user->identity->username;
-			} elseif ( isset(Yii::$app->user->identity->login) ) {
-				$user = Yii::$app->user->identity->login;
-			}
+			$user = Yii::$app->identidad->getUsuario();
 			$this->_usuario = $user;
 			if ( trim($db) == '' ) { $db = 'db';}
 			self::init($db);
