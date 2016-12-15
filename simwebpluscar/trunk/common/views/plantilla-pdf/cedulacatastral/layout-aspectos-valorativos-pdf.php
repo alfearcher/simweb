@@ -79,7 +79,7 @@
 			<td class="info-declaracion" colspan="2"><?=Html::encode($resumen['id_impuesto']); ?></td>
 			
 			
-			      
+		$nombreJoderC	 
 		</tr>  
 	
                      

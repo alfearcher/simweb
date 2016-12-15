@@ -76,7 +76,7 @@
 
 		private $model;
 
-
+  
 
 		/**
 		 * Constructor de la clase.
