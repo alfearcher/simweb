@@ -63,10 +63,10 @@
  		$form = ActiveForm::begin([
  			'id' => 'id-lista-inmueble-form',
  			'method' => 'post',
- 			//'action' => $url,
- 			'enableClientValidation' => true,
+ 			'action' => $url,
+ 			'enableClientValidation' => false,
  			'enableAjaxValidation' => false,
- 			'enableClientScript' => true,
+ 			'enableClientScript' => false,
  		]);
  	?>
 
@@ -176,13 +176,13 @@
 					<div class="row" style="width: 100%;padding: 0px;margin-top: 20px;">
 							<div class="col-sm-3" style="width: 25%;padding: 0px;padding-left: 15px;">
 								<div class="form-group">
-									<?= Html::submitButton(Yii::t('frontend', 'Confirmar Iniciar Liquidacion'),
+									<?= Html::submitButton(Yii::t('frontend', 'Confirmar Seleccion'),
 																					  [
-																						'id' => 'btn-confirm-begin',
+																						'id' => 'btn-confirm-seleccion',
 																						'class' => 'btn btn-success',
 																						'value' => 5,
 																						'style' => 'width: 100%;',
-																						'name' => 'btn-confirm-begin',
+																						'name' => 'btn-confirm-seleccion',
 
 																					  ])
 									?>
