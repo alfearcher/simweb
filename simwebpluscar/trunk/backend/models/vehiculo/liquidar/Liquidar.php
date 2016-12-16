@@ -169,7 +169,7 @@
 		 * Metodo que determina el rango inicial para los calculos del impuesto.
 		 * @return array retorna arreglo con los parametros para inicial la liquidacion.
 		 */
-		private function armarRangoLiquidacionInicial()
+		public function armarRangoLiquidacionInicial()
 		{
 			$this->_id_pago = 0;
 			$añoComienzo = 0;
@@ -395,22 +395,8 @@
 		}
 
 
-
-
-		/**
-		 * Metodo que determina la exigibilidad de la declaracion para un año especifico.
-		 * @param  integer $año año impositivo de la declaracion.
-		 * @return array retorna un arreglo con los atributos de la entidad "exigibilidades".
-		 */
-		private function getExigibilidadDeclaracion($año)
-		{
-			return $exigibilidadDec = OrdenanzaBase::getExigibilidadDeclaracion($año, self::IMPUESTO);
-		}
-
-
-
 		/***/
-		private function getExigibilidadLiquidacion($año)
+		public function getExigibilidadLiquidacion($año)
 		{
 			return $exigibilidadLiq = OrdenanzaBase::getExigibilidadLiquidacion($año, self::IMPUESTO);
 		}

@@ -43,12 +43,15 @@
 	namespace backend\models\vehiculo\liquidar;
 
  	use Yii;
+ 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 	use yii\web\NotFoundHttpException;
 	use common\models\planilla\PagoDetalle;
 	use common\models\contribuyente\ContribuyenteBase;
 	use yii\data\ArrayDataProvider;
 	use backend\models\vehiculo\VehiculosForm;
+	use yii\grid\GridView;
+	use yii\helpers\Html;
 
 
 
@@ -62,10 +65,16 @@
 	* para guardar los nuevos lapsos, sino es asi, los nuevos lapsos se guardaran
 	* en la utlima planilla que existe pendiente.
 	*/
-	class LiquidarVehiculoForm
+	class LiquidarVehiculoForm extends Model
 	{
 
-		protected $id_contribuyente;
+		public $id_contribuyente;
+		public $id_impuesto;
+		public $marca;
+		public $modelo;
+		public $color;
+		public $placa;
+		public $lapso;				// Para contener un string año - periodo - descripcion
 
 		const IMPUESTO = 3;
 
@@ -80,6 +89,37 @@
 			$this->id_contribuyente = $idContribuyente;
 		}
 
+
+		/**
+     	* @inheritdoc
+     	*/
+    	public function scenarios()
+    	{
+        	// bypass scenarios() implementation in the parent class
+        	return Model::scenarios();
+    	}
+
+
+
+		/**
+    	 *	Metodo que permite fijar la reglas de validacion del formulario inscripcion-act-econ-form.
+    	 */
+	    public function rules()
+	    {
+	        return [
+	        	[['id_impuesto', 'placa',
+	        	  'id_contribuyente', 'lapso',],
+	        	  'required',
+	        	  'message' => Yii::t('backend','{attribute} is required')],
+	        	[['id_impuesto', 'id_contribuyente'],
+	        	  'integer',
+	        	  'message' => Yii::t('backend','{attribute} must be a integer')],
+	        	[['placa', 'lapso', 'marca',
+	        	  'modelo', 'color'],
+	        	  'string',
+	        	  'message' => Yii::t('backend','{attribute} must be a string')],
+	        ];
+	    }
 
 
 
@@ -227,6 +267,217 @@
 
 			return $descripcion;
 		}
+
+
+
+
+		/***/
+		public function getDataProviderDetalleLiquidacion($detalles)
+		{
+			return $provider = New ArrayDataProvider([
+									'allModels' => $detalles,
+									'pagination' => false,
+							]);
+		}
+
+
+
+
+		/***/
+		public function generarGridViewResumenLiquidacionIndividual($dataProvider, $idObjeto)
+		{
+			return GridView::widget([
+							'id' => 'id-grid-detalle-liquidacion',
+							'dataProvider' => $dataProvider,
+							'headerRowOptions' => [
+								'class' => 'success',
+							],
+							'tableOptions' => [
+			    				'class' => 'table table-hover',
+								],
+							'summary' => '',
+							'columns' => [
+								['class' => 'yii\grid\SerialColumn'],
+								// [
+			     //                    'class' => 'yii\grid\CheckboxColumn',
+			     //                     'name' => 'chkIdImpuesto',
+			     //                    'checkboxOptions' => function ($model, $key, $index, $column) {
+				    //                         	return [
+				    //                                 'onClick' => 'javascript: return false;',
+				    //                                 'checked' => true,
+
+				    //                             ];
+			     //                    },
+			     //                    'multiple' => false,
+				    //             ],
+			                    [
+			                        'contentOptions' => [
+			                              'style' => 'font-size: 90%;',
+			                        ],
+			                        'format' => 'raw',
+			                        'label' => Yii::t('frontend', 'id-pago'),
+			                        'value' => function($data) {
+			                        				return Html::textInput('id-pago[' . $data['id_impuesto'] . ']',
+				                        															$data['id_pago'],
+				                        															[
+						                                   												'readOnly' => true,
+						                                   												'class' => 'form-control',
+						                                   												'style' => 'width: 100%;
+						                                   														    background-color:white;',
+						                                   											]);
+			                                   		//return $data['id_pago'];
+			            			           },
+			            			'visible' => false,
+			                    ],
+			                    [
+			                        'contentOptions' => [
+			                              'style' => 'font-size: 90%;',
+			                        ],
+			                        'label' => Yii::t('frontend', 'id-impuesto'),
+			                        'value' => function($data) {
+			                                   		return $data['id_impuesto'];
+			            			           },
+			            			'visible' => false,
+			                    ],
+			                    [
+			                        'contentOptions' => [
+			                              'style' => 'font-size: 90%;',
+			                        ],
+			                        'format' => 'raw',
+			                        'label' => Yii::t('frontend', 'impuesto'),
+			                        'value' => function($data) {
+			                        				return Html::textInput('impuesto[' . $data['id_impuesto'] . ']',
+				                        															$data['impuesto'],
+				                        															[
+						                                   												'readOnly' => true,
+						                                   												'class' => 'form-control',
+						                                   												'type' => 'hidden',
+						                                   												'style' => 'width: 100%;
+						                                   														    background-color:white;',
+						                                   											]);
+			                                   		//return $data['impuesto'];
+			            			           },
+			            			//'visible' => false,
+			                    ],
+			                    [
+			                        'contentOptions' => [
+			                              'style' => 'font-size: 90%;text-align: center;',
+			                        ],
+			                        'format' => 'raw',
+			                        'label' => Yii::t('frontend', 'Año'),
+			                        'value' => function($data) {
+			                        				return Html::textInput('ano_impositivo[' . $data['id_impuesto'] . ']',
+				                        															$data['ano_impositivo'],
+				                        															[
+						                                   												'readOnly' => true,
+						                                   												'class' => 'form-control',
+						                                   												'style' => 'width: 100%;
+						                                   														    background-color:white;',
+						                                   											]);
+			                                   		//return $data['ano_impositivo'];
+			            			           },
+			            			//'visible' => false,
+			                    ],
+			                    [
+			                        'contentOptions' => [
+			                              'style' => 'font-size: 90%;text-align: center;',
+			                        ],
+			                        'label' => Yii::t('frontend', 'Periodo'),
+			                        'value' => function($data) {
+			                                   		return $data['trimestre'];
+			            			           },
+			            			//'visible' => false,
+			                    ],
+			                    // [
+			                    //     'contentOptions' => [
+			                    //           'style' => 'font-size: 90%;',
+			                    //     ],
+			                    //     'label' => Yii::t('frontend', 'Tipo'),
+			                    //     'value' => function($data) {
+			                    //                		return $data['exigibilidad']['unidad'];
+			            			     //       },
+			                    // ],
+
+			                    [
+			                        'contentOptions' => [
+			                              'style' => 'font-size: 90%;text-align: right;',
+			                        ],
+			                        'label' => Yii::t('frontend', 'Monto'),
+			                        'value' => function($data) {
+			                                   		return Yii::$app->formatter->asDecimal($data['monto'], 2);
+			            			           },
+			                    ],
+			                    [
+			                        'contentOptions' => [
+			                              'style' => 'font-size: 90%;text-align: right;',
+			                        ],
+			                        'label' => Yii::t('frontend', 'Recargo'),
+			                        'value' => function($data) {
+			                                   		return Yii::$app->formatter->asDecimal($data['recargo'], 2);
+			            			           },
+			                    ],
+			                    [
+			                        'contentOptions' => [
+			                              'style' => 'font-size: 90%;text-align: right;',
+			                        ],
+			                        'label' => Yii::t('frontend', 'Interes'),
+			                        'value' => function($data) {
+			                                   		return Yii::$app->formatter->asDecimal($data['interes'], 2);
+			            			           },
+			                    ],
+			                    [
+			                        'contentOptions' => [
+			                              'style' => 'font-size: 90%;text-align: right;',
+			                        ],
+			                        'label' => Yii::t('frontend', 'Descuento'),
+			                        'value' => function($data) {
+			                                   		return Yii::$app->formatter->asDecimal($data['descuento'], 2);
+			            			           },
+			                    ],
+			                    [
+			                        'contentOptions' => [
+			                              'style' => 'font-size: 90%;text-align: right;',
+			                        ],
+			                        'label' => Yii::t('frontend', 'Rec/Ret'),
+			                        'value' => function($data) {
+			                                   		return Yii::$app->formatter->asDecimal($data['monto_reconocimiento'], 2);
+			            			           },
+			                    ],
+			                    [
+			                        'contentOptions' => [
+			                              'style' => 'font-size: 90%;text-align: center;',
+			                        ],
+			                        'label' => Yii::t('frontend', 'Fecha Vcto'),
+			                        'value' => function($data) {
+			                                   		return $data['fecha_vcto'];
+			            			           },
+			                    ],
+			                    [
+			                        'contentOptions' => [
+			                              'style' => 'font-size: 90%;text-align: center;',
+			                        ],
+			                        'label' => Yii::t('frontend', 'Observacion'),
+			                        'value' => function($data) {
+			                                   		return $data['descripcion'];
+			            			           },
+			                    ],
+
+			                   /* [
+			                        'contentOptions' => [
+			                              'style' => 'font-size: 90%;text-align:center;width:10%;',
+			                        ],
+			                        'label' => Yii::t('frontend', 'fecha'),
+			                        'value' => function($data) {
+			                                   		return date('d-m-Y', strtotime($data['fecha']));
+			            			           },
+			                    ],*/
+
+				        	]
+						]);
+
+		}
+
+
 
 
 	}
