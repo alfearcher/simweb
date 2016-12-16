@@ -88,6 +88,7 @@
 		public function actionIndex()
 		{
 			$_SESSION['begin'] = 1;
+die('jaja');
 			$this->redirect(['listar-vehiculo']);
 		}
 
