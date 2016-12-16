@@ -62,6 +62,7 @@
 		  												'caption' => $caption,
 		  												'subCaption' => $subCaption,
 		  												'dataProvider' => $dataProvider,
+		  												'url' => $url,
 	    					]);
 	    	?>
 		</div>

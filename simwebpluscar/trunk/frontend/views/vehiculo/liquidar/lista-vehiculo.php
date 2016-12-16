@@ -63,7 +63,7 @@
  		$form = ActiveForm::begin([
  			'id' => 'id-lista-vehiculo-form',
  			'method' => 'post',
- 			//'action' => $url,
+ 			'action' => $url,
  			'enableClientValidation' => false,
  			'enableAjaxValidation' => false,
  			'enableClientScript' => false,
