@@ -88,7 +88,6 @@
 		public function actionIndex()
 		{
 			$_SESSION['begin'] = 1;
-die('jaja');
 			$this->redirect(['listar-vehiculo']);
 		}
 
@@ -142,7 +141,6 @@ die('jaja');
 					// }
 				// }
 
-die(var_dump($request->get()));
 
 				// Se crea una lista de vehiculos activos.
 				$searchLiquidacion = New LiquidarVehiculoSearch($idContribuyente);
