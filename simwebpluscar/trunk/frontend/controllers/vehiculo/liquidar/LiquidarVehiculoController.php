@@ -85,6 +85,7 @@
 
 
 
+		/***/
 		public function actionIndex()
 		{
 			$_SESSION['begin'] = 1;
@@ -116,31 +117,6 @@
 					$controlSeleccion = Yii::t('frontend', 'No ha seleccionado ningun vehiculo');
 				}
 				$url = Url::to(['indicar-liquidacion']);
-				// if ( isset($postData['btn-begin']) ) {
-					// if ( $postData['btn-begin'] == 3 ) {
-					// 	if ( isset($postData['chkIdImpuesto']) ) {
-					// 		$chkSeleccion = $postData['chkIdImpuesto'];
-
-					// 		// Se crea una lista de vehiculos activos.
-					// 		$model = New LiquidarVehiculoForm($idContribuyente);
-					// 		$provider = $model->getDataProviderVehiculo($chkSeleccion);
-
-					// 		$url = Url::to(['index-create']);
-					// 		$caption = Yii::t('frontend', 'Liquidar Vehiculo(s)');
-					// 		$subCaption = Yii::t('frontend', $caption . '. Vehiculo(s) seleccinado(s)');
-					// 		return $this->render('/vehiculo/liquidar/lista-vehiculo-liquidacion',[
-					// 										'caption' => $caption,
-					// 										'subCaption' => $subCaption,
-					// 										'dataProvider' => $provider,
-					// 										'url' => $url,
-					// 					]);
-
-					// 	} else {
-					// 		$controlSeleccion = Yii::t('frontend', 'No ha seleccionado ningun vehiculo');
-					// 	}
-					// }
-				// }
-
 
 				// Se crea una lista de vehiculos activos.
 				$searchLiquidacion = New LiquidarVehiculoSearch($idContribuyente);
@@ -284,7 +260,6 @@
 					return $this->redirect(['error-operacion', 'cod' => 505]);
 
 				}
-
 
 			} else {
 				return $this->redirect(['quit']);
