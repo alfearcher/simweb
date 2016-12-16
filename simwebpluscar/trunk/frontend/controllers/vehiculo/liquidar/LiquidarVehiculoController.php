@@ -59,12 +59,15 @@
 	use common\controllers\pdf\planilla\PlanillaPdfController;
 	use backend\models\vehiculo\liquidar\Liquidar;
 	use backend\models\vehiculo\liquidar\LiquidarVehiculoForm;
+	use backend\models\vehiculo\liquidar\LiquidarVehiculoSearch;
 	use common\models\planilla\PagoDetalle;
 	use common\models\planilla\Pago;
 	use common\models\planilla\NumeroPlanillaSearch;
 	use common\models\planilla\PlanillaSearch;
 	use yii\data\ArrayDataProvider;
 	use common\models\contribuyente\ContribuyenteBase;
+	use yii\base\Model;
+	use yii\helpers\ArrayHelper;
 
 
 	session_start();
@@ -109,34 +112,38 @@
 					}
 				}
 
-				if ( isset($postData['btn-begin']) ) {
-					if ( $postData['btn-begin'] == 3 ) {
-						if ( isset($postData['chkIdImpuesto']) ) {
-							$chkSeleccion = $postData['chkIdImpuesto'];
-
-							// Se crea una lista de vehiculos activos.
-							$model = New LiquidarVehiculoForm($idContribuyente);
-							$provider = $model->getDataProviderVehiculo($chkSeleccion);
-
-							$url = Url::to(['index-create']);
-							$caption = Yii::t('frontend', 'Confirmar seleccion. Lista de Vehiculos');
-							$subCaption = Yii::t('frontend', 'Vehiculo(s) seleccinado(s)');
-							return $this->render('/vehiculo/liquidar/pre-seleccion-vehiculo',[
-															'caption' => $caption,
-															'subCaption' => $subCaption,
-															'dataProvider' => $provider,
-															'url' => $url,
-										]);
-
-						} else {
-							$controlSeleccion = Yii::t('frontend', 'No ha seleccionado ningun vehiculo');
-						}
-					}
+				if ( $request->get('id') == 1 ) {
+					$controlSeleccion = Yii::t('frontend', 'No ha seleccionado ningun vehiculo');
 				}
+				$url = Url::to(['indicar-liquidacion']);
+				// if ( isset($postData['btn-begin']) ) {
+					// if ( $postData['btn-begin'] == 3 ) {
+					// 	if ( isset($postData['chkIdImpuesto']) ) {
+					// 		$chkSeleccion = $postData['chkIdImpuesto'];
+
+					// 		// Se crea una lista de vehiculos activos.
+					// 		$model = New LiquidarVehiculoForm($idContribuyente);
+					// 		$provider = $model->getDataProviderVehiculo($chkSeleccion);
+
+					// 		$url = Url::to(['index-create']);
+					// 		$caption = Yii::t('frontend', 'Liquidar Vehiculo(s)');
+					// 		$subCaption = Yii::t('frontend', $caption . '. Vehiculo(s) seleccinado(s)');
+					// 		return $this->render('/vehiculo/liquidar/lista-vehiculo-liquidacion',[
+					// 										'caption' => $caption,
+					// 										'subCaption' => $subCaption,
+					// 										'dataProvider' => $provider,
+					// 										'url' => $url,
+					// 					]);
+
+					// 	} else {
+					// 		$controlSeleccion = Yii::t('frontend', 'No ha seleccionado ningun vehiculo');
+					// 	}
+					// }
+				// }
 
 				// Se crea una lista de vehiculos activos.
-				$model = New LiquidarVehiculoForm($idContribuyente);
-				$provider = $model->getDataProviderVehiculo();
+				$searchLiquidacion = New LiquidarVehiculoSearch($idContribuyente);
+				$provider = $searchLiquidacion->getDataProviderVehiculo();
 
 				if ( $provider !== null ) {
 					$caption = Yii::t('frontend', 'Lista de Vehiculos');
@@ -146,11 +153,97 @@
 													'subCaption' => $subCaption,
 													'dataProvider' => $provider,
 													'controlSeleccion' => $controlSeleccion,
+													'url' => $url,
 								]);
 				} else {
 					return $this->redirect(['error-operacion', 'cod' => 505]);
 
 				}
+
+			} else {
+				return $this->redirect(['quit']);
+			}
+		}
+
+
+
+
+
+		/***/
+		public function actionIndicarLiquidacion()
+		{
+			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) ) {
+
+				$idContribuyente = $_SESSION['idContribuyente'];
+				$request = Yii::$app->request;
+				$postData = $request->post();
+
+				$chkSeleccion = [];
+
+				if ( isset($postData['btn-quit']) ) {
+					if ( $postData['btn-quit'] == 1 ) {
+						return $this->redirect(['quit']);
+					}
+				} elseif ( isset($postData['btn-begin']) ) {
+					if ( $postData['btn-begin'] == 3 ) {
+
+						if ( !isset($postData['chkIdImpuesto']) ) {
+
+							// Se inicia de nuevo el modulo. No se ha seleccionado ningun vehiculo.
+							return $this->redirect(['listar-vehiculo', 'id' => 1]);
+
+						}
+
+					}
+
+				} elseif ( isset($postData['btn-confirm-create']) ) {
+					if ( $postData['btn-confirm-create'] == 5 ) {
+
+
+
+					}
+
+				} elseif ( isset($postData['btn-back']) ) {
+					if ( $postData['btn-back'] == 1 ) {
+						return $this->redirect(['listar-vehiculo']);
+					}
+				}
+
+				$chkSeleccion = isset($postData['chkIdImpuesto']) ? $postData['chkIdImpuesto'] : [];
+				$searchLiquidacion = New LiquidarVehiculoSearch($idContribuyente);
+				$vehiculos = $searchLiquidacion->getListaVehiculo($chkSeleccion);
+
+				if ( count($vehiculos) > 0 ) {
+
+					foreach ( $vehiculos as $i => $vehiculo ) {
+						$lapso[$i] = $searchLiquidacion->getListaLapsoPendiente((int)$vehiculo['id_vehiculo']);
+						$models[$i] = New LiquidarVehiculoForm($idContribuyente);
+						$models[$i]['id_impuesto'] = $vehiculo['id_vehiculo'];
+						$models[$i]['id_contribuyente'] = $idContribuyente;
+						$models[$i]['placa'] = $vehiculo['placa'];
+						$models[$i]['marca'] = $vehiculo['marca'];
+						$models[$i]['modelo'] = $vehiculo['modelo'];
+						$models[$i]['color'] = $vehiculo['color'];
+						$models[$i]['lapso'] = $lapso[$i];
+					}
+
+					$opciones = [
+						'back' => '/vehiculo/liquidar/liquidar-vehiculo/index',
+					];
+					$caption = Yii::t('frontend', 'Liquidacion de Vehiculo(s)');
+					$subCaption = Yii::t('frontend', $caption .'. Indique los parametros para liquidar el impuesto');
+					return $this->render('/vehiculo/liquidar/lista-vehiculo-liquidacion',[
+													'caption' => $caption,
+													'subCaption' => $subCaption,
+													'models' => $models,
+													'opciones' => $opciones,
+													'lapso' => $lapso,
+								]);
+				} else {
+					return $this->redirect(['error-operacion', 'cod' => 505]);
+
+				}
+
 
 			} else {
 				return $this->redirect(['quit']);
@@ -179,6 +272,9 @@
 				$postData = $request->post();
 
 
+// die(var_dump($postData));
+
+
 				if ( isset($postData['btn-quit']) ) {
 					if ( $postData['btn-quit'] == 1 ) {
 						return $this->redirect(['quit']);
@@ -191,22 +287,77 @@
 				} elseif ( isset($postData['btn-confirm-seleccion']) ) {
 					if ( $postData['btn-confirm-seleccion'] == 5 ) {
 						// Vista previa.
-						// Se liquida los inmuebles seleccionados
+						// Se liquida los vehiculos seleccionados y se muetras una vista previa de la liquidacion
+						// de cada vehiculo.
 
 						$detalles = [];
 						$chkSeleccion = $postData['chkIdImpuesto'];
 						if ( count($chkSeleccion) > 0 ) {
+							$formModel = New LiquidarVehiculoForm($idContribuyente);
+
+							// Lo siguiente sera un arreglo de gridview de los resumenes de las liquidaciones
+							// de los diferentes objetos seleccionados.
+							$gridHtml = [];
+							$grid = [];
 
 							foreach ( $chkSeleccion as $key => $value ) {
 								$liquidar[$value] = New Liquidar($idContribuyente, $value);
 								$ultimoLapsoLiquidado[$key] = $liquidar[$value]->getUltimoLapsoLiquidado();
 
-								// Lapsos liquidados.
+								// Lapsos liquidados. Por vehiculo
 								$detalles[$value] = $liquidar[$value]->iniciarProcesoLiquidacion();
+
+
+								// Se genera el proveedro de datos. ArrayDataProvider
+								$provider = $formModel->getDataProviderDetalleLiquidacion($detalles[$value]);
+								//$grid[$value] = $formModel->generarGridViewResumenLiquidacionIndividual($provider, $value);
+
+								$infoVehiculo = 'Placa: ' . $postData['placa'][$value] . ' - Marca: ' . $postData['marca'][$value] .
+								                ' - Modelo: ' . $postData['modelo'][$value] . ' - Color: ' . $postData['color'][$value];
+								$subCaption = Yii::t('frontend', $infoVehiculo);
+								$gridHtml[$value] = $this->renderPartial('/vehiculo/liquidar/resumen-individual-liquidacion',[
+																				'dataProvider' => $provider,
+																				'subCaption' => $subCaption,
+															]);
+
+								foreach ( $detalles[$value] as $i => $campos ) {
+
+									$models[$value][$i] = New PagoDetalle();
+									$models[$value][$i][$campo] = $detalles[$value][$i][$campo];
+
+									// $models[$value][]['id_impuesto'] = $detalles[$value][]['id_impuesto'];
+									// $models[$value][]['impuesto'] = $detalles[$value][]['impuesto'];
+									// $models[$value][]['ano_impositivo'] = $detalles[$value][]['ano_impositivo'];
+									// $models[$value][]['trimestre'] = $detalles[$value][]['trimestre'];
+									// $models[$value][]['monto'] = $detalles[$value]['monto'];
+									// $models[$value][]['recargo'] = $detalles[$value]['recargo'];
+									// $models[$value][]['interes'] = $detalles[$value]['interes'];
+									// $models[$value][]['descuento'] = $detalles[$value]['descuento'];
+									// $models[$value][]['referencia'] = $detalles[$value]['referencia'];
+									// $models[$value][]['pago'] = $detalles[$value]['pago'];
+									// $models[$value][]['fecha_emision'] = $detalles[$value]['fecha_emision'];
+									// $models[$value][]['fecha_pago'] = $detalles[$value]['fecha_pago'];
+									// $models[$value][]['feccha_vcto'] = $detalles[$value]['feccha_vcto'];
+									// $models[$value][]['monto_reconocimiento'] = $detalles[$value]['monto_reconocimiento'];
+									// $models[$value][]['exigibilidad_pago'] = $detalles[$value]['exigibilidad_pago'];
+									// $models[$value][]['fecha_desde'] = $detalles[$value]['fecha_desde'];
+									// $models[$value][]['fecha_hasta'] = $detalles[$value]['fecha_hasta'];
+
+								}
+
 							}
 
 
-die(var_dump($detalles));
+die(var_dump($model));
+
+							$caption = Yii::t('frontend', 'Liquidacion de Vehiculo');
+							$subCaption = Yii::t('frontend', $caption . '. Resumen por Vehiculo');
+							return $this->render('/vehiculo/liquidar/pre-view-liquidacion',[
+																	'caption' => $caption,
+																	'subCaption' => $subCaption,
+																	'gridHtml' => $gridHtml,
+																	'models' => $models,
+									]);
 
 						}
 
