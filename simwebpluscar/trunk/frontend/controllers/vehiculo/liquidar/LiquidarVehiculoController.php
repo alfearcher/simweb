@@ -199,7 +199,49 @@
 				} elseif ( isset($postData['btn-confirm-create']) ) {
 					if ( $postData['btn-confirm-create'] == 5 ) {
 
+						// $model = New LiquidarVehiculoForm($idContribuyente);
+						// $formName = $model->formName();
 
+						// $datos = $postData[$formName];
+						// if ( count($datos) > 0 ) {
+						// 	foreach ( $datos as $key => $value ) {
+						// 		$modelMultiplex[$key] = New LiquidarVehiculoForm($idContribuyente);
+						// 	}
+						// 	Model::loadMultiple($modelMultiplex, $postData);
+						// 	$result = Model::validateMultiple($modelMultiplex);
+						// }
+
+						// if ( Model::loadMultiple($modelMultiplex, $postData)  && Yii::$app->request->isAjax ) {
+						// 	Yii::$app->response->format = Response::FORMAT_JSON;
+						// 	return ActiveForm::validateMultiple($modelMultiplex);
+				  //     	}
+
+// die(var_dump($modelMultiplex));
+// 				      	if ( $result ) {
+// die('valido');
+// 				      	} else {
+// 				      		$chkSeleccion = ArrayHelper::map($datos, 'id_impuesto', 'id_impuesto');
+
+// die(var_dump($chkSeleccion));
+// 				      		$searchLiquidacion = New LiquidarVehiculoSearch($idContribuyente);
+// 							$vehiculos = $searchLiquidacion->getListaVehiculo($chkSeleccion);
+// 							foreach ( $chkSeleccion as $key => $value ) {
+// 								$lapso[$key] = $searchLiquidacion->getListaLapsoPendiente($value);
+// 							}
+
+// 				      		$opciones = [
+// 								'back' => '/vehiculo/liquidar/liquidar-vehiculo/index',
+// 							];
+// 							$caption = Yii::t('frontend', 'Liquidacion de Vehiculo(s)');
+// 							$subCaption = Yii::t('frontend', $caption .'. Indique los parametros para liquidar el impuesto');
+// 							return $this->render('/vehiculo/liquidar/lista-vehiculo-liquidacion',[
+// 															'caption' => $caption,
+// 															'subCaption' => $subCaption,
+// 															'models' => $modelMultiplex,
+// 															'opciones' => $opciones,
+// 															'lapso' => $lapso,
+// 										]);
+// 				      	}
 
 					}
 
