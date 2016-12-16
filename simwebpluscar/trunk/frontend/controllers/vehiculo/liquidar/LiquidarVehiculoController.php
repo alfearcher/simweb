@@ -141,6 +141,8 @@
 					// }
 				// }
 
+die(var_dump($request->get()));
+
 				// Se crea una lista de vehiculos activos.
 				$searchLiquidacion = New LiquidarVehiculoSearch($idContribuyente);
 				$provider = $searchLiquidacion->getDataProviderVehiculo();
