@@ -66,7 +66,7 @@
  			//'action' => $url,
  			'enableClientValidation' => true,
  			'enableAjaxValidation' => false,
- 			'enableClientScript' => true,
+ 			'enableClientScript' => false,
  		]);
  	?>
 
