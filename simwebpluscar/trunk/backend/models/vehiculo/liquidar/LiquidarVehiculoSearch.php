@@ -57,7 +57,6 @@
 
 
 
-
 	/**
 	* Clase que gestiona la liquidacion de Vehiculos, donde los nuevos
 	* periodos a liquidar se guardaran en una planilla. Se determina cual es el
@@ -83,6 +82,22 @@
 		{
 			$this->id_contribuyente = $idContribuyente;
 		}
+
+
+
+		/**
+		 * Metodo que genera un modelo de consulta general de copnsulta
+		 * @param integer $idPago identificador del registro maestro de la planila.
+		 * @return PagoDetalle
+		 */
+		public function actionInfoPlanilla($idPago)
+		{
+			return $findModel = PagoDetalle::find()->alias('D')
+		                                   		   ->where('D.id_pago =:id_pago',[':id_pago'=>$idPago])
+		                                           ->joinWith('pagos P', true, 'INNER JOIN');
+
+		}
+
 
 
 
@@ -186,25 +201,6 @@
 
 
 
-		/**
-		 * Metodo que genera el modelo general de consulta de los lapsos.
-		 * @return PagoDetalle.
-		 */
-		private function findLapsoModel()
-		{
-			// return PagoDetalle::find()->alias('D')
-			// 						  ->where('D.impuesto =:impuesto',
-			// 						  				[':impuesto' => self::IMPUESTO])
-			// 						  ->andWhere('trimestre >:trimestre',
-			// 						  				[':trimestre' => 0])
-			// 						  ->andWhere(['IN', 'pago', [0, 1, 7]])
-			// 						  ->joinWith('pagos P', true, 'INNER JOIN')
-			// 						  ->joinWith('exigibilidad E', true, 'INNER JOIN')
-			// 						  ->joinWith('estatus S', true, 'INNER JOIN');
-
-		}
-
-
 
 		/**
 		 * Metodo que obtine el ultimo lapso liquidado.
@@ -215,16 +211,6 @@
 		{
 			$liquidar = New Liquidar($this->id_contribuyente, $idImpuesto);
 			return $liquidar->getUltimoLapsoLiquidado();
-			// $findModel = self::findLapsoModel();
-			// $model = $findModel->andWhere('id_impuesto =:id_impuesto',
-			// 									[':id_impuesto' => $idImpuesto])
-			// 				   ->orderBy([
-			// 						'ano_impositivo' => SORT_DESC,
-			// 						'trimestre' => SORT_DESC,
-			// 					])
-			// 				   ->asArray()
-			// 				   ->one();
-			// return $model;
 
 		}
 

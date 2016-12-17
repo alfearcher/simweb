@@ -54,6 +54,7 @@
 	use yii\data\ArrayDataProvider;
 	use common\models\planilla\Pago;
 	use backend\models\vehiculo\VehiculosForm;
+	use backend\models\recibo\depositoplanilla\DepositoPlanillaSearch;
 
 
 
@@ -103,6 +104,21 @@
 			$this->_id_pago = 0;
 		}
 
+
+
+
+		/**
+		 * Metodo que permite determinar si se puede utilizar una planilla para adjuntar
+		 * otros lapsos
+		 * @param integer $planilla numero de planilla
+		 * @return boolean
+		 */
+		public function puedoSeleccionarPlanilla($planilla)
+		{
+			$depositoPlanilla = New DepositoPlanillaSearch();
+			$result = $depositoPlanilla->puedoSeleccionarPlanillaParaRecibo($planilla);
+			return $result;
+		}
 
 
 
@@ -204,8 +220,14 @@
 			if ( count($ultimoLapso) > 0 ) {
 				$ultimoAño = (int)$ultimoLapso['ano_impositivo'];
 				$ultimoPeriodo = (int)$ultimoLapso['trimestre'];
+
+				// Esto permite determinar si se selccionara la planilla actual o si se debe
+				// crear otra planilla. Si la planilla esta asociada a un recibo pendiente
+				// no se podra seleccionar.
 				if ( $ultimoLapso['pago'] == 0 ) {
-					$this->_id_pago = $ultimoLapso['id_pago'];
+					if ( self::puedoSeleccionarPlanilla((int)$ultimoLapso['pagos']['planilla']) ) {
+						$this->_id_pago = $ultimoLapso['id_pago'];
+					}
 				}
 
 				// Ultimo año es igual al año actual.
@@ -345,6 +367,7 @@
 			return false;
 
 		}
+
 
 
 
