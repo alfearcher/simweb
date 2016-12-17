@@ -231,6 +231,8 @@
 				      		// Se creaun modelo PagoDetalle con todos los registros liquidados por objetos.
 				      		$models = self::actionCreateModelPago($detalles);
 
+// die(var_dump($models));
+
 				      		// Se muetra el resumen de lo liquidado.
 				      		$url = Url::to(['confirmar-save']);
 				      		$caption = Yii::t('frontend', 'Liquidacion de Vehiculo');
@@ -380,11 +382,13 @@
 
 						$model = New PagoDetalle();
 						$formName = $model->formName();
+
+						// Liquidacion agrupada por objetos.
 						$datos = $postData[$formName];
-die(var_dump($datos));
-						foreach ($variable as $key => $value) {
-							# code...
-						}
+
+						$models = self::actionCreateModelPago($datos);
+
+die(var_dump($models));
 
 					}
 
