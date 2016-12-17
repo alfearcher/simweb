@@ -194,6 +194,7 @@
 				      	}
 
 				      	if ( $result ) {
+				      		$gridHtml = [];
 
 				      		// Se realiza el proceso de liquidacion por objeto y hasta el lapso final seleccionado.
 				      		foreach ( $datos as $key => $vehiculo ) {
@@ -211,8 +212,30 @@
 
 								$detalles[$vehiculo['id_impuesto']] = $liquidar[$vehiculo['id_impuesto']]->iniciarProcesoLiquidacion($lapsoFinal);
 
+								// Se genera el proveedor de datos. ArrayDataProvider
+								$provider = $model->getDataProviderDetalleLiquidacion($detalles[$vehiculo['id_impuesto']]);
+
+								// Genera una vista individual de las liquidaciones de cada objeto.Muestra un grid con dichas
+								// liquidaciones por lapsos.
+								$infoVehiculo = 'Placa: ' . $vehiculo['placa'] . ' - Marca: ' . $vehiculo['marca'] .
+								                ' - Modelo: ' . $vehiculo['modelo'] . ' - Color: ' . $vehiculo['color'];
+								$subCaption = Yii::t('frontend', $infoVehiculo);
+								$gridHtml[$vehiculo['id_impuesto']] = $this->renderPartial('/vehiculo/liquidar/resumen-individual-liquidacion',[
+																								'dataProvider' => $provider,
+																								'subCaption' => $subCaption,
+																			]);
 				      		}
 
+				      		$url = Url::to(['']);
+				      		$caption = Yii::t('frontend', 'Liquidacion de Vehiculo');
+							$subCaption = Yii::t('frontend', $caption . '. Resumen por Vehiculo');
+							return $this->render('/vehiculo/liquidar/pre-view-liquidacion',[
+																	'caption' => $caption,
+																	'subCaption' => $subCaption,
+																	'gridHtml' => $gridHtml,
+																	'url' => $url,
+																	//'models' => $models,
+											]);
 
 
 				      	} else {
