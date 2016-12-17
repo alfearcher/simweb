@@ -52,7 +52,7 @@
 	/**
 	* 	Clase
 	*/
-	class DepositoPlanillaSearch
+	class DepositoSearch
 	{
 
 		protected $planilla;
