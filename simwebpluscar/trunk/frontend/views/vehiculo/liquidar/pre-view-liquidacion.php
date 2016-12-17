@@ -57,18 +57,45 @@
  ?>
 
 
-<div class="lista-inmueble-activo">
+<div class="pre-view-liquidacion">
  	<?php
 
  		$form = ActiveForm::begin([
- 			'id' => 'id-lista-inmueble-form',
+ 			'id' => 'id-pre-view-liquidacion-form',
  			'method' => 'post',
- 			//'action' => $url,
+ 			'action' => $url,
  			'enableClientValidation' => true,
  			'enableAjaxValidation' => false,
  			'enableClientScript' => true,
  		]);
  	?>
+
+	<?php foreach ( $models as $i => $model ): ?>
+		<?php foreach ( $model as $j => $mod ): ?>
+
+			<?=$form->field($mod, "[{$i}][{$j}]id_detalle")->hiddenInput()->label(false);?>
+			<?=$form->field($mod, "[{$i}][{$j}]id_pago")->hiddenInput()->label(false);?>
+			<?=$form->field($mod, "[{$i}][{$j}]id_impuesto")->hiddenInput()->label(false);?>
+			<?=$form->field($mod, "[{$i}][{$j}]impuesto")->hiddenInput()->label(false);?>
+			<?=$form->field($mod, "[{$i}][{$j}]ano_impositivo")->hiddenInput()->label(false);?>
+			<?=$form->field($mod, "[{$i}][{$j}]trimestre")->hiddenInput()->label(false);?>
+			<?=$form->field($mod, "[{$i}][{$j}]monto")->hiddenInput()->label(false);?>
+			<?=$form->field($mod, "[{$i}][{$j}]descuento")->hiddenInput()->label(false);?>
+			<?=$form->field($mod, "[{$i}][{$j}]recargo")->hiddenInput()->label(false);?>
+			<?=$form->field($mod, "[{$i}][{$j}]interes")->hiddenInput()->label(false);?>
+			<?=$form->field($mod, "[{$i}][{$j}]fecha_emision")->hiddenInput()->label(false);?>
+			<?=$form->field($mod, "[{$i}][{$j}]fecha_vcto")->hiddenInput()->label(false);?>
+			<?=$form->field($mod, "[{$i}][{$j}]pago")->hiddenInput()->label(false);?>
+			<?=$form->field($mod, "[{$i}][{$j}]fecha_pago")->hiddenInput()->label(false);?>
+			<?=$form->field($mod, "[{$i}][{$j}]referencia")->hiddenInput()->label(false);?>
+			<?=$form->field($mod, "[{$i}][{$j}]descripcion")->hiddenInput()->label(false);?>
+			<?=$form->field($mod, "[{$i}][{$j}]monto_reconocimiento")->hiddenInput()->label(false);?>
+			<?=$form->field($mod, "[{$i}][{$j}]exigibilidad_pago")->hiddenInput()->label(false);?>
+			<?=$form->field($mod, "[{$i}][{$j}]fecha_desde")->hiddenInput()->label(false);?>
+			<?=$form->field($mod, "[{$i}][{$j}]fecha_hasta")->hiddenInput()->label(false);?>
+
+		<?php endforeach; ?>
+	<?php endforeach; ?>
 
 
 	<meta http-equiv="refresh">
@@ -83,13 +110,17 @@
         	<div class="container-fluid">
         		<div class="col-sm-12">
 
-
 					<div class="row" style="width:100%;">
-						<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding-left:10px;padding-top: 0px;">
+						<div class="row" style="border-bottom: 1px solid #ccc;padding-left:10px;padding-top: 0px;">
 							<h4><?=Html::encode(Yii::t('frontend', $subCaption))?></h4>
 						</div>
-						<div class="row" id="id-lista-inmueble" style="padding: 0px;">
+						<div class="row" id="id-lista-vehiculo" style="padding: 0px;">
+							<?php
+								foreach ( $gridHtml as $i => $grid ) {
+									echo $grid;
+								}
 
+							 ?>
 						</div>
 					</div>
 
@@ -101,11 +132,11 @@
 								<div class="form-group">
 									<?= Html::submitButton(Yii::t('frontend', 'Guardar'),
 																					  [
-																						'id' => 'btn-confirm-begin',
+																						'id' => 'btn-confirm-save',
 																						'class' => 'btn btn-success',
-																						'value' => 5,
+																						'value' => 7,
 																						'style' => 'width: 100%;',
-																						'name' => 'btn-confirm-begin',
+																						'name' => 'btn-confirm-save',
 
 																					  ])
 									?>
