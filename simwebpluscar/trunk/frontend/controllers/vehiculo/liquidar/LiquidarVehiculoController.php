@@ -193,11 +193,13 @@
 							return ActiveForm::validateMultiple($modelMultiplex);
 				      	}
 
-				      	if ( $result ) {
+
+				      	if ( $result ) {		// Validacion correcta
 				      		$gridHtml = [];
 
 				      		// Se realiza el proceso de liquidacion por objeto y hasta el lapso final seleccionado.
 				      		foreach ( $datos as $key => $vehiculo ) {
+				      			$chkIdImpuesto[] = $vehiculo['id_impuesto'];
 
 				      			$liquidar[$vehiculo['id_impuesto']] = New Liquidar($idContribuyente, $vehiculo['id_impuesto']);
 
@@ -226,7 +228,11 @@
 																			]);
 				      		}
 
-				      		$url = Url::to(['']);
+				      		// Se creaun modelo PagoDetalle con todos los registros liquidados por objetos.
+				      		$models = self::actionCreateModelPago($detalles);
+
+				      		// Se muetra el resumen de lo liquidado.
+				      		$url = Url::to(['confirmar-save']);
 				      		$caption = Yii::t('frontend', 'Liquidacion de Vehiculo');
 							$subCaption = Yii::t('frontend', $caption . '. Resumen por Vehiculo');
 							return $this->render('/vehiculo/liquidar/pre-view-liquidacion',[
@@ -234,11 +240,12 @@
 																	'subCaption' => $subCaption,
 																	'gridHtml' => $gridHtml,
 																	'url' => $url,
-																	//'models' => $models,
+																	'models' => $models,
 											]);
 
 
 				      	} else {
+
 
 				      		$chkSeleccion = ArrayHelper::map($datos, 'id_impuesto', 'id_impuesto');
 				      		$searchLiquidacion = New LiquidarVehiculoSearch($idContribuyente);
@@ -311,6 +318,80 @@
 
 
 
+
+
+		/***/
+		protected function actionCreateModelPago($detalles)
+		{
+			foreach ( $detalles as $i => $detalle ) {
+				foreach ( $detalle as $key => $value ) {
+
+					$models[$i][$key] = New PagoDetalle();
+					$models[$i][$key]['id_pago'] = $value['id_pago'];
+					$models[$i][$key]['id_impuesto'] = $value['id_impuesto'];
+					$models[$i][$key]['impuesto'] = $value['impuesto'];
+					$models[$i][$key]['ano_impositivo'] = $value['ano_impositivo'];
+					$models[$i][$key]['trimestre'] = $value['trimestre'];
+					$models[$i][$key]['monto'] = $value['monto'];
+					$models[$i][$key]['recargo'] = $value['recargo'];
+					$models[$i][$key]['interes'] = $value['interes'];
+					$models[$i][$key]['descuento'] = $value['descuento'];
+					$models[$i][$key]['referencia'] = $value['referencia'];
+					$models[$i][$key]['pago'] = $value['pago'];
+					$models[$i][$key]['fecha_emision'] = $value['fecha_emision'];
+					$models[$i][$key]['fecha_pago'] = $value['fecha_pago'];
+					$models[$i][$key]['fecha_vcto'] = $value['fecha_vcto'];
+					$models[$i][$key]['descripcion'] = $value['descripcion'];
+					$models[$i][$key]['monto_reconocimiento'] = $value['monto_reconocimiento'];
+					$models[$i][$key]['exigibilidad_pago'] = $value['exigibilidad_pago'];
+					$models[$i][$key]['fecha_desde'] = $value['fecha_desde'];
+					$models[$i][$key]['fecha_hasta'] = $value['fecha_hasta'];
+				}
+			}
+
+			return $models;
+
+		}
+
+
+
+		/***/
+		public function actionConfirmarSave()
+		{
+			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) ) {
+
+				$idContribuyente = $_SESSION['idContribuyente'];
+
+				$request = Yii::$app->request;
+				$postData = $request->post();
+
+
+				if ( isset($postData['btn-quit']) ) {
+					if ( $postData['btn-quit'] == 1 ) {
+						return $this->redirect(['quit']);
+					}
+				} elseif ( isset($postData['btn-back']) ) {
+					if ( $postData['btn-back'] == 1 ) {
+						return $this->redirect(['listar-vehiculo']);
+					}
+
+				} elseif ( isset($postData['btn-confirm-save']) ) {
+					if ( $postData['btn-confirm-save'] == 7 ) {
+
+						$model = New PagoDetalle();
+						$formName = $model->formName();
+						$datos = $postData[$formName];
+die(var_dump($datos));
+						foreach ($variable as $key => $value) {
+							# code...
+						}
+
+					}
+
+				}
+
+			}
+		}
 
 
 
