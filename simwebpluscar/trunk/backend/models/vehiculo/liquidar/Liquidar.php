@@ -121,12 +121,22 @@
 		}
 
 
+
+
 		/**
 		 * Metodo que inicia el proceso de liquidacion y el mismo debe devolver una arreglo
 		 * con los laspsos liquidados y sus respectivos montos.
+		 * @param array lapsoFinal arreglo que indica hatsa donde se desea liquidar. Este parametro
+		 * estara conformado de la siguiente manera:
+		 * array(2) => {
+		 * 	['ano_impositivo'] => 9999
+		 *  ['periodo'] => 99
+		 * }
+		 * Si el valor de este parametro es vacio, se tomara como lapso final el lapso final del año
+		 * actual para el impuesto.
 		 * @return array
 		 */
-		public function iniciarProcesoLiquidacion()
+		public function iniciarProcesoLiquidacion($lapsoFinal = [])
 		{
 			$this->_detalleLiquidacion = [];
 
@@ -134,21 +144,36 @@
 				$rangoInicio = self::armarRangoLiquidacionInicial();
 
 				if ( count($rangoInicio) > 0 ) {
-					$rangoFinal = self::getUltimoLapso();				// Ultimo lapso del año actual.
+					if ( count($lapsoFinal) > 0 ) {
+						$rangoFinal = $lapsoFinal;
+					} else {
+						$rangoFinal = self::getUltimoLapso();				// Ultimo lapso del año actual.
+					}
 
 					$añoInicio = (int)$rangoInicio['ano_impositivo'];
 					$periodoInicio = (int)$rangoInicio['periodo'];
 					$añoFinal = (int)$rangoFinal['ano_impositivo'];
 					$periodoFinal = (int)$rangoFinal['periodo'];
 
-					for ( $i = $añoInicio; $i <= $añoFinal; $i++ ) {
-						if ( $i == $añoInicio ) {
-							self::liquidarAnoImpositivoVehiculo($i, $periodoInicio);
+					for ( $i = (int)$añoInicio; $i <= (int)$añoFinal; $i++ ) {
+						if ( (int)$añoInicio == (int)$añoFinal ) {
 
-						} elseif ( $i > $añoInicio ) {
+							self::liquidarAnoImpositivoVehiculo($i, $periodoInicio, $periodoFinal);
 
-							self::liquidarAnoImpositivoVehiculo($i, 1);
+						} elseif ( (int)$añoInicio < (int)$añoFinal ) {
+							if ( (int)$i == (int)$añoInicio ) {
 
+								self::liquidarAnoImpositivoVehiculo($i, $periodoInicio);
+
+							} elseif ( (int)$i == (int)$añoFinal ) {
+
+								self::liquidarAnoImpositivoVehiculo($i, $periodoInicio, $periodoFinal);
+
+							} else {
+
+								self::liquidarAnoImpositivoVehiculo($i, $periodoInicio);
+
+							}
 						}
 					}
 
@@ -244,23 +269,16 @@
 		 * @param  integer $desdePeriodo primer periodo fañltante por liquidar, desde aqui se
 		 * comenzara la liquidacion. Luego se determinara en el metodo el periodo final del ciclo
 		 * del calculo.
+		 * @param  integer $desdeHasta
 		 * @return array retorna un arreglo con los detalles de la liquidacion.
 		 */
-		private function liquidarAnoImpositivoVehiculo($año, $desdePeriodo)
+		private function liquidarAnoImpositivoVehiculo($año, $desdePeriodo, $hastaPeriodo = 0)
 		{
 			$montoCalculado = 0;			// Monto calculado para el año impositivo.
 			$modelDetalle = [];
 			$exigibilidadLiq = self::getExigibilidadLiquidacion($año);
-			$exigibilidadDec = self::getExigibilidadDeclaracion($año);
 
-			if ( count($exigibilidadLiq) > 0 && count($exigibilidadDec) > 0 ) {
-
-				$exigDeclaracion = (int)$exigibilidadDec['exigibilidad'];
-				if ( $exigDeclaracion == 1 ) {
-					$periodo = $exigDeclaracion;
-				} else {
-					$periodo = $desdePeriodo;
-				}
+			if ( count($exigibilidadLiq) > 0 ) {
 
 				// Se realiza el calculo de la liquidacion del año.
 				$this->_liquidarVehiculo->setAnoImpositivo($año);
@@ -270,8 +288,10 @@
 					$exigLiq = (int)$exigibilidadLiq['exigibilidad'];
 					$montoPeriodo = self::getMontoPorPeriodo($montoCalculado, $exigLiq);
 
-					// Se crea unu ciclo con los periodos faltantes
-					$hastaPeriodo = $exigLiq;
+					if ( $hastaPeriodo == 0 ) {
+						// Se crea unu ciclo con los periodos faltantes
+						$hastaPeriodo = $exigLiq;
+					}
 
 					$fechaVcto = OrdenanzaBase::getFechaVencimientoSegunFecha(date('Y-m-d'));
 
