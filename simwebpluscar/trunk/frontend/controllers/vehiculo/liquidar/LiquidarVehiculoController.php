@@ -195,6 +195,26 @@
 
 				      	if ( $result ) {
 
+				      		// Se realiza el proceso de liquidacion por objeto y hasta el lapso final seleccionado.
+				      		foreach ( $datos as $key => $vehiculo ) {
+
+				      			$liquidar[$vehiculo['id_impuesto']] = New Liquidar($idContribuyente, $vehiculo['id_impuesto']);
+
+				      			// Lapsos liquidados. Por vehiculo
+				      			// Se toma el lapso final y se convierte en un arreglo con los indices 'ano_impositivo' y 'periodo'
+				      			// para enviarlo como parametro a la liquidacion. Esto permite fijar el "hasta donde" se quiere liquiadr.
+				      			$rango = explode('-', $vehiculo['lapso']);
+				      			$lapsoFinal = [
+				      				'ano_impositivo' => $rango[0],
+				      				'periodo' => $rango[1],
+				      			];
+
+								$detalles[$vehiculo['id_impuesto']] = $liquidar[$vehiculo['id_impuesto']]->iniciarProcesoLiquidacion($lapsoFinal);
+
+				      		}
+
+
+
 				      	} else {
 
 				      		$chkSeleccion = ArrayHelper::map($datos, 'id_impuesto', 'id_impuesto');
