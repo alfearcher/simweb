@@ -83,7 +83,7 @@
 		private $_conexion;
 		private $_transaccion;
 
-		private $_objeto = [];
+		private $_objeto;
 
 
 
@@ -218,10 +218,14 @@
 				      			// Se toma el lapso final y se convierte en un arreglo con los indices 'ano_impositivo' y 'periodo'
 				      			// para enviarlo como parametro a la liquidacion. Esto permite fijar el "hasta donde" se quiere liquiadr.
 				      			$rango = explode('-', $vehiculo['lapso']);
-				      			$lapsoFinal = [
-				      				'ano_impositivo' => $rango[0],
-				      				'periodo' => $rango[1],
-				      			];
+				      			if ( count($rango) > 0 ) {
+					      			$lapsoFinal = [
+					      				'ano_impositivo' => $rango[0],
+					      				'periodo' => $rango[1],
+					      			];
+					      		} else {
+					      			$lapsoFinal = [];
+					      		}
 
 								$detalles[$vehiculo['id_impuesto']] = $liquidar[$vehiculo['id_impuesto']]->iniciarProcesoLiquidacion($lapsoFinal);
 
@@ -236,6 +240,8 @@
 								$gridHtml[$vehiculo['id_impuesto']] = $this->renderPartial('/vehiculo/liquidar/resumen-individual-liquidacion',[
 																								'dataProvider' => $provider,
 																								'subCaption' => $subCaption,
+																								'guardo' => '',
+																								'label' => 'label label-default',
 																			]);
 				      		}
 
@@ -404,14 +410,23 @@
 							if ( $result ) {
 								$this->_transaccion->commit();
 								$this->_conn->close();
-								self::actionGetObjetoGuardado($i, $model, 'Guardo');
+
+								$this->_objeto[$i] = [
+											'mensaje' => 'Guardo',
+											'model' => $model,
+								];
 							} else {
 								$this->_transaccion->commit();
 								$this->_conn->close();
-								self::actionGetObjetoGuardado($i, $model, 'No Guardo');
+								$this->_objeto[$i] = [
+											'mensaje' => 'No Guardo',
+											'model' => $model,
+								];
 							}
 
 						}
+						self::actionAnularSession(['begin']);
+						return self::actionMostrarLiquidacionGuardada($this->_objeto);
 
 					}
 
@@ -419,25 +434,6 @@
 
 			}
 		}
-
-
-
-		/***/
-		private function actionSetObjetoGuardado($idIpuesto, $model, $mensaje)
-		{
-			$this->_objeto[$idImpuesto] = [
-							'model' => $model,
-							'mensaje' => $mensaje,
-					];
-		}
-
-
-		/***/
-		private function actionGetObjetoGuardado($idImpuesto)
-		{
-			return $this->_objeto[$idImpuesto];
-		}
-
 
 
 
@@ -470,7 +466,7 @@
 
 				$puedo = false;
 				$searchLiquidacion = New LiquidarVehiculoSearch($idContribuyente);
-				$result = $searchLiquidacion->puedoSeleccionarPlanilla($modelPago->panilla);
+				$puedo = $searchLiquidacion->puedoSeleccionarPlanilla($modelPago->planilla);
 				if ( !$puedo ) {
 					foreach ( $models as $model ) {
 						$model['id_pago'] = 0;
@@ -481,7 +477,7 @@
 
 			if ( $models[0]['id_pago'] > 0 ) {
 
-				$findModel = $searchLiquidacion->actionInfoPlanilla((int)$models[0]['id_pago'])->asArray()->one();
+				$findModel = $searchLiquidacion->infoPlanilla((int)$models[0]['id_pago'])->asArray()->one();
 
 				// Se verifica que la planilla donde se guardaran los detalle este disponible.
 				// Sino es asi se genrara otra planilla.
@@ -603,31 +599,64 @@
 
 
 
-		/***/
-		public function actionMostrarLiquidacionGuardada($models)
+		/**
+		 * Metodo que busca los detalle de la liquidaciones guardadas y renderiza una vista
+		 * con la informacion de las liquidaciones de cada vehiculo seleccionado. Para aquellos
+		 * registros que no se pudieron guardar se mostraran solo los registros generados en este
+		 * proceso.
+		 * $this->_objeto, contiene la informacion de los registros guardados y no guardado, este
+		 * variable es un arreglo donde el indice ($key), es el identificador del objeto (vehiculo)
+		 * y el contenido de dicho elemento es el modelo guardado con los registros seleccionados.
+		 * Estructura de $this->_objeto es:
+		 * array => {
+		 * 		[identificador del objeto] => [
+		 *  		['modelo'] => modelo guardado
+		 *    		['mensaje'] => 'Guardado' o 'No Guardado'
+		 *      ]
+		 * }
+		 * @return View retorna una vista con la informacion resumen de la liquidaciones.
+		 */
+		public function actionMostrarLiquidacionGuardada($objetos)
 		{
-			$findModel = self::actionInfoPlanilla($models[0]['id_pago']);
-			$detalles = $findModel->asArray()->one();
+			if ( isset($_SESSION['idContribuyente']) ) {
+				$idContribuyente = $_SESSION['idContribuyente'];
 
-			if ( count($detalles) > 0 ) {
+				if ( count($objetos) > 0 ) {
+					$searchLiquidacion = New LiquidarVehiculoSearch($idContribuyente);
+					foreach ( $objetos as $key => $models ) {
 
-				$planilla = (int)$detalles['pagos']['planilla'];
-				$planillaSearch = New PlanillaSearch($planilla);
-				$dataProvider = $planillaSearch->getProviderPlanilla(0);
-				$url = Url::to(['generar-pdf']);
-				$caption = Yii::t('frontend', 'Detalle de la planilla ' . $planilla);
-				$subCaption = Yii::t('frontend', 'Lapsos liquiaddos');
+						$label = 'label label-default';
+						$resultado = (string)$models['mensaje'];
+						if ( strtoupper($resultado) == 'GUARDO' ) {
+							$label = 'label label-success';
+						} elseif ( strtoupper($resultado) == 'NO GUARDO') {
+							$label = 'label label-danger';
+						}
+						// Se genera el proveedor de datos. ArrayDataProvider
+						$provider = $searchLiquidacion->getDataProviderDetalleLiquidacion($models['model']);
 
-				return $this->render('/aaee/liquidar/view-liquidacion-resultante',[
-															'caption' => $caption,
-															'subCaption' => $subCaption,
-															'dataProvider' => $dataProvider,
-															'planilla' => $planilla,
-															'url' => $url,
+						$modelVehiculo = $searchLiquidacion->getListaVehiculo([$key]);
+						$infoVehiculo = ' Placa: ' . $modelVehiculo[0]['placa'] . ' - Marca: ' . $modelVehiculo[0]['marca'] .
+							            ' - Modelo: ' . $modelVehiculo[0]['modelo'] . ' - Color: ' . $modelVehiculo[0]['color'];
+						$subCaption = Yii::t('frontend', $infoVehiculo);
+						$gridHtml[$key] = $this->renderPartial('/vehiculo/liquidar/resumen-individual-liquidacion',[
+																							'dataProvider' => $provider,
+																							'subCaption' => $subCaption,
+																							'guardo' => $resultado,
+																							'label' => $label,
+																		]);
+
+					}
+
+					$caption = Yii::t('frontend', 'Resumen de la operacion');
+					$subCaption = Yii::t('frontend', 'Registros');
+					return $this->render('/vehiculo/liquidar/resumen-general',[
+													'codigo' => 100,
+													'caption' => $caption,
+													'subCaption' => $subCaption,
+													'gridHtml' => $gridHtml,
 						]);
-			} else {
-				// No se encontraro detalles liquidados.
-
+				}
 			}
 		}
 
