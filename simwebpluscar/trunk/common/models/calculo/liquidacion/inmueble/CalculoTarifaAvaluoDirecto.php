@@ -42,12 +42,12 @@
 
 	namespace common\models\calculo\liquidacion\inmueble;
 
-  
+
  	use Yii;
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 	use backend\models\utilidad\tarifa\inmueble\TarifaParametroInmueble;
-	use backend\models\inmueble\avaluo\HistoricoAvaluoForm;
+	use backend\models\inmueble\avaluo\HistoricoAvaluoSearch;
 	use backend\models\inmueble\InmueblesConsulta;
 
 
@@ -79,7 +79,7 @@
 			$this->_montoCalculado = 0;
 			$this->_añoImpositivo = $añoImpositivo;
 			$this->_datosInmueble = $datosInmueble;
-		}       
+		}
 
 
 
@@ -94,11 +94,12 @@
 			$this->_montoCalculado = 0;
 			if ( count($this->_datosInmueble) > 0 && $this->_añoImpositivo > 0 ) {
 				// Se debe buscar el avaluo que corresponde segun el año impositivo.
-				$historico = New HistoricoAvaluoForm();
+				$historico = New HistoricoAvaluoSearch((int)$this->_datosInmueble['id_contribuyente'], (int)$this->_datosInmueble['id_impuesto']);
 				// lo siguiente retorna un arreglo uni-dimensional de los datos del avaluo, para el año impositivo
 				// especifico. El metodo realiza un ajuste para determinar que avaluo se debe utilizar en el calculo
 				// según el año impositivo.
-				$avaluo = $historico->getUltimoAvaluoSegunAnoImpositivo($this->_datosInmueble['id_impuesto'], $this->_añoImpositivo);
+				$avaluo = $historico->getUltimoAvaluoSegunAnoImpositivo($this->_añoImpositivo);
+
 				if ( count($avaluo) > 0 ) {
 					$this->_montoCalculado = self::calcularImpuesto($avaluo);
 				}
@@ -132,7 +133,9 @@
 			// Se obtienen los parametros o tarifas que se aplicaran en los calculo
 			// conjuntamente con los valores del avaluo.
 			$tarifa = self::getParametroTarifa();
+
 			if ( count($tarifa) > 0 ) {
+
 				$tasaLocal = $tarifa[0]['tasa_construccion'] + $tarifa[0]['tasa_terreno'];
 				$minimo = $tarifa[0]['minimo'];
 				$montoAvaluo = self::getAvaluo($avaluo);
@@ -143,6 +146,7 @@
 					}
 				}
 			}
+
 			return $monto;
 		}
 
