@@ -105,6 +105,13 @@
 
 
 
+		/***/
+		public function getImpuesto()
+		{
+			return self::IMPUESTO;
+		}
+
+
 
 		/***/
 		public function getAnoInicio()
@@ -141,14 +148,25 @@
 					$añoFinal = (int)$rangoFinal['ano_impositivo'];
 					$periodoFinal = (int)$rangoFinal['periodo'];
 
-					for ( $i = $añoInicio; $i <= $añoFinal; $i++ ) {
-						if ( $i == $añoInicio ) {
-							self::liquidarAnoImpositivoInmueble($i, $periodoInicio);
+					for ( $i = (int)$añoInicio; $i <= (int)$añoFinal; $i++ ) {
+						if ( (int)$añoInicio == (int)$añoFinal ) {
 
-						} elseif ( $i > $añoInicio ) {
+							self::liquidarAnoImpositivoInmueble($i, $periodoInicio, $periodoFinal);
 
-							self::liquidarAnoImpositivoInmueble($i, 1);
+						} elseif ( (int)$añoInicio < (int)$añoFinal ) {
+							if ( (int)$i == (int)$añoInicio ) {
 
+								self::liquidarAnoImpositivoInmueble($i, $periodoInicio);
+
+							} elseif ( (int)$i == (int)$añoFinal ) {
+
+								self::liquidarAnoImpositivoInmueble($i, $periodoInicio, $periodoFinal);
+
+							} else {
+
+								self::liquidarAnoImpositivoInmueble($i, $periodoInicio);
+
+							}
 						}
 					}
 
@@ -179,8 +197,14 @@
 			if ( count($ultimoLapso) > 0 ) {
 				$ultimoAño = (int)$ultimoLapso['ano_impositivo'];
 				$ultimoPeriodo = (int)$ultimoLapso['trimestre'];
+
+				// Esto permite determinar si se selccionara la planilla actual o si se debe
+				// crear otra planilla. Si la planilla esta asociada a un recibo pendiente
+				// no se podra seleccionar.
 				if ( $ultimoLapso['pago'] == 0 ) {
-					$this->_id_pago = $ultimoLapso['id_pago'];
+					if ( self::puedoSeleccionarPlanilla((int)$ultimoLapso['pagos']['planilla']) ) {
+						$this->_id_pago = $ultimoLapso['id_pago'];
+					}
 				}
 
 				// Ultimo año es igual al año actual.
@@ -223,8 +247,8 @@
 
 			} else {
 				// Significa que no tiene periodos liquidados.
-				// Se tomara como fecha de comienzo de la liquidacion, la fecha de inicio de
-				// actividades del contribuyente.
+				// Se tomara como fecha de comienzo de la liquidacion, el año inicio del
+				// inmueble.
 
 				$lapsoInicio = self::definirLapsoInicio();
 
@@ -246,21 +270,13 @@
 		 * del calculo.
 		 * @return array retorna un arreglo con los detalles de la liquidacion.
 		 */
-		private function liquidarAnoImpositivoInmueble($año, $desdePeriodo)
+		private function liquidarAnoImpositivoInmueble($año, $desdePeriodo, $hastaPeriodo = 0)
 		{
 			$montoCalculado = 0;			// Monto calculado para el año impositivo.
 			$modelDetalle = [];
 			$exigibilidadLiq = self::getExigibilidadLiquidacion($año);
-			$exigibilidadDec = self::getExigibilidadDeclaracion($año);
 
-			if ( count($exigibilidadLiq) > 0 && count($exigibilidadDec) > 0 ) {
-
-				$exigDeclaracion = (int)$exigibilidadDec['exigibilidad'];
-				if ( $exigDeclaracion == 1 ) {
-					$periodo = $exigDeclaracion;
-				} else {
-					$periodo = $desdePeriodo;
-				}
+			if ( count($exigibilidadLiq) > 0 ) {
 
 				// Se realiza el calculo de la liquidacion del año.
 				$this->_liquidarInmueble->setAnoImpositivo($año);
@@ -394,18 +410,6 @@
 			return $lapso;
 		}
 
-
-
-
-		/**
-		 * Metodo que determina la exigibilidad de la declaracion para un año especifico.
-		 * @param  integer $año año impositivo de la declaracion.
-		 * @return array retorna un arreglo con los atributos de la entidad "exigibilidades".
-		 */
-		private function getExigibilidadDeclaracion($año)
-		{
-			return $exigibilidadDec = OrdenanzaBase::getExigibilidadDeclaracion($año, self::IMPUESTO);
-		}
 
 
 
