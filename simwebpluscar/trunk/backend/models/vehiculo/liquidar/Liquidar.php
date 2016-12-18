@@ -121,6 +121,12 @@
 		}
 
 
+		/***/
+		public function getImpuesto()
+		{
+			return self::IMPUESTO;
+		}
+
 
 		/***/
 		public function getFechaInicio()
