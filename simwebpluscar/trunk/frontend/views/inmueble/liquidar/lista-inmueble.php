@@ -63,7 +63,7 @@
  		$form = ActiveForm::begin([
  			'id' => 'id-lista-inmueble-form',
  			'method' => 'post',
- 			//'action' => $url,
+ 			'action' => $url,
  			'enableClientValidation' => true,
  			'enableAjaxValidation' => false,
  			'enableClientScript' => true,
@@ -115,30 +115,13 @@
 				                                   		return $data['id_impuesto'];
 				            			           },
 				                    ],
-				                    // [
-				                    //     'contentOptions' => [
-				                    //           'style' => 'font-size: 90%;',
-				                    //     ],
-				                    //     'format' => 'raw',
-				                    //     'label' => Yii::t('frontend', 'id'),
-				                    //     'value' => function($data) {
-				                    //                		return Html::textInput('id-impuesto[' . $data['id_impuesto'] . ']',
-				                    //                											$data['id_impuesto'],
-				                    //                											[
-				                    //                												'readOnly' => true,
-				                    //                												'class' => 'form-control',
-				                    //                												'style' => 'width: 45%;
-				                    //                														    background-color:white;',
-				                    //                											]);
-				            			     //       },
-				                    // ],
 				                    [
 				                        'contentOptions' => [
 				                              'style' => 'font-size: 90%;',
 				                        ],
 				                        'label' => Yii::t('frontend', 'direccion'),
 				                        'value' => function($data) {
-				                                   		return $data['descripcion'];
+				                                   		return $data['direccion'];
 				            			           },
 				                    ],
 				                    [
@@ -154,28 +137,22 @@
 				                        'contentOptions' => [
 				                              'style' => 'font-size: 90%;',
 				                        ],
-				                        'label' => Yii::t('frontend', 'ultimo pago'),
-				                        'value' => function($data) {
-				                                   		return $data['ultimoPago'];
+				                        'label' => Yii::t('frontend', 'ultimo lapso'),
+				                        'value' => function($data, $ultimo) {
+				                        				$ultimo = $data['añoImpositivo'] . ' - ' . $data['periodo'] . ' - ' . $data['unidad'];
+				                                   		return $ultimo;
 				            			           },
 				                    ],
-				                    // [
-				                    //     'contentOptions' => [
-				                    //           'style' => 'font-size: 90%;',
-				                    //     ],
-				                    //     'format' => 'raw',
-				                    //     'label' => Yii::t('frontend', 'id'),
-				                    //     'value' => function($data) {
-				                    //                		return Html::textInput('periodo[' . $data['id_impuesto'] . ']',
-				                    //                											$data['ultimoPago'],
-				                    //                											[
-				                    //                												'readOnly' => true,
-				                    //                												'class' => 'form-control',
-				                    //                												'style' => 'width: 85%;
-				                    //                														    background-color:white;',
-				                    //                											]);
-				            			     //       },
-				                    // ],
+				                    [
+				                        'contentOptions' => [
+				                              'style' => 'font-size: 90%;',
+				                        ],
+				                        'label' => Yii::t('frontend', 'planilla / condicion'),
+				                        'value' => function($data, $ultimo) {
+				                        				$ultimo = $data['planilla'] . ' / ' . $data['condicion'];
+				                                   		return $ultimo;
+				            			           },
+				                    ],
 
 					        	]
 							]);?>
