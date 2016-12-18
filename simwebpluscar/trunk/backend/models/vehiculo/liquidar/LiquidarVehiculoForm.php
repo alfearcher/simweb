@@ -168,6 +168,7 @@
 					$añoImpositivo = '';
 					$periodo = '' ;
 					$unidad = '' ;
+					$condicion = '';
 
 					$ultimo = self::getUltimoLapsoLiquidado($model['id_vehiculo']);
 					if ( count($ultimo) > 0 ) {
