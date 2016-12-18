@@ -58,11 +58,11 @@
  ?>
 
 
-<div class="view-liquidacion-vehiculo-resultante">
+<div class="view-resumen-individual-liquidacion">
  	<?php
 
  		$form = ActiveForm::begin([
- 			'id' => 'id-liquidacion-vehiculo-resultante-form',
+ 			'id' => 'id-resumen-individual-liquidacion-form',
  			'method' => 'post',
  			'enableClientValidation' => false,
  			'enableAjaxValidation' => false,
@@ -72,8 +72,15 @@
 
 	<div class="row" style="padding:0px;padding-left: 30px;padding-top: 20px;">
 		<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;width:100%;">
-			<div class="col-sm-3" style="width: 100%;">
-				<h4><?=Html::encode(Yii::t('frontend', $subCaption))?></h4>
+			<div class="col-sm-3" style="width: 70%;">
+				<h5><?=Html::encode(Yii::t('frontend', $subCaption))?></h5>
+			</div>
+			<div class="col-sm-2" style="width: 20%;padding-top:6px; float: left;">
+				<?=Html::tag('p', $guardo, [
+									'class' => $label,
+									'style' => 'font-size:110%;'
+									])
+				?>
 			</div>
 		</div>
 		<div class="row" id="id-grid-liquidacion-individual" style="width: 100%;">
@@ -89,18 +96,7 @@
 							'summary' => '',
 							'columns' => [
 								['class' => 'yii\grid\SerialColumn'],
-								// [
-			     //                    'class' => 'yii\grid\CheckboxColumn',
-			     //                     'name' => 'chkIdImpuesto',
-			     //                    'checkboxOptions' => function ($model, $key, $index, $column) {
-				    //                         	return [
-				    //                                 'onClick' => 'javascript: return false;',
-				    //                                 'checked' => true,
 
-				    //                             ];
-			     //                    },
-			     //                    'multiple' => false,
-				    //             ],
 			                    [
 			                        'contentOptions' => [
 			                              'style' => 'font-size: 90%;',
@@ -108,14 +104,6 @@
 			                        'format' => 'raw',
 			                        'label' => Yii::t('frontend', 'id-pago'),
 			                        'value' => function($data) {
-			                        				// return Html::textInput('id-pago[' . $data['id_impuesto'] . ']',
-				                        			// 												$data['id_pago'],
-				                        			// 												[
-						                         //           												'readOnly' => true,
-						                         //           												'class' => 'form-control',
-						                         //           												'style' => 'width: 100%;
-						                         //           														    background-color:white;',
-						                         //           											]);
 			                                   		return $data['id_pago'];
 			            			           },
 			            			'visible' => false,
@@ -137,15 +125,6 @@
 			                        'format' => 'raw',
 			                        'label' => Yii::t('frontend', 'impuesto'),
 			                        'value' => function($data) {
-			                        				// return Html::textInput('impuesto[' . $data['id_impuesto'] . ']',
-				                        			// 												$data['impuesto'],
-				                        			// 												[
-						                         //           												'readOnly' => true,
-						                         //           												'class' => 'form-control',
-						                         //           												'type' => 'hidden',
-						                         //           												'style' => 'width: 100%;
-						                         //           														    background-color:white;',
-						                         //           											]);
 			                                   		return $data['impuesto'];
 			            			           },
 			            			'visible' => false,
@@ -157,14 +136,6 @@
 			                        'format' => 'raw',
 			                        'label' => Yii::t('frontend', 'Año'),
 			                        'value' => function($data) {
-			                        				// return Html::textInput('ano_impositivo[' . $data['id_impuesto'] . ']',
-				                        			// 												$data['ano_impositivo'],
-				                        			// 												[
-						                         //           												'readOnly' => true,
-						                         //           												'class' => 'form-control',
-						                         //           												'style' => 'width: 100%;
-						                         //           														    background-color:white;',
-						                         //           											]);
 			                                   		return $data['ano_impositivo'];
 			            			           },
 			            			//'visible' => false,
@@ -252,16 +223,6 @@
 			                                   		return $data['descripcion'];
 			            			           },
 			                    ],
-
-			                   /* [
-			                        'contentOptions' => [
-			                              'style' => 'font-size: 90%;text-align:center;width:10%;',
-			                        ],
-			                        'label' => Yii::t('frontend', 'fecha'),
-			                        'value' => function($data) {
-			                                   		return date('d-m-Y', strtotime($data['fecha']));
-			            			           },
-			                    ],*/
 
 				        	]
 						]);?>
