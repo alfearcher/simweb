@@ -64,14 +64,15 @@
 	use common\controllers\pdf\planilla\PlanillaPdfController;
 
 
-	session_start();
+	if ( !isset($_SESSION) ) {
+		session_start();
+	}
 
 
 	/***/
 	class PlanillaConsultaController extends Controller
 	{
 		public $layout = 'layout-main';				//	Layout principal del formulario
-
 
 
 
