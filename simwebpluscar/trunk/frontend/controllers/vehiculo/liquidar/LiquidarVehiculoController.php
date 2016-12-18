@@ -69,7 +69,8 @@
 	use yii\base\Model;
 	use yii\helpers\ArrayHelper;
 	use backend\models\recibo\depositoplanilla\DepositoPlanillaSearch;
-
+	use frontend\controllers\planilla\ConsultaController;
+	use frontend\controllers\planilla\PlanillaConsultaController;
 
 	session_start();
 
@@ -84,8 +85,6 @@
 		private $_transaccion;
 
 		private $_objeto;
-
-
 
 
 
@@ -432,6 +431,8 @@
 
 				}
 
+			} else {
+				$this->redirect(['quit']);
 			}
 		}
 
@@ -604,10 +605,10 @@
 		 * con la informacion de las liquidaciones de cada vehiculo seleccionado. Para aquellos
 		 * registros que no se pudieron guardar se mostraran solo los registros generados en este
 		 * proceso.
-		 * $this->_objeto, contiene la informacion de los registros guardados y no guardado, este
+		 * $objeto, contiene la informacion de los registros guardados y no guardado, este
 		 * variable es un arreglo donde el indice ($key), es el identificador del objeto (vehiculo)
 		 * y el contenido de dicho elemento es el modelo guardado con los registros seleccionados.
-		 * Estructura de $this->_objeto es:
+		 * Estructura de $objeto es:
 		 * array => {
 		 * 		[identificador del objeto] => [
 		 *  		['modelo'] => modelo guardado
@@ -648,6 +649,7 @@
 
 					}
 
+					$url = Url::to(['consultor-planilla']);
 					$caption = Yii::t('frontend', 'Resumen de la operacion');
 					$subCaption = Yii::t('frontend', 'Registros');
 					return $this->render('/vehiculo/liquidar/resumen-general',[
@@ -655,10 +657,23 @@
 													'caption' => $caption,
 													'subCaption' => $subCaption,
 													'gridHtml' => $gridHtml,
+													'url' => $url,
 						]);
 				}
 			}
 		}
+
+
+
+
+		/***/
+		public function actionConsultorPlanilla()
+		{
+// die(var_dump(Yii::$app->controller->id));
+			$consultor = New PlanillaConsultaController();
+			$consultor->actionIndex();
+		}
+
 
 
 
