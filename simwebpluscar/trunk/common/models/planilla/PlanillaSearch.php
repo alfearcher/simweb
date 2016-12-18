@@ -220,8 +220,8 @@
 			return $findMmodel = PagoDetalle::find()->alias('D')
 			                                        ->joinWith('pagos P', true, 'INNER JOIN')
 			                                        ->where('planilla =:planilla',
-			                                        			[':planilla' => $this->_planilla])
-			                                        ->andWhere('D.pago =:pago',[':pago' => 0]);
+			                                        			[':planilla' => $this->_planilla]);
+			                                        //->andWhere('D.pago =:pago',[':pago' => 0]);
 		}
 
 
@@ -230,9 +230,8 @@
 		public function getProviderPlanilla($estatus)
 		{
 			$findModel = self::findPlanillaGeneralModel();
-			$query = $findModel
-			->andWhere('pago =:pago',[':pago' => $estatus])
-			->joinWith('exigibilidad E', true, 'INNER JOIN')
+			$query = $findModel->andWhere('pago =:pago',[':pago' => $estatus])
+			                   ->joinWith('exigibilidad E', true, 'INNER JOIN')
 			                   ->joinWith('estatus S', true, 'INNER JOIN')
 			                   ->joinWith('impuestos I', true, 'INNER JOIN')->asArray()->all();
 
