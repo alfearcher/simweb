@@ -57,9 +57,9 @@
 	use common\models\session\Session;
 	use common\conexion\ConexionController;
 	use common\controllers\pdf\planilla\PlanillaPdfController;
-	use backend\models\vehiculo\liquidar\Liquidar;
-	// use backend\models\vehiculo\liquidar\LiquidarVehiculoForm;
-	// use backend\models\vehiculo\liquidar\LiquidarVehiculoSearch;
+	use backend\models\inmueble\liquidar\Liquidar;
+	use backend\models\inmueble\liquidar\LiquidarInmuebleForm;
+	use backend\models\inmueble\liquidar\LiquidarInmuebleSearch;
 	use common\models\planilla\PagoDetalle;
 	use common\models\planilla\Pago;
 	use common\models\planilla\NumeroPlanillaSearch;
@@ -244,6 +244,7 @@
 																			]);
 				      		}
 
+
 				      		// Se crea un modelo PagoDetalle con todos los registros liquidados por objetos.
 				      		$models = self::actionCreateModelPago($detalles);
 
@@ -299,14 +300,12 @@
 				if ( count($inmuebles) > 0 ) {
 
 					foreach ( $inmuebles as $i => $inmueble ) {
-						$lapso[$i] = $searchLiquidacion->getListaLapsoPendiente((int)$inmueble['id_inmueble']);
+						$lapso[$i] = $searchLiquidacion->getListaLapsoPendiente((int)$inmueble['id_impuesto']);
 						$models[$i] = New LiquidarInmuebleForm($idContribuyente);
-						$models[$i]['id_impuesto'] = $inmueble['id_inmueble'];
+						$models[$i]['id_impuesto'] = $inmueble['id_impuesto'];
 						$models[$i]['id_contribuyente'] = $idContribuyente;
-						$models[$i]['placa'] = $inmueble['placa'];
-						$models[$i]['marca'] = $inmueble['marca'];
-						$models[$i]['modelo'] = $inmueble['modelo'];
-						$models[$i]['color'] = $inmueble['color'];
+						$models[$i]['direccion'] = $inmueble['direccion'];
+						$models[$i]['catastro'] = $inmueble['catastro'];
 						$models[$i]['lapso'] = $lapso[$i];
 					}
 
@@ -339,6 +338,7 @@
 		/***/
 		protected function actionCreateModelPago($detalles)
 		{
+			$models = [];
 			foreach ( $detalles as $i => $detalle ) {
 				foreach ( $detalle as $key => $value ) {
 
@@ -639,7 +639,7 @@
 						$modelInmueble = $searchLiquidacion->getListaInmueble([$key]);
 						$infoInmueble = ' Direccion: ' . $modelInmueble[0]['direccion'] . ' - Catastro: ' . $modelInmueble[0]['catastro'];
 
-						$subCaption = Yii::t('frontend', $infoINmueble);
+						$subCaption = Yii::t('frontend', $infoInmueble);
 						$gridHtml[$key] = $this->renderPartial('/inmueble/liquidar/resumen-individual-liquidacion',[
 																							'dataProvider' => $provider,
 																							'subCaption' => $subCaption,
