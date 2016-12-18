@@ -165,6 +165,7 @@
 					$añoImpositivo = '';
 					$periodo = '' ;
 					$unidad = '' ;
+					$condicion = '';
 
 					$ultimo = self::getUltimoLapsoLiquidado($model['id_impuesto']);
 					if ( count($ultimo) > 0 ) {
