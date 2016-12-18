@@ -148,7 +148,7 @@
 		/**
 		 * Metodo que inicia el proceso de liquidacion y el mismo debe devolver una arreglo
 		 * con los laspsos liquidados y sus respectivos montos.
-		 * @param array lapsoFinal arreglo que indica hatsa donde se desea liquidar. Este parametro
+		 * @param array lapsoFinal arreglo que indica hasta donde se desea liquidar. Este parametro
 		 * estara conformado de la siguiente manera:
 		 * array(2) => {
 		 * 	['ano_impositivo'] => 9999
