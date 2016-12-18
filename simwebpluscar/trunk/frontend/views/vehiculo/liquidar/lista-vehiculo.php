@@ -172,7 +172,7 @@
 				            			           },
 				                    ],
 
-				                     [
+				                    [
 				                        'contentOptions' => [
 				                              'style' => 'font-size: 90%;',
 				                        ],
