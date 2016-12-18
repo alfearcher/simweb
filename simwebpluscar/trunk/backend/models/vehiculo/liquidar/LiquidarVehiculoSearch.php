@@ -51,6 +51,7 @@
 	use yii\data\ArrayDataProvider;
 	use backend\models\vehiculo\VehiculosForm;
 	use yii\helpers\ArrayHelper;
+	use yii\data\ActiveDataProvider;
 	use common\models\ordenanza\OrdenanzaBase;
 	use backend\models\vehiculo\liquidar\Liquidar;
 
@@ -90,7 +91,7 @@
 		 * @param integer $idPago identificador del registro maestro de la planila.
 		 * @return PagoDetalle
 		 */
-		public function actionInfoPlanilla($idPago)
+		public function infoPlanilla($idPago)
 		{
 			return $findModel = PagoDetalle::find()->alias('D')
 		                                   		   ->where('D.id_pago =:id_pago',[':id_pago'=>$idPago])

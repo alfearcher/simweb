@@ -230,6 +230,7 @@
 					}
 				}
 
+
 				// Ultimo año es igual al año actual.
 				if ( $ultimoAño == (int)date('Y') ) {
 
