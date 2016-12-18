@@ -65,6 +65,7 @@
  		$form = ActiveForm::begin([
  			'id' => 'id-resumen-general-liquidacion-form',
  			'method' => 'post',
+ 			'action' => $url,
  			'enableClientValidation' => false,
  			'enableAjaxValidation' => false,
  			'enableClientScript' => false,
