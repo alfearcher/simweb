@@ -21,14 +21,14 @@
  */
 
  /**
- *	@file LiquidarActividadEconomicaController.php
+ *	@file LiquidarInmuebleController.php
  *
  *	@author Jose Rafael Perez Teran
  *
  *	@date 14-11-2016
  *
- *  @class LiquidarActividadEconomicaController
- *	@brief Clase que gestiona el proceso de liquidacion de Actividad Economica con
+ *  @class LiquidarInmuebleController
+ *	@brief Clase que gestiona el proceso de liquidacion de Inmuebles Urbanos con
  *  periodos mayores a cero.
  *
  *
@@ -57,15 +57,20 @@
 	use common\models\session\Session;
 	use common\conexion\ConexionController;
 	use common\controllers\pdf\planilla\PlanillaPdfController;
-	use backend\models\inmueble\liquidar\Liquidar;
+	use backend\models\vehiculo\liquidar\Liquidar;
+	// use backend\models\vehiculo\liquidar\LiquidarVehiculoForm;
+	// use backend\models\vehiculo\liquidar\LiquidarVehiculoSearch;
 	use common\models\planilla\PagoDetalle;
 	use common\models\planilla\Pago;
 	use common\models\planilla\NumeroPlanillaSearch;
 	use common\models\planilla\PlanillaSearch;
 	use yii\data\ArrayDataProvider;
 	use common\models\contribuyente\ContribuyenteBase;
-	use backend\models\inmueble\solvencia\SolvenciaInmuebleSearch;
-
+	use yii\base\Model;
+	use yii\helpers\ArrayHelper;
+	use backend\models\recibo\depositoplanilla\DepositoPlanillaSearch;
+	use frontend\controllers\planilla\ConsultaController;
+	use frontend\controllers\planilla\PlanillaConsultaController;
 
 	session_start();
 
@@ -79,9 +84,15 @@
 		private $_conexion;
 		private $_transaccion;
 
+		private $_objeto;
 
 
 
+
+		/**
+		 * Metodo que inicia el proceso
+		 * @return [type] [description]
+		 */
 		public function actionIndex()
 		{
 			$_SESSION['begin'] = 1;
@@ -91,7 +102,10 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que busca y renderiza una vista con una lista de los Inmuebles activos.
+		 * @return view retorna una vista con una lista de Inmueble.
+		 */
 		public function actionListarInmueble()
 		{
 			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) ) {
@@ -109,32 +123,14 @@
 					}
 				}
 
-				if ( isset($postData['btn-begin']) ) {
-					if ( $postData['btn-begin'] == 3 ) {
-						if ( isset($postData['chkIdImpuesto']) ) {
-							$chkSeleccion = $postData['chkIdImpuesto'];
-
-							// Se crea una lista de inmuebles activos.
-							$searchSolvencia = New SolvenciaInmuebleSearch($idContribuyente);
-							$provider = $searchSolvencia->getDataProviderInmueble($chkSeleccion);
-
-							$caption = Yii::t('frontend', 'Confirmar iniciar liquidacion. Lista de Inmuebles');
-							$subCaption = Yii::t('frontend', 'Inmueble(s) seleccinado(s)');
-							return $this->render('/inmueble/liquidar/pre-seleccion-inmueble',[
-															'caption' => $caption,
-															'subCaption' => $subCaption,
-															'dataProvider' => $provider,
-										]);
-
-						} else {
-							$controlSeleccion = Yii::t('frontend', 'No ha seleccionado ningun inmueble');
-						}
-					}
+				if ( $request->get('id') == 1 ) {
+					$controlSeleccion = Yii::t('frontend', 'No ha seleccionado ningun inmueble');
 				}
+				$url = Url::to(['indicar-liquidacion']);
 
 				// Se crea una lista de inmuebles activos.
-				$searchSolvencia = New SolvenciaInmuebleSearch($idContribuyente);
-				$provider = $searchSolvencia->getDataProviderInmueble();
+				$searchLiquidacion = New LiquidarInmuebleSearch($idContribuyente);
+				$provider = $searchLiquidacion->getDataProviderInmueble();
 
 				if ( $provider !== null ) {
 					$caption = Yii::t('frontend', 'Lista de Inmuebles');
@@ -144,6 +140,7 @@
 													'subCaption' => $subCaption,
 													'dataProvider' => $provider,
 													'controlSeleccion' => $controlSeleccion,
+													'url' => $url,
 								]);
 				} else {
 					return $this->redirect(['error-operacion', 'cod' => 509]);
@@ -159,13 +156,224 @@
 
 
 
-		/**
-		 * Metodo que inicia el modulo de lqiquidacion.
-		 * @return [type] [description]
-		 */
-		public function actionIndexCreate()
+		/***/
+		public function actionIndicarLiquidacion()
 		{
+			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) ) {
 
+				$idContribuyente = $_SESSION['idContribuyente'];
+				$request = Yii::$app->request;
+				$postData = $request->post();
+
+				$chkSeleccion = [];
+
+				if ( isset($postData['btn-quit']) ) {
+					if ( $postData['btn-quit'] == 1 ) {
+						return $this->redirect(['quit']);
+					}
+				} elseif ( isset($postData['btn-begin']) ) {
+					if ( $postData['btn-begin'] == 3 ) {
+
+						if ( !isset($postData['chkIdImpuesto']) ) {
+
+							// Se inicia de nuevo el modulo. No se ha seleccionado ningun inmueble.
+							return $this->redirect(['listar-inmueble', 'id' => 1]);
+
+						}
+
+					}
+
+				} elseif ( isset($postData['btn-confirm-create']) ) {
+					if ( $postData['btn-confirm-create'] == 5 ) {
+
+						$model = New LiquidarInmuebleForm($idContribuyente);
+						$formName = $model->formName();
+
+						$datos = $postData[$formName];
+						if ( count($datos) > 0 ) {
+							foreach ( $datos as $key => $value ) {
+								$modelMultiplex[$key] = New LiquidarInmuebleForm($idContribuyente);
+							}
+							Model::loadMultiple($modelMultiplex, $postData);
+							$result = Model::validateMultiple($modelMultiplex);
+						}
+
+						if ( Model::loadMultiple($modelMultiplex, $postData)  && Yii::$app->request->isAjax ) {
+							Yii::$app->response->format = Response::FORMAT_JSON;
+							return ActiveForm::validateMultiple($modelMultiplex);
+				      	}
+
+
+				      	if ( $result ) {		// Validacion correcta
+				      		$gridHtml = [];
+
+				      		// Se realiza el proceso de liquidacion por objeto y hasta el lapso final seleccionado.
+				      		foreach ( $datos as $key => $inmueble ) {
+				      			$chkIdImpuesto[] = $inmueble['id_impuesto'];
+
+				      			$liquidar[$inmueble['id_impuesto']] = New Liquidar($idContribuyente, $inmueble['id_impuesto']);
+
+				      			// Lapsos liquidados. Por inmueble
+				      			// Se toma el lapso final y se convierte en un arreglo con los indices 'ano_impositivo' y 'periodo'
+				      			// para enviarlo como parametro a la liquidacion. Esto permite fijar el "hasta donde" se quiere liquiadr.
+				      			$rango = explode('-', $inmueble['lapso']);
+				      			if ( count($rango) > 0 ) {
+					      			$lapsoFinal = [
+					      				'ano_impositivo' => $rango[0],
+					      				'periodo' => $rango[1],
+					      			];
+					      		} else {
+					      			$lapsoFinal = [];
+					      		}
+
+								$detalles[$inmueble['id_impuesto']] = $liquidar[$inmueble['id_impuesto']]->iniciarProcesoLiquidacion($lapsoFinal);
+
+								// Se genera el proveedor de datos. ArrayDataProvider
+								$provider = $model->getDataProviderDetalleLiquidacion($detalles[$inmueble['id_impuesto']]);
+
+								// Genera una vista individual de las liquidaciones de cada objeto.Muestra un grid con dichas
+								// liquidaciones por lapsos.
+								$infoInmueble = 'Direccion: ' . $inmueble['direccion'] . ' - Catastro: ' . $inmueble['catastro'];
+
+								$subCaption = Yii::t('frontend', $infoInmueble);
+								$gridHtml[$inmueble['id_impuesto']] = $this->renderPartial('/inmueble/liquidar/resumen-individual-liquidacion',[
+																								'dataProvider' => $provider,
+																								'subCaption' => $subCaption,
+																								'guardo' => '',
+																								'label' => 'label label-default',
+																			]);
+				      		}
+
+				      		// Se crea un modelo PagoDetalle con todos los registros liquidados por objetos.
+				      		$models = self::actionCreateModelPago($detalles);
+
+				      		// Se muetra el resumen de lo liquidado.
+				      		$url = Url::to(['confirmar-save']);
+				      		$caption = Yii::t('frontend', 'Liquidacion de Inmuebles Urbanos');
+							$subCaption = Yii::t('frontend', $caption . '. Resumen por Inmueble');
+							return $this->render('/inmueble/liquidar/pre-view-liquidacion',[
+																	'caption' => $caption,
+																	'subCaption' => $subCaption,
+																	'gridHtml' => $gridHtml,
+																	'url' => $url,
+																	'models' => $models,
+											]);
+
+
+				      	} else {
+
+
+				      		$chkSeleccion = ArrayHelper::map($datos, 'id_impuesto', 'id_impuesto');
+				      		$searchLiquidacion = New LiquidarInmuebleSearch($idContribuyente);
+							$inmuebles = $searchLiquidacion->getListaInmueble($chkSeleccion);
+							foreach ( $chkSeleccion as $key => $value ) {
+								$lapso[] = $searchLiquidacion->getListaLapsoPendiente($value);
+							}
+
+				      		$opciones = [
+								'back' => '/inmueble/liquidar/liquidar-inmueble/index',
+							];
+							$caption = Yii::t('frontend', 'Liquidacion de Inmueble(s)');
+							$subCaption = Yii::t('frontend', $caption .'. Indique los parametros para liquidar el impuesto');
+							return $this->render('/inmueble/liquidar/lista-inmueble-liquidacion',[
+															'caption' => $caption,
+															'subCaption' => $subCaption,
+															'models' => $modelMultiplex,
+															'opciones' => $opciones,
+															'lapso' => $lapso,
+										]);
+				      	}
+
+					}
+
+				} elseif ( isset($postData['btn-back']) ) {
+					if ( $postData['btn-back'] == 1 ) {
+						return $this->redirect(['listar-inmueble']);
+					}
+				}
+
+				$chkSeleccion = isset($postData['chkIdImpuesto']) ? $postData['chkIdImpuesto'] : [];
+				$searchLiquidacion = New LiquidarInmuebleSearch($idContribuyente);
+				$inmuebles = $searchLiquidacion->getListaInmueble($chkSeleccion);
+
+				if ( count($inmuebles) > 0 ) {
+
+					foreach ( $inmuebles as $i => $inmueble ) {
+						$lapso[$i] = $searchLiquidacion->getListaLapsoPendiente((int)$inmueble['id_inmueble']);
+						$models[$i] = New LiquidarInmuebleForm($idContribuyente);
+						$models[$i]['id_impuesto'] = $inmueble['id_inmueble'];
+						$models[$i]['id_contribuyente'] = $idContribuyente;
+						$models[$i]['placa'] = $inmueble['placa'];
+						$models[$i]['marca'] = $inmueble['marca'];
+						$models[$i]['modelo'] = $inmueble['modelo'];
+						$models[$i]['color'] = $inmueble['color'];
+						$models[$i]['lapso'] = $lapso[$i];
+					}
+
+					$opciones = [
+						'back' => '/inmueble/liquidar/liquidar-inmueble/index',
+					];
+					$caption = Yii::t('frontend', 'Liquidacion de inmueble(s)');
+					$subCaption = Yii::t('frontend', $caption .'. Indique los parametros para liquidar el impuesto');
+					return $this->render('/inmueble/liquidar/lista-inmueble-liquidacion',[
+													'caption' => $caption,
+													'subCaption' => $subCaption,
+													'models' => $models,
+													'opciones' => $opciones,
+													'lapso' => $lapso,
+								]);
+				} else {
+					return $this->redirect(['error-operacion', 'cod' => 509]);
+
+				}
+
+			} else {
+				return $this->redirect(['quit']);
+			}
+		}
+
+
+
+
+
+		/***/
+		protected function actionCreateModelPago($detalles)
+		{
+			foreach ( $detalles as $i => $detalle ) {
+				foreach ( $detalle as $key => $value ) {
+
+					$models[$i][$key] = New PagoDetalle();
+					$models[$i][$key]['id_pago'] = $value['id_pago'];
+					$models[$i][$key]['id_impuesto'] = $value['id_impuesto'];
+					$models[$i][$key]['impuesto'] = $value['impuesto'];
+					$models[$i][$key]['ano_impositivo'] = $value['ano_impositivo'];
+					$models[$i][$key]['trimestre'] = $value['trimestre'];
+					$models[$i][$key]['monto'] = $value['monto'];
+					$models[$i][$key]['recargo'] = $value['recargo'];
+					$models[$i][$key]['interes'] = $value['interes'];
+					$models[$i][$key]['descuento'] = $value['descuento'];
+					$models[$i][$key]['referencia'] = $value['referencia'];
+					$models[$i][$key]['pago'] = $value['pago'];
+					$models[$i][$key]['fecha_emision'] = $value['fecha_emision'];
+					$models[$i][$key]['fecha_pago'] = $value['fecha_pago'];
+					$models[$i][$key]['fecha_vcto'] = $value['fecha_vcto'];
+					$models[$i][$key]['descripcion'] = $value['descripcion'];
+					$models[$i][$key]['monto_reconocimiento'] = $value['monto_reconocimiento'];
+					$models[$i][$key]['exigibilidad_pago'] = $value['exigibilidad_pago'];
+					$models[$i][$key]['fecha_desde'] = $value['fecha_desde'];
+					$models[$i][$key]['fecha_hasta'] = $value['fecha_hasta'];
+				}
+			}
+
+			return $models;
+
+		}
+
+
+
+		/***/
+		public function actionConfirmarSave()
+		{
 			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) ) {
 
 				$idContribuyente = $_SESSION['idContribuyente'];
@@ -173,125 +381,60 @@
 				$request = Yii::$app->request;
 				$postData = $request->post();
 
+
 				if ( isset($postData['btn-quit']) ) {
 					if ( $postData['btn-quit'] == 1 ) {
 						return $this->redirect(['quit']);
 					}
-				} elseif ( isset($postData['data-ano-impositivo']) && isset($postData['data-periodo'])
-					       && isset($postData['data-key']) ) {
-					// Vista previa.
-					// Lo siguiente recibe un segun parametro, "tipo liquidacion", este parametro es
-					// opcional y por defecto se setea a "ESTIMADA".
-					$liquidar = New Liquidar($idContribuyente);
-					$ultimoLapsoLiquidado = $liquidar->getUltimoLapsoLiquidado();
-
-					// Lapsos liquidados.
-					$detalles = $liquidar->iniciarProcesoLiquidacion();
-
-					$dataKey = 0;
-					$dataKey = (int)$postData['data-key'];
-
-					// data provider de lo seleccionado.
-					foreach ( $detalles as $key => $value ) {
-						if ( $key <= $dataKey ) {
-							$detalleSeleccion[$key] = $detalles[$key];
-						}
+				} elseif ( isset($postData['btn-back']) ) {
+					if ( $postData['btn-back'] == 1 ) {
+						return $this->redirect(['listar-inmueble']);
 					}
 
-					if ( count($detalleSeleccion) > 0 ) {
+				} elseif ( isset($postData['btn-confirm-save']) ) {
+					if ( $postData['btn-confirm-save'] == 7 ) {
 
-						$provider = New ArrayDataProvider([
-										'allModels' => $detalleSeleccion,
-										'pagination' => false,
-							]);
+						$model = New PagoDetalle();
+						$formName = $model->formName();
 
-						$caption = Yii::t('frontend', 'Confirme seleccion de lapsos');
-						$subCaption = Yii::t('frontend', 'Confirmar. Detalle de la liquidacion');
-						return $this->render('/aaee/liquidar/pre-view-liquidacion',[
-																'caption' => $caption,
-																'subCaption' => $subCaption,
-																'dataProvider' => $provider,
-								]);
-					}
+						// Liquidacion agrupada por objetos.
+						$datos = $postData[$formName];
 
+						$models = self::actionCreateModelPago($datos);
 
-				} elseif ( isset($postData['btn-confirm-create']) ) {
-					if ( $postData['btn-confirm-create'] == 3 ) {
+						$result = false;
+						foreach ( $models as $i => $model ) {
 
-						$chkSeleccion = $postData['chkLapso'];
-						$liquidar = New Liquidar($idContribuyente);
-
-						// Lapsos liquidados.
-						$detalles = $liquidar->iniciarProcesoLiquidacion();
-
-						foreach ( $chkSeleccion as $key => $value ) {
-							$models[$key] = New PagoDetalle();
-							foreach ( $models[$key]->attributes as $i => $valor ) {
-								if ( isset($detalles[$key][$i]) ) {
-									$models[$key]->$i = $detalles[$key][$i];
-								}
-							}
-						}
-
-						if ( count($models) > 0 ) {
-							$result = self::actionBeginSave($models, $idContribuyente);
-							self::actionAnularSession(['begin']);
+							$result = self::actionBeginSave($model, $idContribuyente);
 							if ( $result ) {
 								$this->_transaccion->commit();
 								$this->_conn->close();
-								// Mostrar resultado.
-								return self::actionMostrarLiquidacionGuardada($models);
 
+								$this->_objeto[$i] = [
+											'mensaje' => 'Guardo',
+											'model' => $model,
+								];
 							} else {
-								$this->_transaccion->rollBack();
+								$this->_transaccion->commit();
 								$this->_conn->close();
-								$this->redirect(['error-operacion', 'id' => 920]);
+								$this->_objeto[$i] = [
+											'mensaje' => 'No Guardo',
+											'model' => $model,
+								];
 							}
+
 						}
+						self::actionAnularSession(['begin']);
+						return self::actionMostrarLiquidacionGuardada($this->_objeto);
 
 					}
-				}
 
-
-				// Lo siguiente recibe un segun parametro, "tipo liquidacion", este parametro es
-				// opcional y por defecto se setea a "ESTIMADA".
-				$liquidar = New Liquidar($idContribuyente);
-				$ultimoLapsoLiquidado = $liquidar->getUltimoLapsoLiquidado();
-
-				// Lapsos liquidados.
-				$detalles = $liquidar->iniciarProcesoLiquidacion();
-
-				if ( count($detalles) > 0 ) {
-					$provider = $liquidar->getDataProviderDetalle();
-					$fechaInicio = $liquidar->getFechaInicioActividad();
-
-					// Vista inicial.
-					if ( count($detalles) > 0 ) {
-						$caption = Yii::t('frontend', 'Detalle de la Liquidacion');
-						$subCaption = Yii::t('frontend', 'Informacion relevante');
-
-						return $this->render('/aaee/liquidar/_view-detalle',[
-														'dataProvider' => $provider,
-														'caption' => $caption,
-														'subCaption' => $subCaption,
-														'fechaInicio' => $fechaInicio,
-														'ultimoLapsoLiquidado' => $ultimoLapsoLiquidado,
-
-							]);
-					}
-
-				} else {
-					// No se encontraron detalles pendientes.
-					$r = $liquidar->getErrors();
-					return $this->render('/aaee/liquidar/warning',['mensajes' => $r]);
 				}
 
 			} else {
-				// No esta definida la session del contribuyente.
-				return $this->redirect(['quit']);
+				$this->redirect(['quit']);
 			}
 		}
-
 
 
 
@@ -317,9 +460,25 @@
   			// Inicio de la transaccion.
 			$this->_transaccion = $this->_conn->beginTransaction();
 
+			// Se vuelve a verificar si la planilla no esta asociada a un recibo pendiente
+			// o pagada.
+			if ( $models[0]['id_pago'] > 0 ) {
+				$modelPago = Pago::findOne($models[0]['id_pago']);
+
+				$puedo = false;
+				$searchLiquidacion = New LiquidarInmuebleSearch($idContribuyente);
+				$puedo = $searchLiquidacion->puedoSeleccionarPlanilla($modelPago->planilla);
+				if ( !$puedo ) {
+					foreach ( $models as $model ) {
+						$model['id_pago'] = 0;
+					}
+				}
+			}
+
+
 			if ( $models[0]['id_pago'] > 0 ) {
 
-				$findModel = self::actionInfoPlanilla((int)$models[0]['id_pago'])->asArray()->one();
+				$findModel = $searchLiquidacion->infoPlanilla((int)$models[0]['id_pago'])->asArray()->one();
 
 				// Se verifica que la planilla donde se guardaran los detalle este disponible.
 				// Sino es asi se genrara otra planilla.
@@ -355,6 +514,7 @@
 			return $result;
 
 		}
+
 
 
 
@@ -440,47 +600,80 @@
 
 
 
-		/***/
-		public function actionMostrarLiquidacionGuardada($models)
+		/**
+		 * Metodo que busca los detalle de la liquidaciones guardadas y renderiza una vista
+		 * con la informacion de las liquidaciones de cada inmueble seleccionado. Para aquellos
+		 * registros que no se pudieron guardar se mostraran solo los registros generados en este
+		 * proceso.
+		 * $objeto, contiene la informacion de los registros guardados y no guardado, este
+		 * variable es un arreglo donde el indice ($key), es el identificador del objeto (inmueble)
+		 * y el contenido de dicho elemento es el modelo guardado con los registros seleccionados.
+		 * Estructura de $objeto es:
+		 * array => {
+		 * 		[identificador del objeto] => [
+		 *  		['modelo'] => modelo guardado
+		 *    		['mensaje'] => 'Guardado' o 'No Guardado'
+		 *      ]
+		 * }
+		 * @return View retorna una vista con la informacion resumen de la liquidaciones.
+		 */
+		public function actionMostrarLiquidacionGuardada($objetos)
 		{
-			$findModel = self::actionInfoPlanilla($models[0]['id_pago']);
-			$detalles = $findModel->asArray()->one();
+			if ( isset($_SESSION['idContribuyente']) ) {
+				$idContribuyente = $_SESSION['idContribuyente'];
 
-			if ( count($detalles) > 0 ) {
+				if ( count($objetos) > 0 ) {
+					$searchLiquidacion = New LiquidarInmuebleSearch($idContribuyente);
+					foreach ( $objetos as $key => $models ) {
 
-				$planilla = (int)$detalles['pagos']['planilla'];
-				$planillaSearch = New PlanillaSearch($planilla);
-				$dataProvider = $planillaSearch->getProviderPlanilla(0);
-				$url = Url::to(['generar-pdf']);
-				$caption = Yii::t('frontend', 'Detalle de la planilla ' . $planilla);
-				$subCaption = Yii::t('frontend', 'Lapsos liquiaddos');
+						$label = 'label label-default';
+						$resultado = (string)$models['mensaje'];
+						if ( strtoupper($resultado) == 'GUARDO' ) {
+							$label = 'label label-success';
+						} elseif ( strtoupper($resultado) == 'NO GUARDO') {
+							$label = 'label label-danger';
+						}
+						// Se genera el proveedor de datos. ArrayDataProvider
+						$provider = $searchLiquidacion->getDataProviderDetalleLiquidacion($models['model']);
 
-				return $this->render('/aaee/liquidar/view-liquidacion-resultante',[
-															'caption' => $caption,
-															'subCaption' => $subCaption,
-															'dataProvider' => $dataProvider,
-															'planilla' => $planilla,
-															'url' => $url,
+						$modelInmueble = $searchLiquidacion->getListaInmueble([$key]);
+						$infoInmueble = ' Direccion: ' . $modelInmueble[0]['direccion'] . ' - Catastro: ' . $modelInmueble[0]['catastro'];
+
+						$subCaption = Yii::t('frontend', $infoINmueble);
+						$gridHtml[$key] = $this->renderPartial('/inmueble/liquidar/resumen-individual-liquidacion',[
+																							'dataProvider' => $provider,
+																							'subCaption' => $subCaption,
+																							'guardo' => $resultado,
+																							'label' => $label,
+																		]);
+
+					}
+
+					$url = Url::to(['consultor-planilla']);
+					$caption = Yii::t('frontend', 'Resumen de la operacion');
+					$subCaption = Yii::t('frontend', 'Registros');
+					return $this->render('/inmueble/liquidar/resumen-general',[
+													'codigo' => 100,
+													'caption' => $caption,
+													'subCaption' => $subCaption,
+													'gridHtml' => $gridHtml,
+													'url' => $url,
 						]);
-			} else {
-				// No se encontraro detalles liquidados.
-
+				}
 			}
 		}
 
 
 
 
-
-
 		/***/
-		private function actionInfoPlanilla($idPago)
+		public function actionConsultorPlanilla()
 		{
-			return $findModel = PagoDetalle::find()->alias('D')
-		                                   		   ->where('D.id_pago =:id_pago',[':id_pago'=>$idPago])
-		                                           ->joinWith('pagos P', true, 'INNER JOIN');
-
+// die(var_dump(Yii::$app->controller->id));
+			$consultor = New PlanillaConsultaController();
+			$consultor->actionIndex();
 		}
+
 
 
 
