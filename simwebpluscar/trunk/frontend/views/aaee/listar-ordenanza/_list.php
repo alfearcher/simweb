@@ -50,7 +50,7 @@
  <div class="list">
 	 <div class="row">
 		<div class="listar-ordenanza">
-			<?= $this->render('/aaee/listar-ordenanza/listar-ordenanza', [
+			<?= $this->render('@frontend/views/aaee/listar-ordenanza/listar-ordenanza', [
 														'caption' => $caption,
 														'dataProvider' => $dataProvider,
 														'idConfig' => $idConfig,
