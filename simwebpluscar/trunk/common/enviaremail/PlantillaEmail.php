@@ -55,6 +55,7 @@ use yii\base\Model;
 use common\models\Users;
 use yii\db\ActiveRecord;
 use frontend\models\usuario\CrearUsuarioNatural;
+use common\models\contribuyente\ContribuyenteBase;
 use common\enviaremail\EnviarEmailSolicitud;
 
 class PlantillaEmail{
@@ -70,25 +71,37 @@ class PlantillaEmail{
    */
   private function busquedaTipoContribuyente(){
 
-    $idContribuyente = yii::$app->user->identity->id_contribuyente;
-    //die($idContribuyente);
-      $busqueda = CrearUsuarioNatural::find()
-                                    ->where([
-                                      'id_contribuyente' => $idContribuyente,
+    $idContribuyente = isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : 0;
+    // $idContribuyente = yii::$app->user->identity->id_contribuyente;
 
-                                      ])
-                                    ->all();
-            if ($busqueda == true){
-              if($busqueda[0]->tipo_naturaleza == 1){
-                return $busqueda[0]->razon_social;
-              }else{
-                return $busqueda[0]->nombres.' '.$busqueda[0]->apellidos;
-              }
+  //     $busqueda = CrearUsuarioNatural::find()
+  //                                   ->where([
+  //                                     'id_contribuyente' => $idContribuyente,
 
-            }else{
-              return false;
-            }
+  //                                     ])
+  //                                   ->all();
+  //           if ($busqueda == true){
+  //             if($busqueda[0]->tipo_naturaleza == 1){
+  //               return $busqueda[0]->razon_social;
+  //             }else{
+  //               return $busqueda[0]->nombres.' '.$busqueda[0]->apellidos;
+  //             }
+
+  //           }else{
+  //             return false;
+  //           }
+  //
+  //
+
+
+    $contribuyente = '';
+    if ($idContribuyente > 0 ) {
+      $contribuyente = ContribuyenteBase::getContribuyenteDescripcionSegunID($idContribuyente);
+    }
+
   }
+
+
 
     /**
      * [enviarEmail description] metodo que envia email al usuario con la informacion que reciba como parametros
