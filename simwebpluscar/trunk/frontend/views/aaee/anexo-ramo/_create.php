@@ -43,7 +43,7 @@
 
 	?>
 <div class="anexo-ramo-form-create">
-	<?= $this->render('anexo-ramo-form', [
+	<?= $this->render('@backend/views/aaee/anexo-ramo/anexo-ramo-form', [
 						        'model' => $model,
 						        'findModel' => $findModel,
 						        'listaAño' => $listaAño,
