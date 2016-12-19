@@ -28,7 +28,7 @@
  *	@date 25-08-2016
  *
  *  @class AnexoRamoController
- *	@brief Clase AnexoRamoController del lado del contribuyente frontend.
+ *	@brief Clase AnexoRamoController del lado del contribuyente backend.
  *
  *
  *	@property
