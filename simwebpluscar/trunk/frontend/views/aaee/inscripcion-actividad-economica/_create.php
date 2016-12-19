@@ -44,7 +44,7 @@
 
 	?>
 	<div class="inscripcion-act-econ-form-create">
-	    <?= $this->render('inscripcion-act-econ-form', [
+	    <?= $this->render('@frontend/views/aaee/inscripcion-actividad-economica/inscripcion-act-econ-form', [
 	        							'model' => $model,
 	        							'bloquear' => $bloquear,
 	        							'url' => $url,
