@@ -6,7 +6,8 @@
   	use kartik\sidenav\SideNav;
   	use kartik\icons\Icon;
   	use yii\helpers\Url;
-session_start();
+
+// session_start();
   	$typeIcon = Icon::FA;
   	$typeLong = 'fa-2x';
 
