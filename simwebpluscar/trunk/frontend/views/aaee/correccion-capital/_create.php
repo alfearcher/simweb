@@ -43,7 +43,7 @@
 
 	?>
 <div class="correccion-capital-form-create">
-    <?= $this->render('correccion-capital-form', [
+    <?= $this->render('@frontend/views/aaee/correccion-capital/correccion-capital-form', [
 						        'model' => $model,
 						        'datos' => $datos,
 						        'subCaption' => $subCaption,
