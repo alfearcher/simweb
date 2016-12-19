@@ -42,7 +42,7 @@
  */
 
 
- 	namespace frontend\controllers\aaee\correccioncapital;
+ 	namespace backend\controllers\aaee\correccioncapital;
 
 
  	use Yii;
