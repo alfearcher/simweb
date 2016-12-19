@@ -98,6 +98,8 @@ class PlantillaEmail{
     if ($idContribuyente > 0 ) {
       $contribuyente = ContribuyenteBase::getContribuyenteDescripcionSegunID($idContribuyente);
     }
+    return $contribuyente;
+
 
   }
 
