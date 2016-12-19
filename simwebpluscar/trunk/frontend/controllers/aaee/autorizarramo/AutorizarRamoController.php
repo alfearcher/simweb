@@ -140,7 +140,7 @@
 
 							if ( count($rangoOrdenanza) > 0 ) {
 								$dataProvider = $searchRamo->getArrayDataProviderOrdenanza($rangoOrdenanza);
-								return $this->render('/aaee/listar-ordenanza/_list', [
+								return $this->render('@frontend/views/aaee/listar-ordenanza/_list', [
 															'caption' => $caption,
 															'dataProvider' => $dataProvider,
 															'idConfig' => $id,
@@ -319,7 +319,7 @@
 		      						$subCaption = Yii::t('frontend', 'Info of Taxpayer');
 
 
-		      						return $this->render('/aaee/autorizar-ramo/pre-view-create', [
+		      						return $this->render('@frontend/views/aaee/autorizar-ramo/pre-view-create', [
 		      																	'model' => $model,
 		      																	'datosRecibido' => $datosRecibido,
 		      																	'dataProvider' => $dataProviderSeleccionado,
@@ -404,7 +404,7 @@
 					  			$dataProviderSeleccionado = $searchRamo->getDataProviderAddRubro($arregloRubro);
 
 					  			$subCaption = Yii::t('frontend', 'Info of Taxpayer');
-					  			return $this->render('/aaee/autorizar-ramo/_create', [
+					  			return $this->render('@frontend/views/aaee/autorizar-ramo/_create', [
 								  											'model' => $model,
 								  											'datos' => $datos,
 								  											'subCaption' => $subCaption,
@@ -1085,7 +1085,6 @@
 				throw new NotFoundHttpException('No se encontro el registro');
 			}
     	}
-
 
 
 
