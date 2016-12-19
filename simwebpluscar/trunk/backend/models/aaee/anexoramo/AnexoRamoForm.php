@@ -172,7 +172,8 @@
 	     		['fecha_hora', 'default', 'value' => date('Y-m-d H:i:s')],
 	     		['fecha_hora_proceso', 'default', 'value' => '0000-00-00 00:00:00'],
 	     		['estatus', 'default', 'value' => 0],
-	     		['usuario', 'default', 'value' => Yii::$app->user->identity->login, 'on' => 'frontend'],
+	     		['usuario', 'default', 'value' => Yii::$app->identidad->getUsuario()],
+	     		//['usuario', 'default', 'value' => Yii::$app->user->identity->login, 'on' => 'frontend'],
 	     		// ['fecha_desde', function() {
 	     		// 					return self::rangoFiscal();
 	     		// }],
