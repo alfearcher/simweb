@@ -84,7 +84,7 @@
 
 
 
-		/**
+		 /**
 		 * Metodo que inicia el proceso de calculo del impuesto segun la metodologia
 		 * @return Double Retorna un monto calcula del impuesto segun la metodologia.
 		 * Si el monto es cero significa que falto algun parametro para relaizar los calculos.

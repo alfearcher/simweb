@@ -221,8 +221,8 @@
 
             // Nombre del archivo.
             $nombrePDF = 'BE-' . $this->_id_contribuyente . '-' . $this->_año_impositivo . $this->_periodo;
-            $nombre = $nombrePDF;
-            $nombrePDF .= '.pdf';
+            $nombre = $nombrePDF; 
+            $nombrePDF .= '.pdf'; 
 
             //$html = $htmlEncabezado . $htmlContribuyente . $htmlDeclaracion . $htmlCobro . $htmlPiePagina;
 
