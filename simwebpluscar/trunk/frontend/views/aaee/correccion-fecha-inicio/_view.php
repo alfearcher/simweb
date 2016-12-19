@@ -54,7 +54,7 @@
 	 </div>
 	 <div class="row">
 		<div class="solicitud-creada">
-			<?= $this->render('/aaee/correccion-fecha-inicio/view-solicitud-create', [
+			<?= $this->render('@frontend/views/aaee/correccion-fecha-inicio/view-solicitud-create', [
 	    															'model' => $model,
 	    															'modelSearch' => $modelSearch,
 	    															'opciones' => $opciones,

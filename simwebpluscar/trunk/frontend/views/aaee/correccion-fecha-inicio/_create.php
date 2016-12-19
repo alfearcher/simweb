@@ -43,7 +43,7 @@
 
 	?>
 <div class="correccion-fecha-inicio-form-create">
-    <?= $this->render('correccion-fecha-inicio-form', [
+    <?= $this->render('@frontend/views/aaee/correccion-fecha-inicio/correccion-fecha-inicio-form', [
 						        'model' => $model,
 						        'datos' => $datos,
 						        'subCaption' => $subCaption,
