@@ -43,7 +43,7 @@
 
 	?>
 <div class="correccion-razon-social-form-create">
-    <?= $this->render('correccion-razon-social-form', [
+    <?= $this->render('@frontend/views/aaee/correccion-razon-social/correccion-razon-social-form', [
 						        'model' => $model,
 						        'datos' => $datos,
 						        'subCaption' => $subCaption,
