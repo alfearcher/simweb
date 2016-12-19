@@ -51,6 +51,7 @@
 	use yii\jui\DatePicker;
 	use yii\widgets\Pjax;
 	use backend\controllers\utilidad\documento\DocumentoRequisitoController;
+	use backend\controllers\menu\MenuController;
 
 	$typeIcon = Icon::FA;
   	$typeLong = 'fa-2x';
@@ -84,7 +85,33 @@
 	<meta http-equiv="refresh">
     <div class="panel panel-primary"  style="width: 110%;">
         <div class="panel-heading">
-        	<h3><?= Html::encode($this->title) ?></h3>
+        	<div class="row">
+	        	<div class="col-sm-4" style="padding-top: 10px;">
+	        			<h3><?= Html::encode($this->title) ?></h3>
+	        		</div>
+	        		<div class="col-sm-3" style="width: 30%; float:right; padding-right: 40px;padding-top: 15px;">
+
+							<style type="text/css">
+								.col-sm-3 > ul > li > a:hover {
+									background-color: #337AB3;
+								}
+			    			</style>
+			        		<?= MenuController::actionMenuSecundario([
+			        						'help' => '/aaee/autorizarramo/autorizar-ramo/solicitar-ayuda',
+			        						'quit' => '/aaee/autorizarramo/autorizar-ramo/quit',
+			        			])
+			        		?>
+			        		<a href="<?=Url::toRoute(['/aaee/autorizarramo/autorizar-ramo/downloadFile', 'file'=>'10.pdf'])?>"><h3>Descargar</h3></a>
+			        		<!-- <?//=Url::toRoute('Link',['@frontend/view/aaee/autorizar-ramo/prueba/10.pdf'],[
+			        		//						'class' => 'btn btn-primary',
+			        		//						'target' => '_blank',
+			        		//])?> -->
+							<!-- <i class="fa fa-question-circle fa-3x" aria-hidden="true"></i> -->
+
+
+		        	</div>
+	        	<!-- <h3><?//= Html::encode($this->title) ?></h3> -->
+	        </div>
         </div>
 
 <!-- Cuerpo del formulario -->

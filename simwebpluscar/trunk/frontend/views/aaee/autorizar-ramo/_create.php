@@ -43,7 +43,7 @@
 
 	?>
 <div class="autorizar-ramo-form-create">
-    <?= $this->render('seleccionar-ramo-autorizar-form', [
+    <?= $this->render('@frontend/views/aaee/seleccionar-ramo-autorizar-form', [
 						        'model' => $model,
 						        'datos' => $datos,
 						        'subCaption' => $subCaption,
