@@ -58,7 +58,7 @@
 
  <div class="view-correccion-rep-legal-creada">
 	<meta http-equiv="refresh">
-    <div class="panel panel-primary"  style="width: 110%;">
+    <div class="panel panel-primary"  style="width: 105%;">
         <div class="panel-heading">
         	<div class="row">
 	        	<div class="col-sm-4">
@@ -75,99 +75,85 @@
         	</div>
         </div>
 
-<!-- Cuerpo del formulario -->
-        <div class="panel-body" style="background-color: #F9F9F9;">
-        	<div class="container-fluid">
-        		<div class="col-sm-12">
-<!-- DATOS DE LA SUCURSAL -->
-					<div class="row">
-		        		<div class="panel panel-success" style="width: 100%;">
-							<div class="panel-heading">
-					        	<span><?= Html::encode(Yii::t('backend', 'Summary')) ?></span>
-					        </div>
-					        <div class="panel-body">
-					        	<div class="row" style="padding-left: 5px; width: 100%;">
-									<?= GridView::widget([
-										'id' => 'grid-contribuyente-asociado',
-    									'dataProvider' => $dataProvider,
-    									//'filterModel' => $model,
-    									'columns' => [
-    										//['class' => 'yii\grid\SerialColumn'],
-    										[
-							                    'label' => Yii::t('frontend', 'Request'),
-							                    'value' => function($model) {
-                        										return $model->nro_solicitud;
-                											},
-							                ],
-							                [
-							                    'label' => Yii::t('frontend', 'Request Description'),
-							                    'value' => function($model) {
-							                    				return $model->getDescripcionTipoSolicitud($model->nro_solicitud);
-							                    			},
+    	<div class="row" style="padding-left: 5px; width: 100%;">
+    		<div class="col-sm-10" style="100%;">
+				<?= GridView::widget([
+					'id' => 'grid-contribuyente-asociado',
+					'dataProvider' => $dataProvider,
+					//'filterModel' => $model,
+					'columns' => [
+						//['class' => 'yii\grid\SerialColumn'],
+						[
+		                    'label' => Yii::t('frontend', 'Request'),
+		                    'value' => function($model) {
+											return $model->nro_solicitud;
+										},
+		                ],
+		                [
+		                    'label' => Yii::t('frontend', 'Request Description'),
+		                    'value' => function($model) {
+		                    				return $model->getDescripcionTipoSolicitud($model->nro_solicitud);
+		                    			},
 
-							                ],
-							            	[
-							                    'label' => Yii::t('frontend', 'Id. Taxpayer'),
-							                    'value' => function($model) {
-                        										return $model->id_contribuyente;
-                											},
-							                ],
-							                [
-							                    'label' => Yii::t('frontend', 'Ant DNI (Legal Rep.)'),
-							                    'value' => function($model) {
-                        										return $model->naturaleza_rep_v . '-' . $model->cedula_rep_v;
-                											},
-							                ],
-							                [
-							                    'label' => Yii::t('frontend', 'Ant Legal Rep.'),
-							                    'value' => function($model) {
-                        										return $model->representante_v;
-                											},
-							                ],
+		                ],
+		            	[
+		                    'label' => Yii::t('frontend', 'Id. Taxpayer'),
+		                    'value' => function($model) {
+											return $model->id_contribuyente;
+										},
+		                ],
+		                [
+		                    'label' => Yii::t('frontend', 'Ant DNI (Legal Rep.)'),
+		                    'value' => function($model) {
+											return $model->naturaleza_rep_v . '-' . $model->cedula_rep_v;
+										},
+		                ],
+		                [
+		                    'label' => Yii::t('frontend', 'Ant Legal Rep.'),
+		                    'value' => function($model) {
+											return $model->representante_v;
+										},
+		                ],
 
-							                [
-							                    'label' => Yii::t('frontend', 'New DNI (Legal Rep.)'),
-							                    'value' => function($model) {
-                        										return $model->naturaleza_rep_new . '-' . $model->cedula_rep_new;
-                											},
-							                ],
-							                [
-							                    'label' => Yii::t('frontend', 'New Legal Rep.'),
-							                    'value' => function($model) {
-                        										return $model->representante_new;
-                											},
-							                ],
-							                [
-							                	//'attribute' => 'sucursal.razon_social',
-							                   	'label' =>Yii::t('frontend', 'Branch Office'),
-							                    'value' => function($model) {
-                        										return $model->sucursal->razon_social;
-                											},
-							                ],
-							                [
-							                	//'attribute' => 'sucursal.id_sim',
-							                    'label' => Yii::t('frontend', 'License'),
-							                    'value' => function($model) {
-                        										return $model->sucursal->id_sim;
-                											},
-							                ],
-							                [
-							                	//'attribute' => 'sucursal.id_sim',
-							                    'label' => Yii::t('frontend', 'Condition'),
-							                    'value' => function($model) {
-                        										return $model->estatusSolicitud->descripcion;
-                											},
-							                ],
+		                [
+		                    'label' => Yii::t('frontend', 'New DNI (Legal Rep.)'),
+		                    'value' => function($model) {
+											return $model->naturaleza_rep_new . '-' . $model->cedula_rep_new;
+										},
+		                ],
+		                [
+		                    'label' => Yii::t('frontend', 'New Legal Rep.'),
+		                    'value' => function($model) {
+											return $model->representante_new;
+										},
+		                ],
+		                [
+		                	//'attribute' => 'sucursal.razon_social',
+		                   	'label' =>Yii::t('frontend', 'Branch Office'),
+		                    'value' => function($model) {
+											return $model->sucursal->razon_social;
+										},
+		                ],
+		                [
+		                	//'attribute' => 'sucursal.id_sim',
+		                    'label' => Yii::t('frontend', 'License'),
+		                    'value' => function($model) {
+											return $model->sucursal->id_sim;
+										},
+		                ],
+		                [
+		                	//'attribute' => 'sucursal.id_sim',
+		                    'label' => Yii::t('frontend', 'Condition'),
+		                    'value' => function($model) {
+											return $model->estatusSolicitud->descripcion;
+										},
+		                ],
 
-							        	]
-									]);
-									?>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>	<!-- Fin de col-sm-12 -->
-			</div> <!-- Fin de container-fluid -->
-		</div>	<!-- Fin de panel-body -->
+		        	]
+				]);
+				?>
+			</div>
+		</div>
+
 	</div>	<!-- Fin de panel panel-primary -->
 </div>	 <!-- Fin de inscripcion-sucursal-create -->

@@ -43,7 +43,7 @@
 
 	?>
 <div class="correccion-representante-legal-form-create">
-    <?= $this->render('correccion-rep-legal-form', [
+    <?= $this->render('@frontend/views/aaee/correccion-representante-legal/correccion-rep-legal-form', [
 						        'model' => $model,
 						        'datos' => $datos,
 						        'subCaption' => $subCaption,
