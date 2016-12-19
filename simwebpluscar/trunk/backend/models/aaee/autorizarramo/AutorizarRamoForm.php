@@ -137,7 +137,7 @@
 	        	  'fecha_inicio', 'ano_impositivo',
 	        	  'periodo', 'ano_hasta',
 	        	  'fecha_desde', 'fecha_hasta'],
-	        	  'required', 'on' => 'frontend',
+	        	  'required', 'on' => 'backend',
 	        	  'message' => Yii::t('frontend','{attribute} is required')],
 	        	[['nro_solicitud', 'id_contribuyente',
 	        	  'ano_impositivo', 'ano_hasta',
@@ -149,11 +149,12 @@
 	     		['nro_solicitud', 'default', 'value' => 0],
 	     		['id_contribuyente', 'default', 'value' => $_SESSION['idContribuyente']],
 	     		['origen', 'default', 'value' => 'WEB', 'on' => 'frontend'],
-	     		['origen', 'default', 'value' => 'LAN', 'on' => 'frontend'],
+	     		['origen', 'default', 'value' => 'LAN', 'on' => 'backend'],
 	     		['fecha_hora', 'default', 'value' => date('Y-m-d H:i:s')],
 	     		['fecha_hora_proceso', 'default', 'value' => '0000-00-00 00:00:00'],
 	     		['estatus', 'default', 'value' => 0],
-	     		['usuario', 'default', 'value' => Yii::$app->user->identity->login, 'on' => 'frontend'],
+	     		['usuario', 'default', 'value' => Yii::$app->identidad->getUsuario()],
+	     		//['usuario', 'default', 'value' => Yii::$app->user->identity->login, 'on' => 'frontend'],
 	     		//['usuario', 'default', 'value' => Yii::$app->user->identity->username, 'on' => 'backend'],
 	        ];
 	    }
