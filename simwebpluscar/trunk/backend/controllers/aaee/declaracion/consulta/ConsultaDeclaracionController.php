@@ -28,7 +28,7 @@
  *	@date 22-10-2016
  *
  *  @class ConsultaDeclaracionController
- *	@brief Clase ConsultaDeclaracionController del lado del contribuyente frontend.
+ *	@brief Clase ConsultaDeclaracionController del lado del contribuyente backend.
  *
  *
  *	@property
@@ -42,7 +42,7 @@
  */
 
 
- 	namespace frontend\controllers\aaee\declaracion\consulta;
+ 	namespace backend\controllers\aaee\declaracion\consulta;
 
 
  	use Yii;
@@ -142,7 +142,7 @@
 						$errorMensaje = ( trim($errorMensaje) !== '' ) ? $errorMensaje = $errorMensaje . '. ' . $errorListaTipoDeclaracion : $errorListaTipoDeclaracion;
 					}
 					$rutaLista = "/aaee/declaracion/consulta/consulta-declaracion/lista-periodo";
-					return $this->render('/aaee/declaracion/consulta/_lista-tipo',
+					return $this->render('@frontend/views/aaee/declaracion/consulta/_lista-tipo',
 																		[
 																			'model' => $model,
 																			'caption' => $caption,
@@ -253,7 +253,7 @@
 					}
 					$url = '';//Url::to(['index-create']);
 					$rutaLista = "/aaee/declaracion/consulta/consulta-declaracion/lista-periodo";
-					return $this->render('/aaee/declaracion/consulta/_create',
+					return $this->render('@frontend/views/aaee/declaracion/consulta/_create',
 																[
 																	'model' => $model,
 																	'caption' => $caption,
@@ -363,7 +363,7 @@
 				}
 
 				$caption = $lapso['descripcion'] . ' ' . $lapso['a'] . ' - ' . $lapso['p'];
-				return $this->render('/aaee/declaracion/consulta/_declaracion', [
+				return $this->render('@frontend/views/aaee/declaracion/consulta/_declaracion', [
 															'lapso' => $lapso,
 															'dataProvider' => $dataProvider,
 															'caption' => $caption,
@@ -496,7 +496,7 @@
 		{
 			$varSession = self::actionGetListaSessions();
 			self::actionAnularSession($varSession);
-			return $this->render('/menu/menu-vertical');
+			return $this->render('/menu/menuvertical2');
 		}
 
 

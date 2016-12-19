@@ -28,7 +28,7 @@
  *	@date 17-10-2016
  *
  *  @class SustitutivaController
- *	@brief Clase SustitutivaController del lado del contribuyente frontend.
+ *	@brief Clase SustitutivaController del lado del contribuyente backend.
  *
  *
  *	@property
@@ -42,7 +42,7 @@
  */
 
 
- 	namespace frontend\controllers\aaee\declaracion\sustitutiva;
+ 	namespace backend\controllers\aaee\declaracion\sustitutiva;
 
 
  	use Yii;
@@ -241,7 +241,7 @@
 						$errorMensaje = ( trim($errorMensaje) !== '' ) ? $errorMensaje = $errorMensaje . '. ' . $errorListaTipoDeclaracion : $errorListaTipoDeclaracion;
 					}
 					$rutaLista = "/aaee/declaracion/sustitutiva/sustitutiva/lista-periodo";
-					return $this->render('/aaee/declaracion/sustitutiva/_lista-tipo',
+					return $this->render('@frontend/views/aaee/declaracion/sustitutiva/_lista-tipo',
 																		[
 																			'model' => $model,
 																			'caption' => $caption,
@@ -357,7 +357,7 @@
 					}
 					$url = Url::to(['index-create']);
 					$rutaLista = "/aaee/declaracion/sustitutiva/sustitutiva/lista-periodo";
-					return $this->render('/aaee/declaracion/sustitutiva/_create',
+					return $this->render('@frontend/views/aaee/declaracion/sustitutiva/_create',
 																[
 																	'model' => $model,
 																	'caption' => $caption,
@@ -460,14 +460,14 @@
 						} elseif ( $postData['btn-back-form'] == 9 ) {
 
 							$opciones = [
-									'back' => '/aaee/declaracion/sustitutiva/sustitutiva/index-create',
+								'back' => '/aaee/declaracion/sustitutiva/sustitutiva/index-create',
 							];
 
 							$caption = $caption . '. ' . Yii::t('frontend', 'Rubro(s) Registrado(s)') . ' ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo;
 							$subCaption = $subCaption . '. ' . Yii::t('frontend', 'Rubro(s) Registrado(s) ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
 
 							if ( $lapso['tipo'] == 1 ) {
-								return $this->render('/aaee/declaracion/sustitutiva/declaracion-sustitutiva-estimada-form', [
+								return $this->render('@frontend/views/aaee/declaracion/sustitutiva/declaracion-sustitutiva-estimada-form', [
 			  																	'model' => $modelMultiplex,
 			  																	'findModel' => $findModel,
 			  																	'caption' => $caption,
@@ -479,7 +479,7 @@
 
 					  					]);
 							} elseif ( $lapso['tipo'] == 2 ) {
-								return $this->render('/aaee/declaracion/sustitutiva/declaracion-sustitutiva-definitiva-form', [
+								return $this->render('@frontend/views/aaee/declaracion/sustitutiva/declaracion-sustitutiva-definitiva-form', [
 			  																	'model' => $modelMultiplex,
 			  																	'findModel' => $findModel,
 			  																	'caption' => $caption,
@@ -504,7 +504,7 @@
 								$subCaption = $subCaption . '. ' . Yii::t('frontend', 'Categories Registers ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
 
 								if ( $lapso['tipo'] == 1 ) {
-									return $this->render('/aaee/declaracion/sustitutiva/pre-view-sustitutiva-estimada', [
+									return $this->render('@frontend/views/aaee/declaracion/sustitutiva/pre-view-sustitutiva-estimada', [
 																		'model' => $modelMultiplex,
 																		'findModel' => $findModel,
 																		'caption' => $caption,
@@ -514,7 +514,7 @@
 		  																'lapso' => $lapso,
 										]);
 								} elseif ( $lapso['tipo'] == 2 ) {
-									return $this->render('/aaee/declaracion/sustitutiva/pre-view-sustitutiva-definitiva', [
+									return $this->render('@frontend/views/aaee/declaracion/sustitutiva/pre-view-sustitutiva-definitiva', [
 																		'model' => $modelMultiplex,
 																		'findModel' => $findModel,
 																		'caption' => $caption,
@@ -534,7 +534,7 @@
 								$subCaption = $subCaption . '. ' . Yii::t('frontend', 'Categories Registers ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
 
 								if ( $lapso['tipo'] == 1 ) {
-									return $this->render('/aaee/declaracion/sustitutiva/declaracion-sustitutiva-estimada-form', [
+									return $this->render('@frontend/views/aaee/declaracion/sustitutiva/declaracion-sustitutiva-estimada-form', [
 																		'model' => $modelMultiplex,
 																		'findModel' => $findModel,
 																		'caption' => $caption,
@@ -544,7 +544,7 @@
 		  																'lapso' => $lapso,
 										]);
 								} elseif ( $lapso['tipo'] == 2 ) {
-									return $this->render('/aaee/declaracion/sustitutiva/declaracion-sustitutiva-definitiva-form', [
+									return $this->render('@frontend/views/aaee/declaracion/sustitutiva/declaracion-sustitutiva-definitiva-form', [
 																		'model' => $modelMultiplex,
 																		'findModel' => $findModel,
 																		'caption' => $caption,
@@ -615,7 +615,7 @@
 						$caption = $caption . '. ' . Yii::t('frontend', 'Rubro(s) Registrado(s)') . ' ' . $añoImpositivo . ' - ' . $periodo;
 
 						if ( $lapso['tipo'] == 1 ) {
-							return $this->render('/aaee/declaracion/sustitutiva/declaracion-sustitutiva-estimada-form', [
+							return $this->render('@frontend/views/aaee/declaracion/sustitutiva/declaracion-sustitutiva-estimada-form', [
 		  																	'model' => $modelMultiplex,
 		  																	'findModel' => $findModel,
 		  																	'caption' => $caption,
@@ -625,7 +625,7 @@
 
 				  					]);
 						} elseif ( $lapso['tipo'] == 2 ) {
-							return $this->render('/aaee/declaracion/sustitutiva/declaracion-sustitutiva-definitiva-form', [
+							return $this->render('@frontend/views/aaee/declaracion/sustitutiva/declaracion-sustitutiva-definitiva-form', [
 		  																	'model' => $modelMultiplex,
 		  																	'findModel' => $findModel,
 		  																	'caption' => $caption,
@@ -784,7 +784,8 @@
 			$estatus = 0;
 			$userFuncionario = '';
 			$fechaHoraProceso = '0000-00-00 00:00:00';
-			$user = isset($model->usuario) ? $model->usuario : null;
+			//$user = isset($model->usuario) ? $model->usuario : null;
+			$user = Yii::$app->identidad->getUsuario();
 			$nroSolicitud = 0;
 			$modelSolicitud = New SolicitudesContribuyenteForm();
 			$tabla = $modelSolicitud->tableName();
@@ -846,7 +847,8 @@
 		{
 			$result = false;
 			$estatus = 0;
-			$user = isset($model->usuario) ? $model->usuario : null;
+			//$user = isset($model->usuario) ? $model->usuario : null;
+			$user = Yii::$app->identidad->getUsuario();
 			$userFuncionario = '';
 			$fechaHoraProceso = '0000-00-00 00:00:00';
 			if ( isset($conexionLocal) && isset($connLocal) && isset($model) ) {
@@ -859,7 +861,7 @@
 
 					$tabla = '';
 	      			$tabla = $model->tableName();
-
+	      			$model->origen = 'LAN';
 	      			// $model->attributes es array {
 	      			// 							[attribute] => valor
 	      			// 						}
@@ -1364,7 +1366,7 @@
 				$opciones = [
 					'quit' => '/aaee/declaracion/sustitutiva/sustitutiva/quit',
 				];
-				return $this->render('/aaee/declaracion/sustitutiva/_view', [
+				return $this->render('@frontend/views/aaee/declaracion/sustitutiva/_view', [
 																'codigo' => 100,
 																'model' => $model,
 																'modelSearch' => $modelSearch,
@@ -1390,7 +1392,7 @@
 		{
 			$varSession = self::actionGetListaSessions();
 			self::actionAnularSession($varSession);
-			return $this->render('/menu/menu-vertical');
+			return $this->render('/menu/menuvertical2');
 		}
 
 
