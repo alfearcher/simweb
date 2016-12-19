@@ -642,7 +642,8 @@
 			$estatus = 0;
 			$userFuncionario = '';
 			$fechaHoraProceso = '0000-00-00 00:00:00';
-			$user = isset($model->usuario) ? $model->usuario : null;
+			//$user = isset($model->usuario) ? $model->usuario : null;
+			$user = Yii::$app->identidad->getUsuario();
 			$nroSolicitud = 0;
 			$modelSolicitud = New SolicitudesContribuyenteForm();
 			$tabla = $modelSolicitud->tableName();
@@ -706,7 +707,8 @@
 			$result = false;
 			$cancel = false;
 			$estatus = 0;
-			$user = isset($model->usuario) ? $model->usuario : null;
+			//$user = isset($model->usuario) ? $model->usuario : null;
+			$user = Yii::$app->identidad->getUsuario();
 			$userFuncionario = '';
 			$fechaHoraProceso = '0000-00-00 00:00:00';
 			if ( isset($conexionLocal) && isset($connLocal) && isset($model) ) {
