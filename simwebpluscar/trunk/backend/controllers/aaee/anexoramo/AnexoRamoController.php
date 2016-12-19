@@ -249,7 +249,7 @@
 									'back' => '/aaee/anexoramo/anexo-ramo/index-create',
 								];
 								$caption = $caption . '. ' . Yii::t('frontend', 'Categories Registered') . ' ' . $model->ano_impositivo . ' - ' . $model->periodo;
-								return $this->render('@backend/views/aaee/anexo-ramo/view-ramo-registrado', [
+								return $this->render('@frontend/views/aaee/anexo-ramo/view-ramo-registrado', [
 			  													'model' => $model,
 			  													'findModel' => $findModel,
 			  													'dataProviderRubro' => $dataProviderRubro,
@@ -276,7 +276,7 @@
 		  		if ( isset($findModel) ) {
 		  			$caption = $caption . '. ' . Yii::t('frontend', 'Select Fiscal Lapse');
 		  			$listaAño = $searchRamo->getListaAnoRegistrado();
-		  			return $this->render('@backend/views/aaee/anexo-ramo/_create', [
+		  			return $this->render('@frontend/views/aaee/anexo-ramo/_create', [
 			  											'model' => $model,
 			  											'findModel' => $findModel,
 			  											'listaAño' => $listaAño,
@@ -353,7 +353,7 @@
 					      		if ( $model->validate() && $validateRubroSeleccionado ) {
 					      			$searchRamo = New AnexoRamoSearch($model->id_contribuyente);
 					      			$dataProviderRubroAnexar = $searchRamo->getDataProviderAddRubro($arregloIdRubro);
-					      			return $this->render('@backend/views/aaee/anexo-ramo/pre-view-create', [
+					      			return $this->render('@frontend/views/aaee/anexo-ramo/pre-view-create', [
 					      					'model' => $model,
 					      					'dataProvider' => $dataProviderRubroAnexar,
 					      				]);
@@ -429,7 +429,7 @@
 						// Catalogo de rubros para anexar, sin considerar los ya registrados y los seleccionados.
 						$dataProviderRubroCatalogo = $searchRamo->getDataProvider($añoImpositivo, $params, $listaIdRubroIgnorar);
 
-						return $this->render('@backend/views/aaee/anexo-ramo/seleccionar-ramo-anexar-form', [
+						return $this->render('@frontend/views/aaee/anexo-ramo/seleccionar-ramo-anexar-form', [
 																'model' => $model,
 																'findModel' => $findModel,
 																'dataProviderRubro' => $dataProviderRubro,
@@ -1000,7 +1000,7 @@
 				$opciones = [
 					'quit' => '/aaee/anexoramo/anexo-ramo/quit',
 				];
-				return $this->render('@backend/views/aaee/anexo-ramo/_view', [
+				return $this->render('@frontend/views/aaee/anexo-ramo/_view', [
 																'codigo' => 100,
 																'model' => $model,
 																'modelSearch' => $modelSearch,
@@ -1023,7 +1023,7 @@
 		{
 			$varSession = self::actionGetListaSessions();
 			self::actionAnularSession($varSession);
-			return $this->render('/menu/menu-vertical');
+			return $this->render('/menu/menuvertical2');
 		}
 
 
