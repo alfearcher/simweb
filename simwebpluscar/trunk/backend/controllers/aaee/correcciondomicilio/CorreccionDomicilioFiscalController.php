@@ -25,10 +25,10 @@
  *
  *	@author Jose Rafael Perez Teran
  *
- *	@date 20-11-2015
+ *	@date 30-07-2016
  *
  *  @class CorreccionDomicilioFiscalController
- *	@brief Clase CorreccionDomicilioFiscalController
+ *	@brief Clase CorreccionDomicilioFiscalController del lado del contribuyente backend.
  *
  *
  *	@property
@@ -41,328 +41,470 @@
  *
  */
 
+
  	namespace backend\controllers\aaee\correcciondomicilio;
+
 
  	use Yii;
 	use yii\filters\AccessControl;
 	use yii\web\Controller;
 	use yii\filters\VerbFilter;
-	use yii\widgets\ActiveForm;
 	use yii\web\Response;
 	use yii\helpers\Url;
 	use yii\web\NotFoundHttpException;
 	use common\models\contribuyente\ContribuyenteBase;
-	use backend\models\documentoconsignado\DocumentoConsignadoForm;
+	use backend\models\documento\DocumentoConsignadoForm;
 	use common\conexion\ConexionController;
-	use backend\controllers\mensaje\MensajeController;
+	use common\mensaje\MensajeController;
+	use yii\helpers\ArrayHelper;
+	use common\models\session\Session;
+	use common\models\configuracion\solicitud\ParametroSolicitud;
+	use common\models\configuracion\solicitud\SolicitudProcesoEvento;
+	use common\enviaremail\PlantillaEmail;
+	use common\models\solicitudescontribuyente\SolicitudesContribuyenteForm;
+	use backend\models\aaee\correcciondomicilio\CorreccionDomicilioFiscalSearch;
 	use backend\models\aaee\correcciondomicilio\CorreccionDomicilioFiscalForm;
-	use backend\models\aaee\correcciondomicilio\CorreccionDomicilioFiscal;
 
-	session_start();
+	session_start();		// Iniciando session
 
 	/**
-	 * Class principal
+	 * Clase principal que controla la creacion de solicitudes de Correccion de Domicilio.
+	 * Solicitud que se realizara del lado del contribuyente (frontend). Se mostrara una vista
+	 * previa de la solicitud realizada por el contribuyente y se le indicara al contribuyente
+	 * que confirme la operacion o retorne a la vista inicial donde cargo la informacion para su
+	 * ajuste. Cuando el contribuyente confirme su intencion de crear la solicitud, es cuando
+	 * se guardara en base de datos.
 	 */
 	class CorreccionDomicilioFiscalController extends Controller
 	{
 		public $layout = 'layout-main';				//	Layout principal del formulario
 
-		public $connLocal;
-		public $conexion;
-		public $transaccion;
+		private $_conn;
+		private $_conexion;
+		private $_transaccion;
+
+		const SCENARIO_FRONTEND = 'frontend';
+		const SCENARIO_BACKEND = 'backend';
+
+		/**
+		 * Identificador de  configuracion d ela solicitud. Se crea cuando se
+		 * configura la solicitud que gestiona esta clase.
+		 */
+		const CONFIG = 86;
 
 
-
+		/**
+		 * Metodo que mostrara el formulario de cargar inicial de la solicitud, para
+		 * que el contribuyente ingrese la informacion soliictada.
+		 * @return [type] [description]
+		 */
 		public function actionIndex()
 		{
-			if ( isset($_SESSION['idContribuyente']) ) {
-				$idContribuyente = $_SESSION['idContribuyente'];
-				$tipoNaturaleza = isset($_SESSION['tipoNaturaleza']) ? $_SESSION['tipoNaturaleza'] : null;
-				if ( !$tipoNaturaleza == null ) {
-					if ( $tipoNaturaleza == 'NATURAL' || $tipoNaturaleza == 'JURIDICO' )  {
+			// Se verifica que el contribuyente haya iniciado una session.
 
-						$model = New CorreccionDomicilioFiscalForm();
+			self::actionAnularSession(['begin', 'conf']);
+			$request = Yii::$app->request;
+			$getData = $request->get();
 
-						$postData = Yii::$app->request->post();
-
-				  		if ( $model->load($postData) && Yii::$app->request->isAjax ) {
-							Yii::$app->response->format = Response::FORMAT_JSON;
-							return ActiveForm::validate($model);
-				      	}
-
-//die(var_dump($postData));
-				      	if ( $model->load($postData) ) {
-
-				      		if ( $model->validate() ) {
-
-				      			if ( $postData['btn-update'] == 1 ) {
-				      				$postData['btn-update'] = 2;
-					      			$_SESSION['model'] = $model;
-					      			$_SESSION['postData'] = $postData;
-					      			$datosContribuyente = $_SESSION['datosContribuyente'];
-
-					      			return $this->render('/aaee/correccion-domicilio-fiscal/pre-view', [
-				      	 															'model' => $model,
-				      	 															'datosContribuyente' => $datosContribuyente,
-												      	 							'preView' => true,
-												      	 							'postData' => $postData,
-											]);
-						      	}
-				      		}
-				      	}
-
-				      	$datosContribuyente = ContribuyenteBase::getDatosContribuyenteSegunID($idContribuyente);
-				      	if ( isset($datosContribuyente) ) {
-				      		$_SESSION['datosContribuyente'] = $datosContribuyente;
-
-				      		return $this->render('/aaee/correccion-domicilio-fiscal/create', [
-		      																'model' => $model,
-		      																'datosContribuyente' => $datosContribuyente,
-				      				]);
-				      	} else {
-				      		return self::gestionarMensajesLocales('No se pudo obtener los datos del contribuyente.');
-				      	}
-
-					} else {
-						return self::gestionarMensajesLocales('El contribuyente no aplica para esta opción.');
-					}
-				} else {
-					return self::gestionarMensajesLocales('El Tipo de Naturaleza del contribuyente no esta definido.');
-				}
-			} else {
-				return self::gestionarMensajesLocales('El Contribuyente no esta definido.');
-			}
-		}
-
-
-
-
-
-
-		/**
-		 * [actionCreate description]
-		 * @param  boolean $guardar [description]
-		 * @return [type]           [description]
-		 */
-		public function actionCreate($guardar = false)
-		{
-			if ( $guardar == true ) {
-				if ( isset($_SESSION['postData']) ) {
-					$postData = $_SESSION['postData'];
-					if ( $postData['btn-update'] == 2 ) {
-						// Indica que el envio del formulario es correcto.
-						if ( $_SESSION['idContribuyente'] ) {
-							$idContribuyente = $_SESSION['idContribuyente'];
-
-							$conexion = New ConexionController();
-
-		      				// Instancia de conexion hacia la base de datos.
-		      				$this->connLocal = $conexion->initConectar('db');
-		      				$this->connLocal->open();
-
-		      				$todoBien = false;
-
-		      				$model = isset($_SESSION['model']) ? $_SESSION['model'] : null;
-		      				$postData = isset($_SESSION['postData']) ? $_SESSION['postData'] : null;
-
-		      				// Instancia de tipo transaccion para asegurar la integridad del resguardo de los datos.
-		      				// Inicio de la transaccion.
-							$transaccion = $this->connLocal->beginTransaction();
-
-							// El metodo debe retornar un booleano.
-							if ( self::actionCreateCorreccionDomicilioFiscal($idContribuyente, $model, $postData, $conexion, $this->connLocal) ) {
-								if ( self::actionActualizarDomicilioFiscal($idContribuyente, $model, $postData, $conexion, $this->connLocal) ) {
-									if ( self::actionCreateDocumentosConsignados($conexion, $this->connLocal, $idContribuyente) ) {
-										$todoBien = true;
-									}
-								}
-							}
-
-
-							if ( $todoBien ) {
-
-								//unset($_SESSION['datosContribuyente']);
-								$transaccion->commit();
-								$tipoError = 0;	// No error.
-								$msg = Yii::t('backend', 'SUCCESS!....WAIT.');
-								if ( isset($_SESSION['idCorreccion']) ) { $idCorreccion = $_SESSION['idCorreccion']; }
-								$url = "<meta http-equiv='refresh' content='3; ".Url::toRoute(['/aaee/correcciondomicilio/correccion-domicilio-fiscal/view','idCorreccion' => $idCorreccion])."'>";
-								//$url = "<meta http-equiv='refresh' content='3; ".Url::toRoute(['/aaee/correcciondomicilio/correccion-domicilio-fiscal/view-ok'])."'>";
-								return $this->render('/mensaje/mensaje',['msg' => $msg, 'url' => $url, 'tipoError' => $tipoError]);
-
-							} else {
-
-								$transaccion->rollBack();
-								$tipoError = 1; // Error.
-								$msg = "AH ERROR OCCURRED!....WAIT";
-								$url = "<meta http-equiv='refresh' content='3; ".Url::toRoute("/aaee/correcciondomicilio/correccion-domicilio-fiscal/index")."'>";
-								return $this->render('/mensaje/mensaje',['msg' => $msg, 'url' => $url, 'tipoError' => $tipoError]);
-							}
-
-						} else {
-							return self::gestionarMensajesLocales('El Contribuyente no esta definido.');
-						}
-					} else {
-						return self::gestionarMensajesLocales('La solicitud de modificación no es valida.');
-					}
-				} else {
-					return self::gestionarMensajesLocales('La solicitud de modificación no es valida.');
-				}
-			} else {
-				return self::gestionarMensajesLocales('La solicitud de modificación no es valida.');
-			}
-		}
-
-
-
-
-		/**
-		 * Metodo que inserta un registro nuevo en laentidad respectiva.
-		 * @param  [type] $model     [description]
-		 * @param  [type] $postData  [description]
-		 * @param  [type] $conexion  [description]
-		 * @param  [type] $connLocal [description]
-		 * @return retorna un boolean, true si se inserta el registro, false sino logra insertar el registro.
-		 */
-		private function actionCreateCorreccionDomicilioFiscal($idContribuyente, $model, $postData, $conexion, $connLocal)
-		{
-			$result = false;
-			$idCorreccion = 0;
-			if ( isset($postData) ) {
-				if ( isset($model) ) {
-					if ( isset($conexion) ) {
-						$tabla = $model->tableName();
-						$nombreForm = $model->formName();
-						$arregloDatos = $model->attributes;
-						$request = $postData[$nombreForm];
-
-						foreach ( $arregloDatos as $key => $value ) {
-							if ( isset($request[$key]) ) {
-								$arregloDatos[$key] = $request[$key];
-							}
-						}
-
-						$arregloDatos['id_contribuyente'] = $idContribuyente;
-						$arregloDatos['domicilio_fiscal_new'] = $model->domicilio_fiscal_new;
-						$arregloDatos['nro_solicitud'] = 0;
-						$arregloDatos['fecha_hora'] = date('Y-m-d H:i:s');
-						$arregloDatos['usuario'] = Yii::$app->user->identity->username;
-						$arregloDatos['estatus'] = 1;
-						$arregloDatos['origen'] = 'LAN';
-
-						if ( $conexion->guardarRegistro($connLocal, $tabla, $arregloDatos) ) {
-							$idCorreccion = $connLocal->getLastInsertID();
-							if ( $idCorreccion > 0 ) {
-								$_SESSION['idCorreccion'] = $idCorreccion;
-								$result = true;
-							} else {
-								$result = false;
-							}
-						}
-					}
-				}
-			}
-			return $result;
-		}
-
-
-
-
-		/**
-		 * Metodo que actualiza el domicilio fiscal del contribuyente en la entidad respectiva.
-		 * @param  [type] $model     [description]
-		 * @param  [type] $postData  [description]
-		 * @param  [type] $conexion  [description]
-		 * @param  [type] $connLocal [description]
-		 * @return retorna un boolean, true si es satisfactorio, false sino actualiza.
-		 */
-		private function actionActualizarDomicilioFiscal($idContribuyente, $model, $postData, $conexion, $connLocal)
-		{
-			$result = false;
-			if ( $conexion ) {
+			// identificador de la configuracion de la solicitud.
+			$id = $getData['id'];
+			if ( $id == self::CONFIG ) {
 				if ( isset($_SESSION['idContribuyente']) ) {
-					if ( isset($_SESSION['datosContribuyente']) ) {
-						$datosContribuyente = $_SESSION['datosContribuyente'];
-						if ( $model->id_contribuyente == $_SESSION['idContribuyente'] &&
-							$datosContribuyente[0]['id_contribuyente'] == $_SESSION['idContribuyente']) {
+					$idContribuyente = $_SESSION['idContribuyente'];
+					$searchCorreccion = New CorreccionDomicilioFiscalSearch($idContribuyente);
 
-							$tabla = 'contribuyentes';
-							$nombreForm = $model->formName();
-							$request = $postData[$nombreForm];
+					// Se verifica que el contribuyente sea de tipo naturaleza "Juridico".
+					if ( $searchCorreccion->esUnContribuyenteJuridico() ) {
 
-							// Domicilio Fiscal nuevo.
-							$arregloDatos['domicilio_fiscal'] = $model->domicilio_fiscal_new;
+						// Se determina si ya esta inscrito como contribuyente de Actividad Economica.
+						//if ( $searchCorreccion->estaInscritoActividadEconomica() ) {
 
-							if ( $idContribuyente > 0 ) {
-								$arrayCondicion['id_contribuyente'] = $idContribuyente;
-								if ( $conexion->modificarRegistro($connLocal, $tabla, $arregloDatos, $arrayCondicion) ) {
-									$result = true;
+							// Se determina si ya existe una solicitud pendiente.
+							if ( !$searchCorreccion->yaPoseeSolicitudSimiliarPendiente() ) {
+
+								$modelParametro = New ParametroSolicitud($id);
+								// Se obtiene el tipo de solicitud. Se retorna un array donde el key es el nombre
+								// del parametro y el valor del elemento es el contenido del campo en base de datos.
+								$config = $modelParametro->getParametroSolicitud([
+																		'id_config_solicitud',
+																		'tipo_solicitud',
+																		'impuesto',
+																		'nivel_aprobacion'
+															]);
+
+								if ( isset($config) ) {
+									$_SESSION['conf'] = $config;
+									$_SESSION['begin'] = 1;
+									$this->redirect(['index-create']);
 								} else {
-									$result = false;
-									break;
+									// No se obtuvieron los parametros de la configuracion.
+									return $this->redirect(['error-operacion', 'cod' => 955]);
+								}
+							} else {
+								// El contribuyente ya posee una solicitud similar, y la misma esta pendiente.
+								return $this->redirect(['error-operacion', 'cod' => 945]);
+							}
+						//} else {
+							// El contribuyente no esta inscrito como contribuyente de Actividad Economica.
+						//	return $this->redirect(['error-operacion', 'cod' => 404]);
+						//}
+					} else {
+						// El contribuyente no es JURIDICO.
+						return $this->redirect(['error-operacion', 'cod' => 934]);
+					}
+				} else {
+					// No esta defino el contribuyente.
+					return $this->redirect(['error-operacion', 'cod' => 932]);
+				}
+			} else {
+				// Parametro de configuracion no coinciden.
+				return $this->redirect(['error-operacion', 'cod' => 955]);
+			}
+		}
+
+
+
+
+		/**
+		 * Metodo que inicia la carga del formulario que permite realizar la solicitud
+		 * de correccion de domicilio fiscal. Tambien gestiona la ejecucion de las reglas
+		 * de validacion del formulario.
+		 * @return view
+		 */
+		public function actionIndexCreate()
+		{
+			// Se verifica que el contribuyente haya iniciado una session.
+
+			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) && isset($_SESSION['conf'])) {
+
+				$idContribuyente = $_SESSION['idContribuyente'];
+				$request = Yii::$app->request;
+				$postData = $request->post();
+
+				$model = New CorreccionDomicilioFiscalForm();
+				$formName = $model->formName();
+				$model->scenario = self::SCENARIO_FRONTEND;
+
+				if ( isset($postData['btn-back-form']) ) {
+					if ( $postData['btn-back-form'] == 3 ) {
+						$model->load($postData);
+					}
+				}
+
+				if ( isset($postData['btn-quit']) ) {
+					if ( $postData['btn-quit'] == 1 ) {
+						$this->redirect(['quit']);
+					}
+				}
+
+		  		if ( $model->load($postData)  && Yii::$app->request->isAjax ) {
+					Yii::$app->response->format = Response::FORMAT_JSON;
+					return ActiveForm::validate($model);
+		      	}
+
+		      	if ( $model->load($postData) ) {
+		      		if ( $model->validate() ) {
+
+	      				// Validacion correcta.
+	      				if ( isset($postData['btn-create']) ) {
+	      					if ( $postData['btn-create'] == 1 ) {
+
+	      						// Mostrar vista previa.
+	      						$datosRecibido = $postData[$formName];
+	      						return $this->render('@frontend/views/aaee/correccion-domicilio-fiscal/pre-view-create', [
+	      																	'model' => $model,
+	      																	'datosRecibido' => $datosRecibido,
+	      							]);
+	      					}
+	      				} elseif ( isset($postData['btn-confirm-create']) ) {
+	      					if ( $postData['btn-confirm-create'] == 2 ) {
+	      						$result = self::actionBeginSave($model, $postData);
+	      						self::actionAnularSession(['begin']);
+	      						if ( $result ) {
+									$this->_transaccion->commit();
+									return self::actionView($model->nro_solicitud);
+								} else {
+									$this->_transaccion->rollBack();
+									$this->redirect(['error-operacion', 'cod'=> 920]);
+
+	      						}
+	      					}
+	      				}
+			      	}
+		      	 }
+
+		      	// Se muestra el form de la solicitud.
+		      	// Datos generales del contribuyente.
+		      	$searchCorreccion = New CorreccionDomicilioFiscalSearch($idContribuyente);
+		      	$datos = $searchCorreccion->getDatosContribuyente();
+		  		if ( isset($datos) ) {
+		  			$subCaption = Yii::t('frontend', 'Info of Taxpayer');
+		  			return $this->render('@frontend/views/aaee/correccion-domicilio-fiscal/_create', [
+					  											'model' => $model,
+					  											'datos' => $datos,
+					  											'subCaption' => $subCaption,
+					  					]);
+		  		} else {
+		  			// No se encontraron los datos del contribuyente principal.
+		  			$this->redirect(['error-operacion', 'cod' => 404]);
+		  		}
+			}
+		}
+
+
+
+
+		/**
+		 * Metodo que comienza el proceso para guardar la solicitud y los demas
+		 * procesos relacionados.
+		 * @param model $model modelo de CorreccionDomicilioFiscalForm.
+		 * @param array $postEnviado post enviado desde el formulario.
+		 * @return boolean retorna true si se realizan todas las operacions de
+		 * insercion y actualizacion con exitos o false en caso contrario.
+		 */
+		private function actionBeginSave($model, $postEnviado)
+		{
+			$result = false;
+			$nroSolicitud = 0;
+
+			if ( isset($_SESSION['idContribuyente']) ) {
+				if ( isset($_SESSION['conf']) ) {
+					$conf = $_SESSION['conf'];
+
+					$this->_conexion = New ConexionController();
+
+	      			// Instancia de conexion hacia la base de datos.
+	      			$this->_conn = $this->_conexion->initConectar('db');
+	      			$this->_conn->open();
+
+	      			// Instancia de tipo transaccion para asegurar la integridad del resguardo de los datos.
+	      			// Inicio de la transaccion.
+					$this->_transaccion = $this->_conn->beginTransaction();
+
+					$nroSolicitud = self::actionCreateSolicitud($this->_conexion,
+															    $this->_conn,
+															    $model,
+															    $conf);
+					if ( $nroSolicitud > 0 ) {
+						$model->nro_solicitud = $nroSolicitud;
+
+						$result = self::actionCreateCorreccionDomicilio($this->_conexion,
+																	    $this->_conn,
+																	    $model,
+																	    $conf);
+						if ( $result ) {
+							$result = self::actionUpdateDomicilioFiscal($this->_conexion,
+																	  $this->_conn,
+																	  $model,
+																	  $conf);
+							if ( $result ) {
+								$result = self::actionEjecutaProcesoSolicitud($this->_conexion, $this->_conn, $model, $conf);
+								if ( $result ) {
+									$result = self::actionEnviarEmail($model, $conf);
+									$result = true;
 								}
 							}
 						}
 					}
+
+				} else {
+					// No se obtuvieron los parametros de la configuracion.
+					$this->redirect(['error-operacion', 'cod' => 955]);
+				}
+			} else {
+				// No esta defino el contribuyente.
+				$this->redirect(['error-operacion', 'cod' => 932]);
+			}
+			return $result;
+		}
+
+
+
+
+		/**
+		 * Metodo que guarda el registro respectivo en la entidad "solicitudes-contribuyente".
+		 * @param  ConexionController $conexionLocal instancia de la clase ConexionController.
+		 * @param  connection $connLocal instancia de connection.
+		 * @param  model $model modelo de CorreccionDomicilioFiscalForm.
+		 * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
+		 * solicitud.
+		 * @return boolean retorna true si guardo correctamente o false sino guardo.
+		 */
+		private function actionCreateSolicitud($conexionLocal, $connLocal, $model, $conf)
+		{
+			$estatus = 0;
+			$userFuncionario = '';
+			$fechaHoraProceso = '0000-00-00 00:00:00';
+			//$user = isset($model->usuario) ? $model->usuario : null;
+			$user = Yii::$app->identidad->getUsuario();
+			$nroSolicitud = 0;
+			$modelSolicitud = New SolicitudesContribuyenteForm();
+			$tabla = $modelSolicitud->tableName();
+			$idContribuyente = $_SESSION['idContribuyente'];
+
+			$nroSolicitud = 0;
+
+			if ( count($conf) > 0 ) {
+				// Valores que se pasan al modelo:
+				// id-config-solicitud.
+				// impuesto.
+				// tipo-solicitud.
+				// nivel-aprobacion
+				$modelSolicitud->attributes = $conf;
+
+				if ( $conf['nivel_aprobacion'] == 1 ) {
+					$estatus = 1;
+					$userFuncionario = $user;
+					$fechaHoraProceso = date('Y-m-d H:i:s');
+				}
+
+				$modelSolicitud->id_contribuyente = $idContribuyente;
+				$modelSolicitud->id_impuesto = 0;
+				$modelSolicitud->usuario = $user;
+				$modelSolicitud->fecha_hora_creacion = date('Y-m-d H:i:s');
+				$modelSolicitud->inactivo = 0;
+				$modelSolicitud->estatus = $estatus;
+				$modelSolicitud->nro_control = 0;
+				$modelSolicitud->user_funcionario = $userFuncionario;
+				$modelSolicitud->fecha_hora_proceso = $fechaHoraProceso;
+				$modelSolicitud->causa = 0;
+				$modelSolicitud->observacion = '';
+
+				// Arreglo de datos del modelo para guardar los datos.
+				$arregloDatos = $modelSolicitud->attributes;
+
+				if ( $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos) ) {
+					$nroSolicitud = $connLocal->getLastInsertID();
+				}
+			}
+
+			return $nroSolicitud;
+		}
+
+
+
+
+		/**
+		 * Metodo que guarda el registro detalle de la solicitid en la entidad
+		 * "sl" respectiva.
+		 * @param  ConexionController $conexionLocal instancia de la lcase ConexionController.
+		 * @param  connection $connLocal instancia de connection
+		 * @param  model $model modelo de CorreccionDomicilioFiscalForm.
+		 * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
+		 * solicitud.
+		 * @return boolean retorna un true si guardo el registro, false en caso contrario.
+		 */
+		private static function actionCreateCorreccionDomicilio($conexionLocal, $connLocal, $model, $conf)
+		{
+			$result = false;
+			$estatus = 0;
+			// $user = isset($model->usuario) ? $model->usuario : null;
+			$user = Yii::$app->identidad->getUsuario();
+			$userFuncionario = '';
+			$fechaHoraProceso = '0000-00-00 00:00:00';
+			if ( isset($conexionLocal) && isset($connLocal) && isset($model) ) {
+				if ( count($conf) > 0 ) {
+					if ( $conf['nivel_aprobacion'] == 1 ) {
+						$estatus = 1;
+						$userFuncionario = $user;
+						$fechaHoraProceso = date('Y-m-d H:i:s');
+					}
+
+					$tabla = '';
+	      			$tabla = $model->tableName();
+	      			$model->origen = 'LAN';
+	      			// $model->attributes es array {
+	      			// 							[attribute] => valor
+	      			// 						}
+					$arregloDatos = $model->attributes;
+
+					$arregloDatos['estatus'] = $estatus;
+					$arregloDatos['user_funcionario'] = $userFuncionario;
+					$arregloDatos['fecha_hora_proceso'] = $fechaHoraProceso;
+
+					$model->estatus = $estatus;
+					$model->user_funcionario = $userFuncionario;
+
+					$result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
 				}
 			}
 			return $result;
 		}
 
+
+
+
+		/**
+		 * Metodo que ejecuta la actualizacion del domicilio del contribuyente, aplica
+		 * solo en aquellos casos donde la aprobacion de la solicitud sea directa.
+		 * @param  ConexionController $conexionLocal instancia de la lcase ConexionController.
+		 * @param  connection $connLocal instancia de connection
+		 * @param  model $model modelo de CorreccionDomicilioFiscalForm.
+		 * @param  array $conf arreglo que contiene los parametros basicos de configuracion de la
+		 * solicitud.
+		 * @return boolean retorna true si se ejecuta la actualizacion, sino false.
+		 */
+		private static function actionUpdateDomicilioFiscal($conexionLocal, $connLocal, $model, $conf)
+		{
+			$result = false;
+			if ( $conf['nivel_aprobacion'] == 1 ) {
+				$arregloCondicion = ['id_contribuyente' => $model->id_contribuyente];
+				$arregloDatos = ['domicilio_fiscal' => $model->domicilio_fiscal_new];
+
+				$tabla = ContribuyenteBase::tableName();
+
+				$result = $conexionLocal->modificarRegistro($connLocal, $tabla, $arregloDatos, $arregloCondicion);
+			} else {
+				$result = true;
+			}
+			return $result;
+		}
 
 
 
 
 		/**
 		 * Metodo para guardar los documentos consignados.
-		 * @param  [type]  $conexion                [description]
-		 * @param  [type]  $connLocal               [description]
-		 * @param  integer $idContribuyenteGenerado [description]
-		 * @return [type]                           [description]
+		 * @param  ConexionController  $conexionLocal instancia de la clase ConexionController
+		 * @param  connection  $connLocal instancia de connection.
+		 * @param  model $model modelo de InscripcionSucursalForm.
+		 * @param  array $postEnviado post enviado por el formulario. Lo que
+		 * se busca es determinar los items seleccionados como documentos y/o
+		 * requisitos a consignar para guardarlos.
+		 * @return boolean retorna true si guarda efectivamente o false en caso contrario.
 		 */
-		private static function actionCreateDocumentosConsignados($conexion, $connLocal, $idContribuyente = 0)
+		private static function actionCreateDocumentosConsignados($conexionLocal, $connLocal, $model, $postEnviado)
 		{
 			$result = false;
-			if ( $idContribuyente > 0 ) {
-				if ( isset($conexion) ) {
-					if ( isset($_SESSION['postData']) ) {
+			if ( isset($conexionLocal) && isset($connLocal) && isset($model) && count($postEnviado) > 0 ) {
+				$modelDocumento = New DocumentoConsignadoForm();
+				$tabla = $modelDocumento->tableName();
+				$arregloCampos = $modelDocumento->attributes();
 
-						$seleccion = [];
-						$postData = $_SESSION['postData'];
+				$datosInsert['id_doc_consignado'] = null;
+				$datosInsert['id_documento'] = 0;
+				$datosInsert['id_contribuyente'] = $model->id_sede_principal;
+				$datosInsert['id_impuesto'] = 0;
+				$datosInsert['impuesto'] = 1;
+				$datosInsert['nro_solicitud'] = $model->nro_solicitud;
+				$datosInsert['codigo_proceso'] = null;
+				$datosInsert['fecha_hora'] = $model->fecha_hora;
+				$datosInsert['usuario'] = $model->user_funcionario;
+				$datosInsert['estatus'] = $model->estatus;
 
-						if ( isset($postData['selection']) ) {
-							$modelDocumento = new DocumentoConsignadoForm();
-
-							$tabla = '';
-			      			$tabla = $modelDocumento->tableName();
-
-							$arregloDatos = $modelDocumento->attributes;
-
-							$arregloDatos['id_contribuyente'] = $idContribuyente;
-							$arregloDatos['nro_solicitud'] = 0;
-							$arregloDatos['id_impuesto'] = 0;
-							$arregloDatos['impuesto'] = 1;
-							$arregloDatos['codigo_proceso'] = 'CORRECCION-DOMICILIO-FISCAL';
-							$arregloDatos['fecha_hora'] = date('Y-m-d H:i:s');
-							$arregloDatos['estatus'] = 1;
-							$arregloDatos['usuario'] = Yii::$app->user->identity->username;
-
-			  				$seleccion = $postData['selection'];
-			  				//die(var_dump($seleccion));
-			  				foreach ( $seleccion as $key => $value ) {
-			  					$arregloDatos['id_documento'] = $seleccion[$key];
-
-			  					if ( $conexion->guardarRegistro($connLocal, $tabla, $arregloDatos) ) {
-									$result = true;
-								} else {
-									$result = false;
-									break;
-								}
-			  				}
-				  		} else {
-				  			$result = true;
-				  		}
+				// Se obtiene el arreglo de el o los items de documentos y/o reuisitos
+				// seleccionados. Basicamente lo que se obtiene es el identificador (id_documento)
+				// del registro.
+				$arregloChkDocumeto = $postEnviado['chkDocumento'];
+				if ( count($arregloChkDocumeto) > 0 ) {
+					foreach ( $arregloChkDocumeto as $documento ) {
+						$datosInsert['id_documento'] = $documento;
+						$arregloDatos[] = $datosInsert;
 					}
+
+					$result = $conexionLocal->guardarLoteRegistros($connLocal, $tabla, $arregloCampos, $arregloDatos);
+				} else {
+					$result = true;
 				}
 			}
 			return $result;
@@ -372,65 +514,149 @@
 
 
 		/**
-		 * [actionView description]
-		 * @return [type] [description]
+		 * Metodo que se encargara de gestionar la ejecucion y resultados de los procesos relacionados
+		 * a la solicitud. En este caso los proceso relacionados a la solicitud en el evento "CREAR".
+		 * Se verifica si se ejecutaron los procesos y si los mismos fueron todos positivos. Con
+		 * el metodo getAccion(), se determina si se ejecuto algun proceso, este metodo retorna un
+		 * arreglo, si el mismo es null se asume que no habia procesos configurados para que se ejecutaran
+		 * cuando la solicitud fuese creada. El metodo resultadoEjecutarProcesos(), permite determinar el
+		 * resultado de cada proceso que se ejecuto.
+		 * @param  ConexionController $conexionLocal instancia de la clase ConexionController.
+		 * @param  connection $connLocal instancia de conexion que permite ejecutar las acciones en base
+		 * de datos.
+		 * @param  model $model modelo de la instancia CorrecionDomicilioFiscalForm.
+		 * @param  array $conf arreglo que contiene los parametros principales de la configuracion de la
+		 * solicitud.
+		 * @return boolean retorna true si todo se ejecuto correctamente false en caso contrario.
 		 */
-		public function actionView($idCorreccion)
+		private function actionEjecutaProcesoSolicitud($conexionLocal, $connLocal, $model, $conf)
 		{
-			if ( isset($_SESSION['idCorreccion']) ) {
-    			if ( $_SESSION['idCorreccion'] == $idCorreccion ) {
-    				$model = $this->findModel($idCorreccion);
-    				if ( $_SESSION['idCorreccion'] == $model->id_correccion ) {
-    					$postData = $_SESSION['postData'];
-    					$datosContribuyente = $_SESSION['datosContribuyente'];
-    					$variable = ['idCorreccion', 'datosContribuyente', 'model', 'postData'];
-    					self::actionEliminarVariablesSession($variable);
-			        	return $this->render('/aaee/correccion-domicilio-fiscal/pre-view',[
-															        				'model' => $model,
-															        				'preView' => false,
-															        				'postData' => $postData,
-															        				'datosContribuyente' => $datosContribuyente,
+			$result = true;
+			$resultadoProceso = [];
+			$acciones = [];
+			$evento = '';
+			if ( count($conf) > 0 ) {
+				if ( $conf['nivel_aprobacion'] == 1 ) {
+					$evento = Yii::$app->solicitud->aprobar();
+				} else {
+					$evento = Yii::$app->solicitud->crear();
+				}
 
-			        			]);
-			        } else {
-			        	return self::gestionarMensajesLocales('Numero de Inscripcion no valido.');
-			        	//echo 'Numero de Inscripcion no valido.';
-			        }
-	        	} else {
-	        		return self::gestionarMensajesLocales('Numero de Inscription no valido.');
-	        		// echo 'Numero de Inscription no valido.';
-	        	}
-        	}
+
+				$procesoEvento = New SolicitudProcesoEvento($conf['id_config_solicitud']);
+
+				// Se buscan los procesos que genera la solicitud para ejecutarlos, segun el evento.
+				// que en este caso el evento corresponde a "CREAR". Se espera que retorne un arreglo
+				// de resultados donde el key del arrary es el nombre del proceso ejecutado y el valor
+				// del elemento corresponda a un reultado de la ejecucion. La variable $model debe contener
+				// el identificador del contribuyente que realizo la solicitud y el numero de solicitud.
+				$procesoEvento->ejecutarProcesoSolicitudSegunEvento($model, $evento, $conexionLocal, $connLocal);
+
+				// Se obtiene un array de acciones o procesos ejecutados. Sino se obtienen acciones
+				// ejecutadas se asumira que no se configuraro ningun proceso para que se ejecutara
+				// cuando se creara la solicitud.
+				$acciones = $procesoEvento->getAccion();
+
+				if ( count($acciones) > 0 ) {
+
+					// Se evalua cada accion o proceso ejecutado para determinar si se realizo satisfactoriamnente.
+					$resultadoProceso = $procesoEvento->resultadoEjecutarProcesos();
+
+					if ( count($resultadoProceso) > 0 ) {
+						foreach ( $resultadoProceso as $key => $value ) {
+							if ( $value == false ) {
+								$result = false;
+								break;
+							}
+						}
+					}
+				}
+			} else {
+				$result = false;
+			}
+
+			return $result;
+
 		}
 
 
 
+		/**
+		 * Metodo que permite enviar un email al contribuyente indicandole
+		 * la confirmacion de la realizacion de la solicitud.
+		 * @param  model $model modelo que contiene la informacion
+		 * del identificador del contribuyente.
+		 * @param  array $conf arreglo que contiene los parametros principales de la configuracion de la
+		 * solicitud.
+		 * @return Boolean Retorna un true si envio el correo o false en caso
+		 * contrario.
+		 */
+		private function actionEnviarEmail($model, $conf)
+		{
+			$result = false;
+			$listaDocumento = '';
+			if ( count($conf) > 0 ) {
+				$parametroSolicitud = New ParametroSolicitud($conf['id_config_solicitud']);
+				$nroSolicitud = $model->nro_solicitud;
+				$descripcionSolicitud = $parametroSolicitud->getDescripcionTipoSolicitud();
+				$listaDocumento = $parametroSolicitud->getDocumentoRequisitoSolicitud();
+
+				$email = ContribuyenteBase::getEmail($model->id_contribuyente);
+				try {
+					$enviar = New PlantillaEmail();
+					$result = $enviar->plantillaEmailSolicitud($email, $descripcionSolicitud, $nroSolicitud, $listaDocumento);
+				} catch ( Exception $e ) {
+					echo $e->getName();
+				}
+			}
+			return $result;
+		}
 
 
 		/**
-		*	Metodo que busca el ultimo registro creado.
-		* 	@param $idInscripcion, long que identifica el autonumerico generado al crear el registro.
-		*/
-		protected function findModel($idCorreccion)
+		 * Metodo que renderiza una vista con la informacion de la solicitud creada.
+		 * @param  loong $id identificador de la solicitud creada.
+		 * @return view retorna una vista con la informacion detalle de la solicitud.
+		 * Informacion cargada por el contribuyente.
+		 */
+		public function actionView($id)
     	{
-        	if (($model = CorreccionDomicilioFiscal::findOne($idCorreccion)) !== null) {
-            	return $model;
-        	} else {
-            	throw new NotFoundHttpException('The requested page does not exist.');
-        	}
+    		if ( isset($_SESSION['idContribuyente']) ) {
+	    		if ( $id > 0 ) {
+	    			$modelSearch = New CorreccionDomicilioFiscalSearch($_SESSION['idContribuyente']);
+	    			$findModel = $modelSearch->findSolicitudCorreccionDomicilio($id);
+	    			if ( isset($findModel) ) {
+	    				return self::actionShowSolicitud($findModel, $modelSearch);
+	    			} else {
+						throw new NotFoundHttpException('No se encontro el registro');
+					}
+	    		} else {
+	    			throw new NotFoundHttpException('Error ' . $id);
+	    		}
+	    	} else {
+	    		throw new NotFoundHttpException('El contribuyente no esta defino');
+	    	}
     	}
 
 
 
-		/**
-    	 * [actionQuit description]
-    	 * @return [type] [description]
-    	 */
-    	public function actionQuit()
+
+    	/***/
+    	private function actionShowSolicitud($findModel, $modelSearch)
     	{
-    		$variable = ['idCorreccion', 'datosContribuyente', 'model', 'postData'];
-    		self::actionEliminarVariablesSession($variable);
-    		return $this->render('/aaee/correccion-domicilio-fiscal/quit');
+    		if ( isset($findModel) && isset($modelSearch) ) {
+				$opciones = [
+					'quit' => '/aaee/correcciondomicilio/correccion-domicilio-fiscal/quit',
+				];
+				return $this->render('@frontend/views/aaee/correccion-domicilio-fiscal/_view', [
+																'codigo' => 100,
+																'model' => $findModel,
+																'modelSearch' => $modelSearch,
+																'opciones' => $opciones,
+					]);
+			} else {
+				throw new NotFoundHttpException('No se encontro el registro');
+			}
     	}
 
 
@@ -438,36 +664,106 @@
 
 
     	/**
-    	 * [actionEliminarVariablesSession description]
-    	 * @param  array  $arrayVariables [description]
-    	 * @return [type]                 [description]
+    	 * Metodo que indica si los valores presentes en el formulario son validos.
+    	 * Se evalua si los campos son validos a traves del modelo. Esto campos se encuentra
+    	 * en el modelo de inscripcion de actividad economica.
+    	 * @param $postData, post enviado desde el formulario.
+    	 * @return returna boolean que indica si los campos en el formulario contienen valores validos.
+    	 * true indica que todo esta bien, false todo lo contrario.
     	 */
-    	public function actionEliminarVariablesSession($arrayVariables = [])
+    	private static function actionValidateRegistroMercantil($postData)
     	{
-    		if ( count($arrayVariables) > 0 ) {
-    			foreach ( $arrayVariables as $variable ) {
-    				unset($_SESSION[$variable]);
+    		$modelActEcon = new InscripcionActividadEconomicaForm();
+    		$nombreForm = $modelActEcon->formName();
+    		foreach ( $postData[$nombreForm] as $key => $value ) {
+    			if ( !isset($postData[$nombreForm]['fecha']) ) {
+    				return false;
+    			} elseif ( !isset($postData[$nombreForm]['num_reg']) ) {
+    				return false;
+    			} elseif ( !isset($postData[$nombreForm]['reg_mercantil']) ) {
+    				return false;
     			}
     		}
+    		return true;
     	}
 
+
+
+
+
+    	/**
+		 * Metodo salida del modulo.
+		 * @return view
+		 */
+		public function actionQuit()
+		{
+			$varSession = self::actionGetListaSessions();
+			self::actionAnularSession($varSession);
+			return $this->render('/menu/menuvertical2');
+		}
 
 
 
 		/**
-		 * [gestionarMensajesLocales description]
-		 * @param  [type] $mensajeLocal [description]
-		 * @return [type]               [description]
+		 * Metodo que ejecuta la anulacion de las variables de session utilizados
+		 * en el modulo.
+		 * @param  array $varSessions arreglo con los nombres de las variables de
+		 * sesion que seran anuladas.
+		 * @return none.
 		 */
-		public function gestionarMensajesLocales($mensajeLocal)
-    	{
-    		if ( trim($mensajeLocal) != '' ) {
-    			return MensajeController::actionMensaje($mensajeLocal);
-    		}
-    	}
+		public function actionAnularSession($varSessions)
+		{
+			Session::actionDeleteSession($varSessions);
+		}
 
 
+
+		/**
+		 * Metodo que renderiza una vista indicando que le proceso se ejecuto
+		 * satisfactoriamente.
+		 * @param  integer $cod codigo que permite obtener la descripcion del
+		 * codigo de la operacion.
+		 * @return view.
+		 */
+		public function actionProcesoExitoso($cod)
+		{
+			$varSession = self::actionGetListaSessions();
+			self::actionAnularSession($varSession);
+			return MensajeController::actionMensaje($cod);
+		}
+
+
+
+		/**
+		 * Metodo que renderiza una vista que indica que ocurrio un error en la
+		 * ejecucion del proceso.
+		 * @param  integer $cod codigo que permite obtener la descripcion del
+		 * codigo de la operacion.
+		 * @return view.
+		 */
+		public function actionErrorOperacion($cod)
+		{
+			$varSession = self::actionGetListaSessions();
+			self::actionAnularSession($varSession);
+			return MensajeController::actionMensaje($cod);
+		}
+
+
+
+		/**
+		 * Metodo que permite obtener un arreglo de las variables de sesion
+		 * que seran utilizadas en el modulo, aqui se pueden agregar o quitar
+		 * los nombres de las variables de sesion.
+		 * @return array retorna un arreglo de nombres.
+		 */
+		public function actionGetListaSessions()
+		{
+			return $varSession = [
+							'postData',
+							'conf',
+							'begin',
+					];
+		}
 
 	}
-
 ?>
