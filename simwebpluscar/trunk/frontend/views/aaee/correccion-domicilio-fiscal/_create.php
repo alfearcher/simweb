@@ -43,7 +43,7 @@
 
 	?>
 <div class="correccion-domicilio-form-create">
-    <?= $this->render('correccion-domicilio-form', [
+    <?= $this->render('@frontend/views/aaee/correccion-domicilio-fiscal/correccion-domicilio-form', [
 						        'model' => $model,
 						        'datos' => $datos,
 						        'subCaption' => $subCaption,
