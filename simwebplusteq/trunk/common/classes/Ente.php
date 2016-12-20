@@ -69,7 +69,7 @@
 		protected $noPais = 1;
 		protected $pais = 'Republica Bolivariana de Venezuela';
 
-		protected $noEnte = 13;
+		protected $noEnte = 16;
 		protected $alcaldia = 'Alcaldia del Municipio Bolivariano de Guaicaipuro';
 
 		protected $alias = 'LOS TEQUES';
