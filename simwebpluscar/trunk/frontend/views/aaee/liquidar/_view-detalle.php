@@ -51,7 +51,7 @@
  <div class="view">
 	 <div class="row">
 		<div class="view-detalle-liquidacion-aaee">
-			<?= $this->render('/aaee/liquidar/detalle-liquidacion-aaee', [
+			<?= $this->render('@frontend/views/aaee/liquidar/detalle-liquidacion-aaee', [
 															'dataProvider' => $dataProvider,
 															'caption' => $caption,
 															'subCaption' => $subCaption,
