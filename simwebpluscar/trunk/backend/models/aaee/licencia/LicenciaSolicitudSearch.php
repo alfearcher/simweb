@@ -274,6 +274,34 @@
 
 
 		/**
+		 * Metodoq ue permite determinar si existe rubros para el año indicado.
+		 * @param  integer $añoImpositivo año impositivo
+		 * @return boolean retorna true si encuentra rubro, de lo contrario false.
+		 */
+		public function existeRubro($añoImpositivo)
+		{
+			$findModel = ActEconIngreso::find()->alias('I')
+											   ->where('id_contribuyente =:id_contribuyente',
+											   					[':id_contribuyente' => $this->_id_contribuyente])
+											   ->andWhere('inactivo =:inactivo',[':inactivo' => 0])
+											   ->andWhere('estatus =:estatus',[':estatus' => 0])
+											   ->andWhere('ano_impositivo =:ano_impositivo',
+											   					[':ano_impositivo' => $añoImpositivo])
+											   ->joinWith('actividadEconomica', true, 'INNER JOIN')
+											   ->count();
+
+			if ( $findModel > 0 ) {
+				return true;
+			} else {
+				return false;
+			}
+
+		}
+
+
+
+
+		/**
 		 * Metodo que permite ejecutar una serie de metodos que controlan la existencia de algunas
 		 * solicitudes que puedan chocar con la solicitud de emision de licencia. Si encuentra una
 		 * solicitud pendiente que choque con la de emnision de licencia creara un mensaje que se
@@ -285,6 +313,14 @@
 		{
 			$mensaje = [];
 			$result = false;
+
+
+			// Se determina si existen rubros registrados para el año.
+			$existe = self::existeRubro($añoImpositivo);
+			if ( !$existe ) {
+				$mensaje[] = Yii::t('frontend', 'No posee rubros registros para el año ' . $añoImpositivo);
+			}
+
 
 			// Se determina si tiene una solicitud pendiente similar para emision de licencia.
 			$result = self::yaPoseeSolicitudSimiliarPendiente($añoImpositivo);
