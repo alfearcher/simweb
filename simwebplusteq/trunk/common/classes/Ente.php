@@ -73,7 +73,7 @@
 		protected $noEnte = 16;
 		protected $alcaldia = 'Alcaldia del Municipio Bolivariano de Guaicaipuro';
 
-		protected $alias = 'LOS TEQUES. Miranda';
+		protected $alias = 'LOS TEQUES.';
 		protected $eslogan = 'mi eslogan';
 		protected $rif = 'G-200001234-1';
 		protected $direccionLocalidad = 'Los Teques';
