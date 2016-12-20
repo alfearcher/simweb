@@ -154,9 +154,9 @@
 
 				$searchSolvencia = New SolvenciaActividadEconomicaSearch($idContribuyente);
 
-				//$mensajes = $searchSolvencia->validarEvento(date('Y'));
-
 				$mensajes = [];
+				$mensajes = $searchSolvencia->validarEvento(date('Y'));
+
 				if ( count($mensajes) == 0 ) {
 					$modelParametro = New ParametroSolicitud(self::CONFIG);
 					// Se obtiene el tipo de solicitud. Se retorna un array donde el key es el nombre
