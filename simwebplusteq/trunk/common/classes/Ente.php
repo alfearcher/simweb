@@ -77,7 +77,7 @@
 		protected $rif = 'G-200001234-1';
 		protected $direccionLocalidad = 'Los Teques';
 		protected $telefonos = ['0238-123232'];
-		protected $email = ['alcaldiacaroni@gmail.com'];
+		protected $email = ['alcaldiaguaicaipuro@gmail.com'];
 		protected $portalWeb = 'www.alcaldiadigital.com.ve';
 		protected $noEstado = 0;
 		protected $estado = 'Estado Miranda';
