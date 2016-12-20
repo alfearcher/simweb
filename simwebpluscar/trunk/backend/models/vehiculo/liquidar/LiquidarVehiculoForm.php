@@ -159,7 +159,7 @@
 			}
 
 			$data = [];
-			$privider = null;
+			$provider = null;
 			if ( count($models) > 0 ) {
 
 				foreach ( $models as $model ) {
