@@ -61,7 +61,7 @@
 </div>
 
 <div class="desincorporar-ramo-seleccion-form">
-	<?= $this->render('view-ramo-registrado', [
+	<?= $this->render('@frontend/views/aaee/desincorpora-ramo/view-ramo-registrado', [
 						        'model' => $model,
 								'findModel' => $findModel,
 								'dataProviderRubro' => $dataProviderRubro,

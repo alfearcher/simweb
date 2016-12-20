@@ -54,7 +54,7 @@
 	 </div>
 	 <div class="row">
 		<div class="solicitud-creada">
-			<?= $this->render('/aaee/desincorpora-ramo/view-solicitud-create', [
+			<?= $this->render('@frontend/views/aaee/desincorpora-ramo/view-solicitud-create', [
 	    															'model' => $model,
 	    															'modelSearch' => $modelSearch,
 	    															'opciones' => $opciones,

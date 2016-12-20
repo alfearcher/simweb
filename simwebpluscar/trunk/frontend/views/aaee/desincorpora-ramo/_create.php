@@ -66,7 +66,7 @@
 
 
 <div class="anexo-ramo-form-create">
-	<?= $this->render('desincorporar-ramo-form', [
+	<?= $this->render('@frontend/views/aaee/desincorpora-ramo/desincorporar-ramo-form', [
 						        'model' => $model,
 						        'findModel' => $findModel,
 						        'listaAño' => $listaAño,
