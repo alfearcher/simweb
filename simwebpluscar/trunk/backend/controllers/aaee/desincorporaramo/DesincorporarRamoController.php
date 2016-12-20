@@ -686,8 +686,8 @@
 					$arregloDatos['user_funcionario'] = $userFuncionario;
 					$arregloDatos['fecha_hora_proceso'] = $fechaHoraProceso;
 					$arregloDatos['fecha_hora'] = date('Y-m-d H:i:s');
-					$arregloDatos['usuario'] = Yii::$app->user->identity->login;
-					$arregloDatos['origen'] = 'WEB';
+					$arregloDatos['usuario'] = Yii::$app->identidad->getUsuario();
+					$arregloDatos['origen'] = 'LAN';
 
 
 					$model->estatus = $estatus;
