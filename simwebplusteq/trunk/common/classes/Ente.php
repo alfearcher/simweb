@@ -58,6 +58,7 @@
  *	@inherits
  *
  */
+
 	namespace common\classes;
 
 	use Yii;
