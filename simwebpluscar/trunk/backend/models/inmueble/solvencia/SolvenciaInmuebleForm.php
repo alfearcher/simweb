@@ -135,13 +135,13 @@
 	    		Yii::$app->solicitud->aprobar() => [
 	    						'estatus' => 1,
 	    						'fecha_hora_proceso' => date('Y-m-d H:i:s'),
-	    						'user_funcionario' => isset(Yii::$app->user->identity->username) ? Yii::$app->user->identity->username : Yii::$app->user->identity->login,
+	    						'user_funcionario' => Yii::$app->identidad->getUsuario(),
 
 	    		],
 	    		Yii::$app->solicitud->negar() => [
 	    						'estatus' => 9,
 	    						'fecha_hora_proceso' => date('Y-m-d H:i:s'),
-	    						'user_funcionario' => isset(Yii::$app->user->identity->username) ? Yii::$app->user->identity->username : Yii::$app->user->identity->login,
+	    						'user_funcionario' => Yii::$app->identidad->getUsuario(),
 
 	    		],
 	    	];
