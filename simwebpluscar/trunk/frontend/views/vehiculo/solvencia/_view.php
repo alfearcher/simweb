@@ -54,7 +54,7 @@
 	 </div>
 	 <div class="row">
 		<div class="solicitud-solvencia-creada">
-			<?= $this->render('/vehiculo/solvencia/view-solicitud-solvencia-create', [
+			<?= $this->render('@frontend/views/vehiculo/solvencia/view-solicitud-solvencia-create', [
 															'model' => $model,
 															'opciones' => $opciones,
 															'dataProvider' => $dataProvider,

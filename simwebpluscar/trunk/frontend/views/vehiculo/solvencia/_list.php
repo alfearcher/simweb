@@ -58,7 +58,7 @@
  	</div>
 	 <div class="row">
 		<div class="lista-vehiculo-solvencia">
-			<?= $this->render('/vehiculo/solvencia/lista-vehiculo', [
+			<?= $this->render('@frontend/views/vehiculo/solvencia/lista-vehiculo', [
 														'model' => $model,
 		  												'caption' => $caption,
 		  												'subCaption' => $subCaption,
