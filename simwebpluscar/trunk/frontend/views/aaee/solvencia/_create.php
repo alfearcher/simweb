@@ -43,7 +43,7 @@
 ?>
 
 <div class="create-solvencia">
-	<?= $this->render('/aaee/solvencia/create-solvencia-form', [
+	<?= $this->render('@frontend/views/aaee/solvencia/create-solvencia-form', [
 								        			'model' => $model,
 		  											'caption' => $caption,
 					    ]) ?>
