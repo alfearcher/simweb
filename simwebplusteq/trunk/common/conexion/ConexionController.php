@@ -121,7 +121,7 @@
 		private static function determinarParametro($dbConexion, $arregloDsn)
 		{
 			$arregloParametros = [];
-			if ( $dbConexion == 'dbsim' || $dbConexion == 'db' ) {
+			if ( $dbConexion == 'dbsim' || $dbConexion == 'dbsim' ) {
 				foreach ($arregloDsn as $key => $value) {
 					if($key == 'dsn' || $key == 'username' || $key == 'password' || $key == 'charset' ) {
 						$arregloParametros[$key] = $arregloDsn[$key];
