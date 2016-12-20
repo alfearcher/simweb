@@ -43,7 +43,7 @@
 ?>
 
 <div class="create-licencia">
-	<?= $this->render('/aaee/licencia/create-licencia-form', [
+	<?= $this->render('@frontend/views/aaee/licencia/create-licencia-form', [
 								        			'model' => $model,
 		  											'dataProvider' => $dataProvider,
 		  											'tipo' => $tipo,

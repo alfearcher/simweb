@@ -54,7 +54,7 @@
 	 </div>
 	 <div class="row">
 		<div class="solicitud-licencia-creada">
-			<?= $this->render('/aaee/licencia/view-solicitud-licencia-create', [
+			<?= $this->render('@frontend/views/aaee/licencia/view-solicitud-licencia-create', [
 															'model' => $model,
 															'modelSearch' => $modelSearch,
 															'opciones' => $opciones,
