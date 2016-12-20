@@ -91,7 +91,7 @@
 			// Se verifica que el contribuyente haya iniciado una session.
 
 			self::actionAnularSession(['begin']);
-			if ( $_SESSION['idContribuyente']) {
+			if ( isset($_SESSION['idContribuyente']) ) {
 				$idContribuyente = $_SESSION['idContribuyente'];
 
 				$request = Yii::$app->request;
