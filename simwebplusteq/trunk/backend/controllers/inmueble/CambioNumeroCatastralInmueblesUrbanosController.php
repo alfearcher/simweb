@@ -195,7 +195,7 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
 
                         $conn = New ConexionController(); 
 
-                        $this->conexion = $conn->initConectar('dbsim');     // instancia de la conexion (Connection)
+                        $this->conexion = $conn->initConectar('db');     // instancia de la conexion (Connection)
                         $this->conexion->open(); 
 
                         $transaccion = $this->conexion->beginTransaction(); 
