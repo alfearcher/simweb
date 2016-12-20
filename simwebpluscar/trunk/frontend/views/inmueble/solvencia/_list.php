@@ -58,7 +58,7 @@
  	</div>
 	 <div class="row">
 		<div class="lista-inmueble-solvencia">
-			<?= $this->render('/inmueble/solvencia/lista-inmueble', [
+			<?= $this->render('@frontend/views/inmueble/solvencia/lista-inmueble', [
 														'model' => $model,
 		  												'caption' => $caption,
 		  												'subCaption' => $subCaption,
