@@ -156,6 +156,9 @@
 		  			// No se encontraron los datos del contribuyente principal.
 		  			$this->redirect(['error-operacion', 'cod' => 938]);
 		  		}
+			} else {
+				// No esta definido el contribuyente.
+		  		$this->redirect(['error-operacion', 'cod' => 932]);
 			}
 		}
 
