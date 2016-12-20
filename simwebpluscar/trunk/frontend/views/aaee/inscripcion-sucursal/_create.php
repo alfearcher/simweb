@@ -44,7 +44,7 @@
 	?>
 	<div class="inscripcion-sucursal-form-create">
 
-	    <?= $this->render('inscripcion-sucursal-form', [
+	    <?= $this->render('@frontend/views/aaee/inscripcion-sucursal/inscripcion-sucursal-form', [
 	        'model' => $model,
 	        'datos' => $datos,
 	        'listaNaturaleza' => $listaNaturaleza,
