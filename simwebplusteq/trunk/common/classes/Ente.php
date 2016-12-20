@@ -87,7 +87,7 @@
 		protected $municipio = 'Guaicaipuro';
 
 		protected $cuentaRecaudadora = [
-						'1234-1234-12-1234567890'
+						'1234-1234-99-1234567890'
 					];
 
 		// identificador dentro del sistema, generado por el mismo.
