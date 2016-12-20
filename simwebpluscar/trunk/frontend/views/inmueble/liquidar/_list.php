@@ -58,7 +58,7 @@
  	</div>
 	 <div class="row">
 		<div class="lista-inmueble-liquidar">
-			<?= $this->render('/inmueble/liquidar/lista-inmueble', [
+			<?= $this->render('@frontend/views/inmueble/liquidar/lista-inmueble', [
 		  												'caption' => $caption,
 		  												'subCaption' => $subCaption,
 		  												'dataProvider' => $dataProvider,
