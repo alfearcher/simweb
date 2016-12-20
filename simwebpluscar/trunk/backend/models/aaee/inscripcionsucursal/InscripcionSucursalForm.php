@@ -166,7 +166,8 @@
 	          	['fecha_hora', 'default', 'value' => date('Y-m-d H:i:s')],
 	          	['id_sim', 'unique'],
 	     		['estatus', 'default', 'value' => 0],
-	     		['usuario', 'default', 'value' => Yii::$app->user->identity->login],
+	     		['usuario', 'default', 'value' => Yii::$app->identidad->getUsuario()],
+	     		//['usuario', 'default', 'value' => Yii::$app->user->identity->login],
 	     		['origen', 'default', 'value' => 'WEB'],
 	     		['nro_solicitud', 'default', 'value' => 0],
 	     		//['id_contribuyente', 'default', 'value' => 0],
@@ -304,13 +305,13 @@
 	    		Yii::$app->solicitud->aprobar() => [
 	    						'estatus' => 1,
 	    						'fecha_hora_proceso' => date('Y-m-d H:i:s'),
-	    						'user_funcionario' => isset(Yii::$app->user->identity->username) ? Yii::$app->user->identity->username : Yii::$app->user->identity->login,
+	    						'user_funcionario' => Yii::$app->identidad->getUsuario(),
 
 	    		],
 	    		Yii::$app->solicitud->negar() => [
 	    						'estatus' => 9,
 	    						'fecha_hora_proceso' => date('Y-m-d H:i:s'),
-	    						'user_funcionario' => isset(Yii::$app->user->identity->username) ? Yii::$app->user->identity->username : Yii::$app->user->identity->login,
+	    						'user_funcionario' => Yii::$app->identidad->getUsuario(),
 
 	    		],
 	    	];
