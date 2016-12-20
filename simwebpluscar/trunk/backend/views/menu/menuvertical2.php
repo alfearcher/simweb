@@ -233,6 +233,24 @@
 		        	]
 		        ],
 
+		        //	Recibo
+        		['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . '&nbsp; Recibo',
+        			'items' => [
+        						['label' => 'Crear Recibo de Pago', 'url' => ['recibo/recibo/index']],
+        						['label' => 'Consulta de Recibos', 'url' => ['recibo/recibo-consulta/index']],
+        						['label' => 'Solicitar Anulación de Recibo', 'url' => ['recibo/anular-recibo/index']],
+        			]
+        		],
+
+        		//	Planilla
+        		['label' => Icon::show('fa fa-indent',['class' => $typeLong], $typeIcon) . '&nbsp; Liquidacion',
+        			'items' => [
+        						['label' => 'Liquidar Actividad Economica', 'url' => ['aaee/liquidar/liquidar-actividad-economica/index']],
+        						['label' => 'Liquidar Inmueble Urbano', 'url' => ['inmueble/liquidar/liquidar-inmueble/index']],
+        						['label' => 'Liquidar Vehiculo', 'url' => ['vehiculo/liquidar/liquidar-vehiculo/index']],
+        						['label' => 'Consulta de Planilla', 'url' => ['planilla/planilla-consulta/index']],
+        			]
+        		],
 
 		        //	PANEL MAESTRO
         		['label' => Icon::show('fa fa-calculator',['class' => $typeLong], $typeIcon) . '&nbsp; Panel Maestro',
