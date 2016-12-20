@@ -70,20 +70,20 @@
 		protected $pais = 'Republica Bolivariana de Venezuela';
 
 		protected $noEnte = 13;
-		protected $alcaldia = 'Alcaldia del Municipio Bolivariano de Caroni';
+		protected $alcaldia = 'Alcaldia del Municipio Bolivariano de Guaicaipuro';
 
-		protected $alias = 'CARONI';
+		protected $alias = 'LOS TEQUES';
 		protected $eslogan = 'mi eslogan';
-		protected $rif = 'G-200005025-2';
-		protected $direccionLocalidad = 'Pto Ordaz';
+		protected $rif = 'G-200001234-1';
+		protected $direccionLocalidad = 'Los Teques';
 		protected $telefonos = ['0238-123232'];
 		protected $email = ['alcaldiacaroni@gmail.com'];
 		protected $portalWeb = 'www.alcaldiadigital.com.ve';
 		protected $noEstado = 0;
-		protected $estado = 'Estado Bolivar';
+		protected $estado = 'Estado Miranda';
 
 		protected $noMunicipio = 0;
-		protected $municipio = 'Caroni';
+		protected $municipio = 'Guaicaipuro';
 
 		protected $cuentaRecaudadora = [
 						'1234-1234-12-1234567890'
