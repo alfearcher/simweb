@@ -285,6 +285,9 @@
 															    $this->_conn,
 															    $model,
 															    $conf);
+
+die(var_dump($nroSolicitud));
+
 					if ( $nroSolicitud > 0 ) {
 						$model->nro_solicitud = $nroSolicitud;
 
