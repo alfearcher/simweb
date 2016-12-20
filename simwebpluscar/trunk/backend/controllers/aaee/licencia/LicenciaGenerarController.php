@@ -207,7 +207,7 @@
 		{
 			$varSession = self::actionGetListaSessions();
 			self::actionAnularSession($varSession);
-			return $this->render(['/menu/menuvertical2']);
+			return $this->render('/menu/menuvertical2');
 		}
 
 
