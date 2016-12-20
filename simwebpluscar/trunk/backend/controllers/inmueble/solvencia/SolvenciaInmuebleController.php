@@ -866,7 +866,7 @@
 
 				$caption = Yii::t('frontend', 'Solicitud Creada');
 				$subCaption = Yii::t('frontend', 'Solicitud');
-	    		return $this->render('/inmueble/solvencia/_view',[
+	    		return $this->render('@frontend/views/inmueble/solvencia/_view',[
 												'model' => $models,
 												'dataProvider' => $dataProvider,
 												'codigo' => 100,
