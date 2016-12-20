@@ -51,7 +51,7 @@
 
  <div class="row">
 	<div class="lista-impuesto">
-		<?= $this->render('/planilla/consulta/lista-impuesto-planilla', [
+		<?= $this->render('@frontend/views/planilla/consulta/lista-impuesto-planilla', [
 													'model' => $model,
 													'caption' => $caption,
 													'subCaption' => $subCaption,
