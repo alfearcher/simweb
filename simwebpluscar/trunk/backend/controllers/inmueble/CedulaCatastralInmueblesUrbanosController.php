@@ -51,6 +51,7 @@ error_reporting(0);
 session_start();
 use Yii;
 use backend\models\inmueble\InmueblesUrbanosForm;
+use backend\models\inmueble\HistoricoAvaluos;
 use backend\models\inmueble\ContribuyentesForm;
 use backend\models\inmueble\cedulaCatastralForm;
 use common\models\contribuyente\ContribuyenteBase;
@@ -171,7 +172,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
             //$periodoFiscal = date('d-m-Y', strtotime($rangoFecha['fechaDesde'])) . ' AL ' . date('d-m-Y', strtotime($rangoFecha['fechaHasta']));
 
             //$resumen = self::actionResumenDeclaracion('estimado');
-
+            $resumenHistoricoAvaluos= self::actionHistoricoAvaluos(); 
             $htmlCatastro = $this->renderPartial('@common/views/plantilla-pdf/cedulacatastral/layout-catastro-pdf',[
                                                             'resumen'=> $_SESSION['datos'],
                                                             'tipoDeclaracion' => 'ESTIMADA',
@@ -180,6 +181,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
             $htmlAspectosFisicos = $this->renderPartial('@common/views/plantilla-pdf/cedulacatastral/layout-aspectos-fisicos-pdf',[
                                                             'resumen'=> $_SESSION['datos'],
+                                                            'historico'=> $resumenHistoricoAvaluos,
                                                             'tipoDeclaracion' => 'ESTIMADA',
                                                             'periodoFiscal' => $periodoFiscal,
                                     ]);                   
@@ -189,14 +191,14 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
             // foreach ( $resumen as $i => $r ) {
             //     $rubroCalculo[$r['rubro']] = $r['impuesto'];
             // }
-            // $resumenCobro = self::actionResumenCobroPenalidad($rubroCalculo);
+            
 
             $htmlMapa = $this->renderPartial('@common/views/plantilla-pdf/cedulacatastral/layout-mapa-pdf',[
-                                                            'resumen'=> $resumen,
+                                                            'resumen'=> $resumenHistoricoAvaluos,
                                     ]);
             //$resumenAspectosValorativos = self::actionResumenAspectosValorativos($_SESSION['datos']['id_impuesto']);
             $htmlAspectosValorativos = $this->renderPartial('@common/views/plantilla-pdf/cedulacatastral/layout-aspectos-valorativos-pdf',[
-                                                            'resumen'=> $resumen,
+                                                            'resumen'=> $resumenHistoricoAvaluos,
                                     ]);
 
             // informacion del pie de pagina.
@@ -380,7 +382,21 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
          return $buscar[0]["id_tipo_solicitud"];                                              
 
      } 
+/**
+     * [DatosConfiguracionTiposSolicitudes description] metodo que busca el tipo de solicitud en 
+     * la tabla config_tipos_solicitudes
+     */
+     public function actionHistoricoAvaluos()
+     {
 
+         $buscar = HistoricoAvaluos::find()->where("id_impuesto=:id_impuesto", [":id_impuesto" => $_SESSION['datos']['id_impuesto']])
+                                                        //->andwhere("descripcion=:descripcion", [":descripcion" => 'ACTUALIZACION DE DATOS'])
+                                                        ->asArray()->all();
+
+
+         return $buscar;                                              
+
+     } 
 
     /**
      * [EnviarCorreo description] Metodo que se encarga de enviar un email al contribuyente 

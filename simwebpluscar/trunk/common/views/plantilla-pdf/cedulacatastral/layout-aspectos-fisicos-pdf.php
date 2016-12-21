@@ -77,9 +77,9 @@
 	
 		<tr class="cuerpo">
 			<td class="info-declaracion" colspan="1.5"><?=Html::encode($resumen['estado_catastro']); ?></td>
-			<td class="info-declaracion-x" colspan="1.5"><?=Html::encode($resumen['municipio_catastro']); ?></td>
-			<td class="info-declaracion" colspan="2.5"><?=Html::encode($resumen['parroquia_catastro']); ?></td>
-			<td class="info-declaracion" colspan="2.5"><?=Html::encode($resumen['sector_catastro']); ?></td>
+			<td class="info-declaracion" colspan="1.5"><?=Html::encode($resumen['municipio_catastro']); ?></td>
+			<td class="info-declaracion" colspan="2.5"><?=Html::encode($historico[0]['mts2_terreno']); ?></td>
+			<td class="info-declaracion" colspan="2.5"><?=Html::encode($historico[0]['mts']); ?></td>
 			<td class="info-declaracion" colspan="2"><?=Html::encode($resumen['id_impuesto']); ?></td>
 			
 			
@@ -94,17 +94,20 @@
 
 	.label-total, .info-total {
 		border-top: solid 2px #000;
+		text-align: center;
 	}
 
 
 	.info-declaracion-principal,
 	.label-declaracion {
 		border-bottom: solid 2px #000;
+		text-align: center;
 	}
 
 	.info-declaracion,
 	.info-declaracion-x {
 		border-bottom: solid 1px #ccc;
+		text-align: center;
 	}
 
 	.label-declaracion-principal {

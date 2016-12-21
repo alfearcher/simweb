@@ -58,6 +58,11 @@
 <?php
 	$fechaEmision = date('d-m-Y');
 	$sumaImpuesto = 0;
+
+	$valorTerreno = $resumen[0]['mts2_terreno']*$resumen[0]['valor_por_mts2_terreno'];
+	$valorConstruccion = $resumen[0]['valor_por_mts2']*$resumen[0]['mts'];
+
+	$valorCatastral = $valorTerreno+$valorConstruccion;
 ?>
 
 <table repeat_header="1" cellpadding="1" cellspacing="1" width="100%" border="0" margin-top:"50">
@@ -74,9 +79,9 @@
   
 	
 		<tr class="cuerpo">
-			<td class="info-declaracion" colspan="2.5"><?=Html::encode($resumen['parroquia_catastro']); ?></td>
-			<td class="info-declaracion" colspan="2.5"><?=Html::encode($resumen['sector_catastro']); ?></td>
-			<td class="info-declaracion" colspan="2"><?=Html::encode($resumen['id_impuesto']); ?></td>
+			<td class="info-declaracion" colspan="2.5"><?=Html::encode($valorTerreno); ?></td>
+			<td class="info-declaracion" colspan="2.5"><?=Html::encode($valorConstruccion); ?></td>
+			<td class="info-declaracion" colspan="2"><?=Html::encode($valorCatastral); ?></td>
 			
 			
 		   

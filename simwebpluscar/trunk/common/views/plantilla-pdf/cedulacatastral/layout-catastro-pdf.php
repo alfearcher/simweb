@@ -102,17 +102,20 @@
 
 	.label-total, .info-total {
 		border-top: solid 2px #000;
+		text-align: center;
 	}
 
 
 	.info-declaracion-principal,
 	.label-declaracion {
 		border-bottom: solid 2px #000;
+		text-align: center;
 	}
 
 	.info-declaracion,
 	.info-declaracion-x {
 		border-bottom: solid 1px #ccc;
+		text-align: center;
 	}
 
 	.label-declaracion-principal {
@@ -139,11 +142,12 @@
 
 	.info-declaracion-x {
 		text-align: normal;
+		text-align: center;
 	}
 
 
 	.label-total, .info-total {
-		text-align: right;
+		text-align: center;
 		font-family: Arial, Helvetica, sans-serif;
 		font-size: 100%;
 		font-weight: bold;
