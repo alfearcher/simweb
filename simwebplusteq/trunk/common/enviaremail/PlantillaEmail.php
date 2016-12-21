@@ -115,34 +115,37 @@ class PlantillaEmail{
     public function plantillaEmailSolicitud($email, $solicitud, $nro_solicitud, $documento)
     {
 
-        $docu = '';
-        if ( $documento !== null ) {
-            $docu =  implode("<br>*", $documento);
+        if ( trim($email) == '' ) {
+          $docu = '';
+          if ( $documento !== null ) {
+              $docu =  implode("<br>*", $documento);
+          }
+
+          $contribuyente = self::busquedaTipoContribuyente();
+          //die(var_dump($contribuyente));
+                $from = 'manuelz0510@gmail.com';
+                $to = $email;
+                $subject = 'Solicitudes Online';
+                $textBody = 'Solicitudes Online';
+                $body =     'Estimado Contribuyente: '.$contribuyente.'<br><br>
+                             Usted ha realizado con exito su Solicitud '.$solicitud.' de numero: '.$nro_solicitud.'<br><br>'.
+                             'Por favor dirijase a la alcaldia para completar la solicitud correspondiente. '.
+                             'Los documentos a consignar son los siguientes: <br><br>*'.$docu.'<br><br>'.
+                             'Recuerde, esta informacion es personal y de su exclusiva responsabilidad y se agradece no divulgar ni transferir
+                             a terceros estos datos.<br><br>
+                             Esta es una cuenta no monitoreada, por favor no responder este correo.';
+
+              $enviarEmail = new EnviarEmailSolicitud();
+              $enviar = $enviarEmail->enviarEmail($from, $to, $subject, $textBody, $body);
+
+                if($enviar == true){
+                  return true;
+                }else{
+                  return false;
+                }
+        } else {
+          return false;
         }
-
-        $contribuyente = self::busquedaTipoContribuyente();
-        //die(var_dump($contribuyente));
-              $from = 'manuelz0510@gmail.com';
-              $to = $email;
-              $subject = 'Solicitudes Online';
-              $textBody = 'Solicitudes Online';
-              $body =     'Estimado Contribuyente: '.$contribuyente.'<br><br>
-                           Usted ha realizado con exito su Solicitud '.$solicitud.' de numero: '.$nro_solicitud.'<br><br>'.
-                           'Por favor dirijase a la alcaldia para completar la solicitud correspondiente. '.
-                           'Los documentos a consignar son los siguientes: <br><br>*'.$docu.'<br><br>'.
-                           'Recuerde, esta informacion es personal y de su exclusiva responsabilidad y se agradece no divulgar ni transferir
-                           a terceros estos datos.<br><br>
-                           Esta es una cuenta no monitoreada, por favor no responder este correo.';
-
-            $enviarEmail = new EnviarEmailSolicitud();
-            $enviar = $enviarEmail->enviarEmail($from, $to, $subject, $textBody, $body);
-
-              if($enviar == true){
-                return true;
-              }else{
-                return false;
-              }
-
     }
 
 
