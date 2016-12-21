@@ -48,6 +48,7 @@
 	use common\models\ordenanza\OrdenanzaAsignacion;
 	use common\models\ordenanza\OrdenanzaBase;
 	use backend\models\utilidad\ut\UnidadTributariaForm;
+	use backend\models\utilidad\bcv\InteresBcvSearch;
 
 
 
@@ -113,18 +114,18 @@
 			$this->_monto = $monto;
 			$recargo = 0;
 			if ( $this->_año_impositivo > 0 && $this->_periodo > 0  && $this->_impuesto > 0 ) {
-				$recargo = self::IniciarCalculoInteres();
+				$interes = self::IniciarCalculoInteres();
 			}
 
-			$this->_recargo = $recargo;
+			$this->_interes = $interes;
 			//return $recargo;
 		}
 
 
 		/***/
-		public function getRecargo()
+		public function getInteres()
 		{
-			return $this->_recargo;
+			return $this->_interes;
 		}
 
 
@@ -401,6 +402,28 @@
 
 			return $montoRecargo;
 		}
+
+
+
+		/**
+		 * Metodo que inicia el proceso para armar el rango porcentual entres las fechas.
+		 * @param date  $fechaDesde fecha inicial de consulta.
+		 * @param date  $fechaHasta fecha final de consulta.
+		 * @param double $porcentaje porcentaje fijo.
+		 * @return double retorna el monto total.
+		 */
+		public function calcularMontoTotalInteres($fechaDesde, $fechaHasta, $porcentaje = 0)
+		{
+			$montoCalculado = 0;
+			$interes = New InteresBcvSearch();
+
+			$rangoPorcentual = $interes->armarRangoPorcentualInteres($fechaDesde, $fechaHasta, $porcentaje = 0);
+
+die(var_dump($rangoPorcentual));
+
+
+		}
+
 
 
 
