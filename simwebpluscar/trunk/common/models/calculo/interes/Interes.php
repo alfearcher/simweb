@@ -243,7 +243,7 @@
 			self::getConfiguracion();
 			self::getExigibilidadLiquidacion();
 			$fechaActual = date('Y-m-d');
-			$montoRecargo = 0;
+			$montoInteres = 0;
 			$meses = 0;
 			$dias = 0;
 			$añoActual = (int)date('Y');
@@ -270,7 +270,7 @@
 							$cantMeses = $interval->{'m'};
 
 							if ( $cantMeses >= $meses ) {
-								$montoRecargo = self::determinarMontoRecargo();
+								$montoInteres = self::determinarMontoInteres();
 							}
 
 						}
@@ -285,12 +285,12 @@
 
 							if ( $this->_año_impositivo < $añoActual ) {
 
-								$montoRecargo = self::determinarMontoRecargo();
+								$montoInteres = self::determinarMontoInteres();
 
 							} elseif ( $this->_año_impositivo == $añoActual ) {
 								if ( $periodoActual > $this->_periodo ) {
 
-									$montoRecargo = self::determinarMontoRecargo();
+									$montoInteres = self::determinarMontoInteres();
 								}
 							}
 						}
@@ -312,7 +312,7 @@
 							$cantDias = $interval->{'days'};
 
 							if ( $cantDias >= $dias ) {
-								$montoRecargo = self::determinarMontoRecargo();
+								$montoInteres = self::determinarMontoInteres();
 							}
 						}
 
@@ -336,11 +336,11 @@
 							$cantDias = $interval->{'d'};
 
 							if ( $cantMeses >= $meses ) {
-								$montoRecargo = self::determinarMontoRecargo();
+								$montoInteres = self::determinarMontoInteres();
 
 							} elseif ( $cantMeses == $meses ) {
 								if ( $cantDias >= $dias ) {
-									$montoRecargo = self::determinarMontoRecargo();
+									$montoInteres = self::determinarMontoInteres();
 
 								}
 							}
@@ -367,11 +367,11 @@
 							$cantDias = $interval->{'d'};
 
 							if ( $cantMeses >= $meses ) {
-								$montoRecargo = self::determinarMontoRecargo();
+								$montoInteres = self::determinarMontoInteres();
 
 							} elseif ( $cantMeses == $meses ) {
 								if ( $cantDias >= $dias ) {
-									$montoRecargo = self::determinarMontoRecargo();
+									$montoInteres = self::determinarMontoInteres();
 
 								}
 							}
@@ -392,7 +392,7 @@
 							$cantDias = $interval->{'days'};
 
 							if ( $cantDias >= $dias ) {
-								$montoRecargo = self::determinarMontoRecargo();
+								$montoInteres = self::determinarMontoInteres();
 							}
 						}
 					}
@@ -400,7 +400,7 @@
 				}
 			}
 
-			return $montoRecargo;
+			return $montoInteres;
 		}
 
 
@@ -409,11 +409,11 @@
 		 * Metodo que inicia el proceso para armar el rango porcentual entres las fechas.
 		 * @param date  $fechaDesde fecha inicial de consulta.
 		 * @param date  $fechaHasta fecha final de consulta.
-		 * @param double $porcentaje porcentaje fijo.
 		 * @return double retorna el monto total.
 		 */
-		public function calcularMontoTotalInteres($fechaDesde, $fechaHasta, $porcentaje = 0)
+		public function calcularMontoTotalInteres($fechaDesde, $fechaHasta)
 		{
+			$porcentaje = self::determinarMontoInteres();
 			$montoCalculado = 0;
 			$interes = New InteresBcvSearch();
 
@@ -434,24 +434,24 @@ die(var_dump($rangoPorcentual));
 		 * @return double retorna monto del interes segun la logica aplicada.
 		 * Sino determina la logica retornara cero (0).
 		 */
-		private function determinarMontoRecargo()
+		private function determinarMontoInteres()
 		{
-			$montoRecargo = 0;
+			$montoInteres = 0;
 			if ( $this->_configOrdAsignacion['tipo_asignacion'] == 1 ) {
-				$montoRecargo = self::aplicarPorcentajeFijo();
+				$montoInteres = self::aplicarPorcentajeFijo();
 
 			} elseif (  $this->_configOrdAsignacion['tipo_asignacion'] == 2 ) {
-				$montoRecargo = self::aplicarUnidadTributaria();
+				//$montoInteres = self::aplicarUnidadTributaria();
 
 			} elseif (  $this->_configOrdAsignacion['tipo_asignacion'] == 3 ) {
-				$montoRecargo = self::aplicarMontoFijo();
+				//$montoInteres = self::aplicarMontoFijo();
 
 			} elseif (  $this->_configOrdAsignacion['tipo_asignacion'] == 9 ) {
-				$montoRecargo = self::aplicarPorcentajeBCV();
+				$montoInteres = self::aplicarPorcentajeBCV();
 
 			}
 
-			return $montoRecargo;
+			return $montoInteres;
 		}
 
 
