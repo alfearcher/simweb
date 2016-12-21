@@ -286,8 +286,6 @@
 															    $model,
 															    $conf);
 
-die(var_dump($nroSolicitud));
-
 					if ( $nroSolicitud > 0 ) {
 						$model->nro_solicitud = $nroSolicitud;
 
@@ -295,6 +293,7 @@ die(var_dump($nroSolicitud));
 																	    $this->_conn,
 																	    $model,
 																	    $conf);
+// die(var_dump());
 						if ( $result ) {
 							$result = self::actionUpdateDomicilioFiscal($this->_conexion,
 																	  $this->_conn,
