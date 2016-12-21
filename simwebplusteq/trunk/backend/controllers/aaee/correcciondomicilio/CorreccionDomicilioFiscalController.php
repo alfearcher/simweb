@@ -302,7 +302,6 @@
 							if ( $result ) {
 								$result = self::actionEjecutaProcesoSolicitud($this->_conexion, $this->_conn, $model, $conf);
 								if ( $result ) {
-die(var_dump($result));
 									$result = self::actionEnviarEmail($model, $conf);
 									$result = true;
 								}
