@@ -93,7 +93,7 @@ abstract class Application extends Module
     /**
      * @var string the application name.
      */
-    public $name = 'SIM WEB PLUS. ';
+    public $name = 'SIM WEB PLUS';
     /**
      * @var string the version of this application.
      */
