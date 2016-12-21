@@ -72,7 +72,7 @@
 		protected $noEnte = 13;
 		protected $alcaldia = 'Alcaldia del Municipio Bolivariano de Caroni';
 
-		protected $alias = 'CARONI. Pto Ordaz';
+		protected $alias = 'CARONI.';
 		protected $eslogan = 'mi eslogan';
 		protected $rif = 'G-200005025-2';
 		protected $direccionLocalidad = 'Pto Ordaz';
