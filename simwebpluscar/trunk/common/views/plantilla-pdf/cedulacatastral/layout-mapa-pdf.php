@@ -70,24 +70,13 @@
 		<td class="label-mapa" colspan="5"><?=Html::encode('CROQUIS DE UBICACION'); ?></td>
 	</tr >
 	<tr class="cuerpo">
-		<td class="linderos" colspan="5"><?=Html::encode($resumen['id_impuesto']); ?></td>
+		<td class="linderos" colspan="5"><?=Html::encode($resumen[0]['lindero_norte']."<br>".$resumen[0]['lindero_sur']."<br>".$resumen[0]['lindero_este']."<br>".$resumen[0]['lindero_oeste']); ?></td>
 		<td class="mapa" colspan="5"><?=Html::encode($resumen['id_impuesto']); ?></td>
 		<br>
 		<br>
 		<br>
 		<br>
-		<br>
-		<br>                             
-		<br>
-		<br>
-		<br>
-		<br>
-		<br>
-		<br>
-		<br>
-		<br>
-		<br>  
-		<br>
+		
 	</tr> 
 	
 
@@ -118,7 +107,7 @@
 		border-bottom: solid 0.5px #000;
 		font-size: 80%;
 		font-family: Arial, Helvetica, sans-serif;
-		text-align: center;
+		text-align: right;
 	}
 
 
