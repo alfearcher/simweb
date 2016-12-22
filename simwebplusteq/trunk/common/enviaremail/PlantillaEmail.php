@@ -122,7 +122,7 @@ class PlantillaEmail{
           }
 
           $contribuyente = self::busquedaTipoContribuyente();
-          //die(var_dump($contribuyente));
+
                 $from = 'manuelz0510@gmail.com';
                 $to = $email;
                 $subject = 'Solicitudes Online';
