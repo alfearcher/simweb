@@ -127,6 +127,7 @@
 
 			$dataProvider = new ActiveDataProvider([
 	            'query' => $query,
+	            'pagination' => false,
 	        ]);
 
 	        return $dataProvider;
