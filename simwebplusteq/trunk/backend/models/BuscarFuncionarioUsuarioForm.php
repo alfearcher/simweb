@@ -84,7 +84,7 @@ class BuscarFuncionarioUsuarioForm extends Model{
          //Buscar el email en la tabla PreguntasUsuarios
          $table = Funcionario::find()->where(['ci'=>$this->cedula])->asArray()->all();
                                                 
-   
+   die(var_dump($table));
          //Si la cedula no existe mostrar el error
          if ($table == false){
 
