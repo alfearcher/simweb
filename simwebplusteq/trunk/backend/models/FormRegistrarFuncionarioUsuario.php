@@ -62,6 +62,7 @@ class FormRegistrarFuncionarioUsuario extends Model{
     public $email;
     public $password;
     public $password_repeat;
+    public $login;
      
     public function rules()
     {   //validaciones requeridas para el formulario de registro de usuarios     
@@ -122,7 +123,7 @@ class FormRegistrarFuncionarioUsuario extends Model{
        //Buscar el username en la tabla
 
        $table = Funcionario::find()->where("login=:login", [":login" => $this->username]);
-      
+
       $_SESSION['login']=$table->login;
        //Si el username existe mostrar el error
        if ($table == null){
