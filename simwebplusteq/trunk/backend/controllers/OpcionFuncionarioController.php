@@ -188,7 +188,7 @@ class OpcionFuncionarioController extends Controller
 
               if($model->validate()){ 
 
-die(var_dump($$_SESSION['datos']));
+die(var_dump($_SESSION['datos']));
                    // Preparamos la consulta para guardar el usuario 
                    $table = new Users; 
 		     
