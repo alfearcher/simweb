@@ -112,10 +112,10 @@ class FormRegistrarFuncionarioUsuario extends Model{
        //Si el username existe mostrar el error
        if ($table->count() == 1){
 
-           // if ($table2->count() == 1){
+            if ($table2->count() == 1){
         
                $this->addError($attribute, Yii::t('backend', 'The selected username exists'));
-       }//}
+       }}
     }
   
  
