@@ -122,9 +122,9 @@ class FormRegistrarFuncionarioUsuario extends Model{
        //Buscar el username en la tabla
 
        $table = Funcionario::find()->where("login=:login", [":login" => $this->username]);
-      die(var_dump($table));
+      
        //Si el username existe mostrar el error
-       if ($table->count() == null){
+       if ($table == null){
 
            
             $this->addError($attribute, Yii::t('backend', 'El nombre de usuario no existe en los registros de funcionarios'));
