@@ -188,7 +188,7 @@ $_SESSION['datos']=$dataProvider;
 
               if($model->validate()){ 
                 $datos=$_SESSION['datos'];
-die(var_dump($datos->login));
+die(var_dump($datos[0]->login));
                    // Preparamos la consulta para guardar el usuario 
                    $table = new Users; 
 		     
