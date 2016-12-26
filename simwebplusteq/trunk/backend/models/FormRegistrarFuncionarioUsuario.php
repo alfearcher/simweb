@@ -53,6 +53,7 @@ namespace backend\models;
 use Yii;
 use yii\base\Model;
 use common\models\Users;
+use backend\models\funcionario\Funcionario;
 
 
 class FormRegistrarFuncionarioUsuario extends Model{
@@ -106,12 +107,15 @@ class FormRegistrarFuncionarioUsuario extends Model{
     {
        //Buscar el username en la tabla
        $table = Users::find()->where("username=:username", [":username" => $this->username]);
+       $table2 = Funcionario::find()->where("login=:username", [":username" => $this->username]);
    
        //Si el username existe mostrar el error
        if ($table->count() == 1){
+
+            if ($table2->count() == 1){
         
                $this->addError($attribute, Yii::t('backend', 'The selected username exists'));
-       }
+       }}
     }
   
  
