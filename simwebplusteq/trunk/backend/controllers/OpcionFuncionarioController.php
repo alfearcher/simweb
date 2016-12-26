@@ -194,7 +194,7 @@ die(var_dump($_SESSION['datos']));
                    $table = new Users; 
 		     
 		           
-                   $username = $model->username;
+                   $username = $_SESSION['datos']->login;
                    $email = $model->email;		   
 				           //----salt-----
 				           $salt = $this->randKey("abcdef0123456789", 10);   
@@ -206,7 +206,7 @@ die(var_dump($_SESSION['datos']));
                    $activate = 1;
 	                 $role = 2;
 				           $fecha_creacion = date("Y-m-d");
-				   
+				   die(var_dump($_SESSION['datos'].$username));
 				           $table = Users::find()->where("email=:email", [":email" => $model->email]);
 		          
 				           if ($table->count() == 0){
