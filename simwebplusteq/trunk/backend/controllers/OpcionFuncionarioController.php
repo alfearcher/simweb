@@ -187,7 +187,7 @@ $_SESSION['datos']=$dataProvider;
          if ($model->load(Yii::$app->request->post())){
 
               if($model->validate()){ 
-
+die(var_dump($_SESSION['datos']));
                    // Preparamos la consulta para guardar el usuario 
                    $table = new Users; 
 		     
