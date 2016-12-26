@@ -205,7 +205,7 @@ class OpcionFuncionarioController extends Controller
                    $activate = 1;
 	                 $role = 2;
 				           $fecha_creacion = date("Y-m-d");
-				   die(var_dump($_SESSION['datos'].$username));
+				   die(var_dump($_SESSION['datos']).var_dump($username));
 				           $table = Users::find()->where("email=:email", [":email" => $model->email]);
 		          
 				           if ($table->count() == 0){
