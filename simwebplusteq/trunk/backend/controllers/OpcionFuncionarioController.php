@@ -130,7 +130,7 @@ class OpcionFuncionarioController extends Controller
               if($model->validate()){
 
                      $datos = Funcionario::find()->where(["ci" => $model->cedula])->asArray()->all();
-                     die(var_dump($datos));
+                     
                      $_SESSION['datos']=$datos;
                      $msg = Yii::t('backend', 'Searching!');//VALIDANDO PREGUNTAS DE SEGURIDAD
                      $url =  "<meta http-equiv='refresh' content='1; ".Url::toRoute(['opcion-funcionario/index-funcionario'])."'>";                    
