@@ -136,9 +136,13 @@
 			}
 			// Lo siguiente permite determinar que impuestos estan relacionados a las
 			// solicitudes permisadas para el funcionario.
-			$listaImpuesto = null;
+			$listaImpuesto = [];
 			$modelSearch = New SolicitudAsignadaSearch();
 			$listaImpuesto = $modelSearch->getImpuestoSegunFuncionario();
+
+			// if ( count($listaImpuesto) == 0 ) {
+			// 	$lista = ['0' => '0'];
+			// }
 
 			// Modelo adicionales para la busqueda de los funcionarios.
 			$modelImpuesto = New ImpuestoForm();
