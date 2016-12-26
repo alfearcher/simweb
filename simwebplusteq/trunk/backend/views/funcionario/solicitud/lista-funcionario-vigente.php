@@ -60,8 +60,8 @@
 			'id' => 'lista-funcionario-vigente-form',
 		    'method' => 'post',
 		    'action' => Url::toRoute(['funcionario/solicitud/funcionario-solicitud/verificar-envio']),
-			'enableClientValidation' => true,
-			//'enableAjaxValidation' => true,
+			'enableClientValidation' => false,
+			'enableAjaxValidation' => false,
 			'enableClientScript' => true,
 		]);
 	?>
@@ -184,7 +184,7 @@
                      ->createUrl('funcionario/solicitud/funcionario-solicitud/lista-impuesto-solicitud') . '&id=' . '" + $(this).val(),
                      function( data ) {
                            $( "#lista-impuesto-solicitud" ).html( data );
-		             });'
+		             });return false;'
 				                                                            ])->label(false);
 				                ?>
 							</div>
@@ -201,12 +201,14 @@
 						<?}?>
 					</div>
 
-					<?php Pjax::begin()?>
+
 					<div class="row" style="border-bottom: 0.5px solid #ccc;">
+					<?php Pjax::begin()?>
 						<div class="lista-impuesto-solicitud" id="lista-impuesto-solicitud">
 						</div>
-					</div>
 					<?php Pjax::end()?>
+					</div>
+
 <!-- Fin de lista de Solicitudes -->
 
 
