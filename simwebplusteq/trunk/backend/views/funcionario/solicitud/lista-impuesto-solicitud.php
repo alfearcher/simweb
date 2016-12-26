@@ -54,18 +54,6 @@
 ?>
 
 <div class="lista-solicitudes">
-
-	<!-- <?php
-		//$form = ActiveForm::begin([
-			// 'id' => 'lista-impuesto-solicitud',
-		 //    'method' => 'post',
-		 //    //'action' => Url::toRoute(['funcionario/solicitud/funcionario-solicitud/verificar-envio']),
-			// 'enableClientValidation' => false,
-			// 'enableAjaxValidation' => false,
-			// 'enableClientScript' => false,
-		//]);
-	?> -->
-
 	<?= GridView::widget([
 			'id' => 'id-lista-impuesto-solicitud',
 			'dataProvider' => $dataProvider,
@@ -114,7 +102,5 @@
 			]
 		]);
 	?>
-
-	 <!-- <?//php ActiveForm::end(); ?> -->
 </div>
 
