@@ -273,7 +273,7 @@ die(var_dump($_SESSION['datos']));
                    $model->getErrors(); 
               }
          }
-              return $this->render("registrarfuncionariousuario", ["model" => $model, "datos"=>$_SESSION['datos']]);          
+              return $this->render("registrarfuncionariousuario", ["model" => $model, "datos"=>$_SESSION['datos']->login]);          
  
      } // cierre del metodo registerfun
 
