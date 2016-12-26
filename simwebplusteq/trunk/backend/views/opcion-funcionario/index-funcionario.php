@@ -24,7 +24,7 @@ $this->title = Yii::t('backend', 'Official User Register');
     'id' => 'formulariofuncionario',
     'action'=> ['/opcion-funcionario/registrarfuncionariousuario'],
     'enableClientValidation' => false,
-    'enableAjaxValidation' => true, 
+    'enableAjaxValidation' => false, 
     'options' => ['class' => 'form-vertical'],]); ?>
     
 
