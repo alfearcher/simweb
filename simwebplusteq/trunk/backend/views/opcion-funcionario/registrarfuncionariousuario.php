@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				<table class="table table-striped">
 					<tr>
 						<td><div class="col-lg-3">
-						<?= $form->field($model, 'username')->textInput(['maxlength' => true,'value'=>$datos,'style' => 'width:100px;', 'onload'=> true]) ?>
+						<?= $form->field($model, 'username')->textInput(['maxlength' => true,'value'=>$datos,'style' => 'width:100px;', 'readOnly'=> true]) ?>
 							</div>																		    
                         </td>
 				   </tr>
