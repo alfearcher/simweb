@@ -129,7 +129,7 @@ class OpcionFuncionarioController extends Controller
 
               if($model->validate()){
 
-                     $datos = Funcionario::find()->where(["ci" => $model->cedula]);
+                     $datos = Funcionario::find()->where(["ci" => $model->cedula])->asArray()->all();
                      die(var_dump($datos));
                      $_SESSION['datos']=$datos;
                      $msg = Yii::t('backend', 'Searching!');//VALIDANDO PREGUNTAS DE SEGURIDAD
