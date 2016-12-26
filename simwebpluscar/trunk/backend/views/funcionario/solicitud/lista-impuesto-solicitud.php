@@ -55,16 +55,16 @@
 
 <div class="lista-solicitudes">
 
-	<?php
-		$form = ActiveForm::begin([
-			'id' => 'lista-impuesto-solicitud',
-		    'method' => 'post',
-		    //'action' => Url::toRoute(['funcionario/solicitud/funcionario-solicitud/verificar-envio']),
-			//'enableClientValidation' => true,
-			//'enableAjaxValidation' => true,
-			//'enableClientScript' => true,
-		]);
-	?>
+	<!-- <?php
+		//$form = ActiveForm::begin([
+			// 'id' => 'lista-impuesto-solicitud',
+		 //    'method' => 'post',
+		 //    //'action' => Url::toRoute(['funcionario/solicitud/funcionario-solicitud/verificar-envio']),
+			// 'enableClientValidation' => false,
+			// 'enableAjaxValidation' => false,
+			// 'enableClientScript' => false,
+		//]);
+	?> -->
 
 	<?= GridView::widget([
 			'id' => 'id-lista-impuesto-solicitud',
@@ -83,11 +83,15 @@
 					'class' => 'yii\grid\CheckboxColumn',
 					'name' => 'chk-solicitud',
 					'multiple' => true,
-					// 'checkboxOptions' => function($modelSolicitud, $key, $index, $column) {
-					// 						if ( $modelSolicitud->inactivo == 1 ) {
-					// 								return ['enabled' => false, 'readonly' => true];
-					// 							}
-					// 						},
+					'checkboxOptions' => function($model, $key, $index, $column) {
+											if ( $model->inactivo == 0 ) {
+													//return ['enabled' => false, 'readonly' => true];
+
+													return [
+														'value' => $model->id_tipo_solicitud,
+													];
+												}
+											},
 				],
 				[
 					'label' => Yii::t('backend', 'Request'),
@@ -111,6 +115,6 @@
 		]);
 	?>
 
-	<?php ActiveForm::end(); ?>
+	 <!-- <?//php ActiveForm::end(); ?> -->
 </div>
 
