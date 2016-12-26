@@ -79,7 +79,7 @@
 	    {
 	    	$modelFind = null;
 	    	$modelFind = FuncionarioSolicitud::find()->where('inactivo =:inactivo', [':inactivo' => 0])
-	                                                 ->andWhere('login =:login', [':login' => $userLocal])
+	                                                 ->andWhere('usuario =:usuario', [':usuario' => $userLocal])
 	                                                 ->joinWith('funcionario', false)
 			                                         ->orderBy([
 			                                     		'tipo_solicitud' => SORT_ASC,
@@ -100,12 +100,15 @@
 	     */
 	    public function getTipoSolicitudAsignada($userLocal)
 	    {
-	    	$lista = null;
+	    	$lista = [];
 	    	$model = $this->findTipoSolicitudAsignadaFuncionario($userLocal);
 	    	$listaSolicitudeAsignadas = $model->asArray()->all();
-	    	foreach ( $listaSolicitudeAsignadas as $solicitud ) {
-	    		$lista[] = $solicitud['tipo_solicitud'];
-	    	}
+
+			if ( count($listaSolicitudeAsignadas) > 0 ) {
+		    	foreach ( $listaSolicitudeAsignadas as $solicitud ) {
+		    		$lista[] = $solicitud['tipo_solicitud'];
+		    	}
+		    }
 
 	    	return $lista;
 	    }
@@ -205,7 +208,7 @@
 	    /***/
 	    public function getImpuestoSegunFuncionario()
 	    {
-	    	$lista = null;
+	    	$lista = [];
 	    	$listaImpuesto = null;
 	    	$userLocal = Yii::$app->user->identity->username;
 	    	// Se obtiene la lista de solicitudes asignadas al funcionario.
