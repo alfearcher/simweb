@@ -38,6 +38,7 @@ $this->title = Yii::t('backend', 'Official User Register');
             'ci',
             'apellidos',            
             'nombres',
+            'login',
             'status_funcionario',
             
 
