@@ -132,7 +132,6 @@ class OpcionFuncionarioController extends Controller
                      $datos = Funcionario::find()->where(["ci" => $model->cedula])->asArray()->all();
                      
                      $_SESSION['datos']=$datos;
-                     die(var_dump($_SESSION['datos'][0]['login']));
                      $msg = Yii::t('backend', 'Searching!');//VALIDANDO PREGUNTAS DE SEGURIDAD
                      $url =  "<meta http-equiv='refresh' content='1; ".Url::toRoute(['opcion-funcionario/index-funcionario'])."'>";                    
                      return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);  
@@ -190,12 +189,11 @@ class OpcionFuncionarioController extends Controller
 
               if($model->validate()){ 
 
-die(var_dump($_SESSION['datos']));
                    // Preparamos la consulta para guardar el usuario 
                    $table = new Users; 
 		     
 		           
-                   $username = $_SESSION['datos']->login;
+                   $username = $_SESSION['datos'][0]['login'];
                    $email = $model->email;		   
 				           //----salt-----
 				           $salt = $this->randKey("abcdef0123456789", 10);   
@@ -274,7 +272,7 @@ die(var_dump($_SESSION['datos']));
                    $model->getErrors(); 
               }
          }
-              return $this->render("registrarfuncionariousuario", ["model" => $model, "datos"=>$_SESSION['datos']['login']]);          
+              return $this->render("registrarfuncionariousuario", ["model" => $model, "datos"=>$_SESSION['datos'][0]['login']]);          
  
      } // cierre del metodo registerfun
 
