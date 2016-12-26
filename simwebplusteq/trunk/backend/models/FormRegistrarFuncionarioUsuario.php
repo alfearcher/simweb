@@ -70,6 +70,7 @@ class FormRegistrarFuncionarioUsuario extends Model{
             ['username', 'match', 'pattern' => "/^.{3,50}$/", 'message' => Yii::t('backend', 'Minimum 3 and maximum 50 characters')],//minimo 3 y maximo 50 caracteres
             ['username', 'match', 'pattern' => "/^[0-9a-z]+$/i", 'message' => Yii::t('backend', 'Only letters and numbers are accepted')],//Sólo se aceptan letras y números
             ['username', 'username_existe'],
+            ['username', 'login_existe'],
             ['email', 'match', 'pattern' => "/^.{5,80}$/", 'message' => Yii::t('backend', 'Minimum 5 and maximum 80 characters')],//minimo 5 y maximo 80 caracteres
             ['email', 'email', 'message' => 'Formato no válido'],
             ['email', 'email_existe'],
@@ -107,15 +108,27 @@ class FormRegistrarFuncionarioUsuario extends Model{
     {
        //Buscar el username en la tabla
        $table = Users::find()->where("username=:username", [":username" => $this->username]);
-       $table2 = Funcionario::find()->where("login=:login", [":login" => $this->username]);
-   die(var_dump($table).var_dump($table2));
+       
        //Si el username existe mostrar el error
        if ($table->count() == 1){
 
-            if ($table2->count() == 1){
-        
+                    
                $this->addError($attribute, Yii::t('backend', 'The selected username exists'));
-       }}
+       }
+    }
+
+    public function login_existe($attribute, $params)
+    {
+       //Buscar el username en la tabla
+
+       $table = Funcionario::find()->where("login=:login", [":login" => $this->username]);
+   die(var_dump($table));
+       //Si el username existe mostrar el error
+       if ($table->count() == null){
+
+           
+            $this->addError($attribute, Yii::t('backend', 'El nombre de usuario no existe'));
+       }
     }
   
  
