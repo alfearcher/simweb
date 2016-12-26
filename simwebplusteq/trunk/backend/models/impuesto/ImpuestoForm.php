@@ -154,7 +154,7 @@
 	     * Metodo que permite obtener una lista de la entidad "impuestos",
 	     * para luego utilizarlo en lista de combo.
 	     */
-	    public function getListaImpuesto($inactivo = 0, $arrayImpuesto = '')
+	    public function getListaImpuesto($inactivo = 0, $arrayImpuesto = [])
 	    {
 	    	$listaImpuesto = null;
 	    	$model = $this->findImpuesto($arrayImpuesto);
