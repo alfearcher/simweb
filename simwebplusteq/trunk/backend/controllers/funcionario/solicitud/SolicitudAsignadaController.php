@@ -140,10 +140,6 @@
 			$modelSearch = New SolicitudAsignadaSearch();
 			$listaImpuesto = $modelSearch->getImpuestoSegunFuncionario();
 
-			// if ( count($listaImpuesto) == 0 ) {
-			// 	$lista = ['0' => '0'];
-			// }
-
 			// Modelo adicionales para la busqueda de los funcionarios.
 			$modelImpuesto = New ImpuestoForm();
 
