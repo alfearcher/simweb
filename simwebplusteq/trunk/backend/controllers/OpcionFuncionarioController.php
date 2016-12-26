@@ -155,7 +155,7 @@ class OpcionFuncionarioController extends Controller
         //if ( isset( $_SESSION['idContribuyente'] ) ) {
         $searchModel = new FuncionarioForm(); 
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+$_SESSION['datos']=$dataProvider;
         return $this->render('index-funcionario', [
             'searchModel' => $searchModel, 
             'dataProvider' => $dataProvider,
@@ -271,7 +271,7 @@ class OpcionFuncionarioController extends Controller
                    $model->getErrors(); 
               }
          }
-              return $this->render("registrarfuncionariousuario", ["model" => $model]);          
+              return $this->render("registrarfuncionariousuario", ["model" => $model, "datos"=>$_SESSION['datos']]);          
  
      } // cierre del metodo registerfun
 

@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				<table class="table table-striped">
 					<tr>
 						<td><div class="col-lg-3">
-                            <?= $form->field($model, "username")->input("text") //colspan ?> 
+                            <?= $form->field($model, "username")->input("text", "value"=>$datos->login)-> //colspan ?> 
 							</div>																		    
                         </td>
 				   </tr>
