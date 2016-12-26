@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				<table class="table table-striped">
 					<tr>
 						<td><div class="col-lg-3">
-						<?= $form->field($model, 'username')->textInput(['maxlength' => true,'value'=>$datos->login'style' => 'width:100px;'])->label(false) ?>
+						<?= $form->field($model, 'username')->textInput(['maxlength' => true,'value'=>$datos->login,'style' => 'width:100px;'])->label(false) ?>
 							</div>																		    
                         </td>
 				   </tr>
