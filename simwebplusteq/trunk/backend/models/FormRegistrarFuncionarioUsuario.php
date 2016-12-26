@@ -108,7 +108,7 @@ class FormRegistrarFuncionarioUsuario extends Model{
        //Buscar el username en la tabla
        $table = Users::find()->where("username=:username", [":username" => $this->username]);
        $table2 = Funcionario::find()->where("login=:login", [":login" => $this->username]);
-   die(var_dump($table2));
+   die(var_dump($table).var_dump($table2));
        //Si el username existe mostrar el error
        if ($table->count() == 1){
 
