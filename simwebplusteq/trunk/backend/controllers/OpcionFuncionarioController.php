@@ -155,7 +155,7 @@ class OpcionFuncionarioController extends Controller
         //if ( isset( $_SESSION['idContribuyente'] ) ) {
         $searchModel = new FuncionarioForm(); 
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-$_SESSION['datos']=$dataProvider;
+
         return $this->render('index-funcionario', [
             'searchModel' => $searchModel, 
             'dataProvider' => $dataProvider,
@@ -187,8 +187,8 @@ $_SESSION['datos']=$dataProvider;
          if ($model->load(Yii::$app->request->post())){
 
               if($model->validate()){ 
-                $datos=$_SESSION['datos'];
-die(var_dump($datos[0]->login));
+
+die(var_dump($model));
                    // Preparamos la consulta para guardar el usuario 
                    $table = new Users; 
 		     
