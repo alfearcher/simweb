@@ -129,7 +129,7 @@ class OpcionFuncionarioController extends Controller
 
               if($model->validate()){
 
-die(var_dump($model));
+
                      $_SESSION['datos']=$model;
                      $msg = Yii::t('backend', 'Searching!');//VALIDANDO PREGUNTAS DE SEGURIDAD
                      $url =  "<meta http-equiv='refresh' content='1; ".Url::toRoute(['opcion-funcionario/index-funcionario'])."'>";                    
