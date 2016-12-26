@@ -61,4 +61,4 @@ $this->title = Yii::t('backend', 'Official User Register');
     
 
 </div>
-<?= Html::endForm();?>
+<?php ActiveForm::end(); ?> 
