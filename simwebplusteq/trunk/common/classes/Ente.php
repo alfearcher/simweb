@@ -74,10 +74,10 @@
 		protected $alcaldia = 'Alcaldia del Municipio Bolivariano de Guaicaipuro';
 
 		protected $alias = ' LOS TEQUES';
-		protected $eslogan = 'mi eslogan';
-		protected $rif = 'G-200001234-1';
+		protected $eslogan = 'En Guaicaipuro Construimos Futuro';
+		protected $rif = 'G-20004620-1';
 		protected $direccionLocalidad = 'Los Teques';
-		protected $telefonos = ['0238-123232'];
+		protected $telefonos = ['0212-321.50.68'];
 		protected $email = ['alcaldiaguaicaipuro@gmail.com'];
 		protected $portalWeb = 'www.alcaldiadigital.com.ve';
 		protected $noEstado = 0;

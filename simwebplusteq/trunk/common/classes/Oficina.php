@@ -56,7 +56,7 @@
 
  		protected $nombre = 'Direccion de Hacienda Municipal';
  		protected $nombreCargo = 'Director(a) de Hacienda Municipal';
- 		protected $director = 'Lcdo. Nombre Director Encargado';
+ 		protected $director = 'Kelly Pérez';
 
  		//	Inddentificador de la oficina
  		protected $id = 1;
