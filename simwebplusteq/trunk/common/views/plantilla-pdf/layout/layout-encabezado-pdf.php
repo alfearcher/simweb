@@ -64,7 +64,7 @@
 		<div class="row" id="pais"><p><?=strtoupper(Html::encode(Yii::$app->ente->getPais()))?></div></p>
 		<div class="row" id="estado"><p><?=strtoupper(Html::encode(Yii::$app->ente->getEstado()))?></div>
 		<div class="row" id="alcaldia"><?=strtoupper(Html::encode(Yii::$app->ente->getAlcaldia()))?></div>
-		<div class="row" id="renta-municipal"><?=strtoupper(Html::encode('Direccion de Renta'))?></div>
+		<div class="row" id="renta-municipal"><?=strtoupper(Html::encode(Yii::$app->oficina->getNombre()))?></div>
 		<div class="row" id="rif"><?=strtoupper(Html::encode(Yii::$app->ente->getRif()))?></div>
 	</div>
 	<div class="col-sm-3" id="codigo-barra">
