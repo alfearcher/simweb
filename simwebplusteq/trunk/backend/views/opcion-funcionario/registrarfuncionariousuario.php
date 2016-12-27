@@ -28,45 +28,43 @@ $this->params['breadcrumbs'][] = $this->title;
 				<table class="table table-striped">
 					
 				   <tr>
-						<td><div class="col-lg-5">
+						<td><div class="col-sm-4">
                             <?= $form->field($model, "nombre")->textInput(['maxlength' => true,'value'=>$datos['nombres'],'style' => 'width:100px;', 'readOnly'=> true])  ?> 
 							</div>
 						</td>
 				   
-						<td><div class="col-lg-5">
+						<td><div class="col-sm-4">
                             <?= $form->field($model, "apellido")->textInput(['maxlength' => true,'value'=>$datos['apellidos'],'style' => 'width:100px;', 'readOnly'=> true])  ?> 
 							</div>
 						</td>
 				   
-						<td><div class="col-lg-5">
+						<td><div class="col-sm-2">
                             <?= $form->field($model, "cedula")->textInput(['maxlength' => true,'value'=>$datos['ci'],'style' => 'width:100px;', 'readOnly'=> true])  ?> 
 							</div>
 						</td>
 				   </tr>
 
 				   <tr>
-						<td><div class="col-lg-3">
+						<td><div class="col-sm-5">
 						<?= $form->field($model, 'username')->textInput(['maxlength' => true,'value'=>$datos['login'],'style' => 'width:100px;', 'readOnly'=> true]) ?>
 							</div>																		    
                         </td>
-				   </tr>
-
-				   <tr>
-						<td><div class="col-lg-5">
+				   
+						<td><div class="col-sm-5">
                             <?= $form->field($model, "email")->input("email") ?> 
 							</div>
 						</td>
 				   </tr>
 
 				   <tr>
-						<td><div class="col-lg-3">
+						<td><div class="col-sm-3">
                             <?= $form->field($model, "password")->input("password") ?> 
 							</div>
 						</td>
 					</tr>
 
 					<tr>
-						<td><div class="col-lg-3">
+						<td><div class="col-sm-3">
                             <?= $form->field($model, "password_repeat")->input("password") ?>
 							</div> 
 						</td>
