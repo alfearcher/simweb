@@ -63,6 +63,9 @@ class FormRegistrarFuncionarioUsuario extends Model{
     public $password;
     public $password_repeat;
     public $login;
+    public $nombre;
+    public $apellido;
+    public $cedula;
      
     public function rules()
     {   //validaciones requeridas para el formulario de registro de usuarios     

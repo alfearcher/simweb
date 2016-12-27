@@ -26,12 +26,33 @@ $this->params['breadcrumbs'][] = $this->title;
 			</div>
 			<div class="panel-body" >
 				<table class="table table-striped">
+					
+				   <tr>
+						<td><div class="col-lg-5">
+                            <?= $form->field($model, "nombre")->textInput(['maxlength' => true,'value'=>$datos['nombres'],'style' => 'width:100px;', 'readOnly'=> true])  ?> 
+							</div>
+						</td>
+				   </tr>
 					<tr>
+						<td><div class="col-lg-5">
+                            <?= $form->field($model, "apellido")->textInput(['maxlength' => true,'value'=>$datos['apellidos'],'style' => 'width:100px;', 'readOnly'=> true])  ?> 
+							</div>
+						</td>
+				   </tr>
+				   <tr>
+						<td><div class="col-lg-5">
+                            <?= $form->field($model, "cedula")->textInput(['maxlength' => true,'value'=>$datos['ci'],'style' => 'width:100px;', 'readOnly'=> true])  ?> 
+							</div>
+						</td>
+				   </tr>
+
+				   <tr>
 						<td><div class="col-lg-3">
-						<?= $form->field($model, 'username')->textInput(['maxlength' => true,'value'=>$datos,'style' => 'width:100px;', 'readOnly'=> true]) ?>
+						<?= $form->field($model, 'username')->textInput(['maxlength' => true,'value'=>$datos['login'],'style' => 'width:100px;', 'readOnly'=> true]) ?>
 							</div>																		    
                         </td>
 				   </tr>
+
 				   <tr>
 						<td><div class="col-lg-5">
                             <?= $form->field($model, "email")->input("email") ?> 

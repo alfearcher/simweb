@@ -272,7 +272,7 @@ class OpcionFuncionarioController extends Controller
                    $model->getErrors(); 
               }
          }
-              return $this->render("registrarfuncionariousuario", ["model" => $model, "datos"=>$_SESSION['datos'][0]['login']]);          
+              return $this->render("registrarfuncionariousuario", ["model" => $model, "datos"=>$_SESSION['datos'][0]);          
  
      } // cierre del metodo registerfun
 
