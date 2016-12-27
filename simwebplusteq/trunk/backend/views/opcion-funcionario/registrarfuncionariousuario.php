@@ -45,26 +45,24 @@ $this->params['breadcrumbs'][] = $this->title;
 				   </tr>
 
 				   <tr>
-						<td><div class="col-sm-5">
+						<td><div class="col-sm-3">
 						<?= $form->field($model, 'username')->textInput(['maxlength' => true,'value'=>$datos['login'],'style' => 'width:100px;', 'readOnly'=> true]) ?>
 							</div>																		    
                         </td>
 				   
-						<td><div class="col-sm-5">
+						<td><div class="col-sm-7">
                             <?= $form->field($model, "email")->input("email") ?> 
 							</div>
 						</td>
 				   </tr>
 
 				   <tr>
-						<td><div class="col-sm-3">
+						<td><div class="col-sm-5">
                             <?= $form->field($model, "password")->input("password") ?> 
 							</div>
 						</td>
-					</tr>
-
-					<tr>
-						<td><div class="col-sm-3">
+					
+						<td><div class="col-sm-5">
                             <?= $form->field($model, "password_repeat")->input("password") ?>
 							</div> 
 						</td>
