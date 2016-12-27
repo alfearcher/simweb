@@ -78,7 +78,7 @@ class FormRegistrarFuncionarioUsuario extends Model{
             ['email', 'match', 'pattern' => "/^.{5,80}$/", 'message' => Yii::t('backend', 'Minimum 5 and maximum 80 characters')],//minimo 5 y maximo 80 caracteres
             ['email', 'email', 'message' => 'Formato no válido'],
             ['email', 'email_existe'],
-            ['password', 'match', 'pattern' => "/^.{8,16}$/", 'message' => Yii::t('backend', 'Minimum 6 and maximum 16 characters')],//minimo 6 y maximo 16 caracteres
+            ['password', 'match', 'pattern' => "/^.{6,16}$/", 'message' => Yii::t('backend', 'Minimum 6 and maximum 16 characters')],//minimo 6 y maximo 16 caracteres
             ['password_repeat', 'compare', 'compareAttribute' => 'password', 'message' => Yii::t('backend', 'The passwords do not match')],//los password no coinciden
         ];
     }
