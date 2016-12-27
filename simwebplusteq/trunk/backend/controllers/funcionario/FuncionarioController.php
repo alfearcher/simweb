@@ -36,8 +36,9 @@
 	use backend\models\funcionario\FuncionarioForm;
 	use backend\models\funcionario\Funcionario;
 	use common\conexion\ConexionController;
-	use backend\models\utilidad\tarifa\transaccioninmobiliaria\TarifaTransaccionInmobiliariaSearch;
-	use common\models\calculo\transaccioninmobiliaria\TransaccionInmobiliaria;
+	use backend\models\utilidad\departamento\DepartamentoForm;
+	use backend\models\utilidad\tiponaturaleza\TipoNaturaleza;
+	use yii\helpers\ArrayHelper;
 
 
 
@@ -74,6 +75,59 @@
 		public $connLocal;
 		public $conexion;
 		public $transaccion;
+
+
+
+		/***/
+		public function actionIndexCreate()
+		{
+			$request = Yii::$app->request;
+			$postData = $request->post();
+
+			if ( isset($postData['btn-quit']) ) {
+				if ( $postData['btn-quit'] == 1 ) {
+					$this->redirect(['quit']);
+				}
+			}
+
+			$model = New FuncionarioForm();
+			$formName = $model->formName();
+
+			if ( $model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax ) {
+				Yii::$app->response->format = Response::FORMAT_JSON;
+				return ActiveForm::validate($model);
+	      	}
+
+
+	      	if ( $model->load($postData) ) {
+	      		if ( $model->validate() ) {
+	      			// Enviar a vista previa de lo que se quiere guardar.
+
+
+	      		}
+	      	}
+
+	      	// Liosta de los departamentos.
+	      	$listaDepartamento = DepartamentoForm::getListaDepartamento();
+
+	      	// Lista de la naturaleza.
+	      	// Se obtiene el combo-lista para la naturaleza del DNI
+		  	$modeloTipoNaturaleza = TipoNaturaleza::find()->where('id_tipo_naturaleza BETWEEN 2 and 3')->all();
+		  	$listaNaturaleza = ArrayHelper::map($modeloTipoNaturaleza, 'siglas_tnaturaleza', 'nb_naturaleza');
+
+	      	$caption = Yii::t('backend', 'Crear Funcionario');
+	      	return $this->render('/funcionario/create-funcionario-form',[
+	      											'model' => $model,
+	      											'caption' => $caption,
+	      											'listaDepartamento' => $listaDepartamento,
+	      											'listaNaturaleza' => $listaNaturaleza,
+
+	      			]);
+
+
+		}
+
+
 
 
 
