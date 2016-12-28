@@ -37,8 +37,10 @@
 	use backend\models\funcionario\Funcionario;
 	use common\conexion\ConexionController;
 	use backend\models\utilidad\departamento\DepartamentoForm;
+	use backend\models\utilidad\unidaddepartamento\UnidadDepartamentoForm;
 	use backend\models\utilidad\tiponaturaleza\TipoNaturaleza;
 	use yii\helpers\ArrayHelper;
+	use backend\models\utilidad\nivelfuncionario\NivelFuncionarioForm;
 
 
 
@@ -107,6 +109,9 @@
 	      		}
 	      	}
 
+	      	// Lista de Niveles de Funcionario
+	      	$listaNivel = NivelFuncionarioForm::getListaNivel();
+
 	      	// Liosta de los departamentos.
 	      	$listaDepartamento = DepartamentoForm::getListaDepartamento();
 
@@ -121,12 +126,37 @@
 	      											'caption' => $caption,
 	      											'listaDepartamento' => $listaDepartamento,
 	      											'listaNaturaleza' => $listaNaturaleza,
+	      											'listaNivel' => $listaNivel,
 
 	      			]);
 
 
 		}
 
+
+
+
+		/***/
+		public function actionListaUnidad($i)
+	    {
+
+	    	$request = Yii::$app->request;
+	    	$postData = $request->post();
+
+	    	$idDepartamento = $i;
+
+	    	$listaUnidad = UnidadDepartamentoForm::getListaUniadadSegunDepartamento($idDepartamento);
+
+    	    if ( count($listaUnidad) > 0 ) {
+        		echo "<option value='0'>" . "Select..." . "</option>";
+            	foreach ( $listaUnidad as $u => $unidad ) {
+                	echo "<option value='" . $u . "'>" . $unidad . "</option>";
+            	}
+	        } else {
+	            echo "<option> - </option>";
+	        }
+
+	    }
 
 
 
