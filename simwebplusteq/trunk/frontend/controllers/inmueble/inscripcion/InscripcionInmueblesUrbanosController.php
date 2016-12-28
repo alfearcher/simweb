@@ -341,7 +341,7 @@ die(var_dump($envio));
      public function EnviarCorreo($guardo, $documento)
      {
          $email = yii::$app->user->identity->login;
-//die(var_dump($documento));
+die(var_dump($documento).var_dump($guardo).var_dump($email));
          $solicitud = 'Inscripcion de Inmueble';
 
          $nro_solicitud = $guardo;
