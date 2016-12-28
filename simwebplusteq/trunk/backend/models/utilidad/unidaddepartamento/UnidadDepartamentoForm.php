@@ -46,6 +46,7 @@
 	use yii\base\Model;
 	use yii\data\ActiveDataProvider;
 	use backend\models\utilidad\unidaddepartamento\UnidadDepartamento;
+	use yii\helpers\ArrayHelper;
 
 	/**
 	* 	Clase
@@ -124,7 +125,27 @@
 
 
 	    /***/
-	    public function findUnidadDepartamentoSegunDepartamento()
-	    {}
+	    public function getListaUniadadSegunDepartamento($idDepartamento)
+	    {
+	    	$lista = [];
+	    	$model = self::findUnidadSegunDepartamento($idDepartamento);
+	    	if ( $model !== null ) {
+	    		$lista = ArrayHelper::map($model, 'id_unidad', 'descripcion');
+	    	}
+
+	    	return $lista;
+	    }
+
+
+
+	    /***/
+	    public function findUnidadSegunDepartamento($idDepartamento)
+	    {
+	    	return UnidadDepartamento::find()->where('id_departamento =:id_departamento',
+	    												[':id_departamento' => $idDepartamento])
+	    									 ->all();
+	    }
+
+
 	}
 ?>

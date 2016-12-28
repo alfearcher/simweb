@@ -109,12 +109,11 @@
 	    public function getListaDepartamento($inactivo = 0)
 	    {
 	    	$listaDepartamento = null;
-	    	$model = $this->findDepartamento($inactivo);
-	    	if ( isset($model) ) {
-	    		// Se convierte el modelo encontrado en un arreglo de datos para facilitar pasarlo a una lista.
-	    		if ( count($model) > 0 ) {
-	    			$listaDepartamento = ArrayHelper::map($model, 'id_departamento', 'descripcion');
-	    		}
+	    	$model = self::findDepartamento($inactivo);
+	    	if ( $model !== null ) {
+	    		// Se convierte el modelo encontrado en un arreglo de datos para
+	    		// facilitar pasarlo a una lista.
+	    		$listaDepartamento = ArrayHelper::map($model, 'id_departamento', 'descripcion');
 	    	}
 	    	return $listaDepartamento;
 	    }
@@ -130,7 +129,7 @@
 	    public function findDepartamento($inactivo = 0)
 	    {
 	    	$model = Departamento::find()->where('inactivo =:inactivo', [':inactivo' => $inactivo])->all();
-	    	return isset($model) ? $model : null;
+	    	return ( count($model) > 0 ) ? $model : null;
 	    }
 
 

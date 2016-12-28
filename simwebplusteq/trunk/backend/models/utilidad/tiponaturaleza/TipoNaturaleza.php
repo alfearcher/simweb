@@ -39,7 +39,7 @@
  *  @inherits
  *
  */
-    namespace backend\models\utilidad\tiponaturalezaza;
+    namespace backend\models\utilidad\tiponaturaleza;
 
     use Yii;
 
