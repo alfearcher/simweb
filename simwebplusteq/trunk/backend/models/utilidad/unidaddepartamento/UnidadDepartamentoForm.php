@@ -125,7 +125,7 @@
 
 
 	    /***/
-	    public function getListaUniadadSegunDepartamento($idDepartamento)
+	    public function getListaUnidadSegunDepartamento($idDepartamento)
 	    {
 	    	$lista = [];
 	    	$model = self::findUnidadSegunDepartamento($idDepartamento);
