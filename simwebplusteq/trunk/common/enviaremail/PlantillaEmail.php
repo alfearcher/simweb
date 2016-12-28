@@ -179,12 +179,12 @@ class PlantillaEmail{
     public function plantillaEmailSolicitudInscripcion($email, $solicitud, $nro_solicitud, $documento)
     {
 
-        if ( trim($email) == '' ) {
+        if ( trim($email) == true ) {
           $docu = '';
           if ( $documento !== null ) {
               $docu =  implode("<br>*", $documento);
           }
-die(var_dump($email).var_dump(trim($email)));
+die(var_dump($email).var_dump(trim($email)).var_dump($docu));
           $contribuyente = self::busquedaTipoContribuyente();
 
                 $from = 'manuelz0510@gmail.com';
