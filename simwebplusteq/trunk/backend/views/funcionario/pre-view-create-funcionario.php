@@ -100,7 +100,7 @@
 
 
 					<div class="row" style="border-bottom: 1px solid #ccc;margin-top: 20px;;margin-bottom: 20px;">
-							<h4><strong><?=Html::encode(Yii::t('backend', 'Ingrese los siguientes datos '))?></strong></h4>
+							<h4><strong><?=Html::encode(Yii::t('backend', 'Datos Ingresados'))?></strong></h4>
 						</div>
 
 					<div class="row" style="width: 100%;padding: 0px;">
