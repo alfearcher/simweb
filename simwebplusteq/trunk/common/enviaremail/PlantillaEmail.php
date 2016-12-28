@@ -184,7 +184,7 @@ class PlantillaEmail{
           if ( $documento !== null ) {
               $docu =  implode("<br>*", $documento);
           }
-die(var_dump($email).var_dump(trim($email)).var_dump($documento));
+die(var_dump($email).var_dump(trim($email)).var_dump($documento[0]));
           $contribuyente = self::busquedaTipoContribuyente();
 
                 $from = 'manuelz0510@gmail.com';
@@ -194,11 +194,21 @@ die(var_dump($email).var_dump(trim($email)).var_dump($documento));
                 $body =     'Estimado Contribuyente: '.$contribuyente.'<br><br>
                              Usted ha realizado con exito su Solicitud '.$solicitud.' de numero: '.$nro_solicitud.'<br><br>'.
                              'Por favor dirijase a la alcaldia para completar la solicitud correspondiente. '.
-                             'Los documentos a consignar son los siguientes: <br><br>*'.$docu.'<br><br>'.
-                             'Recuerde, esta informacion es personal y de su exclusiva responsabilidad y se agradece no divulgar ni transferir
+                             'Los documentos a consignar obligatoriamente en original y copia son los siguientes: <br><br>*'.$documento[0].'<br>*'.
+                             $documento[1].'<br><br>'.
+                             'Adicionalmente, deberá consignar original y copia de los siguientes documentos si se tratare
+                             de alguno de estos casos: <br><br>*'.
+                             $documento[2].'<br>*'.
+                             $documento[3].'<br>*'.
+                            $documento[4].'<br>*'.
+                            $documento[5].'<br>*'.
+                            $documento[6].'<br>*'.
+                             $documento[7].' en fisico y en digital debidamente firmado por un profesional de area colegiado y con solvencia<br><br>'.
+
+                             'La aprobación o rechazo de su solicitud, le será notificada a través de su correo electrónico, condición ésta que debe esperar para seguir procesando su requerimiento. La celeridad en el procesamiento de su solicitud dependerá del tiempo que disponga para consignar los documentos que la soportan. <br>Recuerde, esta informacion es personal y de su exclusiva responsabilidad y se agradece no divulgar ni transferir
                              a terceros estos datos.<br><br>
                              Esta es una cuenta no monitoreada, por favor no responder este correo.';
-
+die($body);
               $enviarEmail = new EnviarEmailSolicitud();
               $enviar = $enviarEmail->enviarEmail($from, $to, $subject, $textBody, $body);
 
@@ -213,5 +223,9 @@ die(var_dump($email).var_dump(trim($email)).var_dump($documento));
     }
 
 }
+/*Por favor dirijase a la alcaldia para completar la solicitud correspondiente. Los documentos a consignar obligatoriamente en original y copia son los siguientes: 
+Documento de Propiedad del Inmueble; CI del propietario                                                                 Adicionalmente, deberá consignar original y copia de los siguientes documentos si se tratare de alguno de estos casos:                                                                                                                                      Registro Mercantil; Actas de Asamblea (Si el propietario es persona jurídica);                                                       Declaración sucesoral y RIF (En caso de ser una sucesión)                                                                     Autorización simple (En caso de ser familiar directo: padres, hijos, nietos, esposa o conyuge).                        Poder notariado (En caso de que la tramitación sea para un tercero).                                                                   En caso de inscripción de bienhechurias debe consignar carta de residencia del consejo comunal.                                                             Inmueble con superficie mayor a 1.500 m2 deberá consignar plano utm datum regven en fisico y en digital debidamente firmado por un profesional de area colegiado y con solvencia                                                                                                                                                   La aprobación o rechazo de su solicitud, le será notificada a través de su correo electrónico, condición ésta que debe esperar para seguir procesando su requerimiento. La celeridad en el procesamiento de su solicitud dependerá del tiempo que disponga para consignar los documentos que la soportan.
+Recuerde, esta información es personal de su exclusiva responsabilidad se agradece no divulgar ni transferir a terceros estos datos.
 
+Esta es una cuenta no monitoreada, por favor no responder este correo.*/
  ?>
