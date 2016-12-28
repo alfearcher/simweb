@@ -29,8 +29,7 @@
 
 		    	['label' => Icon::show('fa fa-street-view',['class' => $typeLong], $typeIcon) . '&nbsp; Funcionarios',
 		        	'items' => [
-		        			//['label' => 'CVB', 'url' => ['/cvb/prueba-modulo-once/index'], 'options' => ['value' => '300', 'id' => '300']],
-		        			['label' => 'Crear Funcionario', 'url' => ['/funcionario/funcionario/prueba'], 'options' => ['value' => '300', 'id' => '300']],
+		        			['label' => 'Crear Funcionario', 'url' => ['/funcionario/funcionario/index-create'], 'options' => ['value' => '300', 'id' => '300']],
 		        			['label' => 'Modificar Funcionario', 'url' => '#', 'options' => ['value' => '301', 'id' => '301']],
 		        			['label' => 'Desincorporar Funcionario', 'url' => '#', 'options' => ['value' => '302', 'id' => '302']],
 		        			['label' => 'Asignar a Grupo de Trabajo', 'url' => '#', 'options' => ['value' => '303', 'id' => '303']],
