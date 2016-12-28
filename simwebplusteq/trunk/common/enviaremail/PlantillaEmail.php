@@ -184,7 +184,7 @@ class PlantillaEmail{
           if ( $documento !== null ) {
               $docu =  implode("<br>*", $documento);
           }
-die(var_dump($email).var_dump(trim($email)).var_dump($docu));
+die(var_dump($email).var_dump(trim($email)).var_dump($documento));
           $contribuyente = self::busquedaTipoContribuyente();
 
                 $from = 'manuelz0510@gmail.com';
