@@ -134,7 +134,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                       
 
                      $guardo = self::GuardarInscripcion($model);
-die(die(var_dump($guardo));
+die(var_dump($guardo));
                      if($guardo == true){ 
 
 
