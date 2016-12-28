@@ -132,9 +132,9 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                  
                 if (!\Yii::$app->user->isGuest){                                    
                       
-die(var_dump($model));
-                     $guardo = self::GuardarInscripcion($model);
 
+                     $guardo = self::GuardarInscripcion($model);
+die(die(var_dump($guardo));
                      if($guardo == true){ 
 
 
