@@ -125,7 +125,7 @@ use common\conexion\ConexionController;
 	        return [
 	            [['naturaleza','ci','email','id_departamento',
 	              'id_unidad','cargo', 'apellidos', 'nombres',
-	              'niveles_nivel', 'fecha_inicio'],
+	              'niveles_nivel', 'fecha_inicio', 'vigencia'],
 	              'required', 'message' => '{attribute} is required'],
 	            [['ci', 'id_departamento', 'id_unidad'], 'integer'],
 	            [['login', 'clave11', 'cargo'], 'string'],
