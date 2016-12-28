@@ -41,8 +41,10 @@
 	use backend\models\utilidad\tiponaturaleza\TipoNaturaleza;
 	use yii\helpers\ArrayHelper;
 	use backend\models\utilidad\nivelfuncionario\NivelFuncionarioForm;
+	use common\models\session\Session;
 
 
+	session_start();
 
  /**
   *	@file FuncionarioController.php
@@ -74,15 +76,19 @@
 
 		public $layout = 'layout-main';				//	Layout principal del formulario.
 
-		public $connLocal;
-		public $conexion;
-		public $transaccion;
+		private $_conn;
+		private $_conexion;
+		private $_transaccion;
 
 
 
 		/***/
 		public function actionIndexCreate()
 		{
+			if ( !isset($_SESSION['begin']) ) {
+				$_SESSION['begin'] = 1;
+			}
+
 			$request = Yii::$app->request;
 			$postData = $request->post();
 
@@ -95,16 +101,69 @@
 			$model = New FuncionarioForm();
 			$formName = $model->formName();
 
-			if ( $model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax ) {
+			if ( $model->load($postData) && Yii::$app->request->isAjax ) {
 				Yii::$app->response->format = Response::FORMAT_JSON;
 				return ActiveForm::validate($model);
 	      	}
 
+// die(var_dump($postData));
 
-	      	if ( $model->load($postData) ) {
+
+	      	if ( $model->load($postData, $formName) ) {
 	      		if ( $model->validate() ) {
 	      			// Enviar a vista previa de lo que se quiere guardar.
 
+	      			if ( isset($postData['btn-create']) ) {
+	      				if ( $postData['btn-create'] == 3 ) {
+
+							// Lista de Niveles de Funcionario
+					      	$listaNivel = NivelFuncionarioForm::getListaNivel();
+
+					      	// Liosta de los departamentos.
+					      	$listaDepartamento = DepartamentoForm::getListaDepartamento();
+
+					      	// Lista de Uniaades
+					      	$listaUnidad = UnidadDepartamentoForm::getListaUnidadSegunDepartamento($model->id_departamento);
+
+					      	// Lista de la naturaleza.
+					      	// Se obtiene el combo-lista para la naturaleza del DNI
+						  	$modeloTipoNaturaleza = TipoNaturaleza::find()->where('id_tipo_naturaleza BETWEEN 2 and 3')->all();
+						  	$listaNaturaleza = ArrayHelper::map($modeloTipoNaturaleza, 'siglas_tnaturaleza', 'nb_naturaleza');
+
+					      	$caption = Yii::t('backend', 'Confirmar Crear Funcionario');
+					      	return $this->render('/funcionario/pre-view-create-funcionario',[
+					      											'model' => $model,
+					      											'caption' => $caption,
+					      											'listaDepartamento' => $listaDepartamento,
+					      											'listaNaturaleza' => $listaNaturaleza,
+					      											'listaNivel' => $listaNivel,
+					      											'listaUnidad' => $listaUnidad,
+
+					      			]);
+
+	      				}
+
+	      			} elseif ( isset($postData['btn-confirm-create']) ) {
+	      				if ( $postData['btn-confirm-create'] == 5 ) {
+
+	      					// Confirmo y se debe guardar
+	      					$model->fecha_inicio = date('Y-m-d', strtotime($model->fecha_inicio));
+	      					$model->vigencia = date('Y-m-d', strtotime($model->vigencia));
+
+	      					$result = self::actionBeginSave($model, $postData);
+      						self::actionAnularSession(['begin']);
+      						if ( $result ) {
+								$this->_transaccion->commit();
+die(var_dump($model));
+								//return self::actionView($model->id_funcionario);
+							} else {
+								$this->_transaccion->rollBack();
+								$this->redirect(['error-operacion', 'cod'=> 920]);
+
+      						}
+
+	      				}
+	      			}
 
 	      		}
 	      	}
@@ -145,7 +204,7 @@
 
 	    	$idDepartamento = $i;
 
-	    	$listaUnidad = UnidadDepartamentoForm::getListaUniadadSegunDepartamento($idDepartamento);
+	    	$listaUnidad = UnidadDepartamentoForm::getListaUnidadSegunDepartamento($idDepartamento);
 
     	    if ( count($listaUnidad) > 0 ) {
         		echo "<option value='0'>" . "Select..." . "</option>";
@@ -157,6 +216,127 @@
 	        }
 
 	    }
+
+
+
+
+	    /***/
+	    private function actionBeginSave($model, $postEnviado)
+		{
+			$result = false;
+			$idFuncionario = 0;
+
+			$this->_conexion = New ConexionController();
+
+  			// Instancia de conexion hacia la base de datos.
+  			$this->_conn = $this->_conexion->initConectar('db');
+  			$this->_conn->open();
+
+  			// Instancia de tipo transaccion para asegurar la integridad del resguardo de los datos.
+  			// Inicio de la transaccion.
+			$this->_transaccion = $this->_conn->beginTransaction();
+
+			$idFuncionario = self::actionCreateFuncionario($model, $this->_conexion, $this->_conn);
+			if ( $idFuncionario > 0 ) {
+				$model->id_funcionario = $idFuncionario;
+				$result = true;
+			}
+			return $result;
+		}
+
+
+
+
+		/***/
+		private function actionCreateFuncionario($model, $conexion, $conn)
+		{
+			$result = false;
+			$idFuncionario = 0;
+			$tabla = $model->tableName();
+
+			$result = $conexion->guardarRegistro($conn, $tabla, $model->attributes);
+			if ( $result ) {
+				$idFuncionario = $conn->getLastInsertID();
+			}
+
+			return $idFuncionario;
+		}
+
+
+
+
+
+		/**
+		 * Metodo salida del modulo.
+		 * @return view
+		 */
+		public function actionQuit()
+		{
+			$varSession = self::actionGetListaSessions();
+			self::actionAnularSession($varSession);
+			return $this->render('/menu/menuvertical2');
+		}
+
+
+		/**
+		 * Metodo que ejecuta la anulacion de las variables de session utilizados
+		 * en el modulo.
+		 * @param  array $varSessions arreglo con los nombres de las variables de
+		 * sesion que seran anuladas.
+		 * @return none.
+		 */
+		public function actionAnularSession($varSessions)
+		{
+			Session::actionDeleteSession($varSessions);
+		}
+
+
+
+		/**
+		 * Metodo que renderiza una vista indicando que le proceso se ejecuto
+		 * satisfactoriamente.
+		 * @param  integer $cod codigo que permite obtener la descripcion del
+		 * codigo de la operacion.
+		 * @return view.
+		 */
+		public function actionProcesoExitoso($cod)
+		{
+			$varSession = self::actionGetListaSessions();
+			self::actionAnularSession($varSession);
+			return MensajeController::actionMensaje($cod);
+		}
+
+
+
+		/**
+		 * Metodo que renderiza una vista que indica que ocurrio un error en la
+		 * ejecucion del proceso.
+		 * @param  integer $cod codigo que permite obtener la descripcion del
+		 * codigo de la operacion.
+		 * @return view.
+		 */
+		public function actionErrorOperacion($cod)
+		{
+			$varSession = self::actionGetListaSessions();
+			self::actionAnularSession($varSession);
+			return MensajeController::actionMensaje($cod);
+		}
+
+
+
+		/**
+		 * Metodo que permite obtener un arreglo de las variables de sesion
+		 * que seran utilizadas en el modulo, aqui se pueden agregar o quitar
+		 * los nombres de las variables de sesion.
+		 * @return array retorna un arreglo de nombres.
+		 */
+		public function actionGetListaSessions()
+		{
+			return $varSession = [
+							'postData',
+							'begin',
+					];
+		}
 
 
 
