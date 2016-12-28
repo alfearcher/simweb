@@ -169,6 +169,49 @@ class PlantillaEmail{
         }
     }
 
+    /**
+     * [enviarEmail description] metodo que envia email al usuario con la informacion que reciba como parametros
+     * @param  [type] $email string [description] variable que recibe el email del contribuyente al que se le enviara el correo
+     * con la informacion de la solicitud
+     * @param  [type] $solicitud string [description] variable que recibe el tipo de solicitud que realiza el contribuyente
+     * @return [type]            [description] retorna la funcion que hace que envie el correo
+     */
+    public function plantillaEmailSolicitudInscripcion($email, $solicitud, $nro_solicitud, $documento)
+    {
+die(var_dump($email).var_dump(trim($email)));
+        if ( trim($email) == '' ) {
+          $docu = '';
+          if ( $documento !== null ) {
+              $docu =  implode("<br>*", $documento);
+          }
+
+          $contribuyente = self::busquedaTipoContribuyente();
+
+                $from = 'manuelz0510@gmail.com';
+                $to = $email;
+                $subject = 'Solicitudes Online';
+                $textBody = 'Solicitudes Online';
+                $body =     'Estimado Contribuyente: '.$contribuyente.'<br><br>
+                             Usted ha realizado con exito su Solicitud '.$solicitud.' de numero: '.$nro_solicitud.'<br><br>'.
+                             'Por favor dirijase a la alcaldia para completar la solicitud correspondiente. '.
+                             'Los documentos a consignar son los siguientes: <br><br>*'.$docu.'<br><br>'.
+                             'Recuerde, esta informacion es personal y de su exclusiva responsabilidad y se agradece no divulgar ni transferir
+                             a terceros estos datos.<br><br>
+                             Esta es una cuenta no monitoreada, por favor no responder este correo.';
+
+              $enviarEmail = new EnviarEmailSolicitud();
+              $enviar = $enviarEmail->enviarEmail($from, $to, $subject, $textBody, $body);
+
+                if($enviar == true){
+                  return true;
+                }else{
+                  return false;
+                }
+        } else {
+          return false;
+        }
+    }
+
 }
 
  ?>

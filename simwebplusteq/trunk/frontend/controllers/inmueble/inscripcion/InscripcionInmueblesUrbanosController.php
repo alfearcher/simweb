@@ -348,7 +348,7 @@ die(var_dump($documento).var_dump($guardo).var_dump($email));
 
          $enviarEmail = new PlantillaEmail();
         
-         if ($enviarEmail->plantillaEmailSolicitud($email, $solicitud, $nro_solicitud, $documento)){
+         if ($enviarEmail->plantillaEmailSolicitudInscripcion($email, $solicitud, $nro_solicitud, $documento)){
 
              return true;
          } else { 
