@@ -172,14 +172,14 @@
 	    {
 	    	$idRubroEncontrado = 0;
 	    	$findModelRubro = Rubro::findOne($idRubro);
-	    	if ( isset($findModelRubro) ) {
+	    	if ( $findModelRubro !== null ) {
 	    		$rubro = $findModelRubro->rubro;
 	    		$findModelNew = Rubro::find()->where('ano_impositivo =:ano_impositivo',
 	    													[':ano_impositivo' => $añoImpositivo])
 	    									 ->andWhere('rubro =:rubro', [':rubro' => $rubro])
 	    									 ->andWhere('inactivo =:inactivo',['inactivo' => 0])
 	    									 ->one();
-	    		if ( isset($findModelNew) ) {
+	    		if ( $findModelNew !== null ) {
 	    			$idRubroEncontrado = $findModelNew->id_rubro;
 	    		}
 	    	}
