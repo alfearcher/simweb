@@ -1329,7 +1329,7 @@
 	    	$añoActual = (int)date('Y');
     		$añoImpositivo = (int)$modelDeclaracion[0]['ano_impositivo'];
     		$usuario = '';
-			$usuario = Y::$app->identidad->getUsuario();
+			$usuario = Yii::$app->identidad->getUsuario();
 
     		// Año de la estimada a cargar.
 	    	$añoEstimada = $añoImpositivo + 1;
