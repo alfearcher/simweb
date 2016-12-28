@@ -194,7 +194,7 @@ class PlantillaEmail{
                 $body =     'Estimado Contribuyente: '.$contribuyente.'<br><br>
                              Usted ha realizado con exito su Solicitud '.$solicitud.' de numero: '.$nro_solicitud.'<br><br>'.
                              'Por favor dirijase a la alcaldia para completar la solicitud correspondiente. '.
-                             'Los documentos a consignar obligatoriamente en original y copia son los siguientes: <br><br>*'.$documento[0].'<br>*'.
+                             'Los documentos a consignar obligatoriamente en original y copia son los siguientes:<br><br>*'.$documento[0].'<br>*'.
                              $documento[1].'<br><br>'.
                              'Adicionalmente, deberá consignar original y copia de los siguientes documentos si se tratare
                              de alguno de estos casos: <br><br>*'.
