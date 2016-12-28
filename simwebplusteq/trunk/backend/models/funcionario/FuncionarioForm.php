@@ -1,47 +1,47 @@
-<?php 
+<?php
 /**
  *  @copyright © by ASIS CONSULTORES 2012 - 2016
  *  All rights reserved - SIMWebPLUS
  */
 
  /**
- * 
- *  > This library is free software; you can redistribute it and/or modify it under 
- *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free 
- *  > Software Foundation; either version 2 of the Licence, or (at your opinion) 
+ *
+ *  > This library is free software; you can redistribute it and/or modify it under
+ *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free
+ *  > Software Foundation; either version 2 of the Licence, or (at your opinion)
  *  > any later version.
- *  > 
- *  > This library is distributed in the hope that it will be usefull, 
- *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability 
- *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence 
+ *  >
+ *  > This library is distributed in the hope that it will be usefull,
+ *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability
+ *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence
  *  > for more details.
- *  > 
+ *  >
  *  > See [LICENSE.TXT](../../LICENSE.TXT) file for more information.
  *
  */
 
- /**    
+ /**
  *  @file FuncionarioForm.php
- *  
+ *
  *  @author Jose Rafael Perez Teran
- * 
+ *
  *  @date 07-07-2015
- * 
+ *
  *  @class FuncionarioForm
  *  @brief Clase Modelo del formulario de creacion de funcionarios, mantiene las reglas de validacion
- * 
- *  
+ *
+ *
  *  @property
  *
- *  
+ *
  *  @method
  *  rules
  *  attributeLabels
  * 	scenarios
- *  
- *  
+ *
+ *
  *  @inherits
- *  
+ *
  */
 
 
@@ -123,45 +123,27 @@ use common\conexion\ConexionController;
 	    public function rules()
 	    {
 	        return [
-	            [['naturaleza','ci','email','id_departamento', 'id_unidad','cargo', 'apellidos', 'nombres', 'niveles_nivel', 'fecha_inicio'],'required'],
+	            [['naturaleza','ci','email','id_departamento',
+	              'id_unidad','cargo', 'apellidos', 'nombres',
+	              'niveles_nivel', 'fecha_inicio'],
+	              'required', 'message' => '{attribute} is required'],
 	            [['ci', 'id_departamento', 'id_unidad'], 'integer'],
+	            [['login', 'clave11', 'cargo'], 'string'],
 	            ['email', 'email'],
 	            ['email', 'filter','filter'=>'strtolower'],
 	            ['ci', 'unique'],
 	            [['celular'], 'string'],
-	           // [['fecha_inicio'], 'date', 'format' => 'd-M-yyyy'],
-	            ['fecha_inicio', 'fechaInicioValida'],
-	            //['fecha_inicio', 'date'=>'dd-MM-yyyy'],
 	            [['login', 'clave11'], 'default', 'value' => null],
 	            ['en_uso', 'default', 'value' => 0],
 	            ['niveles_nivel', 'default', 'value' => 0],
-	             // status_funcionario default value = 1, funcionario inactivo
 	            ['status_funcionario', 'default', 'value' => 0],
 	            ['entes_ente', 'default', 'value' => Yii::$app->ente->getEnte()],
-	            [['fecha_fin', 'vigencia'], 'default', 'value' => '0000-00-00'],
+	            [['fecha_fin', 'vigencia'], 'default', 'value' => date('Y-m-d', strtotime('0000-00-00'))],
 	            ['fecha_inclusion', 'default', 'value' => date('Y-m-d')],
 
 	        ];
 	    }
 
-
-	    /**
-	    *	Valida que el valor del campo fecha_inicio no sea mayor a la fecha actaul.
-	    *
-	    * 	@return boolean, true o false
-	    */
-	    public static function fechaInicioValida($attribute, $params)
-	    {
-	    	$fechaActual = date('Y-m-d');		// Fecha actual, hoy.
-
-	    	//die(var_dump(parent::getAttributes($attribute)));
-
-	    	/*if ( $fechaActual < $this->params ) {
-
-	    	}*/
-
-	    	return true;
-	    }
 
 
 
@@ -219,12 +201,12 @@ use common\conexion\ConexionController;
 
 
 	    public function search($params)
-   		{ 
+   		{
 
 
 	        $query = Funcionario::find()->where(['id_funcionario' => $_SESSION['idFuncionario']]);
 	        //$query = InmueblesUrbanosForm::find();
-	        
+
 	        $dataProvider = new ActiveDataProvider([
 	            'query' => $query,
 	        ]);
@@ -259,7 +241,7 @@ use common\conexion\ConexionController;
 		            'celular' => $this->celular,
 		            'naturaleza' => $this->naturaleza,
 
-	            
+
 	        ]);
 
 	        $query->andFilterWhere(['like', 'id_funcionario', $this->id_funcionario])
@@ -267,7 +249,7 @@ use common\conexion\ConexionController;
 	            ->andFilterWhere(['like', 'apellidos', $this->apellidos])
 	            ->andFilterWhere(['like', 'nombres', $this->nombres])
 	            ->andFilterWhere(['like', 'status_funcionario', $this->status_funcionario]);
-	            
+
 
 	        return $dataProvider;
     	}
