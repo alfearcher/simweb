@@ -1329,11 +1329,7 @@
 	    	$añoActual = (int)date('Y');
     		$añoImpositivo = (int)$modelDeclaracion[0]['ano_impositivo'];
     		$usuario = '';
-			if ( isset(Yii::$app->user->identity->login) ) {
-				$usuario = Yii::$app->user->identity->login;
-			} elseif ( isset(Yii::$app->user->identity->username) ) {
-				$usuario = Yii::$app->user->identity->username;
-			}
+			$usuario = Y::$app->identidad->getUsuario();
 
     		// Año de la estimada a cargar.
 	    	$añoEstimada = $añoImpositivo + 1;
@@ -1420,7 +1416,8 @@
 									$rangoFecha = self::getRangoFechaDeclaracion($añoEstimada);
 
 									$arreglo['id_impuesto'] = (int)$idActEcon['id'];
-									$arreglo['id_rubro'] = $declaracion['id_rubro'];
+									//$arreglo['id_rubro'] = $declaracion['id_rubro'];
+									$arreglo['id_rubro'] = $idRubro;
 									$arreglo['exigibilidad_periodo'] = (int)$declaracion['exigibilidad_periodo'];
 									$arreglo['periodo_fiscal_desde'] = $rangoFecha['fechaDesde'];
 									$arreglo['periodo_fiscal_hasta'] = $rangoFecha['fechaHasta'];
@@ -1429,7 +1426,7 @@
 									$arreglo['usuario'] = $usuario;
 									$arreglo['fecha_hora'] = date('Y-m-d H:i:s');
 									$arreglo['inactivo'] = 0;
-									$arreglo['condicion'] = 3;
+									$arreglo['condicion'] = 3;		// Rubro cargado por oficio o codigo
 
 									$result = $searchIngreso->guardar($arreglo, $conexion, $conn);
 									if ( !$result ) {
