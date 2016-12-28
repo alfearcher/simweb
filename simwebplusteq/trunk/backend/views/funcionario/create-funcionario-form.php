@@ -81,6 +81,12 @@
         </div>
 
         <?= $form->field($model, 'entes_ente')->hiddenInput(['value' => Yii::$app->ente->getEnte()])->label(false); ?>
+        <?= $form->field($model, 'status_funcionario')->hiddenInput(['value' => $model->status_funcionario])->label(false); ?>
+        <?= $form->field($model, 'fecha_fin')->hiddenInput(['value' => $model->fecha_fin])->label(false); ?>
+        <?= $form->field($model, 'en_uso')->hiddenInput(['value' => $model->en_uso])->label(false); ?>
+        <?= $form->field($model, 'login')->hiddenInput(['value' => $model->login])->label(false); ?>
+        <?= $form->field($model, 'clave11')->hiddenInput(['value' => $model->clave11])->label(false); ?>
+        <?= $form->field($model, 'fecha_inclusion')->hiddenInput(['value' => $model->fecha_inclusion])->label(false); ?>
 
 <!-- Cuerpo del formulario -->
 <!-- style="background-color: #F9F9F9;" -->
@@ -224,6 +230,10 @@
 																	 			'id' => 'departamento',
 																	 			'style' => 'width: 100%;',
                                                      				 			'prompt' => Yii::t('backend', 'Select..'),
+                                                     				 			'onchange' => '$.post( "' . Yii::$app->urlManager
+                                                                                       		           ->createUrl('funcionario/funcionario/lista-unidad') . '&i=' . '" + $(this).val(), function( data ) {
+                                                                                                                 $( "select#unidad" ).html( data );
+                                                                                                           });'
                                                             		])->label(false)
 		    							?>
 									</div>
@@ -277,7 +287,29 @@
 							</div>
 						</div>
 
-						<div class="col-sm-4" style="padding: 0px;width: 25%;">
+						<div class="col-sm-4" style="padding: 0px;width: 20%;">
+							<div class="row" style="padding: 0px;">
+								<div class="nivel">
+		                			<strong><h5><?=Html::encode('Nivel')?></h5></strong>
+								</div>
+							</div>
+
+							<div class="row" style="padding: 0px;">
+								<div class="col-sm-2" style="width:85%;padding:0px;">
+									<div class="nivel">
+										<?= $form->field($model, 'niveles_nivel')->dropDownList($listaNivel,[
+																	 			'id' => 'niveles-nivel',
+																	 			'style' => 'width: 100%;',
+                                                     				 			'prompt' => Yii::t('backend', 'Select..'),
+                                                            		])->label(false)
+		    							?>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+						<div class="col-sm-4" style="padding: 0px;width: 45%;">
 							<div class="row" style="padding: 0px;">
 								<div class="fecha-inicio">
 		                			<strong><h5><?=Html::encode('Fecha Inicio')?></h5></strong>
@@ -285,7 +317,7 @@
 							</div>
 
 							<div class="row" style="padding: 0px;">
-								<div class="col-sm-2" style="width:85%;padding:0px;">
+								<div class="col-sm-2" style="width:45%;padding:0px;">
 									<div class="fecha-inicio">
 										<?= $form->field($model, 'fecha_inicio')->widget(\yii\jui\DatePicker::classname(),[
 																						  'clientOptions' => [
@@ -308,7 +340,7 @@
 							</div>
 						</div>
 
-						<div class="col-sm-4" style="padding: 0px;width: 25%;">
+						<div class="col-sm-4" style="padding: 0px;width: 45%;">
 							<div class="row" style="padding: 0px;">
 								<div class="vigencia">
 		                			<strong><h5><?=Html::encode('Vigente Hasta')?></h5></strong>
@@ -316,7 +348,7 @@
 							</div>
 
 							<div class="row" style="padding: 0px;">
-								<div class="col-sm-2" style="width:85%;padding:0px;">
+								<div class="col-sm-2" style="width:45%;padding:0px;">
 									<div class="vigencia">
 										<?= $form->field($model, 'vigencia')->widget(\yii\jui\DatePicker::classname(),[
 																						  'clientOptions' => [
