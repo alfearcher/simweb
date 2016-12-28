@@ -81,12 +81,12 @@
         </div>
 
         <?= $form->field($model, 'entes_ente')->hiddenInput(['value' => Yii::$app->ente->getEnte()])->label(false); ?>
-        <?= $form->field($model, 'status_funcionario')->hiddenInput(['value' => $model->status_funcionario])->label(false); ?>
-        <?= $form->field($model, 'fecha_fin')->hiddenInput(['value' => $model->fecha_fin])->label(false); ?>
-        <?= $form->field($model, 'en_uso')->hiddenInput(['value' => $model->en_uso])->label(false); ?>
-        <?= $form->field($model, 'login')->hiddenInput(['value' => $model->login])->label(false); ?>
-        <?= $form->field($model, 'clave11')->hiddenInput(['value' => $model->clave11])->label(false); ?>
-        <?= $form->field($model, 'fecha_inclusion')->hiddenInput(['value' => $model->fecha_inclusion])->label(false); ?>
+        <?= $form->field($model, 'status_funcionario')->hiddenInput(['value' => 0])->label(false); ?>
+        <?= $form->field($model, 'fecha_fin')->hiddenInput(['value' => '0000-00-00'])->label(false); ?>
+        <?= $form->field($model, 'en_uso')->hiddenInput(['value' => 0])->label(false); ?>
+        <?= $form->field($model, 'login')->hiddenInput(['value' => null])->label(false); ?>
+        <?= $form->field($model, 'clave11')->hiddenInput(['value' => null])->label(false); ?>
+        <?= $form->field($model, 'fecha_inclusion')->hiddenInput(['value' => date('Y-m-d')])->label(false); ?>
 
 <!-- Cuerpo del formulario -->
 <!-- style="background-color: #F9F9F9;" -->
@@ -358,7 +358,7 @@
 										<div class="vigencia">
 											<?= $form->field($model, 'vigencia')->widget(\yii\jui\DatePicker::classname(),[
 																							  'clientOptions' => [
-																									'maxDate' => '+0d',	// Bloquear los dias en el calendario a partir del dia siguiente al actual.
+																									//'maxDate' => '+0d',	// Bloquear los dias en el calendario a partir del dia siguiente al actual.
 																									'changeMonth' => true,
 																									'changeYear' => true,
 																								],
