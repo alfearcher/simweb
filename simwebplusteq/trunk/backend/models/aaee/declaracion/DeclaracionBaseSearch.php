@@ -774,23 +774,24 @@
 	     */
 	    public function findRubrosRegistrados($añoImpositivo, $periodo)
 	    {
-	    	$tablaAct = ActEcon::tableName();
-	    	$tablaRubro = Rubro::tableName();
-	    	$tablaIngreso = ActEconIngreso::tableName();
-	    	$findModel = ActEconIngreso::find()->where('id_contribuyente =:id_contribuyente',
+	    	// $tablaAct = ActEcon::tableName();
+	    	// $tablaRubro = Rubro::tableName();
+	    	// $tablaIngreso = ActEconIngreso::tableName();
+	    	$findModel = ActEconIngreso::find()->alias('I')
+	    	                                   ->where('id_contribuyente =:id_contribuyente',
 	    													[':id_contribuyente' => $this->_id_contribuyente])
-	    	                                   ->andwhere($tablaAct . '.ano_impositivo =:ano_impositivo',
+	    	                                   ->andwhere('A.ano_impositivo =:ano_impositivo',
 	    													[':ano_impositivo' => $añoImpositivo])
 	    	                                   ->andWhere('estatus =:estatus',
 	    	                                    			[':estatus' => 0])
 	    									   ->andWhere('exigibilidad_periodo =:exigibilidad_periodo',
 	    									   				[':exigibilidad_periodo' => $periodo])
-	    									   ->andWhere($tablaIngreso . '.inactivo =:inactivo',
+	    									   ->andWhere('I.inactivo =:inactivo',
 	    									    			[':inactivo' => 0])
-	    									   ->andWhere($tablaRubro . '.inactivo =:inactivo',
+	    									   ->andWhere('R.inactivo =:inactivo',
 	    									    			[':inactivo' => 0])
-	    									   ->joinWith('actividadEconomica', true, 'INNER JOIN')
-	    									   ->joinWith('rubroDetalle', true, 'INNER JOIN');
+	    									   ->joinWith('actividadEconomica A', true, 'INNER JOIN')
+	    									   ->joinWith('rubroDetalle R', true, 'INNER JOIN');
 
 	    	return isset($findModel) ? $findModel : null;
 	    }
