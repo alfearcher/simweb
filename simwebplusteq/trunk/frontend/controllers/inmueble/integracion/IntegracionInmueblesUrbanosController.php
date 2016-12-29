@@ -244,7 +244,7 @@ public $layout="layout-main";
                           ];  
            
             $conn = New ConexionController();
-            $conexion = $conn->initConectar('dbsim');     // instancia de la conexion (Connection)
+            $conexion = $conn->initConectar('db');     // instancia de la conexion (Connection)
             $conexion->open();  
             $transaccion = $conexion->beginTransaction();
 
