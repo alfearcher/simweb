@@ -408,6 +408,10 @@
 				$this->redirect(['index-update', 'id' => $postData['id']]);
 			}
 
+			if ( isset($postData['btn-quit']) ) {
+				return $this->redirect(['quit']);
+			}
+
 			$model = New ListaFuncionarioForm();
 
 			$dataProvider = $model->search($params);
