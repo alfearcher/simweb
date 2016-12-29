@@ -143,7 +143,7 @@
 
 					} else {
 						// El contribuyente no es la sede principal
-						return $this->redirect(['error-operacion', 'cod' => 934]);
+						return $this->redirect(['error-operacion', 'cod' => 936]);
 					}
 				} else {
 					// No esta defino el contribuyente.
