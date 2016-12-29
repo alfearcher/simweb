@@ -192,7 +192,7 @@
 					$model = $modelSearch->findInscripcion($this->model->nro_solicitud);
 
 
-die(var_dump($model));
+
 					return $this->render('@backend/views/inmueble/inscripcion-inmuebles-urbanos/view-solicitud', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
 													'model' => $model,
