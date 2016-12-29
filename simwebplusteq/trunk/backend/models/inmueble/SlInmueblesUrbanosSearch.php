@@ -107,7 +107,7 @@
 	    public function findInscripcion($nroSolicitud)
 	    {
 	    	$modelFind = SlInmueblesUrbanosForm::find()->where('nro_solicitud =:nro_solicitud', [':nro_solicitud' => $nroSolicitud])
-	    													  ->andWhere('id_contribuyente =:id_contribuyente', [':id_contribuyente' => $this->id_contribuyente])
+	    													  ->andWhere('id_contrib1uyente =:id_contribuyente', [':id_contribuyente' => $this->id_contribuyente])
 	    													  ->one();
 die(var_dump($modelFind));
 	    	return isset($modelFind) ? $modelFind : null; 
