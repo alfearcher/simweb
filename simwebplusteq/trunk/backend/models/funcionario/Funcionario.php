@@ -58,6 +58,7 @@
 	class Funcionario extends ActiveRecord
 	{
 
+
 		/**
 		 *	Metodo que retorna el nombre de la base de datos donde se tiene la conexion actual.
 		 * 	Utiliza las propiedades y metodos de Yii2 para traer dicha informacion.
@@ -77,7 +78,6 @@
 		{
 			return 'funcionarios';
 		}
-
 
 
 
@@ -131,6 +131,53 @@
 		{
 			return $this->hasMany(FuncionarioSolicitud::className(), ['id_funcionario' => 'id_funcionario']);
 		}
+
+
+
+		/**
+     	* @inheritdoc
+     	*/
+    	public function scenarios()
+    	{
+        	// bypass scenarios() implementation in the parent class
+        	return Model::scenarios();
+    	}
+
+
+
+    	/**
+    	 *	Metodo que permite fijar la reglas de validacion del formulario _form
+    	 */
+	    public function rules()
+	    {
+	        return [
+	            [['naturaleza','ci','email','id_departamento',
+	              'id_unidad','cargo', 'apellidos', 'nombres',
+	              'niveles_nivel', 'fecha_inicio', 'vigencia',
+	              'id_funcionario'],
+	              'required', 'message' => '{attribute} is required'],
+	            [['ci', 'id_departamento', 'id_unidad', 'id_funcionario'], 'integer'],
+	            [['login', 'clave11', 'cargo'], 'string'],
+	            ['email', 'email'],
+	            ['email', 'filter','filter'=>'strtolower'],
+	            // ['ci', 'unique', 'when' => function($model) {
+	            // 								if ( !$model->isNewRecord ) {
+	            // 									if ( $model->id_funcionario !== $this->id_funcionario ) {
+	            // 										return true;
+	            // 									}
+	            // 								}
+	            // }],
+	            [['celular'], 'string'],
+	            [['login', 'clave11'], 'default', 'value' => null],
+	            [['status_funcionario', 'niveles_nivel', 'en_uso'], 'default', 'value' => 0],
+	            ['entes_ente', 'default', 'value' => Yii::$app->ente->getEnte()],
+	            [['fecha_fin', 'vigencia'], 'default', 'value' => date('Y-m-d', strtotime('0000-00-00'))],
+	            ['fecha_inclusion', 'default', 'value' => date('Y-m-d')],
+
+	        ];
+	    }
+
+
 
 	}
 

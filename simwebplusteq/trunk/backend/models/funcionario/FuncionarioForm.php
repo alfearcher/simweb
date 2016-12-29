@@ -50,9 +50,8 @@ namespace backend\models\funcionario;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-//use yii\db\ActiveRecord;
 use backend\models\funcionario\Funcionario;
-use common\conexion\ConexionController;
+
 
 /**
  * This is the model class for table "funcionarios".
@@ -198,12 +197,14 @@ use common\conexion\ConexionController;
 
 
 
+
+
+	    /***/
 	    public function search($params)
    		{
 
+	        $query = Funcionario::find();
 
-	        $query = Funcionario::find()->where(['id_funcionario' => $_SESSION['idFuncionario']]);
-	        //$query = InmueblesUrbanosForm::find();
 
 	        $dataProvider = new ActiveDataProvider([
 	            'query' => $query,
@@ -217,39 +218,16 @@ use common\conexion\ConexionController;
 	            return $dataProvider;
 	        }
 
-	        $query->andFilterWhere([
-
-	        		'id_funcionario' => $this->id_funcionario,
-		            'entes_ente' => $this->entes_ente,
-		            'ci' => $this->ci,
-		            'apellidos' => $this->apellidos,
-		            'nombres' => $this->nombres,
-		            'fecha_inicio' =>$this->fecha_inicio,
-		            'fecha_fin' => $this->fecha_fin,
-		            'status_funcionario' => $this->status_funcionario,
-		            'en_uso' => $this->en_uso,
-		            'login' => $this->login,
-		            'clave11' => $this->clave11,
-		            'niveles_nivel' => $this->niveles_nivel,
-		            'cargo' => $this->cargo,
-		            'vigencia' => $this->vigencia,
-		            'id_departamento' => $this->id_departamento,
-		            'id_unidad' => $this->id_unidad,
-		            'email' => $this->email,
-		            'celular' => $this->celular,
-		            'naturaleza' => $this->naturaleza,
-
-
-	        ]);
 
 	        $query->andFilterWhere(['like', 'id_funcionario', $this->id_funcionario])
-	            ->andFilterWhere(['like', 'ci', $this->ci])
-	            ->andFilterWhere(['like', 'apellidos', $this->apellidos])
-	            ->andFilterWhere(['like', 'nombres', $this->nombres])
-	            ->andFilterWhere(['like', 'status_funcionario', $this->status_funcionario]);
+	              ->andFilterWhere(['like', 'ci', $this->ci])
+	              ->andFilterWhere(['like', 'apellidos', $this->apellidos])
+	              ->andFilterWhere(['like', 'nombres', $this->nombres]);
 
 
 	        return $dataProvider;
     	}
+
+
 	}
 ?>
