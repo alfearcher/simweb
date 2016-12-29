@@ -113,7 +113,7 @@
 					$searchCorreccion = New CorreccionRazonSocialSearch($idContribuyente);
 
 					// Se verifica que el contribuyente sea la sede principal.
-					//if ( $searchCorreccion->getSedePrincipal() ) {
+					if ( $searchCorreccion->getSedePrincipal() ) {
 
 						// Se determina si ya existe una solicitud pendiente.
 						if ( !$searchCorreccion->yaPoseeSolicitudSimiliarPendiente() ) {
@@ -141,10 +141,10 @@
 							return $this->redirect(['error-operacion', 'cod' => 945]);
 						}
 
-					//} else {
+					} else {
 						// El contribuyente no es la sede principal
-					//	return $this->redirect(['error-operacion', 'cod' => 934]);
-					//}
+						return $this->redirect(['error-operacion', 'cod' => 934]);
+					}
 				} else {
 					// No esta defino el contribuyente.
 					return $this->redirect(['error-operacion', 'cod' => 932]);
