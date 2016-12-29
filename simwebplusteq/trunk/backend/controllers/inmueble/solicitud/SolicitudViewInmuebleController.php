@@ -96,7 +96,7 @@
 		 * en caso de no encontrar nada false.
 		 */
 		public function actionInicioView()
-		{
+		{ die(var_dump($this->model->tipo_solicitud));
 			if ( isset($this->model) && isset($_SESSION['idContribuyente']) ) {
 // id de la configuracion tipo..
 				if ( $this->model->tipo_solicitud == 20 ) {
