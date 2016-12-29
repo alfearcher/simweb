@@ -34,6 +34,7 @@
 	use yii\web\Response;
 	use yii\helpers\Url;
 	use backend\models\funcionario\FuncionarioForm;
+	use backend\models\funcionario\ListaFuncionarioForm;
 	use backend\models\funcionario\Funcionario;
 	use common\conexion\ConexionController;
 	use backend\models\utilidad\departamento\DepartamentoForm;
@@ -194,7 +195,11 @@
 
 
 
-		/***/
+		/**
+		 * Metodo para generar la lista de unidades, segun el departamento seleccionado
+		 * @param  [type] $i [description]
+		 * @return [type]    [description]
+		 */
 		public function actionListaUnidad($i)
 	    {
 
@@ -245,6 +250,50 @@
 
 
 
+		/***/
+		private function actionBeginUpdate($model, $postEnviado)
+		{
+			$result = false;
+			$idFuncionario = 0;
+
+			$this->_conexion = New ConexionController();
+
+  			// Instancia de conexion hacia la base de datos.
+  			$this->_conn = $this->_conexion->initConectar('db');
+  			$this->_conn->open();
+
+  			// Instancia de tipo transaccion para asegurar la integridad del resguardo de los datos.
+  			// Inicio de la transaccion.
+			$this->_transaccion = $this->_conn->beginTransaction();
+
+			$result = self::actionUpdateFuncionario($model, $this->_conexion, $this->_conn);
+
+			return $result;
+		}
+
+
+
+
+
+
+		/***/
+		private function actionUpdateFuncionario($model, $conexion, $conn)
+		{
+			$result = false;
+			$tabla = $model->tableName();
+			$arreglo = [
+				'id_funcionario' => $model->id_funcionario,
+			];
+
+			$model->fecha_inicio = date('Y-m-d', strtotime($model->fecha_inicio));
+			$model->vigencia = date('Y-m-d', strtotime($model->vigencia));
+			$result = $conexion->modificarRegistro($conn, $tabla, $model->attributes, $arreglo);
+
+			return $result;
+		}
+
+
+
 
 		/***/
 		private function actionCreateFuncionario($model, $conexion, $conn)
@@ -263,6 +312,161 @@
 
 
 
+		/***/
+		public function actionIndexUpdate()
+		{
+			$request = Yii::$app->request;
+
+			if ( $request->isGet ) {
+				return self::actionBuscarFuncionario($request->get('id'));
+			} else {
+
+				$model = New Funcionario();
+				$formName = $model->formName();
+
+				$postData = $request->post();
+
+				if ( $model->load($postData) && Yii::$app->request->isAjax ) {
+					Yii::$app->response->format = Response::FORMAT_JSON;
+					return ActiveForm::validate($model);
+		      	}
+
+		      	if ( isset($postData['btn-quit']) ) {
+		      		return $this->redirect(['quit']);
+		      	}
+
+				if ( isset($postData['btn-back']) ) {
+		      		return $this->redirect(['view-lista']);
+		      	}
+
+		      	if ( $model->load($postData) ) {
+		      		if ( $model->validate() ) {
+		      			$result = false;
+
+		      			$result = self::actionBeginUpdate($model, $postData);
+		      			if ( $result ) {
+		      				$this->_transaccion->commit();
+							$this->redirect(['resultado']);
+						} else {
+							$this->_transaccion->rollBack();
+							$this->redirect(['error-operacion', 'cod'=> 920]);
+
+  						}
+		      		}
+		      	}
+
+		      	// Lista de Niveles de Funcionario
+		      	$listaNivel = NivelFuncionarioForm::getListaNivel();
+
+		      	// Liosta de los departamentos.
+		      	$listaDepartamento = DepartamentoForm::getListaDepartamento();
+
+		      	// Lista de Uniaades
+		      	$listaUnidad = UnidadDepartamentoForm::getListaUnidadSegunDepartamento($model->id_departamento);
+
+		      	// Lista de la naturaleza.
+		      	// Se obtiene el combo-lista para la naturaleza del DNI
+			  	$modeloTipoNaturaleza = TipoNaturaleza::find()->where('id_tipo_naturaleza BETWEEN 2 and 3')->all();
+			  	$listaNaturaleza = ArrayHelper::map($modeloTipoNaturaleza, 'siglas_tnaturaleza', 'nb_naturaleza');
+
+				$caption = Yii::t('backend', 'Actualizacion de Funcionario');
+				return $this->render('/funcionario/update-funcionario-form', [
+											'caption' => $caption,
+											'model' => $model,
+											'listaDepartamento' => $listaDepartamento,
+  											'listaNaturaleza' => $listaNaturaleza,
+  											'listaNivel' => $listaNivel,
+  											'listaUnidad' => $listaUnidad,
+						]);
+
+			}
+		}
+
+
+
+		/***/
+		public function actionResultado()
+		{
+			return $this->render('/funcionario/_list',[
+									'codigo' => 100
+
+					]);
+		}
+
+
+
+
+		/***/
+		public function actionViewLista()
+		{
+			$request = Yii::$app->request;
+			$params = $request->queryParams;
+
+			$postData = $request->post();
+
+			if ( isset($postData['id']) ) {
+				$this->redirect(['index-update', 'id' => $postData['id']]);
+			}
+
+			$model = New ListaFuncionarioForm();
+
+			$dataProvider = $model->search($params);
+			$caption = Yii::t('backend', 'Lista de Funcionarios');
+			return $this->render('/funcionario/lista-funcionario',[
+												'caption' => $caption,
+												'model' => $model,
+												'dataProvider' => $dataProvider,
+					]);
+		}
+
+
+
+
+
+		/***/
+		public function actionBuscarFuncionario($id)
+		{
+			$model = self::actionBuscarFuncionarioModel($id);
+			if ( $model !== null ) {
+				// Lista de Niveles de Funcionario
+		      	$listaNivel = NivelFuncionarioForm::getListaNivel();
+
+		      	// Liosta de los departamentos.
+		      	$listaDepartamento = DepartamentoForm::getListaDepartamento();
+
+		      	// Lista de Uniaades
+		      	$listaUnidad = UnidadDepartamentoForm::getListaUnidadSegunDepartamento($model->id_departamento);
+
+		      	// Lista de la naturaleza.
+		      	// Se obtiene el combo-lista para la naturaleza del DNI
+			  	$modeloTipoNaturaleza = TipoNaturaleza::find()->where('id_tipo_naturaleza BETWEEN 2 and 3')->all();
+			  	$listaNaturaleza = ArrayHelper::map($modeloTipoNaturaleza, 'siglas_tnaturaleza', 'nb_naturaleza');
+
+				$caption = Yii::t('backend', 'Actualizacion de Funcionario');
+				return $this->render('/funcionario/update-funcionario-form', [
+											'caption' => $caption,
+											'model' => $model,
+											'listaDepartamento' => $listaDepartamento,
+  											'listaNaturaleza' => $listaNaturaleza,
+  											'listaNivel' => $listaNivel,
+  											'listaUnidad' => $listaUnidad,
+						]);
+			}
+
+		}
+
+
+
+
+
+
+		/***/
+		private function actionBuscarFuncionarioModel($id)
+		{
+			return Funcionario::findOne($id);
+		}
+
+
 
 
 		/**
@@ -273,7 +477,8 @@
 		{
 			$varSession = self::actionGetListaSessions();
 			self::actionAnularSession($varSession);
-			return $this->render('/menu/menuvertical2');
+			return $this->render('/funcionario/quit');
+			//return $this->render('/menu/menuvertical2');
 		}
 
 
