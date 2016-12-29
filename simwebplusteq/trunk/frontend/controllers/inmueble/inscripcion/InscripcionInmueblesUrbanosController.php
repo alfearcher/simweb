@@ -210,7 +210,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                               'inactivo' => 0,
                           ];  
             
-die(var_dump($arrayDatos1));
+
             $conn = New ConexionController();
             $conexion = $conn->initConectar('dbsim');     // instancia de la conexion (Connection)
             $conexion->open();  
@@ -247,7 +247,7 @@ die(var_dump($arrayDatos1));
                                     'fecha_creacion' => date('Y-m-d h:i:s'),
                                 ]; 
 
-            
+            die(var_dump($arrayDatos2));
                  $tableName2 = 'sl_inmuebles'; 
 
                 if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){
