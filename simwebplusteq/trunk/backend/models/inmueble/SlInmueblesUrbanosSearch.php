@@ -105,11 +105,11 @@
 	     * @return Active Record.
 	     */
 	    public function findInscripcion($nroSolicitud)
-	    {die(var_dump($nroSolicitud));
+	    {
 	    	$modelFind = SlInmueblesUrbanosForm::find()->where('nro_solicitud =:nro_solicitud', [':nro_solicitud' => $nroSolicitud])
 	    													  ->andWhere('id_contribuyente =:id_contribuyente', [':id_contribuyente' => $this->id_contribuyente])
 	    													  ->one();
-
+die(var_dump($modelFind));
 	    	return isset($modelFind) ? $modelFind : null; 
 	    }
 
