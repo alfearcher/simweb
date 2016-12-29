@@ -247,7 +247,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                                     'fecha_creacion' => date('Y-m-d h:i:s'),
                                 ]; 
 
-            die(var_dump($arrayDatos2));
+            
                  $tableName2 = 'sl_inmuebles'; 
 
                 if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){
