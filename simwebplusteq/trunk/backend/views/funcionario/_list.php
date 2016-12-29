@@ -57,7 +57,7 @@
 		</div>
 
 		<div class="row" style="width: 100%;">
-			<?=Html::a('Ir al Lista',Url::to(['view-lista']),[
+			<?=Html::a('Ir al Listado',Url::to(['view-lista']),[
 							'class' => 'btn btn-primary',
 							'style' => 'width:25%;'
 					])
