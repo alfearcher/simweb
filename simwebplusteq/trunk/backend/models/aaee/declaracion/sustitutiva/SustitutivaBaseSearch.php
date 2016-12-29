@@ -452,6 +452,7 @@
 	    	$añoActual = date('Y');
 	    	$añoLimite = Yii::$app->lapso->anoLimiteNotificado();
 
+	    	$findModel = null;
 	    	if ( $tipoDeclaracion == 1 ) {		// Estimada
 
 		    	$findModel = ActEcon::find()->distinct('ano_impositivo')
