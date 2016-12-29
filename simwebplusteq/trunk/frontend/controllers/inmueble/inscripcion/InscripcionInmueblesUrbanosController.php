@@ -189,7 +189,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
             $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
              
-die(var_dump($buscar).var_dump($nivelAprobacion));
+
             try {
             $tableName1 = 'solicitudes_contribuyente'; 
 
@@ -210,7 +210,7 @@ die(var_dump($buscar).var_dump($nivelAprobacion));
                               'inactivo' => 0,
                           ];  
             
-
+die(var_dump($arrayDatos1));
             $conn = New ConexionController();
             $conexion = $conn->initConectar('dbsim');     // instancia de la conexion (Connection)
             $conexion->open();  
