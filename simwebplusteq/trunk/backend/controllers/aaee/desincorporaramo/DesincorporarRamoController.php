@@ -310,6 +310,7 @@
 
 					} elseif ( $postData['btn-back-form'] == 9 ) {
 						if ( isset($postData['chkRubroSeleccionado']) ) {
+
 							$chkRubros = $searchRamo->getConvertirJson($postData['chkRubroSeleccionado']);
 							//$chkRubros = $postData['chkRubroSeleccionado'];
 
@@ -335,6 +336,7 @@
 					if ( $postData['btn-create'] == 5 ) {
 						$model->scenario = self::SCENARIO_FRONTEND;
 						$model->load($postData);
+
 						if ( isset($postData['chkRubroSeleccionado']) ) {
 							$añoImpositivo = $model->ano_impositivo;
 							$periodo = $model->periodo;
