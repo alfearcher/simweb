@@ -1041,6 +1041,7 @@
 	    	$actIngreso = null;
 	    	$jsonRubro = [];
 	    	$rubro = [];
+
 	    	if ( count($chkIdIngresoSeleccion) > 0 ) {
 	    		foreach ( $chkIdIngresoSeleccion as $key => $value ) {
 	    			$actIngreso = ActEconIngreso::findOne((int)$value);
