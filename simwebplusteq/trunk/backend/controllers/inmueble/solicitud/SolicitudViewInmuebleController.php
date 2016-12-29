@@ -96,7 +96,7 @@
 		 * en caso de no encontrar nada false.
 		 */
 		public function actionInicioView()
-		{ die(var_dump($this->model->tipo_solicitud));
+		{ 
 			if ( isset($this->model) && isset($_SESSION['idContribuyente']) ) {
 // id de la configuracion tipo..
 				if ( $this->model->tipo_solicitud == 20 ) {
@@ -192,7 +192,7 @@
 					$model = $modelSearch->findInscripcion($this->model->nro_solicitud);
 
 
-
+die(var_dump($model));
 					return $this->render('@backend/views/inmueble/inscripcion-inmuebles-urbanos/view-solicitud', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
 													'model' => $model,
