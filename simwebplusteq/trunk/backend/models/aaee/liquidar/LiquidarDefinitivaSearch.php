@@ -225,9 +225,11 @@
 					'minimo' => $calculo->getMinimoTributableRubro(),
 					'minimo_ut' => $value['rubroDetalle']['minimo_ut'],
 					'ano_impositivo' => $value['actividadEconomica']['ano_impositivo'],
+					'id_impuesto' => $value['id_impuesto'],
 					'descripcion' => $value['rubroDetalle']['descripcion'],
 					'declaracion' => $value['reales'],
 					'impuesto' => $calculo->getCalcularPorTipoDeclaracion('reales'),
+					'id_contribuyente' => $value['actividadEconomica']['id_contribuyente'],
 				];
 			}
 
@@ -352,6 +354,15 @@
 					]);
 
 			return $provider;
+		}
+
+
+
+
+		/***/
+		public function getFechaVcto($fecha)
+		{
+			return OrdenanzaBase::getFechaVencimientoSegunFecha($fecha);
 		}
 
 
