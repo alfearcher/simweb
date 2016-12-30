@@ -143,8 +143,12 @@
 			      				$caption = Yii::t('frontend', 'Resumen del Calculo. Liqudacion de la definitiva ' . $model->ano_impositivo . ' - ' . $model->exigibilidad_periodo);
 			      				$subCaption = Yii::t('frontend', 'Resumen de la declaracion');
 
-			      				$sumaImpuesto = $liquidarSearch->sumaDeclarado($dataDeclaracion);
-			      				$sumaDeclarado = $liquidarSearch->sumaImpuesto($dataDeclaracion);
+			      				$sumaDeclarado = $liquidarSearch->sumaDeclarado($dataDeclaracion);
+			      				$sumaImpuesto = $liquidarSearch->sumaImpuesto($dataDeclaracion);
+
+			      				$resumenPago = $liquidarSearch->getResumenPagos();
+			      				$providerPago = $liquidarSearch->getArrayDataProviderResumenPago();
+			      				$sumaPago = $liquidarSearch->sumaPago($resumenPago);
 
 			      				return $this->render('@frontend/views/aaee/liquidar/definitiva/resumen-declaracion-pago',[
 			      														'dataDeclaracion' => $dataDeclaracion,
@@ -154,6 +158,9 @@
 			      														'sumaDeclarado' => $sumaDeclarado,
 			      														'sumaImpuesto' => $sumaImpuesto,
 			      														'url' => $url,
+			      														'resumenPago' => $resumenPago,
+			      														'sumaPago' => $sumaPago,
+			      														'dataProviderPago' => $providerPago,
 			      						]);
 
 			      			}
