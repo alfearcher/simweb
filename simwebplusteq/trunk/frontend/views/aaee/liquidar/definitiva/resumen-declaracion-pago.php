@@ -131,6 +131,15 @@
 	        											},
 						                ],
 						                [
+						                    'label' => Yii::t('frontend', 'Minimo'),
+						                    'contentOptions' => [
+						                    	'style' => 'text-align: right',
+						                    ],
+						                    'value' => function($data) {
+	                										return Yii::$app->formatter->asDecimal($data['minimo'], 2);
+	        											},
+						                ],
+						                [
 						                    'label' => Yii::t('frontend', 'Impuesto'),
 						                    'contentOptions' => [
 						                    	'style' => 'text-align: right',
