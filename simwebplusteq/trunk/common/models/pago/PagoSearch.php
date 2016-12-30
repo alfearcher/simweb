@@ -418,7 +418,7 @@
 				// Se coloca una consulta que busque los pagos por el año-periodo.
 			// }
 
-			return $total;
+			return (float)$total;
 		}
 
 
@@ -437,7 +437,7 @@
 				$total = self::getContabilizar($pagos);
 			}
 
-			return $total;
+			return (float)$total;
 		}
 
 
@@ -456,7 +456,7 @@
 				$total = self::getContabilizar($pagos);
 			}
 
-			return $total;
+			return (float)$total;
 		}
 
 
@@ -505,6 +505,20 @@
 			];
 
 			return $resumen;
+		}
+
+
+
+		/***/
+		public function getListaPagoActEcon()
+		{
+			return $listaPagos = [
+						'pagoEstimada' => 'TOTAL PAGOS POR ESTIMADA',
+						'pagoDefinitiva' => 'TOTAL PAGOS COMPLEMENTARIOS',
+						'pagoAbono' => 'TOTAL PAGOS POR ABONOS Y/O SIMILARES',
+						'pagoRetencion' => 'TOTAL PAGOS POR RETENCIONES Y/O RECONOCIMIENTOS',
+						'pagoIndustria' => 'TOTAL PAGOS POR SEDE DE INDUSTRIA'
+					];
 		}
 
 
