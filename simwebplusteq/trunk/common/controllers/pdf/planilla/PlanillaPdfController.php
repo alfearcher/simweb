@@ -452,7 +452,7 @@
 			// Fecha Emision
 			$mpdf->Cell(35, 5, date('d-m-Y'), 1, 0, 'C');
 			// Fecha Vcto
-			$fechaVcto = self::getFechaVctoPlanilla();		// Invocar metodo que devuelva la fecha final de un mes.
+			$fechaVcto = date('d-m-Y', strtotime(self::getFechaVctoPlanilla()));		// Invocar metodo que devuelva la fecha final de un mes.
 			$mpdf->SetFont('Arial', 'B', 10);
 			$mpdf->Cell(35, 5, $fechaVcto, 1, 0, 'C');
 			// ID Contribuyente
