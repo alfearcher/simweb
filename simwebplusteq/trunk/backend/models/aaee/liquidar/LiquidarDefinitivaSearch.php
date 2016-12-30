@@ -252,5 +252,44 @@
 
 
 
+
+		/***/
+		public function sumaDeclarado($data)
+		{
+			if ( count($data) == 0 ) {
+				$data = self::datosDeclaracionImpuesto();
+			}
+
+			$suma = 0;
+			if ( count($data) > 0 ) {
+				foreach ( $data as $d ) {
+					$suma = $suma + $d['declaracion'];
+				}
+			}
+
+			return $suma;
+		}
+
+
+
+
+		/***/
+		public function sumaImpuesto($data)
+		{
+			if ( count($data) == 0 ) {
+				$data = self::datosDeclaracionImpuesto();
+			}
+
+			$suma = 0;
+			if ( count($data) > 0 ) {
+				foreach ( $data as $d ) {
+					$suma = $suma + $d['impuesto'];
+				}
+			}
+
+			return $suma;
+		}
+
+
 	}
  ?>
