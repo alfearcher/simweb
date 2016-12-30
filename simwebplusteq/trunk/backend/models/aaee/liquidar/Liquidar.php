@@ -393,6 +393,7 @@
 									  ->andWhere(['IN', 'pago', [0, 1, 7]])
 									  ->andWhere('trimestre >:trimestre',['trimestre' => 0])
 									  ->andWhere('impuesto =:impuesto',[':impuesto' => self::IMPUESTO])
+									  ->andWhere('referencia =:referencia',[':referencia' => 0])
 									  ->joinWith('pagos P', true, 'INNER JOIN')
 									  ->joinWith('exigibilidad E')
 									  ->joinWith('estatus S', true, 'INNER JOIN')
