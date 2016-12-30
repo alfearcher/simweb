@@ -121,7 +121,29 @@
 							$modelLiq->load($postData, $formName);
 
 							// Mostrar vista previa
+							$sumaPago = (float)$postData['total-pago'];
+							$sumaImpuesto = (float)$postData['total-impuesto'];
+							$totalDiferencia = $postData['total-diferencia'];
+							$m = str_replace('.', '', $totalDiferencia);
+							$m = str_replace(',', '.', $m);
+							if ( $m > 0 ) {
+								$modelLiq['monto'] = $m;
 
+								$caption = Yii::t('frontend', 'Confirme. Liqudacion de la definitiva ' . $modelLiq->ano_impositivo . ' - ' . $modelLiq->trimestre);
+				      			$subCaption = Yii::t('frontend', 'Monto a Liquidar');
+								return $this->render('@frontend/views/aaee/liquidar/definitiva/pre-view-liquidacion-definitiva',[
+																						'model' => $modelLiq,
+																						'sumaImpuesto' => $sumaImpuesto,
+																						'sumaPago' => $sumaPago,
+																						'caption' => $caption,
+																						'subCaption' => $subCaption,
+																						'idContribuyente' => $idContribuyente,
+																						'totalDiferencia' => $totalDiferencia,
+									]);
+
+							} else {
+								return $this->render('@frontend/views/aaee/liquidar/definitiva/_operacion-no-valida');
+							}
 						}
 
 					} elseif ( isset($postData['btn-confirm-create']) ) {
@@ -129,14 +151,19 @@
 							$modelLiq = New LiquidarDefinitivaForm();
 							$formName = $modelLiq->formName();
 							$modelLiq->load($postData, $formName);
+							$modelLiq['monto'] = number_format((float)$modelLiq['monto'], 2, '.', '');
 
 							if ( $postData['id_contribuyente'] == $idContribuyente ) {
 								self::actionAnularSession(['begin']);
 								$result = self::actionBeginSave($modelLiq, $idContribuyente);
 								if ( $result ) {
-
+									$this->_transaccion->commit();
+									$this->_conn->close();
+									return self::actionMostrarLiquidacionGuardada($modelLiq);
 								} else {
-
+									$this->_transaccion->rollBack();
+									$this->_conn->close();
+									$this->redirect(['error-operacion', 'cod'=> 920]);
 								}
 							}
 						}
@@ -157,7 +184,7 @@
 			      			$liquidarSearch = New LiquidarDefinitivaSearch($model->id_contribuyente,
 			      										 				   $model->ano_impositivo,
 			      										 				   $model->exigibilidad_periodo);
-			      			$mensajes = $liquidarSearch->determinarLiquidacionFaltante();
+			      			$mensajes = $liquidarSearch->validarEvento();
 			      			if ( count($mensajes) == 0 ) {
 			      				// Todo bien
 
@@ -232,7 +259,7 @@
 				      	$url = Url::to(['index-lapso']);
 				      	$caption = Yii::t('frontend', 'Liquidacion declaracion definitiva');
 				      	$subCaption = Yii::t('frontend', 'Seleccionar lapso');
-				      	return $this->render('/aaee/liquidar/definitiva/_create',[
+				      	return $this->render('@frontend/views/aaee/liquidar/definitiva/_create',[
 							      											'model' => $model,
 							      											'findModel' => $findModel,
 							      											'caption' => $caption,
@@ -300,69 +327,6 @@
 
 
 
-		/***/
-		public function actionShowDeclaracion()
-		{
-			if ( isset($_SESSION['lapso']) && isset($_SESSION['idContribuyente']) ) {
-				$idContribuyente = $_SESSION['idContribuyente'];
-				$lapso = $_SESSION['lapso'];
-
-				$request = Yii::$app->request;
-				$postData = $request->post();
-
-				if ( isset($postData['btn-quit']) ) {
-					if ( $postData['btn-quit'] == 1 ) {
-						$this->redirect(['quit']);
-					}
-
-				} elseif ( isset($postData['btn-back-form']) ) {
-					if ( $postData['btn-back-form'] == 1 ) {
-						$this->redirect(['index-consulta']);
-					}
-
-				} elseif ( isset($postData['btn-boletin']) ) {
-					if ( $postData['btn-boletin'] == 1 ) {
-
-						$this->redirect(['generar-boletin-estimada']);
-
-					} elseif ( $postData['btn-boletin'] == 2 ) {
-
-					}
-				}
-
-				$declaracionSearch = New DeclaracionBaseSearch($idContribuyente);
-
-				$dataProvider = $declaracionSearch->getDataProviderRubrosRegistrados($lapso['a'], $lapso['p']);
-
-				$dataProviderHistorico = $declaracionSearch->getDataProviderHistoricoDeclaracionSegunLapso($lapso['a'], $lapso['p']);
-
-				$opciones = [
-					'quit' => '/aaee/declaracion/consulta/consulta-declaracion/quit',
-				];
-				if ( $lapso['tipo'] == 1 ) {
-					$urlBoletin = 'generar-boletin-estimada';
-				} elseif ( $lapso['tipo'] == 2 ) {
-					$urlBoletin = 'generar-boletin-definitiva';
-				}
-
-				$caption = $lapso['descripcion'] . ' ' . $lapso['a'] . ' - ' . $lapso['p'];
-				return $this->render('/aaee/declaracion/consulta/_declaracion', [
-															'lapso' => $lapso,
-															'dataProvider' => $dataProvider,
-															'caption' => $caption,
-															'opciones' => $opciones,
-															'dataProviderHistorico' => $dataProviderHistorico,
-															'urlBoletin' => $urlBoletin,
-					]);
-			}
-		}
-
-
-
-
-
-
-
 		/**
 		 * Metodo que inicia el proceos para guardar la liquidacion
 		 * @param PagoDetall $model arreglo de modelo de la clase LiquidacionDefinitivaForm().
@@ -384,15 +348,13 @@
   			// Inicio de la transaccion.
 			$this->_transaccion = $this->_conn->beginTransaction();
 
-			if ( $models[0]['id_pago'] == 0 ) {
+			if ( $model['id_pago'] == 0 ) {
 
 				$idPago = self::actionGuardarPago($this->_conexion, $this->_conn, $idContribuyente);
 				if ( $idPago > 0 ) {
-					foreach ( $models as $model ) {
-						$model['id_pago'] = $idPago;
-					}
 
-					$result = self::actionGuardarDetalle($models, $this->_conexion, $this->_conn);
+					$model['id_pago'] = $idPago;
+					$result = self::actionGuardarDetalle($model, $this->_conexion, $this->_conn);
 				}
 			}
 
@@ -405,25 +367,24 @@
 
 		/**
 		 * Metodo que guarda los detalle de la liquidacion
-		 * @param PagoDetalle $models arreglo de modelo de la clase PagoDetella().
+		 * @param PagoDetalle $models arreglo de modelo de la clase LiquidacionDefinitivaForm().
 		 * @param ConexionController $conexion [description]
 		 * @param  [type] $conn     [description]
 		 * @return boolean retorna true o false.
 		 */
-		private function actionGuardarDetalle($models, $conexion, $conn)
+		private function actionGuardarDetalle($model, $conexion, $conn)
 		{
 			$result = false;
-			if ( count($models) > 0 ) {
-				$tabla = $models[0]->tableName();
+			if ( count($model) > 0 ) {
+				$tabla = $model->tableName();
 
-				foreach ( $models as $model ) {
-					if ( $model['id_pago'] > 0 ) {
-						$result = $conexion->guardarRegistro($conn, $tabla, $model->attributes);
-						if ( !$result ) { break; }
-					} else {
-						break;
-					}
+				if ( $model['id_pago'] > 0 ) {
+					$result = $conexion->guardarRegistro($conn, $tabla, $model->attributes);
+					if ( !$result ) { break; }
+				} else {
+					break;
 				}
+
 			}
 
 			return $result;
@@ -485,9 +446,9 @@
 
 
 		/***/
-		public function actionMostrarLiquidacionGuardada($models)
+		public function actionMostrarLiquidacionGuardada($model)
 		{
-			$findModel = self::actionInfoPlanilla($models[0]['id_pago']);
+			$findModel = self::actionInfoPlanilla($model['id_pago']);
 			$detalles = $findModel->asArray()->one();
 
 			if ( count($detalles) > 0 ) {
@@ -499,7 +460,7 @@
 				$caption = Yii::t('frontend', 'Detalle de la planilla ' . $planilla);
 				$subCaption = Yii::t('frontend', 'Lapsos liquiaddos');
 
-				return $this->render('/aaee/liquidar/view-liquidacion-resultante',[
+				return $this->render('@frontend/views/aaee/liquidar/view-liquidacion-resultante',[
 															'caption' => $caption,
 															'subCaption' => $subCaption,
 															'dataProvider' => $dataProvider,
@@ -648,7 +609,6 @@
 		{
 			return $varSession = [
 							'postData',
-							'conf',
 							'begin',
 					];
 
