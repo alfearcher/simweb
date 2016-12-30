@@ -64,7 +64,7 @@
  		$form = ActiveForm::begin([
  			'id' => 'id-resumen-declaracion-pago-form',
  			'method' => 'post',
- 			'action' => $url,
+ 			//'action' => $url,
  			'enableClientValidation' => false,
  			'enableAjaxValidation' => false,
  			'enableClientScript' => false,
@@ -155,7 +155,7 @@
 
 						<div class="row" style="width: 100%;">
 							<div class="col-sm-3" style="width: 70%;text-align: right;">
-								<h3><strong><?=Html::encode(Yii::t('frontend','Total por impuesto:'))?></strong></h3>
+								<h3><strong><?=Html::encode(Yii::t('frontend','Total por Impuesto:'))?></strong></h3>
 							</div>
 							<div class="col-sm-3" style="width: 28%;padding:0px;padding-top: 12px;padding-right: 15px;">
 								<?=Html::textInput('total-impuesto', Yii::$app->formatter->asDecimal($sumaImpuesto, 2),[
@@ -168,6 +168,77 @@
 								])?>
 							</div>
 						</div>
+
+
+						<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding-top: 0px;width:100%;">
+							<div class="col-sm-3" style="width: 100%;">
+								<h4><?=Html::encode(Yii::t('frontend', 'Resumen de pagos'))?></h4>
+							</div>
+						</div>
+
+						<div class="row" id="id-detalle-resumen-pago" style="width: 100%;padding-top: 10px;">
+							<?= GridView::widget([
+									'id' => 'grid-pago',
+									'dataProvider' => $dataProviderPago,
+									'headerRowOptions' => ['class' => 'success'],
+									'summary' => '',
+									'columns' => [
+										['class' => 'yii\grid\SerialColumn'],
+
+										[
+						                    'label' => Yii::t('frontend', 'Concepto'),
+						                     'contentOptions' => [
+						                    	//'style' => 'text-align: center',
+						                    ],
+						                    'value' => function($data) {
+	                										return $data['concepto'];
+	        											},
+						                ],
+						                [
+						                    'label' => Yii::t('frontend', 'Monto'),
+						                     'contentOptions' => [
+						                    		'style' => 'text-align: right',
+						                    ],
+						                    'value' => function($data) {
+	                										return Yii::$app->formatter->asDecimal($data['monto'], 2);
+	        											},
+						                ],
+						        	]
+								]);?>
+						</div>
+
+						<div class="row" style="width: 100%;">
+							<div class="col-sm-3" style="width: 70%;text-align: right;">
+								<h3><strong><?=Html::encode(Yii::t('frontend','Total Pagos:'))?></strong></h3>
+							</div>
+							<div class="col-sm-3" style="width: 28%;padding:0px;padding-top: 12px;padding-right: 15px;">
+								<?=Html::textInput('total-pago', Yii::$app->formatter->asDecimal($sumaPago, 2),[
+																		'class' => 'form-control',
+																		'style' => 'width: 100%;
+																					background-color: white;
+																					text-align:right;
+																					font-size:large;font-weight: bold;',
+																		'readOnly' => true,
+								])?>
+							</div>
+						</div>
+
+						<div class="row" style="width: 100%;">
+							<div class="col-sm-3" style="width: 70%;text-align: right;">
+								<h3><strong><?=Html::encode(Yii::t('frontend','Total Impuesto - Pagos:'))?></strong></h3>
+							</div>
+							<div class="col-sm-3" style="width: 28%;padding:0px;padding-top: 12px;padding-right: 15px;">
+								<?=Html::textInput('total-diferencia', Yii::$app->formatter->asDecimal($sumaImpuesto - $sumaPago, 2),[
+																											'class' => 'form-control',
+																											'style' => 'width: 100%;
+																														background-color: white;
+																														text-align:right;
+																														font-size:large;font-weight: bold;',
+																											'readOnly' => true,
+								])?>
+							</div>
+						</div>
+
 					</div>
 
 
@@ -175,28 +246,47 @@
 					</div>
 
 
-					<div class="row" style="width: 100%;padding: 0px;margin-top: 20px;">
-						<div class="col-sm-3" style="width: 25%;padding: 0px; padding-left: 25px;margin-left:30px;">
-							<div class="form-group">
-								<?= Html::submitButton(Yii::t('frontend', 'Descargar planilla'),
+					<div class="row">
+						<div class="form-group">
+							<div class="col-sm-3" style="width: 20%;margin-left:100px;">
+								<?= Html::submitButton(Yii::t('frontend', 'Guardar'),
 																		  [
-																			'id' => 'btn-descargar',
+																			'id' => 'btn-create',
 																			'class' => 'btn btn-success',
-																			'value' => 1,
-																			'style' => 'width: 100%;',
-																			'name' => 'btn-descargar',
-																			'data' => [
-																				'method' => 'post',
-																				'params' => [
-																					'planilla' => 0,
-																				]
-																			]
+																			'value' => 3,
+																			'style' => 'width: 100%; margin-left:0px;margin-top:20px;',
+																			'name' => 'btn-create',
+																			//'disabled' => true,
+																		  ]);
+								?>
+							</div>
 
-																		  ])
+							<div class="col-sm-3" style="width: 20%;margin-left:100px;">
+								<?= Html::submitButton(Yii::t('frontend', 'Back'),
+																		  [
+																			'id' => 'btn-back-form',
+																			'class' => 'btn btn-danger',
+																			'value' => 1,
+																			'style' => 'width: 100%; margin-left:0px;margin-top:20px;',
+																			'name' => 'btn-back-form',
+
+																		  ]);
+								?>
+							</div>
+
+							<div class="col-sm-3" style="width: 20%;margin-left:100px;">
+								<?= Html::submitButton(Yii::t('frontend', Yii::t('frontend', 'Quit')),
+																					  [
+																						'id' => 'btn-quit',
+																						'class' => 'btn btn-danger',
+																						'value' => 1,
+																						'style' => 'width: 100%; margin-left:0px;margin-top:20px;',
+																						'name' => 'btn-quit',
+
+																					  ])
 								?>
 							</div>
 						</div>
-
 					</div>
 
 				</div>  <!-- Fin de col-sm-12 -->
