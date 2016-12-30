@@ -150,6 +150,26 @@
 			      				$providerPago = $liquidarSearch->getArrayDataProviderResumenPago();
 			      				$sumaPago = $liquidarSearch->sumaPago($resumenPago);
 
+			      				$modelPagoDetalle = New PagoDetalle();
+			      				$modelPagoDetalle->impuesto = 1;
+			      				$modelPagoDetalle->id_impuesto = $dataDeclaracion[0]['id_impuesto'];
+			      				$modelPagoDetalle->ano_impositivo = $dataDeclaracion[0]['ano_impositivo'];
+			      				$modelPagoDetalle->trimestre = 1;
+			      				$modelPagoDetalle->monto = 0;
+			      				$modelPagoDetalle->descuento = 0;
+			      				$modelPagoDetalle->recargo = 0;
+			      				$modelPagoDetalle->interes = 0;
+			      				$modelPagoDetalle->fecha_emision = date('Y-m-d');
+			      				$modelPagoDetalle->fecha_vcto = $liquidarSearch->getFechaVcto(date('Y-m-d'));
+			      				$modelPagoDetalle->pago = 0;
+			      				$modelPagoDetalle->fecha_pago = '0000-00-00';
+			      				$modelPagoDetalle->referencia = 1;
+			      				$modelPagoDetalle->descripcion = 'LIQUIDACION DEFINITIVA ' . $model->ano_impositivo . ' - ' . $model->exigibilidad_periodo;   ;
+			      				$modelPagoDetalle->monto_reconocimiento = 0;
+			      				$modelPagoDetalle->exigibilidad_pago = 1;
+			      				$modelPagoDetalle->fecha_desde = '0000-00-00';
+			      				$modelPagoDetalle->fecha_hasta = '0000-00-00';
+
 			      				return $this->render('@frontend/views/aaee/liquidar/definitiva/resumen-declaracion-pago',[
 			      														'dataDeclaracion' => $dataDeclaracion,
 			      														'dataProvider' => $provider,
@@ -161,6 +181,7 @@
 			      														'resumenPago' => $resumenPago,
 			      														'sumaPago' => $sumaPago,
 			      														'dataProviderPago' => $providerPago,
+			      														'model' => $modelPagoDetalle,
 			      						]);
 
 			      			}
@@ -212,12 +233,6 @@
 				return $this->redirect(['quit']);
 			}
 		}
-
-
-
-
-
-
 
 
 
