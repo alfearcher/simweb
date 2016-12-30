@@ -67,6 +67,7 @@
 	use backend\models\aaee\declaracion\sustitutiva\SustitutivaBaseSearch;
 	use backend\models\aaee\declaracion\DeclaracionBaseSearch;
 	use backend\models\aaee\liquidar\LiquidarDefinitivaSearch;
+	use backend\models\aaee\liquidar\LiquidarDefinitivaForm;
 
 
 	session_start();
@@ -113,10 +114,33 @@
 						if ( $postData['btn-quit'] == 1 ) {
 							return $this->redirect(['quit']);
 						}
-					} elseif ( isset($postData['btn-accept']) ) {
-						if ( $postData['btn-accept'] == 1 ) {
+					} elseif ( isset($postData['btn-create']) ) {
+						if ( $postData['btn-create'] == 3 ) {
+							$modelLiq = New LiquidarDefinitivaForm();
+							$formName = $modelLiq->formName();
+							$modelLiq->load($postData, $formName);
+
+							// Mostrar vista previa
 
 						}
+
+					} elseif ( isset($postData['btn-confirm-create']) ) {
+						if ( $postData['btn-confirm-create'] == 5 ) {
+							$modelLiq = New LiquidarDefinitivaForm();
+							$formName = $modelLiq->formName();
+							$modelLiq->load($postData, $formName);
+
+							if ( $postData['id_contribuyente'] == $idContribuyente ) {
+								self::actionAnularSession(['begin']);
+								$result = self::actionBeginSave($modelLiq, $idContribuyente);
+								if ( $result ) {
+
+								} else {
+
+								}
+							}
+						}
+
 					}
 
 
@@ -150,25 +174,27 @@
 			      				$providerPago = $liquidarSearch->getArrayDataProviderResumenPago();
 			      				$sumaPago = $liquidarSearch->sumaPago($resumenPago);
 
-			      				$modelPagoDetalle = New PagoDetalle();
-			      				$modelPagoDetalle->impuesto = 1;
-			      				$modelPagoDetalle->id_impuesto = $dataDeclaracion[0]['id_impuesto'];
-			      				$modelPagoDetalle->ano_impositivo = $dataDeclaracion[0]['ano_impositivo'];
-			      				$modelPagoDetalle->trimestre = 1;
-			      				$modelPagoDetalle->monto = 0;
-			      				$modelPagoDetalle->descuento = 0;
-			      				$modelPagoDetalle->recargo = 0;
-			      				$modelPagoDetalle->interes = 0;
-			      				$modelPagoDetalle->fecha_emision = date('Y-m-d');
-			      				$modelPagoDetalle->fecha_vcto = $liquidarSearch->getFechaVcto(date('Y-m-d'));
-			      				$modelPagoDetalle->pago = 0;
-			      				$modelPagoDetalle->fecha_pago = '0000-00-00';
-			      				$modelPagoDetalle->referencia = 1;
-			      				$modelPagoDetalle->descripcion = 'LIQUIDACION DEFINITIVA ' . $model->ano_impositivo . ' - ' . $model->exigibilidad_periodo;   ;
-			      				$modelPagoDetalle->monto_reconocimiento = 0;
-			      				$modelPagoDetalle->exigibilidad_pago = 1;
-			      				$modelPagoDetalle->fecha_desde = '0000-00-00';
-			      				$modelPagoDetalle->fecha_hasta = '0000-00-00';
+
+			      				$modelLiq = New LiquidarDefinitivaForm();
+			      				$modelLiq->id_pago = 0;
+			      				$modelLiq->impuesto = 1;
+			      				$modelLiq->id_impuesto = $dataDeclaracion[0]['id_impuesto'];
+			      				$modelLiq->ano_impositivo = $dataDeclaracion[0]['ano_impositivo'];
+			      				$modelLiq->trimestre = 1;
+			      				$modelLiq->monto = 0;
+			      				$modelLiq->descuento = 0;
+			      				$modelLiq->recargo = 0;
+			      				$modelLiq->interes = 0;
+			      				$modelLiq->fecha_emision = date('Y-m-d');
+			      				$modelLiq->fecha_vcto = $liquidarSearch->getFechaVcto(date('Y-m-d'));
+			      				$modelLiq->pago = 0;
+			      				$modelLiq->fecha_pago = '0000-00-00';
+			      				$modelLiq->referencia = 1;
+			      				$modelLiq->descripcion = 'LIQUIDACION DEFINITIVA ' . $model->ano_impositivo . ' - ' . $model->exigibilidad_periodo;   ;
+			      				$modelLiq->monto_reconocimiento = 0;
+			      				$modelLiq->exigibilidad_pago = 1;
+			      				$modelLiq->fecha_desde = '0000-00-00';
+			      				$modelLiq->fecha_hasta = '0000-00-00';
 
 			      				return $this->render('@frontend/views/aaee/liquidar/definitiva/resumen-declaracion-pago',[
 			      														'dataDeclaracion' => $dataDeclaracion,
@@ -181,7 +207,7 @@
 			      														'resumenPago' => $resumenPago,
 			      														'sumaPago' => $sumaPago,
 			      														'dataProviderPago' => $providerPago,
-			      														'model' => $modelPagoDetalle,
+			      														'model' => $modelLiq,
 			      						]);
 
 			      			}
@@ -233,48 +259,6 @@
 				return $this->redirect(['quit']);
 			}
 		}
-
-
-
-
-
-		/**
-		 * Metodo que inicia el modulo de lqiquidacion.
-		 * @return [type] [description]
-		 */
-		public function actionIndexCreate()
-		{
-
-			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) ) {
-
-				$idContribuyente = $_SESSION['idContribuyente'];
-				if ( ContribuyenteBase::getTipoNaturalezaDescripcionSegunID($idContribuyente) == 'JURIDICO' ) {
-
-					$request = Yii::$app->request;
-					$postData = $request->post();
-
-					if ( isset($postData['btn-quit']) ) {
-						if ( $postData['btn-quit'] == 1 ) {
-							return $this->redirect(['quit']);
-						}
-					} elseif ( isset($postData['btn-confirm-create']) ) {
-						if ( $postData['btn-confirm-create'] == 3 ) {
-
-						}
-					}
-
-
-
-				} else {
-					return $this->redirect(['error-operacion', 'cod' => 934]);
-				}
-
-			} else {
-				// No esta definida la session del contribuyente.
-				return $this->redirect(['quit']);
-			}
-		}
-
 
 
 
@@ -381,11 +365,11 @@
 
 		/**
 		 * Metodo que inicia el proceos para guardar la liquidacion
-		 * @param PagoDetall $models arreglo de modelo de la clase PagoDetalle().
+		 * @param PagoDetall $model arreglo de modelo de la clase LiquidacionDefinitivaForm().
 		 * @param integer $idContribuyente identificador del contribuyente.
 		 * @return boolean retorna true o false.
 		 */
-		private function actionBeginSave($models, $idContribuyente)
+		private function actionBeginSave($model, $idContribuyente)
 		{
 
 			$result = false;
@@ -400,30 +384,7 @@
   			// Inicio de la transaccion.
 			$this->_transaccion = $this->_conn->beginTransaction();
 
-			if ( $models[0]['id_pago'] > 0 ) {
-
-				$findModel = self::actionInfoPlanilla((int)$models[0]['id_pago'])->asArray()->one();
-
-				// Se verifica que la planilla donde se guardaran los detalle este disponible.
-				// Sino es asi se genrara otra planilla.
-				if ( $findModel['pago'] == 0 ) {
-
-					$result = self::actionGuardarDetalle($models, $this->_conexion, $this->_conn);
-
-				} else {
-
-					// Se genera otra planilla para los detalles de la liquiadcion.
-					$idPago = self::actionGuardarPago($this->_conexion, $this->_conn, $idContribuyente);
-					if ( $idPago > 0 ) {
-						foreach ( $models as $model ) {
-							$model['id_pago'] = $idPago;
-						}
-
-						$result = self::actionGuardarDetalle($models, $this->_conexion, $this->_conn);
-					}
-				}
-
-			} elseif ( $models[0]['id_pago'] == 0 ) {
+			if ( $models[0]['id_pago'] == 0 ) {
 
 				$idPago = self::actionGuardarPago($this->_conexion, $this->_conn, $idContribuyente);
 				if ( $idPago > 0 ) {
