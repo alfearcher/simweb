@@ -136,16 +136,25 @@
 			      			$mensajes = $liquidarSearch->determinarLiquidacionFaltante();
 			      			if ( count($mensajes) == 0 ) {
 			      				// Todo bien
-			      				// 	$_SESSION['lapso'] = [
-				   					// 			'a' => $model->ano_impositivo,
-				   					// 			'p' => $model->exigibilidad_periodo,
-				   					// 			'tipo' => 2,
-				   					// 			'descripcion' => 'Definitiva',
-				   					// ];
-				   					// $this->redirect(['show-declaracion']);
 
-$liquidarSearch->getArrayDataProviderDeclaracionImpuesto();
+			      				$url = Url::to(['liquidar-definitiva']);
+			      				$dataDeclaracion = $liquidarSearch->datosDeclaracionImpuesto();
+			      				$provider = $liquidarSearch->getArrayDataProviderDeclaracionImpuesto();
+			      				$caption = Yii::t('frontend', 'Resumen del Calculo. Liqudacion de la definitiva ' . $model->ano_impositivo . ' - ' . $model->exigibilidad_periodo);
+			      				$subCaption = Yii::t('frontend', 'Resumen de la declaracion');
 
+			      				$sumaImpuesto = $liquidarSearch->sumaDeclarado($dataDeclaracion);
+			      				$sumaDeclarado = $liquidarSearch->sumaImpuesto($dataDeclaracion);
+
+			      				return $this->render('@frontend/views/aaee/liquidar/definitiva/resumen-declaracion-pago',[
+			      														'dataDeclaracion' => $dataDeclaracion,
+			      														'dataProvider' => $provider,
+			      														'caption' => $caption,
+			      														'subCaption' => $subCaption,
+			      														'sumaDeclarado' => $sumaDeclarado,
+			      														'sumaImpuesto' => $sumaImpuesto,
+			      														'url' => $url,
+			      						]);
 
 			      			}
 
@@ -196,6 +205,9 @@ $liquidarSearch->getArrayDataProviderDeclaracionImpuesto();
 				return $this->redirect(['quit']);
 			}
 		}
+
+
+
 
 
 
