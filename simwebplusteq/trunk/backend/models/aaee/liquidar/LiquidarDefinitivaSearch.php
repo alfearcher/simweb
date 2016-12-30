@@ -205,6 +205,61 @@
 
 
 
+		/**
+		 * Metodo que determina si la suma de los montos de la definitica es mayor s cero(0).
+		 * @return boolean
+		 */
+		private function montoDeclarado()
+		{
+			$result = false;
+			$findModel = self::findDetalleDeclaracionModel();
+			$resultados = $findModel->asArray()->all();
+			$suma = 0;
+
+			if ( count($resultados) > 0 ) {
+				foreach ( $resultados as $resultado ) {
+					$suma = $resultado['reales'] + $suma;
+				}
+				if ( $suma > 0 ) { $result = true; }
+			}
+
+			return $result;
+		}
+
+
+
+
+
+		/***/
+		public function validarEvento()
+		{
+			$mensajes = [];
+			$existe =  false;
+			// Valida que exista las liquidaciones anteriores.
+			$mensaje = self::determinarLiquidacionFaltante();
+
+			if ( count($mensaje) > 0 ) {
+				$mensajes[] = $mensaje;
+			}
+
+			// Valida si ya exite la liquidacion.
+			$existe = self::existePlanillaDefinitiva($this->_ano_impositivo, $this->_periodo);
+			if ( $existe ) {
+				$mensajes[] = Yii::t('backend', 'Ya existe la liquidacion del lapso ' . $this->_ano_impositivo . ' - ' . $this->_periodo);
+			}
+
+			// Valida que el monto declarado sea mayor a cero (0).
+			if ( !self::montoDeclarado() ) {
+				$mensajes[] = Yii::t('backend', 'El monto declarado del lapso ' . $this->_ano_impositivo . ' - ' . $this->_periodo . ' es cero (0)');
+			}
+
+
+			return $mensajes;
+
+		}
+
+
+
 
 		/***/
 		public function datosDeclaracionImpuesto()
