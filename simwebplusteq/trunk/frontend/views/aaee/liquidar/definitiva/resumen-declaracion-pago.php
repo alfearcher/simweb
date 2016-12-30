@@ -71,6 +71,26 @@
  		]);
  	?>
 
+	<?=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $model->id_contribuyente])->label(false);?>
+	<?=$form->field($model, 'id_impuesto')->hiddenInput(['value' => $model->id_impuesto])->label(false);?>
+	<?=$form->field($model, 'impuesto')->hiddenInput(['value' => $model->impuesto])->label(false);?>
+	<?=$form->field($model, 'ano_impositivo')->hiddenInput(['value' => $model->ano_impositivo])->label(false);?>
+	<?=$form->field($model, 'trimestre')->hiddenInput(['value' => $model->trimestre])->label(false);?>
+	<?=$form->field($model, 'monto')->hiddenInput(['value' => $model->monto])->label(false);?>
+	<?=$form->field($model, 'recargo')->hiddenInput(['value' => $model->recargo])->label(false);?>
+	<?=$form->field($model, 'interes')->hiddenInput(['value' => $model->interes])->label(false);?>
+	<?=$form->field($model, 'descuento')->hiddenInput(['value' => $model->descuento])->label(false);?>
+	<?=$form->field($model, 'fecha_emision')->hiddenInput(['value' => $model->fecha_emision])->label(false);?>
+	<?=$form->field($model, 'fecha_vcto')->hiddenInput(['value' => $model->fecha_vcto])->label(false);?>
+	<?=$form->field($model, 'pago')->hiddenInput(['value' => $model->pago])->label(false);?>
+	<?=$form->field($model, 'fecha_pago')->hiddenInput(['value' => $model->fecha_pago])->label(false);?>
+	<?=$form->field($model, 'referencia')->hiddenInput(['value' => $model->referencia])->label(false);?>
+	<?=$form->field($model, 'descripcion')->hiddenInput(['value' => $model->descripcion])->label(false);?>
+	<?=$form->field($model, 'monto_reconocimiento')->hiddenInput(['value' => $model->monto_reconocimiento])->label(false);?>
+	<?=$form->field($model, 'exigibilidad_pago')->hiddenInput(['value' => $model->exigibilidad_pago])->label(false);?>
+	<?=$form->field($model, 'fecha_desde')->hiddenInput(['value' => $model->fecha_desde])->label(false);?>
+	<?=$form->field($model, 'fecha_hasta')->hiddenInput(['value' => $model->fecha_hasta])->label(false);?>
+
 
 	<meta http-equiv="refresh">
     <div class="panel panel-primary" style="width: 100%;">
