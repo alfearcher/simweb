@@ -56,6 +56,7 @@
 	use common\models\calculo\liquidacion\aaee\CalculoRubro;
 	use backend\models\aaee\declaracion\DeclaracionBaseSearch;
 	use common\models\planilla\PagoDetalle;
+	use common\models\pago\PagoSearch;
 
 
 
@@ -220,7 +221,8 @@
 				$data[] = [
 					'id_rubro' => $value['id_rubro'],
 					'rubro' => $value['rubroDetalle']['rubro'],
-					'minino' => $calculo->getMinimoTributableRubro(),
+					'alicuota' => $value['rubroDetalle']['alicuota'],
+					'minimo' => $calculo->getMinimoTributableRubro(),
 					'minimo_ut' => $value['rubroDetalle']['minimo_ut'],
 					'ano_impositivo' => $value['actividadEconomica']['ano_impositivo'],
 					'descripcion' => $value['rubroDetalle']['descripcion'],
@@ -288,6 +290,68 @@
 			}
 
 			return $suma;
+		}
+
+
+
+
+		/***/
+		public function sumaPago($data)
+		{
+			if ( count($data) == 0 ) {
+				$data = self::getResumenPagos();
+			}
+
+			$suma = 0;
+			if ( count($data) > 0 ) {
+				foreach ( $data as $d) {
+					$suma = $suma + $d['monto'];
+				}
+			}
+
+			return $suma;
+		}
+
+
+
+
+
+		/***/
+		public function getResumenPagos()
+		{
+			$data = [];
+			$pagoSearch = New PagoSearch();
+			$pagoSearch->setIdContribuyente($this->_id_contribuyente);
+
+			$resumen = $pagoSearch->getResumenPagoDefinitiva($this->_ano_impositivo, $this->_periodo);
+
+			$listaPagos = $pagoSearch->getListaPagoActEcon();
+
+			foreach ( $resumen as $key => $value ) {
+
+				$data[$key] = [
+					'concepto' => $listaPagos[$key],
+					'monto' => $value,
+				];
+			}
+
+			return $data;
+		}
+
+
+
+
+		/***/
+		public function getArrayDataProviderResumenPago()
+		{
+			$data = self::getResumenPagos();
+			$provider = New ArrayDataProvider([
+						'allModels' => $data,
+						'pagination' => false,
+
+					]);
+
+			return $provider;
 		}
 
 
