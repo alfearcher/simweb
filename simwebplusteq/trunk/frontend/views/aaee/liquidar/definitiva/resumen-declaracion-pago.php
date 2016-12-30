@@ -71,7 +71,8 @@
  		]);
  	?>
 
-	<?=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $model->id_contribuyente])->label(false);?>
+	<?=Html::hiddenInput('id_contribuyente', $dataDeclaracion[0]['id_contribuyente'])?>
+	<?=$form->field($model, 'id_pago')->hiddenInput(['value' => $model->id_pago])->label(false);?>
 	<?=$form->field($model, 'id_impuesto')->hiddenInput(['value' => $model->id_impuesto])->label(false);?>
 	<?=$form->field($model, 'impuesto')->hiddenInput(['value' => $model->impuesto])->label(false);?>
 	<?=$form->field($model, 'ano_impositivo')->hiddenInput(['value' => $model->ano_impositivo])->label(false);?>
@@ -249,6 +250,7 @@
 							</div>
 							<div class="col-sm-3" style="width: 28%;padding:0px;padding-top: 12px;padding-right: 15px;">
 								<?=Html::textInput('total-diferencia', Yii::$app->formatter->asDecimal($sumaImpuesto - $sumaPago, 2),[
+																											'id' => 'id-total-diferencia',
 																											'class' => 'form-control',
 																											'style' => 'width: 100%;
 																														background-color: white;
