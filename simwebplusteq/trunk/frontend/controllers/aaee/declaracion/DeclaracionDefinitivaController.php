@@ -934,6 +934,20 @@
 
 
 
+	     /***/
+		public function actionGenerarBoletinDefinitiva()
+		{
+
+			$id = $_SESSION['idContribuyente'];
+			$lapso = $_SESSION['lapso'];
+			$a = $lapso['a'];
+			$p = $lapso['p'];
+
+			$boletin = New BoletinController($id, $a, $p);
+			return $boletin->generarBoletinDefinitiva();
+		}
+
+
 
 	    /**
 	     * Metodo que muestra una vista con el pdf del certificado de la declaracion
