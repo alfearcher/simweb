@@ -51,6 +51,7 @@
 	use common\models\contribuyente\ContribuyenteBase;
 	use common\models\calculo\liquidacion\vehiculo\LiquidacionVehiculo;
 	use common\models\calculo\recargo\Recargo;
+	use common\models\calculo\interes\Interes;
 	use yii\data\ArrayDataProvider;
 	use common\models\planilla\Pago;
 	use backend\models\vehiculo\VehiculosForm;
@@ -333,6 +334,9 @@
 						$recargo->calcularRecargo($año, $i, $montoPeriodo);
 						$montoRecargo = $recargo->getRecargo();
 
+						$montoInteres = 0;
+						$montoInteres = $interes->calcularInteres($año, $i, $montoPeriodo);
+
 						$modelDetalle[$j] = New PagoDetalle();
 						$modelDetalle[$j]->id_pago = $this->_id_pago;
 						$modelDetalle[$j]->id_impuesto = $this->_objeto->id_vehiculo;
@@ -341,7 +345,7 @@
 						$modelDetalle[$j]->trimestre = $i;
 						$modelDetalle[$j]->monto = $montoPeriodo;
 						$modelDetalle[$j]->recargo = $montoRecargo;
-						$modelDetalle[$j]->interes = 0;
+						$modelDetalle[$j]->interes = $montoInteres;
 						$modelDetalle[$j]->descuento = 0;
 						$modelDetalle[$j]->pago = 0;
 						$modelDetalle[$j]->fecha_pago = '0000-00-00';
