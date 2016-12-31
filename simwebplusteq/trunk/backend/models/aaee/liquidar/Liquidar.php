@@ -357,6 +357,8 @@
 							$modelDetalle[$j]->fecha_emision = date('Y-m-d');
 							$modelDetalle[$j]->fecha_vcto = $fechaVcto;
 							$modelDetalle[$j]->exigibilidad_pago = $exigibilidadLiq['exigibilidad'];
+							$modelDetalle[$j]->fecha_desde = '0000-00-00';
+							$modelDetalle[$j]->fecha_hasta = '0000-00-00';
 
 							$j++;
 						}
