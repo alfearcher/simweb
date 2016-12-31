@@ -122,7 +122,7 @@
 			if ( $this->_año_impositivo > 0 && $this->_periodo > 0  && $this->_impuesto > 0 ) {
 				$aplicoSancion = self::IniciarCalculoInteres();
 				if ( $aplicoSancion ) {
-					$fechaDesde = self::getFechaInicioPeriodo();
+					$fechaDesde = self::getFechaVencePeriodo();
 					$fechaHasta = date('Y-m-d');
 
 					self::determinarRangoPorcentual($fechaDesde, $fechaHasta);
@@ -133,6 +133,36 @@
 			return $this->_interes;
 		}
 
+
+
+
+		/***/
+		public function getFechaVencePeriodo()
+		{
+			$fecha = null;
+			if ( count($this->_configOrdAsignacion) > 0 ) {
+				$meses = 0;
+				$dias = 0;
+				$meses = $this->_configOrdAsignacion['mes_aplicacion'];
+				$dias = $this->_configOrdAsignacion['dias_aplicacion'];
+
+				$fecha = date_create(self::getFechaInicioPeriodo());
+
+				if ( $meses > 0 ) {
+					$m = $meses . ' month';
+					date_add($fecha, date_interval_create_from_date_string($m));
+				}
+
+				if ( $dias > 0 ) {
+					$d = $dias . ' days';
+					date_add($fecha, date_interval_create_from_date_string($d));
+				}
+
+				return date_format($fecha, 'Y-m-d');
+			}
+
+			return null;
+		}
 
 
 
