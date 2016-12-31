@@ -230,6 +230,8 @@
 					$modelDetalle->fecha_emision = $fechaActual;
 					$modelDetalle->fecha_vcto = $fechaVcto;
 					$modelDetalle->exigibilidad_pago = 99;
+					$modelDetalle->fecha_desde = '0000-00-00';
+					$modelDetalle->fecha_hasta = '0000-00-00';
 
 					$arregloDatos[] = $modelDetalle->attributes;
 
