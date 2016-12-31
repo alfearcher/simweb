@@ -62,15 +62,24 @@
 
 
 
+
+
+
+
+
 		/**
 		 * Metodo que devuelve el monto por interes a plicar para el lapso de fechas.
+		 * Metodo que incia el proceso.
 		 * @param date  $fechaDesde fecha inicial del rango.
 		 * @param date  $fechaHasta fecha final del rango.
-		 * @param double $porcentaje porcentaje fijo que se debe aplicar.
+		 * @param double $porcentaje porcentaje fijo que se debe aplicar. Ejemplo:
+		 * - 0.1 (10%)
+		 * - 0.01 (100%)
 		 * @return double.
 		 */
 		public function armarRangoPorcentualInteres($fechaDesde, $fechaHasta, $porcentaje = 0)
 		{
+			self::calcularPorMes($fechaDesde, $fechaHasta, $porcentaje);
 			return self::getRangoPorcentajes();
 		}
 
@@ -172,9 +181,10 @@
 		{
 			$porc = 0;
 			$rango = self::crearCicloEntreFecha($fechaDesde, $fechaHasta);
+
 			if ( count($rango) > 0 ) {
 				foreach ( $rango as $key => $r ) {
-					if ( $porcentaje > 0 ) {
+					if ( $porcentaje == 0 ) {
 						$porc = self::getDeterminarPorcentaje((int)$r['a'], (int)$r['m']);
 					} else {
 						$porc = $porcentaje;
@@ -187,6 +197,7 @@
 					];
 				}
 			}
+
 		}
 
 
@@ -201,7 +212,25 @@
 		 */
 		public function getDeterminarPorcentaje($año, $mes)
 		{
-			$model = self::findInteres($año, $mes);
+			$añoLocal = 0;
+			$mesLocal = 0;
+			$porcentaje = 0;
+			// Se debe realizar un ajuste en la consulta, ya que para un año-mes especifico
+			// el porcentaje de interes a buscar sera el del laspo (año-mes anterior),
+			// debido a que para el mes en curos no se puede obtener el porcentaje por ser un
+			// mes no finalizado.
+
+			if ( $mes == 1 ) {
+				// Lapso anterior
+				$añoLocal = $año - 1;
+				$mesLocal = 12;
+			} else {
+				$añoLocal = $año;
+				$mesLocal = $mes - 1;
+			}
+
+			$model = self::findInteres($añoLocal, $mesLocal);
+
 			if ( $model !== null ) {
 				if ( $model->factor_divisor > 0 ) {
 					$porcentaje = number_format(( $model->interes_promedio / $model->factor_divisor ), 2);
