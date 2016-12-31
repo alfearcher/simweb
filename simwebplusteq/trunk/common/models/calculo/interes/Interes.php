@@ -125,14 +125,31 @@
 					$fechaDesde = self::getFechaVencePeriodo();
 					$fechaHasta = date('Y-m-d');
 
-					self::determinarRangoPorcentual($fechaDesde, $fechaHasta);
-					$this->_interes = self::calcularMontoInteres();
+					if ( self::getRangoFechaValido($fechaDesde, $fechaHasta) ) {
+						self::determinarRangoPorcentual($fechaDesde, $fechaHasta);
+						$this->_interes = self::calcularMontoInteres();
+					} else {
+						$this->_interes = 0;
+					}
 				}
 			}
 
 			return $this->_interes;
 		}
 
+
+
+		/***/
+		private function getRangoFechaValido($fechaDesde, $fechaHasta)
+		{
+			if ( $fechaDesde !== null || $fechaHasta !== null ) {
+				if ( $fechaDesde <= $fechaHasta ) {
+					return true;
+				}
+			}
+
+			return false;
+		}
 
 
 
