@@ -4,7 +4,7 @@
     use yii\helpers\Html;
     use yii\bootstrap\Nav;
     use frontend\models\usuario\CrearUsuarioJuridico;
-    
+
 
     $typeIcon = Icon::FA;
     $typeLong = 'fa-2x';
@@ -95,7 +95,7 @@
            $contribuyente =$buscar[0]['razon_social'];
     }
 
-    
+
     $menuItems1[] = ['label' => '<div class="contribuyente" style="padding-right: 5px; ">
                     <form>
                         <div class="form-group" >
@@ -112,22 +112,22 @@
                     </form>
                 </div>'];
 
-     $menuItems1[] = ['label' => '<div class="view-ok" id="view-ok" style="padding-right: 13px;">
-                                    <i class="glyphicon glyphicon-user fa-2x"></i>
-                                </div>', 'url' => ['/buscargeneral/buscar-general/view','idContribuyente' => isset($idContribuyente) ? $idContribuyente : null]];
+     // $menuItems1[] = ['label' => '<div class="view-ok" id="view-ok" style="padding-right: 13px;">
+     //                                <i class="glyphicon glyphicon-user fa-2x"></i>
+     //                            </div>', 'url' => ['/buscargeneral/buscar-general/view','idContribuyente' => isset($idContribuyente) ? $idContribuyente : null]];
 
     // $menuItems1[] = [
     //         'label' => Icon::show('glyphicon glyphicon-user',['class' => 'fa-2x'], $typeIcon),
     //                         'url' => '#',
     // ];
 
-    $menuItems1[] = ['label' => '<div class="multa" id="multa" >
-                                    <i class="fa fa-file-text-o fa-2x"></i>Multa<span class="badge">4</span>
-                                </div>'];
+    // $menuItems1[] = ['label' => '<div class="multa" id="multa" >
+    //                                 <i class="fa fa-file-text-o fa-2x"></i>Multa<span class="badge">4</span>
+    //                             </div>'];
 
-    $menuItems1[] = ['label' => '<div class="alerta" id="alerta" >
-                                    <i class="fa fa-flag-o fa-2x"></i>alerta<span class="badge">2</span>
-                                </div>'];
+    // $menuItems1[] = ['label' => '<div class="alerta" id="alerta" >
+    //                                 <i class="fa fa-flag-o fa-2x"></i>alerta<span class="badge">2</span>
+    //                             </div>'];
 
     echo Nav::widget([
         'options' => ['class' => 'navbar navbar-right1',
