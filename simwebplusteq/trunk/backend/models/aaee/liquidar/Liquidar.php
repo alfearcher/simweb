@@ -54,6 +54,7 @@
 	use common\models\calculo\liquidacion\aaee\CalculoRubro;
 	use backend\models\aaee\actecon\ActEconSearch;
 	use common\models\calculo\recargo\Recargo;
+	use common\models\calculo\interes\Interes;
 	use yii\data\ArrayDataProvider;
 	use common\models\planilla\Pago;
 
@@ -326,6 +327,7 @@
 						$fechaVcto = OrdenanzaBase::getFechaVencimientoSegunFecha(date('Y-m-d'));
 
 						$recargo = New Recargo(self::IMPUESTO);
+						$interes = New Interes(self::IMPUESTO);
 
 						$j = 0;
 						for ( $i = $desdePeriodo; $i <= $hastaPeriodo; $i++) {
@@ -333,6 +335,9 @@
 							$montoRecargo = 0;
 							$recargo->calcularRecargo($año, $i, $montoPeriodo);
 							$montoRecargo = $recargo->getRecargo();
+
+							$montoInteres = 0;
+							$montoInteres = $interes->calcularInteres($año, $i, $montoPeriodo);
 
 							$modelDetalle[$j] = New PagoDetalle();
 							$modelDetalle[$j]->id_pago = $this->_id_pago;
@@ -342,7 +347,7 @@
 							$modelDetalle[$j]->trimestre = $i;
 							$modelDetalle[$j]->monto = $montoPeriodo;
 							$modelDetalle[$j]->recargo = $montoRecargo;
-							$modelDetalle[$j]->interes = 0;
+							$modelDetalle[$j]->interes = $montoInteres;
 							$modelDetalle[$j]->descuento = 0;
 							$modelDetalle[$j]->pago = 0;
 							$modelDetalle[$j]->fecha_pago = '0000-00-00';
