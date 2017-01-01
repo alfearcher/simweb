@@ -60,6 +60,7 @@
 	use common\models\planilla\PlanillaSearch;
 	use common\models\historico\cvbplanilla\GenerarValidadorPlanilla;
 	use common\models\ordenanza\OrdenanzaBase;
+	use common\models\descuento\AplicarDescuento;
 
 	use mPDF;
 
@@ -79,6 +80,7 @@
 		private $_searchPlanilla;
 		private $_codigoValidador;
 		private $_fechaVcto;
+		private $_aplicarDescuento;		// Instacia de AplicarDescuento().
 
 
 
@@ -91,8 +93,10 @@
 		{
 			$this->_planilla = (int)$planilla;
 			$this->_searchPlanilla = New PlanillaSearch($this->_planilla);
+			//$this->_aplicarDescuento = New AplicarDescuento($this->_planilla);
 
 		}
+
 
 
 		/***/
@@ -138,6 +142,8 @@
 		public function actionGenerarPlanillaPdf()
 		{
 			if ( $this->_planilla > 0 ) {
+
+				//$this->_aplicarDescuento->iniciarDescuento();
 
 				$model = $this->_searchPlanilla->getDetallePlanilla();
 
