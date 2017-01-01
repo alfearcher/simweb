@@ -83,8 +83,38 @@
 										  ->andWhere('D.impuesto =:impuesto',
 										  			[':impuesto' => $this->_impuesto]);
 
-			return ( count($findModel) > 0 ) ? $findModel : [];
+			return $findModel;
 		}
+
+
+
+
+
+
+		/**
+		 * Metodo que retorna la configuracion del descuento segun el tipo de liquidacion
+		 * impuesto,
+		 * @param  integer $tipoLiquidacion tipo de liquiadcion que representa la planilla
+		 * puede ser una planilla de liquidacion normal o de definitiva de actividad economica.
+		 * @return array retotna los registros encontrados segun la consulta.
+		 */
+		public function getConfiguracion($tipoLiquidacion)
+		{
+			$findModel = self::findDescuentoModel();
+
+			return $model = $findModel->andWhere('tipo_liquidacion =:tipo_liquidacion',
+												['tipo_liquidacion' => $tipoLiquidacion])
+									  ->andWhere('fecha_desde <=:fecha_desde',[':fecha_desde' => date('Y-m-d')])
+									  ->andWhere('fecha_hasta >=:fecha_desde',[':fecha_desde' => date('Y-m-d')])
+									  ->orderBy([
+											'ano_impositivo' => SORT_ASC,
+											'periodo' => SORT_ASC,
+										])
+									  ->asArray()
+									  ->all();
+		}
+
+
 
 
 
@@ -106,6 +136,9 @@
 
 			return $config;
 		}
+
+
+
 
 
 
