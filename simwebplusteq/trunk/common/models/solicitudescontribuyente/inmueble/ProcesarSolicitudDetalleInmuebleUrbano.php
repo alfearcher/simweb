@@ -51,7 +51,7 @@
 
     use Yii;
     use common\models\solicitudescontribuyente\inmueble\ProcesarInscripcionInmuebleUrbano;
-    use common\models\solicitudescontribuyente\inmueble\ProcesarAvaluoUrbano;
+    use common\models\solicitudescontribuyente\inmueble\ProcesarAvaluoInmuebleUrbano;
     use common\models\solicitudescontribuyente\inmueble\ProcesarActualizacionDatosInmuebleUrbano;
     use common\models\solicitudescontribuyente\inmueble\ProcesarCambioNumeroCatastralInmuebleUrbano;
     use common\models\solicitudescontribuyente\inmueble\ProcesarCambioPropiedadHorizontalInmuebleUrbano;
