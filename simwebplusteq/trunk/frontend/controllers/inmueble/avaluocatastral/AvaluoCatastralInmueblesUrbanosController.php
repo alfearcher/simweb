@@ -176,7 +176,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                      if($guardo == true){ 
 
                            $envio = self::EnviarCorreo($guardo, $requisitos);
-die(var_dump($envio));
+
                            if($envio == true){ 
 
                               return MensajeController::actionMensaje(100);
