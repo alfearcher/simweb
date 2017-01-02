@@ -350,6 +350,10 @@
 							// Cantidad de meses entre las fechas.
 							$interval = date_diff(date_create($fechaInicioPeriodo), date_create($fechaActual));
 							$cantMeses = $interval->{'m'};
+							$cantA = $interval->{'y'};
+							if ( $cantA > 0 ) {
+								$cantMeses = $cantA * 12;
+							}
 
 							if ( $cantMeses >= $meses ) {
 								$aplicoSancion = true;
