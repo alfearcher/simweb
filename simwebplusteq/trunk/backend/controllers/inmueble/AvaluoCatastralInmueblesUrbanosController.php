@@ -227,23 +227,23 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
             $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
             
             try {
-            // $tableName1 = 'solicitudes_contribuyente'; 
+            $tableName1 = 'solicitudes_contribuyente'; 
 
-            // $tipoSolicitud = self::DatosConfiguracionTiposSolicitudes();
+            $tipoSolicitud = self::DatosConfiguracionTiposSolicitudes();
 
-            // $arrayDatos1 = [  'id_contribuyente' => $datos->id_contribuyente,
-            //                   'id_config_solicitud' => $_SESSION['id'],
-            //                   'impuesto' => 2,
-            //                   'id_impuesto' => $datos->id_impuesto,
-            //                   'tipo_solicitud' => $tipoSolicitud,
-            //                   'usuario' => yii::$app->user->identity->login,
-            //                   'fecha_hora_creacion' => date('Y-m-d h:i:s'),
-            //                   'nivel_aprobacion' => $nivelAprobacion["nivel_aprobacion"],
-            //                   'nro_control' => 0,
-            //                   'firma_digital' => null,
-            //                   'estatus' => 0,
-            //                   'inactivo' => 0,
-            //               ];  
+            $arrayDatos1 = [  'id_contribuyente' => $datos->id_contribuyente,
+                              'id_config_solicitud' => $_SESSION['id'],
+                              'impuesto' => 2,
+                              'id_impuesto' => $datos->id_impuesto,
+                              'tipo_solicitud' => $tipoSolicitud,
+                              'usuario' => yii::$app->user->identity->login,
+                              'fecha_hora_creacion' => date('Y-m-d h:i:s'),
+                              'nivel_aprobacion' => $nivelAprobacion["nivel_aprobacion"],
+                              'nro_control' => 0,
+                              'firma_digital' => null,
+                              'estatus' => 0,
+                              'inactivo' => 0,
+                          ];  
             
 
             $conn = New ConexionController();
@@ -251,46 +251,49 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
             $conexion->open();  
             $transaccion = $conexion->beginTransaction();
 
-            // if ( $conn->guardarRegistro($conexion, $tableName1,  $arrayDatos1) ){  
-            //     $result = $conexion->getLastInsertID();
+            if ( $conn->guardarRegistro($conexion, $tableName1,  $arrayDatos1) ){  
+                $result = $conexion->getLastInsertID();
+                
 
+                $avaluoConstruccion = $model->metros_construccion * $model->valor_construccion;
+                $avaluoTerreno = $model->metros_terreno * $model->valor_terreno;
 
-            //     $arrayDatos2 = [    'id_contribuyente' => $datos->id_contribuyente,
-            //                         'id_impuesto' => $datos->id_impuesto,
-            //                         'nro_solicitud' => $result,
-            //                         'ano_inicio' => $model->ano_inicio,
-            //                         'direccion' => $model->direccion,
-            //                         'medidor' => $model->medidor,
-            //                         'observacion' => $model->observacion,
-            //                         'tipo_ejido' => $model->tipo_ejido,
-            //                       //'av_calle_esq_dom' => $av_calle_esq_dom,
-            //                         'casa_edf_qta_dom' => $model->casa_edf_qta_dom,
-            //                         'piso_nivel_no_dom' => $model->piso_nivel_no_dom,
-            //                         'apto_dom' => $model->apto_dom,
-            //                         'fecha_creacion' => date('Y-m-d h:i:s'),
-            //                     ]; 
+                $arrayDatos2 = [    'id_impuesto' => $datos->id_impuesto,
+                                    'nro_solicitud' => $result,
+                                    'fecha' => date('Y-m-d'),
+                                    'mts' => $model->metros_construccion,
+                                    'valor_por_mts2' => $model->valor_construccion,
+                                    'mts2_terreno' => $model->metros_terreno,
+                                    'valor_por_mts2_terreno' => $model->valor_construccion,
+                                    'valor' => $avaluoConstruccion + $avaluoTerreno,
+                                    
+                                ]; 
 
             
-            //      $tableName2 = 'sl_inmuebles'; 
+                 $tableName2 = 'sl_historico_avaluos'; 
 
-                // if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){
+                if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){
 
-                //     if ($nivelAprobacion['nivel_aprobacion'] != 1){
+                    if ($nivelAprobacion['nivel_aprobacion'] != 1){
 
-                //         $transaccion->commit(); 
-                //         $conexion->close(); 
-                //         $tipoError = 0;  
-                //         return $result; 
+                        $transaccion->commit(); 
+                        $conexion->close(); 
+                        $tipoError = 0;  
+                        return $result; 
 
-                //     } else {
+                    } else {
                 
                         $avaluoConstruccion = $model->metros_construccion * $model->valor_construccion;
                         $avaluoTerreno = $model->metros_terreno * $model->valor_terreno;
 
                         $arrayDatos1 = [    'id_impuesto' => $datos->id_impuesto,
-                                            'metros_cuadrados' => $model->metros_construccion,
-                                            'valor_unitario' => $model->valor_construccion,
-                                            'avaluo_construccion' => $avaluoConstruccion,
+                                            'nro_solicitud' => $result,
+                                            'fecha' => date('Y-m-d'),
+                                            'mts' => $model->metros_construccion,
+                                            'valor_por_mts2' => $model->valor_construccion,
+                                            'mts2_terreno' => $model->metros_terreno,
+                                            'valor_por_mts2_terreno' => $model->valor_construccion,
+                                            'valor' => $avaluoConstruccion + $avaluoTerreno,
                                             'inactivo' => 0,
                                             'fecha_creador' => date('Y'),
                                             'usuario_creador' => $_SESSION['idContribuyente'],
@@ -299,22 +302,13 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                                         ]; 
 
             
-                        $tableName1 = 'avaluos_construccion';
-                        $arrayDatos2 = [    'id_impuesto' => $datos->id_impuesto,
-                                            'metros_cuadrados' => $model->metros_terreno,
-                                            'valor_mts2' => $model->valor_construccion,
-                                            'avaluo_terreno' => $avaluoTerreno,
-                                            'inactivo' => 0,
-                                            'fecha_creador' => date('Y'),
-                                            'usuario_creador' => $_SESSION['idContribuyente'],
-                                            
-                                    
-                                        ]; 
+                        $tableName1 = 'historico_avaluos';
+                         
 
             
                         $tableName2 = 'avaluos_terreno';
 //die(var_dump($arrayDatos1).var_dump($arrayDatos2));
-                        if ( $conn->guardarRegistro($conexion, $tableName1,  $arrayDatos1) and $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){
+                        if ( $conn->guardarRegistro($conexion, $tableName1,  $arrayDatos1) ){
 
                               $transaccion->commit();  
                               $conexion->close(); 

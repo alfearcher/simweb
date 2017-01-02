@@ -50357,3 +50357,2629 @@ $_SERVER = [
     'REQUEST_TIME_FLOAT' => 1482789746.449
     'REQUEST_TIME' => 1482789746
 ]
+2017-01-02 14:42:18 [::1][-][-][warning][yii\web\Session::init] Session is already started
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\views\layouts\layout-main.php:12
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\buscargeneral\BuscarGeneralController.php:149
+2017-01-02 14:42:18 [::1][-][-][info][application] $_GET = [
+    'r' => 'buscargeneral/buscar-general/index'
+]
+
+$_COOKIE = [
+    '_identity' => 'febc6f7b628367e98fddd3b9a860516168700dc12f3a34d5e48ddb38285d0351a:2:{i:0;s:9:\"_identity\";i:1;s:39:\"[5,\"13f416c7b7f679de34078bcc5\",2592000]\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+]
+
+$_SERVER = [
+    'MIBDIRS' => 'C:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'C:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_HOST' => 'localhost:8081'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_CACHE_CONTROL' => 'max-age=0'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.8,en;q=0.6'
+    'HTTP_COOKIE' => '_identity=febc6f7b628367e98fddd3b9a860516168700dc12f3a34d5e48ddb38285d0351a%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A39%3A%22%5B5%2C%2213f416c7b7f679de34078bcc5%22%2C2592000%5D%22%3B%7D'
+    'PATH' => 'C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;c:\\Program Files\\Intel\\DMIX;C:\\Program Files (x86)\\Intel\\Services\\IPT\\;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files\\TortoiseSVN\\bin;C:\\Program Files (x86)\\ATI Technologies\\ATI.ACE\\Core-Static;C:\\Program Files\\OpenVPN\\bin;C:\\Users\\Analista\\AppData\\Local\\Microsoft\\WindowsApps;'
+    'SystemRoot' => 'C:\\WINDOWS'
+    'COMSPEC' => 'C:\\WINDOWS\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\WINDOWS'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3 Server at localhost Port 8081</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '8081'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'C:/xampp/htdocs/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REMOTE_PORT' => '60952'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'r=buscargeneral%2Fbuscar-general%2Findex'
+    'REQUEST_URI' => '/alvaro/simwebplusteq/trunk/backend/web/index.php?r=buscargeneral%2Fbuscar-general%2Findex'
+    'SCRIPT_NAME' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'PHP_SELF' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1483364538.04
+    'REQUEST_TIME' => 1483364538
+]
+2017-01-02 14:43:25 [::1][1][-][warning][yii\web\Session::init] Session is already started
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\models\funcionario\solicitud\SolicitudAsignadaSearch.php:213
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\funcionario\solicitud\SolicitudAsignadaController.php:141
+2017-01-02 14:43:24 [::1][1][-][info][application] $_GET = [
+    'r' => 'funcionario/solicitud/solicitud-asignada/index'
+]
+
+$_COOKIE = [
+    '_csrf' => '4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"fqIcveFP4bIPKTXsV3apINIs987zUsZ6\";}'
+    'PHPSESSID' => 'i0d7bs4rj1gk53h4uveqlpcg90'
+    '_identity' => 'ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea:2:{i:0;s:9:\"_identity\";i:1;s:39:\"[1,\"a5dd1347f3daf1ed10401b3be\",2592000]\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+]
+
+$_SERVER = [
+    'MIBDIRS' => 'C:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'C:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_HOST' => 'localhost:8081'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_REFERER' => 'http://localhost:8081/alvaro/simwebplusteq/trunk/backend/web/index.php?r=menu%2Fvertical'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.8,en;q=0.6'
+    'HTTP_COOKIE' => '_csrf=4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22fqIcveFP4bIPKTXsV3apINIs987zUsZ6%22%3B%7D; PHPSESSID=i0d7bs4rj1gk53h4uveqlpcg90; _identity=ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A39%3A%22%5B1%2C%22a5dd1347f3daf1ed10401b3be%22%2C2592000%5D%22%3B%7D'
+    'PATH' => 'C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;c:\\Program Files\\Intel\\DMIX;C:\\Program Files (x86)\\Intel\\Services\\IPT\\;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files\\TortoiseSVN\\bin;C:\\Program Files (x86)\\ATI Technologies\\ATI.ACE\\Core-Static;C:\\Program Files\\OpenVPN\\bin;C:\\Users\\Analista\\AppData\\Local\\Microsoft\\WindowsApps;'
+    'SystemRoot' => 'C:\\WINDOWS'
+    'COMSPEC' => 'C:\\WINDOWS\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\WINDOWS'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3 Server at localhost Port 8081</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '8081'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'C:/xampp/htdocs/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REMOTE_PORT' => '60980'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Findex'
+    'REQUEST_URI' => '/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Findex'
+    'SCRIPT_NAME' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'PHP_SELF' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1483364604.93
+    'REQUEST_TIME' => 1483364604
+]
+2017-01-02 14:43:42 [::1][1][-][warning][yii\web\Session::init] Session is already started
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\funcionario\solicitud\SolicitudAsignadaController.php:982
+2017-01-02 14:43:42 [::1][1][-][info][application] $_GET = [
+    'r' => 'funcionario/solicitud/solicitud-asignada/list-solicitud'
+    'i' => '2'
+]
+
+$_COOKIE = [
+    '_csrf' => '4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"fqIcveFP4bIPKTXsV3apINIs987zUsZ6\";}'
+    'PHPSESSID' => 'i0d7bs4rj1gk53h4uveqlpcg90'
+    '_identity' => 'ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea:2:{i:0;s:9:\"_identity\";i:1;s:39:\"[1,\"a5dd1347f3daf1ed10401b3be\",2592000]\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+]
+
+$_SERVER = [
+    'MIBDIRS' => 'C:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'C:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_HOST' => 'localhost:8081'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'CONTENT_LENGTH' => '0'
+    'HTTP_ACCEPT' => '*/*'
+    'HTTP_ORIGIN' => 'http://localhost:8081'
+    'HTTP_X_CSRF_TOKEN' => 'VktpNmo5SDEwOiBVHFwOYWIpIGYhbRBCAHgIRiN3AUJvc15MP0oSBw=='
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
+    'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
+    'HTTP_REFERER' => 'http://localhost:8081/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Findex'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.8,en;q=0.6'
+    'HTTP_COOKIE' => '_csrf=4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22fqIcveFP4bIPKTXsV3apINIs987zUsZ6%22%3B%7D; PHPSESSID=i0d7bs4rj1gk53h4uveqlpcg90; _identity=ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A39%3A%22%5B1%2C%22a5dd1347f3daf1ed10401b3be%22%2C2592000%5D%22%3B%7D'
+    'PATH' => 'C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;c:\\Program Files\\Intel\\DMIX;C:\\Program Files (x86)\\Intel\\Services\\IPT\\;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files\\TortoiseSVN\\bin;C:\\Program Files (x86)\\ATI Technologies\\ATI.ACE\\Core-Static;C:\\Program Files\\OpenVPN\\bin;C:\\Users\\Analista\\AppData\\Local\\Microsoft\\WindowsApps;'
+    'SystemRoot' => 'C:\\WINDOWS'
+    'COMSPEC' => 'C:\\WINDOWS\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\WINDOWS'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3 Server at localhost Port 8081</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '8081'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'C:/xampp/htdocs/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REMOTE_PORT' => '60983'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => 'r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Flist-solicitud&i=2'
+    'REQUEST_URI' => '/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Flist-solicitud&i=2'
+    'SCRIPT_NAME' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'PHP_SELF' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1483364622.799
+    'REQUEST_TIME' => 1483364622
+]
+2017-01-02 14:43:47 [::1][1][-][warning][yii\web\Session::init] Session is already started
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\funcionario\solicitud\SolicitudAsignadaController.php:869
+2017-01-02 14:43:46 [::1][1][-][info][application] $_GET = [
+    'r' => 'funcionario/solicitud/solicitud-asignada/buscar-solicitudes-contribuyente'
+]
+
+$_COOKIE = [
+    '_csrf' => '4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"fqIcveFP4bIPKTXsV3apINIs987zUsZ6\";}'
+    '_identity' => 'ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea:2:{i:0;s:9:\"_identity\";i:1;s:39:\"[1,\"a5dd1347f3daf1ed10401b3be\",2592000]\";}'
+    'PHPSESSID' => 'i0d7bs4rj1gk53h4uveqlpcg90'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+    'postBusquedaInicial' => [
+        '_csrf' => 'VktpNmo5SDEwOiBVHFwOYWIpIGYhbRBCAHgIRiN3AUJvc15MP0oSBw=='
+        'SolicitudAsignadaForm' => [
+            'impuesto' => '2'
+            'tipo_solicitud' => '20'
+            'fecha_desde' => ''
+            'fecha_hasta' => ''
+            'nro_solicitud' => ''
+        ]
+        'btn-search-request' => '1'
+    ]
+]
+
+$_SERVER = [
+    'MIBDIRS' => 'C:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'C:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_HOST' => 'localhost:8081'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_CACHE_CONTROL' => 'max-age=0'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_REFERER' => 'http://localhost:8081/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Findex'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.8,en;q=0.6'
+    'HTTP_COOKIE' => '_csrf=4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22fqIcveFP4bIPKTXsV3apINIs987zUsZ6%22%3B%7D; _identity=ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A39%3A%22%5B1%2C%22a5dd1347f3daf1ed10401b3be%22%2C2592000%5D%22%3B%7D; PHPSESSID=i0d7bs4rj1gk53h4uveqlpcg90'
+    'PATH' => 'C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;c:\\Program Files\\Intel\\DMIX;C:\\Program Files (x86)\\Intel\\Services\\IPT\\;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files\\TortoiseSVN\\bin;C:\\Program Files (x86)\\ATI Technologies\\ATI.ACE\\Core-Static;C:\\Program Files\\OpenVPN\\bin;C:\\Users\\Analista\\AppData\\Local\\Microsoft\\WindowsApps;'
+    'SystemRoot' => 'C:\\WINDOWS'
+    'COMSPEC' => 'C:\\WINDOWS\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\WINDOWS'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3 Server at localhost Port 8081</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '8081'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'C:/xampp/htdocs/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REMOTE_PORT' => '60984'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitudes-contribuyente'
+    'REQUEST_URI' => '/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitudes-contribuyente'
+    'SCRIPT_NAME' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'PHP_SELF' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1483364626.967
+    'REQUEST_TIME' => 1483364626
+]
+2017-01-02 14:43:52 [::1][1][-][warning][yii\web\Session::init] Session is already started
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\funcionario\solicitud\SolicitudAsignadaController.php:869
+2017-01-02 14:43:52 [::1][1][-][info][application] $_GET = [
+    'r' => 'funcionario/solicitud/solicitud-asignada/buscar-solicitudes-contribuyente'
+    'page' => '2'
+]
+
+$_COOKIE = [
+    '_csrf' => '4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"fqIcveFP4bIPKTXsV3apINIs987zUsZ6\";}'
+    'PHPSESSID' => 'i0d7bs4rj1gk53h4uveqlpcg90'
+    '_identity' => 'ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea:2:{i:0;s:9:\"_identity\";i:1;s:39:\"[1,\"a5dd1347f3daf1ed10401b3be\",2592000]\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+    'postBusquedaInicial' => [
+        '_csrf' => 'VktpNmo5SDEwOiBVHFwOYWIpIGYhbRBCAHgIRiN3AUJvc15MP0oSBw=='
+        'SolicitudAsignadaForm' => [
+            'impuesto' => '2'
+            'tipo_solicitud' => '20'
+            'fecha_desde' => ''
+            'fecha_hasta' => ''
+            'nro_solicitud' => ''
+        ]
+        'btn-search-request' => '1'
+    ]
+]
+
+$_SERVER = [
+    'MIBDIRS' => 'C:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'C:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_HOST' => 'localhost:8081'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_REFERER' => 'http://localhost:8081/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitudes-contribuyente'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.8,en;q=0.6'
+    'HTTP_COOKIE' => '_csrf=4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22fqIcveFP4bIPKTXsV3apINIs987zUsZ6%22%3B%7D; PHPSESSID=i0d7bs4rj1gk53h4uveqlpcg90; _identity=ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A39%3A%22%5B1%2C%22a5dd1347f3daf1ed10401b3be%22%2C2592000%5D%22%3B%7D'
+    'PATH' => 'C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;c:\\Program Files\\Intel\\DMIX;C:\\Program Files (x86)\\Intel\\Services\\IPT\\;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files\\TortoiseSVN\\bin;C:\\Program Files (x86)\\ATI Technologies\\ATI.ACE\\Core-Static;C:\\Program Files\\OpenVPN\\bin;C:\\Users\\Analista\\AppData\\Local\\Microsoft\\WindowsApps;'
+    'SystemRoot' => 'C:\\WINDOWS'
+    'COMSPEC' => 'C:\\WINDOWS\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\WINDOWS'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3 Server at localhost Port 8081</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '8081'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'C:/xampp/htdocs/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REMOTE_PORT' => '60984'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitudes-contribuyente&page=2'
+    'REQUEST_URI' => '/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitudes-contribuyente&page=2'
+    'SCRIPT_NAME' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'PHP_SELF' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1483364632.299
+    'REQUEST_TIME' => 1483364632
+]
+2017-01-02 14:43:56 [::1][1][i0d7bs4rj1gk53h4uveqlpcg90][warning][yii\web\Session::init] Session is already started
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\conexion\ConexionController.php:158
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\conexion\ConexionController.php:344
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\models\contribuyente\ContribuyenteBase.php:203
+2017-01-02 14:43:56 [::1][1][i0d7bs4rj1gk53h4uveqlpcg90][error][yii\base\InvalidConfigException] exception 'yii\base\InvalidConfigException' with message 'Please specify the "model" property.' in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\widgets\DetailView.php:121
+Stack trace:
+#0 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\Object.php(107): yii\widgets\DetailView->init()
+#1 [internal function]: yii\base\Object->__construct(Array)
+#2 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\di\Container.php(379): ReflectionClass->newInstanceArgs(Array)
+#3 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\di\Container.php(154): yii\di\Container->build('yii\\widgets\\Det...', Array, Array)
+#4 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\BaseYii.php(344): yii\di\Container->get('yii\\widgets\\Det...', Array, Array)
+#5 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\Widget.php(101): yii\BaseYii::createObject(Array)
+#6 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\views\inmueble\inscripcion-inmuebles-urbanos\view-solicitud.php(71): yii\base\Widget::widget(Array)
+#7 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\View.php(326): require('C:\\xampp\\htdocs...')
+#8 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\View.php(248): yii\base\View->renderPhpFile('C:\\xampp\\htdocs...', Array)
+#9 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\View.php(150): yii\base\View->renderFile('C:\\xampp\\htdocs...', Array, Object(backend\controllers\inmueble\solicitud\SolicitudViewInmuebleController))
+#10 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\Controller.php(378): yii\base\View->render('@backend/views/...', Array, Object(backend\controllers\inmueble\solicitud\SolicitudViewInmuebleController))
+#11 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\inmueble\solicitud\SolicitudViewInmuebleController.php(202): yii\base\Controller->render('@backend/views/...', Array)
+#12 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\inmueble\solicitud\SolicitudViewInmuebleController.php(106): backend\controllers\inmueble\solicitud\SolicitudViewInmuebleController->actionMostrarSolicitudInscripcionInmueble()
+#13 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\models\solicitudescontribuyente\DetalleSolicitudCreada.php(123): backend\controllers\inmueble\solicitud\SolicitudViewInmuebleController->actionInicioView()
+#14 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\models\solicitudescontribuyente\DetalleSolicitudCreada.php(102): common\models\solicitudescontribuyente\DetalleSolicitudCreada->getViewPorImpuesto(Object(common\models\solicitudescontribuyente\SolicitudesContribuyente))
+#15 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\funcionario\solicitud\SolicitudAsignadaController.php(774): common\models\solicitudescontribuyente\DetalleSolicitudCreada->getDatosSolicitudCreada()
+#16 [internal function]: backend\controllers\funcionario\solicitud\SolicitudAsignadaController->actionBuscarSolicitudSeleccionada()
+#17 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\InlineAction.php(55): call_user_func_array(Array, Array)
+#18 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\Controller.php(154): yii\base\InlineAction->runWithParams(Array)
+#19 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\Module.php(454): yii\base\Controller->runAction('buscar-solicitu...', Array)
+#20 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\web\Application.php(100): yii\base\Module->runAction('funcionario/sol...', Array)
+#21 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#22 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\web\index.php(18): yii\base\Application->run()
+#23 {main}
+2017-01-02 14:43:56 [::1][1][i0d7bs4rj1gk53h4uveqlpcg90][info][application] $_GET = [
+    'r' => 'funcionario/solicitud/solicitud-asignada/buscar-solicitud-seleccionada'
+]
+
+$_POST = [
+    '_csrf' => 'eEZvQ0FBVHMeNyYgNyQSI0wkJhMKFQwALnUOMwgPHQBBflg5FDIORQ=='
+    'SolicitudAsignadaSearch' => [
+        'listado' => '5'
+    ]
+    'id' => '23486'
+]
+
+$_COOKIE = [
+    '_csrf' => '4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"fqIcveFP4bIPKTXsV3apINIs987zUsZ6\";}'
+    'PHPSESSID' => 'i0d7bs4rj1gk53h4uveqlpcg90'
+    '_identity' => 'ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea:2:{i:0;s:9:\"_identity\";i:1;s:39:\"[1,\"a5dd1347f3daf1ed10401b3be\",2592000]\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+    'postBusquedaInicial' => [
+        '_csrf' => 'VktpNmo5SDEwOiBVHFwOYWIpIGYhbRBCAHgIRiN3AUJvc15MP0oSBw=='
+        'SolicitudAsignadaForm' => [
+            'impuesto' => '2'
+            'tipo_solicitud' => '20'
+            'fecha_desde' => ''
+            'fecha_hasta' => ''
+            'nro_solicitud' => ''
+        ]
+        'btn-search-request' => '1'
+    ]
+    'postSeleccionado' => [
+        '_csrf' => 'eEZvQ0FBVHMeNyYgNyQSI0wkJhMKFQwALnUOMwgPHQBBflg5FDIORQ=='
+        'SolicitudAsignadaSearch' => [
+            'listado' => '5'
+        ]
+        'id' => '23486'
+    ]
+    'idContribuyente' => '319529'
+]
+
+$_SERVER = [
+    'MIBDIRS' => 'C:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'C:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_HOST' => 'localhost:8081'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'CONTENT_LENGTH' => '123'
+    'HTTP_CACHE_CONTROL' => 'max-age=0'
+    'HTTP_ORIGIN' => 'http://localhost:8081'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_REFERER' => 'http://localhost:8081/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitudes-contribuyente&page=2'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.8,en;q=0.6'
+    'HTTP_COOKIE' => '_csrf=4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22fqIcveFP4bIPKTXsV3apINIs987zUsZ6%22%3B%7D; PHPSESSID=i0d7bs4rj1gk53h4uveqlpcg90; _identity=ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A39%3A%22%5B1%2C%22a5dd1347f3daf1ed10401b3be%22%2C2592000%5D%22%3B%7D'
+    'PATH' => 'C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;c:\\Program Files\\Intel\\DMIX;C:\\Program Files (x86)\\Intel\\Services\\IPT\\;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files\\TortoiseSVN\\bin;C:\\Program Files (x86)\\ATI Technologies\\ATI.ACE\\Core-Static;C:\\Program Files\\OpenVPN\\bin;C:\\Users\\Analista\\AppData\\Local\\Microsoft\\WindowsApps;'
+    'SystemRoot' => 'C:\\WINDOWS'
+    'COMSPEC' => 'C:\\WINDOWS\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\WINDOWS'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3 Server at localhost Port 8081</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '8081'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'C:/xampp/htdocs/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REMOTE_PORT' => '60996'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => 'r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitud-seleccionada'
+    'REQUEST_URI' => '/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitud-seleccionada'
+    'SCRIPT_NAME' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'PHP_SELF' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1483364636.028
+    'REQUEST_TIME' => 1483364636
+]
+2017-01-02 14:43:56 [::1][1][i0d7bs4rj1gk53h4uveqlpcg90][warning][yii\log\Dispatcher::dispatch] Unable to send log via yii\debug\LogTarget: Exception 'Exception' with message 'Serialization of 'Closure' is not allowed' 
+
+in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2-debug\LogTarget.php:58
+
+Stack trace:
+#0 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2-debug\LogTarget.php(58): serialize(Array)
+#1 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2-debug\LogTarget.php(112): yii\debug\LogTarget->export(Array)
+#2 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\log\Dispatcher.php(188): yii\debug\LogTarget->collect(Array, true)
+#3 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\log\Logger.php(173): yii\log\Dispatcher->dispatch(Array, true)
+#4 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\ErrorHandler.php(111): yii\log\Logger->flush(true)
+#5 [internal function]: yii\base\ErrorHandler->handleException(Object(yii\base\InvalidConfigException))
+#6 {main}
+2017-01-02 14:43:56 [::1][1][i0d7bs4rj1gk53h4uveqlpcg90][info][application] $_GET = [
+    'r' => 'funcionario/solicitud/solicitud-asignada/buscar-solicitud-seleccionada'
+]
+
+$_POST = [
+    '_csrf' => 'eEZvQ0FBVHMeNyYgNyQSI0wkJhMKFQwALnUOMwgPHQBBflg5FDIORQ=='
+    'SolicitudAsignadaSearch' => [
+        'listado' => '5'
+    ]
+    'id' => '23486'
+]
+
+$_COOKIE = [
+    '_csrf' => '4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"fqIcveFP4bIPKTXsV3apINIs987zUsZ6\";}'
+    'PHPSESSID' => 'i0d7bs4rj1gk53h4uveqlpcg90'
+    '_identity' => 'ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea:2:{i:0;s:9:\"_identity\";i:1;s:39:\"[1,\"a5dd1347f3daf1ed10401b3be\",2592000]\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+    'postBusquedaInicial' => [
+        '_csrf' => 'VktpNmo5SDEwOiBVHFwOYWIpIGYhbRBCAHgIRiN3AUJvc15MP0oSBw=='
+        'SolicitudAsignadaForm' => [
+            'impuesto' => '2'
+            'tipo_solicitud' => '20'
+            'fecha_desde' => ''
+            'fecha_hasta' => ''
+            'nro_solicitud' => ''
+        ]
+        'btn-search-request' => '1'
+    ]
+    'postSeleccionado' => [
+        '_csrf' => 'eEZvQ0FBVHMeNyYgNyQSI0wkJhMKFQwALnUOMwgPHQBBflg5FDIORQ=='
+        'SolicitudAsignadaSearch' => [
+            'listado' => '5'
+        ]
+        'id' => '23486'
+    ]
+    'idContribuyente' => '319529'
+]
+
+$_SERVER = [
+    'MIBDIRS' => 'C:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'C:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_HOST' => 'localhost:8081'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'CONTENT_LENGTH' => '123'
+    'HTTP_CACHE_CONTROL' => 'max-age=0'
+    'HTTP_ORIGIN' => 'http://localhost:8081'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_REFERER' => 'http://localhost:8081/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitudes-contribuyente&page=2'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.8,en;q=0.6'
+    'HTTP_COOKIE' => '_csrf=4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22fqIcveFP4bIPKTXsV3apINIs987zUsZ6%22%3B%7D; PHPSESSID=i0d7bs4rj1gk53h4uveqlpcg90; _identity=ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A39%3A%22%5B1%2C%22a5dd1347f3daf1ed10401b3be%22%2C2592000%5D%22%3B%7D'
+    'PATH' => 'C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;c:\\Program Files\\Intel\\DMIX;C:\\Program Files (x86)\\Intel\\Services\\IPT\\;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files\\TortoiseSVN\\bin;C:\\Program Files (x86)\\ATI Technologies\\ATI.ACE\\Core-Static;C:\\Program Files\\OpenVPN\\bin;C:\\Users\\Analista\\AppData\\Local\\Microsoft\\WindowsApps;'
+    'SystemRoot' => 'C:\\WINDOWS'
+    'COMSPEC' => 'C:\\WINDOWS\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\WINDOWS'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3 Server at localhost Port 8081</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '8081'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'C:/xampp/htdocs/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REMOTE_PORT' => '60996'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => 'r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitud-seleccionada'
+    'REQUEST_URI' => '/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitud-seleccionada'
+    'SCRIPT_NAME' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'PHP_SELF' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1483364636.028
+    'REQUEST_TIME' => 1483364636
+]
+2017-01-02 14:44:00 [::1][1][-][warning][yii\web\Session::init] Session is already started
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\funcionario\solicitud\SolicitudAsignadaController.php:869
+2017-01-02 14:44:00 [::1][1][-][info][application] $_GET = [
+    'r' => 'funcionario/solicitud/solicitud-asignada/buscar-solicitudes-contribuyente'
+    'page' => '2'
+]
+
+$_COOKIE = [
+    '_csrf' => '4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"fqIcveFP4bIPKTXsV3apINIs987zUsZ6\";}'
+    'PHPSESSID' => 'i0d7bs4rj1gk53h4uveqlpcg90'
+    '_identity' => 'ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea:2:{i:0;s:9:\"_identity\";i:1;s:39:\"[1,\"a5dd1347f3daf1ed10401b3be\",2592000]\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+    'postBusquedaInicial' => [
+        '_csrf' => 'VktpNmo5SDEwOiBVHFwOYWIpIGYhbRBCAHgIRiN3AUJvc15MP0oSBw=='
+        'SolicitudAsignadaForm' => [
+            'impuesto' => '2'
+            'tipo_solicitud' => '20'
+            'fecha_desde' => ''
+            'fecha_hasta' => ''
+            'nro_solicitud' => ''
+        ]
+        'btn-search-request' => '1'
+    ]
+    'idContribuyente' => '319529'
+]
+
+$_SERVER = [
+    'MIBDIRS' => 'C:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'C:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_HOST' => 'localhost:8081'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_REFERER' => 'http://localhost:8081/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitudes-contribuyente'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.8,en;q=0.6'
+    'HTTP_COOKIE' => '_csrf=4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22fqIcveFP4bIPKTXsV3apINIs987zUsZ6%22%3B%7D; PHPSESSID=i0d7bs4rj1gk53h4uveqlpcg90; _identity=ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A39%3A%22%5B1%2C%22a5dd1347f3daf1ed10401b3be%22%2C2592000%5D%22%3B%7D'
+    'PATH' => 'C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;c:\\Program Files\\Intel\\DMIX;C:\\Program Files (x86)\\Intel\\Services\\IPT\\;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files\\TortoiseSVN\\bin;C:\\Program Files (x86)\\ATI Technologies\\ATI.ACE\\Core-Static;C:\\Program Files\\OpenVPN\\bin;C:\\Users\\Analista\\AppData\\Local\\Microsoft\\WindowsApps;'
+    'SystemRoot' => 'C:\\WINDOWS'
+    'COMSPEC' => 'C:\\WINDOWS\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\WINDOWS'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3 Server at localhost Port 8081</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '8081'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'C:/xampp/htdocs/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REMOTE_PORT' => '61006'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitudes-contribuyente&page=2'
+    'REQUEST_URI' => '/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitudes-contribuyente&page=2'
+    'SCRIPT_NAME' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'PHP_SELF' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1483364640.728
+    'REQUEST_TIME' => 1483364640
+]
+2017-01-02 14:44:03 [::1][1][i0d7bs4rj1gk53h4uveqlpcg90][warning][yii\web\Session::init] Session is already started
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\conexion\ConexionController.php:158
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\conexion\ConexionController.php:344
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\models\contribuyente\ContribuyenteBase.php:203
+2017-01-02 14:44:03 [::1][1][i0d7bs4rj1gk53h4uveqlpcg90][error][yii\base\InvalidConfigException] exception 'yii\base\InvalidConfigException' with message 'Please specify the "model" property.' in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\widgets\DetailView.php:121
+Stack trace:
+#0 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\Object.php(107): yii\widgets\DetailView->init()
+#1 [internal function]: yii\base\Object->__construct(Array)
+#2 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\di\Container.php(379): ReflectionClass->newInstanceArgs(Array)
+#3 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\di\Container.php(154): yii\di\Container->build('yii\\widgets\\Det...', Array, Array)
+#4 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\BaseYii.php(344): yii\di\Container->get('yii\\widgets\\Det...', Array, Array)
+#5 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\Widget.php(101): yii\BaseYii::createObject(Array)
+#6 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\views\inmueble\inscripcion-inmuebles-urbanos\view-solicitud.php(71): yii\base\Widget::widget(Array)
+#7 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\View.php(326): require('C:\\xampp\\htdocs...')
+#8 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\View.php(248): yii\base\View->renderPhpFile('C:\\xampp\\htdocs...', Array)
+#9 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\View.php(150): yii\base\View->renderFile('C:\\xampp\\htdocs...', Array, Object(backend\controllers\inmueble\solicitud\SolicitudViewInmuebleController))
+#10 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\Controller.php(378): yii\base\View->render('@backend/views/...', Array, Object(backend\controllers\inmueble\solicitud\SolicitudViewInmuebleController))
+#11 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\inmueble\solicitud\SolicitudViewInmuebleController.php(202): yii\base\Controller->render('@backend/views/...', Array)
+#12 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\inmueble\solicitud\SolicitudViewInmuebleController.php(106): backend\controllers\inmueble\solicitud\SolicitudViewInmuebleController->actionMostrarSolicitudInscripcionInmueble()
+#13 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\models\solicitudescontribuyente\DetalleSolicitudCreada.php(123): backend\controllers\inmueble\solicitud\SolicitudViewInmuebleController->actionInicioView()
+#14 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\models\solicitudescontribuyente\DetalleSolicitudCreada.php(102): common\models\solicitudescontribuyente\DetalleSolicitudCreada->getViewPorImpuesto(Object(common\models\solicitudescontribuyente\SolicitudesContribuyente))
+#15 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\funcionario\solicitud\SolicitudAsignadaController.php(774): common\models\solicitudescontribuyente\DetalleSolicitudCreada->getDatosSolicitudCreada()
+#16 [internal function]: backend\controllers\funcionario\solicitud\SolicitudAsignadaController->actionBuscarSolicitudSeleccionada()
+#17 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\InlineAction.php(55): call_user_func_array(Array, Array)
+#18 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\Controller.php(154): yii\base\InlineAction->runWithParams(Array)
+#19 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\Module.php(454): yii\base\Controller->runAction('buscar-solicitu...', Array)
+#20 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\web\Application.php(100): yii\base\Module->runAction('funcionario/sol...', Array)
+#21 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#22 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\web\index.php(18): yii\base\Application->run()
+#23 {main}
+2017-01-02 14:44:03 [::1][1][i0d7bs4rj1gk53h4uveqlpcg90][info][application] $_GET = [
+    'r' => 'funcionario/solicitud/solicitud-asignada/buscar-solicitud-seleccionada'
+]
+
+$_POST = [
+    '_csrf' => 'eUVVSUR3eUMfNBwqMhI/E00nHBkPIyEwL3Y0OQ05MDBAfWIzEQQjdQ=='
+    'SolicitudAsignadaSearch' => [
+        'listado' => '5'
+    ]
+    'id' => '23482'
+]
+
+$_COOKIE = [
+    '_csrf' => '4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"fqIcveFP4bIPKTXsV3apINIs987zUsZ6\";}'
+    'PHPSESSID' => 'i0d7bs4rj1gk53h4uveqlpcg90'
+    '_identity' => 'ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea:2:{i:0;s:9:\"_identity\";i:1;s:39:\"[1,\"a5dd1347f3daf1ed10401b3be\",2592000]\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+    'postBusquedaInicial' => [
+        '_csrf' => 'VktpNmo5SDEwOiBVHFwOYWIpIGYhbRBCAHgIRiN3AUJvc15MP0oSBw=='
+        'SolicitudAsignadaForm' => [
+            'impuesto' => '2'
+            'tipo_solicitud' => '20'
+            'fecha_desde' => ''
+            'fecha_hasta' => ''
+            'nro_solicitud' => ''
+        ]
+        'btn-search-request' => '1'
+    ]
+    'idContribuyente' => '319529'
+    'postSeleccionado' => [
+        '_csrf' => 'eUVVSUR3eUMfNBwqMhI/E00nHBkPIyEwL3Y0OQ05MDBAfWIzEQQjdQ=='
+        'SolicitudAsignadaSearch' => [
+            'listado' => '5'
+        ]
+        'id' => '23482'
+    ]
+]
+
+$_SERVER = [
+    'MIBDIRS' => 'C:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'C:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_HOST' => 'localhost:8081'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'CONTENT_LENGTH' => '125'
+    'HTTP_CACHE_CONTROL' => 'max-age=0'
+    'HTTP_ORIGIN' => 'http://localhost:8081'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_REFERER' => 'http://localhost:8081/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitudes-contribuyente&page=2'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.8,en;q=0.6'
+    'HTTP_COOKIE' => '_csrf=4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22fqIcveFP4bIPKTXsV3apINIs987zUsZ6%22%3B%7D; PHPSESSID=i0d7bs4rj1gk53h4uveqlpcg90; _identity=ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A39%3A%22%5B1%2C%22a5dd1347f3daf1ed10401b3be%22%2C2592000%5D%22%3B%7D'
+    'PATH' => 'C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;c:\\Program Files\\Intel\\DMIX;C:\\Program Files (x86)\\Intel\\Services\\IPT\\;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files\\TortoiseSVN\\bin;C:\\Program Files (x86)\\ATI Technologies\\ATI.ACE\\Core-Static;C:\\Program Files\\OpenVPN\\bin;C:\\Users\\Analista\\AppData\\Local\\Microsoft\\WindowsApps;'
+    'SystemRoot' => 'C:\\WINDOWS'
+    'COMSPEC' => 'C:\\WINDOWS\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\WINDOWS'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3 Server at localhost Port 8081</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '8081'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'C:/xampp/htdocs/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REMOTE_PORT' => '61008'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => 'r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitud-seleccionada'
+    'REQUEST_URI' => '/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitud-seleccionada'
+    'SCRIPT_NAME' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'PHP_SELF' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1483364643.175
+    'REQUEST_TIME' => 1483364643
+]
+2017-01-02 14:44:03 [::1][1][i0d7bs4rj1gk53h4uveqlpcg90][warning][yii\log\Dispatcher::dispatch] Unable to send log via yii\debug\LogTarget: Exception 'Exception' with message 'Serialization of 'Closure' is not allowed' 
+
+in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2-debug\LogTarget.php:58
+
+Stack trace:
+#0 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2-debug\LogTarget.php(58): serialize(Array)
+#1 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2-debug\LogTarget.php(112): yii\debug\LogTarget->export(Array)
+#2 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\log\Dispatcher.php(188): yii\debug\LogTarget->collect(Array, true)
+#3 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\log\Logger.php(173): yii\log\Dispatcher->dispatch(Array, true)
+#4 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\ErrorHandler.php(111): yii\log\Logger->flush(true)
+#5 [internal function]: yii\base\ErrorHandler->handleException(Object(yii\base\InvalidConfigException))
+#6 {main}
+2017-01-02 14:44:03 [::1][1][i0d7bs4rj1gk53h4uveqlpcg90][info][application] $_GET = [
+    'r' => 'funcionario/solicitud/solicitud-asignada/buscar-solicitud-seleccionada'
+]
+
+$_POST = [
+    '_csrf' => 'eUVVSUR3eUMfNBwqMhI/E00nHBkPIyEwL3Y0OQ05MDBAfWIzEQQjdQ=='
+    'SolicitudAsignadaSearch' => [
+        'listado' => '5'
+    ]
+    'id' => '23482'
+]
+
+$_COOKIE = [
+    '_csrf' => '4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"fqIcveFP4bIPKTXsV3apINIs987zUsZ6\";}'
+    'PHPSESSID' => 'i0d7bs4rj1gk53h4uveqlpcg90'
+    '_identity' => 'ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea:2:{i:0;s:9:\"_identity\";i:1;s:39:\"[1,\"a5dd1347f3daf1ed10401b3be\",2592000]\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+    'postBusquedaInicial' => [
+        '_csrf' => 'VktpNmo5SDEwOiBVHFwOYWIpIGYhbRBCAHgIRiN3AUJvc15MP0oSBw=='
+        'SolicitudAsignadaForm' => [
+            'impuesto' => '2'
+            'tipo_solicitud' => '20'
+            'fecha_desde' => ''
+            'fecha_hasta' => ''
+            'nro_solicitud' => ''
+        ]
+        'btn-search-request' => '1'
+    ]
+    'idContribuyente' => '319529'
+    'postSeleccionado' => [
+        '_csrf' => 'eUVVSUR3eUMfNBwqMhI/E00nHBkPIyEwL3Y0OQ05MDBAfWIzEQQjdQ=='
+        'SolicitudAsignadaSearch' => [
+            'listado' => '5'
+        ]
+        'id' => '23482'
+    ]
+]
+
+$_SERVER = [
+    'MIBDIRS' => 'C:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'C:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_HOST' => 'localhost:8081'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'CONTENT_LENGTH' => '125'
+    'HTTP_CACHE_CONTROL' => 'max-age=0'
+    'HTTP_ORIGIN' => 'http://localhost:8081'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_REFERER' => 'http://localhost:8081/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitudes-contribuyente&page=2'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.8,en;q=0.6'
+    'HTTP_COOKIE' => '_csrf=4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22fqIcveFP4bIPKTXsV3apINIs987zUsZ6%22%3B%7D; PHPSESSID=i0d7bs4rj1gk53h4uveqlpcg90; _identity=ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A39%3A%22%5B1%2C%22a5dd1347f3daf1ed10401b3be%22%2C2592000%5D%22%3B%7D'
+    'PATH' => 'C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;c:\\Program Files\\Intel\\DMIX;C:\\Program Files (x86)\\Intel\\Services\\IPT\\;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files\\TortoiseSVN\\bin;C:\\Program Files (x86)\\ATI Technologies\\ATI.ACE\\Core-Static;C:\\Program Files\\OpenVPN\\bin;C:\\Users\\Analista\\AppData\\Local\\Microsoft\\WindowsApps;'
+    'SystemRoot' => 'C:\\WINDOWS'
+    'COMSPEC' => 'C:\\WINDOWS\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\WINDOWS'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3 Server at localhost Port 8081</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '8081'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'C:/xampp/htdocs/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REMOTE_PORT' => '61008'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => 'r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitud-seleccionada'
+    'REQUEST_URI' => '/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitud-seleccionada'
+    'SCRIPT_NAME' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'PHP_SELF' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1483364643.175
+    'REQUEST_TIME' => 1483364643
+]
+2017-01-02 14:44:05 [::1][1][-][warning][yii\web\Session::init] Session is already started
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\funcionario\solicitud\SolicitudAsignadaController.php:869
+2017-01-02 14:44:05 [::1][1][-][info][application] $_GET = [
+    'r' => 'funcionario/solicitud/solicitud-asignada/buscar-solicitudes-contribuyente'
+    'page' => '2'
+]
+
+$_COOKIE = [
+    '_csrf' => '4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"fqIcveFP4bIPKTXsV3apINIs987zUsZ6\";}'
+    'PHPSESSID' => 'i0d7bs4rj1gk53h4uveqlpcg90'
+    '_identity' => 'ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea:2:{i:0;s:9:\"_identity\";i:1;s:39:\"[1,\"a5dd1347f3daf1ed10401b3be\",2592000]\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+    'postBusquedaInicial' => [
+        '_csrf' => 'VktpNmo5SDEwOiBVHFwOYWIpIGYhbRBCAHgIRiN3AUJvc15MP0oSBw=='
+        'SolicitudAsignadaForm' => [
+            'impuesto' => '2'
+            'tipo_solicitud' => '20'
+            'fecha_desde' => ''
+            'fecha_hasta' => ''
+            'nro_solicitud' => ''
+        ]
+        'btn-search-request' => '1'
+    ]
+    'idContribuyente' => '319529'
+]
+
+$_SERVER = [
+    'MIBDIRS' => 'C:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'C:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_HOST' => 'localhost:8081'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_REFERER' => 'http://localhost:8081/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitudes-contribuyente'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.8,en;q=0.6'
+    'HTTP_COOKIE' => '_csrf=4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22fqIcveFP4bIPKTXsV3apINIs987zUsZ6%22%3B%7D; PHPSESSID=i0d7bs4rj1gk53h4uveqlpcg90; _identity=ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A39%3A%22%5B1%2C%22a5dd1347f3daf1ed10401b3be%22%2C2592000%5D%22%3B%7D'
+    'PATH' => 'C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;c:\\Program Files\\Intel\\DMIX;C:\\Program Files (x86)\\Intel\\Services\\IPT\\;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files\\TortoiseSVN\\bin;C:\\Program Files (x86)\\ATI Technologies\\ATI.ACE\\Core-Static;C:\\Program Files\\OpenVPN\\bin;C:\\Users\\Analista\\AppData\\Local\\Microsoft\\WindowsApps;'
+    'SystemRoot' => 'C:\\WINDOWS'
+    'COMSPEC' => 'C:\\WINDOWS\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\WINDOWS'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3 Server at localhost Port 8081</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '8081'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'C:/xampp/htdocs/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REMOTE_PORT' => '61014'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitudes-contribuyente&page=2'
+    'REQUEST_URI' => '/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitudes-contribuyente&page=2'
+    'SCRIPT_NAME' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'PHP_SELF' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1483364645.584
+    'REQUEST_TIME' => 1483364645
+]
+2017-01-02 14:44:07 [::1][1][-][warning][yii\web\Session::init] Session is already started
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\conexion\ConexionController.php:158
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\conexion\ConexionController.php:344
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\models\contribuyente\ContribuyenteBase.php:203
+2017-01-02 14:44:07 [::1][1][-][info][application] $_GET = [
+    'r' => 'funcionario/solicitud/solicitud-asignada/buscar-solicitud-seleccionada'
+]
+
+$_POST = [
+    '_csrf' => 'TS1vRWU4UjkrXCYmE10UaXlPJhUubApKGx4ONSx2G0p0FVg/MEsIDw=='
+    'SolicitudAsignadaSearch' => [
+        'listado' => '5'
+    ]
+    'id' => '23713'
+]
+
+$_COOKIE = [
+    '_csrf' => '4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"fqIcveFP4bIPKTXsV3apINIs987zUsZ6\";}'
+    'PHPSESSID' => 'i0d7bs4rj1gk53h4uveqlpcg90'
+    '_identity' => 'ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea:2:{i:0;s:9:\"_identity\";i:1;s:39:\"[1,\"a5dd1347f3daf1ed10401b3be\",2592000]\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+    'postBusquedaInicial' => [
+        '_csrf' => 'VktpNmo5SDEwOiBVHFwOYWIpIGYhbRBCAHgIRiN3AUJvc15MP0oSBw=='
+        'SolicitudAsignadaForm' => [
+            'impuesto' => '2'
+            'tipo_solicitud' => '20'
+            'fecha_desde' => ''
+            'fecha_hasta' => ''
+            'nro_solicitud' => ''
+        ]
+        'btn-search-request' => '1'
+    ]
+    'idContribuyente' => '62017'
+    'postSeleccionado' => [
+        '_csrf' => 'TS1vRWU4UjkrXCYmE10UaXlPJhUubApKGx4ONSx2G0p0FVg/MEsIDw=='
+        'SolicitudAsignadaSearch' => [
+            'listado' => '5'
+        ]
+        'id' => '23713'
+    ]
+]
+
+$_SERVER = [
+    'MIBDIRS' => 'C:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'C:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_HOST' => 'localhost:8081'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'CONTENT_LENGTH' => '125'
+    'HTTP_CACHE_CONTROL' => 'max-age=0'
+    'HTTP_ORIGIN' => 'http://localhost:8081'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_REFERER' => 'http://localhost:8081/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitudes-contribuyente&page=2'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.8,en;q=0.6'
+    'HTTP_COOKIE' => '_csrf=4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22fqIcveFP4bIPKTXsV3apINIs987zUsZ6%22%3B%7D; PHPSESSID=i0d7bs4rj1gk53h4uveqlpcg90; _identity=ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A39%3A%22%5B1%2C%22a5dd1347f3daf1ed10401b3be%22%2C2592000%5D%22%3B%7D'
+    'PATH' => 'C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;c:\\Program Files\\Intel\\DMIX;C:\\Program Files (x86)\\Intel\\Services\\IPT\\;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files\\TortoiseSVN\\bin;C:\\Program Files (x86)\\ATI Technologies\\ATI.ACE\\Core-Static;C:\\Program Files\\OpenVPN\\bin;C:\\Users\\Analista\\AppData\\Local\\Microsoft\\WindowsApps;'
+    'SystemRoot' => 'C:\\WINDOWS'
+    'COMSPEC' => 'C:\\WINDOWS\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\WINDOWS'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3 Server at localhost Port 8081</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '8081'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'C:/xampp/htdocs/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REMOTE_PORT' => '61016'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => 'r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitud-seleccionada'
+    'REQUEST_URI' => '/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitud-seleccionada'
+    'SCRIPT_NAME' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'PHP_SELF' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1483364647.516
+    'REQUEST_TIME' => 1483364647
+]
+2017-01-02 14:44:19 [::1][1][i0d7bs4rj1gk53h4uveqlpcg90][warning][yii\web\Session::init] Session is already started
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\models\solicitudescontribuyente\SolicitudesContribuyenteForm.php:211
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\models\solicitudescontribuyente\ProcesarSolicitudContribuyente.php:250
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\models\solicitudescontribuyente\ProcesarSolicitudContribuyente.php:220
+2017-01-02 14:44:19 [::1][1][i0d7bs4rj1gk53h4uveqlpcg90][error][yii\db\IntegrityException] exception 'PDOException' with message 'SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'id_impuesto' cannot be null' in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\db\Command.php:844
+Stack trace:
+#0 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\db\Command.php(844): PDOStatement->execute()
+#1 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\conexion\ConexionController.php(206): yii\db\Command->execute()
+#2 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\funcionario\solicitud\SolicitudAsignadaController.php(711): common\conexion\ConexionController->guardarRegistro(Object(yii\db\Connection), '<span class="st...', '[<span class="s...')
+#3 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\funcionario\solicitud\SolicitudAsignadaController.php(367): backend\controllers\funcionario\solicitud\SolicitudAsignadaController::actionCreateDocumentosConsignados('[<span class="s...', '<span class="st...', Object(common\conexion\ConexionController), Object(yii\db\Connection))
+#4 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\funcionario\solicitud\SolicitudAsignadaController.php(195): backend\controllers\funcionario\solicitud\SolicitudAsignadaController->actionIniciarAprobarSolicitud('[<span class="s...', '<span class="st...')
+#5 [internal function]: backend\controllers\funcionario\solicitud\SolicitudAsignadaController->actionProcesarSolicitud()
+#6 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\InlineAction.php(55): call_user_func_array('[<span class="t...', '[]')
+#7 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\Controller.php(154): yii\base\InlineAction->runWithParams('[<span class="s...')
+#8 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\Module.php(454): yii\base\Controller->runAction('<span class="st...', '[<span class="s...')
+#9 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\web\Application.php(100): yii\base\Module->runAction('<span class="st...', '[<span class="s...')
+#10 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#11 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\web\index.php(18): yii\base\Application->run()
+#12 {main}
+
+Next exception 'yii\db\IntegrityException' with message 'SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'id_impuesto' cannot be null
+The SQL being executed was: INSERT INTO `documentos_consignados` (`id_doc_consignado`, `id_documento`, `id_contribuyente`, `id_impuesto`, `impuesto`, `nro_solicitud`, `codigo_proceso`, `fecha_hora`, `usuario`, `estatus`) VALUES (NULL, 36, '62017', NULL, 2, '23713', NULL, '2017-01-02 14:44:19', 'admin', 0)' in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\db\Schema.php:631
+Stack trace:
+#0 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\db\Command.php(854): yii\db\Schema->convertException(Object(PDOException), 'INSERT INTO `do...')
+#1 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\conexion\ConexionController.php(206): yii\db\Command->execute()
+#2 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\funcionario\solicitud\SolicitudAsignadaController.php(711): common\conexion\ConexionController->guardarRegistro(Object(yii\db\Connection), '<span class="st...', '[<span class="s...')
+#3 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\funcionario\solicitud\SolicitudAsignadaController.php(367): backend\controllers\funcionario\solicitud\SolicitudAsignadaController::actionCreateDocumentosConsignados('[<span class="s...', '<span class="st...', Object(common\conexion\ConexionController), Object(yii\db\Connection))
+#4 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\funcionario\solicitud\SolicitudAsignadaController.php(195): backend\controllers\funcionario\solicitud\SolicitudAsignadaController->actionIniciarAprobarSolicitud('[<span class="s...', '<span class="st...')
+#5 [internal function]: backend\controllers\funcionario\solicitud\SolicitudAsignadaController->actionProcesarSolicitud()
+#6 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\InlineAction.php(55): call_user_func_array('[<span class="t...', '[]')
+#7 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\Controller.php(154): yii\base\InlineAction->runWithParams('[<span class="s...')
+#8 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\Module.php(454): yii\base\Controller->runAction('<span class="st...', '[<span class="s...')
+#9 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\web\Application.php(100): yii\base\Module->runAction('<span class="st...', '[<span class="s...')
+#10 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#11 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\web\index.php(18): yii\base\Application->run()
+#12 {main}
+Additional Information:
+Array
+(
+    [0] => 23000
+    [1] => 1048
+    [2] => Column 'id_impuesto' cannot be null
+)
+
+2017-01-02 14:44:19 [::1][1][i0d7bs4rj1gk53h4uveqlpcg90][info][application] $_GET = [
+    'r' => 'funcionario/solicitud/solicitud-asignada/procesar-solicitud'
+]
+
+$_POST = [
+    '_csrf' => 'd3JNTmRaVlQRAwQtEj8QBEMQBB4vDg4nIUEsPi0UHydOSno0MSkMYg=='
+    'SolicitudesContribuyente' => [
+        'listado' => '6'
+        'exigirDocumento' => '1'
+        'id_config_solicitud' => '68'
+        'impuesto' => '2'
+        'id_impuesto' => ''
+        'nro_solicitud' => '23713'
+        'fecha_hora_creacion' => '2016-12-29 03:07:37'
+        'impuesto_descripcion' => 'INMUEBLES URBANOS'
+        'tipo_solicitud' => 'REGISTRO NUEVO'
+        'nivel_aprobacion' => 'SELECCION DE OPCIONES'
+        'estatus' => 'PENDIENTE POR PROCESAR'
+        'id_contribuyente' => '62017'
+    ]
+    'dni' => 'J-17978358-9'
+    'contribuyente' => 'Isai, C.A'
+    'domicilio' => 'El vigia'
+    'chk-documento-requisito_all' => '1'
+    'chk-documento-requisito' => [
+        0 => '36'
+        1 => '37'
+        2 => '38'
+        3 => '39'
+        4 => '40'
+        5 => '41'
+        6 => '42'
+        7 => '43'
+    ]
+    'btn-approve-request' => '1'
+]
+
+$_COOKIE = [
+    '_csrf' => '4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"fqIcveFP4bIPKTXsV3apINIs987zUsZ6\";}'
+    'PHPSESSID' => 'i0d7bs4rj1gk53h4uveqlpcg90'
+    '_identity' => 'ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea:2:{i:0;s:9:\"_identity\";i:1;s:39:\"[1,\"a5dd1347f3daf1ed10401b3be\",2592000]\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+    'postBusquedaInicial' => [
+        '_csrf' => 'VktpNmo5SDEwOiBVHFwOYWIpIGYhbRBCAHgIRiN3AUJvc15MP0oSBw=='
+        'SolicitudAsignadaForm' => [
+            'impuesto' => '2'
+            'tipo_solicitud' => '20'
+            'fecha_desde' => ''
+            'fecha_hasta' => ''
+            'nro_solicitud' => ''
+        ]
+        'btn-search-request' => '1'
+    ]
+    'idContribuyente' => '62017'
+    'postSeleccionado' => [
+        '_csrf' => 'TS1vRWU4UjkrXCYmE10UaXlPJhUubApKGx4ONSx2G0p0FVg/MEsIDw=='
+        'SolicitudAsignadaSearch' => [
+            'listado' => '5'
+        ]
+        'id' => '23713'
+    ]
+]
+
+$_SERVER = [
+    'MIBDIRS' => 'C:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'C:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_HOST' => 'localhost:8081'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'CONTENT_LENGTH' => '1105'
+    'HTTP_CACHE_CONTROL' => 'max-age=0'
+    'HTTP_ORIGIN' => 'http://localhost:8081'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_REFERER' => 'http://localhost:8081/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitud-seleccionada'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.8,en;q=0.6'
+    'HTTP_COOKIE' => '_csrf=4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22fqIcveFP4bIPKTXsV3apINIs987zUsZ6%22%3B%7D; PHPSESSID=i0d7bs4rj1gk53h4uveqlpcg90; _identity=ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A39%3A%22%5B1%2C%22a5dd1347f3daf1ed10401b3be%22%2C2592000%5D%22%3B%7D'
+    'PATH' => 'C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;c:\\Program Files\\Intel\\DMIX;C:\\Program Files (x86)\\Intel\\Services\\IPT\\;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files\\TortoiseSVN\\bin;C:\\Program Files (x86)\\ATI Technologies\\ATI.ACE\\Core-Static;C:\\Program Files\\OpenVPN\\bin;C:\\Users\\Analista\\AppData\\Local\\Microsoft\\WindowsApps;'
+    'SystemRoot' => 'C:\\WINDOWS'
+    'COMSPEC' => 'C:\\WINDOWS\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\WINDOWS'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3 Server at localhost Port 8081</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '8081'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'C:/xampp/htdocs/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REMOTE_PORT' => '61026'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => 'r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fprocesar-solicitud'
+    'REQUEST_URI' => '/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fprocesar-solicitud'
+    'SCRIPT_NAME' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'PHP_SELF' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1483364659.255
+    'REQUEST_TIME' => 1483364659
+]
+2017-01-02 14:53:36 [::1][1][-][warning][yii\web\Session::init] Session is already started
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\models\solicitudescontribuyente\SolicitudesContribuyenteForm.php:211
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\models\solicitudescontribuyente\ProcesarSolicitudContribuyente.php:250
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\models\solicitudescontribuyente\ProcesarSolicitudContribuyente.php:220
+2017-01-02 14:53:36 [::1][1][-][info][application] $_GET = [
+    'r' => 'funcionario/solicitud/solicitud-asignada/procesar-solicitud'
+]
+
+$_POST = [
+    '_csrf' => 'd3JNTmRaVlQRAwQtEj8QBEMQBB4vDg4nIUEsPi0UHydOSno0MSkMYg=='
+    'SolicitudesContribuyente' => [
+        'listado' => '6'
+        'exigirDocumento' => '1'
+        'id_config_solicitud' => '68'
+        'impuesto' => '2'
+        'id_impuesto' => ''
+        'nro_solicitud' => '23713'
+        'fecha_hora_creacion' => '2016-12-29 03:07:37'
+        'impuesto_descripcion' => 'INMUEBLES URBANOS'
+        'tipo_solicitud' => 'REGISTRO NUEVO'
+        'nivel_aprobacion' => 'SELECCION DE OPCIONES'
+        'estatus' => 'PENDIENTE POR PROCESAR'
+        'id_contribuyente' => '62017'
+    ]
+    'dni' => 'J-17978358-9'
+    'contribuyente' => 'Isai, C.A'
+    'domicilio' => 'El vigia'
+    'chk-documento-requisito_all' => '1'
+    'chk-documento-requisito' => [
+        0 => '36'
+        1 => '37'
+        2 => '38'
+        3 => '39'
+        4 => '40'
+        5 => '41'
+        6 => '42'
+        7 => '43'
+    ]
+    'btn-approve-request' => '1'
+]
+
+$_COOKIE = [
+    '_csrf' => '4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"fqIcveFP4bIPKTXsV3apINIs987zUsZ6\";}'
+    'PHPSESSID' => 'i0d7bs4rj1gk53h4uveqlpcg90'
+    '_identity' => 'ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea:2:{i:0;s:9:\"_identity\";i:1;s:39:\"[1,\"a5dd1347f3daf1ed10401b3be\",2592000]\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+    'postBusquedaInicial' => [
+        '_csrf' => 'VktpNmo5SDEwOiBVHFwOYWIpIGYhbRBCAHgIRiN3AUJvc15MP0oSBw=='
+        'SolicitudAsignadaForm' => [
+            'impuesto' => '2'
+            'tipo_solicitud' => '20'
+            'fecha_desde' => ''
+            'fecha_hasta' => ''
+            'nro_solicitud' => ''
+        ]
+        'btn-search-request' => '1'
+    ]
+    'idContribuyente' => '62017'
+    'postSeleccionado' => [
+        '_csrf' => 'TS1vRWU4UjkrXCYmE10UaXlPJhUubApKGx4ONSx2G0p0FVg/MEsIDw=='
+        'SolicitudAsignadaSearch' => [
+            'listado' => '5'
+        ]
+        'id' => '23713'
+    ]
+]
+
+$_SERVER = [
+    'MIBDIRS' => 'C:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'C:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_HOST' => 'localhost:8081'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'CONTENT_LENGTH' => '1105'
+    'HTTP_CACHE_CONTROL' => 'max-age=0'
+    'HTTP_ORIGIN' => 'http://localhost:8081'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_REFERER' => 'http://localhost:8081/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitud-seleccionada'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.8,en;q=0.6'
+    'HTTP_COOKIE' => '_csrf=4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22fqIcveFP4bIPKTXsV3apINIs987zUsZ6%22%3B%7D; PHPSESSID=i0d7bs4rj1gk53h4uveqlpcg90; _identity=ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A39%3A%22%5B1%2C%22a5dd1347f3daf1ed10401b3be%22%2C2592000%5D%22%3B%7D'
+    'PATH' => 'C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;c:\\Program Files\\Intel\\DMIX;C:\\Program Files (x86)\\Intel\\Services\\IPT\\;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files\\TortoiseSVN\\bin;C:\\Program Files (x86)\\ATI Technologies\\ATI.ACE\\Core-Static;C:\\Program Files\\OpenVPN\\bin;C:\\Users\\Analista\\AppData\\Local\\Microsoft\\WindowsApps;'
+    'SystemRoot' => 'C:\\WINDOWS'
+    'COMSPEC' => 'C:\\WINDOWS\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\WINDOWS'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3 Server at localhost Port 8081</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '8081'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'C:/xampp/htdocs/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REMOTE_PORT' => '61042'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => 'r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fprocesar-solicitud'
+    'REQUEST_URI' => '/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fprocesar-solicitud'
+    'SCRIPT_NAME' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'PHP_SELF' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1483365216.156
+    'REQUEST_TIME' => 1483365216
+]
+2017-01-02 15:17:49 [::1][1][-][warning][yii\web\Session::init] Session is already started
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\funcionario\solicitud\SolicitudAsignadaController.php:869
+2017-01-02 15:17:49 [::1][1][-][info][application] $_GET = [
+    'r' => 'funcionario/solicitud/solicitud-asignada/buscar-solicitudes-contribuyente'
+    'page' => '2'
+]
+
+$_COOKIE = [
+    '_csrf' => '4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"fqIcveFP4bIPKTXsV3apINIs987zUsZ6\";}'
+    '_identity' => 'ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea:2:{i:0;s:9:\"_identity\";i:1;s:39:\"[1,\"a5dd1347f3daf1ed10401b3be\",2592000]\";}'
+    'PHPSESSID' => 'i0d7bs4rj1gk53h4uveqlpcg90'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+    'postBusquedaInicial' => [
+        '_csrf' => 'VktpNmo5SDEwOiBVHFwOYWIpIGYhbRBCAHgIRiN3AUJvc15MP0oSBw=='
+        'SolicitudAsignadaForm' => [
+            'impuesto' => '2'
+            'tipo_solicitud' => '20'
+            'fecha_desde' => ''
+            'fecha_hasta' => ''
+            'nro_solicitud' => ''
+        ]
+        'btn-search-request' => '1'
+    ]
+    'idContribuyente' => '62017'
+]
+
+$_SERVER = [
+    'MIBDIRS' => 'C:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'C:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_HOST' => 'localhost:8081'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_REFERER' => 'http://localhost:8081/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitudes-contribuyente'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.8,en;q=0.6'
+    'HTTP_COOKIE' => '_csrf=4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22fqIcveFP4bIPKTXsV3apINIs987zUsZ6%22%3B%7D; _identity=ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A39%3A%22%5B1%2C%22a5dd1347f3daf1ed10401b3be%22%2C2592000%5D%22%3B%7D; PHPSESSID=i0d7bs4rj1gk53h4uveqlpcg90'
+    'PATH' => 'C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;c:\\Program Files\\Intel\\DMIX;C:\\Program Files (x86)\\Intel\\Services\\IPT\\;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files\\TortoiseSVN\\bin;C:\\Program Files (x86)\\ATI Technologies\\ATI.ACE\\Core-Static;C:\\Program Files\\OpenVPN\\bin;C:\\Users\\Analista\\AppData\\Local\\Microsoft\\WindowsApps;'
+    'SystemRoot' => 'C:\\WINDOWS'
+    'COMSPEC' => 'C:\\WINDOWS\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\WINDOWS'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3 Server at localhost Port 8081</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '8081'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'C:/xampp/htdocs/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REMOTE_PORT' => '61108'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitudes-contribuyente&page=2'
+    'REQUEST_URI' => '/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitudes-contribuyente&page=2'
+    'SCRIPT_NAME' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'PHP_SELF' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1483366669.139
+    'REQUEST_TIME' => 1483366669
+]
+2017-01-02 15:30:34 [::1][1][-][warning][yii\web\Session::init] Session is already started
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\models\funcionario\solicitud\SolicitudAsignadaSearch.php:213
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\funcionario\solicitud\SolicitudAsignadaController.php:141
+2017-01-02 15:30:34 [::1][1][-][info][application] $_GET = [
+    'r' => 'funcionario/solicitud/solicitud-asignada/index'
+]
+
+$_COOKIE = [
+    '_csrf' => '4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"fqIcveFP4bIPKTXsV3apINIs987zUsZ6\";}'
+    'PHPSESSID' => 'i0d7bs4rj1gk53h4uveqlpcg90'
+    '_identity' => 'ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea:2:{i:0;s:9:\"_identity\";i:1;s:39:\"[1,\"a5dd1347f3daf1ed10401b3be\",2592000]\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+]
+
+$_SERVER = [
+    'MIBDIRS' => 'C:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'C:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_HOST' => 'localhost:8081'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_REFERER' => 'http://localhost:8081/alvaro/simwebplusteq/trunk/backend/web/index.php?r=menu%2Fvertical'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.8,en;q=0.6'
+    'HTTP_COOKIE' => '_csrf=4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22fqIcveFP4bIPKTXsV3apINIs987zUsZ6%22%3B%7D; PHPSESSID=i0d7bs4rj1gk53h4uveqlpcg90; _identity=ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A39%3A%22%5B1%2C%22a5dd1347f3daf1ed10401b3be%22%2C2592000%5D%22%3B%7D'
+    'PATH' => 'C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;c:\\Program Files\\Intel\\DMIX;C:\\Program Files (x86)\\Intel\\Services\\IPT\\;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files\\TortoiseSVN\\bin;C:\\Program Files (x86)\\ATI Technologies\\ATI.ACE\\Core-Static;C:\\Program Files\\OpenVPN\\bin;C:\\Users\\Analista\\AppData\\Local\\Microsoft\\WindowsApps;'
+    'SystemRoot' => 'C:\\WINDOWS'
+    'COMSPEC' => 'C:\\WINDOWS\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\WINDOWS'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3 Server at localhost Port 8081</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '8081'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'C:/xampp/htdocs/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REMOTE_PORT' => '61143'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Findex'
+    'REQUEST_URI' => '/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Findex'
+    'SCRIPT_NAME' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'PHP_SELF' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1483367434.675
+    'REQUEST_TIME' => 1483367434
+]
+2017-01-02 15:30:37 [::1][1][-][warning][yii\web\Session::init] Session is already started
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\funcionario\solicitud\SolicitudAsignadaController.php:982
+2017-01-02 15:30:37 [::1][1][-][info][application] $_GET = [
+    'r' => 'funcionario/solicitud/solicitud-asignada/list-solicitud'
+    'i' => '3'
+]
+
+$_COOKIE = [
+    '_csrf' => '4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"fqIcveFP4bIPKTXsV3apINIs987zUsZ6\";}'
+    'PHPSESSID' => 'i0d7bs4rj1gk53h4uveqlpcg90'
+    '_identity' => 'ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea:2:{i:0;s:9:\"_identity\";i:1;s:39:\"[1,\"a5dd1347f3daf1ed10401b3be\",2592000]\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+]
+
+$_SERVER = [
+    'MIBDIRS' => 'C:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'C:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_HOST' => 'localhost:8081'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'CONTENT_LENGTH' => '0'
+    'HTTP_ACCEPT' => '*/*'
+    'HTTP_ORIGIN' => 'http://localhost:8081'
+    'HTTP_X_CSRF_TOKEN' => 'SEc0TWJGZXguNn0uFCMjKHwlfR0pEj0LHnRVPSsILAtxfwM3NzU/Tg=='
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
+    'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
+    'HTTP_REFERER' => 'http://localhost:8081/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Findex'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.8,en;q=0.6'
+    'HTTP_COOKIE' => '_csrf=4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22fqIcveFP4bIPKTXsV3apINIs987zUsZ6%22%3B%7D; PHPSESSID=i0d7bs4rj1gk53h4uveqlpcg90; _identity=ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A39%3A%22%5B1%2C%22a5dd1347f3daf1ed10401b3be%22%2C2592000%5D%22%3B%7D'
+    'PATH' => 'C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;c:\\Program Files\\Intel\\DMIX;C:\\Program Files (x86)\\Intel\\Services\\IPT\\;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files\\TortoiseSVN\\bin;C:\\Program Files (x86)\\ATI Technologies\\ATI.ACE\\Core-Static;C:\\Program Files\\OpenVPN\\bin;C:\\Users\\Analista\\AppData\\Local\\Microsoft\\WindowsApps;'
+    'SystemRoot' => 'C:\\WINDOWS'
+    'COMSPEC' => 'C:\\WINDOWS\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\WINDOWS'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3 Server at localhost Port 8081</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '8081'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'C:/xampp/htdocs/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REMOTE_PORT' => '61148'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => 'r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Flist-solicitud&i=3'
+    'REQUEST_URI' => '/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Flist-solicitud&i=3'
+    'SCRIPT_NAME' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'PHP_SELF' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1483367437.027
+    'REQUEST_TIME' => 1483367437
+]
+2017-01-02 15:30:40 [::1][1][-][warning][yii\web\Session::init] Session is already started
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\funcionario\solicitud\SolicitudAsignadaController.php:869
+2017-01-02 15:30:40 [::1][1][-][info][application] $_GET = [
+    'r' => 'funcionario/solicitud/solicitud-asignada/buscar-solicitudes-contribuyente'
+]
+
+$_COOKIE = [
+    '_csrf' => '4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"fqIcveFP4bIPKTXsV3apINIs987zUsZ6\";}'
+    '_identity' => 'ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea:2:{i:0;s:9:\"_identity\";i:1;s:39:\"[1,\"a5dd1347f3daf1ed10401b3be\",2592000]\";}'
+    'PHPSESSID' => 'i0d7bs4rj1gk53h4uveqlpcg90'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+    'postBusquedaInicial' => [
+        '_csrf' => 'SEc0TWJGZXguNn0uFCMjKHwlfR0pEj0LHnRVPSsILAtxfwM3NzU/Tg=='
+        'SolicitudAsignadaForm' => [
+            'impuesto' => '3'
+            'tipo_solicitud' => '32'
+            'fecha_desde' => ''
+            'fecha_hasta' => ''
+            'nro_solicitud' => ''
+        ]
+        'btn-search-request' => '1'
+    ]
+]
+
+$_SERVER = [
+    'MIBDIRS' => 'C:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'C:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_HOST' => 'localhost:8081'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_CACHE_CONTROL' => 'max-age=0'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_REFERER' => 'http://localhost:8081/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Findex'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.8,en;q=0.6'
+    'HTTP_COOKIE' => '_csrf=4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22fqIcveFP4bIPKTXsV3apINIs987zUsZ6%22%3B%7D; _identity=ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A39%3A%22%5B1%2C%22a5dd1347f3daf1ed10401b3be%22%2C2592000%5D%22%3B%7D; PHPSESSID=i0d7bs4rj1gk53h4uveqlpcg90'
+    'PATH' => 'C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;c:\\Program Files\\Intel\\DMIX;C:\\Program Files (x86)\\Intel\\Services\\IPT\\;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files\\TortoiseSVN\\bin;C:\\Program Files (x86)\\ATI Technologies\\ATI.ACE\\Core-Static;C:\\Program Files\\OpenVPN\\bin;C:\\Users\\Analista\\AppData\\Local\\Microsoft\\WindowsApps;'
+    'SystemRoot' => 'C:\\WINDOWS'
+    'COMSPEC' => 'C:\\WINDOWS\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\WINDOWS'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3 Server at localhost Port 8081</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '8081'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'C:/xampp/htdocs/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REMOTE_PORT' => '61143'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitudes-contribuyente'
+    'REQUEST_URI' => '/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitudes-contribuyente'
+    'SCRIPT_NAME' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'PHP_SELF' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1483367440.058
+    'REQUEST_TIME' => 1483367440
+]
+2017-01-02 15:30:45 [::1][1][-][warning][yii\web\Session::init] Session is already started
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\conexion\ConexionController.php:158
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\conexion\ConexionController.php:344
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\models\contribuyente\ContribuyenteBase.php:203
+2017-01-02 15:30:45 [::1][1][-][info][application] $_GET = [
+    'r' => 'funcionario/solicitud/solicitud-asignada/buscar-solicitud-seleccionada'
+]
+
+$_POST = [
+    '_csrf' => 'eEstUDVsNWceOmQzQwlzN0wpZAB.OG0ULnhMIHwifBRBcxoqYB9vUQ=='
+    'SolicitudAsignadaSearch' => [
+        'listado' => '5'
+    ]
+    'id' => '23679'
+]
+
+$_COOKIE = [
+    '_csrf' => '4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"fqIcveFP4bIPKTXsV3apINIs987zUsZ6\";}'
+    'PHPSESSID' => 'i0d7bs4rj1gk53h4uveqlpcg90'
+    '_identity' => 'ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea:2:{i:0;s:9:\"_identity\";i:1;s:39:\"[1,\"a5dd1347f3daf1ed10401b3be\",2592000]\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+    'postBusquedaInicial' => [
+        '_csrf' => 'SEc0TWJGZXguNn0uFCMjKHwlfR0pEj0LHnRVPSsILAtxfwM3NzU/Tg=='
+        'SolicitudAsignadaForm' => [
+            'impuesto' => '3'
+            'tipo_solicitud' => '32'
+            'fecha_desde' => ''
+            'fecha_hasta' => ''
+            'nro_solicitud' => ''
+        ]
+        'btn-search-request' => '1'
+    ]
+    'postSeleccionado' => [
+        '_csrf' => 'eEstUDVsNWceOmQzQwlzN0wpZAB.OG0ULnhMIHwifBRBcxoqYB9vUQ=='
+        'SolicitudAsignadaSearch' => [
+            'listado' => '5'
+        ]
+        'id' => '23679'
+    ]
+    'idContribuyente' => '62067'
+]
+
+$_SERVER = [
+    'MIBDIRS' => 'C:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'C:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_HOST' => 'localhost:8081'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'CONTENT_LENGTH' => '123'
+    'HTTP_CACHE_CONTROL' => 'max-age=0'
+    'HTTP_ORIGIN' => 'http://localhost:8081'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_REFERER' => 'http://localhost:8081/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitudes-contribuyente'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.8,en;q=0.6'
+    'HTTP_COOKIE' => '_csrf=4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22fqIcveFP4bIPKTXsV3apINIs987zUsZ6%22%3B%7D; PHPSESSID=i0d7bs4rj1gk53h4uveqlpcg90; _identity=ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A39%3A%22%5B1%2C%22a5dd1347f3daf1ed10401b3be%22%2C2592000%5D%22%3B%7D'
+    'PATH' => 'C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;c:\\Program Files\\Intel\\DMIX;C:\\Program Files (x86)\\Intel\\Services\\IPT\\;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files\\TortoiseSVN\\bin;C:\\Program Files (x86)\\ATI Technologies\\ATI.ACE\\Core-Static;C:\\Program Files\\OpenVPN\\bin;C:\\Users\\Analista\\AppData\\Local\\Microsoft\\WindowsApps;'
+    'SystemRoot' => 'C:\\WINDOWS'
+    'COMSPEC' => 'C:\\WINDOWS\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\WINDOWS'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3 Server at localhost Port 8081</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '8081'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'C:/xampp/htdocs/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REMOTE_PORT' => '61143'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => 'r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitud-seleccionada'
+    'REQUEST_URI' => '/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitud-seleccionada'
+    'SCRIPT_NAME' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'PHP_SELF' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1483367445.206
+    'REQUEST_TIME' => 1483367445
+]
+2017-01-02 15:31:01 [::1][1][i0d7bs4rj1gk53h4uveqlpcg90][warning][yii\web\Session::init] Session is already started
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\models\solicitudescontribuyente\SolicitudesContribuyenteForm.php:211
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\models\solicitudescontribuyente\ProcesarSolicitudContribuyente.php:250
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\models\solicitudescontribuyente\ProcesarSolicitudContribuyente.php:220
+2017-01-02 15:31:03 [::1][1][i0d7bs4rj1gk53h4uveqlpcg90][error][yii\base\ErrorException:2] exception 'yii\base\ErrorException' with message 'stream_socket_enable_crypto(): SSL operation failed with code 1. OpenSSL Error messages:
+error:14090086:SSL routines:SSL3_GET_SERVER_CERTIFICATE:certificate verify failed' in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\swiftmailer\swiftmailer\lib\classes\Swift\Transport\StreamBuffer.php:95
+Stack trace:
+#0 [internal function]: yii\base\ErrorHandler->handleError(2, 'stream_socket_e...', 'C:\\xampp\\htdocs...', 95, Array)
+#1 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\swiftmailer\swiftmailer\lib\classes\Swift\Transport\StreamBuffer.php(95): stream_socket_enable_crypto(Resource id #215, true, 57)
+#2 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\swiftmailer\swiftmailer\lib\classes\Swift\Transport\EsmtpTransport.php(288): Swift_Transport_StreamBuffer->startTLS()
+#3 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\swiftmailer\swiftmailer\lib\classes\Swift\Transport\AbstractSmtpTransport.php(118): Swift_Transport_EsmtpTransport->_doHeloCommand()
+#4 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\swiftmailer\swiftmailer\lib\classes\Swift\Mailer.php(79): Swift_Transport_AbstractSmtpTransport->start()
+#5 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2-swiftmailer\Mailer.php(146): Swift_Mailer->send(Object(Swift_Message))
+#6 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\mail\BaseMailer.php(260): yii\swiftmailer\Mailer->sendMessage(Object(yii\swiftmailer\Message))
+#7 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\mail\BaseMessage.php(48): yii\mail\BaseMailer->send(Object(yii\swiftmailer\Message))
+#8 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\enviaremail\EnviarEmailSolicitud.php(81): yii\mail\BaseMessage->send()
+#9 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\enviaremail\PlantillaEmail.php(163): common\enviaremail\EnviarEmailSolicitud->enviarEmail('manuelz0510@gma...', 'marvingblanco21...', 'Solicitudes Onl...', 'Solicitudes Onl...', 'Estimado contri...')
+#10 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\funcionario\solicitud\SolicitudAsignadaController.php(489): common\enviaremail\PlantillaEmail->plantillaSolicitudProcesada('marvingblanco21...', 'Estimado contri...')
+#11 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\funcionario\solicitud\SolicitudAsignadaController.php(374): backend\controllers\funcionario\solicitud\SolicitudAsignadaController->actionEnviarEmail(Array, 'APROBAR')
+#12 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\funcionario\solicitud\SolicitudAsignadaController.php(195): backend\controllers\funcionario\solicitud\SolicitudAsignadaController->actionIniciarAprobarSolicitud(Array, 'SolicitudesCont...')
+#13 [internal function]: backend\controllers\funcionario\solicitud\SolicitudAsignadaController->actionProcesarSolicitud()
+#14 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\InlineAction.php(55): call_user_func_array(Array, Array)
+#15 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\Controller.php(154): yii\base\InlineAction->runWithParams(Array)
+#16 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\Module.php(454): yii\base\Controller->runAction('procesar-solici...', Array)
+#17 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\web\Application.php(100): yii\base\Module->runAction('funcionario/sol...', Array)
+#18 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#19 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\web\index.php(18): yii\base\Application->run()
+#20 {main}
+2017-01-02 15:31:01 [::1][1][i0d7bs4rj1gk53h4uveqlpcg90][info][application] $_GET = [
+    'r' => 'funcionario/solicitud/solicitud-asignada/procesar-solicitud'
+]
+
+$_POST = [
+    '_csrf' => 'NHhRcVdFZWtSCRgSISAjOwAaGCEcET0YYkswAR4LLBgNQGYLAjY/XQ=='
+    'SolicitudesContribuyente' => [
+        'listado' => '6'
+        'exigirDocumento' => '1'
+        'id_config_solicitud' => '60'
+        'impuesto' => '3'
+        'id_impuesto' => '0'
+        'nro_solicitud' => '23679'
+        'fecha_hora_creacion' => '2016-12-29 11:12:38'
+        'impuesto_descripcion' => 'VEHICULOS'
+        'tipo_solicitud' => 'REGISTRO NUEVO'
+        'nivel_aprobacion' => 'SELECCION DE OPCIONES'
+        'estatus' => 'PENDIENTE POR PROCESAR'
+        'id_contribuyente' => '62067'
+    ]
+    'dni' => 'J-18738664-7'
+    'contribuyente' => 'Inversiones Marving'
+    'domicilio' => 'La matica'
+    'chk-documento-requisito_all' => '1'
+    'chk-documento-requisito' => [
+        0 => '1'
+        1 => '2'
+        2 => '3'
+    ]
+    'btn-approve-request' => '1'
+]
+
+$_COOKIE = [
+    '_csrf' => '4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"fqIcveFP4bIPKTXsV3apINIs987zUsZ6\";}'
+    'PHPSESSID' => 'i0d7bs4rj1gk53h4uveqlpcg90'
+    '_identity' => 'ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea:2:{i:0;s:9:\"_identity\";i:1;s:39:\"[1,\"a5dd1347f3daf1ed10401b3be\",2592000]\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+    'postBusquedaInicial' => [
+        '_csrf' => 'SEc0TWJGZXguNn0uFCMjKHwlfR0pEj0LHnRVPSsILAtxfwM3NzU/Tg=='
+        'SolicitudAsignadaForm' => [
+            'impuesto' => '3'
+            'tipo_solicitud' => '32'
+            'fecha_desde' => ''
+            'fecha_hasta' => ''
+            'nro_solicitud' => ''
+        ]
+        'btn-search-request' => '1'
+    ]
+    'postSeleccionado' => [
+        '_csrf' => 'eEstUDVsNWceOmQzQwlzN0wpZAB.OG0ULnhMIHwifBRBcxoqYB9vUQ=='
+        'SolicitudAsignadaSearch' => [
+            'listado' => '5'
+        ]
+        'id' => '23679'
+    ]
+    'idContribuyente' => '62067'
+]
+
+$_SERVER = [
+    'MIBDIRS' => 'C:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'C:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_HOST' => 'localhost:8081'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'CONTENT_LENGTH' => '941'
+    'HTTP_CACHE_CONTROL' => 'max-age=0'
+    'HTTP_ORIGIN' => 'http://localhost:8081'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_REFERER' => 'http://localhost:8081/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitud-seleccionada'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.8,en;q=0.6'
+    'HTTP_COOKIE' => '_csrf=4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22fqIcveFP4bIPKTXsV3apINIs987zUsZ6%22%3B%7D; PHPSESSID=i0d7bs4rj1gk53h4uveqlpcg90; _identity=ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A39%3A%22%5B1%2C%22a5dd1347f3daf1ed10401b3be%22%2C2592000%5D%22%3B%7D'
+    'PATH' => 'C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;c:\\Program Files\\Intel\\DMIX;C:\\Program Files (x86)\\Intel\\Services\\IPT\\;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files\\TortoiseSVN\\bin;C:\\Program Files (x86)\\ATI Technologies\\ATI.ACE\\Core-Static;C:\\Program Files\\OpenVPN\\bin;C:\\Users\\Analista\\AppData\\Local\\Microsoft\\WindowsApps;'
+    'SystemRoot' => 'C:\\WINDOWS'
+    'COMSPEC' => 'C:\\WINDOWS\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\WINDOWS'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3 Server at localhost Port 8081</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '8081'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'C:/xampp/htdocs/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REMOTE_PORT' => '61160'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => 'r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fprocesar-solicitud'
+    'REQUEST_URI' => '/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fprocesar-solicitud'
+    'SCRIPT_NAME' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'PHP_SELF' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1483367461.705
+    'REQUEST_TIME' => 1483367461
+]
+2017-01-02 15:31:04 [::1][1][i0d7bs4rj1gk53h4uveqlpcg90][warning][yii\log\Dispatcher::dispatch] Unable to send log via yii\debug\LogTarget: Exception 'Exception' with message 'Serialization of 'Closure' is not allowed' 
+
+in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2-debug\LogTarget.php:58
+
+Stack trace:
+#0 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2-debug\LogTarget.php(58): serialize(Array)
+#1 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2-debug\LogTarget.php(112): yii\debug\LogTarget->export(Array)
+#2 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\log\Dispatcher.php(188): yii\debug\LogTarget->collect(Array, true)
+#3 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\log\Logger.php(173): yii\log\Dispatcher->dispatch(Array, true)
+#4 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\ErrorHandler.php(111): yii\log\Logger->flush(true)
+#5 [internal function]: yii\base\ErrorHandler->handleException(Object(yii\base\ErrorException))
+#6 {main}
+2017-01-02 15:31:01 [::1][1][i0d7bs4rj1gk53h4uveqlpcg90][info][application] $_GET = [
+    'r' => 'funcionario/solicitud/solicitud-asignada/procesar-solicitud'
+]
+
+$_POST = [
+    '_csrf' => 'NHhRcVdFZWtSCRgSISAjOwAaGCEcET0YYkswAR4LLBgNQGYLAjY/XQ=='
+    'SolicitudesContribuyente' => [
+        'listado' => '6'
+        'exigirDocumento' => '1'
+        'id_config_solicitud' => '60'
+        'impuesto' => '3'
+        'id_impuesto' => '0'
+        'nro_solicitud' => '23679'
+        'fecha_hora_creacion' => '2016-12-29 11:12:38'
+        'impuesto_descripcion' => 'VEHICULOS'
+        'tipo_solicitud' => 'REGISTRO NUEVO'
+        'nivel_aprobacion' => 'SELECCION DE OPCIONES'
+        'estatus' => 'PENDIENTE POR PROCESAR'
+        'id_contribuyente' => '62067'
+    ]
+    'dni' => 'J-18738664-7'
+    'contribuyente' => 'Inversiones Marving'
+    'domicilio' => 'La matica'
+    'chk-documento-requisito_all' => '1'
+    'chk-documento-requisito' => [
+        0 => '1'
+        1 => '2'
+        2 => '3'
+    ]
+    'btn-approve-request' => '1'
+]
+
+$_COOKIE = [
+    '_csrf' => '4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"fqIcveFP4bIPKTXsV3apINIs987zUsZ6\";}'
+    'PHPSESSID' => 'i0d7bs4rj1gk53h4uveqlpcg90'
+    '_identity' => 'ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea:2:{i:0;s:9:\"_identity\";i:1;s:39:\"[1,\"a5dd1347f3daf1ed10401b3be\",2592000]\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+    'postBusquedaInicial' => [
+        '_csrf' => 'SEc0TWJGZXguNn0uFCMjKHwlfR0pEj0LHnRVPSsILAtxfwM3NzU/Tg=='
+        'SolicitudAsignadaForm' => [
+            'impuesto' => '3'
+            'tipo_solicitud' => '32'
+            'fecha_desde' => ''
+            'fecha_hasta' => ''
+            'nro_solicitud' => ''
+        ]
+        'btn-search-request' => '1'
+    ]
+    'postSeleccionado' => [
+        '_csrf' => 'eEstUDVsNWceOmQzQwlzN0wpZAB.OG0ULnhMIHwifBRBcxoqYB9vUQ=='
+        'SolicitudAsignadaSearch' => [
+            'listado' => '5'
+        ]
+        'id' => '23679'
+    ]
+    'idContribuyente' => '62067'
+]
+
+$_SERVER = [
+    'MIBDIRS' => 'C:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'C:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_HOST' => 'localhost:8081'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'CONTENT_LENGTH' => '941'
+    'HTTP_CACHE_CONTROL' => 'max-age=0'
+    'HTTP_ORIGIN' => 'http://localhost:8081'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_REFERER' => 'http://localhost:8081/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitud-seleccionada'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.8,en;q=0.6'
+    'HTTP_COOKIE' => '_csrf=4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22fqIcveFP4bIPKTXsV3apINIs987zUsZ6%22%3B%7D; PHPSESSID=i0d7bs4rj1gk53h4uveqlpcg90; _identity=ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A39%3A%22%5B1%2C%22a5dd1347f3daf1ed10401b3be%22%2C2592000%5D%22%3B%7D'
+    'PATH' => 'C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;c:\\Program Files\\Intel\\DMIX;C:\\Program Files (x86)\\Intel\\Services\\IPT\\;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files\\TortoiseSVN\\bin;C:\\Program Files (x86)\\ATI Technologies\\ATI.ACE\\Core-Static;C:\\Program Files\\OpenVPN\\bin;C:\\Users\\Analista\\AppData\\Local\\Microsoft\\WindowsApps;'
+    'SystemRoot' => 'C:\\WINDOWS'
+    'COMSPEC' => 'C:\\WINDOWS\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\WINDOWS'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3 Server at localhost Port 8081</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '8081'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'C:/xampp/htdocs/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REMOTE_PORT' => '61160'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => 'r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fprocesar-solicitud'
+    'REQUEST_URI' => '/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fprocesar-solicitud'
+    'SCRIPT_NAME' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'PHP_SELF' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1483367461.705
+    'REQUEST_TIME' => 1483367461
+]
+2017-01-02 15:33:43 [::1][1][-][warning][yii\web\Session::init] Session is already started
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\funcionario\solicitud\SolicitudAsignadaController.php:869
+2017-01-02 15:33:43 [::1][1][-][info][application] $_GET = [
+    'r' => 'funcionario/solicitud/solicitud-asignada/buscar-solicitudes-contribuyente'
+]
+
+$_COOKIE = [
+    '_csrf' => '4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"fqIcveFP4bIPKTXsV3apINIs987zUsZ6\";}'
+    'PHPSESSID' => 'i0d7bs4rj1gk53h4uveqlpcg90'
+    '_identity' => 'ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea:2:{i:0;s:9:\"_identity\";i:1;s:39:\"[1,\"a5dd1347f3daf1ed10401b3be\",2592000]\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+    'postBusquedaInicial' => [
+        '_csrf' => 'SEc0TWJGZXguNn0uFCMjKHwlfR0pEj0LHnRVPSsILAtxfwM3NzU/Tg=='
+        'SolicitudAsignadaForm' => [
+            'impuesto' => '3'
+            'tipo_solicitud' => '32'
+            'fecha_desde' => ''
+            'fecha_hasta' => ''
+            'nro_solicitud' => ''
+        ]
+        'btn-search-request' => '1'
+    ]
+    'idContribuyente' => '62067'
+]
+
+$_SERVER = [
+    'MIBDIRS' => 'C:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'C:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_HOST' => 'localhost:8081'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_REFERER' => 'http://localhost:8081/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Findex'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.8,en;q=0.6'
+    'HTTP_COOKIE' => '_csrf=4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22fqIcveFP4bIPKTXsV3apINIs987zUsZ6%22%3B%7D; PHPSESSID=i0d7bs4rj1gk53h4uveqlpcg90; _identity=ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A39%3A%22%5B1%2C%22a5dd1347f3daf1ed10401b3be%22%2C2592000%5D%22%3B%7D'
+    'PATH' => 'C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;c:\\Program Files\\Intel\\DMIX;C:\\Program Files (x86)\\Intel\\Services\\IPT\\;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files\\TortoiseSVN\\bin;C:\\Program Files (x86)\\ATI Technologies\\ATI.ACE\\Core-Static;C:\\Program Files\\OpenVPN\\bin;C:\\Users\\Analista\\AppData\\Local\\Microsoft\\WindowsApps;'
+    'SystemRoot' => 'C:\\WINDOWS'
+    'COMSPEC' => 'C:\\WINDOWS\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\WINDOWS'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3 Server at localhost Port 8081</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '8081'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'C:/xampp/htdocs/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REMOTE_PORT' => '61170'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitudes-contribuyente'
+    'REQUEST_URI' => '/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitudes-contribuyente'
+    'SCRIPT_NAME' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'PHP_SELF' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1483367623
+    'REQUEST_TIME' => 1483367623
+]
+2017-01-02 15:33:47 [::1][1][-][warning][yii\web\Session::init] Session is already started
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\models\funcionario\solicitud\SolicitudAsignadaSearch.php:213
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\funcionario\solicitud\SolicitudAsignadaController.php:141
+2017-01-02 15:33:46 [::1][1][-][info][application] $_GET = [
+    'r' => 'funcionario/solicitud/solicitud-asignada/index'
+]
+
+$_COOKIE = [
+    '_csrf' => '4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"fqIcveFP4bIPKTXsV3apINIs987zUsZ6\";}'
+    'PHPSESSID' => 'i0d7bs4rj1gk53h4uveqlpcg90'
+    '_identity' => 'ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea:2:{i:0;s:9:\"_identity\";i:1;s:39:\"[1,\"a5dd1347f3daf1ed10401b3be\",2592000]\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+]
+
+$_SERVER = [
+    'MIBDIRS' => 'C:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'C:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_HOST' => 'localhost:8081'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_REFERER' => 'http://localhost:8081/alvaro/simwebplusteq/trunk/backend/web/index.php?r=menu%2Fvertical'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.8,en;q=0.6'
+    'HTTP_COOKIE' => '_csrf=4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22fqIcveFP4bIPKTXsV3apINIs987zUsZ6%22%3B%7D; PHPSESSID=i0d7bs4rj1gk53h4uveqlpcg90; _identity=ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A39%3A%22%5B1%2C%22a5dd1347f3daf1ed10401b3be%22%2C2592000%5D%22%3B%7D'
+    'PATH' => 'C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;c:\\Program Files\\Intel\\DMIX;C:\\Program Files (x86)\\Intel\\Services\\IPT\\;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files\\TortoiseSVN\\bin;C:\\Program Files (x86)\\ATI Technologies\\ATI.ACE\\Core-Static;C:\\Program Files\\OpenVPN\\bin;C:\\Users\\Analista\\AppData\\Local\\Microsoft\\WindowsApps;'
+    'SystemRoot' => 'C:\\WINDOWS'
+    'COMSPEC' => 'C:\\WINDOWS\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\WINDOWS'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3 Server at localhost Port 8081</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '8081'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'C:/xampp/htdocs/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REMOTE_PORT' => '61172'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Findex'
+    'REQUEST_URI' => '/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Findex'
+    'SCRIPT_NAME' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'PHP_SELF' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1483367626.933
+    'REQUEST_TIME' => 1483367626
+]
+2017-01-02 15:33:49 [::1][1][-][warning][yii\web\Session::init] Session is already started
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\funcionario\solicitud\SolicitudAsignadaController.php:982
+2017-01-02 15:33:49 [::1][1][-][info][application] $_GET = [
+    'r' => 'funcionario/solicitud/solicitud-asignada/list-solicitud'
+    'i' => '2'
+]
+
+$_COOKIE = [
+    '_csrf' => '4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"fqIcveFP4bIPKTXsV3apINIs987zUsZ6\";}'
+    'PHPSESSID' => 'i0d7bs4rj1gk53h4uveqlpcg90'
+    '_identity' => 'ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea:2:{i:0;s:9:\"_identity\";i:1;s:39:\"[1,\"a5dd1347f3daf1ed10401b3be\",2592000]\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+]
+
+$_SERVER = [
+    'MIBDIRS' => 'C:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'C:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_HOST' => 'localhost:8081'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'CONTENT_LENGTH' => '0'
+    'HTTP_ACCEPT' => '*/*'
+    'HTTP_ORIGIN' => 'http://localhost:8081'
+    'HTTP_X_CSRF_TOKEN' => 'NkFFOTZVclpQMAxaQDA0CgIjDGl9ASopYHIkSX8bOykPeXJDYyYobA=='
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
+    'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
+    'HTTP_REFERER' => 'http://localhost:8081/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Findex'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.8,en;q=0.6'
+    'HTTP_COOKIE' => '_csrf=4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22fqIcveFP4bIPKTXsV3apINIs987zUsZ6%22%3B%7D; PHPSESSID=i0d7bs4rj1gk53h4uveqlpcg90; _identity=ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A39%3A%22%5B1%2C%22a5dd1347f3daf1ed10401b3be%22%2C2592000%5D%22%3B%7D'
+    'PATH' => 'C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;c:\\Program Files\\Intel\\DMIX;C:\\Program Files (x86)\\Intel\\Services\\IPT\\;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files\\TortoiseSVN\\bin;C:\\Program Files (x86)\\ATI Technologies\\ATI.ACE\\Core-Static;C:\\Program Files\\OpenVPN\\bin;C:\\Users\\Analista\\AppData\\Local\\Microsoft\\WindowsApps;'
+    'SystemRoot' => 'C:\\WINDOWS'
+    'COMSPEC' => 'C:\\WINDOWS\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\WINDOWS'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3 Server at localhost Port 8081</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '8081'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'C:/xampp/htdocs/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REMOTE_PORT' => '61172'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => 'r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Flist-solicitud&i=2'
+    'REQUEST_URI' => '/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Flist-solicitud&i=2'
+    'SCRIPT_NAME' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'PHP_SELF' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1483367629.095
+    'REQUEST_TIME' => 1483367629
+]
+2017-01-02 15:33:52 [::1][1][-][warning][yii\web\Session::init] Session is already started
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\funcionario\solicitud\SolicitudAsignadaController.php:869
+2017-01-02 15:33:51 [::1][1][-][info][application] $_GET = [
+    'r' => 'funcionario/solicitud/solicitud-asignada/buscar-solicitudes-contribuyente'
+]
+
+$_COOKIE = [
+    '_csrf' => '4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"fqIcveFP4bIPKTXsV3apINIs987zUsZ6\";}'
+    '_identity' => 'ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea:2:{i:0;s:9:\"_identity\";i:1;s:39:\"[1,\"a5dd1347f3daf1ed10401b3be\",2592000]\";}'
+    'PHPSESSID' => 'i0d7bs4rj1gk53h4uveqlpcg90'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+    'postBusquedaInicial' => [
+        '_csrf' => 'NkFFOTZVclpQMAxaQDA0CgIjDGl9ASopYHIkSX8bOykPeXJDYyYobA=='
+        'SolicitudAsignadaForm' => [
+            'impuesto' => '2'
+            'tipo_solicitud' => '20'
+            'fecha_desde' => ''
+            'fecha_hasta' => ''
+            'nro_solicitud' => ''
+        ]
+        'btn-search-request' => '1'
+    ]
+]
+
+$_SERVER = [
+    'MIBDIRS' => 'C:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'C:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_HOST' => 'localhost:8081'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_CACHE_CONTROL' => 'max-age=0'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_REFERER' => 'http://localhost:8081/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Findex'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.8,en;q=0.6'
+    'HTTP_COOKIE' => '_csrf=4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22fqIcveFP4bIPKTXsV3apINIs987zUsZ6%22%3B%7D; _identity=ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A39%3A%22%5B1%2C%22a5dd1347f3daf1ed10401b3be%22%2C2592000%5D%22%3B%7D; PHPSESSID=i0d7bs4rj1gk53h4uveqlpcg90'
+    'PATH' => 'C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;c:\\Program Files\\Intel\\DMIX;C:\\Program Files (x86)\\Intel\\Services\\IPT\\;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files\\TortoiseSVN\\bin;C:\\Program Files (x86)\\ATI Technologies\\ATI.ACE\\Core-Static;C:\\Program Files\\OpenVPN\\bin;C:\\Users\\Analista\\AppData\\Local\\Microsoft\\WindowsApps;'
+    'SystemRoot' => 'C:\\WINDOWS'
+    'COMSPEC' => 'C:\\WINDOWS\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\WINDOWS'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3 Server at localhost Port 8081</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '8081'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'C:/xampp/htdocs/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REMOTE_PORT' => '61172'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitudes-contribuyente'
+    'REQUEST_URI' => '/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitudes-contribuyente'
+    'SCRIPT_NAME' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'PHP_SELF' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1483367631.961
+    'REQUEST_TIME' => 1483367631
+]
+2017-01-02 15:33:54 [::1][1][-][warning][yii\web\Session::init] Session is already started
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\funcionario\solicitud\SolicitudAsignadaController.php:869
+2017-01-02 15:33:54 [::1][1][-][info][application] $_GET = [
+    'r' => 'funcionario/solicitud/solicitud-asignada/buscar-solicitudes-contribuyente'
+    'page' => '3'
+]
+
+$_COOKIE = [
+    '_csrf' => '4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"fqIcveFP4bIPKTXsV3apINIs987zUsZ6\";}'
+    'PHPSESSID' => 'i0d7bs4rj1gk53h4uveqlpcg90'
+    '_identity' => 'ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea:2:{i:0;s:9:\"_identity\";i:1;s:39:\"[1,\"a5dd1347f3daf1ed10401b3be\",2592000]\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+    'postBusquedaInicial' => [
+        '_csrf' => 'NkFFOTZVclpQMAxaQDA0CgIjDGl9ASopYHIkSX8bOykPeXJDYyYobA=='
+        'SolicitudAsignadaForm' => [
+            'impuesto' => '2'
+            'tipo_solicitud' => '20'
+            'fecha_desde' => ''
+            'fecha_hasta' => ''
+            'nro_solicitud' => ''
+        ]
+        'btn-search-request' => '1'
+    ]
+]
+
+$_SERVER = [
+    'MIBDIRS' => 'C:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'C:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_HOST' => 'localhost:8081'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_REFERER' => 'http://localhost:8081/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitudes-contribuyente'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.8,en;q=0.6'
+    'HTTP_COOKIE' => '_csrf=4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22fqIcveFP4bIPKTXsV3apINIs987zUsZ6%22%3B%7D; PHPSESSID=i0d7bs4rj1gk53h4uveqlpcg90; _identity=ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A39%3A%22%5B1%2C%22a5dd1347f3daf1ed10401b3be%22%2C2592000%5D%22%3B%7D'
+    'PATH' => 'C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;c:\\Program Files\\Intel\\DMIX;C:\\Program Files (x86)\\Intel\\Services\\IPT\\;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files\\TortoiseSVN\\bin;C:\\Program Files (x86)\\ATI Technologies\\ATI.ACE\\Core-Static;C:\\Program Files\\OpenVPN\\bin;C:\\Users\\Analista\\AppData\\Local\\Microsoft\\WindowsApps;'
+    'SystemRoot' => 'C:\\WINDOWS'
+    'COMSPEC' => 'C:\\WINDOWS\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\WINDOWS'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3 Server at localhost Port 8081</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '8081'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'C:/xampp/htdocs/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REMOTE_PORT' => '61177'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitudes-contribuyente&page=3'
+    'REQUEST_URI' => '/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitudes-contribuyente&page=3'
+    'SCRIPT_NAME' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'PHP_SELF' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1483367634.094
+    'REQUEST_TIME' => 1483367634
+]
+2017-01-02 15:33:56 [::1][1][-][warning][yii\web\Session::init] Session is already started
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\conexion\ConexionController.php:158
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\conexion\ConexionController.php:344
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\models\contribuyente\ContribuyenteBase.php:203
+2017-01-02 15:33:56 [::1][1][-][info][application] $_GET = [
+    'r' => 'funcionario/solicitud/solicitud-asignada/buscar-solicitud-seleccionada'
+]
+
+$_POST = [
+    '_csrf' => 'bmNQdWRfM2YIEhkWEjp1NloBGSUvC2sVOFAxBS0RehVXW2cPMSxpUA=='
+    'SolicitudAsignadaSearch' => [
+        'listado' => '5'
+    ]
+    'id' => '23729'
+]
+
+$_COOKIE = [
+    '_csrf' => '4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"fqIcveFP4bIPKTXsV3apINIs987zUsZ6\";}'
+    'PHPSESSID' => 'i0d7bs4rj1gk53h4uveqlpcg90'
+    '_identity' => 'ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea:2:{i:0;s:9:\"_identity\";i:1;s:39:\"[1,\"a5dd1347f3daf1ed10401b3be\",2592000]\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+    'postBusquedaInicial' => [
+        '_csrf' => 'NkFFOTZVclpQMAxaQDA0CgIjDGl9ASopYHIkSX8bOykPeXJDYyYobA=='
+        'SolicitudAsignadaForm' => [
+            'impuesto' => '2'
+            'tipo_solicitud' => '20'
+            'fecha_desde' => ''
+            'fecha_hasta' => ''
+            'nro_solicitud' => ''
+        ]
+        'btn-search-request' => '1'
+    ]
+    'postSeleccionado' => [
+        '_csrf' => 'bmNQdWRfM2YIEhkWEjp1NloBGSUvC2sVOFAxBS0RehVXW2cPMSxpUA=='
+        'SolicitudAsignadaSearch' => [
+            'listado' => '5'
+        ]
+        'id' => '23729'
+    ]
+    'idContribuyente' => '62021'
+]
+
+$_SERVER = [
+    'MIBDIRS' => 'C:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'C:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_HOST' => 'localhost:8081'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'CONTENT_LENGTH' => '123'
+    'HTTP_CACHE_CONTROL' => 'max-age=0'
+    'HTTP_ORIGIN' => 'http://localhost:8081'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_REFERER' => 'http://localhost:8081/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitudes-contribuyente&page=3'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.8,en;q=0.6'
+    'HTTP_COOKIE' => '_csrf=4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22fqIcveFP4bIPKTXsV3apINIs987zUsZ6%22%3B%7D; PHPSESSID=i0d7bs4rj1gk53h4uveqlpcg90; _identity=ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A39%3A%22%5B1%2C%22a5dd1347f3daf1ed10401b3be%22%2C2592000%5D%22%3B%7D'
+    'PATH' => 'C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;c:\\Program Files\\Intel\\DMIX;C:\\Program Files (x86)\\Intel\\Services\\IPT\\;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files\\TortoiseSVN\\bin;C:\\Program Files (x86)\\ATI Technologies\\ATI.ACE\\Core-Static;C:\\Program Files\\OpenVPN\\bin;C:\\Users\\Analista\\AppData\\Local\\Microsoft\\WindowsApps;'
+    'SystemRoot' => 'C:\\WINDOWS'
+    'COMSPEC' => 'C:\\WINDOWS\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\WINDOWS'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3 Server at localhost Port 8081</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '8081'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'C:/xampp/htdocs/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REMOTE_PORT' => '61172'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => 'r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitud-seleccionada'
+    'REQUEST_URI' => '/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitud-seleccionada'
+    'SCRIPT_NAME' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'PHP_SELF' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1483367635.987
+    'REQUEST_TIME' => 1483367635
+]
+2017-01-02 15:34:18 [::1][1][i0d7bs4rj1gk53h4uveqlpcg90][warning][yii\web\Session::init] Session is already started
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\models\solicitudescontribuyente\SolicitudesContribuyenteForm.php:211
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\models\solicitudescontribuyente\ProcesarSolicitudContribuyente.php:250
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\models\solicitudescontribuyente\ProcesarSolicitudContribuyente.php:220
+2017-01-02 15:34:18 [::1][1][i0d7bs4rj1gk53h4uveqlpcg90][error][yii\db\IntegrityException] exception 'PDOException' with message 'SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'id_impuesto' cannot be null' in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\db\Command.php:844
+Stack trace:
+#0 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\db\Command.php(844): PDOStatement->execute()
+#1 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\conexion\ConexionController.php(206): yii\db\Command->execute()
+#2 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\funcionario\solicitud\SolicitudAsignadaController.php(711): common\conexion\ConexionController->guardarRegistro(Object(yii\db\Connection), '<span class="st...', '[<span class="s...')
+#3 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\funcionario\solicitud\SolicitudAsignadaController.php(367): backend\controllers\funcionario\solicitud\SolicitudAsignadaController::actionCreateDocumentosConsignados('[<span class="s...', '<span class="st...', Object(common\conexion\ConexionController), Object(yii\db\Connection))
+#4 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\funcionario\solicitud\SolicitudAsignadaController.php(195): backend\controllers\funcionario\solicitud\SolicitudAsignadaController->actionIniciarAprobarSolicitud('[<span class="s...', '<span class="st...')
+#5 [internal function]: backend\controllers\funcionario\solicitud\SolicitudAsignadaController->actionProcesarSolicitud()
+#6 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\InlineAction.php(55): call_user_func_array('[<span class="t...', '[]')
+#7 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\Controller.php(154): yii\base\InlineAction->runWithParams('[<span class="s...')
+#8 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\Module.php(454): yii\base\Controller->runAction('<span class="st...', '[<span class="s...')
+#9 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\web\Application.php(100): yii\base\Module->runAction('<span class="st...', '[<span class="s...')
+#10 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#11 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\web\index.php(18): yii\base\Application->run()
+#12 {main}
+
+Next exception 'yii\db\IntegrityException' with message 'SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'id_impuesto' cannot be null
+The SQL being executed was: INSERT INTO `documentos_consignados` (`id_doc_consignado`, `id_documento`, `id_contribuyente`, `id_impuesto`, `impuesto`, `nro_solicitud`, `codigo_proceso`, `fecha_hora`, `usuario`, `estatus`) VALUES (NULL, 36, '62021', NULL, 2, '23729', NULL, '2017-01-02 15:34:18', 'admin', 0)' in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\db\Schema.php:631
+Stack trace:
+#0 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\db\Command.php(854): yii\db\Schema->convertException(Object(PDOException), 'INSERT INTO `do...')
+#1 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\common\conexion\ConexionController.php(206): yii\db\Command->execute()
+#2 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\funcionario\solicitud\SolicitudAsignadaController.php(711): common\conexion\ConexionController->guardarRegistro(Object(yii\db\Connection), '<span class="st...', '[<span class="s...')
+#3 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\funcionario\solicitud\SolicitudAsignadaController.php(367): backend\controllers\funcionario\solicitud\SolicitudAsignadaController::actionCreateDocumentosConsignados('[<span class="s...', '<span class="st...', Object(common\conexion\ConexionController), Object(yii\db\Connection))
+#4 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\funcionario\solicitud\SolicitudAsignadaController.php(195): backend\controllers\funcionario\solicitud\SolicitudAsignadaController->actionIniciarAprobarSolicitud('[<span class="s...', '<span class="st...')
+#5 [internal function]: backend\controllers\funcionario\solicitud\SolicitudAsignadaController->actionProcesarSolicitud()
+#6 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\InlineAction.php(55): call_user_func_array('[<span class="t...', '[]')
+#7 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\Controller.php(154): yii\base\InlineAction->runWithParams('[<span class="s...')
+#8 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\Module.php(454): yii\base\Controller->runAction('<span class="st...', '[<span class="s...')
+#9 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\web\Application.php(100): yii\base\Module->runAction('<span class="st...', '[<span class="s...')
+#10 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#11 C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\web\index.php(18): yii\base\Application->run()
+#12 {main}
+Additional Information:
+Array
+(
+    [0] => 23000
+    [1] => 1048
+    [2] => Column 'id_impuesto' cannot be null
+)
+
+2017-01-02 15:34:18 [::1][1][i0d7bs4rj1gk53h4uveqlpcg90][info][application] $_GET = [
+    'r' => 'funcionario/solicitud/solicitud-asignada/procesar-solicitud'
+]
+
+$_POST = [
+    '_csrf' => 'SGhIUlA2R3guGQExJlMBKHwKAQIbYh8LHlspIhl4DgtxUH8oBUUdTg=='
+    'SolicitudesContribuyente' => [
+        'listado' => '6'
+        'exigirDocumento' => '1'
+        'id_config_solicitud' => '68'
+        'impuesto' => '2'
+        'id_impuesto' => ''
+        'nro_solicitud' => '23729'
+        'fecha_hora_creacion' => '2016-12-30 04:03:27'
+        'impuesto_descripcion' => 'INMUEBLES URBANOS'
+        'tipo_solicitud' => 'REGISTRO NUEVO'
+        'nivel_aprobacion' => 'SELECCION DE OPCIONES'
+        'estatus' => 'PENDIENTE POR PROCESAR'
+        'id_contribuyente' => '62021'
+    ]
+    'dni' => 'J-15000-1'
+    'contribuyente' => 'empresa de prueba'
+    'domicilio' => 'direccion de prueba'
+    'chk-documento-requisito_all' => '1'
+    'chk-documento-requisito' => [
+        0 => '36'
+        1 => '37'
+        2 => '38'
+        3 => '39'
+        4 => '40'
+        5 => '41'
+        6 => '42'
+        7 => '43'
+    ]
+    'btn-approve-request' => '1'
+]
+
+$_COOKIE = [
+    '_csrf' => '4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"fqIcveFP4bIPKTXsV3apINIs987zUsZ6\";}'
+    'PHPSESSID' => 'i0d7bs4rj1gk53h4uveqlpcg90'
+    '_identity' => 'ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea:2:{i:0;s:9:\"_identity\";i:1;s:39:\"[1,\"a5dd1347f3daf1ed10401b3be\",2592000]\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+    'postBusquedaInicial' => [
+        '_csrf' => 'NkFFOTZVclpQMAxaQDA0CgIjDGl9ASopYHIkSX8bOykPeXJDYyYobA=='
+        'SolicitudAsignadaForm' => [
+            'impuesto' => '2'
+            'tipo_solicitud' => '20'
+            'fecha_desde' => ''
+            'fecha_hasta' => ''
+            'nro_solicitud' => ''
+        ]
+        'btn-search-request' => '1'
+    ]
+    'postSeleccionado' => [
+        '_csrf' => 'bmNQdWRfM2YIEhkWEjp1NloBGSUvC2sVOFAxBS0RehVXW2cPMSxpUA=='
+        'SolicitudAsignadaSearch' => [
+            'listado' => '5'
+        ]
+        'id' => '23729'
+    ]
+    'idContribuyente' => '62021'
+]
+
+$_SERVER = [
+    'MIBDIRS' => 'C:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'C:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_HOST' => 'localhost:8081'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'CONTENT_LENGTH' => '1119'
+    'HTTP_CACHE_CONTROL' => 'max-age=0'
+    'HTTP_ORIGIN' => 'http://localhost:8081'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_REFERER' => 'http://localhost:8081/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitud-seleccionada'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.8,en;q=0.6'
+    'HTTP_COOKIE' => '_csrf=4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22fqIcveFP4bIPKTXsV3apINIs987zUsZ6%22%3B%7D; PHPSESSID=i0d7bs4rj1gk53h4uveqlpcg90; _identity=ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A39%3A%22%5B1%2C%22a5dd1347f3daf1ed10401b3be%22%2C2592000%5D%22%3B%7D'
+    'PATH' => 'C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;c:\\Program Files\\Intel\\DMIX;C:\\Program Files (x86)\\Intel\\Services\\IPT\\;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files\\TortoiseSVN\\bin;C:\\Program Files (x86)\\ATI Technologies\\ATI.ACE\\Core-Static;C:\\Program Files\\OpenVPN\\bin;C:\\Users\\Analista\\AppData\\Local\\Microsoft\\WindowsApps;'
+    'SystemRoot' => 'C:\\WINDOWS'
+    'COMSPEC' => 'C:\\WINDOWS\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\WINDOWS'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3 Server at localhost Port 8081</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '8081'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'C:/xampp/htdocs/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REMOTE_PORT' => '61185'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => 'r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fprocesar-solicitud'
+    'REQUEST_URI' => '/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fprocesar-solicitud'
+    'SCRIPT_NAME' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'PHP_SELF' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1483367658.745
+    'REQUEST_TIME' => 1483367658
+]
+2017-01-02 15:47:08 [::1][1][-][warning][yii\web\Session::init] Session is already started
+    in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\funcionario\solicitud\SolicitudAsignadaController.php:869
+2017-01-02 15:47:08 [::1][1][-][info][application] $_GET = [
+    'r' => 'funcionario/solicitud/solicitud-asignada/buscar-solicitudes-contribuyente'
+    'page' => '3'
+]
+
+$_COOKIE = [
+    '_csrf' => '4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"fqIcveFP4bIPKTXsV3apINIs987zUsZ6\";}'
+    'PHPSESSID' => 'i0d7bs4rj1gk53h4uveqlpcg90'
+    '_identity' => 'ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea:2:{i:0;s:9:\"_identity\";i:1;s:39:\"[1,\"a5dd1347f3daf1ed10401b3be\",2592000]\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+    'postBusquedaInicial' => [
+        '_csrf' => 'NkFFOTZVclpQMAxaQDA0CgIjDGl9ASopYHIkSX8bOykPeXJDYyYobA=='
+        'SolicitudAsignadaForm' => [
+            'impuesto' => '2'
+            'tipo_solicitud' => '20'
+            'fecha_desde' => ''
+            'fecha_hasta' => ''
+            'nro_solicitud' => ''
+        ]
+        'btn-search-request' => '1'
+    ]
+    'idContribuyente' => '62021'
+]
+
+$_SERVER = [
+    'MIBDIRS' => 'C:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'C:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_HOST' => 'localhost:8081'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_REFERER' => 'http://localhost:8081/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitudes-contribuyente'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.8,en;q=0.6'
+    'HTTP_COOKIE' => '_csrf=4f42e2137d2a4896fc452ddff09b8b69d0c0d742f3f46da73772029dfdd0e64aa%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22fqIcveFP4bIPKTXsV3apINIs987zUsZ6%22%3B%7D; PHPSESSID=i0d7bs4rj1gk53h4uveqlpcg90; _identity=ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A39%3A%22%5B1%2C%22a5dd1347f3daf1ed10401b3be%22%2C2592000%5D%22%3B%7D'
+    'PATH' => 'C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;c:\\Program Files\\Intel\\DMIX;C:\\Program Files (x86)\\Intel\\Services\\IPT\\;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files\\TortoiseSVN\\bin;C:\\Program Files (x86)\\ATI Technologies\\ATI.ACE\\Core-Static;C:\\Program Files\\OpenVPN\\bin;C:\\Users\\Analista\\AppData\\Local\\Microsoft\\WindowsApps;'
+    'SystemRoot' => 'C:\\WINDOWS'
+    'COMSPEC' => 'C:\\WINDOWS\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\WINDOWS'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3 Server at localhost Port 8081</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '8081'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'C:/xampp/htdocs/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REMOTE_PORT' => '61217'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitudes-contribuyente&page=3'
+    'REQUEST_URI' => '/alvaro/simwebplusteq/trunk/backend/web/index.php?r=funcionario%2Fsolicitud%2Fsolicitud-asignada%2Fbuscar-solicitudes-contribuyente&page=3'
+    'SCRIPT_NAME' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'PHP_SELF' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1483368428.375
+    'REQUEST_TIME' => 1483368428
+]

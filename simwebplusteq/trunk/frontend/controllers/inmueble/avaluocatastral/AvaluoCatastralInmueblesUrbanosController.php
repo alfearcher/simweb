@@ -265,7 +265,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                                     'valor_por_mts2' => $model->valor_construccion,
                                     'mts2_terreno' => $model->metros_terreno,
                                     'valor_por_mts2_terreno' => $model->valor_construccion,
-                                    'valor' => $model->casa_edf_qta_dom,
+                                    'valor' => $avaluoConstruccion + $avaluoTerreno,
                                     
                                 ]; 
 
@@ -287,9 +287,13 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                         $avaluoTerreno = $model->metros_terreno * $model->valor_terreno;
 
                         $arrayDatos1 = [    'id_impuesto' => $datos->id_impuesto,
-                                            'metros_cuadrados' => $model->metros_construccion,
-                                            'valor_unitario' => $model->valor_construccion,
-                                            'avaluo_construccion' => $avaluoConstruccion,
+                                            'nro_solicitud' => $result,
+                                            'fecha' => date('Y-m-d'),
+                                            'mts' => $model->metros_construccion,
+                                            'valor_por_mts2' => $model->valor_construccion,
+                                            'mts2_terreno' => $model->metros_terreno,
+                                            'valor_por_mts2_terreno' => $model->valor_construccion,
+                                            'valor' => $avaluoConstruccion + $avaluoTerreno,
                                             'inactivo' => 0,
                                             'fecha_creador' => date('Y'),
                                             'usuario_creador' => $_SESSION['idContribuyente'],
@@ -298,17 +302,8 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                                         ]; 
 
             
-                        $tableName1 = 'avaluos_construccion';
-                        $arrayDatos2 = [    'id_impuesto' => $datos->id_impuesto,
-                                            'metros_cuadrados' => $model->metros_terreno,
-                                            'valor_mts2' => $model->valor_construccion,
-                                            'avaluo_terreno' => $avaluoTerreno,
-                                            'inactivo' => 0,
-                                            'fecha_creador' => date('Y'),
-                                            'usuario_creador' => $_SESSION['idContribuyente'],
-                                            
-                                    
-                                        ]; 
+                        $tableName1 = 'historico_avaluos';
+                         
 
             
                         $tableName2 = 'avaluos_terreno';

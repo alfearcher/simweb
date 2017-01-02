@@ -288,7 +288,7 @@
                     $tableNameMaster = 'inmuebles';
 
                     $arregloDatosMaster = [
-                                            //'id_impuesto' => $camposModel['id_impuesto'],
+                                            
                                             'id_contribuyente' => $camposModel['id_contribuyente'],
                                             'ano_inicio' => $camposModel['ano_inicio'],
                                             'direccion' => $camposModel['direccion'],
@@ -302,14 +302,15 @@
                                          ];  
 
                     $resultInsert = $this->_conexion->guardarRegistro($this->_conn, $tableNameMaster, $arregloDatosMaster);
-
+                    $resultId = $this->_conn->getLastInsertID();
+                    //die(var_dump($resultId));
                     $result = $this->_conexion->modificarRegistro($this->_conn, $tableName,
                                                               $arregloDatos, $arregloCondicion);
 
                 } else {
                     if (!$result ) { self::setErrors(Yii::t('backend', 'Failed update request')); }
                     return $result;
-                }
+                } 
                     
             } 
 
