@@ -53,10 +53,7 @@ AppAsset::register($this);
     <!-- Aqui comienza el encabezado -->
                 <?php
                     NavBar::begin([
-                        'brandLabel' => Yii::$app->name . ' '. Yii::$app->ente->getAlias(),
-                        // 'brandLabel' => 'FFF '. Html::img('@common/public/imagen/customize/logo.jpg',[
-                        //                                 'style' => 'display:inline; vertical-align: top; height:32px;',
-                        //     ]),
+                        'brandLabel' => strtoupper(Yii::$app->ente->getAlcaldia()),  //Yii::$app->name . ' '. Yii::$app->ente->getAlias(),
 
                         'brandUrl' => Yii::$app->homeUrl,
                         'options' => [
