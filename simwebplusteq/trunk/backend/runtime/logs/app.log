@@ -52983,3 +52983,62 @@ $_SERVER = [
     'REQUEST_TIME_FLOAT' => 1483368428.375
     'REQUEST_TIME' => 1483368428
 ]
+2017-01-02 16:07:49 [::1][-][-][error][yii\base\ErrorException:4] exception 'yii\base\ErrorException' with message 'syntax error, unexpected 'catch' (T_CATCH)' in C:\xampp\htdocs\alvaro\simwebplusteq\trunk\backend\controllers\inmueble\AvaluoCatastralInmueblesUrbanosController.php:332
+Stack trace:
+#0 [internal function]: yii\base\ErrorHandler->handleFatalError()
+#1 {main}
+2017-01-02 16:07:49 [::1][-][-][info][application] $_GET = [
+    'r' => 'inmueble/avaluo-catastral-inmuebles-urbanos/index'
+]
+
+$_COOKIE = [
+    '_identity' => 'ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea:2:{i:0;s:9:\"_identity\";i:1;s:39:\"[1,\"a5dd1347f3daf1ed10401b3be\",2592000]\";}'
+    '_csrf' => 'aee8b4296e68e02ab2ad99de8351882dbd2c7872b76a8ae1d9315cf430312e83a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"TDThj3OS0CKTQryWaaupOgS2M9E6sZcH\";}'
+    'PHPSESSID' => 'i0d7bs4rj1gk53h4uveqlpcg90'
+]
+
+$_SERVER = [
+    'MIBDIRS' => 'C:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'C:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_HOST' => 'localhost:8081'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_REFERER' => 'http://localhost:8081/alvaro/simwebplusteq/trunk/backend/web/index.php?r=menu%2Fvertical'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.8,en;q=0.6'
+    'HTTP_COOKIE' => '_identity=ac47db8b6c9008a580582dbbc9fa8720b008bb95c693dabd446a75b4dccd057ea%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A39%3A%22%5B1%2C%22a5dd1347f3daf1ed10401b3be%22%2C2592000%5D%22%3B%7D; _csrf=aee8b4296e68e02ab2ad99de8351882dbd2c7872b76a8ae1d9315cf430312e83a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22TDThj3OS0CKTQryWaaupOgS2M9E6sZcH%22%3B%7D; PHPSESSID=i0d7bs4rj1gk53h4uveqlpcg90'
+    'PATH' => 'C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;c:\\Program Files\\Intel\\DMIX;C:\\Program Files (x86)\\Intel\\Services\\IPT\\;C:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin;C:\\Program Files\\TortoiseSVN\\bin;C:\\Program Files (x86)\\ATI Technologies\\ATI.ACE\\Core-Static;C:\\Program Files\\OpenVPN\\bin;C:\\Users\\Analista\\AppData\\Local\\Microsoft\\WindowsApps;'
+    'SystemRoot' => 'C:\\WINDOWS'
+    'COMSPEC' => 'C:\\WINDOWS\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\WINDOWS'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3 Server at localhost Port 8081</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Win32) OpenSSL/1.0.1i PHP/5.6.3'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '8081'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'C:/xampp/htdocs'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'C:/xampp/htdocs/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REMOTE_PORT' => '61324'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'r=inmueble%2Favaluo-catastral-inmuebles-urbanos%2Findex'
+    'REQUEST_URI' => '/alvaro/simwebplusteq/trunk/backend/web/index.php?r=inmueble%2Favaluo-catastral-inmuebles-urbanos%2Findex'
+    'SCRIPT_NAME' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'PHP_SELF' => '/alvaro/simwebplusteq/trunk/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1483369669.314
+    'REQUEST_TIME' => 1483369669
+]

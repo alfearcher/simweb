@@ -176,7 +176,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                      if($guardo == true){ 
 
                            $envio = self::EnviarCorreo($guardo, $requisitos);
-
+die(var_dump($envio));
                            if($envio == true){ 
 
                               return MensajeController::actionMensaje(100);
@@ -305,9 +305,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                         $tableName1 = 'historico_avaluos';
                          
 
-            
-                        $tableName2 = 'avaluos_terreno';
-//die(var_dump($arrayDatos1).var_dump($arrayDatos2));
+
                         if ( $conn->guardarRegistro($conexion, $tableName1,  $arrayDatos1) ){
 
                               $transaccion->commit();  
@@ -323,7 +321,22 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                               return false; 
 
                         }
-                  
+                  }
+
+
+                } else {
+            
+                    $transaccion->rollBack(); 
+                    $conexion->close(); 
+                    $tipoError = 0; 
+                    return false; 
+
+                }
+
+            }else{ 
+                
+                return false;
+            }   
 
 
                 
@@ -360,7 +373,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      {
          $email = yii::$app->user->identity->login;
 
-         $solicitud = 'Actualizacion de Datos del Inmueble';
+         $solicitud = 'Avaluo Catastral del Inmueble';
 
          $nro_solicitud = $guardo;
 

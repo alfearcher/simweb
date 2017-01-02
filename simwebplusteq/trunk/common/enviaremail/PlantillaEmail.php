@@ -115,7 +115,7 @@ class PlantillaEmail{
     public function plantillaEmailSolicitud($email, $solicitud, $nro_solicitud, $documento)
     {
 
-        if ( trim($email) == '' ) {
+        if ( trim($email) == true ) {
           $docu = '';
           if ( $documento !== null ) {
               $docu =  implode("<br>*", $documento);
