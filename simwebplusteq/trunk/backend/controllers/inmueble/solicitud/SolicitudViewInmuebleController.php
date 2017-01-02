@@ -56,6 +56,8 @@
 	use yii\web\NotFoundHttpException;
 	use backend\models\inmueble\SlInmueblesUrbanosForm;
 	use backend\models\inmueble\SlInmueblesUrbanosSearch;
+	use backend\models\inmueble\SlHistoricoAvaluosForm;
+	use backend\models\inmueble\SlHistoricoAvaluosSearch;
 	use backend\models\inmueble\SlCambioPropietarioForm;
 	use backend\models\inmueble\SlCambioPropietarioSearch;
 	use backend\models\inmueble\solvencia\SolvenciaInmuebleSearch;
@@ -207,8 +209,8 @@
 		private function actionMostrarSolicitudAvaluoInmueble()
 		{
 			if ( $this->model->nivel_aprobacion == 2 ) {
-					$modelSearch = New SlInmueblesUrbanosSearch($this->model->id_contribuyente);
-					$model = $modelSearch->findActualizacionDatos($this->model->nro_solicitud);
+					$modelSearch = New SlHistoricoAvaluosSearch($this->model->id_contribuyente);
+					$model = $modelSearch->findAvaluos($this->model->nro_solicitud);
 
 
 

@@ -253,25 +253,24 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
             if ( $conn->guardarRegistro($conexion, $tableName1,  $arrayDatos1) ){  
                 $result = $conexion->getLastInsertID();
+                
 
+                $avaluoConstruccion = $model->metros_construccion * $model->valor_construccion;
+                $avaluoTerreno = $model->metros_terreno * $model->valor_terreno;
 
-                $arrayDatos2 = [    'id_contribuyente' => $datos->id_contribuyente,
-                                    'id_impuesto' => $datos->id_impuesto,
+                $arrayDatos2 = [    'id_impuesto' => $datos->id_impuesto,
                                     'nro_solicitud' => $result,
-                                    'ano_inicio' => $model->ano_inicio,
-                                    'direccion' => $model->direccion,
-                                    'medidor' => $model->medidor,
-                                    'observacion' => $model->observacion,
-                                    'tipo_ejido' => $model->tipo_ejido,
-                                  //'av_calle_esq_dom' => $av_calle_esq_dom,
-                                    'casa_edf_qta_dom' => $model->casa_edf_qta_dom,
-                                    'piso_nivel_no_dom' => $model->piso_nivel_no_dom,
-                                    'apto_dom' => $model->apto_dom,
-                                    'fecha_creacion' => date('Y-m-d h:i:s'),
+                                    'fecha' => date('Y-m-d'),
+                                    'mts' => $model->metros_construccion,
+                                    'valor_por_mts2' => $model->valor_construccion,
+                                    'mts2_terreno' => $model->metros_terreno,
+                                    'valor_por_mts2_terreno' => $model->valor_construccion,
+                                    'valor' => $model->casa_edf_qta_dom,
+                                    
                                 ]; 
 
             
-                 $tableName2 = 'sl_inmuebles'; 
+                 $tableName2 = 'sl_historico_avaluos'; 
 
                 if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){
 
@@ -314,7 +313,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
             
                         $tableName2 = 'avaluos_terreno';
 //die(var_dump($arrayDatos1).var_dump($arrayDatos2));
-                        if ( $conn->guardarRegistro($conexion, $tableName1,  $arrayDatos1) and $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){
+                        if ( $conn->guardarRegistro($conexion, $tableName1,  $arrayDatos1) ){
 
                               $transaccion->commit();  
                               $conexion->close(); 

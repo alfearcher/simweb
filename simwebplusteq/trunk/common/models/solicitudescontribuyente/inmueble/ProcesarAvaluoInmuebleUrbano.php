@@ -53,6 +53,7 @@
     use backend\models\aaee\InmueblesUrbanosForm;
     use backend\models\inmueble\SlInmueblesUrbanosSearch;
     use common\models\contribuyente\ContribuyenteBase;
+    use backend\models\inmueble\SlHistoricoAvaluosSearch;
 
 
 
@@ -262,7 +263,7 @@
             $cancel = false;            // Controla si el proceso se debe cancelar.
 
             // Se crea la instancia del modelo que contiene los campos que seran actualizados.
-            $model = New SlInmueblesUrbanosSearch($modelInscripcion->id_contribuyente);
+            $model = New SlHistoricoAvaluosSearch($modelInscripcion->id_contribuyente);
             $tableName = $model->tableName();
 
             // Se obtienen los campos que seran actualizados en la entidad "sl-".
@@ -285,20 +286,16 @@
                                                               $arregloDatos, $arregloCondicion);
                 } elseif($arregloDatos['estatus_funcionario'] == 1) {
 
-                    $tableNameMaster = 'inmuebles';
+                    $tableNameMaster = 'historico_avaluos';
 
                     $arregloDatosMaster = [
-                                            //'id_impuesto' => $camposModel['id_impuesto'],
-                                            'id_contribuyente' => $camposModel['id_contribuyente'],
-                                            'ano_inicio' => $camposModel['ano_inicio'],
-                                            'direccion' => $camposModel['direccion'],
-                                            'casa_edf_qta_dom' => $camposModel['casa_edf_qta_dom'], 
-                                            'piso_nivel_no_dom' => $camposModel['piso_nivel_no_dom'], 
-                                            'apto_dom' => $camposModel['apto_dom'], 
-                                            'medidor' => $camposModel['medidor'], 
-                                            'observacion' => $camposModel['observacion'],
-                                            'tipo_ejido' => $camposModel['id_contribuyente'],
-
+                                            'id_impuesto' => $camposModel['id_impuesto'],
+                                            'mts' => $camposModel['mts'],
+                                            'valor_por_mts2' => $camposModel['valor_por_mts'],
+                                            'mts2_terreno' => $camposModel['mts_terreno'],
+                                            'valor_por_mts2_terreno' => $camposModel['valor_por_mts_terreno'], 
+                                            'valor' => $camposModel['valor'], 
+                                            
                                          ];  
 
                     $resultInsert = $this->_conexion->guardarRegistro($this->_conn, $tableNameMaster, $arregloDatosMaster);

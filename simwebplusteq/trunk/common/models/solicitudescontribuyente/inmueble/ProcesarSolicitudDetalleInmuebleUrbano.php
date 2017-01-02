@@ -126,6 +126,11 @@
 
                 } elseif ( $this->_model->tipo_solicitud == 21 ) {
                     //Avaluo
+                    $procesar = New ProcesarAvaluoInmuebleUrbano($this->_model,
+                                                                          $this->_evento,
+                                                                          $this->_conn,
+                                                                          $this->_conexion);
+                    $result = $procesar->procesarSolicitud();
 
                 } elseif ( $this->_model->tipo_solicitud == 22 ) {
                     //Certificado Catastral

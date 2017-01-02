@@ -55,6 +55,7 @@
 	use yii\data\ArrayDataProvider;
 	use common\models\planilla\Pago;
 	use backend\models\inmueble\InmueblesConsulta;
+	use backend\models\recibo\depositoplanilla\DepositoPlanillaSearch;
 
 
 
@@ -106,6 +107,21 @@
 
 
 
+		/**
+		 * Metodo que permite determinar si se puede utilizar una planilla para adjuntar
+		 * otros lapsos
+		 * @param integer $planilla numero de planilla
+		 * @return boolean
+		 */
+		public function puedoSeleccionarPlanilla($planilla)
+		{
+			$depositoPlanilla = New DepositoPlanillaSearch();
+			$result = $depositoPlanilla->puedoSeleccionarPlanillaParaRecibo($planilla);
+			return $result;
+		}
+
+
+
 		/***/
 		public function getImpuesto()
 		{
@@ -132,9 +148,17 @@
 		/**
 		 * Metodo que inicia el proceso de liquidacion y el mismo debe devolver una arreglo
 		 * con los laspsos liquidados y sus respectivos montos.
+		 * @param array lapsoFinal arreglo que indica hasta donde se desea liquidar. Este parametro
+		 * estara conformado de la siguiente manera:
+		 * array(2) => {
+		 * 	['ano_impositivo'] => 9999
+		 *  ['periodo'] => 99
+		 * }
+		 * Si el valor de este parametro es vacio, se tomara como lapso final el lapso final del año
+		 * actual para el impuesto.
 		 * @return array
 		 */
-		public function iniciarProcesoLiquidacion()
+		public function iniciarProcesoLiquidacion($lapsoFinal = [])
 		{
 			$this->_detalleLiquidacion = [];
 
@@ -142,7 +166,11 @@
 				$rangoInicio = self::armarRangoLiquidacionInicial();
 
 				if ( count($rangoInicio) > 0 ) {
-					$rangoFinal = self::getUltimoLapso();				// Ultimo lapso del año actual.
+					if ( count($lapsoFinal) > 0 ) {
+						$rangoFinal = $lapsoFinal;
+					} else {
+						$rangoFinal = self::getUltimoLapso();	// Ultimo lapso del año actual.
+					}
 
 					$añoInicio = (int)$rangoInicio['ano_impositivo'];
 					$periodoInicio = (int)$rangoInicio['periodo'];
@@ -188,13 +216,14 @@
 		 * Metodo que determina el rango inicial para los calculos del impuesto.
 		 * @return array retorna arreglo con los parametros para inicial la liquidacion.
 		 */
-		private function armarRangoLiquidacionInicial()
+		public function armarRangoLiquidacionInicial()
 		{
 			$this->_id_pago = 0;
 			$añoComienzo = 0;
 			$periodoComienzo = 0;
 			$lapsoInicio = [];
 			$ultimoLapso = self::getUltimoLapsoLiquidado();
+
 			if ( count($ultimoLapso) > 0 ) {
 				$ultimoAño = (int)$ultimoLapso['ano_impositivo'];
 				$ultimoPeriodo = (int)$ultimoLapso['trimestre'];
@@ -283,12 +312,14 @@
 				$this->_liquidarInmueble->setAnoImpositivo($año);
 				$montoCalculado = $this->_liquidarInmueble->iniciarCalcularLiquidacionInmueble();
 
-				if ( $montoCalculado > 0 ) {
+				if ( $montoCalculado >= 0 ) {
 					$exigLiq = (int)$exigibilidadLiq['exigibilidad'];
 					$montoPeriodo = self::getMontoPorPeriodo($montoCalculado, $exigLiq);
 
-					// Se crea unu ciclo con los periodos faltantes
-					$hastaPeriodo = $exigLiq;
+					if ( $hastaPeriodo == 0 ) {
+						// Se crea unu ciclo con los periodos faltantes
+						$hastaPeriodo = $exigLiq;
+					}
 
 					$fechaVcto = OrdenanzaBase::getFechaVencimientoSegunFecha(date('Y-m-d'));
 
@@ -420,7 +451,7 @@
 
 
 		/***/
-		private function getExigibilidadLiquidacion($año)
+		public function getExigibilidadLiquidacion($año)
 		{
 			return $exigibilidadLiq = OrdenanzaBase::getExigibilidadLiquidacion($año, self::IMPUESTO);
 		}
