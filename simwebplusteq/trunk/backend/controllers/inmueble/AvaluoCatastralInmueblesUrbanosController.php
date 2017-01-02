@@ -53,7 +53,7 @@ use Yii;
 use backend\models\inmueble\InmueblesUrbanosForm;
 use backend\models\inmueble\ContribuyentesForm;
 use backend\models\inmueble\AvaluoCatastralForm;
-
+use common\models\contribuyente\ContribuyenteBase;
 use backend\models\inmueble\InmueblesConsulta;
 use backend\models\inmueble\InmueblesSearch;
 use yii\web\Controller;
@@ -84,6 +84,8 @@ class AvaluoCatastralInmueblesUrbanosController extends Controller
 tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
 */
+
+    
       /**
      * Lists all Inmuebles models.
      * @return mixed
@@ -175,17 +177,17 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                      if($guardo == true){ 
 
-                          // $envio = self::EnviarCorreo($guardo, $requisitos);
+                           $envio = self::EnviarCorreo($guardo, $requisitos);
 
-                          // if($envio == true){ 
+                           if($envio == true){ 
 
                               return MensajeController::actionMensaje(100);
 
-                          // } else { 
+                           } else { 
                             
-                          //     return MensajeController::actionMensaje(920);
+                               return MensajeController::actionMensaje(920);
 
-                          // }
+                           }
 
                       } else {
 
@@ -225,7 +227,8 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
             $buscar = new ParametroSolicitud($_SESSION['id']);
 
             $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
-            
+            $datosContribuyente = self::DatosContribuyente();
+            $_SESSION['datosContribuyente']= $datosContribuyente;
             try {
             $tableName1 = 'solicitudes_contribuyente'; 
 
@@ -236,7 +239,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                               'impuesto' => 2,
                               'id_impuesto' => $datos->id_impuesto,
                               'tipo_solicitud' => $tipoSolicitud,
-                              'usuario' => yii::$app->user->identity->login,
+                              'usuario' => $datosContribuyente['email'],
                               'fecha_hora_creacion' => date('Y-m-d h:i:s'),
                               'nivel_aprobacion' => $nivelAprobacion["nivel_aprobacion"],
                               'nro_control' => 0,
@@ -305,9 +308,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                         $tableName1 = 'historico_avaluos';
                          
 
-            
-                        $tableName2 = 'avaluos_terreno';
-//die(var_dump($arrayDatos1).var_dump($arrayDatos2));
+
                         if ( $conn->guardarRegistro($conexion, $tableName1,  $arrayDatos1) ){
 
                               $transaccion->commit();  
@@ -323,7 +324,22 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                               return false; 
 
                         }
-                  
+                  }
+
+
+                } else {
+            
+                    $transaccion->rollBack(); 
+                    $conexion->close(); 
+                    $tipoError = 0; 
+                    return false; 
+
+                }
+
+            }else{ 
+                
+                return false;
+            }   
 
 
                 
@@ -335,6 +351,21 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                        
      }
 
+     /**
+     * [DatosContribuyente] metodo que busca los datos del contribuyente en 
+     * la tabla contribuyente
+     */
+     public function DatosContribuyente()
+     {
+
+         $buscar = ContribuyenteBase::find()->where("id_contribuyente=:idContribuyente", [":idContribuyente" => $_SESSION['idContribuyente']])
+                                                        ->asArray()->all();
+
+
+         return $buscar[0];                                              
+
+     } 
+
     /**
      * [DatosConfiguracionTiposSolicitudes description] metodo que busca el tipo de solicitud en 
      * la tabla config_tipos_solicitudes
@@ -343,7 +374,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      {
 
          $buscar = ConfiguracionTiposSolicitudes::find()->where("impuesto=:impuesto", [":impuesto" => 2])
-                                                        ->andwhere("descripcion=:descripcion", [":descripcion" => 'ACTUALIZACION DE DATOS'])
+                                                        ->andwhere("descripcion=:descripcion", [":descripcion" => 'REGISTRO DE AVALUO CATASTRAL'])
                                                         ->asArray()->all();
 
 
@@ -358,9 +389,9 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      */
      public function EnviarCorreo($guardo, $requisitos)
      {
-         $email = yii::$app->user->identity->login;
+         $email = $_SESSION['datosContribuyente']['email'];
 
-         $solicitud = 'Actualizacion de Datos del Inmueble';
+         $solicitud = 'Avaluo Catastral del Inmueble';
 
          $nro_solicitud = $guardo;
 

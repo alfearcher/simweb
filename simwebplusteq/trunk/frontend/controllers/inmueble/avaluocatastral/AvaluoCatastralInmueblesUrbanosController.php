@@ -356,7 +356,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      {
 
          $buscar = ConfiguracionTiposSolicitudes::find()->where("impuesto=:impuesto", [":impuesto" => 2])
-                                                        ->andwhere("descripcion=:descripcion", [":descripcion" => 'ACTUALIZACION DE DATOS'])
+                                                        ->andwhere("descripcion=:descripcion", [":descripcion" => 'REGISTRO DE AVALUO CATASTRAL'])
                                                         ->asArray()->all();
 
 
