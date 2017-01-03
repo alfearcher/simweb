@@ -193,7 +193,7 @@
 				// es la del año actual se busca el id_impuesto que corresponda, segun
 				// los parametros existentes del id_impuesto que se mande.
 				$idImpuesto = $miTasa->determinarTasaParaLiquidar($tasa['id_impuesto']);
-die(var_dump($idImpuesto));
+die('kaka');
 				if ( $idImpuesto > 0 ) {
 					for ( $i = 1; $i <= $tasa['nro_veces_liquidar']; $i++ ) {
 						$planillaTasa = New PlanillaTasa($model->id_contribuyente, $idImpuesto, $conexionLocal, $connLocal);
