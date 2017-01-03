@@ -4,7 +4,7 @@ return [
 	'components' => [
 		'db'        => [
 			'class'    => 'yii\db\Connection',
-			//'dsn' => 'mysql:host=localhost;dbname=sim_car_plus',
+			//'dsn' => 'mysql:host=localhost;dbname=sim_teq',
 			'dsn' => 'mysql:host=192.168.30.7;dbname=sim_teq',
 			//'dsn' => 'mysql:host=pinky.ddns.net:8383;dbname=sim_teq',
 			'username' => 'adminyii',
@@ -69,5 +69,8 @@ return [
 		'identidad' => [
 			'class' => 'common\classes\Identidad'
 		],
+		'ayuda' => [
+			'class' => 'common\classes\GestorAyuda'
+		]
 	],
 ];
