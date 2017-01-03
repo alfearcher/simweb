@@ -21,13 +21,13 @@
  */
 
  /**
- *  @file anexo-ramo-form.php
+ *  @file layout-encabezado-pdf.php
  *
  *  @author Jose Rafael Perez Teran
  *
  *  @date 27-08-2016
  *
- *  @view anexo-ramo-form.php
+ *  @view layout-encabezado-pdf.php
  *
  *
  *  @property
