@@ -160,73 +160,73 @@
 		        		],
 
 		        		//	SOLICITUDES DE VEHICULOS
-		        		['label' => Icon::show('fa fa-car',['class' => $typeLong], $typeIcon) . '&nbsp; Vehiculos',
-		        			'items' => [
-		        						['label' => 'Inscripci&oacute;n de Vehiculos' , 'url' =>['/vehiculo/registrar/registrar-vehiculo/registrar-vehiculo', 'id' =>60]],
-		        						['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . 'Calcomania',
-					        				'items' => [
-			        							['label' => 'Solicitud de reposición de calcomania por extravió o daño','url' => ['/vehiculo/calcomania/solicitud-extravio/seleccionar-calcomania', 'id' => 82]],
+		        // 		['label' => Icon::show('fa fa-car',['class' => $typeLong], $typeIcon) . '&nbsp; Vehiculos',
+		        // 			'items' => [
+		        // 						['label' => 'Inscripci&oacute;n de Vehiculos' , 'url' =>['/vehiculo/registrar/registrar-vehiculo/registrar-vehiculo', 'id' =>60]],
+		        // 						['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . 'Calcomania',
+					     //    				'items' => [
+			       //  							['label' => 'Solicitud de reposición de calcomania por extravió o daño','url' => ['/vehiculo/calcomania/solicitud-extravio/seleccionar-calcomania', 'id' => 82]],
 
-					        				],
-					        			],
-		        						['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Solvencia',
-		        					   		'items' => [
-	        					   				['label' => 'Solicitar Emision', 'url' => ['/vehiculo/solvencia/solvencia-vehiculo/index', 'id' => 115]],
-	        					   				['label' => 'Descargar Solvencia', 'url' => ['/vehiculo/solvencia/solvencia-vehiculo-generar/index']],
-		        					   		]
-		        					   	],
-		        						['label' => 'Cambio de Propietario', 'url' => ['/vehiculo/cambiopropietario/opcion-cambio-propietario/seleccionar-tipo-cambio-propietario', 'id' => 9]],
-		        						['label' => 'Cambio de Placa', 'url' => ['/vehiculo/cambioplaca/cambio-placa-vehiculo/vista-seleccion', 'id' => 74], 'options' => []],
-		        						['label' => 'Desincorporaci&oacute;n de Vehiculo', 'url' => ['/vehiculo/desincorporacion/desincorporacion-vehiculo/vista-seleccion', 'id' => 4]],
-		        						['label' => 'Cambio de Otros Datos del Vehiculo', 'url' => ['/vehiculo/cambiodatos/cambio-datos-vehiculo/vista-seleccion', 'id' => 5]],
-		        			],
-		        		],
+					     //    				],
+					     //    			],
+		        // 						['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Solvencia',
+		        // 					   		'items' => [
+	        	// 				   				['label' => 'Solicitar Emision', 'url' => ['/vehiculo/solvencia/solvencia-vehiculo/index', 'id' => 115]],
+	        	// 				   				['label' => 'Descargar Solvencia', 'url' => ['/vehiculo/solvencia/solvencia-vehiculo-generar/index']],
+		        // 					   		]
+		        // 					   	],
+		        // 						['label' => 'Cambio de Propietario', 'url' => ['/vehiculo/cambiopropietario/opcion-cambio-propietario/seleccionar-tipo-cambio-propietario', 'id' => 9]],
+		        // 						['label' => 'Cambio de Placa', 'url' => ['/vehiculo/cambioplaca/cambio-placa-vehiculo/vista-seleccion', 'id' => 74], 'options' => []],
+		        // 						['label' => 'Desincorporaci&oacute;n de Vehiculo', 'url' => ['/vehiculo/desincorporacion/desincorporacion-vehiculo/vista-seleccion', 'id' => 4]],
+		        // 						['label' => 'Cambio de Otros Datos del Vehiculo', 'url' => ['/vehiculo/cambiodatos/cambio-datos-vehiculo/vista-seleccion', 'id' => 5]],
+		        // 			],
+		        // 		],
 
-		        		//	PROPAGANDA COMERCIAL
-		        		['label' => Icon::show('fa fa-file-powerpoint-o',['class' => $typeLong], $typeIcon) . '&nbsp; Propaganda Comercial',
-		        			'items' => [
-		        						['label' => 'Inscripción de Propagandas', 'url' => ['/propaganda/crearpropaganda/crear-propaganda/crear-propaganda'	, 'id' => 75]],
-		        						['label' => 'Cambio de Otros Datos de Propaganda', 'url' => ['/propaganda/modificarpropaganda/modificar-propaganda/vista-seleccion', 'id' => 84]],
-		        						//['label' => 'Renovación de Propagandas', 'url' => '#'],
-		        						['label' => 'Desincorporación de Propaganda', 'url' => ['propaganda/desincorporarpropaganda/desincorporar-propaganda/vista-seleccion', 'id' => 97]],
+		        // 		//	PROPAGANDA COMERCIAL
+		        // 		['label' => Icon::show('fa fa-file-powerpoint-o',['class' => $typeLong], $typeIcon) . '&nbsp; Propaganda Comercial',
+		        // 			'items' => [
+		        // 						['label' => 'Inscripción de Propagandas', 'url' => ['/propaganda/crearpropaganda/crear-propaganda/crear-propaganda'	, 'id' => 75]],
+		        // 						['label' => 'Cambio de Otros Datos de Propaganda', 'url' => ['/propaganda/modificarpropaganda/modificar-propaganda/vista-seleccion', 'id' => 84]],
+		        // 						//['label' => 'Renovación de Propagandas', 'url' => '#'],
+		        // 						['label' => 'Desincorporación de Propaganda', 'url' => ['propaganda/desincorporarpropaganda/desincorporar-propaganda/vista-seleccion', 'id' => 97]],
 
-		        						['label' => 'Asignar Patrocinador', 'url' => ['propaganda/patrocinador/asignar-patrocinador-propaganda/seleccion', 'id' => 102]],
+		        // 						['label' => 'Asignar Patrocinador', 'url' => ['propaganda/patrocinador/asignar-patrocinador-propaganda/seleccion', 'id' => 102]],
 
-										['label' => 'Anular Patrocinador', 'url' => ['propaganda/patrocinador/anular-patrocinador-propaganda/seleccion', 'id' => 109]],
+										// ['label' => 'Anular Patrocinador', 'url' => ['propaganda/patrocinador/anular-patrocinador-propaganda/seleccion', 'id' => 109]],
 
-		        						['label' => 'Catalogo', 'url' => ['propaganda/catalogo/catalogo-propaganda/vista-catalogo-propaganda']],
+		        // 						['label' => 'Catalogo', 'url' => ['propaganda/catalogo/catalogo-propaganda/vista-catalogo-propaganda']],
 
-		        						//['label' => 'Solvencia', 'url' => '#'],
-		        			]
-		        		],
+		        // 						//['label' => 'Solvencia', 'url' => '#'],
+		        // 			]
+		        // 		],
 
 		        		//	ESPECTACULO PUBLICO
-		        		['label' => Icon::show('fa fa-cubes',['class' => $typeLong], $typeIcon) . '&nbsp; Espectaculo Publico',
-		        			'items' => [
-		        						['label' => 'Inscripción de Espectaculo', 'url' => '#'],
-		        						['label' => 'Suspención de Espectaculo', 'url' => '#'],
-		        						['label' => 'Sellado y Troquelado de Entradas', 'url' => '#'],
-		        						['label' => 'Cambio de Otros Datos de Espectaculos', 'url' => '#'],
-		        			]
-		        		],
+		        		// ['label' => Icon::show('fa fa-cubes',['class' => $typeLong], $typeIcon) . '&nbsp; Espectaculo Publico',
+		        		// 	'items' => [
+		        		// 				['label' => 'Inscripción de Espectaculo', 'url' => '#'],
+		        		// 				['label' => 'Suspención de Espectaculo', 'url' => '#'],
+		        		// 				['label' => 'Sellado y Troquelado de Entradas', 'url' => '#'],
+		        		// 				['label' => 'Cambio de Otros Datos de Espectaculos', 'url' => '#'],
+		        		// 	]
+		        		// ],
 
-		        		//	APUESTAS LICITAS
-		        		['label' => Icon::show('fa fa-diamond',['class' => $typeLong], $typeIcon) . '&nbsp; Apuestas Licitas',
-		        			'items' => [
-		        						['label' => 'Inscripción de Apuestas', 'url' => ['apuestalicita/apuestas-licita/create']],
-		        						['label' => 'Cambio de Otros Datos de Apuestas Licitas', 'url' => ['apuestalicita/apuestas-licita/index']],
-		        						['label' => 'Declaración de Apuestas Licitas', 'url' => '#'],
-		        			]
-		        		],
+		        		// //	APUESTAS LICITAS
+		        		// ['label' => Icon::show('fa fa-diamond',['class' => $typeLong], $typeIcon) . '&nbsp; Apuestas Licitas',
+		        		// 	'items' => [
+		        		// 				['label' => 'Inscripción de Apuestas', 'url' => ['apuestalicita/apuestas-licita/create']],
+		        		// 				['label' => 'Cambio de Otros Datos de Apuestas Licitas', 'url' => ['apuestalicita/apuestas-licita/index']],
+		        		// 				['label' => 'Declaración de Apuestas Licitas', 'url' => '#'],
+		        		// 	]
+		        		// ],
 
-		        		//	Recibo
-		        		['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . '&nbsp; Recibo',
-		        			'items' => [
-		        						['label' => 'Crear Recibo de Pago', 'url' => ['recibo/recibo/index']],
-		        						['label' => 'Consulta de Recibos', 'url' => ['recibo/recibo-consulta/index']],
-		        						['label' => 'Solicitar Anulación de Recibo', 'url' => ['recibo/anular-recibo/index']],
-		        			]
-		        		],
+		        		// //	Recibo
+		        		// ['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . '&nbsp; Recibo',
+		        		// 	'items' => [
+		        		// 				['label' => 'Crear Recibo de Pago', 'url' => ['recibo/recibo/index']],
+		        		// 				['label' => 'Consulta de Recibos', 'url' => ['recibo/recibo-consulta/index']],
+		        		// 				['label' => 'Solicitar Anulación de Recibo', 'url' => ['recibo/anular-recibo/index']],
+		        		// 	]
+		        		// ],
 
 		        		//	Planilla.
 		        		['label' => Icon::show('fa fa-indent',['class' => $typeLong], $typeIcon) . '&nbsp; Liquidacion',
@@ -240,22 +240,22 @@
 		        		],
 
 		        		//	Otras
-		        		['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . '&nbsp; Otras',
-		        			'items' => [
-		        						['label' => 'Pago Parcial', 'url' => '#'],
-		        						['label' => 'Convenio de Pago', 'url' => '#'],
-		        						['label' => 'Cheque Devuelto', 'url' => '#'],
-		        						['label' => 'Credito Fiscal', 'url' => '#'],
-		        						['label' => 'Multas', 'url' => '#'],
-		        						['label' => 'Fiscalización', 'url' => '#'],
-		        						['label' => 'Auditorias', 'url' => '#'],
-		        						['label' => 'Registro de Agente de Retención', 'url' => '#'],
-		        						['label' => 'Recibo de Pago', 'url' => '#'],
-		        						['label' => 'Cierre', 'url' => '#'],
-		        						//['label' => 'Declaración de Apuestas Licitas', 'url' => '#'],
-		        						//['label' => 'Declaración de Apuestas Licitas', 'url' => '#'],
-		        			]
-		        		],
+		        		// ['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . '&nbsp; Otras',
+		        		// 	'items' => [
+		        		// 				['label' => 'Pago Parcial', 'url' => '#'],
+		        		// 				['label' => 'Convenio de Pago', 'url' => '#'],
+		        		// 				['label' => 'Cheque Devuelto', 'url' => '#'],
+		        		// 				['label' => 'Credito Fiscal', 'url' => '#'],
+		        		// 				['label' => 'Multas', 'url' => '#'],
+		        		// 				['label' => 'Fiscalización', 'url' => '#'],
+		        		// 				['label' => 'Auditorias', 'url' => '#'],
+		        		// 				['label' => 'Registro de Agente de Retención', 'url' => '#'],
+		        		// 				['label' => 'Recibo de Pago', 'url' => '#'],
+		        		// 				['label' => 'Cierre', 'url' => '#'],
+		        		// 				//['label' => 'Declaración de Apuestas Licitas', 'url' => '#'],
+		        		// 				//['label' => 'Declaración de Apuestas Licitas', 'url' => '#'],
+		        		// 	]
+		        		// ],
 
 //	Solicitudes Elaboradas
 		        		['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . '&nbsp; Elaboradas',
