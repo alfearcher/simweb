@@ -53,7 +53,7 @@ use Yii;
 use yii\base\Model;
 use common\models\utilidades\Utilidad;
 use frontend\models\usuario\Afiliaciones;
-
+use common\conexion\ConexionController;
 /**
  * LoginForm es el model del login de acceso.
  */
@@ -128,11 +128,30 @@ class LoginForm extends Model
                                     'estatus' => 0,
                                     ])
                                 ->one();
+            
 
-          //  die(var_dump($buscar));
+           if($buscar['password_hash'] == null){
+
+             $cambio=self::actionCambioClave();
+             
+
+                $buscar2 = Afiliacion::find()
+                                ->where([
+                                    'login' => $this->email,
+                                    'password_hash' => $cambio, 
+                                    'estatus' => 0,
+                                    ])
+                                ->one();
+                
+                if  ($buscar2 == false){ 
+                $this->addError($attribute, 'Usuario o password incorrecto.');
+            }
+           } else {
+          
                  if  ($buscar == false){ 
                 $this->addError($attribute, 'Usuario o password incorrecto.');
             }
+           }
         } 
     
 
@@ -168,27 +187,73 @@ class LoginForm extends Model
 
         return $this->_user;
     }
+
+    public function actionCambioClave()
+    {
+//412ed1db244a8641cd696e6262bbe705 password adminteq 
+//9a1z1 primera prueba clave
+//21azaa segunda clave de prueba
+//const $utilidad = '14adf8';
+//
+//prueba en login---- affj9 MARTINEZRAMON1943@GMAIL.COM
+ try {
+              $afiliado = Afiliacion::find()->where("login=:login", [":login" => $this->email])
+                                            //->andwhere('estatus' => 0)
+                                            ->asArray()->one();
+              
+             
+              
+          
+
     
-       // die('llego a getuser');
-        // $pass = $this->password;
-        // $utilidad = Utilidad::getUtilidad();
-        // $password = $pass.$utilidad;
+              $salt = Utilidad::getUtilidad();
 
-        //  $password_hash = md5($password);
+              $password1 = $afiliado['password'].$salt;
 
-        // $buscar = Afiliacion::find()
-        //                     ->where([
-        //                         'login' => $this->email,
-        //                         'password_hash' => $password_hash,
+              $password_hash = md5($password1);
+                 
+              $arregloDatos = ['password_hash' => $password_hash];
 
-        //                         ])
-        //                     ->all();
+              $conexion = new ConexionController();
 
-                            //die($buscar[0]['id_contribuyente']);
+              $conn = $conexion->initConectar('db');
+                 
+              $conn->open();
 
-                       
-        
-       // die($this->login);
-       
+              $transaccion = $conn->beginTransaction();
+
+              $tableName= 'afiliaciones';
+              $arregloDatos = ['password_hash' => $password_hash,
+                                'password' => 0,
+                                'estatus'=> 0];
+               $arregloCondition = ['id_contribuyente' => $afiliado['id_contribuyente'],
+                                    'estatus'=> 1];
+
+
+                  if ($conexion->modificarRegistroNatural($conn, $tableName, $arregloDatos, $arregloCondition)){
+
+                      $transaccion->commit();
+                      $conn->close();
+                      return $password_hash;
+                     
+                      
+                  }else{ 
+                 
+                      $transaccion->rollback();
+                      $conn->close();
+                      return false;
+                      
+                  }
+
+                        
+
+             } catch ( Exception $e ) {
+                //echo $e->errorInfo[2];
+             } 
+             
+                
+        }
+    
+            
    
 }

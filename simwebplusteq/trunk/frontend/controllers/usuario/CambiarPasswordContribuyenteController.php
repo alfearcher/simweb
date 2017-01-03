@@ -75,12 +75,15 @@ use common\models\session\Session;
 use common\mensaje\MensajeController;
 use frontend\models\usuario\PreguntaSeguridadContribuyente;
 use frontend\models\usuario\MostrarPreguntaSeguridadForm;
+
+use frontend\models\usuario\Afiliacion;
 session_start();
 /**
  * Site controller
  */
 class CambiarPasswordContribuyenteController extends Controller
-{
+{   
+    
    
     public $layout = "layout-login";
 
@@ -93,7 +96,7 @@ class CambiarPasswordContribuyenteController extends Controller
      * @return retorna la vista para seleccionar el tipo de cambio de password que desee realizar
      */
    public function actionSeleccionarTipoContribuyente(){
-
+   
     return $this->render('/usuario/seleccionar-tipo-recuperar-password');
    }
 
@@ -543,8 +546,8 @@ class CambiarPasswordContribuyenteController extends Controller
 
               $transaccion->commit();
               $conn->close();
-              return true;
-              
+              //return true;
+              return $this->render('/usuario/seleccionar-tipo-contribuyente');
           }else{ 
          
               $transaccion->rollback();
@@ -602,6 +605,9 @@ class CambiarPasswordContribuyenteController extends Controller
 
   }
 
-  
+
+
+        
+
 }
 ?>

@@ -85,7 +85,7 @@ public $layout = "layout-login";
      
     public function actionLogin()
     {
-       // die('ee');
+        
         
         $mensajeError = '';
         $model = New LoginForm();
@@ -271,6 +271,10 @@ public $layout = "layout-login";
     {
         return $this->render('/menu/menu-vertical');
     }
+
+   
+
+
 
 
     
