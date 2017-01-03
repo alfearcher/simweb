@@ -72,7 +72,7 @@ AppAsset::register($this);
 
                     //'visible' => false
                     if (Yii::$app->user->isGuest) {
-                        $menuItems[] = ['label' => '<p>' . Icon::show('user',['class' => 'fa-2x'], $typeIcon) .  'Login ' . '</p>', 'url' => ['/site/login'],
+                        $menuItems[] = ['label' => '<p>' . Icon::show('user',['class' => 'fa-2x'], $typeIcon) .  Yii::t('frontend', 'Ingresar ') . '</p>', 'url' => ['/site/login'],
                             //'items' => []
                         ];
                     } else {
