@@ -166,6 +166,7 @@
 					}
 				}
 			}
+die(var_dump($montoCalculado));
 			$this->_calculoAnual = $montoCalculado;
 		}
 
