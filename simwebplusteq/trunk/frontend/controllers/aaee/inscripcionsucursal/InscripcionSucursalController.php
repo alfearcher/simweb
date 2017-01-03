@@ -70,6 +70,7 @@
 	use common\enviaremail\PlantillaEmail;
 	use common\models\solicitudescontribuyente\SolicitudesContribuyenteForm;
 
+
 	session_start();		// Iniciando session
 
 	/**
@@ -287,6 +288,10 @@
 						$errorMensajeFechaInicioSedePrincipal = Yii::t('frontend', 'The begin date of headquarters main , not is valid.');
 					}
 
+					$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : [];
+					$rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud']);
+
+// die(var_dump($rutaAyuda));
 		  			return $this->render('/aaee/inscripcion-sucursal/_create', [
 		  											'model' => $model,
 		  											'datos' => $datos,
@@ -296,6 +301,7 @@
 		  											'modelTelefono' => $modelTelefono,
 		  											'mensajeRegistroMercantil' => $mensajeRegistroMercantil,
 		  											'errorMensajeFechaInicioSedePrincipal' => $errorMensajeFechaInicioSedePrincipal,
+		  											'rutaAyuda' => $rutaAyuda,
 		  											//'mensajeErrorChk' => $mensajeErrorChk,
 		  					]);
 		  		} else {
@@ -868,6 +874,10 @@
 							'begin',
 					];
 		}
+
+
+
+
 
 	}
 ?>
