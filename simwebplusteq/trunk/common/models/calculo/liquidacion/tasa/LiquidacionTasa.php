@@ -142,7 +142,7 @@
 			$montoCalculado = 0;
 			if ( isset($this->_idImpuesto) ) {
 				$tasa = $this->getParametrosTasa();
-die(var_dump($tasa));
+// die(var_dump($tasa));
 				if ( isset($tasa) ) {
 					$this->_parametro = [
 								'id_impuesto' => $tasa['id_impuesto'],
@@ -166,6 +166,7 @@ die(var_dump($tasa));
 					}
 				}
 			}
+die(var_dump($montoCalculado));
 			$this->_calculoAnual = $montoCalculado;
 		}
 
