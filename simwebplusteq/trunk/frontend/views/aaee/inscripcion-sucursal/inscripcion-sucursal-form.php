@@ -505,6 +505,21 @@
 											])?>
 									</div>
 								</div>
+
+<!-- prueba de emision de ayuda -->
+								<div class="col-sm-2" style="margin-left: 150px;">
+									<div class="form-group">
+									<!-- '../../common/docs/user/ayuda.pdf'  funciona -->
+										 <?= Html::a(Yii::t('backend', 'Help'), $rutaAyuda,  [
+																						'id' => 'btn-help',
+																						'class' => 'btn btn-danger',
+																						'name' => 'btn-help',
+																						'target' => '_blank',
+																						'value' => 1,
+																						'style' => 'width: 100%;'
+											])?>
+									</div>
+								</div>
 							</div>
 
 						</div>

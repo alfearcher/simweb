@@ -53,6 +53,7 @@
 			'modelTelefono' => $modelTelefono,
 			'mensajeRegistroMercantil' => $mensajeRegistroMercantil,
 			'errorMensajeFechaInicioSedePrincipal' => $errorMensajeFechaInicioSedePrincipal,
+			'rutaAyuda' => $rutaAyuda,
 			//'mensajeErrorChk' => $mensajeErrorChk,
 
 	    ]) ?>
