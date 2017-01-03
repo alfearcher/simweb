@@ -95,6 +95,8 @@
 			$this->_calculoAnual = 0;
 			$this->_parametro = null;
 			if ( isset($this->_idImpuesto) ) {
+
+die(var_dump($this->_idImpuesto));
 				$this->calculoTasa();
 				if ( $this->_montoALiquidar == 0 ) {
 					$monto = $this->_multiplicador > 0 ? $this->getCalculoAnual() * $this->_multiplicador : $this->getCalculoAnual();
