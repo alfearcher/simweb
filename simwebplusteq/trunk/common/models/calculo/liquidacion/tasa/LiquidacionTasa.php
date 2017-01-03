@@ -139,6 +139,7 @@
 		 */
 		private function calculoTasa()
 		{
+die('laaa');
 			$montoCalculado = 0;
 			if ( isset($this->_idImpuesto) ) {
 				$tasa = $this->getParametrosTasa();
