@@ -6,46 +6,46 @@
  */
 
  /**
- * 
- *  > This library is free software; you can redistribute it and/or modify it under 
- *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free 
- *  > Software Foundation; either version 2 of the Licence, or (at your opinion) 
+ *
+ *  > This library is free software; you can redistribute it and/or modify it under
+ *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free
+ *  > Software Foundation; either version 2 of the Licence, or (at your opinion)
  *  > any later version.
- *  > 
- *  > This library is distributed in the hope that it will be usefull, 
- *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability 
- *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence 
+ *  >
+ *  > This library is distributed in the hope that it will be usefull,
+ *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability
+ *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence
  *  > for more details.
- *  > 
+ *  >
  *  > See [LICENSE.TXT](../../LICENSE.TXT) file for more information.
  *
  */
 
- /**    
+ /**
  *  @file EnviarEmailCambioClave.php
- *  
+ *
  *  @author Manuel Alejandro Zapata Canelon
- * 
+ *
  *  @date 20/01/2016
- * 
+ *
  *  @class enviarEmailCambioCLave
- *  @brief Modelo que envia el correo electronico al usuario con su nueva clave luego de haberla cambiado. 
- * 
- *  
- * 
- *  
- *  
+ *  @brief Modelo que envia el correo electronico al usuario con su nueva clave luego de haberla cambiado.
+ *
+ *
+ *
+ *
+ *
  *  @property
  *
- *  
+ *
  *  @method
- * 
+ *
  *  enviarEmailCambioClave
- *  
+ *
  *
  *  @inherits
- *  
- */ 
+ *
+ */
 
 namespace common\enviaremail;
 
@@ -56,7 +56,7 @@ use yii\db\ActiveRecord;
 
 
 class enviarEmailCambioCLave{
-    
+
     /**
      * [enviarEmailCambioCLave description] metodo que envia email al usuario con la informacion que reciba como parametros
      * @param  [type] $email     [description] parametro recibido que contiene el email, que es el login del usuario
@@ -66,10 +66,10 @@ class enviarEmailCambioCLave{
     public function enviarEmailCambioCLave($email, $Password1)
     {
 
-        
+
 
        return Yii::$app->mailer->compose()
-        ->setFrom('manuelz0510@gmail.com')
+        ->setFrom('pruebasimteq@gmail.com')
         ->setTo($email)
         ->setSubject('Cambio de Contraseña')
         ->setTextBody('Cambio de Contraseña')
