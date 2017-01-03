@@ -130,7 +130,7 @@
 					}
 				}
 
-				for ( $j = $mesInicio; $j <= $mesHasta; $j++ ) {
+				for ( $j = $mesInicio; $j <= $mesFinal; $j++ ) {
 					$rango[] = [
 						'a' => $i,
 						'm' => $j,
