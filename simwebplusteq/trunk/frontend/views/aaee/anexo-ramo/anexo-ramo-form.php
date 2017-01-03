@@ -171,19 +171,32 @@
 				</div>  <!-- Fin de col-sm-12 -->
 			</div>  	<!-- Fin de container-fluid -->
 
-			<div class="row">
-				<div class="col-sm-3">
+			<div class="row" style="width: 100%;">
+				<div class="col-sm-2">
 					<div class="form-group">
 						<?= Html::submitButton(Yii::t('frontend', Yii::t('frontend', 'Quit')),
 																			  [
 																				'id' => 'btn-quit',
 																				'class' => 'btn btn-danger',
 																				'value' => 1,
-																				'style' => 'width: 100%; margin-left: 300px;margin-top:20px;',
+																				'style' => 'width: 100%; margin-left: 100px;',
 																				'name' => 'btn-quit',
 
 																			  ])
 						?>
+					</div>
+				</div>
+
+				<div class="col-sm-2" style="margin-left: 150px;">
+					<div class="form-group">
+						 <?= Html::a(Yii::t('backend', 'Help'), $rutaAyuda,  [
+															'id' => 'btn-help',
+															'class' => 'btn btn-danger',
+															'name' => 'btn-help',
+															'target' => '_blank',
+															'value' => 1,
+															'style' => 'width: 100%;'
+							])?>
 					</div>
 				</div>
 			</div>
