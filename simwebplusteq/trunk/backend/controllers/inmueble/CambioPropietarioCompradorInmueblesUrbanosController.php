@@ -64,6 +64,7 @@ use backend\models\inmueble\CambioPropietarioCompradorInmueblesForm;
 use backend\models\inmueble\BuscarVendedorForm;
 use frontend\models\inmueble\InmueblesSearch;
 use frontend\models\inmueble\InmueblesConsulta;
+use common\models\contribuyente\ContribuyenteBase;
 
 //use common\models\Users;
 
@@ -244,17 +245,17 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                      if($guardo == true){ 
 
-                          // $envio = self::EnviarCorreo($guardo, $requisitos);
+                          $envio = self::EnviarCorreo($guardo, $requisitos);
 
-                          // if($envio == true){ 
+                          if($envio == true){ 
 
                               return MensajeController::actionMensaje(100);
 
-                          // } else { 
+                          } else { 
                             
-                          //     return MensajeController::actionMensaje(920);
+                              return MensajeController::actionMensaje(920);
 
-                          // }
+                          }
 
                       } else {
 
@@ -294,25 +295,26 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
             $buscar = new ParametroSolicitud($_SESSION['id']);
 
             $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
-
+            $datosContribuyente = self::DatosContribuyente();
+            $_SESSION['datosContribuyente']= $datosContribuyente;
             try {
-            // $tableName1 = 'solicitudes_contribuyente'; 
+            $tableName1 = 'solicitudes_contribuyente'; 
 
             $tipoSolicitud = self::DatosConfiguracionTiposSolicitudes();
 
-            // $arrayDatos1 = [  'id_contribuyente' => $_SESSION['idContribuyente'],
-            //                   'id_config_solicitud' => $_SESSION['id'],
-            //                   'impuesto' => 2,
-            //                   'id_impuesto' => $datos->id_impuesto,
-            //                   'tipo_solicitud' => $tipoSolicitud,
-            //                   'usuario' => yii::$app->user->identity->login,
-            //                   'fecha_hora_creacion' => date('Y-m-d h:i:s'),
-            //                   'nivel_aprobacion' => $nivelAprobacion["nivel_aprobacion"],
-            //                   'nro_control' => 0,
-            //                   'firma_digital' => null,
-            //                   'estatus' => 0,
-            //                   'inactivo' => 0,
-            //               ];  
+            $arrayDatos1 = [  'id_contribuyente' => $_SESSION['idContribuyente'],
+                              'id_config_solicitud' => $_SESSION['id'],
+                              'impuesto' => 2,
+                              'id_impuesto' => $datos->id_impuesto,
+                              'tipo_solicitud' => $tipoSolicitud,
+                              'usuario' => $datosContribuyente['email'],
+                              'fecha_hora_creacion' => date('Y-m-d h:i:s'),
+                              'nivel_aprobacion' => $nivelAprobacion["nivel_aprobacion"],
+                              'nro_control' => 0,
+                              'firma_digital' => null,
+                              'estatus' => 0,
+                              'inactivo' => 0,
+                          ];  
             
 
             $conn = New ConexionController();
@@ -320,45 +322,45 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
             $conexion->open();  
             $transaccion = $conexion->beginTransaction();
 
-            // if ( $conn->guardarRegistro($conexion, $tableName1,  $arrayDatos1) ){  
-            //     $result = $conexion->getLastInsertID();
+            if ( $conn->guardarRegistro($conexion, $tableName1,  $arrayDatos1) ){  
+                $result = $conexion->getLastInsertID();
               
                   
 
 
-            //     $arrayDatos2 = [    'nro_solicitud' => $result,
-            //                         'id_impuesto' => $datos->id_impuesto,
-            //                         'impuesto' => 2,
-            //                         'id_propietario' => $datos->id_contribuyente,
-            //                         'id_comprador' => $_SESSION['idContribuyente'],
-            //                         'usuario' => yii::$app->user->identity->login,
-            //                         'fecha_hora' => date('Y-m-d h:i:s'),
-            //                         'estatus' => 0,
+                $arrayDatos2 = [    'nro_solicitud' => $result,
+                                    'id_impuesto' => $datos->id_impuesto,
+                                    'impuesto' => 2,
+                                    'id_propietario' => $datos->id_contribuyente,
+                                    'id_comprador' => $_SESSION['idContribuyente'],
+                                    'usuario' => yii::$app->user->identity->login,
+                                    'fecha_hora' => date('Y-m-d h:i:s'),
+                                    'estatus' => 0,
                                     
-            //                     ]; 
+                                ]; 
 
-            //      $tableName2 = 'sl_cambios_propietarios'; 
+                 $tableName2 = 'sl_cambios_propietarios'; 
 
-            //      $arrayDatos4 = [   'id_contribuyente' => $_SESSION['idContribuyente'],
-            //                         'id_impuesto' => $datos->id_impuesto,
-            //                         'nro_solicitud' => $result,
-            //                         'direccion' => $datos->direccion,
-            //                         'fecha_creacion' => date('Y-m-d h:i:s'),
-            //                     ]; 
+                 $arrayDatos4 = [   'id_contribuyente' => $_SESSION['idContribuyente'],
+                                    'id_impuesto' => $datos->id_impuesto,
+                                    'nro_solicitud' => $result,
+                                    'direccion' => $datos->direccion,
+                                    'fecha_creacion' => date('Y-m-d h:i:s'),
+                                ]; 
 
            
-            //      $tableName4 = 'sl_inmuebles'; 
+                 $tableName4 = 'sl_inmuebles'; 
 
-                // if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) and $conn->guardarRegistro($conexion, $tableName4,  $arrayDatos4) ){
+                if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) and $conn->guardarRegistro($conexion, $tableName4,  $arrayDatos4) ){
 
-                //     if ($nivelAprobacion['nivel_aprobacion'] != 1){
+                    if ($nivelAprobacion['nivel_aprobacion'] != 1){
 
-                //         $transaccion->commit(); 
-                //         $conexion->close(); 
-                //         $tipoError = 0;  
-                //         return $result; 
+                        $transaccion->commit(); 
+                        $conexion->close(); 
+                        $tipoError = 0;  
+                        return $result; 
 
-                //     } else {
+                    } else {
 
                         $arrayDatos3 = [    'id_contribuyente' => $_SESSION['idContribuyente'],
                                                                                 
@@ -383,22 +385,22 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                               return false; 
 
                         }
-                //  }
+                 }
 
 
-            //     } else {
+                } else {
             
-            //         $transaccion->rollBack(); 
-            //         $conexion->close(); 
-            //         $tipoError = 0; 
-            //         return false; 
+                    $transaccion->rollBack(); 
+                    $conexion->close(); 
+                    $tipoError = 0; 
+                    return false; 
 
-            //     }
+                }
 
-            // }else{ 
+            }else{ 
                 
-            //     return false;
-            // }   
+                return false;
+            }   
             
           } catch ( Exception $e ) {
               //echo $e->errorInfo[2];
@@ -406,6 +408,35 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                        
      }
 
+     /**
+     * [DatosContribuyente] metodo que busca los datos del contribuyente en 
+     * la tabla contribuyente
+     */
+     public function DatosContribuyente()
+     {
+
+         $buscar = ContribuyenteBase::find()->where("id_contribuyente=:idContribuyente", [":idContribuyente" => $_SESSION['idContribuyente']])
+                                                        ->asArray()->all();
+
+
+         return $buscar[0];                                              
+
+     } 
+
+     /**
+     * [DatosContribuyente] metodo que busca los datos del contribuyente en 
+     * la tabla contribuyente
+     */
+     public function DatosContribuyente()
+     {
+
+         $buscar = ContribuyenteBase::find()->where("id_contribuyente=:idContribuyente", [":idContribuyente" => $_SESSION['idContribuyente']])
+                                                        ->asArray()->all();
+
+
+         return $buscar[0];                                              
+
+     } 
     /**
      * [DatosConfiguracionTiposSolicitudes description] metodo que busca el tipo de solicitud en 
      * la tabla config_tipos_solicitudes
@@ -429,7 +460,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      */
      public function EnviarCorreo($guardo, $requisitos)
      {
-         $email = yii::$app->user->identity->login;
+         $email = $_SESSION['datosContribuyente']['email'];
 
          $solicitud = 'CAMBIO DE PROPIETARIO (COMPRADOR)';
 

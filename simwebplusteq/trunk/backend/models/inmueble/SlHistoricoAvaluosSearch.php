@@ -46,7 +46,7 @@
 	//use yii\base\Model;
 	//use yii\db\ActiveRecord;
 	use common\models\contribuyente\ContribuyenteBase;
-	use backend\models\inmueble\SlHistoricoAvaluosForm;
+	
 	/**
 	* 	Clase
 	*/

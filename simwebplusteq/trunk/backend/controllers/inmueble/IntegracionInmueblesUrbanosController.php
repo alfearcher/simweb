@@ -61,6 +61,7 @@ use yii\filters\VerbFilter;
 use yii\helpers\Url;
 use common\conexion\ConexionController;
 use backend\models\inmueble\IntegracionInmueblesForm;
+use common\models\contribuyente\ContribuyenteBase;
 
 use backend\models\buscargeneral\BuscarGeneralForm;
 use backend\models\buscargeneral\BuscarGeneral;
@@ -68,6 +69,8 @@ use common\mensaje\MensajeController;
 use frontend\models\inmueble\ConfiguracionTiposSolicitudes;
 use common\models\configuracion\solicitud\ParametroSolicitud;
 use common\models\configuracion\solicitud\DocumentoSolicitud;
+use common\enviaremail\PlantillaEmail;
+
 /**
  * CambiosInmueblesUrbanosController implements the CRUD actions for InmueblesUrbanosForm model.
  */
@@ -170,17 +173,17 @@ class IntegracionInmueblesUrbanosController extends Controller
 
                      if($guardo == true){ 
 
-                          // $envio = self::EnviarCorreo($guardo, $requisitos);
+                          $envio = self::EnviarCorreo($guardo, $requisitos);
 
-                          // if($envio == true){ 
+                          if($envio == true){ 
 
                               return MensajeController::actionMensaje(100);
 
-                          // } else { 
+                          } else { 
                             
-                          //     return MensajeController::actionMensaje(920);
+                              return MensajeController::actionMensaje(920);
 
-                          // }
+                          }
 
                       } else {
 
@@ -218,25 +221,26 @@ class IntegracionInmueblesUrbanosController extends Controller
             $buscar = new ParametroSolicitud($_SESSION['id']);
 
             $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
-            
+            $datosContribuyente = self::DatosContribuyente();
+            $_SESSION['datosContribuyente']= $datosContribuyente;
             try {
-            // $tableName1 = 'solicitudes_contribuyente'; 
+            $tableName1 = 'solicitudes_contribuyente'; 
 
-            // $tipoSolicitud = self::DatosConfiguracionTiposSolicitudes();
+            $tipoSolicitud = self::DatosConfiguracionTiposSolicitudes();
 
-            // $arrayDatos1 = [  'id_contribuyente' => $datos->id_contribuyente,
-            //                   'id_config_solicitud' => $_SESSION['id'],
-            //                   'impuesto' => 2,
-            //                   'id_impuesto' => $datos->id_impuesto,
-            //                   'tipo_solicitud' => $tipoSolicitud,
-            //                   'usuario' => yii::$app->user->identity->login,
-            //                   'fecha_hora_creacion' => date('Y-m-d h:i:s'),
-            //                   'nivel_aprobacion' => $nivelAprobacion["nivel_aprobacion"],
-            //                   'nro_control' => 0,
-            //                   'firma_digital' => null,
-            //                   'estatus' => 1,
-            //                   'inactivo' => 0,
-            //               ];  
+            $arrayDatos1 = [  'id_contribuyente' => $datos->id_contribuyente,
+                              'id_config_solicitud' => $_SESSION['id'],
+                              'impuesto' => 2,
+                              'id_impuesto' => $datos->id_impuesto,
+                              'tipo_solicitud' => $tipoSolicitud,
+                              'usuario' => $datosContribuyente['email'],
+                              'fecha_hora_creacion' => date('Y-m-d h:i:s'),
+                              'nivel_aprobacion' => $nivelAprobacion["nivel_aprobacion"],
+                              'nro_control' => 0,
+                              'firma_digital' => null,
+                              'estatus' => 1,
+                              'inactivo' => 0,
+                          ];  
             
 
             $conn = New ConexionController();
@@ -244,43 +248,43 @@ class IntegracionInmueblesUrbanosController extends Controller
             $conexion->open();  
             $transaccion = $conexion->beginTransaction();
 
-            // if ( $conn->guardarRegistro($conexion, $tableName1,  $arrayDatos1) ){  
-            //     $result = $conexion->getLastInsertID();
+            if ( $conn->guardarRegistro($conexion, $tableName1,  $arrayDatos1) ){  
+                $result = $conexion->getLastInsertID();
 
-                // $arrayCampos2 = ['id_contribuyente','nro_solicitud','ano_inicio','direccion','medidor','observacion',
-                //                  'tipo_ejido', 'casa_edf_qta_dom', 'piso_nivel_no_dom', 'apto_dom', 'fecha_creacion'];
+                $arrayCampos2 = ['id_contribuyente','nro_solicitud','ano_inicio','direccion','medidor','observacion',
+                                 'tipo_ejido', 'casa_edf_qta_dom', 'piso_nivel_no_dom', 'apto_dom', 'fecha_creacion'];
 
-                // $arrayDatos2 = [   [$datos->id_contribuyente, $result, $model->ano_inicio,
-                //                    $model->direccion, $model->medidor, $model->observacion, $model->tipo_ejido,
-                //                    $model->casa_edf_qta_dom, $model->piso_nivel_no_dom, $model->apto_dom,
-                //                    date('Y-m-d h:i:s')],
+                $arrayDatos2 = [   [$datos->id_contribuyente, $result, $model->ano_inicio,
+                                   $model->direccion, $model->medidor, $model->observacion, $model->tipo_ejido,
+                                   $model->casa_edf_qta_dom, $model->piso_nivel_no_dom, $model->apto_dom,
+                                   date('Y-m-d h:i:s')],
 
-                //                    [$datos->id_contribuyente, $result, $model->ano_inicio,
-                //                    $model->direccion1, $model->medidor1, $model->observacion1, $model->tipo_ejido1,
-                //                    $model->casa_edf_qta_dom1, $model->piso_nivel_no_dom1, $model->apto_dom1,
-                //                    date('Y-m-d h:i:s')],
-                //                 ]; 
+                                   [$datos->id_contribuyente, $result, $model->ano_inicio,
+                                   $model->direccion1, $model->medidor1, $model->observacion1, $model->tipo_ejido1,
+                                   $model->casa_edf_qta_dom1, $model->piso_nivel_no_dom1, $model->apto_dom1,
+                                   date('Y-m-d h:i:s')],
+                                ]; 
 
-                // $arrayDatosInactivar2 = [    'id_contribuyente' => $datos->id_contribuyente,
-                //                     'id_impuesto' => $datos->id_impuesto,
-                //                     'nro_solicitud' => $result,
-                //                     'inactivo' => 1,
-                //                     'fecha_creacion' => date('Y-m-d h:i:s'),
-                //                 ];
+                $arrayDatosInactivar2 = [    'id_contribuyente' => $datos->id_contribuyente,
+                                    'id_impuesto' => $datos->id_impuesto,
+                                    'nro_solicitud' => $result,
+                                    'inactivo' => 1,
+                                    'fecha_creacion' => date('Y-m-d h:i:s'),
+                                ];
 
             
-                //  $tableName2 = 'sl_inmuebles'; 
+                 $tableName2 = 'sl_inmuebles'; 
 
-                // if ( $conn->guardarLoteRegistros($conexion, $tableName2, $arrayCampos2,  $arrayDatos2) and $conn->guardarRegistro($conexion, $tableName2,  $arrayDatosInactivar2)){
+                if ( $conn->guardarLoteRegistros($conexion, $tableName2, $arrayCampos2,  $arrayDatos2) and $conn->guardarRegistro($conexion, $tableName2,  $arrayDatosInactivar2)){
 
-                //     if ($nivelAprobacion['nivel_aprobacion'] != 1){
+                    if ($nivelAprobacion['nivel_aprobacion'] != 1){
 
-                //         $transaccion->commit(); 
-                //         $conexion->close(); 
-                //         $tipoError = 0;  
-                //         return $result; 
+                        $transaccion->commit(); 
+                        $conexion->close(); 
+                        $tipoError = 0;  
+                        return $result; 
 
-                //     } else {
+                    } else {
                 
                
                      $catastro1 = array(['estado' => $model->estado_catastro, 'municipio'=> $model->municipio_catastro, 'parroquia'=>$model->parroquia_catastro, 'ambito'=>$model->ambito_catastro, 'sector'=>$model->sector_catastro, 'manzana' =>$model->manzana_catastro]);
@@ -373,27 +377,86 @@ class IntegracionInmueblesUrbanosController extends Controller
                               return false; 
 
                         }
-                  //}
+                  }
 
 
-            //     } else {
+                } else {
             
-            //         $transaccion->rollBack(); 
-            //         $conexion->close(); 
-            //         $tipoError = 0; 
-            //         return false; 
+                    $transaccion->rollBack(); 
+                    $conexion->close(); 
+                    $tipoError = 0; 
+                    return false; 
 
-            //     }
+                }
 
-            // }else{ 
+            }else{ 
                 
-            //     return false;
-            // }   
+                return false;
+            }   
             
           } catch ( Exception $e ) {
               //echo $e->errorInfo[2];
           } 
                        
+     }
+
+     /**
+     * [DatosContribuyente] metodo que busca los datos del contribuyente en 
+     * la tabla contribuyente
+     */
+     public function DatosContribuyente()
+     {
+
+         $buscar = ContribuyenteBase::find()->where("id_contribuyente=:idContribuyente", [":idContribuyente" => $_SESSION['idContribuyente']])
+                                                        ->asArray()->all();
+
+
+         return $buscar[0];                                              
+
+     } 
+
+     } 
+
+    /**
+     * [DatosConfiguracionTiposSolicitudes description] metodo que busca el tipo de solicitud en 
+     * la tabla config_tipos_solicitudes
+     */
+     public function DatosConfiguracionTiposSolicitudes()
+     {
+
+         $buscar = ConfiguracionTiposSolicitudes::find()->where("impuesto=:impuesto", [":impuesto" => 2])
+                                                        ->andwhere("descripcion=:descripcion", [":descripcion" => 'REGISTRO DE AVALUO CATASTRAL'])
+                                                        ->asArray()->all();
+
+
+         return $buscar[0]["id_tipo_solicitud"];                                              
+
+     } 
+
+
+    /**
+     * [EnviarCorreo description] Metodo que se encarga de enviar un email al contribuyente 
+     * con el estatus del proceso
+     */
+     public function EnviarCorreo($guardo, $requisitos)
+     {
+         $email = $_SESSION['datosContribuyente']['email'];
+
+         $solicitud = 'Avaluo Catastral del Inmueble';
+
+         $nro_solicitud = $guardo;
+
+         $enviarEmail = new PlantillaEmail();
+        
+         if ($enviarEmail->plantillaEmailSolicitud($email, $solicitud, $nro_solicitud, $requisitos)){
+
+             return true; 
+         } else { 
+
+             return false; 
+         }
+
+
      }
 
     /**

@@ -54,7 +54,7 @@ use backend\models\inmueble\InmueblesUrbanosForm;
 use backend\models\inmueble\ContribuyentesForm;
 use backend\models\inmueble\AvaluoCatastralForm;
 use common\models\contribuyente\ContribuyenteBase;
-use backend\models\inmueble\InmueblesConsulta;
+
 use backend\models\inmueble\InmueblesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -65,11 +65,13 @@ use common\conexion\ConexionController;
 use backend\models\buscargeneral\BuscarGeneralForm;
 use backend\models\buscargeneral\BuscarGeneral;
 
+use backend\models\inmueble\InmueblesConsulta;
 use common\enviaremail\PlantillaEmail;
 use common\mensaje\MensajeController;
 use frontend\models\inmueble\ConfiguracionTiposSolicitudes;
 use common\models\configuracion\solicitud\ParametroSolicitud;
 use common\models\configuracion\solicitud\DocumentoSolicitud;
+use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 /**
  * CambiosInmueblesUrbanosController implements the CRUD actions for InmueblesUrbanosForm model.
  */
