@@ -6,43 +6,43 @@
  */
 
  /**
- * 
- *  > This library is free software; you can redistribute it and/or modify it under 
- *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free 
- *  > Software Foundation; either version 2 of the Licence, or (at your opinion) 
+ *
+ *  > This library is free software; you can redistribute it and/or modify it under
+ *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free
+ *  > Software Foundation; either version 2 of the Licence, or (at your opinion)
  *  > any later version.
- *  > 
- *  > This library is distributed in the hope that it will be usefull, 
- *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability 
- *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence 
+ *  >
+ *  > This library is distributed in the hope that it will be usefull,
+ *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability
+ *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence
  *  > for more details.
- *  > 
+ *  >
  *  > See [LICENSE.TXT](../../LICENSE.TXT) file for more information.
  *
  */
 
- /**    
+ /**
  *  @file CrearUsuarioNaturalController.php
- *  
+ *
  *  @author Manuel Alejandro Zapata Canelon
- * 
+ *
  *  @date 13/01/2016
- * 
+ *
  *  @class CrearUsuarioNaturalController
  *  @brief Controlador para crear usuario natural
- * 
- *  
- * 
- *  
- *  
+ *
+ *
+ *
+ *
+ *
  *  @property
  *
- *  
- *  
+ *
+ *
  *
  *  @inherits
- *  
- */ 
+ *
+ */
 
 namespace frontend\controllers\usuario;
 
@@ -70,18 +70,18 @@ session_start();
 
 class CrearUsuarioNaturalController extends Controller
 {
-   
+
     public $layout = "layout-login";
 
     /**
     * Este metodo se utiliza para levantar el formulario para la busqueda de la persona Natural
     *
     * @return retorna el modelo que valida el formulario y renderiza la vista al mismo
-    * 
+    *
     */
     public function actionCrearUsuarioNatural()
     {
- 
+
         $model = New CrearUsuarioNaturalForm();
 
         $postData = Yii::$app->request->post();
@@ -96,13 +96,13 @@ class CrearUsuarioNaturalController extends Controller
                 if ($model->validate()){
 
 
-                    
+
 
                 return self::actionBuscarRif($model->naturaleza, $model->cedula , $model->tipo);
 
-                      
+
                 }
-                        
+
             }
             return $this->render('/usuario/crear-usuario-natural' , ['model' => $model]);
 
@@ -125,9 +125,9 @@ class CrearUsuarioNaturalController extends Controller
                                    'cedula' => $cedula,
                                    'tipo' => $tipo,
                                 ];
-         
 
-        
+
+
         $dataProvider = CrearUsuarioNaturalForm::obtenerDataProviderRif($naturaleza, $cedula, $tipo);
 
         $posts = $dataProvider->getModels();
@@ -138,10 +138,10 @@ class CrearUsuarioNaturalController extends Controller
 
                 $model->naturaleza = $naturaleza;
 
-                return $this->redirect(['natural', 
-                                     
-                                        
-                
+                return $this->redirect(['natural',
+
+
+
                                         ]);
 
             }else{
@@ -153,7 +153,7 @@ class CrearUsuarioNaturalController extends Controller
 
    /**
    *
-   * Este metodo se utiliza para levantar el formulario de carga de datos basicos 
+   * Este metodo se utiliza para levantar el formulario de carga de datos basicos
    * de usuario juridico y a su vez llama al metodo que guarda su informacion en la BD
    *
    * @param  $naturaleza [string] trae la naturaleza del usuario como venezolano, juridico, gubernamental
@@ -165,8 +165,8 @@ class CrearUsuarioNaturalController extends Controller
    {
          $rifNatural = isset($_SESSION['rifNatural']) ? $_SESSION['rifNatural'] : null;
 
-         if ($rifNatural != null){ 
-       
+         if ($rifNatural != null){
+
        $model = new CargaDatosBasicosNaturalForm();
 
       // $model->naturaleza = $naturaleza;
@@ -182,18 +182,18 @@ class CrearUsuarioNaturalController extends Controller
 
                if ($model->validate()){
 
-               
+
 
                    $resultado = self::beginSave("contribuyente", $model);
 
                    if ($resultado == true){
-                   
+
                        return MensajeController::actionMensaje(Yii::t('frontend', 'We have sent you an email with your new user and password'));
                    }else{
                        return MensajeController::actionMensaje(Yii::t('frontend', 'Sorry, there was a problem creating your account'));
                    }
                }
-                        
+
                }
                $layout = 'layout-main';
                return $this->render('/usuario/formulario-natural' , ['model' => $model,
@@ -210,19 +210,19 @@ class CrearUsuarioNaturalController extends Controller
     *
     * Metodo que verifica si el usuario no tiene correo electronico para enviar un mensaje , pidiendole
     * que se dirija a la alcaldia, de lo contrario , de no tener cuenta en "afiliacion", se le crea una automatica
-    * 
+    *
     * @param  [int] Se refiere al id del contribuyente
     * @return [string] Retorna un mensaje en pantalla para el usuario
     */
     public function actionValidarNatural($id)
     {
-                
+
         $model = CrearUsuarioNaturalForm::findContribuyente($id);
 
             if ($model[0]->email == null or trim($model[0]->email) == ""){
-                 
+
                 return MensajeController::actionMensaje('Please, go to your city hall');
-              
+
             } else {
 
                 $modelAfiliacion = CrearUsuarioNaturalForm::findAfiliacion($model[0]->id_contribuyente);
@@ -230,10 +230,10 @@ class CrearUsuarioNaturalController extends Controller
                     if ($modelAfiliacion == true){
 
                         return MensajeController::actionMensaje('this user already exists');
-                        }else{ 
+                        }else{
 
                         $modelx = new CargaDatosBasicosNaturalForm();
-               
+
                         $modelx->id_contribuyente = $model[0]->id_contribuyente;
 
                         $modelx->email = $model[0]->email;
@@ -248,15 +248,15 @@ class CrearUsuarioNaturalController extends Controller
 
 
 
-                   }  
-           
+                   }
+
             }
-    }     
-        
+    }
+
     /**
     *
     * Modelo para guardar los datos en la tabla afiliaciones y envia un email al usuario con su nuevo "usuario" y "contraseña"
-    * 
+    *
     * @param $model instancia que trae el modelo con los datos del formulario
     * @param $conn instancia de conexion
     * @param $conexion instancia de conexion
@@ -264,7 +264,7 @@ class CrearUsuarioNaturalController extends Controller
     */
     public function salvarAfiliacion($conn, $conexion, $model)
     {
-        
+
         $resultado = false;
         $tabla = 'afiliaciones';
         $arregloDatos = [];
@@ -284,7 +284,7 @@ class CrearUsuarioNaturalController extends Controller
             $password = $nuevaClave.$salt;
 
             $password_hash = md5($password);
-         
+
             $arregloDatos['id_contribuyente'] = $model->id_contribuyente;
 
             $arregloDatos['login'] = $model->email;
@@ -297,30 +297,30 @@ class CrearUsuarioNaturalController extends Controller
 
                     $resultado = true;
                 }
-         
+
                 $enviarEmail = new EnviarEmailNatural();
- 
+
                 $enviarEmail->enviarEmail($model->email, $nuevaClave, $model->nombres, $model->apellidos);
 
                 return $resultado;
-              
-            
-            
+
+
+
     }
 
     /**
     *
-    * metodo que guarda la informacion en la tabla contribuyente 
-    * 
+    * metodo que guarda la informacion en la tabla contribuyente
+    *
     * @param $model instancia que trae el modelo con los datos del formulario
     * @param $conn instancia de conexion
     * @param $conexion instancia de conexion
     * @return retorna el resultado de la insercion en la tabla afiliaciones
-    * 
+    *
     */
     public function salvarContribuyenteNatural($conn, $conexion, $model)
     {
-       
+
         $tabla = 'contribuyentes';
 
         $arregloDatos = [];
@@ -330,14 +330,14 @@ class CrearUsuarioNaturalController extends Controller
 
                 $arregloDatos[$value] =0;
             }
-          
+
             $arregloDatos['tipo_naturaleza'] = 0;
-        
+
             $arregloDatos['naturaleza'] = $model->naturaleza;
 
             $arregloDatos['cedula'] = $model->cedula;
 
-            $arregloDatos['ente'] = 13;
+            $arregloDatos['ente'] = Yii::$app->ente->getEnte();
 
             $arregloDatos['tipo'] = $model->tipo;
 
@@ -360,18 +360,18 @@ class CrearUsuarioNaturalController extends Controller
             $arregloDatos['email'] = $model->email;
 
             $codigo = $model->codigo;
-            
+
 
             $arregloDatos['tlf_celular'] = $codigo.$model->tlf_celular;
 
-            
+
 
             $idContribuyente = 0;
-            
+
                 if ($conexion->guardarRegistroAfiliacion($conn, $tabla, $arregloDatos )){
-            
+
                     $idContribuyente = $conn->getLastInsertID();
-              
+
                 }
                 return $idContribuyente;
 
@@ -381,7 +381,7 @@ class CrearUsuarioNaturalController extends Controller
     *
     * Metodo que guarda la informacion de los formularios de carga de datos basicos, tanto en contribuyente, o en contribuyente y afiliaciones a la misma vez
     * segun lo requiera el caso
-    * 
+    *
     * @param $var [string] variable en donde se guardan los parametros "contribuyente" y "afiliaciones"
     * @param $modelo instancia del modelo que trae la informacion del formulario
     * @return retorna mensaje de felicitaciones por haber creado una nueva cuenta en el sistema
@@ -394,7 +394,7 @@ class CrearUsuarioNaturalController extends Controller
         $idContribuyente = 0;
 
         $conn = $conexion->initConectar('db');
-         
+
         $conn->open();
 
         $transaccion = $conn->beginTransaction();
@@ -407,28 +407,28 @@ class CrearUsuarioNaturalController extends Controller
                     $transaccion->commit();
                     $conn->close();
                      return true;
-              
+
             }else{
                 $transaccion->rollback();
                 $conn->close();
                 return false;
               }
 
-            }elseif ($var == "contribuyente") { 
+            }elseif ($var == "contribuyente") {
 
                 $idContribuyente = self::salvarContribuyenteNatural($conn, $conexion, $model);
 
                     if ($idContribuyente > 0){
-               
+
                         $model->id_contribuyente = $idContribuyente;
                         $respuesta = self::salvarAfiliacion( $conn, $conexion, $model);
 
                     if ($respuesta == true){
-                    
+
                         $transaccion->commit();
                         $conn->close();
                         return true;
-                   
+
                     }else {
                         $transaccion->rollback();
                         $conn->close();
@@ -444,6 +444,6 @@ class CrearUsuarioNaturalController extends Controller
 
  }
 
-?> 
+?>
 
 
