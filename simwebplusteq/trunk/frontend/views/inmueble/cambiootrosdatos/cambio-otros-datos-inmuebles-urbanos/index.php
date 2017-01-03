@@ -23,7 +23,7 @@ $this->title = Yii::t('backend', 'Property Urban');
     'id' => 'formulario',
     'action'=> ['/inmueble/cambiootrosdatos/cambio-otros-datos-inmuebles-urbanos/view'],
     'enableClientValidation' => false,
-    'enableAjaxValidation' => true,
+    'enableAjaxValidation' => false,
     'options' => ['class' => 'form-vertical'],]); ?>
     
 
