@@ -43,7 +43,7 @@ AppAsset::register($this);
     <!-- Aqui comienza el encabezado -->
                 <?php
                     NavBar::begin([
-                        'brandLabel' => Yii::$app->name . ' '. Yii::$app->ente->getAlias(),
+                        'brandLabel' => strtoupper(Yii::$app->ente->getAlcaldia()),//Yii::$app->name . ' '. Yii::$app->ente->getAlias(),
                         'brandUrl' => Yii::$app->homeUrl,
                         'options' => [
                             //-inverse
@@ -60,7 +60,7 @@ AppAsset::register($this);
 
                     //'visible' => false
                     if (Yii::$app->user->isGuest) {
-                        $menuItems[] = ['label' => '<p>' . Icon::show('user',['class' => 'fa-2x'], $typeIcon) .  'Login ' . '</p>', 'url' => ['/site/login'],
+                        $menuItems[] = ['label' => '<p>' . Icon::show('user',['class' => 'fa-2x'], $typeIcon) .  Yii::t('backend', 'Ingresar ') . '</p>', 'url' => ['/site/login'],
                             //'items' => []
                         ];
                     } else {

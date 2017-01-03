@@ -102,13 +102,13 @@
     //                         'url' => '#',
     // ];
 
-    $menuItems1[] = ['label' => '<div class="multa" id="multa" >
-                                    <i class="fa fa-file-text-o fa-2x"></i>Multa<span class="badge">4</span>
-                                </div>'];
+    // $menuItems1[] = ['label' => '<div class="multa" id="multa" >
+    //                                 <i class="fa fa-file-text-o fa-2x"></i>Multa<span class="badge">4</span>
+    //                             </div>'];
 
-    $menuItems1[] = ['label' => '<div class="alerta" id="alerta" >
-                                    <i class="fa fa-flag-o fa-2x"></i>alerta<span class="badge">2</span>
-                                </div>'];
+    // $menuItems1[] = ['label' => '<div class="alerta" id="alerta" >
+    //                                 <i class="fa fa-flag-o fa-2x"></i>alerta<span class="badge">2</span>
+    //                             </div>'];
 
     echo Nav::widget([
         'options' => ['class' => 'navbar navbar-right1',
