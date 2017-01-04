@@ -363,6 +363,7 @@
 				// Si retorna FALSE indica que no se logro ejecutar correctamente los procesos
 				// relacionados al evento-solicitud. Aqui acaba el procedimiento sin guardar nada.
 
+
 				if ( isset($postData['chk-documento-requisito']) && $result == true ) {
 					$result = self::actionCreateDocumentosConsignados($postData, $formName, $this->_conexion, $this->_conn);
 				}
@@ -692,11 +693,19 @@
 					// Arreglo [campo] => valor.
 					$arregloDatos = $modelDocumento->attributes;
 
+
 					foreach ( $arregloDatos as $key => $value ) {
 						if ( isset($campoSolicitud[$key]) ) {
 							$arregloDatos[$key] = $campoSolicitud[$key];
 						}
 					}
+
+
+					if ( isset($_SESSION['idObjeto']) ) {
+						$idImpuesto = $_SESSION['idObjeto'];
+						$arregloDatos['id_impuesto'] = $idImpuesto;
+					}
+
 
 					// Se setean los atributos con valores por defecto, segun el modelo.
 					foreach ( $arregloDatos as $key => $value ) {
