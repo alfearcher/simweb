@@ -189,34 +189,41 @@
 					// Lo siguiente recibe un segun parametro, "tipo liquidacion", este parametro es
 					// opcional y por defecto se setea a "ESTIMADA".
 					$liquidar = New Liquidar($idContribuyente);
-					$ultimoLapsoLiquidado = $liquidar->getUltimoLapsoLiquidado();
 
-					// Lapsos liquidados.
-					$detalles = $liquidar->iniciarProcesoLiquidacion();
+					$mensajes = $liquidar->validarEvento();
+					if ( count($mensajes) == 0 ) {
 
-					if ( count($detalles) > 0 ) {
-						$provider = $liquidar->getDataProviderDetalle();
-						$fechaInicio = $liquidar->getFechaInicioActividad();
+						$ultimoLapsoLiquidado = $liquidar->getUltimoLapsoLiquidado();
 
-						// Vista inicial.
+						// Lapsos liquidados.
+						$detalles = $liquidar->iniciarProcesoLiquidacion();
+
 						if ( count($detalles) > 0 ) {
-							$caption = Yii::t('frontend', 'Detalle de la Liquidacion');
-							$subCaption = Yii::t('frontend', 'Informacion relevante');
+							$provider = $liquidar->getDataProviderDetalle();
+							$fechaInicio = $liquidar->getFechaInicioActividad();
 
-							return $this->render('/aaee/liquidar/_view-detalle',[
-															'dataProvider' => $provider,
-															'caption' => $caption,
-															'subCaption' => $subCaption,
-															'fechaInicio' => $fechaInicio,
-															'ultimoLapsoLiquidado' => $ultimoLapsoLiquidado,
+							// Vista inicial.
+							if ( count($detalles) > 0 ) {
+								$caption = Yii::t('frontend', 'Detalle de la Liquidacion');
+								$subCaption = Yii::t('frontend', 'Informacion relevante');
 
-								]);
+								return $this->render('/aaee/liquidar/_view-detalle',[
+																'dataProvider' => $provider,
+																'caption' => $caption,
+																'subCaption' => $subCaption,
+																'fechaInicio' => $fechaInicio,
+																'ultimoLapsoLiquidado' => $ultimoLapsoLiquidado,
+
+									]);
+							}
+
+						} else {
+							// No se encontraron detalles pendientes.
+							$r = $liquidar->getErrors();
+							return $this->render('/aaee/liquidar/warning',['mensajes' => $r]);
 						}
-
 					} else {
-						// No se encontraron detalles pendientes.
-						$r = $liquidar->getErrors();
-						return $this->render('/aaee/liquidar/warning',['mensajes' => $r]);
+						return $this->render('/aaee/liquidar/warning',['mensajes' => $mensajes]);
 					}
 				} else {
 					return $this->redirect(['error-operacion', 'cod' => 934]);
