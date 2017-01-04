@@ -48,6 +48,7 @@
 	        							'model' => $model,
 	        							'bloquear' => $bloquear,
 	        							'url' => $url,
+	        							'rutaAyuda' => $rutaAyuda,
 	    ]) ?>
 
 	</div>
