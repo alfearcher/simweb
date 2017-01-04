@@ -65,6 +65,7 @@
 	use common\models\configuracion\solicitud\SolicitudProcesoEvento;
 	use common\models\contribuyente\ContribuyenteBase;
 	use common\enviaremail\PlantillaEmail;
+	use common\models\configuracion\solicitudplanilla\SolicitudPlanillaSearch;
 
 
 	session_start();		// Iniciando session
@@ -494,14 +495,56 @@
 
 			self::actionProcesoExitoso();
 
+
+			// Se buscan las planillas relacionadas a la solicitud. Se refiere a las planillas
+			// de impueso "tasa".
+			$modelPlanilla = New SolicitudPlanillaSearch($nro, Yii::$app->solicitud->crear());
+			$dataProvider = $modelPlanilla->getArrayDataProvider();
+
+			$caption = Yii::t('frontend', 'Planilla(s)');
+			$viewSolicitudPlanilla = $this->renderAjax('@common/views/solicitud-planilla/solicitud-planilla', [
+															'caption' => $caption,
+															'dataProvider' => $dataProvider,
+				]);
+
+
 			return $this->render('/aaee/inscripcion-actividad-economica/view-solicitud', [
 											'caption' => Yii::t('frontend', 'Request Nro. ' . $nro),
 											'model' => $model,
 											'codigoMensaje' => 100,
+											'viewSolicitudPlanilla' => $viewSolicitudPlanilla,
 
 				]);
 		}
 
+
+
+		/**
+		 * Metodo que permite renderizar una vista de los detalles de la planilla
+		 * que se encuentran en la solicitud.
+		 * @return View Retorna una vista que contiene un grid con los detalles de la
+		 * planilla.
+		 */
+		public function actionViewPlanilla()
+		{
+			$request = Yii::$app->request;
+			$getData = $request->get();
+
+			$planilla = $getData['p'];
+			$planillaSearch = New PlanillaSearch($planilla);
+			$dataProvider = $planillaSearch->getArrayDataProviderPlanilla();
+
+			// Se determina si la peticion viene de un listado que contiene mas de una
+			// pagina de registros. Esto sucede cuando los detalles de un listado contienen
+			// mas de los manejados para una pagina en la vista.
+			if ( isset($request->queryParams['page']) ) {
+				$planillaSearch->load($request->queryParams);
+			}
+				return $this->renderAjax('@backend/views/planilla/planilla-detalle', [
+									 			'dataProvider' => $dataProvider,
+									 			'caption' => 'Planilla: ' . $planilla,
+				]);
+		}
 
 
 
