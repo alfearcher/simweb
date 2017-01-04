@@ -95,6 +95,7 @@
 	<?= $form->field($model, 'naturaleza_rep')->hiddenInput(['value' => $datos['naturaleza_rep']])->label(false); ?>
 	<?= $form->field($model, 'cedula_rep')->hiddenInput(['value' => $datos['cedula_rep']])->label(false); ?>
 	<?= $form->field($model, 'representante')->hiddenInput(['value' => $datos['representante']])->label(false); ?>
+	<?= $form->field($model, 'id_sim')->hiddenInput(['value' => 0])->label(false); ?>
 
 
 <!-- Cuerpo del formulario -->
@@ -224,19 +225,21 @@
 
 
 <!-- Id Sim del la Sucursal (Numero de Licencia) -->
-											<div class="col-sm-3" style="margin-left: 3px;">
+											<!-- <div class="col-sm-3" style="margin-left: 3px;">
 												<div class="row" style="width:100%;">
-													<p style="margin-top: 0px;margin-bottom: 0px;"><i><?=Yii::t('backend', $model->getAttributeLabel('id_sim')) ?></i></p>
+													<p style="margin-top: 0px;margin-bottom: 0px;"><i><?//=Yii::t('backend', $model->getAttributeLabel('id_sim')) ?></i></p>
 												</div>
 												<div class="row" >
 													<div class="id-sim">
-														<?= $form->field($model, 'id_sim')->textInput([
-																										'id' => 'id-sim',
-																										'style' => 'width:100%;',
-																							 			])->label(false) ?>
+														<?//= $form->field($model, 'id_sim')->textInput([
+																										// 'id' => 'id-sim',
+																										// 'style' => 'width:100%;',
+																										// 'value' => 0,
+																										// 'readOnly' => true,
+																							 		// 	])->label(false) ?>
 													</div>
 												</div>
-											</div>
+											</div> -->
 <!-- Fin de Id Sim del la Sucursal (Numero de Licencia) -->
 
 <!-- Fecha de Inicio de la Sucursal -->

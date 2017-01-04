@@ -98,6 +98,7 @@
 	<?= $form->field($model, 'fecha_hora')->hiddenInput(['value' => $model->fecha_hora])->label(false); ?>
 	<?= $form->field($model, 'origen')->hiddenInput(['value' => $model->origen])->label(false); ?>
 	<?= $form->field($model, 'estatus')->hiddenInput(['value' => 0])->label(false); ?>
+	<?= $form->field($model, 'id_sim')->hiddenInput(['value' => 0])->label(false); ?>
 
 <!-- Cuerpo del formulario -->
         <div class="panel-body" style="background-color: #F9F9F9;">
