@@ -99,7 +99,7 @@
 		        					   				['label' => 'Cambio de Domicilio Fiscal', 'url' => ['/aaee/correcciondomicilio/correccion-domicilio-fiscal/index', 'id' => 86]],
 		        					   				['label' => 'Cambio de Representante Legal', 'url' => ['/aaee/correccionreplegal/correccion-representante-legal/index', 'id' => 56]],
 		        					   				['label' => 'Aumento de Capital', 'url' => ['/aaee/correccioncapital/correccion-capital/index', 'id' => 66]],
-		        					   				['label' => 'Cambio de Otros Datos', 'url' => '#'],
+		        					   				//['label' => 'Cambio de Otros Datos', 'url' => '#'],
 		        					   		]
 		        					   	],
 		        					   	['label' => Icon::show('fa fa-table',['class' => $typeLong], $typeIcon) . '&nbsp; Declaracion',
@@ -110,12 +110,12 @@
 		        					   				['label' => 'Consulta', 'url' => ['/aaee/declaracion/consulta/consulta-declaracion/index']],
 		        					   		]
 		        					   	],
-		        					   	['label' => Icon::show('fa fa-caret-square-o-up',['class' => $typeLong], $typeIcon) . '&nbsp; Cesación de Actividades',
-		        					   		'items' => [
-		        					   				['label' => 'Temporal', 'url' => '#'],
-		        					   				['label' => 'Definitiva', 'url' => '#'],
-		        					   		]
-		        					   	],
+		        					   	// ['label' => Icon::show('fa fa-caret-square-o-up',['class' => $typeLong], $typeIcon) . '&nbsp; Cesación de Actividades',
+		        					   	// 	'items' => [
+		        					   	// 			['label' => 'Temporal', 'url' => '#'],
+		        					   	// 			['label' => 'Definitiva', 'url' => '#'],
+		        					   	// 	]
+		        					   	// ],
 		        			]
 		        		],
 
