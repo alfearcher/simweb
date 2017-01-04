@@ -5,42 +5,42 @@
  */
 
  /**
- * 
- *  > This library is free software; you can redistribute it and/or modify it under 
- *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free 
- *  > Software Foundation; either version 2 of the Licence, or (at your opinion) 
+ *
+ *  > This library is free software; you can redistribute it and/or modify it under
+ *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free
+ *  > Software Foundation; either version 2 of the Licence, or (at your opinion)
  *  > any later version.
- *  > 
- *  > This library is distributed in the hope that it will be usefull, 
- *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability 
- *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence 
+ *  >
+ *  > This library is distributed in the hope that it will be usefull,
+ *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability
+ *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence
  *  > for more details.
- *  > 
+ *  >
  *  > See [LICENSE.TXT](../../LICENSE.TXT) file for more information.
  *
  */
 
- /**    
+ /**
  *  @file CargaDatosBasicosForm.php
- *  
+ *
  *  @author Manuel Alejandro Zapata Canelon
- * 
+ *
  *  @date 13/01/2016
- * 
+ *
  *  @class CargaDatosBasicosForm
  *  @brief Modelo del formulario de datos basicos, en el estan las validaciones y textos necesarios.
  *   @property
  *
- *  
+ *
  *  @method
  *
  *  tableName
  *  rules
  *  attributeLabels
  *  getGenderOptions
- *    
+ *
  *  @inherits
- *  
+ *
  */
 namespace frontend\models\usuario;
 
@@ -107,7 +107,7 @@ use Yii;
  * @property string $ruc
  */
 class CargaDatosBasicosForm extends CrearUsuarioJuridico
-{   
+{
 
         public $id_contribuyente;
         public $ente;
@@ -185,7 +185,7 @@ class CargaDatosBasicosForm extends CrearUsuarioJuridico
      */
     public function rules()
     {
-        return [            
+        return [
             [['ente', 'cedula', 'tipo',  'tlf_ofic', 'email', 'codigo', 'codigo3'],'required'],
             [['tlf_celular', 'tlf_ofic'], 'match', 'pattern' => "/^.{7,7}$/", 'message' => Yii::t('frontend', 'Phone number must have 7 digits')],
             ['tlf_celular', 'integer', 'message' => Yii::t('frontend', 'Mobile phone must be an integer')],
@@ -193,8 +193,8 @@ class CargaDatosBasicosForm extends CrearUsuarioJuridico
             [['domicilio_fiscal'], 'match' , 'pattern' => "/[a-zA-Z0-9*#°.,-_]+/", 'message' => Yii::t('frontend', '{attribute} is sensitive to lower and upper case and some symbols(#*°.,-_)')],
 
             [['ente','cedula', 'tipo', 'tipo_naturaleza', 'id_rif', 'id_cp', 'inactivo', 'cuenta', 'num_reg', 'extension_horario', 'num_empleados', 'tipo_contribuyente', 'licencia', 'agente_retencion', 'manzana_limite', 'lote_1', 'lote_2', 'lote_3', 'foraneo', 'no_declara', 'econ_informal', 'grupo_contribuyente', 'no_sujeto'], 'integer'],
-            [['fecha_nac', 'fecha', 'fecha_inclusion', 'fecha_inicio', 'fe_inic_agente_reten'], 'safe'],            
-            [['capital'], 'number'],            
+            [['fecha_nac', 'fecha', 'fecha_inclusion', 'fecha_inicio', 'fe_inic_agente_reten'], 'safe'],
+            [['capital'], 'number'],
             [['naturaleza', 'sexo'], 'string', 'max' => 1],
             [['nombres', 'apellidos', 'nit', 'casa_edf_qta_dom', 'reg_mercantil', 'tomo', 'folio', 'horario'],  'string', 'max' => 50],
             [['razon_social'], 'string', 'max' => 75],
@@ -202,7 +202,7 @@ class CargaDatosBasicosForm extends CrearUsuarioJuridico
             [['razon_social', 'tlf_ofic', 'tlf_celular', 'domicilio_fiscal'], 'required', 'when' => function($model) {
                                                         return $model->tipo_naturaleza == 1;
             }],
-           
+
             [['representante'], 'string', 'max' => 200],
             [['piso_nivel_no_dom', 'apto_dom'], 'string', 'max' => 25],
             [['domicilio_fiscal'], 'string', 'max' => 250],
@@ -216,7 +216,7 @@ class CargaDatosBasicosForm extends CrearUsuarioJuridico
              ['tlf_celular','string', 'max'=>12],
             ['ente', 'default', 'value' => Yii::$app->ente->getEnte()],
             [['naturaleza', 'cedula', 'tipo', 'tipo_naturaleza', 'id_rif'], 'unique', 'targetAttribute' => ['naturaleza', 'cedula', 'tipo', 'tipo_naturaleza', 'id_rif'], 'message' => 'This user has already been taken.'],
-            
+
             [['id_rif'], 'default', 'value'=> function($model){
                                                     return self::dameIdRif($model);
 
@@ -253,7 +253,7 @@ class CargaDatosBasicosForm extends CrearUsuarioJuridico
             'casa_edf_qta_dom' => Yii::t('frontend', 'House Edf Qta Dom'),
             'piso_nivel_no_dom' => Yii::t('frontend', 'Flat Level No Dom'),
             'apto_dom' => Yii::t('frontend', 'Apto Dom'),
-            'domicilio_fiscal' => Yii::t('frontend', 'Offices'),
+            'domicilio_fiscal' => Yii::t('frontend', 'Domicilio Fiscal'),
             'catastro' => Yii::t('frontend', 'Catastro'),
             'tlf_hab' => Yii::t('frontend', 'Tlf Hab'),
             'tlf_hab_otro' => Yii::t('frontend', 'Tlf Hab Otro'),
@@ -309,19 +309,19 @@ class CargaDatosBasicosForm extends CrearUsuarioJuridico
 
     $modelFind = CrearUsuarioJuridico::find()
                                       ->where([
-                                        'naturaleza' => $model->naturaleza, 
-                                        'cedula' => $model->cedula, 
+                                        'naturaleza' => $model->naturaleza,
+                                        'cedula' => $model->cedula,
                                         'tipo_naturaleza' => 1])
                                       ->orderBy(['id_rif' => SORT_DESC])->one();
 
     if(count($modelFind)>0){
 
-     return $modelFind->id_rif +=1;  
+     return $modelFind->id_rif +=1;
     } else {
 
       return 0;
-    }                                 
+    }
 
-    
+
   }
 }
