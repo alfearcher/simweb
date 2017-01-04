@@ -19,7 +19,7 @@
 
         <?=Html::a('Comenzar',Url::to(['site/login']),[
                                     'class' => 'btn btn-lg btn-success',
-                                    // 'style' => 'background-color: green;',
+                                    'style' => 'width:25%;',
         ])?>
 
         <!-- <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p> -->
