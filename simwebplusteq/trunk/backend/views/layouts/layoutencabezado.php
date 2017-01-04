@@ -43,7 +43,8 @@ AppAsset::register($this);
     <!-- Aqui comienza el encabezado -->
                 <?php
                     NavBar::begin([
-                        'brandLabel' => strtoupper(Yii::$app->ente->getAlcaldia()),//Yii::$app->name . ' '. Yii::$app->ente->getAlias(),
+                        'brandLabel' => Html::img('@web/imagen/logo.jpg',[
+                                            'style' => 'width: 45%;padding-top:-15px;']),
                         'brandUrl' => Yii::$app->homeUrl,
                         'options' => [
                             //-inverse
