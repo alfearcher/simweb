@@ -172,12 +172,17 @@
 		      	 	}
 		  		}
 
+
+		  		$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : [];
+				$rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud']);
+
 		  		$url = Url::to(['index-create']);
 		  		$bloquear = false;
 	  			return $this->render('/aaee/inscripcion-actividad-economica/_create', [
 	  																'model' => $model,
 	  																'bloquear' => $bloquear,
 	  																'url' => $url,
+	  																'rutaAyuda' => $rutaAyuda,
 	  				]);
 	  		} else {
 	  			// Contribuyente no definido.
