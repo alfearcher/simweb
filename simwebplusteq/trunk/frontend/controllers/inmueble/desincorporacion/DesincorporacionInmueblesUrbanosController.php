@@ -260,7 +260,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                      } else {
 
-                            return MensajeController::actionMensaje(900);
+                            return MensajeController::actionMensaje(972);
                      } 
 
                    }else{ 
