@@ -66,6 +66,7 @@
 	use common\models\contribuyente\ContribuyenteBase;
 	use common\enviaremail\PlantillaEmail;
 	use common\models\configuracion\solicitudplanilla\SolicitudPlanillaSearch;
+	use common\models\planilla\PlanillaSearch;
 
 
 	session_start();		// Iniciando session
