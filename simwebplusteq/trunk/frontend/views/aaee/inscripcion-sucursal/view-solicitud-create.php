@@ -75,84 +75,83 @@
         </div>
 
 <!-- Cuerpo del formulario -->
-        <div class="panel-body" style="background-color: #F9F9F9;">
+<!-- style="background-color: #F9F9F9;" -->
+        <div class="panel-body" >
         	<div class="container-fluid">
         		<div class="col-sm-12">
 <!-- DATOS DE LA SUCURSAL -->
-					<div class="row">
-		        		<div class="panel panel-success" style="width: 100%;">
-							<div class="panel-heading">
-					        	<span><?= Html::encode(Yii::t('backend', 'Summary')) ?></span>
-					        </div>
-					        <div class="panel-body">
-					        	<div class="row" style="padding-left: 15px; width: 100%;">
-									<?= DetailView::widget([
-											'model' => $model,
-							    			'attributes' => [
+					<div class="row" style="width: 100%;">
 
-							    				[
-							    					'label' => $model->getAttributeLabel('nro_solicitud'),
-							    					'value' => $model->nro_solicitud,
-							    				],
-							    				[
-								                    'label' => Yii::t('frontend', 'Request Description'),
-								                    'value' => $model->getDescripcionTipoSolicitud($model->nro_solicitud),
-								                ],
-							    				[
-							    					'label' => $model->getAttributeLabel('razon_social'),
-							    					'value' => $model->razon_social,
-							    				],
-							    				[
-							    					'label' => $model->getAttributeLabel('id_sim'),
-							    					'value' => $model->id_sim,
-							    				],
-							    				[
-							    					'label' => $model->getAttributeLabel('fecha_inicio'),
-							    					'value' => $model->fecha_inicio,
-							    				],
-							    				[
-							    					'label' => $model->getAttributeLabel('domicilio_fiscal'),
-							    					'value' => $model->domicilio_fiscal,
-							    				],
-							    				[
-							    					'label' => $model->getAttributeLabel('email'),
-							    					'value' => $model->email,
-							    				],
-							    				[
-							    					'label' => $model->getAttributeLabel('tlf_ofic'),
-							    					'value' => $model->tlf_ofic,
-							    				],
-							    				[
-							    					'label' => $model->getAttributeLabel('tlf_ofic_otro'),
-							    					'value' => $model->tlf_ofic_otro,
-							    				],
-							    				[
-							    					'label' => $model->getAttributeLabel('tlf_celular'),
-							    					'value' => $model->tlf_celular,
-							    				],
-							    				[
-							    					'label' => $model->getAttributeLabel('usuario'),
-							    					'value' => $model->usuario,
-							    				],
-							    				// [
-							    				// 	'label' => $model->getAttributeLabel('fecha_hora'),
-							    				// 	'value' => $model->fecha_hora,
-							    				// ],
-							    				[
-							    					'label' => $model->getAttributeLabel('orugen'),
-							    					'value' => $model->origen,
-							    				],
-							    				[
-							    					'label' => $model->getAttributeLabel('estatus'),
-							    					'value' => $model['estatusInscripcion']->descripcion,
-							    					//'value' => $modelSearch->getDescripcionEstatus($model->estatus),
-							    				],
+						<div class="row" style="margin-left:18px;width: 95%;">
+							<?=$viewSolicitudPlanilla?>
+						</div>
 
-							    			],
-										])
-									?>
-								</div>
-							</div>
+		        		<div class="row" style="padding-left: 10px; width: 100%;">
+							<?= DetailView::widget([
+									'model' => $model,
+					    			'attributes' => [
+
+					    				[
+					    					'label' => $model->getAttributeLabel('nro_solicitud'),
+					    					'value' => $model->nro_solicitud,
+					    				],
+					    				[
+						                    'label' => Yii::t('frontend', 'Request Description'),
+						                    'value' => $model->getDescripcionTipoSolicitud($model->nro_solicitud),
+						                ],
+					    				[
+					    					'label' => $model->getAttributeLabel('razon_social'),
+					    					'value' => $model->razon_social,
+					    				],
+					    				[
+					    					'label' => $model->getAttributeLabel('id_sim'),
+					    					'value' => $model->id_sim,
+					    				],
+					    				[
+					    					'label' => $model->getAttributeLabel('fecha_inicio'),
+					    					'value' => $model->fecha_inicio,
+					    				],
+					    				[
+					    					'label' => $model->getAttributeLabel('domicilio_fiscal'),
+					    					'value' => $model->domicilio_fiscal,
+					    				],
+					    				[
+					    					'label' => $model->getAttributeLabel('email'),
+					    					'value' => $model->email,
+					    				],
+					    				[
+					    					'label' => $model->getAttributeLabel('tlf_ofic'),
+					    					'value' => $model->tlf_ofic,
+					    				],
+					    				[
+					    					'label' => $model->getAttributeLabel('tlf_ofic_otro'),
+					    					'value' => $model->tlf_ofic_otro,
+					    				],
+					    				[
+					    					'label' => $model->getAttributeLabel('tlf_celular'),
+					    					'value' => $model->tlf_celular,
+					    				],
+					    				[
+					    					'label' => $model->getAttributeLabel('usuario'),
+					    					'value' => $model->usuario,
+					    				],
+					    				// [
+					    				// 	'label' => $model->getAttributeLabel('fecha_hora'),
+					    				// 	'value' => $model->fecha_hora,
+					    				// ],
+					    				[
+					    					'label' => $model->getAttributeLabel('orugen'),
+					    					'value' => $model->origen,
+					    				],
+					    				[
+					    					'label' => $model->getAttributeLabel('estatus'),
+					    					'value' => $model['estatusInscripcion']->descripcion,
+					    					//'value' => $modelSearch->getDescripcionEstatus($model->estatus),
+					    				],
+
+					    			],
+								])
+							?>
 						</div>
 					</div>
 				</div>	<!-- Fin de col-sm-12 -->

@@ -58,6 +58,7 @@
 	    															'model' => $model,
 	    															'modelSearch' => $modelSearch,
 	    															'opciones' => $opciones,
+	    															'viewSolicitudPlanilla' => $viewSolicitudPlanilla,
 	    					]);
 	    	?>
 		</div>
