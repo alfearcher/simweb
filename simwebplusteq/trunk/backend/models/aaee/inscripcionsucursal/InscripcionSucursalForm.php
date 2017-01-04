@@ -145,7 +145,7 @@
 	        return [
 	        	[['id_sede_principal', 'naturaleza',
 	        	  'cedula', 'tipo', 'domicilio_fiscal',
-	        	  'email', 'id_sim',
+	        	  'email',
 	        	  'fecha_inicio', 'razon_social',
 	        	  'tlf_ofic', 'tlf_celular',],
 	        	  'required', 'on' => 'frontend', 'message' => Yii::t('frontend','{attribute} is required')],
