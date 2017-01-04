@@ -179,31 +179,29 @@ class PlantillaEmail{
     public function plantillaEmailSolicitudInscripcion($email, $solicitud, $nro_solicitud, $documento)
     {
 
+
         if ( trim($email) == true ) {
           $docu = '';
           if ( $documento !== null ) {
-              $docu =  implode("<br>*", $documento);
+              $documentoA =  implode("<br>*", $documento['a']);
+              $documentoB =  implode("<br>*", $documento['b']);
           }
 
           $contribuyente = self::busquedaTipoContribuyente();
 
                 $from = 'pruebasimteq@gmail.com';
                 $to = $email;
-                $subject = 'Solicitudes Online';
+                $subject = $solicitud.' de numero: '.$nro_solicitud;
                 $textBody = 'Solicitudes Online';
                 $body =     'Estimado Contribuyente: '.$contribuyente.'<br><br>
                              Usted ha realizado con exito su Solicitud '.$solicitud.' de numero: '.$nro_solicitud.'<br><br>'.
                              'Por favor dirijase a la alcaldia para completar la solicitud correspondiente. '.
-                             'Los documentos a consignar obligatoriamente en original y copia son los siguientes: <br><br>*'.$documento[0].'<br>*'.
-                             $documento[1].'<br><br>'.
+                             'Los documentos a consignar obligatoriamente en original y copia son los siguientes: <br><br>*'.$documentoA.'<br><br>'.
+                             
                              'Adicionalmente, deberá consignar original y copia de los siguientes documentos si se tratare
                              de alguno de estos casos: <br><br>*'.
-                             $documento[2].'<br>*'.
-                             $documento[3].'<br>*'.
-                            $documento[4].'<br>*'.
-                            $documento[5].'<br>*'.
-                            $documento[6].'<br>*'.
-                             $documento[7].' en fisico y en digital debidamente firmado por un profesional de area colegiado y con solvencia<br><br>'.
+                             $documentoB.'<br><br>'.
+                             'En fisico y en digital debidamente firmado por un profesional de area colegiado y con solvencia<br><br>'.
 
                              'La aprobación o rechazo de su solicitud, le será notificada a través de su correo electrónico, condición ésta que debe esperar para seguir procesando su requerimiento. La celeridad en el procesamiento de su solicitud dependerá del tiempo que disponga para consignar los documentos que la soportan. <br>Recuerde, esta informacion es personal y de su exclusiva responsabilidad y se agradece no divulgar ni transferir
                              a terceros estos datos.<br><br>

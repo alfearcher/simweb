@@ -69,25 +69,75 @@ class DocumentoSolicitud{
     {
 
 
-       $documentos = SolicitudDocumento::find()->Where(['id_config_solicitud'=>$_SESSION['id']]) 
+       $documentosPrincipal = SolicitudDocumento::find()->Where(['id_config_solicitud'=>$_SESSION['id']]) 
+                                               ->andWhere(['copia'=>0])
                                                ->joinWith('documentoRequisito')
                                                ->asArray()
                                                ->all();
-       if($documentos == true) {
 
-         foreach ($documentos as $key => $value) {
+       $documentosSegundarios = SolicitudDocumento::find()->Where(['id_config_solicitud'=>$_SESSION['id']]) 
+                                               ->andWhere(['copia'=>1])
+                                               ->joinWith('documentoRequisito')
+                                               ->asArray()
+                                               ->all();
+       
+       if($documentosPrincipal == true and $documentosSegundarios == true) {
+
+         foreach ($documentosPrincipal as $key => $value) {
                    
           $a[] = $value['documentoRequisito']['descripcion'];
 
           }
+          foreach ($documentosSegundarios as $key => $value) {
+                   
+          $b[] = $value['documentoRequisito']['descripcion'];
 
-        return $a;
+          }
+
+        return $doc = (['a'=>$a, 'b'=>$b]);
         
-       } else {
+       }         
 
-        return $a =['a' => 'NO REQUIERE DOCUMENTOS'];
+
+        if($documentosPrincipal == true and $documentosSegundarios == false) {
+
+         foreach ($documentosPrincipal as $key => $value) {
+                   
+          $a[] = $value['documentoRequisito']['descripcion'];
+
+          }
+          $b = ['b'=>'NO REQUIERE DOCUMENTOS'];
+
+        return $doc = (['a'=>$a, 'b'=>$b]);
+        
        }
+
+
+       if($documentosPrincipal == false and $documentosSegundarios == true) {
+
+         
+          foreach ($documentosSegundarios as $key => $value) {
+                   
+          $b[] = $value['documentoRequisito']['descripcion'];
+
+          }
+          $a = ['a'=>'NO REQUIERE DOCUMENTOS'];
+
+        return $doc = (['a'=>$a, 'b'=>$b]);
+        
+       }    
+
+
        
+       if($documentosPrincipal == false and $documentosSegundarios == false) {
+
+         
+          $a = ['a'=>'NO REQUIERE DOCUMENTOS'];
+          $b = ['b'=>'NO REQUIERE DOCUMENTOS'];
+
+        return $doc = (['a'=>$a, 'b'=>$b]);
+        
+       }      
     }
 
 } 

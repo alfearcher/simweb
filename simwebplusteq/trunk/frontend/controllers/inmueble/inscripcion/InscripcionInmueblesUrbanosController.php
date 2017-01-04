@@ -127,7 +127,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                  //condicionales     
                    $documento = new DocumentoSolicitud();
 
-                   $requisitos = $documento->documentos();
+                   $requisitos = $documento->documentosSol();
 
                  
                 if (!\Yii::$app->user->isGuest){                                    
