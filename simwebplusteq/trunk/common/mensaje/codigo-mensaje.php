@@ -60,6 +60,7 @@ return [
 	'962' => [Yii::t('backend', 'El contribuyente ya posee una solicitud por inscripcion de actividad economica, dicha solicitud no permite crear la actual'), 'danger', 'fa fa-times'],
 	'964' => [Yii::t('backend', 'Taxpayer doesnt has start date activity'), 'danger', 'fa fa-times'],
 	'970' => [Yii::t('backend', 'No tiene rango ordenazas pendientes.'), 'warning', 'fa fa-info-circle'],
+	'971' => [Yii::t('backend', 'El inmueble ya posee una solicitud pendiente de cambio numero catastral, dicha solicitud no permite crear la actual'), 'danger', 'fa fa-times'],
 
 	'990' => [Yii::t('backend', 'Register not found'), 'danger', 'fa fa-times'],
 	'991' => [Yii::t('backend', 'You can aquire a property you already own '), 'danger', 'fa fa-exclamation-triangle'],

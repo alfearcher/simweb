@@ -221,7 +221,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                       } 
                     } else {
 
-                            return MensajeController::actionMensaje(900);
+                            return MensajeController::actionMensaje(971);
                      } 
 
                    }else{ 
@@ -257,7 +257,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
             $buscar = new ParametroSolicitud($_SESSION['id']);
 
             $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
-            
+            die('lleque');
             try {
             $tableName1 = 'solicitudes_contribuyente'; 
 

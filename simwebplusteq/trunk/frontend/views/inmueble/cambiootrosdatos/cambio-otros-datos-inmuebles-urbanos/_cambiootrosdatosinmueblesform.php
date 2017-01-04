@@ -19,7 +19,7 @@ $this->title = Yii::t('frontend', 'Property Update');
     'method' => 'post',
     'id' => 'formulario',
     'enableClientValidation' => false,
-    'enableAjaxValidation' => true,
+    'enableAjaxValidation' => false,
     'options' => ['class' => 'form-vertical'],]); ?>
 
 <div class="container" style="width:1280px">
@@ -190,7 +190,7 @@ $this->title = Yii::t('frontend', 'Property Update');
                     <div class="row">
 
                              
-                                <?= Html::beginForm();?>
+                                <? //= Html::beginForm();?>
                                 <div class="col-sm-1">
                                 <?= Html::submitButton(Yii::t('frontend', 'Accept'), ['class' => 'btn btn-success',
                                       'data' => [
@@ -200,7 +200,7 @@ $this->title = Yii::t('frontend', 'Property Update');
                                 <div class="col-sm-1">
                                 <?= Html::a(Yii::t('frontend', 'Back'), ['/site/menu-vertical'], ['class' => 'btn btn-danger']) ?>
                                 </div>
-                                <?= Html::endForm();?> 
+                                <? //= Html::endForm();?> 
                                 
                     </div>
                                                                        
@@ -222,8 +222,8 @@ $this->title = Yii::t('frontend', 'Property Update');
 
 
 <?= $form->field($model, 'validacion')->hiddenInput(['value' => '2'])->label(false) ?> 
-<?= Html::endForm();?> 
-<?php //ActiveForm::end(); ?> 
+<?//= Html::endForm();?> 
+<?php ActiveForm::end(); ?> 
 
 
 
