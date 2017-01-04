@@ -209,7 +209,7 @@
 		private function actionMostrarSolicitudAvaluoInmueble()
 		{
 			if ( $this->model->nivel_aprobacion == 2 ) {
-					$modelSearch = New SlHistoricoAvaluosSearch($this->model->id_contribuyente);
+					$modelSearch = New SlHistoricoAvaluosSearch();
 					$model = $modelSearch->findAvaluos($this->model->nro_solicitud);
 
 

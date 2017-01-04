@@ -1,5 +1,4 @@
 <?php
-
 /**
  *  @copyright © by ASIS CONSULTORES 2012 - 2016
  *  All rights reserved - SIMWebPLUS
@@ -51,7 +50,6 @@
 
     use Yii;
     use backend\models\aaee\InmueblesUrbanosForm;
-    use backend\models\inmueble\SlInmueblesUrbanosSearch;
     use common\models\contribuyente\ContribuyenteBase;
     use backend\models\inmueble\SlHistoricoAvaluosSearch;
 
@@ -263,7 +261,7 @@
             $cancel = false;            // Controla si el proceso se debe cancelar.
 
             // Se crea la instancia del modelo que contiene los campos que seran actualizados.
-            $model = New SlHistoricoAvaluosSearch($modelInscripcion->id_contribuyente);
+            $model = New SlHistoricoAvaluosSearch();
             $tableName = $model->tableName();
 
             // Se obtienen los campos que seran actualizados en la entidad "sl-".

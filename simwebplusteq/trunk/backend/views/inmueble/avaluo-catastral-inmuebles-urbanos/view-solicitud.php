@@ -57,13 +57,13 @@
 						'model' => $model,
 		    			'attributes' => [
 		    				'nro_solicitud',
-		    				'id_contribuyente',
-		    				'direccion',
-		    				'ano_inicio',
-		    				'casa_edf_qta_dom',
-		    				'apto_dom',
-		    				'tlf_hab',
-		    				'medidor',
+		    				'mts',
+		    				'valor_por_mts2',
+		    				'mts2_terreno',
+		    				'valor_por_mts2_terreno',
+		    				'valor',
+		    				
+		    				
 
 
 		        			//'created_at:datetime', // creation date formatted as datetime
