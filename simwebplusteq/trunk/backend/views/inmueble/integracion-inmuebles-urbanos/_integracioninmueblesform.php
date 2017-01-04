@@ -539,7 +539,7 @@ $variablephp=$_COOKIE['variablephp'];
 <div class="col-sm-2">
 <?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) ?>
 </div>
-<?= Html::endForm();?> 
+
 
 
                                                         </div>

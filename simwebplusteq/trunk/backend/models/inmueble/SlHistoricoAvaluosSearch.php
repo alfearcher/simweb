@@ -50,7 +50,7 @@
 	/**
 	* 	Clase
 	*/
-	class SlHistoricoAvaluosSearch extends SlHistoricoAvaluosForm
+	class SlHistoricoAvaluosSearch Models extends SlHistoricoAvaluosForm
 	{
 
 		private $id_contribuyente;
