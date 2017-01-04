@@ -164,7 +164,7 @@
 	        	  'num_celular'],
 	        	  'string', 'on' => 'frontend',],
 	          	['fecha_hora', 'default', 'value' => date('Y-m-d H:i:s')],
-	          	['id_sim', 'unique'],
+	          	//['id_sim', 'unique'],
 	     		['estatus', 'default', 'value' => 0],
 	     		['usuario', 'default', 'value' => Yii::$app->identidad->getUsuario()],
 	     		//['usuario', 'default', 'value' => Yii::$app->user->identity->login],
