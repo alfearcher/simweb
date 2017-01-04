@@ -84,6 +84,8 @@
 		private $_liquidarActividadEconomica;	// Instabcia de la clase LiquidacionActividadEconomica().
 		private $_tipoLiquidacion;
 
+		private $_declaracionSearch;			// Instancia de la clase DeclaracionBaseSearch();
+
 		const IMPUESTO = 1;
 
 		private $_controlErrors = [];
@@ -102,11 +104,69 @@
 			$this->_tipoLiquidacion = $tipoLiquidacion;
 			$this->_liquidarActividadEconomica = New LiquidacionActividadEconomica($idContribuyente);
 			$this->_id_pago = 0;
+			$this->declaracionSearch = New DeclaracionBaseSearch($idContribuyente);
 		}
 
 
 
+		/**
+		 * Metodo que genera el modelo general de consulta de los rubros con sus respectivas
+		 * montos declrados.
+		 * @return ActEconIngreso
+		 */
+		public function findDetalleDeclaracionModel($añoImpositivo, $periodo)
+		{
+			return $this->declaracionSearch->findRubrosRegistrados($añoImpositivo, $periodo);
+		}
 
+
+
+		/**
+		 * Metodo que determina si la suma de los montos de la estimada es mayor s cero(0).
+		 * @return boolean
+		 */
+		private function montoDeclarado($añoImpositivo, $periodo)
+		{
+			$result = false;
+			$findModel = self::findDetalleDeclaracionModel($añoImpositivo, $periodo);
+			$resultados = $findModel->asArray()->all();
+			$suma = 0;
+
+			if ( count($resultados) > 0 ) {
+				foreach ( $resultados as $resultado ) {
+					$suma = $resultado['estimado'] + $suma;
+				}
+				if ( $suma > 0 ) { $result = true; }
+			}
+
+			return $result;
+		}
+
+
+
+		/***/
+		public function validarEvento()
+		{
+			$mensajes = [];
+			// Se buscan los rangos de liquidacion
+			$rangoInicio = self::armarRangoLiquidacionInicial();
+
+			if ( count($rangoInicio) > 0 ) {
+				$rangoFinal = self::getUltimoLapso();			// Ultimo lapso del año actual.
+				$añoInicio = (int)$rangoInicio['ano_impositivo'];
+				$periodoInicio = (int)$rangoInicio['periodo'];
+				$añoFinal = (int)$rangoFinal['ano_impositivo'];
+				$periodoFinal = (int)$rangoFinal['periodo'];
+
+				for ( $i = $añoInicio; $i <= $añoFinal; $i++ ) {
+					if ( !self::montoDeclarado($i, 1) ) {
+						$mensajes[] = Yii::t('frontend', 'La suma de la declaracion del año ' . $i . ', suma cero (0)');
+					}
+				}
+			}
+
+			return $mensajes;
+		}
 
 
 
