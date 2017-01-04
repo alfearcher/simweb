@@ -189,7 +189,7 @@ $variablephp=$_COOKIE['variablephp'];
     'method' => 'post',
     'id' => 'formulario',
     'enableClientValidation' => false,
-    'enableAjaxValidation' => true,
+    'enableAjaxValidation' => false,
     'options' => ['class' => 'form-vertical'],]); ?>
 
 
@@ -377,14 +377,17 @@ $variablephp=$_COOKIE['variablephp'];
                                                 
                                                 <div class="row" style="margin-left:20px;">
                                                         <div class="form-group"> 
-<?= Html::beginForm();?> 
+<? //= Html::beginForm();?> 
 <div class="col-sm-2">
-<?= Html::submitButton(Yii::t('backend', 'Accept'), ['class' => 'btn btn-primary', 'name'=>'AcceptSeller', 'value'=>'AcceptSeller']) ?>
+<?= Html::submitButton(Yii::t('frontend', 'Aceptar'), ['class' => 'btn btn-success',
+                                      'data' => [
+                                                  'confirm' => Yii::t('app', 'Are you sure you want to Incorporate this item?'),
+                                                  'method' => 'post',],]) ?> 
 </div>
 <div class="col-sm-2">
-<?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) ?>
+<?= Html::a(Yii::t('backend', 'Back'), ['/menu/menu-vertical'], ['class' => 'btn btn-danger']) ?>
 </div>
-<?= Html::endForm();?> 
+<? //= Html::endForm();?> 
 
 
                                                         </div>
