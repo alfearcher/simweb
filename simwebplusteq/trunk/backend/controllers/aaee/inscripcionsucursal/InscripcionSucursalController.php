@@ -69,6 +69,8 @@
 	use common\models\configuracion\solicitud\SolicitudProcesoEvento;
 	use common\enviaremail\PlantillaEmail;
 	use common\models\solicitudescontribuyente\SolicitudesContribuyenteForm;
+	use common\models\configuracion\solicitudplanilla\SolicitudPlanillaSearch;
+	use common\models\planilla\PlanillaSearch;
 
 	session_start();		// Iniciando session
 
@@ -287,6 +289,9 @@
 						$errorMensajeFechaInicioSedePrincipal = Yii::t('frontend', 'The begin date of headquarters main , not is valid.');
 					}
 
+					$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : [];
+					$rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud']);
+
 		  			return $this->render('@frontend/views/aaee/inscripcion-sucursal/_create', [
 		  											'model' => $model,
 		  											'datos' => $datos,
@@ -296,6 +301,7 @@
 		  											'modelTelefono' => $modelTelefono,
 		  											'mensajeRegistroMercantil' => $mensajeRegistroMercantil,
 		  											'errorMensajeFechaInicioSedePrincipal' => $errorMensajeFechaInicioSedePrincipal,
+		  											'rutaAyuda' => $rutaAyuda,
 		  											//'mensajeErrorChk' => $mensajeErrorChk,
 		  					]);
 		  		} else {
@@ -751,6 +757,19 @@
     	private function actionShowSolicitud($findModel, $modelSearch)
     	{
     		if ( isset($findModel) && isset($modelSearch) ) {
+
+    			// Se buscan las planillas relacionadas a la solicitud. Se refiere a las planillas
+				// de impueso "tasa".
+				$modelPlanilla = New SolicitudPlanillaSearch($findModel['nro_solicitud'], Yii::$app->solicitud->crear());
+				$dataProvider = $modelPlanilla->getArrayDataProvider();
+
+				$caption = Yii::t('frontend', 'Planilla(s)');
+				$viewSolicitudPlanilla = $this->renderAjax('@common/views/solicitud-planilla/solicitud-planilla', [
+																'caption' => $caption,
+																'dataProvider' => $dataProvider,
+					]);
+
+
 				$opciones = [
 					'quit' => '/aaee/inscripcionsucursal/inscripcion-sucursal/quit',
 				];
@@ -759,11 +778,42 @@
 															'model' => $findModel,
 															'modelSearch' => $modelSearch,
 															'opciones' => $opciones,
+															'viewSolicitudPlanilla' => $viewSolicitudPlanilla,
 					]);
 			} else {
 				throw new NotFoundHttpException('No se encontro el registro');
 			}
     	}
+
+
+
+
+    	/**
+		 * Metodo que permite renderizar una vista de los detalles de la planilla
+		 * que se encuentran en la solicitud.
+		 * @return View Retorna una vista que contiene un grid con los detalles de la
+		 * planilla.
+		 */
+		public function actionViewPlanilla()
+		{
+			$request = Yii::$app->request;
+			$getData = $request->get();
+
+			$planilla = $getData['p'];
+			$planillaSearch = New PlanillaSearch($planilla);
+			$dataProvider = $planillaSearch->getArrayDataProviderPlanilla();
+
+			// Se determina si la peticion viene de un listado que contiene mas de una
+			// pagina de registros. Esto sucede cuando los detalles de un listado contienen
+			// mas de los manejados para una pagina en la vista.
+			if ( isset($request->queryParams['page']) ) {
+				$planillaSearch->load($request->queryParams);
+			}
+				return $this->renderAjax('@backend/views/planilla/planilla-detalle', [
+									 			'dataProvider' => $dataProvider,
+									 			'caption' => 'Planilla: ' . $planilla,
+				]);
+		}
 
 
 
