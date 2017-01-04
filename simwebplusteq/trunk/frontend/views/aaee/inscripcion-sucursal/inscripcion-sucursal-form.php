@@ -513,9 +513,9 @@
 								<div class="col-sm-2" style="margin-left: 150px;">
 									<div class="form-group">
 									<!-- '../../common/docs/user/ayuda.pdf'  funciona -->
-										 <?= Html::a(Yii::t('backend', 'Help'), $rutaAyuda,  [
+										 <?= Html::a(Yii::t('backend', 'Ayuda'), $rutaAyuda,  [
 																						'id' => 'btn-help',
-																						'class' => 'btn btn-danger',
+																						'class' => 'btn btn-default',
 																						'name' => 'btn-help',
 																						'target' => '_blank',
 																						'value' => 1,
