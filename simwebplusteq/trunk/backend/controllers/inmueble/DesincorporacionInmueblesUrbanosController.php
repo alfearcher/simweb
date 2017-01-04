@@ -109,7 +109,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
             $idConfig = yii::$app->request->get('id');
         
-            $_SESSION['id'] = $idConfig;
+            $_SESSION['id'] = 1;
 
             $searchModel = new InmueblesSearch();
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);

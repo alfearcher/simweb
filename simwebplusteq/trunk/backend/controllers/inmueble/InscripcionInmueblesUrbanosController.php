@@ -89,7 +89,7 @@ class InscripcionInmueblesUrbanosController extends Controller
      **/
      public function actionInscripcionInmueblesUrbanos()
      {
-
+          $_SESSION['id'] = 68;
          if ( isset( $_SESSION['idContribuyente'] ) ) {
          //Creamos la instancia con el model de validación
          $model = new InscripcionInmueblesUrbanosForm();

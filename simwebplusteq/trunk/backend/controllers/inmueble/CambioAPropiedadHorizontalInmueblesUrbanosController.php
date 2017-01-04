@@ -79,7 +79,7 @@ class CambioAPropiedadHorizontalInmueblesUrbanosController extends Controller
         if ( isset( $_SESSION['idContribuyente'] ) ) {
         $searchModel = new InmueblesSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        $_SESSION['id'] = 3;
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

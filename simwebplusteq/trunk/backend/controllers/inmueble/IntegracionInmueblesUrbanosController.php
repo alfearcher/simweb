@@ -89,7 +89,7 @@ class IntegracionInmueblesUrbanosController extends Controller
     {
         $idConfig = yii::$app->request->get('id');
 
-         $_SESSION['id'] = $idConfig;
+         $_SESSION['id'] = 107;
 
         if ( isset( $_SESSION['idContribuyente'] ) ) {
         $searchModel = new InmueblesSearch();

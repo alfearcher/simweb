@@ -103,7 +103,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
     {
         $idConfig = yii::$app->request->get('id');
 
-         $_SESSION['id'] = $idConfig;
+         $_SESSION['id'] = 106;
 
         if ( isset( $_SESSION['idContribuyente'] ) ) {
         $searchModel = new InmueblesSearch();

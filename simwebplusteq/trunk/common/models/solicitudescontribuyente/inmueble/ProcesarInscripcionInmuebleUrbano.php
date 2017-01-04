@@ -303,7 +303,7 @@
 
                     $resultInsert = $this->_conexion->guardarRegistro($this->_conn, $tableNameMaster, $arregloDatosMaster);
                     $resultId = $this->_conn->getLastInsertID();
-                    //die(var_dump($resultId));
+                    $_SESSION['idObjeto']=$resultId;
                     $result = $this->_conexion->modificarRegistro($this->_conn, $tableName,
                                                               $arregloDatos, $arregloCondicion);
 
