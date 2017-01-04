@@ -386,7 +386,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      {
 
          $buscar = ConfiguracionTiposSolicitudes::find()->where("impuesto=:impuesto", [":impuesto" => 2])
-                                                        ->andwhere("descripcion=:descripcion", [":descripcion" => 'SOLICITAR CAMBIO DE NUMERO CATASTRAL'])
+                                                        ->andwhere("descripcion=:descripcion", [":descripcion" => 'CAMBIO DE NUMERO CATASTRAL'])
                                                         ->asArray()->all();
 
 
