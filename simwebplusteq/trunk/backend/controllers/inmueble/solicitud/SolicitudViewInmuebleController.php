@@ -214,7 +214,7 @@
 
 
 
-					return $this->render('@backend/views/inmueble/avaluo-inmuebles-urbanos/view-solicitud', [
+					return $this->render('@backend/views/inmueble/avaluo-catastral-inmuebles-urbanos/view-solicitud', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
 													'model' => $model,
 

@@ -62,7 +62,7 @@
      * que esten relacionada con la aprobacion o negacion de la solicitud. la clase debe
      * entregar como respuesta un true o false.
      */
-    class ProcesarAvaluoInmuebleUrbanoUrbano extends SlHistoricoAvaluosSearch
+    class ProcesarAvaluoInmuebleUrbano extends SlHistoricoAvaluosSearch
     {
         private $_model;
 
