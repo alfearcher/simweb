@@ -351,14 +351,77 @@
 		{
 			$configSolicitudDoc = null;
 
-			$configSolicitudDoc = SolicitudDocumento::find()->where(['id_config_solicitud' => $this->getIdConfig(),
-																     'config_solic_documentos.inactivo' => 0])
+			$documentosPrincipal = SolicitudDocumento::find()->where(['id_config_solicitud' => $this->getIdConfig(),
+																     'config_solic_documentos.inactivo' => 0,
+																     'copia'=>0])
+															->joinWith('documentoRequisito')
+															->asArray()
+															->all();
+			$documentosSegundarios = SolicitudDocumento::find()->where(['id_config_solicitud' => $this->getIdConfig(),
+																     'config_solic_documentos.inactivo' => 0,
+																     'copia'=>1])
 															->joinWith('documentoRequisito')
 															->asArray()
 															->all();
 
-			return $configSolicitudDoc;
-		}
+		if($documentosPrincipal == true and $documentosSegundarios == true) {
+
+         foreach ($documentosPrincipal as $key => $value) {
+                   
+          $a[] = $value['documentoRequisito']['descripcion'];
+
+          }
+          foreach ($documentosSegundarios as $key => $value) {
+                   
+          $b[] = $value['documentoRequisito']['descripcion'];
+
+          }
+
+        return $doc = (['a'=>$a, 'b'=>$b]);
+        
+       }         
+
+
+        if($documentosPrincipal == true and $documentosSegundarios == false) {
+
+         foreach ($documentosPrincipal as $key => $value) {
+                   
+          $a[] = $value['documentoRequisito']['descripcion'];
+
+          }
+          $b = ['b'=>'NO REQUIERE DOCUMENTOS'];
+
+        return $doc = (['a'=>$a, 'b'=>$b]);
+        
+       }
+
+
+       if($documentosPrincipal == false and $documentosSegundarios == true) {
+
+         
+          foreach ($documentosSegundarios as $key => $value) {
+                   
+          $b[] = $value['documentoRequisito']['descripcion'];
+
+          }
+          $a = ['a'=>'NO REQUIERE DOCUMENTOS'];
+
+        return $doc = (['a'=>$a, 'b'=>$b]);
+        
+       }    
+
+
+       
+       if($documentosPrincipal == false and $documentosSegundarios == false) {
+
+         
+          $a = ['a'=>'NO REQUIERE DOCUMENTOS'];
+          $b = ['b'=>'NO REQUIERE DOCUMENTOS'];
+
+        return $doc = (['a'=>$a, 'b'=>$b]);
+        
+       }      
+	}
 
 
 
@@ -374,14 +437,21 @@
 
 			$configDocumento = $this->findConfiguracionSolicitudDocumento();
 
+			return $configDocumento;
+		}
+
+		public function getDocumentoRequisitoSolicitudCopia()
+		{
+			$documento = null;
+
+			$configDocumento = $this->findConfiguracionSolicitudDocumento();
+
 			foreach ( $configDocumento as $documentos ) {
 				$documento[] = $documentos['documentoRequisito']['descripcion'];
 			}
 
 			return $documento;
 		}
-
-
 
 
 		/**
