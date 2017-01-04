@@ -19,7 +19,7 @@
         </div>
 
         <?=Html::a('Comenzar',Url::to(['site/login']),[
-                                    'class' => 'btn btn-lg btn-success',
+                                    'class' => 'btn btn-lg btn-primary',
                                     // 'style' => 'background-color: green;',
         ])?>
 
