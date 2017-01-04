@@ -51,6 +51,18 @@
 	use common\mensaje\MensajeController;
 ?>
 
+<?php
+		$form = ActiveForm::begin([
+			'id' => 'view-solicitud-seleccionada-form',
+		    'method' => 'post',
+		    // 'action' => $url,
+			'enableClientValidation' => false,
+			'enableAjaxValidation' => false,
+			'enableClientScript' => true,
+		]);
+	?>
+
+
 <div class="row" style="width: 70%;">
 	<div class="info-solicitud">
 		<div class="row">
@@ -58,7 +70,10 @@
 				<?= MensajeController::actionMensaje($codigoMensaje);  ?>
 			</div>
 		</div>
-		<div class="row">
+		<div class="row" style="width: 100%;">
+			<?=$viewSolicitudPlanilla?>
+		</div>
+		<div class="row" style="width: 100%;">
 			<h3><?= Html::encode($caption) ?></h3>
 				<?= DetailView::widget([
 						'model' => $model,
@@ -87,4 +102,6 @@
 				?>
 		</div>
 	</div>
+
+	<?php ActiveForm::end(); ?>
 </div>
