@@ -192,7 +192,7 @@
                                     'fecha_funcionario' => date('Y-m-d H:i:s')
                 ],
             ];
-    
+
            return $atributos[$evento];
         }
 
@@ -257,7 +257,7 @@
          * en caso contrario.
          */
         private function updateSolicitudInscripcion($modelInscripcion)
-        { 
+        {
             $result = false;
             $cancel = false;            // Controla si el proceso se debe cancelar.
 
@@ -288,37 +288,38 @@
                     $tableNameMaster = 'inmuebles';
 
                     $arregloDatosMaster = [
-                                            
+
                                             'id_contribuyente' => $camposModel['id_contribuyente'],
                                             'ano_inicio' => $camposModel['ano_inicio'],
                                             'direccion' => $camposModel['direccion'],
-                                            'casa_edf_qta_dom' => $camposModel['casa_edf_qta_dom'], 
-                                            'piso_nivel_no_dom' => $camposModel['piso_nivel_no_dom'], 
-                                            'apto_dom' => $camposModel['apto_dom'], 
-                                            'medidor' => $camposModel['medidor'], 
+                                            'casa_edf_qta_dom' => $camposModel['casa_edf_qta_dom'],
+                                            'piso_nivel_no_dom' => $camposModel['piso_nivel_no_dom'],
+                                            'apto_dom' => $camposModel['apto_dom'],
+                                            'medidor' => $camposModel['medidor'],
                                             'observacion' => $camposModel['observacion'],
                                             'tipo_ejido' => $camposModel['id_contribuyente'],
 
-                                         ];  
+                                         ];
 
                     $resultInsert = $this->_conexion->guardarRegistro($this->_conn, $tableNameMaster, $arregloDatosMaster);
                     $resultId = $this->_conn->getLastInsertID();
                     $_SESSION['idObjeto']=$resultId;
+
                     $result = $this->_conexion->modificarRegistro($this->_conn, $tableName,
                                                               $arregloDatos, $arregloCondicion);
 
                 } else {
                     if (!$result ) { self::setErrors(Yii::t('backend', 'Failed update request')); }
                     return $result;
-                } 
-                    
-            } 
+                }
+
+            }
 
             if (!$result ) { self::setErrors(Yii::t('backend', 'Failed update request')); }
             return $result;
         }
 
-    
+
     }
 
  ?>
