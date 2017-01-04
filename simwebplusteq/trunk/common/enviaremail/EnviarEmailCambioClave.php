@@ -71,8 +71,8 @@ class enviarEmailCambioCLave{
        return Yii::$app->mailer->compose()
         ->setFrom('pruebasimteq@gmail.com')
         ->setTo($email)
-        ->setSubject('Cambio de Contraseña')
-        ->setTextBody('Cambio de Contraseña')
+        ->setSubject('Cambio de Contraseña SIM Los Teques')
+        ->setTextBody('Cambio de Contraseña SIM Los Teques')
         ->setHtmlBody('Estimado Contribuyente: <br><br>
                        Usted ha realizado con exito su cambio de datos de acceso<br><br>
                        Usuario: ' .$email.'<br>'.'Contraseña: '.$Password1.'<br><br>'.

@@ -125,7 +125,7 @@ class PlantillaEmail{
 
                 $from = 'pruebasimteq@gmail.com';
                 $to = $email;
-                $subject = 'Solicitudes Online';
+                $subject = $solicitud.', Solicitud: '.$nro_solicitud;
                 $textBody = 'Solicitudes Online';
                 $body =     'Estimado Contribuyente: '.$contribuyente.'<br><br>
                              Usted ha realizado con exito su Solicitud '.$solicitud.' de numero: '.$nro_solicitud.'<br><br>'.
@@ -155,7 +155,7 @@ class PlantillaEmail{
     {
         $from = 'pruebasimteq@gmail.com';
         $to = $email;
-        $subject = 'Solicitudes Online';
+        $subject = 'Solicitud procesada';
         $textBody = 'Solicitudes Online';
         $body = $cuerpo . '<br><br>' . 'Esta es una cuenta no monitoreada, por favor no responder este correo.';
 
