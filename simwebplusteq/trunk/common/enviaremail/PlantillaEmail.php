@@ -191,10 +191,10 @@ class PlantillaEmail{
 
                 $from = 'pruebasimteq@gmail.com';
                 $to = $email;
-                $subject = $solicitud.' de numero: '.$nro_solicitud;
+                $subject = $solicitud.', Solicitud: '.$nro_solicitud;
                 $textBody = 'Solicitudes Online';
                 $body =     'Estimado Contribuyente: '.$contribuyente.'<br><br>
-                             Usted ha realizado con exito su Solicitud '.$solicitud.' de numero: '.$nro_solicitud.'<br><br>'.
+                             Usted ha realizado con exito su Solicitud '.$solicitud.' numero: '.$nro_solicitud.'<br><br>'.
                              'Por favor dirijase a la alcaldia para completar la solicitud correspondiente. '.
                              'Los documentos a consignar obligatoriamente en original y copia son los siguientes: <br><br>*'.$documentoA.'<br><br>'.
                              
