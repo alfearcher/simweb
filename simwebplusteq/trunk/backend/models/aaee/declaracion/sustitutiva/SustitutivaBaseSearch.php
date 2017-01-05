@@ -459,7 +459,7 @@
 		    								->where('id_contribuyente =:id_contribuyente',
 		    	 										['id_contribuyente' => $this->_id_contribuyente])
 		    			  				    ->andWhere('estatus =:estatus', [':estatus' => 0])
-		    			  				    ->andWhere('inactivo1 =:inactivo', [':inactivo' => 0])
+		    			  				    ->andWhere('inactivo =:inactivo', [':inactivo' => 0])
 		    			  				    ->andWhere('bloqueado =:bloqueado', [':bloqueado' => 0])
 		    							    ->andWhere(['BETWEEN', 'ano_impositivo', $añoLimite, $añoActual])
 		    							    ->joinWith('actividadDetalle', false, 'INNER JOIN')
