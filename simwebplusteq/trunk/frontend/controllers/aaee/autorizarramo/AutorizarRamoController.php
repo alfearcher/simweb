@@ -403,6 +403,9 @@
 					  			// Rubros seleccionados
 					  			$dataProviderSeleccionado = $searchRamo->getDataProviderAddRubro($arregloRubro);
 
+					  			$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : [];
+								$rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud'], 'frontend');
+
 					  			$subCaption = Yii::t('frontend', 'Info of Taxpayer');
 					  			return $this->render('@frontend/views/aaee/autorizar-ramo/_create', [
 								  											'model' => $model,
@@ -418,6 +421,7 @@
 									        								'fechaHasta' => $fechaHasta,
 									        								'activarBotonCreate' => $activarBotonCreate,
 									        								'errorRubroSeleccionado' => $errorRubroSeleccionado,
+									        								'rutaAyuda' => $rutaAyuda,
 
 								  					]);
 					  		}
