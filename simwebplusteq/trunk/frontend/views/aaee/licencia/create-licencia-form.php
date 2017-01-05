@@ -277,7 +277,7 @@
 							</div>
 
 
-							<div class="col-sm-2" style="margin-left: 50px;margin-top:20px;">
+							<div class="col-sm-2" style="margin-left: 50px;">
 								<div class="form-group">
 								<!-- '../../common/docs/user/ayuda.pdf'  funciona -->
 									<?= Html::a(Yii::t('backend', 'Ayuda'), $rutaAyuda,  [
