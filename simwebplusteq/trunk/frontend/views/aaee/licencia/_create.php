@@ -50,6 +50,7 @@
 		  											'ano_impositivo' => $ano_impositivo,
 		  											'periodo' => 1,
 		  											'caption' => $caption,
+		  											'rutaAyuda' => $rutaAyuda,
 					    ]) ?>
 </div>
 
