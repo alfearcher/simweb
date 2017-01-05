@@ -262,6 +262,8 @@
 							}
 						}
 
+						$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : [];
+						$rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud'], 'frontend');
 
 						$subCaption = Yii::t('frontend', 'Info of Taxpayer');
 		  				return $this->render('/aaee/correccion-fecha-inicio/_create', [
@@ -270,6 +272,7 @@
 					  											'subCaption' => $subCaption,
 					  											'esSedePrincipal' => $esSedePrincipal,
 					  											'errorMensajeFechaInicioSedePrincipal' => $errorMensajeFechaInicioSedePrincipal,
+					  											'rutaAyuda' => $rutaAyuda,
 
 					  					]);
 		  			} else {
