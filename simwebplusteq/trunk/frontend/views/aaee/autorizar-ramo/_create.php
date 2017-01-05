@@ -57,6 +57,7 @@
 						        'fechaHasta' => $fechaHasta,
 						        'activarBotonCreate' => $activarBotonCreate,
 						        'errorRubroSeleccionado' => $errorRubroSeleccionado,
+						        'rutaAyuda' => $rutaAyuda,
 
 					    ]) ?>
 </div>

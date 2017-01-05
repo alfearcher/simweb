@@ -49,6 +49,7 @@
 						        'subCaption' => $subCaption,
 						        'esSedePrincipal' => $esSedePrincipal,
 					  			'errorMensajeFechaInicioSedePrincipal' => $errorMensajeFechaInicioSedePrincipal,
+					  			'rutaAyuda' => $rutaAyuda,
 
 					    ]) ?>
 </div>
