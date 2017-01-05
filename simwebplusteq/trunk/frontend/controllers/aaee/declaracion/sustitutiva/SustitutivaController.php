@@ -614,6 +614,9 @@
 						];
 						$caption = $caption . '. ' . Yii::t('frontend', 'Rubro(s) Registrado(s)') . ' ' . $añoImpositivo . ' - ' . $periodo;
 
+						$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : [];
+						$rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud'], 'frontend');
+
 						if ( $lapso['tipo'] == 1 ) {
 							return $this->render('/aaee/declaracion/sustitutiva/declaracion-sustitutiva-estimada-form', [
 		  																	'model' => $modelMultiplex,
@@ -622,6 +625,7 @@
 		  																	'opciones' =>$opciones,
 		  																	'subCaption' => $subCaption,
 		  																	'errorHabilitar' => $errorHabilitar,
+		  																	'rutaAyuda' => $rutaAyuda,
 
 				  					]);
 						} elseif ( $lapso['tipo'] == 2 ) {
@@ -632,6 +636,7 @@
 		  																	'opciones' =>$opciones,
 		  																	'subCaption' => $subCaption,
 		  																	'errorHabilitar' => $errorHabilitar,
+		  																	'rutaAyuda' => $rutaAyuda,
 		  							]);
 						}
 
