@@ -245,7 +245,7 @@
 
 		  		if ( isset($findModel) ) {
 		  			$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : [];
-					$rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud'], 'backend');
+					$rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud'], 'frontend');
 
 		  			$caption = $caption . '. ' . Yii::t('frontend', 'Select Fiscal Lapse');
 		  			$listaAño = $searchRamo->getListaAnoRegistrado();
