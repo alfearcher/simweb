@@ -136,7 +136,7 @@ class PlantillaEmail{
                              'Adicionalmente, deberá consignar original y copia de los siguientes documentos si se tratare
                              de alguno de estos casos: <br><br>*'.
                              $documentoB.'<br><br>'.
-                             'En fisico y en digital debidamente firmado por un profesional de area colegiado y con solvencia<br><br>'.
+                             //'En fisico y en digital debidamente firmado por un profesional de area colegiado y con solvencia<br><br>'.
 
                              'La aprobación o rechazo de su solicitud, le será notificada a través de su correo electrónico, condición ésta que debe esperar para seguir procesando su requerimiento. La celeridad en el procesamiento de su solicitud dependerá del tiempo que disponga para consignar los documentos que la soportan. <br>Recuerde, esta informacion es personal y de su exclusiva responsabilidad y se agradece no divulgar ni transferir
                              a terceros estos datos.<br><br>
@@ -209,7 +209,7 @@ class PlantillaEmail{
                              'Adicionalmente, deberá consignar original y copia de los siguientes documentos si se tratare
                              de alguno de estos casos: <br><br>*'.
                              $documentoB.'<br><br>'.
-                             'En fisico y en digital debidamente firmado por un profesional de area colegiado y con solvencia<br><br>'.
+                             //'En fisico y en digital debidamente firmado por un profesional de area colegiado y con solvencia<br><br>'.
 
                              'La aprobación o rechazo de su solicitud, le será notificada a través de su correo electrónico, condición ésta que debe esperar para seguir procesando su requerimiento. La celeridad en el procesamiento de su solicitud dependerá del tiempo que disponga para consignar los documentos que la soportan. <br>Recuerde, esta informacion es personal y de su exclusiva responsabilidad y se agradece no divulgar ni transferir
                              a terceros estos datos.<br><br>
