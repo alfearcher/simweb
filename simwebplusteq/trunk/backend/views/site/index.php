@@ -24,7 +24,7 @@
             ?>
         </div>
 
-        <?=Html::a('Comenzar',Url::to(['site/login']),[
+        <?=Html::a('Ingresar',Url::to(['site/login']),[
                                     'class' => 'btn btn-lg btn-primary',
                                     'style' => 'width:25%;',
         ])?>
