@@ -244,6 +244,9 @@
 		      	}
 
 		  		if ( isset($findModel) ) {
+		  			$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : [];
+					$rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud'], 'backend');
+
 		  			$caption = $caption . '. ' . Yii::t('frontend', 'Select Fiscal Lapse');
 		  			$listaAño = $searchRamo->getListaAnoRegistrado();
 		  			return $this->render('/aaee/desincorpora-ramo/_create', [
@@ -252,6 +255,7 @@
 			  											'listaAño' => $listaAño,
 			  											'caption' => $caption,
 			  											'errorMensaje' => $errorMensaje,
+			  											'rutaAyuda' => $rutaAyuda,
 					  					]);
 
 		  		} else {
