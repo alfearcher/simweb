@@ -191,7 +191,7 @@
 					<div class="form-group">
 						 <?= Html::a(Yii::t('backend', 'Help'), $rutaAyuda,  [
 															'id' => 'btn-help',
-															'class' => 'btn btn-danger',
+															'class' => 'btn btn-default',
 															'name' => 'btn-help',
 															'target' => '_blank',
 															'value' => 1,
