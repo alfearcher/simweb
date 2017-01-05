@@ -290,7 +290,7 @@
 					}
 
 					$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : [];
-					$rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud']);
+					$rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud'], 'backend');
 
 		  			return $this->render('@frontend/views/aaee/inscripcion-sucursal/_create', [
 		  											'model' => $model,
