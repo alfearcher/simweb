@@ -268,6 +268,8 @@
 						$errorListaAño = Yii::t('frontend', 'No se encontraron RUBROS AUTORIZADOS cargados ');
 						$errorMensaje = ( trim($errorMensaje) !== '' ) ? $errorMensaje = $errorMensaje . '. ' . $errorListaAño : $errorListaAño;
 					}
+
+
 					$url = Url::to(['index-create']);
 					$rutaLista = "/aaee/declaracion/declaracion-estimada/lista-periodo";
 					return $this->render('/aaee/declaracion/estimada/_create',
@@ -464,6 +466,10 @@
 						$opciones = [
 							'back' => '/aaee/declaracion/declaracion-estimada/index-create',
 						];
+
+						$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : [];
+						$rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud'], 'frontend');
+
 						$caption = $caption . '. ' . Yii::t('frontend', 'Categories Registered') . ' ' . $añoImpositivo . ' - ' . $periodo;
 						return $this->render('/aaee/declaracion/estimada/declaracion-estimada-form', [
 	  																	'model' => $modelMultiplex,
@@ -472,9 +478,7 @@
 	  																	'caption' => $caption,
 	  																	'opciones' =>$opciones,
 	  																	'subCaption' => $subCaption,
-
-
-
+	  																	'rutaAyuda' => $rutaAyuda,
 			  					]);
 
 			  		} else {
