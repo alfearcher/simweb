@@ -407,7 +407,7 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
      {
 
          $buscar = ConfiguracionTiposSolicitudes::find()->where("impuesto=:impuesto", [":impuesto" => 2])
-                                                        ->andwhere("descripcion=:descripcion", [":descripcion" => 'CAMBIO DE NUMERO CATASTRAL'])
+                                                        ->andwhere("descripcion=:descripcion", [":descripcion" => 'NUMERO CATASTRAL'])
                                                         ->asArray()->all();
 
 

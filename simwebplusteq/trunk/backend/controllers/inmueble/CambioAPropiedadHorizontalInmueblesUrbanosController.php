@@ -59,6 +59,13 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\Url;
 use common\conexion\conexionController;
+use common\models\contribuyente\ContribuyenteBase;
+use common\enviaremail\PlantillaEmail;
+use common\mensaje\MensajeController;
+use frontend\models\inmueble\ConfiguracionTiposSolicitudes;
+use common\models\configuracion\solicitud\ParametroSolicitud;
+use common\models\configuracion\solicitud\DocumentoSolicitud;
+use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 session_start();
 /**************************************************************************************************
  * CambioAPropiedadHorizontalInmueblesUrbanosController implements the actions for Inmuebles model.
@@ -94,16 +101,26 @@ class CambioAPropiedadHorizontalInmueblesUrbanosController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+    
+    public function actionView()
     {
         if ( isset( $_SESSION['idContribuyente'] ) ) {
+
+
+          $idInmueble = yii::$app->request->post('id');
+           
+          $datos = InmueblesConsulta::find()->where("id_impuesto=:impuesto", [":impuesto" => $idInmueble])
+                                            ->andwhere("inactivo=:inactivo", [":inactivo" => 0])
+                                            ->one();
+          $_SESSION['datos'] = $datos;
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $datos,
         ]);
         }  else {
                     echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
         }
-    }
+    } 
     
      /**
      *Metodo: CambioAPropiedadHorizontalInmuebles
@@ -113,11 +130,14 @@ class CambioAPropiedadHorizontalInmueblesUrbanosController extends Controller
      *para el cambio de otros datos inmuebles
      *@return model 
      **/
-    public function actionCambioAPropiedadHorizontalInmuebles($id_impuesto)
-    {
-        if ( isset( $_SESSION['idContribuyente'] ) ) {
-        $model = $this->findModel($id_impuesto);
+     public function actionCambioAPropiedadHorizontalInmuebles()
+     { 
+         
+         if ( isset( $_SESSION['idContribuyente']) ) {
+         //Creamos la instancia con el model de validación
+         $model = new CambioAPropiedadHorizontalInmueblesForm(); 
 
+         $datos = $_SESSION['datos'];
     
          //Mostrará un mensaje en la vista cuando el usuario se haya registrado
          $msg = null;
@@ -125,110 +145,259 @@ class CambioAPropiedadHorizontalInmueblesUrbanosController extends Controller
          $tipoError = null; 
     
          //Validación mediante ajax
-         if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax){
+         if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax){ 
 
               Yii::$app->response->format = Response::FORMAT_JSON;
               return ActiveForm::validate($model); 
-         } 
+         }
    
-         if ($model->load(Yii::$app->request->post())){ 
+         if ($model->load(Yii::$app->request->post())){
 
-              if($model->validate()){
+              if($model->validate()){ 
 
                  //condicionales     
-                  
-                if (!\Yii::$app->user->isGuest){
+                  $documento = new DocumentoSolicitud();
 
-                     $datosCambio = Yii::$app->request->post('CambioAPropiedadHorizontalInmueblesForm');
+                   $requisitos = $documento->documentos();
 
+                if (!\Yii::$app->user->isGuest){                                      
+                      
 
-                     $id_impuesto = $datosCambio["id_impuesto"];                   
-                     $id_contribuyente = $datosCambio["id_contribuyente"];        
-                     $propiedad_horizontal = $datosCambio["propiedad_horizontal"];
-                     
+                     $guardo = self::GuardarCambios($model, $datos);
 
-                     //cambios a propiedad horizontal
-                    if ($propiedad_horizontal == 0) {
+                     if($guardo == true){ 
 
-                          $parcela_catastro = $datosCambio["parcela_catastro"];                                            //Parcela catastro
+                          $envio = self::EnviarCorreo($guardo, $requisitos);
+
+                          if($envio == true){ 
+
+                              return MensajeController::actionMensaje(100);
+
+                          } else { 
+                            
+                              return MensajeController::actionMensaje(920);
+
+                          }
+
+                      } else {
+
+                            return MensajeController::actionMensaje(920);
+                      } 
+
+                   }else{ 
+
+                        $msg = Yii::t('backend', 'AN ERROR OCCURRED WHEN FILLING THE URBAN PROPERTY!');//HA OCURRIDO UN ERROR AL LLENAR LAS PREGUNTAS SECRETAS
+                        $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("site/login")."'>";                     
+                        return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
+                   } 
+
+              }else{ 
+                
+                   $model->getErrors(); 
+              }
+         }
+              return $this->render('cambio-a-propiedad-horizontal-inmuebles', ['model' => $model, 'datos'=>$datos]);  
+
+        }  else {
+                    echo "No hay Contribuyente Registrado!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['site/login'])."'>";
+        }    
+ 
+     } // cierre del metodo inscripcion de inmuebles
+
+    
+
+     /**
+      * [GuardarInscripcion description] Metodo que se encarga de guardar los datos de la solicitud 
+      * de inscripcion del inmueble del contribuyente
+      * @param [type] $model [description] arreglo de datos del formulario de inscripcion del
+      * inmueble
+      */
+     public function GuardarCambios($model, $datos)
+     {
+            $buscar = new ParametroSolicitud($_SESSION['id']);
+
+            $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
+            $datosContribuyente = self::DatosContribuyente();
+            $_SESSION['datosContribuyente']= $datosContribuyente;
+            try {
+            $tableName1 = 'solicitudes_contribuyente'; 
+
+            $tipoSolicitud = self::DatosConfiguracionTiposSolicitudes();
+
+            $arrayDatos1 = [  'id_contribuyente' => $datos->id_contribuyente,
+                              'id_config_solicitud' => $_SESSION['id'],
+                              'impuesto' => 2,
+                              'id_impuesto' => $datos->id_impuesto,
+                              'tipo_solicitud' => $tipoSolicitud,
+                              'usuario' => $datosContribuyente['email'],
+                              'fecha_hora_creacion' => date('Y-m-d h:i:s'),
+                              'nivel_aprobacion' => $nivelAprobacion["nivel_aprobacion"],
+                              'nro_control' => 0,
+                              'firma_digital' => null,
+                              'estatus' => 0,
+                              'inactivo' => 0,
+                          ];  
+            
+
+            $conn = New ConexionController();
+            $conexion = $conn->initConectar('db');     // instancia de la conexion (Connection)
+            $conexion->open();  
+            $transaccion = $conexion->beginTransaction();
+
+            if ( $conn->guardarRegistro($conexion, $tableName1,  $arrayDatos1) ){  
+                $result = $conexion->getLastInsertID();
+ ;               
+                if ($model->propiedad_horizontal == 0) {
+
+                          $parcela_catastro = $model->parcela_catastro;                                            //Parcela catastro
                           $subparcela_catastro = 0;                                                                //Sub parcela catastro
                           $nivel_catastro = 0;                                                                     //Nivel catastro
                           $unidad_catastro = 0;                                                                    //Unidad catastro     
                      }else{ 
 
-                          $parcela_catastro = $datosCambio["parcela_catastro"];                                            //Parcela catastro
-                          $subparcela_catastro = $datosCambio["subparcela_catastro"];                                      //Sub parcela catastro
-                          $nivel_c1 = $datosCambio["nivela"];
-                          $nivel_c2 = $datosCambio["nivelb"];
+                          $parcela_catastro = $model->parcela_catastro;                                            //Parcela catastro
+                          $subparcela_catastro = $model->subparcela_catastro;                                      //Sub parcela catastro
+                          $nivel_c1 = $model->nivela;
+                          $nivel_c2 = $model->nivelb;
                           $nivel_catastro1 = array(['nivela' =>$nivel_c1 , 'nivelb'=>$nivel_c2 ]);                 //Nivel catastro
                           $nivel_catastro = "".$nivel_catastro1[0]['nivela']."".$nivel_catastro1[0]['nivelb']."";
-                          $unidad_catastro = $datosCambio["unidad_catastro"];                                              //Unidad catastro  
+                          $unidad_catastro = $model->unidad_catastro;                                              //Unidad catastro  
                      }  
-                    
-
-                        //--------------TRY---------------
-                        $arrayDatos = [
-                                        //datos a guardar de propiedad horizontal
-                                       'propiedad_horizontal' => $propiedad_horizontal,
-                                       'parcela_catastro' => $parcela_catastro,
-                                       'subparcela_catastro' => $subparcela_catastro,
-                                       'nivel_catastro' => $nivel_catastro,
-                                       'unidad_catastro' => $unidad_catastro,
-                                      ]; 
-
-                        $tableName = 'inmuebles';  
-
-                        $arrayCondition = ['id_impuesto' => $id_impuesto,]; 
 
 
-                        $conn = New ConexionController(); 
+                $arrayDatos2 = [    'id_contribuyente' => $datos->id_contribuyente,
+                                    'id_impuesto' => $datos->id_impuesto,
+                                    'nro_solicitud' => $result,
+                                    'propiedad_horizontal' => $model->propiedad_horizontal,
+                                    'parcela_catastro' => $parcela_catastro,
+                                    'subparcela_catastro' => $subparcela_catastro,
+                                    'nivel_catastro' => $nivel_catastro,
+                                    'unidad_catastro' => $unidad_catastro,
+                                    'fecha_creacion' => date('Y-m-d h:i:s'),
+                                ]; 
 
-                        $this->conexion = $conn->initConectar('db');     // instancia de la conexion (Connection)
-                        $this->conexion->open(); 
+           
+                 $tableName2 = 'sl_inmuebles'; 
 
-                        $transaccion = $this->conexion->beginTransaction(); 
+                if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){
 
-                        if ( $conn->modificarRegistro($this->conexion, $tableName, $arrayDatos, $arrayCondition) ){
+                    if ($nivelAprobacion['nivel_aprobacion'] != 1){
 
-                            $transaccion->commit(); 
-                            $tipoError = 0; 
-                            $msg = Yii::t('backend', 'SUCCESSFUL UPDATE DATA OF THE URBAN PROPERTY!');//REGISTRO EXITOSO DE LAS PREGUNTAS DE SEGURIDAD
-                            $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['inmueble/inmuebles-urbanos/view', 'id' => $model->id_impuesto])."'>";                     
-                            return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
-                        }else{
+                        $transaccion->commit(); 
+                        $conexion->close(); 
+                        $tipoError = 0;  
+                        return $result; 
 
-                            $transaccion->rollBack(); 
-                            $tipoError = 0; 
-                            $msg = Yii::t('backend', 'AN ERROR OCCURRED WHEN UPDATE THE URBAN PROPERTY!');//HA OCURRIDO UN ERROR AL LLENAR LAS PREGUNTAS SECRETAS
-                            $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['inmueble/inmuebles-urbanos/view', 'id' => $model->id_impuesto])."'>";                     
-                            return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
-                        }   
+                    } else {
 
-                        $this->conexion->close(); 
+                        $arrayDatos3 = [    'id_contribuyente' => $datos->id_contribuyente,
+                                            'propiedad_horizontal' => $model->propiedad_horizontal,
+                                            'parcela_catastro' => $parcela_catastro,
+                                            'subparcela_catastro' => $subparcela_catastro,
+                                            'nivel_catastro' => $nivel_catastro,
+                                            'unidad_catastro' => $unidad_catastro,
+                                    
+                                        ]; 
+
+            
+                        $tableName3 = 'inmuebles';
+                        $arrayCondition = ['id_impuesto'=>$datos->id_impuesto];
+
+                        if ( $conn->modificarRegistro($conexion, $tableName3,  $arrayDatos3, $arrayCondition) ){
+
+                              $transaccion->commit();  
+                              $conexion->close(); 
+                              $tipoError = 0; 
+                              return $result; 
+
+                        } else {
+            
+                              $transaccion->rollBack(); 
+                              $conexion->close(); 
+                              $tipoError = 0; 
+                              return false; 
+
+                        }
+                  }
 
 
-                   }else{
+                } else {
+            
+                    $transaccion->rollBack(); 
+                    $conexion->close(); 
+                    $tipoError = 0; 
+                    return false; 
 
-                        $msg = Yii::t('backend', 'AN ERROR OCCURRED WHEN FILLING THE URBAN PROPERTY!');//HA OCURRIDO UN ERROR AL LLENAR LAS PREGUNTAS SECRETAS
-                        $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute(['inmueble/inmuebles-urbanos/view', 'id' => $model->id_impuesto])."'>";                     
-                        return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
-                   } 
+                }
 
-              }else{
+            }else{ 
                 
-                   $model->getErrors(); 
-              }
+                return false;
+            }   
+            
+          } catch ( Exception $e ) {
+              //echo $e->errorInfo[2];
+          } 
+                       
+     }
+
+       
+
+    /**
+     * [DatosContribuyente] metodo que busca los datos del contribuyente en 
+     * la tabla contribuyente
+     */
+     public function DatosContribuyente()
+     {
+
+         $buscar = ContribuyenteBase::find()->where("id_contribuyente=:idContribuyente", [":idContribuyente" => $_SESSION['idContribuyente']])
+                                                        ->asArray()->all();
+
+
+         return $buscar[0];                                              
+
+     } 
+
+    /**
+     * [DatosConfiguracionTiposSolicitudes description] metodo que busca el tipo de solicitud en 
+     * la tabla config_tipos_solicitudes
+     */
+     public function DatosConfiguracionTiposSolicitudes()
+     {
+
+         $buscar = ConfiguracionTiposSolicitudes::find()->where("impuesto=:impuesto", [":impuesto" => 2])
+                                                        ->andwhere("descripcion=:descripcion", [":descripcion" => 'CAMBIO A PROPIEDAD HORIZONTAL'])
+                                                        ->asArray()->all();
+
+
+         return $buscar[0]["id_tipo_solicitud"];                                              
+
+     } 
+
+     /**
+     * [EnviarCorreo description] Metodo que se encarga de enviar un email al contribuyente 
+     * con el estatus del proceso
+     */
+     public function EnviarCorreo($guardo, $requisitos)
+     {
+         $email = $_SESSION['datosContribuyente']['email'];
+
+         $solicitud = 'Cambio a Propiedad Horizontal';
+
+         $nro_solicitud = $guardo;
+
+         $enviarEmail = new PlantillaEmail();
+        
+         if ($enviarEmail->plantillaEmailSolicitud($email, $solicitud, $nro_solicitud, $requisitos)){
+
+             return true; 
+         } else { 
+
+             return false; 
          }
 
-         return $this->render('cambio-a-propiedad-horizontal-inmuebles', [
-                'model' => $model,
-            ]); 
-        
-        }  else {
-                    echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
-        }
-    } 
 
+     }
 
     /**
      * Finds the Inmuebles model based on its primary key value.

@@ -21,15 +21,15 @@
  */
 
  /**    
- *  @file CambioOtrosDatosInmueblesUrbanosController.php
+ *  @file AvaluoCatastralInmueblesUrbanosController.php
  *  
  *  @author Alvaro Jose Fernandez Archer
  * 
- *  @date 08-03-2016
+ *  @date 17-08-2015
  * 
- *  @class CambioOtrosDatosInmueblesUrbanosController
- *  @brief Clase que permite controlar la solicitud del registro o inscripcion de inmuebles urbanos
- *  en el lado del contribuyente,
+ *  @class AvaluoCatastralInmueblesUrbanosController
+ *  @brief Clase que permite controlar el avaluo catastral del inmueble urbano 
+ *  
  *
  * 
  *  
@@ -38,56 +38,46 @@
  *
  *  
  *  @method
- *  View
- *  Index
- *  CambiosOtrosDatosInmueblesUrbanos
- *  GuardarCambios
- *  DatosConfiguracionTiposSolicitudes
- *  EnviarCorreo
+ *  AvaluoCatastralInmuebles
+ *  findModel
+ *  
+ *   
  *  
  *  @inherits
  *  
  */
-namespace frontend\controllers\inmueble\cambionumerocatastral;
-
+namespace backend\controllers\inmueble;
+error_reporting(0);
+session_start();
 use Yii;
-use yii\filters\AccessControl;
+use backend\models\inmueble\InmueblesUrbanosForm;
+use backend\models\inmueble\ContribuyentesForm;
+use backend\models\inmueble\AvaluoCatastralForm;
+use common\models\contribuyente\ContribuyenteBase;
+
+use backend\models\inmueble\InmueblesSearch;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
- 
-use yii\widgets\ActiveForm;
-use yii\web\Response;
-use common\models\Users;
-use common\models\User;
-use yii\web\Session;
-use frontend\models\inmueble\cambionumerocatastral\CambioNumeroCatastralInmueblesForm;
-use frontend\models\inmueble\InmueblesSearch;
-use frontend\models\inmueble\InmueblesConsulta;
-use common\models\solicitudescontribuyente\SolicitudesContribuyente;
-
-//use common\models\Users;
-
-// mandar url
-use yii\web\UrlManager;
-use yii\base\Component;
-use yii\base\Object;
 use yii\helpers\Url;
-// active record consultas..
-use yii\db\ActiveRecord;
 use common\conexion\ConexionController;
+
+use backend\models\buscargeneral\BuscarGeneralForm;
+use backend\models\buscargeneral\BuscarGeneral;
+
+use backend\models\inmueble\InmueblesConsulta;
 use common\enviaremail\PlantillaEmail;
 use common\mensaje\MensajeController;
 use frontend\models\inmueble\ConfiguracionTiposSolicitudes;
 use common\models\configuracion\solicitud\ParametroSolicitud;
 use common\models\configuracion\solicitud\DocumentoSolicitud;
-
-session_start();
-/*********************************************************************************************************
- * InscripcionInmueblesUrbanosController implements the actions for InscripcionInmueblesUrbanosForm model.
- *********************************************************************************************************/
-class CambioNumeroCatastralInmueblesUrbanosController extends Controller
-{
-   public $layout="layout-main";
+use common\models\solicitudescontribuyente\SolicitudesContribuyente;
+/**
+ * CambiosInmueblesUrbanosController implements the CRUD actions for InmueblesUrbanosForm model.
+ */
+class LinderosInmueblesUrbanosController extends Controller
+{   
+    public $layout="layout-main";
     public $conn;
     public $conexion;
     public $transaccion;
@@ -96,6 +86,8 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
 tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
 */
+
+    
       /**
      * Lists all Inmuebles models.
      * @return mixed
@@ -104,7 +96,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
     {
         $idConfig = yii::$app->request->get('id');
 
-         $_SESSION['id'] = $idConfig;
+         $_SESSION['id'] = 6;
 
         if ( isset( $_SESSION['idContribuyente'] ) ) {
         $searchModel = new InmueblesSearch();
@@ -150,12 +142,12 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      *Metodo para crear las cuentas de usuarios de los funcionarios
      *@return model 
      **/
-     public function actionCambioDeNumeroCatastralInmuebles()
+     public function actionLinderosInmuebles()
      { 
          
-         if ( isset(Yii::$app->user->identity->id_contribuyente) ) {
+         if ( isset($_SESSION['idContribuyente'] ) ) {
          //Creamos la instancia con el model de validación
-         $model = new CambioNumeroCatastralInmueblesForm();
+         $model = new AvaluoCatastralForm();
 
          $datos = $_SESSION['datos'];
     
@@ -163,7 +155,6 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
          $msg = null;
          $url = null; 
          $tipoError = null; 
-         $todoBien = true;
     
          //Validación mediante ajax
          if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax){ 
@@ -184,45 +175,26 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                 if (!\Yii::$app->user->isGuest){                                      
                       
 
-
-                     foreach($datos as $key => $value) {
-                     
-                          $value; 
-                          //die($value['id_vehiculo']);
-                          $verificarSolicitud = self::verificarSolicitud($value , $_SESSION['id']);
-              
-                          if($verificarSolicitud == true){
-                              //die(var_dump($value['id_vehiculo']));
-                              $todoBien = false;
-                          
-                           } 
-                     }
-
-                    if($todoBien == true){
                      $guardo = self::GuardarCambios($model, $datos);
 
                      if($guardo == true){ 
 
-                          $envio = self::EnviarCorreo($guardo, $requisitos);
+                           $envio = self::EnviarCorreo($guardo, $requisitos);
 
-                          if($envio == true){ 
+                           if($envio == true){ 
 
                               return MensajeController::actionMensaje(100);
 
-                          } else { 
+                           } else { 
                             
-                              return MensajeController::actionMensaje(920);
+                               return MensajeController::actionMensaje(920);
 
-                          }
+                           }
 
                       } else {
 
                             return MensajeController::actionMensaje(920);
                       } 
-                    } else {
-
-                            return MensajeController::actionMensaje(971);
-                     } 
 
                    }else{ 
 
@@ -236,7 +208,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                    $model->getErrors(); 
               }
          }
-              return $this->render('cambio-de-numero-catastral-inmuebles', ['model' => $model, 'datos'=>$datos]);  
+              return $this->render('avaluo-catastral-inmuebles', ['model' => $model, 'datos'=>$datos]);  
 
         }  else {
                     echo "No hay Contribuyente Registrado!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['site/login'])."'>";
@@ -257,7 +229,8 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
             $buscar = new ParametroSolicitud($_SESSION['id']);
 
             $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
-            
+            $datosContribuyente = self::DatosContribuyente();
+            $_SESSION['datosContribuyente']= $datosContribuyente;
             try {
             $tableName1 = 'solicitudes_contribuyente'; 
 
@@ -268,7 +241,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                               'impuesto' => 2,
                               'id_impuesto' => $datos->id_impuesto,
                               'tipo_solicitud' => $tipoSolicitud,
-                              'usuario' => yii::$app->user->identity->login,
+                              'usuario' => $datosContribuyente['email'],
                               'fecha_hora_creacion' => date('Y-m-d h:i:s'),
                               'nivel_aprobacion' => $nivelAprobacion["nivel_aprobacion"],
                               'nro_control' => 0,
@@ -286,32 +259,23 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
             if ( $conn->guardarRegistro($conexion, $tableName1,  $arrayDatos1) ){  
                 $result = $conexion->getLastInsertID();
                 
-                $estado_catastro = $model->estado_catastro; 
-                $municipio_catastro = $model->municipio_catastro; 
-                $parroquia_catastro = $model->parroquia_catastro; 
-                $ambito_catastro = $model->ambito_catastro; 
-                $sector_catastro = $model->sector_catastro; 
-                $manzana_catastro = $model->manzana_catastro; 
-                $catastro1 = array(['estado' => $estado_catastro, 'municipio'=> $municipio_catastro, 'parroquia'=>$parroquia_catastro, 'ambito'=>$ambito_catastro, 'sector'=>$sector_catastro, 'manzana' =>$manzana_catastro]);
-                $catastro = "".$catastro1[0]['estado']."-".$catastro1[0]['municipio']."-".$catastro1[0]['parroquia']."-".$catastro1[0]['ambito']."-".$catastro1[0]['sector']."-".$catastro1[0]['manzana']."";
 
+                $avaluoConstruccion = $model->metros_construccion * $model->valor_construccion;
+                $avaluoTerreno = $model->metros_terreno * $model->valor_terreno;
 
-                $arrayDatos2 = [    'id_contribuyente' => $datos->id_contribuyente,
-                                    'id_impuesto' => $datos->id_impuesto,
+                $arrayDatos2 = [    'id_impuesto' => $datos->id_impuesto,
                                     'nro_solicitud' => $result,
-                                    'estado_catastro' => $model->estado_catastro,
-                                    'municipio_catastro' => $model->municipio_catastro,
-                                    'parroquia_catastro' => $model->parroquia_catastro,
-                                    'ambito_catastro' => $model->ambito_catastro,
-                                    'sector_catastro' => $model->sector_catastro,
-                                    'manzana_catastro' => $model->manzana_catastro,
-                                       //catastro
-                                    'catastro' => $catastro,
-                                    'fecha_creacion' => date('Y-m-d h:i:s'),
+                                    'fecha' => date('Y-m-d'),
+                                    'lindero_norte' => $model->lindero_norte,
+                                    'lindero_sur' => $model->lindero_sur,
+                                    'lindero_este' => $model->lindero_este,
+                                    'lindero_oeste' => $model->lindero_oeste,
+                                    
+                                    
                                 ]; 
 
             
-                 $tableName2 = 'sl_inmuebles'; 
+                 $tableName2 = 'sl_historico_avaluos'; 
 
                 if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){
 
@@ -323,29 +287,28 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                         return $result; 
 
                     } else {
-
-                        $arrayDatos3 = [    'id_contribuyente' => $datos->id_contribuyente,
-                                            'estado_catastro' => $model->estado_catastro,
-                                            'municipio_catastro' => $model->municipio_catastro,
-                                            'parroquia_catastro' => $model->parroquia_catastro,
-                                            'ambito_catastro' => $model->ambito_catastro,
-                                            'sector_catastro' => $model->sector_catastro,
-                                            'manzana_catastro' => $model->manzana_catastro,
-                                               //catastro
-                                            'catastro' => $catastro,
-                                    
-                                        ]; 
+                
+                        
+                        $arrayDatos3 = [    
+                                            'lindero_norte' => $model->lindero_norte,
+                                            'lindero_sur' => $model->lindero_sur,
+                                            'lindero_este' => $model->lindero_este,
+                                            'lindero_oeste' => $model->lindero_oeste,
+                                                                                        
+                                       ]; 
 
             
-                        $tableName3 = 'inmuebles';
-                        $arrayCondition = ['id_impuesto'=>$datos->id_impuesto];
+                        $tableName3 = 'historico_avaluos';
+                        $arrayCondition = ['id_impuesto' => $datos->id_impuesto,]
+                         
+
 
                         if ( $conn->modificarRegistro($conexion, $tableName3,  $arrayDatos3, $arrayCondition) ){
 
                               $transaccion->commit();  
                               $conexion->close(); 
                               $tipoError = 0; 
-                              return $result; 
+                              return true; 
 
                         } else {
             
@@ -371,12 +334,31 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                 
                 return false;
             }   
+
+
+                
+ 
             
           } catch ( Exception $e ) {
               //echo $e->errorInfo[2];
           } 
                        
      }
+
+     /**
+     * [DatosContribuyente] metodo que busca los datos del contribuyente en 
+     * la tabla contribuyente
+     */
+     public function DatosContribuyente()
+     {
+
+         $buscar = ContribuyenteBase::find()->where("id_contribuyente=:idContribuyente", [":idContribuyente" => $_SESSION['idContribuyente']])
+                                                        ->asArray()->all();
+
+
+         return $buscar[0];                                              
+
+     } 
 
     /**
      * [DatosConfiguracionTiposSolicitudes description] metodo que busca el tipo de solicitud en 
@@ -386,30 +368,13 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      {
 
          $buscar = ConfiguracionTiposSolicitudes::find()->where("impuesto=:impuesto", [":impuesto" => 2])
-                                                        ->andwhere("descripcion=:descripcion", [":descripcion" => 'NUMERO CATASTRAL'])
+                                                        ->andwhere("descripcion=:descripcion", [":descripcion" => 'REGISTRO DE AVALUO CATASTRAL'])
                                                         ->asArray()->all();
 
 
          return $buscar[0]["id_tipo_solicitud"];                                              
 
      } 
-
-      public function verificarSolicitud($idInmueble,$idConfig)
-    {
-      $buscar = SolicitudesContribuyente::find()
-                                        ->where([ 
-                                          'id_impuesto' => $idInmueble,
-                                          'id_config_solicitud' => $idConfig,
-                                          'inactivo' => 0,
-                                        ])
-                                      ->all();
-
-            if($buscar == true){
-             return true;
-            }else{
-             return false;
-            }
-    }
 
 
     /**
@@ -418,9 +383,9 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      */
      public function EnviarCorreo($guardo, $requisitos)
      {
-         $email = yii::$app->user->identity->login;
+         $email = $_SESSION['datosContribuyente']['email'];
 
-         $solicitud = 'Cambio de Número Catastral';
+         $solicitud = 'Avaluo Catastral del Inmueble';
 
          $nro_solicitud = $guardo;
 
@@ -436,5 +401,40 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
 
      }
+    
 
+    /**
+     * Finds the Inmuebles model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return Inmuebles the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    // protected function findModel($id)
+    // { 
+    //     if (($model = AvaluoCatastralForm::findOne($id)) !== null) {
+
+    //         return $model; 
+    //     } else {
+    //         throw new NotFoundHttpException('The requested page does not exist.');
+    //     } 
+    // } 
+    
+    /**
+     * Finds the Contribuyentes model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return Contribuyente the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+   /* public function findModelContribuyente($id)
+    {//echo'<pre>'; var_dump($_SESSION['idContribuyente']); echo '</pre>'; die('hola');
+        if (($modelContribuyente = ContribuyentesForm::findOne($id)) !== null) {
+            
+            return $modelContribuyente; 
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }*/
 }
+

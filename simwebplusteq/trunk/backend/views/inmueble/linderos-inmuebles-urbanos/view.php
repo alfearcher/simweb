@@ -14,8 +14,8 @@ $this->title = Yii::t('backend', 'View Property Urban');
     
 
     <p>
-       <?= Html::a(Yii::t('backend', 'Horizontal property change'), ['inmueble/cambio-a-propiedad-horizontal-inmuebles-urbanos/cambio-a-propiedad-horizontal-inmuebles'], ['class' => 'btn btn-primary']) ?>
-       <?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) ?>
+        <?= Html::a(Yii::t('backend', 'Property Valuation'), ['inmueble/avaluo-catastral-inmuebles-urbanos/avaluo-catastral-inmuebles'], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) ?>
     </p> 
 
     <?= DetailView::widget([

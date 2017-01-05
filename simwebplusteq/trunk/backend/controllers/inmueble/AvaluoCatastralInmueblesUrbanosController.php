@@ -291,8 +291,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                         $avaluoConstruccion = $model->metros_construccion * $model->valor_construccion;
                         $avaluoTerreno = $model->metros_terreno * $model->valor_terreno;
 
-                        $arrayDatos1 = [    'id_impuesto' => $datos->id_impuesto,
-                                            'nro_solicitud' => $result,
+                        $arrayDatos3 = [    'id_impuesto' => $datos->id_impuesto,
                                             'fecha' => date('Y-m-d'),
                                             'mts' => $model->metros_construccion,
                                             'valor_por_mts2' => $model->valor_construccion,
@@ -307,11 +306,11 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                                         ]; 
 
             
-                        $tableName1 = 'historico_avaluos';
+                        $tableName3 = 'historico_avaluos';
                          
 
 
-                        if ( $conn->guardarRegistro($conexion, $tableName1,  $arrayDatos1) ){
+                        if ( $conn->guardarRegistro($conexion, $tableName3,  $arrayDatos3) ){
 
                               $transaccion->commit();  
                               $conexion->close(); 
