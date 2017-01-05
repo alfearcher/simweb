@@ -104,7 +104,7 @@
             $this->_evento = $evento;
             $this->_conn = $conn;
             $this->_conexion = $conexion;
-            parent::__construct($model['id_contribuyente']);
+            //parent::__construct($model['id_contribuyente']);
         }
 
 
@@ -164,7 +164,7 @@
             // Este find retorna el modelo de la entidad "sl-inscripciones-act-econ"
             // con datos, ya que en el metodo padre se ejecuta el ->one() que realiza
             // la consulta.
-            $modelFind = $this->findInscripcion($this->_model->nro_solicitud);
+            $modelFind = $this->findAvaluos($this->_model->nro_solicitud);
             return isset($modelFind) ? $modelFind : null;
         }
 
@@ -207,7 +207,7 @@
             $result = false;
             $modelInscripcion = self::findInscripcionInmuebleUrbano();
             if ( $modelInscripcion !== null ) {
-                if ( $modelInscripcion['id_contribuyente'] == $this->_model->id_contribuyente ) {
+                if ( $modelInscripcion['id_impuesto'] == $this->_model->id_impuesto ) {
                     $result = self::updateSolicitudInscripcion($modelInscripcion);
                     // if ( $result ) {
                     //     $result = self::updateContribuyente($modelInscripcion);
@@ -234,7 +234,7 @@
             $result = false;
             $modelInscripcion = self::findInscripcionInmuebleUrbano();
             if ( $modelInscripcion !== null ) {
-                if ( $modelInscripcion['id_contribuyente'] == $this->_model->id_contribuyente ) {
+                if ( $modelInscripcion['id_impuesto'] == $this->_model->id_impuesto ) {
                     $result = self::updateSolicitudInscripcion($modelInscripcion);
                 } else {
                     self::setErrors(Yii::t('backend', 'Error in the ID of taxpayer'));
@@ -289,9 +289,9 @@
                     $arregloDatosMaster = [
                                             'id_impuesto' => $camposModel['id_impuesto'],
                                             'mts' => $camposModel['mts'],
-                                            'valor_por_mts2' => $camposModel['valor_por_mts'],
-                                            'mts2_terreno' => $camposModel['mts_terreno'],
-                                            'valor_por_mts2_terreno' => $camposModel['valor_por_mts_terreno'], 
+                                            'valor_por_mts2' => $camposModel['valor_por_mts2'],
+                                            'mts2_terreno' => $camposModel['mts2_terreno'],
+                                            'valor_por_mts2_terreno' => $camposModel['valor_por_mts2_terreno'], 
                                             'valor' => $camposModel['valor'], 
                                             
                                          ];  
