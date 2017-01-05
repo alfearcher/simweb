@@ -237,7 +237,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
             $tipoSolicitud = self::DatosConfiguracionTiposSolicitudes();
 
-            $arrayDatos1 = [  'id_contribuyente' => $datos->id_contribuyente,
+            $arrayDatos1 = [  'id_contribuyente' => $datosContribuyente['id_contribuyente'],
                               'id_config_solicitud' => $_SESSION['id'],
                               'impuesto' => 2,
                               'id_impuesto' => $datos->id_impuesto,
@@ -383,10 +383,10 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      * con el estatus del proceso
      */
      public function EnviarCorreo($guardo, $requisitos)
-     {
+     { 
          $email = $_SESSION['datosContribuyente']['email'];
 
-         $solicitud = 'Avaluo Catastral del Inmueble';
+         $solicitud = 'Linderos del Inmueble';
 
          $nro_solicitud = $guardo;
 
