@@ -178,7 +178,7 @@ public $layout = "layout-login";
         //die('llegue a logout');
         Yii::$app->user->logout();
         
-        return $this->redirect(['/contribuyente/crear/crear']);
+        return $this->redirect(['/site/index']);
     }
 
     public function actionLogout2()
@@ -186,7 +186,7 @@ public $layout = "layout-login";
         //die('llegue a logout');
         Yii::$app->user->logout();
         
-        return $this->redirect(['site/login']);
+        return $this->redirect(['/site/index']);
     }
 
 
