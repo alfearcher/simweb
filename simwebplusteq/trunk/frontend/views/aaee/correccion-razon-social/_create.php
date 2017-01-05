@@ -49,6 +49,7 @@
 						        'subCaption' => $subCaption,
 						        'dataProvider' => $dataProvider,
 						        'errorChk' => $errorChk,
+						        'rutaAyuda' => $rutaAyuda,
 
 					    ]) ?>
 </div>
