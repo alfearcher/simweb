@@ -498,6 +498,10 @@
 						$opciones = [
 							'back' => '/aaee/declaracion/declaracion-definitiva/index-create',
 						];
+
+						$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : [];
+						$rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud'], 'frontend');
+
 						$caption = $caption . '. ' . Yii::t('frontend', 'Categories Registered') . ' ' . $añoImpositivo . ' - ' . $periodo;
 						return $this->render('/aaee/declaracion/definitiva/declaracion-definitiva-form', [
 	  																	'model' => $modelMultiplex,
@@ -506,6 +510,7 @@
 	  																	'caption' => $caption,
 	  																	'opciones' =>$opciones,
 	  																	'subCaption' => $subCaption,
+																		'rutaAyuda' => $rutaAyuda,
 
 			  					]);
 
