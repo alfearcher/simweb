@@ -71,6 +71,7 @@
 						        'findModel' => $findModel,
 						        'listaAño' => $listaAño,
 						        'caption' => $caption,
+						        'rutaAyuda' => $rutaAyuda,
 					    ]) ?>
 </div>
 
