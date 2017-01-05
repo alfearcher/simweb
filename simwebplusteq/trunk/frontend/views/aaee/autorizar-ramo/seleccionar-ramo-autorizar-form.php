@@ -97,17 +97,10 @@
 								}
 			    			</style>
 			        		<?= MenuController::actionMenuSecundario([
-			        						'help' => '/aaee/autorizarramo/autorizar-ramo/solicitar-ayuda',
+			        						//'help' => $rutaAyuda,
 			        						'quit' => '/aaee/autorizarramo/autorizar-ramo/quit',
 			        			])
 			        		?>
-			        		<a href="<?=Url::toRoute(['/aaee/autorizarramo/autorizar-ramo/downloadFile', 'file'=>'10.pdf'])?>"><h3>Descargar</h3></a>
-			        		<!-- <?//=Url::toRoute('Link',['@frontend/view/aaee/autorizar-ramo/prueba/10.pdf'],[
-			        		//						'class' => 'btn btn-primary',
-			        		//						'target' => '_blank',
-			        		//])?> -->
-							<!-- <i class="fa fa-question-circle fa-3x" aria-hidden="true"></i> -->
-
 
 		        	</div>
 	        	<!-- <h3><?//= Html::encode($this->title) ?></h3> -->
@@ -483,7 +476,7 @@
 					<div class="form-group">
 						 <?= Html::a(Yii::t('backend', 'Help'), $rutaAyuda,  [
 																		'id' => 'btn-help',
-																		'class' => 'btn btn-danger',
+																		'class' => 'btn btn-default',
 																		'name' => 'btn-help',
 																		'target' => '_blank',
 																		'value' => 1,
