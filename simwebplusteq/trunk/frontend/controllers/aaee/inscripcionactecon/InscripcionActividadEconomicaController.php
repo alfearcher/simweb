@@ -174,7 +174,7 @@
 
 
 		  		$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : [];
-				$rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud']);
+				$rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud'], 'frontend');
 
 		  		$url = Url::to(['index-create']);
 		  		$bloquear = false;
