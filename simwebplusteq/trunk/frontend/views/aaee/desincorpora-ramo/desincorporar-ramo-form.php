@@ -176,18 +176,32 @@
 			</div>  	<!-- Fin de container-fluid -->
 
 			<div class="row">
-				<div class="col-sm-3">
+				<div class="col-sm-3" style="margin-left: 150px;margin-top:20px;">
 					<div class="form-group">
 						<?= Html::submitButton(Yii::t('frontend', Yii::t('frontend', 'Quit')),
 																			  [
 																				'id' => 'btn-quit',
 																				'class' => 'btn btn-danger',
 																				'value' => 1,
-																				'style' => 'width: 100%; margin-left: 300px;margin-top:20px;',
+																				'style' => 'width: 100%;',
 																				'name' => 'btn-quit',
 
 																			  ])
 						?>
+					</div>
+				</div>
+
+				<div class="col-sm-2" style="margin-left: 50px;margin-top:20px;">
+					<div class="form-group">
+					<!-- '../../common/docs/user/ayuda.pdf'  funciona -->
+						 <?= Html::a(Yii::t('backend', 'Ayuda'), $rutaAyuda,  [
+																		'id' => 'btn-help',
+																		'class' => 'btn btn-default',
+																		'name' => 'btn-help',
+																		'target' => '_blank',
+																		'value' => 1,
+																		'style' => 'width: 100%;'
+							])?>
 					</div>
 				</div>
 			</div>
