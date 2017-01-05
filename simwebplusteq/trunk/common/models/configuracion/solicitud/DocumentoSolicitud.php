@@ -69,13 +69,13 @@ class DocumentoSolicitud{
     {
 
 
-       $documentosPrincipal = SolicitudDocumento::find()->Where(['id_config_solicitud'=>$_SESSION['id']]) 
+       $documentosPrincipal = SolicitudDocumento::find()->Where(['id_config_solicitud'=>$_SESSION['id'],'config_solic_documentos.inactivo' => 0]) 
                                                ->andWhere(['copia'=>0])
                                                ->joinWith('documentoRequisito')
                                                ->asArray()
                                                ->all();
 
-       $documentosSegundarios = SolicitudDocumento::find()->Where(['id_config_solicitud'=>$_SESSION['id']]) 
+       $documentosSegundarios = SolicitudDocumento::find()->Where(['id_config_solicitud'=>$_SESSION['id'],'config_solic_documentos.inactivo' => 0]) 
                                                ->andWhere(['copia'=>1])
                                                ->joinWith('documentoRequisito')
                                                ->asArray()
