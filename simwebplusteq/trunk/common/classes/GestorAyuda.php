@@ -54,10 +54,15 @@
 		}
 
 
-		/***/
-		public function getRutaAyuda($tipo)
+		/**
+		 * Metodo que permite armar la ruta de la ayuda de la vista.
+		 * @param  integer $tipo tipo de solicitud
+		 * @param  string $escenario "backend" o "frontend"
+		 * @return string retorna una url donde se especifica la ruta de la ayuda.
+		 */
+		public function getRutaAyuda($tipo, $escenario)
 		{
-			return $rutaBase = self::getRutaBase()[$tipo] . self::findTipoSolicitud($tipo);
+			return $rutaBase = self::getRutaBase()[$escenario][$tipo] . self::findTipoSolicitud($tipo);
 		}
 
 
