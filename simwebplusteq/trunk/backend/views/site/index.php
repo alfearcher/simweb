@@ -8,12 +8,18 @@
 <div class="site-index">
 
     <div class="jumbotron">
+        <div class="row" style="margin-top:-80px;">
+            <?=Html::img('@web/imagen/logo.jpg',[
+                                            'style' => 'width: 40%;'
+                ]);
+            ?>
+        </div>
         <h1>Bienvenido!</h1>
 
         <p class="lead">AL NUEVO SISTEMA DE RECAUDACION DE LA ALCALDIA </p>
         <div class="row">
             <?=Html::img('@web/imagen/logo-sin-fondo-blanco.jpg',[
-                                            'style' => 'width: 25%;'
+                                            'style' => 'width: 15%;'
                 ]);
             ?>
         </div>
