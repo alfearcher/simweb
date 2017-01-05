@@ -50,6 +50,7 @@
 						        'dataProvider' => $dataProvider,
 						        'listaNaturaleza' => $listaNaturaleza,
 						        'errorRif' => $errorRif,
+						        'rutaAyuda' => $rutaAyuda,
 
 					    ]) ?>
 </div>
