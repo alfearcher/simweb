@@ -125,7 +125,7 @@
 		        						['label' => 'Avaluo Catastral', 'url' => ['/inmueble/avaluo-catastral-inmuebles-urbanos/index']],
 		        						['label' => 'Certificado Catastral', 'url' => ['/inmueble/cedula-catastral-inmuebles-urbanos/index']],
 		        						['label' => 'Renovación de Certificado Catastral', 'url' => '#'],
-		        						['label' => 'Solvencia', 'url' => '#'],
+		        						['label' => 'Linderos', 'url' => ['/inmueble/linderos-inmuebles-urbanos/index']],
 		        						['label' => 'Cambio de Numero Catastral', 'url' => ['/inmueble/cambio-numero-catastral-inmuebles-urbanos/index']],
 		        						['label' => 'Cambio de Propietario(VENDEDOR)', 'url' => ['inmueble/cambio-propietario-vendedor-inmuebles-urbanos/index','id' =>12]], // vendedor:12
 		        						['label' => 'Cambio de Propietario(COMPRADOR)', 'url' => ['inmueble/cambio-propietario-comprador-inmuebles-urbanos/buscar-vendedor','id' =>11]], // comprador:11

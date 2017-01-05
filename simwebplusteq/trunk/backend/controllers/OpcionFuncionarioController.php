@@ -129,7 +129,7 @@ class OpcionFuncionarioController extends Controller
 
               if($model->validate()){
 
-                     $datos = Funcionario::find()->where(["ci" => $model->cedula])->asArray()->all();
+                     $datos = Funcionario::find()->where(["ci" => $model->cedula])->asArray()->one();
                      
                      $_SESSION['datos']=$datos;
                      $msg = Yii::t('backend', 'Searching!');//VALIDANDO PREGUNTAS DE SEGURIDAD
@@ -155,7 +155,7 @@ class OpcionFuncionarioController extends Controller
     {
         //if ( isset( $_SESSION['idContribuyente'] ) ) {
         $searchModel = new FuncionarioForm(); 
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $_SESSION['datos']['ci']);
 
         return $this->render('index-funcionario', [
             'searchModel' => $searchModel, 
@@ -272,7 +272,7 @@ class OpcionFuncionarioController extends Controller
                    $model->getErrors(); 
               }
          }
-              return $this->render("registrarfuncionariousuario", ["model" => $model, "datos"=>$_SESSION['datos'][0]]);          
+              return $this->render("registrarfuncionariousuario", ["model" => $model, "datos"=>$_SESSION['datos']]);          
  
      } // cierre del metodo registerfun
 

@@ -53,6 +53,7 @@ use Yii;
 use backend\models\inmueble\InmueblesUrbanosForm;
 use backend\models\inmueble\ContribuyentesForm;
 use backend\models\inmueble\AvaluoCatastralForm;
+use backend\models\inmueble\LinderosForm;
 use common\models\contribuyente\ContribuyenteBase;
 
 use backend\models\inmueble\InmueblesSearch;
@@ -96,7 +97,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
     {
         $idConfig = yii::$app->request->get('id');
 
-         $_SESSION['id'] = 6;
+         $_SESSION['id'] = 117;
 
         if ( isset( $_SESSION['idContribuyente'] ) ) {
         $searchModel = new InmueblesSearch();
@@ -123,7 +124,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
           $idInmueble = yii::$app->request->post('id');
            
-          $datos = InmueblesConsulta::find()->where("id_impuesto=:impuesto", [":impuesto" => $idInmueble])
+          $datos = AvaluoCatastralForm::find()->where("id_impuesto=:impuesto", [":impuesto" => $idInmueble])
                                             ->andwhere("inactivo=:inactivo", [":inactivo" => 0])
                                             ->one();
           $_SESSION['datos'] = $datos;
@@ -147,7 +148,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
          
          if ( isset($_SESSION['idContribuyente'] ) ) {
          //Creamos la instancia con el model de validación
-         $model = new AvaluoCatastralForm();
+         $model = new LinderosForm();
 
          $datos = $_SESSION['datos'];
     
@@ -208,7 +209,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                    $model->getErrors(); 
               }
          }
-              return $this->render('avaluo-catastral-inmuebles', ['model' => $model, 'datos'=>$datos]);  
+              return $this->render('linderos-inmuebles', ['model' => $model, 'datos'=>$datos]);  
 
         }  else {
                     echo "No hay Contribuyente Registrado!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['site/login'])."'>";
@@ -299,7 +300,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
             
                         $tableName3 = 'historico_avaluos';
-                        $arrayCondition = ['id_impuesto' => $datos->id_impuesto,]
+                        $arrayCondition = ['id_impuesto' => $datos->id_impuesto, 'inactivo' => 0];
                          
 
 
@@ -368,7 +369,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      {
 
          $buscar = ConfiguracionTiposSolicitudes::find()->where("impuesto=:impuesto", [":impuesto" => 2])
-                                                        ->andwhere("descripcion=:descripcion", [":descripcion" => 'REGISTRO DE AVALUO CATASTRAL'])
+                                                        ->andwhere("descripcion=:descripcion", [":descripcion" => 'LINDEROS'])
                                                         ->asArray()->all();
 
 

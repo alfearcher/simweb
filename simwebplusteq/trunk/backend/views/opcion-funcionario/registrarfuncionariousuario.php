@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
     'method' => 'post',
 	'id' => 'formulario',
     'enableClientValidation' => false,
-    'enableAjaxValidation' => true,
+    'enableAjaxValidation' => false,
 	'options' => ['class' => 'form-horizontal'],
         
 ]);
@@ -25,59 +25,53 @@ $this->params['breadcrumbs'][] = $this->title;
 				<?= $this->title ?>
 			</div>
 			<div class="panel-body" >
-				<table class="table table-striped">
-					
-				   <tr>
-						<td><div class="col-sm-4">
+				
+						<div class="row" style="margin-left:20px; margin-top:20px;">
+							<div class="col-sm-4">
                             <?= $form->field($model, "nombre")->textInput(['maxlength' => true,'value'=>$datos['nombres'],'style' => 'width:100px;', 'readOnly'=> true])  ?> 
 							</div>
-						</td>
+						
 				   
-						<td><div class="col-sm-4">
+							<div class="col-sm-4">
                             <?= $form->field($model, "apellido")->textInput(['maxlength' => true,'value'=>$datos['apellidos'],'style' => 'width:100px;', 'readOnly'=> true])  ?> 
 							</div>
-						</td>
+						
 				   
-						<td><div class="col-sm-2">
+							<div class="col-sm-2">
                             <?= $form->field($model, "cedula")->textInput(['maxlength' => true,'value'=>$datos['ci'],'style' => 'width:100px;', 'readOnly'=> true])  ?> 
 							</div>
-						</td>
-				   </tr>
-
-				   <tr>
-						<td><div class="col-sm-3">
-						<?= $form->field($model, 'username')->textInput(['maxlength' => true,'value'=>$datos['login'],'style' => 'width:100px;', 'readOnly'=> true]) ?>
-							</div>																		    
-                        </td>
+						</div>
 				   
-						<td><div class="col-sm-7">
-                            <?= $form->field($model, "email")->input("email") ?> 
+						<div class="row" style="margin-left:20px; margin-top:20px;">
+							<div class="col-sm-4">
+							<?= $form->field($model, 'username')->textInput(['maxlength' => true,'value'=>$datos['login'],'style' => 'width:150px;', 'readOnly'=> true]) ?>
+							</div>																		    
+                        	
+                        	<div class="col-sm-6">
+                            <?= $form->field($model, "email")->input("email")->textInput(['maxlength' => true,'style' => 'width:300px;']) ?> 
 							</div>
-						</td>
-				   </tr>
-
-				   <tr>
-						<td><div class="col-sm-5">
-                            <?= $form->field($model, "password")->input("password") ?> 
+						</div>
+				   
+						<div class="row" style="margin-left:20px; margin-top:20px;">
+							<div class="col-sm-4">
+                            <?= $form->field($model, "password")->passwordInput(['maxlength' => true,'style' => 'width:200px;']) ?> 
 							</div>
-						</td>
-					
-						<td><div class="col-sm-5">
-                            <?= $form->field($model, "password_repeat")->input("password") ?>
+						
+							<div class="col-sm-4">
+                            <?= $form->field($model, "password_repeat")->passwordInput(['maxlength' => true,'style' => 'width:200px;']) ?>
 							</div> 
-						</td>
-					</tr>
-
-					<tr>
-						<td> 
+						</div>
+					
+						<div class="row" style="margin-left:20px; margin-top:20px;">
+							<div class="col-sm-5">
                             <?= Html::submitButton("Registrar", ["class" => "btn btn-primary"]) ?>
-						</td>
-					</tr>
-				</table>
+							</div> 
+						</div>
+					
 			</div>
 		</div>
 	</div>
 	    
+<?php ActiveForm::end(); ?> 
 
-<?php $form->end() ?>
 

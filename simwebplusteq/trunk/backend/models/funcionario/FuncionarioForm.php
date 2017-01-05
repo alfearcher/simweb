@@ -200,10 +200,10 @@ use backend\models\funcionario\Funcionario;
 
 
 	    /***/
-	    public function search($params)
+	    public function search($params, $ci)
    		{
 
-	        $query = Funcionario::find();
+	        $query = Funcionario::find()->where(['ci'=>$ci]);
 
 
 	        $dataProvider = new ActiveDataProvider([
