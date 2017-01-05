@@ -37,7 +37,7 @@ $this->title = 'Iniciar Sesion';
 
 			<div class="row" style="margin-left:20px; margin-top:20px;">
                             <div class="col-sm-3"> 
-                            <?= Yii::t('backend', 'Nombre de Usuario:') ?>
+                            <?= Yii::t('backend', 'Correo Electronico:') ?>
                             </div> 
 
                             <div class="col-sm-7">                         
