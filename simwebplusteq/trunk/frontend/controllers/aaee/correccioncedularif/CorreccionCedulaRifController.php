@@ -269,6 +269,9 @@
 		  			$modeloTipoNaturaleza = TipoNaturaleza::find()->where('id_tipo_naturaleza BETWEEN 1 and 4')->all();
 		  			$listaNaturaleza = ArrayHelper::map($modeloTipoNaturaleza, 'siglas_tnaturaleza', 'nb_naturaleza');
 
+		  			$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : [];
+					$rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud'], 'frontend');
+
 		  			$subCaption = Yii::t('frontend', 'Info of Taxpayer');
 		  			return $this->render('/aaee/correccion-cedula-rif/_create', [
 					  											'model' => $model,
@@ -277,6 +280,7 @@
 					  											'dataProvider' => $dataProvider,
 					  											'listaNaturaleza' => $listaNaturaleza,
 					  											'errorRif' => $errorRif,
+					  											'rutaAyuda' => $rutaAyuda,
 					  					]);
 		  		} else {
 		  			// No se encontraron los datos del contribuyente principal.
