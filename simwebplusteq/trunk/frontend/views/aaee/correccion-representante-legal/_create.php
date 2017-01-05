@@ -49,6 +49,7 @@
 						        'subCaption' => $subCaption,
 						        'dataProvider' => $dataProvider,
 						        'listaNaturaleza' => $listaNaturaleza,
+						        'rutaAyuda' => $rutaAyuda,
 
 					    ]) ?>
 </div>
