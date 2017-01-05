@@ -30,29 +30,34 @@ $this->title = 'Iniciar Sesion';
 				<?= $this->title ?>
 			</div>
 			<div class="panel-body" >
-				<table class="table table-striped">
-					<tr>
-						<td>
-                            <?= $form->field($model, 'username') ?>
+				
+						<div class="row" style="margin-left:20px; margin-top:20px;">
+                            <div class="col-sm-3"> 
+                            <?= Yii::t('backend', 'Nombre de Usuario:') ?>
+                            </div> 
+
+                            <div class="col-sm-7">                         
+                            <?= $form->field($model, 'username')->textInput(['maxlength' => true,'style' => 'width:200px;'])->label(false) ?>
+							</div>
+						</div>
 							
-						 </td>
-				   </tr>
-				   <tr>
-						<td>
-                            <?= $form->field($model, 'password')->passwordInput() ?>
-							
-						 </td>
-				   </tr>
-				   
-				   <tr>
-						<td><div class="col-lg-offset-0 col-lg-5">
+						 <div class="row" style="margin-left:20px; margin-top:20px;">
+                            <div class="col-sm-3"> 
+                            <?= Yii::t('backend', 'Contraseña:') ?>
+                            </div>
+
+                            <div class="col-sm-7"> 
+                            <?= $form->field($model, 'password')->passwordInput(['maxlength' => true,'style' => 'width:200px;'])->label(false) ?>
+							</div>
+						</div>
+
+						<div class="row" style="margin-left:20px; margin-top:20px;">	
+						 <div class="col-lg-offset-0 col-lg-5">
                             <?= Html::submitButton('Iniciar Sesion', ['class' => 'btn btn-primary', 'name' => 'login-button']) // BOTON DE INICIAR SESION ?>
 							
 							<?= Html::a('Cambiar Password', ['opcion-funcionario/iniciarrecuperacionpasswordfuncionario'], ['class' => 'btn btn-primary']) //BOTON DE RECUPERAR CONTRASENA ?>
-                            </div>
-						</td>
-					</tr>
-				</table>
+                         </div>
+						</div>
 			</div>
 		</div>
   </div>	
