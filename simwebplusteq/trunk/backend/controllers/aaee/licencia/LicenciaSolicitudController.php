@@ -313,6 +313,9 @@
 		  			$model->fecha_hora = date('Y-m-d H:i:s');
 		  			$model->origen = 'LAN';
 
+		  			$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : [];
+					$rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud'], 'backend');
+
 		  			// Nro de licencia actual.
 		  			$model->licencia = $findModel->id_sim;
 		  			$caption .= '. ' . $tipoLicencia;
@@ -323,6 +326,7 @@
 		  												'ano_impositivo' => $añoImpositivo,
 		  												'periodo' => 1,
 		  												'caption' => $caption,
+		  												'rutaAyuda' => $rutaAyuda,
 
 		  					]);
 
