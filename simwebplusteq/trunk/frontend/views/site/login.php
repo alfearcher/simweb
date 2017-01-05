@@ -32,18 +32,28 @@ $this->title = 'Iniciar Sesion';
 				<?= $this->title ?>
 			</div>
 			<div class="panel-body" >
-				
-			<div class="row" style="margin-left: 10px;">
-				
-				 <?= $form->field($model, 'email') ?>
+			
 
-		    </div>
 
-			<div class="row" style="margin-left: 10px;">
-				
-				<?= $form->field($model, 'password')->passwordInput() ?>
+			<div class="row" style="margin-left:20px; margin-top:20px;">
+                            <div class="col-sm-3"> 
+                            <?= Yii::t('backend', 'Nombre de Usuario:') ?>
+                            </div> 
 
-			</div>
+                            <div class="col-sm-7">                         
+                            <?= $form->field($model, 'email')->textInput(['maxlength' => true,'style' => 'width:200px;'])->label(false) ?>
+							</div>
+						</div>
+							
+						 <div class="row" style="margin-left:20px; margin-top:20px;">
+                            <div class="col-sm-3"> 
+                            <?= Yii::t('backend', 'Contraseña:') ?>
+                            </div>
+
+                            <div class="col-sm-7"> 
+                            <?= $form->field($model, 'password')->passwordInput(['maxlength' => true,'style' => 'width:200px;'])->label(false) ?>
+							</div>
+						</div>
 
 		
 			
