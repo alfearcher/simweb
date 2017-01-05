@@ -254,6 +254,9 @@
 		  				$dataProvider = $searchCorreccion->getDataProviderSucursal($ids);
 		  			}
 
+		  			$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : [];
+					$rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud'], 'backend');
+
 		  			$subCaption = Yii::t('frontend', 'Info of Taxpayer');
 		  			return $this->render('@frontend/views/aaee/correccion-razon-social/_create', [
 					  											'model' => $model,
@@ -261,6 +264,7 @@
 					  											'subCaption' => $subCaption,
 					  											'dataProvider' => $dataProvider,
 					  											'errorChk' => $errorChk,
+					  											'rutaAyuda' => $rutaAyuda,
 					  					]);
 		  		} else {
 		  			// No se encontraron los datos del contribuyente principal.

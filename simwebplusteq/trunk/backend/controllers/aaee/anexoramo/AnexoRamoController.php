@@ -274,6 +274,10 @@
 		      	}
 
 		  		if ( isset($findModel) ) {
+
+		  			$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : [];
+					$rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud'], 'backend');
+
 		  			$caption = $caption . '. ' . Yii::t('frontend', 'Select Fiscal Lapse');
 		  			$listaAño = $searchRamo->getListaAnoRegistrado();
 		  			return $this->render('@frontend/views/aaee/anexo-ramo/_create', [
@@ -281,6 +285,7 @@
 			  											'findModel' => $findModel,
 			  											'listaAño' => $listaAño,
 			  											'caption' => $caption,
+			  											'rutaAyuda' => $rutaAyuda,
 					  					]);
 
 		  		} else {

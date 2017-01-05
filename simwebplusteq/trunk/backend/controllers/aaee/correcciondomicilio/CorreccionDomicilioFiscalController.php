@@ -238,11 +238,16 @@
 		      	$searchCorreccion = New CorreccionDomicilioFiscalSearch($idContribuyente);
 		      	$datos = $searchCorreccion->getDatosContribuyente();
 		  		if ( isset($datos) ) {
+
+		  			$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : [];
+					$rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud'], 'backend');
+
 		  			$subCaption = Yii::t('frontend', 'Info of Taxpayer');
 		  			return $this->render('@frontend/views/aaee/correccion-domicilio-fiscal/_create', [
 					  											'model' => $model,
 					  											'datos' => $datos,
 					  											'subCaption' => $subCaption,
+					  											'rutaAyuda' => $rutaAyuda,
 					  					]);
 		  		} else {
 		  			// No se encontraron los datos del contribuyente principal.
