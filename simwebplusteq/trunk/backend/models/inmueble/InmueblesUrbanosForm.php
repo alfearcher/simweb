@@ -125,6 +125,11 @@ class InmueblesUrbanosForm extends \yii\db\ActiveRecord
     public $datosVContribuyente;
     public $datosVInmueble;
 
+    public $lindero_norte;
+    public $lindero_sur;
+    public $lindero_este;
+    public $lindero_oeste;
+
     public static function tableName()
     {
         return 'inmuebles';

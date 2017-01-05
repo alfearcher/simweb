@@ -17,7 +17,7 @@ $disabled = true;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?= $this->render('_avaluocatastralinmueblesform', [
+    <?= $this->render('_linderosinmueblesform', [
         'disabled'=>$disabled,'modelContribuyente' => $modelContribuyente,
         'model'=>$model, 'modelBuscar'=>$modelBuscar,'datosVContribuyente'=>$datosVContribuyente, 'datosVInmueble'=>$datosVInmueble, 'modelavaluo' =>$modelavaluo,
     ]) ?>

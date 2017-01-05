@@ -24,7 +24,7 @@ use backend\models\ContribuyentesForm;
 /* @var $this yii\web\View */
 /* @var $model backend\models\InscripcionInmueblesUrbanosForm */
 /* @var $form ActiveForm */
-$this->title = Yii::t('backend', 'Change of property values'). '<p>Id Taxpayer: ' . $modelContribuyente->id_contribuyente.'</p>';
+$this->title = Yii::t('backend', 'Change of property values');
  
 
  ?>
@@ -173,42 +173,45 @@ $variablephp=$_COOKIE['variablephp'];
 
 <div class="panel panel-primary">
 <div class="panel-heading">
-                <?= Yii::t('frontend', 'Property Values') ?>  
+                <?= Yii::t('frontend', 'Linderos del Inmueble') ?>  
 </div>
                                                     <div class="row" style="margin-left:20px; margin-top:20px;">
                                                         <div class="col-sm-2"> 
-                                                        <?= Yii::t('backend', 'Meters Construction') ?>
+                                                        <?= Yii::t('backend', 'Lindero Norte') ?>
                                                         </div> 
                                                     
+                                                        <div class="col-sm-5"> 
+                                                        <?= $form->field($model, 'lindero_norte')->textarea(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?>
+                                                        </div> 
+                                                    </div>   
+                                                    <div class="row" style="margin-left:20px; margin-top:20px;">
                                                         <div class="col-sm-2"> 
-                                                        <?= $form->field($model, 'metros_construccion')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?>
+                                                        <?= Yii::t('backend', 'Lindero Sur') ?>
                                                         </div> 
 
-                                                        <div class="col-sm-2"> 
-                                                        <?= Yii::t('backend', 'Value of Construction') ?>
-                                                        </div> 
-
-                                                        <div class="col-sm-2"> 
-                                                        <?= $form->field($model, 'valor_construccion')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?>
+                                                        <div class="col-sm-5"> 
+                                                        <?= $form->field($model, 'lindero_sur')->textarea(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?>
                                                         </div> 
                                                     </div>
 
                                             
                                                     <div class="row" style="margin-left:20px; margin-top:20px;">
                                                         <div class="col-sm-2"> 
-                                                        <?= Yii::t('backend', 'Meters of Land') ?>
+                                                        <?= Yii::t('backend', 'Lindero Este') ?>
                                                         </div> 
                                                     
-                                                        <div class="col-sm-2"> 
-                                                        <?= $form->field($model, 'metros_terreno')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?> 
-                                                        </div>
+                                                        <div class="col-sm-5"> 
+                                                        <?= $form->field($model, 'lindero_este')->textarea(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?> 
+                                                        </div>                                                        
+                                                    </div>
 
+                                                    <div class="row" style="margin-left:20px; margin-top:20px;">
                                                         <div class="col-sm-2"> 
-                                                        <?= Yii::t('backend', 'Value of Land') ?>
+                                                        <?= Yii::t('backend', 'Lindero Oeste') ?>
                                                         </div> 
 
-                                                        <div class="col-sm-2"> 
-                                                        <?= $form->field($model, 'valor_terreno')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?>
+                                                        <div class="col-sm-5"> 
+                                                        <?= $form->field($model, 'lindero_oeste')->textarea(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?>
                                                         </div> 
                                                     </div>         
                                                 
@@ -243,7 +246,6 @@ $variablephp=$_COOKIE['variablephp'];
                                                        
                                                        
 <!-- Campos ocultos -->  
-<?= $form->field($model, 'id_contribuyente')->hiddenInput(['value' => $modelContribuyente->id_contribuyente])->label(false) ?>
 <?= $form->field($model, 'id_impuesto')->hiddenInput(['value' => $model->id_impuesto])->label(false) ?>
 
 <?= $form->field($model, 'validacion')->hiddenInput(['value' => 4])->label(false) ?>
