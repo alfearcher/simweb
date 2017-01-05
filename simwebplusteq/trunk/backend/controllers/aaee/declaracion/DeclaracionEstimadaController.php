@@ -464,6 +464,10 @@
 						$opciones = [
 							'back' => '/aaee/declaracion/declaracion-estimada/index-create',
 						];
+
+						$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : [];
+						$rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud'], 'backend');
+
 						$caption = $caption . '. ' . Yii::t('frontend', 'Categories Registered') . ' ' . $añoImpositivo . ' - ' . $periodo;
 						return $this->render('@frontend/views/aaee/declaracion/estimada/declaracion-estimada-form', [
 	  																	'model' => $modelMultiplex,
@@ -472,8 +476,7 @@
 	  																	'caption' => $caption,
 	  																	'opciones' =>$opciones,
 	  																	'subCaption' => $subCaption,
-
-
+	  																	'rutaAyuda' => $rutaAyuda,
 
 			  					]);
 
