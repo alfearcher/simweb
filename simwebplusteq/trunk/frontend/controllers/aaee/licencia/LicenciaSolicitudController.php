@@ -304,6 +304,10 @@
 		      	}
 
 		  		if ( isset($findModel) ) {
+
+		  			$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : [];
+					$rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud'], 'frontend');
+
 		  			$añoImpositivo = (int)date('Y');
 		  			$dataProvider = $searchLicencia->getDataProviderRubrosRegistrados($añoImpositivo, 1);
 		  			$model->id_contribuyente = $findModel->id_contribuyente;
@@ -323,6 +327,7 @@
 		  												'ano_impositivo' => $añoImpositivo,
 		  												'periodo' => 1,
 		  												'caption' => $caption,
+		  												'rutaAyuda' => $rutaAyuda,
 
 		  					]);
 
