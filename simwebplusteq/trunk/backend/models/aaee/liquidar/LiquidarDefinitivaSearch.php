@@ -162,12 +162,14 @@
                                          ->all();
 
 		    if ( count($resultados) > 0 ) {
-		    	foreach ( $resultados as $key => $value ) {
-		    		$existe = self::existePlanillaDefinitiva((int)$value['ano_impositivo'],
-		    												 (int)$value['actividadDetalle'][$key]['exigibilidad_periodo']);
+
+		    	foreach ( $resultados as $rs ) {
+
+		    		$existe = self::existePlanillaDefinitiva((int)$rs['ano_impositivo'],
+		    												 1);
 
 		    		if ( !$existe ) {
-		    			$mensaje[] = Yii::t('backend', 'Falta por liquidar el laspo ' . $value['ano_impositivo'] . ' - ' . $value['actividadDetalle'][$key]['exigibilidad_periodo']);
+		    			$mensaje[] = Yii::t('backend', 'Falta por liquidar el laspo ' . $rs['ano_impositivo'] . ' - ' . 1);
 		    		}
 		    	}
 		    }
