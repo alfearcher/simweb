@@ -1533,7 +1533,7 @@
 	    	if ( $añoImpositivo >= 2017 ) {
 	    		$montoMinimo = self::montoMinimoEstimada($añoImpositivo, $periodo);
 
-// die(var_dump($postEnviado));
+
 		    	$sumaDeclarado = 0;
 		    	foreach ( $postEnviado as $post ) {
 		    		$sumaDeclarado = $sumaDeclarado + $post['monto_new'];
