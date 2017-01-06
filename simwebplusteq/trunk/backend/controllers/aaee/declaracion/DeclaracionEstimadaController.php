@@ -305,6 +305,7 @@
 				$request = Yii::$app->request;
 
 				$lapso = isset($_SESSION['lapso']) ? $_SESSION['lapso'] : null;
+				$mensajeDeclaracion = '';
 
 				if ( count($lapso) > 0 ) {
 					$btnSearchCategory = 1;
@@ -345,6 +346,10 @@
 						return ActiveForm::validateMultiple($modelMultiplex);
 			      	}
 
+
+			      	$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : [];
+					$rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud'], 'backend');
+
 			      	// Datos generales del contribuyente.
 			      	$searchDeclaracion = New DeclaracionBaseSearch($idContribuyente);
 			      	$findModel = $searchDeclaracion->findContribuyente();
@@ -357,8 +362,8 @@
 							$opciones = [
 									'back' => '/aaee/declaracion/declaracion-estimada/index-create',
 							];
-							$caption = $caption . '. ' . Yii::t('frontend', 'Categories Registered') . ' ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo;
-							$subCaption = Yii::t('frontend', 'Categories Registers ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
+							$caption = $caption . '. ' . Yii::t('frontend', 'Rubros Registrados') . ' ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo;
+							$subCaption = Yii::t('frontend', 'Rubros Registrados ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
 							return $this->render('@frontend/views/aaee/declaracion/estimada/declaracion-estimada-form', [
 		  																	'model' => $modelMultiplex,
 		  																	'findModel' => $findModel,
@@ -366,8 +371,8 @@
 		  																	'caption' => $caption,
 		  																	'opciones' =>$opciones,
 		  																	'subCaption' => $subCaption,
-
-
+		  																	'rutaAyuda' => $rutaAyuda,
+		  																	'mensajeDeclaracion' => $mensajeDeclaracion,
 
 				  					]);
 						}
@@ -379,7 +384,7 @@
 									'back' => '/aaee/declaracion/declaracion-estimada/index-create',
 								];
 								$caption = Yii::t('frontend', 'Confirm') . ' ' . $caption . '. ' . Yii::t('frontend', 'Pre View');
-								$subCaption = Yii::t('frontend', 'Categories Registers ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
+								$subCaption = Yii::t('frontend', 'Rubros Registrados ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
 
 								return $this->render('@frontend/views/aaee/declaracion/estimada/pre-view-create', [
 																	'model' => $modelMultiplex,
@@ -393,7 +398,7 @@
 								$opciones = [
 									'back' => '/aaee/declaracion/declaracion-estimada/index-create',
 								];
-								$caption = $caption . '. ' . Yii::t('frontend', 'Categories Registered') . ' ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo;
+								$caption = $caption . '. ' . Yii::t('frontend', 'Rubros Registrados') . ' ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo;
 								$subCaption = Yii::t('frontend', 'Categories Registers ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
 								return $this->render('@frontend/views/aaee/declaracion/estimada/declaracion-estimada-form', [
 			  																	'model' => $modelMultiplex,
@@ -402,9 +407,8 @@
 			  																	'caption' => $caption,
 			  																	'opciones' =>$opciones,
 			  																	'subCaption' => $subCaption,
-
-
-
+			  																	'rutaAyuda' => $rutaAyuda,
+			  																	'mensajeDeclaracion' => $mensajeDeclaracion,
 					  					]);
 							}
 						}
@@ -429,7 +433,7 @@
 			  		if ( isset($findModel) ) {
 			  			$añoImpositivo = (int)$lapso['a'];
 						$periodo = (int)$lapso['p'];
-						$subCaption = Yii::t('frontend', 'Categories Registers ' . $añoImpositivo . ' - ' . $periodo);
+						$subCaption = Yii::t('frontend', 'Rubros Registrados ' . $añoImpositivo . ' - ' . $periodo);
 
 						// Lo siguiente obtiene una declracion de la definitiva del año anterior.
 						// [ramo] => monto estimada
@@ -465,10 +469,8 @@
 							'back' => '/aaee/declaracion/declaracion-estimada/index-create',
 						];
 
-						$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : [];
-						$rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud'], 'backend');
 
-						$caption = $caption . '. ' . Yii::t('frontend', 'Categories Registered') . ' ' . $añoImpositivo . ' - ' . $periodo;
+						$caption = $caption . '. ' . Yii::t('frontend', 'Rubros Registrados') . ' ' . $añoImpositivo . ' - ' . $periodo;
 						return $this->render('@frontend/views/aaee/declaracion/estimada/declaracion-estimada-form', [
 	  																	'model' => $modelMultiplex,
 	  																	'findModel' => $findModel,
@@ -477,6 +479,7 @@
 	  																	'opciones' =>$opciones,
 	  																	'subCaption' => $subCaption,
 	  																	'rutaAyuda' => $rutaAyuda,
+	  																	'mensajeDeclaracion' => $mensajeDeclaracion,
 
 			  					]);
 
