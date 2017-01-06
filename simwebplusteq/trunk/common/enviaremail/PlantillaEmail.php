@@ -60,7 +60,7 @@ use common\enviaremail\EnviarEmailSolicitud;
 
 class PlantillaEmail{
 
-  private $_from = 'pruebasimteq@gmail.com';
+  private $_from;
 
 
 
@@ -124,7 +124,7 @@ class PlantillaEmail{
 
           $contribuyente = self::busquedaTipoContribuyente();
 
-                $from = 'pruebasimteq@gmail.com';
+                $from = Yii::$app->ente->getEmail()[0];
                 $to = $email;
                 $subject = $solicitud.', Solicitud: '.$nro_solicitud;
                 $textBody = 'Solicitudes Online';
@@ -132,7 +132,7 @@ class PlantillaEmail{
                              Usted ha realizado con exito su Solicitud '.$solicitud.' numero: '.$nro_solicitud.'<br><br>'.
                              'Por favor dirijase a la alcaldia para completar la solicitud correspondiente. '.
                              'Los documentos a consignar obligatoriamente en original y copia son los siguientes: <br><br>*'.$documentoA.'<br><br>'.
-                             
+
                              'Adicionalmente, deberá consignar original y copia de los siguientes documentos si se tratare
                              de alguno de estos casos: <br><br>*'.
                              $documentoB.'<br><br>'.
@@ -153,7 +153,7 @@ class PlantillaEmail{
         } else {
           return false;
         }
-    
+
     }
 
 
@@ -161,7 +161,7 @@ class PlantillaEmail{
     /***/
     public function plantillaSolicitudProcesada($email, $cuerpo)
     {
-        $from = 'pruebasimteq@gmail.com';
+        $from = Yii::$app->ente->getEmail()[0];
         $to = $email;
         $subject = 'Solicitud procesada';
         $textBody = 'Solicitudes Online';
@@ -197,7 +197,7 @@ class PlantillaEmail{
 
           $contribuyente = self::busquedaTipoContribuyente();
 
-                $from = 'pruebasimteq@gmail.com';
+                $from = Yii::$app->ente->getEmail()[0];
                 $to = $email;
                 $subject = $solicitud.', Solicitud: '.$nro_solicitud;
                 $textBody = 'Solicitudes Online';
@@ -205,7 +205,7 @@ class PlantillaEmail{
                              Usted ha realizado con exito su Solicitud '.$solicitud.' numero: '.$nro_solicitud.'<br><br>'.
                              'Por favor dirijase a la alcaldia para completar la solicitud correspondiente. '.
                              'Los documentos a consignar obligatoriamente en original y copia son los siguientes: <br><br>*'.$documentoA.'<br><br>'.
-                             
+
                              'Adicionalmente, deberá consignar original y copia de los siguientes documentos si se tratare
                              de alguno de estos casos: <br><br>*'.
                              $documentoB.'<br><br>'.

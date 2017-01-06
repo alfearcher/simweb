@@ -69,7 +69,7 @@ class enviarEmailCambioCLave{
 
 
        return Yii::$app->mailer->compose()
-        ->setFrom('pruebasimteq@gmail.com')
+        ->setFrom(Yii::$app->ente->getEmail()[0])
         ->setTo($email)
         ->setSubject('Cambio de Contraseña SIM Los Teques')
         ->setTextBody('Cambio de Contraseña SIM Los Teques')

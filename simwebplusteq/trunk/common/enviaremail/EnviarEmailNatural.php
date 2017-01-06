@@ -68,7 +68,7 @@ class EnviarEmailNatural{
       //die($nombre.' '.$apellido);
 
        return Yii::$app->mailer->compose()
-        ->setFrom('pruebasimteq@gmail.com')
+        ->setFrom(Yii::$app->ente->getEmail()[0])
         ->setTo($email)
         ->setSubject('Registro de usuario SIM Los Teques')
         ->setTextBody('Registro de usuario SIM Los Teques')
