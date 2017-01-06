@@ -1,6 +1,5 @@
 <?php
 
-$email = Yii::$app->ente->getEmail()[0];
 return [
 	'components' => [
 		'db'        => [
@@ -45,7 +44,7 @@ return [
 			   'host' => 'smtp.gmail.com',
 			   //'username' => 'manuelz0510@gmail.com',
 			   //'username' => 'simweb@alcaldiadeguaicaipuro.gob.ve',
-			   'username' => $email,
+			   'username' => 'hacienda.guaicaipuro@gmail.com',
 			   'password' => 'pru3b4s1m',
 			   // 'password' => 'pzE#Z8i6n2C0',
 			   //'password' => 'Manuel051092',
