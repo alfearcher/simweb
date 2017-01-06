@@ -470,15 +470,17 @@
 		public function getContabilizar($pagos)
 		{
 			$total = 0;
+			$subTotal1 = 0;
+			$subTotal2 = 0;
 			if ( count($pagos) > 0 ) {
 				foreach ( $pagos as $pago ) {
-					$subTotal1 = $pago['monto'] + $pago['recargo'] + $pago['interes'];
-					$subTotal2 = $pago['descuento'] + $pago['monto_reconocimiento'];
+					$subTotal1 = $pago['monto']; // + $pago['recargo'] + $pago['interes'];
+					//$subTotal2 = $pago['descuento'] + $pago['monto_reconocimiento'];
 
 					$total = $total + ($subTotal1 - $subTotal2);
 				}
 
-				$total = number_format($total, 2);
+				$total = $total;
 			}
 
 			return $total;
@@ -495,6 +497,7 @@
 		 */
 		public function getResumenPagoDefinitiva($añoImpositivo, $periodo)
 		{
+
 			$resumen = [
 				'pagoEstimada' => self::getContabilizarPagoPorEstimada($añoImpositivo, $periodo),
 				'pagoDefinitiva' => self::getContabilizarPagoPorDefinitiva($añoImpositivo, $periodo),
