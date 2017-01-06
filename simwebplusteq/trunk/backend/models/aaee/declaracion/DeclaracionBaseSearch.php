@@ -1513,5 +1513,68 @@
 	    }
 
 
+
+
+
+	    /**
+	     * Metodo que permite controlarar el monto declarado den la definitiva.
+	     * A partir del año es 2017 se debe controlar que la suma de los montos declarados
+	     * en la estimada no sea no sea inferior a la definitiva anterior.
+	     * @param  integer $añoImpositivo año de la declaracion.
+	     * @param  integer $periodo periodo de la declaracion.
+	     * @param  array $postEnviado post enviaado.
+	     * @return string retorna mensaje si encuentra una situacion irregular, en caso contrario
+	     * debe enviar mensaje.
+	     */
+	    public function controlDeclaracionEstimada($añoImpositivo, $periodo, $postEnviado)
+	    {
+	    	$mensajeDeclaracion = '';
+
+	    	if ( $añoImpositivo >= 2017 ) {
+	    		$montoMinimo = self::montoMinimoEstimada($añoImpositivo, $periodo);
+
+// die(var_dump($postEnviado));
+		    	$sumaDeclarado = 0;
+		    	foreach ( $postEnviado as $post ) {
+		    		$sumaDeclarado = $sumaDeclarado + $post['monto_new'];
+		    	}
+
+		    	if ( $sumaDeclarado < $montoMinimo ) {
+		    		$descreto = 'De conformidad con el DECRETO Nro. FGDS-I-048-2016, de fecha 29-12-2016, LA SUMA DE LO DECLARADO NO DEBE SER INFERIOR A ' . number_format($montoMinimo, 2);
+		    		$mensajeDeclaracion = $descreto;
+		    	}
+		    }
+
+	    	return $mensajeDeclaracion;
+	    }
+
+
+
+
+
+	    /***/
+	    public function montoMinimoEstimada($añoImpositivo, $periodo)
+	    {
+	    	$minimo = 0;
+	    	$porcentajeIncremento = 1.65;
+	    	if ( $añoImpositivo >= 2017 ) {
+	    		$findModel = self::findRubrosRegistrados($añoImpositivo - 1, $periodo);
+	    		$resultados = $findModel->all();
+
+	    		$suma = 0;
+	    		if ( count($resultados) > 0 ) {
+	    			foreach ( $resultados as $resultado ) {
+	    				$suma = $resultado['reales'] + $suma;
+	    			}
+	    		}
+
+	    		$suma =  $suma * $porcentajeIncremento;
+	    	}
+
+	    	return $suma;
+	    }
+
+
+
 	}
  ?>
