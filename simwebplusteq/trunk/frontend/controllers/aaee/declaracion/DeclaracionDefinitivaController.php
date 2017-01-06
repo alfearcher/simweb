@@ -345,6 +345,9 @@
 						return ActiveForm::validateMultiple($modelMultiplex);
 			      	}
 
+			      	$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : [];
+					$rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud'], 'frontend');
+
 			      	// Datos generales del contribuyente.
 			      	$searchDeclaracion = New DeclaracionBaseSearch($idContribuyente);
 			      	$findModel = $searchDeclaracion->findContribuyente();
@@ -358,8 +361,8 @@
 							$opciones = [
 									'back' => '/aaee/declaracion/declaracion-definitiva/index-create',
 							];
-							$caption = $caption . '. ' . Yii::t('frontend', 'Categories Registered') . ' ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo;
-							$subCaption = $subCaption . '. ' . Yii::t('frontend', 'Categories Registers ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
+							$caption = $caption . '. ' . Yii::t('frontend', 'Rubros Registrados') . ' ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo;
+							$subCaption = $subCaption . '. ' . Yii::t('frontend', 'Rubros Registrados ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
 							return $this->render('/aaee/declaracion/definitiva/declaracion-definitiva-form', [
 		  																	'model' => $modelMultiplex,
 		  																	'findModel' => $findModel,
@@ -367,9 +370,7 @@
 		  																	'caption' => $caption,
 		  																	'opciones' =>$opciones,
 		  																	'subCaption' => $subCaption,
-
-
-
+		  																	'rutaAyuda' => $rutaAyuda,
 				  					]);
 						}
 					} elseif( isset($postData['btn-create']) ) {
@@ -381,7 +382,7 @@
 									'back' => '/aaee/declaracion/declaracion-definitiva/index-create',
 								];
 								$caption = Yii::t('frontend', 'Confirm') . ' ' . $caption . '. ' . Yii::t('frontend', 'Pre View');
-								$subCaption = $subCaption . '. ' . Yii::t('frontend', 'Categories Registers ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
+								$subCaption = $subCaption . '. ' . Yii::t('frontend', 'Rubros Registrados ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
 
 								return $this->render('/aaee/declaracion/definitiva/pre-view-create', [
 																	'model' => $modelMultiplex,
@@ -395,8 +396,8 @@
 								$opciones = [
 									'back' => '/aaee/declaracion/declaracion-definitiva/index-create',
 								];
-								$caption = $caption . '. ' . Yii::t('frontend', 'Categories Registered') . ' ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo;
-								$subCaption = $subCaption . '. ' . Yii::t('frontend', 'Categories Registers ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
+								$caption = $caption . '. ' . Yii::t('frontend', 'Rubros Registrados') . ' ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo;
+								$subCaption = $subCaption . '. ' . Yii::t('frontend', 'Rubros Registrados ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
 								return $this->render('/aaee/declaracion/definitiva/declaracion-definitiva-form', [
 			  																	'model' => $modelMultiplex,
 			  																	'findModel' => $findModel,
@@ -404,8 +405,7 @@
 			  																	'caption' => $caption,
 			  																	'opciones' =>$opciones,
 			  																	'subCaption' => $subCaption,
-
-
+			  																	'rutaAyuda' => $rutaAyuda,
 
 					  					]);
 							}
@@ -452,7 +452,7 @@
 			  		if ( isset($findModel) ) {
 			  			$añoImpositivo = (int)$lapso['a'];
 						$periodo = (int)$lapso['p'];
-						$subCaption = $subCaption . '. ' . Yii::t('frontend', 'Categories Registers ' . $añoImpositivo . ' - ' . $periodo);
+						$subCaption = $subCaption . '. ' . Yii::t('frontend', 'Rubros Registrados ' . $añoImpositivo . ' - ' . $periodo);
 
 						$rubroRegistradoModels = $searchDeclaracion->findRubrosRegistrados($añoImpositivo, $periodo)->all();
 
@@ -499,10 +499,7 @@
 							'back' => '/aaee/declaracion/declaracion-definitiva/index-create',
 						];
 
-						$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : [];
-						$rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud'], 'frontend');
-
-						$caption = $caption . '. ' . Yii::t('frontend', 'Categories Registered') . ' ' . $añoImpositivo . ' - ' . $periodo;
+						$caption = $caption . '. ' . Yii::t('frontend', 'Rubros Registrados') . ' ' . $añoImpositivo . ' - ' . $periodo;
 						return $this->render('/aaee/declaracion/definitiva/declaracion-definitiva-form', [
 	  																	'model' => $modelMultiplex,
 	  																	'findModel' => $findModel,

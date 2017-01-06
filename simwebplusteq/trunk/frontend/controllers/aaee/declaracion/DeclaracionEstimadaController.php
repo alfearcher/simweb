@@ -307,6 +307,7 @@
 				$request = Yii::$app->request;
 
 				$lapso = isset($_SESSION['lapso']) ? $_SESSION['lapso'] : null;
+				$mensajeDeclaracion = '';
 
 				if ( count($lapso) > 0 ) {
 					$btnSearchCategory = 1;
@@ -347,6 +348,9 @@
 						return ActiveForm::validateMultiple($modelMultiplex);
 			      	}
 
+			      	$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : [];
+					$rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud'], 'frontend');
+
 			      	// Datos generales del contribuyente.
 			      	$searchDeclaracion = New DeclaracionBaseSearch($idContribuyente);
 			      	$findModel = $searchDeclaracion->findContribuyente();
@@ -368,13 +372,23 @@
 		  																	'caption' => $caption,
 		  																	'opciones' =>$opciones,
 		  																	'subCaption' => $subCaption,
-
+		  																	'rutaAyuda' => $rutaAyuda,
+		  																	'mensajeDeclaracion' => $mensajeDeclaracion,
 
 
 				  					]);
 						}
 					} elseif( isset($postData['btn-create']) ) {
 						if ( $postData['btn-create'] == 3 ) {
+
+							$suma = 0;
+							// Aqui se controla que la suma de lo declarado sea mayor a cero (0).
+							$suma = self::actionControlDeclaracion($postData[$formName]);
+							if ( $suma <= 0 ) {
+								$mensajeDeclaracion = Yii::t('frontend', 'LA SUMA DEL MONTO DECLARADO NO CUMPLE CON LO REQUERIDO. DEBE SER MAYOR A CERO (0).');
+								$result = false;
+							}
+
 							if ( $result ) {
 								// Presentar preview.
 								$opciones = [
@@ -404,7 +418,8 @@
 			  																	'caption' => $caption,
 			  																	'opciones' =>$opciones,
 			  																	'subCaption' => $subCaption,
-
+			  																	'rutaAyuda' => $rutaAyuda,
+			  																	'mensajeDeclaracion' => $mensajeDeclaracion,
 
 
 					  					]);
@@ -467,9 +482,6 @@
 							'back' => '/aaee/declaracion/declaracion-estimada/index-create',
 						];
 
-						$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : [];
-						$rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud'], 'frontend');
-
 						$caption = $caption . '. ' . Yii::t('frontend', 'Rubros Registrados') . ' ' . $añoImpositivo . ' - ' . $periodo;
 						return $this->render('/aaee/declaracion/estimada/declaracion-estimada-form', [
 	  																	'model' => $modelMultiplex,
@@ -479,6 +491,7 @@
 	  																	'opciones' =>$opciones,
 	  																	'subCaption' => $subCaption,
 	  																	'rutaAyuda' => $rutaAyuda,
+	  																	'mensajeDeclaracion' => $mensajeDeclaracion,
 			  					]);
 
 			  		} else {
@@ -487,6 +500,30 @@
 			  		}
 			  	}
 			}
+		}
+
+
+
+		/**
+		 * Metodo que controla el monto declarado, el mismo debe ser mayor a cero (0).
+		 * @param  array $postEnviado post enviado desde el formulario de la declaracion.
+		 * @return boolean retorna true si el monto declarado cumple la condicon,
+		 * false en caso contrario.
+		 */
+		private function actionControlDeclaracion($postEnviado)
+		{
+			$result = false;
+			$suma = 0;
+			if ( count($postEnviado) > 0 ) {
+
+				foreach ( $postEnviado as $post ) {
+					$suma = $suma + (float)$post['monto_new'];
+				}
+
+				if ( $suma > 0 ) { $result = true; }
+			}
+
+			return $suma;
 		}
 
 
