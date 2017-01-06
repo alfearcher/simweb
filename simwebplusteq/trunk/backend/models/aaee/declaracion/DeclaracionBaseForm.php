@@ -254,7 +254,7 @@
 	            'inactivo' => Yii::t('frontend', 'Condition'),
 	            'monto_minimo' => Yii::t('frontend', 'Monto minimo'),
 	            'monto_new' => Yii::t('frontend', 'Monto a declarar'),
-	            'rubro' => Yii::t('frontend', 'Category'),
+	            'rubro' => Yii::t('frontend', 'Rubro'),
 	            'id_rubro' => Yii::t('frontend', 'Id.'),
 	            'islr' => Yii::t('frontend', 'islr'),
 	            'pp_industria' => Yii::t('frontend', 'Pago por Industria'),
