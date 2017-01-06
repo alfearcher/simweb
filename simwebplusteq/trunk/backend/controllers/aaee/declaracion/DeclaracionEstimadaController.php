@@ -378,16 +378,27 @@
 						}
 					} elseif( isset($postData['btn-create']) ) {
 						if ( $postData['btn-create'] == 3 ) {
-
+							$result = true;
 							$suma = 0;
 							// Aqui se controla que la suma de lo declarado sea mayor a cero (0).
 							$suma = self::actionControlDeclaracion($postData[$formName]);
+
+
 							if ( $suma <= 0 ) {
 								$mensajeDeclaracion = Yii::t('frontend', 'LA SUMA DEL MONTO DECLARADO NO CUMPLE CON LO REQUERIDO. DEBE SER MAYOR A CERO (0).');
 								$result = false;
 							}
 
+							if ( trim($mensajeDeclaracion) == '' ) {
+							   	$mensajeDeclaracion = $searchDeclaracion->controlDeclaracionEstimada($lapso['a'], $lapso['p'], $postData[$formName]);
+								if ( trim($mensajeDeclaracion) !== '' ) {
+									$result = false;
+								}
+							}
+
+
 							if ( $result ) {
+
 								// Presentar preview.
 								$opciones = [
 									'back' => '/aaee/declaracion/declaracion-estimada/index-create',
