@@ -838,7 +838,7 @@
 												'name' => 'btn-help',
 												'target' => '_blank',
 												'value' => 1,
-												'style' => 'width: 100%;margin-top:20px;'
+												'style' => 'width: 100%;'
 											])?>
 					</div>
 				</div>

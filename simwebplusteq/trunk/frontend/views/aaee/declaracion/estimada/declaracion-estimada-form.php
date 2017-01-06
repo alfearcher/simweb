@@ -238,9 +238,9 @@
 				</div>  <!-- Fin de col-sm-12 -->
 			</div>  	<!-- Fin de container-fluid -->
 
-			<div class="row">
+			<div class="row" style="width: 100%;">
 				<div class="form-group">
-					<div class="col-sm-3" style="width: 20%;margin-left:100px;">
+					<div class="col-sm-3" style="width: 15%;margin-left:80px;">
 						<?= Html::submitButton(Yii::t('frontend', 'Create Request'),
 																			  [
 																				'id' => 'btn-create',
@@ -253,8 +253,8 @@
 						?>
 					</div>
 
-					<div class="col-sm-3" style="width: 20%;margin-left:100px;">
-						<?= Html::submitButton(Yii::t('frontend', 'Back Form'),
+					<div class="col-sm-3" style="width: 15%;margin-left:80px;">
+						<?= Html::submitButton(Yii::t('frontend', 'Back'),
 																		  [
 																			'id' => 'btn-back-form',
 																			'class' => 'btn btn-danger',
@@ -266,7 +266,7 @@
 						?>
 					</div>
 
-					<div class="col-sm-3" style="width: 20%;margin-left:100px;">
+					<div class="col-sm-3" style="width: 15%;margin-left:80px;">
 						<?= Html::submitButton(Yii::t('frontend', Yii::t('frontend', 'Quit')),
 																			  [
 																				'id' => 'btn-quit',
@@ -280,17 +280,16 @@
 					</div>
 
 					<div class="col-sm-2" style="margin-left: 50px;">
-						<div class="form-group">
 						<!-- '../../common/docs/user/ayuda.pdf'  funciona -->
-							<?= Html::a(Yii::t('backend', 'Ayuda'), $rutaAyuda,  [
-													'id' => 'btn-help',
-													'class' => 'btn btn-default',
-													'name' => 'btn-help',
-													'target' => '_blank',
-													'value' => 1,
-													'style' => 'width: 100%;'
-												])?>
-						</div>
+						<?= Html::a(Yii::t('backend', 'Ayuda'), $rutaAyuda,  [
+												'id' => 'btn-help',
+												'class' => 'btn btn-default',
+												'name' => 'btn-help',
+												'target' => '_blank',
+												'value' => 1,
+												'style' => 'width: 100%;margin-top:20px;'
+											])?>
+
 					</div>
 				</div>
 			</div>
