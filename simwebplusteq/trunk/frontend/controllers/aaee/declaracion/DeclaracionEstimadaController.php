@@ -391,8 +391,11 @@
 
 							if ( trim($mensajeDeclaracion) == '' ) {
 							   	$mensajeDeclaracion = $searchDeclaracion->controlDeclaracionEstimada($lapso['a'], $lapso['p'], $postData[$formName]);
-								$result = false;
+								if ( trim($mensajeDeclaracion) !== '' ) {
+									$result = false;
+								}
 							}
+
 
 							if ( $result ) {
 								// Presentar preview.
