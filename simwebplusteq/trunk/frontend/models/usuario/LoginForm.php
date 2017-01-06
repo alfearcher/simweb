@@ -131,7 +131,7 @@ class LoginForm extends Model
             
 
            if($buscar['password_hash'] == null){
-
+die('aqui llego a la rutina para empezar el cambio a password_hash nota: entro a esta rutina por conseguir null dicha variable en la base de datos');
              $cambio=self::actionCambioClave();
              
 
