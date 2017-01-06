@@ -9,8 +9,8 @@
     <div class="jumbotron">
 
         <div class="row" style="margin-top:-80px;">
-            <?=Html::img('@web/imagen/logo.jpg',[
-                                            'style' => 'width: 40%;'
+            <?=Html::img('@web/imagen/logo-teq.png',[
+                                            'style' => 'width: 50%;'
                 ]);
             ?>
         </div>
