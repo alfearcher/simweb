@@ -230,7 +230,7 @@
 											<div class="row" style="width: 100%;padding-left: 35px;">
 												<?php if ( trim($mensajeDeclaracion) ) { ?>
 													<div class="well well-sm" style="color: red;padding-left: 35px;">
-														<h3><?=Html::encode($mensajeDeclaracion)?></h3>
+														<h4><?=Html::encode($mensajeDeclaracion)?></h4>
 													</div>
 												<?php } ?>
 											</div>
