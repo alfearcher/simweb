@@ -43,12 +43,13 @@ AppAsset::register($this);
     <!-- Aqui comienza el encabezado -->
                 <?php
                     NavBar::begin([
-                        'brandLabel' => Html::img('@web/imagen/logo.jpg',[
-                                            'style' => 'width: 45%;padding-top:-15px;']),
-                        'brandUrl' => Yii::$app->homeUrl,
+                        // 'brandLabel' => Html::img('@web/imagen/logo-teq.png',[
+                        //                     'style' => 'width: 10%;padding:0px;']),
+                        // 'brandUrl' => Yii::$app->homeUrl,
                         'options' => [
                             //-inverse
                             //'class' => 'navbar-inverse navbar-fixed-top',
+                            //'style' => 'height:25px;'
                         ],
                     ]);
 
