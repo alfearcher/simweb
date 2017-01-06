@@ -11,8 +11,8 @@ return [
 			'password' => 'adminyii2015',
 			//'username' => 'jperez',
 			//'password' => 'jperez',
-			'username' => 'root',
-			'password' => '',
+			//'username' => 'root',
+			//'password' => '',
 			'charset'  => 'utf8',
 		],
 		'dbsim' => [
