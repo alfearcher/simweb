@@ -226,6 +226,14 @@
 								                </div>
 
 											 <?php endforeach; ?>
+<!-- Indicar que lo declrado es igual a cero -->
+											<div class="row" style="width: 100%;padding-left: 35px;">
+												<?php if ( trim($mensajeDeclaracion) ) { ?>
+													<div class="well well-sm" style="color: red;padding-left: 35px;">
+														<h3><?=Html::encode($mensajeDeclaracion)?></h3>
+													</div>
+												<?php } ?>
+											</div>
 										 </div>
 
 									</div>

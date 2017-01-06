@@ -678,7 +678,7 @@
 
 												<div class="item panel panel-primary"><!-- widgetItem -->
 													<div class="panel-heading">
-														<h3 class="panel-title pull-left"><b><?=Html::encode( $i+1 .'. '. Yii::t('frontend', 'Category') . ' ' . $mod->rubro); ?></b></h3>
+														<h3 class="panel-title pull-left"><b><?=Html::encode( $i+1 .'. '. Yii::t('frontend', 'Rubro') . ' ' . $mod->rubro); ?></b></h3>
 									                    <div class="clearfix"></div>
 									                </div>
 								                    <div class="panel-body">
@@ -838,7 +838,7 @@
 												'name' => 'btn-help',
 												'target' => '_blank',
 												'value' => 1,
-												'style' => 'width: 100%;'
+												'style' => 'width: 100%;margin-top:20px;'
 											])?>
 					</div>
 				</div>
