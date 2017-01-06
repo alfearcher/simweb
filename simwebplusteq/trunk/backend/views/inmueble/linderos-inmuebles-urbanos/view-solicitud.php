@@ -57,11 +57,11 @@
 						'model' => $model,
 		    			'attributes' => [
 		    				'nro_solicitud',
-		    				'mts',
-		    				'valor_por_mts2',
-		    				'mts2_terreno',
-		    				'valor_por_mts2_terreno',
-		    				'valor',
+		    				'id_impuesto',
+		    				'lindero_norte',
+		    				'lindero_sur',
+		    				'lindero_este',
+		    				'lindero_oeste',
 		    				
 		    				
 

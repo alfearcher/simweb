@@ -60,6 +60,7 @@
     use common\models\solicitudescontribuyente\inmueble\ProcesarCambioPropietarioVendedorInmuebleUrbano;
     use common\models\solicitudescontribuyente\inmueble\ProcesarCambioPropietarioCompradorInmuebleUrbano;
     use common\models\solicitudescontribuyente\inmueble\ProcesarSolicitudSolvenciaInmueble;
+    use common\models\solicitudescontribuyente\inmueble\ProcesarLinderosInmuebleUrbano;
 
 
 
@@ -212,6 +213,14 @@
                 } elseif ( $this->_model->tipo_solicitud == 82 ) {
 
                     $procesar = New ProcesarSolicitudSolvenciaInmueble($this->_model,
+                                                                       $this->_evento,
+                                                                       $this->_conn,
+                                                                       $this->_conexion);
+                    $result = $procesar->procesarSolicitud();
+
+                } elseif ( $this->_model->tipo_solicitud == 84 ) {
+
+                    $procesar = New ProcesarSolicitudLinderosInmueble($this->_model,
                                                                        $this->_evento,
                                                                        $this->_conn,
                                                                        $this->_conexion);

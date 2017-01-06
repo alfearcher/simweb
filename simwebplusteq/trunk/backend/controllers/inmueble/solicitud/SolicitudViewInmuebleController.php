@@ -161,6 +161,10 @@
 
 					return self::actionMostrarSolicitudSolvenciaInmuebleCreada();
 
+				} elseif ( $this->model->tipo_solicitud == 84 ) {
+
+					return self::actionMostrarSolicitudLinderosInmueble();
+
 				}
 			}
 
@@ -449,6 +453,25 @@
 					$model = $modelSearch->findVendedor($this->model->nro_solicitud);
 
 					return $this->render('@backend/views/inmueble/cambio-propietario-comprador-inmuebles-urbanos/view-solicitud', [
+													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
+													'model' => $model,
+
+						]);
+			}
+
+			return false;
+		}
+
+		// tipo solicitud 84
+		private function actionMostrarSolicitudLinderosInmueble()
+		{
+			if ( $this->model->nivel_aprobacion == 2 ) {
+					$modelSearch = New SlHistoricoAvaluosSearch();
+					$model = $modelSearch->findAvaluos($this->model->nro_solicitud);
+
+
+
+					return $this->render('@backend/views/inmueble/linderos-inmuebles-urbanos/view-solicitud', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
 													'model' => $model,
 
