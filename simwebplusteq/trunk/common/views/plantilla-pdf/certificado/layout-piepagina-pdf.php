@@ -101,11 +101,11 @@
 						LA AUTENTICIDAD Y VIGENCIA DE ESTA NOTIFICACION PUEDE VERIFICARSE A TRAVES DEL CODIGO QR
 						QUE SE ENCUENTRA EN LA PARTE INFERIOR DERECHA.
 					</div>
-					<div class="row">
+					<!-- <div class="row">
 						<strong>Este documento ha sido firmado electrónicamente, amparado en el decreto Nro. 1204 con rango
 						y fuerza de Ley sobre Mensajes de datos y Firmas Electrónica de fecha 10/02/2001, publicado
 						en Gaceta Oficial de la Republica Bolivariana de Venezuela Nro. 37.148 del 28/02/2001.</strong>
-					</div>
+					</div> -->
 				</td>
 			</tr>
 		</table>
