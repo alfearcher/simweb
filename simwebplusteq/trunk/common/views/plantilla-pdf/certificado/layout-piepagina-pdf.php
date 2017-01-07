@@ -98,8 +98,8 @@
 			<tr>
 				<td class="label-pie-pagina-4" colspan="10" style="text-align: center;font-size: 55%;font-family: Verdana, Arial, Helvetica, sans-serif;">
 					<div class="row" style="color: red;">
-						LA AUTENTICIDAD Y VIGENCIA DE ESTA NOTIFICACION PUEDE VERIFICARSE A TRAVES DEL CODIGO QR
-						QUE SE ENCUENTRA EN LA PARTE INFERIOR DERECHA.
+						LA AUTENTICIDAD Y VIGENCIA DE ESTA NOTIFICACION PUEDE VERIFICARSE A TRAVES DEL CODIGO DE BARRA
+						QUE SE ENCUENTRA EN LA PARTE INFERIOR.
 					</div>
 					<!-- <div class="row">
 						<strong>Este documento ha sido firmado electrónicamente, amparado en el decreto Nro. 1204 con rango
