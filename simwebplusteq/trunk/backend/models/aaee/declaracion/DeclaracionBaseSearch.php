@@ -1576,5 +1576,22 @@
 
 
 
+	    /**
+	     * Metodo que a traves del año impositivo, define su año anterior y con estos valores
+	     * determina si ambos pertenecen a la misma ordenanza.
+	     * @param integer $añoImpositivo año impositivo de la declaracion.
+	     * @return boolean retorna true si ambos coinciden en la misma ordenanza o false caso
+	     * contrario.
+	     */
+	    public function esLaMismaOrdenaza($añoImpositivo)
+	    {
+	    	$añoInterior = $añoImpositivo - 1;
+	    	$result = false;
+	    	return $result = OrdenanzaBase::anoMismaOrdenanza($añoImpositivo, $añoInterior, 1);
+
+	    }
+
+
+
 	}
  ?>
