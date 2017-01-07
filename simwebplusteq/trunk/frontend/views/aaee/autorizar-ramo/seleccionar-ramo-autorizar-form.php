@@ -266,7 +266,7 @@
 										<div class="list-group">
   											<a href="#" class="list-group-item">
     											<h4 class="list-group-item-heading">Observaciones</h4>
-    											<p class="list-group-item-text">La autorización de los ramos comprenderan el lapso de tiempo entre los años <?= Html::encode($añoCatalogo) ?> y <?= Html::encode($añoVenceOrdenanza) ?>. Ambos inclusibles</p>
+    											<p class="list-group-item-text">La autorización de los ramos comprenderan el lapso de tiempo entre los años <?= Html::encode($añoCatalogo) ?> y <?= Html::encode($añoVenceOrdenanza) ?>. Ambos inclusives</p>
   											</a>
 										</div>
 									</div>
