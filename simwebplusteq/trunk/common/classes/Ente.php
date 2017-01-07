@@ -155,7 +155,7 @@
 
 		public function getTelefonos()
 		{
-			return $this->$telefonos;
+			return $this->telefonos;
 		}
 
 		public function getEmail()
