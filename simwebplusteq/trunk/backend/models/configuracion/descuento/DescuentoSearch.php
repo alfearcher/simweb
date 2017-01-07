@@ -126,7 +126,7 @@
 			if ( count($descuentos) > 0 ) {
 				foreach ( $descuentos as $descuento ) {
 					if ( $descuento['tipo_liquidacion'] == 0 ) {
-						if ( $descuento['aplicar_solo_periodo'] == 0 && $descuento['periodo'] == 1 ) {
+						if ( $descuento['aplicar_solo_periodo'] == 0 && $descuento['periodo'] == 4 ) {
 							$config = $descuento;
 							break;
 						}
@@ -177,7 +177,7 @@
 			$descuento = [];
 			$config = self::getConfigDescuentoTodoAno($añoImpositivo);
 			if ( count($config) > 0 ) {
-				$descuento['descuento'] = number_format(($config['porc_monto']/100) * $monto, 2);
+				$descuento['descuento'] = ($config['porc_monto']/100) * $monto;
 				$descuento['fecha_desde'] = $config['fecha_desde'];
 				$descuento['fecha_hasta'] = $config['fecha_hasta'];
 
