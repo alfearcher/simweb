@@ -91,7 +91,7 @@
 			<tr>
 				<td class="label-pie-pagina-3" colspan="10" style="text-align: center;color: #175778; font-size: 70%;font-family: Verdana, Arial, Helvetica, sans-serif;">
 					<div class="nota-pie-1" >
-						LA IMPRESION DE ESTE CERTIFICADO DEBE SER LEGIBLE Y DE ALTA CALIDA
+						LA IMPRESION DE ESTE CERTIFICADO DEBE SER LEGIBLE Y DE ALTA CALIDAD
 					</div>
 				</td>
 			</tr>

@@ -71,7 +71,7 @@
 		<td class="texto" style="text-align: justify;font-family: Verdana, Arial, Helvetica, sans-serif;font-size: 100%;">
 		<p>
 			Quien suscribe: <strong><?=Html::encode(Yii::$app->oficina->getDirector())?></strong>, Director(a) de Dirección de Hacienda Municipal de la
-			<strong><?=Html::encode(Yii::$app->ente->getAlcaldia())?></strong>, del Municipio <strong><?=Html::encode(Yii::$app->ente->getMunicipio())?></strong> del <strong><?=Html::encode(Yii::$app->ente->getEstado())?></strong>,
+			<strong><?=Html::encode(Yii::$app->ente->getAlcaldia())?></strong> del <?=Html::encode(Yii::$app->ente->getEstado())?></strong>,
 			de conformidad con lo dispuesto en el Artículo 138 del Código Orgánico Tributario, certifica
 			la recepción de la <strong>Declaración Definitiva de Ingresos Brutos del Impuesto Sobre Actividades
 			Económicas de Industria, Comercio, Servicios y Conexos</strong>, ejecicio fiscal <strong><?=Html::encode($periodoFiscal)?></strong>,
