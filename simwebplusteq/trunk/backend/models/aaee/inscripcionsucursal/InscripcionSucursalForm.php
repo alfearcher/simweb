@@ -77,6 +77,8 @@
 		public $num_tlf_ofic;
 		public $num_tlf_ofic_otro;
 		public $num_celular;
+		public $naturaleza_rep;
+		public $cedula_rep;
 
 		const SCENARIO_FRONTEND = 'frontend';
 		const SCENARIO_BACKEND = 'backend';
@@ -161,7 +163,7 @@
 	        	  'tlf_celular', 'tlf_ofic',
 	        	  'tlf_ofic_otro', 'id_sim',
 	        	  'num_tlf_ofic', 'num_tlf_ofic_otro',
-	        	  'num_celular'],
+	        	  'num_celular'. 'naturaleza_rep'],
 	        	  'string', 'on' => 'frontend',],
 	          	['fecha_hora', 'default', 'value' => date('Y-m-d H:i:s')],
 	          	//['id_sim', 'unique'],
