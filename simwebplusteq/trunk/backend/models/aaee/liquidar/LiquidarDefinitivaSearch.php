@@ -144,14 +144,14 @@
 		 */
 		public function determinarLiquidacionFaltante()
 		{
+			$añoLimite = Yii::$app->lapso->anoLimiteNotificado();
 			$mensaje = [];
 			$existe = true;
 			$resultados = ActEcon::find()->alias('A')
 										 ->distinct('ano_impositivo')
 	                                     ->where('id_contribuyente =:id_contribuyente',
 	                                   			[':id_contribuyente' => $this->_id_contribuyente])
-	                                     ->andWhere('ano_impositivo <:ano_impositivo',
-	                                   			[':ano_impositivo' => $this->_ano_impositivo])
+	                                     ->andWhere(['BETWEEN', 'ano_impositivo', $añoLimite, $this->_ano_impositivo-1])
 	                                     ->andWhere('estatus =:estatus',[':estatus' => 0])
 	                                     ->andWhere('inactivo =:inactivo',[':inactivo' => 0])
 	                                     ->joinWith('actividadDetalle I', true, 'INNER JOIN')
@@ -165,8 +165,7 @@
 
 		    	foreach ( $resultados as $rs ) {
 
-		    		$existe = self::existePlanillaDefinitiva((int)$rs['ano_impositivo'],
-		    												 1);
+		    		$existe = self::existePlanillaDefinitiva((int)$rs['ano_impositivo'], 1);
 
 		    		if ( !$existe ) {
 		    			$mensaje[] = Yii::t('backend', 'Falta por liquidar el laspo ' . $rs['ano_impositivo'] . ' - ' . 1);
@@ -253,6 +252,14 @@
 			// Valida que el monto declarado sea mayor a cero (0).
 			if ( !self::montoDeclarado() ) {
 				$mensajes[] = Yii::t('backend', 'El monto declarado del lapso ' . $this->_ano_impositivo . ' - ' . $this->_periodo . ' es cero (0)');
+			}
+
+
+			// Valida que existe la liquidacion estimada del lapso.
+			$resultado = self::exiteLiquidacionEstimadaDelLapso($this->_ano_impositivo);
+
+			if ( !$resultado ) {
+				$mensajes[] = Yii::t('backend', 'No se determino las liquidaciones de la estimada para el lapso ' . $this->_ano_impositivo . ' - ' . $this->_periodo);
 			}
 
 
@@ -421,6 +428,31 @@
 		{
 			return OrdenanzaBase::getFechaVencimientoSegunFecha($fecha);
 		}
+
+
+
+
+
+		/***/
+		public function exiteLiquidacionEstimadaDelLapso($añoImpositivo)
+		{
+			return $resultados = PagoDetalle::find()->alias('D')
+											 ->where('id_contribuyente =:id_contribuyente',
+											 			[':id_contribuyente' => $this->_id_contribuyente])
+											 ->andWhere('ano_impositivo =:ano_impositivo',
+											 			[':ano_impositivo' => $añoImpositivo])
+											 ->andWhere('trimestre >:trimestre',
+											 			[':trimestre' => 0])
+											 ->andWhere('referencia =:referencia',
+											 			[':referencia' => 0])
+											 ->andWhere('impuesto =:impuesto',[':impuesto' => 1])
+											 ->andwhere('pago !=:pago',
+											 			['pago' => 9])
+											 ->joinWith('pagos P', true, 'INNER JOIN')
+											 ->exists();
+
+		}
+
 
 
 	}
