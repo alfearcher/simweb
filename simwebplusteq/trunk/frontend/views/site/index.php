@@ -16,7 +16,7 @@
         </div>
         <h1>Bienvenido!</h1>
 
-        <p class="lead">AL SISTEMA ON LINE DE INFORMACION Y TRAMITES TRIBUTARIOS</p>
+        <p class="lead">AL SERVICIO AUTOMATIZADO DE INFORMACION Y TRAMITES TRIBUTARIOS</p>
         <div class="row">
             <?=Html::img('@web/imagen/logo-sin-fondo-blanco.jpg',[
                                             'style' => 'width: 15%;'
