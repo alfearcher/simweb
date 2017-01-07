@@ -75,19 +75,19 @@
 		        					   	['label' => 'Inscripción de Sucursales', 'url' => ['/aaee/inscripcionsucursal/inscripcion-sucursal/index', 'id' => 85]],
 		        					   	['label' => 'Autorizar Ramo(s)', 'url' => ['/aaee/autorizarramo/autorizar-ramo/index', 'id' => 96]],
 		        					   	//['label' => 'Licencias', 'url' => ['/aaee/licencia/licencia-base/index']],
-		        					   	['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Licencia',
-		        					   		'items' => [
-	        					   				['label' => 'Solicitar Emision', 'url' => ['/aaee/licencia/licencia-solicitud/index', 'id' => 113]],
-	        					   				['label' => 'Descargar Licencia', 'url' => ['/aaee/licencia/licencia-generar/index']],
-		        					   		]
-		        					   	],
+		        					   	// ['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Licencia',
+		        					   	// 	'items' => [
+	        					   		// 		['label' => 'Solicitar Emision', 'url' => ['/aaee/licencia/licencia-solicitud/index', 'id' => 113]],
+	        					   		// 		['label' => 'Descargar Licencia', 'url' => ['/aaee/licencia/licencia-generar/index']],
+		        					   	// 	]
+		        					   	// ],
 
-	        					   		['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Solvencia',
-		        					   		'items' => [
-	        					   				['label' => 'Solicitar Emision', 'url' => ['/aaee/solvencia/solvencia-actividad-economica-solicitud/index', 'id' => 114]],
-	        					   				['label' => 'Descargar Solvencia', 'url' => ['/aaee/solvencia/solvencia-actividad-generar/index']],
-		        					   		]
-		        					   	],
+	        					   		// ['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Solvencia',
+		        					   	// 	'items' => [
+	        					   		// 		['label' => 'Solicitar Emision', 'url' => ['/aaee/solvencia/solvencia-actividad-economica-solicitud/index', 'id' => 114]],
+	        					   		// 		['label' => 'Descargar Solvencia', 'url' => ['/aaee/solvencia/solvencia-actividad-generar/index']],
+		        					   	// 	]
+		        					   	// ],
 
 		        					   	['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Modificion de Datos',
 		        					   		'items' => [
@@ -133,41 +133,41 @@
 
 
 		        		//	SOLICITUDES DE INMUEBLES URBANOS
-		        		['label' => Icon::show('fa fa-home',['class' => $typeLong], $typeIcon) . '&nbsp; Inmuebles Urbanos',
-		        			'items' => [
-		        						['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Solvencia',
-		        					   		'items' => [
-	        					   				['label' => 'Solicitar Emision', 'url' => ['/inmueble/solvencia/solvencia-inmueble/index', 'id' => 116]],
-	        					   				['label' => 'Descargar Solvencia', 'url' => ['/inmueble/solvencia/solvencia-inmueble-generar/index']],
-		        					   		]
-		        					   	],
-		        						['label' => 'Inscripción de Inmuebles Urbanos', 'url' => ['inmueble/inscripcion/inscripcion-inmuebles-urbanos/inscripcion-inmuebles-urbanos','id' =>68]],
-		        						['label' => 'Avaluo Catastral', 'url' => ['inmueble/avaluocatastral/avaluo-catastral-inmuebles-urbanos/index','id' =>6]],
-		        						['label' => 'Certificado Catastral', 'url' => '#'],
-		        						['label' => 'Renovación de Certificado Catastral', 'url' => '#'],
-		        						//['label' => 'Solvencia', 'url' => '#'],
-		        						['label' => 'Cambio de Numero Catastral', 'url' => ['/inmueble/cambionumerocatastral/cambio-numero-catastral-inmuebles-urbanos/index', 'id' =>7]],
-		        						['label' => 'Cambio de Propietario(VENDEDOR)', 'url' => ['inmueble/cambiopropietariovendedor/cambio-propietario-vendedor-inmuebles-urbanos/index','id' =>12]], // vendedor:12
-		        						['label' => 'Cambio de Propietario(COMPRADOR)', 'url' => ['inmueble/cambiopropietariocomprador/cambio-propietario-comprador-inmuebles-urbanos/buscar-vendedor','id' =>11]], // comprador:11
-		        						['label' => 'Integración de Parcela', 'url' => ['/inmueble/integracion/integracion-inmuebles-urbanos/integracion-inmuebles', 'id' =>107]],
-		        						['label' => 'Desintegración de Parcela', 'url' => ['inmueble/desintegracion/desintegracion-inmuebles-urbanos/index', 'id' =>106]],
-		        						['label' => 'Cambio a Propiedad Horizontal', 'url' => ['/inmueble/cambiopropiedadhorizontal/cambio-propiedad-horizontal-inmuebles-urbanos/index', 'id' =>3]],
-		        						['label' => 'Cambio de Otros Datos del Inmueble', 'url' => ['/inmueble/cambiootrosdatos/cambio-otros-datos-inmuebles-urbanos/index','id' =>80]],
-		        						['label' => 'Modificar Avaluo', 'url' => '#'],
-		        						['label' => 'Desincorporación de Inmueble', 'url' => ['inmueble/desincorporacion/desincorporacion-inmuebles-urbanos/index','id' =>1], 'options' => ['onclick' => "setId(50)"]],
+		        		// ['label' => Icon::show('fa fa-home',['class' => $typeLong], $typeIcon) . '&nbsp; Inmuebles Urbanos',
+		        		// 	'items' => [
+		        		// 				['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Solvencia',
+		        		// 			   		'items' => [
+	        			// 		   				['label' => 'Solicitar Emision', 'url' => ['/inmueble/solvencia/solvencia-inmueble/index', 'id' => 116]],
+	        			// 		   				['label' => 'Descargar Solvencia', 'url' => ['/inmueble/solvencia/solvencia-inmueble-generar/index']],
+		        		// 			   		]
+		        		// 			   	],
+		        		// 				['label' => 'Inscripción de Inmuebles Urbanos', 'url' => ['inmueble/inscripcion/inscripcion-inmuebles-urbanos/inscripcion-inmuebles-urbanos','id' =>68]],
+		        		// 				['label' => 'Avaluo Catastral', 'url' => ['inmueble/avaluocatastral/avaluo-catastral-inmuebles-urbanos/index','id' =>6]],
+		        		// 				['label' => 'Certificado Catastral', 'url' => '#'],
+		        		// 				['label' => 'Renovación de Certificado Catastral', 'url' => '#'],
+		        		// 				//['label' => 'Solvencia', 'url' => '#'],
+		        		// 				['label' => 'Cambio de Numero Catastral', 'url' => ['/inmueble/cambionumerocatastral/cambio-numero-catastral-inmuebles-urbanos/index', 'id' =>7]],
+		        		// 				['label' => 'Cambio de Propietario(VENDEDOR)', 'url' => ['inmueble/cambiopropietariovendedor/cambio-propietario-vendedor-inmuebles-urbanos/index','id' =>12]], // vendedor:12
+		        		// 				['label' => 'Cambio de Propietario(COMPRADOR)', 'url' => ['inmueble/cambiopropietariocomprador/cambio-propietario-comprador-inmuebles-urbanos/buscar-vendedor','id' =>11]], // comprador:11
+		        		// 				['label' => 'Integración de Parcela', 'url' => ['/inmueble/integracion/integracion-inmuebles-urbanos/integracion-inmuebles', 'id' =>107]],
+		        		// 				['label' => 'Desintegración de Parcela', 'url' => ['inmueble/desintegracion/desintegracion-inmuebles-urbanos/index', 'id' =>106]],
+		        		// 				['label' => 'Cambio a Propiedad Horizontal', 'url' => ['/inmueble/cambiopropiedadhorizontal/cambio-propiedad-horizontal-inmuebles-urbanos/index', 'id' =>3]],
+		        		// 				['label' => 'Cambio de Otros Datos del Inmueble', 'url' => ['/inmueble/cambiootrosdatos/cambio-otros-datos-inmuebles-urbanos/index','id' =>80]],
+		        		// 				['label' => 'Modificar Avaluo', 'url' => '#'],
+		        		// 				['label' => 'Desincorporación de Inmueble', 'url' => ['inmueble/desincorporacion/desincorporacion-inmuebles-urbanos/index','id' =>1], 'options' => ['onclick' => "setId(50)"]],
 
-		        			]
-		        		],
+		        		// 	]
+		        		// ],
 
 		        		//	SOLICITUDES DE VEHICULOS
-		        		['label' => Icon::show('fa fa-car',['class' => $typeLong], $typeIcon) . '&nbsp; Vehiculos',
-		        			'items' => [
-		        						['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Solvencia',
-		        					   		'items' => [
-	        					   				['label' => 'Solicitar Emision', 'url' => ['/vehiculo/solvencia/solvencia-vehiculo/index', 'id' => 115]],
-	        					   				['label' => 'Descargar Solvencia', 'url' => ['/vehiculo/solvencia/solvencia-vehiculo-generar/index']],
-		        					   		]
-		        					   	],
+		        		// ['label' => Icon::show('fa fa-car',['class' => $typeLong], $typeIcon) . '&nbsp; Vehiculos',
+		        		// 	'items' => [
+		        		// 				['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Solvencia',
+		        		// 			   		'items' => [
+	        			// 		   				['label' => 'Solicitar Emision', 'url' => ['/vehiculo/solvencia/solvencia-vehiculo/index', 'id' => 115]],
+	        			// 		   				['label' => 'Descargar Solvencia', 'url' => ['/vehiculo/solvencia/solvencia-vehiculo-generar/index']],
+		        		// 			   		]
+		        		// 			   	],
 		        						// ['label' => 'Inscripci&oacute;n de Vehiculos' , 'url' =>['/vehiculo/registrar/registrar-vehiculo/registrar-vehiculo', 'id' =>60]],
 		        						// ['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . 'Calcomania',
 					        			// 	'items' => [
@@ -180,8 +180,8 @@
 		        						// ['label' => 'Cambio de Placa', 'url' => ['/vehiculo/cambioplaca/cambio-placa-vehiculo/vista-seleccion', 'id' => 74], 'options' => []],
 		        						// ['label' => 'Desincorporaci&oacute;n de Vehiculo', 'url' => ['/vehiculo/desincorporacion/desincorporacion-vehiculo/vista-seleccion', 'id' => 4]],
 		        						// ['label' => 'Cambio de Otros Datos del Vehiculo', 'url' => ['/vehiculo/cambiodatos/cambio-datos-vehiculo/vista-seleccion', 'id' => 5]],
-		        			],
-		        		],
+		        		// 	],
+		        		// ],
 
 		        // 		//	PROPAGANDA COMERCIAL
 		        // 		['label' => Icon::show('fa fa-file-powerpoint-o',['class' => $typeLong], $typeIcon) . '&nbsp; Propaganda Comercial',
