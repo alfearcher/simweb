@@ -455,6 +455,9 @@
 						$periodo = (int)$lapso['p'];
 						$subCaption = Yii::t('frontend', 'Rubros Registrados ' . $añoImpositivo . ' - ' . $periodo);
 
+						$mismaOrdenanza = true;
+						$mismaOrdenanza = $searchDeclaracion->esLaMismaOrdenaza($añoImpositivo);
+
 						// Lo siguiente obtiene una declracion de la definitiva del año anterior.
 						// [ramo] => monto estimada
 						$declaracionDefinitiva = $searchDeclaracion->getDefinitivaAnterior($añoImpositivo-1, $periodo);
@@ -476,8 +479,8 @@
 							$modelMultiplex[$i]['rubro'] = $rubroModel->rubroDetalle->rubro;
 							$modelMultiplex[$i]['descripcion'] = $rubroModel->rubroDetalle->descripcion;
 							$modelMultiplex[$i]['monto_new'] = 0;
-							$modelMultiplex[$i]['monto_v'] = $rubroModel->estimado;
-							$modelMultiplex[$i]['monto_minimo'] = $monto;
+							$modelMultiplex[$i]['monto_v'] = ( $mismaOrdenanza ) ? $rubroModel->estimado : 0;
+							$modelMultiplex[$i]['monto_minimo'] = ( $mismaOrdenanza ) ? $monto : 0;
 							$modelMultiplex[$i]['usuario'] = isset(Yii::$app->user->identity->login) ? Yii::$app->user->identity->login : null;
 							$modelMultiplex[$i]['fecha_hora'] = date('Y-m-d H:i:s');
 							$modelMultiplex[$i]['origen'] = 'WEB';
