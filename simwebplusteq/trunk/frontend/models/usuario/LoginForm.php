@@ -6,38 +6,38 @@
  */
 
  /**
- * 
- *  > This library is free software; you can redistribute it and/or modify it under 
- *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free 
- *  > Software Foundation; either version 2 of the Licence, or (at your opinion) 
+ *
+ *  > This library is free software; you can redistribute it and/or modify it under
+ *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free
+ *  > Software Foundation; either version 2 of the Licence, or (at your opinion)
  *  > any later version.
- *  > 
- *  > This library is distributed in the hope that it will be usefull, 
- *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability 
- *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence 
+ *  >
+ *  > This library is distributed in the hope that it will be usefull,
+ *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability
+ *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence
  *  > for more details.
- *  > 
+ *  >
  *  > See [LICENSE.TXT](../../LICENSE.TXT) file for more information.
  *
  */
 
- /**    
+ /**
  *  @file LoginForm.php
- *  
+ *
  *  @author Manuel Alejandro Zapata Canelon
- * 
+ *
  *  @date 11-01-2016
- * 
+ *
  *  @class LoginForm
  *  @brief Clase que permite validar cada uno de los datos del formulario login.
- * 
- *  
- * 
- *  
- *  
+ *
+ *
+ *
+ *
+ *
  *  @property
  *
- *  
+ *
  *  @method
  *  rules
  *  validatePassword
@@ -45,7 +45,7 @@
  *  getUser
  *
  *  @inherits
- *  
+ *
  */
 namespace frontend\models\usuario;
 
@@ -76,8 +76,8 @@ class LoginForm extends Model
     public $password;
     public $rememberMe = true;
     public $salt;
-	
-	
+
+
     private $_user = false;
 
 
@@ -92,9 +92,9 @@ class LoginForm extends Model
             // rememberMe es un valor booleano
             ['email' , 'validatePassword'],
           //  ['rememberMe', 'boolean'],
-            
+
             // password es validado por validatePassword()
-           
+
         ];
     }
 
@@ -104,7 +104,7 @@ class LoginForm extends Model
 	 *  Metodo que retorna los nombres de los atributos
 	 */
 	  public function attributeLabels()
-    { 
+    {
         return [
         'email' => Yii::t('frontend', 'Email'),
         'password' => Yii::t('frontend', 'Password'),
@@ -120,46 +120,57 @@ class LoginForm extends Model
         $password = $pass.$utilidad;
 
         $password_hash = md5($password);
-        
+
             $buscar = Afiliacion::find()
                                 ->where([
                                     'login' => $this->email,
-                                    'password_hash' => $password_hash, 
+                                    'password_hash' => $password_hash,
                                     'estatus' => 0,
                                     ])
                                 ->one();
-            
 
-           if($buscar['password_hash'] == null){
+
+          if ( $buscar == null ) {
+              $buscar = Afiliacion::find()
+                                ->where([
+                                    'login' => $this->email,
+                                    'password' => $pass,
+                                    'estatus' => 0,
+                                    ])
+                                ->one();
+
+          }
+// die(var_dump($buscar));
+           if ( $buscar['password_hash'] == null ) {
 //aqui llego a la rutina para empezar el cambio a password_hash nota: entro a esta rutina por conseguir null dicha variable en la base de datos
-             $cambio=self::actionCambioClave();
-             
+             $cambio=self::actionCambioClave($buscar['id_contribuyente']);
+
 
                 $buscar2 = Afiliacion::find()
                                 ->where([
                                     'login' => $this->email,
-                                    'password_hash' => $cambio, 
+                                    'password_hash' => $cambio,
                                     'estatus' => 0,
                                     ])
                                 ->one();
-                
-                if  ($buscar2 == false){ 
+
+                if  ($buscar2 == false){
                 $this->addError($attribute, 'Usuario o password incorrecto.');
             }
            } else {
-          
-                 if  ($buscar == false){ 
+
+                 if  ($buscar == false){
                 $this->addError($attribute, 'Usuario o password incorrecto.');
             }
            }
-        } 
-    
+        }
+
 
      public function login()
     {
-     
+
         if ($this->validate()) {
-           
+
             //die(var_dump($this->getUser()));
             return Yii::$app->user->login($this->getUser(),  10*10*10);
             //3600*24*30 : 0
@@ -167,7 +178,7 @@ class LoginForm extends Model
             return false;
         }
     }
-	
+
     public function getUser()
     {
 
@@ -178,7 +189,7 @@ class LoginForm extends Model
            $password_hash = md5($password);
 
          if ($this->_user === false) {
-            
+
             $this->_user = Afiliaciones::findByUsername($this->email, $password_hash);
 
 
@@ -188,36 +199,37 @@ class LoginForm extends Model
         return $this->_user;
     }
 
-    public function actionCambioClave()
+    public function actionCambioClave($idContribuyente)
     {
-//412ed1db244a8641cd696e6262bbe705 password adminteq 
+//412ed1db244a8641cd696e6262bbe705 password adminteq
 //9a1z1 primera prueba clave
 //21azaa segunda clave de prueba
 //const $utilidad = '14adf8';
 //
 //prueba en login---- affj9 MARTINEZRAMON1943@GMAIL.COM
  try {
-              $afiliado = Afiliacion::find()->where("login=:login", [":login" => $this->email])
-                                            //->andwhere('estatus' => 0)
-                                            ->asArray()->one();
-              
-             
-              
-          
+              // $afiliado = Afiliacion::find()->where("login=:login", [":login" => $this->email])
+              //                               //->andwhere('estatus' => 0)
+              //                               ->asArray()->one();
 
-    
+
+              $afiliado = Afiliacion::find()->where('id_contribuyente =:id_contribuyente',
+                                                      [':id_contribuyente' => $idContribuyente])
+                                            ->asArray()->one();
+
+
               $salt = Utilidad::getUtilidad();
 
               $password1 = $afiliado['password'].$salt;
 
               $password_hash = md5($password1);
-                 
+
               $arregloDatos = ['password_hash' => $password_hash];
 
               $conexion = new ConexionController();
 
               $conn = $conexion->initConectar('db');
-                 
+
               $conn->open();
 
               $transaccion = $conn->beginTransaction();
@@ -226,8 +238,7 @@ class LoginForm extends Model
               $arregloDatos = ['password_hash' => $password_hash,
                                 'password' => 0,
                                 'estatus'=> 0];
-               $arregloCondition = ['id_contribuyente' => $afiliado['id_contribuyente'],
-                                    'estatus'=> 1];
+               $arregloCondition = ['id_contribuyente' => $afiliado['id_contribuyente']];
 
 
                   if ($conexion->modificarRegistroNatural($conn, $tableName, $arregloDatos, $arregloCondition)){
@@ -235,25 +246,25 @@ class LoginForm extends Model
                       $transaccion->commit();
                       $conn->close();
                       return $password_hash;
-                     
-                      
-                  }else{ 
-                 
+
+
+                  }else{
+
                       $transaccion->rollback();
                       $conn->close();
                       return false;
-                      
+
                   }
 
-                        
+
 
              } catch ( Exception $e ) {
                 //echo $e->errorInfo[2];
-             } 
-             
-                
+             }
+
+
         }
-    
-            
-   
+
+
+
 }
