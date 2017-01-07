@@ -88,7 +88,8 @@
         /***/
         public function generarBoletinDefinitiva()
         {
-            $barcode = 152222;
+            // $barcode = 152222;
+            $barcode = $nombrePDF = 'BD-' . $this->_id_contribuyente . '-' . $this->_año_impositivo . $this->_periodo;
             // Informacion del encabezado.
             $htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/layout/layout-encabezado-pdf', [
                                                             'caption' => 'BOLETIN DE NOTIFICACION',
@@ -122,7 +123,6 @@
             $pago = New PagoSearch();
             $pago->setIdContribuyente($this->_id_contribuyente);
             $resumenPago = $pago->getResumenPagoDefinitiva($this->_año_impositivo, $this->_periodo);
-
 
             $htmlCobro = $this->renderPartial('@common/views/plantilla-pdf/boletin/definitiva/layout-cobro-anticipado-pdf',[
                                                             'resumen'=> $resumenPago,
@@ -167,7 +167,8 @@
         /***/
         public function generarBoletinEstimada()
         {
-            $barcode = 152222;
+            //$barcode = 152222;
+            $barcode = 'BD-' . $this->_id_contribuyente . '-' . $this->_año_impositivo . $this->_periodo;
             // Informacion del encabezado.
             $htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/layout/layout-encabezado-pdf', [
                                                             'caption' => 'BOLETIN DE NOTIFICACION',
@@ -180,7 +181,7 @@
                                                             'model' => $findModel,
                                                             'showDireccion' => true,
                                                             'showRepresentante' => true,
-                                    ]);   
+                                    ]);
 
 
             // Informacion de la declaracion.
@@ -206,7 +207,7 @@
             $htmlCobro = $this->renderPartial('@common/views/plantilla-pdf/boletin/estimada/layout-cobro-anticipado-pdf',[
                                                             'resumen'=> $resumenCobro,
                                     ]);
-         
+
 
             // informacion del pie de pagina.
             $htmlPiePagina = $this->renderPartial('@common/views/plantilla-pdf/boletin/layout-piepagina-pdf',[
@@ -221,8 +222,8 @@
 
             // Nombre del archivo.
             $nombrePDF = 'BE-' . $this->_id_contribuyente . '-' . $this->_año_impositivo . $this->_periodo;
-            $nombre = $nombrePDF; 
-            $nombrePDF .= '.pdf'; 
+            $nombre = $nombrePDF;
+            $nombrePDF .= '.pdf';
 
             //$html = $htmlEncabezado . $htmlContribuyente . $htmlDeclaracion . $htmlCobro . $htmlPiePagina;
 
