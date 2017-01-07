@@ -92,8 +92,6 @@
 
 
 
-
-
 		/**
 		 * Metodo constructor de la clase.
 		 * @param integer $idContribuyente identificador del contribuyente.
@@ -377,7 +375,7 @@
 				if ( $montoCalculado > 0 ) {
 					$idImpuesto = 0;
 					$exigLiq = (int)$exigibilidadLiq['exigibilidad'];
-					$montoPeriodo = self::getMontoPorPeriodo($montoCalculado, $exigLiq);
+					$montoPeriodo = self::getMontoPorPeriodo($montoCalculado, $exigLiq, $año);
 
 					// Se crea unu ciclo con los periodos faltantes
 					$hastaPeriodo = $exigLiq;
@@ -543,16 +541,43 @@
 		 * exigiblidada de liquidacion del año.
 		 * @param  double $montoCalculado monto calculado del impuesto del año.
 		 * @param  integer $exigibilidadLiq numero de veces que se debe liquidar en el año.
+		 * @param  integer $año $año impositivo.
 		 * @return double retorna el monto que le corresponde a cada periodo.
 		 */
-		private function getMontoPorPeriodo($montoCalculado, $exigibilidadLiq)
+		private function getMontoPorPeriodo($montoCalculado, $exigibilidadLiq, $año)
 		{
 			$monto = 0;
+			$periodo = 0;
 			if ( $montoCalculado > 0 ) {
 				$exigibilidadLiq;
 
+				$findModel = self::findLapsoModel();
+				$resultados = $findModel->andWhere('D.ano_impositivo =:ano_impositivo',
+															[':ano_impositivo' => $año])
+										->all();
+
+
+				if ( count($resultados) > 0 ) {
+
+					// Ultimo lapso del año.
+					$ultimo = end($resultados);
+					$dividirMonto = $exigibilidadLiq - $ultimo['trimestre'];
+
+				} else {
+					if ( date('Y',strtotime($this->_contribuyente['fecha_inicio'])) == $año ) {
+						// Periodo segun fecha inicio.
+						$periodo = OrdenanzaBase::getPeriodoSegunFecha($exigibilidadLiq, $this->_contribuyente['fecha_inicio']);
+						if ( $periodo > 0 ) {
+							$dividirMonto = ( $exigibilidadLiq - $periodo ) + 1;
+						}
+					} else {
+						$dividirMonto = $exigibilidadLiq;
+					}
+
+				}
+
 				if ( $exigibilidadLiq > 0 ) {
-					$monto = $montoCalculado / $exigibilidadLiq;
+					$monto = $montoCalculado / $dividirMonto;
 				}
 			}
 
