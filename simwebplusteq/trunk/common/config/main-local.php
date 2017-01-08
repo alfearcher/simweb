@@ -13,8 +13,8 @@ return [
 			'password' => 'C4C1QU3-105T3QU35-2017',
 			//'username' => 'jperez',
 			//'password' => 'jperez',
-			'username' => 'root',
-			'password' => '',
+			//'username' => 'root',
+			//'password' => '',
 			'charset'  => 'utf8',
 		],
 		'dbsim' => [
