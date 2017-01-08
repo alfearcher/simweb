@@ -778,13 +778,20 @@
 
 											<?php endforeach; ?>
 
-											<div class="row" style="width: 100%;padding-left: 35px;">
+											<div class="row" style="width: 100%;padding-left: 15px;">
 												<?php if ( trim($mensajeDeclaracion) ) { ?>
-													<div class="well well-sm" style="color: red;padding-left: 35px;">
+													<div class="well well-sm" style="color: red;padding-left: 25px;padding-right: 25px;">
 														<h3><?=Html::encode($mensajeDeclaracion)?></h3>
 													</div>
+
 												<?php } ?>
 											</div>
+
+											<div class="row" style="width: 100%;padding-left: 15px;">
+												<div class="well well-sm" style="color: blue;padding-left: 25px;padding-right: 25px;">
+													<h4><?=Html::encode('Si el monto de la Declaración Definitiva es inferior al de la Declaración Estimada, usted debe consultar la ayuda (Botón Ayuda) y seguir el procedimiento allí establecido.')?></h4>
+												</div>
+											 </div>
 										 </div>
 
 									</div>
