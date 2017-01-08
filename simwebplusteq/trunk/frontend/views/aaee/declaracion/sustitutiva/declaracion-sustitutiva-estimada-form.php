@@ -306,7 +306,7 @@
 
 			<div class="row">
 				<div class="form-group">
-					<div class="col-sm-3" style="width: 20%;margin-left:100px;">
+					<div class="col-sm-3" style="width: 15%;margin-left:70px;">
 						<?= Html::submitButton(Yii::t('frontend', 'Create Request'),
 																			  [
 																				'id' => 'btn-create',
@@ -319,8 +319,8 @@
 						?>
 					</div>
 
-					<div class="col-sm-3" style="width: 20%;margin-left:100px;">
-						<?= Html::submitButton(Yii::t('frontend', 'Back Form'),
+					<div class="col-sm-3" style="width: 15%;margin-left:70px;">
+						<?= Html::submitButton(Yii::t('frontend', 'Back'),
 																		  [
 																			'id' => 'btn-back-form',
 																			'class' => 'btn btn-danger',
@@ -332,7 +332,7 @@
 						?>
 					</div>
 
-					<div class="col-sm-3" style="width: 20%;margin-left:100px;">
+					<div class="col-sm-3" style="width: 15%;margin-left:70px;">
 						<?= Html::submitButton(Yii::t('frontend', Yii::t('frontend', 'Quit')),
 																			  [
 																				'id' => 'btn-quit',
@@ -354,7 +354,7 @@
 													'name' => 'btn-help',
 													'target' => '_blank',
 													'value' => 1,
-													'style' => 'width: 100%;'
+													'style' => 'width: 100%;margin-top:20px;'
 												])?>
 						</div>
 					</div>
