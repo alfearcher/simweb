@@ -79,7 +79,7 @@
 		protected $direccionLocalidad = 'Los Teques';
 		protected $telefonos = ['0212-321.50.68'];
 		protected $email = ['hacienda.guaicaipuro@gmail.com'];
-		protected $portalWeb = 'www.alcaldiadigital.com.ve';
+		protected $portalWeb = 'http://www.alcaldiadeguaicaipuro.gob.ve/';
 		protected $noEstado = 0;
 		protected $estado = 'Estado Miranda';
 
