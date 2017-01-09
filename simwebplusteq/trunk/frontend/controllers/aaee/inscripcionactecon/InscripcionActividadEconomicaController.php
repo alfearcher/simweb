@@ -129,7 +129,7 @@
 						return $this->redirect(['error-operacion', 'cod' => 945]);
 					} else {
 
-						if ( $modelSearch->poseeDeclaracion() ) {
+						if ( !$modelSearch->poseeDeclaracion() ) {
 
 							$_SESSION['begin'] = 1;
 							return $this->redirect(['index-create']);
