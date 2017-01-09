@@ -43,9 +43,12 @@
 	namespace backend\models\aaee\inscripcionactecon;
 
  	use Yii;
-	//use yii\base\Model;
-	//use yii\db\ActiveRecord;
+	use backend\models\aaee\actecon\ActEcon;
+	use backend\models\aaee\acteconingreso\ActEconIngreso;
 	use common\models\contribuyente\ContribuyenteBase;
+
+
+
 
 	/**
 	* 	Clase
@@ -151,6 +154,23 @@
 	    													  ->joinWith('estatusInscripcion')
 	    													  ->one();
 	    	return isset($modelFind) ? $modelFind : null;
+	    }
+
+
+
+
+	    /**
+	     * Metodo que determina si el contribuyente tiene registros en las declaraciones.
+	     * Si es asi, esto es indicativo que es un contribuyente de Actividad Economica
+	     * y no procede la inscripcion respectiva.
+	     * @return boolean retorna true o false
+	     */
+	    public function poseeDeclaracion()
+	    {
+	    	return $result = ActEcon::find()->where('id_contribuyente =:id_contribuyente',
+		    	 										[':id_contribuyente' => $this->id_contribuyente])
+		    								->andWhere('estatus =:estatus', [':estatus' => 0])
+		    								->exists();
 	    }
 
 
