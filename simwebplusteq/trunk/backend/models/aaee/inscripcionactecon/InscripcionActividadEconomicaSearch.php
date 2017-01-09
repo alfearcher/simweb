@@ -167,7 +167,7 @@
 	     */
 	    public function poseeDeclaracion()
 	    {
-	    	return $result = ActEcon::find()->where('id_contribuyente =:id_contribuyente',
+	    	$result = ActEcon::find()->where('id_contribuyente =:id_contribuyente',
 		    	 										[':id_contribuyente' => $this->id_contribuyente])
 		    								->andWhere('estatus =:estatus', [':estatus' => 0])
 		    								->exists();
