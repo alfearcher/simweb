@@ -119,13 +119,21 @@
                                     ]);
 
 
+            // Deuda segun rubros
+            $deudaSegunRubro = 0;
+            $deudaSegunRubro = self::getSumaImpuesto('impuesto', $resumen);
 
+
+
+            // Resumen de los pagos reconocidos al contribuyente.
             $pago = New PagoSearch();
             $pago->setIdContribuyente($this->_id_contribuyente);
             $resumenPago = $pago->getResumenPagoDefinitiva($this->_año_impositivo, $this->_periodo);
 
             $htmlCobro = $this->renderPartial('@common/views/plantilla-pdf/boletin/definitiva/layout-cobro-anticipado-pdf',[
                                                             'resumen'=> $resumenPago,
+                                                            'resumenDeuda' => $deudaSegunRubro,
+
                                     ]);
 
 
@@ -378,10 +386,18 @@
 
 
 
-
-        public function generarDeclaracionEstimada()
+        /**
+         * Metodo que suma el monto del impuesto segun el atributo.
+         * @param string $atributo descripcion del atributo, 'estimado', 'reales'
+         * @return doublo retorna monto de la suma del impuesto.
+         */
+        public function getSumaImpuesto($atributo, $resumen)
         {
-
+            $suma = 0;
+            foreach ( $resumen as $i => $r ) {
+                $suma = $suma + $r[$atributo];
+            }
+            return $suma;
         }
 
 
