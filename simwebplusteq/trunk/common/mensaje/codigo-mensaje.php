@@ -53,6 +53,8 @@ return [
 	'941' => [Yii::t('backend', 'Status of request incorrect '), 'danger', 'fa fa-times'],
 	'945' => [Yii::t('backend', 'Request exists'), 'warning', 'fa fa-info-circle'],
 	'946' => [Yii::t('backend', 'Request details not exists'), 'danger', 'fa fa-times'],
+	'947' => [Yii::t('backend', 'El contribuyente ya esta registrado como contribuyente de Actividad Economica'), 'warning', 'fa fa-info-circle'],
+
 	'950' => [Yii::t('backend', 'Invoice uncreditworthy'), 'danger', 'fa fa-times'],
 	'955' => [Yii::t('backend', 'Setup parameter was not defined'), 'danger', 'fa fa-times'],
 	'960' => [Yii::t('backend', 'El contribuyente posee una solicitud para crear sucursal. Hasta que no se procese dicha solicitud no podra crear una para modificacion del rif.'), 'danger', 'fa fa-times'],
