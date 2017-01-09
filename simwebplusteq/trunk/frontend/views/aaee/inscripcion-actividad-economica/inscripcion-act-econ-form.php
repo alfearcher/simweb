@@ -67,10 +67,10 @@
  	?>
 
 	<meta http-equiv="refresh">
-    <div class="panel panel-primary"  style="width: 90%;">
+    <div class="panel panel-primary"  style="width: 100%;">
         <div class="panel-heading">
-        	<div class="row">
-	        	<div class="col-sm-4">
+        	<div class="row" style="width: 100%;">
+	        	<div class="col-sm-4" style="width: 65%;">
 	        		<h3><?= Html::encode($this->title) ?></h3>
 	        	</div>
 	        	<div class="col-sm-3" style="width: 30%; float:right; padding-right: 50px;">
