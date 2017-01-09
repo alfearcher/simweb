@@ -53,6 +53,11 @@
 		        	]
 		        ],
 
+		        ['label' => Icon::show('fa fa-list',['class' => $typeLong], $typeIcon) . '&nbsp; Listados',
+		        	'items' => [
+		        		['label' => 'Solicitudes de Declaracion', 'url' => ['#']],
+		        	],
+		        ],
 		    	// &nbsp; espacio en blanco html
 		        // ['label' => Icon::show('fa fa-book',['class' => $typeLong], $typeIcon) . '&nbsp; Registros Maestros',
 		        // 	'items' => [
@@ -69,18 +74,18 @@
 		        						['label' => 'Inscripción de Actividades Economicas','url' => ['/aaee/inscripcionactecon/inscripcion-actividad-economica/index', 'id' => 81]],
 		        					   	['label' => 'Inscripción de Sucursales', 'url' => ['/aaee/inscripcionsucursal/inscripcion-sucursal/index', 'id' => 85]],
 		        					   	['label' => 'Autorizar Ramos', 'url' => ['/aaee/autorizarramo/autorizar-ramo/index', 'id' => 96]],
-		        					   	['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Licencia',
-		        					   		'items' => [
-	        					   				['label' => 'Solicitar Emision', 'url' => ['/aaee/licencia/licencia-solicitud/index', 'id' => 113]],
-	        					   				['label' => 'Descargar Licencia', 'url' => ['/aaee/licencia/licencia-generar/index']],
-		        					   		]
-		        					   	],
-		        					   	['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Solvencia',
-		        					   		'items' => [
-	        					   				['label' => 'Solicitar Emision', 'url' => ['/aaee/solvencia/solvencia-actividad-economica-solicitud/index', 'id' => 114]],
-	        					   				['label' => 'Descargar Solvencia', 'url' => ['/aaee/solvencia/solvencia-actividad-generar/index']],
-		        					   		]
-		        					   	],
+		        					   	// ['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Licencia',
+		        					   	// 	'items' => [
+	        					   		// 		['label' => 'Solicitar Emision', 'url' => ['/aaee/licencia/licencia-solicitud/index', 'id' => 113]],
+	        					   		// 		['label' => 'Descargar Licencia', 'url' => ['/aaee/licencia/licencia-generar/index']],
+		        					   	// 	]
+		        					   	// ],
+		        					   	// ['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Solvencia',
+		        					   	// 	'items' => [
+	        					   		// 		['label' => 'Solicitar Emision', 'url' => ['/aaee/solvencia/solvencia-actividad-economica-solicitud/index', 'id' => 114]],
+	        					   		// 		['label' => 'Descargar Solvencia', 'url' => ['/aaee/solvencia/solvencia-actividad-generar/index']],
+		        					   	// 	]
+		        					   	// ],
 		        					   	['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Modificion de Datos',
 		        					   		'items' => [
 		        					   				['label' => 'Anexo de Ramo', 'url' => ['/aaee/anexoramo/anexo-ramo/index', 'id' => 70]],
@@ -113,42 +118,42 @@
 		        		],
 
 		        		//	SOLICITUDES DE INMUEBLES URBANOS
-		        		['label' => Icon::show('fa fa-home',['class' => $typeLong], $typeIcon) . '&nbsp; Inmuebles Urbanos',
-		        			'items' => [
-		        						['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Solvencia',
-		        					   		'items' => [
-	        					   				['label' => 'Solicitar Emision', 'url' => ['/inmueble/solvencia/solvencia-inmueble/index', 'id' => 116]],
-	        					   				['label' => 'Descargar Solvencia', 'url' => ['/inmueble/solvencia/solvencia-inmueble-generar/index']],
-		        					   		]
-		        					   	],
-		        						['label' => 'Inscripción de Inmuebles Urbanos', 'url' => ['/inmueble/inscripcion-inmuebles-urbanos/inscripcion-inmuebles-urbanos']],
-		        						['label' => 'Avaluo Catastral', 'url' => ['/inmueble/avaluo-catastral-inmuebles-urbanos/index']],
-		        						['label' => 'Certificado Catastral', 'url' => ['/inmueble/cedula-catastral-inmuebles-urbanos/index']],
-		        						['label' => 'Renovación de Certificado Catastral', 'url' => '#'],
-		        						['label' => 'Linderos', 'url' => ['/inmueble/linderos-inmuebles-urbanos/index']],
-		        						['label' => 'Cambio de Numero Catastral', 'url' => ['/inmueble/cambio-numero-catastral-inmuebles-urbanos/index']],
-		        						['label' => 'Cambio de Propietario(VENDEDOR)', 'url' => ['inmueble/cambio-propietario-vendedor-inmuebles-urbanos/index','id' =>12]], // vendedor:12
-		        						['label' => 'Cambio de Propietario(COMPRADOR)', 'url' => ['inmueble/cambio-propietario-comprador-inmuebles-urbanos/buscar-vendedor','id' =>11]], // comprador:11
-		        						['label' => 'Integración de Parcela', 'url' => ['/inmueble/integracion-inmuebles-urbanos/integracion-inmuebles']],
-		        						['label' => 'Desintegración de Parcela', 'url' => ['inmueble/desintegracion-inmuebles-urbanos/index']],
-		        						['label' => 'Cambio a Propiedad Horizontal', 'url' => ['/inmueble/cambio-a-propiedad-horizontal-inmuebles-urbanos/index']],
-		        						['label' => 'Cambio de Otros Datos del Inmueble', 'url' => ['/inmueble/cambio-otros-datos-inmuebles-urbanos/index']],
-		        						['label' => 'Modificar Avaluo', 'url' => '#'],
-		        						['label' => 'Desincorporación de Inmueble', 'url' => ['/inmueble/desincorporacion-inmuebles-urbanos/index']],
+		        		// ['label' => Icon::show('fa fa-home',['class' => $typeLong], $typeIcon) . '&nbsp; Inmuebles Urbanos',
+		        		// 	'items' => [
+		        		// 				['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Solvencia',
+		        		// 			   		'items' => [
+	        			// 		   				['label' => 'Solicitar Emision', 'url' => ['/inmueble/solvencia/solvencia-inmueble/index', 'id' => 116]],
+	        			// 		   				['label' => 'Descargar Solvencia', 'url' => ['/inmueble/solvencia/solvencia-inmueble-generar/index']],
+		        		// 			   		]
+		        		// 			   	],
+		        		// 				['label' => 'Inscripción de Inmuebles Urbanos', 'url' => ['/inmueble/inscripcion-inmuebles-urbanos/inscripcion-inmuebles-urbanos']],
+		        		// 				['label' => 'Avaluo Catastral', 'url' => ['/inmueble/avaluo-catastral-inmuebles-urbanos/index']],
+		        		// 				['label' => 'Certificado Catastral', 'url' => ['/inmueble/cedula-catastral-inmuebles-urbanos/index']],
+		        		// 				['label' => 'Renovación de Certificado Catastral', 'url' => '#'],
+		        		// 				['label' => 'Linderos', 'url' => ['/inmueble/linderos-inmuebles-urbanos/index']],
+		        		// 				['label' => 'Cambio de Numero Catastral', 'url' => ['/inmueble/cambio-numero-catastral-inmuebles-urbanos/index']],
+		        		// 				['label' => 'Cambio de Propietario(VENDEDOR)', 'url' => ['inmueble/cambio-propietario-vendedor-inmuebles-urbanos/index','id' =>12]], // vendedor:12
+		        		// 				['label' => 'Cambio de Propietario(COMPRADOR)', 'url' => ['inmueble/cambio-propietario-comprador-inmuebles-urbanos/buscar-vendedor','id' =>11]], // comprador:11
+		        		// 				['label' => 'Integración de Parcela', 'url' => ['/inmueble/integracion-inmuebles-urbanos/integracion-inmuebles']],
+		        		// 				['label' => 'Desintegración de Parcela', 'url' => ['inmueble/desintegracion-inmuebles-urbanos/index']],
+		        		// 				['label' => 'Cambio a Propiedad Horizontal', 'url' => ['/inmueble/cambio-a-propiedad-horizontal-inmuebles-urbanos/index']],
+		        		// 				['label' => 'Cambio de Otros Datos del Inmueble', 'url' => ['/inmueble/cambio-otros-datos-inmuebles-urbanos/index']],
+		        		// 				['label' => 'Modificar Avaluo', 'url' => '#'],
+		        		// 				['label' => 'Desincorporación de Inmueble', 'url' => ['/inmueble/desincorporacion-inmuebles-urbanos/index']],
 
-		        			]
-		        		],
+		        		// 	]
+		        		// ],
 
 		        		//	SOLICITUDES DE VEHICULOS
-		        		['label' => Icon::show('fa fa-car',['class' => $typeLong], $typeIcon) . '&nbsp; Vehiculos',
-		        			'items' => [
-		        						['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Solvencia',
-		        					   		'items' => [
-	        					   				['label' => 'Solicitar Emision', 'url' => ['/vehiculo/solvencia/solvencia-vehiculo/index', 'id' => 115]],
-	        					   				['label' => 'Descargar Solvencia', 'url' => ['/vehiculo/solvencia/solvencia-vehiculo-generar/index']],
-		        					   		]
-		        					   	],
-		        						['label' => 'Inscripci&oacute;n de Vehiculos', 'url' => ['vehiculo/vehiculos/create']],
+		        		// ['label' => Icon::show('fa fa-car',['class' => $typeLong], $typeIcon) . '&nbsp; Vehiculos',
+		        		// 	'items' => [
+		        						// ['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Solvencia',
+		        					 //   		'items' => [
+	        					  //  				['label' => 'Solicitar Emision', 'url' => ['/vehiculo/solvencia/solvencia-vehiculo/index', 'id' => 115]],
+	        					  //  				['label' => 'Descargar Solvencia', 'url' => ['/vehiculo/solvencia/solvencia-vehiculo-generar/index']],
+		        					 //   		]
+		        					 //   	],
+		        						//['label' => 'Inscripci&oacute;n de Vehiculos', 'url' => ['vehiculo/vehiculos/create']],
 		        						// ['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . 'Calcomania',
 					        			// 	'items' => [
 			        					// 		['label' => 'Administrar funcionarios responsables de entregar calcomania','url' => ['/vehiculo/calcomania/administrarfuncionario/administrar-funcionario/busqueda-funcionario']],
@@ -174,8 +179,8 @@
 		        						// ['label' => 'Cambio de Placa', 'url' => ['vehiculo/vehiculos/cambio-placa']],
 		        						// ['label' => 'Desincorporaci&oacute;n de Vehiculo', 'url' => '#'],
 		        						// ['label' => 'Cambio de Otros Datos del Vehiculo', 'url' => ['vehiculo/vehiculos/busqueda']],
-		        			],
-		        		],
+		        		// 	],
+		        		// ],
 
 		        		//	PROPAGANDA COMERCIAL
 		        		// ['label' => Icon::show('fa fa-file-powerpoint-o',['class' => $typeLong], $typeIcon) . '&nbsp; Propaganda Comercial',
@@ -239,10 +244,10 @@
         		//	Planilla
         		['label' => Icon::show('fa fa-indent',['class' => $typeLong], $typeIcon) . '&nbsp; Liquidacion',
         			'items' => [
-        						['label' => 'Liquidar Actividad Economica', 'url' => ['aaee/liquidar/liquidar-actividad-economica/index']],
-        						['label' => 'Liquidar Actividad Economica (Definitiva)', 'url' => ['aaee/liquidar/liquidar-actividad-economica-definitiva/index']],
-        						['label' => 'Liquidar Inmueble Urbano', 'url' => ['inmueble/liquidar/liquidar-inmueble/index']],
-        						['label' => 'Liquidar Vehiculo', 'url' => ['vehiculo/liquidar/liquidar-vehiculo/index']],
+        						// ['label' => 'Liquidar Actividad Economica', 'url' => ['aaee/liquidar/liquidar-actividad-economica/index']],
+        						// ['label' => 'Liquidar Actividad Economica (Definitiva)', 'url' => ['aaee/liquidar/liquidar-actividad-economica-definitiva/index']],
+        						// ['label' => 'Liquidar Inmueble Urbano', 'url' => ['inmueble/liquidar/liquidar-inmueble/index']],
+        						// ['label' => 'Liquidar Vehiculo', 'url' => ['vehiculo/liquidar/liquidar-vehiculo/index']],
         						['label' => 'Consulta de Planilla', 'url' => ['planilla/planilla-consulta/index']],
         			]
         		],
@@ -317,48 +322,46 @@
 		        		//	SOLICITUDES DE PRESUPUESTOS
 		        		['label' => Icon::show('fa fa-briefcase',['class' => $typeLong], $typeIcon) . '&nbsp; Niveles de Presupuestos',
 		        			'items' => [
-		        						['label' => 'Registro','url' => ['/presupuesto/nivelespresupuesto/registrar/registro-niveles-presupuestarios/registro-niveles-presupuestarios']],
-		        					   	['label' => 'Modifiacion', 'url' => ['/presupuesto/nivelespresupuesto/modificar/modificar-niveles-presupuesto/vista-seleccion']],
-		        					   	['label' => 'Inactivacion', 'url' => ['/presupuesto/nivelespresupuesto/inactivar/inactivar-niveles-presupuesto/vista-seleccion']],
+		        						// ['label' => 'Registro','url' => ['/presupuesto/nivelespresupuesto/registrar/registro-niveles-presupuestarios/registro-niveles-presupuestarios']],
+		        					 //   	['label' => 'Modifiacion', 'url' => ['/presupuesto/nivelespresupuesto/modificar/modificar-niveles-presupuesto/vista-seleccion']],
+		        					 //   	['label' => 'Inactivacion', 'url' => ['/presupuesto/nivelespresupuesto/inactivar/inactivar-niveles-presupuesto/vista-seleccion']],
 
-		        					   	['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Codigos Presupuestarios',
-		        					   		'items' => [
-		        					   				['label' => 'Registrar', 'url' => ['/presupuesto/codigopresupuesto/registrar/registrar-codigo-presupuestario/registro-codigo-presupuesto']],
-		        					   				['label' => 'Modificar/Inactivar', 'url' => ['/presupuesto/codigopresupuesto/modificarinactivar/modificar-codigo-presupuestario/busqueda-codigo-multiple']],
+		        					 //   	['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Codigos Presupuestarios',
+		        					 //   		'items' => [
+		        					 //   				['label' => 'Registrar', 'url' => ['/presupuesto/codigopresupuesto/registrar/registrar-codigo-presupuestario/registro-codigo-presupuesto']],
+		        					 //   				['label' => 'Modificar/Inactivar', 'url' => ['/presupuesto/codigopresupuesto/modificarinactivar/modificar-codigo-presupuestario/busqueda-codigo-multiple']],
 
-		        					   				['label' => 'Cambiar Codigos Presupuestarios entre Niveles Presupuestarios', 'url' => ['presupuesto/codigopresupuesto/cambiarcodigo/cambiar-codigo-presupuestario/busqueda-codigo-presupuestario']],
+		        					 //   				['label' => 'Cambiar Codigos Presupuestarios entre Niveles Presupuestarios', 'url' => ['presupuesto/codigopresupuesto/cambiarcodigo/cambiar-codigo-presupuestario/busqueda-codigo-presupuestario']],
 
-		        					   		]
-		        					   	],
+		        					 //   		]
+		        					 //   	],
 
-		        					   	['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Ordenanza de Presupuestos',
-		        					   		'items' => [
+		        					   	// ['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Ordenanza de Presupuestos',
+		        					   	// 	'items' => [
 
-		        					   				['label' => 'Registro', 'url' => ['/presupuesto/ordenanza/registrar/registrar-ordenanza-presupuesto/registrar-ordenanza-presupuesto']],
-		        					   				['label' => 'Modificar/Inactivar', 'url' => ['/presupuesto/ordenanza/modificarinactivar/modificar-inactivar-ordenanza-presupuesto/busqueda-ordenanza-presupuesto']],
+		        					   	// 			['label' => 'Registro', 'url' => ['/presupuesto/ordenanza/registrar/registrar-ordenanza-presupuesto/registrar-ordenanza-presupuesto']],
+		        					   	// 			['label' => 'Modificar/Inactivar', 'url' => ['/presupuesto/ordenanza/modificarinactivar/modificar-inactivar-ordenanza-presupuesto/busqueda-ordenanza-presupuesto']],
 
-
-
-		        					   		]
-		        					   	],
+		        					   	// 	]
+		        					   	// ],
 
 
-		        					   	 	['label' => Icon::show('fa fa-briefcase',['class' => $typeLong], $typeIcon) . '&nbsp; Presupuestos',
-		        					   		'items' => [
+		        					   	//  	['label' => Icon::show('fa fa-briefcase',['class' => $typeLong], $typeIcon) . '&nbsp; Presupuestos',
+		        					   	// 	'items' => [
 
 
 
-		        					   				['label' => 'Cargar Presupuesto', 'url' => ['/presupuesto/cargarpresupuesto/registrar/cargar-presupuesto/vista-ordenanza-presupuesto']],
-		        					   				['label' => 'Modificar/Inactivar', 'url' => ['/presupuesto/cargarpresupuesto/modificarinactivar/modificar-inactivar-presupuesto/vista-presupuesto']],
+		        					   	// 			['label' => 'Cargar Presupuesto', 'url' => ['/presupuesto/cargarpresupuesto/registrar/cargar-presupuesto/vista-ordenanza-presupuesto']],
+		        					   	// 			['label' => 'Modificar/Inactivar', 'url' => ['/presupuesto/cargarpresupuesto/modificarinactivar/modificar-inactivar-presupuesto/vista-presupuesto']],
 
-		        					   		]
-		        					   	],
-		        					   	['label' => Icon::show('fa fa-table',['class' => $typeLong], $typeIcon) . '&nbsp; Reportes',
-		        					   		'items' => [
-		        					   				['label' => 'Generar Reporte', 'url' => '#'],
+		        					   	// 	]
+		        					   	// ],
+		        					   	// ['label' => Icon::show('fa fa-table',['class' => $typeLong], $typeIcon) . '&nbsp; Reportes',
+		        					   	// 	'items' => [
+		        					   	// 			['label' => 'Generar Reporte', 'url' => '#'],
 
-		        					   		]
-		        					   	],
+		        					   	// 	]
+		        					   	// ],
 
 		        			]
 		        		],
@@ -371,22 +374,22 @@
 		        		//	SOLICITUDES DE PRESUPUESTOS
 		        		['label' => Icon::show('fa fa-briefcase',['class' => $typeLong], $typeIcon) . '&nbsp; Catalogo de Tasas',
 		        			'items' => [
-		        						['label' => 'Registro','url' => ['/tasas/registrar/registrar-tasas/registro-tasas']],
+		        						// ['label' => 'Registro','url' => ['/tasas/registrar/registrar-tasas/registro-tasas']],
 
-		        					   	['label' => 'Modificar/inactivar', 'url' => ['/tasas/modificarinactivar/modificar-inactivar-tasas/busqueda-tasa']],
+		        					 //   	['label' => 'Modificar/inactivar', 'url' => ['/tasas/modificarinactivar/modificar-inactivar-tasas/busqueda-tasa']],
 
-		        					   	['label' => 'Replicar Tasas', 'url' => ['/tasas/replicar/replicar-tasas/busqueda-lote-tasas']],
+		        					 //   	['label' => 'Replicar Tasas', 'url' => ['/tasas/replicar/replicar-tasas/busqueda-lote-tasas']],
 
-		        					   ['label' => 'Reportes', 'url' => ['/tasas/reportes/reportes-tasas/busqueda-multiple-reportes']],
+		        					 //   ['label' => 'Reportes', 'url' => ['/tasas/reportes/reportes-tasas/busqueda-multiple-reportes']],
 
-		        					   	['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Codigo Subniveles',
-		        					   		'items' => [
-		        					   				['label' => 'Registrar', 'url' => ['/tasas/codigosubnivel/registrar/registrar-codigo-subnivel/registro-codigo-subnivel']],
+		        					 //   	['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Codigo Subniveles',
+		        					 //   		'items' => [
+		        					 //   				['label' => 'Registrar', 'url' => ['/tasas/codigosubnivel/registrar/registrar-codigo-subnivel/registro-codigo-subnivel']],
 
-		        					   				['label' => 'Modificar/Inactivar', 'url' => ['/tasas/codigosubnivel/modificarinactivar/modificar-inactivar-codigo-subnivel/modificar-codigo-subnivel']],
+		        					 //   				['label' => 'Modificar/Inactivar', 'url' => ['/tasas/codigosubnivel/modificarinactivar/modificar-inactivar-codigo-subnivel/modificar-codigo-subnivel']],
 
-		        					   		]
-		        					   	],
+		        					 //   		]
+		        					 //   	],
 
 		        			]
 		        		],
