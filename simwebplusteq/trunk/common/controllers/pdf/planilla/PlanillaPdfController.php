@@ -916,9 +916,9 @@
 		private function actionGetViewInfoCuentaRecaudadoraPaginaWeb($mpdf, $y = 0)
 		{
 			// Informacion de la Cuenta Recaudadora
-	       	$cuentaRecaudadora = Yii::$app->ente->getCuentaRecaudadoraPrincipal(0);
+	       	$cuentaRecaudadora = '';//Yii::$app->ente->getCuentaRecaudadoraPrincipal(0);
 	       	$mpdf->SetFont('Arial', 'I', 8);
-	       	$mpdf->Text(125, 102 + $y, 'Nro: Cuenta Recaudadora: ' . $cuentaRecaudadora);
+	       	//$mpdf->Text(125, 102 + $y, 'Nro: Cuenta Recaudadora: ' . $cuentaRecaudadora);
 
 	       	// Informacion de acceso web
 	       	$accesoWeb = Yii::$app->ente->getPortalWeb();
@@ -926,7 +926,7 @@
 	       	$mpdf->Text(138, 107 + $y, 'Ahora puede acceder desde el portal');
 
 	       	$mpdf->SetFont('Arial', 'I', 7);
-	       	$mpdf->Text(143, 110 + $y, $accesoWeb);
+	       	$mpdf->Text(137, 110 + $y, $accesoWeb);
 
 		}
 
