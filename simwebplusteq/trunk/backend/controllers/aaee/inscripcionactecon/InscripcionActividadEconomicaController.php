@@ -127,8 +127,15 @@
 						// Ya posee una solicitud de este tipo y no puede continuar.
 						return $this->redirect(['error-operacion', 'cod' => 945]);
 					} else {
-						$_SESSION['begin'] = 1;
-						return $this->redirect(['index-create']);
+						if ( $modelSearch->poseeDeclaracion() ) {
+
+							$_SESSION['begin'] = 1;
+							return $this->redirect(['index-create']);
+
+						} else {
+							// El contribuyente ya posee registros de declaracion.
+							return $this->redirect(['error-operacion', 'cod' => 947]);
+						}
 					}
 				} else {
 					// Naturaleza del Contribuyente no definido o no corresponde con el tipo de solicitud.
