@@ -140,7 +140,8 @@ class PlantillaEmail{
 
                              'La aprobación o rechazo de su solicitud, le será notificada a través de su correo electrónico, condición ésta que debe esperar para seguir procesando su requerimiento. La celeridad en el procesamiento de su solicitud dependerá del tiempo que disponga para consignar los documentos que la soportan. <br>Recuerde, esta informacion es personal y de su exclusiva responsabilidad y se agradece no divulgar ni transferir
                              a terceros estos datos.<br><br>
-                             Esta es una cuenta no monitoreada, por favor no responder este correo.';
+                             Esta es una cuenta no monitoreada, por favor no responder este correo.<br>***REGULACIÓN DE USO DEL CORREO ELECTRÓNICO DE  LA ALCALDIA DEL MUNICIPIO BOLIVARIANO DE GUAICAIPURO HACIA INTERNET***  La información contenida en este correo electrónico y cualquier
+anexo puede ser de carácter confidencial y es propiedad de la alcaldía del Municipio Bolivariano de Guaicaipuro. Sólo está permitido su uso, copia, transmisión, recepción o distribución a personas debidamente autorizadas. Si usted recibió este correo por error por favor destrúyalo y/o elimine cualquier copia guardada en su sistema y notifique inmediatamente al remitente o a la dirección de correo electrónica: hacienda@alcaldiadeguicaipuro.gob.ve. Usted no debe utilizar la información contenida para ningún propósito ni compartirla con otras personas.';
 
               $enviarEmail = new EnviarEmailSolicitud();
               $enviar = $enviarEmail->enviarEmail($from, $to, $subject, $textBody, $body);
@@ -213,7 +214,8 @@ class PlantillaEmail{
 
                              'La aprobación o rechazo de su solicitud, le será notificada a través de su correo electrónico, condición ésta que debe esperar para seguir procesando su requerimiento. La celeridad en el procesamiento de su solicitud dependerá del tiempo que disponga para consignar los documentos que la soportan. <br>Recuerde, esta informacion es personal y de su exclusiva responsabilidad y se agradece no divulgar ni transferir
                              a terceros estos datos.<br><br>
-                             Esta es una cuenta no monitoreada, por favor no responder este correo.';
+                             Esta es una cuenta no monitoreada, por favor no responder este correo.<br>***REGULACIÓN DE USO DEL CORREO ELECTRÓNICO DE  LA ALCALDIA DEL MUNICIPIO BOLIVARIANO DE GUAICAIPURO HACIA INTERNET***  La información contenida en este correo electrónico y cualquier
+anexo puede ser de carácter confidencial y es propiedad de la alcaldía del Municipio Bolivariano de Guaicaipuro. Sólo está permitido su uso, copia, transmisión, recepción o distribución a personas debidamente autorizadas. Si usted recibió este correo por error por favor destrúyalo y/o elimine cualquier copia guardada en su sistema y notifique inmediatamente al remitente o a la dirección de correo electrónica: hacienda@alcaldiadeguicaipuro.gob.ve. Usted no debe utilizar la información contenida para ningún propósito ni compartirla con otras personas.';
 
               $enviarEmail = new EnviarEmailSolicitud();
               $enviar = $enviarEmail->enviarEmail($from, $to, $subject, $textBody, $body);
