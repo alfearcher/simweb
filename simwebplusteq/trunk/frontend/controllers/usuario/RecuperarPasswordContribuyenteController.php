@@ -180,15 +180,15 @@ die('llegue');
 
            // $postData = Yii::$app->request->post();
 
-        if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax){
+        // if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax){
 
-              Yii::$app->response->format = Response::FORMAT_JSON;
-              return ActiveForm::validate($model);
-         }
+        //       Yii::$app->response->format = Response::FORMAT_JSON;
+        //       return ActiveForm::validate($model);
+        //  }
 
-         if ($model->load(Yii::$app->request->post())){
+        //  if ($model->load(Yii::$app->request->post())){
 
-              if($model->validate()){ 
+        //       if($model->validate()){ 
 die('llegue');
                         // $buscarId = new VerificarPreguntasContribuyenteJuridicoForm();
 
@@ -231,9 +231,9 @@ die('llegue');
                                 
                         //     }
                             
-                    }
+                //     }
                         
-                }
+                // }
 
                     return $this->render('/usuario/recuperar-password-juridico' , ['model' => $model]);
 
