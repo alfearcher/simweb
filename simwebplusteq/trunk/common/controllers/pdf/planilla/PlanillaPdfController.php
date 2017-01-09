@@ -93,7 +93,7 @@
 		{
 			$this->_planilla = (int)$planilla;
 			$this->_searchPlanilla = New PlanillaSearch($this->_planilla);
-			//$this->_aplicarDescuento = New AplicarDescuento($this->_planilla);
+			$this->_aplicarDescuento = New AplicarDescuento($this->_planilla);
 
 		}
 
@@ -143,7 +143,7 @@
 		{
 			if ( $this->_planilla > 0 ) {
 
-				//$this->_aplicarDescuento->iniciarDescuento();
+				$this->_aplicarDescuento->iniciarDescuento();
 
 				$model = $this->_searchPlanilla->getDetallePlanilla();
 
@@ -867,7 +867,10 @@
 			// Campo donde se muestra la observacion de la planilla.
 			$mpdf->Cell(-10);
 			$mpdf->SetFont('Arial', '', 6);
-			$mpdf->MultiCell(195, 5, utf8_decode($detallePlanilla[0]['descripcion']), 0, 'J');
+			//$detallePlanilla[0]['descripcion']
+			// echo $detallePlanilla[0]['descripcion'];
+			// die();
+			$mpdf->MultiCell(195, 5, utf8_decode((utf8_encode($detallePlanilla[0]['descripcion']))), 0, 'J');
 
 			$mpdf->Cell(-10);
 			//$mpdf->Rect(5, 65 + $y, 195, 5);
