@@ -144,11 +144,11 @@ class RecuperarPasswordContribuyenteController extends Controller
                                      $this->redirect(['mensaje-recuperar']);
                             }else { 
                                
-                                   return MensajeController::actionMensaje(Yii::t('frontend','Tiene una cuenta activa afiliada como contribuyente')); 
+                                   return MensajeController::actionMensaje(975); 
                             }
 
                         }else{
-                            return MensajeController::actionMensaje(Yii::t('frontend','El contribuyente no esta registrado'));
+                            return MensajeController::actionMensaje(932);
                         }
                     
                     }
@@ -192,7 +192,7 @@ class RecuperarPasswordContribuyenteController extends Controller
                             //die(var_dump($buscarAfiliacionesJuridico));
 
                             if ($buscarAfiliacionesJuridico == false){
-                                return MensajeController::actionMensaje(Yii::t('frontend', 'Sorry, you are not afiliated, go to create user')); 
+                                return MensajeController::actionMensaje(932); 
                             }else{ 
                            
                             $idsContribuyente = [];
@@ -251,7 +251,7 @@ class RecuperarPasswordContribuyenteController extends Controller
             $this->redirect(['mensaje-recuperar']);
         }else { 
                                
-            return MensajeController::actionMensaje(Yii::t('frontend','Tiene una cuenta activa afiliada como contribuyente')); 
+            return MensajeController::actionMensaje(975); 
         }
                 
 
@@ -280,15 +280,15 @@ class RecuperarPasswordContribuyenteController extends Controller
                                 $envio = self::enviarRecuperacion($_SESSION['Afiliaciones']['password'],$_SESSION['Contribuyente']['email']);
                        
                                 if ($envio==true){
-                                    return MensajeController::actionMensaje(100);
+                                    return MensajeController::actionMensaje(103);
                                     
 
                                 } else {
-                                    return MensajeController::actionMensaje(Yii::t('frontend','La recuperacion de contraseña a fallado'));
+                                    return MensajeController::actionMensaje(973);
                                 }
 
                         } else {
-                            return MensajeController::actionMensaje(Yii::t('frontend','La recuperacion de contraseña a fallado por no tener correo electronico asignado como contribuyente'));
+                            return MensajeController::actionMensaje(974);
 
                         }
                         
