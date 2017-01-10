@@ -277,7 +277,7 @@ class RecuperarPasswordContribuyenteController extends Controller
                     if ($model->validate()){
                         if($_SESSION['Contribuyente']['email'] != null){
                                 $envio = self::enviarRecuperacion($_SESSION['Afiliaciones']['password'],$_SESSION['Contribuyente']['email']);
-                       
+                       die(var_dump($envio));
                                 if ($envio==true){
 
                                     return MensajeController::actionMensaje(Yii::t('frontend','Se ha enviado a su direccion de correo electronico su usuario y contraseña'));
