@@ -283,7 +283,7 @@ class RecuperarPasswordContribuyenteController extends Controller
                                     return MensajeController::actionMensaje(Yii::t('frontend','Se ha enviado a su direccion de correo electronico su usuario y contraseña'));
 
                                 } else {
-                                 return MensajeController::actionMensaje(Yii::t('frontend','La recuperacion de contraseña a fallado'));
+                                    return MensajeController::actionMensaje(Yii::t('frontend','La recuperacion de contraseña a fallado'));
                                 }
 
                         } else {
