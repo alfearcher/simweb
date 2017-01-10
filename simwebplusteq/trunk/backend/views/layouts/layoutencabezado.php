@@ -72,7 +72,7 @@ AppAsset::register($this);
                             //'linkOptions' => ['data-method' => 'post'],
                                 'items' => [['label' => Yii::t('backend', 'Create Security Questions'), 'url' =>  ['pregunta-seguridad/asignarpreguntasecreta']],
                                             ['label' => Yii::t('backend', 'Change Password'), 'url' =>  ['opcion-funcionario/cambiarpasswordfuncionario']],
-                                            ['label' => 'Logout', 'url' => ['site/logout'],'linkOptions' => ['data-method' => 'post'], ],
+                                            ['label' => 'Salir', 'url' => ['site/logout'],'linkOptions' => ['data-method' => 'post'], ],
                                     ]
 
                         ];
