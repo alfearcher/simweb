@@ -223,6 +223,34 @@ class RecuperarPasswordJuridicoForm extends CrearUsuarioNatural
                 return false;
             } 
     } 
+
+    /**
+     * [buscarIdContribuyente description] Metodo que busca el id del contribuyente en la tabla contribuyentes
+     * @param  [type] $model [description] modelo que trae la informacion del contribuyente desde la tabla contribuyentes
+     * @return [type]        [description] retorna una respuesta con la informacion buscada en caso de encontrarla, sino retorna false.
+     */
+    public function buscarContribuyenteDatos($id)
+    {
+
+        $validarPregunta = CrearUsuarioNatural::find() 
+                                ->where([
+                                
+                                'id_contribuyente' => $id,
+                                
+                              
+                                ])
+                                ->one();
+                               
+            if($validarPregunta != null){
+        
+                return $validarPregunta;  
+        
+            } else {
+
+                return false;
+
+            }
+    } 
     
    
 }
