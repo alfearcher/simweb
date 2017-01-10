@@ -55,7 +55,7 @@
 
 		        ['label' => Icon::show('fa fa-list',['class' => $typeLong], $typeIcon) . '&nbsp; Listados',
 		        	'items' => [
-		        		['label' => 'Solicitudes de Declaracion', 'url' => ['#']],
+		        		['label' => 'Solicitudes de Declaracion', 'url' => ['/aaee/listado/listado-solicitud-declaracion/index']],
 		        	],
 		        ],
 		    	// &nbsp; espacio en blanco html
