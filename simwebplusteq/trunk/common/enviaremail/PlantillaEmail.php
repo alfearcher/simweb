@@ -262,7 +262,7 @@ anexo puede ser de carácter confidencial y es propiedad de la alcaldía del Mun
 
               $enviarEmail = new EnviarEmailSolicitud();
               $enviar = $enviarEmail->enviarEmail($from, $to, $subject, $textBody, $body);
-die(var_dump($enviar).' llego despues de enviar');
+//die(var_dump($enviar).' llego despues de enviar');
                 if($enviar == true){
                   return true;
                 }else{
