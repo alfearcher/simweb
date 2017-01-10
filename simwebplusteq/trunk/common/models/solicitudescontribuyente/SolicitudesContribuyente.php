@@ -62,6 +62,8 @@
     use backend\models\configuracion\nivelaprobacion\NivelAprobacion;
     use backend\models\utilidad\causanegacionsolicitud\CausaNegacionSolicitud;
     use backend\models\solicitud\estatus\EstatusSolicitud;
+    use backend\models\aaee\declaracion\DeclaracionBase;
+    use common\models\contribuyente\ContribuyenteBase;
 
 
 
@@ -192,6 +194,42 @@
             $tipo = $findModel->tipoSolicitud['descripcion'];
             return $tipo;
         }
+
+
+
+
+        /***/
+        public function getDeclaracion()
+        {
+            return $this->hasOne(DeclaracionBase::className(),['nro_solicitud' => 'nro_solicitud']);
+        }
+
+
+
+        /***/
+         public function getContribuyente($idContribuyente)
+         {
+            return ContribuyenteBase::getContribuyenteDescripcionSegunID($idContribuyente);
+         }
+
+
+
+         /***/
+         public function getSumaMontoDeclarado($nroSolicitud)
+         {
+            $suma = 0;
+            $declaraciones = DeclaracionBase::find()->where('nro_solicitud =:nro_solicitud',
+                                                            [':nro_solicitud' => $nroSolicitud])
+                                                    ->asArray()
+                                                    ->all();
+            if ( count($declaraciones) > 0 ) {
+                foreach ( $declaraciones as $declaracion ) {
+                    $suma = $suma + $declaracion['monto_new'];
+                }
+            }
+
+            return $suma;
+         }
 
     }
 
