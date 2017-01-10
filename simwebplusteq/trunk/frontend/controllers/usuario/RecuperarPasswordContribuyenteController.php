@@ -80,6 +80,7 @@ use frontend\models\usuario\MensajeRecuperarForm;
 use common\models\contribuyente\ContribuyenteBase;
 use frontend\models\usuario\Afiliacion;
 use common\enviaremail\PlantillaEmail;
+
 session_start();
 /**
  * Site controller
@@ -279,8 +280,8 @@ class RecuperarPasswordContribuyenteController extends Controller
                                 $envio = self::enviarRecuperacion($_SESSION['Afiliaciones']['password'],$_SESSION['Contribuyente']['email']);
                        
                                 if ($envio==true){
-
-                                    return MensajeController::actionMensaje(Yii::t('frontend','Se ha enviado a su direccion de correo electronico su usuario y contraseña'));
+                                    return MensajeController::actionMensaje(100);
+                                    
 
                                 } else {
                                     return MensajeController::actionMensaje(Yii::t('frontend','La recuperacion de contraseña a fallado'));
