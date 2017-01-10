@@ -138,7 +138,7 @@
 								[
 				                    'label' => Yii::t('frontend', 'Liquidado'),
 				                    'contentOptions' => [
-				                    	'style' => 'text-align: center',
+				                    	'style' => 'text-align: right',
 				                    ],
 				                    'value' => function($data) {
 				                    				$tipo = 0;
@@ -150,7 +150,7 @@
 
 				                    				$listado = New ListadoSolicitudDeclaracion();
 				                    				$suma = $listado->getMontoLiquidacion($tipo, $data->declaracion->ano_impositivo, $data->id_contribuyente);
-            										return $suma;
+            										return Yii::$app->formatter->asDecimal($suma, 2);
     											},
 				                ],
 
