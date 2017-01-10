@@ -64,6 +64,9 @@ return [
 	'970' => [Yii::t('backend', 'No tiene rango ordenazas pendientes.'), 'warning', 'fa fa-info-circle'],
 	'971' => [Yii::t('backend', 'El inmueble ya posee una solicitud pendiente de cambio numero catastral, dicha solicitud no permite crear la actual'), 'danger', 'fa fa-times'],
     '972' => [Yii::t('backend', 'El inmueble ya posee una solicitud pendiente de Desintegracion, dicha solicitud no permite crear la actual'), 'danger', 'fa fa-times'],
+    '973' => [Yii::t('backend', 'La recuperacion de contraseña a fallado'), 'success', 'fa fa-check-circle-o'],
+    '974' => [Yii::t('backend', 'La recuperacion de contraseña a fallado por no tener correo electronico asignado como contribuyente'), 'danger', 'fa fa-check-circle-o'],
+    '975' => [Yii::t('backend', 'Tiene una cuenta activa afiliada como contribuyente'), 'danger', 'fa fa-check-circle-o'],
 
 	'990' => [Yii::t('backend', 'Register not found'), 'danger', 'fa fa-times'],
 	'991' => [Yii::t('backend', 'You can aquire a property you already own '), 'danger', 'fa fa-exclamation-triangle'],
@@ -81,6 +84,7 @@ return [
 	'100' => [Yii::t('backend', 'Register saved'), 'success', 'fa fa-check-circle-o'],
 	'101' => [Yii::t('backend', 'Request was apporved successfully'), 'success', 'fa fa-check-circle-o'],
 	'102' => [Yii::t('backend', 'Request was rejected successfully'), 'success', 'fa fa-check-circle-o'],
+	'103' => [Yii::t('backend', 'Proceso exitoso, el usuario y clave han sido enviado a su correo electronico'), 'success', 'fa fa-check-circle-o'],
 	'200' => [Yii::t('backend', 'Register updated'), 'success', 'fa fa-check-circle-o'],
 	'300' => [Yii::t('backend', 'Operation executed'), 'success', 'fa fa-check-circle-o'],
 	'400' => [Yii::t('backend', 'Register was inactivated'), 'success', 'fa fa-check-circle-o'],
