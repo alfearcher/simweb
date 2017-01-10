@@ -308,6 +308,7 @@
 
 				$lapso = isset($_SESSION['lapso']) ? $_SESSION['lapso'] : null;
 				$mensajeDeclaracion = '';
+				$mensajeDeclaracionInicial = '';
 
 				if ( count($lapso) > 0 ) {
 					$btnSearchCategory = 1;
@@ -355,6 +356,10 @@
 			      	$searchDeclaracion = New DeclaracionBaseSearch($idContribuyente);
 			      	$findModel = $searchDeclaracion->findContribuyente();
 
+
+			      	$mensajeDeclaracionInicial = $searchDeclaracion->controlDeclaracionEstimada($lapso['a'], $lapso['p'], []);
+
+
 					if ( isset($postData['btn-back-form']) ) {
 						if ( $postData['btn-back-form'] == 1 ) {
 							$postData = [];			// Inicializa el post.
@@ -374,6 +379,7 @@
 		  																	'subCaption' => $subCaption,
 		  																	'rutaAyuda' => $rutaAyuda,
 		  																	'mensajeDeclaracion' => $mensajeDeclaracion,
+		  																	'mensajeDeclaracionInicial' => $mensajeDeclaracionInicial,
 
 
 				  					]);
@@ -428,6 +434,7 @@
 			  																	'subCaption' => $subCaption,
 			  																	'rutaAyuda' => $rutaAyuda,
 			  																	'mensajeDeclaracion' => $mensajeDeclaracion,
+			  																	'mensajeDeclaracionInicial' => $mensajeDeclaracionInicial,
 
 
 					  					]);
@@ -503,6 +510,7 @@
 	  																	'subCaption' => $subCaption,
 	  																	'rutaAyuda' => $rutaAyuda,
 	  																	'mensajeDeclaracion' => $mensajeDeclaracion,
+	  																	'mensajeDeclaracionInicial' => $mensajeDeclaracionInicial,
 			  					]);
 
 			  		} else {
