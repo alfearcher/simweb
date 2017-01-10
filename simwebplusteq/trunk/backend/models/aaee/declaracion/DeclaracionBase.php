@@ -50,6 +50,7 @@
 	use backend\models\aaee\declaracion\tipodeclaracion\TipoDeclaracion;
 	use backend\models\aaee\rubro\Rubro;
 	use common\models\solicitudescontribuyente\SolicitudesContribuyente;
+	use common\models\contribuyente\ContribuyenteBase;
 
 	/**
 	* 	Clase que gestiona la solicitud base de la declaracion.
@@ -122,6 +123,27 @@
 		 {
 		 	return $this->hasOne(TipoDeclaracion::className(), ['tipo_declaracion' => 'tipo_declaracion']);
 		 }
+
+
+
+
+		 /**
+		  * Relacion con la entidad "solicitudes-contribuyentes".
+		  * @return SolicitudesContribuyente
+		  */
+		 public function getSolicitud()
+		 {
+		 	return $this->hasOne(SolicitudesContribuyente::className(), ['nro_solicitud' => 'nro_solicitud']);
+		 }
+
+
+
+		 /***/
+		 public function getContribuyente($idContribuyente)
+		 {
+		 	return ContribuyenteBase::getContribuyenteDescripcionSegunID($idContribuyente);
+		 }
+
 
 	}
 
