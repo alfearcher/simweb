@@ -276,9 +276,9 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                                     
                                 ]; 
 
-            
+            $model = $arrayDatos2;
                  $tableName2 = 'sl_historico_avaluos'; 
-                $resultProceso = self::actionEjecutaProcesoSolicitud($conn, $conexion, $model, $config); 
+                //$resultProceso = self::actionEjecutaProcesoSolicitud($conn, $conexion, $model, $config); 
                 if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){
 
                     if ($nivelAprobacion['nivel_aprobacion'] != 1){
@@ -293,7 +293,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                         $avaluoConstruccion = $model->metros_construccion * $model->valor_construccion;
                         $avaluoTerreno = $model->metros_terreno * $model->valor_terreno;
 
-                        $arrayDatos1 = [    'id_impuesto' => $datos->id_impuesto,
+                        $arrayDatos3 = [    'id_impuesto' => $datos->id_impuesto,
                                             'nro_solicitud' => $result,
                                             'fecha' => date('Y-m-d'),
                                             'mts' => $model->metros_construccion,
@@ -309,11 +309,11 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                                         ]; 
 
             
-                        $tableName1 = 'historico_avaluos';
+                        $tableName3 = 'historico_avaluos';
                          
 
 
-                        if ( $conn->guardarRegistro($conexion, $tableName1,  $arrayDatos1) ){
+                        if ( $conn->guardarRegistro($conexion, $tableName3,  $arrayDatos3) ){
 
                               $transaccion->commit();  
                               $conexion->close(); 
@@ -417,7 +417,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      * @return boolean retorna true si todo se ejecuto correctamente false en caso contrario.
      */
     private function actionEjecutaProcesoSolicitud($conexionLocal, $connLocal, $model, $conf)
-    {
+    { die(var_dump($model->nro_solicitud));
       $result = true;
       $resultadoProceso = [];
       $acciones = [];
