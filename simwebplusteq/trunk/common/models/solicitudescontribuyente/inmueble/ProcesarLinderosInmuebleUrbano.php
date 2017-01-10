@@ -287,7 +287,7 @@
                     $tableNameMaster = 'historico_avaluos';
 
                     $arregloDatosMaster = [
-                                            'id_impuesto' => $camposModel['id_impuesto'],
+                                            
                                             'lindero_norte' => $camposModel['lindero_norte'],
                                             'lindero_sur' => $camposModel['lindero_sur'],
                                             'lindero_este' => $camposModel['lindero_este'],

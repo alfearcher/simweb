@@ -298,6 +298,35 @@
                                             'medidor' => $camposModel['medidor'],
                                             'observacion' => $camposModel['observacion'],
                                             'tipo_ejido' => $camposModel['id_contribuyente'],
+                                            'manzana_limite' => $camposModel['manzana_limite'],
+                                            
+                                            'tlf_hab' => $camposModel['tlf_hab'],
+                                       'medidor' => $camposModel['medidor'],
+                                       'id_sim' => $camposModel['id_sim'],
+                                       'observacion' => $camposModel['observacion'],
+                                       'inactivo' => $camposModel['inactivo'],
+                                       'catastro' => $camposModel['catastro'],
+                                       'id_habitante' => $camposModel['id_habitante'],
+                                       'tipo_ejido' => $camposModel['tipo_ejido'],
+                                       'propiedad_horizontal' => $camposModel ['propiedad_horizontal'],
+                                       //catastro inmueble
+                                       'estado_catastro' => $camposModel['estado_catastro'],
+                                       'municipio_catastro' => $camposModel['municipio_catastro'],
+                                       'parroquia_catastro' => $camposModel['parroquia_catastro'],
+                                       'ambito_catastro' => $camposModel['ambito_catastro'],
+                                       'sector_catastro' => $camposModel['sector_catastro'],
+                                       'manzana_catastro' => $camposModel['manzana_catastro'],
+                                       //parcelas 
+                                       'parcela_catastro' => $camposModel['parcela_catastro'],
+                                       'subparcela_catastro' => $camposModel['subparcela_catastro'],
+                                       'nivel_catastro' => $camposModel['nivel_catastro'],
+                                       'unidad_catastro' => $camposModel['unidad_catastro'],
+
+                                       'liquidado' => $camposModel['liquidado'], 
+                                       'lote_1' => $camposModel['lote_1'],
+                                       'lote_2' => $camposModel ['lote_2'],
+                                       'lote_3' => $camposModel ['lote_3'], 
+                                       'nivel' => $camposModel['nivel'],
 
                                          ];
 
