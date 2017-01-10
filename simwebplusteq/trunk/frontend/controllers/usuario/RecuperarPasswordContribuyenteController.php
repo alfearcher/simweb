@@ -275,16 +275,22 @@ class RecuperarPasswordContribuyenteController extends Controller
 
 
                     if ($model->validate()){
-
-                        $envio = self::enviarRecuperacion($_SESSION['Afiliaciones']['password'],$_SESSION['Afiliaciones']['login']);
+                        if($_SESSION['Contribuyente']['email'] != null){
+                                $envio = self::enviarRecuperacion($_SESSION['Afiliaciones']['password'],$_SESSION['Contribuyente']['email']);
                        
-                        if ($envio==true){
+                                if ($envio==true){
 
-                            return MensajeController::actionMensaje(Yii::t('frontend','Se ha enviado a su direccion de correo electronico su usuario y contraseña'));
+                                    return MensajeController::actionMensaje(Yii::t('frontend','Se ha enviado a su direccion de correo electronico su usuario y contraseña'));
+
+                                } else {
+                                 return MensajeController::actionMensaje(Yii::t('frontend','La recuperacion de contraseña a fallado'));
+                                }
 
                         } else {
-                            return MensajeController::actionMensaje(Yii::t('frontend','La recuperacion de contraseña a fallado'));
+                            return MensajeController::actionMensaje(Yii::t('frontend','La recuperacion de contraseña a fallado por no tener correo electronico asignado como contribuyente'));
+
                         }
+                        
                     }
                 }
     return $this->render('/usuario/mensaje-recuperar', ['model' => $model]);
@@ -294,7 +300,7 @@ class RecuperarPasswordContribuyenteController extends Controller
      * [EnviarCorreo description] Metodo que se encarga de enviar un email al contribuyente 
      * con el estatus del proceso
      */
-     public function enviarRecuperacion($clave, $email)
+     public function enviarRecuperacion($clave, $emailContribuyente)
      {
          
          $solicitud = 'Restauracion de usuario y contraseña';
@@ -310,7 +316,7 @@ class RecuperarPasswordContribuyenteController extends Controller
          } 
          $enviarEmail = new PlantillaEmail();
         
-         if ($enviarEmail->plantillaRecuperarLogin($email, $solicitud, $clave, $contribuyente)){
+         if ($enviarEmail->plantillaRecuperarLogin($emailContribuyente, $solicitud, $clave, $contribuyente)){
 
              return true; 
          } else { 
