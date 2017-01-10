@@ -136,6 +136,14 @@
 					        </div>
 					        <div class="panel-body">
 <!-- INICIO RUBROS REGISTRADOS PARA EL AÑO-PERIODO -->
+								<div class="row" style="width: 100%;padding-left: 35px;">
+									<?php if ( trim($mensajeDeclaracionInicial) ) { ?>
+										<div class="well well-sm" style="color: blue;padding-left: 35px;">
+											<h4><?=Html::encode($mensajeDeclaracionInicial)?></h4>
+										</div>
+									<?php } ?>
+								</div>
+
 								<div class="row"  style="padding-left: 10px; width: 100%;">
 									<div class="rubro-registrado">
 										<div class="row" style="margin-left: 5px;">
