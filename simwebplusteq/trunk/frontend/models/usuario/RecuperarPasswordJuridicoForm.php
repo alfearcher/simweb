@@ -75,6 +75,7 @@ class RecuperarPasswordJuridicoForm extends CrearUsuarioNatural
             [['cedula','tipo'],'integer'],
             [['naturaleza',  'cedula', 'tipo', 'email'], 'required' ],
             [['cedula'], 'validarLongitud'],
+            ['cedula' ,'validarRif'],
             ['cedula' ,'validarEmailRif'],
         ];
     } 
@@ -159,13 +160,44 @@ class RecuperarPasswordJuridicoForm extends CrearUsuarioNatural
 
             if($validar == null){
         
-                $this->addError($attribute, Yii::t('frontend', 'This user does not exists' ));
+                $this->addError($attribute, Yii::t('frontend', 'El correo registrado no coincide, dirijase a la Alcaldia' ));
         
             }else{
                 return false;
             }
 
     }
+    /**
+     * [validarEmailRif description] metodo que busca el email y el rif en la tabla contribuyentes para verificar si posee preguntas de seguridad
+     * @param  [type] $attribute [description] atributos necesarios para enviar mensaje de error
+     * @param  [type] $params    [description] parametros necesarios para enviar mensaje de error
+     * @return [type]            [description] retorna un mensaje de error en caso de no encontrar al usuario en la tabla
+     */
+    public function validarRif($attribute, $params)
+    { 
+        
+        $validar = CrearUsuarioNatural::find() 
+                                ->where([
+                                'naturaleza' => $this->naturaleza,
+                                'cedula' => $this->cedula,
+                                'tipo' => $this->tipo,
+                                'tipo_naturaleza' => 1,
+                                'inactivo' => 0,
+                              
+                                ])
+                                ->all();
+
+            if($validar == null){
+        
+                $this->addError($attribute, Yii::t('frontend', 'RIF invalido, verifique los datos si son correcto, ingrese por la opcion CREAR USUARIO' ));
+        
+            }else{
+                return false;
+            }
+
+    }
+
+
     /**
      * 
      * [buscarIdContribuyente description] metodo que busca al usuario juridico en la tabla contribuyentes de manera masiva

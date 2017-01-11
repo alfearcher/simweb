@@ -71,6 +71,7 @@ class RecuperarPasswordNaturalForm extends CrearUsuarioNatural
              ['cedula', 'integer'],
             [['naturaleza',  'cedula', 'email'], 'required' ],
             [['cedula'], 'validarLongitud'],
+            ['cedula' , 'validarCi'],
             ['cedula' , 'validarEmailRif'],
            
              
@@ -134,7 +135,39 @@ class RecuperarPasswordNaturalForm extends CrearUsuarioNatural
             if($validar == null){
         
           
-                $this->addError($attribute, Yii::t('frontend', 'This user does not exists' ));
+                $this->addError($attribute, Yii::t('frontend', 'El correo registrado no coincide, dirijase a la Alcaldia' ));
+        
+            }else{
+                
+                return false;
+            }
+
+    }
+
+    /**
+     * [validarEmailRif description] metodo que busca el email y el rif en la tabla contribuyentes para verificar si posee preguntas de seguridad
+     * @param  [type] $attribute [description] atributos necesarios para enviar mensaje de error
+     * @param  [type] $params    [description] parametros necesarios para enviar mensaje de error
+     * @return [type]            [description] retorna un mensaje de error en caso de no encontrar al usuario en la tabla
+     */
+    public function validarCi($attribute, $params)
+    { 
+        
+        $validar = CrearUsuarioNatural::find() 
+                                ->where([
+                                'naturaleza' => $this->naturaleza,
+                                'cedula' => $this->cedula,
+                                'email' => $this->email,
+                                'tipo_naturaleza' => 0,
+                                'inactivo' => 0,
+                              
+                                ])
+                                ->all();
+
+            if($validar == null){
+        
+          
+                $this->addError($attribute, Yii::t('frontend', 'CI invalido, verifique los datos si son correcto, ingrese por la opcion CREAR USUARIO' ));
         
             }else{
                 
