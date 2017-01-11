@@ -216,7 +216,7 @@ class CrearUsuarioJuridicoController extends Controller
 
             if ($model[0]->email == null or trim($model[0]->email) == ""){
 
-                return MensajeController::actionMensaje('Please, go to your city hall');
+                return MensajeController::actionMensaje('Por favor, dirijase a la Alcaldia');
 
             }else{
 
@@ -224,7 +224,7 @@ class CrearUsuarioJuridicoController extends Controller
 
                 if ($modelAfiliacion == true){
 
-                  return MensajeController::actionMensaje('this user already exists');
+                  return MensajeController::actionMensaje('Este usuario ya existe');
                    }else{
 
                     $modelx = new CargaDatosBasicosForm();
@@ -236,9 +236,9 @@ class CrearUsuarioJuridicoController extends Controller
                     $guardarAfiliacion = self::beginSave("afiliaciones", $modelx);
 
                     if ($guardarAfiliacion == true){
-                                return MensajeController::actionMensaje('You have been afiliated, please check your email');
+                                return MensajeController::actionMensaje('Has sido afiliado, consulta tu correo electrónico');
                             } else{
-                                return MensajeController::actionMensaje('An error ocurred while we were trying to proced');
+                                return MensajeController::actionMensaje('Ocurrió un error, al intentar afiliar el contribuyente');
                             }
 
                 }
