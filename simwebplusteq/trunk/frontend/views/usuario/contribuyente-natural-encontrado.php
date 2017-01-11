@@ -19,7 +19,7 @@
 /* @var $searchModel app\models\BancoSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('frontend','Result of the Consult '.BuscarGeneralForm::getCedulaRif(0, $naturaleza, $cedula, $tipo));
+$this->title = Yii::t('frontend','Resultado de la consulta '.BuscarGeneralForm::getCedulaRif(0, $naturaleza, $cedula, $tipo));
 
 ?>
 <div class="buscar-gerenarl-view-list">
