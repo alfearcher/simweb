@@ -66,7 +66,9 @@ return [
     '972' => [Yii::t('backend', 'El inmueble ya posee una solicitud pendiente de Desintegracion, dicha solicitud no permite crear la actual'), 'danger', 'fa fa-times'],
     '973' => [Yii::t('backend', 'La recuperacion de contraseña a fallado'), 'success', 'fa fa-check-circle-o'],
     '974' => [Yii::t('backend', 'La recuperacion de contraseña a fallado por no tener correo electronico asignado como contribuyente'), 'danger', 'fa fa-check-circle-o'],
-    '975' => [Yii::t('backend', 'Tiene una cuenta activa afiliada como contribuyente'), 'danger', 'fa fa-check-circle-o'],
+    '975' => [Yii::t('backend', 'Anteriormente ingreso validamente al sistema, seleccione la opcion CAMBIAR CONTRASEÑA'), 'danger', 'fa fa-check-circle-o'],
+    '976' => [Yii::t('backend', 'El contribuyente no posee afiliacion al sistema'), 'danger', 'fa fa-check-circle-o'],
+
 
 	'990' => [Yii::t('backend', 'Register not found'), 'danger', 'fa fa-times'],
 	'991' => [Yii::t('backend', 'You can aquire a property you already own '), 'danger', 'fa fa-exclamation-triangle'],
