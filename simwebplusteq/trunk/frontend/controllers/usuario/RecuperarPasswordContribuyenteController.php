@@ -138,17 +138,23 @@ class RecuperarPasswordContribuyenteController extends Controller
                             $buscarAfiliaciones = $buscarId::buscarIdAfiliaciones($buscarContribuyente->id_contribuyente);
                             $_SESSION['Afiliaciones']=$buscarAfiliaciones;
                             $_SESSION['Contribuyente'] = $buscarContribuyente;
-                            if ($buscarAfiliaciones['password_hash'] == null and $buscarAfiliaciones['password'] != 0){
+                            if ($buscarAfiliaciones == true) {
+                                
+                            
+                            if ($buscarAfiliaciones['password_hash'] == null and $buscarAfiliaciones['password'] !== 0){
                                 
                                   
                                      $this->redirect(['mensaje-recuperar']);
                             }else { 
                                
-                                   return MensajeController::actionMensaje(975); 
+                                   return MensajeController::actionMensaje(975); //Ingreso anteriormente por primera vez al sistema, ingrese a la opcion CAMBIAR CONTRASEÑA
                             }
+                        } else {
 
+                            return MensajeController::actionMensaje(976);//El contribuyente no posee afiliacion en el sitema
+                        }
                         }else{
-                            return MensajeController::actionMensaje(932);
+                            return MensajeController::actionMensaje(932);//Taxpayer not defined ----- contribuyente no definido
                         }
                     
                     }
@@ -192,7 +198,7 @@ class RecuperarPasswordContribuyenteController extends Controller
                             //die(var_dump($buscarAfiliacionesJuridico));
 
                             if ($buscarAfiliacionesJuridico == false){
-                                return MensajeController::actionMensaje(932); 
+                                return MensajeController::actionMensaje(976); //El contribuyente no posee afiliacion al sistema
                             }else{ 
                            
                             $idsContribuyente = [];
@@ -245,15 +251,20 @@ class RecuperarPasswordContribuyenteController extends Controller
         $_SESSION['Contribuyente'] =$buscarContribuyente;
         $_SESSION['Afiliaciones']=$buscarAfiliaciones;
 
-        if ($buscarAfiliaciones['password_hash'] == null and $buscarAfiliaciones['password'] != 0){
+        if ($buscarAfiliaciones == true) {
+
+             if ($buscarAfiliaciones['password_hash'] == null and $buscarAfiliaciones['password'] !== 0){
                                 
                                 
-            $this->redirect(['mensaje-recuperar']);
-        }else { 
+                 $this->redirect(['mensaje-recuperar']);
+             }else { 
                                
-            return MensajeController::actionMensaje(975); 
-        }
-                
+                 return MensajeController::actionMensaje(975); //Ya ingreso anteriormente por primera vez al sistema, ingrese a la opcion CAMBIAR CONTRASEÑA
+             }
+        }  else {
+
+            return MensajeController::actionMensaje(976);//El contribuyente no posee afiliacion en el sitema
+        }      
 
     }
 
@@ -277,18 +288,18 @@ class RecuperarPasswordContribuyenteController extends Controller
 
                     if ($model->validate()){
                         if($_SESSION['Contribuyente']['email'] != null){
-                                $envio = self::enviarRecuperacion($_SESSION['Afiliaciones']['password'],$_SESSION['Contribuyente']['email']);
+                                $envio = self::enviarRecuperacion($_SESSION['Afiliaciones']['password'],$_SESSION['Afiliaciones']['login'],$_SESSION['Contribuyente']['email']);
                        
                                 if ($envio==true){
-                                    return MensajeController::actionMensaje(103);
+                                    return MensajeController::actionMensaje(103);//Proceso exitoso, el usuario y clave han sido enviado a su correo electronico
                                     
 
                                 } else {
-                                    return MensajeController::actionMensaje(973);
+                                    return MensajeController::actionMensaje(973);//La recuperacion de contraseña a fallado
                                 }
 
                         } else {
-                            return MensajeController::actionMensaje(974);
+                            return MensajeController::actionMensaje(974);//La recuperacion de contraseña a fallado por no tener correo electronico asignado como contribuyente
 
                         }
                         
@@ -301,7 +312,7 @@ class RecuperarPasswordContribuyenteController extends Controller
      * [EnviarCorreo description] Metodo que se encarga de enviar un email al contribuyente 
      * con el estatus del proceso
      */
-     public function enviarRecuperacion($clave, $emailContribuyente)
+     public function enviarRecuperacion($clave,$login,$emailContribuyente)
      {
          
          $solicitud = 'Restauracion de usuario y contraseña';
@@ -317,7 +328,7 @@ class RecuperarPasswordContribuyenteController extends Controller
          } 
          $enviarEmail = new PlantillaEmail();
         
-         if ($enviarEmail->plantillaRecuperarLogin($emailContribuyente, $solicitud, $clave, $contribuyente)){
+         if ($enviarEmail->plantillaRecuperarLogin($emailContribuyente, $solicitud, $clave,$login, $contribuyente)){
 
              return true; 
          } else { 
