@@ -182,11 +182,11 @@ class CrearUsuarioJuridicoController extends Controller
 
                 if ($resultado == true){
 
-                    return MensajeController::actionMensaje(Yii::t('frontend', 'We have sent you an email with your new user and password'));
+                    return MensajeController::actionMensaje(Yii::t('frontend', 'Te hemos enviado un correo electrónico con tu nuevo usuario y contraseña'));
 
                 }else{
 
-                    return MensajeController::actionMensaje(Yii::t('frontend', 'Sorry, there was a problem creating your account'));
+                    return MensajeController::actionMensaje(Yii::t('frontend', 'Se ha producido un problema al crear su cuenta'));
                 }
                 }
 
