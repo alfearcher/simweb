@@ -46,10 +46,13 @@
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 	use backend\models\utilidad\tarifa\inmueble\TarifaAvaluo;
+	use backend\models\utilidad\tarifa\inmueble\Tarifa;
+	use common\models\ordenanza\OrdenanzaBase;
+
 
 
 	/**
-	* 	Clase
+	* Clase
 	*/
 	class TarifaParametroInmueble extends ActiveRecord
 	{
@@ -85,6 +88,34 @@
 			return isset($model) ? $model : null;
 
 		}
+
+
+
+
+		/**
+		 * Metodo que busca los parametros para el calculo del inmueble.
+		 * @param  integer $usoInmueble uso del inmueble.
+		 * @param  integer $añoImpositivo año impositivo que se quiere calcular.
+		 * @return double retorna monto del calculo o null sino consiguenada.
+		 */
+		public function getAlicuotaSegunUsoInmuebleOrdenanza($usoInmueble, $añoImpositivo)
+		{
+			if ( $usoInmueble > 0 && $añoImpositivo > 0 ) {
+
+				$añoOrdenanza = OrdenanzaBase::getAnoOrdenanzaSegunAnoImpositivoImpuesto($añoImpositivo, 2);
+
+				if ( $añoOrdenanza > 0 ) {
+					return $model = Tarifa::find()->where('uso =:uso',
+														[':uso' => $usoInmueble])
+												  ->andWhere('ano_impositivo =:ano_impositivo',
+												  		[':ano_impositivo' => $añoOrdenanza])
+												  ->asArray()
+												  ->all();
+				}
+			}
+			return null;
+		}
+
 
 
 	}
