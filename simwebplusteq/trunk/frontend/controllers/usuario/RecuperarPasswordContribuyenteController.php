@@ -259,7 +259,7 @@ class RecuperarPasswordContribuyenteController extends Controller
                  $this->redirect(['mensaje-recuperar']);
              }else { 
                                
-                 return MensajeController::actionMensaje(975); //Ya ingreso anteriormente por primera vez al sistema, ingrese a la opcion CAMBIAR CONTRASEÑA
+                 return MensajeController::actionMensaje(975); //Ingreso anteriormente por primera vez al sistema, ingrese a la opcion CAMBIAR CONTRASEÑA
              }
         }  else {
 
