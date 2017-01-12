@@ -51,6 +51,9 @@
 	use backend\models\inmueble\avaluo\HistoricoAvaluoForm;
 	use backend\models\utilidad\tarifa\inmueble\TarifaParametroInmueble;
 	use common\models\calculo\liquidacion\inmueble\CalculoTarifaAvaluoDirecto;
+	use common\models\calculo\liquidacion\inmueble\CalculoPorUsoInmuebleAvaluo;
+	use common\models\calculo\liquidacion\inmueble\CalculoPorAlicuotaAplicadaAvaluo;
+
 
 	/**
 	* 	Clase que gestiona el calculo anual del impuesto de inmueble,
@@ -230,7 +233,15 @@
 			} elseif ( $idMetodo == 9 ) {
 				$calculoDirecto = New CalculoTarifaAvaluoDirecto($this->_datosInmueble, $this->_añoImpositivo);
 				$monto = $calculoDirecto->iniciarCalculo();
-			} else {
+
+			} elseif ( $idMetodo == 10 ) {
+				$calculo = New CalculoPorUsoInmuebleAvaluo($this->_datosInmueble, $this->_añoImpositivo);
+				$monto = $calculo->iniciarCalculo();
+
+			} elseif ( $idMetodo == 11 ) {
+				$calculo = New CalculoPorAlicuotaAplicadaAvaluo($this->_datosInmueble, $this->_añoImpositivo);
+				$monto = $calculo->iniciarCalculo();
+
 			}
 			return $monto;
 		}
