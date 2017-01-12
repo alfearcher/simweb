@@ -129,7 +129,7 @@ $this->title = 'Busqueda persona Natural';
 
                                     <div class="col-sm-3" >
                                         
-                                            <?= Html::a('Return',['/usuario/cambiar-password-contribuyente/seleccionar-tipo-contribuyente'], ['class' => 'btn btn-primary','style' => 'height:30px;width:140px;margin-left:80px;' ]) //BOTON DE RECUPERAR CONTRASENA ?>
+                                            <?= Html::a('Volver',['/usuario/cambiar-password-contribuyente/seleccionar-tipo-contribuyente'], ['class' => 'btn btn-primary','style' => 'height:30px;width:140px;margin-left:80px;' ]) //BOTON DE RECUPERAR CONTRASENA ?>
                                         
                                     </div>
                                    </div>
