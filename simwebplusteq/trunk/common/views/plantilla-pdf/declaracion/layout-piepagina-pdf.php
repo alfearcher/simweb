@@ -63,59 +63,67 @@
 	<head>
 	</head>
 	<body>
-		<table repeat_header="1" cellpadding="1" cellspacing="1" width="100%" border="0">
+		<div class="row" style="width: 60%;padding:0px;padding-top: -40px;padding-bottom: 18px;">
+			<div class="col-sm-3" id="logo" style="width: 100%;padding:0px;padding-left: 260px;">
+					<?=Html::img('@common/public/imagen/customize/firma-director.jpg');?>
+			</div>
+		</div>
 
-			<tr>
-				<td class="label-pie-pagina-1-a" colspan="10" style="font-weight: bold;font-size: 90%;font-family: Verdana, Arial, Helvetica, sans-serif;text-align: center;">
-					<?=Html::encode('Firma Autorizada:  ' . $director); ?>
-				</td>
-				<!-- <td class="label-pie-pagina-1-c" colspan="1"></td> -->
+		<div class="row" style="width: 100%;padding:0px;padding-top: -40px;">
+			<table repeat_header="1" cellpadding="1" cellspacing="1" width="100%" border="0">
 
-			</tr>
-			<tr>
-				<td class="label-pie-pagina-2" colspan="10" style="font-weight: bold;font-size: 80%;text-align: center;">
-					<?=Html::encode($nombreCargo); ?>
-				</td>
-			</tr>
+				<tr>
+					<td class="label-pie-pagina-1-a" colspan="10" style="font-weight: bold;font-size: 90%;font-family: Verdana, Arial, Helvetica, sans-serif;text-align: center;">
+						<?=Html::encode('Firma Autorizada:  ' . $director); ?>
+					</td>
+					<!-- <td class="label-pie-pagina-1-c" colspan="1"></td> -->
 
-			<tr>
-				<td class="label-barcode" colspan="10" style="text-align: center;padding-left: 105px;">
-					<barcode code=<?=$barcode;?> type="C128A" height="1.5" width="0.6" text="1" class="barcode" />
-				</td>
-			</tr>
+				</tr>
+				<tr>
+					<td class="label-pie-pagina-2" colspan="10" style="font-weight: bold;font-size: 80%;text-align: center;">
+						<?=Html::encode($nombreCargo); ?>
+					</td>
+				</tr>
 
-			<tr>
-				<td class="label-barcode" colspan="10" style="font-weight: bold;text-align: center;font-family: Verdana, Arial, Helvetica, sans-serif;font-size: 70%;">
-					<?=$barcode?>
-				</td>
-			</tr>
+				<tr>
+					<td class="label-barcode" colspan="10" style="text-align: center;padding-left: 105px;">
+						<barcode code=<?=$barcode;?> type="C128A" height="1.5" width="0.6" text="1" class="barcode" />
+					</td>
+				</tr>
 
-			<tr>
-				<td class="label-pie-pagina-3" colspan="10" style="text-align: justify;color: red;background-color: #FFE061; font-size: 80%;">
-					<div class="nota-pie-1" >
-						Con la aceptación de la información contenida en la presente Declaración de Ingresos Brutos, la
-						Administración Tributaria, de conformidad con el artículo 171 y el numeral 3 del artículo 172 del
-						Código Orgánico Tributario publicado en Gaceta Oficial Extraordinaria N° 6152 de fecha 28/11/2014,
-						emite, en este mismo acto, el Certificado de Declaración y el Boletín de Notificación, mediante el
-						cual se le notifica formalmente, los deberes formales y materiales que origina tal Declaración, así
-						como los recursos que frente al acto administrativo notificado tiene derecho a ejercer.
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td class="label-pie-pagina-4" colspan="10" style="text-align: center;font-size: 55%;font-family: Verdana, Arial, Helvetica, sans-serif;">
-					<div class="row" style="color: red;">
-						LA AUTENTICIDAD Y VIGENCIA DE ESTA NOTIFICACION PUEDE VERIFICARSE A TRAVES DEL CODIGO DE BARRA
-						QUE SE ENCUENTRA EN LA PARTE INFERIOR.
-					</div>
-					<!-- <div class="row">
-						<strong>Este documento ha sido firmado electrónicamente, amparado en el decreto Nro. 1204 con rango
-						y fuerza de Ley sobre Mensajes de datos y Firmas Electrónica de fecha 10/02/2001, publicado
-						en Gaceta Oficial de la Republica Bolivariana de Venezuela Nro. 37.148 del 28/02/2001.</strong>
-					</div> -->
-				</td>
-			</tr>
-		</table>
+				<tr>
+					<td class="label-barcode" colspan="10" style="font-weight: bold;text-align: center;font-family: Verdana, Arial, Helvetica, sans-serif;font-size: 70%;">
+						<?=$barcode?>
+					</td>
+				</tr>
+
+				<tr>
+					<td class="label-pie-pagina-3" colspan="10" style="text-align: justify;color: red;background-color: #FFE061; font-size: 80%;">
+						<div class="nota-pie-1" >
+							Con la aceptación de la información contenida en la presente Declaración de Ingresos Brutos, la
+							Administración Tributaria, de conformidad con el artículo 171 y el numeral 3 del artículo 172 del
+							Código Orgánico Tributario publicado en Gaceta Oficial Extraordinaria N° 6152 de fecha 28/11/2014,
+							emite, en este mismo acto, el Certificado de Declaración y el Boletín de Notificación, mediante el
+							cual se le notifica formalmente, los deberes formales y materiales que origina tal Declaración, así
+							como los recursos que frente al acto administrativo notificado tiene derecho a ejercer.
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="label-pie-pagina-4" colspan="10" style="text-align: center;font-size: 55%;font-family: Verdana, Arial, Helvetica, sans-serif;">
+						<div class="row" style="color: red;">
+							LA AUTENTICIDAD Y VIGENCIA DE ESTA NOTIFICACION PUEDE VERIFICARSE A TRAVES DEL CODIGO DE BARRA
+							QUE SE ENCUENTRA EN LA PARTE INFERIOR.
+						</div>
+						<!-- <div class="row">
+							<strong>Este documento ha sido firmado electrónicamente, amparado en el decreto Nro. 1204 con rango
+							y fuerza de Ley sobre Mensajes de datos y Firmas Electrónica de fecha 10/02/2001, publicado
+							en Gaceta Oficial de la Republica Bolivariana de Venezuela Nro. 37.148 del 28/02/2001.</strong>
+						</div> -->
+					</td>
+				</tr>
+			</table>
+		</div>
 	</body>
 </html>
 
