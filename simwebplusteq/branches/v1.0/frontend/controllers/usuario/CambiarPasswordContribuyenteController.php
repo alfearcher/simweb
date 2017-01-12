@@ -436,10 +436,20 @@ class CambiarPasswordContribuyenteController extends Controller
                                                                          ->one();
 
                             $enviarEmail = new EnviarEmailCambioClave();
-                            $enviarEmail->EnviarEmailCambioClave($consultaContribuyente->email, $model->password1);
-                      
-                            return MensajeController::actionMensaje(Yii::t('frontend', 'No tienes creadas tus preguntas de seguridad, por favor dirijase a la Alcaldía'));
+                           $enviar = $enviarEmail->EnviarEmailCambioClave($consultaContribuyente->email, $model->password1);
 
+                            if($enviar == true){
+
+                                return MensajeController::actionMensaje(104);
+
+                            } else {
+                                  return MensajeController::actionMensaje(Yii::t('frontend', 'No se ha podido cambiar la contraseña, intente mas tarde'));
+                            }
+                            
+
+                        } else {
+
+                            return MensajeController::actionMensaje(Yii::t('frontend', 'No se ha podido cambiar la contraseña, intente mas tarde'));
                         }
                     
                     }
@@ -491,10 +501,19 @@ class CambiarPasswordContribuyenteController extends Controller
                                                                 ->one();
 
                   $enviarEmail = new EnviarEmailCambioClave();
-                  $enviarEmail->EnviarEmailCambioClave($consultaContribuyente->email, $model->password1);
-                      
-                  return MensajeController::actionMensaje(Yii::t('frontend', 'We have sent you an email with your new password'));
+                  $enviar = $enviarEmail->EnviarEmailCambioClave($consultaContribuyente->email, $model->password1);
+                      if($enviar == true){
 
+                            return MensajeController::actionMensaje(104);
+
+                      } else {
+                            return MensajeController::actionMensaje(Yii::t('frontend', 'No se ha podido cambiar la contraseña, intente mas tarde'));
+                      }
+                  
+
+              } else {
+
+                 return MensajeController::actionMensaje(Yii::t('frontend', 'No se ha podido cambiar la contraseña, intente mas tarde'));
               }
                     
           }
@@ -546,8 +565,8 @@ class CambiarPasswordContribuyenteController extends Controller
 
               $transaccion->commit();
               $conn->close();
-              //return true;
-              return $this->render('/usuario/seleccionar-tipo-contribuyente');
+              return true;
+              //return $this->render('/usuario/seleccionar-tipo-contribuyente');
           }else{ 
          
               $transaccion->rollback();
