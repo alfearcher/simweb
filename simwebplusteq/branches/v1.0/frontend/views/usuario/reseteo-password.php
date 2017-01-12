@@ -46,11 +46,11 @@ $this->title = 'Resetear Password';
                            
 							<div class="row">
 							<div class="col-sm-5">
-                            <?= Html::submitButton("Update", ["class" => "btn btn-success", 'style' => 'height:30px;width:140px;margin-left:0px;']) ?>
+                            <?= Html::submitButton("Actualizar", ["class" => "btn btn-success", 'style' => 'height:30px;width:140px;margin-left:0px;']) ?>
 							</div>
 							
 							<div class="col-sm-3" >
-                            <?= Html::a('Return',['/usuario/mostrar-pregunta-seguridad/buscar-mostrar-pregunta-seguridad'], ['class' => 'btn btn-primary','style' => 'height:30px;width:140px;margin-left:-40px;' ]) //boton para volver a la busqueda de pregunta de seguridad ?>
+                            <?= Html::a('Volver',['/usuario/mostrar-pregunta-seguridad/buscar-mostrar-pregunta-seguridad'], ['class' => 'btn btn-primary','style' => 'height:30px;width:140px;margin-left:-40px;' ]) //boton para volver a la busqueda de pregunta de seguridad ?>
                             </div>
                             </div>
 			</div>

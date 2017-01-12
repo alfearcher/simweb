@@ -284,7 +284,7 @@ class CambiarPasswordContribuyenteController extends Controller
                                                                            // die(var_dump($preguntaSeguridad));
 
       }else {
-         return MensajeController::actionMensaje(Yii::t('frontend', 'You have not created your security answers yet'));
+         return MensajeController::actionMensaje(Yii::t('frontend', 'No tienes creadas tus preguntas de seguridad, por favor dirijase a la Alcaldía'));
       }
     }
 
@@ -397,7 +397,7 @@ class CambiarPasswordContribuyenteController extends Controller
                                                         
                                                         ]); 
      }else{
-         return MensajeController::actionMensaje(Yii::t('frontend', 'You have not created your security answers yet'));
+         return MensajeController::actionMensaje(Yii::t('frontend', 'No tienes creadas tus preguntas de seguridad, por favor dirijase a la Alcaldía'));
      }
     }
 
@@ -438,7 +438,7 @@ class CambiarPasswordContribuyenteController extends Controller
                             $enviarEmail = new EnviarEmailCambioClave();
                             $enviarEmail->EnviarEmailCambioClave($consultaContribuyente->email, $model->password1);
                       
-                            return MensajeController::actionMensaje(Yii::t('frontend', 'We have sent you an email with your new password'));
+                            return MensajeController::actionMensaje(Yii::t('frontend', 'No tienes creadas tus preguntas de seguridad, por favor dirijase a la Alcaldía'));
 
                         }
                     

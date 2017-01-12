@@ -48,7 +48,7 @@ $this->title = 'Resetear Password';
 							</div>
 							
 							<div class="col-sm-3" >
-                            <?= Html::a('Return',['/usuario/cambiar-password-contribuyente/cambiar-password-natural'], ['class' => 'btn btn-primary','style' => 'height:30px;width:140px;margin-left:-40px;' ]) //boton para volver a la busqueda de pregunta de seguridad ?>
+                            <?= Html::a('Volver',['/usuario/cambiar-password-contribuyente/cambiar-password-natural'], ['class' => 'btn btn-primary','style' => 'height:30px;width:140px;margin-left:-40px;' ]) //boton para volver a la busqueda de pregunta de seguridad ?>
                             </div>
                             </div>
 			</div>
