@@ -60,9 +60,14 @@
 	//$nombreCargo = 'Direccion de Rentas';
 ?>
 
+<div class="row" style="width: 60%;padding:0px;padding-top: -40px;padding-bottom: 18px;">
+	<div class="col-sm-3" id="logo" style="width: 100%;padding:0px;padding-left: 260px;">
+			<?=Html::img('@common/public/imagen/customize/firma-director.jpg');?>
+	</div>
+</div>
+<div class="row" style="width: 100%;padding:0px;padding-top: -40px;">
 <!-- Especificaciones del pie de pagina -->
 <table repeat_header="1" cellpadding="1" cellspacing="1" width="100%" border="0">
-
 	<tr>
 		<td class="label-pie-pagina-1-a" colspan="10" style="font-weight: bold;font-size: 90%;font-family: Verdana, Arial, Helvetica, sans-serif;text-align: center;">
 			<?=Html::encode('Firma Autorizada:  ' . $director); ?>
@@ -110,7 +115,7 @@
 		</td>
 	</tr>
 </table>
-
+</div>
 
 <!-- <style type="text/css">
 
