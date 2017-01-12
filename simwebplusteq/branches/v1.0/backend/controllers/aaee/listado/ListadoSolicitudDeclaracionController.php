@@ -21,14 +21,14 @@
  */
 
  /**
- *	@file LicenciaSolicitudController.php
+ *	@file ListadoSolicitudDeclaracionController.php
  *
  *	@author Jose Rafael Perez Teran
  *
  *	@date 20-11-2016
  *
- *  @class LicenciaSolicitudController
- *	@brief Clase LicenciaSolicitudController del lado del contribuyente backend.
+ *  @class ListadoSolicitudDeclaracionController
+ *	@brief Clase ListadoSolicitudDeclaracionController del lado del funcionario backend.
  *
  *
  *	@property
@@ -53,7 +53,9 @@
 	use yii\helpers\Url;
 	use yii\web\NotFoundHttpException;
 	use backend\models\aaee\listado\ListadoSolicitudDeclaracion;
+	use backend\models\aaee\listado\ListadoSolicitudDeclaracionSearch;
 	use backend\models\impuesto\ImpuestoForm;
+	use backend\models\configuracion\tiposolicitud\TipoSolicitud;
 
 
 
@@ -66,51 +68,10 @@
 	{
 		public $layout = 'layout-main';				//	Layout principal del formulario
 
+		const SCENARIO_NRO_SOLICITUD = 'numero_solicitud';
+		const SCENARIO_TIPO = 'tipo';
+		const SCENARIO_DEFAULT = 'default';
 
-
-
-
-
-		/***/
-		public function actionIndex1()
-		{
-
-			$request = Yii::$app->request->queryParams;
-			$postData = Yii::$app->request->post();
-
-
-			$model = New ListadoSolicitudDeclaracion();
-
-			if ( $model->load($postData) && Yii::$app->request->isAjax ) {
-				Yii::$app->response->format = Response::FORMAT_JSON;
-				return ActiveForm::validate($model);
-			}
-
-			if ( $model->load($postData) ) {
-				if ( $model->validate() ) {
-
-				}
-			}
-
-
-			$rutaLista = Url::to(['lista-solicitud']);
-			$listaImpuesto = [];
-			// Modelo adicionales para la busqueda de los funcionarios.
-			$modelImpuesto = New ImpuestoForm();
-
-			// Se define la lista de item para el combo de impuestos.
-			// El primer parametro se refiere a la condicion del registro 0 => activo, 1 => inactivo.
-			$listaImpuesto = $modelImpuesto->getListaImpuesto(0, $listaImpuesto);
-
-			$caption = Yii::t('backend', 'Search Request');
-			return $this->render('/solicitud/busqueda/busqueda-solicitud', [
-														'model' => $model,
-														'modelImpuesto' => $modelImpuesto,
-														'caption' => $caption,
-														'listaImpuesto' => $listaImpuesto,
-														'rutaLista' => $rutaLista,
-							]);
-		}
 
 
 
@@ -120,16 +81,140 @@
 		public function actionIndex()
 		{
 
-			$listadoModel = New ListadoSolicitudDeclaracion();
-        	$dataProvider = $listadoModel->search(Yii::$app->request->queryParams);
+			// $request = Yii::$app->request->queryParams;
+			$request = Yii::$app->request;
+			if ( $request->isGet ) {
+				$postData = $request->get();
+			} else {
+				$postData = $request->post();
+				$_SESSION['postInicial'] = $postData;
+			}
+
+			$model = New ListadoSolicitudDeclaracion();
+
+			if ( isset($postData['nro_solicitud']) )  {
+				$model->scenario = self::SCENARIO_NRO_SOLICITUD;
+			} else {
+				$model->scenario = self::SCENARIO_TIPO;
+			}
+
+			if ( isset($postData['btn-back-form']) ) {
+				if ( $postData['btn-back-form'] == 1 ) {
+					$postData = [];
+					$request = [];
+					$model->load($postData);
+				}
+			}
 
 
-        	return $this->render('/aaee/listado/listado-solicitud-declaracion',[
-        				'listadoModel' => $listadoModel,
-        				'dataProvider' => $dataProvider,
-        		]);
+			if ( isset($postData['page']) ) {
 
+				if ( isset($_SESSION['postInicial']) ) {
+					$postData = $_SESSION['postInicial'];
+				}
+
+
+				$model->load($postData);
+				$dataProvider = $model->search($postData);
+
+	        	return $this->render('/aaee/listado/listado-solicitud-declaracion',[
+	        				'listadoModel' => $model,
+	        				'dataProvider' => $dataProvider,
+	        		]);
+
+
+	        } else {
+
+				if ( $model->load($postData) && Yii::$app->request->isAjax ) {
+					Yii::$app->response->format = Response::FORMAT_JSON;
+					return ActiveForm::validate($model);
+				}
+
+				if ( isset($_SESSION['postInicial']) ) {
+					$postData = $_SESSION['postInicial'];
+				}
+
+				if ( isset($postData['nro_solicitud']) )  {
+
+					if ( $model->load($postData) ) {
+						if ( $model->validate() ) {
+
+	        				$dataProvider = $model->search($postData);
+
+				        	return $this->render('/aaee/listado/listado-solicitud-declaracion',[
+				        				'listadoModel' => $model,
+				        				'dataProvider' => $dataProvider,
+				        		]);
+						}
+					}
+
+				} else {
+
+					if ( $model->load($postData) ) {
+						if ( $model->validate() ) {
+							if ( isset($_SESSION['postInicial']) ) {
+								$postData = $_SESSION['postInicial'];
+							}
+	        				$dataProvider = $model->search($postData);
+	        				$model->load($postData);
+				        	return $this->render('/aaee/listado/listado-solicitud-declaracion',[
+				        				'listadoModel' => $model,
+				        				'dataProvider' => $dataProvider,
+				        		]);
+						}
+					}
+				}
+
+				$rutaLista = 'aaee/listado/listado-solicitud-declaracion/listar-solicitud';
+				$listaImpuesto = [];
+				// Modelo adicionales para la busqueda de los funcionarios.
+				$modelImpuesto = New ImpuestoForm();
+
+				// Se define la lista de item para el combo de impuestos.
+				// El primer parametro se refiere a la condicion del registro 0 => activo, 1 => inactivo.
+				$listaImpuesto = $modelImpuesto->getListaImpuesto(0, [1]);
+
+				$listaEstatus = $model->getListaEstatus();
+
+				$caption = Yii::t('backend', 'Search Request');
+				return $this->render('/solicitud/busqueda/busqueda-solicitud', [
+															'model' => $model,
+															'modelImpuesto' => $modelImpuesto,
+															'caption' => $caption,
+															'listaImpuesto' => $listaImpuesto,
+															'rutaLista' => $rutaLista,
+															'listaEstatus' => $listaEstatus,
+								]);
+			}
 		}
+
+
+
+
+
+		/**
+		 * Metodo que permite renderizar un combo de tipos de solicitudes
+		 * segun el parametro impuestos.
+		 * @param  Integer $i identificador del impuesto.
+		 * @return Renderiza una vista con un combo de impuesto.
+		 */
+		public function actionListarSolicitud($i)
+	    {
+
+			$solicitudes = TipoSolicitud::find()->where('impuesto =:impuesto',
+															[':impuesto' => $i])
+												->andWhere(['IN', 'id_tipo_solicitud', [8,73]])
+												->all();
+
+	        if ( count($solicitudes) > 0 ) {
+	        	echo "<option value='0'>" . "Select..." . "</option>";
+	            foreach ( $solicitudes as $solicitud ) {
+	                echo "<option value='" . $solicitud->id_tipo_solicitud . "'>" . $solicitud->descripcion . "</option>";
+	            }
+	        } else {
+	            echo "<option> - </option>";
+	        }
+	    }
 
 
 
