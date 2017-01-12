@@ -546,8 +546,8 @@ class CambiarPasswordContribuyenteController extends Controller
 
               $transaccion->commit();
               $conn->close();
-              //return true;
-              return $this->render('/usuario/seleccionar-tipo-contribuyente');
+              return true;
+              //return $this->render('/usuario/seleccionar-tipo-contribuyente');
           }else{ 
          
               $transaccion->rollback();
