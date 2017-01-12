@@ -4,7 +4,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-// 
+// agregando titulo
 $this->title = 'Recuperacion de contraseña';
 // vista para recuperar
 ?>
