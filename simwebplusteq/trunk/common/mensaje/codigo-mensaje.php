@@ -87,6 +87,7 @@ return [
 	'101' => [Yii::t('backend', 'Request was apporved successfully'), 'success', 'fa fa-check-circle-o'],
 	'102' => [Yii::t('backend', 'Request was rejected successfully'), 'success', 'fa fa-check-circle-o'],
 	'103' => [Yii::t('backend', 'Proceso exitoso, el usuario y clave han sido enviado a su correo electronico'), 'success', 'fa fa-check-circle-o'],
+	'104' => [Yii::t('frontend', 'Proceso exitoso, su nueva clave ha sido enviada a su correo electronico'), 'success', 'fa fa-check-circle-o'],
 	'200' => [Yii::t('backend', 'Register updated'), 'success', 'fa fa-check-circle-o'],
 	'300' => [Yii::t('backend', 'Operation executed'), 'success', 'fa fa-check-circle-o'],
 	'400' => [Yii::t('backend', 'Register was inactivated'), 'success', 'fa fa-check-circle-o'],
