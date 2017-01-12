@@ -192,27 +192,27 @@ class RecuperarPasswordContribuyenteController extends Controller
 
                             $naturaleza = $model->naturaleza;
                             $cedula = $model->cedula;
-                            $tipo = $model->tipo;
+                            $tipo = $model->cedula;
 
-                            $buscarAfiliacionesJuridico = $buscarId->buscarIdAfiliaciones($model);
-                            //die(var_dump($buscarAfiliacionesJuridico));
+                            // $buscarAfiliacionesJuridico = $buscarId->buscarIdAfiliaciones($model);
+                            // //die(var_dump($buscarAfiliacionesJuridico));
 
-                            if ($buscarAfiliacionesJuridico == false){
-                                return MensajeController::actionMensaje(976); //El contribuyente no posee afiliacion al sistema
-                            }else{ 
+                            // if ($buscarAfiliacionesJuridico == false){
+                            //     return MensajeController::actionMensaje(976); //El contribuyente no posee afiliacion al sistema
+                            // }else{ 
                            
-                            $idsContribuyente = [];
+                            // $idsContribuyente = [];
 
-                            foreach($buscarAfiliacionesJuridico as $key => $value){
+                            // foreach($buscarAfiliacionesJuridico as $key => $value){
                               
-                                $idsContribuyente[] = $buscarAfiliacionesJuridico[$key]['id_contribuyente'];
+                            //     $idsContribuyente[] = $buscarAfiliacionesJuridico[$key]['id_contribuyente'];
                               
-                            }
+                            // }
 
                           
                            
                                    
-                                $dataProvider = $buscarId::buscarIdContribuyente($idsContribuyente);
+                                $dataProvider = $buscarId::buscarIdContribuyente($model);
 
                                 if ($dataProvider == true){
                                     
@@ -227,7 +227,7 @@ class RecuperarPasswordContribuyenteController extends Controller
                                 }
                             
                                 
-                            }
+                           
                             
                      }
                         
@@ -259,7 +259,7 @@ class RecuperarPasswordContribuyenteController extends Controller
                  $this->redirect(['mensaje-recuperar']);
              }else { 
                                
-                 return MensajeController::actionMensaje(975); //Ya ingreso anteriormente por primera vez al sistema, ingrese a la opcion CAMBIAR CONTRASEÑA
+                 return MensajeController::actionMensaje(975); //Ingreso anteriormente por primera vez al sistema, ingrese a la opcion CAMBIAR CONTRASEÑA
              }
         }  else {
 
@@ -273,7 +273,7 @@ class RecuperarPasswordContribuyenteController extends Controller
      * paraconfirmar el proceso de recuperacion
      */
     public function actionMensajeRecuperar(){
-  
+
    $model = New MensajeRecuperarForm();
 
    if ( $model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax ) {

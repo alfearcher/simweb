@@ -205,23 +205,20 @@ class RecuperarPasswordJuridicoForm extends CrearUsuarioNatural
      * @param  [type] $idsContribuyente [description] ids de los contribuyentes encontrados y enviados para buscar en la tabla contribuyentes
      * @return [type]                   [description] retorna un data provider con las empresas asociadas a esos id que se buscaron previamente
      */
-    public function buscarIdContribuyente($idsContribuyente)
+    public function buscarIdContribuyente($model)
     {
-        //die(var_dump($idsContribuyente));
-
-        $query = CrearUsuarioNatural::find();
+       
+        $query = CrearUsuarioNatural::find()->where(['naturaleza' => $model->naturaleza, 'cedula' => $model->cedula, 'tipo' => $model->tipo,'tipo_naturaleza' => 1 , 'inactivo' => 0]);
                                        
-
-                                      // die(var_dump($query));
-           
+  
         $dataProvider = new ActiveDataProvider([
 
                                'query' => $query
 
                                                ]);
-          //  die(var_dump($dataProvider));
-         $query->where(['tipo_naturaleza' => 1 , 'inactivo' => 0]);
-        $query->andFilterWhere(['in', 'id_contribuyente' , $idsContribuyente]);
+         
+         //$query->where(['tipo_naturaleza' => 1 , 'inactivo' => 0]);
+        //$query->andFilterWhere(['in', 'id_contribuyente' , $model]);
 
             
             return $dataProvider; 
