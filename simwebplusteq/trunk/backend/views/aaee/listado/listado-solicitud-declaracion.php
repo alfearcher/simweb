@@ -76,7 +76,7 @@
 	<meta http-equiv="refresh">
     <div class="panel panel-primary"  style="width: 110%;">
         <div class="panel-heading">
-        	<h3><?= Html::encode($this->title) ?></h3>
+        	<h3><?= Html::encode('Listado de Solicitudes de Declaraciones') ?></h3>
         </div>
 
 <!-- Cuerpo del formulario style="background-color: #F9F9F9;"-->
@@ -94,68 +94,62 @@
 								['class' => 'yii\grid\SerialColumn'],
 								'nro_solicitud',
 								'fecha_hora_creacion',
+								'ano_impositivo',
+								'descripcion',
+								'condicion',
+								'id_contribuyente',
 								[
-				                    'label' => Yii::t('frontend', 'Año'),
-				                    'value' => function($data) {
-            										return $data->declaracion->ano_impositivo;
-    											},
-				                ],
-
-				            	[
-				                    'label' => Yii::t('frontend', 'Descripcion'),
-				                    'value' => function($data) {
-            										return $data->getDescripcionTipoSolicitud($data->nro_solicitud);
-    											},
-				                ],
-				                [
-				                    'label' => Yii::t('frontend', 'Estatus'),
-				                    'value' => function($data) {
-            										return $data->estatusSolicitud->descripcion;
-    											},
-				                ],
-				                [
-				                    'label' => Yii::t('frontend', 'ID.'),
-				                    'value' => function($data) {
-            										return $data->id_contribuyente;
-    											},
-				                ],
-				                [
 				                    'label' => Yii::t('frontend', 'Contribuyente'),
 				                    'value' => function($data) {
-            										return $data->getContribuyente($data->id_contribuyente);
+				                    				$listado = New ListadoSolicitudDeclaracion();
+            										return $listado->getContribuyente($data['id_contribuyente']);
     											},
 				                ],
-				                [
-				                    'label' => Yii::t('frontend', 'Suma declaracion'),
-				                    'contentOptions' => [
-				                    	'style' => 'text-align: right',
-				                    ],
+								[
+			                    	'label' => Yii::t('frontend', 'Suma Declaracion'),
+			                    	'contentOptions' => [
+			                    		'style' => 'text-align: right',
+			                    	],
 				                    'value' => function($data) {
-            										return Yii::$app->formatter->asDecimal($data->getSumaMontoDeclarado($data->nro_solicitud), 2);
-    											},
+				                    		return $data['suma'];
+				                    }
 				                ],
-
 								[
 				                    'label' => Yii::t('frontend', 'Liquidado'),
 				                    'contentOptions' => [
 				                    	'style' => 'text-align: right',
 				                    ],
+
 				                    'value' => function($data) {
 				                    				$tipo = 0;
-				                    				if ( $data->declaracion->tipo_declaracion == 1 ) {
+				                    				if ( $data['tipo_declaracion'] == 1 ) {
 				                    					$tipo = 0;
-				                    				} elseif ( $data->declaracion->tipo_declaracion == 2 ) {
+				                    				} elseif ( $data['tipo_declaracion'] == 2 ) {
 				                    					$tipo = 1;
 				                    				}
 
 				                    				$listado = New ListadoSolicitudDeclaracion();
-				                    				$suma = $listado->getMontoLiquidacion($tipo, $data->declaracion->ano_impositivo, $data->id_contribuyente);
+				                    				$suma = $listado->getMontoLiquidacion($tipo, $data['ano_impositivo'], $data['id_contribuyente']);
             										return Yii::$app->formatter->asDecimal($suma, 2);
     											},
 				                ],
 
 				        	]
 						]);?>
+					</div>
+
+					<div class="col-sm-3" style="margin-left: 50px;">
+						<div class="form-group">
+							<?= Html::submitButton(Yii::t('backend', 'Back'),
+																	  [
+																		'id' => 'btn-back-form',
+																		'class' => 'btn btn-danger',
+																		'value' => 1,
+																		'style' => 'width: 100%',
+																		'name' => 'btn-back-form',
+																	  ])
+							?>
+						</div>
 					</div>
 				</div>  <!-- Fin de col-sm-12 -->
 			</div>  	<!-- Fin de container-fluid -->
