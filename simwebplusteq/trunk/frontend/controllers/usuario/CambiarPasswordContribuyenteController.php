@@ -422,7 +422,7 @@ class CambiarPasswordContribuyenteController extends Controller
                     if ($model->validate()){
                  
                         $actualizarNatural =  self::actualizarPasswordNatural($id_contribuyente, $model->password1);
-die(var_dump($enviar)); 
+
                         if ($actualizarNatural == true){
 
                             $consultaContribuyente = new CrearusuarioNatural();
