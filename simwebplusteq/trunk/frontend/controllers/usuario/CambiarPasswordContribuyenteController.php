@@ -437,7 +437,7 @@ class CambiarPasswordContribuyenteController extends Controller
 
                             $enviarEmail = new EnviarEmailCambioClave();
                            $enviar = $enviarEmail->EnviarEmailCambioClave($consultaContribuyente->email, $model->password1);
-        die(var_dump($enviar));    
+                            
                             if($enviar == true){
 
                             return MensajeController::actionMensaje(Yii::t('frontend', 'We have sent you an email with your new password'));
