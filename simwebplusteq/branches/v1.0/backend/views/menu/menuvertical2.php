@@ -118,31 +118,31 @@
 		        		],
 
 		        		//	SOLICITUDES DE INMUEBLES URBANOS
-		        		['label' => Icon::show('fa fa-home',['class' => $typeLong], $typeIcon) . '&nbsp; Inmuebles Urbanos',
-		        			'items' => [
-		        						['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Solvencia',
-		        					   		'items' => [
-	        					   				['label' => 'Solicitar Emision', 'url' => ['/inmueble/solvencia/solvencia-inmueble/index', 'id' => 116]],
-	        					   				['label' => 'Descargar Solvencia', 'url' => ['/inmueble/solvencia/solvencia-inmueble-generar/index']],
-		        					   		]
-		        					   	],
-		        						['label' => 'Inscripción de Inmuebles Urbanos', 'url' => ['/inmueble/inscripcion-inmuebles-urbanos/inscripcion-inmuebles-urbanos']],
-		        						['label' => 'Avaluo Catastral', 'url' => ['/inmueble/avaluo-catastral-inmuebles-urbanos/index']],
-		        						['label' => 'Certificado Catastral', 'url' => ['/inmueble/cedula-catastral-inmuebles-urbanos/index']],
-		        						['label' => 'Renovación de Certificado Catastral', 'url' => '#'],
-		        						['label' => 'Linderos', 'url' => ['/inmueble/linderos-inmuebles-urbanos/index']],
-		        						['label' => 'Cambio de Numero Catastral', 'url' => ['/inmueble/cambio-numero-catastral-inmuebles-urbanos/index']],
-		        						['label' => 'Cambio de Propietario(VENDEDOR)', 'url' => ['inmueble/cambio-propietario-vendedor-inmuebles-urbanos/index','id' =>12]], // vendedor:12
-		        						['label' => 'Cambio de Propietario(COMPRADOR)', 'url' => ['inmueble/cambio-propietario-comprador-inmuebles-urbanos/buscar-vendedor','id' =>11]], // comprador:11
-		        						['label' => 'Integración de Parcela', 'url' => ['/inmueble/integracion-inmuebles-urbanos/integracion-inmuebles']],
-		        						['label' => 'Desintegración de Parcela', 'url' => ['inmueble/desintegracion-inmuebles-urbanos/index']],
-		        						['label' => 'Cambio a Propiedad Horizontal', 'url' => ['/inmueble/cambio-a-propiedad-horizontal-inmuebles-urbanos/index']],
-		        						['label' => 'Cambio de Otros Datos del Inmueble', 'url' => ['/inmueble/cambio-otros-datos-inmuebles-urbanos/index']],
-		        						['label' => 'Modificar Avaluo', 'url' => '#'],
-		        						['label' => 'Desincorporación de Inmueble', 'url' => ['/inmueble/desincorporacion-inmuebles-urbanos/index']],
+		        		// ['label' => Icon::show('fa fa-home',['class' => $typeLong], $typeIcon) . '&nbsp; Inmuebles Urbanos',
+		        		// 	'items' => [
+		        		// 				['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Solvencia',
+		        		// 			   		'items' => [
+	        			// 		   				['label' => 'Solicitar Emision', 'url' => ['/inmueble/solvencia/solvencia-inmueble/index', 'id' => 116]],
+	        			// 		   				['label' => 'Descargar Solvencia', 'url' => ['/inmueble/solvencia/solvencia-inmueble-generar/index']],
+		        		// 			   		]
+		        		// 			   	],
+		        		// 				['label' => 'Inscripción de Inmuebles Urbanos', 'url' => ['/inmueble/inscripcion-inmuebles-urbanos/inscripcion-inmuebles-urbanos']],
+		        		// 				['label' => 'Avaluo Catastral', 'url' => ['/inmueble/avaluo-catastral-inmuebles-urbanos/index']],
+		        		// 				['label' => 'Certificado Catastral', 'url' => ['/inmueble/cedula-catastral-inmuebles-urbanos/index']],
+		        		// 				['label' => 'Renovación de Certificado Catastral', 'url' => '#'],
+		        		// 				['label' => 'Linderos', 'url' => ['/inmueble/linderos-inmuebles-urbanos/index']],
+		        		// 				['label' => 'Cambio de Numero Catastral', 'url' => ['/inmueble/cambio-numero-catastral-inmuebles-urbanos/index']],
+		        		// 				['label' => 'Cambio de Propietario(VENDEDOR)', 'url' => ['inmueble/cambio-propietario-vendedor-inmuebles-urbanos/index','id' =>12]], // vendedor:12
+		        		// 				['label' => 'Cambio de Propietario(COMPRADOR)', 'url' => ['inmueble/cambio-propietario-comprador-inmuebles-urbanos/buscar-vendedor','id' =>11]], // comprador:11
+		        		// 				['label' => 'Integración de Parcela', 'url' => ['/inmueble/integracion-inmuebles-urbanos/integracion-inmuebles']],
+		        		// 				['label' => 'Desintegración de Parcela', 'url' => ['inmueble/desintegracion-inmuebles-urbanos/index']],
+		        		// 				['label' => 'Cambio a Propiedad Horizontal', 'url' => ['/inmueble/cambio-a-propiedad-horizontal-inmuebles-urbanos/index']],
+		        		// 				['label' => 'Cambio de Otros Datos del Inmueble', 'url' => ['/inmueble/cambio-otros-datos-inmuebles-urbanos/index']],
+		        		// 				['label' => 'Modificar Avaluo', 'url' => '#'],
+		        		// 				['label' => 'Desincorporación de Inmueble', 'url' => ['/inmueble/desincorporacion-inmuebles-urbanos/index']],
 
-		        			]
-		        		],
+		        		// 	]
+		        		// ],
 
 		        		//	SOLICITUDES DE VEHICULOS
 		        		// ['label' => Icon::show('fa fa-car',['class' => $typeLong], $typeIcon) . '&nbsp; Vehiculos',
@@ -244,10 +244,10 @@
         		//	Planilla
         		['label' => Icon::show('fa fa-indent',['class' => $typeLong], $typeIcon) . '&nbsp; Liquidacion',
         			'items' => [
-        						['label' => 'Liquidar Actividad Economica', 'url' => ['aaee/liquidar/liquidar-actividad-economica/index']],
-        						['label' => 'Liquidar Actividad Economica (Definitiva)', 'url' => ['aaee/liquidar/liquidar-actividad-economica-definitiva/index']],
-        						['label' => 'Liquidar Inmueble Urbano', 'url' => ['inmueble/liquidar/liquidar-inmueble/index']],
-        						['label' => 'Liquidar Vehiculo', 'url' => ['vehiculo/liquidar/liquidar-vehiculo/index']],
+        						//['label' => 'Liquidar Actividad Economica', 'url' => ['aaee/liquidar/liquidar-actividad-economica/index']],
+        						//['label' => 'Liquidar Actividad Economica (Definitiva)', 'url' => ['aaee/liquidar/liquidar-actividad-economica-definitiva/index']],
+        						//['label' => 'Liquidar Inmueble Urbano', 'url' => ['inmueble/liquidar/liquidar-inmueble/index']],
+        						//['label' => 'Liquidar Vehiculo', 'url' => ['vehiculo/liquidar/liquidar-vehiculo/index']],
         						['label' => 'Consulta de Planilla', 'url' => ['planilla/planilla-consulta/index']],
         			]
         		],
@@ -467,18 +467,18 @@
 
 
 		        //	CONFIGURACIONES
-        		['label' => Icon::show('fa fa-cog',['class' => $typeLong], $typeIcon) . '&nbsp; Configuraciones',
-        			'items' => [
-        						['label' => 'Configurar Ordenanzas', 'url' => '#'],
-        						['label' => 'Configurar Vencimiento de Documentos', 'url' => '#'],
-        						['label' => 'Configurar Solicitudes', 'url' => ['/configuracion/solicitud/configurar-solicitud/index']],
-        						['label' => 'Configurar Convenios de Pagos', 'url' => ['/configuracion/convenios/configurar-convenios/create']],
-        						['label' => 'Configurar Dirección de Tributos',
-        						            'url' => ['/hola/saludo2'],
-        						            'id' => 10,
-        						            'click' => 'alert("Button 2 clicked");'],
-        			]
-        		],
+        		// ['label' => Icon::show('fa fa-cog',['class' => $typeLong], $typeIcon) . '&nbsp; Configuraciones',
+        		// 	'items' => [
+        		// 				['label' => 'Configurar Ordenanzas', 'url' => '#'],
+        		// 				['label' => 'Configurar Vencimiento de Documentos', 'url' => '#'],
+        		// 				['label' => 'Configurar Solicitudes', 'url' => ['/configuracion/solicitud/configurar-solicitud/index']],
+        		// 				['label' => 'Configurar Convenios de Pagos', 'url' => ['/configuracion/convenios/configurar-convenios/create']],
+        		// 				['label' => 'Configurar Dirección de Tributos',
+        		// 				            'url' => ['/hola/saludo2'],
+        		// 				            'id' => 10,
+        		// 				            'click' => 'alert("Button 2 clicked");'],
+        		// 	]
+        		// ],
 
 
 
