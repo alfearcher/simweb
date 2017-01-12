@@ -575,7 +575,7 @@
 		    			  				    ->andWhere('bloqueado =:bloqueado', [':bloqueado' => 0])
 		    							    ->andWhere('ano_impositivo =:ano_impositivo',
 		    							    			[':ano_impositivo' => $añoActual])
-		    							    ->joinWith('actividadDetalle', 'INNER JOIN', false)
+		    							    ->joinWith('actividadDetalle', false, 'INNER JOIN')
 		    							    ->orderBy([
 		    							   		'ano_impositivo' => SORT_ASC,
 		    							   	])
@@ -590,7 +590,7 @@
 		    			  				    ->andWhere('inactivo =:inactivo', [':inactivo' => 0])
 		    			  				    ->andWhere('bloqueado =:bloqueado', [':bloqueado' => 0])
 		    							    ->andWhere(['BETWEEN', 'ano_impositivo', $añoLimite, $añoActual - 1])
-		    							    ->joinWith('actividadDetalle', 'INNER JOIN', false)
+		    							    ->joinWith('actividadDetalle',false, 'INNER JOIN')
 		    							    ->orderBy([
 		    							   		'ano_impositivo' => SORT_ASC,
 		    							   	])
@@ -1535,9 +1535,11 @@
 
 
 		    	$sumaDeclarado = 0;
-		    	foreach ( $postEnviado as $post ) {
-		    		$sumaDeclarado = $sumaDeclarado + $post['monto_new'];
-		    	}
+		    	if ( count($postEnviado) > 0 ) {
+			    	foreach ( $postEnviado as $post ) {
+			    		$sumaDeclarado = $sumaDeclarado + $post['monto_new'];
+			    	}
+			    }
 
 		    	if ( $sumaDeclarado < $montoMinimo ) {
 		    		$descreto = 'De conformidad con el DECRETO Nro. FGDS-I-048-2016, de fecha 29-12-2016, LA SUMA DE LO DECLARADO NO DEBE SER INFERIOR A ' . number_format($montoMinimo, 2);
