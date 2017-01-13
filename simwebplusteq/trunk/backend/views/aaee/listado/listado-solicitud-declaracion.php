@@ -91,6 +91,10 @@
 							'id' => 'grid-lista',
 							'dataProvider' => $dataProvider,
 							'headerRowOptions' => ['class' => 'success'],
+							'showFooter' => true,
+							'footerRowOptions' => [
+								'style' => 'font-weight: bold;text-align:right;'
+							],
 							//'filterModel' => $listadoModel,
 							'columns' => [
 								['class' => 'yii\grid\SerialColumn'],
@@ -129,7 +133,8 @@
 			                    	],
 				                    'value' => function($data) {
 				                    		return Yii::$app->formatter->asDecimal($data['suma'],2);
-				                    }
+				                    },
+				                    'footer' => Yii::$app->formatter->asDecimal($totalDeclarado, 2),
 				                ],
 								[
 				                    'label' => Yii::t('frontend', 'Liquidado'),
