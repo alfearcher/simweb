@@ -56,7 +56,9 @@
 	use backend\models\aaee\listado\ListadoSolicitudDeclaracionSearch;
 	use backend\models\impuesto\ImpuestoForm;
 	use backend\models\configuracion\tiposolicitud\TipoSolicitud;
-
+	use common\models\solicitudescontribuyente\DetalleSolicitudCreada;
+	use common\models\configuracion\solicitudplanilla\SolicitudPlanillaSearch;
+	use common\models\session\Session;
 
 
 	session_start();		// Iniciando session
@@ -75,10 +77,16 @@
 
 
 
+		public function actionIndex()
+		{
+			self::actionAnularSession(['postInicial']);
+			$this->redirect(['mostrar-buscar-solicitud']);
+		}
+
 
 
 		/***/
-		public function actionIndex()
+		public function actionMostrarBuscarSolicitud()
 		{
 
 			// $request = Yii::$app->request->queryParams;
@@ -190,8 +198,6 @@
 
 
 
-
-
 		/**
 		 * Metodo que permite renderizar un combo de tipos de solicitudes
 		 * segun el parametro impuestos.
@@ -215,6 +221,64 @@
 	            echo "<option> - </option>";
 	        }
 	    }
+
+
+
+	    /**
+		 * Metodo que permite renderizar una vista de los detalles de la planilla
+		 * que se encuentran en la solicitud.
+		 * @return View Retorna una vista que contiene un grid con los detalles de la
+		 * planilla.
+		 */
+		public function actionViewDetalleSolicitud()
+		{
+			$request = Yii::$app->request;
+			$getData = $request->get();
+
+			$nroSolicitud = 0;
+			$nroSolicitud = $getData['nro'];
+
+			// Vista detalle de la solicitud, es la informacion que se cargo.
+			$detalle = New DetalleSolicitudCreada($nroSolicitud);
+			$viewDetalleSolicitud = $detalle->getDatosSolicitudCreada();
+
+
+			// Se buscan las planillas relacionadas a la solicitud. Se refiere a las planillas
+			// de impueso "tasa".
+			$modelPlanilla = New SolicitudPlanillaSearch($nroSolicitud, Yii::$app->solicitud->crear());
+			$dataProvider = $modelPlanilla->getArrayDataProvider();
+
+			$caption = Yii::t('frontend', 'Planilla(s)');
+			$viewSolicitudPlanilla = $this->renderAjax('@common/views/solicitud-planilla/solicitud-planilla', [
+															'caption' => $caption,
+															'dataProvider' => $dataProvider,
+									]);
+
+
+
+			$viewDocumentoConsignado = '';
+
+			$caption = Yii::t('frontend', 'Request details. Pendiente');
+			$opciones = [
+				'back' => '#',
+				'quit' => '#',
+			];
+			if ( $viewDetalleSolicitud !== false ) {
+				return $this->renderAjax('/solicitud/busqueda/view-detalle-solicitud',[
+												'viewDetalleSolicitud' => $viewDetalleSolicitud,
+												'viewSolicitudPlanilla' => $viewSolicitudPlanilla,
+												'viewDocumentoConsignado' => $viewDocumentoConsignado,
+												'caption' => $caption,
+												'opciones' => $opciones,
+						]);
+			} else {
+				throw new NotFoundHttpException('Solicitud no encontrada');
+			}
+
+		}
+
+
+
 
 
 
@@ -246,10 +310,6 @@
 
 
 
-
-
-
-
 		/**
 		 * Metodo que permite obtener un arreglo de las variables de sesion
 		 * que seran utilizadas en el modulo, aqui se pueden agregar o quitar
@@ -259,10 +319,7 @@
 		public function actionGetListaSessions()
 		{
 			return $varSession = [
-							'postData',
-							'conf',
-							'begin',
-							'lapso'
+							'postInicial',
 					];
 		}
 
