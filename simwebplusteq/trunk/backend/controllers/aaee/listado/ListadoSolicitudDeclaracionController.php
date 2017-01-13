@@ -132,6 +132,7 @@
 	        	return $this->render('/aaee/listado/listado-solicitud-declaracion',[
 	        				'listadoModel' => $model,
 	        				'dataProvider' => $dataProvider,
+	        				'totalDeclarado' => $totalDeclarado,
 	        		]);
 
 
