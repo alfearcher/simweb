@@ -117,6 +117,7 @@ class CambioNumeroCatastralInmueblesForm extends \yii\db\ActiveRecord
     {
         return [
             [['id_contribuyente','ano_inicio', 'liquidado', 'manzana_limite', 'lote_1', 'lote_2', 'lote_3', 'inactivo', 'id_habitante', 'tipo_ejido', 'propiedad_horizontal', 'estado_catastro', 'municipio_catastro', 'parroquia_catastro', 'sector_catastro', 'manzana_catastro', 'parcela_catastro', 'subparcela_catastro', 'unidad_catastro'], 'integer','message' => Yii::t('backend', 'only integers')],
+            [['estado_catastro', 'municipio_catastro', 'parroquia_catastro', 'ambito_catastro','sector_catastro', 'manzana_catastro'], 'required','message' => Yii::t('backend', 'Required field')],
             [['parcela_catastro', 'subparcela_catastro', 'unidad_catastro','nivela','nivelb'],'required', 'when'=> function($model){ return $model->propiedad_horizontal == 1; }, 'message' => Yii::t('backend', 'Required field')],
            // [['observacion','datosVendedor','inmuebleVendedor'], 'string'], 
             [['direccion'], 'string', 'max' => 255,'message' => Yii::t('backend', 'Only 255 character')],

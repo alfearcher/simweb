@@ -66,6 +66,9 @@ use frontend\models\inmueble\ConfiguracionTiposSolicitudes;
 use common\models\configuracion\solicitud\ParametroSolicitud;
 use common\models\configuracion\solicitud\DocumentoSolicitud;
 use common\models\solicitudescontribuyente\SolicitudesContribuyente;
+
+use backend\models\inmueble\Estados;
+use backend\models\inmueble\Municipios;
 session_start();
 /**
  * CambiosInmueblesUrbanosController implements the CRUD actions for Inmuebles model.
@@ -108,6 +111,13 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
     public function actionView($id)
     {
         if ( isset( $_SESSION['idContribuyente'] ) ) {
+
+            $idInmueble = yii::$app->request->post('id');
+           
+          $datos = InmueblesConsulta::find()->where("id_impuesto=:impuesto", [":impuesto" => $idInmueble])
+                                            ->andwhere("inactivo=:inactivo", [":inactivo" => 0])
+                                            ->one();
+          $_SESSION['datos'] = $datos;
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -124,7 +134,7 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
      *para el cambio de otros datos inmuebles
      *@return model 
      **/
-     public function actionCambioDeNumeroCatastralInmuebles($id_impuesto)
+     public function actionCambioDeNumeroCatastralInmuebles()
      { 
          
          if ( isset($_SESSION['idContribuyente']) ) {
@@ -407,7 +417,7 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
      {
 
          $buscar = ConfiguracionTiposSolicitudes::find()->where("impuesto=:impuesto", [":impuesto" => 2])
-                                                        ->andwhere("descripcion=:descripcion", [":descripcion" => 'NUMERO CATASTRAL'])
+                                                        ->andwhere("descripcion=:descripcion", [":descripcion" => 'CAMBIO DE NUMERO CATASTRAL'])
                                                         ->asArray()->all();
 
 
@@ -487,4 +497,46 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    /**
+         * Metodo que permite renderizar un combo de tipos de solicitudes
+         * segun el parametro impuestos.
+         * @param  Integer $i identificador del impuesto.
+         * @return Renderiza una vista con un combo de impuesto.
+         */
+        public function actionListMunicipio($i)
+        {
+            $countSolicitud = 0;
+            //$userLocal = Yii::$app->user->identity->username;
+            //$modelm = New municipio;
+
+            // // Todas las solicitudes asignadas.
+            // $listaSolicitud = $model->getTipoSolicitudAsignada($userLocal);
+
+            // // Lista de solicitudes filtradas por el impuesto, es decir, las solicitudes
+            // // relacionada al impuesto $i.
+            // $lista = $model->getFiltrarSolicitudAsignadaSegunImpuesto($i, $listaSolicitud);
+
+            // if ( count($lista) > 0 ) {
+            //     $countSolicitud = TipoSolicitud::find()->where('impuesto =:impuesto', [':impuesto' => $i])
+            //                                            ->andWhere(['IN', 'id_tipo_solicitud', $lista])
+            //                                            ->andwhere('inactivo =:inactivo', [':inactivo' => 0])
+            //                                            ->count();
+
+                //$solicitudes = TipoSolicitud::find()->where(['impuesto' => $i, 'inactivo' => 0])->all();
+
+                $ListMunicipios = Municipios::find()->where('estado =:estado', [':estado' => $i])
+                                                    //->andwhere('inactivo =:inactivo', [':inactivo' => 0])
+                                                    ->all();
+            //}
+
+            if ( $ListMunicipios > 0 ) {
+                echo "<option value='0'>" . "Select..." . "</option>";
+                foreach ( $ListMunicipios as $solicitud ) {
+                    echo "<option value='" . $solicitud->municipio . "'>" . $solicitud->descripcion . "</option>";
+                }
+            } else {
+                echo "<option> - </option>";
+            }
+        }
 }

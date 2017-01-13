@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveField;
+use yii\helpers\Url;
 
 use backend\models\inmueble\ParametrosNivelesCatastro;
 use backend\models\inmueble\Estados;
@@ -67,7 +68,8 @@ function bloquea() {
     'method' => 'post',
     'id' => 'formulario',
     'enableClientValidation' => false,
-    'enableAjaxValidation' => false,
+            'enableAjaxValidation' => false,
+            'enableClientScript' => false,
     'options' => ['class' => 'form-vertical'],]); ?>
 
 
@@ -125,7 +127,23 @@ function bloquea() {
 
                         <td style="max-width: 100px">
                             <div class="col-sm-1">
-                            <?= $form->field($model, 'estado_catastro')->textInput(['style' => 'width:80px;'])->label(false);?> 
+                                <?php
+                                $modelEstado = Estados::find()->asArray()->all();
+                                $listaEstado = ArrayHelper::map($modelEstado, 'estado', 'nombre'); ?>
+                            <?= $form->field($model, 'estado_catastro')->dropDownList($listaEstado, [
+                                                                  'id'=> 'estado_catastro',
+                                                                  'prompt' => Yii::t('backend', 'Select'),
+                                                                  'style' => 'width:80px;',
+                                                                   'onchange'=>'
+                                                                                    $.get( "'.Url::toRoute('dependent-dropdown/municipio_catastro').'", { id: $(this).val() } )
+                                                                                        .done(function( data ) {
+                                                                                            $( "#'.Html::getInputId($model, 'municipio_catastro').'" ).html( data );
+                                                                                        }
+                                                                                    );
+                                                                                '
+                                                                            ])->label(false);
+                                ?> 
+                            
                             </div>
                         </td>
 
@@ -137,7 +155,14 @@ function bloquea() {
 
                         <td style="max-width: 100px">
                             <div class="col-sm-1">
-                            <?= $form->field($model, 'municipio_catastro')->textInput(['style' => 'width:80px;'])->label(false); ?>
+                                <?= $form->field($model, 'municipio_catastro')
+                                          ->dropDownList([], [
+                                                                'id'=> 'municipio_catastro',
+                                                                'prompt' => Yii::t('backend', 'Select'),
+                                                                'style' => 'width:80px;',
+                                                            ])->label(false);
+                                ?>
+                            
                             </div>
                         </td>
 
@@ -149,7 +174,12 @@ function bloquea() {
 
                         <td style="max-width: 100px">
                             <div class="col-sm-1">
-                            <?= $form->field($model, 'parroquia_catastro')->textInput(['style' => 'width:80px;'])->label(false) ?>
+                            <?= $form->field($model, 'parroquia_catastro')
+                                                            ->dropDownList([], [
+                                                                'id'=> 'parroquia_catastro',
+                                                                'prompt' => Yii::t('backend', 'Select'),
+                                                                'style' => 'width:80px;',
+                                                            ])->label(false) ?>
                             </div> 
                         </td>
 
@@ -161,7 +191,12 @@ function bloquea() {
 
                         <td style="max-width: 100px">
                             <div class="col-sm-1">
-                            <?= $form->field($model, 'ambito_catastro')->textInput(['style' => 'width:80px;'])->label(false) ?>
+                            <?= $form->field($model, 'ambito_catastro')
+                                                                ->dropDownList([], [
+                                                                'id'=> 'ambito_catastro',
+                                                                'prompt' => Yii::t('backend', 'Select'),
+                                                                'style' => 'width:80px;',
+                                                            ])->label(false) ?>
                             </div>
                         </td>
 
@@ -173,7 +208,12 @@ function bloquea() {
 
                         <td style="max-width: 100px">
                             <div class="col-sm-1">
-                            <?= $form->field($model, 'sector_catastro')->textInput(['style' => 'width:80px;'])->label(false) ?>
+                            <?= $form->field($model, 'sector_catastro')
+                                                                ->dropDownList([], [
+                                                                'id'=> 'sector_catastro',
+                                                                'prompt' => Yii::t('backend', 'Select'),
+                                                                'style' => 'width:80px;',
+                                                            ])->label(false) ?>
                             </div>
                         </td>
 
@@ -185,7 +225,12 @@ function bloquea() {
 
                         <td style="max-width: 100px">
                             <div class="col-sm-1">
-                            <?= $form->field($model, 'manzana_catastro')->textInput(['style' => 'width:80px;'])->label(false) ?>
+                            <?= $form->field($model, 'manzana_catastro')
+                                                                ->dropDownList([], [
+                                                                'id'=> 'manzana_catastro',
+                                                                'prompt' => Yii::t('backend', 'Select'),
+                                                                'style' => 'width:80px;',
+                                                            ])->label(false) ?>
                             </div> 
                         </td>
                    </tr>
@@ -351,7 +396,10 @@ function bloquea() {
                             </div>
                         </td>
 
-                        <td colspan="5" style="max-width: 100px"> 
+                        
+                   </tr>
+                   <tr>
+                        <td colspan="5" > 
                             <div class="form-group"> 
 <?= Html::beginForm();?>
 <?= Html::submitButton(Yii::t('backend', 'Accept'), ['class' => 'btn btn-primary', 'name'=>'Accept', 'value'=>'Accept']) ?>
@@ -360,8 +408,8 @@ function bloquea() {
                             </div>
                                                                        
                         </td>
-                   </tr>
 
+                    </tr>
                     
                 </table>
             </div>
@@ -438,5 +486,9 @@ function cambio(val) {
  'onchange' =>    'cambio()'
 
   <div class="col-lg-1">
+<? //= $form->field($model, 'estado_catastro1')->textInput(['style' => 'width:80px;'])->label(false);?> 
+<? //= $form->field($model, 'municipio_catastro')->textInput(['style' => 'width:80px;'])->label(false); ?>
+
+
                             <? //= $form->field($model, 'nivel_catastro')->textInput([])->label(false) ?>
                             </div>
