@@ -5,6 +5,8 @@ use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveField;
 use yii\helpers\Url;
+use yii\helpers\BaseHtml;
+use yii\jui\DatePicker;
 
 use backend\models\inmueble\ParametrosNivelesCatastro;
 use backend\models\inmueble\Estados;
@@ -67,9 +69,9 @@ function bloquea() {
     <?php $form = ActiveForm::begin([
     'method' => 'post',
     'id' => 'formulario',
-    'enableClientValidation' => false,
-            'enableAjaxValidation' => false,
-            'enableClientScript' => false,
+    'enableClientValidation' => true,
+            'enableAjaxValidation' => true,
+            'enableClientScript' => true,
     'options' => ['class' => 'form-vertical'],]); ?>
 
 
@@ -134,14 +136,17 @@ function bloquea() {
                                                                   'id'=> 'estado_catastro',
                                                                   'prompt' => Yii::t('backend', 'Select'),
                                                                   'style' => 'width:80px;',
-                                                                   'onchange'=>'
-                                                                                    $.get( "'.Url::toRoute('dependent-dropdown/municipio_catastro').'", { id: $(this).val() } )
-                                                                                        .done(function( data ) {
-                                                                                            $( "#'.Html::getInputId($model, 'municipio_catastro').'" ).html( data );
-                                                                                        }
-                                                                                    );
-                                                                                '
-                                                                            ])->label(false);
+                                                                   'onchange'=>'$.post( "' . Yii::$app->urlManager
+                                                                                                       ->createUrl('/cambio-numero-catastral-inmuebles-urbanos/select-municipio') . '&i=' . '" + $(this).val(), function( data ) {
+                                                                                                                 $( "select#municipio_catastro" ).html( data );
+                                                                                                           });' 
+                                                                   // 'ajax'=>[
+                                                                   //                  'type'=>'POST',
+                                                                   //                  'url'=>Url::toRoute('Cambio-numero-catastral-inmuebles-urbanos/list-municipio'),
+                                                                   //                  'update'=>'#' .  ArrayHelper::map($model, 'municipio','nombre') //CHtml::activeId($model, 'municipio_catastro') 
+                                                                   //              ] 
+
+                                                                            ])->label(false); 
                                 ?> 
                             
                             </div>
@@ -401,10 +406,10 @@ function bloquea() {
                    <tr>
                         <td colspan="5" > 
                             <div class="form-group"> 
-<?= Html::beginForm();?>
+<? //= Html::beginForm();?>
 <?= Html::submitButton(Yii::t('backend', 'Accept'), ['class' => 'btn btn-primary', 'name'=>'Accept', 'value'=>'Accept']) ?>
 <?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) ?>
-<?= Html::endForm();?> 
+<? //= Html::endForm();?> 
                             </div>
                                                                        
                         </td>

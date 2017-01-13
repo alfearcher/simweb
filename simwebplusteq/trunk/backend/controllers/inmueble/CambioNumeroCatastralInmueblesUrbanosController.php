@@ -499,56 +499,54 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
     }
 
     /**
-         * Metodo que permite renderizar un combo de tipos de solicitudes
-         * segun el parametro impuestos.
-         * @param  Integer $i identificador del impuesto.
-         * @return Renderiza una vista con un combo de impuesto.
+         * Metodo que permite renderizar un combo de lista de municipios
+         * para el numero catastral.
+         * @param  Integer $i identificador del estado.
+         * @return Renderiza una vista con un combo de municipios.
          */
         public function actionListMunicipio($i)
         {
-            $countSolicitud = 0;
-            //$userLocal = Yii::$app->user->identity->username;
-            //$modelm = New municipio;
-
-            // // Todas las solicitudes asignadas.
-            // $listaSolicitud = $model->getTipoSolicitudAsignada($userLocal);
-
-            // // Lista de solicitudes filtradas por el impuesto, es decir, las solicitudes
-            // // relacionada al impuesto $i.
-            // $lista = $model->getFiltrarSolicitudAsignadaSegunImpuesto($i, $listaSolicitud);
-
-            // if ( count($lista) > 0 ) {
-            //     $countSolicitud = TipoSolicitud::find()->where('impuesto =:impuesto', [':impuesto' => $i])
-            //                                            ->andWhere(['IN', 'id_tipo_solicitud', $lista])
-            //                                            ->andwhere('inactivo =:inactivo', [':inactivo' => 0])
-            //                                            ->count();
-
-                //$solicitudes = TipoSolicitud::find()->where(['impuesto' => $i, 'inactivo' => 0])->all();
+            
 
                 $ListMunicipios = Municipios::find()->where('estado =:estado', [':estado' => $i])
                                                     //->andwhere('inactivo =:inactivo', [':inactivo' => 0])
                                                     ->all();
-            //}
+           
 
             if ( $ListMunicipios > 0 ) {
                 echo "<option value='0'>" . "Select..." . "</option>";
                 foreach ( $ListMunicipios as $solicitud ) {
-                    echo "<option value='" . $solicitud->municipio . "'>" . $solicitud->descripcion . "</option>";
+                    echo "<option value='" . $solicitud->municipio . "'>" . $solicitud->nombre . "</option>";
                 }
             } else {
                 echo "<option> - </option>";
             }
         }
 
+    public function actionSelectmunicipio()
+        {
+                 $id_uno= $_POST['estados']['estado']; 
+             $lista = Municipios::findAll('idestado = :id_uno',array(':id_uno' => $id_uno));
+             $lista = ArrayHelper::map($lista, 'municipio', 'nombre');
 
-    public function actionSelectMunicipio() {
+                        echo CHtml::tag('option',array('value' => ''),'Seleccione un Municipio...',true);
+                    foreach($lista as $valor => $municipio)
+            {
+                echo CHtml::tag('option',array('value' => $valor),CHtml::encode($municipio), true);
+            }
+
+        }
+
+
+
+    public function actionSelectMunicipio2() {
         $id = (int) $_POST ['estados']['nombre'];
-         $lista = CHtml::listData(Municipios::model()->findAll('estado =:id', [':id'=>$id]), 'id', 'municipio');
+         $lista = ArrayHelper::map(Municipios::model()->findAll('estado =:id', [':id'=>$id]), 'municipio', 'nombre');
 
-         echo CHtml::tag('option', array('value'=>''), '-- Seleccione Municipio --', true);
+         echo ArrayHelper::map('option', ['value'=>''], '-- Seleccione Municipio --', true);
 
         foreach ($lista as $valor=>$municipio) {
-            echo CHtml::tag('option', array('value'=>$valor), CHtml::encode($municipio), true);
+            echo Html::endTag('option', ['value'=>$valor], Html::encode($municipio), true);
         }
     }
 

@@ -243,10 +243,10 @@ $variablephp=$_COOKIE['variablephp'];
                                                        
                                                        
 <!-- Campos ocultos -->  
-<?= $form->field($model, 'id_contribuyente')->hiddenInput(['value' => $modelContribuyente->id_contribuyente])->label(false) ?>
+
 <?= $form->field($model, 'id_impuesto')->hiddenInput(['value' => $model->id_impuesto])->label(false) ?>
 
-<?= $form->field($model, 'validacion')->hiddenInput(['value' => 4])->label(false) ?>
+
 
 <?//= Html::endForm();?> 
   <?php ActiveForm::end(); ?>                                                   
