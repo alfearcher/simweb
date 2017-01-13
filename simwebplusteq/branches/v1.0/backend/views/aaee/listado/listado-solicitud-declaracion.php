@@ -51,6 +51,8 @@
 	use yii\jui\DatePicker;
 	use yii\widgets\Pjax;
 	use backend\models\aaee\listado\ListadoSolicitudDeclaracion;
+	use yii\bootstrap\Modal;
+	use backend\controllers\menu\MenuController;
 
 
 	$typeIcon = Icon::FA;
@@ -92,7 +94,22 @@
 							//'filterModel' => $listadoModel,
 							'columns' => [
 								['class' => 'yii\grid\SerialColumn'],
-								'nro_solicitud',
+								//'nro_solicitud',
+								[
+		                            'label' => 'Nro. Solicitud',
+		                            'format' => 'raw',
+		                            'value' => function($data) {
+		                            	return Html::a($data['nro_solicitud'], '#', [
+																	'id' => 'link-view-solicitud',
+														            //'class' => 'btn btn-success',
+														            'data-toggle' => 'modal',
+														            'data-target' => '#modal',
+														            'data-url' => Url::to(['view-detalle-solicitud', 'nro' => $data['nro_solicitud']]),
+														            'data-solicitud' => $data['nro_solicitud'],
+														            'data-pjax' => '0',
+														        ]);
+		                            	},
+		                        ],
 								'fecha_hora_creacion',
 								'ano_impositivo',
 								'descripcion',
@@ -111,7 +128,7 @@
 			                    		'style' => 'text-align: right',
 			                    	],
 				                    'value' => function($data) {
-				                    		return $data['suma'];
+				                    		return Yii::$app->formatter->asDecimal($data['suma'],2);
 				                    }
 				                ],
 								[
@@ -161,3 +178,43 @@
 </div>	 <!-- Fin de inscripcion-act-econ-form -->
 
 
+
+<?php
+$this->registerJs(
+    '$(document).on("click", "#link-view-solicitud", (function() {
+        $.get(
+            $(this).data("url"),
+            function (data) {
+                //$(".modal-body").html(data);
+                $(".detalle-solicitud").html(data);
+                $("#modal").modal();
+            }
+        );
+    }));
+
+    '
+); ?>
+
+
+<style type="text/css">
+	.modal-content	{
+			margin-top: 150px;
+			margin-left: -180px;
+			width: 150%;
+	}
+</style>
+
+<?php
+Modal::begin([
+    'id' => 'modal',
+    //'header' => '<h4 class="modal-title">Complete</h4>',
+    'size' => 'modal-lg',
+    'footer' => '<a href="#" class="btn btn-primary" data-dismiss="modal">Cerrar</a>',
+]);
+
+//echo "<div class='well'></div>";
+Pjax::begin();
+echo "<div class='detalle-solicitud'></div>";
+Pjax::end();
+Modal::end();
+?>
