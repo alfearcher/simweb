@@ -18,8 +18,8 @@ $disabled = true;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_renovacioncertificadocatastralinmueblesform', [
-        'disabled'=>$disabled,'modelContribuyente' => $modelContribuyente,
-        'model'=>$model, 'modelBuscar'=>$modelBuscar,'datosVContribuyente'=>$datosVContribuyente, 'datosVInmueble'=>$datosVInmueble, 'modelavaluo' =>$modelavaluo,
+        'disabled'=>$disabled, 'modelAvaluo'=>$modelAvaluo,
+        'model'=>$model, 
     ]) ?>
 
 </div>

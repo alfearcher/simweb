@@ -14,12 +14,15 @@ $this->title = Yii::t('backend', 'View Property Urban');
     
 
     <p>
-        <?= Html::a(Yii::t('backend', 'Property Valuation'), ['inmueble/avaluo-catastral-inmuebles-urbanos/avaluo-catastral-inmuebles'], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('backend', 'Renovacion de certificado catastral'), ['inmueble/renovacion-certificado-catastral-inmuebles-urbanos/renovacion-certificado-catastral-inmuebles'], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) ?>
     </p> 
-
+<div class="panel panel-primary">
+<div class="panel-heading">
+                <?= Yii::t('frontend', 'Datos del Inmueble') ?>  
+</div>
     <?= DetailView::widget([
-        'model' => $model,
+        'model' => $modelInmueble,
         'attributes' => [ 
             'id_impuesto',
             'id_contribuyente',
@@ -28,34 +31,61 @@ $this->title = Yii::t('backend', 'View Property Urban');
             'ano_inicio',
             'direccion',
             //'liquidado',
-            //'manzana_limite',
+            'manzana_limite',
             //'lote_1',
             //'lote_2',
             //'nivel',
             //'lote_3',
-            //'av_calle_esq_dom',
-            //'casa_edf_qta_dom',
-            //'piso_nivel_no_dom',
-            //'apto_dom',
+            'av_calle_esq_dom',
+            'casa_edf_qta_dom',
+            'piso_nivel_no_dom',
+            'apto_dom',
             'tlf_hab',
-            //'medidor',
-            //'id_sim',
+            'medidor',
+            'id_sim',
             'observacion:ntext',
             'inactivo',
-            //'tipo_ejido',
-            //'propiedad_horizontal',
-            //'estado_catastro',
-            //'municipio_catastro',
-            //'parroquia_catastro',
-            //'ambito_catastro',
-            //'sector_catastro',
-            //'manzana_catastro',
-            //'parcela_catastro',
-            //'subparcela_catastro',
-            //'nivel_catastro',
-            //'unidad_catastro',
+            'tipo_ejido',
+            'propiedad_horizontal',
+            'estado_catastro',
+            'municipio_catastro',
+            'parroquia_catastro',
+            'ambito_catastro',
+            'sector_catastro',
+            'manzana_catastro',
+            'parcela_catastro',
+            'subparcela_catastro',
+            'nivel_catastro',
+            'unidad_catastro',
         ], 
     ]) ?>
+</div>
+
+<div class="panel panel-primary">
+<div class="panel-heading">
+                <?= Yii::t('frontend', 'Datos del Avaluos') ?>  
+</div>
+    <?= DetailView::widget([
+        'model' => $modelHAvaluos,
+        'attributes' => [ 
+             'id_historico_avaluo',
+             'id_impuesto',
+             'fecha',
+             'mts',
+             'valor_por_mts2',
+             'mts2_terreno',
+             'valor_por_mts2_terreno',
+             'valor',
+             'inactivo',
+             'lindero_norte',
+             'lindero_sur',
+             'lindero_este',
+             'lindero_oeste',
+            
+        ], 
+    ]) ?>
+</div>
+
 
 </div>
 
