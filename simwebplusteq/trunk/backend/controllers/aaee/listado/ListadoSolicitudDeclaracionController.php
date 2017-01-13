@@ -59,6 +59,7 @@
 	use common\models\solicitudescontribuyente\DetalleSolicitudCreada;
 	use common\models\configuracion\solicitudplanilla\SolicitudPlanillaSearch;
 	use common\models\session\Session;
+	use common\models\totalizar\TotalizarGrid;
 
 
 	session_start();		// Iniciando session
@@ -163,11 +164,17 @@
 							if ( isset($_SESSION['postInicial']) ) {
 								$postData = $_SESSION['postInicial'];
 							}
+
 	        				$dataProvider = $model->search($postData);
 	        				$model->load($postData);
+
+	        				$totalizar = New TotalizarGrid();
+							$totalDeclarado = $totalizar->getTotalizar($dataProvider,'suma');
+
 				        	return $this->render('/aaee/listado/listado-solicitud-declaracion',[
 				        				'listadoModel' => $model,
 				        				'dataProvider' => $dataProvider,
+				        				'totalDeclarado' => $totalDeclarado,
 				        		]);
 						}
 					}
