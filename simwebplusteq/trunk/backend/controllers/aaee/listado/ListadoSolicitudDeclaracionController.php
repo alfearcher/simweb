@@ -126,6 +126,9 @@
 				$model->load($postData);
 				$dataProvider = $model->search($postData);
 
+				$totalizar = New TotalizarGrid();
+				$totalDeclarado = $totalizar->getTotalizar($dataProvider,'suma');
+
 	        	return $this->render('/aaee/listado/listado-solicitud-declaracion',[
 	        				'listadoModel' => $model,
 	        				'dataProvider' => $dataProvider,
