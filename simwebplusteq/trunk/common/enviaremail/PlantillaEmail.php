@@ -240,7 +240,7 @@ anexo puede ser de carácter confidencial y es propiedad de la alcaldía del Mun
      * @param  [type] $contribuyente string [description] variable que recibe el nombre o razon social del contribuyente
      * @return [type]            [description] retorna la funcion que hace que envie el correo
      */
-    public function plantillaRecuperarLogin($email, $solicitud, $clave,$contribuyente)
+    public function plantillaRecuperarLogin($email, $solicitud, $clave,$login,$contribuyente)
     {
 
         if ( trim($email) == true ) {
@@ -254,7 +254,7 @@ anexo puede ser de carácter confidencial y es propiedad de la alcaldía del Mun
                 $textBody = 'Solicitudes Online';
                 $body =     'Estimado Contribuyente: '.$contribuyente.'<br><br>
                        Usted ha realizado con exito la recuperacion de usuario y contraseña<br><br>
-                       Usuario: ' .$email.'<br>'.'Contraseña: '.$clave.'<br><br>'.
+                       Usuario: ' .$login.'<br>'.'Contraseña: '.$clave.'<br><br>'.
                        'A partir de este momento puede disfrutar de nuestro servicio "on-line".<br>
                        Recuerde, esta informacion es personal y de su exclusiva responsabilidad y se agradece no divulgar ni transferir
                        a terceros estos datos<br><br>
@@ -262,7 +262,7 @@ anexo puede ser de carácter confidencial y es propiedad de la alcaldía del Mun
 
               $enviarEmail = new EnviarEmailSolicitud();
               $enviar = $enviarEmail->enviarEmail($from, $to, $subject, $textBody, $body);
-//die(var_dump($enviar).' llego despues de enviar');
+
                 if($enviar == true){
                   return true;
                 }else{
