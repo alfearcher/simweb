@@ -105,7 +105,8 @@
 		 */
 		public function actionInicioView()
 		{
-			if ( isset($this->_model) && isset($_SESSION['idContribuyente']) ) {
+			//&& isset($_SESSION['idContribuyente'])
+			if ( isset($this->_model) ) {
 
 				if ( $this->_model->tipo_solicitud == 1 ) {
 
@@ -631,7 +632,7 @@
 		 */
 		private function actionMostarSolicitudDeclaracionEstimada()
 		{
-			if ( $this->_model->nivel_aprobacion == 2 ) {
+			if ( $this->_model->nivel_aprobacion == 2 || $this->_model->nivel_aprobacion == 1 ) {
 					$modelSearch = New DeclaracionBaseSearch($this->_model->id_contribuyente);
 					$model = $modelSearch->findSolicitudDeclaracion($this->_model->nro_solicitud);
 					$dataProvider = $modelSearch->getDataProviderSolicitud($this->_model->nro_solicitud);
@@ -671,10 +672,11 @@
 		 */
 		private function actionMostarSolicitudDeclaracionDefinitiva()
 		{
-			if ( $this->_model->nivel_aprobacion == 2 ) {
+			if ( $this->_model->nivel_aprobacion == 2 || $this->_model->nivel_aprobacion == 1 ) {
 				$modelSearch = New DeclaracionBaseSearch($this->_model->id_contribuyente);
 				$model = $modelSearch->findSolicitudDeclaracion($this->_model->nro_solicitud);
 				$dataProvider = $modelSearch->getDataProviderSolicitud($this->_model->nro_solicitud);
+
 				if ( isset($model) ) {
 					return $this->render('@backend/views/aaee/declaracion/definitiva/view-solicitud', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->_model->nro_solicitud),
