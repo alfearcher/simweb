@@ -122,8 +122,8 @@
 					$postData = $_SESSION['postInicial'];
 				}
 
-				$dataProvider = $model->search($postData);
 				$model->load($postData);
+				$dataProvider = $model->search($postData);
 
 				$totalizar = New TotalizarGrid();
 				$totalDeclarado = $totalizar->getTotalizar($dataProvider,'suma');
