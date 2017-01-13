@@ -475,7 +475,7 @@ class InscripcionInmueblesUrbanosController extends Controller
      {
 
          $buscar = ConfiguracionTiposSolicitudes::find()->where("impuesto=:impuesto", [":impuesto" => 2])
-                                                        ->andwhere("descripcion=:descripcion", [":descripcion" => 'REGISTRO NUEVO DE INMUEBLES URBANOS'])
+                                                        ->andwhere("descripcion=:descripcion", [":descripcion" => 'REGISTRO NUEVO'])
                                                         ->asArray()->all();
 
 

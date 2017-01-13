@@ -539,4 +539,27 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
                 echo "<option> - </option>";
             }
         }
+
+
+    public function actionSelectMunicipio() {
+        $id = (int) $_POST ['estados']['nombre'];
+         $lista = CHtml::listData(Municipios::model()->findAll('estado =:id', [':id'=>$id]), 'id', 'municipio');
+
+         echo CHtml::tag('option', array('value'=>''), '-- Seleccione Municipio --', true);
+
+        foreach ($lista as $valor=>$municipio) {
+            echo CHtml::tag('option', array('value'=>$valor), CHtml::encode($municipio), true);
+        }
+    }
+
+    public function actionSelectParroquia() {
+        $id = (int) $_POST ['TblEstructura']['idmunicipio'];
+        $lista = CHtml::listData(Parroquia::model()->findAll('idmunicipio =:id', [':id'=>$id]), 'id', 'parroquia');
+
+        echo CHtml::tag('option', array('value'=>''), '-- Seleccione Parroquia --', true);
+
+        foreach ($lista as $valor => $parroquia) {
+            echo CHtml::tag('option', array('value'=>$valor), CHtml::encode($parroquia), true);
+        }
+    }
 }
