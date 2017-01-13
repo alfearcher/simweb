@@ -105,6 +105,7 @@ class AvaluoCatastralForm extends \yii\db\ActiveRecord
     public $valor_construccion;
     public $valor_terreno;
     public $validacion;
+    public $nro_solicitud;
 
    
 

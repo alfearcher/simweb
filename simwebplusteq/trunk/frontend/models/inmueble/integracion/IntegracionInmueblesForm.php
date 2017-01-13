@@ -107,6 +107,7 @@ class IntegracionInmueblesForm extends \yii\db\ActiveRecord
     
     Public  $nivela;
     Public  $nivelb;
+    public $nro_solicitud;
 
     public static function tableName()
     {

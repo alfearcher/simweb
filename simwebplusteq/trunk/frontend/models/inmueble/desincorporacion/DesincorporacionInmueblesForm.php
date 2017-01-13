@@ -99,7 +99,7 @@ class DesincorporacionInmueblesForm extends \yii\db\ActiveRecord
     public $validacion;
     public $causa;
     public $observacion;
-    
+    public $nro_solicitud;
     
     public static function tableName()
     {

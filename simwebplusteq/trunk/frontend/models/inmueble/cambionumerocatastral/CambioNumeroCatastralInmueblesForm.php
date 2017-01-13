@@ -100,7 +100,7 @@ class CambioNumeroCatastralInmueblesForm extends \yii\db\ActiveRecord
 {
      
     public $validacion;
-    
+    public $nro_solicitud;
     
     public static function tableName()
     {

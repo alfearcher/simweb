@@ -320,7 +320,8 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
             
                  $tableName2 = 'sl_inmuebles'; 
-                 //$resultProceso = self::actionEjecutaProcesoSolicitud($conn, $conexion, $model, $config);
+                 $model->nro_solicitud = $arrayDatos2['nro_solicitud'];
+                 $resultProceso = self::actionEjecutaProcesoSolicitud($conn, $conexion, $model, $config);
                 if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){
 
                     if ($nivelAprobacion['nivel_aprobacion'] != 1){
@@ -479,7 +480,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
      * @return boolean retorna true si todo se ejecuto correctamente false en caso contrario.
      */
     private function actionEjecutaProcesoSolicitud($conexionLocal, $connLocal, $model, $conf)
-    {
+    { 
       $result = true;
       $resultadoProceso = [];
       $acciones = [];

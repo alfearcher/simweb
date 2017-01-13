@@ -108,7 +108,7 @@ class DesintegracionInmueblesForm extends \yii\db\ActiveRecord
     public $medidor1;
     public $observacion1;
     public $tipo_ejido1;
-    
+    public $nro_solicitud;
     
     public static function tableName()
     {

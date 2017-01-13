@@ -102,6 +102,7 @@ class CambioPropiedadHorizontalInmueblesForm extends \yii\db\ActiveRecord
     public $validacion;
     public $nivela;
     public $nivelb;
+    public $nro_solicitud;
     
     public static function tableName()
     {

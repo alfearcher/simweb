@@ -291,7 +291,8 @@ public $layout="layout-main";
 
             
                  $tableName2 = 'sl_inmuebles'; 
-                // $resultProceso = self::actionEjecutaProcesoSolicitud($conn, $conexion, $model, $config);
+                 $model->nro_solicitud = $arrayDatos2['nro_solicitud'];
+                 $resultProceso = self::actionEjecutaProcesoSolicitud($conn, $conexion, $model, $config);
                 if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2)){
                   if($conn->guardarRegistro($conexion, $tableName2,  $arrayDatosInactivarSl1)) {
                    if($conn->guardarRegistro($conexion, $tableName2,  $arrayDatosInactivarSl2)) {

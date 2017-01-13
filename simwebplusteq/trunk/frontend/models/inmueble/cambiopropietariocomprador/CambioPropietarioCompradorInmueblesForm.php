@@ -106,6 +106,7 @@ class CambioPropietarioCompradorInmueblesForm extends \yii\db\ActiveRecord
     public $naturalezaBuscar;
     public $cedulaBuscar;
     public $tipoBuscar;
+    public $nro_solicitud;
     
     public static function tableName()
     {

@@ -290,7 +290,8 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
             
                  $tableName2 = 'sl_inmuebles'; 
-                //$resultProceso = self::actionEjecutaProcesoSolicitud($conn, $conexion, $model, $config); 
+                 $model->nro_solicitud = $arrayDatos2['nro_solicitud'];
+                $resultProceso = self::actionEjecutaProcesoSolicitud($conn, $conexion, $model, $config); 
                 if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){
 
                     if ($nivelAprobacion['nivel_aprobacion'] != 1){

@@ -295,8 +295,9 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                                 ];
 
             
-                 $tableName2 = 'sl_inmuebles'; 
-                //$resultProceso = self::actionEjecutaProcesoSolicitud($conn, $conexion, $model, $config);
+                 $tableName2 = 'sl_inmuebles';
+                 $model->nro_solicitud = $arrayDatos2['nro_solicitud']; 
+                $resultProceso = self::actionEjecutaProcesoSolicitud($conn, $conexion, $model, $config);
                 if ( $conn->guardarLoteRegistros($conexion, $tableName2, $arrayCampos2,  $arrayDatos2) and $conn->guardarRegistro($conexion, $tableName2,  $arrayDatosInactivar2)){
 
                     if ($nivelAprobacion['nivel_aprobacion'] != 1){
