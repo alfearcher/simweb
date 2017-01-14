@@ -134,7 +134,7 @@
 				                    'value' => function($data) {
 				                    		return Yii::$app->formatter->asDecimal($data['suma'],2);
 				                    },
-				                    'footer' => Yii::$app->formatter->asDecimal($totalDeclarado, 2),
+				                    'footer' => Yii::$app->formatter->asDecimal($totalPagina, 2),
 				                ],
 								[
 				                    'label' => Yii::t('frontend', 'Liquidado'),
@@ -160,17 +160,56 @@
 						]);?>
 					</div>
 
-					<div class="col-sm-3" style="margin-left: 50px;">
-						<div class="form-group">
-							<?= Html::submitButton(Yii::t('backend', 'Back'),
-																	  [
-																		'id' => 'btn-back-form',
-																		'class' => 'btn btn-danger',
-																		'value' => 1,
-																		'style' => 'width: 100%',
-																		'name' => 'btn-back-form',
-																	  ])
+
+					<div class="row" style="width: 100%;padding:0px;margin-left: 400px;">
+						<div class="col-sm-2">
+							<h4><?=Html::encode('Total Declarado')?></h4>
+						</div>
+						<div class="col-sm-3" style="width: 28%;padding:0px;">
+							<?=Html::textInput('total', Yii::$app->formatter->asDecimal($total,2),[
+																						'class' => 'form-control',
+																						'style' => 'width: 100%;
+																									background-color: white;
+																									text-align:right;
+																									font-size:large;font-weight: bold;',
+																						'readOnly' => true,
+														])
 							?>
+						</div>
+					</div>
+
+
+					<div class="row" style="width: 100%;padding:0px;margin-left: 400px;">
+						<div class="col-sm-2">
+							<h4><?=Html::encode('Total Liquidado')?></h4>
+						</div>
+						<div class="col-sm-3" style="width: 28%;padding:0px;">
+							<?=Html::textInput('totalLiquidado', Yii::$app->formatter->asDecimal($totalLiquidado,2),[
+																						'class' => 'form-control',
+																						'style' => 'width: 100%;
+																									background-color: white;
+																									text-align:right;
+																									font-size:large;font-weight: bold;',
+																						'readOnly' => true,
+														])
+							?>
+						</div>
+					</div>
+
+
+					<div class="row" style="width:100%;padding:0px;padding-top: 20px;">
+						<div class="col-sm-3" style="margin-left: 50px;">
+							<div class="form-group">
+								<?= Html::submitButton(Yii::t('backend', 'Back'),
+																		  [
+																			'id' => 'btn-back-form',
+																			'class' => 'btn btn-danger',
+																			'value' => 1,
+																			'style' => 'width: 100%',
+																			'name' => 'btn-back-form',
+																		  ])
+								?>
+							</div>
 						</div>
 					</div>
 				</div>  <!-- Fin de col-sm-12 -->
