@@ -125,13 +125,22 @@
 				$model->load($postData);
 				$dataProvider = $model->search($postData);
 
+				// Total de la consulta.
+				$total = $model->getTotal();
+
+				// Total liquidado
+				$totalLiquidado = $model->getTotalLiquidado();
+
+				// Total por pagina.
 				$totalizar = New TotalizarGrid();
-				$totalDeclarado = $totalizar->getTotalizar($dataProvider,'suma');
+				$totalPagina = $totalizar->getTotalizar($dataProvider,'suma');
 
 	        	return $this->render('/aaee/listado/listado-solicitud-declaracion',[
 	        				'listadoModel' => $model,
 	        				'dataProvider' => $dataProvider,
-	        				'totalDeclarado' => $totalDeclarado,
+	        				'totalPagina' => $totalPagina,
+	        				'total' => $total,
+	        				'totalLiquidado' => $totalLiquidado,
 	        		]);
 
 
@@ -169,15 +178,29 @@
 							}
 
 	        				$dataProvider = $model->search($postData);
+
+// foreach ($dataProvider->models as $item ) {
+// 	$a[] = $item;
+// }
+// die(var_dump($model->getTotal()));
 	        				$model->load($postData);
 
+	        				// Total de la consulta.
+							$total = $model->getTotal();
+
+							// Total liquidado
+							$totalLiquidado = $model->getTotalLiquidado();
+
+							// Total por pagina.
 	        				$totalizar = New TotalizarGrid();
-							$totalDeclarado = $totalizar->getTotalizar($dataProvider,'suma');
+							$totalPagina = $totalizar->getTotalizar($dataProvider,'suma');
 
 				        	return $this->render('/aaee/listado/listado-solicitud-declaracion',[
 				        				'listadoModel' => $model,
 				        				'dataProvider' => $dataProvider,
-				        				'totalDeclarado' => $totalDeclarado,
+				        				'totalPagina' => $totalPagina,
+				        				'total' => $total,
+				        				'totalLiquidado' => $totalLiquidado,
 				        		]);
 						}
 					}
