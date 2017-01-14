@@ -112,6 +112,7 @@
 					$postData = [];
 					$request = [];
 					$model->load($postData);
+					self::actionAnularSession(['postInicial']);
 				}
 			}
 
