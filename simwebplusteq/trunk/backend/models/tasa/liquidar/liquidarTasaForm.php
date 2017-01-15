@@ -64,6 +64,7 @@
 		public $id_contribuyente;
 		public $multiplicar_por;
 		public $resultado;
+		public $observacion;
 
 
 
@@ -94,7 +95,8 @@
 	        	  'codigo', 'id_contribuyente'],
 	        	  'integer',
 	        	  'message' => Yii::t('backend', '{attribute}' . ' es incorrecto')],
-	        	//[[]]
+	        	[['observacion'], 'string'],
+	        	[['observacion', 'multiplicar_por', 'resultado'], 'safe'],
 	        ];
 	    }
 
