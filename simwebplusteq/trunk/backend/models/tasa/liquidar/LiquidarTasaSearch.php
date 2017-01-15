@@ -217,7 +217,7 @@
 	    	$model = [];
 	    	if ( $impuesto > 0 && $añoImpositivo > 0 && $idCodigo > 0 && $grupoSubNivel > 0 ) {
 				$model = Tasa::find()->alias('T')
-									 ->select(['T.id_impuesto',
+									 ->select(['T.codigo',
 									  		   'concat(T.codigo, " - ", T.descripcion) as codigosub'])
 					                 ->where('T.impuesto =:impuesto',
 											[':impuesto' => $impuesto])
@@ -234,7 +234,7 @@
 	        if ( count($model) > 0 ) {
 	        	echo "<option value='0'>" . "Seleccione..." . "</option>";
 	            foreach ( $model as $mod ) {
-	                echo "<option value='" . $mod->id_impuesto . "'>" . $mod->codigosub . "</option>";
+	                echo "<option value='" . $mod->codigo . "'>" . $mod->codigosub . "</option>";
 	            }
 	        } else {
 	            echo "<option> - </option>";
@@ -242,6 +242,56 @@
 
 	        return;
 	    }
+
+
+
+
+
+	    /***/
+	    public function findIdImpuesto($impuesto, $añoImpositivo, $idCodigo, $grupoSubNivel, $codigo)
+	    {
+	    	$idImpuesto = 0;
+	    	$model = [];
+	    	if ( $impuesto > 0 && $añoImpositivo > 0 && $idCodigo > 0 && $grupoSubNivel > 0 && $codigo > 0 ) {
+				$model = Tasa::find()->alias('T')
+					                 ->where('T.impuesto =:impuesto',
+											[':impuesto' => $impuesto])
+					                 ->andWhere('T.ano_impositivo =:ano_impositivo',
+					                 		[':ano_impositivo' => $añoImpositivo])
+					                 ->andWhere('T.id_codigo =:id_codigo',
+					                 		[':id_codigo' => $idCodigo])
+					                 ->andWhere('T.grupo_subnivel =:grupo_subnivel',
+					                 		[':grupo_subnivel' => $grupoSubNivel])
+					                 ->andWhere('T.codigo =:codigo',
+					                 		[':codigo' => $codigo])
+					                 ->andWhere('T.inactivo =:inactivo',
+					                 		[':inactivo' => 0])
+					                 ->asArray()
+					                 ->all();
+
+			}
+
+	        return $model;
+	    }
+
+
+
+
+	    /***/
+	    public function findTasa($idImpuesto)
+	    {
+	    	$findModel = Tasa::find()->alias('T')
+	    	                         ->joinWith('impuestos I', true, 'INNER JOIN')
+	    	                         ->joinWith('codigoContable C', true, 'INNER JOIN')
+	    	                         ->joinWith('grupoSubNivel G', true, 'INNER JOIN')
+	    	                         ->joinWith('tipoRango R', true, 'INNER JOIN')
+	    	                         ->where('id_impuesto =:id_impuesto',
+	    	                        		[':id_impuesto' => $idImpuesto])
+	    	                         ->asArray()
+	    	                         ->one();
+			return $findModel;
+	    }
+
 
 
 

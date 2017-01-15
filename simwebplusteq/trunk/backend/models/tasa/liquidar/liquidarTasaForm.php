@@ -47,12 +47,24 @@
 	use yii\data\ActiveDataProvider;
 	use backend\models\tasa\Tasa;
 	use common\models\planilla\PagoDetalle;
+	use backend\models\tasa\liquidar\LiquidarTasaSearch;
 
 	/**
 	* 	Clase
 	*/
 	class LiquidarTasaForm extends Tasa
 	{
+
+		public $id_impuesto;
+		public $impuesto;
+		public $ano_impositivo;
+		public $id_codigo;
+		public $grupo_subnivel;
+		public $codigo;
+		public $id_contribuyente;
+		public $multiplicar_por;
+		public $resultado;
+
 
 
 		/**
@@ -72,10 +84,17 @@
 	    public function rules()
 	    {
 	        return [
-	        	[['impuesto'],
-	        	  'required',
+	        	[['impuesto', 'ano_impositivo',
+	        	  'id_codigo', 'grupo_subnivel',
+	        	   'codigo', 'id_contribuyente'],
+	        	   'required',
 	        	  'message' => Yii::t('backend', '{attribute} is required')],
-	        	[['impuesto'],'integer', 'message' => Yii::t('backend', '{attribute}' . ' es incorrecto')]
+	        	[['impuesto', 'ano_impositivo',
+	        	  'id_codigo', 'grupo_subnivel',
+	        	  'codigo', 'id_contribuyente'],
+	        	  'integer',
+	        	  'message' => Yii::t('backend', '{attribute}' . ' es incorrecto')],
+	        	//[[]]
 	        ];
 	    }
 
@@ -117,6 +136,20 @@
 	    }
 
 
+	    /***/
+	    public function afterValidate()
+	    {
+	    	$this->id_impuesto = 0;
+	    	$searchLiquidar = New LiquidarTasaSearch();
+	    	$model = $searchLiquidar->findIdImpuesto($this->impuesto, $this->ano_impositivo,
+	    		                                     $this->id_codigo, $this->grupo_subnivel,
+	    		                                     $this->codigo);
+	    	if ( count($model) > 0 ) {
+	    		$this->id_impuesto = $model[0]['id_impuesto'];
+	    	}
+
+	    	return $this->id_impuesto;
+	    }
 
 
 
