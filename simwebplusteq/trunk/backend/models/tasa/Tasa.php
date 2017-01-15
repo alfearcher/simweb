@@ -55,6 +55,7 @@
 	*/
 	class Tasa extends ActiveRecord
 	{
+		public $codigosub;
 
 		/**
 		 *	Metodo que retorna el nombre de la base de datos donde se tiene la conexion actual.
