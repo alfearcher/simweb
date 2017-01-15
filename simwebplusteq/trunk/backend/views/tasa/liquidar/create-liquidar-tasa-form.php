@@ -70,7 +70,13 @@
  		]);
  	?>
 
-	<!-- <?//=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $model->id_contribuyente])->label(false);?> -->
+	<?=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $model->id_contribuyente])->label(false);?>
+	<?=$form->field($model, 'id_impuesto')->hiddenInput([
+												'id' => 'id-impuesto',
+
+											])
+											->label(false);
+	?>
 
 
 	<meta http-equiv="refresh">
@@ -235,30 +241,15 @@
 					<div class="row" style="width: 100%;padding: 0px;margin-top: 20px;">
 							<div class="col-sm-3" style="width: 25%;padding: 0px;padding-left: 15px;">
 								<div class="form-group">
-									<?= Html::submitButton(Yii::t('frontend', 'Crear Solicitud'),
+									<?= Html::submitButton(Yii::t('frontend', 'Aceptar'),
 																			  [
-																				'id' => 'btn-create',
-																				'class' => 'btn btn-success',
-																				'value' => 5,
+																				'id' => 'btn-aceptar',
+																				'class' => 'btn btn-primary',
+																				'value' => 1,
 																				'style' => 'width: 100%;',
-																				'name' => 'btn-create',
+																				'name' => 'btn-aceptar',
 
 																			  ])
-									?>
-								</div>
-							</div>
-
-							<div class="col-sm-3" style="width: 25%;padding: 0px;padding-left: 25px;margin-left:30px;">
-								<div class="form-group">
-									<?= Html::submitButton(Yii::t('frontend', 'Back'),
-																		  [
-																			'id' => 'btn-back-form',
-																			'class' => 'btn btn-danger',
-																			'value' => 3,
-																			'style' => 'width: 100%;',
-																			'name' => 'btn-back-form',
-
-																		  ])
 									?>
 								</div>
 							</div>
