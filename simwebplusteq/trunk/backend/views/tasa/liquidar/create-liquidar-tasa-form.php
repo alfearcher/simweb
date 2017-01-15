@@ -71,12 +71,10 @@
  	?>
 
 	<?=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $model->id_contribuyente])->label(false);?>
-	<?=$form->field($model, 'id_impuesto')->hiddenInput([
-												'id' => 'id-impuesto',
-
-											])
-											->label(false);
-	?>
+	<?=$form->field($model, 'multiplicar_por')->hiddenInput(['value' => $model->multiplicar_por])->label(false);?>
+	<?=$form->field($model, 'observacion')->hiddenInput(['value' => $model->observacion])->label(false);?>
+	<?=$form->field($model, 'id_impuesto')->hiddenInput(['id' => 'id-impuesto'])->label(false);?>
+	<?=$form->field($model, 'resultado')->hiddenInput(['id' => 'resultado'])->label(false);?>
 
 
 	<meta http-equiv="refresh">

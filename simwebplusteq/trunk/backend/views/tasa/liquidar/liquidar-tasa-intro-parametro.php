@@ -249,7 +249,7 @@
 
 						<div class="row" id="ut-del-ano-impositivo">
 							<div class="col-sm-2" style="width: 18%;padding:0px;">
-								<h4><strong>UT del Año</strong></h4>
+								<h4><strong>UT del Año <?= $tasa['ano_impositivo']?></strong></h4>
 							</div>
 							<div class="col-sm-4" style="width:20%;padding:0px;margin-left:16px;">
 								 <?= Html::textInput('ut-del-ano-impositivo', Yii::$app->formatter->asDecimal($utDelAño, 2),
@@ -327,11 +327,7 @@
 																			'onClick' => 'var enMoneda = $( "#id-monto-en-moneda" ).val();
 																						  var multiplicarPor = $( "#liquidartasaform-multiplicar_por" ).val();
 																						  var total = parseFloat(enMoneda) * parseFloat(multiplicarPor);
-																						  $( "#liquidartasaform-resultado" ).val(total);
-																						 //$( "#liquidartasaform-resultado" ).html(total);
-																						 // alert(total);
-
-																			',
+																						  $( "#liquidartasaform-resultado" ).val(total);',
 
 																		  ])
 								?>
@@ -352,7 +348,7 @@
 																						'class' => 'form-control',
 																						'style' => 'width: 100%;',
 																						'placeholder' => '0.00',
-																						'disabled' => 'disabled',
+																						'readOnly' => true,
 																					],
 																					'clientOptions' => [
 																						'alias' =>  'decimal',
@@ -371,6 +367,27 @@
 						</div>
 					</div>
 
+
+					<div class="row" id="observacion-planilla" style="width: 100%;padding:0px;padding-left: 16px;">
+						<div class="col-sm-2" style="width: 18%;padding:0px;">
+							<h4><strong>Observacion (Opcional):</strong></h4>
+						</div>
+						<div class="col-sm-4" style="width:50%;padding:0px;margin-left:25px;">
+							<?=$form->field($model, 'observacion')->textArea([
+																'id' => 'id-observacion',
+																'class' => 'form-control',
+																'rows' => 4,
+																'style' => 'width:600px;
+																		   background-color:white;',
+
+															]);
+							?>
+						</div>
+					</div>
+
+
+					<div class="row" style="border-bottom: 2px solid #ccc;padding: 0px;padding-top:20px;width: 103%;margin-left: -30px;">
+					</div>
 
 
 					<div class="row" style="width: 100%;padding: 0px;margin-top: 20px;">
