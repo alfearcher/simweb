@@ -51,9 +51,11 @@ namespace common\models\tasas;
 
 use Yii;
 use backend\models\utilidad\tarifa\vehiculo\TarifaVehiculo;
+use backend\models\tasa\Tasa;
 
 class GrupoSubnivel extends \yii\db\ActiveRecord
 {
+    public $grupo;
 
     /**
     * @inheritdoc
@@ -97,6 +99,16 @@ class GrupoSubnivel extends \yii\db\ActiveRecord
        return $datos[0]->descripcion;
     }
 
+
+
+    /**
+     * Relacion eon la entidad "varios"
+     * @return Tasa
+     */
+    public function getTasa()
+    {
+        return $this->hasOne(Tasa::className(), ['grupo_subnivel' => 'grupo_subnivel']);
+    }
 
 
 }
