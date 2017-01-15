@@ -90,22 +90,22 @@
 
 		public function getCodigoContable()
 		{
-			return $this->hasMany(CodigosContables::className(), ['id_codigo' => 'id_codigo']);
+			return $this->hasOne(CodigosContables::className(), ['id_codigo' => 'id_codigo']);
 		}
 
 		public function getImpuestos()
 		{
-			return $this->hasMany(Impuesto::className(), ['impuesto' => 'impuesto']);
+			return $this->hasOne(Impuesto::className(), ['impuesto' => 'impuesto']);
 		}
 
 		public function getGrupoSubNivel()
 		{
-			return $this->hasMany(GrupoSubnivel::className(), ['grupo_subnivel' => 'grupo_subnivel']);
+			return $this->hasOne(GrupoSubnivel::className(), ['grupo_subnivel' => 'grupo_subnivel']);
 		}
 
 			public function getTipoRango()
 		{
-			return $this->hasMany(TiposRangos::className(), ['tipo_rango' => 'tipo_rango']);
+			return $this->hasOne(TiposRangos::className(), ['tipo_rango' => 'tipo_rango']);
 		}
 
  }
