@@ -60,7 +60,7 @@
 	use backend\models\tasa\liquidar\LiquidarTasaSearch;
 	use backend\models\tasa\liquidar\LiquidarTasaForm;
 	use backend\models\impuesto\ImpuestoForm;
-
+	use backend\models\utilidad\ut\UnidadTributariaForm;
 
 	session_start();		// Iniciando session
 
@@ -114,7 +114,33 @@
 					return ActiveForm::validate($model);
 		      	}
 
-				$tasaSearch = New LiquidarTasaSearch();
+		      	if ( $model->load($postData) ) {
+
+		      		if ( $model->validate() ) {
+
+		      			if ( $model->id_impuesto > 0 ) {
+		      				// Mostrar formulario con la informacion de los parametros mas
+		      				// los campos para ingresar un cantidad.
+
+		      				// Unidad tributaria del año.
+		      				$utDelAño = self::actionUnidadTributaria($model->ano_impositivo);
+
+		      				// Informacion completa de la tasa que se liquidara.
+		      				$tasa = self::actionTasa($model->id_impuesto);
+
+		      				return $this->render('/tasa/liquidar/_pre-view',[
+		      											'model' => $model,
+		      											'tasa' => $tasa,
+		      											'utDelAño' => $utDelAño,
+
+		      					]);
+		      			} else {
+		      				// Mostrar mensaje de que no se pudo determinar el identificador de la tasa
+
+		      			}
+		      		}
+
+		      	}
 
 				$impuesto = New ImpuestoForm();
 				$listaImpuesto = $impuesto->getListaImpuesto();
@@ -123,6 +149,7 @@
 				$caption = Yii::t('backend', 'Liquidar Tasas');
 				$subCaption = Yii::t('backend', 'Seleccione los parametros solicitados');
 
+				$model->id_contribuyente = $idContribuyente;
 				return $this->render('/tasa/liquidar/_create',[
 													'model' => $model,
 													'caption' => $caption,
@@ -150,6 +177,7 @@
 			$año = isset($request['a']) ? $request['a'] : 0;
 			$idCodigo = isset($request['idcodigo']) ? $request['idcodigo'] : 0;
 			$subnivel = isset($request['subnivel']) ? $request['subnivel'] : 0;
+			$codigo = isset($request['codigo']) ? $request['codigo'] : 0;
 
 // die(var_dump($request));
 
@@ -174,6 +202,28 @@
 
 		}
 
+
+
+
+		/***/
+		public function actionTasa($idImpuesto)
+		{
+			// Parametros completos de la tasa.
+			$searchTasa = New LiquidarTasaSearch();
+			return $tasa = $searchTasa->findTasa($idImpuesto);
+		}
+
+
+
+
+		/***/
+		public function actionUnidadTributaria($añoImpositivo)
+		{
+			$montoUt = 0;
+			$ut = New UnidadTributariaForm();
+			$montoUt = $ut->getUnidadTributaria((int)$añoImpositivo);
+			return $montoUt;
+		}
 
 
 
