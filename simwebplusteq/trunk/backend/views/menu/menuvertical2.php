@@ -248,6 +248,7 @@
         						['label' => 'Liquidar Actividad Economica (Definitiva)', 'url' => ['aaee/liquidar/liquidar-actividad-economica-definitiva/index']],
         						['label' => 'Liquidar Inmueble Urbano', 'url' => ['inmueble/liquidar/liquidar-inmueble/index']],
         						['label' => 'Liquidar Vehiculo', 'url' => ['vehiculo/liquidar/liquidar-vehiculo/index']],
+        						['label' => 'Liquidar Tasa', 'url' => ['tasa/liquidar/liquidar-tasa/index']],
         						['label' => 'Consulta de Planilla', 'url' => ['planilla/planilla-consulta/index']],
         			]
         		],
