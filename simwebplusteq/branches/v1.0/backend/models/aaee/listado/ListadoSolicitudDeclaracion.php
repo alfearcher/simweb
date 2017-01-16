@@ -120,7 +120,127 @@
     	/***/
     	public function getDataProvider($params)
     	{
-			$query = New Query();
+			// $query = New Query();
+			// $rows = [];
+   //  		if ( $this->ordenar_declaracion == 0 ) {
+
+	  //   		$rows = $query->select('S.nro_solicitud,S.fecha_hora_creacion,
+	  //   			                    S.id_contribuyente,D.ano_impositivo,
+	  //   			                    T.descripcion,E.descripcion as condicion,
+	  //   			                    D.tipo_declaracion,
+	  //   			                    sum(D.monto_new) as suma')
+	  //   				      ->from(SolicitudesContribuyente::tableName() . ' S')
+	  //   				      ->join('INNER JOIN', DeclaracionBase::tableName() . ' D', 'S.nro_solicitud=D.nro_solicitud')
+	  //   				      ->join('INNER JOIN', EstatusSolicitud::tableName() . ' E', 'S.estatus=E.estatus_solicitud')
+	  //   				      ->join('INNER JOIN', TipoSolicitud::tableName() . ' T', 'S.tipo_solicitud=T.id_tipo_solicitud')
+	  //   				      ->where(['BETWEEN', 'date(fecha_hora_creacion)',
+	  //   				      		 						date('Y-m-d',strtotime($this->fecha_desde)),
+			//     	      					 				date('Y-m-d',strtotime($this->fecha_hasta))])
+	  //   				      ->andWhere('S.tipo_solicitud =:tipo_solicitud',
+	  //   				      								[':tipo_solicitud' => $this->tipo_solicitud])
+	  //   				      ->andWhere('S.impuesto =:impuesto',
+	  //   				      				[':impuesto' => $this->impuesto])
+	  //   				      ->andWhere('S.estatus =:estatus',
+	  //   				      				[':estatus' => $this->estatus_solicitud])
+	  //   				      ->groupBy(
+	  //   				      		'S.nro_solicitud'
+	  //   				      	);
+	  //   				      // ->all();
+
+   //  		} elseif ( $this->ordenar_declaracion == 1 ) {
+
+   //  			$rows = $query->select('S.nro_solicitud,S.fecha_hora_creacion,
+	  //   			                    S.id_contribuyente,D.ano_impositivo,
+	  //   			                    T.descripcion,E.descripcion as condicion,
+	  //   			                    D.tipo_declaracion,
+	  //   			                    sum(D.monto_new) as suma')
+	  //   				      ->from(SolicitudesContribuyente::tableName() . ' S')
+	  //   				      ->join('INNER JOIN', DeclaracionBase::tableName() . ' D', 'S.nro_solicitud=D.nro_solicitud')
+	  //   				      ->join('INNER JOIN', EstatusSolicitud::tableName() . ' E', 'S.estatus=E.estatus_solicitud')
+	  //   				      ->join('INNER JOIN', TipoSolicitud::tableName() . ' T', 'S.tipo_solicitud=T.id_tipo_solicitud')
+	  //   				      ->where(['BETWEEN', 'date(fecha_hora_creacion)',
+	  //   				      		 						date('Y-m-d',strtotime($this->fecha_desde)),
+			//     	      					 				date('Y-m-d',strtotime($this->fecha_hasta))])
+	  //   				      ->andWhere('S.tipo_solicitud =:tipo_solicitud',
+	  //   				      								[':tipo_solicitud' => $this->tipo_solicitud])
+	  //   				      ->andWhere('S.impuesto =:impuesto',
+	  //   				      				[':impuesto' => $this->impuesto])
+	  //   				      ->andWhere('S.estatus =:estatus',
+	  //   				      				[':estatus' => $this->estatus_solicitud])
+	  //   				      ->groupBy(
+	  //   				      		'S.nro_solicitud'
+	  //   				      	)
+	  //   				      ->orderBy([
+	  //   				      		'suma'=> SORT_DESC,
+	  //   				      	]);
+	  //   				     // ->all();
+
+   //  		}
+
+
+    		$query = self::getFindSolicitudDeclaracion();
+
+    		$dataProvider = New ActiveDataProvider([
+							'query' => $query,
+							'pagination' => [
+        						'pageSize' => 30,
+    						],
+					]);
+
+    		return $dataProvider;
+
+    	}
+
+
+
+
+    	/**
+    	 * Total declarado
+    	 * @return [type] [description]
+    	 */
+    	public function getTotal()
+    	{
+    		$query = self::getFindSolicitudDeclaracion();
+    		$rows = $query->all();
+
+    		$suma = 0;
+
+    		foreach ( $rows as $row ) {
+    			$suma += $row['suma'];
+    		}
+
+    		return $suma;
+    	}
+
+
+
+
+    	/**
+    	 * Total liquidado, excluyendo a las planillas anuladas.
+    	 * @return [type] [description]
+    	 */
+    	public function getTotalLiquidado()
+    	{
+    		$query = self::getFindSolicitudDeclaracion();
+    		$rows = $query->all();
+    		$suma = 0;
+
+    		foreach ( $rows as $row ) {
+    			$suma += self::getMontoLiquidacion($row['tipo_declaracion'] - 1,
+    											   $row['ano_impositivo'],
+    											   $row['id_contribuyente']);
+    		}
+
+    		return $suma;
+    	}
+
+
+
+
+    	/***/
+    	public function getFindSolicitudDeclaracion()
+    	{
+    		$query = New Query();
 			$rows = [];
     		if ( $this->ordenar_declaracion == 0 ) {
 
@@ -177,75 +297,13 @@
 
     		}
 
-
-    		$dataProvider = New ActiveDataProvider([
-							'query' => $query,
-							'pagination' => [
-        						'pageSize' => 30,
-    						],
-					]);
-
-    		return $dataProvider;
+    		return $query;
 
     	}
 
 
 
 
-
-
-
-
-
-		/***/
-		public function search1($params)
-		{
-			$query = self::findSolicitudDeclaracionModel();
-
-			$dataProvider = New ActiveDataProvider([
-							'query' => $query,
-							'pagination' => [
-        						'pageSize' => 30,
-    						],
-    						'sort' => [
-    							'sum(D.monto_new)' => SORT_ASC,
-    						],
-					]);
-	  //       if (!$this->validate()) {
-	  //           // uncomment the following line if you do not want to any records when validation fails
-	  //           // $query->where('0=1');
-	  //           return $dataProvider;
-	  //       }
-
-
-	    	if ( $this->tipo_solicitud > 0 ) {
-		   		$query->andFilterWhere(['=', 'tipo_solicitud1', $this->tipo_solicitud]);
-		   	}
-	    	if ( $this->fecha_desde !== null && $this->fecha_hasta !== null ) {
-
-		    	$query->andFilterWhere(['BETWEEN','date(fecha_hora_creacion)',
-		    	      					 date('Y-m-d',strtotime($this->fecha_desde)),
-		    	      					 date('Y-m-d',strtotime($this->fecha_hasta))]);
-		   	}
-		   	if ( $this->impuesto > 0 ) {
-		   		$query->andFilterWhere(['=', 'impuesto', $this->impuesto]);
-		   	}
-		   	if ( $this->nro_solicitud > 0 ) {
-		   		$query->andFilterWhere(['=', 'nro_solicitud', $this->nro_solicitud]);
-		   	}
-
-		   	if ( $this->estatus_solicitud !== null ) {
-		   		$query->andFilterWhere(['=', 'estatus_solicitud', $this->estatus_solicitud]);
-		   	}
-
-		   	if ( $this->nro_solicitud !== null ) {
-		   		$query->andFilterWhere(['=', 'nro_solicitud', $this->nro_solicitud]);
-		   	}
-
-	        return $dataProvider;
-
-
-		}
 
 
 
