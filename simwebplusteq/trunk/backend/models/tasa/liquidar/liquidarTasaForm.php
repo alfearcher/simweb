@@ -65,6 +65,7 @@
 		public $multiplicar_por;
 		public $resultado;
 		public $observacion;
+		public $id_pago;
 
 
 
@@ -92,11 +93,22 @@
 	        	  'message' => Yii::t('backend', '{attribute} is required')],
 	        	[['impuesto', 'ano_impositivo',
 	        	  'id_codigo', 'grupo_subnivel',
-	        	  'codigo', 'id_contribuyente'],
+	        	  'codigo', 'id_contribuyente',
+	        	  'id_impuesto'],
 	        	  'integer',
 	        	  'message' => Yii::t('backend', '{attribute}' . ' es incorrecto')],
 	        	[['observacion'], 'string'],
-	        	[['observacion', 'multiplicar_por', 'resultado'], 'safe'],
+	        	[['observacion', 'multiplicar_por',
+	        	  'resultado', 'id_pago', 'id_impuesto'],
+	        	  'safe'],
+	        	[['resultado'],
+	        	  'double',
+	        	  'message' => Yii::t('backend', 'Monto no valido')],
+	        	// ['resultado',
+	        	//  'compare',
+	        	//  'compareValue' => 0,
+	        	//  'operator' => '>',
+	        	//  'message' => Yii::t('backend', 'Monto debe ser mayor a cero')],
 	        ];
 	    }
 
