@@ -73,11 +73,13 @@
 
 	<?=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $model->id_contribuyente])->label(false);?>
 	<?=$form->field($model, 'id_impuesto')->hiddenInput(['value' => $model->id_impuesto])->label(false);?>
+	<?=$form->field($model, 'ano_impositivo')->hiddenInput(['value' => $model->ano_impositivo])->label(false);?>
 	<?=$form->field($model, 'impuesto')->hiddenInput(['value' => $model->impuesto])->label(false);?>
 	<?=$form->field($model, 'id_codigo')->hiddenInput(['value' => $model->id_codigo])->label(false);?>
 	<?=$form->field($model, 'grupo_subnivel')->hiddenInput(['value' => $model->grupo_subnivel])->label(false);?>
 	<?=$form->field($model, 'codigo')->hiddenInput(['value' => $model->codigo])->label(false);?>
 	<?=$form->field($model, 'descripcion')->hiddenInput(['value' => $model->descripcion])->label(false);?>
+	<?=$form->field($model, 'id_pago')->hiddenInput(['id' => 'id_pago'])->label(false);?>
 
 
 	<meta http-equiv="refresh">
@@ -296,7 +298,9 @@
 																							//'mask' => '9{1,3}[,9{1,3}][,9{1,3}]',
 																							'options' => [
 																								'class' => 'form-control',
-																								'style' => 'width: 100%;',
+																								'style' => 'width: 100%;
+																								            font-size: 160%;
+																								            font-weight:bold;',
 																								'placeholder' => '0.00',
 																							],
 																							'clientOptions' => [
@@ -346,7 +350,9 @@
 																					//'mask' => '9{1,3}[,9{1,3}][,9{1,3}]',
 																					'options' => [
 																						'class' => 'form-control',
-																						'style' => 'width: 100%;',
+																						'style' => 'width: 100%;
+																								    font-size: 160%;
+																								    font-weight:bold;',
 																						'placeholder' => '0.00',
 																						'readOnly' => true,
 																					],
@@ -397,7 +403,7 @@
 																			  [
 																				'id' => 'btn-liquidar',
 																				'class' => 'btn btn-success',
-																				'value' => 1,
+																				'value' => 5,
 																				'style' => 'width: 100%;',
 																				'name' => 'btn-liquidar',
 																			  ])
@@ -409,11 +415,11 @@
 								<div class="form-group">
 									<?= Html::submitButton(Yii::t('frontend', 'Back'),
 																		  [
-																			'id' => 'btn-back-form',
+																			'id' => 'btn-back',
 																			'class' => 'btn btn-danger',
 																			'value' => 3,
 																			'style' => 'width: 100%;',
-																			'name' => 'btn-back-form',
+																			'name' => 'btn-back',
 
 																		  ])
 									?>

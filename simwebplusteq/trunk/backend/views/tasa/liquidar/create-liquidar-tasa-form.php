@@ -75,6 +75,7 @@
 	<?=$form->field($model, 'observacion')->hiddenInput(['value' => $model->observacion])->label(false);?>
 	<?=$form->field($model, 'id_impuesto')->hiddenInput(['id' => 'id-impuesto'])->label(false);?>
 	<?=$form->field($model, 'resultado')->hiddenInput(['id' => 'resultado'])->label(false);?>
+	<?=$form->field($model, 'id_pago')->hiddenInput(['id' => 'id_pago'])->label(false);?>
 
 
 	<meta http-equiv="refresh">
