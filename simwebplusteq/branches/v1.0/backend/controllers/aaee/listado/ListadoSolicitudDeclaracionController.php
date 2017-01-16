@@ -59,6 +59,7 @@
 	use common\models\solicitudescontribuyente\DetalleSolicitudCreada;
 	use common\models\configuracion\solicitudplanilla\SolicitudPlanillaSearch;
 	use common\models\session\Session;
+	use common\models\totalizar\TotalizarGrid;
 
 
 	session_start();		// Iniciando session
@@ -111,6 +112,7 @@
 					$postData = [];
 					$request = [];
 					$model->load($postData);
+					self::actionAnularSession(['postInicial']);
 				}
 			}
 
@@ -121,13 +123,25 @@
 					$postData = $_SESSION['postInicial'];
 				}
 
-
 				$model->load($postData);
 				$dataProvider = $model->search($postData);
+
+				// Total de la consulta.
+				$total = $model->getTotal();
+
+				// Total liquidado
+				$totalLiquidado = $model->getTotalLiquidado();
+
+				// Total por pagina.
+				$totalizar = New TotalizarGrid();
+				$totalPagina = $totalizar->getTotalizar($dataProvider,'suma');
 
 	        	return $this->render('/aaee/listado/listado-solicitud-declaracion',[
 	        				'listadoModel' => $model,
 	        				'dataProvider' => $dataProvider,
+	        				'totalPagina' => $totalPagina,
+	        				'total' => $total,
+	        				'totalLiquidado' => $totalLiquidado,
 	        		]);
 
 
@@ -163,11 +177,31 @@
 							if ( isset($_SESSION['postInicial']) ) {
 								$postData = $_SESSION['postInicial'];
 							}
+
 	        				$dataProvider = $model->search($postData);
+
+// foreach ($dataProvider->models as $item ) {
+// 	$a[] = $item;
+// }
+// die(var_dump($model->getTotal()));
 	        				$model->load($postData);
+
+	        				// Total de la consulta.
+							$total = $model->getTotal();
+
+							// Total liquidado
+							$totalLiquidado = $model->getTotalLiquidado();
+
+							// Total por pagina.
+	        				$totalizar = New TotalizarGrid();
+							$totalPagina = $totalizar->getTotalizar($dataProvider,'suma');
+
 				        	return $this->render('/aaee/listado/listado-solicitud-declaracion',[
 				        				'listadoModel' => $model,
 				        				'dataProvider' => $dataProvider,
+				        				'totalPagina' => $totalPagina,
+				        				'total' => $total,
+				        				'totalLiquidado' => $totalLiquidado,
 				        		]);
 						}
 					}
