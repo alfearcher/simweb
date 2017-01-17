@@ -324,7 +324,7 @@
 						if ( $model->load($postData) ) {
 			    			if ( $model->validate() ) {
 
-			    				//$msjControls = $searchSustitutiva->validarEvento((int)$model->ano_impositivo, (int)$model->exigibilidad_periodo, $tipoDeclaracion);
+			    				$msjControls = $searchSustitutiva->validarEvento((int)$model->ano_impositivo, (int)$model->exigibilidad_periodo, $tipoDeclaracion);
 
 		    					if ( count($msjControls) == 0 ) {
 				   					$_SESSION['lapso'] = [
