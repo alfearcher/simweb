@@ -161,7 +161,7 @@
 				'80' => $rutaBaseFrontendVehiculo,
 				'83' => $rutaBaseFrontendVehiculo,
 
-				'39' => $rutaBaseFrontentPropaganda,
+				'39' => $rutaBaseFrontendPropaganda,
 
 			]
 	]
