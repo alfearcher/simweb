@@ -897,6 +897,13 @@
 	    	$idImpuesto = 0;
 	    	$aprobada = false;
 	    	$pendiente = false;
+	    	$tipo = '';
+
+	    	if ( $tipoDeclaracion == 1 ) {
+	    		$tipo = 'ESTIMADA';
+	    	} elseif ( $tipoDeclaracion == 2 ) {
+	    		$tipo = 'DFINITIVA';
+	    	}
 
 	    	$idImpuesto = self::getIdImpuestoSegunAnoImpositivo($añoImpositivo);
 
@@ -926,9 +933,10 @@
 	    		$mensajes[] = $solicitud;
 	    	}
 
-	    	// if ( trim($declaracion) !== "" ) {
-	    	// 	$mensajes[] = $declaracion;
-	    	// }
+	    	if ( !self::declaracionValida($idImpuesto, $periodo, $tipoDeclaracion) ) {
+	    		$mensajes[] = Yii::t('backend', 'La declaración ' . $tipo . ' del lapso ' . $añoImpositivo . ' - ' . $periodo . ', NO EXISTE. Cargue los montos de la declaración ' . $tipo . ' de dicho lapso, luego podrá realizar la sustitutiva.' );
+	    	}
+
 
 	    	if ( trim($mensajePendiente) !== "" ) {
 	    		$mensajes[] = $mensajePendiente;
@@ -961,6 +969,48 @@
 
 
 
+	    /**
+	     * Metodo que permite determinar si una declaracion de un laspo determinado
+	     * posee montos cargadas. Aqui se considera como montos cargados, aquella
+	     * declaracion cuya suma de los montos de cada rubro en estatus activos y
+	     * desbloqueados es igual o mayor a cero (0).
+	     *
+	     * @param  integer $idImpuesto identificador de la entidad "act-econ" que es donde
+	     * se guarda el maestro de la declaracion.
+	     * @param  integer $periodo identifica el periodo dentro del lapso.
+	     * @param  integer $tipoDeclaracion indica el tipo de declracion la cual se le cargara
+	     * la sustitutiva.
+	     * - tipo 1: estimada.
+		 * - tipo 2: definitiva.
+	     * @return boolean retorna un true o false.
+	     */
+	    public function declaracionValida($idImpuesto, $periodo, $tipoDeclaracion)
+	    {
+	    	$result = false;
+	    	$suma = 0;
+	    	$findModel = self::findActEconIngresos($idImpuesto, $periodo);
+	    	$resultados = $findModel->asArray()->all();
+
+	    	if ( count($resultados) > 0 ) {
+
+	    		if ( $tipoDeclaracion == 1 ) {			// Estimada
+
+	    			foreach ( $resultados as $resultado ) {
+	    				$suma += $resultado['estimado'];
+	    			}
+
+	    		} elseif ( $tipoDeclaracion == 2 ) {	// Definitiva
+
+	    			foreach ( $resultados as $resultado ) {
+	    				$suma += $resultado['reales'];
+	    			}
+
+	    		}
+	    	}
+
+	    	if ( $suma > 0 ) { $result = true; }
+	    	return $result;
+	    }
 
 
 
