@@ -902,7 +902,7 @@
 	    	if ( $tipoDeclaracion == 1 ) {
 	    		$tipo = 'ESTIMADA';
 	    	} elseif ( $tipoDeclaracion == 2 ) {
-	    		$tipo = 'DFINITIVA';
+	    		$tipo = 'DEFINITIVA';
 	    	}
 
 	    	$idImpuesto = self::getIdImpuestoSegunAnoImpositivo($añoImpositivo);
