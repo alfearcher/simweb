@@ -142,14 +142,14 @@
 <!-- Boton para salir de la actualizacion -->
 						<div class="col-sm-3" style="margin-left: 50px;">
 							<div class="form-group">
-								<?= Html::submitButton(Yii::t('backend', 'Quit'),
-																		  [
-																			'id' => 'btn-quit',
-																			'class' => 'btn btn-danger',
-																			'value' => 1,
-																			'style' => 'width: 100%',
-																			'name' => 'btn-quit',
-																		  ])
+								<?= Html::a(Yii::t('backend', 'Quit'), Url::to(['quit']),
+																					  [
+																						'id' => 'btn-quit',
+																						'class' => 'btn btn-danger',
+																						'value' => 1,
+																						'style' => 'width: 100%',
+																						'name' => 'btn-quit',
+																					  ])
 								?>
 							</div>
 						</div>
