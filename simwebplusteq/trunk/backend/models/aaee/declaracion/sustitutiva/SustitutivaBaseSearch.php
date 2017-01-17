@@ -461,7 +461,7 @@
 		    			  				    ->andWhere('estatus =:estatus', [':estatus' => 0])
 		    			  				    ->andWhere('inactivo =:inactivo', [':inactivo' => 0])
 		    			  				    ->andWhere('bloqueado =:bloqueado', [':bloqueado' => 0])
-		    							    ->andWhere(['BETWEEN', 'ano_impositivo', $añoLimite, $añoActual])
+		    							    ->andWhere(['BETWEEN', 'ano_impositivo', $añoActual, $añoActual])
 		    							    ->joinWith('actividadDetalle', false, 'INNER JOIN')
 		    							    ->orderBy([
 		    							   		'ano_impositivo' => SORT_ASC,
@@ -476,7 +476,7 @@
 		    			  				    ->andWhere('estatus =:estatus', [':estatus' => 0])
 		    			  				    ->andWhere('inactivo =:inactivo', [':inactivo' => 0])
 		    			  				    ->andWhere('bloqueado =:bloqueado', [':bloqueado' => 0])
-		    							    ->andWhere(['BETWEEN', 'ano_impositivo', $añoLimite, $añoActual - 1])
+		    							    ->andWhere(['BETWEEN', 'ano_impositivo', $añoActual - 1, $añoActual - 1])
 		    							    ->joinWith('actividadDetalle', false, 'INNER JOIN')
 		    							    ->orderBy([
 		    							   		'ano_impositivo' => SORT_ASC,
