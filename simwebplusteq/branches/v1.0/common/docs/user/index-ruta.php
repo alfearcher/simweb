@@ -102,6 +102,8 @@
 				'68' => $rutaBaseBackendVehiculo,
 				'80' => $rutaBaseBackendVehiculo,
 				'83' => $rutaBaseBackendVehiculo,
+
+				'39' => $rutaBaseBackendPropaganda,
 			],
 			'frontend' => [
 				'1' => $rutaBaseFrontendAAEE,
@@ -158,6 +160,8 @@
 				'68' => $rutaBaseFrontendVehiculo,
 				'80' => $rutaBaseFrontendVehiculo,
 				'83' => $rutaBaseFrontendVehiculo,
+
+				'39' => $rutaBaseFrontentPropaganda,
 
 			]
 	]
