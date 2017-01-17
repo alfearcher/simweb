@@ -62,7 +62,12 @@
 		 */
 		public function getRutaAyuda($tipo, $escenario)
 		{
-			return $rutaBase = self::getRutaBase()[$escenario][$tipo] . self::findTipoSolicitud($tipo);
+			$rutaBase = isset(self::getRutaBase()[$escenario][$tipo]) ? self::getRutaBase()[$escenario][$tipo] : '';
+			if ( $rutaBase == '' ) {
+				return '';
+			} else {
+			 	return $rutaBase . self::findTipoSolicitud($tipo);
+			}
 		}
 
 
