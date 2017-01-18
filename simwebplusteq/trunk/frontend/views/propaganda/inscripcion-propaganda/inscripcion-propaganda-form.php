@@ -55,8 +55,8 @@
  			'id' => 'id-inscripcion-propaganda-form',
  			'method' => 'post',
  			'enableClientValidation' => true,
- 			'enableAjaxValidation' => false,
- 			'enableClientScript' => false,
+ 			'enableAjaxValidation' => true,
+ 			'enableClientScript' => true,
  		]);
  	?>
 
@@ -175,7 +175,15 @@
                                                       'id'=> 'tipo-propaganda',
                                                       'prompt' => Yii::t('backend', 'Select'),
                                                       'style' => 'width:740px;',
-                                                      'onchange' => '$( "#id-descripcion" ).html( $( "#tipo-propaganda option:selected").text() )',
+                                                      'onchange' => '$( "#id-descripcion" ).html( $( "#tipo-propaganda option:selected").text() );
+																	 $.post( "' . Yii::$app->urlManager
+	                                                                                       ->createUrl('/propaganda/inscripcionpropaganda/inscripcion-propaganda/determinar-base-calculo') . '&t=' . '" + $(this).val(),
+	                                                                                   		           			 function( data ) {
+	                                                                                   		           			 	//alert(data);
+	                                                                                   		           			 	//$( "#base-calcuo" ).html( "" );
+	                                                                                                             	$( "#base-calculo" ).val(data);
+	                                                                                                       		}
+	                                                                                    );',
                                                                 ])->label(false);
 	                            ?>
 							</div>
@@ -190,6 +198,22 @@
 																		'style' => 'width:140%;background-color:white;',
 																		'readOnly' => true,
 																 	])->label(false) ?>
+							</div>
+						</div>
+
+
+						<div class="row" style="width:100%;padding:0px;">
+							<div class="col-sm-2" style="width: 18%;padding:0px;padding-left: 20px;">
+								<p><strong><?=Html::encode(Yii::t('frontend', 'Base:'))?></strong></p>
+							</div>
+							<div class="col-sm-4" style="width:60%;padding:0px;margin-left:15px;">
+								<?= $form->field($model, 'base_calculo')->textInput([
+																				'id' => 'base-calculo',
+																				'class' => 'form-control',
+																				'style' => 'width:10%;',
+																				'readOnly' => true,
+																			])->label(false);
+								?>
 							</div>
 						</div>
 
@@ -420,9 +444,11 @@
                                                                                		           																								       '&f=' . '" + $("#fecha-inicio").val(),
                                                                                		           			 function( data ) {
                                                                                		           			 	//$( "#fecha-fin" ).html( "" );
-                                                                                                         	$( "#fecha-fin" ).html( data );
+                                                                                                         	$( "#fecha-fin" ).val( data );
                                                                                                    		}
-                                                                                );'
+                                                                                );
+
+                                                                                '
                                                                         ])->label(false);
 		                            ?>
 								</div>
@@ -600,3 +626,10 @@
 	</div>
 	<?php ActiveForm::end(); ?>
 </div>
+
+<?php
+	$this->registerJs('
+
+
+	');
+ ?>
