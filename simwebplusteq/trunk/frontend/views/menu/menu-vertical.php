@@ -186,7 +186,7 @@
 		        		//	PROPAGANDA COMERCIAL
 		        		['label' => Icon::show('fa fa-file-powerpoint-o',['class' => $typeLong], $typeIcon) . '&nbsp; Propaganda Comercial',
 		        			'items' => [
-		        						['label' => 'Inscripción de Propagandas', 'url' => ['/propaganda/crearpropaganda/crear-propaganda/crear-propaganda'	, 'id' => 75]],
+		        						['label' => 'Inscripción de Propagandas', 'url' => ['/propaganda/inscripcionpropaganda/inscripcion-propaganda/index', 'id' => 75]],
 		        						['label' => 'Cambio de Otros Datos de Propaganda', 'url' => ['/propaganda/modificarpropaganda/modificar-propaganda/vista-seleccion', 'id' => 84]],
 		        						//['label' => 'Renovación de Propagandas', 'url' => '#'],
 		        						['label' => 'Desincorporación de Propaganda', 'url' => ['propaganda/desincorporarpropaganda/desincorporar-propaganda/vista-seleccion', 'id' => 97]],
