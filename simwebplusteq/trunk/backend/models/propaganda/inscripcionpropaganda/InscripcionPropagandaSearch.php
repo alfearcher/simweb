@@ -356,6 +356,19 @@
 
 
 
+
+		/***/
+		public function getBaseCalculo($tipo)
+		{
+
+			$model = TipoPropaganda::findOne($tipo);
+			return (string)$model['base_calculo'];
+
+		}
+
+
+
+
 		/***/
 		public function getFechaHasta($cantidadTiempo, $idTiempo, $fechaInicio)
 		{
