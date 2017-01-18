@@ -52,7 +52,7 @@
     use backend\models\propaganda\mediodifusion\MedioDifusion;
     use backend\models\solicitud\estatus\EstatusSolicitud;
     use common\models\solicitudescontribuyente\SolicitudesContribuyente;
-
+    use backend\models\utilidad\tiempo\Tiempo;
 
 
     /**
@@ -158,6 +158,15 @@
             return $tipo = SolicitudesContribuyente::getDescripcionTipoSolicitud($nroSolicitud);
          }
 
+
+        /**
+         * Relacion con la entidad "tiempos"
+         * @return Active Record.
+         */
+        public function getTiempo()
+        {
+            return $this->hasOne(Tiempo::className(), ['id_tiempo' => 'id_tiempo']);
+        }
 
     }
 

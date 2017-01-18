@@ -56,7 +56,7 @@
 	use backend\models\utilidad\tarifa\propaganda\TarifaPropaganda;
 	use common\models\ordenanza\OrdenanzaBase;
 	use yii\helpers\ArrayHelper;
-
+	use backend\models\utilidad\tiempo\Tiempo;
 
 
 	/**
@@ -284,6 +284,27 @@
 	        }
 
 	        return;
+		}
+
+
+
+
+		/**
+		 * Metodo que genera una lista con las registros de la entidad "tiempos"
+		 * @param  array  $tiempo identificadores de  la entidad.
+		 * @return array
+		 */
+		public function getListaTiempo($tiempo = [])
+		{
+			if ( count($tiempo) > 0 ) {
+				$modelTiempo = Tiempo::find()->where(['IN', 'id_tiempo', $tiempo])
+			                                 ->all();
+			} else {
+				$modelTiempo = Tiempo::find()->all();
+			}
+
+			return ArrayHelper::map($modelTiempo,'id_tiempo','descripcion');
+
 		}
 
 

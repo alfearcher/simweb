@@ -80,7 +80,7 @@
     	public $idioma;
     	public $observacion;
     	public $fecha_fin;
-    	public $fecha_guardado;
+    	public $fecha_inicio;
     	public $fecha_hora;
     	public $usuario;
     	public $user_funcionario;
@@ -90,6 +90,7 @@
     	public $ancho;
     	public $profundidad;
     	public $nombre_propaganda;
+    	public $mts;
     	public $descripcion;
 
 
@@ -124,11 +125,14 @@
 	        	   'cantidad_propagandas',],
 	        	  'integer',
 	        	  'message' => Yii::t('backend', '{attribute} no valido')],
+	        	  ['cantidad_propagandas',
+	        	  'number',
+	        	  'message' => Yii::t('backend', '{attribute} no valido')],
 	        	  [['observacion', 'direccion',
 	        	  	'descripcion',],
 	        	  'string',
 	        	  'message' => Yii::t('backend', '{attribute} no valido')],
-	        	  [['alto', 'ancho', 'profundidad'],
+	        	  [['alto', 'ancho', 'profundidad', 'mts'],
 	        	  'double',
 	        	  'message' => Yii::t('backend', '{attribute} no valido')],
 	        	  [['estatus', 'inactivo', 'bebidas_alcoholicas',
