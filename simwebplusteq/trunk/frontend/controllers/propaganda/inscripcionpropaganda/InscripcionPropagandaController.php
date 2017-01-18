@@ -273,7 +273,26 @@
 				return $searchPropaganda->getFechaHasta($cantidad, $idTiempo, $fecha);
 			}
 
-			return '';
+			//return '';
+		}
+
+
+
+
+		/***/
+		public function actionDeterminarBaseCalculo()
+		{
+			$request = Yii::$app->request->get();
+			$tipo = isset($request['t']) ? $request['t'] : 0;		// tipo de propaganda.
+
+			$idContribuyente = isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : 0;
+
+			if ( $tipo > 0 ) {
+
+				$searchPropaganda = New InscripcionPropagandaSearch($idContribuyente);
+				return $searchPropaganda->getBaseCalculo($tipo);
+
+			}
 		}
 
 
