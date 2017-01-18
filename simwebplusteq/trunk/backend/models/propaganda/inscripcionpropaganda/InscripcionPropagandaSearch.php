@@ -189,6 +189,53 @@
 
 
 		/**
+		 * Metodo que genera una lista con las clases de las propagandas. Si recibe
+		 * un arreglo vacio busca todos las clases de las propagandas.
+		 * @param  array  $uso identificadores de la propaganda.
+		 * @return array
+		 */
+		public function getListaMewdioDifusion($difusion = [])
+		{
+			if ( count($difusion) > 0 ) {
+				$modelDifusion = MedioDifusion::find()->where(['IN', 'medio_difusion', $difusion])
+			                                 ->all();
+			} else {
+				$modelDifusion = MedioDifusion::find()->all();
+			}
+
+			return ArrayHelper::map($modelDifusion,'medio_difusion','descripcion');
+
+		}
+
+
+
+
+		/**
+		 * Metodo que genera una lista con las clases de las propagandas. Si recibe
+		 * un arreglo vacio busca todos las clases de las propagandas.
+		 * @param  array  $uso identificadores de la propaganda.
+		 * @return array
+		 */
+		public function getListaMewdioTransporte($transporte = [])
+		{
+			if ( count($transporte) > 0 ) {
+				$modelTransporte = MedioTransporte::find()->where(['IN', 'medio_transporte', $transporte])
+			                                 ->all();
+			} else {
+				$modelTransporte = MedioTransporte::find()->all();
+			}
+
+			return ArrayHelper::map($modelTransporte,'medio_transporte','descripcion');
+
+		}
+
+
+
+
+
+
+
+		/**
 		 * Metodo para obtener el identificador de la ordenanza.
 		 * @param integer $añoImpositivo año impositivo.
 		 * @return integer
@@ -305,6 +352,52 @@
 
 			return ArrayHelper::map($modelTiempo,'id_tiempo','descripcion');
 
+		}
+
+
+
+		/***/
+		public function getFechaHasta($cantidadTiempo, $idTiempo, $fechaInicio)
+		{
+			$fecha = '';
+			$fechaHasta = '';
+			$result = '';
+			$findModel = Tiempo::findOne($idTiempo);
+
+			if ( $findModel !== null ) {
+				$fechaIn = date('Y-m-d', strtotime($fechaInicio));
+				$fecha = date_create($fechaIn);
+
+				$fechaHasta = date_format($fecha, 'Y-m-d');
+
+				if ( $findModel->descripcion == 'Hora(s)' ) {
+
+					$t = $cantidadTiempo . ' hours';
+					$result = date_add(date_create($fechaHasta), date_interval_create_from_date_string($t));
+
+				} elseif ( $findModel->descripcion == 'Dia(s)' ) {
+
+					$t = $cantidadTiempo . ' days';
+					$result = date_add(date_create($fechaHasta), date_interval_create_from_date_string($t));
+
+				} elseif ( $findModel->descripcion == 'Semana(s)' ) {
+
+					$t = $cantidadTiempo . ' weeks';
+					$result = date_add(date_create($fechaHasta), date_interval_create_from_date_string($t));
+
+				} elseif ( $findModel->descripcion == 'Mese(s)' ) {
+
+					$t = $cantidadTiempo . ' months';
+					$result = date_add(date_create($fechaHasta), date_interval_create_from_date_string($t));
+
+				} elseif ( $findModel->descripcion == 'Año(s)' ) {
+
+					$t = $cantidadTiempo . ' years';
+					$result = date_add(date_create($fechaHasta), date_interval_create_from_date_string($t));
+				}
+			}
+
+			return date_format($result, 'd-m-Y');
 		}
 
 
