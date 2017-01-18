@@ -40,13 +40,14 @@
 	*@var $this yii\web\View */
 
 	?>
-<div class="create-formulario">
+<div class="create-formulario" style="width: 100%;">
     <?= $this->render('@frontend/views/propaganda/inscripcion-propaganda/inscripcion-propaganda-form', [
 												        'model' => $model,
 												        'caption' => $caption,
 												        'subCaption' => $subCaption,
 												        'rutaAyuda' => $rutaAyuda,
 												        'listaUsoPropaganda' => $listaUsoPropaganda,
+												        'listaClasePropaganda' => $listaClasePropaganda,
 
 					    ]) ?>
 </div>

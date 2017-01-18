@@ -72,7 +72,7 @@
 	<?=$form->field($model, 'estatus')->hiddenInput(['value' => $model->estatus])->label(false); ?>
 
 	<meta http-equiv="refresh">
-    <div class="panel panel-primary"  style="width: 90%;">
+    <div class="panel panel-primary"  style="width: 100%;">
         <div class="panel-heading">
         	<h3><?= Html::encode($caption) ?></h3>
         </div>
@@ -82,35 +82,100 @@
         	<div class="container-fluid">
         		<div class="col-sm-12" >
 
-		        	<div class="row" style="width: 100%;">
+		        	<div class="row" style="width:100%;">
 						<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding-left: 5px;padding-top: 0px;">
-							<h4><?=Html::encode(Yii::t('frontend', $subCaption))?></h4>
+							<h4><strong><?=Html::encode(Yii::t('frontend', $subCaption))?></strong></h4>
 						</div>
 
-						<div class="col-sm-2" style="width: 10%;padding:0px;">
-							<p><strong><?=Html::encode(Yii::t('frontend', 'Uso:'))?></strong></p>
+						<div class="row" style="border-bottom: 1px solid; padding-left: 5px;padding-top: 10px;">
+							<h4><strong><?=Html::encode(Yii::t('frontend', 'Datos Básicos'))?></strong></h4>
 						</div>
-						<div class="col-sm-4" style="width:50%;padding:0px;margin-left:100px;">
-							 <?= $form->field($model, 'uso_propaganda')
-							          ->dropDownList($listaUsoPropaganda, [
-                                                              'id'=> 'uso_propaganda',
-                                                              'prompt' => Yii::t('backend', 'Select'),
-                                                              'style' => 'width:340px;',
-                                                              // 'onchange' => '$.post( "' . Yii::$app->urlManager
-                                                              //                      		           ->createUrl('/tasa/liquidar/liquidar-tasa/generar-lista') . '&i=' . '" + $(this).val(),
-                                                              //                      		           			 function( data ) {
-                                                              //                      		           			 	$( "select#id-codigo" ).html( "" );
-                                                              //                      		           			 	$( "select#id-grupo-subnivel" ).html( "" );
-                                                              //                      		           			 	$( "select#codigo" ).html( "" );
-                                                              //                      		           			 	$( "#id-codigo-descripcion" ).html( "" );
-                                                              //                                                	$( "select#id-ano-impositivo" ).html( data );
-                                                              //                                          		}
-                                                              //                       );'
-                                                                        ])->label(false);
-                            ?>
+
+						<div class="row" style="width:100%;padding:0px;margin-top: 20px;">
+							<div class="col-sm-2" style="width: 10%;padding:0px;padding-left: 20px;">
+								<p><strong><?=Html::encode(Yii::t('frontend', 'Nombre:'))?></strong></p>
+							</div>
+							<div class="col-sm-4" style="width:60%;padding:0px;margin-left:100px;">
+								<?= $form->field($model, 'nombre_propaganda')->textInput([
+																				'id' => 'nombre-propaganda',
+																				'class' => 'form-control',
+																				'style' => 'width:100%;',
+																			])->label(false);
+								?>
+							</div>
+						</div>
+
+<!-- USO PROPAGANDA -->
+						<div class="row" style="width:100%;padding:0px;">
+							<div class="col-sm-2" style="width:10%;padding:0px;padding-left: 20px;">
+								<p><strong><?=Html::encode(Yii::t('frontend', 'Uso:'))?></strong></p>
+							</div>
+							<div class="col-sm-4" style="width:50%;padding:0px;margin-left:100px;">
+								 <?= $form->field($model, 'uso_propaganda')
+								          ->dropDownList($listaUsoPropaganda, [
+	                                                              'id'=> 'uso-propaganda',
+	                                                              'prompt' => Yii::t('backend', 'Select'),
+	                                                              'style' => 'width:340px;',
+	                                                              'onchange' => '$( "select#tipo-propaganda" ).html( "" );',
+	                                                                        ])->label(false);
+	                            ?>
+							</div>
+						</div>
+
+<!-- CLASE PROPAGANDA -->
+
+						<div class="row" style="width:100%;padding:0px;">
+							<div class="col-sm-2" style="width:10%;padding:0px;padding-left: 20px;">
+								<p><strong><?=Html::encode(Yii::t('frontend', 'Clase:'))?></strong></p>
+							</div>
+							<div class="col-sm-4" style="width:50%;padding:0px;margin-left:100px;">
+								 <?= $form->field($model, 'clase_propaganda')
+								          ->dropDownList($listaClasePropaganda, [
+	                                                              'id'=> 'clase-propaganda',
+	                                                              'prompt' => Yii::t('backend', 'Select'),
+	                                                              'style' => 'width:340px;',
+	                                                              'onchange' => '$.post( "' . Yii::$app->urlManager
+	                                                                                   		           ->createUrl('/propaganda/inscripcionpropaganda/inscripcion-propaganda/generar-lista-tipo') . '&c=' . '" + $(this).val() +  "' .
+	                                                                                   		           																								'&u=' . '" + $("#uso-propaganda").val(),
+	                                                                                   		           			 function( data ) {
+	                                                                                   		           			 	$( "select#tipo-propaganda" ).html( "" );
+	                                                                                                             	$( "select#tipo-propaganda" ).html( data );
+	                                                                                                       		}
+	                                                                                    );'
+	                                                                        ])->label(false);
+	                            ?>
+							</div>
+						</div>
+
+<!-- TIPO DE PROPAGANDA -->
+
+						<div class="row" style="width:100%;padding:0px;">
+							<div class="col-sm-2" style="width:10%;padding:0px;padding-left: 20px;">
+								<p><strong><?=Html::encode(Yii::t('frontend', 'Tipo:'))?></strong></p>
+							</div>
+							<div class="col-sm-4" style="width:50%;padding:0px;margin-left:100px;">
+								 <?= $form->field($model, 'tipo_propaganda')
+								          ->dropDownList([], [
+                                                      'id'=> 'tipo-propaganda',
+                                                      'prompt' => Yii::t('backend', 'Select'),
+                                                      'style' => 'width:740px;',
+                                                      'onchange' => '$( "#id-descripcion" ).html( $( "#tipo-propaganda option:selected").text() )',
+                                                                ])->label(false);
+	                            ?>
+							</div>
 						</div>
 
 
+						<div class="row" style="width:100%;padding:0px;">
+							<div class="col-sm-4" style="width:50%;padding:0px;margin-left:205px;">
+								<?= $form->field($model, 'descripcion')->textArea([
+																		'id' => 'id-descripcion',
+																		'rows' => 4,
+																		'style' => 'width:140%;background-color:white;',
+																		'readOnly' => true,
+																 	])->label(false) ?>
+							</div>
+						</div>
 
 					</div>
 
