@@ -53,17 +53,21 @@
 	use backend\models\propaganda\tipo\TipoPropaganda;
 	use backend\models\propaganda\mediodifusion\MedioDifusion;
 	use backend\models\propaganda\mediotransporte\MedioTransporte;
+	use backend\models\utilidad\tarifa\propaganda\TarifaPropaganda;
+	use common\models\ordenanza\OrdenanzaBase;
 	use yii\helpers\ArrayHelper;
 
 
 
-
+	/**
+	 * Clase
+	 */
 	class InscripcionPropagandaSearch
 	{
 
 		private $_id_contribuyente;
 
-
+		const IMPUESTO = 4;
 
 		/**
 		 * Metodo constructor de la clase.
@@ -141,12 +145,17 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que genera una lista con los usos de la propaganda. Si recibe
+		 * un arreglo vacio busca todos los usos de las propagandas.
+		 * @param  array  $uso identificadores de la propaganda.
+		 * @return array
+		 */
 		public function getListaUsoPropaganda($uso = [])
 		{
 			if ( count($uso) > 0 ) {
 				$modelUso = UsoPropaganda::find()->where(['IN', 'uso_propaganda', $uso])
-			                                 ->all();
+			                                     ->all();
 			} else {
 				$modelUso = UsoPropaganda::find()->all();
 			}
@@ -154,6 +163,129 @@
 			return ArrayHelper::map($modelUso,'uso_propaganda','descripcion');
 
 		}
+
+
+
+		/**
+		 * Metodo que genera una lista con las clases de las propagandas. Si recibe
+		 * un arreglo vacio busca todos las clases de las propagandas.
+		 * @param  array  $uso identificadores de la propaganda.
+		 * @return array
+		 */
+		public function getListaClasePropaganda($clase = [])
+		{
+			if ( count($clase) > 0 ) {
+				$modelClase = ClasePropaganda::find()->where(['IN', 'clase_propaganda', $clase])
+			                                 ->all();
+			} else {
+				$modelClase = ClasePropaganda::find()->all();
+			}
+
+			return ArrayHelper::map($modelClase,'clase_propaganda','descripcion');
+
+		}
+
+
+
+
+		/**
+		 * Metodo para obtener el identificador de la ordenanza.
+		 * @param integer $añoImpositivo año impositivo.
+		 * @return integer
+		 */
+		public function getIdOrdenanza($añoImpositivo)
+		{
+			$id = 0;
+			$añoOrdenanza = 0;
+			$añoOrdenanza = OrdenanzaBase::getAnoOrdenanzaSegunAnoImpositivoImpuesto($añoImpositivo, self::IMPUESTO);
+			if ( $añoOrdenanza > 0 ) {
+				$ordenanza = OrdenanzaBase::getIdOrdenanza($añoOrdenanza, self::IMPUESTO);
+				if ( count($ordenanza) > 0 ) {
+					$id = (int)$ordenanza[0]['id_ordenanza'];
+				}
+			}
+
+			return $id;
+		}
+
+
+
+
+
+
+		/**
+		 * Metodo que obtiene los identificadores de uso-propaganda, clase-propaganda,
+		 * tipos-propagandas.
+		 * @param  string $nombreCampo nombre del atributo.
+		 * @param  integer $idOrdenanza identificador de la ordenanza.
+		 * @return array|null.
+		 */
+		public function getIdentificadorTarifaPropaganda($nombreCampo, $idOrdenanza)
+		{
+			if ( $idOrdenanza > 0 ) {
+
+				$model = TarifaPropaganda::find()->select($nombreCampo)
+												 ->distinct($nombreCampo)
+												 ->where('id_ordenanza =:id_ordenanza',
+												 			['id_ordenanza' => $idOrdenanza])
+												 ->asArray()
+												 ->all();
+				return $model;
+			}
+
+			return null;
+		}
+
+
+
+
+		/***/
+		public function getIdentificadorSegunAnoImpositivo($nombreCampo, $añoImpositivo)
+		{
+			$idOrdenanza = self::getIdOrdenanza($añoImpositivo);
+			if ( $idOrdenanza > 0 ) {
+				return self::getIdentificadorTarifaPropaganda($nombreCampo, $idOrdenanza);
+			}
+			return null;
+		}
+
+
+
+
+		/***/
+		public function generarViewListaTipoPropaganda($uso, $clase, $añoImpositivo)
+		{
+			$model = [];
+	    	if ( $uso > 0 && $clase > 0 && $añoImpositivo > 0 ) {
+
+	    		$idOrdenanza = self::getIdOrdenanza($añoImpositivo);
+				if ( $idOrdenanza > 0 ) {
+
+					$model = TarifaPropaganda::find()->alias('A')
+													 ->select(['T.tipo_propaganda','descripcion'])
+										 			 ->distinct('A.tipo_propaganda')
+										 			 ->joinWith('tipoPropaganda T', true, 'INNER JOIN')
+						                 			 ->where('uso_propaganda =:uso_propaganda',
+																[':uso_propaganda' => $uso])
+						                 			 ->andWhere('clase_propaganda =:clase_propaganda',
+																[':clase_propaganda' => $clase])
+						                 			 ->andWhere('id_ordenanza =:id_ordenanza',
+																[':id_ordenanza' => $idOrdenanza])
+									     			->all();
+				}
+			}
+	        if ( count($model) > 0 ) {
+	        	echo "<option value='0'>" . "Seleccione..." . "</option>";
+	            foreach ( $model as $mod ) {
+	                echo "<option value='" . $mod->tipoPropaganda->tipo_propaganda . "'>" .  $mod->tipoPropaganda->tipo_propaganda . ' - ' . $mod->tipoPropaganda->descripcion . "</option>";
+	            }
+	        } else {
+	            echo "<option> - </option>";
+	        }
+
+	        return;
+		}
+
 
 	}
  ?>

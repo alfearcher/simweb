@@ -90,6 +90,7 @@
     	public $ancho;
     	public $profundidad;
     	public $nombre_propaganda;
+    	public $descripcion;
 
 
 
@@ -123,7 +124,8 @@
 	        	   'cantidad_propagandas',],
 	        	  'integer',
 	        	  'message' => Yii::t('backend', '{attribute} no valido')],
-	        	  [['observacion', 'direccion',],
+	        	  [['observacion', 'direccion',
+	        	  	'descripcion',],
 	        	  'string',
 	        	  'message' => Yii::t('backend', '{attribute} no valido')],
 	        	  [['alto', 'ancho', 'profundidad'],
@@ -146,6 +148,7 @@
 	     		  [['fecha_guardado'],
 	     		    'default',
 	     		    'value' => date('Y-m-d')],
+
 
 	        ];
 	    }
