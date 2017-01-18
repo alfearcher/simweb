@@ -42,9 +42,9 @@
 	use yii\widgets\ActiveForm;
 	use yii\web\View;
 	//use yii\widgets\Pjax;
-	//use backend\controllers\utilidad\documento\DocumentoRequisitoController;
 	//use common\models\contribuyente\ContribuyenteBase;
 	use yii\widgets\DetailView;
+	use yii\widgets\MaskedInput;
 
 ?>
 
@@ -109,7 +109,7 @@
 <!-- DIRECCION DDE UBICACION DE LA PROPAGANDA -->
 						<div class="row" style="width:100%;padding:0px;">
 							<div class="col-sm-2" style="width: 18%;padding:0px;padding-left: 20px;">
-								<p><strong><?=Html::encode(Yii::t('frontend', 'Direccion (Ubicación):'))?></strong></p>
+								<p><strong><?=Html::encode(Yii::t('frontend', 'Dirección (Ubicación):'))?></strong></p>
 							</div>
 							<div class="col-sm-4" style="width:60%;padding:0px;margin-left:15px;">
 								<?= $form->field($model, 'direccion')->textInput([
@@ -192,6 +192,266 @@
 																 	])->label(false) ?>
 							</div>
 						</div>
+
+<!-- <div class="row" style="width: 100%;"> -->
+						<div class="col-5" style="width: 50%;float: left;">
+
+							<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1; padding-left: 5px;margin-top:20px;">
+								<h4><strong><?=Html::encode(Yii::t('frontend', 'Dimensiones, Medidas y Cantidades'))?></strong></h4>
+							</div>
+
+<!-- CANTIDAD DE PROPAGANDA -->
+							<div class="row" style="width:100%;padding:0px;margin-top: 20px;">
+								<div class="col-sm-2" style="width: 10%;padding:0px;padding-left: 20px;">
+									<p><strong><?=Html::encode(Yii::t('frontend', 'Cantidad:'))?></strong></p>
+								</div>
+								<div class="col-sm-4" style="width:40%;padding:0px;margin-left:100px;">
+									<?= $form->field($model, 'cantidad_propagandas')->textInput([
+																					'id' => 'cantidad-propagandas',
+																					'class' => 'form-control',
+																					'style' => 'width:100%;',
+																				])->label(false);
+									?>
+								</div>
+							</div>
+
+<!-- ALTO -->
+
+							<div class="row" style="width:100%;padding:0px;">
+								<div class="col-sm-2" style="width:10%;padding:0px;padding-left: 20px;">
+									<p><strong><?=Html::encode(Yii::t('frontend', 'Alto:'))?></strong></p>
+								</div>
+
+								<div class="col-sm-4" style="width: 40%;padding:0px;margin-left:100px;">
+									<div class="alto">
+										<?= $form->field($model, 'alto')->widget(MaskedInput::className(), [
+																						'id' => 'alto',
+																						//'mask' => '9{1,3}[,9{1,3}][,9{1,3}]',
+																						'options' => [
+																							'class' => 'form-control',
+																							'style' => 'width: 100%;',
+																							'placeholder' => '0.00',
+																						],
+																						'clientOptions' => [
+																							'alias' =>  'decimal',
+																							'digits' => 2,
+																							'digitsOptional' => false,
+																							'groupSeparator' => ',',
+																							'removeMaskOnSubmit' => true,
+																							// 'allowMinus'=>false,
+																							//'groupSize' => 3,
+																							'radixPoint'=> ".",
+																							'autoGroup' => true,
+																							//'decimalSeparator' => ',',
+																						],
+
+																	  				  ])->label(false) ?>
+									</div>
+								</div>
+							</div>
+
+<!-- ANCHO -->
+
+							<div class="row" style="width:100%;padding:0px;">
+								<div class="col-sm-2" style="width:10%;padding:0px;padding-left: 20px;">
+									<p><strong><?=Html::encode(Yii::t('frontend', 'Ancho:'))?></strong></p>
+								</div>
+
+								<div class="col-sm-4" style="width: 40%;padding:0px;margin-left:100px;">
+									<div class="alto">
+										<?= $form->field($model, 'ancho')->widget(MaskedInput::className(), [
+																						'id' => 'ancho',
+																						//'mask' => '9{1,3}[,9{1,3}][,9{1,3}]',
+																						'options' => [
+																							'class' => 'form-control',
+																							'style' => 'width: 100%;',
+																							'placeholder' => '0.00',
+																						],
+																						'clientOptions' => [
+																							'alias' =>  'decimal',
+																							'digits' => 2,
+																							'digitsOptional' => false,
+																							'groupSeparator' => ',',
+																							'removeMaskOnSubmit' => true,
+																							// 'allowMinus'=>false,
+																							//'groupSize' => 3,
+																							'radixPoint'=> ".",
+																							'autoGroup' => true,
+																							//'decimalSeparator' => ',',
+																						],
+
+																	  				  ])->label(false) ?>
+									</div>
+								</div>
+							</div>
+
+
+<!-- PROFUNDIDAD -->
+							<div class="row" style="width:100%;padding:0px;">
+								<div class="col-sm-2" style="width:10%;padding:0px;padding-left: 20px;">
+									<p><strong><?=Html::encode(Yii::t('frontend', 'Profundidad:'))?></strong></p>
+								</div>
+
+								<div class="col-sm-4" style="width: 40%;padding:0px;margin-left:100px;">
+									<div class="profundidad">
+										<?= $form->field($model, 'profundidad')->widget(MaskedInput::className(), [
+																						'id' => 'profundidad',
+																						//'mask' => '9{1,3}[,9{1,3}][,9{1,3}]',
+																						'options' => [
+																							'class' => 'form-control',
+																							'style' => 'width: 100%;',
+																							'placeholder' => '0.00',
+																						],
+																						'clientOptions' => [
+																							'alias' =>  'decimal',
+																							'digits' => 2,
+																							'digitsOptional' => false,
+																							'groupSeparator' => ',',
+																							'removeMaskOnSubmit' => true,
+																							// 'allowMinus'=>false,
+																							//'groupSize' => 3,
+																							'radixPoint'=> ".",
+																							'autoGroup' => true,
+																							//'decimalSeparator' => ',',
+																						],
+
+																	  				  ])->label(false) ?>
+									</div>
+								</div>
+							</div>
+
+
+<!-- METROS -->
+							<div class="row" style="width:100%;padding:0px;">
+								<div class="col-sm-2" style="width:10%;padding:0px;padding-left: 20px;">
+									<p><strong><?=Html::encode(Yii::t('frontend', 'Metros:'))?></strong></p>
+								</div>
+
+								<div class="col-sm-4" style="width: 40%;padding:0px;margin-left:100px;">
+									<div class="mts">
+										<?= $form->field($model, 'mts')->widget(MaskedInput::className(), [
+																						'id' => 'mts',
+																						//'mask' => '9{1,3}[,9{1,3}][,9{1,3}]',
+																						'options' => [
+																							'class' => 'form-control',
+																							'style' => 'width: 100%;',
+																							'placeholder' => '0.00',
+																						],
+																						'clientOptions' => [
+																							'alias' =>  'decimal',
+																							'digits' => 2,
+																							'digitsOptional' => false,
+																							'groupSeparator' => ',',
+																							'removeMaskOnSubmit' => true,
+																							// 'allowMinus'=>false,
+																							//'groupSize' => 3,
+																							'radixPoint'=> ".",
+																							'autoGroup' => true,
+																							//'decimalSeparator' => ',',
+																						],
+
+																	  				  ])->label(false) ?>
+									</div>
+								</div>
+								<div class="col-sm-2" id="metros" style="width:10%;padding:0px;padding-left: 20px;">
+									<p><strong><?=Html::encode(Yii::t('frontend', 'Lineales'))?></strong></p>
+								</div>
+							</div>
+
+						</div>
+
+
+						<div class="col-4" style="width: 45%;float: right;">
+
+							<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1; padding-left: 5px;margin-top:20px;">
+								<h4><strong><?=Html::encode(Yii::t('frontend', 'Lapso de Publicación'))?></strong></h4>
+							</div>
+
+<!-- FECHA DE INICIO -->
+							<div class="row" style="width:100%;padding:0px;margin-top:20px;">
+								<div class="col-sm-2" style="width:34%;padding:0px;padding-left: 20px;">
+									<p><strong><?=Html::encode(Yii::t('frontend', 'Fecha Inicio:'))?></strong></p>
+								</div>
+
+								<div class="col-sm-4" style="width: 25%;padding:0px;margin-left:0px;">
+									<div class="fecha-inicio">
+										<?= $form->field($model, 'fecha_inicio')->widget(\yii\jui\DatePicker::classname(),[
+																							  'clientOptions' => [
+																									'maxDate' => '+0d',	// Bloquear los dias en el calendario a partir del dia siguiente al actual.
+																									'changeMonth' => true,
+																									'changeYear' => true,
+																								],
+																							  'language' => 'es-ES',
+																							  'dateFormat' => 'dd-MM-yyyy',
+																							  'options' => [
+																							  		'id' => 'fecha-inicio',
+																									'class' => 'form-control',
+																									'readonly' => true,
+																									'style' => 'background-color: white;width:100%;',
+
+																								]
+																					])->label(false) ?>
+									</div>
+								</div>
+							</div>
+
+<!-- CANTIDAD DE TIEMPO	 -->
+							<div class="row" style="width:100%;padding:0px;">
+								<div class="col-sm-2" style="width: 10%;padding:0px;padding-left: 20px;">
+									<p><strong><?=Html::encode(Yii::t('frontend', 'Cantidad:'))?></strong></p>
+								</div>
+								<div class="col-sm-4" style="width:15%;padding:0px;margin-left:115px;float: left;">
+									<?= $form->field($model, 'cantidad_tiempo')->textInput([
+																					'id' => 'cantidad-tiempo',
+																					'class' => 'form-control',
+																					'style' => 'width:100%;',
+																				])->label(false);
+									?>
+								</div>
+								<div class="col-sm-4" style="width:35%;padding:0px;float:left;margin: 0px;padding-left: 10px;">
+									 <?= $form->field($model, 'id_tiempo')
+									          ->dropDownList($listaTiempo, [
+		                                                              'id'=> 'id-tiempo',
+		                                                              'prompt' => Yii::t('backend', 'Select'),
+		                                                              'style' => 'width:140px;',
+		                                                             //'onchange' => '$( "select#tipo-propaganda" ).html( "" );',
+		                                                                        ])->label(false);
+		                            ?>
+								</div>
+
+							</div>
+
+<!-- FECHA FIN -->
+							<div class="row" style="width:100%;padding:0px;">
+								<div class="col-sm-2" style="width: 34%;padding:0px;padding-left: 20px;">
+									<p><strong><?=Html::encode(Yii::t('frontend', 'Fecha Hasta:'))?></strong></p>
+								</div>
+								<div class="col-sm-4" style="width:25%;padding:0px;margin-left: 5px;">
+									<?= $form->field($model, 'fecha_fin')->textInput([
+																					'id' => 'fecha-fin',
+																					'class' => 'form-control',
+																					'style' => 'width:100%;',
+																					'readOnly' => true,
+																				])->label(false);
+									?>
+								</div>
+							</div>
+
+						</div>
+
+					</div>
+
+
+
+
+					<div class="row" style="width:100%;">
+
+						<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1; padding-left: 5px;margin-top:20px;">
+							<h4><strong><?=Html::encode(Yii::t('frontend', 'Otras Caracteristicas'))?></strong></h4>
+						</div>
+
+
+
 
 					</div>
 

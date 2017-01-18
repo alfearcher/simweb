@@ -48,6 +48,7 @@
 												        'rutaAyuda' => $rutaAyuda,
 												        'listaUsoPropaganda' => $listaUsoPropaganda,
 												        'listaClasePropaganda' => $listaClasePropaganda,
+												        'listaTiempo' => $listaTiempo,
 
 					    ]) ?>
 </div>
