@@ -202,13 +202,14 @@
 
 		  		$listaUsoPropaganda = $searchPropaganda->getListaUsoPropaganda($idUsos);
 		  		$listaClasePropaganda = $searchPropaganda->getListaClasePropaganda($idClases);
+		  		$listaTiempo = $searchPropaganda->getListaTiempo();
 
 		  		$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : [];
 				$rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud'], 'frontend');
 
 				$model->id_contribuyente = $idContribuyente;
-				$caption = Yii::t('frontend', 'Inscripcion de Propaganda');
-				$subCaption = Yii::t('frontend', 'Datos a Registrar de laa Propaganda');
+				$caption = Yii::t('frontend', 'Inscripción de Propaganda');
+				$subCaption = Yii::t('frontend', 'Datos a Registrar de la Propaganda');
 	  			return $this->render('@frontend/views/propaganda/inscripcion-propaganda/_create', [
 	  																'model' => $model,
 												        			'caption' => $caption,
@@ -216,6 +217,7 @@
 												        			'rutaAyuda' => $rutaAyuda,
 												        			'listaUsoPropaganda' => $listaUsoPropaganda,
 												        			'listaClasePropaganda' => $listaClasePropaganda,
+												        			'listaTiempo' => $listaTiempo,
 	  				]);
 
 	  		} else {
