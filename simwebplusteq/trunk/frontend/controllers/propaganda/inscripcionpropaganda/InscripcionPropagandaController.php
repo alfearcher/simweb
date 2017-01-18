@@ -203,6 +203,8 @@
 		  		$listaUsoPropaganda = $searchPropaganda->getListaUsoPropaganda($idUsos);
 		  		$listaClasePropaganda = $searchPropaganda->getListaClasePropaganda($idClases);
 		  		$listaTiempo = $searchPropaganda->getListaTiempo();
+		  		$listaMedioDifusion = $searchPropaganda->getListaMewdioDifusion();
+		  		$listaMedioTransporte = $searchPropaganda->getListaMewdioTransporte();
 
 		  		$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : [];
 				$rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud'], 'frontend');
@@ -218,6 +220,8 @@
 												        			'listaUsoPropaganda' => $listaUsoPropaganda,
 												        			'listaClasePropaganda' => $listaClasePropaganda,
 												        			'listaTiempo' => $listaTiempo,
+												        			'listaMedioDifusion' => $listaMedioDifusion,
+												        			'listaMedioTransporte' => $listaMedioTransporte,
 	  				]);
 
 	  		} else {
@@ -246,9 +250,31 @@
 				return $searchPropaganda->generarViewListaTipoPropaganda($uso, $clase, $añoImpositivo);
 
 			}
-
+			return '';
 		}
 
+
+
+
+
+		/***/
+		public function actionDeterminarFechaHasta()
+		{
+			$request = Yii::$app->request->get();
+			$cantidad = isset($request['c']) ? $request['c'] : 0;		// cantidad de tiempo.
+			$idTiempo = isset($request['t']) ? $request['t'] : 0;		// id tiempo
+			$fecha = isset($request['f']) ? $request['f'] : 0;			// fecha de inicio
+
+			$idContribuyente = isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : 0;
+
+			if ( $cantidad > 0 && $idTiempo > 0 && $fecha !== 0 ) {
+
+				$searchPropaganda = New InscripcionPropagandaSearch($idContribuyente);
+				return $searchPropaganda->getFechaHasta($cantidad, $idTiempo, $fecha);
+			}
+
+			return '';
+		}
 
 
 
