@@ -194,7 +194,14 @@
 		      	 	}
 		  		}
 
-		  		$listaUsoPropaganda = $searchPropaganda->getListaUsoPropaganda();
+		  		$idUsos = $searchPropaganda->getIdentificadorSegunAnoImpositivo("uso_propaganda", date('Y'));
+		  		$idClases = $searchPropaganda->getIdentificadorSegunAnoImpositivo("clase_propaganda", date('Y'));
+
+		  		$idUsos = ( $idUsos !== null ) ? $idUsos : [];
+		  		$idClases = ( $idClases !== null ) ? $idClases : [];
+
+		  		$listaUsoPropaganda = $searchPropaganda->getListaUsoPropaganda($idUsos);
+		  		$listaClasePropaganda = $searchPropaganda->getListaClasePropaganda($idClases);
 
 		  		$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : [];
 				$rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud'], 'frontend');
@@ -208,6 +215,7 @@
 												        			'subCaption' => $subCaption,
 												        			'rutaAyuda' => $rutaAyuda,
 												        			'listaUsoPropaganda' => $listaUsoPropaganda,
+												        			'listaClasePropaganda' => $listaClasePropaganda,
 	  				]);
 
 	  		} else {
@@ -216,6 +224,29 @@
 	  		}
 
 		}
+
+
+
+
+
+		/***/
+		public function actionGenerarListaTipo()
+		{
+			$request = Yii::$app->request->get();
+			$uso = isset($request['u']) ? $request['u'] : 0;
+			$clase = isset($request['c']) ? $request['c'] : 0;
+			$añoImpositivo = (int)date('Y');
+			$idContribuyente = isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : 0;
+
+			$searchPropaganda = New InscripcionPropagandaSearch($idContribuyente);
+			if ( $uso > 0 && $añoImpositivo > 0 && $clase > 0 ) {
+
+				return $searchPropaganda->generarViewListaTipoPropaganda($uso, $clase, $añoImpositivo);
+
+			}
+
+		}
+
 
 
 
