@@ -108,7 +108,7 @@
 
 <!-- DIRECCION DDE UBICACION DE LA PROPAGANDA -->
 						<div class="row" style="width:100%;padding:0px;">
-							<div class="col-sm-2" style="width: 18%;padding:0px;padding-left: 5px;">
+							<div class="col-sm-2" style="width: 18%;padding:0px;padding-left: 20px;">
 								<p><strong><?=Html::encode(Yii::t('frontend', 'Direccion (Ubicación):'))?></strong></p>
 							</div>
 							<div class="col-sm-4" style="width:60%;padding:0px;margin-left:15px;">
