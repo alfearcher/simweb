@@ -411,11 +411,19 @@
 								<div class="col-sm-4" style="width:35%;padding:0px;float:left;margin: 0px;padding-left: 10px;">
 									 <?= $form->field($model, 'id_tiempo')
 									          ->dropDownList($listaTiempo, [
-		                                                              'id'=> 'id-tiempo',
-		                                                              'prompt' => Yii::t('backend', 'Select'),
-		                                                              'style' => 'width:140px;',
-		                                                             //'onchange' => '$( "select#tipo-propaganda" ).html( "" );',
-		                                                                        ])->label(false);
+                                                              'id'=> 'id-tiempo',
+                                                              'prompt' => Yii::t('backend', 'Select'),
+                                                              'style' => 'width:140px;',
+                                                              'onchange' => '$.post( "' . Yii::$app->urlManager
+                                                                               		               ->createUrl('/propaganda/inscripcionpropaganda/inscripcion-propaganda/determinar-fecha-hasta') . '&t=' . '" + $(this).val() +  "' .
+                                                                               		           																								       '&c=' . '" + $("#cantidad-tiempo").val() +  "' .
+                                                                               		           																								       '&f=' . '" + $("#fecha-inicio").val(),
+                                                                               		           			 function( data ) {
+                                                                               		           			 	//$( "#fecha-fin" ).html( "" );
+                                                                                                         	$( "#fecha-fin" ).html( data );
+                                                                                                   		}
+                                                                                );'
+                                                                        ])->label(false);
 		                            ?>
 								</div>
 
@@ -426,12 +434,12 @@
 								<div class="col-sm-2" style="width: 34%;padding:0px;padding-left: 20px;">
 									<p><strong><?=Html::encode(Yii::t('frontend', 'Fecha Hasta:'))?></strong></p>
 								</div>
-								<div class="col-sm-4" style="width:25%;padding:0px;margin-left: 5px;">
+								<div class="col-sm-4" style="width:25%;padding:0px;margin-left: 2px;">
 									<?= $form->field($model, 'fecha_fin')->textInput([
 																					'id' => 'fecha-fin',
 																					'class' => 'form-control',
 																					'style' => 'width:100%;',
-																					'readOnly' => true,
+																					// 'readOnly' => true,
 																				])->label(false);
 									?>
 								</div>
@@ -451,6 +459,87 @@
 						</div>
 
 
+						<div class="row" style="width:100%;padding:0px;">
+							<div class="col-sm-4" style="width:5%;padding:0px;">
+								<?= $form->field($model, 'cigarros')->checkbox([
+																			'id' => 'cigarros',
+																			'class' => 'form-control',
+																			'style' => 'width:100%;',
+																			'label' => null,
+																		]);
+								?>
+							</div>
+							<div class="col-sm-2" style="width: 10%;padding:0px;margin-top: 15px;">
+								<p><strong><?=Html::encode(Yii::t('frontend', ' De Cigarros'))?></strong></p>
+							</div>
+						</div>
+
+						<div class="row" style="width:40%;padding:0px;">
+							<div class="col-sm-4" style="width:5%;padding:0px;padding-top: -50px;padding-left: 20px;">
+								<?= $form->field($model, 'bebidas_alcoholicas')->checkbox([
+																			'id' => 'bebidas-alcoholicas',
+																			'class' => 'form-control',
+																			'style' => 'width:100%;',
+																			'label' => null,
+																		]);
+								?>
+							</div>
+							<div class="col-sm-2" style="width: 60%;padding:0px;padding-top: 13px;padding-left: 30px;">
+								<p><strong><?=Html::encode(Yii::t('frontend', 'De Bedidas Alcoholicas'))?></strong></p>
+							</div>
+						</div>
+
+
+						<div class="row" style="width:40%;padding:0px;">
+							<div class="col-sm-4" style="width:5%;padding:0px;padding-top: -50px;padding-left: 20px;">
+								<?= $form->field($model, 'idioma')->checkbox([
+																			'id' => 'idioma',
+																			'class' => 'form-control',
+																			'style' => 'width:100%;',
+																			'label' => null,
+																		]);
+								?>
+							</div>
+							<div class="col-sm-2" style="width: 60%;padding:0px;padding-top: 13px;padding-left: 30px;">
+								<p><strong><?=Html::encode(Yii::t('frontend', 'En otro idioma'))?></strong></p>
+							</div>
+						</div>
+
+
+<!-- MEDIO DIFUSION -->
+						<div class="row" style="width:100%;padding:0px;">
+							<div class="col-sm-2" style="width:20%;padding:0px;padding-left: 20px;">
+								<p><strong><?=Html::encode(Yii::t('frontend', 'Medio de Difusión:'))?></strong></p>
+							</div>
+							<div class="col-sm-4" style="width:50%;padding:0px;">
+								 <?= $form->field($model, 'medio_difusion')
+								          ->dropDownList($listaMedioDifusion, [
+	                                                              'id'=> 'medio-difusion',
+	                                                              'prompt' => Yii::t('backend', 'Select'),
+	                                                              'style' => 'width:340px;',
+
+	                                                            ])->label(false);
+	                            ?>
+							</div>
+						</div>
+
+<!-- MEDIO TRANSPORTE -->
+
+						<div class="row" style="width:100%;padding:0px;">
+							<div class="col-sm-2" style="width:20%;padding:0px;padding-left: 20px;">
+								<p><strong><?=Html::encode(Yii::t('frontend', 'Medio de Transporte:'))?></strong></p>
+							</div>
+							<div class="col-sm-4" style="width:50%;padding:0px;">
+								 <?= $form->field($model, 'medio_transporte')
+								          ->dropDownList($listaMedioDifusion, [
+	                                                              'id'=> 'medio-transporte',
+	                                                              'prompt' => Yii::t('backend', 'Select'),
+	                                                              'style' => 'width:340px;',
+
+	                                                            ])->label(false);
+	                            ?>
+							</div>
+						</div>
 
 
 					</div>

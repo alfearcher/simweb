@@ -49,6 +49,8 @@
 												        'listaUsoPropaganda' => $listaUsoPropaganda,
 												        'listaClasePropaganda' => $listaClasePropaganda,
 												        'listaTiempo' => $listaTiempo,
+												        'listaMedioDifusion' => $listaMedioDifusion,
+												        'listaMedioTransporte' => $listaMedioTransporte,
 
 					    ]) ?>
 </div>
