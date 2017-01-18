@@ -83,14 +83,15 @@
         		<div class="col-sm-12" >
 
 		        	<div class="row" style="width:100%;">
-						<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding-left: 5px;padding-top: 0px;">
+						<div class="row" style="border-bottom: 1px solid;padding-left: 5px;padding-top: 0px;">
 							<h4><strong><?=Html::encode(Yii::t('frontend', $subCaption))?></strong></h4>
 						</div>
 
-						<div class="row" style="border-bottom: 1px solid; padding-left: 5px;padding-top: 10px;">
+						<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1; padding-left: 5px;margin-top:20px;">
 							<h4><strong><?=Html::encode(Yii::t('frontend', 'Datos Básicos'))?></strong></h4>
 						</div>
 
+<!-- NOMBRE DE LA PROPAGANDA -->
 						<div class="row" style="width:100%;padding:0px;margin-top: 20px;">
 							<div class="col-sm-2" style="width: 10%;padding:0px;padding-left: 20px;">
 								<p><strong><?=Html::encode(Yii::t('frontend', 'Nombre:'))?></strong></p>
@@ -98,6 +99,21 @@
 							<div class="col-sm-4" style="width:60%;padding:0px;margin-left:100px;">
 								<?= $form->field($model, 'nombre_propaganda')->textInput([
 																				'id' => 'nombre-propaganda',
+																				'class' => 'form-control',
+																				'style' => 'width:100%;',
+																			])->label(false);
+								?>
+							</div>
+						</div>
+
+<!-- DIRECCION DDE UBICACION DE LA PROPAGANDA -->
+						<div class="row" style="width:100%;padding:0px;">
+							<div class="col-sm-2" style="width: 18%;padding:0px;padding-left: 5px;">
+								<p><strong><?=Html::encode(Yii::t('frontend', 'Direccion (Ubicación):'))?></strong></p>
+							</div>
+							<div class="col-sm-4" style="width:60%;padding:0px;margin-left:15px;">
+								<?= $form->field($model, 'direccion')->textInput([
+																				'id' => 'direccion',
 																				'class' => 'form-control',
 																				'style' => 'width:100%;',
 																			])->label(false);
