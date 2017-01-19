@@ -55,7 +55,7 @@
  			'id' => 'id-inscripcion-propaganda-form',
  			'method' => 'post',
  			'enableClientValidation' => true,
- 			'enableAjaxValidation' => true,
+ 			'enableAjaxValidation' => false,
  			'enableClientScript' => true,
  		]);
  	?>
@@ -65,11 +65,17 @@
 	<?=$form->field($model, 'estatus')->hiddenInput(['value' => 0])->label(false); ?>
 	<?=$form->field($model, 'id_sim')->hiddenInput(['value' => 0])->label(false); ?>
 
+	<?=$form->field($model, 'id_cp')->hiddenInput(['value' => $model->id_cp])->label(false); ?>
+	<?=$form->field($model, 'inactivo')->hiddenInput(['value' => $model->inactivo])->label(false); ?>
+	<?=$form->field($model, 'planilla')->hiddenInput(['value' => $model->planilla])->label(false); ?>
 	<?=$form->field($model, 'estatus')->hiddenInput(['value' => $model->estatus])->label(false); ?>
 	<?=$form->field($model, 'estatus')->hiddenInput(['value' => $model->estatus])->label(false); ?>
-	<?=$form->field($model, 'estatus')->hiddenInput(['value' => $model->estatus])->label(false); ?>
-	<?=$form->field($model, 'estatus')->hiddenInput(['value' => $model->estatus])->label(false); ?>
-	<?=$form->field($model, 'estatus')->hiddenInput(['value' => $model->estatus])->label(false); ?>
+
+
+
+
+
+
 
 	<meta http-equiv="refresh">
     <div class="panel panel-primary"  style="width: 100%;">
@@ -155,6 +161,8 @@
 	                                                                                   		           																								'&u=' . '" + $("#uso-propaganda").val(),
 	                                                                                   		           			 function( data ) {
 	                                                                                   		           			 	$( "select#tipo-propaganda" ).html( "" );
+	                                                                                   		           			 	$( "#id-descripcion" ).text( "" );
+	                                                                                   		           			 	$( "#base-calculo" ).val( "" );
 	                                                                                                             	$( "select#tipo-propaganda" ).html( data );
 	                                                                                                       		}
 	                                                                                    );'
@@ -179,8 +187,32 @@
 																	 $.post( "' . Yii::$app->urlManager
 	                                                                                       ->createUrl('/propaganda/inscripcionpropaganda/inscripcion-propaganda/determinar-base-calculo') . '&t=' . '" + $(this).val(),
 	                                                                                   		           			 function( data ) {
-	                                                                                   		           			 	//alert(data);
-	                                                                                   		           			 	//$( "#base-calcuo" ).html( "" );
+
+	                                                                                   		           			 	$( "#base-calculo" ).val( "" );
+
+	                                                                                   		           			 	$( "#alto" ).val(0);
+	                                                                                   		           			 	$( "#ancho" ).val(0);
+	                                                                                   		           			 	$( "#profundidad" ).val(0);
+																													$( "#costo" ).val(0);
+																													$( "#mts" ).val(0);
+
+	                                                                                   		           			 	$( "#alto" ).prop("disabled", true);
+	                                                                                   		           			 	$( "#ancho" ).prop("disabled", true);
+	                                                                                   		           			 	$( "#profundidad" ).prop("disabled", true);
+																													$( "#costo" ).prop("disabled", true);
+																													$( "#mts" ).prop("disabled", true);
+
+	                                                                                   		           			 	if ( data == 2 ) {
+	                                                                                   		           			 		$("#alto").prop("disabled", false);
+	                                                                                   		           			 		$("#ancho").prop("disabled", false);
+	                                                                                   		           			 		//$("#metros").text("cuadrados");
+
+	                                                                                   		           			 	} else if ( data == 3 ) {
+																														$("#mts").prop("disabled", false);
+
+	                                                                                   		           			 	} else if ( data == 7 ) {
+	                                                                                   		           			 		$( "#costo" ).prop("disabled", false);
+	                                                                                   		           			 	}
 	                                                                                                             	$( "#base-calculo" ).val(data);
 	                                                                                                       		}
 	                                                                                    );',
@@ -188,7 +220,6 @@
 	                            ?>
 							</div>
 						</div>
-
 
 						<div class="row" style="width:100%;padding:0px;">
 							<div class="col-sm-4" style="width:50%;padding:0px;margin-left:205px;">
@@ -201,7 +232,7 @@
 							</div>
 						</div>
 
-
+<!-- BASE DE CALCULO -->
 						<div class="row" style="width:100%;padding:0px;">
 							<div class="col-sm-2" style="width: 18%;padding:0px;padding-left: 20px;">
 								<p><strong><?=Html::encode(Yii::t('frontend', 'Base:'))?></strong></p>
@@ -216,6 +247,11 @@
 								?>
 							</div>
 						</div>
+
+
+						<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1; padding-left: 5px;margin-top:20px;">
+						</div>
+
 
 <!-- <div class="row" style="width: 100%;"> -->
 						<div class="col-5" style="width: 50%;float: left;">
@@ -249,12 +285,13 @@
 								<div class="col-sm-4" style="width: 40%;padding:0px;margin-left:100px;">
 									<div class="alto">
 										<?= $form->field($model, 'alto')->widget(MaskedInput::className(), [
-																						'id' => 'alto',
 																						//'mask' => '9{1,3}[,9{1,3}][,9{1,3}]',
 																						'options' => [
 																							'class' => 'form-control',
 																							'style' => 'width: 100%;',
 																							'placeholder' => '0.00',
+																							'id' => 'alto',
+
 																						],
 																						'clientOptions' => [
 																							'alias' =>  'decimal',
@@ -284,12 +321,12 @@
 								<div class="col-sm-4" style="width: 40%;padding:0px;margin-left:100px;">
 									<div class="alto">
 										<?= $form->field($model, 'ancho')->widget(MaskedInput::className(), [
-																						'id' => 'ancho',
 																						//'mask' => '9{1,3}[,9{1,3}][,9{1,3}]',
 																						'options' => [
 																							'class' => 'form-control',
 																							'style' => 'width: 100%;',
 																							'placeholder' => '0.00',
+																							'id' => 'ancho',
 																						],
 																						'clientOptions' => [
 																							'alias' =>  'decimal',
@@ -319,12 +356,12 @@
 								<div class="col-sm-4" style="width: 40%;padding:0px;margin-left:100px;">
 									<div class="profundidad">
 										<?= $form->field($model, 'profundidad')->widget(MaskedInput::className(), [
-																						'id' => 'profundidad',
 																						//'mask' => '9{1,3}[,9{1,3}][,9{1,3}]',
 																						'options' => [
 																							'class' => 'form-control',
 																							'style' => 'width: 100%;',
 																							'placeholder' => '0.00',
+																							'id' => 'profundidad',
 																						],
 																						'clientOptions' => [
 																							'alias' =>  'decimal',
@@ -354,12 +391,12 @@
 								<div class="col-sm-4" style="width: 40%;padding:0px;margin-left:100px;">
 									<div class="mts">
 										<?= $form->field($model, 'mts')->widget(MaskedInput::className(), [
-																						'id' => 'mts',
 																						//'mask' => '9{1,3}[,9{1,3}][,9{1,3}]',
 																						'options' => [
 																							'class' => 'form-control',
 																							'style' => 'width: 100%;',
 																							'placeholder' => '0.00',
+																							'id' => 'mts',
 																						],
 																						'clientOptions' => [
 																							'alias' =>  'decimal',
@@ -377,9 +414,47 @@
 																	  				  ])->label(false) ?>
 									</div>
 								</div>
-								<div class="col-sm-2" id="metros" style="width:10%;padding:0px;padding-left: 20px;">
-									<p><strong><?=Html::encode(Yii::t('frontend', 'Lineales'))?></strong></p>
+								<p><strong><div class="col-sm-2" id="metros" style="width:10%;padding:0px;padding-left: 20px;">
+									<?=Html::encode(Yii::t('frontend', 'Lineales'))?>
+								</div></strong></p>
+							</div>
+
+
+<!-- COSTO -->
+							<div class="row" style="width:100%;padding:0px;">
+								<div class="col-sm-2" style="width:10%;padding:0px;padding-left: 20px;">
+									<p><strong><?=Html::encode(Yii::t('frontend', 'Costo:'))?></strong></p>
 								</div>
+
+								<div class="col-sm-4" style="width: 40%;padding:0px;margin-left:100px;">
+									<div class="costo">
+										<?= $form->field($model, 'costo')->widget(MaskedInput::className(), [
+																						//'mask' => '9{1,3}[,9{1,3}][,9{1,3}]',
+																						'options' => [
+																							'class' => 'form-control',
+																							'style' => 'width: 100%;',
+																							'placeholder' => '0.00',
+																							'id' => 'costo',
+																						],
+																						'clientOptions' => [
+																							'alias' =>  'decimal',
+																							'digits' => 2,
+																							'digitsOptional' => false,
+																							'groupSeparator' => ',',
+																							'removeMaskOnSubmit' => true,
+																							// 'allowMinus'=>false,
+																							//'groupSize' => 3,
+																							'radixPoint'=> ".",
+																							'autoGroup' => true,
+																							//'decimalSeparator' => ',',
+																						],
+
+																	  				  ])->label(false) ?>
+									</div>
+								</div>
+							</div>
+
+							<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1; padding-left: 5px;margin-top:20px;">
 							</div>
 
 						</div>
@@ -422,13 +497,16 @@
 <!-- CANTIDAD DE TIEMPO	 -->
 							<div class="row" style="width:100%;padding:0px;">
 								<div class="col-sm-2" style="width: 10%;padding:0px;padding-left: 20px;">
-									<p><strong><?=Html::encode(Yii::t('frontend', 'Cantidad:'))?></strong></p>
+									<p><strong><?=Html::encode(Yii::t('frontend', 'Tiempo:'))?></strong></p>
 								</div>
 								<div class="col-sm-4" style="width:15%;padding:0px;margin-left:115px;float: left;">
 									<?= $form->field($model, 'cantidad_tiempo')->textInput([
 																					'id' => 'cantidad-tiempo',
 																					'class' => 'form-control',
 																					'style' => 'width:100%;',
+																					'keypress' => '
+																						$( "#fecha-fin" ).val("");
+																					',
 																				])->label(false);
 									?>
 								</div>
@@ -471,6 +549,11 @@
 								</div>
 							</div>
 
+
+							<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1; padding-left: 5px;margin-top:20px;">
+							</div>
+
+
 						</div>
 
 					</div>
@@ -485,8 +568,8 @@
 						</div>
 
 
-						<div class="row" style="width:100%;padding:0px;">
-							<div class="col-sm-4" style="width:5%;padding:0px;">
+						<div class="row" style="width:40%;padding:0px;">
+							<div class="col-sm-4" style="width:8%;padding:0px;padding-left: 20px;">
 								<?= $form->field($model, 'cigarros')->checkbox([
 																			'id' => 'cigarros',
 																			'class' => 'form-control',
@@ -495,13 +578,13 @@
 																		]);
 								?>
 							</div>
-							<div class="col-sm-2" style="width: 10%;padding:0px;margin-top: 15px;">
+							<div class="col-sm-2" style="width: 40%;padding:0px;margin-top: 15px;padding-left: 20px;">
 								<p><strong><?=Html::encode(Yii::t('frontend', ' De Cigarros'))?></strong></p>
 							</div>
 						</div>
 
 						<div class="row" style="width:40%;padding:0px;">
-							<div class="col-sm-4" style="width:5%;padding:0px;padding-top: -50px;padding-left: 20px;">
+							<div class="col-sm-4" style="width:8%;padding:0px;padding-top: -50px;padding-left: 20px;">
 								<?= $form->field($model, 'bebidas_alcoholicas')->checkbox([
 																			'id' => 'bebidas-alcoholicas',
 																			'class' => 'form-control',
@@ -510,14 +593,14 @@
 																		]);
 								?>
 							</div>
-							<div class="col-sm-2" style="width: 60%;padding:0px;padding-top: 13px;padding-left: 30px;">
+							<div class="col-sm-2" style="width: 60%;padding:0px;padding-top: 13px;padding-left: 20px;">
 								<p><strong><?=Html::encode(Yii::t('frontend', 'De Bedidas Alcoholicas'))?></strong></p>
 							</div>
 						</div>
 
 
 						<div class="row" style="width:40%;padding:0px;">
-							<div class="col-sm-4" style="width:5%;padding:0px;padding-top: -50px;padding-left: 20px;">
+							<div class="col-sm-4" style="width:8%;padding:0px;padding-top: -50px;padding-left: 20px;">
 								<?= $form->field($model, 'idioma')->checkbox([
 																			'id' => 'idioma',
 																			'class' => 'form-control',
@@ -526,7 +609,7 @@
 																		]);
 								?>
 							</div>
-							<div class="col-sm-2" style="width: 60%;padding:0px;padding-top: 13px;padding-left: 30px;">
+							<div class="col-sm-2" style="width: 60%;padding:0px;padding-top: 13px;padding-left: 20px;">
 								<p><strong><?=Html::encode(Yii::t('frontend', 'En otro idioma'))?></strong></p>
 							</div>
 						</div>
@@ -542,7 +625,7 @@
 								          ->dropDownList($listaMedioDifusion, [
 	                                                              'id'=> 'medio-difusion',
 	                                                              'prompt' => Yii::t('backend', 'Select'),
-	                                                              'style' => 'width:340px;',
+	                                                              'style' => 'width:440px;',
 
 	                                                            ])->label(false);
 	                            ?>
@@ -560,7 +643,7 @@
 								          ->dropDownList($listaMedioDifusion, [
 	                                                              'id'=> 'medio-transporte',
 	                                                              'prompt' => Yii::t('backend', 'Select'),
-	                                                              'style' => 'width:340px;',
+	                                                              'style' => 'width:440px;',
 
 	                                                            ])->label(false);
 	                            ?>
@@ -568,10 +651,27 @@
 						</div>
 
 
+						<div class="row" style="width:100%;padding:0px;">
+							<div class="col-sm-2" style="width:10%;padding:0px;padding-left: 20px;">
+								<p><strong><?=Html::encode(Yii::t('frontend', 'Observacion:'))?></strong></p>
+							</div>
+							<div class="col-sm-4" style="width:50%;padding:0px;margin-left:205px;">
+								<?= $form->field($model, 'observacion')->textArea([
+																		'id' => 'id-observacion',
+																		'rows' => 4,
+																		'style' => 'width:140%;background-color:white;',
+																 	])->label(false) ?>
+							</div>
+						</div>
+
+
+
 					</div>
 
+					<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1; padding-left: 5px;margin-top:20px;">
+					</div>
 
-					<div class="row" style="margin-top: 15px;">
+					<div class="row" style="margin-top: 25px;">
 <!-- Boton para aplicar la actualizacion -->
 						<div class="col-sm-3">
 							<div class="form-group">
@@ -626,10 +726,3 @@
 	</div>
 	<?php ActiveForm::end(); ?>
 </div>
-
-<?php
-	$this->registerJs('
-
-
-	');
- ?>
