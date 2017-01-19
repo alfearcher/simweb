@@ -354,10 +354,10 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                                     'tipo_inmueble' => $value['tipo_inmueble'],
                                     'clase_inmueble' => $value['clase_inmueble'],
                                     'id_tipologia_zona' => $value['id_tipologia_zona'],
-                                    'lindero_norte' => $_SESSION['datosHAvaluos']['lindero_norte'],
-                                    'lindero_sur' => $_SESSION['datosHAvaluos']['lindero_sur'],
-                                    'lindero_este' => $_SESSION['datosHAvaluos']['lindero_este'],
-                                    'lindero_oeste' => $_SESSION['datosHAvaluos']['lindero_oeste'],
+                                    'lindero_norte' => $_SESSION['datosHAvaluos'][0]['lindero_norte'],
+                                    'lindero_sur' => $_SESSION['datosHAvaluos'][0]['lindero_sur'],
+                                    'lindero_este' => $_SESSION['datosHAvaluos'][0]['lindero_este'],
+                                    'lindero_oeste' => $_SESSION['datosHAvaluos'][0]['lindero_oeste'],
                                     
                                 ]; 
 
@@ -389,10 +389,10 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                                             'tipo_inmueble' => $value['tipo_inmueble'],
                                             'clase_inmueble' => $value['clase_inmueble'],
                                             'id_tipologia_zona' => $value['id_tipologia_zona'],
-                                            'lindero_norte' => $_SESSION['datosHAvaluos']['lindero_norte'],
-                                            'lindero_sur' => $_SESSION['datosHAvaluos']['lindero_sur'],
-                                            'lindero_este' => $_SESSION['datosHAvaluos']['lindero_este'],
-                                            'lindero_oeste' => $_SESSION['datosHAvaluos']['lindero_oeste'],
+                                            'lindero_norte' => $_SESSION['datosHAvaluos'][0]['lindero_norte'],
+                                            'lindero_sur' => $_SESSION['datosHAvaluos'][0]['lindero_sur'],
+                                            'lindero_este' => $_SESSION['datosHAvaluos'][0]['lindero_este'],
+                                            'lindero_oeste' => $_SESSION['datosHAvaluos'][0]['lindero_oeste'],
                                             
                                     
                                         ]; 
@@ -578,7 +578,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
 
             $arrayDatos = ['avaluo1'=> $arrayDatos1, 'avaluo2'=> $arrayDatos2, 'avaluo3' => $arrayDatos3];
 
-       } elseif($_SESSION['anioRegistro']==null) {
+       } elseif($_SESSION['anioRegistro']==null and $_SESSION['anioAvaluo'][0] == null) {
 
             $anioImpositivo = '2018';
             $tarifaAvaluos = self::TarifaAvaluos($_SESSION['datosInmueble']['manzana_limite'],$model->id_tipologia_zona, $anioImpositivo );
