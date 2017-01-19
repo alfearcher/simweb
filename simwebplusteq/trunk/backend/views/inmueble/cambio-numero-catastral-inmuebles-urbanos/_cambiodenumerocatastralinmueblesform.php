@@ -11,6 +11,7 @@ use yii\jui\DatePicker;
 use backend\models\inmueble\ParametrosNivelesCatastro;
 use backend\models\inmueble\Estados;
 use backend\models\inmueble\Municipios;
+use backend\models\inmueble\Parroquias;
 /* @var $this yii\web\View */
 /* @var $model backend\models\InscripcionInmueblesUrbanosForm */
 /* @var $form ActiveForm */
@@ -160,8 +161,10 @@ function bloquea() {
 
                         <td style="max-width: 100px">
                             <div class="col-sm-1">
+                                <?php $modelEstado = Municipios::find()->where(['estado'=>15])->asArray()->all();
+                                $listaMunicipio = ArrayHelper::map($modelEstado, 'estado', 'nombre'); ?>
                                 <?= $form->field($model, 'municipio_catastro')
-                                          ->dropDownList([], [
+                                          ->dropDownList($listaMunicipio, [
                                                                 'id'=> 'municipio_catastro',
                                                                 'prompt' => Yii::t('backend', 'Select'),
                                                                 'style' => 'width:80px;',
@@ -179,8 +182,10 @@ function bloquea() {
 
                         <td style="max-width: 100px">
                             <div class="col-sm-1">
+                                <?php $modelEstado = Estados::find()->where(['estado'=>15, 'municipio' =>10])->asArray()->all();
+                                $listaParroquia = ArrayHelper::map($modelEstado, 'parroquia', 'nombre'); ?>
                             <?= $form->field($model, 'parroquia_catastro')
-                                                            ->dropDownList([], [
+                                                            ->dropDownList($listaParroquia, [
                                                                 'id'=> 'parroquia_catastro',
                                                                 'prompt' => Yii::t('backend', 'Select'),
                                                                 'style' => 'width:80px;',
@@ -197,7 +202,7 @@ function bloquea() {
                         <td style="max-width: 100px">
                             <div class="col-sm-1">
                             <?= $form->field($model, 'ambito_catastro')
-                                                                ->dropDownList([], [
+                                                                ->textInput( [
                                                                 'id'=> 'ambito_catastro',
                                                                 'prompt' => Yii::t('backend', 'Select'),
                                                                 'style' => 'width:80px;',
@@ -214,7 +219,7 @@ function bloquea() {
                         <td style="max-width: 100px">
                             <div class="col-sm-1">
                             <?= $form->field($model, 'sector_catastro')
-                                                                ->dropDownList([], [
+                                                                ->textInput( [
                                                                 'id'=> 'sector_catastro',
                                                                 'prompt' => Yii::t('backend', 'Select'),
                                                                 'style' => 'width:80px;',
@@ -231,7 +236,7 @@ function bloquea() {
                         <td style="max-width: 100px">
                             <div class="col-sm-1">
                             <?= $form->field($model, 'manzana_catastro')
-                                                                ->dropDownList([], [
+                                                                ->textInput([
                                                                 'id'=> 'manzana_catastro',
                                                                 'prompt' => Yii::t('backend', 'Select'),
                                                                 'style' => 'width:80px;',
