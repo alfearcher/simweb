@@ -655,7 +655,7 @@
 							<div class="col-sm-2" style="width:10%;padding:0px;padding-left: 20px;">
 								<p><strong><?=Html::encode(Yii::t('frontend', 'Observacion:'))?></strong></p>
 							</div>
-							<div class="col-sm-4" style="width:50%;padding:0px;margin-left:205px;">
+							<div class="col-sm-4" style="width:50%;padding:0px;margin-left:105px;">
 								<?= $form->field($model, 'observacion')->textArea([
 																		'id' => 'id-observacion',
 																		'rows' => 4,
