@@ -91,6 +91,8 @@
     	public $profundidad;
     	public $nombre_propaganda;
     	public $mts;
+    	public $costo;
+    	public $errorMensajeInput;
     	public $descripcion;
 
 
@@ -118,40 +120,43 @@
 	        	[['id_impuesto', 'id_contribuyente', 'nro_solicitud',
 	        	  'ano_impositivo', 'clase_propaganda', 'uso_propaganda',
 	        	  'tipo_propaganda', 'id_tiempo',
-	        	  'cantidad_tiempo', 'base_calculo',
+	        	  'base_calculo',
 	        	  'estatus', 'inactivo', 'idioma',
 	        	  'bebidas_alcoholicas', 'planilla', 'medio_transporte',
-	        	  'medio_difusion', 'id_cp', 'cigarros',
-	        	   'cantidad_propagandas',],
+	        	  'medio_difusion', 'id_cp', 'cigarros',],
 	        	  'integer',
 	        	  'message' => Yii::t('backend', '{attribute} no valido')],
-	        	  ['cantidad_propagandas',
-	        	  'number',
-	        	  'message' => Yii::t('backend', '{attribute} no valido')],
-	        	  [['observacion', 'direccion',
-	        	  	'descripcion',],
+	        	[['cantidad_tiempo',],
+	        	   'number',
+	        	   'message' => Yii::t('backend', '{attribute} no valido')],
+	        	[['cantidad_propagandas'],
+	        	   'number',
+	        	   'message' => Yii::t('backend', '{attribute} no valido')],
+	        	[['observacion', 'direccion',
+	        	  'descripcion',],
 	        	  'string',
 	        	  'message' => Yii::t('backend', '{attribute} no valido')],
-	        	  [['alto', 'ancho', 'profundidad', 'mts'],
+	        	[['alto', 'ancho', 'profundidad',
+	        	  'mts', 'costo'],
 	        	  'double',
 	        	  'message' => Yii::t('backend', '{attribute} no valido')],
-	        	  [['estatus', 'inactivo', 'bebidas_alcoholicas',
-	        	    'idioma', 'id_cp', 'medio_difusion', 'medio_transporte',
-	        	    'id_sim', 'cigarros', 'planilla'],
-	        	    'default',
-	        	    'value' => 0],
-	        	  [['fecha_desde', 'fecha_fin'],
-	        	    'date',
-	        	    'format' => 'dd-MM-yyyy',
-	        	    'message' => Yii::t('backend','formatted date no valid')],
-	     		  ['usuario', 'default', 'value' => Yii::$app->identidad->getUsuario()],
-	     		  ['nombre_propaganda', 'filter', 'filter' => 'strtoupper'],
-	     		  [['fecha_hora', 'fecha_guardado'],
-	     		    'default',
-	     		    'value' => date('Y-m-d H:i:s')],
-	     		  [['fecha_guardado'],
-	     		    'default',
-	     		    'value' => date('Y-m-d')],
+	        	[['estatus', 'inactivo', 'bebidas_alcoholicas',
+	        	  'idioma', 'id_cp', 'medio_difusion', 'medio_transporte',
+	        	  'id_sim', 'cigarros', 'planilla', 'id_cp'],
+	        	  'default',
+	        	   'value' => 0],
+	        	[['fecha_desde', 'fecha_fin'],
+	        	  'date',
+	        	  'format' => 'dd-MM-yyyy',
+	        	  'message' => Yii::t('backend','formatted date no valid')],
+	     		['usuario', 'default', 'value' => Yii::$app->identidad->getUsuario()],
+	     		['nombre_propaganda', 'filter', 'filter' => 'strtoupper'],
+	     		[['fecha_hora', 'fecha_guardado'],
+	     		  'default',
+	     		  'value' => date('Y-m-d H:i:s')],
+	     		[['fecha_guardado'],
+	     		  'default',
+	     		  'value' => date('Y-m-d')],
 
 
 	        ];
@@ -187,6 +192,42 @@
 
 	    	return $atributos[$evento];
 	    }
+
+
+
+	    /***/
+	    public function validateInputBaseCalculo()
+	    {
+	    	$result = false;
+	    	if ( $this->base_calculo == 2 ) {
+	    		if ( $this->alto > 0 && $this->ancho > 0 ) {
+	    			$result = true;
+
+	    		} else {
+	    			$this->errorMensajeInput = Yii::t('backend', 'Debe registrar alto y ancho');
+	    		}
+
+	    	} elseif ( $model->base_calculo == 3 ) {
+	    		if ( $this->mts > 0 ) {
+	    			$result = true;
+	    		} else {
+	    			$this->errorMensajeInput = Yii::t('backend', 'Debe registrar metros');
+	    		}
+
+	    	} elseif ( $model->base_calculo == 7 ) {
+	    		if ( $this->costo > 0 ) {
+	    			$result = true;
+	    		} else {
+	    			$this->errorMensajeInput = Yii::t('backend', 'Debe registrar costo');
+	    		}
+
+	    	} else {
+	    		$result = true;
+	    	}
+
+	    	return $result;
+	    }
+
 
 
 
