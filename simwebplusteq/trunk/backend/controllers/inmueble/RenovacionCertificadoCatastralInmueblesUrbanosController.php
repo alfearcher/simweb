@@ -64,6 +64,10 @@ use backend\models\inmueble\InmueblesConsulta;
 use backend\models\inmueble\InmueblesSearch;
 use backend\models\inmueble\AvaluoCatastralForm;
 use backend\models\inmueble\HistoricoAvaluoSearch;
+use backend\models\inmueble\InmueblesRegistrosForm;
+use backend\models\inmueble\InmueblesRegistros;
+use backend\models\inmueble\TarifasAvaluos;
+
 
 //use common\models\Users;
 
@@ -104,7 +108,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
     {
         if ( isset( $_SESSION['idContribuyente'] ) ) {
 
-          $idConfig = 7;
+          $idConfig = 6;
           $_SESSION['id'] = $idConfig;
         $searchModel = new InmueblesSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -132,17 +136,50 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
           $datosInmueble = InmueblesConsulta::find()->where("id_impuesto=:impuesto", [":impuesto" => $idInmueble])
                                             ->andwhere("inactivo=:inactivo", [":inactivo" => 0])
                                             ->one();
+
+           $_SESSION['datosInmueble'] = $datosInmueble; 
+
+          $datosIRegistros = InmueblesRegistros::find()->where("id_impuesto=:impuesto", [":impuesto" => $idInmueble])
+                                            //->andwhere("inactivo=:inactivo", [":inactivo" => 0])
+                                            ->all();
+
+          $_SESSION['datosIRegistros'] = $datosIRegistros; 
           
           $datosHAvaluos = HistoricoAvaluoSearch::find()->where("id_impuesto=:impuesto", [":impuesto" => $idInmueble])
                                             //->andwhere("inactivo=:inactivo", [":inactivo" => 0])
-                                            ->all();
-          foreach ($datosHAvaluos as $key => $value) {
-                                            
-          }                                 
-          $_SESSION['datosInmueble'] = $datosInmueble;
-          $_SESSION['datosUAvaluos'] = $value;
-           $_SESSION['datosHAvaluos'] = $datosHAvaluos;
+                                            ->all(); 
 
+          $_SESSION['datosHAvaluos'] = $datosHAvaluos; 
+          
+
+          if ($datosHAvaluos != null) {
+                
+                foreach ($datosHAvaluos as $key => $value) {
+                                            
+                } 
+                $añoUltimoAvaluo = explode('-', $value['fecha']);
+                $_SESSION['anioAvaluo'] = $añoUltimoAvaluo;
+                $_SESSION['datosUAvaluos'] = $value; 
+                
+          } else {
+                $value = false;
+                // no presenta historico de avaluos
+                // buscaremos fecha en inmuebles registros
+                if ($datosIRegistros != null) {
+
+                    foreach ($datosIRegistros as $key => $valueIn) {
+                                            
+                    } 
+                    $añoUltimoRegistro = explode('-', $registros['fecha']);
+                    $_SESSION['anioRegistro'] = $añoUltimoRegistro;
+                    $_SESSION['datosURegistros'] = $valueIn;
+                } else {
+                  $valueIn = false; 
+                  //no posee registros de inmueble
+                  
+                } 
+          } 
+                                         
 
         return $this->render('view', [
             'modelInmueble' => $datosInmueble, 'modelHAvaluos' => $value,
@@ -160,12 +197,12 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
      { 
        
          
-
-         $_SESSION['id'] = 68;
          if ( isset($_SESSION['idContribuyente'] ) ) {
          //Creamos la instancia con el model de validación
          $model = new InscripcionInmueblesUrbanosForm();
           $modelAvaluo = new AvaluoCatastralForm();
+          $modelRegistro = new InmueblesRegistrosForm();
+
          //Mostrará un mensaje en la vista cuando el usuario se haya registrado
          $msg = null;
          $url = null; 
@@ -177,55 +214,71 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
               Yii::$app->response->format = Response::FORMAT_JSON;
               return ActiveForm::validate($model); 
          }
+         if ($modelAvaluo->load(Yii::$app->request->post()) && Yii::$app->request->isAjax){ 
+
+              Yii::$app->response->format = Response::FORMAT_JSON;
+              return ActiveForm::validate($modelAvaluo); 
+         }
+         if ($modelRegistro->load(Yii::$app->request->post()) && Yii::$app->request->isAjax){ 
+
+              Yii::$app->response->format = Response::FORMAT_JSON;
+              return ActiveForm::validate($modelRegistro); 
+         }
    
-         if ($model->load(Yii::$app->request->post())){
+         if ($model->load(Yii::$app->request->post()) && $modelAvaluo->load(Yii::$app->request->post()) && $modelRegistro->load(Yii::$app->request->post()) ){
 
-              if($model->validate()){ 
 
-                 //condicionales     
-                   $documento = new DocumentoSolicitud();
+              $isValid = $model->validate();
+              $isValid = $modelAvaluo->validate() && $isValid;
+              $isValid = $modelRegistro->validate() && $isValid;
+              if($isValid ){ 
+                
+//&& $modelAvaluo->validate() && $modelRegistro->validate()
+                                         //condicionales     
+                                           $documento = new DocumentoSolicitud();
+                        
+                                           $requisitos = $documento->documentos();
+                        
+                                         
+                                        if (!\Yii::$app->user->isGuest){                                    
+                                              
+                                             
+                                             $guardo = self::GuardarInscripcion($model,$modelAvaluo,$modelRegistro);
+                                             
+                                             if($guardo == true){ 
+                        
+                        
+                                                  $envio = self::EnviarCorreo($guardo, $requisitos);
+                        
+                                                  if($envio == true){
+                        
+                                                      return MensajeController::actionMensaje(100);
+                        
+                                                  } else { 
+                                                    
+                                                      return MensajeController::actionMensaje(920);
+                        
+                                                  } 
+                        
+                                              } else {
+                        
+                                                    return MensajeController::actionMensaje(920);
+                                              } 
+                        
+                                           }else{ 
+                        
+                                                $msg = Yii::t('backend', 'AN ERROR OCCURRED WHEN FILLING THE URBAN PROPERTY!');//HA OCURRIDO UN ERROR AL LLENAR LAS PREGUNTAS SECRETAS
+                                                $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("site/login")."'>";                     
+                                                return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
+                                           } 
 
-                   $requisitos = $documento->documentos();
-
-                 
-                if (!\Yii::$app->user->isGuest){                                    
                       
-
-                     $guardo = self::GuardarInscripcion($model);
-
-                     if($guardo == true){ 
-
-
-                          $envio = self::EnviarCorreo($guardo, $requisitos);
-
-                          if($envio == true){
-
-                              return MensajeController::actionMensaje(100);
-
-                          } else { 
-                            
-                              return MensajeController::actionMensaje(920);
-
-                          } 
-
-                      } else {
-
-                            return MensajeController::actionMensaje(920);
-                      } 
-
-                   }else{ 
-
-                        $msg = Yii::t('backend', 'AN ERROR OCCURRED WHEN FILLING THE URBAN PROPERTY!');//HA OCURRIDO UN ERROR AL LLENAR LAS PREGUNTAS SECRETAS
-                        $url =  "<meta http-equiv='refresh' content='3; ".Url::toRoute("site/login")."'>";                     
-                        return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
-                   } 
-
               }else{ 
                 
                    $model->getErrors(); 
               }
          }
-              return $this->render('renovacion-certificado-catastral-inmuebles', ['model' => $model, 'modelAvaluo' => $modelAvaluo]);  
+              return $this->render('renovacion-certificado-catastral-inmuebles', ['model' => $model, 'modelAvaluo' => $modelAvaluo, 'modelRegistro'=>$modelRegistro]);  
 
         }  else {
                     echo "No hay Contribuyente Registrado!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['site/login'])."'>";
@@ -241,7 +294,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
       * @param [type] $model [description] arreglo de datos del formulario de inscripcion del
       * inmueble
       */
-     public function GuardarInscripcion($model)
+     public function GuardarInscripcion($model,$modelAvaluo,$modelRegistro)
      {
             $buscar = new ParametroSolicitud($_SESSION['id']);
 
@@ -255,198 +308,349 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
             $datosContribuyente = self::DatosContribuyente();
             $_SESSION['datosContribuyente']= $datosContribuyente;
 
-            try {
-            $tableName1 = 'solicitudes_contribuyente'; 
-
-            $tipoSolicitud = self::DatosConfiguracionTiposSolicitudes();
-     
-            
-            $arrayDatos1 = [  'id_contribuyente' => $model->id_contribuyente,
-                              'id_config_solicitud' => $_SESSION['id'], //$idConf
-                              'impuesto' => 2,
-                              'id_impuesto' => null,
-                              'tipo_solicitud' => $tipoSolicitud,
-                              'usuario' => $datosContribuyente['email'],
-                              'fecha_hora_creacion' => date('Y-m-d h:i:s'),
-                              'nivel_aprobacion' => $nivelAprobacion["nivel_aprobacion"],
-                              'nro_control' => 0,
-                              'firma_digital' => null,
-                              'estatus' => 0,
-                              'inactivo' => 0,
-                          ];  
-            
+            $avaluos=self::actionCalcularAvaluos($modelAvaluo); 
 
             $conn = New ConexionController();
             $conexion = $conn->initConectar('db');     // instancia de la conexion (Connection)
             $conexion->open();  
             $transaccion = $conexion->beginTransaction();
 
-            if ( $conn->guardarRegistro($conexion, $tableName1,  $arrayDatos1) ){  
+            try {
+
+                foreach($avaluos as $key => $value){
                 
+                
+
+                $tableName1 = 'solicitudes_contribuyente'; 
+
+                $arrayDatos1 = [  'id_contribuyente' => $_SESSION['idContribuyente'],
+                                  'id_config_solicitud' => $config['id_config_solicitud'],
+                                  'impuesto' => 2,
+                                  'id_impuesto' => $value['id_impuesto'],
+                                  'tipo_solicitud' => $config['tipo_solicitud'],
+                                  'usuario' => $datosContribuyente['email'],
+                                  'fecha_hora_creacion' => date('Y-m-d h:i:s'),
+                                  'nivel_aprobacion' => $nivelAprobacion["nivel_aprobacion"],
+                                  'nro_control' => 0,
+                                  'firma_digital' => null,
+                                  'estatus' => 0,
+                                  'inactivo' => 0,
+                              ];  
+                
+
+                if ( $conn->guardarRegistro($conexion, $tableName1,  $arrayDatos1) ){  
                 $result = $conexion->getLastInsertID();
-
-                $catastro1 = array(['estado' => $model->estado_catastro, 'municipio'=> $model->municipio_catastro, 'parroquia'=>$model->parroquia_catastro, 'ambito'=>$model->ambito_catastro, 'sector'=>$model->sector_catastro, 'manzana' =>$model->manzana_catastro]);
-                     $catastro = "".$catastro1[0]['estado']."-".$catastro1[0]['municipio']."-".$catastro1[0]['parroquia']."-".$catastro1[0]['ambito']."-".$catastro1[0]['sector']."-".$catastro1[0]['manzana']."";
-                     
-                     
-                     if ($model->propiedad_horizontal == 0) {
-
-                          $parcela_catastro = $model->parcela_catastro;                                     //Parcela catastro
-                          $subparcela_catastro = 0;                                                         //Sub parcela catastro
-                          $nivel_catastro = 0;                                                              //Nivel catastro
-                          $unidad_catastro = 0;                                                             //Unidad catastro     
-                     }else{ 
-
-                          $parcela_catastro = $model->parcela_catastro;                                     //Parcela catastro
-                          $subparcela_catastro = $model->subparcela_catastro;                               //Sub parcela catastro
-                          $nivel_c1 = $model->nivela;
-                          $nivel_c2 = $model->nivelb;
-                          $nivel_catastro1 = array(['nivela' =>$nivel_c1 , 'nivelb'=>$nivel_c2 ]);              //Nivel catastro
-                          $nivel_catastro = "".$nivel_catastro1[0]['nivela']."".$nivel_catastro1[0]['nivelb']."";
-                          $unidad_catastro = $model->unidad_catastro;                                       //Unidad catastro  
-                          
-                     } 
                 
 
-                $arrayDatos2 = [       'nro_solicitud' => $result,
-                                       'id_contribuyente' => $_SESSION['idContribuyente'],
-                                       'ano_inicio' => $model->ano_inicio,
-                                       'direccion' => $model->direccion,
-                                       'manzana_limite' => $model->manzana_limite,
-                                       'nivel' => $model->nivel,
-                                       //direcciones
-                                       'av_calle_esq_dom' => $model->av_calle_esq_dom,
-                                       'casa_edf_qta_dom' => $model->casa_edf_qta_dom,
-                                       'piso_nivel_no_dom' => $model->piso_nivel_no_dom,
-                                       'apto_dom' => $model->apto_dom,
-                                       //otros datos
-                                       'tlf_hab' => $model->tlf_hab,
-                                       'medidor' => $model->medidor,
-                                       'id_sim' => 0,
-                                       'observacion' => $model->observacion,
-                                       'inactivo' => $model->inactivo,
-                                       'catastro' => $catastro,
-                                       'id_habitante' => $model->id_habitante,
-                                       'tipo_ejido' => $model->tipo_ejido,
-                                       'propiedad_horizontal' => $model->propiedad_horizontal,
-                                       //catastro inmueble
-                                       'estado_catastro' => $model->estado_catastro,
-                                       'municipio_catastro' => $model->municipio_catastro,
-                                       'parroquia_catastro' => $model->parroquia_catastro,
-                                       'ambito_catastro' => $model->ambito_catastro,
-                                       'sector_catastro' => $model->sector_catastro,
-                                       'manzana_catastro' => $model->manzana_catastro,
-                                       //parcelas 
-                                       'parcela_catastro' => $model->parcela_catastro,
-                                       'subparcela_catastro' => $subparcela_catastro,
-                                       'nivel_catastro' => $nivel_catastro,
-                                       'unidad_catastro' => $unidad_catastro,
-
-                                       'liquidado' => $model->liquidado, 
-                                       'lote_1' => 0,
-                                       'lote_2' => 0,
-                                       'lote_3' => 0, 
-                                       'nivel' => $model->nivel,
+                $arrayDatos2 = [    'id_impuesto' => $value['id_impuesto'],
+                                    'nro_solicitud' => $result,
+                                    'fecha' => $value['fecha'],
+                                    'mts' => $value['mts'],
+                                    'valor_por_mts2' => $value['valor_por_mts2'],
+                                    'mts2_terreno' => $value['mts2_terreno'],
+                                    'valor_por_mts2_terreno' => $value['valor_por_mts2_terreno'],
+                                    'valor' => $value['valor'],
+                                    'id_uso_inmueble' => $value['id_uso_inmueble'],
+                                    'tipo_inmueble' => $value['tipo_inmueble'],
+                                    'clase_inmueble' => $value['clase_inmueble'],
+                                    'id_tipologia_zona' => $value['id_tipologia_zona'],
                                     
                                 ]; 
 
+
             
-                 $tableName2 = 'sl_inmuebles'; 
-                 //$resultProceso = self::actionEjecutaProcesoSolicitud($conn, $conexion, $config); 
+                 $tableName2 = 'sl_historico_avaluos'; 
+
                 if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){
 
                     if ($nivelAprobacion['nivel_aprobacion'] != 1){
 
+                        
+                        $tipoError = 0;  
+                        $todoBien = true; 
 
-                        $transaccion->commit(); 
-                        $conexion->close(); 
-                        $tipoError = 0; 
-                        return $result; 
+                    } else {
+                
+                        $avaluoConstruccion = $model->metros_construccion * $model->valor_construccion;
+                        $avaluoTerreno = $model->metros_terreno * $model->valor_terreno;
 
-                    } else { 
+                        $arrayDatos3 = [    'id_impuesto' => $value['id_impuesto'],
+                                            'fecha' => $value['fecha'],
+                                            'mts' => $value['mts'],
+                                            'valor_por_mts2' => $value['valor_por_mts2'],
+                                            'mts2_terreno' => $value['mts2_terreno'],
+                                            'valor_por_mts2_terreno' => $value['valor_por_mts2_terreno'],
+                                            'valor' => $value['valor'],
+                                            'id_uso_inmueble' => $value['id_uso_inmueble'],
+                                            'tipo_inmueble' => $value['tipo_inmueble'],
+                                            'clase_inmueble' => $value['clase_inmueble'],
+                                            'id_tipologia_zona' => $value['id_tipologia_zona'],
+                                            
+                                    
+                                        ]; 
 
-                        $arrayDatos3 = [    'id_contribuyente' => $_SESSION['idContribuyente'],
-                                       'ano_inicio' => $model->ano_inicio,
-                                       'direccion' => $model->direccion,
-                                       'manzana_limite' => $model->manzana_limite,
-                                       'nivel' => $model->nivel,
-                                       //direcciones
-                                       'av_calle_esq_dom' => $model->av_calle_esq_dom,
-                                       'casa_edf_qta_dom' => $model->casa_edf_qta_dom,
-                                       'piso_nivel_no_dom' => $model->piso_nivel_no_dom,
-                                       'apto_dom' => $model->apto_dom,
-                                       //otros datos
-                                       'tlf_hab' => $model->tlf_hab,
-                                       'medidor' => $model->medidor,
-                                       'id_sim' => 0,
-                                       'observacion' => $model->observacion,
-                                       'inactivo' => $model->inactivo,
-                                       'catastro' => $catastro,
-                                       'id_habitante' => $model->id_habitante,
-                                       'tipo_ejido' => $model->tipo_ejido,
-                                       'propiedad_horizontal' => $model->propiedad_horizontal,
-                                       //catastro inmueble
-                                       'estado_catastro' => $model->estado_catastro,
-                                       'municipio_catastro' => $model->municipio_catastro,
-                                       'parroquia_catastro' => $model->parroquia_catastro,
-                                       'ambito_catastro' => $model->ambito_catastro,
-                                       'sector_catastro' => $model->sector_catastro,
-                                       'manzana_catastro' => $model->manzana_catastro,
-                                       //parcelas 
-                                       'parcela_catastro' => $model->parcela_catastro,
-                                       'subparcela_catastro' => $subparcela_catastro,
-                                       'nivel_catastro' => $nivel_catastro,
-                                       'unidad_catastro' => $unidad_catastro,
+            
+                        $tableName3 = 'historico_avaluos';
+                         
 
-                                       'liquidado' => $model->liquidado, 
-                                       'lote_1' => 0,
-                                       'lote_2' => 0,
-                                       'lote_3' => 0, 
-                                       'nivel' => $model->nivel,
-                                       ]; 
-
-                        $tableName3 = 'inmuebles';
 
                         if ( $conn->guardarRegistro($conexion, $tableName3,  $arrayDatos3) ){
 
-                              $transaccion->commit(); 
-                              $conexion->close(); 
+                             
                               $tipoError = 0; 
-                              return $result; 
+                              $todoBien = true; 
 
                         } else {
             
-                              $transaccion->rollBack(); 
-                              $conexion->close(); 
+                              
                               $tipoError = 0; 
-                              return false; 
+                              $todoBien = false;
 
                         }
+                  }
 
-
-                    }
 
                 } else {
             
-                    $transaccion->rollBack();
-                    $conexion->close();
+                     
                     $tipoError = 0; 
-                    return false;
+                    $todoBien = false; 
 
                 }
 
+            }else{ 
+                $tipoError = 0;
+                $todoBien = false;
+            }
+            } /// fin del foreach 
 
+                if ($todoBien == true){
+                    
+                    $transaccion->commit();  
+                    $conexion->close(); 
+                    $tipoError = 0; 
+                    return $result;
 
-            } else { 
+                } else {
                 
-                 return false;
-             }   
-            
+                    $transaccion->rollBack(); 
+                    $conexion->close(); 
+                    $tipoError = 0; 
+                    return false; 
+
+                }
+                  
+               
+          
           } catch ( Exception $e ) {
               //echo $e->errorInfo[2];
           } 
                        
      }
+    
+
+    /**
+     * [DatosContribuyente] metodo que busca los datos del contribuyente en 
+     * la tabla contribuyente
+     */
+     public function actionCalcularAvaluos($model)
+     {
+
+
+        if ($_SESSION['anioAvaluo'][0] != null) {
+         
+        
+            if ($_SESSION['anioAvaluo'][0] <= 2011) {
+              $anioImpositivo = '2012';
+              $tarifaAvaluos = self::TarifaAvaluos($_SESSION['datosInmueble']['manzana_limite'],$model->id_tipologia_zona, $anioImpositivo );
+              //se calcula 2012 y 2017
+              $arrayDatos1 = [    'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
+                                    
+                                    'fecha' => '2012-01-01',
+                                    'mts' => $model->metros_construccion,
+                                    'valor_por_mts2' => $tarifaAvaluos['valor_construccion'],
+                                    'mts2_terreno' => $model->metros_terreno,
+                                    'valor_por_mts2_terreno' => $tarifaAvaluos['valor_terreno'],
+                                    'valor' => $tarifaAvaluos['valor_construccion']*$model->metros_construccion + $tarifaAvaluos['valor_terreno']*$model->metros_terreno,
+                                    'id_uso_inmueble' => $model->id_uso_inmueble,
+                                    'tipo_inmueble'   => $model->tipo_inmueble, 
+                                    'clase_inmueble' => $model->clase_inmueble,
+                                    'id_tipologia_zona' => $model->id_tipologia_zona,
+                                    
+                                ]; 
+
+              $tarifaAvaluos = self::TarifaAvaluos($_SESSION['datosInmueble']['manzana_limite'], $model->id_tipologia_zona, date('Y') );
+              $arrayDatos2 = [    'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
+                                    
+                                    'fecha' => date('Y-m-d'),
+                                    'mts' => $model->metros_construccion,
+                                    'valor_por_mts2' => $tarifaAvaluos['valor_construccion'],
+                                    'mts2_terreno' => $model->metros_terreno,
+                                    'valor_por_mts2_terreno' => $tarifaAvaluos['valor_terreno'],
+                                    'valor' => $tarifaAvaluos['valor_construccion']*$model->metros_construccion + $tarifaAvaluos['valor_terreno']*$model->metros_terreno,
+                                    'id_uso_inmueble' => $model->id_uso_inmueble,
+                                    'tipo_inmueble'   => $model->tipo_inmueble, 
+                                    'clase_inmueble' => $model->clase_inmueble,
+                                    'id_tipologia_zona' => $model->id_tipologia_zona,
+                                    
+                                ]; 
+
+            $arrayDatos = ['avaluo1'=> $arrayDatos1, 'avaluo2'=> $arrayDatos2];
+            } elseif($_SESSION['anioAvaluo'][0] >= 2012 and $_SESSION['anioAvaluo'][0] < 2017 ) {
+            
+              // se calcula 2017 nada mas 
+              $tarifaAvaluos = self::TarifaAvaluos($_SESSION['datosInmueble']['manzana_limite'],$model->id_tipologia_zona, date('Y') );
+              $arrayDatos = [    'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
+                                    
+                                    'fecha' => date('Y-m-d'),
+                                    'mts' => $model->metros_construccion,
+                                    'valor_por_mts2' => $model->valor_construccion,
+                                    'mts2_terreno' => $model->metros_terreno,
+                                    'valor_por_mts2_terreno' => $model->valor_construccion,
+                                    'valor' => $tarifaAvaluos['valor_construccion']*$model->metros_construccion + $tarifaAvaluos['valor_terreno']*$model->metros_terreno,
+                                    'id_uso_inmueble' => $model->id_uso_inmueble,
+                                    'tipo_inmueble'   => $model->tipo_inmueble, 
+                                    'clase_inmueble' => $model->clase_inmueble,
+                                    'id_tipologia_zona' => $model->id_tipologia_zona,
+                                    
+                                ]; 
+              
+            }
+          
+       } elseif($_SESSION['anioRegistro']!=null) {
+
+            $anioImpositivo = '2018';
+            $tarifaAvaluos = self::TarifaAvaluos($_SESSION['datosInmueble']['manzana_limite'],$model->id_tipologia_zona, $anioImpositivo );
+            $arrayDatos1 = [    'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
+                                    
+                                    'fecha' => '2008-01-01',
+                                    'mts' => $model->metros_construccion,
+                                    'valor_por_mts2' => $model->valor_construccion,
+                                    'mts2_terreno' => $model->metros_terreno,
+                                    'valor_por_mts2_terreno' => $model->valor_construccion,
+                                    'valor' => $tarifaAvaluos['valor_construccion']*$model->metros_construccion + $tarifaAvaluos['valor_terreno']*$model->metros_terreno,
+                                    'id_uso_inmueble' => $model->id_uso_inmueble,
+                                    'tipo_inmueble'   => $model->tipo_inmueble, 
+                                    'clase_inmueble' => $model->clase_inmueble,
+                                    'id_tipologia_zona' => $model->id_tipologia_zona,
+                                    
+                                ]; 
+              $anioImpositivo = '2012';
+              $tarifaAvaluos = self::TarifaAvaluos($_SESSION['datosInmueble']['manzana_limite'],$model->id_tipologia_zona, $anioImpositivo );
+              $arrayDatos2 = [    'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
+                                   
+                                    'fecha' => '2012-01-01',
+                                    'mts' => $model->metros_construccion,
+                                    'valor_por_mts2' => $model->valor_construccion,
+                                    'mts2_terreno' => $model->metros_terreno,
+                                    'valor_por_mts2_terreno' => $model->valor_construccion,
+                                    'valor' => $tarifaAvaluos['valor_construccion']*$model->metros_construccion + $tarifaAvaluos['valor_terreno']*$model->metros_terreno,
+                                    'id_uso_inmueble' => $model->id_uso_inmueble,
+                                    'tipo_inmueble'   => $model->tipo_inmueble, 
+                                    'clase_inmueble' => $model->clase_inmueble,
+                                    'id_tipologia_zona' => $model->id_tipologia_zona,
+                                    
+                                ]; 
+              $tarifaAvaluos = self::TarifaAvaluos($_SESSION['datosInmueble']['manzana_limite'],$model->id_tipologia_zona, date('Y') );
+              $arrayDatos3 = [    'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
+                                    
+                                    'fecha' => date('Y-m-d'),
+                                    'mts' => $model->metros_construccion,
+                                    'valor_por_mts2' => $model->valor_construccion,
+                                    'mts2_terreno' => $model->metros_terreno,
+                                    'valor_por_mts2_terreno' => $model->valor_construccion,
+                                    'valor' => $tarifaAvaluos['valor_construccion']*$model->metros_construccion + $tarifaAvaluos['valor_terreno']*$model->metros_terreno,
+                                    'id_uso_inmueble' => $model->id_uso_inmueble,
+                                    'tipo_inmueble'   => $model->tipo_inmueble, 
+                                    'clase_inmueble' => $model->clase_inmueble,
+                                    'id_tipologia_zona' => $model->id_tipologia_zona,
+                                    
+                                ]; 
+
+
+            $arrayDatos = ['avaluo1'=> $arrayDatos1, 'avaluo2'=> $arrayDatos2, 'avaluo3' => $arrayDatos3];
+
+       } elseif($_SESSION['anioRegistro']==null) {
+
+            $anioImpositivo = '2018';
+            $tarifaAvaluos = self::TarifaAvaluos($_SESSION['datosInmueble']['manzana_limite'],$model->id_tipologia_zona, $anioImpositivo );
+            $arrayDatos1 = [    'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
+                                    
+                                    'fecha' => '2008-01-01',
+                                    'mts' => $model->metros_construccion,
+                                    'valor_por_mts2' => $model->valor_construccion,
+                                    'mts2_terreno' => $model->metros_terreno,
+                                    'valor_por_mts2_terreno' => $model->valor_construccion,
+                                    'valor' => $tarifaAvaluos['valor_construccion']*$model->metros_construccion + $tarifaAvaluos['valor_terreno']*$model->metros_terreno,
+                                    'id_uso_inmueble' => $model->id_uso_inmueble,
+                                    'tipo_inmueble'   => $model->tipo_inmueble, 
+                                    'clase_inmueble' => $model->clase_inmueble,
+                                    'id_tipologia_zona' => $model->id_tipologia_zona,
+                                    
+                                ]; 
+              $anioImpositivo = '2012';
+              $tarifaAvaluos = self::TarifaAvaluos($_SESSION['datosInmueble']['manzana_limite'],$model->id_tipologia_zona, $anioImpositivo );
+              $arrayDatos2 = [    'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
+                                    
+                                    'fecha' => '2012-01-01',
+                                    'mts' => $model->metros_construccion,
+                                    'valor_por_mts2' => $model->valor_construccion,
+                                    'mts2_terreno' => $model->metros_terreno,
+                                    'valor_por_mts2_terreno' => $model->valor_construccion,
+                                    'valor' => $tarifaAvaluos['valor_construccion']*$model->metros_construccion + $tarifaAvaluos['valor_terreno']*$model->metros_terreno,
+                                    'id_uso_inmueble' => $model->id_uso_inmueble,
+                                    'tipo_inmueble'   => $model->tipo_inmueble, 
+                                    'clase_inmueble' => $model->clase_inmueble,
+                                    'id_tipologia_zona' => $model->id_tipologia_zona,
+                                    
+                                ];
+              $tarifaAvaluos = self::TarifaAvaluos($_SESSION['datosInmueble']['manzana_limite'],$model->id_tipologia_zona, date('Y') ); 
+              $arrayDatos3 = [    'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
+                                    
+                                    'fecha' => date('Y-m-d'),
+                                    'mts' => $model->metros_construccion,
+                                    'valor_por_mts2' => $model->valor_construccion,
+                                    'mts2_terreno' => $model->metros_terreno,
+                                    'valor_por_mts2_terreno' => $model->valor_construccion,
+                                    'valor' => $tarifaAvaluos['valor_construccion']*$model->metros_construccion + $tarifaAvaluos['valor_terreno']*$model->metros_terreno,
+                                    'id_uso_inmueble' => $model->id_uso_inmueble,
+                                    'tipo_inmueble'   => $model->tipo_inmueble, 
+                                    'clase_inmueble' => $model->clase_inmueble,
+                                    'id_tipologia_zona' => $model->id_tipologia_zona,
+                                    
+                                ]; 
+
+
+            $arrayDatos = ['avaluo1'=> $arrayDatos1, 'avaluo2'=> $arrayDatos2, 'avaluo3' => $arrayDatos3];
+       }
+
+
+
+      return $arrayDatos;                                           
+
+     }
+
+     /**
+     * [DatosContribuyente] metodo que busca los datos del contribuyente en 
+     * la tabla contribuyente
+     */
+     public function TarifaAvaluos($manzana_limite,$id_tipologia_zona, $date)
+     {
+
+         $buscar = TarifasAvaluos::find()->where("manzana_limite=:manzana_limite", [":manzana_limite" => $manzana_limite])
+                                            ->AndWhere("id_tipologia_zona=:id_tipologia_zona", [":id_tipologia_zona" => $id_tipologia_zona])
+                                            ->AndWhere("ano_impositivo=:ano_impositivo", [":ano_impositivo" => $date])
+                                            ->asArray()->all();
+
+         if($buscar[0] ==true){
+
+            return $buscar[0]; 
+         }
+         return $buscar = false;                                              
+
+     }
+
+
 
      /**
      * Metodo que se encargara de gestionar la ejecucion y resultados de los procesos relacionados

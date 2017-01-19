@@ -62,6 +62,7 @@
 		    				'mts2_terreno',
 		    				'valor_por_mts2_terreno',
 		    				'valor',
+		    				'fecha',
 		    				
 		    				
 

@@ -109,6 +109,7 @@ class AvaluoCatastralForm extends \yii\db\ActiveRecord
     public $lindero_sur;
     public $lindero_este;
     public $lindero_oeste;
+    public $id_tipologia_zona;
 
    
 
@@ -124,8 +125,10 @@ class AvaluoCatastralForm extends \yii\db\ActiveRecord
 
         return [ 
 
-            [['id_impuesto'], 'integer','message' => Yii::t('backend', 'only integers')],
-            [['metros_terreno','metros_construccion','valor_terreno','valor_construccion'],'required','message' => Yii::t('backend', 'No debe estar vacio el campo de datos')],
+            [['id_impuesto','id_tipologia_zona','tipo_inmueble','clase_inmueble','id_uso_inmueble'], 'integer','message' => Yii::t('backend', 'only integers')],
+            [['metros_terreno','metros_construccion'/*,'valor_terreno','valor_construccion'*/],'required','message' => Yii::t('backend', 'No debe estar vacio el campo de datos')],
+            //[['lindero_norte', 'lindero_sur','lindero_este', 'lindero_oeste'],'required','message' => Yii::t('backend', 'No debe estar vacio el campo de datos')],
+
             //[['observacion','datosVendedor','inmuebleVendedor'], 'string'], 
             //[['direccion'], 'string', 'max' => 255,'message' => Yii::t('backend', 'Only 255 character')],
             
