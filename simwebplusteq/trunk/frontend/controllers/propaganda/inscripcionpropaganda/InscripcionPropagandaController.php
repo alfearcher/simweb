@@ -179,18 +179,23 @@
 					return ActiveForm::validate($model);
 		      	}
 
+
 		      	if ( $model->load(Yii::$app->request->post()) ) {
 
 		      	 	if ( $model->validate() ) {
-		      	 		// Todo bien la validacion es correcta.
-		      	 		$_SESSION['guardar'] = 1;
-		      	 		$result = self::actionBeginSave($model);
-		      	 		if ( $result ) {
-		      	 			self::actionMostrarSolicitudCreada($model);
-		      	 		} else {
 
-		      	 			$this->redirect(['error-operacion', 'cod' => 920]);
-		      	 		}
+		      	 		if ( $model->validateInputBaseCalculo() ) {
+
+			      	 		// Todo bien la validacion es correcta.
+			      	 		$_SESSION['guardar'] = 1;
+			      	 		$result = self::actionBeginSave($model);
+			      	 		if ( $result ) {
+			      	 			self::actionMostrarSolicitudCreada($model);
+			      	 		} else {
+
+			      	 			$this->redirect(['error-operacion', 'cod' => 920]);
+			      	 		}
+			      	 	}
 		      	 	}
 		  		}
 
