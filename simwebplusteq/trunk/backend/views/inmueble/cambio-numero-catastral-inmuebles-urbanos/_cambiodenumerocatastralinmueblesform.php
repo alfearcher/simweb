@@ -162,7 +162,7 @@ function bloquea() {
                         <td style="max-width: 100px">
                             <div class="col-sm-1">
                                 <?php $modelEstado = Municipios::find()->where(['estado'=>15])->asArray()->all();
-                                $listaMunicipio = ArrayHelper::map($modelEstado, 'estado', 'nombre'); ?>
+                                $listaMunicipio = ArrayHelper::map($modelEstado, 'municipio', 'nombre'); ?>
                                 <?= $form->field($model, 'municipio_catastro')
                                           ->dropDownList($listaMunicipio, [
                                                                 'id'=> 'municipio_catastro',
