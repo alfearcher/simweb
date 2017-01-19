@@ -62,14 +62,14 @@
 
 	<?=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $model->id_contribuyente])->label(false);?>
 	<?=$form->field($model, 'nro_solicitud')->hiddenInput(['value' => 0])->label(false);?>
-	<?=$form->field($model, 'estatus')->hiddenInput(['value' => 0])->label(false); ?>
+	<?=$form->field($model, 'estatus')->hiddenInput(['value' => $model->estatus])->label(false); ?>
 	<?=$form->field($model, 'id_sim')->hiddenInput(['value' => 0])->label(false); ?>
 
 	<?=$form->field($model, 'id_cp')->hiddenInput(['value' => $model->id_cp])->label(false); ?>
 	<?=$form->field($model, 'inactivo')->hiddenInput(['value' => $model->inactivo])->label(false); ?>
 	<?=$form->field($model, 'planilla')->hiddenInput(['value' => $model->planilla])->label(false); ?>
-	<?=$form->field($model, 'estatus')->hiddenInput(['value' => $model->estatus])->label(false); ?>
-	<?=$form->field($model, 'estatus')->hiddenInput(['value' => $model->estatus])->label(false); ?>
+	<?=$form->field($model, 'ano_impositivo')->hiddenInput(['value' => $model->ano_impositivo])->label(false); ?>
+	<?=$form->field($model, 'fecha_hora')->hiddenInput(['value' => $model->fecha_hora])->label(false); ?>
 
 
 
