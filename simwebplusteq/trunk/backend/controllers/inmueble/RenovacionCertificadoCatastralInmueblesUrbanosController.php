@@ -354,6 +354,10 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                                     'tipo_inmueble' => $value['tipo_inmueble'],
                                     'clase_inmueble' => $value['clase_inmueble'],
                                     'id_tipologia_zona' => $value['id_tipologia_zona'],
+                                    'lindero_norte' => $_SESSION['datosHAvaluos']['lindero_norte'],
+                                    'lindero_sur' => $_SESSION['datosHAvaluos']['lindero_sur'],
+                                    'lindero_este' => $_SESSION['datosHAvaluos']['lindero_este'],
+                                    'lindero_oeste' => $_SESSION['datosHAvaluos']['lindero_oeste'],
                                     
                                 ]; 
 
@@ -385,6 +389,10 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                                             'tipo_inmueble' => $value['tipo_inmueble'],
                                             'clase_inmueble' => $value['clase_inmueble'],
                                             'id_tipologia_zona' => $value['id_tipologia_zona'],
+                                            'lindero_norte' => $_SESSION['datosHAvaluos']['lindero_norte'],
+                                            'lindero_sur' => $_SESSION['datosHAvaluos']['lindero_sur'],
+                                            'lindero_este' => $_SESSION['datosHAvaluos']['lindero_este'],
+                                            'lindero_oeste' => $_SESSION['datosHAvaluos']['lindero_oeste'],
                                             
                                     
                                         ]; 
