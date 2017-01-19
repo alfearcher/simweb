@@ -57,7 +57,7 @@
 		
         public static function tableName()
         {
-            return 'historicos_avaluos';
+            return 'historico_avaluos';
         }
 	/**
      * Creates data provider instance with search query applied
