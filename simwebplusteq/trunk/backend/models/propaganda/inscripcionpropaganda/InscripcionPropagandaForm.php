@@ -322,6 +322,43 @@
 
 
 
+	    /**
+    	*   Metodo attributeLabels(), retorna las etiquetas de los campos.
+    	*/
+    	public function attributeLabels()
+	    {
+	        return  [
+                'id_impuesto' => Yii::t( 'backend', 'Tax Id' ),
+                'id_contribuyente' => Yii::t( 'backend', 'Id Contribuyente' ),
+                'ano_impositivo' => Yii::t( 'backend', 'Tax Year' ),
+                'direccion' => Yii::t( 'backend', 'Address' ),
+                'id_cp' => Yii::t( 'backend', 'Location' ),
+                'clase_propaganda' => Yii::t( 'backend', 'Clase Propaganda' ),
+                'tipo_propaganda' => Yii::t( 'backend', 'Kind' ),
+                'uso_propaganda' => Yii::t( 'backend', 'Use' ),
+                'medio_difusion' => Yii::t( 'backend', 'Through Construction' ),
+                'medio_transporte' => Yii::t( 'backend', 'Transport Means' ),
+                'fecha_desde' => Yii::t( 'backend', 'Start Date' ),
+                'cantidad_tiempo' => Yii::t( 'backend', 'Quantity' ),
+                'id_tiempo' => Yii::t( 'backend', 'Lapse' ),
+                'inactivo' => Yii::t( 'backend', 'Status' ),
+                'id_sim' => Yii::t( 'backend', 'Id Sim'),
+                'cantidad_base' => Yii::t( 'backend', 'Number' ),
+                'base_calculo' => Yii::t( 'backend', 'Base'),
+                'cigarros' => Yii::t( 'backend', 'Cigarettes or Tobacco' ),
+                'bebidas_alcoholicas' => Yii::t( 'backend', 'Alcoholic Beverages' ),
+                'cantidad_propagandas' => Yii::t( 'backend', 'Units' ),
+                'planilla' => Yii::t( 'backend', 'Planilla' ),
+                'idioma' => Yii::t( 'backend', 'Foreign Language' ),
+                'observacion' => Yii::t( 'backend', 'Observation' ),
+                'ano_impo' => Yii::t( 'backend', 'Tax Year' ),
+                'fecha_fin' => Yii::t( 'backend', 'Date End' ),
+                'fecha_inicio' => Yii::t( 'backend', 'Start Date' ),
+                'fecha_guardado' => Yii::t( 'backend', 'Date Creation' ),
+            ];
+	    }
+
+
 
     }
 

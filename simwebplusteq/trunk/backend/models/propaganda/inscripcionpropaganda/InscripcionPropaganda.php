@@ -47,7 +47,7 @@
     use yii\db\ActiveRecord;
     use backend\models\propaganda\uso\UsoPropaganda;
     use backend\models\propaganda\clase\ClasePropaganda;
-    use backend\models\propaganda\uso\TipoPropaganda;
+    use backend\models\propaganda\tipo\TipoPropaganda;
     use backend\models\propaganda\mediotransporte\MedioTransporte;
     use backend\models\propaganda\mediodifusion\MedioDifusion;
     use backend\models\solicitud\estatus\EstatusSolicitud;
