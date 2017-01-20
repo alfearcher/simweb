@@ -46,6 +46,7 @@
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 	use backend\models\propaganda\inscripcionpropaganda\InscripcionPropaganda;
+	use backend\models\propaganda\Propaganda;
 	use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomica;
 	use common\models\contribuyente\ContribuyenteBase;
 	use backend\models\propaganda\uso\UsoPropaganda;
@@ -138,7 +139,12 @@
 			 													[':nro_solicitud' => $nroSolicitud])
 													  ->andWhere('id_contribuyente =:id_contribuyente',
 													  			[':id_contribuyente' => $this->_id_contribuyente])
-													  ->joinWith('estatusSolicitud')
+													  ->joinWith('estatusSolicitud E', true, 'INNER JOIN')
+													  ->joinWith('clasePropaganda C', true, 'INNER JOIN')
+													  ->joinWith('usoPropaganda U', true, 'INNER JOIN')
+													  ->joinWith('tipoPropaganda T', true, 'INNER JOIN')
+													  ->joinWith('medioTransporte')
+													  ->joinWith('medioDifusion')
 													  ->one();
 			return isset($findModel) ? $findModel : null;
 		}
@@ -166,22 +172,50 @@
 
 
 
-		/**
-		 * Metodo que genera una lista con las clases de las propagandas. Si recibe
-		 * un arreglo vacio busca todos las clases de las propagandas.
-		 * @param  array  $uso identificadores de la propaganda.
-		 * @return array
-		 */
+		/***/
 		public function getListaClasePropaganda($clase = [])
 		{
 			if ( count($clase) > 0 ) {
 				$modelClase = ClasePropaganda::find()->where(['IN', 'clase_propaganda', $clase])
-			                                 ->all();
+			                                     ->all();
 			} else {
 				$modelClase = ClasePropaganda::find()->all();
 			}
 
 			return ArrayHelper::map($modelClase,'clase_propaganda','descripcion');
+
+		}
+
+
+
+
+		/***/
+		public function getListaTipoPropaganda($uso, $clase, $añoImpositivo, $tipo = 0)
+		{
+			$model = [];
+			if ( $tipo == 0 ) {
+				if ( $uso > 0 && $clase > 0 && $añoImpositivo > 0 ) {
+
+		    		$idOrdenanza = self::getIdOrdenanza($añoImpositivo);
+					if ( $idOrdenanza > 0 ) {
+
+						$model = TarifaPropaganda::find()->alias('A')
+														 ->select(['T.tipo_propaganda','descripcion'])
+											 			 ->distinct('A.tipo_propaganda')
+											 			 ->joinWith('tipoPropaganda T', true, 'INNER JOIN')
+							                 			 ->where('uso_propaganda =:uso_propaganda',
+																	[':uso_propaganda' => $uso])
+							                 			 ->andWhere('clase_propaganda =:clase_propaganda',
+																	[':clase_propaganda' => $clase])
+							                 			 ->andWhere('id_ordenanza =:id_ordenanza',
+																	[':id_ordenanza' => $idOrdenanza])
+										     			->all();
+					}
+				}
+			} else {
+				$model = TipoPropaganda::findOne($tipo);
+			}
+			return ArrayHelper::map($model, 'tipo_propaganda', 'descripcion');
 
 		}
 
@@ -412,6 +446,39 @@
 
 			return date_format($result, 'd-m-Y');
 		}
+
+
+
+
+		/**
+		 * Metodo que guarda el registro de la propaganda.
+		 * @param  InscripcionPropagandaForm $model modelo de la inscripcion de propaganda
+		 * realizada en la solicitud.
+		 * @param ConexionController $conexionLocal [description]
+		 * @param  [type] $connLocal     [description]
+		 * @return integer retorna un identificador de la propaganda.
+		 */
+		public function guardarPropaganda($model, $conexionLocal, $connLocal)
+		{
+			$idImpuesto = 0;
+			$modelPropaganda = New Propaganda();
+			$tabla = $modelPropaganda->tableName();
+
+			$modelPropaganda->fecha_desde = $model->fecha_inicio;
+			foreach ( $modelPropaganda->attributes as $key => $value ) {
+				if ( isset($model->$key) ) {
+					$modelPropaganda->$key = $model->$key;
+				}
+			}
+
+			if ( $conexionLocal->guardarRegistro($connLocal, $tabla, $modelPropaganda->attributes) ) {
+				$idImpuesto = $connLocal->getLastInsertID();
+			}
+
+			return $idImpuesto;
+
+		}
+
 
 
 	}

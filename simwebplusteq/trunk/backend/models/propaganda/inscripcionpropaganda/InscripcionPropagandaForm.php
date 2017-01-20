@@ -66,7 +66,7 @@
     	public $uso_propaganda;
     	public $medio_difusion;
     	public $medio_transporte;
-    	public $fecha_desde;
+    	public $fecha_inicio;
     	public $cantidad_tiempo;
     	public $id_tiempo;
     	public $inactivo;
@@ -80,7 +80,6 @@
     	public $idioma;
     	public $observacion;
     	public $fecha_fin;
-    	public $fecha_inicio;
     	public $fecha_hora;
     	public $usuario;
     	public $user_funcionario;
@@ -92,16 +91,102 @@
     	public $nombre_propaganda;
     	public $mts;
     	public $costo;
+    	public $origen;
     	public $errorMensajeInput;
     	public $descripcion;
 
+    	const SCENARIO_FRONTEND = 'frontend';
+		const SCENARIO_BACKEND = 'backend';
 
 
     	/***/
     	public function scenarios()
     	{
         	// bypass scenarios() implementation in the parent class
-        	return Model::scenarios();
+        	//return Model::scenarios();
+        	return [
+        		self::SCENARIO_FRONTEND => [
+        					'id_contribuyente',
+        					'id_impuesto',
+        					'nro_solicitud',
+        					'ano_impositivo',
+        					'direccion',
+        					'id_cp',
+        					'clase_propaganda',
+        					'tipo_propaganda',
+        					'uso_propaganda',
+        					'medio_difusion',
+        					'medio_transporte',
+        					'cantidad_tiempo',
+        					'id_tiempo',
+        					'inactivo',
+        					'id_sim',
+        					'cantidad_base',
+        					'base_calculo',
+        					'cigarros',
+        					'bebidas_alcoholicas',
+        					'cantidad_propagandas',
+        					'planilla',
+        					'idioma',
+        					'observacion',
+        					'fecha_fin',
+        					'fecha_inicio',
+        					'fecha_hora',
+        					'usuario',
+        					'user_funcionario',
+        					'fecha_hora_proceso',
+        					'estatus',
+        					'alto',
+        					'ancho',
+        					'profundidad',
+        					'nombre_propaganda',
+        					'mts',
+        					'costo',
+        					'origen',
+        					'descripcion',
+
+        		],
+        		self::SCENARIO_BACKEND => [
+        					'id_contribuyente',
+        					'id_impuesto',
+        					'nro_solicitud',
+        					'ano_impositivo',
+        					'direccion',
+        					'id_cp',
+        					'clase_propaganda',
+        					'tipo_propaganda',
+        					'uso_propaganda',
+        					'medio_difusion',
+        					'medio_transporte',
+        					'cantidad_tiempo',
+        					'id_tiempo',
+        					'inactivo',
+        					'id_sim',
+        					'cantidad_base',
+        					'base_calculo',
+        					'cigarros',
+        					'bebidas_alcoholicas',
+        					'cantidad_propagandas',
+        					'planilla',
+        					'idioma',
+        					'observacion',
+        					'fecha_fin',
+        					'fecha_inicio',
+        					'fecha_hora',
+        					'usuario',
+        					'user_funcionario',
+        					'fecha_hora_proceso',
+        					'estatus',
+        					'alto',
+        					'ancho',
+        					'profundidad',
+        					'nombre_propaganda',
+        					'mts',
+        					'costo',
+        					'origen',
+        					'descripcion',
+        		]
+        	];
     	}
 
 
@@ -112,10 +197,13 @@
 	    public function rules()
 	    {
 	        return [
-	        	[['id_impuesto', 'id_contribuyente', 'nro_solicitud',
-	        	  'ano_impositivo', 'clase_propaganda', 'uso_propaganda',
-	        	  'tipo_propaganda', 'id_tiempo', 'fecha_desde', 'fecha_fin',
-	        	  'cantidad_tiempo', 'base_calculo',],
+	        	[['id_contribuyente', 'nombre_propaganda',
+	        	  'direccion',
+	        	  'clase_propaganda', 'uso_propaganda',
+	        	  'tipo_propaganda', 'id_tiempo', 'fecha_inicio',
+	        	  'fecha_fin',
+	        	  'cantidad_tiempo', 'base_calculo',
+	        	  'cantidad_propagandas'],
 	        	  'required'],
 	        	[['id_impuesto', 'id_contribuyente', 'nro_solicitud',
 	        	  'ano_impositivo', 'clase_propaganda', 'uso_propaganda',
@@ -133,7 +221,7 @@
 	        	   'number',
 	        	   'message' => Yii::t('backend', '{attribute} no valido')],
 	        	[['observacion', 'direccion',
-	        	  'descripcion',],
+	        	  'descripcion', 'nombre_propaganda', 'origen',],
 	        	  'string',
 	        	  'message' => Yii::t('backend', '{attribute} no valido')],
 	        	[['alto', 'ancho', 'profundidad',
@@ -142,9 +230,14 @@
 	        	  'message' => Yii::t('backend', '{attribute} no valido')],
 	        	[['estatus', 'inactivo', 'bebidas_alcoholicas',
 	        	  'idioma', 'id_cp', 'medio_difusion', 'medio_transporte',
-	        	  'id_sim', 'cigarros', 'planilla', 'id_cp'],
+	        	  'id_sim', 'cigarros', 'planilla', 'id_cp',
+	        	  'cantidad_base', 'alto', 'ancho', 'profundidad',
+	        	  'mts', 'costo', 'id_impuesto',],
 	        	  'default',
-	        	   'value' => 0],
+	        	  'value' => 0],
+	        	[['ano_impositivo',],
+	        	  'default',
+	        	  'value' => date('Y')],
 	        	[['fecha_desde', 'fecha_fin'],
 	        	  'date',
 	        	  'format' => 'dd-MM-yyyy',
@@ -157,8 +250,7 @@
 	     		[['fecha_guardado'],
 	     		  'default',
 	     		  'value' => date('Y-m-d')],
-
-
+	     		['nombre_propaganda', 'filter', 'filter' => 'strtoupper'],
 	        ];
 	    }
 
@@ -207,14 +299,14 @@
 	    			$this->errorMensajeInput = Yii::t('backend', 'Debe registrar alto y ancho');
 	    		}
 
-	    	} elseif ( $model->base_calculo == 3 ) {
+	    	} elseif ( $this->base_calculo == 3 ) {
 	    		if ( $this->mts > 0 ) {
 	    			$result = true;
 	    		} else {
 	    			$this->errorMensajeInput = Yii::t('backend', 'Debe registrar metros');
 	    		}
 
-	    	} elseif ( $model->base_calculo == 7 ) {
+	    	} elseif ( $this->base_calculo == 7 ) {
 	    		if ( $this->costo > 0 ) {
 	    			$result = true;
 	    		} else {
