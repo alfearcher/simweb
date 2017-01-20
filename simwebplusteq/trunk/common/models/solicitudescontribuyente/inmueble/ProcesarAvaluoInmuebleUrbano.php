@@ -293,6 +293,14 @@
                                             'mts2_terreno' => $camposModel['mts2_terreno'],
                                             'valor_por_mts2_terreno' => $camposModel['valor_por_mts2_terreno'], 
                                             'valor' => $camposModel['valor'], 
+                                            'id_uso_inmueble' => $camposModel['id_uso_inmueble'],
+                                            'tipo_inmueble' => $camposModel['tipo_inmueble'],
+                                            'clase_inmueble' => $camposModel['clase_inmueble'],
+                                            'id_tipologia_zona' => $camposModel['id_tipologia_zona'],
+                                            'lindero_norte' => $camposModel['lindero_norte'],
+                                            'lindero_sur' => $camposModel['lindero_sur'],
+                                            'lindero_este' => $camposModel['lindero_este'],
+                                            'lindero_oeste' => $camposModel['lindero_oeste'],
                                             
                                          ];  
 
