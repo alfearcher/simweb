@@ -676,7 +676,7 @@
 			$modelSearch = New InscripcionPropagandaSearch($id);
 			$model = $modelSearch->findSolicitudInscripcionPropaganda($nro);
 
-			return $this->render('@frontend/views/propaganda/inscripcion-propaganda/view-solicitud', [
+			return $this->render('@frontend/views/propaganda/inscripcion-propaganda/view-solicitud-creada', [
 											'caption' => Yii::t('frontend', 'Request Nro. ' . $nro),
 											'model' => $model,
 											'codigoMensaje' => 100,
