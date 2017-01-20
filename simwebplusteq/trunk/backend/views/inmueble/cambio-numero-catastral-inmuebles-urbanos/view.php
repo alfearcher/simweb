@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Inmuebles */
 
-$this->title = Yii::t('backend', 'View Property Urban. Id Tax: '.$model->id_impuesto);
+$this->title = Yii::t('backend', 'View Property Urban');
 
 ?>
 <div class="inmuebles-view">
@@ -14,12 +14,12 @@ $this->title = Yii::t('backend', 'View Property Urban. Id Tax: '.$model->id_impu
     
 
     <p>
-        <?= Html::a(Yii::t('backend', 'Change of cadastral number'), ['inmueble/cambio-numero-catastral-inmuebles-urbanos/cambio-de-numero-catastral-inmuebles', 'id_impuesto' => $model->id_impuesto], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('backend', 'Change of cadastral number'), ['inmueble/cambio-numero-catastral-inmuebles-urbanos/cambio-de-numero-catastral-inmuebles'], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) ?>
     </p> 
 
     <?= DetailView::widget([
-        'model' => $model,
+        'model' => $modelInmueble,
         'attributes' => [ 
             'id_impuesto',
             'id_contribuyente',
@@ -28,7 +28,7 @@ $this->title = Yii::t('backend', 'View Property Urban. Id Tax: '.$model->id_impu
             'ano_inicio',
             'direccion',
             //'liquidado',
-            //'manzana_limite',
+            
             //'lote_1',
             //'lote_2',
             //'nivel',
@@ -42,18 +42,19 @@ $this->title = Yii::t('backend', 'View Property Urban. Id Tax: '.$model->id_impu
             //'id_sim',
             'observacion:ntext',
             'inactivo',
-            //'tipo_ejido',
-            //'propiedad_horizontal',
-            //'estado_catastro',
-            //'municipio_catastro',
-            //'parroquia_catastro',
-            //'ambito_catastro',
-            //'sector_catastro',
-            //'manzana_catastro',
-            //'parcela_catastro',
-            //'subparcela_catastro',
-            //'nivel_catastro',
-            //'unidad_catastro',
+            'tipo_ejido',
+            'propiedad_horizontal',
+            'estado_catastro',
+            'municipio_catastro',
+            'parroquia_catastro',
+            'ambito_catastro',
+            'sector_catastro',
+            'manzana_catastro',
+            'parcela_catastro',
+            'subparcela_catastro',
+            'nivel_catastro',
+            'unidad_catastro',
+            'manzana_limite',
         ], 
     ]) ?>
 

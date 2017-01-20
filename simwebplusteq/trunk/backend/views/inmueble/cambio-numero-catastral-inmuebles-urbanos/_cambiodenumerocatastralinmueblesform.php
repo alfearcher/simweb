@@ -243,7 +243,7 @@ Session["variablephp"] = tu;
                             <?= $form->field($model, 'propiedad_horizontal')->checkbox(['id'=> 'propiedadhorizontal',
                                                                                          'style' => 'width:50px;', 
                                                                                          'onclick'=>'bloquea()',
-                                                                                         'value'=>$_SESSION['datosInmueble']['municipio_catastro'],
+                                                                                         'value'=>$_SESSION['datosInmueble']['propiedad_horizontal'],
                                                                                          
                                                                                           ]); ?> 
                             </div> 

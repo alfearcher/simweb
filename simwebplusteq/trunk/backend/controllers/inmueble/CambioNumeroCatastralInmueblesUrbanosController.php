@@ -113,7 +113,7 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionView()
     {
         if ( isset( $_SESSION['idContribuyente'] ) ) {
 
@@ -138,7 +138,7 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
           $_SESSION['datosIRegistros'] = $datosIRegistros; 
           
           $datosHAvaluos = HistoricoAvaluoSearch::find()->where("id_impuesto=:impuesto", [":impuesto" => $idInmueble])->asArray()
-                                            //->andwhere("inactivo=:inactivo", [":inactivo" => 0])
+                                            ->andwhere("inactivo=:inactivo", [":inactivo" => 0])
                                             ->all(); 
 
           $_SESSION['datosHAvaluos'] = $datosHAvaluos; 
@@ -172,7 +172,7 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
                 } 
           } 
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'modelInmueble' => $datosInmueble, 'modelHAvaluos' => $value,
         ]);
         }  else {
                     echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
