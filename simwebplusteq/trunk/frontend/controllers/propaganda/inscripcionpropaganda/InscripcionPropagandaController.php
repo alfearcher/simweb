@@ -77,9 +77,10 @@
 	{
 		public $layout = 'layout-main';				//	Layout principal del formulario
 
-		public $conn;
-		public $conexion;
-		public $transaccion;
+		private $_conn;
+		private $_conexion;
+		private $_transaccion;
+		public $envioCorreo;
 
 		const SCENARIO_FRONTEND = 'frontend';
 		const SCENARIO_BACKEND = 'backend';
@@ -166,6 +167,9 @@
 			$result = false;
 			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) ) {
 
+				$request = Yii::$app->request;
+				$postData = $request->post();
+
 				$idContribuyente = $_SESSION['idContribuyente'];
 
 				$model = New InscripcionPropagandaForm();
@@ -173,30 +177,82 @@
 
 				$searchPropaganda = New InscripcionPropagandaSearch($idContribuyente);
 
+				if ( isset($postData['btn-quit']) ) {
+					if ( $postData['btn-quit'] == 1 ) {
+						$this->redirect(['quit']);
+					}
+
+				} elseif ( isset($postData['btn-confirm-create']) ) {
+					if ( $postData['btn-confirm-create'] == 5 ) {
+
+						$model->load($postData);
+
+						$model->fecha_inicio = date('Y-m-d', strtotime($model->fecha_inicio));
+						$model->fecha_fin = date('Y-m-d', strtotime($model->fecha_fin));
+
+						$result = self::actionBeginSave($model, $postData);
+		      	 		if ( $result ) {
+		      	 			$this->_transaccion->commit();
+		      	 			$this->_conn->close();
+		      	 			self::actionMostrarSolicitudCreada($model);
+
+		      	 		} else {
+		      	 			$this->_transaccion->rollBack();
+		      	 			$this->_conn->close();
+		      	 			$this->redirect(['error-operacion', 'cod' => 920]);
+
+		      	 		}
+
+					}
+				}
 
 		  		if ( $model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax ) {
 					Yii::$app->response->format = Response::FORMAT_JSON;
 					return ActiveForm::validate($model);
 		      	}
 
+		      	$caption = Yii::t('frontend', 'Inscripción de Propaganda');
 
 		      	if ( $model->load(Yii::$app->request->post()) ) {
 
-		      	 	if ( $model->validate() ) {
+		      		if ( isset($postData['btn-create']) ) {
 
-		      	 		if ( $model->validateInputBaseCalculo() ) {
+		      			if ( $postData['btn-create'] == 3 ) {
 
-			      	 		// Todo bien la validacion es correcta.
-			      	 		$_SESSION['guardar'] = 1;
-			      	 		$result = self::actionBeginSave($model);
-			      	 		if ( $result ) {
-			      	 			self::actionMostrarSolicitudCreada($model);
-			      	 		} else {
+				      	 	if ( $model->validate() ) {
 
-			      	 			$this->redirect(['error-operacion', 'cod' => 920]);
-			      	 		}
-			      	 	}
-		      	 	}
+				      	 		if ( $model->validateInputBaseCalculo() ) {
+
+				      	 			$listaUsoPropaganda = $searchPropaganda->getListaUsoPropaganda($model->uso_propaganda);
+							  		$listaClasePropaganda = $searchPropaganda->getListaClasePropaganda($model->clase_propaganda);
+
+							  		$listaTiempo = $searchPropaganda->getListaTiempo();
+							  		$listaMedioDifusion = $searchPropaganda->getListaMewdioDifusion();
+							  		$listaMedioTransporte = $searchPropaganda->getListaMewdioTransporte();
+									$listaTipoPropaganda = $searchPropaganda->getListaTipoPropaganda($model->uso_propaganda,
+									                                                                 $model->clase_propaganda,
+									                                                                 $model->ano_impositivo,
+									                                                                 $model->tipo_propaganda);
+
+				      	 			$caption = Yii::t('frontend', 'Confirmar') . '. ' . $caption;
+
+					      	 		// Mostrar vista previa de la solicitud para confirmar.
+									return $this->render('@frontend/views/propaganda/inscripcion-propaganda/_view',[
+																				'model' => $model,
+																				'caption' => $caption,
+																				'listaUsoPropaganda' => $listaUsoPropaganda,
+															        			'listaClasePropaganda' => $listaClasePropaganda,
+															        			'listaTiempo' => $listaTiempo,
+															        			'listaMedioDifusion' => $listaMedioDifusion,
+															        			'listaMedioTransporte' => $listaMedioTransporte,
+															        			'listaTipoPropaganda' => $listaTipoPropaganda,
+
+										]);
+					      	 	}
+
+				      	 	}
+				      	}
+			      	}
 		  		}
 
 		  		$idUsos = $searchPropaganda->getIdentificadorSegunAnoImpositivo("uso_propaganda", date('Y'));
@@ -205,8 +261,19 @@
 		  		$idUsos = ( $idUsos !== null ) ? $idUsos : [];
 		  		$idClases = ( $idClases !== null ) ? $idClases : [];
 
+		  		$listaTipoPropaganda = [];
+		  		if ( isset($postData['tipo_propaganda']) ) {
+		  			$idTipo = $postData['tipo_propaganda'];
+		  			$clase = $postData['clase_propaganda'];
+		  			$uso = $postData['uso_propaganda'];
+		  			$a = date('Y');
+
+		  			$listaTipoPropaganda = $searchPropaganda->getListaTipoPropaganda($uso, $clase, $a);
+		  		}
+
 		  		$listaUsoPropaganda = $searchPropaganda->getListaUsoPropaganda($idUsos);
 		  		$listaClasePropaganda = $searchPropaganda->getListaClasePropaganda($idClases);
+
 		  		$listaTiempo = $searchPropaganda->getListaTiempo();
 		  		$listaMedioDifusion = $searchPropaganda->getListaMewdioDifusion();
 		  		$listaMedioTransporte = $searchPropaganda->getListaMewdioTransporte();
@@ -215,7 +282,7 @@
 				$rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud'], 'frontend');
 
 				$model->id_contribuyente = $idContribuyente;
-				$caption = Yii::t('frontend', 'Inscripción de Propaganda');
+
 				$subCaption = Yii::t('frontend', 'Datos a Registrar de la Propaganda');
 	  			return $this->render('@frontend/views/propaganda/inscripcion-propaganda/_create', [
 	  																'model' => $model,
@@ -227,6 +294,7 @@
 												        			'listaTiempo' => $listaTiempo,
 												        			'listaMedioDifusion' => $listaMedioDifusion,
 												        			'listaMedioTransporte' => $listaMedioTransporte,
+												        			'listaTipoPropaganda' => $listaTipoPropaganda,
 	  				]);
 
 	  		} else {
@@ -306,56 +374,60 @@
 
 
 		/***/
-		private function actionBeginSave($model)
+		private function actionBeginSave($model, $postEnviado)
 		{
+			$this->envioCorreo = false;
 			$result = false;
 			$nroSolicitud = 0;
-			$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : null;
-			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['guardar'])  ) {
-				if ( $_SESSION['idContribuyente'] > 0 && $_SESSION['guardar'] == 1 ) {
+			$idImpuesto = 0;
 
-					$conexion = New ConexionController();
+			$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : null;
+			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin'])  ) {
+				if ( $_SESSION['idContribuyente'] > 0 && $_SESSION['begin'] == 1 ) {
+
+					$this->_conexion = New ConexionController();
 
 					// Instancia de conexion hacia la base de datos.
-			      	$this->conn = $conexion->initConectar('db');
-			      	$this->conn->open();
+			      	$this->_conn = $this->_conexion->initConectar('db');
+			      	$this->_conn->open();
 
 			      	// Instancia de tipo transaccion para asegurar la integridad del resguardo de los datos.
 			      	// Inicio de la transaccion.
-					$transaccion = $this->conn->beginTransaction();
-					$nroSolicitud = self::actionCreateSolicitud($conexion, $this->conn);
+					$this->_transaccion = $this->_conn->beginTransaction();
+					$nroSolicitud = self::actionCreateSolicitud($this->_conexion, $this->_conn);
 					if ( $nroSolicitud > 0 ) {
 
 						$model->nro_solicitud = $nroSolicitud;
-						// Detalle de la solicitud
-						$result = self::actionCreateInscripcionActEcon($model, $conexion, $this->conn);
 
-						if ( count($conf) > 0 && $result == true ) {
+						if ( $conf['nivel_aprobacion'] == 1 ) {
 
-							// Se define que tipo de aprobacion se debe aplicar en la solicitud.
-							if ( $conf['nivel_aprobacion'] == 1 ) {
+							// Se guarda en la entidad principal
+							$idImpuesto = self::actionCreatePropaganda($model, $this->_conexion, $this->_conn, $conf);
 
-								// Solicitud de aprobacion directa. Se deben de pasar los datos
-								// a las tablas principales. En este caso se actualiza los datos
-								// del contribuyente con los datos anteriormente guardados.
-								$result = self::actionUpdateContribuyente($model, $conexion, $this->conn);
+							if ( $idImpuesto > 0 ) {
+								// Se pasa a guardar en la sl- de la solicitud
+								$model->id_impuesto = $idImpuesto;
+								$result = self::actionCreateInscripcionPropaganda($model, $this->_conexion, $this->_conn, $conf);
 							}
 
-							if ( $result ) {
-								$result = self::actionEjecutaProcesoSolicitud($model, $conexion, $this->conn);
-							}
+						} elseif ( $conf['nivel_aprobacion'] == 2 ) {
+
+							// Se pasa a guardar en la sl- de la solicitud
+							$result = self::actionCreateInscripcionPropaganda($model, $this->_conexion, $this->_conn, $conf);
 
 						}
+
 						if ( $result ) {
-							// Se envia el email respectivo
-							self::actionEnviarEmail($model);
-							$transaccion->commit();
-						} else {
-							$transaccion->rollBack();
+							$result = self::actionEjecutaProcesoSolicitud($model, $this->_conexion, $this->_conn);
 						}
-					}
 
-					$this->conn->close();
+						if ( $result ) {
+
+							$this->envioCorreo = self::actionEnviarEmail($model);
+
+						}
+
+					}
 
 				} else {
 					// Operacion no ejecutada.
@@ -401,13 +473,13 @@
 
 				if ( $conf['nivel_aprobacion'] == 1 ) {
 					$estatus = 1;
-					$userFuncionario = Yii::$app->user->identity->login;
+					$userFuncionario = Yii::$app->identidad->getUsuario();
 					$fechaHoraProceso = date('Y-m-d H:i:s');
 				}
 
 				$modelSolicitud->id_contribuyente = $idContribuyente;
 				$modelSolicitud->id_impuesto = 0;
-				$modelSolicitud->usuario = Yii::$app->user->identity->login;
+				$modelSolicitud->usuario = Yii::$app->identidad->getUsuario();
 				$modelSolicitud->fecha_hora_creacion = date('Y-m-d H:i:s');
 				$modelSolicitud->inactivo = 0;
 				$modelSolicitud->estatus = $estatus;
@@ -430,7 +502,7 @@
 
 
 		/***/
-		private function actionCreateInscripcionActEcon($model, $conexionLocal, $connLocal)
+		private function actionCreateInscripcionPropaganda($model, $conexionLocal, $connLocal, $conf)
 		{
 			$estatus = 0;
 			$userFuncionario = '';
@@ -439,21 +511,19 @@
 			$tabla = $model->tableName();
 			$idContribuyente = $_SESSION['idContribuyente'];
 
-			$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : null;
 			if ( $conf['nivel_aprobacion'] == 1 ) {
 				$estatus = 1;
-				$userFuncionario = Yii::$app->user->identity->login;
+				$userFuncionario = Yii::$app->identidad->getUsuario();
 				$fechaHoraProceso = date('Y-m-d H:i:s');
 			}
 
 			$model->origen = 'WEB';
-			$model->fecha = date('Y-m-d', strtotime($model->fecha));
-			$model->fecha_inicio = date('Y-m-d', strtotime($model->fecha_inicio));
-			$model->estatus = $estatus;
 			$model->fecha_hora = date('Y-m-d H:i:s');
-			$model->usuario = Yii::$app->user->identity->login;
+			$model->usuario = Yii::$app->identidad->getUsuario();
+
 			$model->user_funcionario = $userFuncionario;
 			$model->fecha_hora_proceso = $fechaHoraProceso;
+			$model->estatus = $estatus;
 
 			// Arreglo de datos para pasarle los datos del modelo.
 			$arregloDatos = $model->attributes;
@@ -464,6 +534,30 @@
 		}
 
 
+
+
+		/***/
+		private function actionCreatePropaganda($model, $conexionLocal, $connLocal, $conf)
+		{
+			$idImpuesto = 0;
+			if ( $conf['nivel_aprobacion'] == 1 ) {
+
+				if ( isset($_SESSION['idContribuyente']) ) {
+					$idContribuyente = $_SESSION['idContribuyente'];
+					if ( $model->id_contribuyente == $idContribuyente ) {
+
+						$model->user_funcionario = Yii::$app->identidad->getUsuario();
+						$model->fecha_hora_proceso = date('Y-m-d H:i:s');
+
+						$searchPropaganda = New InscripcionPropagandaSearch($idContribuyente);
+						$idImpuesto = $searchPropaganda->guardarPropaganda($model, $conexionLocal, $connLocal);
+
+					}
+				}
+			}
+
+			return $idImpuesto;
+		}
 
 
 
@@ -508,6 +602,7 @@
 
 				// Se obtiene un array de acciones o procesos ejecutados.
 				$acciones = $procesoEvento->getAccion();
+
 				if ( count($acciones) > 0 ) {
 
 					// Se evalua cada accion o proceso ejecutado para determinar si se realizo satisfactoriamnente.
@@ -578,36 +673,15 @@
 			$id = isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : null;
 			$nro = isset($_SESSION['nro_solicitud']) ? $_SESSION['nro_solicitud'] : null;
 
-			$modelSearch = New InscripcionActividadEconomicaSearch($id);
-			$model = $modelSearch->findInscripcion($nro);
+			$modelSearch = New InscripcionPropagandaSearch($id);
+			$model = $modelSearch->findSolicitudInscripcionPropaganda($nro);
 
-			self::actionProcesoExitoso();
-
-
-			// Se buscan las planillas relacionadas a la solicitud. Se refiere a las planillas
-			// de impueso "tasa".
-			$modelPlanilla = New SolicitudPlanillaSearch($nro, Yii::$app->solicitud->crear());
-			$dataProvider = $modelPlanilla->getArrayDataProvider();
-
-			$caption = Yii::t('frontend', 'Planilla(s)');
-			$viewSolicitudPlanilla = $this->renderAjax('@common/views/solicitud-planilla/solicitud-planilla', [
-															'caption' => $caption,
-															'dataProvider' => $dataProvider,
-				]);
-
-
-			return $this->render('/aaee/inscripcion-actividad-economica/view-solicitud', [
+			return $this->render('@frontend/views/propaganda/inscripcion-propaganda/view-solicitud', [
 											'caption' => Yii::t('frontend', 'Request Nro. ' . $nro),
 											'model' => $model,
 											'codigoMensaje' => 100,
-											'viewSolicitudPlanilla' => $viewSolicitudPlanilla,
-
 				]);
 		}
-
-
-
-
 
 
 
@@ -620,7 +694,7 @@
 		{
 			$varSession = self::actionGetListaSessions();
 			self::actionAnularSession($varSession);
-			return $this->render('/funcionario/solicitud-asignada/quit');
+			return $this->render('/menu/menu-vertical');
 		}
 
 
