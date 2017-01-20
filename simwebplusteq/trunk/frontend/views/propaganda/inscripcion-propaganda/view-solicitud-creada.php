@@ -193,7 +193,7 @@
 
 							<div class="col-sm-3">
 								<div class="form-group">
-									<?= Html::a(Yii::t('backend', 'Ir a liquidar propaganda actual'), Url::to(['index']),
+									<?= Html::a(Yii::t('backend', 'liquidar impuesto propaganda actual'), Url::to(['index']),
 																									  [
 																										'id' => 'btn-otra',
 																										'class' => 'btn btn-primary',
