@@ -72,6 +72,9 @@
         		<div class="col-sm-12">
 
 					<div class="row" style="width: 100%;">
+						<div class="row" style="width: 100%;padding-left: 30px;">
+							<?=$viewSolicitudPlanilla?>
+						</div>
 						<div class="row" style="padding-left: 0px; width: 100%;">
 							<?= DetailView::widget([
 									'model' => $model,
@@ -90,7 +93,10 @@
 					    					'label' => $model->getAttributeLabel('id_contribuyente'),
 					    					'value' => $model->id_contribuyente,
 					    				],
-
+					    				[
+					    					'label' => $model->getAttributeLabel('id_impuesto'),
+					    					'value' => $model->id_impuesto,
+					    				],
 					    				[
 					    					'label' => $model->getAttributeLabel('nombre_propaganda'),
 					    					'value' => $model->nombre_propaganda,

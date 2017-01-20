@@ -51,6 +51,7 @@
 		    <?= $this->render('@frontend/views/propaganda/inscripcion-propaganda/view-solicitud-creada', [
 														'caption' => $caption,
 														'model' => $model,
+														'viewSolicitudPlanilla' => $viewSolicitudPlanilla,
 
 							    ]) ?>
 		</div>
