@@ -151,6 +151,11 @@ class InscripcionInmueblesUrbanosForm extends Model{
     public $metros_terreno;
     public $valor_construccion;
     public $valor_terreno;
+    public $lindero_norte;
+    public $lindero_sur;
+    public $lindero_este;
+    public $lindero_oeste;
+
 
     public function rules()
     {

@@ -166,6 +166,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
           } else {
                 $value = false;
                 $_SESSION['datosUAvaluos'] = 0;
+                $_SESSION['anioAvaluo'] = 0;
                 // no presenta historico de avaluos
                 // buscaremos fecha en inmuebles registros
                 if ($datosIRegistros != null) {
@@ -173,11 +174,15 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                     foreach ($datosIRegistros as $key => $valueIn) {
                                             
                     } 
-                    $añoUltimoRegistro = explode('-', $registros['fecha']);
+                    
+                    $añoUltimoRegistro = explode('-', $valueIn['fecha']);
                     $_SESSION['anioRegistro'] = $añoUltimoRegistro;
                     $_SESSION['datosURegistros'] = $valueIn;
                 } else {
+                 
                   $valueIn = false; 
+                  $_SESSION['anioRegistro'] = null; 
+                  
                   //no posee registros de inmueble
                   
                 } 
@@ -250,7 +255,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                         
                                          
                                         if (!\Yii::$app->user->isGuest){                                    
-                                              
+                             
                                           if ($_SESSION['anioAvaluo'][0] == date('Y')) {
 
                                                   return MensajeController::actionMensaje(921);
@@ -325,7 +330,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
 
             
 
-            
+           
 
             $avaluos=self::actionCalcularAvaluos($modelAvaluo); 
 
@@ -373,10 +378,10 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                                     'tipo_inmueble' => $value['tipo_inmueble'],
                                     'clase_inmueble' => $value['clase_inmueble'],
                                     'id_tipologia_zona' => $value['id_tipologia_zona'],
-                                    'lindero_norte' => $_SESSION['datosHAvaluos'][0]['lindero_norte'],
-                                    'lindero_sur' => $_SESSION['datosHAvaluos'][0]['lindero_sur'],
-                                    'lindero_este' => $_SESSION['datosHAvaluos'][0]['lindero_este'],
-                                    'lindero_oeste' => $_SESSION['datosHAvaluos'][0]['lindero_oeste'],
+                                    'lindero_norte' => $value['lindero_norte'],
+                                    'lindero_sur' => $value['lindero_sur'],
+                                    'lindero_este' => $value['lindero_este'],
+                                    'lindero_oeste' => $value['lindero_oeste'],
                                     
                                 ]; 
 
@@ -408,10 +413,10 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                                             'tipo_inmueble' => $value['tipo_inmueble'],
                                             'clase_inmueble' => $value['clase_inmueble'],
                                             'id_tipologia_zona' => $value['id_tipologia_zona'],
-                                            'lindero_norte' => $_SESSION['datosHAvaluos'][0]['lindero_norte'],
-                                            'lindero_sur' => $_SESSION['datosHAvaluos'][0]['lindero_sur'],
-                                            'lindero_este' => $_SESSION['datosHAvaluos'][0]['lindero_este'],
-                                            'lindero_oeste' => $_SESSION['datosHAvaluos'][0]['lindero_oeste'],
+                                            'lindero_norte' => $value['lindero_norte'],
+                                            'lindero_sur' => $value['lindero_sur'],
+                                            'lindero_este' => $value['lindero_este'],
+                                            'lindero_oeste' => $value['lindero_oeste'],
                                             
                                     
                                         ]; 
@@ -503,6 +508,10 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                                     'tipo_inmueble'   => $model->tipo_inmueble, 
                                     'clase_inmueble' => $model->clase_inmueble,
                                     'id_tipologia_zona' => $model->id_tipologia_zona,
+                                    'lindero_norte' => $model->lindero_norte,
+                                    'lindero_sur' => $model->lindero_sur,
+                                    'lindero_este' => $model->lindero_este,
+                                    'lindero_oeste' => $model->lindero_oeste,
                                     
                                 ]; 
 
@@ -519,6 +528,10 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                                     'tipo_inmueble'   => $model->tipo_inmueble, 
                                     'clase_inmueble' => $model->clase_inmueble,
                                     'id_tipologia_zona' => $model->id_tipologia_zona,
+                                    'lindero_norte' => $model->lindero_norte,
+                                    'lindero_sur' => $model->lindero_sur,
+                                    'lindero_este' => $model->lindero_este,
+                                    'lindero_oeste' => $model->lindero_oeste,
                                     
                                 ]; 
 
@@ -539,6 +552,10 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                                     'tipo_inmueble'   => $model->tipo_inmueble, 
                                     'clase_inmueble' => $model->clase_inmueble,
                                     'id_tipologia_zona' => $model->id_tipologia_zona,
+                                    'lindero_norte' => $model->lindero_norte,
+                                    'lindero_sur' => $model->lindero_sur,
+                                    'lindero_este' => $model->lindero_este,
+                                    'lindero_oeste' => $model->lindero_oeste,
                                     
                                 ]; 
               $arrayDatos = ['avaluo1'=> $arrayDatos1];
@@ -560,6 +577,10 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                                     'tipo_inmueble'   => $model->tipo_inmueble, 
                                     'clase_inmueble' => $model->clase_inmueble,
                                     'id_tipologia_zona' => $model->id_tipologia_zona,
+                                    'lindero_norte' => $model->lindero_norte,
+                                    'lindero_sur' => $model->lindero_sur,
+                                    'lindero_este' => $model->lindero_este,
+                                    'lindero_oeste' => $model->lindero_oeste,
                                     
                                 ]; 
               $anioImpositivo = '2012';
@@ -576,6 +597,10 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                                     'tipo_inmueble'   => $model->tipo_inmueble, 
                                     'clase_inmueble' => $model->clase_inmueble,
                                     'id_tipologia_zona' => $model->id_tipologia_zona,
+                                    'lindero_norte' => $model->lindero_norte,
+                                    'lindero_sur' => $model->lindero_sur,
+                                    'lindero_este' => $model->lindero_este,
+                                    'lindero_oeste' => $model->lindero_oeste,
                                     
                                 ]; 
               $tarifaAvaluos = self::TarifaAvaluos($_SESSION['datosInmueble']['manzana_limite'],$model->id_tipologia_zona, date('Y') );
@@ -591,6 +616,10 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                                     'tipo_inmueble'   => $model->tipo_inmueble, 
                                     'clase_inmueble' => $model->clase_inmueble,
                                     'id_tipologia_zona' => $model->id_tipologia_zona,
+                                    'lindero_norte' => $model->lindero_norte,
+                                    'lindero_sur' => $model->lindero_sur,
+                                    'lindero_este' => $model->lindero_este,
+                                    'lindero_oeste' => $model->lindero_oeste,
                                     
                                 ]; 
 
@@ -599,7 +628,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
 
        } elseif($_SESSION['anioRegistro']==null and $_SESSION['anioAvaluo'][0] == null) {
 
-            $anioImpositivo = '2018';
+            $anioImpositivo = '2008';
             $tarifaAvaluos = self::TarifaAvaluos($_SESSION['datosInmueble']['manzana_limite'],$model->id_tipologia_zona, $anioImpositivo );
             $arrayDatos1 = [    'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
                                     
@@ -613,6 +642,10 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                                     'tipo_inmueble'   => $model->tipo_inmueble, 
                                     'clase_inmueble' => $model->clase_inmueble,
                                     'id_tipologia_zona' => $model->id_tipologia_zona,
+                                    'lindero_norte' => $model->lindero_norte,
+                                    'lindero_sur' => $model->lindero_sur,
+                                    'lindero_este' => $model->lindero_este,
+                                    'lindero_oeste' => $model->lindero_oeste,
                                     
                                 ]; 
               $anioImpositivo = '2012';
@@ -629,8 +662,12 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                                     'tipo_inmueble'   => $model->tipo_inmueble, 
                                     'clase_inmueble' => $model->clase_inmueble,
                                     'id_tipologia_zona' => $model->id_tipologia_zona,
+                                    'lindero_norte' => $model->lindero_norte,
+                                    'lindero_sur' => $model->lindero_sur,
+                                    'lindero_este' => $model->lindero_este,
+                                    'lindero_oeste' => $model->lindero_oeste,
                                     
-                                ];
+                                ]; 
               $tarifaAvaluos = self::TarifaAvaluos($_SESSION['datosInmueble']['manzana_limite'],$model->id_tipologia_zona, date('Y') ); 
               $arrayDatos3 = [    'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
                                     
@@ -644,6 +681,10 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                                     'tipo_inmueble'   => $model->tipo_inmueble, 
                                     'clase_inmueble' => $model->clase_inmueble,
                                     'id_tipologia_zona' => $model->id_tipologia_zona,
+                                    'lindero_norte' => $model->lindero_norte,
+                                    'lindero_sur' => $model->lindero_sur,
+                                    'lindero_este' => $model->lindero_este,
+                                    'lindero_oeste' => $model->lindero_oeste,
                                     
                                 ]; 
 
