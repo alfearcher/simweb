@@ -151,6 +151,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
 
           $_SESSION['datosHAvaluos'] = $datosHAvaluos; 
           
+      
 
           if ($datosHAvaluos != null) {
                 
@@ -179,6 +180,12 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                   
                 } 
           } 
+
+
+
+          
+
+
                                          
 
         return $this->render('view', [
@@ -228,10 +235,10 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
          if ($model->load(Yii::$app->request->post()) && $modelAvaluo->load(Yii::$app->request->post()) && $modelRegistro->load(Yii::$app->request->post()) ){
 
 
-              // $isValid = $model->validate();
-              // $isValid = $modelAvaluo->validate(); && $isValid;
-              // $isValid = $modelRegistro->validate(); && $isValid;
-              if($modelAvaluo->validate()){ 
+               $isValid = $model->validate();
+               $isValid = $modelAvaluo->validate() && $isValid;
+               $isValid = $modelRegistro->validate() && $isValid;
+              if($isValid){ 
                 
 //&& $modelAvaluo->validate() && $modelRegistro->validate()
                                          //condicionales     
@@ -242,7 +249,12 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                                          
                                         if (!\Yii::$app->user->isGuest){                                    
                                               
-                                             
+                                          if ($_SESSION['anioAvaluo'][0] == date('Y')) {
+
+                                                  return MensajeController::actionMensaje(921);
+
+                                            } else {
+
                                              $guardo = self::GuardarInscripcion($model,$modelAvaluo,$modelRegistro);
                                              
                                              if($guardo == true){ 
@@ -263,7 +275,8 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                                               } else {
                         
                                                     return MensajeController::actionMensaje(920);
-                                              } 
+                                              }
+                                             }
                         
                                            }else{ 
                         
@@ -307,6 +320,10 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                           ]);
             $datosContribuyente = self::DatosContribuyente();
             $_SESSION['datosContribuyente']= $datosContribuyente;
+
+            
+
+            
 
             $avaluos=self::actionCalcularAvaluos($modelAvaluo); 
 
