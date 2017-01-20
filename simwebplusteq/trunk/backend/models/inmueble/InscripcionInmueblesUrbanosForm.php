@@ -147,6 +147,11 @@ class InscripcionInmueblesUrbanosForm extends Model{
      Public  $capa_subparcela;
      Public $nro_solicitud;
 
+     public $metros_construccion;
+    public $metros_terreno;
+    public $valor_construccion;
+    public $valor_terreno;
+
     public function rules()
     {
 
