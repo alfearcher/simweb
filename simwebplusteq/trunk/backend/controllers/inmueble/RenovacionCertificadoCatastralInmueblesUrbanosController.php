@@ -188,6 +188,11 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                 } 
           } 
 
+          if ($datosIRegistros == null) {
+            
+            return MensajeController::actionMensaje(922);
+          }
+
 
 
           
