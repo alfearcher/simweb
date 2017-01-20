@@ -44,6 +44,8 @@ return [
 	'900' => [Yii::t('backend', 'Register not valid'), 'danger', 'fa fa-times'],
 	'910' => [Yii::t('backend', 'Saving data not detected'), 'danger', 'fa fa-times'],
 	'920' => [Yii::t('backend', 'Error. The operation was not executed'), 'danger', 'fa fa-times'],
+	'921' => [Yii::t('backend', 'El inmueble ya posee avaluo para el año actual'), 'danger', 'fa fa-times'],
+
 	'930' => [Yii::t('backend', 'Taxpayer type was not defined'), 'danger', 'fa fa-times'],
 	'932' => [Yii::t('backend', 'Taxpayer not defined'), 'danger', 'fa fa-times'],
 	'934' => [Yii::t('backend', 'Type of taxpayer incorrect'), 'danger', 'fa fa-times'],
