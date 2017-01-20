@@ -145,6 +145,7 @@ class InscripcionInmueblesUrbanosForm extends Model{
     Public  $unidad_catastro;
 
      Public  $capa_subparcela;
+     Public $nro_solicitud;
 
     public function rules()
     {
