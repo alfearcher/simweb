@@ -98,10 +98,10 @@
 
 <!-- NOMBRE DE LA PROPAGANDA -->
 						<div class="row" style="width:100%;padding:0px;margin-top: 20px;">
-							<div class="col-sm-2" style="width: 10%;padding:0px;padding-left: 20px;">
-								<p><strong><?=Html::encode(Yii::t('frontend', 'Nombre:'))?></strong></p>
+							<div class="col-sm-2" style="width: 22%;padding:0px;padding-left: 20px;">
+								<p><strong><?=Html::encode(Yii::t('frontend', 'Nombre de la Propaganda:'))?></strong></p>
 							</div>
-							<div class="col-sm-4" style="width:60%;padding:0px;margin-left:100px;">
+							<div class="col-sm-4" style="width:60%;padding:0px;margin-left:0px;">
 								<?= $form->field($model, 'nombre_propaganda')->textInput([
 																				'id' => 'nombre-propaganda',
 																				'class' => 'form-control',
@@ -116,7 +116,7 @@
 							<div class="col-sm-2" style="width: 18%;padding:0px;padding-left: 20px;">
 								<p><strong><?=Html::encode(Yii::t('frontend', 'Dirección (Ubicación):'))?></strong></p>
 							</div>
-							<div class="col-sm-4" style="width:60%;padding:0px;margin-left:15px;">
+							<div class="col-sm-4" style="width:60%;padding:0px;margin-left:40px;">
 								<?= $form->field($model, 'direccion')->textInput([
 																				'id' => 'direccion',
 																				'class' => 'form-control',
@@ -131,7 +131,7 @@
 							<div class="col-sm-2" style="width:10%;padding:0px;padding-left: 20px;">
 								<p><strong><?=Html::encode(Yii::t('frontend', 'Uso:'))?></strong></p>
 							</div>
-							<div class="col-sm-4" style="width:50%;padding:0px;margin-left:100px;">
+							<div class="col-sm-4" style="width:50%;padding:0px;margin-left:122px;">
 								 <?= $form->field($model, 'uso_propaganda')
 								          ->dropDownList($listaUsoPropaganda, [
 	                                                              'id'=> 'uso-propaganda',
@@ -149,7 +149,7 @@
 							<div class="col-sm-2" style="width:10%;padding:0px;padding-left: 20px;">
 								<p><strong><?=Html::encode(Yii::t('frontend', 'Clase:'))?></strong></p>
 							</div>
-							<div class="col-sm-4" style="width:50%;padding:0px;margin-left:100px;">
+							<div class="col-sm-4" style="width:50%;padding:0px;margin-left:122px;">
 								 <?= $form->field($model, 'clase_propaganda')
 								          ->dropDownList($listaClasePropaganda, [
 	                                                              'id'=> 'clase-propaganda',
@@ -176,7 +176,7 @@
 							<div class="col-sm-2" style="width:10%;padding:0px;padding-left: 20px;">
 								<p><strong><?=Html::encode(Yii::t('frontend', 'Tipo:'))?></strong></p>
 							</div>
-							<div class="col-sm-4" style="width:50%;padding:0px;margin-left:100px;">
+							<div class="col-sm-4" style="width:50%;padding:0px;margin-left:122px;">
 								 <?= $form->field($model, 'tipo_propaganda')
 								          ->dropDownList($listaTipoPropaganda, [
                                                       'id'=> 'tipo-propaganda',
@@ -221,7 +221,7 @@
 						</div>
 
 						<div class="row" style="width:100%;padding:0px;">
-							<div class="col-sm-4" style="width:50%;padding:0px;margin-left:205px;">
+							<div class="col-sm-4" style="width:50%;padding:0px;margin-left:225px;">
 								<?= $form->field($model, 'descripcion')->textArea([
 																		'id' => 'id-descripcion',
 																		'rows' => 4,
@@ -236,7 +236,7 @@
 							<div class="col-sm-2" style="width: 18%;padding:0px;padding-left: 20px;">
 								<p><strong><?=Html::encode(Yii::t('frontend', 'Base:'))?></strong></p>
 							</div>
-							<div class="col-sm-4" style="width:60%;padding:0px;margin-left:15px;">
+							<div class="col-sm-4" style="width:60%;padding:0px;margin-left:35px;">
 								<?= $form->field($model, 'base_calculo')->textInput([
 																				'id' => 'base-calculo',
 																				'class' => 'form-control',

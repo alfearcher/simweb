@@ -558,7 +558,8 @@
 																			'class' => 'form-control',
 																			'style' => 'width:100%;',
 																			'label' => null,
-																			'disabled' => 'disabled',
+																			'onClick' => 'javascript: return false;',
+																			'readOnly' => true,
 																		]);
 								?>
 							</div>
@@ -574,7 +575,8 @@
 																			'class' => 'form-control',
 																			'style' => 'width:100%;',
 																			'label' => null,
-																			'disabled' => 'disabled',
+																			'onClick' => 'javascript: return false;',
+																			'readOnly' => true,
 																		]);
 								?>
 							</div>
@@ -591,7 +593,8 @@
 																			'class' => 'form-control',
 																			'style' => 'width:100%;',
 																			'label' => null,
-																			'disabled' => 'disabled',
+																			'onClick' => 'javascript: return false;',
+																			'readOnly' => true,
 																		]);
 								?>
 							</div>
