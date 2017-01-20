@@ -21,13 +21,13 @@
  */
 
  /**
- *  @file CalculoPorMetro.php
+ *  @file CalculoPorTiempoTranscurrido.php
  *
  *  @author Jose Rafael Perez Teran
  *
  *  @date 20-01-2017
  *
- *  @class CalculoPorMetro
+ *  @class CalculoPorTiempoTranscurrido
  *  @brief Clase Modelo
  *
  *
@@ -49,11 +49,10 @@
 	use common\models\calculo\liquidacion\propaganda\ParametroTarifaPropaganda;
 
 
-
 	/**
 	 * Clase que basa su calculo en los metros lineales propaganda.
 	 */
-	class CalculoPorMetro extends ParametroTarifaPropaganda
+	class CalculoPorTiempoTranscurrido extends ParametroTarifaPropaganda
 	{
 
 		private $_añoImpositivo;
@@ -116,13 +115,25 @@
 		{
 			$montoAplicar = 0;
 			$montoTotal = 0;
+			$cantidadTiempo = 0;
 
 			$montoAplicar = $this->determinarMontoAplicar();
 			$cantidadPropaganda = $this->_datosPropaganda['cantidad_propagandas'];
-			$mts = $this->_datosPropaganda['mts'];
-			//$cantidadTiempo = $this->getCantidadTiempo('año');
 
-			$montoTotal = $montoAplicar * $cantidadPropaganda * $mts;
+			$baseCalculo = $this->getBaseCalculoPorTipo();
+			if ( $baseCalculo == 4 ) {
+				$cantidadTiempo = $this->getCantidadTiempo('dia');
+			} elseif ( $baseCalculo == 6 ) {
+				$cantidadTiempo = $this->getCantidadTiempo('mes');
+			} elseif ( $baseCalculo == 8 ) {
+				$cantidadTiempo = $this->getCantidadTiempo('año');
+			} elseif ( $baseCalculo == 9 ) {
+				$cantidadTiempo = $this->getCantidadTiempo('año');
+			} elseif ( $baseCalculo == 10 ) {
+				$cantidadTiempo = $this->getCantidadTiempo('año');
+			}
+
+			$montoTotal = $montoAplicar * $cantidadPropaganda;
 
 			if ( $cantidadTiempo > 0 ) {
 				$montoTotal = $montoTotal * $cantidadTiempo;

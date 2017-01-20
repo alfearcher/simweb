@@ -21,13 +21,13 @@
  */
 
  /**
- *  @file CalculoPorMetro.php
+ *  @file CalculoPorUnidadFraccion.php
  *
  *  @author Jose Rafael Perez Teran
  *
  *  @date 20-01-2017
  *
- *  @class CalculoPorMetro
+ *  @class CalculoPorUnidadFraccion
  *  @brief Clase Modelo
  *
  *
@@ -53,13 +53,13 @@
 	/**
 	 * Clase que basa su calculo en los metros lineales propaganda.
 	 */
-	class CalculoPorMetro extends ParametroTarifaPropaganda
+	class CalculoPorUnidadFraccion extends ParametroTarifaPropaganda
 	{
 
 		private $_añoImpositivo;
 		private $_datosPropaganda;
 		private $_montoCalculado;
-
+		private $_unidadLimite;
 
 		/**
 		 * Metodo constructor de la clase
@@ -68,11 +68,12 @@
 		 * Este arreglo se refiere a la entidad "propagandas".
 		 * @param Integer $añoImpositivo Año impositivo al cual se le calculara el impuesto.
 		 */
-		public function __construct($datosPropaganda, $añoImpositivo)
+		public function __construct($datosPropaganda, $añoImpositivo, $unidadControl)
 		{
 			$this->_montoCalculado = 0;
 			$this->_añoImpositivo = $añoImpositivo;
 			$this->_datosPropaganda = $datosPropaganda;
+			$this->_unidadLimite = $unidadControl;
 			parent::__construct($datosPropaganda, $añoImpositivo);
 		}
 
@@ -116,13 +117,40 @@
 		{
 			$montoAplicar = 0;
 			$montoTotal = 0;
+			$parteEntera = 0;
+			$resto = 0;
 
 			$montoAplicar = $this->determinarMontoAplicar();
 			$cantidadPropaganda = $this->_datosPropaganda['cantidad_propagandas'];
-			$mts = $this->_datosPropaganda['mts'];
-			//$cantidadTiempo = $this->getCantidadTiempo('año');
 
-			$montoTotal = $montoAplicar * $cantidadPropaganda * $mts;
+			if ( $cantidadPropaganda > $this->_unidadLimite ) {
+				$resultado = $cantidadPropaganda / $this->_unidadLimite;
+				$parte = explode(".", $resultado);
+				$parteEntera = $parte[0];
+
+				$resto = $cantidadPropaganda - ( $parteEntera * $this->_unidadLimite );
+				if ( $resto > 0 ) {
+					$parteEntera = $parteEntera + 1;
+				}
+				$montoTotal = $montoAplicar * $parteEntera;
+
+			} else {
+				$montoTotal = $montoAplicar;
+			}
+
+			$t = '';
+			$idTiempo = $this->_datosPropaganda['id_tiempo'];
+			if ( $idTiempo == 2 ) {
+				$t = 'dia';
+			} elseif ( $idTiempo == 3 ) {
+				$t = 'semana';
+			} elseif ( $idTiempo == 4 ) {
+				$t = 'mes';
+			} elseif ( $idTiempo == 0 || $idTiempo == 5 ) {
+				$t = 'año';
+			}
+
+			$cantidadTiempo = $this->getCantidadTiempo($t);
 
 			if ( $cantidadTiempo > 0 ) {
 				$montoTotal = $montoTotal * $cantidadTiempo;
