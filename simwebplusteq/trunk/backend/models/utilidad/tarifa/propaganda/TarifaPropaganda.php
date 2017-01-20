@@ -48,6 +48,9 @@
 	use backend\models\propaganda\tipo\TipoPropaganda;
 	use backend\models\propaganda\uso\UsoPropaganda;
 	use backend\models\propaganda\clase\ClasePropaganda;
+	use backend\models\utilidad\tiporango\TipoRango;
+
+
 
 	/**
 	* Clase
@@ -106,6 +109,17 @@
         public function getTipoPropaganda()
         {
             return $this->hasOne(TipoPropaganda::className(), ['tipo_propaganda' => 'tipo_propaganda']);
+        }
+
+
+
+        /**
+         * Relacion con la entidad "tipos-rangos"
+         * @return [type] [description]
+         */
+        public function getTipoRango()
+        {
+        	return $this->hasOne(TipoRango::className(), ['tipo_rango' => 'tipo_monto']);
         }
 
 
