@@ -170,7 +170,7 @@
 						</div>
 
 						<div class="row" style="margin-top: 25px;">
-	<!-- Boton para aplicar la actualizacion -->
+
 							<div class="col-sm-3">
 								<div class="form-group">
 									<?= Html::a(Yii::t('backend', 'Inscribir otra propaganda'), Url::to(['index', 'id' => 75]),
@@ -184,7 +184,39 @@
 									?>
 								</div>
 							</div>
+
+							<div class="col-sm-3">
+								<div class="form-group">
+									<?= Html::a(Yii::t('backend', 'Ir a liquidar propaganda actual'), Url::to(['index']),
+																									  [
+																										'id' => 'btn-otra',
+																										'class' => 'btn btn-primary',
+																										'value' => 1,
+																										'style' => 'width: 100%',
+																										'name' => 'btn-otra',
+																									  ])
+									?>
+								</div>
+							</div>
+
+							<div class="col-sm-3">
+								<div class="form-group">
+									<?= Html::a(Yii::t('backend', 'Quit'), Url::to(['quit']),
+																					  [
+																						'id' => 'btn-quit',
+																						'class' => 'btn btn-danger',
+																						'value' => 1,
+																						'style' => 'width: 100%',
+																						'name' => 'btn-quit',
+																					  ])
+									?>
+								</div>
+							</div>
+
 						</div>
+
+
+
 					</div>
 				</div>	<!-- Fin de col-sm-12 -->
 			</div> <!-- Fin de container-fluid -->
