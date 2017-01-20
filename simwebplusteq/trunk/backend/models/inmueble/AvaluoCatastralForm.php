@@ -110,6 +110,7 @@ class AvaluoCatastralForm extends \yii\db\ActiveRecord
     public $lindero_este;
     public $lindero_oeste;
     public $id_tipologia_zona;
+    public $nro_solicitud;
 
    
 
