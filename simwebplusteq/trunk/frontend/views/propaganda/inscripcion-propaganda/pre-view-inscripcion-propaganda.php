@@ -22,13 +22,13 @@
  */
 
  /**
- *  @file inscripcion-propaganda-form.php
+ *  @file pre-view-inscripcion-propaganda-form.php
  *
  *  @author Jose Rafael Perez Teran
  *
  *  @date 17-01-2017
  *
- *  @view inscripcion-propaganda-form
+ *  @view pre-view-inscripcion-propaganda-form
  *  @brief vista principal para la inscripcion de la propaganda.
  *
  */
@@ -42,17 +42,16 @@
 	use yii\widgets\ActiveForm;
 	use yii\web\View;
 	//use yii\widgets\Pjax;
-	//use common\models\contribuyente\ContribuyenteBase;
 	use yii\widgets\DetailView;
 	use yii\widgets\MaskedInput;
 
 ?>
 
-<div class="inscripcion-propaganda-form">
+<div class="pre-view-inscripcion-propaganda-form">
  	<?php
 
  		$form = ActiveForm::begin([
- 			'id' => 'id-inscripcion-propaganda-form',
+ 			'id' => 'id-pre-view-inscripcion-propaganda-form',
  			'method' => 'post',
  			'enableClientValidation' => true,
  			'enableAjaxValidation' => false,
@@ -61,10 +60,38 @@
  	?>
 
 	<?=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $model->id_contribuyente])->label(false);?>
-	<?=$form->field($model, 'nro_solicitud')->hiddenInput(['value' => 0])->label(false);?>
+	<?=$form->field($model, 'nro_solicitud')->hiddenInput(['value' => $model->nro_solicitud])->label(false);?>
+
+	<?=$form->field($model, 'direccion')->hiddenInput(['value' => $model->direccion])->label(false); ?>
+	<?=$form->field($model, 'clase_propaganda')->hiddenInput(['value' => $model->clase_propaganda])->label(false); ?>
+	<?=$form->field($model, 'tipo_propaganda')->hiddenInput(['value' => $model->tipo_propaganda])->label(false); ?>
+	<?=$form->field($model, 'uso_propaganda')->hiddenInput(['value' => $model->uso_propaganda])->label(false); ?>
+
+	<?=$form->field($model, 'id_tiempo')->hiddenInput(['value' => $model->id_tiempo])->label(false); ?>
+	<?=$form->field($model, 'fecha_inicio')->hiddenInput(['value' => $model->fecha_inicio])->label(false); ?>
+	<?=$form->field($model, 'fecha_fin')->hiddenInput(['value' => $model->fecha_fin])->label(false); ?>
+	<?=$form->field($model, 'cantidad_tiempo')->hiddenInput(['value' => $model->cantidad_tiempo])->label(false); ?>
+
+	<?=$form->field($model, 'cantidad_propagandas')->hiddenInput(['value' => $model->cantidad_propagandas])->label(false); ?>
+	<?=$form->field($model, 'alto')->hiddenInput(['value' => $model->alto])->label(false); ?>
+	<?=$form->field($model, 'ancho')->hiddenInput(['value' => $model->ancho])->label(false); ?>
+	<?=$form->field($model, 'profundidad')->hiddenInput(['value' => $model->profundidad])->label(false); ?>
+	<?=$form->field($model, 'mts')->hiddenInput(['value' => $model->mts])->label(false); ?>
+	<?=$form->field($model, 'costo')->hiddenInput(['value' => $model->costo])->label(false); ?>
+
+	<?=$form->field($model, 'cigarros')->hiddenInput(['value' => $model->cigarros])->label(false); ?>
+	<?=$form->field($model, 'bebidas_alcoholicas')->hiddenInput(['value' => $model->bebidas_alcoholicas])->label(false); ?>
+	<?=$form->field($model, 'idioma')->hiddenInput(['value' => $model->idioma])->label(false); ?>
+	<?=$form->field($model, 'observacion')->hiddenInput(['value' => $model->observacion])->label(false); ?>
+
+	<?=$form->field($model, 'medio_difusion')->hiddenInput(['value' => $model->medio_difusion])->label(false); ?>
+	<?=$form->field($model, 'medio_transporte')->hiddenInput(['value' => $model->medio_transporte])->label(false); ?>
+
+	<?=$form->field($model, 'usuario')->hiddenInput(['value' => $model->usuario])->label(false); ?>
+	<?=$form->field($model, 'inactivo')->hiddenInput(['value' => $model->inactivo])->label(false); ?>
+
 	<?=$form->field($model, 'estatus')->hiddenInput(['value' => $model->estatus])->label(false); ?>
 	<?=$form->field($model, 'id_sim')->hiddenInput(['value' => 0])->label(false); ?>
-
 	<?=$form->field($model, 'id_cp')->hiddenInput(['value' => $model->id_cp])->label(false); ?>
 	<?=$form->field($model, 'inactivo')->hiddenInput(['value' => $model->inactivo])->label(false); ?>
 	<?=$form->field($model, 'planilla')->hiddenInput(['value' => $model->planilla])->label(false); ?>
@@ -73,7 +100,6 @@
 	<?=$form->field($model, 'cantidad_base')->hiddenInput(['value' => $model->cantidad_base])->label(false); ?>
 	<?=$form->field($model, 'id_impuesto')->hiddenInput(['value' => $model->id_impuesto])->label(false); ?>
 	<?=$form->field($model, 'origen')->hiddenInput(['value' => $model->origen])->label(false); ?>
-
 
 
 	<meta http-equiv="refresh">
@@ -88,10 +114,6 @@
         		<div class="col-sm-12" >
 
 		        	<div class="row" style="width:100%;">
-						<div class="row" style="border-bottom: 1px solid;padding-left: 5px;padding-top: 0px;">
-							<h4><strong><?=Html::encode(Yii::t('frontend', $subCaption))?></strong></h4>
-						</div>
-
 						<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1; padding-left: 5px;margin-top:20px;">
 							<h4><strong><?=Html::encode(Yii::t('frontend', 'Datos Básicos'))?></strong></h4>
 						</div>
@@ -106,6 +128,7 @@
 																				'id' => 'nombre-propaganda',
 																				'class' => 'form-control',
 																				'style' => 'width:100%;',
+																				'readOnly' => true,
 																			])->label(false);
 								?>
 							</div>
@@ -121,6 +144,7 @@
 																				'id' => 'direccion',
 																				'class' => 'form-control',
 																				'style' => 'width:100%;',
+																				'readOnly' => true,
 																			])->label(false);
 								?>
 							</div>
@@ -137,8 +161,8 @@
 	                                                              'id'=> 'uso-propaganda',
 	                                                              'prompt' => Yii::t('backend', 'Select'),
 	                                                              'style' => 'width:340px;',
-	                                                              'onchange' => '$( "select#tipo-propaganda" ).html( "" );',
-	                                                                        ])->label(false);
+	                                                              'disabled' => 'disabled',
+	                                                         ])->label(false);
 	                            ?>
 							</div>
 						</div>
@@ -152,20 +176,11 @@
 							<div class="col-sm-4" style="width:50%;padding:0px;margin-left:100px;">
 								 <?= $form->field($model, 'clase_propaganda')
 								          ->dropDownList($listaClasePropaganda, [
-	                                                              'id'=> 'clase-propaganda',
-	                                                              'prompt' => Yii::t('backend', 'Select'),
-	                                                              'style' => 'width:340px;',
-	                                                              'onchange' => '$.post( "' . Yii::$app->urlManager
-	                                                                                   		           ->createUrl('/propaganda/inscripcionpropaganda/inscripcion-propaganda/generar-lista-tipo') . '&c=' . '" + $(this).val() +  "' .
-	                                                                                   		           																								'&u=' . '" + $("#uso-propaganda").val(),
-	                                                                                   		           			 function( data ) {
-	                                                                                   		           			 	$( "select#tipo-propaganda" ).html( "" );
-	                                                                                   		           			 	$( "#id-descripcion" ).text( "" );
-	                                                                                   		           			 	$( "#base-calculo" ).val( "" );
-	                                                                                                             	$( "select#tipo-propaganda" ).html( data );
-	                                                                                                       		}
-	                                                                                    );'
-	                                                                        ])->label(false);
+		                                                              'id'=> 'clase-propaganda',
+		                                                              'prompt' => Yii::t('backend', 'Select'),
+		                                                              'style' => 'width:340px;',
+		                                                              'disabled' => 'disabled',
+	                                                              ])->label(false);
 	                            ?>
 							</div>
 						</div>
@@ -179,43 +194,11 @@
 							<div class="col-sm-4" style="width:50%;padding:0px;margin-left:100px;">
 								 <?= $form->field($model, 'tipo_propaganda')
 								          ->dropDownList($listaTipoPropaganda, [
-                                                      'id'=> 'tipo-propaganda',
-                                                      'prompt' => Yii::t('backend', 'Select'),
-                                                      'style' => 'width:740px;',
-                                                      'onchange' => '$( "#id-descripcion" ).html( $( "#tipo-propaganda option:selected").text() );
-																	 $.post( "' . Yii::$app->urlManager
-	                                                                                       ->createUrl('/propaganda/inscripcionpropaganda/inscripcion-propaganda/determinar-base-calculo') . '&t=' . '" + $(this).val(),
-	                                                                                   		           			 function( data ) {
-
-	                                                                                   		           			 	$( "#base-calculo" ).val( "" );
-
-	                                                                                   		           			 	$( "#alto" ).val(0);
-	                                                                                   		           			 	$( "#ancho" ).val(0);
-	                                                                                   		           			 	$( "#profundidad" ).val(0);
-																													$( "#costo" ).val(0);
-																													$( "#mts" ).val(0);
-
-	                                                                                   		           			 	$( "#alto" ).prop("disabled", true);
-	                                                                                   		           			 	$( "#ancho" ).prop("disabled", true);
-	                                                                                   		           			 	$( "#profundidad" ).prop("disabled", true);
-																													$( "#costo" ).prop("disabled", true);
-																													$( "#mts" ).prop("disabled", true);
-
-	                                                                                   		           			 	if ( data == 2 ) {
-	                                                                                   		           			 		$("#alto").prop("disabled", false);
-	                                                                                   		           			 		$("#ancho").prop("disabled", false);
-	                                                                                   		           			 		//$("#metros").text("cuadrados");
-
-	                                                                                   		           			 	} else if ( data == 3 ) {
-																														$("#mts").prop("disabled", false);
-
-	                                                                                   		           			 	} else if ( data == 7 ) {
-	                                                                                   		           			 		$( "#costo" ).prop("disabled", false);
-	                                                                                   		           			 	}
-	                                                                                                             	$( "#base-calculo" ).val(data);
-	                                                                                                       		}
-	                                                                                    );',
-                                                                ])->label(false);
+		                                                      'id'=> 'tipo-propaganda',
+		                                                      'prompt' => Yii::t('backend', 'Select'),
+		                                                      'style' => 'width:740px;',
+		                                                      'disabled' => 'disabled',
+                                                    ])->label(false);
 	                            ?>
 							</div>
 						</div>
@@ -269,6 +252,7 @@
 																					'id' => 'cantidad-propagandas',
 																					'class' => 'form-control',
 																					'style' => 'width:100%;',
+																					'readOnly' => true,
 																				])->label(false);
 									?>
 								</div>
@@ -290,6 +274,7 @@
 																							'style' => 'width: 100%;',
 																							'placeholder' => '0.00',
 																							'id' => 'alto',
+																							'readOnly' => true,
 
 																						],
 																						'clientOptions' => [
@@ -326,6 +311,7 @@
 																							'style' => 'width: 100%;',
 																							'placeholder' => '0.00',
 																							'id' => 'ancho',
+																							'readOnly' => true,
 																						],
 																						'clientOptions' => [
 																							'alias' =>  'decimal',
@@ -361,6 +347,7 @@
 																							'style' => 'width: 100%;',
 																							'placeholder' => '0.00',
 																							'id' => 'profundidad',
+																							'readOnly' => true,
 																						],
 																						'clientOptions' => [
 																							'alias' =>  'decimal',
@@ -396,6 +383,7 @@
 																							'style' => 'width: 100%;',
 																							'placeholder' => '0.00',
 																							'id' => 'mts',
+																							'readOnly' => true,
 																						],
 																						'clientOptions' => [
 																							'alias' =>  'decimal',
@@ -434,6 +422,7 @@
 																							'style' => 'width: 100%;',
 																							'placeholder' => '0.00',
 																							'id' => 'costo',
+																							'readOnly' => true,
 																						],
 																						'clientOptions' => [
 																							'alias' =>  'decimal',
@@ -491,7 +480,7 @@
 																							  'options' => [
 																							  		'id' => 'fecha-inicio',
 																									'class' => 'form-control',
-																									'readonly' => true,
+																									'disabled' => 'disabled',
 																									'style' => 'background-color: white;width:100%;',
 
 																								]
@@ -510,9 +499,7 @@
 																					'id' => 'cantidad-tiempo',
 																					'class' => 'form-control',
 																					'style' => 'width:100%;',
-																					'keypress' => '
-																						$( "#fecha-fin" ).val("");
-																					',
+																					'readOnly' => true,
 																				])->label(false);
 									?>
 								</div>
@@ -522,17 +509,7 @@
                                                               'id'=> 'id-tiempo',
                                                               'prompt' => Yii::t('backend', 'Select'),
                                                               'style' => 'width:140px;',
-                                                              'onchange' => '$.post( "' . Yii::$app->urlManager
-                                                                               		               ->createUrl('/propaganda/inscripcionpropaganda/inscripcion-propaganda/determinar-fecha-hasta') . '&t=' . '" + $(this).val() +  "' .
-                                                                               		           																								       '&c=' . '" + $("#cantidad-tiempo").val() +  "' .
-                                                                               		           																								       '&f=' . '" + $("#fecha-inicio").val(),
-                                                                               		           			 function( data ) {
-                                                                               		           			 	//$( "#fecha-fin" ).html( "" );
-                                                                                                         	$( "#fecha-fin" ).val( data );
-                                                                                                   		}
-                                                                                );
-
-                                                                                '
+                                                              'disabled' => 'disabled',
                                                                         ])->label(false);
 		                            ?>
 								</div>
@@ -549,7 +526,7 @@
 																					'id' => 'fecha-fin',
 																					'class' => 'form-control',
 																					'style' => 'width:100%;',
-																					// 'readOnly' => true,
+																					'readOnly' => true,
 																				])->label(false);
 									?>
 								</div>
@@ -581,6 +558,7 @@
 																			'class' => 'form-control',
 																			'style' => 'width:100%;',
 																			'label' => null,
+																			'disabled' => 'disabled',
 																		]);
 								?>
 							</div>
@@ -596,6 +574,7 @@
 																			'class' => 'form-control',
 																			'style' => 'width:100%;',
 																			'label' => null,
+																			'disabled' => 'disabled',
 																		]);
 								?>
 							</div>
@@ -612,6 +591,7 @@
 																			'class' => 'form-control',
 																			'style' => 'width:100%;',
 																			'label' => null,
+																			'disabled' => 'disabled',
 																		]);
 								?>
 							</div>
@@ -632,7 +612,7 @@
 	                                                              'id'=> 'medio-difusion',
 	                                                              'prompt' => Yii::t('backend', 'Select'),
 	                                                              'style' => 'width:440px;',
-
+	                                                              'disabled' => 'disabled',
 	                                                            ])->label(false);
 	                            ?>
 							</div>
@@ -650,7 +630,7 @@
 	                                                              'id'=> 'medio-transporte',
 	                                                              'prompt' => Yii::t('backend', 'Select'),
 	                                                              'style' => 'width:440px;',
-
+	                                                              'disabled' => 'disabled',
 	                                                            ])->label(false);
 	                            ?>
 							</div>
@@ -666,6 +646,7 @@
 																		'id' => 'id-observacion',
 																		'rows' => 4,
 																		'style' => 'width:140%;background-color:white;',
+																		'readOnly' => true,
 																 	])->label(false) ?>
 							</div>
 						</div>
@@ -681,18 +662,32 @@
 <!-- Boton para aplicar la actualizacion -->
 						<div class="col-sm-3">
 							<div class="form-group">
-								<?= Html::submitButton(Yii::t('backend', 'Create'),
+								<?= Html::submitButton(Yii::t('backend', 'Confirmar Crear'),
 																  [
-																	'id' => 'btn-create',
+																	'id' => 'btn-confirm-create',
 																	'class' => 'btn btn-success',
-																	'value' => 3,
+																	'value' => 5,
 																	'style' => 'width: 100%',
-																	'name' => 'btn-create',
+																	'name' => 'btn-confirm-create',
 																  ])
 								?>
 							</div>
 						</div>
 <!-- Fin de Boton para aplicar la actualizacion -->
+
+						<div class="col-sm-3" style="margin-left: 50px;">
+							<div class="form-group">
+								<?= Html::submitButton(Yii::t('backend', 'Back'),
+																  [
+																	'id' => 'btn-back',
+																	'class' => 'btn btn-danger',
+																	'value' => 2,
+																	'style' => 'width: 100%',
+																	'name' => 'btn-back',
+																  ])
+								?>
+							</div>
+						</div>
 
 						<div class="col-sm-1"></div>
 
@@ -711,19 +706,6 @@
 							</div>
 						</div>
 
-						<div class="col-sm-2" style="margin-left: 50px;">
-							<div class="form-group">
-							<!-- '../../common/docs/user/ayuda.pdf'  funciona -->
-								<?= Html::a(Yii::t('backend', 'Ayuda'), $rutaAyuda,  [
-														'id' => 'btn-help',
-														'class' => 'btn btn-default',
-														'name' => 'btn-help',
-														'target' => '_blank',
-														'value' => 1,
-														'style' => 'width: 100%;'
-													])?>
-							</div>
-						</div>
 <!-- Fin de Boton para salir de la actualizacion -->
 					</div>
 				</div>

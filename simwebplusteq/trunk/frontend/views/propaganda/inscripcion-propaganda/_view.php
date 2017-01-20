@@ -1,5 +1,4 @@
 <?php
-
 /**
  *  @copyright © by ASIS CONSULTORES 2012 - 2016
  *  All rights reserved - SIMWebPLUS
@@ -22,14 +21,14 @@
  */
 
  /**
- *  @file _create.php
+ *  @file _view.php
  *
  *  @author Jose Rafael Perez Teran
  *
  *  @date 17-01-2017
  *
- *  @view create.php
- *  @brief vista para mostrar el formulario de inscripcion de propagandanda.
+ *  @view _view.php
+ *  @brief vista para mostrar el formulario de inscripcion de propagandanda en pre-vista.
  *
  */
 
@@ -40,18 +39,16 @@
 	*@var $this yii\web\View */
 
 	?>
-<div class="create-formulario" style="width: 100%;">
-    <?= $this->render('@frontend/views/propaganda/inscripcion-propaganda/inscripcion-propaganda-form', [
+<div class="pre-view-create-formulario" style="width: 100%;">
+    <?= $this->render('@frontend/views/propaganda/inscripcion-propaganda/pre-view-inscripcion-propaganda', [
 												        'model' => $model,
 												        'caption' => $caption,
-												        'subCaption' => $subCaption,
-												        'rutaAyuda' => $rutaAyuda,
 												        'listaUsoPropaganda' => $listaUsoPropaganda,
-												        'listaClasePropaganda' => $listaClasePropaganda,
-												        'listaTiempo' => $listaTiempo,
-												        'listaMedioDifusion' => $listaMedioDifusion,
-												        'listaMedioTransporte' => $listaMedioTransporte,
-												        'listaTipoPropaganda' => $listaTipoPropaganda,
+									        			'listaClasePropaganda' => $listaClasePropaganda,
+									        			'listaTiempo' => $listaTiempo,
+									        			'listaMedioDifusion' => $listaMedioDifusion,
+									        			'listaMedioTransporte' => $listaMedioTransporte,
+									        			'listaTipoPropaganda' => $listaTipoPropaganda,
 
 					    ]) ?>
 </div>
