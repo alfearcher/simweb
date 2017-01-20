@@ -46,7 +46,6 @@
 	use yii\db\ActiveRecord;
 	use yii\db\Exception;
 	use common\models\ordenanza\OrdenanzaBase;
-	use backend\models\utilidad\ut\UnidadTributariaForm;
 	use backend\models\propaganda\Propaganda;
 	use backend\models\utilidad\tarifa\propaganda\TarifaPropaganda;
 	use backend\models\propaganda\tipo\TipoPropaganda;
@@ -55,6 +54,8 @@
 	use common\models\calculo\liquidacion\propaganda\CalculoPorMetroCuadrado;
 	use common\models\calculo\liquidacion\propaganda\CalculoPorTiempoTranscurrido;
 	use common\models\calculo\liquidacion\propaganda\CalculoPorUnidadFraccion;
+	use common\models\calculo\liquidacion\propaganda\CalculoPorCostoPropaganda;
+
 
 
 	/**
@@ -221,42 +222,43 @@
 
 				// calculo por unidades.
 				$calculo = New CalculoPorUnidad($this->_datosPropaganda, $this->_añoImpositivo);
-				$calculo->iniciarCalculo();
+				$monto = $calculo->iniciarCalculo();
 
 			} elseif ( $idMetodo == 2 ) {
 
 				// calculo por metros cuadrados.
 				$calculo = New CalculoPorMetroCuadrado($this->_datosPropaganda, $this->_añoImpositivo);
-				$calculo->iniciarCalculo();
+				$monto = $calculo->iniciarCalculo();
 
 			} elseif ( $idMetodo == 3 ) {
 
 				// calculo por metros lineales.
 				$calculo = New CalculoPorMetro($this->_datosPropaganda, $this->_añoImpositivo);
-				$calculo->iniciarCalculo();
+				$monto = $calculo->iniciarCalculo();
 
 			} elseif ( $idMetodo == 4 || $idMetodo == 6 || $idMetodo == 8 || $idMetodo == 9 || $idMetodo == 10 ) {
 
 				// calculo por tiempo transcurrido
 				$calculo = New CalculoPorTiempoTranscurrido($this->_datosPropaganda, $this->_añoImpositivo);
-				$calculo->iniciarCalculo();
+				$monto = $calculo->iniciarCalculo();
 
 			} elseif ( $idMetodo == 5 ) {
 
 				// calculo por cada 1000 unidaddes y fraccion.
 				$calculo = New CalculoPorUnidadFraccion($this->_datosPropaganda, $this->_añoImpositivo, 1000);
-				$calculo->iniciarCalculo();
+				$monto = $calculo->iniciarCalculo();
 
 			} elseif ( $idMetodo == 7 ) {
 
 				// calcular por costo de la propaganda.
 				$calculo = New CalculoPorUnidadFraccion($this->_datosPropaganda, $this->_añoImpositivo, 100);
-				$calculo->iniciarCalculo();
+				$monto = $calculo->iniciarCalculo();
 
 			} elseif ( $idMetodo == 12 ) {
 
 				// calculo por cada 100 unidades y fraccion.
-
+				$calculo = New CalculoPorCostoPropaganda($this->_datosPropaganda, $this->_añoImpositivo);
+				$monto = $calculo->iniciarCalculo();
 
 			}
 			return $monto;
