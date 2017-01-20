@@ -146,7 +146,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
           $_SESSION['datosIRegistros'] = $datosIRegistros; 
           
           $datosHAvaluos = HistoricoAvaluoSearch::find()->where("id_impuesto=:impuesto", [":impuesto" => $idInmueble])->asArray()
-                                            //->andwhere("inactivo=:inactivo", [":inactivo" => 0])
+                                            ->andwhere("inactivo=:inactivo", [":inactivo" => 0])
                                             ->all(); 
 
           $_SESSION['datosHAvaluos'] = $datosHAvaluos; 
