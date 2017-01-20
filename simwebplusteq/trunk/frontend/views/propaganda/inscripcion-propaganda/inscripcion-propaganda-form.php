@@ -549,7 +549,7 @@
 																					'id' => 'fecha-fin',
 																					'class' => 'form-control',
 																					'style' => 'width:100%;',
-																					// 'readOnly' => true,
+																					'readOnly' => true,
 																				])->label(false);
 									?>
 								</div>
