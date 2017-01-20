@@ -18,7 +18,7 @@ $disabled = true;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_cambiodenumerocatastralinmueblesform', [
-        'model' => $model, 'disabled'=>$disabled,
+        'model' => $model, 'disabled'=>$disabled, 'modelAvaluo' => $modelAvaluo, 'modelRegistro'=>$modelRegistro
     ]) ?>
 
 </div>

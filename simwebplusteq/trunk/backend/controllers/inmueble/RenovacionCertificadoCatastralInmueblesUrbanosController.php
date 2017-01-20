@@ -228,10 +228,10 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
          if ($model->load(Yii::$app->request->post()) && $modelAvaluo->load(Yii::$app->request->post()) && $modelRegistro->load(Yii::$app->request->post()) ){
 
 
-              $isValid = $model->validate();
-              $isValid = $modelAvaluo->validate() && $isValid;
-              $isValid = $modelRegistro->validate() && $isValid;
-              if($isValid ){ 
+              // $isValid = $model->validate();
+              // $isValid = $modelAvaluo->validate(); && $isValid;
+              // $isValid = $modelRegistro->validate(); && $isValid;
+              if($modelAvaluo->validate()){ 
                 
 //&& $modelAvaluo->validate() && $modelRegistro->validate()
                                          //condicionales     
@@ -361,8 +361,8 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                                     
                                 ]; 
 
-
-            
+                 $model->nro_solicitud = $arrayDatos2['nro_solicitud'];
+                 $resultProceso = self::actionEjecutaProcesoSolicitud($conn, $conexion, $model, $config); 
                  $tableName2 = 'sl_historico_avaluos'; 
 
                 if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){

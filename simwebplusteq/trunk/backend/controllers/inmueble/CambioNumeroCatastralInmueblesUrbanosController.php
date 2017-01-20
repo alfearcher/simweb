@@ -53,6 +53,10 @@ use backend\models\inmueble\InmueblesUrbanosForm;
 use backend\models\inmueble\CambioNumeroCatastralInmueblesForm;
 use backend\models\inmueble\InmueblesConsulta;
 use backend\models\inmueble\InmueblesSearch;
+use backend\models\inmueble\AvaluoCatastralForm;
+use backend\models\inmueble\InmueblesRegistrosForm;
+use backend\models\inmueble\InmueblesRegistros;
+use backend\models\inmueble\HistoricoAvaluoSearch;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\web\NotFoundHttpException;
@@ -69,6 +73,7 @@ use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 
 use backend\models\inmueble\Estados;
 use backend\models\inmueble\Municipios;
+use backend\models\inmueble\Parroquias;
 session_start();
 /**
  * CambiosInmueblesUrbanosController implements the CRUD actions for Inmuebles model.
@@ -118,6 +123,54 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
                                             ->andwhere("inactivo=:inactivo", [":inactivo" => 0])
                                             ->one();
           $_SESSION['datos'] = $datos;
+
+
+          $datosInmueble = InmueblesConsulta::find()->where("id_impuesto=:impuesto", [":impuesto" => $idInmueble])
+                                            ->andwhere("inactivo=:inactivo", [":inactivo" => 0])
+                                            ->one();
+
+           $_SESSION['datosInmueble'] = $datosInmueble; 
+
+          $datosIRegistros = InmueblesRegistros::find()->where("id_impuesto=:impuesto", [":impuesto" => $idInmueble])
+                                            //->andwhere("inactivo=:inactivo", [":inactivo" => 0])
+                                            ->all();
+
+          $_SESSION['datosIRegistros'] = $datosIRegistros; 
+          
+          $datosHAvaluos = HistoricoAvaluoSearch::find()->where("id_impuesto=:impuesto", [":impuesto" => $idInmueble])->asArray()
+                                            //->andwhere("inactivo=:inactivo", [":inactivo" => 0])
+                                            ->all(); 
+
+          $_SESSION['datosHAvaluos'] = $datosHAvaluos; 
+
+
+          if ($datosHAvaluos != null) {
+                
+                foreach ($datosHAvaluos as $key => $value) {
+                                            
+                } 
+                $añoUltimoAvaluo = explode('-', $value['fecha']);
+                $_SESSION['anioAvaluo'] = $añoUltimoAvaluo;
+                $_SESSION['datosUAvaluos'] = $value; 
+                
+          } else {
+                $value = false;
+                // no presenta historico de avaluos
+                // buscaremos fecha en inmuebles registros
+                if ($datosIRegistros != null) {
+
+                    foreach ($datosIRegistros as $key => $valueIn) {
+                                            
+                    } 
+                    $añoUltimoRegistro = explode('-', $registros['fecha']);
+                    $_SESSION['anioRegistro'] = $añoUltimoRegistro;
+                    $_SESSION['datosURegistros'] = $valueIn;
+                } else {
+                  $valueIn = false; 
+                  //no posee registros de inmueble
+                  
+                } 
+          } 
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -140,6 +193,8 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
          if ( isset($_SESSION['idContribuyente']) ) {
          //Creamos la instancia con el model de validación
          $model = new CambioNumeroCatastralInmueblesForm();
+         $modelAvaluo = new AvaluoCatastralForm();
+          $modelRegistro = new InmueblesRegistrosForm();
 
          $datos = $_SESSION['datos'];
     
@@ -155,8 +210,24 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
               Yii::$app->response->format = Response::FORMAT_JSON;
               return ActiveForm::validate($model); 
          }
+         if ($modelAvaluo->load(Yii::$app->request->post()) && Yii::$app->request->isAjax){ 
+
+              Yii::$app->response->format = Response::FORMAT_JSON;
+              return ActiveForm::validate($modelAvaluo); 
+         }
+         if ($modelRegistro->load(Yii::$app->request->post()) && Yii::$app->request->isAjax){ 
+
+              Yii::$app->response->format = Response::FORMAT_JSON;
+              return ActiveForm::validate($modelRegistro); 
+         }
    
-         if ($model->load(Yii::$app->request->post())){
+         if ($model->load(Yii::$app->request->post()) && $modelAvaluo->load(Yii::$app->request->post()) && $modelRegistro->load(Yii::$app->request->post()) ){
+
+
+              // $isValid = $model->validate();
+              // $isValid = $modelAvaluo->validate(); && $isValid;
+              // $isValid = $modelRegistro->validate(); && $isValid;
+
 
               if($model->validate()){ 
 
@@ -220,7 +291,7 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
                    $model->getErrors(); 
               }
          }
-              return $this->render('cambio-de-numero-catastral-inmuebles', ['model' => $model, 'datos'=>$datos]);  
+              return $this->render('cambio-de-numero-catastral-inmuebles', ['model' => $model, 'datos'=>$datos, 'modelAvaluo' => $modelAvaluo, 'modelRegistro'=>$modelRegistro]);  
 
         }  else {
                     echo "No hay Contribuyente Registrado!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['site/login'])."'>";
@@ -296,6 +367,7 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
                                     'subparcela_catastro' => $model->subparcela_catastro,
                                     'nivel_catastro' => $model->nivel_catastro,
                                     'unidad_catastro' => $model->unidad_catastro,
+                                    'manzana_limite' => $model->manzana_catastro,
                                     'catastro' => $catastro,
                                     'fecha_creacion' => date('Y-m-d h:i:s'),
                                 ]; 
@@ -316,12 +388,16 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
                                     'subparcela_catastro' => 0,
                                     'nivel_catastro' => 0,
                                     'unidad_catastro' => 0,
+                                    'manzana_limite' => $model->manzana_catastro,
                                     'catastro' => $catastro,
                                     'fecha_creacion' => date('Y-m-d h:i:s'),
                                 ]; 
 
                 }
                  $tableName2 = 'sl_inmuebles'; 
+
+                 $model->nro_solicitud = $arrayDatos2['nro_solicitud'];
+                 $resultProceso = self::actionEjecutaProcesoSolicitud($conn, $conexion, $model, $config); 
 
                 if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){
 
@@ -346,6 +422,7 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
                                             'subparcela_catastro' => $model->subparcela_catastro,
                                             'nivel_catastro' => $model->nivel_catastro,
                                             'unidad_catastro' => $model->unidad_catastro,
+                                            'manzana_limite' => $model->manzana_catastro,
                                                //catastro
                                             'catastro' => $catastro,
                                     
@@ -363,6 +440,7 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
                                             'subparcela_catastro' => 0,
                                             'nivel_catastro' => 0,
                                             'unidad_catastro' => 0,
+                                            'manzana_limite' => $model->manzana_catastro,
                                                //catastro
                                             'catastro' => $catastro,
                                         ];
@@ -455,6 +533,71 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
          return $buscar[0];                                              
 
      } 
+
+     /**
+     * Metodo que se encargara de gestionar la ejecucion y resultados de los procesos relacionados
+     * a la solicitud. En este caso los proceso relacionados a la solicitud en el evento "CREAR".
+     * Se verifica si se ejecutaron los procesos y si los mismos fueron todos positivos. Con
+     * el metodo getAccion(), se determina si se ejecuto algun proceso, este metodo retorna un
+     * arreglo, si el mismo es null se asume que no habia procesos configurados para que se ejecutaran
+     * cuando la solicitud fuese creada. El metodo resultadoEjecutarProcesos(), permite determinar el
+     * resultado de cada proceso que se ejecuto.
+     * @param  ConexionController $conexionLocal instancia de la clase ConexionController.
+     * @param  connection $connLocal instancia de conexion que permite ejecutar las acciones en base
+     * de datos.
+     * @param  model $model modelo de la instancia InscripcionSucursalForm.
+     * @param  array $conf arreglo que contiene los parametros principales de la configuracion de la
+     * solicitud.
+     * @return boolean retorna true si todo se ejecuto correctamente false en caso contrario.
+     */
+    private function actionEjecutaProcesoSolicitud($conexionLocal, $connLocal, $model, $conf)
+    {
+      $result = true;
+      $resultadoProceso = [];
+      $acciones = [];
+      $evento = '';
+      
+      if ( count($conf) > 0 ) {
+        if ( $conf['nivel_aprobacion'] == 1 ) {
+          $evento = Yii::$app->solicitud->aprobar();
+        } else {
+          $evento = Yii::$app->solicitud->crear();
+        }
+
+        $procesoEvento = New SolicitudProcesoEvento($conf['id_config_solicitud']);
+
+        // Se buscan los procesos que genera la solicitud para ejecutarlos, segun el evento.
+        // que en este caso el evento corresponde a "CREAR". Se espera que retorne un arreglo
+        // de resultados donde el key del arrary es el nombre del proceso ejecutado y el valor
+        // del elemento corresponda a un reultado de la ejecucion. La variable $model debe contener
+        // el identificador del contribuyente que realizo la solicitud y el numero de solicitud.
+        $procesoEvento->ejecutarProcesoSolicitudSegunEvento($model, $evento, $conexionLocal, $connLocal);
+
+        // Se obtiene un array de acciones o procesos ejecutados. Sino se obtienen acciones
+        // ejecutadas se asumira que no se configuraro ningun proceso para que se ejecutara
+        // cuando se creara la solicitud.
+        $acciones = $procesoEvento->getAccion();
+        if ( count($acciones) > 0 ) {
+
+          // Se evalua cada accion o proceso ejecutado para determinar si se realizo satisfactoriamnente.
+          $resultadoProceso = $procesoEvento->resultadoEjecutarProcesos();
+
+          if ( count($resultadoProceso) > 0 ) {
+            foreach ( $resultadoProceso as $key => $value ) {
+              if ( $value == false ) {
+                $result = false;
+                break;
+              }
+            }
+          }
+        }
+      } else {
+        $result = false;
+      }
+
+      return $result;
+
+    }
 
     /**
      * [EnviarCorreo description] Metodo que se encarga de enviar un email al contribuyente 

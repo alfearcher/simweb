@@ -2,44 +2,49 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\widgets\Dropdown;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveField;
-use yii\helpers\Url;
-use yii\helpers\BaseHtml;
-use yii\jui\DatePicker;
+use yii\widgets\DetailView;
 
-use backend\models\inmueble\ParametrosNivelesCatastro;
+use yii\base\Widget;
+use yii\bootstrap\ButtonDropdown;
+use yii\helpers\BaseHtml;
+use yii\web\UrlManager;
+use yii\base\Component;
+use yii\base\Object;
+use yii\helpers\Url;
+
+
+use backend\models\inmueble\InmueblesUrbanosForm;
+use backend\models\inmueble\CambioPropietarioInmueblesForm;
 use backend\models\inmueble\Estados;
 use backend\models\inmueble\Municipios;
 use backend\models\inmueble\Parroquias;
-/* @var $this yii\web\View */
+use backend\models\ContribuyentesForm;
+use backend\models\inmueble\ParametrosNivelesCatastro;
+use backend\models\inmueble\UsosInmuebles;
+use backend\models\inmueble\TiposInmuebles;
+use backend\models\inmueble\ClasesInmuebles;
+use backend\models\inmueble\TipologiasZonas;
+
 /* @var $model backend\models\InscripcionInmueblesUrbanosForm */
 /* @var $form ActiveForm */
-$this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_impuesto.'</p>';
+$this->title = Yii::t('backend', 'Renovacion de Certificado Catastral'). '</p>';
+ 
+
  ?>
-
-<script language="javascript"> 
-
-
-
-function activar(val) {
-      
-      var tit1=tit2=tit3=tit4=tit5='none';
-        
-        if (val=='1'){tit1='block';}else{tit2='block';}
-      
-    //alert('val'+val);
-    document.getElementById("ms1").style.display=tit1;
-    document.getElementById("ms2").style.display=tit2;    
-} 
-
-
+<script type="text/javascript">
 function bloquea() { 
 
 /*if ($('input:checkbox[name="Inmuebles[propiedad_horizontal]"]:checked').val() == '0'){
 
     alert('estoy');
 }*/
+ //alert('estoy'+document.getElementById("propiedadhorizontal").checked);
+
+       
+    
     if (document.getElementById("propiedadhorizontal").checked==1) { 
         document.getElementById("subparcela").style.display=''; 
         document.getElementById("subparcelac").style.display=''; 
@@ -60,223 +65,307 @@ function bloquea() {
         document.getElementById("unidad1").style.display='none'; 
         document.getElementById("unidad1c").style.display='none';
         
-    }
+    } 
+} 
+
+function documento() { 
+
+
+
+         
+    
+    if (document.getElementById("documento_propiedad").value==1) { 
+        
+        document.getElementById("id_documentos_registro").style.display='none'; 
+        document.getElementById("id_documentos_saren").style.display=''; 
+        
+        //readOnly = false
+    } 
+
+    if (document.getElementById("documento_propiedad").value==2) { 
+        document.getElementById("id_documentos_registro").style.display=''; 
+        document.getElementById("id_documentos_saren").style.display='none';
+        
+        
+    } 
 } 
 
 </script> 
+
+
+<script type="text/javascript">
+function cambioPropietario() { 
+        document.getElementById("seller").style.display='none'; 
+        document.getElementById("buyer").style.display='';
+        //document.getElementById("tipo").style.display='';
+        //document.getElementById("contribuyentesform-cedulabuscar").style.display='';
+               
+    } 
+function bloquea2() { 
+if ($( "input:checked" ).val() == 1) { 
+  
+        $("#tipo").hide();
+        
+    } else { 
+
+        $("#tipo").show();
+               
+    } 
+
+if ($( "input:checked" ).val() == 1) { 
+  
+        $("#tipo2").hide();
+        
+    } else { 
+
+        $("#tipo2").show();
+               
+    } 
+
+    if (document.getElementById("inmueblesurbanosform-operacion").value==1) { 
+        document.getElementById("seller").style.display=''; 
+        document.getElementById("buyer").style.display='none'; 
+        
+    } 
+
+    if (document.getElementById("inmueblesurbanosform-operacion").value==2) { 
+        document.getElementById("buyer").style.display='';
+        document.getElementById("seller").style.display='none';
+               
+    }
+} 
+
+function tipo() { 
+//alert('aqui llegue');$( "input:checked" ).val()
+
+    if ($( "input:checked" ).val() == 1) { 
+  
+        $("#tipo").hide();
+        $("#tipo2").hide();
+        //document.getElementById("tipo").style.display=''; 
+        //document.getElementById("contribuyentesform-cedulabuscar").style.display='none'; 
+        
+    } else { 
+        // alert('valor 0');
+        $("#tipo").show();
+        $("#tipo").show();
+        //document.getElementById("tipo").style.display='';
+        //document.getElementById("contribuyentesform-cedulabuscar").style.display='';
+               
+    } 
+}
+function tipo2() { 
+//alert('aqui llegue');$( "input:checked" ).val()
+
+    if ($( "input:checked" ).val() == 1) { 
+        //alert('valor 1');
+        $("#tipo").hide();
+        //document.getElementById("tipo").style.display=''; 
+        //document.getElementById("contribuyentesform-cedulabuscar").style.display='none'; 
+        
+    } else { 
+        // alert('valor 0');
+        $("#tipo").show();
+        //document.getElementById("tipo").style.display='';
+        //document.getElementById("contribuyentesform-cedulabuscar").style.display='';
+               
+    } 
+} 
+
+
+function naturaleza( val ){
+
+var tu = val;
+//alert('Hola'+tu);
+  var variablejs = document.getElementById("inmueblesurbanosform-naturalezabuscar").value;
+  //alert('alert'+tu);
+  var variablejs2 = $('#inmueblesurbanosform-naturalezabuscar').val();
+ //alert(tu); 
+
+ //var miVariable = "Esto es una variable en JS";
+document.cookie ='variablephp='+tu;
+Session["variablephp"] = tu;
+
+//objp.Session["variablephp"] = ''+tu;
+//$("p").html("<b>Single:</b> " + variablejs2);
+
+}
+
+
+
+</script> 
 <body onload = "bloquea()"/>
+<body onload = "documento()"/>
+
+
+
 <div class="inscripcionInmueblesUrbanos">
 
     <?php $form = ActiveForm::begin([
     'method' => 'post',
     'id' => 'formulario',
-    'enableClientValidation' => true,
-            'enableAjaxValidation' => true,
-            'enableClientScript' => true,
+    'enableClientValidation' => false,
+    'enableAjaxValidation' => false,
     'options' => ['class' => 'form-vertical'],]); ?>
 
 
 
 
-<div class="container" style="width:1280px">
- <div class="col-sm-12" style="width:1230px">
-        <div class="panel panel-primary ancho-alto ">
+<div class="col-sm-100 ">
+        <div class="panel panel-primary ">
             <div class="panel-heading">
                 <?= $this->title ?>
             </div> 
-            <div class="panel-body" >
-                <table class="table table-striped ">
-                    <tr>
-                        <td style="max-width: 85px" align="right"> 
-                            <div class="col-sm-1">
-                            <?= Yii::t('backend', 'IdTaxpayer') ?>
+            <div class="panel-body" > 
+                
+                    
+ 
+<div class="panel panel-primary">
+<div class="panel-heading">
+                <?= Yii::t('frontend', 'Datos del Inmueble') ?>  
+</div>
+                
+                    <div class="row" style="margin-left:20px; margin-top:20px;">
+                        
+                            <div class="col-sm-1"> 
+                            <?= Yii::t('backend', 'Id Sim') ?>
                             </div> 
-                        </td>
-
-                        <td style="max-width: 100px" align="letf">
+                      
+                            <div class="col-sm-4">
+                            <?= $form->field($model, 'id_sim')->textInput(['style' => 'width:80px;'])->label(false) ?>
+                            </div> 
+                       
                             <div class="col-sm-2">
-                            <?= $form->field($model, 'id_contribuyente')->textInput(['readOnly'=>true,'style' => 'width:80px;'])->label(false) ?>
-                            </div>
-                        </td>
-
-                        <td style="max-width: 100px" align="letf">                            
-                            <div class="col-sm-2">
-                            <?= $form->field($model, 'inactivo')->checkbox(['disabled'=>$disabled,'style' => 'width:50px;'])?> 
-                            </div>
-                        </td>
-
-                        <td colspan="9" style="max-width: 100px" align="letf">
-                            <div class="col-sm-5">  
-                            <?= $form->field($model, 'propiedad_horizontal')->checkbox(['id'=> 'propiedadhorizontal', 
-                                                                                         'style' => 'width:50px;',
+                            <?= $form->field($model, 'inactivo')->checkbox(array(['style' => 'width:80px;']))?> 
+                            </div> 
+                       
+                            <div class="col-sm-3"> 
+                            <?= $form->field($model, 'propiedad_horizontal')->checkbox(['id'=> 'propiedadhorizontal',
+                                                                                         'style' => 'width:50px;', 
                                                                                          'onclick'=>'bloquea()',
-                                                                                         //'onchange' =>'bloquea()',
                                                                                          
-                                                                                     ]); 
-
-                                               ?>
-                            </div>
-
-                        </td>
-                    </tr>
+                                                                                          ]); ?> 
+                            </div> 
+                        
+                    </div>
                                                     
 <!-- Direccion de Catastro  -->         
-                   <tr>
-                        <td style="max-width: 85px" align="right"> 
+                   <div class="row" style="margin-left:20px; margin-top:20px;">
+                        
                             <div class="col-sm-1"> 
                             <?= Yii::t('backend', 'Edo.') ?>
                             </div> 
-                        </td>
-
-                        <td style="max-width: 100px">
-                            <div class="col-sm-1">
-                                <?php
-                                $modelEstado = Estados::find()->asArray()->all();
-                                $listaEstado = ArrayHelper::map($modelEstado, 'estado', 'nombre'); ?>
-                            <?= $form->field($model, 'estado_catastro')->dropDownList($listaEstado, [
-                                                                  'id'=> 'estado_catastro',
-                                                                  'prompt' => Yii::t('backend', 'Select'),
-                                                                  'style' => 'width:80px;',
-                                                                   'onchange'=>'$.post( "' . Yii::$app->urlManager
-                                                                                                       ->createUrl('/cambio-numero-catastral-inmuebles-urbanos/select-municipio') . '&i=' . '" + $(this).val(), function( data ) {
-                                                                                                                 $( "select#municipio_catastro" ).html( data );
-                                                                                                           });' 
-                                                                   // 'ajax'=>[
-                                                                   //                  'type'=>'POST',
-                                                                   //                  'url'=>Url::toRoute('Cambio-numero-catastral-inmuebles-urbanos/list-municipio'),
-                                                                   //                  'update'=>'#' .  ArrayHelper::map($model, 'municipio','nombre') //CHtml::activeId($model, 'municipio_catastro') 
-                                                                   //              ] 
-
-                                                                            ])->label(false); 
-                                ?> 
-                            
+                        
+                            <div class="col-sm-2">
+                            <?php
+                                $modelParametros = Estados::find()->asArray()->all();                                         
+                                $listaParametros = ArrayHelper::map($modelParametros,'estado','nombre'); 
+                                //echo'<pre>'; var_dump($listaParametros); echo '</pre>'; die(); ?>
+                            <?= $form->field($model, 'estado_catastro')->dropDownList($listaParametros,['id'=> 'estados', 'style' => 'width:100px;', 'value'=>$_SESSION['datosInmueble']['estado_catastro']])/*->dropDownList($listaEstados, [
+                                                                                                            
+                                                                                                            'prompt' => Yii::t('backend', 'Select'),
+                                                                                                            'style' => 'width:80px;',
+                                                                                                            'onchange' =>
+                                                                                                                '$.post( "' . Yii::$app->urlManager
+                                                                                                                                       ->createUrl('municipios/lists') . '&estado=' . '" + $(this).val(), function( data ) {
+                                                                                                                                                                                                                $( "select#municipios" ).html( data );
+                                                                                                                                                                                                            });' 
+                                                                                                            ])*/->label(false); 
+                                    
+                             ?> 
                             </div>
-                        </td>
-
-                        <td style="max-width: 100px">
+                        
                             <div class="col-sm-1"> 
                             <?= Yii::t('backend', 'Mnp.') ?>
+                            </div> 
+                        
+                            <div class="col-sm-2">
+                            <?php
+                                $modelParametros = Municipios::find()->where(['estado' => 15])->asArray()->all();                                         
+                                $listaParametros = ArrayHelper::map($modelParametros,'municipio','nombre'); 
+                                //echo'<pre>'; var_dump($listaParametros); echo '</pre>'; die(); ?>
+                            <?= $form->field($model, 'municipio_catastro')->dropDownList($listaParametros,['id'=> 'municipios', 'style' => 'width:100px;','value'=>$_SESSION['datosInmueble']['municipio_catastro']])/*->dropDownList($listaMunicipios, [
+                                                                                                            'id'=> 'municipios', 
+                                                                                                            'prompt' => Yii::t('backend', 'Select'),
+                                                                                                            'style' => 'width:80px;',
+                                                                                                           'onchange' =>
+                                                                                                                '$.post( "' . Yii::$app->urlManager
+                                                                                                                                       ->createUrl('parroquias/lists') . '&municipio=' . '" + $(this).val(), function( data ) {
+                                                                                                                                                                                                            $( "select#parroquias" ).html( data );
+                                                                                                                                                                                                            });' 
+                                                                                                            ])*/->label(false); 
+                                    
+                             ?> 
                             </div>
-                        </td>
-
-                        <td style="max-width: 100px">
-                            <div class="col-sm-1">
-                                <?php $modelEstado = Municipios::find()->where(['estado'=>15])->asArray()->all();
-                                $listaMunicipio = ArrayHelper::map($modelEstado, 'municipio', 'nombre'); ?>
-                                <?= $form->field($model, 'municipio_catastro')
-                                          ->dropDownList($listaMunicipio, [
-                                                                'id'=> 'municipio_catastro',
-                                                                'prompt' => Yii::t('backend', 'Select'),
-                                                                'style' => 'width:80px;',
-                                                            ])->label(false);
-                                ?>
-                            
-                            </div>
-                        </td>
-
-                        <td style="max-width: 100px">
+                        
                             <div class="col-sm-1"> 
                             <?= Yii::t('backend', 'Prq.') ?>
                             </div> 
-                        </td>
-
-                        <td style="max-width: 100px">
-                            <div class="col-sm-1">
-                                <?php $modelEstado = Parroquias::find()->where(['estado'=>15, 'municipio' =>10])->asArray()->all();
-                                $listaParroquia = ArrayHelper::map($modelEstado, 'parroquia', 'nombre'); ?>
-                            <?= $form->field($model, 'parroquia_catastro')
-                                                            ->dropDownList($listaParroquia, [
-                                                                'id'=> 'parroquia_catastro',
-                                                                'prompt' => Yii::t('backend', 'Select'),
-                                                                'style' => 'width:80px;',
-                                                            ])->label(false) ?>
+                        
+                            <div class="col-sm-">
+                            <?php
+                                $modelParametros = Parroquias::find()->where(['estado' => 15, 'municipio'=>10])->asArray()->all();                                         
+                                $listaParametros = ArrayHelper::map($modelParametros,'parroquia','nombre'); 
+                                //echo'<pre>'; var_dump($listaParametros); echo '</pre>'; die(); ?>
+                            <?= $form->field($model, 'parroquia_catastro')->dropDownList($listaParametros,['id'=> 'parroquia','style' => 'width:100px;','value'=>$_SESSION['datosInmueble']['parroquia_catastro']])->label(false) ?>
                             </div> 
-                        </td>
+                        
+                        </div>
 
-                        <td style="max-width: 100px">
+                        <div class="row" style="margin-left:20px; margin-top:20px;">
+
                             <div class="col-sm-1"> 
                             <?= Yii::t('backend', 'Amb.') ?>
-                            </div>
-                        </td>
-
-                        <td style="max-width: 100px">
-                            <div class="col-sm-1">
-                            <?= $form->field($model, 'ambito_catastro')
-                                                                ->textInput( [
-                                                                'id'=> 'ambito_catastro',
-                                                                'prompt' => Yii::t('backend', 'Select'),
-                                                                'style' => 'width:80px;',
-                                                            ])->label(false) ?>
-                            </div>
-                        </td>
-
-                        <td style="max-width: 100px">
+                            </div> 
+                        
+                            <div class="col-sm-2">
+                            <?= $form->field($model, 'ambito_catastro')->textInput(['style' => 'width:80px;','value'=>$_SESSION['datosInmueble']['ambito_catastro']])->label(false) ?>
+                            </div> 
+                        
                             <div class="col-sm-1"> 
                             <?= Yii::t('backend', 'Sct.') ?>
                             </div> 
-                        </td>
-
-                        <td style="max-width: 100px">
-                            <div class="col-sm-1">
-                            <?= $form->field($model, 'sector_catastro')
-                                                                ->textInput( [
-                                                                'id'=> 'sector_catastro',
-                                                                'prompt' => Yii::t('backend', 'Select'),
-                                                                'style' => 'width:80px;',
-                                                            ])->label(false) ?>
-                            </div>
-                        </td>
-
-                        <td style="max-width: 100px">
+                        
+                            <div class="col-sm-2">
+                            <?= $form->field($model, 'sector_catastro')->textInput(['style' => 'width:80px;','value'=>$_SESSION['datosInmueble']['sector_catastro']])->label(false) ?>
+                            </div> 
+                        
+                            
                             <div class="col-sm-1"> 
                             <?= Yii::t('backend', 'Mzn.') ?>
                             </div> 
-                        </td>
-
-                        <td style="max-width: 100px">
-                            <div class="col-sm-1">
-                            <?= $form->field($model, 'manzana_catastro')
-                                                                ->textInput([
-                                                                'id'=> 'manzana_catastro',
-                                                                'prompt' => Yii::t('backend', 'Select'),
-                                                                'style' => 'width:80px;',
-                                                            ])->label(false) ?>
+                        
+                            <div class="col-sm-2">
+                            <?= $form->field($model, 'manzana_catastro')->textInput(['style' => 'width:80px;','value'=>$_SESSION['datosInmueble']['manzana_catastro']])->label(false) ?>
                             </div> 
-                        </td>
-                   </tr>
-<!-- Tipo de Domicilios del catastro -->
-                   <tr>
-                        <td style="max-width: 85px" align="right">                   
+                                        
+                            
+                        
+                           
+                        </div>
+
+                        <div class="row" style="margin-left:20px; margin-top:20px;">
+
                             <div class="col-sm-1"> 
                             <?= Yii::t('backend', 'Plot') ?>
-                            </div>
-                        </td>
+                            </div> 
 
-                        <td style="max-width: 100px">
-                            <div class="col-sm-1">
-                            <?= $form->field($model, 'parcela_catastro')->textInput(['style' => 'width:80px;'])->label(false) ?>
+                             <div class="col-sm-1" >
+                            <?= $form->field($model, 'parcela_catastro')->textInput(['style' => 'width:80px;','value'=>$_SESSION['datosInmueble']['parcela_catastro']])->label(false) ?>
                             </div>
-                        </td>
 
-                        <td style="max-width: 100px">
                             <div class="col-sm-1" id="subparcela" style="display:none"> 
                             <?= Yii::t('backend', 'Sub-plot') ?>
-                            </div> 
-                        </td>
-
-                        <td style="max-width: 100px">                    
+                            </div>  
+                                           
                             <div class="col-sm-1" id="subparcelac" style="display:none">
                             <?= $form->field($model, 'subparcela_catastro')->textInput(['style' => 'width:80px;'])->label(false) //<?= $form->field($model, 'capa_subparcela')->textInput(['style' => 'width:80px;display:block;', 'id' => 'ms2', 'disabled'=>'disabled' ])->label(false) , 'id' => 'ms1' display:none;?>
                             </div> 
-                        </td>
-
-                        <td style="max-width: 100px">                           
+                                                 
                            <div class="col-sm-1" id="level" style= 'display:none'>
                             <?= Yii::t('backend', 'Level') ?> <!--</legend> -->
-                            </div>
-                        </td>
-
-                        <td style="max-width: 100px">
+                            </div> 
+                        
                             <div class="col-sm-1" id="levelc" style="display:none">
                             <?php
                                 $modelParametros = ParametrosNivelesCatastro::find()->asArray()->all();                                         
@@ -291,14 +380,13 @@ function bloquea() {
                                                                                                                                        ->createUrl('parroquias/lists') . '&municipio=' . '" + $(this).val(), function( data ) {
                                                                                                                                                                                                             $( "select#parroquias" ).html( data );
                                                                                                                                                                                                             });' 
-                                                                                                           */ ],['style' => 'width:80px;'])->label(false);
+                                                                                                           */ ])->label(false);
                                                                                                           ?>
                             </div> 
-                        </td>
-
-                        <td style="max-width: 100px">
-                            <div class="col-sm-2" id="levelc2" style="display:none">
-                            <?= $form->field($model, 'nivelb')->dropDownList(['prompt' => Yii::t('backend', 'Select'),
+                       
+                            <div class="col-sm-1" id="levelc2" style="display:none">
+                            <?= $form->field($model, 'nivelb')->dropDownList([
+                                                                                        'prompt' => Yii::t('backend', 'Select'),
                                                                                         '00'=>'00','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09',
                                                                                         '10'=>'10','11'=>'11','12'=>'12','13'=>'13','14'=>'14','15'=>'15','16'=>'16','17'=>'17','18'=>'18','19'=>'19',
                                                                                         '20'=>'20','21'=>'21','22'=>'22','23'=>'23','24'=>'24','25'=>'25','26'=>'26','27'=>'27','28'=>'28','29'=>'29',
@@ -312,121 +400,398 @@ function bloquea() {
                                                                                         ],['style' => 'width:80px;'])->label(false) ?> 
 
                             </div>
-                        </td>
+                        
 
-                        <td style="max-width: 100px">
+                                                
                             <div class="col-sm-1" id="unidad1" style="display:none"> 
                             <?= Yii::t('backend', 'Unit') ?>
-                            </div> 
-                        </td>
-
-                        <td colspan="4" style="max-width: 100px">
+                            </div>
+                       
                             <div class="col-sm-1" id="unidad1c" style="display:none">
                             <?= $form->field($model, 'unidad_catastro')->textInput(['style' => 'width:80px;'])->label(false) ?>
-                            </div>                                  
-                        </td> 
-                   </tr> 
-
-                                                                                    
-                   <tr>
-                        <td style="max-width: 85px" align="right">
+                            </div>                                          
+                        
+                   </div>
+<!-- Direccion y anio de domicilio --> 
+                   <div class="row" style="margin-left:20px; margin-top:20px;">
+                        
                             <div class="col-sm-2"> 
-                            <?= Yii::t('backend', 'Street Addres') ?>
+                            <?= Yii::t('backend', 'Street Addres') ?> 
                             </div> 
-                        </td>
-
-                        <td colspan="4" style="max-width: 100px">
+                        
                             <div class="col-sm-4"> 
-                            <?= $form->field($model, 'direccion')->textarea(['disabled'=>$disabled,'maxlength' => true,'style' => 'width:300px;'])->label(false) ?>
+                            <?= $form->field($model, 'direccion')->textarea(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?>
                             </div> 
-                        </td>
-
-                        <td style="max-width: 100px">
+                        
                             <div class="col-sm-1"> 
                             <?= Yii::t('backend', 'Year home') ?>
                             </div> 
-                        </td>
-
-                        <td colspan="7" style="max-width: 100px">
+                        
                             <div class="col-sm-1"> 
-                            <?= $form->field($model, 'ano_inicio')->textInput(['disabled'=>$disabled,'style' => 'width:100px;'])->label(false) ?> 
+                            <?= $form->field($model, 'ano_inicio')->textInput(['style' => 'width:80px;'])->label(false)/*->input('date', 
+                                                                           [
+                                                                              //'value' => date('d-m-Y'),
+                                                                              'type' => 'date',
+                                                                              'style' => 'width:160px;'
+                                                                              //'format' => 'yyyy-mm-dd',
+                                                                           ])*/  ?>  
                             </div>                                                                          
-                        </td>
-                   </tr> 
- <!-- Direccio del domicilio -->                   
-                                   
-                   <tr>
-                        <td style="max-width: 85px" align="right">
-                            <div class="col-sm-1"> 
-                            <?= Yii::t('backend', 'Phone') ?>
-                            </div>
-                        </td>
-
-                        <td style="max-width: 100px">
+                        
+                   </div>
+ <!-- Direccion del domicilio -->                   
+                   <div class="row" style="margin-left:20px; margin-top:20px;"> 
+                        
                             <div class="col-sm-2"> 
-                            <?= $form->field($model, 'tlf_hab')->textInput(['disabled'=>$disabled,'style' => 'width:100px;'])->label(false) ?>
-                            </div>
-                        </td>
-
-                        <td style="max-width: 100px">
-                            <div class="col-lg-1"> 
+                            <?= Yii::t('backend', 'Hse/Building/Ctryhse') ?>
+                            </div>  
+                        
+                            <div class="col-sm-2">
+                            <?= $form->field($model, 'casa_edf_qta_dom')->textInput(['style' => 'width:80px;'])->label(false) ?>
+                            </div> 
+                        
+                            <div class="col-sm-2"> 
+                            <?= Yii::t('backend', 'Floor/Level') ?>
+                            </div> 
+                       
+                            <div class="col-sm-2">
+                            <?= $form->field($model, 'piso_nivel_no_dom')->textInput(['style' => 'width:80px;'])->label(false) ?>
+                            </div> 
+                       
+                            <div class="col-sm-2"> 
+                            <?= Yii::t('backend', 'Apartment/Num') ?>
+                            </div> 
+                        
+                            <div class="col-sm-2"> 
+                            <?= $form->field($model, 'apto_dom')->textInput(['style' => 'width:80px;'])->label(false) ?>
+                            </div> 
+                        
+                            <div class="col-sm-2"> 
                             <?= Yii::t('backend', 'Meter') ?>
                             </div> 
-                        </td>
-
-                        <td style="max-width: 100px">
-                            <div class="col-lg-2">
-                            <?= $form->field($model, 'medidor')->textInput(['disabled'=>$disabled,'style' => 'width:100px;'])->label(false) ?>
-                            </div> 
-                        </td>
-
-                        <td colspan="8" style="max-width: 100px">
-                            <div class="col-lg-2">
-                            <?= $form->field($model, 'id_impuesto')->hiddenInput(['style' => 'width:80px;'])->label(false) ?>
-                            </div>                                                      
-                        </td>
-                   </tr>
-
-                   <tr>
-                        <td style="max-width: 85px" align="right">
-                            <div class="col-lg-1"> 
-                            <?= Yii::t('backend', 'Observation') ?>
-                            </div> 
-                        </td>
-
-                        <td colspan="4" style="max-width: 100px">
-                            <div class="col-lg-4">
-                            <?= $form->field($model, 'observacion')->textarea(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?>
-                            </div> 
-                        </td>
-
-                        <td colspan="2" style="max-width: 100px">                                               
-                            <div class="col-lg-2"> 
-                            <?= $form->field($model, 'tipo_ejido')->checkbox(['disabled'=>$disabled,'style' => 'width:50px;']) ?>
-                            </div>
-                        </td>
-
                         
-                   </tr>
-                   <tr>
-                        <td colspan="5" > 
-                            <div class="form-group"> 
-<? //= Html::beginForm();?>
-<?= Html::submitButton(Yii::t('backend', 'Accept'), ['class' => 'btn btn-primary', 'name'=>'Accept', 'value'=>'Accept']) ?>
-<?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) ?>
-<? //= Html::endForm();?> 
-                            </div>
-                                                                       
-                        </td>
+                            <div class="col-sm-2"> 
+                            <?= $form->field($model, 'medidor')->textInput(['style' => 'width:80px;'])->label(false) ?>
+                            </div>                                                                        
+                        
+                    </div>
 
-                    </tr>
-                    
-                </table>
-            </div>
-        </div>
-    </div>
+<!-- Observacion y Tipo de ejido de domicilio --> 
+                   <div class="row" style="margin-left:20px; margin-top:20px;">
+                        
+                            <div class="col-sm-1"> 
+                            <?= Yii::t('backend', 'Observation') ?> 
+                            </div> 
+                        
+                            <div class="col-sm-4"> 
+                            <?= $form->field($model, 'observacion')->textarea(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?>
+                            </div>    
+                                                                                          
+                            <div class="col-sm-2"> 
+                            <?= $form->field($model, 'tipo_ejido')->checkbox(['style' => 'width:50px;']) ?>
+                            </div> 
+                        </td>                                              
+                    </div>                    
 </div>
-<!-- Campos ocultos -->   
+ 
+
+<div class="panel panel-primary">
+<div class="panel-heading">
+                <?= Yii::t('frontend', 'Valores de la propiedad') ?>  
+</div>
+                                                    <div class="row" style="margin-left:20px; margin-top:20px;">
+                                                        <div class="col-sm-2"> 
+                                                        <?= Yii::t('backend', 'Meters Construction') ?>
+                                                        </div> 
+                                                    
+                                                        <div class="col-sm-2"> 
+                                                        <?= $form->field($modelAvaluo, 'metros_construccion')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value' => $_SESSION['datosHAvaluos'][0]['mts']])->label(false) ?>
+                                                        </div> 
+
+                                                        <div class="col-sm-2"> 
+                                                        <?= Yii::t('backend', 'Value of Construction') ?>
+                                                        </div> 
+
+                                                        <div class="col-sm-2"> 
+                                                        <?= $form->field($modelAvaluo, 'valor_construccion')->textInput(['maxlength' => true,'style' => 'width:100px;', 'readOnly' => true])->label(false) ?>
+                                                        </div> 
+                                                    </div>
+
+                                            
+                                                    <div class="row" style="margin-left:20px; margin-top:20px;">
+                                                        <div class="col-sm-2"> 
+                                                        <?= Yii::t('backend', 'Meters of Land') ?>
+                                                        </div> 
+                                                    
+                                                        <div class="col-sm-2"> 
+                                                        <?= $form->field($modelAvaluo, 'metros_terreno')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value' => $_SESSION['datosHAvaluos'][0]['mts2_terreno']])->label(false) ?> 
+                                                        </div>
+
+                                                        <div class="col-sm-2"> 
+                                                        <?= Yii::t('backend', 'Value of Land') ?>
+                                                        </div> 
+
+                                                        <div class="col-sm-2"> 
+                                                        <?= $form->field($modelAvaluo, 'valor_terreno')->textInput(['maxlength' => true,'style' => 'width:100px;', 'readOnly' =>true])->label(false) ?>
+                                                        </div> 
+                                                    </div>       
+
+                                                     <div class="row" style="margin-left:20px; margin-top:20px;">
+                                                        <div class="col-sm-2"> 
+                                                        <?= Yii::t('backend', 'Uso Inmueble') ?>
+                                                        </div> 
+                                                    
+                                                        <div class="col-sm-4"> 
+                                                        <?php
+                                                        $modelParametros = UsosInmuebles::find()->asArray()->all();                                         
+                                                        $listaParametros = ArrayHelper::map($modelParametros,'uso_inmueble','descripcion'); 
+                                                        ?> 
+                                                        <?= $form->field($modelAvaluo, 'id_uso_inmueble')->dropDownList($listaParametros, [ 
+                                                                                                            'id'=> 'UsosInmuebles', 
+                                                                                                            'prompt' => Yii::t('backend', 'Select'),
+                                                                                                            'style' => 'width:300px;',
+                                                                                                            'value' => $_SESSION['datosHAvaluos'][0]['id_uso_inmueble'],
+                                                                                                           /*'onchange' =>
+                                                                                                                '$.post( "' . Yii::$app->urlManager
+                                                                                                                                       ->createUrl('parroquias/lists') . '&municipio=' . '" + $(this).val(), function( data ) {
+                                                                                                                                                                                                            $( "select#parroquias" ).html( data );
+                                                                                                                                                                                                            });' 
+                                                                                                           */ ])->label(false); ?> 
+                                                        </div>
+
+                                                        <div class="col-sm-2"> 
+                                                        <?= Yii::t('backend', 'Tipo Inmueble') ?>
+                                                        </div> 
+
+                                                        <div class="col-sm-3"> 
+                                                        <?php
+                                                        $modelParametros = TiposInmuebles::find()->asArray()->all();                                         
+                                                        $listaParametros = ArrayHelper::map($modelParametros,'tipo_inmueble','descripcion'); 
+                                                        ?>
+                                                        <?= $form->field($modelAvaluo, 'tipo_inmueble')->dropDownList($listaParametros, [ 
+                                                                                                            'id'=> 'TiposInmuebles', 
+                                                                                                            'prompt' => Yii::t('backend', 'Select'),
+                                                                                                            'style' => 'width:200px;',
+                                                                                                            'value' => $_SESSION['datosHAvaluos'][0]['tipo_inmueble'],
+                                                                                                           /*'onchange' =>
+                                                                                                                '$.post( "' . Yii::$app->urlManager
+                                                                                                                                       ->createUrl('parroquias/lists') . '&municipio=' . '" + $(this).val(), function( data ) {
+                                                                                                                                                                                                            $( "select#parroquias" ).html( data );
+                                                                                                                                                                                                            });' 
+                                                                                                           */ ])->label(false); ?>
+                                                        </div> 
+                                                    </div>
+
+                                                    <div class="row" style="margin-left:20px; margin-top:20px;">
+                                                        <div class="col-sm-2"> 
+                                                        <?= Yii::t('backend', 'Clases Inmueble') ?>
+                                                        </div> 
+
+                                                        <div class="col-sm-3"> 
+                                                        <?php
+                                                        $modelParametros = ClasesInmuebles::find()->asArray()->all();                                         
+                                                        $listaParametros = ArrayHelper::map($modelParametros,'clase_inmueble','descripcion'); 
+                                                        ?>
+                                                        <?= $form->field($modelAvaluo, 'clase_inmueble')->dropDownList($listaParametros, [ 
+                                                                                                            'id'=> 'ClasesInmuebles', 
+                                                                                                            'prompt' => Yii::t('backend', 'Select'),
+                                                                                                            'style' => 'width:200px;',
+                                                                                                            'value' => $_SESSION['datosHAvaluos'][0]['clase_inmueble'],
+                                                                                                           /*'onchange' =>
+                                                                                                                '$.post( "' . Yii::$app->urlManager
+                                                                                                                                       ->createUrl('parroquias/lists') . '&municipio=' . '" + $(this).val(), function( data ) {
+                                                                                                                                                                                                            $( "select#parroquias" ).html( data );
+                                                                                                                                                                                                            });' 
+                                                                                                           */ ])->label(false); ?>
+                                                        </div> 
+
+                                                        <div class="col-sm-2"> 
+                                                        <?= Yii::t('backend', 'Tipologia Inmueble') ?>
+                                                        </div> 
+
+                                                        <div class="col-sm-4">  
+                                                        <?php
+                                                        $modelParametros = TipologiasZonas::find()->asArray()->all();                                         
+                                                        $listaParametros = ArrayHelper::map($modelParametros,'id_tipologia_zona','descripcion'); 
+                                                        ?>
+                                                        <?= $form->field($modelAvaluo, 'id_tipologia_zona')->dropDownList($listaParametros, [ 
+                                                                                                            'id'=> 'tipologiaInmuebles', 
+                                                                                                            'prompt' => Yii::t('backend', 'Select'),
+                                                                                                            'style' => 'width:300px;',
+                                                                                                            'value' => $_SESSION['datosHAvaluos'][0]['id_tipologia_zona']
+                                                                                                           /*'onchange' =>
+                                                                                                                '$.post( "' . Yii::$app->urlManager
+                                                                                                                                       ->createUrl('parroquias/lists') . '&municipio=' . '" + $(this).val(), function( data ) {
+                                                                                                                                                                                                            $( "select#parroquias" ).html( data );
+                                                                                                                                                                                                            });' 
+                                                                                                           */ ])->label(false); ?>
+                                                        </div> 
+                                                    </div>      
+                                                    <div class="row" style="margin-left:20px; margin-top:20px;">
+                                                        <div class="col-sm-2"> 
+                                                        <?= Yii::t('backend', 'Lindero Norte') ?>
+                                                        </div> 
+                                                    
+                                                        <div class="col-sm-6"> 
+                                                        <?= $form->field($modelAvaluo, 'lindero_norte')->textInput(['maxlength' => true,'style' => 'width:700px;','value' => $_SESSION['datosHAvaluos'][0]['lindero_norte']])->label(false) ?> 
+                                                        </div>
+                                                     </div>
+                                                     <div class="row" style="margin-left:20px; margin-top:20px;">
+                                                        <div class="col-sm-2"> 
+                                                        <?= Yii::t('backend', 'Lindero Sur') ?>
+                                                        </div> 
+
+                                                        <div class="col-sm-6"> 
+                                                        <?= $form->field($modelAvaluo, 'lindero_sur')->textInput(['maxlength' => true,'style' => 'width:700px;','value' => $_SESSION['datosHAvaluos'][0]['lindero_sur']])->label(false) ?>
+                                                        </div> 
+                                                     </div>
+                                                     <div class="row" style="margin-left:20px; margin-top:20px;">
+                                                        <div class="col-sm-2"> 
+                                                        <?= Yii::t('backend', 'Lindero Este') ?>
+                                                        </div> 
+
+                                                        <div class="col-sm-6"> 
+                                                        <?= $form->field($modelAvaluo, 'lindero_este')->textInput(['maxlength' => true,'style' => 'width:700px;','value' => $_SESSION['datosHAvaluos'][0]['lindero_este']])->label(false) ?>
+                                                        </div> 
+                                                     </div>
+                                                     <div class="row" style="margin-left:20px; margin-top:20px;">
+                                                        <div class="col-sm-2"> 
+                                                        <?= Yii::t('backend', 'Lindero Oeste') ?>
+                                                        </div> 
+
+                                                        <div class="col-sm-6"> 
+                                                        <?= $form->field($modelAvaluo, 'lindero_oeste')->textInput(['maxlength' => true,'style' => 'width:700px;','value' => $_SESSION['datosHAvaluos'][0]['lindero_oeste']])->label(false) ?>
+                                                        </div> 
+                                                    </div>     
+                                                
+</div>
+
+
+<div class="panel panel-primary">
+<div class="panel-heading">
+                <?= Yii::t('frontend', 'Registro del inmueble') ?>  
+</div>
+                                                    <div class="row" style="margin-left:20px; margin-top:20px;">
+                                                        <div class="col-sm-2"> 
+                                                        <?= Yii::t('backend', 'Documento de Propiedad') ?>
+                                                        </div> 
+                                                    
+                                                        <div class="col-sm-4"> 
+                                                        <?= $form->field($modelRegistro, 'documento_propiedad')->dropDownList([
+                                                                                         'prompt' => Yii::t('backend', 'Selecciona'),
+                                                                                         '1'=>'Datos SAREN','2'=>'Documento de Registro'],['id' => 'documento_propiedad','style' => 'width:250px;','onclick'=>'documento()',])->label(false) ?>
+                                                        </div>  
+
+                                                    </div>
+
+                                                    <div class="row" style="margin-left:20px; margin-top:20px; ">
+                                                        <div class="col-sm-2"> 
+                                                        <?= Yii::t('backend', 'Fecha') ?>
+                                                        </div> 
+                                                    
+                                                        <div class="col-sm-2"> 
+                                                        <?= $form->field($modelRegistro, 'fecha')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?>
+                                                        </div> 
+
+                                                        <div class="col-sm-2"> 
+                                                        <?= Yii::t('backend', 'Nro Documento') ?>
+                                                        </div> 
+
+                                                        <div class="col-sm-2"> 
+                                                        <?= $form->field($modelRegistro, 'num_reg')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?>
+                                                        </div> 
+
+                                                        <div class="col-sm-2"> 
+                                                        <?= Yii::t('backend', 'Circuito') ?>
+                                                        </div> 
+
+                                                        <div class="col-sm-2"> 
+                                                        <?= $form->field($modelRegistro, 'reg_mercantil')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?>
+                                                        </div> 
+                                                    </div>
+
+                                            
+                                                    <div class="row" id = "id_documentos_registro"style="margin-left:20px; margin-top:20px;display:none">
+                                                        <div class="col-sm-2"> 
+                                                        <?= Yii::t('backend', 'Tomo') ?>
+                                                        </div> 
+                                                    
+                                                        <div class="col-sm-2"> 
+                                                        <?= $form->field($modelRegistro, 'tomo')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?> 
+                                                        </div>
+
+                                                        <div class="col-sm-2"> 
+                                                        <?= Yii::t('backend', 'Protocolo') ?>
+                                                        </div> 
+
+                                                        <div class="col-sm-2"> 
+                                                        <?= $form->field($modelRegistro, 'protocolo')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?>
+                                                        </div> 
+
+                                                        <div class="col-sm-2"> 
+                                                        <?= Yii::t('backend', 'Folio') ?>
+                                                        </div> 
+
+                                                        <div class="col-sm-2"> 
+                                                        <?= $form->field($modelRegistro, 'folio')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?>
+                                                        </div> 
+
+                                                        
+                                                    </div>         
+
+                                                    <div class="row" id = "id_documentos_saren"style="margin-left:20px; margin-top:20px;display:none">
+                                                        <div class="col-sm-2"> 
+                                                        <?= Yii::t('backend', 'Matriculado Nro') ?>
+                                                        </div> 
+                                                    
+                                                        <div class="col-sm-2"> 
+                                                        <?= $form->field($modelRegistro, 'nro_matriculado')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?> 
+                                                        </div>
+
+                                                        <div class="col-sm-2"> 
+                                                        <?= Yii::t('backend', 'Asiento Registral') ?>
+                                                        </div> 
+
+                                                        <div class="col-sm-2"> 
+                                                        <?= $form->field($modelRegistro, 'asiento_registral')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?>
+                                                        </div> 
+
+                                                                                                              
+                                                    </div>       
+                                                
+</div>
+                                                
+                                                    <div class="row" style="margin-left:20px; margin-top:20px;">
+                                                        <div class="col-sm-2">
+                                                        <?php 
+                                                        echo Html::submitButton(Yii::t('backend', 'Accept'), ['class' => 'btn btn-primary', 'name'=>'AcceptBuyer', 'value'=>'Accept']); 
+                                                        ?> 
+                                                        </div> 
+                                                        <div class="col-sm-2">
+                                                        <?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) ?>
+                                                        </div> 
+                                                    </div> 
+                                                 
+                                       
+                                                   
+                  </div>      
+              </div>
+        </div>
+                              
+
+                             
+
+                            
+                                        
+                                  
+
+                                                     
+ 
+                                                       
+                                                       
+<!-- Campos ocultos -->  
+
+<?= $form->field($model, 'id_impuesto')->hiddenInput(['value' => $model->id_impuesto])->label(false) ?>
+
 <?= $form->field($model, 'manzana_limite')->hiddenInput(['value' => 130])->label(false) ?> 
 <?= $form->field($model, 'id_habitante')->hiddenInput(['value' => 123456])->label(false) ?>
 <?= $form->field($model, 'liquidado')->hiddenInput(['value' => 0])->label(false) ?>
@@ -434,14 +799,41 @@ function bloquea() {
 
 
 <?= $form->field($model, 'validacion')->hiddenInput(['value' => '3'])->label(false) ?> 
+
+
 <?//= Html::endForm();?> 
+  <?php ActiveForm::end(); ?>                                                   
+                   
 
-<?php ActiveForm::end(); ?> 
+                
+
+   
+
+
+       
+
+            </div>
+        </div>
+    </div>
 
 
 
-</div><!-- inscripcionInmueblesUrbanos -->
+<?php //$form->end(); ?>
+ 
+</div><!-- inscripcionInmueblesUrbanos 
+['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9']
+-->                     
 
+
+
+
+<?= $form->field($model, 'manzana_limite')->hiddenInput(['value' => 130])->label(false) ?> 
+<?= $form->field($model, 'id_habitante')->hiddenInput(['value' => 123456])->label(false) ?>
+<?= $form->field($model, 'liquidado')->hiddenInput(['value' => 0])->label(false) ?>
+<?= $form->field($model, 'nivel')->hiddenInput(['value' => 0])->label(false) ?>
+
+
+<?= $form->field($model, 'validacion')->hiddenInput(['value' => '3'])->label(false) ?> 
 <!-- 
 <tr>
                         <td><div class="col-lg-5">
