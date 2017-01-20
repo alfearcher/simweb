@@ -150,6 +150,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                                             ->all(); 
 
           $_SESSION['datosHAvaluos'] = $datosHAvaluos; 
+        //die(var_dump($_SESSION['datosHAvaluos']));
           
       
 
@@ -164,6 +165,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                 
           } else {
                 $value = false;
+                $_SESSION['datosUAvaluos'] = 0;
                 // no presenta historico de avaluos
                 // buscaremos fecha en inmuebles registros
                 if ($datosIRegistros != null) {

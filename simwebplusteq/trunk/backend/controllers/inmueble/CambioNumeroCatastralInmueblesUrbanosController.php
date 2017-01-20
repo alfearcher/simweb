@@ -224,12 +224,12 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
          if ($model->load(Yii::$app->request->post()) && $modelAvaluo->load(Yii::$app->request->post()) && $modelRegistro->load(Yii::$app->request->post()) ){
 
 
-              // $isValid = $model->validate();
-              // $isValid = $modelAvaluo->validate(); && $isValid;
-              // $isValid = $modelRegistro->validate(); && $isValid;
+              $isValid = $model->validate();
+              $isValid = $modelAvaluo->validate() && $isValid;
+              $isValid = $modelRegistro->validate() && $isValid;
 
 
-              if($model->validate()){ 
+              if($isValid){ 
 
                  //condicionales     
                   $documento = new DocumentoSolicitud();
