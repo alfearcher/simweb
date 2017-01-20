@@ -21,13 +21,13 @@
  */
 
  /**
- *  @file CalculoPorUnidad.php
+ *  @file CalculoPorMetroCuadrado.php
  *
  *  @author Jose Rafael Perez Teran
  *
  *  @date 20-01-2017
  *
- *  @class CalculoPorUnidad
+ *  @class CalculoPorMetroCuadrado
  *  @brief Clase Modelo
  *
  *
@@ -51,9 +51,9 @@
 
 
 	/**
-	 * Clase que basa su calculo en la cantidad de unidades de propaganda.
+	 * Clase que basa su calculo en los metros cuadrado propaganda.
 	 */
-	class CalculoPorUnidad extends ParametroTarifaPropaganda
+	class CalculoPorMetroCuadrado extends ParametroTarifaPropaganda
 	{
 
 		private $_añoImpositivo;
@@ -119,9 +119,14 @@
 
 			$montoAplicar = $this->determinarMontoAplicar();
 			$cantidadPropaganda = $this->_datosPropaganda['cantidad_propagandas'];
+			$alto = $this->_datosPropaganda['alto'];
+			$ancho = $this->_datosPropaganda['ancho'];
+
+			$mts2 = $alto * $ancho;
+
 			$cantidadTiempo = $this->getCantidadTiempo('año');
 
-			$montoTotal = $montoAplicar * $cantidadPropaganda;
+			$montoTotal = $montoAplicar * $cantidadPropaganda * $mts2;
 
 			if ( $cantidadTiempo > 0 ) {
 				$montoTotal = $montoTotal * $cantidadTiempo;

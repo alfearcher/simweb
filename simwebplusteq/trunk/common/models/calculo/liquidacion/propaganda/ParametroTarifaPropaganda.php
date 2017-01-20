@@ -159,7 +159,13 @@
 
 				$montoCalculo = ( $montoAplicar + $montoAgregar ) - $montoDeduccion;
 
-				$this->_montoAplicar = $montoCalculo;
+				if ( $tarifa['tipoRango'] == 0 ) {
+					$this->_montoAplicar = $montoCalculo;
+				} elseif ( $tarifa['tipoRango'] == 1 ) {
+					$this->_montoAplicar = $montoCalculo * self::getMontoUnidadTributaria();
+				}
+
+
 
 			}
 
