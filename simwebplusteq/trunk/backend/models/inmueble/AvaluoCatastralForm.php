@@ -57,6 +57,7 @@ use Yii;
 use backend\models\inmueble\InmueblesConsulta;
 use common\conexion\ConexionController;
 use backend\models\inmueble\Solvencias;
+use backend\models\inmueble\TarifasAvaluos;
 /**
  * This is the model class for table "inmuebles".
  *
@@ -128,42 +129,8 @@ class AvaluoCatastralForm extends \yii\db\ActiveRecord
 
             [['id_impuesto','id_tipologia_zona','tipo_inmueble','clase_inmueble','id_uso_inmueble'], 'integer','message' => Yii::t('backend', 'only integers')],
             [['metros_terreno','metros_construccion','id_tipologia_zona','tipo_inmueble','clase_inmueble','id_uso_inmueble'/*,'valor_terreno','valor_construccion'*/],'required','message' => Yii::t('backend', 'No debe estar vacio el campo de datos')],
-            //[['lindero_norte', 'lindero_sur','lindero_este', 'lindero_oeste'],'required','message' => Yii::t('backend', 'No debe estar vacio el campo de datos')],
+            [['id_tipologia_zona'],'ComparaTarifaAvaluos'],
 
-            //[['observacion','datosVendedor','inmuebleVendedor'], 'string'], 
-            //[['direccion'], 'string', 'max' => 255,'message' => Yii::t('backend', 'Only 255 character')],
-            
-                       
-            //validaciones cambio propietario del inmueble
-            // [['tipo_naturaleza1','tipo_naturaleza','operacion','validacion'],'integer','message' => Yii::t('backend', 'only integers')],
-            
-            // [['naturalezaBuscar1','tipo_naturaleza1'], 'string','when'=>function($model){ return $model->operacion==1;}, 'max' => 1,'message' => Yii::t('backend', 'Only 1 character')],
-            // [['naturalezaBuscar','tipo_naturaleza'], 'string','when'=>function($model){ return $model->operacion==2;}, 'max' => 1,'message' => Yii::t('backend', 'Only 1 character')],
-            
-            // [['cedulaBuscar1','ano_traspaso1'], 'string', 'max' => 8,'when'=>function($model){ return $model->operacion==1;},'message' => Yii::t('backend', 'Only 8 character')],
-            // [['cedulaBuscar','ano_traspaso'], 'string', 'max' => 8,'when'=>function($model){ return $model->operacion==2;},'message' => Yii::t('backend', 'Only 8 character')],
-            
-            // [['tipoBuscar1'], 'string', 'max' => 1,'when'=>function($model){ return $model->operacion==1;},'message' => Yii::t('backend', 'Only 1 character')],
-            // [['tipoBuscar'], 'string', 'max' => 1,'when'=>function($model){ return $model->operacion==2;},'message' => Yii::t('backend', 'Only 1 character')],
-            
-            // //requeridos en cambio propietario del inmueble
-            // [['direccion'],'required','when'=>function($model){ return $model->operacion==1;},'message' => Yii::t('backend', 'Street Address cannot be blank')],
-            // [['ano_traspaso1'],'required','when'=>function($model){ return $model->operacion==1;},'message' => Yii::t('backend', 'Handover Year cannot be blank')],
-            // [['tipo_naturaleza1'],'required','when'=>function($model){ return $model->operacion==1;},'message' => Yii::t('backend', 'Type Nature cannot be blank')],
-            // [['naturalezaBuscar1','cedulaBuscar1','tipoBuscar1'], 'required','when'=>function($model){ return $model->tipo_naturaleza1==2;},'message' => Yii::t('backend', 'Cannot be blank')],
-            // [['naturalezaBuscar1','cedulaBuscar1'], 'required','when'=>function($model){ return $model->tipo_naturaleza1==1;},'message' => Yii::t('backend', 'Cannot be blank')],
-
-            // [['ano_traspaso'],'required','when'=>function($model){ return $model->operacion==2;},'message' => Yii::t('backend', 'Handover Year cannot be blank')],
-            // [['tipo_naturaleza'],'required','when'=>function($model){ return $model->operacion==2;},'message' => Yii::t('backend', 'Type Nature cannot be blank')],
-            // [['naturalezaBuscar','cedulaBuscar','tipoBuscar'], 'required','when'=>function($model){ return $model->tipo_naturaleza==2;},'message' => Yii::t('backend', 'Cannot be blank')],
-            // [['naturalezaBuscar','cedulaBuscar'], 'required','when'=>function($model){ return $model->tipo_naturaleza==1;},'message' => Yii::t('backend', 'Cannot be blank')],
-            // //solvencia del inmueble 
-
-            // [['ano_traspaso1'], 'inmuebleSolventeA','when'=>function($model){ return $model->operacion==1;}],
-
-            // [['ano_traspaso'], 'inmuebleSolventeB','when'=>function($model){ return $model->operacion==2;}],
-            // //[['datosVendedor'],'datosVendedor'],
-            
         ]; 
     }
 
@@ -221,6 +188,26 @@ class AvaluoCatastralForm extends \yii\db\ActiveRecord
             'tipoBuscar'=> Yii::t('backend', 'Type'),
         ];  
     }
+
+    /**
+     * [DatosContribuyente] metodo que busca los datos del contribuyente en 
+     * la tabla contribuyente
+     */
+     public function ComparaTarifaAvaluos($attribute, $params)
+     {
+
+         $buscar = TarifasAvaluos::find()->where("manzana_limite=:manzana_limite", [":manzana_limite" => $_SESSION['datosInmueble']['manzana_limite']])
+                                            ->AndWhere("id_tipologia_zona=:id_tipologia_zona", [":id_tipologia_zona" => $this->id_tipologia_zona])
+                                            //->AndWhere("ano_impositivo=:ano_impositivo", [":ano_impositivo" => $date])
+                                            ->asArray()->all();
+
+         if ($buscar == null){ 
+
+                  //echo'<pre>'; var_dump($buscar[0]['id_contribuyente']); echo '</pre>'; die();
+                  $this->addError($attribute, Yii::t('backend', 'No existe esa tipologia para ese sector')); //el contribuidor (id) ya ha asignado catastro sobre este inmueble
+          }                                             
+
+     }
 
     public function catastro_existe($attribute, $params)
     {
