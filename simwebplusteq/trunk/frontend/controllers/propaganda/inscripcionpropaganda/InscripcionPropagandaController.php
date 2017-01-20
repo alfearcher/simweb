@@ -676,10 +676,23 @@
 			$modelSearch = New InscripcionPropagandaSearch($id);
 			$model = $modelSearch->findSolicitudInscripcionPropaganda($nro);
 
+
+			// Se buscan las planillas relacionadas a la solicitud. Se refiere a las planillas
+			// de impueso "tasa".
+			$modelPlanilla = New SolicitudPlanillaSearch($nro, Yii::$app->solicitud->crear());
+			$dataProvider = $modelPlanilla->getArrayDataProvider();
+
+			$caption = Yii::t('frontend', 'Planilla(s)');
+			$viewSolicitudPlanilla = $this->renderAjax('@common/views/solicitud-planilla/solicitud-planilla', [
+															'caption' => $caption,
+															'dataProvider' => $dataProvider,
+				]);
+
 			return $this->render('@frontend/views/propaganda/inscripcion-propaganda/_view-create', [
 											'caption' => Yii::t('frontend', 'Request Nro. ' . $nro),
 											'model' => $model,
 											'codigo' => 100,
+											'viewSolicitudPlanilla' => $viewSolicitudPlanilla,
 				]);
 		}
 
