@@ -740,6 +740,7 @@
 
 			$id = isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : null;
 			$nro = isset($_SESSION['nro_solicitud']) ? $_SESSION['nro_solicitud'] : null;
+			self::actionAnularSession(['nro_solicitud']);
 
 			if ( $id !== null && $nro !== null ) {
 				$modelSearch = New InscripcionPropagandaSearch($id);
@@ -771,14 +772,13 @@
 					$pdf = New PlanillaPdfController($result['planilla'], true);
 					$pdf->actionGenerarPlanillaPdf();
 
+
 				} else {
 
 					$this->_transaccion->rollBack();
       	 			$this->_conn->close();
       	 			$this->redirect(['error-operacion', 'cod' => 920]);
 				}
-
-
 
 			} else {
 
