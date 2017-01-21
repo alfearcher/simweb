@@ -171,17 +171,18 @@
 	                            'format' => 'raw',
 	                            'value' => function($data) {
 	                            		return Html::submitButton($data['planilla'],
-                            													[
-																					'id' => 'print-view-planilla',
-												            						'class' => 'btn btn-primary',
-												            						'target' => '_blank',
-												            						'data' => [
-												            							'method' => 'post',
-												            							'params' => [
-												            								'p' => $data['planilla'],
-												            							],
-												            						],
-												            					]);
+                													[
+																		'id' => 'print-view-planilla',
+									            						'class' => 'btn btn-primary',
+									            						'target' => '_blank',
+									            						'data' => [
+									            							'method' => 'post',
+									            							'params' => [
+									            								'p' => $data['planilla'],
+									            								'o' => isset($data['objeto']) ? (boolean) $data['objeto'] : false,
+									            							],
+									            						],
+									            					]);
 	                            },
 	                        ],
 
@@ -192,10 +193,10 @@
 
 
 	    /***/
-	    public function generarProviderDeudaPlanillaPorImpuesto($impuesto, $idImpuesto, $tipoPeriodo)
+	    public function generarProviderDeudaPlanillaPorImpuesto($impuesto, $idImpuesto, $tipoPeriodo, $objeto = false)
 	    {
 	    	$deudaSearch = New DeudaSearch($this->id_contribuyente);
-	    	return $deudaSearch->getProviderDeudaPlanillaPorImpuesto($impuesto, $idImpuesto, $tipoPeriodo);
+	    	return $deudaSearch->getProviderDeudaPlanillaPorImpuesto($impuesto, $idImpuesto, $tipoPeriodo, $objeto);
 	    }
 
 
@@ -215,7 +216,7 @@
 	    public function generarCollapsePlanillaPeriodoCero($impuesto)
 	    {
 	    	$deudaSearch = New DeudaSearch($this->id_contribuyente);
-	    	$provider = $deudaSearch->getProviderDeudaPlanillaPorImpuesto($impuesto, 0, $tipoPeriodo = '=');
+	    	$provider = $deudaSearch->getProviderDeudaPlanillaPorImpuesto($impuesto, 0, $tipoPeriodo = '=', false);
 
 	    	if ( $provider !== null ) {
 	    		return self::generarGridPlanilla($provider);
@@ -323,7 +324,7 @@
 
 	    		}
 	    	} elseif ( $impuesto == 3 ) {
-	    		// Se buscan los datos del inmueble.
+	    		// Se buscan los datos del vehiculo.
 	    		$models = VehiculosForm::find()->where('id_contribuyente =:id_contribuyente',
 	    													[':id_contribuyente' => $this->id_contribuyente])
 	    				  						   ->andWhere('status_vehiculo =:status_vehiculo',
@@ -358,6 +359,41 @@
 
 
 	    	} elseif ( $impuesto == 4 ) {
+
+	    		// Se buscan los datos de la propaganda.
+	    		$models = Propaganda::find()->where('id_contribuyente =:id_contribuyente',
+	    												[':id_contribuyente' => $this->id_contribuyente])
+				  						    ->andWhere('inactivo =:inactivo',
+				  						    			[':inactivo' => 0])
+										    ->asArray()
+										    ->all();
+
+	    		$content = [];
+	    		if ( count($models) > 0 ) {
+
+	    			$content = ArrayHelper::map($models, 'id_impuesto', 'nombre_propaganda');
+	    			foreach ( $content as $key => $value ) {
+	    				$provider = self::generarProviderDeudaPlanillaPorImpuesto($impuesto, $key, '=', true);
+
+  						if ( $provider !== null ) {
+	    					$contentGrid = self::generarGridPlanilla($provider);
+	    				} else {
+	    					$contentGrid = '';
+	    				}
+
+	    				$item[] = [
+	    					'label' => $value,
+	    					'content' => (string)$contentGrid,
+
+	    				];
+	    			}
+
+	    			return Collapse::widget([
+	    						'items' => $item
+	    				]);
+
+	    		}
+
 
 	    	}
 	    }
