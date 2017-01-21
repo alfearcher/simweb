@@ -52,6 +52,7 @@
 														'caption' => $caption,
 														'model' => $model,
 														'viewSolicitudPlanilla' => $viewSolicitudPlanilla,
+														'url' => $url,
 
 							    ]) ?>
 		</div>

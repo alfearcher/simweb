@@ -192,16 +192,25 @@
 							</div>
 
 							<div class="col-sm-3" style="margin-left:50px;">
+
+								<?php
+									$disabled = '';
+									if ( $model->id_impuesto == 0 ) {
+										$disabled = ' disabled';
+									}
+								 ?>
+
 								<div class="form-group">
 									<?= Html::a(Yii::t('backend', 'Liquidar Impuesto de la Propaganda'),
-																				Url::to(['liquidar-impuesto-propaganda']),
+																				Url::to([$url]),
 																			  	[
-																					'id' => 'btn-otra',
-																					'class' => 'btn btn-primary',
+																					'id' => 'btn-liquidar',
+																					'class' => 'btn btn-primary' . $disabled,
 																					'value' => 1,
 																					'style' => 'width: 120%',
-																					'name' => 'btn-otra',
+																					'name' => 'btn-liquidar',
 																					'target' => '_blank',
+
 																			  	])
 									?>
 								</div>
