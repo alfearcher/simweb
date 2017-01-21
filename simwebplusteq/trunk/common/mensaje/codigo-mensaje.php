@@ -108,6 +108,8 @@ return [
 
 	'520' => [Yii::t('frontend', 'No presenta historico de licencias'), 'warning', 'fa fa-info-circle'],
 
+	'600' => [Yii::t('frontend', 'No se ejecuto la liquidación'), 'warning', 'fa fa-info-circle'],
+
 ]
 
 
