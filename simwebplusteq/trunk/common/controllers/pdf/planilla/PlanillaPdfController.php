@@ -520,11 +520,11 @@
 			$mpdf->SetFont('Arial', 'B', 10);
 			$mpdf->Cell(35, 5, $fechaVcto, 1, 0, 'C');
 			// ID Contribuyente
-			$mpdf->Cell(45, 5, $this->_contribuyente->id_contribuyente, 1, 0, 'C');
+			$mpdf->Cell(45, 5, $detallePlanilla[0]['pagos']['id_contribuyente'], 1, 0, 'C');
 			// Nro Liquidacion
 			$mpdf->Cell(45, 5, $detallePlanilla[0]['pagos']['planilla'], 1, 0, 'C');
 			// Control
-			$control = '00000';
+			$control = $detallePlanilla[0]['id_impuesto'];
 			$mpdf->Cell(35, 5, $control, 1, 1, 'C');
 
 		}
