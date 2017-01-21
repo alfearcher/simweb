@@ -175,7 +175,7 @@
 						<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1; padding-left: 5px;margin-top:20px;">
 						</div>
 
-						<div class="row" style="margin-top: 25px;">
+						<div class="row" style="margin-top: 25px;width: 100%;">
 
 							<div class="col-sm-3">
 								<div class="form-group">
@@ -191,7 +191,7 @@
 								</div>
 							</div>
 
-							<div class="col-sm-3">
+							<div class="col-sm-3" style="margin-left:50px;">
 								<div class="form-group">
 									<?= Html::a(Yii::t('backend', 'Liquidar Impuesto de la Propaganda'),
 																				Url::to(['liquidar-impuesto-propaganda']),
@@ -199,7 +199,7 @@
 																					'id' => 'btn-otra',
 																					'class' => 'btn btn-primary',
 																					'value' => 1,
-																					'style' => 'width: 100%',
+																					'style' => 'width: 120%',
 																					'name' => 'btn-otra',
 																					'target' => '_blank',
 																			  	])
@@ -207,7 +207,7 @@
 								</div>
 							</div>
 
-							<div class="col-sm-3">
+							<div class="col-sm-3" style="margin-left:100px;">
 								<div class="form-group">
 									<?= Html::a(Yii::t('backend', 'Quit'), Url::to(['quit']),
 																					  [
