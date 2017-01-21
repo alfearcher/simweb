@@ -53,6 +53,8 @@
     use backend\models\solicitud\estatus\EstatusSolicitud;
     use common\models\solicitudescontribuyente\SolicitudesContribuyente;
     use backend\models\utilidad\tiempo\Tiempo;
+    use backend\models\propaganda\Propaganda;
+
 
 
     /**
@@ -167,6 +169,17 @@
         {
             return $this->hasOne(Tiempo::className(), ['id_tiempo' => 'id_tiempo']);
         }
+
+
+        /**
+         * Relacion con la entidad "propagandas"
+         * @return [type] [description]
+         */
+        public function getPropaganda()
+        {
+            return $this->hasOne(Propaganda::className(), ['id_impuesto' => 'id_impuesto']);
+        }
+
 
     }
 
