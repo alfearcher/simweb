@@ -195,8 +195,11 @@
 
 								<?php
 									$disabled = '';
+									$target = '_blank';
+
 									if ( $model->id_impuesto == 0 ) {
 										$disabled = ' disabled';
+										$target = '';
 									}
 								 ?>
 
@@ -209,7 +212,10 @@
 																					'value' => 1,
 																					'style' => 'width: 120%',
 																					'name' => 'btn-liquidar',
-																					'target' => '_blank',
+																					'target' => $target,
+																					'onclick' => '
+																						$( "#btn-liquidar" ).bind("click", false);
+																					',
 
 																			  	])
 									?>
