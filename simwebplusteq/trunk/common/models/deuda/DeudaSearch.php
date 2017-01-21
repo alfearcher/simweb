@@ -51,7 +51,7 @@
 	use common\models\planilla\PagoDetalle;
 	use yii\helpers\ArrayHelper;
 	use yii\data\ArrayDataProvider;
-
+	use backend\models\propaganda\Propaganda;
 
 
 	/**
@@ -1315,6 +1315,40 @@
 
 					} else {
 						if ( trim($tipoPeriodo == '=') && ( $idImpuesto == 0 ) ) {
+
+							$listaIdImpuesto = self::listaObjetoExcluir($impuesto);
+							if ( count($listaIdImpuesto) == 0 ) {
+								$listaIdImpuesto[] = 0;
+							}
+
+							$planillas = $findModel->select([
+														'P.id_pago',
+														'P.ente',
+														'P.planilla',
+														'P.id_contribuyente',
+														'D.trimestre',
+														'(sum(D.monto+D.recargo+D.interes)-sum(D.descuento+D.monto_reconocimiento)) as t',
+														'D.impuesto',
+														'D.id_impuesto',
+														'I.descripcion as descripcion_impuesto',
+														'D.descripcion',
+													])
+												   ->andWhere('D.impuesto =:impuesto',
+												   				[':impuesto' => $impuesto])
+												   ->andWhere('trimestre ' . $tipoPeriodo . ':trimestre',
+												   				[':trimestre' => 0])
+												   ->andWhere(['NOT IN', 'id_impuesto', $listaIdImpuesto])
+												   ->joinWith('pagos P', false, 'INNER JOIN')
+												   ->joinWith('impuestos I', true, 'INNER JOIN')
+												   ->groupBy('P.planilla')
+												   ->orderBy([
+												   		'D.impuesto' => SORT_ASC,
+
+												   	])
+												   ->asArray()
+												   ->all();
+
+						} elseif ( trim($tipoPeriodo) == '>' && ( $idImpuesto > 0 ) ) {
 							$planillas = $findModel->select([
 														'P.id_pago',
 														'P.ente',
@@ -1328,6 +1362,7 @@
 														'D.descripcion',
 													])
 												   ->andWhere('D.impuesto =:impuesto',[':impuesto' => $impuesto])
+												   ->andWhere('D.id_impuesto =:id_impuesto',[':id_impuesto' => $idImpuesto])
 												   ->andWhere('trimestre ' . $tipoPeriodo . ':trimestre',[':trimestre' => 0])
 												   ->joinWith('pagos P', false, 'INNER JOIN')
 												   ->joinWith('impuestos I', true, 'INNER JOIN')
@@ -1338,7 +1373,9 @@
 												   	])
 												   ->asArray()
 												   ->all();
-						} elseif ( trim($tipoPeriodo == '>') && ( $idImpuesto > 0 ) ) {
+
+						} elseif ( trim($tipoPeriodo) == '=' && ( $idImpuesto > 0 ) ) {
+
 							$planillas = $findModel->select([
 														'P.id_pago',
 														'P.ente',
@@ -1399,8 +1436,15 @@
 
 
 
-		/***/
-		public function getProviderDeudaPlanillaPorImpuesto($impuesto, $idImpuesto, $tipoPeriodo)
+		/**
+		 * [getProviderDeudaPlanillaPorImpuesto description]
+		 * @param  [type]  $impuesto    [description]
+		 * @param  [type]  $idImpuesto  [description]
+		 * @param  [type]  $tipoPeriodo [description]
+		 * @param  boolean $objeto indicador para propaganda, apuesta, espectaculo
+		 * @return [type]               [description]
+		 */
+		public function getProviderDeudaPlanillaPorImpuesto($impuesto, $idImpuesto, $tipoPeriodo, $objeto = false)
 		{
 			$provider = null;
 			$planillas = self::getPlanillaConDeudaPorImpuesto($impuesto, $idImpuesto, $tipoPeriodo);
@@ -1415,6 +1459,7 @@
 						'id_impuesto' => $planilla['id_impuesto'],
 						'impuestoDescripcion' => $planilla['descripcion_impuesto'],
 						'observacion' => $planilla['descripcion'],
+						'objeto' => (boolean) $objeto,
 					];
 				}
 				$provider = New ArrayDataProvider([
@@ -1428,5 +1473,31 @@
 		}
 
 
+
+
+		/***/
+		private function listaObjetoExcluir($impuesto)
+		{
+			$listaIdImpuesto = [];
+			if ( $impuesto == 4 ) {
+				$findModel = Propaganda::find()->where('id_contribuyente =:id_contribuyente',
+														['id_contribuyente' => $this->_id_contribuyente])
+											   ->andWhere('inactivo =:inactivo',
+											   			[':inactivo' => 0])
+											   ->asArray()
+											   ->all();
+
+				$listaIdImpuesto = array_column($findModel, 'id_impuesto');
+			}
+
+			return $listaIdImpuesto;
+		}
+
+
+
+
 	}
+
+
+
  ?>
