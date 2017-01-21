@@ -193,14 +193,16 @@
 
 							<div class="col-sm-3">
 								<div class="form-group">
-									<?= Html::a(Yii::t('backend', 'liquidar impuesto propaganda actual'), Url::to(['index']),
-																									  [
-																										'id' => 'btn-otra',
-																										'class' => 'btn btn-primary',
-																										'value' => 1,
-																										'style' => 'width: 100%',
-																										'name' => 'btn-otra',
-																									  ])
+									<?= Html::a(Yii::t('backend', 'Liquidar Impuesto de la Propaganda'),
+																				Url::to(['liquidar-impuesto-propaganda']),
+																			  	[
+																					'id' => 'btn-otra',
+																					'class' => 'btn btn-primary',
+																					'value' => 1,
+																					'style' => 'width: 100%',
+																					'name' => 'btn-otra',
+																					'target' => '_blank',
+																			  	])
 									?>
 								</div>
 							</div>
