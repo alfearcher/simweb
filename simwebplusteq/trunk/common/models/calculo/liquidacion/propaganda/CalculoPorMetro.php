@@ -120,7 +120,7 @@
 			$montoAplicar = $this->determinarMontoAplicar();
 			$cantidadPropaganda = $this->_datosPropaganda['cantidad_propagandas'];
 			$mts = $this->_datosPropaganda['mts'];
-			//$cantidadTiempo = $this->getCantidadTiempo('año');
+			$cantidadTiempo = $this->getCantidadTiempo('año');
 
 			$montoTotal = $montoAplicar * $cantidadPropaganda * $mts;
 
