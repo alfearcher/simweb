@@ -219,7 +219,7 @@
 		{
 			return $findMmodel = PagoDetalle::find()->alias('D')
 			                                        ->joinWith('pagos P', true, 'INNER JOIN')
-			                                        ->where('planilla =:planilla',
+			                                        ->where('P.planilla =:planilla',
 			                                        			[':planilla' => $this->_planilla]);
 			                                        //->andWhere('D.pago =:pago',[':pago' => 0]);
 		}
@@ -253,7 +253,7 @@
 		 * Metodo que retorna un modelo de
 		 * @return [type] [description]
 		 */
-		public function getDetallePlanilla()
+		public function getDetallePlanilla($objeto = false)
 		{
 			$findModel = self::findPlanillaGeneralModel();
 
@@ -280,13 +280,21 @@
 				}
 
 			} elseif ( $result[0]['trimestre'] == 0 ) {
+
 				if ( $result[0]['impuesto'] == 9 || $result[0]['impuesto'] == 10 || $result[0]['impuesto'] == 11 ) {
 
 					return $model = $model->joinWith('tasa O', true, 'INNER JOIN');
 
 				} else {
 
-					return $model = $model->joinWith('tasa O', true, 'INNER JOIN');
+					if ( $objeto ) {
+						if ( $result[0]['impuesto'] == 4 ) {
+							return $model = $model->joinWith('propaganda O', true, 'INNER JOIN');
+						}
+					} else {
+
+						return $model = $model->joinWith('tasa O', true, 'INNER JOIN');
+					}
 
 				}
 
