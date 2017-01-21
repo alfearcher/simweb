@@ -691,11 +691,14 @@
 															'dataProvider' => $dataProvider,
 				]);
 
+			$url = 'liquidar-impuesto-propaganda';
+
 			return $this->render('@frontend/views/propaganda/inscripcion-propaganda/_view-create', [
 											'caption' => Yii::t('frontend', 'Request Nro. ' . $nro),
 											'model' => $model,
 											'codigo' => 100,
 											'viewSolicitudPlanilla' => $viewSolicitudPlanilla,
+											'url' => $url,
 				]);
 		}
 
