@@ -66,6 +66,9 @@
 	use common\enviaremail\PlantillaEmail;
 	use common\models\configuracion\solicitudplanilla\SolicitudPlanillaSearch;
 	use common\models\planilla\PlanillaSearch;
+	use common\models\planilla\PlanillaPropaganda;
+	use common\controllers\pdf\planilla\PlanillaPdfController;
+
 
 
 	session_start();		// Iniciando session
@@ -724,6 +727,57 @@
 									 			'caption' => 'Planilla: ' . $planilla,
 				]);
 		}
+
+
+
+
+		/***/
+		public function liquidarImpuestoPropaganda()
+		{
+
+			$id = isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : null;
+			$nro = isset($_SESSION['nro_solicitud']) ? $_SESSION['nro_solicitud'] : null;
+
+			if ( $id !== null && $nro !== null ) {
+				$modelSearch = New InscripcionPropagandaSearch($id);
+				$model = $modelSearch->findSolicitudInscripcionPropaganda($nro);
+
+				$this->_conexion = New ConexionController();
+
+				// Instancia de conexion hacia la base de datos.
+		      	$this->_conn = $this->_conexion->initConectar('db');
+		      	$this->_conn->open();
+
+		      	// Instancia de tipo transaccion para asegurar la integridad del resguardo de los datos.
+		      	// Inicio de la transaccion.
+				$this->_transaccion = $this->_conn->beginTransaction();
+
+
+				$propaganda = New PlanillaPropaganda($model->id_contribuyente, $model->id_impuesto,
+				                                     $this->_conexion, $this->_conn, $model->ano_impositivo);
+
+				$propaganda->liquidarPropaganda('LIQUIDACION DE PROPAGANDA');
+
+				$result = $propaganda->getResultado();
+				if ( $result['planilla'] > 0 && $result['resultado'] == true ) {
+					// Se liquido y guardo planilla ahora se muestra.
+
+					$pdf = New PlanillaPdfController($result['planilla']);
+					$pdf->actionGenerarPlanillaPdf();
+				}
+
+
+
+			} else {
+
+				// Error al intentar liquidar el impuesto.
+				$this->redirect(['error-operacion', 'cod' => 552]);
+			}
+
+
+
+		}
+
 
 
 
