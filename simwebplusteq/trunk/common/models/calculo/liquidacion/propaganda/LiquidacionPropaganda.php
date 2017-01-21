@@ -138,6 +138,7 @@
 					if ( $idMetodo > 0 ) {
 
 						$monto = self::iniciarCalculoLiquidacionPropagandaSegunMetodo($idMetodo);
+
 					}
 				}
 			}

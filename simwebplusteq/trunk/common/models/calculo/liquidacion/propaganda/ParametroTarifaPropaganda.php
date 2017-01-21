@@ -162,13 +162,11 @@
 
 				$montoCalculo = ( $montoAplicar + $montoAgregar ) - $montoDeduccion;
 
-				if ( $this->_tarifa['tipoRango'] == 0 ) {
+				if ( $this->_tarifa['tipoRango']['tipo_rango'] == 0 ) {
 					$this->_montoAplicar = $montoCalculo;
-				} elseif ( $this->_tarifa['tipoRango'] == 1 ) {
+				} elseif ( $this->_tarifa['tipoRango']['tipo_rango'] == 1 ) {
 					$this->_montoAplicar = $montoCalculo * self::getMontoUnidadTributaria();
 				}
-
-
 
 			}
 
@@ -208,7 +206,7 @@
 		public function getMontoUnidadTributaria()
 		{
 			$ut = New UnidadTributariaForm();
-			$montoUt = $ut->getUnidadTributaria($this->_añoImpositivo);
+			$montoUt = $ut->getUnidadTributaria((int)$this->_añoImpositivo);
 			return $montoUt;
 		}
 

@@ -118,6 +118,7 @@
 			$montoTotal = 0;
 
 			$montoAplicar = $this->determinarMontoAplicar();
+
 			$cantidadPropaganda = $this->_datosPropaganda['cantidad_propagandas'];
 			$alto = $this->_datosPropaganda['alto'];
 			$ancho = $this->_datosPropaganda['ancho'];
