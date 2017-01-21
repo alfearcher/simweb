@@ -177,10 +177,17 @@
 		{
 			$request = Yii::$app->request;
 			$postData = $request->post();
+			$obj = true;
 
 			if ( isset($postData['p']) ) {
 				$planilla = $postData['p'];
-				$pdf = New PlanillaPdfController($planilla);
+				$objeto = $postData['o'];
+
+				if ( $postData['o'] == "false" ) {
+					$pdf = New PlanillaPdfController($planilla, false);
+				} else {
+					$pdf = New PlanillaPdfController($planilla, true);
+				}
 				$pdf->actionGenerarPlanillaPdf();
 
 			}
