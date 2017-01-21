@@ -740,7 +740,7 @@
 
 			$id = isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : null;
 			$nro = isset($_SESSION['nro_solicitud']) ? $_SESSION['nro_solicitud'] : null;
-			self::actionAnularSession(['nro_solicitud']);
+
 
 			if ( $id !== null && $nro !== null ) {
 				$modelSearch = New InscripcionPropagandaSearch($id);
@@ -765,7 +765,7 @@
 
 				if ( $result['planilla'] > 0 && $result['resultado'] == true ) {
 					// Se liquido y guardo planilla ahora se muestra.
-
+					self::actionAnularSession(['nro_solicitud']);
 					$this->_transaccion->commit();
 		      	 	$this->_conn->close();
 
