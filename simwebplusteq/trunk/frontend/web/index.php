@@ -1,6 +1,6 @@
 <?php
-defined('YII_DEBUG') or define('YII_DEBUG', false);
-// defined('YII_DEBUG') or define('YII_DEBUG', true);
+// defined('YII_DEBUG') or define('YII_DEBUG', false);
+defined('YII_DEBUG') or define('YII_DEBUG', true); // Habilita los mensajes de error detallado
 defined('YII_ENV') or define('YII_ENV', 'dev');
 // defined('YII_ENV') or define('YII_ENV', 'dev');
 
