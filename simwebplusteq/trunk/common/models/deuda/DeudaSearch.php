@@ -1486,8 +1486,13 @@
 											   			[':inactivo' => 0])
 											   ->asArray()
 											   ->all();
+				if ( count($findModel) > 0 ) {
+					foreach ( $findModel as $reg ) {
+						$listaIdImpuesto[] = $reg['id_impuesto'];
+					}
+					//$listaIdImpuesto = array_column($findModel, 'id_impuesto');
+				}
 
-				$listaIdImpuesto = array_column($findModel, 'id_impuesto');
 			}
 
 			return $listaIdImpuesto;
