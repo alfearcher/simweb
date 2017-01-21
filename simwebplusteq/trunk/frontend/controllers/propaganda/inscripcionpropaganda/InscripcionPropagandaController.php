@@ -732,7 +732,7 @@
 
 
 		/***/
-		public function liquidarImpuestoPropaganda()
+		public function actionLiquidarImpuestoPropaganda()
 		{
 
 			$id = isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : null;
@@ -752,18 +752,27 @@
 		      	// Inicio de la transaccion.
 				$this->_transaccion = $this->_conn->beginTransaction();
 
-
 				$propaganda = New PlanillaPropaganda($model->id_contribuyente, $model->id_impuesto,
 				                                     $this->_conexion, $this->_conn, $model->ano_impositivo);
 
 				$propaganda->liquidarPropaganda('LIQUIDACION DE PROPAGANDA');
 
 				$result = $propaganda->getResultado();
+
 				if ( $result['planilla'] > 0 && $result['resultado'] == true ) {
 					// Se liquido y guardo planilla ahora se muestra.
 
-					$pdf = New PlanillaPdfController($result['planilla']);
+					$this->_transaccion->commit();
+		      	 	$this->_conn->close();
+
+					$pdf = New PlanillaPdfController($result['planilla'], true);
 					$pdf->actionGenerarPlanillaPdf();
+
+				} else {
+
+					$this->_transaccion->rollBack();
+      	 			$this->_conn->close();
+      	 			$this->redirect(['error-operacion', 'cod' => 920]);
 				}
 
 
@@ -771,7 +780,7 @@
 			} else {
 
 				// Error al intentar liquidar el impuesto.
-				$this->redirect(['error-operacion', 'cod' => 552]);
+				$this->redirect(['error-operacion', 'cod' => 600]);
 			}
 
 
