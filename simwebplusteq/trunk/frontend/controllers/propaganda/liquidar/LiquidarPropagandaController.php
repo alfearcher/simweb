@@ -464,56 +464,66 @@
   			// Inicio de la transaccion.
 			$this->_transaccion = $this->_conn->beginTransaction();
 
+
+			$idPago = self::actionGuardarPago($this->_conexion, $this->_conn, $idContribuyente);
+			if ( $idPago > 0 ) {
+				foreach ( $models as $model ) {
+					$model['id_pago'] = $idPago;
+				}
+
+				$result = self::actionGuardarDetalle($models, $this->_conexion, $this->_conn);
+			}
+
+
 			// Se vuelve a verificar si la planilla no esta asociada a un recibo pendiente
 			// o pagada.
-			if ( $models[0]['id_pago'] > 0 ) {
-				$modelPago = Pago::findOne($models[0]['id_pago']);
+			// if ( $models[0]['id_pago'] > 0 ) {
+			// 	$modelPago = Pago::findOne($models[0]['id_pago']);
 
-				$puedo = false;
-				$searchLiquidacion = New LiquidarPropagandaSearch($idContribuyente);
-				$puedo = $searchLiquidacion->puedoSeleccionarPlanilla($modelPago->planilla);
-				if ( !$puedo ) {
-					foreach ( $models as $model ) {
-						$model['id_pago'] = 0;
-					}
-				}
-			}
+			// 	$puedo = false;
+			// 	$searchLiquidacion = New LiquidarPropagandaSearch($idContribuyente);
+			// 	$puedo = $searchLiquidacion->puedoSeleccionarPlanilla($modelPago->planilla);
+			// 	if ( !$puedo ) {
+			// 		foreach ( $models as $model ) {
+			// 			$model['id_pago'] = 0;
+			// 		}
+			// 	}
+			// }
 
+			// if ( $models[0]['id_pago'] > 0 ) {
 
-			if ( $models[0]['id_pago'] > 0 ) {
+			// 	$findModel = $searchLiquidacion->infoPlanilla((int)$models[0]['id_pago'])->asArray()->one();
 
-				$findModel = $searchLiquidacion->infoPlanilla((int)$models[0]['id_pago'])->asArray()->one();
+			// 	// Se verifica que la planilla donde se guardaran los detalle este disponible.
+			// 	// Sino es asi se genrara otra planilla.
+			// 	if ( $findModel['pago'] == 0 ) {
 
-				// Se verifica que la planilla donde se guardaran los detalle este disponible.
-				// Sino es asi se genrara otra planilla.
-				if ( $findModel['pago'] == 0 ) {
+			// 		$result = self::actionGuardarDetalle($models, $this->_conexion, $this->_conn);
 
-					$result = self::actionGuardarDetalle($models, $this->_conexion, $this->_conn);
+			// 	} else {
 
-				} else {
+			// 		// Se genera otra planilla para los detalles de la liquiadcion.
+			// 		$idPago = self::actionGuardarPago($this->_conexion, $this->_conn, $idContribuyente);
+			// 		if ( $idPago > 0 ) {
+			// 			foreach ( $models as $model ) {
+			// 				$model['id_pago'] = $idPago;
+			// 			}
 
-					// Se genera otra planilla para los detalles de la liquiadcion.
-					$idPago = self::actionGuardarPago($this->_conexion, $this->_conn, $idContribuyente);
-					if ( $idPago > 0 ) {
-						foreach ( $models as $model ) {
-							$model['id_pago'] = $idPago;
-						}
+			// 			$result = self::actionGuardarDetalle($models, $this->_conexion, $this->_conn);
+			// 		}
+			// 	}
 
-						$result = self::actionGuardarDetalle($models, $this->_conexion, $this->_conn);
-					}
-				}
+			// } elseif ( $models[0]['id_pago'] == 0 ) {
 
-			} elseif ( $models[0]['id_pago'] == 0 ) {
+			// 	$idPago = self::actionGuardarPago($this->_conexion, $this->_conn, $idContribuyente);
+			// 	if ( $idPago > 0 ) {
+			// 		foreach ( $models as $model ) {
+			// 			$model['id_pago'] = $idPago;
+			// 		}
 
-				$idPago = self::actionGuardarPago($this->_conexion, $this->_conn, $idContribuyente);
-				if ( $idPago > 0 ) {
-					foreach ( $models as $model ) {
-						$model['id_pago'] = $idPago;
-					}
-
-					$result = self::actionGuardarDetalle($models, $this->_conexion, $this->_conn);
-				}
-			}
+			// 		$result = self::actionGuardarDetalle($models, $this->_conexion, $this->_conn);
+			// 	}
+			// }
 
 			return $result;
 
@@ -606,11 +616,11 @@
 
 		/**
 		 * Metodo que busca los detalle de la liquidaciones guardadas y renderiza una vista
-		 * con la informacion de las liquidaciones de cada inmueble seleccionado. Para aquellos
+		 * con la informacion de las liquidaciones de cada propaganda seleccionado. Para aquellos
 		 * registros que no se pudieron guardar se mostraran solo los registros generados en este
 		 * proceso.
 		 * $objeto, contiene la informacion de los registros guardados y no guardado, este
-		 * variable es un arreglo donde el indice ($key), es el identificador del objeto (inmueble)
+		 * variable es un arreglo donde el indice ($key), es el identificador del objeto (propaganda)
 		 * y el contenido de dicho elemento es el modelo guardado con los registros seleccionados.
 		 * Estructura de $objeto es:
 		 * array => {
@@ -643,7 +653,7 @@
 						$modelPropaganda = $searchLiquidacion->getListaPropaganda([$key]);
 						$infoPropaganda = ' Nombre: ' . $modelPropaganda[0]['nombre_propaganda'] . ' Direccion: ' . $modelPropaganda[0]['direccion'];
 
-						$subCaption = Yii::t('frontend', $infoInmueble);
+						$subCaption = Yii::t('frontend', $infoPropaganda);
 						$gridHtml[$key] = $this->renderPartial('@frontend/views/propaganda/liquidar/resumen-individual-liquidacion',[
 																							'dataProvider' => $provider,
 																							'subCaption' => $subCaption,
