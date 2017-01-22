@@ -392,7 +392,7 @@
 					}
 				} elseif ( isset($postData['btn-back']) ) {
 					if ( $postData['btn-back'] == 1 ) {
-						return $this->redirect(['listar-inmueble']);
+						return $this->redirect(['listar-propaganda']);
 					}
 
 				} elseif ( isset($postData['btn-confirm-save']) ) {
