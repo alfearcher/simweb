@@ -137,6 +137,8 @@
 			//$model->usuario = Yii::$app->user->identity->email;
 			$model->usuario = $this->usuario;
 			$model->fecha_hora = date('Y-m-d H:i:s');
+			$model->token = md5(uniqid());
+			$model->observacion = 'SIMWebPLUS';
 
 			$this->_conn->open();
 			$this->_transaccion = $this->_conn->beginTransaction();
