@@ -232,35 +232,36 @@
 				// Ultimo año es igual al año actual.
 				if ( $ultimoAño == (int)date('Y') ) {
 
-					$exigibilidadLiq = self::getExigibilidadLiquidacion($ultimoAño);
-					if ( $ultimoPeriodo == (int)$exigibilidadLiq['exigibilidad'] ) {
+					//$exigibilidadLiq = self::getExigibilidadLiquidacion($ultimoAño);
+					//if ( $ultimoPeriodo == (int)$exigibilidadLiq['exigibilidad'] ) {
 						// No hay mas periodos que liquidar.
 						self::setErrors("No existen mas periodos por liquidar para el año {$ultimoAño}");
 
-					} elseif ( $ultimoPeriodo < $exigibilidadLiq ) {
+					//} elseif ( $ultimoPeriodo < $exigibilidadLiq ) {
 
-						$añoComienzo = $ultimoAño;
-						$periodoComienzo = $ultimoPeriodo + 1;
-					}
+						//$añoComienzo = $ultimoAño;
+						//$periodoComienzo = $ultimoPeriodo + 1;
+					//}
 
 				// Ultimo año es anterior al año actual.
 				} elseif ( $ultimoAño < (int)date('Y') ) {
 
-					$exigibilidadLiq = self::getExigibilidadLiquidacion($ultimoAño);
-					if ( $ultimoPeriodo == (int)$exigibilidadLiq['exigibilidad'] ) {
+					//$exigibilidadLiq = self::getExigibilidadLiquidacion($ultimoAño);
+					//if ( $ultimoPeriodo == (int)$exigibilidadLiq['exigibilidad'] ) {
 
 						$añoComienzo = $ultimoAño + 1;
-						$periodoComienzo = 1;
+						$periodoComienzo = 0;
+						//$periodoComienzo = 1;
 
-					} elseif ( $ultimoPeriodo < $exigibilidadLiq ) {
+					// } elseif ( $ultimoPeriodo < $exigibilidadLiq ) {
 
-						$añoComienzo = $ultimoAño;
-						$periodoComienzo = $ultimoPeriodo + 1;
+					// 	$añoComienzo = $ultimoAño;
+					// 	$periodoComienzo = $ultimoPeriodo + 1;
 
-					}
+					// }
 				}
 
-				if ( $añoComienzo > 0 && $periodoComienzo > 0 ) {
+				if ( $añoComienzo > 0 && $periodoComienzo == 0 ) {
 					$lapsoInicio = [
 						'ano_impositivo' => $añoComienzo,
 						'periodo' => $periodoComienzo,
@@ -429,13 +430,15 @@
 			$año = (int)date('Y');
 			// Lo siguiente retorna un arreglo con la informacion de la entidad "exigibilidades".
 			// Todos los atributos de la entidad.
-			$exigibilidadLiq = OrdenanzaBase::getExigibilidadLiquidacion($año, self::IMPUESTO);
-			if ( count($exigibilidadLiq) > 0 ) {
+			//$exigibilidadLiq = OrdenanzaBase::getExigibilidadLiquidacion($año, self::IMPUESTO);
+			$exigibilidadLiq = 0;
+			//if ( count($exigibilidadLiq) > 0 ) {
 				$lapso = [
 					'ano_impositivo' => $año,
-					'periodo' => $exigibilidadLiq['exigibilidad'],
+					//'periodo' => $exigibilidadLiq['exigibilidad'],
+					'periodo' => 0,
 				];
-			}
+			//}
 
 			return $lapso;
 		}
@@ -490,7 +493,7 @@
 			$añoComienzo = 0;
 			$periodoComienzo = 0;
 			$lapsoInicio = [];
-			$añoInicio = (int)date('Y', strtotime($this->_objeto->fecha_inicio));
+			$añoInicio = (int)date('Y', strtotime($this->_objeto->ano_impositivo));
 
 			if ( strlen($añoInicio) == 4 ) {		// Longitud de año valida.
 
@@ -507,10 +510,10 @@
 					];
 
 				} elseif ( $añoInicio >= $añoLimite ) {
-					$exigibilidadLiq = self::getExigibilidadLiquidacion($añoInicio);
+					//$exigibilidadLiq = self::getExigibilidadLiquidacion($añoInicio);
 
 					$añoComienzo = $añoInicio;
-					$periodoComienzo = 1;
+					$periodoComienzo = 0;
 
 					$lapsoInicio = [
 						'ano_impositivo' => $añoComienzo,

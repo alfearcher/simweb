@@ -147,6 +147,7 @@
 
 			$data = [];
 			$provider = null;
+
 			if ( count($models) > 0 ) {
 
 				foreach ( $models as $model ) {
@@ -157,6 +158,7 @@
 					$unidad = '' ;
 					$condicion = '';
 
+					$bloquear = 0;
 					$ultimo = self::getUltimoLapsoLiquidado($model['id_impuesto']);
 					if ( count($ultimo) > 0 ) {
 						$planilla = $ultimo['pagos']['planilla'];
@@ -165,6 +167,8 @@
 						$periodo = $ultimo['trimestre'];
 						$unidad = $ultimo['exigibilidad']['unidad'];
 						$condicion = $ultimo['estatus']['descripcion'];
+
+						if ( $añoImpositivo == date('Y') ) { $bloquear = 1; }
 					}
 
 					$data[$model['id_impuesto']] = [
@@ -177,6 +181,7 @@
 								'periodo' => $periodo,
 								'unidad' => $unidad,
 								'condicion' => $condicion,
+								'bloquear' => $bloquear,
 					];
 				}
 
