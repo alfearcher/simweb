@@ -120,12 +120,12 @@
 		        		//	SOLICITUDES DE INMUEBLES URBANOS
 		        		['label' => Icon::show('fa fa-home',['class' => $typeLong], $typeIcon) . '&nbsp; Inmuebles Urbanos',
 		        			'items' => [
-		        						['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Solvencia',
-		        					   		'items' => [
-	        					   				['label' => 'Solicitar Emision', 'url' => ['/inmueble/solvencia/solvencia-inmueble/index', 'id' => 116]],
-	        					   				['label' => 'Descargar Solvencia', 'url' => ['/inmueble/solvencia/solvencia-inmueble-generar/index']],
-		        					   		]
-		        					   	],
+		        						// ['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Solvencia',
+		        					 //   		'items' => [
+	        					  //  				['label' => 'Solicitar Emision', 'url' => ['/inmueble/solvencia/solvencia-inmueble/index', 'id' => 116]],
+	        					  //  				['label' => 'Descargar Solvencia', 'url' => ['/inmueble/solvencia/solvencia-inmueble-generar/index']],
+		        					 //   		]
+		        					 //   	],
 		        						['label' => 'Inscripción de Inmuebles Urbanos', 'url' => ['/inmueble/inscripcion-inmuebles-urbanos/inscripcion-inmuebles-urbanos']],
 		        						['label' => 'Avaluo Catastral', 'url' => ['/inmueble/avaluo-catastral-inmuebles-urbanos/index']],
 		        						['label' => 'Certificado Catastral', 'url' => ['/inmueble/cedula-catastral-inmuebles-urbanos/index']],
@@ -145,15 +145,15 @@
 		        		],
 
 		        		//	SOLICITUDES DE VEHICULOS
-		        		// ['label' => Icon::show('fa fa-car',['class' => $typeLong], $typeIcon) . '&nbsp; Vehiculos',
-		        		// 	'items' => [
+		        		['label' => Icon::show('fa fa-car',['class' => $typeLong], $typeIcon) . '&nbsp; Vehiculos',
+		        			'items' => [
 		        						// ['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Solvencia',
 		        					 //   		'items' => [
 	        					  //  				['label' => 'Solicitar Emision', 'url' => ['/vehiculo/solvencia/solvencia-vehiculo/index', 'id' => 115]],
 	        					  //  				['label' => 'Descargar Solvencia', 'url' => ['/vehiculo/solvencia/solvencia-vehiculo-generar/index']],
 		        					 //   		]
 		        					 //   	],
-		        						//['label' => 'Inscripci&oacute;n de Vehiculos', 'url' => ['vehiculo/vehiculos/create']],
+		        						['label' => 'Inscripci&oacute;n de Vehiculos', 'url' => ['vehiculo/vehiculos/create']],
 		        						// ['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . 'Calcomania',
 					        			// 	'items' => [
 			        					// 		['label' => 'Administrar funcionarios responsables de entregar calcomania','url' => ['/vehiculo/calcomania/administrarfuncionario/administrar-funcionario/busqueda-funcionario']],
@@ -174,13 +174,13 @@
 
 					        			// 	],
 					        			// ],
-		        						//['label' => 'Solvencia', 'url' => '#'],
+		        						// ['label' => 'Solvencia', 'url' => '#'],
 		        						// ['label' => 'Cambio de Propietario', 'url' => '#'],
 		        						// ['label' => 'Cambio de Placa', 'url' => ['vehiculo/vehiculos/cambio-placa']],
 		        						// ['label' => 'Desincorporaci&oacute;n de Vehiculo', 'url' => '#'],
 		        						// ['label' => 'Cambio de Otros Datos del Vehiculo', 'url' => ['vehiculo/vehiculos/busqueda']],
-		        		// 	],
-		        		// ],
+		        			],
+		        		],
 
 		        		//	PROPAGANDA COMERCIAL
 		        		['label' => Icon::show('fa fa-file-powerpoint-o',['class' => $typeLong], $typeIcon) . '&nbsp; Propaganda Comercial',
@@ -248,6 +248,7 @@
         						['label' => 'Liquidar Actividad Economica (Definitiva)', 'url' => ['aaee/liquidar/liquidar-actividad-economica-definitiva/index']],
         						['label' => 'Liquidar Inmueble Urbano', 'url' => ['inmueble/liquidar/liquidar-inmueble/index']],
         						['label' => 'Liquidar Vehiculo', 'url' => ['vehiculo/liquidar/liquidar-vehiculo/index']],
+        						//['label' => 'Liquidar Propaganda', 'url' => ['propaganda/liquidar/liquidar-propaganda/index']],
         						['label' => 'Liquidar Tasa', 'url' => ['tasa/liquidar/liquidar-tasa/index']],
         						['label' => 'Consulta de Planilla', 'url' => ['planilla/planilla-consulta/index']],
         			]
@@ -468,18 +469,18 @@
 
 
 		        //	CONFIGURACIONES
-        		['label' => Icon::show('fa fa-cog',['class' => $typeLong], $typeIcon) . '&nbsp; Configuraciones',
-        			'items' => [
-        						['label' => 'Configurar Ordenanzas', 'url' => '#'],
-        						['label' => 'Configurar Vencimiento de Documentos', 'url' => '#'],
-        						['label' => 'Configurar Solicitudes', 'url' => ['/configuracion/solicitud/configurar-solicitud/index']],
-        						['label' => 'Configurar Convenios de Pagos', 'url' => ['/configuracion/convenios/configurar-convenios/create']],
-        						['label' => 'Configurar Dirección de Tributos',
-        						            'url' => ['/hola/saludo2'],
-        						            'id' => 10,
-        						            'click' => 'alert("Button 2 clicked");'],
-        			]
-        		],
+        		// ['label' => Icon::show('fa fa-cog',['class' => $typeLong], $typeIcon) . '&nbsp; Configuraciones',
+        		// 	'items' => [
+        		// 				['label' => 'Configurar Ordenanzas', 'url' => '#'],
+        		// 				['label' => 'Configurar Vencimiento de Documentos', 'url' => '#'],
+        		// 				['label' => 'Configurar Solicitudes', 'url' => ['/configuracion/solicitud/configurar-solicitud/index']],
+        		// 				['label' => 'Configurar Convenios de Pagos', 'url' => ['/configuracion/convenios/configurar-convenios/create']],
+        		// 				['label' => 'Configurar Dirección de Tributos',
+        		// 				            'url' => ['/hola/saludo2'],
+        		// 				            'id' => 10,
+        		// 				            'click' => 'alert("Button 2 clicked");'],
+        		// 	]
+        		// ],
 
 
 
