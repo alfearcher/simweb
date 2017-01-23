@@ -128,6 +128,7 @@
 		        					 //   	],
 		        						['label' => 'Inscripción de Inmuebles Urbanos', 'url' => ['/inmueble/inscripcion-inmuebles-urbanos/inscripcion-inmuebles-urbanos']],
 		        						['label' => 'Avaluo Catastral', 'url' => ['/inmueble/avaluo-catastral-inmuebles-urbanos/index']],
+		        						['label' => 'Datos Registro de Propiedad', 'url' => ['/inmueble/registros-inmuebles-urbanos/index']],
 		        						['label' => 'Certificado Catastral', 'url' => ['/inmueble/cedula-catastral-inmuebles-urbanos/index']],
 		        						['label' => 'Renovación de Certificado Catastral', 'url' => ['/inmueble/renovacion-certificado-catastral-inmuebles-urbanos/index']],
 		        						['label' => 'Linderos', 'url' => ['/inmueble/linderos-inmuebles-urbanos/index']],
