@@ -280,13 +280,21 @@
 				}
 
 			} elseif ( $result[0]['trimestre'] == 0 ) {
+
 				if ( $result[0]['impuesto'] == 9 || $result[0]['impuesto'] == 10 || $result[0]['impuesto'] == 11 ) {
 
 					return $model = $model->joinWith('tasa O', true, 'INNER JOIN');
 
 				} else {
 
-					return $model = $model->joinWith('tasa O', true, 'INNER JOIN');
+					if ( $objeto ) {
+						if ( $result[0]['impuesto'] == 4 ) {
+							return $model = $model->joinWith('propaganda O', true, 'INNER JOIN');
+						}
+					} else {
+
+						return $model = $model->joinWith('tasa O', true, 'INNER JOIN');
+					}
 
 				}
 
