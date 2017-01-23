@@ -820,7 +820,7 @@ class RegistrosInmueblesUrbanosController extends Controller
      {
          $email = $_SESSION['datosContribuyente']['email'];
 
-         $solicitud = 'Inscripcion de Inmueble';
+         $solicitud = 'Datos Registro de Inmueble';
 
          $nro_solicitud = $guardo;
 
