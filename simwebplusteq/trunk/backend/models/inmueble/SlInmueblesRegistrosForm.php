@@ -21,14 +21,14 @@
  */
 
  /**    
- *  @file AvaluoCatastralForm.php
+ *  @file SlInmueblesUrbanosForm.php
  *  
  *  @author Alvaro Jose Fernandez Archer
  * 
  *  @date 27-07-2015
  * 
- *  @class AvaluoCatastaralForm
- *  @brief Clase que permite validar cada uno de los datos del formulario de avaluo catastral de inmuebles 
+ *  @class SlInmueblesUrbanosForm
+ *  @brief Clase que permite validar cada uno de los datos del formulario de inscripcion de inmuebles 
  *  urbanos, se establecen las reglas para los datos a ingresar y se le asigna el nombre de las etiquetas 
  *  de los campos. 
  * 
@@ -41,9 +41,6 @@
  *  
  *  @method
  *  tableName
- *  rules
- *  attributeLabels
- *  catastro_existe
  *
  *  
  *
@@ -57,8 +54,6 @@ use Yii;
 use backend\models\inmueble\InmueblesConsulta;
 use common\conexion\ConexionController;
 use backend\models\inmueble\Solvencias;
-
-
 /**
  * This is the model class for table "inmuebles".
  *
@@ -96,65 +91,18 @@ use backend\models\inmueble\Solvencias;
  * @property string $nivel_catastro
  * @property string $unidad_catastro
  */
-class InmueblesRegistrosForm extends \yii\db\ActiveRecord
+class SlInmueblesRegistrosForm extends \yii\db\ActiveRecord
 {
 
-    public $conn;
-    public $conexion;
-    public $transaccion;   
-    public $fecha;
-    public $documento_propiedad;
-    public $num_reg;
-    public $reg_mercantil;
-    public $valor_documental;
-
-    public $tomo;
-    public $protocolo;
-    public $folio;
     
-    public $nro_matriculado;
-    public $asiento_registral;
-    public $validacion3;
-
-   
 
     public static function tableName()
     {
-        return 'inmuebles_registros';
-    }
+        return 'sl_inmuebles_registros';        
+    }    
  
+ 	
+   
+  
 
-
-    public function rules()
-    {
-        
-        return [ 
-
-
-         
-            [['documento_propiedad','validacion3'], 'integer','message' => Yii::t('backend', 'Debe seleccionar una opcion'),'when'=> function($modelRegistro){ return $this->validacion3 == 3; }],
-            [['documento_propiedad', 'fecha','num_reg','reg_mercantil','valor_documental' ], 'required','message' => Yii::t('backend', 'Campo requerido'),'when'=> function($modelRegistro){ return $this->validacion3 == 3; }],
-            [['valor_documental'], 'double','message' => Yii::t('backend', 'debe ser numerico'),'when'=> function($modelRegistro){ return $this->documento_propiedad == 3 and $this->validacion3 == 3; }],
-            
-            [['nro_matriculado', 'asiento_registral'], 'required','message' => Yii::t('backend', 'Campo requerido'),'when'=> function($modelRegistro){ return $this->documento_propiedad == 3 and $this->validacion3 == 3; }],
-            [['tomo', 'protocolo','folio'], 'required','message' => Yii::t('backend', 'Campo requerido'),'when'=> function($modelRegistro){ return $this->documento_propiedad == 2 and $this->validacion3 == 3; }],
-
-          
-                        
-        ];  
-    }
-
-    
-    public function attributeLabels()
-    {
-        return [ 
-            'lindero_norte' => Yii::t('backend', 'Lindero Norte'), 
-            'lindero_sur' => Yii::t('backend', 'Lindero Sur'),
-            'lindero_este' => Yii::t('backend', 'Lindero Este'),
-            'lindero_oeste' => Yii::t('backend', 'Lindero Oeste'),
-            
-        ];  
-    }
-
-    
 }

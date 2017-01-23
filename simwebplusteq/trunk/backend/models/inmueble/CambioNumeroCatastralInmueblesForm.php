@@ -103,7 +103,7 @@ class CambioNumeroCatastralInmueblesForm extends \yii\db\ActiveRecord
     public $transaccion;   
     public $nivela;
     public $nivelb;
-    public $validacion; 
+    public $validacion1; 
     public $nro_solicitud;
 
     public static function tableName()
@@ -117,21 +117,21 @@ class CambioNumeroCatastralInmueblesForm extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_contribuyente','ano_inicio', 'liquidado', 'manzana_limite', 'lote_1', 'lote_2', 'lote_3', 'inactivo', 'id_habitante', 'tipo_ejido', 'propiedad_horizontal', 'estado_catastro', 'municipio_catastro', 'parroquia_catastro', 'sector_catastro', 'manzana_catastro', 'parcela_catastro', 'subparcela_catastro', 'unidad_catastro'], 'integer','message' => Yii::t('backend', 'only integers')],
-            [['estado_catastro', 'municipio_catastro', 'parroquia_catastro', 'ambito_catastro','sector_catastro', 'manzana_catastro','parcela_catastro'], 'required','message' => Yii::t('backend', 'Required field')],
-            [['subparcela_catastro', 'unidad_catastro','nivela','nivelb'],'required', 'when'=> function($model){ return $model->propiedad_horizontal == 1; }, 'message' => Yii::t('backend', 'Required field')],
+            [['id_contribuyente','ano_inicio', 'liquidado', 'manzana_limite', 'lote_1', 'lote_2', 'lote_3', 'inactivo', 'id_habitante', 'tipo_ejido', 'propiedad_horizontal', 'estado_catastro', 'municipio_catastro', 'parroquia_catastro', 'sector_catastro', 'manzana_catastro', 'parcela_catastro', 'subparcela_catastro', 'unidad_catastro','validacion1'], 'integer','message' => Yii::t('backend', 'only integers'),'when'=> function($model){ return $this->validacion1 == 1; }],
+            [['estado_catastro', 'municipio_catastro', 'parroquia_catastro', 'ambito_catastro','sector_catastro', 'manzana_catastro','parcela_catastro'], 'required','message' => Yii::t('backend', 'Required field'),'when'=> function($model){ return $this->validacion1 == 1; }],
+            [['subparcela_catastro', 'unidad_catastro','nivela','nivelb'],'required', 'when'=> function($model){ return $model->propiedad_horizontal == 1 and $this->validacion1 == 1; }, 'message' => Yii::t('backend', 'Required field')],
            // [['observacion','datosVendedor','inmuebleVendedor'], 'string'], 
-            [['direccion'], 'string', 'max' => 255,'message' => Yii::t('backend', 'Only 255 character')],
-            [['nivel', 'ambito_catastro','validacion'], 'string', 'max' => 4,'message' => Yii::t('backend', 'Only 3 character')],
-            [['av_calle_esq_dom', 'casa_edf_qta_dom'], 'string', 'max' => 50,'message' => Yii::t('backend', 'Only 50 character')],
-            [['piso_nivel_no_dom', 'apto_dom'], 'string', 'max' => 25,'message' => Yii::t('backend', 'Only 25 character')],
-            [['tlf_hab'], 'string', 'max' => 15,'message' => Yii::t('backend', 'Only 15 character')],
-            [['medidor', 'id_sim'], 'string', 'max' => 20,'message' => Yii::t('backend', 'Only 20 character')],
-            [['catastro'], 'string', 'max' => 60,'message' => Yii::t('backend', 'Only 60 character')],
+            [['direccion'], 'string', 'max' => 255,'message' => Yii::t('backend', 'Only 255 character'),'when'=> function($model){ return $this->validacion1 == 1; }],
+            [['nivel', 'ambito_catastro'], 'string', 'max' => 4,'message' => Yii::t('backend', 'Only 3 character'),'when'=> function($model){ return $this->validacion1 == 1; }],
+            [['av_calle_esq_dom', 'casa_edf_qta_dom'], 'string', 'max' => 50,'message' => Yii::t('backend', 'Only 50 character'),'when'=> function($model){ return $this->validacion1 == 1; }],
+            [['piso_nivel_no_dom', 'apto_dom'], 'string', 'max' => 25,'message' => Yii::t('backend', 'Only 25 character'),'when'=> function($model){ return $this->validacion1 == 1; }],
+            [['tlf_hab'], 'string', 'max' => 15,'message' => Yii::t('backend', 'Only 15 character'),'when'=> function($model){ return $this->validacion1 == 1; }],
+            [['medidor', 'id_sim'], 'string', 'max' => 20,'message' => Yii::t('backend', 'Only 20 character'),'when'=> function($model){ return $this->validacion1 == 1; }],
+            [['catastro'], 'string', 'max' => 60,'message' => Yii::t('backend', 'Only 60 character'),'when'=> function($model){ return $this->validacion1 == 1; }],
             //'liquidado', 'id_habitante'
             
-            [['propiedad_horizontal'], 'catastro_cambio','when'=>function($model){ return $model->validacion==3;}], 
-            [['propiedad_horizontal'], 'catastro_cambio2','when'=>function($model){ return $model->validacion==3;}],
+            [['propiedad_horizontal'], 'catastro_cambio','when'=>function($model){ return $model->propiedad_horizontal==0 and $this->validacion1 == 1;}], 
+            [['propiedad_horizontal'], 'catastro_cambio2','when'=>function($model){ return $model->propiedad_horizontal==1 and $this->validacion1 == 1;}],
         ];
     }
 
@@ -176,7 +176,7 @@ class CambioNumeroCatastralInmueblesForm extends \yii\db\ActiveRecord
             'subparcela_catastro' => Yii::t('backend', 'Subplot'),
             'nivel_catastro' => Yii::t('backend', 'Level'),
             'unidad_catastro' => Yii::t('backend', 'Unit'),
-            'validacion' => Yii::t('backend', 'v'),
+            'validacion1' => Yii::t('backend', 'v'),
             
         ];
     }

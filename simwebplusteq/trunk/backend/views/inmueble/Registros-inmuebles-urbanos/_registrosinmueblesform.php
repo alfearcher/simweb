@@ -20,7 +20,6 @@ use backend\models\inmueble\InmueblesUrbanosForm;
 use backend\models\inmueble\CambioPropietarioInmueblesForm;
 use backend\models\inmueble\Estados;
 use backend\models\inmueble\Municipios;
-use backend\models\inmueble\Parroquias;
 use backend\models\ContribuyentesForm;
 use backend\models\inmueble\ParametrosNivelesCatastro;
 use backend\models\inmueble\UsosInmuebles;
@@ -232,18 +231,18 @@ Session["variablephp"] = tu;
                             </div> 
                       
                             <div class="col-sm-4">
-                            <?= $form->field($model, 'id_sim')->textInput(['style' => 'width:80px;'])->label(false) ?>
+                            <?= $form->field($model, 'id_sim')->textInput(['style' => 'width:80px;','readOnly' =>true])->label(false) ?>
                             </div> 
                        
                             <div class="col-sm-2">
-                            <?= $form->field($model, 'inactivo')->checkbox(array(['style' => 'width:80px;']))?> 
+                            <?= $form->field($model, 'inactivo')->checkbox(array(['style' => 'width:80px;','readOnly' =>true]))?> 
                             </div> 
                        
                             <div class="col-sm-3"> 
                             <?= $form->field($model, 'propiedad_horizontal')->checkbox(['id'=> 'propiedadhorizontal',
                                                                                          'style' => 'width:50px;', 
                                                                                          'onclick'=>'bloquea()',
-                                                                                         'value'=>$_SESSION['datosInmueble']['propiedad_horizontal'],
+                                                                                         'readOnly' =>true,
                                                                                          
                                                                                           ]); ?> 
                             </div> 
@@ -257,13 +256,9 @@ Session["variablephp"] = tu;
                             <?= Yii::t('backend', 'Edo.') ?>
                             </div> 
                         
-                            <div class="col-sm-2">
-                            <?php
-                                $modelParametros = Estados::find()->asArray()->all();                                         
-                                $listaParametros = ArrayHelper::map($modelParametros,'estado','nombre'); 
-                                //echo'<pre>'; var_dump($listaParametros); echo '</pre>'; die(); ?>
-                            <?= $form->field($model, 'estado_catastro')->dropDownList($listaParametros,['id'=> 'estados', 'style' => 'width:100px;', 'value'=>$_SESSION['datosInmueble']['estado_catastro']])/*->dropDownList($listaEstados, [
-                                                                                                            
+                            <div class="col-sm-1">
+                            <?= $form->field($model, 'estado_catastro')->textInput(['style' => 'width:80px;', 'value'=>$_SESSION['datosInmueble']['estado_catastro'],'readOnly' =>true])/*->dropDownList($listaEstados, [
+                                                                                                            'id'=> 'estados', 
                                                                                                             'prompt' => Yii::t('backend', 'Select'),
                                                                                                             'style' => 'width:80px;',
                                                                                                             'onchange' =>
@@ -280,12 +275,8 @@ Session["variablephp"] = tu;
                             <?= Yii::t('backend', 'Mnp.') ?>
                             </div> 
                         
-                            <div class="col-sm-2">
-                            <?php
-                                $modelParametros = Municipios::find()->where(['estado' => 15])->asArray()->all();                                         
-                                $listaParametros = ArrayHelper::map($modelParametros,'municipio','nombre'); 
-                                //echo'<pre>'; var_dump($listaParametros); echo '</pre>'; die(); ?>
-                            <?= $form->field($model, 'municipio_catastro')->dropDownList($listaParametros,['id'=> 'municipios', 'style' => 'width:100px;','value'=>$_SESSION['datosInmueble']['municipio_catastro']])/*->dropDownList($listaMunicipios, [
+                            <div class="col-sm-1">
+                            <?= $form->field($model, 'municipio_catastro')->textInput(['style' => 'width:80px;','value'=>$_SESSION['datosInmueble']['municipio_catastro'],'readOnly' =>true])/*->dropDownList($listaMunicipios, [
                                                                                                             'id'=> 'municipios', 
                                                                                                             'prompt' => Yii::t('backend', 'Select'),
                                                                                                             'style' => 'width:80px;',
@@ -303,64 +294,54 @@ Session["variablephp"] = tu;
                             <?= Yii::t('backend', 'Prq.') ?>
                             </div> 
                         
-                            <div class="col-sm-">
-                            <?php
-                                $modelParametros = Parroquias::find()->where(['estado' => 15, 'municipio'=>10])->asArray()->all();                                         
-                                $listaParametros = ArrayHelper::map($modelParametros,'parroquia','nombre'); 
-                                //echo'<pre>'; var_dump($listaParametros); echo '</pre>'; die(); ?>
-                            <?= $form->field($model, 'parroquia_catastro')->dropDownList($listaParametros,['id'=> 'parroquia','style' => 'width:100px;','value'=>$_SESSION['datosInmueble']['parroquia_catastro']])->label(false) ?>
+                            <div class="col-sm-1">
+                            <?= $form->field($model, 'parroquia_catastro')->textInput(['style' => 'width:80px;','value'=>$_SESSION['datosInmueble']['parroquia_catastro'],'readOnly' =>true])->label(false) ?>
                             </div> 
                         
-                        </div>
-
-                        <div class="row" style="margin-left:20px; margin-top:20px;">
-
                             <div class="col-sm-1"> 
                             <?= Yii::t('backend', 'Amb.') ?>
                             </div> 
                         
-                            <div class="col-sm-2">
-                            <?= $form->field($model, 'ambito_catastro')->textInput(['style' => 'width:80px;','value'=>$_SESSION['datosInmueble']['ambito_catastro']])->label(false) ?>
+                            <div class="col-sm-1">
+                            <?= $form->field($model, 'ambito_catastro')->textInput(['style' => 'width:80px;','value'=>$_SESSION['datosInmueble']['ambito_catastro'],'readOnly' =>true])->label(false) ?>
                             </div> 
                         
                             <div class="col-sm-1"> 
                             <?= Yii::t('backend', 'Sct.') ?>
                             </div> 
                         
-                            <div class="col-sm-2">
-                            <?= $form->field($model, 'sector_catastro')->textInput(['style' => 'width:80px;','value'=>$_SESSION['datosInmueble']['sector_catastro']])->label(false) ?>
+                            <div class="col-sm-1">
+                            <?= $form->field($model, 'sector_catastro')->textInput(['style' => 'width:80px;','value'=>$_SESSION['datosInmueble']['sector_catastro'],'readOnly' =>true])->label(false) ?>
                             </div> 
                         
                             
+                        
+                   </div>
+<!-- Tipo de Domicilios del catastro --> 
+                   <div class="row" style="margin-left:20px; margin-top:20px;">
+
                             <div class="col-sm-1"> 
                             <?= Yii::t('backend', 'Mzn.') ?>
                             </div> 
                         
-                            <div class="col-sm-2">
-                            <?= $form->field($model, 'manzana_catastro')->textInput(['style' => 'width:80px;','value'=>$_SESSION['datosInmueble']['manzana_catastro']])->label(false) ?>
+                            <div class="col-sm-1">
+                            <?= $form->field($model, 'manzana_catastro')->textInput(['style' => 'width:80px;','value'=>$_SESSION['datosInmueble']['manzana_catastro'],'readOnly' =>true])->label(false) ?>
                             </div> 
                                         
-                            
-                        
-                           
-                        </div>
-
-                        <div class="row" style="margin-left:20px; margin-top:20px;">
-
                             <div class="col-sm-1"> 
                             <?= Yii::t('backend', 'Plot') ?>
                             </div> 
-
-                             <div class="col-sm-1" >
-                            <?= $form->field($model, 'parcela_catastro')->textInput(['style' => 'width:80px;','value'=>$_SESSION['datosInmueble']['parcela_catastro']])->label(false) ?>
+                        
+                            <div class="col-sm-1" >
+                            <?= $form->field($model, 'parcela_catastro')->textInput(['style' => 'width:80px;','value'=>$_SESSION['datosInmueble']['parcela_catastro'],'readOnly' =>true])->label(false) ?>
                             </div>
-
+                        
                             <div class="col-sm-1" id="subparcela" style="display:none"> 
                             <?= Yii::t('backend', 'Sub-plot') ?>
                             </div>  
                                            
                             <div class="col-sm-1" id="subparcelac" style="display:none">
-                            <?= $form->field($model, 'subparcela_catastro')->textInput(['style' => 'width:80px;','value'=>$_SESSION['datosInmueble']['subparcela_catastro']])->label(false) //<?= $form->field($model, 'capa_subparcela')->textInput(['style' => 'width:80px;display:block;', 'id' => 'ms2', 'disabled'=>'disabled' ])->label(false) , 'id' => 'ms1' display:none;?>
+                            <?= $form->field($model, 'subparcela_catastro')->textInput(['style' => 'width:80px;','readOnly' =>true])->label(false) //<?= $form->field($model, 'capa_subparcela')->textInput(['style' => 'width:80px;display:block;', 'id' => 'ms2', 'disabled'=>'disabled' ])->label(false) , 'id' => 'ms1' display:none;?>
                             </div> 
                                                  
                            <div class="col-sm-1" id="level" style= 'display:none'>
@@ -376,6 +357,7 @@ Session["variablephp"] = tu;
                                                                                                             'id'=> 'parametro', 
                                                                                                             'prompt' => Yii::t('backend', 'Select'),
                                                                                                             'style' => 'width:80px;',
+                                                                                                            'readOnly' =>true,
                                                                                                            /*'onchange' =>
                                                                                                                 '$.post( "' . Yii::$app->urlManager
                                                                                                                                        ->createUrl('parroquias/lists') . '&municipio=' . '" + $(this).val(), function( data ) {
@@ -398,7 +380,7 @@ Session["variablephp"] = tu;
                                                                                         '70'=>'70','71'=>'71','72'=>'72','73'=>'73','74'=>'74','75'=>'75','76'=>'76','77'=>'77','78'=>'78','79'=>'79',
                                                                                         '80'=>'80','81'=>'81','82'=>'82','83'=>'83','84'=>'84','85'=>'85','86'=>'86','87'=>'87','88'=>'88','89'=>'89',
                                                                                         '90'=>'90','91'=>'91','92'=>'92','93'=>'93','94'=>'94','95'=>'95','96'=>'96','97'=>'97','98'=>'98','99'=>'99',
-                                                                                        ],['style' => 'width:80px;'])->label(false) ?> 
+                                                                                        ],['style' => 'width:80px;','readOnly' =>true])->label(false) ?> 
 
                             </div>
                         
@@ -409,7 +391,7 @@ Session["variablephp"] = tu;
                             </div>
                        
                             <div class="col-sm-1" id="unidad1c" style="display:none">
-                            <?= $form->field($model, 'unidad_catastro')->textInput(['style' => 'width:80px;','value'=>$_SESSION['datosInmueble']['unidad_catastro']])->label(false) ?>
+                            <?= $form->field($model, 'unidad_catastro')->textInput(['style' => 'width:80px;','readOnly' =>true])->label(false) ?>
                             </div>                                          
                         
                    </div>
@@ -421,7 +403,7 @@ Session["variablephp"] = tu;
                             </div> 
                         
                             <div class="col-sm-4"> 
-                            <?= $form->field($model, 'direccion')->textarea(['maxlength' => true,'style' => 'width:300px;','value'=>$_SESSION['datosInmueble']['direccion']])->label(false) ?>
+                            <?= $form->field($model, 'direccion')->textarea(['maxlength' => true,'style' => 'width:300px;','readOnly' =>true])->label(false) ?>
                             </div> 
                         
                             <div class="col-sm-1"> 
@@ -429,7 +411,7 @@ Session["variablephp"] = tu;
                             </div> 
                         
                             <div class="col-sm-1"> 
-                            <?= $form->field($model, 'ano_inicio')->textInput(['style' => 'width:80px;','value'=>$_SESSION['datosInmueble']['ano_inicio']])->label(false)/*->input('date', 
+                            <?= $form->field($model, 'ano_inicio')->textInput(['style' => 'width:80px;','readOnly' =>true])->label(false)/*->input('date', 
                                                                            [
                                                                               //'value' => date('d-m-Y'),
                                                                               'type' => 'date',
@@ -447,7 +429,7 @@ Session["variablephp"] = tu;
                             </div>  
                         
                             <div class="col-sm-2">
-                            <?= $form->field($model, 'casa_edf_qta_dom')->textInput(['style' => 'width:80px;','value'=>$_SESSION['datosInmueble']['casa_edf_qta_dom']])->label(false) ?>
+                            <?= $form->field($model, 'casa_edf_qta_dom')->textInput(['style' => 'width:80px;','readOnly' =>true])->label(false) ?>
                             </div> 
                         
                             <div class="col-sm-2"> 
@@ -455,7 +437,7 @@ Session["variablephp"] = tu;
                             </div> 
                        
                             <div class="col-sm-2">
-                            <?= $form->field($model, 'piso_nivel_no_dom')->textInput(['style' => 'width:80px;','value'=>$_SESSION['datosInmueble']['piso_nivel_no_dom']])->label(false) ?>
+                            <?= $form->field($model, 'piso_nivel_no_dom')->textInput(['style' => 'width:80px;','readOnly' =>true])->label(false) ?>
                             </div> 
                        
                             <div class="col-sm-2"> 
@@ -463,7 +445,7 @@ Session["variablephp"] = tu;
                             </div> 
                         
                             <div class="col-sm-2"> 
-                            <?= $form->field($model, 'apto_dom')->textInput(['style' => 'width:80px;','value'=>$_SESSION['datosInmueble']['apto_dom']])->label(false) ?>
+                            <?= $form->field($model, 'apto_dom')->textInput(['style' => 'width:80px;','readOnly' =>true])->label(false) ?>
                             </div> 
                         
                             <div class="col-sm-2"> 
@@ -471,7 +453,7 @@ Session["variablephp"] = tu;
                             </div> 
                         
                             <div class="col-sm-2"> 
-                            <?= $form->field($model, 'medidor')->textInput(['style' => 'width:80px;','value'=>$_SESSION['datosInmueble']['medidor']])->label(false) ?>
+                            <?= $form->field($model, 'medidor')->textInput(['style' => 'width:80px;','readOnly' =>true])->label(false) ?>
                             </div>                                                                        
                         
                     </div>
@@ -484,11 +466,11 @@ Session["variablephp"] = tu;
                             </div> 
                         
                             <div class="col-sm-4"> 
-                            <?= $form->field($model, 'observacion')->textarea(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?>
+                            <?= $form->field($model, 'observacion')->textarea(['maxlength' => true,'style' => 'width:300px;','readOnly' =>true])->label(false) ?>
                             </div>    
                                                                                           
                             <div class="col-sm-2"> 
-                            <?= $form->field($model, 'tipo_ejido')->checkbox(['style' => 'width:50px;','value'=>$_SESSION['datosInmueble']['tipo_ejido']]) ?>
+                            <?= $form->field($model, 'tipo_ejido')->checkbox(['style' => 'width:50px;','readOnly' =>true]) ?>
                             </div> 
                         </td>                                              
                     </div>                    
@@ -505,7 +487,7 @@ Session["variablephp"] = tu;
                                                         </div> 
                                                     
                                                         <div class="col-sm-2"> 
-                                                        <?= $form->field($modelAvaluo, 'metros_construccion')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value' => $_SESSION['datosHAvaluos'][0]['mts'], 'readOnly' => true])->label(false) ?>
+                                                        <?= $form->field($modelAvaluo, 'metros_construccion')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value' => $_SESSION['datosUAvaluos']['mts'],'readOnly' =>true])->label(false) ?>
                                                         </div> 
 
                                                         <div class="col-sm-2"> 
@@ -524,7 +506,7 @@ Session["variablephp"] = tu;
                                                         </div> 
                                                     
                                                         <div class="col-sm-2"> 
-                                                        <?= $form->field($modelAvaluo, 'metros_terreno')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value' => $_SESSION['datosHAvaluos'][0]['mts2_terreno'], 'readOnly' => true])->label(false) ?> 
+                                                        <?= $form->field($modelAvaluo, 'metros_terreno')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value' => $_SESSION['datosUAvaluos']['mts2_terreno'], 'readOnly' =>true])->label(false) ?> 
                                                         </div>
 
                                                         <div class="col-sm-2"> 
@@ -550,8 +532,8 @@ Session["variablephp"] = tu;
                                                                                                             'id'=> 'UsosInmuebles', 
                                                                                                             'prompt' => Yii::t('backend', 'Select'),
                                                                                                             'style' => 'width:300px;',
-                                                                                                            'value' => $_SESSION['datosHAvaluos'][0]['id_uso_inmueble'],
-                                                                                                            'readOnly' => true,
+                                                                                                            'value' => $_SESSION['datosUAvaluos']['id_uso_inmueble'],
+                                                                                                            'readOnly' =>true,
                                                                                                            /*'onchange' =>
                                                                                                                 '$.post( "' . Yii::$app->urlManager
                                                                                                                                        ->createUrl('parroquias/lists') . '&municipio=' . '" + $(this).val(), function( data ) {
@@ -573,8 +555,8 @@ Session["variablephp"] = tu;
                                                                                                             'id'=> 'TiposInmuebles', 
                                                                                                             'prompt' => Yii::t('backend', 'Select'),
                                                                                                             'style' => 'width:200px;',
-                                                                                                            'value' => $_SESSION['datosHAvaluos'][0]['tipo_inmueble'],
-                                                                                                            'readOnly' => true,
+                                                                                                            'value' => $_SESSION['datosUAvaluos']['tipo_inmueble'],
+                                                                                                            'readOnly' =>true,
                                                                                                            /*'onchange' =>
                                                                                                                 '$.post( "' . Yii::$app->urlManager
                                                                                                                                        ->createUrl('parroquias/lists') . '&municipio=' . '" + $(this).val(), function( data ) {
@@ -598,8 +580,8 @@ Session["variablephp"] = tu;
                                                                                                             'id'=> 'ClasesInmuebles', 
                                                                                                             'prompt' => Yii::t('backend', 'Select'),
                                                                                                             'style' => 'width:200px;',
-                                                                                                            'value' => $_SESSION['datosHAvaluos'][0]['clase_inmueble'],
-                                                                                                            'readOnly' => true,
+                                                                                                            'value' => $_SESSION['datosUAvaluos']['clase_inmueble'],
+                                                                                                            'readOnly' =>true,
                                                                                                            /*'onchange' =>
                                                                                                                 '$.post( "' . Yii::$app->urlManager
                                                                                                                                        ->createUrl('parroquias/lists') . '&municipio=' . '" + $(this).val(), function( data ) {
@@ -621,8 +603,8 @@ Session["variablephp"] = tu;
                                                                                                             'id'=> 'tipologiaInmuebles', 
                                                                                                             'prompt' => Yii::t('backend', 'Select'),
                                                                                                             'style' => 'width:300px;',
-                                                                                                            'value' => $_SESSION['datosHAvaluos'][0]['id_tipologia_zona'],
-                                                                                                            'readOnly' => true,
+                                                                                                            'value' => $_SESSION['datosUAvaluos']['id_tipologia_zona'],
+                                                                                                            'readOnly' =>true,
                                                                                                            /*'onchange' =>
                                                                                                                 '$.post( "' . Yii::$app->urlManager
                                                                                                                                        ->createUrl('parroquias/lists') . '&municipio=' . '" + $(this).val(), function( data ) {
@@ -637,7 +619,7 @@ Session["variablephp"] = tu;
                                                         </div> 
                                                     
                                                         <div class="col-sm-6"> 
-                                                        <?= $form->field($modelAvaluo, 'lindero_norte')->textInput(['maxlength' => true,'style' => 'width:700px;','value' => $_SESSION['datosHAvaluos'][0]['lindero_norte'],'readOnly' => true])->label(false) ?> 
+                                                        <?= $form->field($modelAvaluo, 'lindero_norte')->textInput(['maxlength' => true,'style' => 'width:700px;','value' => $_SESSION['datosUAvaluos']['lindero_norte'],'readOnly' =>true])->label(false) ?> 
                                                         </div>
                                                      </div>
                                                      <div class="row" style="margin-left:20px; margin-top:20px;">
@@ -646,7 +628,7 @@ Session["variablephp"] = tu;
                                                         </div> 
 
                                                         <div class="col-sm-6"> 
-                                                        <?= $form->field($modelAvaluo, 'lindero_sur')->textInput(['maxlength' => true,'style' => 'width:700px;','value' => $_SESSION['datosHAvaluos'][0]['lindero_sur'],'readOnly' => true])->label(false) ?>
+                                                        <?= $form->field($modelAvaluo, 'lindero_sur')->textInput(['maxlength' => true,'style' => 'width:700px;','value' => $_SESSION['datosUAvaluos']['lindero_sur'],'readOnly' =>true])->label(false) ?>
                                                         </div> 
                                                      </div>
                                                      <div class="row" style="margin-left:20px; margin-top:20px;">
@@ -655,7 +637,7 @@ Session["variablephp"] = tu;
                                                         </div> 
 
                                                         <div class="col-sm-6"> 
-                                                        <?= $form->field($modelAvaluo, 'lindero_este')->textInput(['maxlength' => true,'style' => 'width:700px;','value' => $_SESSION['datosHAvaluos'][0]['lindero_este'],'readOnly' => true])->label(false) ?>
+                                                        <?= $form->field($modelAvaluo, 'lindero_este')->textInput(['maxlength' => true,'style' => 'width:700px;','value' => $_SESSION['datosUAvaluos']['lindero_este'],'readOnly' =>true])->label(false) ?>
                                                         </div> 
                                                      </div>
                                                      <div class="row" style="margin-left:20px; margin-top:20px;">
@@ -664,7 +646,7 @@ Session["variablephp"] = tu;
                                                         </div> 
 
                                                         <div class="col-sm-6"> 
-                                                        <?= $form->field($modelAvaluo, 'lindero_oeste')->textInput(['maxlength' => true,'style' => 'width:700px;','value' => $_SESSION['datosHAvaluos'][0]['lindero_oeste'],'readOnly' => true])->label(false) ?>
+                                                        <?= $form->field($modelAvaluo, 'lindero_oeste')->textInput(['maxlength' => true,'style' => 'width:700px;','value' => $_SESSION['datosUAvaluos']['lindero_oeste'],'readOnly' =>true])->label(false) ?>
                                                         </div> 
                                                     </div>     
                                                 
@@ -684,7 +666,15 @@ Session["variablephp"] = tu;
                                                         <?= $form->field($modelRegistro, 'documento_propiedad')->dropDownList([
                                                                                          'prompt' => Yii::t('backend', 'Selecciona'),
                                                                                          '1'=>'Datos SAREN','2'=>'Documento de Registro'],['id' => 'documento_propiedad','style' => 'width:250px;','onclick'=>'documento()',])->label(false) ?>
-                                                        </div>  
+                                                        </div>
+
+                                                        <div class="col-sm-2"> 
+                                                        <?= Yii::t('backend', 'Valor Documental') ?>
+                                                        </div> 
+                                                    
+                                                        <div class="col-sm-2"> 
+                                                        <?= $form->field($modelRegistro, 'valor_documental')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?>
+                                                        </div>   
 
                                                     </div>
 
@@ -694,7 +684,29 @@ Session["variablephp"] = tu;
                                                         </div> 
                                                     
                                                         <div class="col-sm-2"> 
-                                                        <?= $form->field($modelRegistro, 'fecha')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?>
+                                                        <?= $form->field($modelRegistro, 'fecha')->widget(\yii\jui\DatePicker::classname(),[
+                                                                                        //'type' => 'date',
+                                                                                        'clientOptions' => [
+                                                                                           // 'maxDate' => '+0d', // Bloquear los dias en el calendario a partir del dia siguiente al actual.
+                                                                                           'yearRange'=>'-200:+0',
+                                                                                        'changeYear' => 'true', 
+                                                                                       // 'changeMonth' => 'true', 
+                                                                                        'showAnim'=>'fold',
+                                                                                       
+                                                                                         ],
+                                                                                       'language' => 'es-ES',
+                                                                                       'dateFormat' => 'yyyy-MM-dd',
+                                                                                        'options' => [
+                                                                                            //'onClick' => 'alert("calendario")',
+                                                                                            'id' => 'fecha-nac',
+                                                                                            'class' => 'form-control',
+                                                                                           'readonly' => true,
+                                                                                            //'type' => 'date',
+                                                                                            'style' => 'background-color: white;',
+                                                                                        ],
+
+                                                                                      
+                                                                                    ])->label(false) ?>
                                                         </div> 
 
                                                         <div class="col-sm-2"> 
@@ -796,14 +808,8 @@ Session["variablephp"] = tu;
 <!-- Campos ocultos -->  
 
 <?= $form->field($model, 'id_impuesto')->hiddenInput(['value' => $model->id_impuesto])->label(false) ?>
+<?= $form->field($modelRegistro, 'validacion3')->hiddenInput(['value' => 3])->label(false) ?>
 
-<?= $form->field($model, 'manzana_limite')->hiddenInput(['value' => 130])->label(false) ?> 
-<?= $form->field($model, 'id_habitante')->hiddenInput(['value' => 123456])->label(false) ?>
-<?= $form->field($model, 'liquidado')->hiddenInput(['value' => 0])->label(false) ?>
-<?= $form->field($model, 'nivel')->hiddenInput(['value' => 0])->label(false) ?>
-
-
-<?= $form->field($model, 'validacion1')->hiddenInput(['value' => '1'])->label(false) ?> 
 
 
 <?//= Html::endForm();?> 
@@ -828,74 +834,3 @@ Session["variablephp"] = tu;
 </div><!-- inscripcionInmueblesUrbanos 
 ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9']
 -->                     
-
-
-
-
-<?= $form->field($model, 'manzana_limite')->hiddenInput(['value' => 130])->label(false) ?> 
-<?= $form->field($model, 'id_habitante')->hiddenInput(['value' => 123456])->label(false) ?>
-<?= $form->field($model, 'liquidado')->hiddenInput(['value' => 0])->label(false) ?>
-<?= $form->field($model, 'nivel')->hiddenInput(['value' => 0])->label(false) ?>
-
-
-<?= $form->field($model, 'validacion1')->hiddenInput(['value' => '1111'])->label(false) ?> 
-<!-- 
-<tr>
-                        <td><div class="col-lg-5">
-                            
-                            </div>                                                                          
-                        </td>
-                   </tr>
-                   <tr>
-                        <td><div class="col-lg-5">
-                            <? // = $form->field($model, 'lote_1') ?>
-                            </div>                                                                          
-                        </td>
-                   </tr>
-                   <tr>
-                        <td><div class="col-lg-5">
-                            <? // = $form->field($model, 'lote_2') ?>
-                            </div>                                                                          
-                        </td>
-                   </tr>
-                   <tr>
-                        <td><div class="col-lg-5">
-                        <? // = $form->field($model, 'lote_3') ?>
-                        </div>                                                                          
-                        </td>
-                   </tr>  <? // = $form->field($model, 'estado_catastro')->label(false) ?>
-                   <? // = $form->field($model, 'municipio_catastro')->label(false) ?>
-
-
-select E.estado,M.municipio,P.parroquia,A.ambito,S.codigo_ambito,A.descripcion,S.sector,MZ.manzana from estados As E " & _
-             "inner join municipios as M on E.estado=M.estado " & _
-             "inner join parroquias as P on M.estado=P.estado and M.municipio=P.municipio " & _
-             "inner join sectores as S on P.estado=S.estado and P.municipio=S.municipio and P.parroquia=S.parroquia " & _
-             "inner join ambitos as A on S.ambito=A.ambito " & _
-             "inner join urbanizaciones as U on S.id_cp=U.id_cp " & _
-             "inner join manzanas as MZ on U.id_cp=MZ.id_cp and U.urbanizacion=MZ.urbanizacion " & _
-             "inner join manzana_limites as ML on MZ.id_manzana=ML.id_manzana " & _
-             "where ML.manzana_limite=" & Str(nIdManzanaLimite) 
-
-<div class="form-group">
-        <? //= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>
-
-<script>
-function cambio(val) {
-   
-  // alert(''.val);
-     $("#ver").val($("#tipo_propaganda").val());
-       
-    }
-</script>
-
- 'onchange' =>    'cambio()'
-
-  <div class="col-lg-1">
-<? //= $form->field($model, 'estado_catastro1')->textInput(['style' => 'width:80px;'])->label(false);?> 
-<? //= $form->field($model, 'municipio_catastro')->textInput(['style' => 'width:80px;'])->label(false); ?>
-
-
-                            <? //= $form->field($model, 'nivel_catastro')->textInput([])->label(false) ?>
-                            </div>

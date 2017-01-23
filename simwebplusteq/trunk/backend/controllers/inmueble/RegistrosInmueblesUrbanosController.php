@@ -92,7 +92,7 @@ session_start();
 /*********************************************************************************************************
  * InscripcionInmueblesUrbanosController implements the actions for InscripcionInmueblesUrbanosForm model.
  *********************************************************************************************************/
-class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controller
+class RegistrosInmueblesUrbanosController extends Controller
 {
     public $layout="layout-main";
     public $conn;
@@ -109,7 +109,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
     {
         if ( isset( $_SESSION['idContribuyente'] ) ) {
 
-          $idConfig = 6;
+          $idConfig = 118;
           $_SESSION['id'] = $idConfig;
         $searchModel = new InmueblesSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -189,17 +189,8 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                 } 
           } 
 
-          if ($datosIRegistros == null) {
-            
-            return MensajeController::actionMensaje(922);
-          }
-
-
-
-          
-
-
-                                         
+         
+                                     
 
         return $this->render('view', [
             'modelInmueble' => $datosInmueble, 'modelHAvaluos' => $value,
@@ -213,15 +204,15 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
      *Metodo para crear las cuentas de usuarios de los funcionarios
      *@return model 
      **/
-     public function actionRenovacionCertificadoCatastralInmuebles()
+     public function actionRegistrosInmuebles()
      { 
        
          
          if ( isset($_SESSION['idContribuyente'] ) ) {
          //Creamos la instancia con el model de validación
          $model = new CambioNumeroCatastralInmueblesForm();
-          $modelAvaluo = new AvaluoCatastralForm();
-          $modelRegistro = new InmueblesRegistrosForm();
+         $modelAvaluo = new AvaluoCatastralForm();
+         $modelRegistro = new InmueblesRegistrosForm();
 
          //Mostrará un mensaje en la vista cuando el usuario se haya registrado
          $msg = null;
@@ -245,14 +236,14 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
               return ActiveForm::validate($modelRegistro); 
          }
    
-         if ($model->load(Yii::$app->request->post()) && $modelAvaluo->load(Yii::$app->request->post()) && $modelRegistro->load(Yii::$app->request->post()) ){
+         if ($modelRegistro->load(Yii::$app->request->post()) ){
 
 
                $isValid = $model->validate();
                $isValid = $modelAvaluo->validate() && $isValid;
                $isValid = $modelRegistro->validate() && $isValid;
               if($isValid){ 
-              
+                
 
                                          //condicionales     
                                            $documento = new DocumentoSolicitud();
@@ -262,11 +253,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                                          
                                         if (!\Yii::$app->user->isGuest){                                    
                              
-                                          if ($_SESSION['anioAvaluo'][0] == date('Y')) {
-
-                                                  return MensajeController::actionMensaje(921);
-
-                                            } else {
+                                          
 
                                              $guardo = self::GuardarInscripcion($model,$modelAvaluo,$modelRegistro);
                                              
@@ -289,7 +276,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                         
                                                     return MensajeController::actionMensaje(920);
                                               }
-                                             }
+                                             
                         
                                            }else{ 
                         
@@ -304,7 +291,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                    $model->getErrors(); 
               }
          }
-              return $this->render('renovacion-certificado-catastral-inmuebles', ['model' => $model, 'modelAvaluo' => $modelAvaluo, 'modelRegistro'=>$modelRegistro]);  
+              return $this->render('registros-inmuebles', ['model' => $model, 'modelAvaluo' => $modelAvaluo, 'modelRegistro'=>$modelRegistro]);  
 
         }  else {
                     echo "No hay Contribuyente Registrado!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['site/login'])."'>";
@@ -336,9 +323,9 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
 
             
 
-           
+          
 
-            $avaluos=self::actionCalcularAvaluos($modelAvaluo); 
+            //$avaluos=self::actionCalcularAvaluos($modelAvaluo); 
 
             $conn = New ConexionController();
             $conexion = $conn->initConectar('db');     // instancia de la conexion (Connection)
@@ -347,7 +334,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
 
             try {
 
-                foreach($avaluos as $key => $value){
+               
                 
                 
 
@@ -356,7 +343,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                 $arrayDatos1 = [  'id_contribuyente' => $_SESSION['idContribuyente'],
                                   'id_config_solicitud' => $config['id_config_solicitud'],
                                   'impuesto' => 2,
-                                  'id_impuesto' => $value['id_impuesto'],
+                                  'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
                                   'tipo_solicitud' => $config['tipo_solicitud'],
                                   'usuario' => $datosContribuyente['email'],
                                   'fecha_hora_creacion' => date('Y-m-d h:i:s'),
@@ -370,30 +357,30 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
 
                 if ( $conn->guardarRegistro($conexion, $tableName1,  $arrayDatos1) ){  
                 $result = $conexion->getLastInsertID();
-                
+              
 
-                $arrayDatos2 = [    'id_impuesto' => $value['id_impuesto'],
+                $arrayDatos2 = [    'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
                                     'nro_solicitud' => $result,
-                                    'fecha' => $value['fecha'],
-                                    'mts' => $value['mts'],
-                                    'valor_por_mts2' => $value['valor_por_mts2'],
-                                    'mts2_terreno' => $value['mts2_terreno'],
-                                    'valor_por_mts2_terreno' => $value['valor_por_mts2_terreno'],
-                                    'valor' => $value['valor'],
-                                    'id_uso_inmueble' => $value['id_uso_inmueble'],
-                                    'tipo_inmueble' => $value['tipo_inmueble'],
-                                    'clase_inmueble' => $value['clase_inmueble'],
-                                    'id_tipologia_zona' => $value['id_tipologia_zona'],
-                                    'lindero_norte' => $value['lindero_norte'],
-                                    'lindero_sur' => $value['lindero_sur'],
-                                    'lindero_este' => $value['lindero_este'],
-                                    'lindero_oeste' => $value['lindero_oeste'],
-                                    
+                                    'id_contribuyente' => $_SESSION['idContribuyente'],
+                                    'fecha' => $modelRegistro->fecha,
+                                    'id_tipo_documento_inmueble' => $modelRegistro->documento_propiedad,
+                                    'num_reg' => $modelRegistro->num_reg,
+                                    'reg_mercantil' => $modelRegistro->reg_mercantil,
+                                    'valor_documental'=> $modelRegistro->valor_documental,
+                                    'fecha_creacion' => date('Y-m-d h:i:s'),
+
+                                    'tomo' => $modelRegistro->tomo,
+                                    'protocolo' => $modelRegistro->protocolo,                                    
+                                    'folio' => $modelRegistro->folio,
+
+                                    'nro_matricula' => $modelRegistro->nro_matriculado,
+                                    'asiento_registral' => $modelRegistro->asiento_registral,
+                               
                                 ]; 
 
                  $model->nro_solicitud = $arrayDatos2['nro_solicitud'];
                  $resultProceso = self::actionEjecutaProcesoSolicitud($conn, $conexion, $model, $config); 
-                 $tableName2 = 'sl_historico_avaluos'; 
+                 $tableName2 = 'sl_inmuebles_registros'; 
 
                 if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){
 
@@ -408,27 +395,29 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                         $avaluoConstruccion = $model->metros_construccion * $model->valor_construccion;
                         $avaluoTerreno = $model->metros_terreno * $model->valor_terreno;
 
-                        $arrayDatos3 = [    'id_impuesto' => $value['id_impuesto'],
-                                            'fecha' => $value['fecha'],
-                                            'mts' => $value['mts'],
-                                            'valor_por_mts2' => $value['valor_por_mts2'],
-                                            'mts2_terreno' => $value['mts2_terreno'],
-                                            'valor_por_mts2_terreno' => $value['valor_por_mts2_terreno'],
-                                            'valor' => $value['valor'],
-                                            'id_uso_inmueble' => $value['id_uso_inmueble'],
-                                            'tipo_inmueble' => $value['tipo_inmueble'],
-                                            'clase_inmueble' => $value['clase_inmueble'],
-                                            'id_tipologia_zona' => $value['id_tipologia_zona'],
-                                            'lindero_norte' => $value['lindero_norte'],
-                                            'lindero_sur' => $value['lindero_sur'],
-                                            'lindero_este' => $value['lindero_este'],
-                                            'lindero_oeste' => $value['lindero_oeste'],
+                        $arrayDatos3 = [    
+                                    'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
+                                    'id_contribuyente' => $_SESSION['idContribuyente'],
+                                    'fecha' => $modelRegistro->fecha,
+                                    'id_tipo_documento_inmueble' => $modelRegistro->documento_propiedad,
+                                    'num_reg' => $modelRegistro->num_reg,
+                                    'reg_mercantil' => $modelRegistro->reg_mercantil,
+                                    'valor_documental'=> $modelRegistro->valor_documental,
+                                    'fecha_creacion' => date('Y-m-d h:i:s'),
+
+                                    'tomo' => $modelRegistro->tomo,
+                                    'protocolo' => $modelRegistro->protocolo,                                    
+                                    'folio' => $modelRegistro->folio,
+
+                                    'nro_matricula' => $modelRegistro->nro_matriculado,
+                                    'asiento_registral' => $modelRegistro->asiento_registral,
+                               
                                             
                                     
                                         ]; 
 
             
-                        $tableName3 = 'historico_avaluos';
+                        $tableName3 = 'inmuebles_registros';
                          
 
 
@@ -460,7 +449,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                 $tipoError = 0;
                 $todoBien = false;
             }
-            } /// fin del foreach 
+            
 
                 if ($todoBien == true){
                     
@@ -831,7 +820,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
      {
          $email = $_SESSION['datosContribuyente']['email'];
 
-         $solicitud = 'Renovacion de certificado catastral de Inmueble';
+         $solicitud = 'Inscripcion de Inmueble';
 
          $nro_solicitud = $guardo;
 

@@ -58,6 +58,8 @@ use backend\models\inmueble\InmueblesConsulta;
 use common\conexion\ConexionController;
 use backend\models\inmueble\Solvencias;
 use backend\models\inmueble\TarifasAvaluos;
+
+
 /**
  * This is the model class for table "inmuebles".
  *
@@ -105,14 +107,14 @@ class AvaluoCatastralForm extends \yii\db\ActiveRecord
     public $metros_terreno;
     public $valor_construccion;
     public $valor_terreno;
-    public $validacion;
+    public $validacion2;
     public $lindero_norte;
     public $lindero_sur;
     public $lindero_este;
     public $lindero_oeste;
     public $id_tipologia_zona;
     public $nro_solicitud;
-
+   
    
 
     public static function tableName()
@@ -124,14 +126,15 @@ class AvaluoCatastralForm extends \yii\db\ActiveRecord
 
     public function rules()
     {
-
+        
         return [ 
 
-            [['id_impuesto','id_tipologia_zona','tipo_inmueble','clase_inmueble','id_uso_inmueble'], 'integer','message' => Yii::t('backend', 'only integers')],
-            [['metros_terreno','metros_construccion','id_tipologia_zona','tipo_inmueble','clase_inmueble','id_uso_inmueble'/*,'valor_terreno','valor_construccion'*/],'required','message' => Yii::t('backend', 'No debe estar vacio el campo de datos')],
-            [['id_tipologia_zona'],'ComparaTarifaAvaluos'],
-            [['lindero_norte','lindero_sur','lindero_este','lindero_oeste'],'string','message' => Yii::t('backend', 'No debe estar vacio el campo')],
-
+          
+            [['id_impuesto','id_tipologia_zona','tipo_inmueble','clase_inmueble','id_uso_inmueble','validacion2'], 'integer','message' => Yii::t('backend', 'only integers'),'when'=> function($modelAvaluo){ return $this->validacion2 == 2; }],
+            [['metros_terreno','metros_construccion','id_tipologia_zona','tipo_inmueble','clase_inmueble','id_uso_inmueble'/*,'valor_terreno','valor_construccion'*/],'required','message' => Yii::t('backend', 'No debe estar vacio el campo de datos'),'when'=> function($modelAvaluo){ return $this->validacion2 == 2; }],
+            [['id_tipologia_zona'],'ComparaTarifaAvaluos','when'=> function($modelAvaluo){ return $this->validacion2 == 2; }],
+            [['lindero_norte','lindero_sur','lindero_este','lindero_oeste'],'string','message' => Yii::t('backend', 'No debe estar vacio el campo'),'when'=> function($modelAvaluo){ return $this->validacion2 == 2; }],
+          
         ]; 
     }
 

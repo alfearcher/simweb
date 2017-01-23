@@ -60,6 +60,9 @@
 	use backend\models\inmueble\SlHistoricoAvaluosSearch;
 	use backend\models\inmueble\SlCambioPropietarioForm;
 	use backend\models\inmueble\SlCambioPropietarioSearch;
+	use backend\models\inmueble\SlInmueblesRegistrosSearch;
+	use backend\models\inmueble\SlInmueblesRegistrosForm;
+	
 	use backend\models\inmueble\solvencia\SolvenciaInmuebleSearch;
 	// use common\conexion\ConexionController;
 	use backend\controllers\MenuController;
@@ -164,6 +167,10 @@
 				} elseif ( $this->model->tipo_solicitud == 84 ) {
 
 					return self::actionMostrarSolicitudLinderosInmueble();
+
+				} elseif ( $this->model->tipo_solicitud == 85 ) {
+
+					return self::actionMostrarSolicitudRegistrosInmueble();
 
 				}
 			}
@@ -472,6 +479,25 @@
 
 
 					return $this->render('@backend/views/inmueble/linderos-inmuebles-urbanos/view-solicitud', [
+													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
+													'model' => $model,
+
+						]);
+			}
+
+			return false;
+		}
+
+		// tipo solicitud 85
+		private function actionMostrarSolicitudRegistrosInmueble()
+		{
+			if ( $this->model->nivel_aprobacion == 2 ) {
+					$modelSearch = New SlInmueblesRegistrosSearch();
+					$model = $modelSearch->findInmueblesRegistros($this->model->nro_solicitud);
+
+
+
+					return $this->render('@backend/views/inmueble/registros-inmuebles-urbanos/view-solicitud', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
 													'model' => $model,
 

@@ -254,7 +254,7 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
                      // }
 
                     //if($todoBien == true){
-                     $guardo = self::GuardarCambios($model, $datos);
+                     $guardo = self::GuardarCambios($model, $modelAvaluo, $modelRegistro);
 
                      if($guardo == true){ 
 
@@ -307,23 +307,30 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
       * @param [type] $model [description] arreglo de datos del formulario de inscripcion del
       * inmueble
       */
-     public function GuardarCambios($model, $datos)
+     public function GuardarCambios($model, $modelAvaluo, $modelRegistro)
      {
             $buscar = new ParametroSolicitud($_SESSION['id']);
 
             $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
+
+            $config = $buscar->getParametroSolicitud([
+                                'id_config_solicitud',
+                                'tipo_solicitud',
+                                'impuesto',
+                                'nivel_aprobacion'
+                          ]);
             $datosContribuyente = self::DatosContribuyente();
             $_SESSION['datosContribuyente']= $datosContribuyente;
             try {
             $tableName1 = 'solicitudes_contribuyente'; 
 
-            $tipoSolicitud = self::DatosConfiguracionTiposSolicitudes();
+            
 
-            $arrayDatos1 = [  'id_contribuyente' => $datos->id_contribuyente,
+            $arrayDatos1 = [  'id_contribuyente' => $_SESSION['idContribuyente'],
                               'id_config_solicitud' => $_SESSION['id'],
                               'impuesto' => 2,
-                              'id_impuesto' => $datos->id_impuesto,
-                              'tipo_solicitud' => $tipoSolicitud,
+                              'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
+                              'tipo_solicitud' => $config['tipo_solicitud'],
                               'usuario' => $datosContribuyente['email'],
                               'fecha_hora_creacion' => date('Y-m-d h:i:s'),
                               'nivel_aprobacion' => $nivelAprobacion["nivel_aprobacion"],
@@ -352,8 +359,8 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
                 $catastro = "".$catastro1[0]['estado']."-".$catastro1[0]['municipio']."-".$catastro1[0]['parroquia']."-".$catastro1[0]['ambito']."-".$catastro1[0]['sector']."-".$catastro1[0]['manzana']."";
 
                 if($model->propiedad_horizontal == 1){
-                $arrayDatos2 = [    'id_contribuyente' => $datos->id_contribuyente,
-                                    'id_impuesto' => $datos->id_impuesto,
+                $arrayDatos2 = [    'id_contribuyente' => $_SESSION['idContribuyente'],
+                                    'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
                                     'nro_solicitud' => $result,
                                     'estado_catastro' => $model->estado_catastro,
                                     'municipio_catastro' => $model->municipio_catastro,
@@ -373,8 +380,8 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
                                 ]; 
 
                 } else {
-                $arrayDatos2 = [    'id_contribuyente' => $datos->id_contribuyente,
-                                    'id_impuesto' => $datos->id_impuesto,
+                $arrayDatos2 = [    'id_contribuyente' => $_SESSION['idContribuyente'],
+                                    'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
                                     'nro_solicitud' => $result,
                                     'estado_catastro' => $model->estado_catastro,
                                     'municipio_catastro' => $model->municipio_catastro,
@@ -410,7 +417,7 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
 
                     } else {
                         if($model->propiedad_horizontal == 1){
-                        $arrayDatos3 = [    'id_contribuyente' => $datos->id_contribuyente,
+                        $arrayDatos3 = [    'id_contribuyente' => $_SESSION['idContribuyente'],
                                             'estado_catastro' => $model->estado_catastro,
                                             'municipio_catastro' => $model->municipio_catastro,
                                             'parroquia_catastro' => $model->parroquia_catastro,
@@ -428,7 +435,7 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
                                     
                                         ]; 
                         } else {
-                          $arrayDatos3 = [    'id_contribuyente' => $datos->id_contribuyente,
+                          $arrayDatos3 = [    'id_contribuyente' => $_SESSION['idContribuyente'],
                                             'estado_catastro' => $model->estado_catastro,
                                             'municipio_catastro' => $model->municipio_catastro,
                                             'parroquia_catastro' => $model->parroquia_catastro,
@@ -447,7 +454,7 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
                         }
             
                         $tableName3 = 'inmuebles';
-                        $arrayCondition = ['id_impuesto'=>$datos->id_impuesto];
+                        $arrayCondition = ['id_impuesto'=>$_SESSION['datosInmueble']['id_impuesto']];
 
                         if ( $conn->modificarRegistro($conexion, $tableName3,  $arrayDatos3, $arrayCondition) ){
 

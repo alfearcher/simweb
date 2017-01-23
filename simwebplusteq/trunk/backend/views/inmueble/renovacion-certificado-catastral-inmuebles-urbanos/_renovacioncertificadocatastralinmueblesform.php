@@ -772,7 +772,7 @@ Session["variablephp"] = tu;
 <!-- Campos ocultos -->  
 
 <?= $form->field($model, 'id_impuesto')->hiddenInput(['value' => $model->id_impuesto])->label(false) ?>
-
+<?= $form->field($modelAvaluo, 'validacion2')->hiddenInput(['value' => 2])->label(false) ?>
 
 
 <?//= Html::endForm();?> 

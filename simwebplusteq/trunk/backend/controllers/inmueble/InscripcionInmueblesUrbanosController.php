@@ -197,14 +197,14 @@ class InscripcionInmueblesUrbanosController extends Controller
             try {
             $tableName1 = 'solicitudes_contribuyente'; 
 
-            $tipoSolicitud = self::DatosConfiguracionTiposSolicitudes();
+           // $tipoSolicitud = self::DatosConfiguracionTiposSolicitudes();
      
             
             $arrayDatos1 = [  'id_contribuyente' => $model->id_contribuyente,
                               'id_config_solicitud' => $_SESSION['id'], //$idConf
                               'impuesto' => 2,
                               'id_impuesto' => null,
-                              'tipo_solicitud' => $tipoSolicitud,
+                              'tipo_solicitud' => $config['tipo_solicitud'],
                               'usuario' => $datosContribuyente['email'],
                               'fecha_hora_creacion' => date('Y-m-d h:i:s'),
                               'nivel_aprobacion' => $nivelAprobacion["nivel_aprobacion"],
@@ -291,7 +291,8 @@ class InscripcionInmueblesUrbanosController extends Controller
 
             
                  $tableName2 = 'sl_inmuebles'; 
-                 //$resultProceso = self::actionEjecutaProcesoSolicitud($conn, $conexion, $config); 
+                 $model->nro_solicitud = $arrayDatos2['nro_solicitud'];
+                 $resultProceso = self::actionEjecutaProcesoSolicitud($conn, $conexion, $model, $config); 
                 if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){
 
                     if ($nivelAprobacion['nivel_aprobacion'] != 1){
