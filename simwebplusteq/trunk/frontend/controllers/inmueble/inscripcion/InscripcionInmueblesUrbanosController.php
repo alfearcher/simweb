@@ -201,14 +201,14 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
             try {
             $tableName1 = 'solicitudes_contribuyente'; 
 
-            $tipoSolicitud = self::DatosConfiguracionTiposSolicitudes();
+            //$tipoSolicitud = self::DatosConfiguracionTiposSolicitudes();
      
             
             $arrayDatos1 = [  'id_contribuyente' => $model->id_contribuyente,
                               'id_config_solicitud' => $_SESSION['id'], //$idConf
                               'impuesto' => 2,
                               'id_impuesto' => null,
-                              'tipo_solicitud' => $tipoSolicitud,
+                              'tipo_solicitud' => $config['tipo_solicitud'],
                               'usuario' => yii::$app->user->identity->login,
                               'fecha_hora_creacion' => date('Y-m-d h:i:s'),
                               'nivel_aprobacion' => $nivelAprobacion["nivel_aprobacion"],
