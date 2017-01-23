@@ -113,7 +113,7 @@ class RegistrosInmueblesUrbanosController extends Controller
           $_SESSION['id'] = $idConfig;
         $searchModel = new InmueblesSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-die(var_dump($dataProvider));
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
