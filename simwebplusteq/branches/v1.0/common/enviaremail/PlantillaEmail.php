@@ -158,6 +158,7 @@ anexo puede ser de carácter confidencial y es propiedad de la alcaldía del Mun
 
 
 
+
     /***/
     public function plantillaSolicitudProcesada($email, $cuerpo)
     {
@@ -176,6 +177,42 @@ anexo puede ser de carácter confidencial y es propiedad de la alcaldía del Mun
           return false;
         }
     }
+
+
+
+
+    /***/
+    public function plantillaSolicitudSustitutivaAprobada($email, $cuerpo)
+    {
+        $from = Yii::$app->ente->getEmail()[0];
+        $to = $email;
+        $subject = 'Solicitud procesada';
+        $textBody = 'Solicitudes Online';
+
+        $contribuyente = self::busquedaTipoContribuyente();
+
+        $cuerpo2 =  'Estimado Contribuyente: '. $contribuyente .'<br><br>' .
+                    'Su solicitud de Declaración Sustitutiva ha sido aceptada. Si del análisis realizado a los
+                    documentos que soportan su requerimiento, resultare una diferencia a su favor, la Administración
+                    Tributaria le notificará el reconocimiento del crédito fiscal y compensará, tras los trámites
+                    correspondientes, a partir del trimestre inmediato posterior a su notificación.';
+
+
+        $body = $cuerpo2 . '<br><br>' . 'Esta es una cuenta no monitoreada, por favor no responder este correo.';
+
+        $enviarEmail = new EnviarEmailSolicitud();
+        $enviar = $enviarEmail->enviarEmail($from, $to, $subject, $textBody, $body);
+
+        if($enviar == true){
+          return true;
+        }else{
+          return false;
+        }
+    }
+
+
+
+
 
     /**
      * [enviarEmail description] metodo que envia email al usuario con la informacion que reciba como parametros
@@ -240,13 +277,13 @@ anexo puede ser de carácter confidencial y es propiedad de la alcaldía del Mun
      * @param  [type] $contribuyente string [description] variable que recibe el nombre o razon social del contribuyente
      * @return [type]            [description] retorna la funcion que hace que envie el correo
      */
-    public function plantillaRecuperarLogin($email, $solicitud, $clave,$contribuyente)
+    public function plantillaRecuperarLogin($email, $solicitud, $clave,$login,$contribuyente)
     {
 
         if ( trim($email) == true ) {
-          
 
-          
+
+
 
                 $from = Yii::$app->ente->getEmail()[0];
                 $to = $email;
@@ -254,7 +291,7 @@ anexo puede ser de carácter confidencial y es propiedad de la alcaldía del Mun
                 $textBody = 'Solicitudes Online';
                 $body =     'Estimado Contribuyente: '.$contribuyente.'<br><br>
                        Usted ha realizado con exito la recuperacion de usuario y contraseña<br><br>
-                       Usuario: ' .$email.'<br>'.'Contraseña: '.$clave.'<br><br>'.
+                       Usuario: ' .$login.'<br>'.'Contraseña: '.$clave.'<br><br>'.
                        'A partir de este momento puede disfrutar de nuestro servicio "on-line".<br>
                        Recuerde, esta informacion es personal y de su exclusiva responsabilidad y se agradece no divulgar ni transferir
                        a terceros estos datos<br><br>
@@ -262,7 +299,7 @@ anexo puede ser de carácter confidencial y es propiedad de la alcaldía del Mun
 
               $enviarEmail = new EnviarEmailSolicitud();
               $enviar = $enviarEmail->enviarEmail($from, $to, $subject, $textBody, $body);
-//die(var_dump($enviar).' llego despues de enviar');
+
                 if($enviar == true){
                   return true;
                 }else{
