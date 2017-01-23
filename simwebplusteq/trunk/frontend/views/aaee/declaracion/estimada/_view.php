@@ -52,11 +52,11 @@
  	<div class="row">
 		<?= MensajeController::actionMensaje($codigo); ?>
 	 </div>
-	 <div class="row" style="width: 100%;">
+	 <!-- <div class="row" style="width: 100%;">
 		<div class="well well-sm" style="color: blue;padding-left: 25px;padding-right: 25px;">
-			<h4><?=Html::encode('Dentro de las 24 horas ingrese al sistema en Liquidación/Consulta, para imprimir las planillas de liquidación y pagar en el Banco.')?></h4>
+			<h4><?//=Html::encode('Dentro de las 24 horas ingrese al sistema en Liquidación/Consulta, para imprimir las planillas de liquidación y pagar en el Banco.')?></h4>
 		</div>
-	 </div>
+	 </div> -->
 	 <div class="row">
 		<div class="solicitud-creada">
 			<?= $this->render('@frontend/views/aaee/declaracion/estimada/view-solicitud-create', [
