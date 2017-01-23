@@ -11,7 +11,7 @@ use kartik\icons\Icon;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('backend', 'Property Urban');
-die('llego');
+//nombre
 ?>
 <div class="inmuebles-index">
 
