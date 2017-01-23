@@ -39,7 +39,7 @@ $this->title = Yii::t('backend', 'Property Urban');
             //'ano_inicio',
             'direccion',
             //'liquidado',
-            'manzana_limite',
+             'manzana_limite',
             // 'lote_1',
             // 'lote_2',
             // 'nivel',
