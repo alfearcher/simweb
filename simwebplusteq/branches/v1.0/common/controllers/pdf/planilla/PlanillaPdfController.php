@@ -82,19 +82,19 @@
 		private $_fechaVcto;
 		private $_aplicarDescuento;		// Instacia de AplicarDescuento().
 
-
+		public $_objeto;
 
 
 		/**
 		 * Metodo constructor de la clase.
 		 * @param integer $planilla numero de planilla de liquidacion.
 		 */
-		public function __construct($planilla)
+		public function __construct($planilla, $objeto = false)
 		{
 			$this->_planilla = (int)$planilla;
 			$this->_searchPlanilla = New PlanillaSearch($this->_planilla);
 			$this->_aplicarDescuento = New AplicarDescuento($this->_planilla);
-
+			$this->_objeto = $objeto;
 		}
 
 
@@ -145,7 +145,7 @@
 
 				$this->_aplicarDescuento->iniciarDescuento();
 
-				$model = $this->_searchPlanilla->getDetallePlanilla();
+				$model = $this->_searchPlanilla->getDetallePlanilla($this->_objeto);
 
 				$result = $model->asArray()->all();
 
@@ -185,14 +185,27 @@
 
 					} else {
 
-						// Informacion del codigo presupuestario de la tasa. Tipo modelo
-						$codigo = $this->_searchPlanilla->getDatosCodigoPresupuesto($result[0]['tasa']['id_codigo']);
-						if ( count($codigo) > 0 ) {
+						if ( !$this->_objeto ) {
+							// Informacion del codigo presupuestario de la tasa. Tipo modelo
+							$codigo = $this->_searchPlanilla->getDatosCodigoPresupuesto($result[0]['tasa']['id_codigo']);
 
-							self::actionCrearPlanillaTasaPdf($result, $codigo->toArray());
+							if ( count($codigo) > 0 ) {
+
+								self::actionCrearPlanillaTasaPdf($result, $codigo->toArray());
+
+							}
+
+						} else {
+							// Es un objeto, no es inmueble, ni vehiculo.
+							if ( $result[0]['impuesto'] == 4 ) {
+
+								self::actionCrearPlanillaPropagandaPdf($result);
+
+							} if ( $result[0]['impuesto'] == 6 ) {
+
+							}
 
 						}
-
 					}
 
 				}
@@ -303,6 +316,51 @@
 
 
 
+		/***/
+		private function actionCrearPlanillaPropagandaPdf($detallePlanilla)
+		{
+
+			$y = 0;
+			$datosPropaganda = $detallePlanilla[0]['propaganda'];
+
+			$mpdf = new mPDF;
+			$nombre = 'PL' . $detallePlanilla[0]['pagos']['planilla'] . ' - ' . date('Y-m-d H:i:s') . '.pdf';
+
+			self::actionViewEncabezadoPrincipal($mpdf, 0);
+			$mpdf->Ln(8);
+
+			self::actionGetViewPrimerEncabezado($mpdf, $detallePlanilla);
+			self::actionGetSubTituloDetalle($mpdf, $detallePlanilla);
+			self::actionGetViewSegundoDetalle($mpdf, $detallePlanilla, $detallePresupuesto);
+			self::actionGetViewTercerDetalle($mpdf, $detallePlanilla);
+
+			self::actionGetViewRafaga($mpdf);
+			self::actionGetViewInfoCuentaRecaudadoraPaginaWeb($mpdf);
+			self::actionGetViewCodigoValidador($mpdf);
+
+			self::actionGetViewInfoRestante($mpdf);
+
+			// Parte inferior
+			$mpdf->Ln(71);
+
+			$y = 132;
+			self::actionViewEncabezadoPrincipal($mpdf, $y);
+			$mpdf->Ln(15);
+			self::actionGetViewPrimerEncabezado($mpdf, $detallePlanilla, $y);
+			self::actionGetSubTituloDetalle($mpdf, $detallePlanilla , $y);
+			self::actionGetViewSegundoDetalle($mpdf, $detallePlanilla, $detallePresupuesto, $y);
+			self::actionGetViewTercerDetalle($mpdf, $detallePlanilla, $y);
+
+			self::actionGetViewRafaga($mpdf, $y);
+			self::actionGetViewInfoCuentaRecaudadoraPaginaWeb($mpdf, $y);
+
+			self::actionGetViewCodigoValidador($mpdf, $y);
+			self::actionGetViewInfoRestante($mpdf, strtoupper(Yii::$app->oficina->getNombre()), $y);
+
+			$mpdf->Output($nombre, 'I');
+	       	exit;
+
+		}
 
 
 
@@ -462,11 +520,11 @@
 			$mpdf->SetFont('Arial', 'B', 10);
 			$mpdf->Cell(35, 5, $fechaVcto, 1, 0, 'C');
 			// ID Contribuyente
-			$mpdf->Cell(45, 5, $this->_contribuyente->id_contribuyente, 1, 0, 'C');
+			$mpdf->Cell(45, 5, $detallePlanilla[0]['pagos']['id_contribuyente'], 1, 0, 'C');
 			// Nro Liquidacion
 			$mpdf->Cell(45, 5, $detallePlanilla[0]['pagos']['planilla'], 1, 0, 'C');
 			// Control
-			$control = '00000';
+			$control = $detallePlanilla[0]['id_impuesto'];
 			$mpdf->Cell(35, 5, $control, 1, 1, 'C');
 
 		}
