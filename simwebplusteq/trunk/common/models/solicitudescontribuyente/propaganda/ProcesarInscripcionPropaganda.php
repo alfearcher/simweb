@@ -22,13 +22,13 @@
  */
 
  /**
- *  @file ProcesarInscripcionVehiculo.php
+ *  @file ProcesarInscripcionPropaganda.php
  *
- *  @author Manuel Alejandro Zapata Canelon
+ *  @author Jose Perez
  *
- *  @date 05/08/2016
+ *  @date 23/01/2017
  *
- *  @class ProcesarInscripcionVehiculo
+ *  @class ProcesarInscripcionPropaganda
  *  @brief
  *
  *
