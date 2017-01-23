@@ -50,13 +50,11 @@
     namespace common\models\solicitudescontribuyente\propaganda;
 
     use Yii;
-    use backend\models\aaee\InmueblesUrbanosForm;
-    use backend\models\inmueble\SlInmueblesUrbanosSearch;
     use common\models\contribuyente\ContribuyenteBase;
-    use frontend\models\vehiculo\solicitudes\SlVehiculos;
-    use frontend\models\vehiculo\solicitudes\SlVehiculosForm; 
-    use frontend\models\propaganda\solicitudes\SlPropagandas;
-    use frontend\models\propaganda\solicitudes\SlPropagandasForm;
+    use backend\models\propaganda\inscripcionpropaganda\InscripcionPropagandaSearch;
+    use backend\models\propaganda\inscripcionpropaganda\InscripcionPropagandaForm;
+    use backend\models\propaganda\Propaganda;
+
 
 
     /**
@@ -64,7 +62,7 @@
      * que esten relacionada con la aprobacion o negacion de la solicitud. la clase debe
      * entregar como respuesta un true o false.
      */
-    class ProcesarInscripcionPropaganda extends SlPropagandas
+    class ProcesarInscripcionPropaganda extends InscripcionPropagandaSearch
     {
 
         private $_model;
@@ -109,7 +107,7 @@
             $this->_evento = $evento;
             $this->_conn = $conn;
             $this->_conexion = $conexion;
-           // parent::__construct($model['id_contribuyente']);
+            parent::__construct($model['id_contribuyente']);
 
         }
 
@@ -146,13 +144,11 @@
          */
         public function procesarSolicitud()
         {
-           //die('llegue a procesar');
             $result = false;
             if ( $this->_evento == Yii::$app->solicitud->aprobar() ) {
                 $result = self::aprobarDetalleSolicitud();
 
             } elseif ( $this->_evento == Yii::$app->solicitud->negar() ) {
-               // die('esta negando');
                 $result = self::negarDetalleSolicitud();
             }
             return $result;
@@ -169,42 +165,15 @@
          */
         public function findInscripcionPropaganda()
         {
-            // Este find retorna el modelo de la entidad "sl-vehiculos"
+            // Este find retorna el modelo de la entidad "sl-propagandas"
             // con datos, ya que en el metodo padre se ejecuta el ->one() que realiza
             // la consulta.
-            $SlPropagandas = New SlPropagandasForm($this->_model->id_contribuyente);
-
-            $modelFind = $SlPropagandas->findInscripcionPropaganda($this->_model->nro_solicitud);
-            return isset($modelFind) ? $modelFind : null;
+            $findModel = $this->findSolicitudInscripcionPropaganda($this->_model->nro_solicitud);
+            return isset($findModel) ? $findModel : null;
         }
 
-        /**
-        * Metodo que retorna un arreglo de atributos que seran actualizados
-        * al momento de procesar la solicitud (aprobar o negar). Estos atributos
-        * afectaran a la entidad respectiva de la clase.
-        * @param String $evento, define la accion a realizar sobre la solicitud.
-        * - Aprobar.
-        * - Negar.
-        * @return Array Retorna un arreglo de atributos segun el evento.
-        */
-        public function atributosUpDateProcesarSolicitud($evento)
-        {
-           // die('llego');
-            $atributos = [
-                Yii::$app->solicitud->aprobar() => [
-                                    'estatus' => 1,
-                                    'user_funcionario' => isset(Yii::$app->user->identity->username) ? Yii::$app->user->identity->username : Yii::$app->user->identity->login,
-                                    'fecha_funcionario' => date('Y-m-d H:i:s')
-                ],
-                Yii::$app->solicitud->negar() => [
-                                    'estatus' => 9,
-                                    'user_funcionario' => isset(Yii::$app->user->identity->username) ? Yii::$app->user->identity->username : Yii::$app->user->identity->login,
-                                    'fecha_funcionario' => date('Y-m-d H:i:s')
-                ],
-            ];
-    
-           return $atributos[$evento];
-        }
+
+
 
 
 
@@ -215,17 +184,18 @@
          */
         private function aprobarDetalleSolicitud()
         {
-           // die('llego a aprobar');
             $result = false;
+            $idImpuesto = 0;
             $modelInscripcion = self::findInscripcionPropaganda();
-            //die(var_dump($modelInscripcion));
             if ( $modelInscripcion !== null ) {
                 if ( $modelInscripcion['id_contribuyente'] == $this->_model->id_contribuyente ) {
-                    //die('comparo');
-                    $result = self::updateSolicitudInscripcion($modelInscripcion);
-                    // if ( $result ) {
-                    //     $result = self::updateContribuyente($modelInscripcion);
-                    // }
+
+                    $idImpuesto = self::createPropaganda($modelInscripcion);
+                    if ( $idImpuesto > 0 ) {
+                        $modelInscripcion['id_impuesto'] = $idImpuesto;
+                        $result = self::updateSolicitudInscripcion($modelInscripcion);
+                    }
+
                 } else {
                     self::setErrors(Yii::t('backend', 'Error in the ID of taxpayer'));
                 }
@@ -263,102 +233,75 @@
         /**
          * Metodo que realiza la actualizacin de los atributos segun el evento a ejecutar
          * sobre la solicitud.
-         * @param  Active Record $modelInscripcion modelo de la entidad "sl-vehiculos".
+         * @param  Active Record $modelInscripcion modelo de la entidad "sl-propagandas".
          * Este modelo contiene los datos-detalles, referida a los datos cargados al momento de elaborar
          * la solicitud.
          * @return Boolean Retorna un true si todo se ejecuto satisfactoriamente, false
          * en caso contrario.
          */
         private function updateSolicitudInscripcion($modelInscripcion)
-        { 
-           // die('llego a solicitud inscripcion');
+        {
             $result = false;
             $cancel = false;            // Controla si el proceso se debe cancelar.
 
             // Se crea la instancia del modelo que contiene los campos que seran actualizados.
-            $model = New SlPropagandas();
+            $model = New InscripcionPropagandaForm();
             $tableName = $model->tableName();
-            //die(var_dump($tableName));
+
             // Se obtienen los campos que seran actualizados en la entidad "sl-".
             // Estos atributos ya vienen con sus datos cargados.
-            
-            $arregloDatos = self::atributosUpDateProcesarSolicitud($this->_evento);
-            //die(var_dump($arregloDatos));
+            $arregloCampos = $model->atributosUpDateProcesarSolicitud($this->_evento);
+            $arregloCampos['id_impuesto'] = $modelInscripcion['id_impuesto'];
 
             $camposModel = $modelInscripcion->toArray();
 
             // Se define el arreglo para el where conditon del update.
             $arregloCondicion['nro_solicitud'] = isset($camposModel['nro_solicitud']) ? $camposModel['nro_solicitud'] : null;
 
-            if ( count($arregloDatos) == 0 || count($arregloCondicion) == 0 ) { $cancel = true; }
+            if ( count($arregloCampos) == 0 || count($arregloCondicion) == 0 ) { $cancel = true; }
 
             // Si no existe en la solicitud un campo que viene del modelo que deba ser
             // actualizado, entonces el proceso debe ser cancelado.
             if ( !$cancel ) {
-                if($arregloDatos['estatus'] == 9)
-                {
-                    $result = $this->_conexion->modificarRegistro($this->_conn, $tableName,
-                                                              $arregloDatos, $arregloCondicion);
-                } elseif($arregloDatos['estatus'] == 1) {
-
-                    $tableNameMaster = 'propagandas';
-
-                    $arregloDatosMaster = [
-                                            
-                                            'id_contribuyente' => $camposModel['id_contribuyente'],
-                                            'ano_impositivo' => $camposModel['ano_impositivo'],
-                                            'direccion' => $camposModel['direccion'],
-                                            'id_cp' => $camposModel['id_cp'],
-                                            'clase_propaganda' => $camposModel['clase_propaganda'],
-                                            'tipo_propaganda' => $camposModel['tipo_propaganda'],
-                                            'uso_propaganda' => $camposModel['uso_propaganda'],
-                                            'medio_difusion' => $camposModel['medio_difusion'], 
-                                            'medio_transporte' => $camposModel['medio_transporte'], 
-                                            'fecha_desde' => $camposModel['fecha_desde'],
-                                            'cantidad_tiempo' => $camposModel['cantidad_tiempo'],
-                                            'id_tiempo' => $camposModel['id_tiempo'],
-                                            'inactivo' => $camposModel['inactivo'],
-                                            //die($camposModel['liquidado']),
-                                            'id_sim' => $camposModel['id_sim'],
-                                            'cantidad_base' => $camposModel['cantidad_base'],
-                                            'base_calculo' => $camposModel['base_calculo'],
-                                            'cigarros' => $camposModel['cigarros'],
-                                            'bebidas_alcoholicas' => $camposModel['bebidas_alcoholicas'],
-                                            'cantidad_propagandas' => $camposModel['cantidad_propagandas'],
-                                            'planilla' => $camposModel['planilla'],
-                                            'idioma' => $camposModel['idioma'],
-                                            'observacion' => $camposModel['observacion'],
-                                            'fecha_fin' => $camposModel['fecha_fin'],
-                                            'fecha_guardado' => $camposModel['fecha_guardado'],
-                                            'alto' => $camposModel['alto'],
-                                            'ancho' => $camposModel['ancho'],
-                                            'profundidad' => $camposModel['profundidad'],
-                                            'nombre_propaganda' => $camposModel['nombre_propaganda'],
-                                            'unidad' => $camposModel['unidad'],
-                                            
-
-
-                                         ];
-
-                                        // die(var_dump($arregloDatosMaster));
-
-                    $resultInsert = $this->_conexion->guardarRegistro($this->_conn, $tableNameMaster, $arregloDatosMaster);
-
-                    $result = $this->_conexion->modificarRegistro($this->_conn, $tableName,
-                                                              $arregloDatos, $arregloCondicion);
-
-                } else {
-                    if (!$result ) { self::setErrors(Yii::t('backend', 'Failed update request')); }
-                    return $result;
-                }
-                    
-            } 
+                $result = $this->_conexion->modificarRegistro($this->_conn,
+                                                              $tableName,
+                                                              $arregloCampos,
+                                                              $arregloCondicion);
+            }
 
             if (!$result ) { self::setErrors(Yii::t('backend', 'Failed update request')); }
             return $result;
         }
 
-    
+
+
+
+        /**
+         * Metodo que inserta en la entidad "propagandas"
+         * @param InscripcionPropaganda $modelInscripcion modelo de la entidad "sl-propagandas"
+         * @return boolean retorna true si inserta un registro false en caso contrario.
+         */
+        private function createPropaganda($modelInscripcion)
+        {
+            $idImpuesto = 0;
+            $result = false;
+            if ( $modelInscripcion['id_contribuyente'] == $this->_model->id_contribuyente ) {
+
+                $modelInscripcion->user_funcionario = Yii::$app->identidad->getUsuario();
+                $modelInscripcion->fecha_hora_proceso = date('Y-m-d H:i:s');
+
+                $searchPropaganda = New InscripcionPropagandaSearch($modelInscripcion['id_contribuyente']);
+                $idImpuesto = $searchPropaganda->guardarPropaganda($modelInscripcion, $this->_conexion, $this->_conn);
+                if ( $idImpuesto > 0 ) {
+                    $result = true;
+                }
+            }
+
+            return $idImpuesto;
+        }
+
+
+
     }
 
  ?>
