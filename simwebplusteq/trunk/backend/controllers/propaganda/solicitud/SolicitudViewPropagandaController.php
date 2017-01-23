@@ -61,7 +61,8 @@
 	use frontend\models\propaganda\solicitudes\SlPropagandasForm;
 	use yii\db\Query;
 	use common\models\propaganda\patrocinador\SlAnulacionesPatrocinadores;
-	//session_start();		// Iniciando session
+	use backend\models\propaganda\inscripcionpropaganda\InscripcionPropagandaSearch;
+
 
 
 	/**
@@ -74,7 +75,7 @@
 	{
 
 		private $model;
-		
+
 
 
 
@@ -111,11 +112,11 @@
 				} elseif ( $this->model->tipo_solicitud == 42 ) {
 
 					return self::actionMostarSolicitudDesincorporacionPropaganda();
-				
+
 				} elseif ($this->model->tipo_solicitud == 72){
-					
+
 					return self::actionMostarSolicitudAsignacionPatrocinadorPropaganda();
-				
+
 				} elseif ($this->model->tipo_solicitud == 74){
 
 					return self::actionMostrarSolicitudAnulacionPatrocinadorPropaganda();
@@ -124,7 +125,7 @@
 
 
 			 }
-		 	
+
 
 			return false;
 		}
@@ -147,24 +148,36 @@
 		 * 	- Esquema de esta vista:
 		 *  	* Nombre del campo : Valor del campo
 		 * nivel de aprobacion 3: Muestra inhabilitado los datos suministrados previamente y habilita
-		 * aquellos campos que no fueron cargados inicialmente.  
+		 * aquellos campos que no fueron cargados inicialmente.
 		 */
 		private function actionMostarSolicitudInscripcionPropaganda()
 		{
+			// if ( $this->model->nivel_aprobacion == 2 ) {
+			// 		$modelSearch = New SlPropagandasForm($this->model->id_contribuyente);
+			// 		$model = $modelSearch->findInscripcionPropaganda($this->model->nro_solicitud);
+
+			// 		return $this->render('/propaganda/solicitudes/inscripcion/view-solicitud-inscripcion-propaganda', [
+			// 										'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
+			// 										'model' => $model,
+
+
+			// 			]);
+			// }
+
+
 			if ( $this->model->nivel_aprobacion == 2 ) {
-					$modelSearch = New SlPropagandasForm($this->model->id_contribuyente);
-					$model = $modelSearch->findInscripcionPropaganda($this->model->nro_solicitud);
+					$modelSearch = New InscripcionPropagandaSearch($this->model->id_contribuyente);
+					$model = $modelSearch->findSolicitudInscripcionPropaganda($this->model->nro_solicitud);
 
-	//die(var_dump($model));
-
-
-					return $this->render('/propaganda/solicitudes/inscripcion/view-solicitud-inscripcion-propaganda', [
+					return $this->render('@backend/views/propaganda/inscripcion-propaganda/view-solicitud', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
 													'model' => $model,
-													
+
 
 						]);
 			}
+
+
 
 			return false;
 		}
@@ -186,7 +199,7 @@
 		 * 	- Esquema de esta vista:
 		 *  	* Nombre del campo : Valor del campo
 		 * nivel de aprobacion 3: Muestra inhabilitado los datos suministrados previamente y habilita
-		 * aquellos campos que no fueron cargados inicialmente.  
+		 * aquellos campos que no fueron cargados inicialmente.
 		 */
 		private function actionMostarSolicitudCambioDatosPropaganda()
 		{
@@ -228,20 +241,20 @@
 		 * 	- Esquema de esta vista:
 		 *  	* Nombre del campo : Valor del campo
 		 * nivel de aprobacion 3: Muestra inhabilitado los datos suministrados previamente y habilita
-		 * aquellos campos que no fueron cargados inicialmente.  
+		 * aquellos campos que no fueron cargados inicialmente.
 		 */
 		private function actionMostarSolicitudDesincorporacionPropaganda()
 		{
 			if ( $this->model->nivel_aprobacion == 2 ) {
 					$modelSearch = New SlPropagandasForm($this->model->id_contribuyente);
 					$model = $modelSearch->findDesincorporacionPropaganda($this->model->nro_solicitud);
-			
+
 
 
 					return $this->render('/propaganda/solicitudes/desincorporacion/view-solicitud-desincorporacion-propaganda', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
 													'model' => $model,
-												
+
 
 						]);
 			}
@@ -265,7 +278,7 @@
 		 * 	- Esquema de esta vista:
 		 *  	* Nombre del campo : Valor del campo
 		 * nivel de aprobacion 3: Muestra inhabilitado los datos suministrados previamente y habilita
-		 * aquellos campos que no fueron cargados inicialmente.  
+		 * aquellos campos que no fueron cargados inicialmente.
 		 */
 		private function actionMostarSolicitudAsignacionPatrocinadorPropaganda()
 		{
@@ -303,7 +316,7 @@
 		 * 	- Esquema de esta vista:
 		 *  	* Nombre del campo : Valor del campo
 		 * nivel de aprobacion 3: Muestra inhabilitado los datos suministrados previamente y habilita
-		 * aquellos campos que no fueron cargados inicialmente.  
+		 * aquellos campos que no fueron cargados inicialmente.
 		 */
 		private function actionMostrarSolicitudAnulacionPatrocinadorPropaganda()
 		{
@@ -331,17 +344,17 @@
 
 				$query = New Query();
 
-		
+
 
 			$model = $query->select('*')
 						 ->from('propagandas')
 					     ->Join('INNER JOIN', 'sl_propagandas_patrocinadores', 'sl_propagandas_patrocinadores.id_impuesto =  propagandas.id_impuesto')
 					     ->Join('INNER JOIN', 'contribuyentes', 'contribuyentes.id_contribuyente = sl_propagandas_patrocinadores.id_patrocinador')
-					     
+
 					     ->where(['sl_propagandas_patrocinadores.id_impuesto' => $idPropaganda])
 					     ->andWhere(['contribuyentes.id_contribuyente' => $idPatrocinador])
-					    
-					     
+
+
 					     ->all();
 
 			return $model;
@@ -354,17 +367,17 @@
 
 				$query = New Query();
 
-		
+
 
 			$model = $query->select('*')
 						 ->from('propagandas')
 					     ->Join('INNER JOIN', 'sl_anulaciones_patrocinadores', 'sl_anulaciones_patrocinadores.id_impuesto =  propagandas.id_impuesto')
 					     ->Join('INNER JOIN', 'contribuyentes', 'contribuyentes.id_contribuyente = sl_anulaciones_patrocinadores.id_patrocinador')
-					     
+
 					     ->where(['sl_anulaciones_patrocinadores.id_impuesto' => $idPropaganda])
 					     ->andWhere(['contribuyentes.id_contribuyente' => $idPatrocinador])
-					    
-					     
+
+
 					     ->all();
 
 					     //die(var_dump(expression))
@@ -379,16 +392,16 @@
 
 				$query = New Query();
 
-		
+
 
 			$model = $query->select('*')
 						 ->from('sl_propagandas_patrocinadores')
-					   
+
 					     ->where(['nro_solicitud' => $NroSolicitud])
 					     ->andWhere(['estatus' => 0])
-					     
-					    
-					     
+
+
+
 					     ->all();
 
 
@@ -405,7 +418,7 @@
 													'estatus' => 0,
 
 													])
-												
+
 												->all();
 												//die(var_dump($model));
 
@@ -423,7 +436,7 @@
 
 
 
-		
+
 
 
 
