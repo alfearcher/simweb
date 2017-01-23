@@ -480,14 +480,25 @@
 		{
 			$result = false;
 			if ( isset($postEnviado['nro_solicitud']) ) {
+
 				$cuerpoEmail = self::actionArmarCuerpoEmail($postEnviado['nro_solicitud'], $evento);
 				if ( trim($cuerpoEmail) !== '' ) {
 					// Obtuve un cuerpo de correo, ahora se manda a la clase para que lo envie al contribuyente.
 					$modelSolicitud = New SolicitudesContribuyenteForm();
 					$email = $modelSolicitud->getEmailContribuyente($postEnviado['id_contribuyente']);
 
-					$plantilla = New PlantillaEmail();
-					$result = $plantilla->plantillaSolicitudProcesada($email, $cuerpoEmail);
+					if ( isset($postEnviado['tipo_solicitud']) ) {
+						if ( $postEnviado['tipo_solicitud'] === "DECLARACION SUSTITUTIVA" && $evento == Yii::$app->solicitud->aprobar() ) {
+							$plantilla = New PlantillaEmail();
+							$result = $plantilla->plantillaSolicitudSustitutivaAprobada($email, $cuerpoEmail);
+						} else {
+							$plantilla = New PlantillaEmail();
+							$result = $plantilla->plantillaSolicitudProcesada($email, $cuerpoEmail);
+						}
+					} else {
+						$plantilla = New PlantillaEmail();
+						$result = $plantilla->plantillaSolicitudProcesada($email, $cuerpoEmail);
+					}
 				}
 			}
 			return $result;
