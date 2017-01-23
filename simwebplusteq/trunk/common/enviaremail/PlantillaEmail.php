@@ -189,7 +189,9 @@ anexo puede ser de carácter confidencial y es propiedad de la alcaldía del Mun
         $subject = 'Solicitud procesada';
         $textBody = 'Solicitudes Online';
 
-        $cuerpo2 =  'Estimado Contribuyente: '.'<br><br>' .
+        $contribuyente = self::busquedaTipoContribuyente();
+
+        $cuerpo2 =  'Estimado Contribuyente: '. $contribuyente .'<br><br>' .
                     'Su solicitud de Declaración Sustitutiva ha sido aceptada. Si del análisis realizado a los
                     documentos que soportan su requerimiento, resultare una diferencia a su favor, la Administración
                     Tributaria le notificará el reconocimiento del crédito fiscal y compensará, tras los trámites
