@@ -131,7 +131,7 @@
             $resumenPago = $pago->getResumenPagoDefinitiva($this->_año_impositivo, $this->_periodo);
 
             $listaConcepto = $pago->getListaPagoActEcon();
-
+            $data = [];
             foreach ( $listaConcepto as $c => $concepto ) {
                 if ( isset($resumenPago[$c]) ) {
                     $data[$concepto] = $resumenPago[$c];
