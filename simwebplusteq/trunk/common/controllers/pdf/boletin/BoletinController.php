@@ -130,9 +130,18 @@
             $pago->setIdContribuyente($this->_id_contribuyente);
             $resumenPago = $pago->getResumenPagoDefinitiva($this->_año_impositivo, $this->_periodo);
 
+            $listaConcepto = $pago->getListaPagoActEcon();
+
+            foreach ( $listaConcepto as $c => $concepto ) {
+                if ( isset($resumenPago[$c]) ) {
+                    $data[$concepto] = $resumenPago[$c];
+                }
+            }
+
             $htmlCobro = $this->renderPartial('@common/views/plantilla-pdf/boletin/definitiva/layout-cobro-anticipado-pdf',[
                                                             'resumen'=> $resumenPago,
                                                             'resumenDeuda' => $deudaSegunRubro,
+                                                            'data' => $data,
 
                                     ]);
 
