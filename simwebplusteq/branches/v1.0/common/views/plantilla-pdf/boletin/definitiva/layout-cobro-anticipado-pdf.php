@@ -58,7 +58,7 @@
 <?php
 
 	//$sumaImpuesto = $resumen['pagoEstimada'] + $resumen['pagoDefinitiva'] + $resumen['pagoAbono'] + $resumen['pagoRetencion'] + $resumen['pagoIndustria'];
-	$sumaImpuesto = $resumen['pagoEstimada'] + $resumen['pagoDefinitiva'] + $resumen['pagoAbono'] + $resumen['pagoIndustria'];
+	$sumaImpuesto = $resumen['pagoEstimada'] + $resumen['pagoNoEstimada'] + $resumen['pagoDefinitiva'] + $resumen['pagoAbono'] + $resumen['pagoIndustria'];
 	if ( $resumenDeuda >= $sumaImpuesto ) {
 		$subTotal = $resumenDeuda - $sumaImpuesto;
 	} else {
@@ -70,35 +70,44 @@
 <table repeat_header="1" cellpadding="1" cellspacing="1" width="100%" border="0">
 	<caption>ESPECIFICACIONES DE LOS COBROS ANTICIPADOS</caption>
 
+	<?php foreach ( $data as $concepto => $monto ) { ?>
+		<tr>
+			<td class="label-caption" colspan="5"><?=Html::encode($concepto); ?></td>
+			<td class="monto" colspan="5"><?=Html::encode(Yii::$app->formatter->asDecimal($monto, 2)); ?></td>
+		</tr>
+
+	<?php } ?>
+
+	<!-- <tr>
+		<td class="label-caption" colspan="5"><?//=Html::encode('TOTAL PAGOS POR ESTIMADA'); ?></td>
+		<td class="monto" colspan="5"><?//=Html::encode(Yii::$app->formatter->asDecimal($resumen['pagoEstimada'], 2)); ?></td>
+	</tr>
+
 	<tr>
-		<td class="label-caption" colspan="5"><?=Html::encode('TOTAL PAGOS POR ESTIMADA'); ?></td>
-		<td class="monto" colspan="5"><?=Html::encode(Yii::$app->formatter->asDecimal($resumen['pagoEstimada'], 2)); ?></td>
+		<td class="label-caption" colspan="5"><?//=Html::encode('TOTAL PAGOS COMPLEMENTARIOS'); ?></td>
+		<td class="monto" colspan="5"><?//=Html::encode(Yii::$app->formatter->asDecimal($resumen['pagoDefinitiva'], 2)); ?></td>
 	</tr>
 	<tr>
-		<td class="label-caption" colspan="5"><?=Html::encode('TOTAL PAGOS COMPLEMENTARIOS'); ?></td>
-		<td class="monto" colspan="5"><?=Html::encode(Yii::$app->formatter->asDecimal($resumen['pagoDefinitiva'], 2)); ?></td>
-	</tr>
-	<tr>
-		<td class="label-caption" colspan="5"><?=Html::encode('TOTAL PAGOS POR ABONOS Y/O SIMILARES'); ?></td>
-		<td class="monto" colspan="5"><?=Html::encode(Yii::$app->formatter->asDecimal($resumen['pagoAbono'], 2)); ?></td>
-	</tr>
+		<td class="label-caption" colspan="5"><?//=Html::encode('TOTAL PAGOS POR ABONOS Y/O SIMILARES'); ?></td>
+		<td class="monto" colspan="5"><//?=Html::encode(Yii::$app->formatter->asDecimal($resumen['pagoAbono'], 2)); ?></td>
+	</tr> -->
 	<!-- <tr>
 		<td class="label-caption" colspan="5"><?//=Html::encode('TOTAL PAGOS POR RETENCIONES Y/O RECONOCIMIENTOS'); ?></td>
 		<td class="monto" colspan="5"><?//=Html::encode(Yii::$app->formatter->asDecimal($resumen['pagoRetencion'], 2)); ?></td>
 	</tr> -->
-	<tr>
-		<td class="label-caption" colspan="5"><?=Html::encode('TOTAL PAGOS POR SEDE DE INDUSTRIA'); ?></td>
-		<td class="monto" colspan="5"><?=Html::encode(Yii::$app->formatter->asDecimal($resumen['pagoIndustria'], 2)); ?></td>
+	<!-- <tr>
+		<td class="label-caption" colspan="5"><?//=Html::encode('TOTAL PAGOS POR SEDE DE INDUSTRIA'); ?></td>
+		<td class="monto" colspan="5"><?//=Html::encode(Yii::$app->formatter->asDecimal($resumen['pagoIndustria'], 2)); ?></td>
 	</tr>
 
 	<tr>
-		<td class="label-total-pago" colspan="6"><?=Html::encode('TOTAL PAGOS PERIODO:'); ?></th>
-		<td class="monto-total-pago" colspan="4"><?=Html::encode(Yii::$app->formatter->asDecimal($sumaImpuesto, 2)); ?></td>
+		<td class="label-total-pago" colspan="6"><?//=Html::encode('TOTAL PAGOS PERIODO:'); ?></th>
+		<td class="monto-total-pago" colspan="4"><?//=Html::encode(Yii::$app->formatter->asDecimal($sumaImpuesto, 2)); ?></td>
 	</tr>
 	<tr>
-		<td class="label-causado" colspan="6"><?=Html::encode('TOTAL A PAGAR IMPUESTO CAUSADOS Y NO PAGADOS PERIODO:'); ?></th>
-		<td class="monto-causado" colspan="4"><?=Html::encode(Yii::$app->formatter->asDecimal($subTotal, 2)); ?></td>
-	</tr>
+		<td class="label-causado" colspan="6"><?//=Html::encode('TOTAL A PAGAR IMPUESTO CAUSADOS Y NO PAGADOS PERIODO:'); ?></th>
+		<td class="monto-causado" colspan="4"><?//=Html::encode(Yii::$app->formatter->asDecimal($subTotal, 2)); ?></td>
+	</tr> -->
 
 
 </table>
