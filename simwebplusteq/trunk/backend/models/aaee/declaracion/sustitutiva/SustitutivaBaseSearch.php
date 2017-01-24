@@ -446,7 +446,7 @@
 	     * 		[año] => año
 	     * }
 	     */
-	    public function getListaAnoRegistrado($tipoDeclaracion)
+	    public function getListaAnoRegistrado($tipoDeclaracion, $consulta = false)
 	    {
 	    	$listaAño = [];
 	    	$añoActual = date('Y');
@@ -455,34 +455,69 @@
 	    	$findModel = null;
 	    	if ( $tipoDeclaracion == 1 ) {		// Estimada
 
-		    	$findModel = ActEcon::find()->distinct('ano_impositivo')
-		    								->where('id_contribuyente =:id_contribuyente',
-		    	 										['id_contribuyente' => $this->_id_contribuyente])
-		    			  				    ->andWhere('estatus =:estatus', [':estatus' => 0])
-		    			  				    ->andWhere('inactivo =:inactivo', [':inactivo' => 0])
-		    			  				    ->andWhere('bloqueado =:bloqueado', [':bloqueado' => 0])
-		    							    ->andWhere(['BETWEEN', 'ano_impositivo', $añoActual, $añoActual])
-		    							    ->joinWith('actividadDetalle', false, 'INNER JOIN')
-		    							    ->orderBy([
-		    							   		'ano_impositivo' => SORT_ASC,
-		    							   	])
-		    							    ->all();
+	    		if ( !$consulta ) {
+
+			    	$findModel = ActEcon::find()->distinct('ano_impositivo')
+			    								->where('id_contribuyente =:id_contribuyente',
+			    	 										['id_contribuyente' => $this->_id_contribuyente])
+			    			  				    ->andWhere('estatus =:estatus', [':estatus' => 0])
+			    			  				    ->andWhere('inactivo =:inactivo', [':inactivo' => 0])
+			    			  				    ->andWhere('bloqueado =:bloqueado', [':bloqueado' => 0])
+			    							    ->andWhere(['BETWEEN', 'ano_impositivo', $añoActual, $añoActual])
+			    							    ->joinWith('actividadDetalle', false, 'INNER JOIN')
+			    							    ->orderBy([
+			    							   		'ano_impositivo' => SORT_ASC,
+			    							   	])
+			    							    ->all();
+			    } else {
+
+			    	$findModel = ActEcon::find()->distinct('ano_impositivo')
+			    								->where('id_contribuyente =:id_contribuyente',
+			    	 										['id_contribuyente' => $this->_id_contribuyente])
+			    			  				    ->andWhere('estatus =:estatus', [':estatus' => 0])
+			    			  				    ->andWhere('inactivo =:inactivo', [':inactivo' => 0])
+			    			  				    ->andWhere('bloqueado =:bloqueado', [':bloqueado' => 0])
+			    							    ->andWhere(['BETWEEN', 'ano_impositivo', $añoLimite, $añoActual])
+			    							    ->joinWith('actividadDetalle', false, 'INNER JOIN')
+			    							    ->orderBy([
+			    							   		'ano_impositivo' => SORT_ASC,
+			    							   	])
+			    							    ->all();
+
+			    }
 
 		    } elseif ( $tipoDeclaracion == 2 ) {	// Definitiva
 
-		    	$findModel = ActEcon::find()->distinct('ano_impositivo')
-		    								->where('id_contribuyente =:id_contribuyente',
-		    	 										['id_contribuyente' => $this->_id_contribuyente])
-		    			  				    ->andWhere('estatus =:estatus', [':estatus' => 0])
-		    			  				    ->andWhere('inactivo =:inactivo', [':inactivo' => 0])
-		    			  				    ->andWhere('bloqueado =:bloqueado', [':bloqueado' => 0])
-		    							    ->andWhere(['BETWEEN', 'ano_impositivo', $añoActual - 1, $añoActual - 1])
-		    							    ->joinWith('actividadDetalle', false, 'INNER JOIN')
-		    							    ->orderBy([
-		    							   		'ano_impositivo' => SORT_ASC,
-		    							   	])
-		    							    ->all();
+		    	if ( !$consulta ) {
 
+			    	$findModel = ActEcon::find()->distinct('ano_impositivo')
+			    								->where('id_contribuyente =:id_contribuyente',
+			    	 										['id_contribuyente' => $this->_id_contribuyente])
+			    			  				    ->andWhere('estatus =:estatus', [':estatus' => 0])
+			    			  				    ->andWhere('inactivo =:inactivo', [':inactivo' => 0])
+			    			  				    ->andWhere('bloqueado =:bloqueado', [':bloqueado' => 0])
+			    							    ->andWhere(['BETWEEN', 'ano_impositivo', $añoActual - 1, $añoActual - 1])
+			    							    ->joinWith('actividadDetalle', false, 'INNER JOIN')
+			    							    ->orderBy([
+			    							   		'ano_impositivo' => SORT_ASC,
+			    							   	])
+			    							    ->all();
+			    } else {
+
+			    	$findModel = ActEcon::find()->distinct('ano_impositivo')
+			    								->where('id_contribuyente =:id_contribuyente',
+			    	 										['id_contribuyente' => $this->_id_contribuyente])
+			    			  				    ->andWhere('estatus =:estatus', [':estatus' => 0])
+			    			  				    ->andWhere('inactivo =:inactivo', [':inactivo' => 0])
+			    			  				    ->andWhere('bloqueado =:bloqueado', [':bloqueado' => 0])
+			    							    ->andWhere(['BETWEEN', 'ano_impositivo', $añoLimite, $añoActual - 1])
+			    							    ->joinWith('actividadDetalle', false, 'INNER JOIN')
+			    							    ->orderBy([
+			    							   		'ano_impositivo' => SORT_ASC,
+			    							   	])
+			    							    ->all();
+
+			    }
 
 		    }
 
