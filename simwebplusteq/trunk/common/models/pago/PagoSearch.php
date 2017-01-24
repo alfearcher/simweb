@@ -518,7 +518,7 @@
 		{
 			return $listaPagos = [
 						'pagoEstimada' => 'TOTAL PAGOS POR ESTIMADA',
-						'pagoNoEstimada' => 'TOTAL PERIODOS NO PAGOS POR ESTIMADA',
+						'pagoNoEstimada' => 'TOTAL PERIODOS ESTIMADA NO PAGADOS',
 						'pagoDefinitiva' => 'TOTAL PAGOS COMPLEMENTARIOS',
 						'pagoAbono' => 'TOTAL PAGOS POR ABONOS Y/O SIMILARES',
 						'pagoRetencion' => 'TOTAL PAGOS POR RETENCIONES Y/O RECONOCIMIENTOS',
