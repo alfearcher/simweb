@@ -57,7 +57,7 @@
 	use backend\models\aaee\declaracion\DeclaracionBaseSearch;
 	use common\models\planilla\PagoDetalle;
 	use common\models\pago\PagoSearch;
-
+	use common\models\calculo\liquidacion\aaee\LiquidacionActividadEconomica;
 
 
 	/**
@@ -165,11 +165,14 @@
 
 		    	foreach ( $resultados as $rs ) {
 
-		    		$existe = self::existePlanillaDefinitiva((int)$rs['ano_impositivo'], 1);
+		    		if ( self::existeDiferenciaDefinitivaEstimada((int)$rs['ano_impositivo'], 1) ) {
 
-		    		if ( !$existe ) {
-		    			$mensaje[] = Yii::t('backend', 'Falta por liquidar el laspo ' . $rs['ano_impositivo'] . ' - ' . 1);
-		    		}
+		    			$existe = self::existePlanillaDefinitiva((int)$rs['ano_impositivo'], 1);
+
+			    		if ( !$existe ) {
+			    			$mensaje[] = Yii::t('backend', 'Falta por liquidar el laspo ' . $rs['ano_impositivo'] . ' - ' . 1);
+			    		}
+			    	}
 		    	}
 		    }
 
@@ -452,6 +455,35 @@
 											 ->exists();
 
 		}
+
+
+
+
+		/**
+		 * Metodo que permite detreminar si existe diferencias entre la liquidacion definitiva
+		 * y la liquidacion estimada de un año-periodo especifico.
+		 * @return boolean retorna true o false.
+		 */
+		private function existeDiferenciaDefinitivaEstimada($añoImpositivo, $periodo)
+		{
+			$liqEstimada = 0;
+			$liqDefinitiva = 0;
+			$diferencia = 0;
+			$existe = false;
+			$liquidacion = New LiquidacionActividadEconomica($this->_id_contribuyente);
+
+			$liqEstimada = $liquidacion->iniciarCalcularLiquidacion($añoImpositivo, $periodo, 'estimado');
+			$liqDefinitiva = $liquidacion->iniciarCalcularLiquidacion($añoImpositivo, $periodo, 'reales');
+
+			$diferencia = $liqDefinitiva - $liqEstimada;
+			if ( $diferencia > 0 ) {
+				$existe = true;
+			}
+
+			return $existe;
+		}
+
+
 
 
 
