@@ -184,22 +184,22 @@
 		        		// ],
 
 		        // 		//	PROPAGANDA COMERCIAL
-		        // 		['label' => Icon::show('fa fa-file-powerpoint-o',['class' => $typeLong], $typeIcon) . '&nbsp; Propaganda Comercial',
-		        // 			'items' => [
-		        // 						['label' => 'Inscripción de Propagandas', 'url' => ['/propaganda/crearpropaganda/crear-propaganda/crear-propaganda'	, 'id' => 75]],
-		        // 						['label' => 'Cambio de Otros Datos de Propaganda', 'url' => ['/propaganda/modificarpropaganda/modificar-propaganda/vista-seleccion', 'id' => 84]],
-		        // 						//['label' => 'Renovación de Propagandas', 'url' => '#'],
-		        // 						['label' => 'Desincorporación de Propaganda', 'url' => ['propaganda/desincorporarpropaganda/desincorporar-propaganda/vista-seleccion', 'id' => 97]],
+		        		['label' => Icon::show('fa fa-file-powerpoint-o',['class' => $typeLong], $typeIcon) . '&nbsp; Propaganda Comercial',
+		        			'items' => [
+		        						['label' => 'Inscripción de Propagandas', 'url' => ['/propaganda/inscripcionpropaganda/inscripcion-propaganda/index', 'id' => 75]],
+		        						//['label' => 'Cambio de Otros Datos de Propaganda', 'url' => ['/propaganda/modificarpropaganda/modificar-propaganda/vista-seleccion', 'id' => 84]],
+		        						//['label' => 'Renovación de Propagandas', 'url' => '#'],
+		        						//['label' => 'Desincorporación de Propaganda', 'url' => ['propaganda/desincorporarpropaganda/desincorporar-propaganda/vista-seleccion', 'id' => 97]],
 
-		        // 						['label' => 'Asignar Patrocinador', 'url' => ['propaganda/patrocinador/asignar-patrocinador-propaganda/seleccion', 'id' => 102]],
+		        						//['label' => 'Asignar Patrocinador', 'url' => ['propaganda/patrocinador/asignar-patrocinador-propaganda/seleccion', 'id' => 102]],
 
-										// ['label' => 'Anular Patrocinador', 'url' => ['propaganda/patrocinador/anular-patrocinador-propaganda/seleccion', 'id' => 109]],
+										//['label' => 'Anular Patrocinador', 'url' => ['propaganda/patrocinador/anular-patrocinador-propaganda/seleccion', 'id' => 109]],
 
-		        // 						['label' => 'Catalogo', 'url' => ['propaganda/catalogo/catalogo-propaganda/vista-catalogo-propaganda']],
+		        						//['label' => 'Catalogo', 'url' => ['propaganda/catalogo/catalogo-propaganda/vista-catalogo-propaganda']],
 
-		        // 						//['label' => 'Solvencia', 'url' => '#'],
-		        // 			]
-		        // 		],
+		        						//['label' => 'Solvencia', 'url' => '#'],
+		        			]
+		        		],
 
 		        		//	ESPECTACULO PUBLICO
 		        		// ['label' => Icon::show('fa fa-cubes',['class' => $typeLong], $typeIcon) . '&nbsp; Espectaculo Publico',
