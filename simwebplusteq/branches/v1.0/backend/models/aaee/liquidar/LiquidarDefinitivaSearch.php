@@ -386,13 +386,19 @@
 
 
 		/***/
-		public function getResumenPagos()
+		public function getResumenPagos($añoImpositivo = 0, $periodo = 0)
 		{
 			$data = [];
 			$pagoSearch = New PagoSearch();
 			$pagoSearch->setIdContribuyente($this->_id_contribuyente);
 
-			$resumen = $pagoSearch->getResumenPagoDefinitiva($this->_ano_impositivo, $this->_periodo);
+			if ( $añoImpositivo == 0 ) {
+
+				$resumen = $pagoSearch->getResumenPagoDefinitiva($this->_ano_impositivo, $this->_periodo);
+
+			} else {
+				$resumen = $pagoSearch->getResumenPagoDefinitiva($añoImpositivo, $periodo);
+			}
 
 			$listaPagos = $pagoSearch->getListaPagoActEcon();
 
@@ -464,21 +470,36 @@
 		 * y la liquidacion estimada de un año-periodo especifico.
 		 * @return boolean retorna true o false.
 		 */
-		private function existeDiferenciaDefinitivaEstimada($añoImpositivo, $periodo)
+		public function existeDiferenciaDefinitivaEstimada($añoImpositivo, $periodo)
 		{
 			$liqEstimada = 0;
 			$liqDefinitiva = 0;
+			$suma = 0;
 			$diferencia = 0;
 			$existe = false;
+
+			// Para calcular lo pagdo por estimada
+			$diferenciaEstimadaPagoEstimada;
+
 			$liquidacion = New LiquidacionActividadEconomica($this->_id_contribuyente);
+			// Monto calculado por definitiva del laspo.
+			$liquidacion->iniciarCalcularLiquidacion($añoImpositivo, $periodo, 'reales');
+			$liqDefinitiva = round($liquidacion->getCalculoAnual(), 2);
 
-			$liqEstimada = $liquidacion->iniciarCalcularLiquidacion($añoImpositivo, $periodo, 'estimado');
-			$liqDefinitiva = $liquidacion->iniciarCalcularLiquidacion($añoImpositivo, $periodo, 'reales');
+			// Monto calculado por estimada del lapso
+			$liquidacion->iniciarCalcularLiquidacion($añoImpositivo, $periodo, 'estimado');
+			$liqEstimada = round($liquidacion->getCalculoAnual(), 2);
 
-			$diferencia = $liqDefinitiva - $liqEstimada;
-			if ( $diferencia > 0 ) {
-				$existe = true;
-			}
+			// Resumen de los pagos por conceptos. Se recibe un arreglo donde el indice del arreglo
+			// es un concepto u el valor del elemento es el monto de lo pagado por ese concepto.
+			$pagos = self::getResumenPagos($añoImpositivo, $periodo);
+
+			// Se contabiliza los pagos.
+			$suma = self::sumaPago($pagos);
+
+			$diferencia = $liqDefinitiva - $suma;
+
+			if ( $diferencia > 0 ) { $existe = true;}
 
 			return $existe;
 		}
