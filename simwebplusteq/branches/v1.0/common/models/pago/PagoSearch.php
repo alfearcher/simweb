@@ -500,6 +500,7 @@
 
 			$resumen = [
 				'pagoEstimada' => self::getContabilizarPagoPorEstimada($añoImpositivo, $periodo),
+				'pagoNoEstimada' => 0,
 				'pagoDefinitiva' => self::getContabilizarPagoPorDefinitiva($añoImpositivo, $periodo),
 				'pagoAbono' => self::getContabilizarPagoAbonoActEconomica($añoImpositivo),
 				'pagoRetencion' => 0,
@@ -517,6 +518,7 @@
 		{
 			return $listaPagos = [
 						'pagoEstimada' => 'TOTAL PAGOS POR ESTIMADA',
+						'pagoNoEstimada' => 'TOTAL PERIODOS ESTIMADA NO PAGADOS',
 						'pagoDefinitiva' => 'TOTAL PAGOS COMPLEMENTARIOS',
 						'pagoAbono' => 'TOTAL PAGOS POR ABONOS Y/O SIMILARES',
 						'pagoRetencion' => 'TOTAL PAGOS POR RETENCIONES Y/O RECONOCIMIENTOS',
