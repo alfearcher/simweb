@@ -58,7 +58,7 @@
 <?php
 
 	//$sumaImpuesto = $resumen['pagoEstimada'] + $resumen['pagoDefinitiva'] + $resumen['pagoAbono'] + $resumen['pagoRetencion'] + $resumen['pagoIndustria'];
-	$sumaImpuesto = $resumen['pagoEstimada'] + $resumen['pagoDefinitiva'] + $resumen['pagoAbono'] + $resumen['pagoIndustria'];
+	$sumaImpuesto = $resumen['pagoEstimada'] + $resumen['pagoNoEstimada'] + $resumen['pagoDefinitiva'] + $resumen['pagoAbono'] + $resumen['pagoIndustria'];
 	if ( $resumenDeuda >= $sumaImpuesto ) {
 		$subTotal = $resumenDeuda - $sumaImpuesto;
 	} else {
