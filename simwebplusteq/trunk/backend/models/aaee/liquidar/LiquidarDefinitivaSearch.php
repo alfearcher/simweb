@@ -470,23 +470,25 @@
 		 * y la liquidacion estimada de un año-periodo especifico.
 		 * @return boolean retorna true o false.
 		 */
-		private function existeDiferenciaDefinitivaEstimada($añoImpositivo, $periodo)
+		public function existeDiferenciaDefinitivaEstimada($añoImpositivo, $periodo)
 		{
 			$liqEstimada = 0;
 			$liqDefinitiva = 0;
 			$suma = 0;
 			$diferencia = 0;
-			$existe = true;
+			$existe = false;
 
 			// Para calcular lo pagdo por estimada
 			$diferenciaEstimadaPagoEstimada;
 
 			$liquidacion = New LiquidacionActividadEconomica($this->_id_contribuyente);
 			// Monto calculado por definitiva del laspo.
-			$liqDefinitiva = $liquidacion->iniciarCalcularLiquidacion($añoImpositivo, $periodo, 'reales');
+			$liquidacion->iniciarCalcularLiquidacion($añoImpositivo, $periodo, 'reales');
+			$liqDefinitiva = round($liquidacion->getCalculoAnual(), 2);
 
 			// Monto calculado por estimada del lapso
-			$liqEstimada = $liquidacion->iniciarCalcularLiquidacion($añoImpositivo, $periodo, 'estimado');
+			$liquidacion->iniciarCalcularLiquidacion($añoImpositivo, $periodo, 'estimado');
+			$liqEstimada = round($liquidacion->getCalculoAnual(), 2);
 
 			// Resumen de los pagos por conceptos. Se recibe un arreglo donde el indice del arreglo
 			// es un concepto u el valor del elemento es el monto de lo pagado por ese concepto.
