@@ -44,6 +44,9 @@ return [
 	'900' => [Yii::t('backend', 'Register not valid'), 'danger', 'fa fa-times'],
 	'910' => [Yii::t('backend', 'Saving data not detected'), 'danger', 'fa fa-times'],
 	'920' => [Yii::t('backend', 'Error. The operation was not executed'), 'danger', 'fa fa-times'],
+	'921' => [Yii::t('backend', 'El inmueble ya posee avaluo para el año actual'), 'danger', 'fa fa-times'],
+	'922' => [Yii::t('backend', 'El inmueble no posee datos de propiedad. Realice la solicitud DATOS DE REGISTRO DE PROPIEDAD'), 'danger', 'fa fa-times'],
+
 	'930' => [Yii::t('backend', 'Taxpayer type was not defined'), 'danger', 'fa fa-times'],
 	'932' => [Yii::t('backend', 'Taxpayer not defined'), 'danger', 'fa fa-times'],
 	'934' => [Yii::t('backend', 'Type of taxpayer incorrect'), 'danger', 'fa fa-times'],
@@ -104,6 +107,11 @@ return [
 	'510' => [Yii::t('frontend', 'El inmueble no presenta historico de solvencias'), 'warning', 'fa fa-info-circle'],
 
 	'520' => [Yii::t('frontend', 'No presenta historico de licencias'), 'warning', 'fa fa-info-circle'],
+
+	'515' => [Yii::t('frontend', 'No presenta propagandas activos registrados'), 'warning', 'fa fa-info-circle'],
+
+	'600' => [Yii::t('frontend', 'No se ejecuto la liquidación'), 'warning', 'fa fa-info-circle'],
+
 ]
 
 
