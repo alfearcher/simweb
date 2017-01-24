@@ -56,6 +56,8 @@
 	class Tasa extends ActiveRecord
 	{
 
+		public $codigosub;
+
 		/**
 		 *	Metodo que retorna el nombre de la base de datos donde se tiene la conexion actual.
 		 * 	Utiliza las propiedades y metodos de Yii2 para traer dicha informacion.
