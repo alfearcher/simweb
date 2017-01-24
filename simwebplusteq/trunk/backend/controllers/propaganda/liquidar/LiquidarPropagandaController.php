@@ -43,7 +43,7 @@
  */
 
 
- 	namespace frontend\controllers\propaganda\liquidar;
+ 	namespace backend\controllers\propaganda\liquidar;
 
 
  	use Yii;
@@ -144,7 +144,7 @@
 													'url' => $url,
 								]);
 				} else {
-					return $this->redirect(['error-operacion', 'cod' => 509]);
+					return $this->redirect(['error-operacion', 'cod' => 515]);
 
 				}
 
