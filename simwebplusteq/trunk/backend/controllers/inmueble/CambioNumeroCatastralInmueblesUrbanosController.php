@@ -170,7 +170,17 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
                   //no posee registros de inmueble
                   
                 } 
-          } 
+          }
+
+           $verificarSolicitud = self::verificarSolicitud($datosInmueble['id_impuesto'] , $_SESSION['id']);
+           if($verificarSolicitud == true){
+                
+                return MensajeController::actionMensaje(923);                
+                          
+            }
+
+
+
         return $this->render('view', [
             'modelInmueble' => $datosInmueble, 'modelHAvaluos' => $value,
         ]);
@@ -510,22 +520,7 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
 
      } 
 
-      public function verificarSolicitud($idInmueble,$idConfig)
-    {
-      $buscar = SolicitudesContribuyente::find()
-                                        ->where([ 
-                                          'id_impuesto' => $idInmueble,
-                                          'id_config_solicitud' => $idConfig,
-                                          'inactivo' => 0,
-                                        ])
-                                      ->all();
-
-            if($buscar == true){
-             return true;
-            }else{
-             return false;
-            }
-    }
+     
     /**
      * [DatosContribuyente] metodo que busca los datos del contribuyente en 
      * la tabla contribuyente
@@ -604,6 +599,29 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
 
       return $result;
 
+    }
+
+    /**
+    * [verificarSolicitud description]
+    * @param  [type] $idInmueble [description] datos del inmueble 
+    * @param  [type] $idConfig   [description] id configuracion de la solicuitud de desincorporacion del inmueble
+    * @return [type]             [description]
+    */
+     public function verificarSolicitud($idInmueble,$idConfig)
+    {
+      $buscar = SolicitudesContribuyente::find()
+                                        ->where([ 
+                                          'id_impuesto' => $idInmueble,
+                                          'id_config_solicitud' => $idConfig,
+                                          'inactivo' => 0,
+                                        ])
+                                      ->all();
+
+            if($buscar == true){
+             return true;
+            }else{
+             return false;
+            }
     }
 
     /**

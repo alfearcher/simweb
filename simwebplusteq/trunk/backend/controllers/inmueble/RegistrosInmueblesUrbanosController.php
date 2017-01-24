@@ -88,6 +88,7 @@ use common\models\configuracion\solicitud\ParametroSolicitud;
 use common\models\configuracion\solicitud\DocumentoSolicitud;
 use common\models\contribuyente\ContribuyenteBase;
 use common\models\configuracion\solicitud\SolicitudProcesoEvento;
+use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 session_start();
 /*********************************************************************************************************
  * InscripcionInmueblesUrbanosController implements the actions for InscripcionInmueblesUrbanosForm model.
@@ -189,6 +190,12 @@ class RegistrosInmueblesUrbanosController extends Controller
                 } 
           } 
 
+           $verificarSolicitud = self::verificarSolicitud($datosInmueble['id_impuesto'] , $_SESSION['id']);
+           if($verificarSolicitud == true){
+                
+                return MensajeController::actionMensaje(923);                
+                          
+            } 
          
                                      
 
@@ -794,6 +801,29 @@ class RegistrosInmueblesUrbanosController extends Controller
          return $buscar[0];                                              
 
      }
+
+    /**
+    * [verificarSolicitud description]
+    * @param  [type] $idInmueble [description] datos del inmueble 
+     * @param  [type] $idConfig   [description] id configuracion de la solicuitud de desincorporacion del inmueble
+    * @return [type]             [description]
+    */
+     public function verificarSolicitud($idInmueble,$idConfig)
+    {
+      $buscar = SolicitudesContribuyente::find()
+                                        ->where([ 
+                                          'id_impuesto' => $idInmueble,
+                                          'id_config_solicitud' => $idConfig,
+                                          'inactivo' => 0,
+                                        ])
+                                      ->all();
+
+            if($buscar == true){
+             return true;
+            }else{
+             return false;
+            }
+    }
 
     /**
      * [DatosConfiguracionTiposSolicitudes description] metodo que busca el tipo de solicitud en 

@@ -114,6 +114,13 @@ class CambioAPropiedadHorizontalInmueblesUrbanosController extends Controller
                                             ->one();
           $_SESSION['datos'] = $datos;
 
+          $verificarSolicitud = self::verificarSolicitud($datos['id_impuesto'] , $_SESSION['id']);
+          if($verificarSolicitud == true){
+                
+              return MensajeController::actionMensaje(923);                
+                          
+          }
+
         return $this->render('view', [
             'model' => $datos,
         ]);
