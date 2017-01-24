@@ -140,7 +140,7 @@
 	        	//   'date',
 	        	//   'message' => Yii::t('frontend','formatted date no valid')],
 	          	['fecha_hora', 'default', 'value' => date('Y-m-d H:i:s')],
-	          	['num_reg', 'unique'],
+	          	//['num_reg', 'unique'],
 	          	['capital', 'default', 'value' => 0],
 	     		['estatus', 'default', 'value' => 0],
 	     		['fecha_hora_proceso', 'default', 'value' => date('Y-m-d H:i:s', strtotime('0000-00-00 00:00:00'))],
