@@ -66,9 +66,11 @@
     use common\models\contribuyente\ContribuyenteBase;
     use backend\models\TiposPropaganda;
     use common\models\presupuesto\nivelespresupuesto\NivelesContables;
-   
+    use backend\models\tasa\Tasa;
+
     class CodigosContables extends ActiveRecord
     {
+        public $cod;
 
         public static function getDb()
         {
@@ -100,14 +102,20 @@
         }
 
 
-     
-        
+        /**
+         * Relacion eon la entidad "varios"
+         * @return Tasa
+         */
+        public function getTasa()
+        {
+            return $this->hasOne(Tasa::className(), ['id_codigo' => 'id_codigo']);
+        }
 
 
 
 
-  
-    
+
+
  }
 
 
