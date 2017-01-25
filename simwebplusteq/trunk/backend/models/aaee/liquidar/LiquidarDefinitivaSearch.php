@@ -170,7 +170,7 @@
 		    			$existe = self::existePlanillaDefinitiva((int)$rs['ano_impositivo'], 1);
 
 			    		if ( !$existe ) {
-			    			$mensaje[] = Yii::t('backend', 'Falta por liquidar el laspo ' . $rs['ano_impositivo'] . ' - ' . 1);
+			    			$mensaje[] = Yii::t('backend', 'Falta por liquidar el lapso ' . $rs['ano_impositivo'] . ' - ' . 1);
 			    		}
 			    	}
 		    	}
