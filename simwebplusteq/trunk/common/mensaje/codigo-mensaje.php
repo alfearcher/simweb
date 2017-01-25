@@ -46,6 +46,7 @@ return [
 	'920' => [Yii::t('backend', 'Error. The operation was not executed'), 'danger', 'fa fa-times'],
 	'921' => [Yii::t('backend', 'El inmueble ya posee avaluo para el año actual'), 'danger', 'fa fa-times'],
 	'922' => [Yii::t('backend', 'El inmueble no posee datos de propiedad. Realice la solicitud DATOS DE REGISTRO DE PROPIEDAD'), 'danger', 'fa fa-times'],
+	'923' => [Yii::t('backend', 'El inmueble ya posee una solicitud pendiente por procesar de este tipo.'), 'danger', 'fa fa-times'],
 
 	'930' => [Yii::t('backend', 'Taxpayer type was not defined'), 'danger', 'fa fa-times'],
 	'932' => [Yii::t('backend', 'Taxpayer not defined'), 'danger', 'fa fa-times'],
