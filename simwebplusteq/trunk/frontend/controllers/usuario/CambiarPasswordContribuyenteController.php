@@ -291,7 +291,7 @@ class CambiarPasswordContribuyenteController extends Controller
 
     public function actionOcultarVariable($id)
     {
-      //  die($id);
+        die($id);
      
         Session::actionDeleteSession(['idContribuyente']);
 
