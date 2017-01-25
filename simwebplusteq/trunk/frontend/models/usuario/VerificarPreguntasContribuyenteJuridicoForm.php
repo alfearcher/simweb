@@ -211,7 +211,7 @@ class VerificarPreguntasContribuyenteJuridicoForm extends CrearUsuarioNatural
                               
                                 ])
                                 ->all();
-die('llego aqui a buscar pregunta'.var_dump($validarPreguntaSeguridad));
+
             if($validarPreguntaSeguridad != null){
                 
                 return $validarPreguntaSeguridad;  
