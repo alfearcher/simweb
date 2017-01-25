@@ -54,6 +54,7 @@
 	use yii\data\ActiveDataProvider;
 	use common\models\ordenanza\OrdenanzaBase;
 	use backend\models\inmueble\liquidar\Liquidar;
+	use backend\models\inmueble\avaluo\HistoricoAvaluoSearch;
 
 
 
@@ -71,7 +72,6 @@
 
 		protected $id_contribuyente;
 
-		//const IMPUESTO = 2;
 
 
 
@@ -164,6 +164,13 @@
 					$unidad = '' ;
 					$condicion = '';
 
+					$bloquear = 0;
+					$observacion = '';
+					if ( !self::existeAvaluoActual($model['id_impuesto']) ) {
+						$bloquear = 1;
+						$observacion = 'NO SE ENCONTRO EL AVALUO ' . date('Y');
+					}
+
 					$ultimo = self::getUltimoLapsoLiquidado($model['id_impuesto']);
 					if ( count($ultimo) > 0 ) {
 						$planilla = $ultimo['pagos']['planilla'];
@@ -184,6 +191,8 @@
 								'periodo' => $periodo,
 								'unidad' => $unidad,
 								'condicion' => $condicion,
+								'bloquear' => $bloquear,
+								'observacion' => $observacion,
 					];
 				}
 
@@ -285,7 +294,11 @@
 
 
 
-		/***/
+		/**
+		 * [getDataProviderDetalleLiquidacion description]
+		 * @param  [type] $detalles [description]
+		 * @return [type]           [description]
+		 */
 		public function getDataProviderDetalleLiquidacion($detalles)
 		{
 			return $provider = New ArrayDataProvider([
@@ -294,6 +307,45 @@
 							]);
 		}
 
+
+
+
+		/**
+		 * Metodo ue permite determinar si existe un avaluo para el año actual.
+		 * @param  integer $idImpuesto identificador del inmueble.
+		 * @return boolean retorna true si existe, false en caso contrario.
+		 */
+		public function existeAvaluoActual($idImpuesto)
+		{
+			$existe = false;
+			$añoActual = (int)date('Y');
+			$avaluo = self::getAvaluoSegunAnoImpositivo($añoActual, $idImpuesto);
+			if ( count($avaluo) > 0 ) {
+				if ( (int)$avaluo['ano_impositivo'] == $añoActual ) {
+					$existe = true;
+				}
+			}
+
+			return $existe;
+		}
+
+
+
+
+
+		/**
+		 * Metodo que permite obtener el avaluo de un inmueble segun el año impositivo.
+		 * La estructura retornada es un arraeglo con la informacion de la entidad "historico-avaluos"
+		 * @param  integer $añoImpositivo año impositivo especifico.
+		 * @param  integer $idImpuesto identificador del inmueble.
+		 * @return array retorna una arreglo con los datos del avaluo.
+		 */
+		public function getAvaluoSegunAnoImpositivo($añoImpositivo, $idImpuesto)
+		{
+			$searchAvaluo = New HistoricoAvaluoSearch($this->id_contribuyente, $idImpuesto);
+			return $avaluo = $searchAvaluo->getUltimoAvaluoSegunAnoImpositivo($añoImpositivo);
+
+		}
 
 
 
