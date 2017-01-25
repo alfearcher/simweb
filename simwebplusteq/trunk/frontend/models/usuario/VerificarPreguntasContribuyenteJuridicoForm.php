@@ -201,7 +201,7 @@ class VerificarPreguntasContribuyenteJuridicoForm extends CrearUsuarioNatural
      */
     public function buscarPreguntaSeguridadJuridico($id)
     {
-       die('llego aqui a buscar pregunta');
+       
         $validarPreguntaSeguridad = PreguntaSeguridadContribuyente::find() 
                                 ->where([
                                 
