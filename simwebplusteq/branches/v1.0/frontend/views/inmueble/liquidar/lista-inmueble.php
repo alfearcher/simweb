@@ -95,6 +95,11 @@
 								'headerRowOptions' => [
 									'class' => 'success',
 								],
+								'rowOptions' => function($model) {
+					            	if ( $model['bloquear'] == 1 ) {
+					                	return [ 'class' => 'warning'];
+					               	}
+					            },
 								'tableOptions' => [
                     				'class' => 'table table-hover table-bordered',
               					],
@@ -105,6 +110,13 @@
 				                        'class' => 'yii\grid\CheckboxColumn',
 				                        'name' => 'chkIdImpuesto',
 				                        'multiple' => false,
+				                        'checkboxOptions' => function ($model, $key, $index, $column) {
+				                        	if ( $model['bloquear'] == 1 ) {
+					                			return [
+					                				'disabled' => 'disabled',
+					                			];
+					               			}
+				                        }
 				                    ],
 				                    [
 				                        'contentOptions' => [
@@ -151,6 +163,16 @@
 				                        'value' => function($data, $ultimo) {
 				                        				$ultimo = $data['planilla'] . ' / ' . $data['condicion'];
 				                                   		return $ultimo;
+				            			           },
+				                    ],
+
+				                    [
+				                        'contentOptions' => [
+				                              'style' => 'font-size: 90%;',
+				                        ],
+				                        'label' => Yii::t('frontend', 'observacion'),
+				                        'value' => function($data) {
+				                                   		return $data['observacion'];
 				            			           },
 				                    ],
 
