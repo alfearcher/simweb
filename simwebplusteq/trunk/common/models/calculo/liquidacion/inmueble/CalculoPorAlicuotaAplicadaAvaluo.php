@@ -181,7 +181,6 @@
 		 */
 		private function getAvaluo($avaluo)
 		{
-// die(var_dump($avaluo));
 			$montoAvaluo = 0;
 			if ( count($avaluo) > 0 ) {
 

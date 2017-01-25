@@ -181,7 +181,7 @@
 
 				// Avaluo del terreno.
 				$montoAvaluoTerreno = $avaluo['mts2_terreno'] * $avaluo['valor_por_mts2_terreno'];
-// die(var_dump($montoAvaluoConstruccion));
+
 				if ( $this->_datosInmueble['tipo_ejido'] == 0 ) {
 					$montoAvaluo = $montoAvaluoTerreno + $montoAvaluoConstruccion;
 				} else {
