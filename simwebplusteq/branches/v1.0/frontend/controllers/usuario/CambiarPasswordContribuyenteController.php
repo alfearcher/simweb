@@ -195,25 +195,25 @@ class CambiarPasswordContribuyenteController extends Controller
                             $cedula = $model->cedula;
                             $tipo = $model->tipo;
 
-                            $buscarAfiliacionesJuridico = $buscarId->buscarIdAfiliaciones($model);
-                            //die(var_dump($buscarAfiliacionesJuridico));
+                            // $buscarAfiliacionesJuridico = $buscarId->buscarIdAfiliaciones($model);
+                            // //die(var_dump($buscarAfiliacionesJuridico));
 
-                            if ($buscarAfiliacionesJuridico == false){
-                                return MensajeController::actionMensaje(Yii::t('frontend', 'Sorry, you are not afiliated, go to create user')); 
-                            }else{ 
+                            // if ($buscarAfiliacionesJuridico == false){
+                            //     return MensajeController::actionMensaje(Yii::t('frontend', 'Sorry, you are not afiliated, go to create user')); 
+                            // }else{ 
                            
-                            $idsContribuyente = [];
+                            // $idsContribuyente = [];
 
-                            foreach($buscarAfiliacionesJuridico as $key => $value){
+                            // foreach($buscarAfiliacionesJuridico as $key => $value){
                               
-                                $idsContribuyente[] = $buscarAfiliacionesJuridico[$key]['id_contribuyente'];
+                            //     $idsContribuyente[] = $buscarAfiliacionesJuridico[$key]['id_contribuyente'];
                               
-                            }
+                            // }
 
                               
                            
                                    
-                                $dataProvider = $buscarId::buscarIdContribuyente($idsContribuyente);
+                                $dataProvider = $buscarId::buscarIdContribuyente($model);
 
                                 if ($dataProvider == true){
                                     
@@ -228,7 +228,7 @@ class CambiarPasswordContribuyenteController extends Controller
                                 }
                             
                                 
-                            }
+                            //}
                             
                     }
                         
@@ -291,7 +291,7 @@ class CambiarPasswordContribuyenteController extends Controller
 
     public function actionOcultarVariable($id)
     {
-      //  die($id);
+        
      
         Session::actionDeleteSession(['idContribuyente']);
 
@@ -339,7 +339,7 @@ class CambiarPasswordContribuyenteController extends Controller
                 
                 }else{
 
-                    return MensajeController::actionMensaje(Yii::t('frontend', 'You have not created your security answers yet, in case you forgot your password, please go to your city hall'));
+                    return MensajeController::actionMensaje(401);
                 }
             
             
