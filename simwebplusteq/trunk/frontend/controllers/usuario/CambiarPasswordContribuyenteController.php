@@ -326,9 +326,9 @@ class CambiarPasswordContribuyenteController extends Controller
                 $buscarPreguntas = new VerificarPreguntasContribuyenteJuridicoForm();
 
                 $buscarPreguntaSeguridad = $buscarPreguntas::BuscarPreguntaSeguridadJuridico($id);
-die(var_dump($buscarPreguntaSeguridad).'llegoooooooooooooooooooooooo');
-                if ($buscarPreguntaSeguridad == true){
 
+                if ($buscarPreguntaSeguridad == true){
+die(var_dump($buscarPreguntaSeguridad).'llegoooooooooooooooooooooooo 2');
                    $_SESSION['preguntaSeguridadJuridico'] = $buscarPreguntaSeguridad;
                     
 
