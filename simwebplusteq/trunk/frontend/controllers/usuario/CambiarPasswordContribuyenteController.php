@@ -195,25 +195,25 @@ class CambiarPasswordContribuyenteController extends Controller
                             $cedula = $model->cedula;
                             $tipo = $model->tipo;
 
-                            $buscarAfiliacionesJuridico = $buscarId->buscarIdAfiliaciones($model);
-                            //die(var_dump($buscarAfiliacionesJuridico));
+                            // $buscarAfiliacionesJuridico = $buscarId->buscarIdAfiliaciones($model);
+                            // //die(var_dump($buscarAfiliacionesJuridico));
 
-                            if ($buscarAfiliacionesJuridico == false){
-                                return MensajeController::actionMensaje(Yii::t('frontend', 'Sorry, you are not afiliated, go to create user')); 
-                            }else{ 
+                            // if ($buscarAfiliacionesJuridico == false){
+                            //     return MensajeController::actionMensaje(Yii::t('frontend', 'Sorry, you are not afiliated, go to create user')); 
+                            // }else{ 
                            
-                            $idsContribuyente = [];
+                            // $idsContribuyente = [];
 
-                            foreach($buscarAfiliacionesJuridico as $key => $value){
+                            // foreach($buscarAfiliacionesJuridico as $key => $value){
                               
-                                $idsContribuyente[] = $buscarAfiliacionesJuridico[$key]['id_contribuyente'];
+                            //     $idsContribuyente[] = $buscarAfiliacionesJuridico[$key]['id_contribuyente'];
                               
-                            }
+                            // }
 
                               
                            
                                    
-                                $dataProvider = $buscarId::buscarIdContribuyente($idsContribuyente);
+                                $dataProvider = $buscarId::buscarIdContribuyente($model);
 
                                 if ($dataProvider == true){
                                     
