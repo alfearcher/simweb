@@ -12,11 +12,11 @@ $this->title =Yii::t( 'backend', 'List of Advertisements' );
 
 function seleccion() {
 
-    if ( document.getElementById('checkbox').checked == 1 ) {     
-               
+    if ( document.getElementById('checkbox').checked == 1 ) {
+
                 btn.disabled = false;
-    } else { 
-                btn.disabled = true; 
+    } else {
+                btn.disabled = true;
     }
 }
 
@@ -27,7 +27,7 @@ function seleccion() {
     <h1><?= Html::encode($this->title) ?></h1>
     <p>
         <?= Html::beginForm( [ 'propaganda/propaganda/disable' ], 'post' );?>
-        
+
         <?= Html::submitButton( 'Inactive', [ 'class' => 'btn btn-primary', 'name' => 'btn', 'id' => "btn", 'value' => 'inactive', 'disabled' => 'disabled' ] );?>
     </p>
 
@@ -42,10 +42,10 @@ function seleccion() {
                                 'contribuyenteName',
                                 'usoName',
                                 'claseName',
-                                'inactivoName',            
-                                'fecha_guardado',
+                                'inactivoName',
+                                'fecha_hora',
                             ]
     ] ); ?>
-    <?= Html::endForm();?> 
+    <?= Html::endForm();?>
 </div>
 
