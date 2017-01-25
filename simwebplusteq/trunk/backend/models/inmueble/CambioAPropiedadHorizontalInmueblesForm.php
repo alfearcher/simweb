@@ -250,7 +250,7 @@ class CambioAPropiedadHorizontalInmueblesForm extends \yii\db\ActiveRecord
                                     ->andwhere("manzana_catastro=:manzana_catastro", [":manzana_catastro" => $this->manzana_catastro])
                                     ->andwhere("parcela_catastro=:parcela_catastro", [":parcela_catastro" => $this->parcela_catastro])
                                     ->andwhere("propiedad_horizontal=:propiedad_horizontal", [":propiedad_horizontal" => 0])
-                                    ->andWhere("manzana_limite=:manzana_limite", [":manzana_limite" => $this->manzana_limite])
+                                    //->andWhere("manzana_limite=:manzana_limite", [":manzana_limite" => $this->manzana_limite])
                                     ->andWhere("inactivo=:inactivo", [":inactivo" => 0])
                                     ->asArray()->all(); 
                                     
@@ -289,7 +289,7 @@ class CambioAPropiedadHorizontalInmueblesForm extends \yii\db\ActiveRecord
                                     ->andwhere("subparcela_catastro=:subparcela_catastro", [":subparcela_catastro" => $this->subparcela_catastro])
                                     ->andwhere("nivel_catastro=:nivel_catastro", [":nivel_catastro" => $nivel_catastro])
                                     ->andwhere("unidad_catastro=:unidad_catastro", [":unidad_catastro" => $this->unidad_catastro])
-                                    ->andWhere("manzana_limite=:manzana_limite", [":manzana_limite" => $this->manzana_limite])
+                                    //->andWhere("manzana_limite=:manzana_limite", [":manzana_limite" => $this->manzana_limite])
                                     ->andWhere("inactivo=:inactivo", [":inactivo" => 0])
                                     ->asArray()->all(); 
                                     
