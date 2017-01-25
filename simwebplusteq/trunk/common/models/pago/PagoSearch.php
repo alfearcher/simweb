@@ -788,6 +788,8 @@
 												[':impuesto' => 1])
 									->andWhere('D.trimestre >:trimestre',
 												[':trimestre' => 0])
+									->andWhere('D.referencia =:referencia',
+												[':referencia' => 0])
 									->asArray()
 									->all();
 
