@@ -168,7 +168,7 @@
 					$observacion = '';
 					if ( !self::existeAvaluoActual($model['id_impuesto']) ) {
 						$bloquear = 1;
-						$observacion = 'No se encontro el avaluo ' . date('Y');
+						$observacion = 'NO SE ENCONTRO EL AVALUO ' . date('Y');
 					}
 
 					$ultimo = self::getUltimoLapsoLiquidado($model['id_impuesto']);
