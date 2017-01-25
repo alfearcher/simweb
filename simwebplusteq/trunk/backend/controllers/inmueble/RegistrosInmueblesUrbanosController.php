@@ -266,7 +266,7 @@ class RegistrosInmueblesUrbanosController extends Controller
                                              
                                              if($guardo == true){ 
                         
-                        
+                        die('antes de imprimir'.var_dump($guardo));
                                                   $envio = self::EnviarCorreo($guardo, $requisitos);
                         
                                                   if($envio == true){
