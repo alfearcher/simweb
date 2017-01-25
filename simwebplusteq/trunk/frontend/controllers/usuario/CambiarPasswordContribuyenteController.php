@@ -338,7 +338,7 @@ class CambiarPasswordContribuyenteController extends Controller
                                                  ]);
                 
                 }else{
-die(var_dump($buscarPreguntaSeguridad).'llegoooooooooooooooooooooooo 2 sin preguntas');
+
                     return MensajeController::actionMensaje(401);
                 }
             
