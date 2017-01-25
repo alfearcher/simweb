@@ -219,7 +219,7 @@
 		{
 			return $findMmodel = PagoDetalle::find()->alias('D')
 			                                        ->joinWith('pagos P', true, 'INNER JOIN')
-			                                        ->where('planilla =:planilla',
+			                                        ->where('P.planilla =:planilla',
 			                                        			[':planilla' => $this->_planilla]);
 			                                        //->andWhere('D.pago =:pago',[':pago' => 0]);
 		}
