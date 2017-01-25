@@ -269,7 +269,7 @@
 								<h4><strong>En Bs.</strong></h4>
 							</div>
 							<div class="col-sm-4" style="width:20%;padding:0px;">
-								 <?= Html::textInput('monto-en-moneda',$utDelAño * $tasa['monto'],
+								 <?= Html::textInput('monto-en-moneda', ($tasa['tipoRango']['descripcion'] == "BOLIVARES") ? number_format($tasa['monto']) : $utDelAño * $tasa['monto'],
 																[
 																	'id' => 'id-monto-en-moneda',
 																	'class' => 'form-control',
@@ -307,13 +307,13 @@
 																								'alias' =>  'decimal',
 																								'digits' => 2,
 																								'digitsOptional' => false,
-																								'groupSeparator' => ',',
+																								//'groupSeparator' => '.',
 																								'removeMaskOnSubmit' => true,
 																								// 'allowMinus'=>false,
 																								//'groupSize' => 3,
-																								'radixPoint'=> ".",
+																								//'radixPoint'=> ".",
 																								'autoGroup' => true,
-																								//'decimalSeparator' => ',',
+																								'decimalSeparator' => ',',
 																							],
 
 																		  				  ])->label(false) ?>
@@ -328,11 +328,13 @@
 																			'value' => 1,
 																			'style' => 'width: 100%;',
 																			'name' => 'btn-calcular',
-																			'onClick' => 'var enMoneda = $( "#id-monto-en-moneda" ).val();
-																						  var multiplicarPor = $( "#liquidartasaform-multiplicar_por" ).val();
-																						  var total = parseFloat(enMoneda) * parseFloat(multiplicarPor);
-																						  $( "#liquidartasaform-resultado" ).val(total);',
+																			'onClick' => '
+																						  	var enMoneda = $( "#id-monto-en-moneda" ).val();
+																						  	var multiplicarPor = $( "#liquidartasaform-multiplicar_por" ).val();
+																						  	var total = parseFloat(enMoneda) * parseFloat(multiplicarPor);
+																						  	$( "#liquidartasaform-resultado" ).val(total);
 
+																						  ',
 																		  ])
 								?>
 							</div>
@@ -360,13 +362,13 @@
 																						'alias' =>  'decimal',
 																						'digits' => 2,
 																						'digitsOptional' => false,
-																						'groupSeparator' => ',',
+																						'groupSeparator' => '.',
 																						'removeMaskOnSubmit' => true,
 																						// 'allowMinus'=>false,
 																						//'groupSize' => 3,
-																						'radixPoint'=> ".",
+																						//'radixPoint'=> ",",
 																						'autoGroup' => true,
-																						//'decimalSeparator' => ',',
+																						'decimalSeparator' => ',',
 																					],
 
 																  				  ])->label(false) ?>
