@@ -315,7 +315,7 @@ class CambiarPasswordContribuyenteController extends Controller
     public function actionBuscarPreguntaSeguridadJuridico()
     {   
        
-die('llego aqui');
+
         if (isset($_SESSION['idContribuyente'])){
           
            
