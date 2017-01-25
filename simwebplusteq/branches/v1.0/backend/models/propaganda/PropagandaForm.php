@@ -5,39 +5,39 @@
  */
 
  /**
- * 
- *      > This library is free software; you can redistribute it and/or modify it under 
- *      > the terms of the GNU Lesser Gereral Public Licence as published by the Free 
- *      > Software Foundation; either version 2 of the Licence, or (at your opinion) 
+ *
+ *      > This library is free software; you can redistribute it and/or modify it under
+ *      > the terms of the GNU Lesser Gereral Public Licence as published by the Free
+ *      > Software Foundation; either version 2 of the Licence, or (at your opinion)
  *      > any later version.
- *      > 
- *      > This library is distributed in the hope that it will be usefull, 
- *      > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability 
- *      > or fitness for a particular purpose. See the GNU Lesser General Public Licence 
+ *      >
+ *      > This library is distributed in the hope that it will be usefull,
+ *      > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability
+ *      > or fitness for a particular purpose. See the GNU Lesser General Public Licence
  *      > for more details.
- *      > 
+ *      >
  *      > See [LICENSE.TXT](../../LICENSE.TXT) file for more information.
  *
  */
 
- /**    
+ /**
  *      @file PropagandaForm.php
- *  
+ *
  *      @author Ronny Jose Simosa Montoya
- * 
+ *
  *      @date 18-08-2015
- * 
+ *
  *      @class PropagandaForm
  *      @brief Clase contiene las reglas de negocios ( Etiquetas, validaciones y busqueda ).
- * 
- *  
- *  
+ *
+ *
+ *
  *      @property
- *  
+ *
  *      @method
- *  
+ *
  *      @inherits
- *  
+ *
  */
 
 namespace backend\models\propaganda;
@@ -107,7 +107,7 @@ class PropagandaForm extends \yii\db\ActiveRecord
         return [
                     [ [ 'id_impuesto', 'id_contribuyente', 'ano_impositivo', 'id_cp', 'clase_propaganda', 'tipo_propaganda', 'uso_propaganda', 'medio_difusion', 'medio_transporte', 'id_tiempo', 'inactivo', 'id_sim', 'cigarros', 'bebidas_alcoholicas', 'cantidad_propagandas', 'planilla', 'idioma' ], 'integer' ],
                     [ [ 'clase_propaganda', 'id_contribuyente', 'clase_propaganda', 'tipo_propaganda', 'uso_propaganda', 'id_tiempo', 'cantidad_propagandas', 'fecha_desde', 'cantidad_tiempo', 'cantidad_base', 'base_calculo','ano_impo', 'medio_difusion', 'id_cp' ], 'required' ],
-                    [ [ 'direccion', 'fecha_desde', 'fecha_fin', 'fecha_guardado', 'observacion', 'selection' ], 'safe' ],
+                    [ [ 'direccion', 'fecha_desde', 'fecha_fin', 'observacion', 'selection' ], 'safe' ],
                     [ [ 'cantidad_tiempo' ], 'number' ],
                 ];
     }
@@ -143,7 +143,7 @@ class PropagandaForm extends \yii\db\ActiveRecord
                     'observacion' => Yii::t( 'backend', 'Observation' ),
                     'ano_impo' => Yii::t( 'backend', 'Tax Year' ),
                     'fecha_fin' => Yii::t( 'backend', 'Date End' ),
-                    'fecha_guardado' => Yii::t( 'backend', 'Date Creation' ),
+                    //'fecha_guardado' => Yii::t( 'backend', 'Date Creation' ),
                     'usoName' => Yii::t( 'backend', 'Use Advertisement' ),
                     'claseName' => Yii::t( 'backend', 'Kind of Propaganda' ),
                     'contribuyenteName' => Yii::t( 'backend', 'Business Name' ),
@@ -154,7 +154,7 @@ class PropagandaForm extends \yii\db\ActiveRecord
                     'selection' => Yii::t( 'backend', 'Selection' ),
                 ];
     }
-    
+
     /**
     *   Contiene la relacion de 1 a M, de las tablas propagandas y tipos_propagandas, las cuales se relacionan  por su id referencial.
     */
@@ -162,15 +162,15 @@ class PropagandaForm extends \yii\db\ActiveRecord
     {
         return $this->hasOne( UsosPropaganda::className(), [ 'uso_propaganda' => 'uso_propaganda' ] );
     }
- 
+
     /**
     *   Almacena el campo descripcion de la tabla tipos_propagandas, en una variable GET para retornarla a la vista.
     */
-    public function getUsoName() 
+    public function getUsoName()
     {
         return $this->uso->descripcion;
     }
-    
+
     /**
     *   Contiene la relacion de 1 a M, de las tablas propagandas y clases_propagandas, las cuales se relacionan  por su id referencial.
     */
@@ -178,15 +178,15 @@ class PropagandaForm extends \yii\db\ActiveRecord
     {
         return $this->hasOne( ClasesPropaganda::className(), [ 'clase_propaganda' => 'clase_propaganda' ] );
     }
-    
+
     /**
     *   Almacena el campo descripcion de la tabla clases_propagandas, en una variable GET para retornarla a la vista.
     */
-    public function getClaseName() 
+    public function getClaseName()
     {
         return $this->clase->descripcion;
     }
-    
+
     /**
     *   Contiene la relacion de 1 a M, de las tablas propagandas y contribuyentes, las cuales se relacionan  por su id referencial.
     */
@@ -194,22 +194,22 @@ class PropagandaForm extends \yii\db\ActiveRecord
     {
         return $this->hasOne( Contribuyente::className(), [ 'id_contribuyente' => 'id_contribuyente' ] );
     }
-    
+
     /**
     *   Almacena el campo descripcion de la tabla contribuyentes, en una variable GET para retornarla a la vista.
     */
-    public function getContribuyenteName() 
+    public function getContribuyenteName()
     {
         return $this->contribuyente->razon_social;
     }
-    
+
     /**
     *   Almacena el campo inactivo de la tabla propagandas, en una variable GET para retornarla a la vista con el valor seteado dependiendo del condicional.
     */
-    public function getInactivoName() 
+    public function getInactivoName()
     {
         if( $this->inactivo == '0' ) {
-            
+
                     $this->inactivo = 'ACTIVO';
         } else {
                     $this->inactivo = 'INACTIVO';
@@ -226,7 +226,7 @@ class PropagandaForm extends \yii\db\ActiveRecord
      */
     public function busquedaPropaganda($idPropaganda, $idContribuyente)
     {
-        
+
         $buscar = Propaganda::find()
                             ->where([
                             'id_impuesto' => $idPropaganda,
