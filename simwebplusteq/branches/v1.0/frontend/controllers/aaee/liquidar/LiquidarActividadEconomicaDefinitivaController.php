@@ -248,7 +248,7 @@
 
 		      		if ( count($findModel) > 0 ) {
 			      		$errorMensaje = '';
-				      	$listaAño = $searchSustitutiva->getListaAnoRegistrado(2);
+				      	$listaAño = $searchSustitutiva->getListaAnoRegistrado(2, true);
 						if ( count($listaAño) == 0 ) {
 							$errorListaAño = Yii::t('frontend', 'No se encontraron RUBROS AUTORIZADOS cargados ');
 							$errorMensaje = ( trim($errorMensaje) !== '' ) ? $errorMensaje = $errorMensaje . '. ' . $errorListaAño : $errorListaAño;
