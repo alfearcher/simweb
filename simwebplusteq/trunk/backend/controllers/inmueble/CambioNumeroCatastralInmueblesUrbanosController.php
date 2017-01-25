@@ -70,6 +70,7 @@ use frontend\models\inmueble\ConfiguracionTiposSolicitudes;
 use common\models\configuracion\solicitud\ParametroSolicitud;
 use common\models\configuracion\solicitud\DocumentoSolicitud;
 use common\models\solicitudescontribuyente\SolicitudesContribuyente;
+use common\models\configuracion\solicitud\SolicitudProcesoEvento;
 
 use backend\models\inmueble\Estados;
 use backend\models\inmueble\Municipios;
