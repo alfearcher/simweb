@@ -138,6 +138,7 @@
 			if ( count($tarifa) > 0 ) {
 
 				$montoAvaluo = self::getAvaluo($avaluo);
+
 				if ( $montoAvaluo > 0 ) {
 					if ( $tarifa[0]['alicuota'] > 0 ) {
 						$monto = $tarifa[0]['alicuota'] * $montoAvaluo;
@@ -182,16 +183,22 @@
 		{
 			$montoAvaluo = 0;
 			if ( count($avaluo) > 0 ) {
-				// Avaluo de la construccion.
-				$montoAvaluoConstruccion = $avaluo['mts'] * $avaluo['valor_por_mts2'];
 
-				// Avaluo del terreno.
-				$montoAvaluoTerreno = $avaluo['mts2_terreno'] * $avaluo['valor_por_mts2_terreno'];
+				if ( $avaluo['valor'] > 0 ) {
+					$montoAvaluo = $avaluo['valor'];
 
-				if ( $this->_datosInmueble['tipo_ejido'] == 0 ) {
-					$montoAvaluo = $montoAvaluoTerreno + $montoAvaluoConstruccion;
 				} else {
-					$montoAvaluo = $montoAvaluoConstruccion;
+					// Avaluo de la construccion.
+					$montoAvaluoConstruccion = $avaluo['mts'] * $avaluo['valor_por_mts2'];
+
+					// Avaluo del terreno.
+					$montoAvaluoTerreno = $avaluo['mts2_terreno'] * $avaluo['valor_por_mts2_terreno'];
+
+					if ( $this->_datosInmueble['tipo_ejido'] == 0 ) {
+						$montoAvaluo = $montoAvaluoTerreno + $montoAvaluoConstruccion;
+					} else {
+						$montoAvaluo = $montoAvaluoConstruccion;
+					}
 				}
 			}
 
