@@ -159,7 +159,7 @@
 		 */
 		private function getParametroTarifa($avaluo)
 		{
-			return TarifaParametroInmueble::getAlicuotaSegunUsoInmuebleOrdenanza($valuo[0]['id_uso_inmueble'],
+			return TarifaParametroInmueble::getAlicuotaSegunUsoInmuebleOrdenanza($avaluo['id_uso_inmueble'],
 																				 $this->_añoImpositivo);
 		}
 
@@ -177,11 +177,11 @@
 			$montoAvaluo = 0;
 			if ( count($avaluo) > 0 ) {
 				// Avaluo de la construccion.
-				$montoAvaluoConstruccion = $avaluo[0]['mts'] * $avaluo[0]['valor_por_mts2'];
+				$montoAvaluoConstruccion = $avaluo['mts'] * $avaluo['valor_por_mts2'];
 
 				// Avaluo del terreno.
-				$montoAvaluoTerreno = $avaluo[0]['mts2_terreno'] * $avaluo[0]['valor_por_mts2_terreno'];
-
+				$montoAvaluoTerreno = $avaluo['mts2_terreno'] * $avaluo['valor_por_mts2_terreno'];
+// die(var_dump($montoAvaluoConstruccion));
 				if ( $this->_datosInmueble['tipo_ejido'] == 0 ) {
 					$montoAvaluo = $montoAvaluoTerreno + $montoAvaluoConstruccion;
 				} else {
