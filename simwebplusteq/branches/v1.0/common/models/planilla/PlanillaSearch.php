@@ -253,7 +253,7 @@
 		 * Metodo que retorna un modelo de
 		 * @return [type] [description]
 		 */
-		public function getDetallePlanilla()
+		public function getDetallePlanilla($objeto = false)
 		{
 			$findModel = self::findPlanillaGeneralModel();
 
