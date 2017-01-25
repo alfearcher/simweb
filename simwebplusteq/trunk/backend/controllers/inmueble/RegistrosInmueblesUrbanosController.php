@@ -328,6 +328,11 @@ class RegistrosInmueblesUrbanosController extends Controller
             $datosContribuyente = self::DatosContribuyente();
             $_SESSION['datosContribuyente']= $datosContribuyente;
 
+            if($_SESSION['datosContribuyente']['email'] == null){
+                        
+               return MensajeController::actionMensaje(924);
+                        
+            }
             
 
           
