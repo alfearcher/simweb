@@ -328,7 +328,7 @@ class CambiarPasswordContribuyenteController extends Controller
                 $buscarPreguntaSeguridad = $buscarPreguntas::BuscarPreguntaSeguridadJuridico($id);
 
                 if ($buscarPreguntaSeguridad == true){
-die(var_dump($buscarPreguntaSeguridad).'llegoooooooooooooooooooooooo 2');
+
                    $_SESSION['preguntaSeguridadJuridico'] = $buscarPreguntaSeguridad;
                     
 
@@ -338,8 +338,8 @@ die(var_dump($buscarPreguntaSeguridad).'llegoooooooooooooooooooooooo 2');
                                                  ]);
                 
                 }else{
-
-                    return MensajeController::actionMensaje(Yii::t('frontend', 'You have not created your security answers yet, in case you forgot your password, please go to your city hall'));
+die(var_dump($buscarPreguntaSeguridad).'llegoooooooooooooooooooooooo 2 sin preguntas');
+                    return MensajeController::actionMensaje(401);
                 }
             
             
