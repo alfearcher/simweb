@@ -187,7 +187,7 @@
 		        			'items' => [
 		        						['label' => 'Inscripción de Propagandas', 'url' => ['propaganda/inscripcionpropaganda/inscripcion-propaganda/index', 'id' => 75]],
 		        						//['label' => 'Renovación de Propagandas', 'url' => '#'],
-		        						//['label' => 'Desincorporación de Propaganda', 'url' => ['propaganda/propaganda/desincorporacion']],
+		        						['label' => 'Desincorporación de Propaganda', 'url' => ['propaganda/propaganda/desincorporacion']],
 		        						//['label' => 'Cambio de Otros Datos de Propaganda', 'url' => ['propaganda/propaganda/index']],
 		        						//['label' => 'Solvencia', 'url' => '#'],
 		        			]
