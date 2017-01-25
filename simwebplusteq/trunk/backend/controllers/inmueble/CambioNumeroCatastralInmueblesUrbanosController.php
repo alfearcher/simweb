@@ -175,7 +175,7 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
 
            $verificarSolicitud = self::verificarSolicitud($datosInmueble['id_impuesto'] , $_SESSION['id']);
            if($verificarSolicitud == true){
-                
+                die('llego a decir que ya tiene solicitud');
                 return MensajeController::actionMensaje(923);                
                           
             }
