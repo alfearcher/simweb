@@ -166,6 +166,16 @@
 				            			           },
 				                    ],
 
+				                    [
+				                        'contentOptions' => [
+				                              'style' => 'font-size: 90%;',
+				                        ],
+				                        'label' => Yii::t('frontend', 'observacion'),
+				                        'value' => function($data) {
+				                                   		return $data['observacion'];
+				            			           },
+				                    ],
+
 					        	]
 							]);?>
 						</div>
