@@ -500,7 +500,7 @@
 
 			$resumen = [
 				'pagoEstimada' => self::getContabilizarPagoPorEstimada($añoImpositivo, $periodo),
-				'pagoNoEstimada' => 0,
+				'pagoNoEstimada' => self::getDeudaActividadEconomicaPendiente($añoImpositivo),
 				'pagoDefinitiva' => self::getContabilizarPagoPorDefinitiva($añoImpositivo, $periodo),
 				'pagoAbono' => self::getContabilizarPagoAbonoActEconomica($añoImpositivo),
 				'pagoRetencion' => 0,
@@ -729,5 +729,79 @@
 
 			return $model;
 		}
+
+
+
+		public function getDeudaActividadEconomicaPendiente($añoImpositivo)
+		{
+			$idImpuestoExcluido = self::getIdImpuestoExcluido($añoImpositivo);
+
+			if ( count($idImpuestoExcluido) > 0 ) {
+				$deuda1 = PagoDetalle::find()->alias('D')
+				                            ->joinWith('pagos P', true, 'INNER JOIN')
+											->where('id_contribuyente =:id_contribuyente',
+														[':id_contribuyente' => $this->_id_contribuyente])
+											->andWhere('D.ano_impositivo =:ano_impositivo',
+														[':ano_impositivo' => $añoImpositivo])
+											->andWhere('D.pago =:pago',
+														[':pago' => 0])
+											->andWhere('D.impuesto =:impuesto',
+														[':impuesto' => 1])
+											->andWhere('D.trimestre =:trimestre',
+														[':trimestre' => 0])
+											->andWhere(['NOT IN', 'id_impuesto', $idImpuestoExcluido])
+											->asArray()
+											->all();
+			} else {
+				$deuda1 = PagoDetalle::find()->alias('D')
+				                            ->joinWith('pagos P', true, 'INNER JOIN')
+											->where('id_contribuyente =:id_contribuyente',
+														[':id_contribuyente' => $this->_id_contribuyente])
+											->andWhere('D.ano_impositivo =:ano_impositivo',
+														[':ano_impositivo' => $añoImpositivo])
+											->andWhere('D.pago =:pago',
+														[':pago' => 0])
+											->andWhere('D.impuesto =:impuesto',
+														[':impuesto' => 1])
+											->andWhere('D.trimestre =:trimestre',
+														[':trimestre' => 0])
+											->asArray()
+											->all();
+
+			}
+
+			$suma1 = 0;
+			foreach ( $deuda1 as $d ) {
+				$suma1 =  $suma1 + $d['monto'];
+			}
+
+
+			$deuda2 = PagoDetalle::find()->alias('D')
+		                            ->joinWith('pagos P', true, 'INNER JOIN')
+									->where('id_contribuyente =:id_contribuyente',
+												[':id_contribuyente' => $this->_id_contribuyente])
+									->andWhere('D.ano_impositivo =:ano_impositivo',
+												[':ano_impositivo' => $añoImpositivo])
+									->andWhere('D.pago =:pago',
+												[':pago' => 0])
+									->andWhere('D.impuesto =:impuesto',
+												[':impuesto' => 1])
+									->andWhere('D.trimestre >:trimestre',
+												[':trimestre' => 0])
+									->asArray()
+									->all();
+
+			$suma2 = 0;
+			foreach ( $deuda2 as $d ) {
+				$suma2 =  $suma2 + $d['monto'];
+			}
+
+
+			$total = 0;
+			$total = $suma1 + $suma2;
+
+			return $total;
+		}
+
 
 	}
