@@ -102,7 +102,7 @@
 					    					'value' => $model->fecha_fin,
 					    				],
 					    				[
-					    					'label' => $model->getAttributeLabel('ano_impositivo'),
+					    					'label' => 'Año',
 					    					'value' => $model->ano_impositivo,
 					    				],
 					    				[
@@ -145,7 +145,10 @@
 					    					'label' => $model->getAttributeLabel('observacion'),
 					    					'value' => $model->observacion,
 					    				],
-
+					    				[
+					    					'label' => $model->getAttributeLabel('base_calculo'),
+					    					'value' => $model->base_calculo,
+					    				],
 
 					    			],
 								])

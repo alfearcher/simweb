@@ -90,6 +90,11 @@
 								'id' => 'grid-listado-propaganda',
 								'dataProvider' => $dataProvider,
 								'headerRowOptions' => ['class' => 'success'],
+								'rowOptions' => function($model) {
+									if ( $model->inactivo == 1 ) {
+										return ['class' => 'danger'];
+									}
+								},
 								'filterModel' => $listadoPropaganda,
 								'columns' => [
 									//['class' => 'yii\grid\SerialColumn'],
