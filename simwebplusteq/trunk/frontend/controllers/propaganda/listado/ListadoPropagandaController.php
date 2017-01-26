@@ -108,7 +108,7 @@
 
 			} else {
 				// Contribuyente no definido.
-				$this->redirect(['error-operacion', 'cod' => 200]);
+				$this->redirect(['error-operacion', 'cod' => 930]);
 			}
 		}
 
