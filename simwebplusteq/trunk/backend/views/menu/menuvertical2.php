@@ -191,6 +191,7 @@
 		        						['label' => 'Desincorporación de Propaganda', 'url' => ['propaganda/propaganda/desincorporacion']],
 		        						// ['label' => 'Cambio de Otros Datos de Propaganda', 'url' => ['propaganda/propaganda/index']],
 		        						//['label' => 'Solvencia', 'url' => '#'],
+		        						['label' => 'Listado', 'url' => ['propaganda/listado/listado-propaganda/index']],
 		        			]
 		        		],
 
