@@ -665,7 +665,7 @@ Session["variablephp"] = tu;
                                                         <div class="col-sm-4"> 
                                                         <?= $form->field($modelRegistro, 'documento_propiedad')->dropDownList([
                                                                                          'prompt' => Yii::t('backend', 'Selecciona'),
-                                                                                         '1'=>'Datos SAREN','2'=>'Documento de Registro'],['id' => 'documento_propiedad','style' => 'width:250px;','onclick'=>'documento()',])->label(false) ?>
+                                                                                         '2'=>'Datos SAREN','1'=>'Documento de Registro'],['id' => 'documento_propiedad','style' => 'width:250px;','onclick'=>'documento()',])->label(false) ?>
                                                         </div>
 
                                                         <div class="col-sm-2"> 
