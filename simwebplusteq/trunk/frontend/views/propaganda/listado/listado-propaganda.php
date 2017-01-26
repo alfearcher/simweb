@@ -140,6 +140,16 @@
                 										return $data->tipoPropaganda->descripcion;
         											},
 					                ],
+					                [
+					                    'label' => Yii::t('frontend', 'Condición'),
+					                    'value' => function($data) {
+                										if ( $data->inactivo == 1 ) {
+                											return 'INACTIVO';
+                										} else {
+                											return 'ACTIVO';
+                										}
+        											},
+					                ],
 
 					        	]
 							]);?>

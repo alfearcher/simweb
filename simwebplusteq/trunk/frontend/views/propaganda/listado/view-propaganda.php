@@ -149,6 +149,11 @@
 					    					'label' => $model->getAttributeLabel('base_calculo'),
 					    					'value' => $model->base_calculo,
 					    				],
+					    				[
+					    					'label' => $model->getAttributeLabel('inactivo'),
+					    					'value' => ($model->inactivo == 1 ) ? 'INACTIVO' : '',
+
+					    				],
 
 					    			],
 								])
