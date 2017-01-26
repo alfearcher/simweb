@@ -199,6 +199,7 @@
 		        // 						['label' => 'Catalogo', 'url' => ['propaganda/catalogo/catalogo-propaganda/vista-catalogo-propaganda']],
 
 		        						//['label' => 'Solvencia', 'url' => '#'],
+		        						['label' => 'Listado', 'url' => ['propaganda/listado/listado-propaganda/index']],
 		        			]
 		        		],
 
