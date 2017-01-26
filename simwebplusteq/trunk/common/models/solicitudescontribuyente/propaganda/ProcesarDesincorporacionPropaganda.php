@@ -315,11 +315,23 @@
                     $arregloCondicionMaster = [
 
 
-                                                'id_impuesto' => $camposModel['id_impuesto']
+                                                'id_impuesto' => $camposModel['id_impuesto'] 
                                                 ];
+
+                     $tableNameMasterPago = 'pagos_detalle';
+
+                 $arregloDatosMasterPago = [
+                                            'pago' => 9,
+                                            
+                                         ];
+
+                    $arregloCondicionMasterPago = [ 'id_impuesto' => $camposModel['id_impuesto'] , 'impuesto' = 4, 'pago' = 0
+                                                ];                           
 
                     $resultInsert = $this->_conexion->modificarRegistro($this->_conn, $tableNameMaster, $arregloDatosMaster, 
                         $arregloCondicionMaster);
+                     $resultInsert = $this->_conexion->modificarRegistro($this->_conn, $tableNameMasterPago, $arregloDatosMasterPago, 
+                        $arregloCondicionMasterPago);
 
                     $result = $this->_conexion->modificarRegistro($this->_conn, $tableName,
                                                               $arregloDatos, $arregloCondicion);
