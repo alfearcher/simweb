@@ -282,7 +282,7 @@ class InscripcionInmueblesUrbanosForm extends Model{
           //Si la consulta no cuenta (0) mostrar el error
             if ($table != null){
 
-                    $this->addError($attribute, Yii::t('backend', 'The taxpayer: '.$table[0]['id_contribuyente'].' has already assigned cadestre. Tax: '.$table[0]['id_impuesto']));//Impuesto: '.$table->id_impuesto; 
+                    $this->addError($attribute, Yii::t('backend', 'El Contribuyente: '.$table[0]['id_contribuyente'].' ya ha asignado catastro. Id_impuesto: '.$table[0]['id_impuesto']));//Impuesto: '.$table->id_impuesto; 
             } 
      }
     
@@ -316,7 +316,7 @@ class InscripcionInmueblesUrbanosForm extends Model{
           //Si la consulta no cuenta (0) mostrar el error
             if ($table != null){
 
-                    $this->addError($attribute, Yii::t('backend', 'The taxpayer: '.$table[0]['id_contribuyente'].' has already assigned cadestre. Tax: '.$table[0]['id_impuesto']));//Impuesto: '.$table->id_impuesto; 
+                    $this->addError($attribute, Yii::t('backend', 'El Contribuyente: '.$table[0]['id_contribuyente'].' ya ha asignado catastro. Id_impuesto: '.$table[0]['id_impuesto']));//Impuesto: '.$table->id_impuesto; 
             } 
      }
 
