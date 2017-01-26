@@ -79,17 +79,17 @@
 		'heading' => Icon::show('fa fa-cube',['class' => 'fa-3x'], Icon::FA) . ' ' . $caption,
 		//'heading' => 'Options',
 		'items' => [
-			['label' => Icon::show('fa fa-file-text',['class' => 'fa-2x'], Icon::FA) . '&nbsp;' . Yii::t('backend','Nueva ( Inicio de Actividad ' . date('Y'). ' )'),
-								 'options' => [
-								 		'class' => 'item-principal',
-								 		'data' => [
-								 			'tipo' => 'NUEVA',
-								 		],
+			// ['label' => Icon::show('fa fa-file-text',['class' => 'fa-2x'], Icon::FA) . '&nbsp;' . Yii::t('backend','Nueva ( Inicio de Actividad ' . date('Y'). ' )'),
+			// 					 'options' => [
+			// 					 		'class' => 'item-principal',
+			// 					 		'data' => [
+			// 					 			'tipo' => 'NUEVA',
+			// 					 		],
 
-								 ],
-								 'url' => [$urlNueva],
-								 'visible' => $urlNueva == '#' ? false : true,
-			],
+			// 					 ],
+			// 					 'url' => [$urlNueva],
+			// 					 'visible' => $urlNueva == '#' ? false : true,
+			// ],
 			['label' => Icon::show('fa fa-floppy-o',['class' => 'fa-2x'], Icon::FA) . '&nbsp;' . Yii::t('backend','Renovacón'),
 								 'options' => [
 								 		'class' => 'item-principal',
