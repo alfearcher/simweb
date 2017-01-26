@@ -60,6 +60,8 @@ use common\models\Users;
 use common\models\User;
 use yii\web\Session;
 use frontend\models\inmueble\inscripcion\InscripcionInmueblesUrbanosForm;
+use frontend\models\inmueble\registroinmueble\InmueblesRegistrosForm;
+use frontend\models\inmueble\registroinmueble\InmueblesRegistros;
 
 //use common\models\Users;
 
@@ -109,6 +111,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
          if ( isset(Yii::$app->user->identity->id_contribuyente) ) {
          //Creamos la instancia con el model de validación
          $model = new InscripcionInmueblesUrbanosForm();
+        
     
          //Mostrará un mensaje en la vista cuando el usuario se haya registrado
          $msg = null;
@@ -120,9 +123,13 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
               Yii::$app->response->format = Response::FORMAT_JSON;
               return ActiveForm::validate($model); 
-         }
+         } 
+         
    
-         if ($model->load(Yii::$app->request->post())){
+         if ($model->load(Yii::$app->request->post()) ){
+
+              
+              
 
               if($model->validate()){ 
 
@@ -136,11 +143,13 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                       
 
                      $guardo = self::GuardarInscripcion($model);
+                    // $guardoRegistro = self::GuardarRegistroInmueble($modelRegistro);
 
                      if($guardo == true){ 
 
 
                           $envio = self::EnviarCorreo($guardo, $requisitos);
+                          //$envioRegistro = self::EnviarCorreo($guardoRegistro, $requisitos);
 
                           if($envio == true){
 
@@ -320,6 +329,186 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                  return false;
              }   
             
+          } catch ( Exception $e ) {
+              //echo $e->errorInfo[2];
+          } 
+                       
+     }
+
+
+     /**
+      * [GuardarInscripcion description] Metodo que se encarga de guardar los datos de la solicitud 
+      * de inscripcion del inmueble del contribuyente
+      * @param [type] $model [description] arreglo de datos del formulario de inscripcion del
+      * inmueble
+      */
+     public function GuardarRegistroInmueble($model,$modelRegistro)
+     {
+            $buscar = new ParametroSolicitud(118);
+
+            $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
+            $config = $buscar->getParametroSolicitud([
+                                'id_config_solicitud',
+                                'tipo_solicitud',
+                                'impuesto',
+                                'nivel_aprobacion'
+                          ]);
+            $datosContribuyente = self::DatosContribuyente();
+            $_SESSION['datosContribuyente']= $datosContribuyente;
+
+            if($_SESSION['datosContribuyente']['email'] == null){
+                        
+               return MensajeController::actionMensaje(924);
+                        
+            }
+            
+
+          
+
+            //$avaluos=self::actionCalcularAvaluos($modelAvaluo); 
+
+            $conn = New ConexionController();
+            $conexion = $conn->initConectar('db');     // instancia de la conexion (Connection)
+            $conexion->open();  
+            $transaccion = $conexion->beginTransaction();
+
+            try {
+
+               
+                
+                
+
+                $tableName1 = 'solicitudes_contribuyente'; 
+
+                $arrayDatos1 = [  'id_contribuyente' => $_SESSION['idContribuyente'],
+                                  'id_config_solicitud' => $config['id_config_solicitud'],
+                                  'impuesto' => 2,
+                                  'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
+                                  'tipo_solicitud' => $config['tipo_solicitud'],
+                                  'usuario' => $datosContribuyente['email'],
+                                  'fecha_hora_creacion' => date('Y-m-d h:i:s'),
+                                  'nivel_aprobacion' => $nivelAprobacion["nivel_aprobacion"],
+                                  'nro_control' => 0,
+                                  'firma_digital' => null,
+                                  'estatus' => 0,
+                                  'inactivo' => 0,
+                              ];  
+                
+
+                if ( $conn->guardarRegistro($conexion, $tableName1,  $arrayDatos1) ){  
+                $result = $conexion->getLastInsertID();
+              
+
+                $arrayDatos2 = [    'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
+                                    'nro_solicitud' => $result,
+                                    'id_contribuyente' => $_SESSION['idContribuyente'],
+                                    'fecha' => $modelRegistro->fecha,
+                                    'id_tipo_documento_inmueble' => $modelRegistro->documento_propiedad,
+                                    'num_reg' => $modelRegistro->num_reg,
+                                    'reg_mercantil' => $modelRegistro->reg_mercantil,
+                                    'valor_documental'=> $modelRegistro->valor_documental,
+                                    'fecha_creacion' => date('Y-m-d h:i:s'),
+
+                                    'tomo' => $modelRegistro->tomo,
+                                    'protocolo' => $modelRegistro->protocolo,                                    
+                                    'folio' => $modelRegistro->folio,
+
+                                    'nro_matricula' => $modelRegistro->nro_matriculado,
+                                    'asiento_registral' => $modelRegistro->asiento_registral,
+                               
+                                ]; 
+
+                 $model->nro_solicitud = $arrayDatos2['nro_solicitud'];
+                 $resultProceso = self::actionEjecutaProcesoSolicitud($conn, $conexion, $model, $config); 
+                 $tableName2 = 'sl_inmuebles_registros'; 
+
+                if ( $conn->guardarRegistro($conexion, $tableName2,  $arrayDatos2) ){
+
+                    if ($nivelAprobacion['nivel_aprobacion'] != 1){
+
+                        
+                        $tipoError = 0;  
+                        $todoBien = true; 
+
+                    } else {
+                
+                        $avaluoConstruccion = $model->metros_construccion * $model->valor_construccion;
+                        $avaluoTerreno = $model->metros_terreno * $model->valor_terreno;
+
+                        $arrayDatos3 = [    
+                                    'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
+                                    'id_contribuyente' => $_SESSION['idContribuyente'],
+                                    'fecha' => $modelRegistro->fecha,
+                                    'id_tipo_documento_inmueble' => $modelRegistro->documento_propiedad,
+                                    'num_reg' => $modelRegistro->num_reg,
+                                    'reg_mercantil' => $modelRegistro->reg_mercantil,
+                                    'valor_documental'=> $modelRegistro->valor_documental,
+                                    'fecha_creacion' => date('Y-m-d h:i:s'),
+
+                                    'tomo' => $modelRegistro->tomo,
+                                    'protocolo' => $modelRegistro->protocolo,                                    
+                                    'folio' => $modelRegistro->folio,
+
+                                    'nro_matricula' => $modelRegistro->nro_matriculado,
+                                    'asiento_registral' => $modelRegistro->asiento_registral,
+                               
+                                            
+                                    
+                                        ]; 
+
+            
+                        $tableName3 = 'inmuebles_registros';
+                         
+
+
+                        if ( $conn->guardarRegistro($conexion, $tableName3,  $arrayDatos3) ){
+
+                             
+                              $tipoError = 0; 
+                              $todoBien = true; 
+
+                        } else {
+            
+                              
+                              $tipoError = 0; 
+                              $todoBien = false;
+
+                        }
+                  }
+
+
+                } else {
+            
+                     
+                    $tipoError = 0; 
+                    $todoBien = false; 
+
+                }
+
+            }else{ 
+                $tipoError = 0;
+                $todoBien = false;
+            }
+            
+
+                if ($todoBien == true){
+                    
+                    $transaccion->commit();  
+                    $conexion->close(); 
+                    $tipoError = 0; 
+                    return $result;
+
+                } else {
+                
+                    $transaccion->rollBack(); 
+                    $conexion->close(); 
+                    $tipoError = 0; 
+                    return false; 
+
+                }
+                  
+               
+          
           } catch ( Exception $e ) {
               //echo $e->errorInfo[2];
           } 

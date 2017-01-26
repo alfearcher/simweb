@@ -46,7 +46,29 @@ function bloquea() {
         document.getElementById("unidad1c").style.display='none';
         
     } 
-} 
+}
+
+function documento() { 
+
+
+
+         
+    
+    if (document.getElementById("documento_propiedad").value==1) { 
+        
+        document.getElementById("id_documentos_registro").style.display='none'; 
+        document.getElementById("id_documentos_saren").style.display=''; 
+        
+        //readOnly = false
+    } 
+
+    if (document.getElementById("documento_propiedad").value==2) { 
+        document.getElementById("id_documentos_registro").style.display=''; 
+        document.getElementById("id_documentos_saren").style.display='none';
+        
+        
+    } 
+}  
 
 </script> 
 <div class="inscripcionInmueblesUrbanos">
@@ -68,7 +90,8 @@ function bloquea() {
             <div class="panel-body" >
                 <table class="table table-striped ">
                     
-                    <div class="row">
+
+                    <div class="row" style="margin-left:20px; margin-top:20px;">
                         
                             <div class="col-sm-2"> 
                             <?= Yii::t('backend', 'IdTaxpayer') ?>
@@ -102,7 +125,7 @@ function bloquea() {
                                                     
 
 <!-- Direccion y anio de domicilio --> 
-                   <div class="row">
+                   <div class="row" style="margin-left:20px; margin-top:20px;">
                         
                             <div class="col-sm-2"> 
                             <?= Yii::t('backend', 'Street Addres') ?> 
@@ -120,7 +143,7 @@ function bloquea() {
                         
                    </div>
  <!-- Direccion del domicilio -->                   
-                   <div class="row"> 
+                   <div class="row" style="margin-left:20px; margin-top:20px;"> 
                         
                             <div class="col-sm-2"> 
                             <?= Yii::t('backend', 'Hse/Building/Ctryhse') ?>
@@ -171,7 +194,7 @@ function bloquea() {
                     </div>
 
 <!-- Observacion y Tipo de ejido de domicilio --> 
-                   <div class="row">
+                   <div class="row" style="margin-left:20px; margin-top:20px;">
                         
                             <div class="col-sm-2"> 
                             <?= Yii::t('backend', 'Observation') ?> 
@@ -192,6 +215,7 @@ function bloquea() {
                                            
 
                    </div>
+
                    <div class="row">
                         
                             <div class="col-sm-1">
@@ -220,6 +244,7 @@ function bloquea() {
 <?= $form->field($model, 'nivel')->hiddenInput(['value' => 0])->label(false) ?>
 <?= $form->field($model, 'catastro')->hiddenInput(['value' => 0])->label(false) ?>
 <?= $form->field($model, 'tlf_hab')->hiddenInput(['style' => 'width:80px;','value' =>0])->label(false) ?>
+
 
 
 
