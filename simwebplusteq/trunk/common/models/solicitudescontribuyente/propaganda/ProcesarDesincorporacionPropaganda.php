@@ -325,7 +325,7 @@
                                             
                                          ];
 
-                    $arregloCondicionMasterPago = [ 'id_impuesto' => $camposModel['id_impuesto'] , 'impuesto' = 4, 'pago' = 0
+                    $arregloCondicionMasterPago = [ 'id_impuesto' => $camposModel['id_impuesto'] , 'impuesto' => 4, 'pago' => 0
                                                 ];                           
 
                     $resultInsert = $this->_conexion->modificarRegistro($this->_conn, $tableNameMaster, $arregloDatosMaster, 
