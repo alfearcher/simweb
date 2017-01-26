@@ -269,7 +269,7 @@
 								<h4><strong>En Bs.</strong></h4>
 							</div>
 							<div class="col-sm-4" style="width:20%;padding:0px;">
-								 <?= Html::textInput('monto-en-moneda', ($tasa['tipoRango']['descripcion'] == "BOLIVARES") ? number_format($tasa['monto']) : $utDelAño * $tasa['monto'],
+								 <?= Html::textInput('monto-en-moneda', ($tasa['tipoRango']['descripcion'] == "BOLIVARES") ? round($tasa['monto'],4) : $utDelAño * $tasa['monto'],
 																[
 																	'id' => 'id-monto-en-moneda',
 																	'class' => 'form-control',
