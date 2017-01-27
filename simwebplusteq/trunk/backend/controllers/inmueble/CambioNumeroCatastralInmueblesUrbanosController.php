@@ -174,13 +174,23 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
                 } 
           }
 
-          foreach ($datosIRegistros as $key => $valueIn) {
+          if ($datosIRegistros == null) {
+
+                    $valueIn = false; 
+         } else {
+
+         foreach ($datosIRegistros as $key => $valueIn) {
                                             
                     } 
-                    
-          $_SESSION['datosURegistros'] = $valueIn;
+                    $añoUltimoRegistro = explode('-', $registros['fecha']);
+                    $_SESSION['anioRegistro'] = $añoUltimoRegistro;
+                    $_SESSION['datosURegistros'] = $valueIn;
+         }
+
 
            $verificarSolicitud = self::verificarSolicitud($datosInmueble['id_impuesto'] , $_SESSION['id']);
+           
+
            if($verificarSolicitud == true){
                 
                 return MensajeController::actionMensaje(923);                
