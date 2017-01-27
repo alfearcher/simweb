@@ -119,12 +119,11 @@
 		public function condicionDefinitiva($añoImpositivo, $periodo, $idContribuyente)
 		{
 			$findDefinitiva = self::definitivaLiquidadas($añoImpositivo, $periodo, $idContribuyente);
-			$result = $findDefinitiva->all();
-die(var_dump($result));
-			if ( $result == null ) {	// No existe registro para el lapso.
+			$result = $findDefinitiva->asArray()->all();
+			if ( count($result) == 0 ) {	// No existe registro para el lapso.
 				return false;
 			} else {
-				return (int)$result->pago;
+				return (int)$result[0]['pago'];
 			}
 		}
 
