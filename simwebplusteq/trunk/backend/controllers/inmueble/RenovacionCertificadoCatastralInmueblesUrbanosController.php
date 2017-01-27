@@ -153,7 +153,11 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
           $_SESSION['datosHAvaluos'] = $datosHAvaluos; 
         //die(var_dump($_SESSION['datosHAvaluos']));
           
-      
+          foreach ($datosIRegistros as $key => $valueIn) {
+                                            
+                    } 
+                    
+                    $_SESSION['datosURegistros'] = $valueIn;
 
           if ($datosHAvaluos != null) {
                 
@@ -188,6 +192,11 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                   
                 } 
           } 
+
+          if ($datosInmueble['parcela_catastro'] != 0 and $datosInmueble['manzana_limite'] == null ) {
+            
+            return MensajeController::actionMensaje(925);
+          }
 
           if ($datosIRegistros == null) {
             

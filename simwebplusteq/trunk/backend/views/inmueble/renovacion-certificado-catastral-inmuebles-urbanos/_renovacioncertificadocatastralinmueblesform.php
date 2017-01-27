@@ -231,18 +231,18 @@ Session["variablephp"] = tu;
                             </div> 
                       
                             <div class="col-sm-4">
-                            <?= $form->field($model, 'id_sim')->textInput(['style' => 'width:80px;'])->label(false) ?>
+                            <?= $form->field($model, 'id_sim')->textInput(['style' => 'width:80px;','readOnly' => true])->label(false) ?>
                             </div> 
                        
                             <div class="col-sm-2">
-                            <?= $form->field($model, 'inactivo')->checkbox(array(['style' => 'width:80px;']))?> 
+                            <?= $form->field($model, 'inactivo')->checkbox(array(['style' => 'width:80px;','readOnly' => true]))?> 
                             </div> 
                        
                             <div class="col-sm-3"> 
                             <?= $form->field($model, 'propiedad_horizontal')->checkbox(['id'=> 'propiedadhorizontal',
                                                                                          'style' => 'width:50px;', 
                                                                                          'onclick'=>'bloquea()',
-                                                                                         
+                                                                                         'readOnly' => true,
                                                                                           ]); ?> 
                             </div> 
                         
@@ -256,7 +256,7 @@ Session["variablephp"] = tu;
                             </div> 
                         
                             <div class="col-sm-1">
-                            <?= $form->field($model, 'estado_catastro')->textInput(['style' => 'width:80px;', 'value'=>$_SESSION['datosInmueble']['estado_catastro']])/*->dropDownList($listaEstados, [
+                            <?= $form->field($model, 'estado_catastro')->textInput(['style' => 'width:80px;', 'value'=>$_SESSION['datosInmueble']['estado_catastro'],'readOnly' => true])/*->dropDownList($listaEstados, [
                                                                                                             'id'=> 'estados', 
                                                                                                             'prompt' => Yii::t('backend', 'Select'),
                                                                                                             'style' => 'width:80px;',
@@ -275,7 +275,7 @@ Session["variablephp"] = tu;
                             </div> 
                         
                             <div class="col-sm-1">
-                            <?= $form->field($model, 'municipio_catastro')->textInput(['style' => 'width:80px;','value'=>$_SESSION['datosInmueble']['municipio_catastro']])/*->dropDownList($listaMunicipios, [
+                            <?= $form->field($model, 'municipio_catastro')->textInput(['style' => 'width:80px;','value'=>$_SESSION['datosInmueble']['municipio_catastro'],'readOnly' => true])/*->dropDownList($listaMunicipios, [
                                                                                                             'id'=> 'municipios', 
                                                                                                             'prompt' => Yii::t('backend', 'Select'),
                                                                                                             'style' => 'width:80px;',
@@ -294,7 +294,7 @@ Session["variablephp"] = tu;
                             </div> 
                         
                             <div class="col-sm-1">
-                            <?= $form->field($model, 'parroquia_catastro')->textInput(['style' => 'width:80px;','value'=>$_SESSION['datosInmueble']['parroquia_catastro']])->label(false) ?>
+                            <?= $form->field($model, 'parroquia_catastro')->textInput(['style' => 'width:80px;','value'=>$_SESSION['datosInmueble']['parroquia_catastro'],'readOnly' => true])->label(false) ?>
                             </div> 
                         
                             <div class="col-sm-1"> 
@@ -302,7 +302,7 @@ Session["variablephp"] = tu;
                             </div> 
                         
                             <div class="col-sm-1">
-                            <?= $form->field($model, 'ambito_catastro')->textInput(['style' => 'width:80px;','value'=>$_SESSION['datosInmueble']['ambito_catastro']])->label(false) ?>
+                            <?= $form->field($model, 'ambito_catastro')->textInput(['style' => 'width:80px;','value'=>$_SESSION['datosInmueble']['ambito_catastro'],'readOnly' => true])->label(false) ?>
                             </div> 
                         
                             <div class="col-sm-1"> 
@@ -310,7 +310,7 @@ Session["variablephp"] = tu;
                             </div> 
                         
                             <div class="col-sm-1">
-                            <?= $form->field($model, 'sector_catastro')->textInput(['style' => 'width:80px;','value'=>$_SESSION['datosInmueble']['sector_catastro']])->label(false) ?>
+                            <?= $form->field($model, 'sector_catastro')->textInput(['style' => 'width:80px;','value'=>$_SESSION['datosInmueble']['sector_catastro'],'readOnly' => true])->label(false) ?>
                             </div> 
                         
                             
@@ -324,7 +324,7 @@ Session["variablephp"] = tu;
                             </div> 
                         
                             <div class="col-sm-1">
-                            <?= $form->field($model, 'manzana_catastro')->textInput(['style' => 'width:80px;','value'=>$_SESSION['datosInmueble']['manzana_catastro']])->label(false) ?>
+                            <?= $form->field($model, 'manzana_catastro')->textInput(['style' => 'width:80px;','value'=>$_SESSION['datosInmueble']['manzana_catastro'],'readOnly' => true])->label(false) ?>
                             </div> 
                                         
                             <div class="col-sm-1"> 
@@ -332,7 +332,7 @@ Session["variablephp"] = tu;
                             </div> 
                         
                             <div class="col-sm-1" >
-                            <?= $form->field($model, 'parcela_catastro')->textInput(['style' => 'width:80px;','value'=>$_SESSION['datosInmueble']['parcela_catastro']])->label(false) ?>
+                            <?= $form->field($model, 'parcela_catastro')->textInput(['style' => 'width:80px;','value'=>$_SESSION['datosInmueble']['parcela_catastro'],'readOnly' => true])->label(false) ?>
                             </div>
                         
                             <div class="col-sm-1" id="subparcela" style="display:none"> 
@@ -340,7 +340,7 @@ Session["variablephp"] = tu;
                             </div>  
                                            
                             <div class="col-sm-1" id="subparcelac" style="display:none">
-                            <?= $form->field($model, 'subparcela_catastro')->textInput(['style' => 'width:80px;'])->label(false) //<?= $form->field($model, 'capa_subparcela')->textInput(['style' => 'width:80px;display:block;', 'id' => 'ms2', 'disabled'=>'disabled' ])->label(false) , 'id' => 'ms1' display:none;?>
+                            <?= $form->field($model, 'subparcela_catastro')->textInput(['style' => 'width:80px;','readOnly' => true])->label(false) //<?= $form->field($model, 'capa_subparcela')->textInput(['style' => 'width:80px;display:block;', 'id' => 'ms2', 'disabled'=>'disabled' ])->label(false) , 'id' => 'ms1' display:none;?>
                             </div> 
                                                  
                            <div class="col-sm-1" id="level" style= 'display:none'>
@@ -378,7 +378,7 @@ Session["variablephp"] = tu;
                                                                                         '70'=>'70','71'=>'71','72'=>'72','73'=>'73','74'=>'74','75'=>'75','76'=>'76','77'=>'77','78'=>'78','79'=>'79',
                                                                                         '80'=>'80','81'=>'81','82'=>'82','83'=>'83','84'=>'84','85'=>'85','86'=>'86','87'=>'87','88'=>'88','89'=>'89',
                                                                                         '90'=>'90','91'=>'91','92'=>'92','93'=>'93','94'=>'94','95'=>'95','96'=>'96','97'=>'97','98'=>'98','99'=>'99',
-                                                                                        ],['style' => 'width:80px;'])->label(false) ?> 
+                                                                                        ],['style' => 'width:80px;','readOnly' => true])->label(false) ?> 
 
                             </div>
                         
@@ -389,7 +389,7 @@ Session["variablephp"] = tu;
                             </div>
                        
                             <div class="col-sm-1" id="unidad1c" style="display:none">
-                            <?= $form->field($model, 'unidad_catastro')->textInput(['style' => 'width:80px;'])->label(false) ?>
+                            <?= $form->field($model, 'unidad_catastro')->textInput(['style' => 'width:80px;','readOnly' => true])->label(false) ?>
                             </div>                                          
                         
                    </div>
@@ -401,7 +401,7 @@ Session["variablephp"] = tu;
                             </div> 
                         
                             <div class="col-sm-4"> 
-                            <?= $form->field($model, 'direccion')->textarea(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?>
+                            <?= $form->field($model, 'direccion')->textarea(['maxlength' => true,'style' => 'width:300px;','readOnly' => true])->label(false) ?>
                             </div> 
                         
                             <div class="col-sm-1"> 
@@ -409,7 +409,7 @@ Session["variablephp"] = tu;
                             </div> 
                         
                             <div class="col-sm-1"> 
-                            <?= $form->field($model, 'ano_inicio')->textInput(['style' => 'width:80px;'])->label(false)/*->input('date', 
+                            <?= $form->field($model, 'ano_inicio')->textInput(['style' => 'width:80px;','readOnly' => true])->label(false)/*->input('date', 
                                                                            [
                                                                               //'value' => date('d-m-Y'),
                                                                               'type' => 'date',
@@ -427,7 +427,7 @@ Session["variablephp"] = tu;
                             </div>  
                         
                             <div class="col-sm-2">
-                            <?= $form->field($model, 'casa_edf_qta_dom')->textInput(['style' => 'width:80px;'])->label(false) ?>
+                            <?= $form->field($model, 'casa_edf_qta_dom')->textInput(['style' => 'width:80px;','readOnly' => true])->label(false) ?>
                             </div> 
                         
                             <div class="col-sm-2"> 
@@ -435,7 +435,7 @@ Session["variablephp"] = tu;
                             </div> 
                        
                             <div class="col-sm-2">
-                            <?= $form->field($model, 'piso_nivel_no_dom')->textInput(['style' => 'width:80px;'])->label(false) ?>
+                            <?= $form->field($model, 'piso_nivel_no_dom')->textInput(['style' => 'width:80px;','readOnly' => true])->label(false) ?>
                             </div> 
                        
                             <div class="col-sm-2"> 
@@ -443,7 +443,7 @@ Session["variablephp"] = tu;
                             </div> 
                         
                             <div class="col-sm-2"> 
-                            <?= $form->field($model, 'apto_dom')->textInput(['style' => 'width:80px;'])->label(false) ?>
+                            <?= $form->field($model, 'apto_dom')->textInput(['style' => 'width:80px;','readOnly' => true])->label(false) ?>
                             </div> 
                         
                             <div class="col-sm-2"> 
@@ -451,7 +451,7 @@ Session["variablephp"] = tu;
                             </div> 
                         
                             <div class="col-sm-2"> 
-                            <?= $form->field($model, 'medidor')->textInput(['style' => 'width:80px;'])->label(false) ?>
+                            <?= $form->field($model, 'medidor')->textInput(['style' => 'width:80px;','readOnly' => true])->label(false) ?>
                             </div>                                                                        
                         
                     </div>
@@ -464,11 +464,11 @@ Session["variablephp"] = tu;
                             </div> 
                         
                             <div class="col-sm-4"> 
-                            <?= $form->field($model, 'observacion')->textarea(['maxlength' => true,'style' => 'width:300px;'])->label(false) ?>
+                            <?= $form->field($model, 'observacion')->textarea(['maxlength' => true,'style' => 'width:300px;','readOnly' => true])->label(false) ?>
                             </div>    
                                                                                           
                             <div class="col-sm-2"> 
-                            <?= $form->field($model, 'tipo_ejido')->checkbox(['style' => 'width:50px;']) ?>
+                            <?= $form->field($model, 'tipo_ejido')->checkbox(['style' => 'width:50px;','readOnly' => true]) ?>
                             </div> 
                         </td>                                              
                     </div>                    
@@ -659,7 +659,7 @@ Session["variablephp"] = tu;
                                                         <div class="col-sm-4"> 
                                                         <?= $form->field($modelRegistro, 'documento_propiedad')->dropDownList([
                                                                                          'prompt' => Yii::t('backend', 'Selecciona'),
-                                                                                         '1'=>'Datos SAREN','2'=>'Documento de Registro'],['id' => 'documento_propiedad','style' => 'width:250px;','onclick'=>'documento()',])->label(false) ?>
+                                                                                         '1'=>'Datos SAREN','2'=>'Documento de Registro'],['id' => 'documento_propiedad','style' => 'width:250px;','onclick'=>'documento()', 'value'=>$_SESSION['datosURegistros']['id_tipo_documento_inmueble'],'readOnly' => true])->label(false) ?>
                                                         </div>  
 
                                                     </div>
@@ -670,7 +670,7 @@ Session["variablephp"] = tu;
                                                         </div> 
                                                     
                                                         <div class="col-sm-2"> 
-                                                        <?= $form->field($modelRegistro, 'fecha')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?>
+                                                        <?= $form->field($modelRegistro, 'fecha')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value'=>$_SESSION['datosURegistros']['fecha'],'readOnly' => true])->label(false) ?>
                                                         </div> 
 
                                                         <div class="col-sm-2"> 
@@ -678,7 +678,7 @@ Session["variablephp"] = tu;
                                                         </div> 
 
                                                         <div class="col-sm-2"> 
-                                                        <?= $form->field($modelRegistro, 'num_reg')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?>
+                                                        <?= $form->field($modelRegistro, 'num_reg')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value' => $_SESSION['datosURegistros']['num_reg'],'readOnly' => true])->label(false) ?>
                                                         </div> 
 
                                                         <div class="col-sm-2"> 
@@ -686,7 +686,7 @@ Session["variablephp"] = tu;
                                                         </div> 
 
                                                         <div class="col-sm-2"> 
-                                                        <?= $form->field($modelRegistro, 'reg_mercantil')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?>
+                                                        <?= $form->field($modelRegistro, 'reg_mercantil')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value'=>$_SESSION['datosURegistros']['reg_mercantil'],'readOnly' => true])->label(false) ?>
                                                         </div> 
                                                     </div>
 
@@ -697,7 +697,7 @@ Session["variablephp"] = tu;
                                                         </div> 
                                                     
                                                         <div class="col-sm-2"> 
-                                                        <?= $form->field($modelRegistro, 'tomo')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?> 
+                                                        <?= $form->field($modelRegistro, 'tomo')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value'=>$_SESSION['datosURegistros']['tomo'],'readOnly' => true])->label(false) ?> 
                                                         </div>
 
                                                         <div class="col-sm-2"> 
@@ -705,7 +705,7 @@ Session["variablephp"] = tu;
                                                         </div> 
 
                                                         <div class="col-sm-2"> 
-                                                        <?= $form->field($modelRegistro, 'protocolo')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?>
+                                                        <?= $form->field($modelRegistro, 'protocolo')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value'=>$_SESSION['datosURegistros']['protocolo'],'readOnly' => true])->label(false) ?>
                                                         </div> 
 
                                                         <div class="col-sm-2"> 
@@ -713,7 +713,7 @@ Session["variablephp"] = tu;
                                                         </div> 
 
                                                         <div class="col-sm-2"> 
-                                                        <?= $form->field($modelRegistro, 'folio')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?>
+                                                        <?= $form->field($modelRegistro, 'folio')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value'=>$_SESSION['datosURegistros']['folio'],'readOnly' => true])->label(false) ?>
                                                         </div> 
 
                                                         
@@ -725,7 +725,7 @@ Session["variablephp"] = tu;
                                                         </div> 
                                                     
                                                         <div class="col-sm-2"> 
-                                                        <?= $form->field($modelRegistro, 'nro_matriculado')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?> 
+                                                        <?= $form->field($modelRegistro, 'nro_matriculado')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value' => $_SESSION['datosURegistros']['nro_matricula'],'readOnly' => true])->label(false) ?> 
                                                         </div>
 
                                                         <div class="col-sm-2"> 
@@ -733,7 +733,7 @@ Session["variablephp"] = tu;
                                                         </div> 
 
                                                         <div class="col-sm-2"> 
-                                                        <?= $form->field($modelRegistro, 'asiento_registral')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?>
+                                                        <?= $form->field($modelRegistro, 'asiento_registral')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value' =>$_SESSION['datosURegistros']['asiento_registral'],'readOnly' => true])->label(false) ?>
                                                         </div> 
 
                                                                                                               
