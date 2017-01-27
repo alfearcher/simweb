@@ -144,11 +144,7 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
 
           $_SESSION['datosHAvaluos'] = $datosHAvaluos; 
 
-          foreach ($datosIRegistros as $key => $valueIn) {
-                                            
-                    } 
-                    
-          $_SESSION['datosURegistros'] = $valueIn;
+          
           
           if ($datosHAvaluos != null) {
                 
@@ -177,6 +173,12 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
                   
                 } 
           }
+
+          foreach ($datosIRegistros as $key => $valueIn) {
+                                            
+                    } 
+                    
+          $_SESSION['datosURegistros'] = $valueIn;
 
            $verificarSolicitud = self::verificarSolicitud($datosInmueble['id_impuesto'] , $_SESSION['id']);
            if($verificarSolicitud == true){
