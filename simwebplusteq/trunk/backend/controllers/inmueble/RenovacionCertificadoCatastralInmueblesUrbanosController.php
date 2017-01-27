@@ -395,7 +395,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                 $arrayDatos2 = [    'id_impuesto' => $value['id_impuesto'],
                                     'nro_solicitud' => $result,
                                     'fecha' => $value['fecha'],
-                                    'fecha' => $value['ano_impositivo'],
+                                    'ano_impositivo' => $value['ano_impositivo'],
                                     'mts' => $value['mts'],
                                     'valor_por_mts2' => $value['valor_por_mts2'],
                                     'mts2_terreno' => $value['mts2_terreno'],
@@ -431,7 +431,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
 
                         $arrayDatos3 = [    'id_impuesto' => $value['id_impuesto'],
                                             'fecha' => $value['fecha'],
-                                            'fecha' => $value['ano_impositivo'],
+                                            'ano_impositivo' => $value['ano_impositivo'],
                                             'mts' => $value['mts'],
                                             'valor_por_mts2' => $value['valor_por_mts2'],
                                             'mts2_terreno' => $value['mts2_terreno'],
