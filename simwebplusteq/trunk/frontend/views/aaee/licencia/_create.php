@@ -51,6 +51,7 @@
 		  											'periodo' => 1,
 		  											'caption' => $caption,
 		  											'rutaAyuda' => $rutaAyuda,
+
 					    ]) ?>
 </div>
 

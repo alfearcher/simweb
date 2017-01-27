@@ -61,6 +61,7 @@
 															'dataProvider' => $dataProvider,
 															'historico' => $historico,
 															'caption' => $caption,
+															'viewSolicitudPlanilla' => $viewSolicitudPlanilla,
 	    					]);
 	    	?>
 		</div>
