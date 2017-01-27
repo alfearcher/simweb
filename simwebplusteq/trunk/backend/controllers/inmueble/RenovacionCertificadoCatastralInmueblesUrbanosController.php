@@ -527,12 +527,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
               $tarifaAvaluos = self::TarifaAvaluos($_SESSION['datosInmueble']['manzana_limite'],$model->id_tipologia_zona, $anioImpositivo );
               //se calcula 2012 y 2017
               
-              $valuo = $tarifaAvaluos['valor_construccion']*$model->metros_construccion + $tarifaAvaluos['valor_terreno']*$model->metros_terreno;
-              if($_SESSION['datosURegistros']['valor_documental'] > $valuo ){
-                    $valor = $_SESSION['datosURegistros']['valor_documental'];
-                } else {
-                    $valor = $valuo;
-                }
+            
               
               $arrayDatos1 = [    'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
                                     
@@ -542,7 +537,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                                     'valor_por_mts2' => $tarifaAvaluos['valor_construccion'],
                                     'mts2_terreno' => $model->metros_terreno,
                                     'valor_por_mts2_terreno' => $tarifaAvaluos['valor_terreno'],
-                                    'valor' => $valor,
+                                    'valor' => $tarifaAvaluos['valor_construccion']*$model->metros_construccion + $tarifaAvaluos['valor_terreno']*$model->metros_terreno,
                                     'id_uso_inmueble' => $model->id_uso_inmueble,
                                     'tipo_inmueble'   => $model->tipo_inmueble, 
                                     'clase_inmueble' => $model->clase_inmueble,
@@ -618,12 +613,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
 
             $anioImpositivo = '2008';
             $tarifaAvaluos = self::TarifaAvaluos($_SESSION['datosInmueble']['manzana_limite'],$model->id_tipologia_zona, $anioImpositivo );
-            $valuo = $tarifaAvaluos['valor_construccion']*$model->metros_construccion + $tarifaAvaluos['valor_terreno']*$model->metros_terreno;
-              if($_SESSION['datosURegistros']['valor_documental'] > $valuo ){
-                    $valor = $_SESSION['datosURegistros']['valor_documental'];
-                } else {
-                    $valor = $valuo;
-                }
+            
             $arrayDatos1 = [    'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
                                     
                                     'fecha' => '2008-01-01',
@@ -632,7 +622,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                                     'valor_por_mts2' => $tarifaAvaluos['valor_construccion'],
                                     'mts2_terreno' => $model->metros_terreno,
                                     'valor_por_mts2_terreno' => $tarifaAvaluos['valor_terreno'],
-                                    'valor' => $valor,
+                                    'valor' => $tarifaAvaluos['valor_construccion']*$model->metros_construccion + $tarifaAvaluos['valor_terreno']*$model->metros_terreno,
                                     'id_uso_inmueble' => $model->id_uso_inmueble,
                                     'tipo_inmueble'   => $model->tipo_inmueble, 
                                     'clase_inmueble' => $model->clase_inmueble,
@@ -645,12 +635,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                                 ]; 
               $anioImpositivo = '2012';
               $tarifaAvaluos = self::TarifaAvaluos($_SESSION['datosInmueble']['manzana_limite'],$model->id_tipologia_zona, $anioImpositivo );
-              $valuo = $tarifaAvaluos['valor_construccion']*$model->metros_construccion + $tarifaAvaluos['valor_terreno']*$model->metros_terreno;
-              if($_SESSION['datosURegistros']['valor_documental'] > $valuo ){
-                    $valor = $_SESSION['datosURegistros']['valor_documental'];
-                } else {
-                    $valor = $valuo;
-                }
+              
               $arrayDatos2 = [    'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
                                    
                                     'fecha' => '2012-01-01',
@@ -659,7 +644,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                                     'valor_por_mts2' => $tarifaAvaluos['valor_construccion'],
                                     'mts2_terreno' => $model->metros_terreno,
                                     'valor_por_mts2_terreno' => $tarifaAvaluos['valor_terreno'],
-                                    'valor' => $valor,
+                                    'valor' => $tarifaAvaluos['valor_construccion']*$model->metros_construccion + $tarifaAvaluos['valor_terreno']*$model->metros_terreno,
                                     'id_uso_inmueble' => $model->id_uso_inmueble,
                                     'tipo_inmueble'   => $model->tipo_inmueble, 
                                     'clase_inmueble' => $model->clase_inmueble,
@@ -704,12 +689,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
 
             $anioImpositivo = '2008';
             $tarifaAvaluos = self::TarifaAvaluos($_SESSION['datosInmueble']['manzana_limite'],$model->id_tipologia_zona, $anioImpositivo );
-            $valuo = $tarifaAvaluos['valor_construccion']*$model->metros_construccion + $tarifaAvaluos['valor_terreno']*$model->metros_terreno;
-              if($_SESSION['datosURegistros']['valor_documental'] > $valuo ){
-                    $valor = $_SESSION['datosURegistros']['valor_documental'];
-                } else {
-                    $valor = $valuo;
-                }
+            
             $arrayDatos1 = [    'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
                                     
                                     'fecha' => '2008-01-01',
@@ -718,7 +698,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                                     'valor_por_mts2' => $tarifaAvaluos['valor_construccion'],
                                     'mts2_terreno' => $model->metros_terreno,
                                     'valor_por_mts2_terreno' => $tarifaAvaluos['valor_terreno'],
-                                    'valor' => $valor,
+                                    'valor' => $tarifaAvaluos['valor_construccion']*$model->metros_construccion + $tarifaAvaluos['valor_terreno']*$model->metros_terreno,
                                     'id_uso_inmueble' => $model->id_uso_inmueble,
                                     'tipo_inmueble'   => $model->tipo_inmueble, 
                                     'clase_inmueble' => $model->clase_inmueble,
@@ -731,12 +711,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                                 ]; 
               $anioImpositivo = '2012';
               $tarifaAvaluos = self::TarifaAvaluos($_SESSION['datosInmueble']['manzana_limite'],$model->id_tipologia_zona, $anioImpositivo );
-              $valuo = $tarifaAvaluos['valor_construccion']*$model->metros_construccion + $tarifaAvaluos['valor_terreno']*$model->metros_terreno;
-              if($_SESSION['datosURegistros']['valor_documental'] > $valuo ){
-                    $valor = $_SESSION['datosURegistros']['valor_documental'];
-                } else {
-                    $valor = $valuo;
-                }
+              
               $arrayDatos2 = [    'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
                                     
                                     'fecha' => '2012-01-01',
@@ -745,7 +720,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                                     'valor_por_mts2' => $tarifaAvaluos['valor_construccion'],
                                     'mts2_terreno' => $model->metros_terreno,
                                     'valor_por_mts2_terreno' => $tarifaAvaluos['valor_terreno'],
-                                    'valor' => $valor,
+                                    'valor' => $tarifaAvaluos['valor_construccion']*$model->metros_construccion + $tarifaAvaluos['valor_terreno']*$model->metros_terreno,
                                     'id_uso_inmueble' => $model->id_uso_inmueble,
                                     'tipo_inmueble'   => $model->tipo_inmueble, 
                                     'clase_inmueble' => $model->clase_inmueble,
