@@ -113,7 +113,7 @@ class CambioOtrosDatosInmueblesForm extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            
+            [['direccion'],'required','message' => Yii::t('backend', 'Street Address cannot be blank')],
             [['ano_inicio', 'manzana_limite',  'inactivo', 'id_habitante', 'tipo_ejido'], 'integer','message' => Yii::t('backend', 'only integers')],
             // [['observacion','datosVendedor','inmuebleVendedor'], 'string'], 
             [['direccion', 'observacion'], 'string', 'max' => 255,'message' => Yii::t('backend', 'Only 255 character')],
