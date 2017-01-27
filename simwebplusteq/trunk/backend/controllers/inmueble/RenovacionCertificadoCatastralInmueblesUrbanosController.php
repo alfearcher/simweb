@@ -525,6 +525,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
               $arrayDatos1 = [    'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
                                     
                                     'fecha' => '2012-01-01',
+                                    'ano_impositivo' => '2012',
                                     'mts' => $model->metros_construccion,
                                     'valor_por_mts2' => $tarifaAvaluos['valor_construccion'],
                                     'mts2_terreno' => $model->metros_terreno,
@@ -545,6 +546,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
               $arrayDatos2 = [    'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
                                     
                                     'fecha' => date('Y-m-d'),
+                                    'ano_impositivo' => date('Y'),
                                     'mts' => $model->metros_construccion,
                                     'valor_por_mts2' => $tarifaAvaluos['valor_construccion'],
                                     'mts2_terreno' => $model->metros_terreno,
@@ -569,6 +571,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
               $arrayDatos1 = [    'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
                                     
                                     'fecha' => date('Y-m-d'),
+                                    'ano_impositivo' => date('Y'),
                                     'mts' => $model->metros_construccion,
                                     'valor_por_mts2' => $tarifaAvaluos['valor_construccion'],
                                     'mts2_terreno' => $model->metros_terreno,
@@ -594,6 +597,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
             $arrayDatos1 = [    'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
                                     
                                     'fecha' => '2008-01-01',
+                                    'ano_impositivo' => '2008',
                                     'mts' => $model->metros_construccion,
                                     'valor_por_mts2' => $tarifaAvaluos['valor_construccion'],
                                     'mts2_terreno' => $model->metros_terreno,
@@ -614,6 +618,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
               $arrayDatos2 = [    'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
                                    
                                     'fecha' => '2012-01-01',
+                                    'ano_impositivo' => '2012',
                                     'mts' => $model->metros_construccion,
                                     'valor_por_mts2' => $tarifaAvaluos['valor_construccion'],
                                     'mts2_terreno' => $model->metros_terreno,
@@ -633,6 +638,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
               $arrayDatos3 = [    'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
                                     
                                     'fecha' => date('Y-m-d'),
+                                    'ano_impositivo' => date('Y'),
                                     'mts' => $model->metros_construccion,
                                     'valor_por_mts2' => $tarifaAvaluos['valor_construccion'],
                                     'mts2_terreno' => $model->metros_terreno,
@@ -659,6 +665,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
             $arrayDatos1 = [    'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
                                     
                                     'fecha' => '2008-01-01',
+                                    'ano_impositivo' => '2008',
                                     'mts' => $model->metros_construccion,
                                     'valor_por_mts2' => $tarifaAvaluos['valor_construccion'],
                                     'mts2_terreno' => $model->metros_terreno,
@@ -679,6 +686,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
               $arrayDatos2 = [    'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
                                     
                                     'fecha' => '2012-01-01',
+                                    'ano_impositivo' => '2012',
                                     'mts' => $model->metros_construccion,
                                     'valor_por_mts2' => $tarifaAvaluos['valor_construccion'],
                                     'mts2_terreno' => $model->metros_terreno,
@@ -698,6 +706,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
               $arrayDatos3 = [    'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
                                     
                                     'fecha' => date('Y-m-d'),
+                                    'ano_impositivo' => date('Y'),
                                     'mts' => $model->metros_construccion,
                                     'valor_por_mts2' => $tarifaAvaluos['valor_construccion'],
                                     'mts2_terreno' => $model->metros_terreno,

@@ -80,7 +80,6 @@ class DesincorporarPropagandaController extends Controller
 {
 
 
-
     
   public $layout = 'layout-main';
    
