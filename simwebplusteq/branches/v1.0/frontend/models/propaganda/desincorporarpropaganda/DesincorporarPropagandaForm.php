@@ -5,48 +5,48 @@
  */
 
  /**
- * 
- *  > This library is free software; you can redistribute it and/or modify it under 
- *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free 
- *  > Software Foundation; either version 2 of the Licence, or (at your opinion) 
+ *
+ *  > This library is free software; you can redistribute it and/or modify it under
+ *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free
+ *  > Software Foundation; either version 2 of the Licence, or (at your opinion)
  *  > any later version.
- *  > 
- *  > This library is distributed in the hope that it will be usefull, 
- *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability 
- *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence 
+ *  >
+ *  > This library is distributed in the hope that it will be usefull,
+ *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability
+ *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence
  *  > for more details.
- *  > 
+ *  >
  *  > See [LICENSE.TXT](../../LICENSE.TXT) file for more information.
  *
  */
 
- /**    
+ /**
  *  @file DesincorporarPropagandaForm.php
- *  
+ *
  *  @author Manuel Alejandro Zapata Canelon
- * 
+ *
  *  @date 11/08/2016
- * 
+ *
  *  @class DesincorporarPropagandaForm
  *  @brief Clase que contiene las rules para validacion del formulario de la modificacion de propaganda
- * 
- *  
- * 
- *  
- *  
+ *
+ *
+ *
+ *
+ *
  *  @property
  *
- *  
+ *
  *  @method
  *  rules
  *  scenarios
  *  search
  *
- *  
+ *
  *
  *  @inherits
- *  
- */ 
+ *
+ */
 namespace frontend\models\propaganda\desincorporarpropaganda;
 
 use Yii;
@@ -66,12 +66,13 @@ class DesincorporarPropagandaForm extends Model
 
     public $causa;
     public $observacion;
+    public $nro_solicitud;
     //public $impuesto;
 
 
 
-    
-   
+
+
     /**
      * @inheritdoc
      */
@@ -80,14 +81,14 @@ class DesincorporarPropagandaForm extends Model
         return [
 
              [['causa','observacion'], 'required'],
-            
+
            //  [['cantidad_base', 'base_calculo','observacion','direccion' ,'clase_propaganda','cigarrillos', 'bebidas_alcoholicas', 'idioma'  ,'fecha_fin', 'cantidad_tiempo', 'tiempo', 'fecha_inicial', 'uso_propaganda', 'tipo_propaganda', 'medio_difusion', 'medio_transporte', 'id_sim'], 'default', 'value' => 0],
 
            //  [['alto','ancho'],'required','when' => function($model) {
            //                                                                  if ( $model->base_calculo == 2 ) {
            //                                                                      return true; }
            //                                                                  }],
-           
+
            // [['alto','ancho', 'profundidad'],'required','when' => function($model) {
            //                                                                  if ( $model->base_calculo == 12 ) {
            //                                                                      return true; }
@@ -98,23 +99,23 @@ class DesincorporarPropagandaForm extends Model
            //                                                                      return true; }
            //                                                                  }],
 
-          
-            
+
+
            //  [['unidad', 'cantidad_tiempo'], 'integer'],
 
-             ]; 
-    } 
+             ];
+    }
 
     /**
      * @inheritdoc
      */
-   
+
 
     public function attributeLabels()
     {
         return [
-                'nombre_propaganda' => Yii::t('frontend', 'Nombre de la propaganda'), 
-                'ano_impositivo' => Yii::t('frontend', 'Año Impositivo'), 
+                'nombre_propaganda' => Yii::t('frontend', 'Nombre de la propaganda'),
+                'ano_impositivo' => Yii::t('frontend', 'Año Impositivo'),
                 'clase_propaganda' => Yii::t('frontend', 'Clase de Propaganda'),
                 'uso_propaganda' => Yii::t('frontend', 'Uso de Propaganda'),
                 'fecha_desde' => Yii::t('frontend', 'Fecha de Inscripcion'),
@@ -133,7 +134,7 @@ class DesincorporarPropagandaForm extends Model
                 'direccion' => Yii::t('frontend', 'Direccion'),
                 'observacion' => Yii::t('frontend', 'Mensaje de la Propaganda'),
                 'unidad' => Yii::t('frontend', 'Unidad'),
-        ];      
+        ];
     }
 
     public function attributeSlPropagandas()
@@ -176,8 +177,8 @@ class DesincorporarPropagandaForm extends Model
             'ancho',
             'profundidad',
             'unidad',
-            
-          
+
+
         ];
     }
 
@@ -216,8 +217,8 @@ class DesincorporarPropagandaForm extends Model
             'ancho',
             'profundidad',
             'unidad',
-            
-          
+
+
         ];
     }
 
@@ -225,7 +226,7 @@ class DesincorporarPropagandaForm extends Model
     {
 
 
-    return [  
+    return [
 
               'nro_solicitud',
               'id_contribuyente',
@@ -236,11 +237,11 @@ class DesincorporarPropagandaForm extends Model
               'usuario',
               'fecha_hora',
               'inactivo',
-              
-              
+
+
 
               ];
-      
+
     }
 
        /**
@@ -251,7 +252,7 @@ class DesincorporarPropagandaForm extends Model
      * @return ActiveDataProvider
      */
     public function searchPropaganda()
-    { 
+    {
        // die('llegue a search');
 
         $idContribuyente = yii::$app->user->identity->id_contribuyente;
@@ -259,8 +260,8 @@ class DesincorporarPropagandaForm extends Model
 
         $query = Propaganda::find();
 
-                                
-                             
+
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
            // die(var_dump($dataProvider)),
@@ -269,10 +270,10 @@ class DesincorporarPropagandaForm extends Model
             'id_contribuyente' =>  $idContribuyente,
             'inactivo' => 0,
             ]);
-        
+
         return $dataProvider;
 
-       
+
     }
 
     public function busquedaPropaganda($idPropaganda, $idContribuyente)
@@ -284,8 +285,8 @@ class DesincorporarPropagandaForm extends Model
                                     'id_impuesto' => $idPropaganda,
                                     'inactivo' => 0,
 
-                                
-                               
+
+
                                 ])
                                 ->one();
                                 //die(var_dump($busqueda));
@@ -300,10 +301,10 @@ class DesincorporarPropagandaForm extends Model
     public function verificarSolicitudPropaganda($idPropaganda, $idConfig)
     {
         $buscar = SolicitudesContribuyente::find()
-                                        ->where([ 
+                                        ->where([
                                           'id_impuesto' => $idPropaganda,
                                           'id_config_solicitud' => $idConfig,
-                                          'inactivo' => 0,
+                                          'estatus' => 0,
                                         ])
                                       ->all();
 
@@ -312,7 +313,7 @@ class DesincorporarPropagandaForm extends Model
             }else{
              return false;
             }
-        
+
     }
 
        public function validarCheck($postCheck)
@@ -327,7 +328,7 @@ class DesincorporarPropagandaForm extends Model
 
 
 
-   
 
-  
+
+
 }
