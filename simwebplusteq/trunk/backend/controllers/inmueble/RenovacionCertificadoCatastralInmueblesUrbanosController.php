@@ -196,21 +196,22 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
           if ($datosInmueble['parcela_catastro'] == 0 and $datosInmueble['manzana_limite'] == null ) {
             
             
-            if ($datosIRegistros == null) {
+              if ($datosIRegistros == null) {
             
-               return MensajeController::actionMensaje(926);
+                 return MensajeController::actionMensaje(926);
 
-            } else {
+              } else {
 
-                return MensajeController::actionMensaje(925);
+                  return MensajeController::actionMensaje(925);
 
-            }
+              }
 
           }
 
           if ($datosIRegistros == null) {
             
-            return MensajeController::actionMensaje(922);
+             return MensajeController::actionMensaje(922);
+             
           }
 
 
