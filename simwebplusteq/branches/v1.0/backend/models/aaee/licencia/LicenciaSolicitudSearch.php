@@ -360,7 +360,7 @@
 
 				foreach ( $model as $mod ) {
 					$tipo = $mod->getDescripcionTipoSolicitud($mod['nro_solicitud']);
-					$mensaje[] = 'La Solicitud Nro. ' . $mod['nro_solicitud'] . ' ('. $tipo .'), se encuentra ' . $mod->estatusSolicitud->descripcion . ', rubro: ' . $mod->rubro->rubro . ' ' . $mod->rubro->descripcion;
+					$mensaje[] = 'La Solicitud Nro. ' . $mod['nro_solicitud'] . ' ('. $tipo .'), se encuentra ' . $mod->estatusSolicitud->descripcion;
 				}
 			}
 
