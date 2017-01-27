@@ -52,7 +52,7 @@ use backend\controllers\operacionbase\OperacionBaseController;
 /**
  * This is the model class for table "propagandas".
  *
- 
+ *
  * @property  msgError $msgError
  * @property  ano_impo $ano_impo
  * @property  ano_impo $ano_impo
@@ -195,7 +195,7 @@ class DisableForm extends \yii\db\ActiveRecord
                                                 
                                         } else {
                                                     return false;
-                                        }
+                                        } 
                                     } 
                                             $transaccion->commit();
                                     

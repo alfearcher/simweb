@@ -12,8 +12,8 @@ $this->title =Yii::t( 'backend', 'List of Advertisements' );
 
 function seleccion() {
 
-    if ( document.getElementById('checkbox').checked == 1 ) {
-alert('llego despues');
+    if ( document.getElementById('checkbox').checked !== 0 ) {
+
                  document.getElementById("btn").style.display='';
                 btn.disabled = false;
     } else {
