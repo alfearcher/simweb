@@ -28,7 +28,7 @@
  *	@date 20-11-2016
  *
  *  @class LicenciaSolicitudController
- *	@brief Clase LicenciaSolicitudController del lado del contribuyente backend.
+ *	@brief Clase LicenciaSolicitudController del lado del contribuyente frontend.
  *
  *
  *	@property
@@ -116,13 +116,13 @@
 			$urlSalida = 'quit';
 
 			// identificador de la configuracion de la solicitud.
-			$id = $getData['id'];
-			if ( $id == self::CONFIG ) {
+			// $id = $getData['id'];
+			// if ( $id == self::CONFIG ) {
 				if ( isset($_SESSION['idContribuyente']) ) {
 					if ( ContribuyenteBase::getTipoNaturalezaDescripcionSegunID($_SESSION['idContribuyente']) == 'JURIDICO' ) {
 						// Se muestra un sud-menu de opciones donde el usuario especifica el tipo
 						// de licencia, "Nueva" o "Renovacion".
-						return $this->render('@frontend/views/aaee/licencia/sub-menu-tipo',[
+						return $this->render('/aaee/licencia/sub-menu-tipo',[
 													'urlNueva' => $urlNueva,
 													'urlRenovacion' => $urlRenovacion,
 													'urlSalida' => $urlSalida,
@@ -137,10 +137,10 @@
 					// No esta definido el contribuyente.
 					return $this->redirect(['error-operacion', 'cod' => 404]);
 				}
-			} else {
-				// Solicitud no valida
-				throw new NotFoundHttpException(Yii::t('frontend', 'No se pudo obtener la informacion de la configuracion de la solicitud'));
-			}
+			// } else {
+			// 	// Solicitud no valida
+			// 	throw new NotFoundHttpException(Yii::t('frontend', 'No se pudo obtener la informacion de la configuracion de la solicitud'));
+			// }
 		}
 
 
@@ -149,6 +149,7 @@
 		public function actionIndexNueva()
 		{
 			$_SESSION['tipo'] = 'NUEVA';
+			$_SESSION['id_config_solicitud'] = 113;
 			$this->redirect(['check']);
 		}
 
@@ -158,6 +159,7 @@
 		public function actionIndexRenovacion()
 		{
 			$_SESSION['tipo'] = 'RENOVACION';
+			$_SESSION['id_config_solicitud'] = 116;
 			$this->redirect(['check']);
 		}
 
@@ -183,7 +185,7 @@
 				$mensajes = $searchLicencia->validarEvento(date('Y'), $tipo);
 
 				if ( count($mensajes) == 0 ) {
-					$modelParametro = New ParametroSolicitud(self::CONFIG);
+					$modelParametro = New ParametroSolicitud($_SESSION['id_config_solicitud']);
 					// Se obtiene el tipo de solicitud. Se retorna un array donde el key es el nombre
 					// del parametro y el valor del elemento es el contenido del campo en base de datos.
 					$config = $modelParametro->getParametroSolicitud([
@@ -203,7 +205,7 @@
 					}
 				} else {
 					// Mostrar mensajes que indica porque no puede continuar con la solicitud.
-					return $this->render('@frontend/views/aaee/licencia/mensaje-error',[
+					return $this->render('/aaee/licencia/mensaje-error',[
 														'mensajes' => $mensajes
 							]);
 				}
@@ -256,7 +258,7 @@
 					if ( $postData['btn-back-form'] == 3 ) {
 						$postData = [];			// Inicializa el post.
 						$model->load($postData);
-						$this->redirect(['index', 'id' => self::CONFIG]);
+						$this->redirect(['index', 'id' => $_SESSION['id_config_solicitud']]);
 					}
 
 				} elseif ( isset($postData['btn-create']) ) {
@@ -266,7 +268,7 @@
 			    				// Vista previa
 			    				$caption = 'Confirmar ' . $caption . '. ' . $tipoLicencia;
 			    				$dataProvider = $searchLicencia->getDataProviderRubrosRegistrados($model->ano_impositivo, 1);
-			    				return $this->render('@frontend/views/aaee/licencia/pre-view-create',[
+			    				return $this->render('/aaee/licencia/pre-view-create',[
 		  												'model' => $model,
 		  												'dataProvider' => $dataProvider,
 		  												// 'tipo' => $tipoLicencia,
@@ -304,6 +306,10 @@
 		      	}
 
 		  		if ( isset($findModel) ) {
+
+		  			$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : [];
+					$rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud'], 'frontend');
+
 		  			$añoImpositivo = (int)date('Y');
 		  			$dataProvider = $searchLicencia->getDataProviderRubrosRegistrados($añoImpositivo, 1);
 		  			$model->id_contribuyente = $findModel->id_contribuyente;
@@ -311,15 +317,12 @@
 		  			$model->tipo = $tipoLicencia;
 		  			$model->usuario = Yii::$app->identidad->getUsuario();
 		  			$model->fecha_hora = date('Y-m-d H:i:s');
-		  			$model->origen = 'LAN';
-
-		  			$conf = isset($_SESSION['conf']) ? $_SESSION['conf'] : [];
-					$rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud'], 'backend');
+		  			$model->origen = 'WEB';
 
 		  			// Nro de licencia actual.
 		  			$model->licencia = $findModel->id_sim;
 		  			$caption .= '. ' . $tipoLicencia;
-		  			return $this->render('@frontend/views/aaee/licencia/_create',[
+		  			return $this->render('/aaee/licencia/_create',[
 		  												'model' => $model,
 		  												'dataProvider' => $dataProvider,
 		  												'tipo' => $tipoLicencia,
@@ -424,8 +427,7 @@
 			$estatus = 0;
 			$userFuncionario = '';
 			$fechaHoraProceso = '0000-00-00 00:00:00';
-			//$user = isset($model->usuario) ? $model->usuario : Yii::$app->identidad->getUsuario();
-			$user = Yii::$app->identidad->getUsuario();
+			$user = isset($model->usuario) ? $model->usuario : Yii::$app->identidad->getUsuario();
 			$nroSolicitud = 0;
 			$modelSolicitud = New SolicitudesContribuyenteForm();
 			$tabla = $modelSolicitud->tableName();
@@ -814,7 +816,7 @@
 				$opciones = [
 					'quit' => '/aaee/licencia/licencia-solicitud/quit',
 				];
-				return $this->render('@frontend/views/aaee/licencia/_view', [
+				return $this->render('/aaee/licencia/_view', [
 														'codigo' => 100,
 														'model' => $model,
 														'modelSearch' => $modelSearch,
@@ -902,7 +904,8 @@
 							'postData',
 							'conf',
 							'begin',
-							'lapso'
+							'lapso',
+							'id_config_solicitud',
 					];
 		}
 
