@@ -66,6 +66,7 @@ class DesincorporarPropagandaForm extends Model
 
     public $causa;
     public $observacion;
+    public $nro_solicitud;
     //public $impuesto;
 
 
