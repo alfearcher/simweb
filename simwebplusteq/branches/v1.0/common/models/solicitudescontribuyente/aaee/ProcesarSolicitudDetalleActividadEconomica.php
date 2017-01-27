@@ -65,6 +65,7 @@
     use common\models\solicitudescontribuyente\aaee\ProcesarDeclaracionDefinitiva;
     use common\models\solicitudescontribuyente\aaee\ProcesarDeclaracionSustitutiva;
     use common\models\solicitudescontribuyente\aaee\ProcesarSolicitudLicencia;
+    use common\models\solicitudescontribuyente\aaee\ProcesarSolicitudLicenciaRenovacion;
     use common\models\solicitudescontribuyente\aaee\ProcesarSolicitudSolvenciaActividadEconomica;
 
 
@@ -144,6 +145,14 @@
                                                               $this->_evento,
                                                               $this->_conn,
                                                               $this->_conexion);
+                    $result = $procesar->procesarSolicitud();
+
+
+                } elseif ( $this->_model->tipo_solicitud == 4 ) {
+                    $procesar = New ProcesarSolicitudLicenciaRenovacion($this->_model,
+                                                                        $this->_evento,
+                                                                        $this->_conn,
+                                                                        $this->_conexion);
                     $result = $procesar->procesarSolicitud();
 
 
