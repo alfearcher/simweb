@@ -66,6 +66,8 @@
 	use backend\models\aaee\rubro\Rubro;
 	use common\models\numerocontrol\NumeroControlSearch;
 	use backend\models\aaee\historico\licencia\HistoricoLicenciaSearch;
+	use common\models\configuracion\solicitudplanilla\SolicitudPlanillaSearch;
+	use common\models\planilla\PlanillaSearch;
 
 
 
@@ -116,8 +118,8 @@
 			$urlSalida = 'quit';
 
 			// identificador de la configuracion de la solicitud.
-			$id = $getData['id'];
-			if ( $id == self::CONFIG ) {
+			// $id = $getData['id'];
+			// if ( $id == self::CONFIG ) {
 				if ( isset($_SESSION['idContribuyente']) ) {
 					if ( ContribuyenteBase::getTipoNaturalezaDescripcionSegunID($_SESSION['idContribuyente']) == 'JURIDICO' ) {
 						// Se muestra un sud-menu de opciones donde el usuario especifica el tipo
@@ -137,10 +139,10 @@
 					// No esta definido el contribuyente.
 					return $this->redirect(['error-operacion', 'cod' => 404]);
 				}
-			} else {
-				// Solicitud no valida
-				throw new NotFoundHttpException(Yii::t('frontend', 'No se pudo obtener la informacion de la configuracion de la solicitud'));
-			}
+			// } else {
+			// 	// Solicitud no valida
+			// 	throw new NotFoundHttpException(Yii::t('frontend', 'No se pudo obtener la informacion de la configuracion de la solicitud'));
+			// }
 		}
 
 
@@ -149,6 +151,7 @@
 		public function actionIndexNueva()
 		{
 			$_SESSION['tipo'] = 'NUEVA';
+			$_SESSION['id_config_solicitud'] = 113;
 			$this->redirect(['check']);
 		}
 
@@ -158,6 +161,7 @@
 		public function actionIndexRenovacion()
 		{
 			$_SESSION['tipo'] = 'RENOVACION';
+			$_SESSION['id_config_solicitud'] = 116;
 			$this->redirect(['check']);
 		}
 
@@ -183,7 +187,7 @@
 				$mensajes = $searchLicencia->validarEvento(date('Y'), $tipo);
 
 				if ( count($mensajes) == 0 ) {
-					$modelParametro = New ParametroSolicitud(self::CONFIG);
+					$modelParametro = New ParametroSolicitud($_SESSION['id_config_solicitud']);
 					// Se obtiene el tipo de solicitud. Se retorna un array donde el key es el nombre
 					// del parametro y el valor del elemento es el contenido del campo en base de datos.
 					$config = $modelParametro->getParametroSolicitud([
@@ -256,7 +260,7 @@
 					if ( $postData['btn-back-form'] == 3 ) {
 						$postData = [];			// Inicializa el post.
 						$model->load($postData);
-						$this->redirect(['index', 'id' => self::CONFIG]);
+						$this->redirect(['index', 'id' => $_SESSION['id_config_solicitud']]);
 					}
 
 				} elseif ( isset($postData['btn-create']) ) {
@@ -806,8 +810,22 @@
  				$model = $findModel->all();
  				self::actionAnularSession(['id_historico']);
 
+
+ 				$nro = $model[0]->nro_solicitud;
+ 				// Se buscan las planillas relacionadas a la solicitud. Se refiere a las planillas
+				// de impueso "tasa".
+				$modelPlanilla = New SolicitudPlanillaSearch($nro, Yii::$app->solicitud->crear());
+				$dataProvider1 = $modelPlanilla->getArrayDataProvider();
+
+				$caption = Yii::t('frontend', 'Planilla(s)');
+				$viewSolicitudPlanilla = $this->renderAjax('@common/views/solicitud-planilla/solicitud-planilla', [
+																'caption' => $caption,
+																'dataProvider' => $dataProvider1,
+										]);
+
+
  				$search = New HistoricoLicenciaSearch($model[0]->id_contribuyente);
- 				$historico = $search->findHistoricoLicenciaSegunSolicitud($model[0]->nro_solicitud);
+ 				$historico = $search->findHistoricoLicenciaSegunSolicitud($nro);
 
  				$_SESSION['id_historico'] = isset($historico[0]['id_historico']) ? $historico[0]['id_historico'] : null;
 
@@ -821,12 +839,44 @@
 														'opciones' => $opciones,
 														'dataProvider' => $dataProvider,
 														'historico' => $historico,
-														'caption' => 'Solicitud Creada Nro. ' . $model[0]->nro_solicitud,
+														'caption' => 'Solicitud Creada Nro. ' . $nro,
+														'viewSolicitudPlanilla' => $viewSolicitudPlanilla,
 					]);
 			} else {
 				throw new NotFoundHttpException('No se encontro el registro');
 			}
     	}
+
+
+
+
+    	/**
+		 * Metodo que permite renderizar una vista de los detalles de la planilla
+		 * que se encuentran en la solicitud.
+		 * @return View Retorna una vista que contiene un grid con los detalles de la
+		 * planilla.
+		 */
+		public function actionViewPlanilla()
+		{
+			$request = Yii::$app->request;
+			$getData = $request->get();
+
+			$planilla = $getData['p'];
+			$planillaSearch = New PlanillaSearch($planilla);
+			$dataProvider = $planillaSearch->getArrayDataProviderPlanilla();
+
+			// Se determina si la peticion viene de un listado que contiene mas de una
+			// pagina de registros. Esto sucede cuando los detalles de un listado contienen
+			// mas de los manejados para una pagina en la vista.
+			if ( isset($request->queryParams['page']) ) {
+				$planillaSearch->load($request->queryParams);
+			}
+				return $this->renderAjax('@backend/views/planilla/planilla-detalle', [
+									 			'dataProvider' => $dataProvider,
+									 			'caption' => 'Planilla: ' . $planilla,
+				]);
+		}
+
 
 
 
@@ -902,7 +952,8 @@
 							'postData',
 							'conf',
 							'begin',
-							'lapso'
+							'lapso',
+							'id_config_solicitud',
 					];
 		}
 
