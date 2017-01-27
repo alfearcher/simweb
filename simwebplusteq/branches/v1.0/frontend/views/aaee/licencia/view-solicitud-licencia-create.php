@@ -85,7 +85,10 @@
         		<div class="col-sm-12">
 
 					<div class="row">
-						<div class="row" style="padding-left: 0px; width: 50%;">
+						<div class="row" style="padding-left: 22px;width: 100%;">
+							<?=$viewSolicitudPlanilla?>
+						</div>
+						<div class="row" style="padding 0px; width: 50%;">
 			        		<h4><?= Html::encode(Yii::t('frontend', 'Main Information')) ?></h4>
 							<?= DetailView::widget([
 									'model' => $model,
