@@ -144,7 +144,12 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
 
           $_SESSION['datosHAvaluos'] = $datosHAvaluos; 
 
-
+          foreach ($datosIRegistros as $key => $valueIn) {
+                                            
+                    } 
+                    
+          $_SESSION['datosURegistros'] = $valueIn;
+          
           if ($datosHAvaluos != null) {
                 
                 foreach ($datosHAvaluos as $key => $value) {
