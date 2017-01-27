@@ -116,7 +116,7 @@
 		 */
 		private function findDepositoPlanillaPago()
 		{
-			return DepositoPlanilla::find()->alis('DP')
+			return DepositoPlanilla::find()->alias('DP')
 										   ->joinWith('pago P', true, 'INNER JOIN');
 		}
 
