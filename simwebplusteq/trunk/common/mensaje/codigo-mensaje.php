@@ -49,6 +49,7 @@ return [
 	'923' => [Yii::t('backend', 'El inmueble ya posee una solicitud pendiente por procesar de este tipo.'), 'danger', 'fa fa-times'],
 	'924' => [Yii::t('backend', 'El contribuyente no posee email registrado. solicitud cancelada'), 'danger', 'fa fa-times'],
 	'925' => [Yii::t('backend', 'El Inmueble no posee registro de catastro valido, debe crear una solicitud de cambio catastral'), 'danger', 'fa fa-times'],
+	'926' => [Yii::t('backend', 'El Inmueble no posee registro de catastro valido ni posee datos de propiedad , debe crear una solicitud de CAMBIO DE NUMERO CATASTRAL y DATOS DE REGISTRO DE PROPIEDAD'), 'danger', 'fa fa-times'],
 
 
 	'930' => [Yii::t('backend', 'Taxpayer type was not defined'), 'danger', 'fa fa-times'],
