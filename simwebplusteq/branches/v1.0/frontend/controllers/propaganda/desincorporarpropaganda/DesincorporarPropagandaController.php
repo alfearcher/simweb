@@ -6,42 +6,42 @@
  */
 
  /**
- * 
- *  > This library is free software; you can redistribute it and/or modify it under 
- *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free 
- *  > Software Foundation; either version 2 of the Licence, or (at your opinion) 
+ *
+ *  > This library is free software; you can redistribute it and/or modify it under
+ *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free
+ *  > Software Foundation; either version 2 of the Licence, or (at your opinion)
  *  > any later version.
- *  > 
- *  > This library is distributed in the hope that it will be usefull, 
- *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability 
- *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence 
+ *  >
+ *  > This library is distributed in the hope that it will be usefull,
+ *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability
+ *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence
  *  > for more details.
- *  > 
+ *  >
  *  > See [LICENSE.TXT](../../LICENSE.TXT) file for more information.
  *
  */
 
- /**    
+ /**
  *  @file DesincorporarPropagandaController.php
- *  
+ *
  *  @author Manuel Alejandro Zapata Canelon
- * 
+ *
  *  @date 11/08/16
- * 
+ *
  *  @class DesincorporarPropagandaController
  *  @brief Controlador que redirecciona a las busquedas y metodos para la desincorporacion de las propagandas comerciales
- *  
- * 
- *  
- *  
+ *
+ *
+ *
+ *
  *  @property
  *
  *
- *  
+ *
  *
  *  @inherits
- *  
- */ 
+ *
+ */
 
 namespace frontend\controllers\propaganda\desincorporarpropaganda;
 
@@ -61,6 +61,8 @@ use common\models\configuracion\solicitud\DocumentoSolicitud;
 use common\enviaremail\PlantillaEmail;
 use frontend\models\propaganda\desincorporarpropaganda\DesincorporarPropagandaForm;
 use frontend\models\vehiculo\registrar\RegistrarVehiculoForm;
+use common\models\contribuyente\ContribuyenteBase;
+use common\models\configuracion\solicitud\SolicitudProcesoEvento;
 
 
 
@@ -79,9 +81,9 @@ class DesincorporarPropagandaController extends Controller
 
 
 
-    
+
   public $layout = 'layout-main';
-   
+
   /**
    * [actionVistaSeleccion description] Metodo que renderiza la vista para la seleccion de la o las propagandas a desincorporar
    * @param  string $errorCheck [description] Mensaje de error
@@ -95,58 +97,58 @@ class DesincorporarPropagandaController extends Controller
           $searchModel = new DesincorporarPropagandaForm();
 
           $dataProvider = $searchModel->searchPropaganda();
-       
+
 
           return $this->render('/propaganda/desincorporarpropaganda/seleccionar-propagandas', [
                                                // 'searchModel' => $searchModel,
                                                 'dataProvider' => $dataProvider,
                                                 'errorCheck' => $errorCheck,
-                                                ]); 
-   
-  
+                                                ]);
 
-    
+
+
+
   }
 
   /**
-   * [actionMotivosDesincorporacion description] 
+   * [actionMotivosDesincorporacion description]
    * @return [type] [description]
    */
   public function actionVerificarDesincorporacion()
   {
     //die('llegue a motivos');
-      $errorCheck = ""; 
+      $errorCheck = "";
       $idContribuyente = yii::$app->user->identity->id_contribuyente;
       $idPropaganda = yii::$app->request->post('chk-desincorporar-propaganda');
       //die(var_dump($idPropaganda));
       $_SESSION['idPropaganda'] = $idPropaganda;
 //die(var_dump($_SESSION['idPropaganda']));
-  
+
       $validacion = new DesincorporarPropagandaForm();
 
        if ($validacion->validarCheck(yii::$app->request->post('chk-desincorporar-propaganda')) == true){
            $modelsearch = new DesincorporarPropagandaForm();
            $busqueda = $modelsearch->busquedaPropaganda($idPropaganda, $idContribuyente);
       //die(var_dump($busqueda));
-          if ($busqueda == true){ 
-           
-        
+          if ($busqueda == true){
+
+
               $_SESSION['datosPropaganda'] = $busqueda;
              // die(var_dump($_SESSION['datosPropaganda']));
-        
+
           return $this->redirect(['desincorporar-propaganda']);
-        
+
           }else{
 
               die('no existe Propaganda asociado a ese ID');
           }
        }else{
           $errorCheck = "Please select an Advertising";
-          return $this->redirect(['vista-seleccion' , 'errorCheck' => $errorCheck]); 
+          return $this->redirect(['vista-seleccion' , 'errorCheck' => $errorCheck]);
 
-                                                                                             
+
        }
-     
+
   }
 
   public function actionDesincorporarPropaganda()
@@ -154,14 +156,14 @@ class DesincorporarPropagandaController extends Controller
 
 
         $todoBien = true;
-      
+
         if(isset(yii::$app->user->identity->id_contribuyente)){
 
-        
 
-          $datosPropaganda = $_SESSION['idPropaganda']; 
+
+          $datosPropaganda = $_SESSION['idPropaganda'];
          // die(var_dump($datosVehiculo));
-           if (isset($datosPropaganda)){ 
+           if (isset($datosPropaganda)){
 
 
             $model = new DesincorporarPropagandaForm();
@@ -179,21 +181,21 @@ class DesincorporarPropagandaController extends Controller
                if ($model->validate()){
 
                   //die(var_dump($datosPropaganda));
-                  
+
                   foreach($datosPropaganda as $key => $value) {
-                     
+
                      $value;
                      //die($value.'ho');
-                    
+
                      $verificarSolicitud = new DesincorporarPropagandaForm();
 
                      $verificacion = $verificarSolicitud->verificarSolicitudPropaganda($value , $_SESSION['id']);
-                      
+
 
                       if($verificacion == true){
                         //die(var_dump($value['id_vehiculo']));
                         $todoBien = false;
-                      
+
                        }
                   }
 
@@ -203,34 +205,35 @@ class DesincorporarPropagandaController extends Controller
                       $buscarActualizar = self::beginSave("buscarActualizar", $model, $datosPropaganda);
 
                     if($buscarActualizar == true){
-                     
+
                         return MensajeController::actionMensaje(100);
 
                     }else{
 
                         return MensajeController::actionMensaje(920);
-                    
+
                     }
-                    
+
                     }else{
+
                        return MensajeController::actionMensaje(403);
 
                     }
                 }
-                
-            
+
+
             }
-            
+
             return $this->render('/propaganda/desincorporarpropaganda/causa-motivos-desincorporacion', [
                                                               'model' => $model,
-                                                              
 
-                                                           
+
+
             ]);
-            
+
              }else{
                die('no hay datos de Propaganda');
-             } 
+             }
 
          }else{
 
@@ -243,16 +246,16 @@ class DesincorporarPropagandaController extends Controller
 
   public function buscarNumeroSolicitud($conn, $conexion)
   {
-      //die('hola');  
+      //die('hola');
       $buscar = new ParametroSolicitud($_SESSION['id']);
 
-      
+
 
         $buscar->getParametroSolicitud(["tipo_solicitud", "impuesto", "nivel_aprobacion"]);
 
         $resultado = $buscar->getParametroSolicitud(["tipo_solicitud", "impuesto", "nivel_aprobacion"]);
 
-     // die(var_dump($resultado["impuesto"]));  
+     // die(var_dump($resultado["impuesto"]));
       $datosPropaganda = $_SESSION['datosPropaganda'];
       $impuesto = $resultado['impuesto'];
       $datos = yii::$app->user->identity;
@@ -266,7 +269,7 @@ class DesincorporarPropagandaController extends Controller
       }
 
       $arregloDatos['impuesto'] = $impuesto;
-     
+
       $arregloDatos['id_config_solicitud'] = $_SESSION['id'];
 
       $arregloDatos['id_impuesto'] = $datosPropaganda->id_impuesto;
@@ -301,7 +304,7 @@ class DesincorporarPropagandaController extends Controller
               $idSolicitud = $conn->getLastInsertID();
 
           }
-         
+
 
           return $idSolicitud;
 
@@ -311,13 +314,13 @@ class DesincorporarPropagandaController extends Controller
 
     public function guardarSolicitud($conn, $conexion , $model, $idSolicitud,  $idPropaganda)
     {
-     
+
       //die($impuesto);
 
       $buscar = new ParametroSolicitud($_SESSION['id']);
 
       $resultado = $buscar->getParametroSolicitud(["tipo_solicitud", "impuesto", "nivel_aprobacion"]);
-      
+
       $impuesto = $resultado['impuesto'];
       $datosPropaganda = $_SESSION['datosPropaganda'];
       $numeroSolicitud = $idSolicitud;
@@ -375,16 +378,16 @@ class DesincorporarPropagandaController extends Controller
       $tableName = 'propagandas';
       $arregloCondition = ['id_impuesto' => $idPropaganda];
       //die(var_dump($arregloCondition));
-     
 
-      
+
+
 
       $arregloDatos['inactivo'] = 1;
 
       $conexion = new ConexionController();
 
       $conn = $conexion->initConectar('db');
-         
+
       $conn->open();
 
       //$transaccion = $conn->beginTransaction();
@@ -394,17 +397,17 @@ class DesincorporarPropagandaController extends Controller
              // die('modifico');
 
               return true;
-              
+
           }
-         
-    
+
+
 
 
     }
 
     public function beginSave($var, $model, $datosPropaganda)
     {
-      
+
       $todoBien = true;
 
       $buscar = new ParametroSolicitud($_SESSION['id']);
@@ -413,7 +416,10 @@ class DesincorporarPropagandaController extends Controller
 
         //die(var_dump($buscar->getParametroSolicitud(["nivel_aprobacion"])));
 
-        $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion", "impuesto"]);
+        $nivelAprobacion = $buscar->getParametroSolicitud(['id_config_solicitud',
+                                'tipo_solicitud',
+                                'impuesto',
+                                'nivel_aprobacion']);
 
        // die(var_dump($nivelAprobacion));
 
@@ -430,7 +436,7 @@ class DesincorporarPropagandaController extends Controller
           if ($var == "buscarActualizar"){
 
               foreach($datosPropaganda as $key => $value){
-              
+
 
                 $idSolicitud = 0;
                 $idSolicitud = self::buscarNumeroSolicitud($conn, $conexion, $model, $value);
@@ -441,14 +447,17 @@ class DesincorporarPropagandaController extends Controller
 
                     $guardar = self::guardarSolicitud($conn,$conexion, $model, $idSolicitud , $value);
 
-                      if ($nivelAprobacion['nivel_aprobacion'] != 1){ 
+                    $model->nro_solicitud = $idSolicitud;
+                    $resultProceso = self::actionEjecutaProcesoSolicitud($conn, $conexion, $model, $nivelAprobacion);
+
+                      if ($nivelAprobacion['nivel_aprobacion'] != 1){
 
                           if ($idSolicitud and $guardar == true ){
                             //die('guardo en los dos');
                             $todoBien == true;
                           }
-                        
-                      
+
+
                       }else{
 
 
@@ -466,14 +475,14 @@ class DesincorporarPropagandaController extends Controller
               }
 
              }
-              
 
-             
+
+
                     if ($todoBien == true){
 
                     $transaccion->commit();
                     $conn->close();
-                    
+
                       $enviarNumeroSolicitud = new PlantillaEmail();
 
                       $login = yii::$app->user->identity->login;
@@ -501,46 +510,126 @@ class DesincorporarPropagandaController extends Controller
                       $conn->close();
                       return false;
                     }
-                    
 
-                   
 
-                      
-                 
 
-                      
 
-                          
-                         
-          
+
+
+
+
+
+
+
+
 
         }
- 
-              
-            
+
+
+
     }
 
-   
-    
+    /**
+     * [DatosContribuyente] metodo que busca los datos del contribuyente en
+     * la tabla contribuyente
+     */
+     public function DatosContribuyente()
+     {
 
-    
+         $buscar = ContribuyenteBase::find()->where("id_contribuyente=:idContribuyente", [":idContribuyente" => $_SESSION['idContribuyente']])
+                                                        ->asArray()->all();
 
- 
-              
-            
+
+         return $buscar[0];
+
+     }
+
+     /**
+     * Metodo que se encargara de gestionar la ejecucion y resultados de los procesos relacionados
+     * a la solicitud. En este caso los proceso relacionados a la solicitud en el evento "CREAR".
+     * Se verifica si se ejecutaron los procesos y si los mismos fueron todos positivos. Con
+     * el metodo getAccion(), se determina si se ejecuto algun proceso, este metodo retorna un
+     * arreglo, si el mismo es null se asume que no habia procesos configurados para que se ejecutaran
+     * cuando la solicitud fuese creada. El metodo resultadoEjecutarProcesos(), permite determinar el
+     * resultado de cada proceso que se ejecuto.
+     * @param  ConexionController $conexionLocal instancia de la clase ConexionController.
+     * @param  connection $connLocal instancia de conexion que permite ejecutar las acciones en base
+     * de datos.
+     * @param  model $model modelo de la instancia InscripcionSucursalForm.
+     * @param  array $conf arreglo que contiene los parametros principales de la configuracion de la
+     * solicitud.
+     * @return boolean retorna true si todo se ejecuto correctamente false en caso contrario.
+     */
+    private function actionEjecutaProcesoSolicitud($conexionLocal, $connLocal, $model, $conf)
+    {
+      $result = true;
+      $resultadoProceso = [];
+      $acciones = [];
+      $evento = '';
+
+      if ( count($conf) > 0 ) {
+        if ( $conf['nivel_aprobacion'] == 1 ) {
+          $evento = Yii::$app->solicitud->aprobar();
+        } else {
+          $evento = Yii::$app->solicitud->crear();
+        }
+
+        $procesoEvento = New SolicitudProcesoEvento($conf['id_config_solicitud']);
+
+        // Se buscan los procesos que genera la solicitud para ejecutarlos, segun el evento.
+        // que en este caso el evento corresponde a "CREAR". Se espera que retorne un arreglo
+        // de resultados donde el key del arrary es el nombre del proceso ejecutado y el valor
+        // del elemento corresponda a un reultado de la ejecucion. La variable $model debe contener
+        // el identificador del contribuyente que realizo la solicitud y el numero de solicitud.
+        $procesoEvento->ejecutarProcesoSolicitudSegunEvento($model, $evento, $conexionLocal, $connLocal);
+
+        // Se obtiene un array de acciones o procesos ejecutados. Sino se obtienen acciones
+        // ejecutadas se asumira que no se configuraro ningun proceso para que se ejecutara
+        // cuando se creara la solicitud.
+        $acciones = $procesoEvento->getAccion();
+        if ( count($acciones) > 0 ) {
+
+          // Se evalua cada accion o proceso ejecutado para determinar si se realizo satisfactoriamnente.
+          $resultadoProceso = $procesoEvento->resultadoEjecutarProcesos();
+
+          if ( count($resultadoProceso) > 0 ) {
+            foreach ( $resultadoProceso as $key => $value ) {
+              if ( $value == false ) {
+                $result = false;
+                break;
+              }
+            }
+          }
+        }
+      } else {
+        $result = false;
+      }
+
+      return $result;
+
+    }
+
+
+
+
+
+
+
+
+
 }
-    
 
 
 
-    
-
-   
 
 
-    
 
-    
+
+
+
+
+
+
 
 
 
