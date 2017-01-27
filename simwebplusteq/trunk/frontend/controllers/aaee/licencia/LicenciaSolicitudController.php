@@ -116,8 +116,8 @@
 			$urlSalida = 'quit';
 
 			// identificador de la configuracion de la solicitud.
-			$id = $getData['id'];
-			if ( $id == self::CONFIG ) {
+			// $id = $getData['id'];
+			// if ( $id == self::CONFIG ) {
 				if ( isset($_SESSION['idContribuyente']) ) {
 					if ( ContribuyenteBase::getTipoNaturalezaDescripcionSegunID($_SESSION['idContribuyente']) == 'JURIDICO' ) {
 						// Se muestra un sud-menu de opciones donde el usuario especifica el tipo
@@ -137,10 +137,10 @@
 					// No esta definido el contribuyente.
 					return $this->redirect(['error-operacion', 'cod' => 404]);
 				}
-			} else {
-				// Solicitud no valida
-				throw new NotFoundHttpException(Yii::t('frontend', 'No se pudo obtener la informacion de la configuracion de la solicitud'));
-			}
+			// } else {
+			// 	// Solicitud no valida
+			// 	throw new NotFoundHttpException(Yii::t('frontend', 'No se pudo obtener la informacion de la configuracion de la solicitud'));
+			// }
 		}
 
 
@@ -149,6 +149,7 @@
 		public function actionIndexNueva()
 		{
 			$_SESSION['tipo'] = 'NUEVA';
+			$_SESSION['id_config_solicitud'] = 113;
 			$this->redirect(['check']);
 		}
 
@@ -158,6 +159,7 @@
 		public function actionIndexRenovacion()
 		{
 			$_SESSION['tipo'] = 'RENOVACION';
+			$_SESSION['id_config_solicitud'] = 116;
 			$this->redirect(['check']);
 		}
 
@@ -183,7 +185,7 @@
 				$mensajes = $searchLicencia->validarEvento(date('Y'), $tipo);
 
 				if ( count($mensajes) == 0 ) {
-					$modelParametro = New ParametroSolicitud(self::CONFIG);
+					$modelParametro = New ParametroSolicitud($_SESSION['id_config_solicitud']);
 					// Se obtiene el tipo de solicitud. Se retorna un array donde el key es el nombre
 					// del parametro y el valor del elemento es el contenido del campo en base de datos.
 					$config = $modelParametro->getParametroSolicitud([
@@ -256,7 +258,7 @@
 					if ( $postData['btn-back-form'] == 3 ) {
 						$postData = [];			// Inicializa el post.
 						$model->load($postData);
-						$this->redirect(['index', 'id' => self::CONFIG]);
+						$this->redirect(['index', 'id' => $_SESSION['id_config_solicitud']]);
 					}
 
 				} elseif ( isset($postData['btn-create']) ) {
@@ -902,7 +904,8 @@
 							'postData',
 							'conf',
 							'begin',
-							'lapso'
+							'lapso',
+							'id_config_solicitud',
 					];
 		}
 
