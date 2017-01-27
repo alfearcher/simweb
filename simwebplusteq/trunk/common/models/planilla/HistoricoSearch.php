@@ -120,6 +120,7 @@
 		{
 			$findDefinitiva = self::definitivaLiquidadas($añoImpositivo, $periodo, $idContribuyente);
 			$result = $findDefinitiva->all();
+die(var_dump($result));
 			if ( $result == null ) {	// No existe registro para el lapso.
 				return false;
 			} else {
