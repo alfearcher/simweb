@@ -683,7 +683,7 @@ Session["variablephp"] = tu;
                                                         <div class="col-sm-4"> 
                                                         <?= $form->field($modelRegistro, 'documento_propiedad')->dropDownList([
                                                                                          'prompt' => Yii::t('backend', 'Selecciona'),
-                                                                                         '1'=>'Datos SAREN','2'=>'Documento de Registro'],['id' => 'documento_propiedad','style' => 'width:250px;','onclick'=>'documento()',])->label(false) ?>
+                                                                                         '1'=>'Datos SAREN','2'=>'Documento de Registro'],['id' => 'documento_propiedad','style' => 'width:250px;','onclick'=>'documento()', 'value'=>$_SESSION['datosURegistros']['id_tipo_documento_inmueble'],'readOnly' => true])->label(false) ?>
                                                         </div>  
 
                                                     </div>
@@ -694,7 +694,7 @@ Session["variablephp"] = tu;
                                                         </div> 
                                                     
                                                         <div class="col-sm-2"> 
-                                                        <?= $form->field($modelRegistro, 'fecha')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?>
+                                                        <?= $form->field($modelRegistro, 'fecha')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value'=>$_SESSION['datosURegistros']['fecha'],'readOnly' => true])->label(false) ?>
                                                         </div> 
 
                                                         <div class="col-sm-2"> 
@@ -702,7 +702,7 @@ Session["variablephp"] = tu;
                                                         </div> 
 
                                                         <div class="col-sm-2"> 
-                                                        <?= $form->field($modelRegistro, 'num_reg')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?>
+                                                        <?= $form->field($modelRegistro, 'num_reg')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value'=>$_SESSION['datosURegistros']['num_reg'],'readOnly' => true])->label(false) ?>
                                                         </div> 
 
                                                         <div class="col-sm-2"> 
@@ -710,7 +710,7 @@ Session["variablephp"] = tu;
                                                         </div> 
 
                                                         <div class="col-sm-2"> 
-                                                        <?= $form->field($modelRegistro, 'reg_mercantil')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?>
+                                                        <?= $form->field($modelRegistro, 'reg_mercantil')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value'=>$_SESSION['datosURegistros']['reg_mercantil'],'readOnly' => true])->label(false) ?>
                                                         </div> 
                                                     </div>
 
@@ -721,7 +721,7 @@ Session["variablephp"] = tu;
                                                         </div> 
                                                     
                                                         <div class="col-sm-2"> 
-                                                        <?= $form->field($modelRegistro, 'tomo')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?> 
+                                                        <?= $form->field($modelRegistro, 'tomo')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value'=>$_SESSION['datosURegistros']['tomo'],'readOnly' => true])->label(false) ?> 
                                                         </div>
 
                                                         <div class="col-sm-2"> 
@@ -729,7 +729,7 @@ Session["variablephp"] = tu;
                                                         </div> 
 
                                                         <div class="col-sm-2"> 
-                                                        <?= $form->field($modelRegistro, 'protocolo')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?>
+                                                        <?= $form->field($modelRegistro, 'protocolo')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value'=>$_SESSION['datosURegistros']['protocolo'],'readOnly' => true])->label(false) ?>
                                                         </div> 
 
                                                         <div class="col-sm-2"> 
@@ -737,7 +737,7 @@ Session["variablephp"] = tu;
                                                         </div> 
 
                                                         <div class="col-sm-2"> 
-                                                        <?= $form->field($modelRegistro, 'folio')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?>
+                                                        <?= $form->field($modelRegistro, 'folio')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value'=>$_SESSION['datosURegistros']['folio'],'readOnly' => true])->label(false) ?>
                                                         </div> 
 
                                                         
@@ -749,7 +749,7 @@ Session["variablephp"] = tu;
                                                         </div> 
                                                     
                                                         <div class="col-sm-2"> 
-                                                        <?= $form->field($modelRegistro, 'nro_matriculado')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?> 
+                                                        <?= $form->field($modelRegistro, 'nro_matriculado')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value'=>$_SESSION['datosURegistros']['nro_matricula'],'readOnly' => true])->label(false) ?> 
                                                         </div>
 
                                                         <div class="col-sm-2"> 
@@ -757,7 +757,7 @@ Session["variablephp"] = tu;
                                                         </div> 
 
                                                         <div class="col-sm-2"> 
-                                                        <?= $form->field($modelRegistro, 'asiento_registral')->textInput(['maxlength' => true,'style' => 'width:100px;'])->label(false) ?>
+                                                        <?= $form->field($modelRegistro, 'asiento_registral')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value'=>$_SESSION['datosURegistros']['asiento_registral'],'readOnly' => true])->label(false) ?>
                                                         </div> 
 
                                                                                                               
