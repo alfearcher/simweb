@@ -66,6 +66,8 @@
 	use backend\models\aaee\rubro\Rubro;
 	use common\models\numerocontrol\NumeroControlSearch;
 	use backend\models\aaee\historico\licencia\HistoricoLicenciaSearch;
+	use common\models\configuracion\solicitudplanilla\SolicitudPlanillaSearch;
+	use common\models\planilla\PlanillaSearch;
 
 
 
@@ -808,8 +810,22 @@
  				$model = $findModel->all();
  				self::actionAnularSession(['id_historico']);
 
+
+ 				$nro = $model[0]->nro_solicitud;
+ 				// Se buscan las planillas relacionadas a la solicitud. Se refiere a las planillas
+				// de impueso "tasa".
+				$modelPlanilla = New SolicitudPlanillaSearch($nro, Yii::$app->solicitud->crear());
+				$dataProvider1 = $modelPlanilla->getArrayDataProvider();
+
+				$caption = Yii::t('frontend', 'Planilla(s)');
+				$viewSolicitudPlanilla = $this->renderAjax('@common/views/solicitud-planilla/solicitud-planilla', [
+																'caption' => $caption,
+																'dataProvider' => $dataProvider1,
+										]);
+
+
  				$search = New HistoricoLicenciaSearch($model[0]->id_contribuyente);
- 				$historico = $search->findHistoricoLicenciaSegunSolicitud($model[0]->nro_solicitud);
+ 				$historico = $search->findHistoricoLicenciaSegunSolicitud($nro);
 
  				$_SESSION['id_historico'] = isset($historico[0]['id_historico']) ? $historico[0]['id_historico'] : null;
 
@@ -823,12 +839,44 @@
 														'opciones' => $opciones,
 														'dataProvider' => $dataProvider,
 														'historico' => $historico,
-														'caption' => 'Solicitud Creada Nro. ' . $model[0]->nro_solicitud,
+														'caption' => 'Solicitud Creada Nro. ' . $nro,
+														'viewSolicitudPlanilla' => $viewSolicitudPlanilla,
 					]);
 			} else {
 				throw new NotFoundHttpException('No se encontro el registro');
 			}
     	}
+
+
+
+
+    	/**
+		 * Metodo que permite renderizar una vista de los detalles de la planilla
+		 * que se encuentran en la solicitud.
+		 * @return View Retorna una vista que contiene un grid con los detalles de la
+		 * planilla.
+		 */
+		public function actionViewPlanilla()
+		{
+			$request = Yii::$app->request;
+			$getData = $request->get();
+
+			$planilla = $getData['p'];
+			$planillaSearch = New PlanillaSearch($planilla);
+			$dataProvider = $planillaSearch->getArrayDataProviderPlanilla();
+
+			// Se determina si la peticion viene de un listado que contiene mas de una
+			// pagina de registros. Esto sucede cuando los detalles de un listado contienen
+			// mas de los manejados para una pagina en la vista.
+			if ( isset($request->queryParams['page']) ) {
+				$planillaSearch->load($request->queryParams);
+			}
+				return $this->renderAjax('@backend/views/planilla/planilla-detalle', [
+									 			'dataProvider' => $dataProvider,
+									 			'caption' => 'Planilla: ' . $planilla,
+				]);
+		}
+
 
 
 
