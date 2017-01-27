@@ -211,7 +211,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
           if ($datosIRegistros == null) {
             
              return MensajeController::actionMensaje(922);
-             
+
           }
 
 
@@ -239,7 +239,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
          
          if ( isset($_SESSION['idContribuyente'] ) ) {
          //Creamos la instancia con el model de validación
-         $model = new CambioNumeroCatastralInmueblesForm();
+          $model = new CambioNumeroCatastralInmueblesForm();
           $modelAvaluo = new AvaluoCatastralForm();
           $modelRegistro = new InmueblesRegistrosForm();
 
@@ -425,8 +425,8 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
 
                     } else {
                 
-                        $avaluoConstruccion = $model->metros_construccion * $model->valor_construccion;
-                        $avaluoTerreno = $model->metros_terreno * $model->valor_terreno;
+                        //$avaluoConstruccion = $model->metros_construccion * $model->valor_construccion;
+                        //$avaluoTerreno = $model->metros_terreno * $model->valor_terreno;
 
                         $arrayDatos3 = [    'id_impuesto' => $value['id_impuesto'],
                                             'fecha' => $value['fecha'],
