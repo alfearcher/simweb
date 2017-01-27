@@ -54,7 +54,7 @@
     use backend\models\inmueble\SlInmueblesUrbanosSearch;
     use common\models\contribuyente\ContribuyenteBase;
     use frontend\models\vehiculo\solicitudes\SlVehiculos;
-    use frontend\models\vehiculo\solicitudes\SlVehiculosForm; 
+    use frontend\models\vehiculo\solicitudes\SlVehiculosForm;
     use frontend\models\propaganda\solicitudes\SlPropagandas;
     use frontend\models\propaganda\solicitudes\SlPropagandasForm;
     use frontend\models\vehiculo\solicitudes\SlDesincorporacionesVehiculo;
@@ -203,7 +203,7 @@
                                     'fecha_funcionario' => date('Y-m-d H:i:s')
                 ],
             ];
-    
+
            return $atributos[$evento];
         }
 
@@ -271,7 +271,7 @@
          * en caso contrario.
          */
         private function updateSolicitudDesincorporacion($modelDesincorporacion)
-        { 
+        {
            // die('llego a solicitud inscripcion');
             $result = false;
             $cancel = false;            // Controla si el proceso se debe cancelar.
@@ -282,7 +282,7 @@
             //die(var_dump($tableName));
             // Se obtienen los campos que seran actualizados en la entidad "sl-desincorporaciones".
             // Estos atributos ya vienen con sus datos cargados.
-            
+
             $arregloDatos = self::atributosUpDateProcesarSolicitud($this->_evento);
             //die(var_dump($arregloDatos));
 
@@ -306,9 +306,9 @@
 
                  $arregloDatosMaster = [
                                             'inactivo' => 1,
-                                            
 
-                                           
+
+
 
                                          ];
 
@@ -318,8 +318,20 @@
                                                 'id_impuesto' => $camposModel['id_impuesto']
                                                 ];
 
-                    $resultInsert = $this->_conexion->modificarRegistro($this->_conn, $tableNameMaster, $arregloDatosMaster, 
+                     $tableNameMasterPago = 'pagos_detalle';
+
+                 $arregloDatosMasterPago = [
+                                            'pago' => 9,
+
+                                         ];
+
+                    $arregloCondicionMasterPago = [ 'id_impuesto' => $camposModel['id_impuesto'] , 'impuesto' => 4, 'pago' => 0
+                                                ];
+
+                    $resultInsert = $this->_conexion->modificarRegistro($this->_conn, $tableNameMaster, $arregloDatosMaster,
                         $arregloCondicionMaster);
+                     $resultInsert = $this->_conexion->modificarRegistro($this->_conn, $tableNameMasterPago, $arregloDatosMasterPago,
+                        $arregloCondicionMasterPago);
 
                     $result = $this->_conexion->modificarRegistro($this->_conn, $tableName,
                                                               $arregloDatos, $arregloCondicion);
@@ -328,14 +340,14 @@
                     if (!$result ) { self::setErrors(Yii::t('backend', 'Failed update request')); }
                     return $result;
                 }
-                    
-            } 
+
+            }
 
             if (!$result ) { self::setErrors(Yii::t('backend', 'Failed update request')); }
             return $result;
         }
 
-    
+
     }
 
  ?>
