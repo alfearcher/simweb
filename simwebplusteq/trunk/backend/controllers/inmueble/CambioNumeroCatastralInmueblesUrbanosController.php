@@ -614,7 +614,7 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
                                         ->where([ 
                                           'id_impuesto' => $idInmueble,
                                           'id_config_solicitud' => $idConfig,
-                                          'inactivo' => 0,
+                                          'estatus' => 0,
                                         ])
                                       ->all();
 

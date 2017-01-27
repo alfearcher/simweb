@@ -451,7 +451,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                                         ->where([ 
                                           'id_impuesto' => $idInmueble,
                                           'id_config_solicitud' => $idConfig,
-                                          'inactivo' => 0,
+                                          'estatus' => 0,
                                         ])
                                       ->all();
 

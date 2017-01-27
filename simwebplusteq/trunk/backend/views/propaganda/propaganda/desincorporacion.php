@@ -13,7 +13,8 @@ $this->title =Yii::t( 'backend', 'List of Advertisements' );
 function seleccion() {
 
     if ( document.getElementById('checkbox').checked == 1 ) {
-
+alert('llego despues');
+                 document.getElementById("btn").style.display='';
                 btn.disabled = false;
     } else {
                 btn.disabled = true;
@@ -28,11 +29,12 @@ function seleccion() {
     <p>
         <?= Html::beginForm( [ 'propaganda/propaganda/disable' ], 'post' );?>
 
-        <?= Html::submitButton( 'Inactive', [ 'class' => 'btn btn-primary', 'name' => 'btn', 'id' => "btn", 'value' => 'inactive', 'disabled' => 'disabled' ] );?>
+        <?= Html::submitButton( 'Inactive', [ 'class' => 'btn btn-primary', 'name' => 'btn', 'id' => "btn", 'value' => 'inactive', 'style' => ['display'=>'none'] ] );?>
     </p>
 
     <?= GridView::widget([
            'dataProvider' => $dataProvider,
+           'id'=> 'checkbox',
            'filterModel' =>  $searchModel,
            'columns' =>    [
                                 [ 'class' => 'yii\grid\CheckboxColumn' ],
