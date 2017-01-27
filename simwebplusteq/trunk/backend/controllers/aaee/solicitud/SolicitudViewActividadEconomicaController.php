@@ -186,6 +186,7 @@
 
 
 
+
 		/**
 		 * Metodo particular que se encarga de buscar los datos de la solicitud particular sobre
 		 * "Inscripcion de Actividades Economicas", y de renderizar una vista del detalle de la solicitud
