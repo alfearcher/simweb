@@ -401,7 +401,7 @@ Session["variablephp"] = tu;
                             </div> 
                         
                             <div class="col-sm-4"> 
-                            <?= $form->field($model, 'direccion')->textarea(['maxlength' => true,'style' => 'width:300px;','readOnly' => true])->label(false) ?>
+                            <?= $form->field($model, 'direccion')->textarea(['maxlength' => true,'style' => 'width:300px;','readOnly' => true,'value'=>$_SESSION['datosInmueble']['direccion']])->label(false) ?>
                             </div> 
                         
                             <div class="col-sm-1"> 
@@ -409,7 +409,7 @@ Session["variablephp"] = tu;
                             </div> 
                         
                             <div class="col-sm-1"> 
-                            <?= $form->field($model, 'ano_inicio')->textInput(['style' => 'width:80px;','readOnly' => true])->label(false)/*->input('date', 
+                            <?= $form->field($model, 'ano_inicio')->textInput(['style' => 'width:80px;','readOnly' => true,'value'=>$_SESSION['datosInmueble']['ano_inicio']])->label(false)/*->input('date', 
                                                                            [
                                                                               //'value' => date('d-m-Y'),
                                                                               'type' => 'date',
@@ -427,7 +427,7 @@ Session["variablephp"] = tu;
                             </div>  
                         
                             <div class="col-sm-2">
-                            <?= $form->field($model, 'casa_edf_qta_dom')->textInput(['style' => 'width:80px;','readOnly' => true])->label(false) ?>
+                            <?= $form->field($model, 'casa_edf_qta_dom')->textInput(['style' => 'width:80px;','readOnly' => true,'value'=>$_SESSION['datosInmueble']['casa_edf_qta_dom']])->label(false) ?>
                             </div> 
                         
                             <div class="col-sm-2"> 
@@ -435,7 +435,7 @@ Session["variablephp"] = tu;
                             </div> 
                        
                             <div class="col-sm-2">
-                            <?= $form->field($model, 'piso_nivel_no_dom')->textInput(['style' => 'width:80px;','readOnly' => true])->label(false) ?>
+                            <?= $form->field($model, 'piso_nivel_no_dom')->textInput(['style' => 'width:80px;','readOnly' => true,'value'=>$_SESSION['datosInmueble']['piso_nivel_no_dom']])->label(false) ?>
                             </div> 
                        
                             <div class="col-sm-2"> 
@@ -443,7 +443,7 @@ Session["variablephp"] = tu;
                             </div> 
                         
                             <div class="col-sm-2"> 
-                            <?= $form->field($model, 'apto_dom')->textInput(['style' => 'width:80px;','readOnly' => true])->label(false) ?>
+                            <?= $form->field($model, 'apto_dom')->textInput(['style' => 'width:80px;','readOnly' => true,'value'=>$_SESSION['datosInmueble']['apto_dom']])->label(false) ?>
                             </div> 
                         
                             <div class="col-sm-2"> 
@@ -451,7 +451,7 @@ Session["variablephp"] = tu;
                             </div> 
                         
                             <div class="col-sm-2"> 
-                            <?= $form->field($model, 'medidor')->textInput(['style' => 'width:80px;','readOnly' => true])->label(false) ?>
+                            <?= $form->field($model, 'medidor')->textInput(['style' => 'width:80px;','readOnly' => true,'value'=>$_SESSION['datosInmueble']['medidor']])->label(false) ?>
                             </div>                                                                        
                         
                     </div>
@@ -468,7 +468,7 @@ Session["variablephp"] = tu;
                             </div>    
                                                                                           
                             <div class="col-sm-2"> 
-                            <?= $form->field($model, 'tipo_ejido')->checkbox(['style' => 'width:50px;','readOnly' => true]) ?>
+                            <?= $form->field($model, 'tipo_ejido')->checkbox(['style' => 'width:50px;','readOnly' => true,'value'=>$_SESSION['datosInmueble']['tipo_ejido']]) ?>
                             </div> 
                         </td>                                              
                     </div>                    
