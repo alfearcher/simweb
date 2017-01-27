@@ -252,13 +252,13 @@
 			} elseif ( $idMetodo == 7 ) {
 
 				// calcular por costo de la propaganda.
-				$calculo = New CalculoPorUnidadFraccion($this->_datosPropaganda, $this->_añoImpositivo, 100);
+				$calculo = New CalculoPorCostoPropaganda($this->_datosPropaganda, $this->_añoImpositivo);
 				$monto = $calculo->iniciarCalculo();
 
 			} elseif ( $idMetodo == 12 ) {
 
 				// calculo por cada 100 unidades y fraccion.
-				$calculo = New CalculoPorCostoPropaganda($this->_datosPropaganda, $this->_añoImpositivo);
+				$calculo = New CalculoPorUnidadFraccion($this->_datosPropaganda, $this->_añoImpositivo, 100);
 				$monto = $calculo->iniciarCalculo();
 
 			}
