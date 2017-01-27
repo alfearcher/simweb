@@ -153,11 +153,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
           $_SESSION['datosHAvaluos'] = $datosHAvaluos; 
         //die(var_dump($_SESSION['datosHAvaluos']));
           
-          foreach ($datosIRegistros as $key => $valueIn) {
-                                            
-                    } 
-                    
-                    $_SESSION['datosURegistros'] = $valueIn;
+          
 
           if ($datosHAvaluos != null) {
                 
@@ -215,7 +211,11 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
           }
 
 
-
+          foreach ($datosIRegistros as $key => $valueIn) {
+                                            
+                    } 
+                    
+                    $_SESSION['datosURegistros'] = $valueIn;
           
 
 
