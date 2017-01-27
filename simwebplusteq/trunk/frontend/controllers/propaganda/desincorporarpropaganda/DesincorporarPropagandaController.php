@@ -213,7 +213,7 @@ class DesincorporarPropagandaController extends Controller
                     }
                     
                     }else{
-                      
+
                        return MensajeController::actionMensaje(403);
 
                     }
