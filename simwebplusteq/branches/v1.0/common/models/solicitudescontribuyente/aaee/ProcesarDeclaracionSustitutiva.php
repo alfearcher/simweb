@@ -377,7 +377,7 @@
                 $arregloDatos['periodo'] = $modelDeclaracion[0]->exigibilidad_periodo;
                 $arregloDatos['ano_impositivo'] = $actModel->ano_impositivo;
                 $arregloDatos['json_rubro'] = json_encode($rjson);
-                $arregloDatos['observacion'] = 'APROBADA POR FUNCIONARIO, SOLICITUD DECLARACION SUSTITUTIVA';
+                $arregloDatos['observacion'] = 'ACEPTADA POR FUNCIONARIO, SOLICITUD DECLARACION SUSTITUTIVA';
                 $arregloDatos['por_sustitutiva'] = 1;
 
                 $result = $historico->guardar($arregloDatos, $this->_conexion, $this->_conn);
