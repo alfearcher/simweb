@@ -117,6 +117,8 @@ return [
 
 	'600' => [Yii::t('frontend', 'No se ejecuto la liquidación'), 'warning', 'fa fa-info-circle'],
 
+	'700' => [Yii::t('frontend', 'Disculpe, su perfil no le permite esta operación'), 'warning', 'fa fa-info-circle'],
+	'702' => [Yii::t('frontend', 'Disculpe, no ha iniciado correctamente este operación'), 'warning', 'fa fa-info-circle'],
 ]
 
 
