@@ -44,7 +44,7 @@
 
  	use Yii;
 	use yii\db\ActiveRecord;
-
+	use common\models\contribuyente\ContribuyenteBase;
 
 	/**
 	* 	Clase
@@ -70,6 +70,17 @@
 		public static function tableName()
 		{
 			return 'historico_licencias_sw';
+		}
+
+
+
+		/**
+		 * Relacin con la entidad "contribuyente"
+		 * @return [type] [description]
+		 */
+		public function getContribuyente()
+		{
+			$this->hasOne(ContribuyenteBase::className(), ['id_contribuyente' => 'id_contribuyente']);
 		}
 
 
