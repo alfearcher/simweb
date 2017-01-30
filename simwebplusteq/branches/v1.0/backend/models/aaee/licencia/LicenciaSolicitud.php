@@ -49,6 +49,8 @@
 	use backend\models\aaee\actecon\ActEcon;
 	use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 	use backend\models\aaee\rubro\Rubro;
+	use common\models\configuracion\solicitudplanilla\SolicitudPlanilla;
+	use common\models\contribuyente\ContribuyenteBase;
 
 
 	/**
@@ -102,7 +104,38 @@
 
 
 
+		/**
+		 * Relacion con la entidad "solicitides-planillas"
+		 * @return [type] [description]
+		 */
+		public function getPlanillas()
+		{
+			return $this->hasMany(SolicitudPlanilla::className(),['nro_solicitud' => 'nro_solicitud']);
+		}
 
+
+
+		/**
+		 * Descripcion del contribuyente, razon social para los de tipo naturaleza "juridico",
+		 * apellidos y nombres pra los de tipo naturaleza "natural"
+		 * @param  integer $idContribuyente identificador del contribuyente
+		 * @return string retorna la descripcion del contribuyente.
+		 */
+		public function getContribuyente($idContribuyente)
+		{
+			return ContribuyenteBase::getContribuyenteDescripcionSegunID($idContribuyente);
+		}
+
+
+
+		/**
+		 * Relacion con la entidad "solicitudes-contribuyente"
+		 * @return [type] [description]
+		 */
+		public function getSolicitud()
+		{
+			return $this->hasOne(SolicitudesContribuyente::className(),['nro_solicitud' => 'nro_solicitud']);
+		}
 
 
 	}
