@@ -84,13 +84,30 @@
         <div class="panel-body">
         	<div class="container-fluid">
         		<div class="col-sm-12">
+        			<div class="row">
+        				<div class="list-group">
+        					<strong><h3 class="list-group-item-heading">Indicaciones:</h3></strong>
+        					<p class="list-group-item-text">
+        						<?= Html::tag('li', Yii::t('backend', 'El listado corresponde a las solicitudes de EMISION DE LICENCIAS (Nuevas y/o Renovadas).')); ?>
+        						<?= Html::tag('li', Yii::t('backend', 'La filas en color rojo indican que la solicitud esta bloqueada por no cumplir
+        						con una de las políticas establecidas para su aprobación. Se puede leer los motivos de su condición en la columna Observación')); ?>
+        						<?= Html::tag('li', Yii::t('backend', 'Se pueden seleccionar una o todas las filas (que no esten bloqueadas) del listado
+        						para su aprobación.')); ?>
+        						<?= Html::tag('li', Yii::t('backend', 'Una vez aprobada la solicitud el Contribuyente podrá descargar su licencia a través
+        						de la opción <strong>Solicitudes/Actividades Económicas/Licencia/Descargar Licencia.</strong>')); ?>
+
+        					</p>
+
+        				</div>
+        			</div>
+
 		        	<div class="row" style="padding:0px;padding-right:-20px;width:103%;">
 						<?= GridView::widget([
 								'id' => 'grid-listado-licencia',
 								'dataProvider' => $dataProvider,
 								'headerRowOptions' => ['class' => 'success'],
-								'rowOptions' => function($model) {
-									if ( $model['bloquear'] == 1 ) {
+								'rowOptions' => function($data) {
+									if ( $data['bloquear'] == 1 ) {
 										return ['class' => 'danger'];
 									}
 								},
