@@ -217,7 +217,7 @@
 			      					return $this->render('/solicitud/especial/aaee/licencia/listado-solicitud-licencia',[
 			      																'model' => $model,
 			      																'dataProvider' => $dataProvider,
-			      						]);
+			      							]);
 
 			      				}
 			      			}
