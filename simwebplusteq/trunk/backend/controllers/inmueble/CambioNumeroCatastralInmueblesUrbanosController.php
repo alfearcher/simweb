@@ -352,7 +352,7 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
             try {
             $tableName1 = 'solicitudes_contribuyente'; 
 
-            
+              
 
             $arrayDatos1 = [  'id_contribuyente' => $_SESSION['idContribuyente'],
                               'id_config_solicitud' => $_SESSION['id'],

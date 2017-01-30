@@ -79,6 +79,7 @@
 		    				'observacion',
 		    				'fecha_hora',
 		    				'usuario',
+		    				 'id_impuesto', 'clase_propaganda', 'tipo_propaganda', 'uso_propaganda',  'fecha_inicio',  'fecha_fin', 'alto', 'ancho', 'profundidad', 'nombre_propaganda', 'mts', 
 		    				
 
 					       

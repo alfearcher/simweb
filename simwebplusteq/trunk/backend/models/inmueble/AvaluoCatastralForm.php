@@ -136,7 +136,7 @@ class AvaluoCatastralForm extends \yii\db\ActiveRecord
             [['id_tipologia_zona'],'ComparaTarifaAvaluos','when'=> function($modelAvaluo){ return $this->validacion2 == 2; }],
             [['lindero_norte','lindero_sur','lindero_este','lindero_oeste'],'string','message' => Yii::t('backend', 'No debe estar vacio el campo'),'when'=> function($modelAvaluo){ return $this->validacion2 == 2; }],
           
-        ]; 
+        ];   
     }
 
     
