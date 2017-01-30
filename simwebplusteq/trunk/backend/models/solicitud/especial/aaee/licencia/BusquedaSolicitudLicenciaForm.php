@@ -279,7 +279,7 @@
 		public function armarDataProvider($params, $preView = false)
 		{
 			$data = [];
-			$provider = null;
+			$provider = [];
 			if ( !$preView ) {
 				$results = self::getDatoSolicitudLicencia($params);
 			} else {
