@@ -522,6 +522,7 @@ class RegistrosInmueblesUrbanosController extends Controller
                                     
                                 ]; 
 
+
               $tarifaAvaluos = self::TarifaAvaluos($_SESSION['datosInmueble']['manzana_limite'], $model->id_tipologia_zona, date('Y') );
               $arrayDatos2 = [    'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
                                     
