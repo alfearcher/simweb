@@ -46,6 +46,11 @@ return [
 	'920' => [Yii::t('backend', 'Error. The operation was not executed'), 'danger', 'fa fa-times'],
 	'921' => [Yii::t('backend', 'El inmueble ya posee avaluo para el año actual'), 'danger', 'fa fa-times'],
 	'922' => [Yii::t('backend', 'El inmueble no posee datos de propiedad. Realice la solicitud DATOS DE REGISTRO DE PROPIEDAD'), 'danger', 'fa fa-times'],
+	'923' => [Yii::t('backend', 'El inmueble ya posee una solicitud pendiente por procesar de este tipo.'), 'danger', 'fa fa-times'],
+	'924' => [Yii::t('backend', 'El contribuyente no posee email registrado. solicitud cancelada'), 'danger', 'fa fa-times'],
+	'925' => [Yii::t('backend', 'El Inmueble no posee registro de catastro valido, debe crear una solicitud de cambio catastral'), 'danger', 'fa fa-times'],
+	'926' => [Yii::t('backend', 'El Inmueble no posee registro de catastro valido ni posee datos de propiedad , debe crear una solicitud de CAMBIO DE NUMERO CATASTRAL y DATOS DE REGISTRO DE PROPIEDAD'), 'danger', 'fa fa-times'],
+
 
 	'930' => [Yii::t('backend', 'Taxpayer type was not defined'), 'danger', 'fa fa-times'],
 	'932' => [Yii::t('backend', 'Taxpayer not defined'), 'danger', 'fa fa-times'],
@@ -112,6 +117,9 @@ return [
 
 	'600' => [Yii::t('frontend', 'No se ejecuto la liquidación'), 'warning', 'fa fa-info-circle'],
 
+	'700' => [Yii::t('frontend', 'Disculpe, su perfil no le permite esta operación'), 'warning', 'fa fa-info-circle'],
+	'702' => [Yii::t('frontend', 'Disculpe, no ha iniciado correctamente este operación'), 'warning', 'fa fa-info-circle'],
+	'704' => [Yii::t('frontend', 'Disculpe, la operación de aprobación no se ejecuto correctamente'), 'warning', 'fa fa-info-circle'],
 ]
 
 
