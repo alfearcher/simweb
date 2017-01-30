@@ -555,6 +555,26 @@
 
 
 
+		/***/
+		public function getPagoInmuebleEspecificoSegunAñoImpositivo($idImpuesto, $añoImpositivo)
+		{
+			self::setIdImpuesto($idImpuesto);
+			self::setImpuesto(2);
+			$model = self::getModelPagoObjetoImpositivo('>');	// Periodos mayores a cero.
+			$pagos = $model->andWhere('D.ano_impositivo =:ano_impositivo',
+											[':ano_impositivo' => $añoImpositivo])
+			               ->asArray()
+			               ->all();
+			if ( count($pagos) > 0 ) {
+				return $pagos;
+			}
+			return null;
+		}
+
+
+
+
+
 		/**
 		 * Metodo que consulta los pagos de un Aseo especifico, solo considerando los
 		 * periodos mayores a cero.
@@ -602,6 +622,35 @@
 			}
 			return null;
 		}
+
+
+
+
+
+		/**
+		 * [getPagoVehiculoEspecificoSegunAñoImpositivo description]
+		 * @param  [type] $idImpuesto    [description]
+		 * @param  [type] $añoImpositivo [description]
+		 * @return [type]                [description]
+		 */
+		public function getPagoVehiculoEspecificoSegunAñoImpositivo($idImpuesto, $añoImpositivo)
+		{
+			self::setIdImpuesto($idImpuesto);
+			self::setImpuesto(3);
+			$model = self::getModelPagoObjetoImpositivo('>');	// Periodos mayores a cero.
+			$pagos = $model->andWhere('D.ano_impositivo =:ano_impositivo',
+											[':ano_impositivo' => $añoImpositivo])
+			               ->asArray()
+			               ->all();
+
+			if ( count($pagos) > 0 ) {
+				return $pagos;
+			}
+			return null;
+		}
+
+
+
 
 
 
