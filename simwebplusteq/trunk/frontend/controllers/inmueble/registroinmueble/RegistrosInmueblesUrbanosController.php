@@ -399,7 +399,7 @@ class RegistrosInmueblesUrbanosController extends Controller
                     if ($nivelAprobacion['nivel_aprobacion'] != 1){
 
                         
-                        $tipoError = 0;  
+                        $tipoError = 0;   
                         $todoBien = true; 
 
                     } else {
