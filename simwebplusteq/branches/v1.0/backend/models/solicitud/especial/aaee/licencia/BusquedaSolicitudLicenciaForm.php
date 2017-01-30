@@ -313,14 +313,19 @@
 					];
 				}
 
-				if ( count($data) > 0 ) {
-					$provider = New ArrayDataProvider([
-										'key' => 'nro_solicitud',
-										'allModels' => $data,
-										'pagination' => false,
-							]);
-				}
+				// if ( count($data) > 0 ) {
+				// 	$provider = New ArrayDataProvider([
+				// 						'key' => 'nro_solicitud',
+				// 						'allModels' => $data,
+				// 						'pagination' => false,
+				// 			]);
+				// }
 			}
+			$provider = New ArrayDataProvider([
+						'key' => 'nro_solicitud',
+						'allModels' => $data,
+						'pagination' => false,
+			]);
 			return $provider;
 		}
 
