@@ -64,6 +64,7 @@
     use backend\models\solicitud\estatus\EstatusSolicitud;
     use backend\models\aaee\declaracion\DeclaracionBase;
     use common\models\contribuyente\ContribuyenteBase;
+    use backend\models\aaee\licencia\LicenciaSolicitud;
 
 
 
@@ -230,6 +231,18 @@
 
             return $suma;
          }
+
+
+
+
+        /**
+         * Relacion con la entidad "sl-licencias"
+         * @return [type] [description]
+         */
+        public function getLicencias()
+        {
+            return $this->hasMany(LicenciaSolicitud::className(),['nro_solicitud' => 'nro_solicitud']);
+        }
 
     }
 
