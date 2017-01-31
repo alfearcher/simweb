@@ -43,10 +43,9 @@
 	namespace common\models\calculo\actualizar;
 
  	use Yii;
-	use yii\base\Model;
-	use yii\db\ActiveRecord;
 	use common\models\descuento\AplicarDescuento;
 	use common\models\planilla\PagoDetalle;
+	use common\models\planilla\Pago;
 	use common\models\ordenanza\OrdenanzaBase;
 	use common\models\calculo\liquidacion\aaee\LiquidacionActividadEconomica;
 	use common\models\calculo\liquidacion\inmueble\LiquidacionInmueble;
@@ -55,7 +54,11 @@
 	use common\models\calculo\recargo\Recargo;
 	use common\models\calculo\interes\Interes;
 	use common\models\pago\PagoSearch;
-
+	use common\mensaje\MensajeController;
+	use backend\models\impuesto\ImpuestoForm;
+	use yii\base\ErrorException;
+	use common\conexion\ConexionController;
+	use backend\models\propaganda\Propaganda;
 
 
 
@@ -75,11 +78,16 @@
 		private $_planilla;
 		private $_conn;
 		private $_conexion;
+		private $_transaccion;
 		private $_detallePlanilla;
 		private $_impuesto;
 		private $_id_impuesto;
 		private $_definitiva = false;
 		private $_conPeriodo = false;
+
+		private $_descuento;
+		private $_detalleActualizado;
+		public $errorOcurrido;
 
 
 
@@ -87,18 +95,14 @@
 		/**
 		 * Metodo constrictur de la clase,
 		 * @param integer $planilla numero de planila.
-		 * @param ConexionController $conexion instancia de clase ConexionController.
-		 * @param [type] $conn     [description]
 		 */
-		public function __construct($planilla, $conexion, $conn)
+		public function __construct($planilla)
 		{
 			$this->_planilla = $planilla;
-			$this->_conexion = $conexion;
-			$this->_conn;
+			$this->_detalleActualizado = [];
 
+			$this->_descuento = New AplicarDescuento($this->_planilla);
 		}
-
-
 
 
 
@@ -108,10 +112,14 @@
 		 */
 		public function iniciarActualizacion()
 		{
+
 			$this->_detallePlanilla = self::getPlanillaModel()->where('planilla =:planilla',
 																		[':planilla' => $this->_planilla])
 															  ->asArray()
 															  ->all();
+
+
+// die(var_dump($this->_detallePlanilla));
 
 			$this->_impuesto = self::getImpuestoPlanilla();
 			$this->_definitiva = self::esUnaDefinitiva();
@@ -119,6 +127,173 @@
 			$this->_id_impuesto = self::getIdImpuesto();
 
 			self::crearCicloActualizacion();
+
+			return self::aplicarActualizacion();
+		}
+
+
+
+
+		/***/
+		public function getErrors()
+		{
+			return $this->errorOcurrido;
+		}
+
+
+
+
+		/***/
+		private function aplicarActualizacion()
+		{
+			$result = false;
+
+			self::setConexion();
+			if ( isset($this->_conexion) && isset($this->_conn) ) {
+
+				$this->_conn->open();
+
+				$this->_transaccion = $this->_conn->beginTransaction();
+
+				$result = self::aplicarRecalculo();
+
+				// if ( $result ) {
+				// 	self::aplicarDescuento();
+				// }
+
+				if ( $result ) {
+					$this->_transaccion->commit();
+				} else {
+					$this->_transaccion->rollBack();
+				}
+
+				$this->_conn->close();
+			}
+
+		}
+
+
+
+		/***/
+		public function aplicarDescuento()
+		{
+			$this->_descuento->iniciarDescuento();
+		}
+
+
+
+
+
+		/**
+		 * Metodo que ejecuta los procesos de actualizacion de los recalculos.
+		 * @return boolean
+		 */
+		private function aplicarRecalculo()
+		{
+			$result = false;
+
+			if ( count($this->_detalleActualizado) > 0 ) {
+
+// die(var_dump($this->_detalleActualizado));
+				$result = self::actualizarPagoDetalle();
+				if ( $result ) {
+					$result = self::actualizarPago();
+				}
+
+			}
+
+			return $result;
+		}
+
+
+
+
+		/**
+		 * Metodo que aplica la actualizacion sobre la entidad "pagos-detalle"
+		 * @return boolean
+		 */
+		private function actualizarPagoDetalle()
+		{
+			$result = false;
+
+			try {
+
+				$model = New PagoDetalle();
+				$tabla = $model->tableName();
+
+				foreach ( $this->_detalleActualizado as $detalle ) {
+
+					$arregloCondicion['id_detalle'] = $detalle['id_detalle'];
+
+					$arregloDatos['ano_impositivo'] = $detalle['ano_impositivo'];
+					$arregloDatos['trimestre'] = $detalle['trimestre'];
+					$arregloDatos['monto'] = $detalle['monto'];
+					$arregloDatos['descuento'] = $detalle['descuento'];
+					$arregloDatos['recargo'] = $detalle['recargo'];
+					$arregloDatos['interes'] = $detalle['interes'];
+					$arregloDatos['monto_reconocimiento'] = $detalle['monto_reconocimiento'];
+					$arregloDatos['descripcion'] = $detalle['descripcion'];
+
+					$result = $this->_conexion->modificarRegistro($this->_conn, $tabla,
+				 											  	  $arregloDatos,
+				 											      $arregloCondicion);
+					if ( !$result ) { break; }
+				}
+
+			} catch ( ErrorException $e ) {
+				$mensajeError = Yii::t('common', 'No se ejecuto correctamente la actualizacion de los detalles de la planilla');
+				$this->errorOcurrido[] = $mensajeError;
+				Yii::warning($mensajeError);
+				return false;
+			}
+
+			return $result;
+		}
+
+
+
+
+
+		/**
+		 * Metodo que actualiza el atributo "ult-act" en la entidad "pagos"
+		 * @return boolean
+		 */
+		private function actualizarPago()
+		{
+			$result = false;
+
+			try {
+				$model = New Pago();
+				$tabla = $model->tableName();
+
+				$arregloCondicion['id_pago'] = $this->_detalleActualizado[0]['id_pago'];
+				$arregloDatos['ult_act'] = date('Y-m-d');
+
+				$result = $this->_conexion->modificarRegistro($this->_conn, $tabla,
+				 											  $arregloDatos,
+				 											  $arregloCondicion);
+			} catch ( ErrorException $e ) {
+				$mensajeError = Yii::t('common', 'No se ejecuto correctamente la actualizacion de la fecha');
+				$this->errorOcurrido[] = $mensajeError;
+				Yii::warning($mensajeError);
+				return false;
+			}
+
+			return $result;
+		}
+
+
+
+
+
+		/***/
+		public function setConexion()
+		{
+			$this->_conexion = New ConexionController();
+
+			// Instancia de conexion hacia la base de datos.
+	      	$this->_conn = $this->_conexion->initConectar('db');
+	      	//$this->_conn->open();
 		}
 
 
@@ -133,7 +308,7 @@
 		 */
 		public function esUnaDefinitiva()
 		{
-			$referencia = current($this->_detallePlanilla['referencia']);
+			$referencia = $this->_detallePlanilla[0]['referencia'];
 			if ( $referencia == 1 ) {
 				return true;
 			} else {
@@ -151,7 +326,7 @@
 		 */
 		public function esUnaPlanillaConPeriodo()
 		{
-			$periodo = current($this->_detallePlanilla['trimestre']);
+			$periodo = $this->_detallePlanilla[0]['trimestre'];
 			if ( $periodo == 0 ) {
 				return false;
 			} else {
@@ -172,7 +347,7 @@
 		 */
 		public function getIdImpuesto()
 		{
-			return $idImpuesto = current($this->_detallePlanilla['id_impuesto']);
+			return $idImpuesto = $this->_detallePlanilla[0]['id_impuesto'];
 		}
 
 
@@ -185,7 +360,7 @@
 		 */
 		public function getImpuestoPlanilla()
 		{
-			return $impuesto = current($this->_detallePlanilla['impuesto']);
+			return $impuesto = $this->_detallePlanilla[0]['impuesto'];
 		}
 
 
@@ -222,7 +397,7 @@
 
 				} else {
 					$result = $findModel->where('id_contribuyente =:id_contribuyente',
-													[':id_contribuyente' => $this->_detallePlanilla['pagos']['id_contribuyente']])
+													[':id_contribuyente' => $this->_detallePlanilla[0]['pagos']['id_contribuyente']])
 										->andWhere('impuesto =:impuesto',
 													[':impuesto' => $this->_impuesto])
 										->andWhere('ano_impositivo =:ano_impositivo',
@@ -267,7 +442,7 @@
 			}
 
 
-			$primero = current($result['trimestre']);
+			$primero = $result[0]['trimestre'];
 
 			return $primero;
 
@@ -295,7 +470,7 @@
 
 					} else {
 
-						$pago->setIdContribuyente($this->_detallePlanilla['pagos']['id_contribuyente']);
+						$pago->setIdContribuyente($this->_detallePlanilla[0]['pagos']['id_contribuyente']);
 						$result = $pago->getPagoEstimadaSegunAnoImpositivo($añoImpositivo);
 
 					}
@@ -351,11 +526,19 @@
 
 
 
-		/***/
+		/**
+		 * [crearCicloActualizacion description]
+		 * @return [type] [description]
+		 */
 		private function crearCicloActualizacion()
 		{
 			$detalles = self::getDetallePlanillaPorAnoImpositivo();
 
+			// Descripcion de la aplanilla.
+			$descripcion = self::getDescripcionPlanillaSegunImpuesto();
+
+
+// die(var_dump($detalles));
 			// Ciclo de la planilla por año
 			foreach ( $detalles as $detalle ) {
 
@@ -363,9 +546,10 @@
 				$montoAnualImpuesto = 0;
 				$montoAnualImpuesto = self::liquidarImpuesto($detalle['ano_impositivo']);
 
-				if ( $montoAnualImpuesto > 0 ) {
+				if ( $montoAnualImpuesto >= 0 ) {
 					$montoPeriodo = self::getMontoPeriodo($detalle['ano_impositivo'], $montoAnualImpuesto);
 
+					// Ciclo de los detalle de la planilla.
 					foreach ( $this->_detallePlanilla as $planillaDetalle ) {
 
 						if ( $detalle['ano_impositivo'] == $planillaDetalle['ano_impositivo'] ) {
@@ -382,12 +566,30 @@
 							$montoInteres = self::getCalcularInteres($planillaDetalle['ano_impositivo'],
 																	 $planillaDetalle['trimestre'],
 																	 $montoPeriodo);
-						}
+
+
+							$this->_detalleActualizado[] = [
+
+								'id_detalle' => $planillaDetalle['id_detalle'],
+								'id_pago' => $planillaDetalle['id_pago'],
+								'ano_impositivo' => $planillaDetalle['ano_impositivo'],
+								'trimestre' => $planillaDetalle['trimestre'],
+								'monto' => $montoPeriodo,
+								'descuento' => $montoDescuento,
+								'recargo' => $montoRecargo,
+								'interes' => $montoInteres,
+								'monto_reconocimiento' => $montoReconocimiento,
+								'descripcion' => $descripcion,
+
+							];
+
+						}		// Fin ciclo detalles de la planilla $this->_detallePlanilla
 
 					}
-				}
 
-			}
+				}
+			}					// Fin de ciclo de años de la planilla.
+
 		}
 
 
@@ -404,11 +606,11 @@
 		{
 			$findModel = self::getPlanillaModel();
 			return $findModel->select(['ano_impositivo',
-									   'id_pago',
-									   'id_contribuyente',
+									   'P.id_pago',
+									   'P.id_contribuyente',
 									   'impuesto',
 									   'id_impuesto',
-									   'planilla'])
+									   'P.planilla'])
 							 ->where('planilla =:planilla',
 										[':planilla' => $this->_planilla])
 							 ->andWhere('pago =:pago',
@@ -420,7 +622,7 @@
 							 	'ano_impositivo' => SORT_ASC,
 							 ])
 							 ->asArray()
-							 -all();
+							 ->all();
 		}
 
 
@@ -459,7 +661,7 @@
 
 					} else {
 
-						$liquidar = New LiquidacionActividadEconomica($this->_detallePlanilla['pagos']['id_contribuyente']);
+						$liquidar = New LiquidacionActividadEconomica($this->_detallePlanilla[0]['pagos']['id_contribuyente']);
 						$liquidar->iniciarCalcularLiquidacion($añoImpositivo, 1, 'estimado');
 						$montoAnual = $liquidar->getCalculoAnual();
 
@@ -514,10 +716,12 @@
 		 */
 		private function getCalcularRecargo($añoImpositivo, $periodo, $monto)
 		{
-			$monto = 0;
-			$recargo = New Recargo($this->_impuesto);
-			$monto = $recargo->calcularRecargo($añoImpositivo, $periodo, $monto);
-			return round($monto, 2);
+			$montoRecargo = 0;
+			$recargo = New Recargo((int)$this->_impuesto);
+			$recargo->calcularRecargo($añoImpositivo, $periodo, $monto);
+			$montoRecargo = $recargo->getRecargo();
+
+			return round($montoRecargo, 2);
 		}
 
 
@@ -532,10 +736,12 @@
 		 */
 		private function getCalcularInteres($añoImpositivo, $periodo, $monto)
 		{
-			$monto = 0;
-			$recargo = New Interes($this->_impuesto);
-			$monto = $recargo->calcularInteres($añoImpositivo, $periodo, $monto);
-			return round($monto, 2);
+			$montoInteres = 0;
+			$interes = New Interes((int)$this->_impuesto);
+			$interes->calcularInteres($añoImpositivo, $periodo, $monto);
+			$montoInteres = $interes->getInteres();
+
+			return round($montoInteres, 2);
 		}
 
 
@@ -597,6 +803,45 @@
 
 			return round($montoAjuste, 2);
 		}
+
+
+
+
+		/***/
+		private function getDescripcionPlanillaSegunImpuesto()
+		{
+			$etiqueta = 'LIQUIDACION DE ';
+			$registroActualizado = ' / Registro actualizado ' . date('d-m-Y h:i:s');
+			$impuesto = New ImpuestoForm();
+			$descripcion = '';
+
+			$descripcion = $impuesto->getDescripcionImpuesto($this->_impuesto);
+
+			return $etiqueta . $descripcion . $registroActualizado;
+		}
+
+
+
+
+		/**
+		 * Metodo que permite determinar si un id-impuesto de propaganda
+		 * pertenece a la entidad "propagandas".
+		 * @return boolean
+		 */
+		public function esUnObjetoPropaganda()
+		{
+			$result = false;
+			$model = Propaganda::findOne($this->_id_impuesto);
+			if ( $model !== null ) {
+
+				if ( $model->id_contribuyente == $this->_detallePlanilla[0]['pagos']['id_contribuyente'] ) {
+					$result = true;
+				}
+			}
+			return $result;
+		}
+
+
 
 
 	}
