@@ -495,8 +495,8 @@
 					$modelSearch = New SlInmueblesRegistrosSearch();
 					$model = $modelSearch->findInmueblesRegistros($this->model->nro_solicitud);
 
-
-
+ 
+ 
 					return $this->render('@backend/views/inmueble/registros-inmuebles-urbanos/view-solicitud', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
 													'model' => $model,

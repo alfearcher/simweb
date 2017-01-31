@@ -192,7 +192,7 @@ class AvaluoCatastralForm extends \yii\db\ActiveRecord
             'cedulaBuscar'=> Yii::t('backend', 'Identification Card'),
             'tipoBuscar'=> Yii::t('backend', 'Type'),
         ];  
-    }
+    }  
 
     /**
      * [DatosContribuyente] metodo que busca los datos del contribuyente en 

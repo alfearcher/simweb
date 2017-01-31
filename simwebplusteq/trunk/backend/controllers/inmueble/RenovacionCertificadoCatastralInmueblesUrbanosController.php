@@ -763,7 +763,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
        }
 
 
- 
+  
       return $arrayDatos;                                           
 
      }

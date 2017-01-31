@@ -490,7 +490,7 @@ Session["variablephp"] = tu;
 
                                                         <div class="col-sm-2"> 
                                                         <?= Yii::t('backend', 'Value of Construction') ?>
-                                                        </div>   
+                                                        </div>    
 
                                                         <div class="col-sm-2"> 
                                                         <?= $form->field($modelAvaluo, 'valor_construccion')->textInput(['maxlength' => true,'style' => 'width:100px;', 'readOnly' => true])->label(false) ?>
