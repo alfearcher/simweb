@@ -815,7 +815,7 @@
 			$impuesto = New ImpuestoForm();
 			$descripcion = '';
 
-			$descripcion = $impuesto->getDescripcionImpuesto($this->_impuesto);
+			$descripcion = $impuesto->getDescripcionImpuesto((int)$this->_impuesto);
 
 			return $etiqueta . $descripcion . $registroActualizado;
 		}
