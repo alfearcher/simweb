@@ -146,27 +146,49 @@
 		public function getDeclaracionContribuyente()
 		{
 			if ( $this->_añoImpositivo > 0 && $this->_periodo > 0 ) {
-				$modelfind = ActEcon::find()->where([
-												'id_contribuyente' => $this->_idContribuyente,
-												'ano_impositivo' => $this->_añoImpositivo,
-												'exigibilidad_periodo' => $this->_periodo,
-												'estatus' => 0,
-												'inactivo' => 0,
-													])
-				                            ->joinWith('actividadDetalle')
+
+				$modelfind = ActEcon::find()->alias('A')
+											->where('A.id_contribuyente =:id_contribuyente',
+															[':id_contribuyente' => $this->_idContribuyente])
+											->andWhere('A.ano_impositivo =:ano_impositivo',
+															[':ano_impositivo' => $this->_añoImpositivo])
+											->andWhere('B.exigibilidad_periodo =:exigibilidad_periodo',
+															[':exigibilidad_periodo' => $this->_periodo])
+											->andWhere('A.estatus =:estatus',
+															[':estatus' => 0])
+											->andWhere('B.inactivo =:inactivo',
+															[':inactivo' => 0])
+											// ->where([
+											// 	'A.id_contribuyente' => $this->_idContribuyente,
+											// 	'A.ano_impositivo' => $this->_añoImpositivo,
+											// 	'A.exigibilidad_periodo' => $this->_periodo,
+											// 	'A.estatus' => 0,
+											// 	'B.inactivo' => 0,
+											// 		])
+				                            ->joinWith('actividadDetalle B', true, 'INNER JOIN')
 				                            ->orderBy([
 				                            	'ano_impositivo' => SORT_ASC,
 				                            	'exigibilidad_periodo' => SORT_ASC,
 				                            	     ])
 				                            ->asArray()
 				                            ->all();
+
+				$m = '';
+				foreach ( $modelfind[0]['actividadDetalle']  as $j ) {
+
+					if ( $j['inactivo'] == 0 ) {
+						$m[] = $j;
+					}
+				}
+
+				$modelfind[0]['actividadDetalle'] = $m;
+
 				if ( count($modelfind) > 0 ) {
 					return $modelfind;
 				}
 			}
 			return null;
 		}
-
 
 
 
