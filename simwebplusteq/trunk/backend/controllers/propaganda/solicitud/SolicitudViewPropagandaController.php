@@ -62,6 +62,8 @@
 	use yii\db\Query;
 	use common\models\propaganda\patrocinador\SlAnulacionesPatrocinadores;
 	use backend\models\propaganda\inscripcionpropaganda\InscripcionPropagandaSearch;
+	use backend\models\propaganda\Propaganda;
+
 
 
 
@@ -248,12 +250,15 @@
 			if ( $this->model->nivel_aprobacion == 2 ) {
 					$modelSearch = New SlPropagandasForm($this->model->id_contribuyente);
 					$model = $modelSearch->findDesincorporacionPropaganda($this->model->nro_solicitud);
+					$datosPropaganda = Propaganda::find()->where(['id_impuesto' => $model['id_impuesto'] ])->one();
+
+
 
 
 
 					return $this->render('/propaganda/solicitudes/desincorporacion/view-solicitud-desincorporacion-propaganda', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
-													'model' => $model,
+													'model' => $model, 'modelPropaganda'=>$datosPropaganda,
 
 
 						]);
