@@ -79,6 +79,32 @@
 		    				'observacion',
 		    				'fecha_hora',
 		    				'usuario',
+		    				  
+		    				
+
+					       
+		        				
+		    			],
+					])
+				?>
+				<?= DetailView::widget([
+						'model' => $modelPropaganda,
+						
+		    			'attributes' => [
+		    				
+		    				'id_impuesto',
+		    				'id_contribuyente',
+		    				'nombre_propaganda',
+		    				'clase_propaganda',
+		    				'tipo_propaganda', 
+		    				'uso_propaganda',
+		    				'fecha_desde',
+		    				'fecha_fin', 
+		    				'alto',
+		    				'ancho',
+		    				'profundidad',
+
+
 		    				
 
 					       
