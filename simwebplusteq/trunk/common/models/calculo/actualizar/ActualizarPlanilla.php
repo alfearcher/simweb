@@ -60,6 +60,7 @@
 	use common\conexion\ConexionController;
 	use backend\models\propaganda\Propaganda;
 	use backend\models\recibo\depositoplanilla\DepositoPlanillaSearch;
+	use backend\models\aaee\liquidar\LiquidarDefinitivaSearch;
 
 
 
@@ -221,7 +222,7 @@
 
 			if ( count($this->_detalleActualizado) > 0 ) {
 
-// die(var_dump($this->_detalleActualizado));
+die(var_dump($this->_detalleActualizado));
 				$result = self::actualizarPagoDetalle();
 				if ( $result ) {
 					$result = self::actualizarPago();
@@ -685,6 +686,17 @@
 				if ( $this->_conPeriodo ) {
 					if ( $this->_definitiva ) {
 
+						$liquidarSearch = New LiquidarDefinitivaSearch($this->_detallePlanilla[0]['pagos']['id_contribuyente'],
+			      										 			   $this->_detallePlanilla[0]['ano_impositivo'],
+			      										 			   $this->_detallePlanilla[0]['trimestre']);
+
+						$dataDeclaracion = $liquidarSearch->datosDeclaracionImpuesto();
+						$sumaImpuesto = $liquidarSearch->sumaImpuesto($dataDeclaracion);
+
+						$resumenPago = $liquidarSearch->getResumenPagos();
+	      				$sumaPago = $liquidarSearch->sumaPago($resumenPago);
+
+	      				$montoAnual = $sumaImpuesto - $sumaPago;
 
 					} else {
 
