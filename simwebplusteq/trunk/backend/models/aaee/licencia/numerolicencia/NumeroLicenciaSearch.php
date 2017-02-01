@@ -77,7 +77,7 @@
 		 */
 		public function __construct($db = 'db')
 		{
-			$this->planilla = 0;
+			$this->licencia = 0;
 
 			$this->usuario = Yii::$app->identidad->getUsuario();
 			if ( trim($db) == '' ) { $db = 'db';}

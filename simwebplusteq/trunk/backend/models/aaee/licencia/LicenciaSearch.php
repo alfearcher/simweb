@@ -46,9 +46,10 @@
 	use yii\db\ActiveRecord;
 	use backend\models\aaee\licencia\Licencia;
 	use common\models\contribuyente\ContribuyenteBase;
-	use backend\models\aaee\actecon\ActEcon;
+	use backend\models\aaee\actecon\ActEconSearch;
 	use yii\base\ErrorException;
 	use common\conexion\ConexionController;
+	use backend\models\aaee\licencia\numerolicencia\NumeroLicenciaSearch;
 
 
 	/**
@@ -63,6 +64,10 @@
 		private $_conexion;
 		private $_conn;
 		private $_transaccion;
+
+
+
+
 
 		/**
 		 * Metodo constructor de la clase.
@@ -219,14 +224,8 @@
 				$model->ente = Yii::$app->ente->getEnte();
 				$model->id_contribuyente = $this->_id_contribuyente;
 				$model->ano_impositivo = date('Y');
-				$actEcon = ActEcon::find()->where('id_contribuyente =:id_contribuyente',
-															[':id_contribuyente' => $this->_id_contribuyente])
-												     ->andWhere('estatus =:estatus',[':estatus'=> 0])
-												     ->andWhere('ano_impositivo =:ano_impositivo',
-												     		[':ano_impositivo' => date('Y')])
-												     ->one();
 
-				$model->id_impuesto = $actEcon->id_impuesto;
+				$model->id_impuesto = swlf::getIdentificador(date('Y'));
 
 				if ( $model->id_impuesto > 0 ) {
 					$model->serial_licencia = self::determinarSerialLicencia();
@@ -278,6 +277,23 @@
 			return $result;
 		}
 
+
+
+
+		/**
+		 * Metodo que retorna el identificador de la entidad "act-econ", segun un año especifico
+		 * @param  integer $añoImpositivo año impositivo de la declaracion.
+		 * @return integer retorna el identificador de la entidad "act-econ".
+		 */
+		private function getIdImpuesto($añoImpositivo)
+		{
+			$searchActEcon = New ActEconSearch($this->_id_contribuyente);
+			$identificador = $searchActEcon->getIdentificador($añoImpositivo);
+			if ( $identificador !== false && $identificador !== null ) {
+				return $identificador;
+			}
+			return 0;
+		}
 
 
 
