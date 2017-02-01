@@ -241,6 +241,15 @@
 					if ( !$result ) { break; }
 				}
 
+
+				// Aqui se define el descuento especial sobre las planillas de inmueble para la
+				// Alcaldia de Guaicaipuro (Los Teques).
+				if ( $model[0]['impuesto'] == 2 ) {
+					if ( $result ) {
+						$result = self::aplicarDescuentoEspecialInmueble($model, $this->_conexion, $this->_conn);
+					}
+				}
+
 			} elseif ( $totalPeriodo < $exigibilidadLiq ) {
 				// Quiere decir que la planilla actual tiene menos periodos de los que exige la
 				// exigibilidad de liquidacion, lo que debe indicar que elcontribuyente pago unos
@@ -272,7 +281,15 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que efectivamente aplica el descuento.
+		 * @param array $config configuracion del descuento.
+		 * @param double $descuento monto del descuento aplicar al periodo.
+		 * @param PagoDetalle $model modelo de la planilla.
+		 * @param ConexionController $conexion instancia de la clase ConxionController.
+		 * @param Connection $conn instancia de la clase Connection
+		 * @return boolean.
+		 */
 		private function aplicarDescuentoMonto($config, $descuento, $model, $conexion, $conn)
 		{
 			$result = false;
@@ -363,6 +380,31 @@
 			return $suma;
 		}
 
+
+
+
+
+		/**
+		 * Metodo que aplica el descuento del 100% sobre los recargo e interese sobre la planilla.
+		 * Esto aplica para la Alcaldia de Guaicaipuro, año 2017.
+		 * @param PagoDetalle $model modelo de la planilla.
+		 * @param ConexionController $conexion instancia de la clase ConxionController.
+		 * @param Connection $conn instancia de la clase Connection
+		 * @return boolean.
+		 */
+		private function aplicarDescuentoEspecialInmueble($model, $conexion, $conn)
+		{
+			$result = false;
+			$tabla = PagoDetalle::tableName();
+
+			$arregloCondicion['id_pago'] = $model[0]['id_pago'];
+			$arregloDatos['recargo'] = 0;
+			$arregloDatos['interes'] = 0;
+
+			$result = $conexion->modificarRegistro($conn, $tabla, $arregloDatos, $arregloCondicion);
+
+			return $result;
+		}
 
 
 
