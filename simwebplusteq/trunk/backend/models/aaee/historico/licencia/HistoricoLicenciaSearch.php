@@ -48,6 +48,9 @@
 	use yii\db\ActiveRecord;
 	use backend\models\aaee\historico\licencia\HistoricoLicencia;
 	use common\models\numerocontrol\NumeroControlSearch;
+	use backend\models\aaee\licencia\LicenciaSearch;
+
+
 
 	/**
 	* 	Clase
