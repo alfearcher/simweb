@@ -148,6 +148,7 @@
 				} else {
 					// Solo se actualiza el atributo "ult-act" de la entidad "pagos".
 
+					$this->_detalleActualizado[0]['id_pago'] = $this->_detallePlanilla[0]['id_pago'];
 					self::setConexion();
 					self::actualizarPago();
 				}
