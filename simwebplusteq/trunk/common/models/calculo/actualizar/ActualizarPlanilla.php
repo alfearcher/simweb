@@ -222,7 +222,7 @@
 
 			if ( count($this->_detalleActualizado) > 0 ) {
 
-die(var_dump($this->_detalleActualizado));
+// die(var_dump($this->_detalleActualizado));
 				$result = self::actualizarPagoDetalle();
 				if ( $result ) {
 					$result = self::actualizarPago();
@@ -565,8 +565,6 @@ die(var_dump($this->_detalleActualizado));
 			// Descripcion de la aplanilla.
 			$descripcion = self::getDescripcionPlanillaSegunImpuesto();
 
-
-// die(var_dump($detalles));
 			// Ciclo de la planilla por año
 			foreach ( $detalles as $detalle ) {
 
