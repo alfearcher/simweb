@@ -314,7 +314,7 @@
 
 			// Instancia de conexion hacia la base de datos.
 	      	$this->_conn = $this->_conexion->initConectar('db');
-	      	//$this->_conn->open();
+
 		}
 
 
@@ -711,7 +711,7 @@
 
 			} else if ( $this->_impuesto == 4 ) {
 
-				if ( $this->_conPeriodo ) {
+				if ( !$this->_conPeriodo ) {
 
 					$liquidar = New LiquidacionPropaganda($this->_id_impuesto);
 					$liquidar->setAnoImpositivo($añoImpositivo);
