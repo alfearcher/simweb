@@ -59,6 +59,7 @@
 	use yii\base\ErrorException;
 	use common\conexion\ConexionController;
 	use backend\models\propaganda\Propaganda;
+	use backend\models\recibo\depositoplanilla\DepositoPlanillaSearch;
 
 
 
@@ -113,32 +114,37 @@
 		public function iniciarActualizacion()
 		{
 
-			$this->_detallePlanilla = self::getPlanillaModel()->where('planilla =:planilla',
-																		[':planilla' => $this->_planilla])
-															  ->asArray()
-															  ->all();
+			if ( DepositoPlanillaSearch::puedoSeleccionarPlanillaParaRecibo($this->_planilla) ) {
 
-			$this->_impuesto = self::getImpuestoPlanilla();
-			$this->_definitiva = self::esUnaDefinitiva();
-			$this->_conPeriodo = self::esUnaPlanillaConPeriodo();
-			$this->_id_impuesto = self::getIdImpuesto();
+				// Significa que la planilla no esta relacionada a ningun recibo pemdiente o pagado.
 
-			if ( $this->_impuesto == 1 || $this->_impuesto == 2 || $this->_impuesto == 3 ) {
+				$this->_detallePlanilla = self::getPlanillaModel()->where('planilla =:planilla',
+																			[':planilla' => $this->_planilla])
+																  ->asArray()
+																  ->all();
 
-				if ( $this->_conPeriodo ) {
+				$this->_impuesto = self::getImpuestoPlanilla();
+				$this->_definitiva = self::esUnaDefinitiva();
+				$this->_conPeriodo = self::esUnaPlanillaConPeriodo();
+				$this->_id_impuesto = self::getIdImpuesto();
 
-					self::crearCicloActualizacion();
-					return self::aplicarActualizacion();
+				if ( $this->_impuesto == 1 || $this->_impuesto == 2 || $this->_impuesto == 3 ) {
 
-				}
+					if ( $this->_conPeriodo ) {
 
-			} elseif ( $this->_impuesto == 4 ) {
+						self::crearCicloActualizacion();
+						return self::aplicarActualizacion();
 
-				if ( self::esUnObjetoPropaganda() ) {
+					}
 
-					self::crearCicloActualizacion();
-					return self::aplicarActualizacion();
+				} elseif ( $this->_impuesto == 4 ) {
 
+					if ( self::esUnObjetoPropaganda() ) {
+
+						self::crearCicloActualizacion();
+						return self::aplicarActualizacion();
+
+					}
 				}
 			}
 
