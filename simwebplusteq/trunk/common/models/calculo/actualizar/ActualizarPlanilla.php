@@ -587,14 +587,16 @@ die(var_dump($this->_detalleActualizado));
 							$montoDescuento = 0;
 							$montoReconocimiento = 0;
 
-							$montoRecargo = self::getCalcularRecargo($planillaDetalle['ano_impositivo'],
-																	 $planillaDetalle['trimestre'],
-																	 $montoPeriodo);
+							if ( !$this->_definitiva ) {
 
-							$montoInteres = self::getCalcularInteres($planillaDetalle['ano_impositivo'],
-																	 $planillaDetalle['trimestre'],
-																	 $montoPeriodo);
+								$montoRecargo = self::getCalcularRecargo($planillaDetalle['ano_impositivo'],
+																		 $planillaDetalle['trimestre'],
+																		 $montoPeriodo);
 
+								$montoInteres = self::getCalcularInteres($planillaDetalle['ano_impositivo'],
+																		 $planillaDetalle['trimestre'],
+																		 $montoPeriodo);
+							}
 
 							$this->_detalleActualizado[] = [
 
@@ -849,6 +851,11 @@ die(var_dump($this->_detalleActualizado));
 		/***/
 		private function getDescripcionPlanillaSegunImpuesto()
 		{
+			$definitiva = '';
+			if ( $this->_definitiva ) {
+				$definitiva = ' DEFINITIVA ' . $this->_detallePlanilla[0]['ano_impositivo'] . ' - ' . $this->_detallePlanilla[0]['trimestre'];
+			}
+
 			$etiqueta = 'LIQUIDACION DE ';
 			$registroActualizado = ' / Registro actualizado ' . date('d-m-Y h:i:s');
 			$impuesto = New ImpuestoForm();
@@ -856,7 +863,7 @@ die(var_dump($this->_detalleActualizado));
 
 			$descripcion = $impuesto->getDescripcionImpuesto((int)$this->_impuesto);
 
-			return $etiqueta . $descripcion . $registroActualizado;
+			return $etiqueta . $descripcion . $definitiva  . $registroActualizado;
 		}
 
 
