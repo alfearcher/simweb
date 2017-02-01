@@ -238,14 +238,7 @@
 					$model->licores2 = '';
 					$model->serial_preimpreso = '';
 
-					$arregloCondicion = [
-							'id_contribuyente' => $this->_id_contribuyente,
-							'status_licencia' => 0,
-					];
-					$arregloDatos = [
-							'status_licencia' => 1,
-					];
-					$result = $this->_conexion->modificarRegistro($this->_conn, $tabla, $arregloDatos, $arregloCondicion);
+					$result = self::inactivarRegisro();
 					if ( $result ) {
 						$result = $this->_conexion->guardarRegistro($this->_conn, $tabla, $model->attribute);
 					}
@@ -257,6 +250,45 @@
 			}
 
 			return $result;
+		}
+
+
+
+
+		/**
+		 * Metodo que inactiva los registros existentes en la entidad "licencias"
+		 * para un contribuyente especifico.
+		 * @return boolean
+		 */
+		private function inactivarRegisro()
+		{
+			$result = false;
+			$model = New Licencia();
+			$tabla = $model->tableName();
+
+			$arregloCondicion = [
+					'id_contribuyente' => $this->_id_contribuyente,
+					'status_licencia' => 0,
+			];
+			$arregloDatos = [
+					'status_licencia' => 1,
+			];
+			$result = $this->_conexion->modificarRegistro($this->_conn, $tabla, $arregloDatos, $arregloCondicion);
+
+			return $result;
+		}
+
+
+
+
+
+		/**
+		 * Metodo que define la fecha de vencimiento de la licencia.
+		 * @return date
+		 */
+		public function getFechaVencimiento()
+		{
+			return date('Y') . '-12-31';
 		}
 
 
