@@ -118,17 +118,32 @@
 															  ->asArray()
 															  ->all();
 
-
-// die(var_dump($this->_detallePlanilla));
-
 			$this->_impuesto = self::getImpuestoPlanilla();
 			$this->_definitiva = self::esUnaDefinitiva();
 			$this->_conPeriodo = self::esUnaPlanillaConPeriodo();
 			$this->_id_impuesto = self::getIdImpuesto();
 
-			self::crearCicloActualizacion();
+			if ( $this->_impuesto == 1 || $this->_impuesto == 2 || $this->_impuesto == 3 ) {
 
-			return self::aplicarActualizacion();
+				if ( $this->_conPeriodo ) {
+
+					self::crearCicloActualizacion();
+					return self::aplicarActualizacion();
+
+				}
+
+			} elseif ( $this->_impuesto == 4 ) {
+
+				if ( self::esUnObjetoPropaganda() ) {
+
+					self::crearCicloActualizacion();
+					return self::aplicarActualizacion();
+
+				}
+			}
+
+			return true;
+
 		}
 
 
