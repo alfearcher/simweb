@@ -267,7 +267,7 @@
 				}
 
 			} catch ( ErrorException $e ) {
-				$mensajeError = Yii::t('common', 'No se ejecuto correctamente la actualizacion de los detalles de la planilla');
+				$mensajeError = Yii::t('frontend', 'No se ejecuto correctamente la actualizacion de los detalles de la planilla');
 				$this->errorOcurrido[] = $mensajeError;
 				Yii::warning($mensajeError);
 				return false;
@@ -299,7 +299,7 @@
 				 											  $arregloDatos,
 				 											  $arregloCondicion);
 			} catch ( ErrorException $e ) {
-				$mensajeError = Yii::t('common', 'No se ejecuto correctamente la actualizacion de la fecha');
+				$mensajeError = Yii::t('frontend', 'No se ejecuto correctamente la actualizacion de la fecha');
 				$this->errorOcurrido[] = $mensajeError;
 				Yii::warning($mensajeError);
 				return false;
