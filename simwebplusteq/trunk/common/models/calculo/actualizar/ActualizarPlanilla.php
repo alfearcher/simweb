@@ -145,6 +145,11 @@
 						return self::aplicarActualizacion();
 
 					}
+				} else {
+					// Solo se actualiza el atributo "ult-act" de la entidad "pagos".
+
+					self::setConexion();
+					self::actualizarPago();
 				}
 			}
 
