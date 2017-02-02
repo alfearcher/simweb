@@ -137,7 +137,12 @@
 
 			if ( count($tarifa) > 0 ) {
 
-				$montoAvaluo = self::getAvaluo($avaluo);
+				if ( $avaluo['valor'] > 0 ) {
+					$montoAvaluo = $avaluo['valor'];
+				} else {
+					$montoAvaluo = self::getAvaluo($avaluo);
+				}
+
 				if ( $montoAvaluo > 0 ) {
 					$monto = $tarifa[0]['alicuota'] * $montoAvaluo;
 				}
