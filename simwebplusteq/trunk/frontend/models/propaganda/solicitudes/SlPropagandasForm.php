@@ -182,7 +182,7 @@ class SlPropagandasForm extends SlPropagandas
             $modelFind = SlDesincorporacionesVehiculo::find()->where('nro_solicitud =:nro_solicitud', [':nro_solicitud' => $nroSolicitud])
                                                     ->andWhere('id_contribuyente =:id_contribuyente', [':id_contribuyente' => $this->id_contribuyente])
                                                     ->one();
-                                                    //die(var_dump($modelFinf));
+                                                    
             return isset($modelFind) ? $modelFind : null;
         }
         /**
