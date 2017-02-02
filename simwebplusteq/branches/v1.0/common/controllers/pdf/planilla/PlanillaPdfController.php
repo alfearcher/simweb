@@ -62,6 +62,7 @@
 	use common\models\ordenanza\OrdenanzaBase;
 	use common\models\descuento\AplicarDescuento;
 
+	use common\models\calculo\actualizar\ActualizarPlanilla;
 	use mPDF;
 
 
@@ -82,6 +83,7 @@
 		private $_fechaVcto;
 		private $_aplicarDescuento;		// Instacia de AplicarDescuento().
 
+		private $_actualizarPlanilla;
 		public $_objeto;
 
 
@@ -93,8 +95,10 @@
 		{
 			$this->_planilla = (int)$planilla;
 			$this->_searchPlanilla = New PlanillaSearch($this->_planilla);
+			$this->_actualizarPlanilla = New ActualizarPlanilla($this->_planilla);
 			$this->_aplicarDescuento = New AplicarDescuento($this->_planilla);
 			$this->_objeto = $objeto;
+
 		}
 
 
@@ -142,6 +146,8 @@
 		public function actionGenerarPlanillaPdf()
 		{
 			if ( $this->_planilla > 0 ) {
+
+				$this->_actualizarPlanilla->iniciarActualizacion();
 
 				$this->_aplicarDescuento->iniciarDescuento();
 
