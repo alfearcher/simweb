@@ -156,9 +156,8 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
                 $_SESSION['datosUAvaluos'] = $value; 
                 
           } else {
-                $value = HistoricoAvaluoSearch::find()->where("id_impuesto=:impuesto", [":impuesto" => $idInmueble])->asArray()
-                                            ->andwhere("inactivo=:inactivo", [":inactivo" => 0])
-                                            ->all();;
+                $value = new AvaluoCatastralForm();
+                $_SESSION['datosUAvaluos'] = $value; 
                 // no presenta historico de avaluos
                 // buscaremos fecha en inmuebles registros
                 if ($datosIRegistros != null) {
@@ -178,7 +177,8 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
 
           if ($datosIRegistros == null) {
 
-                    $valueIn = false; 
+                    $valueIn = new InmueblesRegistrosForm(); 
+                    $_SESSION['datosURegistros'] = $valueIn;
          } else {
 
          foreach ($datosIRegistros as $key => $valueIn) {
