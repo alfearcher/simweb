@@ -166,8 +166,8 @@ class RegistrosInmueblesUrbanosController extends Controller
                 $_SESSION['datosUAvaluos'] = $value; 
                 
           } else {
-                $value = false;
-                $_SESSION['datosUAvaluos'] = 0;
+                $value = new AvaluoCatastralForm();
+                $_SESSION['datosUAvaluos'] = $value;
                 $_SESSION['anioAvaluo'] = 0;
                 // no presenta historico de avaluos
                 // buscaremos fecha en inmuebles registros
@@ -182,7 +182,8 @@ class RegistrosInmueblesUrbanosController extends Controller
                     $_SESSION['datosURegistros'] = $valueIn;
                 } else {
                  
-                  $valueIn = false; 
+                  $valueIn = new InmueblesRegistrosForm(); 
+                  $_SESSION['datosURegistros'] = $valueIn;
                   $_SESSION['anioRegistro'] = null; 
                   
                   //no posee registros de inmueble
