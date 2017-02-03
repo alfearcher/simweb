@@ -154,6 +154,25 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
                 $añoUltimoAvaluo = explode('-', $value['fecha']);
                 $_SESSION['anioAvaluo'] = $añoUltimoAvaluo;
                 $_SESSION['datosUAvaluos'] = $value; 
+
+                if ($datosIRegistros != null) {
+
+                    foreach ($datosIRegistros as $key => $valueIn) {
+                                            
+                    } 
+                    
+                    $añoUltimoRegistro = explode('-', $valueIn['fecha']);
+                    $_SESSION['anioRegistro'] = $añoUltimoRegistro;
+                    $_SESSION['datosURegistros'] = $valueIn;
+                } else {
+                 
+                  $valueIn = new InmueblesRegistrosForm(); 
+                  $_SESSION['datosURegistros'] = $valueIn; 
+                  $_SESSION['anioRegistro'] = null; 
+                  
+                  //no posee registros de inmueble
+                  
+                } 
                 
           } else {
                 $value = new AvaluoCatastralForm();
@@ -175,19 +194,7 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
                 } 
           }
 
-          if ($datosIRegistros == null) {
-
-                    $valueIn = new InmueblesRegistrosForm(); 
-                    $_SESSION['datosURegistros'] = $valueIn;
-         } else {
-
-         foreach ($datosIRegistros as $key => $valueIn) {
-                                            
-                    } 
-                    $añoUltimoRegistro = explode('-', $registros['fecha']);
-                    $_SESSION['anioRegistro'] = $añoUltimoRegistro;
-                    $_SESSION['datosURegistros'] = $valueIn;
-         }
+         
 
 
            $verificarSolicitud = self::verificarSolicitud($datosInmueble['id_impuesto'] , $_SESSION['id']);
