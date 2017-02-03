@@ -146,46 +146,46 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
 
           
           
-         //  if ($datosHAvaluos != null) {
+          if ($datosHAvaluos != null) {
                 
-         //        foreach ($datosHAvaluos as $key => $value) {
+                foreach ($datosHAvaluos as $key => $value) {
                                             
-         //        } 
-         //        $añoUltimoAvaluo = explode('-', $value['fecha']);
-         //        $_SESSION['anioAvaluo'] = $añoUltimoAvaluo;
-         //        $_SESSION['datosUAvaluos'] = $value; 
+                } 
+                $añoUltimoAvaluo = explode('-', $value['fecha']);
+                $_SESSION['anioAvaluo'] = $añoUltimoAvaluo;
+                $_SESSION['datosUAvaluos'] = $value; 
                 
-         //  } else {
-         //        $value = false;
-         //        // no presenta historico de avaluos
-         //        // buscaremos fecha en inmuebles registros
-         //        if ($datosIRegistros != null) {
+          } else {
+                $value = $datosHAvaluos;
+                // no presenta historico de avaluos
+                // buscaremos fecha en inmuebles registros
+                if ($datosIRegistros != null) {
 
-         //            foreach ($datosIRegistros as $key => $valueIn) {
+                    foreach ($datosIRegistros as $key => $valueIn) {
                                             
-         //            } 
-         //            $añoUltimoRegistro = explode('-', $registros['fecha']);
-         //            $_SESSION['anioRegistro'] = $añoUltimoRegistro;
-         //            $_SESSION['datosURegistros'] = $valueIn;
-         //        } else {
-         //          $valueIn = false; 
-         //          //no posee registros de inmueble
+                    } 
+                    $añoUltimoRegistro = explode('-', $registros['fecha']);
+                    $_SESSION['anioRegistro'] = $añoUltimoRegistro;
+                    $_SESSION['datosURegistros'] = $valueIn;
+                } else {
+                  $valueIn = false; 
+                  //no posee registros de inmueble
                   
-         //        } 
-         //  }
+                } 
+          }
 
-         //  if ($datosIRegistros == null) {
+          if ($datosIRegistros == null) {
 
-         //            $valueIn = false; 
-         // } else {
+                    $valueIn = false; 
+         } else {
 
-         // foreach ($datosIRegistros as $key => $valueIn) {
+         foreach ($datosIRegistros as $key => $valueIn) {
                                             
-         //            } 
-         //            $añoUltimoRegistro = explode('-', $registros['fecha']);
-         //            $_SESSION['anioRegistro'] = $añoUltimoRegistro;
-         //            $_SESSION['datosURegistros'] = $valueIn;
-         // }
+                    } 
+                    $añoUltimoRegistro = explode('-', $registros['fecha']);
+                    $_SESSION['anioRegistro'] = $añoUltimoRegistro;
+                    $_SESSION['datosURegistros'] = $valueIn;
+         }
 
 
            $verificarSolicitud = self::verificarSolicitud($datosInmueble['id_impuesto'] , $_SESSION['id']);
