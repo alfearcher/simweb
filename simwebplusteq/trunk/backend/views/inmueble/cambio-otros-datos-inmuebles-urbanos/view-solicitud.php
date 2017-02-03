@@ -62,8 +62,8 @@
 		    				//'fecha_hora',
 		    				'ano_inicio',
 		    				'casa_edf_qta_dom',
-		    				'apto_dom',
-		    				'tlf_hab',
+		    				'piso_nivel_no_dom',
+		    				'apto_dom',		    				
 		    				'medidor',
 
 

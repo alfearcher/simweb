@@ -97,17 +97,7 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
                         </td>
                   
                    <tr>
-                        <td style="max-width: 85px" align="right">
-                            <div class="col-sm-1"> 
-                            <?= Yii::t('backend', 'Phone') ?>
-                            </div> 
-                        </td>
-
-                        <td style="max-width: 200px" align="right">
-                            <div class="col-sm-2"> 
-                            <?= $form->field($model, 'tlf_hab')->textInput(['style' => 'width:100px;'])->label(false) ?>
-                            </div>
-                        </td>
+                        
 
                         <td style="max-width: 200px" align="right">
                             <div class="col-sm-1"> 
@@ -153,11 +143,7 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
                             </div> 
                         </td>
 
-                        <td style="max-width: 100px">
-                            <div class="col-sm-2">
-                            <?= $form->field($model, 'inactivo')->checkbox()?> 
-                            </div>
-                        </td>
+                        
 
                         <td style="max-width: 100px">      
 
