@@ -505,7 +505,10 @@ Session["variablephp"] = tu;
                                                         </div> 
                                                     
                                                         <div class="col-sm-2"> 
-                                                        <?= $form->field($modelAvaluo, 'metros_construccion')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value' => $_SESSION['datosHAvaluos'][0]['mts'], 'readOnly' => true])->label(false) ?>
+                                                       
+                                                           <?= $form->field($modelAvaluo, 'metros_construccion')->textInput(['maxlength' => true,'style' => 'width:100px;',  'readOnly' => true, 'value' => $_SESSION['datosUAvaluos']['mts']])->label(false) ?>
+                                                       
+                                                        
                                                         </div> 
 
                                                         <div class="col-sm-2"> 
@@ -524,7 +527,9 @@ Session["variablephp"] = tu;
                                                         </div> 
                                                     
                                                         <div class="col-sm-2"> 
-                                                        <?= $form->field($modelAvaluo, 'metros_terreno')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value' => $_SESSION['datosHAvaluos'][0]['mts2_terreno'], 'readOnly' => true])->label(false) ?> 
+                                                        <?= $form->field($modelAvaluo, 'metros_terreno')->textInput(['maxlength' => true,'style' => 'width:100px;',  'readOnly' => true, 'value' => $_SESSION['datosUAvaluos']['mts2_terreno']])->label(false) ?>
+                                                        
+                                                        
                                                         </div>
 
                                                         <div class="col-sm-2"> 
@@ -546,18 +551,22 @@ Session["variablephp"] = tu;
                                                         $modelParametros = UsosInmuebles::find()->asArray()->all();                                         
                                                         $listaParametros = ArrayHelper::map($modelParametros,'uso_inmueble','descripcion'); 
                                                         ?> 
+
                                                         <?= $form->field($modelAvaluo, 'id_uso_inmueble')->dropDownList($listaParametros, [ 
                                                                                                             'id'=> 'UsosInmuebles', 
                                                                                                             'prompt' => Yii::t('backend', 'Select'),
                                                                                                             'style' => 'width:300px;',
-                                                                                                            'value' => $_SESSION['datosHAvaluos'][0]['id_uso_inmueble'],
+                                                                                                            'value' => $_SESSION['datosUAvaluos']['id_uso_inmueble'],
                                                                                                             'readOnly' => true,
                                                                                                            /*'onchange' =>
                                                                                                                 '$.post( "' . Yii::$app->urlManager
                                                                                                                                        ->createUrl('parroquias/lists') . '&municipio=' . '" + $(this).val(), function( data ) {
                                                                                                                                                                                                             $( "select#parroquias" ).html( data );
                                                                                                                                                                                                             });' 
-                                                                                                           */ ])->label(false); ?> 
+                                                                                                           */ ])->label(false);  
+                                                         ?>
+
+                                                        
                                                         </div>
 
                                                         <div class="col-sm-2"> 
@@ -569,18 +578,21 @@ Session["variablephp"] = tu;
                                                         $modelParametros = TiposInmuebles::find()->asArray()->all();                                         
                                                         $listaParametros = ArrayHelper::map($modelParametros,'tipo_inmueble','descripcion'); 
                                                         ?>
+
                                                         <?= $form->field($modelAvaluo, 'tipo_inmueble')->dropDownList($listaParametros, [ 
                                                                                                             'id'=> 'TiposInmuebles', 
                                                                                                             'prompt' => Yii::t('backend', 'Select'),
                                                                                                             'style' => 'width:200px;',
-                                                                                                            'value' => $_SESSION['datosHAvaluos'][0]['tipo_inmueble'],
+                                                                                                            'value' => $_SESSION['datosUAvaluos']['tipo_inmueble'],
                                                                                                             'readOnly' => true,
                                                                                                            /*'onchange' =>
                                                                                                                 '$.post( "' . Yii::$app->urlManager
                                                                                                                                        ->createUrl('parroquias/lists') . '&municipio=' . '" + $(this).val(), function( data ) {
                                                                                                                                                                                                             $( "select#parroquias" ).html( data );
                                                                                                                                                                                                             });' 
-                                                                                                           */ ])->label(false); ?>
+                                                                                                           */ ])->label(false);
+                                                       ?>
+                                                        
                                                         </div> 
                                                     </div>
 
@@ -594,18 +606,21 @@ Session["variablephp"] = tu;
                                                         $modelParametros = ClasesInmuebles::find()->asArray()->all();                                         
                                                         $listaParametros = ArrayHelper::map($modelParametros,'clase_inmueble','descripcion'); 
                                                         ?>
+
                                                         <?= $form->field($modelAvaluo, 'clase_inmueble')->dropDownList($listaParametros, [ 
                                                                                                             'id'=> 'ClasesInmuebles', 
                                                                                                             'prompt' => Yii::t('backend', 'Select'),
                                                                                                             'style' => 'width:200px;',
-                                                                                                            'value' => $_SESSION['datosHAvaluos'][0]['clase_inmueble'],
+                                                                                                            'value' => $_SESSION['datosUAvaluos']['clase_inmueble'],
                                                                                                             'readOnly' => true,
                                                                                                            /*'onchange' =>
                                                                                                                 '$.post( "' . Yii::$app->urlManager
                                                                                                                                        ->createUrl('parroquias/lists') . '&municipio=' . '" + $(this).val(), function( data ) {
                                                                                                                                                                                                             $( "select#parroquias" ).html( data );
                                                                                                                                                                                                             });' 
-                                                                                                           */ ])->label(false); ?>
+                                                                                                           */ ])->label(false);
+                                                        ?>
+                                                        
                                                         </div> 
 
                                                         <div class="col-sm-2"> 
@@ -617,18 +632,21 @@ Session["variablephp"] = tu;
                                                         $modelParametros = TipologiasZonas::find()->asArray()->all();                                         
                                                         $listaParametros = ArrayHelper::map($modelParametros,'id_tipologia_zona','descripcion'); 
                                                         ?>
+
                                                         <?= $form->field($modelAvaluo, 'id_tipologia_zona')->dropDownList($listaParametros, [ 
                                                                                                             'id'=> 'tipologiaInmuebles', 
                                                                                                             'prompt' => Yii::t('backend', 'Select'),
                                                                                                             'style' => 'width:300px;',
-                                                                                                            'value' => $_SESSION['datosHAvaluos'][0]['id_tipologia_zona'],
+                                                                                                            'value' => $_SESSION['datosUAvaluos']['id_tipologia_zona'],
                                                                                                             'readOnly' => true,
                                                                                                            /*'onchange' =>
                                                                                                                 '$.post( "' . Yii::$app->urlManager
                                                                                                                                        ->createUrl('parroquias/lists') . '&municipio=' . '" + $(this).val(), function( data ) {
                                                                                                                                                                                                             $( "select#parroquias" ).html( data );
                                                                                                                                                                                                             });' 
-                                                                                                           */ ])->label(false); ?>
+                                                                                                           */ ])->label(false);
+                                                       ?>
+                                                        
                                                         </div> 
                                                     </div>      
                                                     <div class="row" style="margin-left:20px; margin-top:20px;">
@@ -637,7 +655,8 @@ Session["variablephp"] = tu;
                                                         </div> 
                                                     
                                                         <div class="col-sm-6"> 
-                                                        <?= $form->field($modelAvaluo, 'lindero_norte')->textInput(['maxlength' => true,'style' => 'width:700px;','value' => $_SESSION['datosHAvaluos'][0]['lindero_norte'],'readOnly' => true])->label(false) ?> 
+                                                        <?= $form->field($modelAvaluo, 'lindero_norte')->textInput(['maxlength' => true,'style' => 'width:700px;','value' => $_SESSION['datosUAvaluos']['lindero_norte'],'readOnly' => true])->label(false) ?>
+                                                        
                                                         </div>
                                                      </div>
                                                      <div class="row" style="margin-left:20px; margin-top:20px;">
@@ -646,7 +665,9 @@ Session["variablephp"] = tu;
                                                         </div> 
 
                                                         <div class="col-sm-6"> 
-                                                        <?= $form->field($modelAvaluo, 'lindero_sur')->textInput(['maxlength' => true,'style' => 'width:700px;','value' => $_SESSION['datosHAvaluos'][0]['lindero_sur'],'readOnly' => true])->label(false) ?>
+                                                        <?= $form->field($modelAvaluo, 'lindero_sur')->textInput(['maxlength' => true,'style' => 'width:700px;','value' => $_SESSION['datosUAvaluos']['lindero_sur'],'readOnly' => true])->label(false)
+                                                        ?>
+                                                      
                                                         </div> 
                                                      </div>
                                                      <div class="row" style="margin-left:20px; margin-top:20px;">
@@ -655,7 +676,9 @@ Session["variablephp"] = tu;
                                                         </div> 
 
                                                         <div class="col-sm-6"> 
-                                                        <?= $form->field($modelAvaluo, 'lindero_este')->textInput(['maxlength' => true,'style' => 'width:700px;','value' => $_SESSION['datosHAvaluos'][0]['lindero_este'],'readOnly' => true])->label(false) ?>
+                                                        <?= $form->field($modelAvaluo, 'lindero_este')->textInput(['maxlength' => true,'style' => 'width:700px;','value' => $_SESSION['datosUAvaluos']['lindero_este'],'readOnly' => true])->label(false)
+                                                        ?>
+
                                                         </div> 
                                                      </div>
                                                      <div class="row" style="margin-left:20px; margin-top:20px;">
@@ -664,7 +687,8 @@ Session["variablephp"] = tu;
                                                         </div> 
 
                                                         <div class="col-sm-6"> 
-                                                        <?= $form->field($modelAvaluo, 'lindero_oeste')->textInput(['maxlength' => true,'style' => 'width:700px;','value' => $_SESSION['datosHAvaluos'][0]['lindero_oeste'],'readOnly' => true])->label(false) ?>
+                                                        <?=  $form->field($modelAvaluo, 'lindero_oeste')->textInput(['maxlength' => true,'style' => 'width:700px;','value' => $_SESSION['datosUAvaluos']['lindero_oeste'],'readOnly' => true])->label(false)
+                                                        ?>
                                                         </div> 
                                                     </div>     
                                                 
@@ -680,10 +704,12 @@ Session["variablephp"] = tu;
                                                         <?= Yii::t('backend', 'Documento de Propiedad') ?>
                                                         </div> 
                                                     
-                                                        <div class="col-sm-4"> 
-                                                        <?= $form->field($modelRegistro, 'documento_propiedad')->dropDownList([
+                                                        <div class="col-sm-4">
+                                                        <?=  $form->field($modelRegistro, 'documento_propiedad')->dropDownList([
                                                                                          'prompt' => Yii::t('backend', 'Selecciona'),
-                                                                                         '1'=>'Datos SAREN','2'=>'Documento de Registro'],['id' => 'documento_propiedad','style' => 'width:250px;','onclick'=>'documento()', 'value'=>$_SESSION['datosURegistros']['id_tipo_documento_inmueble'],'readOnly' => true])->label(false) ?>
+                                                                                         '1'=>'Datos SAREN','2'=>'Documento de Registro'],['id' => 'documento_propiedad','style' => 'width:250px;','onclick'=>'documento()', 'value'=>$_SESSION['datosURegistros']['id_tipo_documento_inmueble'],'readOnly' => true])->label(false)
+                                                        ?> 
+                                                        
                                                         </div>  
 
                                                     </div>
@@ -694,7 +720,9 @@ Session["variablephp"] = tu;
                                                         </div> 
                                                     
                                                         <div class="col-sm-2"> 
-                                                        <?= $form->field($modelRegistro, 'fecha')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value'=>$_SESSION['datosURegistros']['fecha'],'readOnly' => true])->label(false) ?>
+                                                        <?=  $form->field($modelRegistro, 'fecha')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value'=>$_SESSION['datosURegistros']['fecha'],'readOnly' => true])->label(false)
+                                                        ?>
+                                                        
                                                         </div> 
 
                                                         <div class="col-sm-2"> 
@@ -702,7 +730,9 @@ Session["variablephp"] = tu;
                                                         </div> 
 
                                                         <div class="col-sm-2"> 
-                                                        <?= $form->field($modelRegistro, 'num_reg')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value'=>$_SESSION['datosURegistros']['num_reg'],'readOnly' => true])->label(false) ?>
+                                                        <?=  $form->field($modelRegistro, 'num_reg')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value'=>$_SESSION['datosURegistros']['num_reg'],'readOnly' => true])->label(false)
+                                                        ?>
+                                                       
                                                         </div> 
 
                                                         <div class="col-sm-2"> 
@@ -710,7 +740,9 @@ Session["variablephp"] = tu;
                                                         </div> 
 
                                                         <div class="col-sm-2"> 
-                                                        <?= $form->field($modelRegistro, 'reg_mercantil')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value'=>$_SESSION['datosURegistros']['reg_mercantil'],'readOnly' => true])->label(false) ?>
+                                                        <?=  $form->field($modelRegistro, 'reg_mercantil')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value'=>$_SESSION['datosURegistros']['reg_mercantil'],'readOnly' => true])->label(false)
+                                                        ?>
+                                                        
                                                         </div> 
                                                     </div>
 
@@ -721,7 +753,9 @@ Session["variablephp"] = tu;
                                                         </div> 
                                                     
                                                         <div class="col-sm-2"> 
-                                                        <?= $form->field($modelRegistro, 'tomo')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value'=>$_SESSION['datosURegistros']['tomo'],'readOnly' => true])->label(false) ?> 
+                                                        <?=  $form->field($modelRegistro, 'tomo')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value'=>$_SESSION['datosURegistros']['tomo'],'readOnly' => true])->label(false)
+                                                        ?>
+                                                        
                                                         </div>
 
                                                         <div class="col-sm-2"> 
@@ -729,7 +763,9 @@ Session["variablephp"] = tu;
                                                         </div> 
 
                                                         <div class="col-sm-2"> 
-                                                        <?= $form->field($modelRegistro, 'protocolo')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value'=>$_SESSION['datosURegistros']['protocolo'],'readOnly' => true])->label(false) ?>
+                                                        <?=  $form->field($modelRegistro, 'protocolo')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value'=>$_SESSION['datosURegistros']['protocolo'],'readOnly' => true])->label(false)
+                                                        ?>
+                                                        
                                                         </div> 
 
                                                         <div class="col-sm-2"> 
@@ -737,7 +773,9 @@ Session["variablephp"] = tu;
                                                         </div> 
 
                                                         <div class="col-sm-2"> 
-                                                        <?= $form->field($modelRegistro, 'folio')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value'=>$_SESSION['datosURegistros']['folio'],'readOnly' => true])->label(false) ?>
+                                                        <?=  $form->field($modelRegistro, 'folio')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value'=>$_SESSION['datosURegistros']['folio'],'readOnly' => true])->label(false)
+                                                        ?>
+                                                        
                                                         </div> 
 
                                                         
@@ -749,7 +787,9 @@ Session["variablephp"] = tu;
                                                         </div> 
                                                     
                                                         <div class="col-sm-2"> 
-                                                        <?= $form->field($modelRegistro, 'nro_matriculado')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value'=>$_SESSION['datosURegistros']['nro_matricula'],'readOnly' => true])->label(false) ?> 
+                                                        <?=  $form->field($modelRegistro, 'nro_matriculado')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value'=>$_SESSION['datosURegistros']['nro_matricula'],'readOnly' => true])->label(false)
+                                                        ?>
+                                                       
                                                         </div>
 
                                                         <div class="col-sm-2"> 
@@ -757,7 +797,9 @@ Session["variablephp"] = tu;
                                                         </div> 
 
                                                         <div class="col-sm-2"> 
-                                                        <?= $form->field($modelRegistro, 'asiento_registral')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value'=>$_SESSION['datosURegistros']['asiento_registral'],'readOnly' => true])->label(false) ?>
+                                                        <?=  $form->field($modelRegistro, 'asiento_registral')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value'=>$_SESSION['datosURegistros']['asiento_registral'],'readOnly' => true])->label(false)
+                                                        ?>
+                                                        
                                                         </div> 
 
                                                                                                               

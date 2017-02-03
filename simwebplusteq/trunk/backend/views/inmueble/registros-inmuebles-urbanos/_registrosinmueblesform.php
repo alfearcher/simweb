@@ -73,7 +73,7 @@ function documento() {
 
          
     
-    if (document.getElementById("documento_propiedad").value==1) { 
+    if (document.getElementById("documento_propiedad").value==2) { 
         
         document.getElementById("id_documentos_registro").style.display='none'; 
         document.getElementById("id_documentos_saren").style.display=''; 
@@ -81,7 +81,7 @@ function documento() {
         //readOnly = false
     } 
 
-    if (document.getElementById("documento_propiedad").value==2) { 
+    if (document.getElementById("documento_propiedad").value==1) { 
         document.getElementById("id_documentos_registro").style.display=''; 
         document.getElementById("id_documentos_saren").style.display='none';
         
@@ -665,7 +665,7 @@ Session["variablephp"] = tu;
                                                         <div class="col-sm-4"> 
                                                         <?= $form->field($modelRegistro, 'documento_propiedad')->dropDownList([
                                                                                          'prompt' => Yii::t('backend', 'Selecciona'),
-                                                                                         '1'=>'Datos SAREN','2'=>'Documento de Registro'],['id' => 'documento_propiedad','style' => 'width:250px;','onclick'=>'documento()',])->label(false) ?>
+                                                                                         '2'=>'Datos SAREN','1'=>'Documento de Registro'],['id' => 'documento_propiedad','style' => 'width:250px;','onclick'=>'documento()',])->label(false) ?>
                                                         </div>
 
                                                         <div class="col-sm-2"> 
