@@ -194,9 +194,11 @@
 									if ( $pagada == true ) {
 										$result = self::actionIniciarAprobarSolicitud($postData, $formName);
 										if ( $result ) {
-											return self::actionProcesoExitoso(101);
+											return self::actionMostrarResultado(101);
+											// return self::actionProcesoExitoso(101);
 										} else {
-											return self::actionErrorOperacion(920);
+											// return self::actionErrorOperacion(920);
+											return self::actionMostrarResultado(920);
 										}
 									} else {
 										$this->redirect(['buscar-solicitud-seleccionada']);
@@ -215,9 +217,11 @@
 							if ( $pagada == true ) {
 								$result = self::actionIniciarAprobarSolicitud($postData, $formName);
 								if ( $result ) {
-									return self::actionProcesoExitoso(101);
+									return self::actionMostrarResultado(101);
+									// return self::actionProcesoExitoso(101);
 								} else {
-									return self::actionErrorOperacion(920);
+									// return self::actionErrorOperacion(920);
+									return self::actionMostrarResultado(920);
 								}
 							} else {
 								$this->redirect(['buscar-solicitud-seleccionada']);
@@ -279,9 +283,11 @@
 						if ( $modelNegacion->validate() ) {
 							$result = self::actionIniciarNegarSolicitud($postData, $formName);
 							if ( $result ) {
-								return self::actionProcesoExitoso(102);
+								//return self::actionProcesoExitoso(102);
+								return self::actionMostrarResultado(102);
 							} else {
-								return self::actionErrorOperacion(920);
+								return self::actionMostrarResultado(920);
+								//return self::actionErrorOperacion(920);
 							}
 						}
 					}
@@ -909,6 +915,22 @@
 				return self::actionQuit();
 			}
 		}
+
+
+
+		/**
+		 * Metodo que muestra el resultado del procesamiento de la solicitud.
+		 * Muestra un mensaje con un enlace para retornar al listado de solicitudes.
+		 * @param  integer $codigo codigo del resultado de procesamiento.
+		 * @return view.
+		 */
+		public function actionMostrarResultado($codigo)
+		{
+			return $this->render('/funcionario/solicitud-asignada/resultado-procesar-solicitud',[
+										'codigo' => $codigo,
+					]);
+		}
+
 
 
 
