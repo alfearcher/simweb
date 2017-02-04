@@ -81,6 +81,7 @@
 		public $rubro;
 		public $descripcion;
 		public $chkHabilitar;
+		public $sumaSustitutiva;
 
 		const SCENARIO_ESTIMADA = 'estimada';
 		const SCENARIO_DEFINITIVA = 'definitiva';
