@@ -150,6 +150,15 @@
 						        	</div>
 						        <?php } ?>
 
+
+						        <?php if ( !$sustitutivaValida ) { ?>
+									<div class="row" style="padding-left: 15px;">
+						        		<div class="well well-sm" style="width: 50%;padding-left: 10px;color: red;">
+											<h4><strong><?=Html::encode(Yii::t('frontend', 'La suma de los montos ingresados no puede sumar cero (0)')); ?></strong></h4>
+										</div>
+						        	</div>
+						        <?php } ?>
+
 <!-- INICIO RUBROS REGISTRADOS PARA EL AÑO-PERIODO -->
 								<div class="row"  style="padding-left: 10px; width: 100%;">
 									<div class="rubro-registrado">
