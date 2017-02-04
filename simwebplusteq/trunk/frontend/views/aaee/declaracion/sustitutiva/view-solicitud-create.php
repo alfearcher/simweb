@@ -157,6 +157,83 @@
 							]);?>
 					</div>
 
+					<?php
+						$sumaEstimada = 0;
+						$sumaDefinitiva = 0;
+						$sumaSustitutiva = 0;
+
+						foreach ( $dataProvider->getModels() as $model ) {
+							$sumaEstimada = $sumaEstimada + $model->estimado;
+							$sumaDefinitiva = $sumaDefinitiva + $model->reales;
+							$sumaSustitutiva = $sumaSustitutiva + $model->sustitutiva;
+						}
+					 ?>
+
+
+
+					<div class="row" style="padding: 0px;width: 100%;">
+						<div class="row" style="padding: 0px;width: 100%;">
+							<div class="col-sm-2" style="padding: 0px;width: 45%;">
+								<?=Html::tag('h3', 'Total de las declaraciones:', [
+																'style' => 'width:85%;padding:0px;',
+								]);?>
+							</div>
+						</div>
+
+						<?php if ( $lapso['tipo'] == 1 ) { ?>
+							<div class="row" style="padding: 0px;width: 100%;">
+								<div class="col-sm-2" style="padding: 0px;width: 35%;">
+									<?=Html::tag('h4', 'Total por Estimado:', [
+																	'style' => 'width:60%;padding:0px;',
+									]);?>
+								</div>
+								<div class="col-sm-2" style="padding: 0px;width: 25%;">
+									<?=Html::textInput('sumaEstimada', Yii::$app->formatter->asDecimal($sumaEstimada, 2), [
+																						'class' => 'form-control',
+																						'readOnly' => true,
+																						'style' => 'text-align: right;font-size:120%;font-weight:bold;',
+														]);
+									?>
+								</div>
+							</div>
+						<?php } ?>
+
+						<?php if ( $lapso['tipo'] == 2 ) { ?>
+							<div class="row" style="padding: 0px;width: 100%;">
+								<div class="col-sm-2" style="padding: 0px;width: 35%;">
+									<?=Html::tag('h4', 'Total por Definitiva:', [
+																	'style' => 'width:60%;padding:0px;',
+									]);?>
+								</div>
+								<div class="col-sm-2" style="padding: 0px;width: 25%;">
+									<?=Html::textInput('sumaDefinitiva', Yii::$app->formatter->asDecimal($sumaDefinitiva, 2), [
+																						'class' => 'form-control',
+																						'readOnly' => true,
+																						'style' => 'text-align: right;font-size:120%;font-weight:bold;',
+														]);
+									?>
+								</div>
+							</div>
+						<?php } ?>
+
+
+						<div class="row" style="padding: 0px;width: 100%;">
+							<div class="col-sm-2" style="padding: 0px;width: 35%;">
+								<?=Html::tag('h4', 'Total por Sustitutiva:', [
+																'style' => 'width:60%;padding:0px;',
+								]);?>
+							</div>
+							<div class="col-sm-2" style="padding: 0px;width: 25%;">
+								<?=Html::textInput('sumaSustitutiva', Yii::$app->formatter->asDecimal($sumaSustitutiva, 2), [
+																					'class' => 'form-control',
+																					'readOnly' => true,
+																					'style' => 'text-align: right;font-size:120%;font-weight:bold;',
+													]);
+								?>
+							</div>
+						</div>
+					</div>
+
 					<div class="row" style="border-top: 1px solid #ccc; padding-bottom: 10px;"></div>
 
 					<div class="row">
