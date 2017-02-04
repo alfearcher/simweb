@@ -267,6 +267,24 @@
 											<?php endforeach; ?>
 										 </div>
 
+										 <div class="row" style="width:60%;padding: 0px;float: right;">
+											<div class="col-sm-2" style="width:40%;padding:0px;">
+												<?= Html::tag('h3', 'Suma de la declaración:',[
+																			'style' => 'padding:0px;margin:0px;padding-top:-50px;',
+													])
+
+												?>
+											</div>
+											<div class="col-sm-2" style="width:40%;padding:0px;">
+				                                <?=Html::textInput('sumaSustitutiva', number_format($sumaSustitutiva,2, ',','.'),[
+		                                										'readOnly' => true,
+		                                										'class' => 'form-control',
+		                                										'style' => 'font-size:145%;font-weight:bold;text-align:right;',
+				                                	]);
+												?>
+				                            </div>
+										</div>
+
 									</div>
 								</div>
 <!-- FIN DE RUBROS REGISTRADOS PARA EL AÑO-PERIODO -->
