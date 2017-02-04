@@ -1049,5 +1049,45 @@
 
 
 
+
+	     /**
+	     * Metodo que permite sumar los montos ingresados en la declaracion sustitutiva.
+	     * @param SustitutivaBaseForm $models modelo de la clase con los datos de la declaracion
+	     * enviada.
+	     * @return double.
+	     */
+	    public function sumarDeclaracionSustitutivaIngresada($models)
+	    {
+	    	$suma = 0;
+	    	if ( count($models) > 0 ) {
+	    		foreach ( $models as $model ) {
+	    			$suma = $suma + $model['sustitutiva'];
+	    		}
+	    	}
+
+	    	return $suma;
+	    }
+
+
+
+	    /**
+	     * Metodo que permite determinar si una declaracion sustitutiva es valida por los montos
+	     * ingresados.
+	     * @param SustitutivaBaseForm $models modelo de la clase con los datos de la declaracion
+	     * enviada.
+	     * @return boolean.
+	     */
+	    public function validarSustitutiva($models)
+	    {
+	    	$result = false;
+	    	$suma = 0;
+	    	$suma = self::sumarDeclaracionSustitutivaIngresada($models);
+	    	if ( $suma > 0 ) {
+	    		return true;
+	    	} else {
+	    		return false;
+	    	}
+	    }
+
 	}
  ?>
