@@ -459,8 +459,9 @@
 							$this->redirect(['index-create']);
 						} elseif ( $postData['btn-back-form'] == 9 ) {
 
+							$sustitutivaValida = true;
 							$opciones = [
-									'back' => '/aaee/declaracion/sustitutiva/sustitutiva/index-create',
+								'back' => '/aaee/declaracion/sustitutiva/sustitutiva/index-create',
 							];
 
 							$caption = $caption . '. ' . Yii::t('frontend', 'Rubro(s) Registrado(s)') . ' ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo;
@@ -474,6 +475,7 @@
 			  																	'opciones' =>$opciones,
 			  																	'subCaption' => $subCaption,
 			  																	'errorHabilitar' => $errorHabilitar,
+			  																	'sustitutivaValida' => $sustitutivaValida,
 
 
 
@@ -486,6 +488,7 @@
 			  																	'opciones' =>$opciones,
 			  																	'subCaption' => $subCaption,
 			  																	'errorHabilitar' => $errorHabilitar,
+			  																	'sustitutivaValida' => $sustitutivaValida,
 
 
 
@@ -495,8 +498,15 @@
 					} elseif( isset($postData['btn-create']) ) {
 						if ( $postData['btn-create'] == 3 ) {
 
+							$sustitutivaValida = $searchSustitutiva->validarSustitutiva($modelMultiplex);
+							if ( !$sustitutivaValida ) { $result = false; }
+
 							if ( $result ) {
 								// Presentar preview.
+
+								$sumaSustitutiva = 0;
+								$sumaSustitutiva = $searchSustitutiva->sumarDeclaracionSustitutivaIngresada($modelMultiplex);
+
 								$opciones = [
 									'back' => '/aaee/declaracion/sustitutiva/sustitutiva/index-create',
 								];
@@ -512,6 +522,8 @@
 		  																'subCaption' => $subCaption,
 		  																'errorHabilitar' => $errorHabilitar,
 		  																'lapso' => $lapso,
+		  																'sumaSustitutiva' => $sumaSustitutiva,
+
 										]);
 								} elseif ( $lapso['tipo'] == 2 ) {
 									return $this->render('/aaee/declaracion/sustitutiva/pre-view-sustitutiva-definitiva', [
@@ -522,6 +534,7 @@
 		  																'subCaption' => $subCaption,
 		  																'errorHabilitar' => $errorHabilitar,
 		  																'lapso' => $lapso,
+		  																'sumaSustitutiva' => $sumaSustitutiva,
 										]);
 								}
 
@@ -530,8 +543,8 @@
 									'back' => '/aaee/declaracion/sustitutiva/sustitutiva/index-create',
 								];
 
-								$caption = Yii::t('frontend', 'Confirm') . ' ' . $caption . '. ' . Yii::t('frontend', 'Pre View');
-								$subCaption = $subCaption . '. ' . Yii::t('frontend', 'Categories Registers ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
+								$caption = $caption . '. ' . Yii::t('frontend', 'Rubro(s) Registrado(s)') . ' ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo;
+								$subCaption = $subCaption . '. ' . Yii::t('frontend', 'Rubro(s) Registrado(s) ' . $modelMultiplex[0]->ano_impositivo . ' - ' . $modelMultiplex[0]->exigibilidad_periodo);
 
 								if ( $lapso['tipo'] == 1 ) {
 									return $this->render('/aaee/declaracion/sustitutiva/declaracion-sustitutiva-estimada-form', [
@@ -542,6 +555,7 @@
 		  																'subCaption' => $subCaption,
 		  																'errorHabilitar' => $errorHabilitar,
 		  																'lapso' => $lapso,
+		  																'sustitutivaValida' => $sustitutivaValida,
 										]);
 								} elseif ( $lapso['tipo'] == 2 ) {
 									return $this->render('/aaee/declaracion/sustitutiva/declaracion-sustitutiva-definitiva-form', [
@@ -552,6 +566,7 @@
 		  																'subCaption' => $subCaption,
 		  																'errorHabilitar' => $errorHabilitar,
 		  																'lapso' => $lapso,
+		  																'sustitutivaValida' => $sustitutivaValida,
 										]);
 								}
 
@@ -609,6 +624,8 @@
 
 						}
 
+						$sustitutivaValida = true;
+
 						$opciones = [
 							'back' => '/aaee/declaracion/sustitutiva/sustitutiva/index-create',
 						];
@@ -626,6 +643,7 @@
 		  																	'subCaption' => $subCaption,
 		  																	'errorHabilitar' => $errorHabilitar,
 		  																	'rutaAyuda' => $rutaAyuda,
+		  																	'sustitutivaValida' => $sustitutivaValida,
 
 				  					]);
 						} elseif ( $lapso['tipo'] == 2 ) {
@@ -637,6 +655,7 @@
 		  																	'subCaption' => $subCaption,
 		  																	'errorHabilitar' => $errorHabilitar,
 		  																	'rutaAyuda' => $rutaAyuda,
+		  																	'sustitutivaValida' => $sustitutivaValida,
 		  							]);
 						}
 
