@@ -186,7 +186,7 @@
 
 
 
-					<div class="row">
+					<div class="row" style="padding:0px;margin-top: 15px;">
 						<?=Html::encode('CODIGO:') ?>
 						<?=Html::tag('h3', $cvb);?>
 					</div>
