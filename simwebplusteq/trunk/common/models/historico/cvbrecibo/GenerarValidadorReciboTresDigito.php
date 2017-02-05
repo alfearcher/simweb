@@ -269,7 +269,7 @@
 
 			$resultado = $mod + self::getLongitud(self::formatearMonto($this->_model->monto));
 
-			$this->_cvbRecibo = self::getCodigoValidador();
+			$this->_cvbRecibo = self::getCodigoValidador($resultado);
 
 			return $this->_cvbRecibo;
 		}
