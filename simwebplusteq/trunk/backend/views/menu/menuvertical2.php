@@ -27,6 +27,14 @@
 		        // Important: you need to specify url as 'controller/action',
 		        // not just as 'controller' even if default action is used.
 
+		    	['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . '&nbsp; Casos de Usos',
+        			'items' => [
+						['label' => 'Codigo Validador Bancario (3 digitos)', 'url' => ['/prueba/cvb/recibo/codigo-validador-bancario-listado/index']],
+						['label' => 'Prueba de Generación del CVB', 'url' => ['/prueba/cvb/recibo/codigo-validador-prueba/index']],
+        			]
+        		],
+
+
 		    	['label' => Icon::show('fa fa-street-view',['class' => $typeLong], $typeIcon) . '&nbsp; Funcionarios',
 		        	'items' => [
 		        			['label' => 'Crear Funcionario', 'url' => ['/funcionario/funcionario/index-create'], 'options' => ['value' => '300', 'id' => '300']],
