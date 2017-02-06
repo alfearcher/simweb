@@ -153,6 +153,19 @@
 								?>
 							</div>
 						</div>
+
+
+						<div class="col-sm-3" style="width:20%;padding-top: 15px;">
+							<div class="form-group">
+								<?= Html::a(Yii::t('frontend', 'Exportar a Excel'), Url::to(['exportar']),
+																[
+																	'class' => 'btn btn-default',
+																	'value' => 1,
+																	'style' => 'width: 100%',
+																]);
+								?>
+							</div>
+						</div>
 					</div>
 
 				</div>
