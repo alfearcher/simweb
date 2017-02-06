@@ -29,7 +29,7 @@
 
 		    	['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . '&nbsp; Casos de Usos',
         			'items' => [
-						['label' => 'Codigo Validador Bancario (3 digitos)', 'url' => ['/prueba/cvb/recibo/codigo-validador-bancario-listado/index']],
+						['label' => 'Listado Codigo Validador Bancario (3 digitos)', 'url' => ['/prueba/cvb/recibo/codigo-validador-bancario-listado/index']],
 						['label' => 'Prueba de Generación del CVB', 'url' => ['/prueba/cvb/recibo/codigo-validador-prueba/index']],
         			]
         		],
