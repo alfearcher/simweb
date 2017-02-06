@@ -18,7 +18,7 @@ $disabled = true;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_registrosinmueblesform', [
-        'disabled'=>$disabled, 'modelAvaluo'=>$modelAvaluo,'modelRegistro'=>$modelRegistro,
+        'disabled'=>$disabled, 'modelAvaluo'=>$modelAvaluo,'modelRegistro'=>$modelRegistro,'rutaAyuda' => $rutaAyuda,
         'model'=>$model, 
     ]) ?>
 

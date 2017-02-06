@@ -138,14 +138,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                    $requisitos = $documento->documentos();
 
-                   $buscar = new ParametroSolicitud($_SESSION['id']);
-                   $config = $buscar->getParametroSolicitud([
-                                'id_config_solicitud',
-                                'tipo_solicitud',
-                                'impuesto',
-                                'nivel_aprobacion'
-                          ]);
-                   $rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud'], 'backend');
+                   
                 if (!\Yii::$app->user->isGuest){                                    
                       
 
@@ -185,6 +178,14 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                    $model->getErrors(); 
               }
          }
+              $buscar = new ParametroSolicitud($_SESSION['id']);
+                   $config = $buscar->getParametroSolicitud([
+                                'id_config_solicitud',
+                                'tipo_solicitud',
+                                'impuesto',
+                                'nivel_aprobacion'
+                          ]); 
+                   $rutaAyuda = Yii::$app->ayuda->getRutaAyuda($config['tipo_solicitud'], 'backend');
               return $this->render('inscripcion-inmuebles-urbanos', ['model' => $model, 'rutaAyuda' => $rutaAyuda, ]);  
 
         }  else {

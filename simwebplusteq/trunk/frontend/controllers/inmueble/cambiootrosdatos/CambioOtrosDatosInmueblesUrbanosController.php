@@ -181,6 +181,8 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
                    $requisitos = $documento->documentos();
 
+                   
+
                 if (!\Yii::$app->user->isGuest){                                      
                       
 
@@ -216,8 +218,16 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                 
                    $model->getErrors(); 
               }
-         }
-              return $this->render('cambio-otros-datos-inmuebles', ['model' => $model, 'datos'=>$datos]);  
+         }    
+              $buscar = new ParametroSolicitud($_SESSION['id']);
+                   $config = $buscar->getParametroSolicitud([
+                                'id_config_solicitud',
+                                'tipo_solicitud',
+                                'impuesto',
+                                'nivel_aprobacion'
+                          ]); 
+                   $rutaAyuda = Yii::$app->ayuda->getRutaAyuda($config['tipo_solicitud'], 'backend');
+              return $this->render('cambio-otros-datos-inmuebles', ['model' => $model, 'datos'=>$datos,'rutaAyuda' => $rutaAyuda,]);  
 
         }  else {
                     echo "No hay Contribuyente Registrado!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['site/login'])."'>";

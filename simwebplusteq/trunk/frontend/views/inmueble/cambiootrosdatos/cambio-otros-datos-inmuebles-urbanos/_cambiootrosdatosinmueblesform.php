@@ -200,6 +200,18 @@ $this->title = Yii::t('frontend', 'Property Update');
                                 <div class="col-sm-1">
                                 <?= Html::a(Yii::t('frontend', 'Back'), ['/site/menu-vertical'], ['class' => 'btn btn-danger']) ?>
                                 </div>
+
+                                <div class="col-sm-1">
+                                    <!-- '../../common/docs/user/ayuda.pdf'  funciona -->
+                                         <?= Html::a(Yii::t('backend', 'Ayuda'), $rutaAyuda,  [
+                                                                                        'id' => 'btn-help',
+                                                                                        'class' => 'btn btn-default',
+                                                                                        'name' => 'btn-help',
+                                                                                        'target' => '_blank',
+                                                                                        'value' => 1,
+                                                                                        'style' => 'width: 100%;'
+                                            ])?>
+                                </div>
                                 <? //= Html::endForm();?> 
                                 
                     </div>

@@ -260,7 +260,8 @@ class RegistrosInmueblesUrbanosController extends Controller
                                            $documento = new DocumentoSolicitud();
                         
                                            $requisitos = $documento->documentos();
-                        
+
+                                           
                                          
                                         if (!\Yii::$app->user->isGuest){                                    
                              
@@ -302,7 +303,15 @@ class RegistrosInmueblesUrbanosController extends Controller
                    $model->getErrors(); 
               }
          }
-              return $this->render('registros-inmuebles', ['model' => $model, 'modelAvaluo' => $modelAvaluo, 'modelRegistro'=>$modelRegistro]);  
+              $buscar = new ParametroSolicitud($_SESSION['id']);
+                   $config = $buscar->getParametroSolicitud([
+                                'id_config_solicitud',
+                                'tipo_solicitud',
+                                'impuesto',
+                                'nivel_aprobacion'
+                          ]); 
+                   $rutaAyuda = Yii::$app->ayuda->getRutaAyuda($config['tipo_solicitud'], 'backend');
+              return $this->render('registros-inmuebles', ['model' => $model, 'modelAvaluo' => $modelAvaluo, 'modelRegistro'=>$modelRegistro,'rutaAyuda' => $rutaAyuda,]);  
 
         }  else {
                     echo "No hay Contribuyente Registrado!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['site/login'])."'>";
