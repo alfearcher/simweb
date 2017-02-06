@@ -430,7 +430,12 @@
 		private function sumaDigito($numero)
 		{
 			$suma = 0;
+			$arreglo = [];
 			foreach (str_split($numero) as $key => $value ) {
+				$arreglo[$key+1] = $value;
+			}
+
+			foreach ( $arreglo as $key => $value ) {
 				$suma = $suma + $value;
 			}
 
@@ -449,7 +454,12 @@
 		private function sumaProductoDigito($numero)
 		{
 			$suma = 0;
+			$arreglo = [];
 			foreach (str_split($numero) as $key => $value ) {
+				$arreglo[$key+1] = $value;
+			}
+
+			foreach ( $arreglo as $key => $value ) {
 				$suma = $suma + ( $key * $value );
 			}
 
@@ -462,7 +472,7 @@
 		/***/
 		private function getModulo($monto, $base)
 		{
-			return fmod($monto, $base);
+			return round($monto / $base);
 		}
 
 
@@ -481,7 +491,7 @@
 		/***/
 		private function getAcumulado2()
 		{
-			$this->_acumulado1 = self::sumaDigito($this->_codigoRecibo) * self::sumaProductoDigito($this->_codigoRecibo);
+			$this->_acumulado2 = self::sumaDigito($this->_codigoRecibo) * self::sumaProductoDigito($this->_codigoRecibo);
 			if ( $this->_acumulado2 < 100 ) {
 				$this->_acumulado2 = $this->_acumulado2 * 100;
 			}
