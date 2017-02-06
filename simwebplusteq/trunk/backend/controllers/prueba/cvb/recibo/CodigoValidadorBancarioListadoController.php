@@ -54,6 +54,10 @@
 	use common\mensaje\MensajeController;
 	use common\models\session\Session;
 	use backend\models\prueba\cvb\recibo\CodigoValidadorBancarioListado;
+	use moonland\phpexcel\Excel;
+	use arturoliveira\ExcelView;
+	use common\models\historico\cvbrecibo\GenerarValidadorReciboTresDigito;
+	use backend\models\recibo\deposito\Deposito;
 
 
 	session_start();
@@ -78,16 +82,51 @@
 		/***/
 		public function actionListado()
 		{
-			$search = New CodigoValidadorBancarioListado();
-			$dataProvider = $search->search(Yii::$app->request->bodyParams);
 
-// die(var_dump(Yii::$app->request->bodyParams));
+			$search = New CodigoValidadorBancarioListado();
+			$dataProvider = $search->search(Yii::$app->request->queryParams);
+			$_SESSION['request'] = Yii::$app->request->queryParams;
+
 			$caption = Yii::t('frontend', 'Casos de Usos - Recibos/Codigos Validador Bancario.');
 			return $this->render('/prueba/cvb/recibo/listado-recibo-cvb',[
 										'model' => $search,
 										'dataProvider' => $dataProvider,
 										'caption' => $caption,
 					]);
+		}
+
+
+
+
+
+		/***/
+		public function actionExportar()
+		{
+			$search = New CodigoValidadorBancarioListado();
+			$dataProvider = $search->search($_SESSION['request']);
+
+			Excel::widget([
+    			'models' => $dataProvider->getModels(),
+    			'format' => 'Excel2007',
+                'properties' => [
+
+                ],
+    			'mode' => 'export', //default value as 'export'
+    			'columns' => [
+
+    				'recibo',
+    				'fecha',
+    				'monto',
+    				[
+    					'attribute' => 'CVB',
+    					'value' => function($model) {
+    						$generar = New GenerarValidadorReciboTresDigito($model);
+    						$cvb = $generar->getCodigoValidadorRecibo();
+    						return $cvb;
+    					},
+    				],
+    			]
+			]);
 		}
 
 
