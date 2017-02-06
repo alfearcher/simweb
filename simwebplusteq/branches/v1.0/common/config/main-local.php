@@ -4,8 +4,8 @@ return [
 	'components' => [
 		'db'        => [
 			'class'    => 'yii\db\Connection',
-			'dsn' => 'mysql:host=192.168.1.15;dbname=sim_teq',
-			//'dsn' => 'mysql:host=192.168.30.7;dbname=sim_teq',
+			//'dsn' => 'mysql:host=192.168.1.15;dbname=sim_teq',
+			'dsn' => 'mysql:host=192.168.30.7;dbname=sim_teq',
 			'username' => 'adminyii',
 			//'password' => 'adminyii2015',
 			'password' => 'C4C1QU3-105T3QU35-2017',
