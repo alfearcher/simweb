@@ -275,10 +275,19 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
 
                    $requisitos = $documento->documentos();
 
+                   $buscar = new ParametroSolicitud($_SESSION['id']);
+                   $config = $buscar->getParametroSolicitud([
+                                'id_config_solicitud',
+                                'tipo_solicitud',
+                                'impuesto',
+                                'nivel_aprobacion'
+                          ]);
+                   $rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud'], 'backend');
+
                 if (!\Yii::$app->user->isGuest){                                      
                       
 
-
+                     
                      // foreach($datos as $key => $value) {
                      
                      //     $value; 
@@ -330,7 +339,7 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
                    $model->getErrors(); 
               }
          }
-              return $this->render('cambio-de-numero-catastral-inmuebles', ['model' => $model, 'datos'=>$datos, 'modelAvaluo' => $modelAvaluo, 'modelRegistro'=>$modelRegistro]);  
+              return $this->render('cambio-de-numero-catastral-inmuebles', ['model' => $model, 'datos'=>$datos, 'modelAvaluo' => $modelAvaluo, 'modelRegistro'=>$modelRegistro, 'rutaAyuda' => $rutaAyuda,]);  
 
         }  else {
                     echo "No hay Contribuyente Registrado!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['site/login'])."'>";
