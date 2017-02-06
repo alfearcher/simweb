@@ -46,6 +46,7 @@
  	use backend\models\recibo\deposito\Deposito;
  	use yii\data\ActiveDataProvider;
  	use yii\base\Model;
+ 	use yii\data\Pagination;
  	use common\models\historico\cvbrecibo\GenerarValidadorReciboTresDigito;
 
 
@@ -60,11 +61,26 @@
 		/***/
 		public function search($params)
 		{
-			$query = Deposito::find();
+			$recibos = [
+				69831,
+				38753,
+				84557,
+				142,
+				9,
+				9154,
+				62218,
+				48684,
+				180,
+				22846,
+				23719,
+			];
+
+			$query = Deposito::find()->where(['IN', 'recibo', $recibos]);
+
 			$dataProvider = New ActiveDataProvider([
 				'query' => $query,
 				'pagination' => [
-					'pageSize' => 30,
+					'pageSize' => 50,
 				],
 				'sort' => [
 					'defaultOrder' => [
@@ -75,9 +91,6 @@
 			]);
 
 			$this->load($params);
-			$query->limit(10)
-				  ->filterWhere(['IN', 'estatus' , [1]])
-				  ->andFilterWhere(['=', 'id_contribuyente', 0]);
 
 			return $dataProvider;
 		}
