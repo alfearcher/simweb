@@ -127,7 +127,7 @@
     				'fecha',
     				'monto',
     				[
-    					'attribute' => 'CVB',
+    					'attribute' => 'Codigo Validador Bancario',
     					'value' => function($model) {
     						$generar = New GenerarValidadorReciboTresDigito($model);
     						$cvb = $generar->getCodigoValidadorRecibo();
