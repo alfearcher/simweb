@@ -87,6 +87,15 @@
 			$dataProvider = $search->search(Yii::$app->request->queryParams);
 			$_SESSION['request'] = Yii::$app->request->queryParams;
 
+			$request = Yii::$app->request;
+			$postData = $request->post();
+
+			if ( isset($postData['btn-quit']) ) {
+				if ( $postData['btn-quit'] == 1 ) {
+					$this->redirect(['quit']);
+				}
+			}
+
 			$caption = Yii::t('frontend', 'Casos de Usos - Recibos/Codigos Validador Bancario.');
 			return $this->render('/prueba/cvb/recibo/listado-recibo-cvb',[
 										'model' => $search,
@@ -142,7 +151,7 @@
 		{
 			$varSession = self::actionGetListaSessions();
 			self::actionAnularSession($varSession);
-			return $this->render('/menu/menu-vertical');
+			return $this->render('/menu/menuvertical2');
 		}
 
 
