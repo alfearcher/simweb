@@ -52,6 +52,8 @@
 	use backend\models\aaee\licencia\numerolicencia\NumeroLicenciaSearch;
 
 
+
+
 	/**
 	 * Clase que gestiona la generacion del numero de licencia.
 	 */
@@ -60,7 +62,8 @@
 
 		private $_id_contribuyente;
 		private $_nro_licencia;
-
+		private $_tipoLicencia = '';
+		private $_observacion = '';
 		private $_conexion;
 		private $_conn;
 		private $_transaccion;
@@ -74,10 +77,12 @@
 		 * @param long $idContribuyente identificador del contribuyente.
 		 * Valor unico dentro de la entidad correspondiente.
 		 */
-		public function __construct($idContribuyente)
+		public function __construct($idContribuyente, $conexion, $conn)
 		{
 			$this->_id_contribuyente = $idContribuyente;
 			$this->_nro_licencia = 0;
+			$this->_conexion = $conexion;
+			$this->_conn = $conn;
 
 		}
 
@@ -122,29 +127,18 @@
 		 */
 		public function determinarNroLicencia()
 		{
+			$this->_nro_licencia = '';
 			$findModel = self::getLicenciaModel();
 			if ( ContribuyenteBase::getTipoNaturalezaDescripcionSegunID($this->_id_contribuyente) == 'JURIDICO' ) {
 				$contribuyente = ContribuyenteBase::findOne($this->_id_contribuyente);
 
-				$nro = $contribuyente->id_sim;
-				if ( strlen(trim($nro)) > 1 ) {
-					$this->_nro_licencia = $nro;
-				} else {
-					$model = $findModel->andWhere('ano_impositivo =:ano_impositivo',
-					 								[':ano_impositivo' => date('Y')])
-									   ->orderBy([
-									   		'status_licencia' => SORT_ASC,
-									   	])
-									   ->limit(1)
-									   ->one();
-
-					if ( count($model) > 0 ) {
-						// Numero existente en la entidad "licencia"
-						$this->_nro_licencia = $model->serial_licencia;
-					}
-				}
+				$this->_nro_licencia = $contribuyente->id_sim;
+				// if ( strlen(trim($nro)) > 1 ) {
+				// 	$this->_nro_licencia = $nro;
+				// }
 			}
 		}
+
 
 
 
@@ -157,6 +151,63 @@
 			return $this->_nro_licencia;
 		}
 
+
+
+		/**
+		 * Metodo que setea el numero de licencia
+		 * @param strieng $nroLicencia numero de licencia.
+		 */
+		public function setLicencia($nroLicencia)
+		{
+			$this->_nro_licencia = $nroLicencia;
+		}
+
+
+
+		/**
+		 * Metodo que setea el tipo de licencia.
+		 * @param string $tipo tipo de licencia "NUEVA" o "RENOVADA"
+		 */
+		public function setTipoLicencia($tipo)
+		{
+			$this->_tipoLicencia = $tipo;
+		}
+
+
+
+
+		/**
+		 * Metodo que retorna el tipo de licencia a guardar.
+		 * @return string.
+		 */
+		public function getTipoLicencia()
+		{
+			return $this->_tipoLicencia;
+		}
+
+
+
+
+		/**
+		 * Metodo que setea el contenido de la observacion que va en el registro.
+		 * @param string $observacion nota a colocar en la licencia.
+		 */
+		public function setObservacion($observacion)
+		{
+			$this->_observacion = $observacion;
+		}
+
+
+
+
+		/**
+		 * Metodo que retorna el contenido de la observacion.
+		 * @return [type] [description]
+		 */
+		public function getObservacion()
+		{
+			return $this->_observacion;
+		}
 
 
 
@@ -214,7 +265,7 @@
 		 * Metodo que inserta un regsitro en la entidad "licencias".
 		 * @return boolean retorna true si inserta satisfactoriamente, false en caso contrario.
 		 */
-		private function guardar()
+		public function guardar()
 		{
 			$result = false;
 			$model = New Licencia();
@@ -225,24 +276,28 @@
 				$model->id_contribuyente = $this->_id_contribuyente;
 				$model->ano_impositivo = date('Y');
 
-				$model->id_impuesto = swlf::getIdentificador(date('Y'));
+				$model->id_impuesto = self::getIdImpuesto(date('Y'));
 
 				if ( $model->id_impuesto > 0 ) {
 					$model->serial_licencia = self::determinarSerialLicencia();
 					$model->fecha_emision = date('Y-m-d');
-					$model->fecha_vcto = '';
+					$model->fecha_vcto = self::getFechaVencimiento();
 					$model->status_licencia = 0;
 					$model->licores = 0;
-					$model->observacion = '';
-					$model->licores2 = '';
+					$model->observacion = self::getObservacion();
+					$model->licores2 = 0;
+					$model->uso_licencia = 0;
 					$model->serial_preimpreso = '';
+					$model->tipo_licencia = self::getTipoLicencia();
+					$model->nro_licencia = self::getLicencia();
 
-					$result = self::inactivarRegisro();
+					$result = self::inactivarRegistro();
 					if ( $result ) {
-						$result = $this->_conexion->guardarRegistro($this->_conn, $tabla, $model->attribute);
+						$result = $this->_conexion->guardarRegistro($this->_conn, $tabla, $model->attributes);
 					}
 
 				}
+
 			} catch ( ErrorException $e ) {
 				$result = false;
 				Yii::warning('No se pudo gerera el registro para el nuemro de licencia');
@@ -259,7 +314,7 @@
 		 * para un contribuyente especifico.
 		 * @return boolean
 		 */
-		private function inactivarRegisro()
+		public function inactivarRegistro()
 		{
 			$result = false;
 			$model = New Licencia();
@@ -333,6 +388,19 @@
 			$this->_conn->close();
 
 			return $result;
+		}
+
+
+
+
+		/***/
+		public function getCorrelativoLicencia()
+		{
+			$correlativo = 0;
+			$searchNumero = New NumeroLicenciaSearch();
+			$searchNumero->init('db');
+			$correlativo = $searchNumero->getGenerarNumeroLicencia();
+			return $correlativo;
 		}
 
 

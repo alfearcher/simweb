@@ -139,7 +139,7 @@
 		 * @return Long Retorna el numero (licencia) generado por la operacion de insercion.
 		 * si no logra insertar retorna cero (0).
 		 */
-		public function getGenerarNumeroLicencia()
+		public function getGenerarNumeroLicencia($observacion = '')
 		{
 			$model = New NumeroLicencia();
 
@@ -147,7 +147,7 @@
 			$model->usuario = $this->usuario;
 			$model->fecha_hora = date('Y-m-d H:i:s');
 			$model->token = md5(uniqid());
-			$model->observacion = 'SIMWebPLUS';
+			$model->observacion =  ( trim($observacion) !== '' ) ? $observacion : 'SIMWebPLUS';
 
 			$this->_conn->open();
 			$this->_transaccion = $this->_conn->beginTransaction();
