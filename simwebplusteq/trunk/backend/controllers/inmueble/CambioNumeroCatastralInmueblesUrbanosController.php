@@ -275,18 +275,11 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
 
                    $requisitos = $documento->documentos();
 
-                   $buscar = new ParametroSolicitud($_SESSION['id']);
-                   $config = $buscar->getParametroSolicitud([
-                                'id_config_solicitud',
-                                'tipo_solicitud',
-                                'impuesto',
-                                'nivel_aprobacion'
-                          ]);
-                   $rutaAyuda = Yii::$app->ayuda->getRutaAyuda($conf['tipo_solicitud'], 'backend');
+
 
                 if (!\Yii::$app->user->isGuest){                                      
                       
-
+                   
                      
                      // foreach($datos as $key => $value) {
                      
@@ -338,7 +331,15 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
                 
                    $model->getErrors(); 
               }
-         }
+         }    
+              $buscar = new ParametroSolicitud($_SESSION['id']);
+                   $config = $buscar->getParametroSolicitud([
+                                'id_config_solicitud',
+                                'tipo_solicitud',
+                                'impuesto',
+                                'nivel_aprobacion'
+                          ]); 
+                   $rutaAyuda = Yii::$app->ayuda->getRutaAyuda($config['tipo_solicitud'], 'backend');
               return $this->render('cambio-de-numero-catastral-inmuebles', ['model' => $model, 'datos'=>$datos, 'modelAvaluo' => $modelAvaluo, 'modelRegistro'=>$modelRegistro, 'rutaAyuda' => $rutaAyuda,]);  
 
         }  else {
