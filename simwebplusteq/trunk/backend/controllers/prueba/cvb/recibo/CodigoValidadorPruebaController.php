@@ -100,7 +100,6 @@
 				return ActiveForm::validate($model);
 	      	}
 
-// die(var_dump($postData));
 	      	$cvb = '';
 	      	if ( $model->load($postData) ){
 
@@ -153,7 +152,7 @@
 		{
 			$varSession = self::actionGetListaSessions();
 			self::actionAnularSession($varSession);
-			return $this->render('/menu/menu-vertical');
+			return $this->render('/menu/menuvertical2');
 		}
 
 
