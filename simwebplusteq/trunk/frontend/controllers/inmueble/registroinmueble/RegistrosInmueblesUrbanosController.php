@@ -164,6 +164,8 @@ class RegistrosInmueblesUrbanosController extends Controller
                 $añoUltimoAvaluo = explode('-', $value['fecha']);
                 $_SESSION['anioAvaluo'] = $añoUltimoAvaluo;
                 $_SESSION['datosUAvaluos'] = $value; 
+
+                
                 
           } else {
                 $value = new AvaluoCatastralForm();
