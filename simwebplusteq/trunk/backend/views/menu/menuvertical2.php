@@ -66,11 +66,18 @@
 		        		['label' => 'Solicitudes de Declaracion', 'url' => ['/aaee/listado/listado-solicitud-declaracion/index']],
 		        	],
 		        ],
+
 		        ['label' => Icon::show('fa fa-th-large',['class' => $typeLong], $typeIcon) . '&nbsp; Atención de Solicitudes Especiales',
 		        	'items' => [
-		        		['label' => 'Licencias', 'url' => ['/solicitud/especial/aaee/licencia/procesar-licencia/index']],
+		        		['label' => Icon::show('fa fa-check-square', ['class' => $typeLong], $typeIcon) . '&nbsp; Licencias',
+		        			'items' => [
+		        				['label' => 'Asignar Numero', 'url' => ['/aaee/licencia/asignar-numero-licencia/index']],
+		        				['label' => 'Aprobar Solicitudes Masivas', 'url' => ['/solicitud/especial/aaee/licencia/procesar-licencia/index']],
+		        			],
+		        		],
 		        	],
 		        ],
+
 		    	// &nbsp; espacio en blanco html
 		        ['label' => Icon::show('fa fa-book',['class' => $typeLong], $typeIcon) . '&nbsp; Registros Maestros',
 		        	'items' => [
