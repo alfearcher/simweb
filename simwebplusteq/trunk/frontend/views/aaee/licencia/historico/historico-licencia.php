@@ -140,7 +140,7 @@
 															'style' => 'font-weight:bold;'
 														]);
 									?>
-									<p style="font-size: 120%;">Las solicitudes de modificación y actualización de los datos de la presente licencia, se harán efectivos cuando dichas solicitudes sean aprobadas por el ente emisor de dicha licencia.</p>
+									<p style="font-size: 120%;">Las solicitudes de modificación y actualización de los datos de la presente licencia, se harán efectivos cuando dichas solicitudes sean aprobadas por el ente emisor de misma.</p>
 								</div>
 							</div>
 						</div>
