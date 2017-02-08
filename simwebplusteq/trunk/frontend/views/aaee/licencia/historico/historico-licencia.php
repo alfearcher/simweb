@@ -90,8 +90,8 @@
         	<div class="container-fluid">
         		<div class="col-sm-12">
 
-					<div class="row">
-						<div class="col-sm-5" style="padding: 0px; width: 45%;">
+					<div class="row" style="padding: 0px;width:100%;">
+						<div class="col-sm-5" style="padding: 0px; width: 40%;">
 							<div class="row" style="padding-left: 0px; width: 100%;">
 				        		<h4><?= Html::encode(Yii::t('frontend', 'Informacion Historico')) ?></h4>
 								<?= DetailView::widget([
@@ -132,20 +132,16 @@
 							</div>
 						</div>
 
-						<div class="col-sm-3" style="width: 20%;padding: 0px; padding-left: 25px;margin-left:60px;padding-top: 35px;">
-							<div class="form-group">
-								<?= Html::a(Yii::t('frontend', Yii::t('frontend', 'Descargar Licencia')),
-																				['generar-licencia-pdf', 'id' => $model->nro_control],
-																			  	[
-																					'id' => 'btn-generar-pdf',
-																					'class' => 'btn btn-success',
-																					'value' => 4,
-																					'style' => 'width: 100%;',
-																					'name' => 'btn-generar-pdf',
-																					'target' => '_blink',
-
-																			  	])
-								?>
+						<div class="row" style="padding: 0px;margin: 0px;width: 100%;">
+							<div class="col-sm-5" style="width:100%;">
+								<div class="well well-sm">
+									<?=Html::tag('h4', Yii::t('backend', 'IMPORTANTE'),
+														[
+															'style' => 'font-weight:bold;'
+														]);
+									?>
+									<p style="font-size: 120%;">Las solicitudes de modificación y actualización de los datos de la presente licencia, se harán efectivos cuando dichas solicitudes sean aprobadas por el ente emisor de dicha licencia.</p>
+								</div>
 							</div>
 						</div>
 
@@ -389,24 +385,39 @@
 
 					<div class="row" style="width: 100%;padding: 0px;margin-top: 20px;">
 
-							<div class="col-sm-3" style="width: 25%;padding: 0px; padding-left: 25px;margin-left:30px;">
-								<div class="form-group">
-									<?= Html::submitButton(Yii::t('frontend', 'Quit'),
-																		  	[
-																				'id' => 'btn-quit',
-																				'class' => 'btn btn-danger',
-																				'value' => 1,
-																				'style' => 'width: 100%;',
-																				'name' => 'btn-quit',
+						<div class="col-sm-3" style="width:30%;padding: 0px;">
+							<div class="form-group">
+								<?= Html::a(Yii::t('frontend', Yii::t('frontend', 'Descargar Licencia')),
+																				['generar-licencia-pdf', 'id' => $model->nro_control],
+																			  	[
+																					'id' => 'btn-generar-pdf',
+																					'class' => 'btn btn-success',
+																					'value' => 4,
+																					'style' => 'width: 100%;',
+																					'name' => 'btn-generar-pdf',
+																					'target' => '_blink',
 
-																		  	])
-									?>
-								</div>
+																			  	])
+								?>
 							</div>
-
 						</div>
-					</div>
 
+						<div class="col-sm-3" style="width: 25%;padding: 0px; padding-left: 25px;margin-left:30px;">
+							<div class="form-group">
+								<?= Html::submitButton(Yii::t('frontend', 'Quit'),
+																	  	[
+																			'id' => 'btn-quit',
+																			'class' => 'btn btn-danger',
+																			'value' => 1,
+																			'style' => 'width: 100%;',
+																			'name' => 'btn-quit',
+
+																	  	])
+								?>
+							</div>
+						</div>
+
+					</div>
 				</div>  <!-- Fin de col-sm-12 -->
 			</div>  	<!-- Fin de container-fluid -->
 
