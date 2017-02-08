@@ -247,7 +247,7 @@
 				if ( isset($postData['btn-quit']) ) {
 					if ( $postData['btn-quit'] == 1 ) {
 						self::actionAnularSession(['actualizado']);
-						$this->redirect(['quit']);
+						return $this->redirect(['quit']);
 					}
 				} elseif ( isset($postData['btn-asignar-otro']) ) {
 					if ( $postData['btn-asignar-otro'] == 3 ) {
