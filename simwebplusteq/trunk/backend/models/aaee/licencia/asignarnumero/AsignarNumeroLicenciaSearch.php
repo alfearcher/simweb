@@ -52,6 +52,7 @@
 	use yii\helpers\ArrayHelper;
 	use backend\models\aaee\licencia\numerolicencia\NumeroLicenciaSearch;
 	use common\conexion\ConexionController;
+	use backend\models\aaee\historico\licencia\HistoricoLicencia;
 
 
 
@@ -232,15 +233,84 @@
 		 */
 		private function armarNumeroLicencia()
 		{
-			$this->_nroLicencia = 0;
-			$numeroSearch = New NumeroLicenciaSearch('db');
-			$numeroSearch->getGenerarNumeroLicencia();
-			$this->_correlativo = $numeroSearch->getLicencia();
+			$intentos = 10;
+			$ct = 0;
+			$this->_nroLicencia = '';
+			$this->_correlativo = 0;
 
-			if ( $this->_correlativo > 0 ) {
-				$this->_nroLicencia = $this->_correlativo . '-' . date('Y');
+			while ( $ct <= $intentos ) {
+				$this->_nroLicencia = '';
+				$this->_correlativo = 0;
+
+				$numeroSearch = New NumeroLicenciaSearch('db');
+
+				// Genera el correlativo.
+				$numeroSearch->getGenerarNumeroLicencia();
+				$this->_correlativo = $numeroSearch->getLicencia();
+
+				if ( $this->_correlativo > 0 ) {
+					$nroGenerado = $this->_correlativo . '-' . date('Y');
+					if ( !self::existeNroLicenciaArmada($nroGenerado) ) {
+						$this->_nroLicencia = $this->_correlativo . '-' . date('Y');
+						break;
+					} else {
+						$ct++;
+					}
+				} else {
+					$ct++;
+				}
 			}
+
 		}
+
+
+
+
+		/**
+		 * Metodo que permite determinar si un numero de licencia especifico ya esta asignado
+		 * a un contribuyente.
+		 * @param  string $nroLicencia numero de licencia generado.
+		 * @return boolean
+		 */
+		private function existeNroLicenciaArmada($nroLicencia)
+		{
+			$result = self::findLicenciaEnContribuyente($nroLicencia);
+			if ( $result ) { return $result; }
+
+			$result = self::findLicenciaEnHistorico($nroLicencia);
+			if ( $result ) { return $result; }
+
+			return $result;
+		}
+
+
+
+		/**
+		 * Metodo que busca el numero de licencia armado en la entidad "historico-licencias-sw"
+		 * @param string $nroLicencia numero de licencia armado.
+		 * @return boolean.
+		 */
+		private function findLicenciaEnHistorico($nroLicencia)
+		{
+			return $result = HistoricoLicencia::find()->where('licencia =:licencia',
+			 													[':licencia' => trim($nroLicencia)])
+											          ->exists();
+		}
+
+
+
+		/**
+		 * Metodo que busca el numero de licencia armado en la entidad "contribuyentes"
+		 * @param string $nroLicencia numero de licencia armado.
+		 * @return boolean.
+		 */
+		private function findLicenciaEnContribuyente($nroLicencia)
+		{
+			return $result = ContribuyenteBase::find()->where('id_sim =:id_sim',
+			 													[':id_sim' => trim($nroLicencia)])
+											          ->exists();
+		}
+
 
 
 
