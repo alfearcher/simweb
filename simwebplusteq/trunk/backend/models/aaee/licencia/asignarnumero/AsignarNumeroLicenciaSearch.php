@@ -53,6 +53,7 @@
 	use backend\models\aaee\licencia\numerolicencia\NumeroLicenciaSearch;
 	use common\conexion\ConexionController;
 	use backend\models\aaee\historico\licencia\HistoricoLicencia;
+	use backend\models\aaee\licencia\Licencia;
 
 
 
@@ -280,6 +281,9 @@
 			$result = self::findLicenciaEnHistorico($nroLicencia);
 			if ( $result ) { return $result; }
 
+			$result = self::findLicenciaEnLicencia($nroLicencia);
+			if ( $result ) { return $result; }
+
 			return $result;
 		}
 
@@ -311,6 +315,20 @@
 											          ->exists();
 		}
 
+
+
+
+		/**
+		 * Metodo que busca el numero de licencia armado en la entidad "licencias"
+		 * @param string $nroLicencia numero de licencia armado.
+		 * @return boolean.
+		 */
+		private function findLicenciaEnLicencia($nroLicencia)
+		{
+			return $result = Licencia::find()->where('nro_licencia =:nro_licencia',
+			 											[':nro_licencia' => trim($nroLicencia)])
+											 ->exists();
+		}
 
 
 
