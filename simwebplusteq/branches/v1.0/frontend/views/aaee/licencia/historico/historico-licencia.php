@@ -90,8 +90,8 @@
         	<div class="container-fluid">
         		<div class="col-sm-12">
 
-					<div class="row">
-						<div class="col-sm-5" style="padding: 0px; width: 45%;">
+					<div class="row" style="padding: 0px;width:100%;">
+						<div class="col-sm-5" style="padding: 0px; width: 40%;">
 							<div class="row" style="padding-left: 0px; width: 100%;">
 				        		<h4><?= Html::encode(Yii::t('frontend', 'Informacion Historico')) ?></h4>
 								<?= DetailView::widget([
@@ -132,20 +132,41 @@
 							</div>
 						</div>
 
-						<div class="col-sm-3" style="width: 20%;padding: 0px; padding-left: 25px;margin-left:60px;padding-top: 35px;">
-							<div class="form-group">
-								<?= Html::a(Yii::t('frontend', Yii::t('frontend', 'Descargar Licencia')),
-																				['generar-licencia-pdf', 'id' => $model->nro_control],
-																			  	[
-																					'id' => 'btn-generar-pdf',
-																					'class' => 'btn btn-success',
-																					'value' => 4,
-																					'style' => 'width: 100%;',
-																					'name' => 'btn-generar-pdf',
-																					'target' => '_blink',
+						<div class="row" style="padding: 0px;margin: 0px;width: 100%;">
+							<div class="col-sm-5" style="width:100%;">
+								<div class="well well-sm">
+									<?=Html::tag('h4', Yii::t('backend', 'IMPORTANTE'),
+														[
+															'style' => 'font-weight:bold;'
+														]);
+									?>
+									<?=Html::tag('p', Yii::t('backend', 'Las actualizaciones y modificaciones de los datos de las licencias solo se verán reflejados cuando se cumplan las condiciones siguientes:'),
+														[
+															'style' => 'font-size: 120%;'
+														]);
+									?>
+									<?=Html::tag('li', Yii::t('backend', 'Dichas solicitudes hayan sido aprobadas por el ente emisor de la licencia.'),
+														[
+															'style' => 'font-size: 120%;'
+														]);
+									?>
+									<?=Html::tag('li', Yii::t('backend', 'Una vez que el contribuyente haya realizado una solicitud de emision de licencia y la misma sea aprobada por el ente emisor.'),
+														[
+															'style' => 'font-size: 120%;'
+														]);
+									?>
+									<?=Html::tag('h5', Yii::t('backend', 'Sugerencia'),
+														[
+															'style' => 'font-weight:bold;'
+														]);
+									?>
+									<?=Html::tag('li', Yii::t('backend', 'Realice todas las solicitudes de actualización y modificación sobre los datos de la licencia que consideré pertinente y espere a que las mismas sean aprobadas para luego solicitar la emision de una licencia.'),
+														[
+															'style' => 'font-size: 120%;'
+														]);
+									?>
 
-																			  	])
-								?>
+								</div>
 							</div>
 						</div>
 
@@ -387,26 +408,66 @@
 					<div class="row" style="border-bottom: 2px solid #ccc;padding: 0px;width: 103%;margin-left: -30px;">
 					</div>
 
-					<div class="row" style="width: 100%;padding: 0px;margin-top: 20px;">
+					<?php
+						$disabled = '';
+						$target = '_blank';
 
-							<div class="col-sm-3" style="width: 25%;padding: 0px; padding-left: 25px;margin-left:30px;">
-								<div class="form-group">
-									<?= Html::submitButton(Yii::t('frontend', 'Quit'),
-																		  	[
-																				'id' => 'btn-quit',
-																				'class' => 'btn btn-danger',
-																				'value' => 1,
-																				'style' => 'width: 100%;',
-																				'name' => 'btn-quit',
+						if ( $bloquearDescarga ) {
+							$disabled = ' disabled';
+							$target = '';
+						}
+					 ?>
 
-																		  	])
+					<?php if ( $bloquearDescarga ) { ?>
+						<div class="row" style="padding: 0px;margin: 0px;width: 100%;margin-top: 20px;">
+							<div class="col-sm-5" style="width:70%;">
+								<div class="well well-sm">
+									<?=Html::tag('h4', Yii::t('backend', 'AVISO. NO SE PODRA DESCARGAR LA LICENCIA.'),
+														[
+															'style' => 'color:red;font-weight:bold;'
+														]);
 									?>
+									<p style="font-size: 120%;"><?=Html::encode($mensajeBloqueo); ?></p>
 								</div>
 							</div>
-
 						</div>
-					</div>
+					<?php } ?>
 
+					<div class="row" style="width: 100%;padding: 0px;margin-top: 20px;">
+
+						<div class="col-sm-3" style="width:30%;padding: 0px;">
+							<div class="form-group">
+								<?= Html::a(Yii::t('frontend', Yii::t('frontend', 'Descargar Licencia')),
+																				['generar-licencia-pdf', 'id' => $model->nro_control],
+																			  	[
+																					'id' => 'btn-generar-pdf',
+																					'class' => 'btn btn-success' . $disabled,
+																					'value' => 4,
+																					'style' => 'width: 100%;',
+																					'name' => 'btn-generar-pdf',
+																					'target' => $target,
+
+																			  	])
+								?>
+							</div>
+						</div>
+
+						<div class="col-sm-3" style="width: 25%;padding: 0px; padding-left: 25px;margin-left:30px;">
+							<div class="form-group">
+								<?= Html::submitButton(Yii::t('frontend', 'Quit'),
+																	  	[
+																			'id' => 'btn-quit',
+																			'class' => 'btn btn-danger',
+																			'value' => 1,
+																			'style' => 'width: 100%;',
+																			'name' => 'btn-quit',
+
+																	  	])
+								?>
+							</div>
+						</div>
+
+					</div>
 				</div>  <!-- Fin de col-sm-12 -->
 			</div>  	<!-- Fin de container-fluid -->
 
