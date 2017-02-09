@@ -5,38 +5,38 @@
  */
 
  /**
- * 
- *  > This library is free software; you can redistribute it and/or modify it under 
- *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free 
- *  > Software Foundation; either version 2 of the Licence, or (at your opinion) 
+ *
+ *  > This library is free software; you can redistribute it and/or modify it under
+ *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free
+ *  > Software Foundation; either version 2 of the Licence, or (at your opinion)
  *  > any later version.
- *  > 
- *  > This library is distributed in the hope that it will be usefull, 
- *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability 
- *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence 
+ *  >
+ *  > This library is distributed in the hope that it will be usefull,
+ *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability
+ *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence
  *  > for more details.
- *  > 
+ *  >
  *  > See [LICENSE.TXT](../../LICENSE.TXT) file for more information.
  *
  */
 
- /**    
+ /**
  *  @file SiteController.php
- *  
+ *
  *  @author Alvaro Jose Fernandez Archer
- * 
+ *
  *  @date 19-05-2015
- * 
+ *
  *  @class SiteController
  *  @brief Clase que permite controlar el login y el control de acceso a los usuarios.
- * 
- *  
- * 
- *  
- *  
+ *
+ *
+ *
+ *
+ *
  *  @property
  *
- *  
+ *
  *  @method
  *  behaviors
  *  actions
@@ -45,11 +45,11 @@
  *  actionIndex3
  *  actionLogin
  *  actionLogout
- *  
- *  
- *  
+ *
+ *
+ *
  *  @inherits
- *  
+ *
  */
 namespace backend\controllers;
 
@@ -78,7 +78,7 @@ use yii\helpers\Url;
 class SiteController extends Controller
 {
 
-  public $layout = 'layout-login'; 
+  public $layout = 'layout-login';
 
 
 // ------------CONTROL DE ACCESO----------------
@@ -158,7 +158,7 @@ class SiteController extends Controller
             ],
         ];
     }
-	
+
 // ------------VISTAS------------
 //
 //
@@ -167,7 +167,7 @@ class SiteController extends Controller
     {
         return $this->render('index');
     }
-// index del usuario	
+// index del usuario
     public function actionIndex2()
     {
         return $this->render('index2');
@@ -180,13 +180,13 @@ class SiteController extends Controller
 
 
 // --------LOGIN---------
-// 
+//
 // acceder a las cuentas de usuarios
-// BD preguntas secretas ---> tablas: preguntaseguridad, preguntasusuarios 
+// BD preguntas secretas ---> tablas: preguntaseguridad, preguntasusuarios
 
      public function actionLogin()
      {
-         if (!\Yii::$app->user->isGuest) 
+         if (!\Yii::$app->user->isGuest)
   	     {
                if (User::isUserAdmin(Yii::$app->user->identity->id_funcionario))
                {
@@ -200,17 +200,17 @@ class SiteController extends Controller
                {
                    return $this->redirect(["site/index2"]);
                }
-         }	   
-	   
-	    
+         }
+
+
           $model = new LoginForm();
-          if ($model->load(Yii::$app->request->post()) && $model->login()) 
+          if ($model->load(Yii::$app->request->post()) && $model->login())
           {
                 if (User::isUserAdmin(Yii::$app->user->identity->id_funcionario))
                 {
                     //return $this->redirect(["site/index3"]);
                       //return $this->redirect(["@backend/views/menu/vertical"]);
-      
+
                 }
   	              if (User::isUserFuncionario(Yii::$app->user->identity->id_funcionario))
                   {
@@ -218,15 +218,15 @@ class SiteController extends Controller
 
                   //MenuController::actionVertical();
 
-                    return $this->redirect(["/menu/vertical"]);                  
-                    
+                    return $this->redirect(["/menu/vertical"]);
+
                   }
                   else
                   {
                     return $this->redirect(["site/index2"]);
                   }
-          } 
-		      else 
+          }
+		      else
 		      {
               return $this->render('login', [
                                    'model' => $model,
@@ -241,5 +241,15 @@ class SiteController extends Controller
 		 return $this->redirect(["site/login"]);
          //return $this->goHome();
      }
-	 
+
+
+     /**
+      * Metodo que renderiza una vista cuando el sistema este en mantenimiento.
+      * @return [type] [description]
+      */
+     public function actionOffline()
+     {
+         return $this->render('site/offline');
+     }
+
 }
