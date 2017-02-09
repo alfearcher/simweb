@@ -452,10 +452,10 @@
 				foreach ( $deudaObjeto as $key => $value ) {
 					foreach ( $value as $i => $objeto ) {
 						if ( $objeto['impuesto'] == 3 ) {
-							$observacion[] = 'Presebta deuda en ' . $objeto['descripcion'] . ', objeto: ' . $objeto['id_vehiculo'] . ' - ' . $objeto['placa'] . ', deuda: ' . $objeto['t'];
+							$observacion[] = 'Presenta deuda en ' . $objeto['descripcion'] . ', objeto: ' . $objeto['id_vehiculo'] . ' - ' . $objeto['placa'] . ', deuda: ' . $objeto['t'];
 
 						} elseif ( $objeto['impuesto'] == 4 ) {
-							$observacion[] = 'Presebta deuda en ' . $objeto['descripcion'] . ', objeto: ' . $objeto['id_impuesto'] . ' - ' . $objeto['nombre_propaganda'] . ', deuda: ' . $objeto['t'];
+							$observacion[] = 'Presenta deuda en ' . $objeto['descripcion'] . ', objeto: ' . $objeto['id_impuesto'] . ' - ' . $objeto['nombre_propaganda'] . ', deuda: ' . $objeto['t'];
 
 						}
 					}
