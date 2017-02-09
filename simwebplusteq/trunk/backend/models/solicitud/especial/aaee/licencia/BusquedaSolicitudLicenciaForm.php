@@ -580,8 +580,12 @@ die(var_dump($listaObjeto));
 			$lista = null;
 
 			foreach ( $impuestos as $key => $value ) {
+				$misObjeto = null;
 				$solvente->setImpuesto($value);
-				$lista[$value] = $solvente->getListaObjetoContribuyente();
+				$misObjeto = $solvente->getListaObjetoContribuyente();
+				if ( count($misObjeto) > 0 ) {
+					$lista[$value] = $misObjeto;
+				}
 			}
 
 			return $lista;
