@@ -249,7 +249,7 @@ class SiteController extends Controller
       */
      public function actionOffline()
      {
-         return $this->render('site/offline');
+         return $this->render('offline');
      }
 
 }
