@@ -451,7 +451,11 @@
 // die(var_dump($deudaObjeto));
 				foreach ( $deudaObjeto as $key => $value ) {
 					foreach ( $value as $i => $objeto ) {
-						$observacion[] = 'Presebta deuda en ' . $objeto['descripcion'] . ', objeto: ' . $objeto['id_impuesto'] . ' - ' . $objeto['observacion'] . ', deuda: ' . $objeto['t'];
+						if ( $objeto['impuesto'] == 4 ) {
+							$observacion[] = 'Presebta deuda en ' . $objeto['descripcion'] . ', objeto: ' . $objeto['id_impuesto'] . ' - ' . $objeto['nombre_propaganda'] . ', deuda: ' . $objeto['t'];
+						} elseif ( $objeto['impuesto'] == 3 ) {
+							$observacion[] = 'Presebta deuda en ' . $objeto['descripcion'] . ', objeto: ' . $objeto['id_impuesto'] . ' - ' . $objeto['placa'] . ', deuda: ' . $objeto['t'];
+						}
 					}
 				}
 // die(var_dump($observacion));
