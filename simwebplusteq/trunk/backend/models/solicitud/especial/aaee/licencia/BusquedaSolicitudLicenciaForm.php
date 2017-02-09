@@ -52,6 +52,9 @@
 	use common\models\planilla\PlanillaSearch;
 	use common\models\contribuyente\ContribuyenteBase;
 	use backend\models\aaee\historico\licencia\HistoricoLicencia;
+	use common\models\deuda\DeudaSearch;
+	use common\models\deuda\Solvente;
+
 
 
 	/**
@@ -87,7 +90,10 @@
 	        	  'integer', 'message' => Yii::t('backend', 'Formato de valores incorrecto')],
 	        	[['tipo',],
 	        	  'string', 'message' => Yii::t('backend', 'Formato de valores incorrecto')],
-	        	[['fecha_desde', 'fecha_hasta'],
+	        	[['fecha_desde'],
+	        	  'date', 'format' => 'dd-MM-yyyy',
+	        	  'message' => Yii::t('backend','formatted date no valid')],
+	        	[['fecha_hasta'],
 	        	  'date', 'format' => 'dd-MM-yyyy',
 	        	  'message' => Yii::t('backend','formatted date no valid')],
 	        	[['fecha_desde', 'fecha_hasta'],
@@ -112,12 +118,18 @@
 	        	  				}
 	        				}
 	        	, 'message' => Yii::t('backend', '{attribute} is required')],
-	        	[['fecha_hasta'], 'compare',
-	        	  'compareAttribute' => 'fecha_desde', 'operator' => '>='],
+	        	//['fecha_desde', 'date', 'timestampAttribute' => 'fecha_desde','message' => 'hola'],
+	        	//['fecha_hasta', 'date', 'timestampAttribute' => 'fecha_hasta'],
+	        	['fecha_desde',
+	        	 'compare',
+	        	 'compareAttribute' => 'fecha_hasta',
+	        	 'operator' => '<=',
+	        	 'enableClientValidation' => false],
+	        	// [['fecha_hasta'], 'compare',
+	        	//   'compareAttribute' => 'fecha_desde', 'operator' => '>=', 'type' => 'date'],
 
 	        ];
 	    }
-
 
 
 
@@ -313,13 +325,6 @@
 					];
 				}
 
-				// if ( count($data) > 0 ) {
-				// 	$provider = New ArrayDataProvider([
-				// 						'key' => 'nro_solicitud',
-				// 						'allModels' => $data,
-				// 						'pagination' => false,
-				// 			]);
-				// }
 			}
 			$provider = New ArrayDataProvider([
 						'key' => 'nro_solicitud',
@@ -440,6 +445,18 @@
 				$observacion[] = Yii::t('backend', 'El contribuyente no posee un numero de licencia valido');
 			}
 
+			$deudaObjeto = self::getDeudaPorObjeto($result['id_contribuyente']);
+
+			if ( count($deudaObjeto) > 0 ) {
+// die(var_dump($deudaObjeto));
+				foreach ( $deudaObjeto as $key => $value ) {
+					foreach ( $value as $i => $objeto ) {
+						$observacion[] = 'Presebta deuda en ' . $objeto['descripcion'] . ', objeto: ' . $objeto['id_impuesto'] . ' - ' . $objeto['observacion'] . ', deuda: ' . $objeto['t'];
+					}
+				}
+// die(var_dump($observacion));
+			}
+
 			return $observacion;
 		}
 
@@ -466,6 +483,32 @@
 		}
 
 
+
+
+		/**
+		 * Metodo que permite obtener las deudas por objetos de los contribuyentes.
+		 * Los objetos se entiende por Vehiculo, Propaganda.
+		 * @param  integer $idContribuyente identificador del contribuyente.
+		 * @return array retorna arreglo con los datos de las deudas o un vacio.
+		 */
+		private function getDeudaPorObjeto($idContribuyente)
+		{
+			$impuestos = [3,4];
+			$deuda = null;
+
+			$deudaSearch = New DeudaSearch($idContribuyente);
+			foreach ( $impuestos as $key => $value ) {
+				$deudaObjeto = null;
+				$deudaObjeto = $deudaSearch->getDeudaPorListaObjeto($value);
+				if ( count($deudaObjeto) > 0 ) {
+					$deuda[$value] =  $deudaObjeto;
+				}
+
+			}
+
+			return $deuda;
+
+		}
 
 
 	}
