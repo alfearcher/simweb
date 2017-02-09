@@ -459,15 +459,16 @@
 
 				$listaObjeto = self::getListaObjeto($result['id_contribuyente'], $impuesto);
 				if ( count($listaObjeto) > 0 ) {
-					foreach ( $listaObjeto as $objeto ) {
-						if ( $impuesto == 3 ) {
-die(var_dump($objeto));
-							$idImpuesto = $objeto['id_vehiculo'];
-							$descripcion = 'El vehiculo de placa: ' . $objeto['placa'];
-						}
+					foreach ( $listaObjeto as $objetos ) {
+						foreach ( $objetos as $objeto ) {
+							if ( $impuesto == 3 ) {
+								$idImpuesto = $objeto['id_vehiculo'];
+								$descripcion = 'El vehiculo de placa: ' . $objeto['placa'];
+							}
 
-						if ( !self::estaSolventeObjeto($impuesto, $idImpuesto, $result['id_contribuyente']) ) {
-							$observacion[] = $descripcion .  ', NO ESTA SOLVENTE';
+							if ( !self::estaSolventeObjeto($impuesto, $idImpuesto, $result['id_contribuyente']) ) {
+								$observacion[] = $descripcion .  ', NO ESTA SOLVENTE';
+							}
 						}
 					}
 				}
