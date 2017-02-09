@@ -47,6 +47,7 @@
 	use yii\db\ActiveRecord;
 	use backend\models\aaee\acteconingreso\ActEconIngreso;
 	use backend\models\utilidad\exigibilidad\Exigibilidad;
+	use common\models\contribuyente\ContribuyenteBase;
 
 
 	/**
@@ -95,6 +96,17 @@
 		public function getExigibilidad()
 		{
 			return $this->hasOne(Exigibilidad::className(), ['exigibilidad' => 'exigibilidad_declaracion']);
+		}
+
+
+
+		/**
+		 * Relacion con la entidad "contribuyentes"
+		 * @return ContribuyenteBase
+		 */
+		public function getContribuyente()
+		{
+			return $this->hasOne(ContribuyenteBase::className(),['id_contribuyente' => 'id_contribuyente']);
 		}
 
 	}
