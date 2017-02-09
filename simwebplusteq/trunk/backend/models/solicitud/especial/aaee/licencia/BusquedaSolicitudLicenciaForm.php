@@ -461,7 +461,7 @@
 				if ( count($listaObjeto) > 0 ) {
 					foreach ( $listaObjeto as $objeto ) {
 						if ( $impuesto == 3 ) {
-die(var_dump($listaObjeto));
+die(var_dump($objeto));
 							$idImpuesto = $objeto['id_vehiculo'];
 							$descripcion = 'El vehiculo de placa: ' . $objeto['placa'];
 						}
