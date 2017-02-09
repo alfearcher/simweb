@@ -120,10 +120,8 @@
     	public function rules()
     	{
     		return [
-    			[['naturaleza_rep_v', 'cedula_rep_v',
-    			   'naturaleza_rep_new', 'cedula_rep_new',
-    			   'representante_v', 'representante_new',
-    			   'id_contribuyente'],
+    			[['naturaleza_rep_new', 'cedula_rep_new',
+    			   'representante_new', 'id_contribuyente'],
     			   'required', 'on' => 'frontend',
     			   'message' => Yii::t('backend', '{attribute} is required')],
     			[['naturaleza_rep_v', 'cedula_rep_v',
