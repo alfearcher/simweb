@@ -119,7 +119,7 @@
 				if ( $firmaControl === $control ) {
 					$bloquearDescarga = false;
 				} else {
-					$mensajeBloqueo = Yii::t('backend', 'Existe diferencia entre los datos de la presente licencia y los datos de control de la misma.');
+					$mensajeBloqueo = Yii::t('frontend', 'Existe diferencia entre los datos de la presente licencia y los datos de control de la misma.');
 					$bloquearDescarga = true;
 				}
 
