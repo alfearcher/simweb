@@ -297,9 +297,6 @@
 			$result = false;
 
 			$ultimoPeriodo = self::getUltimoPeriodoActividadEconomica();
-if ( $this->_id_contribuyente == 92 ) {
-die(var_dump($ultimoPeriodo));
-}
 			if ( count($ultimoPeriodo) > 0 ) {
 				$periodoActual = self::getPeriodoActualSegunOrdenanza();
 				if ( count($periodoActual) > 0 ) {
