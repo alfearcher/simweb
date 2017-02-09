@@ -96,6 +96,8 @@
 
 				$request = Yii::$app->request;
 				$postData = $request->post();
+				$mensajeBloqueo = '';
+				$bloquearDescarga = true;
 
 				if ( isset($postData['btn-quit']) ) {
 					if ( $postData['btn-quit'] == 1 ) {
@@ -106,6 +108,20 @@
 
 				$searchModel = New HistoricoLicenciaSearch($idContribuyente);
 				$model = $searchModel->findUltimoHistoricoAnoActual();
+
+				$control = '1';
+				$datosJson = '0';
+
+				$datosJson = $model->fuente_json . $model->rubro_json;
+				$firmaControl = $model->firma_control;
+				$control = md5($datosJson);
+
+				if ( $firmaControl === $control ) {
+					$bloquearDescarga = false;
+				} else {
+					$mensajeBloqueo = Yii::t('backend', 'Existe diferencia entre los datos de la presente licencia y los datos de control de la misma.');
+					$bloquearDescarga = true;
+				}
 
 				if ( isset($postData['btn-generar-nro-licencia']) ) {
 					if ( $postData['btn-generar-nro-licencia'] == 5 ) {
@@ -124,6 +140,8 @@
 						$_SESSION['nro_control'] = $model->nro_control;
 						return $this->render('/aaee/licencia/historico/historico-licencia', [
 																		'model' => $model,
+																		'bloquearDescarga' => $bloquearDescarga,
+																		'mensajeBloqueo' => $mensajeBloqueo,
 								]);
 					} else {
 						// No posee historico de licencia generada.
