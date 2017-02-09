@@ -104,8 +104,6 @@
 			$this->determinarNroLicencia();
 			$this->_nroLicencia = $this->getLicencia();
 
-// die(var_dump($this->_nroLicencia));
-
 			if ( !isset($this->_conexion) || !isset($this->_conn) ) {
 				self::setConexion();
 				$this->_conn->open();
