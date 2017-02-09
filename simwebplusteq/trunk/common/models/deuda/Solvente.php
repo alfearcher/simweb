@@ -226,7 +226,6 @@
 			// Lo siguiente retorna un arreglo.
 			$pagos = $search->getUltimoLapsoPagoActividadEconomica();
 
-die(var_dump($pagos));
 			if ( $pagos !== null ) {
 				$lapso['a'] = $pagos['ano_impositivo'];
 				$lapso['p'] = $pagos['trimestre'];
