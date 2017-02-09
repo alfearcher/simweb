@@ -61,17 +61,12 @@
 	use common\enviaremail\PlantillaEmail;
 	use common\models\solicitudescontribuyente\SolicitudesContribuyenteForm;
 	use common\models\solicitudescontribuyente\SolicitudesContribuyente;
-	// use backend\models\aaee\licencia\LicenciaSolicitudSearch;
-	// use backend\models\aaee\licencia\LicenciaSolicitudForm;
-	// use backend\models\aaee\rubro\Rubro;
-	// use common\models\numerocontrol\NumeroControlSearch;
-	// use backend\models\aaee\historico\licencia\HistoricoLicenciaSearch;
-	//use common\models\configuracion\solicitudplanilla\SolicitudPlanillaSearch;
 	use common\models\planilla\PlanillaSearch;
 
 	use backend\models\solicitud\especial\aaee\licencia\BusquedaSolicitudLicenciaForm;
 	use backend\models\solicitud\especial\aaee\licencia\SolicitudLicenciaSearch;
 	use common\models\solicitudescontribuyente\ProcesarSolicitudContribuyente;
+	use common\models\aaee\licencia\GenerarLicencia;
 
 
 	session_start();		// Iniciando session
@@ -121,8 +116,8 @@
 
 				// Ruta donde se atendera la solicitud de busqueda.
 				$url = Url::to(['mostrar-listado']);
-				$_SESSION['begin'] = 1;
 
+				$_SESSION['begin'] = 1;
 				$listaTipoLicencia = [
 					'NUEVA' => 'NUEVA',
 					'RENOVACION' => 'RENOVACION',
@@ -144,6 +139,12 @@
 
 
 
+		/***/
+		public function actionIniciarListado()
+		{
+			$_SESSION['begin'] = 1;
+			$this->redirect(['mostrar-listado']);
+		}
 
 
 
@@ -155,6 +156,7 @@
 		{
 			if ( isset($_SESSION['begin']) ) {
 
+				$_SESSION['begin'] = 2;
 				$request = Yii::$app->request;
 				$postData = $request->post();
 
@@ -362,12 +364,22 @@
 
 					$result = self::actionEjecutarProcesoRelacionadoSolicitud($solicitud, $evento);
 
-					if ( $result == true ) {
-						$this->_transaccion->commit();
-						$solicitudAprobada[] = $value;
+					if ( $result ) {
 
-						// Se envia el correo al contribuyente notificando el resultado del procesamiento de su solicitud.
-						self::actionEnviarEmail($solicitud, $evento);
+						$generarLicencia = New GenerarLicencia($solicitud['id_contribuyente'],
+															   $solicitud['nro_solicitud'],
+															   $this->_conexion,
+															   $this->_conn);
+						if ( $generarLicencia->iniciarGenerarLicencia() ) {
+							$this->_transaccion->commit();
+							$solicitudAprobada[] = $value;
+
+							// Se envia el correo al contribuyente notificando el resultado del procesamiento de su solicitud.
+							self::actionEnviarEmail($solicitud, $evento);
+						} else {
+							$result = false;
+							$this->_transaccion->rollBack();
+						}
 					} else {
 						$this->_transaccion->rollBack();
 					}
@@ -658,6 +670,7 @@
 							'id_config_solicitud',
 					];
 		}
+
 
 	}
 ?>
