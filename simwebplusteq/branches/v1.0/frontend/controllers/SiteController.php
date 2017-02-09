@@ -27,7 +27,7 @@ use common\models\contribuyente\ContribuyenteBase;
  */
 class SiteController extends Controller
 {
-   
+
 public $layout = "layout-login";
 
     /**
@@ -82,11 +82,11 @@ public $layout = "layout-login";
         return $this->render('index');
     }
 
-     
+
     public function actionLogin()
     {
-        
-        
+
+
         $mensajeError = '';
         $model = New LoginForm();
 
@@ -112,46 +112,46 @@ public $layout = "layout-login";
                     $validarContribuyente = $validar->ValidarUsuarioContribuyente($validarPassword);
 
 
-                            
-                        
 
-                        
+
+
+
                 if ($validarContribuyente){
 
                     $_SESSION['idContribuyente'] = $validarContribuyente->id_contribuyente;
                     $_SESSION['nombre'] = $validarContribuyente->nombres;
                     $_SESSION['apellido'] = $validarContribuyente->apellidos;
-                    
-                
+
+
                     $validarActivo = $validar->validarUsuarioActivo($validarContribuyente);
 
                         if ($validarActivo == true){
                             return MensajeController::actionMensaje('Your status is inactive, please go to your city hall ');
-                         
+
                         }else{
-                     
+
 
                     $pregunta = new PreguntaSeguridadContribuyenteForm();
 
                     $preguntaSeguridad = $pregunta->ValidarPreguntaSeguridad($model, $validarPassword->id_contribuyente);
 
-                       
-                            
-                    if ($validarPassword and $validarContribuyente == true and $preguntaSeguridad == null){
-                                
-                        return $this->redirect(['/usuario/pregunta-seguridad-contribuyente/crear-pregunta-seguridad-contribuyente', 
-                                                                                                                       
-                                                                                        'id_contribuyente' => $validarPassword->id_contribuyente,
-                                                                                                                        
-                                                                                                                        ]);
-                    }else{ 
 
-                                                                                                        
+
+                    if ($validarPassword and $validarContribuyente == true and $preguntaSeguridad == null){
+
+                        return $this->redirect(['/usuario/pregunta-seguridad-contribuyente/crear-pregunta-seguridad-contribuyente',
+
+                                                                                        'id_contribuyente' => $validarPassword->id_contribuyente,
+
+                                                                                                                        ]);
+                    }else{
+
+
 
                         return $this->redirect(['menu-vertical']);
-                    
-                    
-                    
+
+
+
                     }
                     }
                     } else {
@@ -160,13 +160,13 @@ public $layout = "layout-login";
                     }
 
                     } else {
-                           
+
                         $model->addError('email', 'Usuario Y/o Contraseña Incorrectas');
-                          
+
                     }
-                     
+
             }
-                        
+
             }
             return $this->render('login' , ['model' => $model]);
 
@@ -177,7 +177,7 @@ public $layout = "layout-login";
     {
         //die('llegue a logout');
         Yii::$app->user->logout();
-        
+
         return $this->redirect(['/site/index']);
     }
 
@@ -185,12 +185,12 @@ public $layout = "layout-login";
     {
         //die('llegue a logout');
         Yii::$app->user->logout();
-        
+
         return $this->redirect(['/site/index']);
     }
 
 
-   
+
     public function actionContact()
     {
         $model = new ContactForm();
@@ -272,10 +272,17 @@ public $layout = "layout-login";
         return $this->render('/menu/menu-vertical');
     }
 
-   
+
+    /**
+      * Metodo que renderiza una vista cuando el sistema este en mantenimiento.
+      * @return [type] [description]
+      */
+     public function actionOffline()
+     {
+         return $this->render('offline');
+     }
 
 
 
 
-    
 }
