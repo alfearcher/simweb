@@ -256,7 +256,7 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
           }
 
 
-         
+          
           
 
           if($value == true and $valueIn == true){
@@ -405,41 +405,17 @@ die('llego a los mensajes de error');
        
          
          if ( isset($_SESSION['idContribuyente'] ) ) {
-         //Creamos la instancia con el model de validación
-          $model = new CambioNumeroCatastralInmueblesForm();
-          $modelAvaluo = new AvaluoCatastralForm();
-          $modelRegistro = new InmueblesRegistrosForm();
+         
 
          //Mostrará un mensaje en la vista cuando el usuario se haya registrado
          $msg = null;
          $url = null; 
          $tipoError = null; 
-    
+         $_SESSION['id'] = 54;
          //Validación mediante ajax
-         if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax){ 
-
-              Yii::$app->response->format = Response::FORMAT_JSON;
-              return ActiveForm::validate($model); 
-         }
-         if ($modelAvaluo->load(Yii::$app->request->post()) && Yii::$app->request->isAjax){ 
-
-              Yii::$app->response->format = Response::FORMAT_JSON;
-              return ActiveForm::validate($modelAvaluo); 
-         }
-         if ($modelRegistro->load(Yii::$app->request->post()) && Yii::$app->request->isAjax){ 
-
-              Yii::$app->response->format = Response::FORMAT_JSON;
-              return ActiveForm::validate($modelRegistro); 
-         }
+        
    
-         if ($model->load(Yii::$app->request->post()) && $modelAvaluo->load(Yii::$app->request->post()) && $modelRegistro->load(Yii::$app->request->post()) ){
-
-
-               $isValid = $model->validate();
-               $isValid = $modelAvaluo->validate() && $isValid;
-               $isValid = $modelRegistro->validate() && $isValid;
-              if($isValid){ 
-              
+         
 
                                          //condicionales     
                                            $documento = new DocumentoSolicitud();
@@ -449,13 +425,8 @@ die('llego a los mensajes de error');
                                          
                                         if (!\Yii::$app->user->isGuest){                                    
                              
-                                          if ($_SESSION['anioAvaluo'][0] == date('Y')) {
-
-                                                  return MensajeController::actionMensaje(921);
-
-                                            } else {
-
-                                             $guardo = self::GuardarInscripcion($model,$modelAvaluo,$modelRegistro);
+                                          
+                                             $guardo = self::GuardarInscripcion($_SESSION['datosInmueble'],$_SESSION['datosUAvaluos'],$_SESSION['datosURegistros']);
                                              
                                              if($guardo == true){ 
                         
@@ -476,7 +447,7 @@ die('llego a los mensajes de error');
                         
                                                     return MensajeController::actionMensaje(920);
                                               }
-                                             }
+                                             
                         
                                            }else{ 
                         
@@ -486,12 +457,9 @@ die('llego a los mensajes de error');
                                            } 
 
                       
-              }else{ 
-                
-                   $model->getErrors(); 
-              }
-         }
-              return $this->render('nuevo-certificado-catastral-inmuebles', ['model' => $model, 'modelAvaluo' => $modelAvaluo, 'modelRegistro'=>$modelRegistro]);  
+              
+         
+              //return $this->render('nuevo-certificado-catastral-inmuebles', ['model' => $model, 'modelAvaluo' => $modelAvaluo, 'modelRegistro'=>$modelRegistro]);  
 
         }  else {
                     echo "No hay Contribuyente Registrado!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['site/login'])."'>";
@@ -508,41 +476,14 @@ die('llego a los mensajes de error');
        
          
          if ( isset($_SESSION['idContribuyente'] ) ) {
-         //Creamos la instancia con el model de validación
-          $model = new CambioNumeroCatastralInmueblesForm();
-          $modelAvaluo = new AvaluoCatastralForm();
-          $modelRegistro = new InmueblesRegistrosForm();
+         
 
          //Mostrará un mensaje en la vista cuando el usuario se haya registrado
          $msg = null;
          $url = null; 
          $tipoError = null; 
-    
-         //Validación mediante ajax
-         if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax){ 
-
-              Yii::$app->response->format = Response::FORMAT_JSON;
-              return ActiveForm::validate($model); 
-         }
-         if ($modelAvaluo->load(Yii::$app->request->post()) && Yii::$app->request->isAjax){ 
-
-              Yii::$app->response->format = Response::FORMAT_JSON;
-              return ActiveForm::validate($modelAvaluo); 
-         }
-         if ($modelRegistro->load(Yii::$app->request->post()) && Yii::$app->request->isAjax){ 
-
-              Yii::$app->response->format = Response::FORMAT_JSON;
-              return ActiveForm::validate($modelRegistro); 
-         }
-   
-         if ($model->load(Yii::$app->request->post()) && $modelAvaluo->load(Yii::$app->request->post()) && $modelRegistro->load(Yii::$app->request->post()) ){
-
-
-               $isValid = $model->validate();
-               $isValid = $modelAvaluo->validate() && $isValid;
-               $isValid = $modelRegistro->validate() && $isValid;
-              if($isValid){ 
-              
+         $_SESSION['id'] = 54; // no sale la configuracion de renovacion id confi de certificado catastral
+                    
 
                                          //condicionales     
                                            $documento = new DocumentoSolicitud();
@@ -552,13 +493,8 @@ die('llego a los mensajes de error');
                                          
                                         if (!\Yii::$app->user->isGuest){                                    
                              
-                                          if ($_SESSION['anioAvaluo'][0] == date('Y')) {
-
-                                                  return MensajeController::actionMensaje(921);
-
-                                            } else {
-
-                                             $guardo = self::GuardarInscripcion($model,$modelAvaluo,$modelRegistro);
+                                          
+                                             $guardo = self::GuardarInscripcion($_SESSION['datosInmueble'],$_SESSION['datosUAvaluos'],$_SESSION['datosURegistros']);
                                              
                                              if($guardo == true){ 
                         
@@ -579,7 +515,7 @@ die('llego a los mensajes de error');
                         
                                                     return MensajeController::actionMensaje(920);
                                               }
-                                             }
+                                             
                         
                                            }else{ 
                         
@@ -588,13 +524,10 @@ die('llego a los mensajes de error');
                                                 return $this->render("/mensaje/mensaje", ["msg" => $msg, "url" => $url, "tipoError" => $tipoError]);
                                            } 
 
-                      
-              }else{ 
-                
-                   $model->getErrors(); 
-              }
-         }
-              return $this->render('renovacion-certificado-catastral-inmuebles', ['model' => $model, 'modelAvaluo' => $modelAvaluo, 'modelRegistro'=>$modelRegistro]);  
+                     
+              
+         
+              //return $this->render('renovacion-certificado-catastral-inmuebles', ['model' => $model, 'modelAvaluo' => $modelAvaluo, 'modelRegistro'=>$modelRegistro]);  
 
         }  else {
                     echo "No hay Contribuyente Registrado!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['site/login'])."'>";
@@ -625,11 +558,6 @@ die('llego a los mensajes de error');
             $_SESSION['datosContribuyente']= $datosContribuyente;
 
             
-
-           
-
-            $avaluos=self::actionCalcularAvaluos($modelAvaluo); 
-
             $conn = New ConexionController();
             $conexion = $conn->initConectar('db');     // instancia de la conexion (Connection)
             $conexion->open();  
@@ -637,7 +565,7 @@ die('llego a los mensajes de error');
 
             try {
 
-                foreach($avaluos as $key => $value){
+                
                 
                 if ($nivelAprobacion['nivel_aprobacion'] == 1){
                   $estatus = 1;
@@ -650,7 +578,7 @@ die('llego a los mensajes de error');
                 $arrayDatos1 = [  'id_contribuyente' => $_SESSION['idContribuyente'],
                                   'id_config_solicitud' => $config['id_config_solicitud'],
                                   'impuesto' => 2,
-                                  'id_impuesto' => $value['id_impuesto'],
+                                  'id_impuesto' => $model['id_impuesto'],
                                   'tipo_solicitud' => $config['tipo_solicitud'],
                                   'usuario' => $datosContribuyente['email'],
                                   'fecha_hora_creacion' => date('Y-m-d h:i:s'),
@@ -758,7 +686,7 @@ die('llego a los mensajes de error');
                 $tipoError = 0;
                 $todoBien = false;
             }
-            } /// fin del foreach 
+            
 
                 if ($todoBien == true){
                     
