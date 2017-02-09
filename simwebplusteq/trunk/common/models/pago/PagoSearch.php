@@ -684,6 +684,7 @@
 		{
 			$ultimo = null;
 			$pagos = self::getPagoPeriodoActividadEconomica();
+die(var_dump($pagos));
 			if ( count($pagos) > 0 ) {
 				$ultimo = end($pagos);
 			}
