@@ -263,8 +263,6 @@
 				$findModel = self::getModelGeneral();
 
 				$deuda = $findModel->select([
-
-
 										'D.id_impuesto',
 										'D.impuesto',
 										'I.descripcion',
@@ -443,6 +441,7 @@
 									'I.descripcion',
 									'A.id_impuesto',
 									'A.observacion',
+									'A.nombre_propaganda',
 									'(sum(monto+recargo+interes)-sum(descuento+monto_reconocimiento)) as t',
 
 								])
