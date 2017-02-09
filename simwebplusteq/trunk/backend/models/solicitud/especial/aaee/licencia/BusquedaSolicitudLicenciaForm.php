@@ -576,7 +576,7 @@
 				$impuestos = [3];
 			}
 
-			$lista = [];
+			$lista = null;
 
 			foreach ( $impuestos as $key => $value ) {
 				$solvente->setImpuesto($value);
