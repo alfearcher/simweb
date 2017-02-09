@@ -666,6 +666,10 @@
 			 									[':trimestre' => 0])
 							   ->joinWith('exigibilidad E')
 							   ->joinWith('impuestos I')
+							   ->orderBy([
+							   		'ano_impositivo' => SORT_ASC,
+							   		'trimestre' => SORT_ASC,
+							   	])
 							   ->asArray()
 							   ->all();
 
@@ -684,7 +688,6 @@
 		{
 			$ultimo = null;
 			$pagos = self::getPagoPeriodoActividadEconomica();
-die(var_dump($pagos));
 			if ( count($pagos) > 0 ) {
 				$ultimo = end($pagos);
 			}
