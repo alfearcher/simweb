@@ -304,6 +304,10 @@
 
 						if ( $ultimoPeriodo['p'] == $periodoActual['periodo'] ) {
 							$result = true;
+
+						} elseif ( $ultimoPeriodo['p'] > $periodoActual['periodo'] ) {
+							$result = true;
+
 						}
 
 					} elseif ( $ultimoPeriodo['a'] > $periodoActual['año'] ) {
