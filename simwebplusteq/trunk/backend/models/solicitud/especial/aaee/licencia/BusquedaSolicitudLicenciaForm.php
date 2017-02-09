@@ -608,7 +608,7 @@
 			$solvente->setIdContribuyente($idContribuyente);
 			$solvente->setImpuesto($impuesto);
 			$solvente->setIdImpuesto($idImpuesto);
-			return $solvente->verificarCondicionObjeto();
+			return $solvente->determinarSolvencia();
 
 		}
 
