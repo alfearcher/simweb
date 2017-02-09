@@ -226,7 +226,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                                 'impuesto',
                                 'nivel_aprobacion'
                           ]); 
-                   $rutaAyuda = Yii::$app->ayuda->getRutaAyuda($config['tipo_solicitud'], 'backend');
+                   $rutaAyuda = Yii::$app->ayuda->getRutaAyuda($config['tipo_solicitud'], 'frontend');
               return $this->render('cambio-otros-datos-inmuebles', ['model' => $model, 'datos'=>$datos,'rutaAyuda' => $rutaAyuda,]);  
 
         }  else {

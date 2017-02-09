@@ -310,7 +310,7 @@ class RegistrosInmueblesUrbanosController extends Controller
                                 'impuesto',
                                 'nivel_aprobacion'
                           ]); 
-                   $rutaAyuda = Yii::$app->ayuda->getRutaAyuda($config['tipo_solicitud'], 'backend');
+                   $rutaAyuda = Yii::$app->ayuda->getRutaAyuda($config['tipo_solicitud'], 'frontend');
               return $this->render('registros-inmuebles', ['model' => $model, 'modelAvaluo' => $modelAvaluo, 'modelRegistro'=>$modelRegistro,'rutaAyuda' => $rutaAyuda,]);  
 
         }  else {
@@ -360,8 +360,11 @@ class RegistrosInmueblesUrbanosController extends Controller
             try {
 
                
-                
-                
+                if ($nivelAprobacion['nivel_aprobacion'] == 1){
+                  $estatus = 1;
+                } else {
+                  $estatus = 0;
+                }                
 
                 $tableName1 = 'solicitudes_contribuyente'; 
 
@@ -375,7 +378,7 @@ class RegistrosInmueblesUrbanosController extends Controller
                                   'nivel_aprobacion' => $nivelAprobacion["nivel_aprobacion"],
                                   'nro_control' => 0,
                                   'firma_digital' => null,
-                                  'estatus' => 0,
+                                  'estatus' => $estatus,
                                   'inactivo' => 0,
                               ];  
                 

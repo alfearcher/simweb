@@ -185,7 +185,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                                 'impuesto',
                                 'nivel_aprobacion'
                           ]); 
-                   $rutaAyuda = Yii::$app->ayuda->getRutaAyuda($config['tipo_solicitud'], 'backend');
+                   $rutaAyuda = Yii::$app->ayuda->getRutaAyuda($config['tipo_solicitud'], 'frontend');
               return $this->render('inscripcion-inmuebles-urbanos', ['model' => $model, 'rutaAyuda' => $rutaAyuda, ]);  
 
         }  else {
@@ -220,7 +220,11 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
 
             //$tipoSolicitud = self::DatosConfiguracionTiposSolicitudes();
      
-            
+            if ($nivelAprobacion['nivel_aprobacion'] == 1){
+                  $estatus = 1;
+                } else {
+                  $estatus = 0;
+                }
             $arrayDatos1 = [  'id_contribuyente' => $model->id_contribuyente,
                               'id_config_solicitud' => $_SESSION['id'], //$idConf
                               'impuesto' => 2,
@@ -231,7 +235,7 @@ tablas: solicitudes_contribuyente, sl_inmuebles, config_tipos_solicitudes
                               'nivel_aprobacion' => $nivelAprobacion["nivel_aprobacion"],
                               'nro_control' => 0,
                               'firma_digital' => null,
-                              'estatus' => 0,
+                              'estatus' => $estatus,
                               'inactivo' => 0,
                           ];  
             
