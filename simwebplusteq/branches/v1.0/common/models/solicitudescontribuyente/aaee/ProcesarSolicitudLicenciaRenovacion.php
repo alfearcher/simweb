@@ -299,6 +299,7 @@
                         'catastro' => 0,
                         'fechaEmision' => date('Y-m-d'),
                         'fechaVcto' => $fechaVcto,
+                        'licencia' => $contribuyente->id_sim,
                 ];
 
                 $fuente_json = json_encode($arregloContribuyente);
