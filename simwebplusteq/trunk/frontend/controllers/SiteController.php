@@ -279,7 +279,7 @@ public $layout = "layout-login";
       */
      public function actionOffline()
      {
-         return $this->render('site/offline');
+         return $this->render('offline');
      }
 
 
