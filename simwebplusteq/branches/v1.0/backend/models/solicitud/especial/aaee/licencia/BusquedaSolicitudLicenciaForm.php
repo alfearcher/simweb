@@ -52,6 +52,9 @@
 	use common\models\planilla\PlanillaSearch;
 	use common\models\contribuyente\ContribuyenteBase;
 	use backend\models\aaee\historico\licencia\HistoricoLicencia;
+	use common\models\deuda\DeudaSearch;
+	use common\models\deuda\Solvente;
+
 
 
 	/**
@@ -87,7 +90,10 @@
 	        	  'integer', 'message' => Yii::t('backend', 'Formato de valores incorrecto')],
 	        	[['tipo',],
 	        	  'string', 'message' => Yii::t('backend', 'Formato de valores incorrecto')],
-	        	[['fecha_desde', 'fecha_hasta'],
+	        	[['fecha_desde'],
+	        	  'date', 'format' => 'dd-MM-yyyy',
+	        	  'message' => Yii::t('backend','formatted date no valid')],
+	        	[['fecha_hasta'],
 	        	  'date', 'format' => 'dd-MM-yyyy',
 	        	  'message' => Yii::t('backend','formatted date no valid')],
 	        	[['fecha_desde', 'fecha_hasta'],
@@ -112,12 +118,18 @@
 	        	  				}
 	        				}
 	        	, 'message' => Yii::t('backend', '{attribute} is required')],
-	        	[['fecha_hasta'], 'compare',
-	        	  'compareAttribute' => 'fecha_desde', 'operator' => '>='],
+	        	//['fecha_desde', 'date', 'timestampAttribute' => 'fecha_desde','message' => 'hola'],
+	        	//['fecha_hasta', 'date', 'timestampAttribute' => 'fecha_hasta'],
+	        	['fecha_desde',
+	        	 'compare',
+	        	 'compareAttribute' => 'fecha_hasta',
+	        	 'operator' => '<=',
+	        	 'enableClientValidation' => false],
+	        	// [['fecha_hasta'], 'compare',
+	        	//   'compareAttribute' => 'fecha_desde', 'operator' => '>=', 'type' => 'date'],
 
 	        ];
 	    }
-
 
 
 
@@ -313,13 +325,6 @@
 					];
 				}
 
-				// if ( count($data) > 0 ) {
-				// 	$provider = New ArrayDataProvider([
-				// 						'key' => 'nro_solicitud',
-				// 						'allModels' => $data,
-				// 						'pagination' => false,
-				// 			]);
-				// }
 			}
 			$provider = New ArrayDataProvider([
 						'key' => 'nro_solicitud',
@@ -440,6 +445,79 @@
 				$observacion[] = Yii::t('backend', 'El contribuyente no posee un numero de licencia valido');
 			}
 
+			if ( !self::solventeConActividadEconomica($result['id_contribuyente']) ) {
+				$observacion[] = Yii::t('backend', 'El contribuyente aparece como no solvente para el impuesto de ACTIVIDAD ECONOMICA (Estimada)');
+			}
+
+
+
+			// Deuda de las definitivas pendientes.
+			$deudas = self::getDeudaDefinitivaPendiente($result['id_contribuyente']);
+			if ( count($deudas) > 0 ) {
+				foreach ( $deudas as $deuda ) {
+					if ( $deuda['monto'] > 0 ) {
+						$observacion[] = 'Definitiva pendiente: ' . $deuda['ano_impositivo'] . ' - planilla: ' . $deuda['planilla'] . ' - deuda: ' . $deuda['monto'];
+					}
+				}
+			}
+
+
+			// Lista de objetos que posee el contribuyente.
+			// En este caso solo vehiculo.
+			$impuestos = [3];
+			$descripcion = '';
+
+			foreach ( $impuestos as $i => $impuesto ) {
+
+				$listaObjeto = self::getListaObjeto($result['id_contribuyente'], $impuesto);
+				if ( count($listaObjeto) > 0 ) {
+					foreach ( $listaObjeto as $objetos ) {
+						foreach ( $objetos as $objeto ) {
+							if ( $impuesto == 3 ) {
+								$idImpuesto = $objeto['id_vehiculo'];
+								$descripcion = 'El vehiculo de placa: ' . $objeto['placa'];
+							}
+
+							if ( !self::estaSolventeObjeto($impuesto, $idImpuesto, $result['id_contribuyente']) ) {
+								$observacion[] = $descripcion .  ', NO ESTA SOLVENTE';
+							}
+						}
+					}
+				}
+
+			}
+
+
+			// Deuda de otros impuestos. Impuesto menores.
+			$deudaOtroImpuesto = self::getDeudaOtroImpuesto($result['id_contribuyente']);
+			if ( count($deudaOtroImpuesto) > 0 ) {
+				foreach ( $deudaOtroImpuesto as $deudas ) {
+					foreach ($deudas as $planilla ) {
+						$observacion[] = 'Presenta deuda en ' . $planilla['descripcion_impuesto'] . ', con planilla: ' . $planilla['planilla'];
+					}
+				}
+			}
+
+
+
+			// Deuda de propaganda.
+			$deudaObjeto = self::getDeudaPorObjeto($result['id_contribuyente']);
+			if ( count($deudaObjeto) > 0 ) {
+				foreach ( $deudaObjeto as $key => $value ) {
+					foreach ( $value as $i => $objeto ) {
+						if ( $objeto['impuesto'] == 3 ) {
+							$observacion[] = 'Presenta deuda en ' . $objeto['descripcion'] . ', objeto: ' . $objeto['id_vehiculo'] . ' - ' . $objeto['placa'] . ', deuda: ' . $objeto['t'];
+
+						} elseif ( $objeto['impuesto'] == 4 ) {
+							$observacion[] = 'Presenta deuda en ' . $objeto['descripcion'] . ', objeto: ' . $objeto['id_impuesto'] . ' - ' . $objeto['nombre_propaganda'] . ', deuda: ' . $objeto['t'];
+
+						}
+					}
+				}
+
+			}
+
+
 			return $observacion;
 		}
 
@@ -465,6 +543,148 @@
 			return $dataProvider;
 		}
 
+
+
+
+		/**
+		 * Metodo que permite obtener las deudas por objetos de los contribuyentes.
+		 * Los objetos se entiende por Propaganda.
+		 * @param  integer $idContribuyente identificador del contribuyente.
+		 * @return array retorna arreglo con los datos de las deudas o un vacio.
+		 */
+		private function getDeudaPorObjeto($idContribuyente)
+		{
+			$impuestos = [4];
+			$deuda = null;
+
+			$deudaSearch = New DeudaSearch($idContribuyente);
+			foreach ( $impuestos as $key => $value ) {
+				$deudaObjeto = null;
+				$deudaObjeto = $deudaSearch->getDeudaPorListaObjeto($value);
+				if ( count($deudaObjeto) > 0 ) {
+					$deuda[$value] =  $deudaObjeto;
+				}
+
+			}
+
+			return $deuda;
+
+		}
+
+
+
+		/**
+		 * Metodo que determina si los objetos relacinados al contribuyente estan
+		 * solvente. Aqui los objetos son inmuebles y vehiculos.
+		 * @param  integer $idContribuyente identificador del contribuyente.
+		 * @param  integer $impuesto identificador del impuesto.
+		 * @return array retorna un arreglo indicando los objetos que no estan solventes.
+		 */
+		private function getListaObjeto($idContribuyente, $impuesto = 0)
+		{
+			$solvente = New Solvente();
+			$solvente->setIdContribuyente($idContribuyente);
+			if ( $impuesto > 0 ) {
+				$impuestos = [$impuesto];
+			} else {
+				$impuestos = [3];
+			}
+
+			$lista = null;
+
+			foreach ( $impuestos as $key => $value ) {
+				$misObjeto = null;
+				$solvente->setImpuesto($value);
+				$misObjeto = $solvente->getListaObjetoContribuyente();
+				if ( count($misObjeto) > 0 ) {
+					$lista[$value] = $misObjeto;
+				}
+			}
+
+			return $lista;
+		}
+
+
+
+
+		/**
+		 * Metodo que permite determinar si un objeto esta solvente.
+		 * @param integer $impuesto identificador del impuesto.
+		 * @param integer $idImpuesto identificador del objeto.
+		 * @param integer $idContribuyente identificador del contribuyente.
+		 * @return booolen.
+		 */
+		private function estaSolventeObjeto($impuesto, $idImpuesto, $idContribuyente)
+		{
+			$solvente = New Solvente();
+			$solvente->setIdContribuyente($idContribuyente);
+			$solvente->setImpuesto($impuesto);
+			$solvente->setIdImpuesto($idImpuesto);
+			return $solvente->determinarSolvencia();
+
+		}
+
+
+
+
+		/**
+		 * Metodo que determina si el contribuyente esta solvente con el impuesto
+		 * de Actividad Economica, en lo referente a Estimada.
+		 * @param integer $idContribuyente identificador del contribuyente.
+		 * @return boolean.
+		 */
+		private function solventeConActividadEconomica($idContribuyente)
+		{
+			$solvente = New Solvente();
+			$solvente->setIdContribuyente($idContribuyente);
+			$solvente->setImpuesto(1);
+
+			return $solvente->estaSolventeActividadEconomica();
+		}
+
+
+
+
+
+		/**
+		 * Metodo que busca deudas eb otros impuestos especificados.
+		 * Retorna un arreglo de planillas en deuda.
+		 * @param integer $idContribuyente identificador del contribuyente.
+		 * @param integer $impuesto identificador del impuesto.
+		 * @return array
+		 */
+		private function getDeudaOtroImpuesto($idContribuyente, $impuesto = 0)
+		{
+			$deuda = null;
+			if ( $impuesto > 0 ) {
+				$impuestos = [$impuesto];
+			} else {
+				$impuestos = [6, 7, 9, 10, 11];
+			}
+
+			$deudaSearch = New DeudaSearch($idContribuyente);
+			foreach ( $impuestos as $key => $value ) {
+				$deuda[$value] = $deudaSearch->getDetalleDeudaObjetoPorPlanilla($impuesto, 0, '=');
+			}
+
+			return $deuda;
+		}
+
+
+
+
+		/**
+		 * Metodo para obtener las planillas de las definitivas pendientes.
+		 * @param integer $idContribuyente identificador del contribuyente.
+		 * @return array
+		 */
+		private function getDeudaDefinitivaPendiente($idContribuyente)
+		{
+			$deuda = null;
+			$deudaSearch = New DeudaSearch($idContribuyente);
+			$deuda = $deudaSearch->getDefinitivaPendiente();
+			return $deuda;
+		}
 
 
 
