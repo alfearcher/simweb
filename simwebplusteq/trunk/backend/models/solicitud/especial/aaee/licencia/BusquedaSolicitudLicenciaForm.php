@@ -452,7 +452,7 @@
 
 
 			// Deuda de las definitivas pendientes.
-			$deudas = self::getDefinitivaPendiente($result['id_contribuyente']);
+			$deudas = self::getDeudaDefinitivaPendiente($result['id_contribuyente']);
 			if ( count($deudas) > 0 ) {
 				foreach ( $deudas as $deuda ) {
 					$observacion[] = 'Definitiva pendiente: ' . $deuda['ano_impositivo'] . ' - planilla: ' . $deuda['planilla'] . ' - deuda: ' . $deuda['monto'];
