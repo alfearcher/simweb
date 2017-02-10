@@ -129,6 +129,7 @@ class InmueblesUrbanosForm extends \yii\db\ActiveRecord
     public $lindero_sur;
     public $lindero_este;
     public $lindero_oeste;
+    public $nro_solicitud;
 
     public static function tableName()
     {

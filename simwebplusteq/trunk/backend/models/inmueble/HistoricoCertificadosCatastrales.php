@@ -84,23 +84,12 @@ namespace backend\models\inmueble;
 use Yii;
 
 
-class InmueblesRegistros extends \yii\db\ActiveRecord
+class HistoricoCertificadosCatastrales extends \yii\db\ActiveRecord
 {
-    public $fecha;
-    public $documento_propiedad;
-    public $num_reg;
-    public $reg_mercantil;
-    public $valor_documental;
-
-    public $tomo;
-    public $protocolo;
-    public $folio;
     
-    public $nro_matriculado;
-    public $asiento_registral;
     public static function tableName()
     {
-        return 'inmuebles_registros';
+        return 'historico_certificados_catastrales';
     }
 
     

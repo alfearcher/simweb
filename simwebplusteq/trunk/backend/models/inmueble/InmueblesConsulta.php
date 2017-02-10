@@ -86,6 +86,7 @@ use Yii;
 
 class InmueblesConsulta extends \yii\db\ActiveRecord
 {
+    public $nro_solicitud;
     
     public static function tableName()
     {

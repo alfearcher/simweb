@@ -526,6 +526,7 @@
 				$arregloDatos['id_funcionario'] = $funcionario;
 				foreach ( $chkSolicitud as $solicitud ) {
 					$arregloDatos['tipo_solicitud'] = $solicitud;
+					
 					// Se inactiva cualquier solicitud que tenga el funcionario y que coincida con la que se guardara.
 					$result = self::actionInactivarFuncionarioSolicitud($funcionario, $solicitud, $tabla, $conexionLocal, $connLocal);
 					if ( $result ) {

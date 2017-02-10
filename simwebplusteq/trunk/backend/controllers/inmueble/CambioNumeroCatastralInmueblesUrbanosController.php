@@ -194,9 +194,9 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
                   //no posee registros de inmueble
                   
                 } 
-          }
+          } 
 
-        
+      
 
 
            $verificarSolicitud = self::verificarSolicitud($datosInmueble['id_impuesto'] , $_SESSION['id']);
