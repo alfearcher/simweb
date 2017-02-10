@@ -8,14 +8,15 @@ use yii\widgets\DetailView;
 
 $this->title = Yii::t('backend', 'View Property Urban');
 
+
 ?>
 <div class="inmuebles-view">
 
     
 
     <p>
-        <?= Html::a(Yii::t('backend', 'Nuevo Certificado catastral'), ['inmueble/certificadocatastral/certificado-catastral-inmuebles-urbanos/nuevo-certificado-catastral-inmuebles'], ['class' => 'btn btn-success']) ?>
-        <?= Html::a(Yii::t('backend', 'Renovacion del Certificado catastral'), ['inmueble/certificadocatastral/certificado-catastral-inmuebles-urbanos/renovacion-certificado-catastral-inmuebles'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('backend', 'Nuevo Certificado catastral'), ['inmueble/certificadocatastral/certificado-catastral-inmuebles-urbanos/nuevo-certificado-catastral-inmuebles'], ['class' => 'btn btn-success', 'disabled'=>$read]) ?>
+        <?= Html::a(Yii::t('backend', 'Renovacion del Certificado catastral'), ['inmueble/certificadocatastral/certificado-catastral-inmuebles-urbanos/renovacion-certificado-catastral-inmuebles'], ['class' => 'btn btn-success', 'disabled'=>$readR]) ?>
         <?= Html::a(Yii::t('backend', 'Volver al Menu Principal'), ['/site/menu-vertical'], ['class' => 'btn btn-danger']) ?>
     </p> 
 <div class="panel panel-primary">
