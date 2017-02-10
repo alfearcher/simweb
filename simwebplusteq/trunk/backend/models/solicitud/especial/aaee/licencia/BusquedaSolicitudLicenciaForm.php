@@ -450,6 +450,16 @@
 			}
 
 
+
+			// Deuda de las definitivas pendientes.
+			$deudas = self::getDefinitivaPendiente($result['id_contribuyente']);
+			if ( count($deudas) > 0 ) {
+				foreach ( $deudas as $deuda ) {
+					$observacion[] = 'Definitiva pendiente: ' . $deuda['ano_impositivo'] . ' - planilla: ' . $deuda['planilla'] . ' - deuda: ' . $deuda['monto'];
+				}
+			}
+
+
 			// Lista de objetos que posee el contribuyente.
 			// En este caso solo vehiculo.
 			$impuestos = [3];
@@ -638,12 +648,12 @@
 		 * Metodo que busca deudas eb otros impuestos especificados.
 		 * Retorna un arreglo de planillas en deuda.
 		 * @param integer $idContribuyente identificador del contribuyente.
-		 * @param inteher $impuesto identificador del impuesto.
+		 * @param integer $impuesto identificador del impuesto.
 		 * @return array
 		 */
 		private function getDeudaOtroImpuesto($idContribuyente, $impuesto = 0)
 		{
-			$deuda = '';
+			$deuda = null;
 			if ( $impuesto > 0 ) {
 				$impuestos = [$impuesto];
 			} else {
@@ -655,6 +665,22 @@
 				$deuda[$value] = $deudaSearch->getDetalleDeudaObjetoPorPlanilla($impuesto, 0, '=');
 			}
 
+			return $deuda;
+		}
+
+
+
+
+		/**
+		 * Metodo para obtener las planillas de las definitivas pendientes.
+		 * @param integer $idContribuyente identificador del contribuyente.
+		 * @return array
+		 */
+		private function getDeudaDefinitivaPendiente($idContribuyente)
+		{
+			$deuda = null;
+			$deudaSearch = New DeudaSearch($idContribuyente);
+			$deuda = $deudaSearch->getDefinitivaPendiente();
 			return $deuda;
 		}
 
