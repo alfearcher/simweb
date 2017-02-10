@@ -263,8 +263,6 @@
 				$findModel = self::getModelGeneral();
 
 				$deuda = $findModel->select([
-
-
 										'D.id_impuesto',
 										'D.impuesto',
 										'I.descripcion',
@@ -443,6 +441,7 @@
 									'I.descripcion',
 									'A.id_impuesto',
 									'A.observacion',
+									'A.nombre_propaganda',
 									'(sum(monto+recargo+interes)-sum(descuento+monto_reconocimiento)) as t',
 
 								])
@@ -981,9 +980,8 @@
 			if ( $idImpuesto == 0 && $impuesto == 1 && $periodo == '>' ) {
 
 				$deuda = $findModel->select([
-
 										'P.planilla',
-                    'P.id_contribuyente',
+                    					'P.id_contribuyente',
 										'P.id_pago',
 										'P.ente',
 										'sum(D.monto) as tmonto',
@@ -992,7 +990,7 @@
 										'sum(D.descuento) as tdescuento',
 										'sum(D.monto_reconocimiento) as tmonto_reconocimiento',
 										'D.descripcion',
-                    'D.ano_impositivo',
+                    					'D.ano_impositivo',
 										'D.id_impuesto',
 										'D.impuesto',
 										'I.descripcion as descripcion_impuesto',
@@ -1017,7 +1015,6 @@
 				$deuda = $findModel->select([
 										'P.planilla',
 										'P.id_contribuyente',
-
 										'P.id_pago',
 										'P.ente',
 										'sum(D.monto) as tmonto',
@@ -1026,7 +1023,7 @@
 										'sum(D.descuento) as tdescuento',
 										'sum(D.monto_reconocimiento) as tmonto_reconocimiento',
 										'D.descripcion',
-                    'D.ano_impositivo',
+                    					'D.ano_impositivo',
 										'D.id_impuesto',
 										'D.impuesto',
 										'I.descripcion as descripcion_impuesto',
@@ -1058,7 +1055,7 @@
 										'sum(D.descuento) as tdescuento',
 										'sum(D.monto_reconocimiento) as tmonto_reconocimiento',
 										'D.descripcion',
-                    'D.ano_impositivo',
+                    					'D.ano_impositivo',
 										'D.impuesto',
 										'I.descripcion as descripcion_impuesto',
 										])
@@ -1498,6 +1495,63 @@
 			return $listaIdImpuesto;
 		}
 
+
+
+
+		/**
+		 * Metodo que permite localizar periodo liqquidados sin pagar.
+		 * Definiendo un lapso de tiempo en años. Esto solo aplica para
+		 * aquellas deudas que se generan con periodos mayores a cero.
+		 * @param integer $impuesto identificador del impuesto.
+		 * @param  integer $idImpuesto identificador del objeto (si es nencesario)
+		 * @return PagoDetalle.
+		 */
+		public function getPeriodoPendiente($impuesto, $idImpuesto = 0)
+		{
+			$añoLimite = Yii::$app->lapso->anoLimiteNotificado();
+			$añoActual = (int)date('Y');
+
+			$findModel = self::getModelGeneral();
+			$model = $findModel->joinWith('impuestos I', true, 'INNER JOIN')
+			                   ->andWhere('D.impuesto =:impuesto',
+												[':impuesto' => $impuesto])
+							   ->andWhere(['IN', 'ano_impositivo', [$añoLimite, $añoActual - 1]])
+							   ->andWhere('D.trimestre >:trimestre',
+							   					[':trimestre' => 0]);
+
+			if ( $idImpuesto > 0 ) {
+				$model = $model->andWhere('D.id_impuesto =:id_impuesto',
+												[':id_impuesto' => $idImpuesto]);
+			}
+
+			return $model->asArray()->all();
+
+		}
+
+
+
+
+
+		/**
+		 * Metodo que devuelve las planillas de definitivas pendientes
+		 * @return array
+		 */
+		public function getDefinitivaPendiente()
+		{
+			$deuda = null;
+			$results = self::detalleDeudaActividadEconomica();
+			foreach ( $results as $result ) {
+				if ( $result['referencia'] == 1 ) {
+					$deuda[$result['pagos']['planilla']] = [
+						'planilla' => $result['pagos']['planilla'],
+						'monto' => $result['monto'],
+						'ano_impositivo' => $result['ano_impositivo'],
+					];
+				}
+			}
+
+			return $deuda;
+		}
 
 
 
