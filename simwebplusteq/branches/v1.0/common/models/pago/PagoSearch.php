@@ -666,6 +666,10 @@
 			 									[':trimestre' => 0])
 							   ->joinWith('exigibilidad E')
 							   ->joinWith('impuestos I')
+							   ->orderBy([
+							   		'ano_impositivo' => SORT_ASC,
+							   		'trimestre' => SORT_ASC,
+							   	])
 							   ->asArray()
 							   ->all();
 
