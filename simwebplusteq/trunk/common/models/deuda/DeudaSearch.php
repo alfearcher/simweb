@@ -1542,7 +1542,6 @@
 			$results = self::detalleDeudaActividadEconomica();
 			foreach ( $results as $result ) {
 				if ( $result['referencia'] == 1 ) {
-die(var_dump($result));
 					$deuda[$result['pagos']['planilla']] = [
 						'planilla' => $result['pagos']['planilla'],
 						'monto' => $result['monto'],
