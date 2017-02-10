@@ -455,7 +455,9 @@
 			$deudas = self::getDeudaDefinitivaPendiente($result['id_contribuyente']);
 			if ( count($deudas) > 0 ) {
 				foreach ( $deudas as $deuda ) {
-					$observacion[] = 'Definitiva pendiente: ' . $deuda['ano_impositivo'] . ' - planilla: ' . $deuda['planilla'] . ' - deuda: ' . $deuda['monto'];
+					if ( $deuda['monto'] > 0 ) {
+						$observacion[] = 'Definitiva pendiente: ' . $deuda['ano_impositivo'] . ' - planilla: ' . $deuda['planilla'] . ' - deuda: ' . $deuda['monto'];
+					}
 				}
 			}
 
