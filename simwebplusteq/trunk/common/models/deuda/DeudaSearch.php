@@ -1551,7 +1551,7 @@ die(var_dump($result));
 				}
 			}
 
-			return $result;
+			return $deuda;
 		}
 
 
