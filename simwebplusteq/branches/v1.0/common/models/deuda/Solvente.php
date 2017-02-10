@@ -47,6 +47,8 @@
  	use common\models\ordenanza\OrdenanzaBase;
  	use common\models\planilla\Planilla;
  	use common\models\pago\PagoSearch;
+ 	use backend\models\vehiculo\VehiculosForm;
+
 
 
 	/**
@@ -302,6 +304,10 @@
 
 						if ( $ultimoPeriodo['p'] == $periodoActual['periodo'] ) {
 							$result = true;
+
+						} elseif ( $ultimoPeriodo['p'] > $periodoActual['periodo'] ) {
+							$result = true;
+
 						}
 
 					} elseif ( $ultimoPeriodo['a'] > $periodoActual['año'] ) {
@@ -319,6 +325,29 @@
 			return $result;
 		}
 
+
+
+
+
+		/***/
+		public function getListaObjetoContribuyente()
+		{
+			$listaObjeto = [];
+
+			if ( $this->impuesto == 2 ) {			// Lista de inmuebles.
+
+			} elseif ( $this->impuesto == 3 ) {		// Lista de Vehiculos.
+
+				$result = VehiculosForm::find()->where('status_vehiculo =:status_vehiculo',
+															['status_vehiculo' => 0])
+											   ->andWhere('id_contribuyente =:id_contribuyente',
+											  				['id_contribuyente' => $this->_id_contribuyente])
+											   ->asArray()
+											   ->all();
+			}
+
+			return $result;
+		}
 
 
 
