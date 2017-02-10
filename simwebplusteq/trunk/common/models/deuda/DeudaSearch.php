@@ -1530,6 +1530,31 @@
 
 
 
+
+
+		/**
+		 * Metodo que devuelve las planillas de definitivas pendientes
+		 * @return array
+		 */
+		public function getDefinitivaPendiente()
+		{
+			$deuda = null;
+			$results = self::detalleDeudaActividadEconomica();
+			foreach ( $results as $result ) {
+				if ( $result['referencia'] == 1 ) {
+					$deuda[$result['pagos']['planilla']] = [
+						'planilla' => $result['pagos']['planilla'],
+						'monto' => $result['monto'],
+						'ano_impositivo' => $result['ano_impositivo'],
+					];
+				}
+			}
+
+			return $result;
+		}
+
+
+
 	}
 
 
