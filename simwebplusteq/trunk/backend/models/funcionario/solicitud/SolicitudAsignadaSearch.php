@@ -79,7 +79,7 @@
 	    {
 	    	$modelFind = null;
 	    	$modelFind = FuncionarioSolicitud::find()->where('inactivo =:inactivo', [':inactivo' => 0])
-	                                                 ->andWhere('usuario =:usuario', [':usuario' => $userLocal])
+	                                                 ->andWhere('login =:login', [':login' => $userLocal])
 	                                                 ->joinWith('funcionario', false)
 			                                         ->orderBy([
 			                                     		'tipo_solicitud' => SORT_ASC,
