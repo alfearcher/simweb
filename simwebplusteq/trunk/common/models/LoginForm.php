@@ -152,7 +152,7 @@ class LoginForm extends Model
         } else {
                     
                   $vigencia = $buscar[0]['vigencia'];
-                  if(date('Y-m-d') > $vigencia){
+                  if(date('Y-m-d') > $vigencia and $buscar[0]['status_funcionario'] == 0 ){
 
                         $this->addError($attribute, Yii::t('backend', 'El funcionario no se encuentra vigente para el registro'));
                   }
