@@ -58,7 +58,7 @@
 		    'method' => 'post',
 			'enableClientValidation' => true,
 			'enableAjaxValidation' => true,
-			'enableClientScript' => true,
+			'enableClientScript' => false,
 		]);
 	?>
 
@@ -224,6 +224,31 @@
 						</div>
 					</div>
 <!-- Fin de Nro de Solicitud -->
+
+
+
+<!-- Inicio de Id Contribuyente-->
+					<div class="row" style="border-bottom: 0.5px solid #ccc;">
+						<h4><strong><?= $model->getAttributeLabel('id_contribuyente') ?></strong></h4>
+					</div>
+
+					<div class="row" style="padding-top: 15px;">
+						<div class="col-sm-2">
+							<div class="row">
+								<p><strong><?= $model->getAttributeLabel('id_contribuyente') ?></strong></p>
+							</div>
+						</div>
+						<div class="col-sm-3">
+							<div class="row" class="id-contribuyente">
+								<?= $form->field($model, 'id_contribuyente')->textInput([
+																				'id' => 'id-contribuyente',
+																			])->label(false) ?>
+							</div>
+						</div>
+					</div>
+<!-- Fin de Id Contribuyente -->
+
+
 
 
 					<div class="row">
