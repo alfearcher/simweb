@@ -150,12 +150,26 @@ class LoginForm extends Model
            
                   $this->addError($attribute, Yii::t('backend', 'El funcionario no se encuentra registrado')); 
         } else {
-                    
-                  $vigencia = $buscar[0]['vigencia'];
-                  if(date('Y-m-d') > $vigencia and $buscar[0]['status_funcionario'] == 0 ){
+                  
+                   $vigencia = $buscar[0]['vigencia'];
 
-                        $this->addError($attribute, Yii::t('backend', 'El funcionario no se encuentra vigente para el registro'));
-                  }
+                   if(date('Y-m-d') > $vigencia ){
+
+                          if ($buscar[0]['status_funcionario'] == 1) {
+
+                              $this->addError($attribute, Yii::t('backend', 'El funcionario se encuentra inactivo'));
+                         }
+ 
+                          $this->addError($attribute, Yii::t('backend', 'El funcionario no se encuentra vigente para el registro'));
+
+                     } else {
+
+                          if ($buscar[0]['status_funcionario'] == 1) {
+
+                              $this->addError($attribute, Yii::t('backend', 'El funcionario se encuentra inactivo'));
+                          }
+
+                    }
         }                         
     } 
 }
