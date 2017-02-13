@@ -179,6 +179,10 @@
 		   		$query->andFilterWhere(['=', 'nro_solicitud', $this->nro_solicitud])
 		   			  ->andFilterWhere(['IN', 'tipo_solicitud', $tipoSolicitud]);
 		   	}
+		   	if ( $this->id_contribuyente > 0 ) {
+		   		$query->andFilterWhere(['=', 'id_contribuyente', $this->id_contribuyente])
+		   			  ->andFilterWhere(['IN', 'tipo_solicitud', $tipoSolicitud]);
+		   	}
 	    	return $dataProvider;
 	    	//$query->andFilterWhere(['IN', 'tipo_solicitud', $tipoSolicitud]);
 	    }
