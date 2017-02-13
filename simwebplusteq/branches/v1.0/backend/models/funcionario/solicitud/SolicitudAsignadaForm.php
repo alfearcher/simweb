@@ -64,6 +64,9 @@
 	    public $tipo_solicitud;
 	    public $fecha_desde;
 	    public $fecha_hasta;
+	    public $id_contribuyente;
+
+
 
     	/**
      	* @inheritdoc
@@ -85,30 +88,38 @@
 	        	//[['fecha_desde', 'fecha_hasta'], 'date', 'message' => Yii::t('backend', '{attribute} is date')],
 	        	[['fecha_hasta'], 'required',
 	        	  'when' => function($model) {
-	        	  				if ( $model->fecha_desde != null ) {
+	        	  				if ( trim($model->fecha_desde) !== '' ) {
 	        	  					return true;
 	        	  				}
 	        				}
 	        	, 'message' => Yii::t('backend', '{attribute} is required')],
 	        	[['fecha_desde'], 'required',
 	        	  'when' => function($model) {
-	        	  				if ( $model->fecha_hasta != null ) {
+	        	  				if ( trim($model->fecha_hasta) !== '' ) {
 	        	  					return true;
 	        	  				}
 	        				}
 	        	, 'message' => Yii::t('backend', '{attribute} is required')],
+	        	// ['fecha_desde', 'date', 'timestampAttribute' => 'fecha_hasta'],
+	        	// ['fecha_desde',
+	        	//  'compare',
+	        	//  'compareAttribute' => 'fecha_hasta',
+	        	//  'operator' => '>',
+	        	//  'enableClientValidation' => false],
+
 	        	[['fecha_hasta'], 'compare',
 	        	  'compareAttribute' => 'fecha_desde', 'operator' => '>='],
 	        	[['fecha_desde', 'fecha_hasta'], 'default', 'value' => null],
 	        	[['impuesto'], 'required',
 	        	  'when' => function($model) {
-	        	  				if ( $model->tipo_solicitud != null ) {
+	        	  				if ( trim($model->fecha_desde) !== '' || trim($model->fecha_hasta) !== '' ) {
 	        	  					return true;
 	        	  				}
 	        				}
-	        	, 'message' => Yii::t('backend', '{attribute} is required')],
+	        	, 'message' => Yii::t('backend', 'ppp')],
 	        	[['impuesto', 'tipo_solicitud'], 'integer', 'message' => Yii::t('backend', 'Select {attribute}')],
 	        	[['nro_solicitud'], 'integer', 'message' => Yii::t('backend', '{attribute} not valid')],
+	        	[['id_contribuyente'], 'integer', 'message' => Yii::t('backend', '{attribute} not valid')],
 	        ];
 	    }
 
