@@ -22,13 +22,13 @@
  */
 
  /**
- *  @file ProcesarDesincorporacionPropaganda.php
+ *  @file ProcesarInscripcionInmuebleUrbano.php
  *
- *  @author Manuel Alejandro Zapata Canelon
+ *  @author Alvaro Jose Fernandez ARcher
  *
- *  @date 25/08/2016
+ *  @date 19/07/2016
  *
- *  @class ProcesarDesincorporacionPropaganda
+ *  @class ProcesarInscripcionInmuebleUrbano
  *  @brief
  *
  *
@@ -47,17 +47,14 @@
  *
  */
 
-    namespace common\models\solicitudescontribuyente\propaganda;
+    namespace common\models\solicitudescontribuyente\inmueble;
 
     use Yii;
     use backend\models\aaee\InmueblesUrbanosForm;
-    use backend\models\inmueble\SlInmueblesUrbanosSearch;
+    use backend\models\inmueble\SlCertificadoCatastralSearch;
     use common\models\contribuyente\ContribuyenteBase;
-    use frontend\models\vehiculo\solicitudes\SlVehiculos;
-    use frontend\models\vehiculo\solicitudes\SlVehiculosForm; 
-    use frontend\models\propaganda\solicitudes\SlPropagandas;
-    use frontend\models\propaganda\solicitudes\SlPropagandasForm;
-    use frontend\models\vehiculo\solicitudes\SlDesincorporacionesVehiculo;
+    use common\models\inmueble\certificadocatastral\JsonCertificado;
+
 
 
     /**
@@ -65,9 +62,8 @@
      * que esten relacionada con la aprobacion o negacion de la solicitud. la clase debe
      * entregar como respuesta un true o false.
      */
-    class ProcesarDesincorporacionPropaganda extends SlPropagandas
+    class ProcesarCertificadoCatastralInmuebleUrbano extends SlCertificadoCatastralSearch
     {
-
         private $_model;
 
         private $_conn;
@@ -110,8 +106,7 @@
             $this->_evento = $evento;
             $this->_conn = $conn;
             $this->_conexion = $conexion;
-           // parent::__construct($model['id_contribuyente']);
-
+            parent::__construct($model['id_contribuyente']);
         }
 
 
@@ -147,13 +142,11 @@
          */
         public function procesarSolicitud()
         {
-           //die('llegue a procesar');
             $result = false;
             if ( $this->_evento == Yii::$app->solicitud->aprobar() ) {
                 $result = self::aprobarDetalleSolicitud();
 
             } elseif ( $this->_evento == Yii::$app->solicitud->negar() ) {
-               // die('esta negando');
                 $result = self::negarDetalleSolicitud();
             }
             return $result;
@@ -163,19 +156,17 @@
 
         /**
          * Metodo que permite obtener un modelo de los datos de la solicitud,
-         * sobre la entidad "sl-desincorporaciones", referente al detalle de la solicitud. Es la
+         * sobre la entidad "sl-", referente al detalle de la solicitud. Es la
          * entidad donde se guardan los detalle de esta solicitud.
          * @return Boolean Retorna un true si todo se ejecuto satisfactoriamente, false
          * en caso contrario.
          */
-        public function findDesincorporacionPropaganda()
+        public function findCertificadoCatastralUrbano()
         {
-            // Este find retorna el modelo de la entidad "sl-desincorporaciones"
+            // Este find retorna el modelo de la entidad "sl-inscripciones-act-econ"
             // con datos, ya que en el metodo padre se ejecuta el ->one() que realiza
             // la consulta.
-            $SlPropagandas = New SlPropagandasForm($this->_model->id_contribuyente);
-
-            $modelFind = $SlPropagandas->findDesincorporacionPropaganda($this->_model->nro_solicitud);
+            $modelFind = $this->findCertificado($this->_model->nro_solicitud);
             return isset($modelFind) ? $modelFind : null;
         }
 
@@ -190,20 +181,19 @@
         */
         public function atributosUpDateProcesarSolicitud($evento)
         {
-           // die('llego');
             $atributos = [
                 Yii::$app->solicitud->aprobar() => [
                                     'estatus' => 1,
                                     'user_funcionario' => isset(Yii::$app->user->identity->username) ? Yii::$app->user->identity->username : Yii::$app->user->identity->login,
-                                    'fecha_funcionario' => date('Y-m-d H:i:s')
+                                    'fecha_hora_proceso' => date('Y-m-d H:i:s')
                 ],
                 Yii::$app->solicitud->negar() => [
                                     'estatus' => 9,
                                     'user_funcionario' => isset(Yii::$app->user->identity->username) ? Yii::$app->user->identity->username : Yii::$app->user->identity->login,
-                                    'fecha_funcionario' => date('Y-m-d H:i:s')
+                                    'fecha_hora_proceso' => date('Y-m-d H:i:s')
                 ],
             ];
-    
+
            return $atributos[$evento];
         }
 
@@ -216,14 +206,11 @@
          */
         private function aprobarDetalleSolicitud()
         {
-           // die('llego a aprobar');
             $result = false;
-            $modelDesincorporacion = self::findDesincorporacionPropaganda();
-            //die(var_dump($modelInscripcion));
-            if ( $modelDesincorporacion !== null ) {
-                if ( $modelDesincorporacion['id_contribuyente'] == $this->_model->id_contribuyente ) {
-                    //die('comparo');
-                    $result = self::updateSolicitudDesincorporacion($modelDesincorporacion);
+            $modelInscripcion = self::findCertificadoCatastralUrbano();
+            if ( $modelInscripcion !== null ) {
+                if ( $modelInscripcion['id_contribuyente'] == $this->_model->id_contribuyente ) {
+                    $result = self::updateSolicitudInscripcion($modelInscripcion);
                     // if ( $result ) {
                     //     $result = self::updateContribuyente($modelInscripcion);
                     // }
@@ -247,10 +234,10 @@
         private function negarDetalleSolicitud()
         {
             $result = false;
-            $modelDesincorporacion = self::findDesincorporacionPropaganda();
-            if ( $modelDesincorporacion !== null ) {
-                if ( $modelDesincorporacion['id_contribuyente'] == $this->_model->id_contribuyente ) {
-                    $result = self::updateSolicitudDesincorporacion($modelDesincorporacion);
+            $modelInscripcion = self::findCertificadoCatastralUrbano();
+            if ( $modelInscripcion !== null ) {
+                if ( $modelInscripcion['id_contribuyente'] == $this->_model->id_contribuyente ) {
+                    $result = self::updateSolicitudInscripcion($modelInscripcion);
                 } else {
                     self::setErrors(Yii::t('backend', 'Error in the ID of taxpayer'));
                 }
@@ -264,29 +251,26 @@
         /**
          * Metodo que realiza la actualizacin de los atributos segun el evento a ejecutar
          * sobre la solicitud.
-         * @param  Active Record $modelInscripcion modelo de la entidad "sl-vehiculos".
+         * @param  Active Record $modelInscripcion modelo de la entidad "sl-inscripciones-act-econ".
          * Este modelo contiene los datos-detalles, referida a los datos cargados al momento de elaborar
          * la solicitud.
          * @return Boolean Retorna un true si todo se ejecuto satisfactoriamente, false
          * en caso contrario.
          */
-        private function updateSolicitudDesincorporacion($modelDesincorporacion)
-        { 
-           // die('llego a solicitud inscripcion');
+        private function updateSolicitudInscripcion($modelInscripcion)
+        {
             $result = false;
             $cancel = false;            // Controla si el proceso se debe cancelar.
 
             // Se crea la instancia del modelo que contiene los campos que seran actualizados.
-            $model = New SlDesincorporacionesVehiculo();
+            $model = New SlCertificadoCatastralSearch($modelInscripcion->id_contribuyente);
             $tableName = $model->tableName();
-            //die(var_dump($tableName));
-            // Se obtienen los campos que seran actualizados en la entidad "sl-desincorporaciones".
-            // Estos atributos ya vienen con sus datos cargados.
-            
-            $arregloDatos = self::atributosUpDateProcesarSolicitud($this->_evento);
-            //die(var_dump($arregloDatos));
 
-            $camposModel = $modelDesincorporacion->toArray();
+            // Se obtienen los campos que seran actualizados en la entidad "sl-".
+            // Estos atributos ya vienen con sus datos cargados.
+            $arregloDatos = self::atributosUpDateProcesarSolicitud($this->_evento);
+
+            $camposModel = $modelInscripcion->toArray();
 
             // Se define el arreglo para el where conditon del update.
             $arregloCondicion['nro_solicitud'] = isset($camposModel['nro_solicitud']) ? $camposModel['nro_solicitud'] : null;
@@ -302,36 +286,34 @@
                                                               $arregloDatos, $arregloCondicion);
                 } elseif($arregloDatos['estatus'] == 1) {
 
-                    $tableNameMaster = 'propagandas';
+                    $tableNameMaster = 'historico_certificados_catastrales';
 
-                 $arregloDatosMaster = [
-                                            'inactivo' => 1,
-                                            
+                    $jsonInmueble = new JsonCertificado(); 
+                    $json = $jsonInmueble->DatosJson($modelInscripcion['id_impuesto']);
 
+                    $arregloDatosMaster = [ 
                                            
-
+                                            'id_impuesto' => $modelInscripcion['id_impuesto'],
+                                            'nro_solicitud' => $modelInscripcion['nro_solicitud'],
+                                            'fecha_hora' => $modelInscripcion['fecha_hora'],
+                                            'ano_impositivo' => $modelInscripcion['ano_impositivo'],
+                                            'id_contribuyente' => $modelInscripcion['id_contribuyente'],
+                                            'tipo' => $modelInscripcion['tipo'],
+                                            'certificado_catastral' => 'CC-'.$modelInscripcion['id_impuesto'].'-'.$modelInscripcion['id_contribuyente'] ,
+                                            'nro_control' => 0,
+                                            'serial_control' => 0,
+                                            'inmueble_json' => $json['inmuebleJson'],
+                                            'avaluo_json' => $json['avaluoJson'],
+                                            'registro_json' => $json['registroJson'],
+                                            'usuario' => $modelInscripcion['usuario'],
+                                            'inactivo' => 0,
+                                            'observacion' => 'creada',
+                                            'firma_control' => $json['firmaControl'],
                                          ];
 
-                    $arregloCondicionMaster = [
-
-
-                                                'id_impuesto' => $camposModel['id_impuesto'] 
-                                                ];
-
-                     $tableNameMasterPago = 'pagos_detalle';
-
-                 $arregloDatosMasterPago = [
-                                            'pago' => 9,
-                                            
-                                         ]; 
-
-                    $arregloCondicionMasterPago = [ 'id_impuesto' => $camposModel['id_impuesto'] , 'impuesto' => 4, 'pago' => 0
-                                                ];                           
-
-                    $resultInsert = $this->_conexion->modificarRegistro($this->_conn, $tableNameMaster, $arregloDatosMaster, 
-                        $arregloCondicionMaster);
-                     $resultInsert2 = $this->_conexion->modificarRegistro($this->_conn, $tableNameMasterPago, $arregloDatosMasterPago, 
-                        $arregloCondicionMasterPago);
+                    $resultInsert = $this->_conexion->guardarRegistro($this->_conn, $tableNameMaster, $arregloDatosMaster);
+                    $resultId = $this->_conn->getLastInsertID();
+                    $_SESSION['idObjeto']=$resultId;
 
                     $result = $this->_conexion->modificarRegistro($this->_conn, $tableName,
                                                               $arregloDatos, $arregloCondicion);
@@ -340,14 +322,14 @@
                     if (!$result ) { self::setErrors(Yii::t('backend', 'Failed update request')); }
                     return $result;
                 }
-                    
-            } 
+
+            }
 
             if (!$result ) { self::setErrors(Yii::t('backend', 'Failed update request')); }
             return $result;
         }
 
-    
+
     }
 
  ?>

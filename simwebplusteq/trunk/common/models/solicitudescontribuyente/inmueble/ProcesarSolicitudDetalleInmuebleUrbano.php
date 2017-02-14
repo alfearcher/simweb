@@ -62,6 +62,7 @@
     use common\models\solicitudescontribuyente\inmueble\ProcesarSolicitudSolvenciaInmueble;
     use common\models\solicitudescontribuyente\inmueble\ProcesarLinderosInmuebleUrbano;
     use common\models\solicitudescontribuyente\inmueble\ProcesarRegistrosInmuebleUrbano;
+    use common\models\solicitudescontribuyente\inmueble\ProcesarCertificadoCatastralInmuebleUrbano;
 
 
 
@@ -140,6 +141,11 @@
 
                 } elseif ( $this->_model->tipo_solicitud == 23 ) {
                     //Renovacion Certificado Catastral
+                    $procesar = New ProcesarCertificadoCatastralInmuebleUrbano($this->_model,
+                                                                          $this->_evento,
+                                                                          $this->_conn,
+                                                                          $this->_conexion);
+                    $result = $procesar->procesarSolicitud();
 
                 } elseif ( $this->_model->tipo_solicitud == 24 ) {
                     //Solvencia
