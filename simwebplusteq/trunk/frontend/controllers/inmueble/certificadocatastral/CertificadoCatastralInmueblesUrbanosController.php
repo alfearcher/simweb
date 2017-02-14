@@ -69,6 +69,7 @@ use backend\models\inmueble\InmueblesRegistrosForm;
 use backend\models\inmueble\InmueblesRegistros;
 use backend\models\inmueble\TarifasAvaluos;
 use backend\models\inmueble\HistoricoCertificadosCatastrales;
+use common\models\inmueble\certificadocatastral\JsonCertificado;
 
 
 //use common\models\Users;
@@ -429,7 +430,7 @@ die('llego a los mensajes de error');
          $msg = null;
          $url = null; 
          $tipoError = null; 
-         $_SESSION['id'] = 54;
+         $_SESSION['id'] = 54; // id de la renovacion
          //Validación mediante ajax
         
    
@@ -500,7 +501,7 @@ die('llego a los mensajes de error');
          $msg = null;
          $url = null; 
          $tipoError = null; 
-         $_SESSION['id'] = 54; // no sale la configuracion de renovacion id confi de certificado catastral
+         $_SESSION['id'] = 54; // no sale la configuracion de nueva id confi de  renovacion certificado catastral
                     
 
                                          //condicionales     
@@ -641,10 +642,8 @@ die('llego a los mensajes de error');
 
                     } else {
                 
-                        $inmuebleJson = json_encode($model);;
-                        $avaluoJson = json_encode($modelAvaluo);
-                        $registroJson = json_encode($modelRegistro); 
-                        $firmaControl = md5($inmuebleJson.$avaluoJson.$registroJson);
+                        $jsonInmueble = new JsonCertificado();
+                        $json = $jsonInmueble->DatosJson($model['id_impuesto']);
 
                         $arrayDatos3 = [    'id_impuesto' => $model['id_impuesto'],
                                             'nro_solicitud' => $result,
@@ -655,17 +654,17 @@ die('llego a los mensajes de error');
                                             'certificado_catastral' => $model['id_impuesto'].'-'.$_SESSION['idContribuyente'] ,
                                             'nro_control' => 0,
                                             'serial_control' => 0,
-                                            'inmueble_json' => $inmuebleJson,
-                                            'avaluo_json' => $avaluoJson,
-                                            'registro_json' => $registroJson,
+                                            'inmueble_json' => $json['inmuebleJson'],
+                                            'avaluo_json' => $json['avaluoJson'],
+                                            'registro_json' => $json['registroJson'],
                                             'usuario' => $_SESSION['datosContribuyente']['email'],
                                             'inactivo' => 0,
                                             'observacion' => 'creada',
-                                            'firma_control' => $firmaControl,
+                                            'firma_control' => $json['firmaControl'],
 
-                                        ]; 
+                                        ];  
 
-            die(var_dump($arrayDatos3));
+            
                         $tableName3 = 'historico_certificados_catastrales';
                          
 
@@ -724,56 +723,6 @@ die('llego a los mensajes de error');
                        
      }
 
-      /**
-     * [DatosContribuyente] metodo que busca los datos del contribuyente en 
-     * la tabla contribuyente
-     */
-     public function DatosContribuyente()
-     {
-Public  $id_impuesto;
-    Public  $id_contribuyente;
-    Public  $ano_inicio;
-    Public  $direccion;
-    Public  $liquidado;
-    Public  $manzana_limite;
-    Public  $lote_1;
-    Public  $lote_2;
-    Public  $lote_3;
-    Public  $nivel;
-    Public  $av_calle_esq_dom;
-    Public  $casa_edf_qta_dom;
-    Public  $piso_nivel_no_dom;
-    Public  $apto_dom;
-    Public  $tlf_hab;
-    Public  $medidor;
-    Public  $id_sim;
-    Public  $observacion;
-    Public  $inactivo;
-    Public  $catastro;
-    Public  $id_habitante;
-    Public  $tipo_ejido;
-    Public  $propiedad_horizontal;
-    Public  $estado_catastro;
-    Public  $municipio_catastro;
-    Public  $parroquia_catastro;
-    Public  $ambito_catastro;
-    Public  $sector_catastro;
-    Public  $manzana_catastro;
-    Public  $parcela_catastro;
-    Public  $subparcela_catastro;
-    Public  $nivel_catastro;
-    Public  $nivela;
-    Public  $nivelb;
-    Public  $unidad_catastro;
-         $buscar = ContribuyenteBase::find()->where("id_contribuyente=:idContribuyente", [":idContribuyente" => $_SESSION['idContribuyente']])
-                                                        ->asArray()->all();
-
-
-         return $buscar[0];                                              
-
-     }
-     
-   
 
      /**
      * Metodo que se encargara de gestionar la ejecucion y resultados de los procesos relacionados
