@@ -62,6 +62,7 @@
 	use backend\models\inmueble\SlCambioPropietarioSearch;
 	use backend\models\inmueble\SlInmueblesRegistrosSearch;
 	use backend\models\inmueble\SlInmueblesRegistrosForm;
+	use backend\models\inmueble\SlCertificadoCatastralSearch;
 	
 	use backend\models\inmueble\solvencia\SolvenciaInmuebleSearch;
 	// use common\conexion\ConexionController;
@@ -258,12 +259,12 @@
 		private function actionMostrarSolicitudRenovacionCertificadoCatastralInmueble()
 		{
 			if ( $this->model->nivel_aprobacion == 2 ) {
-					$modelSearch = New SlInmueblesUrbanosSearch($this->model->id_contribuyente);
-					$model = $modelSearch->findActualizacionDatos($this->model->nro_solicitud);
+					$modelSearch = New SlCertificadoCatastralSearch($this->model->id_contribuyente);
+					$model = $modelSearch->findCertificado($this->model->nro_solicitud);
 
 
 
-					return $this->render('@backend/views/inmueble/renovacion-certificado-catastral-inmuebles-urbanos/view-solicitud', [
+					return $this->render('@backend/views/inmueble/certificado-catastral-inmuebles-urbanos/view-solicitud', [
 													'caption' => Yii::t('frontend', 'Request Nro. ' . $this->model->nro_solicitud),
 													'model' => $model,
 
