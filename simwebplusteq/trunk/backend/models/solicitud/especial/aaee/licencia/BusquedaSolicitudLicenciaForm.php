@@ -431,8 +431,9 @@
 
 		/**
 		 * [determinarCondicionSolicitud description]
-		 * @param  [type] $result [description]
-		 * @return [type]         [description]
+		 * @param LicenciaSolicittud $result registro de la consulta realizada sobre
+		 * la entidad "sl-licencias"
+		 * @return array retorna arreglo de mensajes.
 		 */
 		public function determinarCondicionSolicitud($result)
 		{
@@ -516,6 +517,19 @@
 				}
 
 			}
+
+
+
+			// Informacion basica de la licencia. Se verifica que existe
+			// esta informacion basica.
+			$infos = self::informacionFaltanteLicencia($result['id_contribuyente']);
+			if ( count($infos) > 0 ) {
+				foreach ( $infos as $key => $value ) {
+					$observacion[] = $value;
+				}
+			}
+
+
 
 
 			return $observacion;
@@ -687,6 +701,134 @@
 		}
 
 
+
+
+		/**
+		 * Metodo que permite generar un mensaje de advertencia por cada item
+		 * faltante de la licencia. Estos items son los datos basicos que debe
+		 * tener la licencia.
+		 * @param integer $idContribuyente identificador del contribuyente.
+		 * @return array
+		 */
+		private function informacionFaltanteLicencia($idContribuyente)
+		{
+			$mensaje = null;
+			$mensajes = null;
+			$contribuyente = ContribuyenteBase::findOne($idContribuyente);
+			if ( $contribuyente == null ) {
+				return $mensaje[] = Yii::t('backend', 'No se encontro infonación del contribuyente');
+			} else {
+				$mensaje[] = self::domicilioValido($contribuyente);
+				$mensaje[] = self::capitalValido($contribuyente);
+
+				$ms = self::infoRepresentanteValida($contribuyente);
+				if ( count($ms) > 0 ) {
+					foreach ( $ms as $key => $value ) {
+						$mensaje[] = $value;
+					}
+				}
+				$mensaje[] = self::razonSocialValida($contribuyente);
+
+			}
+
+			foreach ( $mensaje as $key => $value ) {
+				if ( $value !== null ) {
+					$mensajes[] = $value;
+				}
+			}
+
+			return $mensajes;
+		}
+
+
+
+
+		/**
+		 * Metodo que determina si el contribuyente posee un domicilio fiscal valido.
+		 * Si la direccion es valida no retorna nada, si no esta definida el domicilio
+		 * segun la politica ( longitud mayor o igual a 10 caracteres ).
+		 * @param ContribuyenteBase $datoContribuyente datos del contribuyente
+		 * ( ContribuyenteBase::findOne())
+		 * @return string
+		 */
+		private function domicilioValido($datoContribuyente)
+		{
+			$mensaje = null;
+			if ( strlen(trim($datoContribuyente['domicilio_fiscal'])) < 10 ) {
+				$mensaje = Yii::t('backend', 'No se encontro infonación del DOMICILIO FISCAL');
+			}
+			return $mensaje;
+		}
+
+
+
+
+		/**
+		 * Metodo que determina si el contribuyente posee un capital valido.
+		 * Si el monto del capital es mayor a cero, se considera como valido
+		 * el registro.
+		 * @param ContribuyenteBase $datoContribuyente datos del contribuyente
+		 * ( ContribuyenteBase::findOne()).
+		 * @return string
+		 */
+		private function capitalValido($datoContribuyente)
+		{
+			$mensaje = null;
+			if ( (float)$datoContribuyente['capital'] == 0 ) {
+				$mensaje = Yii::t('backend', 'El monto del CAPITAL no es valido');
+			}
+			return $mensaje;
+		}
+
+
+
+
+		/**
+		 * Metodo que permite establece si la informacion del representante legal
+		 * de la empresa ( cedula y apellidos y nombres ) son validos. Para la cedula
+		 * del representante se fija el formato A-cedula, donde:
+		 * - A: debe ser valores [Vo E].
+		 * - cedula: debe ser un entero mayor a 1000.
+		 * Para el representante:
+		 * - El mismo debe tener una longitud mayor a 5 caracteres.
+		 * @param ContribuyenteBase $datoContribuyente datos del contribuyente
+		 * ( ContribuyenteBase::findOne()).
+		 * @return array
+		 */
+		private function infoRepresentanteValida($datoContribuyente)
+		{
+			$mensaje = null;
+
+			if ( strlen(trim($datoContribuyente['representante'])) < 5 ) {
+				$mensaje[] = Yii::t('backend', 'No esta definido el nombre del REPRESENTANTE LEGAL');
+			}
+
+			if ( !in_array(trim($datoContribuyente['naturaleza_rep']), ['V', 'E']) || (int)$datoContribuyente['cedula_rep'] < 1000 ) {
+				$mensaje[] = Yii::t('backend', 'No esta definida la cedula del REPRESENTANTE LEGAL');
+			}
+
+			return $mensaje;
+		}
+
+
+
+
+		/**
+		 * Metodo que determina si contribuyente posee una nombre de razon social
+		 * valido. Segun la politica debe ser mayor a 1 caracter.
+		 * @param ContribuyenteBase $datoContribuyente datos del contribuyente
+		 * ( ContribuyenteBase::findOne()).
+		 * @return string
+		 */
+		private function razonSocialValida($datoContribuyente)
+		{
+			$mensaje = null;
+			if ( strlen(trim($datoContribuyente['razon_social'])) <= 1 ) {
+				$mensaje = Yii::t('backend', 'El nombre de la empresa no es valido');
+			}
+
+			return $mensaje;
+		}
 
 	}
 ?>
