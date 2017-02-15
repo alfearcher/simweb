@@ -53,19 +53,27 @@
 	<head>
 	</head>
 	<body>
-		<table repeat_header="1" cellpadding="1" cellspacing="1" width="100%" border="0">
-			<tr>
-				<td class="label-pie-pagina-1-a" colspan="9" style="font-weight: bold;font-size: 90%;font-family: Verdana, Arial, Helvetica, sans-serif;">
-					<?=Html::encode('Firma Autorizada:  ' . $director); ?>
-				</td>
-				<td class="label-pie-pagina-1-c" colspan="1"></td>
+		<div class="row" style="width: 50%;padding:0px;padding-top:-40px;">
+			<div class="col-sm-3" id="logo" style="width: 50%;padding:0px;padding-left: 20px;padding-top:-40px;">
+					<?=Html::img('@common/public/imagen/customize/firma-director.jpg');?>
+			</div>
+		</div>
 
-			</tr>
-			<tr>
-				<td class="label-pie-pagina-2" colspan="10" style="font-weight: bold;font-size: 80%;">
-					<?=Html::encode($nombreCargo); ?>
-				</td>
-			</tr>
-		</table>
+		<div class="row" style="width: 100%;padding:0px;padding-top:-15px;">
+			<table repeat_header="1" cellpadding="1" cellspacing="1" width="100%" border="0">
+				<tr>
+					<td class="label-pie-pagina-1-a" colspan="9" style="font-weight: bold;font-size: 90%;font-family: Verdana, Arial, Helvetica, sans-serif;">
+						<?=Html::encode('Firma Autorizada:  ' . $director); ?>
+					</td>
+					<td class="label-pie-pagina-1-c" colspan="1"></td>
+
+				</tr>
+				<tr>
+					<td class="label-pie-pagina-2" colspan="10" style="font-weight: bold;font-size: 80%;">
+						<?=Html::encode($nombreCargo); ?>
+					</td>
+				</tr>
+			</table>
+		</div>
 	</body>
 </html>
