@@ -535,7 +535,7 @@
 		 */
 		public function getDataProviderHistoricoCertificado($nroSolicitudes)
 		{
-			$query = HistoricoCertificadoCatastral::find();
+			$query = HistoricoCertificadosCatastrales::find();
 
 			$dataProvider = New ActiveDataProvider([
 				'query' => $query,
