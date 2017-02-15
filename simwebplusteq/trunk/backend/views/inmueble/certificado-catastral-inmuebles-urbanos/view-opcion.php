@@ -68,7 +68,7 @@ $this->title = Yii::t('backend', 'View Property Urban');
                 <?= Yii::t('frontend', 'Datos del Avaluos') ?>  
 </div>
     <?= DetailView::widget([
-        'model' => $modelHAvaluos,
+        'model' => $modelHAvaluos, 
         'attributes' => [ 
              'id_historico_avaluo',
              'id_impuesto',

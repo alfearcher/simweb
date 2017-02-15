@@ -102,18 +102,18 @@ class InmueblesRegistrosForm extends \yii\db\ActiveRecord
     public $conn;
     public $conexion;
     public $transaccion;   
-    public $fecha;
-    public $documento_propiedad;
-    public $num_reg;
-    public $reg_mercantil;
-    public $valor_documental;
+    // public $fecha;
+    // public $documento_propiedad;
+    // public $num_reg;
+    // public $reg_mercantil;
+    // public $valor_documental;
 
-    public $tomo;
-    public $protocolo;
-    public $folio;
+    // public $tomo;
+    // public $protocolo;
+    // public $folio;
     
-    public $nro_matriculado;
-    public $asiento_registral;
+    // public $nro_matriculado;
+    // public $asiento_registral;
     public $validacion3;
 
    
@@ -132,7 +132,7 @@ class InmueblesRegistrosForm extends \yii\db\ActiveRecord
 
 
          
-            [['documento_propiedad','validacion3'], 'integer','message' => Yii::t('backend', 'Debe seleccionar una opcion'),'when'=> function($modelRegistro){ return $this->validacion3 == 3; }],
+            [['documento_propiedad','validacion3','tomo'], 'integer','message' => Yii::t('backend', 'Debe seleccionar una opcion'),'when'=> function($modelRegistro){ return $this->validacion3 == 3; }],
             [['documento_propiedad', 'fecha','num_reg','reg_mercantil','valor_documental' ], 'required','message' => Yii::t('backend', 'Campo requerido'),'when'=> function($modelRegistro){ return $this->validacion3 == 3; }],
             [['valor_documental'], 'double','message' => Yii::t('backend', 'debe ser numerico'),'when'=> function($modelRegistro){ return  $this->validacion3 == 3; }],
             

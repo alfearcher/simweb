@@ -150,7 +150,7 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
                                             //->andwhere("inactivo=:inactivo", [":inactivo" => 0])
                                             ->all();
 
-          $_SESSION['datosIRegistros'] = $datosIRegistros; 
+          $_SESSION['datosIRegistros'] = $datosIRegistros;  
           
           $datosHAvaluos = AvaluoCatastralForm::find()->where("id_impuesto=:impuesto", [":impuesto" => $idInmueble])->asArray()
                                             ->andwhere("inactivo=:inactivo", [":inactivo" => 0])
@@ -215,7 +215,7 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
                     
                     $añoUltimoRegistro = explode('-', $valueIn['fecha']);
                     $_SESSION['anioRegistro'] = $añoUltimoRegistro;
-                    $_SESSION['datosURegistros'] = $valueIn;
+                    $_SESSION['datosURegistros'] = $valueIn; 
                 } else {
                  
                   $valueIn = false;
