@@ -569,7 +569,7 @@
 				$model = New BusquedaSolicitudCertificadoForm();
 
 				$dataProvider = $model->getDataProviderHistoricoCertificado($solicitudAprobada);
-				return $this->render('/solicitud/especial/aaee/licencia/lista-historico-licencia',[
+				return $this->render('/solicitud/especial/inmueble/certificadocatastral/lista-historico-licencia',[
 														'model' => $model,
 														'dataProvider' => $dataProvider,
 						]);
