@@ -138,6 +138,16 @@
 		}
 
 
+
+		/**
+		 * Relacion con la entidad "contribuyentes"
+		 * @return ContribuyenteBase.
+		 */
+		public function getDatosContribuyente()
+		{
+			return $this->hasOne(ContribuyenteBase::className(),['id_contribuyente' => 'id_contribuyente']);
+		}
+
 	}
 
 

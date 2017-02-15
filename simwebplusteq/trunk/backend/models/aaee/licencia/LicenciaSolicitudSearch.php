@@ -93,17 +93,38 @@
 		 * Metodo que realiza una busqueda de la solicitud por concepto de emision de licencia.
 		 * El $findModel retorna sin valores y solo aplicando el ->all()
 		 * se obtienen los registros. Esta solicitud puede contener uno o muchos registros
-		 * @param long $nroSolicitud identificador de la solicitud.
+		 * @param integer $nroSolicitud identificador de la solicitud.
 		 * @return Active Record.
 		 */
 		public function findSolicitudLicencia($nroSolicitud)
 		{
-			$findModel = LicenciaSolicitud::find()->where('nro_solicitud =:nro_solicitud',
+			$findModel = LicenciaSolicitud::find()->alias('L')
+			                                      ->where('nro_solicitud =:nro_solicitud',
 													 		[':nro_solicitud' => $nroSolicitud])
-										           ->andWhere('id_contribuyente =:id_contribuyente',
+										           ->andWhere('L.id_contribuyente =:id_contribuyente',
 											   				[':id_contribuyente' => $this->_id_contribuyente]);
 
 			return isset($findModel) ? $findModel : null;
+		}
+
+
+
+
+		/**
+		 * Metodo que genera el proveedor de datos segun
+		 * @param integer $nroSolicitud identificador de la solicitud.
+		 * @return ActiveDataProvider
+		 */
+		public function getDataProviderRubroSegunSolicitud($nroSolicitud)
+		{
+			$query = self::findSolicitudLicencia($nroSolicitud)->joinWith('rubro R', true, 'INNER JOIN')
+			                                                   ->joinWith('datosContribuyente C', true, 'INNER JOIN');
+			$dataProvider = New ActiveDataProvider([
+				'query' => $query
+			]);
+
+			$query->all();
+			return $dataProvider;
 		}
 
 
