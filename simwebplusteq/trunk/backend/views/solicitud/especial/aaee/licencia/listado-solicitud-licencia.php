@@ -157,7 +157,7 @@
 					                	'contentOptions' => [
 				                        	'style' => 'font-size: 90%;',
 				                        ],
-					                    'label' => Yii::t('frontend', 'Tipo de Licencia'),
+					                    'label' => Yii::t('frontend', 'Tipo/Licencia'),
 					                    'value' => function($data) {
                 										return $data['tipo'];
         											},
@@ -171,15 +171,31 @@
                 										return $data['ano_impositivo'];
         											},
 					                ],
+
 					                [
 					                	'contentOptions' => [
 				                        	'style' => 'font-size: 90%;',
 				                        ],
 					                    'label' => Yii::t('frontend', 'ID.'),
+					                    'format' => 'raw',
 					                    'value' => function($data) {
-                										return $data['id_contribuyente'];
+                										//return $data['id_contribuyente'];
+                										return Html::a($data['id_contribuyente'], '#', [
+                																'id' => 'link-id-contribuyente',
+                																'data-toggle' => 'modal',
+                																'data-target' => '#modal',
+                																'data-url' => Url::to(['view-pre-licencia-modal',
+                																					    'nro' => $data['nro_solicitud'],
+                																						'id' => $data['id_contribuyente'],
+                																				 		'a' => $data['ano_impositivo'], 'p' => 1]),
+                																'data-ano-impositivo' => $data['ano_impositivo'],
+                																'data-periodo' => 1,
+                																'data-pjax' => 0,
+                													]);
+
         											},
 					                ],
+
 					                [
 					                	'contentOptions' => [
 				                        	'style' => 'font-size: 90%;',
@@ -281,6 +297,17 @@
 <?php
 $this->registerJs(
     '$(document).on("click", "#link-view-planilla", (function() {
+        $.get(
+            $(this).data("url"),
+            function (data) {
+                //$(".modal-body").html(data);
+                $(".detalle").html(data);
+                $("#modal").modal();
+            }
+        );
+    }));
+
+	$(document).on("click", "#link-id-contribuyente", (function() {
         $.get(
             $(this).data("url"),
             function (data) {
