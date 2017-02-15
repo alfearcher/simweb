@@ -568,7 +568,7 @@
 					$deuda[$value] =  $deudaObjeto;
 				}
 
-			}
+			} 
 
 			return $deuda;
 
