@@ -54,6 +54,10 @@ use Yii;
 use backend\models\inmueble\InmueblesConsulta;
 use common\conexion\ConexionController;
 use backend\models\inmueble\Solvencias;
+
+use common\models\solicitudescontribuyente\SolicitudesContribuyente;
+
+use common\models\configuracion\solicitudplanilla\SolicitudPlanilla;
 /**
  * This is the model class for table "inmuebles".
  *
@@ -101,7 +105,23 @@ class SlCertificadoCatastralForm extends \yii\db\ActiveRecord
         return 'sl_certificado_catastral';        
     }    
  
- 	
+ 	/**
+		 * Relacion con la entidad "solicitides-planillas"
+		 * @return [type] [description]
+		 */
+		public function getPlanillas()
+		{
+			return $this->hasMany(SolicitudPlanilla::className(),['nro_solicitud' => 'nro_solicitud']);
+		}
+
+		/**
+		 * Relacion con la entidad "solicitudes-contribuyente"
+		 * @return [type] [description]
+		 */
+		public function getSolicitud()
+		{
+			return $this->hasOne(SolicitudesContribuyente::className(),['nro_solicitud' => 'nro_solicitud']);
+		}
    
   
 

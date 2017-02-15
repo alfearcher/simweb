@@ -75,6 +75,13 @@
 		        				['label' => 'Aprobar Solicitudes Masivas', 'url' => ['/solicitud/especial/aaee/licencia/procesar-licencia/index']],
 		        			],
 		        		],
+
+		        		['label' => Icon::show('fa fa-check-square', ['class' => $typeLong], $typeIcon) . '&nbsp; Certificado Catastral',
+		        			'items' => [
+		        				['label' => 'Asignar Numero', 'url' => ['/inmueble/licencia/asignar-numero-licencia/index']],
+		        				['label' => 'Aprobar Solicitudes Masivas', 'url' => ['/solicitud/especial/inmueble/certificadocatastral/procesar-certificado/index']],
+		        			],
+		        		],
 		        	],
 		        ],
 
