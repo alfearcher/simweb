@@ -387,7 +387,7 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
 
                   self::actionCedulaCatastralInmuebles();
           } else {
-die('llego a los mensajes de error');
+
             if ($_SESSION['datosUAvaluos'] == null) {
             
                  return MensajeController::actionMensaje(926);
@@ -402,6 +402,7 @@ die('llego a los mensajes de error');
 
               }
           }
+
 
           
         
