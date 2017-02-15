@@ -96,7 +96,7 @@
 				                        ],
 					                	'label' => Yii::t('backend', 'Id Historico'),
 					                    'value' => function($data) {
-                										return $data['id_historico'];
+                										return $data['id_historico_certificados_catastrales'];
         											},
 					                ],
 					                [
@@ -159,7 +159,7 @@
 				                        ],
 					                    'label' => Yii::t('frontend', 'Nro. Licencia'),
 					                    'value' => function($data) {
-                										return $data['licencia'];
+                										return $data['certificado_catastral'];
         											},
 					                ],
 
