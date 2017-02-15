@@ -74,9 +74,9 @@
   
 	
 		<tr class="cuerpo">
-			<td class="info-declaracion" colspan="2.5"><?=Html::encode($resumen['parroquia_catastro']); ?></td>
-			<td class="info-declaracion" colspan="2.5"><?=Html::encode($resumen['sector_catastro']); ?></td>
-			<td class="info-declaracion" colspan="2"><?=Html::encode($resumen['id_impuesto']); ?></td>
+			<td class="info-declaracion" colspan="2.5"><?=Html::encode($resumen['valor_por_mts2']); ?></td>
+			<td class="info-declaracion" colspan="2.5"><?=Html::encode($resumen['valor_por_mts2_terreno']); ?></td>
+			<td class="info-declaracion" colspan="2"><?=Html::encode($resumen['valor']); ?></td>
 			
 			
 		   

@@ -76,10 +76,10 @@
 
 	
 		<tr class="cuerpo">
-			<td class="info-declaracion" colspan="1.5"><?=Html::encode($resumen['estado_catastro']); ?></td>
-			<td class="info-declaracion-x" colspan="1.5"><?=Html::encode($resumen['municipio_catastro']); ?></td>
-			<td class="info-declaracion" colspan="2.5"><?=Html::encode($resumen['parroquia_catastro']); ?></td>
-			<td class="info-declaracion" colspan="2.5"><?=Html::encode($resumen['sector_catastro']); ?></td>
+			<td class="info-declaracion" colspan="1.5"><?=Html::encode($resumen['tipo_inmueble']); ?></td>
+			<td class="info-declaracion" colspan="1.5"><?=Html::encode($resumen['id_uso_inmueble']); ?></td>
+			<td class="info-declaracion" colspan="2.5"><?=Html::encode($resumen['mts2_terreno']); ?></td>
+			<td class="info-declaracion" colspan="2.5"><?=Html::encode($resumen['mts']); ?></td>
 			<td class="info-declaracion" colspan="2"><?=Html::encode($resumen['id_impuesto']); ?></td>
 			
 			

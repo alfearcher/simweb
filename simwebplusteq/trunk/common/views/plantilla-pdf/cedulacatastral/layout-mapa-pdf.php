@@ -55,11 +55,7 @@
 
  ?>
 
-<?php
-    
-	$sumaImpuesto = $resumen['pagoEstimada'] + $resumen['pagoDefinitiva'] + $resumen['pagoAbono'] + $resumen['pagoRetencion'] + $resumen['pagoIndustria'];
-	$subTotal = 0; 
-?>
+
 
 <!-- Especificaciones de los periodos a pagar -->
 <table repeat_header="1" cellpadding="1" cellspacing="1" width="100%" border="0">
@@ -70,24 +66,9 @@
 		<td class="label-mapa" colspan="5"><?=Html::encode('CROQUIS DE UBICACION'); ?></td>
 	</tr >
 	<tr class="cuerpo">
-		<td class="linderos" colspan="5"><?=Html::encode($resumen['id_impuesto']); ?></td>
-		<td class="mapa" colspan="5"><?=Html::encode($resumen['id_impuesto']); ?></td>
-		<br>
-		<br>
-		<br>
-		<br>
-		<br>
-		<br>                             
-		<br>
-		<br>
-		<br>
-		<br>
-		<br>
-		<br>
-		<br>
-		<br>
-		<br>  
-		<br>
+		<td class="linderos" colspan="5"><?=Html::encode($resumen['lindero_norte'].' '.$resumen['lindero_sur'].' '.$resumen['lindero_este'].' '.$resumen['lindero_oeste']); ?></td>
+		<td class="mapa" colspan="5"><?=Html::encode($resumen['valor']); ?></td>
+		
 	</tr> 
 	
 
@@ -118,7 +99,7 @@
 		border-bottom: solid 0.5px #000;
 		font-size: 80%;
 		font-family: Arial, Helvetica, sans-serif;
-		text-align: center;
+		text-align: left;
 	}
 
 
