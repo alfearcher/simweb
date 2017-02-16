@@ -62,11 +62,14 @@
 	use common\models\solicitudescontribuyente\SolicitudesContribuyenteForm;
 	use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 	use common\models\planilla\PlanillaSearch;
-
 	use backend\models\solicitud\especial\aaee\licencia\BusquedaSolicitudLicenciaForm;
 	use backend\models\solicitud\especial\aaee\licencia\SolicitudLicenciaSearch;
 	use common\models\solicitudescontribuyente\ProcesarSolicitudContribuyente;
 	use common\models\aaee\licencia\GenerarLicencia;
+	use backend\models\aaee\licencia\LicenciaSolicitudSearch;
+	use backend\models\aaee\licencia\LicenciaSolicitudForm;
+
+
 
 
 	session_start();		// Iniciando session
@@ -269,9 +272,6 @@
 				$this->redirect(['error-operacion', 'cod' => 702]);
 			}
 		}
-
-
-
 
 
 
@@ -555,6 +555,45 @@
 			}
 		}
 
+
+
+
+
+		/**
+		 * Metodo que permite renderizar una vista con la informacion preliminar de
+		 * la licencia segun el numero de solicitud de la misma.
+		 * @return View
+		 */
+		public function actionViewPreLicenciaModal()
+		{
+			$request = Yii::$app->request;
+			$postGet = $request->get();
+
+			// Identificador del contribuyente
+			$id = $postGet['id'];
+
+			// Año impositivo
+			$añoImpositivo = $postGet['a'];
+
+			// Periodo
+			$periodo = $postGet['p'];
+
+			// Numero de solicitud
+			$nroSolicitud = $postGet['nro'];
+
+			$licenciaSearch = New LicenciaSolicitudSearch($id);
+			$dataProvider = $licenciaSearch->getDataProviderRubroSegunSolicitud($nroSolicitud);
+
+			$models = $dataProvider->getModels();
+			$model = $models[0]['datosContribuyente'];
+
+			return $this->renderAjax('/aaee/licencia/pre-view-datos-licencia',[
+							'model' => $model,
+							'models' => $models,
+							'dataProvider' => $dataProvider,
+					]);
+
+		}
 
 
 
