@@ -966,7 +966,7 @@
 	    		$fecha = date('Y-m-d', strtotime($result->fecha_hora));
 
 	    		// Anexo de ramo
-	    		$existe[] = AnexoRamo::find()->where('fecha_hora_proceso >:fecha_hora_proceso',
+	    		$existe[] = AnexoRamo::find()->where('date(fecha_hora_proceso) >:fecha_hora_proceso',
 	    												[':fecha_hora_proceso' => $fecha])
 	    				  				     ->andWhere('ano_impositivo =:ano_impositivo',
 	    								  				[':ano_impositivo' => date('Y', strtotime($fecha))])
@@ -975,7 +975,7 @@
 	    								     ->exists();
 
 	    		// Desincorporar ramo
-	    		$existe[] = DesincorporarRamo::find()->where('fecha_hora_proceso >:fecha_hora_proceso',
+	    		$existe[] = DesincorporarRamo::find()->where('date(fecha_hora_proceso) >:fecha_hora_proceso',
 	    														[':fecha_hora_proceso' => $fecha])
 	    				  				             ->andWhere('ano_impositivo =:ano_impositivo',
 	    								  						[':ano_impositivo' => date('Y', strtotime($fecha))])
@@ -984,7 +984,7 @@
 	    								             ->exists();
 
 	    		// Correccion de Razon Social
-	    		$existe[] = CorreccionRazonSocial::find()->where('fecha_hora_proceso >:fecha_hora_proceso',
+	    		$existe[] = CorreccionRazonSocial::find()->where('date(fecha_hora_proceso) >:fecha_hora_proceso',
 	    															[':fecha_hora_proceso' => $fecha])
 	    				      			                  ->andWhere('estatus =:estatus',
 	    								  							[':estatus' => 1])
@@ -996,16 +996,16 @@
 	    				      			                     ->andWhere('estatus =:estatus',
 	    								  								[':estatus' => 1])
 	    								                     ->exists();
-die(var_dump($existe));
+
 	    		// Correccion de Representante Legal
-				$existe[] = CorreccionRepresentanteLegal::find()->where('fecha_hora_proceso >:fecha_hora_proceso',
+				$existe[] = CorreccionRepresentanteLegal::find()->where('date(fecha_hora_proceso) >:fecha_hora_proceso',
 	    																	[':fecha_hora_proceso' => $fecha])
 	    				      			                        ->andWhere('estatus =:estatus',
 	    								  									[':estatus' => 1])
 	    								                        ->exists();
 
 	    		// Correccion de Rif
-				$existe[] = CorreccionCedulaRif::find()->where('fecha_hora_proceso >:fecha_hora_proceso',
+				$existe[] = CorreccionCedulaRif::find()->where('date(fecha_hora_proceso) >:fecha_hora_proceso',
 	    															[':fecha_hora_proceso' => $fecha])
 	    				      			               ->andWhere('estatus =:estatus',
 	    								  							[':estatus' => 1])
