@@ -66,6 +66,9 @@
 	use backend\models\aaee\rubro\RubroForm;
 	use backend\models\aaee\rubro\Rubro;
 	use yii\helpers\ArrayHelper;
+	use backend\models\aaee\historico\licencia\HistoricoLicenciaSearch;
+
+
 
 	/**
 	 * Clase que gestiona el funcionamiento de la solicitud para la emision de
@@ -235,7 +238,7 @@
 		 */
 		public function findSolicitudCambioRepresentantePendienta()
 		{
-			$findModel = CorreccionDomicilioFiscal::find()->alias('A')
+			$findModel = CorreccionRepresentanteLegal::find()->alias('A')
 			                              ->where('id_contribuyente =:id_contribuyente',
 	    											[':id_contribuyente' => $this->_id_contribuyente])
 	    								  ->andWhere('estatus =:estatus',
@@ -940,5 +943,86 @@
 	    		return isset($result->id_impuesto) ? $result->id_impuesto : null;
 	    	}
 	    }
+
+
+
+	    /**
+	     * Metodo que permite determinar si se puede realizar otra solicitud de emision de licencia.
+	     * Segun politica de negocio una solicitud nueva de emision se puede ejecutar si:
+	     * - Existe una solicitud de modificacion de los datos de la licencia aprobada que se haya
+	     * realizado posterior al ultimo registro del historico de licencia.
+	     * @return string
+	     */
+	    public function validarNuevaSolicitud()
+	    {
+	    	$mensaje = null;
+	    	$historicoSearch = New HistoricoLicenciaSearch($this->_id_contribuyente);
+
+	    	// Ultimo historico del año actual.
+	    	$result = $historicoSearch->findUltimoHistoricoAnoActual();
+
+	    	if ( $result !== null ) {
+	    		// Ultima fecha del historico.
+	    		$fecha = date('Y-m-d', strtotime($result->fecha_hora));
+
+	    		// Anexo de ramo
+	    		$existe[] = AnexoRamo::find()->where('fecha_hora_proceso >:fecha_hora_proceso',
+	    												[':fecha_hora_proceso' => $fecha])
+	    				  				     ->andWhere('ano_impositivo =:ano_impositivo',
+	    								  				[':ano_impositivo' => date('Y', strtotime($fecha))])
+	    				      			     ->andWhere('estatus =:estatus',
+	    								  				[':estatus' => 1])
+	    								     ->exists();
+
+	    		// Desincorporar ramo
+	    		$existe[] = DesincorporarRamo::find()->where('fecha_hora_proceso >:fecha_hora_proceso',
+	    														[':fecha_hora_proceso' => $fecha])
+	    				  				             ->andWhere('ano_impositivo =:ano_impositivo',
+	    								  						[':ano_impositivo' => date('Y', strtotime($fecha))])
+	    				      			             ->andWhere('estatus =:estatus',
+	    								  						[':estatus' => 1])
+	    								             ->exists();
+
+	    		// Correccion de Razon Social
+	    		$existe[] = CorreccionRazonSocial::find()->where('fecha_hora_proceso >:fecha_hora_proceso',
+	    															[':fecha_hora_proceso' => $fecha])
+	    				      			                  ->andWhere('estatus =:estatus',
+	    								  							[':estatus' => 1])
+	    								                  ->exists();
+
+	    		// Correccion de Domicilio Fiscal
+				$existe[] = CorreccionDomicilioFiscal::find()->where('fecha_hora_proceso >:fecha_hora_proceso',
+	    																[':fecha_hora_proceso' => $fecha])
+	    				      			                     ->andWhere('estatus =:estatus',
+	    								  								[':estatus' => 1])
+	    								                     ->exists();
+
+	    		// Correccion de Representante Legal
+				$existe[] = CorreccionRepresentanteLegal::find()->where('fecha_hora_proceso >:fecha_hora_proceso',
+	    																	[':fecha_hora_proceso' => $fecha])
+	    				      			                        ->andWhere('estatus =:estatus',
+	    								  									[':estatus' => 1])
+	    								                        ->exists();
+
+	    		// Correccion de Rif
+				$existe[] = CorreccionCedulaRif::find()->where('fecha_hora_proceso >:fecha_hora_proceso',
+	    															[':fecha_hora_proceso' => $fecha])
+	    				      			               ->andWhere('estatus =:estatus',
+	    								  							[':estatus' => 1])
+	    								               ->exists();
+
+	  			foreach ( $existe as $key => $value ) {
+	  				if ( $value == true ) {
+	  					return true;
+	  				}
+	  			}
+	  			return false;
+
+	    	} else {
+	    		return true;
+	    	}
+	    }
+
+
 	}
  ?>
