@@ -90,7 +90,7 @@
 			// 					 'url' => [$urlNueva],
 			// 					 'visible' => $urlNueva == '#' ? false : true,
 			// ],
-			['label' => Icon::show('fa fa-floppy-o',['class' => 'fa-2x'], Icon::FA) . '&nbsp;' . Yii::t('backend','Renovacón'),
+			['label' => Icon::show('fa fa-floppy-o',['class' => 'fa-2x'], Icon::FA) . '&nbsp;' . Yii::t('backend','Renovación'),
 								 'options' => [
 								 		'class' => 'item-principal',
 								 		'data' => [
