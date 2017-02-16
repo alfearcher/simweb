@@ -332,8 +332,7 @@
 						'pagination' => false,
 			]);
 			return $provider;
-		}
-
+		} 
 
 
 

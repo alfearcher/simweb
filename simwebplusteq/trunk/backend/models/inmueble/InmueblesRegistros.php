@@ -86,18 +86,18 @@ use Yii;
 
 class InmueblesRegistros extends \yii\db\ActiveRecord
 {
-    public $fecha;
-    public $documento_propiedad;
-    public $num_reg;
-    public $reg_mercantil;
-    public $valor_documental;
+    // public $fecha;
+    // public $documento_propiedad;
+    // public $num_reg;
+    // public $reg_mercantil;
+    // public $valor_documental;
 
-    public $tomo;
-    public $protocolo;
-    public $folio;
+    // public $tomo;
+    // public $protocolo;
+    // public $folio;
     
-    public $nro_matriculado;
-    public $asiento_registral;
+    // public $nro_matriculado;
+    // public $asiento_registral;
     public static function tableName()
     {
         return 'inmuebles_registros';

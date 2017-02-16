@@ -582,8 +582,6 @@
 
 
 
-
-
     	/**
 		 * Metodo que permite renderizar una vista de los detalles de la planilla
 		 * que se encuentran en la solicitud.
@@ -628,11 +626,6 @@
             $modelFind = $buscar->findCertificado($nro_solicitud); 
             return isset($modelFind) ? $modelFind : null;
         }
-
-
-
-
-
 
 
 
