@@ -29,11 +29,11 @@ class TipoNaturaleza extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['siglas_tnaturaleza', 'nb_naturaleza'], 'required'],
-            [['siglas_tnaturaleza'], 'string', 'max' => 2],
-            [['nb_naturaleza'], 'string', 'max' => 45],
-            [['siglas_tnaturaleza'], 'unique'],
-            [['nb_naturaleza'], 'unique']
+            [['siglas_tnaturaleza', 'nb_naturaleza'], 'required','message' => 'Campo requerido'],
+            [['siglas_tnaturaleza'], 'string', 'max' => 2,'message' => 'Maximo 2 caracteres'],
+            [['nb_naturaleza'], 'string', 'max' => 45,'message' => 'Maximo 45 caracteres'],
+            [['siglas_tnaturaleza'], 'unique', 'message' => 'No debe coincidir con datos ya ingresado'],
+            [['nb_naturaleza'], 'unique','message' => 'No debe coincidir con datos ya ingresado']
         ];
     }
 

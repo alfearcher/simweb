@@ -118,32 +118,32 @@ class DatosBasicoForm extends \yii\db\ActiveRecord
     public function rules()
     {
         return [            
-            [['ente','naturaleza', 'cedula', 'tipo',  'tlf_hab', 'email'],'required'],
+            [['ente','naturaleza', 'cedula', 'tipo',  'tlf_hab', 'email'],'required','message' => 'Campo requerido'],
             [['ente','cedula', 'tipo', 'tipo_naturaleza', 'id_rif', 'id_cp', 'inactivo', 'cuenta', 'num_reg', 'extension_horario', 'num_empleados', 'tipo_contribuyente', 'licencia', 'agente_retencion', 'manzana_limite', 'lote_1', 'lote_2', 'lote_3', 'foraneo', 'no_declara', 'econ_informal', 'grupo_contribuyente', 'no_sujeto'], 'integer'],
             [['fecha_nac', 'fecha', 'fecha_inclusion', 'fecha_inicio', 'fe_inic_agente_reten'], 'safe'],            
             [['capital'], 'number'],            
-            [['naturaleza', 'sexo'], 'string', 'max' => 1],
+            [['naturaleza', 'sexo'], 'string', 'max' => 1,'message' => 'Maximo un caracter'],
             [['nombres', 'apellidos', 'nit', 'casa_edf_qta_dom', 'reg_mercantil', 'tomo', 'folio', 'horario'], 'string', 'max' => 50],
-            [['razon_social'], 'string', 'max' => 75],
+            [['razon_social'], 'string', 'max' => 75,'message' => 'Maximo 75 caracteres'],
             [['sexo'],'default', 'value' => ''],
             [['razon_social', 'tlf_ofic'], 'required', 'when' => function($model) {
                                                         return $model->tipo_naturaleza == 1;
-            }],
+            },'message' => 'Campo requerido'],
             [['nombres', 'apellidos', 'tlf_celular'], 'required', 'when' => function($model) {
                                                         return $model->tipo_naturaleza == 0;
-            }],
-            [['representante'], 'string', 'max' => 200],
-            [['piso_nivel_no_dom', 'apto_dom'], 'string', 'max' => 25],
-            [['domicilio_fiscal'], 'string', 'max' => 250],
-            [['catastro', 'email'], 'string', 'max' => 60],
-            [['tlf_hab', 'tlf_hab_otro', 'tlf_ofic', 'tlf_ofic_otro', 'tlf_celular', 'fax', 'id_sim'], 'string', 'max' => 15],
-            [['nivel'], 'string', 'max' => 3],
-            [['ruc'], 'string', 'max' => 20],
+            },'message' => 'Campo requerido'],
+            [['representante'], 'string', 'max' => 200,'message' => 'Maximo 200 caracteres'],
+            [['piso_nivel_no_dom', 'apto_dom'], 'string', 'max' => 25,'message' => 'Maximo 25 caracteres'],
+            [['domicilio_fiscal'], 'string', 'max' => 250,'message' => 'Maximo 250 caracteres'],
+            [['catastro', 'email'], 'string', 'max' => 60,'message' => 'Maximo 60 caracteres'],
+            [['tlf_hab', 'tlf_hab_otro', 'tlf_ofic', 'tlf_ofic_otro', 'tlf_celular', 'fax', 'id_sim'], 'string', 'max' => 15,'message' => 'Maximo 15 caracteres'],
+            [['nivel'], 'string', 'max' => 3,'message' => 'Maximo 3 caracteres'],
+            [['ruc'], 'string', 'max' => 20,'message' => 'Maximo 20 caracteres'],
             ['email', 'filter','filter'=>'strtolower'],
             ['email', 'email'],
-            ['tlf_ofic_otro','string', 'max'=>12],
+            ['tlf_ofic_otro','string', 'max'=>12,'message' => 'Maximo 12 caracteres'],
             ['ente', 'default', 'value' => Yii::$app->ente->getEnte()],
-            [['naturaleza', 'cedula', 'tipo', 'tipo_naturaleza', 'id_rif'], 'unique', 'targetAttribute' => ['naturaleza', 'cedula', 'tipo', 'tipo_naturaleza', 'id_rif'], 'message' => 'The combination of Naturaleza, Cedula, Tipo, Tipo Naturaleza and Id Rif has already been taken.']
+            [['naturaleza', 'cedula', 'tipo', 'tipo_naturaleza', 'id_rif'], 'unique', 'targetAttribute' => ['naturaleza', 'cedula', 'tipo', 'tipo_naturaleza', 'id_rif'], 'message' => 'La combinacion de Naturaleza, Cedula, Tipo, Tipo Naturaleza y Id Rif ha sido usada.']
         ];
     }
 

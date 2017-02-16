@@ -18,7 +18,7 @@ class DatosBasicoSearch extends Contribuyentes
     public function rules()
     {
         return [
-            [['id_contribuyente', 'ente', 'cedula', 'tipo', 'tipo_naturaleza', 'id_rif', 'id_cp', 'inactivo', 'cuenta', 'num_reg', 'extension_horario', 'num_empleados', 'tipo_contribuyente', 'licencia', 'agente_retencion', 'manzana_limite', 'lote_1', 'lote_2', 'lote_3', 'foraneo', 'no_declara', 'econ_informal', 'grupo_contribuyente', 'no_sujeto'], 'integer'],
+            [['id_contribuyente', 'ente', 'cedula', 'tipo', 'tipo_naturaleza', 'id_rif', 'id_cp', 'inactivo', 'cuenta', 'num_reg', 'extension_horario', 'num_empleados', 'tipo_contribuyente', 'licencia', 'agente_retencion', 'manzana_limite', 'lote_1', 'lote_2', 'lote_3', 'foraneo', 'no_declara', 'econ_informal', 'grupo_contribuyente', 'no_sujeto'], 'integer', ],
             [['naturaleza', 'nombres', 'apellidos', 'razon_social', 'representante', 'nit', 'fecha_nac', 'sexo', 'casa_edf_qta_dom', 'piso_nivel_no_dom', 'apto_dom', 'domicilio_fiscal', 'catastro', 'tlf_hab', 'tlf_hab_otro', 'tlf_ofic', 'tlf_ofic_otro', 'tlf_celular', 'fax', 'email', 'reg_mercantil', 'tomo', 'folio', 'fecha', 'horario', 'id_sim', 'nivel', 'fecha_inclusion', 'fecha_inicio', 'fe_inic_agente_reten', 'ruc'], 'safe'],
             [['capital'], 'number'],
         ];
