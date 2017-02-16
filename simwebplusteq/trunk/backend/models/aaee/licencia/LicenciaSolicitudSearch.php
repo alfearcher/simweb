@@ -960,7 +960,7 @@
 
 	    	// Ultimo historico del año actual.
 	    	$result = $historicoSearch->findUltimoHistoricoAnoActual();
-
+die(var_dump($result));
 	    	if ( $result !== null ) {
 	    		// Ultima fecha del historico.
 	    		$fecha = date('Y-m-d', strtotime($result->fecha_hora));
