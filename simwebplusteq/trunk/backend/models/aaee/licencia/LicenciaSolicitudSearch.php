@@ -960,7 +960,7 @@
 
 	    	// Ultimo historico del año actual.
 	    	$result = $historicoSearch->findUltimoHistoricoAnoActual();
-die(var_dump($result));
+
 	    	if ( $result !== null ) {
 	    		// Ultima fecha del historico.
 	    		$fecha = date('Y-m-d', strtotime($result->fecha_hora));
@@ -996,7 +996,7 @@ die(var_dump($result));
 	    				      			                     ->andWhere('estatus =:estatus',
 	    								  								[':estatus' => 1])
 	    								                     ->exists();
-
+die(var_dump($existe));
 	    		// Correccion de Representante Legal
 				$existe[] = CorreccionRepresentanteLegal::find()->where('fecha_hora_proceso >:fecha_hora_proceso',
 	    																	[':fecha_hora_proceso' => $fecha])
