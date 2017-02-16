@@ -208,8 +208,10 @@
 								<div class="capital" style="margin-left: 0px;">
 									<?= $form->field($model, 'capital')->textInput([
 																				'id' => 'id-capital',
-																				'style' => 'width:100%;background-color:white;',
-																				'value' => $datosContribuyente['capital'],
+																				'style' => 'width:100%;
+																				            background-color:white;
+																				            text-align:right;',
+																				'value' => Yii::$app->formatter->asDecimal($datosContribuyente['capital'], 2),
 																				'readOnly' => true,
 
 																		])->label('Capital') ?>
@@ -380,21 +382,21 @@
 
 				                    [
 				                        'contentOptions' => [
-				                              'style' => 'font-size: 90%;',
+				                              'style' => 'font-size: 90%;text-align:right;',
 				                        ],
 				                        'label' => Yii::t('frontend', 'Alicuota'),
 				                        'value' => function($data) {
-				                        				return $data['alicuota'];
+				                        				return Yii::$app->formatter->asDecimal($data['alicuota'], 2);
 				            			           },
 				                    ],
 
 				                   	[
 				                        'contentOptions' => [
-				                              'style' => 'font-size: 90%;',
+				                              'style' => 'font-size: 90%;text-align:right;',
 				                        ],
 				                        'label' => Yii::t('frontend', 'Minimo'),
 				                        'value' => function($data) {
-				                        				return $data['minimo'];
+				                        				return Yii::$app->formatter->asDecimal($data['minimo'], 2);
 				            			           },
 				                    ],
 					        	]
