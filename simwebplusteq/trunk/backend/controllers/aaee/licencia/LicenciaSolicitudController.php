@@ -184,28 +184,37 @@
 
 				$tipo = $_SESSION['tipo'];
 				//$mensajes = [];
-				$mensajes = $searchLicencia->validarEvento(date('Y'), $tipo);
 
-				if ( count($mensajes) == 0 ) {
-					$modelParametro = New ParametroSolicitud($_SESSION['id_config_solicitud']);
-					// Se obtiene el tipo de solicitud. Se retorna un array donde el key es el nombre
-					// del parametro y el valor del elemento es el contenido del campo en base de datos.
-					$config = $modelParametro->getParametroSolicitud([
-															'id_config_solicitud',
-															'tipo_solicitud',
-															'impuesto',
-															'nivel_aprobacion'
-												]);
+				if ( $searchLicencia->validarNuevaSolicitud() ) {
+					$mensajes = $searchLicencia->validarEvento(date('Y'), $tipo);
 
-					if ( isset($config) ) {
-						$_SESSION['conf'] = $config;
-						$_SESSION['begin'] = 1;
-						$this->redirect(['index-create']);
+					if ( count($mensajes) == 0 ) {
+						$modelParametro = New ParametroSolicitud($_SESSION['id_config_solicitud']);
+						// Se obtiene el tipo de solicitud. Se retorna un array donde el key es el nombre
+						// del parametro y el valor del elemento es el contenido del campo en base de datos.
+						$config = $modelParametro->getParametroSolicitud([
+																'id_config_solicitud',
+																'tipo_solicitud',
+																'impuesto',
+																'nivel_aprobacion'
+													]);
+
+						if ( isset($config) ) {
+							$_SESSION['conf'] = $config;
+							$_SESSION['begin'] = 1;
+							$this->redirect(['index-create']);
+						} else {
+							// No se obtuvieron los parametros de la configuracion.
+							return $this->redirect(['error-operacion', 'cod' => 955]);
+						}
 					} else {
-						// No se obtuvieron los parametros de la configuracion.
-						return $this->redirect(['error-operacion', 'cod' => 955]);
+						// Mostrar mensajes que indica porque no puede continuar con la solicitud.
+						return $this->render('@frontend/views/aaee/licencia/mensaje-error',[
+															'mensajes' => $mensajes
+								]);
 					}
 				} else {
+					$mensajes[] = Yii::t('backend', 'No existen cambios en los datos de la licencia actual');
 					// Mostrar mensajes que indica porque no puede continuar con la solicitud.
 					return $this->render('@frontend/views/aaee/licencia/mensaje-error',[
 														'mensajes' => $mensajes
