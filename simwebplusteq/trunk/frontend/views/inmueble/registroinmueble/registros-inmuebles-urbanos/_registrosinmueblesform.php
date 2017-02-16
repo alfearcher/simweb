@@ -466,7 +466,7 @@ Session["variablephp"] = tu;
                             </div> 
                         
                             <div class="col-sm-4"> 
-                            <?= $form->field($model, 'observacion')->textarea(['maxlength' => true,'style' => 'width:300px;','readOnly' =>true])->label(false) ?>
+                            <?= $form->field($model, 'observacion')->textarea(['maxlength' => true,'style' => 'width:300px;','readOnly' =>true,'value'=>$_SESSION['datosInmueble']['observacion']])->label(false) ?>
                             </div>    
                                                                                           
                             <div class="col-sm-2"> 

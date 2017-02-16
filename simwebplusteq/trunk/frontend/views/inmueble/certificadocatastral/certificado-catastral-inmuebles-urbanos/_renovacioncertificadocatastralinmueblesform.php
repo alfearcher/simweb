@@ -389,7 +389,7 @@ Session["variablephp"] = tu;
                             </div>
                        
                             <div class="col-sm-1" id="unidad1c" style="display:none">
-                            <?= $form->field($model, 'unidad_catastro')->textInput(['style' => 'width:80px;','readOnly' => true])->label(false) ?>
+                            <?= $form->field($model, 'unidad_catastro')->textInput(['style' => 'width:80px;','readOnly' => true,'value'=>$_SESSION['datosInmueble']['unidad_catastro']])->label(false) ?>
                             </div>                                          
                         
                    </div>
