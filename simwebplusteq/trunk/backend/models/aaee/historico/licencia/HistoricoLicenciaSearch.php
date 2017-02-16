@@ -257,7 +257,7 @@
 		{
 			$findModel = self::findHistoricoLicenciaModel();
 			$model = $findModel->andWhere('nro_solicitud =:nro_solicitud',
-										[':nro_solicitud' => $nroSolicitud])
+												[':nro_solicitud' => $nroSolicitud])
 							   ->all();
 
 			return ( count($model) > 0 ) ? $model : [];
@@ -273,7 +273,7 @@
 		 * @param  integer $añoImpositivo año impositivo
 		 * @return active record
 		 */
-		private function findUltimoHistoricoSegunAnoImpositivo($añoImpositivo)
+		public function findUltimoHistoricoSegunAnoImpositivo($añoImpositivo)
 		{
 			$findModel = self::findHistoricoLicenciaModel();
 			$model = $findModel->andWhere('ano_impositivo =:ano_impositivo',
@@ -299,7 +299,7 @@
 			$findModel = self::findUltimoHistoricoSegunAnoImpositivo($añoImpositivo);
 
 			$model = $findModel->andWhere('inactivo =:inactivo',
-										[':inactivo' => 0])
+												[':inactivo' => 0])
 							   ->limit(1)->one();
 			return $model;
 
