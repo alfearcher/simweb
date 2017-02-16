@@ -140,12 +140,12 @@
 															'style' => 'font-weight:bold;'
 														]);
 									?>
-									<?=Html::tag('p', Yii::t('backend', 'Las actualizaciones y modificaciones de los datos de las licencias solo se verán reflejados cuando se cumplan las condiciones siguientes:'),
+									<?=Html::tag('p', Yii::t('backend', 'Las actualizaciones y/o modificaciones de los datos de las licencias solo se verán reflejados cuando se cumplan las condiciones siguientes:'),
 														[
 															'style' => 'font-size: 120%;'
 														]);
 									?>
-									<?=Html::tag('li', Yii::t('backend', 'Dichas solicitudes hayan sido aprobadas por el ente emisor de la licencia.'),
+									<?=Html::tag('li', Yii::t('backend', 'Dichas solicitudes de actualizaciones y/o modificaciones hayan sido aprobadas por el ente emisor de la licencia.'),
 														[
 															'style' => 'font-size: 120%;'
 														]);
@@ -160,7 +160,7 @@
 															'style' => 'font-weight:bold;'
 														]);
 									?>
-									<?=Html::tag('li', Yii::t('backend', 'Realice todas las solicitudes de actualización y modificación sobre los datos de la licencia que consideré pertinente y espere a que las mismas sean aprobadas para luego solicitar la emision de una licencia.'),
+									<?=Html::tag('li', Yii::t('backend', 'Realice todas las solicitudes de actualización y/o modificación sobre los datos de la licencia que consideré pertinente y espere a que las mismas sean aprobadas para luego solicitar la emision de una licencia.'),
 														[
 															'style' => 'font-size: 120%;'
 														]);
@@ -208,8 +208,10 @@
 								<div class="capital" style="margin-left: 0px;">
 									<?= $form->field($model, 'capital')->textInput([
 																				'id' => 'id-capital',
-																				'style' => 'width:100%;background-color:white;',
-																				'value' => $datosContribuyente['capital'],
+																				'style' => 'width:100%;
+																				            background-color:white;
+																				            text-align:right;',
+																				'value' => Yii::$app->formatter->asDecimal($datosContribuyente['capital'], 2),
 																				'readOnly' => true,
 
 																		])->label('Capital') ?>
@@ -380,21 +382,21 @@
 
 				                    [
 				                        'contentOptions' => [
-				                              'style' => 'font-size: 90%;',
+				                              'style' => 'font-size: 90%;text-align:right;',
 				                        ],
 				                        'label' => Yii::t('frontend', 'Alicuota'),
 				                        'value' => function($data) {
-				                        				return $data['alicuota'];
+				                        				return Yii::$app->formatter->asDecimal($data['alicuota'], 2);
 				            			           },
 				                    ],
 
 				                   	[
 				                        'contentOptions' => [
-				                              'style' => 'font-size: 90%;',
+				                              'style' => 'font-size: 90%;text-align:right;',
 				                        ],
 				                        'label' => Yii::t('frontend', 'Minimo'),
 				                        'value' => function($data) {
-				                        				return $data['minimo'];
+				                        				return Yii::$app->formatter->asDecimal($data['minimo'], 2);
 				            			           },
 				                    ],
 					        	]
