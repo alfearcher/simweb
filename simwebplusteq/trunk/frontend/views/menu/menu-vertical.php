@@ -82,12 +82,12 @@
 		        					   		]
 		        					   	],
 
-	        					   		// ['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Solvencia',
-		        					   	// 	'items' => [
-	        					   		// 		['label' => 'Solicitar Emision', 'url' => ['/aaee/solvencia/solvencia-actividad-economica-solicitud/index', 'id' => 114]],
-	        					   		// 		['label' => 'Descargar Solvencia', 'url' => ['/aaee/solvencia/solvencia-actividad-generar/index']],
-		        					   	// 	]
-		        					   	// ],
+	        					   		['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Solvencia',
+		        					   		'items' => [
+	        					   				['label' => 'Solicitar Emision', 'url' => ['/aaee/solvencia/solvencia-actividad-economica-solicitud/index', 'id' => 114]],
+	        					   				['label' => 'Descargar Solvencia', 'url' => ['/aaee/solvencia/solvencia-actividad-generar/index']],
+		        					   		]
+		        					   	],
 
 		        					   	['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Modificion de Datos',
 		        					   		'items' => [
@@ -135,12 +135,12 @@
 		        		//	SOLICITUDES DE INMUEBLES URBANOS
 		        		['label' => Icon::show('fa fa-home',['class' => $typeLong], $typeIcon) . '&nbsp; Inmuebles Urbanos',
 		        			'items' => [
-		        						// ['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Solvencia',
-		        					 //   		'items' => [
-	        					  //  				['label' => 'Solicitar Emision', 'url' => ['/inmueble/solvencia/solvencia-inmueble/index', 'id' => 116]],
-	        					  //  				['label' => 'Descargar Solvencia', 'url' => ['/inmueble/solvencia/solvencia-inmueble-generar/index']],
-		        					 //   		]
-		        					 //   	],
+		        						['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Solvencia',
+		        					   		'items' => [
+	        					   				['label' => 'Solicitar Emision', 'url' => ['/inmueble/solvencia/solvencia-inmueble/index', 'id' => 116]],
+	        					   				['label' => 'Descargar Solvencia', 'url' => ['/inmueble/solvencia/solvencia-inmueble-generar/index']],
+		        					   		]
+		        					   	],
 		        						['label' => 'Inscripción de Inmuebles Urbanos', 'url' => ['inmueble/inscripcion/inscripcion-inmuebles-urbanos/inscripcion-inmuebles-urbanos','id' =>68]],
 		        						//['label' => 'Avaluo Catastral', 'url' => ['inmueble/avaluocatastral/avaluo-catastral-inmuebles-urbanos/index','id' =>6]],
 		        						['label' => 'Datos Registro de Propiedad', 'url' => ['/inmueble/registroinmueble/registros-inmuebles-urbanos/index']],
@@ -163,12 +163,12 @@
 		        		//	SOLICITUDES DE VEHICULOS
 		        		['label' => Icon::show('fa fa-car',['class' => $typeLong], $typeIcon) . '&nbsp; Vehiculos',
 		        			'items' => [
-		        						// ['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Solvencia',
-		        					 //   		'items' => [
-	        					  //  				['label' => 'Solicitar Emision', 'url' => ['/vehiculo/solvencia/solvencia-vehiculo/index', 'id' => 115]],
-	        					  //  				['label' => 'Descargar Solvencia', 'url' => ['/vehiculo/solvencia/solvencia-vehiculo-generar/index']],
-		        					 //   		]
-		        					 //   	],
+		        						['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Solvencia',
+		        					   		'items' => [
+	        					   				['label' => 'Solicitar Emision', 'url' => ['/vehiculo/solvencia/solvencia-vehiculo/index', 'id' => 115]],
+	        					   				['label' => 'Descargar Solvencia', 'url' => ['/vehiculo/solvencia/solvencia-vehiculo-generar/index']],
+		        					   		]
+		        					   	],
 		        						['label' => 'Inscripci&oacute;n de Vehiculos' , 'url' =>['/vehiculo/registrar/registrar-vehiculo/registrar-vehiculo', 'id' =>60]],
 		        						// ['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . 'Calcomania',
 					        			// 	'items' => [
