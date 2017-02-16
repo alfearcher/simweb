@@ -582,6 +582,45 @@
 
 
 
+		/**
+		 * Metodo que permite renderizar una vista con la informacion preliminar de
+		 * la licencia segun el numero de solicitud de la misma.
+		 * @return View
+		 */
+		public function actionViewPreCertificadoModal()
+		{
+			$request = Yii::$app->request;
+			$postGet = $request->get();
+
+			// Identificador del contribuyente
+			$id = $postGet['id'];
+
+			// Año impositivo
+			$añoImpositivo = $postGet['a'];
+
+			// Periodo
+			$periodo = $postGet['p'];
+
+			// Numero de solicitud
+			$nroSolicitud = $postGet['nro'];
+
+
+			
+
+			$certificadoSearch = self::findCertificadoCatastralUrbano($nroSolicitud,$id);
+			
+die(var_dump($certificadoSearch['id_impuesto']));
+			$models = $dataProvider->getModels();
+			$model = $models[0]['datosContribuyente'];
+
+			return $this->renderAjax('/inmueble/certificado-catastral-inmuebles-urbanos/pre-view-datos-licencia',[
+							'model' => $model,
+							'models' => $models,
+							'dataProvider' => $dataProvider,
+					]);
+
+		}
+
     	/**
 		 * Metodo que permite renderizar una vista de los detalles de la planilla
 		 * que se encuentran en la solicitud.
