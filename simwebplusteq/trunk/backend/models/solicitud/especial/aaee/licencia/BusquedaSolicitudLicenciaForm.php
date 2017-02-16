@@ -54,6 +54,7 @@
 	use backend\models\aaee\historico\licencia\HistoricoLicencia;
 	use common\models\deuda\DeudaSearch;
 	use common\models\deuda\Solvente;
+	use yii\validators\EmailValidator;
 
 
 
@@ -530,8 +531,6 @@
 			}
 
 
-
-
 			return $observacion;
 		}
 
@@ -720,6 +719,7 @@
 			} else {
 				$mensaje[] = self::domicilioValido($contribuyente);
 				$mensaje[] = self::capitalValido($contribuyente);
+				$mensaje[] = self::emailValido($contribuyente);
 
 				$ms = self::infoRepresentanteValida($contribuyente);
 				if ( count($ms) > 0 ) {
@@ -830,5 +830,24 @@
 			return $mensaje;
 		}
 
+
+
+		/**
+		 * Metodo que determina si el email del contribuyente es valido.
+		 * @param ContribuyenteBase $datoContribuyente datos del contribuyente
+		 * ( ContribuyenteBase::findOne()).
+		 * @return string
+		 */
+		private function emailValido($datoContribuyente)
+		{
+			$mensaje = null;
+			$validator = new EmailValidator();
+
+			if ( !$validator->validate($datoContribuyente['email']) ) {
+				$mensaje = Yii::t('backend', 'El EMAIL del contribuyente no es valido');
+			}
+
+			return $mensaje;
+		}
 	}
 ?>
