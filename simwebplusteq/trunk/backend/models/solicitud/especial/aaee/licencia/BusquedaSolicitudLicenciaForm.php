@@ -755,7 +755,7 @@
 		{
 			$mensaje = null;
 			if ( strlen(trim($datoContribuyente['domicilio_fiscal'])) < 10 ) {
-				$mensaje = Yii::t('backend', 'No se encontro infonación del DOMICILIO FISCAL');
+				$mensaje = Yii::t('backend', 'No se encontro infomación del DOMICILIO FISCAL');
 			}
 			return $mensaje;
 		}
