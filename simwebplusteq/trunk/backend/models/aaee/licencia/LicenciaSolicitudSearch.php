@@ -991,7 +991,7 @@
 	    								                  ->exists();
 
 	    		// Correccion de Domicilio Fiscal
-				$existe[] = CorreccionDomicilioFiscal::find()->where('fecha_hora_proceso >:fecha_hora_proceso',
+				$existe[] = CorreccionDomicilioFiscal::find()->where('date(fecha_hora_proceso) >:fecha_hora_proceso',
 	    																[':fecha_hora_proceso' => $fecha])
 	    				      			                     ->andWhere('estatus =:estatus',
 	    								  								[':estatus' => 1])
