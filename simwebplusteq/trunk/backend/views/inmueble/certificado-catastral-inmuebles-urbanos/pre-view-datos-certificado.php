@@ -76,7 +76,7 @@
 	<meta http-equiv="refresh">
     <div class="panel panel-primary" style="width: 100%;">
         <div class="panel-heading">
-        	<h3><?= Html::encode(Yii::t('frontend', 'Datos preliminares del Certificado Catastral. Información de la solicitud: ' . $models[0]['nro_solicitud'])) ?></h3>
+        	<h3><?= Html::encode(Yii::t('frontend', 'Datos preliminares del Certificado Catastral. Información de la solicitud: ' . $modelCertificado['nro_solicitud'])) ?></h3>
         </div>
 
 <!-- Cuerpo del formulario -->
@@ -98,10 +98,10 @@
 						<div class="row">
 							<div class="col-sm-2" style="width: 20%;padding: 0px; padding-top: 10px;">
 								<div class="rif" style="margin-left: 0px;">
-									<?= $form->field($model, 'rif')->textInput([
+									<?= $form->field($model, 'id_rif')->textInput([
 																				'id' => 'id-rif',
 																				'style' => 'width:100%;background-color:white;',
-																				'value' => $model['naturaleza']. '-'. $model['cedula'] . '-' . $model['tipo'],
+																				'value' => $modelContribuyente['naturaleza']. '-'. $modelContribuyente['cedula'] . '-' . $modelContribuyente['tipo'],
 																				'readOnly' => true,
 
 																		])->label('RIF') ?>
@@ -113,7 +113,7 @@
 									<?= $form->field($model, 'razon_social')->textInput([
 																				'id' => 'id-razon-social',
 																				'style' => 'width:100%;background-color:white;',
-																				'value' => $model['razon_social'],
+																				'value' => $modelContribuyente['razon_social'],
 																				'readOnly' => true,
 
 																		])->label('Razon Social') ?>
@@ -122,15 +122,15 @@
 
 							<div class="col-sm-2" style="width: 20%;padding: 0px; padding-top: 10px;padding-left: 5px;">
 								<div class="capital" style="margin-left: 0px;">
-									<?= $form->field($model, 'capital')->textInput([
+									<?= $form->field($model, 'id_inmueble')->textInput([
 																				'id' => 'id-capital',
 																				'style' => 'width:100%;
 																				 			background-color:white;
 																				 			text-align:right;',
-																				'value' => Yii::$app->formatter->asDecimal($model['capital'], 2),
+																				'value' => $modelInmueble['id_inmueble'],
 																				'readOnly' => true,
 
-																		])->label('Capital') ?>
+																		])->label('Id Inmueble') ?>
 								</div>
 							</div>
 						</div>
@@ -138,10 +138,10 @@
 						<div class="row">
 							<div class="col-sm-2" style="width: 75%;padding: 0px;">
 								<div class="domicilio" style="margin-left: 0px;">
-									<?= $form->field($model, 'domicilio')->textInput([
+									<?= $form->field($model, 'direccion')->textInput([
 																				'id' => 'id-rif',
 																				'style' => 'width:100%;background-color:white;',
-																				'value' => $model['domicilio_fiscal'],
+																				'value' => $modelInmueble['direccion'],
 																				'readOnly' => true,
 
 																		])->label('Domicilio Fiscal') ?>
@@ -156,36 +156,14 @@
 									<?= $form->field($model, 'catastro')->textInput([
 																				'id' => 'id-catastro',
 																				'style' => 'width:100%;background-color:white;',
-																				'value' => isset($model['catastro']) ? $model['catastro'] : 0,
+																				'value' => $modelInmueble['catastro'],
 																				'readOnly' => true,
 
 																		])->label('Catastro') ?>
 								</div>
 							</div>
 
-							<div class="col-sm-2" style="width: 55%;padding: 0px;padding-left: 5px;">
-								<div class="representante" style="margin-left: 0px;">
-									<?= $form->field($model, 'representante')->textInput([
-																				'id' => 'id-representante',
-																				'style' => 'width:100%;background-color:white;',
-																				'value' => $model['representante'],
-																				'readOnly' => true,
-
-																		])->label('Representante Legal') ?>
-								</div>
-							</div>
-
-							<div class="col-sm-2" style="width: 20%;padding: 0px;padding-left: 5px;">
-								<div class="cedula-representante" style="margin-left: 0px;">
-									<?= $form->field($model, 'cedulaRep')->textInput([
-																				'id' => 'id-cedula-representante',
-																				'style' => 'width:100%;background-color:white;',
-																				'value' => $model['naturaleza_rep'] . '-' . $model['cedula_rep'],
-																				'readOnly' => true,
-
-																		])->label('Cedula Representante') ?>
-								</div>
-							</div>
+							
 						</div>
 					</div>
 
@@ -203,7 +181,7 @@
 									<?= $form->field($model, 'id_contribuyente')->textInput([
 																				'id' => 'id-contribuyente',
 																				'style' => 'width:100%;background-color:white;',
-																				'value' => $model['id_contribuyente'],
+																				'value' => $modelContribuyente['id_contribuyente'],
 																				'readOnly' => true,
 
 																		])->label('ID Contribuyente') ?>
@@ -212,22 +190,22 @@
 
 							<div class="col-sm-2" style="width: 20%;padding: 0px;padding-left: 5px;padding-top: 10px;">
 								<div class="licencia" style="margin-left: 0px;">
-									<?= $form->field($model, 'licencia')->textInput([
+									<?= $form->field($model, 'certificado_catastral')->textInput([
 																				'id' => 'id-licencia',
 																				'style' => 'width:100%;background-color:white;',
-																				'value' => $model['id_sim'],
+																				'value' => $modelCertificado['certificado_catastral'],
 																				'readOnly' => true,
 
-																		])->label('Nro. Licencia') ?>
+																		])->label('Nro. Certificado Catastral') ?>
 								</div>
 							</div>
 
 							<div class="col-sm-2" style="width: 15%;padding: 0px;padding-left: 5px;padding-top: 10px;">
 								<div class="fecha-emision" style="margin-left: 0px;">
-									<?= $form->field($model, 'fecha_emision')->textInput([
+									<?= $form->field($model, 'fecha_hora')->textInput([
 																				'id' => 'id-fecha_emision',
 																				'style' => 'width:100%;background-color:white;',
-																				'value' => isset($datosContribuyente['fechaEmision']) ? $datosContribuyente['fechaEmision'] : '',
+																				'value' => $modelCertificado['fecha_hora'],
 																				'readOnly' => true,
 
 																		])->label('Fecha Emisión') ?>
@@ -236,13 +214,13 @@
 
 							<div class="col-sm-2" style="width: 15%;padding: 0px;padding-left: 5px;padding-top: 10px;">
 								<div class="fecha-vcto" style="margin-left: 0px;">
-									<?= $form->field($model, 'fecha_vcto')->textInput([
+									<?= $form->field($model, 'ano_inicio')->textInput([
 																				'id' => 'id-fecha_vcto',
 																				'style' => 'width:100%;background-color:white;',
-																				'value' => isset($datosContribuyente['fechaVcto']) ? $datosContribuyente['fechaVcto'] : '',
+																				'value' => isset($modelInmueble['ano_inicio']),
 																				'readOnly' => true,
 
-																		])->label('Fecha Vcto') ?>
+																		])->label('Fecha Inicio del inmueble') ?>
 								</div>
 							</div>
 
@@ -251,80 +229,7 @@
 
 <!-- INFORMACION DE LOS RUBROS AUTORIZADOS -->
 
-					<div class="row" class="informacion-rubro" id="informacion-rubro">
-						<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding: 0px;width: 100%;padding-left: 15px;">
-							<h4><strong><?=Html::encode(Yii::t('frontend', 'Rubros Autorizados'))?></strong></h4>
-						</div>
-
-						<div class="row" style="width: 100%;">
-							<?= GridView::widget([
-								'id' => 'id-grid-rubro-registrado',
-								'dataProvider' => $dataProvider,
-								'headerRowOptions' => [
-									'class' => 'success',
-								],
-								'tableOptions' => [
-                    				'class' => 'table table-hover',
-              					],
-								'summary' => '',
-								'columns' => [
-									['class' => 'yii\grid\SerialColumn'],
-
-				                    [
-				                        'contentOptions' => [
-				                              'style' => 'font-size: 90%;',
-				                        ],
-				                        'label' => Yii::t('frontend', 'rubro'),
-				                        'value' => function($data) {
-				                                   		return $data['rubro']['rubro'];
-				            			           },
-				                    ],
-
-				                    [
-				                        'contentOptions' => [
-				                              'style' => 'font-size: 90%;',
-				                        ],
-				                        'label' => Yii::t('frontend', 'Año'),
-				                        'value' => function($data) {
-				                                   		return $data['rubro']['ano_impositivo'];
-				            			           },
-				                    ],
-
-				                    [
-				                        'contentOptions' => [
-				                              'style' => 'font-size: 90%;',
-				                        ],
-				                        'label' => Yii::t('frontend', 'descripcion'),
-				                        'value' => function($data) {
-				                                   		return $data['rubro']['descripcion'];
-				            			           },
-				                    ],
-
-				                    [
-				                        'contentOptions' => [
-				                              'style' => 'font-size: 90%;text-align:right;',
-				                        ],
-				                        'label' => Yii::t('frontend', 'Alicuota'),
-				                        'value' => function($data) {
-				                        				return Yii::$app->formatter->asDecimal($data['rubro']['alicuota'], 2);
-				            			           },
-				                    ],
-
-				                   	[
-				                        'contentOptions' => [
-				                              'style' => 'font-size: 90%;text-align:right;',
-				                        ],
-				                        'label' => Yii::t('frontend', 'Minimo en UT'),
-				                        'value' => function($data) {
-				                        				return Yii::$app->formatter->asDecimal($data['rubro']['minimo_ut'], 2);
-				            			           },
-				                    ],
-					        	]
-							]);?>
-						</div>
-
-					</div>
-
+					
 					<div class="row" style="border-bottom: 2px solid #ccc;padding: 0px;width: 103%;margin-left: -30px;">
 					</div>
 

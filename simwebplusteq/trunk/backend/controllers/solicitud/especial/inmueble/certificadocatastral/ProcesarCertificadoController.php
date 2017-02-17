@@ -69,6 +69,11 @@
 	use common\models\solicitudescontribuyente\ProcesarSolicitudContribuyente;
 	use common\models\inmueble\certificadocatastral\JsonCertificado;
 	use common\models\aaee\licencia\GenerarLicencia;
+	use common\models\contribuyente\ContribuyenteBase;
+	use backend\models\inmueble\InmueblesConsulta;
+	use backend\models\inmueble\InmueblesRegistros;
+	use backend\models\inmueble\HistoricoAvaluoSearch;
+	use backend\models\solicitud\especial\inmueble\certificadocatastral\VistaPreliminarCertificado;
 
 
 	session_start();		// Iniciando session
@@ -96,6 +101,7 @@
 		 */
 		public function actionIndex()
 		{
+			
 			$this->redirect(['listado-solicitud']);
 		}
 
@@ -594,7 +600,8 @@
 
 			// Identificador del contribuyente
 			$id = $postGet['id'];
-
+			$buscar = ContribuyenteBase::find()->where("id_contribuyente=:idContribuyente", [":idContribuyente" => $id])
+                                                        ->asArray()->all();
 			// Año impositivo
 			$añoImpositivo = $postGet['a'];
 
@@ -603,20 +610,20 @@
 
 			// Numero de solicitud
 			$nroSolicitud = $postGet['nro'];
-
-
-			
-
 			$certificadoSearch = self::findCertificadoCatastralUrbano($nroSolicitud,$id);
-			
-die(var_dump($certificadoSearch['id_impuesto']));
-			$models = $dataProvider->getModels();
-			$model = $models[0]['datosContribuyente'];
 
-			return $this->renderAjax('/inmueble/certificado-catastral-inmuebles-urbanos/pre-view-datos-licencia',[
-							'model' => $model,
-							'models' => $models,
-							'dataProvider' => $dataProvider,
+ 		         
+			$model = self::findDatosCertificadoCatastral($certificadoSearch['id_impuesto']);
+			$models = new VistaPreliminarCertificado();
+          	
+			return $this->renderAjax('/inmueble/certificado-catastral-inmuebles-urbanos/pre-view-datos-certificado',[
+							'model' => $models,
+							'modelContribuyente' => $buscar[0],
+							'modelCertificado' =>$certificadoSearch,
+							'modelInmueble' => $model['inmueble'],
+							'modelAvaluo' => $model['avaluo'],
+							'modelRegistro' => $model['registro'],
+							
 					]);
 
 		}
@@ -666,7 +673,70 @@ die(var_dump($certificadoSearch['id_impuesto']));
             return isset($modelFind) ? $modelFind : null;
         }
 
+		/**
+         * Metodo que permite obtener un modelo de los datos de la solicitud,
+         * sobre la entidad "sl-", referente al detalle de la solicitud. Es la
+         * entidad donde se guardan los detalle de esta solicitud.
+         * @return Boolean Retorna un true si todo se ejecuto satisfactoriamente, false
+         * en caso contrario.
+         */
+        public function findDatosCertificadoCatastral($idInmueble)
+        {
+            // Este find retorna el modelo de la entidad "sl-inscripciones-act-econ"
+            // con datos, ya que en el metodo padre se ejecuta el ->one() que realiza
+            // la consulta.
+            
+            $datosInmueble = InmueblesConsulta::find()->where("id_impuesto=:impuesto", [":impuesto" => $idInmueble])
+                                            ->andwhere("inactivo=:inactivo", [":inactivo" => 0])
+                                            ->one();
 
+
+           
+
+          	$datosIRegistros = InmueblesRegistros::find()->where("id_impuesto=:impuesto", [":impuesto" => $idInmueble])
+                                            //->andwhere("inactivo=:inactivo", [":inactivo" => 0])
+                                            ->all();
+
+          	 
+          
+         	$datosHAvaluos = HistoricoAvaluoSearch::find()->where("id_impuesto=:impuesto", [":impuesto" => $idInmueble])->asArray()
+                                            ->andwhere("inactivo=:inactivo", [":inactivo" => 0])
+                                            ->all(); 
+			
+            if ($datosHAvaluos != null) {
+                
+                foreach ($datosHAvaluos as $key => $value) {
+                                            
+                } 
+                
+                $_SESSION['datosUAvaluos'] = $value; 
+
+                if ($datosIRegistros != null) {
+
+                    foreach ($datosIRegistros as $key => $valueIn) {
+                                            
+                    } 
+                    
+                    $_SESSION['datosURegistros'] = $valueIn;
+                } else {
+                 
+                  return MensajeController::actionMensaje(920);
+                  
+                } 
+                
+          } else {
+                
+                return MensajeController::actionMensaje(920);
+          } 
+
+          	$modelFind = [
+          				  'inmueble'=>$datosInmueble,
+          				  'avaluo'=>$value,
+          				  'registro'=>$valueIn,
+          				  ];
+
+            return isset($modelFind) ? $modelFind : null;
+        }
 
 
     	/**
