@@ -71,12 +71,12 @@
 		        ],
 
 		    	// &nbsp; espacio en blanco html
-		        // ['label' => Icon::show('fa fa-book',['class' => $typeLong], $typeIcon) . '&nbsp; Registros Maestros',
-		        // 	'items' => [
-		        // 			['label' => 'Registros Datos Básicos', 'url' => ['/registromaestro/datosbasico/create'], 'options' => ['value' => '520', 'id' => '500']],
-		        // 			//Icon::show('fa fa-book',['class' => 'fa-2x'], $typeIcon) . '&nbsp;
-		        // 	]
-		        // ],
+		        ['label' => Icon::show('fa fa-book',['class' => $typeLong], $typeIcon) . '&nbsp; Registros Maestros',
+		        	'items' => [
+		        			['label' => 'Registros Datos Básicos', 'url' => ['/registromaestro/datosbasico/create'], 'options' => ['value' => '520', 'id' => '500']],
+		        			//Icon::show('fa fa-book',['class' => 'fa-2x'], $typeIcon) . '&nbsp;
+		        	]
+		        ],
 
 		        ['label' => Icon::show('fa fa-laptop',['class' => $typeLong], $typeIcon) . '&nbsp; Solicitudes',
 		        	'items' => [
