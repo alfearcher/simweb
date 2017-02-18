@@ -361,7 +361,11 @@
 
 
 
-            /***/
+            /**
+             * Metodo que limpia el arreglo de mensajes de aquellos vallores con null.
+             * @param array $mensajes arreglo de mensajes
+             * @return array
+             */
             private function depurarMensaje($mensajes)
             {
                   $mensajesDepurado = [];
@@ -378,23 +382,45 @@
 
 
 
+            /**
+             * Metodo que ccontabliza el monto total por recibo y por planillas
+             * contenidos en el recibo. Para esto utiliza los providers de datos
+             * creados en la consulta del recibo. El resultado obtenido es un arreglo
+             * de totales donde el valor del indice cero (0), es el total del recibo
+             * y el elemento de indice uno (1), es el total de la suma de las planillas
+             * contenidas en el recibo.
+             * @param  array $providers arregglo de ActiveDataProvider del recibo y de
+             * las planillas contenidas en el recibo.
+             * @return array.
+             */
+            public function getTotalesReciboPlanilla($providers)
+            {
+                  $totales = [];
+
+                  foreach ( $providers as $provider ) {
+                        $totales[] = self::contabilizarProvider($provider);
+                  }
+
+                  return $totales;
+            }
 
 
-  //      	private function lizmar()
-  //      	{
 
-  //      		vawertyulnbvcdopzasqwddcddddbbbnmjkloyvbancodeficnvyhjh  my   name is lizmar hello hoy dire los colour en hopes
-  // favachik . com popur en hoppes banco kiosko mmnah 04241571213 contadto principal en favachik .com mmnah names liz pao y vi
-  // viki pa precidenta liz viceprecidenta del club viki secretaria del club cuantas participantes 4 top 12 club favachik. com
-  // yenar planilla 2017
+            /**
+             * Metodo que contabiliza el monto de un provider especifico.
+             * @param ActiveDataProvider $provider data provider de depositos o
+             * de depositos-planillas.
+             * @return float.
+             */
+            private function contabilizarProvider($provider)
+            {
+                  $suma = 0;
+                  foreach ( $provider->getModels() as $model ) {
+                        $suma = $suma + $model->monto;
+                  }
 
-  // preguntas 9 interogacion hoy dia domingo 12 de febrero mañana 13 de febrero reunion a las 8 am de la manana
-
-  // martes 14 de febrero dia de la amistad dia inportante para el club . y fin.
-
-       	// }
-
-
+                  return $suma;
+            }
 
 
 
