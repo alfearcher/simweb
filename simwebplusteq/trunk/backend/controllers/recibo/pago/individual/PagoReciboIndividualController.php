@@ -122,6 +122,8 @@
 						// Arreglo de los provider del recibo y el de las planillas.
 						$dataProviders = $pagoReciboSearch->getDataProviders();
 
+						$totales = $pagoReciboSearch->getTotalesReciboPlanilla($dataProviders);
+
 						$htmlMensaje = $this->renderPartial('/recibo/pago/individual/warnings',[
 															'mensajes' => $mensajes,
 											]);
@@ -129,6 +131,7 @@
 						$htmlDatosRecibo = $this->renderPartial('/recibo/pago/individual/datos-recibo',[
 															'dataProviderRecibo' => $dataProviders[0],
 															'dataProviderReciboPlanilla' => $dataProviders[1],
+															'totales' => $totales,
 											]);
 
 						if ( count($mensajes) == 0 ) {
@@ -157,6 +160,8 @@
                 // Usuario no autorizado.
             }
         }
+
+
 
 
 
