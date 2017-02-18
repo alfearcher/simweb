@@ -111,7 +111,26 @@
 		]);?>
 	</div>
 
-	<div class="row" style="width:100%;border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding:0px;">
+	<div class="row" style="width: 100%;">
+		<div class="col-sm-4" style="width: 38%;font-size: 120%;font-weight: bold;">
+			<?=Html::encode(Yii::t('backend', 'Total por Recibo: '));?>
+		</div>
+		<div class="col-sm-3" style="width: 30%;">
+			<?=Html::textInput('total-recibo',
+							   (isset($totales[0]) ? Yii::$app->formatter->asDecimal($totales[0],2) : 0),
+							   [
+							   		'class' => 'form-control',
+							   		'style' => 'font-size:120%;
+							   			        font-weight:bold;
+							   			        text-align:right;
+							   			        background-color:white;',
+							   	    'readOnly' => true,
+							   ])
+			;?>
+		</div>
+	</div>
+
+	<div class="row" style="width:100%;border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding:0px;margin-top: 15px;">
 		<h4><strong><?=Html::encode(Yii::t('frontend', 'Planillas Relacionadas al Recibo'))?></strong></h4>
 	</div>
 
@@ -149,7 +168,7 @@
 	            [
 	                'label' => Yii::t('backend', 'Contribuyente'),
 	                'contentOptions' => [
-	                	'style' => 'text-align:right;',
+	                	//'style' => 'text-align:right;',
 	                ],
 	                'value' => function($model) {
 									return $model->descripcion;
@@ -173,5 +192,24 @@
 
 	    	]
 		]);?>
+	</div>
+
+	<div class="row" style="width: 100%;">
+		<div class="col-sm-4" style="width: 60%;font-size: 120%;font-weight: bold;">
+			<?=Html::encode(Yii::t('backend', 'Total por Planilla: '));?>
+		</div>
+		<div class="col-sm-3" style="width: 30%;">
+			<?=Html::textInput('total-recibo',
+							   (isset($totales[1]) ? Yii::$app->formatter->asDecimal($totales[1],2) : 0),
+							   [
+							   		'class' => 'form-control',
+							   		'style' => 'font-size:120%;
+							   			        font-weight:bold;
+							   			        text-align:right;
+							   			        background-color:white;',
+							   	    'readOnly' => true,
+							   ])
+			;?>
+		</div>
 	</div>
 </div>
