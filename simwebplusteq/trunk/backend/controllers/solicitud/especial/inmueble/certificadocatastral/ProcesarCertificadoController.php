@@ -101,8 +101,8 @@
 		 */
 		public function actionIndex()
 		{
-			
-			$this->redirect(['listado-solicitud']);
+			$this->redirect(['view-pre-certificado-modal']);//actionViewPreCertificadoModal
+			//$this->redirect(['listado-solicitud']);
 		}
 
 
@@ -599,25 +599,25 @@
 			$postGet = $request->get();
 
 			// Identificador del contribuyente
-			$id = $postGet['id'];
-			$buscar = ContribuyenteBase::find()->where("id_contribuyente=:idContribuyente", [":idContribuyente" => $id])
+			//$id = $postGet['id'];
+			$buscar = ContribuyenteBase::find()->where("id_contribuyente=:idContribuyente", [":idContribuyente" => 63167])
                                                         ->asArray()->all();
 			// Año impositivo
-			$añoImpositivo = $postGet['a'];
+			//$añoImpositivo = $postGet['a'];
 
 			// Periodo
-			$periodo = $postGet['p'];
+			//$periodo = $postGet['p'];
 
 			// Numero de solicitud
-			$nroSolicitud = $postGet['nro'];
-			$certificadoSearch = self::findCertificadoCatastralUrbano($nroSolicitud,$id);
+			//$nroSolicitud = $postGet['nro'];
+			$certificadoSearch = self::findCertificadoCatastralUrbano(9722, 63167);
 
  		         
 			$model = self::findDatosCertificadoCatastral($certificadoSearch['id_impuesto']);
-			$models = new VistaPreliminarCertificado();
-          	
-			return $this->renderAjax('/inmueble/certificado-catastral-inmuebles-urbanos/pre-view-datos-certificado',[
-							'model' => $models,
+			//$models = new VistaPreliminarCertificado();
+          	//renderAjax
+			return $this->render('/inmueble/certificado-catastral-inmuebles-urbanos/pre-view-datos-certificado',[
+							//'model' => $models,
 							'modelContribuyente' => $buscar[0],
 							'modelCertificado' =>$certificadoSearch,
 							'modelInmueble' => $model['inmueble'],

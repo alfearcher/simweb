@@ -50,6 +50,7 @@
 	use yii\widgets\ActiveForm;
 	use yii\web\View;
 	use yii\widgets\DetailView;
+	use yii\helpers\BaseHtml;
 
 	$typeIcon = Icon::FA;
   	$typeLong = 'fa-2x';
@@ -98,7 +99,7 @@
 						<div class="row">
 							<div class="col-sm-2" style="width: 20%;padding: 0px; padding-top: 10px;">
 								<div class="rif" style="margin-left: 0px;">
-									<?= $form->field($model, 'id_rif')->textInput([
+									<?= $form->field($modelContribuyente, 'id_rif')->textInput([
 																				'id' => 'id-rif',
 																				'style' => 'width:100%;background-color:white;',
 																				'value' => $modelContribuyente['naturaleza']. '-'. $modelContribuyente['cedula'] . '-' . $modelContribuyente['tipo'],
@@ -110,7 +111,7 @@
 
 							<div class="col-sm-2" style="width: 55%;padding: 0px; padding-top: 10px;padding-left: 5px;">
 								<div class="razon-social" style="margin-left: 0px;">
-									<?= $form->field($model, 'razon_social')->textInput([
+									<?= $form->field($modelContribuyente, 'razon_social')->textInput([
 																				'id' => 'id-razon-social',
 																				'style' => 'width:100%;background-color:white;',
 																				'value' => $modelContribuyente['razon_social'],
@@ -122,7 +123,7 @@
 
 							<div class="col-sm-2" style="width: 20%;padding: 0px; padding-top: 10px;padding-left: 5px;">
 								<div class="capital" style="margin-left: 0px;">
-									<?= $form->field($model, 'id_inmueble')->textInput([
+									<?= $form->field($modelInmueble, 'id_inmueble')->textInput([
 																				'id' => 'id-capital',
 																				'style' => 'width:100%;
 																				 			background-color:white;
@@ -138,7 +139,7 @@
 						<div class="row">
 							<div class="col-sm-2" style="width: 75%;padding: 0px;">
 								<div class="domicilio" style="margin-left: 0px;">
-									<?= $form->field($model, 'direccion')->textInput([
+									<?= $form->field($modelInmueble, 'direccion')->textInput([
 																				'id' => 'id-rif',
 																				'style' => 'width:100%;background-color:white;',
 																				'value' => $modelInmueble['direccion'],
@@ -153,7 +154,7 @@
 						<div class="row">
 							<div class="col-sm-2" style="width: 20%;padding: 0px;">
 								<div class="rif" style="margin-left: 0px;">
-									<?= $form->field($model, 'catastro')->textInput([
+									<?= $form->field($modelInmueble, 'catastro')->textInput([
 																				'id' => 'id-catastro',
 																				'style' => 'width:100%;background-color:white;',
 																				'value' => $modelInmueble['catastro'],
@@ -167,7 +168,6 @@
 						</div>
 					</div>
 
-
 <!-- INFORMACION Y VIGENCIA DE LA LICENCIA -->
 
 					<div class="row" class="informacion-licencia" id="informacion-licencia">
@@ -178,7 +178,7 @@
 						<div class="row">
 							<div class="col-sm-2" style="width: 20%;padding: 0px;padding-top: 10px;">
 								<div class="id-contribuyente" style="margin-left: 0px;">
-									<?= $form->field($model, 'id_contribuyente')->textInput([
+									<?= $form->field($modelContribuyente, 'id_contribuyente')->textInput([
 																				'id' => 'id-contribuyente',
 																				'style' => 'width:100%;background-color:white;',
 																				'value' => $modelContribuyente['id_contribuyente'],
@@ -190,7 +190,7 @@
 
 							<div class="col-sm-2" style="width: 20%;padding: 0px;padding-left: 5px;padding-top: 10px;">
 								<div class="licencia" style="margin-left: 0px;">
-									<?= $form->field($model, 'certificado_catastral')->textInput([
+									<?= $form->field($modelCertificado, 'certificado_catastral')->textInput([
 																				'id' => 'id-licencia',
 																				'style' => 'width:100%;background-color:white;',
 																				'value' => $modelCertificado['certificado_catastral'],
@@ -202,7 +202,7 @@
 
 							<div class="col-sm-2" style="width: 15%;padding: 0px;padding-left: 5px;padding-top: 10px;">
 								<div class="fecha-emision" style="margin-left: 0px;">
-									<?= $form->field($model, 'fecha_hora')->textInput([
+									<?= $form->field($modelCertificado, 'fecha_hora')->textInput([
 																				'id' => 'id-fecha_emision',
 																				'style' => 'width:100%;background-color:white;',
 																				'value' => $modelCertificado['fecha_hora'],
@@ -214,7 +214,7 @@
 
 							<div class="col-sm-2" style="width: 15%;padding: 0px;padding-left: 5px;padding-top: 10px;">
 								<div class="fecha-vcto" style="margin-left: 0px;">
-									<?= $form->field($model, 'ano_inicio')->textInput([
+									<?= $form->field($modelInmueble, 'ano_inicio')->textInput([
 																				'id' => 'id-fecha_vcto',
 																				'style' => 'width:100%;background-color:white;',
 																				'value' => isset($modelInmueble['ano_inicio']),
