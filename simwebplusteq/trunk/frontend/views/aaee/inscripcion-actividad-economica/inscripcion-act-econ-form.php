@@ -283,13 +283,13 @@
 																								'alias' =>  'decimal',
 																								'digits' => 2,
 																								'digitsOptional' => false,
-																								'groupSeparator' => ',',
+																								'groupSeparator' => '.',
 																								'removeMaskOnSubmit' => true,
 																								// 'allowMinus'=>false,
 																								//'groupSize' => 3,
-																								'radixPoint'=> ".",
+																								'radixPoint'=> ",",
 																								'autoGroup' => true,
-																								//'decimalSeparator' => ',',
+																								'decimalSeparator' => ',',
 																							],
 																		  				  ])->label(false);
 									?>
