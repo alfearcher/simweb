@@ -113,11 +113,11 @@
 								<div class="razon-social" style="margin-left: 0px;">
 									<?= $form->field($model, 'razon_social')->textInput([
 																				'id' => 'id-razon-social',
-																				'style' => 'width:100%;background-color:white;',
-																				'value' => $modelContribuyente['razon_social'],
+																				'style' => 'width:100%;background-color:white;', 
+																				'value' => $descripcion,
 																				'readOnly' => true,
 
-																		])->label('Razon Social') ?>
+																		])->label('Razon Social / Nombres') ?>
 								</div>
 							</div>
 
@@ -172,7 +172,7 @@
 
 					<div class="row" class="informacion-licencia" id="informacion-licencia">
 						<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding: 0px;width: 100%;padding-left: 15px;">
-							<h4><strong><?=Html::encode(Yii::t('frontend', 'Identificacion y Vigencia de la Licencia'))?></strong></h4>
+							<h4><strong><?=Html::encode(Yii::t('frontend', 'Identificacion y Vigencia del Certificado Catastral'))?></strong></h4>
 						</div>
 
 						<div class="row">

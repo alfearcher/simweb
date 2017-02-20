@@ -101,7 +101,7 @@
 		 */
 		public function actionIndex()
 		{
-			
+			//$this->redirect(['view-pre-certificado-modal']);
 			$this->redirect(['listado-solicitud']);
 		}
 
@@ -602,6 +602,8 @@
 			$id = $postGet['id'];
 			$buscar = ContribuyenteBase::find()->where("id_contribuyente=:idContribuyente", [":idContribuyente" => $id])
                                                         ->asArray()->all();
+            $contribuyente = new ContribuyenteBase();
+            $descripcion = $contribuyente->getContribuyenteDescripcionSegunID($id); 
 			// Año impositivo
 			$añoImpositivo = $postGet['a'];
 
@@ -624,6 +626,8 @@
 							'modelInmueble' => $model['inmueble'],
 							'modelAvaluo' => $model['avaluo'],
 							'modelRegistro' => $model['registro'],
+							'descripcion' => $descripcion,
+
 							
 					]);
 

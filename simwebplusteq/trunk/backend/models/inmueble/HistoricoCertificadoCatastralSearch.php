@@ -47,10 +47,11 @@
 	//use yii\db\ActiveRecord;
 	use common\models\contribuyente\ContribuyenteBase;
 
+
 	/**
 	* 	Clase
 	*/
-	class SlCertificadoCatastralSearch extends SlCertificadoCatastralForm
+	class HistoricoCertificadoCatastralSearch extends HistoricoCertificadosCatastrales
 	{
 
 		private $id_contribuyente;
@@ -121,7 +122,7 @@
 	     */
 	    public function findCertificadoHistorico($idInmueble)
 	    {
-	    	$modelFind = SlCertificadoCatastralForm::find()->where('id_impuesto =:id_impuesto', [':id_impuesto' => $idInmueble])
+	    	$modelFind = HistoricoCertificadosCatastrales::find()->where('id_impuesto =:id_impuesto', [':id_impuesto' => $idInmueble])
 	    													  ->andWhere('id_contribuyente =:id_contribuyente', [':id_contribuyente' => $this->id_contribuyente])
 	    													  ->asArray()->all();
 
