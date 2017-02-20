@@ -168,6 +168,8 @@
 		      	if ( $model->load(Yii::$app->request->post()) ) {
 
 		      	 	if ( $model->validate() ) {
+		      	 		$model->capital = str_replace(',','.',$model->capital);
+
 		      	 		// Todo bien la validacion es correcta.
 		      	 		$_SESSION['guardar'] = 1;
 		      	 		$result = self::actionBeginSave($model);
