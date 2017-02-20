@@ -47,6 +47,7 @@
 						        'model' => $model,
 						        'datos' => $datos,
 						        'subCaption' => $subCaption,
+						        'rutaAyuda' => $rutaAyuda,
 
 					    ]) ?>
 </div>

@@ -189,6 +189,21 @@
 							</div>
 						</div>
 <!-- Fin de Boton para salir de la actualizacion -->
+
+						<div class="col-sm-2" style="margin-left: 50px;">
+							<div class="form-group">
+							<!-- '../../common/docs/user/ayuda.pdf'  funciona -->
+								<?= Html::a(Yii::t('backend', 'Ayuda'), $rutaAyuda,  [
+														'id' => 'btn-help',
+														'class' => 'btn btn-default',
+														'name' => 'btn-help',
+														'target' => '_blank',
+														'value' => 1,
+														'style' => 'width: 100%;'
+													])?>
+							</div>
+						</div>
+
 					</div>
 				</div>
 			</div>
