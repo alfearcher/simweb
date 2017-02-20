@@ -132,7 +132,7 @@
 	        	[['id_contribuyente', 'num_reg',
 	        	  'num_empleados', 'cedula_rep'],
 	        	  'integer'],
-	        	[['capital'], 'double'],
+	        	//['capital', 'double'],
 	        	[['reg_mercantil', 'tomo', 'folio', 'naturaleza_rep',
 	        	  'representante'],
 	        	  'string'],
@@ -236,7 +236,6 @@
 
 	    	return $atributos[$evento];
 	    }
-
 
 
 	}
