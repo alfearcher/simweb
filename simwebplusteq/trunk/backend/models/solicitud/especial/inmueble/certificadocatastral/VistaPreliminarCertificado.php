@@ -49,7 +49,7 @@
 	/**
 	*
 	*/
-	class VistaPreliminarCertificado 
+	class VistaPreliminarCertificado extends ActiveRecord
 	{
 //sl certificado catastral
 		public $id_certificado;
@@ -171,5 +171,58 @@
 		public $ruc;
 		public $naturaleza_rep; 
 		public $cedula_rep;
+
+		/**
+		 *	Metodo que retorna el nombre de la base de datos donde se tiene la conexion actual.
+		 * 	Utiliza las propiedades y metodos de Yii2 para traer dicha informacion.
+		 * 	@return Nombre de la base de datos
+		 */
+		public static function getDb()
+		{
+			return Yii::$app->db;
+		}
+
+
+
+
+		/**
+		 * 	Metodo que retorna el nombre de la tabla que utiliza el modelo.
+		 * 	@return Nombre de la tabla del modelo.
+		 */
+		public static function tableName()
+		{
+			return 'contribuyentes';
+		}
+
+		 public function rules()
+    {
+        
+        return [ 
+
+
+         
+            [['documento_propiedad','tomo'], 'integer','message' => Yii::t('backend', 'Debe seleccionar una opcion'),'when'=> function($modelRegistro){ return $this->validacion3 == 3; }],
+            [['documento_propiedad', 'fecha','num_reg','reg_mercantil','valor_documental' ], 'required','message' => Yii::t('backend', 'Campo requerido'),'when'=> function($modelRegistro){ return $this->validacion3 == 3; }],
+            [['valor_documental'], 'double','message' => Yii::t('backend', 'debe ser numerico'),'when'=> function($modelRegistro){ return  $this->validacion3 == 3; }],
+            
+            [['nro_matricula', 'asiento_registral'], 'required','message' => Yii::t('backend', 'Campo requerido'),'when'=> function($modelRegistro){ return $this->documento_propiedad == 2 and $this->validacion3 == 3; }],
+            [['tomo', 'protocolo','folio'], 'required','message' => Yii::t('backend', 'Campo requerido'),'when'=> function($modelRegistro){ return $this->documento_propiedad == 1 and $this->validacion3 == 3; }],
+
+          
+                        
+        ];  
+    }
+
+    
+    public function attributeLabels()
+    {
+        return [ 
+            'lindero_norte' => Yii::t('backend', 'Lindero Norte'), 
+            'lindero_sur' => Yii::t('backend', 'Lindero Sur'),
+            'lindero_este' => Yii::t('backend', 'Lindero Este'),
+            'lindero_oeste' => Yii::t('backend', 'Lindero Oeste'),
+            
+        ];  
+    }
 	}
  ?>
