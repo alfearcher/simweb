@@ -61,9 +61,12 @@
 	use common\models\historico\cvbplanilla\GenerarValidadorPlanilla;
 	use common\models\ordenanza\OrdenanzaBase;
 	use common\models\descuento\AplicarDescuento;
-
+	use common\models\descuento\AplicarDescuentoViviendaPrincipal;
 	use common\models\calculo\actualizar\ActualizarPlanilla;
 	use mPDF;
+
+
+
 
 
 	/**
@@ -81,8 +84,8 @@
 		private $_searchPlanilla;
 		private $_codigoValidador;
 		private $_fechaVcto;
-		private $_aplicarDescuento;		// Instacia de AplicarDescuento().
-
+		private $_aplicarDescuento;						// Instacia de AplicarDescuento().
+		private $_aplicarDescuentoViviendaPrincipal;		// Instancia de AplicarDescuentoViviendaPrincipal()
 		private $_actualizarPlanilla;
 		public $_objeto;
 
@@ -97,6 +100,7 @@
 			$this->_searchPlanilla = New PlanillaSearch($this->_planilla);
 			$this->_actualizarPlanilla = New ActualizarPlanilla($this->_planilla);
 			$this->_aplicarDescuento = New AplicarDescuento($this->_planilla);
+			$this->_aplicarDescuentoViviendaPrincipal = New AplicarDescuentoViviendaPrincipal($this->_planilla);
 			$this->_objeto = $objeto;
 
 		}
@@ -149,6 +153,7 @@
 
 				$this->_actualizarPlanilla->iniciarActualizacion();
 
+				$this->_aplicarDescuentoViviendaPrincipal->iniciarDescuentoViviendaPrincipal();
 				$this->_aplicarDescuento->iniciarDescuento();
 
 				$model = $this->_searchPlanilla->getDetallePlanilla($this->_objeto);
