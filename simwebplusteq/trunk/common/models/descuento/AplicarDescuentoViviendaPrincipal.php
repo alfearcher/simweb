@@ -108,10 +108,11 @@
 			$procesoExitoso = false;
 			// Registros de la planilla.
 			$results = $this->_planillaSearch->getRegistroDetallePlanilla();
+
 			if ( self::laPlanillaEsPeriodo($results) && self::planillaInmueble($results) ) {
 
 				self::setConexion();
-				self::historicoViviendaPrincipal();
+				self::historicoViviendaPrincipal($results);
 				$historicoVivienda = $this->_historicoSearch->getHistoricoViviendaPrincipal();
 
 				$this->_conn->open();
@@ -140,6 +141,8 @@
 				$this->_conn->close();
 
 			}
+
+			return $procesoExitoso;
 		}
 
 
@@ -149,10 +152,10 @@
 		 * Metodo que crear una instancia de la clase HistoricoViviendaPrincipalSearch
 		 * @return [type] [description]
 		 */
-		public function historicoViviendaPrincipal()
+		public function historicoViviendaPrincipal($results)
 		{
-			$this->_historicoSearch = New HistoricoViviendaPrincipalSearch($this->_planillaSearch[0]['pagos']['id_contribuyente'],
-																     	  $this->_planillaSearch[0]['id_impuesto']);
+			$this->_historicoSearch = New HistoricoViviendaPrincipalSearch($results[0]['pagos']['id_contribuyente'],
+																     	  $results[0]['id_impuesto']);
 		}
 
 
@@ -171,11 +174,11 @@
 			$periodoDesde = $this->_historicoSearch->getPeriodoFechaDesde($lapsoPlanilla['exigibilidad'], 'fecha_desde');
 			$periodoHasta = $this->_historicoSearch->getPeriodoFechaDesde($lapsoPlanilla['exigibilidad'], 'fecha_hasta');
 
-			$añoHistoricoDesde = date('Y', $historicoVivienda['fecha_desde']);
-			$añoHistoricoHasta = date('Y', $historicoVivienda['fecha_hasta']);
+			$añoHistoricoDesde = date('Y', strtotime($historicoVivienda['fecha_desde']));
+			$añoHistoricoHasta = date('Y', strtotime($historicoVivienda['fecha_hasta']));
 
 			if ( (int)$lapsoPlanilla['ano_impositivo'] == (int)$añoHistoricoDesde ) {
-				if ( (int)$lapsoPlanilla['periodo'] == (int)$periodoDesde ) {
+				if ( (int)$lapsoPlanilla['periodo'] >= (int)$periodoDesde ) {
 
 					return true;
 
