@@ -212,7 +212,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-3" style="width: 15%;padding: 0px;padding-left: 5px;padding-top: 10px;">
+                            <div class="col-sm-2" style="width: 20%;padding: 0px;padding-left: 5px;padding-top: 10px;">
                                 <div class="fecha-vcto" style="margin-left: 0px;">
                                     <?= $form->field($model, 'ano_inicio')->textInput([
                                                                                 'id' => 'id-fecha_vcto',
@@ -227,7 +227,138 @@
                         </div>
                     </div>
 
-<!-- INFORMACION DE LOS RUBROS AUTORIZADOS -->
+ <!-- INFORMACION DE AVALUOS -->
+
+                     <div class="row" class="informacion-licencia" id="informacion-licencia">
+                        <div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding: 0px;width: 100%;padding-left: 15px;">
+                            <h4><strong><?=Html::encode(Yii::t('frontend', 'Aspectos Valorativos del Inmueble'))?></strong></h4>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-2" style="width: 20%;padding: 0px;padding-top: 10px;">
+                                <div class="id-contribuyente" style="margin-left: 0px;">
+                                    <?= $form->field($model, 'mts')->textInput([
+                                                                                'id' => 'id-contribuyente',
+                                                                                'style' => 'width:100%;background-color:white;',
+                                                                                'value' => $modelAvaluo['mts'],
+                                                                                'readOnly' => true,
+
+                                                                        ])->label('Metros de Construcción') ?>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-2" style="width: 20%;padding: 0px;padding-left: 5px;padding-top: 10px;">
+                                <div class="licencia" style="margin-left: 0px;">
+                                    <?= $form->field($model, 'valor_por_mts2')->textInput([
+                                                                                'id' => 'id-licencia',
+                                                                                'style' => 'width:100%;background-color:white;',
+                                                                                'value' => $modelAvaluo['valor_por_mts2'],
+                                                                                'readOnly' => true,
+
+                                                                        ])->label('Valor Metros de Construcción') ?>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-2" style="width: 20%;padding: 0px;padding-left: 5px;padding-top: 10px;">
+                                <div class="fecha-emision" style="margin-left: 0px;">
+                                    <?= $form->field($model, 'mts2_terreno')->textInput([
+                                                                                'id' => 'id-fecha_emision',
+                                                                                'style' => 'width:100%;background-color:white;',
+                                                                                'value' => $modelAvaluo['mts2_terreno'],
+                                                                                'readOnly' => true,
+
+                                                                        ])->label('Metros de Terreno') ?>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3" style="width: 20%;padding: 0px;padding-left: 5px;padding-top: 10px;">
+                                <div class="fecha-vcto" style="margin-left: 0px;">
+                                    <?= $form->field($model, 'valor_por_mts2_terreno')->textInput([
+                                                                                'id' => 'id-fecha_vcto',
+                                                                                'style' => 'width:100%;background-color:white;',
+                                                                                'value' => isset($modelAvaluo['valor_por_mts2_terreno']),
+                                                                                'readOnly' => true,
+
+                                                                        ])->label('Valor Metros de Terreno') ?>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3" style="width: 20%;padding: 0px;padding-left: 5px;padding-top: 10px;">
+                                <div class="fecha-vcto" style="margin-left: 0px;">
+                                    <?= $form->field($model, 'valor')->textInput([
+                                                                                'id' => 'id-fecha_vcto',
+                                                                                'style' => 'width:100%;background-color:white;',
+                                                                                'value' => isset($modelAvaluo['valor']),
+                                                                                'readOnly' => true,
+
+                                                                        ])->label('Valor del Inmueble') ?>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+<!-- INFORMACION JURIDIA DEL INMUEBLE -->
+
+                    <div class="row" class="informacion-licencia" id="informacion-licencia">
+                        <div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding: 0px;width: 100%;padding-left: 15px;">
+                            <h4><strong><?=Html::encode(Yii::t('frontend', 'Aspectos Juridicos del Inmueble'))?></strong></h4>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-2" style="width: 20%;padding: 0px;padding-top: 10px;">
+                                <div class="id-contribuyente" style="margin-left: 0px;">
+                                    <?= $form->field($model, 'fecha')->textInput([
+                                                                                'id' => 'id-contribuyente',
+                                                                                'style' => 'width:100%;background-color:white;',
+                                                                                'value' => $modelRegistro['fecha'],
+                                                                                'readOnly' => true,
+
+                                                                        ])->label('Fecha de Registro') ?>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-2" style="width: 20%;padding: 0px;padding-left: 5px;padding-top: 10px;">
+                                <div class="licencia" style="margin-left: 0px;">
+                                    <?= $form->field($model, 'num_reg')->textInput([
+                                                                                'id' => 'id-licencia',
+                                                                                'style' => 'width:100%;background-color:white;',
+                                                                                'value' => $modelRegistro['num_reg'],
+                                                                                'readOnly' => true,
+
+                                                                        ])->label('Nro de Registro') ?>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-2" style="width: 20%;padding: 0px;padding-left: 5px;padding-top: 10px;">
+                                <div class="fecha-emision" style="margin-left: 0px;">
+                                    <?= $form->field($model, 'reg_mercantil')->textInput([
+                                                                                'id' => 'id-fecha_emision',
+                                                                                'style' => 'width:100%;background-color:white;',
+                                                                                'value' => $modelRegistro['reg_mercantil'],
+                                                                                'readOnly' => true,
+
+                                                                        ])->label('Nro Circuito Mercantil') ?>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3" style="width: 20%;padding: 0px;padding-left: 5px;padding-top: 10px;">
+                                <div class="fecha-vcto" style="margin-left: 0px;">
+                                    <?= $form->field($model, 'valor_documental')->textInput([
+                                                                                'id' => 'id-fecha_vcto',
+                                                                                'style' => 'width:100%;background-color:white;',
+                                                                                'value' => isset($modelRegistro['valor_documental']),
+                                                                                'readOnly' => true,
+
+                                                                        ])->label('Valor Documental') ?>
+                                </div>
+                            </div>
+
+                            
+                        </div>
+                    </div>
+<!-- BOTONES -->
 
                     <div class="row" class="informacion-botones-licencia" id="informacion-botones-licencia">
                             <div class="col-sm-5" style="width: 15%;padding: 0px;padding-left: 5px;padding-top: 10px;">
