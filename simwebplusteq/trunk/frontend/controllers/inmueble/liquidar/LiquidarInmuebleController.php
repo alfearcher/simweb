@@ -360,8 +360,8 @@
 					$models[$i][$key]['descripcion'] = $value['descripcion'];
 					$models[$i][$key]['monto_reconocimiento'] = $value['monto_reconocimiento'];
 					$models[$i][$key]['exigibilidad_pago'] = $value['exigibilidad_pago'];
-					$models[$i][$key]['fecha_desde'] = $value['fecha_desde'];
-					$models[$i][$key]['fecha_hasta'] = $value['fecha_hasta'];
+					$models[$i][$key]['fecha_desde'] = isset($value['fecha_desde']) ? $value['fecha_desde'] : '0000-00-00';
+					$models[$i][$key]['fecha_hasta'] = isset($value['fecha_hasta']) ? $value['fecha_hasta'] : '0000-00-00';
 				}
 			}
 
