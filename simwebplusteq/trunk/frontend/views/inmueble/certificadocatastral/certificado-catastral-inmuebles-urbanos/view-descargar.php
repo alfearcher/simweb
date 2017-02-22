@@ -217,7 +217,7 @@
                                     <?= $form->field($model, 'ano_inicio')->textInput([
                                                                                 'id' => 'id-fecha_vcto',
                                                                                 'style' => 'width:100%;background-color:white;',
-                                                                                'value' => isset($modelInmueble['ano_inicio']),
+                                                                                'value' => $modelInmueble['ano_inicio'],
                                                                                 'readOnly' => true,
 
                                                                         ])->label('Fecha Inicio del inmueble') ?>
@@ -276,7 +276,7 @@
                                     <?= $form->field($model, 'valor_por_mts2_terreno')->textInput([
                                                                                 'id' => 'id-fecha_vcto',
                                                                                 'style' => 'width:100%;background-color:white;',
-                                                                                'value' => isset($modelAvaluo['valor_por_mts2_terreno']),
+                                                                                'value' => $modelAvaluo['valor_por_mts2_terreno'],
                                                                                 'readOnly' => true,
 
                                                                         ])->label('Valor Metros de Terreno') ?>
@@ -288,10 +288,10 @@
                                     <?= $form->field($model, 'valor')->textInput([
                                                                                 'id' => 'id-fecha_vcto',
                                                                                 'style' => 'width:100%;background-color:white;',
-                                                                                'value' => isset($modelAvaluo['valor']),
+                                                                                'value' => $modelAvaluo['valor'],
                                                                                 'readOnly' => true,
 
-                                                                        ])->label('Valor del Inmueble') ?>
+                                                                        ])->label('Avaluo del Inmueble') ?>
                                 </div>
                             </div>
 
@@ -348,10 +348,73 @@
                                     <?= $form->field($model, 'valor_documental')->textInput([
                                                                                 'id' => 'id-fecha_vcto',
                                                                                 'style' => 'width:100%;background-color:white;',
-                                                                                'value' => isset($modelRegistro['valor_documental']),
+                                                                                'value' => $modelRegistro['valor_documental'],
                                                                                 'readOnly' => true,
 
                                                                         ])->label('Valor Documental') ?>
+                                </div>
+                            </div>
+
+                            
+                        </div>
+                    </div>
+
+<!-- LINDEROS DEL INMUEBLE -->
+
+                    <div class="row" class="informacion-licencia" id="informacion-licencia">
+                        <div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding: 0px;width: 100%;padding-left: 15px;">
+                            <h4><strong><?=Html::encode(Yii::t('frontend', 'Linderos del Inmueble'))?></strong></h4>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-5" style="width: 70%;padding: 0px;padding-top: 10px;">
+                                <div class="id-contribuyente" style="margin-left: 0px;">
+                                    <?= $form->field($model, 'lindero_norte')->textInput([
+                                                                                'id' => 'id-contribuyente',
+                                                                                'style' => 'width:100%;background-color:white;',
+                                                                                'value' => $modelAvaluo['lindero_norte'],
+                                                                                'readOnly' => true,
+
+                                                                        ])->label('Lindero Norte') ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-5" style="width: 70%;padding: 0px;padding-left: 5px;padding-top: 10px;">
+                                <div class="licencia" style="margin-left: 0px;">
+                                    <?= $form->field($model, 'lindero_sur')->textInput([
+                                                                                'id' => 'id-licencia',
+                                                                                'style' => 'width:100%;background-color:white;',
+                                                                                'value' => $modelAvaluo['lindero_sur'],
+                                                                                'readOnly' => true,
+
+                                                                        ])->label('Lindero Sur') ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-5" style="width: 70%;padding: 0px;padding-left: 5px;padding-top: 10px;">
+                                <div class="fecha-emision" style="margin-left: 0px;">
+                                    <?= $form->field($model, 'lindero_este')->textInput([
+                                                                                'id' => 'id-fecha_emision',
+                                                                                'style' => 'width:100%;background-color:white;',
+                                                                                'value' => $modelAvaluo['lindero_este'],
+                                                                                'readOnly' => true,
+
+                                                                        ])->label('Lindero Este') ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-5" style="width: 70%;padding: 0px;padding-left: 5px;padding-top: 10px;">
+                                <div class="fecha-vcto" style="margin-left: 0px;">
+                                    <?= $form->field($model, 'lindero_oeste')->textInput([
+                                                                                'id' => 'id-fecha_vcto',
+                                                                                'style' => 'width:100%;background-color:white;',
+                                                                                'value' => $modelAvaluo['lindero_oeste'],
+                                                                                'readOnly' => true,
+
+                                                                        ])->label('Lindero Oeste') ?>
                                 </div>
                             </div>
 
