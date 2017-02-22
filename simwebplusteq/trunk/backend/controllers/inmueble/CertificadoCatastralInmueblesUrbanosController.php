@@ -430,7 +430,7 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
                                          'descripcion' => $descripcion,
       
                          
-                           ]);
+                           ]); 
                       } else {
             
                             //mensaje de que no concuerdan los datos del inmueble y el ultimo historico  928
