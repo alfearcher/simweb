@@ -413,7 +413,7 @@
 	    private function getListaUsuarioAutorizado()
 	    {
 	    	return [
-	    		'adminteq1',
+	    		'adminteq',
 	    		'pfranco',
 	    		'kperez',
 	    	];
