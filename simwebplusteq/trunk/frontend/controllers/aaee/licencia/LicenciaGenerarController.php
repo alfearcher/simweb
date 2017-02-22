@@ -109,20 +109,6 @@
 				$searchModel = New HistoricoLicenciaSearch($idContribuyente);
 				$model = $searchModel->findUltimoHistoricoAnoActual();
 
-				$control = '1';
-				$datosJson = '0';
-
-				$datosJson = $model->fuente_json . $model->rubro_json;
-				$firmaControl = $model->firma_control;
-				$control = md5($datosJson);
-
-				if ( $firmaControl === $control ) {
-					$bloquearDescarga = false;
-				} else {
-					$mensajeBloqueo = Yii::t('frontend', 'Existe diferencia entre los datos de la presente licencia y los datos de control de la misma.');
-					$bloquearDescarga = true;
-				}
-
 				if ( isset($postData['btn-generar-nro-licencia']) ) {
 					if ( $postData['btn-generar-nro-licencia'] == 5 ) {
 
@@ -136,6 +122,21 @@
 
 				} else {
 					if ( $model !== null ) {
+
+						$control = '1';
+						$datosJson = '0';
+
+						$datosJson = $model->fuente_json . $model->rubro_json;
+						$firmaControl = $model->firma_control;
+						$control = md5($datosJson);
+
+						if ( $firmaControl === $control ) {
+							$bloquearDescarga = false;
+						} else {
+							$mensajeBloqueo = Yii::t('frontend', 'Existe diferencia entre los datos de la presente licencia y los datos de control de la misma.');
+							$bloquearDescarga = true;
+						}
+
 						$_SESSION['id_historico'] = $model->id_historico;
 						$_SESSION['nro_control'] = $model->nro_control;
 						return $this->render('/aaee/licencia/historico/historico-licencia', [
