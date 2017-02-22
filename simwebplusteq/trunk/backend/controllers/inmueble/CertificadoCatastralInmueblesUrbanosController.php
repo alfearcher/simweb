@@ -970,8 +970,10 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
             // }
             // $resumenCobro = self::actionResumenCobroPenalidad($rubroCalculo);
 
+            $rutaImagen = Yii::$app->catastro->getRutaImagenAdverso($_SESSION['datosInmueble']['id_impuesto']);
             $htmlMapa = $this->renderPartial('@common/views/plantilla-pdf/cedulacatastral/layout-mapa-pdf',[
                                                             'resumen'=> $_SESSION['datosUAvaluos'],
+                                                            'imagenA'=> $rutaImagen,
                                     ]);
             //$resumenAspectosValorativos = self::actionResumenAspectosValorativos($_SESSION['datos']['id_impuesto']);
             $htmlAspectosValorativos = $this->renderPartial('@common/views/plantilla-pdf/cedulacatastral/layout-aspectos-valorativos-pdf',[
