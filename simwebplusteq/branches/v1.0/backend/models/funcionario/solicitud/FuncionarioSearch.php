@@ -405,5 +405,41 @@
 
 
 
+
+	    /**
+	     * Metodo que maneja la lista de usuarios autorizados para entrar al formulario.
+	     * @return array.
+	     */
+	    private function getListaUsuarioAutorizado()
+	    {
+	    	return [
+	    		'adminteq',
+	    		'pfranco',
+	    		'kperez',
+	    	];
+	    }
+
+
+
+	    /**
+	     * Metodoq ue determina si el usuario esta autorizado para entrar al formulario.
+	     * @param string $usuario usuario logueado.
+	     * @return boolean.
+	     */
+	    public function usuarioAutorizado($usuario)
+	    {
+	    	$lista = self::getListaUsuarioAutorizado();
+	    	if ( count($lista) > 0 ) {
+
+	    		foreach ( $lista as $key => $value ) {
+	    			if ( $value == $usuario ) {
+	    				return true;
+	    			}
+	    		}
+	    	}
+
+	    	return false;
+	    }
+
 	}
 ?>
