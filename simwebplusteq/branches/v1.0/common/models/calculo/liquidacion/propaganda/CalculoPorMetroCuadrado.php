@@ -125,7 +125,7 @@
 
 			$mts2 = $alto * $ancho;
 
-			$cantidadTiempo = $this->getCantidadTiempo('año');
+			$cantidadTiempo = $this->getCantidadTiempo('dia');
 
 			$montoTotal = $montoAplicar * $cantidadPropaganda * $mts2;
 
