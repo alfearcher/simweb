@@ -56,11 +56,11 @@
 		 */
 		public function getRutaImagenAdverso($idImpuesto)
 		{
-			$rutaBase = '../../common/imagencatastro/adverso/A';
+			$rutaBase = '@web/imagen/imagencatastro/adverso/A';
 			if ( $rutaBase == '' ) {
 				return '';
 			} else {
-			 	return $rutaBase .'-'. $idImpuesto . '.png';
+			 	return $rutaBase .'-'. $idImpuesto . '.jpg';
 			}
 		}
 
@@ -72,11 +72,11 @@
 		 */
 		public function getRutaImagenReverso($idImpuesto)
 		{
-			$rutaBase = '../../common/imagencatastro/reverso/R';
+			$rutaBase = '@web/imagen/imagencatastro/reverso/R';
 			if ( $rutaBase == '' ) {
 				return '';
 			} else {
-			 	return $rutaBase .'-'. $idImpuesto . '.png';
+			 	return $rutaBase .'-'. $idImpuesto . '.jpg';
 			}
 		}
 

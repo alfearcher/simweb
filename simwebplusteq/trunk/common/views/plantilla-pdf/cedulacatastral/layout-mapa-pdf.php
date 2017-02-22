@@ -66,12 +66,26 @@
 		<td class="label-mapa" colspan="5"><?=Html::encode('CROQUIS DE UBICACION'); ?></td>
 	</tr >
 	<tr class="cuerpo">
-		<td class="linderos" colspan="5"><?=Html::encode($resumen['lindero_norte'].' '.$resumen['lindero_sur'].' '.$resumen['lindero_este'].' '.$resumen['lindero_oeste']); ?></td>
-		<td class="mapa" colspan="5"><?=Html::encode($resumen['valor']); ?></td>
+		<td class="linderos" colspan="5">
+			<div class="row">
+			<?=Html::encode($resumen['lindero_norte']); ?>
+			</div>
+			<div class="row">
+			<?=Html::encode($resumen['lindero_sur']); ?>
+			</div>
+			<div class="row">
+			<?=Html::encode($resumen['lindero_este']); ?>
+			</div>
+			<div class="row">
+			<?=Html::encode($resumen['lindero_oeste']); ?>
+			</div>
+		</td>
+		<td class="mapa" colspan="5">
+			<?=Html::img($imagenA,['style' => 'width: 100%;']); ?>
+		</td>
 		
 	</tr> 
 	
-
 
 </table>
 
