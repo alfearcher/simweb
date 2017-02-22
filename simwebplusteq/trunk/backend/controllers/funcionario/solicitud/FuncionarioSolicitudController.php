@@ -343,60 +343,68 @@
 				$_SESSION['postIndex'] = null;
 
 				$model = New FuncionarioSearch();
-				$formName = $model->formName();
-				$request = Yii::$app->request;
-				$postData = $request->post();
 
-				if ( isset($postData['btn-search']) ) {
-					$model->scenario = self::SCENARIO_SEARCH_DEPARTAMENTO_UNIDAD;
-				} elseif ( isset($postData['btn-search-parameters']) ) {
-					$model->scenario = self::SCENARIO_SEARCH_GLOBAL;
-				} else {
-					$model->scenario = self::SCENARIO_SEARCH_GLOBAL;
-				}
+				if ( $model->usuarioAutorizado(Yii::$app->identidad->getUsuario()) ) {
 
-				if ( $model->load($postData) && Yii::$app->request->isAjax ) {
-					Yii::$app->response->format = Response::FORMAT_JSON;
-					return ActiveForm::validate($model);
-				}
+					$formName = $model->formName();
+					$request = Yii::$app->request;
+					$postData = $request->post();
 
-				$_SESSION['postIndex'] = $postData;
-				if ( $model->load($postData) ) {
 					if ( isset($postData['btn-search']) ) {
-						// Busqueda de funcionarios por departamento y unidad.
-						if ( $model->validate() ) {
-							$idDepartamento = $postData[$formName]['id_departamento'];
-							$idUnidad = $postData[$formName]['id_unidad'];
-							return self::actionBuscarPorDepartamentoUnidad($idDepartamento, $idUnidad, $model);
-						}
-
+						$model->scenario = self::SCENARIO_SEARCH_DEPARTAMENTO_UNIDAD;
 					} elseif ( isset($postData['btn-search-parameters']) ) {
-						// Busqueda de los funcionarios por parametro, DNI, apellidos o nombres.
-						if ( $model->validate() ) {
-							$params = $postData[$formName]['searchGlobal'];
-							return self::actionBuscarFuncionarioPorParametros($params, $model);
-						}
-					} elseif ( isset($postData['btn-search-all']) ) {
-						// Busqueda de todos los funcionarios con cuentas vigentes.
-						return self::actionBuscarFuncionarioAll($model);
+						$model->scenario = self::SCENARIO_SEARCH_GLOBAL;
+					} else {
+						$model->scenario = self::SCENARIO_SEARCH_GLOBAL;
 					}
+
+					if ( $model->load($postData) && Yii::$app->request->isAjax ) {
+						Yii::$app->response->format = Response::FORMAT_JSON;
+						return ActiveForm::validate($model);
+					}
+
+					$_SESSION['postIndex'] = $postData;
+					if ( $model->load($postData) ) {
+						if ( isset($postData['btn-search']) ) {
+							// Busqueda de funcionarios por departamento y unidad.
+							if ( $model->validate() ) {
+								$idDepartamento = $postData[$formName]['id_departamento'];
+								$idUnidad = $postData[$formName]['id_unidad'];
+								return self::actionBuscarPorDepartamentoUnidad($idDepartamento, $idUnidad, $model);
+							}
+
+						} elseif ( isset($postData['btn-search-parameters']) ) {
+							// Busqueda de los funcionarios por parametro, DNI, apellidos o nombres.
+							if ( $model->validate() ) {
+								$params = $postData[$formName]['searchGlobal'];
+								return self::actionBuscarFuncionarioPorParametros($params, $model);
+							}
+						} elseif ( isset($postData['btn-search-all']) ) {
+							// Busqueda de todos los funcionarios con cuentas vigentes.
+							return self::actionBuscarFuncionarioAll($model);
+						}
+					}
+
+					// Modelo adicionales para la busqueda de los funcionarios.
+					$modelDepartamento = New DepartamentoForm();
+					$modelUnidad = New UnidadDepartamentoForm();
+
+					// Se define la lista de item para el combo de departamentos.
+					$listaDepartamento = $modelDepartamento->getListaDepartamento();
+
+					return $this->render('/funcionario/solicitud/funcionario-solicitud-form', [
+																					'model' => $model,
+																					'modelDepartamento' => $modelDepartamento,
+																					'modelUnidad' => $modelUnidad,
+																					'caption' => 'Assign Request to Official',
+																					'listaDepartamento' => $listaDepartamento,
+
+						]);
+				} else {
+					// El usuario no esta autorizado.
+					return $this->redirect(['error-operacion', 'codigo' => 700]);
+
 				}
-
-				// Modelo adicionales para la busqueda de los funcionarios.
-				$modelDepartamento = New DepartamentoForm();
-				$modelUnidad = New UnidadDepartamentoForm();
-
-				// Se define la lista de item para el combo de departamentos.
-				$listaDepartamento = $modelDepartamento->getListaDepartamento();
-
-				return $this->render('/funcionario/solicitud/funcionario-solicitud-form', [
-																				'model' => $model,
-																				'modelDepartamento' => $modelDepartamento,
-																				'modelUnidad' => $modelUnidad,
-																				'caption' => 'Assign Request to Official',
-																				'listaDepartamento' => $listaDepartamento,
-
-					]);
 
 			} else {
 				// No esta definido el usuario. Eliminar todas las variables de session y salir.
@@ -526,7 +534,7 @@
 				$arregloDatos['id_funcionario'] = $funcionario;
 				foreach ( $chkSolicitud as $solicitud ) {
 					$arregloDatos['tipo_solicitud'] = $solicitud;
-					
+
 					// Se inactiva cualquier solicitud que tenga el funcionario y que coincida con la que se guardara.
 					$result = self::actionInactivarFuncionarioSolicitud($funcionario, $solicitud, $tabla, $conexionLocal, $connLocal);
 					if ( $result ) {
@@ -572,8 +580,6 @@
 					// Se verifica que haya seleccionado algun funcionario y solicitud de las listas.
 					$chkFuncionario = isset($postData['chk-funcionario']) ? $postData['chk-funcionario'] : null;
 					$chkSolicitud = isset($postData['chk-solicitud']) ? $postData['chk-solicitud'] : null;
-
-// die(var_dump($postData));
 
 					if ( count($chkFuncionario) > 0 && count($chkSolicitud) > 0 ) {
 						// Todo bien. Se puede guardar.
