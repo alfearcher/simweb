@@ -57,6 +57,7 @@
 		public function getRutaImagenAdverso($idImpuesto)
 		{
 			$rutaBase = '@web/imagen/imagencatastro/adverso/A';
+			
 			if ( $rutaBase == '' ) {
 				return '';
 			} else {
