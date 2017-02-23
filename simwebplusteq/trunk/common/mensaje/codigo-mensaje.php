@@ -50,7 +50,8 @@ return [
 	'924' => [Yii::t('backend', 'El contribuyente no posee email registrado. solicitud cancelada'), 'danger', 'fa fa-times'],
 	'925' => [Yii::t('backend', 'El Inmueble no posee registro de catastro valido, debe crear una solicitud de cambio catastral'), 'danger', 'fa fa-times'],
 	'926' => [Yii::t('backend', 'El Inmueble no posee registro de catastro valido ni posee datos de propiedad , debe crear una solicitud de CAMBIO DE NUMERO CATASTRAL y DATOS DE REGISTRO DE PROPIEDAD'), 'danger', 'fa fa-times'],
-
+	'927' => [Yii::t('backend', 'El Inmueble no tiene historico de CERTIFICADO CATASTRAL , debe crear una solicitud de RENOVACION DE CERTIFICADO CATASTRAL'), 'danger', 'fa fa-times'],
+    '928' => [Yii::t('backend', 'Los datos del inmueble no concuerdan con el ultimo CERTIFICADO CATASTRAL, debe crear una solicitud de RENOVACION DE CERTIFICADO CATASTRAL'), 'danger', 'fa fa-times'],
 
 	'930' => [Yii::t('backend', 'Taxpayer type was not defined'), 'danger', 'fa fa-times'],
 	'932' => [Yii::t('backend', 'Taxpayer not defined'), 'danger', 'fa fa-times'],

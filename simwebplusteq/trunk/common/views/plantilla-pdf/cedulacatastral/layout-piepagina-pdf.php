@@ -66,15 +66,15 @@
 		<table repeat_header="1" cellpadding="1" cellspacing="1" width="100%" border="0">
 
 			<tr>
-				<td class="label-barcode" colspan="10" style="text-align: center;padding-left: 105px;">
-					<barcode code=<?=$barcode;?> type="C128A" height="1.5" width="0.6" text="1" class="barcode" />
+				<td class="label-barcode" colspan="10" style="text-align: right;padding-left: 105px;">
+					<barcode code=<?=$barcode;?> size="1.6" type="QR" height="1.5" width="0.6" class="barcode" />
 				</td>
 			</tr>
-			<tr>
+			<!-- <tr>
 				<td class="label-barcode" colspan="10" style="font-weight: bold;text-align: center;font-family: Verdana, Arial, Helvetica, sans-serif;font-size: 70%;">
-					<?=$barcode?>
+					
 				</td>
-			</tr>
+			</tr> -->
 
 			<tr>
 				<td class="label-pie-pagina-1-a" colspan="9" style="font-weight: bold;font-size: 90%;font-family: Verdana, Arial, Helvetica, sans-serif;">
