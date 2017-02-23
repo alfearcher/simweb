@@ -918,7 +918,7 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
      }
 
 
-          /**
+     /**
      *REGISTRO (inscripcion) INMUEBLES URBANOS
      *Metodo para crear las cuentas de usuarios de los funcionarios
      *@return model 
@@ -958,6 +958,21 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
                                                             
                                     ]);  
 
+            if ($_SESSION['datosURegistros']['id_tipo_documento_inmueble'] == 1) {
+              
+                  $htmlAspectosJuridicos = $this->renderPartial('@common/views/plantilla-pdf/cedulacatastral/layout-aspectos-juridicos-registro-pdf',[
+                                                            'resumen'=> $_SESSION['datosURegistros'],
+                                                            
+                                    ]); 
+            } else {
+
+                  $htmlAspectosJuridicos = $this->renderPartial('@common/views/plantilla-pdf/cedulacatastral/layout-aspectos-juridicos-saren-pdf',[
+                                                            'resumen'=> $_SESSION['datosURegistros'],
+                                                            
+                                    ]); 
+            }
+            
+
             $htmlAspectosFisicos = $this->renderPartial('@common/views/plantilla-pdf/cedulacatastral/layout-aspectos-fisicos-pdf',[
                                                             'resumen'=> $_SESSION['datosUAvaluos'],
                                                             
@@ -970,8 +985,10 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
             // }
             // $resumenCobro = self::actionResumenCobroPenalidad($rubroCalculo);
 
+            $rutaImagen = Yii::$app->catastro->getRutaImagenAdverso($_SESSION['datosInmueble']['id_impuesto']);
             $htmlMapa = $this->renderPartial('@common/views/plantilla-pdf/cedulacatastral/layout-mapa-pdf',[
                                                             'resumen'=> $_SESSION['datosUAvaluos'],
+                                                            'imagenA'=> $rutaImagen,
                                     ]);
             //$resumenAspectosValorativos = self::actionResumenAspectosValorativos($_SESSION['datos']['id_impuesto']);
             $htmlAspectosValorativos = $this->renderPartial('@common/views/plantilla-pdf/cedulacatastral/layout-aspectos-valorativos-pdf',[
@@ -999,6 +1016,7 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
             $mpdf->SetHeader($nombre);
             $mpdf->WriteHTML($htmlEncabezado);
             $mpdf->WriteHTML($htmlContribuyente);
+            $mpdf->WriteHTML($htmlAspectosJuridicos);
             $mpdf->WriteHTML($htmlCatastro);
             $mpdf->WriteHTML($htmlAspectosFisicos);
             $mpdf->WriteHTML($htmlMapa);
