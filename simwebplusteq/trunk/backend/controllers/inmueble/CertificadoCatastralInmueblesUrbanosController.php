@@ -918,7 +918,7 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
      }
 
 
-          /**
+    /**
      *REGISTRO (inscripcion) INMUEBLES URBANOS
      *Metodo para crear las cuentas de usuarios de los funcionarios
      *@return model 
@@ -930,7 +930,7 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
       //$_SESSION['datosUAvaluos']
          
          if ( isset($_SESSION['idContribuyente'] ) ) {
-            $barcode = 152222;
+            $barcode = $_SESSION['ultimoCertificado']['firma_control'];
             // Informacion del encabezado.
             $htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/layout/layout-encabezado-pdf', [
                                                             'caption' => 'CEDULA CATASTRAL',
@@ -958,13 +958,23 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
                                                             
                                     ]);  
 
+            if ($_SESSION['datosURegistros']['id_tipo_documento_inmueble'] == 0) {
+              
+                  $htmlAspectosJuridicos = $this->renderPartial('@common/views/plantilla-pdf/cedulacatastral/layout-aspectos-juridicos-registro-pdf',[
+                                                            'resumen'=> $_SESSION['datosURegistros'],
+                                                            
+                                    ]); 
+            } 
+
             if ($_SESSION['datosURegistros']['id_tipo_documento_inmueble'] == 1) {
               
                   $htmlAspectosJuridicos = $this->renderPartial('@common/views/plantilla-pdf/cedulacatastral/layout-aspectos-juridicos-registro-pdf',[
                                                             'resumen'=> $_SESSION['datosURegistros'],
                                                             
                                     ]); 
-            } else {
+            } 
+
+             if ($_SESSION['datosURegistros']['id_tipo_documento_inmueble'] == 2) {
 
                   $htmlAspectosJuridicos = $this->renderPartial('@common/views/plantilla-pdf/cedulacatastral/layout-aspectos-juridicos-saren-pdf',[
                                                             'resumen'=> $_SESSION['datosURegistros'],
@@ -1021,7 +1031,7 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
             $mpdf->WriteHTML($htmlAspectosFisicos);
             $mpdf->WriteHTML($htmlMapa);
             $mpdf->WriteHTML($htmlAspectosValorativos);
-            $mpdf->SetHTMLFooter($htmlPiePagina);
+            $mpdf->SetHTMLFooter($htmlPiePagina); 
 
            // $mpdf->WriteHTML($html);
             $mpdf->Output($nombrePDF, 'I');
@@ -1031,7 +1041,7 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
                     echo "No hay Contribuyente Registrado!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['site/login'])."'>";
         }    
  
-     } // cierre del metodo inscripcion de inmuebles
+     } // cierre del metodo inscripcion de inmueble
 
 
      /**
