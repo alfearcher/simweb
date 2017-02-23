@@ -81,7 +81,7 @@
 			</div>
 		</td>
 		<td class="mapa" colspan="5">
-			<?=Html::img($imagenA,['style' => 'width: 100%;']); ?>
+			<?=Html::img($imagenA,['style' => 'width: 35%;']); ?>
 		</td>
 		
 	</tr> 

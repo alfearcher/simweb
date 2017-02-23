@@ -61,35 +61,29 @@
 ?>
 
 <table repeat_header="1" cellpadding="1" cellspacing="1" width="100%" border="0">
-	<caption>CODIGO CATASTRAL</caption>
+	<caption>ASPECTOS JURIDICOS DEL INMUEBLE</caption>
     
 	  
 <!-- Datos especificos de la declaracion -->
 	<tr>
-		<th class="label-declaracion" colspan="1"><?=Html::encode('EDO'); ?></th>
-		<th class="label-declaracion" colspan="3"><?=Html::encode('MUN'); ?></th>
-		<th class="label-declaracion" colspan="1"><?=Html::encode('PARR'); ?></th>
-		<th class="label-declaracion" colspan="1"><?=Html::encode('AMBITO'); ?></th>
-		<th class="label-declaracion" colspan="2"><?=Html::encode('SECTOR'); ?></th>
-		<th class="label-declaracion" colspan="1"><?=Html::encode('MANZ'); ?></th>
-		<th class="label-declaracion" colspan="1"><?=Html::encode('PARCELA'); ?></th>
-		<th class="label-declaracion" colspan="1"><?=Html::encode('SUB-P'); ?></th>
-		<th class="label-declaracion" colspan="1"><?=Html::encode('NIVEL'); ?></th>
-		<th class="label-declaracion" colspan="1"><?=Html::encode('UNIDAD'); ?></th>
+		<th class="label-declaracion" colspan="1.5"><?=Html::encode('NRO REGISTRO'); ?></th>
+		<th class="label-declaracion" colspan="1.5"><?=Html::encode('CIRCUITO'); ?></th>
+		<th class="label-declaracion" colspan="2"><?=Html::encode('TOMO'); ?></th>
+		<th class="label-declaracion" colspan="2"><?=Html::encode('FOLIO'); ?></th>
+		<th class="label-declaracion" colspan="2"><?=Html::encode('PROTOCOLO'); ?></th>
+		<th class="label-declaracion" colspan="2"><?=Html::encode('FECHA REGISTRO'); ?></th>
+		
 	</tr>  
 
 	
 		<tr class="cuerpo">
-			<td class="info-declaracion" colspan="1"><?=Html::encode($resumen['estado_catastro']); ?></td>
-			<td class="info-declaracion" colspan="3"><?=Html::encode($resumen['municipio_catastro']); ?></td>
-			<td class="info-declaracion" colspan="1"><?=Html::encode($resumen['parroquia_catastro']); ?></td>
-			<td class="info-declaracion" colspan="1"><?=Html::encode($resumen['ambito_catastro']); ?></td>
-			<td class="info-declaracion" colspan="2"><?=Html::encode($resumen['sector_catastro']); ?></td>
-			<td class="info-declaracion" colspan="1"><?=Html::encode($resumen['manzana_catastro']); ?></td>
-			<td class="info-declaracion" colspan="1"><?=Html::encode($resumen['parcela_catastro']); ?></td>
-			<td class="info-declaracion" colspan="1"><?=Html::encode($resumen['subparcela_catastro']); ?></td>
-			<td class="info-declaracion" colspan="1"><?=Html::encode($resumen['nivel_catastro']); ?></td>
-			<td class="info-declaracion" colspan="1"><?=Html::encode($resumen['unidad_catastro']); ?></td>
+			<td class="info-declaracion" colspan="1.5"><?=Html::encode($resumen['num_reg']); ?></td>
+			<td class="info-declaracion" colspan="1.5"><?=Html::encode($resumen['reg_mercantil']); ?></td>
+			<td class="info-declaracion" colspan="2"><?=Html::encode($resumen['tomo']); ?></td>
+			<td class="info-declaracion" colspan="2"><?=Html::encode($resumen['folio']); ?></td>
+			<td class="info-declaracion" colspan="2"><?=Html::encode($resumen['protocolo']); ?></td>
+			<td class="info-declaracion" colspan="2"><?=Html::encode($resumen['fecha']); ?></td>
+			
 			
 			
 		</tr>  
