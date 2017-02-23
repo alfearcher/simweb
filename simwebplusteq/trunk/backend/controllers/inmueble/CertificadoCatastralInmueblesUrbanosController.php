@@ -958,6 +958,21 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
                                                             
                                     ]);  
 
+            if ($_SESSION['datosURegistros']['id_tipo_documento_inmueble'] == 1) {
+              
+                  $htmlAspectosJuridicos = $this->renderPartial('@common/views/plantilla-pdf/cedulacatastral/layout-aspectos-juridicos-registro-pdf',[
+                                                            'resumen'=> $_SESSION['datosURegistros'],
+                                                            
+                                    ]); 
+            } else {
+
+                  $htmlAspectosJuridicos = $this->renderPartial('@common/views/plantilla-pdf/cedulacatastral/layout-aspectos-juridicos-saren-pdf',[
+                                                            'resumen'=> $_SESSION['datosURegistros'],
+                                                            
+                                    ]); 
+            }
+            
+
             $htmlAspectosFisicos = $this->renderPartial('@common/views/plantilla-pdf/cedulacatastral/layout-aspectos-fisicos-pdf',[
                                                             'resumen'=> $_SESSION['datosUAvaluos'],
                                                             
@@ -1001,6 +1016,7 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
             $mpdf->SetHeader($nombre);
             $mpdf->WriteHTML($htmlEncabezado);
             $mpdf->WriteHTML($htmlContribuyente);
+            $mpdf->WriteHTML($htmlAspectosJuridicos);
             $mpdf->WriteHTML($htmlCatastro);
             $mpdf->WriteHTML($htmlAspectosFisicos);
             $mpdf->WriteHTML($htmlMapa);
