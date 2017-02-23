@@ -958,13 +958,23 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
                                                             
                                     ]);  
 
+           if ($_SESSION['datosURegistros']['id_tipo_documento_inmueble'] == 0) {
+              
+                  $htmlAspectosJuridicos = $this->renderPartial('@common/views/plantilla-pdf/cedulacatastral/layout-aspectos-juridicos-registro-pdf',[
+                                                            'resumen'=> $_SESSION['datosURegistros'],
+                                                            
+                                    ]); 
+            } 
+
             if ($_SESSION['datosURegistros']['id_tipo_documento_inmueble'] == 1) {
               
                   $htmlAspectosJuridicos = $this->renderPartial('@common/views/plantilla-pdf/cedulacatastral/layout-aspectos-juridicos-registro-pdf',[
                                                             'resumen'=> $_SESSION['datosURegistros'],
                                                             
                                     ]); 
-            } else {
+            } 
+
+             if ($_SESSION['datosURegistros']['id_tipo_documento_inmueble'] == 2) {
 
                   $htmlAspectosJuridicos = $this->renderPartial('@common/views/plantilla-pdf/cedulacatastral/layout-aspectos-juridicos-saren-pdf',[
                                                             'resumen'=> $_SESSION['datosURegistros'],
