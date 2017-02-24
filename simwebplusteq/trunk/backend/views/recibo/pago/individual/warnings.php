@@ -4,7 +4,7 @@
 
 ?>
 
-<div class="lista-error-mensaje">
+<div class="lista-error-mensaje" style="width: 100%;padding: 0px;padding-left: 20px;">
 	<?php
 		$view = '';
 

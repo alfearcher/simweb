@@ -56,12 +56,11 @@
  			'method' => 'post',
  			'enableClientValidation' => true,
  			'enableAjaxValidation' => false,
- 			'enableClientScript' => false,
+ 			'enableClientScript' => true,
  		]);
  	?>
 
 	<!-- <?//=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $model->id_contribuyente])->label(false);?> -->
-
 
 	<meta http-equiv="refresh">
     <div class="panel panel-primary"  style="width: 100%;">
@@ -73,49 +72,45 @@
         <div class="panel-body">
         	<div class="container-fluid">
         		<div class="col-sm-12" >
-
-		        	<div class="row" style="width:100%;margin-bottom: 20px;">
-						<div class="row" style="border-bottom: 1px solid;padding-left: 5px;padding-top: 0px;">
-							<h4><strong><?=Html::encode(Yii::t('frontend', 'Ingrese:'))?></strong></h4>
-						</div>
-
-<!-- RECIBO DE PAGO -->
-						<div class="row" style="width:100%;padding:0px;margin-top: 20px;">
-							<div class="col-sm-2" style="width: 22%;padding:0px;padding-left: 20px;">
-								<p><strong><?=Html::encode(Yii::t('frontend', 'Numero de Recibo:'))?></strong></p>
-							</div>
-							<div class="col-sm-4" style="width:20%;padding:0px;margin-left:0px;">
-								<?= $form->field($model, 'recibo')->textInput([
-																		'id' => 'recibo',
-																		'class' => 'form-control',
-																		'style' => 'width:100%;font-size:140%;
-																		            font-weight:bold;text-align:right;',
-																		'maxLength' => 10,
-																	])->label(false);
-								?>
-							</div>
-
-							<div class="col-sm-2" style="width:15%;padding:0px;margin-left:30px;">
-								<div class="form-group">
-									<?= Html::submitButton(Yii::t('backend', 'Buscar'),
-																	  [
-																		'id' => 'btn-buscar-recibo',
-																		'class' => 'btn btn-primary',
-																		'value' => 3,
-																		'style' => 'width: 100%',
-																		'name' => 'btn-buscar-recibo',
-																	  ])
-									?>
-								</div>
-							</div>
-						</div>
-
-						<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1; padding-left: 5px;margin-top:20px;">
-						</div>
-
+<!-- DATOS DEL RECIBO -->
+					<div class="row" style="width:100%;padding:0px;padding-left: 10px;">
+						<?=$htmlRecibo;?>
 					</div>
 
+<!-- FIN DE DATOS DEL RECIBO -->
+
 					<div class="row" style="margin-top: 25px;">
+
+						<div class="col-sm-2" style="margin-left: 20px;width: 25%;">
+							<div class="form-group">
+								<?= Html::submitButton(Yii::t('backend', 'Formas de Pago'),
+																  [
+																	'id' => 'btn-forma-pago',
+																	'class' => 'btn btn-primary',
+																	'value' => 1,
+																	'style' => 'width: 100%',
+																	'name' => 'btn-forma-pago',
+																	//'disabled' => '',
+																  ])
+								?>
+							</div>
+						</div>
+
+
+						<div class="col-sm-2" style="margin-left: 50px;">
+							<div class="form-group">
+								<?= Html::submitButton(Yii::t('backend', 'Back'),
+																  [
+																	'id' => 'btn-back',
+																	'class' => 'btn btn-danger',
+																	'value' => 1,
+																	'style' => 'width: 100%',
+																	'name' => 'btn-back',
+																  ])
+								?>
+							</div>
+						</div>
+
 						<div class="col-sm-2" style="margin-left: 50px;">
 							<div class="form-group">
 								<?= Html::submitButton(Yii::t('backend', 'Quit'),

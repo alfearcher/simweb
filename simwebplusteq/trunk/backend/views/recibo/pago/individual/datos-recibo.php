@@ -212,4 +212,7 @@
 			;?>
 		</div>
 	</div>
+
+	<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1; padding-left: 5px;margin-top:20px;">
+	</div>
 </div>

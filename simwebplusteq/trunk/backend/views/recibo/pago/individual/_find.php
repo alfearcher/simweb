@@ -50,19 +50,11 @@
 
 
  <div class="row" style="width:100%;">
- 	<?php if ( $htmlMensaje !== null ) { ?>
-	 	<div class="well well-sm" style="width:100%;color:red;padding-left: 30px;font-size: 120%;">
-	 		<?= $htmlMensaje; ?>
-	 	</div>
-	 <?php } ?>
-
 	<div class="busqueda-recibo">
 		<?= $this->render('/recibo/pago/individual/busqueda-recibo-form', [
 												'model' => $model,
-												'bloquearFormaPago' => $bloquearFormaPago,
 												'caption' => $caption,
 												'subCaption' => $subCaption,
-												'htmlDatosRecibo' => $htmlDatosRecibo,
 
     					]);
     	?>
