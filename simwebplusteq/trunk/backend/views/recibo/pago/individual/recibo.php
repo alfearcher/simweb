@@ -60,7 +60,7 @@
  		]);
  	?>
 
-	<!-- <?//=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $model->id_contribuyente])->label(false);?> -->
+	<?=$form->field($model, 'recibo')->hiddenInput(['value' => $model->recibo])->label(false);?>
 
 	<meta http-equiv="refresh">
     <div class="panel panel-primary"  style="width: 100%;">
@@ -81,6 +81,12 @@
 
 					<div class="row" style="margin-top: 25px;">
 
+						<?php if ( $bloquearFormaPago ) {
+								$bloquear = true;
+							} else {
+								$bloquear = false;
+							}
+						?>
 						<div class="col-sm-2" style="margin-left: 20px;width: 25%;">
 							<div class="form-group">
 								<?= Html::submitButton(Yii::t('backend', 'Formas de Pago'),
@@ -90,7 +96,7 @@
 																	'value' => 1,
 																	'style' => 'width: 100%',
 																	'name' => 'btn-forma-pago',
-																	//'disabled' => '',
+																	'disabled' => $bloquear,
 																  ])
 								?>
 							</div>
