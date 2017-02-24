@@ -104,7 +104,6 @@
                 // no se pasa.
                 $mensajes = [];
                 $htmlMensaje = null;
-                $htmlDatosRecibo = null;
 
           		$formName = $model->formName();
 
@@ -157,6 +156,7 @@
 						$caption = Yii::t('backend', 'Pago de Recibo');
 						$subCaption = Yii::t('backend', 'Datos del Recibo');
 						return $this->render('/recibo/pago/individual/recibo', [
+													'model' => $model,
 													'htmlRecibo' => $htmlRecibo,
 													'caption' => $caption,
 													'subCaption' => $subCaption,
