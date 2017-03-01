@@ -256,7 +256,7 @@
 					$arregloDatos['ano_impositivo'] = $detalle['ano_impositivo'];
 					$arregloDatos['trimestre'] = $detalle['trimestre'];
 					$arregloDatos['monto'] = $detalle['monto'];
-					$arregloDatos['descuento'] = $detalle['descuento'];
+					$arregloDatos['descuento'] = 0;
 					$arregloDatos['recargo'] = $detalle['recargo'];
 					$arregloDatos['interes'] = $detalle['interes'];
 					$arregloDatos['monto_reconocimiento'] = $detalle['monto_reconocimiento'];
