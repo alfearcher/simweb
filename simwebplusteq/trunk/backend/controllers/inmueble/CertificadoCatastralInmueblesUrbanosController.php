@@ -72,6 +72,8 @@ use backend\models\inmueble\HistoricoCertificadosCatastrales;
 use common\models\inmueble\certificadocatastral\JsonCertificado;
 use backend\models\inmueble\HistoricoCertificadoCatastralSearch;
 use backend\models\solicitud\especial\inmueble\certificadocatastral\VistaPreliminarCertificado;
+use backend\models\inmueble\UsosInmuebles;
+use backend\models\inmueble\TiposInmuebles;
 
 
 //use common\models\Users;
@@ -485,8 +487,8 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
     }
 
 
-         /**
-     *REGISTRO (inscripcion) INMUEBLES URBANOS
+     /**
+     *NUEVO (CERTIFICADO CATASTRAL) INMUEBLES URBANOS
      *Metodo para crear las cuentas de usuarios de los funcionarios
      *@return model 
      **/
@@ -557,7 +559,7 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
  
      } // cierre del metodo inscripcion de inmuebles
      /**
-     *REGISTRO (inscripcion) INMUEBLES URBANOS
+     *RENOVACION DE CERTIFICADO CATASTRAL (inscripcion) INMUEBLES URBANOS
      *Metodo para crear las cuentas de usuarios de los funcionarios
      *@return model 
      **/
@@ -629,7 +631,7 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
 
      /**
       * [GuardarInscripcion description] Metodo que se encarga de guardar los datos de la solicitud 
-      * de inscripcion del inmueble del contribuyente
+      * de certificado catastral del inmueble del contribuyente
       * @param [type] $model [description] arreglo de datos del formulario de inscripcion del
       * inmueble
       */
@@ -919,8 +921,8 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
 
 
     /**
-     *REGISTRO (inscripcion) INMUEBLES URBANOS
-     *Metodo para crear las cuentas de usuarios de los funcionarios
+     *PDF (cedula catastral) INMUEBLES URBANOS
+     *Metodo para generar la cedula catastral en pdf
      *@return model 
      **/
      public function actionCedulaCatastralInmuebles()
@@ -982,11 +984,15 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
                                     ]); 
             }
             
+            $modelUsos = UsosInmuebles::find()->where(['uso_inmueble' => $_SESSION['datosUAvaluos']['id_uso_inmueble']])->asArray()->all();  
+            $modelTipos = TiposInmuebles::find()->where(['tipo_inmueble' => $_SESSION['datosUAvaluos']['tipo_inmueble']])->asArray()->all();
 
             $htmlAspectosFisicos = $this->renderPartial('@common/views/plantilla-pdf/cedulacatastral/layout-aspectos-fisicos-pdf',[
                                                             'resumen'=> $_SESSION['datosUAvaluos'],
+                                                            'uso'=> $modelUsos[0]['descripcion'],
+                                                            'tipo'=> $modelTipos[0]['descripcion'],
                                                             
-                                    ]);                   
+                                    ]); 
 
 
             // Informacion de las cuotas por cobrar.
@@ -1010,7 +1016,7 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
                                                             'director'=> Yii::$app->oficina->getDirector(),
                                                             'nombreCargo' => Yii::$app->oficina->getNombreCargo(),
                                                             'barcode' => $barcode,
-                                    ]);             
+                                    ]);            
 
             
 
