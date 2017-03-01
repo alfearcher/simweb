@@ -59,6 +59,8 @@
 	use common\models\session\Session;
     use backend\models\recibo\pago\individual\BusquedaReciboForm;
     use backend\models\recibo\pago\individual\PagoReciboIndividualSearch;
+    use backend\models\recibo\deposito\DepositoForm;
+
 
 
 
@@ -105,6 +107,9 @@
                 $mensajes = [];
                 $htmlMensaje = null;
 
+                // url para registrar las formas de pagos, para el boton del menu desplegable.
+                $urlFormaPagos = '#';
+
           		$formName = $model->formName();
 
                 if ( $model->load($postData) && Yii::$app->request->isAjax ) {
@@ -124,6 +129,12 @@
 					}
 				}
 
+				if ( isset($postData['btn-forma-pago']) ) {
+					if ( $postData['btn-forma-pago'] == 2 ) {
+						$this->redirect(['registrar-forma-pagos']);
+					}
+				}
+
 				if ( $model->load($postData) ) {
 
 					if ( $model->validate() ) {
@@ -133,8 +144,11 @@
 						$mensajes = $pagoReciboSearch->validarEvento();
 
 						if ( count($mensajes) == 0 ) {
+							$urlFormaPagos = Url::to(['registrar-forma-pagos']);
 							$bloquearFormaPago = false;
 							$htmlMensaje = null;
+							$_SESSION['recibo'] = $model->recibo;
+
 						} else {
 							$htmlMensaje = $this->renderPartial('/recibo/pago/individual/warnings',[
 																	'mensajes' => $mensajes,
@@ -151,6 +165,8 @@
 																'dataProviderReciboPlanilla' => $dataProviders[1],
 																'totales' => $totales,
 																'htmlMensaje' => $htmlMensaje,
+																'urlFormaPagos' => $urlFormaPagos,
+																'bloquearFormaPago' => $bloquearFormaPago,
 											]);
 
 						$caption = Yii::t('backend', 'Pago de Recibo');
@@ -179,6 +195,44 @@
                 // Usuario no autorizado.
             }
         }
+
+
+
+        /***/
+        public function actionRegistrarFormaPagos()
+        {
+        	$depositoModel = New DepositoForm();
+        	if ( isset($_SESSION['recibo']) ) {
+        		$recibo = $_SESSION['recibo'];
+
+        		$request = Yii::$app->request;
+        		$postData = $request->post();
+        		$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
+
+        		$datosRecibo = $pagoReciboSearch->getDeposito();
+
+        		if ( $depositoModel->load($postData)  && Yii::$app->request->isAjax ) {
+					Yii::$app->response->format = Response::FORMAT_JSON;
+					return ActiveForm::validate($depositoModel);
+		      	}
+// die(var_dump($datosRecibo));
+
+
+
+		      	return $this->render('/recibo/pago/individual/_registrar-formas-pago', [
+		      								'model' => $depositoModel,
+		      			]);
+
+        	} else {
+
+        	}
+
+        }
+
+
+
+
+
 
 
 
@@ -251,7 +305,7 @@
 		{
 			return $varSession = [
 							'postData',
-							'conf',
+							'recibo',
 							'begin',
 					];
 
