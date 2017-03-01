@@ -46,6 +46,7 @@
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 	use backend\models\recibo\depositoplanilla\DepositoPlanilla;
+	use backend\models\recibo\deposito\Deposito;
 	use common\models\planilla\Pago;
 
 
@@ -137,6 +138,14 @@
 			}
 
 			return $lista;
+		}
+
+
+
+		/***/
+		public function findDeposito($recibo)
+		{
+			return Deposito::findOne($recibo);
 		}
 
 
