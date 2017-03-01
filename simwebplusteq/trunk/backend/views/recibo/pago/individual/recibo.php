@@ -93,7 +93,7 @@
 																  [
 																	'id' => 'btn-forma-pago',
 																	'class' => 'btn btn-primary',
-																	'value' => 1,
+																	'value' => 2,
 																	'style' => 'width: 100%',
 																	'name' => 'btn-forma-pago',
 																	'disabled' => $bloquear,

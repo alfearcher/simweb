@@ -61,21 +61,27 @@
 		</div>
 
 		<div class="col-sm-2" style="width: 15%;float: right;">
-			<div class="form-group">
-				<?= Html::submitButton(Yii::t('backend', 'Back'),
-												  [
-													'id' => 'btn-back',
-													'class' => 'btn btn-danger',
-													'value' => 1,
-													'style' => 'width: 100%',
-													'name' => 'btn-back',
-												  ])
-				?>
+			<div class="btn-group">
+				<button type="button" class="btn btn-danger btn-lg dropdown-toggle" data-toggle="dropdown">
+					Opciones <span class="caret"></span>
+				</button>
+
+				<ul class="dropdown-menu" role="menu" style="background-color: white;">
+					<?php if ( $bloquearFormaPago ) {
+								$class = 'disabled';
+							} else {
+								$class = 'forma-pago';
+							}
+					?>
+
+					<li class=<?=$class ?>><a href=<?=$urlFormaPagos; ?>>Formas de Pago</a></li>
+					<li><a href=<?=Url::to(['quit']) ?>>Salida</a></li>
+				</ul>
 			</div>
 		</div>
 	</div>
 
-	<div class="row" style="width: 100%;padding: 0px;padding-left: 30px;">
+	<div class="row" style="width: 101%;padding: 0px;padding-left: 40px;margin-top: 15px;">
 		<?= $this->render('/recibo/pago/individual/datos-recibo',[
 												'dataProviderRecibo' => $dataProviderRecibo,
 												'dataProviderReciboPlanilla' => $dataProviderReciboPlanilla,
