@@ -66,8 +66,8 @@
 	  
 <!-- Datos especificos de la declaracion -->
 	<tr>
-		<th class="label-declaracion" colspan="1.5"><?=Html::encode('TIPO'); ?></th>
-		<th class="label-declaracion" colspan="1.5"><?=Html::encode('USO'); ?></th>
+		<th class="label-declaracion" colspan="2.5"><?=Html::encode('TIPO'); ?></th>
+		<th class="label-declaracion" colspan="2.5"><?=Html::encode('USO'); ?></th>
 		<th class="label-declaracion" colspan="2.5"><?=Html::encode('AREA TERRENO (mts2)'); ?></th>
 		<th class="label-declaracion" colspan="2.5"><?=Html::encode('AREA CONSTRUCCION (mts2)'); ?></th>
 		<th class="label-declaracion" colspan="2"><?=Html::encode('ID INMUEBLE'); ?></th>
@@ -76,8 +76,8 @@
 
 	
 		<tr class="cuerpo">
-			<td class="info-declaracion" colspan="1.5"><?=Html::encode($resumen['tipo_inmueble']); ?></td>
-			<td class="info-declaracion" colspan="1.5"><?=Html::encode($resumen['id_uso_inmueble']); ?></td>
+			<td class="info-declaracion" colspan="2.5"><?=Html::encode($tipo); ?></td>
+			<td class="info-declaracion" colspan="2.5"><?=Html::encode($uso); ?></td>
 			<td class="info-declaracion" colspan="2.5"><?=Html::encode($resumen['mts2_terreno']); ?></td>
 			<td class="info-declaracion" colspan="2.5"><?=Html::encode($resumen['mts']); ?></td>
 			<td class="info-declaracion" colspan="2"><?=Html::encode($resumen['id_impuesto']); ?></td>
