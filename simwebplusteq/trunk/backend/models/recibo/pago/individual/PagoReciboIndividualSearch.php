@@ -424,6 +424,16 @@
 
 
 
+            /**
+             * Metodo que retorna el registro de la consulta realizada sobre la entidad
+             * "depositos".
+             * @return Deposito
+             */
+            public function getDeposito()
+            {
+                  return self::findDepositoModel()->asArray()->all();
+            }
+
 
 	}
 
