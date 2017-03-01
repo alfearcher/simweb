@@ -72,6 +72,8 @@ use backend\models\inmueble\HistoricoCertificadosCatastrales;
 use backend\models\inmueble\HistoricoCertificadoCatastralSearch;
 use common\models\inmueble\certificadocatastral\JsonCertificado;
 use backend\models\solicitud\especial\inmueble\certificadocatastral\VistaPreliminarCertificado;
+use backend\models\inmueble\UsosInmuebles;
+use backend\models\inmueble\TiposInmuebles;
 
 
 //use common\models\Users;
@@ -983,10 +985,15 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
             }
             
 
+            $modelUsos = UsosInmuebles::find()->where(['uso_inmueble' => $_SESSION['datosUAvaluos']['id_uso_inmueble']])->asArray()->all();  
+            $modelTipos = TiposInmuebles::find()->where(['tipo_inmueble' => $_SESSION['datosUAvaluos']['tipo_inmueble']])->asArray()->all();
+
             $htmlAspectosFisicos = $this->renderPartial('@common/views/plantilla-pdf/cedulacatastral/layout-aspectos-fisicos-pdf',[
                                                             'resumen'=> $_SESSION['datosUAvaluos'],
+                                                            'uso'=> $modelUsos[0]['descripcion'],
+                                                            'tipo'=> $modelTipos[0]['descripcion'],
                                                             
-                                    ]);                   
+                                    ]);                  
 
 
             // Informacion de las cuotas por cobrar.
