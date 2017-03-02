@@ -227,7 +227,8 @@
 			// Se suma el monto del impuesto.
 			$sumaImpuesto = 0;
 			foreach ( $model as $key => $value ) {
-				$sumaImpuesto = $sumaImpuesto + $value['monto'];
+				// $sumaImpuesto = $sumaImpuesto + $value['monto'];
+				$sumaImpuesto = $sumaImpuesto + ($value['monto'] - $value['descuento']);
 			}
 
 			if ( $totalPeriodo == $exigibilidadLiq ) {
@@ -272,7 +273,7 @@
 			if ( $result ) {
 				$this->_transaccion->commit();
 			} else {
-				$this->_transaccion->rolBack();
+				$this->_transaccion->rollBack();
 			}
 			$this->_conn->close();
 
@@ -296,7 +297,7 @@
 			$tabla = PagoDetalle::tableName();
 
 			$porcentaje = $config['porc_monto'] / 100;
-			$arregloDato['descuento'] = $descuento;
+			$arregloDato['descuento'] = $descuento + $model['descuento'];
 			if ( trim($model['descripcion']) == '' ) {
 				$arregloDato['descripcion'] = 'DESCUENTO DEL ' . $config['porc_monto'] . '%, SOBRE EL MONTO DEL IMPUESTO DEL AÑO ' . $model['ano_impositivo'];
 			} else {
