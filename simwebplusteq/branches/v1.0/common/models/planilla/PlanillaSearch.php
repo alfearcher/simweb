@@ -221,8 +221,27 @@
 			                                        ->joinWith('pagos P', true, 'INNER JOIN')
 			                                        ->where('P.planilla =:planilla',
 			                                        			[':planilla' => $this->_planilla]);
-			                                        //->andWhere('D.pago =:pago',[':pago' => 0]);
+
 		}
+
+
+
+
+		/**
+		 * Metodo que retorna los registros de la planilla. Solo aquellos
+		 * que estan en la entidad "pagos" y "pagos-detalle".
+		 * @return array
+		 */
+		public function getRegistroDetallePlanilla()
+		{
+			return self::findPlanillaGeneralModel()->orderBy([
+			                                        	'D.ano_impositivo' => SORT_ASC,
+			                                        	'D.trimestre' => SORT_ASC,
+			                                        ])
+			                                       ->asArray()
+			                                       ->all();
+		}
+
 
 
 
@@ -375,6 +394,75 @@
 			return $lapso;
 
 		}
+
+
+
+		/***/
+		public function findRegistrosPlanillaPorAnoImpositivoModel($añoImpositivo)
+		{
+			$findModel = self::findPlanillaGeneralModel();
+			if ( $añoImpositivo > 0 ) {
+				$models = $findModel->andWhere('D.ano_impositivo =:ano_impositivo',
+													[':ano_impositivo' => $añoImpositivo]);
+			}
+
+			return null;
+		}
+
+
+
+
+		/**
+		 * Metodo que permite determinar la suma de un campo de la planilla. Se puede especificar un
+		 * parametro adicional como el año impositivo.
+		 * @param string $campo descripcion del campo.
+		 * @param  integer $añoImpositivo año impositivo (opcional).
+		 * @return double.
+		 */
+		public function getMontoPlanillaPorConcepto($campo, $añoImpositivo = 0)
+		{
+			$suma = 0;
+
+			if ( $añoImpositivo > 0 ) {
+				$findModel = self::findRegistrosPlanillaPorAnoImpositivoModel($añoImpositivo);
+			} else {
+				$findModel = self::findPlanillaGeneralModel();
+			}
+
+			$results = $findModel->asArray()->all();
+
+			foreach ( $results as $result ) {
+				if ( isset($result[$campo]) ) {
+					$suma = $suma + $result[$campo];
+				}
+			}
+
+			return $suma;
+
+		}
+
+
+
+
+		/**
+		 * Metodo que determina el monto de la planilla,
+		 * @return double
+		 */
+		public function getMontoPlanilla()
+		{
+			$suma = 0;
+
+			$findModel = self::findPlanillaGeneralModel();
+
+			$results = $findModel->asArray()->all();
+
+			foreach ( $results as $result ) {
+				$suma = $suma + ( ( $result['monto'] + $result['recargo'] + $result['interes'] ) - ($result['descuento'] + $result['monto_reconocimiento']) );
+			}
+			return $suma;
+
+		}
+
 
 
 
