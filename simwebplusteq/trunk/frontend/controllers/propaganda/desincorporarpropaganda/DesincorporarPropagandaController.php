@@ -573,7 +573,7 @@ class DesincorporarPropagandaController extends Controller
         } else {
           $evento = Yii::$app->solicitud->crear();
         }
-
+        
         $procesoEvento = New SolicitudProcesoEvento($conf['id_config_solicitud']);
 
         // Se buscan los procesos que genera la solicitud para ejecutarlos, segun el evento.
@@ -608,7 +608,6 @@ class DesincorporarPropagandaController extends Controller
       return $result;
 
     }
-
    
     
 

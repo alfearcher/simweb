@@ -63,6 +63,7 @@ use common\models\solicitudescontribuyente\SolicitudesContribuyente;
 use frontend\models\vehiculo\registrar\RegistrarVehiculoForm;
 use common\models\configuracion\solicitud\DocumentoSolicitud;
 use common\enviaremail\PlantillaEmail;
+use common\models\configuracion\solicitud\SolicitudProcesoEvento;
 /**
  * Site controller
  */
@@ -448,7 +449,10 @@ class DesincorporacionVehiculoController extends Controller
 
         //die(var_dump($buscar->getParametroSolicitud(["nivel_aprobacion"])));
 
-        $nivelAprobacion = $buscar->getParametroSolicitud(["nivel_aprobacion"]);
+        $nivelAprobacion = $buscar->getParametroSolicitud(['id_config_solicitud',
+                                'tipo_solicitud',
+                                'impuesto',
+                                'nivel_aprobacion']);
 
        // die(var_dump($nivelAprobacion));
 
@@ -474,6 +478,9 @@ class DesincorporacionVehiculoController extends Controller
                  // die($idSolicitud);
 
                     $guardar = self::guardarRegistroDesincorporacion($conn,$conexion, $model, $idSolicitud , $value['id_vehiculo']);
+
+                    $model->nro_solicitud = $idSolicitud;
+                    $resultProceso = self::actionEjecutaProcesoSolicitud($conn, $conexion, $model, $nivelAprobacion);
 
                       if ($nivelAprobacion['nivel_aprobacion'] != 1){ 
 
@@ -552,6 +559,71 @@ class DesincorporacionVehiculoController extends Controller
  
               
             
+    }
+
+    /**
+     * Metodo que se encargara de gestionar la ejecucion y resultados de los procesos relacionados
+     * a la solicitud. En este caso los proceso relacionados a la solicitud en el evento "CREAR".
+     * Se verifica si se ejecutaron los procesos y si los mismos fueron todos positivos. Con
+     * el metodo getAccion(), se determina si se ejecuto algun proceso, este metodo retorna un
+     * arreglo, si el mismo es null se asume que no habia procesos configurados para que se ejecutaran
+     * cuando la solicitud fuese creada. El metodo resultadoEjecutarProcesos(), permite determinar el
+     * resultado de cada proceso que se ejecuto.
+     * @param  ConexionController $conexionLocal instancia de la clase ConexionController.
+     * @param  connection $connLocal instancia de conexion que permite ejecutar las acciones en base
+     * de datos.
+     * @param  model $model modelo de la instancia InscripcionSucursalForm.
+     * @param  array $conf arreglo que contiene los parametros principales de la configuracion de la
+     * solicitud.
+     * @return boolean retorna true si todo se ejecuto correctamente false en caso contrario.
+     */
+    private function actionEjecutaProcesoSolicitud($conexionLocal, $connLocal, $model, $conf)
+    {
+      $result = true;
+      $resultadoProceso = [];
+      $acciones = [];
+      $evento = '';
+      
+      if ( count($conf) > 0 ) {
+        if ( $conf['nivel_aprobacion'] == 1 ) {
+          $evento = Yii::$app->solicitud->aprobar();
+        } else {
+          $evento = Yii::$app->solicitud->crear();
+        }
+
+        $procesoEvento = New SolicitudProcesoEvento($conf['id_config_solicitud']);
+
+        // Se buscan los procesos que genera la solicitud para ejecutarlos, segun el evento.
+        // que en este caso el evento corresponde a "CREAR". Se espera que retorne un arreglo
+        // de resultados donde el key del arrary es el nombre del proceso ejecutado y el valor
+        // del elemento corresponda a un reultado de la ejecucion. La variable $model debe contener
+        // el identificador del contribuyente que realizo la solicitud y el numero de solicitud.
+        $procesoEvento->ejecutarProcesoSolicitudSegunEvento($model, $evento, $conexionLocal, $connLocal);
+
+        // Se obtiene un array de acciones o procesos ejecutados. Sino se obtienen acciones
+        // ejecutadas se asumira que no se configuraro ningun proceso para que se ejecutara
+        // cuando se creara la solicitud.
+        $acciones = $procesoEvento->getAccion();
+        if ( count($acciones) > 0 ) {
+
+          // Se evalua cada accion o proceso ejecutado para determinar si se realizo satisfactoriamnente.
+          $resultadoProceso = $procesoEvento->resultadoEjecutarProcesos();
+
+          if ( count($resultadoProceso) > 0 ) {
+            foreach ( $resultadoProceso as $key => $value ) {
+              if ( $value == false ) {
+                $result = false;
+                break;
+              }
+            }
+          }
+        }
+      } else {
+        $result = false;
+      }
+
+      return $result;
+
     }
 
 }  
