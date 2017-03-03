@@ -14,6 +14,8 @@ use yii\web\UrlManager;
 use yii\base\Component;
 use yii\base\Object;
 use yii\helpers\Url;
+use yii\bootstrap\Modal;
+use yii\widgets\Pjax;
 
 
 use backend\models\inmueble\InmueblesUrbanosForm;
@@ -65,6 +67,33 @@ function bloquea() {
         document.getElementById("unidad1c").style.display='none';
         
     } 
+} 
+
+function avaluo() { 
+//alert('estoy en la tipologia '+document.getElementById('tipologiaInmuebles').value);
+//mterreno
+//mconstruccion
+//tipologiaInmuebles
+  var tipologia = document.getElementById("tipologiaInmuebles").value;
+  var terreno =  document.getElementById('mterreno').value;
+  var construccion = document.getElementById('mconstruccion').value;
+
+    if (document.getElementById("tipologiaInmuebles").value!=0) { 
+        document.getElementById("totales").style.display=''; 
+        <?php
+                $_SESSION['tipologia'] ="  document.write(tipologia).value ";
+                $_SESSION['mconstruccion'] ="<script> document.write(construccion).value </script>" ;
+                $_SESSION['mterreno'] ="<script> document.write(terreno).value </script>" ;
+        ?>
+        //readOnly = false
+    } 
+
+     if (document.getElementById("tipologiaInmuebles").value==0) { 
+        document.getElementById("totales").style.display='none'; 
+       
+        
+    } 
+   
 } 
 
 function documento() { 
@@ -485,7 +514,7 @@ Session["variablephp"] = tu;
                                                         </div> 
                                                     
                                                         <div class="col-sm-2"> 
-                                                        <?= $form->field($modelAvaluo, 'metros_construccion')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value' => $_SESSION['datosUAvaluos']['mts']])->label(false) ?>
+                                                        <?= $form->field($modelAvaluo, 'metros_construccion')->textInput(['id' => 'mconstruccion','maxlength' => true,'style' => 'width:100px;', 'value' => $_SESSION['datosUAvaluos']['mts']])->label(false) ?>
                                                         </div> 
 
                                                         <div class="col-sm-2"> 
@@ -504,7 +533,7 @@ Session["variablephp"] = tu;
                                                         </div> 
                                                     
                                                         <div class="col-sm-2"> 
-                                                        <?= $form->field($modelAvaluo, 'metros_terreno')->textInput(['maxlength' => true,'style' => 'width:100px;', 'value' => $_SESSION['datosUAvaluos']['mts2_terreno']])->label(false) ?> 
+                                                        <?= $form->field($modelAvaluo, 'metros_terreno')->textInput(['id' => 'mterreno','maxlength' => true,'style' => 'width:100px;', 'value' => $_SESSION['datosUAvaluos']['mts2_terreno']])->label(false) ?> 
                                                         </div>
 
                                                         <div class="col-sm-2"> 
@@ -514,6 +543,24 @@ Session["variablephp"] = tu;
                                                         <div class="col-sm-2"> 
                                                         <?= $form->field($modelAvaluo, 'valor_terreno')->textInput(['maxlength' => true,'style' => 'width:100px;', 'readOnly' =>true])->label(false) ?>
                                                         </div> 
+
+                                                        <div class="col-sm-3" id="totales" style="display:none"> 
+                                                        <?= Html::a(Yii::t('backend', 'Totales Avaluo Año '.date('Y')), '#', [
+                                                                                'id' => 'link-year-avaluo',
+                                                                                'data-toggle' => 'modal',
+                                                                                'data-target' => '#modal',
+                                                                                'data-url' => Url::to(['view-pre-avaluo-modal',
+                                                                                                        
+                                                                                                        'id' => $_SESSION['tipologia'], 
+                                                                                                        'a' => date('Y'), 
+                                                                                                        't' => $_SESSION['mterreno'],
+                                                                                                        'c' => $_SESSION['mconstruccion']]),
+                                                                                'data-ano-impositivo' => date('Y'),
+                                                                                'data-periodo' => 1,
+                                                                                'data-pjax' => 0,
+                                                                    ]); ?>
+                                                        </div>
+
                                                     </div>       
 
                                                      <div class="row" style="margin-left:20px; margin-top:20px;">
@@ -554,11 +601,7 @@ Session["variablephp"] = tu;
                                                                                                             'style' => 'width:200px;',
                                                                                                             'value' => $_SESSION['datosUAvaluos']['tipo_inmueble'],
                                                                                                            /*'onchange' =>
-                                                                                                                '$.post( "' . Yii::$app->urlManager
-                                                                                                                                       ->createUrl('parroquias/lists') . '&municipio=' . '" + $(this).val(), function( data ) {
-                                                                                                                                                                                                            $( "select#parroquias" ).html( data );
-                                                                                                                                                                                                            });' 
-                                                                                                           */ ])->label(false); ?>
+                                                                                                                */ ])->label(false); ?>
                                                         </div> 
                                                     </div>
 
@@ -599,8 +642,8 @@ Session["variablephp"] = tu;
                                                                                                             'prompt' => Yii::t('backend', 'Select'),
                                                                                                             'style' => 'width:300px;',
                                                                                                             'value' => $_SESSION['datosUAvaluos']['id_tipologia_zona'],
-                                                                                                           /*'onchange' =>
-                                                                                                                '$.post( "' . Yii::$app->urlManager
+                                                                                                           'onchange' => 'avaluo()',
+                                                                                                               /* '$.post( "' . Yii::$app->urlManager
                                                                                                                                        ->createUrl('parroquias/lists') . '&municipio=' . '" + $(this).val(), function( data ) {
                                                                                                                                                                                                             $( "select#parroquias" ).html( data );
                                                                                                                                                                                                             });' 
@@ -790,7 +833,49 @@ Session["variablephp"] = tu;
         </div>
     </div>
 
+<?php
+$this->registerJs(
+    '
+    $(document).on("click", "#link-year-avaluo", (function() {
+        $.get(
+            $(this).data("url"),
+            function (data) {
+                //$(".modal-body").html(data);
+                $(".detalle").html(data);
+                $("#modal").modal();
+            }
+        );
+    }));
 
+    '
+
+
+
+); ?>
+
+
+<style type="text/css">
+    .modal-content  {
+            margin-top: 110px;
+            margin-left: -180px;
+            width: 150%;
+    }
+</style>
+
+<?php
+Modal::begin([
+    'id' => 'modal',
+    //'header' => '<h4 class="modal-title">Complete</h4>',
+    'size' => 'modal-lg',
+    'footer' => '<a href="#" class="btn btn-primary" data-dismiss="modal">Cerrar</a>',
+]);
+
+//echo "<div class='well'></div>";
+Pjax::begin();
+echo "<div class='detalle'></div>";
+Pjax::end();
+Modal::end();
+?>
 
 <?php //$form->end(); ?>
  

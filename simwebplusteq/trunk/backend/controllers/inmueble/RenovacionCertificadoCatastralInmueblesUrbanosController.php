@@ -81,6 +81,8 @@ use yii\helpers\Url;
 use yii\db\ActiveRecord;
 use common\conexion\ConexionController;
 
+use backend\models\solicitud\especial\inmueble\certificadocatastral\VistaPreliminarCertificado;
+
 use common\enviaremail\PlantillaEmail;
 use common\mensaje\MensajeController;
 use frontend\models\inmueble\ConfiguracionTiposSolicitudes;
@@ -932,6 +934,62 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
 
 
      }
+
+     /**
+     * Metodo que permite renderizar una vista con la informacion preliminar de
+     * los valores de AVALUO segun el numero de el id_tipologia_Zona y la manzana limite de la misma.
+     * @return View
+     */
+    public function actionViewPreAvaluoModal()
+    {
+      $request = Yii::$app->request;
+      $postGet = $request->get();
+
+die(var_dump($postGet['id']));
+      // Identificador del contribuyente
+      $id = $postGet['id'];
+
+      $metros_terreno = $postGet['t'];
+      $metros_construccion = $postGet['c'];
+      die(' id '.$id.$metros_terreno.$metros_construccion);  
+      // Año impositivo
+      //$añoImpositivo = $postGet['a'];
+
+      
+
+      // Numero de solicitud
+      //$nroSolicitud = $postGet['nro'];
+     // $certificadoSearch = self::findCertificadoCatastralUrbano($nroSolicitud, $id);
+
+      $tarifaAvaluos = self::TarifaAvaluos($_SESSION['datosInmueble']['manzana_limite'],$id, date('Y') ); 
+      $valuo = $tarifaAvaluos['valor_construccion']*$metros_construccion + $tarifaAvaluos['valor_terreno']*$metros_terreno;     
+     
+      $modelAvaluo = ['mts'=>$metros_construccion,
+                      'valor_por_mts2'=>$tarifaAvaluos['valor_construccion'],
+                      'valor_por_mts2_terreno'=>$tarifaAvaluos['valor_terreno'],
+                      'mts2_terreno' =>$metros_terreno,
+                      'valor_construccion'=> $tarifaAvaluos['valor_construccion']*$metros_construccion,
+                      'valor_terreno'=> $tarifaAvaluos['valor_terreno']*$metros_terreno,
+                      'valor' => $valuo,
+                      ];
+      
+      $models = new VistaPreliminarCertificado();
+
+            //renderAjax
+      return $this->renderAjax('/inmueble/renovacion-certificado-catastral-inmuebles-urbanos/pre-view-datos-avaluo',[
+              'model' => $models,
+              //'modelContribuyente' => $buscar[0],
+              //'modelCertificado' =>$certificadoSearch,
+              'modelInmueble' => $_SESSION['datosInmueble'],
+              'modelTarifa' => $tarifaAvaluos,
+              'modelAvaluo' => $modelAvaluo,
+              //'modelRegistro' => $model['registro'],
+              //'descripcion' => $descripcion,
+
+              
+          ]);
+
+    }
 
      
 

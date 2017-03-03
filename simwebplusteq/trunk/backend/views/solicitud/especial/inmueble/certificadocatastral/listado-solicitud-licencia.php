@@ -171,15 +171,7 @@
                 										return $data['ano_impositivo'];
         											},
 					                ],
-					                [
-					                	'contentOptions' => [
-				                        	'style' => 'font-size: 90%;',
-				                        ],
-					                    'label' => Yii::t('frontend', 'ID.'),
-					                    'value' => function($data) {
-                										return $data['id_contribuyente'];
-        											},
-					                ],
+					               
 					                [
 					                	'contentOptions' => [
 				                        	'style' => 'font-size: 90%;',
