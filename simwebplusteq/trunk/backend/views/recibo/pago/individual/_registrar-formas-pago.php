@@ -96,18 +96,21 @@
 								</div>
 							</div>
 
-							<div class="col-sm-2" style="width: 25%;padding: 0px;padding-left: 15px;">
+							<div class="col-sm-2" style="width: 25%;padding: 0px;padding-left: 15px;padding-top: 25px;">
 								<div class="monto" style="margin-left: 0px;">
-									<?= $form->field($model, 'monto')->textInput([
-																			'id' => 'id-monto',
-																			'style' => 'width:100%;
-																			 background-color:white;
-																			 font-weight:bold;
-																			 text-align:right;
-																			 font-size:140%;',
-																			'value' => Yii::$app->formatter->asDecimal($datosRecibo[0]['monto'], 2),
-																			'readOnly' => true,
-																		])->label('Monto') ?>
+									<?= Html::textInput('montoRecibo',
+													     Yii::$app->formatter->asDecimal($datosRecibo[0]['monto'], 2),
+													     [
+													     	'id' => 'id-monto',
+													     	'class' => 'form-control',
+															'style' => 'width:100%;
+															background-color:white;
+															font-weight:bold;
+															text-align:right;
+															font-size:140%;',
+															'readOnly' => true,
+													     ])
+									?>
 								</div>
 							</div>
 
@@ -151,6 +154,7 @@
 									'header' => 'Forma de pagos',
 									'id' => 'modal',
 									'size' => 'modal-lg',
+									'footer' => '<a href="#" class="btn btn-danger" data-dismiss="modal">Cerrar</a>',
 								]);
 
 								echo "<div id='modalContent' style='padding-left: 20px;'></div>";

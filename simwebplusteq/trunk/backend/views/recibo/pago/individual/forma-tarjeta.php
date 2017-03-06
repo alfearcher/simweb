@@ -21,13 +21,13 @@
  */
 
  /**
- *  @file forma-efectivo.php
+ *  @file forma-tarjeta.php
  *
  *  @author Jose Rafael Perez Teran
  *
  *  @date 13-02-2017
  *
- *  @view forma-efectivo.php
+ *  @view forma-tarjeta.php
  *
  *
  *  @property
@@ -58,7 +58,7 @@
 
 <?php
 	$form = ActiveForm::begin([
-		'id' => 'id-forma-efectivo-form',
+		'id' => 'id-forma-tarjeta-form',
 		'method' => 'post',
 		'enableClientValidation' => true,
 		'enableAjaxValidation' => false,
