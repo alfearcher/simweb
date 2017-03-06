@@ -631,7 +631,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                                 ]; 
               $arrayDatos = ['avaluo1'=> $arrayDatos1];
             }
-          
+           
        } elseif($_SESSION['anioRegistro']!=null) {
 
             $anioImpositivo = '2008';
@@ -945,13 +945,13 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
       $request = Yii::$app->request;
       $postGet = $request->get();
 
-die(var_dump($postGet['id']));
+die(var_dump($postGet['id']).var_dump(json_decode($postGet['a'])).var_dump(json_decode($postGet['c'])).var_dump(json_decode($postGet['t'])).'llego aqui'); 
       // Identificador del contribuyente
       $id = $postGet['id'];
 
       $metros_terreno = $postGet['t'];
       $metros_construccion = $postGet['c'];
-      die(' id '.$id.$metros_terreno.$metros_construccion);  
+      
       // Año impositivo
       //$añoImpositivo = $postGet['a'];
 

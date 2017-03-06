@@ -33,7 +33,7 @@ use backend\models\inmueble\TipologiasZonas;
 /* @var $form ActiveForm */
 $this->title = Yii::t('backend', 'Renovacion de Certificado Catastral'). '</p>';
  
-
+$_GET['tipo']=null;
  ?>
 <script type="text/javascript">
 function bloquea() { 
@@ -73,19 +73,27 @@ function avaluo() {
 //alert('estoy en la tipologia '+document.getElementById('tipologiaInmuebles').value);
 //mterreno
 //mconstruccion
-//tipologiaInmuebles
+//tipologiaInmuebles 
   var tipologia = document.getElementById("tipologiaInmuebles").value;
   var terreno =  document.getElementById('mterreno').value;
   var construccion = document.getElementById('mconstruccion').value;
 
+  <?php
+
+                $_SESSION['tipologia'] ='<script type="text/javascript"> document.write(tipologia.value)) </script>';
+                $_SESSION['mconstruccion'] ="<script type='text/javascript'> document.write(construccion.value) </script>" ;
+                $_SESSION['mterreno'] ="<script type='text/javascript'> document.write(terreno.value) </script>" ;
+  ?> 
+//window.location.href = window.location.href+"?tipo=" + tipologia + "&terreno=" + terreno + "&construccion=" + construccion;
+//document.cookie ='id='+tipologia+'; expires=Thu, 2 Aug 2021 20:47:11 UTC; path=/';
+//document.cookie ='t='+terreno+'; expires=Thu, 2 Aug 2021 20:47:11 UTC; path=/';
+//document.cookie ='c='+construccion+'; expires=Thu, 2 Aug 2021 20:47:11 UTC; path=/';
+    
+
     if (document.getElementById("tipologiaInmuebles").value!=0) { 
-        document.getElementById("totales").style.display=''; 
-        <?php
-                $_SESSION['tipologia'] ="  document.write(tipologia).value ";
-                $_SESSION['mconstruccion'] ="<script> document.write(construccion).value </script>" ;
-                $_SESSION['mterreno'] ="<script> document.write(terreno).value </script>" ;
-        ?>
-        //readOnly = false
+        document.getElementById("totales").style.display='';
+        
+        
     } 
 
      if (document.getElementById("tipologiaInmuebles").value==0) { 
@@ -95,6 +103,16 @@ function avaluo() {
     } 
    
 } 
+function enviar()
+    {
+        // Esta es la variable que vamos a pasar
+        
+        var tipologia = document.getElementById("tipologiaInmuebles").value;
+        var terreno =  $("#mterreno").val();
+        var construccion = $("#mconstruccion").val();
+        // Enviamos la variable de javascript a archivo.php
+       return tipologia;
+    }
 
 function documento() { 
 
@@ -547,17 +565,20 @@ Session["variablephp"] = tu;
                                                         <div class="col-sm-3" id="totales" style="display:none"> 
                                                         <?= Html::a(Yii::t('backend', 'Totales Avaluo Año '.date('Y')), '#', [
                                                                                 'id' => 'link-year-avaluo',
-                                                                                'data-toggle' => 'modal',
+                                                                                'data-toggle' => 'modal', 
                                                                                 'data-target' => '#modal',
                                                                                 'data-url' => Url::to(['view-pre-avaluo-modal',
                                                                                                         
-                                                                                                        'id' => $_SESSION['tipologia'], 
-                                                                                                        'a' => date('Y'), 
-                                                                                                        't' => $_SESSION['mterreno'],
-                                                                                                        'c' => $_SESSION['mconstruccion']]),
+                                                                                                        'id' =>"<script type='text/javascript'> document.getElementById('tipologiaInmuebles').value;  </script>",
+                                                                                                        'a' => date('Y'),
+                                                                                                        't' => '<script type="text/javascript"> document.getElementById("mterreno").value  </script>',
+                                                                                                        'c' => '<script type="text/javascript"> document.getElementById("mconstruccion").value  </script>',
+
+                                                                                                    ]),
                                                                                 'data-ano-impositivo' => date('Y'),
                                                                                 'data-periodo' => 1,
                                                                                 'data-pjax' => 0,
+                                                                                
                                                                     ]); ?>
                                                         </div>
 
@@ -814,7 +835,8 @@ Session["variablephp"] = tu;
                                                        
 <!-- Campos ocultos -->  
 
-<?= $form->field($model, 'id_impuesto')->hiddenInput(['value' => $model->id_impuesto])->label(false) ?>
+<?= $form->field($model, 'id_impuesto')->hiddenInput(['value' => $_SESSION['datosInmueble']['id_impuesto']])->label(false) ?>
+<?= $form->field($model, 'manzana_limite')->hiddenInput(['id' => 'manzanaLimite', 'value' => $_SESSION['datosInmueble']['manzana_limite']])->label(false) ?>
 <?= $form->field($modelAvaluo, 'validacion2')->hiddenInput(['value' => 2])->label(false) ?>
 
 

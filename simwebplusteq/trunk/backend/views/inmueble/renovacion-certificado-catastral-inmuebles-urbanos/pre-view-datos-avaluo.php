@@ -56,7 +56,7 @@
   	$typeLong = 'fa-2x';
 
     Icon::map($this, $typeIcon);
-
+ 
  ?>
 
 

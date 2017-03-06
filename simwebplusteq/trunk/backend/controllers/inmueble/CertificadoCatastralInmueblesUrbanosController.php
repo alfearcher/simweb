@@ -1066,7 +1066,7 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
             $modelFind = $buscar->findCertificadoHistorico($id_impuesto); 
             return isset($modelFind) ? $modelFind : null;
         }
-
+ 
     /**
          * Metodo que permite obtener un modelo de los datos de la solicitud,
          * sobre la entidad "sl-", referente al detalle de la solicitud. Es la

@@ -594,7 +594,7 @@
 		 * @return View
 		 */
 		public function actionViewPreCertificadoModal()
-		{
+		{ 
 			$request = Yii::$app->request;
 			$postGet = $request->get();
 
