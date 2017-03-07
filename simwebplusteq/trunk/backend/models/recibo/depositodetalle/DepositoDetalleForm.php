@@ -64,6 +64,7 @@
 		public $estatus;
 		public $codigo_banco;
 		public $cuenta_deposito;
+		public $codigo_cuenta;
 
 
 		const SCENARIO_EFECTIVO = 'efectivo';
@@ -95,6 +96,7 @@
         				'fecha',
         				'monto',
         				'cuenta',
+        				'codigo_cuenta',
         				'cheque',
         		],
         		self::SCENARIO_TARJETA => [
@@ -123,16 +125,50 @@
 	    public function rules()
 	    {
 	        return [
-	        	// [['recibo', 'impuesto',
-	        	//   'estatus', 'planilla', 'monto'],
-	        	//   'require'],
-	        	[['recibo', 'planilla',
-	        	  'estatus'],
-	        	  'integer'],
-	        	[['immpuesto', 'descripcion'],
-	        	  'string'],
-	        	[['estatus', 'codigo'], 'default', 'value' => 0],
-
+	        	[['recibo', 'id_forma',
+	        	  'fecha', 'monto'],
+	        	  'required', 'on' => 'efectivo',
+	        	  'message' => Yii::t('backend','{attribute} is required')],
+	        	[['recibo', 'id_forma',
+	        	  'fecha', 'monto',
+	        	  'cheque', 'cuenta',
+	        	  'codigo_cuenta',],
+	        	  'required', 'on' => 'cheque',
+	        	  'message' => Yii::t('backend','{attribute} is required')],
+	        	[['recibo', 'id_forma',
+	        	  'fecha', 'monto',
+	        	  'cheque', 'cuenta'],
+	        	  'required', 'on' => 'tarjeta',
+	        	  'message' => Yii::t('backend','{attribute} is required')],
+	        	[['recibo', 'id_forma',
+	        	  'fecha', 'monto',
+	        	  'deposito',],
+	        	  'required', 'on' => 'deposito',
+	        	  'message' => Yii::t('backend','{attribute} is required')],
+	        	[['recibo', 'id_forma',
+	        	  'estatus', 'codigo_banco'],
+	        	  'integer',
+	        	  'message' => Yii::t('backend','{attribute} must be integer')],
+	        	[['cheque', 'cuenta'],
+	        	  'string',
+	        	  'message' => Yii::t('backend','{attribute} must be string')],
+	        	//[['monto'],'formatter' => ],
+	        	// ['monto',
+	        	//  'double',
+	        	//  'message' => Yii::t('backend','{attribute} must be double')],
+	        	[['estatus'], 'default', 'value' => 0],
+	        	[['codigo_cuenta'],
+	        	  'string',
+	        	  'max' => 4,
+	        	  'message' => Yii::t('backend', 'Debe contener 4 digitos')],
+	        	[['codigo_cuenta'],
+	        	  'string',
+	        	  'min' => 4,
+	        	  'message' => Yii::t('backend', 'Debe contener 4 digitos')],
+	        	[['cuenta'],
+	        	  'string',
+	        	  'max' => 21,
+	        	  'message' => Yii::t('backend', 'Debe contener 4 digitos')],
 
 	        ];
 	    }
@@ -147,6 +183,13 @@
 	    {
 	        return [
 
+	        	'recibo' => Yii::t('backend','Nro. Recibo'),
+	        	'id_forma' => Yii::t('backend','Fomra de Pago'),
+	        	'deposito' => Yii::t('backend','Nro. Deposito'),
+	        	'fecha' => Yii::t('backend','fecha'),
+	        	'cheque' => Yii::t('backend','Nro. Cheque'),
+	        	'cuenta' => Yii::t('backend','Nro. Cuenta'),
+	        	'monto' => Yii::t('backend','Monto'),
 
 	        ];
 	    }
