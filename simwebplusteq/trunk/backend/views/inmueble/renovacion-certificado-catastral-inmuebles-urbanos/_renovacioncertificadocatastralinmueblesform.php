@@ -77,17 +77,11 @@ function avaluo() {
    tipologia = document.getElementById("tipologiaInmuebles").value;
    terreno =  document.getElementById('mterreno').value;
    construccion = document.getElementById('mconstruccion').value;
-
-  <?php
-
-                $_SESSION['tipologia'] ='<script> document.getElementById("tipologiaInmuebles").value </script>';
-                $_SESSION['mconstruccion'] ="<script type='text/javascript'> document.write(construccion.value) </script>" ;
-                $_SESSION['mterreno'] ="<script type='text/javascript'> document.write(terreno.value) </script>" ;
-  ?> 
+ 
 //window.location.href = window.location.href+"?tipo=" + tipologia + "&terreno=" + terreno + "&construccion=" + construccion;
-document.cookie ='id='+document.getElementById("tipologiaInmuebles").value+'; expires=Thu, 2 Aug 20:47:11 UTC; path=/';
-document.cookie ='t='+document.getElementById('mterreno').value+'; expires=Thu, 2 Aug 2021 20:47:11 UTC; path=/';
-document.cookie ='c='+document.getElementById('mconstruccion').value+'; expires=Thu, 2 Aug 2021 20:47:11 UTC; path=/';
+document.cookie ='id='+document.getElementById("tipologiaInmuebles").value+'; expires=Thu, 2 Aug 2071 20:47:11 UTC; path=/';
+document.cookie ='t='+document.getElementById('mterreno').value+'; expires=Thu, 2 Aug 2071 20:47:11 UTC; path=/';
+document.cookie ='c='+document.getElementById('mconstruccion').value+'; expires=Thu, 2 Aug 2071 20:47:11 UTC; path=/';
     
 
     if (document.getElementById("tipologiaInmuebles").value!=0) { 

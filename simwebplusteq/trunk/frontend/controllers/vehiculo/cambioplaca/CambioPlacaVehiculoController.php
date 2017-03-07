@@ -46,7 +46,7 @@
 namespace frontend\controllers\vehiculo\cambioplaca;
 
 use Yii;
-
+ 
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
@@ -143,7 +143,7 @@ class CambioPlacaVehiculoController extends Controller
 
               die('no existe vehiculo asociado a ese ID');
           }
-  }
+  } 
 
     /**
      * [actionRegistrarVehiculo description] metodo que renderiza y valida el formulario de cambio de datos del vehiculo
