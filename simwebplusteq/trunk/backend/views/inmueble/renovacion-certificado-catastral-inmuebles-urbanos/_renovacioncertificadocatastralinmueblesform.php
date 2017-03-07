@@ -74,20 +74,20 @@ function avaluo() {
 //mterreno
 //mconstruccion
 //tipologiaInmuebles 
-  var tipologia = document.getElementById("tipologiaInmuebles").value;
-  var terreno =  document.getElementById('mterreno').value;
-  var construccion = document.getElementById('mconstruccion').value;
+   tipologia = document.getElementById("tipologiaInmuebles").value;
+   terreno =  document.getElementById('mterreno').value;
+   construccion = document.getElementById('mconstruccion').value;
 
   <?php
 
-                $_SESSION['tipologia'] ='<script type="text/javascript"> document.write(tipologia.value)) </script>';
+                $_SESSION['tipologia'] ='<script> document.getElementById("tipologiaInmuebles").value </script>';
                 $_SESSION['mconstruccion'] ="<script type='text/javascript'> document.write(construccion.value) </script>" ;
                 $_SESSION['mterreno'] ="<script type='text/javascript'> document.write(terreno.value) </script>" ;
   ?> 
 //window.location.href = window.location.href+"?tipo=" + tipologia + "&terreno=" + terreno + "&construccion=" + construccion;
-//document.cookie ='id='+tipologia+'; expires=Thu, 2 Aug 2021 20:47:11 UTC; path=/';
-//document.cookie ='t='+terreno+'; expires=Thu, 2 Aug 2021 20:47:11 UTC; path=/';
-//document.cookie ='c='+construccion+'; expires=Thu, 2 Aug 2021 20:47:11 UTC; path=/';
+document.cookie ='id='+document.getElementById("tipologiaInmuebles").value+'; expires=Thu, 2 Aug 20:47:11 UTC; path=/';
+document.cookie ='t='+document.getElementById('mterreno').value+'; expires=Thu, 2 Aug 2021 20:47:11 UTC; path=/';
+document.cookie ='c='+document.getElementById('mconstruccion').value+'; expires=Thu, 2 Aug 2021 20:47:11 UTC; path=/';
     
 
     if (document.getElementById("tipologiaInmuebles").value!=0) { 
@@ -569,10 +569,10 @@ Session["variablephp"] = tu;
                                                                                 'data-target' => '#modal',
                                                                                 'data-url' => Url::to(['view-pre-avaluo-modal',
                                                                                                         
-                                                                                                        'id' =>"<script type='text/javascript'> document.getElementById('tipologiaInmuebles').value;  </script>",
+                                                                                                        'id' =>$_COOKIE['id'],//"<script type='text/javascript'> document.getElementById('tipologiaInmuebles').value;  </script>", 
                                                                                                         'a' => date('Y'),
-                                                                                                        't' => '<script type="text/javascript"> document.getElementById("mterreno").value  </script>',
-                                                                                                        'c' => '<script type="text/javascript"> document.getElementById("mconstruccion").value  </script>',
+                                                                                                        't' => $_COOKIE['t'],//'<script type="text/javascript"> document.getElementById("mterreno").value  </script>',
+                                                                                                        'c' => $_COOKIE['c'],//'<script type="text/javascript"> document.getElementById("mconstruccion").value  </script>',
 
                                                                                                     ]),
                                                                                 'data-ano-impositivo' => date('Y'),

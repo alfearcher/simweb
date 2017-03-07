@@ -945,7 +945,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
       $request = Yii::$app->request;
       $postGet = $request->get();
 
-die(var_dump($postGet['id']).var_dump(json_decode($postGet['a'])).var_dump(json_decode($postGet['c'])).var_dump(json_decode($postGet['t'])).'llego aqui'); 
+
       // Identificador del contribuyente
       $id = $postGet['id'];
 
@@ -953,7 +953,7 @@ die(var_dump($postGet['id']).var_dump(json_decode($postGet['a'])).var_dump(json_
       $metros_construccion = $postGet['c'];
       
       // Año impositivo
-      //$añoImpositivo = $postGet['a'];
+      $añoImpositivo = $postGet['a'];
 
       
 
@@ -961,7 +961,7 @@ die(var_dump($postGet['id']).var_dump(json_decode($postGet['a'])).var_dump(json_
       //$nroSolicitud = $postGet['nro'];
      // $certificadoSearch = self::findCertificadoCatastralUrbano($nroSolicitud, $id);
 
-      $tarifaAvaluos = self::TarifaAvaluos($_SESSION['datosInmueble']['manzana_limite'],$id, date('Y') ); 
+      $tarifaAvaluos = self::TarifaAvaluos($_SESSION['datosInmueble']['manzana_limite'],$id, $añoImpositivo ); 
       $valuo = $tarifaAvaluos['valor_construccion']*$metros_construccion + $tarifaAvaluos['valor_terreno']*$metros_terreno;     
      
       $modelAvaluo = ['mts'=>$metros_construccion,
