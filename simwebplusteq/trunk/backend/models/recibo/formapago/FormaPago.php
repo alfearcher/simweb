@@ -75,7 +75,7 @@
 		 */
 		public static function tableName()
 		{
-			return 'formas-pago';
+			return 'formas_pago';
 		}
 
 
