@@ -24,6 +24,15 @@ return [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
                 ],
+                [
+                    'class' => 'yii\log\EmailTarget',
+                    'levels' => ['error'],
+                    'message' => [
+                        'from' => ['jperez320@gmail.com'],
+                        'to' => ['jperez820@hotmail.com', 'alvarojfer_archer@hotmail.com'],
+                        'subject' => 'Gestion de errores SIMWebPLUS',
+                    ],
+                ],
             ],
         ],
         'errorHandler' => [
