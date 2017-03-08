@@ -15,7 +15,7 @@ return [
         'user' => [
             'identityClass' => 'frontend\models\usuario\Afiliaciones',
             'enableAutoLogin' => false,
-            'identityCookie' =>[ 
+            'identityCookie' =>[
             'name' => '_frontendUser',
 
             ]
@@ -26,6 +26,15 @@ return [
                 [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
+                ],
+                [
+                    'class' => 'yii\log\EmailTarget',
+                    'levels' => ['error'],
+                    'message' => [
+                        'from' => ['jperez320@gmail.com'],
+                        'to' => ['jperez820@hotmail.com', 'alvaro.fernandez@asisconsultores.com.ve'],
+                        'subject' => 'Gestion de errores SIMWebPLUS',
+                    ],
                 ],
             ],
         ],
