@@ -573,7 +573,7 @@ Session["variablephp"] = tu;
                                                                                 'data-periodo' => 1,
                                                                                 'data-pjax' => 0,
                                                                                 
-                                                                    ]); ?>
+                                                                    ]); ?> 
                                                         </div>
 
                                                     </div>       

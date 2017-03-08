@@ -75,7 +75,7 @@ class CambioPropietarioVendedorController extends Controller
 {
 
 
-
+ 
     
   public $layout = 'layout-main';
    

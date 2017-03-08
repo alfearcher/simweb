@@ -91,7 +91,7 @@ class VehiculosController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
-
+ 
     /**
      * Lista el vehiculo que esta relacionado con la placa que se ingreso en el
      * formulariod e busqueda.

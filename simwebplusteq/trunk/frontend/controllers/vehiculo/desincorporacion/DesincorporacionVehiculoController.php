@@ -243,7 +243,7 @@ class DesincorporacionVehiculoController extends Controller
 
        }
     }
-
+ 
     public function verificarSolicitud($idVehiculo,$idConfig)
     {
       $buscar = SolicitudesContribuyente::find()

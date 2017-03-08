@@ -76,7 +76,7 @@ class CompradorNaturalController extends Controller
 {
 
 
-
+ 
     
   public $layout = 'layout-main';
    
