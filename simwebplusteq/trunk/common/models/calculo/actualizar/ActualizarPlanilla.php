@@ -51,6 +51,7 @@
 	use common\models\calculo\liquidacion\inmueble\LiquidacionInmueble;
 	use common\models\calculo\liquidacion\propaganda\LiquidacionPropaganda;
 	use common\models\calculo\liquidacion\vehiculo\LiquidacionVehiculo;
+	use common\models\calculo\liquidacion\tasa\LiquidacionTasa;
 	use common\models\calculo\recargo\Recargo;
 	use common\models\calculo\interes\Interes;
 	use common\models\pago\PagoSearch;
@@ -146,6 +147,16 @@
 						return self::aplicarActualizacion();
 
 					}
+
+				} elseif ( $this->_impuesto == 9 ) {
+
+					if ( !$this->_conPeriodo ) {
+
+						self::crearCicloActualizacion();
+						return self::aplicarActualizacion();
+
+					}
+
 				} else {
 					// Solo se actualiza el atributo "ult-act" de la entidad "pagos".
 
@@ -222,7 +233,6 @@
 
 			if ( count($this->_detalleActualizado) > 0 ) {
 
-// die(var_dump($this->_detalleActualizado));
 				$result = self::actualizarPagoDetalle();
 				if ( $result ) {
 					$result = self::actualizarPago();
@@ -482,7 +492,7 @@
 
 
 		/**
-		 * Metodo que permite determinar cual es el primer periodo del año liquidado.
+		 * Metodo que permite determinar los pagos existentes.
 		 * @param  integer $añoImpositivo año impositivo del calculo.
 		 * @return array.
 		 */
@@ -493,7 +503,7 @@
 			if ( $this->_impuesto == 1 ) {
 
 				if ( $this->_conPeriodo ) {
-					if ( $yhis->_definitiva ) {
+					if ( $this->_definitiva ) {
 
 
 					} else {
@@ -573,7 +583,12 @@
 				$montoAnualImpuesto = self::liquidarImpuesto($detalle['ano_impositivo']);
 
 				if ( $montoAnualImpuesto >= 0 ) {
-					$montoPeriodo = self::getMontoPeriodo($detalle['ano_impositivo'], $montoAnualImpuesto);
+
+					if ( $this->_conPeriodo ) {
+						$montoPeriodo = self::getMontoPeriodo($detalle['ano_impositivo'], $montoAnualImpuesto);
+					} else {
+						$montoPeriodo = $montoAnualImpuesto;
+					}
 
 					// Ciclo de los detalle de la planilla.
 					foreach ( $this->_detallePlanilla as $planillaDetalle ) {
@@ -585,7 +600,7 @@
 							$montoDescuento = 0;
 							$montoReconocimiento = 0;
 
-							if ( !$this->_definitiva ) {
+							if ( !$this->_definitiva && $this->_conPeriodo ) {
 
 								$montoRecargo = self::getCalcularRecargo($planillaDetalle['ano_impositivo'],
 																		 $planillaDetalle['trimestre'],
@@ -736,6 +751,41 @@
 					$montoAnual = $liquidar->iniciarCalcularLiquidacionPropaganda();
 				}
 
+			} else if ( $this->_impuesto == 9 ) {
+
+				if ( !$this->_conPeriodo ) {
+
+					$montoPlanilla = $this->_detallePlanilla[0]['monto'];
+					$añoImpositivo = $this->_detallePlanilla[0]['ano_impositivo'];
+					$equivalenteMoneda = 0;
+
+					$liquidar = New LiquidacionTasa($this->_id_impuesto);
+
+					// Parametro utilizado en la liquidacion.
+					$parametroTasa = $liquidar->getParametrosTasa();
+
+					if ( $parametroTasa['tipo_rango'] == 1 ) {
+						// Monto producto de la multiplicacion de la cantidad de unidad tributarias
+						// que estan configuradas en la entidad "varios" y el equivalente en monedas
+						// de las unidades tributarias para el año que indica la planilla.
+						$montoBase = 0;
+
+						// Monto en moneda nacional de la unidad tributearia utilizada en los calculos
+						// del impuesto.
+						$equivalenteMoneda = $liquidar->getUnidadTributariaLocal((int)$parametroTasa['ano_impositivo'] - 1);
+
+						// Se determina el monto base.
+						$montoBase = $equivalenteMoneda * $parametroTasa['monto'];
+
+						$multiplicador = $montoPlanilla / $montoBase;
+						$liquidar->iniciarCalcularLiquidacionTasa();
+						$montoImpuesto = $liquidar->getCalculoAnual();
+
+						$montoAnual = $multiplicador * $montoImpuesto;
+
+					}
+				}
+
 			} else if ( $this->_impuesto == 12 ) {
 
 			}
@@ -884,9 +934,6 @@
 			}
 			return $result;
 		}
-
-
-
 
 	}
 
