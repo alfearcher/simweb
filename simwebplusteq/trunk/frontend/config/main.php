@@ -32,7 +32,7 @@ return [
                     'levels' => ['error'],
                     'message' => [
                         'from' => ['jperez320@gmail.com'],
-                        'to' => ['jperez820@hotmail.com', 'alvaro.fernandez@asisconsultores.com.ve'],
+                        'to' => ['jperez820@hotmail.com', 'alvarojfer_archer@hotmail.com'],
                         'subject' => 'Gestion de errores SIMWebPLUS',
                     ],
                 ],
