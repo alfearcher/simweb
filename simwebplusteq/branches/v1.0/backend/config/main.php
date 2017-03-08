@@ -30,7 +30,7 @@ return [
                     'message' => [
                         'from' => ['jperez320@gmail.com'],
                         'to' => ['jperez820@hotmail.com', 'alvarojfer_archer@hotmail.com'],
-                        'subject' => 'Gestion de errores SIMWebPLUS',
+                        'subject' => 'Gestion de errores SIMWebPLUS. Produccion',
                     ],
                 ],
             ],
