@@ -569,7 +569,7 @@ Session["variablephp"] = tu;
                                                                                                         'c' => $_COOKIE['c'],//'<script type="text/javascript"> document.getElementById("mconstruccion").value  </script>',
 
                                                                                                     ]),
-                                                                                'data-ano-impositivo' => date('Y'),
+                                                                                'data-ano-impositivo' => date('Y')
                                                                                 'data-periodo' => 1,
                                                                                 'data-pjax' => 0,
                                                                                 
