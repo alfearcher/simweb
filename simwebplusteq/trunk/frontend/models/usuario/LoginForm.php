@@ -92,7 +92,7 @@ class LoginForm extends Model
             // username y password son requeridos
             [['email', 'password'], 'required', 'message' => 'Campo requerido'],
             // rememberMe es un valor booleano
-            ['email' , 'validatePassword'],
+            ['password' , 'validatePassword'],
           //  ['rememberMe', 'boolean'],
 
             // password es validado por validatePassword()
