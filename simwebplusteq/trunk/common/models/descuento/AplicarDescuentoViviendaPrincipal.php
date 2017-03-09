@@ -114,8 +114,8 @@
 				self::setConexion();
 				self::historicoViviendaPrincipal($results);
 				$historicoVivienda = $this->_historicoSearch->getHistoricoViviendaPrincipal();
-die(var_dump($historicoVivienda));
-				if ( $historicoVivienda !== null ) {
+
+				if ( count($historicoVivienda) > 0 ) {
 					$this->_conn->open();
 					$this->_transaccion = $this->_conn->beginTransaction();
 
