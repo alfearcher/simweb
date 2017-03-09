@@ -115,31 +115,35 @@
 				self::historicoViviendaPrincipal($results);
 				$historicoVivienda = $this->_historicoSearch->getHistoricoViviendaPrincipal();
 
-				$this->_conn->open();
-				$this->_transaccion = $this->_conn->beginTransaction();
+				if ( count($historicoVivienda) > 0 ) {
+					$this->_conn->open();
+					$this->_transaccion = $this->_conn->beginTransaction();
 
-				foreach ( $results as $result ) {
+					foreach ( $results as $result ) {
 
-					$lapsoPlanilla = [
-						'ano_impositivo' => $result['ano_impositivo'],
-						'periodo' => $result['trimestre'],
-						'exigibilidad' => $result['exigibilidad_pago'],
-					];
-					if ( self::lapsoPlanillaDentroRango($historicoVivienda[0], $lapsoPlanilla) ) {
-						$procesoExitoso = self::aplicarDescuento($result);
-						if ( !$procesoExitoso ) {
-							break;
+						$lapsoPlanilla = [
+							'ano_impositivo' => $result['ano_impositivo'],
+							'periodo' => $result['trimestre'],
+							'exigibilidad' => $result['exigibilidad_pago'],
+						];
+						if ( self::lapsoPlanillaDentroRango($historicoVivienda[0], $lapsoPlanilla) ) {
+							$procesoExitoso = self::aplicarDescuento($result);
+							if ( !$procesoExitoso ) {
+								break;
+							}
 						}
 					}
-				}
 
-				if ( $procesoExitoso ) {
-					$this->_transaccion->commit();
+					if ( $procesoExitoso ) {
+						$this->_transaccion->commit();
+					} else {
+						$this->_transaccion->rollBack();
+					}
+					$this->_conn->close();
+
 				} else {
-					$this->_transaccion->rollBack();
+					$procesoExitoso = true;
 				}
-				$this->_conn->close();
-
 			}
 
 			return $procesoExitoso;
