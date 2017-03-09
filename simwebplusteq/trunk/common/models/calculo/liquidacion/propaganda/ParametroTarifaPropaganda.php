@@ -219,11 +219,11 @@
 
 			if ( $tiempo == 'dia' ) {
 				// horas
-				$i = 'd';
+				$i = 'days';
 
 			} elseif ( $tiempo == 'dia' ) {
 				// dias
-				$i = 'd';
+				$i = 'days';
 
 			} elseif ( $tiempo == 'semana' ) {
 				// semanas
