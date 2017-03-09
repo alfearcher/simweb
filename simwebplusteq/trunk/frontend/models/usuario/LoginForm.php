@@ -55,6 +55,7 @@ use common\models\utilidades\Utilidad;
 use frontend\models\usuario\Afiliaciones;
 use common\conexion\ConexionController;
 use common\models\contribuyente\ContribuyenteBase;
+use backend\models\registromaestro\DatosBasicoForm;
 /**
  * LoginForm es el model del login de acceso.
  */
@@ -114,7 +115,7 @@ class LoginForm extends Model
     }
 
     public function validatePassword($attribute, $params)
-    {
+    { 
         $pass = $this->password;
 
         $utilidad = Utilidad::getUtilidad();
@@ -131,7 +132,7 @@ class LoginForm extends Model
                                 ->one();
 
 
-          $contribuyente = new ContribuyenteBase();
+          
            
                  
           if ( $buscar == null ) {
@@ -143,7 +144,7 @@ class LoginForm extends Model
                                     ])
                                 ->one();
 
-                $activo = $contribuyente->getDatosContribuyenteSegunID($buscar['id_contribuyente']);
+                $activo = ContribuyenteBase::find()->where(['id_contribuyente'=>$buscar['id_contribuyente']])->one();
                 
 
                 if  ($activo['inactivo'] == 1){
@@ -151,7 +152,7 @@ class LoginForm extends Model
                  }
           } else {
 
-                $activo = $contribuyente->getDatosContribuyenteSegunID($buscar['id_contribuyente']);
+                $activo = ContribuyenteBase::find()->where(['id_contribuyente'=>$buscar['id_contribuyente']])->one();
                 
 
                 if  ($activo['inactivo'] == 1){

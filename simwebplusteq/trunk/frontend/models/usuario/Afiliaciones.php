@@ -56,6 +56,7 @@ use common\models\utilidades\Utilidad;
 use frontend\models\usuario\loginForm;
 use frontend\models\usuario\Afiliacion;
 use frontend\models\usuario\CrearUsuarioJuridicoForm;
+use common\models\contribuyente\ContribuyenteBase;
 use yii\db\ActiveRecord;
  
 class Afiliaciones extends \yii\base\Object implements \yii\web\IdentityInterface
@@ -255,6 +256,8 @@ class Afiliaciones extends \yii\base\Object implements \yii\web\IdentityInterfac
         }
     
   }
+
+  
    
 }
 ?>
