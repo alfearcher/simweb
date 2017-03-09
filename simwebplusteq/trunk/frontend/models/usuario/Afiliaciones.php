@@ -255,7 +255,7 @@ class Afiliaciones extends \yii\base\Object implements \yii\web\IdentityInterfac
             }
         }
     
-  }
+    }
 
   
    

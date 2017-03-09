@@ -12,7 +12,7 @@ $this->title = 'Cause of Desincorporation';
 //die($pregunta1);
 ?>
  
-
+ 
 
 <?php $form = ActiveForm::begin([
     

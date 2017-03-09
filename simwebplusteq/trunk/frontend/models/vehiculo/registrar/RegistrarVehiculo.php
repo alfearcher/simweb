@@ -56,7 +56,7 @@ use yii\base\Model;
 use common\models\Users;
 use yii\db\ActiveRecord;
 
-
+ 
 class RegistrarVehiculo extends ActiveRecord{
   
     public static function getDb()

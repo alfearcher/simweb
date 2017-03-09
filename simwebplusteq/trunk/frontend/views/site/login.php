@@ -40,7 +40,7 @@ $this->title = 'Iniciar Sesion';
                             <?= Yii::t('backend', 'Correo Electronico:') ?>
                             </div> 
 
-                            <div class="col-sm-7">                         
+                            <div class="col-sm-8">                         
                             <?= $form->field($model, 'email')->textInput(['maxlength' => true,'style' => 'width:200px;'])->label(false) ?>
 							</div>
 						</div>
@@ -50,7 +50,7 @@ $this->title = 'Iniciar Sesion';
                             <?= Yii::t('backend', 'Contraseña:') ?>
                             </div>
 
-                            <div class="col-sm-7"> 
+                            <div class="col-sm-8"> 
                             <?= $form->field($model, 'password')->passwordInput(['maxlength' => true,'style' => 'width:200px;'])->label(false) ?>
 							</div>
 						</div>
