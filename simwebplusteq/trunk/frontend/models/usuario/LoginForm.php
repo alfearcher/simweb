@@ -54,6 +54,7 @@ use yii\base\Model;
 use common\models\utilidades\Utilidad;
 use frontend\models\usuario\Afiliaciones;
 use common\conexion\ConexionController;
+use common\models\contribuyente\ContribuyenteBase;
 /**
  * LoginForm es el model del login de acceso.
  */
@@ -130,6 +131,9 @@ class LoginForm extends Model
                                 ->one();
 
 
+          $contribuyente = new ContribuyenteBase();
+           
+                 
           if ( $buscar == null ) {
               $buscar = Afiliacion::find()
                                 ->where([
@@ -139,8 +143,25 @@ class LoginForm extends Model
                                     ])
                                 ->one();
 
+                $activo = $contribuyente->getDatosContribuyenteSegunID($buscar['id_contribuyente']);
+                
+
+                if  ($activo['inactivo'] == 1){
+                    $this->addError($attribute, 'Contribuyente inactivo.');
+                 }
+          } else {
+
+                $activo = $contribuyente->getDatosContribuyenteSegunID($buscar['id_contribuyente']);
+                
+
+                if  ($activo['inactivo'] == 1){
+                    $this->addError($attribute, 'Contribuyente inactivo.');
+                 }
           }
+          
 // die(var_dump($buscar));
+           
+
            if ( $buscar['password_hash'] == null ) {
 //aqui llego a la rutina para empezar el cambio a password_hash nota: entro a esta rutina por conseguir null dicha variable en la base de datos
              $cambio=self::actionCambioClave($buscar['id_contribuyente']);
@@ -153,15 +174,19 @@ class LoginForm extends Model
                                     'estatus' => 0,
                                     ])
                                 ->one();
-
+               
                 if  ($buscar2 == false){
-                $this->addError($attribute, 'Usuario o password incorrecto.');
-            }
+                    $this->addError($attribute, 'Usuario o password incorrecto.');
+                }
+
+
            } else {
 
+                 
+                 
                  if  ($buscar == false){
-                $this->addError($attribute, 'Usuario o password incorrecto.');
-            }
+                    $this->addError($attribute, 'Usuario o password incorrecto.');
+                 }
            }
         }
 
