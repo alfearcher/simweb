@@ -54,6 +54,8 @@ use yii\base\Model;
 use common\models\utilidades\Utilidad;
 use frontend\models\usuario\Afiliaciones;
 use common\conexion\ConexionController;
+use common\models\contribuyente\ContribuyenteBase;
+use backend\models\registromaestro\DatosBasicoForm;
 /**
  * LoginForm es el model del login de acceso.
  */
@@ -90,7 +92,7 @@ class LoginForm extends Model
             // username y password son requeridos
             [['email', 'password'], 'required', 'message' => 'Campo requerido'],
             // rememberMe es un valor booleano
-            ['email' , 'validatePassword'],
+            ['password' , 'validatePassword'],
           //  ['rememberMe', 'boolean'],
 
             // password es validado por validatePassword()
@@ -113,7 +115,7 @@ class LoginForm extends Model
     }
 
     public function validatePassword($attribute, $params)
-    {
+    { 
         $pass = $this->password;
 
         $utilidad = Utilidad::getUtilidad();
@@ -130,6 +132,9 @@ class LoginForm extends Model
                                 ->one();
 
 
+          
+           
+                 
           if ( $buscar == null ) {
               $buscar = Afiliacion::find()
                                 ->where([
@@ -139,8 +144,25 @@ class LoginForm extends Model
                                     ])
                                 ->one();
 
+                $activo = ContribuyenteBase::find()->where(['id_contribuyente'=>$buscar['id_contribuyente']])->one();
+                
+
+                if  ($activo['inactivo'] == 1){
+                    $this->addError($attribute, 'Contribuyente inactivo.');
+                 }
+          } else {
+
+                $activo = ContribuyenteBase::find()->where(['id_contribuyente'=>$buscar['id_contribuyente']])->one();
+                
+
+                if  ($activo['inactivo'] == 1){
+                    $this->addError($attribute, 'Contribuyente inactivo.');
+                 }
           }
+          
 // die(var_dump($buscar));
+           
+
            if ( $buscar['password_hash'] == null ) {
 //aqui llego a la rutina para empezar el cambio a password_hash nota: entro a esta rutina por conseguir null dicha variable en la base de datos
              $cambio=self::actionCambioClave($buscar['id_contribuyente']);
@@ -153,15 +175,19 @@ class LoginForm extends Model
                                     'estatus' => 0,
                                     ])
                                 ->one();
-
+               
                 if  ($buscar2 == false){
-                $this->addError($attribute, 'Usuario o password incorrecto.');
-            }
+                    $this->addError($attribute, 'Usuario o password incorrecto.');
+                }
+
+
            } else {
 
+                 
+                 
                  if  ($buscar == false){
-                $this->addError($attribute, 'Usuario o password incorrecto.');
-            }
+                    $this->addError($attribute, 'Usuario o password incorrecto.');
+                 }
            }
         }
 
