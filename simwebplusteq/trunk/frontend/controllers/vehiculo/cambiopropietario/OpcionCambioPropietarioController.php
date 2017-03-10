@@ -66,7 +66,7 @@ class OpcionCambioPropietarioController extends Controller
    
     public $layout = "layout-main";
 
-   
+    
  
     /**
      *

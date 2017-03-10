@@ -61,7 +61,7 @@ use frontend\models\vehiculo\cambiodatos\BusquedaVehiculos;
 class MostrarDatosVehiculoForm extends Model
 {
      
-  
+   
 public $placa;
 public $marca;
 public $modelo;
