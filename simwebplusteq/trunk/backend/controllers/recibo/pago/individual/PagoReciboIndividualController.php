@@ -62,6 +62,7 @@
     use backend\models\recibo\pago\individual\PagoReciboIndividualSearch;
     use backend\models\recibo\deposito\DepositoForm;
     use backend\models\recibo\depositodetalle\DepositoDetalleForm;
+    use backend\models\recibo\depositodetalle\DepositoDetalleUsuarioForm;
     use backend\models\recibo\formapago\FormaPago;
     use backend\models\utilidad\banco\BancoSearch;
     use backend\models\utilidad\tipotarjeta\TipoTarjetaSearch;
@@ -189,6 +190,7 @@
 																'htmlMensaje' => $htmlMensaje,
 																'urlFormaPagos' => $urlFormaPagos,
 																'bloquearFormaPago' => $bloquearFormaPago,
+
 											]);
 
 						$caption = Yii::t('backend', 'Pago de Recibo');
@@ -246,9 +248,9 @@
         			}
         		}
 
-        		if ( isset($postGet['forma']) ) {
-        			$htmlFormaPago = self::actionViewFormaPago((int)$postGet['forma']);
-        		}
+        		// if ( isset($postGet['forma']) ) {
+        		// 	$htmlFormaPago = self::actionViewFormaPago((int)$postGet['forma']);
+        		// }
 
         		$datosRecibo = $pagoReciboSearch->getDeposito();
 
@@ -269,6 +271,7 @@
 		      								'datosRecibo' => $datosRecibo,
 		      								'listaForma' => $listaForma,
 		      								'htmlFormaPago' => $htmlFormaPago,
+		      								'montoSobrante' => $datosRecibo[0]['monto'],
 		      			]);
 
         	} else {
@@ -290,26 +293,23 @@
 
 			$forma = isset($postGet['forma']) ? (int)$postGet['forma'] : 0;
 
-			$model = New DepositoDetalleForm();
+			$model = New DepositoDetalleUsuarioForm();
 			$model->id_forma = $forma;
 			$model->recibo = isset($_SESSION['recibo']) ? $_SESSION['recibo'] : 0;
-
+			$model->usuario = Yii::$app->identidad->getUsuario();
+			$model->
 			if ( $model->load($postData)  && Yii::$app->request->isAjax ) {
 				Yii::$app->response->format = Response::FORMAT_JSON;
 				return ActiveForm::validate($model);
 	      	}
-
+die(var_dump($postData));
         	if ( $forma == 1 ) {
-// die(var_dump($request->get()));
-        		// $searchBanco = New BancoSearch();
-        		// $listaBanco = $searchBanco->getListaBanco();
- // die(var_dump('aass'));
-
         		$model->scenario = self::SCENARIO_CHEQUE;
         		return $this->renderAjax('/recibo/pago/individual/forma-cheque', [
         										'model' => $model,
         										'caption' => 'Cheque',
         		]);
+
         	} elseif ( $forma == 2 ) {
         		$searchBanco = New BancoSearch();
         		$listaBanco = $searchBanco->getListaBanco();
@@ -324,18 +324,29 @@
         										'listaBanco' => $listaBanco,
         										'listaTipoTarjeta' => $listaTipoTarjeta,
         		]);
+
         	} elseif ( $forma == 3 ) {
         		$model->scenario = self::SCENARIO_EFECTIVO;
         		return $this->renderAjax('/recibo/pago/individual/forma-efectivo', [
         										'model' => $model,
         										'caption' => 'Efectivo',
         		]);
+
         	} elseif ( $forma == 4 ) {
+        		$searchBanco = New BancoSearch();
+        		$listaBanco = $searchBanco->getListaBanco();
+
+        		$searchTipoTarjeta = New TipoTarjetaSearch();
+        		$listaTipoTarjeta = $searchTipoTarjeta->getListaTipoTarjeta();
+
         		$model->scenario = self::SCENARIO_TARJETA;
         		return $this->renderAjax('/recibo/pago/individual/forma-tarjeta', [
         										'model' => $model,
         										'caption' => 'Tarjeta',
+        										'listaBanco' => $listaBanco,
+        										'listaTipoTarjeta' => $listaTipoTarjeta,
         		]);
+
         	} else {
         		return null;
         	}
