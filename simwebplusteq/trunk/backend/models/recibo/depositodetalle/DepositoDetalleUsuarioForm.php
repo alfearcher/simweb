@@ -21,13 +21,13 @@
  */
 
  /**
- *  @file DepositoDetalleForm.php
+ *  @file DepositoDetalleUsuarioForm.php
  *
  *  @author Jose Rafael Perez Teran
  *
  *  @date 12-11-2016
  *
- *  @class DepositoDetalleForm
+ *  @class DepositoDetalleUsuarioForm
  *  @brief Clase Modelo del formulario
  *
  *
@@ -44,13 +44,13 @@
 
  	use Yii;
 	use yii\base\Model;
-	use backend\models\recibo\depositodetalle\DepositoDetalle;
+	use backend\models\recibo\depositodetalle\DepositoDetalleUsuario;
 
 
 	/**
 	* 	Clase base del formulario
 	*/
-	class DepositoDetalleForm extends DepositoDetalle
+	class DepositoDetalleUsuarioForm extends DepositoDetalleUsuario
 	{
 		public $linea;			// Autoincremental
 		public $recibo;
@@ -67,6 +67,7 @@
 		public $codigo_cuenta;
 		public $tipo_deposito;
 		public $id_banco;
+		public $usuario;
 
 
 		const SCENARIO_EFECTIVO = 'efectivo';
@@ -91,6 +92,7 @@
         				'id_forma',
         				'fecha',
         				'monto',
+        				'usuario',
         		],
         		self::SCENARIO_CHEQUE => [
         				'recibo',
@@ -100,6 +102,7 @@
         				'cuenta',
         				'codigo_cuenta',
         				'cheque',
+        				'usuario',
         		],
         		self::SCENARIO_TARJETA => [
         				'recibo',
@@ -110,6 +113,7 @@
         				'cheque',
         				'tipo_deposito',
         				'id_banco',
+        				'usuario',
         		],
         		self::SCENARIO_DEPOSITO => [
         				'recibo',
@@ -117,6 +121,7 @@
         				'deposito',
         				'fecha',
         				'monto',
+        				'usuario',
         		],
         	];
     	}
@@ -130,38 +135,42 @@
 	    {
 	        return [
 	        	[['recibo', 'id_forma',
-	        	  'fecha', 'monto'],
+	        	  'fecha', 'monto',
+	        	  'usuario',],
 	        	  'required', 'on' => 'efectivo',
 	        	  'message' => Yii::t('backend','{attribute} is required')],
 	        	[['recibo', 'id_forma',
 	        	  'fecha', 'monto',
 	        	  'cheque', 'cuenta',
-	        	  'codigo_cuenta',],
+	        	  'codigo_cuenta', 'usuario',],
 	        	  'required', 'on' => 'cheque',
 	        	  'message' => Yii::t('backend','{attribute} is required')],
 	        	[['recibo', 'id_forma',
 	        	  'fecha', 'monto',
 	        	  'cheque', 'cuenta',
-	        	  'tipo_deposito', 'id_banco'],
+	        	  'tipo_deposito', 'id_banco',
+	        	  'usuario',],
 	        	  'required', 'on' => 'tarjeta',
 	        	  'message' => Yii::t('backend','{attribute} is required')],
 	        	[['recibo', 'id_forma',
 	        	  'fecha', 'monto',
-	        	  'deposito',],
+	        	  'deposito', 'usuario',],
 	        	  'required', 'on' => 'deposito',
 	        	  'message' => Yii::t('backend','{attribute} is required')],
 	        	[['recibo', 'id_forma',
-	        	  'estatus', 'codigo_banco'],
+	        	  'estatus', 'codigo_banco',],
 	        	  'integer',
 	        	  'message' => Yii::t('backend','{attribute} must be integer')],
-	        	[['cheque', 'cuenta'],
+	        	[['cheque', 'cuenta',
+	        	  'usuario',],
 	        	  'string',
 	        	  'message' => Yii::t('backend','{attribute} must be string')],
 	        	//[['monto'],'formatter' => ],
 	        	// ['monto',
 	        	//  'double',
 	        	//  'message' => Yii::t('backend','{attribute} must be double')],
-	        	[['estatus'], 'default', 'value' => 0],
+	        	[['estatus', 'conciliado',
+	        	  'codigo_banco'], 'default', 'value' => 0],
 	        	[['codigo_cuenta'],
 	        	  'string',
 	        	  'max' => 4,
