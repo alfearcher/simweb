@@ -101,7 +101,26 @@
 									<?= Html::textInput('montoRecibo',
 													     Yii::$app->formatter->asDecimal($datosRecibo[0]['monto'], 2),
 													     [
-													     	'id' => 'id-monto',
+													     	'id' => 'id-monto-recibo',
+													     	'class' => 'form-control',
+															'style' => 'width:100%;
+															background-color:white;
+															font-weight:bold;
+															text-align:right;
+															font-size:140%;',
+															'readOnly' => true,
+													     ])
+									?>
+								</div>
+							</div>
+
+
+							<div class="col-sm-2" style="width: 25%;padding: 0px;padding-left: 15px;padding-top: 25px;">
+								<div class="monto-sobrante" style="margin-left: 0px;">
+									<?= Html::textInput('montoSobrante',
+													     Yii::$app->formatter->asDecimal($montoSobrante, 2),
+													     [
+													     	'id' => 'id-monto-sobrante',
 													     	'class' => 'form-control',
 															'style' => 'width:100%;
 															background-color:white;
