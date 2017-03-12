@@ -170,7 +170,7 @@
 	        	//  'double',
 	        	//  'message' => Yii::t('backend','{attribute} must be double')],
 	        	[['estatus', 'conciliado',
-	        	  'codigo_banco'], 'default', 'value' => 0],
+	        	  'codigo_banco', 'deposito'], 'default', 'value' => 0],
 	        	[['codigo_cuenta'],
 	        	  'string',
 	        	  'max' => 4,
