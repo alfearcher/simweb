@@ -48,8 +48,8 @@
 	use backend\models\recibo\deposito\Deposito;
 	use backend\models\recibo\depositoplanilla\DepositoPlanilla;
 	use common\models\planilla\PlanillaSearch;
-
-
+      use backend\models\recibo\depositodetalle\DepositoDetalleUsuario;
+      use yii\data\ArrayDataProvider;
 
 
 	/**
@@ -433,6 +433,91 @@
             {
                   return self::findDepositoModel()->asArray()->all();
             }
+
+
+
+            /**
+             * Metodo que permite generar el data provider de los pagos
+             * registrados por el usuario para pagar un recibo, especifico.
+             * Cada recibo se le asociara un formas de pagos que estara guardada
+             * temporalmente hasta su salvado final. Estos registros estaran relacionados
+             * al recibo-usuario.
+             * @param string $usuario usuario que esta realizando laoperacion
+             * de salvado del registro.
+             * @return ArrayDataProvider
+             */
+            public function getDataProviderRegistroTemp($usuario)
+            {
+                  $data = [];
+                  $results = self::findDepositoDetalleUsuarioTemp($usuario);
+                  if ( count($results) > 0 ) {
+
+                        foreach ( $results as $result ) {
+                              $data[$result['recibo']] = [
+                                    'linea' => $result['linea'],
+                                    'recibo' => $result['recibo'],
+                                    'id_forma' => $result['id_forma'],
+                                    'deposito' => $result['deposito'],
+                                    'fecha' => $result['fecha'],
+                                    'cuenta' => $result['cuenta'],
+                                    'cheque' => $result['chequeo'],
+                                    'monto' => $result['monto'],
+                                    'usuario' => $usuario,
+                                    'forma' => $result['formaPago']['descripcion'],
+                              ];
+                        }
+                  }
+
+                  $provider = New ArrayDataProvider([
+                        'allModels' => $data,
+                        'pagination' => false,
+                  ]);
+
+                  return $provider;
+            }
+
+
+
+            /**
+             * Metodo que realiza la consulta y devuelve los registros guardados
+             * temporalmente. Estods registros indican la forma de pago conque
+             * se pagara el recibo especifico.
+             * @param string $usuario usuario que esta realizando laoperacion
+             * de salvado del registro.
+             * @return array.
+             */
+            public function findDepositoDetalleUsuarioTemp($usuario)
+            {
+                  return $findModel = DepositoDetalleUsuario::find()->where('recibo =:recibo',
+                                                                              [':recibo', $this->_recibo])
+                                                                    ->andWhere('usuario =:usuario',
+                                                                              ['usuario' => $usuario])
+                                                                    ->joinWith('formaPago', true, 'INNER JOIN')
+                                                                    ->asArray()
+                                                                    ->all();
+            }
+
+
+
+            /**
+             * Metodo que determina el total agregado para un recibo
+             * @param string $usuario usuario que esta realizando laoperacion
+             * de salvado del registro.
+             * @return double retorna monto total guardado.
+             */
+            public function getTotalFormaPagoAgregado($usuario)
+            {
+                  $total = 0;
+                  $results = self::findDepositoDetalleUsuarioTemp($usuario);
+                  if ( count($results) > 0 ) {
+                        foreach ( $results as $result ) {
+                              $total = $total + $result['monto'];
+                        }
+                  }
+
+                  return $total;
+            }
+
 
 
 	}
