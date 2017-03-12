@@ -45,6 +45,8 @@
  	use Yii;
 	use yii\base\Model;
 	use backend\models\utilidad\tipotarjeta\TipoTarjeta;
+	use yii\helpers\ArrayHelper;
+
 
 
 	/**
