@@ -79,15 +79,28 @@
 	{
 		public $layout = 'layout-main';				//	Layout principal del formulario
 
-		public $connLocal;
-		public $conexion;
-		public $transaccion;
+		private $_conn;
+		private $_conexion;
+		private $_transaccion;
 
 		const SCENARIO_EFECTIVO = 'efectivo';
 		const SCENARIO_CHEQUE = 'cheque';
 		const SCENARIO_DEPOSITO = 'deposito';
 		const SCENARIO_TARJETA = 'tarjeta';
 
+
+
+
+
+		/**
+		 * Metodo que configura las variables que permitiran la interaccion
+		 * con la base de datos.
+		 */
+		private function setConexion()
+		{
+			$this->_conexion = New ConexionController();
+			$this->_conn = $this->_conexion->initConectar('db');
+		}
 
 
 
@@ -116,6 +129,7 @@
          */
         public function actionMostrarFormConsulta()
         {
+        	self::actionAnularSession(['datosRecibo']);
             $model = New BusquedaReciboForm();
             if ( $model->usuarioAutorizado(Yii::$app->identidad->getUsuario()) ) {
 
@@ -238,9 +252,9 @@
         		$request = Yii::$app->request;
         		$postData = $request->post();
         		$postGet = $request->get();
-        		$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
+        		//$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
 
-        		$htmlFormaPago = null;
+        		//$htmlFormaPago = null;
 
         		if ( isset($postData['btn-back']) ) {
         			if ( $postData['btn-back'] == 1 ) {
@@ -248,35 +262,66 @@
         			}
         		}
 
-        		// if ( isset($postGet['forma']) ) {
-        		// 	$htmlFormaPago = self::actionViewFormaPago((int)$postGet['forma']);
-        		// }
-
-        		$datosRecibo = $pagoReciboSearch->getDeposito();
+        		//$datosRecibo = $pagoReciboSearch->getDeposito();
 
         		if ( $depositoModel->load($postData)  && Yii::$app->request->isAjax ) {
 					Yii::$app->response->format = Response::FORMAT_JSON;
 					return ActiveForm::validate($depositoModel);
 		      	}
 
-		      	$formasPago = FormaPago::find()->all();
-		      	$listaForma = ArrayHelper::map($formasPago, 'id_forma', 'descripcion');
+		      	return self::actionViewResumenRecibo();
 
-		      	$captionRecibo = Yii::t('backend', 'Recibo Nro') . '. ' . $recibo;
-		      	$caption = Yii::t('backend', 'Registrar Formas de Pago');
-		      	return $this->render('/recibo/pago/individual/_registrar-formas-pago', [
-		      								'model' => $depositoModel,
-		      								'caption' => $caption,
-		      								'captionRecibo' => $captionRecibo,
-		      								'datosRecibo' => $datosRecibo,
-		      								'listaForma' => $listaForma,
-		      								'htmlFormaPago' => $htmlFormaPago,
-		      								'montoSobrante' => $datosRecibo[0]['monto'],
-		      			]);
+		      	// $_SESSION['datosRecibo'] = $datosRecibo;
+		      	// $formasPago = FormaPago::find()->all();
+		      	// $listaForma = ArrayHelper::map($formasPago, 'id_forma', 'descripcion');
+
+		      	// $captionRecibo = Yii::t('backend', 'Recibo Nro') . '. ' . $recibo;
+		      	// $caption = Yii::t('backend', 'Registrar Formas de Pago');
+		      	// return $this->render('/recibo/pago/individual/_registrar-formas-pago', [
+		      	// 							// 'model' => $depositoModel,
+		      	// 							'caption' => $caption,
+		      	// 							'captionRecibo' => $captionRecibo,
+		      	// 							'datosRecibo' => $datosRecibo,
+		      	// 							'listaForma' => $listaForma,
+		      	// 							'htmlFormaPago' => $htmlFormaPago,
+		      	// 							'montoSobrante' => $datosRecibo[0]['monto'],
+		      	// 		]);
 
         	} else {
 
         	}
+
+        }
+
+
+
+        /***/
+        public function actionViewResumenRecibo($montoAgregar = 0)
+        {
+        	$recibo = $_SESSION['recibo'];
+        	$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
+        	$htmlFormaPago = null;
+        	$dataProvider = $pagoReciboSearch->getDataProviderRegistroTemp();
+
+        	$datosRecibo = $pagoReciboSearch->getDeposito();
+
+			$_SESSION['datosRecibo'] = $datosRecibo;
+	      	$formasPago = FormaPago::find()->all();
+	      	$listaForma = ArrayHelper::map($formasPago, 'id_forma', 'descripcion');
+
+	      	$montoSobrante = $datosRecibo[0]['monto'] - $montoAgregar;
+	      	$captionRecibo = Yii::t('backend', 'Recibo Nro') . '. ' . $recibo;
+	      	$caption = Yii::t('backend', 'Registrar Formas de Pago');
+	      	return $this->render('/recibo/pago/individual/_registrar-formas-pago', [
+	      								// 'model' => $depositoModel,
+	      								'caption' => $caption,
+	      								'captionRecibo' => $captionRecibo,
+	      								'datosRecibo' => $datosRecibo,
+	      								'listaForma' => $listaForma,
+	      								'htmlFormaPago' => $htmlFormaPago,
+	      								'montoSobrante' => $montoSobrante,
+	      								'dataProvider' => $dataProvider,
+	      			]);
 
         }
 
@@ -297,61 +342,108 @@
 			$model->id_forma = $forma;
 			$model->recibo = isset($_SESSION['recibo']) ? $_SESSION['recibo'] : 0;
 			$model->usuario = Yii::$app->identidad->getUsuario();
-			$model->
+			$model->conciliado = 0;
+			$model->estatus = 0;
+			$model->codigo_banco = 0;
+
 			if ( $model->load($postData)  && Yii::$app->request->isAjax ) {
 				Yii::$app->response->format = Response::FORMAT_JSON;
 				return ActiveForm::validate($model);
 	      	}
-die(var_dump($postData));
-        	if ( $forma == 1 ) {
-        		$model->scenario = self::SCENARIO_CHEQUE;
-        		return $this->renderAjax('/recibo/pago/individual/forma-cheque', [
-        										'model' => $model,
-        										'caption' => 'Cheque',
-        		]);
 
-        	} elseif ( $forma == 2 ) {
-        		$searchBanco = New BancoSearch();
-        		$listaBanco = $searchBanco->getListaBanco();
+	      	$formName = $model->formName();
+// die(var_dump($postData));
+			if ( isset($postData['btn-add-forma']) ) {
+				if ( $postData['btn-add-forma'] > 0 ) {
 
-        		$searchTipoTarjeta = New TipoTarjetaSearch();
-        		$listaTipoTarjeta = $searchTipoTarjeta->getListaTipoTarjeta();
+					// $model->fecha = date('Y-m-d', strtotime($postData[$formName]['fecha']));
+					// $model->scenario = self::SCENARIO_EFECTIVO;
+					self::actionAgregarFormaPago($postData);
+					return self::actionViewResumenRecibo(100);
+				}
+			} else {
+	        	if ( $forma == 1 ) {
+	        		$model->scenario = self::SCENARIO_CHEQUE;
+	        		return $this->renderAjax('/recibo/pago/individual/forma-cheque', [
+	        										'model' => $model,
+	        										'caption' => 'Cheque',
+	        		]);
 
-        		$model->scenario = self::SCENARIO_DEPOSITO;
-        		return $this->renderAjax('/recibo/pago/individual/forma-deposito', [
-        										'model' => $model,
-        										'caption' => 'Deposito',
-        										'listaBanco' => $listaBanco,
-        										'listaTipoTarjeta' => $listaTipoTarjeta,
-        		]);
+	        	} elseif ( $forma == 2 ) {
+	        		$searchBanco = New BancoSearch();
+	        		$listaBanco = $searchBanco->getListaBanco();
 
-        	} elseif ( $forma == 3 ) {
-        		$model->scenario = self::SCENARIO_EFECTIVO;
-        		return $this->renderAjax('/recibo/pago/individual/forma-efectivo', [
-        										'model' => $model,
-        										'caption' => 'Efectivo',
-        		]);
+	        		$searchTipoTarjeta = New TipoTarjetaSearch();
+	        		$listaTipoTarjeta = $searchTipoTarjeta->getListaTipoTarjeta();
 
-        	} elseif ( $forma == 4 ) {
-        		$searchBanco = New BancoSearch();
-        		$listaBanco = $searchBanco->getListaBanco();
+	        		$model->scenario = self::SCENARIO_DEPOSITO;
+	        		return $this->renderAjax('/recibo/pago/individual/forma-deposito', [
+	        										'model' => $model,
+	        										'caption' => 'Deposito',
+	        										'listaBanco' => $listaBanco,
+	        										'listaTipoTarjeta' => $listaTipoTarjeta,
+	        		]);
 
-        		$searchTipoTarjeta = New TipoTarjetaSearch();
-        		$listaTipoTarjeta = $searchTipoTarjeta->getListaTipoTarjeta();
+	        	} elseif ( $forma == 3 ) {
 
-        		$model->scenario = self::SCENARIO_TARJETA;
-        		return $this->renderAjax('/recibo/pago/individual/forma-tarjeta', [
-        										'model' => $model,
-        										'caption' => 'Tarjeta',
-        										'listaBanco' => $listaBanco,
-        										'listaTipoTarjeta' => $listaTipoTarjeta,
-        		]);
+	        		$model->scenario = self::SCENARIO_EFECTIVO;
+	        		return $this->renderAjax('/recibo/pago/individual/forma-efectivo', [
+	        										'model' => $model,
+	        										'caption' => 'Efectivo',
+	        		]);
 
-        	} else {
-        		return null;
-        	}
+	        	} elseif ( $forma == 4 ) {
+	        		$searchBanco = New BancoSearch();
+	        		$listaBanco = $searchBanco->getListaBanco();
+
+	        		$searchTipoTarjeta = New TipoTarjetaSearch();
+	        		$listaTipoTarjeta = $searchTipoTarjeta->getListaTipoTarjeta();
+
+	        		$model->scenario = self::SCENARIO_TARJETA;
+	        		return $this->renderAjax('/recibo/pago/individual/forma-tarjeta', [
+	        										'model' => $model,
+	        										'caption' => 'Tarjeta',
+	        										'listaBanco' => $listaBanco,
+	        										'listaTipoTarjeta' => $listaTipoTarjeta,
+	        		]);
+
+	        	} else {
+	        		return null;
+	        	}
+	        }
+
         }
 
+
+
+
+        /***/
+        public function actionAgregarFormaPago($postEnviado)
+        {
+        	$model = New DepositoDetalleUsuarioForm();
+        	$formName = $model->formName();
+
+// die(var_dump($postEnviado[$model->formName()]));
+        	// $model->load($postEnviado[$model->formName()]);
+
+ //die(var_dump($model));
+ 			if ( $postEnviado[$formName]['id_forma'] == 1 ) {
+ 				$model->scenario = self::SCENARIO_CHEQUE;
+				$model->load($postEnviado);
+die(var_dump($model));
+ 			} elseif ( $postEnviado[$formName]['id_forma'] == 2 ) {
+ 				$model->scenario = self::SCENARIO_DEPOSITO;
+
+ 			} elseif ( $postEnviado[$formName]['id_forma'] == 3 ) {
+ 				$model->scenario = self::SCENARIO_EFECTIVO;
+				$model->load($postEnviado);
+
+die(var_dump($model));
+ 			} elseif ( $postEnviado[$formName]['id_forma'] == 4 ) {
+ 				$model->scenario = self::SCENARIO_TARJETA;
+
+ 			}
+        }
 
 
 
