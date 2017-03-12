@@ -81,18 +81,21 @@
 					<div class="row" style="margin-top: 25px;">
 
 						<div class="row" style="width: 100%;">
-							<div class="col-sm-2" style="width: 20%;padding: 0px;">
+							<div class="col-sm-2" style="width: 20%;padding: 0px;padding-top: 25px;margin-bottom: 20px;">
 								<div class="recibo" style="margin-left: 0px;">
-									<?= $form->field($model, 'recibo')->textInput([
-																			'id' => 'id-recibo',
-																			'style' => 'width:100%;
-																						background-color:white;
-																						font-weight:bold;
-																						text-align:right;
-																						font-size:140%;;',
-																			'value' => $datosRecibo[0]['recibo'],
-																			'readOnly' => true,
-																		])->label('Recibo') ?>
+									<?= Html::textInput('recibo',
+														 $datosRecibo[0]['recibo'],
+														 [
+															'id' => 'id-recibo',
+															'class' => 'form-control',
+															'style' => 'width:100%;
+																		background-color:white;
+																		font-weight:bold;
+																		text-align:right;
+																		font-size:140%;;',
+															'readOnly' => true,
+														])
+									?>
 								</div>
 							</div>
 
@@ -195,6 +198,77 @@
 							<?php } ?>
 						</div>
 
+
+<!-- FORMA DE PAGO REGISTRADAS -->
+						<div class="row" style="width: 100%;">
+							<?= GridView::widget([
+								'id' => 'id-grid-forma-pago-registrada',
+								'dataProvider' => $dataProvider,
+								'headerRowOptions' => [
+									'class' => 'success',
+								],
+								'tableOptions' => [
+                    				'class' => 'table table-hover',
+              					],
+								'summary' => '',
+								'columns' => [
+									['class' => 'yii\grid\SerialColumn'],
+
+				                    [
+				                        'contentOptions' => [
+				                              'style' => 'font-size: 90%;',
+				                        ],
+				                        'label' => Yii::t('frontend', 'Forma de Pago'),
+				                        'value' => function($data) {
+				                                   		return $data['formaPago']['descripcion'];
+				            			           },
+				                    ],
+
+				                    [
+				                        'contentOptions' => [
+				                              'style' => 'font-size: 90%;',
+				                        ],
+				                        'label' => Yii::t('frontend', 'Fecha'),
+				                        'value' => function($data) {
+				                                   		return $data['fecha'];
+				            			           },
+				                    ],
+
+				                    [
+				                        'contentOptions' => [
+				                              'style' => 'font-size: 90%;',
+				                        ],
+				                        'label' => Yii::t('frontend', 'Deposito'),
+				                        'value' => function($data) {
+				                                   		return $data['deposito'];
+				            			           },
+				                    ],
+
+				                    [
+				                        'contentOptions' => [
+				                              'style' => 'font-size: 90%;',
+				                        ],
+				                        'label' => Yii::t('frontend', 'Cheque'),
+				                        'value' => function($data) {
+				                                   		return $data['cheque'];
+				            			           },
+				                    ],
+
+				                    [
+				                        'contentOptions' => [
+				                              'style' => 'font-size: 90%;text-align:right;',
+				                        ],
+				                        'label' => Yii::t('frontend', 'monto'),
+				                        'value' => function($data) {
+				                        				return Yii::$app->formatter->asDecimal($data['monto'], 2);
+				            			           },
+				                    ],
+
+					        	]
+							]);?>
+						</div>
+
+<!-- FIN DE FORMA DE PAGO REGISTRADAS -->
 
 						<div class="row" style="width: 100%;">
 							<div class="col-sm-2" style="margin-left: 50px;">
