@@ -123,7 +123,7 @@
 		 * Metodo que obtiene los parametros (campos del registro) de la entidad.
 		 * @return Array Retorna un arreglo con los campos de la entidad segun el identificador.
 		 */
-		private function getParametrosTasa()
+		public function getParametrosTasa()
 		{
 			$tasa = TasaForm::getValoresTasa($this->_idImpuesto);
 			return $tasa;
@@ -142,7 +142,7 @@
 			$montoCalculado = 0;
 			if ( isset($this->_idImpuesto) ) {
 				$tasa = $this->getParametrosTasa();
-// die(var_dump($tasa));
+
 				if ( isset($tasa) ) {
 					$this->_parametro = [
 								'id_impuesto' => $tasa['id_impuesto'],
@@ -158,7 +158,8 @@
 					} elseif ( $tasa['tipo_rango'] == 1 ) {		// Unidad tributaria.
 						// Se obtiene la unidad tributaria del año.
 						settype($tasa['ano_impositivo'], 'integer');
-						$unidadTributariaDelAño = UnidadTributariaForm::getUnidadTributaria($tasa['ano_impositivo']);
+						//$unidadTributariaDelAño = UnidadTributariaForm::getUnidadTributaria($tasa['ano_impositivo']);
+						$unidadTributariaDelAño = self::getUnidadTributariaLocal($tasa['ano_impositivo']);
 						if ( isset($unidadTributariaDelAño) ) {
 							$montoCalculado = $unidadTributariaDelAño * $tasa['monto'];
 
@@ -172,6 +173,16 @@
 
 
 
+		/**
+		 * Metodo que permite obtener la cantidad en equivalente en moneda nacional de las
+		 * unidades tributarias.
+		 * @param integer $añoImpositivo año impositivo.
+		 * @return double
+		 */
+		public function getUnidadTributariaLocal($añoImpositivo)
+		{
+			return UnidadTributariaForm::getUnidadTributaria($añoImpositivo);
+		}
 
 	}
 
