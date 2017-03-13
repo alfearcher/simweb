@@ -59,7 +59,7 @@ use frontend\models\usuario\Afiliacion;
 
 class CambioDatosVehiculoForm extends Model
 {
-
+ 
  
   public $placa;
   public $marcavieja;

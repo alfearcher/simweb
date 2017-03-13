@@ -69,7 +69,7 @@ class DesincorporacionVehiculoForm extends Model
 
 
      
-  
+   
 
     public function rules()
     {   //validaciones requeridas para el formulario de registro de usuarios  
