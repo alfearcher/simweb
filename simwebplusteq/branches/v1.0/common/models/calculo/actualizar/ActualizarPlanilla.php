@@ -781,7 +781,7 @@
 						$liquidar->iniciarCalcularLiquidacionTasa();
 						$montoImpuesto = $liquidar->getCalculoAnual();
 
-						$montoAnual = $multiplicador * $montoImpuesto;
+						$montoAnual = 1 * $montoImpuesto;
 
 					}
 				}
