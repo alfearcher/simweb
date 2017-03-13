@@ -220,7 +220,7 @@
 				                        ],
 				                        'label' => Yii::t('frontend', 'Forma de Pago'),
 				                        'value' => function($data) {
-				                                   		return $data['formaPago']['descripcion'];
+				                                   		return $data['forma'];
 				            			           },
 				                    ],
 
@@ -251,6 +251,16 @@
 				                        'label' => Yii::t('frontend', 'Cheque'),
 				                        'value' => function($data) {
 				                                   		return $data['cheque'];
+				            			           },
+				                    ],
+
+				                    [
+				                        'contentOptions' => [
+				                              'style' => 'font-size: 90%;',
+				                        ],
+				                        'label' => Yii::t('frontend', 'Cuenta'),
+				                        'value' => function($data) {
+				                                   		return $data['cuenta'];
 				            			           },
 				                    ],
 
