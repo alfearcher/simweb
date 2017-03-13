@@ -450,17 +450,18 @@
             {
                   $data = [];
                   $results = self::findDepositoDetalleUsuarioTemp($usuario);
+
                   if ( count($results) > 0 ) {
 
                         foreach ( $results as $result ) {
-                              $data[$result['recibo']] = [
+                              $data[$result['linea']] = [
                                     'linea' => $result['linea'],
                                     'recibo' => $result['recibo'],
                                     'id_forma' => $result['id_forma'],
                                     'deposito' => $result['deposito'],
                                     'fecha' => $result['fecha'],
                                     'cuenta' => $result['cuenta'],
-                                    'cheque' => $result['chequeo'],
+                                    'cheque' => $result['cheque'],
                                     'monto' => $result['monto'],
                                     'usuario' => $usuario,
                                     'forma' => $result['formaPago']['descripcion'],
@@ -469,6 +470,7 @@
                   }
 
                   $provider = New ArrayDataProvider([
+                        'key' => 'linea',
                         'allModels' => $data,
                         'pagination' => false,
                   ]);
@@ -488,11 +490,12 @@
              */
             public function findDepositoDetalleUsuarioTemp($usuario)
             {
-                  return $findModel = DepositoDetalleUsuario::find()->where('recibo =:recibo',
-                                                                              [':recibo', $this->_recibo])
+                  return $findModel = DepositoDetalleUsuario::find()->alias('A')
+                                                                    ->where('recibo =:recibo',
+                                                                              [':recibo' => $this->_recibo])
                                                                     ->andWhere('usuario =:usuario',
-                                                                              ['usuario' => $usuario])
-                                                                    ->joinWith('formaPago', true, 'INNER JOIN')
+                                                                              [':usuario' => $usuario])
+                                                                    ->joinWith('formaPago F', true, 'INNER JOIN')
                                                                     ->asArray()
                                                                     ->all();
             }
