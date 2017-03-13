@@ -296,12 +296,13 @@
 
 
         /***/
-        public function actionViewResumenRecibo($montoAgregar = 0)
+        public function actionViewResumenRecibo()
         {
         	$recibo = $_SESSION['recibo'];
+
         	$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
         	$htmlFormaPago = null;
-        	$dataProvider = $pagoReciboSearch->getDataProviderRegistroTemp();
+        	$dataProvider = $pagoReciboSearch->getDataProviderRegistroTemp(Yii::$app->identidad->getUsuario());
 
         	$datosRecibo = $pagoReciboSearch->getDeposito();
 
@@ -309,7 +310,7 @@
 	      	$formasPago = FormaPago::find()->all();
 	      	$listaForma = ArrayHelper::map($formasPago, 'id_forma', 'descripcion');
 
-	      	$montoSobrante = $datosRecibo[0]['monto'] - $montoAgregar;
+	      	$montoSobrante = $datosRecibo[0]['monto'];
 	      	$captionRecibo = Yii::t('backend', 'Recibo Nro') . '. ' . $recibo;
 	      	$caption = Yii::t('backend', 'Registrar Formas de Pago');
 	      	return $this->render('/recibo/pago/individual/_registrar-formas-pago', [
@@ -359,7 +360,8 @@
 					// $model->fecha = date('Y-m-d', strtotime($postData[$formName]['fecha']));
 					// $model->scenario = self::SCENARIO_EFECTIVO;
 					self::actionAgregarFormaPago($postData);
-					return self::actionViewResumenRecibo(100);
+					//return self::actionViewResumenRecibo();
+					$this->redirect(['view-resumen-recibo']);
 				}
 			} else {
 	        	if ( $forma == 1 ) {
@@ -420,33 +422,77 @@
         /***/
         public function actionAgregarFormaPago($postEnviado)
         {
+        	$result = false;
         	$model = New DepositoDetalleUsuarioForm();
         	$formName = $model->formName();
 
 // die(var_dump($postEnviado[$model->formName()]));
         	// $model->load($postEnviado[$model->formName()]);
 
- //die(var_dump($model));
+        	self::setConexion();
+ 			$this->_conn->open();
+ 			$this->_transaccion = $this->_conn->beginTransaction();
+
  			if ( $postEnviado[$formName]['id_forma'] == 1 ) {
  				$model->scenario = self::SCENARIO_CHEQUE;
 				$model->load($postEnviado);
-die(var_dump($model));
+// die(var_dump($model));
+				$model->fecha = date('Y-m-d', strtotime($postEnviado[$formName]['fecha']));
+ 			    $model->conciliado = 0;
+ 			    $model->cuenta = $model->codigo_cuenta . $model->cuenta;
+ 			    //$model->cheque = '';
+ 			    $model->estatus = 0;
+ 			    $model->deposito = 0;
+ 			    $model->codigo_banco = 0;
+ 			    $model->cuenta_deposito = '';
+
+// die(var_dump($model));
  			} elseif ( $postEnviado[$formName]['id_forma'] == 2 ) {
  				$model->scenario = self::SCENARIO_DEPOSITO;
 
  			} elseif ( $postEnviado[$formName]['id_forma'] == 3 ) {
- 				$model->scenario = self::SCENARIO_EFECTIVO;
-				$model->load($postEnviado);
 
-die(var_dump($model));
+ 				$model->scenario = self::SCENARIO_EFECTIVO;
+ 				$model->load($postEnviado);
+ 				$model->fecha = date('Y-m-d', strtotime($postEnviado[$formName]['fecha']));
+ 			    $model->conciliado = 0;
+ 			    $model->cuenta = '';
+ 			    $model->cheque = '';
+ 			    $model->estatus = 0;
+ 			    $model->deposito = 0;
+ 			    $model->codigo_banco = 0;
+ 			    $model->cuenta_deposito = '';
+
+
+// die(var_dump($model));
  			} elseif ( $postEnviado[$formName]['id_forma'] == 4 ) {
  				$model->scenario = self::SCENARIO_TARJETA;
 
  			}
+
+ 			$result = self::actionBeginSaveFormaPagoTemp($model);
+ 			if ( $result ) {
+ 				$this->_transaccion->commit();
+ 			} else {
+ 				$this->_transaccion->rollBack();
+ 			}
+
+ 			$this->_conn->close();
+ 			return $result;
         }
 
 
 
+        /***/
+        private function actionBeginSaveFormaPagoTemp($model)
+        {
+        	$d = $model->attributes;
+        	$tabla = $model->tableName();
+// die(var_dump($d));
+
+        	return $result = $this->_conexion->guardarRegistro($this->_conn, $tabla, $model->attributes);
+
+        }
 
 
         /**
