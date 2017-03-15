@@ -65,8 +65,8 @@
 		public $codigo_banco;
 		public $cuenta_deposito;
 		public $codigo_cuenta;
-		//public $tipo_deposito;
-		//public $id_banco;
+		public $tipo_deposito;
+		public $banco;
 		public $usuario;
 
 
@@ -112,7 +112,7 @@
         				'cuenta',
         				'cheque',
         				'tipo_deposito',
-        				'id_banco',
+        				'banco',
         				'usuario',
         		],
         		self::SCENARIO_DEPOSITO => [
@@ -148,7 +148,7 @@
 	        	[['recibo', 'id_forma',
 	        	  'fecha', 'monto',
 	        	  'cheque', 'cuenta',
-	        	  'tipo_deposito', 'id_banco',
+	        	  'tipo_deposito', 'banco',
 	        	  'usuario',],
 	        	  'required', 'on' => 'tarjeta',
 	        	  'message' => Yii::t('backend','{attribute} is required')],
