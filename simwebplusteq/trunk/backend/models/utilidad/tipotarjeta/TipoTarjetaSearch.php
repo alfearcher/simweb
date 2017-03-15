@@ -80,6 +80,23 @@
 		}
 
 
+
+		/***/
+		public function getListaTipoTarjetaDescripcion()
+		{
+			$model = self::getTipoTarjeta();
+			return $lista = ArrayHelper::map($model, 'descripcion', 'descripcion');
+		}
+
+
+		/***/
+		public function getDescripcionTarjeta($tipo)
+		{
+			$result = TipoTarjeta::findOne($tipo);
+			return $result->descripcion;
+		}
+
+
 	}
 
 ?>
