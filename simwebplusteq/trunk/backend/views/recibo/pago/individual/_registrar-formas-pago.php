@@ -248,9 +248,15 @@
 				                        'contentOptions' => [
 				                              'style' => 'font-size: 90%;',
 				                        ],
-				                        'label' => Yii::t('frontend', 'Cheque'),
+				                        'label' => Yii::t('frontend', 'Cuenta'),
 				                        'value' => function($data) {
-				                                   		return $data['cheque'];
+				                        				if ( $data['id_forma'] == 1 ) {
+				                                   			return $data['cuenta'];
+
+				                                   		} elseif ( $data['id_forma'] == 4 ) {
+				                                   			return $data['codigo_cuenta'] . $data['cuenta'];
+
+				                                   		}
 				            			           },
 				                    ],
 
@@ -258,15 +264,21 @@
 				                        'contentOptions' => [
 				                              'style' => 'font-size: 90%;',
 				                        ],
-				                        'label' => Yii::t('frontend', 'Cuenta'),
+				                        'label' => Yii::t('frontend', 'Nro de Cheque o Tarjeta'),
 				                        'value' => function($data) {
-				                                   		return $data['cuenta'];
+				                        				if ( $data['id_forma'] == 1 ) {
+				                                   			return $data['cheque'];
+				                                   		} elseif ( $data['id_forma'] == 4 ) {
+				                                   			return $data['cheque'];
+				                                   		}
 				            			           },
 				                    ],
 
 				                    [
 				                        'contentOptions' => [
-				                              'style' => 'font-size: 90%;text-align:right;',
+				                              'style' => 'font-size: 100%;
+				                              			  text-align:right;
+				                              			  font-weight:bold;',
 				                        ],
 				                        'label' => Yii::t('frontend', 'monto'),
 				                        'value' => function($data) {
@@ -274,11 +286,58 @@
 				            			           },
 				                    ],
 
+				                    [
+				                        'contentOptions' => [
+				                              'style' => 'font-size: 100%;
+				                              			  text-align:right;
+				                              			  font-weight:bold;',
+				                        ],
+				                        'label' => Yii::t('frontend', 'Editar'),
+				                        'format' => 'raw',
+				                        'value' => function($data, $key) {
+				                        				return Html::a(Yii::t('backend', 'Editar'),
+				                        				 			   Url::to(['update', 'linea' => $data['linea'], 'recibo' => $data['recibo']]),
+				                        				 			   [
+				                        				 			   		'class' => 'btn btn-primary',
+				                        				 			   ]);
+				                        }
+				                        /**'id' => 'id-btn-linea',
+				                        									'class' => 'btn btn-primary',
+				                        									'data' => [
+				                        										'method' => 'post',
+				                        										'params' => [
+				                        											'data-linea' => $data['linea'],
+				                        											'data-recibo' => $data['recibo'],
+				                        										],
+				                        									],*/
+				                    ],
+
 					        	]
 							]);?>
 						</div>
-
 <!-- FIN DE FORMA DE PAGO REGISTRADAS -->
+
+<!-- TOTAL AGREGADO -->
+						<div class="row" style="padding: 0px;width: 100%;">
+							<div class="col-sm-2" style="width: 25%;padding: 0px;padding-left: 15px;padding-top: 25px;float: right;">
+								<div class="monto" style="margin-left: 0px;">
+									<?= Html::textInput('montoAgregado',
+													     Yii::$app->formatter->asDecimal($montoAgregado, 2),
+													     [
+													     	'id' => 'id-monto-agregado',
+													     	'class' => 'form-control',
+															'style' => 'width:100%;
+															background-color:white;
+															font-weight:bold;
+															text-align:right;
+															font-size:140%;',
+															'readOnly' => true,
+													     ])
+									?>
+								</div>
+							</div>
+						</div>
+<!-- FIN DE TOTAL AGREGADO -->
 
 						<div class="row" style="width: 100%;">
 							<div class="col-sm-2" style="margin-left: 50px;">

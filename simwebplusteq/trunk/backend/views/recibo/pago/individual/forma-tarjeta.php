@@ -72,7 +72,7 @@
 	<?=$form->field($model, 'estatus')->hiddenInput(['value' => $model->estatus])->label(false)?>
 	<?=$form->field($model, 'codigo_banco')->hiddenInput(['value' => $model->codigo_banco])->label(false)?>
 	<?=$form->field($model, 'cuenta_deposito')->hiddenInput(['value' => $model->cuenta_deposito])->label(false)?>
-
+	<?=$form->field($model, 'usuario')->hiddenInput(['value' => $model->usuario])->label(false)?>
 
 
 <div class="row" style="width:100%;border-bottom: 0.5px solid;padding:0px;padding-left:5px;margin-bottom: 15px;">
@@ -108,7 +108,7 @@
 
 	<div class="col-sm-2" style="width:55%;padding: 0px;">
 		<div class="banco">
-    		<?= $form->field($model, 'id_banco')->dropDownList($listaBanco,[
+    		<?= $form->field($model, 'banco')->dropDownList($listaBanco,[
 												 			'id' => 'id-banco',
 												 			'style' => 'width: 100%;',
                                  				 			'prompt' => Yii::t('backend', 'Select..'),
