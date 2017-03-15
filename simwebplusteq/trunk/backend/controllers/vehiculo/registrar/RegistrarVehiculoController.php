@@ -96,7 +96,7 @@ class RegistrarVehiculoController extends Controller
         $_SESSION['id'] = $idConfig;
 
 
-        
+         
 
         if(isset(yii::$app->user->identity->id_contribuyente)){
 

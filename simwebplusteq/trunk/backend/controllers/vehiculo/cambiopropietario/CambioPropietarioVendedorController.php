@@ -74,7 +74,7 @@ session_start();
 class CambioPropietarioVendedorController extends Controller
 {
 
-
+ 
  
     
   public $layout = 'layout-main';
