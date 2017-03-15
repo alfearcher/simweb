@@ -197,6 +197,7 @@
 
 						$totales = $pagoReciboSearch->getTotalesReciboPlanilla($dataProviders);
 
+						$result = self::actionInicializarTemporal($model->recibo);
 						$htmlRecibo = $this->renderPartial('/recibo/pago/individual/_recibo-encontrado',[
 																'dataProviderRecibo' => $dataProviders[0],
 																'dataProviderReciboPlanilla' => $dataProviders[1],
@@ -221,6 +222,8 @@
 
 				$caption = Yii::t('backend', 'Pago de Recibo');
 				$subCaption = Yii::t('backend', 'Datos del Recibo');
+
+				$result = self::actionInicializarTemporal();
 
 				// Mostrar formulario de busqueda del recibo.
 				return $this->render('/recibo/pago/individual/_find', [
@@ -296,13 +299,63 @@
 
 
         /***/
+        public function actionUpdate()
+        {
+        	$request = Yii::$app->request;
+        	$postGet = $request->get();
+
+// die(var_dump($postData));
+			$recibo = $postGet['recibo'];
+			$linea = $postGet['linea'];
+			$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
+
+			$model = New DepositoDetalleUsuarioForm();
+			$usuario = Yii::$app->identidad->getUsuario();
+
+			$registers = $pagoReciboSearch->findDepositoDetalleUsuarioTemp($usuario);
+
+die(var_dump($registers));
+			if ( $registers[0]['id_forma'] == 1 ) {
+
+			} elseif ($registers[0]['id_forma'] == 2 ) {
+
+			} elseif ($registers[0]['id_forma'] == 3 ) {
+
+			} elseif ($registers[0]['id_forma'] == 4 ) {
+				$searchBanco = New BancoSearch();
+        		$listaBanco = $searchBanco->getListaBanco();
+
+        		$searchTipoTarjeta = New TipoTarjetaSearch();
+        		$listaTipoTarjeta = $searchTipoTarjeta->getListaTipoTarjetaDescripcion();
+
+        		$model->scenario = self::SCENARIO_TARJETA;
+        		return $this->renderAjax('/recibo/pago/individual/forma-tarjeta', [
+        										'model' => $model,
+        										'caption' => 'Tarjeta',
+        										'listaBanco' => $listaBanco,
+        										'listaTipoTarjeta' => $listaTipoTarjeta,
+        		]);
+
+			}
+			if ( $model->load($postData)  && Yii::$app->request->isAjax ) {
+				Yii::$app->response->format = Response::FORMAT_JSON;
+				return ActiveForm::validate($model);
+	      	}
+
+        }
+
+
+
+
+
+        /***/
         public function actionViewResumenRecibo()
         {
         	$recibo = $_SESSION['recibo'];
-
+        	$usuario = Yii::$app->identidad->getUsuario();
         	$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
         	$htmlFormaPago = null;
-        	$dataProvider = $pagoReciboSearch->getDataProviderRegistroTemp(Yii::$app->identidad->getUsuario());
+        	$dataProvider = $pagoReciboSearch->getDataProviderRegistroTemp($usuario);
 
         	$datosRecibo = $pagoReciboSearch->getDeposito();
 
@@ -310,7 +363,9 @@
 	      	$formasPago = FormaPago::find()->all();
 	      	$listaForma = ArrayHelper::map($formasPago, 'id_forma', 'descripcion');
 
-	      	$montoSobrante = $datosRecibo[0]['monto'];
+	      	$montoAgregado = $pagoReciboSearch->getTotalFormaPagoAgregado($usuario);
+
+	      	$montoSobrante = $datosRecibo[0]['monto'] - $montoAgregado;
 	      	$captionRecibo = Yii::t('backend', 'Recibo Nro') . '. ' . $recibo;
 	      	$caption = Yii::t('backend', 'Registrar Formas de Pago');
 	      	return $this->render('/recibo/pago/individual/_registrar-formas-pago', [
@@ -321,6 +376,7 @@
 	      								'listaForma' => $listaForma,
 	      								'htmlFormaPago' => $htmlFormaPago,
 	      								'montoSobrante' => $montoSobrante,
+	      								'montoAgregado' => $montoAgregado,
 	      								'dataProvider' => $dataProvider,
 	      			]);
 
@@ -353,14 +409,19 @@
 	      	}
 
 	      	$formName = $model->formName();
-// die(var_dump($postData));
+// die(var_dump($forma));
 			if ( isset($postData['btn-add-forma']) ) {
 				if ( $postData['btn-add-forma'] > 0 ) {
 
-					// $model->fecha = date('Y-m-d', strtotime($postData[$formName]['fecha']));
-					// $model->scenario = self::SCENARIO_EFECTIVO;
-					self::actionAgregarFormaPago($postData);
-					//return self::actionViewResumenRecibo();
+					if ( $postData[$formName]['id_forma'] == 3 ) {
+						if ( self::actionExisteFormaPago($postData[$formName]['recibo'], $postData[$formName]['id_forma']) ) {
+							self::actionActualizarMontoEfectivo($postData);
+						} else {
+							self::actionAgregarFormaPago($postData);
+						}
+					} else {
+						self::actionAgregarFormaPago($postData);
+					}
 					$this->redirect(['view-resumen-recibo']);
 				}
 			} else {
@@ -395,11 +456,12 @@
 	        		]);
 
 	        	} elseif ( $forma == 4 ) {
+
 	        		$searchBanco = New BancoSearch();
 	        		$listaBanco = $searchBanco->getListaBanco();
 
 	        		$searchTipoTarjeta = New TipoTarjetaSearch();
-	        		$listaTipoTarjeta = $searchTipoTarjeta->getListaTipoTarjeta();
+	        		$listaTipoTarjeta = $searchTipoTarjeta->getListaTipoTarjetaDescripcion();
 
 	        		$model->scenario = self::SCENARIO_TARJETA;
 	        		return $this->renderAjax('/recibo/pago/individual/forma-tarjeta', [
@@ -419,15 +481,101 @@
 
 
 
+        /**
+         * Metodo que determina si una forma de pago ya esta registrada.
+         * @param integer $recibo identificador del recibo.
+         * @param integer $idForma identificador de la forma de pago.
+         * @return boolean.
+         */
+        public function actionExisteFormaPago($recibo, $idForma)
+        {
+        	$result = false;
+
+			$usuario = Yii::$app->identidad->getUsuario();
+    		$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
+    		$registers = $pagoReciboSearch->findFormaPago($idForma, $usuario);
+    		if ( count($registers) > 0 ) {
+    			$result = true;
+    		}
+
+    		return $result;
+        }
+
+
+
+
+        /**
+         * Metodo que permite actualizar el monto de una forma de pago.
+         * La actualizacion del monto por forma de pago "efectivo", se realiza debido
+         * a que no se puede incluir el registro si ya existe una forma de pago de tipo
+         * "efectivo", lo que se hace es actualizar dicho monto.
+         * @param array $postEnviado post enviado desde el formulario sin formateo.
+         * @return boolean.
+         */
+        public function actionActualizarMontoEfectivo($postEnviado)
+        {
+        	$result = false;
+        	$model = New DepositoDetalleUsuarioForm();
+			$formName = $model->formName();
+
+        	if ( $postEnviado[$formName]['id_forma'] == 3 ) {
+
+				$recibo = $postEnviado[$formName]['recibo'];
+				$usuario = Yii::$app->identidad->getUsuario();
+        		$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
+        		$registers = $pagoReciboSearch->findFormaPago((int)$postEnviado[$formName]['id_forma'], $usuario);
+
+        		if ( count($registers) > 0 ) {
+        			$monto = $postEnviado[$formName]['monto'] + $registers[0]['monto'];
+        			$model->load($postEnviado);
+
+        			$model->fecha = date('Y-m-d', strtotime($postEnviado[$formName]['fecha']));
+	 			    $model->conciliado = 0;
+	 			    $model->cuenta = '';
+	 			    $model->cheque = '';
+	 			    $model->estatus = 0;
+	 			    $model->deposito = 0;
+	 			    $model->codigo_banco = 0;
+	 			    $model->cuenta_deposito = '';
+
+	 			    $arregloCondicion = [
+	 			    	'recibo' => $recibo,
+	 			    	'id_forma' => (int)$postEnviado[$formName]['id_forma'],
+	 			    	'usuario' => $usuario,
+	 			    ];
+
+	 			    $arregloDatos = [
+	 			    	'monto' => $monto,
+	 			    ];
+
+	 			    self::setConexion();
+	 			    $this->_conn->open();
+	 			    $this->_transaccion = $this->_conn->beginTransaction();
+
+	 			    $result = self::actionBeginActualizarFormaPagoTemp($model, $arregloCondicion, $arregloDatos);
+
+	 			    if ( $result ) {
+	 			    	$this->_transaccion->commit();
+	 			    } else {
+	 			    	$this->_transaccion->rollBack();
+	 			    }
+	 			    $this->_conn->close();
+        		}
+
+        		return $result;
+
+        	}
+        }
+
+
+
+
         /***/
         public function actionAgregarFormaPago($postEnviado)
         {
         	$result = false;
         	$model = New DepositoDetalleUsuarioForm();
         	$formName = $model->formName();
-
-// die(var_dump($postEnviado[$model->formName()]));
-        	// $model->load($postEnviado[$model->formName()]);
 
         	self::setConexion();
  			$this->_conn->open();
@@ -439,7 +587,7 @@
 // die(var_dump($model));
 				$model->fecha = date('Y-m-d', strtotime($postEnviado[$formName]['fecha']));
  			    $model->conciliado = 0;
- 			    $model->cuenta = $model->codigo_cuenta . $model->cuenta;
+ 			   // $model->cuenta = $model->codigo_cuenta . $model->cuenta;
  			    //$model->cheque = '';
  			    $model->estatus = 0;
  			    $model->deposito = 0;
@@ -462,11 +610,23 @@
  			    $model->deposito = 0;
  			    $model->codigo_banco = 0;
  			    $model->cuenta_deposito = '';
+ 			    $model->banco = '';
 
+ 			} elseif ( $postEnviado[$formName]['id_forma'] == 4 ) {
+
+ 				$model->scenario = self::SCENARIO_TARJETA;
+ 				$model->load($postEnviado);
+ 				$model->fecha = date('Y-m-d', strtotime($postEnviado[$formName]['fecha']));
 
 // die(var_dump($model));
- 			} elseif ( $postEnviado[$formName]['id_forma'] == 4 ) {
- 				$model->scenario = self::SCENARIO_TARJETA;
+ 			    $model->conciliado = 0;
+ 			    //$model->cuenta = '';
+ 			    $model->cheque = $model->tipo_deposito;
+ 			    $model->estatus = 0;
+ 			    $model->deposito = 0;
+ 			    $model->codigo_banco = 0;
+ 			    $model->cuenta_deposito = '';
+ 			    $model->codigo_cuenta = $model->banco;
 
  			}
 
@@ -483,16 +643,127 @@
 
 
 
-        /***/
+
+
+        /**
+         * Metodo que realiza la insercion en la entidad respectiva.
+         * @param DepositioDetalleUsuarioForm $model modelo de la clase.
+         * @return boolean retorna true si ejecuta la operacion satisfactorimente, false en caso
+         * contrario.
+         */
         private function actionBeginSaveFormaPagoTemp($model)
         {
         	$d = $model->attributes;
         	$tabla = $model->tableName();
-// die(var_dump($d));
 
         	return $result = $this->_conexion->guardarRegistro($this->_conn, $tabla, $model->attributes);
 
         }
+
+
+
+
+        /**
+         * Metodo que actualiza el regitro seleccionado
+         * @param DepositioDetalleUsuarioForm $model modelo de la clase.
+         * @param array $arregloCondicion arreglo que posee el where condicion de la actualizacion
+         * Estructura del arreglos:
+         * 	[
+         *  	'campo' => valor del campo,
+         *  ]
+         * @param array $arregloDatos arreglo de datos que seran actualizados.
+         * @return boolean retorna true si ejecuta la operacion satisfactorimente, false en caso
+         * contrario.
+         */
+        private function actionBeginActualizarFormaPagoTemp($model, $arregloCondicion, $arregloDatos)
+        {
+        	$d = $model->attributes;
+        	$tabla = $model->tableName();
+
+        	return $result = $this->_conexion->modificarRegistro($this->_conn, $tabla, $arregloDatos, $arregloCondicion);
+        }
+
+
+
+
+        /**
+         * Metodo que permite inicializar la tabla temporal utilizada para la carga de las formas
+         * de pagos utilizadas para pagar un recibo. Proceso que realiza el usuario en el modulo
+         * de la caja.
+         * @param array $arregloCondicion arreglo de datos con la estructura:
+         *  [
+         *  	campo => valor de campo,
+         *  ]
+         * @return boolean retorna true si ejecuta la operacion satisfactoriamente o false en caso
+         * contrario.
+         */
+        private function actionSuprimirRegistroTemporal($arregloCondicion)
+        {
+        	$result = false;
+        	$model = New DepositoDetalleUsuarioForm();
+        	$tabla = $model->tableName();
+
+        	self::setConexion();
+        	$this->_conn->open();
+ 			$this->_transaccion = $this->_conn->beginTransaction();
+
+ 			$result = $this->_conexion->eliminarRegistro($this->_conn, $tabla, $arregloCondicion);
+
+ 			if ( $result ) {
+ 				$this->_transaccion->commit();
+ 			} else {
+ 				$this->_transaccion->rollBack();
+ 			}
+			$this->_conn->close();
+
+			return $result;
+        }
+
+
+
+        /**
+         * Metodo que permite ejecutar la inicializacion de la tabla temporal
+         * @param integer $recibo numero de recibo
+         * @return boolean
+         */
+        public function actionInicializarTemporal($recibo = 0)
+        {
+        	$result = false;
+        	$arregloCondicion = [
+    			'usuario' => Yii::$app->identidad->getUsuario(),
+    		];
+        	$result = self::actionSuprimirRegistroTemporal($arregloCondicion);
+
+        	if ( $recibo > 0 ) {
+        		$arregloCondicion = [
+        			'recibo' => $recibo,
+        		];
+        		$result = self::actionSuprimirRegistroTemporal($arregloCondicion);
+        	}
+
+        	return $result;
+        }
+
+
+
+
+        /**
+         * Metodo que permite suprimir registros de la tabla temporal que se utiliza
+         * para registrar las formas de pagos de un recibo.
+         * @param array $arregloCondicion arreglo de datos con la estructura:
+         *  [
+         *  	campo => valor de campo,
+         *  ]
+         * @return boolean retorna true si ejecuta la operacion satisfactoriamente o
+         * false en caso contrario.
+         */
+        private function actionSuprimir($arregloCondicion)
+        {
+        	return $result = self::actionSuprimirRegistroTemporal($arregloCondicion);
+        }
+
+
+
 
 
         /**
