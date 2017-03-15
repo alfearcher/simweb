@@ -50,6 +50,9 @@
 	use common\models\planilla\PlanillaSearch;
       use backend\models\recibo\depositodetalle\DepositoDetalleUsuario;
       use yii\data\ArrayDataProvider;
+      use backend\models\utilidad\tipotarjeta\TipoTarjetaSearch;
+
+
 
 
 	/**
@@ -454,6 +457,16 @@
                   if ( count($results) > 0 ) {
 
                         foreach ( $results as $result ) {
+                              $codigo_cuenta = '';
+                              if ( $result['id_forma'] == 1 ) {
+                                    $codigo_cuenta = $result['codigo_cuenta'];
+
+                              } elseif ( $result['id_forma'] == 4 ) {
+                                    $codigo_cuenta = $result['codigo_cuenta'];
+
+                              } else {
+                                    $codigo_cuenta = '';
+                              }
                               $data[$result['linea']] = [
                                     'linea' => $result['linea'],
                                     'recibo' => $result['recibo'],
@@ -465,6 +478,9 @@
                                     'monto' => $result['monto'],
                                     'usuario' => $usuario,
                                     'forma' => $result['formaPago']['descripcion'],
+                                    'codigo_cuenta' => $codigo_cuenta,
+                                    'banco' => $result['banco'],
+
                               ];
                         }
                   }
@@ -480,6 +496,22 @@
 
 
 
+
+            /**
+             * Metodo que genera el modelo principal de consulta de la entidad
+             * "depositos-detalles-usuarios".
+             * @return DepositoDetalleUsuario.
+             */
+            private function findDepositoDetalleUsuarioModel()
+            {
+                  return $findModel = DepositoDetalleUsuario::find()->alias('A')
+                                                                    ->where('recibo =:recibo',
+                                                                              [':recibo' => $this->_recibo]);
+            }
+
+
+
+
             /**
              * Metodo que realiza la consulta y devuelve los registros guardados
              * temporalmente. Estods registros indican la forma de pago conque
@@ -490,15 +522,15 @@
              */
             public function findDepositoDetalleUsuarioTemp($usuario)
             {
-                  return $findModel = DepositoDetalleUsuario::find()->alias('A')
-                                                                    ->where('recibo =:recibo',
-                                                                              [':recibo' => $this->_recibo])
-                                                                    ->andWhere('usuario =:usuario',
-                                                                              [':usuario' => $usuario])
-                                                                    ->joinWith('formaPago F', true, 'INNER JOIN')
-                                                                    ->asArray()
-                                                                    ->all();
+                  $findModel = self::findDepositoDetalleUsuarioModel();
+                  $model = $findModel->andWhere('usuario =:usuario',
+                                                      [':usuario' => $usuario])
+                                     ->joinWith('formaPago F', true, 'INNER JOIN');
+
+                  return $results = $model->asArray()->all();
             }
+
+
 
 
 
@@ -523,6 +555,34 @@
 
 
 
+
+
+            /**
+             * Metodo que realiza la consulta por recibo, usuario y forma de pago.
+             * @param integer $idForma identificador de la forma de pago.
+             * @param string $usuario usuario que realiza la operacion de registro.
+             * @return array.
+             */
+            public function findFormaPago($idForma, $usuario)
+            {
+                  $findModel = self::findDepositoDetalleUsuarioModel();
+                  $model = $findModel->andWhere('usuario =:usuario',
+                                                      [':usuario' => $usuario])
+                                     ->andWhere('id_forma =:id_forma',
+                                                      [':id_forma' => $idForma]);
+
+                  return $results = $model->asArray()->all();
+
+            }
+
+
+
+            /***/
+            public function getDescripcionTipoTarjeta($tipo)
+            {
+                  $tarjetaSearch = New TipoTarjetaSearch();
+                  return $descripcion = $tarjetaSearch->getDescripcionTarjeta($tipo);
+            }
 	}
 
 ?>
