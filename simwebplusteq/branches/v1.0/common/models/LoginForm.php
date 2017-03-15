@@ -51,6 +51,7 @@ namespace common\models;
 
 use Yii;
 use yii\base\Model;
+use common\models\funcionario\Funcionario;
 
 /**
  * LoginForm es el model del login de acceso.
@@ -76,6 +77,7 @@ class LoginForm extends Model
             [['username', 'password'], 'required', 'message' => 'Campo requerido'],
             // rememberMe es un valor booleano
             ['rememberMe', 'boolean'],
+            ['username', 'validateFuncionarioExiste'],
             // password es validado por validatePassword()
             ['password', 'validatePassword'],
         ];
@@ -105,7 +107,7 @@ class LoginForm extends Model
 		if (!$this->hasErrors()) {
             $user = $this->getUser();
 
-            if (!$user || !$user->validatePassword($this->password)) {
+            if (!$user || !$user->validatePassword($this->password)) { 
                 $this->addError($attribute, 'Usuario o password incorrecto.');
             }
         } //  fin validate password */                          
@@ -130,4 +132,42 @@ class LoginForm extends Model
 
         return $this->_user;
     }
+
+    /**
+     * Validates the password.
+     * Este metodo realiza la validation del password.
+     */
+    public function validateFuncionarioExiste($attribute, $params)
+    {   
+       
+        //-----salt-------
+        $username = $this->username;
+        $buscar = Funcionario::find()->where("login=:login", [":login" => $username])
+                                     ->asArray()->all();
+
+        
+        if ($buscar == null){
+           
+                  $this->addError($attribute, Yii::t('backend', 'El funcionario no se encuentra registrado')); 
+        } else {
+                  
+                  $vigencia = $buscar[0]['vigencia'];
+                  if(date('Y-m-d') > $vigencia ){
+
+                        if ($buscar[0]['status_funcionario'] == 1) {
+
+                            $this->addError($attribute, Yii::t('backend', 'El funcionario se encuentra inactivo'));
+                        }
+
+                        $this->addError($attribute, Yii::t('backend', 'El funcionario no se encuentra vigente para el registro'));
+                  } else {
+
+                        if ($buscar[0]['status_funcionario'] == 1) {
+
+                            $this->addError($attribute, Yii::t('backend', 'El funcionario se encuentra inactivo'));
+                        }
+
+                  }
+        }                         
+    } 
 }

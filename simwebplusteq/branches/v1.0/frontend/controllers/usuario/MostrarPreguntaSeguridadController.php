@@ -105,7 +105,10 @@ class MostrarPreguntaSeguridadController extends Controller
 
                                                         ])
                                                     ->all();
-        
+        if($buscarPreguntas == false){
+
+          return MensajeController::actionMensaje(405);
+        }
 
         $model = new MostrarPreguntaSeguridadForm();
 
