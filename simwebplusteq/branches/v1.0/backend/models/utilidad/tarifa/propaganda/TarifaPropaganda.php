@@ -49,6 +49,7 @@
 	use backend\models\propaganda\uso\UsoPropaganda;
 	use backend\models\propaganda\clase\ClasePropaganda;
 	use backend\models\utilidad\tiporango\TipoRango;
+	use backend\models\utilidad\tiempo\Tiempo;
 
 
 
@@ -122,6 +123,16 @@
         	return $this->hasOne(TipoRango::className(), ['tipo_rango' => 'tipo_monto']);
         }
 
+
+
+        /**
+         * Relacion con la entidad "tiempos"
+         * @return [type] [description]
+         */
+        public function getTiempo()
+        {
+        	return $this->hasOne(Tiempo::className(), ['id_tiempo' => 'lapso_calculo']);
+        }
 
 	}
 
