@@ -77,7 +77,7 @@ class CompradorJuridicoController extends Controller
 {
 
 
- 
+  
     
   public $layout = 'layout-main';
    

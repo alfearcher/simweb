@@ -67,7 +67,7 @@ class OpcionCambioPropietarioController extends Controller
     public $layout = "layout-main";
 
     
- 
+  
     /**
      *
      * metodo que renderiza la vista para la seleccion del tipo de registro a realizarse

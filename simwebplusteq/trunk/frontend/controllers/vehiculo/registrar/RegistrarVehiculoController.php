@@ -78,7 +78,7 @@ session_start();
 class RegistrarVehiculoController extends Controller
 {
 
-
+ 
 
 
    public $layout = 'layout-main';

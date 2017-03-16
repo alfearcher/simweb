@@ -69,7 +69,7 @@ session_start();
 
 
 
-
+ 
 
 class CambioPropietarioVendedorController extends Controller
 {
