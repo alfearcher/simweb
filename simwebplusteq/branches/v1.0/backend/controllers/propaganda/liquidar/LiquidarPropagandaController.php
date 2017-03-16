@@ -749,7 +749,7 @@
 		{
 			$varSession = self::actionGetListaSessions();
 			self::actionAnularSession($varSession);
-			return $this->render('/menu/menu-vertical');
+			return $this->render('/menu/menuvertical2');
 		}
 
 
