@@ -79,6 +79,7 @@
 		public $num_celular;
 		public $naturaleza_rep;
 		public $cedula_rep;
+		public $fecha;
 
 		const SCENARIO_FRONTEND = 'frontend';
 		const SCENARIO_BACKEND = 'backend';
@@ -151,7 +152,7 @@
 	        	  'fecha_inicio', 'razon_social',
 	        	  'tlf_ofic', 'tlf_celular',],
 	        	  'required', 'on' => 'frontend', 'message' => Yii::t('frontend','{attribute} is required')],
-	        	[['fecha_inicio'], 'date', 'format' => 'dd-MM-yyyy','message' => Yii::t('backend','formatted date no valid')],
+	        	[['fecha_inicio', 'fecha'], 'date', 'format' => 'dd-MM-yyyy','message' => Yii::t('backend','formatted date no valid')],
 	        	// [['fecha_inicio'], 'required', 'when' => function($model) {
 	        	// 										return self::fechaInicioValida();
 	        	// 									}
