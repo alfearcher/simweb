@@ -498,18 +498,18 @@
 
 
 		        //	CONFIGURACIONES
-        		// ['label' => Icon::show('fa fa-cog',['class' => $typeLong], $typeIcon) . '&nbsp; Configuraciones',
-        		// 	'items' => [
-        		// 				['label' => 'Configurar Ordenanzas', 'url' => '#'],
-        		// 				['label' => 'Configurar Vencimiento de Documentos', 'url' => '#'],
-        		// 				['label' => 'Configurar Solicitudes', 'url' => ['/configuracion/solicitud/configurar-solicitud/index']],
-        		// 				['label' => 'Configurar Convenios de Pagos', 'url' => ['/configuracion/convenios/configurar-convenios/create']],
-        		// 				['label' => 'Configurar Dirección de Tributos',
-        		// 				            'url' => ['/hola/saludo2'],
-        		// 				            'id' => 10,
-        		// 				            'click' => 'alert("Button 2 clicked");'],
-        		// 	]
-        		// ],
+        		['label' => Icon::show('fa fa-cog',['class' => $typeLong], $typeIcon) . '&nbsp; Configuraciones',
+        			'items' => [
+        						['label' => 'Configurar Ordenanzas', 'url' => '#'],
+        						['label' => 'Configurar Vencimiento de Documentos', 'url' => '#'],
+        						['label' => 'Configurar Solicitudes', 'url' => ['/configuracion/solicitud/configurar-solicitud/index']],
+        						['label' => 'Configurar Convenios de Pagos', 'url' => ['/configuracion/convenios/configurar-convenios/create']],
+        						['label' => 'Configurar Dirección de Tributos',
+        						            'url' => ['/hola/saludo2'],
+        						            'id' => 10,
+        						            'click' => 'alert("Button 2 clicked");'],
+        			]
+        		],
 
 
 
