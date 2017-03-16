@@ -50,6 +50,7 @@
 	use common\models\ordenanza\OrdenanzaBase;
 	use backend\models\utilidad\ut\UnidadTributariaForm;
 	use backend\models\propaganda\tipo\TipoPropaganda;
+	use common\models\utilidades\CalcularLapsoTiempo;
 
 
 
@@ -188,11 +189,13 @@
 			$idOrdenanza = self::getIdOrdenanza();
 			if ( $idOrdenanza !== null ) {
 
-				return TarifaPropaganda::find()->where('tipo_propaganda =:tipo_propaganda',
+				return TarifaPropaganda::find()->alias('T')
+				                               ->where('tipo_propaganda =:tipo_propaganda',
 															[':tipo_propaganda' => $datosPropaganda['tipo_propaganda']])
 											   ->andWhere('id_ordenanza =:id_ordenanza',
 											   				[':id_ordenanza' => $idOrdenanza[0]['id_ordenanza']])
 											   ->joinWith('tipoRango R', true, 'INNER JOIN')
+											   ->joinWith('tiempo A')
 				                               ->asArray()
 				                               ->one();
 			}
@@ -212,42 +215,51 @@
 
 
 
-		/***/
+
+		/**
+		 * Metodo que indica la cantidad de tiempo de publicacion de la propaganda.
+		 * Se define el tipo de tiempo en el cual se desea consultar por el tipo de
+		 * propaganda.
+		 * @param  string $tiempo [description]
+		 * @return retorna un entero.
+		 */
 		public function getCantidadTiempo($tiempo = '')
 		{
-			$cantidadTiempo = $this->_datosPropaganda['cantidad_tiempo'];
 
-			if ( $tiempo == 'dia' ) {
-				// horas
-				$i = 'days';
+			$cantidad = 0;
+			// Se obtienen los parametros o tarifas que se aplicaran en los calculo.
+			$this->_tarifa = self::getParametroTarifa($this->_datosPropaganda);
 
-			} elseif ( $tiempo == 'dia' ) {
-				// dias
-				$i = 'days';
+			$tiempo = New CalcularLapsoTiempo($this->_datosPropaganda['fecha_inicio'], $this->_datosPropaganda['fecha_fin']);
 
-			} elseif ( $tiempo == 'semana' ) {
+			if ( strtolower($this->_tarifa['tiempo']['descripcion']) == 'dia(s)' ) {
+				// dia
+				$cantidad = $tiempo->getCantidadDias();
+
+			} elseif ( strtolower($this->_tarifa['tiempo']['descripcion']) == 'semana(s)' ) {
 				// semanas
-				$i = 'w';
+				$cantidad = $tiempo->getCantidadSemanas();
 
-			} elseif ( $tiempo == 'mes' ) {
+			} elseif ( strtolower($this->_tarifa['tiempo']['descripcion']) == 'mese(s)' ) {
 				// meses
-				$i = 'm';
+				$cantidad = $tiempo->getCantidadMeses();
 
-			} elseif ( $tiempo == 'año' ) {
+			} elseif ( strtolower($this->_tarifa['tiempo']['descripcion']) == 'año(s)' ) {
 				// años
-				$i = 'y';
+				$cantidad = $tiempo->getCantidadAnos();
 
-			} elseif ( $tiempo == '' ) {
-				$i = 'y';
+			} elseif ( strtolower($this->_tarifa['tiempo']['descripcion']) == 'trimestre(s)' ) {
+				// trimestrales
+				$cantidad = $tiempo->getCantidadTrimestre();
+
+			} else {
+				$cantidad = 1;
 			}
 
-			// Se determina la cantidad de tiempo entre las fecha inicio y fecha final de
-			// publicacion de la propaganda.
-			$interval = date_diff(date_create($this->_datosPropaganda['fecha_inicio']), date_create($this->_datosPropaganda['fecha_fin']));
-
-			return $interval->{$i};
+			return $cantidad;
 
 		}
+
 
 
 
