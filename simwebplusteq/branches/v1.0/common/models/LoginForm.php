@@ -62,8 +62,8 @@ class LoginForm extends Model
     public $password;
     public $rememberMe = true;
     public $salt;
-	
-	
+  
+  
     private $_user = false;
 
 
@@ -82,15 +82,15 @@ class LoginForm extends Model
             ['password', 'validatePassword'],
         ];
     }
-	/*
-	 *  Metodo que retorna los nombres de los atributos
-	 */
-	public function attributeLabels()
+  /*
+   *  Metodo que retorna los nombres de los atributos
+   */
+  public function attributeLabels()
 { 
     return [
       'username' => Yii::t('backend', 'Username'),
       'password' => Yii::t('backend', 'Password'),
-	  'rememberMe' => Yii::t('backend', 'RememberMe'),
+    'rememberMe' => Yii::t('backend', 'RememberMe'),
               ];
 }
 
@@ -100,11 +100,11 @@ class LoginForm extends Model
      */
     public function validatePassword($attribute, $params)
     {   
-	   
-	    //-----salt-------
-		$password = $this->password + $this->salt;
-		
-		if (!$this->hasErrors()) {
+     
+      //-----salt-------
+    $password = $this->password + $this->salt;
+    
+    if (!$this->hasErrors()) {
             $user = $this->getUser();
 
             if (!$user || !$user->validatePassword($this->password)) { 
@@ -151,23 +151,27 @@ class LoginForm extends Model
                   $this->addError($attribute, Yii::t('backend', 'El funcionario no se encuentra registrado')); 
         } else {
                   
-                  $vigencia = $buscar[0]['vigencia'];
-                  if(date('Y-m-d') > $vigencia ){
+                   $vigencia = $buscar[0]['vigencia'];
 
-                        if ($buscar[0]['status_funcionario'] == 1) {
+                   if(date('Y-m-d') > $vigencia ){
 
-                            $this->addError($attribute, Yii::t('backend', 'El funcionario se encuentra inactivo'));
-                        }
+                          if ($buscar[0]['status_funcionario'] == 1) {
 
-                        $this->addError($attribute, Yii::t('backend', 'El funcionario no se encuentra vigente para el registro'));
-                  } else {
+                              $this->addError($attribute, Yii::t('backend', 'El funcionario se encuentra inactivo'));
+                         }
+ 
+                          $this->addError($attribute, Yii::t('backend', 'El funcionario no se encuentra vigente para el registro'));
 
-                        if ($buscar[0]['status_funcionario'] == 1) {
+                     } else {
 
-                            $this->addError($attribute, Yii::t('backend', 'El funcionario se encuentra inactivo'));
-                        }
+                          if ($buscar[0]['status_funcionario'] == 1) {
 
-                  }
+                              $this->addError($attribute, Yii::t('backend', 'El funcionario se encuentra inactivo'));
+                          }
+
+                    }
         }                         
-    } 
+    }
+
+     
 }
