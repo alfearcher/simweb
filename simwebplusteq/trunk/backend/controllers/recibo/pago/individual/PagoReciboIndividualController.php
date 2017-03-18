@@ -272,8 +272,8 @@
 					return ActiveForm::validate($depositoModel);
 		      	}
 
-		      	return self::actionViewResumenRecibo();
-
+		      	//return self::actionViewResumenRecibo();
+		      	return self::actionViewResumenReciboFormaPago();
 		      	// $_SESSION['datosRecibo'] = $datosRecibo;
 		      	// $formasPago = FormaPago::find()->all();
 		      	// $listaForma = ArrayHelper::map($formasPago, 'id_forma', 'descripcion');
@@ -384,11 +384,44 @@ die(var_dump($registers));
 
 
 
+        /***/
+        public function actionViewResumenReciboFormaPago()
+        {
+			$recibo = $_SESSION['recibo'];
+        	$usuario = Yii::$app->identidad->getUsuario();
+        	$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
+        	$dataProvider = $pagoReciboSearch->getDataProviderRegistroTemp($usuario);
+
+        	$datosRecibo = $pagoReciboSearch->getDeposito();
+
+			$_SESSION['datosRecibo'] = $datosRecibo;
+	      	$formasPago = FormaPago::find()->all();
+	      	$listaForma = ArrayHelper::map($formasPago, 'id_forma', 'descripcion');
+
+	      	$montoAgregado = $pagoReciboSearch->getTotalFormaPagoAgregado($usuario);
+
+	      	$montoSobrante = $datosRecibo[0]['monto'] - $montoAgregado;
+	      	$captionRecibo = Yii::t('backend', 'Recibo Nro') . '. ' . $recibo;
+	      	$caption = Yii::t('backend', 'Registrar Formas de Pago');
+	      	return $this->render('/recibo/pago/individual/resumen-recibo-forma-pago.php', [
+			      								'caption' => $caption,
+			      								'captionRecibo' => $captionRecibo,
+			      								'datosRecibo' => $datosRecibo,
+			      								'listaForma' => $listaForma,
+			      								'montoSobrante' => $montoSobrante,
+			      								'montoAgregado' => $montoAgregado,
+			      								'dataProvider' => $dataProvider,
+			      			]);
+        }
+
+
+
 
         /***/
         public function actionViewFormaPago()
         {
 
+die('sss');
         	$request = Yii::$app->request;
         	$postGet = $request->get();
         	$postData = $request->post();
@@ -420,6 +453,7 @@ die(var_dump($registers));
 							self::actionAgregarFormaPago($postData);
 						}
 					} else {
+						self::mensage('dddd');
 						self::actionAgregarFormaPago($postData);
 					}
 					$this->redirect(['view-resumen-recibo']);
@@ -593,7 +627,7 @@ die(var_dump($registers));
  			    $model->deposito = 0;
  			    $model->codigo_banco = 0;
  			    $model->cuenta_deposito = '';
-
+ 			    $model->banco = '';
 // die(var_dump($model));
  			} elseif ( $postEnviado[$formName]['id_forma'] == 2 ) {
  				$model->scenario = self::SCENARIO_DEPOSITO;
@@ -618,16 +652,17 @@ die(var_dump($registers));
  				$model->load($postEnviado);
  				$model->fecha = date('Y-m-d', strtotime($postEnviado[$formName]['fecha']));
 
-// die(var_dump($model));
+// die(var_dump($postEnviado));
+
  			    $model->conciliado = 0;
  			    //$model->cuenta = '';
- 			    $model->cheque = $model->tipo_deposito;
+ 			    //$model->cheque = $model->tipo_deposito;
  			    $model->estatus = 0;
  			    $model->deposito = 0;
  			    $model->codigo_banco = 0;
  			    $model->cuenta_deposito = '';
- 			    $model->codigo_cuenta = $model->banco;
-
+ 			    //$model->codigo_cuenta = $model->banco;
+// die(var_dump($model));
  			}
 
  			$result = self::actionBeginSaveFormaPagoTemp($model);
@@ -843,8 +878,13 @@ die(var_dump($registers));
 
 
 
-
-
+		/***/
+		public function mensage($mensaje)
+		{
+			return '<script type="text/javascript">
+					alert("Hola");
+				</script>';
+		}
 
 
 
