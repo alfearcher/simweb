@@ -45,6 +45,7 @@
  	use Yii;
 	use yii\base\Model;
 	use backend\models\recibo\depositodetalle\DepositoDetalleUsuario;
+	use backend\models\utilidad\banco\BancoSearch;
 
 
 	/**
@@ -114,6 +115,7 @@
         				'tipo_deposito',
         				'banco',
         				'usuario',
+        				'codigo_cuenta',
         		],
         		self::SCENARIO_DEPOSITO => [
         				'recibo',
@@ -148,8 +150,7 @@
 	        	[['recibo', 'id_forma',
 	        	  'fecha', 'monto',
 	        	  'cheque', 'cuenta',
-	        	  'tipo_deposito', 'banco',
-	        	  'usuario',],
+	        	  'usuario', 'codigo_cuenta'],
 	        	  'required', 'on' => 'tarjeta',
 	        	  'message' => Yii::t('backend','{attribute} is required')],
 	        	[['recibo', 'id_forma',
@@ -183,7 +184,10 @@
 	        	  'string',
 	        	  'max' => 21,
 	        	  'message' => Yii::t('backend', 'Debe contener 4 digitos')],
-
+	        	[['codigo_cuenta', 'cuenta', 'cheque'],
+	        	  'unique',
+	        	  'on' => 'cheque',
+	        	  'message' => Yii::t('backend', 'El numer de cheque ya existe')],
 	        ];
 	    }
 
@@ -210,7 +214,11 @@
 
 
 
-
+	    /***/
+	    public function validateCodigoCuenta($attribute, $params)
+	    {
+die('hah');
+	    }
 
 
 	}
