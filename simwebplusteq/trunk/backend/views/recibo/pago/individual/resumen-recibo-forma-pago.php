@@ -57,12 +57,23 @@
 
  ?>
 
-<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding: 0px;width: 100%;padding-left: 15px;margin-top: 20px;">
+<?php
+	$form = ActiveForm::begin([
+		'id' => 'id-resumen-recibo-forma-pago-form',
+		'method' => 'post',
+		//'action' => ['registrar-formas-pago'],
+		'enableClientValidation' => true,
+		'enableAjaxValidation' => false,
+		'enableClientScript' => true,
+	]);
+ ?>
+
+<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding: 0px;width: 100%;padding-left: 15px;margin-top: 5px;">
 	<h4><strong><?=Html::encode(Yii::t('backend', 'Datos del Recibo'))?></strong></h4>
 </div>
 
 <div class="row" style="width: 100%;padding: 0px;margin-left:5px;">
-	<div class="col-sm-2" style="width: 15%;padding: 0px;padding-top: 25px;margin-bottom: 20px;">
+	<div class="col-sm-2" style="width: 15%;padding: 0px;padding-top: 5px;margin-bottom: 20px;">
 		<div class="row" style="width: 30%;padding: 0px;">
 			<?=Html::label(Yii::t('backend', 'Recibo'), 'recibo-label',['style' => 'font-size:120%;'])?>
 		</div>
@@ -83,7 +94,7 @@
 		</div>
 	</div>
 
-	<div class="col-sm-2" style="width: 25%;padding: 0px;padding-left: 15px;padding-top: 25px;margin-left: 10px;">
+	<div class="col-sm-2" style="width: 25%;padding: 0px;padding-left: 15px;padding-top: 5px;margin-left: 10px;">
 		<div class="row" style="width: 65%;padding: 0px;margin-left: 3px;">
 			<?=Html::label(Yii::t('backend', 'Monto Recibo'), 'recibo-label',['style' => 'font-size:120%;'])?>
 		</div>
@@ -104,7 +115,7 @@
 		</div>
 	</div>
 
-	<div class="col-sm-2" style="width: 25%;padding: 0px;padding-left: 15px;padding-top: 25px;">
+	<div class="col-sm-2" style="width: 25%;padding: 0px;padding-left: 15px;padding-top: 5px;">
 		<div class="row" style="width: 65%;padding: 0px;margin-left: 3px;">
 			<?=Html::label(Yii::t('backend', 'Monto Faltante'), 'recibo-label',['style' => 'font-size:120%;'])?>
 		</div>
@@ -126,7 +137,7 @@
 	</div>
 </div>
 
-<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding: 0px;width: 100%;padding-left: 15px;margin-top: 20px;">
+<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding: 0px;width: 100%;padding-left: 15px;margin-top: 0px;">
 	<h4><strong><?=Html::encode(Yii::t('backend', 'Seleccione la(s) forma(s) de pago'))?></strong></h4>
 </div>
 
@@ -146,14 +157,24 @@
 						$icon = 'fa fa-credit-card';
 					}
 
-					echo Html::a('&nbsp;&nbsp;' . strtolower($value),
-				   				['view-forma-pago', 'forma' => $key,'recibo' => $datosRecibo[0]['recibo']],
-					    		[
-					    	  		'class' => $icon . ' btn btn-default btn-lg',
-					    	  		'id' => 'id-' . strtolower($value),
-					    	  		'style' => 'width:140px;margin-left:10px;font-size:140%;',
+					// echo Html::a('&nbsp;&nbsp;' . strtolower($value),
+				 //   				['view-forma-pago', 'forma' => $key,'recibo' => $datosRecibo[0]['recibo']],
+					//     		[
+					//     	  		'class' => $icon . ' btn btn-default btn-lg',
+					//     	  		'id' => 'id-' . strtolower($value),
+					//     	  		'style' => 'width:140px;margin-left:10px;font-size:140%;',
 
-					    	  	]);
+					//     	  	]);
+
+					echo Html::submitButton('&nbsp;&nbsp;' . strtolower($value),
+									    		[
+									    	  		'class' => $icon . ' btn btn-default btn-lg',
+									    	  		'id' => 'id-btn-' . strtolower($value),
+									    	  		'style' => 'width:140px;margin-left:10px;font-size:140%;',
+									    	  		'value' => $key,
+									    	  		'name' => 'btn-'. strtolower($value),
+
+									    	  	]);
 					endforeach;
 				?>
 			</div>
@@ -161,115 +182,4 @@
 	</div>
 </div>
 
-<!-- FORMA DE PAGO REGISTRADAS -->
-<div class="row" style="width: 100%;margin-top: 25px;">
-	<?= GridView::widget([
-		'id' => 'id-grid-forma-pago-registrada',
-		'dataProvider' => $dataProvider,
-		'headerRowOptions' => [
-			'class' => 'success',
-		],
-		'tableOptions' => [
-			'class' => 'table table-hover',
-			],
-		'summary' => '',
-		'columns' => [
-			['class' => 'yii\grid\SerialColumn'],
-
-            [
-                'contentOptions' => [
-                      'style' => 'font-size: 90%;',
-                ],
-                'label' => Yii::t('frontend', 'Forma de Pago'),
-                'value' => function($data) {
-                           		return $data['forma'];
-    			           },
-            ],
-
-            [
-                'contentOptions' => [
-                      'style' => 'font-size: 90%;',
-                ],
-                'label' => Yii::t('frontend', 'Fecha'),
-                'value' => function($data) {
-                           		return date('d-m-Y', strtotime($data['fecha']));
-    			           },
-            ],
-
-            [
-                'contentOptions' => [
-                      'style' => 'font-size: 90%;',
-                ],
-                'label' => Yii::t('frontend', 'Deposito'),
-                'value' => function($data) {
-                           		return $data['deposito'];
-    			           },
-            ],
-
-            [
-                'contentOptions' => [
-                      'style' => 'font-size: 90%;',
-                ],
-                'label' => Yii::t('frontend', 'Cuenta'),
-                'value' => function($data) {
-                				if ( $data['id_forma'] == 1 ) {
-                           			return $data['codigo_cuenta'] . $data['cuenta'];
-
-                           		} elseif ( $data['id_forma'] == 4 ) {
-                           			return $data['codigo_cuenta'] . $data['cuenta'];
-
-                           		} else {
-									return $data['cuenta'];
-                           		}
-    			           },
-            ],
-
-            [
-                'contentOptions' => [
-                      'style' => 'font-size: 90%;',
-                ],
-                'label' => Yii::t('frontend', 'Nro de Cheque o Tarjeta'),
-                'value' => function($data) {
-                				if ( $data['id_forma'] == 1 ) {
-                           			return $data['cheque'];
-                           		} elseif ( $data['id_forma'] == 4 ) {
-                           			return $data['cheque'];
-                           		} else {
-                           			return $data['cheque'];
-                           		}
-    			           },
-            ],
-
-            [
-                'contentOptions' => [
-                      'style' => 'font-size: 100%;
-                      			  text-align:right;
-                      			  font-weight:bold;',
-                ],
-                'label' => Yii::t('frontend', 'monto'),
-                'value' => function($data) {
-                				return Yii::$app->formatter->asDecimal($data['monto'], 2);
-    			           },
-            ],
-
-            [
-                'contentOptions' => [
-                      'style' => 'font-size: 100%;
-                      			  text-align:right;
-                      			  font-weight:bold;',
-                ],
-                'label' => Yii::t('frontend', 'Editar'),
-                'format' => 'raw',
-                'value' => function($data, $key) {
-                				return Html::a(Yii::t('backend', 'Editar'),
-                				 			   Url::to(['update', 'linea' => $data['linea'], 'recibo' => $data['recibo']]),
-                				 			   [
-                				 			   		'class' => 'btn btn-primary',
-                				 			   ]);
-                }
-            ],
-
-    	]
-	]);?>
-</div>
-<!-- FIN DE FORMA DE PAGO REGISTRADAS -->
+<?php ActiveForm::end(); ?>
