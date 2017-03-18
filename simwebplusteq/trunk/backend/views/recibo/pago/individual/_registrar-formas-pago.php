@@ -230,7 +230,7 @@
 				                        ],
 				                        'label' => Yii::t('frontend', 'Fecha'),
 				                        'value' => function($data) {
-				                                   		return $data['fecha'];
+				                                   		return date('d-m-Y', strtotime($data['fecha']));
 				            			           },
 				                    ],
 
@@ -251,11 +251,13 @@
 				                        'label' => Yii::t('frontend', 'Cuenta'),
 				                        'value' => function($data) {
 				                        				if ( $data['id_forma'] == 1 ) {
-				                                   			return $data['cuenta'];
+				                                   			return $data['codigo_cuenta'] . $data['cuenta'];
 
 				                                   		} elseif ( $data['id_forma'] == 4 ) {
 				                                   			return $data['codigo_cuenta'] . $data['cuenta'];
 
+				                                   		} else {
+															return $data['cuenta'];
 				                                   		}
 				            			           },
 				                    ],
@@ -269,6 +271,8 @@
 				                        				if ( $data['id_forma'] == 1 ) {
 				                                   			return $data['cheque'];
 				                                   		} elseif ( $data['id_forma'] == 4 ) {
+				                                   			return $data['cheque'];
+				                                   		} else {
 				                                   			return $data['cheque'];
 				                                   		}
 				            			           },

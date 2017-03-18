@@ -73,7 +73,7 @@
 	<?=$form->field($model, 'codigo_banco')->hiddenInput(['value' => $model->codigo_banco])->label(false)?>
 	<?=$form->field($model, 'cuenta_deposito')->hiddenInput(['value' => $model->cuenta_deposito])->label(false)?>
 	<?=$form->field($model, 'usuario')->hiddenInput(['value' => $model->usuario])->label(false)?>
-
+	<?=$form->field($model, 'banco')->hiddenInput(['value' => $model->banco])->label(false)?>
 
 <div class="row" style="width:100%;border-bottom: 0.5px solid;padding:0px;padding-left:5px;margin-bottom: 15px;">
 	<h4><strong><?=Yii::t('backend', 'Datos de la ' . $caption)?></strong></h4>
@@ -88,8 +88,8 @@
 
 	<div class="col-sm-2" style="width:30%;padding: 0px;">
 		<div class="tipo-deposito">
-    		<?= $form->field($model, 'tipo_deposito')->dropDownList($listaTipoTarjeta,[
-												 			'id' => 'id-tipo-tarjeta',
+    		<?= $form->field($model, 'cheque')->dropDownList($listaTipoTarjeta,[
+												 			'id' => 'id-cheque',
 												 			'style' => 'width: 100%;',
                                  				 			'prompt' => Yii::t('backend', 'Select..'),
                                         			])->label(false)
@@ -108,8 +108,8 @@
 
 	<div class="col-sm-2" style="width:55%;padding: 0px;">
 		<div class="banco">
-    		<?= $form->field($model, 'banco')->dropDownList($listaBanco,[
-												 			'id' => 'id-banco',
+    		<?= $form->field($model, 'codigo_cuenta')->dropDownList($listaBanco,[
+												 			'id' => 'id-codigo-cuenta',
 												 			'style' => 'width: 100%;',
                                  				 			'prompt' => Yii::t('backend', 'Select..'),
                                         			])->label(false)
