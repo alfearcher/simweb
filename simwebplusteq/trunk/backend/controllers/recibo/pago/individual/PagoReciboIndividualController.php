@@ -248,14 +248,14 @@
          */
         public function actionRegistrarFormasPago()
         {
-        	$depositoModel = New DepositoForm();
         	if ( isset($_SESSION['recibo']) ) {
         		$recibo = $_SESSION['recibo'];
 
         		$request = Yii::$app->request;
         		$postData = $request->post();
         		$postGet = $request->get();
-        		//$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
+
+ // die(var_dump($postData));
 
         		//$htmlFormaPago = null;
 
@@ -265,30 +265,52 @@
         			}
         		}
 
+        		if ( isset($postData['btn-cheque']) ) {
+        			if ( $postData['btn-cheque'] == 1 ) {
+        				$forma = (int)$postData['btn-cheque'];
+        			}
+        		} elseif ( isset($postData['btn-deposito']) ) {
+        			if ( $postData['btn-deposito'] == 2 ) {
+        				$forma = (int)$postData['btn-deposito'];;
+        			}
+        		} elseif ( isset($postData['btn-efectivo']) ) {
+        			if ( $postData['btn-efectivo'] == 3 ) {
+        				$forma = (int)$postData['btn-efectivo'];;
+        			}
+        		} elseif ( isset($postData['btn-tarjetas']) ) {
+        			if ( $postData['btn-tarjetas'] == 4 ) {
+        				$forma = (int)$postData['btn-tarjetas'];;
+        			}
+        		} else {
+        			$forma = 0;
+        		}
+        		$htmlFormaPago = self::actionShowViewFormaPago($forma);
+
+        		$model = New DepositoDetalleUsuarioForm();
+
         		//$datosRecibo = $pagoReciboSearch->getDeposito();
 
-        		if ( $depositoModel->load($postData)  && Yii::$app->request->isAjax ) {
+        		if ( $model->load($postData)  && Yii::$app->request->isAjax ) {
 					Yii::$app->response->format = Response::FORMAT_JSON;
-					return ActiveForm::validate($depositoModel);
+					return ActiveForm::validate($model);
 		      	}
 
-		      	//return self::actionViewResumenRecibo();
-		      	return self::actionViewResumenReciboFormaPago();
+		      	$htmlResumenReciboFormaPago = self::actionViewResumenReciboFormaPago();
+		      	$htmlFormaPagoContabilizada = self::actionShowViewFormaPagoContabilizada();
 		      	// $_SESSION['datosRecibo'] = $datosRecibo;
 		      	// $formasPago = FormaPago::find()->all();
 		      	// $listaForma = ArrayHelper::map($formasPago, 'id_forma', 'descripcion');
 
-		      	// $captionRecibo = Yii::t('backend', 'Recibo Nro') . '. ' . $recibo;
-		      	// $caption = Yii::t('backend', 'Registrar Formas de Pago');
-		      	// return $this->render('/recibo/pago/individual/_registrar-formas-pago', [
-		      	// 							// 'model' => $depositoModel,
-		      	// 							'caption' => $caption,
-		      	// 							'captionRecibo' => $captionRecibo,
-		      	// 							'datosRecibo' => $datosRecibo,
-		      	// 							'listaForma' => $listaForma,
-		      	// 							'htmlFormaPago' => $htmlFormaPago,
-		      	// 							'montoSobrante' => $datosRecibo[0]['monto'],
-		      	// 		]);
+		      	$captionRecibo = Yii::t('backend', 'Recibo Nro') . '. ' . $recibo;
+		      	$caption = Yii::t('backend', 'Registrar Formas de Pago');
+
+		      	return $this->render('/recibo/pago/individual/_registrar-formas-pago', [
+		      								'caption' => $caption,
+		      								'captionRecibo' => $captionRecibo,
+		      								'htmlFormaPago' => $htmlFormaPago,
+		      								'htmlResumenReciboFormaPago' => $htmlResumenReciboFormaPago,
+		      								'htmlFormaPagoContabilizada' => $htmlFormaPagoContabilizada,
+		      			]);
 
         	} else {
 
@@ -390,7 +412,6 @@ die(var_dump($registers));
 			$recibo = $_SESSION['recibo'];
         	$usuario = Yii::$app->identidad->getUsuario();
         	$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
-        	$dataProvider = $pagoReciboSearch->getDataProviderRegistroTemp($usuario);
 
         	$datosRecibo = $pagoReciboSearch->getDeposito();
 
@@ -403,14 +424,12 @@ die(var_dump($registers));
 	      	$montoSobrante = $datosRecibo[0]['monto'] - $montoAgregado;
 	      	$captionRecibo = Yii::t('backend', 'Recibo Nro') . '. ' . $recibo;
 	      	$caption = Yii::t('backend', 'Registrar Formas de Pago');
-	      	return $this->render('/recibo/pago/individual/resumen-recibo-forma-pago.php', [
+	      	return $this->renderPartial('/recibo/pago/individual/resumen-recibo-forma-pago', [
 			      								'caption' => $caption,
 			      								'captionRecibo' => $captionRecibo,
 			      								'datosRecibo' => $datosRecibo,
 			      								'listaForma' => $listaForma,
 			      								'montoSobrante' => $montoSobrante,
-			      								'montoAgregado' => $montoAgregado,
-			      								'dataProvider' => $dataProvider,
 			      			]);
         }
 
@@ -418,10 +437,84 @@ die(var_dump($registers));
 
 
         /***/
+        public function actionShowViewFormaPagoContabilizada()
+        {
+        	$recibo = $_SESSION['recibo'];
+        	$usuario = Yii::$app->identidad->getUsuario();
+        	$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
+        	$dataProvider = $pagoReciboSearch->getDataProviderRegistroTemp($usuario);
+
+        	$montoAgregado = $pagoReciboSearch->getTotalFormaPagoAgregado($usuario);
+
+        	return $this->renderPartial('/recibo/pago/individual/forma-pago-contabilizada', [
+			      								'montoAgregado' => $montoAgregado,
+			      								'dataProvider' => $dataProvider,
+			      		]);
+        }
+
+
+
+
+        /***/
+        public function actionShowViewFormaPago($forma)
+        {
+        	$model = New DepositoDetalleUsuarioForm();
+        	if ( $forma == 1 ) {
+	        		$model->scenario = self::SCENARIO_CHEQUE;
+	        		return $this->renderPartial('/recibo/pago/individual/forma-cheque', [
+	        										'model' => $model,
+	        										'caption' => 'Cheque',
+	        		]);
+
+	        	} elseif ( $forma == 2 ) {
+	        		$searchBanco = New BancoSearch();
+	        		$listaBanco = $searchBanco->getListaBanco();
+
+	        		$searchTipoTarjeta = New TipoTarjetaSearch();
+	        		$listaTipoTarjeta = $searchTipoTarjeta->getListaTipoTarjeta();
+
+	        		$model->scenario = self::SCENARIO_DEPOSITO;
+	        		return $this->renderPartial('/recibo/pago/individual/forma-deposito', [
+	        										'model' => $model,
+	        										'caption' => 'Deposito',
+	        										'listaBanco' => $listaBanco,
+	        										'listaTipoTarjeta' => $listaTipoTarjeta,
+	        		]);
+
+	        	} elseif ( $forma == 3 ) {
+
+	        		$model->scenario = self::SCENARIO_EFECTIVO;
+	        		return $this->renderPartial('/recibo/pago/individual/forma-efectivo', [
+	        										'model' => $model,
+	        										'caption' => 'Efectivo',
+	        		]);
+
+	        	} elseif ( $forma == 4 ) {
+
+	        		$searchBanco = New BancoSearch();
+	        		$listaBanco = $searchBanco->getListaBanco();
+
+	        		$searchTipoTarjeta = New TipoTarjetaSearch();
+	        		$listaTipoTarjeta = $searchTipoTarjeta->getListaTipoTarjetaDescripcion();
+
+	        		$model->scenario = self::SCENARIO_TARJETA;
+	        		return $this->renderPartial('/recibo/pago/individual/forma-tarjeta', [
+	        										'model' => $model,
+	        										'caption' => 'Tarjeta',
+	        										'listaBanco' => $listaBanco,
+	        										'listaTipoTarjeta' => $listaTipoTarjeta,
+	        		]);
+	        	} else {
+	        		return null;
+	        	}
+        }
+
+
+
+        /***/
         public function actionViewFormaPago()
         {
 
-die('sss');
         	$request = Yii::$app->request;
         	$postGet = $request->get();
         	$postData = $request->post();
