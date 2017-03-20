@@ -56,7 +56,7 @@ use yii\data\ActiveDataProvider;
 use frontend\models\vehiculo\cambiodatos\BusquedaVehiculos;
 use common\models\calcomania\calcomaniamodelo\Calcomania;
 
-
+ 
 /**
  * InmueblesSearch represents the model behind the search form about `backend\models\Inmuebles`.
  */
