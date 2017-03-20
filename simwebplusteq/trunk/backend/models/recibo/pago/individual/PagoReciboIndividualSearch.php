@@ -49,6 +49,7 @@
 	use backend\models\recibo\depositoplanilla\DepositoPlanilla;
 	use common\models\planilla\PlanillaSearch;
       use backend\models\recibo\depositodetalle\DepositoDetalleUsuario;
+      use backend\models\recibo\depositodetalle\DepositoDetalle;
       use yii\data\ArrayDataProvider;
       use backend\models\utilidad\tipotarjeta\TipoTarjetaSearch;
 
@@ -508,6 +509,98 @@
                                                                     ->where('recibo =:recibo',
                                                                               [':recibo' => $this->_recibo]);
             }
+
+
+            /**
+             * Metodo que genera el modelo principal de consulta de la entidad
+             * "depositos-detalle"
+             * @return DepositoDetalle.
+             */
+            private function findDepositoDetalleModel()
+            {
+                  return $findModel = DepositoDetalleUsuario::find()->alias('A');
+            }
+
+
+            /**
+             * Metodo que determina si un numero de cheque ya esta registrado en la entidad
+             * final (depositos-detalle).
+             * @param string $nroCuenta numero de cuenta donde se registra el cheque,
+             * esta variables esta conformada por el codigo-del-banco + el-numero-cuenta
+             * propiamente dicho.
+             * @param string $cheque nuemro del cheque.
+             * @return boolean.
+             */
+            public function existeChequeEnBD($nroCuenta, $cheque)
+            {
+                  $findModel = self::findDepositoDetalleModel();
+                  $registers = $findModel->where('cheque =:cheque',
+                                                      [':cheque' => $cheque])
+                                       ->andWhere('id_forma =:id_forma',
+                                                      [':id_forma' => 1])
+                                       ->all();
+                  if ( $registers ) {
+                        foreach ( $registers as $register ) {
+                              if ( trim($register->cuenta) === trim($nroCuenta) ) {
+                                    return true;
+                              }
+                        }
+                  }
+                  return false;
+            }
+
+
+
+            /**
+             * Metodo que determina si un numero de cheque ya esta registrado en la entidad
+             * final (depositos-detalle).
+             * @param string $nroCuenta numero de cuenta donde se registra el cheque,
+             * esta variables esta conformada por el codigo-del-banco + el-numero-cuenta
+             * propiamente dicho.
+             * @param string $cheque nuemro del cheque.
+             * @return boolean.
+             */
+            public function existeChequeTemporal($nroCuenta, $cheque)
+            {
+                  $findModel = self::findDepositoDetalleUsuarioModel();
+                  $registers = $findModel->where('cheque =:cheque',
+                                                      [':cheque' => $cheque])
+                                       ->andWhere('id_forma =:id_forma',
+                                                      [':id_forma' => 1])
+                                       ->all();
+                  if ( $registers ) {
+                        foreach ( $registers as $register ) {
+                              if ( trim($register->cuenta) === trim($nroCuenta) ) {
+                                    return true;
+                              }
+                        }
+                  }
+                  return false;
+            }
+
+
+
+
+            /**
+             * Metodo que determina si un numero de cheque ya se encuentra registrado
+             * en la temporal o en la base de datos final. Realiza una doble consulta
+             * en dos entidades diferentes.
+             * @param string $nroCuenta numero de cuenta donde se registra el cheque,
+             * esta variables esta conformada por el codigo-del-banco + el-numero-cuenta
+             * propiamente dicho.
+             * @param string $cheque nuemro del cheque.
+             * @return boolean
+             */
+            public function existeCheque($nroCuenta, $cheque)
+            {
+                  if ( self::existeChequeEnBD($nroCuenta, $cheque) ) {
+                        return true;
+                  } elseif ( self::existeChequeTemporal($nroCuenta, $cheque) ) {
+                        return true;
+                  }
+                  return false;
+            }
+
 
 
 

@@ -184,10 +184,21 @@
 	        	  'string',
 	        	  'max' => 21,
 	        	  'message' => Yii::t('backend', 'Debe contener 4 digitos')],
-	        	[['codigo_cuenta', 'cuenta', 'cheque'],
+	        	// [['cuenta', 'cheque'],
+	        	//   'unique',
+	        	//   'targetAttribute' => ['cuenta', 'cheque'],
+	        	//   'on' => 'cheque',
+	        	//   'message' => Yii::t('backend', 'El numer de cheque ya existe')],
+
+	        	[['cuenta','cheque'],
 	        	  'unique',
+	        	  'targetAttribute' => ['cuenta', 'cheque'],
 	        	  'on' => 'cheque',
-	        	  'message' => Yii::t('backend', 'El numer de cheque ya existe')],
+	        	  'message' => Yii::t('backend', 'El numero de cheque ya existe')],
+	        	['codigo_cuenta',
+	        	 'validateCodigoCuenta',
+	        	 'on' => 'cheque',
+	        	 'message' => Yii::t('backend', 'El banco no es valido')],
 	        ];
 	    }
 
@@ -214,10 +225,18 @@
 
 
 
+
 	    /***/
-	    public function validateCodigoCuenta($attribute, $params)
+	    public function validateCodigoCuenta($attribute)
 	    {
-die('hah');
+	    	$searchBanco = New BancoSearch();
+	    	$arregloCondicion = [
+	    		'codigo' => $this->codigo_cuenta,
+	    	];
+
+	    	if ( !$searchBanco->existeBanco($arregloCondicion) ) {
+	    		$this->addError($attribute, Yii::t('backend', 'Banco no valido'));
+	    	}
 	    }
 
 
