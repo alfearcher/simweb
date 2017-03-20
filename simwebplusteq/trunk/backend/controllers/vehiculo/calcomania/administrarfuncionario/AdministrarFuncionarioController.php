@@ -70,7 +70,7 @@ session_start();
 
 
 
-
+ 
 
 class AdministrarFuncionarioController extends Controller
 {

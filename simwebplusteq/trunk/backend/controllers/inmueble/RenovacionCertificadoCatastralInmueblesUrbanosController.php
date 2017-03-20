@@ -974,7 +974,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                       ];
       
       $models = new VistaPreliminarCertificado();
- 
+
             //renderAjax
       return $this->renderAjax('/inmueble/renovacion-certificado-catastral-inmuebles-urbanos/pre-view-datos-avaluo',[
               'model' => $models,
@@ -991,7 +991,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
 
     }
 
-     
+      
 
 
 }
