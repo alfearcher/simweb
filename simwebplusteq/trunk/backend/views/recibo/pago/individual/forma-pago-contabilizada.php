@@ -41,7 +41,7 @@
  */
 
  	use yii\web\Response;
- 	//use kartik\icons\Icon;
+ 	use kartik\icons\Icon;
  	use yii\grid\GridView;
 	use yii\helpers\Html;
 	use yii\helpers\Url;
@@ -54,6 +54,10 @@
 	use yii\widgets\DetailView;
 	use yii\widgets\MaskedInput;
 
+	$typeIcon = Icon::FA;
+    $typeLong = 'fa-2x';
+
+    Icon::map($this, $typeIcon);
 
  ?>
 
@@ -163,21 +167,51 @@
     			           },
             ],
 
+            // [
+            //     'contentOptions' => [
+            //           'style' => 'font-size: 100%;
+            //           			  text-align:right;
+            //           			  font-weight:bold;',
+            //     ],
+            //     'label' => Yii::t('frontend', 'Editar'),
+            //     'format' => 'raw',
+            //     'value' => function($data, $key) {
+            //     				return Html::a(Yii::t('backend', 'Editar'),
+            //     				 			   Url::to(['update', 'linea' => $data['linea'], 'recibo' => $data['recibo']]),
+            //     				 			   [
+            //     				 			   		'class' => 'btn btn-primary',
+            //     				 			   ]);
+            //     }
+            // ],
+
             [
-                'contentOptions' => [
-                      'style' => 'font-size: 100%;
-                      			  text-align:right;
-                      			  font-weight:bold;',
-                ],
-                'label' => Yii::t('frontend', 'Editar'),
-                'format' => 'raw',
-                'value' => function($data, $key) {
-                				return Html::a(Yii::t('backend', 'Editar'),
-                				 			   Url::to(['update', 'linea' => $data['linea'], 'recibo' => $data['recibo']]),
-                				 			   [
-                				 			   		'class' => 'btn btn-primary',
-                				 			   ]);
-                }
+            	'class' => 'yii\grid\ActionColumn',
+            	'header' => 'Editar',
+            	'template' => '{update}',
+            	'buttons' => [
+            		'update' => function($url, $data, $key) {
+            			return Html::a('<center><span class="fa fa-pencil-square-o fa-lg"></center></span>',
+            							['update', 'l' => $key],
+            							[
+            								'style' => 'font-size:140%;'
+            							]);
+            		}
+            	],
+            ],
+
+            [
+            	'class' => 'yii\grid\ActionColumn',
+            	'header' => 'Suprimir',
+            	'template' => '{delete}',
+            	'buttons' => [
+            		'delete' => function($url, $data, $key) {
+            			return Html::a('<center><span class="fa fa-times fa-lg"></center></span>',
+            							['suprimir-forma-pago', 'l' => $key],
+            							[
+            								'style' => 'font-size:140%;color:red;'
+            							]);
+            		}
+            	],
             ],
 
     	]

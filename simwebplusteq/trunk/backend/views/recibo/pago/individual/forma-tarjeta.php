@@ -219,12 +219,12 @@
 <div class="row" style="width:100%;">
 	<div class="col-sm-2" style="margin-left: 10px;">
 		<div class="form-group">
-			<?= Html::submitButton(Yii::t('backend', 'Registrar'),
+			<?= Html::submitButton(Yii::t('backend', 'Guardar'),
 											  [
 												'id' => 'btn-add-forma',
 												'class' => 'btn btn-primary',
 												'value' => 1,
-												'style' => 'width: 100%',
+												'style' => 'width: 120%',
 												'name' => 'btn-add-forma',
 											  ])
 			?>
