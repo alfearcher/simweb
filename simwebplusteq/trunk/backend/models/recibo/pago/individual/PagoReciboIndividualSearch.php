@@ -52,7 +52,7 @@
       use backend\models\recibo\depositodetalle\DepositoDetalle;
       use yii\data\ArrayDataProvider;
       use backend\models\utilidad\tipotarjeta\TipoTarjetaSearch;
-
+      use backend\models\recibo\depositodetalle\VaucheDetalleUsuario;
 
 
 
@@ -498,6 +498,65 @@
 
 
 
+
+
+            /**
+             * Metodo que permite generar el data provider de los pagos
+             * registrados por el usuario para pagar un recibo, especifico.
+             * Cada recibo se le asociara un formas de pagos que estara guardada
+             * temporalmente hasta su salvado final. Estos registros estaran relacionados
+             * al recibo-usuario.
+             * @param string $usuario usuario que esta realizando laoperacion
+             * de salvado del registro.
+             * @return ArrayDataProvider
+             */
+            public function getDataProviderRegistroVaucheTemp($usuario, $linea)
+            {
+                  $data = [];
+                  $results = self::findVaucheDetalleUsuarioTemp($usuario, $linea);
+// die(var_dump($results));
+                  if ( count($results) > 0 ) {
+
+                        foreach ( $results as $result ) {
+                              $codigo_cuenta = '';
+                              if ( $result['tipo'] == 2 ) {
+                                    $codigo_cuenta = $result['codigo_cuenta'];
+
+                              } else {
+                                    $codigo_cuenta = '';
+                              }
+                              $data[$result['id_vauche']] = [
+                                    'id_vauche' => $result['id_vauche'],
+                                    'linea' => $result['linea'],
+                                    'recibo' => $result['recibo'],
+                                    'tipo' => $result['tipo'],
+                                    //'deposito' => $result['deposito'],
+                                    //'fecha' => $result['fecha'],
+                                    'cuenta' => $result['cuenta'],
+                                    'cheque' => $result['cheque'],
+                                    'monto' => $result['monto'],
+                                    'usuario' => $usuario,
+                                    'forma' => $result['tipoDeposito']['descripcion'],
+                                    'codigo_cuenta' => $codigo_cuenta,
+                                    'banco' => 0,
+
+                              ];
+                        }
+                  }
+
+                  $provider = New ArrayDataProvider([
+                        'key' => 'linea',
+                        'allModels' => $data,
+                        'pagination' => false,
+                  ]);
+
+                  return $provider;
+            }
+
+
+
+
+
             /**
              * Metodo que genera el modelo principal de consulta de la entidad
              * "depositos-detalles-usuarios".
@@ -510,6 +569,18 @@
                                                                               [':recibo' => $this->_recibo]);
             }
 
+
+            /**
+             * Metodo que genera el modelo principal de consulta de la entidad
+             * "vauches-detalles-usuarios".
+             * @return VaucheDetalleUsuario.
+             */
+            private function findVaucheDetalleUsuarioModel()
+            {
+                  return $findModel = VaucheDetalleUsuario::find()->alias('A')
+                                                                    ->where('recibo =:recibo',
+                                                                              [':recibo' => $this->_recibo]);
+            }
 
 
 
@@ -644,6 +715,31 @@
 
                   return $results = $model->asArray()->all();
             }
+
+
+
+
+            /**
+             * Metodo que realiza la consulta y devuelve los registros guardados
+             * temporalmente. Estos registros indican la forma de pago con que
+             * se pagara el recibo especifico. Informacion que estara en el vauchers.
+             * @param string $usuario usuario que esta realizando laoperacion
+             * de salvado del registro.
+             * @return array.
+             */
+            public function findVaucheDetalleUsuarioTemp($usuario, $linea)
+            {
+                  $findModel = self::findVaucheDetalleUsuarioModel();
+                  $model = $findModel->andWhere('usuario =:usuario',
+                                                      [':usuario' => $usuario])
+                                     ->andWhere('linea =:linea',
+                                                      [':linea' => $linea])
+                                     ->joinWith('tipoDeposito T', true, 'INNER JOIN');
+
+                  return $results = $model->asArray()->all();
+            }
+
+
 
 
 
