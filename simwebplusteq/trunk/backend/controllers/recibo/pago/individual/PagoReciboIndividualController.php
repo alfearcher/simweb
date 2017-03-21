@@ -66,7 +66,8 @@
     use backend\models\recibo\formapago\FormaPago;
     use backend\models\utilidad\banco\BancoSearch;
     use backend\models\utilidad\tipotarjeta\TipoTarjetaSearch;
-
+    use backend\models\recibo\tipodeposito\TipoDepositoSearch;
+    use backend\models\recibo\depositodetalle\VaucheDetalleUsuarioForm;
 
 
 
@@ -301,6 +302,7 @@
 					if ( $model->validate() ) {
 						// Se guarda
 						if ( (int)$forma !== 3 ) {
+// die(var_dump($postData));
 							$result = self::actionAgregarFormaPago($postData);
 							if ( $result ) {
 								return self::actionArmarFormulario(0, $model, ['insert']);
@@ -459,6 +461,7 @@
 								'linea' => $model->linea,
 							];
 
+							$model->fecha = date('Y-m-d', strtotime($model->fecha));
 							$result = self::actionBeginActualizarFormaPagoTemp($model, $arregloCondicion, $model->attributes);
 							if ( $result ) {
 								return self::actionArmarFormulario(0, $model, []);
@@ -678,13 +681,7 @@
 	        		]);
 
 	        	} elseif ( $forma == 2 ) {
-	        		$searchBanco = New BancoSearch();
-	        		$listaBanco = $searchBanco->getListaBanco();
 
-	        		$searchTipoTarjeta = New TipoTarjetaSearch();
-	        		$listaTipoTarjeta = $searchTipoTarjeta->getListaTipoTarjeta();
-
-	        		//$model->scenario = self::SCENARIO_DEPOSITO;
 	        		if ( $postData !== null ) {
 	        			$model->load($postData);
 	        		} else {
@@ -699,12 +696,22 @@
 		        		$model->usuario = $usuario;
 						$model->banco = '';
 					}
+
+					// $modelVauche = New VaucheDetalleUsuarioForm();
+
+					// $searchTipoDeposito = New TipoDepositoSearch();
+					// $listaTipoDeposito = $searchTipoDeposito->getListaTipoDeposito();
+
+        			$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
+					$dataProvider = $pagoReciboSearch->getDataProviderRegistroVaucheTemp($usuario, $model->linea);
+
 	        		return $this->renderPartial('/recibo/pago/individual/forma-deposito', [
 	        										'model' => $model,
 	        										'caption' => 'Deposito',
-	        										'listaBanco' => $listaBanco,
-	        										'listaTipoTarjeta' => $listaTipoTarjeta,
 	        										'operacion' => $operacion,
+	        										'dataProvider' => $dataProvider,
+	        										// 'listaTipoDeposito' => $listaTipoDeposito,
+	        										// 'modelVauche' => $modelVauche,
 	        		]);
 
 	        	} elseif ( $forma == 3 ) {
@@ -863,6 +870,7 @@
  			$this->_transaccion = $this->_conn->beginTransaction();
 
  			if ( $postEnviado[$formName]['id_forma'] == 1 ) {
+
  				$model->scenario = self::SCENARIO_CHEQUE;
 				$model->load($postEnviado);
 				$model->fecha = date('Y-m-d', strtotime($postEnviado[$formName]['fecha']));
@@ -872,8 +880,20 @@
  			    $model->codigo_banco = 0;
  			    $model->cuenta_deposito = '';
  			    $model->banco = '';
+
  			} elseif ( $postEnviado[$formName]['id_forma'] == 2 ) {
+
  				$model->scenario = self::SCENARIO_DEPOSITO;
+ 				$model->load($postEnviado);
+ 				$model->fecha = date('Y-m-d', strtotime($postEnviado[$formName]['fecha']));
+ 			    $model->conciliado = 0;
+ 			    $model->cuenta = '';
+ 			    $model->cheque = '';
+ 			    $model->estatus = 0;
+ 			    $model->codigo_banco = 0;
+ 			    $model->cuenta_deposito = '';
+ 			    $model->banco = '';
+ 			    $model->monto = 0;
 
  			} elseif ( $postEnviado[$formName]['id_forma'] == 3 ) {
 
@@ -899,6 +919,7 @@
  			    $model->deposito = 0;
  			    $model->codigo_banco = 0;
  			    $model->cuenta_deposito = '';
+
  			}
 
  			$result = self::actionBeginSaveFormaPagoTemp($model);
@@ -1045,6 +1066,40 @@
         {
         	return $result = self::actionSuprimirRegistroTemporal($arregloCondicion);
         }
+
+
+
+
+
+        /***/
+        public function actionViewAgregarDetalleDeposito()
+        {
+        	$request = Yii::$app->request;
+die(var_dump($request->get()));
+        	$modelVauche = New VaucheDetalleUsuarioForm();
+
+			$searchTipoDeposito = New TipoDepositoSearch();
+			$listaTipoDeposito = $searchTipoDeposito->getListaTipoDeposito();
+        	return $this->renderAjax('/recibo/pago/individual/agregar-detalle-deposito-form', [
+        													'modelVauche' => $modelVauche,
+        													'listaTipoDeposito' => $listaTipoDeposito,
+        													'url' => Url::to(['agregar-detalle-deposito']),
+        		]);
+        }
+
+
+
+
+        /***/
+        public function actionAgregarDetalleDeposito()
+        {
+        	$request = Yii::$app->request;
+
+ die(var_dump($request->post()));
+        }
+
+
+
 
 
 
