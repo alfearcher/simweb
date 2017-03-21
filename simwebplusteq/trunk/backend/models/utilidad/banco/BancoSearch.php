@@ -108,6 +108,22 @@
 		}
 
 
+
+		/**
+		 * Metodo que rezliza la consulta segun una condicion especifica y determina
+		 * si existe el registro.
+		 * @param array $arregloCondicion arreglo que especifica el atributo y el valor
+		 * del mismo, este arreglo se utilizara en el where condition de la consulta.
+		 * Esquema del arreglo:
+		 * 	[
+		 *  	atributo => valor del atributo,
+		 *  ]
+		 * @return boolean
+		 */
+		public function existeBanco($arregloCondicion)
+		{
+			return Banco::find()->where($arregloCondicion)->exists();
+		}
 	}
 
 ?>
