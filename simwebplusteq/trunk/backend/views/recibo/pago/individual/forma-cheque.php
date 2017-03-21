@@ -66,6 +66,7 @@
 	]);
  ?>
 
+	<?=$form->field($model, 'linea')->hiddenInput(['value' => $model->linea])->label(false)?>
 	<?=$form->field($model, 'recibo')->hiddenInput(['value' => $model->recibo])->label(false)?>
 	<?=$form->field($model, 'id_forma')->hiddenInput(['value' => $model->id_forma])->label(false)?>
 	<?=$form->field($model, 'deposito')->hiddenInput(['value' => $model->deposito])->label(false)?>

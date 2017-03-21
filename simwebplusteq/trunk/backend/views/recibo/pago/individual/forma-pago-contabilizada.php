@@ -219,22 +219,23 @@
 </div>
 <!-- FIN DE FORMA DE PAGO REGISTRADAS -->
 <div class="row" style="padding: 0px;width: 100%;">
-	<div class="col-sm-2" style="width: 25%;padding: 0px;padding-left: 15px;padding-top: 25px;float: right;">
-		<div class="monto" style="margin-left: 0px;">
-			<?= Html::textInput('montoAgregado',
-							     Yii::$app->formatter->asDecimal($montoAgregado, 2),
-							     [
-							     	'id' => 'id-monto-agregado',
-							     	'class' => 'form-control',
-									'style' => 'width:100%;
-									background-color:white;
-									font-weight:bold;
-									text-align:right;
-									font-size:140%;',
-									'readOnly' => true,
-							     ])
-			?>
-		</div>
+	<div class="col-sm-2" style="width: 15%;padding: 0px;margin: 0px;padding-top: 10px;margin-left: 560px;">
+		<?=Html::label(Yii::t('backend', 'Total Registrado'), 'total-ingresado-label',['style' => 'font-size:120%;'])?>
+	</div>
+	<div class="col-sm-2" style="width: 25%;padding: 0px;padding-left: 15px;float: right;">
+		<?= Html::textInput('montoAgregado',
+						     Yii::$app->formatter->asDecimal($montoAgregado, 2),
+						     [
+						     	'id' => 'id-monto-agregado',
+						     	'class' => 'form-control',
+								'style' => 'width:100%;
+								background-color:white;
+								font-weight:bold;
+								text-align:right;
+								font-size:140%;',
+								'readOnly' => true,
+						     ])
+		?>
 	</div>
 </div>
 <?php ActiveForm::end(); ?>

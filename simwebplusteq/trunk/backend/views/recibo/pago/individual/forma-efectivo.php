@@ -66,6 +66,7 @@
 	]);
  ?>
 
+	<?=$form->field($model, 'linea')->hiddenInput(['value' => $model->linea])->label(false)?>
 	<?=$form->field($model, 'recibo')->hiddenInput(['value' => $model->recibo])->label(false)?>
 	<?=$form->field($model, 'id_forma')->hiddenInput(['value' => $model->id_forma])->label(false)?>
 	<?=$form->field($model, 'deposito')->hiddenInput(['value' => $model->deposito])->label(false)?>
@@ -159,6 +160,15 @@
 											  ])
 			?>
 		</div>
+	</div>
+
+	<div class="col-sm-2">
+		<?php if ( count($operacion) > 0 ) {
+			foreach ( $operacion as $key => $value ) {
+				echo Html::tag('li', $value, ['style' => 'color:red;']);
+			}
+
+		}?>
 	</div>
 </div>
 <?php ActiveForm::end(); ?>

@@ -68,6 +68,9 @@
 	]);
  ?>
 
+	<!-- <?//=Html::hiddenInput('operacion', $operacion, ['id' => 'id-operacion'])?> -->
+
+
 	<meta http-equiv="refresh">
     <div class="panel panel-primary"  style="width: 100%;">
         <div class="panel-heading">
@@ -102,6 +105,15 @@
 						</div>
 <!-- FINAL DE FORMA DE PAGO CONYTABILIZADA -->
 
+
+<!-- FORMA PARA REGISTRAR LA PRE-REFERENCIAS -->
+						<div class="row" style="padding: 0px;padding-left: 5px;width: 100%;">
+							<?php if ( $htmlFormaPagoContabilizada !== null ) { ?>
+								<div class="forma-pre-referencia"></div>
+							<?php } ?>
+						</div>
+
+<!-- FINAL DE FORMA PARA REGISTRAR LA PRE-REFERENCIAS -->
 
 <!-- INICIO DEL FORMULARIO MODAL -->
 						<style type="text/css">
