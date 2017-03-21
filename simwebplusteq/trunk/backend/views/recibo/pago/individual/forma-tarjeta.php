@@ -109,7 +109,7 @@
 
 	<div class="col-sm-2" style="width:55%;padding: 0px;">
 		<div class="banco">
-    		<?= $form->field($model, 'codigo_cuenta')->dropDownList($listaBanco,[
+    		<?= $form->field($modelV, 'codigo_cuenta')->dropDownList($listaBanco,[
 												 			'id' => 'id-codigo-cuenta',
 												 			'style' => 'width: 100%;',
                                  				 			'prompt' => Yii::t('backend', 'Select..'),
@@ -230,6 +230,15 @@
 											  ])
 			?>
 		</div>
+	</div>
+
+	<div class="col-sm-2">
+		<?php if ( count($operacion) > 0 ) {
+			foreach ( $operacion as $key => $value ) {
+				echo Html::tag('li', $value, ['style' => 'color:red;']);
+			}
+
+		}?>
 	</div>
 </div>
 <?php ActiveForm::end(); ?>

@@ -191,3 +191,19 @@
 	</div>
 <?php ActiveForm::end(); ?>
 
+
+<?php
+$this->registerJs(
+    '$(document).on("click", "#link-add-detail", (function() {
+        $.get(
+            $(this).data("url"),
+            function (data) {
+                //$(".modal-body").html(data);
+                $("#modalContent").html(data);
+                $("#modal").modal();
+            }
+        );
+    }));
+
+    '
+); ?>

@@ -113,11 +113,27 @@
 
             [
                 'contentOptions' => [
-                      'style' => 'font-size: 90%;',
+                      'style' => 'font-size: 100%;font-weight:bold;',
                 ],
                 'label' => Yii::t('frontend', 'Deposito'),
+                'format' => 'raw',
                 'value' => function($data) {
-                           		return $data['deposito'];
+                				if ( $data['id_forma'] == 2 ) {
+                					return Html::a($data['deposito'], '#',
+                									[
+                				 			   			'id' => 'link-add-detail',
+                				 			   			'data-toggle' => 'modal',
+                				 			   			'data-target' => '#modal',
+                				 			   			'data-url' => Url::to(['view-agregar-detalle-deposito',
+                				 			   				     				'linea' => $data['linea'],
+                				 			   			    	 				'recibo' => $data['recibo'],
+                				 			   			    	 				 'deposito' => $data['deposito']]),
+                				 			   			'data-pjax' => 0,
+                				 			   			//'class' => 'btn btn-default',
+                				 			   		]);
+                				} else {
+                           			return $data['deposito'];
+                				}
     			           },
             ],
 
