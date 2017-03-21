@@ -511,6 +511,8 @@
             }
 
 
+
+
             /**
              * Metodo que genera el modelo principal de consulta de la entidad
              * "depositos-detalle"
@@ -520,6 +522,9 @@
             {
                   return $findModel = DepositoDetalleUsuario::find()->alias('A');
             }
+
+
+
 
 
             /**
@@ -602,6 +607,23 @@
             }
 
 
+
+
+            /**
+             * Metodo que realiza la consulta sobre la temporal por medio del identificador
+             * de la entidad.
+             * @param string $linea identificador de la entidad temporal.
+             * @return array.
+             */
+            public function findEspecificoDepositoDetalleUsuarioTemp($linea)
+            {
+                  $findModel = self::findDepositoDetalleUsuarioModel();
+                  $model = $findModel->andWhere('linea =:linea',
+                                                      [':linea' => $linea])
+                                     ->joinWith('formaPago F', true, 'INNER JOIN');
+
+                  return $results = $model->one();
+            }
 
 
 
