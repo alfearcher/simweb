@@ -333,13 +333,17 @@
         		// Recibo no valido
 
         	}
-        	//$this->redirect(['registrar-formas-pago']);
+        	$this->redirect(['registrar-formas-pago']);
 
         }
 
 
 
-        /***/
+        /**
+         * Metodo que suprime un registro de la forma de pago. Redirecciona
+         * a el formulario principal mostrando las formas de pago registradas.
+         * @return view
+         */
         public function actionSuprimirFormaPago()
         {
         	if ( isset($_SESSION['recibo']) ) {
@@ -384,7 +388,10 @@
 
 
 
-        /***/
+        /**
+         * Metodo que suprime un registro de los detalles del vauche.
+         * @return boolean.
+         */
         public function actionSuprimirDetalleVauche()
         {
         	if ( isset($_SESSION['recibo']) ) {
@@ -500,6 +507,8 @@
 							];
 
 							$model->fecha = date('Y-m-d', strtotime($model->fecha));
+							$model->monto = str_replace(',','.', $model->monto);
+
 							$result = self::actionBeginActualizarFormaPagoTemp($model, $arregloCondicion, $model->attributes);
 							if ( $result ) {
 								return self::actionArmarFormulario(0, $model, []);
@@ -548,7 +557,7 @@
 
 		      	$captionRecibo = Yii::t('backend', 'Recibo Nro') . '. ' . $recibo;
 		      	$caption = Yii::t('backend', 'Registrar Formas de Pago');
-
+		      	$rutaAyuda = Url::to(['ruta-ayuda']);
 		      	return $this->render('/recibo/pago/individual/_registrar-formas-pago', [
 		      								'caption' => $caption,
 		      								'captionRecibo' => $captionRecibo,
@@ -556,6 +565,7 @@
 		      								'htmlResumenReciboFormaPago' => $htmlResumenReciboFormaPago,
 		      								'htmlFormaPagoContabilizada' => $htmlFormaPagoContabilizada,
 		      								'operacion' => $operacion,
+		      								'rutaAyuda' => $rutaAyuda,
 		      			]);
         	}
         }
@@ -566,38 +576,38 @@
 
 
         /***/
-        public function actionViewResumenRecibo5555()
-        {
-        	$recibo = $_SESSION['recibo'];
-        	$usuario = Yii::$app->identidad->getUsuario();
-        	$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
-        	$htmlFormaPago = null;
-        	$dataProvider = $pagoReciboSearch->getDataProviderRegistroTemp($usuario);
+   //      public function actionViewResumenRecibo5555()
+   //      {
+   //      	$recibo = $_SESSION['recibo'];
+   //      	$usuario = Yii::$app->identidad->getUsuario();
+   //      	$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
+   //      	$htmlFormaPago = null;
+   //      	$dataProvider = $pagoReciboSearch->getDataProviderRegistroTemp($usuario);
 
-        	$datosRecibo = $pagoReciboSearch->getDeposito();
+   //      	$datosRecibo = $pagoReciboSearch->getDeposito();
 
-			$_SESSION['datosRecibo'] = $datosRecibo;
-	      	$formasPago = FormaPago::find()->all();
-	      	$listaForma = ArrayHelper::map($formasPago, 'id_forma', 'descripcion');
+			// $_SESSION['datosRecibo'] = $datosRecibo;
+	  //     	$formasPago = FormaPago::find()->all();
+	  //     	$listaForma = ArrayHelper::map($formasPago, 'id_forma', 'descripcion');
 
-	      	$montoAgregado = $pagoReciboSearch->getTotalFormaPagoAgregado($usuario);
+	  //     	$montoAgregado = $pagoReciboSearch->getTotalFormaPagoAgregado($usuario);
 
-	      	$montoSobrante = $datosRecibo[0]['monto'] - $montoAgregado;
-	      	$captionRecibo = Yii::t('backend', 'Recibo Nro') . '. ' . $recibo;
-	      	$caption = Yii::t('backend', 'Registrar Formas de Pago');
-	      	return $this->render('/recibo/pago/individual/_registrar-formas-pago', [
-	      								// 'model' => $depositoModel,
-	      								'caption' => $caption,
-	      								'captionRecibo' => $captionRecibo,
-	      								'datosRecibo' => $datosRecibo,
-	      								'listaForma' => $listaForma,
-	      								'htmlFormaPago' => $htmlFormaPago,
-	      								'montoSobrante' => $montoSobrante,
-	      								'montoAgregado' => $montoAgregado,
-	      								'dataProvider' => $dataProvider,
-	      			]);
+	  //     	$montoSobrante = $datosRecibo[0]['monto'] - $montoAgregado;
+	  //     	$captionRecibo = Yii::t('backend', 'Recibo Nro') . '. ' . $recibo;
+	  //     	$caption = Yii::t('backend', 'Registrar Formas de Pago');
+	  //     	return $this->render('/recibo/pago/individual/_registrar-formas-pago', [
+	  //     								// 'model' => $depositoModel,
+	  //     								'caption' => $caption,
+	  //     								'captionRecibo' => $captionRecibo,
+	  //     								'datosRecibo' => $datosRecibo,
+	  //     								'listaForma' => $listaForma,
+	  //     								'htmlFormaPago' => $htmlFormaPago,
+	  //     								'montoSobrante' => $montoSobrante,
+	  //     								'montoAgregado' => $montoAgregado,
+	  //     								'dataProvider' => $dataProvider,
+	  //     			]);
 
-        }
+   //      }
 
 
 
@@ -848,7 +858,8 @@
         		$registers = $pagoReciboSearch->findFormaPago((int)$postEnviado[$formName]['id_forma'], $usuario);
 
         		if ( count($registers) > 0 ) {
-        			$monto = $postEnviado[$formName]['monto'] + $registers[0]['monto'];
+        			$montoEnviado = str_replace(',', '.', $postEnviado[$formName]['monto']);
+        			$monto = $montoEnviado + $registers[0]['monto'];
         			$linea = $registers[0]['linea'];
 
         			$model->load($postEnviado);
@@ -948,6 +959,8 @@
  			    $model->cuenta_deposito = '';
 
  			}
+
+ 			$model->monto = str_replace(',','.', $model->monto);
 
  			$result = self::actionBeginSaveFormaPagoTemp($model);
  			if ( $result ) {
@@ -1083,20 +1096,46 @@
          */
         public function actionInicializarTemporal($recibo = 0)
         {
-        	$result = false;
+        	$procesoExitoso = false;
+        	$result = [];
+        	$modelDepositoDetalle = New DepositoDetalleUsuarioForm();
+        	$modelVauche = New VaucheDetalleUsuarioForm();
+
+        	self::setConexion();
+        	$this->_conn->open();
+        	$this->_transaccion = $this->_conn->beginTransaction();
+
         	$arregloCondicion = [
     			'usuario' => Yii::$app->identidad->getUsuario(),
     		];
-        	$result = self::actionSuprimirRegistroTemporal($arregloCondicion);
+
+    		$result[] = self::actionSuprimirDetalleTemporal($modelVauche, $arregloCondicion);
+        	$result[] = self::actionSuprimirDetalleTemporal($modelDepositoDetalle, $arregloCondicion);
 
         	if ( $recibo > 0 ) {
         		$arregloCondicion = [
         			'recibo' => $recibo,
         		];
-        		$result = self::actionSuprimirRegistroTemporal($arregloCondicion);
+        		$result[] = self::actionSuprimirDetalleTemporal($modelVauche, $arregloCondicion);
+        		$result[] = self::actionSuprimirDetalleTemporal($modelDepositoDetalle, $arregloCondicion);
         	}
 
-        	return $result;
+        	$cancel = false;
+        	foreach ( $result as $key => $value ) {
+        		if ( $value === false ) {
+        			$cancel = true;
+        		}
+        	}
+
+        	if ( !$cancel ) {
+        		$this->_transaccion->commit();
+        		$procesoExitoso = true;
+        	} else {
+        		$this->_transaccion->rollBack();
+        	}
+        	$this->_conn->close();
+
+        	return $procesoExitoso;
         }
 
 
@@ -1121,7 +1160,13 @@
 
 
 
-        /***/
+        /**
+         * Metodo que renderiza una vista para cargar los detalles del vauche. Estos
+         * detalle son los datos por concepto de efectivo y por cheques que posea el
+         * vauche del deposito. Además el metodo inserta los registros por cada cheque.
+         * Se intenta que si existe efectivo se sume al monto existente.
+         * @return view
+         */
         public function actionViewAgregarDetalleDeposito()
         {
 			$recibo = isset($_SESSION['recibo']) ? (int)$_SESSION['recibo'] : 0;
@@ -1201,7 +1246,7 @@
         {
         	$result = false;
         	$tabla = $model->tableName();
-
+        	$model->monto = str_replace(',', '.', $model->monto);
         	return $result = $this->_conexion->guardarRegistro($this->_conn, $tabla, $model->attributes);
 
         }
@@ -1222,6 +1267,7 @@
         	$monto = 0;
         	$recibo = isset($model->recibo) ? $model->recibo : 0;
 			$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
+			$model->monto = str_replace(',', '.', $model->monto);
 
 			$monto = $pagoReciboSearch->contabilizarVaucheDetalleDepositoUsuario($model->usuario, $model->deposito);
 			if ( $monto >= 0 ) {
