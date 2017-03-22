@@ -162,7 +162,7 @@
 
 
 <div class="row" style="width:100%;border-bottom: 0.5px solid  #ccc;padding:0px;padding-left:5px;margin-bottom: 15px;">
-	<h4><strong><?=Yii::t('backend', 'Detalle(s) del deposito')?></strong></h4>
+	<h4><strong><?=Yii::t('backend', 'Detalle(s) del deposito') . $model->deposito; ?></strong></h4>
 </div>
 
 <!-- FORMA DE PAGO REGISTRADAS -->
