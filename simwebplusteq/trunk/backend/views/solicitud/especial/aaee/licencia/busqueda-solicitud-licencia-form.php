@@ -193,33 +193,33 @@
 
 
 				<div class="row" style="padding-top: 15px;">
-					<!-- <div class="col-sm-2" style="width: 22%;padding: 0px;padding-left: 25px;">
+					<div class="col-sm-2" style="width: 22%;padding: 0px;padding-left: 25px;">
 						<div class="row">
-							<p><strong><?//= $model->getAttributeLabel('id_contribuyente') ?></strong></p>
+							<p><strong><?= $model->getAttributeLabel('id_contribuyente') ?></strong></p>
 						</div>
 					</div>
 					<div class="col-sm-2" style="width: 25%;">
 						<div class="row" class="id-contribuyente">
-							<?//= $form->field($model, 'id_contribuyente')->textInput([
-																			// 'id' => 'id-contribuyente',
-																			// 'style' => 'width: 100%;'
-																		//])->label(false) ?>
+							<?= $form->field($model, 'id_contribuyente')->textInput([
+																			'id' => 'id-contribuyente',
+																			'style' => 'width: 100%;'
+																		])->label(false) ?>
 						</div>
 					</div>
 
 					<div class="col-sm-3" style="float: right;width: 40%;">
 						<div class="form-group">
-							<?//= Html::submitButton(Yii::t('backend', 'Search Request'),
-																	 //  [
-																		// 'id' => 'btn-search-contribuyente',
-																		// 'class' => 'btn btn-warning',
-																		// 'value' => 5,
-																		// 'name' => 'btn-search-contribuyente',
-																		// 'style' => 'width: 100%;',
-																	 //  ])
+							<?= Html::submitButton(Yii::t('backend', 'Search Request'),
+																	[
+																		'id' => 'btn-search-contribuyente',
+																		'class' => 'btn btn-warning',
+																		'value' => 5,
+																		'name' => 'btn-search-contribuyente',
+																		'style' => 'width: 100%;',
+																	 ])
 							?>
 						</div>
-					</div> -->
+					</div>
 
 				</div>
 
