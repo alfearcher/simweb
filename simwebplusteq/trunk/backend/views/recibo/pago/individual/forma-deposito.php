@@ -180,15 +180,15 @@
 		'columns' => [
 			['class' => 'yii\grid\SerialColumn'],
 
-			[
-                'contentOptions' => [
-                      'style' => 'font-size: 90%;',
-                ],
-                'label' => Yii::t('frontend', 'Deposito'),
-                'value' => function($data) {
-                           		return $data['deposito'];
-    			           },
-            ],
+			// [
+   //              'contentOptions' => [
+   //                    'style' => 'font-size: 90%;',
+   //              ],
+   //              'label' => Yii::t('frontend', 'Deposito'),
+   //              'value' => function($data) {
+   //                         		return $data['deposito'];
+   //  			           },
+   //          ],
 
 			[
                 'contentOptions' => [

@@ -109,7 +109,7 @@
 
 	<div class="col-sm-2" style="width:55%;padding: 0px;">
 		<div class="banco">
-    		<?= $form->field($modelV, 'codigo_cuenta')->dropDownList($listaBanco,[
+    		<?= $form->field($model, 'codigo_cuenta')->dropDownList($listaBanco,[
 												 			'id' => 'id-codigo-cuenta',
 												 			'style' => 'width: 100%;',
                                  				 			'prompt' => Yii::t('backend', 'Select..'),

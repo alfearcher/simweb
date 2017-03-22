@@ -139,8 +139,8 @@
 
 <!-- FINAL DEL FORMULARIO MODAL -->
 
-						<div class="row" style="width: 100%;">
-							<div class="col-sm-2" style="margin-left: 50px;">
+						<div class="row" style="width: 100%;margin-top: 50px;">
+							<div class="col-sm-2" style="margin-left: 10px;width: 20%;">
 								<div class="form-group">
 									<?= Html::submitButton(Yii::t('backend', 'Back'),
 																	  [
@@ -154,7 +154,7 @@
 								</div>
 							</div>
 
-							<div class="col-sm-2" style="margin-left: 50px;">
+							<div class="col-sm-2" style="margin-left: 40px;width: 20%;">
 								<div class="form-group">
 									<?= Html::submitButton(Yii::t('backend', 'Quit'),
 																	  [
@@ -167,22 +167,23 @@
 									?>
 								</div>
 							</div>
+
+							<div class="col-sm-2" style="margin-left: 40px;width: 20%;">
+								 <div class="form-group">
+								 <!-- '../../common/docs/user/ayuda.pdf'  funciona -->
+									<?= Html::a(Yii::t('backend', 'Ayuda'), $rutaAyuda,  [
+															'id' => 'btn-help',
+															'class' => 'btn btn-default',
+															'name' => 'btn-help',
+															'target' => '_blank',
+															'value' => 1,
+															'style' => 'width: 100%;'
+														])?>
+
+								</div>
+							</div>
 						</div>
 
-						<!-- <div class="col-sm-2" style="margin-left: 50px;">
-							 <div class="form-group">
-							 '../../common/docs/user/ayuda.pdf'  funciona
-								<?//= Html::a(Yii::t('backend', 'Ayuda'), $rutaAyuda,  [
-													// 	'id' => 'btn-help',
-													// 	'class' => 'btn btn-default',
-													// 	'name' => 'btn-help',
-													// 	'target' => '_blank',
-													// 	'value' => 1,
-													// 	'style' => 'width: 100%;'
-													// ])?>
-
-							</div>
-						</div> -->
 <!-- Fin de Boton para salir de la actualizacion -->
 					</div>
 				</div>
