@@ -66,7 +66,7 @@
 		public $usuario;
 		public $codigo_cuenta;
 		public $id_forma;
-
+		public $deposito;
 
 
 		/**
@@ -86,7 +86,7 @@
 	    public function rules()
 	    {
 	        return [
-	        	[['recibo', 'id_forma',
+	        	[['recibo',
 	        	  'monto', 'cheque',
 	        	  'cuenta', 'tipo',
 	        	  'codigo_cuenta', 'usuario',],
@@ -96,7 +96,7 @@
 	        	  							}
 	        	  						},
 	        	  'message' => Yii::t('backend','{attribute} is required')],
-	        	[['recibo', 'id_forma',
+	        	[['recibo',
 	        	  'monto', 'tipo',
 	        	  'usuario',],
 	        	  'required', 'when' => function($model) {
@@ -123,6 +123,8 @@
 	        	['codigo_cuenta',
 	        	 'validateCodigoCuenta',
 	        	 'message' => Yii::t('backend', 'El banco no es valido')],
+	        	[['deposito', 'linea'], 'safe'],
+	        	['estatus', 'default', 'value' => 0],
 	        ];
 	    }
 
@@ -191,7 +193,7 @@
 	     */
 	    public function validateChequeVauche()
 	    {
-	    	if ( $this->id_forma == 2 ) {
+	    	if ( $this->tipo == 2 ) {
 	    		$depositoUsuario = VaucheDetalleUsuario::find()->alias('U')
 	    		                                                 ->where('cuenta =:cuenta',
 	    																['cuenta' => $this->cuenta])
@@ -211,10 +213,10 @@
 	    /***/
 	    public function validateChequeFormaPago()
 	    {
-	    	if ( $this->id_forma == 2 ) {
+	    	if ( $this->tipo == 2 ) {
 	    		$depositoUsuario = DepositoDetalleUsuario::find()->alias('U')
 	    														 ->where('id_forma =:id_forma',
-	    														 		['id_forma' => $this->id_forma])
+	    														 		['id_forma' => 1])
 	    		                                                 ->andWhere('cuenta =:cuenta',
 	    																['cuenta' => $this->cuenta])
 	    														 ->andWhere('cheque =:cheque',

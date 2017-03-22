@@ -127,6 +127,7 @@
         				'deposito',
         				'fecha',
         				'usuario',
+        				'monto',
         		],
         	];
     	}
