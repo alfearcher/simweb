@@ -45,6 +45,7 @@
  	use Yii;
 	use yii\base\Model;
 	use backend\models\recibo\tipodeposito\TipoDeposito;
+	use yii\helpers\ArrayHelper;
 
 
 	/**
