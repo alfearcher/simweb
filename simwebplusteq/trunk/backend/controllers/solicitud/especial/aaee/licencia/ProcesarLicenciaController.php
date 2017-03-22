@@ -232,7 +232,7 @@
 			      	} elseif ( isset($postData['btn-search-contribuyente']) ) {
 			      		if ( $postData['btn-search-contribuyente'] == 5 ) {
 
-			      			if ( $model->load(['id_contribuyente']) ) {
+			      			if ( $model->load($postData) ) {
 			      				if ( $model->validate(['id_contribuyente']) ) {
 
 			      					$_SESSION['postEnviado'] = $postData;
