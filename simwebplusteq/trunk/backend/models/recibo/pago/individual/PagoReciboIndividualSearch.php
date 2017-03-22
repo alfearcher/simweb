@@ -530,7 +530,7 @@
                                     'linea' => $result['linea'],
                                     'recibo' => $result['recibo'],
                                     'tipo' => $result['tipo'],
-                                    //'deposito' => $result['deposito'],
+                                    'deposito' => $result['deposito'],
                                     //'fecha' => $result['fecha'],
                                     'cuenta' => $result['cuenta'],
                                     'cheque' => $result['cheque'],
@@ -545,7 +545,7 @@
                   }
 
                   $provider = New ArrayDataProvider([
-                        'key' => 'linea',
+                        'key' => 'id_vauche',
                         'allModels' => $data,
                         'pagination' => false,
                   ]);
@@ -698,6 +698,19 @@
 
 
 
+
+            /***/
+            public function findEspecificoDetalleVauche($idVauche)
+            {
+                  $findModel = self::findVaucheDetalleUsuarioModel();
+                  $model = $findModel->andWhere('id_vauche =:id_vauche',
+                                                      ['id_vauche' => $idVauche]);
+                  return $model->one();
+            }
+
+
+
+
             /**
              * Metodo que realiza la consulta y devuelve los registros guardados
              * temporalmente. Estods registros indican la forma de pago conque
@@ -793,6 +806,35 @@
             {
                   $tarjetaSearch = New TipoTarjetaSearch();
                   return $descripcion = $tarjetaSearch->getDescripcionTarjeta($tipo);
+            }
+
+
+
+
+            /**
+             * Metodo que contaviliza el total de los montos registrados para un vaucher.
+             * Segun el recibo, usuario y deposito.
+             * @param string $usuario usuario que esta realizando la carga de los registros
+             * del vaucher.
+             * @param integer $deposito numero del vaucher.
+             * @return double retorna el monto contabilizado que posee el vaucher.
+             */
+            public function contabilizarVaucheDetalleDepositoUsuario($usuario, $deposito)
+            {
+                  $suma = 0;
+                  $findModel = self::findVaucheDetalleUsuarioModel();
+                  $model = $findModel->andWhere('usuario =:usuario',
+                                                      [':usuario' => $usuario])
+                                     ->andWhere('deposito =:deposito',
+                                                      [':deposito' => $deposito])
+                                     ->all();
+
+                  if ( count($model) ) {
+                        foreach ( $model as $r ) {
+                              $suma = $suma + $r->monto;
+                        }
+                  }
+                  return $suma;
             }
 	}
 
