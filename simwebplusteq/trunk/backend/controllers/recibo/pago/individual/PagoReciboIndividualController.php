@@ -573,44 +573,6 @@
 
 
 
-
-
-        /***/
-   //      public function actionViewResumenRecibo5555()
-   //      {
-   //      	$recibo = $_SESSION['recibo'];
-   //      	$usuario = Yii::$app->identidad->getUsuario();
-   //      	$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
-   //      	$htmlFormaPago = null;
-   //      	$dataProvider = $pagoReciboSearch->getDataProviderRegistroTemp($usuario);
-
-   //      	$datosRecibo = $pagoReciboSearch->getDeposito();
-
-			// $_SESSION['datosRecibo'] = $datosRecibo;
-	  //     	$formasPago = FormaPago::find()->all();
-	  //     	$listaForma = ArrayHelper::map($formasPago, 'id_forma', 'descripcion');
-
-	  //     	$montoAgregado = $pagoReciboSearch->getTotalFormaPagoAgregado($usuario);
-
-	  //     	$montoSobrante = $datosRecibo[0]['monto'] - $montoAgregado;
-	  //     	$captionRecibo = Yii::t('backend', 'Recibo Nro') . '. ' . $recibo;
-	  //     	$caption = Yii::t('backend', 'Registrar Formas de Pago');
-	  //     	return $this->render('/recibo/pago/individual/_registrar-formas-pago', [
-	  //     								// 'model' => $depositoModel,
-	  //     								'caption' => $caption,
-	  //     								'captionRecibo' => $captionRecibo,
-	  //     								'datosRecibo' => $datosRecibo,
-	  //     								'listaForma' => $listaForma,
-	  //     								'htmlFormaPago' => $htmlFormaPago,
-	  //     								'montoSobrante' => $montoSobrante,
-	  //     								'montoAgregado' => $montoAgregado,
-	  //     								'dataProvider' => $dataProvider,
-	  //     			]);
-
-   //      }
-
-
-
         /***/
         public function actionViewResumenReciboFormaPago()
         {
