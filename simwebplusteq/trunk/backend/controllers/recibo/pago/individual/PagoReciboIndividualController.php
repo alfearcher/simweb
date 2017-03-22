@@ -948,6 +948,7 @@
         private function actionBeginSaveFormaPagoTemp($model)
         {
         	$d = $model->attributes;
+die(var_dump($d));
         	$tabla = $model->tableName();
 
         	return $result = $this->_conexion->guardarRegistro($this->_conn, $tabla, $model->attributes);
