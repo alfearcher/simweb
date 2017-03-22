@@ -302,7 +302,7 @@
 					if ( $model->validate() ) {
 						// Se guarda
 						if ( (int)$forma !== 3 ) {
-// die(var_dump($postData));
+
 							$result = self::actionAgregarFormaPago($postData);
 							if ( $result ) {
 								return self::actionArmarFormulario(0, $model, ['insert']);
@@ -323,32 +323,17 @@
 						}
 
 					} else {
-						//$htmlFormaPago = self::actionShowViewFormaPago($forma, $model, $postData);
 						return self::actionArmarFormulario($forma, $model, [], $postData);
 					}
 
         		} else {
-        			// $htmlFormaPago = self::actionShowViewFormaPago($forma, $model);
         			return self::actionArmarFormulario($forma, $model, []);
         		}
-
-		      	// $htmlResumenReciboFormaPago = self::actionViewResumenReciboFormaPago();
-		      	// $htmlFormaPagoContabilizada = self::actionShowViewFormaPagoContabilizada();
-
-		      	// $captionRecibo = Yii::t('backend', 'Recibo Nro') . '. ' . $recibo;
-		      	// $caption = Yii::t('backend', 'Registrar Formas de Pago');
-
-		      	// return $this->render('/recibo/pago/individual/_registrar-formas-pago', [
-		      	// 							'caption' => $caption,
-		      	// 							'captionRecibo' => $captionRecibo,
-		      	// 							'htmlFormaPago' => $htmlFormaPago,
-		      	// 							'htmlResumenReciboFormaPago' => $htmlResumenReciboFormaPago,
-		      	// 							'htmlFormaPagoContabilizada' => $htmlFormaPagoContabilizada,
-		      	// 		]);
-
         	} else {
+        		// Recibo no valido
 
         	}
+        	//$this->redirect(['registrar-formas-pago']);
 
         }
 
@@ -365,18 +350,86 @@
 		      	if ( $request->isGet ) {
 
         			$postGet = $request->get();
-
         			$arregloCondicion = [
         				'linea' => $postGet['l'],
         			];
 
-        			$result = false;
-		      		$result = self::actionSuprimir($arregloCondicion);
+        			self::setConexion();
+        			$this->_transaccion = $this->_conn->beginTransaction();
+        			$this->_conn->open();
+
+        			$modelDepositoDetalle = New DepositoDetalleUsuarioForm();
+	        		$result = self::actionSuprimirDetalleTemporal($modelDepositoDetalle, $arregloCondicion);
+        			if ( $postGet['forma'] == 2 ) {
+	        			if ( $result ) {
+	        				$modelVauche = New VaucheDetalleUsuarioForm();
+	        				$result = self::actionSuprimirDetalleTemporal($modelVauche, $arregloCondicion);
+	        			}
+	        		}
+        			if ( $result ) {
+        				$this->_transaccion->commit();
+        			} else {
+        				$this->_transaccion->rollBack();
+        			}
+					$this->_conn->close();
+
+		      		//$result = self::actionSuprimir($arregloCondicion);
         		}
 
 		      	$this->redirect(['registrar-formas-pago']);
 		    }
         }
+
+
+
+
+
+        /***/
+        public function actionSuprimirDetalleVauche()
+        {
+        	if ( isset($_SESSION['recibo']) ) {
+        		$recibo = $_SESSION['recibo'];
+
+		      	$request = Yii::$app->request;
+		      	if ( $request->isGet ) {
+
+		      		$postGet = $request->get();
+		      		if ( (int)$postGet['recibo'] == (int)$recibo ) {
+
+	        			$arregloCondicion = [
+	        				'id_vauche' => $postGet['id'],
+	        			];
+
+	        			self::setConexion();
+	        			$this->_transaccion = $this->_conn->beginTransaction();
+	        			$this->_conn->open();
+
+	        			$pagoReciboSearch = New PagoReciboIndividualSearch($postGet['recibo']);
+	        			$modelVauche = $pagoReciboSearch->findEspecificoDetalleVauche($postGet['id']);
+		        		$result = self::actionSuprimirDetalleTemporal($modelVauche, $arregloCondicion);
+
+	        			if ( $result ) {
+	        				$result = self::actionActualizarMontoDeposito($modelVauche, 'restar');
+	        			}
+
+	        			if ( $result) {
+	        				$this->_transaccion->commit();
+	        			} else {
+	        				$this->_transaccion->rollBack();
+	        			}
+						$this->_conn->close();
+					}
+        		}
+        		$this->redirect(['update', 'l' => (int)$postGet['l']]);
+
+		    }
+        }
+
+
+
+
+
+
 
 
 
@@ -422,21 +475,6 @@
 	        			$model->attributes = $registers->toArray();
 
 	        			return self::actionArmarFormulario($forma, $model, []);
-	        		// 	$htmlFormaPago = self::actionShowViewFormaPago($forma, $model);
-
-	        		// 	$htmlResumenReciboFormaPago = self::actionViewResumenReciboFormaPago();
-				      	// $htmlFormaPagoContabilizada = self::actionShowViewFormaPagoContabilizada();
-
-				      	// $captionRecibo = Yii::t('backend', 'Recibo Nro') . '. ' . $recibo;
-				      	// $caption = Yii::t('backend', 'Registrar Formas de Pago');
-
-				      	// return $this->render('/recibo/pago/individual/_registrar-formas-pago', [
-				      	// 							'caption' => $caption,
-				      	// 							'captionRecibo' => $captionRecibo,
-				      	// 							'htmlFormaPago' => $htmlFormaPago,
-				      	// 							'htmlResumenReciboFormaPago' => $htmlResumenReciboFormaPago,
-				      	// 							'htmlFormaPagoContabilizada' => $htmlFormaPagoContabilizada,
-				      	// 		]);
 
 		      		}
         		} else {
@@ -469,12 +507,10 @@
 								return self::actionArmarFormulario($forma, $model, ['ERROR']);
 							}
 						} else {
-							//$htmlFormaPago = self::actionShowViewFormaPago($forma, $model, $postData);
 							return self::actionArmarFormulario($forma, $model, [], $postData);
 						}
 
 	        		} else {
-	        			// $htmlFormaPago = self::actionShowViewFormaPago($forma, $model);
 	        			return self::actionArmarFormulario($forma, $model, []);
 	        		}
         		}
@@ -657,120 +693,111 @@
 
         	if ( $forma == 1 ) {
 
-	        		//$model->scenario = self::SCENARIO_CHEQUE;
-	        		if ( $postData !== null ) {
-	        			$model->load($postData);
-	        			//$model->validate();
+        		if ( $postData !== null ) {
+        			$model->load($postData);
+        			//$model->validate();
 
-	        		} else {
-		        		$model->recibo = $recibo;
-		        		$model->id_forma = $forma;
-		        		$model->deposito = 0;
-		        		$model->conciliado = 0;
-		        		$model->estatus = 0;
-		        		$model->codigo_banco = 0;
-		        		$model->cuenta_deposito = '';
-		        		$model->usuario = $usuario;
-		        		$model->banco = '';
-		        		$model->fecha = date('Y-m-d');
-		        	}
-	        		return $this->renderPartial('/recibo/pago/individual/forma-cheque', [
-	        										'model' => $model,
-	        										'caption' => 'Cheque',
-	        										'operacion' => $operacion,
-	        		]);
-
-	        	} elseif ( $forma == 2 ) {
-
-	        		if ( $postData !== null ) {
-	        			$model->load($postData);
-	        		} else {
-		        		$model->recibo = $recibo;
-		        		$model->id_forma = $forma;
-		        		$model->cuenta = '';
-		        		$model->cheque = '';
-		        		$model->conciliado = 0;
-		        		$model->estatus = 0;
-		        		$model->codigo_banco = 0;
-		        		$model->cuenta_deposito = '';
-		        		$model->usuario = $usuario;
-						$model->banco = '';
-					}
-
-					// $modelVauche = New VaucheDetalleUsuarioForm();
-
-					// $searchTipoDeposito = New TipoDepositoSearch();
-					// $listaTipoDeposito = $searchTipoDeposito->getListaTipoDeposito();
-
-        			$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
-					$dataProvider = $pagoReciboSearch->getDataProviderRegistroVaucheTemp($usuario, $model->linea);
-
-	        		return $this->renderPartial('/recibo/pago/individual/forma-deposito', [
-	        										'model' => $model,
-	        										'caption' => 'Deposito',
-	        										'operacion' => $operacion,
-	        										'dataProvider' => $dataProvider,
-	        										// 'listaTipoDeposito' => $listaTipoDeposito,
-	        										// 'modelVauche' => $modelVauche,
-	        		]);
-
-	        	} elseif ( $forma == 3 ) {
-
-	        		//$model->scenario = self::SCENARIO_EFECTIVO;
-	        		if ( $postData !== null ) {
-	        			$model->load($postData);
-	        		} else {
-		        		$model->recibo = $recibo;
-		        		$model->id_forma = $forma;
-		        		$model->cuenta = '';
-		        		$model->cheque = '';
-		        		$model->conciliado = 0;
-		        		$model->estatus = 0;
-		        		$model->codigo_banco = 0;
-		        		$model->cuenta_deposito = '';
-		        		$model->usuario = $usuario;
-						$model->banco = '';
-					}
-	        		return $this->renderPartial('/recibo/pago/individual/forma-efectivo', [
-	        										'model' => $model,
-	        										'caption' => 'Efectivo',
-	        										'operacion' => $operacion,
-	        		]);
-
-	        	} elseif ( $forma == 4 ) {
-
-	        		$searchBanco = New BancoSearch();
-	        		$listaBanco = $searchBanco->getListaBanco();
-
-	        		$searchTipoTarjeta = New TipoTarjetaSearch();
-	        		$listaTipoTarjeta = $searchTipoTarjeta->getListaTipoTarjetaDescripcion();
-
-	        		//$model->scenario = self::SCENARIO_TARJETA;
-	        		if ( $postData !== null ) {
-	        			$model->load($postData);
-	        		} else {
-		        		$model->recibo = $recibo;
-		        		$model->id_forma = $forma;
-		        		$model->deposito = '';
-		        		$model->cheque = '';
-		        		$model->conciliado = 0;
-		        		$model->estatus = 0;
-		        		$model->codigo_banco = 0;
-		        		$model->cuenta_deposito = '';
-		        		$model->usuario = $usuario;
-						$model->banco = '';
-						$model->fecha = date('Y-m-d');
-					}
-	        		return $this->renderPartial('/recibo/pago/individual/forma-tarjeta', [
-	        										'model' => $model,
-	        										'caption' => 'Tarjeta',
-	        										'listaBanco' => $listaBanco,
-	        										'listaTipoTarjeta' => $listaTipoTarjeta,
-	        										'operacion' => $operacion,
-	        		]);
-	        	} else {
-	        		return null;
+        		} else {
+	        		$model->recibo = $recibo;
+	        		$model->id_forma = $forma;
+	        		$model->deposito = 0;
+	        		$model->conciliado = 0;
+	        		$model->estatus = 0;
+	        		$model->codigo_banco = 0;
+	        		$model->cuenta_deposito = '';
+	        		$model->usuario = $usuario;
+	        		$model->banco = '';
+	        		$model->fecha = date('Y-m-d');
 	        	}
+        		return $this->renderPartial('/recibo/pago/individual/forma-cheque', [
+        										'model' => $model,
+        										'caption' => 'Cheque',
+        										'operacion' => $operacion,
+        		]);
+
+        	} elseif ( $forma == 2 ) {
+
+        		if ( $postData !== null ) {
+        			$model->load($postData);
+        		} else {
+	        		$model->recibo = $recibo;
+	        		$model->id_forma = $forma;
+	        		$model->cuenta = '';
+	        		$model->cheque = '';
+	        		$model->conciliado = 0;
+	        		$model->estatus = 0;
+	        		$model->codigo_banco = 0;
+	        		$model->cuenta_deposito = '';
+	        		$model->usuario = $usuario;
+					$model->banco = '';
+				}
+
+    			$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
+				$dataProvider = $pagoReciboSearch->getDataProviderRegistroVaucheTemp($usuario, $model->linea);
+
+        		return $this->renderPartial('/recibo/pago/individual/forma-deposito', [
+        										'model' => $model,
+        										'caption' => 'Deposito',
+        										'operacion' => $operacion,
+        										'dataProvider' => $dataProvider,
+
+        		]);
+
+        	} elseif ( $forma == 3 ) {
+
+        		if ( $postData !== null ) {
+        			$model->load($postData);
+        		} else {
+	        		$model->recibo = $recibo;
+	        		$model->id_forma = $forma;
+	        		$model->cuenta = '';
+	        		$model->cheque = '';
+	        		$model->conciliado = 0;
+	        		$model->estatus = 0;
+	        		$model->codigo_banco = 0;
+	        		$model->cuenta_deposito = '';
+	        		$model->usuario = $usuario;
+					$model->banco = '';
+				}
+        		return $this->renderPartial('/recibo/pago/individual/forma-efectivo', [
+        										'model' => $model,
+        										'caption' => 'Efectivo',
+        										'operacion' => $operacion,
+        		]);
+
+        	} elseif ( $forma == 4 ) {
+
+        		$searchBanco = New BancoSearch();
+        		$listaBanco = $searchBanco->getListaBanco();
+
+        		$searchTipoTarjeta = New TipoTarjetaSearch();
+        		$listaTipoTarjeta = $searchTipoTarjeta->getListaTipoTarjetaDescripcion();
+
+        		if ( $postData !== null ) {
+        			$model->load($postData);
+        		} else {
+	        		$model->recibo = $recibo;
+	        		$model->id_forma = $forma;
+	        		$model->deposito = '';
+	        		$model->cheque = '';
+	        		$model->conciliado = 0;
+	        		$model->estatus = 0;
+	        		$model->codigo_banco = 0;
+	        		$model->cuenta_deposito = '';
+	        		$model->usuario = $usuario;
+					$model->banco = '';
+					$model->fecha = date('Y-m-d');
+				}
+        		return $this->renderPartial('/recibo/pago/individual/forma-tarjeta', [
+        										'model' => $model,
+        										'caption' => 'Tarjeta',
+        										'listaBanco' => $listaBanco,
+        										'listaTipoTarjeta' => $listaTipoTarjeta,
+        										'operacion' => $operacion,
+        		]);
+        	} else {
+        		return null;
+        	}
         }
 
 
@@ -939,7 +966,7 @@
 
         /**
          * Metodo que realiza la insercion en la entidad respectiva.
-         * @param DepositioDetalleUsuarioForm $model modelo de la clase.
+         * @param VaucheDetalleUsuarioForm|DepositioDetalleUsuarioForm $model modelo de la clase.
          * @return boolean retorna true si ejecuta la operacion satisfactorimente, false en caso
          * contrario.
          */
@@ -1026,6 +1053,29 @@
 
 
 
+
+
+
+
+        /**
+         * Metodo que suprime regiatros de las entidades temporales.
+         * @param VaucheDetalleUsuarioForm $model instancia de la clase.
+         * @param array $arregloCondicion arreglo del where condition
+         * @return boolean.
+         */
+        private function actionSuprimirDetalleTemporal($model, $arregloCondicion)
+        {
+        	$result = false;
+        	$tabla = $model->tableName();
+
+ 			return $result = $this->_conexion->eliminarRegistro($this->_conn, $tabla, $arregloCondicion);
+        }
+
+
+
+
+
+
         /**
          * Metodo que permite ejecutar la inicializacion de la tabla temporal
          * @param integer $recibo numero de recibo
@@ -1074,32 +1124,131 @@
         /***/
         public function actionViewAgregarDetalleDeposito()
         {
-        	$request = Yii::$app->request;
-die(var_dump($request->get()));
-        	$modelVauche = New VaucheDetalleUsuarioForm();
+			$recibo = isset($_SESSION['recibo']) ? (int)$_SESSION['recibo'] : 0;
 
+			$usuario = Yii::$app->identidad->getUsuario();
 			$searchTipoDeposito = New TipoDepositoSearch();
 			$listaTipoDeposito = $searchTipoDeposito->getListaTipoDeposito();
-        	return $this->renderAjax('/recibo/pago/individual/agregar-detalle-deposito-form', [
-        													'modelVauche' => $modelVauche,
-        													'listaTipoDeposito' => $listaTipoDeposito,
-        													'url' => Url::to(['agregar-detalle-deposito']),
-        		]);
-        }
 
-
-
-
-        /***/
-        public function actionAgregarDetalleDeposito()
-        {
         	$request = Yii::$app->request;
+        	$modelVauche = New VaucheDetalleUsuarioForm();
+        	$formName = $modelVauche->formName();
 
- die(var_dump($request->post()));
+        	if ( $request->isGet ) {
+        		// Viene de seleccionar el numero de deposito para cargar los detalles
+        		// del mismo.
+
+        		if ( (int)$request->get('recibo') === $recibo ) {
+        			$modelVauche->linea = (int)$request->get('linea');
+        			$modelVauche->recibo = (int)$request->get('recibo');
+        			$modelVauche->deposito = (int)$request->get('deposito');
+        			$modelVauche->usuario = $usuario;
+
+		        	return $this->renderAjax('/recibo/pago/individual/agregar-detalle-deposito-form', [
+		        													'modelVauche' => $modelVauche,
+		        													'listaTipoDeposito' => $listaTipoDeposito,
+		        													'url' => Url::to(['view-agregar-detalle-deposito']),
+		        		]);
+		        }
+        	} else {
+
+        		$postData = $request->post();
+
+        		if ( $modelVauche->load($postData)  && Yii::$app->request->isAjax ) {
+					Yii::$app->response->format = Response::FORMAT_JSON;
+					return ActiveForm::validate($modelVauche);
+				}
+
+				if ( $modelVauche->load($postData) ) {
+
+					if ( $modelVauche->validate() ) {
+						// Se guarda el detalle del deposito.
+
+						self::setConexion();
+						$this->_conn->open();
+						$this->_transaccion = $this->_conn->beginTransaction();
+
+						$result = self::actionBeginAgregarDetalleDeposito($modelVauche, $postData);
+						if ( $result ) {
+							// Se actualiza el maestro del vaucher.
+							$result = self::actionActualizarMontoDeposito($modelVauche, 'sumar');
+							if ( $result ) {
+								$this->_transaccion->commit();
+							} else {
+								$this->_transaccion->rollBack();
+							}
+
+						} else {
+							$this->_transaccion->rollBack();
+						}
+						$this->_conn->close();
+					}
+				}
+        	}
+        	$this->redirect(['registrar-formas-pago']);
         }
 
 
 
+
+        /**
+         * Metodo que inicia el proceso para guardar el detalle del vauche
+         * @param VaucheDepositoDetalleUsuarioForm $model instancia de la clase.
+         * @param array $postEnviado post enviado desde el formulario.
+         * @return boolean.
+         */
+        private function actionBeginAgregarDetalleDeposito($model, $postEnviado)
+        {
+        	$result = false;
+        	$tabla = $model->tableName();
+
+        	return $result = $this->_conexion->guardarRegistro($this->_conn, $tabla, $model->attributes);
+
+        }
+
+
+
+
+
+        /**
+         * [actionActualizarMontoDeposito description]
+         * @param VaucheDetalleUsuarioForm $model
+         * @param string $operacion 'sumar' o 'restar'
+         * @return boolean
+         */
+        private function actionActualizarMontoDeposito($model, $operacion)
+        {
+        	$result = false;
+        	$monto = 0;
+        	$recibo = isset($model->recibo) ? $model->recibo : 0;
+			$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
+
+			$monto = $pagoReciboSearch->contabilizarVaucheDetalleDepositoUsuario($model->usuario, $model->deposito);
+			if ( $monto >= 0 ) {
+				$modelUsuario = New DepositoDetalleUsuarioForm();
+				$tabla = $modelUsuario->tableName();
+
+				$arregloCondicion = [
+					'recibo' => $model->recibo,
+					'deposito' => $model->deposito,
+					'usuario' => $model->usuario,
+				];
+
+				if ( $operacion == 'sumar' ) {
+					$arregloDatos = [
+						'monto' => $monto + $model->monto,
+					];
+				} elseif ( $operacion == 'restar' ) {
+					$arregloDatos = [
+						'monto' => $monto - $model->monto,
+					];
+				}
+
+				$result = $this->_conexion->modificarRegistro($this->_conn, $tabla, $arregloDatos, $arregloCondicion);
+			}
+
+			return $result;
+        }
 
 
 
