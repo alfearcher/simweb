@@ -76,8 +76,8 @@
 	use backend\models\documento\DocumentoConsignadoForm;
 	use common\enviaremail\PlantillaEmail;
 // para prueba
-	use common\models\planilla\Pago;
-	use common\models\planilla\PagoDetalle;
+	//use common\models\planilla\Pago;
+	//use common\models\planilla\PagoDetalle;
 
 
 	/**
@@ -557,7 +557,8 @@
 								  'Funcionario: ' . $value['user_funcionario'] . '<br>';
 
 						if ( $value['causaNegacion']['causa'] > 0 ) {
-							$cuerpo = $cuerpo . 'Causa: ' . $value['causaNegacion']['descripcion'] . '<br>';
+							$cuerpo = $cuerpo . 'Causa: ' . $value['causaNegacion']['descripcion'] . '<br>' .
+							          'Observación: ' . $value['observacion'];
 						}
 					}
 					$cuerpoCorreo = $cuerpoEncabezado . $cuerpo;
