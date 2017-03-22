@@ -922,7 +922,6 @@
 
  			}
 
-die(var_dump($model));
  			$model->monto = str_replace(',','.', $model->monto);
 
  			$result = self::actionBeginSaveFormaPagoTemp($model);
