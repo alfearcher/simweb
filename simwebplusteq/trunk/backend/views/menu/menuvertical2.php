@@ -310,10 +310,10 @@
 
 
         		//	PAGOS
-        		// ['label' => Icon::show('fa fa-money',['class' => $typeLong], $typeIcon) . '&nbsp; Pagos y Deudas',
-        		// 	'items' => [
+        		['label' => Icon::show('fa fa-money',['class' => $typeLong], $typeIcon) . '&nbsp; Pagos y Deudas',
+        			'items' => [
         		// 				['label' => 'Recibo', 'url' => '#'],
-        		// 				['label' => 'Caja', 'url' => '#'],
+        		 		['label' => 'Caja', 'url' => ['/recibo/pago/individual/pago-recibo-individual/index']],
         		// 				['label' => 'Elaborar Deposito', 'url' => '#'],
         		// 				['label' => 'Pagos Anteriores', 'url' => '#'],
         		// 				['label' => 'Exoneraciones y Exenciones', 'url' => '#'],
@@ -342,9 +342,9 @@
 
 	        	// 				   	]
 	        	// 				],
-        		// 	]
+        			]
 
-        		// ],
+        		],
 
 
         		//PRESUPUESTOS
