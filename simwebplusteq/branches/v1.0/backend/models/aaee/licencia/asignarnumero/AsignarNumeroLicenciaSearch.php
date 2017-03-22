@@ -436,8 +436,8 @@
 	    private function getListaFuncionarioAutorizado()
 	    {
 	    	return [
-	    		'admin',
-	    		'jperez',
+	    		'adminteq',
+	    		'kperez',
 	    	];
 	    }
 
