@@ -233,7 +233,7 @@
 			      		if ( $postData['btn-search-contribuyente'] == 5 ) {
 
 			      			if ( $model->load(['id_contribuyente']) ) {
-			      				if ( $model->validate() ) {
+			      				if ( $model->validate(['id_contribuyente']) ) {
 
 			      					$_SESSION['postEnviado'] = $postData;
 			      					$dataProvider = $model->armarDataProvider(Yii::$app->request->bodyParams);
@@ -337,7 +337,7 @@
 				$solicitud = SolicitudesContribuyente::findOne($value)->toArray();
 				$_SESSION['idContribuyente'] = $solicitud['id_contribuyente'];
 
-				$result = false; 
+				$result = false;
 
 				$this->_conexion = New ConexionController();
 
@@ -606,7 +606,7 @@
 		 * planilla.
 		 */
 		public function actionViewPlanilla()
-		{ 
+		{
 			$request = Yii::$app->request;
 			$getData = $request->get();
 
