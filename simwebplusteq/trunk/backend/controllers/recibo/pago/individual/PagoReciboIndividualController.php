@@ -879,8 +879,8 @@
  			    $model->deposito = 0;
  			    $model->codigo_banco = 0;
  			    $model->cuenta_deposito = '';
- 			    $model->banco = '';
-
+ 			    $model->banco = 0;
+die(var_dump($model));
  			} elseif ( $postEnviado[$formName]['id_forma'] == 2 ) {
 
  				$model->scenario = self::SCENARIO_DEPOSITO;
