@@ -299,7 +299,6 @@
 				$results = self::getSolicitudLicenciaSeleccionada($params);
 			}
 
-
 			if ( $results !== null && count($results) > 0 ) {
 
 				foreach ( $results as $result ) {
