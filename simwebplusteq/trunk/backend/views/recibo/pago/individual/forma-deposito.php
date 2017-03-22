@@ -77,6 +77,7 @@
 	<?=$form->field($model, 'cuenta_deposito')->hiddenInput(['value' => $model->cuenta_deposito])->label(false)?>
 	<?=$form->field($model, 'usuario')->hiddenInput(['value' => $model->usuario])->label(false)?>
 	<?=$form->field($model, 'banco')->hiddenInput(['value' => $model->banco])->label(false)?>
+	<?=$form->field($model, 'monto')->hiddenInput(['value' => $model->monto])->label(false)?>
 
 <div class="row" style="width:100%;border-bottom: 0.5px solid;padding:0px;padding-left:5px;margin-bottom: 15px;">
 	<h4><strong><?=Yii::t('backend', 'Datos del ' . $caption)?></strong></h4>
@@ -167,7 +168,7 @@
 <!-- FORMA DE PAGO REGISTRADAS -->
 <div class="row" style="width: 100%;margin-top: 5px;">
 	<?= GridView::widget([
-		'id' => 'id-grid-forma-pago-registrada',
+		'id' => 'id-grid-vauche-registrado',
 		'dataProvider' => $dataProvider,
 		'headerRowOptions' => [
 			'class' => 'success',
@@ -183,31 +184,21 @@
                 'contentOptions' => [
                       'style' => 'font-size: 90%;',
                 ],
+                'label' => Yii::t('frontend', 'Deposito'),
+                'value' => function($data) {
+                           		return $data['deposito'];
+    			           },
+            ],
+
+			[
+                'contentOptions' => [
+                      'style' => 'font-size: 90%;',
+                ],
                 'label' => Yii::t('frontend', 'Tipo'),
                 'value' => function($data) {
                            		return $data['forma'];
     			           },
             ],
-
-            // [
-            //     'contentOptions' => [
-            //           'style' => 'font-size: 90%;',
-            //     ],
-            //     'label' => Yii::t('frontend', 'Deposito'),
-            //     'value' => function($data) {
-            //                		return $data['deposito'];
-    			     //       },
-            // ],
-
-            // [
-            //     'contentOptions' => [
-            //           'style' => 'font-size: 90%;',
-            //     ],
-            //     'label' => Yii::t('frontend', 'Fecha'),
-            //     'value' => function($data) {
-            //                		return date('d-m-Y', strtotime($data['fecha']));
-    			     //       },
-            // ],
 
             [
                 'contentOptions' => [
@@ -256,7 +247,7 @@
             	'buttons' => [
             		'delete' => function($url, $data, $key) {
             			return Html::a('<center><span class="fa fa-times fa-lg"></center></span>',
-            							['suprimir-cheque-deposito-pago', 'l' => $key],
+            							['suprimir-detalle-vauche', 'id' => $key, 'l' => $data['linea'], 'recibo' => $data['recibo']],
             							[
             								'style' => 'font-size:140%;color:red;'
             							]);

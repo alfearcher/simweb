@@ -222,7 +222,7 @@
             	'buttons' => [
             		'delete' => function($url, $data, $key) {
             			return Html::a('<center><span class="fa fa-times fa-lg"></center></span>',
-            							['suprimir-forma-pago', 'l' => $key],
+            							['suprimir-forma-pago', 'l' => $key, 'recibo' => $data['recibo'], 'forma' => $data['id_forma']],
             							[
             								'style' => 'font-size:140%;color:red;'
             							]);

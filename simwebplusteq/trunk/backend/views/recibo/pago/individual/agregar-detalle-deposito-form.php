@@ -62,18 +62,20 @@
 		'method' => 'post',
 		'action' => $url,
 		'enableClientValidation' => true,
-		'enableAjaxValidation' => false,
+		'enableAjaxValidation' => true,
 		'enableClientScript' => true,
 	]);
  ?>
+
+	<?=$form->field($modelVauche, 'linea')->hiddenInput(['value' => $modelVauche->linea])->label(false)?>
+	<?=$form->field($modelVauche, 'deposito')->hiddenInput(['value' => $modelVauche->deposito])->label(false)?>
+	<?=$form->field($modelVauche, 'recibo')->hiddenInput(['value' => $modelVauche->recibo])->label(false)?>
+	<?=$form->field($modelVauche, 'usuario')->hiddenInput(['value' => $modelVauche->usuario])->label(false)?>
+	<?=$form->field($modelVauche, 'estatus')->hiddenInput(['value' => 0])->label(false)?>
 <!--
-	<?//=$form->field($model, 'linea')->hiddenInput(['value' => $model->linea])->label(false)?>
-	<?//=$form->field($model, 'linea')->hiddenInput(['value' => $model->linea])->label(false)?>
-	<?//=$form->field($model, 'recibo')->hiddenInput(['value' => $model->recibo])->label(false)?>
 	<?//=$form->field($model, 'id_forma')->hiddenInput(['value' => $model->id_forma])->label(false)?>
 	<?//=$form->field($model, 'cuenta')->hiddenInput(['value' => $model->cuenta])->label(false)?>
 	<?//=$form->field($model, 'cheque')->hiddenInput(['value' => $model->cheque])->label(false)?>
-	<?//=$form->field($model, 'estatus')->hiddenInput(['value' => $model->estatus])->label(false)?>
 	<?//=$form->field($model, 'usuario')->hiddenInput(['value' => $model->usuario])->label(false)?>
  -->
 <!-- FORMA PARA REGISTRAR LOS DETALLES DEL DEPOSITO -->
