@@ -879,7 +879,7 @@
  			    $model->deposito = 0;
  			    $model->codigo_banco = 0;
  			    $model->cuenta_deposito = '';
- 			    $model->banco = 0;
+ 			    $model->id_banco = 0;
 
  			} elseif ( $postEnviado[$formName]['id_forma'] == 2 ) {
 
@@ -892,7 +892,7 @@
  			    $model->estatus = 0;
  			    $model->codigo_banco = 0;
  			    $model->cuenta_deposito = '';
- 			    $model->banco = '';
+ 			    $model->id_banco = 0;
  			    $model->monto = 0;
 
  			} elseif ( $postEnviado[$formName]['id_forma'] == 3 ) {
@@ -907,7 +907,7 @@
  			    $model->deposito = 0;
  			    $model->codigo_banco = 0;
  			    $model->cuenta_deposito = '';
- 			    $model->banco = '';
+ 			    $model->id_banco = 0;
 
  			} elseif ( $postEnviado[$formName]['id_forma'] == 4 ) {
 
@@ -919,7 +919,7 @@
  			    $model->deposito = 0;
  			    $model->codigo_banco = 0;
  			    $model->cuenta_deposito = '';
-
+ 			    $model->id_banco = 0;
  			}
 
  			$model->monto = str_replace(',','.', $model->monto);
