@@ -67,7 +67,7 @@
 		public $cuenta_deposito;
 		public $codigo_cuenta;
 		public $tipo_deposito;
-		public $banco;
+		public $id_banco;
 		public $usuario;
 
 
