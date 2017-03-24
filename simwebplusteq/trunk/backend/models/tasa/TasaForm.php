@@ -260,7 +260,7 @@
 	    public function determinarTasaRealSegunAnoImpositivo($idImpuesto, $añoImpositivo)
 	    {
 	    	$idTasa = 0;
-	    	$result = $this->laTasaCorresponde($idImpuesto, $añoImpositivo);
+	    	$result = self::laTasaCorresponde($idImpuesto, $añoImpositivo);
 
 	    	if ( $result !== null ) {
 	    		if ( $result ) {
@@ -270,14 +270,14 @@
 	    			// Con el $idImpuesto se buscan los parametros adicionales que permitira
 	    			// localizar otra tasa que corresponda a esos parametros pero diferenciando
 	    			// el año, el cual sera el actual.
-	    			$parametros = $this->getValoresTasa($idImpuesto);
+	    			$parametros = self::getValoresTasa($idImpuesto);
 	    			if ( count($parametros) > 0 ) {
 	    				$idCodigo = $parametros['id_codigo'];
 	    				$impuesto = $parametros['impuesto'];
 	    				$grupoSubnivel = $parametros['grupo_subnivel'];
 	    				$codigo = $parametros['codigo'];
 
-	    				$model = $this->findTasaSegunParametros($idCodigo, $impuesto, $añoImpositivo, $grupoSubnivel, $codigo);
+	    				$model = self::findTasaSegunParametros($idCodigo, $impuesto, $añoImpositivo, $grupoSubnivel, $codigo);
 	    				$valores = $model->asArray()->all();
 
 	    				if ( count($valores) > 0 ) {
