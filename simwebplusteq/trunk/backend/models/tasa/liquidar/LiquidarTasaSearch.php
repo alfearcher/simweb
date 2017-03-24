@@ -52,6 +52,8 @@
 	use common\models\tasas\TiposRangos;
 	use backend\models\tasa\Tasa;
 	use yii\helpers\ArrayHelper;
+	use backend\models\configuracion\tasasolicitud\TasaMultaSolicitud;
+
 
 
 	/**
@@ -173,13 +175,21 @@
 	     * @param integer $impuesto identificador del impuesto.
 	     * @param  integer $añoImpositivo año impositivo.
 	     * @param  integer $idCodigo identificador de los codigos contables.
+	     * @param  boolean $excluirTasaConfig indica si se desea excluir de la consulta a los
+	     * identificadores de las tasas que se encuentran configurados en las solicitudes.
 	     * @return array retorna una lista o un guion (-).
 	     */
-	    public function generarViewListaGrupoSubNivel($impuesto, $añoImpositivo, $idCodigo)
+	    public function generarViewListaGrupoSubNivel($impuesto, $añoImpositivo, $idCodigo, $excluirTasaConfig = false)
 	    {
 	    	$model = [];
+	    	if ( $excluirTasaConfig ) {
+	    		$excluirTasa = self::tasaConfiguradaSegunImpuesto($impuesto);
+	    	} else {
+	    		$excluirTasa = [];		// vacio.
+	    	}
+
 	    	if ( $impuesto > 0 && $añoImpositivo > 0 && $idCodigo > 0 ) {
-				$model = GrupoSubnivel::find()->alias('G')
+				$findModel = GrupoSubnivel::find()->alias('G')
 											  ->select(['G.grupo_subnivel',
 											  		   'concat(G.grupo_subnivel, " - ", G.descripcion) as grupo'])
 											  ->distinct('G.grupo_subnivel')
@@ -193,9 +203,15 @@
 							                  ->andWhere('G.inactivo =:inactivo',
 							                 		[':inactivo' => 0])
 							                  ->andWhere('T.inactivo =:inactivo',
-							                 		[':inactivo' => 0])
-										      ->all();
+							                 		[':inactivo' => 0]);
+
+				if ( count($excluirTasa) > 0 ) {
+					$model = $findModel->andWhere(['NOT IN', 'T.id_impuesto', $excluirTasa])->all();
+				} else {
+					$model = $findModel->all();
+				}
 			}
+
 	        if ( count($model) > 0 ) {
 	        	echo "<option value='0'>" . "Seleccione..." . "</option>";
 	            foreach ( $model as $mod ) {
@@ -294,7 +310,36 @@
 
 
 
+	    /**
+	     * Metodo que determina los identificadores de las tasas que se encuatran configuradas
+	     * segun el identificador del impuesto. El metodo arma un arreglo con los identificadores
+	     * de las tasas. Estos identificadores de las tasas se deben encontrar activos al igual
+	     * que el registro de la configuracion.
+	     * @param integer $impuesto identificador del impuesto.
+	     * @return array
+	     */
+	    public function tasaConfiguradaSegunImpuesto($impuesto)
+	    {
+	    	$idTasas;	// identificadores de las tasas.
+	    	$registers = TasaMultaSolicitud::find()->alias('M')
+	    										   ->joinWith('tasa T', true, 'INNER JOIN')
+	    										   ->where('M.inactivo =:inactivo',[':inactivo' => 0])
+	    										   ->andWhere('T.inactivo =:inactivo',[':inactivo' => 0])
+	    										   ->andWhere('T.impuesto =:impuesto',[':impuesto' => $impuesto])
+	    										   ->asArray()
+	    										   ->all();
+	    	if ( count($registers) > 0 ) {
+	    		foreach ( $registers as $register ) {
+	    			if ( !in_array($register['id_impuesto'], $idTasas) ) {
+	    				$idTasas[] = $register['id_impuesto'];
+	    			}
+	    		}
+	    	} else {
+	    		$idTasas = [];		// Vacio.
+	    	}
 
+	    	return $idTasas;
+	    }
 
 	}
  ?>
