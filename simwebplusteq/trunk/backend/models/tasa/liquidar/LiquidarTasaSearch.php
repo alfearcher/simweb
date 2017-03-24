@@ -175,19 +175,11 @@
 	     * @param integer $impuesto identificador del impuesto.
 	     * @param  integer $añoImpositivo año impositivo.
 	     * @param  integer $idCodigo identificador de los codigos contables.
-	     * @param  boolean $excluirTasaConfig indica si se desea excluir de la consulta a los
-	     * identificadores de las tasas que se encuentran configurados en las solicitudes.
 	     * @return array retorna una lista o un guion (-).
 	     */
-	    public function generarViewListaGrupoSubNivel($impuesto, $añoImpositivo, $idCodigo, $excluirTasaConfig = false)
+	    public function generarViewListaGrupoSubNivel($impuesto, $añoImpositivo, $idCodigo)
 	    {
 	    	$model = [];
-	    	if ( $excluirTasaConfig ) {
-	    		$excluirTasa = self::tasaConfiguradaSegunImpuesto($impuesto);
-	    	} else {
-	    		$excluirTasa = [];		// vacio.
-	    	}
-
 	    	if ( $impuesto > 0 && $añoImpositivo > 0 && $idCodigo > 0 ) {
 				$findModel = GrupoSubnivel::find()->alias('G')
 											  ->select(['G.grupo_subnivel',
@@ -205,11 +197,8 @@
 							                  ->andWhere('T.inactivo =:inactivo',
 							                 		[':inactivo' => 0]);
 
-				if ( count($excluirTasa) > 0 ) {
-					$model = $findModel->andWhere(['NOT IN', 'T.id_impuesto', $excluirTasa])->all();
-				} else {
-					$model = $findModel->all();
-				}
+				$model = $findModel->all();
+
 			}
 
 	        if ( count($model) > 0 ) {
@@ -227,26 +216,47 @@
 
 
 
-	    /***/
-	    public function generarViewListaCodigoSubNivel($impuesto, $añoImpositivo, $idCodigo, $grupoSubNivel)
+	     /**
+	     * Metodo que permite renderizar una vista tipo combo lista con los grupos
+	     * subniveles y su descripcion.
+	     * @param integer $impuesto identificador del impuesto.
+	     * @param  integer $añoImpositivo año impositivo.
+	     * @param  integer $idCodigo identificador de los codigos contables.
+	     * @param  boolean $excluirTasaConfig indica si se desea excluir de la consulta a los
+	     * identificadores de las tasas que se encuentran configurados en las solicitudes.
+	     * @return array retorna una lista o un guion (-).
+	     */
+	    public function generarViewListaCodigoSubNivel($impuesto, $añoImpositivo, $idCodigo, $grupoSubNivel, $excluirTasaConfig = false)
 	    {
 	    	$model = [];
+	    	if ( $excluirTasaConfig ) {
+	    		$excluirTasa = self::tasaConfiguradaSegunImpuesto($impuesto);
+	    	} else {
+	    		$excluirTasa = [];		// vacio.
+	    	}
+
 	    	if ( $impuesto > 0 && $añoImpositivo > 0 && $idCodigo > 0 && $grupoSubNivel > 0 ) {
-				$model = Tasa::find()->alias('T')
-									 ->select(['T.codigo',
+				$findModel = Tasa::find()->alias('T')
+										 ->select(['T.codigo',
 									  		   'concat(T.codigo, " - ", T.descripcion) as codigosub'])
-					                 ->where('T.impuesto =:impuesto',
-											[':impuesto' => $impuesto])
-					                 ->andWhere('T.ano_impositivo =:ano_impositivo',
-					                 		[':ano_impositivo' => $añoImpositivo])
-					                 ->andWhere('T.id_codigo =:id_codigo',
-					                 		[':id_codigo' => $idCodigo])
-					                 ->andWhere('T.grupo_subnivel =:grupo_subnivel',
-					                 		[':grupo_subnivel' => $grupoSubNivel])
-					                 ->andWhere('T.inactivo =:inactivo',
-					                 		[':inactivo' => 0])
-								     ->all();
+					    	             ->where('T.impuesto =:impuesto',
+												[':impuesto' => $impuesto])
+					        	         ->andWhere('T.ano_impositivo =:ano_impositivo',
+					                 			[':ano_impositivo' => $añoImpositivo])
+					            	     ->andWhere('T.id_codigo =:id_codigo',
+					                 			[':id_codigo' => $idCodigo])
+					                	 ->andWhere('T.grupo_subnivel =:grupo_subnivel',
+					                 			[':grupo_subnivel' => $grupoSubNivel])
+					                 	->andWhere('T.inactivo =:inactivo',
+					                 			[':inactivo' => 0]);
+
+				if ( count($excluirTasa) > 0 ) {
+					$model = $findModel->andWhere(['NOT IN', 'T.id_impuesto', $excluirTasa])->all();
+				} else {
+					$model = $findModel->all();
+				}
 			}
+
 	        if ( count($model) > 0 ) {
 	        	echo "<option value='0'>" . "Seleccione..." . "</option>";
 	            foreach ( $model as $mod ) {
