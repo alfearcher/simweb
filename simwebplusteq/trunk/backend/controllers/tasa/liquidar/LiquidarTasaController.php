@@ -233,11 +233,11 @@
 
 			} elseif ( $impuesto > 0 && $año > 0 && $idCodigo > 0 && $subnivel == 0 ) {
 
-				return $tasaSearch->generarViewListaGrupoSubNivel($impuesto, $año, $idCodigo, true);
+				return $tasaSearch->generarViewListaGrupoSubNivel($impuesto, $año, $idCodigo);
 
 			} elseif ( $impuesto > 0 && $año > 0 && $idCodigo > 0 && $subnivel > 0 ) {
 
-				return $tasaSearch->generarViewListaCodigoSubNivel($impuesto, $año, $idCodigo, $subnivel);
+				return $tasaSearch->generarViewListaCodigoSubNivel($impuesto, $año, $idCodigo, $subnivel, true);
 
 			}
 
