@@ -329,7 +329,7 @@
 	     * @param integer $impuesto identificador del impuesto.
 	     * @return array
 	     */
-	    public function tasaConfiguradaSegunImpuesto($impuesto)
+	    public function tasaConfiguradaSegunImpuesto($impuesto, $añoImpositivo)
 	    {
 	    	$idTasas = [];	// identificadores de las tasas.
 	    	$registers = TasaMultaSolicitud::find()->alias('M')
@@ -345,16 +345,11 @@
 	    		foreach ( $registers as $register ) {
 	    			if ( !in_array($register['id_impuesto'], $idTasas) ) {
 
-						// Se determinara la tasa correspondiente al año actual.
-						// Con el id_impuesto se determina si corresponde al año actual, sino
-						// es la del año actual se busca el id_impuesto que corresponda, segun
-						// los parametros existentes del id_impuesto que se mande.
-						$idImpuesto = $miTasa->determinarTasaParaLiquidar($register['id_impuesto']);
-						if ( $idImpuesto > 0 ) {
-							$idTasas[] = $idImpuesto;
-						} else {
-							$idTasas[] = $register['id_impuesto'];
-						}
+	    				$idImpuesto = $miTasa->determinarTasaRealSegunAnoImpositivo($register['id_impuesto'], $añoImpositivo);
+	    				if ( $idImpuesto > 0 ) {
+	    					$idTasas[]= $idImpuesto;
+	    				}
+
 	    			}
 	    		}
 	    	} else {
