@@ -127,7 +127,12 @@
 
 
 
-	    /***/
+	    /**
+	     * [findTasaSegunAnoDescripcion description]
+	     * @param  [type] $añoImpositivoLocal [description]
+	     * @param  [type] $descripcionLocal   [description]
+	     * @return [type]                     [description]
+	     */
 	    public function findTasaSegunAnoDescripcion($añoImpositivoLocal, $descripcionLocal)
 	    {
 	    	$modelFind = Tasa::find()->where('ano_impositivo =:ano_impositivo', [':ano_impositivo' => $añoImpositivoLocal])
