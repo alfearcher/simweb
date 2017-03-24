@@ -231,7 +231,7 @@
 	    {
 	    	$model = [];
 	    	if ( $excluirTasaConfig ) {
-	    		$excluirTasa = self::tasaConfiguradaSegunImpuesto($impuesto);
+	    		$excluirTasa = self::tasaConfiguradaSegunImpuesto($impuesto, $añoImpositivo);
 	    	} else {
 	    		$excluirTasa = [];		// vacio.
 	    	}
@@ -327,6 +327,7 @@
 	     * de las tasas. Estos identificadores de las tasas se deben encontrar activos al igual
 	     * que el registro de la configuracion.
 	     * @param integer $impuesto identificador del impuesto.
+	     * @param integer $añoImpositivo año donde se desea encontrar el identificador de la tasa.
 	     * @return array
 	     */
 	    public function tasaConfiguradaSegunImpuesto($impuesto, $añoImpositivo)
