@@ -349,10 +349,12 @@
 						// Con el id_impuesto se determina si corresponde al año actual, sino
 						// es la del año actual se busca el id_impuesto que corresponda, segun
 						// los parametros existentes del id_impuesto que se mande.
-						$idImpuesto = $miTasa->determinarTasaParaLiquidar($tasa['id_impuesto']);
-
-	    				//$idTasas[] = $register['id_impuesto'];
-	    				$idTasas[] = $idImpuesto;
+						$idImpuesto = $miTasa->determinarTasaParaLiquidar($register['id_impuesto']);
+						if ( $idImpuesto > 0 ) {
+							$idTasas[] = $idImpuesto;
+						} else {
+							$idTasas[] = $register['id_impuesto'];
+						}
 	    			}
 	    		}
 	    	} else {
