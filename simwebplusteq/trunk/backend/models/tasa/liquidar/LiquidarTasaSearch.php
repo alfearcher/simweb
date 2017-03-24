@@ -53,6 +53,7 @@
 	use backend\models\tasa\Tasa;
 	use yii\helpers\ArrayHelper;
 	use backend\models\configuracion\tasasolicitud\TasaMultaSolicitud;
+	use backend\models\tasa\TasaForm;
 
 
 
@@ -341,7 +342,16 @@
 	    	if ( count($registers) > 0 ) {
 	    		foreach ( $registers as $register ) {
 	    			if ( !in_array($register['id_impuesto'], $idTasas) ) {
-	    				$idTasas[] = $register['id_impuesto'];
+
+	    				$miTasa = New TasaForm();
+						// Se determinara la tasa correspondiente al año actual.
+						// Con el id_impuesto se determina si corresponde al año actual, sino
+						// es la del año actual se busca el id_impuesto que corresponda, segun
+						// los parametros existentes del id_impuesto que se mande.
+						$idImpuesto = $miTasa->determinarTasaParaLiquidar($tasa['id_impuesto']);
+
+	    				//$idTasas[] = $register['id_impuesto'];
+	    				$idTasas[] = $idImpuesto;
 	    			}
 	    		}
 	    	} else {
