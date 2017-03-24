@@ -330,7 +330,6 @@
 	    										   ->all();
 	    	if ( count($registers) > 0 ) {
 	    		foreach ( $registers as $register ) {
-die(var_dump($register['id_impuesto']));
 	    			if ( !in_array($register['id_impuesto'], $idTasas) ) {
 	    				$idTasas[] = $register['id_impuesto'];
 	    			}
