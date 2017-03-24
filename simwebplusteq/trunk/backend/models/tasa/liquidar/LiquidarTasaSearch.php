@@ -320,7 +320,7 @@
 	     */
 	    public function tasaConfiguradaSegunImpuesto($impuesto)
 	    {
-	    	$idTasas;	// identificadores de las tasas.
+	    	$idTasas = '';	// identificadores de las tasas.
 	    	$registers = TasaMultaSolicitud::find()->alias('M')
 	    										   ->joinWith('tasa T', true, 'INNER JOIN')
 	    										   ->where('M.inactivo =:inactivo',[':inactivo' => 0])
