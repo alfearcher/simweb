@@ -65,7 +65,7 @@
 		public $cantidad_ut;
 
 
-  
+
 
 
 		/**
@@ -242,6 +242,52 @@
 	    		}
 	    	}
 	    	return null;
+	    }
+
+
+
+	    /**
+	     * Metodo que permite determinar el identificador real para un año especifico de la
+	     * tasa, se tomara un identificador ($idImpuesto) y a partir de este, se buscara la informacion
+	     * que se complementará con el año impositivo enviado. Esto se convinara para realizar una
+	     * consulta encadenada con los datos recopilados.
+	     * @param integer $idImpuesto identificador del registro en la entidad. Autoincremental.
+	     * @param inetger $añoImpositivo año impositivo donde se desea encontrar el identificador de
+	     * la tasa.
+	     * @return integer retorna un valor que representa el identificador en la
+	     * entidad respectiva sino encuentra el identificador devolvera cero (0).
+	     */
+	    public function determinarTasaRealSegunAnoImpositivo($idImpuesto, $añoImpositivo)
+	    {
+	    	$idTasa = 0;
+	    	$result = $this->laTasaCorresponde($idImpuesto, $añoImpositivo);
+
+	    	if ( $result !== null ) {
+	    		if ( $result ) {
+	    			// La tasa coresponde con el año.
+	    			$idTasa = $idImpuesto;
+	    		} else {
+	    			// Con el $idImpuesto se buscan los parametros adicionales que permitira
+	    			// localizar otra tasa que corresponda a esos parametros pero diferenciando
+	    			// el año, el cual sera el actual.
+	    			$parametros = $this->getValoresTasa($idImpuesto);
+	    			if ( count($parametros) > 0 ) {
+	    				$idCodigo = $parametros['id_codigo'];
+	    				$impuesto = $parametros['impuesto'];
+	    				$grupoSubnivel = $parametros['grupo_subnivel'];
+	    				$codigo = $parametros['codigo'];
+
+	    				$model = $this->findTasaSegunParametros($idCodigo, $impuesto, $añoImpositivo, $grupoSubnivel, $codigo);
+	    				$valores = $model->asArray()->all();
+
+	    				if ( count($valores) > 0 ) {
+	    					$idTasa = $valores[0]['id_impuesto'];
+	    				}
+	    			}
+	    		}
+	    	}
+
+	    	return $idTasa;
 	    }
 
 	}
