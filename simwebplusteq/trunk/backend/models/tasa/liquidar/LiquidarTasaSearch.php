@@ -340,10 +340,11 @@
 	    										   ->asArray()
 	    										   ->all();
 	    	if ( count($registers) > 0 ) {
+	    		$miTasa = New TasaForm();
+
 	    		foreach ( $registers as $register ) {
 	    			if ( !in_array($register['id_impuesto'], $idTasas) ) {
 
-	    				$miTasa = New TasaForm();
 						// Se determinara la tasa correspondiente al año actual.
 						// Con el id_impuesto se determina si corresponde al año actual, sino
 						// es la del año actual se busca el id_impuesto que corresponda, segun
