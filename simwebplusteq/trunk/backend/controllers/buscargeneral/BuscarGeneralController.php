@@ -250,11 +250,23 @@
     	 */
     	protected function findModel($idContribuyente)
     	{
-        	if (($model = BuscarGeneral::findOne($idContribuyente)) !== null) {
-            	return $model;
-        	} else {
-            	throw new NotFoundHttpException('The requested page does not exist.');
-        	}
+  			$model = BuscarGeneral::find()->alias('B')
+  			                              ->joinWith('afiliacion A', true, 'INNER JOIN')
+  			                              ->where('B.id_contribuyente =:id_contribuyente',
+  			                          					[':id_contribuyente' => $idContribuyente])
+  			                              ->one();
+
+  			if ( $model !== null ) {
+  				return $model;
+  			} else {
+  				throw new NotFoundHttpException('The requested page does not exist.');
+  			}
+
+        	// if (($model = BuscarGeneral::findOne($idContribuyente)) !== null) {
+         //    	return $model;
+        	// } else {
+         //    	throw new NotFoundHttpException('The requested page does not exist.');
+        	// }
     	}
 
 	}
