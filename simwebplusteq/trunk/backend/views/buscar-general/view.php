@@ -68,6 +68,16 @@ $this->title = Yii::t('backend','Id. Taxpayer') . ': ' . $model->id_contribuyent
                     </div>
                 </div>
 
+
+<!-- CONDICION -->
+                <div class="panel-body" style="margin-left: 160px; padding-top: 0px;">
+                    <div class="row">
+                        <div class="col-md-1" style="width: 150px"><b><?= Yii::t('backend', 'Condicion') . ':'; ?></b></div>
+                        <div class="col-md-1"><?= ( $model->inactivo == 0 ) ? 'ACTIVO' : 'INACTIVO'; ?></div>
+                    </div>
+                </div>
+
+
 <!-- USUARIO -->
                 <div class="panel-body" style="margin-left: 160px; padding-top: 0px;">
                     <div class="row">
