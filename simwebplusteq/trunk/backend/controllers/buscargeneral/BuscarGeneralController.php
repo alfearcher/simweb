@@ -261,12 +261,6 @@
   			} else {
   				throw new NotFoundHttpException('The requested page does not exist.');
   			}
-
-        	// if (($model = BuscarGeneral::findOne($idContribuyente)) !== null) {
-         //    	return $model;
-        	// } else {
-         //    	throw new NotFoundHttpException('The requested page does not exist.');
-        	// }
     	}
 
 	}
