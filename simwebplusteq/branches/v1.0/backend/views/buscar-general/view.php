@@ -67,11 +67,36 @@ $this->title = Yii::t('backend','Id. Taxpayer') . ': ' . $model->id_contribuyent
                         <div class="col-md-1"><?= ContribuyenteBase::getTipoNaturalezaDescripcion($model['tipo_naturaleza']) ?></div>
                     </div>
                 </div>
+
+
+<!-- CONDICION -->
+                <div class="panel-body" style="margin-left: 160px; padding-top: 0px;">
+                    <div class="row">
+                        <div class="col-md-1" style="width: 150px"><b><?= Yii::t('backend', 'Condicion') . ':'; ?></b></div>
+                        <div class="col-md-1"><?= ( $model->inactivo == 0 ) ? 'ACTIVO' : 'INACTIVO'; ?></div>
+                    </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-sm-3">
-                       <?= Html::a(Yii::t('backend', 'Quit'), ['menu/vertical'], ['class' => 'btn btn-danger']) ?>
+
+<!-- USUARIO -->
+                <div class="panel-body" style="margin-left: 160px; padding-top: 0px;">
+                    <div class="row">
+                        <div class="col-md-1" style="width: 150px"><b><?= Yii::t('backend', 'Usuario') . ':'; ?></b></div>
+                        <div class="col-md-1"><?=$model->afiliacion->login; ?></div>
+                    </div>
+                </div>
+
+
+                </div>
+
+                <div class="row" style="width: 100%;padding: 0px;;margin-bottom: 50px;padding-left: 400px;">
+                    <div class="col-sm-3" style="text-align: center;">
+                       <?= Html::a(Yii::t('backend', 'Quit'), ['menu/vertical'],
+                                                              [
+                                                                    'class' => 'btn btn-danger',
+                                                                    'style' => 'width: 100%;'
+                                                              ])
+                        ?>
                     </div>
                 </div>
 
