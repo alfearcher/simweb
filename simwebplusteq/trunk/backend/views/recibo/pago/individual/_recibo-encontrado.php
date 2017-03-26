@@ -48,7 +48,6 @@
 
  ?>
 
-
  <div class="row" style="width:100%;">
 
  	<div class="row" style="width:100%;">
@@ -82,7 +81,6 @@
 					?>
 				</div>
 			</div>
-
 
 			<div class="col-sm-2" style="margin-left: 5px;width: 15%;">
 				<div class="form-group">
