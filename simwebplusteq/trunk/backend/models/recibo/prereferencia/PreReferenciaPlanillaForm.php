@@ -53,6 +53,10 @@
 	class PreReferenciaPlanillaForm extends PreReferenciaPlanilla
 	{
 
+		public $id_banco;
+		public $cuenta_recaudadora;
+
+
 		/**
      	* @inheritdoc
      	*/
@@ -70,7 +74,10 @@
 	    public function rules()
 	    {
 	        return [
-
+	        	[['id_banco', 'cuenta_recaudodora'],
+	        	'required',
+	        	'message' => Yii::t('backend','{attribute} is required'),
+	        	]
 
 	        ];
 	    }
@@ -84,12 +91,6 @@
 	    public function attributeLabels()
 	    {
 	        return [
-	        	'recibo' => Yii::t('frontend', 'Nro. Recibo'),
-	        	'fecha' => Yii::t('frontend', 'Fecha'),
-	        	'monto' => Yii::t('frontend', 'Monto'),
-	        	'estatus' => Yii::t('frontend', 'Condicion'),
-	        	'id_contribuyente' => Yii::t('frontend', 'Id. Contribuyente'),
-	        	'usuario' => Yii::t('frontend', 'Usuario'),
 
 	        ];
 	    }
