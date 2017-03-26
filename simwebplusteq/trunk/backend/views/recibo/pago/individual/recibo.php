@@ -87,7 +87,7 @@
 								$bloquear = false;
 							}
 						?>
-						<div class="col-sm-2" style="margin-left: 20px;width: 25%;">
+						<div class="col-sm-2" style="margin-left: 20px;width: 20%;">
 							<div class="form-group">
 								<?= Html::submitButton(Yii::t('backend', 'Formas de Pago'),
 																  [
@@ -103,7 +103,7 @@
 						</div>
 
 
-						<div class="col-sm-2" style="margin-left: 50px;">
+						<div class="col-sm-2" style="margin-left: 5px;width: 15%;">
 							<div class="form-group">
 								<?= Html::submitButton(Yii::t('backend', 'Back'),
 																  [
@@ -117,7 +117,7 @@
 							</div>
 						</div>
 
-						<div class="col-sm-2" style="margin-left: 50px;">
+						<div class="col-sm-2" style="margin-left: 5px;width: 15%;">
 							<div class="form-group">
 								<?= Html::submitButton(Yii::t('backend', 'Quit'),
 																  [
@@ -129,6 +129,7 @@
 																  ])
 								?>
 							</div>
+
 						</div>
 
 						<!-- <div class="col-sm-2" style="margin-left: 50px;">

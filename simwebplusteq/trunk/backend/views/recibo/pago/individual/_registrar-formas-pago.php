@@ -140,7 +140,7 @@
 <!-- FINAL DEL FORMULARIO MODAL -->
 
 						<div class="row" style="width: 100%;margin-top: 50px;">
-							<div class="col-sm-2" style="margin-left: 10px;width: 20%;">
+							<div class="col-sm-2" style="margin-left: 10px;width: 15%;">
 								<div class="form-group">
 									<?= Html::submitButton(Yii::t('backend', 'Back'),
 																	  [
@@ -154,7 +154,7 @@
 								</div>
 							</div>
 
-							<div class="col-sm-2" style="margin-left: 40px;width: 20%;">
+							<div class="col-sm-2" style="margin-left: 5px;width: 15%;">
 								<div class="form-group">
 									<?= Html::submitButton(Yii::t('backend', 'Quit'),
 																	  [
@@ -168,7 +168,7 @@
 								</div>
 							</div>
 
-							<div class="col-sm-2" style="margin-left: 40px;width: 20%;">
+							<div class="col-sm-2" style="margin-left: 5px;width: 15%;">
 								 <div class="form-group">
 								 <!-- '../../common/docs/user/ayuda.pdf'  funciona -->
 									<?= Html::a(Yii::t('backend', 'Ayuda'), $rutaAyuda,  [
@@ -180,6 +180,21 @@
 															'style' => 'width: 100%;'
 														])?>
 
+								</div>
+							</div>
+
+
+							<div class="col-sm-2" style="margin-left: 25px;width: 25%;">
+								<div class="form-group">
+									<?= Html::submitButton(Yii::t('backend', 'Pre-Referencias'),
+																	  [
+																		'id' => 'btn-pre-referencia',
+																		'class' => 'btn btn-primary',
+																		'value' => 2,
+																		'style' => 'width: 100%',
+																		'name' => 'btn-pre-referencia',
+																	  ])
+									?>
 								</div>
 							</div>
 						</div>
@@ -205,6 +220,12 @@ $this->registerJs(
             }
         );
     }));
-
+	if ( $( "#id-monto-recibo").val() == $( "#id-monto-agregado").val() ) {
+		$( "#btn-pre-referencia").attr("disabled", false);
+		$( "#id-monto-ok").show("slow");
+	} else {
+		$( "#btn-pre-referencia").attr("disabled", true);
+		$( "#id-monto-ok").hide("slow");
+	}
     '
 ); ?>

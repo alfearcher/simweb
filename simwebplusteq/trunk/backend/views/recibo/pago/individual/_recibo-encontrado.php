@@ -60,23 +60,57 @@
 			<?php } ?>
 		</div>
 
-		<div class="col-sm-2" style="width: 15%;float: right;">
-			<div class="btn-group">
-				<button type="button" class="btn btn-danger btn-lg dropdown-toggle" data-toggle="dropdown">
-					Opciones <span class="caret"></span>
-				</button>
+		<div class="row" style="margin-top: 25px;">
 
-				<ul class="dropdown-menu" role="menu" style="background-color: white;">
-					<?php if ( $bloquearFormaPago ) {
-								$class = 'disabled';
-							} else {
-								$class = 'forma-pago';
-							}
+			<?php if ( $bloquearFormaPago ) {
+					$bloquear = true;
+				} else {
+					$bloquear = false;
+				}
+			?>
+			<div class="col-sm-2" style="margin-left: 20px;width: 20%;">
+				<div class="form-group">
+					<?= Html::submitButton(Yii::t('backend', 'Formas de Pago'),
+													  [
+														'id' => 'btn-forma-pago',
+														'class' => 'btn btn-primary',
+														'value' => 2,
+														'style' => 'width: 100%',
+														'name' => 'btn-forma-pago',
+														'disabled' => $bloquear,
+													  ])
 					?>
+				</div>
+			</div>
 
-					<li class=<?=$class ?>><a href=<?=$urlFormaPagos; ?>>Formas de Pago</a></li>
-					<li><a href=<?=Url::to(['quit']) ?>>Salida</a></li>
-				</ul>
+
+			<div class="col-sm-2" style="margin-left: 5px;width: 15%;">
+				<div class="form-group">
+					<?= Html::submitButton(Yii::t('backend', 'Back'),
+													  [
+														'id' => 'btn-back',
+														'class' => 'btn btn-danger',
+														'value' => 1,
+														'style' => 'width: 100%',
+														'name' => 'btn-back',
+													  ])
+					?>
+				</div>
+			</div>
+
+			<div class="col-sm-2" style="margin-left: 5px;width: 15%;">
+				<div class="form-group">
+					<?= Html::submitButton(Yii::t('backend', 'Quit'),
+													  [
+														'id' => 'btn-quit',
+														'class' => 'btn btn-danger',
+														'value' => 1,
+														'style' => 'width: 100%',
+														'name' => 'btn-quit',
+													  ])
+					?>
+				</div>
+
 			</div>
 		</div>
 	</div>

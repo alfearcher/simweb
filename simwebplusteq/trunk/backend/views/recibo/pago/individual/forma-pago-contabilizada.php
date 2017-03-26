@@ -234,10 +234,16 @@
 	]);?>
 </div>
 <!-- FIN DE FORMA DE PAGO REGISTRADAS -->
+
+
 <div class="row" style="padding: 0px;width: 100%;">
 	<div class="col-sm-2" style="width: 15%;padding: 0px;margin: 0px;padding-top: 10px;margin-left: 560px;">
 		<?=Html::label(Yii::t('backend', 'Total Registrado'), 'total-ingresado-label',['style' => 'font-size:120%;'])?>
 	</div>
+    <div class="col-sm-1" style="width: 6%;margin:0px;padding:0px;text-align: right;margin-top: 5px;color: green;">
+        <div class="fa fa-check-circle fa-lg" id="id-monto-ok" style="font-size: 240%;"></div>
+    </div>
+
 	<div class="col-sm-2" style="width: 25%;padding: 0px;padding-left: 15px;float: right;">
 		<?= Html::textInput('montoAgregado',
 						     Yii::$app->formatter->asDecimal($montoAgregado, 2),
