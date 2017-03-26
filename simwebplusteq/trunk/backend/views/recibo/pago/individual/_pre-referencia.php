@@ -55,5 +55,6 @@
 										'caption' => $caption,
 										'subCaption' => $subCaption,
 										'listaBanco' => $listaBanco,
+										'url' => $url,
 			]);?>
 </div>
