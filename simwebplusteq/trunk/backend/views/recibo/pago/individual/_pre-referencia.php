@@ -56,5 +56,6 @@
 										'subCaption' => $subCaption,
 										'listaBanco' => $listaBanco,
 										'url' => $url,
+										'datosRecibo' => $_SESSION['datosRecibo'],
 			]);?>
 </div>

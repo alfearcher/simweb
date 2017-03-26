@@ -77,7 +77,89 @@
 
 		        	<div class="row" style="width:100%;margin-bottom: 20px;">
 						<div class="row" style="border-bottom: 1px solid;padding-left: 5px;padding-top: 0px;">
-							<h4><strong><?=Html::encode($subCaption)?></strong></h4>
+							<h4><strong><?=Html::encode(Yii::t('backend', 'Información del Recibo'))?></strong></h4>
+						</div>
+
+						<div class="row" style="width:100%;padding:0px;margin:0px;margin-top: 20px;">
+							<div class="col-sm-2" style="width: 20%;padding:0px;">
+								<p><strong><?=Html::encode(Yii::t('backend', 'Recibo Nro.:'))?></strong></p>
+							</div>
+							<div class="col-sm-4" style="width:20%;padding:0px;margin-left:0px;">
+								<?=Html::textInput('recibo',
+											       $datosRecibo[0]['recibo'],
+											       [
+											       		'class' => 'form-control',
+											       		'style' => 'width:100%;
+											       					background-color:white;
+											       					font-size:120%;
+											       					font-weight:bold;text-align:right;',
+											       		'readOnly' => true,
+											       ])
+								?>
+							</div>
+						</div>
+
+						<div class="row" style="width:100%;padding:0px;margin:0px;margin-top: 5px;">
+							<div class="col-sm-2" style="width: 20%;padding:0px;">
+								<p><strong><?=Html::encode(Yii::t('backend', 'Monto:'))?></strong></p>
+							</div>
+							<div class="col-sm-4" style="width:20%;padding:0px;margin-left:0px;">
+								<?=Html::textInput('monto',
+											       Yii::$app->formatter->asDecimal($datosRecibo[0]['monto'], 2),
+											       [
+											       		'class' => 'form-control',
+											       		'style' => 'width:100%;
+											       					background-color:white;
+											       					font-size:120%;
+											       					font-weight:bold;
+											       					text-align:right;',
+											       		'readOnly' => true,
+											       ])
+								?>
+							</div>
+						</div>
+
+						<div class="row" style="width:100%;padding:0px;margin:0px;margin-top: 5px;">
+							<div class="col-sm-2" style="width: 20%;padding:0px;">
+								<p><strong><?=Html::encode(Yii::t('backend', 'Id. Contribuyente:'))?></strong></p>
+							</div>
+							<div class="col-sm-4" style="width:20%;padding:0px;margin-left:0px;">
+								<?=Html::textInput('id-contribuyente',
+											       $datosRecibo[0]['id_contribuyente'],
+											       [
+											       		'class' => 'form-control',
+											       		'style' => 'width:100%;
+											       					background-color:white;
+											       					font-size:120%;
+											       					font-weight:bold;text-align:right;',
+											       		'readOnly' => true,
+											       ])
+								?>
+							</div>
+						</div>
+
+
+						<div class="row" style="width:100%;padding:0px;margin:0px;margin-top: 5px;">
+							<div class="col-sm-2" style="width: 20%;padding:0px;">
+								<p><strong><?=Html::encode(Yii::t('backend', 'Fecha Pago:'))?></strong></p>
+							</div>
+							<div class="col-sm-4" style="width:13%;padding:0px;margin-left:0px;">
+								<?=Html::textInput('fecha-pago-recibo',
+											       ( $datosRecibo[0]['estatus'] == 1 ) ? $datosRecibo[0]['fecha'] : '',
+											       [
+											       		'class' => 'form-control',
+											       		'style' => 'width:100%;
+											       					background-color:white;
+											       					font-size:120%;
+											       					font-weight:bold;',
+											       		'readOnly' => true,
+											       ])
+								?>
+							</div>
+						</div>
+
+						<div class="row" style="border-bottom: 1px solid;padding-left: 5px;padding-top: 0px;">
+							<h4><strong><?=Html::encode(Yii::t('backend', 'Cuenta Recaudadora'))?></strong></h4>
 						</div>
 
 <!-- LISTA DE BANCOS CON CUENTAS RECAUDADORAS-->
@@ -131,6 +213,45 @@
 							</div>
 						</div>
 <!-- FIN DE LISTA DE CUENTA RECAUDADORAS -->
+
+						<div class="row" style="border-bottom: 1px solid;padding-left: 5px;padding-top: 0px;">
+							<h4><strong><?=Html::encode(Yii::t('backend', 'Referencias Bancarias'))?></strong></h4>
+						</div>
+
+						<div class="row" style="width:100%;margin-bottom: 20px;">
+							<div class="row" style="width:100%;padding:0px;margin:0px;margin-top: 20px;">
+								<div class="col-sm-2" style="width: 20%;padding:0px;">
+									<p><strong><?=Html::encode(Yii::t('backend', 'Fecha Pago:'))?></strong></p>
+								</div>
+								<div class="col-sm-4" style="width:10%;padding:0px;margin-left:0px;">
+									<?=Html::textInput('fecha-pago',
+												       ( $datosRecibo[0]['estatus'] == 1 ) ? $datosRecibo[0]['fecha'] : date('d-m-Y'),
+												       [
+												       		'class' => 'form-control',
+												       		'style' => 'width:100%;
+												       					background-color:white;
+												       					font-size:100%;
+												       					font-weight:bold;',
+												       		'readOnly' => true,
+												       ])
+									?>
+								</div>
+
+								<div class="col-sm-2" style="width:25%;padding:0px;margin:0px;margin-left: 20px;">
+									<?= Html::submitButton(Yii::t('backend', 'Buscar Referencias Bancarias'),
+																	  [
+																		'id' => 'btn-back',
+																		'class' => 'btn btn-primary',
+																		'value' => 2,
+																		'style' => 'width: 100%',
+																		'name' => 'btn-back',
+																	  ])
+									?>
+								</div>
+							</div>
+
+						</div>
+
 
 
 						<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1; padding-left: 5px;margin-top:20px;">
