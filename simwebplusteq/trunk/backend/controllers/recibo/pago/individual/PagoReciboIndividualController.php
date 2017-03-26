@@ -68,6 +68,9 @@
     use backend\models\utilidad\tipotarjeta\TipoTarjetaSearch;
     use backend\models\recibo\tipodeposito\TipoDepositoSearch;
     use backend\models\recibo\depositodetalle\VaucheDetalleUsuarioForm;
+    use backend\models\recibo\prereferencia\PreReferenciaPlanillaForm;
+
+    use yii\jui\Dialog;
 
 
 
@@ -197,7 +200,7 @@
 						$dataProviders = $pagoReciboSearch->getDataProviders();
 
 						$totales = $pagoReciboSearch->getTotalesReciboPlanilla($dataProviders);
-
+// die(var_dump($bloquearFormaPago));
 						$result = self::actionInicializarTemporal($model->recibo);
 						$htmlRecibo = $this->renderPartial('/recibo/pago/individual/_recibo-encontrado',[
 																'dataProviderRecibo' => $dataProviders[0],
@@ -263,23 +266,32 @@
         			}
         		}
 
+        		if ( isset($postData['btn-pre-referencia']) ) {
+        			if ( $postData['btn-pre-referencia'] == 2 ) {
+        				$this->redirect(['pre-referencia']);
+        			}
+        		}
 
         		// Se define el formulario a utilizar
         		if ( isset($postData['btn-cheque']) ) {
         			if ( $postData['btn-cheque'] == 1 ) {
         				$forma = (int)$postData['btn-cheque'];
+        				self::actionAnularSession(['guardo']);
         			}
         		} elseif ( isset($postData['btn-deposito']) ) {
         			if ( $postData['btn-deposito'] == 2 ) {
         				$forma = (int)$postData['btn-deposito'];
+        				self::actionAnularSession(['guardo']);
         			}
         		} elseif ( isset($postData['btn-efectivo']) ) {
         			if ( $postData['btn-efectivo'] == 3 ) {
         				$forma = (int)$postData['btn-efectivo'];
+        				self::actionAnularSession(['guardo']);
         			}
         		} elseif ( isset($postData['btn-tarjetas']) ) {
         			if ( $postData['btn-tarjetas'] == 4 ) {
         				$forma = (int)$postData['btn-tarjetas'];
+        				self::actionAnularSession(['guardo']);
         			}
         		} else {
         			$forma = 0;
@@ -301,25 +313,29 @@
 
 					if ( $model->validate() ) {
 						// Se guarda
-						if ( (int)$forma !== 3 ) {
+						if ( !isset($_SESSION['guardo']) ) {
+							if ( (int)$forma !== 3 ) {
 
-							$result = self::actionAgregarFormaPago($postData);
-							if ( $result ) {
-								return self::actionArmarFormulario(0, $model, ['insert']);
+								$result = self::actionAgregarFormaPago($postData);
+								if ( $result ) {
+									return self::actionArmarFormulario(0, $model, ['insert']);
+								} else {
+									return self::actionArmarFormulario($forma, $model, ['ERROR']);
+								}
 							} else {
-								return self::actionArmarFormulario($forma, $model, ['ERROR']);
+								if ( self::actionExisteFormaPago($recibo, 3) ) {
+									$result = self::actionActualizarMontoEfectivo($postData);
+								} else {
+									$result = self::actionAgregarFormaPago($postData);
+								}
+								if ( $result ) {
+									return self::actionArmarFormulario(0, $model, []);
+								} else {
+									return self::actionArmarFormulario($forma, $model, ['ERROR']);
+								}
 							}
 						} else {
-							if ( self::actionExisteFormaPago($recibo, 3) ) {
-								$result = self::actionActualizarMontoEfectivo($postData);
-							} else {
-								$result = self::actionAgregarFormaPago($postData);
-							}
-							if ( $result ) {
-								return self::actionArmarFormulario(0, $model, []);
-							} else {
-								return self::actionArmarFormulario($forma, $model, ['ERROR']);
-							}
+							return self::actionArmarFormulario(0, $model, []);
 						}
 
 					} else {
@@ -333,9 +349,48 @@
         		// Recibo no valido
 
         	}
-        	$this->redirect(['registrar-formas-pago']);
+        }
+
+
+
+        /***/
+        public function actionPreReferencia()
+        {
+        	$recibo = isset($_SESSION['recibo']) ? (int)$_SESSION['recibo'] : 0;
+        	if ( $recibo > 0 ) {
+
+        		$model = New PreReferenciaPlanillaForm();
+
+        		$searchBanco = New BancoSearch();
+
+        		// Listado de bancos relacionados a cuentas recaudadoras.
+        		$listaBanco = $searchBanco->getListaBancoRelacionadaCuentaReceptora();
+
+        		$caption = Yii::t('backend', 'Registro de Pre-Referencias Bancarias');
+        		$subCaption = Yii::t('backend', 'Elabore la referencia bancaria');
+        		return $this->render('/recibo/pago/individual/_pre-referencia',[
+        										'model' => $model,
+        										'caption' => $caption,
+        										'subCaption' => $subCaption,
+        										'listaBanco' => $listaBanco,
+        			]);
+        	}
+        }
+
+
+
+        /***/
+        public function actionListarCuentaRecaudadora()
+        {
+        	$request = Yii::$app->request;
+        	$postGet = $request->get();
+
+        	$searchBanco = New BancoSearch();
+        	$id = isset($postGet['id']) ? (int)$postGet['id'] : 0;
+        	return $searchBanco->generarViewListaCuentaRecaudadora($id);
 
         }
+
 
 
 
@@ -431,10 +486,6 @@
 
 		    }
         }
-
-
-
-
 
 
 
@@ -926,6 +977,7 @@
 
  			$result = self::actionBeginSaveFormaPagoTemp($model);
  			if ( $result ) {
+ 				$_SESSION['guardo'] = 1;
  				$this->_transaccion->commit();
  			} else {
  				$this->_transaccion->rollBack();
@@ -981,6 +1033,7 @@
 
         	$result = $this->_conexion->modificarRegistro($this->_conn, $tabla, $arregloDatos, $arregloCondicion);
         	if ( $result ) {
+        		$_SESSION['guardo'] = 1;
  				$this->_transaccion->commit();
  			} else {
  				$this->_transaccion->rollBack();
@@ -1340,11 +1393,15 @@
 
 
 		/***/
-		public function mensage($mensaje)
+		public function actionMensajeAlerta($mensaje)
 		{
-			echo '<script type="text/javascript">
-					alert("Hola");
-				</script>';
+			?>
+			<script>
+				var ms ='<?php echo $mensaje;?>';
+				alert(ms);
+			</script>
+		<?php
+			return;
 		}
 
 
