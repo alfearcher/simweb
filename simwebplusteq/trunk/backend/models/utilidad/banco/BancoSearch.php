@@ -46,6 +46,7 @@
 	use yii\base\Model;
 	use yii\db\ActiveRecord;
 	use backend\models\utilidad\banco\Banco;
+	use backend\models\utilidad\banco\BancoCuentaReceptora;
 	use yii\helpers\ArrayHelper;
 
 
@@ -124,6 +125,103 @@
 		{
 			return Banco::find()->where($arregloCondicion)->exists();
 		}
+
+
+
+		/**
+		 * Metodo que genera un listado de bancos relacionados a las cuentas receptoras.
+		 * El arreglo tiene la estructura:
+		 * {
+		 * 		'id_banco' => 'nombre'
+		 * }
+		 * @return array.
+		 */
+		public function getListaBancoRelacionadaCuentaReceptora()
+		{
+			$lista = null;
+			$findModel = BancoCuentaReceptora::find()->alias('R')
+			                          				 ->joinWith('banco', true, 'INNER JOIN')
+			                          				 ->where('status =:status',
+			                          				 			[':status' => 1])
+			                          				 ->andWhere('R.inactivo =:inactivo',
+			                          				 			[':inactivo' => 0]);
+			$registers = $findModel->all();
+			if ( count($registers) > 0 ) {
+				foreach ( $registers as $register ) {
+					$listaBanco[] = [
+						'id_banco' => $register->banco->id_banco,
+						'nombre' => $register->banco->nombre,
+					];
+				}
+				$lista = ArrayHelper::map($listaBanco, 'id_banco', 'nombre');
+			}
+			return $lista;
+		}
+
+
+
+		/**
+		 * Metodo que genera un arrelo para los listados tipo combo-lista.
+		 * El arreglo tiene la estruvtura:
+		 * {
+		 * 		'cuenta' => 'cuenta - observacion'
+		 * }
+		 * Este arreglo contiene las cuentas recaudadoras asociadas a un banco.
+		 * @param integer $idBanco identificador del banco.
+		 * @return array
+		 */
+		public function getListaCuentaRecaudadora($idBanco = 0)
+		{
+			$lista = [];
+			$findModel = BancoCuentaReceptora::find()->alias('R');
+			if ( $idBanco > 0 ) {
+				$findModel = $findModel->joinWith('banco B', true, 'INNER JOIN')
+			                           ->where('B.id_banco =:id_banco',
+			                          			[':id_banco' => $idBanco])
+			                           ->andWhere('R.inactivo =:inactivo',
+			                          			[':inactivo' => 0]);
+
+			} else {
+				$findModel = $findModel->joinWith('banco B', true, 'INNER JOIN')
+			                           ->where('status =:status',
+			                          			[':status' => 1])
+			                           ->andWhere('R.inactivo =:inactivo',
+			                          			[':inactivo' => 0]);
+			}
+
+			$registers = $findModel->all();
+
+			if ( count($registers) > 0 ) {
+				foreach ( $registers as $register ) {
+					$lista[] = [
+						'cuenta' => $register['cuenta'],
+						'valor' => $register['cuenta'] . ' - ' . $register['observacion'],
+					];
+				}
+			}
+			return ArrayHelper::map($lista, 'cuenta', 'valor');
+		}
+
+
+
+
+
+		/***/
+		public function generarViewListaCuentaRecaudadora($idBanco = 0)
+	    {
+	    	$lista = self::getListaCuentaRecaudadora($idBanco);
+
+	        if ( count($lista) > 0 ) {
+	        	echo "<option value='0'>" . "Seleccione..." . "</option>";
+	            foreach ( $lista as $key => $item ) {
+	                echo "<option value='" . $key . "'>" . $item . "</option>";
+	            }
+	        } else {
+	            echo "<option> - </option>";
+	        }
+
+	        return;
+	    }
 	}
 
 ?>
