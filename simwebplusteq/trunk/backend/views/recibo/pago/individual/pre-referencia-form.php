@@ -58,7 +58,7 @@
  			'action' => $url,
  			'enableClientValidation' => true,
  			'enableAjaxValidation' => false,
- 			'enableClientScript' => false,
+ 			'enableClientScript' => true,
  		]);
  	?>
 
@@ -178,7 +178,8 @@
                                                                                    		           ->createUrl('/recibo/pago/individual/pago-recibo-individual/listar-cuenta-recaudadora') . '&id=' . '" + $(this).val(),
                                                                                    		           			 function( data ) {
                                                                                    		           			 	$( "#btn-find-referencia").attr("disabled", true);
-                                                                                   		           			 	$( "#btn-find-serial-form").attr("disabled", true);
+                                                                                   		           			 	$( "#id-serial-referencia-form").hide(true);
+                                                                                   		           			 	$( "#link-add-serial-form").attr("disabled", true);
                                                                                    		           			 	$( "select#id-cuenta-recaudadora" ).html( "" );
                                                                                    		           			 	$( "#tipo-cuenta-recaudadora" ).html( "" );
                                                                                                              	$( "select#id-cuenta-recaudadora" ).html( data );
@@ -209,11 +210,13 @@
 	                                                                                                     		$( "#tipo-cuenta-recaudadora" ).html( data );
 	                                                                                                     		$( "#tipo-cuenta-recaudadora" ).css( "color", "red" );
 	                                                                                                     		$( "#btn-find-referencia").attr("disabled", true);
-	                                                                                                     		$( "#btn-find-serial-form").attr("disabled", false);
+	                                                                                                     		$( "#link-add-serial-form").attr("disabled", false);
+	                                                                                                     		$( "#id-serial-referencia-form").show(true);
 	                                                                                                     		if ( data == "CUENTA RECAUDADORA" ) {
 																													$( "#tipo-cuenta-recaudadora" ).css( "color", "blue" );
 																													$( "#btn-find-referencia").attr("disabled", false);
-																													$( "#btn-find-serial-form").attr("disabled", true);
+																													$( "#link-add-serial-form").attr("disabled", true);
+																													$( "#id-serial-referencia-form").hide(true);
 	                                                                                                     		}
 	                                                                                               			}
 	                                                                          );'
@@ -280,18 +283,39 @@
                 				 			   							'data-target' => '#modal',
                 				 			   							'data-url' => Url::to(['view-agregar-serial-form',
                 				 			   			    	 								'recibo' => $datosRecibo[0]['recibo']]),
-                				 			   													'data-pjax' => 0,
-                				 			   													'class' => 'btn btn-primary',
+                				 			   							'data-pjax' => 0,
+                				 			   							'class' => 'btn btn-primary',
+                				 			   							'style' => 'width:100%;'
                 				 			   						]);
 								?>
 							</div>
 <!-- FIN DE BOTON SERIAL DE REFERENCIA MANUAL -->
 
+<!-- BOTON AGREGAR DEPOSITO A LISTADO -->
+							<div class="col-sm-2" style="width:52%;padding:0px;margin:0px;margin-left: 20px;margin-top: 10px;">
+								<?= Html::a(Yii::t('backend', 'Agregar depositos al listado de referencias'), '#',
+																  	[
+                				 			   							'id' => 'link-add-deposito',
+                				 			   							'data-toggle' => 'modal',
+                				 			   							'data-target' => '#modal',
+                				 			   							'data-url' => Url::to(['view-agregar-serial-form',
+                				 			   			    	 								'recibo' => $datosRecibo[0]['recibo']]),
+                				 			   							'data-pjax' => 0,
+                				 			   							'class' => 'btn btn-warning',
+                				 			   							'style' => 'width:100%;'
+                				 			   						]);
+								?>
+							</div>
+<!-- FIN DE BOTON AGREGAR DEPOSITO A LISTADO -->
+
+
+
+
 						</div>
 
 <!-- LISTADO DE PLANILLAS A PAGAR -->
 						<div class="row" style="width:100%;padding:0px;margin:0px;margin-top: 5px;">
-							<div class="col-sm-4" style="width:45%;padding:0px;margin-left:0px;">
+							<div class="col-sm-4" style="width:55%;padding:0px;margin-left:0px;">
 								<div class="row" style="width:100%;">
 									<?= GridView::widget([
 										'id' => 'id-grid-planilla-sin-referencia',
@@ -299,6 +323,17 @@
 										'headerRowOptions' => ['class' => 'warning'],
 										'columns' => [
 											['class' => 'yii\grid\SerialColumn'],
+											[
+						                        'class' => 'yii\grid\CheckboxColumn',
+						                        'name' => 'chkPlanilla',
+						                        'multiple' => true,
+						                        'checkboxOptions' => function ($model, $key, $index, $column) {
+						                				// return [
+						                				// 	'disabled' => 'disabled',
+						                				// ];
+
+						                        }
+						                    ],
 											// [
 								   //              'label' => Yii::t('backend', 'Nro. Recibo'),
 								   //              'value' => function($model) {
@@ -310,8 +345,20 @@
 								                'contentOptions' => [
 								                	'style' => 'text-align:center;font-size:90%;',
 								                ],
+								                'format' => 'raw',
 								                'value' => function($model) {
-																return $model->planilla;
+																//return $model->planilla;
+																return Html::textInput('planilla',
+																				 		$model->planilla,
+																						[
+																							'id' => 'id-' . $model->planilla,
+																							'class' => 'form-control',
+																							'disabled' => 'disabled',
+																							'style' => 'width:70%;
+																										font-size:90%;
+																										background-color:white;'
+
+																						]);
 															},
 								            ],
 								            [
@@ -319,26 +366,42 @@
 								                'contentOptions' => [
 								                	'style' => 'text-align:center;font-size:90%;',
 								                ],
+								                'format' => 'raw',
 								                'value' => function($model) {
-																return $model->impuesto;
+																//return $model->impuesto;
+																return Html::textInput('impuesto',
+																				 		$model->impuesto,
+																						[
+																							'id' => 'id-' . $model->impuesto,
+																							'class' => 'form-control',
+																							'disabled' => 'disabled',
+																							'style' => 'width:80%;
+																										font-size:90%;
+																										background-color:white;'
+
+																						]);
 															},
 								            ],
-								       //      [
-								       //          'label' => Yii::t('backend', 'Contribuyente'),
-								       //          'contentOptions' => [
-								       //          	//'style' => 'text-align:right;',
-								       //          ],
-								       //          'value' => function($model) {
-															// 	return $model->descripcion;
-															// },
-								       //      ],
+
 								            [
 								                'label' => Yii::t('backend', 'Monto'),
 								                'contentOptions' => [
 								                	'style' => 'text-align:right;font-weight:bold;font-size:90%;',
 								                ],
+								                'format' => 'raw',
 								                'value' => function($model) {
-																return Yii::$app->formatter->asDecimal($model->monto, 2);
+																//return Yii::$app->formatter->asDecimal($model->monto, 2);
+																return Html::textInput('monto',
+																				 		Yii::$app->formatter->asDecimal($model->monto, 2),
+																						[
+																							'id' => 'id-' . $model->impuesto,
+																							'class' => 'form-control',
+																							'disabled' => 'disabled',
+																							'style' => 'width:80%;
+																										font-size:90%;
+																										background-color:white;'
+
+																						]);
 															},
 								            ],
 								            [
@@ -346,8 +409,20 @@
 								                'contentOptions' => [
 								                	'style' => 'text-align:center;font-size:90%;',
 								                ],
+								                'format' => 'raw',
 								                'value' => function($model) {
-																return $model->condicion->descripcion;
+																//return $model->condicion->descripcion;
+																return Html::textInput('condicion',
+																				 		$model->condicion->descripcion,
+																						[
+																							'id' => 'id-' . $model->impuesto,
+																							'class' => 'form-control',
+																							'disabled' => 'disabled',
+																							'style' => 'width:80%;
+																										font-size:90%;
+																										background-color:white;'
+
+																						]);
 															},
 								        	],
 
@@ -357,26 +432,87 @@
 							</div>
 
 <!-- FORMULARIO PARA CARGAR LAS REFERENCIAS MANUALES -->
-							<!-- INICIO DEL FORMULARIO MODAL -->
-							<style type="text/css">
-								.modal-content {
-									margin-top: 150px;
+							<div class="col-sm-3" id="id-serial-referencia-form" style="width: 40%;padding:0px;margin:0px;padding-left: 15px;margin-left: 5px;margin-top: 20px;border:1px solid #ccc;">
 
-								}
-							</style>
-							<div class="row">
-								<?php
-									Modal::begin([
-										'header' => 'Rerefencias',
-										'id' => 'modal',
-										'size' => 'modal-lg',
-										'footer' => '<a href="#" class="btn btn-danger" data-dismiss="modal">Cerrar</a>',
-									]);
+								<div class="row" style="width:100%;padding:0px;margin:0px;">
+									<div class="col-sm-2" style="width: 95%;border-bottom: 1px solid;padding:0px;padding-top: 0px;">
+										<h4><strong><?=Html::encode(Yii::t('backend', 'Ingrese lo siguiente:'))?></strong></h4>
+									</div>
+								</div>
 
-									echo "<div id='modalContent' style='padding-left: 20px;'></div>";
+								<div class="row" style="width:100%;padding:0px;margin:0px;margin-top: 20px;">
+									<div class="col-sm-2" style="width: 35%;padding:0px;margin:0px;margin-top: 5px;">
+										<p><strong><?=Html::encode($modelSerial->getAttributeLabel('serial'))?></strong></p>
+									</div>
+									<div class="col-sm-4" style="width:45%;padding:0px;margin:0px;">
+										<?=$form->field($modelSerial, 'serial')->textInput([
+														'id' => 'id-serial',
+														'style' => 'width: 100%;
+														 font-size:100;
+														 font-weight:bold;',
+													])->label(false)
+										?>
+									</div>
+								</div>
 
-									Modal::end();
-								 ?>
+								<div class="row" style="width:100%;padding:0px;margin:0px;">
+									<div class="col-sm-2" style="width: 35%;padding:0px;margin:0px;margin-top: 5px;">
+										<p><strong><?=Html::encode($modelSerial->getAttributeLabel('monto_edocueta'))?></strong></p>
+									</div>
+									<div class="col-sm-4" style="width:45%;padding:0px;margin:0px;">
+										<?= $form->field($modelSerial, 'monto_edocuenta')->widget(MaskedInput::className(), [
+																						//'mask' => '',
+																						'options' => [
+																							'id' => 'id-monto-edocuenta',
+																							'class' => 'form-control',
+																							'style' => 'width: 100%;
+																							 font-weight:bold;
+																							 font-size:120;',
+																							'placeholder' => '0.00',
+																						],
+																						'clientOptions' => [
+																							'alias' =>  'decimal',
+																							'digits' => 2,
+																							'digitsOptional' => false,
+																							'groupSeparator' => '.',
+																							'removeMaskOnSubmit' => true,
+																							// 'allowMinus'=>false,
+																							//'groupSize' => 3,
+																							'radixPoint'=> ",",
+																							'autoGroup' => true,
+																							'decimalSeparator' => ',',
+																						],
+																	  				  ])->label(false);
+										?>
+									</div>
+								</div>
+
+
+								<div class="row" style="width:100%;padding:0px;margin:0px;">
+									<div class="col-sm-2" style="width: 35%;padding:0px;margin:0px;margin-top: 5px;">
+										<p><strong><?=Html::encode($modelSerial->getAttributeLabel('fecha_edocueta'))?></strong></p>
+									</div>
+									<div class="col-sm-4" style="width:30%;padding:0px;margin:0px;">
+										<?= $form->field($modelSerial, 'fecha_edocuenta')->widget(\yii\jui\DatePicker::classname(),[
+																				  'clientOptions' => [
+																						'maxDate' => '+0d',	// Bloquear los dias en el calendario a partir del dia siguiente al actual.
+																						'changeMonth' => true,
+																						'changeYear' => true,
+																					],
+																				  'language' => 'es-ES',
+																				  'dateFormat' => 'dd-MM-yyyy',
+																				  'options' => [
+																				  		'id' => 'id-fecha-edocuenta',
+																						'class' => 'form-control',
+																						'readonly' => true,
+																						'style' => 'background-color:white;
+																								    width:100%;
+																									font-size:100%;
+																	 								font-weight:bold;',
+																					]
+																					])->label(false) ?>
+									</div>
+								</div>
 							</div>
 
 <!-- FINAL DEL FORMULARIO MODAL -->
@@ -449,15 +585,9 @@
 
 <?php
 $this->registerJs(
-    '$(document).on("click", "#link-add-serial-form", (function() {
-        $.get(
-            $(this).data("url"),
-            function (data) {
-                //$(".modal-body").html(data);
-                $("#modalContent").html(data);
-                $("#modal").modal();
-            }
-        );
-    }));
-    '
+    '$(document).ready(function(){
+    	$( "#btn-find-referencia").attr("disabled", true);
+    	$( "#link-add-serial-form").attr("disabled", true);
+    	$( "#id-serial-referencia-form").hide(true);
+    });'
 ); ?>
