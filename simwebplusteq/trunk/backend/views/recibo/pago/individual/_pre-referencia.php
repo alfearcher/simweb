@@ -58,5 +58,6 @@
 										'url' => $url,
 										'datosRecibo' => $_SESSION['datosRecibo'],
 										'dataProviders' => $dataProviders,
+										'modelSerial' => $modelSerial,
 			]);?>
 </div>

@@ -41,7 +41,8 @@
 	use yii\helpers\ArrayHelper;
 	use yii\widgets\ActiveForm;
 	use yii\web\View;
-	//use yii\widgets\Pjax;
+	use yii\widgets\Pjax;
+	use yii\bootstrap\Modal;
 	//use common\models\contribuyente\ContribuyenteBase;
 	use yii\widgets\DetailView;
 	use yii\widgets\MaskedInput;
@@ -176,7 +177,10 @@
                                                              'onchange' => '$.post( "' . Yii::$app->urlManager
                                                                                    		           ->createUrl('/recibo/pago/individual/pago-recibo-individual/listar-cuenta-recaudadora') . '&id=' . '" + $(this).val(),
                                                                                    		           			 function( data ) {
+                                                                                   		           			 	$( "#btn-find-referencia").attr("disabled", true);
+                                                                                   		           			 	$( "#btn-find-serial-form").attr("disabled", true);
                                                                                    		           			 	$( "select#id-cuenta-recaudadora" ).html( "" );
+                                                                                   		           			 	$( "#tipo-cuenta-recaudadora" ).html( "" );
                                                                                                              	$( "select#id-cuenta-recaudadora" ).html( data );
                                                                                                        		}
                                                                                     );'
@@ -197,19 +201,28 @@
 	                                                      'id'=> 'id-cuenta-recaudadora',
 	                                                      'prompt' => Yii::t('backend', 'Select'),
 	                                                      'style' => 'width:100%;',
-	                                                      // 'onchange' => '$.post( "' . Yii::$app->urlManager
-	                                                      //                      		           ->createUrl('/recibo/pago/individual/pago-recibo-individual/listar-cuenta-recaudadora') . '&a=' . '" + $(this).val() +  "' .
-	                                                      //                      		           															   '&i=' . '" + $("#impuesto").val(),
-	                                                      //                      		           				 function( data ) {
-	                                                      //                      		           				 	//$( "select#id-codigo" ).html( "" );
-	                                                      //                      		           				 	$( "select#id-grupo-subnivel" ).html( "" );
-	                                                      //                      		           				 	$( "select#codigo" ).html( "" );
-	                                                      //                      		           				 	$( "#id-codigo-descripcion" ).html( "" );
-	                                                      //                                                		$( "select#id-codigo" ).html( data );
-	                                                      //                                          			}
-	                                                       //                     );'
+	                                                      'onchange' => '$.post( "' . Yii::$app->urlManager
+	                                                                           		           ->createUrl('/recibo/pago/individual/pago-recibo-individual/determinar-cuenta-recaudadora') . '&cuenta=' . '" + $(this).val() +  "' .
+	                                                                           		           															   '&id-banco=' . '" + $("select#id-banco").val(),
+	                                                                           		           				 function( data ) {
+	                                                                           		           				 	$( "#tipo-cuenta-recaudadora" ).html( "" );
+	                                                                                                     		$( "#tipo-cuenta-recaudadora" ).html( data );
+	                                                                                                     		$( "#tipo-cuenta-recaudadora" ).css( "color", "red" );
+	                                                                                                     		$( "#btn-find-referencia").attr("disabled", true);
+	                                                                                                     		$( "#btn-find-serial-form").attr("disabled", false);
+	                                                                                                     		if ( data == "CUENTA RECAUDADORA" ) {
+																													$( "#tipo-cuenta-recaudadora" ).css( "color", "blue" );
+																													$( "#btn-find-referencia").attr("disabled", false);
+																													$( "#btn-find-serial-form").attr("disabled", true);
+	                                                                                                     		}
+	                                                                                               			}
+	                                                                          );'
 	                                                                ])->label(false);
 	                            ?>
+							</div>
+
+							<div class="col-sm-2" style="width:16%;padding:0px;margin:0px;margin-left:10px;font-size: 90%;font-weight: bold;">
+								<div id="tipo-cuenta-recaudadora"></div>
 							</div>
 						</div>
 <!-- FIN DE LISTA DE CUENTA RECAUDADORAS -->
@@ -218,37 +231,61 @@
 							<h4><strong><?=Html::encode(Yii::t('backend', 'Referencias Bancarias'))?></strong></h4>
 						</div>
 
-						<div class="row" style="width:100%;margin-bottom: 20px;">
-							<div class="row" style="width:100%;padding:0px;margin:0px;margin-top: 20px;">
-								<div class="col-sm-2" style="width: 20%;padding:0px;">
-									<p><strong><?=Html::encode(Yii::t('backend', 'Fecha Pago:'))?></strong></p>
-								</div>
-								<div class="col-sm-4" style="width:10%;padding:0px;margin-left:0px;">
-									<?=Html::textInput('fecha-pago',
-												       ( $datosRecibo[0]['estatus'] == 1 ) ? $datosRecibo[0]['fecha'] : date('d-m-Y'),
-												       [
-												       		'class' => 'form-control',
-												       		'style' => 'width:100%;
-												       					background-color:white;
-												       					font-size:100%;
-												       					font-weight:bold;',
-												       		'readOnly' => true,
-												       ])
-									?>
-								</div>
-
-								<div class="col-sm-2" style="width:25%;padding:0px;margin:0px;margin-left: 20px;">
-									<?= Html::submitButton(Yii::t('backend', 'Buscar Referencias Bancarias'),
-																	  [
-																		'id' => 'btn-back',
-																		'class' => 'btn btn-primary',
-																		'value' => 2,
-																		'style' => 'width: 100%',
-																		'name' => 'btn-back',
-																	  ])
-									?>
-								</div>
+						<div class="row" style="width:100%;padding:0px;margin:0px;margin-top: 20px;">
+							<!-- FECHA DE PAGO -->
+							<div class="col-sm-2" style="width: 20%;padding:0px;">
+								<p><strong><?=Html::encode(Yii::t('backend', 'Fecha Pago'))?></strong></p>
 							</div>
+							<div class="col-sm-4" style="width:10%;padding:0px;margin-left:0px;">
+								<?= $form->field($model, 'fecha_pago')->widget(\yii\jui\DatePicker::classname(),[
+																				  'clientOptions' => [
+																						'maxDate' => '+0d',	// Bloquear los dias en el calendario a partir del dia siguiente al actual.
+																						'changeMonth' => true,
+																						'changeYear' => true,
+																					],
+																				  'language' => 'es-ES',
+																				  'dateFormat' => 'dd-MM-yyyy',
+																				  'options' => [
+																				  		'id' => 'id-fecha-pago',
+																						'class' => 'form-control',
+																						'readonly' => true,
+																						'style' => 'background-color:white;
+																								    width:100%;
+																									font-size:100%;
+																	 								font-weight:bold;',
+																					]
+																					])->label(false) ?>
+
+							</div>
+							<!-- FIN DE FECHA DE PAGO -->
+
+							<div class="col-sm-2" style="width:25%;padding:0px;margin:0px;margin-left: 20px;">
+								<?= Html::submitButton(Yii::t('backend', 'Buscar Referencias Bancarias'),
+																  [
+																	'id' => 'btn-find-referencia',
+																	'class' => 'btn btn-primary',
+																	'value' => 3,
+																	'style' => 'width: 100%',
+																	'name' => 'btn-find-referencia',
+																  ])
+								?>
+							</div>
+
+<!-- BOTON SERIAL DE REFERENCIA MANUAL -->
+							<div class="col-sm-2" style="width:25%;padding:0px;margin:0px;margin-left: 20px;">
+								<?= Html::a(Yii::t('backend', 'Seriales(Referencias)'), '#',
+																  	[
+                				 			   							'id' => 'link-add-serial-form',
+                				 			   							'data-toggle' => 'modal',
+                				 			   							'data-target' => '#modal',
+                				 			   							'data-url' => Url::to(['view-agregar-serial-form',
+                				 			   			    	 								'recibo' => $datosRecibo[0]['recibo']]),
+                				 			   													'data-pjax' => 0,
+                				 			   													'class' => 'btn btn-primary',
+                				 			   						]);
+								?>
+							</div>
+<!-- FIN DE BOTON SERIAL DE REFERENCIA MANUAL -->
 
 						</div>
 
@@ -318,6 +355,34 @@
 									]);?>
 								</div>
 							</div>
+
+<!-- FORMULARIO PARA CARGAR LAS REFERENCIAS MANUALES -->
+							<!-- INICIO DEL FORMULARIO MODAL -->
+							<style type="text/css">
+								.modal-content {
+									margin-top: 150px;
+
+								}
+							</style>
+							<div class="row">
+								<?php
+									Modal::begin([
+										'header' => 'Rerefencias',
+										'id' => 'modal',
+										'size' => 'modal-lg',
+										'footer' => '<a href="#" class="btn btn-danger" data-dismiss="modal">Cerrar</a>',
+									]);
+
+									echo "<div id='modalContent' style='padding-left: 20px;'></div>";
+
+									Modal::end();
+								 ?>
+							</div>
+
+<!-- FINAL DEL FORMULARIO MODAL -->
+
+<!-- FORMULARIO PARA CARGAR LAS REFERENCIAS MANUALES -->
+
 						</div>
 <!-- LISTADO DE PLANILLAS A PAGAR -->
 
@@ -379,3 +444,20 @@
 	</div>
 	<?php ActiveForm::end(); ?>
 </div>
+
+
+
+<?php
+$this->registerJs(
+    '$(document).on("click", "#link-add-serial-form", (function() {
+        $.get(
+            $(this).data("url"),
+            function (data) {
+                //$(".modal-body").html(data);
+                $("#modalContent").html(data);
+                $("#modal").modal();
+            }
+        );
+    }));
+    '
+); ?>
