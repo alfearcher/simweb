@@ -68,7 +68,6 @@
 	use common\controllers\pdf\planilla\PlanillaPdfController;
 
 
-
 	session_start();		// Iniciando session
 
 	/**
@@ -238,7 +237,7 @@
 
 			} elseif ( $impuesto > 0 && $año > 0 && $idCodigo > 0 && $subnivel > 0 ) {
 
-				return $tasaSearch->generarViewListaCodigoSubNivel($impuesto, $año, $idCodigo, $subnivel);
+				return $tasaSearch->generarViewListaCodigoSubNivel($impuesto, $año, $idCodigo, $subnivel, true);
 
 			}
 
