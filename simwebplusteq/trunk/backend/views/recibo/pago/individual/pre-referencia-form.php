@@ -252,6 +252,75 @@
 
 						</div>
 
+<!-- LISTADO DE PLANILLAS A PAGAR -->
+						<div class="row" style="width:100%;padding:0px;margin:0px;margin-top: 5px;">
+							<div class="col-sm-4" style="width:45%;padding:0px;margin-left:0px;">
+								<div class="row" style="width:100%;">
+									<?= GridView::widget([
+										'id' => 'id-grid-planilla-sin-referencia',
+										'dataProvider' => $dataProviders[1],
+										'headerRowOptions' => ['class' => 'warning'],
+										'columns' => [
+											['class' => 'yii\grid\SerialColumn'],
+											// [
+								   //              'label' => Yii::t('backend', 'Nro. Recibo'),
+								   //              'value' => function($model) {
+											// 					return $model->recibo;
+											// 				},
+								   //          ],
+								            [
+								                'label' => Yii::t('backend', 'Planilla'),
+								                'contentOptions' => [
+								                	'style' => 'text-align:center;font-size:90%;',
+								                ],
+								                'value' => function($model) {
+																return $model->planilla;
+															},
+								            ],
+								            [
+								                'label' => Yii::t('backend', 'Impuesto'),
+								                'contentOptions' => [
+								                	'style' => 'text-align:center;font-size:90%;',
+								                ],
+								                'value' => function($model) {
+																return $model->impuesto;
+															},
+								            ],
+								       //      [
+								       //          'label' => Yii::t('backend', 'Contribuyente'),
+								       //          'contentOptions' => [
+								       //          	//'style' => 'text-align:right;',
+								       //          ],
+								       //          'value' => function($model) {
+															// 	return $model->descripcion;
+															// },
+								       //      ],
+								            [
+								                'label' => Yii::t('backend', 'Monto'),
+								                'contentOptions' => [
+								                	'style' => 'text-align:right;font-weight:bold;font-size:90%;',
+								                ],
+								                'value' => function($model) {
+																return Yii::$app->formatter->asDecimal($model->monto, 2);
+															},
+								            ],
+								            [
+								                'label' => Yii::t('frontend', 'Condition'),
+								                'contentOptions' => [
+								                	'style' => 'text-align:center;font-size:90%;',
+								                ],
+								                'value' => function($model) {
+																return $model->condicion->descripcion;
+															},
+								        	],
+
+								    	]
+									]);?>
+								</div>
+							</div>
+						</div>
+<!-- LISTADO DE PLANILLAS A PAGAR -->
+
 
 
 						<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1; padding-left: 5px;margin-top:20px;">

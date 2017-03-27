@@ -57,5 +57,6 @@
 										'listaBanco' => $listaBanco,
 										'url' => $url,
 										'datosRecibo' => $_SESSION['datosRecibo'],
+										'dataProviders' => $dataProviders,
 			]);?>
 </div>
