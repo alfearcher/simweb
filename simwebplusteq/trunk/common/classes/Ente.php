@@ -87,7 +87,7 @@
 		protected $municipio = 'Guaicaipuro';
 
 		protected $cuentaRecaudadora = [
-						'1234-1234-99-1234567890'
+						'01280063186300031652',
 					];
 
 		// identificador dentro del sistema, generado por el mismo.
@@ -101,88 +101,131 @@
 		}
 
 
+
+		/**
+		 * Metodo que retorna el arreglo con todos los numeros de la cuentas recaudadoras
+		 * @return array
+		 */
+		public function getCuentaRecaudadora()
+		{
+			return $this->cuentaRecaudadora;
+		}
+
+
+
+		/***/
 		public function getCuentaRecaudadoraPrincipal($nro)
 		{
 			return $this->cuentaRecaudadora[$nro];
 		}
 
 
+		/***/
 		public function getPortalWeb()
 		{
 			return $this->portalWeb;
 		}
 
 
+		/***/
 		public function getNoPais()
 		{
 			return $this->noPais;
 		}
 
+
+		/***/
 		public function getPais()
 		{
 			return $this->pais;
 		}
 
+
+		/***/
 		public function getEnte()
 		{
 			return  $this->noEnte;
 		}
 
+
+		/***/
 		public function getAlcaldia()
 		{
 			return $this->alcaldia;
 		}
 
+
+		/***/
 		public function getAlias()
 		{
 			return $this->alias;
 		}
 
+
+		/***/
 		public function getEslogan()
 		{
 			return $this->eslogan;
 		}
 
+
+		/***/
 		public function getRif()
 		{
 			return $this->rif;
 		}
 
+
+		/***/
 		public function getDireccion()
 		{
 			return $this->direccionLocalidad;
 		}
 
+
+		/***/
 		public function getTelefonos()
 		{
 			return $this->telefonos;
 		}
 
+
+		/***/
 		public function getEmail()
 		{
 			return $this->email;
 		}
 
+
+		/***/
 		public function getnoEstado()
 		{
 			return $this->noEstado;
 		}
 
+
+		/***/
 		public function getEstado()
 		{
 			return $this->estado;
 		}
 
+
+		/***/
 		public function getnoMunicipio()
 		{
 			return $this->noMunicipio;
 		}
 
+
+		/***/
 		public function getMunicipio()
 		{
 			return $this->municipio;
 		}
 
+
+		/***/
 		public function getId()
 		{
 			return $this->id;
