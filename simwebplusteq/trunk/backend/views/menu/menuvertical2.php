@@ -48,6 +48,7 @@
 		        				'items' => [
 		        							['label' => 'Crear Cuenta','url' =>['opcion-funcionario/buscar-funcionario-usuario']],
 		        							['label' => 'Desincorporar Cuenta','url' => '#'],
+		        							['label' => 'Recuperar Cuenta Contribuyente','url' =>['/usuario/recuperar-password-contribuyente/seleccionar-tipo-contribuyente']], 
 		        				]
 		        			],
 
