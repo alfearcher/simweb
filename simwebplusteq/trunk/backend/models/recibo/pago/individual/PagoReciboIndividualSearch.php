@@ -480,7 +480,7 @@
                                     'usuario' => $usuario,
                                     'forma' => $result['formaPago']['descripcion'],
                                     'codigo_cuenta' => $codigo_cuenta,
-                                    'banco' => $result['banco'],
+                                    'id_banco' => $result['id_banco'],
 
                               ];
                         }
