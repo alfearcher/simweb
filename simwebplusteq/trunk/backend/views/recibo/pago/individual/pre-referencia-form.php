@@ -274,25 +274,10 @@
 								?>
 							</div>
 
-<!-- BOTON SERIAL DE REFERENCIA MANUAL -->
-							<div class="col-sm-2" style="width:25%;padding:0px;margin:0px;margin-left: 20px;">
-								<?= Html::a(Yii::t('backend', 'Seriales(Referencias)'), '#',
-																  	[
-                				 			   							'id' => 'link-add-serial-form',
-                				 			   							'data-toggle' => 'modal',
-                				 			   							'data-target' => '#modal',
-                				 			   							'data-url' => Url::to(['view-agregar-serial-form',
-                				 			   			    	 								'recibo' => $datosRecibo[0]['recibo']]),
-                				 			   							'data-pjax' => 0,
-                				 			   							'class' => 'btn btn-primary',
-                				 			   							'style' => 'width:100%;'
-                				 			   						]);
-								?>
-							</div>
-<!-- FIN DE BOTON SERIAL DE REFERENCIA MANUAL -->
+
 
 <!-- BOTON AGREGAR DEPOSITO A LISTADO -->
-							<div class="col-sm-2" style="width:52%;padding:0px;margin:0px;margin-left: 20px;margin-top: 10px;">
+							<div class="col-sm-2" style="width:35%;padding:0px;margin:0px;margin-left: 10px;">
 								<?= Html::a(Yii::t('backend', 'Agregar depositos al listado de referencias'), '#',
 																  	[
                 				 			   							'id' => 'link-add-deposito',
@@ -487,7 +472,6 @@
 									</div>
 								</div>
 
-
 								<div class="row" style="width:100%;padding:0px;margin:0px;">
 									<div class="col-sm-2" style="width: 35%;padding:0px;margin:0px;margin-top: 5px;">
 										<p><strong><?=Html::encode($modelSerial->getAttributeLabel('fecha_edocueta'))?></strong></p>
@@ -512,6 +496,19 @@
 																					]
 																					])->label(false) ?>
 									</div>
+
+									<div class="col-sm-2" style="margin-left: 10px;width: 30%;">
+										<div class="form-group">
+											<?= Html::a(Yii::t('backend', 'Guardar'), '#',
+																			[
+			                				 			   						'id' => 'link-add-serial',
+			                				 			   						'class' => 'btn btn-primary',
+			                				 			   						'style' => 'width:100%;'
+			                				 			   					]);
+											?>
+										</div>
+									</div>
+
 								</div>
 							</div>
 
