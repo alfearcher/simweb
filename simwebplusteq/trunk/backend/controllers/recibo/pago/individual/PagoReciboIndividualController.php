@@ -777,7 +777,7 @@
 	        		$model->codigo_banco = 0;
 	        		$model->cuenta_deposito = '';
 	        		$model->usuario = $usuario;
-	        		$model->banco = '';
+	        		$model->id_banco = 0;
 	        		$model->fecha = date('Y-m-d');
 	        	}
         		return $this->renderPartial('/recibo/pago/individual/forma-cheque', [
@@ -800,7 +800,7 @@
 	        		$model->codigo_banco = 0;
 	        		$model->cuenta_deposito = '';
 	        		$model->usuario = $usuario;
-					$model->banco = '';
+					$model->id_banco = 0;
 				}
 
     			$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
@@ -828,7 +828,7 @@
 	        		$model->codigo_banco = 0;
 	        		$model->cuenta_deposito = '';
 	        		$model->usuario = $usuario;
-					$model->banco = '';
+					$model->id_banco = 0;
 				}
         		return $this->renderPartial('/recibo/pago/individual/forma-efectivo', [
         										'model' => $model,
@@ -856,7 +856,7 @@
 	        		$model->codigo_banco = 0;
 	        		$model->cuenta_deposito = '';
 	        		$model->usuario = $usuario;
-					$model->banco = '';
+					$model->id_banco = 0;
 					$model->fecha = date('Y-m-d');
 				}
         		return $this->renderPartial('/recibo/pago/individual/forma-tarjeta', [
