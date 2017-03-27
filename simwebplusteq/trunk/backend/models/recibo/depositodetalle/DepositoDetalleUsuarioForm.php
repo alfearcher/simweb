@@ -117,7 +117,7 @@
         				'cuenta',
         				'cheque',
         				'tipo_deposito',
-        				'banco',
+        				'id_banco',
         				'usuario',
         				'codigo_cuenta',
         		],
