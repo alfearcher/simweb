@@ -55,6 +55,7 @@
 
 		public $id_banco;
 		public $cuenta_recaudadora;
+		public $fecha_pago;
 
 
 		/**
@@ -74,7 +75,8 @@
 	    public function rules()
 	    {
 	        return [
-	        	[['id_banco', 'cuenta_recaudodora'],
+	        	[['id_banco', 'cuenta_recaudodora',
+	        	  'fecha_pago'],
 	        	'required',
 	        	'message' => Yii::t('backend','{attribute} is required'),
 	        	]
