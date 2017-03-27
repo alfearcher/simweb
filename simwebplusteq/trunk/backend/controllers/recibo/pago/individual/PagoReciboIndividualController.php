@@ -69,6 +69,8 @@
     use backend\models\recibo\tipodeposito\TipoDepositoSearch;
     use backend\models\recibo\depositodetalle\VaucheDetalleUsuarioForm;
     use backend\models\recibo\prereferencia\PreReferenciaPlanillaForm;
+    use backend\models\recibo\pago\individual\SerialReferenciaForm;
+
 
     use yii\jui\Dialog;
 
@@ -359,20 +361,41 @@
         	$recibo = isset($_SESSION['recibo']) ? (int)$_SESSION['recibo'] : 0;
         	if ( $recibo > 0 ) {
 
+        		$request = Yii::$app->request;
+	        	$postGet = $request->get();
+	        	$postData = $request->post();
+//die(var_dump($postData));
+        		if ( isset($postData['btn-back']) ) {
+	        		if ( $postData['btn-back'] == 2 ) {
+	        			$this->redirect(['registrar-formas-pago']);
+	        		}
+	        	}
+	        	$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
+	        	$dataProviders = $pagoReciboSearch->getDataProviders();
+
         		$model = New PreReferenciaPlanillaForm();
+        		$modelSerial = New SerialReferenciaForm();
 
         		$searchBanco = New BancoSearch();
 
         		// Listado de bancos relacionados a cuentas recaudadoras.
         		$listaBanco = $searchBanco->getListaBancoRelacionadaCuentaReceptora();
 
-        		$caption = Yii::t('backend', 'Registro de Pre-Referencias Bancarias');
+        		$datosRecibo = $_SESSION['datosRecibo'];
+        		$model->fecha_pago = ( $datosRecibo[0]['estatus'] == 1 ? $datosRecibo[0]['fecha'] : date('d-m-Y') );
+
+        		$url = Url::to(['pre-referencia']);
+        		$caption = Yii::t('backend', 'Registro de Pre-Referencias Bancarias') . '. ' . Yii::t('backend', 'Recibo Nro. ') . $recibo;
         		$subCaption = Yii::t('backend', 'Elabore la referencia bancaria');
         		return $this->render('/recibo/pago/individual/_pre-referencia',[
         										'model' => $model,
         										'caption' => $caption,
         										'subCaption' => $subCaption,
         										'listaBanco' => $listaBanco,
+        										'url' => $url,
+        										'datosRecibo' => $datosRecibo,
+        										'dataProviders' => $dataProviders,
+        										'modelSerial' => $modelSerial,
         			]);
         	}
         }
@@ -384,12 +407,37 @@
         {
         	$request = Yii::$app->request;
         	$postGet = $request->get();
+        	$postData = $request->post();
 
         	$searchBanco = New BancoSearch();
         	$id = isset($postGet['id']) ? (int)$postGet['id'] : 0;
         	return $searchBanco->generarViewListaCuentaRecaudadora($id);
 
         }
+
+
+
+
+
+        /***/
+        public function actionDeterminarCuentaRecaudadora()
+        {
+        	$request = Yii::$app->request;
+        	$postGet = $request->get();
+        	$postData = $request->post();
+
+        	$listaCuentasRecaudadoras = Yii::$app->ente->getCuentaRecaudadora();
+        	if ( isset($postGet['cuenta']) && isset($postGet['id-banco']) ) {
+        		if ( in_array($postGet['cuenta'], $listaCuentasRecaudadoras) ) {
+        			echo "CUENTA RECAUDADORA";
+        		} else {
+        			echo "NO ES CUENTA RECAUDADORA";
+        		}
+        	} else {
+        		echo "NO ES CUENTA RECAUDADORA";
+        	}
+        }
+
 
 
 
@@ -1247,6 +1295,69 @@
         	}
         	$this->redirect(['registrar-formas-pago']);
         }
+
+
+
+
+        /***/
+        public function actionViewAgregarSerialForm()
+        {
+			$recibo = isset($_SESSION['recibo']) ? (int)$_SESSION['recibo'] : 0;
+
+			$usuario = Yii::$app->identidad->getUsuario();
+			$modelSerial = New SerialReferenciaForm();
+			$formName = $modelSerial->formName();
+
+        	$request = Yii::$app->request;
+
+        	if ( $request->isGet ) {
+        		// Viene de seleccionar el numero de deposito para cargar los detalles
+        		// del mismo.
+	        	return $this->renderAjax('/recibo/pago/individual/agregar-serial-form', [
+	        													'modelSerial' => $modelSerial,
+	        													'url' => Url::to(['view-agregar-serial-form']),
+	        			]);
+
+        	} else {
+
+        		$postData = $request->post();
+
+        		if ( $modelSerial->load($postData)  && Yii::$app->request->isAjax ) {
+					Yii::$app->response->format = Response::FORMAT_JSON;
+					return ActiveForm::validate($modelSerial);
+				}
+
+				if ( $modelSerial->load($postData) ) {
+
+					if ( $modelSerial->validate() ) {
+						// Se guarda el detalle del deposito.
+
+						// self::setConexion();
+						// $this->_conn->open();
+						// $this->_transaccion = $this->_conn->beginTransaction();
+
+						// $result = self::actionBeginAgregarDetalleDeposito($modelSerial, $postData);
+						// if ( $result ) {
+						// 	// Se actualiza el maestro del vaucher.
+						// 	$result = self::actionActualizarMontoDeposito($modelSerial, 'sumar');
+						// 	if ( $result ) {
+						// 		$this->_transaccion->commit();
+						// 	} else {
+						// 		$this->_transaccion->rollBack();
+						// 	}
+
+						// } else {
+						// 	$this->_transaccion->rollBack();
+						// }
+						// $this->_conn->close();
+
+					}
+				}
+        	}
+        }
+
+
+
 
 
 
