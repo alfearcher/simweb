@@ -341,7 +341,7 @@ class RecuperarAccesoContribuyenteController extends Controller
                               ];  
                 $arrayCondition = ['id_contribuyente'=>$contribuyente['id_contribuyente']];
 
-                if ( $conn->guardarRegistro($conexion, $tableName,  $arrayDatos, $arrayCondition) ){  
+                if ( $conn->modificarRegistro($conexion, $tableName,  $arrayDatos, $arrayCondition) ){  
                 
                     $tipoError = 0;
                     $todoBien = true;
