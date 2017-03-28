@@ -45,7 +45,7 @@
  *  @inherits
  *  
  */
-namespace frontend\models\usuario;
+namespace backend\models\usuario;
 
 use Yii;
 use yii\base\Model;
@@ -57,7 +57,7 @@ class RecuperarPasswordNaturalForm extends CrearUsuarioNatural
 {
      
     public $id_contribuyente;
-	public $usuario;
+	  public $usuario;
     public $email;
     public $naturaleza;
     public $cedula;
@@ -69,7 +69,7 @@ class RecuperarPasswordNaturalForm extends CrearUsuarioNatural
     {   //validaciones requeridas para el formulario de registro de usuarios     
         return [
              ['cedula', 'integer'],
-            [['naturaleza',  'cedula', 'email'], 'required' ],
+            [['naturaleza',  'cedula'], 'required' ],
             [['cedula'], 'validarLongitud'],
             ['cedula' , 'validarCi'],
             ['cedula' , 'validarEmailRif'],
@@ -125,7 +125,6 @@ class RecuperarPasswordNaturalForm extends CrearUsuarioNatural
                                 ->where([
                                 'naturaleza' => $this->naturaleza,
                                 'cedula' => $this->cedula,
-                                'email' => $this->email,
                                 'tipo_naturaleza' => 0,
                                 'inactivo' => 0,
                               
@@ -135,7 +134,7 @@ class RecuperarPasswordNaturalForm extends CrearUsuarioNatural
             if($validar == null){
         
           
-                $this->addError($attribute, Yii::t('frontend', 'El correo registrado no coincide, dirijase a la Alcaldia' ));
+                $this->addError($attribute, Yii::t('frontend', 'Los datos ingresados no se encuentran registrados' ));
         
             }else{
                 
@@ -157,7 +156,6 @@ class RecuperarPasswordNaturalForm extends CrearUsuarioNatural
                                 ->where([
                                 'naturaleza' => $this->naturaleza,
                                 'cedula' => $this->cedula,
-                                'email' => $this->email,
                                 'tipo_naturaleza' => 0,
                                 'inactivo' => 0,
                               

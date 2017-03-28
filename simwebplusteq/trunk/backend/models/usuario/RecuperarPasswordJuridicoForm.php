@@ -48,7 +48,7 @@
  *  @inherits
  *  
  */
-namespace frontend\models\usuario;
+namespace backend\models\usuario;
 
 use Yii;
 use yii\base\Model;
@@ -73,7 +73,7 @@ class RecuperarPasswordJuridicoForm extends CrearUsuarioNatural
     {   //validaciones requeridas para el formulario de registro de usuarios     
         return [
             [['cedula','tipo'],'integer'],
-            [['naturaleza',  'cedula', 'tipo', 'email'], 'required' ],
+            [['naturaleza',  'cedula', 'tipo'], 'required' ],
             [['cedula'], 'validarLongitud'],
             ['cedula' ,'validarRif'],
             ['cedula' ,'validarEmailRif'],
@@ -150,7 +150,7 @@ class RecuperarPasswordJuridicoForm extends CrearUsuarioNatural
                                 ->where([
                                 'naturaleza' => $this->naturaleza,
                                 'cedula' => $this->cedula,
-                                'email' => $this->email,
+                                
                                 'tipo' => $this->tipo,
                                 'tipo_naturaleza' => 1,
                                 'inactivo' => 0,
@@ -160,7 +160,7 @@ class RecuperarPasswordJuridicoForm extends CrearUsuarioNatural
 
             if($validar == null){
         
-                $this->addError($attribute, Yii::t('frontend', 'El correo registrado no coincide, dirijase a la Alcaldia' ));
+                $this->addError($attribute, Yii::t('frontend', 'Los datos no se encuentran registrados, dirijase a la Alcaldia' ));
         
             }else{
                 return false;

@@ -44,7 +44,7 @@
  *  
  */ 
 
-namespace Backend\controllers\usuario;
+namespace backend\controllers\usuario;
 
 use Yii;
 use common\models\LoginForm;
@@ -60,8 +60,9 @@ use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use frontend\models\usuario\RecuperarPasswordNaturalForm;
-use frontend\models\usuario\RecuperarPasswordJuridicoForm;
+use backend\models\usuario\RecuperarPasswordNaturalForm;
+use backend\models\usuario\RecuperarPasswordJuridicoForm;
+
 
 use frontend\models\usuario\ValidarCambiarPasswordNaturalForm;
 use frontend\models\usuario\ValidarCambiarPasswordJuridicoForm;
@@ -75,7 +76,7 @@ use common\models\session\Session;
 use common\mensaje\MensajeController;
 use frontend\models\usuario\PreguntaSeguridadContribuyente;
 use frontend\models\usuario\MostrarPreguntaSeguridadForm;
-use frontend\models\usuario\MensajeRecuperarForm;
+use backend\models\usuario\MensajeRecuperarForm;
 
 use common\models\contribuyente\ContribuyenteBase;
 use frontend\models\usuario\Afiliacion;
@@ -87,7 +88,7 @@ session_start();
  */
 class RecuperarAccesoContribuyenteController extends Controller
 {   
-    
+    // usuario/recuperar-acceso-contribuyente/seleccionar-tipo-contribuyente
    
     public $layout = "layout-login";
 
@@ -141,18 +142,12 @@ class RecuperarAccesoContribuyenteController extends Controller
                             if ($buscarAfiliaciones == true) {
                                 
                             
-                            if ($buscarAfiliaciones['password_hash'] == null and $buscarAfiliaciones['password'] !== 0){
-                                
-                                  
-                                     $this->redirect(['mensaje-recuperar']);
-                            }else { 
-                               
-                                   return MensajeController::actionMensaje(975); //Ingreso anteriormente por primera vez al sistema, ingrese a la opcion CAMBIAR CONTRASEÑA
-                            }
-                        } else {
+                                $this->redirect(['mensaje-recuperar']);
+                            
+                            } else {
 
                             return MensajeController::actionMensaje(976);//El contribuyente no posee afiliacion en el sitema
-                        }
+                            }
                         }else{
                             return MensajeController::actionMensaje(932);//Taxpayer not defined ----- contribuyente no definido
                         }
@@ -253,14 +248,9 @@ class RecuperarAccesoContribuyenteController extends Controller
 
         if ($buscarAfiliaciones == true) {
 
-             if ($buscarAfiliaciones['password_hash'] == null and $buscarAfiliaciones['password'] !== 0){
-                                
-                                
-                 $this->redirect(['mensaje-recuperar']);
-             }else { 
-                               
-                 return MensajeController::actionMensaje(975); //Ingreso anteriormente por primera vez al sistema, ingrese a la opcion CAMBIAR CONTRASEÑA
-             }
+             
+                $this->redirect(['mensaje-recuperar']);
+             
         }  else {
 
             return MensajeController::actionMensaje(976);//El contribuyente no posee afiliacion en el sitema
@@ -286,9 +276,23 @@ class RecuperarAccesoContribuyenteController extends Controller
                 if ( $model->load(Yii::$app->request->post()) ) {
 
 
-                    if ($model->validate()){
+                    if ($model->validate()){ 
+
+                        $seguridad = new Seguridad();
+
+                        $nuevaClave = $seguridad->randKey(6);
+                        $salt = Utilidad::getUtilidad();
+                        $password = $nuevaClave.$salt;
+
+                        $password_hash = md5($password);
+
                         if($_SESSION['Contribuyente']['email'] != null){
-                                $envio = self::enviarRecuperacion($_SESSION['Afiliaciones']['password'],$_SESSION['Afiliaciones']['login'],$_SESSION['Contribuyente']['email']);
+
+                             $guardo = self::GuardarAfiliacion($nuevaClave, $password_hash, $_SESSION['Contribuyente']);
+                                            
+                             if($guardo == true){
+
+                                $envio = self::enviarRecuperacion($nuevaClave,$_SESSION['Afiliaciones']['login'],$_SESSION['Contribuyente']['email']);
                        
                                 if ($envio==true){
                                     return MensajeController::actionMensaje(103);//Proceso exitoso, el usuario y clave han sido enviado a su correo electronico
@@ -297,6 +301,9 @@ class RecuperarAccesoContribuyenteController extends Controller
                                 } else {
                                     return MensajeController::actionMensaje(973);//La recuperacion de contraseña a fallado
                                 }
+                            } else {
+                                    return MensajeController::actionMensaje(973);//La recuperacion de contraseña a fallado
+                            }
 
                         } else {
                             return MensajeController::actionMensaje(974);//La recuperacion de contraseña a fallado por no tener correo electronico asignado como contribuyente
@@ -307,6 +314,68 @@ class RecuperarAccesoContribuyenteController extends Controller
                 }
     return $this->render('/usuario/mensaje-recuperar', ['model' => $model]);
    }
+
+   /**
+      * [GuardarAfiliacion description] Metodo que se encarga de guardar los datos de la solicitud 
+      * de recuperar afiliacion del contribuyente
+      * @param [type] $model [description] arreglo de datos del formulario afiliacion de contribuyente
+      * 
+      */
+     public function GuardarAfiliacion($nuevaClave,$passwordHash,$contribuyente)
+     {
+            
+
+            $conn = New ConexionController();
+            $conexion = $conn->initConectar('db');     // instancia de la conexion (Connection)
+            $conexion->open();  
+            $transaccion = $conexion->beginTransaction();
+
+            try {
+
+
+                $tableName = 'afiliaciones'; 
+
+                $arrayDatos = [  'password' => 0,
+                                 'password_hash' => $passwordHash,
+                                  
+                              ];  
+                $arrayCondition = ['id_contribuyente'=>$contribuyente['id_contribuyente']];
+
+                if ( $conn->guardarRegistro($conexion, $tableName,  $arrayDatos, $arrayCondition) ){  
+                
+                    $tipoError = 0;
+                    $todoBien = true;
+                
+
+                }else{ 
+                    $tipoError = 0;
+                    $todoBien = false;
+                }
+            
+
+                if ($todoBien == true){
+                    
+                    $transaccion->commit();  
+                    $conexion->close(); 
+                    $tipoError = 0; 
+                    return true;
+
+                } else {
+                
+                    $transaccion->rollBack(); 
+                    $conexion->close(); 
+                    $tipoError = 0; 
+                    return false; 
+
+                }
+                  
+               
+          
+          } catch ( Exception $e ) {
+              //echo $e->errorInfo[2];
+          } 
+                       
+     }
 
    /**
      * [EnviarCorreo description] Metodo que se encarga de enviar un email al contribuyente 

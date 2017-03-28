@@ -45,7 +45,7 @@
  *  @inherits
  *  
  */
-namespace frontend\models\usuario;
+namespace backend\models\usuario;
 
 use Yii;
 use yii\base\Model;
