@@ -81,9 +81,7 @@ $this->title = 'Busqueda persona Natural';
 
             
                                   
-                                <div class="col-sm-10" style="width:100%;">
-                                <p style="margin-left: 0px;margin-top: 0px;margin-bottom: 0px;"><i><small><?=Yii::t('frontend', 'Email') ?></small></i></p>
-                                </div>
+                                
 <!-- EMAIL -->
                                   
                                    
