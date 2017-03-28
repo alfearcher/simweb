@@ -529,28 +529,28 @@
 					<div class="row" style="margin-top: 25px;">
 						<div class="col-sm-2" style="margin-left: 50px;">
 							<div class="form-group">
-								<?= Html::submitButton(Yii::t('backend', 'Back'),
-																  [
-																	'id' => 'btn-back',
-																	'class' => 'btn btn-danger',
-																	'value' => 2,
-																	'style' => 'width: 100%',
-																	'name' => 'btn-back',
-																  ])
+								<?= Html::a(Yii::t('backend', 'Back'),Url::to(['registrar-formas-pago']),
+																		  [
+																			'id' => 'btn-back',
+																			'class' => 'btn btn-danger',
+																			'value' => 2,
+																			'style' => 'width: 100%',
+																			'name' => 'btn-back',
+																		  ])
 								?>
 							</div>
 						</div>
 
 						<div class="col-sm-2" style="margin-left: 50px;">
 							<div class="form-group">
-								<?= Html::submitButton(Yii::t('backend', 'Quit'),
-																  [
-																	'id' => 'btn-quit',
-																	'class' => 'btn btn-danger',
-																	'value' => 1,
-																	'style' => 'width: 100%',
-																	'name' => 'btn-quit',
-																  ])
+								<?= Html::a(Yii::t('backend', 'Quit'),Url::to(['quit']),
+																		  [
+																			'id' => 'btn-quit',
+																			'class' => 'btn btn-danger',
+																			'value' => 2,
+																			'style' => 'width: 100%',
+																			'name' => 'btn-quit',
+																		  ])
 								?>
 							</div>
 						</div>
