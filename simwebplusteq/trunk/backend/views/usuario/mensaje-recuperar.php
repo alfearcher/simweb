@@ -37,7 +37,7 @@ $this->title = 'Recuperacion de contraseña';
 
                                                     <div class="row" style="margin-left:20px; margin-top:20px;">
                                                         <div class="col-sm-10"> 
-                                                        <?= Yii::t('frontend', 'El Usuario y Contraseña le sera enviado por correo electronico, al email registrado como contribuyente') ?>
+                                                        <?= Yii::t('frontend', 'El Usuario y Contraseña le sera enviado por correo electronico, al email registrado como contribuyente '.$_SESSION['Contribuyente']['email']) ?>
                                                         </div> 
                                                     
                                                        
@@ -55,7 +55,7 @@ $this->title = 'Recuperacion de contraseña';
                                                         ?> 
                                                         </div> 
                                                         <div class="col-sm-2">
-                                                        <?= Html::a(Yii::t('frontend', 'Volver'), ['/site/index'], ['class' => 'btn btn-danger']) ?>
+                                                        <?= Html::a(Yii::t('frontend', 'Volver'), ['/usuario/recuperar-acceso-contribuyente/seleccionar-tipo-contribuyente'], ['class' => 'btn btn-danger']) ?>
                                                         </div> 
                                                     </div> 
                                                  

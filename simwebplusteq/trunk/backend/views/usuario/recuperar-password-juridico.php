@@ -131,7 +131,7 @@ $this->title = 'Busqueda persona Juridica';
 
                                     <div class="col-sm-3" >
                                         
-                                            <?= Html::a('Volver',['/usuario/recuperar-password-contribuyente/seleccionar-tipo-contribuyente'], ['class' => 'btn btn-primary','style' => 'height:30px;width:140px;margin-left:80px;' ]) //BOTON DE RECUPERAR CONTRASENA ?>
+                                            <?= Html::a('Volver',['/usuario/recuperar-acceso-contribuyente/seleccionar-tipo-contribuyente'], ['class' => 'btn btn-danger','style' => 'height:30px;width:140px;margin-left:80px;' ]) //BOTON DE RECUPERAR CONTRASENA ?>
                                         
                                     </div>
                                    </div>
