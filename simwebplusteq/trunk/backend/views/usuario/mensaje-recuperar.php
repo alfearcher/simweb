@@ -37,7 +37,7 @@ $this->title = 'Recuperacion de contraseña';
 
                                                     <div class="row" style="margin-left:20px; margin-top:20px;">
                                                         <div class="col-sm-10"> 
-                                                        <?= Yii::t('frontend', 'El Usuario y Contraseña le sera enviado por correo electronico, al email registrado como contribuyente '.$_SESSION['Contribuyente']['email']) ?>
+                                                        <?= Yii::t('frontend', 'El Usuario y Contraseña le sera enviado por correo electronico, al email registrado como '.$_SESSION['Contribuyente']['email']) ?>
                                                         </div> 
                                                     
                                                        
