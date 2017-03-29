@@ -189,12 +189,21 @@ class OpcionFuncionarioController extends Controller
 
               if($model->validate()){
 
+
+                   // Preparamos la consulta para guardar el usuario 
+                   $table = new Users; 
+		     
+		           
+                   $username = $_SESSION['datos']['login'];
+                   $email = $model->email;		   
+
                    // Preparamos la consulta para guardar el usuario
                    $table = new Users;
 
 
                    $username = $_SESSION['datos']['login'];
                    $email = $model->email;
+
 				           //----salt-----
 				           $salt = $this->randKey("abcdef0123456789", 10);
 				           $clave = $model->password + $salt;
@@ -286,6 +295,7 @@ class OpcionFuncionarioController extends Controller
          //Instancia para validar el formulario
          $model = new FormCambiarPasswordFuncionario;
 
+         
          //Mensaje que será mostrado al usuario en la vista
 	       $url = null;
          $msg = null;
@@ -509,7 +519,7 @@ class OpcionFuncionarioController extends Controller
 
                      $transaccion = $this->conexion->beginTransaction();
 
-                     if ( $conn->modificarRegistro($this->conexion, $tableName, $arrayDatos, $arrayCondition) ){
+                     if ( $conn->modificarRegistroNatural($this->conexion, $tableName, $arrayDatos, $arrayCondition) ){
 
                          $transaccion->commit();
                          $tipoError = 0;
