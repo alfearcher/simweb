@@ -187,7 +187,7 @@ class RecuperarAccesoContribuyenteController extends Controller
 
                             $naturaleza = $model->naturaleza;
                             $cedula = $model->cedula;
-                            $tipo = $model->cedula;
+                            $tipo = $model->tipo;
 
                             // $buscarAfiliacionesJuridico = $buscarId->buscarIdAfiliaciones($model);
                             // //die(var_dump($buscarAfiliacionesJuridico));
