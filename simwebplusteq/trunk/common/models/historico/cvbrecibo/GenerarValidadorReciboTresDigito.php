@@ -241,6 +241,7 @@
 		public function __construct($model)
 		{
 			$this->_model = $model;
+//die(var_dump($model));
 			$e = '000' . Yii::$app->ente->getEnte();
 			$this->_ente = substr($e, -3);
 		}
@@ -266,7 +267,6 @@
 
 			// parte entera de la division.
 			$mod = self::getModulo($this->_subTotal, 11);
-
 			$resultado = $mod + self::getLongitud(self::formatearMonto($this->_model->monto));
 
 			$this->_cvbRecibo = self::getCodigoValidador($resultado);
@@ -333,6 +333,7 @@
 		/***/
 		private function formatearMonto($montoBase)
 		{
+
 			$monto = number_format($montoBase, 2);
 
 			// se debe quitar los separadores de punto y decimales del monto.
@@ -472,7 +473,10 @@
 		/***/
 		private function getModulo($monto, $base)
 		{
-			return round($monto / $base);
+			$resultado = $monto / $base;
+			$arreglo = explode('.', $resultado);
+
+			return $arreglo[0];
 		}
 
 
