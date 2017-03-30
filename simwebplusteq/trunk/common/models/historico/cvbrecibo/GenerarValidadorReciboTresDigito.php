@@ -241,7 +241,6 @@
 		public function __construct($model)
 		{
 			$this->_model = $model;
-//die(var_dump($model));
 			$e = '000' . Yii::$app->ente->getEnte();
 			$this->_ente = substr($e, -3);
 		}
