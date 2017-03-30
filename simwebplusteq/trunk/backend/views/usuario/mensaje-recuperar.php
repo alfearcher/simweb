@@ -67,6 +67,6 @@ $this->title = 'Recuperacion de contraseña';
                               
 
       <?= $form->field($model, 'nivel')->hiddenInput(['value' => 0])->label(false) ?>                       
-
+ 
   <?php ActiveForm::end(); ?>                                                   
                 
