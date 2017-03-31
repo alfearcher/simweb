@@ -73,8 +73,8 @@
 		    	// &nbsp; espacio en blanco html
 		        ['label' => Icon::show('fa fa-book',['class' => $typeLong], $typeIcon) . '&nbsp; Registros Maestros',
 		        	'items' => [
-		        			['label' => 'Registros Datos Básicos', 'url' => ['/registromaestro/datosbasico/create'], 'options' => ['value' => '520', 'id' => '500']],
-		        			//Icon::show('fa fa-book',['class' => 'fa-2x'], $typeIcon) . '&nbsp;
+		        		['label' => 'Registros Datos Básicos', 'url' => ['/registromaestro/datosbasico/create'], 'options' => ['value' => '520', 'id' => '500']],
+		        		['label' => 'Recuperar Cuenta Contribuyente','url' =>['/usuario/recuperar-acceso-contribuyente/seleccionar-tipo-contribuyente']],
 		        	]
 		        ],
 
