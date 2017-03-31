@@ -48,7 +48,7 @@
 		        				'items' => [
 		        							['label' => 'Crear Cuenta','url' =>['opcion-funcionario/buscar-funcionario-usuario']],
 		        							['label' => 'Desincorporar Cuenta','url' => '#'],
-		        							['label' => 'Recuperar Cuenta Contribuyente','url' =>['/usuario/recuperar-acceso-contribuyente/seleccionar-tipo-contribuyente']], 
+		        							['label' => 'Recuperar Cuenta Contribuyente','url' =>['/usuario/recuperar-acceso-contribuyente/seleccionar-tipo-contribuyente']],
 		        				]
 		        			],
 
@@ -89,8 +89,8 @@
 		    	// &nbsp; espacio en blanco html
 		        ['label' => Icon::show('fa fa-book',['class' => $typeLong], $typeIcon) . '&nbsp; Registros Maestros',
 		        	'items' => [
-		        			['label' => 'Registros Datos Básicos', 'url' => ['/registromaestro/datosbasico/create'], 'options' => ['value' => '520', 'id' => '500']],
-		        			//Icon::show('fa fa-book',['class' => 'fa-2x'], $typeIcon) . '&nbsp;
+		        		['label' => 'Registros Datos Básicos', 'url' => ['/registromaestro/datosbasico/create'], 'options' => ['value' => '520', 'id' => '500']],
+		        		['label' => 'Recuperar Cuenta Contribuyente','url' =>['/usuario/recuperar-acceso-contribuyente/seleccionar-tipo-contribuyente']],
 		        	]
 		        ],
 
@@ -274,13 +274,13 @@
         		//	Planilla
         		['label' => Icon::show('fa fa-indent',['class' => $typeLong], $typeIcon) . '&nbsp; Liquidacion',
         			'items' => [
-        						['label' => 'Liquidar Actividad Economica', 'url' => ['aaee/liquidar/liquidar-actividad-economica/index']],
-        						['label' => 'Liquidar Actividad Economica (Definitiva)', 'url' => ['aaee/liquidar/liquidar-actividad-economica-definitiva/index']],
-        						['label' => 'Liquidar Inmueble Urbano', 'url' => ['inmueble/liquidar/liquidar-inmueble/index']],
-        						['label' => 'Liquidar Vehiculo', 'url' => ['vehiculo/liquidar/liquidar-vehiculo/index']],
-        						['label' => 'Liquidar Propaganda', 'url' => ['propaganda/liquidar/liquidar-propaganda/index']],
-        						['label' => 'Liquidar Tasa', 'url' => ['tasa/liquidar/liquidar-tasa/index']],
-        						['label' => 'Consulta de Planilla', 'url' => ['planilla/planilla-consulta/index']],
+        				['label' => 'Liquidar Actividad Economica', 'url' => ['aaee/liquidar/liquidar-actividad-economica/index']],
+        				['label' => 'Liquidar Actividad Economica (Definitiva)', 'url' => ['aaee/liquidar/liquidar-actividad-economica-definitiva/index']],
+        				['label' => 'Liquidar Inmueble Urbano', 'url' => ['inmueble/liquidar/liquidar-inmueble/index']],
+        				['label' => 'Liquidar Vehiculo', 'url' => ['vehiculo/liquidar/liquidar-vehiculo/index']],
+        				['label' => 'Liquidar Propaganda', 'url' => ['propaganda/liquidar/liquidar-propaganda/index']],
+        				['label' => 'Liquidar Tasa', 'url' => ['tasa/liquidar/liquidar-tasa/index']],
+        				['label' => 'Consulta de Planilla', 'url' => ['planilla/planilla-consulta/index']],
         			]
         		],
 
