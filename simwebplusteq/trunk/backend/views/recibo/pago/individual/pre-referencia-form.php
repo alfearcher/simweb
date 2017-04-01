@@ -496,15 +496,17 @@
 																					]
 																					])->label(false) ?>
 									</div>
-
+<!-- BOTON PARA GUARDAR SERIAL -->
 									<div class="col-sm-2" style="margin-left: 10px;width: 30%;">
 										<div class="form-group">
-											<?= Html::a(Yii::t('backend', 'Guardar'), '#',
-																			[
-			                				 			   						'id' => 'link-add-serial',
-			                				 			   						'class' => 'btn btn-primary',
-			                				 			   						'style' => 'width:100%;'
-			                				 			   					]);
+											<?= Html::submitButton(Yii::t('backend', 'Guardar'),
+												  [
+													'id' => 'btn-add-serial',
+													'class' => 'btn btn-primary',
+													'value' => 5,
+													'style' => 'width: 120%',
+													'name' => 'btn-add-serial',
+												  ]);
 											?>
 										</div>
 									</div>
@@ -529,14 +531,14 @@
 					<div class="row" style="margin-top: 25px;">
 						<div class="col-sm-2" style="margin-left: 50px;">
 							<div class="form-group">
-								<?= Html::a(Yii::t('backend', 'Back'),Url::to(['registrar-formas-pago']),
-																		  [
+								<?= Html::submitButton(Yii::t('backend', 'Back'),
+																		[
 																			'id' => 'btn-back',
 																			'class' => 'btn btn-danger',
 																			'value' => 2,
 																			'style' => 'width: 100%',
 																			'name' => 'btn-back',
-																		  ])
+																		])
 								?>
 							</div>
 						</div>

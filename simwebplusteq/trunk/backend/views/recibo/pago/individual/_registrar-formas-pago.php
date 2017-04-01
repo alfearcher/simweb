@@ -229,3 +229,20 @@ $this->registerJs(
 	}
     '
 ); ?>
+
+<?php
+	$this->registerJs(
+		'$("#id-monto").keypress(function(e) {
+    		if ( e.which == 13 ) {
+    			sobrante = $( "#id-monto-sobrante" ).val();
+				valor = sobrante.replace(".", "");
+				monto = valor.replace(",", ".");
+    			sobrante = parseFloat(monto);
+
+        		if ( sobrante > 0 ) {
+        			$( "#id-monto" ).val( sobrante );
+        		}
+    		}
+		});return false;'
+	);
+ ?>

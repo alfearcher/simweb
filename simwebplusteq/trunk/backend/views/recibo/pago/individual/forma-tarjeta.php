@@ -181,9 +181,9 @@
 	<div class="col-sm-2" style="width:35%; padding: 0px;margin:0px;">
 		<div class="monto">
 			<?= $form->field($model, 'monto')->widget(MaskedInput::className(), [
-														'id' => 'id-monto',
 														//'mask' => '',
 														'options' => [
+															'id' => 'id-monto',
 															'class' => 'form-control',
 															'style' => 'width: 100%;
 															 font-weight:bold;
