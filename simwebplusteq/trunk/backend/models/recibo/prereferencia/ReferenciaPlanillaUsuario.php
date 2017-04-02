@@ -21,13 +21,13 @@
  */
 
  /**
- *  @file PreReferenciaPlanilla.php
+ *  @file ReferenciaPlanillaUsuario.php
  *
  *  @author Jose Rafael Perez Teran
  *
  *  @date 22-03-2017
  *
- *  @class PreReferenciaPlanilla
+ *  @class ReferenciaPlanillaUsuario
  *  @brief Clase Modelo
  *
  *
@@ -52,9 +52,11 @@
 
 
 	/**
-	* Clase
+	* Clase modelo principal de la entidad que permite guardar de manera temporal
+	* los registros asociados a las referencias bancarias realizadas por el usuario
+	* para luego guardarla de manera definitiva en la entidad "pre-referencias-planillas"
 	*/
-	class PreReferenciaPlanilla extends ActiveRecord
+	class ReferenciaPlanillaUsuario extends ActiveRecord
 	{
 
 
@@ -75,7 +77,7 @@
 		 */
 		public static function tableName()
 		{
-			return 'pre_referencias_planillas';
+			return 'referencias_planillas_usuarios';
 		}
 
 
@@ -104,7 +106,7 @@
 
 		/**
 		 * Relacion con la entidad "estatus".
-		 * @return active record
+		 * @return ActiveQueryInterface
 		 */
 		public function getCondicion()
 		{

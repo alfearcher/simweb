@@ -21,13 +21,13 @@
  */
 
  /**
- *  @file PreReferenciaPlanillaForm.php
+ *  @file ReferenciaPlanillaUsuarioForm.php
  *
  *  @author Jose Rafael Perez Teran
  *
  *  @date 22-03-2017
  *
- *  @class PreReferenciaPlanillaForm
+ *  @class ReferenciaPlanillaUsuarioForm
  *  @brief Clase Modelo del formulario
  *
  *
@@ -50,12 +50,23 @@
 	/**
 	* 	Clase base del formulario
 	*/
-	class PreReferenciaPlanillaForm extends PreReferenciaPlanilla
+	class ReferenciaPlanillaUsuarioForm extends ReferenciaPlanillaUsuario
 	{
 
-		public $id_banco;
-		public $cuenta_recaudadora;
-		public $fecha_pago;
+		public $id_referencia;
+		public $recibo;
+		public $fecha;
+		public $monto_recibo;
+		public $planilla;
+		public $monto_planilla;
+		public $id_contribuyente;
+		public $fecha_edocuenta;
+		public $serial_edocuenta;
+		public $debito;
+		public $credito;
+		public $estatus;
+		public $observacion;
+		public $usuario;		// quien guarda el registro
 
 
 		/**
@@ -70,27 +81,20 @@
 
 
 		/**
-    	 *	Metodo que permite fijar la reglas de validacion del formulario inscripcion-act-econ-form.
+    	 *Metodo que permite fijar la reglas de validacion del formulario
     	 */
 	    public function rules()
 	    {
 	        return [
-	        	[['id_banco', 'cuenta_recaudadora',],
-	        	  'required',
-	        	  'message' => Yii::t('backend','{attribute} is required'),
-	        	],
-	        	[['id_banco'],
-	        	  'integer',
-	        	  'message' => Yii::t('backend', 'Formato no valido')],
-
 	        ];
 	    }
 
 
 
 	    /**
-	    * 	Lista de atributos con sus respectivas etiquetas (labels), las cuales son las que aparecen en las vistas
-	    * 	@return returna arreglo de datos con los atributoe como key y las etiquetas como valor del arreglo.
+	    * Lista de atributos con sus respectivas etiquetas (labels), las cuales son las que
+	    * aparecen en las vistas
+	    * @return returna arreglo de datos con los atributoe como key y las etiquetas como valor del arreglo.
 	    */
 	    public function attributeLabels()
 	    {
