@@ -54,10 +54,10 @@
 										'model' => $model,
 										'caption' => $caption,
 										'subCaption' => $subCaption,
-										'listaBanco' => $listaBanco,
+										'datosBanco' => $datosBanco,
 										'url' => $url,
 										'datosRecibo' => $_SESSION['datosRecibo'],
 										'dataProviders' => $dataProviders,
-										'modelSerial' => $modelSerial,
+										'htmlSerialForm' => $htmlSerialForm,
 			]);?>
 </div>

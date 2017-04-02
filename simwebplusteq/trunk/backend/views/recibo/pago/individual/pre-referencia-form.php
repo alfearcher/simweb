@@ -58,11 +58,12 @@
  			'action' => $url,
  			'enableClientValidation' => true,
  			'enableAjaxValidation' => false,
- 			'enableClientScript' => true,
+ 			'enableClientScript' => false,
  		]);
  	?>
 
-	<!-- <?//=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $model->id_contribuyente])->label(false);?> -->
+	<?=$form->field($model, 'id_banco')->hiddenInput(['value' => $model->id_banco])->label(false);?>
+	<?=$form->field($model, 'cuenta_recaudadora')->hiddenInput(['value' => $model->cuenta_recaudadora])->label(false);?>
 
 
 	<meta http-equiv="refresh">
@@ -166,69 +167,69 @@
 <!-- LISTA DE BANCOS CON CUENTAS RECAUDADORAS-->
 						<div class="row" style="width:100%;padding:0px;margin:0px;margin-top: 20px;">
 							<div class="col-sm-2" style="width: 20%;padding:0px;">
-								<p><strong><?=Html::encode(Yii::t('backend', 'Listado de Bancos:'))?></strong></p>
+								<p><strong><?=Html::encode(Yii::t('backend', 'Banco:'))?></strong></p>
 							</div>
 							<div class="col-sm-4" style="width:60%;padding:0px;margin-left:0px;">
-								<?= $form->field($model, 'id_banco')
-							              ->dropDownList($listaBanco, [
-                                                             'id'=> 'id-banco',
-                                                             'prompt' => Yii::t('backend', 'Select'),
-                                                             'style' => 'width:100%;',
-                                                             'onchange' => '$.post( "' . Yii::$app->urlManager
-                                                                                   		           ->createUrl('/recibo/pago/individual/pago-recibo-individual/listar-cuenta-recaudadora') . '&id=' . '" + $(this).val(),
-                                                                                   		           			 function( data ) {
-                                                                                   		           			 	$( "#btn-find-referencia").attr("disabled", true);
-                                                                                   		           			 	$( "#id-serial-referencia-form").hide(true);
-                                                                                   		           			 	$( "#link-add-serial-form").attr("disabled", true);
-                                                                                   		           			 	$( "select#id-cuenta-recaudadora" ).html( "" );
-                                                                                   		           			 	$( "#tipo-cuenta-recaudadora" ).html( "" );
-                                                                                                             	$( "select#id-cuenta-recaudadora" ).html( data );
-                                                                                                       		}
-                                                                                    );'
-                                        ])->label(false);
-                            ?>
+								<?=Html::textInput('banco',
+											       $datosBanco['nombre'],
+											       [
+											       		'id' => 'banco',
+											       		'class' => 'form-control',
+											       		'style' => 'width:100%;
+											       					background-color:white;
+											       					font-size:120%;
+											       					font-weight:bold;',
+											       		'readOnly' => true,
+											       ])
+								?>
 							</div>
 						</div>
 <!-- FIN LISTA DE BANCOS CON CUENTAS RECAUDADORAS -->
 
 <!-- LISTA DE CUENTA RECAUDADORAS -->
-						<div class="row" style="width:100%;padding:0px;margin:0px;">
+						<div class="row" style="width:100%;padding:0px;margin:0px;margin-top: 5px;">
 							<div class="col-sm-2" style="width: 20%;padding:0px;">
 								<p><strong><?=Html::encode(Yii::t('backend', 'Cuenta Recaudadora:'))?></strong></p>
 							</div>
 							<div class="col-sm-3" style="width:60%;padding:0px;margin-left:0px;">
-								 <?= $form->field($model, 'cuenta_recaudadora')
-								          ->dropDownList([], [
-	                                                      'id'=> 'id-cuenta-recaudadora',
-	                                                      'prompt' => Yii::t('backend', 'Select'),
-	                                                      'style' => 'width:100%;',
-	                                                      'onchange' => '$.post( "' . Yii::$app->urlManager
-	                                                                           		           ->createUrl('/recibo/pago/individual/pago-recibo-individual/determinar-cuenta-recaudadora') . '&cuenta=' . '" + $(this).val() +  "' .
-	                                                                           		           															   '&id-banco=' . '" + $("select#id-banco").val(),
-	                                                                           		           				 function( data ) {
-	                                                                           		           				 	$( "#tipo-cuenta-recaudadora" ).html( "" );
-	                                                                                                     		$( "#tipo-cuenta-recaudadora" ).html( data );
-	                                                                                                     		$( "#tipo-cuenta-recaudadora" ).css( "color", "red" );
-	                                                                                                     		$( "#btn-find-referencia").attr("disabled", true);
-	                                                                                                     		$( "#link-add-serial-form").attr("disabled", false);
-	                                                                                                     		$( "#id-serial-referencia-form").show(true);
-	                                                                                                     		if ( data == "CUENTA RECAUDADORA" ) {
-																													$( "#tipo-cuenta-recaudadora" ).css( "color", "blue" );
-																													$( "#btn-find-referencia").attr("disabled", false);
-																													$( "#link-add-serial-form").attr("disabled", true);
-																													$( "#id-serial-referencia-form").hide(true);
-	                                                                                                     		}
-	                                                                                               			}
-	                                                                          );'
-	                                                                ])->label(false);
-	                            ?>
-							</div>
-
-							<div class="col-sm-2" style="width:16%;padding:0px;margin:0px;margin-left:10px;font-size: 90%;font-weight: bold;">
-								<div id="tipo-cuenta-recaudadora"></div>
+								<?=Html::textInput('cuenta_recaudadora',
+											       $datosBanco['cuenta_recaudadora'],
+											       [
+											       		'id' => 'id-cuenta-recaudadora',
+											       		'class' => 'form-control',
+											       		'style' => 'width:100%;
+											       					background-color:white;
+											       					font-size:120%;
+											       					font-weight:bold;',
+											       		'readOnly' => true,
+											       ])
+								?>
 							</div>
 						</div>
 <!-- FIN DE LISTA DE CUENTA RECAUDADORAS -->
+
+<!-- TIPO DE CUENTA RECAUDADORA -->
+						<div class="row" style="width:100%;padding:0px;margin:0px;margin-top: 5px;">
+							<div class="col-sm-2" style="width: 20%;padding:0px;">
+								<p><strong><?=Html::encode(Yii::t('backend', 'Tipo:'))?></strong></p>
+							</div>
+							<div class="col-sm-4" style="width:60%;padding:0px;margin-left:0px;">
+								<?=Html::textInput('tipo_cuenta',
+											       $datosBanco['tipo_cuenta'],
+											       [
+											       		'id' => 'id-tipo-cuenta',
+											       		'class' => 'form-control',
+											       		'style' => 'width:100%;
+											       					background-color:white;
+											       					font-size:120%;
+											       					font-weight:bold;',
+											       		'readOnly' => true,
+											       ])
+								?>
+							</div>
+						</div>
+<!-- FIN DE TIPO DE CUENTA RECAUDADORA -->
+
 
 						<div class="row" style="border-bottom: 1px solid;padding-left: 5px;padding-top: 0px;">
 							<h4><strong><?=Html::encode(Yii::t('backend', 'Referencias Bancarias'))?></strong></h4>
@@ -292,15 +293,11 @@
 								?>
 							</div>
 <!-- FIN DE BOTON AGREGAR DEPOSITO A LISTADO -->
-
-
-
-
 						</div>
 
 <!-- LISTADO DE PLANILLAS A PAGAR -->
 						<div class="row" style="width:100%;padding:0px;margin:0px;margin-top: 5px;">
-							<div class="col-sm-4" style="width:55%;padding:0px;margin-left:0px;">
+							<div class="col-sm-4" style="width:50%;padding:0px;margin-left:0px;">
 								<div class="row" style="width:100%;">
 									<?= GridView::widget([
 										'id' => 'id-grid-planilla-sin-referencia',
@@ -332,18 +329,7 @@
 								                ],
 								                'format' => 'raw',
 								                'value' => function($model) {
-																//return $model->planilla;
-																return Html::textInput('planilla',
-																				 		$model->planilla,
-																						[
-																							'id' => 'id-' . $model->planilla,
-																							'class' => 'form-control',
-																							'disabled' => 'disabled',
-																							'style' => 'width:70%;
-																										font-size:90%;
-																										background-color:white;'
-
-																						]);
+																return $model->planilla;
 															},
 								            ],
 								            [
@@ -353,18 +339,7 @@
 								                ],
 								                'format' => 'raw',
 								                'value' => function($model) {
-																//return $model->impuesto;
-																return Html::textInput('impuesto',
-																				 		$model->impuesto,
-																						[
-																							'id' => 'id-' . $model->impuesto,
-																							'class' => 'form-control',
-																							'disabled' => 'disabled',
-																							'style' => 'width:80%;
-																										font-size:90%;
-																										background-color:white;'
-
-																						]);
+																return $model->impuesto;
 															},
 								            ],
 
@@ -375,18 +350,7 @@
 								                ],
 								                'format' => 'raw',
 								                'value' => function($model) {
-																//return Yii::$app->formatter->asDecimal($model->monto, 2);
-																return Html::textInput('monto',
-																				 		Yii::$app->formatter->asDecimal($model->monto, 2),
-																						[
-																							'id' => 'id-' . $model->impuesto,
-																							'class' => 'form-control',
-																							'disabled' => 'disabled',
-																							'style' => 'width:80%;
-																										font-size:90%;
-																										background-color:white;'
-
-																						]);
+																return Yii::$app->formatter->asDecimal($model->monto, 2);
 															},
 								            ],
 								            [
@@ -396,18 +360,7 @@
 								                ],
 								                'format' => 'raw',
 								                'value' => function($model) {
-																//return $model->condicion->descripcion;
-																return Html::textInput('condicion',
-																				 		$model->condicion->descripcion,
-																						[
-																							'id' => 'id-' . $model->impuesto,
-																							'class' => 'form-control',
-																							'disabled' => 'disabled',
-																							'style' => 'width:80%;
-																										font-size:90%;
-																										background-color:white;'
-
-																						]);
+																return $model->condicion->descripcion;
 															},
 								        	],
 
@@ -417,111 +370,13 @@
 							</div>
 
 <!-- FORMULARIO PARA CARGAR LAS REFERENCIAS MANUALES -->
-							<div class="col-sm-3" id="id-serial-referencia-form" style="width: 40%;padding:0px;margin:0px;padding-left: 15px;margin-left: 5px;margin-top: 20px;border:1px solid #ccc;">
-
-								<div class="row" style="width:100%;padding:0px;margin:0px;">
-									<div class="col-sm-2" style="width: 95%;border-bottom: 1px solid;padding:0px;padding-top: 0px;">
-										<h4><strong><?=Html::encode(Yii::t('backend', 'Ingrese lo siguiente:'))?></strong></h4>
-									</div>
-								</div>
-
-								<div class="row" style="width:100%;padding:0px;margin:0px;margin-top: 20px;">
-									<div class="col-sm-2" style="width: 35%;padding:0px;margin:0px;margin-top: 5px;">
-										<p><strong><?=Html::encode($modelSerial->getAttributeLabel('serial'))?></strong></p>
-									</div>
-									<div class="col-sm-4" style="width:45%;padding:0px;margin:0px;">
-										<?=$form->field($modelSerial, 'serial')->textInput([
-														'id' => 'id-serial',
-														'style' => 'width: 100%;
-														 font-size:100;
-														 font-weight:bold;',
-													])->label(false)
-										?>
-									</div>
-								</div>
-
-								<div class="row" style="width:100%;padding:0px;margin:0px;">
-									<div class="col-sm-2" style="width: 35%;padding:0px;margin:0px;margin-top: 5px;">
-										<p><strong><?=Html::encode($modelSerial->getAttributeLabel('monto_edocueta'))?></strong></p>
-									</div>
-									<div class="col-sm-4" style="width:45%;padding:0px;margin:0px;">
-										<?= $form->field($modelSerial, 'monto_edocuenta')->widget(MaskedInput::className(), [
-																						//'mask' => '',
-																						'options' => [
-																							'id' => 'id-monto-edocuenta',
-																							'class' => 'form-control',
-																							'style' => 'width: 100%;
-																							 font-weight:bold;
-																							 font-size:120;',
-																							'placeholder' => '0.00',
-																						],
-																						'clientOptions' => [
-																							'alias' =>  'decimal',
-																							'digits' => 2,
-																							'digitsOptional' => false,
-																							'groupSeparator' => '.',
-																							'removeMaskOnSubmit' => true,
-																							// 'allowMinus'=>false,
-																							//'groupSize' => 3,
-																							'radixPoint'=> ",",
-																							'autoGroup' => true,
-																							'decimalSeparator' => ',',
-																						],
-																	  				  ])->label(false);
-										?>
-									</div>
-								</div>
-
-								<div class="row" style="width:100%;padding:0px;margin:0px;">
-									<div class="col-sm-2" style="width: 35%;padding:0px;margin:0px;margin-top: 5px;">
-										<p><strong><?=Html::encode($modelSerial->getAttributeLabel('fecha_edocueta'))?></strong></p>
-									</div>
-									<div class="col-sm-4" style="width:30%;padding:0px;margin:0px;">
-										<?= $form->field($modelSerial, 'fecha_edocuenta')->widget(\yii\jui\DatePicker::classname(),[
-																				  'clientOptions' => [
-																						'maxDate' => '+0d',	// Bloquear los dias en el calendario a partir del dia siguiente al actual.
-																						'changeMonth' => true,
-																						'changeYear' => true,
-																					],
-																				  'language' => 'es-ES',
-																				  'dateFormat' => 'dd-MM-yyyy',
-																				  'options' => [
-																				  		'id' => 'id-fecha-edocuenta',
-																						'class' => 'form-control',
-																						'readonly' => true,
-																						'style' => 'background-color:white;
-																								    width:100%;
-																									font-size:100%;
-																	 								font-weight:bold;',
-																					]
-																					])->label(false) ?>
-									</div>
-<!-- BOTON PARA GUARDAR SERIAL -->
-									<div class="col-sm-2" style="margin-left: 10px;width: 30%;">
-										<div class="form-group">
-											<?= Html::submitButton(Yii::t('backend', 'Guardar'),
-												  [
-													'id' => 'btn-add-serial',
-													'class' => 'btn btn-primary',
-													'value' => 5,
-													'style' => 'width: 120%',
-													'name' => 'btn-add-serial',
-												  ]);
-											?>
-										</div>
-									</div>
-
-								</div>
+							<div class="col-sm-3" id="id-serial-referencia-form" style="width: 40%;padding:0px;margin:0px;padding-left: 15px;margin-left: 5px;">
+								<?=$htmlSerialForm  ?>
 							</div>
-
-<!-- FINAL DEL FORMULARIO MODAL -->
-
 <!-- FORMULARIO PARA CARGAR LAS REFERENCIAS MANUALES -->
 
 						</div>
 <!-- LISTADO DE PLANILLAS A PAGAR -->
-
-
 
 						<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1; padding-left: 5px;margin-top:20px;">
 						</div>
@@ -584,9 +439,13 @@
 
 <?php
 $this->registerJs(
-    '$(document).ready(function(){
+    '$(document).ready(function() {
     	$( "#btn-find-referencia").attr("disabled", true);
-    	$( "#link-add-serial-form").attr("disabled", true);
-    	$( "#id-serial-referencia-form").hide(true);
+    	if ( $( "#id-tipo-cuenta").val() == "CUENTA RECAUDADORA" ) {
+			$( "#btn-find-referencia").attr("disabled", false);
+    	}
+
+    //	$( "#link-add-serial-form").attr("disabled", true);
+    //	$( "#id-serial-referencia-form").hide(true);
     });'
 ); ?>
