@@ -70,9 +70,8 @@
     use backend\models\recibo\depositodetalle\VaucheDetalleUsuarioForm;
     use backend\models\recibo\prereferencia\PreReferenciaPlanillaForm;
     use backend\models\recibo\pago\individual\SerialReferenciaForm;
+    use backend\models\recibo\prereferencia\ReferenciaPlanillaUsuarioForm;
 
-
-    use yii\jui\Dialog;
 
 
 
@@ -270,7 +269,7 @@
 
         		if ( isset($postData['btn-pre-referencia']) ) {
         			if ( $postData['btn-pre-referencia'] == 2 ) {
-        				$this->redirect(['pre-referencia']);
+        				$this->redirect(['seleccionar-cuenta-recaudadora']);
         			}
         		}
 
@@ -355,6 +354,75 @@
 
 
 
+        /**
+         * Metodo que renderiza una vista que permite la seleccion de la cuenta recaudadora
+         * que se utilizara en el proceso de pre-referencia. La vista costa de dos conbo-lista.
+         * Se presentan 3 botones.
+         * @return view
+         */
+        public function actionSeleccionarCuentaRecaudadora()
+        {
+        	self::actionAnularSession(['datosBanco']);
+        	$recibo = isset($_SESSION['recibo']) ? (int)$_SESSION['recibo'] : 0;
+        	if ( $recibo > 0 ) {
+        		$request = Yii::$app->request;
+        		$postData = $request->post();
+
+        		if ( isset($postData['btn-back']) ) {
+        			if ( $postData['btn-back'] == 2 ) {
+        				$this->redirect(['registrar-formas-pago']);
+        			}
+        		}
+
+        		if ( isset($postData['btn-quit']) ) {
+        			if ( $postData['btn-quit'] == 2 ) {
+        				$this->redirect(['quit']);
+        			}
+        		}
+
+        		$model = New PreReferenciaPlanillaForm();
+        		if ( $model->load($postData)  && Yii::$app->request->isAjax ) {
+					Yii::$app->response->format = Response::FORMAT_JSON;
+					return ActiveForm::validate($model);
+				}
+
+				$searchBanco = New BancoSearch();
+
+        		if ( $model->load($postData) ) {
+
+        			if ( $model->validate() ) {
+        				// Se busca datos del banco con el post recibido.
+        				$banco = $searchBanco->findBanco($model->id_banco);
+        				$tipoCuenta = $postData['tipo-cuenta'];
+        				$datosBanco = $banco->toArray();
+        				$datosBanco['cuenta_recaudadora'] = $model->cuenta_recaudadora;
+        				$datosBanco['tipo_cuenta'] = $postData['tipo-cuenta'];
+
+        				$_SESSION['datosBanco'] = $datosBanco;
+        				$this->redirect(['pre-referencia']);
+        			}
+        		}
+
+        		// Listado de bancos relacionados a cuentas recaudadoras.
+        		$listaBanco = $searchBanco->getListaBancoRelacionadaCuentaReceptora();
+
+        		$caption = Yii::t('backend', 'Registro de Pre-Referencias Bancarias') . '. ' . Yii::t('backend', 'Recibo Nro. ') . $recibo;
+        		$subCaption = Yii::t('backend', 'Elabore la referencia bancaria');
+        		return $this->render('/recibo/pago/individual/seleccionar-cuenta-recaudadora-form',[
+        										'model' => $model,
+        										'caption' => $caption,
+        										'subCaption' => $subCaption,
+        										'listaBanco' => $listaBanco,
+        			]);
+        	}
+        }
+
+
+
+
+
+
+
         /***/
         public function actionPreReferencia()
         {
@@ -365,41 +433,113 @@
 	        	$postGet = $request->get();
 	        	$postData = $request->post();
 //die(var_dump($postData));
+
         		if ( isset($postData['btn-back']) ) {
 	        		if ( $postData['btn-back'] == 2 ) {
-	        			$this->redirect(['registrar-formas-pago']);
+	        			$this->redirect(['seleccionar-cuenta-recaudadora']);
 	        		}
 	        	}
+
+	        	$datosBanco = isset($_SESSION['datosBanco']) ? $_SESSION['datosBanco'] : [];
+
+//die(var_dump($datosBanco));
+
+	        	$modelSerial = New SerialReferenciaForm();
+
 	        	$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
 	        	$dataProviders = $pagoReciboSearch->getDataProviders();
 
-        		$model = New PreReferenciaPlanillaForm();
-        		$modelSerial = New SerialReferenciaForm();
-
-        		$searchBanco = New BancoSearch();
-
-        		// Listado de bancos relacionados a cuentas recaudadoras.
-        		$listaBanco = $searchBanco->getListaBancoRelacionadaCuentaReceptora();
-
         		$datosRecibo = $_SESSION['datosRecibo'];
+
+        		$model = New PreReferenciaPlanillaForm();
         		$model->fecha_pago = ( $datosRecibo[0]['estatus'] == 1 ? $datosRecibo[0]['fecha'] : date('d-m-Y') );
+        		$model->id_banco = $datosBanco['id_banco'];
+        		$model->cuenta_recaudadora = $datosBanco['cuenta_recaudadora'];
+
+        		if ( $modelSerial->load($postData)  && Yii::$app->request->isAjax ) {
+					Yii::$app->response->format = Response::FORMAT_JSON;
+					return ActiveForm::validate($modelSerial);
+				}
+
+				if ( $modelSerial->load($postData) ) {
+					if ( $modelSerial->validate() ) {
+						// guardar serial
+						$modelReferenciaUsuario = New ReferenciaPlanillaUsuarioForm();
+die(var_dump($postData));
+
+					}
+				}
+
+				$htmlSerialForm = null;
+				if ( $datosBanco['tipo_cuenta'] == 'NO ES CUENTA RECAUDADORA' ) {
+	        		$htmlSerialForm = $this->renderPartial('/recibo/pago/individual/agregar-serial-form',[
+	        																			'modelSerial' => $modelSerial,
+	        							]);
+	        	}
 
         		$url = Url::to(['pre-referencia']);
         		$caption = Yii::t('backend', 'Registro de Pre-Referencias Bancarias') . '. ' . Yii::t('backend', 'Recibo Nro. ') . $recibo;
         		$subCaption = Yii::t('backend', 'Elabore la referencia bancaria');
         		return $this->render('/recibo/pago/individual/_pre-referencia',[
-        										'model' => $model,
-        										'caption' => $caption,
-        										'subCaption' => $subCaption,
-        										'listaBanco' => $listaBanco,
-        										'url' => $url,
-        										'datosRecibo' => $datosRecibo,
-        										'dataProviders' => $dataProviders,
-        										'modelSerial' => $modelSerial,
-        			]);
+			        										'model' => $model,
+			        										'caption' => $caption,
+			        										'subCaption' => $subCaption,
+			        										'url' => $url,
+			        										'datosRecibo' => $datosRecibo,
+			        										'datosBanco' => $datosBanco,
+			        										'dataProviders' => $dataProviders,
+			        										'htmlSerialForm' => $htmlSerialForm,
+        				]);
         	}
         }
 
+
+
+
+        /**
+         * Metodo que permite guardar la referencia en una entidad temporal
+         * @param ReferenciaPlanillaUsuarioForm $modelReferenciaUsuario instancia de la clase.
+         * @return boolean
+         */
+        private function actionGuardarReferenciaTemporal($modelReferenciaUsuario)
+        {
+        	$result = false;
+        	self::setConexion();
+        	$this->_transaccion = $this->_conn->beginTransaction();
+        	$this->_conn->open();
+
+        	$tabla = $modelReferenciaUsuario->tableName();
+
+        	return $result = $this->_conexion->guardarRegistro($this->_conn, $tabla, $modelReferenciaUsuario->attributes);
+        }
+
+
+
+
+        /**
+         * Metodo que permite setear el valor de los atributos del modelo con los dstos
+         * del post enviado desde el formulario.
+         * @param ReferenciaPlanillaUsuarioForm $modelReferenciaUsuario instancia de la clase.
+         * @param array $postEnviado arreglo del post enviado.
+         * @return ReferenciaPlanillaUsuarioForm
+         */
+        private function actionLoadModeloReferencia($modelReferenciaUsuario, $postEnviado)
+        {
+        	$modelReferenciaUsuario->recibo = $postEnviado['recibo'];
+        	$modelReferenciaUsuario->fecha = $postEnviado['fecha'];
+        	$modelReferenciaUsuario->monto_recibo = $postEnviado['monto'];
+        	$modelReferenciaUsuario->planilla = $postEnviado['planilla'];
+        	$modelReferenciaUsuario->monto_planilla = $postEnviado['fecha'];
+        	$modelReferenciaUsuario->id_contribuyente = $postEnviado['fecha'];
+        	$modelReferenciaUsuario->fecha_edocuenta = $postEnviado['fecha'];
+        	$modelReferenciaUsuario->serial_edocuenta = $postEnviado['fecha'];
+        	$modelReferenciaUsuario->debito = $postEnviado['fecha'];
+        	$modelReferenciaUsuario->credito = $postEnviado['fecha'];
+        	$modelReferenciaUsuario->estatus = 0;
+        	$modelReferenciaUsuario->observacion = $postEnviado['fecha'];
+        	$modelReferenciaUsuario->usuario = Yii::$app->identidad->getUsuario();
+
+        }
 
 
         /***/
@@ -1504,15 +1644,12 @@
 
 
 		/***/
-		public function actionMensajeAlerta($mensaje)
+		public function actionPrueba()
 		{
-			?>
-			<script>
-				var ms ='<?php echo $mensaje;?>';
-				alert(ms);
-			</script>
-		<?php
-			return;
+			$request = Yii::$app->request;
+			$postData = $request->get();
+
+die(var_dump($postData));
 		}
 
 
