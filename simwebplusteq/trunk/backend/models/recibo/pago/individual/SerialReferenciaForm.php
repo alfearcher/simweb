@@ -44,13 +44,14 @@
 
  	use Yii;
 	use yii\base\Model;
-
+	use backend\models\recibo\pago\individual\SerialReferenciaUsuario;
 
 	/**
-	* 	Clase base del formulario
+	* Clase base del formulario
 	*/
-	class SerialReferenciaForm extends Model
+	class SerialReferenciaForm extends SerialReferenciaUsuario
 	{
+		public $recibo;
 		public $serial;
 		public $monto_edocuenta;
 		public $fecha_edocuenta;
@@ -81,9 +82,9 @@
 	        	[['serial',],
 	        	  'integer',
 	        	  'message' => Yii::t('backend', 'El serial no es valido')],
-	        	[['monto_edocuenta',],
-	        	  'double',
-	        	  'message' => Yii::t('backend', 'El monto no es valido')],
+	        	// [['monto_edocuenta',],
+	        	//   'double',
+	        	//   'message' => Yii::t('backend', 'El monto no es valido')],
 	        ];
 	    }
 

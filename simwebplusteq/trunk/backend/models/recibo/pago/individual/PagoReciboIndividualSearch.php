@@ -135,6 +135,7 @@
                   $query = self::findDepositoPlanillaModel();
 
                   $dataProvider = New ActiveDataProvider([
+                        'key' => 'planilla',
                         'query' => $query,
                   ]);
 
