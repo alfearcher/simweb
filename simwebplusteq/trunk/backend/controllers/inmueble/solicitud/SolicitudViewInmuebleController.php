@@ -294,7 +294,7 @@
 
 			return false;
 		}
-
+ 
 		// tipo solicitud 25
 		private function actionMostrarSolicitudCambioNumeroCatastralInmueble()
 		{

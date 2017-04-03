@@ -409,7 +409,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                                   'estatus' => 0,
                                   'inactivo' => 0,
                               ];  
-                
+                  
 
                 if ( $conn->guardarRegistro($conexion, $tableName1,  $arrayDatos1) ){  
                 $result = $conexion->getLastInsertID();

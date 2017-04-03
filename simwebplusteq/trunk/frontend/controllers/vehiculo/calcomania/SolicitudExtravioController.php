@@ -80,7 +80,7 @@ class SolicitudExtravioController extends Controller
 {
 
 
-
+ 
     
   public $layout = 'layout-main';
    

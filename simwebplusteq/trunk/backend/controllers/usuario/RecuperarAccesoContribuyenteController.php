@@ -351,7 +351,7 @@ class RecuperarAccesoContribuyenteController extends Controller
                     $tipoError = 0;
                     $todoBien = false;
                 }
-            
+          
 
                 if ($todoBien == true){
                     

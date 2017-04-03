@@ -628,7 +628,7 @@
 							'modelRegistro' => $model['registro'],
 							'descripcion' => $descripcion,
 
-							
+							 
 					]);
 
 		}
