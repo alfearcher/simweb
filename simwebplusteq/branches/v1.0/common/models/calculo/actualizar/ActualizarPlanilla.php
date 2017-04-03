@@ -785,7 +785,8 @@
 						$liquidar->iniciarCalcularLiquidacionTasa();
 						$montoImpuesto = $liquidar->getCalculoAnual();
 
-						$montoAnual = 1 * $montoImpuesto;
+						//$montoAnual = 1 * $montoImpuesto;
+						$montoAnual = $montoPlanilla;
 
 					} elseif ( $parametroTasa['tipo_rango'] == 0 ) {
 						$montoAnual = $montoPlanilla;
