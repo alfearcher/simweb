@@ -298,6 +298,9 @@
 <!-- LISTADO DE PLANILLAS A PAGAR -->
 						<div class="row" style="width:100%;padding:0px;margin:0px;margin-top: 5px;">
 							<div class="col-sm-4" style="width:55%;padding:0px;margin-left:0px;">
+								<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;width: 100%;padding-top: 10px;">
+							        <strong><p><?=Yii::t('backend', 'Planillas (Relacionadas al recibo)')?></p></strong>
+							    </div>
 								<div class="row" style="width:100%;">
 									<?= GridView::widget([
 										'id' => 'id-grid-planilla-sin-referencia',
@@ -368,8 +371,17 @@
 								    	]
 									]);?>
 								</div>
+								<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;width: 100%;padding: 0px;margin-top: -10px;">
+							        <div class="col-sm-4" style="width: 60%;padding: 0px;margin: 0px;">
+							            <strong><h4><?=Yii::t('backend', 'Total (Planillas):')?></h4></strong>
+							        </div>
+							        <div class="col-sm-4" style="width: 30%;padding: 0px;margin: 0px;text-align: right;">
+							            <strong><h4><?=Yii::$app->formatter->asDecimal($totalPlanilla, 2)?></h4></strong>
+							        </div>
+							    </div>
 
-								<div class="row" style="width: 100%;padding: 0px;margin: 0px;">
+
+								<div class="row" style="width: 100%;padding: 0px;margin: 0px;margin-top: 25px;">
 									<?=$htmlSerialAgregado ?>
 								</div>
 							</div>

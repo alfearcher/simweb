@@ -60,5 +60,6 @@
 										'dataProviders' => $dataProviders,
 										'htmlSerialForm' => $htmlSerialForm,
 										'htmlSerialAgregado' => $htmlSerialAgregado,
+										'totalPlanilla' => $totalPlanilla,
 			]);?>
 </div>
