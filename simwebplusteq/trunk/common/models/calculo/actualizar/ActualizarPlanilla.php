@@ -786,6 +786,8 @@
 
 						$montoAnual = 1 * $montoImpuesto;
 
+					} elseif ( $parametroTasa['tipo_rango'] == 0 ) {
+						$montoAnual = $montoPlanilla;
 					}
 				}
 
