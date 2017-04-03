@@ -789,6 +789,8 @@
 
 					} elseif ( $parametroTasa['tipo_rango'] == 0 ) {
 						$montoAnual = $montoPlanilla;
+					} else {
+						$montoAnual = $montoPlanilla;
 					}
 				}
 
