@@ -118,7 +118,7 @@
 
 			if ( DepositoPlanillaSearch::puedoSeleccionarPlanillaParaRecibo($this->_planilla) ) {
 
-				// Significa que la planilla no esta relacionada a ningun recibo pemdiente o pagado.
+				// Significa que la planilla no esta relacionada a ningun recibo pendiente o pagado.
 
 				$this->_detallePlanilla = self::getPlanillaModel()->where('planilla =:planilla',
 																			[':planilla' => $this->_planilla])
@@ -899,19 +899,21 @@
 		/***/
 		private function getDescripcionPlanillaSegunImpuesto()
 		{
+			$detalle = $this->_detallePlanilla[0]['descripcion'];
+
 			$definitiva = '';
 			if ( $this->_definitiva ) {
 				$definitiva = ' DEFINITIVA ' . $this->_detallePlanilla[0]['ano_impositivo'] . ' - ' . $this->_detallePlanilla[0]['trimestre'];
 			}
 
 			$etiqueta = 'LIQUIDACION DE ';
-			$registroActualizado = ' / Registro actualizado ' . date('d-m-Y h:i:s');
-			$impuesto = New ImpuestoForm();
-			$descripcion = '';
+			$registroActualizado = ' / Actualización ' . date('d-m-Y h:i:s');
 
-			$descripcion = $impuesto->getDescripcionImpuesto((int)$this->_impuesto);
+			//$impuesto = New ImpuestoForm();
+			//$descripcion = '';
+			//$descripcion = $impuesto->getDescripcionImpuesto((int)$this->_impuesto);
 
-			return $etiqueta . $descripcion . $definitiva  . $registroActualizado;
+			return $detalle . $registroActualizado;
 		}
 
 
