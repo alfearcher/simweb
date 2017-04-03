@@ -297,7 +297,7 @@
 
 <!-- LISTADO DE PLANILLAS A PAGAR -->
 						<div class="row" style="width:100%;padding:0px;margin:0px;margin-top: 5px;">
-							<div class="col-sm-4" style="width:50%;padding:0px;margin-left:0px;">
+							<div class="col-sm-4" style="width:55%;padding:0px;margin-left:0px;">
 								<div class="row" style="width:100%;">
 									<?= GridView::widget([
 										'id' => 'id-grid-planilla-sin-referencia',
@@ -308,11 +308,12 @@
 											[
 						                        'class' => 'yii\grid\CheckboxColumn',
 						                        'name' => 'chkPlanilla',
-						                        'multiple' => true,
+						                        'multiple' => false,
 						                        'checkboxOptions' => function ($model, $key, $index, $column) {
-						                				// return [
-						                				// 	'disabled' => 'disabled',
-						                				// ];
+						                				return [
+						                					'onClick' => 'javascript: return false;',
+					                            			'checked' => true,
+						                				];
 
 						                        }
 						                    ],
@@ -367,11 +368,15 @@
 								    	]
 									]);?>
 								</div>
+
+								<div class="row" style="width: 100%;padding: 0px;margin: 0px;">
+									<?=$htmlSerialAgregado ?>
+								</div>
 							</div>
 
 <!-- FORMULARIO PARA CARGAR LAS REFERENCIAS MANUALES -->
-							<div class="col-sm-3" id="id-serial-referencia-form" style="width: 40%;padding:0px;margin:0px;padding-left: 15px;margin-left: 5px;">
-								<?=$htmlSerialForm  ?>
+							<div class="col-sm-3" id="id-serial-referencia-form" style="width: 35%;padding:0px;margin:0px;padding-left: 15px;margin-left: 5px;">
+								<?=$htmlSerialForm ?>
 							</div>
 <!-- FORMULARIO PARA CARGAR LAS REFERENCIAS MANUALES -->
 

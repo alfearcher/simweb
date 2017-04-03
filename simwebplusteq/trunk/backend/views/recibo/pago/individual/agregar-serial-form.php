@@ -57,10 +57,13 @@
  			'method' => 'post',
  			//'action' => $url,
  			'enableClientValidation' => true,
- 			'enableAjaxValidation' => true,
+ 			'enableAjaxValidation' => false,
  			'enableClientScript' => true,
  		]);
  	?>
+
+	<?=$form->field($modelSerial, 'recibo')->hiddenInput(['value' => $modelSerial->recibo])->label(false)?>
+	<?=$form->field($modelSerial, 'usuario')->hiddenInput(['value' => $modelSerial->usuario])->label(false)?>
 
 	<div class="col-sm-3" id="id-serial-referencia-form" style="width: 100%;padding:0px;margin:0px;">
 		<div class="row" style="width:100%;padding:0px;margin:0px;">
@@ -73,13 +76,13 @@
 			<div class="col-sm-2" style="width: 35%;padding:0px;margin:0px;margin-top: 5px;">
 				<p><strong><?=Html::encode($modelSerial->getAttributeLabel('serial'))?></strong></p>
 			</div>
-			<div class="col-sm-4" style="width:45%;padding:0px;margin:0px;">
+			<div class="col-sm-4" style="width:50%;padding:0px;margin:0px;margin-left: 15px;">
 				<?=$form->field($modelSerial, 'serial')->textInput([
-								'id' => 'id-serial',
-								'style' => 'width: 100%;
-								 font-size:100;
-								 font-weight:bold;',
-							])->label(false)
+															'id' => 'id-serial',
+															'style' => 'width: 100%;
+															 font-size:100;
+															 font-weight:bold;',
+														])->label(false)
 				?>
 			</div>
 		</div>
@@ -88,7 +91,7 @@
 			<div class="col-sm-2" style="width: 35%;padding:0px;margin:0px;margin-top: 5px;">
 				<p><strong><?=Html::encode($modelSerial->getAttributeLabel('monto_edocueta'))?></strong></p>
 			</div>
-			<div class="col-sm-4" style="width:45%;padding:0px;margin:0px;">
+			<div class="col-sm-4" style="width:50%;padding:0px;margin:0px;margin-left: 15px;">
 				<?= $form->field($modelSerial, 'monto_edocuenta')->widget(MaskedInput::className(), [
 																//'mask' => '',
 																'options' => [
@@ -121,7 +124,7 @@
 			<div class="col-sm-2" style="width: 35%;padding:0px;margin:0px;margin-top: 5px;">
 				<p><strong><?=Html::encode($modelSerial->getAttributeLabel('fecha_edocueta'))?></strong></p>
 			</div>
-			<div class="col-sm-4" style="width:28%;padding:0px;margin:0px;">
+			<div class="col-sm-4" style="width:32%;padding:0px;margin:0px;margin-left: 15px;">
 				<?= $form->field($modelSerial, 'fecha_edocuenta')->widget(\yii\jui\DatePicker::classname(),[
 														  'clientOptions' => [
 																'maxDate' => '+0d',	// Bloquear los dias en el calendario a partir del dia siguiente al actual.

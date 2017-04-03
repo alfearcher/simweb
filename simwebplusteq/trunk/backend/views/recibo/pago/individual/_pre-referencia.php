@@ -59,5 +59,6 @@
 										'datosRecibo' => $_SESSION['datosRecibo'],
 										'dataProviders' => $dataProviders,
 										'htmlSerialForm' => $htmlSerialForm,
+										'htmlSerialAgregado' => $htmlSerialAgregado,
 			]);?>
 </div>
