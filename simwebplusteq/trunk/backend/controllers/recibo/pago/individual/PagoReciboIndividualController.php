@@ -444,6 +444,11 @@
 	        	$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
 	        	$dataProviders = $pagoReciboSearch->getDataProviders();
 
+	        	// Modelo del dataProvider relacionado a las planillas existentes en el recibo.
+	        	// DepositoPLanilla
+	        	$models = $dataProviders[1]->getModels();
+	        	$totalPlanilla = self::actionTotalizarMontoDocumento($models, 'monto');
+
 	        	$datosBanco = isset($_SESSION['datosBanco']) ? $_SESSION['datosBanco'] : [];
 	        	$datosRecibo = isset($_SESSION['datosRecibo']) ? $_SESSION['datosRecibo'] : [];
 
@@ -499,6 +504,7 @@
 			        										'dataProviders' => $dataProviders,
 			        										'htmlSerialForm' => $htmlSerialForm,
 			        										'htmlSerialAgregado' => $htmlSerialAgregado,
+			        										'totalPlanilla' => $totalPlanilla,
         				]);
         	}
         }
@@ -539,14 +545,31 @@
     		// Retorna un arreglo con los datos del modelo, sino encuentra nada
     		// el arreglo llega vacion
     		$models = $dataProvider->getModels();
-    		foreach ( $models as $model ) {
-    			$totalizar = $totalizar + $model->monto_edocuenta;
-    		}
 
+    		$totalizar = self::actionTotalizarMontoDocumento($models, 'monto_edocuenta');
     		return $this->renderPartial('/recibo/pago/individual/serial-agregado-form',[
     													'dataProvider' => $dataProvider,
     													'totalizar' => $totalizar,
     			]);
+        }
+
+
+
+
+        /**
+         * Metodo que permite la totalizacion de un valore perteneciente a un modelo.
+         * Dicha variable se pasa como argumento ($nombreCampo)
+         * @param Model $model modelo de un dataProvider.
+         * @param string $nombreCampo nombre del atributo que se totalizara.
+         * @return double.
+         */
+        private function actionTotalizarMontoDocumento($model, $nombreCampo)
+        {
+        	$totalizado = 0;
+        	foreach ( $model as $item ) {
+        		$totalizado = $totalizado + $item->$nombreCampo;
+        	}
+        	return $totalizado;
         }
 
 
@@ -619,34 +642,11 @@
 
 
 
-
         /**
-         * Metodo que permite setear el valor de los atributos del modelo con los dstos
-         * del post enviado desde el formulario.
-         * @param ReferenciaPlanillaUsuarioForm $modelReferenciaUsuario instancia de la clase.
-         * @param array $postEnviado arreglo del post enviado.
-         * @return ReferenciaPlanillaUsuarioForm
+         * Metodo que renderiza un listado dde cuentas recaudadoras, segun el identificador
+         * del banco seleccionado. La lista aparecera en la vista.
+         * @return view
          */
-        private function actionLoadModeloReferencia($modelReferenciaUsuario, $postEnviado)
-        {
-        	$modelReferenciaUsuario->recibo = $postEnviado['recibo'];
-        	$modelReferenciaUsuario->fecha = $postEnviado['fecha'];
-        	$modelReferenciaUsuario->monto_recibo = $postEnviado['monto'];
-        	$modelReferenciaUsuario->planilla = $postEnviado['planilla'];
-        	$modelReferenciaUsuario->monto_planilla = $postEnviado['fecha'];
-        	$modelReferenciaUsuario->id_contribuyente = $postEnviado['fecha'];
-        	$modelReferenciaUsuario->fecha_edocuenta = $postEnviado['fecha'];
-        	$modelReferenciaUsuario->serial_edocuenta = $postEnviado['fecha'];
-        	$modelReferenciaUsuario->debito = $postEnviado['fecha'];
-        	$modelReferenciaUsuario->credito = $postEnviado['fecha'];
-        	$modelReferenciaUsuario->estatus = 0;
-        	$modelReferenciaUsuario->observacion = $postEnviado['fecha'];
-        	$modelReferenciaUsuario->usuario = Yii::$app->identidad->getUsuario();
-
-        }
-
-
-        /***/
         public function actionListarCuentaRecaudadora()
         {
         	$request = Yii::$app->request;
@@ -663,7 +663,11 @@
 
 
 
-        /***/
+        /**
+         * Metodo que renderiza un mensaje indicando si un numero de cuemta determinado
+         * corresponde a la cuenta recaudadora de la Alcaldia.
+         * @return string
+         */
         public function actionDeterminarCuentaRecaudadora()
         {
         	$request = Yii::$app->request;
