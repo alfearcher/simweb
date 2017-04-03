@@ -440,6 +440,8 @@
 													[':impuesto' => $this->_impuesto])
 										->andWhere('ano_impositivo =:ano_impositivo',
 													[':ano_impositivo'=> $añoImpositivo])
+										->andWhere('trimestre >:trimestre',
+													[':trimestre'=> 0])
 										->andWhere('referencia =:referencia',
 													[':referencia' => 0])
 										->andWhere('pago !=:pago',
@@ -478,7 +480,6 @@
 					return 0;
 				}
 			}
-
 
 			$primero = $result[0]['trimestre'];
 
