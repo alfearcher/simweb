@@ -70,6 +70,7 @@
     use backend\models\recibo\depositodetalle\VaucheDetalleUsuarioForm;
     use backend\models\recibo\prereferencia\PreReferenciaPlanillaForm;
     use backend\models\recibo\pago\individual\SerialReferenciaForm;
+    use backend\models\recibo\pago\individual\SerialReferenciaUsuarioSearch;
     use backend\models\recibo\prereferencia\ReferenciaPlanillaUsuarioForm;
 
 
@@ -440,16 +441,13 @@
 	        		}
 	        	}
 
-	        	$datosBanco = isset($_SESSION['datosBanco']) ? $_SESSION['datosBanco'] : [];
-
-//die(var_dump($datosBanco));
-
-	        	$modelSerial = New SerialReferenciaForm();
-
 	        	$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
 	        	$dataProviders = $pagoReciboSearch->getDataProviders();
 
-        		$datosRecibo = $_SESSION['datosRecibo'];
+	        	$datosBanco = isset($_SESSION['datosBanco']) ? $_SESSION['datosBanco'] : [];
+	        	$datosRecibo = isset($_SESSION['datosRecibo']) ? $_SESSION['datosRecibo'] : [];
+
+	        	$modelSerial = New SerialReferenciaForm();
 
         		$model = New PreReferenciaPlanillaForm();
         		$model->fecha_pago = ( $datosRecibo[0]['estatus'] == 1 ? $datosRecibo[0]['fecha'] : date('d-m-Y') );
@@ -461,21 +459,32 @@
 					return ActiveForm::validate($modelSerial);
 				}
 
-				if ( $modelSerial->load($postData) ) {
-					if ( $modelSerial->validate() ) {
-						// guardar serial
-						$modelReferenciaUsuario = New ReferenciaPlanillaUsuarioForm();
-die(var_dump($postData));
-
+				if ( isset($postData['btn-add-serial']) ) {
+					if ( $postData['btn-add-serial'] == 5 ) {
+						if ( $modelSerial->load($postData) ) {
+							$modelSerial->fecha_edocuenta = date('Y-m-d', strtotime($modelSerial->fecha_edocuenta));
+							$modelSerial->monto_edocuenta = str_replace('.', '', $modelSerial->monto_edocuenta);
+							$modelSerial->monto_edocuenta = str_replace(',', '.', $modelSerial->monto_edocuenta);
+							if ( $modelSerial->validate() ) {
+								// guardar serial
+								$modelSerial->observacion = self::actionSetObservacionSerialManual($datosBanco['cuenta_recaudadora']);
+								self::actionGuardarSerialTemporal($modelSerial);
+							}
+						}
 					}
 				}
 
-				$htmlSerialForm = null;
+				$htmlSerialForm = null;		// Formulario para cargar los seriales manuales.
 				if ( $datosBanco['tipo_cuenta'] == 'NO ES CUENTA RECAUDADORA' ) {
+					$modelSerial->recibo = $recibo;
+					$modelSerial->usuario = Yii::$app->identidad->getUsuario();
 	        		$htmlSerialForm = $this->renderPartial('/recibo/pago/individual/agregar-serial-form',[
-	        																			'modelSerial' => $modelSerial,
+	        																		'modelSerial' => $modelSerial,
 	        							]);
 	        	}
+
+	        	// Vista con los seriales-referencias agregados.
+	        	$htmlSerialAgregado = self::actionViewHtmlSerialAgregado();
 
         		$url = Url::to(['pre-referencia']);
         		$caption = Yii::t('backend', 'Registro de Pre-Referencias Bancarias') . '. ' . Yii::t('backend', 'Recibo Nro. ') . $recibo;
@@ -489,6 +498,7 @@ die(var_dump($postData));
 			        										'datosBanco' => $datosBanco,
 			        										'dataProviders' => $dataProviders,
 			        										'htmlSerialForm' => $htmlSerialForm,
+			        										'htmlSerialAgregado' => $htmlSerialAgregado,
         				]);
         	}
         }
@@ -496,22 +506,116 @@ die(var_dump($postData));
 
 
 
+
+        /**
+         * Metodo que permite setear el valor de la observacion de la pre-referencia.
+         * @param string $nroCuentaRecaudadora numero de la cuenta recaudadora.
+         * @return string
+         */
+        public function actionSetObservacionSerialManual($nroCuentaRecaudadora)
+        {
+        	return 'SERIAL MANUAL, Cuenta Recaudadora: ' . $nroCuentaRecaudadora;
+        }
+
+
+
+
+
+        /**
+         * Metodo que permite renderizar una vista que muestra los seriales para las pre-referencias
+         * agregadas por el usuario.
+         * @return view
+         */
+        public function actionViewHtmlSerialAgregado()
+        {
+        	$recibo = isset($_SESSION['recibo']) ? $_SESSION['recibo'] : 0;
+        	$usuario = Yii::$app->identidad->getUsuario();
+    		$serialSearch = New SerialReferenciaUsuarioSearch($recibo, $usuario);
+    		$dataProvider = $serialSearch->getDataProvider();
+
+    		// Totalizar los montos de los seriales agregados.
+    		$totalizar = 0;
+
+    		// Retorna un arreglo con los datos del modelo, sino encuentra nada
+    		// el arreglo llega vacion
+    		$models = $dataProvider->getModels();
+    		foreach ( $models as $model ) {
+    			$totalizar = $totalizar + $model->monto_edocuenta;
+    		}
+
+    		return $this->renderPartial('/recibo/pago/individual/serial-agregado-form',[
+    													'dataProvider' => $dataProvider,
+    													'totalizar' => $totalizar,
+    			]);
+        }
+
+
+
+
+
+        /**
+         * Metodo que permite suprimir un registro de los seriales agregados.
+         * Esto seon los seriales (pre-referencia) agregados por el usuario.
+         * @return boolean.
+         */
+        public function actionSuprimirSerialAgregado()
+        {
+        	$result = false;
+        	$request = Yii::$app->request;
+        	$postGet = $request->get();
+
+        	$idSerial = isset($postGet['id']) ? $postGet['id'] : 0;
+
+        	if ( $idSerial > 0 ) {
+	        	$recibo = isset($_SESSION['recibo']) ? $_SESSION['recibo'] : 0;
+	        	$usuario = Yii::$app->identidad->getUsuario();
+	    		$serialSearch = New SerialReferenciaUsuarioSearch($recibo, $usuario);
+
+	        	self::setConexion();
+				$this->_transaccion = $this->_conn->beginTransaction();
+				$this->_conn->open();
+
+				$result = $serialSearch->suprimirSerialById($idSerial, $this->_conn, $this->_conexion);
+				if ( $result ) {
+					$this->_transaccion->commit();
+				} else {
+					$this->_transaccion->rollBack();
+				}
+				$this->_conn->close();
+			}
+			$this->redirect(['pre-referencia']);
+        }
+
+
+
+
+
+
         /**
          * Metodo que permite guardar la referencia en una entidad temporal
-         * @param ReferenciaPlanillaUsuarioForm $modelReferenciaUsuario instancia de la clase.
+         * @param SerialReferenciaUsuario $model instancia de la clase.
          * @return boolean
          */
-        private function actionGuardarReferenciaTemporal($modelReferenciaUsuario)
+        private function actionGuardarSerialTemporal($model)
         {
         	$result = false;
         	self::setConexion();
         	$this->_transaccion = $this->_conn->beginTransaction();
         	$this->_conn->open();
 
-        	$tabla = $modelReferenciaUsuario->tableName();
+        	$tabla = $model->tableName();
 
-        	return $result = $this->_conexion->guardarRegistro($this->_conn, $tabla, $modelReferenciaUsuario->attributes);
+        	$result = $this->_conexion->guardarRegistro($this->_conn, $tabla, $model->attributes);
+        	if ( $result ) {
+        		$this->_transaccion->commit();
+        	} else {
+        		$this->_transaccion->rollBack();
+        	}
+        	$this->_conn->close();
+        	return $result;
         }
+
+
 
 
 
