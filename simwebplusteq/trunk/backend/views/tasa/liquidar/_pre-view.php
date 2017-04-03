@@ -46,6 +46,7 @@
 													'model' => $model,
 		      										'tasa' => $tasa,
 		      										'utDelAño' => $utDelAño,
+		      										'montoEnMoneda' => $montoEnMoneda,
 					    ]); ?>
 </div>
 
