@@ -45,6 +45,7 @@
  	use Yii;
 	use yii\base\Model;
 	use backend\models\recibo\pago\individual\SerialReferenciaUsuario;
+	use backend\models\recibo\prereferencia\PreReferenciaPlanilla;
 
 	/**
 	* Clase base del formulario
@@ -53,9 +54,11 @@
 	{
 		public $recibo;
 		public $serial;
-		public $monto_edocuenta;
 		public $fecha_edocuenta;
-
+		public $monto_edocuenta;
+		public $estatus;
+		public $usuario;
+		public $observacion;
 
 
 		/**
@@ -82,6 +85,14 @@
 	        	[['serial',],
 	        	  'integer',
 	        	  'message' => Yii::t('backend', 'El serial no es valido')],
+	        	['estatus', 'default', 'value' => 0],
+	        	['observacion', 'string'],
+	        	['serial', 'unique', 'message' => '{attribute} ya existe'],
+	        	[['recibo', 'usuario',
+	        	  'estatus', 'observacion'],
+	        	  'safe'],
+	        	['serial', 'existeSerialFecha'],
+	        	['fecha_edocuenta', 'fechaEdoCuentaCorrecta'],
 	        	// [['monto_edocuenta',],
 	        	//   'double',
 	        	//   'message' => Yii::t('backend', 'El monto no es valido')],
@@ -101,6 +112,53 @@
 	        	'monto_edocuenta' => Yii::t('backend', 'Monto'),
 	        	'fecha_edocuenta' => Yii::t('backend', 'Fecha(Edo. Cuenta)'),
 	        ];
+	    }
+
+
+
+	    /**
+	     * Metodo que permite determinar si un serial ya esta relacionado a otra planilla
+	     * para la misma fecha.
+	     * @param string $attribute descripcion del atributo.
+	     * @return
+	     */
+	    public function existeSerialFecha($attribute)
+	    {
+	    	$result = PreReferenciaPlanilla::find()->where('serial_edocuenta =:serial_edocuenta',
+	    															[':serial_edocuenta' => $this->serial])
+	    										   ->andWhere('fecha_edocuenta =:fecha_edocuenta',
+	    											 				[':fecha_edocuenta' => date('Y-m-d', strtotime($this->fecha_edocuenta))])
+	    										   ->andWhere(['IN', 'estatus', [0, 1]])
+	    										   ->exists();
+	    	if ( $result ) {
+	    		$this->addError($attribute, Yii::t('backend', 'Serial ya esta relacionado a otra planilla, para la misma fecha.'));
+	    	}
+	    }
+
+
+
+	    /**
+	     * Metodo que permite controlar la unicidad del valor de la fecha para los seriales
+	     * que se agreguen a los listados.
+	     * @param string $attribute nombre del atributo
+	     * @return
+	     */
+	    public function fechaEdoCuentaCorrecta($attribute)
+	    {
+	    	$registers = $this->find()->where('usuario =:usuario',
+	    											[':usuario' => $this->usuario])
+	    						   	  ->andWhere('recibo =:recibo',
+	    						   	  				[':recibo' => $this->recibo])
+	    						   	  ->asArray()
+	    						   	  ->all();
+	    	if ( count($registers) > 0 ) {
+	    		foreach ( $registers as $register ) {
+	    			if ( $this->fecha_edocuenta !== $register['fecha_edocuenta'] ) {
+	    				$this->addError($attribute, Yii::t('backend', 'La fecha del serial que intenta agregar no coinciden con los ya existentes.'));
+	    			}
+	    		}
+	    	}
+
 	    }
 
 

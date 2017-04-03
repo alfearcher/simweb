@@ -55,7 +55,6 @@
       use backend\models\recibo\depositodetalle\VaucheDetalleUsuario;
 
 
-
 	/**
 	* Clase que permite gestionar el pago de un recibo por caja.
 	*/
