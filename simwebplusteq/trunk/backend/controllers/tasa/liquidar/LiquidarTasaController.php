@@ -115,6 +115,8 @@
 					}
 				} elseif ( isset($postData['btn-liquidar']) ) {
 					if ( $postData['btn-liquidar'] == 5 ) {
+						$model->resultado = str_replace('.', '', $model->resultado);
+						$model->resultado = str_replace(',', '.', $model->resultado);
 
 						if ( $model->load($postData) ) {
 
@@ -166,10 +168,13 @@
 		      				// Informacion completa de la tasa que se liquidara.
 		      				$tasa = self::actionTasa($model->id_impuesto);
 
+		      				$montoEnMoneda = self::actionDeterminarMontoEnMoneda($tasa);
+
 		      				return $this->render('/tasa/liquidar/_pre-view',[
 		      											'model' => $model,
 		      											'tasa' => $tasa,
 		      											'utDelAño' => $utDelAño,
+		      											'montoEnMoneda' => $montoEnMoneda,
 
 		      					]);
 		      			} else {
@@ -246,7 +251,12 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que retorna el registro de la tasa que se utilizo en la liquidacion.
+		 * Se recibe un arreglo con los atributos del registro.
+		 * @param integer $idImpuesto identificacion de la entidad.
+		 * @return array
+		 */
 		public function actionTasa($idImpuesto)
 		{
 			// Parametros completos de la tasa.
@@ -257,7 +267,11 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que retorna el monto de la unidad tributaria para un año.
+		 * @param integer $añoImpositivo año impositivo.
+		 * @return double.
+		 */
 		public function actionUnidadTributaria($añoImpositivo)
 		{
 			$montoUt = 0;
@@ -266,6 +280,34 @@
 			return $montoUt;
 		}
 
+
+		/**
+		 * Metodo que permite determinar el monto en moneda segun el parametro de calculo.
+		 * Esto permite determinar la cabtidad en moneda que se debe utilizar si la tasa
+		 * esta calculada en unidades tributarias, enn caso de que el calculo sea en moneda
+		 * nacional o en porcentaje se debera colocar 1.
+		 * @param array $tasa arreglo con el registro de la tasa utilixada en los alculos.
+		 * @return double.
+		 */
+		public function actionDeterminarMontoEnMoneda($tasa)
+		{
+			$monto = 0;
+			if ( $tasa['tipoRango']['tipo_rango'] == 0 ) {
+				$monto = $tasa['monto'];
+
+			} elseif ( $tasa['tipoRango']['tipo_rango'] == 1 ) {
+				$monto = $tasa['monto'] * self::actionUnidadTributaria($tasa['ano_impositivo']);
+
+			} elseif ( $tasa['tipoRango']['tipo_rango'] == 2 ) {
+				$monto = round($tasa['monto'] / 100, 2);
+
+			} else {
+				$monto = 1;
+
+			}
+
+			return $monto;
+		}
 
 
 		/**
@@ -296,7 +338,7 @@
 				$fechaVcto = OrdenanzaBase::getFechaVencimientoSegunFecha(date('Y-m-d'));
 				$observacion = $postEnviado['codigo-presupuesto-descripcion'] . ' / ' .
 							   $postEnviado['codigo-descripcion'] . ' / ' .
-							   $model['observacion'];
+							   $model['observacion'] . ' / factor: ' . $model['multiplicar_por'];
 
 				$model->id_pago = $idPago;
 
