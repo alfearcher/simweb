@@ -69,6 +69,18 @@
 		}
 
 
+		/**
+		 * Metodo que realiza una consulta, sobre la entidad "bancos", para localizar
+		 * un registro por su identificador.
+		 * @param integer $idBanco identificador de la entidad.
+		 * @return Banco.
+		 */
+		public function findBanco($idBanco)
+		{
+			return $banco = Banco::find()->where('id_banco =:id_banco', [':id_banco' => $idBanco])->one();
+		}
+
+
 
 		/**
 		 * Metodo que permite obtener una lista de los registros de la entidad
