@@ -436,7 +436,7 @@
 	        	$postGet = $request->get();
 	        	$postData = $request->post();
 
-die(var_dump($postData));
+//die(var_dump($postData));
 
 	        	$htmlSerialForm = null;		// Formulario para cargar los seriales manuales.
 
@@ -570,7 +570,7 @@ die(var_dump($postData));
          * Metodo que determina la cantidad de registro del tipo deposito (vauche)
          * @return integer.
          */
-        private function actionCantidadVaucheRegistrado($recibo)
+        private function actionCantidadDepositoRegistrado($recibo)
         {
         	return $registers = DepositoDetalleUsuarioForm::find()->where('recibo =:recibo',
         								 	 									[':recibo' => $recibo])
@@ -578,6 +578,44 @@ die(var_dump($postData));
         								 						  				[':id_forma' => 2])
         	                             						  ->count();
         }
+
+
+
+
+
+        /***/
+        public function actionAgregarDepositoComoSerial($recibo, $usuario)
+        {
+        	$registers = DepositoDetalleUsuarioForm::find()->where('recibo =:recibo',
+        								 	 							[':recibo' => $recibo])
+        								 				   ->andWhere('id_forma =:id_forma',
+        								 						  		[':id_forma' => 2])
+        	                             				   ->all();
+        	foreach ( $registers as $key => $value ) {
+
+	        	$register = $txtSearch->findRegistroTxtById($value)->toArray();
+
+	        	if ( count($register) > 0 ) {
+
+		        	$modelSerial = New SerialReferenciaForm();
+
+		        	$modelSerial->recibo = $recibo;
+		        	$modelSerial->serial = $register['planilla'];
+		        	$modelSerial->fecha_edocuenta = $register['fecha_pago'];
+		        	$modelSerial->monto_edocuenta = $register['monto_planilla'];
+		        	$modelSerial->estatus = 0;
+		        	$modelSerial->observacion = self::actionSetObservacionSerialManual('123456');
+		        	$modelSerial->usuario = $usuario;
+
+		        	$result = self::actionGuardarSerialTemporal($modelSerial);
+		        }
+        	}
+
+        	$this->redirect(['pre-referencia']);
+        }
+
+
+
 
 
 
