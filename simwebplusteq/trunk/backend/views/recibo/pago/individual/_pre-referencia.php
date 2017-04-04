@@ -61,5 +61,6 @@
 										'htmlSerialForm' => $htmlSerialForm,
 										'htmlSerialAgregado' => $htmlSerialAgregado,
 										'totalPlanilla' => $totalPlanilla,
+										'cantidadDeposito' => $cantidadDeposito,
 			]);?>
 </div>

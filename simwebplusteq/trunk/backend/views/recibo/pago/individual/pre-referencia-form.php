@@ -269,7 +269,7 @@
 																	'id' => 'btn-find-referencia',
 																	'class' => 'btn btn-primary',
 																	'value' => 3,
-																	'style' => 'width: 100%',
+																	'style' => 'width: 100%;',
 																	'name' => 'btn-find-referencia',
 																  ])
 								?>
@@ -279,17 +279,14 @@
 
 <!-- BOTON AGREGAR DEPOSITO A LISTADO -->
 							<div class="col-sm-2" style="width:35%;padding:0px;margin:0px;margin-left: 10px;">
-								<?= Html::a(Yii::t('backend', 'Agregar depositos al listado de referencias'), '#',
-																  	[
-                				 			   							'id' => 'link-add-deposito',
-                				 			   							'data-toggle' => 'modal',
-                				 			   							'data-target' => '#modal',
-                				 			   							'data-url' => Url::to(['view-agregar-serial-form',
-                				 			   			    	 								'recibo' => $datosRecibo[0]['recibo']]),
-                				 			   							'data-pjax' => 0,
-                				 			   							'class' => 'btn btn-warning',
-                				 			   							'style' => 'width:100%;'
-                				 			   						]);
+								<?= Html::submitButton(Yii::t('backend', 'Depositos como referencias ' . Html::tag('span',$cantidadDeposito, ['class' => 'badge', 'style' => 'font-size:100%;'])),
+																  [
+																	'id' => 'btn-add-deposito',
+																	'class' => 'btn btn-default',
+																	'value' => 6,
+																	'style' => 'width: 100%;height:150%;',
+																	'name' => 'btn-add-deposito',
+																  ])
 								?>
 							</div>
 <!-- FIN DE BOTON AGREGAR DEPOSITO A LISTADO -->
@@ -387,7 +384,7 @@
 							</div>
 
 <!-- FORMULARIO PARA CARGAR LAS REFERENCIAS MANUALES -->
-							<div class="col-sm-3" id="id-serial-referencia-form" style="width: 35%;padding:0px;margin:0px;padding-left: 15px;margin-left: 5px;">
+							<div class="col-sm-3" id="id-serial-referencia-form" style="width: 38%;padding:0px;margin:0px;margin-left: 10px;">
 								<?=$htmlSerialForm ?>
 							</div>
 <!-- FORMULARIO PARA CARGAR LAS REFERENCIAS MANUALES -->
