@@ -72,6 +72,7 @@
     use backend\models\recibo\pago\individual\SerialReferenciaForm;
     use backend\models\recibo\pago\individual\SerialReferenciaUsuarioSearch;
     use backend\models\recibo\prereferencia\ReferenciaPlanillaUsuarioForm;
+    use backend\models\recibo\txt\RegistroTxtSearch;
 
 
 
@@ -202,7 +203,7 @@
 						$dataProviders = $pagoReciboSearch->getDataProviders();
 
 						$totales = $pagoReciboSearch->getTotalesReciboPlanilla($dataProviders);
-// die(var_dump($bloquearFormaPago));
+
 						$result = self::actionInicializarTemporal($model->recibo);
 						$htmlRecibo = $this->renderPartial('/recibo/pago/individual/_recibo-encontrado',[
 																'dataProviderRecibo' => $dataProviders[0],
@@ -435,9 +436,24 @@
 	        	$postData = $request->post();
 //die(var_dump($postData));
 
+				$modelSerial = New SerialReferenciaForm();
+				$model = New PreReferenciaPlanillaForm();
+
         		if ( isset($postData['btn-back']) ) {
 	        		if ( $postData['btn-back'] == 2 ) {
 	        			$this->redirect(['seleccionar-cuenta-recaudadora']);
+	        		}
+	        	} elseif ( isset($postData['btn-find-referencia']) ) {
+	        		if ( $postData['btn-find-referencia'] == 3 ) {
+
+	        			$formName = $model->formName();
+	        			$model->load($postData);
+	        			$model->fecha_pago = date('Y-m-d', strtotime($postData[$formName]['fecha_pago']));
+
+	        			// Se busca las referencias que se encuentran en el registro-txt de las planillas
+	        			// pagadas en banco. Pero que no esten relacionada a ninguna pre-referencia anterior
+	        			// Se tomaran aquellos registros asociados a la fecha de pago.
+	        			$htmlSerialForm = self::actionBuscarReferenciaTxt($model->fecha_pago);
 	        		}
 	        	}
 
@@ -452,9 +468,6 @@
 	        	$datosBanco = isset($_SESSION['datosBanco']) ? $_SESSION['datosBanco'] : [];
 	        	$datosRecibo = isset($_SESSION['datosRecibo']) ? $_SESSION['datosRecibo'] : [];
 
-	        	$modelSerial = New SerialReferenciaForm();
-
-        		$model = New PreReferenciaPlanillaForm();
         		$model->fecha_pago = ( $datosRecibo[0]['estatus'] == 1 ? $datosRecibo[0]['fecha'] : date('d-m-Y') );
         		$model->id_banco = $datosBanco['id_banco'];
         		$model->cuenta_recaudadora = $datosBanco['cuenta_recaudadora'];
@@ -509,6 +522,17 @@
         	}
         }
 
+
+
+
+        /***/
+        public function actionBuscarReferenciaTxt($fechaPago)
+        {
+        	$txtSearch = New RegistroTxtSearch();
+        	$txtSearch->setFechaPago($fechaPago);
+        	$txtSearch->getDataProviderByFecha();
+
+        }
 
 
 
@@ -1411,6 +1435,7 @@
         	$result = [];
         	$modelDepositoDetalle = New DepositoDetalleUsuarioForm();
         	$modelVauche = New VaucheDetalleUsuarioForm();
+        	$modelSerial = New SerialReferenciaForm();
 
         	self::setConexion();
         	$this->_conn->open();
@@ -1422,6 +1447,7 @@
 
     		$result[] = self::actionSuprimirDetalleTemporal($modelVauche, $arregloCondicion);
         	$result[] = self::actionSuprimirDetalleTemporal($modelDepositoDetalle, $arregloCondicion);
+        	$result[] = self::actionSuprimirDetalleTemporal($modelSerial, $arregloCondicion);
 
         	if ( $recibo > 0 ) {
         		$arregloCondicion = [
@@ -1429,6 +1455,7 @@
         		];
         		$result[] = self::actionSuprimirDetalleTemporal($modelVauche, $arregloCondicion);
         		$result[] = self::actionSuprimirDetalleTemporal($modelDepositoDetalle, $arregloCondicion);
+        		$result[] = self::actionSuprimirDetalleTemporal($modelSerial, $arregloCondicion);
         	}
 
         	$cancel = false;
@@ -1747,17 +1774,6 @@
 							'begin',
 					];
 
-		}
-
-
-
-		/***/
-		public function actionPrueba()
-		{
-			$request = Yii::$app->request;
-			$postData = $request->get();
-
-die(var_dump($postData));
 		}
 
 
