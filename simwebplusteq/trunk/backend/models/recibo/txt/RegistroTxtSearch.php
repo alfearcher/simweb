@@ -46,8 +46,10 @@
 	use yii\base\Model;
 	use common\models\planilla\Pago;
 	use yii\data\ArrayDataProvider;
+	use yii\data\ActiveDataProvider;
 	use yii\helpers\ArrayHelper;
 	use backend\models\recibo\prereferencia\PreReferenciaPlanilla;
+	use backend\models\recibo\pago\individual\SerialReferenciaUsuario;
 
 
 	/**
@@ -112,6 +114,19 @@
 		{
 			return $tis->_planilla;
 		}
+
+
+
+		/**
+		 * Metodo que realiza la consulta de la entidad por id.
+		 * @param integer $idRegistro identificador de la entidad.
+		 * @return RegisterTxt.
+		 */
+		public function findRegistroTxtById($idRegistro)
+		{
+			return $this->findOne($idRegistro);
+		}
+
 
 
 
@@ -194,8 +209,36 @@
 
 
 
-		/***/
-		private function getDataPlanillaSinReferencia()
+		/**
+		 * Metodo que arma un listado con las referencias ya agregadas a la entidad temporal
+		 * para que no puedan aparecer en el listado de las planillas sin referencias. Esto
+		 * con el objeto de que no se tomen nuevamente del listado de planillas sin referencias.
+		 * Se buscan los registros agregados en "seriales-referencias-usuarios" relacionados
+		 * a una fecha especifica.
+		 * @return array
+		 */
+		public function getListaPlanillaYaSeleccionada()
+		{
+			$registers = SerialReferenciaUsuario::find()->where('fecha_edocuenta =:fecha_edocuenta',
+																		[':fecha_edocuenta' => $this->_fecha_pago])
+													    ->all();
+
+			$listaSerial = self::getListaPlanillaReferencia($registers, 'serial', 'serial');
+
+			return $lista =  array_values($listaSerial);
+		}
+
+
+
+
+		/**
+		 * Metodo que generar la data para el data provider que se utilizara para el listado
+		 * del grid de planilla sin referencia. Se realiza una serie de consultas para
+		 * utilizarlas como filtro, esto con la intencion de no mostrar planillas que ya
+		 * tengan asociadas referencias o que ya fueron seleccionadas en este proceso.
+		 * @return RegistroTxt
+		 */
+		private function getDataModelPlanillaSinReferencia()
 		{
 			// registros de las referencias existentes para una fecha especifica.
 			// Se buscan los registros que no esten anulados, para que sirvan de
@@ -206,31 +249,44 @@
 			$listaReferencia = self::getListaPlanillaReferencia($referencias, 'planilla', 'planilla');
 
 			// arreglo donde el valor delo mismo es el numero de planilla.
-			$listaPlamilla = array_values($listaReferencia);
+			$listaPlanilla = array_values($listaReferencia);
+
+			// Se buscan las planillas ya agregadas en la entidad temporal.
+			$listaYaAgregada = self::getListaPlanillaYaSeleccionada();
+
+			// Listado que se utilizara para filtar la consulta, con el objeto que no
+			// aparezcan en el listado nuevamente.
+			$listaFiltro = array_merge($listaPlanilla, $listaYaAgregada);
 
 			// Ahora se debe buscar en la entidad "registros-txt", las planillas que aun
 			// no estan en las referencias. Se debe realizar una consulta excluyente de
 			// conjunto.
-			$registers = $this->find()->where('fecha_pago =:fecha_pago',
+			$model = $this->find()->where('fecha_pago =:fecha_pago',
 													[':fecha_pago' => $this->_fecha_pago])
-									  ->andWhere(['NOT IN', 'planilla', $listaPlamilla])
-									  ->all();
+									  ->andWhere(['NOT IN', 'planilla', $listaFiltro]);
 
-die(var_dump($registers));
+			return $model;
 		}
 
 
 
-		/***/
-		public function getDataProviderByFecha()
-		{
-			$data = self::getDataPlanillaSinReferencia();
 
-			$provider = New ArrayDataProvider([
-				'allModels' => $data,
+
+		/**
+		 * Metodo que genera el data provider para el grid del lsitado de
+		 * planillas sin referencias relacionadas, segun una fecha especifica.
+		 * @return ActiveDataProvider.
+		 */
+		public function getDataProviderPlanillaSinRferenciaByFecha()
+		{
+
+			$query = self::getDataModelPlanillaSinReferencia();
+			$provider = New ActiveDataProvider([
+				'key' => 'id_registro',
+				'query' => $query,
 				'pagination' => false,
 			]);
-
+			$query->all();
 			return $provider;
 		}
 
