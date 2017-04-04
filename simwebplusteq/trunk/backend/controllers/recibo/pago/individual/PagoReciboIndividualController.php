@@ -431,29 +431,64 @@
         	$recibo = isset($_SESSION['recibo']) ? (int)$_SESSION['recibo'] : 0;
         	if ( $recibo > 0 ) {
 
+        		$usuario = Yii::$app->identidad->getUsuario();
         		$request = Yii::$app->request;
 	        	$postGet = $request->get();
 	        	$postData = $request->post();
-//die(var_dump($postData));
+
+die(var_dump($postData));
+
+	        	$htmlSerialForm = null;		// Formulario para cargar los seriales manuales.
+
+	        	// Se determina la cantidad de vauches registrados en las formas de pago.
+				$cantidadDeposito = (int)self::actionCantidadVaucheRegistrado($recibo);
 
 				$modelSerial = New SerialReferenciaForm();
 				$model = New PreReferenciaPlanillaForm();
 
         		if ( isset($postData['btn-back']) ) {
 	        		if ( $postData['btn-back'] == 2 ) {
+	        			self::actionAnularSession(['fecha_pago']);
 	        			$this->redirect(['seleccionar-cuenta-recaudadora']);
 	        		}
 	        	} elseif ( isset($postData['btn-find-referencia']) ) {
 	        		if ( $postData['btn-find-referencia'] == 3 ) {
 
 	        			$formName = $model->formName();
+	        			if ( !isset($_SESSION['fecha_pago']) ) {
+	        				$_SESSION['fecha_pago'] = $model->fecha_pago;
+	        			} else {
+	        				if ( $_SESSION['fecha_pago'] !== date('Y-m-d', strtotime($postData[$formName]['fecha_pago'])) ) {
+	        					$result = self::actionInicializarEntidadTemporal($recibo, $usuario, $modelSerial);
+	        				}
+	        			}
+
 	        			$model->load($postData);
 	        			$model->fecha_pago = date('Y-m-d', strtotime($postData[$formName]['fecha_pago']));
+	        			$_SESSION['fecha_pago'] = $model->fecha_pago;
 
 	        			// Se busca las referencias que se encuentran en el registro-txt de las planillas
 	        			// pagadas en banco. Pero que no esten relacionada a ninguna pre-referencia anterior
 	        			// Se tomaran aquellos registros asociados a la fecha de pago.
-	        			$htmlSerialForm = self::actionBuscarReferenciaTxt($model->fecha_pago);
+	        			$htmlSerialForm = self::actionViewHtmlPlanillaSinReferencia($model->fecha_pago);
+
+	        		}
+	        	} elseif ( isset($postData['btn-add-planilla']) ) {
+	        		if ( $postData['btn-add-planilla'] == 4 ) {
+
+	        			$chkIdRegistro = $postData['chkIdRegistro'];
+	        			$fechaPago = $postData['fecha_pago'];
+
+	        			$model->fecha_pago = date('Y-m-d', strtotime($postData['fecha_pago']));
+	        			self::actionAgregarPlanillaComoSerial($chkIdRegistro, $fechaPago);
+	        		}
+	        	} elseif ( isset($postData['btn-add-deposito']) ) {
+	        		if ( $postData['btn-add-deposito'] == 6 ) {
+
+	        			$fechaPago = $postData['fecha_pago'];
+	        			$model->fecha_pago = date('Y-m-d', strtotime($postData['fecha_pago']));
+
+
 	        		}
 	        	}
 
@@ -468,7 +503,12 @@
 	        	$datosBanco = isset($_SESSION['datosBanco']) ? $_SESSION['datosBanco'] : [];
 	        	$datosRecibo = isset($_SESSION['datosRecibo']) ? $_SESSION['datosRecibo'] : [];
 
-        		$model->fecha_pago = ( $datosRecibo[0]['estatus'] == 1 ? $datosRecibo[0]['fecha'] : date('d-m-Y') );
+	        	if ( !isset($_SESSION['fecha_pago']) ) {
+        			$model->fecha_pago = ( $datosRecibo[0]['estatus'] == 1 ? $datosRecibo[0]['fecha'] : date('d-m-Y') );
+        		} else {
+        			$model->fecha_pago = $_SESSION['fecha_pago'];
+        		}
+
         		$model->id_banco = $datosBanco['id_banco'];
         		$model->cuenta_recaudadora = $datosBanco['cuenta_recaudadora'];
 
@@ -492,7 +532,6 @@
 					}
 				}
 
-				$htmlSerialForm = null;		// Formulario para cargar los seriales manuales.
 				if ( $datosBanco['tipo_cuenta'] == 'NO ES CUENTA RECAUDADORA' ) {
 					$modelSerial->recibo = $recibo;
 					$modelSerial->usuario = Yii::$app->identidad->getUsuario();
@@ -518,6 +557,7 @@
 			        										'htmlSerialForm' => $htmlSerialForm,
 			        										'htmlSerialAgregado' => $htmlSerialAgregado,
 			        										'totalPlanilla' => $totalPlanilla,
+			        										'cantidadDeposito' => $cantidadDeposito,
         				]);
         	}
         }
@@ -525,13 +565,83 @@
 
 
 
-        /***/
-        public function actionBuscarReferenciaTxt($fechaPago)
+
+        /**
+         * Metodo que determina la cantidad de registro del tipo deposito (vauche)
+         * @return integer.
+         */
+        private function actionCantidadVaucheRegistrado($recibo)
+        {
+        	return $registers = DepositoDetalleUsuarioForm::find()->where('recibo =:recibo',
+        								 	 									[':recibo' => $recibo])
+        								 						  ->andWhere('id_forma =:id_forma',
+        								 						  				[':id_forma' => 2])
+        	                             						  ->count();
+        }
+
+
+
+        /**
+         * Metodo que permite inicializar una entidad temporal
+         * @param integer $recibo numero de recibo.
+         * @param string $usuario nombre del usuario actual,
+         * @param model $model instancia de la clase.
+         * @return boolean
+         */
+        private function actionInicializarEntidadTemporal($recibo, $usuario, $model)
+        {
+        	$results = null;
+        	$cancel = false;
+
+        	self::setConexion();
+        	$this->_conn->open();
+        	$this->_transaccion = $this->_conn->beginTransaction();
+
+        	$arregloCondicion = ['recibo' => $recibo];
+			$results[] = self::actionSuprimirDetalleTemporal($model, $arregloCondicion);
+			$arregloCondicion = ['usuario' => $usuario];
+			$results[] = self::actionSuprimirDetalleTemporal($model, $arregloCondicion);
+
+			foreach ( $results as $key => $value ) {
+				if ( !$value ) {
+					$cancel = true;
+					break;
+				}
+			}
+
+			if ( !$cancel ) {
+				$this->_transaccion->commit();
+			} else {
+				$this->_transaccion->rollBack();
+			}
+			$this->_conn->close();
+
+			return $cancel;
+        }
+
+
+
+
+
+        /**
+         * Metodo que renderiza una vista con un grid que muestra
+         * @param string $fechaPago fecha de pago del txt.
+         * @return view
+         */
+        public function actionViewHtmlPlanillaSinReferencia($fechaPago)
         {
         	$txtSearch = New RegistroTxtSearch();
         	$txtSearch->setFechaPago($fechaPago);
-        	$txtSearch->getDataProviderByFecha();
+        	$dataProvider = $txtSearch->getDataProviderPlanillaSinRferenciaByFecha();
+        	$models = $dataProvider->getModels();
 
+        	$totalizar = self::actionTotalizarMontoDocumento($models, 'monto_planilla');
+
+        	return $this->renderPartial('/recibo/pago/individual/lista-planilla-sin-referencia', [
+        														'dataProvider' => $dataProvider,
+        														'totalizar' => $totalizar,
+        														'fechaPago' => $fechaPago,
+        		]);
         }
 
 
@@ -545,6 +655,48 @@
         public function actionSetObservacionSerialManual($nroCuentaRecaudadora)
         {
         	return 'SERIAL MANUAL, Cuenta Recaudadora: ' . $nroCuentaRecaudadora;
+        }
+
+
+
+
+
+        /**
+         * Metodo que guardar una planilla como serial de pre-referencia, seleccionado
+         * previamente por el usuario. Esta planilla viene desde el listado de Referencias
+         * Bancarias.
+         * @param array $chkIdRegistro arreglo de identificadores de la entidad "registros-txt".
+         * @param string $fechaPago fecha de pago relacionada a los identificadores.
+         * @return boolean retorna true si de guardado
+         */
+        public function actionAgregarPlanillaComoSerial($chkIdRegistro = [], $fechaPago)
+        {
+        	$rsult = false;
+        	$recibo = isset($_SESSION['recibo']) ? $_SESSION['recibo'] : 0;
+        	$usuario = Yii::$app->identidad->getUsuario();
+
+        	$txtSearch = New RegistroTxtSearch();
+        	foreach ( $chkIdRegistro as $key => $value ) {
+
+	        	$register = $txtSearch->findRegistroTxtById($value)->toArray();
+
+	        	if ( count($register) > 0 ) {
+
+		        	$modelSerial = New SerialReferenciaForm();
+
+		        	$modelSerial->recibo = $recibo;
+		        	$modelSerial->serial = $register['planilla'];
+		        	$modelSerial->fecha_edocuenta = $register['fecha_pago'];
+		        	$modelSerial->monto_edocuenta = $register['monto_planilla'];
+		        	$modelSerial->estatus = 0;
+		        	$modelSerial->observacion = self::actionSetObservacionSerialManual('123456');
+		        	$modelSerial->usuario = $usuario;
+
+		        	$result = self::actionGuardarSerialTemporal($modelSerial);
+		        }
+        	}
+
+        	$this->redirect(['pre-referencia']);
         }
 
 
@@ -1407,7 +1559,7 @@
 
         /**
          * Metodo que suprime regiatros de las entidades temporales.
-         * @param VaucheDetalleUsuarioForm $model instancia de la clase.
+         * @param model $model instancia de la clase.
          * @param array $arregloCondicion arreglo del where condition
          * @return boolean.
          */
