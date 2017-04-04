@@ -333,15 +333,16 @@
 																			'name' => 'btn-calcular',
 																			'onClick' => '
 																							var montoMoneda = $( "#id-monto-en-moneda" ).val();
-																							var montoMoneda = montoMoneda.replace(".", "");
+																							var montoMoneda1 = montoMoneda.split(".").join("");
+																							var montoMoneda = montoMoneda1.replace(".", "");
 																							var enMoneda = montoMoneda.replace(",", ".");
 
 																						  	//var enMoneda = parseFloat($( "#id-monto-en-moneda" ).val());
 																						  	//var multiplicarPor = $( "#id-multiplicar_por" ).val();
 
 																						  	var multiplicar = $( "#id-multiplicar-por" ).val();
-																						  	var multiplicar = multiplicar.replace(".", "");
-																						  	var multiplicarPor = multiplicar.replace(",", ".");
+																						  	var multiplicar1 = multiplicar.split(".").join("");
+																						  	var multiplicarPor = multiplicar1.replace(",", ".");
 
 																						  	var total = parseFloat(enMoneda) * parseFloat(multiplicarPor);
 																						  	$( "#id-resultado" ).val(total);
