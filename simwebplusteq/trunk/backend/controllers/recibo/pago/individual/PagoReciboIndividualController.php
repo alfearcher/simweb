@@ -441,7 +441,7 @@
 	        	$htmlSerialForm = null;		// Formulario para cargar los seriales manuales.
 
 	        	// Se determina la cantidad de vauches registrados en las formas de pago.
-				$cantidadDeposito = (int)self::actionCantidadVaucheRegistrado($recibo);
+				$cantidadDeposito = (int)self::actionCantidadDepositoRegistrado($recibo);
 
 				$modelSerial = New SerialReferenciaForm();
 				$model = New PreReferenciaPlanillaForm();
