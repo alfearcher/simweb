@@ -223,7 +223,7 @@
 																	'id' => 'id-monto',
 																	'class' => 'form-control',
 																	'style' => 'width:140px;
-																			   background-color:white;',
+																			   background-color:white;font-size:120%;',
 																	'readOnly' => true
 																]);
 								?>
@@ -259,7 +259,8 @@
 																	'id' => 'id-ut-del-ano-impositivo',
 																	'class' => 'form-control',
 																	'style' => 'width:200px;
-																			   background-color:white;',
+																			   background-color:white;
+																			   font-size:120%;',
 																	'readOnly' => true
 																]);
 								?>
@@ -269,12 +270,14 @@
 								<h4><strong>En Bs.</strong></h4>
 							</div>
 							<div class="col-sm-4" style="width:20%;padding:0px;">
-								 <?= Html::textInput('monto-en-moneda', ($tasa['tipoRango']['descripcion'] == "BOLIVARES") ? round($tasa['monto'], 4) : $utDelAño * $tasa['monto'],
+								 <?= Html::textInput('monto-en-moneda', Yii::$app->formatter->asDecimal($montoEnMoneda, 2),
 																[
 																	'id' => 'id-monto-en-moneda',
 																	'class' => 'form-control',
 																	'style' => 'width:200px;
-																			   background-color:white;',
+																			   background-color:white;
+																			   text-align:right;
+																			   font-size:120%;',
 																	'readOnly' => true
 																]);
 								?>
@@ -294,9 +297,9 @@
 						</div>
 						<div class="col-sm-4" style="width:20%;padding:0px;margin-left:16px;">
 							<?= $form->field($model, 'multiplicar_por')->widget(MaskedInput::className(), [
-																							'id' => 'id-multiplicar-por',
 																							//'mask' => '9{1,3}[,9{1,3}][,9{1,3}]',
 																							'options' => [
+																								'id' => 'id-multiplicar-por',
 																								'class' => 'form-control',
 																								'style' => 'width: 100%;
 																								            font-size: 160%;
@@ -307,11 +310,11 @@
 																								'alias' =>  'decimal',
 																								'digits' => 2,
 																								'digitsOptional' => false,
-																								//'groupSeparator' => '.',
+																								'groupSeparator' => '.',
 																								'removeMaskOnSubmit' => true,
 																								// 'allowMinus'=>false,
 																								//'groupSize' => 3,
-																								//'radixPoint'=> ".",
+																								'radixPoint'=> ",",
 																								'autoGroup' => true,
 																								'decimalSeparator' => ',',
 																							],
@@ -329,10 +332,20 @@
 																			'style' => 'width: 100%;',
 																			'name' => 'btn-calcular',
 																			'onClick' => '
-																						  	var enMoneda = $( "#id-monto-en-moneda" ).val();
-																						  	var multiplicarPor = $( "#liquidartasaform-multiplicar_por" ).val();
+																							var montoMoneda = $( "#id-monto-en-moneda" ).val();
+																							var montoMoneda1 = montoMoneda.split(".").join("");
+																							var montoMoneda = montoMoneda1.replace(".", "");
+																							var enMoneda = montoMoneda.replace(",", ".");
+
+																						  	//var enMoneda = parseFloat($( "#id-monto-en-moneda" ).val());
+																						  	//var multiplicarPor = $( "#id-multiplicar_por" ).val();
+
+																						  	var multiplicar = $( "#id-multiplicar-por" ).val();
+																						  	var multiplicar1 = multiplicar.split(".").join("");
+																						  	var multiplicarPor = multiplicar1.replace(",", ".");
+
 																						  	var total = parseFloat(enMoneda) * parseFloat(multiplicarPor);
-																						  	$( "#liquidartasaform-resultado" ).val(total);
+																						  	$( "#id-resultado" ).val(total);
 
 																						  ',
 																		  ])
@@ -348,9 +361,9 @@
 						</div>
 						<div class="col-sm-4" style="width:20%;padding:0px;margin-left:16px;">
 							<?= $form->field($model, 'resultado')->widget(MaskedInput::className(), [
-																					'id' => 'resultado',
 																					//'mask' => '9{1,3}[,9{1,3}][,9{1,3}]',
 																					'options' => [
+																						'id' => 'id-resultado',
 																						'class' => 'form-control',
 																						'style' => 'width: 100%;
 																								    font-size: 160%;
@@ -366,7 +379,7 @@
 																						'removeMaskOnSubmit' => true,
 																						// 'allowMinus'=>false,
 																						//'groupSize' => 3,
-																						//'radixPoint'=> ",",
+																						'radixPoint'=> ",",
 																						'autoGroup' => true,
 																						'decimalSeparator' => ',',
 																					],
