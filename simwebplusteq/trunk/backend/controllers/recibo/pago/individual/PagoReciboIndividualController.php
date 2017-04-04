@@ -366,6 +366,8 @@
         {
         	self::actionAnularSession(['datosBanco']);
         	$recibo = isset($_SESSION['recibo']) ? (int)$_SESSION['recibo'] : 0;
+        	$usuario = Yii::$app->identidad->getUsuario();
+
         	if ( $recibo > 0 ) {
         		$request = Yii::$app->request;
         		$postData = $request->post();
@@ -401,6 +403,9 @@
         				$datosBanco['tipo_cuenta'] = $postData['tipo-cuenta'];
 
         				$_SESSION['datosBanco'] = $datosBanco;
+
+        				$modelSerial = New SerialReferenciaForm();
+        				self::actionInicializarEntidadTemporal($recibo, $usuario, $modelSerial);
         				$this->redirect(['pre-referencia']);
         			}
         		}
@@ -485,10 +490,11 @@
 	        	} elseif ( isset($postData['btn-add-deposito']) ) {
 	        		if ( $postData['btn-add-deposito'] == 6 ) {
 
-	        			$fechaPago = $postData['fecha_pago'];
-	        			$model->fecha_pago = date('Y-m-d', strtotime($postData['fecha_pago']));
+	        			$formName = $model->formName();
+	        			$model->load($postData);
+	        			$model->fecha_pago = date('Y-m-d', strtotime($postData[$formName]['fecha_pago']));
 
-
+	        			self::actionAgregarDepositoComoSerial($recibo, $usuario, $model->fecha_pago);
 	        		}
 	        	}
 
@@ -583,32 +589,44 @@
 
 
 
-        /***/
-        public function actionAgregarDepositoComoSerial($recibo, $usuario)
+        /**
+         * Metodo que permite agregar los numeros de depositos (vauches) como seriales de
+         * preferencias.
+         * @param integre $recibo numero de recibo que se esta procesando.
+         * @param string $usuario nombre del usuario que esta realizando la operacion.
+         * @param string $fechaPago fecha de pago
+         * @return boolean.
+         */
+        public function actionAgregarDepositoComoSerial($recibo, $usuario, $fechaPago)
         {
         	$registers = DepositoDetalleUsuarioForm::find()->where('recibo =:recibo',
         								 	 							[':recibo' => $recibo])
         								 				   ->andWhere('id_forma =:id_forma',
         								 						  		[':id_forma' => 2])
-        	                             				   ->all();
-        	foreach ( $registers as $key => $value ) {
+        								 				   ->asArray()
+        	                         				       ->all();
+        	if ( count($registers) > 0 ) {
 
-	        	$register = $txtSearch->findRegistroTxtById($value)->toArray();
+        		$modelSerial = New SerialReferenciaForm();
+        		foreach ( $registers as $register ) {
 
-	        	if ( count($register) > 0 ) {
+        			// Se busca el numero de deposito en los seriles existente para no repetirlo.
+        			$resultado = $modelSerial->find()->where('serial =:serial',
+        														[':serial' => $register['deposito']])
+        										  ->exists();
+        			if ( !$resultado ) {
 
-		        	$modelSerial = New SerialReferenciaForm();
+        				$modelSerial->recibo = $recibo;
+			        	$modelSerial->serial = $register['deposito'];
+			        	$modelSerial->fecha_edocuenta = $register['fecha'];
+			        	$modelSerial->monto_edocuenta = $register['monto'];
+			        	$modelSerial->estatus = 0;
+			        	$modelSerial->observacion = self::actionSetObservacionSerialManual('123456');
+			        	$modelSerial->usuario = $usuario;
 
-		        	$modelSerial->recibo = $recibo;
-		        	$modelSerial->serial = $register['planilla'];
-		        	$modelSerial->fecha_edocuenta = $register['fecha_pago'];
-		        	$modelSerial->monto_edocuenta = $register['monto_planilla'];
-		        	$modelSerial->estatus = 0;
-		        	$modelSerial->observacion = self::actionSetObservacionSerialManual('123456');
-		        	$modelSerial->usuario = $usuario;
-
-		        	$result = self::actionGuardarSerialTemporal($modelSerial);
-		        }
+			        	$result = self::actionGuardarSerialTemporal($modelSerial);
+        			}
+				}
         	}
 
         	$this->redirect(['pre-referencia']);
