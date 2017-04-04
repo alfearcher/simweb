@@ -236,9 +236,9 @@
 						</div>
 
 						<div class="row" style="width:100%;padding:0px;margin:0px;margin-top: 20px;">
-							<!-- FECHA DE PAGO -->
-							<div class="col-sm-2" style="width: 20%;padding:0px;">
-								<p><strong><?=Html::encode(Yii::t('backend', 'Fecha Pago'))?></strong></p>
+<!-- FECHA DE PAGO -->
+							<div class="col-sm-2" style="width: 10%;padding:0px;margin: 0px;margin-top:5px;">
+								<p><strong><?=Html::encode(Yii::t('backend', 'Fecha Pago:'))?></strong></p>
 							</div>
 							<div class="col-sm-4" style="width:10%;padding:0px;margin-left:0px;">
 								<?= $form->field($model, 'fecha_pago')->widget(\yii\jui\DatePicker::classname(),[
@@ -261,9 +261,9 @@
 																					])->label(false) ?>
 
 							</div>
-							<!-- FIN DE FECHA DE PAGO -->
+<!-- FIN DE FECHA DE PAGO -->
 
-							<div class="col-sm-2" style="width:25%;padding:0px;margin:0px;margin-left: 20px;">
+							<div class="col-sm-2" style="width:25%;padding:0px;margin:0px;margin-left: 50px;">
 								<?= Html::submitButton(Yii::t('backend', 'Buscar Referencias Bancarias'),
 																  [
 																	'id' => 'btn-find-referencia',
@@ -278,7 +278,7 @@
 
 
 <!-- BOTON AGREGAR DEPOSITO A LISTADO -->
-							<div class="col-sm-2" style="width:35%;padding:0px;margin:0px;margin-left: 10px;">
+							<div class="col-sm-2" style="width:35%;padding:0px;margin:0px;margin-left: 25px;">
 								<?= Html::submitButton(Yii::t('backend', 'Depositos como referencias ' . Html::tag('span',$cantidadDeposito, ['class' => 'badge', 'style' => 'font-size:100%;'])),
 																  [
 																	'id' => 'btn-add-deposito',
