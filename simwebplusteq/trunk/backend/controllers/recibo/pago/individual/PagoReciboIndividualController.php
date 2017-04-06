@@ -475,28 +475,43 @@
 	        			// Se busca las referencias que se encuentran en el registro-txt de las planillas
 	        			// pagadas en banco. Pero que no esten relacionada a ninguna pre-referencia anterior
 	        			// Se tomaran aquellos registros asociados a la fecha de pago.
-	        			$htmlSerialForm = self::actionViewHtmlPlanillaSinReferencia($model->fecha_pago);
+	        			$cuentaRecaudadora = $postData['cuenta_recaudadora'];
+	        			$htmlSerialForm = self::actionViewHtmlPlanillaSinReferencia($model->fecha_pago, $cuentaRecaudadora);
 
 	        		}
 	        	} elseif ( isset($postData['btn-add-planilla']) ) {
 	        		if ( $postData['btn-add-planilla'] == 4 ) {
 
+	        			$cuentaRecaudadora = $postData['cuenta_recaudadora'];
 	        			$chkIdRegistro = $postData['chkIdRegistro'];
 	        			$fechaPago = $postData['fecha_pago'];
 
 	        			$model->fecha_pago = date('Y-m-d', strtotime($postData['fecha_pago']));
-	        			self::actionAgregarPlanillaComoSerial($chkIdRegistro, $fechaPago);
+	        			self::actionAgregarPlanillaComoSerial($chkIdRegistro, $fechaPago, $cuentaRecaudadora);
 	        		}
 	        	} elseif ( isset($postData['btn-add-deposito']) ) {
 	        		if ( $postData['btn-add-deposito'] == 6 ) {
 
+	        			$cuentaRecaudadora = $postData['cuenta_recaudadora'];
 	        			$formName = $model->formName();
 	        			$model->load($postData);
 	        			$model->fecha_pago = date('Y-m-d', strtotime($postData[$formName]['fecha_pago']));
 
-	        			self::actionAgregarDepositoComoSerial($recibo, $usuario, $model->fecha_pago);
+	        			self::actionAgregarDepositoComoSerial($recibo, $usuario, $model->fecha_pago, $cuentaRecaudadora);
+	        		}
+	        	} elseif ( isset($postData['btn-save-pre-referencia']) ) {
+	        		if ( $postData['btn-save-pre-referencia'] == 7 ) {
+	        			// Guardar temporalmente las pre-referencias.
+	        			$result = self::actionBeginGuardarPreReferenciaTemporal($postData);
+	        			if ( $result ) {
+	        				// Mostrar pre-vista con el resumen de la informacion existente más boton
+	        				// para guardar el pago.
+
+	        			}
 	        		}
 	        	}
+
+
 
 	        	$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
 	        	$dataProviders = $pagoReciboSearch->getDataProviders();
@@ -597,7 +612,7 @@
          * @param string $fechaPago fecha de pago
          * @return boolean.
          */
-        public function actionAgregarDepositoComoSerial($recibo, $usuario, $fechaPago)
+        public function actionAgregarDepositoComoSerial($recibo, $usuario, $fechaPago, $cuentaRecaudadora)
         {
         	$registers = DepositoDetalleUsuarioForm::find()->where('recibo =:recibo',
         								 	 							[':recibo' => $recibo])
@@ -621,7 +636,7 @@
 			        	$modelSerial->fecha_edocuenta = $register['fecha'];
 			        	$modelSerial->monto_edocuenta = $register['monto'];
 			        	$modelSerial->estatus = 0;
-			        	$modelSerial->observacion = self::actionSetObservacionSerialManual('123456');
+			        	$modelSerial->observacion = self::actionSetObservacionSerialManual($cuentaRecaudadora);
 			        	$modelSerial->usuario = $usuario;
 
 			        	$result = self::actionGuardarSerialTemporal($modelSerial);
@@ -684,7 +699,7 @@
          * @param string $fechaPago fecha de pago del txt.
          * @return view
          */
-        public function actionViewHtmlPlanillaSinReferencia($fechaPago)
+        public function actionViewHtmlPlanillaSinReferencia($fechaPago, $cuentaRecaudadora)
         {
         	$txtSearch = New RegistroTxtSearch();
         	$txtSearch->setFechaPago($fechaPago);
@@ -697,6 +712,7 @@
         														'dataProvider' => $dataProvider,
         														'totalizar' => $totalizar,
         														'fechaPago' => $fechaPago,
+        														'cuentaRecaudadora' => $cuentaRecaudadora,
         		]);
         }
 
@@ -725,7 +741,7 @@
          * @param string $fechaPago fecha de pago relacionada a los identificadores.
          * @return boolean retorna true si de guardado
          */
-        public function actionAgregarPlanillaComoSerial($chkIdRegistro = [], $fechaPago)
+        public function actionAgregarPlanillaComoSerial($chkIdRegistro = [], $fechaPago, $cuentaRecaudadora)
         {
         	$rsult = false;
         	$recibo = isset($_SESSION['recibo']) ? $_SESSION['recibo'] : 0;
@@ -745,7 +761,7 @@
 		        	$modelSerial->fecha_edocuenta = $register['fecha_pago'];
 		        	$modelSerial->monto_edocuenta = $register['monto_planilla'];
 		        	$modelSerial->estatus = 0;
-		        	$modelSerial->observacion = self::actionSetObservacionSerialManual('123456');
+		        	$modelSerial->observacion = self::actionSetObservacionSerialManual($cuentaRecaudadora);
 		        	$modelSerial->usuario = $usuario;
 
 		        	$result = self::actionGuardarSerialTemporal($modelSerial);
