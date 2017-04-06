@@ -142,8 +142,18 @@
         <div class="col-sm-4" style="width: 60%;padding: 0px;margin: 0px;">
             <strong><h4><?=Yii::t('backend', 'Total (Seriales):')?></h4></strong>
         </div>
-        <div class="col-sm-4" style="width: 30%;padding: 0px;margin: 0px;text-align: right;">
-            <strong><h4><?=Yii::$app->formatter->asDecimal($totalizar, 2)?></h4></strong>
+        <div class="col-sm-4" style="width: 38%;padding: 0px;margin: 0px;text-align: right;margin-top:5px;">
+            <?=Html::textInput('total_serial', Yii::$app->formatter->asDecimal($totalizar, 2),
+                                                [
+                                                    'id' => 'id-total-serial',
+                                                    'class' => 'form-control',
+                                                    'style' => 'width:100%;
+                                                                font-size:110%;
+                                                                font-weight: bold;
+                                                                background-color:white;
+                                                                text-align:right;',
+                                                    'readOnly' => true,
+                                                ])?>
         </div>
     </div>
     <?php ActiveForm::end(); ?>

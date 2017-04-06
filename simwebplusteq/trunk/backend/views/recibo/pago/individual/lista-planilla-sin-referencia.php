@@ -63,6 +63,7 @@
     <!-- <?//=$form->field($model, 'fecha_pago')->hiddenInput(['value' => $model->fecha_pago])->label(false);?> -->
 
     <?=Html::hiddenInput('fecha_pago', $fechaPago)?>
+    <?=Html::hiddenInput('cuenta_recaudadora', $cuentaRecaudadora)?>
 
     <div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;width: 100%;padding-top: 10px;">
         <strong><p><?=Yii::t('backend', 'Planillas sin referencia ( Referencias Bancarias )')?></p></strong>

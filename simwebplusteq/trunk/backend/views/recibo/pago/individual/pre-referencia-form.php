@@ -368,18 +368,43 @@
 								    	]
 									]);?>
 								</div>
+
 								<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;width: 100%;padding: 0px;margin-top: -10px;">
 							        <div class="col-sm-4" style="width: 60%;padding: 0px;margin: 0px;">
 							            <strong><h4><?=Yii::t('backend', 'Total (Planillas):')?></h4></strong>
 							        </div>
-							        <div class="col-sm-4" style="width: 30%;padding: 0px;margin: 0px;text-align: right;">
-							            <strong><h4><?=Yii::$app->formatter->asDecimal($totalPlanilla, 2)?></h4></strong>
+							        <div class="col-sm-4" style="width: 38%;padding: 0px;margin: 0px;text-align: right;margin-top:5px;">
+							        	<?=Html::textInput('total_planilla', Yii::$app->formatter->asDecimal($totalPlanilla, 2),
+							                                                [
+							                                                    'id' => 'id-total-planilla',
+							                                                    'class' => 'form-control',
+							                                                    'style' => 'width:100%;
+							                                                                font-size:110%;
+							                                                                font-weight: bold;
+							                                                                background-color:white;
+							                                                                text-align:right;',
+							                                                    'readOnly' => true,
+							                                                ])?>
 							        </div>
 							    </div>
 
 
 								<div class="row" style="width: 100%;padding: 0px;margin: 0px;margin-top: 25px;">
 									<?=$htmlSerialAgregado ?>
+								</div>
+
+								<div class="row" style="width: 100%;padding: 0px;margin: 0px;margin-top: 15px;">
+									<div class="col-sm-2" style="width:50%; padding:0px; margin:0px;">
+										<?= Html::submitButton(Yii::t('backend', 'Guardar pre-referencia'),
+																				[
+																					'id' => 'btn-save-pre-referencia',
+																					'class' => 'btn btn-primary',
+																					'value' => 7,
+																					'style' => 'width: 100%',
+																					'name' => 'btn-save-pre-referencia',
+																				])
+										?>
+									</div>
 								</div>
 							</div>
 
@@ -458,6 +483,12 @@ $this->registerJs(
     	if ( $( "#id-tipo-cuenta").val() == "CUENTA RECAUDADORA" ) {
 			$( "#btn-find-referencia").attr("disabled", false);
     	}
+
+		if ( $( "#id-total-serial" ).val() == $( "#id-total-planilla" ).val() ) {
+			$( "#btn-save-pre-referencia" ).attr("disabled", false);
+		} else {
+			$( "#btn-save-pre-referencia" ).attr("disabled", true);
+		}
 
     //	$( "#link-add-serial-form").attr("disabled", true);
     //	$( "#id-serial-referencia-form").hide(true);
