@@ -117,7 +117,7 @@
 					if ( $postData['btn-liquidar'] == 5 ) {
 						$model->resultado = str_replace('.', '', $model->resultado);
 						$model->resultado = str_replace(',', '.', $model->resultado);
-
+die(var_dump($model));
 						if ( $model->load($postData) ) {
 
 							if ( $model->validate(['id_impuesto', 'id_contribuyente']) ) {
