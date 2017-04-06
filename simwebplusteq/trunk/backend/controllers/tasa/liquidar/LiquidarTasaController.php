@@ -123,7 +123,7 @@
 							if ( $model->validate(['id_impuesto', 'id_contribuyente']) ) {
 
 								if ( $model->resultado > 0 ) {
-die(var_dump($model));
+
 									$result = self::actionBeginSave($model, $idContribuyente, $postData);
 									if ( $result ) {
 										$this->_transaccion->commit();
