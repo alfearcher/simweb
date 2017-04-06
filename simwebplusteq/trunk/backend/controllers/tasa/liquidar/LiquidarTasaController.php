@@ -108,21 +108,21 @@
 				$postData = $request->post();
 
 				$model = New LiquidarTasaForm();
-
+die(var_dump($postData));
 				if ( isset($postData['btn-quit']) ) {
 					if ( $postData['btn-quit'] == 1 ) {
 						$this->redirect(['quit']);
 					}
 				} elseif ( isset($postData['btn-liquidar']) ) {
 					if ( $postData['btn-liquidar'] == 5 ) {
-						$model->resultado = str_replace('.', '', $model->resultado);
-						$model->resultado = str_replace(',', '.', $model->resultado);
+						//$model->resultado = str_replace('.', '', $model->resultado);
+						//$model->resultado = str_replace(',', '.', $model->resultado);
 
 						if ( $model->load($postData) ) {
+							$model->resultado = str_replace('.', '', $postData['resultado']);
+							$model->resultado = str_replace(',', '.', $model->resultado);
 
 							if ( $model->validate(['id_impuesto', 'id_contribuyente']) ) {
-								$model->resultado = str_replace('.', '', $model->resultado);
-								$model->resultado = str_replace(',', '.', $model->resultado);
 
 								if ( $model->resultado > 0 ) {
 die(var_dump($model));
