@@ -117,13 +117,15 @@
 					if ( $postData['btn-liquidar'] == 5 ) {
 						$model->resultado = str_replace('.', '', $model->resultado);
 						$model->resultado = str_replace(',', '.', $model->resultado);
-die(var_dump($model));
+
 						if ( $model->load($postData) ) {
 
 							if ( $model->validate(['id_impuesto', 'id_contribuyente']) ) {
+								$model->resultado = str_replace('.', '', $model->resultado);
+								$model->resultado = str_replace(',', '.', $model->resultado);
 
 								if ( $model->resultado > 0 ) {
-
+die(var_dump($model));
 									$result = self::actionBeginSave($model, $idContribuyente, $postData);
 									if ( $result ) {
 										$this->_transaccion->commit();
