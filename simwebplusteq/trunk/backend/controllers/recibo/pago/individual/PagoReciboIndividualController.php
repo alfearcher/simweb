@@ -633,11 +633,18 @@
 			      						]);
 
 
+        			$datosBanco = $_SESSION['datosBanco'];
+        			$htmlCuentaRecaudadora = $this->renderPartial('/recibo/pago/individual/resumen-cuenta-recaudadora',[
+        													'datosBanco' => $datosBanco,
+        					]);
+
+
 					$caption = Yii::t('backend', 'Resumen de pago. Recibo Nro.') . $recibo ;
 					return $this->render('/recibo/pago/individual/resumen-pago-form',[
 															'caption' => $caption,
 															'htmlRecibo' => $htmlRecibo,
 															'htmlFormaPago' => $htmlFormaPago,
+															'htmlCuentaRecaudadora' => $htmlCuentaRecaudadora,
 							]);
         		}
         	}
