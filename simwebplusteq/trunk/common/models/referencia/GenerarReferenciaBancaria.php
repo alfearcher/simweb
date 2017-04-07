@@ -65,9 +65,10 @@
 	 * -------------------------------------------------------------------------------------------
 	 * La salida de la clase debe ser un arreglo con los datos de la relacion de las planillas
 	 * con los seriales (referencias bancarias). Este arreglo debe tener la estructura del modelo
-	 * PreReferenciaPlanilla.
+	 * PreReferenciaPlanilla. Si ocurre un error en el proceso de armado de las relaciones, el arreglo
+	 * retornado sera vacio.
 	 */
-	class GererarReferenciaBancaria
+	class GenerarReferenciaBancaria
 	{
 
 		private $_recibo;
@@ -98,6 +99,11 @@
 		 */
 		private $_referencia = [];
 
+		public $errores = [];
+
+		private $_observacion;
+
+
 
 		/**
 		 * Metodo constructor de la clase.
@@ -106,11 +112,14 @@
 		 * que se utilizaran en la referencia contra las planillas. Si este modelo es null
 		 * se asumira como seriles el mismo numero de la planilla que esta contenida en el
 		 * recibo.
+		 * @param $obsevacion nota que se colocarar en la referencia, basicamenet indicando
+		 * si es una referencia manual o automatica, además de indicar la cuenta recauddora.
 		 */
-		public function __construct($recibo, $modelSerial = null)
+		public function __construct($recibo, $modelSerial = null, $observacion)
 		{
 			$this->_recibo = $recibo;
 			$this->_modelSerial = $modelSerial;
+			$this->_observacion = $observacion;
 		}
 
 
@@ -124,12 +133,43 @@
 			self::getDatoRecibo();
 			self::getPlanillaRecibo();
 
+			if ( $this->_modelSerial !== null ) {
+				if ( is_array($this->_modelSerial) ) {
+					$model = $this->_modelSerial[0];
+				} else {
+					$model = $this->_modelSerial;
+				}
+            	if ( !is_a($model, SerialReferenciaUsuario::className()) ) {
+            		self::setError(Yii::t('backend', 'La clase de modelSerial no corresponde con el esperado'));
+            		return;
+            	}
+            }
 
-
-
+            self::armarReferencias();
 			return self::getReferencia();
 		}
 
+
+
+		/**
+		 * Metodo que setea un error ocurrido.
+		 * @param srting $mensajeError descripcion del error ocurrido.
+		 */
+		public function setError($mensajeError)
+		{
+			$this->errores[] = $mensajeError;
+		}
+
+
+
+		/**
+		 * Metodo getter de los errores existentes
+		 * @return array
+		 */
+		public function getError()
+		{
+			return $this->errores;
+		}
 
 
 
@@ -145,6 +185,21 @@
 
 
 		/**
+		 * Metodo que determina si un recibo esta pagado a no.
+		 * @return boolean.
+		 */
+		private function reciboPago()
+		{
+			if ( $this->_deposito['estatus'] == 1 ) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+
+
+		/**
 		 * Metodo que realiza la consulta para obtener el registro del recibo.
 		 * @return
 		 */
@@ -153,7 +208,7 @@
 			$this->_deposito = Deposito::find()->where('recibo =:recibo',
 															['recibo' => $this->_recibo])
 											   ->asArray()
-											   ->all();
+											   ->one();
 		}
 
 
@@ -173,13 +228,108 @@
 
 
 
-
-		/***/
+		/**
+		 * Metodo que llama a los metos que ejecutan las relaciones entre el serial y la planuilla.
+		 * @return
+		 */
 		private function armarReferencias()
 		{
 
+			if ( count($this->_depositoPlanilla) > 0 ) {
+				if ( $this->_modelSerial == null ) {
+
+					$this->_modelSerial = [New SerialReferenciaUsuario()];
+
+					// Significa que los seriales a tomar para las referencias son las mismas planillas.
+					foreach ( $this->_depositoPlanilla as $key => $value ) {
+
+						$this->_modelSerial[$key]->recibo = $value['recibo'];
+						$this->_modelSerial[$key]->serial = $value['planilla'];
+						$this->_modelSerial[$key]->fecha_edocuenta = $this->_deposito['fecha'];
+						$this->_modelSerial[$key]->monto_edocuenta = $value['monto'];
+						$this->_modelSerial[$key]->estatus = 0;
+						$this->_modelSerial[$key]->observacion = $this->_observacion;
+						$this->_modelSerial[$key]->usuario = Yii::$app->identidad->getUsuario();
+
+						self::relacionar($this->_modelSerial[$key], $value);
+					}
+
+
+				} else {
+					foreach ( $this->_depositoPlanilla as $planilla ) {
+
+						if ( count($this->_depositoPlanilla) == 1 ) {
+							self::cicloSerialPorPlanillla($planilla, false);
+
+						} elseif ( count($this->_depositoPlanilla) > 1 ) {
+							self::cicloSerialPorPlanillla($planilla, true);
+
+						}
+					}
+				}
+			} else {
+				self::setError(Yii::t('backend', 'No estan defiidas las planillas'));
+			}
 		}
 
+
+
+		/**
+		 * Metodo que crea un ciclo con los seriales y lo recorre para enviar las referencia
+		 * por cada planilla.
+		 * @param array $datoPlanilla arreglo de DepositoPlanilla
+		 * @param boolean $igualdadMonto determina que se buscaran los seriales que coincidan
+		 * con el monto de la planilla.
+		 * @return
+		 */
+		private function cicloSerialPorPlanillla($datoPlanilla, $igualdadMonto)
+		{
+			if ( count($this->_modelSerial) > 0 ) {
+				foreach ( $this->_modelSerial as $serial ) {
+					if ( $igualdadMonto ) {
+						if ( $datoPlanilla['monto'] == $serial['monto_edocuenta'] ) {
+							self::relacionar($serial, $datoPlanilla);
+						}
+					} else {
+						self::relacionar($serial, $datoPlanilla);
+					}
+				}
+			}
+		}
+
+
+
+
+
+
+
+		/**
+		 * Metodo que crea la relacion entre el serial y la planilla.
+		 * @param  [type] $datoSerial arreglo que contiene los atributos del serial
+		 * @param  [type] $datoPlanilla arreglo que contiene  los aributos de la clase
+		 * DepositoPlanilla.
+		 * @return
+		 */
+		private function relacionar($datoSerial, $datoPlanilla)
+		{
+			$this->_referencia[] = [
+				'recibo' => $this->_deposito['recibo'],
+				'fecha' => $this->_deposito['fecha'],
+				'monto_recibo' => $this->_deposito['monto'],
+				'planilla' => $datoPlanilla['planilla'],
+				'monto_planilla' => $datoPlanilla['monto'],
+				'id_contribuyente' => $this->_deposito['id_contribuyente'],
+				'fecha_edocuenta' => $datoSerial->fecha_edocuenta,
+				'serial_edocuenta' => $datoSerial->serial,
+				'debito' => ( $datoSerial->monto_edocuenta < 0 ) ? $datoSerial->monto_edocuenta : 0,
+				'credito' => ( $datoSerial->monto_edocuenta >= 0 ) ? $datoSerial->monto_edocuenta : 0,
+				'estatus' => $datoSerial->estatus,
+				'observacion' => $datoSerial->observacion,
+				'usuario' => $datoSerial->usuario,
+				'fecha_hora' => date('Y-m-d'),
+
+			];
+		}
 
 
 	}
