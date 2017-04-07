@@ -71,22 +71,28 @@
 
         <div class="panel-body">
         	<div class="container-fluid">
-        		<div class="col-sm-12" style="width:100%;">
+        		<div class="col-sm-12" style="width:100%;padding:0px;margin: 0px;">
 
-		        	<div class="row" style="width:100%;margin-bottom: 20px;">
+		        	<div class="row" style="width:100%;padding:0px;margin: 0px;">
 <!-- DATOS DEL RECIBO Y LAS PLANILLAS -->
-						<div class="row" style="width: 100&;padding: 0px;margin: 0px;margin-left: 15px;">
+						<div class="row" style="width: 100%;padding: 0px;margin: 0px;margin-left: 15px;">
 							<?=$htmlRecibo?>
 						</div>
 <!-- FIN DE DATOS DEL RECIBO Y LAS PLANILLAS -->
 
 <!-- FORMAS DE PAGO -->
-						<div class="row" style="width: 100&;padding: 0px;margin: 0px;margin-left: 15px;">
+						<div class="row" style="width: 100%;padding: 0px;margin: 0px;margin-left: 15px;">
 							<?=$htmlFormaPago?>
 						</div>
 <!-- FIN DE FORMA DE PAGO -->
-					</div>
 
+<!-- CUENTA RECAUDADORA-->
+						<div class="row" style="width: 100%;padding: 0px;margin: 0px;margin-left: 15px;">
+							<?=$htmlCuentaRecaudadora?>
+						</div>
+
+<!-- FIN DE CUENTA RECAUDADORA-->
+					</div>
 					<div class="row" style="margin-top: 25px;">
 						<div class="col-sm-2" style="margin-left: 50px;">
 							<div class="form-group">
