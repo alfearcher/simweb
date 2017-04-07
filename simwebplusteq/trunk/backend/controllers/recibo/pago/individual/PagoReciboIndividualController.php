@@ -73,6 +73,7 @@
     use backend\models\recibo\pago\individual\SerialReferenciaUsuarioSearch;
     use backend\models\recibo\prereferencia\ReferenciaPlanillaUsuarioForm;
     use backend\models\recibo\txt\RegistroTxtSearch;
+    use common\models\referencia\GenerarReferenciaBancaria;
 
 
 
@@ -136,7 +137,7 @@
          */
         public function actionMostrarFormConsulta()
         {
-        	self::actionAnularSession(['datosRecibo']);
+        	self::actionAnularSession(['datosRecibo', 'recibo']);
             $model = New BusquedaReciboForm();
             if ( $model->usuarioAutorizado(Yii::$app->identidad->getUsuario()) ) {
 
@@ -499,15 +500,11 @@
 
 	        			self::actionAgregarDepositoComoSerial($recibo, $usuario, $model->fecha_pago, $cuentaRecaudadora);
 	        		}
-	        	} elseif ( isset($postData['btn-save-pre-referencia']) ) {
-	        		if ( $postData['btn-save-pre-referencia'] == 7 ) {
-	        			// Guardar temporalmente las pre-referencias.
-	        			$result = self::actionBeginGuardarPreReferenciaTemporal($postData);
-	        			if ( $result ) {
-	        				// Mostrar pre-vista con el resumen de la informacion existente más boton
-	        				// para guardar el pago.
+	        	} elseif ( isset($postData['btn-generar-pre-referencia']) ) {
+	        		if ( $postData['btn-generar-pre-referencia'] == 7 ) {
 
-	        			}
+	        			$this->redirect(['armar-resumen-pago', 'postEnviado' => $postData]);
+
 	        		}
 	        	}
 
@@ -582,6 +579,105 @@
         				]);
         	}
         }
+
+
+
+
+
+        /**
+         * [actionArmarResumenPago description]
+         * @return [type] [description]
+         */
+        public function actionArmarResumenPago()
+        {
+        	$recibo = isset($_SESSION['recibo']) ?  $_SESSION['recibo'] : 0;
+        	$usuario = Yii::$app->identidad->getUsuario();
+        	if ( $recibo > 0 ) {
+        		$request = Yii::$app->request;
+        		$postGet = $request->get();
+        		$postData = $request->post();
+
+        		if ( !isset($_SESSION['postEnviado']) ) {
+        			$_SESSION['postEnviado'] = $postGet['postEnviado'];
+        		}
+        		$postEnviado = isset($_SESSION['postEnviado']) ? $_SESSION['postEnviado'] : [];
+
+        		if ( $postEnviado['recibo'] == $recibo ) {
+
+        			$urlFormaPagos = '';
+        			$bloquearFormaPago = false;
+        			// Recibo y las planilas
+
+        			// Se verifica que el recibo cumpla las reglas de negocio establecidas.
+					$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
+					$htmlMensaje = null;
+
+					// Arreglo de los provider del recibo y el de las planillas.
+					$dataProviders = $pagoReciboSearch->getDataProviders();
+
+					$totales = $pagoReciboSearch->getTotalesReciboPlanilla($dataProviders);
+
+					$htmlRecibo = $this->renderPartial('/recibo/pago/individual/datos-recibo',[
+															'dataProviderRecibo' => $dataProviders[0],
+															'dataProviderReciboPlanilla' => $dataProviders[1],
+															'totales' => $totales,
+
+										]);
+
+					$dataProvider = $pagoReciboSearch->getDataProviderRegistroTemp($usuario);
+        			$montoAgregado = $pagoReciboSearch->getTotalFormaPagoAgregado($usuario);
+
+        			$htmlFormaPago = $this->renderPartial('/recibo/pago/individual/resumen-forma-pago', [
+			      								'montoAgregado' => $montoAgregado,
+			      								'dataProvider' => $dataProvider,
+			      						]);
+
+
+					$caption = Yii::t('backend', 'Resumen de pago. Recibo Nro.') . $recibo ;
+					return $this->render('/recibo/pago/individual/resumen-pago-form',[
+															'caption' => $caption,
+															'htmlRecibo' => $htmlRecibo,
+															'htmlFormaPago' => $htmlFormaPago,
+							]);
+        		}
+        	}
+        }
+
+
+
+
+
+
+        /**
+         * Metodo que iniciar el proceso de relacionar las planillas con los seriales (referencias bancarias).
+         * @param array $postEnviado post enviado
+         * @return array
+         */
+        public function actionArmarReferenciaBancaria($postEnviado)
+        {
+        	$cuentaRecaudadora = $postEnviado['cuenta_recaudadora'];
+        	$result = false;
+        	$referencia = null;
+        	$recibo = isset($_SESSION['recibo']) ? $_SESSION['recibo'] : 0;
+        	$usuario = Yii::$app->identidad->getUsuario();
+
+    		$serialSearch = New SerialReferenciaUsuarioSearch($recibo, $usuario);
+    		$dataProvider = $serialSearch->getDataProvider();
+
+    		// Retorna un arreglo con los datos del modelo, sino encuentra nada
+    		// el arreglo llega vacion
+    		$models = $dataProvider->getModels();
+
+    		$generar = New GenerarReferenciaBancaria($recibo, $models, self::actionSetObservacionSerialManual($cuentaRecaudadora));
+    		$referencia = $generar->iniciarReferencia();
+    		if ( count($generar->getError()) == 0 ) {
+    			return $referencia;
+    		} else {
+    			return $referencia = [];
+    		}
+
+        }
+
 
 
 
@@ -1206,7 +1302,7 @@
          */
         public function actionShowViewFormaPagoContabilizada()
         {
-        	$recibo = $_SESSION['recibo'];
+        	$recibo = isset($_SESSION['recibo']) ? $_SESSION['recibo'] : 0;
         	$usuario = Yii::$app->identidad->getUsuario();
         	$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
         	$dataProvider = $pagoReciboSearch->getDataProviderRegistroTemp($usuario);
