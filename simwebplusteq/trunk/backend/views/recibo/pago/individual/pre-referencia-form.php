@@ -395,13 +395,13 @@
 
 								<div class="row" style="width: 100%;padding: 0px;margin: 0px;margin-top: 15px;">
 									<div class="col-sm-2" style="width:50%; padding:0px; margin:0px;">
-										<?= Html::submitButton(Yii::t('backend', 'Guardar pre-referencia'),
+										<?= Html::submitButton(Yii::t('backend', 'Generar pre-referencia'),
 																				[
-																					'id' => 'btn-save-pre-referencia',
+																					'id' => 'btn-generar-pre-referencia',
 																					'class' => 'btn btn-primary',
 																					'value' => 7,
 																					'style' => 'width: 100%',
-																					'name' => 'btn-save-pre-referencia',
+																					'name' => 'btn-generar-pre-referencia',
 																				])
 										?>
 									</div>
@@ -485,9 +485,9 @@ $this->registerJs(
     	}
 
 		if ( $( "#id-total-serial" ).val() == $( "#id-total-planilla" ).val() ) {
-			$( "#btn-save-pre-referencia" ).attr("disabled", false);
+			$( "#btn-generar-pre-referencia" ).attr("disabled", false);
 		} else {
-			$( "#btn-save-pre-referencia" ).attr("disabled", true);
+			$( "#btn-generar-pre-referencia" ).attr("disabled", true);
 		}
 
     //	$( "#link-add-serial-form").attr("disabled", true);
