@@ -74,6 +74,8 @@
     use backend\models\recibo\prereferencia\ReferenciaPlanillaUsuarioForm;
     use backend\models\recibo\txt\RegistroTxtSearch;
     use common\models\referencia\GenerarReferenciaBancaria;
+    use common\models\rafaga\GenerarRafagaPlanilla;
+    use common\models\distribucion\presupuesto\GenerarPlanillaPresupuesto;
 
 
 
@@ -597,6 +599,28 @@
         		$postGet = $request->get();
         		$postData = $request->post();
 
+//die(var_dump($postData));
+
+				if ( isset($postData['btn-back']) ) {
+					if ( $postData['btn-back'] == 1 ) {
+						$this->redirect(['pre-referencia']);
+					}
+				}
+
+				if ( isset($postData['btn-quit']) ) {
+					if ( $postData['btn-quit'] == 1 ) {
+						$this->redirect(['quit']);
+					}
+				}
+
+				if ( isset($postData['btn-guardar-pago']) ) {
+					if ( $postData['btn-guardar-pago'] == 9 ) {
+						// Se guarda el pago.
+
+					}
+				}
+
+
         		if ( !isset($_SESSION['postEnviado']) ) {
         			$_SESSION['postEnviado'] = $postGet['postEnviado'];
         		}
@@ -604,6 +628,19 @@
 
         		if ( $postEnviado['recibo'] == $recibo ) {
 
+        			// $generarRafaga = New GenerarRafagaPlanilla($recibo);
+        			// $rafaga = $generarRafaga->iniciarRafaga();
+
+        			// $serialSearch = New SerialReferenciaUsuarioSearch($recibo, $usuario);
+        			// $modelSerial = $serialSearch->findSeriales();
+
+        			// $generarReferencia = New GenerarReferenciaBancaria($recibo, $modelSerial, self::actionSetObservacionSerialManual($postEnviado['cuenta_recaudadora']));
+        			// $referencia = $generarReferencia->iniciarReferencia();
+
+        			$generarCodigoPresupuesto = New GenerarPlanillaPresupuesto($recibo);
+        			$generarCodigoPresupuesto->iniciarPlanillaPresupuesto();
+
+//die(var_dump($referencia));
         			$urlFormaPagos = '';
         			$bloquearFormaPago = false;
         			// Recibo y las planilas
