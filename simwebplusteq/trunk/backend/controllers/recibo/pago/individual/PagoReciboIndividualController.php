@@ -637,7 +637,7 @@
         			// $generarReferencia = New GenerarReferenciaBancaria($recibo, $modelSerial, self::actionSetObservacionSerialManual($postEnviado['cuenta_recaudadora']));
         			// $referencia = $generarReferencia->iniciarReferencia();
 
-        			$generarCodigoPresupuesto = New GenerarPlanillaPresupuesto($recibo);
+        			$generarCodigoPresupuesto = New GenerarPlanillaPresupuesto(6850);
         			$generarCodigoPresupuesto->iniciarPlanillaPresupuesto();
 
 //die(var_dump($referencia));
