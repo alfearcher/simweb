@@ -93,8 +93,37 @@
 
 <!-- FIN DE CUENTA RECAUDADORA-->
 					</div>
-					<div class="row" style="margin-top: 25px;">
-						<div class="col-sm-2" style="margin-left: 50px;">
+
+					<div class="row" style="margin-top: 20px;">
+						<div class="col-sm-2" style="width: 30%;margin-left: 10px;">
+							<div class="form-group">
+								<?= Html::submitButton(Yii::t('backend', 'GUARDAR PAGO'),
+																  [
+																	'id' => 'btn-guardar-pago',
+																	'class' => 'btn btn-success',
+																	'value' => 9,
+																	'style' => 'width: 100%;font-weight: bold;',
+																	'name' => 'btn-guardar-pago',
+																  ])
+								?>
+							</div>
+						</div>
+
+						<div class="col-sm-2" style="width: 20%;margin-left: 10px;">
+							<div class="form-group">
+								<?= Html::submitButton(Yii::t('backend', 'Back'),
+																  [
+																	'id' => 'btn-back',
+																	'class' => 'btn btn-danger',
+																	'value' => 1,
+																	'style' => 'width: 100%',
+																	'name' => 'btn-back',
+																  ])
+								?>
+							</div>
+						</div>
+
+						<div class="col-sm-2" style="width: 20%;margin-left: 10px;">
 							<div class="form-group">
 								<?= Html::submitButton(Yii::t('backend', 'Quit'),
 																  [
@@ -108,6 +137,7 @@
 							</div>
 						</div>
 					</div>
+
 				</div>
 			</div>
 		</div>

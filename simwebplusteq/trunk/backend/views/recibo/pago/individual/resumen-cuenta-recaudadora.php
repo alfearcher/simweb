@@ -57,10 +57,10 @@
 
 <!-- LISTA DE BANCOS CON CUENTAS RECAUDADORAS-->
 	<div class="row" style="width:100%;padding:0px;margin:0px;margin:0px;margin-top: 10px;">
-		<div class="col-sm-2" style="width: 20%;padding:0px;">
+		<div class="col-sm-4" style="width: 20%;padding:0px;">
 			<p><strong><?=Html::encode(Yii::t('backend', 'Banco:'))?></strong></p>
 		</div>
-		<div class="col-sm-4" style="width:60%;padding:0px;margin-left:0px;">
+		<div class="col-sm-3" style="width:60%;padding:0px;margin-left:0px;">
 			<?=Html::textInput('banco',
 						       $datosBanco['nombre'],
 						       [

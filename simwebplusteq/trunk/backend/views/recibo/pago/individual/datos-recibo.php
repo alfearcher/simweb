@@ -112,10 +112,10 @@
 	</div>
 
 	<div class="row" style="width: 100%;">
-		<div class="col-sm-4" style="width: 38%;font-size: 120%;font-weight: bold;">
+		<div class="col-sm-4" style="width: 65%;font-size: 120%;font-weight: bold;">
 			<?=Html::encode(Yii::t('backend', 'Total por Recibo: '));?>
 		</div>
-		<div class="col-sm-3" style="width: 30%;">
+		<div class="col-sm-3" style="width: 30%;float: right;">
 			<?=Html::textInput('total-recibo',
 							   (isset($totales[0]) ? Yii::$app->formatter->asDecimal($totales[0],2) : 0),
 							   [
@@ -195,10 +195,10 @@
 	</div>
 
 	<div class="row" style="width: 100%;">
-		<div class="col-sm-4" style="width: 60%;font-size: 120%;font-weight: bold;">
+		<div class="col-sm-4" style="width: 65%;font-size: 120%;font-weight: bold;">
 			<?=Html::encode(Yii::t('backend', 'Total por Planilla: '));?>
 		</div>
-		<div class="col-sm-3" style="width: 30%;">
+		<div class="col-sm-3" style="width: 30%;float: right;">
 			<?=Html::textInput('total-recibo',
 							   (isset($totales[1]) ? Yii::$app->formatter->asDecimal($totales[1],2) : 0),
 							   [
