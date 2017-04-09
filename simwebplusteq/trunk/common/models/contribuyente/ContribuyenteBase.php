@@ -220,7 +220,7 @@
 		 *
 		 * 	@return Descripcion del contribuyente
 		 */
-		public static function getContribuyenteDescripcionSegunID($idContribuyente)
+		public static function getContribuyenteDescripcionSegunID($idContribuyente, $ordenApellidoNombre = 0)
 		{
 			$dataResult = self::datosContribuyenteSegunID($idContribuyente);
 			if ( $dataResult ) {
@@ -229,7 +229,7 @@
 				$nombresLocal = $dataResult[0]['nombres'];
 				$razonSocialLocal = $dataResult[0]['razon_social'];
 
-				return self::getContribuyenteDescripcion($tipoNaturalezaLocal, $razonSocialLocal, $apellidosLocal, $nombresLocal);
+				return self::getContribuyenteDescripcion($tipoNaturalezaLocal, $razonSocialLocal, $apellidosLocal, $nombresLocal, $ordenApellidoNombre);
 			} else {
 				return false;
 			}
