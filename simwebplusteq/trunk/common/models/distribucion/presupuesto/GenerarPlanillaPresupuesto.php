@@ -43,10 +43,12 @@
 	namespace common\models\distribucion\presupuesto;
 
  	use Yii;
- 	use backend\models\recibo\deposito\Depositomo;
+ 	use backend\models\recibo\deposito\Deposito;
  	use backend\models\recibo\depositoplanilla\DepositoPlanilla;
+ 	use backend\models\tasa\Tasa;
  	use common\models\planilla\PlanillaSearch;
  	use common\models\contribuyente\ContribuyenteBase;
+
 
 
 
@@ -75,6 +77,12 @@
 		 */
 		private $_depositoPlanilla;
 
+		/**
+		 * VAriable arreglo que contiene las distribuciones presupuestaria, recibo-planilla-codigo.
+		 * @var array
+		 */
+		private $_planillaPresupuesto = [];
+
 		public $errores = [];
 
 
@@ -95,9 +103,9 @@
 			self::getDatoRecibo();
 			self::getPlanillaRecibo();
 
-			$d = self::getRelacionImpuestoPresupuesto();
-
-die(var_dump($d));
+			self::cicloPlanilla();
+die(var_dump(self::getPlanillaPresupuesto()));
+			return self::getPlanillaPresupuesto();
 
 		}
 
@@ -117,15 +125,19 @@ die(var_dump($d));
 
 
 
-		/**
-		 * Metodo que permite obtener los datos del contribuyente.
-		 * @return array
-		 */
-		public function getDatoContribuyente($idContribuyente)
-		{
-			return ContribuyenteBase::findOne($idContribuyente);
-		}
 
+		/**
+		 * Metodo que retorna la descripcion del contribuyente, segun el identificador
+		 * del mismo. Si el contribuyente es Juridico retorna la razon social, si es
+		 * Natural retornara apellidos y nombre.
+		 * @param integer $idContribuyente identificador de la entidad y del contribuyente.
+		 * @return string
+		 */
+		private function getDescripcionContribuyente($idContribuyente)
+		{
+			$contribuyente = New ContribuyenteBase();
+			return $contribuyente->getContribuyenteDescripcionSegunID($idContribuyente, 1);
+		}
 
 
 
@@ -186,6 +198,9 @@ die(var_dump($d));
 		{
 			$this->_depositoPlanilla = DepositoPlanilla::find()->where('recibo =:recibo',
 																			[':recibo' => $this->_recibo])
+															   ->orderBy([
+															   		'planilla' => SORT_ASC,
+															   	])
 															   ->asArray()
 															   ->all();
 		}
@@ -214,13 +229,22 @@ die(var_dump($d));
 			if ( count($this->_depositoPlanilla) > 0 ) {
 
 				foreach ( $this->_depositoPlanilla as $planilla ) {
-					$detallePlanilla = self::getDatoPlanilla($planilla['planilla']);
-					if ( count($detallePlanilla) > 0 ) {
-						foreach ( $detallePlanilla as $detalle ) {
 
+					// $planilla, cada planilla en depositos-planillas.
+
+					// Detalles por cada planilla.
+					$detallesPlanilla = self::getDatoPlanilla($planilla['planilla']);
+
+					if ( count($detallesPlanilla) > 0 ) {
+						$idContribuyente = $detallesPlanilla[0]['id_contribuyente'];
+
+						$datoCotribuyente = self::getDescripcionContribuyente($idContribuyente);
+
+						foreach ( $detallesPlanilla as $detalle ) {
+
+							self::distribuirCodigoPlanilla($detalle, $datoCotribuyente);
 
 						}
-
 					}
 				}
 			}
@@ -229,24 +253,181 @@ die(var_dump($d));
 
 
 
-		/***/
-		private static function distribuirCodigoPlanilla($detallePlanilla)
+
+
+		/**
+		 * Metodo que inicia la distribucion presupuestaria de los montos de la planilla.
+		 * @param array $detallePlanilla detalle de un registro perteneciente a la
+		 * planilla.
+		 * @param string $datoCotribuyente descripcion del contribuyente, razon sociaL o
+		 * apellidos y nombres.
+		 * @return
+		 */
+		private function distribuirCodigoPlanilla($detallePlanilla, $datoContribuyente)
 		{
+			$recibo = $this->_recibo;
+			$planilla = $detallePlanilla['planilla'];
+			$monto = $detallePlanilla['monto'];
+			$recargo = $detallePlanilla['recargo'];
+			$interes = $detallePlanilla['interes'];
+			$descuento = $detallePlanilla['descuento'];
+			$montoReconocimiento = $detallePlanilla['monto_reconocimiento'];
+			$impuestoDescripcion = $detallePlanilla['descripcion_impuesto'];
+
+			$primeraVez = true;
+
+			// Lista de codigos presupuestarios
+			$listaCodigo = self::getRelacionImpuestoPresupuesto();
+
+			$codigo = isset($listaCodigo[$detallePlanilla['impuesto']]) ? $listaCodigo[$detallePlanilla['impuesto']] : '';
+
+			// Se comienza con la distribucion.
 			$listaIdimpuesto1 = [171, 517, 652, 654, 1120];
 			if ( $detallePlanilla['impuesto'] <= 7 ) {
+				if ( (int)$detallePlanilla['ano_impositivo'] < (int)date('Y', strtotime($detallePlanilla['fecha_pago'])) ) {
+					if ( date('Y-m-d', strtotime($detallePlanilla['fecha_pago'])) >= date('Y-m-d', strtotime('2011-01-01'))  ) {
 
+						// Deuda morosa
+						$montoAplicar = $monto - ( $descuento + $montoReconocimiento );
+						$codigo = self::getCodigoPresupuestarioDeudaMorosa();
+						self::relacionar($detallePlanilla, $datoContribuyente, $codigo, $montoAplicar);
 
-			} elseif ( $detallePlanilla['impuesto'] == 10 && $detallePlanilla['fecha_pago'] > '2013-01-03' && in_array($detallePlanilla['id_impuesto'], $listaIdimpuesto1) ) {
+						if ( (float)$detallePlanilla['recargo'] > 0 ) {
+							self::relacionarConceptoRecargo($detallePlanilla, $datoContribuyente);
+						}
+
+						if ( (float)$detallePlanilla['interes'] > 0 ) {
+							self::relacionarConceptoInteres($detallePlanilla, $datoContribuyente);
+						}
+
+					} else {
+						$montoAplicar = $monto - ( $descuento + $montoReconocimiento );
+						$codigo = self::getCodigoPresupuestarioDeudaMorosa();
+						self::relacionar($detallePlanilla, $datoContribuyente, $codigo, $montoAplicar);
+
+					}
+				} else {
+
+					$montoAplicar = $monto - ( $descuento + $montoReconocimiento );
+
+					if ( $primeraVez ) {
+						$primeraVez = false;
+						self::relacionar($detallePlanilla, $datoContribuyente, $codigo, $montoAplicar);
+					} else {
+						self::relacionar($detallePlanilla, $datoContribuyente, $codigo, $montoAplicar);
+					}
+
+					if ( (float)$detallePlanilla['recargo'] > 0 ) {
+						self::relacionarConceptoRecargo($detallePlanilla, $datoContribuyente);
+					}
+
+					if ( (float)$detallePlanilla['interes'] > 0 ) {
+						self::relacionarConceptoInteres($detallePlanilla, $datoContribuyente);
+					}
+				}
+
+			} elseif ( (int)$detallePlanilla['impuesto'] == 10 && $detallePlanilla['fecha_pago'] > date('Y-m-d', '2013-01-03') && in_array($detallePlanilla['id_impuesto'], $listaIdimpuesto1) ) {
 				// Activado el 08-04-2013
 
+				// Reparo fiscales
+				$codigo = self::getCodigoPresupuestarioReparoFiscales((int)$detallePlanilla['ano_positivo']);
+				$montoAplicar = $monto - ( $descuento + $montoReconocimiento );
+				self::relacionar($detallePlanilla, $datoContribuyente, $codigo, $montoAplicar);
+
+				if ( (float)$detallePlanilla['interes'] > 0 ) {
+					self::relacionarConceptoInteres($detallePlanilla, $datoContribuyente);
+				}
+
 			} elseif ( $detallePlanilla['impuesto'] == 12 ) {
+				if ( (int)$detallePlanilla['ano_impositivo'] < (int)date('Y', strtotime($detallePlanilla['fecha_pago'])) ) {
 
-			} else {
+					$montoAplicar = $monto - ( $descuento + $montoReconocimiento );
+					if ( $detallePlanilla['fecha_pago'] >= date('Y-m-d', strtotime('2011-01-01')) ) {
 
-				if ( (int)$detallePlanilla['ano_positivo'] < (int)date('Y', strtotime($detallePlanilla['impuesto'])) ) {
+						$codigo = self::getCodigoPresupuestarioDeudaMorosa();
+						self::relacionar($detallePlanilla, $datoContribuyente, $codigo, $montoAplicar);
+					}
+
+					if ( (float)$detallePlanilla['recargo'] > 0 ) {
+						self::relacionarConceptoRecargo($detallePlanilla, $datoContribuyente);
+					}
+
+					if ( (float)$detallePlanilla['interes'] > 0 ) {
+						self::relacionarConceptoInteres($detallePlanilla, $datoContribuyente);
+					}
 
 				} else {
 
+					$montoAplicar = $monto - ( $descuento + $montoReconocimiento );
+					if ( $primeraVez ) {
+						$primeraVez = false;
+						self::relacionar($detallePlanilla, $datoContribuyente, $codigo, $montoAplicar);
+					} else {
+						self::relacionar($detallePlanilla, $datoContribuyente, $codigo, $montoAplicar);
+					}
+
+					if ( (float)$detallePlanilla['recargo'] > 0 ) {
+						self::relacionarConceptoRecargo($detallePlanilla, $datoContribuyente);
+					}
+
+					if ( (float)$detallePlanilla['interes'] > 0 ) {
+						self::relacionarConceptoInteres($detallePlanilla, $datoContribuyente);
+					}
+				}
+
+			} else {
+
+				if ( (int)$detallePlanilla['ano_impositivo'] < (int)date('Y', strtotime($detallePlanilla['fecha_pago'])) ) {
+
+					// Concepto de Cuentas por Cobrar.
+					$listaIdimpuesto2 = [190, 433];
+					if ( in_array($detallePlanilla['id_impuesto'], $listaIdimpuesto2) ) {
+
+						$montoAplicar = $monto - ( $descuento + $montoReconocimiento );
+
+						// Informacion del codigo presupuestario de la entidad "codigos-contables".
+						$codigo = self::getCodigoPresupuestarioCuentaPorCobrar();
+						if ( $codigo !== null ) {
+							self::relacionar($detallePlanilla, $datoContribuyente, $codigo, $montoAplicar);
+						}
+
+					} else {
+						if ( $detallePlanilla['impuesto'] == 9 ) {
+							if ( $detallePlanilla['fecha_pago'] >= date('Y-m-d', '2014-03-01') ) {
+
+								// Deuda morosa por tasa.
+								$codigo = self::getCodigoPresupuestarioDeudaMorosaPorTasa();
+
+							} else {
+								// Deuda morosa.
+								$codigo = self::getCodigoPresupuestarioDeudaMorosa();
+							}
+						} else {
+							// Deuda morosa.
+							$codigo = self::getCodigoPresupuestarioDeudaMorosa();
+						}
+
+						$montoAplicar = $monto - ( $descuento + $montoReconocimiento );
+						self::relacionar($detallePlanilla, $datoContribuyente, $codigo, $montoAplicar);
+					}
+
+					if ( (float)$detallePlanilla['interes'] > 0 ) {
+						self::relacionarConceptoInteres($detallePlanilla, $datoContribuyente);
+					}
+
+				} else {
+
+					$montoAplicar = $monto - ( $descuento + $montoReconocimiento );
+
+					// Informacion del codigo presupuestario de la entidad "codigos-contables".
+					$codigo = self::getDatoCodigoPresupuestarioByIdImpuesto($detallePlanilla);
+					if ( $codigo !== null ) {
+						self::relacionar($detallePlanilla, $datoContribuyente, $codigo['codigo'], $montoAplicar);
+					}
+
+					if ( (float)$detallePlanilla['interes'] > 0 ) {
+						self::relacionarConceptoInteres($detallePlanilla, $datonCotribuyente);
+					}
 				}
 			}
 		}
@@ -254,10 +435,190 @@ die(var_dump($d));
 
 
 
-		/***/
-		private static function relacionar()
+		/**
+		 * Metodo que retorna el codigo presupuestario por concepto de interes de mora.
+		 * @param integer $añoImpositivo año impositivo de la planilla.
+		 * @return string. Codigo presupuestario.
+		 */
+		private static function getCodigoPresupuestarioInteres($añoImpositivo = 0)
 		{
+			if ( $añoImpositivo == 0 ) {
+				return '301110100';
+			}
+			return '301110100';
+		}
 
+
+
+		/**
+		 * Metodo que retorna el codigo presupuestario por concepto de recargo por mora.
+		 * @param integer $añoImpositivo año impositivo de la planilla.
+		 * @return string. Codigo presupuestario.
+		 */
+		private static function getCodigoPresupuestarioRecargo($añoImpositivo = 0)
+		{
+			if ( $añoImpositivo == 0 ) {
+				return '301110800';
+			}
+			return '301110800';
+		}
+
+
+
+		/**
+		 * Metodo que retorna el codigo presupuestario por concepto de reparo fiscales.
+		 * @param integer $añoImpositivo año impositivo de la planilla.
+		 * @return string. Codigo presupuestario.
+		 */
+		private static function getCodigoPresupuestarioReparoFiscales($añoImpositivo = 0)
+		{
+			if ( $añoImpositivo >= 2014 ) {
+				return '301111200';
+			} elseif ( $añoImpositivo < 2014 ) {
+				return '301110200';
+			}
+		}
+
+
+
+
+		/**
+		 * Metodo que retorna el codigo presupuestario por concepto de cuentas por cobrar.
+		 * @param integer $añoImpositivo año impositivo de la planilla.
+		 * @return string. Codigo presupuestario.
+		 */
+		private static function getCodigoPresupuestarioCuentaPorCobrar($añoImpositivo = 0)
+		{
+			if ( $añoImpositivo == 0 ) {
+				return '101020200';
+			}
+			return '101020200';
+		}
+
+
+
+
+		/**
+		 * Metodo que retorna el codigo presupuestario por concepto de Deuda Morosa Por Tasas.
+		 * @param integer $añoImpositivo año impositivo de la planilla.
+		 * @return string. Codigo presupuestario.
+		 */
+		private static function getCodigoPresupuestarioDeudaMorosaPorTasa($añoImpositivo = 0)
+		{
+			if ( $añoImpositivo == 0 ) {
+				return '301035900';
+			}
+			return '301035900';
+		}
+
+
+
+
+		/**
+		 * Metodo que retorna el codigo presupuestario por concepto de Deuda Morosa.
+		 * @param integer $añoImpositivo año impositivo de la planilla.
+		 * @return string. Codigo presupuestario.
+		 */
+		private static function getCodigoPresupuestarioDeudaMorosa($añoImpositivo = 0)
+		{
+			if ( $añoImpositivo == 0 ) {
+				return '301021200';
+			}
+			return '301021200';
+		}
+
+
+
+
+		/**
+		 * Metodo que retorna la informacion del codigo presupuestario segun la tasa
+		 * especifica, aqui la tasa se identifica por el valor del id-impuesto que
+		 * contiene la planilla.
+		 * @param array $detallePlanilla detalle de un registro perteneciente a la
+		 * planilla.
+		 * @return array | null si no encuentra nada.
+		 */
+		private static function getDatoCodigoPresupuestarioByIdImpuesto($detallePlanilla)
+		{
+			$registers = Tasa::find()->alias('T')
+			          	             ->joinWith('codigoContable C', true, 'INNER JOIN')
+			                         ->where('T.id_impuesto =:id_impuesto',
+			                    					[':id_impuesto' => (int)$detallePlanilla['id_impuesto']])
+			                         ->asArray()
+			                         ->one();
+
+			if ( count($registers) > 0 ) {
+				return $registers['codigoContable'];
+			}
+			return $registers;
+		}
+
+
+
+
+		/**
+		 * Metodo que prepara la relacion presupuestaria de los montos por intereses moratorios.
+		 * @param array $detallePlanilla detalle de un registro perteneciente a la
+		 * planilla.
+		 * @param string $datoCotribuyente descripcion del contribuyente, razon sociaL o
+		 * apellidos y nombres.
+		 * @return
+		 */
+		public function relacionarConceptoInteres($detallePlanilla, $datoCotribuyente)
+		{
+			if ( (float)$detallePlanilla['interes'] > 0 ) {
+				$montoAplicar = (float)$detallePlanilla['interes'];
+				$codigo = self::getCodigoPresupuestarioInteres();
+				self::relacionar($detallePlanilla, $datoCotribuyente, $codigo, $montoAplicar);
+			}
+			return;
+		}
+
+
+
+
+		/**
+		 * Metodo que prepara la relacion presupuestaria de los montos por recargo por mora.
+		 * @param array $detallePlanilla detalle de un registro perteneciente a la
+		 * planilla.
+		 * @param string $datoCotribuyente descripcion del contribuyente, razon sociaL o
+		 * apellidos y nombres.
+		 * @return
+		 */
+		public function relacionarConceptoRecargo($detallePlanilla, $datoCotribuyente)
+		{
+			if ( (float)$detallePlanilla['recargo'] > 0 ) {
+				$montoAplicar = (float)$detallePlanilla['recargo'];
+				$codigo = self::getCodigoPresupuestarioRecargo();
+				self::relacionar($detallePlanilla, $datoCotribuyente, $codigo, $montoAplicar);
+			}
+			return;
+		}
+
+
+
+		/**
+		 * Metodo que agrega una relacion de codigo presupuestario vs planilla, en el arreglo.
+		 * @param array $detallePlanilla detalle de un registro perteneciente a la
+		 * planilla.
+		 * @param string $datoCotribuyente descripcion del contribuyente, razon sociaL o
+		 * apellidos y nombres.
+		 * @param string $codigoPresupuestario codigo presupuestario.
+		 * @param double $montoAplicar monto respectivo.
+		 * @return
+		 */
+		private function relacionar($detallePlanilla, $datoCotribuyente, $codigoPresupuestario, $montoAplicar)
+		{
+			$this->_planillaPresupuesto[] = [
+				'recibo' => $this->_recibo,
+				'planilla' => $detallePlanilla['planilla'],
+				'monto' => $montoAplicar,
+				'impuesto' => $detallePlanilla['descripcion_impuesto'],
+				'descripcion' => $datoCotribuyente,
+				'codigo' => $codigoPresupuestario,
+				'estatus' => 0,
+				'codigo_contable' => $codigoPresupuestario,		// quitar lo ultimo dos digitos.
+			];
 		}
 
 
