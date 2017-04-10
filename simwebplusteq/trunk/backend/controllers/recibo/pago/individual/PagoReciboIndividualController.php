@@ -76,7 +76,7 @@
     use common\models\referencia\GenerarReferenciaBancaria;
     use common\models\rafaga\GenerarRafagaPlanilla;
     use common\models\distribucion\presupuesto\GenerarPlanillaPresupuesto;
-
+    use backend\models\recibo\pago\individual\PagoReciboIndividual;
 
 
 
@@ -616,7 +616,8 @@
 				if ( isset($postData['btn-guardar-pago']) ) {
 					if ( $postData['btn-guardar-pago'] == 9 ) {
 						// Se guarda el pago.
-
+						$pago = New PagoReciboIndividual($recibo);
+        				$pago->findDepositoDetalle();
 					}
 				}
 
@@ -637,10 +638,14 @@
         			// $generarReferencia = New GenerarReferenciaBancaria($recibo, $modelSerial, self::actionSetObservacionSerialManual($postEnviado['cuenta_recaudadora']));
         			// $referencia = $generarReferencia->iniciarReferencia();
 
-        			$generarCodigoPresupuesto = New GenerarPlanillaPresupuesto(6850);
-        			$generarCodigoPresupuesto->iniciarPlanillaPresupuesto();
+        			//$generarCodigoPresupuesto = New GenerarPlanillaPresupuesto(6850);
+        			//$generarCodigoPresupuesto->iniciarPlanillaPresupuesto();
 
-//die(var_dump($referencia));
+
+					$pago = New PagoReciboIndividual($recibo);
+        			$pago->definirDepositoDetalle();
+die(var_dump('aaa'));
+
         			$urlFormaPagos = '';
         			$bloquearFormaPago = false;
         			// Recibo y las planilas
