@@ -103,7 +103,7 @@
 		 */
 		private $_rafaga = [];
 
-		public $errores = [];
+		public $errores;
 
 		/**
 		 * Variable que determina el monto restante de una planilla.
@@ -325,7 +325,7 @@
 		private function relacionar($planilla, $detalle, $montoAporte)
 		{
 			$this->_rafaga[] = [
-				'linea' => 0,
+				'linea' => $detalle['linea'],
 				'recibo' => $this->_recibo,
 				'planilla' => $planilla,
 				'id_forma' => $detalle['id_forma'],
