@@ -441,6 +441,18 @@
 
 
             /**
+             * Metodo que retorna los registros de la consulta realizada sobre la entidad
+             * "depositos-planillas".
+             * @return DepositoPlanilla.
+             */
+            public function getDepositoPlanilla()
+            {
+                  return self::findDepositoPlanillaModel()->asArray()->all();
+            }
+
+
+
+            /**
              * Metodo que permite generar el data provider de los pagos
              * registrados por el usuario para pagar un recibo, especifico.
              * Cada recibo se le asociara un formas de pagos que estara guardada
@@ -514,7 +526,7 @@
             {
                   $data = [];
                   $results = self::findVaucheDetalleUsuarioTemp($usuario, $linea);
-// die(var_dump($results));
+
                   if ( count($results) > 0 ) {
 
                         foreach ( $results as $result ) {
