@@ -46,21 +46,32 @@
 	use backend\models\recibo\prereferencia\PreReferenciaPlanilla;
 	use backend\models\recibo\deposito\Deposito;
 	use common\models\planilla\Pago;
+	use common\models\referencia\GenerarReferenciaBancaria;
+
+
 
 
 	/**
 	* 	Clase
 	*/
-	class PreReferenciaPlanillaSearch
+	class PreReferenciaPlanillaSearch extends PreReferenciaPlanilla
 	{
 
-		protected $planilla;
-		protected $recibo;
+		private $planilla;
+		private $recibo;
+		private $_conn;
+		private $_conexion;
+
+		private $_errores;
 
 
 		/***/
-		public function __construct()
-		{}
+		public function __construct($recibo, $conexion, $conn)
+		{
+			$this->_recibo = $recibo;
+			$this->_conexion = $conexion;
+			$this->_conn = $conn;
+		}
 
 
 
