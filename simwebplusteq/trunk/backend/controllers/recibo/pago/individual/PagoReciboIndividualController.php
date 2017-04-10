@@ -617,7 +617,8 @@
 					if ( $postData['btn-guardar-pago'] == 9 ) {
 						// Se guarda el pago.
 						$pago = New PagoReciboIndividual($recibo);
-        				$pago->findDepositoDetalle();
+        				$pago->iniciarPagoRecibo();
+die(var_dump('aaa'));
 					}
 				}
 
@@ -642,15 +643,14 @@
         			//$generarCodigoPresupuesto->iniciarPlanillaPresupuesto();
 
 
-					$pago = New PagoReciboIndividual($recibo);
-        			$pago->definirDepositoDetalle();
-die(var_dump('aaa'));
+					//$pago = New PagoReciboIndividual($recibo);
+        			//$pago->iniciarPagoRecibo();
+//die(var_dump('aaa'));
 
         			$urlFormaPagos = '';
         			$bloquearFormaPago = false;
         			// Recibo y las planilas
 
-        			// Se verifica que el recibo cumpla las reglas de negocio establecidas.
 					$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
 					$htmlMensaje = null;
 
