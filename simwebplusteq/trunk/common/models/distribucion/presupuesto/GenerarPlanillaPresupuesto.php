@@ -104,7 +104,6 @@
 			self::getPlanillaRecibo();
 
 			self::cicloPlanilla();
-//die(var_dump(self::getPlanillaPresupuesto()));
 			return self::getPlanillaPresupuesto();
 
 		}
