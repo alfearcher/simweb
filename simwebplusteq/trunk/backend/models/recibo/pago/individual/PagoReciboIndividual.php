@@ -50,13 +50,12 @@
 	use backend\models\recibo\depositodetalle\VaucheDetalleUsuario;
 	use backend\models\recibo\depositoplanilla\DepositoPlanilla;
 	use backend\models\recibo\planillaaporte\PlanillaAporte;
-	use backend\models\recibo\planillacontable\PlanillaContable;
+	use backend\models\recibo\planillacontable\PlanillaContableSearch;
 	use backend\models\recibo\vauchedetalle\VaucheDetalle;
 	use backend\models\recibo\pago\individual\SerialReferenciaUsuario;
 	use common\models\planilla\Pago;
 	use common\models\planilla\PagoDetalle;
 	use common\models\planilla\PlanillaSearch;
-	use common\models\distribucion\presupuesto\GenerarPlanillaPresupuesto;
 	use common\models\rafaga\GenerarRafagaPlanilla;						// planilla aporte.
 	use common\models\referencia\GenerarReferenciaBancaria;
 	use common\conexion\ConexionController;
@@ -187,6 +186,10 @@
 			if ( self::seteoRecibo() ) {
 				$result = self::seteoPlanilla();
 			}
+			if ( $result ) {
+				$planillaContableSearch = New PlanillaContableSearch($this->_recibo, $this->_conexion, $this->_conn);
+				$result = $planillaContableSearch->iniciarDistribucionPresupuestaria();
+			}
 
 			if ( $result ) {
 				$this->_transaccion->commit();
@@ -314,8 +317,9 @@
 
 
 		/**
-		 * [findDepositoDetalle description]
-		 * @return [type] [description]
+		 * Metodo que permite definir el modelo de los detalles del pago. A partir
+		 * de los datos guardados en la entidad temporal.
+		 * @return DepositoDetalle.
 		 */
 		public function definirDepositoDetalle()
 		{
@@ -341,7 +345,10 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que realiza el seteo en la entidad "depositos".
+		 * @return boolean.
+		 */
 		private function seteoRecibo()
 		{
 			$tabla = Deposito::tableName();
@@ -359,7 +366,12 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que realiza el seteo en la entidad "depositos-planillas".
+		 * @param DepositoPlanilla $depositoPlanilla arreglo con los datos de la entidad
+		 * "depositos-planillas" y "depositos"
+		 * @return boolean.
+		 */
 		private function seteoReciboPlanilla($depositoPlanilla)
 		{
 			$tabla = DepositoPlanilla::tableName();
@@ -375,7 +387,12 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que realiza el seteo en la entidad "pagos".
+		 * @param DepositoPlanilla $depositoPlanilla arreglo con los datos de la entidad
+		 * "depositos-planillas" y "depositos"
+		 * @return boolean.
+		 */
 		private function seteoPago($depositoPlanilla)
 		{
 			$result= false;
@@ -405,7 +422,11 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que realiza el seteo en la entidad "pagos-detalle".
+		 * @param integer $idPago identificador de la entidad "pagos".
+		 * @return boolean
+		 */
 		private function seteoPagoDetalle($idPago)
 		{
 			$tabla = PagoDetalle::tableName();
@@ -422,7 +443,11 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que crea un clico con las planillas contenidas en el recibo para
+		 * realizar los respectivos seteo.
+		 * @return boolean.
+		 */
 		private function seteoPlanilla()
 		{
 			$result =  false;
