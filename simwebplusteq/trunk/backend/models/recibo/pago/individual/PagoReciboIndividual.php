@@ -55,11 +55,13 @@
 	use backend\models\recibo\pago\individual\SerialReferenciaUsuario;
 	use common\models\planilla\Pago;
 	use common\models\planilla\PagoDetalle;
+	use common\models\planilla\PlanillaSearch;
 	use common\models\distribucion\presupuesto\GenerarPlanillaPresupuesto;
 	use common\models\rafaga\GenerarRafagaPlanilla;						// planilla aporte.
 	use common\models\referencia\GenerarReferenciaBancaria;
 	use common\conexion\ConexionController;
 	use yii\db\Exception;
+	use yii\helpers\ArrayHelper;
 
 
 
@@ -160,11 +162,31 @@
 		 * Metodo que inicia el proceso de pago
 		 * @return boolean.
 		 */
-		public function iniciarPagarRecibo()
+		public function iniciarPagoRecibo()
 		{
+
+			if ( $this->_modelDepositoDetalle == null ) {
+				self::definirDepositoDetalle();
+			}
+
+			self::iniciarPago();
+		}
+
+
+
+
+
+		/***/
+		private function iniciarPago()
+		{
+			$result = false;
 			self::setConexion();
 			$this->_transaccion = $this->_conn->beginTransaction();
 			$this->_conn->open();
+
+			if ( self::seteoRecibo() ) {
+				$result = self::seteoPlanilla();
+			}
 
 			if ( $result ) {
 				$this->_transaccion->commit();
@@ -318,20 +340,6 @@
 		}
 
 
-		/***/
-		private function iniciarSeteo()
-		{
-			try {
-
-				self::seteoRecibo();
-				self::seteoPlanilla();
-
-			} catch ( Exception $e ) {
-
-			}
-		}
-
-
 
 		/***/
 		private function seteoRecibo()
@@ -346,45 +354,53 @@
 				'recibo' => $this->_recibo,
 			];
 
-			self::seteoEntidad($tabla, $arregloDato, $arregloCondicion);
+			return self::seteoEntidad($tabla, $arregloDato, $arregloCondicion);
 		}
 
 
 
 		/***/
-		private function seteoReciboPlanilla($planilla)
+		private function seteoReciboPlanilla($depositoPlanilla)
 		{
 			$tabla = DepositoPlanilla::tableName();
 			$arregloDato = [
 				'estatus' => self::PAGO,
 			];
 			$arregloCondicion = [
-				'recibo' => $this->_recibo,
-				'planilla' => $planilla,
+				'recibo' => $depositoPlanilla['recibo'],
+				'planilla' => $depositoPlanilla['planilla'],
 			];
-			self::seteoEntidad($tabla, $arregloDato, $arregloCondicion);
+			return self::seteoEntidad($tabla, $arregloDato, $arregloCondicion);
 		}
 
 
 
 		/***/
-		private function seteoPago($planilla)
+		private function seteoPago($depositoPlanilla)
 		{
-			$pago = Pago::find()->where('planilla =:planilla',
-											[':planilla' => $planilla])
+			$result= false;
+			$pago = PagoDetalle::find()->alias('D')
+								->joinWith('pagos P', true, 'INNER JOIN')
+							    ->where('planilla =:planilla',
+												[':planilla' => $depositoPlanilla['planilla']])
+							    ->asArray()
 								->one();
-			$tabla = $pago->tableName();
+
+			$tabla = Pago::tableName();
 
 			$arregloDato = [
-				'recibo' => $this->_recibo,
+				'recibo' => (int)$depositoPlanilla['recibo'],
 			];
 			$arregloCondicion = [
-				'id_pago' => $pago->id_pago,
+				'id_pago' => (int)$pago['id_pago'],
+				'recibo' => 0,
 			];
+
 			if ( self::seteoEntidad($tabla, $arregloDato, $arregloCondicion) ) {
-				self::seteoPagoDetalle($pago->id_pago);
+				$result = self::seteoPagoDetalle((int)$pago['id_pago']);
 			}
 
+			return $result;
 		}
 
 
@@ -399,9 +415,9 @@
 				'fecha_pago' => date('Y-m-d'),
 			];
 			$arregloCondicion = [
-				'id_pago' => $pago->id_pago,
+				'id_pago' => $idPago,
 			];
-			self::seteoEntidad($tabla, $arregloDato, $arregloCondicion);
+			return self::seteoEntidad($tabla, $arregloDato, $arregloCondicion);
 		}
 
 
@@ -409,11 +425,17 @@
 		/***/
 		private function seteoPlanilla()
 		{
+			$result =  false;
 			$planillas = $this->_pagoSearch->getDepositoPlanilla();
 			foreach ( $planillas as $planilla ) {
-				self::seteoReciboPlanilla($planilla);
-				self::seteoPago($planilla);
+				if ( self::seteoReciboPlanilla($planilla) ) {
+					$result = self::seteoPago($planilla);
+				} else {
+					break;
+				}
+				if ( !$result ) { break; }
 			}
+			return $result;
 		}
 
 
