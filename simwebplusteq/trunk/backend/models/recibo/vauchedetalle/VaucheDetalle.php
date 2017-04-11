@@ -21,13 +21,13 @@
  */
 
  /**
- *  @file VaucheDetalleUsuario.php
+ *  @file VaucheDetalle.php
  *
  *  @author Jose Rafael Perez Teran
  *
  *  @date 26-02-2017
  *
- *  @class VaucheDetalleUsuario
+ *  @class VaucheDetalle
  *  @brief Clase Modelo
  *
  *
