@@ -46,18 +46,19 @@
 	use backend\models\recibo\pago\individual\PagoReciboIndividualSearch;
 	use backend\models\recibo\deposito\Deposito;
 	use backend\models\recibo\depositodetalle\DepositoDetalle;
+	use backend\models\recibo\depositodetalle\DepositoDetalleSearch;
 	use backend\models\recibo\depositodetalle\DepositoDetalleUsuario;
 	use backend\models\recibo\depositodetalle\VaucheDetalleUsuario;
 	use backend\models\recibo\depositoplanilla\DepositoPlanilla;
 	use backend\models\recibo\planillaaporte\PlanillaAporte;
 	use backend\models\recibo\planillacontable\PlanillaContableSearch;
 	use backend\models\recibo\vauchedetalle\VaucheDetalle;
+	use backend\models\recibo\vauchedetalle\VaucheDetalleSearch;
 	use backend\models\recibo\pago\individual\SerialReferenciaUsuario;
 	use common\models\planilla\Pago;
 	use common\models\planilla\PagoDetalle;
 	use common\models\planilla\PlanillaSearch;
 	use common\models\rafaga\GenerarRafagaPlanilla;						// planilla aporte.
-	//use common\models\referencia\GenerarReferenciaBancaria;
 	use  backend\models\recibo\prereferencia\PreReferenciaPlanillaSearch;
 	use common\conexion\ConexionController;
 	use yii\db\Exception;
@@ -166,7 +167,7 @@
 		{
 
 			if ( $this->_modelDepositoDetalle == null ) {
-				self::definirDepositoDetalle();
+				$this->_modelDepositoDetalle = self::definirDepositoDetalle();
 			}
 
 			self::iniciarPago();
@@ -188,6 +189,10 @@
 				$result = self::seteoPlanilla();
 			}
 
+			// Guardar detalle de pagos
+			if ( $result ) {
+				$result = self::guardarDetallePago();
+			}
 
 			// Distribucion de los ingresos presupuestarios.
 			if ( $result ) {
@@ -249,8 +254,6 @@
 			self::setError($generar->getError());
 			return $rafaga;
 		}
-
-
 
 
 
@@ -454,6 +457,57 @@
 			return $result;
 		}
 
+
+
+
+
+		/**
+		 * Metodo que inicia el proceso para guardar los detalles del pago
+		 * @return boolean.
+		 */
+		private function guardarDetallePago()
+		{
+			$result = false;
+			if ( $this->_modelDepositoDetalle == null || count($this->_modelDepositoDetalle) == 0 ) {
+				$result = false;
+			} else {
+
+				$depositoDetalleSearch = New DepositoDetalleSearch($this->_conexion, $this->_conn);
+				foreach ( $this->_modelDepositoDetalle as $detalle ) {
+					$idGenerado = 0;
+					$result = $depositoDetalleSearch->guardar($detalle->toArray());
+					$idGenerado = $depositoDetalleSearch->getIdGenerado();
+
+					if ( $idGenerado > 0 && $detalle['id_forma'] == 2 ) {
+						// Se pasa a guardar los detalle del vauche.
+						$detallesVauche = VaucheDetalleUsuario::find()->where('recibo =:recibo',
+							 												[':recibo' => (int)$detalle['recibo']])
+															  ->andWhere('linea =:linea',
+															  				[':linea' => (int)$detalle['linea']])
+															  ->all();
+						if ( count($detallesVauche) > 0 ) {
+							$vaucheSearch = New VaucheDetalleSearch($this->_conexion, $this->_conn);
+							foreach ( $detallesVauche as $vauche ) {
+								$vauche['id_vauche'] = null;
+								$vauche['linea'] = $idGenerado;
+								$result = $vaucheSearch->guardar($vauche->toArray());
+								if ( !$result ) {
+									break;
+								}
+							}
+						} else {
+							$result = false;
+							break;
+						}
+					} elseif ( $idGenerado == 0 ) {
+						$result = false;
+						break;
+					}
+
+				}
+			}
+			return $result;
+		}
 
 	}
 
