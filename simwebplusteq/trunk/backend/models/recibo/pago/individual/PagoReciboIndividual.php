@@ -57,7 +57,8 @@
 	use common\models\planilla\PagoDetalle;
 	use common\models\planilla\PlanillaSearch;
 	use common\models\rafaga\GenerarRafagaPlanilla;						// planilla aporte.
-	use common\models\referencia\GenerarReferenciaBancaria;
+	//use common\models\referencia\GenerarReferenciaBancaria;
+	use  backend\models\recibo\prereferencia\PreReferenciaPlanillaSearch;
 	use common\conexion\ConexionController;
 	use yii\db\Exception;
 	use yii\helpers\ArrayHelper;
@@ -186,9 +187,26 @@
 			if ( self::seteoRecibo() ) {
 				$result = self::seteoPlanilla();
 			}
+
+
+			// Distribucion de los ingresos presupuestarios.
 			if ( $result ) {
 				$planillaContableSearch = New PlanillaContableSearch($this->_recibo, $this->_conexion, $this->_conn);
 				$result = $planillaContableSearch->iniciarDistribucionPresupuestaria();
+			}
+
+			// Pre referencias bancarias.
+			if ( $result ) {
+				$usuario = Yii::$app->identidad->getUsuario();
+				$modelSerial = SerialReferenciaUsuario::find()->where('recibo =:recibo',
+																			[':recibo' => $this->_recibo])
+															  ->andWhere('usuario =:usuario',
+															  				[':usuario' => $usuario])
+															  ->all();
+
+				$modelSerial = ( count($modelSerial) == 0 ) ? null : $modelSerial;
+				$referenciaSearch = New PreReferenciaPlanillaSearch($this->_recibo, $this->_conexion, $this->_conn, $modelSerial);
+				$result = $referenciaSearch->iniciarPreReferencia();
 			}
 
 			if ( $result ) {
@@ -234,33 +252,6 @@
 
 
 
-		/**
-		 * Metodo que invoca el generador de la distribucion presupustaria.
-		 * Se toman las planillas que contiene el recibo y se determina los
-		 * codigos presupuestarios asociadas a las misma. Si existe un error
-		 * en el proceso de seteara los mismos en la variable de errores.
-		 * @return array
-		 */
-		private function generarDistribucionPresupuesto()
-		{
-			$generar = New GenerarPlanillaPresupuesto($this->_recibo);
-			$distribucion = $generar->iniciarPlanillaPresupuesto();
-			self::setError($generar->getError());
-			return $distribucion;
-		}
-
-
-
-		/***/
-		private function generarReferenciaBancaria()
-		{
-			$generar = New GenerarReferenciaBancaria($this->_recibo);
-			// Determinar si existen registros en la entidad temporal del recibo
-			// si es asi se asume que se esta pagando un recibo manualmente.
-			//$referencia = $generar->iniciarPlanillaPresupuesto();
-			self::setError($generar->getError());
-			return $referencia;
-		}
 
 
 		/**
