@@ -139,7 +139,7 @@
          */
         public function actionMostrarFormConsulta()
         {
-        	self::actionAnularSession(['datosRecibo', 'recibo']);
+        	self::actionAnularSession(['datosRecibo', 'recibo', 'postEnviado']);
             $model = New BusquedaReciboForm();
             if ( $model->usuarioAutorizado(Yii::$app->identidad->getUsuario()) ) {
 
@@ -367,7 +367,7 @@
          */
         public function actionSeleccionarCuentaRecaudadora()
         {
-        	self::actionAnularSession(['datosBanco']);
+        	self::actionAnularSession(['datosBanco', 'postEnviado']);
         	$recibo = isset($_SESSION['recibo']) ? (int)$_SESSION['recibo'] : 0;
         	$usuario = Yii::$app->identidad->getUsuario();
 
@@ -505,9 +505,15 @@
 	        	} elseif ( isset($postData['btn-generar-pre-referencia']) ) {
 	        		if ( $postData['btn-generar-pre-referencia'] == 7 ) {
 
-	        			$this->redirect(['armar-resumen-pago', 'postEnviado' => $postData]);
+	        			if ( self::actionVerificarReferenciaBancaria($postData['cuenta_recaudadora']) ) {
+	        				$_SESSION['postEnviado'] = $postData;
+	        				$this->redirect(['armar-resumen-pago']);
+	        			} else {
+	        				// Vista que indique que la referencia bancaria falló
 
+	        			}
 	        		}
+
 	        	}
 
 
@@ -585,6 +591,29 @@
 
 
 
+        /***/
+        public function actionVerificarReferenciaBancaria($cuentaRecaudadora)
+        {
+        	$recibo = isset($_SESSION['recibo']) ?  $_SESSION['recibo'] : 0;
+        	$usuario = Yii::$app->identidad->getUsuario();
+        	if ( $recibo > 0 ) {
+        		$serialSearch = New SerialReferenciaUsuarioSearch($recibo, $usuario);
+        		$modelSerial = $serialSearch->findSeriales();
+
+        		$generarReferencia = New GenerarReferenciaBancaria($recibo, $modelSerial, $cuentaRecaudadora);
+        		$referencia = $generarReferencia->iniciarReferencia();
+        		if ( count($referencia) > 0 && count($generarReferencia->getError()) == 0 ) {
+        			return true;
+        		}
+        	}
+
+        	return false;
+        }
+
+
+
+
+
 
         /**
          * [actionArmarResumenPago description]
@@ -599,7 +628,7 @@
         		$postGet = $request->get();
         		$postData = $request->post();
 
-//die(var_dump($postData));
+//die(var_dump($postGet));
 
 				if ( isset($postData['btn-back']) ) {
 					if ( $postData['btn-back'] == 1 ) {
@@ -617,18 +646,14 @@
 					if ( $postData['btn-guardar-pago'] == 9 ) {
 						// Se guarda el pago.
 						$pago = New PagoReciboIndividual($recibo);
-        				$pago->iniciarPagoRecibo();
-die(var_dump('aaa'));
+        				$result = $pago->iniciarPagoRecibo();
+die(var_dump($result));
 					}
 				}
 
-
-        		if ( !isset($_SESSION['postEnviado']) ) {
-        			$_SESSION['postEnviado'] = $postGet['postEnviado'];
-        		}
         		$postEnviado = isset($_SESSION['postEnviado']) ? $_SESSION['postEnviado'] : [];
 
-        		if ( $postEnviado['recibo'] == $recibo ) {
+        		if ( (int)$postEnviado['recibo'] == (int)$recibo ) {
 
         			// $generarRafaga = New GenerarRafagaPlanilla($recibo);
         			// $rafaga = $generarRafaga->iniciarRafaga();
