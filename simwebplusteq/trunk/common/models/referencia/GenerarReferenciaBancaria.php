@@ -139,6 +139,7 @@
 				} else {
 					$model = $this->_modelSerial;
 				}
+
             	if ( !is_a($model, SerialReferenciaUsuario::className()) ) {
             		self::setError(Yii::t('backend', 'La clase de modelSerial no corresponde con el esperado'));
             		return;
@@ -256,13 +257,13 @@
 
 
 				} else {
-					foreach ( $this->_depositoPlanilla as $planilla ) {
+					foreach ( $this->_depositoPlanilla as $itemPlanilla ) {
 
 						if ( count($this->_depositoPlanilla) == 1 ) {
-							self::cicloSerialPorPlanillla($planilla, false);
+							self::cicloSerialPorPlanillla($itemPlanilla, false);
 
 						} elseif ( count($this->_depositoPlanilla) > 1 ) {
-							self::cicloSerialPorPlanillla($planilla, true);
+							self::cicloSerialPorPlanillla($itemPlanilla, true);
 
 						}
 					}
@@ -287,11 +288,13 @@
 			if ( count($this->_modelSerial) > 0 ) {
 				foreach ( $this->_modelSerial as $serial ) {
 					if ( $igualdadMonto ) {
-						if ( $datoPlanilla['monto'] == $serial['monto_edocuenta'] ) {
+						if ( (float)$datoPlanilla['monto'] === (float)$serial['monto_edocuenta'] ) {
 							self::relacionar($serial, $datoPlanilla);
+							break;
 						}
 					} else {
 						self::relacionar($serial, $datoPlanilla);
+						break;
 					}
 				}
 			}
