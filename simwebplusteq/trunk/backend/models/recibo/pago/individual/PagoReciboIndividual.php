@@ -170,7 +170,7 @@
 				$this->_modelDepositoDetalle = self::definirDepositoDetalle();
 			}
 
-			self::iniciarPago();
+			return self::iniciarPago();
 		}
 
 
