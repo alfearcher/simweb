@@ -65,7 +65,7 @@
 	 * Si el recibo no esta pagado (estatus = 0),  se debera buscar las formas de pago en la
 	 * entidad temporal. (DepositoDetalleUsuario).
 	 * Si el recibo esta pagado, se buscara los formas de pago en la entidad final (DepositoDetalle).
-	 * La informacion generada por esta clase sera guardada en la entidad PlanillaAporte.
+	 * La informacion generada por esta clase sera guardada en la entidad "planillas-aporte".
 	 * La salida de la clase es una arreglo con la informacion respectiva:
 	 * {
 	 * 		[key] => valor,
@@ -103,7 +103,7 @@
 		 */
 		private $_rafaga = [];
 
-		public $errores;
+		public $_errores;
 
 		/**
 		 * Variable que determina el monto restante de una planilla.
@@ -131,7 +131,10 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que inicia la clase.
+		 * @return array
+		 */
 		public function iniciarRafaga()
 		{
 			self::getDatoRecibo();
@@ -163,6 +166,7 @@
 				}
 				self::armarCicloPlanilla();
 			}
+
 			return self::getRafaga();
 
 		}
@@ -205,7 +209,7 @@
 		 */
 		public function getError()
 		{
-			return $this->errores;
+			return $this->_errores;
 		}
 
 
@@ -227,15 +231,10 @@
 		 */
 		private function reciboPago()
 		{
-			if ( count($this->_deposito) == 1 ) {
-				if ( $this->_deposito['estatus'] == 1 ) {
-					return true;
-				} else {
-					return false;
-				}
+			if ( $this->_deposito['estatus'] == 1 ) {
+				return true;
 			} else {
-				self::setError(Yii::t('backend', 'No exite el recibo ') . $this->_recibo);
-				return;
+				return false;
 			}
 		}
 
@@ -264,6 +263,9 @@
 		{
 			$this->_depositoPlanilla = DepositoPlanilla::find()->where('recibo =:recibo',
 																			[':recibo' => $this->_recibo])
+															   ->orderBy([
+															   		'planilla' => SORT_ASC,
+															   	])
 															   ->asArray()
 															   ->all();
 		}
@@ -333,8 +335,6 @@
 				'estatus' => 0,
 			];
 		}
-
-
 
 
 	}
