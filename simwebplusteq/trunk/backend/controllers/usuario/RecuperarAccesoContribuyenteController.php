@@ -297,7 +297,7 @@ class RecuperarAccesoContribuyenteController extends Controller
                                 if ($envio==true){
                                     return MensajeController::actionMensaje(103);//Proceso exitoso, el usuario y clave han sido enviado a su correo electronico
                                     
-
+ 
                                 } else {
                                     return MensajeController::actionMensaje(973);//La recuperacion de contraseña a fallado
                                 }
@@ -351,7 +351,7 @@ class RecuperarAccesoContribuyenteController extends Controller
                     $tipoError = 0;
                     $todoBien = false;
                 }
-          
+        
 
                 if ($todoBien == true){
                     
