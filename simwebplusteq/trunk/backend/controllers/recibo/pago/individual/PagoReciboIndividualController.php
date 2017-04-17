@@ -74,7 +74,8 @@
     use backend\models\recibo\prereferencia\ReferenciaPlanillaUsuarioForm;
     use backend\models\recibo\txt\RegistroTxtSearch;
     use common\models\referencia\GenerarReferenciaBancaria;
-    use common\models\rafaga\GenerarRafagaPlanilla;
+    //use common\models\rafaga\GenerarRafagaPlanilla;
+    //use backend\models\recibo\planillaaporte\PlanillaAporteSearch;
     use common\models\distribucion\presupuesto\GenerarPlanillaPresupuesto;
     use backend\models\recibo\pago\individual\PagoReciboIndividual;
 
@@ -407,6 +408,7 @@
 
         				$_SESSION['datosBanco'] = $datosBanco;
 
+        				self::actionSetearBancoCuentaReceptoraEnDetallePago($model->id_banco, $model->cuenta_recaudadora);
         				$modelSerial = New SerialReferenciaForm();
         				self::actionInicializarEntidadTemporal($recibo, $usuario, $modelSerial);
         				$this->redirect(['pre-referencia']);
@@ -458,6 +460,9 @@
 	        		if ( $postData['btn-back'] == 2 ) {
 	        			self::actionAnularSession(['fecha_pago']);
 	        			$this->redirect(['seleccionar-cuenta-recaudadora']);
+
+	        		} elseif ( $postData['btn-back'] == 9 ) {
+
 	        		}
 	        	} elseif ( isset($postData['btn-find-referencia']) ) {
 	        		if ( $postData['btn-find-referencia'] == 3 ) {
@@ -510,10 +515,17 @@
 	        				$this->redirect(['armar-resumen-pago']);
 	        			} else {
 	        				// Vista que indique que la referencia bancaria falló
-
+	        				$errorMensaje = Yii::t('backend', 'Las pre-referencias bancarias no se realizarón correctamente');
+	        				return $this->render('/recibo/pago/individual/error-pago', [
+	        													'errorMensaje' => $errorMensaje,
+	        						]);
 	        			}
 	        		}
 
+	        	} elseif ( isset($postData['btn-quit']) ) {
+	        		if ( $postData['btn-quit'] == 9 ) {
+	        			$this->redirect(['quit']);
+	        		}
 	        	}
 
 
@@ -591,7 +603,12 @@
 
 
 
-        /***/
+        /**
+         * Metodo que ejecuta la generacion de las pre-referencias bancarias, si no se detecta ningún error
+         * y las referencia se ejecutan, se devolvera true, de lo contario false.
+         * @param string $cuentaRecaudadora numero de cuenta (cuenta recaudadora seleccionada por el usuario)
+         * @return boolean.
+         */
         public function actionVerificarReferenciaBancaria($cuentaRecaudadora)
         {
         	$recibo = isset($_SESSION['recibo']) ?  $_SESSION['recibo'] : 0;
@@ -610,6 +627,48 @@
         	return false;
         }
 
+
+
+
+        /**
+         * Metodo que permite el seteo de los atributos:
+         * - codigo-banco
+         * - cuenta-deposito.
+         * en la entidad temporal donde se guarda los detalles de las formas de
+         * pagos del recibo.
+         * @param integer $idBanco identificador del banco en la entidad "bancos"
+         * @param string $cuentaRecaudadora numero de la cuenta receptora del pago.
+         * @return boolean.
+         */
+        private function actionSetearBancoCuentaReceptoraEnDetallePago($idBanco, $cuentaRecaudadora)
+        {
+        	$recibo = isset($_SESSION['recibo']) ? $_SESSION['recibo'] : 0;
+        	$result = false;
+        	if ( $recibo > 0 ) {
+        		self::setConexion();
+        		$this->_conn->open();
+        		$this->_transaccion = $this->_conn->beginTransaction();
+
+        		$tabla = DepositoDetalleUsuarioForm::tableName();
+        		$arregloCondicion = [
+        			'recibo' => $recibo,
+        		];
+        		$arregloDato = [
+        			'codigo_banco' => $idBanco,
+        			'cuenta_deposito' => $cuentaRecaudadora,
+        		];
+
+        		$result = $this->_conexion->modificarRegistro($this->_conn, $tabla, $arregloDato, $arregloCondicion);
+        		if ( $result ) {
+        			$this->_transaccion->commit();
+        		} else {
+        			$this->_transaccion->rollBack();
+        		}
+        		$this->_conn->close();
+        	}
+        	return $result;
+
+        }
 
 
 
@@ -633,6 +692,9 @@
 				if ( isset($postData['btn-back']) ) {
 					if ( $postData['btn-back'] == 1 ) {
 						$this->redirect(['pre-referencia']);
+
+					} elseif ( $postData['btn-back'] == 9 ) {
+						$this->redirect(['pre-referencia']);
 					}
 				}
 
@@ -647,7 +709,17 @@
 						// Se guarda el pago.
 						$pago = New PagoReciboIndividual($recibo);
         				$result = $pago->iniciarPagoRecibo();
-die(var_dump($result));
+
+        				if ( $result ) {
+        					// mostrar pago guardado
+        					$this->redirect(['pago-guardado', 'recibo' => $recibo]);
+
+        				} elseif ( !$result ) {
+        					$errorMensaje = Yii::t('backend', 'La operación no se ejecuto satisfactoriamente');
+        					return $this->render('/recibo/pago/individual/error-pago', [
+        													'errorMensaje' => $errorMensaje,
+        						]);
+        				}
 					}
 				}
 
@@ -655,22 +727,7 @@ die(var_dump($result));
 
         		if ( (int)$postEnviado['recibo'] == (int)$recibo ) {
 
-        			// $generarRafaga = New GenerarRafagaPlanilla($recibo);
-        			// $rafaga = $generarRafaga->iniciarRafaga();
-
-        			// $serialSearch = New SerialReferenciaUsuarioSearch($recibo, $usuario);
-        			// $modelSerial = $serialSearch->findSeriales();
-
-        			// $generarReferencia = New GenerarReferenciaBancaria($recibo, $modelSerial, self::actionSetObservacionSerialManual($postEnviado['cuenta_recaudadora']));
-        			// $referencia = $generarReferencia->iniciarReferencia();
-
-        			//$generarCodigoPresupuesto = New GenerarPlanillaPresupuesto(6850);
-        			//$generarCodigoPresupuesto->iniciarPlanillaPresupuesto();
-
-
-					//$pago = New PagoReciboIndividual($recibo);
-        			//$pago->iniciarPagoRecibo();
-//die(var_dump('aaa'));
+//die(var_dump($rafaga));
 
         			$urlFormaPagos = '';
         			$bloquearFormaPago = false;
@@ -714,6 +771,80 @@ die(var_dump($result));
 															'htmlCuentaRecaudadora' => $htmlCuentaRecaudadora,
 							]);
         		}
+        	}
+        }
+
+
+
+
+        /**
+         * Metodo que renderiza una vista con la informacion del recibo.
+         * @return view
+         */
+        public function actionPagoGuardado()
+        {
+        	$recibo = isset($_SESSION['recibo']) ?  $_SESSION['recibo'] : 0;
+        	$usuario = Yii::$app->identidad->getUsuario();
+        	$request = Yii::$app->request;
+
+        	$postData = $request->post();
+        	if ( isset($postData['btn-pagar-otro']) ) {
+        		if ( $postData['btn-pagar-otro'] == 9 ) {
+        			$this->redirect(['index']);
+        		}
+        	} elseif ( isset($postData['btn-quit']) ) {
+        		if ($postData['btn-quit'] == 1 ) {
+        			$this->redirect(['quit']);
+        		}
+        	}
+
+        	if ( $recibo > 0 ) {
+        		$varSession = self::actionGetListaSessions();
+				self::actionAnularSession($varSession);
+				self::actionInicializarTemporal($recibo);
+
+        		$postGet = $request->get();
+        		if ( (int)$recibo == (int)$postGet['recibo'] ) {
+
+        			$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
+
+					// Arreglo de los provider del recibo y el de las planillas.
+					$dataProviders = $pagoReciboSearch->getDataProviders();
+
+					$totales = $pagoReciboSearch->getTotalesReciboPlanilla($dataProviders);
+
+					$htmlRecibo = $this->renderPartial('/recibo/pago/individual/datos-recibo',[
+															'dataProviderRecibo' => $dataProviders[0],
+															'dataProviderReciboPlanilla' => $dataProviders[1],
+															'totales' => $totales,
+
+										]);
+
+					// $dataProvider = $pagoReciboSearch->getDataProviderRegistroTemp($usuario);
+     //    			$montoAgregado = $pagoReciboSearch->getTotalFormaPagoAgregado($usuario);
+
+     //    			$htmlFormaPago = $this->renderPartial('/recibo/pago/individual/resumen-forma-pago', [
+			  //     								'montoAgregado' => $montoAgregado,
+			  //     								'dataProvider' => $dataProvider,
+			  //     						]);
+
+
+     //    			$datosBanco = $_SESSION['datosBanco'];
+     //    			$htmlCuentaRecaudadora = $this->renderPartial('/recibo/pago/individual/resumen-cuenta-recaudadora',[
+     //    													'datosBanco' => $datosBanco,
+     //    					]);
+
+
+					$caption = Yii::t('backend', 'Resumen de pago guardado. Recibo Nro.') . $recibo ;
+					return $this->render('/recibo/pago/individual/resumen-pago-efectuado-form',[
+															'caption' => $caption,
+															'htmlRecibo' => $htmlRecibo,
+															'htmlFormaPago' => null,
+															'htmlCuentaRecaudadora' => null,
+							]);
+        		}
+        	} else {
+        		$this->redirect(['index']);
         	}
         }
 
@@ -1309,9 +1440,6 @@ die(var_dump($result));
         	if ( isset($_SESSION['recibo']) ) {
         		$recibo = $_SESSION['recibo'];
         		$htmlFormaPago = null;
-
-				// $model = New DepositoDetalleUsuarioForm();
-				// $formName = $model->formName();
 
 				// Se define el scenario para la validacion.
     			self::defineScenario($forma, $model);
@@ -2001,25 +2129,6 @@ die(var_dump($result));
 					if ( $modelSerial->validate() ) {
 						// Se guarda el detalle del deposito.
 
-						// self::setConexion();
-						// $this->_conn->open();
-						// $this->_transaccion = $this->_conn->beginTransaction();
-
-						// $result = self::actionBeginAgregarDetalleDeposito($modelSerial, $postData);
-						// if ( $result ) {
-						// 	// Se actualiza el maestro del vaucher.
-						// 	$result = self::actionActualizarMontoDeposito($modelSerial, 'sumar');
-						// 	if ( $result ) {
-						// 		$this->_transaccion->commit();
-						// 	} else {
-						// 		$this->_transaccion->rollBack();
-						// 	}
-
-						// } else {
-						// 	$this->_transaccion->rollBack();
-						// }
-						// $this->_conn->close();
-
 					}
 				}
         	}
@@ -2101,6 +2210,7 @@ die(var_dump($result));
 		 */
 		public function actionQuit()
 		{
+			self::actionInicializarTemporal();
 			$varSession = self::actionGetListaSessions();
 			self::actionAnularSession($varSession);
 			return $this->render('/menu/menuvertical2');
@@ -2166,6 +2276,9 @@ die(var_dump($result));
 							'postData',
 							'recibo',
 							'begin',
+							'postEnviado',
+							'datosRecibo',
+							'datosBanco',
 					];
 
 		}
