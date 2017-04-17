@@ -58,8 +58,9 @@
 	use common\models\planilla\Pago;
 	use common\models\planilla\PagoDetalle;
 	use common\models\planilla\PlanillaSearch;
-	use common\models\rafaga\GenerarRafagaPlanilla;						// planilla aporte.
+	//use common\models\rafaga\GenerarRafagaPlanilla;						// planilla aporte.
 	use  backend\models\recibo\prereferencia\PreReferenciaPlanillaSearch;
+	 use backend\models\recibo\planillaaporte\PlanillaAporteSearch;
 	use common\conexion\ConexionController;
 	use yii\db\Exception;
 	use yii\helpers\ArrayHelper;
@@ -170,14 +171,22 @@
 				$this->_modelDepositoDetalle = self::definirDepositoDetalle();
 			}
 
-			return self::iniciarPago();
+			if ( self::iniciarPago() ) {
+				$result = self::generarRafagaPlanilla();
+				return true;
+			} else {
+				return false;
+			}
 		}
 
 
 
 
 
-		/***/
+		/**
+		 * Metodo que inicia los proceso individuales.
+		 * @return [type] [description]
+		 */
 		private function iniciarPago()
 		{
 			$result = false;
@@ -241,18 +250,25 @@
 
 		/**
 		 * Metodo que invoca al generardor de la rafag de las planillas.
-		 * @param integer $linea identificador generado de la entidad "depositos-detalle"
-		 * una vez que se inserta un registro en dicha entidad. El mismo sirve para link
-		 * entre las entidases "depositos-detalle" y "vauches-detalles" para aquellas
-		 * formas de pago que tiene por valor el id-forma = 2 (vauches bancarios o depositos).
-		 * @return array
+		 * @return boolean.
 		 */
-		private function generarRafaga($linea)
+		private function generarRafagaPlanilla()
 		{
-			$generar = New GenerarRafagaPlanilla($this->_recibo);
-			$rafaga = $generar->iniciarRafaga();
-			self::setError($generar->getError());
-			return $rafaga;
+			self::setConexion();
+			$this->_conn->open();
+			$this->_transaccion = $this->_conn->beginTransaction();
+
+			$aporteSearch = New PlanillaAporteSearch($this->_recibo, $this->_conexion, $this->_conn);
+			$result = $aporteSearch->iniciarRafagaPlanilla();
+			self::setError($aporteSearch->getError());
+
+			if ( $result ) {
+				$this->_transaccion->commit();
+			} else {
+				$this->_transaccion->rollBack();
+			}
+			$this->_conn->close();
+			return $result;
 		}
 
 
