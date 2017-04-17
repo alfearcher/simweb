@@ -223,6 +223,9 @@
 		{
 			$this->_depositoPlanilla = DepositoPlanilla::find()->where('recibo =:recibo',
 																			[':recibo' => $this->_recibo])
+															   ->orderBy([
+															   		'planilla' => SORT_ASC,
+															   	])
 															   ->asArray()
 															   ->all();
 		}
@@ -263,7 +266,7 @@
 							self::cicloSerialPorPlanillla($itemPlanilla, false);
 
 						} elseif ( count($this->_depositoPlanilla) > 1 ) {
-							self::cicloSerialPorPlanillla($itemPlanilla, true);
+							self::cicloSerialPorPlanillla($itemPlanilla, false);
 
 						}
 					}
