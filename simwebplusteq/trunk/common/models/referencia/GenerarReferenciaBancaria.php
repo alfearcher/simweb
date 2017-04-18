@@ -233,7 +233,7 @@
 
 
 		/**
-		 * Metodo que llama a los metos que ejecutan las relaciones entre el serial y la planuilla.
+		 * Metodo que llama a los metos que ejecutan las relaciones entre el serial y la planilla.
 		 * @return
 		 */
 		private function armarReferencias()
@@ -266,7 +266,7 @@
 							self::cicloSerialPorPlanillla($itemPlanilla, false);
 
 						} elseif ( count($this->_depositoPlanilla) > 1 ) {
-							self::cicloSerialPorPlanillla($itemPlanilla, false);
+							self::cicloSerialPorPlanillla($itemPlanilla, true);
 
 						}
 					}
