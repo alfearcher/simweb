@@ -727,8 +727,6 @@
 
         		if ( (int)$postEnviado['recibo'] == (int)$recibo ) {
 
-//die(var_dump($rafaga));
-
         			$urlFormaPagos = '';
         			$bloquearFormaPago = false;
         			// Recibo y las planilas
@@ -929,7 +927,7 @@
         			// Se busca el numero de deposito en los seriles existente para no repetirlo.
         			$resultado = $modelSerial->find()->where('serial =:serial',
         														[':serial' => $register['deposito']])
-        										  ->exists();
+        										     ->exists();
         			if ( !$resultado ) {
 
         				$modelSerial->recibo = $recibo;
@@ -1276,8 +1274,6 @@
         				$this->_transaccion->rollBack();
         			}
 					$this->_conn->close();
-
-		      		//$result = self::actionSuprimir($arregloCondicion);
         		}
 
 		      	$this->redirect(['registrar-formas-pago']);
