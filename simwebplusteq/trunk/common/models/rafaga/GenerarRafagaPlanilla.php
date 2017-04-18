@@ -291,17 +291,19 @@
 			$this->_monto_restante = 0;
 			if ( self::existeMontoPorAsignar() ) {
 				if ( count($this->_depositoDetalle) > 0 ) {
-					foreach ( $this->_depositoDetalle as $detalle ) {
+					foreach ( $this->_depositoDetalle as $i => $detalle ) {
 						if ( $detalle['monto'] > 0 ) {
 							if ( $detalle['monto'] >= $planilla['monto'] ) {
 								$montoAporte = $planilla['monto'];
 								$detalle['monto'] = $detalle['monto'] - $montoAporte;
 								$planilla['monto'] = 0;
+								$this->_depositoDetalle[$i]['monto'] = $detalle['monto'];
 
 							} elseif ( $planilla['monto'] > $detalle['monto'] ) {
 								$montoAporte = $detalle['monto'];
 								$planilla['monto'] = $planilla['monto'] - $detalle['monto'];
 								$detalle['monto'] = 0;
+								$this->_depositoDetalle[$i]['monto'] = $detalle['monto'];
 							}
 
 							$this->_monto_restante = $planilla['monto'];
