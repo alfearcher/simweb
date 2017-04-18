@@ -270,7 +270,7 @@
 								<h4><strong>En Bs.</strong></h4>
 							</div>
 							<div class="col-sm-4" style="width:20%;padding:0px;">
-								 <?= Html::textInput('monto-en-moneda', Yii::$app->formatter->asDecimal($montoEnMoneda, 2),
+								 <?= Html::textInput('monto-en-moneda', Yii::$app->formatter->asDecimal($montoEnMoneda, 4),
 																[
 																	'id' => 'id-monto-en-moneda',
 																	'class' => 'form-control',
@@ -302,7 +302,7 @@
 																								'id' => 'id-multiplicar-por',
 																								'class' => 'form-control',
 																								'style' => 'width: 100%;
-																								            font-size: 160%;
+																								            font-size: 140%;
 																								            font-weight:bold;',
 																								'placeholder' => '0.00',
 																							],
