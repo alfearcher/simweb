@@ -299,7 +299,7 @@
 				$monto = $tasa['monto'] * self::actionUnidadTributaria($tasa['ano_impositivo']);
 
 			} elseif ( $tasa['tipoRango']['tipo_rango'] == 2 ) {
-				$monto = round($tasa['monto'] / 100, 2);
+				$monto = round($tasa['monto'] / 100, 4);
 
 			} else {
 				$monto = 1;
