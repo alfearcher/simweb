@@ -234,6 +234,28 @@
 
 	        return;
 	    }
+
+
+
+	    /**
+	     * Metodo que arma una lista para un combo. utilizando los identificadores
+	     * de los registros.
+	     * @param array $arrayId arreglo de identificadores de la entidad (id-banco)
+	     * @return array (ArrayHelper::map)
+	     */
+	    public function getListaBancoById($arrayId)
+	    {
+	    	if ( is_array($arrayId) ) {
+	    		$registers = Banco::find()->where('status =:status',
+	    												[':status' => 1])
+	    							   	  ->andWhere(['IN', 'id_banco', $arrayId])
+	    							      ->all();
+	    		if ( count($registers) > 0 ) {
+					return ArrayHelper::map($registers, 'id_banco', 'nombre');
+				}
+	    	}
+	    	return null;
+	    }
 	}
 
 ?>
