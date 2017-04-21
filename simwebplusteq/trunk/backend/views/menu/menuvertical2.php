@@ -322,17 +322,12 @@
         		// 				['label' => 'Procesar Pagos en Lote', 'url' => '#'],
         		// 				['label' => 'Registros TXT', 'url' => '#'],
 
-        		// 				['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Deudas',
+        				['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Archivo txt',
+    					   	'items' => [
+    					   		['label' => 'Procesar Pago', 'url' => ['/recibo/pago/lote/pago-recibo-lote/index']],
 
-    					 //   		'items' => [
-    					 //   				['label' => 'Verificar Deudas', 'url' => ['/deudas/deudascontribuyente/deudas-contribuyente/verificar-deudas-contribuyente']],
-
-
-
-
-
-		        // 					   		]
-		        // 					   	],
+		        			]
+		        		],
 
 
 	        	// 				['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Pagos',
