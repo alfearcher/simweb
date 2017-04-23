@@ -78,6 +78,7 @@
 
     use backend\models\recibo\pago\lote\BusquedaArchivoTxtForm;
     use backend\models\recibo\pago\lote\ListaArchivoTxt;
+    use backend\models\recibo\pago\lote\MostrarArchivoTxt;
 
 	session_start();		// Iniciando session
 
@@ -157,7 +158,7 @@
                         $a->crearListaArchivo();
                         $provider = $a->getDataProvider();
 
-                        $subCaption = Yii::t('backend', 'Listado de Archivo de pagos.');
+                        $subCaption = Yii::t('backend', 'Listado de Archivos de pagos.');
                         return $this->render('/recibo/pago/lote/lista-archivo-txt',[
                                                     'dataProvider' => $provider,
                                                     'caption' => $caption,
@@ -200,7 +201,7 @@
 
             $postData = $request->post();
             $postGet = $request->get();
-die(print_r($postData));
+
         }
 
 
@@ -220,6 +221,36 @@ die(print_r($postData));
 
             $postData = $request->post();
             $postGet = $request->get();
+
+            if ( isset($postData['data-file']) ) {
+                if ( isset($postData['data-path']) ) {
+                    $archivo = $postData['data-file'];
+                    $ruta = $postData['data-path'];
+
+                    $mostrar = New MostrarArchivoTxt($ruta, $archivo);
+                    $mostrar->iniciarMostrarArchivo();
+                    $dataProvider = $mostrar->getDataProvider();
+
+                    $models = $dataProvider->getModels();
+                    $montoTotal = $mostrar->calcularTotalByRenglon($models, 'monto_total');
+                    $totalRegistro = $dataProvider->getTotalCount();
+
+                    $this->layout = 'layoutbase';
+                    return $this->render('/recibo/pago/lote/mostrar-archivo-txt',[
+                                                    'dataProvider' => $dataProvider,
+                                                    'montoTotal' => $montoTotal,
+                                                    'totalRegistro' => $totalRegistro,
+                        ]);
+
+                } else {
+                    // No se determino el directorio del archivo
+
+                }
+
+            } else {
+                // No se determino el nombre del archivo.
+
+            }
 
 
         }
