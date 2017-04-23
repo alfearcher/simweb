@@ -109,7 +109,7 @@
 	    public function getListaIdBancoTxt()
 	    {
 	    	// identificadores de los bancos que seran mostrados en el combo del formulario
-	    	// de consulta para. Estos identificadores corresponden a los bancos que envian
+	    	// de consulta. Estos identificadores corresponden a los bancos que envian
 	    	// los archivos txt de pagos.
 	    	return $listaIdBanco = [12, 14];
 	    }
