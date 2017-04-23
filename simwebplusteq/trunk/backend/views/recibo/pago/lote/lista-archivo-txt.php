@@ -41,8 +41,7 @@
 	use yii\helpers\ArrayHelper;
 	use yii\widgets\ActiveForm;
 	use yii\web\View;
-	use yii\widgets\DetailView;
-	use yii\widgets\MaskedInput;
+
 
 ?>
 
@@ -52,7 +51,7 @@
  		$form = ActiveForm::begin([
  			'id' => 'id-lista-archivo',
  			'method' => 'post',
- 			'action' => ['buscar-archivo-txt'],
+ 			'action' => ['mostrar-archivo-txt'],
  			'enableClientValidation' => true,
  			'enableAjaxValidation' => false,
  			'enableClientScript' => false,
