@@ -148,7 +148,7 @@
 
 
 		/**
-		 * Metodo para obtener el data provider
+		 * Metodo para obtener el data provider del contenido del archivo txt
 		 * @return ArrayDataProvider.
 		 */
 		public function getDataProvider()
@@ -195,7 +195,10 @@
 		{
 
 			if ( is_dir(self::getRuta()) ) {
+
+				// Ruta y nonmbre del archivo
 				$ruta = self::getRuta() . self::getNombre();
+
 				$fp = fopen($ruta, "r");
 				$ct = 0;
 				while(!feof($fp)) {
@@ -236,6 +239,7 @@
 			// }
 			//
 			$items = explode(';', $lineaPago);
+
 			foreach ( $items as $key => $value ) {
 				$pago[self::campos()[$key]] = $value;
 			}

@@ -231,83 +231,83 @@
 
 
 		/***/
-		public function lecturaArchivo()
-		{
+		// public function lecturaArchivo()
+		// {
 
-			if ( is_dir(self::getRuta()) ) {
-				$ruta = self::getRuta() . self::getNombre() . '.txt';
-				$fp = fopen($ruta, "r");
-				$ct = 0;
-				while(!feof($fp)) {
-					$linea = fgets($fp);
-					if ( $ct > 0 ) {
-						if ( $linea !== null ) {
-							//echo $linea . "<br />";
-							self::armarItemPago($linea);
-						}
-					}
-					$ct++;
-				}
-				fclose($fp);
-			}
-		}
-
-
-
-
-
-		/***/
-		private function armarItemPago($itemPago)
-		{
-			// se crea un arreglo con la estructura
-			// {
-			// 		campo1 => valor1,
-			// 		campo2 => valor2,
-			// 		.
-			// 		.
-			// 		campoN => valorN
-			// }
-			//
-			$items = explode(';', $itemPago);
-			foreach ( $items as $key => $value ) {
-				$pago[self::campos()[$key]] = $value;
-			}
-			self::addItem($pago);
-		}
+		// 	if ( is_dir(self::getRuta()) ) {
+		// 		$ruta = self::getRuta() . self::getNombre() . '.txt';
+		// 		$fp = fopen($ruta, "r");
+		// 		$ct = 0;
+		// 		while(!feof($fp)) {
+		// 			$linea = fgets($fp);
+		// 			if ( $ct > 0 ) {
+		// 				if ( $linea !== null ) {
+		// 					//echo $linea . "<br />";
+		// 					self::armarItemPago($linea);
+		// 				}
+		// 			}
+		// 			$ct++;
+		// 		}
+		// 		fclose($fp);
+		// 	}
+		// }
 
 
 
 
-		/***/
-		private function addItem($itemPago)
-		{
-			$this->_arreglo_pago[] = $itemPago;
-		}
+
+		// /***/
+		// private function armarItemPago($itemPago)
+		// {
+		// 	// se crea un arreglo con la estructura
+		// 	// {
+		// 	// 		campo1 => valor1,
+		// 	// 		campo2 => valor2,
+		// 	// 		.
+		// 	// 		.
+		// 	// 		campoN => valorN
+		// 	// }
+		// 	//
+		// 	$items = explode(';', $itemPago);
+		// 	foreach ( $items as $key => $value ) {
+		// 		$pago[self::campos()[$key]] = $value;
+		// 	}
+		// 	self::addItem($pago);
+		// }
 
 
 
-		/***/
-		private function campos()
-		{
-			return [
-				0 => 'recibo',
-				1 => 'monto_recibo',
-				2 => 'fecha_pago',
-				3 => 'monto_efectivo',
-				4 => 'monto_cheque',
-				5 => 'cuenta_cheque',
-				6 => 'nro_cheque',
-				7 => 'fecha_cheque',
-				8 => 'monto_tdd',
-				9 => 'nro_tdd',
-				10 => 'monto_tdc',
-				11 => 'nro_tdc',
-				12 => 'monto_transferencia',
-				13 => 'nro_transaccion',
-				14 => 'monto_total',
-				15 => 'nro_cuenta_recaudadora'
-			];
-		}
+
+		// /***/
+		// private function addItem($itemPago)
+		// {
+		// 	$this->_arreglo_pago[] = $itemPago;
+		// }
+
+
+
+		// /***/
+		// private function campos()
+		// {
+		// 	return [
+		// 		0 => 'recibo',
+		// 		1 => 'monto_recibo',
+		// 		2 => 'fecha_pago',
+		// 		3 => 'monto_efectivo',
+		// 		4 => 'monto_cheque',
+		// 		5 => 'cuenta_cheque',
+		// 		6 => 'nro_cheque',
+		// 		7 => 'fecha_cheque',
+		// 		8 => 'monto_tdd',
+		// 		9 => 'nro_tdd',
+		// 		10 => 'monto_tdc',
+		// 		11 => 'nro_tdc',
+		// 		12 => 'monto_transferencia',
+		// 		13 => 'nro_transaccion',
+		// 		14 => 'monto_total',
+		// 		15 => 'nro_cuenta_recaudadora'
+		// 	];
+		// }
 
 	}
 
