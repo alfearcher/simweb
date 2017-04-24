@@ -53,7 +53,6 @@
 
  ?>
 
-<div id="progressbar"><div class="progress-label">Loading...</div></div>
 
 <?php
 
@@ -104,6 +103,33 @@
 		</div>
 	</div>
 
+<div class="col-sm-2" style="margin-left: 40px;">
+	<div class="form-group">
+		<?= Html::a(Yii::t('backend', 'Back'), Url::to(['mostrar-lista-archivo']),
+											  [
+												'id' => 'btn-back',
+												'class' => 'btn btn-danger',
+												'value' => 1,
+												'style' => 'width: 100%',
+												'name' => 'btn-back',
+											  ])
+		?>
+	</div>
+</div>
+
+<div class="col-sm-2" style="margin-left: 20px;">
+	<div class="form-group">
+		<?= Html::a(Yii::t('backend', 'Quit'), Url::to(['quit']),
+											  [
+												'id' => 'btn-quit',
+												'class' => 'btn btn-danger',
+												'value' => 1,
+												'style' => 'width: 100%',
+												'name' => 'btn-quit',
+											  ])
+		?>
+	</div>
+</div>
 
  <div class="row" style="width:98%;margin-left: 25px;">
 	<div class="lista-pago">
@@ -119,6 +145,19 @@
 	    			],
 	    		'summary' => '',
 	    		'columns' => [
+	    			// [
+        //                 'class' => 'yii\grid\CheckboxColumn',
+        //                 'name' => 'chkRecibo',
+        //                 'multiple' => true,
+        //                 'checkboxOptions' => function ($model, $key, $index, $column) {
+        //                 	if ( $model['bloquear'] == 1 ) {
+        //         				return [
+        //         					'disabled' => 'disabled',
+        //         				];
+        //         			}
+        //                 }
+        //             ],
+
 	    			['class' => 'yii\grid\SerialColumn'],
 
 	                [
@@ -325,3 +364,47 @@
 	</div>
 </div>
 <?php ActiveForm::end(); ?>
+
+<div class="col-sm-2" style="margin-left: 40px;">
+	<div class="form-group">
+		<?= Html::a(Yii::t('backend', 'Solo Analizar Archivo'), Url::to(['analizar-archivo']),
+											  [
+												'id' => 'btn-analize-file',
+												'class' => 'btn btn-primary',
+												'value' => 1,
+												'style' => 'width: 100%',
+												'name' => 'btn-analize-file',
+											  ])
+		?>
+	</div>
+</div>
+
+
+
+<div class="col-sm-2" style="margin-left: 40px;">
+	<div class="form-group">
+		<?= Html::a(Yii::t('backend', 'Back'), Url::to(['mostrar-lista-archivo']),
+											  [
+												'id' => 'btn-back',
+												'class' => 'btn btn-danger',
+												'value' => 1,
+												'style' => 'width: 100%',
+												'name' => 'btn-back',
+											  ])
+		?>
+	</div>
+</div>
+
+<div class="col-sm-2" style="margin-left: 20px;">
+	<div class="form-group">
+		<?= Html::a(Yii::t('backend', 'Quit'), Url::to(['quit']),
+											  [
+												'id' => 'btn-quit',
+												'class' => 'btn btn-danger',
+												'value' => 1,
+												'style' => 'width: 100%',
+												'name' => 'btn-quit',
+											  ])
+		?>
+	</div>
+</div>

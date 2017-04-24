@@ -58,6 +58,9 @@
  		]);
  	?>
 
+	<?=$form->field($model, 'id_banco')->hiddenInput(['value' => $model->id_banco])->label(false);?>
+	<?=$form->field($model, 'fecha_pago')->hiddenInput(['value' => $model->fecha_pago])->label(false);?>
+
 	<meta http-equiv="refresh">
     <div class="panel panel-primary"  style="width: 100%;">
         <div class="panel-heading">
@@ -121,6 +124,20 @@
 
 					<div class="row" style="margin-top: 30px;">
 						<div class="col-sm-2" style="margin-left: 40px;">
+							<div class="form-group">
+								<?= Html::submitButton(Yii::t('backend', 'Back'),
+																  [
+																	'id' => 'btn-back',
+																	'class' => 'btn btn-danger',
+																	'value' => 1,
+																	'style' => 'width: 100%',
+																	'name' => 'btn-back',
+																  ])
+								?>
+							</div>
+						</div>
+
+						<div class="col-sm-2" style="margin-left: 20px;">
 							<div class="form-group">
 								<?= Html::submitButton(Yii::t('backend', 'Quit'),
 																  [
