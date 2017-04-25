@@ -21,13 +21,13 @@
  */
 
  /**
- *  @file listado-propaganda.php
+ *  @file listado-solicitud-licencia.php
  *
  *  @author Jose Rafael Perez Teran
  *
  *  @date 26-01-2017
  *
- *  @view listado-propaganda.php
+ *  @view listado-solicitud-licencia.php
  *
  *
  *  @property
@@ -86,7 +86,7 @@
         		<div class="col-sm-12">
         			<div class="row">
         				<div class="list-group">
-        					<strong><h3 class="list-group-item-heading">Indicaciones:</h3></strong>
+        					<strong><h3 class="list-group-item-heading"><?=Yii::t('backend', 'Indicaciones');?></h3></strong>
         					<p class="list-group-item-text">
         						<?= Html::tag('li', Yii::t('backend', 'El listado corresponde a las solicitudes de EMISION DE LICENCIAS (Nuevas y/o Renovadas).')); ?>
         						<?= Html::tag('li', Yii::t('backend', 'La filas en color rojo indican que la solicitud esta bloqueada por no cumplir
@@ -113,10 +113,11 @@
 								},
 								'columns' => [
 									//['class' => 'yii\grid\SerialColumn'],
+
 									[
 				                        'class' => 'yii\grid\CheckboxColumn',
 				                        'name' => 'chkNroSolicitud',
-				                        'multiple' => true,
+				                        'multiple' => $soloLectura ? false : true,
 				                        'checkboxOptions' => function ($model, $key, $index, $column) {
 				                        	if ( $model['bloquear'] == 1 ) {
 				                				return [
@@ -125,6 +126,7 @@
 				                			}
 				                        }
 				                    ],
+
 					                [
 					                	'contentOptions' => [
 				                        	'style' => 'font-size: 90%;',
@@ -252,6 +254,12 @@
 							]);?>
 		        	</div>
 
+					<?php
+						$disabled = false;
+						if ( $soloLectura ) {
+							$disabled = true;
+						}
+					 ?>
 					<div class="row">
 						<div class="form-group">
 							<div class="col-sm-3" style="width: 30%;margin-left: 40px;">
@@ -260,7 +268,9 @@
 																		'class' => 'btn btn-success',
 																		'name' => 'btn-aprobar',
 																		'value' => 2,
-																		'style' => 'width: 100%;'
+																		'style' => 'width: 100%;',
+																		'disabled' => $disabled,
+
 									])?>
 							</div>
 
