@@ -51,7 +51,7 @@
  		$form = ActiveForm::begin([
  			'id' => 'id-lista-archivo',
  			'method' => 'post',
- 			'action' => ['mostrar-archivo-txt'],
+ 			//'action' => ['mostrar-archivo-txt'],
  			'enableClientValidation' => true,
  			'enableAjaxValidation' => false,
  			'enableClientScript' => false,

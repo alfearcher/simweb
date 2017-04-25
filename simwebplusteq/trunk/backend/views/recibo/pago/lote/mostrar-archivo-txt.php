@@ -59,13 +59,18 @@
 	$form = ActiveForm::begin([
 		'id' => 'id-lista-archivo',
 		'method' => 'post',
-		'action' => ['mostrar-archivo-txt'],
+		//'action' => ['mostrar-archivo-txt'],
 		'enableClientValidation' => true,
 		'enableAjaxValidation' => false,
 		'enableClientScript' => false,
 	]);
  ?>
 
+<?=Html::hiddenInput('data-path', $ruta);?>
+<?=Html::hiddenInput('data-file', $archivo);?>
+
+<?=$form->field($model, 'id_banco')->hiddenInput(['value' => $model->id_banco])->label(false);?>
+<?=$form->field($model, 'fecha_pago')->hiddenInput(['value' => $model->fecha_pago])->label(false);?>
 
 <div class="row" style="width:100%;padding: 0px;margin: 0px;">
 	<div class="col-sm-3" style="width: 20%;padding: 0px;margin: 0px;padding-left: 100px;padding-top:10px;">
@@ -105,7 +110,21 @@
 
 <div class="col-sm-2" style="margin-left: 40px;">
 	<div class="form-group">
-		<?= Html::a(Yii::t('backend', 'Back'), Url::to(['mostrar-lista-archivo']),
+		<?= Html::submitButton(Yii::t('backend', 'Analizar Archivo'),
+											  [
+												'id' => 'btn-analize-file',
+												'class' => 'btn btn-primary',
+												'value' => 1,
+												'style' => 'width: 100%',
+												'name' => 'btn-analize-file',
+											  ])
+		?>
+	</div>
+</div>
+
+<div class="col-sm-2" style="margin-left: 20px;">
+	<div class="form-group">
+		<?= Html::submitButton(Yii::t('backend', 'Back'),
 											  [
 												'id' => 'btn-back',
 												'class' => 'btn btn-danger',
@@ -119,7 +138,7 @@
 
 <div class="col-sm-2" style="margin-left: 20px;">
 	<div class="form-group">
-		<?= Html::a(Yii::t('backend', 'Quit'), Url::to(['quit']),
+		<?= Html::submitButton(Yii::t('backend', 'Quit'),
 											  [
 												'id' => 'btn-quit',
 												'class' => 'btn btn-danger',
@@ -145,18 +164,22 @@
 	    			],
 	    		'summary' => '',
 	    		'columns' => [
-	    			// [
-        //                 'class' => 'yii\grid\CheckboxColumn',
-        //                 'name' => 'chkRecibo',
-        //                 'multiple' => true,
-        //                 'checkboxOptions' => function ($model, $key, $index, $column) {
-        //                 	if ( $model['bloquear'] == 1 ) {
-        //         				return [
-        //         					'disabled' => 'disabled',
-        //         				];
-        //         			}
-        //                 }
-        //             ],
+	    			[
+                        'class' => 'yii\grid\CheckboxColumn',
+                        'name' => 'chkRecibo',
+                        'multiple' => false,
+                        'checkboxOptions' => function ($model, $key, $index, $column) {
+                        	return [
+            					'onClick' => 'javascript: return false;',
+	                            'checked' => true,
+            				];
+                        	//if ( $model['bloquear'] == 1 ) {
+                				// return [
+                				// 	'disabled' => 'disabled',
+                				// ];
+                			//}
+                        }
+                    ],
 
 	    			['class' => 'yii\grid\SerialColumn'],
 
@@ -172,7 +195,7 @@
 
 	                [
 	                    'contentOptions' => [
-	                          'style' => 'font-size: 90%;',
+	                    	'style' => 'font-size: 90%;',
 	                    ],
 	                    'label' => Yii::t('backend', 'monto recibo'),
 	                    'value' => function($data, $key) {
@@ -182,7 +205,7 @@
 
 	                [
 	                    'contentOptions' => [
-	                          'style' => 'font-size: 90%;',
+	                    	'style' => 'font-size: 90%;',
 	                    ],
 	                    'label' => Yii::t('backend', 'fecha pago'),
 	                    'value' => function($data, $key) {
@@ -363,11 +386,11 @@
 		</div>
 	</div>
 </div>
-<?php ActiveForm::end(); ?>
+
 
 <div class="col-sm-2" style="margin-left: 40px;">
 	<div class="form-group">
-		<?= Html::a(Yii::t('backend', 'Solo Analizar Archivo'), Url::to(['analizar-archivo']),
+		<?= Html::submitButton(Yii::t('backend', 'Analizar Archivo'),
 											  [
 												'id' => 'btn-analize-file',
 												'class' => 'btn btn-primary',
@@ -379,11 +402,9 @@
 	</div>
 </div>
 
-
-
-<div class="col-sm-2" style="margin-left: 40px;">
+<div class="col-sm-2" style="margin-left: 20px;">
 	<div class="form-group">
-		<?= Html::a(Yii::t('backend', 'Back'), Url::to(['mostrar-lista-archivo']),
+		<?= Html::submitButton(Yii::t('backend', 'Back'),
 											  [
 												'id' => 'btn-back',
 												'class' => 'btn btn-danger',
@@ -397,7 +418,7 @@
 
 <div class="col-sm-2" style="margin-left: 20px;">
 	<div class="form-group">
-		<?= Html::a(Yii::t('backend', 'Quit'), Url::to(['quit']),
+		<?= Html::submitButton(Yii::t('backend', 'Quit'),
 											  [
 												'id' => 'btn-quit',
 												'class' => 'btn btn-danger',
@@ -408,3 +429,5 @@
 		?>
 	</div>
 </div>
+
+<?php ActiveForm::end(); ?>
