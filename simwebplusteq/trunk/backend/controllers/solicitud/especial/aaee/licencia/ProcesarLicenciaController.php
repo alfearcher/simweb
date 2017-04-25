@@ -164,6 +164,7 @@
 				$postData = $request->post();
 
 				$model = New BusquedaSolicitudLicenciaForm();
+				$soloLectura = $model->usuarioLectura(Yii::$app->identidad->getUsuario());
 
 				if ( isset($postData['btn-quit']) ) {
 					if ( $postData['btn-quit'] == 1 ) {
@@ -207,6 +208,7 @@
   					return $this->render('/solicitud/especial/aaee/licencia/listado-solicitud-licencia',[
   																'model' => $model,
   																'dataProvider' => $dataProvider,
+  																'soloLectura' => $soloLectura,
   						]);
 
 		      	} else {
@@ -222,6 +224,7 @@
 			      					return $this->render('/solicitud/especial/aaee/licencia/listado-solicitud-licencia',[
 			      																'model' => $model,
 			      																'dataProvider' => $dataProvider,
+			      																'soloLectura' => $soloLectura,
 			      							]);
 
 			      				}
@@ -240,6 +243,7 @@
 			      					return $this->render('/solicitud/especial/aaee/licencia/listado-solicitud-licencia',[
 			      																'model' => $model,
 			      																'dataProvider' => $dataProvider,
+			      																'soloLectura' => $soloLectura,
 			      						]);
 			      				}
 			      			}
@@ -272,6 +276,8 @@
 				$this->redirect(['error-operacion', 'cod' => 702]);
 			}
 		}
+
+
 
 
 
