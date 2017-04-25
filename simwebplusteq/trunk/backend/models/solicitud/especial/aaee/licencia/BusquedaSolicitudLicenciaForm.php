@@ -156,6 +156,7 @@
 	    	return [
 	    		'adminteq',
 	    		'kperez',
+	    		'pfranco',
 	    	];
 	    }
 
@@ -177,6 +178,27 @@
 	    		}
 	    	}
 	    	return false;
+	    }
+
+
+
+	    /**
+	     * Metodo que indica que el usuario solo tendra opcion de lectura del listado.
+	     * @param string $usuario nombre del usuario.
+	     * @return boolean retorna un true si solo es un usuario de lectura, false
+	     * en caso contrario.
+	     */
+	    public function usuarioLectura($usuario)
+	    {
+	    	if ( trim($usuario) !== '' ) {
+		    	$listaUsuarioLectura = ['pfranco'];
+		    	if ( in_array($usuario, $listaUsuarioLectura) ) {
+		    		return true;
+		    	}
+		    	return false;
+		    } else {
+		    	return true;
+		    }
 	    }
 
 
