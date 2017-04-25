@@ -141,6 +141,10 @@
                     if ( $postData['btn-quit'] == 1 ) {
                         $this->redirect(['quit']);
                     }
+                } elseif ( isset($postData['btn-back']) ) {
+                    if ( $postData['btn-back'] == 1 ) {
+                        $this->redirect(['index']);
+                    }
                 }
 
 
@@ -151,19 +155,20 @@
 
                 if ( $model->load($postData) ) {
                     if ( $model->validate() ) {
-                        //$_SESSION['postEnviado'] = $postData;
-                        //$this->redirect(['mostrar-archivo-txt']);
+                        $_SESSION['postEnviado'] = $postData;
+                        $this->redirect(['mostrar-lista-archivo']);
 
-                        $a = New ListaArchivoTxt($model->id_banco, $model->fecha_pago);
-                        $a->crearListaArchivo();
-                        $provider = $a->getDataProvider();
+                        // $listaArchivo = New ListaArchivoTxt($model->id_banco, $model->fecha_pago);
+                        // $listaArchivo->crearListaArchivo();
+                        // $provider = $listaArchivo->getDataProvider();
 
-                        $subCaption = Yii::t('backend', 'Listado de Archivos de pagos.');
-                        return $this->render('/recibo/pago/lote/lista-archivo-txt',[
-                                                    'dataProvider' => $provider,
-                                                    'caption' => $caption,
-                                                    'subCaption' => $subCaption,
-                        ]);
+                        // $subCaption = Yii::t('backend', 'Listado de Archivos de pagos.');
+                        // return $this->render('/recibo/pago/lote/lista-archivo-txt',[
+                        //                             'model' => $model,
+                        //                             'dataProvider' => $provider,
+                        //                             'caption' => $caption,
+                        //                             'subCaption' => $subCaption,
+                        // ]);
                     }
                 }
 
@@ -189,7 +194,6 @@
 
 
 
-
         /**
          * [actionBuscarArchivoTxt description]
          * @return [type] [description]
@@ -207,6 +211,51 @@
 
 
 
+        /****/
+        public function actionMostrarListaArchivo()
+        {
+            $usuario = Yii::$app->identidad->getUsuario();
+            $request = Yii::$app->request;
+
+            $postGet = $request->get();
+            $postData = ( count($request->post()) > 0 ) ? $request->post() : $_SESSION['postEnviado'];
+
+            if ( isset($postData['btn-quit']) ) {
+                if ( $postData['btn-quit'] == 1 ) {
+                    $this->redirect(['quit']);
+                }
+            } elseif ( isset($postData['btn-back']) ) {
+                if ( $postData['btn-back'] == 1 ) {
+                    $this->redirect(['index']);
+                }
+            } elseif ( isset($postData['data-file']) && isset($postData['data-file']) ) {
+                // Mostrar archivo
+                self::actionAnularSession(['postEnviado']);
+                $_SESSION['postEnviado'] = $request->post();
+                $this->redirect(['mostrar-archivo-txt']);
+            }
+
+            $caption = Yii::t('backend', 'Procesar Pagos. Busqueda de Archivo de Pagos.');
+            $subCaption = Yii::t('backend', 'Listado de Archivos de pagos.');
+
+            $model = New BusquedaArchivoTxtForm();
+            $model->load($postData);
+
+            $listaArchivo = New ListaArchivoTxt($model->id_banco, $model->fecha_pago);
+            $listaArchivo->crearListaArchivo();
+            $provider = $listaArchivo->getDataProvider();
+
+            $subCaption = Yii::t('backend', 'Listado de Archivos de pagos.');
+            return $this->render('/recibo/pago/lote/lista-archivo-txt',[
+                                            'model' => $model,
+                                            'dataProvider' => $provider,
+                                            'caption' => $caption,
+                                            'subCaption' => $subCaption,
+            ]);
+        }
+
+
+
 
         /**
          * Metodo que permite mostrar una vista con los nombres de los archivos txt
@@ -218,12 +267,34 @@
         {
             $usuario = Yii::$app->identidad->getUsuario();
             $request = Yii::$app->request;
+            $postData = ( count($request->post()) > 0 ) ? $request->post() : $_SESSION['postEnviado'];
 
-            $postData = $request->post();
             $postGet = $request->get();
+
+            if ( isset($postData['btn-quit']) ) {
+                if ( $postData['btn-quit'] == 1 ) {
+                    $this->redirect(['quit']);
+                }
+            } elseif ( isset($postData['btn-back']) ) {
+                if ( $postData['btn-back'] == 1 ) {
+                    unset($_SESSION['postEnviado']['data-path']);
+                    unset($_SESSION['postEnviado']['data-file']);
+                    unset($_SESSION['postEnviado']['data-key']);
+                    $this->redirect(['mostrar-lista-archivo']);
+                }
+            } elseif ( isset($postData['btn-analize-file']) ) {
+                if ( $postData['btn-analize-file'] == 1 ) {
+                    $listaRecibo = isset($postData['chkRecibo']) ? $postData['chkRecibo'] : [];
+
+                }
+            }
 
             if ( isset($postData['data-file']) ) {
                 if ( isset($postData['data-path']) ) {
+
+                    $model = New BusquedaArchivoTxtForm();
+                    $model->load($postData);
+
                     $archivo = $postData['data-file'];
                     $ruta = $postData['data-path'];
 
@@ -240,6 +311,10 @@
                                                     'dataProvider' => $dataProvider,
                                                     'montoTotal' => $montoTotal,
                                                     'totalRegistro' => $totalRegistro,
+                                                    'ruta' => $ruta,
+                                                    'archivo' => $archivo,
+                                                    'model' => $model,
+
                         ]);
 
                 } else {
@@ -251,10 +326,16 @@
                 // No se determino el nombre del archivo.
 
             }
-
-
         }
 
+
+
+
+        /***/
+        public function actionAnalizarArchivoTxt($listaRecibo)
+        {
+
+        }
 
 
 
