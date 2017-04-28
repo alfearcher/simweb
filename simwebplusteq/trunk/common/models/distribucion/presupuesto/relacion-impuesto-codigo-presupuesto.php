@@ -1,4 +1,5 @@
 <?php
+	// Se muestra la relacion entre impuesto y codigo presupuestario.
 	return [
 		'1' => '301020700',
 		'2' => '301020500',
