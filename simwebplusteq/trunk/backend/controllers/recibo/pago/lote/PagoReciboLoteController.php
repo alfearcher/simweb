@@ -287,7 +287,14 @@
                     $listaRecibo = isset($postData['chkRecibo']) ? $postData['chkRecibo'] : [];
 
                 }
+            } elseif ( isset($postData['btn-procesar-pago']) ) {
+                if ( $postData['btn-procesar-pago'] == 3 ) {
+                    if ( count($postData) > 0 ) {
+                        self::actionProcesarPagoArchivoTxt($postData);
+                    }
+                }
             }
+
 
             if ( isset($postData['data-file']) ) {
                 if ( isset($postData['data-path']) ) {
@@ -336,6 +343,35 @@
         {
 
         }
+
+
+
+
+        /***/
+        public function actionProcesarPagoArchivoTxt($postEnviado)
+        {
+            $listaRecibo = isset($postEnviado['chkRecibo']) ? $postEnviado['chkRecibo'] : [];
+            if ( count($listaRecibo) > 0 ) {
+                $ruta = isset($postEnviado['data-path']) ? $postEnviado['data-path'] : '';
+                $archivo = isset($postEnviado['data-file']) ? $postEnviado['data-file'] : '';
+                if ( trim($ruta) !== '' && trim($archivo) !== '' ) {
+                    $mostrar = New MostrarArchivoTxt($ruta, $archivo);
+                    $mostrar->iniciarMostrarArchivo();
+
+                    // Contenido del archivo txt de pago arnado en un arreglo.
+                    $arregloPago = $mostrar->getListaPago();
+die(var_dump($arregloPago));
+
+                } else {
+                    // No es valido la ruta del archivo.
+
+                }
+            } else {
+                // No hay recibos en el archivo.
+
+            }
+        }
+
 
 
 
