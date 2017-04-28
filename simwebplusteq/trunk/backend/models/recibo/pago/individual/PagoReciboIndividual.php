@@ -226,7 +226,7 @@
 			if ( $result ) {
 				$this->_transaccion->commit();
 			} else {
-				$this->_transaccion->rollback();
+				$this->_transaccion->rollBack();
 			}
 
 			$this->_conn->close();
