@@ -108,7 +108,22 @@
 		</div>
 	</div>
 
+
 <div class="col-sm-2" style="margin-left: 40px;">
+	<div class="form-group">
+		<?= Html::submitButton(Yii::t('backend', 'Procesar Pagos'),
+											  [
+												'id' => 'btn-procesar-pago',
+												'class' => 'btn btn-success',
+												'value' => 3,
+												'style' => 'width: 100%',
+												'name' => 'btn-procesar-pago',
+											  ])
+		?>
+	</div>
+</div>
+
+<div class="col-sm-2" style="margin-left: 20px;">
 	<div class="form-group">
 		<?= Html::submitButton(Yii::t('backend', 'Analizar Archivo'),
 											  [
@@ -269,7 +284,7 @@
 	                    ],
 	                    'label' => Yii::t('backend', 'monto TDD'),
 	                    'value' => function($data, $key) {
-                    					return $data['monto_tdd'];
+                    					return $data['monto_debito'];
 	        			           },
 	                ],
 
@@ -279,7 +294,7 @@
 	                    ],
 	                    'label' => Yii::t('backend', 'numero TDD'),
 	                    'value' => function($data, $key) {
-                    					return $data['nro_tdd'];
+                    					return $data['nro_debito'];
 	        			           },
 	                ],
 
@@ -289,7 +304,7 @@
 	                    ],
 	                    'label' => Yii::t('backend', 'monto TDC'),
 	                    'value' => function($data, $key) {
-                    					return $data['monto_tdc'];
+                    					return $data['monto_credito'];
 	        			           },
 	                ],
 
@@ -299,7 +314,7 @@
 	                    ],
 	                    'label' => Yii::t('backend', 'numero TDC'),
 	                    'value' => function($data, $key) {
-                    					return $data['nro_tdc'];
+                    					return $data['nro_credito'];
 	        			           },
 	                ],
 
@@ -389,6 +404,21 @@
 
 
 <div class="col-sm-2" style="margin-left: 40px;">
+	<div class="form-group">
+		<?= Html::submitButton(Yii::t('backend', 'Procesar Pagos'),
+											  [
+												'id' => 'btn-procesar-pago',
+												'class' => 'btn btn-success',
+												'value' => 3,
+												'style' => 'width: 100%',
+												'name' => 'btn-procesar-pago',
+											  ])
+		?>
+	</div>
+</div>
+
+
+<div class="col-sm-2" style="margin-left: 20px;">
 	<div class="form-group">
 		<?= Html::submitButton(Yii::t('backend', 'Analizar Archivo'),
 											  [
