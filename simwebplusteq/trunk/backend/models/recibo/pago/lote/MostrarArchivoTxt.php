@@ -74,7 +74,17 @@
          */
         private $_fecha_pago;
 
+        /**
+         * Variable donde se guarda el contenido del archivo txt de pago, por linea.
+         * Cada linea es un elemento en dicho arreglo.
+         * @var array
+         */
         private $_arreglo_pago = [];
+
+ 		private $_errores = [];
+
+        const NUMERO_COLUMNA = 16;
+
 
 
 
@@ -102,10 +112,48 @@
 
 
 
-		/***/
+		/**
+		 * Metodo getter de _arreglo_pago, contenido del archivo txt de pago.
+		 * @return array
+		 */
 		public function getListaPago()
 		{
 			return $this->_arreglo_pago;
+		}
+
+
+
+		/**
+		 * Metodo que permite retornar la cantidad de registros existente en el
+		 * archivo txt de pago.
+		 * @return integer
+		 */
+		public function getTotalLinea()
+		{
+			return count($this->_arreglo_pago);
+		}
+
+
+
+
+		/**
+		 * Metodo setting de errores
+		 * @param string $mensaje mensaje de error.
+		 */
+		private function setError($mensaje)
+		{
+			$this->_errores[] = $mensaje;
+		}
+
+
+
+		/**
+		 * Metodo getter de los mensaje de error.
+		 * @return array
+		 */
+		public function getError()
+		{
+			return $this->_errores;
 		}
 
 
@@ -206,7 +254,7 @@
 					if ( $ct > 0 ) {
 						if ( $linea !== null ) {
 							//echo $linea . "<br />";
-							self::armarItemPago($linea);
+							self::armarItemPago($linea, $ct);
 						}
 					}
 					$ct++;
@@ -227,7 +275,7 @@
 		 * a un arreglo de pagos general ($this->_arreglo_pago).
 		 * @return
 		 */
-		private function armarItemPago($lineaPago)
+		private function armarItemPago($lineaPago, $linea = 0)
 		{
 			// se crea un arreglo con la estructura
 			// {
@@ -240,10 +288,17 @@
 			//
 			$items = explode(';', $lineaPago);
 
-			foreach ( $items as $key => $value ) {
-				$pago[self::campos()[$key]] = $value;
+			if ( (int)count($items) == self::NUMERO_COLUMNA ) {
+
+				foreach ( $items as $key => $value ) {
+					$pago[self::campos()[$key]] = $value;
+				}
+				self::addItem($pago);
+
+			} else {
+				$mensaje = Yii::t('backend', 'La linea del archivo no cumple con las especificaciones del numero de columnas. Recibo: ') . $linea;
+				self::setError($mensaje);
 			}
-			self::addItem($pago);
 		}
 
 
@@ -278,10 +333,10 @@
 				5 => 'cuenta_cheque',
 				6 => 'nro_cheque',
 				7 => 'fecha_cheque',
-				8 => 'monto_tdd',
-				9 => 'nro_tdd',
-				10 => 'monto_tdc',
-				11 => 'nro_tdc',
+				8 => 'monto_debito',
+				9 => 'nro_debito',
+				10 => 'monto_credito',
+				11 => 'nro_credito',
 				12 => 'monto_transferencia',
 				13 => 'nro_transaccion',
 				14 => 'monto_total',
