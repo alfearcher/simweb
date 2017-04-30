@@ -162,7 +162,7 @@
 		 * Metodo que retorna la ruta donde se encuentra el archivo.
 		 * @return string
 		 */
-		private function getRuta()
+		public function getRuta()
 		{
 			return $this->_ruta;
 		}
@@ -174,7 +174,7 @@
 		 * Metodo getter del nombre del archivo.
 		 * @return string
 		 */
-		private function getNombre()
+		public function getNombre()
 		{
 			return $this->_nombre_archivo;
 		}
@@ -191,6 +191,23 @@
 		public function getRutaArchivoTxt()
 		{
 			return $ruta = self::getRuta() . self::getNombre();
+		}
+
+
+
+		/**
+		 * Metodo que determina si un archivo existe.
+		 * @return boolean
+		 */
+		public function existeArchivo()
+		{
+			$existe = true;
+			if ( !file_exists(self::getRutaArchivoTxt()) ) {
+				$mensaje = Yii::t('backend', 'El archivo no existe');
+				self::setError($mensaje);
+				$existe = false;
+			}
+			return $existe;
 		}
 
 
@@ -236,13 +253,13 @@
 
 
 		/**
-		 * [lecturaArchivo description]
-		 * @return [type] [description]
+		 * Metodo que realiza la lectura del archivo
+		 * @return
 		 */
 		public function lecturaArchivo()
 		{
 
-			if ( is_dir(self::getRuta()) ) {
+			if ( self::existeArchivo() ) {
 
 				// Ruta y nonmbre del archivo
 				$ruta = self::getRuta() . self::getNombre();
