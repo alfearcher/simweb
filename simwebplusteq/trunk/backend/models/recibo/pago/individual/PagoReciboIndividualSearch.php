@@ -158,6 +158,39 @@
 
 
 
+            /**
+             * Metodo que determina si el identificador del contribuyente que se encuentra
+             * registrado en el recibo, es igual al que se encuentra en cada una de las
+             * planillas contenida en el recibo.
+             * @param array $results arreglo con los datos del recibo y las planillas
+             * (DepositoPlanilla::find()).
+             * @return array
+             */
+            public function contribuyenteCorrecto($results)
+            {
+                  $mensaje = [];
+                  $idContribuyente = (int)$results[0]['deposito']['id_contribuyente'];
+                  $recibo = $results[0]['deposito']['recibo'];
+
+                  foreach ( $results as $result ) {
+                        $planilla = $result['planilla'];
+                        $planillaSearch = New PlanillaSearch($planilla);
+                        $condicionPlanilla = $planillaSearch->condicionPlanilla();
+                        if ( count($condicionPlanilla) > 0 ) {
+                              if ( (int)$condicionPlanilla[0]['id_contribuyente'] !== $idContribuyente ) {
+                                    $id = (int)$condicionPlanilla[0]['id_contribuyente'];
+                                    $mensaje[] = Yii::t("backend", "El id de la planilla {$planilla}, ({$id}); no coincide con el del recibo {$recibo}, ({$idContribuyente})");
+                              }
+                        }
+                  }
+                  return $mensaje;
+            }
+
+
+
+
+
+
        	/**
        	 * Metodo que permite determinar si el recibo y las planillas asociadoas al mismo
        	 * estan en condicon de pendiente para ser pagados. Esta condicion es primordial
@@ -204,7 +237,7 @@
        	 */
        	public function montoCorrecto($results)
        	{
-       		$mensaje = null;
+       		$mensaje = [];
        		$montoRecibo = $results[0]['deposito']['monto'];
 
        		$suma = 0;
@@ -354,6 +387,12 @@
                               }
                         }
 
+
+                        // Validar el identificador del contribuyente entre el recibo y las planillas
+                        // contenidas en el mismo.
+                        $mensajes[] = self::contribuyenteCorrecto($results);
+
+
                         $mensajes = self::depurarMensaje($mensajes);
 
                   }
@@ -370,7 +409,7 @@
              * @param array $mensajes arreglo de mensajes
              * @return array
              */
-            private function depurarMensaje($mensajes)
+            public function depurarMensaje($mensajes)
             {
                   $mensajesDepurado = [];
 
