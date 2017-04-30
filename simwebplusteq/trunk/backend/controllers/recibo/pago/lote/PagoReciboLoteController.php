@@ -79,6 +79,7 @@
     use backend\models\recibo\pago\lote\BusquedaArchivoTxtForm;
     use backend\models\recibo\pago\lote\ListaArchivoTxt;
     use backend\models\recibo\pago\lote\MostrarArchivoTxt;
+    use backend\models\recibo\pago\lote\PagoReciboLoteSearch;
 
 	session_start();		// Iniciando session
 
@@ -357,11 +358,20 @@
                 if ( trim($ruta) !== '' && trim($archivo) !== '' ) {
                     $mostrar = New MostrarArchivoTxt($ruta, $archivo);
                     $mostrar->iniciarMostrarArchivo();
+                    if ( count($mostrar->getError()) == 0 ) {
 
-                    // Contenido del archivo txt de pago arnado en un arreglo.
-                    $arregloPago = $mostrar->getListaPago();
-die(var_dump($arregloPago));
+                         // Contenido del archivo txt de pago arnado en un arreglo.
+                        //$listaPago = $mostrar->getListaPago();
+                        $pagoReciboLoteSearch = New PagoReciboLoteSearch($mostrar);
+                        $pagoReciboLoteSearch->iniciarPagoReciboLote();
 
+                    } else {
+                        // Enviar mensaje de error, renderizar vista.
+                        return $this->render('/recibo/pago/lote/error', [
+                                                    'mensaje' => 'Error',
+                                                    'urlBack' => 'xxxx',
+                            ]);
+                    }
                 } else {
                     // No es valido la ruta del archivo.
 
@@ -383,7 +393,7 @@ die(var_dump($arregloPago));
 		 */
 		public function actionQuit()
 		{
-			self::actionInicializarTemporal();
+			//self::actionInicializarTemporal();
 			$varSession = self::actionGetListaSessions();
 			self::actionAnularSession($varSession);
 			return $this->render('/menu/menuvertical2');
