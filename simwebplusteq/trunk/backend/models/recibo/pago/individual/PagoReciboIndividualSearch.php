@@ -246,7 +246,7 @@
        		}
 
        		if ( (float)$montoRecibo !== (float)$suma ) {
-       			$mensaje = Yii::t('backend','El monto del recibo no coincide con la suma de los montos de las planillas');
+       			$mensaje[] = Yii::t('backend','El monto del recibo no coincide con la suma de los montos de las planillas');
        		}
 
        		return $mensaje;
@@ -374,7 +374,13 @@
 
                         // Se controla el monto total del recibo contra la sumatoria de los
                         // montos de las planillas (depositos-planillas).
-                        $mensajes[] = self::montoCorrecto($results);
+                        $loteMensajes = null;
+                        $loteMensajes = self::montoCorrecto($results);
+                        if ( count($loteMensajes) > 0 ) {
+                              foreach ($loteMensajes as $key => $value ) {
+                                    $mensajes[] = $value;
+                              }
+                        }
 
 
                         // Se controla que el recibo y las planillas asociadas al mismo esten en un
@@ -390,7 +396,13 @@
 
                         // Validar el identificador del contribuyente entre el recibo y las planillas
                         // contenidas en el mismo.
-                        $mensajes[] = self::contribuyenteCorrecto($results);
+                        $loteMensajes = null;
+                        $loteMensajes = self::contribuyenteCorrecto($results);
+                        if ( count($loteMensajes) > 0 ) {
+                              foreach ( $loteMensajes as $key => $value ) {
+                                    $mensajes[] = $value;
+                              }
+                        }
 
 
                         $mensajes = self::depurarMensaje($mensajes);

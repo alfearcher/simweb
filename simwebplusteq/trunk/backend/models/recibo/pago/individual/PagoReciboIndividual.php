@@ -84,12 +84,14 @@
 		private $_conn;
 		private $_conexion;
 		private $_transaccion;
-		private $_modelDepositoDetalle;
+		public $_modelDepositoDetalle;
 		private $_modelVaucheDetalleUsuario;
 
 		private $_pagoSearch;	// Instancia de la clase PagoReciboIndividualSearch().
 
 		private $_errores;
+		private $_fecha_pago;
+		private $_observacionPreReferencia;
 
 		const PAGO = 1;
 
@@ -97,10 +99,14 @@
 		/**
 		 * Metodo constructor de la clase.
 		 * @param integer $recibo numero de recibo de pago.
+		 * @param string $fechaPago fecha de pago en formato americano, yyyy-mm-dd.
+		 * @param string $observacion observacion de la pre-referncia.
 		 */
-		public function __construct($recibo)
+		public function __construct($recibo, $fechaPago, $observacion = '')
 		{
 			$this->_recibo = $recibo;
+			$this->_observacionPreReferencia = $observacion;
+			$this->_fecha_pago = date('Y-m-d', strtotime($fechaPago));
 			$this->_pagoSearch = New PagoReciboIndividualSearch($recibo);
 			$this->_modelDepositoDetalle = null;
 		}
@@ -141,7 +147,18 @@
 			if ( is_a($model, DepositoDetalle::className()) ) {
 				$this->_modelDepositoDetalle = $model;
 			} else {
-				$this->_modelDepositoDetalle = null;
+				if ( is_array($model) ) {
+					foreach ( $model as $key => $value) {
+						if ( is_a($value, DepositoDetalle::className()) ) {
+							$this->_modelDepositoDetalle[] = $value;
+						} else {
+							$this->_modelDepositoDetalle = null;
+							break;
+						}
+					}
+				} else {
+					$this->_modelDepositoDetalle = null;
+				}
 			}
 		}
 
@@ -171,9 +188,13 @@
 				$this->_modelDepositoDetalle = self::definirDepositoDetalle();
 			}
 
-			if ( self::iniciarPago() ) {
-				$result = self::generarRafagaPlanilla();
-				return true;
+			if ( $this->_modelDepositoDetalle !== null && count($this->_modelDepositoDetalle) > 0 ) {
+				if ( self::iniciarPago() ) {
+					$result = self::generarRafagaPlanilla();
+					return true;
+				} else {
+					return false;
+				}
 			} else {
 				return false;
 			}
@@ -219,7 +240,7 @@
 															  ->all();
 
 				$modelSerial = ( count($modelSerial) == 0 ) ? null : $modelSerial;
-				$referenciaSearch = New PreReferenciaPlanillaSearch($this->_recibo, $this->_conexion, $this->_conn, $modelSerial);
+				$referenciaSearch = New PreReferenciaPlanillaSearch($this->_recibo, $this->_conexion, $this->_conn, $modelSerial, $this->_observacionPreReferencia);
 				$result = $referenciaSearch->iniciarPreReferencia();
 			}
 
@@ -334,6 +355,7 @@
 		public function definirDepositoDetalle()
 		{
 			$usuario = Yii::$app->identidad->getUsuario();
+			$depositoDetalle = [];
 
 			// Se busca los registros temporales de las detalles de pago.
 			$registers = $this->_pagoSearch->findDepositoDetalleUsuarioTemp($usuario);
@@ -443,7 +465,7 @@
 
 			$arregloDato = [
 				'pago' => self::PAGO,
-				'fecha_pago' => date('Y-m-d'),
+				'fecha_pago' => $this->_fecha_pago,
 			];
 			$arregloCondicion = [
 				'id_pago' => $idPago,
