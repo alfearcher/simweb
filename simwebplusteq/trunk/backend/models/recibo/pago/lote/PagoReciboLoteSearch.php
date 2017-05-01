@@ -43,17 +43,13 @@
 	namespace backend\models\recibo\pago\lote;
 
  	use Yii;
-	//use yii\base\Model;
 	use yii\helpers\ArrayHelper;
 	use yii\data\ActiveDataProvider;
-	//use backend\models\recibo\deposito\Deposito;
-	//use backend\models\recibo\depositoplanilla\DepositoPlanilla;
 	use common\models\planilla\PlanillaSearch;
     use backend\models\recibo\depositodetalle\DepositoDetalle;
     use yii\data\ArrayDataProvider;
-    //use backend\models\utilidad\tipotarjeta\TipoTarjetaSearch;
 
-    use backend\models\recibo\pago\lote\MostrarArchivoTxt;
+    //use backend\models\recibo\pago\lote\MostrarArchivoTxt;
     use backend\models\recibo\pago\individual\PagoReciboIndividualSearch;
     use backend\models\recibo\pago\individual\PagoReciboIndividual;
     use backend\models\recibo\txt\RegistroTxtRecibo;
@@ -220,7 +216,7 @@
 
 
 		/**
-		 * Metodo que verifica si
+		 * Metodo que verifica si la ruta y el nombre de archivo no genero error.
 		 * @return boolean
 		 */
 		private function validarArchivo()
@@ -260,7 +256,7 @@
 		{
 			// item de pago efectuado en banco.
 			$recibo = (int)$itemPago['recibo'];
-//die(var_dump($itemPago));
+
 			$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
 
 			// Datos de la entidad "depositos" y "depositos-planillas".
@@ -306,7 +302,6 @@
 				$model->archivo_txt = $this->_mostarArchivo->getNombre();
 				$model->nro_control = self::getNroControl();
 
-//die(var_dump($model));
 				self::addItemRegistroTxt($model);
 			}
 		}
@@ -387,7 +382,12 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que convierte una cadena de digitos en un valor formateado, segun su tipo.
+		 * @param string $campo descripcion del campo.
+		 * @param string $valor cadena de digitos.
+		 * @return string | integer | double
+		 */
 		private function convertir($campo, $valor)
 		{
 			$dato = '';
@@ -481,8 +481,7 @@
 
 		/**
 		 * Metodo que agrega un elemento en el arreglo que reprsenta el modelo de la entidad
-		 *
-		 * @param [type] $model [description]
+		 * @param RegistroTxtRecibo $model
 		 */
 		private function addItemRegistroTxt($model)
 		{
@@ -505,7 +504,12 @@
 
 
 
-		/***/
+		/**
+		 * Metodo deonde se ejecutan os procesos de guardar registro txt y el proceso
+		 * de pago del recibo con todos los precesos asociados al mismo.
+		 * @param RegistroTxtRecibo $itemModelRegistroTxt instancia del modelo con datos.
+		 * @return boolean.
+		 */
 		private function procesarRegistroTxt($itemModelRegistroTxt)
 		{
 			self::setConexion();
@@ -523,16 +527,13 @@
 					$result = self::pagarRecibo($itemModelRegistroTxt);
 				}
 			}
-			$r = 'stop';
+
 			if ( $result ) {
 				$this->_transaccion->commit();
-				$r = 'success';
 			} else {
 				$this->_transaccion->rollBack();
-				$r = 'error';
 			}
 			$this->_conn->close();
-die(var_dump($r));
 		}
 
 
@@ -661,7 +662,6 @@ die(var_dump($r));
 
 				$modelDeposito[] = $model;
 			}
-//die(var_dump($modelDeposito));
 			return $modelDeposito;
 		}
 
