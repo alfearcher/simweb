@@ -61,6 +61,7 @@
 		private $_recibo;
 		private $_conn;
 		private $_conexion;
+		private $_observacion;
 
 		private $_errores;
 
@@ -72,9 +73,10 @@
 		 * @param connection $conn
 		 * @param SerialReferencia $modelSerial
 		 */
-		public function __construct($recibo, $conexion, $conn, $modelSerial = null)
+		public function __construct($recibo, $conexion, $conn, $modelSerial = null, $observacion = '')
 		{
 			$this->_recibo = $recibo;
+			$this->_observacion = $observacion;
 			$this->_conexion = $conexion;
 			$this->_conn = $conn;
 			$this->_modelSerial = $modelSerial;
@@ -164,7 +166,7 @@
 		 */
 		private function generarReferenciaBancaria()
 		{
-			$generar = New GenerarReferenciaBancaria($this->_recibo, $this->_modelSerial, '');
+			$generar = New GenerarReferenciaBancaria($this->_recibo, $this->_modelSerial, $this->_observacion);
 			$referencia = $generar->iniciarReferencia();
 			if ( count($generar->getError()) > 0 ) {
 				$referencia = [];
