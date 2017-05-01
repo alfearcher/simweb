@@ -115,7 +115,7 @@
 		 * @param $obsevacion nota que se colocarar en la referencia, basicamenet indicando
 		 * si es una referencia manual o automatica, además de indicar la cuenta recauddora.
 		 */
-		public function __construct($recibo, $modelSerial = null, $observacion)
+		public function __construct($recibo, $modelSerial = null, $observacion = '')
 		{
 			$this->_recibo = $recibo;
 			$this->_modelSerial = $modelSerial;
@@ -332,7 +332,7 @@
 				'estatus' => $datoSerial->estatus,
 				'observacion' => $datoSerial->observacion,
 				'usuario' => $datoSerial->usuario,
-				'fecha_hora' => date('Y-m-d'),
+				'fecha_hora' => date('Y-m-d H:i:s'),
 
 			];
 		}
