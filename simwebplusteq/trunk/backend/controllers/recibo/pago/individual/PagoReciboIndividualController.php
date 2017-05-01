@@ -446,8 +446,6 @@
 	        	$postGet = $request->get();
 	        	$postData = $request->post();
 
-//die(var_dump($postData));
-
 	        	$htmlSerialForm = null;		// Formulario para cargar los seriales manuales.
 
 	        	// Se determina la cantidad de vauches registrados en las formas de pago.
@@ -687,8 +685,6 @@
         		$postGet = $request->get();
         		$postData = $request->post();
 
-//die(var_dump($postGet));
-
 				if ( isset($postData['btn-back']) ) {
 					if ( $postData['btn-back'] == 1 ) {
 						$this->redirect(['pre-referencia']);
@@ -707,7 +703,7 @@
 				if ( isset($postData['btn-guardar-pago']) ) {
 					if ( $postData['btn-guardar-pago'] == 9 ) {
 						// Se guarda el pago.
-						$pago = New PagoReciboIndividual($recibo);
+						$pago = New PagoReciboIndividual($recibo, date('Y-m-d'));
         				$result = $pago->iniciarPagoRecibo();
 
         				if ( $result ) {
