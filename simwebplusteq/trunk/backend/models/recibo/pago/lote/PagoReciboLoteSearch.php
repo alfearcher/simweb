@@ -43,20 +43,21 @@
 	namespace backend\models\recibo\pago\lote;
 
  	use Yii;
-	use yii\base\Model;
+	//use yii\base\Model;
 	use yii\helpers\ArrayHelper;
 	use yii\data\ActiveDataProvider;
-	use backend\models\recibo\deposito\Deposito;
-	use backend\models\recibo\depositoplanilla\DepositoPlanilla;
+	//use backend\models\recibo\deposito\Deposito;
+	//use backend\models\recibo\depositoplanilla\DepositoPlanilla;
 	use common\models\planilla\PlanillaSearch;
     use backend\models\recibo\depositodetalle\DepositoDetalle;
     use yii\data\ArrayDataProvider;
-    use backend\models\utilidad\tipotarjeta\TipoTarjetaSearch;
+    //use backend\models\utilidad\tipotarjeta\TipoTarjetaSearch;
 
     use backend\models\recibo\pago\lote\MostrarArchivoTxt;
     use backend\models\recibo\pago\individual\PagoReciboIndividualSearch;
     use backend\models\recibo\pago\individual\PagoReciboIndividual;
     use backend\models\recibo\txt\RegistroTxtRecibo;
+    use backend\models\utilidad\banco\BancoSearch;
 
     use common\models\numerocontrol\NumeroControlSearch;
     use common\conexion\ConexionController;
@@ -145,13 +146,17 @@
 
 
 
-		/***/
+		/**
+		 * Metodo constructor de la clase.
+		 * @param MostrarArchivoTxt $mostrarArchivo instancia de la clase.
+		 */
 		public function __construct(MostrarArchivoTxt $mostrarArchivo)
 		{
 			$this->_nro_control = 0;
 			$this->_mostarArchivo = $mostrarArchivo;
 			$this->_usuario = Yii::$app->identidad->getUsuario();
 		}
+
 
 
 
@@ -168,13 +173,21 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que inicia el proceso.
+		 * @return none
+		 */
 		public function iniciarPagoReciboLote()
 		{
 			if ( self::validarArchivo() ) {
 				self::generarNumeroControlOperacion();
 				$listaPagos = self::getListaRegistroPago();
 				self::crearCicloPago($listaPagos);
+				if ( count($this->_lista_registro_txt_recibo) > 0 ) {
+					foreach ( $this->_lista_registro_txt_recibo as $key => $model ) {
+						self::procesarRegistroTxt($model);
+					}
+				}
 			}
 		}
 
@@ -184,13 +197,14 @@
 		/**
 		 * Metodo que instancia la clase que genera el numero de control que se utilizara
 		 * en la operacion de insercion de los registros existentes en el archivo txt de pagos.
-		 * @return
+		 * @return none
 		 */
 		private function generarNumeroControlOperacion()
 		{
 			$numeroControlSearch = New NumeroControlSearch();
 			$this->_nro_control = $numeroControlSearch->generarNumeroControl();
 		}
+
 
 
 		/**
@@ -204,9 +218,10 @@
 
 
 
+
 		/**
 		 * Metodo que verifica si
-		 * @return [type] [description]
+		 * @return boolean
 		 */
 		private function validarArchivo()
 		{
@@ -261,14 +276,15 @@
 				$estatus = 0;
 				$observacion = '';
 				if ( count($mensajes) > 0 ) {
-					$estatus = 1;
+					// Significa que existe un error en los datos del recibo o del txt del banco.
+					$estatus = 5;
 					$observacion = json_encode($mensajes);
 				}
 
 				$archivo = $this->_mostarArchivo->getNombre();
 
-				$listaPlanilla = ArrayHelper::map($registers, 'planilla', 'planilla');
-				$listaPlanilla = array_values($listaPlanilla);
+				$listaPlanilla = array_values(ArrayHelper::map($registers, 'planilla', 'planilla'));
+				//$listaPlanilla = array_values($listaPlanilla);
 				$listaJson = json_encode($listaPlanilla);
 
 				$model = New RegistroTxtRecibo();
@@ -276,21 +292,26 @@
 
 				foreach ( $model->attributes as $key => $value ) {
 					if ( isset($itemPago[$key]) ) {
-						$arregloDato[$key] = self::convertir($key, $itemPago[$key]);
+						$model->$key = self::convertir($key, $itemPago[$key]);
+					} else {
+						$model->$key = '0';
 					}
 				}
-				$arregloDato['id_contribuyente'] = $idContribuyente;
-				$arregloDato['planillas'] = $listaJson;
-				$arregloDato['estatus'] = 0;
-				$arregloDato['fecha_hora'] = date('Y-m-d H:i:s');
-				$arregloDato['usuario'] = $this->_usuario;
-				$arregloDato['observacion'] = $observacion;
-				$arregloDato['archivo_txt'] = $this->_mostarArchivo->getNombre();
-				$arregloDato['nro_control'] = self::getNroControl();
+				$model->id_contribuyente = $idContribuyente;
+				$model->planillas = $listaJson;
+				$model->estatus = $estatus;
+				$model->fecha_hora = date('Y-m-d H:i:s');
+				$model->usuario = $this->_usuario;
+				$model->observacion = $observacion;
+				$model->archivo_txt = $this->_mostarArchivo->getNombre();
+				$model->nro_control = self::getNroControl();
 
-				self::addItemRegistroTxt($arregloDato);
+//die(var_dump($model));
+				self::addItemRegistroTxt($model);
 			}
 		}
+
+
 
 
 
@@ -347,7 +368,7 @@
 			$montoReciboTxt = self::convertirMonto($itemPagoTxt['monto_total']);
 
 			if ( $montoReciboBD !== $montoReciboTxt ) {
-				$mensaje[] = Yii::t("backend", "Monto de recibo {$montoReciboBD}, monto en txt {$montoReciboTxt}");
+				$mensaje[] = Yii::t("backend", "Monto de recibo {$montoReciboBD}. Monto en txt {$montoReciboTxt}");
 			}
 
 			// Validacion de fecha
@@ -355,7 +376,7 @@
 			$fechaPago = self::convertirFecha($itemPagoTxt['fecha_pago']);
 
 			if ( $fechaRecibo !== $fechaPago ) {
-				$mensaje[] = Yii::t("backend", "Fecha de recibo {$fechaRecibo}, fecha de pago txt {$fechaPago}");
+				$mensaje[] = Yii::t("backend", "Fecha de recibo {$fechaRecibo}. Fecha de pago txt {$fechaPago}");
 			}
 
 
@@ -429,12 +450,17 @@
 		 */
 		private function convertirFecha($fechaString)
 		{
-			$dia = substr($fechaString, 0, 2);
-			$mes = substr($fechaString, 2, 2);
-			$año = substr($fechaString, 4, 4);
+			if ( trim($fechaString) == '00000000' || strlen(trim($fechaString)) < 8 ) {
+				return '0000-00-00';
+			} else {
+				$dia = substr($fechaString, 0, 2);
+				$mes = substr($fechaString, 2, 2);
+				$año = substr($fechaString, 4, 4);
 
-			$fecha = $año . '-' . $mes . '-' . $dia;
-			return date('Y-m-d', strtotime($fecha));
+				$fecha = $año . '-' . $mes . '-' . $dia;
+				return date('Y-m-d', strtotime($fecha));
+			}
+
 		}
 
 
@@ -453,16 +479,23 @@
 
 
 
-		/***/
-		private function addItemRegistroTxt($item)
+		/**
+		 * Metodo que agrega un elemento en el arreglo que reprsenta el modelo de la entidad
+		 *
+		 * @param [type] $model [description]
+		 */
+		private function addItemRegistroTxt($model)
 		{
-			$this->_lista_registro_txt_recibo[] = $item;
+			$this->_lista_registro_txt_recibo[] = $model;
 		}
 
 
 
 
-		/***/
+		/**
+		 * Metodo getter de los registros del archivo txt de pago.
+		 * @return array
+		 */
 		private function getListaRegistroPago()
 		{
 			return $this->_mostarArchivo->getListaPago();
@@ -472,14 +505,168 @@
 
 
 
+		/***/
+		private function procesarRegistroTxt($itemModelRegistroTxt)
+		{
+			self::setConexion();
+			$this->_transaccion = $this->_conn->beginTransaction();
+			$this->_conn->open();
+			$result = true;
+			// Si se quiere inactivar los registros coincidentes con el recibo y fecha de pago, activar
+			// la siguiente linea.
+			//$result = self::inactivarRegistro($itemModelRegistroTxt->recibo, $itemModelRegistroTxt->fecha_pago);
+
+			if ( $result ) {
+				// Guardar en la entidad "registros-txt-recibos".
+				$result = self::guardarItemTxtPago($itemModelRegistroTxt);
+				if ( $result == true && $itemModelRegistroTxt->estatus == 0 ) {
+					$result = self::pagarRecibo($itemModelRegistroTxt);
+				}
+			}
+			$r = 'stop';
+			if ( $result ) {
+				$this->_transaccion->commit();
+				$r = 'success';
+			} else {
+				$this->_transaccion->rollBack();
+				$r = 'error';
+			}
+			$this->_conn->close();
+die(var_dump($r));
+		}
+
+
+
+
+		/**
+		 * Metodo que inserta un registro en la entidad "registros-txt-recibos".
+		 * @param  RegistroTxtRecibo $itemModelRegistroTxt modelo de la entidad "registros-txt-recibos".
+		 * @return boolean.
+		 */
+		private function guardarItemTxtPago($itemModelRegistroTxt)
+		{
+			$tabla = $itemModelRegistroTxt->tableName();
+			$arreglo = $itemModelRegistroTxt->toArray();
+			return $this->_conexion->guardarRegistro($this->_conn, $tabla, $arreglo);
+		}
+
+
+
+
+		/**
+		 * Metodo que realiza el pago del recibo.
+		 * @param array $itemModelRegistroTxt item de la entidad "registros-txt-recibos". Contiene los
+		 * campos y los valores de los mismos. Modelo
+		 * @return boolean.
+		 */
+		private function pagarRecibo($itemModelRegistroTxt)
+		{
+			$result = false;
+			$modelDeposito = self::crearModeloDetalleDeposito($itemModelRegistroTxt);
+			$recibo = $itemModelRegistroTxt->recibo;
+			$observacion = "SERIAL AUTOMATICO, REGISTROS DEL ARCHIVO TXT Cuenta Recaudadora: {$itemModelRegistroTxt->nro_cuenta_recaudadora}";
+			$pagoRecibo = New PagoReciboIndividual($recibo, $itemModelRegistroTxt->fecha_pago, $observacion);
+			$pagoRecibo->setDepositoDetalle($modelDeposito);
+			return $result = $pagoRecibo->iniciarPagoRecibo();
+		}
+
+
+
 
 		/***/
-		private function guardarItemTxtPago($itemRegistroTxt)
+		private function crearModeloDetalleDeposito($itemModelRegistroTxt)
 		{
-			$model = New RegistroTxtRecibo();
-			$tabla = $model->tableName();
-			return $this->_conexion->guardarRegistro($this->_conn, $tabla, $itemRegistroTxt);
+			$recibo = (int)$itemModelRegistroTxt->recibo;
+			if ( $itemModelRegistroTxt->monto_efectivo > 0 ) {
+				$model = New DepositoDetalle();
+				$model->recibo = $recibo;
+				$model->id_forma = 3;
+				$model->deposito = 0;
+				$model->fecha = $itemModelRegistroTxt->fecha_pago;
+				$model->cuenta = '';
+				$model->cheque = '';
+				$model->monto = $itemModelRegistroTxt->monto_efectivo;
+				$model->conciliado = 0;
+				$model->estatus = 0;
+				$model->codigo_banco = self::getIdBancoByCodigoBanco($itemModelRegistroTxt->nro_cuenta_recaudadora);
+				$model->cuenta_deposito = $itemModelRegistroTxt->nro_cuenta_recaudadora;
+
+				$modelDeposito[] = $model;
+			}
+
+			if ( $itemModelRegistroTxt->monto_cheque > 0 ) {
+				$model = New DepositoDetalle();
+				$model->recibo = $recibo;
+				$model->id_forma = 1;
+				$model->deposito = 0;
+				$model->fecha = $itemModelRegistroTxt->fecha_pago;
+				$model->cuenta = $itemModelRegistroTxt->cuenta_cheque;
+				$model->cheque = $itemModelRegistroTxt->nro_cheque;
+				$model->monto = $itemModelRegistroTxt->monto_cheque;
+				$model->conciliado = 0;
+				$model->estatus = 0;
+				$model->codigo_banco = self::getIdBancoByCodigoBanco($itemModelRegistroTxt->nro_cuenta_recaudadora);
+				$model->cuenta_deposito = $itemModelRegistroTxt->nro_cuenta_recaudadora;
+
+				$modelDeposito[] = $model;
+			}
+
+			if ( $itemModelRegistroTxt->monto_debito > 0 ) {
+				$model = New DepositoDetalle();
+				$model->recibo = $recibo;
+				$model->id_forma = 4;
+				$model->deposito = 0;
+				$model->fecha = $itemModelRegistroTxt->fecha_pago;
+				$model->cuenta = $itemModelRegistroTxt->nro_debito;
+				$model->cheque = 'DEBITO';
+				$model->monto = $itemModelRegistroTxt->monto_debito;
+				$model->conciliado = 0;
+				$model->estatus = 0;
+				$model->codigo_banco = self::getIdBancoByCodigoBanco($itemModelRegistroTxt->nro_cuenta_recaudadora);
+				$model->cuenta_deposito = $itemModelRegistroTxt->nro_cuenta_recaudadora;
+
+				$modelDeposito[] = $model;
+			}
+
+			if ( $itemModelRegistroTxt->monto_credito > 0 ) {
+				$model = New DepositoDetalle();
+				$model->recibo = $recibo;
+				$model->id_forma = 4;
+				$model->deposito = 0;
+				$model->fecha = $itemModelRegistroTxt->fecha_pago;
+				$model->cuenta = $itemModelRegistroTxt->nro_credito;
+				$model->cheque = 'CREDITO';
+				$model->monto = $itemModelRegistroTxt->monto_credito;
+				$model->conciliado = 0;
+				$model->estatus = 0;
+				$model->codigo_banco = self::getIdBancoByCodigoBanco($itemModelRegistroTxt->nro_cuenta_recaudadora);
+				$model->cuenta_deposito = $itemModelRegistroTxt->nro_cuenta_recaudadora;
+
+				$modelDeposito[] = $model;
+			}
+
+			if ( $itemModelRegistroTxt->monto_transferencia > 0 ) {
+				$model = New DepositoDetalle();
+				$model->recibo = $recibo;
+				$model->id_forma = 3;
+				$model->deposito = 0;
+				$model->fecha = $itemModelRegistroTxt->fecha_pago;
+				$model->cuenta = '';
+				$model->cheque = '';
+				$model->monto = $itemModelRegistroTxt->monto_transferencia;
+				$model->conciliado = 0;
+				$model->estatus = 0;
+				$model->codigo_banco = self::getIdBancoByCodigoBanco($itemModelRegistroTxt->nro_cuenta_recaudadora);
+				$model->cuenta_deposito = $itemModelRegistroTxt->nro_cuenta_recaudadora;
+
+				$modelDeposito[] = $model;
+			}
+//die(var_dump($modelDeposito));
+			return $modelDeposito;
 		}
+
+
+
 
 
 
@@ -519,6 +706,20 @@
 
 
 
+
+		/**
+		 * Metodo que permite obtener el identificador del banco a partir del codigo de la cuenta
+		 * de banco. Codigo de 4 digitos
+		 * @param strind $nroCuentaRecaudadora numero de la cuenta recaudadora.
+		 * @return integer
+		 */
+		private function getIdBancoByCodigoBanco($nroCuentaRecaudadora)
+		{
+			$codigoBanco = substr(trim($nroCuentaRecaudadora), 0, 4);
+			$bancoSearch = New BancoSearch();
+			$registers = $bancoSearch->getBancoByCodigoCuenta($codigoBanco);
+			return isset($registers[0]['id_banco']) ? (int)$registers[0]['id_banco'] : 0;
+		}
 
 
 
