@@ -82,6 +82,21 @@
 
 
 
+
+		/***/
+		public function getBancoByCodigoCuenta($codigoBanco)
+		{
+			if ( is_array($codigoBanco) ) {
+				return $banco = Banco::find()->where(['IN', 'codigo', $codigoBanco])->asArray()->all();
+			} else {
+				return $banco = Banco::find()->where('codigo =:codigo',
+														[':codigo' => $codigoBanco])->asArray()->all();
+			}
+
+		}
+
+
+
 		/**
 		 * Metodo que permite obtener una lista de los registros de la entidad
 		 * "bancos", esta lista se puede utilizar para los combos-listas. El key
