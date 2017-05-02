@@ -151,6 +151,7 @@
 			$this->_nro_control = 0;
 			$this->_mostarArchivo = $mostrarArchivo;
 			$this->_usuario = Yii::$app->identidad->getUsuario();
+			$_lista_registro_txt_recibo = [];
 		}
 
 
@@ -181,7 +182,7 @@
 				self::crearCicloPago($listaPagos);
 				if ( count($this->_lista_registro_txt_recibo) > 0 ) {
 					foreach ( $this->_lista_registro_txt_recibo as $key => $model ) {
-						self::procesarRegistroTxt($model);
+						$result = self::procesarRegistroTxt($model);
 					}
 				}
 			}
@@ -534,6 +535,7 @@
 				$this->_transaccion->rollBack();
 			}
 			$this->_conn->close();
+			return $result;
 		}
 
 

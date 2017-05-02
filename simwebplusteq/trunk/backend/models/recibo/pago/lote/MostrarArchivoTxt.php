@@ -107,6 +107,7 @@
 		 */
 		public function iniciarMostrarArchivo()
 		{
+			$this->_arreglo_pago = [];
 			self::lecturaArchivo();
 		}
 
