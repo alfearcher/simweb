@@ -311,7 +311,7 @@
 
 
         		//	PAGOS
-        		['label' => Icon::show('fa fa-money',['class' => $typeLong], $typeIcon) . '&nbsp; Pagos y Deudas',
+        		['label' => Icon::show('fa fa-money',['class' => $typeLong], $typeIcon) . '&nbsp; Pagos',
         			'items' => [
         		// 				['label' => 'Recibo', 'url' => '#'],
         		 		['label' => 'Caja', 'url' => ['/recibo/pago/individual/pago-recibo-individual/index']],
