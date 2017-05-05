@@ -60,6 +60,7 @@
 	use common\conexion\ConexionController;
 	use common\models\contribuyente\ContribuyenteBase;
 	use common\models\historico\cvbrecibo\GenerarValidadorRecibo;
+	use common\models\historico\cvbrecibo\GenerarValidadorReciboTresDigito;
 	use common\models\historico\cvbrecibo\HistoricoCodigoValidadorBancarioForm;
 
 	use mPDF;
@@ -123,7 +124,8 @@
             $deposito = Deposito::findOne($this->_recibo);
 
             // Se determina el codigo validador bancario del recibo.
-            $validador = New GenerarValidadorRecibo($deposito);
+            //$validador = New GenerarValidadorRecibo($deposito);
+            $validador = New GenerarValidadorReciboTresDigito($deposito);
             $cvb = $validador->getCodigoValidadorRecibo();
 
             // Se guarda el historico del documento.
@@ -201,7 +203,7 @@
 		{
 			$ceroAgregado = '0000000';
 			$codigo = 'RC';
-			$nombrePDF = $codigo . '-';
+			$nombrePDF = $codigo;
 			$preSerial = '';
 			$serial = '';
 			$parametros = [
