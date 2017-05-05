@@ -90,6 +90,7 @@
 		8 * 10 = 80
 
 		Monto suma producto (SPR): 234
+
 		4.	Se suma la resultante del paso 2 (MSR) y paso 3 (SPR).
 		ACUM1 = MSR + SPR. Ejemplo 30 + 234 = 264.
 
