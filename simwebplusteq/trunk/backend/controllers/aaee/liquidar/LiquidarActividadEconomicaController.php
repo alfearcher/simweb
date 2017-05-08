@@ -64,6 +64,7 @@
 	use common\models\planilla\PlanillaSearch;
 	use yii\data\ArrayDataProvider;
 	use common\models\contribuyente\ContribuyenteBase;
+	use backend\models\recibo\depositoplanilla\DepositoPlanillaSearch;
 
 
 	session_start();
@@ -264,9 +265,13 @@
 
 				$findModel = self::actionInfoPlanilla((int)$models[0]['id_pago'])->asArray()->one();
 
+				$puedoSeleccionarPlanilla = false;
+				$depositoPlanillaSearch = New DepositoPlanillaSearch();
+				$puedoSeleccionarPlanilla = $depositoPlanillaSearch->puedoSeleccionarPlanillaParaRecibo((int)$findModel['pagos']['planilla']);
+
 				// Se verifica que la planilla donde se guardaran los detalle este disponible.
 				// Sino es asi se genrara otra planilla.
-				if ( $findModel['pago'] == 0 ) {
+				if ( $findModel['pago'] == 0 && $puedoSeleccionarPlanilla ) {
 
 					$result = self::actionGuardarDetalle($models, $this->_conexion, $this->_conn);
 
