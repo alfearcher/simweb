@@ -305,7 +305,7 @@
 
 				$modelSolicitud->id_contribuyente = $idContribuyente;
 				$modelSolicitud->id_impuesto = 0;
-				$modelSolicitud->usuario = Yii::$app->user->identity->login;
+				$modelSolicitud->usuario = Yii::$app->identidad->getUsuario();
 				$modelSolicitud->fecha_hora_creacion = date('Y-m-d H:i:s');
 				$modelSolicitud->inactivo = 0;
 				$modelSolicitud->estatus = $estatus;
