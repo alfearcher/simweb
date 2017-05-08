@@ -296,18 +296,30 @@
                                                                   'class' => 'btn btn-default',
                                                                   'title' => 'total '. $model['acumulado'],
                                                                   'onClick' => '$("#id-pf").val("' . $model['planilla'] . '");
-                                                                                $("#id-suma").val("' . $model['acumulado'] . '");
+                                                                                $("#id-suma").val("' . Yii::$app->formatter->asDecimal($model['acumulado'], 2) . '");
 
-                                                                                var n = $( "#id-suma" ).val();
+                                                                                var montoAcumulado = $("#id-suma").val();
+                                                                                var montoAcumulado1 = montoAcumulado.split(".").join("");
+                                                                                var montoAcumulado = montoAcumulado1.replace(".", "");
+                                                                                var acumulado = montoAcumulado.replace(",", ".");
+
+                                                                                var n = acumulado;
                                                                                 var total = $( "#id-total" ).val();
+                                                                                var total1 = total.split(".").join("");
+                                                                                var total = total1.replace(".", "");
+                                                                                var t = total.replace(",", ".");
 
-                                                                                var s = parseFloat(n) + parseFloat(total);
+                                                                                var s = parseFloat(n) + parseFloat(t);
                                                                                 if ( n <= 0 ) {
                                                                                     $("#btn-add-seleccion").attr("disabled", true);
                                                                                 } else {
                                                                                     $( "#btn-add-seleccion" ).removeAttr("disabled");
                                                                                 }
+
                                                                                 $( "#id-sub-total" ).val(s);
+                                                                                //var subTotal = $( "#id-sub-total" ).val();
+                                                                                //var suma = subTotal.split(",").join("");
+                                                                                //var suma1 = suma.replace("");
                                                                                 ',
 
                                                               ]
@@ -475,13 +487,13 @@
                                       'alias' =>  'decimal',
                                       'digits' => 2,
                                       'digitsOptional' => false,
-                                      'groupSeparator' => ',',
+                                      'groupSeparator' => '.',
                                       'removeMaskOnSubmit' => true,
                                       // 'allowMinus'=>false,
                                       //'groupSize' => 3,
-                                      'radixPoint'=> ".",
+                                      'radixPoint'=> ",",
                                       'autoGroup' => true,
-                                      //'decimalSeparator' => ',',
+                                      'decimalSeparator' => ',',
                                 ],
 
                         ]);?></p></strong></h3>

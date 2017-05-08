@@ -225,7 +225,7 @@
 							<h3><strong><p><?= MaskedInput::widget([
 						                              'name' => 'total',
 						                              'id' => 'id-total',
-						                              'value' => $model->totalSeleccionado,
+						                              'value' => Yii::$app->formatter->asDecimal($model->totalSeleccionado, 2),
 						                              'options' => [
 						                                  'class' => 'form-control',
 						                                  'style' => 'width:100%;text-align: right;font-size:90%;background-color:#FFFFFF;',
