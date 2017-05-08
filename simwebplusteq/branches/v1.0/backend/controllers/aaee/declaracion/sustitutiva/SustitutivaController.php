@@ -350,7 +350,7 @@
 		  		if ( isset($findModel) ) {
 					// Se busca la lista de años que se mostraran en al combo de años.
 					// Solo se considerara los año anteriores al actual para la declaracion definitiva.
-					$listaAño = $searchSustitutiva->getListaAnoRegistrado($tipoDeclaracion);
+					$listaAño = $searchSustitutiva->getListaAnoRegistrado($tipoDeclaracion, true);
 					if ( count($listaAño) == 0 ) {
 						$errorListaAño = Yii::t('frontend', 'No se encontraron RUBROS AUTORIZADOS cargados ');
 						$errorMensaje = ( trim($errorMensaje) !== '' ) ? $errorMensaje = $errorMensaje . '. ' . $errorListaAño : $errorListaAño;
