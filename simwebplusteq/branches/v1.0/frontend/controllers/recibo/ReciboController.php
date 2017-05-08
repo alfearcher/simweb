@@ -215,6 +215,9 @@
 					if ( $postData['btn-confirm-create'] == 5 ) {
 
 						if ( $model->load($postData) ) {
+							$model->monto = str_replace('.', '', $postData['total']);
+							$model->monto = str_replace(',', '.', $model->monto);
+
 							if ( $model->validate() ) {
 
 								$result = self::actionBeginSave($model, $postData);
@@ -476,7 +479,10 @@
 
 				//$model->totalSeleccionado = self::actionTotalSeleccionado($dataProvider);
 				$model->totalSeleccionado = $postEnviado['total'];
-				$model->monto = $postEnviado['total'];
+				$monto = 0;
+				$monto = str_replace('.', '', $postEnviado['total']);
+				$model->totalSeleccionado = str_replace(',', '.', $monto);
+
 				$model->id_contribuyente = $idContribuyente;
 				$model->fecha_hora_creacion = '';
 
