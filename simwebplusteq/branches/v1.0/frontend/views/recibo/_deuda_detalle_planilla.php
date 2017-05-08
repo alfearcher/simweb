@@ -33,39 +33,39 @@
  *
  */
 
- 	use yii\web\Response;
- 	use kartik\icons\Icon;
- 	use yii\grid\GridView;
-	use yii\helpers\Html;
-	use yii\helpers\Url;
-	use yii\helpers\ArrayHelper;
-	use yii\widgets\ActiveForm;
-	use yii\web\View;
-	use yii\widgets\Pjax;
+  use yii\web\Response;
+  use kartik\icons\Icon;
+  use yii\grid\GridView;
+  use yii\helpers\Html;
+  use yii\helpers\Url;
+  use yii\helpers\ArrayHelper;
+  use yii\widgets\ActiveForm;
+  use yii\web\View;
+  use yii\widgets\Pjax;
   use yii\bootstrap\Modal;
-	use yii\widgets\MaskedInput;
+  use yii\widgets\MaskedInput;
 
 
-	// $typeIcon = Icon::FA;
- //  	$typeLong = 'fa-2x';
+  // $typeIcon = Icon::FA;
+ //   $typeLong = 'fa-2x';
 
  //    Icon::map($this, $typeIcon);
 
 ?>
 
 <div class="deuda-detalle-planilla">
- 	<?php
- 		$form = ActiveForm::begin([
+  <?php
+    $form = ActiveForm::begin([
         'id' => 'id-deuda-detalle-planilla',
- 			  'method' => 'post',
+        'method' => 'post',
         'action'=> Url::to(['index-create']),
         'enableClientValidation' => false,
- 			  'enableAjaxValidation' => false,
- 			  'enableClientScript' => true,
- 		]);
- 	?>
+        'enableAjaxValidation' => false,
+        'enableClientScript' => true,
+    ]);
+  ?>
 
-	<!-- <?//=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $findModel['id_contribuyente']])->label(false);?> -->
+  <!-- <?//=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $findModel['id_contribuyente']])->label(false);?> -->
 
   <?=Html::hiddenInput('id_contribuyente', $idContribuyente) ?>
 
@@ -106,20 +106,20 @@
       </div>
   <?php } ?>
 
-	<div class="row" style="padding-left: 0px;margin-top: 25px;width: 105%;">
+  <div class="row" style="padding-left: 0px;margin-top: 25px;width: 105%;">
       <div class="col-sm-3" style="margin-left:0px;width: 50%;font-family: verdana;font-size:60%;border-bottom: 1px solid #ccc;background-color: #F1F1F1;">
-		     <strong><h4><?=Html::encode($caption)?></h4></strong>
+         <strong><h4><?=Html::encode($caption)?></h4></strong>
       </div>
 
        <div class="col-sm-3" style="margin-left: 10px; width: 45%;font-family: verdana;font-size:60%;border-bottom: 1px solid #ccc;background-color: #F1F1F1;">
          <strong><h4><?=Html::encode('Planilla(s) Bloqueada(s)')?></h4></strong>
       </div>
-	</div>
+  </div>
 
-	<div class="row" class="deuda-planilla" style="padding-top: 10px;">
+  <div class="row" class="deuda-planilla" style="padding-top: 10px;">
       <div class="col-sm-3" id="grid" style="padding-left: 0px;width: 52%;">
 
-    		<?= GridView::widget([
+        <?= GridView::widget([
               'id' => 'grid-deuda-detalle-planilla',
               'dataProvider' => $dataProvider,
               'headerRowOptions' => ['class' => 'success'],
@@ -168,7 +168,7 @@
                         'label' => Yii::t('frontend', 'planilla'),
                         'value' => function($data) {
                                       return $data['planilla'];
-            			                 },
+                                   },
                         //'visible' => ( $periodoMayorCero ) ? false : true,
                     ],
 
@@ -179,7 +179,7 @@
                         'label' => Yii::t('frontend', 'monto'),
                         'value' => function($data) {
                                       return Yii::$app->formatter->asDecimal($data['tmonto'], 2);
-        					                 },
+                                   },
                         'visible' => false,
                     ],
                     [
@@ -238,8 +238,8 @@
                         ],
                         'label' => Yii::t('frontend', 'concepto'),
                         'value' => function($data) {
-        					                   return $data['descripcion'];
-        					               },
+                                     return $data['descripcion'];
+                                 },
                         'visible' => ( $periodoMayorCero ) ? false : true,
                     ],
                     [
@@ -296,18 +296,30 @@
                                                                   'class' => 'btn btn-default',
                                                                   'title' => 'total '. $model['acumulado'],
                                                                   'onClick' => '$("#id-pf").val("' . $model['planilla'] . '");
-                                                                                $("#id-suma").val("' . $model['acumulado'] . '");
+                                                                                $("#id-suma").val("' . Yii::$app->formatter->asDecimal($model['acumulado'], 2) . '");
 
-                                                                                var n = $( "#id-suma" ).val();
+                                                                                var montoAcumulado = $("#id-suma").val();
+                                                                                var montoAcumulado1 = montoAcumulado.split(".").join("");
+                                                                                var montoAcumulado = montoAcumulado1.replace(".", "");
+                                                                                var acumulado = montoAcumulado.replace(",", ".");
+
+                                                                                var n = acumulado;
                                                                                 var total = $( "#id-total" ).val();
+                                                                                var total1 = total.split(".").join("");
+                                                                                var total = total1.replace(".", "");
+                                                                                var t = total.replace(",", ".");
 
-                                                                                var s = parseFloat(n) + parseFloat(total);
+                                                                                var s = parseFloat(n) + parseFloat(t);
                                                                                 if ( n <= 0 ) {
                                                                                     $("#btn-add-seleccion").attr("disabled", true);
                                                                                 } else {
                                                                                     $( "#btn-add-seleccion" ).removeAttr("disabled");
                                                                                 }
+
                                                                                 $( "#id-sub-total" ).val(s);
+                                                                                //var subTotal = $( "#id-sub-total" ).val();
+                                                                                //var suma = subTotal.split(",").join("");
+                                                                                //var suma1 = suma.replace("");
                                                                                 ',
 
                                                               ]
@@ -319,7 +331,7 @@
                         'visible' => ( $periodoMayorCero ) ? true : false,
                     ],
               ]
-    		]);?>
+        ]);?>
       </div>
 
 <!-- planillas bloqueadas -->
@@ -447,7 +459,7 @@
           ]);?>
       </div>
 
-	</div>
+  </div>
 <!-- Final de planillas bloqueadas -->
 
 
@@ -475,13 +487,13 @@
                                       'alias' =>  'decimal',
                                       'digits' => 2,
                                       'digitsOptional' => false,
-                                      'groupSeparator' => ',',
+                                      'groupSeparator' => '.',
                                       'removeMaskOnSubmit' => true,
                                       // 'allowMinus'=>false,
                                       //'groupSize' => 3,
-                                      'radixPoint'=> ".",
+                                      'radixPoint'=> ",",
                                       'autoGroup' => true,
-                                      //'decimalSeparator' => ',',
+                                      'decimalSeparator' => ',',
                                 ],
 
                         ]);?></p></strong></h3>
@@ -536,7 +548,7 @@
       </div>
   </div>
 
-	<?php ActiveForm::end();?>
+  <?php ActiveForm::end();?>
 
 </div>
 
