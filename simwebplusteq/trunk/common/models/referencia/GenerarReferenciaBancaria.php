@@ -289,15 +289,22 @@
 		private function cicloSerialPorPlanillla($datoPlanilla, $igualdadMonto)
 		{
 			if ( count($this->_modelSerial) > 0 ) {
-				foreach ( $this->_modelSerial as $serial ) {
-					if ( $igualdadMonto ) {
-						if ( (float)$datoPlanilla['monto'] === (float)$serial['monto_edocuenta'] ) {
+				if (count($this->_modelSerial) == 1 ) {
+
+					$serial = $this->_modelSerial[0];
+					self::relacionar($serial, $datoPlanilla);
+
+				} else {
+					foreach ( $this->_modelSerial as $serial ) {
+						if ( $igualdadMonto ) {
+							if ( (float)$datoPlanilla['monto'] === (float)$serial['monto_edocuenta'] ) {
+								self::relacionar($serial, $datoPlanilla);
+								break;
+							}
+						} else {
 							self::relacionar($serial, $datoPlanilla);
 							break;
 						}
-					} else {
-						self::relacionar($serial, $datoPlanilla);
-						break;
 					}
 				}
 			}
