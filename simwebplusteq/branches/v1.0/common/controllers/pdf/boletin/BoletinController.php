@@ -185,7 +185,7 @@
         public function generarBoletinEstimada()
         {
             //$barcode = 152222;
-            $barcode = 'BD-' . $this->_id_contribuyente . '-' . $this->_año_impositivo . $this->_periodo;
+            $barcode = 'BE-' . $this->_id_contribuyente . '-' . $this->_año_impositivo . $this->_periodo;
             // Informacion del encabezado.
             $htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/layout/layout-encabezado-pdf', [
                                                             'caption' => 'BOLETIN DE NOTIFICACION',
