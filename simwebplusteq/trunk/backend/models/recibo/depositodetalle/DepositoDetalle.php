@@ -98,6 +98,16 @@
 
 
 
+		/**
+		 * Relacion con la entidad "depositos"
+		 * @return [type] [description]
+		 */
+		public function getDepositoRecibo()
+		{
+			return $this->hasOne(Deposito::className(), ['recibo' => 'recibo']);
+		}
+
+
 
 		/**
 		 * Relacion con la entidad "pagos"
