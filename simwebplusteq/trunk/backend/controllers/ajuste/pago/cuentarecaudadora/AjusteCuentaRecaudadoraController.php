@@ -106,6 +106,7 @@
             $varSessions = self::actionGetListaSessions();
             self::actionAnularSession($varSessions);
             $this->redirect(['mostrar-form-consulta']);
+            $_SESSION['begin'] = 1;
 		}
 
 
@@ -213,14 +214,13 @@
                     if ( isset($postData['btn-update-seleccion']) ) {
                         if ( $postData['btn-update-seleccion'] == 3 ) {
                             // Si llego aqui es porque se procesara la solicitud de actualizacion.
-//die(var_dump($model));
                             // Recibos
                             $chkPagoConfirmado = isset($postData['chkPagoConfirm']) ? $postData['chkPagoConfirm'] : [];
                             if ( self::actionBeginUpdate($model, $chkPagoConfirmado) ) {
-die('success');
+                                return self::actionMostrarResultado(200, $chkPagoConfirmado, $model);
                             } else {
                                 // No se ejecuto la actualizacion.
-die('fail');
+                                return self::actionMostrarResultado(920, $chkPagoConfirmado, $model);
                             }
 
                         }
@@ -228,19 +228,23 @@ die('fail');
                 }
             }
 
-            $dataProvider =  $model->getDataProviderSeleccion($chkPago);
+            if ( isset($_SESSION['begin']) ) {
+                $dataProvider =  $model->getDataProviderSeleccion($chkPago);
 
-            // Listado de bancos relacionados a cuentas recaudadoras.
-            $searchBanco = New BancoSearch();
-            $listaBanco = $searchBanco->getListaBancoRelacionadaCuentaReceptora();
+                // Listado de bancos relacionados a cuentas recaudadoras.
+                $searchBanco = New BancoSearch();
+                $listaBanco = $searchBanco->getListaBancoRelacionadaCuentaReceptora();
 
-            $caption = Yii::t('backend', 'Modificacion de la Cuenta Recaudadora');
-            return $this->render('/ajuste/pago/cuenta-recaudadora/pago-seleccionado-form', [
-                                                'model' => $model,
-                                                'dataProvider' => $dataProvider,
-                                                'caption' => $caption,
-                                                'listaBanco' => $listaBanco,
-                                 ]);
+                $caption = Yii::t('backend', 'Modificacion de la Cuenta Recaudadora');
+                return $this->render('/ajuste/pago/cuenta-recaudadora/pago-seleccionado-form', [
+                                                    'model' => $model,
+                                                    'dataProvider' => $dataProvider,
+                                                    'caption' => $caption,
+                                                    'listaBanco' => $listaBanco,
+                                     ]);
+            } else {
+                $this->redirect(['index']);
+            }
         }
 
 
@@ -273,7 +277,6 @@ die('fail');
 
                     // Recibos seleccionados
                     $chkPago = isset($postData['chkPago']) ? $postData['chkPago'] : [];
-//die(var_dump($chkPago));
                     if ( count($chkPago) == 0 ) {
                          $postData = $_SESSION['postEnviado'];
                          $mensajeAdvertencia = Yii::t('backend', 'No ha seleccionado ningun registros');
@@ -479,6 +482,27 @@ die('fail');
 
 
 
+
+
+        /***/
+        public function actionMostrarResultado($codigo, $chkSeleccions, $model)
+        {
+            $varSessions = self::actionGetListaSessions();
+            self::actionAnularSession($varSessions);
+            $busqueda = New BusquedaCuentaRecaudadoraForm();
+            $dataProvider = $busqueda->getDataProviderSeleccion($chkSeleccions);
+            $caption = Yii::t('backend', 'Modificacion de la Cuenta Recaudadora');
+            return $this->render('/ajuste/pago/cuenta-recaudadora/_resultado-operacion', [
+                                                    'codigo' => $codigo,
+                                                    'model' => $model,
+                                                    'dataProvider' => $dataProvider,
+                                                    'caption' => $caption,
+                    ]);
+
+        }
+
+
+
         /**
 		 * Metodo salida del modulo.
 		 * @return view
@@ -550,7 +574,8 @@ die('fail');
 						'postData',
 						'begin',
 						'postEnviado',
-                        'scenario'
+                        'scenario',
+                        'seleccion',
 					];
 
 		}
