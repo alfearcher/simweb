@@ -128,7 +128,7 @@
 						                ],
 						                'format' => 'raw',
 						                'value' => function($model) {
-														return date('d-m-Y', strtotime($model->fecha));
+														return date('d-m-Y', strtotime($model->depositoRecibo->fecha));
 													},
 						            ],
 
@@ -141,6 +141,7 @@
 						                'value' => function($model) {
 														return $model->formaPago->descripcion;
 													},
+										'visible' => false,
 						            ],
 						            [
 						                'label' => Yii::t('backend', 'Monto'),
@@ -149,7 +150,7 @@
 						                ],
 						                'format' => 'raw',
 						                'value' => function($model) {
-														return Yii::$app->formatter->asDecimal($model->monto, 2);
+														return Yii::$app->formatter->asDecimal($model->depositoRecibo->monto, 2);
 													},
 						            ],
 						            [
