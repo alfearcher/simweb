@@ -50,6 +50,7 @@
 	use backend\models\recibo\estatus\EstatusDeposito;
 	use backend\models\recibo\formapago\FormaPago;
 	use backend\models\recibo\planillaaporte\PlanillaAporte;
+	use backend\models\utilidad\banco\Banco;
 
 
 
@@ -140,6 +141,17 @@
 		public function getPlanillaAporte()
 		{
 			return $this->hasOne(PlanillaAporte::className(), ['linea' => 'linea']);
+		}
+
+
+
+		/**
+		 * Relacion con la entidad "banco"
+		 * @return [type] [description]
+		 */
+		public function getBanco()
+		{
+			return $this->hasOne(Banco::className(), ['id_banco' => 'codigo_banco']);
 		}
 
 	}
