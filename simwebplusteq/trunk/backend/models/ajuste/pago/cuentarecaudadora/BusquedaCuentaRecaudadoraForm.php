@@ -182,9 +182,12 @@
 		public function findDepositoDetalleModel()
 		{
 			$findModel = DepositoDetalle::find()->alias('B')
-												->joinWith('deposito A', true, 'INNER JOIN')
+												->joinWith('depositoRecibo A', true, 'INNER JOIN')
 												->where('A.estatus =:estatus',
-															[':estatus' => 1]);
+															[':estatus' => 1])
+												->groupBy([
+														'A.recibo'
+													]);
 
 			return $findModel;
 		}
@@ -197,10 +200,11 @@
 		{
 			$query = self::findDepositoDetalleModel();
 			$dataProvider = New ActiveDataProvider([
+				'key' => 'recibo',
 				'query' => $query,
 				'pagination' => false,
 			]);
-			$query->andFilterWhere(['IN', 'linea', $seleccion]);
+			$query->andFilterWhere(['IN', 'A.recibo', $seleccion]);
 			$query->all();
 			return $dataProvider;
 		}
@@ -213,6 +217,7 @@
 		{
 			$query = self::findDepositoDetalleModel();
 			$dataProvider = New ActiveDataProvider([
+				'key' => 'recibo',
 				'query' => $query,
 				'pagination' => false,
 			]);
