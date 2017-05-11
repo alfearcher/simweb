@@ -60,6 +60,7 @@
     use backend\models\utilidad\banco\BancoSearch;
     use backend\models\recibo\prereferencia\ReferenciaPlanillaUsuarioForm;
     use backend\models\ajuste\pago\cuentarecaudadora\BusquedaCuentaRecaudadoraForm;
+    use backend\models\recibo\prereferencia\PreReferenciaPlanilla;
 
 
 
@@ -174,7 +175,7 @@
 
 
         /**
-         * Metodo que permite mostrar la selccion confirmada de los registros a actualizar
+         * Metodo que permite mostrar la seleccion confirmada de los registros a actualizar
          * y en la misma vista muestra dos combos que permitiran la seleccion del banco
          * y de la nueva cuenta recaudadora.
          * @return none
@@ -183,7 +184,6 @@
         {
             $request = Yii::$app->request;
             $postData = count($request->bodyParams) > 0 ? $request->bodyParams : [];
-            //self::actionAnularSession(['postEnviado']);
             $usuario = Yii::$app->identidad->getUsuario();
 
             if ( isset($postData['btn-back']) ) {
@@ -205,19 +205,22 @@
             }
 
             $model->scenario = self::SCENARIO_UDPATE;
+            // Recibos seleccionados.
             $chkPago = isset($_SESSION['seleccion']) ? $_SESSION['seleccion'] : ['0'];
 
             if ( $model->load($postData) ) {
                 if ( $model->validate() ) {
                     if ( isset($postData['btn-update-seleccion']) ) {
                         if ( $postData['btn-update-seleccion'] == 3 ) {
-
-                        // Si llego aqui es porque se procesara la solicitud de actualizacion.
-                            if ( $self::actionBeginUpdate($model, $chkPago) ) {
-
+                            // Si llego aqui es porque se procesara la solicitud de actualizacion.
+//die(var_dump($model));
+                            // Recibos
+                            $chkPagoConfirmado = isset($postData['chkPagoConfirm']) ? $postData['chkPagoConfirm'] : [];
+                            if ( self::actionBeginUpdate($model, $chkPagoConfirmado) ) {
+die('success');
                             } else {
                                 // No se ejecuto la actualizacion.
-
+die('fail');
                             }
 
                         }
@@ -267,7 +270,10 @@
                 }
             } elseif ( isset($postData['btn-seleccion']) ) {
                 if ( $postData['btn-seleccion'] == 2 ) {
+
+                    // Recibos seleccionados
                     $chkPago = isset($postData['chkPago']) ? $postData['chkPago'] : [];
+//die(var_dump($chkPago));
                     if ( count($chkPago) == 0 ) {
                          $postData = $_SESSION['postEnviado'];
                          $mensajeAdvertencia = Yii::t('backend', 'No ha seleccionado ningun registros');
@@ -297,19 +303,26 @@
         /**
          * Metodo que in icia el proceso de actualizacion
          * @param BusquedaCuentaRecaudadoraForm $model instancia de la clase con los datos
-         * del banco y cuenta recaudadora.
-         * @param array $chkPagoSeleccions arreglo de identificadores de la entidad "depositos-detalle"
-         * Estos corresponden a los registros seleccionados para la actualizacuion.
+         * del banco y cuenta recaudadora. Con datos.  Moelo donde se elecciona la nueva
+         * cuenta recaudadora y ya existen los recibos seleccionados para su actualizacion.
+         * @param array $chkPagoSeleccions arreglo de identificadores (recibos) de la
+         * entidad "depositos". Estos corresponden a los registros seleccionados para la
+         * actualizacuion.
          * @return boolean
          */
         private function actionBeginUpdate($model, $chkPagoSeleccions)
         {
             $result = false;
+            self::setConexion();
             $this->_transaccion = $this->_conn->beginTransaction();
             $this->_conn->open();
             foreach ( $chkPagoSeleccions as $chkItem ) {
-                $result = self::actionActualizarDepositoDetalle($model, $chkItem);
-                if ( !$result ) { break; }
+                $result = self::actionUpdateDepositoDetalle($model, $chkItem);
+                if ( !$result ) {
+                    break;
+                } else {
+                    $result = self::actionAjustarPreReferencia($chkItem, $model->cuenta_deposito);
+                }
             }
 
             if ( $result ) {
@@ -317,6 +330,8 @@
             } else {
                 $this->_transaccion->rollBack();
             }
+            $this->_conn->close();
+
             return $result;
         }
 
@@ -327,14 +342,14 @@
          * Metodo que ejecuta la actualizacion.
          * @param BusquedaCuentaRecaudadoraForm $model instancia de la clase con los datos
          * del banco y cuenta recaudadora.
-         * @param integer $idLinea identificador de la entidad "depositos-detalle"
+         * @param integer $recibo identificador de la entidad "depositos"
          * @return boolean.
          */
-        private function actionActualizarDepositoDetalle($model, $idLinea)
+        private function actionUpdateDepositoDetalle($model, $recibo)
         {
             $tabla = $model->getTableName();
             $arregloCondicion = [
-                'linea' => $idLinea,
+                'recibo' => $recibo,
             ];
             $arregloDatos = [
                 'codigo_banco' => $model->codigo_banco,
@@ -346,6 +361,90 @@
 
 
 
+        /**
+         * Metodo que inicia el proceso de insercion de registros y la actualizacion
+         * de estatus.
+         * @param integer $recibo identificador de la entidad "depositos". Numero de
+         * recibo de pago.
+         * @param string $nroCuentaRecaudadora numero de la cuenta recaudadora nueva.
+         * @return boolean
+         */
+        private function actionAjustarPreReferencia($recibo, $nroCuentaRecaudadora)
+        {
+            return self::actionInsertarReferencia($recibo, $nroCuentaRecaudadora);
+        }
+
+
+
+        /**
+         * Metodo que realiza la insercion en la entidad "pre-referencias-planillas".
+         * Se inserta un registros con los datos existentes de la referencia pero con
+         * la actualizacion de la observacion de la entidad "pre-referencias-planillas".
+         * @param integer $recibo identificador de la entidad "depositos". Numero de
+         * recibo de pago.
+         * @param string $nroCuentaRecaudadora numero de la cuenta recaudadora nueva.
+         * @return boolean
+         */
+        private function actionInsertarReferencia($recibo, $nroCuentaRecaudadora)
+        {
+            $result = false;
+            $referencia = New PreReferenciaPlanilla();
+            $tabla = $referencia->tableName();
+            $registers = $referencia->find()->where(['IN', 'estatus', [0,1]])
+                                                            ->andWhere('recibo =:recibo',
+                                                                            ['recibo' => $recibo])
+                                                            ->all();
+
+            $nuevaCuentaRecaudadora = self::actionSetObservacionSerialManual($nroCuentaRecaudadora);
+            foreach ( $registers as $register ) {
+
+                $idReferencia = $register->id_referencia;
+                $register->id_referencia = null;
+                $register->observacion = $nuevaCuentaRecaudadora;
+                $register->usuario = Yii::$app->identidad->getUsuario();
+                $register->fecha_hora = date('Y-m-d H:i:s');
+
+                $result = $this->_conexion->guardarRegistro($this->_conn, $tabla, $register->attributes);
+                if ( !$result ) {
+                    break;
+                } else {
+
+                    // Se inactiva la referencia existente para evitar la duplicidad de registros.
+                    $result = self::actionInactivarReferencia($idReferencia, $referencia);
+                    if ( !$result ) { break; }
+
+                }
+            }
+
+            return $result;
+        }
+
+
+
+        /**
+         * Metodo que realiza la inactivacion de la referencia bancaria.
+         * @param integer $idReferencia identificador de la entidad "pre-referencias-planillas".
+         * @return boolean.
+         */
+        private function actionInactivarReferencia($idReferencia, $referencia)
+        {
+            //$register = PreReferenciaPlanilla::findOne($idReferencia);
+            $register = $referencia->find()
+                                   ->where('id_referencia =:id_referencia',
+                                                [':id_referencia' => $idReferencia])
+                                   ->one();
+
+            $tabla = $referencia->tableName();
+
+            $arregloCondicion = [
+                'id_referencia' => $idReferencia,
+            ];
+            $arregloDatos = [
+                'estatus' => 9,
+            ];
+            return $this->_conexion->modificarRegistro($this->_conn, $tabla, $arregloDatos, $arregloCondicion);
+        }
+
 
 
 
@@ -356,7 +455,7 @@
          */
         public function actionSetObservacionSerialManual($nroCuentaRecaudadora)
         {
-        	return 'SERIAL MANUAL, Cuenta Recaudadora: ' . $nroCuentaRecaudadora . ' Actualizacion efectuada por: ' . Yii::$app->identidad->getUsuario() . ' - ' . date('Y-m-d H:i:s');
+        	return 'Cuenta Recaudadora: ' . $nroCuentaRecaudadora . ' Actualizacion efectuada por: ' . Yii::$app->identidad->getUsuario() . ' - ' . date('Y-m-d H:i:s');
         }
 
 
