@@ -329,17 +329,13 @@
 		        			]
 		        		],
 
+						['label' => Icon::show('fa fa-pencil-square-o',['class' => $typeLong], $typeIcon) . '&nbsp; Ajustes',
+					   		'items' => [
+					   			['label' => 'Cuenta Recaudadora', 'url' => ['/ajuste/pago/cuentarecaudadora/ajuste-cuenta-recaudadora/index']],
+					   		]
+	        			],
 
-	        	// 				['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Pagos',
-
-					   		// 		'items' => [
-					   		// 		['label' => 'Verificar Pagos', 'url' => ['/pagos/pagoscontribuyente/pagos-contribuyente/verificar-pagos-contribuyente']],
-
-
-	        	// 				   	]
-	        	// 				],
         			]
-
         		],
 
 
