@@ -133,7 +133,6 @@
 	                                                                ])->label(false);
 	                            ?>
 							</div>
-
 						</div>
 <!-- FIN DE LISTA DE CUENTA RECAUDADORAS -->
 
