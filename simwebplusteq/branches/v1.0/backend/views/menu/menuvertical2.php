@@ -281,16 +281,17 @@
 
 
         		//	AJUSTAR PAGOS
-        		// ['label' => Icon::show('fa fa-pencil-square-o',['class' => $typeLong], $typeIcon) . '&nbsp; Ajustar Pagos',
-        		// 	'items' => [
-        		// 				['label' => 'Ajustar Formas de Pagos', 'url' => '#'],
-        		// 				['label' => 'Ajustar Pagos Inconsistentes', 'url' => '#'],
-        		// 				['label' => 'Listado Planillas-Bancos vs Planillas-Pagadas', 'url' => '#'],
-        		// 				['label' => 'Ajustar Cuentas Bancarias Sobre Pagos', 'url' => '#'],
-        		// 				['label' => 'Ajustar Planillas por Ingresos', 'url' => '#'],
-        		// 				['label' => 'Ajustar Pagos Por Fecha', 'url' => '#'],
-        		// 	]
-        		// ],
+        		['label' => Icon::show('fa fa-pencil-square-o',['class' => $typeLong], $typeIcon) . '&nbsp; Ajustar Pagos',
+        			'items' => [
+						//['label' => 'Ajustar Formas de Pagos', 'url' => '#'],
+						//['label' => 'Ajustar Pagos Inconsistentes', 'url' => '#'],
+						//['label' => 'Listado Planillas-Bancos vs Planillas-Pagadas', 'url' => '#'],
+						//['label' => 'Ajustar Cuentas Bancarias Sobre Pagos', 'url' => '#'],
+						//['label' => 'Ajustar Planillas por Ingresos', 'url' => '#'],
+						//['label' => 'Ajustar Pagos Por Fecha', 'url' => '#'],
+						['label' => 'Ajustar Cuenta Recaudadora', 'url' => ['/ajuste/pago/cuentarecaudadora/ajuste-cuenta-recaudadora/index']],
+        			]
+        		],
 
 
         		//	PAGOS
