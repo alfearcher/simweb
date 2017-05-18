@@ -61,6 +61,7 @@
     use backend\models\recibo\prereferencia\ReferenciaPlanillaUsuarioForm;
     use backend\models\ajuste\pago\cuentarecaudadora\BusquedaCuentaRecaudadoraForm;
     use backend\models\recibo\prereferencia\PreReferenciaPlanilla;
+    use backend\models\aaee\ajuste\pago\cuentarecaudadora\AjusteCuentaRecaudadoraSearch;
 
 
 
@@ -105,8 +106,19 @@
 		{
             $varSessions = self::actionGetListaSessions();
             self::actionAnularSession($varSessions);
-            $this->redirect(['mostrar-form-consulta']);
-            $_SESSION['begin'] = 1;
+
+            $ajuste = New AjusteCuentaRecaudadoraSearch();
+            $autorizado = false;
+
+            // Se determina si el usuario esta autorixado a utilizar el modulo.
+            $autorizado = $ajuste->estaAutorizado(Yii::$app->identidad->getUsuario());
+            if ( $autorizado ) {
+                $_SESSION['begin'] = 1;
+                $this->redirect(['mostrar-form-consulta']);
+            } else {
+                // El usuario no esta autorizado.
+                $this->redirect(['error-operacion', 'cod' => 700]);
+            }
 		}
 
 
