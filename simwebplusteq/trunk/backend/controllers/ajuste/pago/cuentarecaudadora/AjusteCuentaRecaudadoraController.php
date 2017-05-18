@@ -61,7 +61,7 @@
     use backend\models\recibo\prereferencia\ReferenciaPlanillaUsuarioForm;
     use backend\models\ajuste\pago\cuentarecaudadora\BusquedaCuentaRecaudadoraForm;
     use backend\models\recibo\prereferencia\PreReferenciaPlanilla;
-    use backend\models\aaee\ajuste\pago\cuentarecaudadora\AjusteCuentaRecaudadoraSearch;
+    use backend\models\ajuste\pago\cuentarecaudadora\AjusteCuentaRecaudadoraSearch;
 
 
 
