@@ -1,81 +1,82 @@
 <?php
 /**
- *	@copyright © by ASIS CONSULTORES 2012 - 2016
+ *  @copyright © by ASIS CONSULTORES 2012 - 2016
  *  All rights reserved - SIMWebPLUS
  */
 
  /**
  *
- *	> This library is free software; you can redistribute it and/or modify it under
- *	> the terms of the GNU Lesser Gereral Public Licence as published by the Free
- *	> Software Foundation; either version 2 of the Licence, or (at your opinion)
- *	> any later version.
+ *  > This library is free software; you can redistribute it and/or modify it under
+ *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free
+ *  > Software Foundation; either version 2 of the Licence, or (at your opinion)
+ *  > any later version.
  *  >
- *	> This library is distributed in the hope that it will be usefull,
- *	> but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability
- *	> or fitness for a particular purpose. See the GNU Lesser General Public Licence
- *	> for more details.
+ *  > This library is distributed in the hope that it will be usefull,
+ *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability
+ *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence
+ *  > for more details.
  *  >
- *	> See [LICENSE.TXT](../../LICENSE.TXT) file for more information.
+ *  > See [LICENSE.TXT](../../LICENSE.TXT) file for more information.
  *
  */
 
  /**
- *	@file AjusteCuentaRecaudadoraController.php
+ *  @file AjusteCuentaRecaudadoraController.php
  *
- *	@author Jose Rafael Perez Teran
+ *  @author Jose Rafael Perez Teran
  *
- *	@date 09-05-2017
+ *  @date 09-05-2017
  *
  *  @class AjusteCuentaRecaudadoraController
- *	@brief Clase
+ *  @brief Clase
  *
  *
- *	@property
+ *  @property
  *
  *
- *	@method
+ *  @method
  *
  *
- *	@inherits
+ *  @inherits
  *
  */
 
 
- 	namespace backend\controllers\ajuste\pago\cuentarecaudadora;
+    namespace backend\controllers\ajuste\pago\cuentarecaudadora;
 
 
- 	use Yii;
- 	use yii\helpers\ArrayHelper;
-	use yii\filters\AccessControl;
-	use yii\web\Controller;
-	use yii\filters\VerbFilter;
-	use yii\widgets\ActiveForm;
-	use yii\web\Response;
-	use yii\helpers\Url;
-	use yii\web\NotFoundHttpException;
-	use common\conexion\ConexionController;
-	use common\mensaje\MensajeController;
-	use common\models\session\Session;
+    use Yii;
+    use yii\helpers\ArrayHelper;
+    use yii\filters\AccessControl;
+    use yii\web\Controller;
+    use yii\filters\VerbFilter;
+    use yii\widgets\ActiveForm;
+    use yii\web\Response;
+    use yii\helpers\Url;
+    use yii\web\NotFoundHttpException;
+    use common\conexion\ConexionController;
+    use common\mensaje\MensajeController;
+    use common\models\session\Session;
     use backend\models\utilidad\banco\BancoSearch;
     use backend\models\recibo\prereferencia\ReferenciaPlanillaUsuarioForm;
     use backend\models\ajuste\pago\cuentarecaudadora\BusquedaCuentaRecaudadoraForm;
     use backend\models\recibo\prereferencia\PreReferenciaPlanilla;
+    use backend\models\ajuste\pago\cuentarecaudadora\AjusteCuentaRecaudadoraSearch;
 
 
 
-	session_start();		// Iniciando session
+    session_start();        // Iniciando session
 
-	/**
-	 *
-	 */
-	class AjusteCuentaRecaudadoraController extends Controller
-	{
-		public $layout = 'layout-main';				//	Layout principal del formulario
+    /**
+     *
+     */
+    class AjusteCuentaRecaudadoraController extends Controller
+    {
+        public $layout = 'layout-main';             //  Layout principal del formulario
 
-		private $_conn;
-		private $_conexion;
-		private $_transaccion;
+        private $_conn;
+        private $_conexion;
+        private $_transaccion;
 
         const SCENARIO_RECIBO = 'recibo';
         const SCENARIO_LOTE = 'lote';
@@ -83,15 +84,15 @@
         const SCENARIO_DEFAULT = 'default';
 
 
-		/**
-		 * Metodo que configurationa las variables que permitiran la interaccion
-		 * con la base de datos.
-		 */
-		private function setConexion()
-		{
-			$this->_conexion = New ConexionController();
-			$this->_conn = $this->_conexion->initConectar('db');
-		}
+        /**
+         * Metodo que configurationa las variables que permitiran la interaccion
+         * con la base de datos.
+         */
+        private function setConexion()
+        {
+            $this->_conexion = New ConexionController();
+            $this->_conn = $this->_conexion->initConectar('db');
+        }
 
 
 
@@ -101,13 +102,24 @@
          * @return retorna una vista donde se debe colocar el numero de recibo
          * para consultarlo.
          */
-		public function actionIndex()
-		{
+        public function actionIndex()
+        {
             $varSessions = self::actionGetListaSessions();
             self::actionAnularSession($varSessions);
-            $this->redirect(['mostrar-form-consulta']);
-            $_SESSION['begin'] = 1;
-		}
+
+            $ajuste = New AjusteCuentaRecaudadoraSearch();
+            $autorizado = false;
+
+            // Se determina si el usuario esta autorixado a utilizar el modulo.
+            $autorizado = $ajuste->estaAutorizado(Yii::$app->identidad->getUsuario());
+            if ( $autorizado ) {
+                $_SESSION['begin'] = 1;
+                $this->redirect(['mostrar-form-consulta']);
+            } else {
+                // El usuario no esta autorizado.
+                $this->redirect(['error-operacion', 'cod' => 700]);
+            }
+        }
 
 
 
@@ -458,7 +470,7 @@
          */
         public function actionSetObservacionSerialManual($nroCuentaRecaudadora)
         {
-        	return 'Cuenta Recaudadora: ' . $nroCuentaRecaudadora . ' Actualizacion efectuada por: ' . Yii::$app->identidad->getUsuario() . ' - ' . date('Y-m-d H:i:s');
+            return 'Cuenta Recaudadora: ' . $nroCuentaRecaudadora . ' Actualizacion efectuada por: ' . Yii::$app->identidad->getUsuario() . ' - ' . date('Y-m-d H:i:s');
         }
 
 
@@ -470,13 +482,13 @@
          */
         public function actionListarCuentaRecaudadora()
         {
-        	$request = Yii::$app->request;
-        	$postGet = $request->get();
-        	$postData = $request->post();
+            $request = Yii::$app->request;
+            $postGet = $request->get();
+            $postData = $request->post();
 
-        	$searchBanco = New BancoSearch();
-        	$id = isset($postGet['id']) ? (int)$postGet['id'] : 0;
-        	return $searchBanco->generarViewListaCuentaRecaudadora($id);
+            $searchBanco = New BancoSearch();
+            $id = isset($postGet['id']) ? (int)$postGet['id'] : 0;
+            return $searchBanco->generarViewListaCuentaRecaudadora($id);
 
         }
 
@@ -504,83 +516,83 @@
 
 
         /**
-		 * Metodo salida del modulo.
-		 * @return view
-		 */
-		public function actionQuit()
-		{
-			$varSession = self::actionGetListaSessions();
-			self::actionAnularSession($varSession);
-			return $this->render('/menu/menuvertical2');
-		}
+         * Metodo salida del modulo.
+         * @return view
+         */
+        public function actionQuit()
+        {
+            $varSession = self::actionGetListaSessions();
+            self::actionAnularSession($varSession);
+            return $this->render('/menu/menuvertical2');
+        }
 
 
 
-		/**
-		 * Metodo que ejecuta la anulacion de las variables de session utilizados
-		 * en el modulo.
-		 * @param  array $varSessions arreglo con los nombres de las variables de
-		 * sesion que seran anuladas.
-		 * @return none.
-		 */
-		public function actionAnularSession($varSessions)
-		{
-			Session::actionDeleteSession($varSessions);
-		}
+        /**
+         * Metodo que ejecuta la anulacion de las variables de session utilizados
+         * en el modulo.
+         * @param  array $varSessions arreglo con los nombres de las variables de
+         * sesion que seran anuladas.
+         * @return none.
+         */
+        public function actionAnularSession($varSessions)
+        {
+            Session::actionDeleteSession($varSessions);
+        }
 
 
 
-		/**
-		 * Metodo que renderiza una vista indicando que le proceso se ejecuto
-		 * satisfactoriamente.
-		 * @param  integer $cod codigo que permite obtener la descripcion del
-		 * codigo de la operacion.
-		 * @return view.
-		 */
-		public function actionProcesoExitoso($cod)
-		{
-			$varSession = self::actionGetListaSessions();
-			self::actionAnularSession($varSession);
-			return MensajeController::actionMensaje($cod);
-		}
+        /**
+         * Metodo que renderiza una vista indicando que le proceso se ejecuto
+         * satisfactoriamente.
+         * @param  integer $cod codigo que permite obtener la descripcion del
+         * codigo de la operacion.
+         * @return view.
+         */
+        public function actionProcesoExitoso($cod)
+        {
+            $varSession = self::actionGetListaSessions();
+            self::actionAnularSession($varSession);
+            return MensajeController::actionMensaje($cod);
+        }
 
 
 
-		/**
-		 * Metodo que renderiza una vista que indica que ocurrio un error en la
-		 * ejecucion del proceso.
-		 * @param  integer $cod codigo que permite obtener la descripcion del
-		 * codigo de la operacion.
-		 * @return view.
-		 */
-		public function actionErrorOperacion($cod)
-		{
-			$varSession = self::actionGetListaSessions();
-			self::actionAnularSession($varSession);
-			return MensajeController::actionMensaje($cod);
-		}
+        /**
+         * Metodo que renderiza una vista que indica que ocurrio un error en la
+         * ejecucion del proceso.
+         * @param  integer $cod codigo que permite obtener la descripcion del
+         * codigo de la operacion.
+         * @return view.
+         */
+        public function actionErrorOperacion($cod)
+        {
+            $varSession = self::actionGetListaSessions();
+            self::actionAnularSession($varSession);
+            return MensajeController::actionMensaje($cod);
+        }
 
 
 
-		/**
-		 * Metodo que permite obtener un arreglo de las variables de sesion
-		 * que seran utilizadas en el modulo, aqui se pueden agregar o quitar
-		 * los nombres de las variables de sesion.
-		 * @return array retorna un arreglo de nombres.
-		 */
-		public function actionGetListaSessions()
-		{
-			return $varSession = [
-						'postData',
-						'begin',
-						'postEnviado',
+        /**
+         * Metodo que permite obtener un arreglo de las variables de sesion
+         * que seran utilizadas en el modulo, aqui se pueden agregar o quitar
+         * los nombres de las variables de sesion.
+         * @return array retorna un arreglo de nombres.
+         */
+        public function actionGetListaSessions()
+        {
+            return $varSession = [
+                        'postData',
+                        'begin',
+                        'postEnviado',
                         'scenario',
                         'seleccion',
-					];
+                    ];
 
-		}
+        }
 
 
 
-	}
+    }
 ?>
