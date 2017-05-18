@@ -102,7 +102,7 @@
 	    private function getListaFuncionarioAutorizado()
 	    {
 	    	return [
-	    		'adminteq1',
+	    		'adminteq',
 	    		'kperez',
 	    		'pfranco',
 	    	];
