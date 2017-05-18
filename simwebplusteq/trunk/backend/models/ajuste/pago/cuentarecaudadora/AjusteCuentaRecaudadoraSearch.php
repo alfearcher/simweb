@@ -94,5 +94,38 @@
 
 		}
 
+
+		/**
+	     * Metodo donde se fijan los usuario autorizados para utilizar esl modulo.
+	     * @return array
+	     */
+	    private function getListaFuncionarioAutorizado()
+	    {
+	    	return [
+	    		'adminteq1',
+	    		'kperez',
+	    		'pfranco',
+	    	];
+	    }
+
+
+	    /**
+	     * Metodo que permite determinar si un usuario esta autorizado para utilizar el modulo.
+	     * @param  string $usuario usuario logueado
+	     * @return booleam retorna true si lo esta, false en caso conatrio.
+	     */
+	    public function estaAutorizado($usuario)
+	    {
+	    	$listaUsuarioAutorizado = self::getListaFuncionarioAutorizado();
+	    	if ( count($listaUsuarioAutorizado) > 0 ) {
+	    		foreach ( $listaUsuarioAutorizado as $key => $value ) {
+	    			if ( $value == $usuario ) {
+	    				return true;
+	    			}
+	    		}
+	    	}
+	    	return false;
+	    }
+
 	}
 ?>
