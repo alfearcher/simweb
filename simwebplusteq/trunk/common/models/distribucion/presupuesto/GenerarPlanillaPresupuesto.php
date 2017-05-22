@@ -325,7 +325,7 @@
 					}
 				}
 
-			} elseif ( (int)$detallePlanilla['impuesto'] == 10 && $detallePlanilla['fecha_pago'] > date('Y-m-d', '2013-01-03') && in_array($detallePlanilla['id_impuesto'], $listaIdimpuesto1) ) {
+			} elseif ( (int)$detallePlanilla['impuesto'] == 10 && date('Y-m-d', strtotime($detallePlanilla['fecha_pago'])) > date('Y-m-d', strtotime('2013-01-03')) && in_array($detallePlanilla['id_impuesto'], $listaIdimpuesto1) ) {
 				// Activado el 08-04-2013
 
 				// Reparo fiscales
@@ -341,7 +341,7 @@
 				if ( (int)$detallePlanilla['ano_impositivo'] < (int)date('Y', strtotime($detallePlanilla['fecha_pago'])) ) {
 
 					$montoAplicar = $monto - ( $descuento + $montoReconocimiento );
-					if ( $detallePlanilla['fecha_pago'] >= date('Y-m-d', strtotime('2011-01-01')) ) {
+					if ( date('Y-m-d', strtotime($detallePlanilla['fecha_pago'])) >= date('Y-m-d', strtotime('2011-01-01')) ) {
 
 						$codigo = self::getCodigoPresupuestarioDeudaMorosa();
 						self::relacionar($detallePlanilla, $datoContribuyente, $codigo, $montoAplicar);
@@ -392,7 +392,7 @@
 
 					} else {
 						if ( $detallePlanilla['impuesto'] == 9 ) {
-							if ( $detallePlanilla['fecha_pago'] >= date('Y-m-d', '2014-03-01') ) {
+							if ( date('Y-m-d', strtotime($detallePlanilla['fecha_pago'])) >= date('Y-m-d', strtotime('2014-03-01')) ) {
 
 								// Deuda morosa por tasa.
 								$codigo = self::getCodigoPresupuestarioDeudaMorosaPorTasa();
