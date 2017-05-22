@@ -85,7 +85,7 @@
 	.label-identidad-pago {
 		text-align: center;
 		font-family: Arial, Helvetica, sans-serif;
-		font-size: 80%;
+		font-size: 75%;
 		border-bottom: solid 2px #175778;
 
 	}
